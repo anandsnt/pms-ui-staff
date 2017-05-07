@@ -36,7 +36,6 @@ sntRover.controller('RVKeyEncodePopupCtrl', [ '$rootScope', '$scope', '$state', 
 
 		/** ***************************************************************************/
 
-
 		var reservationStatus = "";
 
 		$scope.data = {};
