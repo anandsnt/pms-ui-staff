@@ -168,7 +168,7 @@ sntRover.controller('RVKeyEncodePopupCtrl', [ '$rootScope', '$scope', '$state', 
                     document.removeEventListener("deviceready", checkDeviceConnection, false);
                 };
 
-                if (that.noOfErrorMethodCalled > 1) {
+                if (that.noOfErrorMethodCalled > 1 && $scope.isIpad) {
                     sntCordovaInit();
                     sntapp.cardReader = new CardOperation();
                     document.addEventListener("deviceready", checkDeviceConnection, false);
