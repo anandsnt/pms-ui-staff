@@ -179,16 +179,43 @@ sntZestStation.controller('zsRootCtrl', [
                         },500)
                         
                     }
+                } else if ($scope.softResetCount == 2) {
+
+                    $timeout(function(){
+                        if ($scope.softResetCount == 2) {
+                            // when in a local testing environment, we should be able to test all hotel themes
+                            // a bit faster, to help with this, enable swipe-up/down to change themes.
+                            // *activate themeSwitcher on Ipad by double-tapping the logo @ admin,
+                            // then, at any screen swipe the icon up or down to change the hotel theme
+                            if ($scope.ipadThemeSwitcherEnabled && $scope.isIpad && !$scope.inProd()) {
+                                $scope.zestStationData.showThemeSwitcherDashboard = true;
+                            }
+                        }
+                    },1500);
+                    
+
+
+
                 }
+
                 $timeout(function(){
                     $scope.softResetCount = 0;
                 },2200);
             }
         };
 
+        $scope.adminBtnPress = 0;
         $scope.goToAdmin = function() {
-            $scope.zestStationData.fromAdminButton = true;
-            $state.go('zest_station.admin');
+            if ($state.current.name === 'zest_station.admin' && !$scope.inProd()) {
+                $scope.adminBtnPress++;
+                  $timeout(function(){
+                    $scope.adminBtnPress = 0;
+                },2000);
+            } else {
+                $scope.adminBtnPress = 0;
+                $scope.zestStationData.fromAdminButton = true;
+                $state.go('zest_station.admin');                
+            }
         };
 
 		// check if navigator is iPad
@@ -1594,7 +1621,7 @@ sntZestStation.controller('zsRootCtrl', [
             $scope.zestStationData.hotelLanguages = hotelLanguages.languages;
             $rootScope.isStandAlone = zestStationSettings.is_standalone;
             $scope.zestStationData.check_in_collect_passport = false;// TODO: link with admin setting
-
+            $scope.zestStationData.showThemeSwitcherDashboard = false; // Only for ipad in dev environment, switch themes fast like in chrome (dashboard view)
             $scope.zestStationData.makingKeyInProgress = false;
             $scope.zestStationData.qrCodeScanning = false;
             $scope.zestStationData.demoModeEnabled = 'false'; // demo mode for hitech, only used in snt-theme

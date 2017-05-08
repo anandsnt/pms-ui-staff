@@ -50,7 +50,7 @@ function BaseCtrl($scope) {
         } else {return false;}
     };
     $scope.inProd = function() {
-        var notProd = false;
+        var inDevEnvironment = false;
         var url = true ? document.location : window.location;
 
         if (url.hostname) {
@@ -59,11 +59,11 @@ function BaseCtrl($scope) {
           url.hostname.indexOf('pms-release') !== -1 ||
           url.hostname.indexOf('192.168.1.218') !== -1 ||
           url.hostname.indexOf('localhost') !== -1) {
-                    notProd = true;
+                    inDevEnvironment = true;
                 }
             }
         }
-        if (!notProd) { // in production, dont allow this function
+        if (!inDevEnvironment) { // in production, dont allow this function
             return true;
         } else {return false;}
     };
