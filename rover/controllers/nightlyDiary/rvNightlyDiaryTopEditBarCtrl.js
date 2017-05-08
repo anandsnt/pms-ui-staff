@@ -29,6 +29,8 @@ angular.module('sntRover')
                 params.selectedFloorCount = $scope.diaryData.selectedFloorCount;
                 params.hideRoomType = $scope.diaryData.hideRoomType;
                 params.hideFloorList = $scope.diaryData.hideFloorList;
+                params.selected_floor_ids = $scope.diaryData.selectedFloors;
+                params.selected_room_type_ids = $scope.diaryData.selectedRoomTypes;
 
                 RVNightlyDiarySrv.updateCache(params);
 

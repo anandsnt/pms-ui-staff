@@ -1,30 +1,54 @@
-sntRover.controller('rvReservationCardNotesController', ['$scope', '$filter', '$rootScope', 'ngDialog', '$state',
-    function($scope, $filter, $rootScope, ngDialog, $state) {
-        $scope.reservationNotes = "";
+sntRover.controller('rvReservationCardNotesController', ['$scope', '$filter', '$rootScope', 'ngDialog', '$state', 'RVReservationNotesService',
+    function($scope, $filter, $rootScope, ngDialog, $state, RVReservationNotesService) {
+
+        BaseCtrl.call(this, $scope);
+
+        $scope.reservationNotes = '';
+        $scope.isCountUpdated = $rootScope.isStandAlone;
+
         /*
          *To save the reservation note and update the ui accordingly
          */
         var init = function() {
-            var hideNotes = true;
-
-            if ($scope.reservationData.reservation_card.notes.reservation_notes.length > 0) {
-                hideNotes = false;
-            }
-
-            $scope.reservationNotesState = {
-                hideDetails: hideNotes
-            };
-
             $scope.setScroller('reservationNotes');
+
+            $scope.notesCount = $scope.reservationListData.note_count;
+
+            // CICO-22355 Initiate a sync in case of overlays!
+            if (!$rootScope.isStandAlone) {
+                $scope.callAPI(RVReservationNotesService.sync, {
+                    loader: 'NONE',
+                    params: $scope.reservationData.reservation_card.reservation_id,
+                    successCallBack: function(notesCount) {
+                        $scope.notesCount = notesCount;
+                        $scope.isCountUpdated = true;
+                    },
+                    failureCallBack: function(err) {
+                        $scope.errorMessage = err;
+                        $scope.isCountUpdated = true;
+                    }
+                });
+            }
         };
 
         $scope.openNotesPopup = function() {
-            ngDialog.open({
-                template: '/assets/partials/reservationCard/rvReservationCardNotesPopup.html',
-                className: 'ngdialog-theme-default',
-                scope: $scope,
-                closeByDocument: false,
-                closeByEscape: false
+            $scope.callAPI(RVReservationNotesService.fetch, {
+                params: $scope.reservationData.reservation_card.reservation_id,
+                successCallBack: function(notes) {
+                    // The following step is reqd as the reservation details response no longer holds notes information
+                    $scope.reservationData.reservation_card.notes = $scope.reservationData.reservation_card.notes || {};
+                    $scope.reservationData.reservation_card.notes.reservation_notes = notes;
+                    ngDialog.open({
+                        template: '/assets/partials/reservationCard/rvReservationCardNotesPopup.html',
+                        className: 'ngdialog-theme-default',
+                        scope: $scope,
+                        closeByDocument: false,
+                        closeByEscape: false
+                    });
+                },
+                failureCallBack: function(err) {
+                    $scope.errorMessage = err;
+                }
             });
         };
 
@@ -85,6 +109,14 @@ sntRover.controller('rvReservationCardNotesController', ['$scope', '$filter', '$
                     );
         };
 
+        $scope.closeDialog = function() {
+            // CICO-22355 Update the notesCount to be shown
+            // NOTE This is necessary as we are binding the notesCount with a sepearte variable! The list of notes won't
+            // be available to the UI till the user opens the notes popup for the first time!
+            $scope.notesCount = $scope.reservationData.reservation_card.notes.reservation_notes.length;
+
+            ngDialog.close();
+        };
 
         init();
     }
