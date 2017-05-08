@@ -163,6 +163,7 @@ sntZestStation.controller('zsAdminCtrl', [
         };
 
         $scope.testReadLocalDevice = function() {
+            alert('starting reader');
             $scope.cardReader.startReader({
                 'successCallBack': function() {
                     alert('success');

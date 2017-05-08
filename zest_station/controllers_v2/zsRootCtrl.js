@@ -1677,6 +1677,7 @@ sntZestStation.controller('zsRootCtrl', [
             // and may move to an admin in a future story 
             $scope.zestStationData.consecutiveKeyFailure = 0;
             listenForOptionSelectionByKeyboard();
+            $scope.cardReader = new CardOperation();
 
 
         }());
