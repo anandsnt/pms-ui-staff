@@ -9,6 +9,7 @@ select,
     #rounded > .round();
     .show;
     .transition();
+    display: initial !important;
 } 
 
 input {
@@ -91,6 +92,9 @@ select {
 }
 
 .form {
+    display: table !important;
+    width: 100% !important;
+
     #flexbox > .flex();
     #flexbox > .parent(row wrap, flex-start, flex-start, '');
 
@@ -98,8 +102,6 @@ select {
         width: 50%;
         margin: 0 auto; 
     }
-    display: table;
-    width: 100%
 }
 
 .entry {
@@ -125,10 +127,8 @@ select {
     }
 
     &.input { 
-        position: relative;
-        margin-right: 10px;
-        display:table-cell;
-        width: 100%;
+        display:table-cell !important;
+        width: 100% !important;
 
         .icons {
             position: absolute;
@@ -196,7 +196,6 @@ select {
     }
 
     &.action {
-        display:table-cell;
         padding-left: 10px;
     }
 }
@@ -340,4 +339,16 @@ select {
 
 .editor-mode-cls {
     min-width:200px;
+}
+.action > .button {
+    display: table-cell !important;
+}
+#content > button {
+    display:table-cell !important;
+}
+
+.entry > .select {
+    &.button {
+        display: inline-block !important;
+    }
 }
