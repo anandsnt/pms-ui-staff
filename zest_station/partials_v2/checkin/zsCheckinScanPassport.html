@@ -111,7 +111,7 @@
 
 
 <!-- Scan Results | Add Guest screen  -->
-<section id="main" class="centered test" role="main" click-touch='resetTime()' ng-show="mode == 'SCAN_RESULTS' || mode == 'ADMIN_VERIFY_PASSPORTS'">
+<section id="main" class="centered test add_remove_main" role="main" click-touch='resetTime()' ng-show="mode == 'SCAN_RESULTS' || mode == 'ADMIN_VERIFY_PASSPORTS'">
     <div id="content" class='add-guest-mode-content' ng-show="!AddGuestMode">
 
         <h1 ng-hide="mode !== 'SCAN_RESULTS'">
@@ -149,7 +149,7 @@
                 </span>
                 
 
-                <button type="button" class="button" ng-show='showRemoveButton' click-touch='removeGuest(guest.id)' ng-class='{"overlay grey": selectedReservation.guest_details.length <= 1}'>{{'REMOVE_BTN' |translate}}</button>
+                <button type="button" class="button remove-btn" ng-show='showRemoveButton' click-touch='removeGuest(guest.id)' ng-class='{"overlay grey": selectedReservation.guest_details.length <= 1}'>{{'REMOVE_BTN' |translate}}</button>
             </li>
 
         </ul>

@@ -14,7 +14,9 @@ sntRover.controller('RVReservationMainCtrl', ['$scope',
             'RVReservationGuestSrv',
             'RVReservationStateService',
             'RVReservationDataService',
-            function($scope, $rootScope, ngDialog, $filter, RVCompanyCardSrv, $state, dateFilter, baseSearchData, RVReservationSummarySrv, RVReservationCardSrv, RVPaymentSrv, $timeout, $stateParams, RVReservationGuestSrv, RVReservationStateService, RVReservationDataService) {
+            '$interval',
+            '$log',
+            function($scope, $rootScope, ngDialog, $filter, RVCompanyCardSrv, $state, dateFilter, baseSearchData, RVReservationSummarySrv, RVReservationCardSrv, RVPaymentSrv, $timeout, $stateParams, RVReservationGuestSrv, RVReservationStateService, RVReservationDataService, $interval, $log) {
 
         BaseCtrl.call(this, $scope);
 
@@ -1602,6 +1604,9 @@ sntRover.controller('RVReservationMainCtrl', ['$scope',
             $scope.$broadcast('TABS_MODIFIED');
             devlogRoomsArray();
         };
+
+                CardReaderCtrl.call(this, $scope, $rootScope, $timeout, $interval, $log);
+                $scope.observeForSwipe();
 
     }
 

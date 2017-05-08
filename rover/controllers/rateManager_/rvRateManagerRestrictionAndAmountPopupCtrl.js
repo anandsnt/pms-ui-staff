@@ -313,15 +313,6 @@ angular.module('sntRover')
         };
 
         /**
-         * the successcall back of clea ovveriding api
-         * @param  {Object} response
-         */
-        const onSuccessOfClickedOnClearOverrideButtonAPICall = (response) => {
-            $scope.$emit(rvRateManagerEventConstants.RELOAD_RESULTS);
-            $scope.closeDialog();
-        };
-
-        /**
          * when clciked on remove overriding icon
          */
         $scope.clickedOnClearOverrideButton = () => {
@@ -334,7 +325,7 @@ angular.module('sntRover')
             }
             var options = {
                 params,
-                onSuccess: onSuccessOfClickedOnClearOverrideButtonAPICall
+                onSuccess: onUpdateRateRestrictionData
             }
             $scope.callAPI(rvRateManagerCoreSrv.removeCustomRate, options);
         };
@@ -351,6 +342,7 @@ angular.module('sntRover')
             ngDialog.close();
             $rootScope.modalClosing = false;
             window.scrollTo(0, 0);
+            document.getElementById("rate-manager").scrollTop = 0;
             document.getElementsByClassName("pinnedLeft-list")[0].scrollTop = 0;
             $scope.$apply();
           }, 700);

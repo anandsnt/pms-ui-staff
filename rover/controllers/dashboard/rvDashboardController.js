@@ -1,8 +1,8 @@
 sntRover.controller('RVdashboardController',
     ['$scope', 'ngDialog', 'RVDashboardSrv', 'RVSearchSrv', 'dashBoarddata',
-        '$rootScope', '$filter', '$state', 'RVWorkstationSrv', 'roomTypes',
+        '$rootScope', '$filter', '$state', 'RVWorkstationSrv', 'roomTypes', '$timeout', '$interval', '$log',
         function($scope, ngDialog, RVDashboardSrv, RVSearchSrv, dashBoarddata,
-                 $rootScope, $filter, $state, RVWorkstationSrv, roomTypes) {
+                 $rootScope, $filter, $state, RVWorkstationSrv, roomTypes, $timeout, $interval, $log) {
 
             // setting the heading of the screen
             $scope.heading = 'DASHBOARD_HEADING';
@@ -16,6 +16,7 @@ sntRover.controller('RVdashboardController',
             $scope.shouldShowLateCheckout = true;
             $scope.shouldShowQueuedRooms = true;
             BaseCtrl.call(this, $scope);
+
 
             var init = function() {
                 // setting the heading of the screen
@@ -319,6 +320,9 @@ sntRover.controller('RVdashboardController',
             $scope.headerBackButtonClicked = function() {
                 $scope.$broadcast("HeaderBackButtonClicked");
             };
+
+            CardReaderCtrl.call(this, $scope, $rootScope, $timeout, $interval, $log);
+            $scope.observeForSwipe(6);
 
 
         }]);

@@ -519,7 +519,7 @@ angular.module('sntRover').controller('rvRateManagerLeftSideFilterCtrl', [
         var selectedRateTypeList;
         //PAGINATION stuff will be handled from RateManagerCtrl
         if ($scope.chosenTab === 'RATES') {
-          selectedRateTypeList = $scope.selectedRateTypes;
+          selectedRateTypeList = [];
         }
         if ($scope.chosenTab === 'RATE_TYPES') {
           selectedRateTypeList = $scope.selectedRateTypesFromRTT;

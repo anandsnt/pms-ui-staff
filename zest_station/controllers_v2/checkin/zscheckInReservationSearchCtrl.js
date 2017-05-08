@@ -360,8 +360,53 @@ sntZestStation.controller('zscheckInReservationSearchCtrl', [
                 $scope.mode = 'LAST_NAME_ENTRY';
                 $scope.focusInputField('last-name');
             }
-
         };
+
+        $scope.$on('KEY_INPUT_OPTION', function(evt, option) {
+            if ($scope.mode !== 'CHOOSE_OPTIONS') {
+                return;
+            }
+            var optionsToChooseFrom;
+
+            var dateOn = $scope.zestStationData.checkin_screen.authentication_settings.departure_date, 
+                nightsOn = $scope.zestStationData.checkin_screen.authentication_settings.number_of_nights, 
+                emailOn = $scope.zestStationData.checkin_screen.authentication_settings.email,
+                confirmOn = $scope.zestStationData.checkin_screen.authentication_settings.confirmation;
+
+            if (option === 1) {
+                if (dateOn) {
+                    $scope.findByDate();
+                } else if (nightsOn) {
+                    $scope.findByNoOfNights();
+                } else if (emailOn) {
+                    $scope.findByEmail();
+                } else {
+                    $scope.findByConfirmation();
+                }
+            } else if (option === 2) {
+                if (dateOn && nightsOn) {
+                    $scope.findByNoOfNights();
+                } else if (dateOn || nightsOn && emailOn) {
+                    $scope.findByEmail();
+                } else if (dateOn || nightsOn && confirmOn) {
+                    $scope.findByConfirmation();
+                }
+
+            } else if (option === 3) {
+                if (dateOn && nightsOn && emailOn) {
+                    $scope.findByEmail();
+
+                } else if (dateOn && nightsOn && confirmOn) {
+                    $scope.findByConfirmation();
+
+                } else if (dateOn && !nightsOn && emailOn && confirmOn) {
+                    $scope.findByConfirmation();
+
+                } else if (!dateOn && nightsOn && emailOn && confirmOn) {
+                    $scope.findByConfirmation();
+                }
+            }
+        });
 
         var init = function() {
             $scope.hideKeyboardIfUp();
@@ -378,6 +423,7 @@ sntZestStation.controller('zscheckInReservationSearchCtrl', [
             $scope.mode = 'LAST_NAME_ENTRY';
             $scope.focusInputField('last-name');
             $scope.setScreenIcon('checkin');
+
         };
 
         init();
