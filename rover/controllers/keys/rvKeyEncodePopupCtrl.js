@@ -161,6 +161,7 @@ sntRover.controller('RVKeyEncodePopupCtrl', [ '$rootScope', '$scope', '$state', 
 			if (secondsAfterCalled <= that.MAX_SEC_FOR_DEVICE_CONNECTION_CHECK) { // 10seconds
                 var checkDeviceConnection = function() {
 					$log.info('deviceready listener...');
+                    sntapp.cardReader = new CardOperation();
                     $timeout(function() {
                         $scope.showDeviceConnectingMessge();
                     }, 300);
@@ -169,7 +170,6 @@ sntRover.controller('RVKeyEncodePopupCtrl', [ '$rootScope', '$scope', '$state', 
 
                 if (that.noOfErrorMethodCalled > 1 && $scope.isIpad) {
                     sntCordovaInit();
-                    sntapp.cardReader = new CardOperation();
                     document.addEventListener("deviceready", checkDeviceConnection, false);
                 } else {
                     $scope.showDeviceConnectingMessge();
