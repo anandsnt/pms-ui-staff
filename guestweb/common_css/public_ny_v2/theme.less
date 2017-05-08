@@ -1,6 +1,19 @@
 /*------------------------------- Themes ----------------------------------------------------*/
 
 @import "../style.less";
+@font-face {
+    font-family: 'Gotham Light';
+    src: url('/assets/type/Gotham/GothamLight.eot?') format('eot');
+    src: url('/assets/type/Gotham/GothamLight.woff') format('woff'), 
+    url('/assets/type/Gotham/GothamLight.ttf') format('truetype');
+}
+@font-face {
+    font-family: 'Gotham Book';
+    src: url('/assets/type/Gotham/GothamBook.eot?') format('eot');
+    src: url('/assets/type/Gotham/GothamBook.woff') format('woff'), 
+    url('/assets/type/Gotham/GothamBook.ttf') format('truetype');
+}
+
 html,
 body {
     height: auto;
@@ -9,7 +22,7 @@ body {
 
 body {
     background-color: #FFF;
-    font-family: "Gotham A","Gotham B",Helvetica,Arial,sans-serif;
+    font-family: "Gotham Book","Gotham A",Helvetica,Arial,sans-serif;
 }
 
 .back-text {
@@ -18,12 +31,17 @@ body {
 .description-details{
     float:left;
 }
-.main-text,
-.btn {
-    font-family: "Gotham A","Gotham B",Helvetica,Arial,sans-serif;
+.main-text,.btn {
+    font-family: "Gotham Book","Gotham A",Helvetica,Arial,sans-serif;
+}
+.main-text{
     text-transform: uppercase;
     font-weight: 300 !important;
 }
+.main-text{
+    font-family: "Gotham Light";
+}
+
 .terms-main, .terms-sub,
 .request-text,.error-text,
 .room-error,.cc-error,
@@ -50,7 +68,7 @@ body {
     font-size: 25px !important;
 }
 .strong-font {
-    font-family: "Gotham A","Gotham B",Helvetica,Arial,sans-serif;
+    font-family: "Gotham Book","Gotham A",Helvetica,Arial,sans-serif;
 }
 .main-text{
     font-weight: 500;
@@ -95,7 +113,8 @@ a:hover,
 .footer-text ,.select-style select,
 .input-field,.res-date,
 .footer-sub-text,.footer-sub-text:hover,
-.request-text
+.request-text,
+.no-thanks,.no-thanks:hover
 {
     font-size:13px !important;
     font-weight: 400;
@@ -144,7 +163,7 @@ textarea{
 }
 
 .sub-text {
-    font-family: "Gotham A","Gotham B",Helvetica,Arial,sans-serif
+    font-family: "Gotham Book","Gotham A",Helvetica,Arial,sans-serif
 }
 
 .sub-text,
@@ -226,6 +245,7 @@ textarea{
     font-size: 13px;
     color:#000000;
     min-height: 40px !important;
+    text-transform: uppercase;
 }
 
 .dark-button,
@@ -325,7 +345,7 @@ textarea{
         margin:0px !important;
 }
 .early-checkin-button,.early-checkin-button:hover{
-    font-size: 16px !important;
+    font-size: 13px !important;
 }
 .options-container{
     width:500px;
@@ -335,6 +355,7 @@ textarea{
     .terms-button{
         min-height:40px;
         padding:0% 35px;
+        font-size:13px;
     }
     .terms-button:first-child{
         margin-right:20px;
@@ -374,7 +395,7 @@ textarea{
 .pickadate-cell,
 .for,
 .amount {
-    font-family: "Gotham A","Gotham B",Helvetica,Arial,sans-serif
+    font-family: "Gotham Book","Gotham A",Helvetica,Arial,sans-serif
 }
 .pickadate-main ul:first-child{
     border-bottom: 1px solid black;
