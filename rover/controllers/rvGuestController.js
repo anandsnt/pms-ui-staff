@@ -261,7 +261,8 @@ angular.module('sntRover').controller('guestCardController', [
 			stop: function(event, ui) {
 				preventClicking = true;
 				$scope.eventTimestamp = event.timeStamp;
-			}
+			},
+            start: getGuestDetails
 		};
 
 		/**
@@ -513,7 +514,25 @@ angular.module('sntRover').controller('guestCardController', [
 			}
 		};
 
-		/**
+        /**
+         * @return {undefined}
+         */
+        function getGuestDetails() {
+            if ($scope.reservationData.guest.id && $scope.UICards[0] === 'guest-card'
+                && !RVContactInfoSrv.isGuestFetchComplete($scope.reservationData.guest.id)) {
+                $scope.callAPI(RVContactInfoSrv.getGuestDetails, {
+                    successCallBack: function(data) {
+                        $scope.$emit("UPDATE_GUEST_CARD_DETAILS", data);
+                    },
+                    failureCallBack: function(errorMessage) {
+                        $scope.errorMessage = errorMessage;
+                        $scope.$emit('hideLoader');
+                    }
+                });
+            }
+        }
+
+        /**
 		 * function to open guest card
 		 */
 		$scope.openGuestCard = function() {
@@ -524,6 +543,7 @@ angular.module('sntRover').controller('guestCardController', [
 			$scope.$broadcast("contactTabActive");
 			// //refreshing the scroller in guestcard's tab
 
+            getGuestDetails();
 		};
 
 		/**
@@ -1681,9 +1701,9 @@ angular.module('sntRover').controller('guestCardController', [
 
 		// On selecting comapny card
 		$scope.selectCompany = function(company, useCardRate) {
-			$scope.closeDialog();
 			// CICO-7792
 			if ($scope.viewState.identifier === "CREATION") {
+                $scope.closeDialog();
 				$scope.reservationData.company.id = company.id;
 				$scope.showContractedRates({
 					companyCard: company.id,
@@ -1705,15 +1725,16 @@ angular.module('sntRover').controller('guestCardController', [
 				if (!$scope.reservationDetails.companyCard.futureReservations || $scope.reservationDetails.companyCard.futureReservations <= 0) {
 					$scope.replaceCardCaller('company', company, false, useCardRate);
 				} else {
+                    $scope.closeDialog();
 					$scope.checkFuture('company', company, useCardRate);
 				}
 			}
 		};
 		// On selecting travel agent card
 		$scope.selectTravelAgent = function(travelAgent, useCardRate) {
-			$scope.closeDialog();
 			// CICO-7792
 			if ($scope.viewState.identifier === "CREATION") {
+                $scope.closeDialog();
 				// Update main reservation scope
 				$scope.reservationData.travelAgent.id = travelAgent.id;
 				$scope.showContractedRates({
@@ -1736,11 +1757,12 @@ angular.module('sntRover').controller('guestCardController', [
 				if (!$scope.reservationDetails.travelAgent.futureReservations || $scope.reservationDetails.travelAgent.futureReservations <= 0) {
 					$scope.replaceCardCaller('travel_agent', travelAgent, false, useCardRate);
 				} else {
+                    $scope.closeDialog();
 					$scope.checkFuture('travel_agent', travelAgent, useCardRate);
 				}
 			}
 		};
-
+		
 		$scope.selectGuest = function(guest, $event) {
 			$event.stopPropagation();
 			if ($scope.viewState.identifier === "CREATION") {
@@ -1758,7 +1780,16 @@ angular.module('sntRover').controller('guestCardController', [
 				$scope.viewState.isAddNewCard = false;
 				$scope.reservationDetails.guestCard.id = guest.id;
 				$scope.initGuestCard(guest);
-				$scope.closeGuestCard();
+                $scope.callAPI(RVContactInfoSrv.getGuestDetails, {
+                    successCallBack: function(data) {
+                        $scope.$emit("UPDATE_GUEST_CARD_DETAILS", data);
+                        $scope.closeGuestCard();
+                    },
+                    failureCallBack: function(errorMessage) {
+                        $scope.errorMessage = errorMessage;
+                        $scope.$emit('hideLoader');
+                    }
+                });
 			} else {
 				if (!$scope.reservationDetails.guestCard.futureReservations || $scope.reservationDetails.guestCard.futureReservations <= 0) {
 					$scope.replaceCardCaller('guest', guest, false);
@@ -1871,7 +1902,6 @@ angular.module('sntRover').controller('guestCardController', [
 
 		// CICO-6049 Toggle VIP button
 		$scope.vipToggleClicked = function() {
-			$scope.guestCardData.contactInfo.vip = !$scope.guestCardData.contactInfo.vip;
 			$scope.updateContactInfo();
 		};
 

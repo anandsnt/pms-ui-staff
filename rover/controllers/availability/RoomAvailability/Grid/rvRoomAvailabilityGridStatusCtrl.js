@@ -74,9 +74,7 @@ angular.module('sntRover')
             };
 
             var hasSoldRooms = function () {
-                return hasAdditionalData() && (
-                    !! $scope.data.additionalData.roomTypeWiseDetails || !! $scope.data.additionalData.adultsChildrenCounts
-                );
+                return hasAdditionalData() && !! $scope.data.additionalData.adultsChildrenCounts;
             };
 
             /** 

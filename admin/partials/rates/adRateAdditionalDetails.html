@@ -74,7 +74,8 @@
                     <label>{{workType.name}}</label>
                     <div class="select">
                         <!--class = "placeholder"-->
-                        <select ng-model="selectedWorkTypeTask[workType.value]"
+                        <select convert-to-number
+                                ng-model="selectedWorkTypeTask[workType.value]"
                                 ng-class="{'placeholder' : !selectedWorkTypeTask[workType.value]}"
                                 ng-change="updateSelectedTaskslist()">
                             <option value="" selected>Select Task</option>

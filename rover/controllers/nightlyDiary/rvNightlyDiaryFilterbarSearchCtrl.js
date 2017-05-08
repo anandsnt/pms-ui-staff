@@ -26,20 +26,11 @@ angular.module('sntRover')
         };
         var searchFilteringCall = null;
 
-        // Scroller options for search-results view.
-        var scrollerOptions = {
-            tap: true,
-            preventDefault: false,
-            deceleration: 0.0001,
-            shrinkScrollbars: 'clip'
-        };
-
         // Success callback for search results fetch from service.
         var successCallBackofDataFetch = function(data) {
             $scope.$emit('hideLoader');
             $scope.diaryData.reservationSearchResults = data.results;
             $scope.diaryData.totalSearchResults = data.total_count;
-            refreshScroller();
         };
 
         var failureCallBackofDataFetch = function(errorData) {
@@ -56,14 +47,8 @@ angular.module('sntRover')
             $scope.invokeApi(RVNightlyDiarySearchSrv.fetchSearchResults, params, successCallBackofDataFetch, failureCallBackofDataFetch);
         };
 
-        var refreshScroller = function() {
-            $scope.refreshScroller('reservationSearchResultList');
-        };
-
         BaseCtrl.call(vm, $scope);
         init();
-
-        $scope.setScroller('reservationSearchResultList', scrollerOptions);
 
         // Get full name of each guest.
         $scope.getGuestName = function(firstName, lastName) {
@@ -134,7 +119,7 @@ angular.module('sntRover')
 
         // To handle click on each search item.
         $scope.clickedOnResultItem = function( roomId ) {
-            $scope.$emit('REFRESH_DIARY_ROOMS_AND_RESERVATIONS', roomId);
+            $scope.$emit('UPDATE_RESERVATIONLIST', roomId);
         };
 
         // To handle close search results after rendering new data set.

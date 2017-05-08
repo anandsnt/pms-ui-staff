@@ -22,7 +22,17 @@ sntZestStation.controller('zsAdminCtrl', [
         });
 
         $scope.navToPrev = function() {
-            $state.go('zest_station.home');
+            // go home, unless there is no workstation or workstation is OOS
+            var noWorkstationSelected = $scope.workstation.selected === '',
+                workstationInOrder = $scope.zestStationData.workstationStatus === 'in-order';
+
+            if (!workstationInOrder || noWorkstationSelected) {
+                $state.go('zest_station.outOfService');
+            } else {
+                $state.go('zest_station.home');    
+            }
+            
+
         };
 
         var refreshScroller = function() {
@@ -79,8 +89,8 @@ sntZestStation.controller('zsAdminCtrl', [
             var selectedWorkStation = _.find($scope.zestStationData.workstations, function(workstation) {
                 return workstation.id == $scope.workstation.selected;
             });
-
             setPrinterLabel(selectedWorkStation.printer);
+            $scope.setEncoderDiagnosticInfo(selectedWorkStation.name, selectedWorkStation.key_encoder_id); // in diagnostic info display the encoder name + id
         };
 
         /*
@@ -126,12 +136,20 @@ sntZestStation.controller('zsAdminCtrl', [
         /*
          * Go to home page
          */
-        var lastDemoModeSetting = $scope.zestStationData.demoModeEnabled;
+        var lastDemoModeSetting = $scope.zestStationData.demoModeEnabled,
+            lastEditorModeSetting = $scope.zestStationData.editorModeEnabled,
+            lastNCIModeSetting = $scope.zestStationData.noCheckInsDebugger,
+            lastStationStatus = $scope.zestStationData.workstationStatus;
 
         $scope.cancelAdminSettings = function(a) {
             if (!a) {
-                console.info('setting demo mode back to: ', lastDemoModeSetting);
+                console.info('setting Demo, Editor, and NCI modes back to: ', lastDemoModeSetting, lastEditorModeSetting, lastNCIModeSetting);
                 $scope.zestStationData.demoModeEnabled = lastDemoModeSetting;
+                $scope.zestStationData.noCheckInsDebugger = lastNCIModeSetting;
+                $scope.zestStationData.editorModeEnabled = lastEditorModeSetting;
+                $scope.zestStationData.workstationStatus = lastStationStatus;
+
+                $scope.setEditorModeCls();
             }
             $state.go('zest_station.home');
             setTimeout(function() {
@@ -139,6 +157,8 @@ sntZestStation.controller('zsAdminCtrl', [
                     'restart': true,
                     'from_cancel': true
                 });
+                
+                $scope.setEncoderDiagnosticInfo(); // in diagnostic info display the encoder name + id
             }, 500);
         };
         /*
@@ -184,7 +204,9 @@ sntZestStation.controller('zsAdminCtrl', [
 
                 console.info('' + chromeAppId);
                 // minimize the chrome app on loging out
-                (chromeAppId !== null && chromeAppId.length > 0) ? chrome.runtime.sendMessage(chromeAppId, 'zest-station-logout') : '';
+                if ($scope.inChromeApp && !$scope.inElectron) {
+                    (chromeAppId !== null && chromeAppId.length > 0) ? chrome.runtime.sendMessage(chromeAppId, 'zest-station-logout') : '';
+                }
                 console.info('login out from chrome');
             } else {
                 console.info('login out');
@@ -202,6 +224,7 @@ sntZestStation.controller('zsAdminCtrl', [
                 $scope.zestStationData.encoder = '';
             }
             $scope.zestStationData.emv_terminal_id = $scope.savedSettings.kiosk.workstation.emv_terminal_id;
+            $scope.setEncoderDiagnosticInfo(); // in diagnostic info display the encoder name + id
         };
         var getTheSelectedWorkStation = function() {
             var selectedWorkStation = _.find($scope.zestStationData.workstations, function(workstation) {
@@ -210,10 +233,25 @@ sntZestStation.controller('zsAdminCtrl', [
 
             return selectedWorkStation;
         };
+        $scope.setEditorModeCls = function() {
+            if ($scope.zestStationData.editorModeEnabled === 'true') {
+                $rootScope.cls.editor = 'true';
+            } else {
+                $rootScope.cls.editor = 'false';
+            }
+        };
+
+        $scope.toggleDiagnostics = function() {
+            console.log(arguments);
+            zestSntApp.debugTimers(true);
+              $timeout(function() {
+                $scope.runDigestCycle();
+            }, 900);
+        };
         /*
          *  save work station
          */
-        var saveStation = function() {
+        var saveStation = function(runDemoClicked) {
             // save workstation printer 
             // save workstation to browser
             var successCallBack = function() {
@@ -223,6 +261,7 @@ sntZestStation.controller('zsAdminCtrl', [
                 $scope.zestStationData.workstationName = selectedWorkstation.name;
                 setStationVariables();
                 restartTimers();
+                $scope.setEditorModeCls();
                 $scope.zestStationData.set_workstation_id = station.id;
                 $rootScope.workstation_id = $scope.zestStationData.set_workstation_id;
                 $scope.zestStationData.key_encoder_id = station.key_encoder_id;
@@ -238,6 +277,10 @@ sntZestStation.controller('zsAdminCtrl', [
                 if ($scope.zestStationData.workstationStatus === 'out-of-order') {
                     $state.go('zest_station.outOfService');
                 } else {
+                    if (runDemoClicked) {
+                        $state.go('zest_station.checkinKeySelection');
+                        return;
+                    }
                     $scope.cancelAdminSettings(true);
                 }
             };
@@ -281,7 +324,7 @@ sntZestStation.controller('zsAdminCtrl', [
         /*
          * Save the admin settings
          **/
-        $scope.saveSettings = function() {
+        $scope.saveSettings = function(runDemoClicked) {
             var getParams = function() {
                 var params = {
                     'kiosk': {
@@ -299,13 +342,17 @@ sntZestStation.controller('zsAdminCtrl', [
             delete params.kiosk.workstation;
             delete params.printer;
             var successCallBack = function() {
-                saveStation();
+                saveStation(runDemoClicked);
             };
             var failureCallBack = function(response) {
                 console.warn('failed to save settings');
                 console.log(response);
-                console.info('save setting failed, set demo mode to last setting');
+                console.info('save setting failed, set demo and editor mode to last setting');
                 $scope.zestStationData.demoModeEnabled = lastDemoModeSetting;
+                $scope.zestStationData.noCheckInsDebugger = lastNCIModeSetting;
+                $scope.zestStationData.editorModeEnabled = lastEditorModeSetting;
+                $scope.zestStationData.workstationStatus = lastStationStatus;
+                $scope.setEditorModeCls();
             };
             var options = {
                 params: params,
@@ -363,6 +410,23 @@ sntZestStation.controller('zsAdminCtrl', [
             }, 2000);
         };
 
+        $scope.refreshSocketConnection = function() {
+            if ($scope.zestStationData.stationHandlerConnectedStatus !== "Connecting...") {
+                $scope.$emit('CONNECT_WEBSOCKET');    
+            }
+        };
+
+        $scope.testRunMobileKeyCheckin = function() {
+            // save settings then go to the demo area
+            var demoRunStarted = true;
+
+            $scope.saveSettings(demoRunStarted);
+            
+        };
+        $scope.reload = function() {
+            location.reload(true);
+        };
+
         $scope.showDebugModeOption = false;
         // initialize
         (function() {
@@ -385,18 +449,27 @@ sntZestStation.controller('zsAdminCtrl', [
 
             // if invoked from chrome app or ipad
             // show direct admin without login
-            if ($scope.zestStationData.isAdminFirstLogin) {
+            if ($scope.zestStationData.isAdminFirstLogin && !$scope.zestStationData.fromAdminButton) {
                 $scope.mode = 'admin-screen-active';
                 $scope.zestStationData.isAdminFirstLogin = false;
             } else {
                 $scope.mode = 'login-mode';
             }
+            $scope.zestStationData.fromAdminButton = false;
             setTimeout(function() {
                 refreshScroller(); // maybe need to update layout, but this works to fix scroll issue on admin after page load
             }, scrollerRefreshTime);
             $scope.setScreenIcon('checkin');
             if ($scope.zestStationData.theme === 'snt') {
                 $scope.showDebugModeOption = true;
+            }
+
+            if (!$scope.zestStationData.demoMobileKeyModeEmailLinked) {
+                $scope.zestStationData.demoMobileKeyModeEmailLinked = 'true';
+                $scope.zestStationData.demoMobileKeyModeEnabled = 'true';
+                $scope.zestStationData.demoMobileKeyModeUserEmailOnFile = 'true';
+                $scope.zestStationData.thirdPartyMobileKey = 'false'; // TODO MOVE TO API SETTING
+                
             }
 
         }());

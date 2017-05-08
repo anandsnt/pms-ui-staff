@@ -32,7 +32,7 @@ admin.controller('ADUserDetailsCtrl',
 	$scope.errorMessage = "";
 	$scope.focusOnPassword = false;
 
-	$scope.getMyDashboards = function() {
+	function refreshDashboardsList() {
 
 		var rolesData = $scope.assignedRoles;
 
@@ -53,43 +53,39 @@ admin.controller('ADUserDetailsCtrl',
 				$scope.dashboardOptions.push(dashboard);
 			}
 		}
-		return $scope.dashboardOptions;
-	};
-
-	$scope.getRolesData = function() {
-		var successCallbackRoles = function(data) {
-			$scope.$emit('hideLoader');
-			$scope.rolesWithDashboards = data.userRoles;
-			/**
-		    * To set mod of operation - add/edit
-		    */
-			var id = $stateParams.id;
-
-			if (id === "") {
-				$scope.mod = "add";
-				$scope.userDetailsAdd();
-			} else {
-				$scope.mod = "edit";
-				$scope.userDetailsEdit(id);
-			}
-
-		};
-
-		$scope.invokeApi(ADUserRolesSrv.fetchUserRoles, {}, successCallbackRoles);
 
 	};
-	$scope.getRolesData();
 
-   /**
-    * To check whether logged in user is sntadmin or hoteladmin
-    */
+        $scope.getRolesData = function() {
+            var successCallbackRoles = function(data) {
+                $scope.$emit('hideLoader');
+                $scope.rolesWithDashboards = data.userRoles;
+                /**
+                 * To set mod of operation - add/edit
+                 */
+                var id = $stateParams.id;
 
-	if ($rootScope.adminRole === "snt-admin") {
-		$scope.isAdminSnt = true;
-		 $scope.BackAction = "admin.users({id:" + $scope.hotelId + "})";
-	} else {
-		 $scope.BackAction = "admin.users";
-	}
+                if (id === "") {
+                    $scope.mod = "add";
+                    $scope.userDetailsAdd();
+                } else {
+                    $scope.mod = "edit";
+                    $scope.userDetailsEdit(id);
+                }
+
+                refreshDashboardsList();
+
+            };
+
+            $scope.invokeApi(ADUserRolesSrv.fetchUserRoles, $scope.isAdminSnt, successCallbackRoles);
+
+        };
+
+        /**
+         * To check whether logged in user is sntadmin or hoteladmin
+         */
+
+
 
    /*
     * Handle action when clicked on assigned role
@@ -162,6 +158,8 @@ admin.controller('ADUserDetailsCtrl',
 
 		$scope.assignedRoles.splice(index, 1);
 		$scope.selectedAssignedRole = -1;
+
+		refreshDashboardsList();
 	};
    /*
     * Handle action when clicked on left arrow button
@@ -177,6 +175,8 @@ admin.controller('ADUserDetailsCtrl',
 		$scope.assignedRoles.push(newElement);
 		$scope.unAssignedRoles.splice(index, 1);
 		$scope.selectedUnassignedRole = -1;
+
+        refreshDashboardsList();
 	};
 
 	/**
@@ -212,6 +212,10 @@ admin.controller('ADUserDetailsCtrl',
 			$scope.$emit('hideLoader');
 			$state.go('admin.users', { id: $stateParams.hotelId });
 		};
+
+        if ($scope.isAdminSnt) {
+			data.isSNTAdmin = true;
+        }
 
 		if ($scope.mod === "add") {
 			$scope.invokeApi(ADUserSrv.saveUserDetails, data, successCallback);
@@ -252,6 +256,8 @@ admin.controller('ADUserDetailsCtrl',
 	    		}
 			}
 
+            refreshDashboardsList();
+
 			if ($scope.isInUnlockingMode()) {
 				setFocusOnPasswordField();
 			}
@@ -290,7 +296,7 @@ admin.controller('ADUserDetailsCtrl',
 			$scope.image = "/assets/images/preview_image.png";
 		};
 
-	 	$scope.invokeApi(ADUserSrv.getAddNewDetails, '', successCallbackRender);
+	 	$scope.invokeApi(ADUserSrv.getAddNewDetails, $scope.isAdminSnt, successCallbackRender);
 	};
 
 	/**
@@ -342,5 +348,21 @@ admin.controller('ADUserDetailsCtrl',
 		$scope.selectedUnassignedRole = -1;
 		lastDropedTime = new Date();
 	};
+
+	$scope.onRoleChange = function() {
+		// CICO-37238 Find and update the dashboards related to the roles
+		refreshDashboardsList();
+    };
+
+    (function() {
+        if ($rootScope.adminRole === "snt-admin") {
+            $scope.isAdminSnt = true;
+            $scope.BackAction = "admin.users({id:" + $scope.hotelId + "})";
+        } else {
+            $scope.BackAction = "admin.users";
+        }
+
+        $scope.getRolesData();
+    })();
 
 }]);

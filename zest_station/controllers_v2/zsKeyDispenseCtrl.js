@@ -31,6 +31,7 @@ sntZestStation.controller('zsKeyDispenseCtrl', [
 
 
 		}());
+		
 		/**
 		 * [set data from stateParams description]
 		 * @type {[type]}
@@ -214,6 +215,11 @@ sntZestStation.controller('zsKeyDispenseCtrl', [
 		/* ******************************************************************************************************* */
 
 		var updateLogForKeyActions = function(keyNo, keyStatus) {
+			if ($scope.inDemoMode()) {
+				return;
+			}
+
+			$scope.resetTime();
 			var params = {
 				"reservation_id": $stateParams.reservation_id,
 				"key_no": keyNo,
@@ -232,6 +238,7 @@ sntZestStation.controller('zsKeyDispenseCtrl', [
 		 * @return {[type]}          [description]
 		 */
 		var localEncodingSuccsess = function(response) {
+			$scope.zestStationData.makingKeyInProgress = false;
 			// reset timer so as to avoid unwanted timeouts
 			$scope.resetTime();
 			if ($scope.inDemoMode()) {
@@ -260,12 +267,18 @@ sntZestStation.controller('zsKeyDispenseCtrl', [
 		};
 
 		var remoteEncodingSuccsess = function() {
+			$scope.zestStationData.makingKeyInProgress = false;
 			$scope.resetTime();
 			revertFailureReason();
 			$scope.noOfKeysCreated++;
 			if ($scope.noOfKeysSelected === $scope.noOfKeysCreated) {
 				// all keys are made
 				$scope.mode = 'KEY_CREATION_SUCCESS_MODE';
+				if (!$scope.inDemoMode()) {
+					$scope.trackEvent('all keys encoded', 'key_encode');	
+				}
+				
+
 			} else if ($scope.noOfKeysSelected > $scope.noOfKeysCreated) {
 				// one key has been made out of total 2
 				$scope.mode = 'KEY_ONE_CREATION_SUCCESS_MODE';
@@ -277,6 +290,7 @@ sntZestStation.controller('zsKeyDispenseCtrl', [
 		};
 
 		var startMakingKey = function(keyNo) {
+			$scope.zestStationData.makingKeyInProgress = true;
 			var onResponseSuccess;
 			var params = {
 				'is_additional': false,
@@ -298,6 +312,7 @@ sntZestStation.controller('zsKeyDispenseCtrl', [
 				params.key_encoder_id = $scope.zestStationData.key_encoder_id;
 				onResponseSuccess = remoteEncodingSuccsess;
 			}
+			$scope.resetTime();
 			if ($scope.inDemoMode()) {
 				setTimeout(function() {
 					onResponseSuccess({
@@ -360,20 +375,28 @@ sntZestStation.controller('zsKeyDispenseCtrl', [
 			if ($scope.readyForUserToPressMakeKey) {
 				$scope.readyForUserToPressMakeKey = false;
 				startMakingKey(keyNo);
+
+            	$scope.trackEvent('MakeKey', 'user_selected');
 			}
 		};
 
 
 		$scope.onGeneralFailureCase = function() {
+			$scope.zestStationData.makingKeyInProgress = false;
 			$scope.mode = 'DISPENSE_KEY_FAILURE_MODE';
 			$scope.zestStationData.consecutiveKeyFailure++;
 			if ($scope.zestStationData.consecutiveKeyFailure >= $scope.zestStationData.kioskOutOfOrderTreshold) {
 				$scope.zestStationData.workstationOooReason = $filter('translate')('KEY_CREATION_FAILED');
 				$scope.zestStationData.workstationStatus = 'out-of-order'; // go out of order when (printing or key encoding fails)
+
+				$scope.trackEvent('failure - go out of service', 'key_encode');
+			} else {
+				$scope.trackEvent('key-failure-mode', 'key_encode');
 			}
 			var keyNo = ($scope.noOfKeysCreated === 0) ? 1 : 2;
 
 			updateLogForKeyActions(keyNo, "failed");
+			$scope.resetTime();
 			$scope.runDigestCycle();
 		};
 		/**
@@ -392,16 +415,20 @@ sntZestStation.controller('zsKeyDispenseCtrl', [
 		 *  if webscoket ready state is not ready
 		 */
 		$scope.dispenseKey = function() {
+			$scope.zestStationData.makingKeyInProgress = true;
 			if ($scope.inDemoMode()) {
 				setTimeout(function() {
-					$scope.saveUIDToReservationSuccsess();
+					saveUIDToReservationSuccsess();
 					$scope.runDigestCycle();
 				}, 3500);
 
 			} else {
+				$scope.readyForUserToPressMakeKey = false;
 				// check if socket is open
 				if (!_.isUndefined($scope.socketOperator.returnWebSocketObject()) && $scope.socketOperator.returnWebSocketObject().readyState === 1) {
-					$scope.socketOperator.DispenseKey($scope.dispenseKeyData);
+				// this param has to be set corresponding to key created
+				var is_first_key = $scope.noOfKeysCreated === 0 ? 1 : 0;
+				$scope.socketOperator.DispenseKey($scope.dispenseKeyData, is_first_key);
 				} else {
 					$scope.$emit('CONNECT_WEBSOCKET'); // connect socket
 				}
@@ -421,12 +448,18 @@ sntZestStation.controller('zsKeyDispenseCtrl', [
 			if ($scope.noOfKeysSelected === $scope.noOfKeysCreated) {
 				// all keys are made
 				$scope.mode = 'KEY_CREATION_SUCCESS_MODE';
+				if (!$scope.inDemoMode()) {
+					$scope.trackEvent('all keys encoded', 'key_encode');
+				}
 			} else if ($scope.noOfKeysSelected > $scope.noOfKeysCreated) {
 				// if more key is needed
 				$scope.mode = 'KEY_ONE_CREATION_SUCCESS_MODE';
-				// provide some timeout for user to grab keys
-				$timeout($scope.dispenseKey, 6000);
 			}
+			$timeout(function() {
+				$scope.readyForUserToPressMakeKey = true;
+				$scope.zestStationData.makingKeyInProgress = false;
+
+			}, 1000);
 			revertFailureReason();
 			updateLogForKeyActions($scope.noOfKeysCreated, "success");
 		};
@@ -443,6 +476,19 @@ sntZestStation.controller('zsKeyDispenseCtrl', [
 			});
 		};
 
+		$scope.showDispenserGateIsBlockedPopup = false;
+		$scope.closeGateErrorWarning = function() {
+			$scope.showDispenserGateIsBlockedPopup = false;
+		};
+		$scope.$on('DISPENSE_FAILED_AS_GATE_IS_NOT_FREE', function() {
+			$scope.showDispenserGateIsBlockedPopup = true;
+			$timeout(function() {
+				$scope.readyForUserToPressMakeKey = true;
+				$scope.zestStationData.makingKeyInProgress = false;
+
+			}, 1000);
+		});
+
 		$scope.$on('DISPENSE_SUCCESS', function(event, data) {
 			$scope.zestStationData.workstationStatus = 'in-order';
 			$scope.zestStationData.workstationOooReason = '';
@@ -454,6 +500,7 @@ sntZestStation.controller('zsKeyDispenseCtrl', [
 		});
 
 		$scope.$on('DISPENSE_FAILED', function() {
+			$scope.zestStationData.makingKeyInProgress = false;
 			$scope.onGeneralFailureCase();
 		});
 		$scope.$on('SOCKET_FAILED', function() {
@@ -488,11 +535,22 @@ sntZestStation.controller('zsKeyDispenseCtrl', [
 		 * @return {[type]} [description]
 		 */
 		$scope.reEncodeKey = function() {
+            $scope.trackEvent('retry key encode', 'user_selected');
 
+            $scope.resetTime();
 			var executeKeyOperations = function() {
 				if ($scope.zestStationData.keyWriter === 'websocket') {
-					// provide some timeout for user to grab keys
-					$timeout($scope.dispenseKey, 2000);
+					if($scope.noOfKeysCreated === 0){
+						// when no key is created dipense keys
+						// provide some timeout for user to grab keys
+						$timeout($scope.dispenseKey, 2000);
+					}
+					else{
+						// need to show button to dispense key
+						$timeout(function() {
+							$scope.readyForUserToPressMakeKey = true;
+						}, 1000);
+					}
 				} else {
 					$timeout(function() {
 						$scope.readyForUserToPressMakeKey = true;
@@ -519,6 +577,8 @@ sntZestStation.controller('zsKeyDispenseCtrl', [
             $scope.noOfKeysSelected = no_of_keys;
             $scope.initMakeKey();
         };
+        
+        
 
 
 	}

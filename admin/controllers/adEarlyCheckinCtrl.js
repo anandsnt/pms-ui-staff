@@ -339,6 +339,9 @@ $scope.saveClick = function() {
     
     if ($scope.upsellData.zest_station_early_checkin_addon_id) {
         $scope.upsellData.zest_station_early_checkin_addon_id = parseInt($scope.upsellData.zest_station_early_checkin_addon_id);
+    } else {
+        // CICO-38012 NOTE: The API resets this value only if it is an empty string
+        $scope.upsellData.zest_station_early_checkin_addon_id = "";
     }
     
     var upsellEarlyCheckinSaveSuccessCallback = function(data) {

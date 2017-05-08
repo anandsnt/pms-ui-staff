@@ -11,7 +11,7 @@
             <div class="entry number">
                 <label for="rooming-no-of-rooms">{{'GROUP_NO__OF_ROOMS'|translate}}</label>
                 <div class="select">
-                    <select id="rooming-no-of-rooms" ng-model="numberOfRooms">
+                    <select ng-model="numberOfRooms" convert-to-number>
                         <option ng-repeat="roomcount in possibleNumberOfRooms" value="{{roomcount}}">{{roomcount}}</option>
                     </select>
                 </div>

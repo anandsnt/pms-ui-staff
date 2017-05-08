@@ -1,4 +1,6 @@
-admin.controller('ADUserListCtrl', ['$scope', '$rootScope', '$q', '$state', '$stateParams', 'ADUserSrv', 'ngTableParams', '$filter',  function($scope, $rootScope, $q, $state, $stateParams, ADUserSrv, ngTableParams, $filter) {
+admin.controller('ADUserListCtrl', [
+	'$scope', '$rootScope', '$q', '$state', '$stateParams', 'ADUserSrv', 'ngTableParams', 'ADHotelListSrv',
+	function($scope, $rootScope, $q, $state, $stateParams, ADUserSrv, ngTableParams, ADHotelListSrv) {
 	BaseCtrl.call(this, $scope);
 	$scope.hotelId = $stateParams.id;
 	$scope.isAdminSnt = false;
@@ -17,6 +19,11 @@ admin.controller('ADUserListCtrl', ['$scope', '$rootScope', '$q', '$state', '$st
 		var getParams = $scope.calculateGetParams(params);
 
 		getParams.isAdminSnt = $scope.isAdminSnt;
+
+        if ($scope.isAdminSnt) {
+            getParams.hotel_uuid = ADHotelListSrv.getSelectedProperty();
+        }
+
 		var successCallbackFetch = function(data) {
 			$scope.$emit('hideLoader');
 			$scope.currentClickedElement = -1;

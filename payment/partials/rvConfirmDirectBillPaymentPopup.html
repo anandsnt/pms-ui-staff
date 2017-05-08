@@ -1,0 +1,16 @@
+<div id="modal" class="modal-show" ng-class="{'modal-show': !modalClosing}" role="dialog">
+    <div class="modal-content alert wide">
+        
+        <span class="h2 message">
+        	Paying to Direct Bill will close this Bill and transfer all transactions to A/R. 
+        </span>
+        <p class="text">
+        	Payment cannot be reversed.
+    	</p>
+
+        <div class="actions">
+            <button class="button green" type="button" ng-click="payToDirectBill()">Pay to Direct Bill</button> 
+            <button class="button blank" type="button" ng-click="cancelButtonClick()">Cancel</button>
+        </div>
+    </div>
+</div>

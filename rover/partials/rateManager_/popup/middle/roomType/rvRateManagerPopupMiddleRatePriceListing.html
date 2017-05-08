@@ -1,0 +1,19 @@
+<div>
+	<div class="restriction_text" >
+		<h3>
+		PRICES
+		</h3>
+		<!-- Display if we are viewing Rates -->
+		<em>Prices for all rates</em>
+	</div>
+	<div class="prices-container scrollable" ng-iscroll="rate-price-listing">
+		<div class="wrapper">
+
+			<div class="price-info" ng-repeat="rate in rateAndRestrictions">
+				<span class='name'>{{rate.name}}</span>
+				<span class="price">{{rate.single}}</span>
+			</div>
+
+		</div>
+	</div>
+</div>

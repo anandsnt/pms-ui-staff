@@ -3,7 +3,9 @@
 <section id="main" class="centered test" role="main" click-touch='resetTime()' >
     <div id="content" class='add-guest-mode-content' ng-show="!AddGuestMode">
 
-        <h1>{{addGuestsHeading |translate}}</h1>
+        <h1>
+            <text editable-text="ADDTL_RESIDENTS"> {{'ADDTL_RESIDENTS' |translate}}</text>
+        </h1>
         <ul id="selection" class="editable">
 
             <li ng-repeat='guest in selectedReservation.guest_details track by $index' ng-hide='guest.is_primary'>
@@ -14,8 +16,21 @@
         </ul>
     </div>
     <div id="content" class="input-field-contents" ng-show="AddGuestMode">
-        <h1>{{headingText |translate}}</h1>
-        <h3>{{subHeadingText |translate}}</h3>
+
+        <h1 ng-show='mode === "ENTER_FIRST"'>
+            <text editable-text="ENTER_FIRST"> {{'ENTER_FIRST' |translate}}</text>
+        </h1>
+        <h3 ng-show='mode === "ENTER_FIRST"'>
+            <text editable-text="ENTER_FIRST_SUB"> {{'ENTER_FIRST_SUB' |translate}}</text>
+        </h3>
+
+        <h1 ng-show='mode === "ENTER_LAST"'>
+            <text editable-text="ENTER_LAST"> {{'ENTER_LAST' |translate}}</text>
+        </h1>
+        <h3 ng-show='mode === "ENTER_LAST"'>
+            <text editable-text="ENTER_LAST_SUB"> {{'ENTER_LAST_SUB' |translate}}</text>
+        </h3>
+
         <form class="form" click-touch='resetTime()'>
             <div class="entry input">
                 <input type="{{inputType}}" ng-focus="showOnScreenKeyboard('add-guest-name')" click-touch="showOnScreenKeyboard('add-guest-name')"
@@ -23,15 +38,21 @@
                        enter-press="firstNameEntered()" value="" id="add-guest-name" touch-press />
             </div>
             <div class="entry action">
-                <button type="button" class="button" touch-press='NameEntered()' ng-class="{'overlay': input.inputTextValue.length < 1}">{{'NEXT_BTN' |translate}}</button>
+                <button type="button" class="button" touch-press='NameEntered()' ng-class="{'overlay': input.inputTextValue.length < 1}">
+                    <text editable-text="NEXT_BTN"> {{'NEXT_BTN' |translate}}</text>
+                </button>
             </div>
         </form>
     </div>
     <span ng-include="'/assets/partials_v2/zsTabletFooter.html'" click-touch='resetTime()' ></span>
     <div>
         <div id="actions" class="add-guests-footer" >
-            <button type="button" class="button prev" click-touch="addAGuest(); resetTime();" ng-class='{"overlay grey": selectedReservation.guest_details.length >= maxAddGuests}'>{{'ADD_BTN' |translate}}</button>
-            <button type="button" class="button next" click-touch="goToNext(); resetTime();">{{'NEXT_BTN' |translate}}</button>
+            <button type="button" class="button prev" click-touch="addAGuest(); resetTime();" ng-class='{"overlay grey": selectedReservation.guest_details.length >= maxAddGuests}'>
+                <text editable-text="ADD_BTN"> {{'ADD_BTN' |translate}}</text>
+            </button>
+            <button type="button" class="button next" click-touch="goToNext(); resetTime();">
+                <text editable-text="NEXT_BTN"> {{'NEXT_BTN' |translate}}</text>
+            </button>
         </div>
     </div>
 </section>

@@ -48,8 +48,8 @@
                                 <div class="add-enhancement" ng-init="addonQty=1">
                                     <button id="enhance-room-1-champagne" type="button" class="button green" ng-click="selectAddon(addon, addonQty)">Add</button>
                                     <div class="select">
-                                        <label class="label" for="room-1-champagne-quantity" translate>QUANTITY</label>
-                                        <select name="room-1-champagne-quantity" ng-model="addonQty">
+                                        <label class="label" translate>QUANTITY</label>
+                                        <select convert-to-number ng-model="addonQty">
                                             <option ng-repeat="i in [1, 3] | makeRange" value="{{i}}">{{i}}</option>
                                         </select>
                                     </div>

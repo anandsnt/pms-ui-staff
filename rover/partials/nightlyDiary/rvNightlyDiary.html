@@ -7,7 +7,7 @@
 
 <div ng-include="'/assets/partials/common/notification_message.html'"></div>
 
-<section id="diary-nightly" ng-class="{'diary-days-7': (diaryData.numberOfDays === 7) ,'diary-days-21': (diaryData.numberOfDays === 21), 'with-overlay': diaryData.hasOverlay && diaryData.totalSearchResults > 0 }" class="content" role="main">
+<section id="diary-nightly" ng-class="{'diary-days-7': (diaryData.numberOfDays === 7) ,'diary-days-21': (diaryData.numberOfDays === 21), 'with-overlay': diaryData.totalSearchResults > 0 , 'with-reservation-overlay': diaryData.totalRoomNumberSearchResults > 0}" class="content" role="main">
 
         <!-- Room Search + Timeline -->
         <div class="grid-timeline">
@@ -18,16 +18,11 @@
 
         </div>
 
-        <!-- Stay Range | Remove .hidden to show-->
-        <div class="grid-stay-range" ng-if="diaryData.isEditReservationMode" ng-include="'/assets/partials/nightlyDiary/rvNightlyDiaryStayRange.html'"></div>
-
         <!-- Room Search Results -->
         <div ng-include="'/assets/partials/nightlyDiary/rvNightlyDiaryRoomNumberSearchResult.html'" include-replace>
         </div>
 
         <!-- REACT APP :: Rooms list + Reservations list + Un-assigned Reservations list -->
         <div id="nightlyDiaryMain" class="grid-wrapper"></div>
-
         <div ng-include="'/assets/partials/nightlyDiary/rvNightlyDiaryRightFilterBar.html'" include-replace></div>
-
 </section>

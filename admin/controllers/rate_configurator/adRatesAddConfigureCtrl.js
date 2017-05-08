@@ -182,7 +182,14 @@ admin.controller('ADRatesAddConfigureCtrl', ['$scope', '$rootScope', 'ADRatesCon
                         var hourTwelved = function(hour) {
                             var hourCorrected = (hour < 12 ? hour : hour % 12);
 
-                            return hourCorrected === 0 ? 12 : hourCorrected;
+                            hourCorrected = hourCorrected === 0 ? 12 : hourCorrected;
+                            hourCorrected = hourCorrected.toString();
+
+                            if (hourCorrected.length < 2) {
+                                hourCorrected = "0" + hourCorrected;
+                            }
+
+                            return hourCorrected;
                         };
 
                         if (!!value.day_checkout_cutoff_time) {

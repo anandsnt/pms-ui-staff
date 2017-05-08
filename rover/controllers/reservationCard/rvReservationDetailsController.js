@@ -119,7 +119,7 @@ sntRover.controller('reservationDetailsController',
 			setNavigationBookMark();
 			$rootScope.setPrevState = {
 				title: 'Room Diary'
-				
+
 			};
 		} else if ($scope.previousState.name === "rover.reports" || $rootScope.stayCardStateBookMark.previousState === 'rover.reports') {
 			if ($scope.previousState.name === "rover.reports") {
@@ -133,7 +133,20 @@ sntRover.controller('reservationDetailsController',
 					activeTab: "REPORTS"
 				}
 			};
-		} else {
+		} else if ($scope.previousState.name === "rover.companycarddetails") {
+
+            setNavigationBookMark();
+            $rootScope.setPrevState = {
+                title: 'TRAVEL Agent',
+                name: 'rover.companycarddetails',
+                param: {
+					id: $vault.get('travelAgentId'),
+					type: $vault.get('travelAgentType'),
+					query: $vault.get('travelAgentQuery'),
+					isBackToTACommission: $stateParams.isFromTACommission
+				}
+            };
+        } else {
 			setNavigationBookMark();
 			// if we just created a reservation and came straight to staycard
 			// we should show the back button with the default text "Find Reservations"
@@ -940,6 +953,10 @@ sntRover.controller('reservationDetailsController',
                         $scope.shouldAllowDateExtend = (response.data.is_room_type_available || rvPermissionSrv.getPermissionValue('OVERBOOK_ROOM_TYPE')) ? true : false;
                         $scope.showNotAvailableMessage = (!response.data.is_room_type_available && !rvPermissionSrv.getPermissionValue('OVERBOOK_ROOM_TYPE')) ? true : false;
 
+                        //CICO-36733
+                        $scope.showOverBookingAlert = !response.data.is_room_type_available && rvPermissionSrv.getPermissionValue('OVERBOOK_ROOM_TYPE');
+                        $scope.showChangeDatesPopup = !rvPermissionSrv.getPermissionValue('OVERBOOK_ROOM_TYPE') || response.data.is_room_type_available || !response.data.is_house_available;
+
 						ngDialog.open({
 							template: '/assets/partials/reservation/alerts/editDatesInStayCard.html',
 							className: '',
@@ -1444,5 +1461,10 @@ sntRover.controller('reservationDetailsController',
      	return ($scope.reservationData.reservation_card.is_rates_suppressed == 'false' || RVReservationStateService.getReservationFlag("isSRViewRateBtnClicked"));
      };
 
-
+     /**
+     * Toggle the overbooking alert section visibility
+     */
+     $scope.toggleOverBookingAlert = function() {
+       $scope.showChangeDatesPopup = !$scope.showChangeDatesPopup;
+     }
 }]);

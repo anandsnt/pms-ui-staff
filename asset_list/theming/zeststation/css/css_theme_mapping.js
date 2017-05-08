@@ -10,6 +10,8 @@ module.exports = {
 			'fontainebleau': [themeCSSRoot + 'fontainebleau.less'],
 			'yotel': [themeCSSRoot + 'yotel.less'],
 			'epik': [themeCSSRoot + 'epik.less'],
+			'public': [themeCSSRoot + 'public.less'],
+			'duke': [themeCSSRoot + 'duke.less'],
 			'snt': [themeCSSRoot + 'snt.less']
 
 		}

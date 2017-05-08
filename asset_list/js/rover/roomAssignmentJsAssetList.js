@@ -1,4 +1,4 @@
-module.exports = {	
+module.exports = {
 	getList : function() {
 		var controllerRoot 	= 'rover/controllers/',
 			servicesRoot 	= 'rover/services/',
@@ -6,10 +6,11 @@ module.exports = {
 			assetsForView 	= {
 				minifiedFiles: [
 				],
-				nonMinifiedFiles: [						
+				nonMinifiedFiles: [
 					controllerRoot + "roomAssignment/**/*.js",
 					controllerRoot + "upgrades/**/*.js",
-					servicesRoot + "roomAssignment/**/*.js"
+					servicesRoot + "roomAssignment/**/*.js",
+					servicesRoot + "nightlyDiary/**/*.js"
 				]
 		};
 		return assetsForView;

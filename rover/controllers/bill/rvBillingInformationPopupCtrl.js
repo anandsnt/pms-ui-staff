@@ -1,4 +1,4 @@
-sntRover.controller('rvBillingInformationPopupCtrl', ['$scope', '$rootScope', '$filter', 'RVBillinginfoSrv', 'ngDialog', function($scope, $rootScope, $filter, RVBillinginfoSrv, ngDialog) {
+sntRover.controller('rvBillingInformationPopupCtrl', ['$scope', '$rootScope', '$filter', 'RVBillinginfoSrv', 'ngDialog', 'rvPermissionSrv', function($scope, $rootScope, $filter, RVBillinginfoSrv, ngDialog, rvPermissionSrv) {
 	BaseCtrl.call(this, $scope);
 
     $scope.isInAddRoutesMode = false;
@@ -18,6 +18,8 @@ sntRover.controller('rvBillingInformationPopupCtrl', ['$scope', '$rootScope', '$
     $scope.saveData.payment_type_description =  "";
     $scope.saveData.newPaymentFormVisible = false;
 	$scope.shouldShowWaiting = false;
+
+    $scope.hasPermisionToDeleteGroupBillInfo = rvPermissionSrv.getPermissionValue('GROUPS');
 
 	$scope.$on('UPDATE_SHOULD_SHOW_WAITING', function(e, value) {
 		$scope.shouldShowWaiting = value;
@@ -493,6 +495,12 @@ sntRover.controller('rvBillingInformationPopupCtrl', ['$scope', '$rootScope', '$
     // CICO-14951
     $scope.deleteBillingInfo = function() {
         $scope.deleteDefaultRouting();
+    };
+
+    // CICO-36509 - Checks whether we need to show or not the delete btn in group bill info screen
+    $scope.isDeleteBtnShownForGroupBillingInfo = function() {
+        return ( $scope.selectedEntity.isBillingGroupsPresent || $scope.selectedEntity.isChargeCodesPresent ) && $scope.billingEntity === 'GROUP_DEFAULT_BILLING' &&
+               $scope.hasPermisionToDeleteGroupBillInfo;
     };
 
     var init = function() {

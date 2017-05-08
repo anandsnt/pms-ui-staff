@@ -1,4 +1,12 @@
-admin.controller('ADHotelListCtrl', ['$scope', '$rootScope', '$state', '$stateParams', 'ADHotelListSrv', 'ngTableParams', '$filter', function($scope, $state, $rootScope, $stateParams, ADHotelListSrv, ngTableParams, $filter) {
+admin.controller('ADHotelListCtrl', [
+    '$scope',
+    '$state',
+    '$rootScope',
+    '$stateParams',
+    'ADHotelListSrv',
+    'ngTableParams',
+    '$filter',
+    function($scope, $state, $rootScope, $stateParams, ADHotelListSrv, ngTableParams, $filter) {
 	BaseCtrl.call(this, $scope);
 	ADBaseTableCtrl.call(this, $scope, ngTableParams);
 	$scope.$emit("changedSelectedMenu", 0);
@@ -85,6 +93,16 @@ admin.controller('ADHotelListCtrl', ['$scope', '$rootScope', '$state', '$statePa
 		FetchHotelDetails();
 	};
 
+        $scope.viewHotelSettings = function(hotel) {
+            // Further requests should be for the specific property
+            ADHotelListSrv.setselectedProperty(hotel.uuid);
+
+            $state.go("admin.snthoteldetails", {
+                action: 'edit',
+                id: hotel.id
+            });
+        };
+		
 	initMe();
 
 

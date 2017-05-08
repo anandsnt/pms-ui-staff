@@ -88,8 +88,11 @@ admin.service('adReportsSrv', ['$q', 'ADBaseWebSrvV2', 'adReportsFilterSrv', '$h
                 method: 'POST',
                 url: params.url,
                 data: params.payload
-            }).success(function(data, status, headers, config) {
-                var hiddenAnchor = angular.element('<a/>'),
+            }).then(function(response) {
+
+                var data = response.data,
+                    headers = response.headers,
+                    hiddenAnchor = angular.element('<a/>'),
                     blob = new Blob([data]);
 
                 hiddenAnchor.attr({
@@ -117,8 +120,8 @@ admin.service('adReportsSrv', ['$q', 'ADBaseWebSrvV2', 'adReportsFilterSrv', '$h
                 }
 
                 deferred.resolve(true);
-            }).error(function(errorMessage) {
-                deferred.reject(errorMessage);
+            }, function(response) {
+                deferred.reject(response.errorMessage);
             });
             return deferred.promise;
         };

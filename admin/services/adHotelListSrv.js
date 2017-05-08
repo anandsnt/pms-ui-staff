@@ -1,5 +1,17 @@
 admin.service('ADHotelListSrv', ['$http', '$q', 'ADBaseWebSrv', function($http, $q, ADBaseWebSrv) {
 
+    var selectedProperty,
+        service = this;
+
+    service.setselectedProperty = function(hotelUUID) {
+        selectedProperty = hotelUUID;
+    };
+
+
+    service.getSelectedProperty = function() {
+        return selectedProperty;
+    };
+
 	/**
     *   A getter method to return the hotel list
     */

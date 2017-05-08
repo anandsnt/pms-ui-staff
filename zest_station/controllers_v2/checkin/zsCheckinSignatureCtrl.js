@@ -32,11 +32,17 @@ sntZestStation.controller('zsCheckinSignatureCtrl', [
          */
         $scope.clearSignature = function() {
             $scope.signatureData = '';
-            $("#signature").jSignature("clear");
+            $('#signature').jSignature('clear');
         };
 
         var checkIfEmailIsBlackListedOrValid = function() {
-            return ($stateParams.email.length > 0 && !($stateParams.guest_email_blacklisted === 'true') && zsUtilitySrv.isValidEmail($stateParams.email));
+            var email = $stateParams.guest_email ? $stateParams.guest_email : $stateParams.email;
+
+            if (!email) {
+                email = '';
+            }
+
+            return email.length > 0 && !($stateParams.guest_email_blacklisted === 'true') && zsUtilitySrv.isValidEmail(email);
         };
 
         /**
@@ -46,18 +52,29 @@ sntZestStation.controller('zsCheckinSignatureCtrl', [
          */
         var afterGuestCheckinCallback = function(response) {
             // if email is valid and is not blacklisted
-            var haveValidGuestEmail = checkIfEmailIsBlackListedOrValid();
+            var haveValidGuestEmail = checkIfEmailIsBlackListedOrValid(),
+                collectNationalityEnabled = $scope.zestStationData.check_in_collect_nationality;
 
             console.warn('afterGuestCheckinCallback :: current state params: ', $stateParams);
             var stateParams = {
                 'guest_id': $stateParams.guest_id,
                 'reservation_id': $stateParams.reservation_id,
                 'room_no': $stateParams.room_no,
-                'first_name': $stateParams.first_name
+                'email': $stateParams.email,
+                'first_name': $stateParams.first_name,
+                'guest_email_blacklisted': $stateParams.guest_email_blacklisted
             };
 
             console.info('haveValidGuestEmail: ', haveValidGuestEmail);
-            if (haveValidGuestEmail) {
+            if ($scope.theme === 'yotel') {
+                $scope.setScreenIcon('checkin');
+                $state.go('zest_station.checkinSuccess', stateParams);
+            }
+            // if collectiing nationality after email, but email is already valid
+            else if (collectNationalityEnabled && haveValidGuestEmail) {
+                $state.go('zest_station.collectNationality', stateParams);
+
+            } else if (haveValidGuestEmail) {
                 stateParams.email = $stateParams.email;
                 $state.go('zest_station.checkinKeyDispense', stateParams);
             } else {
@@ -67,16 +84,18 @@ sntZestStation.controller('zsCheckinSignatureCtrl', [
 
         };
 
+        var collectPassportEnabled = $scope.zestStationData.check_in_collect_passport;
+
         var checkInGuest = function() {
             var signature = $scope.signatureData;
             var checkinParams = {
                 'reservation_id': $stateParams.reservation_id,
                 'workstation_id': $scope.zestStationData.set_workstation_id,
-                "authorize_credit_card": false,
-                "do_not_cc_auth": false,
-                "is_promotions_and_email_set": false,
-//                "no_post": "",//handled by the API CICO-35315
-                "is_kiosk": true,
+                'authorize_credit_card': false,
+                'do_not_cc_auth': false,
+                'is_promotions_and_email_set': false,
+                //                "no_post": "",//handled by the API CICO-35315
+                'is_kiosk': true,
                 'signature': signature
             };
             var options = {
@@ -84,8 +103,33 @@ sntZestStation.controller('zsCheckinSignatureCtrl', [
                 successCallBack: afterGuestCheckinCallback
             };
 
-            $scope.callAPI(zsCheckinSrv.checkInGuest, options);
+
+            console.log('collectPassportEnabled: ', collectPassportEnabled);
+            // when collectPassportEnabled (check_in_collect_passport) is enabled,
+            // we should Not check in a guest until After the passports have been validated properly
+            // if any passports are invalid during check-in, the user will need to see a staff member
+
+            if ($scope.zestStationData.noCheckInsDebugger === 'true') {
+                console.log('skipping checkin guest, no-check-ins debugging is ON');
+                if (collectPassportEnabled && !$stateParams.passports_scanned) {
+                    $state.go('zest_station.checkInScanPassport');
+                } else {
+                    afterGuestCheckinCallback({ 'status': 'success' });
+                }
+                
+            } else {
+
+                if (collectPassportEnabled && !$stateParams.passports_scanned) {
+                    $state.go('zest_station.checkInScanPassport');
+                } else {
+                    $scope.callAPI(zsCheckinSrv.checkInGuest, options);
+                }
+
+            }
+
         };
+
+
         /**
          * [submitSignature description]
          * @return {[type]} [description]
@@ -95,7 +139,7 @@ sntZestStation.controller('zsCheckinSignatureCtrl', [
             /*
              * this method will check the guest in after swiping a card
              */
-            $scope.signatureData = JSON.stringify($("#signature").jSignature("getData", "native"));
+            $scope.signatureData = JSON.stringify($('#signature').jSignature('getData', 'native'));
             if ($scope.signatureData !== [] && $scope.signatureData !== null && $scope.signatureData !== '' && $scope.signatureData !== '[]') {
                 checkInGuest();
             } else {
@@ -105,7 +149,7 @@ sntZestStation.controller('zsCheckinSignatureCtrl', [
 
         $scope.reSignCC = function() {
             $scope.resetTime();
-            $scope.mode = "SIGNATURE_MODE";
+            $scope.mode = 'SIGNATURE_MODE';
         };
 
 
@@ -118,7 +162,7 @@ sntZestStation.controller('zsCheckinSignatureCtrl', [
             $scope.$emit(zsEventConstants.HIDE_BACK_BUTTON);
             // show close button
             $scope.$emit(zsEventConstants.SHOW_CLOSE_BUTTON);
-            $scope.mode = "SIGNATURE_MODE";
+            $scope.mode = 'SIGNATURE_MODE';
             $scope.signaturePluginOptions = {
                 height: 230,
                 width: $(window).width() - 120,

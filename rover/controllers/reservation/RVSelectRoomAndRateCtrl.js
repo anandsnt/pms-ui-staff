@@ -1862,7 +1862,6 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 						var isGroupRate = ($scope.stateCheck.activeView == 'RECOMMENDED' && $scope.reservationData.group.id) ? !!$scope.reservationData.group.id : false;
 						var isAllotmentRate = ($scope.stateCheck.activeView == 'RECOMMENDED' && $scope.reservationData.allotment.id) ? !!$scope.reservationData.allotment.id : false;
 						var isCorporate = ($scope.stateCheck.activeView == 'RECOMMENDED' && $scope.reservationData.ratesMeta[rate.id].account_id) ? !!$scope.reservationData.ratesMeta[rate.id].account_id : false;
-						var isSuppressed = ($scope.stateCheck.activeView == 'RECOMMENDED' && $scope.reservationData.ratesMeta[rate.id].is_suppress_rate_on) ? !!$scope.reservationData.ratesMeta[rate.id].is_suppress_rate_on : false;
 						var isMember = ($scope.stateCheck.activeView == 'RECOMMENDED' && $scope.reservationData.member.isSelected && $scope.reservationData.ratesMeta[rate.id].is_member) ? !!$scope.reservationData.member.isSelected && $scope.reservationData.ratesMeta[rate.id].is_member : false;
 						var isPromotion = ($scope.stateCheck.activeView == 'RECOMMENDED' && !proccesedRestrictions.isPromoInvalid && _.indexOf($scope.reservationData.ratesMeta[rate.id].linked_promotion_ids, $scope.reservationData.code.id) > -1) ? !proccesedRestrictions.isPromoInvalid && _.indexOf($scope.reservationData.ratesMeta[rate.id].linked_promotion_ids, $scope.reservationData.code.id) > -1 : false;
 
@@ -1882,7 +1881,7 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 							isGroupRate: isGroupRate,
 							isAllotmentRate: isAllotmentRate,
 							isCorporate: isCorporate,
-							isSuppressed: isSuppressed,
+							isSuppressed: $scope.reservationData.ratesMeta[rate.id].is_suppress_rate_on,
 							isMember: isMember,
 							isPromotion: isPromotion,
 							isSuiteUnavailable: room.isSuiteUnavailable

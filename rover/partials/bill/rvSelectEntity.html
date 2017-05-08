@@ -166,10 +166,10 @@
 					</figure>
 
 					<div class="data">
-						<h2 ng-bind-html="'{{row.lastname}}, {{row.firstname}}'|highlight:textInQueryBox:false" 
+						<h2 ng-bind-html="row.lastname + ', ' + row.firstname | highlight:textInQueryBox:false"
 						ng-class="{'grey' : row.images.length >1}"> </h2>
-						<span class="confirmation" ng-bind-html="'# {{row.confirmation}}'|highlight:textInQueryBox:false" ></span>
-						<span class="room">{{'ROOM_LABEL' | translate}} <strong ng-bind-html="'{{row.room}}'|highlight:textInQueryBox:false"></strong></span>
+						<span class="confirmation" ng-bind-html="'#' + row.confirmation | highlight:textInQueryBox:false" ></span>
+						<span class="room">{{'ROOM_LABEL' | translate}} <strong ng-bind-html="row.room | highlight:textInQueryBox:false"></strong></span>
 					</div>	
 					
 					<span class="guest-status small-icon {{getGuestStatusMapped(row.reservation_status, row.is_opted_late_checkout)}}" ></span>

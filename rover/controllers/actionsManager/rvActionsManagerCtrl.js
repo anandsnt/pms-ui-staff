@@ -1,5 +1,22 @@
-sntRover.controller('RVActionsManagerController', ['$scope', '$rootScope', 'ngDialog', 'rvActionTasksSrv', 'departments', 'dateFilter', 'rvUtilSrv', '$state',
-    function ($scope, $rootScope, ngDialog, rvActionTasksSrv, departments, dateFilter, rvUtilSrv, $state) {
+sntRover.controller('RVActionsManagerController',
+    ['$scope',
+    '$rootScope',
+    'ngDialog',
+    'rvActionTasksSrv',
+    'departments',
+    'dateFilter',
+    'rvUtilSrv',
+    '$state',
+    'RVreportsSubSrv',
+    '$window',
+    '$timeout',
+    '$filter',
+    function ($scope, $rootScope,
+             ngDialog, rvActionTasksSrv,
+             departments, dateFilter,
+             rvUtilSrv, $state,
+             reportsSubSrv, $window,
+            $timeout, $filter ) {
         BaseCtrl.call(this, $scope);
 
         // -------------------------------------------------------------------------------------------------------------- B. Local Methods
@@ -338,6 +355,124 @@ sntRover.controller('RVActionsManagerController', ['$scope', '$rootScope', 'ngDi
 
         $scope.$on('$destroy', listenerClosePopup);
         $scope.$on('$destroy', listenerNewActionPosted);
+
+        // add the print orientation before printing
+        var addPrintOrientation = function() {
+            $( 'head' ).append( "<style id='print-orientation'>@page { size: portrait; }</style>" );
+        };
+
+        // add the print orientation after printing
+        var removePrintOrientation = function() {
+            $( '#print-orientation' ).remove();
+        };
+
+        // Get the parameters required for the report
+        var getReportParams = function() {
+            var params = {};
+
+            // report id for Action manager report
+            params.id = 61;
+            params.from_date = $filter('date')($scope.filterOptions.selectedDay, 'yyyy/MM/dd');
+            params.to_date = params.from_date;
+            params.assigned_departments = [];
+
+            if ($scope.filterOptions.department == "") {
+                _.each($scope.departments, function(department) {
+                    params.assigned_departments.push(department.value);
+                });
+            } else {
+                params.assigned_departments.push($scope.filterOptions.department.value);
+            }
+
+            if ($scope.filterOptions.selectedStatus === "ALL") {
+                params.status = ["UNASSIGNED", "ASSIGNED", "COMPLETED"];
+            } else {
+                params.status = [$scope.filterOptions.selectedStatus];
+            }
+
+            params.actions_by = [$scope.filterOptions.selectedView];
+            params.per_page = 1000;
+            params.page = 1;
+
+            return params;
+
+        };
+
+        // Set the filters that are applied to the report
+        var setAppliedFilter = function() {
+            $scope.appliedFilter = {};
+
+            $scope.appliedFilter.date = dateFilter($scope.filterOptions.selectedDay, $rootScope.dateFormatForAPI);
+            if ($scope.filterOptions.selectedStatus === 'ALL') {
+               $scope.appliedFilter.completion_status = ['ALL STATUS'];
+            } else {
+               $scope.appliedFilter.completion_status = [$scope.filterOptions.selectedStatus];
+            }
+
+            if ($scope.filterOptions.department === '') {
+                $scope.appliedFilter.assigned_departments = ['ALL DEPARTMENTS'];
+            } else {
+                $scope.appliedFilter.assigned_departments = [$scope.filterOptions.department.name];
+            }
+
+            $scope.appliedFilter.show = [$scope.filterOptions.selectedView];
+
+            $scope.leftColSpan = 2;
+            $scope.rightColSpan = 2;
+
+        };
+
+        // Print the action manager report from the action manager screen
+        $scope.printActionManager = function() {
+
+            var sucessCallback = function(data) {
+
+                $scope.$emit('hideLoader');
+                $scope.printActionManagerData = data;
+                $scope.errorMessage = "";
+
+                // add the orientation
+                addPrintOrientation();
+                /*
+                *   ======[ READY TO PRINT ]======
+                */
+                // this will show the popup with full bill
+                $timeout(function() {
+
+                    /*
+                    *   ======[ PRINTING!! JS EXECUTION IS PAUSED ]======
+                    */
+                    $window.print();
+                    if ( sntapp.cordovaLoaded ) {
+                        cordova.exec(function(success) {}, function(error) {}, 'RVCardPlugin', 'printWebView', []);
+                    }
+                }, 200);
+
+                /*
+                *   ======[ PRINTING COMPLETE. JS EXECUTION WILL UNPAUSE ]======
+                */
+                $timeout(function() {
+
+                    // CICO-9569 to solve the hotel logo issue
+                    $("header .logo").removeClass('logo-hide');
+                    $("header .h2").addClass('text-hide');
+                    // remove the orientation after similar delay
+                    removePrintOrientation();
+                }, 200);
+
+            };
+
+            var failureCallback = function(errorData) {
+                $scope.$emit('hideLoader');
+                $scope.errorMessage = errorData;
+            };
+
+            var params = getReportParams();
+
+            setAppliedFilter();
+
+            $scope.invokeApi(reportsSubSrv.fetchReportDetails, params, sucessCallback, failureCallback);
+        };
 
         init();
     }

@@ -1,5 +1,5 @@
-sntRover.controller('staycardController', ['$scope', '$rootScope', 'RVGuestCardSrv', 'ngDialog', '$timeout',
-	function($scope, $rootScope, RVGuestCardSrv, ngDialog, $timeout) {
+sntRover.controller('staycardController', ['$scope', '$rootScope', 'RVGuestCardSrv', 'ngDialog', '$timeout', 'RVContactInfoSrv',
+	function($scope, $rootScope, RVGuestCardSrv, ngDialog, $timeout, RVContactInfoSrv) {
 
 		// Browser chokes when he tries to do the following two thing at the same time:
 		// 		1. Slide in staycard
@@ -134,17 +134,41 @@ sntRover.controller('staycardController', ['$scope', '$rootScope', 'RVGuestCardS
 		$scope.$on('SHOWPAYMENTLIST', function(event, data) {
 			$scope.openPaymentList(data);
 		});
-		$scope.openPaymentList = function(data) {
 
+        /**
+         * @returns {undefined}
+         */
+        function openPaymentListDialog() {
+            ngDialog.open({
+                template: '/assets/partials/payment/rvShowPaymentList.html',
+                controller: 'RVShowPaymentListCtrl',
+                className: '',
+                scope: $scope
+            });
+        }
 
-			$scope.dataToPaymentList = data;
-			ngDialog.open({
-				template: '/assets/partials/payment/rvShowPaymentList.html',
-				controller: 'RVShowPaymentListCtrl',
-				className: '',
-				scope: $scope
-			});
-		};
+        $scope.openPaymentList = function(data) {
+            $scope.dataToPaymentList = data;
+            // 		In case of connectd properties, fetchProfile OWS request is made only when the guest details is fetched!
+			// 		Hence, in order to get the updated list of cards against a guest, make the guest details request before
+			// fetching the card details
+            if (!$rootScope.isStandAlone &&
+                !RVContactInfoSrv.isGuestFetchComplete($scope.reservationData.guest.id)) {
+                $scope.callAPI(RVContactInfoSrv.getGuestDetails, {
+                    successCallBack: function(data) {
+                        $scope.$emit("UPDATE_GUEST_CARD_DETAILS", data);
+                        openPaymentListDialog();
+                    },
+                    failureCallBack: function(errorMessage) {
+                        $scope.errorMessage = errorMessage;
+                        $scope.$emit('hideLoader');
+                    }
+                });
+            } else {
+                openPaymentListDialog();
+            }
+
+        };
 
                 $scope.showRoomSharerPopup = function() {
                     ngDialog.open({

@@ -76,7 +76,7 @@ sntZestStation.service('zsPaymentSrv', ['$http', '$q', 'zsBaseWebSrv', '$rootSco
             var refreshIntervalId = setInterval(incrementTimer, 1000);
 
             var deferred = $q.defer();
-            var url = 'api/reservations/' + postData.reservation_id + '/submit_payment';
+            var url = '/api/reservations/' + postData.reservation_id + '/submit_payment';
 
             var pollToTerminal = function(async_callback_url) {
                 // we will continously communicate with the terminal till 

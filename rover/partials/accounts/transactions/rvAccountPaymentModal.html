@@ -11,7 +11,7 @@
            {{'PAY_BILL' | translate}}
             <div class="select">
                 <!-- number of options should match the number of bills created -->
-                <select name="post-charge-to-bill" ng-model="renderData.billNumberSelected" ng-change = "billNumberChanged()">
+                <select convert-to-number name="post-charge-to-bill" ng-model="renderData.billNumberSelected" ng-change = "billNumberChanged()">
                     <option ng-repeat="bills in billsArray" value="{{bills.bill_number}}" ng-selected="{{bills.bill_number == renderData.billNumberSelected}}">{{bills.bill_number}}</option>
                 </select>
             </div>
@@ -35,7 +35,7 @@
             </snt-payment>
         </div>
     </form>
-    <div class="modal-content confirmation" ng-show="showArSelection">
+    <div class="modal-content confirmation" ng-if="showArSelection">
             <span class="h2 message">Post Payment To</span>
             <div class="actions">
                 <button type="button" class="button blue" ng-click="selectArAccount('company')">Company</button> 

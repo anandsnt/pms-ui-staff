@@ -171,4 +171,15 @@ angular.module('adminModuleOne', []).config(function($stateProvider, $urlRouterP
 			url: '/countrySort'
 		});
 
+		$stateProvider.state('admin.mobileAppMarketingSettings', {
+			templateUrl: '/assets/partials/zestSetup/adMobileAppMarketing.html',
+			controller: 'ADZestMobileAppMarketingCtrl',
+			url: '/admin/hotel/get_mobile_app_marketing_settings',
+			resolve: {
+				data: function(adZestMobileAppMarketingSrv) {
+					return adZestMobileAppMarketingSrv.getZestMobileAppMarketingData();
+				}
+			}
+		});
+
 });

@@ -54,7 +54,7 @@
 	
 	#sohotel {
 
-		.button:not(.transparent):not(.blank):not(.option) {
+		.button:not(.transparent):not(.blank):not(.option):not([disabled]):not(.disabled) {
 			background: fade(@actionBackground, 80%);
 			color: @black;
 		}
@@ -120,6 +120,13 @@
 				background-color: @black;
 			}
 		} 
+		.add-on {
+			&.selected {
+				.add-on-content {
+					color: @black;
+				}
+			}
+		}
 
 		#textual,
 		.popup {

@@ -33,12 +33,13 @@ this.chromeApp = function(onMessageCallback, chromeAppId, fetchQRCode) {
                 listening: true,
                 attempt: this.qrAttempt + 1
             };
+
             console.log('response from Datalogic: ', response);
             if (!response.qr_code) {
                 setTimeout(function() {
                     console.log('listening for QR code scan...');
                     // if (!that.cancelNextMsg) {
-                        chrome.runtime.sendMessage(chromeAppId, msg, that.listenerForQRCodeResponse);
+                    chrome.runtime.sendMessage(chromeAppId, msg, that.listenerForQRCodeResponse);
                     // } else {
                         // console.log('should stop sending messages to chrome app now :)');
                     // }
@@ -75,34 +76,4 @@ this.chromeApp = function(onMessageCallback, chromeAppId, fetchQRCode) {
         }
     }
     return that;
-};
-
-this.chromeExtensionListener = function(onMessageCallback, chromeAppId, fetchQRCode) {
-    var initExtensionSocket = function() {
-        window.addEventListener('message', function(evt) {
-            if (evt.source !== window) {
-                return;
-            }
-            var passedDataObject = evt.data;
-
-            if (passedDataObject.switchToTheme) {
-                    // switch theme requested from our SNT chrome extension for debugging/testing
-                console.info('theme switch requested from extension, switching to [', passedDataObject.switchToTheme, ']');
-                zestSntApp.debugTheme(passedDataObject.switchToTheme);
-            } else if (passedDataObject.toggleDebuggerOnOff) {
-                    // pass toggle argument to station app, not direct on/off
-                    // - this turns on the on-screen timer and workstation details so an admin can verify settings/and proper times
-                    // possible args = //workstationFetchTimer, languageResetTimer, refreshTimer, idlePopupTimer, backToHomeTimer, toggleOnly
-                    // if (debugTimers(true), like here, then the method is only used for toggling on/off the timer view);
-                zestSntApp.debugTimers(true);
-            }
-        }, false);
-    };
-
-    try {
-        initExtensionSocket();
-    } catch (err) {
-        console.warn(err);
-    }
-
 };

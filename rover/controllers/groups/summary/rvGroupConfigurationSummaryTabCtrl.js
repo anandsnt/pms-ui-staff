@@ -360,6 +360,7 @@ angular.module('sntRover').controller('rvGroupConfigurationSummaryTab', ['$scope
             if (!$scope.updateGroupSummary || // This is used in the res-cards and this method is not available there
                 $scope.isInAddMode() || targetElement.id === 'summary' ||
                 targetElement.id === 'cancel-action' || // TODO: Need to check with Dilip/Shiju PC for more about this
+                !!$scope.focusedCompanyCard || !!$scope.focusedTravelAgent || // CICO-39934 Don't update the group, since its already updated while selecting the group
                 whetherSummaryDataChanged() ||
                 $scope.groupSummaryData.isDemographicsPopupOpen ||
                 $scope.isUpdateInProgress ||
@@ -646,10 +647,10 @@ angular.module('sntRover').controller('rvGroupConfigurationSummaryTab', ['$scope
             }, commonDateOptions);
 
             if ($scope.groupConfigData.summary.block_from !== '') {
-                // Fix for CICO-35722. 
+                // Fix for CICO-35722.
                 var blockFromDate = tzIndependentDate($scope.groupConfigData.summary.block_from),
                     todaysBusinessDate = tzIndependentDate($rootScope.businessDate);
-                    
+
                 $scope.toDateOptions = _.extend({
                     minDate: todaysBusinessDate > blockFromDate ? todaysBusinessDate : blockFromDate
                 }, $scope.toDateOptions);
@@ -818,6 +819,39 @@ angular.module('sntRover').controller('rvGroupConfigurationSummaryTab', ['$scope
                     });
                 }
             });
+        };
+
+        // Show the confirm popup before deleting the group billing information
+        $scope.showGroupBillingInfoDeleteConfirmPopup = function() {
+            ngDialog.close();
+            $timeout(function() {
+                ngDialog.open({
+                    template: '/assets/partials/groups/rvGroupBillingInfoDeleteConfirmPopup.html',
+                    className: '',
+                    scope: $scope
+                });
+
+            }, 100);
+
+        };
+
+        // Delete group billing information
+        $scope.deleteGroupBillingInfo = function() {
+
+            var successCallback = function() {
+                    $scope.$emit('hideLoader');
+                    $scope.groupConfigData.summary.posting_account_billing_info = false;
+                    ngDialog.close();
+                },
+                errorCallback = function() {
+                    $scope.$emit('hideLoader');
+                    ngDialog.close();
+                };
+            var params = {};
+
+            params.group_id = $scope.groupConfigData.summary.group_id;
+
+            $scope.invokeApi(rvGroupConfigurationSrv.deleteBillingInfo, params, successCallback, errorCallback);
         };
 
         /*
@@ -1236,7 +1270,7 @@ angular.module('sntRover').controller('rvGroupConfigurationSummaryTab', ['$scope
                         'group_id': $scope.groupConfigData.summary.group_id
                     }
                 });
-            } 
+            }
         };
 
         $scope.removeGroupNote = function(event, noteId) {

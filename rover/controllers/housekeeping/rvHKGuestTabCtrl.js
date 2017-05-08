@@ -81,6 +81,24 @@ angular.module('sntRover').controller('RVHKGuestTabCtrl', [
 			var hkStatusId;
 
 			if ( !! $scope.flag.roomStatusReady ) {
+                // CICO-28117 - Allow only the user with permission to change the room status to inspected
+                var changeRoomStatusToInspectedPermission = rvPermissionSrv.getPermissionValue ('CHANGE_ROOM_STATUS_TO_INSPECTED');
+
+                if (!changeRoomStatusToInspectedPermission && $rootScope.isStandAlone) {
+                    ngDialog.close();
+                    $timeout(function() {
+                        ngDialog.open({
+                            template: '/assets/partials/housekeeping/popups/rvRoomStatusChangeRestrictAlert.html',
+                            className: '',
+                            closeByDocument: true,
+                            scope: $scope
+                        });
+                    }, 50);
+
+
+                   return;
+                }
+
 				if ( 'true' === $scope.roomDetails.checkin_inspected_only ) {
 					hkStatusId = 2;
 				}

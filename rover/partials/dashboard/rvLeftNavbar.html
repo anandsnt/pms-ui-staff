@@ -7,7 +7,7 @@
 		<h5 ng-click="toggleHotelList()">{{currentHotelData.name}}</h5>
 		<dl class="dropdown">
 			<dt>Change hotel:</dt>
-			<dd ng-repeat="hotel in hotelDetails.userHotelsData.hotel_list"><a ng-click="redirectToHotel(hotel.hotel_id)">{{ hotel.hotel_name}}</a></dd>
+			<dd ng-repeat="hotel in hotelDetails.userHotelsData.hotel_list"><a ng-click="redirectToHotel(hotel)">{{ hotel.hotel_name}}</a></dd>
 		</dl>
 	</div>
 
@@ -36,7 +36,7 @@
 					<a ng-click="$emit('updateSettingsSubMenu', settingsSubmenu[0])" class="icon-menu icon-settings" ng-class="{'open':isSettingSubMenuActive}">Settings</a>
 				</li>
 				<li id="sign-out">
-					<a href="/logout" ng-click="toggleDrawerMenu()" class="icon-menu icon-sign-out">Sign Out</a>
+					<a ng-click="logout()" class="icon-menu icon-sign-out">Sign Out</a>
 				</li>
 			</ul>
 
@@ -46,7 +46,7 @@
 					<a class="icon-menu {{mobileMenuItem.iconClass}}" ng-class="{'active':selectedMenuIndex!='' && (selectedMenuIndex == mobileMenuItem.menuIndex || (mobileMenuItem.submenu | filter:{menuIndex:selectedMenuIndex}).length > 0)}" translate="{{mobileMenuItem.title}}" ng-if="mobileMenuItem.action == ''"></a>
 				</li>
 				<li id="sign-out">
-					<a href="/logout" ng-click="toggleDrawerMenu()" class="icon-menu icon-sign-out">Sign Out</a>
+					<a ng-click="logout()" class="icon-menu icon-sign-out">Sign Out</a>
 				</li>
 			</ul>
 		</div>

@@ -19,6 +19,12 @@ var TimelineResizeGrip = React.createClass({
 			element_x: page_offset.left - props.display.x_0 - props.iscroll.grid.x
 		});
 
+		if ( props.reservatonFlow.cannotResizeDuration() ) {
+			props.reservatonFlow.showNotAllowedMsg();
+		} else {
+			document.addEventListener(this.mouseLeavingEvent, this.__onMouseUp);
+			document.addEventListener(this.mouseMovingEvent, this.__onMouseMove);
+		}
 	},
 	__onMouseMove: function(e) {
 		e.stopPropagation();
@@ -160,7 +166,7 @@ var TimelineResizeGrip = React.createClass({
         var hasSupport = false;
 
         try {
-            if (navigator.maxTouchPoints !== 'undefined') {
+            if (navigator.maxTouchPoints !== undefined) {
                 // for modern browsers
                 // even if touchpoints test is supported event support is also needed
                 hasSupport = navigator.maxTouchPoints > 0 && 'ontouchstart' in window;

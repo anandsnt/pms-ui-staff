@@ -5,7 +5,8 @@ sntZestStation.controller('zsThemeActionsCtrl', [
     '$timeout',
     'zsHotelDetailsSrv',
     'zsGeneralSrv',
-    function($scope, $state, zsGeneralSrv, $timeout, zsHotelDetailsSrv, zsGeneralSrv) {
+    '$log',
+    function($scope, $state, zsGeneralSrv, $timeout, zsHotelDetailsSrv, zsGeneralSrv, $log) {
 
         BaseCtrl.call(this, $scope);
 		
@@ -13,6 +14,19 @@ sntZestStation.controller('zsThemeActionsCtrl', [
 		/** ******************************************************************************
 		 *  Theme based actions starts here
 		 ********************************************************************************/
+
+        /*
+            :: themesWithLicensedFonts ::
+            key = hotel theme, 
+            value = specific URL to the licensed font (should only request in production)
+            --***-- for testing, please use placeholder URLs
+         */
+        var themesWithLicensedFonts = {
+            'public': 'https://cloud.typography.com/7902756/7320972/css/fonts.css',
+           // 'littleduke': 'placeholder'
+           // 'public': 'public.font.placeholder.css',
+            'duke': 'duke.font.placeholder.css'
+        };
 
         var iconsPath = '/assets/zest_station/css/icons/default';
 		/**
@@ -67,10 +81,32 @@ sntZestStation.controller('zsThemeActionsCtrl', [
                 fileref.setAttribute('href', url);
                 $('body').attr('id', theme);
                 $('body').append(fileref);
+                // debugging - inProd() needs to be TRUE for loading licensed font
+                if (hotelHasLicensedFont(theme) && $scope.inProd()) {
+                    $log.log('[ ' + theme + ' ] theme using licensed font**');
+                    url = getHotelLicensedFont(theme);
+                    fileref = document.createElement('link');
+
+                    fileref.setAttribute('rel', 'stylesheet');
+                    fileref.setAttribute('type', 'text/css');
+                    fileref.setAttribute('href', url);
+                    $('head').attr('id', theme);
+                    $('head').append(fileref);
+                }
+
                 setThemeByName(theme);
             } else {
                 return;
             }
+        };
+
+        var hotelHasLicensedFont = function(theme) {
+            return !_.isUndefined(themesWithLicensedFonts[theme]);
+        };
+
+        var getHotelLicensedFont = function(theme) {
+            // public | duke
+            return themesWithLicensedFonts[theme];
         };
 
 		/** ******************************************************************************
@@ -78,7 +114,6 @@ sntZestStation.controller('zsThemeActionsCtrl', [
 		 ********************************************************************************/
 
         $scope.$on('QUICK_SET_HOTEL_THEME', function(evt, theme) {
-            // console.log('Quick! Set theme to: ', theme);
             var oldLink = $('link');
 
             for (var i in oldLink) {
@@ -93,6 +128,43 @@ sntZestStation.controller('zsThemeActionsCtrl', [
             $scope.$emit('RUN_APPLY');
         });
 
+        /** ******************************************************************************
+         *  
+         ********************************************************************************/
+
+        $scope.$on('TOGGLE_LANGUAGE_TAGS', function() {
+
+             // enables user (via conosle or developer tools) to show tags on-screen instead of the 
+             // translated text
+            var tags = $('text'), // grab all <text> selectors, which should only be used for locales
+                el, tag, currentText, old;
+
+            // for each field with tag, on current screen, replace
+            // the current text with the tag text, keep ref to the current text
+            // 
+            for (var i = 0; i < tags.length; i++) {
+
+                el = $(tags[i]);
+                tag = $.trim(el.attr('editable-text'));
+                currentText = $.trim(el.text());
+                old = el.attr('old-text');
+
+                if ( currentText === tag ) {
+                    // if showing the tag, switch back to text, 
+                    // just swap the old-text with current value in json file
+                    $scope.saveLanguageEditorChanges(tag, old, true);
+
+                } else {
+                    // to show the TAG instead of translated text, swap out with the
+                    // tag, which is also in the attribute 'editable-text'
+                    el.attr('old-text', currentText);
+                    // to show the tag instead of the text, make the tag value, same as the tag itself
+
+                    $scope.saveLanguageEditorChanges(tag, tag, true);
+                }
+            }
+            $scope.runDigestCycle();
+        });
         
         (function() {// initializeMe
             setHotelBasedTheme(zsGeneralSrv.hotelTheme);

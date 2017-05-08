@@ -22,7 +22,8 @@ var Resizable = React.createClass({
 			__onResizeStart: props.__onResizeStart,
 			__onResizeEnd: props.__onResizeEnd,
 			currentResizeItem: props.currentResizeItem,
-			currentResizeItemRow: props.currentResizeItemRow
+			currentResizeItemRow: props.currentResizeItemRow,
+			reservatonFlow: props.reservatonFlow
 		}),
 		React.createElement( TimelineResizeGrip, {
 			key: 'resize-right-01',
@@ -36,7 +37,8 @@ var Resizable = React.createClass({
 			__onResizeStart: props.__onResizeStart,
 			__onResizeEnd: props.__onResizeEnd,
 			currentResizeItem: props.currentResizeItem,
-			currentResizeItemRow: props.currentResizeItemRow
+			currentResizeItemRow: props.currentResizeItemRow,
+			reservatonFlow: props.reservatonFlow
 		}));
 	}
 });

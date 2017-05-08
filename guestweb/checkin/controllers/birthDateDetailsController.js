@@ -79,12 +79,13 @@
 		};
 
 		var goToNextStep = function() {
-			if ($rootScope.guestPromptAddressOn) {
+			if ($state.href('promptGuestDetails') !== null && $rootScope.guestPromptAddressOn) {
 				$state.go('promptGuestDetails');
 			}
 			else if (!$rootScope.guestAddressOn || $rootScope.isGuestAddressVerified) {
 				// if room upgrades are available
-				if ($rootScope.upgradesAvailable) {
+				// (for checkin now room has to be available)
+				if ($rootScope.upgradesAvailable && ($rootScope.isAutoCheckinOn || $rootScope.isUpgradeAvailableNow)) {
 					$state.go('checkinUpgrade');
 				}
 				else {

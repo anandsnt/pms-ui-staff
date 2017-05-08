@@ -14,7 +14,6 @@ sntRover.controller('reservationActionsController', [
 	'RVReservationSummarySrv',
         'RVPaymentSrv',
     'RVContactInfoSrv',
-	'$stateParams',
 	function($rootScope,
 		$scope,
 		ngDialog,
@@ -29,8 +28,7 @@ sntRover.controller('reservationActionsController', [
 		$window,
 		RVReservationSummarySrv,
                 RVPaymentSrv,
-        RVContactInfoSrv,
-		$stateParams) {
+        RVContactInfoSrv) {
 
 		BaseCtrl.call(this, $scope);
 		var TZIDate = tzIndependentDate,
@@ -1025,11 +1023,7 @@ sntRover.controller('reservationActionsController', [
 				},
 				// Handle Success
 				function() {
-					$state.go('rover.reservation.staycard.reservationcard.reservationdetails', {
-						"id": $stateParams.id || $scope.reservationData.reservationId,
-						"confirmationId": $stateParams.confirmationId || $scope.reservationData.confirmNum,
-						"isrefresh": false
-					});
+                    $state.reload($state.$current.name);
 					$scope.closeDialog();
 				},
 				// Handle Failure

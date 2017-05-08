@@ -48,7 +48,7 @@
         </div>
         <!-- ng-disabled="activeCriteria == 'RATE' || activeCriteria == 'RECOMMENDED' || (stateCheck.stayDatesMode && stateCheck.rateSelected.oneDay)" -->
         <div class="select" ng-show="!borrowForGroups && stateCheck.activeView == 'ROOM_TYPE'">
-            <select ng-model="stateCheck.preferredType" ng-change="onRoomTypeChange($event)" ng-disabled="stateCheck.activeView == 'RATE' || stateCheck.activeView == 'RECOMMENDED' || (stateCheck.stayDatesMode && stateCheck.rateSelected.oneDay && stateCheck.dateModeActiveDate != reservationData.arrivalDate) || reservationData.status == 'CHECKEDIN' || reservationData.status == 'CHECKING_OUT'">
+            <select convert-to-number ng-model="stateCheck.preferredType" ng-change="onRoomTypeChange($event)" ng-disabled="stateCheck.activeView == 'RATE' || stateCheck.activeView == 'RECOMMENDED' || (stateCheck.stayDatesMode && stateCheck.rateSelected.oneDay && stateCheck.dateModeActiveDate != reservationData.arrivalDate) || reservationData.status == 'CHECKEDIN' || reservationData.status == 'CHECKING_OUT'">
                 <option value="" translate ng-if="reservationData.tabs.length < 2">RESV_ALL_ROOMS</option>
                 <option value="" ng-if="viewState.currentTab >0 && !stateCheck.preferredType" class="placeholder">Select Room Type</option>
                 <option value="{{roomType.id}}" ng-repeat="roomType in otherData.roomTypes" ng-selected="roomType.id == stateCheck.preferredType" ng-hide="isRoomTypeSelected(roomType.id);">

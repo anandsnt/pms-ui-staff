@@ -25,7 +25,9 @@ body {
 .padding-top-30{
   padding-top:30px !important;
 }
-
+a{
+   cursor:pointer;
+}
 .black-text{
     color: @black !important;
 }
@@ -213,6 +215,7 @@ body {
 .late-checkout-final-button{
     font-size:16px;
     text-transform:uppercase;
+    line-height: 60px !important;
 }
 /*-------------------------------- responsive code starts here------------------------------*/
 
@@ -265,6 +268,22 @@ body {
     .right-arrow-button {
         background-position: 0 1px;
     }
+    .addon-details .price-details{
+      font-size: 2.8em !important;
+    }
+    .addon-section-container{
+        max-width:550px;
+        .btn-template{
+            max-width:550px;
+        }
+        .addon-container{
+            min-height:150px;
+            padding:15px;
+            .content-image{
+                min-height:120px;
+            }
+        }
+    }
 }
 
 @media only screen 
@@ -282,7 +301,7 @@ and (max-device-width : 1028px){
         font-size:28px;
     }
     .late-checkout-final-button{
-        font-size:23px !important;
+        font-size:20px !important;
         padding-top: 10px;
     }
     .accept-charges {
@@ -591,5 +610,6 @@ and (max-device-width : 1028px){
     margin:0 auto;
 }
 
-
-
+.no-text-case{
+    text-transform:none;
+}

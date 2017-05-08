@@ -15,7 +15,10 @@ admin.controller('ADLinkExistingUserCtrl', ['$scope', '$state', '$stateParams', 
 			$state.go('admin.users', { id: $stateParams.id });
 		};
 
-		$scope.invokeApi(ADUserSrv.linkExistingUser, data, successCallback);
+		$scope.invokeApi(ADUserSrv.linkExistingUser, {
+			data: data,
+            isSNTAdmin: $scope.isSntAdmin
+        }, successCallback);
 	};
 
 }]);

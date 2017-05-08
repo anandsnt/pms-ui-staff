@@ -4,8 +4,7 @@ sntZestStation.controller('zsSelectReservationForCheckInCtrl', [
     '$state',
     'zsEventConstants',
     'zsCheckinSrv',
-    '$stateParams',
-    function($scope, $rootScope, $state, zsEventConstants, zsCheckinSrv, $stateParams) {
+    function($scope, $rootScope, $state, zsEventConstants, zsCheckinSrv) {
 
         /** ********************************************************************************************
          **      Please note that, not all the stateparams passed to this state will not be used in this state, 
@@ -32,16 +31,10 @@ sntZestStation.controller('zsSelectReservationForCheckInCtrl', [
                 return guest_detail.is_primary === true;
             });
 
-            if ($scope.zestStationData.check_in_collect_nationality) {
-                $state.go('zest_station.collectNationality', {
-                    'guestId': primaryGuest.id,
-                    'first_name': primaryGuest.first_name
-                });
-            } else {
-                $state.go('zest_station.checkInReservationDetails', {
-                    'first_name': primaryGuest.first_name
-                });
-            }
+            $state.go('zest_station.checkInReservationDetails', {
+                'first_name': primaryGuest.first_name
+            });
+        
 
         };
         var initPagination = function() {
@@ -74,7 +67,6 @@ sntZestStation.controller('zsSelectReservationForCheckInCtrl', [
             $scope.reservations = zsCheckinSrv.getCheckInReservations();
         };
         var init = function() {
-            console.info('init at select reservation stateparams: ', $stateParams);
             // hide back button
             $scope.$emit(zsEventConstants.SHOW_BACK_BUTTON);
             // show close button

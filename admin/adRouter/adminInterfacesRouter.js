@@ -8,12 +8,6 @@ angular.module('adminInterfacesRouter', []).config(function($stateProvider) {
             exactOnlineSetupValues: ['adExactOnlineSetupSrv', function(adExactOnlineSetupSrv) {
                 return adExactOnlineSetupSrv.fetchExactOnLineConfiguration();
             }],
-            journalsList: ['adExactOnlineSetupSrv', function(adExactOnlineSetupSrv) {
-                return adExactOnlineSetupSrv.fetchJournalsList();
-            }],
-            balancingAccounts: ['adExactOnlineSetupSrv', function(adExactOnlineSetupSrv) {
-                return adExactOnlineSetupSrv.fetchBalancingAccounts();
-            }],
             endPoints: ['adExactOnlineSetupSrv', function(adExactOnlineSetupSrv) {
                 return adExactOnlineSetupSrv.fetchEndpointsList();
             }]
@@ -95,12 +89,15 @@ angular.module('adminInterfacesRouter', []).config(function($stateProvider) {
     });
 
     $stateProvider.state('admin.travelClickSetup', {
-        templateUrl: '/assets/partials/interfaces/TravelClick/adTravelClickCRSSetup.html',
-        controller: 'adTravelClickCRSSetupCtrl',
-        url: '/travelclick/setup',
+        templateUrl: '/assets/partials/interfaces/CRS/adCRSCommonSetup.html',
+        controller: 'adCRSCommonCtrl',
+        url: '/interfaces/setup/:id',
+        onEnter: ['$stateParams', function($stateParams) {
+            $stateParams.id = 'travelclick';
+        }],
         resolve: {
-            CRSConfig: ['adTravelClickCRSSetupSrv', function(adTravelClickCRSSetupSrv) {
-                return adTravelClickCRSSetupSrv.fetchCRSConfiguration();
+            config: ['adInterfacesCommonConfigSrv', function(adInterfacesCommonConfigSrv) {
+                return adInterfacesCommonConfigSrv.fetchConfiguration('travelclick');
             }]
         }
     });
@@ -152,6 +149,17 @@ angular.module('adminInterfacesRouter', []).config(function($stateProvider) {
         resolve: {
             config: ['adInterfacesCommonConfigSrv', function(adInterfacesCommonConfigSrv) {
                 return adInterfacesCommonConfigSrv.fetchConfiguration('duetto');
+            }]
+        }
+    });
+
+    $stateProvider.state('admin.delphi', {
+        templateUrl: '/assets/partials/interfaces/Delphi/adDelphiSetup.html',
+        controller: 'adDelphiCtrl',
+        url: '/delphi/setup',
+        resolve: {
+            config: ['adInterfacesCommonConfigSrv', function(adInterfacesCommonConfigSrv) {
+                return adInterfacesCommonConfigSrv.fetchConfiguration('delphi');
             }]
         }
     });
@@ -386,12 +394,17 @@ angular.module('adminInterfacesRouter', []).config(function($stateProvider) {
     });
 
     $stateProvider.state('admin.synxisSetup', {
-        templateUrl: '/assets/partials/SynxisSetup/adSynxisSetup.html',
-        controller: 'adExternalInterfaceCtrl',
-        // interface_id: 3,
-        interface_id: 'SYNXIS',
-        simple_name: 'Synxis',
-        url: '/synxisSetup'
+        templateUrl: '/assets/partials/interfaces/CRS/adCRSCommonSetup.html',
+        controller: 'adCRSCommonCtrl',
+        url: '/interfaces/setup/:id',
+        onEnter: ['$stateParams', function($stateParams) {
+            $stateParams.id = 'synxis';
+        }],
+        resolve: {
+            config: ['adInterfacesCommonConfigSrv', function(adInterfacesCommonConfigSrv) {
+                return adInterfacesCommonConfigSrv.fetchConfiguration('synxis');
+            }]
+        }
     });
 
     $stateProvider.state('admin.zDirectSetup', {
@@ -414,13 +427,28 @@ angular.module('adminInterfacesRouter', []).config(function($stateProvider) {
 
 
     $stateProvider.state('admin.snapshotSetup', {
+        templateUrl: '/assets/partials/interfaces/adInterfacesSubMenuList.html',
+        controller: 'ADInterfaceSubMenuCtrl',
+        url: '/snapshotSetup'
+    });
+
+
+    $stateProvider.state('admin.snapshotGeneralSetup', {
         templateUrl: '/assets/partials/snapshotSetup/adSnapshotSetup.html',
         controller: 'adsnapshotSetupCtrl',
-        url: '/snapshotSetup',
-        resolve: {
-            snapshotSetupData: ['adSnapShotSetupSrv', function(adSnapShotSetupSrv) {
-                return adSnapShotSetupSrv.getSettings();
-            }]
-        }
+        url: '/snapshotSetup/general'
     });
+
+    $stateProvider.state('admin.snapshotChargeGroupMapping', {
+        templateUrl: '/assets/partials/snapshotSetup/adSnapshotChargeGroupMapping.html',
+        controller: 'adSnapshotChargeGroupMappingCtrl',
+        url: '/snapshotSetup/chargeGroupMapping'
+    });
+
+    $stateProvider.state('admin.snapshotSubGroupMapping', {
+        templateUrl: '/assets/partials/snapshotSetup/adSnapshotSubGroupMapping.html',
+        controller: 'adsnapshotSubGroupMappingCtrl',
+        url: '/snapshotSetup/subGroupMapping'
+    });
+
 });

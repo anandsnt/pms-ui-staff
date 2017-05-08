@@ -31,10 +31,10 @@ angular.module('sntRover').service('rvGroupConfigurationSrv', ['$q', 'rvBaseWebS
 			"notes": []
 		};
 
-		// ---------------------------- cache 
+		// ---------------------------- cache
 		// Used to cache the demographics information of the last fetched group so that it can be used to capture the
-		// info while creating a reservation from the Create Reservation module 
-		
+		// info while creating a reservation from the Create Reservation module
+
 		this.lastFetchedGroup = {
 			group_id: null,
 			demographics: null
@@ -435,7 +435,7 @@ angular.module('sntRover').service('rvGroupConfigurationSrv', ['$q', 'rvBaseWebS
 			return deferred.promise;
 		};
 
-		// CICO-24928 
+		// CICO-24928
 		this.updateGroupNote = function(data) {
 			var deferred = $q.defer(),
 				url = 'api/notes/' + data.id;
@@ -540,7 +540,7 @@ angular.module('sntRover').service('rvGroupConfigurationSrv', ['$q', 'rvBaseWebS
 				}, function(data) {
 				    deferred.reject(data);
 				});
-			return deferred.promise;	
+			return deferred.promise;
 		};
 
 		/**
@@ -558,7 +558,7 @@ angular.module('sntRover').service('rvGroupConfigurationSrv', ['$q', 'rvBaseWebS
 					old_to_date: params.old_to_date,
 					force_fully_over_book: params.force_fully_over_book
 				};
-				
+
 			rvBaseWebSrvV2.postJSON(url, data)
 				.then(function(data) {
 					deferred.resolve(data);
@@ -577,7 +577,7 @@ angular.module('sntRover').service('rvGroupConfigurationSrv', ['$q', 'rvBaseWebS
 			var deferred = $q.defer(),
 				url = '/api/groups/' + params.group_id + '/change_dates',
 				data = _.omit(params, 'group_id');
-				
+
 			rvBaseWebSrvV2.postJSON(url, data)
 				.then(function(data) {
 					deferred.resolve(data);
@@ -585,6 +585,24 @@ angular.module('sntRover').service('rvGroupConfigurationSrv', ['$q', 'rvBaseWebS
 					deferred.reject(data);
 				});
 			return deferred.promise;
-		};		
+		};
+
+        /**
+         * Remove billing information associated with a group
+         * @param {Object} params - group_id
+         * @return Promise
+         */
+        this.deleteBillingInfo = function(params) {
+            var deferred = $q.defer(),
+                url = '/api/groups/' + params.group_id + '/remove_routing';
+
+            rvBaseWebSrvV2.postJSON(url, {})
+                .then(function(data) {
+                    deferred.resolve(data);
+                }, function(data) {
+                    deferred.reject(data);
+                });
+            return deferred.promise;
+        };
 	}
 ]);

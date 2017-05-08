@@ -56,21 +56,25 @@ sntZestStation.controller('zscheckInReservationSearchCtrl', [
 
 
         $scope.findByDate = function() {
+            $scope.trackEvent('FIND_BY_DATE', 'user_selected');
             $scope.mode = 'FIND_BY_DATE';
             $scope.focusInputField('departure-date');
             $scope.resetTime();
         };
         $scope.findByNoOfNights = function() {
+            $scope.trackEvent('NO_OF_NIGHTS', 'user_selected');
             $scope.mode = 'NO_OF_NIGHTS_MODE';
             $scope.focusInputField('no-of-nights');
             $scope.resetTime();
         };
         $scope.findByEmail = function() {
+            $scope.trackEvent('EMAIL_ENTRY', 'user_selected');
             $scope.mode = 'EMAIL_ENTRY_MODE';
             $scope.focusInputField('guest-email');
             $scope.resetTime();
         };
         $scope.findByConfirmation = function() {
+            $scope.trackEvent('CONFIRM_NO', 'user_selected');
             $scope.mode = 'CONFIRM_NO_MODE';
             $scope.focusInputField('conf-number');
             $scope.resetTime();
@@ -83,23 +87,15 @@ sntZestStation.controller('zscheckInReservationSearchCtrl', [
 
         var searchReservation = function(params) {
             var checkinVerificationSuccess = function(data) {
-                if (data.results.length == 0) {
+                if (data.results.length === 0) {
                     $scope.mode = 'NO_MATCH';
                     $scope.callBlurEventForIpad();
-                } else if (data.results.length == 1) {
+                } else if (data.results.length === 1) {
                     $scope.$emit('showLoader');
                     zsCheckinSrv.setSelectedCheckInReservation(data.results);
-                    var primaryGuest = _.find(data.results[0].guest_details, function(guest_detail) {
-                        return guest_detail.is_primary === true;
-                    });
 
-                    if ($scope.zestStationData.check_in_collect_nationality) {
-                        $state.go('zest_station.collectNationality', {
-                            'guestId': primaryGuest.id
-                        });
-                    } else {
-                        $state.go('zest_station.checkInReservationDetails');
-                    }
+                    $state.go('zest_station.checkInReservationDetails');
+                    
                 } else {
                     zsCheckinSrv.setCheckInReservations(data.results);
                     $state.go('zest_station.selectReservationForCheckIn');
@@ -245,7 +241,7 @@ sntZestStation.controller('zscheckInReservationSearchCtrl', [
         };
 
         $scope.dateEntered = function() {
-
+            $scope.showDatePick = false;
             var params = angular.copy($scope.reservationParams);
 
             delete params.no_of_nights;
@@ -288,10 +284,6 @@ sntZestStation.controller('zscheckInReservationSearchCtrl', [
             } else {
                 return;
             }
-        };
-
-        $scope.talkToStaff = function() {
-            $state.go('zest_station.speakToStaff');
         };
 
         var setHotelDateTime = function(response) {

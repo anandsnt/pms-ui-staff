@@ -23,10 +23,10 @@ module.exports = {
 				jsLibRoot + 'ui-utils.min.js',
 				jsLibRoot + 'underscore.min.js',
 				jsLibRoot + 'ngDialog.min.js',
-				jsLibRoot + 'fastclick.min.js'
+				jsLibRoot + 'fastclick.min.js',
+				jsLibRoot + 'moment.min.js'
 			],
 			nonMinifiedFiles: [
-				jsLibRoot + 'bindonce.js',
 				jsLibRoot + 'iscroll.js',
 				jsLibRoot + 'ng-iscroll.js',
 				jsLibRoot + 'Utils.js',
@@ -35,6 +35,8 @@ module.exports = {
 				sharedRoot + 'interceptors/**/*.js',
 				sharedRoot + 'directives/**/*.js',
 				sharedRoot + 'baseCtrl.js',
+                sharedRoot + 'cardReaderCtrl.js',
+                sharedRoot + 'cordova.js',
 
 				roverRoot + 'rvRouters/**/*.js',
 				roverRoot + 'rvApp.js',

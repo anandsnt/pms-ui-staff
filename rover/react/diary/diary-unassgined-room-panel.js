@@ -157,7 +157,7 @@ var UnassignedRoomPanel = React.createClass({
         var hasSupport = false;
 
         try {
-            if (navigator.maxTouchPoints !== 'undefined') {
+            if (navigator.maxTouchPoints !== undefined) {
                 // for modern browsers
                 // even if touchpoints test is supported event support is also needed
                 hasSupport = navigator.maxTouchPoints > 0 && 'ontouchstart' in window;

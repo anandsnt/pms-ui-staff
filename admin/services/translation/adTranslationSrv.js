@@ -16,6 +16,22 @@ admin.service('ADTranslationSrv', ['$http', '$q', 'ADBaseWebSrvV2', function($ht
     };
 
     /**
+    * Get the list of available guest languages
+    * @return {array} of guest languages with enabled and disabled flags 
+    */
+    this.getActiveGuestLanguages = function() {
+        var deferred = $q.defer();
+        var url = '/api/guest_languages';
+
+        ADBaseWebSrvV2.getJSON(url).then(function(data) {
+            deferred.resolve(data);
+        }, function(data) {
+            deferred.reject(data);
+        });
+        return deferred.promise;
+    };
+
+    /**
     * Get menu options and items under it for the translation of labels
     * @return {array} of menu options
     */

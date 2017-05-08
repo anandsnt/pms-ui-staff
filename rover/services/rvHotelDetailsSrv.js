@@ -67,18 +67,23 @@ angular.module('sntRover').service('RVHotelDetailsSrv', ['$q', 'rvBaseWebSrvV2',
 		return deferred.promise;
 	};
 
+    this.getDefaultUUID = function() {
+        var deferred = $q.defer();
+        var url = '/api/current_user_hotels';
 
-	this.redirectToHotel = function(hotel_id) {
-		var deferred = $q.defer();
-		var url = '/admin/hotel_admin/update_current_hotel';
-		var data = {"hotel_id": hotel_id};
+        RVBaseWebSrvV2.getJSON(url).then(function(data) {
+            var hotels = data['hotel_list'];
 
-		RVBaseWebSrvV2.postJSON(url, data).then(function(data) {
-			deferred.resolve(data);
-		}, function(errorMessage) {
-			deferred.reject(errorMessage);
-		});
-		return deferred.promise;
-	};
+            if (hotels.length > 0) {
+                deferred.resolve(hotels[0].hotel_uuid);
+            } else {
+                deferred.resolve(null);
+            }
+        }, function(errorMessage) {
+            deferred.reject(errorMessage);
+        });
+
+        return deferred.promise;
+    };
 
 }]);

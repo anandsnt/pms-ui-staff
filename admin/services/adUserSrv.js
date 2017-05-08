@@ -1,4 +1,5 @@
-admin.service('ADUserSrv', ['$http', '$q', 'ADBaseWebSrv', 'ADBaseWebSrvV2', 'ADBaseWebSrv', function( $http, $q, ADBaseWebSrv, ADBaseWebSrvV2, ADBaseWebSrv) {
+admin.service('ADUserSrv', ['$http', '$q', 'ADBaseWebSrv', 'ADBaseWebSrvV2', 'ADHotelListSrv',
+	function( $http, $q, ADBaseWebSrv, ADBaseWebSrvV2, ADHotelListSrv) {
 
 
 	var that = this;
@@ -47,10 +48,13 @@ admin.service('ADUserSrv', ['$http', '$q', 'ADBaseWebSrv', 'ADBaseWebSrvV2', 'AD
     * @param {object} id of the clicked hotel
     * @return {object} departments array
     */
-	this.getAddNewDetails = function(data) {
-		var id = data.id;
+	this.getAddNewDetails = function(isSNTAdmin) {
 		var deferred = $q.defer();
 		var url = '/admin/users/new.json';
+
+        if (isSNTAdmin) {
+            url += '?hotel_uuid=' + ADHotelListSrv.getSelectedProperty();
+        }
 
 		ADBaseWebSrvV2.getJSON(url).then(function(data) {
 		    deferred.resolve(data);
@@ -69,6 +73,10 @@ admin.service('ADUserSrv', ['$http', '$q', 'ADBaseWebSrv', 'ADBaseWebSrvV2', 'AD
 		var deferred = $q.defer();
 		var url = '/admin/users/' + data.user_id;
 		var updateData = data;
+
+        if (data.isSNTAdmin) {
+            url += '?hotel_uuid=' + ADHotelListSrv.getSelectedProperty();
+        }
 
 		ADBaseWebSrv.putJSON(url, data).then(function(data) {
 			that.updateUserDataOnUpdate(updateData.user_id, "full_name", updateData.first_name + " " + updateData.last_name);
@@ -98,6 +106,10 @@ admin.service('ADUserSrv', ['$http', '$q', 'ADBaseWebSrv', 'ADBaseWebSrvV2', 'AD
 		};
 		var deferred = $q.defer();
 		var url = '/admin/users';
+
+        if (data.isSNTAdmin) {
+            url += '?hotel_uuid=' + ADHotelListSrv.getSelectedProperty();
+        }
 
 		ADBaseWebSrv.postJSON(url, data).then(function(data) {
 			newDataToArray.id = data.user_id;
@@ -198,12 +210,17 @@ admin.service('ADUserSrv', ['$http', '$q', 'ADBaseWebSrv', 'ADBaseWebSrvV2', 'AD
     * @param {object} data - data to link existing user
     * @return {object}
     */
-	this.linkExistingUser = function(data) {
+	this.linkExistingUser = function(params) {
 
 		var deferred = $q.defer();
 		var url = '/admin/users/link_existing';
 
-		ADBaseWebSrv.postJSON(url, data).then(function(data) {
+        if (params.isSNTAdmin) {
+            url += '?hotel_uuid=' + ADHotelListSrv.getSelectedProperty();
+        }
+
+
+        ADBaseWebSrv.postJSON(url, params.data).then(function(data) {
 		    deferred.resolve(data);
 		}, function(data) {
 		    deferred.reject(data);

@@ -1,8 +1,8 @@
-<div class="topbar float" ng-show="showTopBar" >
+<div class="topbar float" ng-class="{'rate-view': isRateView}" ng-show="showTopBar" >
     <ul class="info">
         <!-- show .back if we are looking at a single rate with room rates -->
         <li class="back" ng-show="showBackButton" ng-click='clickedOnBackButton()'>
-            <a class="back-button">Back</a>
+            <a class="back-button">{{backButtonText}}</a>
         </li>
          
 
@@ -10,37 +10,94 @@
             <strong>Date Range</strong>
             <span>{{fromDate}} to {{toDate}}</span>
         </li>
+
+        <li class="rates" ng-show="chosenTab === 'RATE_TYPES' && isRateTypeView">
+            <strong>Rate Type</strong>
+            
+            <!-- If 2 or more add 'X Rate Types' where X is the number of rates, 
+                 If Filter 'Rates' is active and nothing is selected add 'All Rate Types'
+                 otherwise show rate type name
+            -->
+            <span ng-show="selectedRateTypesFromRTT.length === 0">All Rate Types</span> 
+            <span ng-show="selectedRateTypesFromRTT.length === 1">1 Rate Type</span>
+            <span ng-show="selectedRateTypesFromRTT.length > 1">{{selectedRateTypesFromRTT.length}} Rate Types</span>
+        </li>
+
+        <li class="rates" ng-show="chosenTab === 'RATE_TYPES' && isRateView">
+            <strong>Rate Type</strong>
+            <span>{{selectedRateTypeNames.join()}}</span>
+        </li>
+
+        <li class="rates" ng-show="chosenTab === 'RATE_TYPES' && isRoomTypeView">
+            <strong>Rate</strong>
+            <span>{{selectedRateNames.join()}}</span>
+        </li>
         
-        <!-- show .rates if there are any rates selected -->
-        <li class="rates" ng-show="selectedRateNames.length">
+        <!-- show  if there are any rates selected -->
+        <li class="rates" ng-show="chosenTab === 'RATES' && isRateView && selectedCards.length === 0">
             <strong>Rate</strong>
             
-            <!-- add ',' for each rate except the last one-->
+            <!-- If 2 or more add 'X Rates' where X is the number of rates, 
+                 If Filter 'Rates' is active and nothing is selected add 'All Rates'
+                 otherwise show rate name
+            -->
+            <span ng-show="selectedRates.length === 0">All Rates</span> 
+            <span ng-show="selectedRates.length === 1">1 Rate</span>
+            <span ng-show="selectedRates.length > 1">{{selectedRates.length}} Rates</span>
+        </li>
+        
+        <!-- show .card if there are any cards selected -->
+        <li class="card" ng-show="chosenTab === 'RATES' && isRateView && selectedCards.length > 0">
+           <strong>Name Card</strong>
+
+           <!-- add ',' for each company card,IATA etc except the last one-->
+           <span>{{selectedCardNames.join()}}</span>           
+        </li>
+
+        <!-- show  if there are any rates selected -->
+        <li class="rates" ng-show="chosenTab === 'RATES' && isRoomTypeView">
+            <strong>Rate</strong>
             <span>{{selectedRateNames.join()}}</span>
-            
-        </li>        
-        <li class="card" ng-show="selectedAccountName.length">
+        </li>
+
+        <!-- show when all room types are selected -->
+        <li class="rates" ng-show="chosenTab === 'ROOM_TYPES'">
+            <strong>Room Type</strong>
+        
+            <span>All Room Types</span> 
+        </li>
+
+        <li class="card" ng-show="selectedAccountName.length && isRoomTypeView">
            <strong ng-show="selectedAccountName[0] == null">{{selectedCardNames.join()}}</strong>
            <strong>{{selectedAccountName.join()}}</strong>
            <span>{{selectedAddress.join()}}</span>
        </li>
          
         <!-- show .card if there are any cards selected -->
-        <li class="card" ng-hide="selectedAccountName.length">
+        <!-- <li class="card" ng-hide="selectedAccountName.length">
            <strong>Name Card</strong>
 
-           <!-- add ',' for each company card,IATA etc except the last one-->
+            add ',' for each company card,IATA etc except the last one
            <span>{{selectedCardNames.join()}}</span>           
-        </li>
+        </li> -->
          
     </ul>
     <ul class="actions">
-        <li>
+        <!-- show only when viewing rates-->
+        <li ng-show="isRateView">
+            <!-- Add .expanded on .pinnedLeft when checked-->
+            <label class="checkbox" for="rate-toggle">
+                <span class="icon-form icon-checkbox" ng-class="{checked : showContractDetailsChecked}"></span>
+                <input type="checkbox" id="rate-toggle" value="1" ng-click="clickedOnShowContractDetails($event)">
+                Show Contract Details
+             </label>  
+        </li>
+        <li ng-hide="isRateTypeView">
             <button class="button rm-buttonOpenClose green" ng-click="openAll()">
                 Open All
             </button>  
         </li>
-        <li>
+        <li ng-hide="isRateTypeView">
             <button class="button  rm-buttonOpenClose red" ng-click ="closeAll()">
                 Close All
             </button>

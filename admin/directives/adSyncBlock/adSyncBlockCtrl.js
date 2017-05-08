@@ -58,7 +58,7 @@ angular.module('admin').controller('adSyncBlockCtrl', ['$scope', '$rootScope', '
 
             $scope.errorMessage = $scope.successMessage = "";
 
-            if (!items.length) {
+            if (!items.length && $scope.syncItems.length) {
                 $scope.successMessage = '';
                 $scope.errorMessage = ['ERROR: Please select at least one Item to Synchronize!'];
                 return;

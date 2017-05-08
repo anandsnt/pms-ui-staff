@@ -120,6 +120,13 @@ angular.module('sntRover').controller('RVContactInfoController', ['$scope', '$ro
           $scope.reservationData.guest.lastName = $scope.guestCardData.contactInfo.last_name;
           // TODO : Check if this is needed here
 
+          $scope.reservationData.guest.phone = $scope.guestCardData.contactInfo.phone;
+          $scope.reservationData.guest.mobile = $scope.guestCardData.contactInfo.mobile;
+          $scope.reservationData.guest.is_vip = $scope.guestCardData.contactInfo.vip;
+          $scope.reservationData.guest.email = $scope.guestCardData.contactInfo.email;
+          $scope.reservationData.guest.image = $scope.guestCardData.contactInfo.avatar;
+          $scope.reservationData.guest.address = $scope.guestCardData.contactInfo.address;
+
           $scope.reservationData.guest.loyaltyNumber = $scope.guestLoyaltyNumber;
         }
         $scope.guestCardData.userId = data.id;
@@ -235,7 +242,9 @@ angular.module('sntRover').controller('RVContactInfoController', ['$scope', '$ro
     var init = function() {
       // Fetch languages
       fetchGuestLanguages();
-      initialGuestCardData = angular.copy($scope.guestCardData.contactInfo);
+      var unwantedKeys = ["avatar", "confirmation_num"]; // remove unwanted keys for API
+
+      initialGuestCardData = dclone($scope.guestCardData.contactInfo, unwantedKeys);
 
       this.timeoutForSaveInfo = null;
     };

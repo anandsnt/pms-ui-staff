@@ -37,6 +37,11 @@
 		&.icon-oos {
 			fill: @white;
 		}
+		&.icon-arrow-left,
+        &.icon-arrow-right {
+            fill: none;
+            stroke: @white;
+        }
 	}
 
     .logo-svg{
@@ -54,7 +59,7 @@
 	
 	#avenue {
 
-		.button:not(.transparent):not(.blank):not(.option) {
+		.button:not(.transparent):not(.blank):not(.option):not([disabled]):not(.disabled) {
 			background: fade(@actionBackground, 80%);
 		}
 

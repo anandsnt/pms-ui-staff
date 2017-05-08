@@ -1,0 +1,18 @@
+<section id="main" role="main" class="centered" click-touch='resetTime()'>
+    <div id="content">
+        <h1>
+        	<text editable-text="CHECKIN_SUCCESS_HEADER"> {{'CHECKIN_SUCCESS_HEADER' |translate}}</text>&nbsp;{{user_name}}&nbsp;<text editable-text="CHECKIN_SUCCESS_HEADER_ENDING">{{'CHECKIN_SUCCESS_HEADER_ENDING' |translate}}</text>
+    	</h1>
+        <h3>
+        	<text editable-text="CHECKIN_SUCCESS_SUB_HEADER"> {{'CHECKIN_SUCCESS_SUB_HEADER' |translate}}</text>
+        </h3>
+
+        <div id="room" class="room-num" ng-show="zestStationData.show_room_number && zestStationData.station_mobile_key_status === 'third_party'">
+            <span class="number">{{room}}</span>
+        </div>
+
+        <button type="button" class="button" click-touch='checkinFinalDoneAction()'>
+            <text editable-text="CHECKIN_SUCCESS_DONE_BTN">{{'CHECKIN_SUCCESS_DONE_BTN' | translate}}</text>
+        </button>
+    </div>
+</section>

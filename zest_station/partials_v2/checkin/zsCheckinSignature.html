@@ -1,6 +1,8 @@
 <section id="main" class="centered" role="main" ng-hide="mode === 'TIMED_OUT'" click-touch='resetTime()'>
     <div id="content">
-        <h1 translate>SIGN_SCREEN</h1>
+        <h1>
+            <text editable-text="SIGN_SCREEN"> {{'SIGN_SCREEN' |translate}}</text>
+        </h1>
         <form type="post" action="" id="signature">
             <form id="signature-pad" class="complete-registration form signature-pad-layout">
                 <div>
@@ -14,33 +16,47 @@
     </div>
     <div>
         <div id="actions" class="add-guests-footer sign">
-            <button type="button" class="button transparent prev" touch-press='clearSignature()' translate>CLEAR_BTN</button>
-            <button type="button" class="button next" ng-mode="{{signature}}" touch-press="submitSignature()">{{'NEXT_BTN' | translate}}</button>
+            <button type="button" class="button transparent prev" touch-press='clearSignature()'>
+                <text editable-text="CLEAR_BTN"> {{'CLEAR_BTN' |translate}}</text>
+            </button>
+            <button type="button" class="button next" ng-mode="{{signature}}" touch-press="submitSignature()">
+                <text editable-text="NEXT_BTN"> {{'NEXT_BTN' |translate}}</text>
+            </button>
         </div>
     </div>
 </section>
 <!-- timedout -->
 <section id="main" class="centered" role="main" ng-show="mode === 'TIMED_OUT'" click-touch='resetTime()'>
     <div id="content">
-        <h1 translate>CC_SIGN_TIMEOUT</h1>
-        <h2 translate>CC_SIGN_TIMEOUT_SUB</h2>
+        <h1>
+            <text editable-text="CC_SIGN_TIMEOUT"> {{'CC_SIGN_TIMEOUT' |translate}}</text>
+        </h1>
+        <h2>
+            <text editable-text="CC_SIGN_TIMEOUT_SUB"> {{'CC_SIGN_TIMEOUT_SUB' |translate}}</text>
+        </h2>
         <nav id="options" role="nav">
             <ul role="menu">
                 <li>
                     <button type="button" class="button option" touch-press='reSignCC()'>
                         <div ng-include="icons.url.pen"></div>
                     </button>
-                    {{'CC_SIGN_TIMEOUT_SIGN' |translate}}
+
+                    <text editable-text="CC_SIGN_TIMEOUT_SIGN"> {{'CC_SIGN_TIMEOUT_SIGN' |translate}}</text>
+
                 </li>
                 <li class="break">
-                    <span translate>OR_TEXT</span>
+                    <span>
+                        <text editable-text="OR_TEXT"> {{'OR_TEXT' |translate}}</text>
+                    </span>
                 </li>
                 <li>
                     <button type="button" class="button option" touch-press='talkToStaff()'>
                         <div ng-include="icons.url.staff"></div>
                     </button>
-                    {{'SPEAK' |translate}}
-                    <span translate>SPEAK_SUB</span>
+                    <text editable-text="SPEAK"> {{'SPEAK' |translate}}</text>
+                    <span>
+                        <text editable-text="SPEAK_SUB"> {{'SPEAK_SUB' |translate}}</text>
+                    </span>
                 </li>
             </ul>
         </nav>

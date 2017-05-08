@@ -44,15 +44,24 @@ sntRover.controller('rvRoutesAddPaymentCtrl', ['$scope', '$rootScope', '$filter'
   	$scope.fetchAvailablePaymentTypes = function() {
 
             var successCallback = function(data) {
+                var indexOfDB = null;
+
                 $scope.creditCardTypes = [];
-               $scope.availablePaymentTypes = data;
+                $scope.availablePaymentTypes = data;
                 $scope.ccPaymentDetails = {};
                 for (var i in data) {
-                	if (data[i].name === "CC") {
-                		$scope.ccPaymentDetails = data[i];
-                		$scope.creditCardTypes = data[i].values;
-                	}
+                    if (data[i].name === 'CC') {
+                        $scope.ccPaymentDetails = data[i];
+                        $scope.creditCardTypes = data[i].values;
+                    }
                 }
+
+                // CICO-36769 hide direct bill for reservations as entity.
+                if ($scope.selectedEntity.entity_type === 'RESERVATION') {
+                    indexOfDB = _.findIndex($scope.availablePaymentTypes, {name: 'DB'});
+                    $scope.availablePaymentTypes.splice(indexOfDB, 1);
+                }
+
                 $scope.$parent.$emit('hideLoader');
                 $scope.refreshScroller('newpaymentview');
             };

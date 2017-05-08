@@ -1,7 +1,9 @@
 <section id="guest-bill" class="page-print">
 
     <div class="invoice-logo">
-        <h1>{{'INVOICE_HEADER' |translate}}</h1>
+        <h1>
+            <text editable-text="INVOICE_HEADER"> {{'INVOICE_HEADER' |translate}}</text>
+        </h1>
         <!-- the way logo handled in zest station need to be changed. I can't do much at this time other
         than a check as follows -->
          <svg xmlns="http://www.w3.org/2000/svg" version="1.1" class="logo" id="zoku-print-logo" x="0px" y="0px" viewBox="0 0 937.2 146.3" enable-background="new 0 0 937.2 146.3" xml:space="preserve" ng-show="zestStationData.theme === 'zoku'">
@@ -22,55 +24,79 @@
     <div class="guest-info table">
         <div class="row">
             <div class="cell">
-                <strong>{{'INVOICE_FULLNAME' |translate}}</strong>
+                <strong>
+                    <text editable-text="INVOICE_FULLNAME"> {{'INVOICE_FULLNAME' |translate}}</text>
+                </strong>
                 <span>{{printData.guest_details.first_name}}&nbsp;{{printData.guest_details.last_name}}</span>
             </div>
             <div class="cell">
-                <strong>{{'INVOICE_ARRIVAL' |translate}}</strong>
+                <strong>
+                    <text editable-text="INVOICE_ARRIVAL"> {{'INVOICE_ARRIVAL' |translate}}</text>
+                </strong>
                 <span>{{printData.arrival_date | date:dateFormat}}</span>
             </div>
             <div class="cell">
-                <strong>{{'INVOICE_DEPARTURE' |translate}}</strong>
+                <strong>
+                    <text editable-text="INVOICE_DEPARTURE"> {{'INVOICE_DEPARTURE' |translate}}</text>
+                </strong>
                 <span>{{printData.departure_date | date:dateFormat}}</span>
             </div>
             <div class="cell">
-                <strong>{{'INVOICE_NO' |translate}}</strong>
+                <strong>
+                    <text editable-text="INVOICE_NO"> {{'INVOICE_NO' |translate}}</text>
+                </strong>
                 <span>{{printData.invoice_number}}</span>
             </div>
         </div>
         <div class="row">
             <div class="cell">
-                <strong>{{'INVOICE_CITY' |translate}}</strong>
+                <strong>
+                    <text editable-text="INVOICE_CITY"> {{'INVOICE_CITY' |translate}}</text>
+                </strong>
                 <span>{{printData.guest_details.city}}</span>
             </div>
             <div class="cell">
-                <strong>{{'INVOICE_STATE' |translate}}</strong>
+                <strong>
+                    <text editable-text="INVOICE_STATE"> {{'INVOICE_STATE' |translate}}</text>
+                </strong>
                 <span>{{printData.guest_details.state}}</span>
             </div>
             <div class="cell">
-                <strong>{{'INVOICE_PC' |translate}}</strong>
+                <strong>
+                    <text editable-text="INVOICE_PC"> {{'INVOICE_PC' |translate}}</text>
+                </strong>
                 <span>{{printData.guest_details.postal_code}}</span>
             </div>
             <div class="cell">
-                <strong>{{'INVOICE_COUNTRY' |translate}}</strong>
+                <strong>
+                    <text editable-text="INVOICE_COUNTRY"> {{'INVOICE_COUNTRY' |translate}}</text>
+                </strong>
                 <span>{{printData.guest_details.country}}</span>
             </div>
         </div>
         <div class="row">
             <div class="cell">
-                <strong>{{'INVOICE_COUNF' |translate}}</strong>
+                <strong>
+                    <text editable-text="INVOICE_COUNF"> {{'INVOICE_COUNF' |translate}}</text>
+                </strong>
                 <span>{{printData.confirmation_number}}</span>
             </div>
             <div class="cell">
-                <strong>{{'INVOICE_ROOM' |translate}}</strong>
+                <strong>
+                    <text editable-text="INVOICE_ROOM"> {{'INVOICE_ROOM' |translate}}</text>
+                </strong>
                 <span>{{printData.room_number}}</span>
             </div>
             <div class="cell">
-                <strong>{{'INVOICE_TAX' |translate}}</strong>
+                <strong>
+                    <text editable-text="INVOICE_TAX"> {{'INVOICE_TAX' |translate}}</text>
+                </strong>
                 <span>{{printData.tax_number}}</span>
             </div>
             <div class="cell">
-                <strong>{{'INVOICE_REF' |translate}}</strong>
+                <strong>
+                    <text editable-text="INVOICE_REF"> {{'INVOICE_REF' |translate}}</text>
+                </strong>
                 <span>{{printData.reference_number}}</span>
             </div>
         </div>
@@ -82,7 +108,9 @@
 
     <div class="invoice-body">
         <p class="date">
-            <strong>{{'INVOICE_DATE' |translate}}</strong>
+            <strong>
+                <text editable-text="INVOICE_DATE"> {{'INVOICE_DATE' |translate}}</text>
+            </strong>
             {{printData.invoice_date | date:dateFormat}}
         </p>
         
@@ -97,19 +125,29 @@
             <!-- Headings -->
             <div class="row">
                 <div class="cell">
-                    <strong>{{'INVOICE_DATE_OF' |translate}}</strong>
+                    <strong>
+                        <text editable-text="INVOICE_DATE_OF"> {{'INVOICE_DATE_OF' |translate}}</text>
+                    </strong>
                 </div>
                 <div class="cell">
-                    <strong>{{'INVOICE_CHARGE_CODE' |translate}}</strong>
+                    <strong>
+                        <text editable-text="INVOICE_CHARGE_CODE"> {{'INVOICE_CHARGE_CODE' |translate}}</text>
+                    </strong>
                 </div>
                 <div class="cell">
-                    <strong>{{'INVOICE_CHARGE_DESC' |translate}}</strong>
+                    <strong>
+                        <text editable-text="INVOICE_CHARGE_DESC"> {{'INVOICE_CHARGE_DESC' |translate}}</text>
+                    </strong>
                 </div>
                 <div class="cell align-right">
-                    <strong>{{'INVOICE_CHARGE_AMT' |translate}}</strong>
+                    <strong>
+                        <text editable-text="INVOICE_CHARGE_AMT"> {{'INVOICE_CHARGE_AMT' |translate}}</text>
+                    </strong>
                 </div>
                 <div class="cell align-right">
-                    <strong>{{'INVOICE_CREDIT_AMT' |translate}}</strong>
+                    <strong>
+                        <text editable-text="INVOICE_CREDIT_AMT"> {{'INVOICE_CREDIT_AMT' |translate}}</text>
+                    </strong>
                 </div>
             </div>
             <!-- Charges -->
@@ -138,19 +176,27 @@
         <!-- Totals -->
         <div class="invoice-totals table">
             <div class="row">
-                <div class="cell align-right"><strong>{{'INVOICE_TOTAL' |translate}}</strong></div>
+                <div class="cell align-right"><strong>
+                    <text editable-text="INVOICE_TOTAL"> {{'INVOICE_TOTAL' |translate}}</text>
+                </strong></div>
                 <div class="cell align-right"><strong>{{zestStationData.currency}}{{printData.total_fees}}</strong></div>
             </div>
             <div class="row">
-                <div class="cell align-right"><strong>{{'INVOICE_TOTAL_CR' |translate}}</strong></div>
+                <div class="cell align-right"><strong>
+                    <text editable-text="INVOICE_TOTAL_CR"> {{'INVOICE_TOTAL_CR' |translate}}</text>
+                </strong></div>
                 <div class="cell align-right"><strong>{{zestStationData.currency}}{{printData.credits | number: precisonTwo}}</strong></div>
             </div>
             <div class="row">
-                <div class="cell align-right"><strong>{{'INVOICE_TOTAL_BAL' |translate}}</strong></div>
+                <div class="cell align-right"><strong>
+                    <text editable-text="INVOICE_TOTAL_BAL"> {{'INVOICE_TOTAL_BAL' |translate}}</text>
+                </strong></div>
                 <div class="cell align-right"><strong>{{zestStationData.currency}}{{printData.balance}}</strong></div>
             </div>
             <div class="row">
-                <div class="cell align-right">{{'INVOICE_NET' |translate}}</div>
+                <div class="cell align-right">
+                    <text editable-text="INVOICE_NET"> {{'INVOICE_NET' |translate}}</text>
+                </div>
                 <div class="cell align-right"><strong>{{zestStationData.currency}}{{printData.net_amount}}</strong></div>
             </div>
             <div class="row" ng-repeat="item in printData.tax_details">

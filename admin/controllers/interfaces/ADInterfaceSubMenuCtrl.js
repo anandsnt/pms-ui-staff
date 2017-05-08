@@ -13,6 +13,9 @@ admin.controller('ADInterfaceSubMenuCtrl', ['$scope', '$state',
             case "admin.ifcComtrolSetup":
                 $scope.sectionTitle = "Comtrol Setup";
                 break;
+            case "admin.snapshotSetup":
+                $scope.sectionTitle = "Snapshot Setup";
+                break;
             default:
                 $scope.sectionTitle = "Interfaces Setup";
         }

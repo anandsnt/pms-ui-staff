@@ -1,41 +1,47 @@
 this.webSocketOperations = function(socketOpenedSuccessCallback, socketOpenedFailureCallback, actionSuccesCallback) {
     var that = this;
     var wsConfig = {
-        "swipeService": "wss://localhost:4649/CCSwipeService",
-        "connected_alert": "[ WebSocket Connected ]. Warning : Clicking on Connect multipple times will create multipple connections to the server",
-        "close_alert": "Socket Server is no longer connected.",
-        "swipe_alert": "Please swipe.",
-        "connect_delay": 1000 // ms after opening the app, which will then attempt to connect to the service, should only be a second or two
+        'swipeService': 'wss://localhost:4649/CCSwipeService',
+        'connected_alert': '[ WebSocket Connected ]. Warning : Clicking on Connect multiple times will create multiple connections to the server',
+        'close_alert': 'Socket Server is no longer connected.',
+        'swipe_alert': 'Please swipe.',
+        'connect_delay': 1000 // ms after opening the app, which will then attempt to connect to the service, should only be a second or two
     };
     // ws = new WebSocket(wsConfig['swipeService']);
 
     this.simulateSwipe = function() {
-        that.ws.send("{\"Command\" : \"cmd_simulate_swipe\"}");
+        that.ws.send('{"Command" : "cmd_simulate_swipe"}');
     };
     this.observe = function() {
-        that.ws.send("{\"Command\" : \"cmd_observe_for_swipe\"}");
+        that.ws.send('{"Command" : "cmd_observe_for_swipe"}');
     };
     this.UUIDforDevice = function() {
-        that.ws.send("{\"Command\" : \"cmd_device_uid\"}");
+        that.ws.send('{"Command" : "cmd_device_uid"}');
     };
-    this.DispenseKey = function(keyDispenseUID) { // write to key after successful encodeKey call
-        console.info('dispense called : [', keyDispenseUID, ']');
-        that.ws.send("{\"Command\" : \"cmd_dispense_key_card\", \"Data\" : \"" + keyDispenseUID + "\"}");
+    this.DispenseKey = function(keyDispenseUID, is_first_key) { // write to key after successful encodeKey call
+        console.log('{"Command" : "cmd_dispense_key_card", "Data" : "' + keyDispenseUID + '","is_first_key":"' + is_first_key + '"}');
+        that.ws.send('{"Command" : "cmd_dispense_key_card", "Data" : "' + keyDispenseUID + '","is_first_key":"' + is_first_key + '"}');
     };
     this.EjectKeyCard = function() { // reject key on failure
-        that.ws.send("{\"Command\" : \"cmd_eject_key_card\"}");
+        that.ws.send('{"Command" : "cmd_eject_key_card"}');
     };
     this.CaptureKeyCard = function() { // dumps key into internal bucket after insert key
-        that.ws.send("{\"Command\" : \"cmd_capture_key_card\"}");
+        that.ws.send('{"Command" : "cmd_capture_key_card"}');
     };
     this.CaptureQRViaPassportScanner = function() { // captures QR code data from the ARH/Samsotech Passport scanner
-        that.ws.send("{\"Command\" : \"cmd_scan_qr_passport_scanner\"}");
+        that.ws.send('{"Command" : "cmd_scan_qr_passport_scanner"}');
+    };
+    this.CaptureQRViaDatalogic = function() { // captures QR code data (reservation id) from the Datalogic scanner
+        that.ws.send('{"Command" : "cmd_scan_qr_datalogic"}');
     };
     this.InsertKeyCard = function() { // use key for checkout takes key in
-        that.ws.send("{\"Command\" : \"cmd_insert_key_card\"}");
+        that.ws.send('{"Command" : "cmd_insert_key_card"}');
     };
     this.startPrint = function(data) {
-        var printBillJson = { "Command": "cmd_print_bill", "Data": data};
+        var printBillJson = {
+            'Command': 'cmd_print_bill',
+            'Data': data
+        };
         var jsonstring = JSON.stringify(printBillJson);
 
         that.ws.send(jsonstring);
@@ -43,7 +49,7 @@ this.webSocketOperations = function(socketOpenedSuccessCallback, socketOpenedFai
 
     this.connect = function() {
         try {
-            that.ws = new WebSocket("wss://localhost:4649/CCSwipeService");
+            that.ws = new WebSocket('wss://localhost:4649/CCSwipeService');
         } catch (e) {
             console.error(e);
             socketOpenedFailureCallback();

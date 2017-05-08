@@ -37,22 +37,22 @@ sntRover
                 x_offset            = x_origin - (ms_per_hr * 2);
 
             ret = {
-                x_offset: new Date(x_offset),
-                x_origin: new Date(x_origin),
-                x_0: new Date(x_origin),
-                x_n: new Date(x_left),
-                x_p: new Date(x_right),
+                x_offset: new tzIndependentDate(x_offset),
+                x_origin: new tzIndependentDate(x_origin),
+                x_0: new tzIndependentDate(x_origin),
+                x_n: new tzIndependentDate(x_left),
+                x_p: new tzIndependentDate(x_right),
                 toShijuBugStartDate: function(start) {
-                    return new Date(new Date(x_left).setHours(start, 0, 0));
+                    return new tzIndependentDate(new tzIndependentDate(x_left).setHours(start, 0, 0));
                 },
                 toShijuBugEndDate: function(end) {
-                    return new Date(new Date(x_right).setHours(end, 0, 0));
+                    return new tzIndependentDate(new tzIndependentDate(x_right).setHours(end, 0, 0));
                 },
                 toStartDate: function() {
-                    return new Date(new Date(x_left).setHours(0, 0, 0));
+                    return new tzIndependentDate(new tzIndependentDate(x_left).setHours(0, 0, 0));
                 },
                 toEndDate: function() {
-                    return new Date(new Date(x_right).setHours(23, 59, 0));
+                    return new tzIndependentDate(new tzIndependentDate(x_right).setHours(23, 59, 0));
                 }
             };
 

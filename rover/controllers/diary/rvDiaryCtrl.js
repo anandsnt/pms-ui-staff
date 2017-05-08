@@ -615,6 +615,16 @@ angular.module('sntRover')
 				$scope.resetEdit();
 				$scope.renderGrid();
 			}
+		},
+
+		reservatonFlow: {
+			cannotResizeDuration: function() {
+				return $scope.selectedReservations.length > 0 ? true : false;
+			},
+			showNotAllowedMsg: function() {
+				$scope.message = ['Cannot change duration - A reservation for the current duration has already been selected'];
+				openMessageShowingPopup();
+			}
 		}
 	};
 
@@ -1015,6 +1025,8 @@ angular.module('sntRover')
 		    	prevTime = reservation[meta.occupancy.start_date];
 		    	if ($scope.gridProps.edit.active) {
 		    	}
+
+		    	console.log('$scope.onDragStart');
 			}.bind($scope.gridProps);
 
 		    $scope.onDragEnd = function(nextRoom, reservation) {
