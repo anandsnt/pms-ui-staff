@@ -26,9 +26,9 @@
     </div>
     <!-- main content -->
     <div class="row" ng-hide="isLoading || netWorkError">
-        <div class="col-md-6 top-spacing section-container float-none">
+        <div class="col-md-4 no-section-side-padding top-spacing section-container float-none">
             <p class="main-text">Your Address</p>
-            <p class="sub-main-text">To further expedite your check in, please enter the details below.</p>
+            <p class="sub-main-text margin-top-20">To further expedite your check in, please enter the details below.</p>
             <!-- input fields-->
             <div class="section-container">
                 <!-- country -->
@@ -59,19 +59,20 @@
                 <div class="row">
                     <input type="text" class="input-field padding-1" ng-model="guestDetails.city" />
                 </div>
-                <!-- state -->
-                <div class="near-half-width pull-left margin-bottom-10">
-                    <p class="sub-text left-align margin-top-10">STATE</p>
-                    <input type="text" class="input-field padding-1" ng-model="guestDetails.state" />
+                <div class="row">
+                    <!-- state -->
+                    <div class="near-half-width pull-left margin-bottom-10">
+                        <p class="sub-text left-align margin-top-10">STATE</p>
+                        <input type="text" class="input-field padding-1" ng-model="guestDetails.state" />
+                    </div>
+                    <!-- zip -->
+                    <div class="near-half-width pull-right margin-bottom-10">
+                        <p class="sub-text left-align margin-top-10">ZIP CODE</p>
+                        <input type="text" class="input-field padding-1" ng-model="guestDetails.postal_code" />
+                    </div>
                 </div>
-                <!-- zip -->
-                <div class="near-half-width pull-right margin-bottom-10">
-                    <p class="sub-text left-align margin-top-10">ZIP CODE</p>
-                    <input type="text" class="input-field padding-1" ng-model="guestDetails.postal_code" />
-                </div>
-                <br>
                 <!-- birthday -->
-                <div class="row margin-top-10">
+                <div class="row margin-top-20">
                     <p class="sub-text left-align">
                         BIRTHDAY&nbsp;(OPTIONAL)
                     </p>

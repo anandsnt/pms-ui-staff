@@ -30,6 +30,18 @@ body {
 .cc-number-description, .query-text{
     text-transform: uppercase;
 }
+.terms-main{
+   font-size:25px; 
+}
+.terms-sub{
+   font-size:16px; 
+}
+.terms-desc{
+    font-size: 13px !important;
+}
+.query-text,.query-text:hover {
+    font-size: 11px !important;
+}
 
 .strong-font {
     font-family: "Gotham A","Gotham B",Helvetica,Arial,sans-serif;
@@ -79,7 +91,8 @@ a:hover,
 .footer-sub-text,.footer-sub-text:hover,
 .request-text
 {
-    font-size:14px !important;
+    font-size:13px !important;
+    font-weight: 400;
 }
 .header-bar {
     background: #fff;
@@ -143,16 +156,29 @@ textarea{
 }
 
 .calendar-button {
-    background-position: 96% 6px !important;
+    background-position: 96% 6px!important;
+    background-size: 28px;
 }
-
 .input-field {
     border: 1px solid black !important;
     background-color: #fff !important;
     box-shadow: none !important;
     max-width: 100% !important;
-    min-height:45px;
+    min-height:40px;
     padding-left:5px;
+}
+.cc-input-field input,
+.cvv-input-field input,.cc-close,
+.room-error-button{
+    height:40px !important
+}
+
+.btn-close, .btn-close :hover{
+    padding-top:0px !important;
+    padding-bottom:0px !important;
+}
+.cc-input-field input, .cvv-input-field input{
+    min-height:40px !important;
 }
 .margin-bottom-5{
     margin-bottom: 5px !important;
@@ -181,13 +207,16 @@ textarea{
 
 .checkout-btn , .dual-button, .accept-charges{
     padding: 8%;
+    div{
+        font-size:25px;
+    }
 }
 
 
 .btn-template {
-    font-size: 16px;
+    font-size: 13px;
     color:#000000;
-    min-height: initial !important;
+    min-height: 40px !important;
 }
 
 .dark-button,
@@ -234,7 +263,7 @@ textarea{
 }
 
 .select-style {
-    height: 45px;
+    height: 40px;
     display: flex;
 }
 
@@ -261,8 +290,9 @@ textarea{
     border-radius: 0px !important;
     border: 1px solid black !important;
     text-align: center !important;
-    font-size:14px;
+    font-size:13px;
     padding: 14px 20px;
+    height:40px;
 }
 
 .upgrades-label {
@@ -294,7 +324,8 @@ textarea{
 
 .button-actions{
     .terms-button{
-        padding:12px 6%;
+        min-height:40px;
+        padding:0% 35px;
     }
     .terms-button:first-child{
         margin-right:20px;
@@ -567,11 +598,13 @@ textarea{
     }
 }
 
-@media (max-width: 890px) {
-    .btn-template {
-        padding: 11px 4%;
+@media (min-width: 480px) {
+    .no-section-side-padding{
+        padding-left:0px !important;
+        padding-right:0px !important;
     }
 }
+
 
 @media (min-width: 890px) {
     .back_check {
@@ -581,15 +614,8 @@ textarea{
 }
 
 @media (min-width: 990px) {
-
-    .query-text,.query-text:hover {
-        font-size: 11px;
-    }
     .logo-image {
         margin-bottom:20px;
-    }
-    .btn-template{
-        padding: 10px 6%;
     }
     .modal .modal-dialog .alert-link, .modal .modal-dialog p{
         font-size:16px;
@@ -609,7 +635,7 @@ textarea{
     }
     .btn-template,
     .dual-button {
-        font-size: 16px;
+        font-size: 13px;
     }
     .main-text {
         font-size: 28px;

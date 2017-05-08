@@ -26,8 +26,8 @@
     </div>
     <!-- cc entry -->
     <div class="row" ng-hide="isFetching || netWorkError || ccSaved">
-        <div class="col-md-3"></div>
-        <div class="col-md-6 top-spacing">
+        <div class="col-md-4"></div>
+        <div class="col-md-4 top-spacing no-section-side-padding">
             <p class="main-text">Payment Info</p>
             <p class="sub-main-text margin-top-20">Please enter your credit card or debit card information.</p>
             <div class="section-container margin-top-40">
@@ -76,21 +76,21 @@
                 <a class="btn btn-template margin-top-20" ng-click="savePaymentDetails()"> NEXT</a>
             </div>
         </div>
-        <div class="col-md-3">
+        <div class="col-md-4">
         </div>
     </div>
     <!-- contentarea starts here-->
     <div class="row" ng-hide="isFetching || netWorkError || !ccSaved">
-        <div class="col-md-3"></div>
+        <div class="col-md-4"></div>
         <!-- left side -->
-        <div class="col-md-6 top-spacing">
+        <div class="col-md-4 top-spacing no-section-side-padding">
             <p class="main-text final-text"> Success!</p>
             <p class="sub-text margin-top-20"> Card Information stored successfully.</p>
             <form>
                 <input type="submit" class="btn btn-template margin-top-40 padding-3" ng-click="nextButtonClicked()" value="Continue" />
             </form>
         </div>
-        <div class="col-md-3">
+        <div class="col-md-4">
         </div>
         <!-- checkinbtn section ends here-->
     </div>
