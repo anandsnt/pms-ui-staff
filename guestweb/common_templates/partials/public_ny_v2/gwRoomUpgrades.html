@@ -26,7 +26,7 @@
     </div>
     <div class="row" ng-hide="isFetching || netWorkError">
         <div class="col-md-4"></div>
-        <div class="col-md-4 top-spacing no-section-side-padding">
+        <div class="col-md-4 top-spacing no-section-side-padding room-upgrades-container">
             <p class="main-text mob-margin-bottom-3">WANT TO UPGRADE?</p>
             <div class="section-container margin-top-40">
                 <div class="carousel-view">
@@ -36,7 +36,7 @@
                                 <img ng-src="{{(slide.room_type_image.length > 0) ? slide.room_type_image : 'room-image.png'}}" err-Src="/assets/guestweb/img/image_not_available.png" style="width:100%;" />
                             </div>
                             <div class="upgrade-details" style="overflow: hidden">
-                                <div class="col-xs-8  col-sm-9 room-info mob-paddding-top-5">
+                                <div class="col-xs-8  col-sm-9 room-info margin-top-20">
                                     <p class="room-name mob-margin-bottom-3">
                                         {{slide.upgrade_room_type_name}}
                                     </p>
