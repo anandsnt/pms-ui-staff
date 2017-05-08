@@ -1642,7 +1642,6 @@ sntZestStation.controller('zsRootCtrl', [
             getKeyEncoderInfo();
             getAdminWorkStations();
             $scope.zestStationData.bussinessDate = hotelTimeData.business_date;
-            zestSntApp.setBrowser();
 
             $scope.inElectron = $scope.inChromeApp && (typeof chrome === 'undefined' || typeof chrome.runtime === 'undefined');
 

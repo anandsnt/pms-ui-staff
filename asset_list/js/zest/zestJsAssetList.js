@@ -51,7 +51,7 @@ module.exports = {
 					sharedRoot + 'directives/enterPress/enterPress.js',
 					sharedRoot + 'directives/clickTouch/clickTouch.js',
 					jsLibRoot + 'date.js',
-					'rover/rvSntApp.js',
+                	sharedRoot + 'cordova.js',
 					zestRoot + 'zsApp.js',
 					zestRoot + 'zsUtils.js',
 					zestRoot + 'zsWebSocketActions.js',
