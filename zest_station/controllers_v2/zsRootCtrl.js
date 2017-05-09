@@ -156,6 +156,36 @@ sntZestStation.controller('zsRootCtrl', [
                 $state.go('zest_station.outOfService');
             }
         });
+
+        $scope.softResetCount = 0;
+        $scope.manual_refresh_requested = false;
+        $scope.softReset = function() {
+            // when user is at the admin screen, if they tap the Logo 5x times quickly, it 
+            // initiates a soft-reset, this will be helpful in quickly testing or getting new settings to the device(s)
+            var currentState = $state.current.name;
+            if (currentState === 'zest_station.admin') {
+                 
+                $scope.softResetCount++;
+                if ($scope.softResetCount >= 5) {
+                    if (!$scope.manual_refresh_requested){
+                        // get a more accurate count of refresh requests
+                        $scope.trackEvent(currentState, 'manual_refresh_requested');    
+                        $scope.manual_refresh_requested = true;
+
+                        $scope.hasLoader = true;
+                        // quick loading animation so user can see request to refresh was made
+                        $timeout(function(){
+                            location.reload(true);
+                        },500)
+                        
+                    }
+                }
+                $timeout(function(){
+                    $scope.softResetCount = 0;
+                },2200);
+            }
+        };
+
         $scope.goToAdmin = function() {
             $scope.zestStationData.fromAdminButton = true;
             $state.go('zest_station.admin');
@@ -195,7 +225,7 @@ sntZestStation.controller('zsRootCtrl', [
         };
 
 		// $scope.isIpad = (navigator.userAgent.match(/iPad/i) !== null || navigator.userAgent.match(/iPhone/i) !== null) && window.cordova;
-        $scope.isIpad = zestSntApp.cordovaLoaded && iphoneOrIpad;
+        $scope.isIpad = iphoneOrIpad;
 		/**
 		 * This is workaround till we find how to detect if app
 		 *  is invoked from chrome app, we will be hidding this tag from chrome app and
@@ -667,6 +697,9 @@ sntZestStation.controller('zsRootCtrl', [
             if ($scope.zestStationData.theme === 'yotel') {
                 $scope.icons.url.checkmark = iconsPath + '/checkmark.svg';
             }
+            if ($scope.zestStationData.theme === 'public_v2') {
+                $scope.icons.url.pen = $scope.icons.url.keyboard;
+            }
         };
 
 		/** ******************************************************************************
@@ -981,9 +1014,10 @@ sntZestStation.controller('zsRootCtrl', [
         $rootScope.$on('$stateChangeSuccess', function(event, to, toParams, from) {// event, to, toParams, from, fromParams
             $scope.$broadcast('TOGGLE_LANGUAGE_TAGS', 'off');// fixes an issue where tags cannot be changed back after changing screens
             $scope.hideKeyboardIfUp();
-            $log.info('\ngoing to----->' + from.name);
-            $log.info('to stateparams' + toParams);
+            $log.info('\ngoing from----->' + from.name);
+            $log.info('--with stateparams--');
             $log.info(toParams);
+            $log.info('---');
             if (to.name === 'zest_station.home' || to.name === 'zest_station.outOfService') {
                 if ($scope.trackEvent) {
                     $scope.trackEvent('health_check', 'status_update', from.name, to.name);
@@ -1581,7 +1615,6 @@ sntZestStation.controller('zsRootCtrl', [
             getKeyEncoderInfo();
             getAdminWorkStations();
             $scope.zestStationData.bussinessDate = hotelTimeData.business_date;
-            zestSntApp.setBrowser();
 
             $scope.inElectron = $scope.inChromeApp && (typeof chrome === 'undefined' || typeof chrome.runtime === 'undefined');
 
