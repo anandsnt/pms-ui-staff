@@ -12,12 +12,22 @@ sntZestStation.config(['$stateProvider',
             icon: 'checkout_search.png',
             modes: [{
                 'name': 'CO_SEARCH',
-                'label': 'Check-Out Search',
+                'label': 'Check-Out - Search by Name',
+                'description': '',
+                'icon': 'checkout_search.png'
+            },{
+                'name': 'CO_SEARCH_BY_ROOM',
+                'label': 'Check-Out - Search by Room',
                 'description': '',
                 'icon': 'checkout_search.png'
             },{
                 'name': 'PUK_SEARCH_BY_NAME',
                 'label': 'Pickup Keys - Search by Name',
+                'description': '',
+                'icon': 'pickup_keys.png'
+            },{
+                'name': 'PUK_SEARCH_BY_ROOM',
+                'label': 'Pickup Keys - Search by Room',
                 'description': '',
                 'icon': 'pickup_keys.png'
             }]
