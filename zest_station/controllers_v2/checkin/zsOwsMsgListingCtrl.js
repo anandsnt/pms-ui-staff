@@ -65,7 +65,7 @@ sntZestStation.controller('zsOwsMsgListingCtrl', [
 			 *	======[ READY TO PRINT ]======
 			 */
 			setTimeout(function() {
-				if (sntapp.cordovaLoaded) {
+				if ($scope.isIpad) { // CICO-40934 removed the sntapp load from zestJsAssetList, now just check for ipad/iphone
 					var printer = (sntZestStation.selectedPrinter);
 
 					cordova.exec(

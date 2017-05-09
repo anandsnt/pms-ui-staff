@@ -173,7 +173,7 @@ sntZestStation.controller('zsRootCtrl', [
         var iphoneOrIpad = ipadOrIphone();
 
 		// $scope.isIpad = (navigator.userAgent.match(/iPad/i) !== null || navigator.userAgent.match(/iPhone/i) !== null) && window.cordova;
-        $scope.isIpad = zestSntApp.cordovaLoaded && iphoneOrIpad;
+        $scope.isIpad = iphoneOrIpad;
 		/**
 		 * This is workaround till we find how to detect if app
 		 *  is invoked from chrome app, we will be hidding this tag from chrome app and
@@ -1531,7 +1531,6 @@ sntZestStation.controller('zsRootCtrl', [
             getKeyEncoderInfo();
             getAdminWorkStations();
             $scope.zestStationData.bussinessDate = hotelTimeData.business_date;
-            zestSntApp.setBrowser();
 
             $scope.inElectron = $scope.inChromeApp && (typeof chrome === 'undefined' || typeof chrome.runtime === 'undefined');
 
