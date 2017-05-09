@@ -37,6 +37,7 @@ sntZestStation.controller('zsPickupAndCheckoutReservationSearchCtrl', [
                 $scope.roomNumberEntered();
             }, 500);
         };
+        var jumpRefresh = false;
         var init = function() {
 			// show back button
             $scope.$emit(zsEventConstants.SHOW_BACK_BUTTON);
@@ -59,6 +60,18 @@ sntZestStation.controller('zsPickupAndCheckoutReservationSearchCtrl', [
             $scope.mode = 'LAST_NAME_ENTRY';
             $scope.focusInputField('last-name');
 			// debugWithReservation();//debugging, comment out before deploying
+            if ($stateParams.isQuickJump === 'true' && !jumpRefresh) {
+               if ($stateParams.quickJumpMode === 'PUK_SEARCH_BY_NAME') {
+                        $stateParams.mode = 'PICKUP_KEY';
+                        $scope.mode = 'LAST_NAME_ENTRY';
+                        jumpRefresh = true;
+                        init();
+               } else {
+                        $stateParams.mode = '';
+                        $scope.mode = 'LAST_NAME_ENTRY';
+               }
+
+            }
         };
 
         init();
