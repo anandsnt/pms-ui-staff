@@ -30,7 +30,7 @@
             <p class="main-text">Your Address</p>
             <p class="sub-main-text margin-top-20">To further expedite your check in, please enter the details below.</p>
             <!-- input fields-->
-            <div class="section-container">
+            <div class="section-container margin-top-40">
                 <!-- country -->
                 <p class="sub-text left-align">COUNTRY</p>
                 <div class="row">
@@ -72,11 +72,11 @@
                     </div>
                 </div>
                 <!-- birthday -->
-                <div class="row margin-top-20">
+                <div class="row margin-top-20 margin-bottom-0">
                     <p class="sub-text left-align">
                         BIRTHDAY&nbsp;(OPTIONAL)
                     </p>
-                    <div class="row">
+                    <div class="row margin-bottom-0">
                         <div class="eta-container">
                             <div class="select-style">
                                 <select ng-model="guestDetails.month" ng-options="month as month for month in months">
@@ -100,7 +100,7 @@
                         </div>
                     </div>
                 </div>
-                <a class="btn btn-template margin-top-10" ng-click="postGuestDetails()">Continue</a>   
+                <a class="btn btn-template margin-top-40" ng-click="postGuestDetails()">Continue</a>   
             </div>
             <!-- submit -->
         </div>
