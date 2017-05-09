@@ -84,14 +84,25 @@ sntZestStation.config(['$stateProvider',
         });
 		// send emaill bill
         $stateProvider.state('zest_station.emailBill', {
-            url: '/emailBill/:printopted/:reservation_id/:email/:guest_detail_id',
+            url: '/emailBill/:printopted/:reservation_id/:email/:guest_detail_id/:isQuickJump/:quickJumpMode',
             templateUrl: '/assets/partials_v2/checkout/zsEmailBill.html',
             controller: 'zsEmailBillCtrl',
             jumper: true,
             section: 'Checkout',
             label: 'Check-Out Email Bill',
             description: '',
-            icon: 'checkout_edit_email.png'
+            icon: 'checkout_edit_email.png',
+            modes: [{
+                'name': 'EMAIL_BILL_GUEST_OPTIONS',
+                'label': 'Check-Out - Email Bill Guest Options',
+                'description': '',
+                'icon': 'checkout_search.png'
+            },{
+                'name': 'EMAIL_BILL_EDIT_MODE',
+                'label': 'Check-Out - Edit Email',
+                'description': '',
+                'icon': 'checkout_search.png'
+            }]
         });
 		// checkout final
         $stateProvider.state('zest_station.reservationCheckedOut', {

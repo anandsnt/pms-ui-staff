@@ -515,7 +515,6 @@ sntZestStation.controller('zsCheckInReservationDetailsCtrl', [
 
         (function() {
             if ($stateParams.isQuickJump === 'true') {
-                $log.warn('FROM QUICK JUMP');
                 if ($stateParams.quickJumpMode === 'TERMS_CONDITIONS') {
                     showTermsAndCondition();
                 } else {
