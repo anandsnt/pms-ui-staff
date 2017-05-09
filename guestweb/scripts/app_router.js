@@ -1,4 +1,10 @@
 sntGuestWeb.config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $urlRouterProvider) {
+    
+    var themesWithLicensedFonts = {
+        'guestweb_public_ny_v2': 'https://cloud.typography.com/7902756/7320972/css/fonts.css',
+        'guestweb_public_ny': 'https://cloud.typography.com/7902756/7320972/css/fonts.css'
+    };
+
     // checkout now states
     $stateProvider.state('guestwebRoot', {
         url: '/guestwebRoot/:mode/:reservationId',
@@ -69,12 +75,12 @@ sntGuestWeb.config(['$stateProvider', '$urlRouterProvider', function($stateProvi
             }],
             fetchJsThemeFiles: ['reservationAndhotelData', 'jsThemeList', 'sntGuestWebSrv', function(reservationAndhotelData, jsThemeList, sntGuestWebSrv) {
                 var theme = reservationAndhotelData.hotel_theme;
-                if (theme === 'guestweb_public_ny_v2' || theme === 'guestweb_public_ny') {
-                    // if theme used is public use custom font
-                    var fontLink = 'https://cloud.typography.com/7902756/7320972/css/fonts.css';
 
-                    $("head").append("<link href='" + fontLink + "' rel='stylesheet' type='text/css'>");
+                if (!_.isUndefined(themesWithLicensedFonts[theme])) {
+                    // if theme used is public use custom font
+                    $("head").append("<link href='" + themesWithLicensedFonts[theme] + "' rel='stylesheet' type='text/css'>");
                 }
+
                 return sntGuestWebSrv.fetchJsAssets(theme, ['sntGuestWeb']);
             }],
             cssThemeList: ['sntGuestWebSrv', function(sntGuestWebSrv) {
