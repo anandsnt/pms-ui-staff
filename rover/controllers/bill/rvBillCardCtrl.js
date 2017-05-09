@@ -849,7 +849,7 @@ sntRover.controller('RVbillCardController',
 		if (currentActiveBill.is_account_attached && currentActiveBill.has_ar_account && $scope.hasPermissionToDirectBillPayment()) {
 			isPaymentTypeDirectBill = true;
 		}
-		
+
 		return isPaymentTypeDirectBill;
 	};
 
@@ -992,7 +992,7 @@ sntRover.controller('RVbillCardController',
 
 		paymentParams.direct_bill = $scope.checkPaymentTypeIsDirectBill();
 		paymentParams.bill_id = $scope.reservationBillData.bills[$scope.currentActiveBill].bill_id;
-		
+
 		$scope.invokeApi(RVPaymentSrv.renderPaymentScreen, paymentParams, function(data) {
 			// NOTE: Obtain the payment methods and then open the payment popup
 			$scope.paymentTypes = data;
@@ -1703,6 +1703,10 @@ sntRover.controller('RVbillCardController',
 	// To handle complete checkin button click
 	$scope.clickedCompleteCheckin = function(isCheckinWithoutPreAuthPopup, checkInQueuedRoom) {
 
+        // CICO-36122 - Set this to keep the promos and news opt in check-in screen in sync with guest card
+        if ( !!$scope.guestCardData && !!$scope.guestCardData.contactInfo) {
+           $scope.guestCardData.contactInfo.is_opted_promotion_email = $scope.saveData.promotions;
+        }
 
 		if ($scope.hasAnySharerCheckedin()) {
 			// Do nothing , Keep going checkin process , it is a sharer reservation..
@@ -2745,7 +2749,7 @@ sntRover.controller('RVbillCardController',
                 'bill_id': $scope.reservationBillData.bills[$scope.currentActiveBill].bill_id,
                 'date': feesData.date
             };
-            
+
             $scope.invokeApi(RVBillCardSrv.groupChargeDetailsFetch, params, fetchChargeDataSuccessCallback, fetchChargeDataFailureCallback);
         }
         else {
