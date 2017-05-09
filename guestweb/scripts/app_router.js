@@ -69,7 +69,12 @@ sntGuestWeb.config(['$stateProvider', '$urlRouterProvider', function($stateProvi
             }],
             fetchJsThemeFiles: ['reservationAndhotelData', 'jsThemeList', 'sntGuestWebSrv', function(reservationAndhotelData, jsThemeList, sntGuestWebSrv) {
                 var theme = reservationAndhotelData.hotel_theme;
+                if (theme === 'guestweb_public_ny_v2' || theme === 'guestweb_public_ny') {
+                    // if theme used is public use custom font
+                    var fontLink = 'https://cloud.typography.com/7902756/7320972/css/fonts.css';
 
+                    $("head").append("<link href='" + fontLink + "' rel='stylesheet' type='text/css'>");
+                }
                 return sntGuestWebSrv.fetchJsAssets(theme, ['sntGuestWeb']);
             }],
             cssThemeList: ['sntGuestWebSrv', function(sntGuestWebSrv) {
