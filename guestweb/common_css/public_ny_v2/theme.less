@@ -1,6 +1,7 @@
 /*------------------------------- Themes ----------------------------------------------------*/
 
 @import "../style.less";
+
 html,
 body {
     height: auto;
@@ -9,22 +10,61 @@ body {
 
 body {
     background-color: #FFF;
-    font-family: "Gotham Book";
+    font-family: "Gotham A","Gotham B";
+    font-style:normal !important;
+    font-weight: 400 !important;
 }
 
 .back-text {
     display:none;
 }
-
-.main-text,
+.description-details{
+    float:left;
+}
+.main-text{
+    font-family: "Gotham A","Gotham B";
+    font-style:normal !important;
+    font-weight: 300 !important;
+}
 .btn {
-    font-family: "Gotham Book";
+    font-family: "Gotham A","Gotham B";
+    font-style:normal !important;
+    font-weight: 400 !important;
+}
+.main-text{
     text-transform: uppercase;
-    font-weight: bolder;
+    font-weight: 300 !important;
 }
 
+.terms-main, .terms-sub,
+.request-text,.error-text,
+.room-error,.cc-error,
+.cc-number-description, .query-text{
+    text-transform: uppercase;
+}
+.terms-main{
+   font-size:28px; 
+}
+.terms-sub{
+   font-size:16px; 
+}
+.terms-desc{
+    font-size: 13px !important;
+}
+.query-text,.query-text:hover {
+    font-size: 11px !important;
+}
+.section-container.room-upgrades-container{
+    max-width:375px !important;
+    margin:calc(4.5%) auto;
+}
+.room-name{
+    font-size: 28px !important;
+}
 .strong-font {
-    font-family: "Gotham Book";
+    font-family: "Gotham A","Gotham B";
+    font-style:normal !important;
+    font-weight: 400 !important;
 }
 .main-text{
     font-weight: 500;
@@ -34,10 +74,15 @@ body {
 .sub-main-text,
 .sub-text,
 .res-details-heading,
-.res-date{
+.res-date,
+.balance-amount,
+.footer-sub-text{
     text-align:left;
+    text-transform: uppercase;
 }
-
+.footer-text, .no-thanks,.no-thanks:hover{
+    text-transform: uppercase !important;
+}
 a,
 a:hover,
 .main-text,
@@ -45,22 +90,41 @@ a:hover,
 .footer-sub-text,
 .footer-sub-text:hover,
 .phone-label {
-    color: #363d40;
+    color: #000000;
     text-decoration:none;
 }
 
 .sub-main-text {
-    color: #363d40;
+    color: #000000;
     text-transform: uppercase !important;
 }
+p.sub-main-text,p.main-text,.row.margin-bottom-0{
+    margin-bottom:0px;
+}
+.bottom-border{
+    border-bottom: 1px solid #000;
+}
 
+.main-text {
+    font-size: 28px;
+}
+.sub-main-text, .sub-text, 
+.footer-text ,.select-style select,
+.input-field,.res-date,
+.footer-sub-text,.footer-sub-text:hover,
+.request-text,
+.no-thanks,.no-thanks:hover
+{
+    font-size:13px !important;
+    font-weight: 400;
+}
 .header-bar {
     background: #fff;
 }
-
 .logo-image {
-    max-width: 100%;
-    margin: 0%;
+    width:100%;
+    max-width: 98%;
+    margin: 10px 0% 0%;
     margin-bottom:15px;
 }
 
@@ -70,16 +134,37 @@ a:hover,
 .phone-text,
 .phone-text:hover,
 .request-text,
-.error-text {
-    color: #363d40;
+.error-text,
+.balance {
+    color: #000000 !important;
 }
 
+.black-button,.black-button:hover{
+    background:#000 !important;
+    color:#fff !important;   
+}
+.white-button,.white-button:hover{
+    color:#000 !important;
+    background:#fff !important;   
+}
+
+.room-error-green-button, .room-error-green-button:hover,
+.btn-close, .btn-close :hover{
+    color:#000 !important;
+    background:#fff !important;  
+    min-height:40px;
+}
+textarea{
+    border: 1px solid black;  
+}
 .view-bill {
-    color: #363d40;
+    color: #000000;
 }
 
 .sub-text {
-    font-family: "Gotham Book"
+    font-family: "Gotham A","Gotham B";
+    font-style:normal !important;
+    font-weight: 400 !important;
 }
 
 .sub-text,
@@ -87,7 +172,15 @@ a:hover,
 .query-text,
 .query-text:hover,
 .light-text {
-    color: #363d40;
+    color: #000000;
+}
+
+.eta-container {
+    width: 32%;
+    margin-left: 6px;
+}
+.eta-container:first-child {
+    margin-left: 0px;
 }
 
 .btn,
@@ -100,32 +193,70 @@ a:hover,
 }
 
 .calendar-button {
-    background-position: 96% 13px !important;
+    background-position: 96% 6px!important;
+    background-size: 28px;
 }
-
 .input-field {
     border: 1px solid black !important;
     background-color: #fff !important;
     box-shadow: none !important;
     max-width: 100% !important;
+    min-height:40px;
+    padding-left:5px;
+}
+.cc-input-field input,
+.cvv-input-field input,.cc-close,
+.room-error-button{
+    height:40px !important
+}
+
+.btn-close, .btn-close :hover{
+    padding-top:0px !important;
+    padding-bottom:0px !important;
+}
+.cc-input-field input, .cvv-input-field input{
+    min-height:40px !important;
+}
+.margin-bottom-5{
+    margin-bottom: 5px !important;
 }
 
 .section-container {
-        max-width: 100% !important;
-    }
+    max-width: 100% !important;
+    margin-top: calc(4.5%) !important;
+}
+.section-container.margin-top-40{
+    margin-top: 40px !important;
+}
 
 .select-style, text-comment {
     border: 1px solid black !important;
+    width:100%;
+}
+.select-style{
+    background: url(/assets/guestweb/common_images/arrow_down.gif) 95% 50% no-repeat #fff;
 }
 
 .dual-button {
-    font-size: 22px;
-    font-weight: 900;
+    font-size: 28px;
 }
 
+
+.checkout-btn , .dual-button, .accept-charges{
+    text-transform:uppercase;
+    font-family: "Gotham Light";
+    padding: 8%;
+    div{
+        font-size:28px;
+    }
+}
+
+
 .btn-template {
-    font-size: 22px;
-    min-height: initial !important;
+    font-size: 13px;
+    color:#000000;
+    min-height: 40px !important;
+    text-transform: uppercase;
 }
 
 .dark-button,
@@ -154,10 +285,10 @@ a:hover,
 }
 
 .checkout-icon{
-  background-image: url('/assets/guestweb/common_images/checkout-now-black.png') !important;
+  background-image: url('/assets/guestweb/common_images/black/checkout.png') !important;
 }
 .late-checkout-icon{
-  background-image: url('/assets/guestweb/common_images/late-checkout-black.png') !important;
+  background-image: url('/assets/guestweb/common_images/black/late-checkout.png') !important;
 }
 
 .no-thanks,
@@ -171,6 +302,11 @@ a:hover,
     font-weight: 500;
 }
 
+.select-style {
+    height: 40px;
+    display: flex;
+}
+
 // .amount,
 // .time {
 //     font-size: 30px;
@@ -182,6 +318,8 @@ a:hover,
 
 .right-arrow-button {
     background-image: url('/assets/guestweb/common_images/black/right_arrow.png');
+    background-position-y: 2px;
+    background-size: 20px;
 }
 
 .upgrade-details .upgrades-btn {
@@ -194,10 +332,16 @@ a:hover,
     border-radius: 0px !important;
     border: 1px solid black !important;
     text-align: center !important;
+    font-size:13px;
+    padding: 14px 20px;
+    height:40px;
 }
 
 .upgrades-label {
-    color: #BA7A55;
+    color: #000;
+}
+.text-comment{
+    padding-left:8px;
 }
 
 .circle-bg {
@@ -209,9 +353,58 @@ a:hover,
     -webkit-transform: scale(1.5);
     transform: scale(1.5);
 }
+.accept-charges-container{
+    width:331px;
+    margin: calc(4.5%) auto;
+}
+.view-bill{
+    margin-left:0px !important;
+    max-width:150px !important;
+}
+.early-checkin-button,.early-checkin-button:hover{
+    font-size: 13px !important;
+}
+.options-container{
+    width:500px;
+}
 
-.early-checkin-button{
-    font-size: 16px !important;
+.button-actions{
+    .terms-button{
+        min-height:40px;
+        padding:0% 35px;
+        font-size:13px;
+    }
+    .terms-button:first-child{
+        margin-right:20px;
+    }
+}
+
+.carousel-control .icon-next:before {
+    content:url(/assets/guestweb/common_images/black/right.png) !important;
+    cursor:pointer;
+}
+
+.carousel-control .icon-prev:before {
+    content: url(/assets/guestweb/common_images/black/left.png) !important;
+    cursor:pointer;
+}
+.upgrade-details .upgrades-btn p {
+    font-size: 12px!important;
+    font-weight: 100 !important;
+    color: #C0C0C0 !important;
+}
+.upgrade-details .upgrades-btn{
+    padding: 13px 2px;
+}
+.carousel-control.left {
+    left: 0px !important;
+}
+
+.carousel-control.right {
+    right: 0px !important;
+}
+.carousel .carousel-control{
+    top: 103.5px; // have to set the image with dimesnion 800*500
 }
 
 /*----------------- date picker -------------------------*/
@@ -219,9 +412,19 @@ a:hover,
 .pickadate-cell,
 .for,
 .amount {
-    font-family: "Gotham Book"
+    font-family: "Gotham A","Gotham B";
+    font-style:normal !important;
+    font-weight: 400 !important;
 }
-
+.pickadate-main ul:first-child{
+    border-bottom: 1px solid black;
+    border-top: 1px solid black;
+    margin: 0 4px; 
+}
+.pickadate-main ul:nth-child(2){
+    margin:30px 6px 0px;
+}
+  
 .pickadate-cell .pickadate-active.pickadate-outofrange-disabled a {
     color: #000;
     color: transparent;
@@ -231,18 +434,8 @@ a:hover,
 .pickadate-centered-heading {
     color: #000;
 }
-
-.pickadate-cell .pickadate-active {
-    background-color: #000 !important;
-    color: #fff;
-}
-
-.pickadate-head {
-    color: #000000;
-}
-
-.calendar-selection {
-    color: #fff;
+.pickadate-head, .calendar-selection, .pickadate-cell .pickadate-active {
+    color: #000 !important;
 }
 
 .pickadate-cell li:nth-child(1),
@@ -257,7 +450,7 @@ a:hover,
 .pickadate-cell .pickadate-disabled,
 .pickadate-cell .pickadate-enabled,
 .pickadate-cell .pickadate-outofrange-disabled {
-    background-color: #EEEBE8;
+    background-color: #fff;
 }
 
 .pickadate-cell .pickadate-disabled,
@@ -275,30 +468,61 @@ a:hover,
 }
 
 .date-picker-header {
-    background-color: #000;
+    background-color: #fff;
+    color:#000;
 }
 
 .calendar-back {
-    background-image: url('/assets/guestweb/common_images/back_icon.png');
+    background-image: url('/assets/guestweb/common_images/black/back_icon.png');
 }
 
 .calendar-done {
-    background-image: url('/assets/guestweb/common_images/done_white.png');
+    background-image: url('/assets/guestweb/common_images/black/done_black.png');
 }
 
 .pickadate-prev,
 .pickadate-next,
 .pickadate-prev:hover,
 .pickadate-next:hover {
-    color: #000;
+    color: transparent !important;
+}
+
+.pickadate-next,.pickadate-prev{
+    background-image: url(/assets/guestweb/common_images/black/arrow-cal-right.png);
+    width: 50px;
+    height: 50px;
+    display:inline-block;
+    background-size: 35px;
+    background-repeat: no-repeat;
+}
+.pickadate-next{
+    background-image: url(/assets/guestweb/common_images/black/arrow-cal-right.png);
+}
+.pickadate-prev{
+    background-image: url(/assets/guestweb/common_images/black/arrow-cal-left.png);
+}
+
+.pickadate-cell li:nth-child(7n+0),
+.pickadate-cell li:nth-child(1), 
+.pickadate-cell li:nth-child(15), 
+.pickadate-cell li:nth-child(22), 
+.pickadate-cell li:nth-child(29), 
+.pickadate-cell li:nth-child(36), 
+.pickadate-cell li:nth-child(8){
+    border-right:none;
+}
+.pickadate-cell .pickadate-active {
+    border:1px solid black !important;
+    background-color: #fff !important;
 }
 
 .date-picker-wrap {
     background-color: #fff;
+    max-width:600px;
 }
 
 .date-picker-bg {
-    background: rgba(238, 238, 238, 0.58);
+    background: rgba(220, 220, 220, 0.58);
 }
 
 .horizontal-line-sep-mobile {
@@ -310,35 +534,41 @@ a:hover,
 }
 
 .date-text {
-    color: #fff;
-}
-
-.logo-image {
-    max-width: unset;
+    color: #000;
 }
 
 .res-details-heading,
 .res-details-heading:hover {
     color: #000;
+    text-transform: uppercase;
+}
+.pickadate-body{
+    margin-top:20px;
 }
 
 .back-to-checkout {
     background: url(/assets/guestweb/common_images/black/left_arrow.png) center top no-repeat;
     height: 40px;
 }
-
+.accept-charge-icon{
+    background: url(/assets/guestweb/common_images/black/cc.png) center top no-repeat;
+    background-size:48px;
+}
 .row {
     margin-bottom: 21px;
 }
-
+.footer-text{
+    font-style: normal;
+}
 .circle-bg {
-    background: none;
-    background: url("/assets/guestweb/common_images/black/circle-bg.png") no-repeat scroll center top transparent !important;
+    background: none !important;
+    height: 80px;
 }
 
 .time {
-    font-size: 20px;
-    padding-top: 25px;
+    font-size: 30px;
+    font-family: "Gotham Light";
+    padding-top: 28px;
     display: block;
 }
 
@@ -357,36 +587,35 @@ a:hover,
 
 .amount {
     font-size: 28px;
+    font-family: "Gotham Light";
 }
 
-.triple-button,
-.dual-button {
-    border-right: 1px inset #6A6A6A;
-}
 
+.dual-button:first-child,
+.two-options .triple-button:first-child,
+.three-options .triple-button:first-child,
+.three-options .triple-button:nth-child(2){
+    border-right: none !important;
+}
+.triple-button {
+    padding: 5%;
+}
 .circle-bg {
-    height: 124px;
     padding-top: 0px;
 }
 
 @media (max-width: 480px) {
-    .logo-image {
-        max-width: 285px !important;
-    }
     .main-text {
         font-size: 34px;
     }
-    .container {
-        width: 100%;
+    .res-date{
+        font-size:16px;
     }
-    .sub-main-text {
+    .sub-main-text, .footer-text{
         font-size: 17px;
     }
-    .footer-text {
-        font-size: 5.3vw;
-    }
     .logo-image {
-        max-width: 200px;
+        max-width:96%;
         margin: 0% auto;
     }
     .dual-button {
@@ -395,9 +624,6 @@ a:hover,
     .section-container {
         padding-bottom: 0px;
     }
-    .checkout-alone-button {
-        margin-left: 95px !important;
-    }
     .amount {
         font-size: 21px;
     }
@@ -405,14 +631,31 @@ a:hover,
         padding: 5% 10%;
         width: 100%;
     }
-}
-
-@media (max-width: 890px) {
-    .btn-template {
-        padding: 4%;
+    .options-container{
+         width:400px;
     }
-    .checkout-alone-button {
-        margin-left: 95px !important;
+    .proceed-to-checkin{
+        padding-bottom: 10px;
+        padding-top: 10px;
+    }
+    .sub-text{
+        font-size: 15px;
+    }
+    .upgrade-details .upgrades-btn p {
+        font-size: 12px!important;
+        font-weight: 100 !important;
+    }
+    .carousel .carousel-control{
+        top: 103.5px; // have to set the image with dimesnion 800*500
+    }
+    .eta-container:not(:first-child){
+        margin-left: 5px;
+    }
+    .button-actions .terms-button:first-child {
+        margin-right: 18px;
+    }
+    .container {
+        width: 99%;
     }
 }
 
@@ -421,56 +664,51 @@ a:hover,
         font-size: 17px;
         padding-top: 17px;
     }
+    .no-section-side-padding{
+        padding-left:0px !important;
+        padding-right:0px !important;
+    }
 }
 
 @media (min-width: 990px) {
-    .main-text {
-        font-size: 30px;
-    }
-    .sub-main-text {
-        font-size:16px !important;
-    }
-    .sub-text {
-        font-size: 15px !important;
-    }
-    .query-text {
-        font-size: 11px;
-    }
-    .checkout-alone-button {
-        margin-left: 126px;
-    }
-    .checkout-btn {
-        padding: 25% 2% !important;
-    }
     .logo-image {
         margin-bottom:20px;
+    }
+    .modal .modal-dialog .alert-link, .modal .modal-dialog p{
+        font-size:16px;
+    }
+    .show-bill-wrap{
+        background: rgba(220, 220, 220, 0.58);
+    }
+    .container {
+        width: 84%;
+        min-width: 900px;
     }
 }
 
 @media (max-width: 990px) {
     .logo-image {
-        margin: 0px;
+        margin: 6px 0px 15px;
         margin-bottom:15px;
-        // max-width: 295px;
     }
     .back-to-checkout {
         display: none;
     }
     .btn-template,
     .dual-button {
-        font-size: 20px;
+        font-size: 13px;
     }
     .main-text {
         font-size: 28px;
     }
-    .checkout-alone-button {
-        float: left;
-        margin-left: 19px;
-    }
     .sub-main-text {
         font-size: 19px;
     }
-    .checkout-btn {
-        padding: 10% 8%;
+}
+
+@media (min-width: 480px) and (max-width: 990px) {
+    .eta-container:not(:first-child){
+        margin-left: 10px;
     }
 }
+

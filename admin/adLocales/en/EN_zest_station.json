@@ -20,6 +20,9 @@
 "PRINT":"Print",
 "AUTO_PRINT":"Auto Print",
 
+"STATION_LANGUAGE_FILE_ATTACHED":"File Attached",
+"STATION_LANGUAGE_CHOOSE_FILE":"Choose File...",
+"STATION_LANGUAGE_ATTACH_FILE":"Attach File",
 
 
 "STATION_LANGUAGE_SUPPORT":"Language Support",

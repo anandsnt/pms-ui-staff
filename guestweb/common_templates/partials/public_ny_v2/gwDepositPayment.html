@@ -26,8 +26,8 @@
     </div>
     <!-- deposit details -->
     <div class="row" ng-hide="isLoading || netWorkError || paymentSuccess || paymentFailed || noPaymentMethod">
-        <div class="col-md-3"></div>
-        <div class="col-md-6 top-spacing section-container">
+        <div class="col-md-4"></div>
+        <div class="col-md-4 top-spacing section-container no-section-side-padding">
             <div class="row">
                 <p class="main-text text-left" ng-bind="screenDetails.title"></p>
                 <p class="sub-main-text text-left" ng-bind="screenDetails.description"></p>
@@ -35,16 +35,16 @@
                 <p class="sub-main-text text-left">{{depositAmount}}</p>
             </div>
             <div class="row">
-                    <a class="btn btn-template early-checkin-button margin-top-10" ng-click="payNow()"> Pay {{depositAmount}}</a>
-                    <a class="btn btn-template early-checkin-button margin-top-10 grey-btn" ng-click="cancelActions()">Cancel</a>                
+                <a class="btn btn-template early-checkin-button margin-top-10" ng-click="payNow()"> Pay {{depositAmount}}</a>
+                <a class="btn btn-template early-checkin-button margin-top-10" ng-click="cancelActions()">Cancel</a>
             </div>
         </div>
-        <div class="col-md-3"></div>
+        <div class="col-md-4"></div>
     </div>
     <!-- deposit payment failed -->
     <div class="row" ng-show="paymentFailed">
-        <div class="col-md-3"></div>
-        <div class="col-md-6 top-spacing section-container">
+        <div class="col-md-4"></div>
+        <div class="col-md-4 top-spacing section-container no-section-side-padding">
             <div class="row">
                 <p class="main-text" ng-bind="screenDetailsPaymentFailedMessage.title"></p>
                 <p class="sub-main-text" ng-bind="screenDetailsPaymentFailedMessage.description"></p>
@@ -53,12 +53,12 @@
                 <a class="btn btn-template margin-top-10" ng-click="cancelActions()">NEXT</a>
             </div>
         </div>
-        <div class="col-md-3"></div>
+        <div class="col-md-4"></div>
     </div>
     <!-- deposit payment success -->
     <div class="row" ng-show="paymentSuccess">
-        <div class="col-md-3"></div>
-        <div class="col-md-6 top-spacing section-container">
+        <div class="col-md-4"></div>
+        <div class="col-md-4 top-spacing section-container no-section-side-padding">
             <div class="row">
                 <p class="main-text" ng-bind="screenDetailsPaymentSuccesMessage.title"></p>
                 <p class="sub-main-text" ng-bind="screenDetailsPaymentSuccesMessage.description"></p>
@@ -67,12 +67,12 @@
                 <a class="btn btn-template margin-top-10" ng-click="paymentSuccessContinueAction()">NEXT</a>
             </div>
         </div>
-        <div class="col-md-3"></div>
+        <div class="col-md-4"></div>
     </div>
     <!-- deposit no payment method -->
     <div class="row" ng-show="noPaymentMethod">
-        <div class="col-md-3"></div>
-        <div class="col-md-6 top-spacing section-container">
+        <div class="col-md-4"></div>
+        <div class="col-md-4 top-spacing section-container no-section-side-padding">
             <div class="row">
                 <p class="main-text" ng-bind="screenDetailsNoPaymentMethodMessage.title"></p>
                 <p class="sub-main-text" ng-bind="screenDetailsNoPaymentMethodMessage.description"></p>
@@ -81,6 +81,6 @@
                 <a class="btn btn-template margin-top-10" ng-click="cancelActions()">NEXT</a>
             </div>
         </div>
-        <div class="col-md-3"></div>
+        <div class="col-md-4"></div>
     </div>
 </div>

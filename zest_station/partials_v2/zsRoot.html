@@ -11,7 +11,11 @@
           url.hostname.indexOf('192.168.1.239') !== -1 ||
           url.hostname.indexOf('localhost') !== -1) {
 
-          inDevEnvironment = true;
+          inDevEnvironment = true, inLocalEnv = false;
+            if (url.hostname.indexOf('localhost') !== -1) {
+                // dont track in local environment
+                inLocalEnv = true;
+            }
         }
       }
     }
@@ -22,6 +26,7 @@
         // production tracking id
         analyticTrackingID = 'UA-96932423-1';
     }
+    
     // <!-- // actual analytic code \\ -->
     var _gaq = _gaq || [];
     // registeres the tracking ID as Active for this page, in prep for async / event calls
@@ -37,9 +42,13 @@
         s.parentNode.insertBefore(ga, s);
     })();
 
-    var trackAnalyticEvent = function(event_name, event_type){
-        _gaq.push(['_trackEvent', event_name, event_type]);
+    var trackAnalyticEvent = function(event_name, event_type) {
+        if (!inLocalEnv) {
+            _gaq.push(['_trackEvent', event_name, event_type]);
+        }
     }
+    
+
     // end of analytic code
 </script>
 
@@ -54,7 +63,7 @@
 <div ng-include="'/assets/partials_v2/zsDiagnostics.html'"></div>
 
 
-<div class='jumper' ng-show='showJumpList'>
+<div class='jumper' ng-show='showJumpList' ng-class="{'minimized':zestStationData.jumperMinimized}">
     <div ng-include="'/assets/partials_v2/zsJumpList.html'"></div>
 </div>
 
@@ -69,6 +78,18 @@
 </div>
 
 
+<div class="popup iframe-popup open" ng-show="zestStationData.showTemplateList">
+    <div class="popup-content iframe-content">
+        <i class="close-popup" touch-press='zestStationData.showTemplateList = false' ></i>
+        <div class='template-switch-container'>
+            <div ng-repeat="(key, value) in themeTemplateList" class='template-switch-box' touch-press="selectThemeFromTemplateList(value.name)" ng-style="{'background-image':'url(/assets/zest_station/css/icons/default/previews/{{value.name}}.png)'}">
+                <span class='theme-switch-name'>
+                    {{value.name}}
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
 <!-- Popup -->
 <div class="popup" ng-class="{'open':zestStationData.timeOut && !showLanguagePopup}">
     <!-- Remove class "open" to hide popup content -->
@@ -76,7 +97,7 @@
         <h2 class="nocaps">
             <text editable-text="IDLE_TIMEOUT_MSG"> {{'IDLE_TIMEOUT_MSG' |translate}}</text>
         </h2>
-        <button type="button" class="button" click-touch='resetTime();'>
+        <button type="button" class="button idle-timeout-btn" click-touch='resetTime();'>
             <text editable-text="IDLE_TIMEOUT_YES"> {{'IDLE_TIMEOUT_YES' |translate}}</text>
         </button>
     </div>

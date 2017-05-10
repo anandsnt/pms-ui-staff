@@ -102,6 +102,7 @@ angular.module('sntRover')
             $scope.setScroller('scroller-restriction-list', scrollerOptions);
             $scope.setScroller('room-type-price-listing', scrollerOptions);
             $scope.setScroller('room-type-price-editing', scrollerOptions);
+            $scope.setScroller('rate-price-listing', scrollerOptions);
         };
 
         /**
@@ -111,6 +112,7 @@ angular.module('sntRover')
             $scope.refreshScroller('scroller-restriction-list');
             $scope.refreshScroller('room-type-price-listing');
             $scope.refreshScroller('room-type-price-editing');
+            $scope.refreshScroller('rate-price-listing');
         };
 
         /**
@@ -214,6 +216,11 @@ angular.module('sntRover')
                     $scope.contentMiddleMode = 'MULTIPLE_ROOM_TYPE_CHOOSE_RATE';
                     break;
 
+                case $scope.modeConstants.RM_SINGLE_RATE_TYPE_RESTRICTION_MODE:
+                case $scope.modeConstants.RM_MULTIPLE_RATE_TYPE_RESTRICTION_MODE:
+                    $scope.contentMiddleMode = 'RATE_PRICE_LISTING';
+                    break;
+
                 case $scope.modeConstants.RM_SINGLE_RATE_SINGLE_ROOMTYPE_RESTRICTION_AMOUNT_MODE:
                     initializeSingleRateRestrictionAndAmountMiddlePane();
                     break;
@@ -306,15 +313,6 @@ angular.module('sntRover')
         };
 
         /**
-         * the successcall back of clea ovveriding api
-         * @param  {Object} response
-         */
-        const onSuccessOfClickedOnClearOverrideButtonAPICall = (response) => {
-            $scope.$emit(rvRateManagerEventConstants.RELOAD_RESULTS);
-            $scope.closeDialog();
-        };
-
-        /**
          * when clciked on remove overriding icon
          */
         $scope.clickedOnClearOverrideButton = () => {
@@ -327,7 +325,7 @@ angular.module('sntRover')
             }
             var options = {
                 params,
-                onSuccess: onSuccessOfClickedOnClearOverrideButtonAPICall
+                onSuccess: onUpdateRateRestrictionData
             }
             $scope.callAPI(rvRateManagerCoreSrv.removeCustomRate, options);
         };
@@ -344,6 +342,7 @@ angular.module('sntRover')
             ngDialog.close();
             $rootScope.modalClosing = false;
             window.scrollTo(0, 0);
+            document.getElementById("rate-manager").scrollTop = 0;
             document.getElementsByClassName("pinnedLeft-list")[0].scrollTop = 0;
             $scope.$apply();
           }, 700);
@@ -520,6 +519,34 @@ angular.module('sntRover')
         };
 
         /**
+         * to update restriction rate
+         */
+        const callRateTypeRestrictionUpdateAPI = () => {
+            var params = {},
+                dialogData = $scope.ngDialogData,
+                mode = dialogData.mode;
+
+            if (mode === $scope.modeConstants.RM_SINGLE_RATE_TYPE_RESTRICTION_MODE) {
+                params.rate_type_ids = [];
+                params.rate_type_ids.push(dialogData.rateType.id);
+            } else {
+                params.rate_type_ids = _.pluck(dialogData.rateType, 'id');
+            }
+
+            params.details = [];
+
+            formDayRestrictionParamsForAPI(params);
+
+            formRestrictionParamDetailForWeekDaysForAPI(params);
+
+            const options = {
+                params,
+                onSuccess: onUpdateRateRestrictionData
+            };
+            $scope.callAPI(rvRateManagerCoreSrv.updateSingleRateRestrictionData, options);
+        };
+
+        /**
          * [description]
          * @return {[type]} [description]
          */
@@ -615,6 +642,10 @@ angular.module('sntRover')
                 case $scope.modeConstants.RM_SINGLE_RATE_SINGLE_ROOMTYPE_RESTRICTION_AMOUNT_MODE:
                 case $scope.modeConstants.RM_SINGLE_RATE_MULTIPLE_ROOMTYPE_RESTRICTION_AMOUNT_MODE:
                     return callRateRoomTypeRestrictionAndAmountUpdateAPI();
+
+                case $scope.modeConstants.RM_SINGLE_RATE_TYPE_RESTRICTION_MODE:
+                case $scope.modeConstants.RM_MULTIPLE_RATE_TYPE_RESTRICTION_MODE:
+                    return callRateTypeRestrictionUpdateAPI();
 
                 default:
                     break;
@@ -757,6 +788,44 @@ angular.module('sntRover')
             $scope.contentMiddleMode = 'ROOM_TYPE_PRICE_LISTING';
         };
 
+        /**
+         * to initialize the variabes on RM_SINGLE_RATE_RESTRICTION_MODE
+         */
+        const initializeSingleRateTypeRestrictionMode = () => {
+            var dialogData = $scope.ngDialogData;
+
+            $scope.header = dialogData.rateType.name;
+
+            $scope.headerBottomLeftLabel = formatDateForTopHeader(dialogData.date);
+
+            $scope.headerBottomRightLabel = 'All Rates';
+
+            $scope.restrictionList = getRestrictionListForRateView(
+                    dialogData.restrictionTypes,
+                    dialogData.variedAndCommonRestrictions);
+
+            $scope.rateAndRestrictions = dialogData.rateAndRestrictions;
+
+            $scope.contentMiddleMode = 'RATE_PRICE_LISTING';
+        };
+
+        const initializeMultipleRateTypeRestrictionMode = () => {
+            var dialogData = $scope.ngDialogData;
+
+            $scope.header = "All Rate Types";
+
+            $scope.headerBottomLeftLabel = formatDateForTopHeader(dialogData.date);
+
+            $scope.headerBottomRightLabel = 'All Rates';
+
+            $scope.restrictionList = getRestrictionListForRateView(
+                    dialogData.restrictionTypes,
+                    dialogData.variedAndCommonRestrictions);
+
+            $scope.rateAndRestrictions = dialogData.rateAndRestrictions;
+
+            $scope.contentMiddleMode = 'RATE_PRICE_LISTING';
+        };
 
         /**
          * to initialize the multiple rate restriction mode
@@ -992,6 +1061,14 @@ angular.module('sntRover')
                 //when we click a header restriciton cell on rate view mode
                 case $scope.modeConstants.RM_MULTIPLE_RATE_RESTRICTION_MODE:
                     initializeMultipleRateRestrictionMode();
+                    break;
+
+                case $scope.modeConstants.RM_SINGLE_RATE_TYPE_RESTRICTION_MODE:
+                    initializeSingleRateTypeRestrictionMode();
+                    break;
+
+                 case $scope.modeConstants.RM_MULTIPLE_RATE_TYPE_RESTRICTION_MODE:
+                    initializeMultipleRateTypeRestrictionMode();
                     break;
 
                 //when we click a restriciton cell on room type view mode

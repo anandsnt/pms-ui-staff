@@ -15,6 +15,7 @@ sntZestStation.controller('zsQrPickupKeyCtrl', [
 
         var onQRScanFail = function() {
             $scope.$emit('hideLoader');
+            $scope.zestStationData.qrCodeScanning = false;
             if ($scope.zestStationData.pickup_qr_scan_fail_over) {
 				// provide small time out, so as to let user know what is happening
                 $scope.qrCodeScanFailed = true;
@@ -27,6 +28,7 @@ sntZestStation.controller('zsQrPickupKeyCtrl', [
         $scope.arrowDirection = $scope.zestStationData.qr_scanner_arrow_direction ? $scope.zestStationData.qr_scanner_arrow_direction : 'right';
 
         var fetchReservationDetails = function(reservation_id) {
+            $scope.zestStationData.qrCodeScanning = false;
 			/*
 			 * The Scanned QR-code returns the Reservation_id
 			 *  to lookup the reservation, we need to get the Room No. + Last name
@@ -104,13 +106,12 @@ sntZestStation.controller('zsQrPickupKeyCtrl', [
 
 		/** ***************** SAMSOTECH ********************/
         var receiveSamsoTechMsg = function(evt, info) {
-            $scope.zestStationData.qrCodeScanning = false;
             console.log(arguments);
             if (typeof info.msg === typeof 'str') {
                 if (info.msg.indexOf('Invalid') !== -1) {
                     $scope.at = 'input-qr-code';
                     onQRScanFail();
-                    console.warn('scan failed..');
+                    console.warn('QR Scan failed: invalid. ',info.msg);
                     $scope.runDigestCycle();
                 } else if (info.msg.indexOf(' : ') !== -1) {
 					// qr code coming from the samsotech will look like "PR_DF_BC1 : somevalue"
@@ -138,7 +139,7 @@ sntZestStation.controller('zsQrPickupKeyCtrl', [
 				
             });
             $scope.$on('SOCKET_FAILED', function() {
-                console.info('socket failed...');
+                console.info('socket failed.');
                 onQRScanFail();
             });
         };
@@ -200,7 +201,7 @@ sntZestStation.controller('zsQrPickupKeyCtrl', [
             $scope.setScreenIcon('key');
 
 			// 
-			// we'll start the scanner up initially, and if it times-out, ignore the failure,
+			// we'll start the scanner up initially, and if it times-out, ignore the failure while not in that flow,
 			// 
             $scope.scanQRCode();
 

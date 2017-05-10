@@ -226,6 +226,7 @@ sntZestStation.controller('zsKeyDispenseCtrl', [
 				"status": keyStatus
 			};
 			//console.log("reservation_id :" + $stateParams.reservation_id + " key :" + keyNo + " -----status :" + keyStatus);
+
 			$scope.callAPI(zsGeneralSrv.logKeyStatus, {
 				params: params,
 				'loader': 'none' // to hide loader
@@ -428,6 +429,7 @@ sntZestStation.controller('zsKeyDispenseCtrl', [
 				if (!_.isUndefined($scope.socketOperator.returnWebSocketObject()) && $scope.socketOperator.returnWebSocketObject().readyState === 1) {
 				// this param has to be set corresponding to key created
 				var is_first_key = $scope.noOfKeysCreated === 0 ? 1 : 0;
+
 				$scope.socketOperator.DispenseKey($scope.dispenseKeyData, is_first_key);
 				} else {
 					$scope.$emit('CONNECT_WEBSOCKET'); // connect socket

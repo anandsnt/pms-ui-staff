@@ -274,7 +274,9 @@ admin.controller('ADRoomTypesCtrl', ['$scope', '$rootScope', '$state', 'ADRoomTy
 		var successCallBack = function() {
 			$scope.$emit('hideLoader');
 			// actualIndex holds the index of clicked element in $scope.data.room_types
-			var actualIndex = $scope.data.room_types.map(function(x) {return x.id; }).indexOf(roomtype_id);
+            var actualIndex = $scope.data.room_types.map(function(x) {
+                return x.id;
+            }).indexOf(roomtype_id);
 
       		$scope.data.room_types.splice(actualIndex, 1);
 			$scope.tableParams.page(1);

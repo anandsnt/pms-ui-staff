@@ -17,7 +17,7 @@
 	        <div ng-include="'/assets/partials/common/notification_message.html'"></div>
 	        <div class="modal-body">
 	        	<div class="content-left">
-                    <span 
+                    <span
                     rv-include-template="/assets/partials/rateManager_/popup/left/rvRateManagerPopupLeftRestrictionList.html">
             		</span>
             	</div>
@@ -25,7 +25,11 @@
             		<span ng-if="contentMiddleMode === 'ROOM_TYPE_PRICE_LISTING'"
             			rv-include-template="/assets/partials/rateManager_/popup/middle/roomType/rvRateManagerPopupMiddleRoomTypePriceListing.html">
             		</span>
-            		
+
+                    <span ng-if="contentMiddleMode === 'RATE_PRICE_LISTING'"
+                        rv-include-template="/assets/partials/rateManager_/popup/middle/roomType/rvRateManagerPopupMiddleRatePriceListing.html">
+                    </span>
+
             		<span ng-if="contentMiddleMode === 'SINGLE_ROOM_TYPE_CHOOSE_RATE'"
             			rv-include-template="/assets/partials/rateManager_/popup/middle/roomType/rvRateManagerPopupMiddleSingleRoomTypeChooseRate.html">
             		</span>
@@ -70,7 +74,7 @@
 		                <!-- add class .checked when checked -->
 		                <span class="icon-form icon-checkbox" ng-class="{'checked': applyPriceToDates}"></span>
 		                <!-- add attribute 'checked="checked"' when checked-->
-		                <input name="apply-price-to-dates" id="apply-price-to-dates" 
+		                <input name="apply-price-to-dates" id="apply-price-to-dates"
 		                	ng-model="applyPriceToDates" type="checkbox" ng-disabled="isPastDate"/>
 		                Apply Price
 		            </label>
@@ -80,7 +84,7 @@
 		                <!-- add class .checked when checked -->
 		                <span class="icon-form icon-checkbox" ng-class="{'checked': applyRestrictionsToDates}"></span>
 		                <!-- add attribute 'checked="checked"' when checked-->
-		                <input name="apply-restriction-to-dates" id="apply-restriction-to-dates" 
+		                <input name="apply-restriction-to-dates" id="apply-restriction-to-dates"
 		                	ng-model="applyRestrictionsToDates" type="checkbox" ng-disabled="isPastDate"/>
 		                Apply Restrictions
 		            </label>
@@ -96,29 +100,29 @@
 	                        <input  ng-model="weekDay.selected" value="restrictions" type="checkbox" ng-disabled="isPastDate"/>
 	                         {{weekDay.weekDay}}
 	                    </label>
-	                    
+
 	                    <!-- 'ButtonText':
 	                        - 'Select All' - when some day is not selected
 	                        - 'Select None' - when all days are selected
 	                    -->
-	                    <button ng-click="clickedOnWeekDaySelectAllButton()" 
+	                    <button ng-click="clickedOnWeekDaySelectAllButton()"
 	                    	ng-show="!showSelectNoneForWeekDaySelection()" ng-disabled="isPastDate">
 	                        Select All
 	                    </button>
 	                    <button ng-show="showSelectNoneForWeekDaySelection()"
 	                    	ng-click="clickedOnWeekDaySelectNoneButton()" ng-disabled="isPastDate">
 	                        Select None
-	                    </button>	                    
+	                    </button>
 	                </div>
 
 	                <h4>Until</h4>
 	                <div class="has-datepicker">
-	                    <input placeholder="Select Date Range" type="text" class="range-datepicker green" 
-	                    	readonly 
-	                    	rv-clear-text-box 
-	                    	listen-this="untilDate" 
-	                    	ui-date="datePickerOptions" 
-	                    	value="{{untilDate|date:dateFormat}}" 
+	                    <input placeholder="Select Date Range" type="text" class="range-datepicker green"
+	                    	readonly
+	                    	rv-clear-text-box
+	                    	listen-this="untilDate"
+	                    	ui-date="datePickerOptions"
+	                    	value="{{untilDate|date:dateFormat}}"
 	                    	ng-disabled="isPastDate"/>
 	                </div>
 
@@ -135,8 +139,8 @@
 	                <button class="button purple" ng-show="shouldShowClearOverrideButton()" ng-click="clickedOnClearOverrideButton()" type="button">
 	                    Clear Rate Overrides
 	                </button>
-	            
-	                <button class="button green" ng-click="clickedOnSetButton($event)" type="button" 
+
+	                <button class="button green" ng-click="clickedOnSetButton($event)" type="button"
 	                		ng-disabled="isPastDate"
 	                		ng-class="{'grey' : isPastDate}">
 	                    Set

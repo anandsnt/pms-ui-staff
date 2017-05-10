@@ -47,6 +47,9 @@ angular.module('sntRover').controller('stayCardMainCtrl', ['$rootScope', '$scope
 					'id': guestData.id || $scope.reservationDetails.guestCard.id || $scope.reservationData.guest.id
 				};
 
+                $scope.guestCardData.userId = param.id;
+                $scope.guestCardData.guestId = param.id;
+
                 angular.merge($scope.guestCardData.contactInfo, {
                     first_name: $scope.reservationData.guest.firstName,
                     last_name: $scope.reservationData.guest.lastName,
@@ -66,6 +69,27 @@ angular.module('sntRover').controller('stayCardMainCtrl', ['$rootScope', '$scope
                 }, 1000);
 
                 RVContactInfoSrv.setGuest(param.id);
+
+                // CICO-40614 In case of soft reload of stay card (eg. shared room other staycard navigation) the guestCard should be inititated
+                $scope.$broadcast('guestCardAvailable');
+
+                /**
+				 * CICO-40606
+				 * In case of editing a hourly reservation, the guest details aren't transferred from the diary to the confirmation screen (as the diary comes under a different state)
+				 * Hence, for the scenario where we have a guest id, and we are coming into the summary screen in case of hourly reservations, we will have to make this call and fetch
+				 * the guest details
+                 */
+                if ($rootScope.isHourlyRateOn && $state.current.name !== 'rover.reservation.staycard.reservationcard.reservationdetails') {
+                    $scope.callAPI(RVContactInfoSrv.getGuestDetails, {
+                        successCallBack: function(data) {
+                            fetchGuestCardDataSuccessCallback(data);
+                        },
+                        failureCallBack: function(errorMessage) {
+                            $scope.errorMessage = errorMessage;
+                            $scope.$emit('hideLoader');
+                        }
+                    });
+                }
             }
 		};
 
@@ -1069,7 +1093,9 @@ angular.module('sntRover').controller('stayCardMainCtrl', ['$rootScope', '$scope
 			$scope.reservationData.company.id = hResData.company_card_id;
 
 			if (!!$scope.reservationData.guest.id) {
-				$scope.initGuestCard();
+                $scope.initGuestCard({
+                    id: $scope.reservationData.guest.id
+                });
 			}
 			if (!!$scope.reservationData.company.id) {
 				$scope.initCompanyCard();

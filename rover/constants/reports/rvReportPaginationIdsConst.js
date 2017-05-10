@@ -21,6 +21,7 @@ angular.module('reportsModule').constant('RVReportPaginationIdsConst', {
     'Deposit Balance Summary': 'DEPOSIT_SUMMARY',
     'Business on the Books': 'BUSINESS_ON_BOOKS',
     'Complimentary Room Report': 'COMPLIMENTARY_ROOM_REPORT',
-    'Group Rooms Report': 'GROUP_ROOMS_REPORT'
+    'Group Rooms Report': 'GROUP_ROOMS_REPORT',
+    'Add On Upsell': 'ADDON_UPSELLS'
 
 });

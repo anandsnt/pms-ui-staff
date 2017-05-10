@@ -49,7 +49,7 @@ angular.module('sntRover')
                     srvParams = RVNightlyDiarySrv.getCache();
                 }
                 else {
-                    srvParams.start_date = $rootScope.businessDate;
+                    srvParams.start_date = addDaysToDay($rootScope.businessDate, -1);
                     srvParams.no_of_days = 7;
                     srvParams.page = 1;
                     srvParams.per_page = 50;
@@ -76,9 +76,14 @@ angular.module('sntRover')
                     hasOverlay: false,
                     isEditReservationMode: false,
                     showUnassignedPanel: false,
-                    showFilterPanel: false,
+                    showUnassignedReservations: false,
+                    showFilterPanel: screen.width > 1279,
                     selectedRoomTypes: [],
-                    selectedFloors: []
+                    selectedFloors: [],
+                    isFromStayCard: false,
+                    filterList: {},
+                    hideRoomType: true,
+                    hideFloorList: true
                 };
                 $scope.currentSelectedReservation = {};
                 $scope.currentSelectedRoom = {};
@@ -160,6 +165,8 @@ angular.module('sntRover')
              * @param reservation - Current selected reservation
              */
             var selectReservation = (e, reservation, room) => {
+                var srvParams = {};
+
                 if (!$scope.diaryData.isEditReservationMode) {
                     $scope.diaryData.isEditReservationMode = true;
                     $scope.currentSelectedReservation = reservation;
@@ -177,6 +184,11 @@ angular.module('sntRover')
                     } else {
                         // To fix issue point 3 - QA failed comment - CICO-34410
                         $stateParams.isFromStayCard = false;
+                        srvParams = RVNightlyDiarySrv.getCache();
+                        // Selection not showing top bar after unassigning reservation from room assignment
+                        if (srvParams.currentSelectedReservationId === '') {
+                            $scope.$apply();
+                        }
                     }
                 }
             };
@@ -306,7 +318,6 @@ angular.module('sntRover')
             $scope.$on('UPDATE_RESERVATIONLIST', function( event, roomId ) {
                 if (!!roomId) {
                     $scope.$broadcast('RESET_RIGHT_FILTER_BAR');
-                    $scope.diaryData.showFilterPanel = false;
                 }
                 cancelReservationEditing();
                 fetchRoomListDataAndReservationListData(roomId);
@@ -318,7 +329,7 @@ angular.module('sntRover')
             */
             $scope.$on('REFRESH_DIARY_ROOMS_AND_RESERVATIONS', function( event, roomId ) {
                 $scope.$broadcast('RESET_RIGHT_FILTER_BAR');
-                $scope.diaryData.showFilterPanel = false;
+                $scope.diaryData.showFilterPanel = true;
                 cancelReservationEditing();
                 fetchRoomListDataAndReservationListData(roomId);
             });
@@ -349,9 +360,19 @@ angular.module('sntRover')
 
             if ($stateParams.isFromStayCard) {
                 var params = RVNightlyDiarySrv.getCache();
+
                 $scope.currentSelectedReservationId = params.currentSelectedReservationId;
                 $scope.diaryData.selectedRoomId = params.currentSelectedRoomId;
                 $scope.currentSelectedReservation = params.currentSelectedReservation;
+                if (params.selected_floor_ids.length > 0 || params.selected_room_type_ids.length > 0) {
+                    $scope.diaryData.isFromStayCard = true;
+                    $scope.diaryData.showFilterPanel = true;
+                    $scope.diaryData.filterList = params.filterList;
+                    $scope.diaryData.selectedRoomCount = params.selectedRoomCount;
+                    $scope.diaryData.selectedFloorCount = params.selectedFloorCount;
+                    $scope.diaryData.hideRoomType = params.hideRoomType;
+                    $scope.diaryData.hideFloorList = params.hideFloorList;
+                }
             }
 
             // Initial State

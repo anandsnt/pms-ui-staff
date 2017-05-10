@@ -840,14 +840,16 @@ sntRover.controller('RVbillCardController',
 		return rvPermissionSrv.getPermissionValue ('DIRECT_BILL_PAYMENT');
 	};
 
-	// Method to check whether the current active bill is having payment type = DB.
+	// Method to check whether the current active bill is having payment type = DB and,
+	// attached with a company/ta card , which is having a AR Account.
 	$scope.checkPaymentTypeIsDirectBill = function() {
-		var isPaymentTypeDirectBill = false;
+		var isPaymentTypeDirectBill = false,
+			currentActiveBill = $scope.reservationBillData.bills[$scope.currentActiveBill];
 
-		if ($scope.reservationBillData.bills[$scope.currentActiveBill].is_account_attached && $scope.hasPermissionToDirectBillPayment()) {
+		if (currentActiveBill.is_account_attached && currentActiveBill.has_ar_account && $scope.hasPermissionToDirectBillPayment()) {
 			isPaymentTypeDirectBill = true;
 		}
-		
+
 		return isPaymentTypeDirectBill;
 	};
 
@@ -990,7 +992,7 @@ sntRover.controller('RVbillCardController',
 
 		paymentParams.direct_bill = $scope.checkPaymentTypeIsDirectBill();
 		paymentParams.bill_id = $scope.reservationBillData.bills[$scope.currentActiveBill].bill_id;
-		
+
 		$scope.invokeApi(RVPaymentSrv.renderPaymentScreen, paymentParams, function(data) {
 			// NOTE: Obtain the payment methods and then open the payment popup
 			$scope.paymentTypes = data;
@@ -1691,6 +1693,10 @@ sntRover.controller('RVbillCardController',
 	// To handle complete checkin button click
 	$scope.clickedCompleteCheckin = function(isCheckinWithoutPreAuthPopup, checkInQueuedRoom) {
 
+        // CICO-36122 - Set this to keep the promos and news opt in check-in screen in sync with guest card
+        if ( !!$scope.guestCardData && !!$scope.guestCardData.contactInfo) {
+           $scope.guestCardData.contactInfo.is_opted_promotion_email = $scope.saveData.promotions;
+        }
 
 		if ($scope.hasAnySharerCheckedin()) {
 			// Do nothing , Keep going checkin process , it is a sharer reservation..
@@ -2732,7 +2738,7 @@ sntRover.controller('RVbillCardController',
                 'bill_id': $scope.reservationBillData.bills[$scope.currentActiveBill].bill_id,
                 'date': feesData.date
             };
-            
+
             $scope.invokeApi(RVBillCardSrv.groupChargeDetailsFetch, params, fetchChargeDataSuccessCallback, fetchChargeDataFailureCallback);
         }
         else {
@@ -2741,5 +2747,7 @@ sntRover.controller('RVbillCardController',
             $scope.calculateHeightAndRefreshScroll();
         }
     };
+
+    $scope.$emit("OBSERVE_FOR_SWIPE");
 
 }]);

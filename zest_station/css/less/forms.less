@@ -1,6 +1,6 @@
 input,
 select,
-.button {
+.button:not(.ng-hide) {
     font-family: @fontFamily;
     font-size: 1.389em;
     vertical-align: middle;
@@ -9,7 +9,13 @@ select,
     #rounded > .round();
     .show;
     .transition();
+    display: initial !important;
 } 
+li{
+    .button:not(.ng-hide) {
+        display: block !important;
+    }
+}
 
 input {
     color: @textColor;
@@ -91,6 +97,8 @@ select {
 }
 
 .form {
+    width: 100% !important;
+
     #flexbox > .flex();
     #flexbox > .parent(row wrap, flex-start, flex-start, '');
 
@@ -98,6 +106,9 @@ select {
         width: 50%;
         margin: 0 auto; 
     }
+}
+.form:not(.ng-hide){
+    display: table !important;
 }
 
 .entry {
@@ -123,9 +134,8 @@ select {
     }
 
     &.input { 
-        position: relative;
-        margin-right: 10px;
-        #calc > #width > .remove(85%, 10px);
+        display:table-cell !important;
+        width: 100% !important;
 
         .icons {
             position: absolute;
@@ -161,8 +171,8 @@ select {
 
         > label,
         > input,
-        > .select {
-            display: inline-block;
+        > .select:not(.ng-hide) {
+            display: inline-block !important;
         }
 
         > label {
@@ -193,7 +203,7 @@ select {
     }
 
     &.action {
-        width: 15%;
+        padding-left: 10px;
     }
 }
 
@@ -334,3 +344,21 @@ select {
     fill: @brandColor;
 }
 
+.editor-mode-cls {
+    min-width:200px;
+}
+.action > .button:not(.ng-hide) {
+    display: table-cell !important;
+}
+#content > button:not(.ng-hide) {
+    display:table-cell !important;
+}
+
+.entry > .select:not(.ng-hide) {
+    &.button {
+        display: inline-block !important;
+    }
+}
+.centered > #content > .button:not(.ng-hide) {
+    display:block !important;
+}

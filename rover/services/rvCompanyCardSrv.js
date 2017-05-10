@@ -528,5 +528,23 @@ angular.module('sntRover').service('RVCompanyCardSrv', ['$q', 'rvBaseWebSrvV2',
 
             return deferred.promise;
         };
+
+        /**
+         * Service for check commission recalculation
+         * @param {Object} param payLoad
+         * @return {promise|{then, catch, finally}|*|e} Promise
+         */
+        this.recalculateCommission = function(param) {
+            var deferred = $q.defer(),
+                url = '/api/reservations/recalculate_commission_details';
+
+            rvBaseWebSrvV2.postJSON(url, param).then(function(data) {
+                deferred.resolve(data);
+            }, function(data) {
+                deferred.reject(data);
+            });
+            return deferred.promise;
+        };
+
     }
 ]);

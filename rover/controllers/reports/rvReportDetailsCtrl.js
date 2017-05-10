@@ -540,6 +540,24 @@ sntRover.controller('RVReportDetailsCtrl', [
 			    }
 			}
 
+			// For addon Upsell, we don't have to show Revenue, But as we are using common methods to retrieve data
+			// revenue details are also returned from API. We have to filter out revenue details for this report
+			if ($scope.chosenReport.title === reportNames['ADDON_UPSELLS']) {
+				// remove Revenue from header
+				headers.splice(_.indexOf(headers, function() {
+					return value === 'Revenue';
+				}), 1);
+				// remove values corresponding to revenue in each row (will be the last element in each row)
+				_.each(results, function(result) {
+					result.pop();
+				});
+				// remove Revenue from the totals row
+				$scope.$parent.resultsTotalRow.splice(_.indexOf($scope.$parent.resultsTotalRow, function() {
+					return label === 'Revenue';
+				}), 1);
+			}
+
+
 			// new more detailed reports
 			$scope.parsedApiFor = $scope.chosenReport.title;
 

@@ -39,6 +39,30 @@
 							<ad-checkbox  is-checked="data.offer_mobilekey_from_zest" label="{{'OFFER_MOBILEKEY_LABEL' | translate }}" div-class="key-delivery-checkbox" span-class="checkbox-background"></ad-checkbox>
 
 							<ad-checkbox is-checked="data.show_oracode_in_room_ready_email" label="{{'SHOW_ORACODE_IN_ROOM_READY_EMAIL' | translate }}" div-class="key-delivery-checkbox" span-class="checkbox-background"></ad-checkbox>
+							<br>
+						</div>
+						<br>
+						<!--CICO-37921 Configuration only available on overlays-->
+						<div class="entry full-width" ng-if="!isStandAlone">
+							<div class="form-title">
+								<h3>QR Code Delivery
+									<span> (External Key Kiosk) </span>
+								</h3>
+							</div>
+							<label class="radio"
+								   ng-class="{checked: !data.use_external_id_for_qr_code}">
+								<span class="icon-form icon-radio"
+									  ng-class="{checked: !data.use_external_id_for_qr_code}"></span>
+								<input ng-click="toggleUseExternalIDForQRCode()"  type="radio" name="guest-zest" class="change-data">
+								Rover System ID
+							</label>
+							<label class="radio"
+								   ng-class="{checked: use_external_id_for_qr_code}">
+								<span class="icon-form icon-radio"
+									  ng-class="{checked: data.use_external_id_for_qr_code}"></span>
+								<input ng-click="toggleUseExternalIDForQRCode()" type="radio" name="guest-zest" class="change-data">
+								Opera Reservation Name ID
+							</label>
 						</div>
 					</div>
 					

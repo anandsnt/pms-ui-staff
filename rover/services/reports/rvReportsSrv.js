@@ -13,7 +13,7 @@ angular.module('sntRover').service('RVreportsSrv', [
 			EXPORT_SCHEDULE: 'EXPORT_SCHEDULE'
 		}
 
-        var REPORT_TIME_PERIODS = {
+        var REPORT_EXPORT_TIME_PERIODS = {
             'Nationality Statistics': [
                 'LAST_MONTH',
                 'LAST_JANUARY',
@@ -32,7 +32,7 @@ angular.module('sntRover').service('RVreportsSrv', [
              'Financial Transactions': [
                 'YESTERDAY'
              ],
-             'Membership Details': [
+             'Stash Rewards Membership Export': [
                 'YESTERDAY'
              ],
              'Reservations': [
@@ -49,8 +49,41 @@ angular.module('sntRover').service('RVreportsSrv', [
              ],
              'Last Month Reservations': [
                 'LAST_MONTH'
+             ],
+             'Commissions': [
+             	'ALL',
+             	'LAST_MONTH',
+                'LAST_JANUARY',
+                'LAST_FEBRUARY',
+                'LAST_MARCH',
+                'LAST_APRIL',
+                'LAST_MAY',
+                'LAST_JUNE',
+                'LAST_JULY',
+                'LAST_AUGUST',
+                'LAST_SEPTEMBER',
+                'LAST_OCTOBER',
+                'LAST_NOVEMBER',
+                'LAST_DECEMBER'
              ]
 
+        };
+
+        var SCHEDULE_REPORT_TIMEPERIODS = {
+        	'Arrival': [
+        		'TODAY',
+        		'TOMORROW'
+        	 ],
+        	 'Departure': [
+        		'TODAY',
+        		'TOMORROW'
+        	 ],
+        	 'In-House Guests': [
+        		'TODAY',
+        		'TOMORROW'
+        	 ],
+        	 'Comparison': ['YESTERDAY'],
+        	 'Guest Balance Report': ['ALL']
         };
 
 		var cacheKey = 'REPORT_PAYLOAD_CACHE';
@@ -208,7 +241,7 @@ angular.module('sntRover').service('RVreportsSrv', [
 		function schedulePayloadGenerator (type) {
 			var deferred = $q.defer(),
 				payload = {},
-				apiCount = type === SCHEDULE_TYPES.SCHEDULE_REPORT ? 5 : 6,
+				apiCount = type === SCHEDULE_TYPES.SCHEDULE_REPORT ? 5 : 7,
 				exportOnly = type === SCHEDULE_TYPES.EXPORT_SCHEDULE ? true : false;
 
 			var shallWeResolve = function() {
@@ -362,9 +395,14 @@ angular.module('sntRover').service('RVreportsSrv', [
             choosenReport[name] = value;
         };
 
-        // Get the timeperiods configured for a given report
-        service.getReportScheduleTimePeriods = function(title) {
-            return REPORT_TIME_PERIODS[title];
+        // Get the timeperiods configured for a given report for export report
+        service.getReportExportTimePeriods = function(title) {
+            return REPORT_EXPORT_TIME_PERIODS[title];
+        };
+
+        // Get the time periods for each of the reports in the schedule reports
+        service.getScheduleReportTimePeriods = function( title ) {
+        	return SCHEDULE_REPORT_TIMEPERIODS[title];
         };
 
 

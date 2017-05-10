@@ -208,7 +208,9 @@ angular.module('sntRover').controller('RVHkRoomStatusCtrl', [
 
 		$scope.showFilters = function() {
 			$scope.filterOpen = true;
-			setTimeout(function() { $scope.refreshScroller('room-status-filter'); }, 1500);
+            setTimeout(function() {
+                $scope.refreshScroller('room-status-filter');
+            }, 1500);
 		};
 
 		$scope.refreshData = function() {
@@ -730,7 +732,9 @@ angular.module('sntRover').controller('RVHkRoomStatusCtrl', [
 				room_service_status_id: $scope.updateServiceData.room_service_status_id
 			};
 
-			var roomsToAdd = _.filter($scope.completedData.assignedRoomsList, function(room) { return room.is_add_to_update;});
+            var roomsToAdd = _.filter($scope.completedData.assignedRoomsList, function(room) {
+                return room.is_add_to_update;
+            });
 
 			params.room_id = _.pluck(roomsToAdd, 'id');
 			// as per CICO-32168 comments
