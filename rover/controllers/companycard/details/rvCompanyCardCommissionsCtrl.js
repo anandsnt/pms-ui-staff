@@ -260,7 +260,7 @@ function($scope, $state, $rootScope, $stateParams, RVCompanyCardSrv, ngDialog, $
     $scope.toggleSelection = function() {
 
         $scope.filterData.commssionRecalculationValue = '';
-        
+
         if ($scope.filterData.selectAll) {
             updateCheckedStatus(true);
             $scope.selectedCommissions = [].concat($scope.commissionDetails);
