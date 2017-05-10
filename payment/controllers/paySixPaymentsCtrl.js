@@ -3,6 +3,7 @@ angular.module('sntPay').controller('paySixPayController', ['$scope', 'paymentAp
 
         var retrieveCardDetails = function(tokenDetails) {
             var cardDetails = {};
+
             cardDetails.cardType = tokenDetails.token_no.substr(tokenDetails.token_no.length - 4);
             cardDetails.expiryMonth = tokenDetails.expiry.substring(2, 4);
             cardDetails.expiryYear = tokenDetails.expiry.substring(0, 2);
@@ -33,6 +34,7 @@ angular.module('sntPay').controller('paySixPayController', ['$scope', 'paymentAp
                     expiry_date: cardDetails.expiryDate
                 }
             };
+
             $scope.$emit(payEvntConst.CC_TOKEN_GENERATED, {
                 paymentData,
                 tokenDetails,
@@ -137,6 +139,7 @@ angular.module('sntPay').controller('paySixPayController', ['$scope', 'paymentAp
 
         $scope.$on('INITIATE_CHIP_AND_PIN_PAYMENT', function(event, data) {
             var paymentParams = data;
+
             paymentParams.postData.is_emv_request = true;
             paymentParams.postData.workstation_id = $scope.hotelConfig.workstationId;
             paymentParams.emvTimeout = parseInt($scope.hotelConfig.emvTimeout);
@@ -145,6 +148,7 @@ angular.module('sntPay').controller('paySixPayController', ['$scope', 'paymentAp
 
         $scope.$on('INITIATE_CHIP_AND_PIN_TOKENIZATION', function(event, data) {
             var paymentParams = data;
+
             paymentParams.is_emv_request = true;
             paymentParams.emvTimeout = parseInt($scope.hotelConfig.emvTimeout);
             tokenize(data);
@@ -156,6 +160,7 @@ angular.module('sntPay').controller('paySixPayController', ['$scope', 'paymentAp
         (function() {
             // Initially set Manaul card Entry if card is attached already
             var isCCPresent = angular.copy($scope.showSelectedCard());
+
             $scope.payment.isManualEntryInsideIFrame = isCCPresent && $scope.hotelConfig.paymentGateway === 'sixpayments' ? true : false;
 
             // handle six payment iFrame communication
@@ -165,6 +170,7 @@ angular.module('sntPay').controller('paySixPayController', ['$scope', 'paymentAp
 
             angular.element($window).on(messageEvent, function(e) {
                 var responseData = e.data || e.originalEvent.data;
+
                 if (responseData.response_message === "token_created") {
                     notifyParent(responseData);
                 }

@@ -15,7 +15,9 @@ angular.module('sntPay').service('sntPaymentSrv', ['$q', '$http', '$location', '
             var urlStart = url.split('?')[0];
             // please note the type of error expecting is array
             // so form error as array if you modifying it
-            if (status === 406) { // 406- Network error
+            
+
+if (status === 406) { // 406- Network error
                 deferred.reject(errors);
             } else if (status === 422) { // 422
                 deferred.reject(errors);
@@ -46,6 +48,7 @@ angular.module('sntPay').service('sntPaymentSrv', ['$q', '$http', '$location', '
 
             var deferred = $q.defer(),
                 url = "";
+
             if (!!dataToSrv.reservation_id) {
                 url = 'api/reservations/' + dataToSrv.reservation_id + '/submit_payment';
             } else {
@@ -177,6 +180,7 @@ angular.module('sntPay').service('sntPaymentSrv', ['$q', '$http', '$location', '
                 // the timeout set for the hotel
                 if (timeStampInSeconds >= dataToSrv.emvTimeout) {
                     var errors = ["Request timed out. Unable to process the transaction"];
+
                     deferred.reject(errors);
                 } else {
                     // TODO: comment the assignment below before commits and pushes.
@@ -253,6 +257,7 @@ angular.module('sntPay').service('sntPaymentSrv', ['$q', '$http', '$location', '
                 // the timeout set for the hotel
                 if (timeStampInSeconds >= dataToSrv.emvTimeout) {
                     var errors = ["Request timed out. Unable to process the transaction"];
+
                     deferred.reject(errors);
                 } else {
                     // TODO: comment the assignment below before commits and pushes.
@@ -331,6 +336,7 @@ angular.module('sntPay').service('sntPaymentSrv', ['$q', '$http', '$location', '
             };
             var failure = function(data) {
                 var errorMessage = ['There is a problem with your credit card'];
+
                 failureCallback(errorMessage);
             };
 
@@ -339,10 +345,12 @@ angular.module('sntPay').service('sntPaymentSrv', ['$q', '$http', '$location', '
                     service.fetchMLISessionDetails(sessionDetails, success, failure);
                 } catch (err) {
                     var errorMessage = ['There was a problem connecting to the payment gateway.'];
+
                     failureCallback(errorMessage);
                 }
             } else {
                 var errorMessage = ['There is a problem with your credit card'];
+
                 failureCallback(errorMessage);
             }
 

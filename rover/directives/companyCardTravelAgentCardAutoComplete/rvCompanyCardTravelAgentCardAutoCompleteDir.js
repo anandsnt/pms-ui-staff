@@ -91,6 +91,7 @@
           callBackToAutoComplete: callBackToAutoComplete
         }
       };
+
       $scope.callAPI(rvFilterOptionsSrv.fetchCompanyCard, options);
     };
 

@@ -124,6 +124,7 @@ angular.module('sntRover').controller('rvRateManagerLeftSideFilterCtrl', [
        */
       $scope.deleteSelectedRateType = (rateTypeID) => {
         var indexToDelete = _.findIndex($scope.selectedRateTypes , {id: parseInt(rateTypeID)});
+
         $scope.selectedRateTypes.splice(indexToDelete, 1);
 
         $scope.selectedRateTypeID = '';
@@ -138,6 +139,7 @@ angular.module('sntRover').controller('rvRateManagerLeftSideFilterCtrl', [
        */
       $scope.deleteSelectedRateTypeFromRTT = (rateTypeID) => {
         var indexToDelete = _.findIndex($scope.selectedRateTypesFromRTT , {id: parseInt(rateTypeID)});
+
         $scope.selectedRateTypesFromRTT.splice(indexToDelete, 1);
 
         $scope.selectedRateTypeIDFromRTT = '';
@@ -169,6 +171,7 @@ angular.module('sntRover').controller('rvRateManagerLeftSideFilterCtrl', [
       var scrollTo = (cssSelector) => {
         // scrolling to bottom
         var scroller = $scope.getScroller('filter_details');
+
         setTimeout(function() {
           scroller.scrollToElement(cssSelector, 700);
         }, 301);
@@ -205,6 +208,7 @@ angular.module('sntRover').controller('rvRateManagerLeftSideFilterCtrl', [
        */
       $scope.deleteSelectedRate = (rateID) => {
         var indexToDelete = _.findIndex($scope.selectedRates , {id: parseInt(rateID)});
+
         $scope.selectedRates.splice(indexToDelete, 1);
 
         $scope.selectedRateID = '';
@@ -372,6 +376,7 @@ angular.module('sntRover').controller('rvRateManagerLeftSideFilterCtrl', [
         }
         else {
           let selectedCardIDs = _.pluck($scope.selectedCards, 'id');
+
           if (selectedCardIDs.indexOf(ui.item.id) < 0) {
             $scope.selectedCards.push(ui.item);
           }
@@ -396,6 +401,7 @@ angular.module('sntRover').controller('rvRateManagerLeftSideFilterCtrl', [
        */
       $scope.deleteSelectedCard = (cardID) => {
         var indexToDelete = _.findIndex($scope.selectedCards , {id: parseInt(cardID)});
+
         $scope.selectedCards.splice(indexToDelete, 1);
 
         $scope.cardSearchText = '';
@@ -518,6 +524,7 @@ angular.module('sntRover').controller('rvRateManagerLeftSideFilterCtrl', [
       $scope.clickedOnShowRates = () => {
         var selectedRateTypeList;
         // PAGINATION stuff will be handled from RateManagerCtrl
+
         if ($scope.chosenTab === 'RATES') {
           selectedRateTypeList = [];
         }

@@ -215,6 +215,7 @@ sntZestStation.controller('zsRootCtrl', [
 
             $scope.zestStationData.showTemplateList = true;
         }
+
         $scope.selectThemeFromTemplateList = function(theme) {
                 $scope.zestStationData.showTemplateList = false;
                 $scope.quickSetHotelTheme(theme);

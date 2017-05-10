@@ -12,6 +12,7 @@ angular.module('sntRover')
                 fromDate: $scope.fromDate,
                 toDate: $scope.toDate
             };
+
             $scope.$emit(rvTwoMonthCalendarEventConstants.TWO_MONTH_CALENDAR_DATE_UPDATED, updatedData);
             $scope.closeDialog();
         };
@@ -47,6 +48,7 @@ angular.module('sntRover')
             }
             var date = new tzIndependentDate($scope.fromDate);
             // year
+
             if(!_.isUndefined($scope.maxRange.year)){
                 date.setFullYear(date.getFullYear() + $scope.maxRange.year);
             }
@@ -90,6 +92,7 @@ angular.module('sntRover')
         (()=> {
 
             var allParamsForCalendarExist = (!!$scope.ngDialogData && 'fromDate' in $scope.ngDialogData && 'toDate' in $scope.ngDialogData);
+
             if (!allParamsForCalendarExist) { // if some of the params is missing from ngDialog initialization
                 console.error('Unable to initialize two month calendar, you may have missed the required params to initalize the calendar view');
                 return;
