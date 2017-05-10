@@ -54,7 +54,7 @@
 		top: 12% !important;
 	}
 	.admin-screen#main {
-		margin-top: 7.5% !important;
+		margin-top: 12.5% !important;
 	    height: 80% !important;
 	}
 	.terms-content {
@@ -142,12 +142,15 @@
 		display:none;
 	}
 	span,text,button,header{
-		font-weight:lighter;
+		font-weight: 300;
 	}
 	.option {    
 		border-radius: 0px !important;
 	    width: 125px !important;
 	    height: 125px !important;
+	    .icons{
+    	 	margin: 0px !important;
+	    }
 	}
 	.lighter-text {
 		opacity: .4;
@@ -166,6 +169,7 @@
 	select{
     	display: -webkit-inline-box;
     }
+
 	#public {
 
 		h1,
@@ -325,6 +329,12 @@
 	.room-details {
 		top: 10% !important;
 		height: 90% !important;
+		margin-bottom: 15px;
+    	margin-top: 15px;
+	}
+	.room-upsell-content{
+		margin-bottom: 15px;
+    	margin-top: 15px;
 	}
 	.admin-editor-toggle {
 		margin-left: -0.175% !important;
@@ -338,7 +348,41 @@
 	#logo {
 		margin-top: 16% !important;
 	}
+	
+	h1{
+		font-weight:200 !important;/* gotham extra light */
+		letter-spacing: -2px !important;
+	}
 
 	#content > button:not(.ng-hide) {
 		display: block !important;
 	}
+
+	.form.short {
+		width: 50% !important;
+	}
+
+.admin-field-contents{
+	height: 90% !important;
+}
+
+
+
+
+#icon-date {
+    @media only screen and (min-width: 1024px) and (max-width: 1024px) { 
+		position: absolute;
+	    margin-left: -6.8%;
+	    margin-top: 1%;
+	    height: 49.5%;
+	    top: 44%;
+    }
+    
+    @media only screen and (min-width: 1366px) and (max-width: 1366px) { 
+        position: absolute;
+	    margin-left: -5%;
+	    margin-top: 1%;
+	    height: 48.5%;
+	    top: 40%;
+    }
+}

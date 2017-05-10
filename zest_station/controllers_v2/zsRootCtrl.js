@@ -775,7 +775,7 @@ sntZestStation.controller('zsRootCtrl', [
 
             if (_.contains(nonCircleNavIcons, theme)) {
                 $scope.nonCircleNavIcons = true;
-                commonIconsPath = '/assets/zest_station/css/icons/default/square_icons';
+                commonIconsPath = '/assets/zest_station/css/icons/public_v2';
             } else {
                 $scope.nonCircleNavIcons = false;
             }
