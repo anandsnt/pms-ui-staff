@@ -44,7 +44,7 @@
                     <div class="eta-container">
                         <div class="select-style">
                             <select ng-model="stayDetails.hour"
-                            ng-options="hour as hour  for hour in hoursWithRestrictions" ng-change="hoursChanged()">
+                                ng-options="hour as hour  for hour in hoursWithRestrictions" ng-change="hoursChanged()">
                                 <option value="">HH</option>
                             </select>
                         </div>
@@ -52,7 +52,7 @@
                     <div class="eta-container eta-date">
                         <div class="select-style">
                             <select ng-model="stayDetails.minute"
-                            ng-options="minute as minute  for minute in minutesWithRestrictions">
+                                ng-options="minute as minute  for minute in minutesWithRestrictions">
                                 <option value="">MM</option>
                             </select>
                         </div>
@@ -66,14 +66,14 @@
                         </div>
                     </div>
                 </div> -->
-            <!-- </div> -->
-            <p class="sub-text left-align margin-top-20">REQUESTS OR COMMENTS?</p>
-            <div class="row">
-                <textarea rows="5" cols="50" ng-model="stayDetails.comment" class=" text-comment col-xs-12 sub-text" placeholder="Comments here.">
-                </textarea>
-                <!--  submit button-->
-                <a class="btn btn-template margin-top-40" ng-click="postStayDetails()">NEXT</a>
-            </div>
+                <!-- </div> -->
+                <p class="sub-text left-align margin-top-20">REQUESTS OR COMMENTS?</p>
+                <div class="row">
+                    <textarea rows="5" cols="50" ng-model="stayDetails.comment" class=" text-comment col-xs-12 sub-text" placeholder="Comments here.">
+                    </textarea>
+                    <!--  submit button-->
+                    <input type="submit" class="btn btn-template margin-top-40" ng-click="postStayDetails()" value="NEXT" />
+                </div>
             </div>
         </div>
         <div class="col-md-4">
