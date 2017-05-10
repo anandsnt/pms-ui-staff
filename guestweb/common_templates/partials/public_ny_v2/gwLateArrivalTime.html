@@ -26,22 +26,24 @@
     </div>
     <!-- main content -->
     <div class="row" ng-hide="isLoading || netWorkError">
-        <div class="col-md-3"></div>
-        <div class="col-md-6 top-spacing section-container">
+        <div class="col-md-4"></div>
+        <div class="col-md-4 top-spacing section-container no-section-side-padding">
             <p class="main-text">Early Check-in Alert</p>
-            <p class="sub-main-text">
+            <p class="sub-main-text margin-top-20">
                 You have selected an <b>Early Check-in</b> (standard check-in time is {{checkinTime}}). Please choose a check-in time after {{earlyCheckinRestrictLimit}}.
             </p>
             <!--  -->
-            <div class="section-container">
+            <div class="section-container margin-top-40">
                 <p class="sub-text left-align">ESTIMATED ARRIVAL TIME</p>
-                <div class="row">
+                <div class="row margin-top-40">
                     <div class="select-style eta-single">
                         <select name="timepicker" id="timePicker" ng-model="arrivalTime">
                             <option value="">select time</option>
                             <option value="{{time}}" ng-repeat="time in timings">{{time}}</option>
                         </select>
                     </div>
+                     <!--  submit button-->
+                    <a class="btn btn-template margin-top-40" ng-click="postStayDetails()">NEXT</a>
                 </div>
                 <!--  <div class="row">
                     <div class="eta-container">
@@ -70,10 +72,8 @@
                     </div>
                 </div> -->
             </div>
-            <!--  submit button-->
-            <a class="btn btn-template margin-top-10" ng-click="postStayDetails()">NEXT</a>
         </div>
-        <div class="col-md-3">
+        <div class="col-md-4">
         </div>
     </div>
 </div>

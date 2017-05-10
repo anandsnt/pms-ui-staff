@@ -19,7 +19,7 @@
     <div class="row" ng-show="netWorkError">
         <div class="col-md-2"></div>
         <div class="col-md-8 top-spacing">
-            <p class="error-text">Our apologies, something went wrong, please complete your check-out at our front desk. You can also call the hotel at <a href="tel: {{hotelPhone}}" class="phone-text">{{hotelPhone}}.</a></p>
+            <p class="error-text">Our apologies, something went wrong, please complete your check out at our front desk. You can also call the hotel at <a href="tel: {{hotelPhone}}" class="phone-text">{{hotelPhone}}.</a></p>
         </div>
         <div class="col-md-2">
         </div>
@@ -28,10 +28,10 @@
     <div class="row" ng-hide="isFetching || netWorkError">
         <div class="col-md-3"></div>
         <!-- left side -->
-        <div class="col-md-6 top-spacing">
-            <p class="main-text text-left">Please choose your new
+        <div class="col-md-6  no-section-side-padding top-spacing">
+            <p class="sub-main-text text-left">Please choose your new
                 <br>check out time:</p>
-            <div class="row options-container margin-top-10">
+            <div class="row options-container margin-top-40" ng-class="{'two-options': charges.length === 2,'three-options': charges.length === 3}">
                 <a class="btn triple-button one-third-width {{ charge.class }}" ng-repeat="charge in charges" ng-click="gotToNextStep(charge.amount,charge.id)">
                     <div class="row">
                         <div class="circle-bg">

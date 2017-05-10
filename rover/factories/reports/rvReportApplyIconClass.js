@@ -46,7 +46,9 @@ angular.module('reportsModule')
                         'DEFAULT': 'icon-report'
                     };
 
-                    var reportName = _.findKey(reportNames, function(value, key) { return value === report['title']; });
+                    var reportName = _.findKey(reportNames, function(value) {
+                        return value === report['title'];
+                    });
 
                     report['reportIconCls'] = classNames[reportName] || classNames['DEFAULT'];
                 }

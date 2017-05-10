@@ -14,7 +14,9 @@ sntRover.controller('RVCommissionsSummaryController', ['$scope', '$rootScope', '
 
     $scope.setScroller('commissionOverViewScroll', {});
     var refreshArOverviewScroll = function() {
-        setTimeout(function() {$scope.refreshScroller('commissionOverViewScroll');}, 500);
+        setTimeout(function() {
+            $scope.refreshScroller('commissionOverViewScroll');
+        }, 500);
     };
 
     refreshArOverviewScroll();

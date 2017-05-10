@@ -23,7 +23,9 @@ var CardOperation = function() {
                               'RVCardReadIsEncrypted': 0
                           };
 
-            if (typeof data !== 'undefined') { carddata = data;}
+            if (typeof data !== 'undefined') {
+                carddata = data;
+            }
             successCallBack(carddata, successCallBackParameters);
         };
 
@@ -50,7 +52,7 @@ var CardOperation = function() {
 
 
     this.startReader = function(options) {
-        options['shouldCallRecursively'] = true;
+        // the repeated calls for observeForSwipe method is now moved to the cardReaderCtrl which would be run within the controllers
         that.listenForSingleSwipe(options);
     };
 

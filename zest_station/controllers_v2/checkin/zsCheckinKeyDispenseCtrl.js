@@ -48,6 +48,7 @@ sntZestStation.controller('zsCheckinKeyDispenseCtrl', [
             }
             $scope.setScreenIcon('key');
         }());
+
         $scope.guestDetails = {
             "guestEmail": $stateParams.email
         };
@@ -181,6 +182,7 @@ sntZestStation.controller('zsCheckinKeyDispenseCtrl', [
             var  stateParams = {
                 'message': 'Email Updation Failed.'
             };
+
             $state.go('zest_station.speakToStaff', stateParams);
         });
 

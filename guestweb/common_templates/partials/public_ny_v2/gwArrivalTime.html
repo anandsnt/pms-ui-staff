@@ -26,15 +26,13 @@
     </div>
     <!-- main content -->
     <div class="row" ng-hide="isLoading || netWorkError">
-        <div class="col-md-3"></div>
-        <div class="col-md-6 top-spacing section-container mob-padding-bottom-10">
+        <div class="col-md-4"></div>
+        <div class="col-md-4 top-spacing section-container no-section-side-padding">
             <p class="main-text text-left">Your Arrival</p>
             <div class="section-container mob-padding-bottom-10 text-left">
                 <p class="sub-text text-left">ESTIMATED ARRIVAL TIME</p>
                 <span ng-show="showHotelTime" class="sub-main-text">(Please select an arrival time. Your arrival time options are displayed in the hotel’s local time. It is currently  {{hotelTime}} in the hotel’s local time.)</span></p>
-                <br/>
-                <br/>
-                <div class="row">
+                <div class="row margin-top-40">
                     <div class="select-style eta-single">
                         <select name="timepicker" id="timePicker" ng-model="arrivalTime">
                             <option value="">select time</option>
@@ -68,16 +66,17 @@
                         </div>
                     </div>
                 </div> -->
-            </div>
+            <!-- </div> -->
             <p class="sub-text left-align margin-top-20">REQUESTS OR COMMENTS?</p>
             <div class="row">
-                <textarea rows="5" cols="50" ng-model="stayDetails.comment" class=" text-comment col-xs-12 sub-text no-text-transform" placeholder="Comments here.">
+                <textarea rows="5" cols="50" ng-model="stayDetails.comment" class=" text-comment col-xs-12 sub-text" placeholder="Comments here.">
                 </textarea>
+                <!--  submit button-->
+                <a class="btn btn-template margin-top-40" ng-click="postStayDetails()">NEXT</a>
             </div>
-            <!--  submit button-->
-            <a class="btn btn-template margin-top-10" ng-click="postStayDetails()">NEXT</a>
+            </div>
         </div>
-        <div class="col-md-3">
+        <div class="col-md-4">
         </div>
     </div>
 </div>
