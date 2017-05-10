@@ -24,4 +24,4 @@ admin.controller('adZDirectSetupCtrl', ['$scope', 'config', 'adInterfacesCommonC
             $scope.interface = interfaceIdentifier.toUpperCase();
         })();
     }
-])
+]);
