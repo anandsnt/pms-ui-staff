@@ -81,15 +81,11 @@
 <div class="popup iframe-popup open" ng-show="zestStationData.showTemplateList">
     <div class="popup-content iframe-content">
         <i class="close-popup" touch-press='zestStationData.showTemplateList = false' ></i>
-        <div class='templateSwitchContainer'>
-            <div ng-repeat="(key, value) in themeTemplateList" class='templateSwitchBox' touch-press="selectThemeFromTemplateList(value.name)" ng-style="{'background-image':'url(/assets/zest_station/css/icons/default/previews/{{value.name}}.png)'}">
-                <span class='themeSwitchName'>
+        <div class='template-switch-container'>
+            <div ng-repeat="(key, value) in themeTemplateList" class='template-switch-box' touch-press="selectThemeFromTemplateList(value.name)" ng-style="{'background-image':'url(/assets/zest_station/css/icons/default/previews/{{value.name}}.png)'}">
+                <span class='theme-switch-name'>
                     {{value.name}}
                 </span>
-                <!--img 
-                class='template-icon' 
-                ng-src="/assets/zest_station/css/icons/default/previews/{{value.name}}.png" 
-                src-error='{{value.name}}'-->
             </div>
         </div>
     </div>
