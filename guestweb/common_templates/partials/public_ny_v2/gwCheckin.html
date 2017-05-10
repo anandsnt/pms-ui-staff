@@ -42,7 +42,7 @@
                     <!-- CC field will be shown for precheckin if CC is attached only -->
                     <p class="sub-text pull-left margin-top-10" ng-show="!isAutoCheckinOn || isCCOnFile">LAST 4 DIGITS OF CREDIT CARD USED</p>
                     <input type="password" ng-model="cardDigits" class="input-field" ng-show="!isAutoCheckinOn || isCCOnFile"></input>
-                    <a class="btn btn-template margin-top-40" ng-click="nextButtonClicked()"> NEXT</a>
+                     <input type="submit" class="btn btn-template margin-top-40" ng-click="nextButtonClicked()" value="NEXT" />
                 </div>
             </center>
         </div>
