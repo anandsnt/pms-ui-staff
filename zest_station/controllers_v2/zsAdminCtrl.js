@@ -89,6 +89,7 @@ sntZestStation.controller('zsAdminCtrl', [
             var selectedWorkStation = _.find($scope.zestStationData.workstations, function(workstation) {
                 return workstation.id == $scope.workstation.selected;
             });
+
             setPrinterLabel(selectedWorkStation.printer);
             $scope.setEncoderDiagnosticInfo(selectedWorkStation.name, selectedWorkStation.key_encoder_id); // in diagnostic info display the encoder name + id
         };
@@ -233,6 +234,7 @@ sntZestStation.controller('zsAdminCtrl', [
 
             return selectedWorkStation;
         };
+
         $scope.setEditorModeCls = function() {
             if ($scope.zestStationData.editorModeEnabled === 'true') {
                 $rootScope.cls.editor = 'true';
