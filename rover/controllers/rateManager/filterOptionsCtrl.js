@@ -47,11 +47,12 @@ angular.module('sntRover').controller('RMFilterOptionsCtrl', ['filterDefaults', 
 
             if (rmRateType) {
                 if (rmRateType && rmRateType.children) {
-                    try { setTimeout(function() {
-                        if (!rmRateType.children()[0].selected) {
-                            $('#rmRateType').children()[0].selected = true;
-                        }
-                    }, 100);
+                    try {
+                        setTimeout(function() {
+                            if (!rmRateType.children()[0].selected) {
+                                $('#rmRateType').children()[0].selected = true;
+                            }
+                        }, 100);
                     } catch (err) {
 
                     }
@@ -61,11 +62,12 @@ angular.module('sntRover').controller('RMFilterOptionsCtrl', ['filterDefaults', 
 
             if (rmRate) {
                 if (rmRate && rmRate.children) {
-                    try { setTimeout(function() {
-                        if (!rmRate.children()[0].selected) {
-                            $('#rmRate').children()[0].selected = true;
-                        }
-                    }, 100);
+                    try {
+                        setTimeout(function() {
+                            if (!rmRate.children()[0].selected) {
+                                $('#rmRate').children()[0].selected = true;
+                            }
+                        }, 100);
                     } catch (err) {
 
                     }
