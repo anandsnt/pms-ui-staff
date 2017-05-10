@@ -89,8 +89,8 @@ sntZestStation.controller('zsAdminCtrl', [
             var selectedWorkStation = _.find($scope.zestStationData.workstations, function(workstation) {
                 return workstation.id == $scope.workstation.selected;
             });
-
             setPrinterLabel(selectedWorkStation.printer);
+            $scope.setEncoderDiagnosticInfo(selectedWorkStation.name, selectedWorkStation.key_encoder_id); // in diagnostic info display the encoder name + id
         };
 
         /*
@@ -157,6 +157,8 @@ sntZestStation.controller('zsAdminCtrl', [
                     'restart': true,
                     'from_cancel': true
                 });
+                
+                $scope.setEncoderDiagnosticInfo(); // in diagnostic info display the encoder name + id
             }, 500);
         };
         /*
@@ -202,7 +204,9 @@ sntZestStation.controller('zsAdminCtrl', [
 
                 console.info('' + chromeAppId);
                 // minimize the chrome app on loging out
-                (chromeAppId !== null && chromeAppId.length > 0) ? chrome.runtime.sendMessage(chromeAppId, 'zest-station-logout') : '';
+                if ($scope.inChromeApp && !$scope.inElectron) {
+                    (chromeAppId !== null && chromeAppId.length > 0) ? chrome.runtime.sendMessage(chromeAppId, 'zest-station-logout') : '';
+                }
                 console.info('login out from chrome');
             } else {
                 console.info('login out');
@@ -220,6 +224,7 @@ sntZestStation.controller('zsAdminCtrl', [
                 $scope.zestStationData.encoder = '';
             }
             $scope.zestStationData.emv_terminal_id = $scope.savedSettings.kiosk.workstation.emv_terminal_id;
+            $scope.setEncoderDiagnosticInfo(); // in diagnostic info display the encoder name + id
         };
         var getTheSelectedWorkStation = function() {
             var selectedWorkStation = _.find($scope.zestStationData.workstations, function(workstation) {
@@ -246,7 +251,7 @@ sntZestStation.controller('zsAdminCtrl', [
         /*
          *  save work station
          */
-        var saveStation = function() {
+        var saveStation = function(runDemoClicked) {
             // save workstation printer 
             // save workstation to browser
             var successCallBack = function() {
@@ -272,6 +277,10 @@ sntZestStation.controller('zsAdminCtrl', [
                 if ($scope.zestStationData.workstationStatus === 'out-of-order') {
                     $state.go('zest_station.outOfService');
                 } else {
+                    if (runDemoClicked) {
+                        $state.go('zest_station.checkinKeySelection');
+                        return;
+                    }
                     $scope.cancelAdminSettings(true);
                 }
             };
@@ -315,7 +324,7 @@ sntZestStation.controller('zsAdminCtrl', [
         /*
          * Save the admin settings
          **/
-        $scope.saveSettings = function() {
+        $scope.saveSettings = function(runDemoClicked) {
             var getParams = function() {
                 var params = {
                     'kiosk': {
@@ -333,7 +342,7 @@ sntZestStation.controller('zsAdminCtrl', [
             delete params.kiosk.workstation;
             delete params.printer;
             var successCallBack = function() {
-                saveStation();
+                saveStation(runDemoClicked);
             };
             var failureCallBack = function(response) {
                 console.warn('failed to save settings');
@@ -407,6 +416,17 @@ sntZestStation.controller('zsAdminCtrl', [
             }
         };
 
+        $scope.testRunMobileKeyCheckin = function() {
+            // save settings then go to the demo area
+            var demoRunStarted = true;
+
+            $scope.saveSettings(demoRunStarted);
+            
+        };
+        $scope.reload = function() {
+            location.reload(true);
+        };
+
         $scope.showDebugModeOption = false;
         // initialize
         (function() {
@@ -429,18 +449,27 @@ sntZestStation.controller('zsAdminCtrl', [
 
             // if invoked from chrome app or ipad
             // show direct admin without login
-            if ($scope.zestStationData.isAdminFirstLogin) {
+            if ($scope.zestStationData.isAdminFirstLogin && !$scope.zestStationData.fromAdminButton) {
                 $scope.mode = 'admin-screen-active';
                 $scope.zestStationData.isAdminFirstLogin = false;
             } else {
                 $scope.mode = 'login-mode';
             }
+            $scope.zestStationData.fromAdminButton = false;
             setTimeout(function() {
                 refreshScroller(); // maybe need to update layout, but this works to fix scroll issue on admin after page load
             }, scrollerRefreshTime);
             $scope.setScreenIcon('checkin');
             if ($scope.zestStationData.theme === 'snt') {
                 $scope.showDebugModeOption = true;
+            }
+
+            if (!$scope.zestStationData.demoMobileKeyModeEmailLinked) {
+                $scope.zestStationData.demoMobileKeyModeEmailLinked = 'true';
+                $scope.zestStationData.demoMobileKeyModeEnabled = 'true';
+                $scope.zestStationData.demoMobileKeyModeUserEmailOnFile = 'true';
+                $scope.zestStationData.thirdPartyMobileKey = 'false'; // TODO MOVE TO API SETTING
+                
             }
 
         }());

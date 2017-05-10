@@ -143,7 +143,9 @@ angular.module('housekeepingModule', [])
                 fetchHKStaffs: function(RVWorkManagementSrv, workManagementAssets) {
                     return RVWorkManagementSrv.fetchHKStaffs();
                 },
-
+                allRoomTypes: function(RVHkRoomStatusSrv) {
+                    return RVHkRoomStatusSrv.fetchAllRoomTypes();
+                },
                 payload: function(fetchHKStaffs, RVWorkManagementSrv, $stateParams, workManagementAssets) {
                     var unassignedRoomsParam = {
                         date: $stateParams.date

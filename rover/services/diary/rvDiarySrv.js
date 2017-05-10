@@ -351,31 +351,28 @@ angular.module('sntRover').service('rvDiarySrv', ['$q', 'RVBaseWebSrv', 'rvBaseW
                         hour            = null,
                         min             = null;
 
+                        _.each(inactiveRooms, function(value, index) {
 
-                    _.each(inactiveRooms, function(value, key) {
-                        
-                        _.each(value, function(eachRoom) {
-                            if (eachRoom.room_id === room.id) {
-                                // start time                     
-                                hour = eachRoom.from_time.split(":")[0];
-                                min = eachRoom.from_time.split(":")[1];
-                                startTime = new tzIndependentDate(key);
+                           if (value.room_id === room.id) {
+                                hour = value.from_time.split(":")[0];
+                                min = value.from_time.split(":")[1];
+                                startTime = new tzIndependentDate(value.from_date);
                                 startTime.setHours (hour, min, 0);
-                                
+
                                 // end time
-                                hour = eachRoom.to_time.split(":")[0];
-                                min = eachRoom.to_time.split(":")[1];
-                                endTime = new tzIndependentDate(key);
+                                hour = value.to_time.split(":")[0];
+                                min = value.to_time.split(":")[1];
+                                endTime = new tzIndependentDate(value.to_date);
                                 endTime.setHours (hour, min, 0);
 
                                 room.room_inactive_slots.push({
                                     'startTime': startTime,
                                     'endTime': endTime,
-                                    'status': eachRoom.service_status
+                                    'status': value.service_status
                                 });
-                            }
+                           }
+
                         });
-                    });
 
                     room[meta.room.hk_status] = meta.room.hk_status_map[room.hk_status];
                     return room;
@@ -575,7 +572,7 @@ angular.module('sntRover').service('rvDiarySrv', ['$q', 'RVBaseWebSrv', 'rvBaseW
 
                             _data_Store.set({
                                 filter: {
-                                    arrival_time: (new Date(create_reservation_data.start_date)).toComponents().time.toString(),
+                                    arrival_time: arrival_ms.toComponents().time.toString(),
                                     min_hours: (create_reservation_data.end_date - create_reservation_data.start_date) / 3600000,
                                     room_type_id: create_reservation_data.room_type_id
                                 },
@@ -894,11 +891,15 @@ angular.module('sntRover').service('rvDiarySrv', ['$q', 'RVBaseWebSrv', 'rvBaseW
 
                 this.properDateTimeCreation = function(start_date) {
                     var data       = $vault.get('searchReservationData'),
-                        start_date = start_date ? new tzIndependentDate(start_date) : new tzIndependentDate($rootScope.businessDate);
+                        arrivalFormatted;
+
+                    start_date = start_date ? new tzIndependentDate(start_date) : new tzIndependentDate($rootScope.businessDate);
 
                     if (data) {
                         data = JSON.parse(data);
-                        start_date.setHours( parseInt(data.arrivalTime.hh), parseInt(data.arrivalTime.mm) );
+                        arrivalFormatted = getTimeFormated(data.arrivalTime.hh, data.arrivalTime.mm, data.arrivalTime.ampm);
+                        arrivalFormatted = arrivalFormatted.split(":");
+                        start_date.setHours(parseInt(arrivalFormatted[0]), parseInt(arrivalFormatted[1]));
                     } else {
                         correctTime();
                     }
@@ -1046,39 +1047,13 @@ angular.module('sntRover').service('rvDiarySrv', ['$q', 'RVBaseWebSrv', 'rvBaseW
                     }
 
                     function getTotalHours(arrivalDate) {
-                        var startingTime = new Date(arrivalDate),
-                            timeBefore,
-                            timeChnangeDiff,
-                            i, len;
-
-                        var hasExtraHour, hasLessHour;
-
-                        startingTime.setHours(0, 0, 0);
-                        for (i = 0, len = 25; i < len; i++) {
-                            timeBefore = new Date( startingTime );
-                            timeBefore.setHours( timeBefore.getHours() - 1);
-
-                            timeChnangeDiff = startingTime.getTimezoneOffset() - timeBefore.getTimezoneOffset();
-                            if ( timeChnangeDiff < 0 ) {
-                                hasLessHour = true;
-                                hasExtraHour = false;
-                                break;
-                            }
-                            else if ( timeChnangeDiff > 0 ) {
-                                hasLessHour = false;
-                                hasExtraHour = true;
-                                break;
-                            } else {
-                                hasLessHour = false;
-                                hasExtraHour = false;
-                            }
-
-                            startingTime.setHours(startingTime.getHours() + 1);
-                        }
+                        var isDSTArrival = moment(arrivalDate).isDST(),
+                            isDSTPrevious = moment(arrivalDate).add(-1, 'days').isDST(),
+                            isDSTNext = moment(arrivalDate).add(1, 'days').isDST();
 
                         return {
-                            hasExtraHour: hasExtraHour,
-                            hasLessHour: hasLessHour
+                            hasExtraHour: isDSTArrival && !isDSTNext,
+                            hasLessHour: isDSTArrival && !isDSTPrevious
                         };
                     }
                 };

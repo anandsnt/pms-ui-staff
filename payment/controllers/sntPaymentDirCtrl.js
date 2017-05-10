@@ -172,6 +172,20 @@ angular.module('sntPay').controller('sntPaymentController',
 
             /**
              *
+             * @param {{String}} errorMessage errorMessage
+             * @returns {{undefined}} undefined
+             */
+            function updateErrorMessage(errorMessage) {
+                $scope.paymentErrorMessage = '';
+                $timeout(()=>{
+                    $scope.paymentErrorMessage = errorMessage;
+                    $scope.$emit('PAYMENT_FAILED', [errorMessage]);
+                    $scope.$emit('hideLoader');
+                }, 300);
+            }
+
+            /**
+             *
              * @returns {{undefined}} undefined
              */
             function initiateCBAlisteners() {
@@ -197,8 +211,13 @@ angular.module('sntPay').controller('sntPaymentController',
                     );
                 });
 
+                var listenerUpdateErrorMessage = $rootScope.$on('UPDATE_NOTIFICATION', (event, response)=> {
+                    updateErrorMessage(response);
+                });
+
                 $scope.$on('$destroy', listenerCBAPaymentFailure);
                 $scope.$on('$destroy', listenerCBAPaymentSuccess);
+                $scope.$on('$destroy', listenerUpdateErrorMessage);
             }
 
             /**
@@ -309,13 +328,12 @@ angular.module('sntPay').controller('sntPaymentController',
             // toggle between manual card entry and six payment swipe (C&P option in UI) for sixpayments
             $scope.sixPayEntryOptionChanged = function() {
                 if ($scope.payment.isManualEntryInsideIFrame) {
-                    $scope.payment.isManualEntryInsideIFrame = false;
+                    changeToCardAddMode();
+                } else {
                     // Add to guestcard feature for C&P
                     $scope.payment.showAddToGuestCard = !!$scope.reservationId && !$scope.payment.isManualEntryInsideIFrame;
                     $scope.selectedCC = {};
-                } else {
-                    $scope.payment.isManualEntryInsideIFrame = true;
-                    changeToCardAddMode();
+
                 }
             };
 
@@ -679,10 +697,16 @@ angular.module('sntPay').controller('sntPaymentController',
                 $scope.submitPayment(params);
                 ngDialog.close(paymentDialogId);
             });
-            // CICO-33971 : Close confirmation popup.
-            $scope.$on('CANCELLED_CONFIRM_DB_PAYMENT', () => {
+
+            // To close the confirm DB popup.
+            var cancellConfirmDBpopup = function() {
                 $scope.$emit('SHOW_BILL_PAYMENT_POPUP');
                 ngDialog.close(paymentDialogId);
+            };
+
+            // CICO-33971 : Close confirmation popup.
+            $scope.$on('CANCELLED_CONFIRM_DB_PAYMENT', () => {
+                cancellConfirmDBpopup();
             });
 
             $scope.submitPayment = function(payLoad) {
@@ -751,6 +775,10 @@ angular.module('sntPay').controller('sntPaymentController',
                         $scope.$emit('hideLoader');
                     },
                     errorMessage => {
+                        // CICO-40539 - Handle error for DB payment fron bill screen/confirm popup.
+                        if ($scope.selectedPaymentType === 'DB' && $scope.payment.isConfirmedDBpayment) {
+                            cancellConfirmDBpopup();
+                        }
                         handlePaymentError(errorMessage);
                     }
                 );

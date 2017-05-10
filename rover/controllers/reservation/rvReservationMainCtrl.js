@@ -14,7 +14,9 @@ sntRover.controller('RVReservationMainCtrl', ['$scope',
             'RVReservationGuestSrv',
             'RVReservationStateService',
             'RVReservationDataService',
-            function($scope, $rootScope, ngDialog, $filter, RVCompanyCardSrv, $state, dateFilter, baseSearchData, RVReservationSummarySrv, RVReservationCardSrv, RVPaymentSrv, $timeout, $stateParams, RVReservationGuestSrv, RVReservationStateService, RVReservationDataService) {
+            '$interval',
+            '$log',
+            function($scope, $rootScope, ngDialog, $filter, RVCompanyCardSrv, $state, dateFilter, baseSearchData, RVReservationSummarySrv, RVReservationCardSrv, RVPaymentSrv, $timeout, $stateParams, RVReservationGuestSrv, RVReservationStateService, RVReservationDataService, $interval, $log) {
 
         BaseCtrl.call(this, $scope);
 
@@ -1336,10 +1338,11 @@ sntRover.controller('RVReservationMainCtrl', ['$scope',
                     RVReservationStateService.setReservationFlag('borrowForGroups', false);
 
                     if (nextState) {
-                        if (!nextStateParameters) {
-                            nextStateParameters = {};
+                        if ($state.$current.name === nextState) {
+                            $state.reload(nextState);
+                        } else {
+                            $state.go(nextState, nextStateParameters || {});
                         }
-                        $state.go(nextState, nextStateParameters);
                     } else {
                         $scope.$emit('hideLoader');
                     }
@@ -1601,6 +1604,9 @@ sntRover.controller('RVReservationMainCtrl', ['$scope',
             $scope.$broadcast('TABS_MODIFIED');
             devlogRoomsArray();
         };
+
+                CardReaderCtrl.call(this, $scope, $rootScope, $timeout, $interval, $log);
+                $scope.observeForSwipe();
 
     }
 

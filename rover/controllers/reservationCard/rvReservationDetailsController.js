@@ -133,7 +133,20 @@ sntRover.controller('reservationDetailsController',
 					activeTab: "REPORTS"
 				}
 			};
-		} else {
+		} else if ($scope.previousState.name === "rover.companycarddetails") {
+
+            setNavigationBookMark();
+            $rootScope.setPrevState = {
+                title: 'TRAVEL Agent',
+                name: 'rover.companycarddetails',
+                param: {
+					id: $vault.get('travelAgentId'),
+					type: $vault.get('travelAgentType'),
+					query: $vault.get('travelAgentQuery'),
+					isBackToTACommission: $stateParams.isFromTACommission
+				}
+            };
+        } else {
 			setNavigationBookMark();
 			// if we just created a reservation and came straight to staycard
 			// we should show the back button with the default text "Find Reservations"
@@ -934,7 +947,8 @@ sntRover.controller('reservationDetailsController',
 					$scope.responseValidation = {};
 					if (response.errors.length === 0) {
 						$scope.responseValidation = response.data;
-						$scope.stayDatesExtendedForOutsideGroup = (response.data.is_group_reservation && response.data.outside_group_stay_dates) ? true : false;
+                        // CICO-39997 - Check the group reservation date is outside the group date only for standalone
+						$scope.stayDatesExtendedForOutsideGroup = (response.data.is_group_reservation && response.data.outside_group_stay_dates && $rootScope.isStandAlone) ? true : false;
 						$scope.borrowForGroups = (response.data.is_group_reservation && ! response.data.is_room_type_available) ? true : false;
                         // if user has over book permission, allow to extend even when room type not available CICO-35615
                         $scope.shouldAllowDateExtend = (response.data.is_room_type_available || rvPermissionSrv.getPermissionValue('OVERBOOK_ROOM_TYPE')) ? true : false;
@@ -1454,6 +1468,4 @@ sntRover.controller('reservationDetailsController',
      $scope.toggleOverBookingAlert = function() {
        $scope.showChangeDatesPopup = !$scope.showChangeDatesPopup;
      }
-
-
 }]);

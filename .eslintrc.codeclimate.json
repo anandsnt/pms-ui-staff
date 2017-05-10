@@ -21,7 +21,10 @@
         "admin": true,
         "ADBaseTableCtrl": true,
         "tzIndependentDate": true,
-        "getJqDateFormat": false
+        "getJqDateFormat": false,
+        "moment": false,
+        "getTimeFormated": true,
+        "CardReaderCtrl": false
     },
     "installedESLint": true,
     "parserOptions": {

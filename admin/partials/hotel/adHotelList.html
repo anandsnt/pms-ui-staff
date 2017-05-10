@@ -18,7 +18,7 @@
 					<tbody>
 						<tr data-hotel-id="{{hotel.id}}" ng-repeat="hotel in $data">
 							<td data-title="'Hotel'" sortable="'hotel_name'" header-class="width-40">
-								<a ui-sref="admin.snthoteldetails({action:'edit',id:hotel.id})" class="title">
+								<a ng-click="viewHotelSettings(hotel)" class="title">
 									 <strong ng-bind-html="escapeNull(hotel.hotel_name)| highlightWords:searchWords"> </strong>
 									 <em> {{hotel.city}} , {{hotel.state}} </em>
 								</a>

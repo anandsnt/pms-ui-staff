@@ -18,7 +18,7 @@ sntZestStation.controller('zsOwsMsgListingCtrl', [
 
 
 		var checkIfEmailIsBlackListedOrValid = function() {
-			return ($stateParams.email.length > 0 && !($stateParams.guest_email_blacklisted === 'true') && zsUtilitySrv.isValidEmail($stateParams.email));
+			return (!_.isNull($stateParams.email) && $stateParams.email.length > 0 && !($stateParams.guest_email_blacklisted === 'true') && zsUtilitySrv.isValidEmail($stateParams.email));
 		};
 
 		/**
@@ -65,7 +65,7 @@ sntZestStation.controller('zsOwsMsgListingCtrl', [
 			 *	======[ READY TO PRINT ]======
 			 */
 			setTimeout(function() {
-				if (sntapp.cordovaLoaded) {
+				if ($scope.isIpad) { // CICO-40934 removed the sntapp load from zestJsAssetList, now just check for ipad/iphone
 					var printer = (sntZestStation.selectedPrinter);
 
 					cordova.exec(

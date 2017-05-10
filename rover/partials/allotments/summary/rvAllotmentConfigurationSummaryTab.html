@@ -78,7 +78,7 @@
                     <strong>*</strong>
                 </label>
                 <div class="select">
-                    <select id="allotment-hold-status" ng-model="allotmentConfigData.summary.hold_status" iscroll-stop-propagation ng-change="onHoldStatusChange();" ng-disabled="!!allotmentConfigData.summary.is_cancelled">
+                    <select convert-to-number id="allotment-hold-status" ng-model="allotmentConfigData.summary.hold_status" iscroll-stop-propagation ng-change="onHoldStatusChange();" ng-disabled="!!allotmentConfigData.summary.is_cancelled">
                         <option value="" selected translate ng-if="!allotmentConfigData.summary.hold_status">SET_STATUS</option>
                         <option ng-repeat="holdstatus in allotmentConfigData.holdStatusList" value="{{holdstatus.id}}" ng-selected="holdstatus.id == allotmentConfigData.summary.hold_status" ng-hide="holdstatus.name == 'Cancel' && holdstatus.is_system && !isCancellable()">
                             {{holdstatus.name}}

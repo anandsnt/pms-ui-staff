@@ -519,7 +519,7 @@ angular.module('sntRover').service('rvMenuSrv',
 	* @return {boolean}
 	*/
 	this.hasSettingsPermission = function(menuIndex) {
-		
+
 		var returnValue = true;
 
 		switch (menuIndex) {
@@ -528,7 +528,9 @@ angular.module('sntRover').service('rvMenuSrv',
 				break;
 
 			case 'nightlyDiaryReservation':
-				returnValue = !isHourlyRateOn() && $rootScope.isPmsDevEnv;
+				var isRoomDiaryEnabled = ($rootScope.isPmsProductionEnv) ? $rootScope.isRoomDiaryEnabled : true;
+
+				returnValue = !isHourlyRateOn() && isRoomDiaryEnabled;
 				break;
 
 			// dont wanted to show on hourly enabled hotels

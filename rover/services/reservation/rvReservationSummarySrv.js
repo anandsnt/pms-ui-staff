@@ -344,5 +344,35 @@ angular.module('sntRover').service('RVReservationSummarySrv', ['$q', 'rvBaseWebS
             });
             return deferred.promise;
         };
+
+        /*
+         * Call API to Update the no room move flag
+         */
+        this.updateNoRoomMove = function(data) {
+            var deferred = $q.defer();
+            var url = '/api/reservations/' + data.reservationId + '/update_no_room_move_flag';
+
+            rvBaseWebSrvV2.postJSON(url, data).then(function(data) {
+                deferred.resolve(data);
+            }, function(data) {
+                deferred.reject(data);
+            });
+            return deferred.promise;
+        };
+
+        /*
+         * Call API to Update the restrict post flag
+         */
+        this.updateRestrictPost = function(data) {
+            var deferred = $q.defer();
+            var url = '/api/reservations/' + data.reservationId + '/update_restrict_post_flag';
+
+            rvBaseWebSrvV2.postJSON(url, data).then(function(data) {
+                deferred.resolve(data);
+            }, function(data) {
+                deferred.reject(data);
+            });
+            return deferred.promise;
+        };
     }
 ]);

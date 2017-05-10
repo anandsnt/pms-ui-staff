@@ -1,0 +1,48 @@
+<ad-common-parts-in-form-dir on-save-button-click="saveInterfaceConfig"
+                             header-caption="{{'DELPHI_SETUP_HEADER'|translate}}">
+
+    <div class="entry full-width">
+        <label><span translate>ACTIVATE_INACTIVATE</span></label>
+        <div name="active-inactive-toggle" class="switch-button single" ng-class="{ on: config.enabled }"
+             ng-click="toggleEnabled()">
+            <input type="checkbox">
+            <span class="switch-icon"></span>
+        </div>
+    </div>
+
+    <ad-sync-block ng-if="config.enabled"
+                   interface="{{interface}}"
+                   config="config">
+    </ad-sync-block>
+
+    <div class="form-title full-width">
+        <h3><span translate>DELPHI_SUB_TITLE</span></h3>
+    </div>
+
+    <fieldset class="holder left">
+        <ad-textbox inputtype="text"
+                    value="config.hotel_code"
+                    label="{{'HOTEL_CODE'| translate}}"
+                    styleclass="full-width"></ad-textbox>
+        <ad-textbox inputtype="text"
+                    value="config.vendor_id"
+                    label="{{'VENDOR_ID'| translate}}"
+                    styleclass="full-width"></ad-textbox>
+        <ad-textbox inputtype="text"
+                    value="config.end_point"
+                    label="{{'END_POINT'| translate}}"
+                    styleclass="full-width"></ad-textbox>
+    </fieldset>
+
+    <fieldset class="holder right">
+        <ad-textbox inputtype="text" value="config.user_name"
+                    label="{{'USER_NAME'| translate}}"
+                    styleclass="full-width"></ad-textbox>
+        <ad-textbox inputtype="password"
+                    value="config.password"
+                    label="{{'PASSWORD'| translate}}"
+                    styleclass="full-width"></ad-textbox>
+    </fieldset>
+
+</ad-common-parts-in-form-dir>
+

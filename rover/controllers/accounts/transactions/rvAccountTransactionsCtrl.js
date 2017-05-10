@@ -140,7 +140,14 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 				if (chargeCodes.length > 0) {
 					_.each(chargeCodes, function(chargeCode, index) {
 						if (chargeCode.isSelected) {
-							$scope.moveChargeData.selectedTransactionIds.push(chargeCode.id);
+							if (chargeCode.is_group_by_ref) {
+								var concatObject = $scope.moveChargeData.selectedTransactionIds.concat(chargeCode.item_ids);
+
+								$scope.moveChargeData.selectedTransactionIds = concatObject;
+							}
+							else {
+								$scope.moveChargeData.selectedTransactionIds.push(chargeCode.id);
+							}
 						}
 				    });
 				    ngDialog.open({
@@ -170,6 +177,9 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 			// Scope variable to set active bill
 			$scope.currentActiveBill = 0;
 			$scope.dayRates = -1;
+
+			$scope.isStandAlone = $rootScope.isStandAlone;
+
 			$scope.setScroller('registration-content');
 			$scope.setScroller('bill-tab-scroller', {
 				scrollX: true
@@ -275,12 +285,16 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 		$scope.moveToBillAction = function(oldBillValue, feesIndex) {
 
 			var parseOldBillValue = parseInt(oldBillValue) - 1;
-			var newBillValue = $scope.transactionsDetails.bills[parseOldBillValue].transactions[feesIndex].billValue;
-			var transactionId = $scope.transactionsDetails.bills[parseOldBillValue].transactions[feesIndex].id;
+			var transactionData = $scope.transactionsDetails.bills[parseOldBillValue].transactions[feesIndex];
+			var newBillValue = transactionData.billValue,
+				transactionId = transactionData.id ? transactionData.id : null,
+				itemIdList = transactionData.item_ids ? transactionData.item_ids : [];
+
 			var dataToMove = {
 				"to_bill": newBillValue,
 				"from_bill": oldBillValue,
 				"transaction_id": transactionId,
+				'item_ids': itemIdList,
 				"account_id": $scope.accountConfigData.summary.posting_account_id
 			};
 
@@ -1148,5 +1162,38 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 	    };
 	    // Pagination block ends here ..
 
+	    /*
+	     *Function which fetches and returns the charge details of a grouped charge.
+	     */
+		$scope.expandGroupedCharge = function(feesData) {
+			// Success callback for the charge detail fetch for grouped charges.
+			var fetchChargeDataSuccessCallback = function(data) {
+				feesData.light_speed_data = data.data;
+				feesData.isExpanded = true;
+				$scope.$emit('hideLoader');
+				refreshRegContentScroller();
+			};
+			// Failure callback for the charge detail fetch for grouped charges.
+			var fetchChargeDataFailureCallback = function(errorMessage) {
+				$scope.errorMessage = errorMessage;
+				$scope.emit('hideLoader');
+			};
+
+			// If the flag for toggle is false, perform api call to get the data.
+			if (!feesData.isExpanded) {
+				var params = {
+					'reference_number': feesData.reference_number,
+					'bill_id': $scope.transactionsDetails.bills[$scope.currentActiveBill].bill_id,
+					'date': feesData.date
+				};
+
+				$scope.invokeApi(rvAccountTransactionsSrv.groupChargeDetailsFetch, params, fetchChargeDataSuccessCallback, fetchChargeDataFailureCallback);
+			}
+			else {
+				// If the flag for toggle is true, then it is simply reverted to hide the data.
+				feesData.isExpanded = false;
+				refreshRegContentScroller();
+			}
+		};
 	}
 ]);

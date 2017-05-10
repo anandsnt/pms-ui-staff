@@ -40,10 +40,12 @@ angular.module('sntGuestWeb').service('GWBaseWebSrv2', ['$http', '$q', '$window'
  			httpDict.data = params;
   		}
 
-		$http(httpDict).success(function(response, status) {
-	    	deferred.resolve(response);
-		}).error(function(errors, status) {
-			var urlStart = url.split('?')[0];
+		$http(httpDict).then(function(response) {
+	    	deferred.resolve(response.data);
+		}, function(response) {
+			var urlStart = url.split('?')[0],
+                errors = response.data,
+				status = response.status;
 			// please note the type of error expecting is array
 			// so form error as array if you modifying it
 			

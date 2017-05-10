@@ -18,7 +18,7 @@ angular.module('sntPay').service('sntShijiGatewaySrv', ['$q', '$http', '$timeout
                 baseUrl = '/api/async_callbacks/',
                 timeStampInSeconds = 0,
                 pollingInterval = 2000,
-                refreshIntervalId = $interval(()=> {
+                refreshIntervalId = $interval(() => {
                     timeStampInSeconds++;
                 }, ms),
                 poller = function() {
@@ -47,7 +47,10 @@ angular.module('sntPay').service('sntShijiGatewaySrv', ['$q', '$http', '$timeout
                         // });
                     } else if (shouldPoll) {
                         $http.get(baseUrl + id)
-                            .success((data, status) => {
+                            .then(response => {
+                                var data = response.data,
+                                    status = response.status;
+
                                 // if the request is still not processed
                                 if (status === 202 || status === 102 || status === 250) {
                                     $timeout(function() {
@@ -58,13 +61,12 @@ angular.module('sntPay').service('sntShijiGatewaySrv', ['$q', '$http', '$timeout
                                     clearInterval(refreshIntervalId);
                                     deferred.resolve(data);
                                 }
-                            })
-                            .error(data => {
-                                if (!data) {
+                            }, response => {
+                                if (!response.data) {
                                     poller();
                                 } else {
                                     clearInterval(refreshIntervalId);
-                                    deferred.reject(data);
+                                    deferred.reject(response.data);
                                 }
                             });
                     } else {

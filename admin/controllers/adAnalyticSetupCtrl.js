@@ -16,6 +16,11 @@ admin.controller('adAnalyticSetupCtrl', ['$scope', 'adAnalyticSetupSrv', '$state
     var fetchAnalyticSetupSuccessCallback = function(data) {
         $scope.isLoading = false;
         $scope.$emit('hideLoader');
+
+        // NOTE: This is required as the unset values are expected to be empty string and not null
+        if (!data.product_customer_proprietary.selected_tracker) {
+            data.product_customer_proprietary.selected_tracker = '';
+        }
         $scope.data = data;
 
   };

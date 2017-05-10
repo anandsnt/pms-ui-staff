@@ -8,6 +8,10 @@ admin.controller('ADRoomKeyDeliveryCtrl', ['$state', '$scope', '$rootScope', 'AD
         $scope.$emit('hideLoader');
     };
 
+    $scope.toggleUseExternalIDForQRCode = function() {
+        $scope.data.use_external_id_for_qr_code = !$scope.data.use_external_id_for_qr_code;
+    };
+
     $scope.invokeApi(ADRoomKeyDeliverySrv.fetch, {}, fetchSuccess);
 	/*
     * To handle save button click.

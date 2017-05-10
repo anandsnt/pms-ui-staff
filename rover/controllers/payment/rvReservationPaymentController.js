@@ -65,7 +65,8 @@ sntRover.controller('reservationPaymentController',
 	            successCallBack: successCallBackOfUpdateAllowPostWithNoCredit
 	        };
 
-	        $scope.callAPI(RVReservationSummarySrv.updateReservation, options);
+            // CICO-36919 for optimizing
+	        $scope.callAPI(RVReservationSummarySrv.updateRestrictPost, options);
     	}
 
 

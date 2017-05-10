@@ -166,7 +166,8 @@ angular.module('reportsModule')
             'INCLUDE_ADDON_RATE': true,
             'INCLUDE_ADDONS': true,
             'INCLUDE_ADDON_REVENUE': true,
-            'INCLUDE_ACTIONS': true
+            'INCLUDE_ACTIONS': true,
+            'INCLUDE_LEDGER_DATA': true
         };
 
         var __excludeFilterNames = {
@@ -374,6 +375,20 @@ angular.module('reportsModule')
                     break;
             }
         };
+        factory.addIncludeOtherFilter = function( report ) {
+            switch ( report['title'] ) {
+                case reportNames['TRAVEL_AGENT_COMMISSIONS']:
+                    report['filters'].push({
+                        'value': "INCLUDE_TRAVEL_AGENT",
+                        'description': "Include Travel Agent"
+                    });
+                    break;
+
+                default:
+                    // no op
+                    break;
+            }
+        };
 
 
         /**
@@ -531,9 +546,17 @@ angular.module('reportsModule')
                     report['hasAccountSearch'] = filter;
                 }
 
+                if ( filter.value === 'TRAVEL_AGENTS' ) {
+                    report['hasTravelAgentsSearch'] = filter;
+                }
+
                 // check for include company/ta filter and keep a ref to that item
                 if ( filter.value === 'INCLUDE_COMPANYCARD_TA' ) {
                     report['hasIncludeCompanyTa'] = filter;
+                }
+
+                if ( filter.value === 'INCLUDE_GROUP' ) {
+                    report['hasIncludeGroup'] = filter;
                 }
 
                 // check for include company/ta/group filter and keep a ref to that item
@@ -803,6 +826,10 @@ angular.module('reportsModule')
                     requested++;
                     reportsSubSrv.fetchAccounts()
                         .then( fillAccounts );
+                } else if ( 'INCLUDE_TRAVEL_AGENT' === filter.value && ! filter.filled) {
+                    requested++;
+                    reportsSubSrv.fetchTravelAgents()
+                        .then( fillTravelAgents );
                 } else {
                     // no op
                 }
@@ -871,6 +898,30 @@ angular.module('reportsModule')
                 checkAllCompleted();
             }
 
+            function fillTravelAgents (data) {
+                var foundFilter;
+
+                _.each(reportList, function(report) {
+                    foundFilter = _.find(report['filters'], { value: 'TRAVEL_AGENTS' });
+
+                    if ( !! foundFilter ) {
+                        foundFilter['filled'] = true;
+
+                        report.hasTravelAgentsSearch = {
+                            data: angular.copy( data ),
+                            options: {
+                                selectAll: false,
+                                hasSearch: true,
+                                key: 'account_name',
+                                defaultValue: 'Select TA'
+                            }
+                        };
+                    }
+                });
+
+                completed++;
+                checkAllCompleted();
+            }
 
             function fillMarkets (data) {
                 var foundFilter;
@@ -1086,11 +1137,11 @@ angular.module('reportsModule')
 
             function fillAgingBalance() {
                 customData = [
-                                {id: "0_30", status: "0-30 DAYS", selected: true},
-                                {id: "31_60", status: "31-60 DAYS", selected: true},
-                                {id: "61_90",  status: "61-90 DAYS", selected: true},
-                                {id: "91_120",  status: "91-120 DAYS", selected: true},
-                                {id: "120_plus",  status: "120+ DAYS", selected: true}
+                                {id: "0to30", status: "0-30 DAYS", selected: true},
+                                {id: "31to60", status: "31-60 DAYS", selected: true},
+                                {id: "61to90",  status: "61-90 DAYS", selected: true},
+                                {id: "91to120",  status: "91-120 DAYS", selected: true},
+                                {id: "120plus",  status: "120+ DAYS", selected: true}
                             ];
 
 
@@ -1147,6 +1198,21 @@ angular.module('reportsModule')
                     foundFilter = _.find(report['filters'], { value: 'RATE_CODE' });
                     if ( !! foundFilter ) {
                         foundFilter['filled'] = true;
+
+                        // CICO-37341 - Added new entry UNDEFINED for custom rate
+                        if (report['title'] === reportNames['RESERVATIONS_BY_USER']) {
+                            var hasCustomRateItemPresent = _.find(data, {id: -1});
+
+                            if (!hasCustomRateItemPresent) {
+                                var customRate = {
+                                    id: -1,
+                                    description: "UNDEFINED"
+                                };
+
+                                data.push(customRate);
+                            }
+
+                        }
 
                         report.hasRateCodeFilter = {
                             data: angular.copy( data ),
@@ -1845,6 +1911,7 @@ angular.module('reportsModule')
                 report['sort_fields'][2] = daysVacant;
                 report['sort_fields'][3] = lastCheckoutDate;
             }
+
         };
 
 
@@ -1852,7 +1919,8 @@ angular.module('reportsModule')
         factory.processSortBy = function ( report ) {
             // adding custom name copy for easy access
             report['sortByOptions'] = angular.copy( report['sort_fields'] );
-
+            // show sortBy in filters - default
+            report['showSort'] = true;
             // sort by options - include sort direction
             if ( report['sortByOptions'] && report['sortByOptions'].length ) {
                 _.each(report['sortByOptions'], function(item, index, list) {
@@ -1890,6 +1958,21 @@ angular.module('reportsModule')
                     if ( !! roomNo ) {
                         roomNo['sortDir'] = true;
                         report['chosenSortBy'] = roomNo['value'];
+                    }
+                }
+
+                // hide sort by from filter CICO-29257
+                if ( report['title'] === reportNames['COMPLIMENTARY_ROOM_REPORT'] ) {
+                    report['showSort'] = false;
+                }
+
+                // CICO-34733 Set default sort
+                if ( report['title'] === reportNames['GROUP_ROOMS_REPORT'] ) {
+                    var arrivalDate = _.find(report['sortByOptions'], { 'value': 'GROUP_ARRIVAL_DATE' });
+
+                    if ( !! arrivalDate ) {
+                        arrivalDate['sortDir'] = true;
+                        report['chosenSortBy'] = arrivalDate['value'];
                     }
                 }
             }
@@ -2024,7 +2107,9 @@ angular.module('reportsModule')
                 'monthStart': new Date(_year, _month, 1),
                 'twentyEightDaysBefore': new Date(_year, _month, _date - 28),
                 'twentyEightDaysAfter': new Date(_year, _month, _date + 28),
-                'aYearAfter': new Date(_year + 1, _month, _date - 1)
+                'aYearAfter': new Date(_year + 1, _month, _date - 1),
+                'sixMonthsAfter': new Date(_year, _month + 6, _date),
+                'thirtyOneDaysAfter': new Date(_year, _month, _date + 30)
             };
 
             if ( parseInt(xDays) !== NaN ) {

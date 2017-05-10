@@ -8,12 +8,6 @@ angular.module('adminInterfacesRouter', []).config(function($stateProvider) {
             exactOnlineSetupValues: ['adExactOnlineSetupSrv', function(adExactOnlineSetupSrv) {
                 return adExactOnlineSetupSrv.fetchExactOnLineConfiguration();
             }],
-            journalsList: ['adExactOnlineSetupSrv', function(adExactOnlineSetupSrv) {
-                return adExactOnlineSetupSrv.fetchJournalsList();
-            }],
-            balancingAccounts: ['adExactOnlineSetupSrv', function(adExactOnlineSetupSrv) {
-                return adExactOnlineSetupSrv.fetchBalancingAccounts();
-            }],
             endPoints: ['adExactOnlineSetupSrv', function(adExactOnlineSetupSrv) {
                 return adExactOnlineSetupSrv.fetchEndpointsList();
             }]
@@ -159,6 +153,17 @@ angular.module('adminInterfacesRouter', []).config(function($stateProvider) {
         }
     });
 
+    $stateProvider.state('admin.delphi', {
+        templateUrl: '/assets/partials/interfaces/Delphi/adDelphiSetup.html',
+        controller: 'adDelphiCtrl',
+        url: '/delphi/setup',
+        resolve: {
+            config: ['adInterfacesCommonConfigSrv', function(adInterfacesCommonConfigSrv) {
+                return adInterfacesCommonConfigSrv.fetchConfiguration('delphi');
+            }]
+        }
+    });
+
     $stateProvider.state('admin.revinateSetup', {
         templateUrl: '/assets/partials/interfaces/Revinate/adRevinateSetup.html',
         controller: 'adRevinateSetupCtrl',
@@ -167,6 +172,17 @@ angular.module('adminInterfacesRouter', []).config(function($stateProvider) {
             config: ['adInterfacesCommonConfigSrv', function(adInterfacesCommonConfigSrv) {
                 // return {'enabled':true} // uncomment if needing to test UI without IFC connection
                 return adInterfacesCommonConfigSrv.fetchConfiguration('revinate');
+            }]
+        }
+    });
+
+    $stateProvider.state('admin.cendynSetup', {
+        templateUrl: '/assets/partials/interfaces/Cendyn/adCendynSetup.html',
+        controller: 'adCendynSetupCtrl',
+        url: '/cendyn/setup',
+        resolve: {
+            config: ['adInterfacesCommonConfigSrv', function(adInterfacesCommonConfigSrv) {
+                return adInterfacesCommonConfigSrv.fetchConfiguration('cendyn');
             }]
         }
     });
@@ -389,12 +405,17 @@ angular.module('adminInterfacesRouter', []).config(function($stateProvider) {
     });
 
     $stateProvider.state('admin.synxisSetup', {
-        templateUrl: '/assets/partials/SynxisSetup/adSynxisSetup.html',
-        controller: 'adExternalInterfaceCtrl',
-        // interface_id: 3,
-        interface_id: 'SYNXIS',
-        simple_name: 'Synxis',
-        url: '/synxisSetup'
+        templateUrl: '/assets/partials/interfaces/CRS/adCRSCommonSetup.html',
+        controller: 'adCRSCommonCtrl',
+        url: '/interfaces/setup/:id',
+        onEnter: ['$stateParams', function($stateParams) {
+            $stateParams.id = 'synxis';
+        }],
+        resolve: {
+            config: ['adInterfacesCommonConfigSrv', function(adInterfacesCommonConfigSrv) {
+                return adInterfacesCommonConfigSrv.fetchConfiguration('synxis');
+            }]
+        }
     });
 
     $stateProvider.state('admin.zDirectSetup', {
@@ -415,7 +436,7 @@ angular.module('adminInterfacesRouter', []).config(function($stateProvider) {
         url: '/travelTripperSetup'
     });
 
-    
+
     $stateProvider.state('admin.snapshotSetup', {
         templateUrl: '/assets/partials/interfaces/adInterfacesSubMenuList.html',
         controller: 'ADInterfaceSubMenuCtrl',

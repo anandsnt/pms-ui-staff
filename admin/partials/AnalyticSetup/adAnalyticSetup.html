@@ -35,7 +35,12 @@
 							<h3><span translate>HOTEL_TRACKERS_TITLE</span> </h3>
 						</div>
 
-			    <ad-dropdown label-in-drop-down="{{'SELECT_SERVICE' | translate}}" list="data.available_trackers" selected-id='data.product_customer_proprietary.selected_tracker' selbox-class="placeholder" div-class="full-width" label="{{'ANALYTIC_SERVICE_LABEL' | translate}}"></ad-dropdown>
+			    <ad-select-number label-in-drop-down="{{'SELECT_SERVICE' | translate}}"
+								  items="data.available_trackers"
+								  selected-id='data.product_customer_proprietary.selected_tracker'
+								  selbox-class="placeholder"
+								  div-class="full-width" label="{{'ANALYTIC_SERVICE_LABEL' | translate}}">
+				</ad-select-number>
 				
 				<ad-textbox value="data.product_customer_proprietary.tracker_guest_web"  name = "zest-web" id = "zest-web" label = "{{'ZEST_WEB_LABEL' | translate}}" placeholder = "{{'PLACEHOLDER_TRACKING_ID' | translate }}"  styleclass="full-width"></ad-textbox>
 				

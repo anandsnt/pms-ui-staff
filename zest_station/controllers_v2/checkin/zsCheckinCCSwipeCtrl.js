@@ -83,31 +83,7 @@ sntZestStation.controller('zsCheckinCCSwipeCtrl', [
         };
 
         var onClickBack = function() {
-            if (!$scope.zestStationData.kiosk_display_terms_and_condition) {
-                $state.go('zest_station.checkInReservationDetails', $stateParams);
-            } else {
-                var stateParams = {
-                    'guest_id': $stateParams.guest_id,
-                    'reservation_id': $stateParams.reservation_id,
-                    'deposit_amount': $stateParams.deposit_amount,
-                    'room_no': $stateParams.room_no,
-                    'room_status': $stateParams.room_status,
-                    'payment_type_id': $stateParams.payment_type_id,
-                    'guest_email': $stateParams.guest_email,
-                    'guest_email_blacklisted': $stateParams.guest_email_blacklisted,
-                    'first_name': $stateParams.first_name,
-                    'balance_amount': $stateParams.balance_amount,
-                    'pre_auth_amount_for_zest_station': $stateParams.pre_auth_amount_for_zest_station,
-                    'authorize_cc_at_checkin': $stateParams.authorize_cc_at_checkin
-                };
-                // check if this page was invoked through pickupkey flow
-
-                if ($stateParams.pickup_key_mode) {
-                    stateParams.pickup_key_mode = 'manual';
-                }
-                // need to go to [ last viewed ] screen, terms&conditions may be turned off...
-                $state.go('zest_station.checkInTerms', stateParams);
-            }
+            $state.go('zest_station.checkInReservationDetails', $stateParams);
         };
 
         $scope.swipeData;
@@ -243,19 +219,13 @@ sntZestStation.controller('zsCheckinCCSwipeCtrl', [
 
         var successSavePayment = function(response) {
             if (atCardSwipeScreen()) {
+                $scope.$emit('hideLoader');
                 if (response.status === 'success') {
-                    $scope.$emit('hideLoader');
                     goToCardSign();
                 } else {
-                    failSavePayment(response);
+                    goToSwipeError();
                 }
             }
-        };
-
-        var failSavePayment = function(response) {
-            $scope.$emit('hideLoader');
-            $log.warn(response);
-            $state.go('zest_station.error');
         };
 
         var saveSwipedCardMLI = function(response) {
@@ -282,6 +252,7 @@ sntZestStation.controller('zsCheckinCCSwipeCtrl', [
                     });
                 }, 3500);
             } else {
+                // TODO: switch to CallAPi/change the pmtsrv to base2 and remove unneeded hideLoaders
                 $scope.invokeApi(zsPaymentSrv.savePayment, postData, successSavePayment, goToSwipeError);
             }
         };
@@ -295,7 +266,7 @@ sntZestStation.controller('zsCheckinCCSwipeCtrl', [
             return false;
         };
         var isCCAuthMode = function() {
-            if ($stateParams.mode === 'CREDIT_CARD_AUTH') {
+            if ($stateParams.mode === 'CREDIT_CARD_AUTH' || $stateParams.isQuickJump === 'true') {
                 return true;
             }
             return false;
@@ -351,6 +322,12 @@ sntZestStation.controller('zsCheckinCCSwipeCtrl', [
                 $timeout(function() {
                     goToCardSign();
                 }, 2000);
+                return;
+            }
+
+            if (typeof $scope.socketOperator.returnWebSocketObject() === 'undefined') {
+                // minor issue when jumping to cc swipe state (double-clicking on jumper to this state) 
+                // so the websocket doesnt respond < 100~200ms, it throws an error so just returning in that case
                 return;
             }
 
@@ -439,9 +416,11 @@ sntZestStation.controller('zsCheckinCCSwipeCtrl', [
             $log.log(':: onSuccessFetchRemainingAuth :: ', response);
             // we get a 200 - status with failed if unsuccessful...
             if (response.status !== 'success') {
+                $scope.trackEvent('Error', 'cc_swipe');
                 onSwipeError(response);
 
             } else {
+                $scope.trackEvent('Success', 'cc_swipe');
 
                 var amount, needToAuthorizeAtCheckin;
 

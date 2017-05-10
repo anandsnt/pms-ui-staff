@@ -3,7 +3,7 @@
 
 <section id="diary-content" class="content diary-content" role="main">
     <div ng-include="'/assets/partials/common/notification_message.html'"></div>
-    <form method="post" action="" id="diary-header" name="diary-header" class="diary-header" ng-class="{'editing': gridProps.edit.active === true }">
+    <form class="diary-header" ng-class="{'editing': gridProps.edit.active === true }">
         <div class="entry edit" ng-show="gridProps.edit.active">
             <div class="guest">
                 <h1 ng-show="gridProps.edit.originalItem.reservation_primary_guest_full_name">
@@ -14,10 +14,10 @@
                 </h1>
             </div>
             <div class="actions">
-                <button id="edit-staycard" class="button white" ng-click="unassignRoom()">Unassign</button>
-                <button id="edit-staycard" class="button white" ng-click="openStayCard()">StayCard</button>
-                <button id="edit-save" class="button green" ng-click="editSave()">Save</button>
-                <button id="edit-cancel" class="button gray" ng-click="editCancel()">Cancel</button>
+                <button class="button white" ng-click="unassignRoom()">Unassign</button>
+                <button class="button white" ng-click="openStayCard()">StayCard</button>
+                <button class="button green" ng-click="editSave()">Save</button>
+                <button class="button gray" ng-click="editCancel()">Cancel</button>
             </div>
         </div>
         <div class="entry date">

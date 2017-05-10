@@ -24,15 +24,15 @@ function BaseCtrl($scope) {
   // function that converts a null value to a desired string.
   // if no replace value is passed, it returns an empty string
   $scope.escapeNull = function(value, replaceWith) {
-  		var newValue = '';
+          var newValue = '';
 
-  		if ((typeof replaceWith !== 'undefined') && (replaceWith !== null)) {
+          if ((typeof replaceWith !== 'undefined') && (replaceWith !== null)) {
     newValue = replaceWith;
-  		}
-  		var valueToReturn = ((value === null || typeof value === 'undefined') ? newValue : value);
+          }
+          var valueToReturn = ((value === null || typeof value === 'undefined') ? newValue : value);
 
-  		return valueToReturn;
-	};
+          return valueToReturn;
+    };
 
   $scope.fetchedFailed = function(errorMessage) {
     $scope.$emit('hideLoader');
@@ -82,7 +82,7 @@ function BaseCtrl($scope) {
 
     return serviceApi(params).then(
     // success call back
-			function(data) {
+            function(data) {
   if (showLoader) {
     $scope.$emit('hideLoader');
   }
@@ -93,9 +93,9 @@ function BaseCtrl($scope) {
       successCallBack(data);
     }
   }
-			},
-			// failure callback
-			function(error) {
+            },
+            // failure callback
+            function(error) {
   if (showLoader) {
     $scope.$emit('hideLoader');
   }
@@ -106,8 +106,8 @@ function BaseCtrl($scope) {
       failureCallBack(error);
     }
   }
-			}
-		);
+            }
+        );
   };
 
   // handle drag and drop events
@@ -126,7 +126,7 @@ function BaseCtrl($scope) {
   */
 
   $scope.getSimplifiedDayName = function(date) {
-    	var returnText = '';
+        var returnText = '';
 
     try {
       var passedDate = tzIndependentDate(date);
@@ -161,7 +161,7 @@ function BaseCtrl($scope) {
   * To set the title of each navigation
   */
   $scope.setTitle = function(title) {
-    	document.title = title;
+        document.title = title;
   };
 
   $scope.goBack = function($rootScope, $state) {
@@ -177,12 +177,12 @@ function BaseCtrl($scope) {
   };
 
   /*
-  	    this is the default scroller options used by controllers
-  		this can be modified through setScroller function
+          this is the default scroller options used by controllers
+          this can be modified through setScroller function
       */
   $scope.timeOutForScrollerRefresh = 300;
   var defaultScrollerOptions = {
-    	snap: false,
+        snap: false,
     scrollbars: 'custom',
     hideScrollbar: false,
     click: false,
@@ -194,36 +194,36 @@ function BaseCtrl($scope) {
   };
 
   /*
-  	function to handle scroll related things
-  	@param1: string as key
-  	@param2: object as scroller options
+      function to handle scroll related things
+      @param1: string as key
+      @param2: object as scroller options
   */
   $scope.setScroller = function(key, scrollerOptions) {
-    	if (typeof scrollerOptions === 'undefined') {
+        if (typeof scrollerOptions === 'undefined') {
       scrollerOptions = {};
-    	}
-    	// we are merging the settings provided in the function call with defaults
-    	var tempScrollerOptions = angular.copy(defaultScrollerOptions);
+        }
+        // we are merging the settings provided in the function call with defaults
+        var tempScrollerOptions = angular.copy(defaultScrollerOptions);
 
-    	angular.extend(tempScrollerOptions, scrollerOptions); // here is using a angular function to extend,
-    	scrollerOptions = tempScrollerOptions;
-    	// checking whether scroll options object is already initilised in parent controller
-    	// if so we need add a key, otherwise initialise and add
-    	var isEmptyParentScrollerOptions = isEmptyObject($scope.$parent.myScrollOptions);
+        angular.extend(tempScrollerOptions, scrollerOptions); // here is using a angular function to extend,
+        scrollerOptions = tempScrollerOptions;
+        // checking whether scroll options object is already initilised in parent controller
+        // if so we need add a key, otherwise initialise and add
+        var isEmptyParentScrollerOptions = isEmptyObject($scope.$parent.myScrollOptions);
 
-    	if (isEmptyParentScrollerOptions) {
+        if (isEmptyParentScrollerOptions) {
       $scope.$parent.myScrollOptions = {};
-    	}
+        }
 
-    	$scope.$parent.myScrollOptions[key] = scrollerOptions;
+        $scope.$parent.myScrollOptions[key] = scrollerOptions;
   };
 
   /*
-  	function to refresh the scroller
-  	@param1: string as key
+      function to refresh the scroller
+      @param1: string as key
   */
   $scope.refreshScroller = function(key) {
-    	setTimeout(function() {
+        setTimeout(function() {
       if (!!$scope.$parent && $scope.$parent.myScroll) {
         if (key in $scope.$parent.myScroll) {
           $scope.$parent.myScroll[key].refresh();
@@ -232,7 +232,7 @@ function BaseCtrl($scope) {
       if ($scope.hasOwnProperty('myScroll') && (key in $scope.myScroll)) {
         $scope.myScroll[key].refresh();
       }
-    	}, $scope.timeOutForScrollerRefresh);
+        }, $scope.timeOutForScrollerRefresh);
   };
 
   $scope.getScroller = function(key) {

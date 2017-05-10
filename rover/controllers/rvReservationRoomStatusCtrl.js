@@ -284,7 +284,8 @@ angular.module('sntRover').controller('reservationRoomStatus',
             successCallBack: successCallBackOfSaveReservation
         };
 
-        $scope.callAPI(RVReservationSummarySrv.updateReservation, options);
+        // CICO-36919 for optimizing
+        $scope.callAPI(RVReservationSummarySrv.updateNoRoomMove, options);
     };
 
     $scope.showDoNotMoveToggleButton = function() {

@@ -3,8 +3,8 @@
     <div id="content">
         <h1>{{'ADMIN_HEADER' | translate}}</h1>
         <!-- Admin -->
-        <button type="button" class="button" touch-press="loginAdmin()">{{'ADMIN_LOGIN' | translate}}</button>
-        <button type="button" class="button transparent" touch-press="navToPrev()">{{'ADMIN_EXIT' | translate}}</button>
+        <button type="button" class="button done-btn" touch-press="loginAdmin()">{{'ADMIN_LOGIN' | translate}}</button>
+        <button type="button" class="button done-btn transparent" touch-press="navToPrev()">{{'ADMIN_EXIT' | translate}}</button>
     </div>
     <span ng-include="'/assets/partials_v2/zsTabletFooter.html'"></span>
 </section>
@@ -32,7 +32,7 @@
             </div>
         </form>
         <div class="entry action" ng-show='adminLoginError'>
-            <button type="button" class="button centered-exit" touch-press='clickedOnCloseButton(); resetTime()'>{{'EXIT_BTN' |translate}}</button>
+            <button type="button" class="button centered-exit done-btn" touch-press='clickedOnCloseButton(); resetTime()'>{{'EXIT_BTN' |translate}}</button>
         </div>
     </div>
     <span ng-include="'/assets/partials_v2/zsTabletFooter.html'" click-touch='resetTime()'></span>
@@ -95,7 +95,7 @@
                 <div class="entry with-label">
                     <label>Idle Screen Prompt After (seconds)</label>
                     <label class='admin-label-description'>Prompt user to see if they are still using the Station after {{zestStationData.idle_timer.prompt}} seconds of no activity</label>
-                    <input touch-press id="prompt_text" ng-focus="showOnScreenKeyboard('prompt_text')" click-touch="showOnScreenKeyboard('prompt_text')" type="number" min='1' max='{{zestStationData.idle_timer.max}}' ng-model='zestStationData.idle_timer.prompt' />
+                    <input touch-press id="prompt_text" ng-focus="showOnScreenKeyboard('prompt_text')" click-touch="showOnScreenKeyboard('prompt_text')" type="number" min='1' max='{{zestStationData.idle_timer.max}}' ng-model='zestStationData.idle_timer.prompt' class='admin-input admin-input'  />
                 </div>
 
                 <div class="entry with-label">
@@ -124,6 +124,61 @@
                         </select>
                     </div>
                 </div>
+                <!-- MOBILE KEY DEMO OPTIONS -->
+
+                <div class="entry with-label" ng-show="showDebugModeOption">
+                    <label>Mobile Key Demo Mode</label>
+                    <label class='admin-label-description'>Try out the new Mobile Key screens</label>
+                    <div class="entry select">
+                        <select ng-change='runRefreshScroller()' ng-model="zestStationData.demoMobileKeyModeEnabled">
+                            <option value="true">Enabled</option>
+                            <option value="false">Disabled</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="entry with-label" ng-show="showDebugModeOption && zestStationData.demoMobileKeyModeEnabled === 'true' ">
+                    <label>Mobile Key Demo-Flow (User with App or not)</label>
+                    <label class='admin-label-description'>Select (With-App) if you want to test the with-app flow</label>
+                    <div class="entry select">
+                        <select ng-model="zestStationData.demoMobileKeyModeEmailLinked">
+                            <option value="true">Email Linked with App</option>
+                            <option value="false">No App/Email Found</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="entry with-label" ng-show="showDebugModeOption && zestStationData.demoMobileKeyModeEnabled === 'true' ">
+                    <label>Mobile Key Demo-Flow (User with App or not)</label>
+                    <label class='admin-label-description'>If user has an email on-file, we'll send the app link there, otherwise we should collect email</label>
+                    <div class="entry select">
+                        <select ng-model="zestStationData.demoMobileKeyModeUserEmailOnFile">
+                            <option value="true">User with Email on File</option>
+                            <option value="false">No Email</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="entry with-label" ng-show="showDebugModeOption && zestStationData.demoMobileKeyModeEnabled === 'true' ">
+                    <label>Mobile Key Demo-Flow (Third Party App)</label>
+                    <label class='admin-label-description'>If the Hotel has a Non-SNT Mobile Key, select Third Party</label>
+                    <div class="entry select">
+                        <select ng-model="zestStationData.thirdPartyMobileKey">
+                            <option value="true">Third Party</option>
+                            <option value="false">Default</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="entry with-label" ng-show="showDebugModeOption && zestStationData.demoMobileKeyModeEnabled === 'true' ">
+                    <label>Try Mobile Key Flow</label>
+                    <label class='admin-label-description'>Clicking this button will take you directly to the mobile key flow for Testing Only</label>
+                    <div class="select button" type="button" touch-press="testRunMobileKeyCheckin()">
+                        Run Test
+                    </div>
+                </div>
+                <!--END MOBILE KEY DEMO OPTIONS -->
+
 
                 <div class="entry with-label" ng-show="showDebugModeOption">
                     <label>Skip Check-In</label>
@@ -140,7 +195,7 @@
                     <label>Text Editor Mode</label>
                     <label class='admin-label-description'>Allows Station user to edit text by double-clicking current text. *Works best via Internet Browser</label>
                     <div class="entry select">
-                        <select ng-model="zestStationData.editorModeEnabled" ng-change='setEditorModeCls()'>
+                        <select class='admin-editor-toggle' ng-model="zestStationData.editorModeEnabled" ng-change='setEditorModeCls()'>
                             <option value="true">Enabled</option>
                             <option value="false">Disabled</option>
                         </select>
@@ -155,6 +210,7 @@
             <button type="button" class="button button-left-margin" touch-press='logOutApplication()'>Logout</button>
 
             <button ng-show="showDebugModeOption" type="button" class="button button-left-margin" touch-press='toggleDiagnostics()'>Diagnostics</button>
+            <button ng-show="showDebugModeOption" type="button" class="button button-left-margin" click-touch='reload()'>Refresh</button>
 
         </div>
     </div>

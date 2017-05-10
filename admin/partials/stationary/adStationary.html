@@ -277,7 +277,7 @@
                 <div class="entry full-width" ng-show="data.is_show_registration_card_button">
                     <label translate>REGISTRATION_TEMPLATE</label>
                     <div class="select">
-                        <select ng-model="data.selected_guest_registration_template" name="guest-bill-template" class="placeholder">
+                        <select convert-to-number ng-model="data.selected_guest_registration_template" name="guest-bill-template" class="placeholder">
                             <option value="" translate> SELECT_REGISTRATION_TEMPLATE </option>
                             <option ng-repeat="item in data.guest_registration_template" value="{{item.value}}" ng-selected="item.value == data.selected_guest_registration_template">{{item.name}}</option>
                         </select>
@@ -301,7 +301,7 @@
                      <ad-textbox styleclass="full-width" value="data.group_confirmation_email_subject" label="{{'GROUP_CONFIRMATION_EMAIL_SUBJECT'| translate}}" placeholder="{{'ENTER_SUBJECT'| translate}}"></ad-textbox>
                      <label for="email-hotel-logo" translate>HOLD_STATUS </label>
                     <div class="select">
-                        <select ng-model="data.groupholdstatus" name="email-hotel-logo" class="placeholder" ng-change="showConfirmationHeaderFooterBasedOnHoldStatus()">
+                        <select convert-to-number ng-model="data.groupholdstatus" name="email-hotel-logo" class="placeholder" ng-change="showConfirmationHeaderFooterBasedOnHoldStatus()">
                             <option value="" translate> SELECT_HOLD_STATUS </option>
                             <option ng-repeat="item in holdStatusList" value="{{item.id}}">{{item.name}}</option>
                         </select>
@@ -311,6 +311,11 @@
                 <div class="entry full-width">
                      <ad-textarea rows="4" div-class="full-width" text-area-class="full-width" value="data.group_confirmation_header" label="{{'CONFIRMATION_HEADER_TEXT'| translate}} " placeholder="{{'CONFIRMATION_HEADER_TEXT_PLACE_HOLDER' | translate }}" disabled="data.groupholdstatus == ''"></ad-textarea>
                      <ad-textarea rows="4" div-class="full-width" text-area-class="full-width" value="data.group_confirmation_footer" label="{{'CONFIRMATION_FOOTER_TEXT'| translate}} " placeholder="{{'CONFIRMATION_FOOTER_TEXT_PLACE_HOLDER' | translate }}" disabled="data.groupholdstatus == ''"></ad-textarea>
+                </div>
+
+                <div class="entry full-width">
+                    <label translate>GETTING_TO_THE_HOTEL</label>
+                    <ad-textarea rows="4" div-class="full-width" text-area-class="full-width" value="data.group_location_text"></ad-textarea>
                 </div>
             </fieldset>
 

@@ -116,7 +116,7 @@ angular.module('sntRover')
         };
 
         $scope.fetchChargeCodes = function (index, pageNo) {
-            
+
             var item = $scope.cgEntries[index];
             var pageNo = pageNo || 1;
 
@@ -129,7 +129,7 @@ angular.module('sntRover')
 
                 ccStore.set(item.charge_group_id, data.charge_codes);
                 fillChargeCodes(ccStore.get(item.charge_group_id), sourceIndex, data.total_count);
-                
+
                 $timeout(function () {
                     toggleChargeCodes($scope.cgEntries, sourceIndex, true)
                         .then(function () {
@@ -162,6 +162,51 @@ angular.module('sntRover')
             $scope.invokeApi(RVreportsSubSrv.getChargeCodes, params, success, failed);
         };
 
+        $scope.togglePaymentGroup = function(index, pageNo) {
+            $scope.pgEntries[index].isPaymentGroupActive = !$scope.pgEntries[index].isPaymentGroupActive;
+
+            if ($scope.pgEntries[index].isPaymentGroupActive) {
+                var refreshDelay = 1000;
+                var success = function(data) {
+                    ccStore.set($scope.pgEntries[index].charge_group_id, data);
+                    $scope.$emit('hideLoader');
+                    $scope.pgEntries[index].paymentGroupEntries = data;
+                    $scope.pgEntries[index].insidePaginationData = {
+                        id: $scope.pgEntries[index].charge_group_id,
+                        api: [$scope.togglePaymentGroup, index],
+                        perPage: 50
+                    };
+                    $scope.pgEntries[index].totalInsidePagination = data.total_count;
+                    $timeout(function () {
+                         var paginationID = $scope.pgEntries[index].charge_group_id;
+
+                         $scope.$broadcast('updatePagination', paginationID );
+
+                        $scope.refreshScroll(true);
+
+                    }, refreshDelay);
+                };
+                var failed = function() {
+                    $scope.$emit('hideLoader');
+                };
+                var item = $scope.pgEntries[index];
+
+                pageNo = pageNo || 1;
+                var params = {
+                    date: $filter('date')($scope.chosenReport.singleValueDate, 'yyyy-MM-dd'),
+                    report_id: $scope.chosenReport.id,
+                    charge_group_id: item.charge_group_id,
+                    page: pageNo,
+                    per_page: 50
+                };
+
+                $scope.invokeApi(RVreportsSubSrv.getPaymentValues, params, success, failed);
+            } else {
+                $scope.pgEntries[index].paymentGroupEntries = {};
+                ccStore.set($scope.pgEntries[index].charge_group_id, {});
+            }
+
+        };
         $scope.isHidden = function (item) {
             var hidden = false;
 
@@ -267,7 +312,7 @@ angular.module('sntRover')
          * fillAllChargeCodes - loop through the entire cgcc array and fill any already fetched cc
          *
          * @param  {array} source full array
-         * @returns {object}             undefined
+         * @returns {object} undefined
          */
         function fillAllChargeCodes (source) {
             var i, j, id, match, sourceIndex;
@@ -424,8 +469,68 @@ angular.module('sntRover')
             $scope.cgEntries = prepareChargeGroupsCodes(results);
             fillAllChargeCodes($scope.cgEntries);
         }
+        /*
+         * Seperating payment group values
+         * @param {array} results fetched data from API
+         */
+        function paymentGroupInit (results) {
+            $scope.pgEntries = [];
+            $scope.pgEntries = _.where(results, { is_payment_group: true });
+            _.each($scope.pgEntries, function(paymentGroupItem) {
+                paymentGroupItem.isPaymentGroupActive = false;
 
-        /**
+                paymentGroupItem.paymentGroupEntries = ccStore.get(paymentGroupItem.charge_group_id);
+            });
+        }
+        /*
+         * Seperating balance
+         * @param {array} results fetched data from API
+         */
+        function balanceBrought (results) {
+            $scope.balanceEntries = [];
+            $scope.balanceEntries = _.where(results, { is_balance_brought_forward: true });
+        }
+        /*
+         * Seperating ledger deposit values
+         * @param {array} results fetched data from API
+         */
+        function ledgerDepositInit (results) {
+            $scope.ledgerDepositEntries = [];
+            $scope.ledgerDepositEntries = _.where(results, { is_deposit_ledger: true });
+        }
+        /*
+         * Seperating ledger guest values
+         * @param {array} results fetched data from API
+         */
+        function ledgerGuestInit (results) {
+            $scope.ledgerGuestEntries = [];
+            $scope.ledgerGuestEntries = _.where(results, { is_guest_ledger: true });
+        }
+        /*
+         * Seperating ledger AR
+         * @param {array} results fetched data from API
+         */
+        function ledgerARInit (results) {
+            $scope.ledgerAREntries = [];
+            $scope.ledgerAREntries = _.where(results, { is_ar_ledger: true });
+        }
+        /*
+         * Total variance 
+         * @param {array} results fetched data from API
+         */
+       function ledgerTotalVarianceInit (results) {
+            $scope.ledgerTotalVariance = [];
+            $scope.ledgerTotalVariance = _.where(results, { is_total_variance: true });
+        }
+        /*
+         * Total closingBalance 
+         * @param {array} results fetched data from API
+         */
+        function ledgerTotalClosingBalanceInit (results) {
+            $scope.ledgerTotalClosingBalance = [];
+            $scope.ledgerTotalClosingBalance = _.where(results, {  is_total_closing_balance: true });
+        }
+         /**
          * init - bootstrap initial execution
          * @returns {object} undefined
          */
@@ -436,9 +541,16 @@ angular.module('sntRover')
             totalRevenueInit(results);
             staticInit(results);
             chargeGroupInit(results);
+            paymentGroupInit(results);
+            balanceBrought(results);
+            ledgerDepositInit(results);
+            ledgerGuestInit(results);
+            ledgerARInit(results);
+            ledgerTotalVarianceInit(results);
+            ledgerTotalClosingBalanceInit(results);
         }
 
         init();
-        
+
     }
 ]);

@@ -27,7 +27,7 @@
                             </div>
                         </td>
                         <td data-title ="'Locked'"class="delete" >
-                            <button ng-show="user.is_locked" type="button" class="icons icon-lock" ui-sref="admin.serviceprovideruserdetails({ serviceProviderId: serviceProviderId,name:serviceProviderName, userId: user.id, isUnlocking:'true'})" >Unlock</button>
+                            <button ng-show="user.is_locked === 'true'" type="button" class="icons icon-lock" ui-sref="admin.serviceprovideruserdetails({ serviceProviderId: serviceProviderId,name:serviceProviderName, userId: user.id, isUnlocking:'true'})" >Unlock</button>
                         </td>
                         <td data-title ="'Delete'"class="delete" ng-click="deleteUser(user.id, $index)"><a href="#" class="icons icon-delete large-icon" >Delete</a></td>
                     </tr>

@@ -30,14 +30,21 @@ sntZestStation.controller('zsCheckinRoomUpsellCtrl', [
 				'balance_amount': $scope.selectedReservation.reservation_details.balance_amount,
 				'confirmation_number': $scope.selectedReservation.confirmation_number,
 				'pre_auth_amount_for_zest_station': $scope.selectedReservation.reservation_details.pre_auth_amount_for_zest_station,
-				'authorize_cc_at_checkin': $scope.selectedReservation.reservation_details.authorize_cc_at_checkin
+				'authorize_cc_at_checkin': $scope.selectedReservation.reservation_details.authorize_cc_at_checkin,
+				'is_from_room_upsell': 'true'
 			};
 
 			$state.go('zest_station.checkInTerms', stateParams);
 		};
 
 		$scope.skipRoomUpsell = function() {
-			navigateToTermsPage();
+			if ($scope.zestStationData.station_addon_upsell_active) {
+				$state.go('zest_station.addOnUpsell', {
+					'is_from_room_upsell': 'true'
+				});
+			} else {
+				navigateToTermsPage();
+			}
 		};
 
 		$scope.viewSelectedRoomDetails = function(selectedRoom) {
@@ -55,7 +62,14 @@ sntZestStation.controller('zsCheckinRoomUpsellCtrl', [
 				// skipECI used to track going back to reservation details from upsell, avoid re-routing to ECI if purchased or upsold a room
 				$scope.selectedReservation.skipECI = true;
 				zsCheckinSrv.setSelectedCheckInReservation([$scope.selectedReservation]);
-				$state.go('zest_station.checkInReservationDetails');
+				if ($scope.zestStationData.station_addon_upsell_active) {
+					$state.go('zest_station.addOnUpsell', {
+						'is_from_room_upsell': 'true'
+					});
+				} else {
+					// go to old T&C page which redirects to other pages
+					navigateToTermsPage();
+				}
 			};
 
 			var params = {

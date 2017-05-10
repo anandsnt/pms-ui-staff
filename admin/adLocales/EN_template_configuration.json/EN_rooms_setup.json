@@ -30,4 +30,8 @@
 "ROOM_STATUS_UPDATE_CHECKOUT_LABEL":"Enable room status update at checkout",
 "MAINTENANCE_REASONS":"Maintenance Reasons",
 "MAINTENANCE_REASON_PLACEHOLDER":"Enter maintenance reason",
-"ROOM_KEY_DELIVERY_MESSAGE_TITLE": "Enter room key delivery message"
+"ROOM_KEY_DELIVERY_MESSAGE_TITLE": "Enter room key delivery message",
+
+"STATION_MOBILEKEY_DISABLED":"Do not offer Mobile Phone Key",
+"STATION_MOBILEKEY_THIRDPARTY":"Offer Mobile Phone Key - 3rd Party",
+"STATION_MOBILEKEY_SNT":"Offer Mobile Phone Key - Zest"

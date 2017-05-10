@@ -1,0 +1,11 @@
+ <div id="modal" class="modal-show" ng-class="{'modal-show': !modalClosing}" role="dialog">
+    <div class="modal-content alert">
+        <button id="modal-close" type="button" class="modal-close" ng-click="closeDialog()"><span class="icons icon-close invert"></span></button>
+
+        <span class="icons icon-popup-alert"></span>
+        <span class="h2 message" translate>Remove Billing instructions from the group and all associated reservations</span>
+
+        <button type="button" class="button green modal-close" ng-click="deleteGroupBillingInfo()">Proceed</button>
+        <button type="button" class="button blank modal-close" ng-click="closeDialog()">Cancel</button>
+    </div>
+</div>

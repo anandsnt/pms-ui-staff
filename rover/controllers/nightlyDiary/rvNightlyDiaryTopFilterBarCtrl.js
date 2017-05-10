@@ -16,6 +16,7 @@ angular.module('sntRover')
         ) {
 
         BaseCtrl.call(this, $scope);
+
         /*
          * Utility method to shift date.
          * @param {String}  - startDate : base date to be shifted.
@@ -101,7 +102,7 @@ angular.module('sntRover')
             else {
                 $scope.diaryData.toDate = getDateShift($scope.diaryData.fromDate, 21, isRightShift, true);
             }
-            $scope.$emit('REFRESH_DIARY_ROOMS_AND_RESERVATIONS');
+            $scope.$emit('UPDATE_RESERVATIONLIST');
         });
         // Catching event from main controller, when API is completed.
         $scope.$on('FETCH_COMPLETED_DATE_LIST_DATA', function() {
@@ -120,7 +121,7 @@ angular.module('sntRover')
                 $scope.diaryData.toDate = getDateShift($scope.diaryData.fromDate, 21, isRightShift, true);
                 $scope.diaryData.numberOfDays = 21;
             }
-            $scope.$emit('REFRESH_DIARY_ROOMS_AND_RESERVATIONS');
+            $scope.$emit('UPDATE_RESERVATIONLIST');
         };
 
         /*
@@ -151,7 +152,7 @@ angular.module('sntRover')
             var isRightShift = false;
 
             calculateFromDateAndToDate(isRightShift);
-            $scope.$emit('REFRESH_DIARY_ROOMS_AND_RESERVATIONS');
+            $scope.$emit('UPDATE_RESERVATIONLIST');
         };
 
         // To handle click on right date shift.
@@ -159,13 +160,31 @@ angular.module('sntRover')
             var isRightShift = true;
 
             calculateFromDateAndToDate(isRightShift);
-            $scope.$emit('REFRESH_DIARY_ROOMS_AND_RESERVATIONS');
+            $scope.$emit('UPDATE_RESERVATIONLIST');
         };
 
         // To handle click on reset button.
         $scope.clickedResetButton = function() {
             init();
             $scope.$emit('REFRESH_DIARY_ROOMS_AND_RESERVATIONS');
+        };
+
+        // To toggle filter panel view.
+        $scope.togglePanelView = function() {
+            // if ($scope.diaryData.showFilterPanel) {
+            //     $scope.diaryData.showFilterPanel = false;
+            //     $scope.$emit('REFRESH_DIARY_ROOMS_AND_RESERVATIONS');
+            // } else {
+            //     $scope.diaryData.showFilterPanel = true;
+            // }
+            $scope.diaryData.showFilterPanel = !$scope.diaryData.showFilterPanel;
+            $scope.diaryData.showUnassignedReservations = false;
+        };
+
+        // Handle click on unassigned filter button
+        $scope.toggleUnassignedReservations = function() {
+            $scope.diaryData.showUnassignedReservations = !$scope.diaryData.showUnassignedReservations;
+            $scope.diaryData.showFilterPanel = false;
         };
 
         init();

@@ -1,7 +1,7 @@
 module.exports = {	
 	getList : function() {
 		var sharedRoot 	= 'shared/',
-		jsLibRoot 		= sharedRoot + 'lib/js/',
+		jsLibRoot 		= sharedRoot + 'lib-legacy/js/',
 		guestwebroot 	= 'guestweb_v2/',
 		guestwebJSassets 	= {
 			minifiedFiles: [

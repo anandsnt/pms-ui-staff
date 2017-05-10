@@ -3,7 +3,7 @@ const rateManagerExpandedRowsReducer = (state, action) => {
     case RM_RX_CONST.RATE_VIEW_CHANGED:
      	return [];
     case RM_RX_CONST.ROOM_TYPE_VIEW_CHANGED:
-    	return [];       	
+    	return [];	
     case RM_RX_CONST.SINGLE_RATE_EXPANDABLE_VIEW_CHANGED:
     	return []; 
     case RM_RX_CONST.TOGGLE_EXPAND_COLLAPSE_ROW:

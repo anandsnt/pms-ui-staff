@@ -6,7 +6,7 @@
         <div class="block-item item-type additional-detail">
             <h3 class="block-title">Reservation Type</h3>
             <div class="select">
-                <select name="reservation-type" id="reservation-type" ng-class="{'placeholder':reservationParentData.demographics.reservationType == ''}" ng-model="reservationParentData.demographics.reservationType" ng-change="updateAdditionalDetails()" iscroll-stop-propagation>
+                <select convert-to-number name="reservation-type" id="reservation-type" ng-class="{'placeholder':reservationParentData.demographics.reservationType == ''}" ng-model="reservationParentData.demographics.reservationType" ng-change="updateAdditionalDetails()" iscroll-stop-propagation>
                     <!-- Add  class="placeholder" when no value option is selected -->
                     <option value="">Select Reservation Type</option>
                     <option ng-repeat="reservationType in otherData.reservationTypes" value="{{reservationType.value}}" ng-selected="reservationType.value==reservationParentData.demographics.reservationType">{{reservationType.name}}</option>
@@ -35,7 +35,7 @@
                 </div>
                 <input value="{{reservationData.reservation_card.commission_details.commission_value}}" type="text" ng-model="reservationData.reservation_card.commission_details.commission_value" ng-blur="updateAdditionalDetails()" ng-disabled='true'/>
                 <div class="select">
-                    <select name="travel-agent-commission-type" ng-model="reservationData.reservation_card.commission_details.commission_type" ng-change="updateAdditionalDetails()" ng-disabled='true'>
+                    <select convert-to-number name="travel-agent-commission-type" ng-model="reservationData.reservation_card.commission_details.commission_type" ng-change="updateAdditionalDetails()" ng-disabled='true'>
                         <option value="percent">%</option>
                         <option value="amount">{{currencySymbol}}</option>
                     </select>
@@ -47,7 +47,7 @@
         <div class="block-item item-market additional-detail" ng-if="otherData.marketsEnabled">
             <h3 class="block-title">Market</h3>
             <div class="select">
-                <select name="market" ng-class="{'placeholder':reservationParentData.demographics.market == ''}" ng-model="reservationParentData.demographics.market" ng-change="updateAdditionalDetails()" iscroll-stop-propagation>
+                <select convert-to-number name="market" ng-class="{'placeholder':reservationParentData.demographics.market == ''}" ng-model="reservationParentData.demographics.market" ng-change="updateAdditionalDetails()" iscroll-stop-propagation>
                     <!-- Add  class="placeholder" when no value option is selected -->
                     <option value="">Select Market</option>
                     <option ng-repeat="market in otherData.markets" value="{{market.value}}" ng-selected="market.value==reservationParentData.demographics.market">{{market.name}}</option>
@@ -58,7 +58,7 @@
         <div class="block-item item-source additional-detail" ng-if="otherData.sourcesEnabled">
             <h3 class="block-title">Source</h3>
             <div class="select">
-                <select name="source" ng-class="{'placeholder':reservationParentData.demographics.source == ''}" ng-model="reservationParentData.demographics.source" ng-change="updateAdditionalDetails()" iscroll-stop-propagation>
+                <select convert-to-number name="source" ng-class="{'placeholder':reservationParentData.demographics.source == ''}" ng-model="reservationParentData.demographics.source" ng-change="updateAdditionalDetails()" iscroll-stop-propagation>
                     <!-- Add  class="placeholder" when no value option is selected -->
                     <option value="">Select Source</option>
                     <option ng-repeat="source in otherData.sources" value="{{source.value}}" ng-selected="source.value==reservationParentData.demographics.source">{{source.name}}</option>
@@ -69,7 +69,7 @@
         <div class="block-item item-origin additional-detail" ng-if="otherData.originsEnabled">
             <h3 class="block-title">Origin of Booking</h3>
             <div class="select">
-                <select name="origin" ng-class="{'placeholder':reservationParentData.demographics.origin == ''}" ng-model="reservationParentData.demographics.origin" ng-change="updateAdditionalDetails()" iscroll-stop-propagation>
+                <select convert-to-number name="origin" ng-class="{'placeholder':reservationParentData.demographics.origin == ''}" ng-model="reservationParentData.demographics.origin" ng-change="updateAdditionalDetails()" iscroll-stop-propagation>
                     <!-- Add  class="placeholder" when no value option is selected -->
                     <option value="">Select Origin of Booking</option>
                     <option ng-repeat="origin in otherData.origins" value="{{origin.value}}" ng-selected="origin.value==reservationParentData.demographics.origin">{{origin.name}}</option>
@@ -80,7 +80,7 @@
         <div class="block-item item-segment additional-detail" ng-if="otherData.segmentsEnabled">
             <h3 class="block-title">Segment</h3>
             <div class="select">
-                <select name="market" ng-class="{'placeholder':reservationParentData.demographics.segment == ''}" ng-model="reservationParentData.demographics.segment" ng-change="updateAdditionalDetails()" iscroll-stop-propagation ng-disabled="additionalDetails.segmentAvailable && isSegmentAutoComputed()">
+                <select convert-to-number name="market" ng-class="{'placeholder':reservationParentData.demographics.segment == ''}" ng-model="reservationParentData.demographics.segment" ng-change="updateAdditionalDetails()" iscroll-stop-propagation ng-disabled="additionalDetails.segmentAvailable && isSegmentAutoComputed()">
                     <!-- Add  class="placeholder" when no value option is selected -->
                     <option value="">Select Segment</option>
                     <option ng-repeat="segment in otherData.segments" value="{{segment.value}}" ng-selected="segment.value==reservationParentData.demographics.segment">{{segment.name}}</option>

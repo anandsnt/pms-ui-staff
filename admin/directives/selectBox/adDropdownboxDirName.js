@@ -60,5 +60,4 @@ admin.directive('adDropdownName', function($timeout) {
         },
         templateUrl: '/assets/directives/selectBox/adDropdownboxName.html'
     };
-
 });

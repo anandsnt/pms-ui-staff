@@ -58,9 +58,12 @@
     </div>
 </div>
 
-<div class="search-pagination hk-pagination" ng-show="!disablePrevBtn || !disableNextBtn">
+<div class="search-pagination hk-pagination" ng-show="(!disablePrevBtn || !disableNextBtn) && !shouldShowNewPagination()">
     <!-- removed buttons since they include +300ms delay on touch pads -->
     <label class="button dark-grey next" ng-click="fetchNextPage()" ng-class="{'disabled': disableNextBtn}">Next</label>
     <label class="button dark-grey prev" ng-click="fetchPrevPage()" ng-class="{'disabled': disablePrevBtn}">Previous</label>
     <p>Showing <strong>{{ resultFrom }}-{{ resultUpto }}</strong> of <strong id="total-count">{{ netTotalCount }}</strong> items</p>
 </div>
+
+<rv-pagination  page-options="paginationConfig" page-data="totalCount" ng-if="shouldShowNewPagination() && totalCount > 0 && showReportDetails">
+</rv-pagination>

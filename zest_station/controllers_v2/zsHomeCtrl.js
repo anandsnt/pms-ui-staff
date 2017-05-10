@@ -13,6 +13,7 @@ sntZestStation.controller('zsHomeCtrl', [
 		 * when we clicked on pickup key from home screen
 		 */
         $scope.clickedOnPickUpKey = function() {
+            $scope.trackEvent('PUK', 'user_selected');
             clearInterval($scope.activityTimer);
             if ($scope.zestStationData.pickup_qr_scan) {
                 $scope.setScreenIcon('key');
@@ -28,6 +29,8 @@ sntZestStation.controller('zsHomeCtrl', [
 		 * when we clicked on checkin from home screen
 		 */
         $scope.clickedOnCheckinButton = function() {
+            $scope.trackEvent('CI', 'user_selected');
+
             clearInterval($scope.activityTimer);
             $state.go('zest_station.checkInReservationSearch');
         };
@@ -36,6 +39,7 @@ sntZestStation.controller('zsHomeCtrl', [
 		 * when we clicked on checkout from home screen
 		 */
         $scope.clickedOnCheckoutButton = function() {
+            $scope.trackEvent('CO', 'user_selected');
             clearInterval($scope.activityTimer);
             if (!$scope.zestStationData.checkout_keycard_lookup) {
                 $state.go('zest_station.checkOutReservationSearch');
@@ -89,6 +93,12 @@ sntZestStation.controller('zsHomeCtrl', [
             };
 
             var incrementHomeScreenTimer = function() {
+                // pause timers when editor mode is enabled, so user doesnt get moved from the screen, 
+                // reflect in diagnostics with the idleTimerPaused attribute
+                if ($scope.zestStationData.editorModeEnabled === 'true') {
+                    return;
+                }
+
 				// Debugging options available from the console for development and debugging purposes only
                 if (zestSntApp.timeDebugger) {
 					// refresh kiosk every x seconds (while idle) - at home screen
@@ -128,10 +138,8 @@ sntZestStation.controller('zsHomeCtrl', [
 						// highlighting active language buttons. We need not do that again and again , if we already have a 
 						// default language set.So on timer limit(120s), we need to check if the current language is default or not.
                         // when Not in language Editor mode, go ahead and reset back to default language
-                        if ($scope.zestStationData.editorModeEnabled !== 'true') {
-                            console.info('translating to default lanaguage');
-                            setToDefaultLanguage(true);// checkIfDefaultLanguagIsSet = true    
-                        }
+                        console.info('translating to default lanaguage');
+                        setToDefaultLanguage(true);// checkIfDefaultLanguagIsSet = true    
 
                         $scope.runDigestCycle();
                         userInActivityTimeInHomeScreenInSeconds = 0;
@@ -211,6 +219,38 @@ sntZestStation.controller('zsHomeCtrl', [
             $translate.use(langShortCode);
             $scope.selectedLanguage = language;
         };
+
+
+        $scope.$on('KEY_INPUT_OPTION', function(evt, option) {
+            var optionsToChooseFrom;
+
+            var keysOn = $scope.zestStationData.home_screen.pickup_keys,
+                checkinOn = $scope.zestStationData.home_screen.check_in, 
+                checkoutOn = $scope.zestStationData.home_screen.check_out;
+
+            if (option === 1) {
+                if (keysOn) {
+                    $scope.clickedOnPickUpKey();
+                } else if (checkinOn) {
+                    $scope.clickedOnCheckinButton();
+                } else {
+                    $scope.clickedOnCheckoutButton();
+                }
+
+            } else if (option === 2) {
+                if (keysOn && checkinOn) {
+                    $scope.clickedOnCheckinButton();
+
+                } else if (!keysOn && checkinOn && checkoutOn) {
+                    $scope.clickedOnCheckoutButton();
+                }
+
+            } else if (option === 3) {
+                if (keysOn && checkinOn && checkoutOn) {
+                    $scope.clickedOnCheckoutButton();
+                }
+            }
+        });
 
 		/**
 		 * [initializeMe description]

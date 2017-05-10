@@ -1,29 +1,73 @@
+<script>
+    var url = document.location,
+      inDevEnvironment = false,
+      analyticTrackingID;
+
+    if (url.hostname) { // if btn === true, then the user is clicking continue to bypass cc screen in dev environment
+      if (typeof url.hostname === typeof 'str') {
+        if (url.hostname.indexOf('pms-dev') !== -1 ||
+          url.hostname.indexOf('pms-release') !== -1 ||
+          url.hostname.indexOf('192.168.1.218') !== -1 ||
+          url.hostname.indexOf('192.168.1.239') !== -1 ||
+          url.hostname.indexOf('localhost') !== -1) {
+
+          inDevEnvironment = true, inLocalEnv = false;
+            if (url.hostname.indexOf('localhost') !== -1) {
+                // dont track in local environment
+                inLocalEnv = true;
+            }
+        }
+      }
+    }
+    if (inDevEnvironment) {
+        // dev/rel/local tracking id
+        analyticTrackingID = 'UA-96932423-2';
+    } else {
+        // production tracking id
+        analyticTrackingID = 'UA-96932423-1';
+    }
+    
+    // <!-- // actual analytic code \\ -->
+    var _gaq = _gaq || [];
+    // registeres the tracking ID as Active for this page, in prep for async / event calls
+    _gaq.push(['_setAccount', analyticTrackingID]);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+        var ga = document.createElement('script');
+        ga.type = 'text/javascript';
+        ga.async = true;
+        ga.src = ('https://ssl') + '.google-analytics.com/ga.js';
+        var s = document.getElementsByTagName('script')[0];
+        s.parentNode.insertBefore(ga, s);
+    })();
+
+    var trackAnalyticEvent = function(event_name, event_type) {
+        if (!inLocalEnv) {
+            _gaq.push(['_trackEvent', event_name, event_type]);
+        }
+    }
+    
+
+    // end of analytic code
+</script>
+
 <div ng-show="hasLoader" id="loading">
     <div id="loading-spinner"></div>
 </div>
 
-<span ng-show="zestStationData.demoModeEnabled == 'true'" class="demo-text dev-cls top-left-demo">demo</span>
-<span ng-show="zestStationData.noCheckInsDebugger == 'true'" class="demo-text dev-cls top-left-demo" ng-class="{'demo-second-cls':zestStationData.demoModeEnabled == 'true'}">NCI</span>
+<div class='oos_reason' ng-show='zestStationData.workstationStatus === "out-of-order" && zestStationData.timeDebugger !== "true" && zestStationData.theme === "yotel"'>
+    {{zestStationData.workstationOooReason}}
+</div>
 
-<span ng-show="zestStationData.editorModeEnabled == 'true'" class="demo-text editor dev-cls" >Editor Mode Enabled</span>
-
-<span ng-show="zestStationData.timeDebugger == 'true'" class="timer-debugger-left dev-cls non-center">
-     <br> <span> [ {{zestStationData.workstationTimer}}/{{zestStationData.getWorkstationsAtTime}} ] Fetch Workstation Data & Refresh Station Check <br> </span>
-    <span> [ {{zestStationData.userInActivityTimeInHomeScreenInSeconds}}/{{zestStationData.timeUntilLanguageResetCheck}} ] Language Reset  <br> </span>
-
-    <span> [ {{zestStationData.refreshStationTimer}} >= {{zestStationData.timeUntilRefreshCheck}} ] Refresh Station Check Home Idle  <br> </span>
-    <span> [ {{zestStationData.userInActivityTimeInSeconds}}/{{zestStationData.idlePopupTime}} ] Idle Time, Alert <br> </span>
-    <span> [ {{zestStationData.userInActivityTimeInSeconds}}/{{zestStationData.idleToHomeTime}} ]Idle Time, Back to Home </span>
-</span>
-<span ng-show="zestStationData.timeDebugger == 'true'" class="timer-debugger-right dev-cls non-center">
-     <br> <span>Assigned Workstation ({{zestStationData.workstationName}}) <br> </span>
-     <span>Encoding Keys - <span ng-class='{"key-in-progress":zestStationData.makingKeyInProgress}'>({{zestStationData.makingKeyInProgress}})</span><br> </span>
-     <span ng-show='inChromeApp'>
-        Zest Station Handler - <span ng-class='{"key-in-progress":zestStationData.stationHandlerConnectedStatus == "Not-Connected"}'>({{zestStationData.stationHandlerConnectedStatus}})</span><br> 
-    </span>
+<div ng-include="'/assets/partials_v2/zsDiagnostics.html'"></div>
 
 
-</span>
+<div class='jumper' ng-show='showJumpList' ng-class="{'minimized':zestStationData.jumperMinimized}">
+    <div ng-include="'/assets/partials_v2/zsJumpList.html'"></div>
+</div>
+
+
 <div ng-include="'/assets/partials_v2/zsTabletHeader.html'"></div>
 <!--PopUp For External webPage-->
 <div class="popup iframe-popup open" ng-if="showExternalWebPage">
@@ -32,6 +76,8 @@
         <iframe click-touch="showKeyboardOnInput()" id="booking_iframe" src="{{zestStationData.home_screen.booking_pop_up.booking_engine_url| trustAsResourceUrl}}" seamless sandbox="allow-same-origin allow-scripts allow-forms allow-pointer-lock"></iframe>
     </div>
 </div>
+
+
 <!-- Popup -->
 <div class="popup" ng-class="{'open':zestStationData.timeOut && !showLanguagePopup}">
     <!-- Remove class "open" to hide popup content -->
@@ -39,26 +85,12 @@
         <h2 class="nocaps">
             <text editable-text="IDLE_TIMEOUT_MSG"> {{'IDLE_TIMEOUT_MSG' |translate}}</text>
         </h2>
-        <button type="button" class="button" click-touch='resetTime();'>
+        <button type="button" class="button idle-timeout-btn" click-touch='resetTime();'>
             <text editable-text="IDLE_TIMEOUT_YES"> {{'IDLE_TIMEOUT_YES' |translate}}</text>
         </button>
     </div>
 </div>
-<div class="popup" ng-class="{'open':showLanguagePopup}">
-    <div class="popup-content">
-        <i class="close-popup" data-action="popup" touch-press="closeLangPopUp()"></i>
-        <h2 class="nocaps">Select Language</h2>
-        <div id="languages">
-            <button ng-repeat="language in langInfo" ng-hide="!isSupported(language.info.name)" touch-press="selectLanguage(language)" type="button" class="button with-icon" ng-class=" {'active':selectedLanguage==='{{language.language}}' }">
-                <i class="icons icon-flag {{language.info.flag}}"></i> {{language.language}}
-            </button>
-            <!--button ng-hide="!isSupported('nl')" touch-press="selectLanguage('nl')" type="button" class="button with-icon" ng-class=" {'active':selectedLanguage==='nl' }">
-                <i class="icons icon-flag flag-nl"></i>
-                Nederlands
-            </button-->
-        </div>
-    </div>
-</div>
+
 <div id="popup-overlay" ng-class="{'open':zestStationData.timeOut}"></div>
 <!-- Remove class "open" to hide popup overlay -->
 <div ng-controller="zsThemeActionsCtrl">

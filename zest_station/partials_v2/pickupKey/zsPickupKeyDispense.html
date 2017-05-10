@@ -1,3 +1,16 @@
+<!-- Popup -->
+<div class="popup" ng-class="{'open':showDispenserGateIsBlockedPopup}">
+    <!-- Remove class "open" to hide popup content -->
+    <div class="popup-content">
+        <h2 class="nocaps">
+            <text editable-text="GATE_ERROR_MESSAGE"> {{'GATE_ERROR_MESSAGE' |translate}}</text>
+        </h2>
+        <button type="button" class="button" click-touch='closeGateErrorWarning();'>
+            <text editable-text="GATE_ERROR_CLOSE"> {{'GATE_ERROR_CLOSE' |translate}}</text>
+        </button>
+    </div>
+</div>
+
 <!--------------------- select no of keys mode ------------------------>
 <section id="main" class="centered" role="main" click-touch='resetTime()' ng-show="mode === 'DISPENSE_KEY_MODE'">
     <div id="content">
@@ -13,10 +26,10 @@
                 <text editable-text="HOW_MANY_KEYS"> {{'HOW_MANY_KEYS' |translate}}</text>
             </h2>
             <div id="key-options">
-                <button ng-hide="isEmpty('UNO_KEY')" type="button" class="button" touch-press="makeKeys(1)">
+                <button ng-hide="isEmpty('UNO_KEY')" type="button" class="button make-key-btn" touch-press="makeKeys(1)">
                     <text editable-text="UNO_KEY"> {{'UNO_KEY' |translate}}</text>
                 </button>
-                <button ng-hide="isEmpty('DOS_KEY')" type="button" class="button" touch-press="makeKeys(2)">
+                <button ng-hide="isEmpty('DOS_KEY')" type="button" class="button make-key-btn" touch-press="makeKeys(2)">
                     <text editable-text="DOS_KEY"> {{'DOS_KEY' |translate}}</text>
                 </button>
             </div>
@@ -125,7 +138,7 @@
         <div id="room" ng-show="zestStationData.show_room_number">
             <span class="number">{{selectedReservation.room}}</span>
         </div>
-        <button type="button" class="button" click-touch="pickupKeyNextPageAction()" ng-style="doneButtonStyle">
+        <button type="button" class="button done-btn" click-touch="pickupKeyNextPageAction()" ng-style="doneButtonStyle">
             <text editable-text="DONE"> {{'DONE' |translate}}</text>
         </button>
     </div>

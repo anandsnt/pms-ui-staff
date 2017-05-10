@@ -22,78 +22,78 @@ angular.module('sntRover').service('RVBaseWebSrv', ['$http', '$q', '$window', '$
     *   @return {promise}
     */
 
-	this.callWebService = function(httpMethod, url, params) {
-		var deferred = $q.defer();
+    this.callWebService = function(httpMethod, url, params) {
+        var deferred = $q.defer();
 
-		if (typeof params === "undefined") {
-			params = "";
-		}
+        if (typeof params === "undefined") {
+            params = "";
+        }
 
-		var httpDict = {};
+        var httpDict = {};
 
- 		httpDict.url = url;
- 		httpDict.method = httpMethod;
- 		if (httpMethod === 'GET' || httpMethod === 'DELETE') {
- 			httpDict.params = params;
- 		}
- 		else if (httpMethod === 'POST' || httpMethod === 'PUT') {
- 			httpDict.data = params;
- 			if (typeof $rootScope.workstation_id !== 'undefined') {
-				httpDict.data.workstation_id = $rootScope.workstation_id;
-			}
-  		}
+        httpDict.url = url;
+        httpDict.method = httpMethod;
+        if (httpMethod === 'GET' || httpMethod === 'DELETE') {
+            httpDict.params = params;
+        }
+        else if (httpMethod === 'POST' || httpMethod === 'PUT') {
+            httpDict.data = params;
+            if (typeof $rootScope.workstation_id !== 'undefined') {
+                httpDict.data.workstation_id = $rootScope.workstation_id;
+            }
+        }
 
-		// Sample params {params:{fname: "fname", lname: "lname"}}
-		$http(httpDict).success(function(response, status) {
-			if (response.status === "success") {
-		    	deferred.resolve(response.data);
-			} else {
-				// please note the type of error expecting is array
-		    	deferred.reject(response.errors);
-			}
-		}).error(function(response, status) {
-			var urlStart = url.split('?')[0];
-			// please note the type of error expecting is array
-			// so form error as array if you modifying it
-			
+        // Sample params {params:{fname: "fname", lname: "lname"}}
+        $http(httpDict).then(function(response) {
+            if (response.data.status === "success") {
+                deferred.resolve(response.data.data);
+            } else {
+                // please note the type of error expecting is array
+                deferred.reject(response.data.errors);
+            }
+        }, function(response) {
+            var status = response.status;
+            // please note the type of error expecting is array
+            // so form error as array if you modifying it
 
-if (status === 406) { // 406- Network error
-				deferred.reject(response.errors);
-			} else if (status === 422) { // 406- Network error
-				deferred.reject(response.errors);
-			}
- 			else if (status === 501 || status === 502 || status === 503) { // 500- Internal Server Error
-                               $window.location.href = '/500' ;
-                      }
-			else if (status === 500) { // 500- Internal Server Error
 
-				deferred.reject(['Internal server error occured']);
-			}
-			else if (status === 401) { // 401- Unauthorized
-				// so lets redirect to login page
-				$window.location.href = '/logout' ;
-			}
+            if (status === 406) { // 406- Network error
+                deferred.reject(response.data.errors);
+            } else if (status === 422) { // 406- Network error
+                deferred.reject(response.data.errors);
+            }
+            else if (status === 501 || status === 502 || status === 503) { // 500- Internal Server Error
+                $window.location.href = '/500';
+            }
+            else if (status === 500) { // 500- Internal Server Error
 
-			// set of custom error emssage range http status
-			//
-			else if (status >= 470 && status <= 490) {
-				var error = {};
+                deferred.reject(['Internal server error occured']);
+            }
+            else if (status === 401) { // 401- Unauthorized
+                // so lets redirect to login page
+                $window.location.href = '/logout';
+            }
 
-				error.httpStatus = status;
-				error.errorMessage = response.errors;
-				deferred.reject (error);
-			}
-			// CICO-26779 : Handling 404 - Not found.
-			else if (status === 404) {
-				console.warn("Found 404 Error : " + url );
-			}
-			else {
-				deferred.reject(response.errors);
-			}
+            // set of custom error emssage range http status
+            //
+            else if (status >= 470 && status <= 490) {
+                var error = {};
 
-		});
-		return deferred.promise;
-	};
+                error.httpStatus = status;
+                error.errorMessage = response.data.errors;
+                deferred.reject(error);
+            }
+            // CICO-26779 : Handling 404 - Not found.
+            else if (status === 404) {
+                console.warn("Found 404 Error : " + url);
+            }
+            else {
+                deferred.reject(response.data.errors);
+            }
+
+        });
+        return deferred.promise;
+    };
 
    	this.getJSON = function(url, params) {
     	return this.callWebService("GET", url, params);

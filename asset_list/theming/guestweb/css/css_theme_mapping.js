@@ -93,7 +93,19 @@ module.exports = {
             'guestweb_snt': [ themeCSSRoot + 'guestweb_snt.css'],
             'guestweb_silver_stone': [ themeCSSRoot + 'guestweb_silver_stone.css'],
             'guestweb_koa_kea': [ themeCSSRoot + 'guestweb_koa_kea.css'],
-            'guestweb_hotel_chicago': [ themeCSSRoot + 'guestweb_hotel_chicago.css']
+            'guestweb_hotel_chicago': [ themeCSSRoot + 'guestweb_hotel_chicago.css'],
+            'guestweb_public_ny': [ themeCSSRoot + 'guestweb_public_ny.css'],
+            'guestweb_Nobu_Ryokan_Malibu': [ themeCSSRoot + 'guestweb_Nobu_Ryokan_Malibu.css'],
+            'guestweb_ambrose': [ themeCSSRoot + 'guestweb_ambrose.css'],
+            'guestweb_little_duke': [ themeCSSRoot + 'guestweb_little_duke.css'],
+            'guestweb_basecamp_boulder': [ themeCSSRoot + 'guestweb_basecamp_boulder.css'],
+            'guestweb_distrikt_nyc': [ themeCSSRoot + 'guestweb_distrikt_nyc.css'],
+            'guestweb_stella_hotel': [ themeCSSRoot + 'guestweb_stella_hotel.css'],
+            'guestweb_beau_rivage': [ themeCSSRoot + 'guestweb_beau_rivage.css'],
+            'guestweb_gold_strike': [ themeCSSRoot + 'guestweb_gold_strike.css'],
+            'guestweb_historic_taos_inn': [ themeCSSRoot + 'guestweb_historic_taos_inn.css'],
+            'guestweb_public_ny_v2': [ themeCSSRoot + 'guestweb_public_ny_v2.css'],
+            'guestweb_mgm_grand_detroit': [ themeCSSRoot + 'guestweb_mgm_grand_detroit.css']
         };     
     }
 };

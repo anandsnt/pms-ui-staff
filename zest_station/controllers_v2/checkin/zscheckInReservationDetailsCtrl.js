@@ -6,7 +6,8 @@ sntZestStation.controller('zsCheckInReservationDetailsCtrl', [
     'zsCheckinSrv',
     '$stateParams',
     '$log',
-    function($scope, $rootScope, $state, zsEventConstants, zsCheckinSrv, $stateParams, $log) {
+    '$timeout',
+    function($scope, $rootScope, $state, zsEventConstants, zsCheckinSrv, $stateParams, $log, $timeout) {
 
 
         // This controller is used for viewing reservation details 
@@ -29,8 +30,10 @@ sntZestStation.controller('zsCheckInReservationDetailsCtrl', [
          **/
 
         BaseCtrl.call(this, $scope);
+        $scope.mode = 'RESERVATION_DETAILS';
 
         $scope.setScroller('res-details');
+        $scope.setScroller('terms-container');
 
         var refreshScroller = function() {
             $scope.refreshScroller('res-details');
@@ -45,6 +48,7 @@ sntZestStation.controller('zsCheckInReservationDetailsCtrl', [
 
                 if (data.data) {
                     $scope.selectedReservation.reservation_details = data.data.reservation_card;
+                    $scope.zestStationData.selectedReservation = $scope.selectedReservation;
                     if ($scope.isRateSuppressed()) {
                         $scope.selectedReservation.reservation_details.balance = 0;
                     }
@@ -72,6 +76,7 @@ sntZestStation.controller('zsCheckInReservationDetailsCtrl', [
         var fetchAddons = function() {
             var fetchCompleted = function(data) {
                 $scope.selectedReservation.addons = data.existing_packages;
+                setSelectedReservation();
                 setDisplayContentHeight();
                 refreshScroller();
                 $scope.isReservationDetailsFetched = true;
@@ -91,6 +96,9 @@ sntZestStation.controller('zsCheckInReservationDetailsCtrl', [
         };
 
         $scope.isRateSuppressed = function() {
+            if (typeof $scope.selectedReservation === 'undefined') {
+                return false;
+            }
             // need to wait for api to update
             // this is used in HTML to hide things
             if (typeof $scope.selectedReservation.reservation_details !== 'undefined') {
@@ -104,7 +112,8 @@ sntZestStation.controller('zsCheckInReservationDetailsCtrl', [
         var onBackButtonClicked = function() {
 
             var reservations = zsCheckinSrv.getCheckInReservations();
-            
+
+            // can't handle back from T&C for auto assign room, as the rooom status is not returned from API now.
             if ($stateParams.pickup_key_mode) {
                 $state.go('zest_station.checkOutReservationSearch', {
                     'mode': 'PICKUP_KEY'
@@ -117,11 +126,9 @@ sntZestStation.controller('zsCheckInReservationDetailsCtrl', [
             // what needs to be passed back to re-init search results
             //  if more than 1 reservation was found? else go back to input 2nd screen (confirmation, no of nites, etc..)
         };
+        var initComplete = function() {
+            // called after getting selectedReservation details
 
-        (function() {
-            // init
-            // the data is service will be reset after the process from zscheckInReservationSearchCtrl
-            $scope.selectedReservation = zsCheckinSrv.getSelectedCheckInReservation();
             // show back button if not from upsell rooms
             if ($scope.selectedReservation.isRoomUpraded) {
                 $scope.$emit(zsEventConstants.HIDE_BACK_BUTTON);
@@ -133,11 +140,32 @@ sntZestStation.controller('zsCheckInReservationDetailsCtrl', [
             $scope.$emit('hideLoader');
             // starting mode
             $scope.mode = 'RESERVATION_DETAILS';
-            fetchReservationDetails();
+            if (!$stateParams.isQuickJump || $stateParams.isQuickJump === 'false') {
+                fetchReservationDetails();
+            } else {
+                setDisplayContentHeight(); // utils function
+                refreshScroller();
+            }
+
             // set flag to show the contents of the page
             // when all the data are loaded
             $scope.isReservationDetailsFetched = false;
-        }());
+        };
+
+        var setPlaceholderDataForDemo = function() {
+            var options = {
+                params: {},
+                successCallBack: function(response) {
+                    $scope.selectedReservation = response.paths[0].data;
+                    $scope.selectedReservation.reservation_details = $scope.selectedReservation.reservation_card;
+                    initComplete();    
+
+                    $scope.isReservationDetailsFetched = true;
+                }
+            };
+
+            $scope.callAPI(zsCheckinSrv.fetchDetailsPlaceholderData, options);
+        };
 
         $scope.addRemove = function() {
             var stateParams = {};
@@ -299,6 +327,14 @@ sntZestStation.controller('zsCheckInReservationDetailsCtrl', [
             $state.go('zest_station.checkinRoomError');
         };
 
+        var showTermsAndCondition = function() {
+            $scope.mode = 'TERMS_CONDITIONS';
+            setDisplayContentHeight();
+            $timeout(function() {
+                $scope.refreshScroller('terms-container');
+            }, 600);
+        };
+
 
         var assignRoomToReseravtion = function() {
             var reservation_id = $scope.selectedReservation.id;
@@ -320,7 +356,12 @@ sntZestStation.controller('zsCheckInReservationDetailsCtrl', [
                 // will need to check and combine one later
                 // fixing for hotfix
                 $scope.selectedReservation.reservation_details.room_number = response.data.room_number;
-                routeToNext();
+                if (!$scope.zestStationData.kiosk_display_terms_and_condition) {
+                    routeToNext();
+                }
+                else {
+                    showTermsAndCondition();
+                }
             } else {
                 initRoomError();
             }
@@ -336,8 +377,10 @@ sntZestStation.controller('zsCheckInReservationDetailsCtrl', [
 
             if (goToEarlyCheckin) {
                 beginEarlyCheckin(settings);
-            } else if (!$scope.selectedReservation.isRoomUpraded && $scope.selectedReservation.reservation_details.is_upsell_available === 'true' && zestStationRoomUpsellOn) {
+            } else if (!$scope.selectedReservation.isRoomUpraded && $scope.selectedReservation.reservation_details.is_upsell_available === 'true' && !$scope.selectedReservation.reservation_details.cannot_move_room && zestStationRoomUpsellOn) {
                 $state.go('zest_station.roomUpsell');
+            } else if ($scope.zestStationData.station_addon_upsell_active && !$scope.selectedReservation.skipAddon) {
+                $state.go('zest_station.addOnUpsell');
             } else {
                 // terms and condition skip is done in terms and conditions page
                 initTermsPage();
@@ -422,6 +465,10 @@ sntZestStation.controller('zsCheckInReservationDetailsCtrl', [
             }
             return false;
         };
+
+        $scope.agreeTerms = function() {
+            routeToNext();
+        };
             
 
         $scope.onNextFromDetails = function() {
@@ -450,7 +497,11 @@ sntZestStation.controller('zsCheckInReservationDetailsCtrl', [
 
                     } else if (roomIsAssigned() && roomIsReady()) {
                         $log.info('room is assigned and ready, continuing');
-                        routeToNext();
+                        if (!$scope.zestStationData.kiosk_display_terms_and_condition) {
+                            routeToNext();
+                        } else {
+                            showTermsAndCondition();
+                        }
 
                     } else if (roomIsAssigned() && !roomIsReady()) {
                         $log.info('room assigned but not ready, show room error');
@@ -460,5 +511,24 @@ sntZestStation.controller('zsCheckInReservationDetailsCtrl', [
             }
 
         };
+        
+
+        (function() {
+            if ($stateParams.isQuickJump === 'true') {
+                $log.warn('FROM QUICK JUMP');
+                if ($stateParams.quickJumpMode === 'TERMS_CONDITIONS') {
+                    showTermsAndCondition();
+                } else {
+                    // set some dummy data when quick jumping here
+                    setPlaceholderDataForDemo();   
+                }
+            } else {
+                // init
+                // the data is service will be reset after the process from zscheckInReservationSearchCtrl
+                $scope.selectedReservation = zsCheckinSrv.getSelectedCheckInReservation();
+                initComplete();
+            }
+        }());
+        
     }
 ]);

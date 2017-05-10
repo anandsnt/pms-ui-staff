@@ -426,3 +426,10 @@
            font-size: .8em;
            position: inherit;
         }
+
+
+		.station_exit_button>button{
+		  color:white;
+		  float: left !important;
+		  position: absolute;
+		}

@@ -29,5 +29,27 @@
 "MAX_PER_DAY":" Max per day",
 "LIMIT_UPSELL_OFFERS_FOR_FOLLOWING_ROOM_TYPES_BY_MAX_LOS": "LIMIT UPSELL OFFERS FOR FOLLOWING ROOM TYPES BY MAX LOS",
 "ALLOW_ROVER_OVERWRITE": "ALLOW ROVER OVERWRITE",
-"MAX_LOS": "MAX LOS"
+"MAX_LOS": "MAX LOS",
+
+"UPSELL_ADDONS" : "Upsell Add Ons",
+"CUSTOMIZE_WHERE_TO_OFFER_UPSELL":"Customize where to upsell Add Ons to guests",
+"OFFER_IN_ZEST_WEB":"Check In using Zest Web",
+"OFFER_IN_ZEST_STATION":"Check In using Zest Station",
+"CUSTOMIZE_LABEL_FOR_GUEST":"Customize the label shown to the guest",
+"DISPLAY_ORDER":"Display Order",
+"AMOUNT_TYPE":"Amount Type",
+"LABEL":"Label",
+"FLAT_RATE":"Flat Rate",
+"PER_PERSON":"Per Person",
+"PER_ADULT":"Per Adult",
+"PER_CHILD":"Per Child",
+"PER_ROOM":"Per Room",
+"POST_TYPE":"Post Type",
+"POST_EVERY_NIGHT":"Post Every Night",
+"POST_ON_ARRIVAL_NIGHT":"Post on Arrival Night",
+"POST_ON_LAST_NIGHT":"Post on Last Night",
+"SUFFIX":"Suffix",
+"DISPLAY_SUFFIX":"Display Suffix",
+"LABEL":"Label"
+
 
