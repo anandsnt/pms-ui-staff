@@ -177,6 +177,14 @@
                         Run Test
                     </div>
                 </div>
+
+                <div class="entry with-label" ng-show="showDebugModeOption && zestStationData.ccReader === 'local'">
+                    <label>Test Local CC Swipe</label>
+                    <label class='admin-label-description'>Clicking this button will take you directly to the mobile key flow for Testing Only</label>
+                    <div class="select button" type="button" touch-press="testReadLocalDevice()">
+                        Start
+                    </div>
+                </div>
                 <!--END MOBILE KEY DEMO OPTIONS -->
 
 

@@ -162,17 +162,37 @@ sntZestStation.controller('zsAdminCtrl', [
                 $scope.setEncoderDiagnosticInfo(); // in diagnostic info display the encoder name + id
             }, 500);
         };
+
+        $scope.testReadLocalDevice = function() {
+            alert('starting reader');
+            $scope.cardReader.startReader({
+                'successCallBack': function() {
+                    alert('success');
+                },
+                'failureCallBack': function() {
+                    alert('failure');
+                },
+                'test': true
+            });
+        };
         /*
          *  Login button actions
          *  Go to username entry page
          */
         $scope.loginAdmin = function() {
-            $scope.mode = 'admin-name-mode';
-            $scope.headingText = 'Admin Username'; // TODO: need to move this out to a tag.
-            $scope.passwordField = false;
-            showNavButtons();
-            $scope.focusInputField('input_text');
-            
+            if (!$scope.inProd() && $scope.adminBtnPress >= 2){
+                // simulate successful admin login, only in dev environemnt for faster dev/testing
+                $scope.mode = 'admin-screen-active';
+                $scope.adminLoginError = false;
+                $scope.subHeadingText = '';
+                refreshScroller();
+            } else {
+                $scope.mode = 'admin-name-mode';
+                $scope.headingText = 'Admin Username'; // TODO: need to move this out to a tag.
+                $scope.passwordField = false;
+                showNavButtons();
+                $scope.focusInputField('input_text');
+            }
         };
         /*
          *  Input field button actions
