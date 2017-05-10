@@ -1,23 +1,23 @@
 sntZestStation.controller('zsSpeakToStaffCtrl', [
-	'$scope',
-	'$stateParams',
-	'$state',
-	'zsEventConstants',
-	function($scope, $stateParams, $state, zsEventConstants) {
+    '$scope',
+    '$stateParams',
+    '$state',
+    'zsEventConstants',
+    function($scope, $stateParams, $state, zsEventConstants) {
 
 		/**
 		 * [initializeMe description]
 		 */
-		var initializeMe = (function() {
+        var initializeMe = (function() {
 
-			$scope.customMessagePresent = !!$stateParams.message;
-			$scope.customMessage = $scope.customMessagePresent ? $stateParams.message : "";
+            $scope.customMessagePresent = !!$stateParams.message;
+            $scope.customMessage = $scope.customMessagePresent ? $stateParams.message : '';
 			// hide back button
-			$scope.$emit(zsEventConstants.HIDE_BACK_BUTTON);
+            $scope.$emit(zsEventConstants.HIDE_BACK_BUTTON);
 
 			// hide close button
-			$scope.$emit(zsEventConstants.HIDE_CLOSE_BUTTON);
-		}());
+            $scope.$emit(zsEventConstants.HIDE_CLOSE_BUTTON);
+        }());
 
-	}
+    }
 ]);

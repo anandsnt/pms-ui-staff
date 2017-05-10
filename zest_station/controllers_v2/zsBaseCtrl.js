@@ -50,22 +50,20 @@ function BaseCtrl($scope) {
         } else {return false;}
     };
     $scope.inProd = function() {
-        var notProd = false;
+        var inDevEnvironment = false;
         var url = true ? document.location : window.location;
 
         if (url.hostname) {
             if (typeof url.hostname === typeof 'str') {
                 if (url.hostname.indexOf('pms-dev') !== -1 ||
           url.hostname.indexOf('pms-release') !== -1 ||
-          url.hostname.indexOf('192.168.1.218') !== -1 ||
+          url.hostname.indexOf('192.168.1') !== -1 ||
           url.hostname.indexOf('localhost') !== -1) {
-                    notProd = true;
+                    inDevEnvironment = true;
                 }
             }
         }
-        if (!notProd) { // in production, dont allow this function
-            return true;
-        } else {return false;}
+        return !inDevEnvironment;
     };
     $scope.fetchedFailed = function(errorMessage) {
         $scope.$emit('hideLoader');
