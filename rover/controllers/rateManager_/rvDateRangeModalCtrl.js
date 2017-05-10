@@ -46,22 +46,22 @@ angular.module('sntRover')
                 return '';
             }
             var date = new tzIndependentDate($scope.fromDate);
-            //year
+            // year
             if(!_.isUndefined($scope.maxRange.year)){
                 date.setFullYear(date.getFullYear() + $scope.maxRange.year);
             }
 
-            //months
+            // months
             if(!_.isUndefined($scope.maxRange.month)){
                 date.setMonth(date.getMonth() + $scope.maxRange.month);
             }
 
-            //days
+            // days
             if(!_.isUndefined($scope.maxRange.day)){
                 date.setDate(date.getDate() + $scope.maxRange.day);
             }
 
-            //to adjust the 1+30, or 1+365
+            // to adjust the 1+30, or 1+365
             date.setDate(date.getDate() - 1);
             return date;                  
         };
@@ -90,7 +90,7 @@ angular.module('sntRover')
         (()=> {
 
             var allParamsForCalendarExist = (!!$scope.ngDialogData && 'fromDate' in $scope.ngDialogData && 'toDate' in $scope.ngDialogData);
-            if (!allParamsForCalendarExist) { //if some of the params is missing from ngDialog initialization
+            if (!allParamsForCalendarExist) { // if some of the params is missing from ngDialog initialization
                 console.error('Unable to initialize two month calendar, you may have missed the required params to initalize the calendar view');
                 return;
             }

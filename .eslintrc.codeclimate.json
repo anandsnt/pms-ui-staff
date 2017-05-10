@@ -108,7 +108,16 @@
                 "ignoreChainWithDepth": 2
             }
         ],
-        "no-mixed-operators": "error",
+        "no-mixed-operators": [
+            "error",
+            {
+                "groups": [
+                    ["+", "-", "*", "/", "%", "**"],
+                    ["==", "!=", "===", "!==", ">", ">=", "<", "<="]
+                ],
+                "allowSamePrecedence": true
+            }
+        ],
         "no-multiple-empty-lines": [
             "error",
             {

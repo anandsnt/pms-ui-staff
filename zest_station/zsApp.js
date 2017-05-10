@@ -288,7 +288,9 @@ if (jQuery && $) {
         $.fn.getCursorPosition = function() {
             var input = this.get(0);
 
-            if (!input) {return;} // No (input) element found
+            if (!input) {
+                return;
+            } // No (input) element found
             if ('selectionStart' in input) {
                 // Standard-compliant browsers
                 return input.selectionStart;

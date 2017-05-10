@@ -73,7 +73,7 @@ sntZestStation.controller('zsKeyDispenseCtrl', [
 				"is_additional": false,
 				"reservation_id": $scope.reservation_id,
 				"key": 1
-					//"is_kiosk": true
+					// "is_kiosk": true
 			};
 
 			if ($scope.makingKey === 1) {
@@ -225,7 +225,7 @@ sntZestStation.controller('zsKeyDispenseCtrl', [
 				"key_no": keyNo,
 				"status": keyStatus
 			};
-			//console.log("reservation_id :" + $stateParams.reservation_id + " key :" + keyNo + " -----status :" + keyStatus);
+			// console.log("reservation_id :" + $stateParams.reservation_id + " key :" + keyNo + " -----status :" + keyStatus);
 
 			$scope.callAPI(zsGeneralSrv.logKeyStatus, {
 				params: params,

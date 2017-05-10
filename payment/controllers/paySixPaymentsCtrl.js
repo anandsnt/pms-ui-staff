@@ -6,12 +6,12 @@ angular.module('sntPay').controller('paySixPayController', ['$scope', 'paymentAp
             cardDetails.cardType = tokenDetails.token_no.substr(tokenDetails.token_no.length - 4);
             cardDetails.expiryMonth = tokenDetails.expiry.substring(2, 4);
             cardDetails.expiryYear = tokenDetails.expiry.substring(0, 2);
-            //for displaying
+            // for displaying
             cardDetails.expiryDate = cardDetails.expiryMonth + " / " + cardDetails.expiryYear;
-            //for API params
+            // for API params
             cardDetails.cardExpiry = (cardDetails.expiryMonth && cardDetails.expiryYear) ? ("20" + cardDetails.expiryYear + "-" + cardDetails.expiryMonth + "-01") : "";
             cardDetails.cardCode = sntPaymentSrv.getSixPayCreditCardType(tokenDetails.card_type).toLowerCase();
-            //last 4 number of card
+            // last 4 number of card
             cardDetails.endingWith = tokenDetails.token_no.substr(tokenDetails.token_no.length - 4);
             cardDetails.token = tokenDetails.token_no;
             cardDetails.nameOnCard = $scope.payment.guestFirstName + ' ' + $scope.payment.guestLastName;
@@ -46,8 +46,8 @@ angular.module('sntPay').controller('paySixPayController', ['$scope', 'paymentAp
         };
 
         var proceedChipAndPinPayment = function(params) {
-            //we need to notify the parent controllers to show loader
-            //as this is an external directive
+            // we need to notify the parent controllers to show loader
+            // as this is an external directive
 
             $scope.$emit("SHOW_SIX_PAY_LOADER");
             sntPaymentSrv.submitPaymentForChipAndPin(params).then(
@@ -75,7 +75,7 @@ angular.module('sntPay').controller('paySixPayController', ['$scope', 'paymentAp
                     response.cc_details = angular.copy($scope.selectedCC);
 
                     if ($scope.payment.showAddToGuestCard) {
-                        //check if add to guest card was selected
+                        // check if add to guest card was selected
                         response.add_to_guest_card = $scope.payment.addToGuestCardSelected;
                     }
                     $scope.$emit("HIDE_SIX_PAY_LOADER");
@@ -151,14 +151,14 @@ angular.module('sntPay').controller('paySixPayController', ['$scope', 'paymentAp
         });
 
 
-        /****************** init ***********************************************/
+        /** **************** init ***********************************************/
 
         (function() {
-            //Initially set Manaul card Entry if card is attached already
+            // Initially set Manaul card Entry if card is attached already
             var isCCPresent = angular.copy($scope.showSelectedCard());
             $scope.payment.isManualEntryInsideIFrame = isCCPresent && $scope.hotelConfig.paymentGateway === 'sixpayments' ? true : false;
 
-            //handle six payment iFrame communication
+            // handle six payment iFrame communication
             var eventMethod = window.addEventListener ? "addEventListener" : "attachEvent";
             var eventer = window[eventMethod];
             var messageEvent = eventMethod === "attachEvent" ? "onmessage" : "message";

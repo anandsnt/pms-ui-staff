@@ -977,7 +977,7 @@ angular.module('sntRover')
          * will modify the price details passing
          */
         const setDefaultPriceAdjustValues = (key, priceDetails) => {
-            //check the templates pls, you will get there, these are the model &it's values used in templates
+            // check the templates pls, you will get there, these are the model &it's values used in templates
             priceDetails[key + '_amount_operator'] = '+';
             priceDetails[key + '_amount_perc_cur_symbol'] = $rootScope.currencySymbol;
             priceDetails[key + '_changing_value'] =  '';
