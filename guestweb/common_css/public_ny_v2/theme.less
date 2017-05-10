@@ -1,6 +1,7 @@
 /*------------------------------- Themes ----------------------------------------------------*/
 
 @import "../style.less";
+
 html,
 body {
     height: auto;
@@ -9,7 +10,9 @@ body {
 
 body {
     background-color: #FFF;
-    font-family: "Gotham Book";
+    font-family: "Gotham A","Gotham B";
+    font-style:normal !important;
+    font-weight: 400 !important;
 }
 
 .back-text {
@@ -18,15 +21,50 @@ body {
 .description-details{
     float:left;
 }
-.main-text,
+.main-text{
+    font-family: "Gotham A","Gotham B";
+    font-style:normal !important;
+    font-weight: 300 !important;
+}
 .btn {
-    font-family: "Gotham Book";
+    font-family: "Gotham A","Gotham B";
+    font-style:normal !important;
+    font-weight: 400 !important;
+}
+.main-text{
     text-transform: uppercase;
-    font-weight: bolder;
+    font-weight: 300 !important;
 }
 
+.terms-main, .terms-sub,
+.request-text,.error-text,
+.room-error,.cc-error,
+.cc-number-description, .query-text{
+    text-transform: uppercase;
+}
+.terms-main{
+   font-size:28px; 
+}
+.terms-sub{
+   font-size:16px; 
+}
+.terms-desc{
+    font-size: 13px !important;
+}
+.query-text,.query-text:hover {
+    font-size: 11px !important;
+}
+.section-container.room-upgrades-container{
+    max-width:375px !important;
+    margin:calc(4.5%) auto;
+}
+.room-name{
+    font-size: 28px !important;
+}
 .strong-font {
-    font-family: "Gotham Book";
+    font-family: "Gotham A","Gotham B";
+    font-style:normal !important;
+    font-weight: 400 !important;
 }
 .main-text{
     font-weight: 500;
@@ -42,8 +80,8 @@ body {
     text-align:left;
     text-transform: uppercase;
 }
-.footer-text{
-    text-transform: uppercase;
+.footer-text, .no-thanks,.no-thanks:hover{
+    text-transform: uppercase !important;
 }
 a,
 a:hover,
@@ -52,32 +90,41 @@ a:hover,
 .footer-sub-text,
 .footer-sub-text:hover,
 .phone-label {
-    color: #363d40;
+    color: #000000;
     text-decoration:none;
 }
 
 .sub-main-text {
-    color: #363d40;
+    color: #000000;
     text-transform: uppercase !important;
+}
+p.sub-main-text,p.main-text,.row.margin-bottom-0{
+    margin-bottom:0px;
 }
 .bottom-border{
     border-bottom: 1px solid #000;
 }
 
 .main-text {
-    font-size: 30px;
+    font-size: 28px;
 }
-.sub-main-text, .sub-text, .footer-text ,.select-style select,.input-field{
-    font-size:16px !important;
+.sub-main-text, .sub-text, 
+.footer-text ,.select-style select,
+.input-field,.res-date,
+.footer-sub-text,.footer-sub-text:hover,
+.request-text,
+.no-thanks,.no-thanks:hover
+{
+    font-size:13px !important;
+    font-weight: 400;
 }
 .header-bar {
     background: #fff;
 }
-
 .logo-image {
     width:100%;
     max-width: 98%;
-    margin: 0%;
+    margin: 10px 0% 0%;
     margin-bottom:15px;
 }
 
@@ -87,9 +134,11 @@ a:hover,
 .phone-text,
 .phone-text:hover,
 .request-text,
-.error-text {
-    color: #363d40;
+.error-text,
+.balance {
+    color: #000000 !important;
 }
+
 .black-button,.black-button:hover{
     background:#000 !important;
     color:#fff !important;   
@@ -99,19 +148,23 @@ a:hover,
     background:#fff !important;   
 }
 
-.room-error-green-button, .room-error-green-button:hover, .btn-close, .btn-close :hover{
+.room-error-green-button, .room-error-green-button:hover,
+.btn-close, .btn-close :hover{
     color:#000 !important;
     background:#fff !important;  
+    min-height:40px;
 }
 textarea{
     border: 1px solid black;  
 }
 .view-bill {
-    color: #363d40;
+    color: #000000;
 }
 
 .sub-text {
-    font-family: "Gotham Book"
+    font-family: "Gotham A","Gotham B";
+    font-style:normal !important;
+    font-weight: 400 !important;
 }
 
 .sub-text,
@@ -119,7 +172,15 @@ textarea{
 .query-text,
 .query-text:hover,
 .light-text {
-    color: #363d40;
+    color: #000000;
+}
+
+.eta-container {
+    width: 32%;
+    margin-left: 6px;
+}
+.eta-container:first-child {
+    margin-left: 0px;
 }
 
 .btn,
@@ -132,37 +193,70 @@ textarea{
 }
 
 .calendar-button {
-    background-position: 96% 6px !important;
+    background-position: 96% 6px!important;
+    background-size: 28px;
 }
-
 .input-field {
     border: 1px solid black !important;
     background-color: #fff !important;
     box-shadow: none !important;
     max-width: 100% !important;
-    min-height:45px;
+    min-height:40px;
+    padding-left:5px;
+}
+.cc-input-field input,
+.cvv-input-field input,.cc-close,
+.room-error-button{
+    height:40px !important
+}
+
+.btn-close, .btn-close :hover{
+    padding-top:0px !important;
+    padding-bottom:0px !important;
+}
+.cc-input-field input, .cvv-input-field input{
+    min-height:40px !important;
+}
+.margin-bottom-5{
+    margin-bottom: 5px !important;
 }
 
 .section-container {
     max-width: 100% !important;
     margin-top: calc(4.5%) !important;
 }
+.section-container.margin-top-40{
+    margin-top: 40px !important;
+}
 
 .select-style, text-comment {
     border: 1px solid black !important;
+    width:100%;
 }
 .select-style{
     background: url(/assets/guestweb/common_images/arrow_down.gif) 95% 50% no-repeat #fff;
 }
 
 .dual-button {
-    font-size: 22px;
-    font-weight: 900;
+    font-size: 28px;
 }
 
+
+.checkout-btn , .dual-button, .accept-charges{
+    text-transform:uppercase;
+    font-family: "Gotham Light";
+    padding: 8%;
+    div{
+        font-size:28px;
+    }
+}
+
+
 .btn-template {
-    font-size: 20px;
-    min-height: initial !important;
+    font-size: 13px;
+    color:#000000;
+    min-height: 40px !important;
+    text-transform: uppercase;
 }
 
 .dark-button,
@@ -191,10 +285,10 @@ textarea{
 }
 
 .checkout-icon{
-  background-image: url('/assets/guestweb/common_images/checkout-now-black.png') !important;
+  background-image: url('/assets/guestweb/common_images/black/checkout.png') !important;
 }
 .late-checkout-icon{
-  background-image: url('/assets/guestweb/common_images/late-checkout-black.png') !important;
+  background-image: url('/assets/guestweb/common_images/black/late-checkout.png') !important;
 }
 
 .no-thanks,
@@ -208,6 +302,11 @@ textarea{
     font-weight: 500;
 }
 
+.select-style {
+    height: 40px;
+    display: flex;
+}
+
 // .amount,
 // .time {
 //     font-size: 30px;
@@ -219,6 +318,8 @@ textarea{
 
 .right-arrow-button {
     background-image: url('/assets/guestweb/common_images/black/right_arrow.png');
+    background-position-y: 2px;
+    background-size: 20px;
 }
 
 .upgrade-details .upgrades-btn {
@@ -231,10 +332,16 @@ textarea{
     border-radius: 0px !important;
     border: 1px solid black !important;
     text-align: center !important;
+    font-size:13px;
+    padding: 14px 20px;
+    height:40px;
 }
 
 .upgrades-label {
-    color: #BA7A55;
+    color: #000;
+}
+.text-comment{
+    padding-left:8px;
 }
 
 .circle-bg {
@@ -246,12 +353,58 @@ textarea{
     -webkit-transform: scale(1.5);
     transform: scale(1.5);
 }
-
-.early-checkin-button{
-    font-size: 16px !important;
+.accept-charges-container{
+    width:331px;
+    margin: calc(4.5%) auto;
+}
+.view-bill{
+    margin-left:0px !important;
+    max-width:150px !important;
+}
+.early-checkin-button,.early-checkin-button:hover{
+    font-size: 13px !important;
 }
 .options-container{
     width:500px;
+}
+
+.button-actions{
+    .terms-button{
+        min-height:40px;
+        padding:0% 35px;
+        font-size:13px;
+    }
+    .terms-button:first-child{
+        margin-right:20px;
+    }
+}
+
+.carousel-control .icon-next:before {
+    content:url(/assets/guestweb/common_images/black/right.png) !important;
+    cursor:pointer;
+}
+
+.carousel-control .icon-prev:before {
+    content: url(/assets/guestweb/common_images/black/left.png) !important;
+    cursor:pointer;
+}
+.upgrade-details .upgrades-btn p {
+    font-size: 12px!important;
+    font-weight: 100 !important;
+    color: #C0C0C0 !important;
+}
+.upgrade-details .upgrades-btn{
+    padding: 13px 2px;
+}
+.carousel-control.left {
+    left: 0px !important;
+}
+
+.carousel-control.right {
+    right: 0px !important;
+}
+.carousel .carousel-control{
+    top: 103.5px; // have to set the image with dimesnion 800*500
 }
 
 /*----------------- date picker -------------------------*/
@@ -259,7 +412,9 @@ textarea{
 .pickadate-cell,
 .for,
 .amount {
-    font-family: "Gotham Book"
+    font-family: "Gotham A","Gotham B";
+    font-style:normal !important;
+    font-weight: 400 !important;
 }
 .pickadate-main ul:first-child{
     border-bottom: 1px solid black;
@@ -363,10 +518,11 @@ textarea{
 
 .date-picker-wrap {
     background-color: #fff;
+    max-width:600px;
 }
 
 .date-picker-bg {
-    background: rgba(238, 238, 238, 0.58);
+    background: rgba(220, 220, 220, 0.58);
 }
 
 .horizontal-line-sep-mobile {
@@ -395,22 +551,24 @@ textarea{
     height: 40px;
 }
 .accept-charge-icon{
-    background: url(/assets/guestweb/common_images/black/creditcard_icon.png) center top no-repeat;
+    background: url(/assets/guestweb/common_images/black/cc.png) center top no-repeat;
     background-size:48px;
 }
 .row {
     margin-bottom: 21px;
 }
-
+.footer-text{
+    font-style: normal;
+}
 .circle-bg {
-    background: none;
-    background: url("/assets/guestweb/common_images/black/circle-bg.png") no-repeat scroll center top transparent !important;
+    background: none !important;
     height: 80px;
 }
 
 .time {
-    font-size: 20px;
-    padding-top: 25px;
+    font-size: 30px;
+    font-family: "Gotham Light";
+    padding-top: 28px;
     display: block;
 }
 
@@ -429,13 +587,19 @@ textarea{
 
 .amount {
     font-size: 28px;
+    font-family: "Gotham Light";
 }
 
-.triple-button,
-.dual-button {
-    border-right: 1px inset #6A6A6A;
-}
 
+.dual-button:first-child,
+.two-options .triple-button:first-child,
+.three-options .triple-button:first-child,
+.three-options .triple-button:nth-child(2){
+    border-right: none !important;
+}
+.triple-button {
+    padding: 5%;
+}
 .circle-bg {
     padding-top: 0px;
 }
@@ -454,7 +618,7 @@ textarea{
         font-size: 17px;
     }
     .logo-image {
-        max-width:98%;
+        max-width:96%;
         margin: 0% auto;
     }
     .dual-button {
@@ -480,11 +644,12 @@ textarea{
     .sub-text{
         font-size: 15px;
     }
-}
-
-@media (max-width: 890px) {
-    .btn-template {
-        padding: 4%;
+    .upgrade-details .upgrades-btn p {
+        font-size: 12px!important;
+        font-weight: 100 !important;
+    }
+    .carousel .carousel-control{
+        top: 103.5px; // have to set the image with dimesnion 800*500
     }
 }
 
@@ -493,33 +658,35 @@ textarea{
         font-size: 17px;
         padding-top: 17px;
     }
+    .no-section-side-padding{
+        padding-left:0px !important;
+        padding-right:0px !important;
+    }
 }
 
 @media (min-width: 990px) {
-
-    .query-text {
-        font-size: 11px;
-    }
-    .checkout-btn {
-        padding: 15% 2% !important;
-    }
     .logo-image {
         margin-bottom:20px;
+    }
+    .modal .modal-dialog .alert-link, .modal .modal-dialog p{
+        font-size:16px;
+    }
+    .show-bill-wrap{
+        background: rgba(220, 220, 220, 0.58);
     }
 }
 
 @media (max-width: 990px) {
     .logo-image {
-        margin: 0px;
+        margin: 6px 0px 15px;
         margin-bottom:15px;
-        // max-width: 295px;
     }
     .back-to-checkout {
         display: none;
     }
     .btn-template,
     .dual-button {
-        font-size: 16px;
+        font-size: 13px;
     }
     .main-text {
         font-size: 28px;
@@ -527,7 +694,11 @@ textarea{
     .sub-main-text {
         font-size: 19px;
     }
-    .checkout-btn {
-        padding: 10% 18%;
+}
+
+@media (min-width: 480px) and (max-width: 990px) {
+    .eta-container:not(:first-child){
+        margin-left: 10px;
     }
 }
+

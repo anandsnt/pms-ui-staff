@@ -6,7 +6,7 @@
         </span>
         <div ng-show="useNavIcons" ng-include="icons.url.back"></div>
     </button>
-    <div id="logo" class='logo-svg'></div>
+    <div id="logo" class='logo-svg' click-touch='softReset()'></div>
     <!-- Close button, if applicable -->
     
     <button type="button" id="close-button" class="button blank" click-touch='clickedOnCloseButton()' ng-hide="hideCloseButton" ng-class='{"no-circle":nonCircleNavIcons}'>

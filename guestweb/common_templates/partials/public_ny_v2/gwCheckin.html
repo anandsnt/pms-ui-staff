@@ -26,27 +26,27 @@
     </div>
     <!-- main content -->
     <div class="row" ng-hide="isPosting || netWorkError">
-        <div class="col-md-3"></div>
+        <div class="col-md-4"></div>
         <!-- left side -->
-        <div class="col-md-6 top-spacing section-container">
+        <div class="col-md-4 top-spacing section-container no-section-side-padding">
             <p ng-if="!isPrecheckinOnly" class="main-text text-left">Ready to Check-in?</p>
             <p ng-if="isPrecheckinOnly" class="main-text text-left">Start Pre Check-in?</p>
-            <p class="sub-main-text text-left">
+            <p class="sub-main-text text-left margin-top-20">
                 <strong class="reservation-details">Securely check in </strong> by providing the following
                 <strong class="reservation-details">reservation details:</strong>
             </p>
             <center>
                 <div class="section-container">
                     <p class="sub-text pull-left upper-case">Departure date</p>
-                    <input class="input-field padding-3 calendar-button" placeholder="{{dateFormatPlaceholder}}" ng-click="showCalender()" ng-model="departureDate" readonly></input>
+                    <input class="input-field  calendar-button" placeholder="{{dateFormatPlaceholder}}" ng-click="showCalender()" ng-model="departureDate" readonly></input>
                     <!-- CC field will be shown for precheckin if CC is attached only -->
                     <p class="sub-text pull-left margin-top-10" ng-show="!isAutoCheckinOn || isCCOnFile">LAST 4 DIGITS OF CREDIT CARD USED</p>
-                    <input type="password" ng-model="cardDigits" class="input-field padding-3" ng-show="!isAutoCheckinOn || isCCOnFile"></input>
-                    <a class="btn btn-template margin-top-20 padding-3" ng-click="nextButtonClicked()"> NEXT</a>
+                    <input type="password" ng-model="cardDigits" class="input-field" ng-show="!isAutoCheckinOn || isCCOnFile"></input>
+                    <a class="btn btn-template margin-top-40" ng-click="nextButtonClicked()"> NEXT</a>
                 </div>
             </center>
         </div>
-        <div class="col-md-3">
+        <div class="col-md-4">
         </div>
     </div>
 </div>
