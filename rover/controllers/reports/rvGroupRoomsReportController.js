@@ -110,6 +110,7 @@ angular.module('sntRover')
             } else {
                 var currentMonthDays = 0,
                     nextMonthDays = 0;
+
                 _.each(dateRange, function( dateObj ) {
                     if (rvUtilSrv.getMonthFromDateString(dateObj) === fromMonthNo ) {
                         currentMonthDays++;

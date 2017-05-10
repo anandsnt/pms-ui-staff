@@ -133,7 +133,9 @@ angular.module('reportsModule')
         	};
 
         	factory.init = function(report) {
-        		var reportName = _.findKey(reportNames, function(value, key) { return value === report['title']; });
+                var reportName = _.findKey(reportNames, function(value, key) {
+                    return value === report['title'];
+                });
         		var changer = changers[reportName] || changers['DEFAULT']; 
 
         		report.allOptions = [];

@@ -525,7 +525,7 @@ angular.module('sntRover').service('rvRateManagerCoreSrv', ['$q', 'BaseWebSrvV2'
                 'to_date',
                 'name_card_ids[]',
                 'varied_inclusive',
-                'rate_type_ids[]',
+                'rate_type_ids[]'
             );
             if(params['considerRateIDsInAllRestrictionStatusFetch']){
                paramsForCommonRestrictions['rate_ids[]'] = params['rate_ids[]'];

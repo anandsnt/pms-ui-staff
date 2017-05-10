@@ -158,6 +158,7 @@ sntZestStation.controller('zsEmailBillCtrl', [
                         'printopted': 'false',
                         'email_sent': 'true',
                     };
+
                     $state.go('zest_station.reservationCheckedOut', stateParams);
                 }
             };

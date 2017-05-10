@@ -164,6 +164,7 @@ sntZestStation.controller('zsRootCtrl', [
             // when user is at the admin screen, if they tap the Logo 5x times quickly, it 
             // initiates a soft-reset, this will be helpful in quickly testing or getting new settings to the device(s)
             var currentState = $state.current.name;
+          
             $scope.softResetCount++;
             if (currentState === 'zest_station.admin') {
                 
