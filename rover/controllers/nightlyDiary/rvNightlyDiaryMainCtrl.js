@@ -132,6 +132,7 @@ angular.module('sntRover')
                         'selected_room_type_ids': $scope.diaryData.selectedRoomTypes,
                         'selected_floor_ids': $scope.diaryData.selectedFloors
                     };
+
                 if (roomId) {
                     postData.room_id = roomId;
                     $scope.diaryData.selectedRoomId = roomId;
@@ -236,6 +237,7 @@ angular.module('sntRover')
             /*
              * Function to cancel message popup.
              */
+
             $scope.closeDialog = function() {
                 cancelReservationEditing();
                 ngDialog.close();
@@ -409,6 +411,7 @@ angular.module('sntRover')
                     selectedReservationId: $scope.currentSelectedReservation.id,
                     selectedRoomId: $scope.diaryData.selectedRoomId
                 };
+
                 store.dispatch(dispatchData);
             };
             var showReservationSelected = function() {

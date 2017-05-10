@@ -36,8 +36,6 @@ angular.module('sntRover')
                     pickedUpRooms = Array.apply(null, Array(dateRange.length)).map(String.prototype.valueOf, "");
 
 
-
-
                     _.each(summaryCount.rooms_count, function(roomCount) {
                         var index = dateRange.indexOf(roomCount.date);
 

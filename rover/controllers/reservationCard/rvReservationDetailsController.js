@@ -47,7 +47,7 @@ sntRover.controller('reservationDetailsController',
 			};
 		};
 
-		//CICO-29343 - Set the flag to false initially and checking the View SR permission
+		// CICO-29343 - Set the flag to false initially and checking the View SR permission
 		$scope.hasSRViewPermission = rvPermissionSrv.getPermissionValue('VIEW_SUPPRESSED_RATE');
 		RVReservationStateService.setReservationFlag("isSRViewRateBtnClicked", false);
 
@@ -160,8 +160,8 @@ sntRover.controller('reservationDetailsController',
 				backParam = {
 					type: $vault.get('searchType')
 				};
-				//Special case - In case of search by CC, the title has to display the card number as well.
-				//The title is already stored in $vault
+				// Special case - In case of search by CC, the title has to display the card number as well.
+				// The title is already stored in $vault
 				if ($vault.get('searchType') === "BY_SWIPE") {
 					backParam = {
 						type: "BY_SWIPE"
@@ -208,14 +208,14 @@ sntRover.controller('reservationDetailsController',
 				$('#ui-datepicker-overlay').off('click').remove();
 			}
 		};
-		//CICO-16013, moved from rvReservationGuestCtrl.js to de-duplicate api calls
+		// CICO-16013, moved from rvReservationGuestCtrl.js to de-duplicate api calls
 
 		$scope.activeWakeUp = false;
 
-		//CICO-10568
+		// CICO-10568
 		$scope.reservationData.isSameCard = false;
 
-		//CICO-10006 assign the avatar image
+		// CICO-10006 assign the avatar image
 		$scope.guestCardData.cardHeaderImage = reservationListData.guest_details.avatar;
 
 		/**
@@ -243,7 +243,7 @@ sntRover.controller('reservationDetailsController',
 		/*
 		 * success call back of fetch reservation details
 		 */
-		//Data fetched using resolve in router
+		// Data fetched using resolve in router
 		var reservationMainData = $scope.$parent.reservationData;
 
 		$scope.reservationParentData = $scope.$parent.reservationData;
@@ -295,7 +295,6 @@ sntRover.controller('reservationDetailsController',
 		};
 
 
-
 		// update any room related data to search service also
 		$scope.updateSearchCache();
 
@@ -314,7 +313,7 @@ sntRover.controller('reservationDetailsController',
 
 	//  showing Guest button arrow as part of CICO-25774
 
-		//$scope.shouldShowGuestDetails = false;
+		// $scope.shouldShowGuestDetails = false;
 		$scope.toggleGuests = function() {
 
 
@@ -352,7 +351,6 @@ sntRover.controller('reservationDetailsController',
 		};
 
 
-
 		angular.forEach($scope.reservationData.reservation_card.loyalty_level.frequentFlyerProgram, function(item, index) {
 			if ($scope.reservationData.reservation_card.loyalty_level.selected_loyalty === item.id) {
 				$scope.selectedLoyalty = item;
@@ -370,7 +368,7 @@ sntRover.controller('reservationDetailsController',
 			}
 		});
 
-		//Update the balance amount in staycard
+		// Update the balance amount in staycard
 		$scope.$on('UPDATE_DEPOSIT_BALANCE', function(e, data) {
 			$scope.reservationData.reservation_card.balance_amount = data.reservation_balance;
 		});
@@ -387,8 +385,8 @@ sntRover.controller('reservationDetailsController',
 		});
 
 
-		//CICO-7078 : Initiate company & travelagent card info
-		//temporarily store the exiting card ids
+		// CICO-7078 : Initiate company & travelagent card info
+		// temporarily store the exiting card ids
 		var existingCards = {
 			guest: $scope.reservationDetails.guestCard.id,
 			company: $scope.reservationDetails.companyCard.id,
@@ -396,7 +394,7 @@ sntRover.controller('reservationDetailsController',
 			group: $scope.reservationDetails.group.id,
 			allotment: $scope.reservationDetails.allotment.id
 		};
-		//also reload the loyalty card / frequent flyer section
+		// also reload the loyalty card / frequent flyer section
 
 		$rootScope.$broadcast('reload-loyalty-section-data', {});
 
@@ -409,8 +407,8 @@ sntRover.controller('reservationDetailsController',
 		angular.copy(reservationListData, $scope.reservationListData);
 		// CICO-32546, flag to check if atleast one external reference number exists.
 		$scope.externalReferencesExist = ($scope.reservationListData.external_references.length > 0)? true : false;
-		 //Reset to firstTab in case in case of coming into staycard from the create reservation screens
-         //after creating multiple reservations
+		 // Reset to firstTab in case in case of coming into staycard from the create reservation screens
+         // after creating multiple reservations
         $scope.viewState.currentTab = 0;
 
 		$scope.populateDataModel(reservationDetails);
@@ -422,7 +420,7 @@ sntRover.controller('reservationDetailsController',
 			group: $scope.reservationDetails.group.id === existingCards.group,
 			allotment: $scope.reservationDetails.allotment.id === existingCards.allotment
 		});
-		//CICO-7078
+		// CICO-7078
 
 		$scope.refreshReservationDetailsScroller = function(timeoutSpan) {
 			setTimeout(function() {
@@ -451,7 +449,7 @@ sntRover.controller('reservationDetailsController',
 			$scope.$emit('hideLoader');
 			$scope.$parent.$parent.reservation = data;
 			$scope.reservationData = data;
-			//To move the scroller to top after rendering new data in reservation detals.
+			// To move the scroller to top after rendering new data in reservation detals.
 			$scope.$parent.myScroll['resultDetails'].scrollTo(0, 0);
 			// upate the new room number to RVSearchSrv via RVSearchSrv.updateRoomNo - params: confirmation, room
 			$scope.updateSearchCache();
@@ -475,7 +473,7 @@ sntRover.controller('reservationDetailsController',
 			}
 
 		});
-		//To pass confirmation number and resrvation id to reservation Card controller.
+		// To pass confirmation number and resrvation id to reservation Card controller.
 
 		var passData = reservationListData;
 
@@ -486,13 +484,12 @@ sntRover.controller('reservationDetailsController',
 		$scope.$emit('passReservationParams', passData);
 
 
-
 		$rootScope.$on('clearErroMessages', function() {
 			$scope.errorMessage = "";
 		});
 
 		$scope.openPaymentList = function() {
-			//Disable the feature when the reservation is checked out
+			// Disable the feature when the reservation is checked out
 			if (!$scope.isNewsPaperPreferenceAvailable()) {
 				return;
 			}
@@ -516,15 +513,12 @@ sntRover.controller('reservationDetailsController',
 				swipedCardData.swipeFrom = "cancelReservationPenalty";
 
 
-
 			} else if ($scope.isStayCardDepositScreenOpened) {
 				swipedCardData.swipeFrom = "stayCardDeposit";
 
 
-
 			} else if ($scope.isGuestCardVisible) {
 				swipedCardData.swipeFrom = "guestCard";
-
 
 
 			} else {
@@ -533,8 +527,6 @@ sntRover.controller('reservationDetailsController',
                         if (swipedCardData.swipeFrom !== 'guestCard') {
                             $scope.$emit('isFromGuestCardFalse');
                         }
-
-
 
 
 			var swipeOperationObj = new SwipeOperation();
@@ -823,7 +815,7 @@ sntRover.controller('reservationDetailsController',
 
 			if (($scope.reservationParentData.checkinTime.hh !== '' && $scope.reservationParentData.checkinTime.mm !== '') || ($scope.reservationParentData.checkoutTime.hh !== '' && $scope.reservationParentData.checkoutTime.mm !== '') || ($scope.reservationParentData.checkinTime.hh === '' && $scope.reservationParentData.checkinTime.mm === '') || ($scope.reservationParentData.checkoutTime.hh === '' && $scope.reservationParentData.checkoutTime.mm === '')) {
 				var postData = $scope.computeReservationDataforUpdate();
-				//CICO-11705
+				// CICO-11705
 
 				postData.reservationId = $scope.reservationParentData.reservationId;
 				$scope.invokeApi(RVReservationSummarySrv.updateReservation, postData, updateSuccess, updateFailure);
@@ -833,19 +825,19 @@ sntRover.controller('reservationDetailsController',
 		 * we are capturing model opened to add some class mainly for animation
 		 */
 		$rootScope.$on('ngDialog.opened', function(e, $dialog) {
-			//to add stjepan's popup showing animation
+			// to add stjepan's popup showing animation
 			$rootScope.modalOpened = false;
 			$timeout(function() {
 				$rootScope.modalOpened = true;
 			}, 300);
 		});
 		$rootScope.$on('ngDialog.closing', function(e, $dialog) {
-			//to add stjepan's popup showing animation
+			// to add stjepan's popup showing animation
 			$rootScope.modalOpened = false;
 		});
 
 		$scope.closeAddOnPopup = function() {
-			//to add stjepan's popup showing animation
+			// to add stjepan's popup showing animation
 			$rootScope.modalOpened = false;
 			$timeout(function() {
 				ngDialog.close();
@@ -877,7 +869,7 @@ sntRover.controller('reservationDetailsController',
 					if (swipedCardDataToRender.swipeFrom === 'guestCard') {
                        passData.isFromGuestCard = true;
 					}
-					//close any ngDialogs if opened (work around fix)
+					// close any ngDialogs if opened (work around fix)
 					ngDialog.close($rootScope.LastngDialogId, "");
 
 					$scope.openPaymentDialogModal(passData, paymentData);
@@ -887,18 +879,12 @@ sntRover.controller('reservationDetailsController',
 					$scope.$broadcast('SHOW_SWIPED_DATA_ON_STAY_CARD_DEPOSIT_SCREEN', swipedCardDataToRender);
 
 
-
 				} else if (swipedCardDataToRender.swipeFrom === "depositBalance") {
 					$scope.$broadcast('SHOW_SWIPED_DATA_ON_DEPOSIT_BALANCE_SCREEN', swipedCardDataToRender);
 
 
-
-
 				} else {
 					$scope.$broadcast('SHOW_SWIPED_DATA_ON_CANCEL_RESERVATION_PENALTY_SCREEN', swipedCardDataToRender);
-
-
-
 
 
 				}
@@ -936,7 +922,7 @@ sntRover.controller('reservationDetailsController',
 				});
 			}
 		};
-		//CICO-13907
+		// CICO-13907
 		$scope.hasAnySharerCheckedin = function() {
 			var isSharerCheckedin = false;
 
@@ -968,7 +954,7 @@ sntRover.controller('reservationDetailsController',
                         $scope.shouldAllowDateExtend = (response.data.is_room_type_available || rvPermissionSrv.getPermissionValue('OVERBOOK_ROOM_TYPE')) ? true : false;
                         $scope.showNotAvailableMessage = (!response.data.is_room_type_available && !rvPermissionSrv.getPermissionValue('OVERBOOK_ROOM_TYPE')) ? true : false;
 
-                        //CICO-36733
+                        // CICO-36733
                         $scope.showOverBookingAlert = !response.data.is_room_type_available && rvPermissionSrv.getPermissionValue('OVERBOOK_ROOM_TYPE');
                         $scope.showChangeDatesPopup = !rvPermissionSrv.getPermissionValue('OVERBOOK_ROOM_TYPE') || response.data.is_room_type_available || !response.data.is_house_available;
 
@@ -1111,7 +1097,7 @@ sntRover.controller('reservationDetailsController',
 				if (!!existingStayDays[currentDate]) {
 					newStayDates[currentDate] = existingStayDays[currentDate];
 				} else {
-					//go to take information from the new_stay_dates coming from the API response
+					// go to take information from the new_stay_dates coming from the API response
 
 					var newDateDetails = _.where(modifiedStayDays, {
 						reservation_date: currentDate
@@ -1135,12 +1121,12 @@ sntRover.controller('reservationDetailsController',
 				}
 			}
 
-			//change the reservationData model to have the newer values
+			// change the reservationData model to have the newer values
 			$scope.reservationParentData.arrivalDate = newArrivalDate;
 			$scope.reservationParentData.departureDate = newDepartureDate;
 			$scope.reservationParentData.rooms[0].stayDates = newStayDates;
 
-			//If it is a group reservation, which has extended the stay beyond the group staydates, then we will be taking the user to the room and rates screen after confirming the staydates
+			// If it is a group reservation, which has extended the stay beyond the group staydates, then we will be taking the user to the room and rates screen after confirming the staydates
 			if ($scope.stayDatesExtendedForOutsideGroup) {
 				var stateParams = {
 					from_date: $scope.reservationParentData.arrivalDate,
@@ -1163,8 +1149,8 @@ sntRover.controller('reservationDetailsController',
 			$scope.closeDialog();
 		};
 
-		//reverse checkout process-
-		//show room already occupied popup
+		// reverse checkout process-
+		// show room already occupied popup
 		var openRoomOccupiedPopup = function() {
 			ngDialog.open({
 				template: '/assets/partials/reservation/alerts/rvReverseNotPossible.html',
@@ -1246,8 +1232,8 @@ sntRover.controller('reservationDetailsController',
 				$scope.errorMessage = errorMessage;
 			};
 
-			//CICO-28042 - Flag added to show/hide between credit card and
-			//auth release for credit card sections
+			// CICO-28042 - Flag added to show/hide between credit card and
+			// auth release for credit card sections
 			$scope.hasShownReleaseConfirm = false;
 
 			var data = {
@@ -1360,7 +1346,7 @@ sntRover.controller('reservationDetailsController',
 	};
     // CICO-17067 PMS: Rover - Stay Card: Add manual authorization ends here...
 
-    //>>wakeup call check after guest prefs are fetched
+    // >>wakeup call check after guest prefs are fetched
         $scope.$on('wakeup_call_ON', function(evt, data) {
             if (data) {
                 $scope.activeWakeUp = data.active;
@@ -1382,27 +1368,27 @@ sntRover.controller('reservationDetailsController',
 
                     $scope.num = n;
                     if (len >= 8 && len <= 22) {
-                        //then go check the balance of the card
+                        // then go check the balance of the card
                         $('[name=card-number]').keydown(function() {
                             clearTimeout($scope.timer);
                             $scope.updateGiftCardNumber(n);
                             $scope.timer = setTimeout($scope.fetchGiftCardBalance, 1500);
                         });
                     } else {
-                        //hide the field and reset the amount stored
+                        // hide the field and reset the amount stored
                         $scope.giftCardAmountAvailable = false;
                     }
             };
             $scope.num;
             $scope.fetchGiftCardBalance = function() {
                // if ($scope.depositData.paymentType === 'GIFT_CARD'){
-                       //switch this back for the UI if the payment was a gift card
+                       // switch this back for the UI if the payment was a gift card
                    $scope.giftCardAmountAvailable = false;
                    var fetchGiftCardBalanceSuccess = function(giftCardData) {
                        $scope.giftCardAvailableBalance = giftCardData.amount;
                        $scope.giftCardAmountAvailable = true;
                        $scope.$emit('giftCardAvailableBalance', giftCardData);
-                       //data.expiry_date //unused at this time
+                       // data.expiry_date //unused at this time
                        $scope.$emit('hideLoader');
                    };
 
