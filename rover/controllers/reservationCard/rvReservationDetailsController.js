@@ -295,7 +295,6 @@ sntRover.controller('reservationDetailsController',
 		};
 
 
-
 		// update any room related data to search service also
 		$scope.updateSearchCache();
 
@@ -350,7 +349,6 @@ sntRover.controller('reservationDetailsController',
 				$scope.shouldShowGuestDetails = false;
 			}
 		};
-
 
 
 		angular.forEach($scope.reservationData.reservation_card.loyalty_level.frequentFlyerProgram, function(item, index) {
@@ -486,7 +484,6 @@ sntRover.controller('reservationDetailsController',
 		$scope.$emit('passReservationParams', passData);
 
 
-
 		$rootScope.$on('clearErroMessages', function() {
 			$scope.errorMessage = "";
 		});
@@ -516,15 +513,12 @@ sntRover.controller('reservationDetailsController',
 				swipedCardData.swipeFrom = "cancelReservationPenalty";
 
 
-
 			} else if ($scope.isStayCardDepositScreenOpened) {
 				swipedCardData.swipeFrom = "stayCardDeposit";
 
 
-
 			} else if ($scope.isGuestCardVisible) {
 				swipedCardData.swipeFrom = "guestCard";
-
 
 
 			} else {
@@ -533,8 +527,6 @@ sntRover.controller('reservationDetailsController',
                         if (swipedCardData.swipeFrom !== 'guestCard') {
                             $scope.$emit('isFromGuestCardFalse');
                         }
-
-
 
 
 			var swipeOperationObj = new SwipeOperation();
@@ -887,18 +879,12 @@ sntRover.controller('reservationDetailsController',
 					$scope.$broadcast('SHOW_SWIPED_DATA_ON_STAY_CARD_DEPOSIT_SCREEN', swipedCardDataToRender);
 
 
-
 				} else if (swipedCardDataToRender.swipeFrom === "depositBalance") {
 					$scope.$broadcast('SHOW_SWIPED_DATA_ON_DEPOSIT_BALANCE_SCREEN', swipedCardDataToRender);
 
 
-
-
 				} else {
 					$scope.$broadcast('SHOW_SWIPED_DATA_ON_CANCEL_RESERVATION_PENALTY_SCREEN', swipedCardDataToRender);
-
-
-
 
 
 				}

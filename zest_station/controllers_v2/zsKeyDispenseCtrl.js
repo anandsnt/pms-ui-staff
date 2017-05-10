@@ -579,8 +579,6 @@ sntZestStation.controller('zsKeyDispenseCtrl', [
             $scope.noOfKeysSelected = no_of_keys;
             $scope.initMakeKey();
         };
-        
-        
 
 
 	}
