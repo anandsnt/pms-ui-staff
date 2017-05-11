@@ -519,5 +519,25 @@ admin.controller('ADChargeCodesCtrl', ['$scope', 'ADChargeCodesSrv', 'ngTablePar
             
             return selectedType === CHARGE_CODE_TYPE_FEES;
         };
+
+        /**
+         * CICO-40001
+         * Filter charge codes in add tax form based on exclusive_only flag
+         * @param  {Object} editData data when in edit mode
+         * @return {Boolean} show or not
+         */
+        $scope.filterTaxCodes = function (editData) {
+            return function (item) {
+                if ($scope.isEditTax && editData.is_inclusive) {
+                    return !item.exclusive_only;
+                }
+
+                if ($scope.isAddTax && $scope.addData.is_inclusive) {
+                    return !item.exclusive_only;
+                }
+
+                return true;
+            };
+        };
 	}
 ]);
