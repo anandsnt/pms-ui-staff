@@ -102,7 +102,7 @@ sntZestStation.controller('zsThemeActionsCtrl', [
 
 
                 // debugging - inProd() needs to be TRUE for loading licensed font
-                if ((hotelHasLicensedFont(theme) && $scope.inProd() || isASpecialCase(theme))) {
+                if ((hotelHasLicensedFont(theme) && $scope.inProd()) || isASpecialCase(theme)) {
                     // we load fonts using two different services
                     // one provides the css as a .css and the other as a .js 
 
