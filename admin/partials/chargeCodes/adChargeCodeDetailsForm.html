@@ -110,7 +110,7 @@
 					</div>
 				</div>
 				<!--for charge code type other than PAYMENT or TAX -->
-				<div ng-hide="isPmsConfigured || prefetchData.selected_charge_code_type == '1' || prefetchData.selected_charge_code_type == '2'" ng-include="'/assets/partials/chargeCodes/adListTax.html'" ></div>
+				<div ng-hide="shouldHideAddTaxOption()" ng-include="'/assets/partials/chargeCodes/adListTax.html'" ></div>
 
 			</fieldset>
 
