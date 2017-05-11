@@ -1,6 +1,15 @@
 <ad-common-parts-in-form-dir on-save-button-click="saveDetails" header-caption="{{'UPSELL_ADDONS' | translate}}">
     <fieldset class="holder full-width">
-        <ad-form-title form-title="{{'UPSELL_ADDONS' | translate}}"></ad-form-title>
+         <div class="form-title">
+                <h3>
+                    <span>{{'UPSELL_ADDONS' | translate}}</span>
+                </h3>
+                <div class="select select-col addon-lang-dropdown" ng-show='availableLanguagesSet.show_language_field'>
+                     <select ng-model="selectedLanguageId" name="locale" ng-change="onLocaleChange()">
+                        <option ng-repeat="locale in availableLanguagesSet.locales" value="{{locale.value}}" ng-selected="locale.value == selectedLanguageId"> {{locale.language}} </option>
+                    </select>
+                </div>
+            </div>
         <ad-form-sub-title title="CUSTOMIZE_WHERE_TO_OFFER_UPSELL"></ad-form-sub-title>
     </fieldset>
     <fieldset class="holder half-width">

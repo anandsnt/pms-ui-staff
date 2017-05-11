@@ -662,7 +662,11 @@ angular.module('adminModuleTwo', []).config(function($stateProvider) {
         resolve: {
             data: function(ADUpsellAddonSrv) {
                 return ADUpsellAddonSrv.getSettings();
+            },
+            availableLanguages: function(ADTranslationSrv) {
+                return ADTranslationSrv.getActiveGuestLanguages();
             }
+
         }
     });
 
