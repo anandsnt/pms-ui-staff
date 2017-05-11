@@ -812,7 +812,6 @@ angular.module('sntRover').controller('RVHkRoomStatusCtrl', [
 		};
 
 
-
 		$scope.submitHkStatusChange = function() {
 			var _payload,
 				_resetParams,

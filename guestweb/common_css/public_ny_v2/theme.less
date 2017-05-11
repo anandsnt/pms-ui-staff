@@ -20,11 +20,19 @@ body {
 }
 .description-details{
     float:left;
+    font-size:11px;
+}
+
+.sub-texts-spacing{
+    line-height:12.125px;
+    letter-spacing: -0.04em;
 }
 .main-text{
     font-family: "Gotham A","Gotham B";
     font-style:normal !important;
     font-weight: 300 !important;
+    letter-spacing: -0.09em;
+    line-height:28.5px !important;
 }
 .btn {
     font-family: "Gotham A","Gotham B";
@@ -42,33 +50,37 @@ body {
 .cc-number-description, .query-text{
     text-transform: uppercase;
 }
-.terms-main{
-   font-size:28px; 
+.terms-main,
+.accept-charges div,
+.checkout-btn div, .dual-button, 
+.dual-button div,
+.rate-info{
+   font-size:24px; 
+   letter-spacing: -0.09em;
 }
-.terms-sub{
-   font-size:16px; 
+.terms-sub,.rate-desc{
+   font-size:11px; 
+   .sub-texts-spacing;
 }
 .terms-desc{
-    font-size: 13px !important;
+    font-size: 11px !important;
+    .sub-texts-spacing;
 }
 .query-text,.query-text:hover {
-    font-size: 11px !important;
+    font-size: 10px !important;
 }
 .section-container.room-upgrades-container{
     max-width:375px !important;
     margin:calc(4.5%) auto;
 }
 .room-name{
-    font-size: 28px !important;
+    font-size: 24px !important;
+    letter-spacing: -0.09em;
 }
 .strong-font {
     font-family: "Gotham A","Gotham B";
     font-style:normal !important;
     font-weight: 400 !important;
-}
-.main-text{
-    font-weight: 500;
-    line-height: 1em;
 }
 .main-text,
 .sub-main-text,
@@ -106,7 +118,7 @@ p.sub-main-text,p.main-text,.row.margin-bottom-0{
 }
 
 .main-text {
-    font-size: 28px;
+    font-size: 24px;
 }
 .sub-main-text, .sub-text, 
 .footer-text ,.select-style select,
@@ -115,7 +127,8 @@ p.sub-main-text,p.main-text,.row.margin-bottom-0{
 .request-text,
 .no-thanks,.no-thanks:hover
 {
-    font-size:13px !important;
+    font-size:11px !important;
+    .sub-texts-spacing;
     font-weight: 400;
 }
 .header-bar {
@@ -183,6 +196,10 @@ textarea{
     margin-left: 0px;
 }
 
+.room-info {
+    padding: 2% 1%;
+}
+
 .btn,
 .btn:hover {
     background: #fff;
@@ -203,6 +220,10 @@ textarea{
     max-width: 100% !important;
     min-height:40px;
     padding-left:5px;
+    border-radius:0px !important;
+}
+textarea{
+    border-radius:0px !important;
 }
 .cc-input-field input,
 .cvv-input-field input,.cc-close,
@@ -237,23 +258,21 @@ textarea{
     background: url(/assets/guestweb/common_images/arrow_down.gif) 95% 50% no-repeat #fff;
 }
 
-.dual-button {
-    font-size: 28px;
-}
-
 
 .checkout-btn , .dual-button, .accept-charges{
     text-transform:uppercase;
     font-family: "Gotham Light";
+    letter-spacing: -0.09em;
     padding: 8%;
     div{
-        font-size:28px;
+        font-size:24px;
     }
 }
 
 
 .btn-template {
-    font-size: 13px;
+    font-size: 11px;
+    .sub-texts-spacing;
     color:#000000;
     min-height: 40px !important;
     text-transform: uppercase;
@@ -332,8 +351,9 @@ textarea{
     border-radius: 0px !important;
     border: 1px solid black !important;
     text-align: center !important;
-    font-size:13px;
-    padding: 14px 20px;
+    font-size:11px;
+    .sub-texts-spacing;
+    padding: 7px 20px;
     height:40px;
 }
 
@@ -342,6 +362,7 @@ textarea{
 }
 .text-comment{
     padding-left:8px;
+    padding-top: 5px;
 }
 
 .circle-bg {
@@ -362,7 +383,8 @@ textarea{
     max-width:150px !important;
 }
 .early-checkin-button,.early-checkin-button:hover{
-    font-size: 13px !important;
+    font-size: 11px !important;
+    .sub-texts-spacing;
 }
 .options-container{
     width:500px;
@@ -372,7 +394,8 @@ textarea{
     .terms-button{
         min-height:40px;
         padding:0% 35px;
-        font-size:13px;
+        font-size:11px;
+        .sub-texts-spacing;
     }
     .terms-button:first-child{
         margin-right:20px;
@@ -394,7 +417,8 @@ textarea{
     color: #C0C0C0 !important;
 }
 .upgrade-details .upgrades-btn{
-    padding: 13px 2px;
+    padding: 11px 2px;
+    .sub-texts-spacing;
 }
 .carousel-control.left {
     left: 0px !important;
@@ -605,27 +629,46 @@ textarea{
 }
 
 @media (max-width: 480px) {
-    .main-text {
-        font-size: 34px;
+    .main-text,.room-name ,
+    .terms-main, .accept-charges div,
+    .checkout-btn div, .dual-button, 
+    .dual-button div{
+        font-size: 22px;
+        line-height:18.5px !important;
     }
+    .sub-main-text, .sub-text, 
+    .footer-text ,.select-style select,
+    .input-field,.res-date,
+    .footer-sub-text,.footer-sub-text:hover,
+    .request-text,
+    .no-thanks,.no-thanks:hover,
+    .terms-sub,.terms-desc, .btn-template,
+    .proceed-to-checkin,
+    .early-checkin-button,.early-checkin-button:hover,
+    .upgrade-details .upgrades-btn,
+    .button-actions .terms-button,
+    .description-details,.rate-desc{
+        font-size:10px !important;
+        line-height:12px;
+        letter-spacing:0;
+    }
+
     .res-date{
-        font-size:16px;
+        font-size:10px;
     }
-    .sub-main-text, .footer-text{
-        font-size: 17px;
-    }
+
     .logo-image {
         max-width:96%;
         margin: 0% auto;
     }
     .dual-button {
-        font-size: 23px;
+        font-size: 22px;
     }
     .section-container {
         padding-bottom: 0px;
     }
     .amount {
-        font-size: 21px;
+        font-size: 22px;
     }
     .accept-charges {
         padding: 5% 10%;
@@ -638,9 +681,7 @@ textarea{
         padding-bottom: 10px;
         padding-top: 10px;
     }
-    .sub-text{
-        font-size: 15px;
-    }
+
     .upgrade-details .upgrades-btn p {
         font-size: 12px!important;
         font-weight: 100 !important;
@@ -655,7 +696,10 @@ textarea{
         margin-right: 18px;
     }
     .container {
-        width: 99%;
+        width: 94%;
+    }
+    .terms-alert {
+        padding: 10% 4%;
     }
 }
 
@@ -675,7 +719,7 @@ textarea{
         margin-bottom:20px;
     }
     .modal .modal-dialog .alert-link, .modal .modal-dialog p{
-        font-size:16px;
+        font-size:11px;
     }
     .show-bill-wrap{
         background: rgba(220, 220, 220, 0.58);
@@ -694,21 +738,11 @@ textarea{
     .back-to-checkout {
         display: none;
     }
-    .btn-template,
-    .dual-button {
-        font-size: 13px;
-    }
-    .main-text {
-        font-size: 28px;
-    }
-    .sub-main-text {
-        font-size: 19px;
-    }
 }
 
 @media (min-width: 480px) and (max-width: 990px) {
     .eta-container:not(:first-child){
-        margin-left: 10px;
+        margin-left: 8px;
     }
 }
 

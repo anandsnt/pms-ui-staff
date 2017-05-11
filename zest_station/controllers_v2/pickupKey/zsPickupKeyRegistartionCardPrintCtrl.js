@@ -18,7 +18,6 @@ sntZestStation.controller('zsPickupKeyRegistartionCardPrintCtrl', [
         BaseCtrl.call(this, $scope);
 
 
-
         /**
          * [clickedPrint description]
          * @return {[type]} [description]

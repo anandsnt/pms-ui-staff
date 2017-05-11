@@ -55,7 +55,6 @@ sntZestStation.controller('zsCheckinKeyDispenseCtrl', [
         $scope.guestId = $stateParams.guest_id;
 
 
-
         $scope.first_name = $stateParams.first_name;
         $scope.room = $stateParams.room_no;
 
@@ -167,7 +166,6 @@ sntZestStation.controller('zsCheckinKeyDispenseCtrl', [
         $scope.thirdPartyMaileSent = function() {
             nextPageActionsForMobileKey();
         };
-
        
 
         /** COLLECT_EMAIL_MODE **/

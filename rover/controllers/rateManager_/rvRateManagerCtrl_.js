@@ -67,6 +67,7 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
      */
     var setHeadingAndTitle = (nonTranslatedTitle) => {
         var title = $filter('translate')(nonTranslatedTitle);
+
         $scope.setTitle(title);
         $scope.heading = title;
 
@@ -162,6 +163,7 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
             params: params,
             onSuccess: onOpenAllRestrictionsForSingleRateViewSuccess
         };
+
         $scope.callAPI(rvRateManagerCoreSrv.applyAllRestrictions, options);
     };
 
@@ -183,6 +185,7 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
             params: params,
             onSuccess: onCloseAllRestrictionsForSingleRateViewSuccess
         };
+
         $scope.callAPI(rvRateManagerCoreSrv.applyAllRestrictions, options);
     };
 
@@ -215,6 +218,7 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
             params: params,
             onSuccess: onCloseAllRestrictionsForRateViewSuccess
         };
+
         $scope.callAPI(rvRateManagerCoreSrv.applyAllRestrictions, options);
     };
 
@@ -406,7 +410,7 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
         var rateTypeID = dialogData.rateType.id;
 
         // we may changed a rate detail against particular column or rate columns across a particular row
-        //getSingleRateTypeRowDetailsAndUpdateCachedDataModel(rateTypeID);
+        // getSingleRateTypeRowDetailsAndUpdateCachedDataModel(rateTypeID);
         getSingleRateTypeRowDetailsAndUpdateCachedDataModel(rateTypeID);
     };
 
@@ -816,6 +820,7 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
             // scroll focus
             var allRateTypesShowingData = _.where(showingData, { actionType: RM_RX_CONST.RATE_TYPE_VIEW_CHANGED});
             // we will attach scrollTo if attached filter from somewhere
+
             if(_.has(lastSelectedFilterValues[activeFilterIndex].allRate, 'scrollTo')) {
                reduxActionForAllRateTypeView.scrollTo = lastSelectedFilterValues[activeFilterIndex].allRateTypes.scrollTo;
 
@@ -863,6 +868,7 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
                 showRateDetail: $scope.showContractDetailsChecked
             }
         };
+
         e.preventDefault();
         store.dispatch(dispatchData);
     };
@@ -1035,6 +1041,7 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
         /*
          * close rates from diff mode.
          */
+
         $scope.closeAll = function(){
             var stateProps  = store.getState();
             var closedRestriction = _.findWhere(stateProps.restrictionTypes, { value: RM_RX_CONST.CLOSED_RESTRICTION_VALUE });
@@ -1048,6 +1055,7 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
                     }]
                 }]
             };
+
             if (stateProps.mode ===  RM_RX_CONST.SINGLE_RATE_EXPANDABLE_VIEW_MODE) {
                 openAllRestrictionsForSingleRateView(paramsForClosingRestriction);
             }
@@ -1133,12 +1141,13 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
                 if the request got initiated from 'Left side filter'
             */
             var numberOfRates = response.dailyRateAndRestrictions[0].rates.length;
+
             if (numberOfRates === 1 &&
                 _.has(lastSelectedFilterValues[activeFilterIndex], 'fromLeftFilter') && lastSelectedFilterValues[activeFilterIndex].fromLeftFilter) {
 
                 let rates = !cachedRateList.length ? response.rates : cachedRateList;
 
-                //rateList now cached, we will not fetch that again
+                // rateList now cached, we will not fetch that again
                 cachedRateList = rates;
 
                 lastSelectedFilterValues[activeFilterIndex].selectedRates = _.where(rates, { id:response.dailyRateAndRestrictions[0].rates[0].id });
@@ -1266,6 +1275,7 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
             // setting the row to focus soon after rendering
             // column should be assigned from 'allRatesScrollReachedTop'
             var numberOfRatesInNewResponse = newResponse.dailyRateAndRestrictions[0].rates.length;
+
             if (_.isUndefined(lastSelectedFilterValues[activeFilterIndex].allRate.scrollTo)) {
                     lastSelectedFilterValues[activeFilterIndex].allRate.scrollTo = {};
             }
@@ -1273,7 +1283,7 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
 
             dataSetToReturn.dailyRateAndRestrictions = dataSetToReturn.dailyRateAndRestrictions
                 .map((dailyRateAndRestriction) => {
-                    dailyRateAndRestriction = {...dailyRateAndRestriction}; //for fixing the issue of
+                    dailyRateAndRestriction = {...dailyRateAndRestriction}; // for fixing the issue of
                     dailyRateAndRestriction.rates = [
                         ..._.findWhere(newResponse.dailyRateAndRestrictions, { date: dailyRateAndRestriction.date }).rates,
                         ...dailyRateAndRestriction.rates.slice( 0, indexForPickingUp )
@@ -1406,6 +1416,7 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
                     page: lastSelectedFilterValues[activeFilterIndex].allRate.currentPage
                 });
             // if data already in cache
+
             if (dataFoundInCachedResponse) {
                 return processForAllRates(dataFoundInCachedResponse.response)
             }
@@ -1562,7 +1573,7 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
          */
         var onFetchSingleRateTypeRestrictionModeDetailsForPopup = (response, successCallBackParameters) => {
             var restrictionData = response.roomTypeAndRestrictions,
-                //roomTypes = !cachedRoomTypeList.length ? response.roomTypes : cachedRoomTypeList,
+                // roomTypes = !cachedRoomTypeList.length ? response.roomTypes : cachedRoomTypeList,
                 rates = !cachedRateList.length ? response.rates : cachedRateList,
                 variedAndCommonRestrictions = response.restrictionsWithStatus[0].restrictions,
                 rateAndRestrictions = response.rateAndRestrictions[0]
@@ -2141,6 +2152,7 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
                 selectedRateTypes: [{'id': filterValues.selectedRateTypes[0].id}],
                 selectedRates: []
             };
+
             fetchDailyRates(filterValuesForShowRates);
         };
 

@@ -55,7 +55,7 @@ admin.controller('ADZestStationRoomUpsellCtrl', ['$scope', 'ADZestStationSrv', '
             upsellData.upsell_compositions_in_percentage.tier_2 = chechAndAssignValue(upsellData.upsell_compositions_in_percentage.tier_2);
             upsellData.upsell_compositions_in_percentage.tier_3 = chechAndAssignValue(upsellData.upsell_compositions_in_percentage.tier_3);
             $scope.data = upsellData;
-            //upsellData.number_of_room_types_in_higher_level = 1;
+            // upsellData.number_of_room_types_in_higher_level = 1;
             // create an array with max number as the number
             // of upsell room types available
             $scope.maxUpsellOptions = _.range(1, roomUpsellData.number_of_room_types_in_higher_level + 1);
