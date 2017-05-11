@@ -3,6 +3,7 @@ admin.controller('ADChargeCodesCtrl', ['$scope', 'ADChargeCodesSrv', 'ngTablePar
 
         var CHARGE_CODE_TYPE_TAX = 1;
         var CHARGE_CODE_TYPE_PAYMENT = 2;
+        var CHARGE_CODE_TYPE_FEES = 6;
         var CHARGE_CODE_TYPE_TOURIST = 7;
 
 		ADBaseTableCtrl.call(this, $scope, ngTableParams);
@@ -497,7 +498,7 @@ admin.controller('ADChargeCodesCtrl', ['$scope', 'ADChargeCodesSrv', 'ngTablePar
 
         $scope.isTaxSelected = function () {
             var selectedType = parseInt($scope.prefetchData.selected_charge_code_type, 10);
-            
+
             return selectedType === CHARGE_CODE_TYPE_TAX;
         };
 
