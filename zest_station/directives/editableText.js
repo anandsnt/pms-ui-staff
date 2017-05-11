@@ -32,6 +32,7 @@ sntZestStation.directive('editableText', [function() {
 
                 $($inputField).val(output);
                 var afterAddedStr = position+stringToAdd.length;
+
                 $($inputField)[0].setSelectionRange(afterAddedStr, afterAddedStr);
             }
 

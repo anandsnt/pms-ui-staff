@@ -32,6 +32,7 @@ const mapStateToRateManagerGridLeftSideHeadButtonContainerProps = (state) => {
 
 let getPreviousPageButtonText = (mode, paginationStateData) => {
     let previousPageButtonText = "PREVIOUS ";
+
     switch (mode) {
         case RM_RX_CONST.RATE_VIEW_MODE:
             previousPageButtonText += paginationStateData.perPage + " RATES";
@@ -47,6 +48,7 @@ let getPreviousPageButtonText = (mode, paginationStateData) => {
 
 let getNextPageButtonText = (mode, paginationStateData) => {
     let nextPageButtonText = "NEXT ";
+
     switch (mode) {
         case RM_RX_CONST.RATE_VIEW_MODE:
             if (Math.ceil(paginationStateData.totalRows / paginationStateData.perPage) === paginationStateData.page + 1) {

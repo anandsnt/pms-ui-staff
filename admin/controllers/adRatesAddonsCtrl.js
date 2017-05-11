@@ -643,6 +643,7 @@ admin.controller('ADRatesAddonsCtrl', [
             var selectedLanguageTranslations = _.find($scope.singleAddon.translations, function(translation) {
                 return parseInt(selectedLanguage.id) === parseInt(translation.language_id);
             });
+
             $scope.translations = {};
             // $scope.translations.translated_description = _.isUndefined(selectedLanguageTranslations) ? '': selectedLanguageTranslations.translated_description;
             $scope.translations.translated_alternate_description = _.isUndefined(selectedLanguageTranslations) ? '' : selectedLanguageTranslations.translated_alternate_description;

@@ -24,6 +24,7 @@ admin.controller('ADRoomKeyDeliveryCtrl', ['$state', '$scope', '$rootScope', 'AD
         };
         var saveFailed = function(response) {
             var message = response ? response : ['Save Failed'];
+
             $scope.errorMessage = message;
             $scope.$emit('hideLoader');
         };

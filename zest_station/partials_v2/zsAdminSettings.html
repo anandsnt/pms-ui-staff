@@ -44,7 +44,7 @@
 
 <section id="main" class="admin-screen" role="main" ng-show="mode === 'admin-screen-active'" ng-class="{'no-main-bg':zestStationData.theme === 'zoku'}">
     <label class='admin-screen-title'>Zest Station Local Admin Settings</label>
-    <div id="content" class="input-field-contents">
+    <div id="content" class="input-field-contents admin-field-contents">
         <div id="textual" class="tabled-options" style="max-height: 559px;" ng-iscroll="admin-screen" ng-iscroll-delay="100" ng-init="setScroll()">
             <div class="wrapper">
 
@@ -175,6 +175,14 @@
                     <label class='admin-label-description'>Clicking this button will take you directly to the mobile key flow for Testing Only</label>
                     <div class="select button" type="button" touch-press="testRunMobileKeyCheckin()">
                         Run Test
+                    </div>
+                </div>
+
+                <div class="entry with-label" ng-show="showDebugModeOption && zestStationData.ccReader === 'local'">
+                    <label>Test Local CC Swipe</label>
+                    <label class='admin-label-description'>Clicking this button will take you directly to the mobile key flow for Testing Only</label>
+                    <div class="select button" type="button" touch-press="testReadLocalDevice()">
+                        Start
                     </div>
                 </div>
                 <!--END MOBILE KEY DEMO OPTIONS -->
