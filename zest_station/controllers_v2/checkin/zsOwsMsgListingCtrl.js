@@ -101,6 +101,7 @@ sntZestStation.controller('zsOwsMsgListingCtrl', [
 			var setPageNumber = function() {
 				$scope.currentpageNumber = selectedOwsMessageIndex + 1;
 			};
+
 			setPageNumber();
 
 			$scope.currentpageNumber = selectedOwsMessageIndex + 1;

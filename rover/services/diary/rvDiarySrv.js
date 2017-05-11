@@ -117,7 +117,9 @@ angular.module('sntRover').service('rvDiarySrv', ['$q', 'RVBaseWebSrv', 'rvBaseW
                             result = [];
 
                         if (diff.length > 0) {
-                            result = _.filter(incoming, function(id) { return diff.indexOf(id); });
+                            result = _.filter(incoming, function(id) {
+                                return diff.indexOf(id);
+                            });
                         }
 
                         return result;
