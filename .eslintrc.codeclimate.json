@@ -25,7 +25,8 @@
         "moment": false,
         "getTimeFormated": true,
         "CardReaderCtrl": false,
-        "sntCordovaInit": false
+        "sntCordovaInit": false,
+        "CardOperation": false
     },
     "installedESLint": true,
     "parserOptions": {
