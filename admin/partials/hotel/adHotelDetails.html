@@ -35,24 +35,17 @@
 			<ad-textbox value="data.alternate_name" name = "alternate-hotel-name" id = "alternate-hotel-name" label = "Alternate Name" placeholder = "Enter alternate name" required = "no" ></ad-textbox>
 
 			<div class="color-preview">
-				<!-- Toggle the class 'hidden' when we click on the .color on L20 -->
-				<div class="color-picker hidden">
+				<div class="color-picker" ng-hide="isToggleThemePreviewControl">
 					<ul class="colors">
-						 
-						<li>
-							<!-- Add checked="checked" for the color that is set (from db or default) -->
-							<input type="radio" id="{color-name}" name="colorscheme" value="{color-name}"/> 
-							<label class="color {color-name}" for="{color-name}">
-								<!-- Add this icon only to the color that is set (from db or default)
-								<span class="icons icon-revert"></span> -->
+						<li ng-repeat="theme in data.theme_list">
+							<input ng-click="themeSelected(theme)" type="radio" name="colorscheme" value="{{theme.value}}" ng-checked="data.selected_theme == selectedTheme"/> 
+							<label class="color {{theme.value}}" for="{{theme.value}}">
+								<span ng-show="data.selected_theme == selectedTheme" class="icons icon-revert"></span>
 							</label>
 						</li>
 					</ul>
 				</div>
-
-				<!-- Change 'color-name' to the chosen color (onchange or as the one that is set) -->
-				<!-- When clicked, toggle the class 'hidden' from color-picker on L3 -->
-				<div class="color {color-name}"></div>
+				<div ng-click="toggleThemePreviewControl()" class="color {color-name}"></div>
 			</div>
 
 		</fieldset>
