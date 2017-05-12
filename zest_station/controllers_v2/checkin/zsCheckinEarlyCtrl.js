@@ -31,6 +31,7 @@ sntZestStation.controller('zsCheckinEarlyCtrl', [
                 setPlaceholderDataForDemo($stateParams.quickJumpMode);
             } else {
                 var params = JSON.parse($stateParams.early_checkin_data);
+
                 setInitEciParams(params);
             }
 
@@ -53,6 +54,7 @@ sntZestStation.controller('zsCheckinEarlyCtrl', [
                 },
                 successCallBack: function(response) {
                     var data = response.paths;
+
                     for (var i in data) {
                         if (data[i].name === mode) {
                             setInitEciParams(data[i].data);        

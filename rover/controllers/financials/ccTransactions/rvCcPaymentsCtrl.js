@@ -4,7 +4,9 @@ sntRover.controller('RVccPaymentsController', ['$scope', '$filter', '$stateParam
 
 	$scope.setScroller('payment_content', {});
     var refreshPaymentScroll = function() {
-        setTimeout(function() {$scope.refreshScroller('payment_content');}, 500);
+        setTimeout(function() {
+            $scope.refreshScroller('payment_content');
+        }, 500);
     };
 
     refreshPaymentScroll();

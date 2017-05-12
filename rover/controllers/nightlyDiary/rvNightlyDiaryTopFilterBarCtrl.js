@@ -28,6 +28,7 @@ angular.module('sntRover')
             var date = tzIndependentDate(startDate);
             /* For calculating diaryData.toDate, the shiftCount is 6. In case of diaryData.fromDate the shiftCount is 7.
                isInclusive is true in case of toDate. */
+
             if (isInclusive) {
                 shiftCount -= 1;
             }

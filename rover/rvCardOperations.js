@@ -23,7 +23,9 @@ var CardOperation = function() {
                               'RVCardReadIsEncrypted': 0
                           };
 
-            if (typeof data !== 'undefined') { carddata = data;}
+            if (typeof data !== 'undefined') {
+                carddata = data;
+            }
             successCallBack(carddata, successCallBackParameters);
         };
 

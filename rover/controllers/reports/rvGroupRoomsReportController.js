@@ -36,8 +36,6 @@ angular.module('sntRover')
                     pickedUpRooms = Array.apply(null, Array(dateRange.length)).map(String.prototype.valueOf, "");
 
 
-
-
                     _.each(summaryCount.rooms_count, function(roomCount) {
                         var index = dateRange.indexOf(roomCount.date);
 
@@ -110,6 +108,7 @@ angular.module('sntRover')
             } else {
                 var currentMonthDays = 0,
                     nextMonthDays = 0;
+
                 _.each(dateRange, function( dateObj ) {
                     if (rvUtilSrv.getMonthFromDateString(dateObj) === fromMonthNo ) {
                         currentMonthDays++;

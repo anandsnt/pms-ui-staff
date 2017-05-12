@@ -12,7 +12,7 @@ const convertRestrictionsIntoProps = (restrictionTypes) => {
 		};
 	});
 
-	//'more restrictions' will not be in API, it is adding from the UI
+	// 'more restrictions' will not be in API, it is adding from the UI
 
 	restrictionTypeConstObj = RateManagerRestrictionTypes['MORE_RESTRICTIONS'];
 
