@@ -44,6 +44,9 @@ sntRover.controller('roverController', [
       $translate.use('EN');
     }
 
+    // CICO-39623 : Setting up app theme.
+    $rootScope.appTheme = getThemeClass(hotelDetails.selected_theme);
+
     /*
      * To close drawer on click inside pages
      */
