@@ -198,6 +198,20 @@ sntZestStation.controller('zsRootCtrl', [
 
                     }
                 }, 750);
+            } else if ($scope.softResetCount == 3) {
+                  $timeout(function() {
+                    if ($scope.softResetCount == 3) {
+                        // when in a local testing environment, we should be able to test all hotel themes
+                        // a bit faster, to help with this~
+                        // *activate themeSwitcher (showTemplateList) on Ipad by double-tapping the logo @ admin,
+                        // then, at any screen swipe the icon up or down to change the hotel theme
+                        // !! IMPORTANT !! -> ONLY ALLOW IN DEVELOPMENT ENVIRONMENT, NOT for production
+                        if (!$scope.inProd()) { // ONLY IN DEVELOPMENT ENVIRONMENT !! IMPORTANT !!
+                            zestSntApp.getStateList();// toggle jump list
+                        }
+
+                    }
+                }, 750);
             }
 
             $timeout(function() {
