@@ -563,6 +563,12 @@ admin.controller('ADAppCtrl', [
 		    } else {
 		      $translate.use('EN');
 		    }
+
+            // CICO-39623 : Setting up app theme.
+            data.selected_theme = 'theme-07';
+            var appTheme = getThemeClass(data.selected_theme);
+            document.getElementsByTagName("html")[0].setAttribute( 'class', appTheme );
+
 		    // to hide eod submenu conditionally
 			$rootScope.is_auto_change_bussiness_date = data.business_date.is_auto_change_bussiness_date;
 

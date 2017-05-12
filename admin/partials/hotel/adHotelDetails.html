@@ -34,6 +34,27 @@
 
 			<ad-textbox value="data.alternate_name" name = "alternate-hotel-name" id = "alternate-hotel-name" label = "Alternate Name" placeholder = "Enter alternate name" required = "no" ></ad-textbox>
 
+			<div class="color-preview">
+				<!-- Toggle the class 'hidden' when we click on the .color on L20 -->
+				<div class="color-picker hidden">
+					<ul class="colors">
+						 
+						<li>
+							<!-- Add checked="checked" for the color that is set (from db or default) -->
+							<input type="radio" id="{color-name}" name="colorscheme" value="{color-name}"/> 
+							<label class="color {color-name}" for="{color-name}">
+								<!-- Add this icon only to the color that is set (from db or default)
+								<span class="icons icon-revert"></span> -->
+							</label>
+						</li>
+					</ul>
+				</div>
+
+				<!-- Change 'color-name' to the chosen color (onchange or as the one that is set) -->
+				<!-- When clicked, toggle the class 'hidden' from color-picker on L3 -->
+				<div class="color {color-name}"></div>
+			</div>
+
 		</fieldset>
 		<fieldset class="holder full-width" >
 			<div class="form-title">
