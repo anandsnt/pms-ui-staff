@@ -18,7 +18,7 @@
  specific language governing permissions and limitations
  under the License.
 */
-(function() {
+function sntCordovaInit() {
 var PLATFORM_VERSION_BUILD_LABEL = '3.8.0';
 // file: src/scripts/require.js
 
@@ -1862,4 +1862,6 @@ window.cordova = require('cordova');
 
 require('cordova/init');
 
-})();
+}
+
+sntCordovaInit();
