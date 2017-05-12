@@ -8,7 +8,7 @@ admin.controller('adUpsellAddonSettingsCtrl', function($scope, ADUpsellAddonSrv,
 
 	$scope.onLanguageChange = function() {
 		if ($scope.selectedLanguage.code === 'en') {
-			$scope.data = angular.copy(upsellData);
+			return;
 		} else {
 			// if language is not english
 			var selectedLanguage = _.find($scope.availableLanguagesSet.locales, function(language) {
