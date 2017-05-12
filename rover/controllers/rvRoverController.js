@@ -45,9 +45,12 @@ sntRover.controller('roverController', [
     }
 
     // CICO-39623 : Setting up app theme.
-    hotelDetails.selected_theme = 'theme-07';
-    var appTheme = getThemeClass(hotelDetails.selected_theme);
-    document.getElementsByTagName("html")[0].setAttribute( 'class', appTheme );
+    if( !!hotelDetails.selected_theme && hotelDetails.selected_theme !== 'orange' ) {
+      hotelDetails.selected_theme = 'tabasco';
+      var appTheme = 'theme-' + hotelDetails.selected_theme;
+      
+      document.getElementsByTagName("html")[0].setAttribute( 'class', appTheme );
+    }
 
     /*
      * To close drawer on click inside pages
