@@ -83,7 +83,6 @@ var CardOperation = function() {
             return false;
         }
         else {
-            console.log('using cordova instance', cordova.instanceId);
             // calling cordova service
             cordova.exec(
                         // if success call back require any parameters
