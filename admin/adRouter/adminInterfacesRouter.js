@@ -381,9 +381,32 @@ angular.module('adminInterfacesRouter', []).config(function($stateProvider) {
     });
 
     $stateProvider.state('admin.doorlockInterface', {
+      templateUrl: '/assets/partials/interfaces/adInterfacesSubMenuList.html',
+      controller: 'ADInterfaceSubMenuCtrl',
+      url: '/doorlockinterface'
+    });
+
+    $stateProvider.state('admin.directInterface', {
         templateUrl: '/assets/partials/doorLockInterface/adDoorLockInterface.html',
         controller: 'ADDoorLockInterfaceCtrl',
-        url: '/doorlockinterface'
+        url: '/directinterface'
+    });
+
+    $stateProvider.state('admin.mobileKey', {
+      templateUrl: '/assets/partials/interfaces/adInterfacesSubMenuList.html',
+      controller: 'ADInterfaceSubMenuCtrl',
+      url: '/directinterface'
+    });
+
+    $stateProvider.state('admin.keyprSetup', {
+        templateUrl: '/assets/partials/interfaces/Keypr/adKeyprSetup.html',
+        controller: 'adKeyprSetupCtrl',
+        url: '/keypr/setup',
+        resolve: {
+            config: ['adInterfacesCommonConfigSrv', function(adInterfacesCommonConfigSrv) {
+                return adInterfacesCommonConfigSrv.fetchConfiguration('keypr');
+            }]
+        }
     });
 
     $stateProvider.state('admin.sitemindersSetup', {

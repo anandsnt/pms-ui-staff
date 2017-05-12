@@ -1,5 +1,6 @@
 admin.controller('ADInterfaceSubMenuCtrl', ['$scope', '$state',
     function($scope, $state) {
+      console.log($state.current.name);
         switch ($state.current.name) {
             case "admin.textMessagingGroup":
                 $scope.sectionTitle = "Text Messaging Systems Setup";
@@ -16,10 +17,13 @@ admin.controller('ADInterfaceSubMenuCtrl', ['$scope', '$state',
             case "admin.snapshotSetup":
                 $scope.sectionTitle = "Snapshot Setup";
                 break;
+            case "admin.mobileKey":
+                $scope.sectionTitle = "Mobile Key Setup";
+                break;
             default:
                 $scope.sectionTitle = "Interfaces Setup";
         }
-
+        console.log($scope.selectedMenu.components);
         var subComponents = _.find($scope.selectedMenu.components, {state: $state.current.name}).sub_components;
 
         // CICO-36466 Admin Interfaces Menu to be sorted by alphabetical
