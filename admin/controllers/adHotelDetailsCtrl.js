@@ -40,6 +40,7 @@ admin.controller('ADHotelDetailsCtrl', [
 		// SNT Admin -To add new hotel view
 		if ($stateParams.action === "add" || $stateParams.action === "addfromSetup") {
 			$scope.title = "Add New Hotel";
+			$scope.selectedTheme = 'orange';
 			var fetchSuccess = function(data) {
 				$scope.data = data.data;
 				$scope.data.brands = [];
@@ -81,6 +82,7 @@ admin.controller('ADHotelDetailsCtrl', [
 				}
 
 				setDropdownDefaults();
+				$scope.selectedTheme = data.selected_theme;
 			};
 
 			$scope.invokeApi(ADHotelDetailsSrv.fetchEditData, {'id': $stateParams.id}, fetchSuccess);
@@ -112,6 +114,7 @@ admin.controller('ADHotelDetailsCtrl', [
 			}
 
 			setDropdownDefaults();
+			$scope.selectedTheme = data.selected_theme;
 		};
 
 		$scope.invokeApi(ADHotelDetailsSrv.hotelAdminfetchEditData, {}, fetchSuccess);
