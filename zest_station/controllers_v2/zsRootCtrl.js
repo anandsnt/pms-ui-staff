@@ -756,6 +756,7 @@ sntZestStation.controller('zsRootCtrl', [
             }
             if ($scope.zestStationData.theme === 'public_v2') {
                 $scope.icons.url.pen = $scope.icons.url.keyboard;
+                $scope.icons.url.checkmark = iconsPath + '/checkmark.svg';
             }
         };
 
