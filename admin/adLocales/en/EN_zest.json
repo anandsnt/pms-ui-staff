@@ -150,7 +150,10 @@
 "TEXT_2": "Text 2 (Ending)",
 
 "UPSELL_ADONS": "Upsell Add Ons",
-"ADDONS_INSTRUCTION": "Control the Add Ons offered during check in. Drag and drop to control display order"
+"ADDONS_INSTRUCTION": "Control the Add Ons offered during check in. Drag and drop to control display order",
+
+"GUEST_ID_SETUP":"Guest ID Scan Setup",
+"VIEW_GUEST_ID":"View Scanned Guest IDs"
 
 
 

@@ -464,4 +464,11 @@ angular.module('adminInterfacesRouter', []).config(function($stateProvider) {
         url: '/snapshotSetup/subGroupMapping'
     });
 
+
+    $stateProvider.state('admin.guestIdSetup', {
+        templateUrl: '/assets/partials/guestIdSetup/adGuestIDSetup.html',
+        controller: 'ADGuestIDSetup',
+        url: '/guestIdSetup'
+    });
+
 });
