@@ -267,32 +267,3 @@ var returnFooterStyleClass = function(footerCount) {
   }
   return footerClass;
 };
-
-// CICO-39623 : Setting up app theme Mappings.
-var appThemeMappings = {
-
-    'theme-00': ['000000', 'themeDefault'],
-
-    'theme-01': ['000000', 'themeTabasco'],
-    'theme-02': ['000000', 'themeMeteor'],
-    'theme-03': ['000000', 'themeSahara'],
-
-    'theme-04': ['000000', 'themeLeaf'],
-    'theme-05': ['000000', 'themeJava'],
-    'theme-06': ['000000', 'themeChill'],
-    'theme-07': ['000000', 'themeDenim'],
-
-    'theme-08': ['000000', 'themeIndigo'],
-    'theme-09': ['000000', 'themeSeance'],
-    'theme-10': ['000000', 'themeCerise']
-};
-
-var getThemeClass = function ( themeKey ) {
-
-  if (typeof themeKey === 'undefined' || typeof appThemeMappings[themeKey] === 'undefined') {
-        return appThemeMappings['theme-00'][0];
-  }
-  else {
-      return appThemeMappings[themeKey][0];
-  }
-};
