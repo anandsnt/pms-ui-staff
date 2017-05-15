@@ -424,7 +424,7 @@ sntRover.controller('roverController', [
         $scope.menuOpen = false;
         $rootScope.showNotificationForCurrentUser = true;
 
-        if ($rootScope.paymentGateway === "CBA") {
+        if ($rootScope.paymentGateway === "CBA" && sntapp.cordovaLoaded) {
             doCBAPowerFailureCheck();
         }
     };
