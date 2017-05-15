@@ -19,7 +19,9 @@ angular.module('sntRover').controller('RVHKWorkTabCtrl', [
 		// set the scroller
 		$scope.setScroller('room-status-content');
 
-		$timeout(function() {$scope.refreshScroller('room-status-content');}, 1500);
+        $timeout(function() {
+            $scope.refreshScroller('room-status-content');
+        }, 1500);
 
 		$scope.isTaskPresent = function () {
 			return $scope.roomDetails.task_details.length != 0;

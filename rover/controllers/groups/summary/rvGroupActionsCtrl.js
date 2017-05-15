@@ -534,7 +534,9 @@ sntRover.controller('rvGroupActionsCtrl', ['$scope', '$filter', '$rootScope', 'n
             var year, month, day;
             var spl = dateStr.split(delim);
 
-            day = spl[1]; month = spl[0]; year = spl[2];
+            day = spl[1];
+            month = spl[0];
+            year = spl[2];
 
             return {day: day, month: month, year: year};
         };
@@ -845,7 +847,9 @@ sntRover.controller('rvGroupActionsCtrl', ['$scope', '$filter', '$rootScope', 'n
                 if (a[i] === id) {
                     return true;
                 }
-            } return false;
+            }
+
+            return false;
         };
 
         $scope.capped = function(str) {
@@ -876,21 +880,27 @@ sntRover.controller('rvGroupActionsCtrl', ['$scope', '$filter', '$rootScope', 'n
 
             if ($scope.eitherString(str, v)) {// checks all cases upper/lower/first letter cap
                 return true;
-            } else return false;
+            }
+
+            return false;
         };
         $scope.isRequest = function(v) {
             var str = 'REQUEST';
 
             if ($scope.eitherString(str, v)) {// checks all cases upper/lower/first letter cap
                 return true;
-            } else return false;
+            }
+
+            return false;
         };
         $scope.isTrace = function(v) {
             var str = 'TRACE';
 
             if ($scope.eitherString(str, v)) {// checks all cases upper/lower/first letter cap
                 return true;
-            } else return false;
+            }
+
+            return false;
         };
 
         var fetchActionListSuccessCallBack = function (data) {

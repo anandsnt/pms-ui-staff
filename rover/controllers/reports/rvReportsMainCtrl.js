@@ -1946,7 +1946,7 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
                 }
             }
 
-            //Include accounts
+            // Include accounts
             if ( report.hasOwnProperty('hasAccountSearch') ) {
                 selected = _.where( report['hasAccountSearch']['data'], { selected: true } );
 
@@ -2291,14 +2291,14 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
                 $scope.totalCount = response.total_count || 0;
                 $scope.currCount = response.results ? response.results.length : 0;
 
-                //CICO-36186
+                // CICO-36186
                 if(chosenReport.title === reportNames["COMPARISION_BY_DATE"]) {
                     $timeout(function() {
                         $scope.$broadcast('updatePagination', "COMPARISION_BY_DATE");
                     }, 50);
                 }
 
-                 //CICO-36269
+                 // CICO-36269
                 if(chosenReport.title === reportNames["TRAVEL_AGENT_COMMISSIONS"]) {
                     $scope.$broadcast("UPDATE_RESULTS", $scope.results);
                     $timeout(function() {
@@ -2375,7 +2375,7 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
                 $scope.genReport(false, pageNo);
             };
 
-            //CICO-36186 - Implemented the new pagination for Comparison report
+            // CICO-36186 - Implemented the new pagination for Comparison report
             if(chosenReport.title === reportNames["COMPARISION_BY_DATE"]) {
                 var loadAPIData = function(pageNo) {
                     $scope.genReport(false, pageNo);
