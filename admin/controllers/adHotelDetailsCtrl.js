@@ -40,7 +40,6 @@ admin.controller('ADHotelDetailsCtrl', [
 		// SNT Admin -To add new hotel view
 		if ($stateParams.action === "add" || $stateParams.action === "addfromSetup") {
 			$scope.title = "Add New Hotel";
-			$scope.selectedTheme = 'orange';
 			var fetchSuccess = function(data) {
 				$scope.data = data.data;
 				$scope.data.brands = [];
@@ -53,6 +52,7 @@ admin.controller('ADHotelDetailsCtrl', [
 					$scope.data.check_in_primetime = "AM";
 					$scope.data.check_out_primetime = "AM";
 				$scope.data.hotel_pms_type = "";
+				$scope.selectedTheme = data.selected_theme;
 			};
 
 			$scope.invokeApi(ADHotelDetailsSrv.fetchAddData, {}, fetchSuccess);
@@ -185,7 +185,12 @@ admin.controller('ADHotelDetailsCtrl', [
 				data.mli_certificate = $scope.mli.certificate;
 			}
 			data.interface_type_ids = getSelectedInterfaceTypes(data);
-			data.selected_theme = $scope.selectedTheme;
+			var themeData = {
+				'value': $scope.selectedTheme.value,
+				'id':  $scope.selectedTheme.id
+			};
+			
+			data.selected_theme = themeData;
 			var postSuccess = function() {
 				$scope.$emit('hideLoader');
 				$state.go("admin.hotels");
@@ -218,7 +223,12 @@ admin.controller('ADHotelDetailsCtrl', [
 			var data = dclone($scope.data, unwantedKeys);
 
 			data.interface_type_ids = getSelectedInterfaceTypes(data);
-			data.selected_theme = $scope.selectedTheme;
+			var themeData = {
+				'value': $scope.selectedTheme.value,
+				'id':  $scope.selectedTheme.id
+			};
+
+			data.selected_theme = themeData;
 			if ($scope.hotelLogoPrefetched === data.hotel_logo) {
 				data.hotel_logo = "";
 			}
@@ -407,17 +417,15 @@ admin.controller('ADHotelDetailsCtrl', [
 
     // CICO-39623 : Setting up theme color here..
     $scope.isToggleThemePreviewControl = false;
-    $scope.selectedTheme = '';
-    // $scope.selectedThemeCode = '';
+    $scope.selectedTheme = {};
 
     // Toggle the theme preview control.
     $scope.toggleThemePreviewControl = function() {
-    	$scope.isToggleThemePreviewControl = !$scope.isToggleThemePreviewControl;
+ 	  	$scope.isToggleThemePreviewControl = !$scope.isToggleThemePreviewControl;
     };
     // Handle click action on theme selection.
     $scope.themeSelected = function( selectedTheme ) {
-    	$scope.selectedTheme = selectedTheme.value;
-    	// $scope.selectedThemeCode = selectedTheme.code;
+ 	  	$scope.selectedTheme = selectedTheme;
     };
 
 }]);
