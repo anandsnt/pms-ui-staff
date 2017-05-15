@@ -231,11 +231,13 @@ sntZestStation.controller('zsCheckinAddonCtrl', [
 			var fetchAddonLabelSuccess = function(response) {
 				var amountTypesLabels;
 				var postTypeLabels;
+
 				// check if selected language is english, if no use translations 
 				if ($translate.use() !== 'en') {
 					var translatedLabels = _.find(response.translations, function(translation) {
 						return translation.language_id === $scope.languageId;
 					});
+					
 					// check if translations are added, else use english ones
 					if (_.isUndefined(translatedLabels)) {
 						amountTypesLabels = response.amount_types;
@@ -270,6 +272,7 @@ sntZestStation.controller('zsCheckinAddonCtrl', [
 					// if no custom label is present, set to post type
 					addon.post_type_label = (addon.post_type_label === '') ? addon.post_type : addon.post_type_label;
 				});
+
 				setPageNumberDetails();
 				$scope.loadingCompleted = true;
 				$scope.showPageNumberDetails = true;
