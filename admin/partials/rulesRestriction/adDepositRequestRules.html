@@ -93,13 +93,10 @@
 	                        </div>
 	                       	<ad-textbox value="selectedSchedule.advance_days" name="name" id="name" label="Days In advance" placeholder="{{'ENTER_THE_NUM_OF_DAYS'|translate}}"></ad-textbox>
 	                        <ad-textbox value="selectedSchedule.max_no_nights" name="name" id="name" label="Max Number of Nights" placeholder="Max Number of Nights "></ad-textbox>
-	                        <div class="entry radio-check full-width">
-	                            <label class="checkbox">
-	                                <span class="icon-form icon-checkbox" ng-class="{ checked : selectedSchedule.auto_charge_on_due_date }"></span>
-	                                Auto-Charge on Due Date
-	                                <input type="checkbox" ng-model="selectedSchedule.auto_charge_on_due_date">
-	                            </label>
-	                        </div>
+	                        <!--CICO-40120 Leave this comment till this functionality is implemented-->
+							<!--The checkbox mapping auto_charge_on_due_date in the form has been removed as a part of CICO-40120-->
+							<!--The checkbox markup can be obtained from https://github.com/StayNTouch/pms/blob/28163bd6fca31db7dd735ae687f0b57d1cedbfad/app/assets/admin/partials/rulesRestriction/adDepositRequestRules.html#L88-L94-->
+							<!--CICO-40120-->
 	                    </fieldset>
 	                </div>
 
