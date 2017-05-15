@@ -614,7 +614,9 @@ angular.module('sntRover').service('rvAvailabilitySrv', ['$q', 'rvBaseWebSrvV2',
 
         $q.all(promises).then(function() {
         	// Merge sold and availability count with the houseStatistics object
-        	_.each(houseAvailability, function(availability, idx) {_.extend(houseStatistics[idx], availability.house);});
+            _.each(houseAvailability, function(availability, idx) {
+                _.extend(houseStatistics[idx], availability.house);
+            });
         	// Resolve after parsing to a bindable object
             deferred.resolve(that.restructureHouseDataForUI(houseStatistics, roomCount, businessDate));
         }, function(errorMessage) {

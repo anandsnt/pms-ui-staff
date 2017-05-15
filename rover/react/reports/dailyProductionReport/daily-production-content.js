@@ -64,6 +64,7 @@ var DPtdCell = function(props) {
         React.DOM[tag]({}, props.data)
     );
 };
+
 DPtdCell.propTypes = {
     isLastRow: React.PropTypes.bool,
     isBold: React.PropTypes.bool,

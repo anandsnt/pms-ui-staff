@@ -14,7 +14,9 @@ angular.module('sntRover').controller('reservationRoomStatus',
 	$scope.encoderTypes = [];
 
 
-    $timeout(function() { $scope.$apply(); }, 3000);
+        $timeout(function() {
+            $scope.$apply();
+        }, 3000);
     // CICO- 6086 - New class for lock
 	$scope.getRoomClass = function(reservationStatus, cannotMoveRoom) {
 		var reservationRoomClass = '';

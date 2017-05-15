@@ -1,15 +1,18 @@
 
 <!-- Content -->
 <section id="main" class="centered" role="main"  click-touch='resetTime()'>
-    <div id="content">
-        <h1>
+     <div id="content" class='details-content'>
+        <h1 ng-hide="zestStationData.theme === 'public_v2'">
             <text editable-text="SEL_RES_HEADER"> {{'SEL_RES_HEADER' |translate}}</text>
         </h1>
         <div id="labels">
-            <span class="label">
+            <span class="label" ng-hide="zestStationData.theme === 'public_v2'">
                 <text editable-text="SEL_RES_HEADER"> {{'SEL_RES_HEADER' |translate}}</text>
             </span>
-            <span class="label">
+            <h1 class="label select-res-heading" ng-show="zestStationData.theme === 'public_v2'">
+                <text editable-text="SEL_RES_HEADER"> {{'SEL_RES_HEADER' |translate}}</text>
+            </h1>
+            <span class="label" ng-hide="zestStationData.theme === 'public_v2'">
                 <text editable-text="SEL_RES_CO_DATE_ROOM_TYPE"> {{'SEL_RES_CO_DATE_ROOM_TYPE' |translate}}</text>
             </span>
         </div>

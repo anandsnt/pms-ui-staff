@@ -12,7 +12,7 @@
 </div>
 <!--------------------- select no of keys mode ------------------------>
 <section id="main" class="centered" role="main" click-touch='resetTime()' ng-show="mode === 'DISPENSE_KEY_MODE'">
-    <div id="content">
+    <div id="content" class='select-keys'>
         <h1 class="no-margin">
             <text editable-text="CHKED_IN_SUCCESS_HEADER"> {{'CHKED_IN_SUCCESS_HEADER' |translate}}</text> &nbsp;{{first_name}}.
         </h1>
@@ -133,7 +133,7 @@
         <h2>
             <text editable-text="GRAB_KEYS"> {{'GRAB_KEYS' |translate}}</text>
         </h2>
-        <div id="room" ng-show="zestStationData.show_room_number">
+        <div id="room" class='success-key' ng-show="zestStationData.show_room_number">
             <span class="number">{{room}}</span>
             <br>
             <br>
@@ -199,7 +199,7 @@
 </section>
 <!-- select mobile key/ physical key -->
 <section id="main" class="centered" role="main" click-touch='resetTime()' ng-show="mode === 'MOBILE_OR_PHYSICAL_KEY'">
- <span ng-include="'/assets/partials_v2/checkin/key_screen/zsCheckinKeyKeyTypeMode.html'"></span>
+ <span class='checkin-key-options' ng-include="'/assets/partials_v2/checkin/key_screen/zsCheckinKeyKeyTypeMode.html'"></span>
 </section>
 
 <!-- THIRD PARTY SELECTION-->
