@@ -41,6 +41,7 @@ admin.service('ADZestStationSrv', ['$http', '$q', 'ADBaseWebSrv', 'ADBaseWebSrvV
     this.loadTranslationFiles = function(params) {
         var deferred = $q.defer();
         var url = '/staff/locales/download/' + params.lang + '.json';
+        
         ADBaseWebSrvV2.getJSON(url).then(function(data) {
             deferred.resolve(data);
         }, function(data) {
