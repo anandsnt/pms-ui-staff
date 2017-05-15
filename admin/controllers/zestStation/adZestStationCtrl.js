@@ -284,35 +284,24 @@ admin.controller('ADZestStationCtrl', ['$scope', '$rootScope', '$state', '$state
             openEditor(languagesEditedInSession[lang].json);
         } else {
 
-            var jsonRefUrl = 'staff/locales/download/' + lang + '.json';
 
             $log.log('fetching language json file for editing');
 
-            $scope.showLoader();
-        
-            // the ajax requests must contain the hotel UUID , for normal ajax calls we are using
-            // sharedHttpInterceptor.
-            $.ajax({
-                beforeSend: function(request) {
-                    request.setRequestHeader("Hotel-UUID", sntAuthorizationSrv.getProperty());
+            var options = {
+                params: {
+                    'lang': lang
                 },
-                dataType: "json",
-                url: jsonRefUrl,
-                success: function(json) {
-                    var loaderScope = angular.element('#loading-spinner').scope();
-
-                    loaderScope.hasLoader = false;
+                successCallBack: function(json) {
                     $log.log(json); // show the info in console
-
                     // reference to downloaded data in case user wants to continue editing after closing window
                     languagesEditedInSession[lang] = {
                         'json': json
                     };
-
-                    loaderScope.$digest();
                     openEditor(json);
                 }
-            });
+            };
+
+            $scope.callAPI(ADZestStationSrv.loadTranslationFiles, options);
 
         }
 
