@@ -1,4 +1,4 @@
-admin.controller('ADZestStationCtrl', ['$scope', '$rootScope', '$state', '$stateParams', 'ADZestStationSrv', '$filter', 'ngDialog', '$timeout', '$log', 'sntAuthorizationSrv', function($scope, $state, $rootScope, $stateParams, ADZestStationSrv, $filter, ngDialog, $timeout, $log, sntAuthorizationSrv) {
+admin.controller('ADZestStationCtrl', ['$scope', '$rootScope', '$state', '$stateParams', 'ADZestStationSrv', '$filter', 'ngDialog', '$timeout', '$log', function($scope, $state, $rootScope, $stateParams, ADZestStationSrv, $filter, ngDialog, $timeout, $log) {
     BaseCtrl.call(this, $scope);
     $scope.$emit('changedSelectedMenu', 10);
 
