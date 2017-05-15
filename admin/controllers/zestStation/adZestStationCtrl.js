@@ -284,26 +284,25 @@ admin.controller('ADZestStationCtrl', ['$scope', '$rootScope', '$state', '$state
             openEditor(languagesEditedInSession[lang].json);
         } else {
 
-            var jsonRefUrl = 'staff/locales/download/' + lang + '.json';
 
             $log.log('fetching language json file for editing');
 
-            $scope.showLoader();
+            var options = {
+                params: {
+                    'lang': lang
+                },
+                successCallBack: function(json) {
+                    $log.log(json); // show the info in console
+                    // reference to downloaded data in case user wants to continue editing after closing window
+                    languagesEditedInSession[lang] = {
+                        'json': json
+                    };
+                    openEditor(json);
+                }
+            };
 
-            $.getJSON(jsonRefUrl, function(json) {
-                var loaderScope = angular.element('#loading-spinner').scope();
+            $scope.callAPI(ADZestStationSrv.loadTranslationFiles, options);
 
-                loaderScope.hasLoader = false;
-                $log.log(json); // show the info in console
-
-                // reference to downloaded data in case user wants to continue editing after closing window
-                languagesEditedInSession[lang] = {
-                    'json': json
-                };
-
-                loaderScope.$digest();
-                openEditor(json);
-            });
         }
 
 
