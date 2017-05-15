@@ -566,7 +566,6 @@ admin.controller('ADAppCtrl', [
 
             // CICO-39623 : Setting up app theme.
             if( !!data.selected_theme && data.selected_theme.value !== 'ORANGE' ) {
-              // data.selected_theme.value = 'TABASCO';
               var appTheme = 'theme-' + (data.selected_theme.value).toLowerCase();
               
               document.getElementsByTagName("html")[0].setAttribute( 'class', appTheme );

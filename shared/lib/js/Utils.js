@@ -672,31 +672,3 @@ var checkIfReferencetextAvailableForCC = function(paymentTypes,selectedPaymentTy
     });
     return displayReferance;
 };
-
-// CICO-39623 : Setting up app theme Mappings.
-var appThemeMappings = {
-
-    'theme-00': ['theme-snt',       'snt'],
-
-    'theme-01': ['theme-tabasco',   'tabasco'],
-    'theme-02': ['theme-meteor',    'meteor'],
-    'theme-03': ['theme-sahara',    'sahara'],
-    'theme-04': ['theme-leaf',      'leaf'],
-    'theme-05': ['theme-java',      'java'],
-
-    'theme-06': ['theme-chill',     'chill'],
-    'theme-07': ['theme-denim',     'denim'],
-    'theme-08': ['theme-indigo',    'indigo'],
-    'theme-09': ['theme-seance',    'seance'],
-    'theme-10': ['theme-cerise',    'cerise']
-};
-
-var getThemeClass = function ( themeKey ) {
-
-  if (typeof themeKey === 'undefined' || typeof appThemeMappings[themeKey] === 'undefined') {
-        return appThemeMappings['theme-00'][0];
-  }
-  else {
-      return appThemeMappings[themeKey][0];
-  }
-};
