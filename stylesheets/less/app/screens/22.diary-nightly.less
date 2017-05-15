@@ -505,7 +505,7 @@
     }
 
     .suite-room {
-        background-color: #dfac65;
+        background-color: #efc080;
         color: @white;
 
         .icon-suite-white {
@@ -518,24 +518,83 @@
         position: absolute;
         top: 0;
         left: 0;
-        max-width: 120px;
-        overflow: hidden;
-        #flexbox > .parent(row wrap, '', '', '');
+        z-index: 10; 
+        display: block;
 
         .suite-room {
             text-align: center;
             font-weight: 600;
             font-size: 10px;
-            .size(20px, 30px);
+            .size(20px, 25px);
+            display: block;
 
             .icon-suite-white {
-                height: 10px;
-                background-position: 8px -6904px;
+                height: 20px;
+                background-position: 4px -6900px;
                 .show();
             }
 
             &:not(:first-child){
                 .box-shadow(inset 1px 0 0 rgba(0,0,0,0.1));
+            }
+        }
+
+        .suites-rooms {
+            position: absolute;
+            bottom: -5px;
+            left: 35px;
+            background-color: #efc080;
+            width: 100px;
+            #border-radius > .rounded();
+            padding: 10px 10px 5px 10px;
+            text-align: center;
+
+            &:after {
+                content:'';
+                position: absolute;
+                display: block;
+                .square(8px);
+                transform: rotate(45deg);
+                background: #efc080;
+                left: -4px;
+                bottom: 11px;
+            }
+
+            &.top {
+                bottom: auto;
+                top:-5px; 
+
+                &:after {
+                    bottom: auto;
+                    top: 11px;
+                }
+            }
+
+            > strong {
+                color: #98794f;
+                font-weight: 600;
+                font-size: 12px;
+                margin-bottom: 5px;
+                display: block;
+            }
+
+            .suite-room {
+                text-align: left;
+                font-size: 12px; 
+                font-weight: 400;
+                width: 100%;
+                .box-shadow(0 1px 0 rgba(0,0,0,0.05));
+                &:last-child { 
+                    .box-shadow(none);
+                }
+                &:not(:first-child){
+                    margin-top: 1px;
+                }
+
+                .icon-suite-white {
+                    display: inline-block;
+                    vertical-align: middle;
+                }
             }
         }
     }
