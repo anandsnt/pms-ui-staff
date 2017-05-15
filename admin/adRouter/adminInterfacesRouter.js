@@ -398,8 +398,8 @@ angular.module('adminInterfacesRouter', []).config(function($stateProvider) {
       url: '/directinterface'
     });
 
-    $stateProvider.state('admin.keyprSetup', {
-        templateUrl: '/assets/partials/interfaces/Keypr/adKeyprSetup.html',
+    $stateProvider.state('admin.keypr', {
+        templateUrl: '/assets/partials/interfaces/MobileKeys/Keypr/adKeyprSetup.html',
         controller: 'adKeyprSetupCtrl',
         url: '/keypr/setup',
         resolve: {
