@@ -44,6 +44,14 @@ sntRover.controller('roverController', [
       $translate.use('EN');
     }
 
+    // CICO-39623 : Setting up app theme.
+    if( !!hotelDetails.selected_theme && hotelDetails.selected_theme.value !== 'ORANGE' ) {
+      // hotelDetails.selected_theme.value = 'TABASCO';
+      var appTheme = 'theme-' + (hotelDetails.selected_theme.value).toLowerCase();
+      
+      document.getElementsByTagName("html")[0].setAttribute( 'class', appTheme );
+    }
+
     /*
      * To close drawer on click inside pages
      */

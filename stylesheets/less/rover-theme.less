@@ -1,0 +1,68 @@
+/* StayNTouch | Rover Themes */
+
+.applyTheme(@themeColor) {
+	background: url("../cssimg/texture-dark.png"), linear-gradient(to bottom, lighten(@themeColor, 5) 0%,darken(@themeColor, 5) 100%);
+	background-color: mix(lighten(@themeColor, 5), darken(@themeColor, 5), 60%);
+	background-repeat: repeat;
+	padding-top: 5px;
+
+	#global-header h1 .hotel,
+	.nav-bar h1 .hotel {
+		color: @themeColor;
+	}
+}
+
+/* THEME COLORS - V3 (high S, low B) ***/
+@themeTabasco: 			hsl(9, 80%, 41%);
+@themeMeteor:			hsl(35, 80%, 41%);
+@themeSahara: 			hsl(51, 80%, 41%);
+@themeLeaf: 			hsl(94, 80%, 35%);
+@themeJava:				hsl(166, 80%, 41%);
+@themeChill: 			hsl(196, 80%, 41%);
+@themeDenim: 			hsl(219, 80%, 41%);
+@themeIndigo: 			hsl(260, 80%, 41%);
+@themeSeance: 			hsl(289, 80%, 35%);
+@themeCerise: 			hsl(320, 80%, 41%);
+
+html {
+
+	&.theme-tabasco {
+		.applyTheme(@themeTabasco);
+	}
+
+	&.theme-meteor {
+		.applyTheme(@themeMeteor);
+	}
+
+	&.theme-sahara {
+		.applyTheme(@themeSahara);
+	}
+
+	&.theme-leaf {
+		.applyTheme(@themeLeaf);
+	}
+
+	&.theme-java {
+		.applyTheme(@themeJava);
+	}
+
+	&.theme-chill {
+		.applyTheme(@themeChill);
+	}
+
+	&.theme-denim {
+		.applyTheme(@themeDenim);
+	}
+
+	&.theme-indigo {
+		.applyTheme(@themeIndigo);
+	}
+
+	&.theme-seance {
+		.applyTheme(@themeSeance);
+	}
+
+	&.theme-cerise {
+		.applyTheme(@themeCerise);
+	}
+}

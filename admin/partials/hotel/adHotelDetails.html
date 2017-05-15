@@ -34,6 +34,20 @@
 
 			<ad-textbox value="data.alternate_name" name = "alternate-hotel-name" id = "alternate-hotel-name" label = "Alternate Name" placeholder = "Enter alternate name" required = "no" ></ad-textbox>
 
+			<div class="color-preview">
+				<div class="color-picker" ng-hide="isToggleThemePreviewControl">
+					<ul class="colors">
+						<li ng-repeat="theme in data.theme_list">
+							<input ng-click="themeSelected(theme)" type="radio" name="colorscheme" value="{{theme.value}}" ng-checked="theme.is_selected"/> 
+							<label class="color {{(theme.value).toLowerCase()}}" for="{{theme.value}}">
+								<span ng-show="theme.is_selected" class="icons icon-revert"></span>
+							</label>
+						</li>
+					</ul>
+				</div>
+				<div ng-click="toggleThemePreviewControl()" class="color {{(selectedTheme.value).toLowerCase()}}"></div>
+			</div>
+
 		</fieldset>
 		<fieldset class="holder full-width" >
 			<div class="form-title">

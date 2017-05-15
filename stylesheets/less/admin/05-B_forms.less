@@ -181,6 +181,179 @@
                 &:last-child { margin-right: 0; }
             }
 
+            .color-preview { 
+                vertical-align: middle;
+                background: @grey1;
+                display: inline-block;
+                .square(40px);
+                .box-shadow(inset 1px 1px 1px rgba(0,0,0,.15));
+                #border-radius > .rounded();
+                margin-right: 10px;
+                padding: 5px;
+                cursor: pointer;
+                position: relative;
+
+                .color-picker {
+                    position: absolute;
+                    bottom: 50px;
+                    left: -65px;
+
+                    
+                    
+                    .colors {
+                        position: relative;
+                        padding: 10px 10px 0 10px;
+                        background: @white;
+                        .box-shadow(1px 1px 1px 1px rgba(0,0,0,.15));
+                        .float;
+                        width: 170px;
+                        margin: 0;
+
+                        li {
+                            .square(30px);
+                            float: left;
+                            margin-right: 10px;
+                            margin-bottom: 10px;
+                            position: relative;
+
+                            &:nth-child(4n) {
+                                margin-right: 0;
+                            }
+                            &:nth-child(4n+1) {
+                                clear: both;
+                            }
+
+                             input {
+                                position: absolute;
+                                .square(100%);
+                                opacity: 0;
+                                top:0;
+                                left: 0;
+                                min-height: 100%;
+                                cursor: pointer;
+                            }
+
+                            .icon-revert {
+                                .show();
+                                height: 30px;
+                                background-position: 6px -1433px;
+                                background-size: 40px;
+                            }
+
+                            // Checked Color has inner and outer shadow
+                            input:checked + .color {
+                                .icon-revert {
+                                    .hide();
+                                }
+
+                                .box-shadow(inset 0px 0px 5px rgba(0,0,0,.5), 0px 0px 5px @orange;);
+
+                                &.tabasco {
+                                    .box-shadow(inset 0px 0px 5px rgba(0,0,0,.5), 0px 0px 5px @themeTabasco;);
+                                }
+
+                                &.meteor {
+                                    .box-shadow(inset 0px 0px 5px rgba(0,0,0,.5), 0px 0px 5px  @themeMeteor;);
+                                }
+
+                                &.sahara {
+                                    .box-shadow(inset 0px 0px 5px rgba(0,0,0,.5), 0px 0px 5px @themeSahara;);
+                                }
+
+                                &.leaf {
+                                    .box-shadow(inset 0px 0px 5px rgba(0,0,0,.5), 0px 0px 5px @themeLeaf;);
+                                }
+
+                                &.java {
+                                    .box-shadow(inset 0px 0px 5px rgba(0,0,0,.5), 0px 0px 5px @themeLeaf;);
+                                }
+
+                                &.chill {
+                                    .box-shadow(inset 0px 0px 5px rgba(0,0,0,.5), 0px 0px 5px @themeChill;);
+                                }
+
+                                &.denim {
+                                    .box-shadow(inset 0px 0px 5px rgba(0,0,0,.5), 0px 0px 5px @themeDenim;);
+                                }
+
+                                &.indigo {
+                                    .box-shadow(inset 0px 0px 5px rgba(0,0,0,.5), 0px 0px 5px @themeIndigo;);
+                                }
+
+                                &.seance {
+                                    .box-shadow(inset 0px 0px 5px rgba(0,0,0,.5), 0px 0px 5px @themeSeance;);
+                                }
+
+                                &.cerise {
+                                    .box-shadow(inset 0px 0px 5px rgba(0,0,0,.5), 0px 0px 5px @themeCerise;);
+                                }
+                            }
+                        }
+
+                    }
+
+                    &:after {
+                        content: '';
+                        position: absolute;
+                        .square(15px);
+                        bottom: -7px;
+                        left: 0;
+                        margin: auto;
+                        right: 0;
+                        background: @white;
+                        transform: rotateZ(45deg);
+                        .box-shadow(1px 1px 1px rgba(0,0,0,.15));
+                    } 
+                }
+
+                .color {
+                    .square(100%);
+                    display: block;
+                    background: @orange;
+                    position: relative;
+
+                    &.tabasco {
+                        background: @themeTabasco;
+                    }
+
+                    &.meteor {
+                        background: @themeMeteor;
+                    }
+
+                    &.sahara {
+                        background: @themeSahara;
+                    }
+
+                    &.leaf {
+                        background: @themeLeaf;
+                    }
+
+                    &.java {
+                        background: @themeJava;
+                    }
+
+                    &.chill {
+                        background: @themeChill;
+                    }
+
+                    &.denim {
+                        background: @themeDenim;
+                    }
+
+                    &.indigo {
+                        background: @themeIndigo;
+                    }
+
+                    &.seance {
+                        background: @themeSeance;
+                    }
+
+                    &.cerise {
+                        background: @themeCerise;
+                    }
+                }
+            }
+
             .entry-list {
                 margin-bottom: 20px;
 
