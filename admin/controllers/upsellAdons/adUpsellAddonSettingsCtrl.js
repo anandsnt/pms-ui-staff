@@ -7,13 +7,12 @@ admin.controller('adUpsellAddonSettingsCtrl', function($scope, ADUpsellAddonSrv,
 		selectedLanguageTranslationLanguageId = '';
 
 	$scope.onLanguageChange = function() {
-		if ($scope.selectedLanguage.code === 'en') {
-			return;
-		} else {
+		if ($scope.selectedLanguage.code !== 'en') {
 			// if language is not english
 			var selectedLanguage = _.find($scope.availableLanguagesSet.locales, function(language) {
 				return language.value === $scope.selectedLanguage.code;
 			});
+
 			$scope.selectedLanguageTranslations = _.find($scope.data.translations, function(translation) {
 				return translation.language_id === selectedLanguage.id;
 			});
@@ -28,6 +27,8 @@ admin.controller('adUpsellAddonSettingsCtrl', function($scope, ADUpsellAddonSrv,
 				$scope.translated_amount_types = angular.copy(blankAmountTypes);
 				$scope.translated_post_types = angular.copy(blankPostTypes);
 			}
+		} else {
+			return;
 		}
 	};
 
