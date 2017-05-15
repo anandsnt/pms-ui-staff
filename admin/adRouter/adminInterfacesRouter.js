@@ -43,24 +43,24 @@ angular.module('adminInterfacesRouter', []).config(function($stateProvider) {
     });
 
     $stateProvider.state('admin.goMomentIvySetup', {
-        templateUrl: '/assets/partials/interfaces/GoMomentIvy/goMomentIvySetup.html',
+        templateUrl: '/assets/partials/interfaces/TextMessagingSystems/adTextMessagingSystemsSetup.html',
         controller: 'adGoMomentIvySetupCtrl',
         url: '/gomomentivy/setup',
         resolve: {
-            goMomentIvySetupValues: ['adGoMomentIvySetupSrv', function(adGoMomentIvySetupSrv) {
-                return adGoMomentIvySetupSrv.fetchGoMomentIvyConfiguration();
+            goMomentIvySetupValues: ['adInterfacesCommonConfigSrv', function(adInterfacesCommonConfigSrv) {
+                return adInterfacesCommonConfigSrv.fetchConfiguration('gomomentivy');
             }]
         }
     });
 
 
     $stateProvider.state('admin.checkmate', {
-        templateUrl: '/assets/partials/interfaces/Checkmate/checkmateSetup.html',
+        templateUrl: '/assets/partials/interfaces/TextMessagingSystems/adTextMessagingSystemsSetup.html',
         controller: 'adCheckmateSetupCtrl',
         url: '/checkmate/setup',
         resolve: {
-            checkmateSetupValues: ['adCheckmateSetupSrv', function(adCheckmateSetupSrv) {
-                return adCheckmateSetupSrv.fetchCheckmateConfiguration();
+            checkmateSetupValues: ['adInterfacesCommonConfigSrv', function(adInterfacesCommonConfigSrv) {
+                return adInterfacesCommonConfigSrv.fetchConfiguration('checkmate');
             }]
         }
     });
