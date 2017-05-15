@@ -1,4 +1,4 @@
-admin.controller('ADZestStationCtrl', ['$scope', '$rootScope', '$state', '$stateParams', 'ADZestStationSrv', '$filter', 'ngDialog', '$timeout', '$log', function($scope, $state, $rootScope, $stateParams, ADZestStationSrv, $filter, ngDialog, $timeout, $log) {
+admin.controller('ADZestStationCtrl', ['$scope', '$rootScope', '$state', '$stateParams', 'ADZestStationSrv', '$filter', 'ngDialog', '$timeout', '$log', 'sntAuthorizationSrv', function($scope, $state, $rootScope, $stateParams, ADZestStationSrv, $filter, ngDialog, $timeout, $log, sntAuthorizationSrv) {
     BaseCtrl.call(this, $scope);
     $scope.$emit('changedSelectedMenu', 10);
 
@@ -289,21 +289,31 @@ admin.controller('ADZestStationCtrl', ['$scope', '$rootScope', '$state', '$state
             $log.log('fetching language json file for editing');
 
             $scope.showLoader();
+        
+            // the ajax requests must contain the hotel UUID , for normal ajax calls we are using
+            // sharedHttpInterceptor.
+            $.ajax({
+                beforeSend: function(request) {
+                    request.setRequestHeader("Hotel-UUID", sntAuthorizationSrv.getProperty());
+                },
+                dataType: "json",
+                url: jsonRefUrl,
+                success: function(json) {
+                    var loaderScope = angular.element('#loading-spinner').scope();
 
-            $.getJSON(jsonRefUrl, function(json) {
-                var loaderScope = angular.element('#loading-spinner').scope();
+                    loaderScope.hasLoader = false;
+                    $log.log(json); // show the info in console
 
-                loaderScope.hasLoader = false;
-                $log.log(json); // show the info in console
+                    // reference to downloaded data in case user wants to continue editing after closing window
+                    languagesEditedInSession[lang] = {
+                        'json': json
+                    };
 
-                // reference to downloaded data in case user wants to continue editing after closing window
-                languagesEditedInSession[lang] = {
-                    'json': json
-                };
-
-                loaderScope.$digest();
-                openEditor(json);
+                    loaderScope.$digest();
+                    openEditor(json);
+                }
             });
+
         }
 
 
