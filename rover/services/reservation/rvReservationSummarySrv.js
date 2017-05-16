@@ -374,5 +374,17 @@ angular.module('sntRover').service('RVReservationSummarySrv', ['$q', 'rvBaseWebS
             });
             return deferred.promise;
         };
+
+        this.checkUpsellAvailability = function(reservationId) {
+            var deferred = $q.defer(),
+                url = '/api/reservations/' + reservationId + '/upsell_availability';
+
+            rvBaseWebSrvV2.getJSON(url).then(function(data) {
+                deferred.resolve(data.is_upsell_available);
+            }, function(data) {
+                deferred.reject(data);
+            });
+            return deferred.promise;
+        }
     }
 ]);
