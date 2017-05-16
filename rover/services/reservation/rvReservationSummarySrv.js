@@ -385,6 +385,6 @@ angular.module('sntRover').service('RVReservationSummarySrv', ['$q', 'rvBaseWebS
                 deferred.reject(data);
             });
             return deferred.promise;
-        }
+        };
     }
 ]);

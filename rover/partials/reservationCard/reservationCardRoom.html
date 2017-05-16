@@ -27,11 +27,11 @@
      <span class="icons icon-room-lock" ng-show="reservationData.reservation_card.cannot_move_room"></span>
 	</a>
 
-	<div class="actions" >
+	<div class="actions">
 		<a id="upgrade-btn" ng-click="goToRoomUpgrades()"
 		   class="button with-icon grey"
-		   ng-class="{'brand-colors' : showUpgradeButton()}">
-    		<span class="icons {{showUpgradeButton() ? 'icon-upgrade' : 'icon-blocked'}}"
+		   ng-class="{'brand-colors' : shouldEnableUpgradeButton()}">
+    		<span class="icons {{shouldEnableUpgradeButton() ? 'icon-upgrade' : 'icon-blocked'}}"
 				  ng-if="isUpsellAvailabilityKnown"></span>
     		Upgrade
   		</a>

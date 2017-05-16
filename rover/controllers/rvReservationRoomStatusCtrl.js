@@ -76,11 +76,10 @@ angular.module('sntRover').controller('reservationRoomStatus',
 		return reservationRoomStatusClass;
 	};
 
-	$scope.showUpgradeButton = function(reservationStatus,  isUpsellAvailable) {
-		var showUpgrade = false;
-
-        reservationStatus = reservationStatus || $scope.reservationData.reservation_card.reservation_status;
-        isUpsellAvailable = isUpsellAvailable || $scope.reservationData.reservation_card.is_upsell_available;
+	$scope.shouldEnableUpgradeButton = function() {
+		var showUpgrade = false,
+            reservationStatus = $scope.reservationData.reservation_card.reservation_status,
+            isUpsellAvailable = $scope.reservationData.reservation_card.is_upsell_available;
 
 		if ($scope.hasAnySharerCheckedin() || $scope.reservationData.reservation_card.is_suite || $rootScope.isHourlyRateOn) {
 			return false;
@@ -116,6 +115,7 @@ angular.module('sntRover').controller('reservationRoomStatus',
         };
 
         $scope.addHasButtonClass = function(reservationStatus) {
+            // CICO-22356 Since the upgrade button is to be shown always, the default class would be has-button.
             if ($scope.showKeysButton(reservationStatus)) {
                 return "has-buttons";
             }
@@ -226,7 +226,7 @@ angular.module('sntRover').controller('reservationRoomStatus',
 	};
 
         $scope.goToRoomUpgrades = function() {
-            if ($scope.showUpgradeButton()) {
+            if ($scope.shouldEnableUpgradeButton()) {
                 var cannotMoveState = $scope.reservationData.reservation_card.cannot_move_room &&
                     $scope.reservationData.reservation_card.room_number !== '';
 
