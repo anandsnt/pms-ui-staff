@@ -458,6 +458,18 @@ sntZestStation.service('zsCheckinSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
             return deferred.promise;
         };
 
+        this.fetchRoomUpsellAvailability = function(param) {
+            var deferred = $q.defer();
+            var url = '/api/reservations/' + param.id + '/upsell_availability';
+
+            zsBaseWebSrv.getJSON(url).then(function(data) {
+                deferred.resolve(data);
+            }, function(data) {
+                deferred.reject(data);
+            });
+            return deferred.promise;
+        };
+
 
     }
 ]);
