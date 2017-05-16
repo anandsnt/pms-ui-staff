@@ -1,4 +1,4 @@
-<div id="{{fetchGroupAllotmentCardId('HEAD')}}" class="card-header" ng-class="UICardClass('group-card')" ng-controller="RVGroupCardCtrl" ng-show="isStandAlone" outside-click-handler>
+<div id="{{fetchGroupAllotmentCardId('HEAD')}}" class="card-header" ng-class="UICardClass('group-card')" ng-controller="RVGroupCardCtrl" ng-if="::isStandAlone" outside-click-handler>
 <!-- NOTE: Allotments and Groups are mutually exclusive in a reservation. Both can NOT be associated with a reservation at the same time -->
     <!-- This section is to be used in case a group card is selected -->
     <!-- SELECTED GROUP HEADER -->
