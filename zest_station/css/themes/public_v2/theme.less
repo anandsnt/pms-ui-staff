@@ -69,7 +69,7 @@
 		    border-radius: 0em !important;
 		}
 	}
-	.room-upsell-content {
+	.room-upsell-content,.addon-screen>#content {
     	padding-top: 0;
     	height: 90% !important;
 	}
@@ -374,26 +374,11 @@
 
 #icon-date {
     position: absolute;
-    margin-left: -6%;
-    margin-top: .5%;
-    height: 49.5%;
-    top: 44%;
+    margin-left: -7%;
 
-    @media only screen and (min-width: 1024px) and (max-width: 1024px) { 
-		position: absolute;
-	    margin-left: -6.8%;
-	    margin-top: 1%;
-	    height: 49.5%;
-	    top: 44%;
-    }
-    
-    @media only screen and (min-width: 1366px) and (max-width: 1366px) { 
-        position: absolute;
-	    margin-left: -5%;
-	    margin-top: 1%;
-	    height: 48.5%;
-	    top: 40%;
-    }
+    margin-top: 1%;
+	height: 52%;
+	top: 43%;
 }
 
 
@@ -458,10 +443,27 @@
 }
 .checkin-key-options{
 	width:100% !important;
+	margin-top:5% !important;
 	>#content{
 	    max-width: 100% !important;
 	}
 }
 .checkmark-fill {
     fill: @white;
+}
+.close-icon-svg{
+	height: 200%;
+	position: absolute; 
+	left: -35%;
+	top: -20%;
+}
+.back-icon-svg{
+	fill: white;
+	height: 200%;
+	position: absolute;
+	top: -20%;
+	left: -40%;
+}
+.third-party-content{
+	margin-top: 15% !important;
 }

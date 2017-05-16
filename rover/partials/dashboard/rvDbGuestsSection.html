@@ -9,19 +9,19 @@
                 <strong>{{ ::statisticsData.guests.checking_in }}</strong> Arrivals
             </a>
         </li>
-        <li ng-if="statisticsData.guests.is_pre_checkin_only =='true' && statisticsData.guests.checkin_action !== 'auto_checkin'">
+        <li ng-if="::(statisticsData.guests.is_pre_checkin_only =='true' && statisticsData.guests.checkin_action !== 'auto_checkin')">
             <a ng-click="clickedOnGuestsToday($event, 'PRE_CHECKIN', statisticsData.guests.pre_check_in)" class="button orange">
                 <strong>{{ ::statisticsData.guests.pre_check_in }}</strong>
                 <span>Pre Check In</span>
             </a>
         </li>
-        <li ng-if="statisticsData.guests.is_pre_checkin_only =='true' && statisticsData.guests.checkin_action === 'auto_checkin'">
+        <li ng-if="::(statisticsData.guests.is_pre_checkin_only =='true' && statisticsData.guests.checkin_action === 'auto_checkin')">
             <a ng-click="clickedOnGuestsToday($event, 'PRE_CHECKIN', statisticsData.guests.pre_check_in,'MOBILE_CHECKIN')" class="button orange">
                 <strong>{{ ::statisticsData.guests.pre_check_in }}</strong>
                 <span translate>MOBILE_CHECKIN</span>
             </a>
         </li>
-        <li ng-if="isQueuedRoomsTurnedOn && shouldShowLateCheckout">
+        <li ng-if="::(isQueuedRoomsTurnedOn && shouldShowLateCheckout)">
             <a class="button white red-text" ng-click="clickedOnQueuedRoomsIcon()">
                 <strong>{{ ::statisticsData.guests.queued }}</strong>Queued</a>
         </li>
@@ -35,12 +35,12 @@
                 <strong>{{ ::statisticsData.guests.checking_out }}</strong> Departures
             </a>
         </li>
-        <li ng-if="statisticsData.guests.open_bill_checkout > 0 ">
+        <li ng-if="::(statisticsData.guests.open_bill_checkout > 0 )">
             <a class="button red" ng-click="clickedOnGuestsToday($event, 'OPEN_BILL_CHECKOUT', statisticsData.guests.open_bill_checkout)">
                 <strong>{{ ::statisticsData.guests.open_bill_checkout }}</strong> Checked Out<span>(with balance)</span>
             </a>
         </li>
-        <li ng-if="isLateCheckoutTurnedOn && shouldShowLateCheckout">
+        <li ng-if="::(isLateCheckoutTurnedOn && shouldShowLateCheckout)">
             <a class="button red" ng-click="clickedOnHeaderLateCheckoutIcon($event)">
                 <strong>{{ ::statisticsData.guests.late_checkout }}</strong> Late check out
             </a>
