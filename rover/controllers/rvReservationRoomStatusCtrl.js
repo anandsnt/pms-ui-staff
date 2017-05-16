@@ -76,8 +76,10 @@ angular.module('sntRover').controller('reservationRoomStatus',
 		return reservationRoomStatusClass;
 	};
 
-	$scope.showUpgradeButton = function(reservationStatus,  isUpsellAvailable) {
-		var showUpgrade = false;
+	$scope.shouldEnableUpgradeButton = function() {
+		var showUpgrade = false,
+            reservationStatus = $scope.reservationData.reservation_card.reservation_status,
+            isUpsellAvailable = $scope.reservationData.reservation_card.is_upsell_available;
 
 		if ($scope.hasAnySharerCheckedin() || $scope.reservationData.reservation_card.is_suite || $rootScope.isHourlyRateOn) {
 			return false;
@@ -87,6 +89,7 @@ angular.module('sntRover').controller('reservationRoomStatus',
 		}
 		return showUpgrade;
 	};
+
 	$scope.isFutureReservation = function(reservationStatus) {
 		return (reservationStatus === 'RESERVED' || reservationStatus === 'CHECKING_IN');
 	};
@@ -110,17 +113,15 @@ angular.module('sntRover').controller('reservationRoomStatus',
         $scope.hasPermissionToCreateKeys = function() {
                 return rvPermissionSrv.getPermissionValue('CREATE_KEY');
         };
-	$scope.addHasButtonClass = function(reservationStatus,  isUpsellAvailable) {
-		var hasButton = "";
 
-		if ($scope.showKeysButton(reservationStatus) && $scope.showUpgradeButton(reservationStatus,  isUpsellAvailable)) {
-			hasButton = "has-buttons";
-		}
-		else if ($scope.showKeysButton(reservationStatus) || $scope.showUpgradeButton(reservationStatus,  isUpsellAvailable)) {
-			hasButton = "has-button";
-		}
-		return hasButton;
-	};
+        $scope.addHasButtonClass = function(reservationStatus) {
+            // CICO-22356 Since the upgrade button is to be shown always, the default class would be has-button.
+            if ($scope.showKeysButton(reservationStatus)) {
+                return "has-buttons";
+            }
+
+            return "has-button";
+        };
 
         $scope.$on('clickedIconKeyFromQueue', function() {
             $scope.clickedIconKey();// one less thing for user to do
@@ -224,11 +225,20 @@ angular.module('sntRover').controller('reservationRoomStatus',
 		$scope.$emit('hideLoader');
 	};
 
-	$scope.goToRoomUpgrades = function() {
-        var cannotMoveState   =  $scope.reservationData.reservation_card.cannot_move_room && $scope.reservationData.reservation_card.room_number !== "";
+        $scope.goToRoomUpgrades = function() {
+            if ($scope.shouldEnableUpgradeButton()) {
+                var cannotMoveState = $scope.reservationData.reservation_card.cannot_move_room &&
+                    $scope.reservationData.reservation_card.room_number !== '';
 
-		$state.go("rover.reservation.staycard.upgrades", {reservation_id: $scope.reservationData.reservation_card.reservation_id, "clickedButton": "upgradeButton", "cannot_move_room": cannotMoveState});
-	};
+                $state.go('rover.reservation.staycard.upgrades', {
+                    reservation_id: $scope.reservationData.reservation_card.reservation_id,
+                    clickedButton: "upgradeButton",
+                    cannot_move_room: cannotMoveState
+                });
+            } else {
+                return false;
+            }
+        };
 
 	/**
 	 * utility method used to redirect to diary in edit mode
@@ -343,6 +353,21 @@ angular.module('sntRover').controller('reservationRoomStatus',
         $scope.reservationData.viaSharerName = fullname;
         $rootScope.viaSharerPopup = true;
     });
+
+        /**
+         * initiation
+         * @returns {undefined}
+         */
+        (function() {
+            $scope.callAPI(RVReservationSummarySrv.checkUpsellAvailability, {
+                loader: 'NONE',
+                params: $scope.reservationData.reservation_card.reservation_id,
+                successCallBack: function(isUpsellAvailable) {
+                    $scope.isUpsellAvailabilityKnown = true;
+                    $scope.reservationData.reservation_card.is_upsell_available = isUpsellAvailable;
+                }
+            });
+        })();
 
 
 }]);
