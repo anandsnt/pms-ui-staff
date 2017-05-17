@@ -750,19 +750,22 @@ sntRover.controller('roverController', [
      * Handles the OWS error - Shows a popup having OWS connection test option
      */
     $rootScope.showOWSError = function() {
-
-      // Hide loading message
-      $scope.$emit('hideLoader');
-      if (!$rootScope.isOWSErrorShowing) {
-        $rootScope.isOWSErrorShowing = true;
-        ngDialog.open({
-          template: '/assets/partials/housekeeping/rvHkOWSError.html',
-          className: 'ngdialog-theme-default1 modal-theme1',
-          controller: 'RVHKOWSErrorCtrl',
-          closeByDocument: false,
-          scope: $scope
-        });
-      }
+        // Hide loading message
+        $scope.$emit('hideLoader');
+        if (!$rootScope.isOWSErrorShowing) {
+            // close existing popups
+            ngDialog.closeAll();
+            $timeout(function() {
+                $rootScope.isOWSErrorShowing = true;
+                ngDialog.open({
+                    template: '/assets/partials/housekeeping/rvHkOWSError.html',
+                    className: 'ngdialog-theme-default1 modal-theme1',
+                    controller: 'RVOWSErrorCtrl',
+                    closeByDocument: false,
+                    scope: $scope
+                });
+            }, 700);
+        }
     };
 
   // CICO-13582 Display a timeout error message, without try again button.
