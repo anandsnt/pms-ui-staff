@@ -375,6 +375,13 @@ sntRover.controller('RVReservationConfirmCtrl', [
 				justCreatedRes: true
 			};
 
+			// CICO-40207 Before navigating to the staycard make sure only one reservation's details are persisted in scope
+			// Data pertaining to other reservations can be removed!
+			// Stay card operates in the perspective of only one reservation at a time.
+            $scope.reservationData.reservationIds.splice(1);
+            $scope.reservationData.rooms.splice(1);
+
+
 			$scope.otherData.reservationCreated = true;
 			$scope.reservationData.rateDetails = [];
 			$state.go('rover.reservation.staycard.reservationcard.reservationdetails', stateParams);

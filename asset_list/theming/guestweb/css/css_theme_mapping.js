@@ -106,7 +106,8 @@ module.exports = {
             'guestweb_historic_taos_inn': [ themeCSSRoot + 'guestweb_historic_taos_inn.css'],
             'guestweb_public_ny_v2': [ themeCSSRoot + 'guestweb_public_ny_v2.css'],
             'guestweb_mgm_grand_detroit': [ themeCSSRoot + 'guestweb_mgm_grand_detroit.css'],
-            'guestweb_hotel_hiho': [ themeCSSRoot + 'guestweb_hotel_hiho.css']
+            'guestweb_hotel_hiho': [ themeCSSRoot + 'guestweb_hotel_hiho.css'],
+            'guestweb_circle_fairfield': [ themeCSSRoot + 'guestweb_circle_fairfield.css']
         };     
     }
 };
