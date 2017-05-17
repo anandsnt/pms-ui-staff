@@ -418,13 +418,29 @@ angular.module('adminInterfacesRouter', []).config(function($stateProvider) {
         }
     });
 
+	$stateProvider.state('admin.guestrevSetup', {
+        templateUrl: '/assets/partials/interfaces/Guestrev/adGuestrevSetup.html',
+        controller: 'adCRSCommonCtrl',
+        url: '/interfaces/setup/:id',
+        onEnter: ['$stateParams', function($stateParams) {
+            $stateParams.id = 'guestrev';
+        }],
+        resolve: {
+            config: ['adInterfacesCommonConfigSrv', function(adInterfacesCommonConfigSrv) {
+                return adInterfacesCommonConfigSrv.fetchConfiguration('guestrev');
+            }]
+        }
+    });
+
     $stateProvider.state('admin.zDirectSetup', {
         templateUrl: '/assets/partials/ZDirectSetup/adZDirectSetup.html',
-        controller: 'adExternalInterfaceCtrl',
-        // interface_id: 4,
-        interface_id: 'ZDIRECT',
-        simple_name: 'ZDirect',
-        url: '/zDirectSetup'
+        controller: 'adZDirectSetupCtrl',
+        url: '/zdirect/setup',
+        resolve: {
+            config: ['adInterfacesCommonConfigSrv', function(adInterfacesCommonConfigSrv) {
+                return adInterfacesCommonConfigSrv.fetchConfiguration('zdirect');
+            }]
+        }
     });
 
     $stateProvider.state('admin.travelTripperSetup', {

@@ -160,7 +160,9 @@ admin.controller('ADRoomUpsellCtrl', ['$scope', '$rootScope', '$state', 'adRoomU
         var losSet = function(n) {
             var t = 'room_types';
 
-            if (n) {t = 'next_day_room_types';}
+            if (n) {
+                t = 'next_day_room_types';
+            }
             angular.forEach($scope.upsellData[t], function (item, index) {
               if (item.id === value) {
                 item.max_los = '';

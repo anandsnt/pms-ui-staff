@@ -8,6 +8,7 @@ angular.module('sntRover').controller('rvTodoController', ['$scope', function($s
             document.getElementById('todo-starting-point')
         );
     };
+
     render();
 
 

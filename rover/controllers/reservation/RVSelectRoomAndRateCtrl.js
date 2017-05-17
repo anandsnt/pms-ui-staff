@@ -920,6 +920,7 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 			},
 			populateStayDates = function(stayDetails, rateId, roomIndex) {
                 var businessDate = tzIndependentDate($rootScope.businessDate);
+
 				_.each(ROOMS[roomIndex].stayDates, function(details, date) {
                     if(tzIndependentDate(date) >= businessDate) {
     					details.rate.id = rateId;

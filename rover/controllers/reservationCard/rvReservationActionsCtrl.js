@@ -211,7 +211,7 @@ sntRover.controller('reservationActionsController', [
                 res_end = getTwentyFourHourTime(reservationData.departure_date, reservationData.departure_time),
                 isOOORoom = false;
 
-            //CICO-36544
+            // CICO-36544
             if (reservationData.ooo_array) {
                 // loop through all the ooo date and times
                 reservationData.ooo_array.forEach(function(oooTimings) {

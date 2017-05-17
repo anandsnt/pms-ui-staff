@@ -111,7 +111,7 @@ sntZestStation.controller('zsQrPickupKeyCtrl', [
                 if (info.msg.indexOf('Invalid') !== -1) {
                     $scope.at = 'input-qr-code';
                     onQRScanFail();
-                    console.warn('scan failed..');
+                    console.warn('QR Scan failed: invalid. ',info.msg);
                     $scope.runDigestCycle();
                 } else if (info.msg.indexOf(' : ') !== -1) {
 					// qr code coming from the samsotech will look like "PR_DF_BC1 : somevalue"
@@ -139,7 +139,7 @@ sntZestStation.controller('zsQrPickupKeyCtrl', [
 				
             });
             $scope.$on('SOCKET_FAILED', function() {
-                console.info('socket failed...');
+                console.info('socket failed.');
                 onQRScanFail();
             });
         };
@@ -201,7 +201,7 @@ sntZestStation.controller('zsQrPickupKeyCtrl', [
             $scope.setScreenIcon('key');
 
 			// 
-			// we'll start the scanner up initially, and if it times-out, ignore the failure,
+			// we'll start the scanner up initially, and if it times-out, ignore the failure while not in that flow,
 			// 
             $scope.scanQRCode();
 
