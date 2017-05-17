@@ -186,8 +186,7 @@ admin.controller('ADHotelDetailsCtrl', [
 			}
 			data.interface_type_ids = getSelectedInterfaceTypes(data);
 			var themeData = {
-				'value': $scope.selectedTheme.value,
-				'id':  $scope.selectedTheme.id
+				'value': $scope.selectedTheme.value, 'id': $scope.selectedTheme.id
 			};
 			
 			data.selected_theme = themeData;
@@ -224,8 +223,7 @@ admin.controller('ADHotelDetailsCtrl', [
 
 			data.interface_type_ids = getSelectedInterfaceTypes(data);
 			var themeData = {
-				'value': $scope.selectedTheme.value,
-				'id':  $scope.selectedTheme.id
+				'value': $scope.selectedTheme.value, 'id': $scope.selectedTheme.id
 			};
 
 			data.selected_theme = themeData;
@@ -239,7 +237,7 @@ admin.controller('ADHotelDetailsCtrl', [
 				$scope.$emit('hideLoader');
 
 				// CICO-39623 : Setting up app theme.
-	            if( !!$scope.selectedTheme && $scope.selectedTheme.value !== 'ORANGE' ) {
+	            if ( !!$scope.selectedTheme && $scope.selectedTheme.value !== 'ORANGE' ) {
 	              var appTheme = 'theme-' + ($scope.selectedTheme.value).toLowerCase();
 	              
 	              document.getElementsByTagName("html")[0].setAttribute( 'class', appTheme );
