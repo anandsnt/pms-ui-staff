@@ -237,6 +237,14 @@ admin.controller('ADHotelDetailsCtrl', [
 			}
 			var postSuccess = function() {
 				$scope.$emit('hideLoader');
+
+				// CICO-39623 : Setting up app theme.
+	            if( !!$scope.selectedTheme && $scope.selectedTheme.value !== 'ORANGE' ) {
+	              var appTheme = 'theme-' + ($scope.selectedTheme.value).toLowerCase();
+	              
+	              document.getElementsByTagName("html")[0].setAttribute( 'class', appTheme );
+	            }
+
 				$state.go('admin.dashboard', {menu: 0});
 				$scope.$emit('hotelNameChanged', {"new_name": $scope.data.hotel_name});
 				angular.forEach($scope.data.currency_list, function(item, index) {
