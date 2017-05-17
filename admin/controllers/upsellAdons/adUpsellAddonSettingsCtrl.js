@@ -35,6 +35,7 @@ admin.controller('adUpsellAddonSettingsCtrl', function($scope, ADUpsellAddonSrv,
 
 	var returnDataForSaving = function() {
 		var data;
+        
 		if ($scope.selectedLanguage.code === 'en') {
 			data = angular.copy($scope.data);
 			delete data.translations;
