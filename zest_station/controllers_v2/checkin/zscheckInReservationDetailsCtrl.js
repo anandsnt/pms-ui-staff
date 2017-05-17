@@ -73,16 +73,30 @@ sntZestStation.controller('zsCheckInReservationDetailsCtrl', [
 
         };
 
+        var checkIfRoomUpgradeIsPresent = function() {
+            var fetchCompleted = function(data) {
+                $scope.selectedReservation.reservation_details.is_upsell_available = data.is_upsell_available;
+                $scope.isReservationDetailsFetched = true;
+            };
+
+            $scope.callAPI(zsCheckinSrv.fetchRoomUpsellAvailability, {
+                params: {
+                    'id': $scope.selectedReservation.reservation_details.reservation_id
+                },
+                'successCallBack': fetchCompleted
+            });
+        };
+
         var fetchAddons = function() {
             var fetchCompleted = function(data) {
                 $scope.selectedReservation.addons = data.existing_packages;
                 setSelectedReservation();
                 setDisplayContentHeight();
                 refreshScroller();
-                $scope.isReservationDetailsFetched = true;
                 if ($scope.zestStationData.is_kiosk_ows_messages_active && !$scope.zestStationData.is_standalone) {
                     $scope.$broadcast('FETCH_OWS_MESSAGES');
                 }
+                checkIfRoomUpgradeIsPresent();
             };
 
 
