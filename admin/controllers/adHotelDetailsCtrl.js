@@ -186,7 +186,8 @@ admin.controller('ADHotelDetailsCtrl', [
 			}
 			data.interface_type_ids = getSelectedInterfaceTypes(data);
 			var themeData = {
-				'value': $scope.selectedTheme.value, 'id': $scope.selectedTheme.id
+				'value': $scope.selectedTheme.value,
+				'id': $scope.selectedTheme.id
 			};
 			
 			data.selected_theme = themeData;
@@ -222,11 +223,12 @@ admin.controller('ADHotelDetailsCtrl', [
 			var data = dclone($scope.data, unwantedKeys);
 
 			data.interface_type_ids = getSelectedInterfaceTypes(data);
-			var themeData = {
-				'value': $scope.selectedTheme.value, 'id': $scope.selectedTheme.id
+			var themeDataHA = {
+				'value': $scope.selectedTheme.value,
+				'id': $scope.selectedTheme.id
 			};
 
-			data.selected_theme = themeData;
+			data.selected_theme = themeDataHA;
 			if ($scope.hotelLogoPrefetched === data.hotel_logo) {
 				data.hotel_logo = "";
 			}
