@@ -1,49 +1,44 @@
-admin.controller('adGoMomentIvySetupCtrl', ['$scope', 'goMomentIvySetupValues', 'adGoMomentIvySetupSrv',
-  function ($scope, goMomentIvySetupValues, adGoMomentIvySetupSrv) {
-    BaseCtrl.call(this, $scope);
+admin.controller('adGoMomentIvySetupCtrl', ['$scope', 'goMomentIvySetupValues', 'adInterfacesCommonConfigSrv',
+    function($scope, goMomentIvySetupValues, adInterfacesCommonConfigSrv) {
+        BaseCtrl.call(this, $scope);
 
-    /**
-     * when clicked on check box to enable/diable GoMomentIvy
-     * @return {undefiend}
-     */
-    $scope.toggleGoMomentIvyEnabled = function () {
-      $scope.goMomentIvy.enabled = !$scope.goMomentIvy.enabled;
-    };
+        $scope.interfaceIdentifier = 'GOMOMENTIVY';
 
-    /**
-     * when the save is success
-     */
-    var successCallBackOfSaveGoMomentIvySetup = function (data) {
-      $scope.goBackToPreviousState();
-    };
+        /**
+         * when clicked on check box to enable/diable GoMomentIvy
+         * @return {undefined}
+         */
+        $scope.toggleEnabled = function() {
+            $scope.config.enabled = !$scope.config.enabled;
+        };
 
-    /**
-     * when we clicked on save button
-     * @return {undefiend}
-     */
-    $scope.saveGoMomentIvySetup = function () {
-      var params = {
-        enabled: $scope.goMomentIvy.enabled,
-        url: $scope.goMomentIvy.url,
-        access_token: $scope.goMomentIvy.access_token
-      };
-      var options = {
-        params: params,
-        successCallBack: successCallBackOfSaveGoMomentIvySetup
-      };
+        /**
+         * when the save is success
+         * @return {undefined}
+         */
+        var successCallBackOfSave = function() {
+            $scope.goBackToPreviousState();
+        };
 
-      $scope.callAPI(adGoMomentIvySetupSrv.saveGoMomentIvyConfiguration, options);
-    };
+        /**
+         * when we clicked on save button
+         * @return {undefined}
+         */
+        $scope.saveSetup = function() {
+            $scope.callAPI(adInterfacesCommonConfigSrv.saveConfiguration, {
+                params: {
+                    config: $scope.config,
+                    interfaceIdentifier: $scope.interfaceIdentifier
+                },
+                successCallBack: successCallBackOfSave
+            });
+        };
 
-    /**
-     * Initialization stuffs
-     * @return {undefiend}
-     */
-    var initializeMe = (function () {
-      $scope.goMomentIvy = {
-        enabled: goMomentIvySetupValues.enabled,
-        url: goMomentIvySetupValues.url,
-        access_token: goMomentIvySetupValues.access_token
-      };
-    }());
-  }]);
+        /**
+         * Initialization stuffs
+         * @return {undefined}
+         */
+        (function() {
+            $scope.config = goMomentIvySetupValues;
+        })();
+    }]);
