@@ -111,6 +111,29 @@ sntZestStation.controller('zsRootCtrl', [
             return false;
         };
 
+        var setupLanguageTranslations = function() {
+            if (hotelLanguages.languages.length > 0){
+                var codeForLang, locales = zsGeneralSrv.refToLatestPulledTranslations;
+                $scope.tagInEdit = {
+                    language:{}// each lang will have a boundTags array for its html
+                };
+
+                for (var i in hotelLanguages.languages){
+                    codeForLang = hotelLanguages.languages[i].code;
+                    if (locales[codeForLang]){
+                        $scope.tagInEdit.language[codeForLang] = locales[codeForLang];
+                    }
+                }
+            }
+        }
+
+
+        $scope.getTagValue = function(tag){
+            var currentLanguageCode = $scope.currentLanguageCode;
+            var tagValue = $scope.tagInEdit.language[currentLanguageCode][tag];
+            return $scope.tagInEdit.language[currentLanguageCode][tag];
+        }
+
 		/**
 		 * [navToPrev and close button description]
 		 * @return {[type]} [description]
@@ -1664,6 +1687,9 @@ sntZestStation.controller('zsRootCtrl', [
 			// call Zest station settings API
             $scope.zestStationData = zestStationSettings;
             $scope.zestStationData.hotelLanguages = hotelLanguages.languages;
+            if (hotelLanguages){
+               setupLanguageTranslations();
+            }
             $rootScope.isStandAlone = zestStationSettings.is_standalone;
             $scope.zestStationData.check_in_collect_passport = false;// TODO: link with admin setting
             $scope.zestStationData.showTemplateList = false; // Only for ipad in dev environment, switch themes fast like in chrome (dashboard view)

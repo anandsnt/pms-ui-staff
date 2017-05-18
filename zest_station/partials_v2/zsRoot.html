@@ -1,7 +1,8 @@
 <script>
     var url = document.location,
       inDevEnvironment = false,
-      analyticTrackingID;
+      analyticTrackingID,
+      inLocalEnv = false;
 
     if (url.hostname) { // if btn === true, then the user is clicking continue to bypass cc screen in dev environment
       if (typeof url.hostname === typeof 'str') {
