@@ -12,12 +12,11 @@ admin.controller('ADGuestIDSetup', ['$scope', '$state', 'ADGuestIDSetupSrv', '$r
 	*/
 	var fetchCompletedOfSettingsDetails = function(data) {
 		$scope.$emit('hideLoader');
-		$scope.data = data;
-
+		$scope.data = data.guest_id_scan;
 	};
 
 	// fetching the settings details
-//	$scope.invokeApi(ADGuestIDSetupSrv.fetchGuestIDSetupDetails, {}, fetchCompletedOfSettingsDetails);
+	$scope.invokeApi(ADGuestIDSetupSrv.fetchGuestIDSetupDetails, {}, fetchCompletedOfSettingsDetails);
 
 	/*
 	* success call back of details web service call
@@ -28,9 +27,12 @@ admin.controller('ADGuestIDSetup', ['$scope', '$state', 'ADGuestIDSetupSrv', '$r
 	};
 
 	$scope.save = function() {
-		var postingData = {};
-
-		postingData.scan_guest_id_active = $scope.data.scan_guest_id_active;
+		var postingData = {
+			'guest_id_scan':{
+				'scan_guest_id_active':$scope.data.scan_guest_id_active
+			}
+		};
+		postingData.guest_id_scan.scan_guest_id_active = $scope.data.scan_guest_id_active;
 
 		// calling the save api
 		$scope.invokeApi(ADGuestIDSetupSrv.saveGuestIDSetup, postingData, successCallbackOfSaveDetails);

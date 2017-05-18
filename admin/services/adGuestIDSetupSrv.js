@@ -1,4 +1,4 @@
-admin.service('ADGuestIDSetupSrv', ['$q', 'ADBaseWebSrv', function($q, ADBaseWebSrv) {
+admin.service('ADGuestIDSetupSrv', ['$http', '$q', 'ADBaseWebSrvV2', function($http, $q, ADBaseWebSrvV2) {
 
    /*
 	* service class for Guest id setup
@@ -8,32 +8,33 @@ admin.service('ADGuestIDSetupSrv', ['$q', 'ADBaseWebSrv', function($q, ADBaseWeb
     * getter method to get Guest id setup details
     * @return {object} Guest id setup details
     */
-	this.fetchGuestIDSetupDetails = function() {
-		var deferred = $q.defer();
-		var url = '/admin/.json';//TODO REPLACE
+    this.fetchGuestIDSetupDetails = function() {
+        var deferred = $q.defer();
+        var url = '/api/hotel_settings.json';
 
-		ADBaseWebSrv.getJSON(url).then(function(data) {
-			deferred.resolve(data);
-		}, function(errorMessage) {
-			deferred.reject(errorMessage);
-		});
-		return deferred.promise;
-	};
+        ADBaseWebSrvV2.getJSON(url).then(function(data) {
+            deferred.resolve(data);
+        }, function(data) {
+            deferred.reject(data);
+        });
+
+        return deferred.promise;
+    };
 
 	/*
 	* method to save the guest id setup details
 	* @param {object} with guest id setup details
 	*/
-	this.saveGuestIDSetup = function(data) {
-		var deferred = $q.defer();
-		var url = '/admin/';//TODO REPLACE
+    this.saveGuestIDSetup = function(params) {
+        var deferred = $q.defer();
+        var url = '/api/hotel_settings/change_settings/';
 
-		ADBaseWebSrv.postJSON(url, data).then(function(data) {
-			deferred.resolve(data);
-		}, function(errorMessage) {
-			deferred.reject(errorMessage);
-		});
-		return deferred.promise;
-	};
+        ADBaseWebSrvV2.postJSON(url, params).then(function(data) {
+            deferred.resolve(data);
+        }, function(data) {
+            deferred.reject(data);
+        });
+        return deferred.promise;
+    };
 
 }]);
