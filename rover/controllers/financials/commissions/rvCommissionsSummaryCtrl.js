@@ -107,11 +107,17 @@ sntRover.controller('RVCommissionsSummaryController', ['$scope', '$rootScope', '
             }
         }, 100);
     };
+
     $scope.navigateToTA = function(account) {
-        if (account.is_commission_on) {
-            $state.go('rover.companycarddetails', {id: account.id, type: 'TRAVELAGENT', origin: 'COMMISION_SUMMARY'});
-        }
+        // https://stayntouch.atlassian.net/browse/CICO-40583
+        // Can navigate to TA even if commission is off.
+        $state.go('rover.companycarddetails', {
+            id: account.id,
+            type: 'TRAVELAGENT',
+            origin: 'COMMISION_SUMMARY'
+        });
     };
+
     $scope.isPrevButtonDisabled = function() {
         if ($scope.filterData.page == 1) {
             return true;
