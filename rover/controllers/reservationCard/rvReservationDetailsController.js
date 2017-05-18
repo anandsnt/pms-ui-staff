@@ -51,6 +51,12 @@ sntRover.controller('reservationDetailsController',
 		$scope.hasSRViewPermission = rvPermissionSrv.getPermissionValue('VIEW_SUPPRESSED_RATE');
 		RVReservationStateService.setReservationFlag("isSRViewRateBtnClicked", false);
 
+		// CICO-38714 / CICO-41313 - Set the Guest ID Permission flag and check if each guest has an id scanned or not
+		// set to false if the hotel admin switch is turned off
+		// var adminEnabled = false; // TODO: link to hotel admin switch
+   		$scope.hasGuestIDPermission = rvPermissionSrv.getPermissionValue('GUEST_ID_PERMISSION') && adminEnabled;
+   		// $scope.hasGuestIDPermission = true;// debugging
+
 		if (!$rootScope.stayCardStateBookMark) {
 			setNavigationBookMark();
 		}
@@ -1468,4 +1474,19 @@ sntRover.controller('reservationDetailsController',
      $scope.toggleOverBookingAlert = function() {
        $scope.showChangeDatesPopup = !$scope.showChangeDatesPopup;
      }
+
+     /*
+      * show the guest id / passport when clicked "guest id" button from manage additional guests view
+      */
+     $scope.showScannedGuestID = function(guest) {
+     	// TODO: link with proper HTML once complete from design team
+     	//       fetch guest id data with front+back images from API using (guest id / reservation id for primary guest?)
+     	console.warn(guest);
+     	ngDialog.open({
+			template: '/assets/partials/reservationCard/rvFeatureNotAvailableDialog.html',
+			className: 'ngdialog-theme-default',
+			scope: $scope
+		});
+     };
+
 }]);
