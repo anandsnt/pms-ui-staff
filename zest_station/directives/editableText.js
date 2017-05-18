@@ -133,7 +133,7 @@ sntZestStation.directive('editableText', [function() {
                 scope.$parent.$broadcast('TOGGLE_LANGUAGE_TAGS', 'off');
             };
 
-            var updateInputString = function(event, $inputField) {
+            var updateInputString = function(event, $inputField, save) {
                 if (event.keyCode === 32) { // Spacebar
                     // when editing a button and user hits space key
                     // the onclick/enter event gets fired
@@ -164,7 +164,7 @@ sntZestStation.directive('editableText', [function() {
 
                 if (elType === 'BUTTON' || isNavButton) {
                     $($inputField).on('keydown', function(event) {
-                        updateInputString(event, $inputField);
+                        updateInputString(event, $inputField, save);
                     });
 
                 } else {
@@ -214,7 +214,6 @@ sntZestStation.directive('editableText', [function() {
                         }
 
                         var $inputField = $('<input class="editor-mode-cls"/>').val(textForInput);
-
                         // append a new text-input field
                         // so the old element (text-label) does not lose its angular translation listeners
 
@@ -224,7 +223,6 @@ sntZestStation.directive('editableText', [function() {
 
                         var save = function() {
                             var newValueForText = $($inputField).val();
-                            console.info('saving: [', tag, '] > ', newValueForText);
 
                             addListeners(el, textEditor, scope);
 
@@ -243,18 +241,20 @@ sntZestStation.directive('editableText', [function() {
                                 // If editing a Tag WHILE the tag was toggled ON, 
                                 // need to still show that tag value until user toggles Tags back OFF
                                 // 
-                                keepShowingTag ? oldText === tag : false;
+                                keepShowingTag = oldText === tag;
                                 console.log('keepShowingTag: ',keepShowingTag);
+
+                                console.info('saving: [', tag, '] > ', newValueForText);
                                 scope.saveLanguageEditorChanges(tag, newValueForText, false, keepShowingTag);
 
                                 // show label instead of input field by changing tagInEdit to empty string
-                                $(element).show();
+                                $(element).fadeIn();
 
                             } else {
                                 // string has not changed, dont save
                                 $($inputField).remove();
                                 // un-hide the original element
-                                $(element).show();
+                                $(element).fadeIn();
 
                             }
 
