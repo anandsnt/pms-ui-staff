@@ -435,5 +435,12 @@ admin.controller('ADHotelDetailsCtrl', [
     $scope.themeSelected = function( selectedTheme ) {
  	  	$scope.selectedTheme = selectedTheme;
     };
+    // Handle outside click
+    $scope.clickedOutside = function(event) {
+    	if (event.target.id !== 'color-palete') {
+	    	$scope.isToggleThemePreviewControl = true;
+	    }
+    	event.stopPropagation();
+    };
 
 }]);
