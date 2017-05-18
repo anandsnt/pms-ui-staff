@@ -424,7 +424,7 @@ admin.controller('ADHotelDetailsCtrl', [
     };
 
     // CICO-39623 : Setting up theme color here..
-    $scope.isToggleThemePreviewControl = false;
+    $scope.isToggleThemePreviewControl = true;
     $scope.selectedTheme = {};
 
     // Toggle the theme preview control.
