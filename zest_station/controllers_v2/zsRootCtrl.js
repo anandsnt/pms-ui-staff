@@ -95,8 +95,6 @@ sntZestStation.controller('zsRootCtrl', [
         $scope.runDigestCycle = function() {
             if (!$scope.$$phase) {
                 $scope.$digest();
-            } else {
-                return;
             }
         };
 		// used for making keys, checking if there is text in the locale, to hide/show the key #, 
@@ -105,10 +103,7 @@ sntZestStation.controller('zsRootCtrl', [
             if (!value) {
                 return true;
             }
-            if ($filter('translate')(value) === '') {
-                return true;
-            }
-            return false;
+            return $filter('translate')(value) === '';
         };
 
         var setupLanguageTranslations = function() {
