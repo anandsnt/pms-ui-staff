@@ -52,7 +52,7 @@ admin.controller('ADHotelDetailsCtrl', [
 					$scope.data.check_in_primetime = "AM";
 					$scope.data.check_out_primetime = "AM";
 				$scope.data.hotel_pms_type = "";
-				$scope.selectedTheme = data.selected_theme;
+				$scope.selectedTheme = data.data.selected_theme;
 			};
 
 			$scope.invokeApi(ADHotelDetailsSrv.fetchAddData, {}, fetchSuccess);
@@ -82,7 +82,7 @@ admin.controller('ADHotelDetailsCtrl', [
 				}
 
 				setDropdownDefaults();
-				$scope.selectedTheme = data.selected_theme;
+				$scope.selectedTheme = data.data.selected_theme;
 			};
 
 			$scope.invokeApi(ADHotelDetailsSrv.fetchEditData, {'id': $stateParams.id}, fetchSuccess);
