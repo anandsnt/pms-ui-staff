@@ -88,7 +88,6 @@ admin.service('ADAppSrv', ['ADBaseWebSrv', 'ADBaseWebSrvV2', '$q',
         var url = '/api/rover_header_info.json';
 
         ADBaseWebSrvV2.getJSON(url).then(function(data) {
-            userDetails = data.data;
             deferred.resolve(data.data);
         }, function(data) {
             deferred.reject(data);
