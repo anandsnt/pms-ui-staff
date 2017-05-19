@@ -186,8 +186,8 @@ admin.controller('ADHotelDetailsCtrl', [
 			}
 			data.interface_type_ids = getSelectedInterfaceTypes(data);
 			var themeData = {
-				'value': $scope.selectedTheme.value,
-				'id': $scope.selectedTheme.id
+				'value': (!!$scope.selectedTheme) ? $scope.selectedTheme.value : '',
+				'id': (!!$scope.selectedTheme) ? $scope.selectedTheme.id : ''
 			};
 			
 			data.selected_theme = themeData;
@@ -224,8 +224,8 @@ admin.controller('ADHotelDetailsCtrl', [
 
 			data.interface_type_ids = getSelectedInterfaceTypes(data);
 			var themeDataHA = {
-				'value': $scope.selectedTheme.value,
-				'id': $scope.selectedTheme.id
+				'value': (!!$scope.selectedTheme) ? $scope.selectedTheme.value : '',
+				'id': (!!$scope.selectedTheme) ? $scope.selectedTheme.id : ''
 			};
 
 			data.selected_theme = themeDataHA;
