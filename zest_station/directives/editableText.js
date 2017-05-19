@@ -242,8 +242,6 @@ sntZestStation.directive('editableText', [function() {
                                 // need to still show that tag value until user toggles Tags back OFF
                                 // 
                                 keepShowingTag = oldText === tag;
-                                console.log('keepShowingTag: ',keepShowingTag);
-
                                 console.info('saving: [', tag, '] > ', newValueForText);
                                 scope.saveLanguageEditorChanges(tag, newValueForText, false, keepShowingTag);
 
