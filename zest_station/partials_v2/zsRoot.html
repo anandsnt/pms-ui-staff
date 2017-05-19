@@ -96,10 +96,10 @@
     <!-- Remove class "open" to hide popup content -->
     <div class="popup-content">
         <h2 class="nocaps">
-            <text editable-text="IDLE_TIMEOUT_MSG"> {{'IDLE_TIMEOUT_MSG' |translate}}</text>
+            <text data-ng-bind-html="getTagValue('IDLE_TIMEOUT_MSG')" editable-text="IDLE_TIMEOUT_MSG"></text>
         </h2>
         <button type="button" class="button idle-timeout-btn" click-touch='resetTime();'>
-            <text editable-text="IDLE_TIMEOUT_YES"> {{'IDLE_TIMEOUT_YES' |translate}}</text>
+            <text data-ng-bind-html="getTagValue('IDLE_TIMEOUT_YES')" editable-text="IDLE_TIMEOUT_YES"></text>
         </button>
     </div>
 </div>

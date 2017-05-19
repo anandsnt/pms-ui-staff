@@ -8,9 +8,7 @@
                         <button type="button" class="button option" touch-press='clickedOnPickUpKey()'>
                             <div ng-include="icons.url.key"></div>
                         </button>
-
                         <text data-ng-bind-html="getTagValue('PICKUP_KEY')" editable-text="PICKUP_KEY"></text>
-                        
                         <span ng-class='{"lighter-text":zestStationData.themeUsesLighterSubHeader}'>
                             
                             <text data-ng-bind-html="getTagValue('HOME_PUK_SUB')" 
@@ -18,31 +16,24 @@
                             </text>
 
                         </span>
-                        
                     </li>
                     <li ng-if="zestStationData.home_screen.check_in">
                         <button type="button" class="button option" touch-press='clickedOnCheckinButton()'>
                             <div ng-include="icons.url.checkin"></div>
                         </button>
-
-                        <text data-ng-bind-html="getTagValue('CHECK_IN')" 
-                            editable-text="CHECK_IN">
+                        <text data-ng-bind-html="getTagValue('CHECK_IN')" editable-text="CHECK_IN">
                         </text>
-
                     </li>
                     <li ng-if="zestStationData.home_screen.check_out">
                         <button type="button" class="button option" touch-press='clickedOnCheckoutButton()'>
                             <div ng-include="icons.url.checkout"></div>
                         </button>
-                        
                         <text data-ng-bind-html="getTagValue('CHECK_OUT')" editable-text="CHECK_OUT"></text>
-
                     </li>
                     <li ng-if="zestStationData.home_screen.booking_pop_up.enable_pop_up">
                         <button type="button" class="button option" touch-press='openExternalWebPage()'>
                             <div ng-include="icons.url.booknow"></div>
                         </button>
-                        
                         <text data-ng-bind-html="getTagValue('BOOK_NOW')" editable-text="BOOK_NOW"></text>
                     </li>
                 </ul>
