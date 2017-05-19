@@ -390,6 +390,65 @@
 				.nowrap();
 			}
 		}
+
+		/* Content Unavailable ***/
+		&.content-unavailable {
+			cursor: default;
+	        box-shadow: none;
+	        border-radius: 3px;
+	        color: @grey3;
+	        text-shadow: none;
+	        background: rgba(0,0,0,.1);
+
+	        &:hover,
+	        &:active {
+	            color: @grey3;
+	            text-shadow: none;
+	            box-shadow: none;
+	            background: rgba(0,0,0,.1);
+	        }
+		}
+
+		/* Checking Content Button ***/
+		&.loading-content {
+			.content-unavailable();
+			
+	        .icons,
+	        .icons:before,
+	        .icons:after {
+	        	color: rgba(0,0,0,.2);
+	            background: rgba(0,0,0,.2);
+	            .size(16px, 2px);
+	            -webkit-animation: buttonLoader 1s infinite ease-in-out;
+	            animation: buttonLoader 1s infinite ease-in-out;
+	        }
+
+	        .icons {
+	            margin: 0;
+	            -webkit-transform: translateZ(0);
+	            -ms-transform: translateZ(0);
+	            transform: translateZ(0);
+	            -webkit-animation-delay: -0.16s;
+	            animation-delay: -0.16s;
+	        }
+
+	        .icons:before,
+	        .icons:after {
+	            position: absolute;
+	            top: 0;
+	            content: '';
+	        }
+
+	        .icons:before {
+	            left: -4px;
+	            -webkit-animation-delay: -0.32s;
+	            animation-delay: -0.32s;
+	        }
+
+	        .icons:after {
+	            left: 4px;
+	        }
+	    }
 	}
 
 	.add-new-button {
