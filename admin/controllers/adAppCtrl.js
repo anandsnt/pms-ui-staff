@@ -18,7 +18,8 @@ admin.controller('ADAppCtrl', [
             'first_name': userInfoDetails.first_name,
             'last_name': userInfoDetails.last_name,
             'business_date': userInfoDetails.business_date,
-            'logo': userInfoDetails.logo
+            'logo': userInfoDetails.logo,
+            'heading': 'TITLE_HOTEL_ADMIN'
         };
 
 		$scope.setTitle(title);
