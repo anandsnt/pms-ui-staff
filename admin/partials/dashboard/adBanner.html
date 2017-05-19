@@ -1,12 +1,17 @@
-<header role="banner" id="global-header" class="float">
-	<!-- Logo -->
-	<img src="/assets/images/logo.png" class="logo" alt="">
-
-	<form role="search" name="search-form" method="get" id="search-form" class="search-form float hidden" action="index.html">
-		<div class="entry">
-			<a id="clear-query" href="#" class="icons icon-clear-search">Clear query</a>
-			<button type="submit" name="submit" class="icons icon-search">Search</button>
-			<input type="search" placeholder="Search" name="query" id="query" autocomplete="off">
-		</div>
-	</form>
+<header id="global-header" role="banner">
+    <!-- Logo -->
+    <div class="logo">
+        <img ng-src="{{userInfo.logo}}" alt="" />
+    </div>
+    <!-- Title -->
+    <h1>
+        <strong class="hotel">{{data.current_hotel}}</strong>
+        <div class="user">
+            <strong>
+            {{userInfo.first_name}}
+			{{userInfo.last_name}}
+			</strong>
+            <em class="date"> {{userInfo.business_date | date:'EEEE, d MMMM y'}}</em>
+        </div>
+    </h1>
 </header>

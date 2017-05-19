@@ -1,8 +1,8 @@
 admin.controller('ADAppCtrl', [
     '$state', '$scope', '$rootScope', 'ADAppSrv', '$stateParams', '$window', '$translate', 'adminMenuData', 'businessDate',
-    '$timeout', 'ngDialog', 'sntAuthorizationSrv',
+    '$timeout', 'ngDialog', 'sntAuthorizationSrv', 'userInfoDetails',
     function($state, $scope, $rootScope, ADAppSrv, $stateParams, $window, $translate, adminMenuData, businessDate,
-             $timeout, ngDialog, sntAuthorizationSrv) {
+             $timeout, ngDialog, sntAuthorizationSrv, userInfoDetails) {
 
 		// hide the loading text that is been shown when entering Admin
 		$( ".loading-container" ).hide();
@@ -12,6 +12,14 @@ admin.controller('ADAppCtrl', [
 
 		BaseCtrl.call(this, $scope);
 		var title = "Showing Settings";
+
+        // CICO-39623 : set current hotel details      
+        $scope.userInfo = {
+            'first_name': userInfoDetails.first_name,
+            'last_name': userInfoDetails.last_name,
+            'business_date': userInfoDetails.business_date,
+            'logo': userInfoDetails.logo
+        };
 
 		$scope.setTitle(title);
 		$scope.menuOpen = false;

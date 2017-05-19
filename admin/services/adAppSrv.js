@@ -79,4 +79,22 @@ admin.service('ADAppSrv', ['ADBaseWebSrv', 'ADBaseWebSrvV2', '$q',
         return deferred.promise;
     };
 
+    /*
+  	* To fetch user details
+  	* @return {object} user details
+  	*/
+    this.fetchUserInfo = function() {
+        var deferred = $q.defer();
+        var url = '/api/rover_header_info.json';
+
+        ADBaseWebSrvV2.getJSON(url).then(function(data) {
+            userDetails = data.data;
+            deferred.resolve(data.data);
+        }, function(data) {
+            deferred.reject(data);
+        });
+
+        return deferred.promise;
+    };
+
 }]);
