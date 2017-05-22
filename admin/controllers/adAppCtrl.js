@@ -1,8 +1,8 @@
 admin.controller('ADAppCtrl', [
     '$state', '$scope', '$rootScope', 'ADAppSrv', '$stateParams', '$window', '$translate', 'adminMenuData', 'businessDate',
-    '$timeout', 'ngDialog', 'sntAuthorizationSrv', 'userInfoDetails', '$filter',
+    '$timeout', 'ngDialog', 'sntAuthorizationSrv', '$filter',
     function($state, $scope, $rootScope, ADAppSrv, $stateParams, $window, $translate, adminMenuData, businessDate,
-             $timeout, ngDialog, sntAuthorizationSrv, userInfoDetails, $filter) {
+             $timeout, ngDialog, sntAuthorizationSrv, $filter) {
 
 		// hide the loading text that is been shown when entering Admin
 		$( ".loading-container" ).hide();
@@ -13,14 +13,17 @@ admin.controller('ADAppCtrl', [
 		BaseCtrl.call(this, $scope);
 		var title = "Showing Settings";
 
-        // CICO-39623 : set current hotel details      
-        /*$scope.userInfo = {
-            'first_name': userInfoDetails.first_name,
-            'last_name': userInfoDetails.last_name,
-            'business_date': userInfoDetails.business_date,
-            'logo': userInfoDetails.logo,
-            'heading': $filter('translate')('TITLE_HOTEL_ADMIN')
-        };*/
+        var successCallbackOfFtechUserInfo = function (userInfoDetails) {
+            // CICO-39623 : set current hotel details      
+            $scope.userInfo = {
+                'first_name': userInfoDetails.first_name,
+                'last_name': userInfoDetails.last_name,
+                'business_date': userInfoDetails.business_date,
+                'logo': userInfoDetails.logo,
+                'heading': $filter('translate')('TITLE_HOTEL_ADMIN')
+            };
+            $scope.$emit('hideLoader');
+        };
 
 		$scope.setTitle(title);
 		$scope.menuOpen = false;
@@ -374,9 +377,11 @@ admin.controller('ADAppCtrl', [
 
 		if ($rootScope.adminRole === "hotel-admin") {
 			$scope.isHotelAdmin = true;
+            $scope.invokeApi(ADAppSrv.fetchUserInfo, {}, successCallbackOfFtechUserInfo);
 		} else {
 			$scope.isHotelAdmin = false;
 		}
+        
 		$scope.isPmsConfigured = $rootScope.isPmsConfigured;
 		$scope.isDragging = false;
 
