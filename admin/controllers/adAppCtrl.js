@@ -1,8 +1,8 @@
 admin.controller('ADAppCtrl', [
     '$state', '$scope', '$rootScope', 'ADAppSrv', '$stateParams', '$window', '$translate', 'adminMenuData', 'businessDate',
-    '$timeout', 'ngDialog', 'sntAuthorizationSrv',
+    '$timeout', 'ngDialog', 'sntAuthorizationSrv', '$filter',
     function($state, $scope, $rootScope, ADAppSrv, $stateParams, $window, $translate, adminMenuData, businessDate,
-             $timeout, ngDialog, sntAuthorizationSrv) {
+             $timeout, ngDialog, sntAuthorizationSrv, $filter) {
 
 		// hide the loading text that is been shown when entering Admin
 		$( ".loading-container" ).hide();
@@ -12,6 +12,17 @@ admin.controller('ADAppCtrl', [
 
 		BaseCtrl.call(this, $scope);
 		var title = "Showing Settings";
+
+        var successCallbackOfFtechUserInfo = function (userInfoDetails) {
+            // CICO-39623 : set current hotel details      
+            $scope.userInfo = {
+                'first_name': userInfoDetails.first_name,
+                'last_name': userInfoDetails.last_name,
+                'business_date': userInfoDetails.business_date,
+                'logo': userInfoDetails.logo
+            };
+            $scope.$emit('hideLoader');
+        };
 
 		$scope.setTitle(title);
 		$scope.menuOpen = false;
@@ -365,9 +376,11 @@ admin.controller('ADAppCtrl', [
 
 		if ($rootScope.adminRole === "hotel-admin") {
 			$scope.isHotelAdmin = true;
+            $scope.invokeApi(ADAppSrv.fetchUserInfo, {}, successCallbackOfFtechUserInfo);
 		} else {
 			$scope.isHotelAdmin = false;
 		}
+        
 		$scope.isPmsConfigured = $rootScope.isPmsConfigured;
 		$scope.isDragging = false;
 
@@ -563,6 +576,14 @@ admin.controller('ADAppCtrl', [
 		    } else {
 		      $translate.use('EN');
 		    }
+
+            // CICO-39623 : Setting up app theme.
+            if ( !!data.selected_theme && data.selected_theme.value !== 'ORANGE' ) {
+              var appTheme = 'theme-' + (data.selected_theme.value).toLowerCase();
+              
+              document.getElementsByTagName("html")[0].setAttribute( 'class', appTheme );
+            }
+
 		    // to hide eod submenu conditionally
 			$rootScope.is_auto_change_bussiness_date = data.business_date.is_auto_change_bussiness_date;
 

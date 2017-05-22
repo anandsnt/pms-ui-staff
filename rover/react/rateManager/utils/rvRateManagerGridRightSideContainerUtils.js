@@ -8,8 +8,8 @@ const rvRateManagerRightSideContainerUtils = function() {
 	 * @return {array}
 	 */
 	self.convertDateListForRestrictionView = function(dateList, businessDate) {
-		//we will compute date related information first and will use this information in
-		//the view component
+		// we will compute date related information first and will use this information in
+		// the view component
 		var newDateList = [],
 			copiedDate = null,
 			copiedDateComponents = null,
@@ -18,7 +18,7 @@ const rvRateManagerRightSideContainerUtils = function() {
 
 		dateList.map(date => {
 			copiedDate = tzIndependentDate(date);
-			copiedDateComponents = copiedDate.toComponents().date; //refer util.js in diary folder
+			copiedDateComponents = copiedDate.toComponents().date; // refer util.js in diary folder
 			isWeekEnd = (copiedDate.getDay() === 6 || copiedDate.getDay() === 0);
 			isPastDate = copiedDate < businessDate;
 			newDateList.push({
@@ -40,21 +40,22 @@ const rvRateManagerRightSideContainerUtils = function() {
 	 */
 	self.convertDataForRestrictionListing = (listingData, restrictionTypes) => {
 
-		//adding the css class and all stuff for restriction types
+		// adding the css class and all stuff for restriction types
 		restrictionTypes = restrictionTypes.map((restrictionType) => ({
 				...restrictionType,
 				...RateManagerRestrictionTypes[restrictionType.value]
 		}));
 
 		var restrictionTypeIDS = _.pluck(restrictionTypes, 'id'),
-			restrictionTypesBasedOnIDs = _.object(restrictionTypeIDS, restrictionTypes); //for quicker access
+			restrictionTypesBasedOnIDs = _.object(restrictionTypeIDS, restrictionTypes); // for quicker access
 
 		var restrictionForMoreThanMaxAllowed = RateManagerRestrictionTypes['MORE_RESTRICTIONS'];
+
 		restrictionForMoreThanMaxAllowed.days = restrictionForMoreThanMaxAllowed.defaultText;
 
 		listingData = listingData.map((data) => {
 			data.restrictionList = data.restrictionList.map((dayRestrictionList, index) => {
-				//If we cross max restriction allowed in a single column, we will replace with single restriction
+				// If we cross max restriction allowed in a single column, we will replace with single restriction
 				if (dayRestrictionList.length >= RM_RX_CONST.MAX_RESTRICTION_IN_COLUMN) {
 					return [{...restrictionForMoreThanMaxAllowed
 					}];

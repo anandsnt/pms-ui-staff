@@ -15,7 +15,9 @@ angular.module('sntPay').service('sntPaymentSrv', ['$q', '$http', '$location', '
             var urlStart = url.split('?')[0];
             // please note the type of error expecting is array
             // so form error as array if you modifying it
-            if (status === 406) { // 406- Network error
+            
+
+if (status === 406) { // 406- Network error
                 deferred.reject(errors);
             } else if (status === 422) { // 422
                 deferred.reject(errors);
@@ -28,7 +30,7 @@ angular.module('sntPay').service('sntPaymentSrv', ['$q', '$http', '$location', '
                 $window.location.href = '/logout';
             }
 
-            //set of custom error emssage range http status
+            // set of custom error emssage range http status
             else if (status >= 470 && status <= 490) {
                 errors.httpStatus = status;
                 errors.errorMessage = errors;
@@ -46,11 +48,12 @@ angular.module('sntPay').service('sntPaymentSrv', ['$q', '$http', '$location', '
 
             var deferred = $q.defer(),
                 url = "";
+
             if (!!dataToSrv.reservation_id) {
                 url = 'api/reservations/' + dataToSrv.reservation_id + '/submit_payment';
             } else {
                 url = 'api/bills/' + dataToSrv.bill_id + '/submit_payment';
-                //TODO: clean up the above API so that the requests might be consistent
+                // TODO: clean up the above API so that the requests might be consistent
                 dataToSrv.postData.payment_method_id = dataToSrv.postData.payment_type_id;
             }
 
@@ -107,7 +110,7 @@ angular.module('sntPay').service('sntPaymentSrv', ['$q', '$http', '$location', '
                 console.warn("No fee information for the current selected payment type");
             }
 
-            //Parse default Amount -- default to 0
+            // Parse default Amount -- default to 0
             var defaultAmount = !amount ? 0 : parseFloat(amount);
 
             if (amountSymbol === "percent") {
@@ -130,9 +133,9 @@ angular.module('sntPay').service('sntPaymentSrv', ['$q', '$http', '$location', '
             };
         };
 
-        //--------------------------------------------------------------------------------------------------------------
+        // --------------------------------------------------------------------------------------------------------------
         //                                  SIX PAYMENTS
-        //--------------------------------------------------------------------------------------------------------------
+        // --------------------------------------------------------------------------------------------------------------
 
         service.getSixPayCreditCardType = function(cardCode) {
             var sixCreditCardTypes = {
@@ -143,7 +146,7 @@ angular.module('sntPay').service('sntPaymentSrv', ['$q', '$http', '$location', '
                 "MC": 'MC',
                 "VS": 'VA',
                 "VX": 'VA',
-                "MX": 'DS', //Six iframe returns MX for discover. not good,
+                "MX": 'DS', // Six iframe returns MX for discover. not good,
                 "MV": 'MC'
             };
 
@@ -177,6 +180,7 @@ angular.module('sntPay').service('sntPaymentSrv', ['$q', '$http', '$location', '
                 // the timeout set for the hotel
                 if (timeStampInSeconds >= dataToSrv.emvTimeout) {
                     var errors = ["Request timed out. Unable to process the transaction"];
+
                     deferred.reject(errors);
                 } else {
                     // TODO: comment the assignment below before commits and pushes.
@@ -253,6 +257,7 @@ angular.module('sntPay').service('sntPaymentSrv', ['$q', '$http', '$location', '
                 // the timeout set for the hotel
                 if (timeStampInSeconds >= dataToSrv.emvTimeout) {
                     var errors = ["Request timed out. Unable to process the transaction"];
+
                     deferred.reject(errors);
                 } else {
                     // TODO: comment the assignment below before commits and pushes.
@@ -311,10 +316,10 @@ angular.module('sntPay').service('sntPaymentSrv', ['$q', '$http', '$location', '
         };
 
 
-        //--------------------------------------------------------------------------------------------------------------
+        // --------------------------------------------------------------------------------------------------------------
         //                                  MLI
-        //--------------------------------------------------------------------------------------------------------------
-        //fetch MLI session details
+        // --------------------------------------------------------------------------------------------------------------
+        // fetch MLI session details
         service.fetchMLISessionDetails = function(sessionDetails, successCallback, failureCallback) {
 
             var callback = function(response) {
@@ -331,6 +336,7 @@ angular.module('sntPay').service('sntPaymentSrv', ['$q', '$http', '$location', '
             };
             var failure = function(data) {
                 var errorMessage = ['There is a problem with your credit card'];
+
                 failureCallback(errorMessage);
             };
 
@@ -339,19 +345,21 @@ angular.module('sntPay').service('sntPaymentSrv', ['$q', '$http', '$location', '
                     service.fetchMLISessionDetails(sessionDetails, success, failure);
                 } catch (err) {
                     var errorMessage = ['There was a problem connecting to the payment gateway.'];
+
                     failureCallback(errorMessage);
                 }
             } else {
                 var errorMessage = ['There is a problem with your credit card'];
+
                 failureCallback(errorMessage);
             }
 
         };
 
 
-        //--------------------------------------------------------------------------------------------------------------
+        // --------------------------------------------------------------------------------------------------------------
         //                                  MLI
-        //--------------------------------------------------------------------------------------------------------------
+        // --------------------------------------------------------------------------------------------------------------
         /**
          *
          * @param gateWay
