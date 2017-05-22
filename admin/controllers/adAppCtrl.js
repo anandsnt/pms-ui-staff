@@ -19,8 +19,7 @@ admin.controller('ADAppCtrl', [
                 'first_name': userInfoDetails.first_name,
                 'last_name': userInfoDetails.last_name,
                 'business_date': userInfoDetails.business_date,
-                'logo': userInfoDetails.logo,
-                'heading': $filter('translate')('TITLE_HOTEL_ADMIN')
+                'logo': userInfoDetails.logo
             };
             $scope.$emit('hideLoader');
         };
