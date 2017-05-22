@@ -28,15 +28,14 @@
 	</a>
 
 	<div class="actions">
-		<button ng-if="!isUpsellAvailabilityKnown" type="button" class="button with-icon loading-content">
-			<span class="icons icon-upgrade"></span>
-			Upgrade
-		</button>
-
-		<button id="upgrade-btn" ng-click="goToRoomUpgrades()"
-				ng-if="isUpsellAvailabilityKnown"
-				class="button with-icon {{ shouldEnableUpgradeButton() ? 'brand-colors' : 'content-unavailable'}}">
-			<span class="icons {{shouldEnableUpgradeButton() ? 'icon-upgrade' : 'icon-content-unavailable'}}"></span>
+		<button ng-if="showUpgradeButton" type="button"
+				class="button with-icon"
+				ng-click="goToRoomUpgrades()"
+				ng-disabled="reservationData.reservation_card.is_upsell_available !== 'true'"
+				ng-class="{	'loading-content': !isUpsellAvailabilityKnown,
+							'brand-colors': reservationData.reservation_card.is_upsell_available === 'true',
+							'content-unavailable': reservationData.reservation_card.is_upsell_available !== 'true'}">
+			<span class="icons {{reservationData.reservation_card.is_upsell_available === 'true' ? 'icon-upgrade' : 'icon-content-unavailable'}}"></span>
 			Upgrade
 		</button>
 
