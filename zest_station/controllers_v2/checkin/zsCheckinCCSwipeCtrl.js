@@ -212,6 +212,7 @@ sntZestStation.controller('zsCheckinCCSwipeCtrl', [
         var goToSwipeError = function() {
             if (atCardSwipeScreen()) {
                 $scope.waitingForSwipe = false;
+                $scope.zestStationData.waitingForSwipe = $scope.waitingForSwipe;
                 $scope.swipeTimeout = false;
                 $scope.swipeError = true;
             }
@@ -286,22 +287,26 @@ sntZestStation.controller('zsCheckinCCSwipeCtrl', [
             $scope.depositAmount = $stateParams.deposit_amount;
             $scope.showSwipeNav = true;
             $scope.waitingForSwipe = true;
+            $scope.zestStationData.waitingForSwipe = $scope.waitingForSwipe;
         };
 
         var setCCAuthSettings = function() {
             $scope.waitingForSwipe = true;
+            $scope.zestStationData.waitingForSwipe = $scope.waitingForSwipe;
             $scope.swipeError = false;
             $scope.swipeTimeout = false;
         };
 
         var swipeTimeoutCC = function() {
             $scope.waitingForSwipe = false;
+            $scope.zestStationData.waitingForSwipe = $scope.waitingForSwipe;
             $scope.swipeError = false;
             $scope.swipeTimeout = true;
         };
 
         var swipeTimeoutDeposit = function() {
             $scope.waitingForSwipe = false;
+            $scope.zestStationData.waitingForSwipe = $scope.waitingForSwipe;
             $scope.swipeError = false;
             $scope.swipeTimeout = true;
         };
@@ -310,6 +315,7 @@ sntZestStation.controller('zsCheckinCCSwipeCtrl', [
             $timeout(function() {
                 $log.log('waiting for swipe..');
                 $scope.waitingForSwipe = true;
+                $scope.zestStationData.waitingForSwipe = $scope.waitingForSwipe;
                 $scope.swipeError = false;
                 $scope.swipeTimeout = false;
             }, 1000);
@@ -513,6 +519,8 @@ sntZestStation.controller('zsCheckinCCSwipeCtrl', [
             } else {
                 data.amount = '1.00';
             }
+            $scope.zestStationData.pending_deposit_amount = data.amount;
+
             data.reservation_id = $stateParams.reservation_id;
             data.is_emv_request = isEmv;
             $log.info('authorizing with: ', data);
@@ -637,6 +645,9 @@ sntZestStation.controller('zsCheckinCCSwipeCtrl', [
             $scope.setScreenIcon('card');
 
             $log.warn('$stateParams: ', $stateParams);
+            if ($stateParams.deposit_amount){// for debugging detect the deposit/swipe amount
+                $scope.zestStationData.pending_deposit_amount = $stateParams.deposit_amount;
+            }
             // if at the deposit screen, set the currency symbol and amount due, which should be passed from reservation details
             /*
              * 
