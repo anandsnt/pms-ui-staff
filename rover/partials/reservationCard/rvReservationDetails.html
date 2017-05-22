@@ -228,12 +228,18 @@
                     <!-- placeholder: GUEST_ID -->
                     <!-- TODO: Update button background and color, link to controller action-->
 
-                    <a class="button staycard-button guest-id-button ng-binding" 
+                    <!--a class="button staycard-button guest-id-button ng-binding" 
                         click-touch='showScannedGuestID(guest)'
                         ng-hide='!guestData.primary_guest_details.has_guest_id_scanned'
+                        ng-class='{"disabled":!hasGuestIDPermission}'>{{'GUEST_ID_BUTTON' |translate}}
+                    </a-->
+
+                    <button class="button with-icon white green-text" click-touch='showScannedGuestID(guest)'
+                        ng-hide='guestData.primary_guest_details.has_guest_id_scanned'
                         ng-class='{"disabled":!hasGuestIDPermission}'>
-                        {{'GUEST_ID_BUTTON' |translate}}
-                    </a>
+                        <span class="icons icon-identity-card"></span>
+                         {{'GUEST_ID_BUTTON' |translate}}
+                    </button>
 
                 </div>
                 <label for="acc1-first-name">Accompanying guests</label>
@@ -246,12 +252,19 @@
                     <input name="acc1-last-name" id="acc1-last-name" type="text" placeholder="Last Name" ng-model="guest.last_name" value="{{guest.last_name}}" ng-blur="saveAccGuestDetails()" />
                     <!-- placeholder: GUEST_ID -->
                     <!-- TODO: Update button background and color, link to controller action-->
-                    <a class="button staycard-button guest-id-button ng-binding" 
+                    <!--a class="button staycard-button guest-id-button ng-binding" 
                         click-touch='showScannedGuestID(guest)'
                         ng-hide='guest.has_guest_id_scanned'
                         ng-class='{"disabled":!hasGuestIDPermission}'>
                         {{'GUEST_ID_BUTTON' |translate}}
-                    </a>
+                    </a-->
+
+                    <button class="button with-icon white green-text" click-touch='showScannedGuestID(guest)'
+                        ng-hide='!guest.has_guest_id_scanned'
+                        ng-class='{"disabled":!hasGuestIDPermission}'>
+                        <span class="icons icon-identity-card"></span>
+                        {{'GUEST_ID_BUTTON' |translate}}
+                    </button>
 
                 </div>
 

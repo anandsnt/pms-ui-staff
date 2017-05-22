@@ -1,0 +1,42 @@
+<!-- Add class .with-details to show the left details -->
+<div id="guest-id" class="modal-content form guest-id">
+    <button id="modal-close" type="button" class="dark-title modal-close"><span class="icons icon-close"></span></button>
+
+    <div class="modal-header">
+        <h2>{Guest Name}</h2>
+        <em>{Guest Type: Primary Guest or Accompanying Guest}</em>
+    </div>
+
+    <div class="modal-body">
+        <div class="content-left">
+            <ul class="details">
+                <li>
+                    <span>{Detail}</span>
+                    {Value} 
+                </li>
+                ... repeat for each detail
+            </ul>
+        </div>
+        <div class="content-right">
+            <h2 class="guest-id-title">Guest ID</h2>
+            <p class="guest-id-desc">
+                {type} Scanned {date | exp. 14-02-2017} {time | exp. 11:17 AM}
+            </p>
+
+            <!-- If has front & back scanned 
+            <ul class="guest-id-switch">
+                <li class="active">Front</li>
+                <!-- Add .active on click --
+                <li>Back</li>
+            </ul>
+        -->
+            
+            <img src="{img}" alt="">
+            <!-- Add other image if front & back and remove .hidden when clicked on 'Back'
+            <img class="hidden" src="{img}" alt=""> -->
+            
+            <!-- Closes the Modal -->
+            <button class="modal-close button blank">Close the Window</button>
+        </div>
+    </div>
+</div>
