@@ -44,7 +44,7 @@ admin.config([
                     return ADAppSrv.fetchHotelBusinessDate();
                 },
                 userInfoDetails: function(ADAppSrv) {
-                    return ADAppSrv.fetchUserInfo();
+                    //return ADAppSrv.fetchUserInfo();
                 }
             }
         });
