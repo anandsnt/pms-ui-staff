@@ -329,24 +329,66 @@
 
             .form {
                 margin-top: 10px;
-                max-width: 400px;
-                .calc-width(100, 360);
+                max-height: 220px;
                 .float;
+                position: relative;
+
+                .iScrollVerticalScrollbar {
+                    right: 0;
+                }
+
+                .wrapper {
+                    max-width: 430px;
+                    .calc-width(100, 360); 
+                }
 
                 label {
-                    display: inline-block;
+                    display: block;
                     font-size: 14px;
                     line-height: 20px;
                     text-transform: uppercase;
                     margin: 10px 0 0 0;
+                    .float;
+
+                    &:not(:first-child) {
+                        margin-top: 15px;
+                    }
                 }
 
                 .entry {
+                    float:none;
+                    position: relative;
+
+                    &:after {
+                        content:'';
+                        display: table;
+                        clear: both;
+                    }
 
                     .guest-image {
                         margin-right: 10px;
                         .pull-left;
                         .square(40px); 
+
+                        .icons {
+                            .square(40px);
+                            background-color: @grey2;
+
+                            &.icon-student {
+                                background-position: 10px -10530px
+                            }
+
+                            &.icon-infant {
+                                background-position: 10px -10590px;
+                            }
+                        }
+
+                        .vip {
+                            .square(15px);
+                            line-height: 15px;
+                            font-size: 8px;
+                            left: 0;
+                        }
                     }
 
                     input {
@@ -355,6 +397,22 @@
                         .pull-left;
 
                         &:nth-of-type(2) { margin-right: 0; }
+                    }
+
+                    .button {
+                        position: absolute;
+                        left: 100%;
+                        .size(40px, 110px);
+                        margin-left: 10px;
+                        padding-left: 40px;
+                        .nowrap();
+
+                        .icon-identity-card {
+                            background-position: 10px -10831px;
+                            left: 10px;
+                            top: 0;
+                            .square(40px);
+                        }
                     }
                 }
             }
