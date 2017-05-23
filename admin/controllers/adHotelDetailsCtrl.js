@@ -242,6 +242,9 @@ admin.controller('ADHotelDetailsCtrl', [
 	              
 	              document.getElementsByTagName("html")[0].setAttribute( 'class', appTheme );
 	            }
+	            else {
+	            	document.getElementsByTagName("html")[0].removeAttribute( 'class');
+	            }
 
 				$state.go('admin.dashboard', {menu: 0});
 				$scope.$emit('hotelNameChanged', {"new_name": $scope.data.hotel_name});
