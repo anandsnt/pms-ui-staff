@@ -1491,13 +1491,38 @@ sntRover.controller('reservationDetailsController',
      /*
       * show the guest id / passport when clicked "guest id" button from manage additional guests view
       */
-     $scope.showScannedGuestID = function(guest) {
+     $scope.showScannedGuestID = function(isPrimaryGuest, guestData) {
+     	// CICO-38714
      	// TODO: link with proper HTML once complete from design team
      	//       fetch guest id data with front+back images from API using (guest id / reservation id for primary guest?)
-     	console.warn(guest);
+     	var guest;
+     	if (isPrimaryGuest){
+     		guest = guestData;
+     		
+     	} else {
+     		guest = guestData;
+     	}
+
+     	$scope.guestIdData = guest;
+     	$scope.guestIdData.isPrimaryGuest = isPrimaryGuest;
+     	
+     	// TODO: Link with API doc type
+     	$scope.guestIdData.idType = 'Passport';
+     	$scope.guestIdData.dob = '14-02-2014';
+     	$scope.guestIdData.scanDate = '14-02-2017 11:32 AM';
+     	$scope.guestIdData.twoSidedDoc = true;
+     	$scope.guestIdData.nationality = 'Slovakian';
+     	$scope.guestIdData.docID = '12312';
+     	$scope.guestIdData.docExpiry = '11/20';
+     	$scope.guestIdData.showingIdFront = true;
+ 		$scope.guestIdData.imgFrontSrc = '/assets/images/sample_passport.png';
+ 		$scope.guestIdData.imgBackSrc = '/assets/images/sample_passport_back.png';
+
+     	// END TODO API Link parts
+
      	ngDialog.open({
 			template: '/assets/partials/guestId/guestId.html',
-			className: 'modal-content form guest-id',
+			className: 'guest-id-dialog',
 			scope: $scope
 		});
      };
