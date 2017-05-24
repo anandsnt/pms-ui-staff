@@ -178,7 +178,7 @@
         </div>
 
         <!-- Guest details -->
-        <div ng-controller="rvReservationGuestController" class="reservation-guests" ng-if="shouldShowGuestDetails" ng-class="::{'editable': isStandAlone}">
+        <div ng-controller="rvReservationGuestController" class="reservation-guests" ng-show="shouldShowGuestDetails" ng-class="::{'editable': isStandAlone}">
             <div ng-include="'/assets/partials/common/notification_message.html'"></div>
             <span class="notice" ng-show="isStandAlone && guestData.varying_occupancy" translate>VAR_OCCUPANCY</span>
             <ul class="guest-count">
