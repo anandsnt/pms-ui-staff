@@ -10,6 +10,7 @@ const shouldShowGridViewRootContainer = (state) => {
 		RM_RX_CONST.NO_RESULTS_FOUND_MODE,
 		RM_RX_CONST.NOT_CONFIGURED_MODE
 	];
+
 	return (listOfModesNotShowing.indexOf(state.mode) === -1);
 };
 

@@ -13,7 +13,7 @@
     var renderItem = (ul, item) => {
       var htmlForItem = '';
       
-      //CICO-26513
+      // CICO-26513
       ulElement = ul;
       ulElement.off('touchmove').on('touchmove', function(e) {
         e.stopPropagation();
@@ -26,7 +26,7 @@
       var defIcon = '',
          $image = '';
 
-      //CICO-29668   
+      // CICO-29668   
       var content = $("<div></div>"),
           accountName = $("<span></span>").html(highlightFilter_(item.account_name, $scope.ngModel)),
           address = $("<span></span>").html(item.account_address), 
@@ -91,6 +91,7 @@
           callBackToAutoComplete: callBackToAutoComplete
         }
       };
+
       $scope.callAPI(rvFilterOptionsSrv.fetchCompanyCard, options);
     };
 
@@ -136,7 +137,7 @@
     $scope.$on('$destroy', function(){
         $(autocompleteEl).autocomplete( "destroy" );
         
-        //unbinding the touch move
+        // unbinding the touch move
         if(ulElement instanceof HTMLElement) {
           ulElement.off('touchmove')
         }

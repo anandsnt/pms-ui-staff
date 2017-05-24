@@ -13,7 +13,7 @@
                     <h2>{{room.upgrade_room_type_name}}</h2>
                     <div class="price">
                         <strong>+${{room.upsell_amount}}</strong>
-                        <small>Per Night<br>(+TAX)</small>
+                        <small><text editable-text="PER_NIGHT"> {{'PER_NIGHT' |translate}}</text><br><text editable-text="TAX_TEXT"> {{'TAX_TEXT' |translate}}</text></small>
                         <button type="button" class="button" click-touch='viewSelectedRoomDetails(room)' ng-show="zestStationData.room_upsell_style === 'STYLE_B'">
                             <text editable-text="ROOM_DETAILS"> {{'ROOM_DETAILS' |translate}}</text>
                         </button>
@@ -25,7 +25,8 @@
             <button type="button" class="button transparent" click-touch="skipRoomUpsell()">
                 <text editable-text="ROOM_UPGRADE_SKIP"> {{'ROOM_UPGRADE_SKIP' |translate}}</text>
             </button>
-            <p class="text" ng-show="showPageNumberDetails">Showing {{pageStartingIndex}}-{{pageEndingIndex}} of {{upsellRooms.length}} rooms</p>
+            <p class="text" ng-show="showPageNumberDetails">
+            <text editable-text="ROOM_UPSELL_FOOTER_1"> {{'ROOM_UPSELL_FOOTER_1' |translate}}</text>&nbsp;{{pageStartingIndex}}-{{pageEndingIndex}}&nbsp;<text editable-text="ROOM_UPSELL_FOOTER_2"> {{'ROOM_UPSELL_FOOTER_2' |translate}}</text>&nbsp;{{upsellRooms.length}}&nbsp;<text editable-text="ROOM_UPSELL_FOOTER_3">{{'ROOM_UPSELL_FOOTER_3' |translate}}</text></p>
             <div class="button-group">
                 <button type="button" class="button" click-touch="viewPreviousPage()" ng-hide="hidePreviousButton">
                     <text editable-text="ROOM_UPGRADE_PREV"> {{'ROOM_UPGRADE_PREV' |translate}}</text>
@@ -51,7 +52,7 @@
                 <h2>{{selectedRoom.upgrade_room_type_name}}</h2>
                 <div class="price">
                     <strong>+${{selectedRoom.upsell_amount}}</strong>
-                    <small>Per Night(+TAX)</small>
+                    <small><text editable-text="PER_NIGHT"> {{'PER_NIGHT' |translate}}</text><text editable-text="TAX_TEXT"> {{'TAX_TEXT' |translate}}</text></small>
                 </div>
             </div>
         </div>

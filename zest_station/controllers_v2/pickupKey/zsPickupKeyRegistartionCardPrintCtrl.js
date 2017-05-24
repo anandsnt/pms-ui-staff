@@ -18,7 +18,6 @@ sntZestStation.controller('zsPickupKeyRegistartionCardPrintCtrl', [
         BaseCtrl.call(this, $scope);
 
 
-
         /**
          * [clickedPrint description]
          * @return {[type]} [description]
@@ -34,6 +33,7 @@ sntZestStation.controller('zsPickupKeyRegistartionCardPrintCtrl', [
 
             var setMessage = function(printSuccess) {
                 var keySucess = $stateParams.key_created === 'true';
+
                 if (printSuccess && keySucess) {
                     $scope.mode = 'PRINT_SUCCESS_AND_KEY_SUCCESS';
                 } else if (!printSuccess && keySucess) {
@@ -50,6 +50,7 @@ sntZestStation.controller('zsPickupKeyRegistartionCardPrintCtrl', [
             var printFailedActions = function(errorMessage) {
                 $scope.$emit('hideLoader');
                 var printSuccess = false;
+
                 $scope.showDoneButton = true;
                 setMessage(printSuccess);
                 errorMessage = _.isUndefined(errorMessage) ? 'DISPENSE_KEY_PRINT_FAIL' : errorMessage;
@@ -66,6 +67,7 @@ sntZestStation.controller('zsPickupKeyRegistartionCardPrintCtrl', [
                 $scope.$emit('hideLoader');
                 $scope.showDoneButton = true;
                 var printSuccess = true;
+
                 setMessage(printSuccess);
                 $scope.runDigestCycle();
 
@@ -198,6 +200,7 @@ sntZestStation.controller('zsPickupKeyRegistartionCardPrintCtrl', [
 
             $scope.callAPI(zsCheckinSrv.fetchRegistrationCardPrintData, options);
         };
+
         startPrint();
 
 

@@ -48,11 +48,11 @@ sntZestStation.controller('zsCheckinKeyDispenseCtrl', [
             }
             $scope.setScreenIcon('key');
         }());
+
         $scope.guestDetails = {
             "guestEmail": $stateParams.email
         };
         $scope.guestId = $stateParams.guest_id;
-
 
 
         $scope.first_name = $stateParams.first_name;
@@ -166,7 +166,6 @@ sntZestStation.controller('zsCheckinKeyDispenseCtrl', [
         $scope.thirdPartyMaileSent = function() {
             nextPageActionsForMobileKey();
         };
-
        
 
         /** COLLECT_EMAIL_MODE **/
@@ -181,6 +180,7 @@ sntZestStation.controller('zsCheckinKeyDispenseCtrl', [
             var  stateParams = {
                 'message': 'Email Updation Failed.'
             };
+
             $state.go('zest_station.speakToStaff', stateParams);
         });
 

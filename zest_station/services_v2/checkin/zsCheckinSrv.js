@@ -181,6 +181,7 @@ sntZestStation.service('zsCheckinSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
         this.saveNationality = function(params) {
             var deferred = $q.defer(),
                 url = '/api/guest_details/' + params.guest_id;
+
                 param = {
                     'nationality_id': params.nationality_id
                 };
@@ -419,6 +420,7 @@ sntZestStation.service('zsCheckinSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
             var url = '/api/reservations/update_package';
 
             var data = params;
+
             data.application =  'KIOSK';
 
             zsBaseWebSrv.postJSON(url, data).then(function(data) {
@@ -433,6 +435,7 @@ sntZestStation.service('zsCheckinSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
             var deferred = $q.defer();
             var url = '/api/reservations/delete_package';
             var data = params;
+
             data.application =  'KIOSK';
             
             zsBaseWebSrv.postJSON(url, data).then(function(data) {
@@ -448,6 +451,18 @@ sntZestStation.service('zsCheckinSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
             var url = '/api/upsell_addons_setups';
 
             zsBaseWebSrv.getJSON(url, param).then(function(data) {
+                deferred.resolve(data);
+            }, function(data) {
+                deferred.reject(data);
+            });
+            return deferred.promise;
+        };
+
+        this.fetchRoomUpsellAvailability = function(param) {
+            var deferred = $q.defer();
+            var url = '/api/reservations/' + param.id + '/upsell_availability';
+
+            zsBaseWebSrv.getJSON(url).then(function(data) {
                 deferred.resolve(data);
             }, function(data) {
                 deferred.reject(data);

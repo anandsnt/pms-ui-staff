@@ -28,7 +28,9 @@ angular.module('reportsModule')
                         'ADDON_UPSELLS': ['hasSixMonthsLimit']
                     };
 
-                    var reportName = _.findKey(reportNames, function(value, key) { return value === report['title']; });
+                    var reportName = _.findKey(reportNames, function(value, key) {
+                        return value === report['title'];
+                    });
 
                     if ( !! reportName ) {
                         _.each(flags[reportName], function(flag) {

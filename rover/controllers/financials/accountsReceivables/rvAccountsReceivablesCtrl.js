@@ -10,7 +10,9 @@ sntRover.controller('RVAccountsReceivablesController', ['$scope', '$rootScope', 
      */
     $scope.setScroller('arOverViewScroll', {});
     var refreshArOverviewScroll = function() {
-        setTimeout(function() {$scope.refreshScroller('arOverViewScroll');}, 500);
+        setTimeout(function() {
+            $scope.refreshScroller('arOverViewScroll');
+        }, 500);
     };
 
     refreshArOverviewScroll();

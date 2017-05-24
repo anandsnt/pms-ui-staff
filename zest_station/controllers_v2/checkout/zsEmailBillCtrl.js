@@ -158,6 +158,7 @@ sntZestStation.controller('zsEmailBillCtrl', [
                         'printopted': 'false',
                         'email_sent': 'true',
                     };
+
                     $state.go('zest_station.reservationCheckedOut', stateParams);
                 }
             };
@@ -211,6 +212,16 @@ sntZestStation.controller('zsEmailBillCtrl', [
                 $scope.focusInputField('email_text');
             }
             $scope.printMode = false;// this is for non-standalone
+
+             if ($stateParams.isQuickJump === 'true') {
+                $scope.email = "guest@hotel.com";
+                if ($stateParams.quickJumpMode === 'EMAIL_BILL_GUEST_OPTIONS') {
+                    $stateParams.mode = 'EMAIL_BILL_GUEST_OPTIONS';
+                    $scope.mode = 'EMAIL_BILL_GUEST_OPTIONS';
+                } else {
+                    $scope.mode = 'EMAIL_BILL_EDIT_MODE';
+                }
+            }
 
         }());
 

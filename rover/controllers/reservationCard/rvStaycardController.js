@@ -9,7 +9,9 @@ sntRover.controller('staycardController', ['$scope', '$rootScope', 'RVGuestCardS
 		var delay = 700;
 
 		$scope.staycardReady = false;
-		$timeout(function() { $scope.staycardReady = true; }, delay);
+        $timeout(function() {
+            $scope.staycardReady = true;
+        }, delay);
 
 		$scope.depositPopupData = {};
 		$scope.depositPopupData.hasShown = false;
