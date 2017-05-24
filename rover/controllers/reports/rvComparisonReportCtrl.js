@@ -246,6 +246,8 @@ angular.module('sntRover')
                             }
                         )
                     );
+                    // CICO-40996 - Passing the index of the charge group item for fetching the charge codes
+                    var chargeGroupItemIndex = chargeGroupsCodes.length - 1;
 
                     // fill empty 50 charge codes
                     for (k = 0; k < l; k++) {
@@ -264,7 +266,7 @@ angular.module('sntRover')
                         isEmpty: true,
                         pageOptions: {
                             id: cgEntries[i].charge_group_id.toString(),
-                            api: [ $scope.fetchChargeCodes, i ],
+                            api: [ $scope.fetchChargeCodes, chargeGroupItemIndex],
                             perPage: 50
                         }
                     });
@@ -515,7 +517,7 @@ angular.module('sntRover')
             $scope.ledgerAREntries = _.where(results, { is_ar_ledger: true });
         }
         /*
-         * Total variance 
+         * Total variance
          * @param {array} results fetched data from API
          */
        function ledgerTotalVarianceInit (results) {
@@ -523,7 +525,7 @@ angular.module('sntRover')
             $scope.ledgerTotalVariance = _.where(results, { is_total_variance: true });
         }
         /*
-         * Total closingBalance 
+         * Total closingBalance
          * @param {array} results fetched data from API
          */
         function ledgerTotalClosingBalanceInit (results) {
