@@ -44,6 +44,13 @@ sntRover.controller('roverController', [
       $translate.use('EN');
     }
 
+    // CICO-39623 : Setting up app theme.
+    if ( !!hotelDetails.selected_theme && hotelDetails.selected_theme.value !== 'ORANGE' ) {
+      var appTheme = 'theme-' + (hotelDetails.selected_theme.value).toLowerCase();
+      
+      document.getElementsByTagName("html")[0].setAttribute( 'class', appTheme );
+    }
+
     /*
      * To close drawer on click inside pages
      */
@@ -382,8 +389,10 @@ sntRover.controller('roverController', [
       $scope.hasLoader = true;
     });
 
-    $scope.$on("hideLoader", function() {
-      $scope.hasLoader = false;
+    $scope.$on('hideLoader', function() {
+        $timeout(function() {
+            $scope.hasLoader = false;
+        }, 100);
     });
 
     $scope.$on("SHOW_SIX_PAY_LOADER", function() {
@@ -424,7 +433,7 @@ sntRover.controller('roverController', [
         $scope.menuOpen = false;
         $rootScope.showNotificationForCurrentUser = true;
 
-        if ($rootScope.paymentGateway === "CBA") {
+        if ($rootScope.paymentGateway === "CBA" && sntapp.cordovaLoaded) {
             doCBAPowerFailureCheck();
         }
     };

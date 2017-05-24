@@ -32,7 +32,7 @@ const RateManagerGridViewRootComponent = createClass ({
 			this.leftScrollableElement = $(findDOMNode(this)).find(".pinnedLeft-list")[0];
 		}
 
-		//if the left scroller become invalid
+		// if the left scroller become invalid
 		if(this.leftScroller && this.leftScroller.wrapper instanceof Element && !document.body.contains(this.leftScroller.wrapper)) {
 			this.leftScroller = null;
 		}
@@ -47,7 +47,7 @@ const RateManagerGridViewRootComponent = createClass ({
 			this.rightHeadScrollableElement = $(findDOMNode(this)).find(".calendar-rate-table-days.scrollable")[0];
 		}
 
-		//if the right head scroller become invalid
+		// if the right head scroller become invalid
 		if(this.rightHeadScroller && this.rightHeadScroller.wrapper instanceof Element && !document.body.contains(this.rightHeadScroller.wrapper)) {
 			this.rightHeadScroller = null;
 		}
@@ -67,7 +67,7 @@ const RateManagerGridViewRootComponent = createClass ({
 			this.rightScrollableElement = $(findDOMNode(this)).find(".calendar-rate-table-grid.scrollable")[0];
 		}
 
-		//if the right scroller become invalid
+		// if the right scroller become invalid
 		if(this.rightScroller && this.rightScroller.wrapper instanceof Element && !document.body.contains(this.rightScroller.wrapper)) {
 			this.rightScroller = null;
 		}
@@ -117,9 +117,10 @@ const RateManagerGridViewRootComponent = createClass ({
 					let offsetX = !!scrollTo.offsetX ? scrollTo.offsetX : undefined,
 						offsetY = !!scrollTo.offsetY ? scrollTo.offsetY : undefined;
 
-					//right scroller
+					// right scroller
 					if(!_.isUndefined(scrollTo.col)) {
 						let rightHeadScrollDomNode = '.rate-calendar thead tr th:nth-child(' + scrollTo.col +')';
+
 						this.rightHeadScroller.scrollToElement(rightHeadScrollDomNode, 0, offsetX, offsetY);
 						this.rightHeadScroller.refresh();
 					}
@@ -127,14 +128,16 @@ const RateManagerGridViewRootComponent = createClass ({
 					if(!_.isUndefined(scrollTo.row)) {
 						let commonDomScrollDomNode = 'tr:nth-child(' + scrollTo.row + ')';
 
-						//left scroller
+						// left scroller
 						let leftDomScrollDomNode = '.pinnedLeft-list .rate-calendar tbody ' + commonDomScrollDomNode;
+
 						this.leftScroller.scrollToElement(leftDomScrollDomNode, 0, offsetX, offsetY);
 						this.leftScroller.refresh();
 
 						if(!_.isUndefined(scrollTo.col)) {
 							let rightBottomScrollDomNode = '#rateViewCalendar tbody ' + 
 								commonDomScrollDomNode + ' td:nth-child(' + scrollTo.col +')';
+
 							this.rightScroller.scrollToElement(rightBottomScrollDomNode, 0, offsetX, offsetY);
 							this.rightScroller.refresh();
 						}
@@ -151,7 +154,7 @@ const RateManagerGridViewRootComponent = createClass ({
 
 	render() {
 		if(!this.props.shouldShow) {
-			//this dom node related variables need to invalidate
+			// this dom node related variables need to invalidate
 			this.leftScrollableElement = this.rightScrollableElement = this.rightHeadScrollableElement = null;
 			this.leftScroller = this.rightScroller = this.rightHeaderScroller = null;
 			return false;

@@ -65,7 +65,9 @@ sntRover.controller('rvSelectEntityCtrl', ['$scope', '$rootScope', '$filter', 'R
 		$scope.results.accounts = data.accounts;
 		$scope.results.posting_accounts = [];
 		$scope.results.posting_accounts = data.posting_accounts;
-		setTimeout(function() {$scope.refreshScroller('cards_search_scroller');}, 750);
+        setTimeout(function() {
+            $scope.refreshScroller('cards_search_scroller');
+        }, 750);
 	};
   	/**
   	* function to perform filering on results.
@@ -107,7 +109,9 @@ sntRover.controller('rvSelectEntityCtrl', ['$scope', '$rootScope', '$filter', 'R
 
 				$scope.excludeActivereservationFromsSearch();
 		}
-		setTimeout(function() {$scope.refreshScroller('res_search_scroller');}, 750);
+        setTimeout(function() {
+            $scope.refreshScroller('res_search_scroller');
+        }, 750);
 	};
 
 	/**
