@@ -37,7 +37,6 @@ var GlobalApp = function() {
 
     };
 
-
     // success function of coddova plugin's appending
     this.fetchCompletedOfCordovaPlugins = function() {
         that.cordovaLoaded = true;
@@ -51,15 +50,23 @@ var GlobalApp = function() {
         }
     };
 
-    // success function of coddova plugin's appending
-    this.fetchFailedOfCordovaPlugins = function(errorMessage) {
-        that.cordovaLoaded = false;
-    };
-
-
     this.enableCardSwipeDebug = function() {
         that.cardSwipeDebug = true; // Mark it as true to debug cardSwype opertations
         that.cardReader = new CardOperation();
+    };
+
+    this.reInitCardOperations = function() {
+        var checkDeviceConnection = function() {
+            console.log('deviceready listener...');
+            sntapp.cardReader = new CardOperation();
+            window.setTimeout(function() {
+                document.dispatchEvent(new Event('OBSERVE_FOR_SWIPE'));
+            }, 300);
+            document.removeEventListener("deviceready", checkDeviceConnection, false);
+        };
+
+        sntCordovaInit();
+        document.addEventListener("deviceready", checkDeviceConnection, false);
     };
 };
 

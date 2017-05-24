@@ -169,23 +169,23 @@ sntZestStation.controller('zsRootCtrl', [
             if (currentState === 'zest_station.admin') {
                 
                 if ($scope.softResetCount >= 5) {
-                    if (!$scope.manual_refresh_requested){
+                    if (!$scope.manual_refresh_requested) {
                         // get a more accurate count of refresh requests
                         $scope.trackEvent(currentState, 'manual_refresh_requested');    
                         $scope.manual_refresh_requested = true;
 
                         $scope.hasLoader = true;
                         // quick loading animation so user can see request to refresh was made
-                        $timeout(function(){
+                        $timeout(function() {
                             location.reload(true);
-                        },500)
+                        }, 500);
                         
                     }
                 }  
             }
 
             if ($scope.softResetCount == 2) {
-                $timeout(function(){
+                $timeout(function() {
                     if ($scope.softResetCount == 2) {
                         // when in a local testing environment, we should be able to test all hotel themes
                         // a bit faster, to help with this~
@@ -197,28 +197,54 @@ sntZestStation.controller('zsRootCtrl', [
                         }
 
                     }
-                },750);
+                }, 750);
+            } else if ($scope.softResetCount == 3) {
+                  $timeout(function() {
+                    if ($scope.softResetCount == 3) {
+                        // when in a local testing environment, we should be able to test all hotel themes
+                        // a bit faster, to help with this~
+                        // *activate themeSwitcher (showTemplateList) on Ipad by double-tapping the logo @ admin,
+                        // then, at any screen swipe the icon up or down to change the hotel theme
+                        // !! IMPORTANT !! -> ONLY ALLOW IN DEVELOPMENT ENVIRONMENT, NOT for production
+                        if (!$scope.inProd()) { // ONLY IN DEVELOPMENT ENVIRONMENT !! IMPORTANT !!
+                            zestSntApp.getStateList();// toggle jump list
+                        }
+
+                    }
+                }, 750);
             }
 
-            $timeout(function(){
+            $timeout(function() {
                 $scope.softResetCount = 0;
-            },2200);
+            }, 2200);
         };
         $scope.themeTemplateList = [];
         var initThemeTemplateList = function() {
             $scope.themeTemplateList = [];
-            for(var propertyName in $scope.cssMappings) {
+            for (var propertyName in $scope.cssMappings) {
                 $scope.themeTemplateList.push({
-                    'name':propertyName
+                    'name': propertyName
                 });
             }
+            // sorted list to find themes easier
+            $scope.themeTemplateList.sort(function(a, b) {
+                var nameA = a.name.toLowerCase(), 
+                    nameB = b.name.toLowerCase();
+
+                if (nameA < nameB) // sort string ascending
+                    {return -1;} 
+                if (nameA > nameB)
+                    {return 1;}
+                return 0; // default return value (no sorting)
+            });
+
 
             $scope.zestStationData.showTemplateList = true;
-        }
+        };
 
         $scope.selectThemeFromTemplateList = function(theme) {
-                $scope.zestStationData.showTemplateList = false;
-                $scope.quickSetHotelTheme(theme);
+            $scope.zestStationData.showTemplateList = false;
+            $scope.quickSetHotelTheme(theme);
         }; 
 
 
@@ -226,9 +252,9 @@ sntZestStation.controller('zsRootCtrl', [
         $scope.goToAdmin = function() {
             if ($state.current.name === 'zest_station.admin' && !$scope.inProd()) {
                 $scope.adminBtnPress++;
-                  $timeout(function(){
+                $timeout(function() {
                     $scope.adminBtnPress = 0;
-                },2000);
+                }, 2000);
             } else {
                 $scope.adminBtnPress = 0;
                 $scope.zestStationData.fromAdminButton = true;
@@ -744,6 +770,7 @@ sntZestStation.controller('zsRootCtrl', [
             }
             if ($scope.zestStationData.theme === 'public_v2') {
                 $scope.icons.url.pen = $scope.icons.url.keyboard;
+                $scope.icons.url.checkmark = iconsPath + '/checkmark.svg';
             }
         };
 
