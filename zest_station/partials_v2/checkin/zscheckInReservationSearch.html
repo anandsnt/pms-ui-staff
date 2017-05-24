@@ -101,9 +101,9 @@
         <form method="post" class="form short">
             <div class="entry input" click-touch="showDatePicker(); resetTime();">
                 <!--div ng-include="'/assets/css/icons/date.svg'"></div-->
-                <div ng-include="icons.url.date"></div>
                 <input placeholder="" class="hasDatepicker start-focused" ng-model="reservationParams.date" id="departure-date" readonly>
             </div>
+            <div ng-include="icons.url.date" click-touch="showDatePicker(); resetTime();"></div>
             <div class="entry action">
                 <button type="button" class="button" click-touch="dateEntered()">
                     <text editable-text="NEXT_BTN"> {{'NEXT_BTN' |translate}}</text>

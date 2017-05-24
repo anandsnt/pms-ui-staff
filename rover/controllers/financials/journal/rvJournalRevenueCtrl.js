@@ -4,7 +4,9 @@ sntRover.controller('RVJournalRevenueController', ['$scope', '$rootScope', 'RVJo
 
 	$scope.setScroller('revenue_content', {});
     var refreshRevenueScroller = function() {
-        $timeout(function() {$scope.refreshScroller('revenue_content');}, 500);
+        $timeout(function() {
+            $scope.refreshScroller('revenue_content');
+        }, 500);
     };
 
     var fetchDepartments = function() {

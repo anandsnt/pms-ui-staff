@@ -676,6 +676,7 @@ sntRover.controller('RVCompanyCardArTransactionsCtrl', ['$scope', '$rootScope', 
 			}
 			else {
 				var transaction = $scope.arTransactionDetails.ar_transactions[index];
+
 				transaction.details = [];
 
 				if (!transaction.active) {

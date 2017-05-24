@@ -38,6 +38,7 @@ angular.module('sntPay').controller('payMLIOperationsController',
              */
             var notifyParent = function(tokenDetails) {
                 var paymentData = util.formCCTokenGeneratedParams({...$scope.cardData, ...tokenDetails});
+
                 $scope.$emit(payEvntConst.CC_TOKEN_GENERATED, {
                     paymentData,
                     tokenDetails,
@@ -68,6 +69,7 @@ angular.module('sntPay').controller('payMLIOperationsController',
                     ...swipedCardData,
                     ...swipedCardDataToSave
                 });
+
                 $scope.$emit(payEvntConst.CC_TOKEN_GENERATED, {
                     paymentData,
                     cardData: $scope.cardData,
@@ -101,13 +103,14 @@ angular.module('sntPay').controller('payMLIOperationsController',
             $scope.getMLIToken = function($event) {
                 $event.preventDefault();
 
-                //if swiped data is present
+                // if swiped data is present
                 if (isSwiped) {
                     doSwipedCardActions(swipedCCData);
                     return;
                 }
 
                 var params = util.formParamsForFetchingTheToken($scope.cardData);
+
                 $scope.$emit("showLoader");
                 sntPaymentSrv.fetchMLIToken(params, successCallBackOfGetMLIToken, failureCallBackOfGetMLIToken);
             };
@@ -131,7 +134,7 @@ angular.module('sntPay').controller('payMLIOperationsController',
             // when destroying we have to remove the attached '$on' events
             $scope.$on('destroy', resetCardEventHandler);
 
-            /****************** init ***********************************************/
+            /** **************** init ***********************************************/
 
             (function() {
                 initializeCardData();
@@ -139,7 +142,7 @@ angular.module('sntPay').controller('payMLIOperationsController',
                 $scope.modes = paymentConstants.modes;
 
                 try {
-                    //to set your merchant ID provided by Payment Gateway
+                    // to set your merchant ID provided by Payment Gateway
                     HostedForm.setMerchant($scope.hotelConfig.mliMerchantId);
                 } catch (e) {
                     //

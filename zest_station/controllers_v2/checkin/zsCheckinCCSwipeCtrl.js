@@ -611,7 +611,6 @@ sntZestStation.controller('zsCheckinCCSwipeCtrl', [
 
             $scope.numberOfCordovaCalls = 0;
 
-            $scope.cardReader = new CardOperation();
             initiateiPadCardReader();
         };
 

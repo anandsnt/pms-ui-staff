@@ -306,7 +306,9 @@ sntRover.controller('RVAddonForecastReportByAddonCtrl', [
  			/* LOOP ENDS */
  			$scope.modifiedResults = angular.copy( results );
 
- 			$scope.hasResults = !!( _.find($scope.modifiedResults, function(data) { return data.hasData; }) );
+            $scope.hasResults = !!( _.find($scope.modifiedResults, function(data) {
+                return data.hasData;
+            }) );
  		}
 
  		var init = function() {
