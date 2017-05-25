@@ -523,6 +523,7 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
         $scope.fromDateOptionsThirtyOneDaysLimit = angular.extend({
             onSelect: function(value, datePickerObj) {
                 var selectedDate = new tzIndependentDate(util.get_date_from_date_picker(datePickerObj));
+
                 $scope.toDateOptionsThirtyOneDaysLimit.minDate = selectedDate;
                 $scope.toDateOptionsThirtyOneDaysLimit.maxDate = reportUtils.processDate(selectedDate).thirtyOneDaysAfter;
 
