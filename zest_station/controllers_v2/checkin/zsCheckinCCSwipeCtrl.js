@@ -212,7 +212,6 @@ sntZestStation.controller('zsCheckinCCSwipeCtrl', [
         var goToSwipeError = function() {
             if (atCardSwipeScreen()) {
                 $scope.waitingForSwipe = false;
-                $scope.zestStationData.waitingForSwipe = $scope.waitingForSwipe;
                 $scope.swipeTimeout = false;
                 $scope.swipeError = true;
             }
@@ -287,26 +286,22 @@ sntZestStation.controller('zsCheckinCCSwipeCtrl', [
             $scope.depositAmount = $stateParams.deposit_amount;
             $scope.showSwipeNav = true;
             $scope.waitingForSwipe = true;
-            $scope.zestStationData.waitingForSwipe = $scope.waitingForSwipe;
         };
 
         var setCCAuthSettings = function() {
             $scope.waitingForSwipe = true;
-            $scope.zestStationData.waitingForSwipe = $scope.waitingForSwipe;
             $scope.swipeError = false;
             $scope.swipeTimeout = false;
         };
 
         var swipeTimeoutCC = function() {
             $scope.waitingForSwipe = false;
-            $scope.zestStationData.waitingForSwipe = $scope.waitingForSwipe;
             $scope.swipeError = false;
             $scope.swipeTimeout = true;
         };
 
         var swipeTimeoutDeposit = function() {
             $scope.waitingForSwipe = false;
-            $scope.zestStationData.waitingForSwipe = $scope.waitingForSwipe;
             $scope.swipeError = false;
             $scope.swipeTimeout = true;
         };
@@ -315,7 +310,6 @@ sntZestStation.controller('zsCheckinCCSwipeCtrl', [
             $timeout(function() {
                 $log.log('waiting for swipe..');
                 $scope.waitingForSwipe = true;
-                $scope.zestStationData.waitingForSwipe = $scope.waitingForSwipe;
                 $scope.swipeError = false;
                 $scope.swipeTimeout = false;
             }, 1000);
