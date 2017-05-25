@@ -217,7 +217,8 @@ sntZestStation.directive('editableText', [function() {
                         // append a new text-input field
                         // so the old element (text-label) does not lose its angular translation listeners
 
-                        $(el).parent().append($inputField);
+                        $(el).parent()
+                            .append($inputField);
                         // hide the old element so it appears the element is replaced 
                         // with an input field
 
