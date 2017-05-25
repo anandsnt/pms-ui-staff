@@ -110,7 +110,7 @@ sntZestStation.controller('zsRootCtrl', [
             if (hotelLanguages.languages.length > 0){
                 var codeForLang, locales = zsGeneralSrv.refToLatestPulledTranslations;
                 $scope.tagInEdit = {
-                    language:{}// each lang will have a boundTags array for its html
+                    language:{}// each lang code will return have tags with values
                 };
 
                 for (var i in hotelLanguages.languages){
