@@ -1515,6 +1515,7 @@ sntRover.controller('reservationDetailsController',
      	$scope.guestIdData.docID = '12312';
      	$scope.guestIdData.docExpiry = '11/20';
      	$scope.guestIdData.showingIdFront = true;
+     	$scope.guestIdData.hasScannedDoc = true;
  		$scope.guestIdData.imgFrontSrc = '/assets/images/sample_passport.png';
  		$scope.guestIdData.imgBackSrc = '/assets/images/sample_passport_back.png';
 
