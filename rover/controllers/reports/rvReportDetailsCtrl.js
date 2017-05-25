@@ -63,6 +63,12 @@ sntRover.controller('RVReportDetailsCtrl', [
 		$scope.parsedApiFor = undefined;
 		$scope.currencySymbol = $rootScope.currencySymbol;
 
+		// CICO-39558 - Setting flags for commission print.
+		$scope.printTACommissionFlag = {
+			'summary': false,
+			'agent': false
+		};
+
         var setTotalsForReport = function(totals) {
                 var totalsForReport = [], v;
 
@@ -739,7 +745,7 @@ sntRover.controller('RVReportDetailsCtrl', [
 				case reportNames['TRAVEL_AGENT_COMMISSIONS']:
 					$scope.hasReportTotals    = true;
 					$scope.showReportHeader   = true;
-					$scope.showPrintOption = false;
+					$scope.showPrintOption = true;
 					$scope.detailsTemplateUrl  = '/assets/partials/reports/travelAgentCommission/rvTravelAgentCommissionReportRow.html';
 					break;
 
@@ -1097,6 +1103,7 @@ sntRover.controller('RVReportDetailsCtrl', [
                 case reportNames['BUSINESS_ON_BOOKS']:
                 case reportNames['COMPLIMENTARY_ROOM_REPORT']:
                 case reportNames['GROUP_ROOMS_REPORT']:
+                case reportNames['TRAVEL_AGENT_COMMISSIONS']:
 
 					orientation = 'landscape';
 					break;
@@ -1121,6 +1128,11 @@ sntRover.controller('RVReportDetailsCtrl', [
 
 			// add the orientation
 			addPrintOrientation();
+
+			// CICO-39558
+			if ($scope.chosenReport.title === reportNames['TRAVEL_AGENT_COMMISSIONS']) {
+				$scope.printTACommissionFlag.summary = true;
+            };
 
 			/**
 			 * CICO-32471: icons are background image they are loaded async after render
@@ -1159,6 +1171,11 @@ sntRover.controller('RVReportDetailsCtrl', [
 
 					// remove the orientation
 					removePrintOrientation();
+
+					// CICO-39558
+					if ($scope.chosenReport.title === reportNames['TRAVEL_AGENT_COMMISSIONS']) {
+						$scope.printTACommissionFlag.summary = false;
+		            };
 
 					// If a specific report ctrl has created a pre-print 'afterPrint' method
 					// to get clear/remove anything after print
