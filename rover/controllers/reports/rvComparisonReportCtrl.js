@@ -266,7 +266,7 @@ angular.module('sntRover')
                         isEmpty: true,
                         pageOptions: {
                             id: cgEntries[i].charge_group_id.toString(),
-                            api: [ $scope.fetchChargeCodes, chargeGroupItemIndex, i ],
+                            api: [ $scope.fetchChargeCodes, chargeGroupItemIndex],
                             perPage: 50
                         }
                     });
