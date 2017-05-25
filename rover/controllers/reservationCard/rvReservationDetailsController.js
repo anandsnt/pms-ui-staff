@@ -1496,15 +1496,8 @@ sntRover.controller('reservationDetailsController',
      	// TODO: link with proper HTML once complete from design team
      	//       fetch guest id data with front+back images from API using (guest id / reservation id for primary guest?)
      	var guest;
-     	if (isPrimaryGuest){
-     		guest = guestData;
-     		
-     	} else {
-     		guest = guestData;
-     	}
-
+ 		$scope.guestIdData.isPrimaryGuest = isPrimaryGuest;
      	$scope.guestIdData = guest;
-     	$scope.guestIdData.isPrimaryGuest = isPrimaryGuest;
      	
      	// TODO: Link with API doc type
      	$scope.guestIdData.idType = 'Passport';
