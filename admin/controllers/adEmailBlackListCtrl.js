@@ -113,16 +113,17 @@ admin.controller('ADEmailBlackListCtrl', ['$scope', '$state', 'ADEmailBlackListS
     /*
    * To delete an email
    */
-   $scope.deleteEmail = function(index) {
-
-		var param = $scope.emailList[index].id;
+   $scope.deleteEmail = function(id) {
     	var successCallbackDelete = function() {
     		$scope.$emit('hideLoader');
+			var index = _.indexOf($scope.emailList, _.find($scope.emailList, function(email) {
+				return email.id === id;
+			}));
     		$scope.emailList.splice(index, 1);
     		$scope.tableParams.reload();
     	};
 
-    	$scope.invokeApi(ADEmailBlackListSrv.deleteBlacklistedEmail, param, successCallbackDelete);
+    	$scope.invokeApi(ADEmailBlackListSrv.deleteBlacklistedEmail, id, successCallbackDelete);
     };
 	/*
     * To handle click event
