@@ -28,13 +28,16 @@
 	</a>
 
 	<div class="actions">
-		<a id="upgrade-btn" ng-click="goToRoomUpgrades()"
-		   class="button with-icon grey"
-		   ng-class="{'brand-colors' : shouldEnableUpgradeButton()}">
-    		<span class="icons {{shouldEnableUpgradeButton() ? 'icon-upgrade' : 'icon-blocked'}}"
-				  ng-if="isUpsellAvailabilityKnown"></span>
-    		Upgrade
-  		</a>
+		<button ng-if="showUpgradeButton" type="button"
+				class="button with-icon"
+				ng-click="goToRoomUpgrades()"
+				ng-disabled="reservationData.reservation_card.is_upsell_available !== 'true'"
+				ng-class="{	'loading-content': !isUpsellAvailabilityKnown,
+							'brand-colors': reservationData.reservation_card.is_upsell_available === 'true',
+							'content-unavailable': reservationData.reservation_card.is_upsell_available !== 'true'}">
+			<span class="icons {{reservationData.reservation_card.is_upsell_available === 'true' ? 'icon-upgrade' : 'icon-content-unavailable'}}"></span>
+			Upgrade
+		</button>
 
   		<a ng-hide="!showKeysButton(reservationData.reservation_card.reservation_status)" ng-show="showKeysButton(reservationData.reservation_card.reservation_status)" click-touch="clickedIconKey()" id="add-keys" class="button with-icon blue"> <!-- Add attribute data-position="bottom-right" if QR is to be shown -->
     		<span class="icons icon-key"></span>

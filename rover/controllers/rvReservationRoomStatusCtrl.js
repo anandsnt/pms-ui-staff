@@ -115,12 +115,17 @@ angular.module('sntRover').controller('reservationRoomStatus',
         };
 
         $scope.addHasButtonClass = function(reservationStatus) {
-            // CICO-22356 Since the upgrade button is to be shown always, the default class would be has-button.
-            if ($scope.showKeysButton(reservationStatus)) {
-                return "has-buttons";
+            var isUpgradeButtonShown = !hideUpgradeButton() && $scope.isFutureReservation(reservationStatus);
+
+            if (isUpgradeButtonShown && $scope.showKeysButton(reservationStatus)) {
+                return 'has-buttons';
             }
 
-            return "has-button";
+            if (isUpgradeButtonShown || $scope.showKeysButton(reservationStatus)) {
+                return 'has-button';
+            }
+
+            return '';
         };
 
         $scope.$on('clickedIconKeyFromQueue', function() {
@@ -226,18 +231,14 @@ angular.module('sntRover').controller('reservationRoomStatus',
 	};
 
         $scope.goToRoomUpgrades = function() {
-            if ($scope.shouldEnableUpgradeButton()) {
-                var cannotMoveState = $scope.reservationData.reservation_card.cannot_move_room &&
-                    $scope.reservationData.reservation_card.room_number !== '';
+            var cannotMoveState = $scope.reservationData.reservation_card.cannot_move_room &&
+                $scope.reservationData.reservation_card.room_number !== '';
 
-                $state.go('rover.reservation.staycard.upgrades', {
-                    reservation_id: $scope.reservationData.reservation_card.reservation_id,
-                    clickedButton: "upgradeButton",
-                    cannot_move_room: cannotMoveState
-                });
-            } else {
-                return false;
-            }
+            $state.go('rover.reservation.staycard.upgrades', {
+                reservation_id: $scope.reservationData.reservation_card.reservation_id,
+                clickedButton: "upgradeButton",
+                cannot_move_room: cannotMoveState
+            });
         };
 
 	/**
@@ -354,20 +355,37 @@ angular.module('sntRover').controller('reservationRoomStatus',
         $rootScope.viaSharerPopup = true;
     });
 
+        var hideUpgradeButton = function() {
+            return $scope.hasAnySharerCheckedin() || $scope.reservationData.reservation_card.is_suite || $rootScope.isHourlyRateOn;
+        };
+
         /**
          * initiation
          * @returns {undefined}
          */
         (function() {
-            $scope.callAPI(RVReservationSummarySrv.checkUpsellAvailability, {
-                loader: 'NONE',
-                params: $scope.reservationData.reservation_card.reservation_id,
-                successCallBack: function(isUpsellAvailable) {
-                    $scope.isUpsellAvailabilityKnown = true;
-                    $scope.reservationData.reservation_card.is_upsell_available = isUpsellAvailable;
-                }
-            });
+            /**
+             * NOTE CICO-22356
+             * the upgrade button is shown only if ALL the following cases are true
+             * 1. if the reservationStatus is 'RESERVED' OR 'CHECKING_IN'
+             * 2. if NOT reservationData.reservation_card.is_suite
+             * 3. if NOT $rootScope.isHourlyRateOn
+             * 4. if NOT $scope.hasAnySharerCheckedin()
+             *
+             * Hence, the api/reservations/:reservationId/upsell_availability call is made only if ALL the above conditions are TRUE
+             */
+            if (!hideUpgradeButton() && $scope.isFutureReservation($scope.reservationData.reservation_card.reservation_status)) {
+                $scope.showUpgradeButton = true;
+                $scope.callAPI(RVReservationSummarySrv.checkUpsellAvailability, {
+                    loader: 'NONE',
+                    params: $scope.reservationData.reservation_card.reservation_id,
+                    successCallBack: function(isUpsellAvailable) {
+                        $scope.isUpsellAvailabilityKnown = true;
+                        $scope.reservationData.reservation_card.is_upsell_available = isUpsellAvailable;
+                    }
+                });
+            }
         })();
 
-
-}]);
+    }]
+);
