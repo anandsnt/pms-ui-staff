@@ -27,6 +27,7 @@ sntZestStation.directive('editableText', [function() {
             tag: '=tag'
         },
         link: function(scope, element, attrs) {
+            var rootScope;
 
             var editorUpdateString = function($inputField, withText) {
                 var stringToAdd = withText;
@@ -40,11 +41,12 @@ sntZestStation.directive('editableText', [function() {
                 var afterAddedStr = position + stringToAdd.length;
 
                 $($inputField)[0].setSelectionRange(afterAddedStr, afterAddedStr);
-            }
+            };
 
             var listeningOn = [];
-            var addListeners = function(el, fnToFire, scope) {
-                var listen = false;
+            var addListeners = function(el, fnToFire) {
+                var listen = false, tag;
+
                 if (attrs.editableText) {
                     tag = $.trim(attrs.editableText);
                     if (listeningOn.indexOf(tag) === -1) {
@@ -65,9 +67,9 @@ sntZestStation.directive('editableText', [function() {
                     // press-and-hold for 1 sec listener
 
                     $(el).on('mousedown', function() {
-                            pressHoldtimeoutId = setTimeout(fnToFire, 1000);
+                        pressHoldtimeoutId = setTimeout(fnToFire, 1000);
 
-                        })
+                    })
                         .on('mouseup mouseleave', function() {
                             clearTimeout(pressHoldtimeoutId);
 
@@ -81,7 +83,7 @@ sntZestStation.directive('editableText', [function() {
             };
             var parentIsButton = function(element) {
                 return $(element).parent()[0].nodeName === 'BUTTON';
-            }
+            };
 
             var getElType = function(element) {
                 // fixes an issue with press-hold on empty-text buttons which user still will see the button
@@ -89,18 +91,16 @@ sntZestStation.directive('editableText', [function() {
                 if (hasParent(element) && parentIsButton(element)) {
                     return 'BUTTON';
 
-                } else {
-                    if (element[0].parentElement) {
-                        return element[0].parentElement.nodeName;
-                    } else {
-                        return;
-                    }
+                } 
+                if (element[0].parentElement) {
+                    return element[0].parentElement.nodeName;
                 }
+                
             };
 
             var isNavButtonType = function(element) {
                 return element[0].parentElement.parentElement.nodeName === 'BUTTON';
-            }
+            };
 
             var getRootScope = function(element) {
 
@@ -123,11 +123,11 @@ sntZestStation.directive('editableText', [function() {
                     // then request came from popup or element from zsRoot.html, which is outside parent scope
                     return element.scope();
                 }
-            }
+            };
 
             var editorModeIsEnabled = function(rootScope) {
                 return rootScope.editorModeEnabled === 'true';
-            }
+            };
 
             var turnOFFTags = function(scope) {
                 scope.$parent.$broadcast('TOGGLE_LANGUAGE_TAGS', 'off');
@@ -159,7 +159,7 @@ sntZestStation.directive('editableText', [function() {
                 } else if (event.keyCode === 13) { // press enter, saves content
                     save();
                 }
-            }
+            };
             var listenForStringUpdate = function($inputField, elType, isNavButton, save) {
 
                 if (elType === 'BUTTON' || isNavButton) {
@@ -173,7 +173,7 @@ sntZestStation.directive('editableText', [function() {
                     });
                 }
 
-            }
+            };
 
 
             var textEditor = function() {
@@ -181,8 +181,8 @@ sntZestStation.directive('editableText', [function() {
                 // 
                 var elType = getElType(element); // button or text(span/li/text element)
 
-                var rootScope,
-                    scope,
+                var scope,
+                    currentValue,
                     isNavButton = isNavButtonType(element);
 
                 rootScope = getRootScope(element);

@@ -107,27 +107,28 @@ sntZestStation.controller('zsRootCtrl', [
         };
 
         var setupLanguageTranslations = function() {
-            if (hotelLanguages.languages.length > 0){
+            if (hotelLanguages.languages.length > 0) {
                 var codeForLang, locales = zsGeneralSrv.refToLatestPulledTranslations;
+
                 $scope.tagInEdit = {
-                    language:{}// each lang code will return have tags with values
+                    language: {}// each lang code will return have tags with values
                 };
 
-                for (var i in hotelLanguages.languages){
+                for (var i in hotelLanguages.languages) {
                     codeForLang = hotelLanguages.languages[i].code;
-                    if (locales[codeForLang]){
+                    if (locales[codeForLang]) {
                         $scope.tagInEdit.language[codeForLang] = locales[codeForLang];
                     }
                 }
             }
-        }
+        };
 
 
-        $scope.getTagValue = function(tag){
+        $scope.getTagValue = function(tag) {
             var currentLanguageCode = $scope.currentLanguageCode;
-            var tagValue = $scope.tagInEdit.language[currentLanguageCode][tag];
+
             return $scope.tagInEdit.language[currentLanguageCode][tag];
-        }
+        };
 
 		/**
 		 * [navToPrev and close button description]
@@ -217,7 +218,7 @@ sntZestStation.controller('zsRootCtrl', [
                     }
                 }, 750);
             } else if ($scope.softResetCount == 3) {
-                  $timeout(function() {
+                $timeout(function() {
                     if ($scope.softResetCount == 3) {
                         // when in a local testing environment, we should be able to test all hotel themes
                         // a bit faster, to help with this~
@@ -1682,8 +1683,8 @@ sntZestStation.controller('zsRootCtrl', [
 			// call Zest station settings API
             $scope.zestStationData = zestStationSettings;
             $scope.zestStationData.hotelLanguages = hotelLanguages.languages;
-            if (hotelLanguages){
-               setupLanguageTranslations();
+            if (hotelLanguages) {
+                setupLanguageTranslations();
             }
             $rootScope.isStandAlone = zestStationSettings.is_standalone;
             $scope.zestStationData.check_in_collect_passport = false;// TODO: link with admin setting

@@ -639,7 +639,7 @@ sntZestStation.controller('zsCheckinCCSwipeCtrl', [
             $scope.setScreenIcon('card');
 
             $log.warn('$stateParams: ', $stateParams);
-            if ($stateParams.deposit_amount){// for debugging detect the deposit/swipe amount
+            if ($stateParams.deposit_amount) {// for debugging detect the deposit/swipe amount
                 $scope.zestStationData.pending_deposit_amount = $stateParams.deposit_amount;
             }
             // if at the deposit screen, set the currency symbol and amount due, which should be passed from reservation details
