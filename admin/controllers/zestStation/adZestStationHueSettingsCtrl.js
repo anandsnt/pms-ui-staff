@@ -54,7 +54,7 @@ admin.controller('adZestStationHueSettingsCtrl', ['$scope', '$rootScope', '$stat
 			try {
 				bridge = hue.bridge($scope.hueSettings.hue_bridge_ip)
 			} catch (e) {
-				$scope.errorMessage = ['Error finding bridges'];
+				$scope.errorMessage = ['Error creating bridge'];
 				scrollTop();
 				return;
 			};
@@ -63,20 +63,19 @@ admin.controller('adZestStationHueSettingsCtrl', ['$scope', '$rootScope', '$stat
 			try {
 				user = bridge.user($scope.hueSettings.hue_user_name)
 			} catch (e) {
-				$scope.errorMessage = ['Error finding bridges'];
+				$scope.errorMessage = ['Error creating user'];
 				scrollTop();
 				return;
 			};
 		};
 
-		var checkIfBridgeAndUserArePresent = function() {
-
-			if (!bridge) {
-				createBridge();
-			}
-			if (bridge && !user) {
-				createNewUser();
-			}
+		/**
+		 * [checkIfBridgeAndUser create new user and bridge each time so as to check with latest settings at any time]
+		 * @return {[type]} [description]
+		 */
+		var checkIfBridgeAndUser = function() {
+			createBridge();
+			createNewUser();
 		};
 
 		$scope.createNewUser = function() {
@@ -101,18 +100,23 @@ admin.controller('adZestStationHueSettingsCtrl', ['$scope', '$rootScope', '$stat
 
 
 		$scope.getLightsList = function() {
-			checkIfBridgeAndUserArePresent();
+			checkIfBridgeAndUser();
 			$scope.availableLights = [];
 			user.getLights().then(function(lightsData) {
-				for (var key in lightsData) {
-					if (lightsData.hasOwnProperty(key)) {
-						console.log(key + " -> " + lightsData[key].name + " " + lightsData[key].type);
-						$scope.availableLights.push({
-							id: key,
-							name: lightsData[key].name,
-							type: lightsData[key].type,
-							reachable: lightsData[key].state.reachable
-						});
+				if (lightsData.error) {
+					$scope.errorMessage = ['Sorry, someting went wrong. Please check the lights connections'];
+					scrollTop();
+				} else {
+					for (var key in lightsData) {
+						if (lightsData.hasOwnProperty(key)) {
+							console.log(key + " -> " + lightsData[key].name + " " + lightsData[key].type);
+							$scope.availableLights.push({
+								id: key,
+								name: lightsData[key].name,
+								type: lightsData[key].type,
+								reachable: lightsData[key].state.reachable
+							});
+						}
 					}
 				}
 				runDigestCycle();
@@ -124,7 +128,7 @@ admin.controller('adZestStationHueSettingsCtrl', ['$scope', '$rootScope', '$stat
 		};
 
 		$scope.turnONLight = function() {
-			checkIfBridgeAndUserArePresent();
+			checkIfBridgeAndUser();
 			user.setLightState($scope.hueSettings.hue_test_light_id, {
 				on: true
 			}).then(function(data) {
@@ -142,7 +146,7 @@ admin.controller('adZestStationHueSettingsCtrl', ['$scope', '$rootScope', '$stat
 
 		};
 		$scope.turnOFFLight = function() {
-			checkIfBridgeAndUserArePresent();
+			checkIfBridgeAndUser();
 			user.setLightState($scope.hueSettings.hue_test_light_id, {
 				on: false
 			}).then(function(data) {
