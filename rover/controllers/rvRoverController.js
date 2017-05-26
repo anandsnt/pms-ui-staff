@@ -158,7 +158,7 @@ sntRover.controller('roverController', [
     $rootScope.sendConfirmationLetter = hotelDetails.send_confirmation_letter;
     $rootScope.isItemInventoryOn    = hotelDetails.is_item_inventory_on;
 
-    //#CICO-41410
+    // CICO-41410
     $rootScope.isDashboardSwipeEnabled = hotelDetails.enable_dashboard_swipe;
 
     // need to set some default timeout
