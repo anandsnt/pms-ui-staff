@@ -186,9 +186,9 @@ admin.controller('ADUserDetailsCtrl',
 		var unwantedKeys = [];
 
 		if ($scope.image.indexOf("data:") !== -1) {
-			unwantedKeys = ["departments", "roles"];
+			unwantedKeys = ["departments", "roles", 'is_multi_property'];
 		} else {
-			unwantedKeys = ["departments", "roles", "user_photo"];
+			unwantedKeys = ["departments", "roles", "user_photo", 'is_multi_property'];
 		}
 		var userRoles = [];
 
