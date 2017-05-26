@@ -200,6 +200,11 @@ admin.controller('ADUserDetailsCtrl',
 
 
 		$scope.data.user_roles = userRoles;
+
+        if ($scope.data.is_chain_admin === undefined || $scope.data.is_chain_admin === null) {
+            $scope.data.is_chain_admin = false;
+        }
+
 		var data = dclone($scope.data, unwantedKeys);
 		// Remove user_photo field if image is not uploaded. Checking base64 encoded data exist or not
 

@@ -159,6 +159,13 @@
 
 				</fieldset>
 				<fieldset class="holder left">
+		           	<div class="entry full-width">
+						<label for="chainAdmin" >{{'CHAIN_ADMIN'|translate}}<strong > * </strong></label>
+		                <div class="switch-button single {{buttonClass}}" ng-class="{'on': data.is_chain_admin? !isChecked: isChecked}">
+							<input type="checkbox"  ng-checked="data.is_chain_admin" ng-model="data.is_chain_admin">
+							<span class="switch-icon"></span>
+						</div>
+		            </div>
 					<div class="entry full-width">
 							<label for="defaultdashboard" >{{'DEFAULT_DASHBOARD'|translate}}<strong > * </strong></label>
 		                <div class="select">
