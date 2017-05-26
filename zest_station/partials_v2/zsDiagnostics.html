@@ -48,6 +48,11 @@
         <span ng-show='inChromeApp && !inElectron'>Windows App (C)</span>
         <span ng-show='inElectron'>Windows App (E)</span>
         <span ng-show='!isIpad && !inChromeApp'>Web Browser</span>
+        <br>
+
+        <!-- Credit Card Swipe Amount Requested -->
+        <span ng-show='zestStationData.waitingForSwipe'>Swipe for {{zestStationData.pending_deposit_amount}}</span>
+
     </span>
 
 
