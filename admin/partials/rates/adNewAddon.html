@@ -199,7 +199,7 @@
                     </h3>
                 </div>
                 <ad-toggle-button div-class="full-width" label="{{'EXCLUDE_FROM_RATE' | translate}}" is-checked="singleAddon.allow_rate_exclusions"></ad-toggle-button>
-                <section ng-show="singleAddon.allow_rate_exclusions">
+                <section ng-if="singleAddon.allow_rate_exclusions">
                     <div class="entry has-sortable no-margin-right">
                         <label class="center_align">
                             <em class="rate_roomtype_text">Available Rates</em>
