@@ -270,7 +270,7 @@ sntZestStation.controller('zsHomeCtrl', [
             $scope.zestStationData.keyCardInserted = false;
             $scope.zestStationData.makingKey = '';
             $scope.zestStationData.makingAdditionalKey = false;
-            
+            $scope.zestStationData.waitingForSwipe = false;
 
 			// list of languages configured for this hotel
             var combinedList = _.partition(languages.languages, {

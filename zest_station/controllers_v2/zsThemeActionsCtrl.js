@@ -75,10 +75,7 @@ sntZestStation.controller('zsThemeActionsCtrl', [
         };
 
         var isASpecialCase = function(theme) {
-            if (theme === 'public_v2') {
-                return true;
-            }
-            return false;
+            return theme === 'public_v2';
         };
         var setHotelBasedTheme = function(theme) {
 			/*
