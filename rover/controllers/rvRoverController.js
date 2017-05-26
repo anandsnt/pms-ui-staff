@@ -157,6 +157,10 @@ sntRover.controller('roverController', [
     $rootScope.printConfirmationLetter = hotelDetails.print_confirmation_letter;
     $rootScope.sendConfirmationLetter = hotelDetails.send_confirmation_letter;
     $rootScope.isItemInventoryOn    = hotelDetails.is_item_inventory_on;
+
+    //#CICO-41410
+    $rootScope.isDashboardSwipeEnabled = hotelDetails.enable_dashboard_swipe;
+
     // need to set some default timeout
     // discuss with Mubarak
 
@@ -518,27 +522,31 @@ sntRover.controller('roverController', [
         });
     };
 
-    // subemenu actions
+        // subemenu actions
+        $scope.subMenuAction = function(subMenu) {
+            $scope.toggleDrawerMenu();
 
-    $scope.subMenuAction = function(subMenu) {
+            if (subMenu === 'postcharges') {
+                openPostChargePopup();
+            }
+            else if (subMenu === 'endOfDay') {
+                openEndOfDayPopup();
+            }
+            else if (subMenu === 'adminSettings') {
+                // CICO-9816 bug fix - Akhila
+                $('body').addClass('no-animation');
 
-      $scope.toggleDrawerMenu();
+                // CICO-41410 Set card readers to offline
+                if (sntapp.cordovaLoaded && 'rv_native' === sntapp.browser) {
+                    sntapp.cardReader.stopReader();
+                }
 
-      if (subMenu === "postcharges") {
-        openPostChargePopup();
-      }
-      else if (subMenu === "endOfDay") {
-        openEndOfDayPopup();
-      }
-      else if (subMenu === "adminSettings") {
-            // CICO-9816 bug fix - Akhila
-            $('body').addClass('no-animation');
-            $window.location.href = "/admin/h/" + sntAuthorizationSrv.getProperty();
-      }
-      else if (subMenu === "changePassword") {
-         openUpdatePasswordPopup();
-      }
-    };
+                $window.location.href = '/admin/h/' + sntAuthorizationSrv.getProperty();
+            }
+            else if (subMenu === 'changePassword') {
+                openUpdatePasswordPopup();
+            }
+        };
 
     // in order to prevent url change(in rover specially coming from admin/or fresh url entering with states)
     // (bug fix to) https://stayntouch.atlassian.net/browse/CICO-7975
