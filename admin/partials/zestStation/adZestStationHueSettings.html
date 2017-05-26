@@ -1,4 +1,4 @@
-<ad-common-parts-in-form-dir on-save-button-click="saveZestMobileAppMarketingDetails" header-caption="Hue Settings">
+<ad-common-parts-in-form-dir on-save-button-click="saveSettings" header-caption="Hue Settings">
     <fieldset class="holder full-width">
         <ad-form-sub-title title="DISCOVER_HUE_BRIDGE_INSTRUCTIONS"></ad-form-sub-title>
         <div class="entry full-width">
@@ -6,30 +6,30 @@
         </div>
         <div ng-show="availableBridges.length > 0" class="entry half-width">
             <table class="grid">
-                <col width="40%">
+                <!-- <col width="40%"> -->
                 <col width="30%">
-                <col width="30%">
+                <!-- <col width="30%"> -->
                 <thead>
-                    <th class="header">{{'ID' | translate}}</th>
+                    <!-- <th class="header">{{'ID' | translate}}</th> -->
                     <th class="header">{{'IP_ADDRESS' | translate}}</th>
-                    <th class="header">{{'NAME' | translate}}</th>
+                    <!-- <th class="header">{{'NAME' | translate}}</th> -->
                 </thead>
                 <tbody>
                     <tr ng-repeat="bridge in availableBridges">
-                        <td>{{bridge.id}}</td>
+                        <!-- <td>{{bridge.id}}</td> -->
                         <td>
                             {{bridge.internalipaddress}}
                         </td>
-                        <td>
+                        <!--   <td>
                             {{bridge.name}}
-                        </td>
+                        </td> -->
                     </tr>
                 </tbody>
             </table>
         </div>
     </fieldset>
     <fieldset class="holder full-width">
-        <ad-textbox value="data.room_ready_email_subject" name="app-name" id="app-name" label="Enter target Bridge IP" styleclass="half-width"></ad-textbox>
+        <ad-textbox value="hueSettings.hue_bridge_ip" name="app-name" id="app-name" label="Target Bridge IP" styleclass="half-width"></ad-textbox>
     </fieldset>
     <fieldset class="holder full-width">
         <ad-form-sub-title title="HUE_USER_NAME_INSTRUCTIONS"></ad-form-sub-title>
@@ -39,10 +39,13 @@
         <div class="entry full-width" ng-show="newUsername.length > 0">
             {{'NEW_USER_NAME_IS' | translate}} - {{newUsername}}
         </div>
-        <ad-textbox value="hueSettings.user_name" name="app-name" id="app-name" label="Enter User Name" styleclass="half-width"></ad-textbox>
+        <ad-textbox value="hueSettings.hue_user_name" name="app-name" id="app-name" label="User Name" styleclass="half-width"></ad-textbox>
+    </fieldset>
+    <fieldset class="holder full-width">
+        <ad-form-title form-title="Test Settings"></ad-form-title>
+        <ad-form-sub-title title="TEST_SETTINGS_INSTRUCTIONS"></ad-form-sub-title>
     </fieldset>
     <fieldset class="holder left">
-        <ad-form-title form-title="Test Settings"></ad-form-title>
         <div class="entry full-width">
             <button translate="" ng-click="getLightsList()" class="button green" translate="">GET_LIGHTS</button>
         </div>
@@ -51,10 +54,12 @@
                 <col width="10%">
                 <col width="20%">
                 <col width="30%">
+                <col width="20%">
                 <thead>
                     <th class="header">Id</th>
                     <th class="header">type</th>
                     <th class="header">Name</th>
+                    <th class="header">Reachable</th>
                 </thead>
                 <tbody>
                     <tr ng-repeat="light in availableLights">
@@ -65,19 +70,21 @@
                         <td>
                             {{light.name}}
                         </td>
+                        <td>
+                            {{light.reachable}}
+                        </td>
                     </tr>
                 </tbody>
             </table>
         </div>
     </fieldset>
     <fieldset class="holder left">
-        <ad-textbox value="data.room_ready_email_subject" name="app-name" id="app-name" label="Enter required light ID" styleclass="full-width"></ad-textbox>
+        <ad-textbox value="hueSettings.hue_test_light_id" name="app-name" id="app-name" label="light ID" placeholder="Enter the ID of light to test" styleclass="full-width"></ad-textbox>
         <div class="entry">
-            <button translate="" ng-click="clickExcludeRateCode()" class="button green" translate="">TURN_ON_LIGHT</button>
+            <button translate="" ng-click="turnONLight()" class="button green" translate="">TURN_ON_LIGHT</button>
         </div>
         <div class="entry">
-            <button translate="" ng-click="clickExcludeRateCode()" class="button red" translate="">TURN_OFF_LIGHT</button>
+            <button translate="" ng-click="turnOFFLight()" class="button red" translate="">TURN_OFF_LIGHT</button>
         </div>
-    </fieldset>
     </fieldset>
 </ad-common-parts-in-form-dir>
