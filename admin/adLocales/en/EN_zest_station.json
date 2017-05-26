@@ -114,7 +114,17 @@
 "STATION_MOBILE_PHONE_KEY_EMAIL_HEADER":"Get Mobile Phone Key Email",
 "STATION_MOBILE_PHONE_KEY_EMAIL_SETUP":"Setup Mobile Phone Key Email",
 
-"TEXT_1_MOBILE_PHONE_KEY_EMAIL": "Text"
+"TEXT_1_MOBILE_PHONE_KEY_EMAIL": "Text",
+
+"DISCOVER_HUE_BRIDGE_INSTRUCTIONS": "There can be multiple Hue Bridges in the network.If you don't know the required bridge IP address, please click discover bridges button to list the available IPs of the connected bridges. If you already know the IP address, please fill in the Bridge IP filed.",
+"DISCOVER_BRIDGES": "DISCOVER BRIDGES",
+"IP_ADDRESS": "IP address",
+"HUE_USER_NAME_INSTRUCTIONS": "If you don't have a Hue username, please click link button on top of the bridge (big round button) and click on create user name button below. Once user name is created, please copy and paste the username in the  user name field.  If you already have a username, please Enter the user name in the User Name field.",
+"CREATE_USER_NAME": "Create User Name",
+"NEW_USER_NAME_IS": "NEW USER NAME IS",
+"GET_LIGHTS": "GET LIGHTS LIST",
+"TURN_ON_LIGHT": "Turn ON light",
+"TURN_OFF_LIGHT": "Turn OFF light"
 
 
 
