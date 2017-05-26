@@ -3,17 +3,17 @@
 <section id="main" class="centered" role="main"  click-touch='resetTime()'>
      <div id="content" class='details-content'>
         <h1 ng-hide="zestStationData.theme === 'public_v2'">
-            <text editable-text="SEL_RES_HEADER"> {{'SEL_RES_HEADER' |translate}}</text>
+            <text data-ng-bind-html="getTagValue('SEL_RES_HEADER')" editable-text="SEL_RES_HEADER"></text>
         </h1>
         <div id="labels">
             <span class="label" ng-hide="zestStationData.theme === 'public_v2'">
-                <text editable-text="SEL_RES_HEADER"> {{'SEL_RES_HEADER' |translate}}</text>
+                <text data-ng-bind-html="getTagValue('SEL_RES_HEADER')" editable-text="SEL_RES_HEADER"></text>
             </span>
             <h1 class="label select-res-heading" ng-show="zestStationData.theme === 'public_v2'">
-                <text editable-text="SEL_RES_HEADER"> {{'SEL_RES_HEADER' |translate}}</text>
+                <text data-ng-bind-html="getTagValue('SEL_RES_HEADER')" editable-text="SEL_RES_HEADER"></text>
             </h1>
             <span class="label" ng-hide="zestStationData.theme === 'public_v2'">
-                <text editable-text="SEL_RES_CO_DATE_ROOM_TYPE"> {{'SEL_RES_CO_DATE_ROOM_TYPE' |translate}}</text>
+                <text data-ng-bind-html="getTagValue('SEL_RES_CO_DATE_ROOM_TYPE')" editable-text="SEL_RES_CO_DATE_ROOM_TYPE"></text>
             </span>
         </div>
 
@@ -29,7 +29,11 @@
 
                     <strong class="name">{{reservation.guest_details[0].last_name}}, {{reservation.guest_details[0].first_name}}</strong>
                     <div class="date">
-                        {{reservation.departure_date | date:dateFormat}} ({{reservation.stay_dates.length-1}} <text editable-text="FIND_RESERVATION_HOURLY_NIGHTLY"> {{'FIND_RESERVATION_HOURLY_NIGHTLY' |translate}}</text>)
+                        {{reservation.departure_date | date:dateFormat}} 
+                        (
+                        {{reservation.stay_dates.length-1}} 
+                        <text data-ng-bind-html="getTagValue('FIND_RESERVATION_HOURLY_NIGHTLY')" editable-text="FIND_RESERVATION_HOURLY_NIGHTLY"></text>
+                        )
                         <!--span>{{reservation.room_type}}</span-->
                         <span>{{reservation.stay_dates[0].room_type}}</span>
                     </div>
@@ -38,11 +42,11 @@
         </ul>
         <div id="actions" class='select-reservation selectPagingBtns'> <!-- If showing only "Next" button, add class "align-right". When showing only "Previous" button, or both buttons, remove that class -->
             <button type="button" class="button transparent prev" touch-press='moveToPreviousPage()' ng-show="currentPage !==1">
-                <text editable-text="SEL_RES_LAST"> {{'SEL_RES_LAST' |translate}}</text>
+                <text data-ng-bind-html="getTagValue('SEL_RES_LAST')" editable-text="SEL_RES_LAST"></text>
             </button>
             <label >{{currentPage}} / {{totalPages}}</label>
             <button type="button" class="button transparent next" touch-press='moveToNextPage()' ng-show="currentPage !== totalPages">
-                <text editable-text="SEL_RES_NEXT"> {{'SEL_RES_NEXT' |translate}}</text>
+                <text data-ng-bind-html="getTagValue('SEL_RES_NEXT')" editable-text="SEL_RES_NEXT"></text>
             </button>
         </div>
     </div>

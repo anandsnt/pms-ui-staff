@@ -6,10 +6,10 @@
         </div>
         
         <h1>
-        	<text editable-text="OOS_HEADER"> {{'OOS_HEADER' |translate}}</text>
+            <text data-ng-bind-html="getTagValue('OOS_HEADER')" editable-text="OOS_HEADER"></text>
     	</h1>
         <h2>
-        	<text editable-text="OOS_SUB"> {{'OOS_SUB' |translate}}</text>
+            <text data-ng-bind-html="getTagValue('OOS_SUB')" editable-text="OOS_SUB"></text>
         </h2>
     </div>
 <span ng-include="'/assets/partials_v2/zsTabletFooter.html'" ></span>

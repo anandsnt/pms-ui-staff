@@ -95,8 +95,6 @@ sntZestStation.controller('zsRootCtrl', [
         $scope.runDigestCycle = function() {
             if (!$scope.$$phase) {
                 $scope.$digest();
-            } else {
-                return;
             }
         };
 		// used for making keys, checking if there is text in the locale, to hide/show the key #, 
@@ -105,10 +103,31 @@ sntZestStation.controller('zsRootCtrl', [
             if (!value) {
                 return true;
             }
-            if ($filter('translate')(value) === '') {
-                return true;
+            return $filter('translate')(value) === '';
+        };
+
+        var setupLanguageTranslations = function() {
+            if (hotelLanguages.languages.length > 0) {
+                var codeForLang, locales = zsGeneralSrv.refToLatestPulledTranslations;
+
+                $scope.tagInEdit = {
+                    language: {}// each lang code will return have tags with values
+                };
+
+                for (var i in hotelLanguages.languages) {
+                    codeForLang = hotelLanguages.languages[i].code;
+                    if (locales[codeForLang]) {
+                        $scope.tagInEdit.language[codeForLang] = locales[codeForLang];
+                    }
+                }
             }
-            return false;
+        };
+
+
+        $scope.getTagValue = function(tag) {
+            var currentLanguageCode = $scope.currentLanguageCode;
+
+            return $scope.tagInEdit.language[currentLanguageCode][tag];
         };
 
 		/**
@@ -199,7 +218,7 @@ sntZestStation.controller('zsRootCtrl', [
                     }
                 }, 750);
             } else if ($scope.softResetCount == 3) {
-                  $timeout(function() {
+                $timeout(function() {
                     if ($scope.softResetCount == 3) {
                         // when in a local testing environment, we should be able to test all hotel themes
                         // a bit faster, to help with this~
@@ -1664,6 +1683,9 @@ sntZestStation.controller('zsRootCtrl', [
 			// call Zest station settings API
             $scope.zestStationData = zestStationSettings;
             $scope.zestStationData.hotelLanguages = hotelLanguages.languages;
+            if (hotelLanguages) {
+                setupLanguageTranslations();
+            }
             $rootScope.isStandAlone = zestStationSettings.is_standalone;
             $scope.zestStationData.check_in_collect_passport = false;// TODO: link with admin setting
             $scope.zestStationData.showTemplateList = false; // Only for ipad in dev environment, switch themes fast like in chrome (dashboard view)
@@ -1681,6 +1703,7 @@ sntZestStation.controller('zsRootCtrl', [
             $scope.zestStationData.workstationStatus = '';
             $scope.zestStationData.wsIsOos = false;
             $scope.showLanguagePopup = false;
+            $scope.zestStationData.waitingForSwipe = false;
 			// create a websocket obj
             $scope.socketOperator = new webSocketOperations(socketOpenedSuccess, socketOpenedFailed, socketActions);
             fetchHotelSettings();
