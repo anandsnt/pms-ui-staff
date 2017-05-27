@@ -1723,8 +1723,9 @@ sntZestStation.controller('zsRootCtrl', [
             $scope.zestStationData.consecutiveKeyFailure = 0;
             listenForOptionSelectionByKeyboard();
             $scope.cardReader = new CardOperation();
-
-
+            
+            $scope.zestStationData.makingKey = '';
+            $scope.zestStationData.makingAdditionalKey = false;
         }());
     }
 ]);
