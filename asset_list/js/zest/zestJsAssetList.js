@@ -38,6 +38,7 @@ module.exports = {
 
 				],
 				nonMinifiedFiles: [
+					jsLibRoot + 'jsHue/js-hue.js',
 					jsLibRoot + 'iscroll.js',
 					jsLibRoot + 'ng-iscroll.js',
 					jsLibRoot + 'Utils.js',

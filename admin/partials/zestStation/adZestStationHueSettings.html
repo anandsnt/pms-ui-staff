@@ -1,5 +1,6 @@
 <ad-common-parts-in-form-dir on-save-button-click="saveSettings" header-caption="Hue Settings">
     <fieldset class="holder full-width">
+        <ad-toggle-button is-checked="hueSettings.kiosk_is_hue_active" div-class="full-width" label="{{ 'USE_HUE' | translate}}"></ad-toggle-button>
         <ad-form-sub-title title="DISCOVER_HUE_BRIDGE_INSTRUCTIONS"></ad-form-sub-title>
         <div class="entry full-width">
             <button translate="" ng-click="discoverBridges()" class="button green" translate="">DISCOVER_BRIDGES</button>

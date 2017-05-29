@@ -291,6 +291,8 @@ sntZestStation.controller('zsAdminCtrl', [
                     'status': $scope.zestStationData.workstationStatus,
                     'reason': $scope.zestStationData.workstationOooReason
                 });
+                // set new Light ID
+                $scope.zestStationData.selected_light_id = station.hue_light_id;
                 var workStationstorageKey = 'snt_zs_workstation';
 
                 localStorage.setItem(workStationstorageKey, $scope.savedSettings.kiosk.workstation.station_identifier);

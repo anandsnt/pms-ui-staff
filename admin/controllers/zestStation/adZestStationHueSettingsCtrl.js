@@ -70,10 +70,10 @@ admin.controller('adZestStationHueSettingsCtrl', ['$scope', '$rootScope', '$stat
 		};
 
 		/**
-		 * [checkIfBridgeAndUser create new user and bridge each time so as to check with latest settings at any time]
+		 * [createNewBridgeAndUser create new user and bridge each time so as to check with latest settings at any time]
 		 * @return {[type]} [description]
 		 */
-		var checkIfBridgeAndUser = function() {
+		var createNewBridgeAndUser = function() {
 			createBridge();
 			createNewUser();
 		};
@@ -100,7 +100,7 @@ admin.controller('adZestStationHueSettingsCtrl', ['$scope', '$rootScope', '$stat
 
 
 		$scope.getLightsList = function() {
-			checkIfBridgeAndUser();
+			createNewBridgeAndUser();
 			$scope.availableLights = [];
 			user.getLights().then(function(lightsData) {
 				if (lightsData.error) {
@@ -128,7 +128,7 @@ admin.controller('adZestStationHueSettingsCtrl', ['$scope', '$rootScope', '$stat
 		};
 
 		$scope.turnONLight = function() {
-			checkIfBridgeAndUser();
+			createNewBridgeAndUser();
 			user.setLightState($scope.hueSettings.hue_test_light_id, {
 				on: true
 			}).then(function(data) {
@@ -146,7 +146,7 @@ admin.controller('adZestStationHueSettingsCtrl', ['$scope', '$rootScope', '$stat
 
 		};
 		$scope.turnOFFLight = function() {
-			checkIfBridgeAndUser();
+			createNewBridgeAndUser();
 			user.setLightState($scope.hueSettings.hue_test_light_id, {
 				on: false
 			}).then(function(data) {

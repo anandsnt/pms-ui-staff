@@ -116,6 +116,7 @@
 
 "TEXT_1_MOBILE_PHONE_KEY_EMAIL": "Text",
 
+"USE_HUE": "USE HUE",
 "DISCOVER_HUE_BRIDGE_INSTRUCTIONS": "There can be multiple Hue Bridges in the network. If you don't know the required bridge IP address, please click discover bridges button to list the available IPs of the connected bridges. If you already know the IP address, please fill in the Bridge IP field.",
 "DISCOVER_BRIDGES": "DISCOVER BRIDGES",
 "IP_ADDRESS": "Available Bridge IP addresses",
