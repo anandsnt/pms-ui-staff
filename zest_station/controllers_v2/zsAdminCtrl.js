@@ -100,10 +100,12 @@ sntZestStation.controller('zsAdminCtrl', [
                         isLightTurnedOn = true;
                         $log.info('Light with ID ' + selectedWorkstationLightId + ' is turned ON');
                     }
-                }).catch(function(e) {
+                })
+                .catch(function(e) {
+                    $log.error(e);
                     $log.info('Some thing went wrong while trying to turn ON Light with ID - ' + $scope.zestStationData.selected_light_id + '. Make sure this light is correctly connected and is reachable');
                 });
-            };
+            }
         };
 
         var turnOffLight = function() {
@@ -114,15 +116,17 @@ sntZestStation.controller('zsAdminCtrl', [
                     on: false
                 }).then(function(data) {
                     if (data[0].error) {
-                        $log.error('Light with ID ' + selectedWorkstationLightId+ ' is unreachable.');
+                        $log.error('Light with ID ' + selectedWorkstationLightId + ' is unreachable.');
                     } else {
                         isLightTurnedOn = false;
                         $log.info('Light with ID ' + selectedWorkstationLightId + ' is turned OFF');
                     }
-                }).catch(function(e) {
+                })
+                .catch(function(e) {
+                    $log.error(e);
                     $log.info('Some thing went wrong while trying to turn OFF Light with ID - ' + $scope.zestStationData.selected_light_id + '. Make sure this light is correctly connected and is reachable');
                 });
-            };
+            }
         };
 
         // if workstation changes -> change printer accordingly
@@ -130,11 +134,11 @@ sntZestStation.controller('zsAdminCtrl', [
             var selectedWorkStation = _.find($scope.zestStationData.workstations, function(workstation) {
                 return workstation.id == $scope.workstation.selected;
             });
-            selectedWorkstationLightId = selectedWorkStation.hue_light_id;
-            if(isLightTurnedOn){
-                turnOffLight();
-            }
 
+            selectedWorkstationLightId = selectedWorkStation.hue_light_id;
+            if (isLightTurnedOn) {
+                turnOffLight(); // turn off light, if is in ON state
+            }
             setPrinterLabel(selectedWorkStation.printer);
             $scope.setEncoderDiagnosticInfo(selectedWorkStation.name, selectedWorkStation.key_encoder_id); // in diagnostic info display the encoder name + id
         };

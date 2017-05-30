@@ -1,4 +1,4 @@
-admin.controller('adZestStationHueSettingsCtrl', ['$scope', '$rootScope', '$state', '$stateParams', 'ADZestStationSrv', 'kioskSettings','$log',
+admin.controller('adZestStationHueSettingsCtrl', ['$scope', '$rootScope', '$state', '$stateParams', 'ADZestStationSrv', 'kioskSettings', '$log',
 	function($scope, $state, $rootScope, $stateParams, ADZestStationSrv, kioskSettings, $log) {
 
 		BaseCtrl.call(this, $scope);
@@ -92,13 +92,15 @@ admin.controller('adZestStationHueSettingsCtrl', ['$scope', '$rootScope', '$stat
 			bridge.createUser('snt#app').then(function(data) {
 				// extract bridge-generated username from returned data
 				var username = data[0].success.username;
+
 				$scope.newUsername = username;
 				// instantiate user object with username
 				user = bridge.user(username);
 				runDigestCycle();
 			})
 			.catch(function(e) {
-				$scope.errorMessage = ['Sorry, someting went wrong when creating new user. Please make sure that you have clicked the link button on the Hue bridge.'];
+				$scope.errorMessage = ['Sorry, someting went wrong while creating a new user name. Please note that you have to click the link button on the Hue bridge before creating a new user name.'];
+				$log.error(e);
 				scrollTop();
 				return;
 			});
