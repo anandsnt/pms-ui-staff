@@ -2732,7 +2732,9 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
             source: function(request, response) {
                 $scope.$emit( 'showLoader' );
                 var selectedReport = $scope.selectedReport.report;
-                var requestParams = {};
+                var requestParams = {},
+                    fromKey = '',
+                    toKey = '';
 
                 requestParams.q = request.term;
 
