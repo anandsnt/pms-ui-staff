@@ -25,7 +25,8 @@
         "getJqDateFormat": false,
         "CardReaderCtrl": false,
         "sntCordovaInit": false,
-        "CardOperation": false
+        "CardOperation": false,
+        "jsHue": false
     },
     "installedESLint":true,
     "parserOptions":{
