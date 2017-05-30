@@ -1,6 +1,6 @@
 <table id="users_list_table" class="grid datatable table" ng-table="tableParams" template-pagination="custom/pager">
 	<tr ng-repeat="user in $data">
-		<td data-title="'Name'" sortable="'name'"><a ui-sref="admin.userdetails({ page: 'edit', id: user.id, hotelId: hotelId, isUnlocking: false })"  class="title">{{user.full_name}} </a>
+		<td data-title="'Name'" sortable="'name'"><a class="title">{{user.full_name}} </a>
 		<em class="login">{{user.hotel_name}}, {{user.city}}</em>
 		<span ng-if="user.hotel_id===homeHotelId" class="chain-home-hotel">Home</span>
 		</td>
