@@ -1132,7 +1132,7 @@ sntRover.controller('RVReportDetailsCtrl', [
 			// CICO-39558
 			if ($scope.chosenReport.title === reportNames['TRAVEL_AGENT_COMMISSIONS']) {
 				$scope.printTACommissionFlag.summary = true;
-            };
+            }
 
 			/**
 			 * CICO-32471: icons are background image they are loaded async after render
@@ -1175,7 +1175,7 @@ sntRover.controller('RVReportDetailsCtrl', [
 					// CICO-39558
 					if ($scope.chosenReport.title === reportNames['TRAVEL_AGENT_COMMISSIONS']) {
 						$scope.printTACommissionFlag.summary = false;
-		            };
+		            }
 
 					// If a specific report ctrl has created a pre-print 'afterPrint' method
 					// to get clear/remove anything after print
