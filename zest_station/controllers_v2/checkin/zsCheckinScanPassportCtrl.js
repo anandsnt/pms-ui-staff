@@ -191,6 +191,8 @@ sntZestStation.controller('zsCheckinScanPassportCtrl', [
 
             } else if ($scope.mode === 'ADMIN_VERIFY_PASSPORTS') {
                 $log.log('continue or unable to complete check-in');
+                // TODO: Turn Light OFF + redirect to next screen in flow
+                // 
                 
             } else {
                 if ($scope.mode === 'ADMIN_LOGIN_ID') {
@@ -218,17 +220,35 @@ sntZestStation.controller('zsCheckinScanPassportCtrl', [
         };
 
         $scope.selectedReservation = {};
+        $scope.gidImgSrcPath = '/assets/images/';
+
         $scope.selectedReservation.guest_details = [
             {
-                'last_name': 'fuller',
-                'first_name': 'mike',
+                'last_name': 'Sample',
+                'first_name': 'Connor',
+                'full_name':'Connor Sample',
+                'docID':'1234567',
+
+                'dob':'14-02-2014',
+                'docExpiry':'03/2010',
+                'nationality':'USA',
+                'city':'Montgomery',
+
+                'img_path':'sample_passport.png',
                 'id': 1232,
-                'passport_reviewed_status': $filter('translate')('GID_STAFF_REVIEW_SUCCESS'),
+                'passport_reviewed_status': $filter('translate')('GID_STAFF_REVIEW_ACCEPTED'),
                 'passport_scan_status': $filter('translate')('SCAN_PASSPORT_SUCCESS')
             }, {
                 'last_name': 'walberg',
-                'id': 1231,
                 'first_name': 'mark',
+
+                'dob':'14-02-2014',
+                'docExpiry':'11/20',
+                'nationality':'Slovakian',
+                'city':'Bethesda',
+
+                'id': 1231,
+                'img_path':'sample_passport.png',
                 'passport_reviewed_status': $filter('translate')('GID_STAFF_REVIEW_NOT_STARTED'),
                 'passport_scan_status': $filter('translate')('SCAN_PASSPORT_NOT_STARTED')
             }
@@ -236,10 +256,73 @@ sntZestStation.controller('zsCheckinScanPassportCtrl', [
         $scope.AddGuestMode = false;
         $scope.showRemoveButton = false;
 
+        var validatePassportsView = function(){
+            var hasIDNeedingReview = false;
+            for (var gid in $scope.selectedReservation.guest_details){
+                if (gid.passport_reviewed_status === $filter('translate')('GID_STAFF_REVIEW_NOT_STARTED')){
+                    hasIDNeedingReview = true;
+                }
+            }
+
+            $scope.allPassportReviewed = !hasIDNeedingReview;
+        }
+        $scope.staffUserToken = '';
+
+        var onSuccessAdminReview = function(){
+            console.log('on success admin review passport');
+            if ($scope.acceptedPassport) {
+                $scope.selectedPassportInfo.passport_reviewed_status = $filter('translate')('GID_STAFF_REVIEW_ACCEPTED');    
+            } else {
+                $scope.selectedPassportInfo.passport_reviewed_status = $filter('translate')('GID_STAFF_REVIEW_REJECTED');
+            }
+            
+            $scope.selectedPassport = false;
+            $scope.mode = 'ADMIN_VERIFY_PASSPORTS';
+
+            validatePassportsView();
+        };
+
+        var onFailAdminReview = function(){
+            console.log('on fail admin review passport');
+        };
+
+        $scope.acceptPassport = function() {
+            $scope.acceptedPassport = true;
+            var options = {
+                params: {
+                    'staffUserToken': $scope.staffUserToken,
+                    'accept': $scope.acceptedPassport,
+                    'passportData':$scope.selectedPassportInfo
+                },
+                successCallBack: onSuccessAdminReview,
+                failureCallBack: onFailAdminReview
+            };
+
+            $scope.callAPI(zsCheckinSrv.acceptPassport, options);
+
+        };
+
+        $scope.rejectPassport = function() {
+            $scope.acceptedPassport = false;
+            var options = {
+                params: {
+                    'staffUserToken': $scope.staffUserToken,
+                    'accept': $scope.acceptedPassport,
+                    'passportData':$scope.selectedPassportInfo
+                },
+                successCallBack: onSuccessAdminReview,
+                failureCallBack: onFailAdminReview
+            };
+
+            $scope.callAPI(zsCheckinSrv.acceptPassport, options);
+
+        };
+
         /**
          * [initializeMe description]
          */
         var initializeMe = (function() {
+            $scope.setScroller('gid');
             // show back button
             $scope.$emit(zsEventConstants.HIDE_BACK_BUTTON);
             // show close button

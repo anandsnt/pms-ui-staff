@@ -1492,6 +1492,7 @@ sntRover.controller('reservationDetailsController',
       * show the guest id / passport when clicked "guest id" button from manage additional guests view
       */
      $scope.showScannedGuestID = function(isPrimaryGuest, guestData) {
+     	// $scope.guestIdData.showScannedGuestID, must be present for the guestID button to be enabled
      	// CICO-38714
      	// TODO: link with proper HTML once complete from design team
      	//       fetch guest id data with front+back images from API using (guest id / reservation id for primary guest?)

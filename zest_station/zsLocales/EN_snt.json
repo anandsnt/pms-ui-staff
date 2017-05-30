@@ -558,12 +558,16 @@
 
 
 
-   "GID_STAFF_REVIEW_SUCCESS": "Accepted",
+   "GID_STAFF_REVIEW_ACCEPTED": "Accepted",
+   "GID_STAFF_REVIEW_REJECTED": "Rejected",
    "GID_STAFF_REVIEW_NOT_STARTED": "Not Reviewed",
 
 
-   "GID_VERIFY_PASSPORT_SUB": "Reservation Details",
+   "GID_VERIFY_PASSPORT_SUB": "",
    "GID_VERIFY_PASSPORT": "Verify Passport",
+
+   "GID_VERIFY_PASSPORT_ACCEPT": "Accept",
+   "GID_VERIFY_PASSPORT_REJECT": "Reject",
 
    "GID_ADMIN_PWD_SUB": "Enter your password",
    "GID_ADMIN_ID_SUB": "Enter your login ID",
