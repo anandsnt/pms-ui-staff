@@ -1,9 +1,11 @@
 sntZestStation.controller('zsAdminCtrl', [
     '$scope',
-    '$state', 'zsEventConstants', 'zsGeneralSrv', 'zsLoginSrv', '$window', '$rootScope', '$timeout',
-    function($scope, $state, zsEventConstants, zsGeneralSrv, zsLoginSrv, $window, $rootScope, $timeout) {
+    '$state', 'zsEventConstants', 'zsGeneralSrv', 'zsLoginSrv', '$window', '$rootScope', '$timeout', '$log',
+    function($scope, $state, zsEventConstants, zsGeneralSrv, zsLoginSrv, $window, $rootScope, $timeout, $log) {
 
         BaseCtrl.call(this, $scope);
+        var  isLightTurnedOn = false; // initially consider the HUE light status to be turned OFF.
+        var selectedWorkstationLightId = '';
 
         // hide nav buttons in login mode
         var hideNavButtons = function() {
@@ -74,6 +76,7 @@ sntZestStation.controller('zsAdminCtrl', [
             if (typeof selectedWorkStation !== 'undefined') {
                 $scope.workstation.selected = parseInt(selectedWorkStation.id);
                 $scope.workstation.printer = selectedWorkStation.printer;
+                selectedWorkstationLightId = selectedWorkStation.hue_light_id;
             } else {
                 $scope.workstation.selected = '';
                 $scope.workstation.printer = '';
@@ -84,11 +87,53 @@ sntZestStation.controller('zsAdminCtrl', [
             // do nothing as no workstation was set
         }
 
+        var turnOnLight = function() {
+            if (_.isUndefined($scope.zestStationData.hueUser)) {
+                $log.error('No Hue User present');
+            } else {
+                $scope.zestStationData.hueUser.setLightState(selectedWorkstationLightId, {
+                    on: true
+                }).then(function(data) {
+                    if (data[0].error) {
+                        $log.error('Light with ID ' + selectedWorkstationLightId + ' is unreachable.');
+                    } else {
+                        isLightTurnedOn = true;
+                        $log.info('Light with ID ' + selectedWorkstationLightId + ' is turned ON');
+                    }
+                }).catch(function(e) {
+                    $log.info('Some thing went wrong while trying to turn ON Light with ID - ' + $scope.zestStationData.selected_light_id + '. Make sure this light is correctly connected and is reachable');
+                });
+            };
+        };
+
+        var turnOffLight = function() {
+            if (_.isUndefined($scope.zestStationData.hueUser)) {
+                $log.error('No Hue User present');
+            } else {
+                $scope.zestStationData.hueUser.setLightState(selectedWorkstationLightId, {
+                    on: false
+                }).then(function(data) {
+                    if (data[0].error) {
+                        $log.error('Light with ID ' + selectedWorkstationLightId+ ' is unreachable.');
+                    } else {
+                        isLightTurnedOn = false;
+                        $log.info('Light with ID ' + selectedWorkstationLightId + ' is turned OFF');
+                    }
+                }).catch(function(e) {
+                    $log.info('Some thing went wrong while trying to turn OFF Light with ID - ' + $scope.zestStationData.selected_light_id + '. Make sure this light is correctly connected and is reachable');
+                });
+            };
+        };
+
         // if workstation changes -> change printer accordingly
         $scope.worksStationChanged = function() {
             var selectedWorkStation = _.find($scope.zestStationData.workstations, function(workstation) {
                 return workstation.id == $scope.workstation.selected;
             });
+            selectedWorkstationLightId = selectedWorkStation.hue_light_id;
+            if(isLightTurnedOn){
+                turnOffLight();
+            }
 
             setPrinterLabel(selectedWorkStation.printer);
             $scope.setEncoderDiagnosticInfo(selectedWorkStation.name, selectedWorkStation.key_encoder_id); // in diagnostic info display the encoder name + id
@@ -440,6 +485,13 @@ sntZestStation.controller('zsAdminCtrl', [
             }
         };
 
+        $scope.toggleLight = function() {
+            if (isLightTurnedOn) {
+                turnOffLight();
+            } else {
+                turnOnLight();
+            }
+        };
         $scope.testRunMobileKeyCheckin = function() {
             // save settings then go to the demo area
             var demoRunStarted = true;

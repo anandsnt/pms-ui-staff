@@ -1688,25 +1688,19 @@ sntZestStation.controller('zsRootCtrl', [
                 setupLanguageTranslations();
             }
             if ($scope.zestStationData.kiosk_is_hue_active) {
+                var hue = jsHue();
                 try {
                     bridge = hue.bridge($scope.zestStationData.hue_bridge_ip);
                 } catch (e) {
-                    $log.warn('Error creating HUE bridge with bridge IP => '+ $scope.zestStationData.hue_bridge_ip);
+                    $log.error(e);
+                    $log.warn('Error creating HUE bridge with bridge IP => ' + $scope.zestStationData.hue_bridge_ip);
                 };
                 try {
                     $scope.zestStationData.hueUser = bridge.user($scope.zestStationData.hue_user_name);
                 } catch (e) {
-                    $log.warn('Error creating HUE user with user name => '+$scope.zestStationData.hue_user_name);
+                    $log.error(e);
+                    $log.warn('Error creating HUE user with user name => ' + $scope.zestStationData.hue_user_name);
                 };
-                // Now use following code to control lights
-                
-                // $scope.zestStationData.hueUser.setLightState($scope.zestStationData.selected_light_id, {
-                //     on: true
-                // }).then(function(data) {
-                //     $log.info('Light with ID '+$scope.zestStationData.selected_light_id+ 'is turned ON');
-                // }).catch(function(e) {
-                //     $log.info('Some thing went wrong while trying to turn ON Light with ID - ' + $scope.zestStationData.selected_light_id + '. Make sure this light is correctly connected and is reachable');
-                // });
             }
             $rootScope.isStandAlone = zestStationSettings.is_standalone;
             $scope.zestStationData.check_in_collect_passport = false;// TODO: link with admin setting
