@@ -236,6 +236,7 @@ admin.controller('ADDeviceMappingsCtrl', ['ngTableParams', '$scope', '$state', '
                 "is_out_of_order": $scope.mapping.is_out_of_order,
                 "key_encoder_id": $scope.mapping.selectedKeyEncoder,
                 "emv_terminal_id": $scope.mapping.selectedEmvTerminal,
+                "hue_light_id": $scope.mapping.hue_light_id,
                 "key_encoder_description": $scope.getKeyEncoderDescription($scope.mapping.selectedKeyEncoder)
             };
 
@@ -252,7 +253,7 @@ admin.controller('ADDeviceMappingsCtrl', ['ngTableParams', '$scope', '$state', '
 
             $scope.currentClickedElement = -1;
             $scope.isEditMode = false;
-            $scope.loadTable();
+            $scope.tableParams.reload();
         };
 
         $scope.saveWorkstation = function(workstation) {
@@ -289,6 +290,7 @@ admin.controller('ADDeviceMappingsCtrl', ['ngTableParams', '$scope', '$state', '
                 $scope.mapping.refresh_station = false;
             }
             data.refresh_station = $scope.mapping.refresh_station;
+            data.hue_light_id = $scope.mapping.hue_light_id;
             // CICO-10506 //zest station
             if (!$scope.mapping.is_out_of_order) {
                 $scope.mapping.is_out_of_order = false;

@@ -24,6 +24,7 @@ module.exports = {
 				jsLibRoot + 'spectrum.js'		
 			],
 			nonMinifiedFiles: [
+				jsLibRoot + 'jsHue/js-hue.js',
 				jsLibRoot + 'sortable.js',				
 				jsLibRoot + 'angular-multi-select.js',
 				jsLibRoot + 'iscroll.js', 
