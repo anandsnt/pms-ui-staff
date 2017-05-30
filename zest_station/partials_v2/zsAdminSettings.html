@@ -1,10 +1,16 @@
 <!-- login an cancel mode -->
 <section id="main" class="centered" role="main" click-touch='resetTime()' ng-show="mode === 'login-mode'">
     <div id="content">
-        <h1>{{'ADMIN_HEADER' | translate}}</h1>
+        <h1>
+            <text data-ng-bind-html="getTagValue('ADMIN_HEADER')" editable-text="ADMIN_HEADER"></text>
+        </h1>
         <!-- Admin -->
-        <button type="button" class="button done-btn" touch-press="loginAdmin()">{{'ADMIN_LOGIN' | translate}}</button>
-        <button type="button" class="button done-btn transparent" touch-press="navToPrev()">{{'ADMIN_EXIT' | translate}}</button>
+        <button type="button" class="button done-btn" touch-press="loginAdmin()">
+            <text data-ng-bind-html="getTagValue('ADMIN_LOGIN')" editable-text="ADMIN_LOGIN"></text>
+        </button>
+        <button type="button" class="button done-btn transparent" touch-press="navToPrev()">
+            <text data-ng-bind-html="getTagValue('ADMIN_EXIT')" editable-text="ADMIN_EXIT"></text>
+        </button>
     </div>
     <span ng-include="'/assets/partials_v2/zsTabletFooter.html'"></span>
 </section>
@@ -19,7 +25,9 @@
                 <input type="text" placeholder="" ng-focus="showOnScreenKeyboard('input_text')" click-touch="showOnScreenKeyboard('input_text')" ng-model="input.inputTextValue" enter-press="goToNext()" id="input_text" touch-press/>
             </div>
             <div class="entry action">
-                <button type="button" class="button" touch-press='goToNext()' ng-class="{'overlay': input.inputTextValue.length < 1}">{{'NEXT_BTN' |translate}}</button>
+                <button type="button" class="button" touch-press='goToNext()' ng-class="{'overlay': input.inputTextValue.length < 1}">
+                    <text data-ng-bind-html="getTagValue('NEXT_BTN')" editable-text="NEXT_BTN"></text>
+                </button>
             </div>
         </form>
         <!-- password -->
@@ -28,11 +36,15 @@
                 <input type="password" placeholder="" ng-focus="showOnScreenKeyboard('password_text')" click-touch="showOnScreenKeyboard('password_text')" ng-model="input.inputTextValue" enter-press="goToNext()" id="password_text" touch-press/>
             </div>
             <div class="entry action">
-                <button type="button" class="button" touch-press='goToNext()' ng-class="{'overlay': input.inputTextValue.length < 1}">{{'NEXT_BTN' |translate}}</button>
+                <button type="button" class="button" touch-press='goToNext()' ng-class="{'overlay': input.inputTextValue.length < 1}">
+                    <text data-ng-bind-html="getTagValue('NEXT_BTN')" editable-text="NEXT_BTN"></text>
+                </button>
             </div>
         </form>
         <div class="entry action" ng-show='adminLoginError'>
-            <button type="button" class="button centered-exit done-btn" touch-press='clickedOnCloseButton(); resetTime()'>{{'EXIT_BTN' |translate}}</button>
+            <button type="button" class="button centered-exit done-btn" touch-press='clickedOnCloseButton(); resetTime()'>
+                <text data-ng-bind-html="getTagValue('EXIT_BTN')" editable-text="EXIT_BTN"></text>
+            </button>
         </div>
     </div>
     <span ng-include="'/assets/partials_v2/zsTabletFooter.html'" click-touch='resetTime()'></span>

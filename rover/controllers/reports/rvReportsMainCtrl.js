@@ -521,12 +521,13 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 
         // CICO-34733 - Added for Group Rooms report
         $scope.fromDateOptionsThirtyOneDaysLimit = angular.extend({
-            minDate: new tzIndependentDate($rootScope.businessDate),
             onSelect: function(value, datePickerObj) {
                 var selectedDate = new tzIndependentDate(util.get_date_from_date_picker(datePickerObj));
 
                 $scope.toDateOptionsThirtyOneDaysLimit.minDate = selectedDate;
                 $scope.toDateOptionsThirtyOneDaysLimit.maxDate = reportUtils.processDate(selectedDate).thirtyOneDaysAfter;
+
+                $scope.touchedReport.untilDate = $scope.toDateOptionsThirtyOneDaysLimit.maxDate;
             }
         }, datePickerCommon);
 
