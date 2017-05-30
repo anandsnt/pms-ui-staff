@@ -56,6 +56,16 @@ sntZestStation.controller('zsCheckinScanPassportCtrl', [
         };
 
 
+        var setScroller = function(SCROLL_NAME) {
+            $scope.setScroller(SCROLL_NAME, {
+                probeType: 3,
+                tap: true,
+                preventDefault: false,
+                scrollX: false,
+                scrollY: true
+            });
+        };
+
         var onPassportScanfailure = function() {
             $scope.mode = 'SCAN_FAILURE';
             $log.log('mode: ', $scope.mode);
@@ -95,11 +105,15 @@ sntZestStation.controller('zsCheckinScanPassportCtrl', [
 
             } else {
                 // verify passport
-                $scope.mode = 'ADMIN_VERIFY_PASSPORT_VIEW';
+                $scope.mode = 'ADMIN_VERIFY_PASSPORT_VIEW';                
+
+                $timeout(function(){
+                    // scroller setup
+                    refreshScroller();
+                },0);
             }
 
         };
-
 
         $scope.scan = function() {
             $scope.mode = 'SCANNING_IN_PROGRESS';
@@ -279,6 +293,7 @@ sntZestStation.controller('zsCheckinScanPassportCtrl', [
             $scope.selectedPassport = false;
             $scope.mode = 'ADMIN_VERIFY_PASSPORTS';
 
+
             validatePassportsView();
         };
 
@@ -298,7 +313,8 @@ sntZestStation.controller('zsCheckinScanPassportCtrl', [
                 failureCallBack: onFailAdminReview
             };
 
-            $scope.callAPI(zsCheckinSrv.acceptPassport, options);
+            onSuccessAdminReview();
+            //$scope.callAPI(zsCheckinSrv.acceptPassport, options);
 
         };
 
@@ -318,11 +334,28 @@ sntZestStation.controller('zsCheckinScanPassportCtrl', [
 
         };
 
+
+        /* 
+         *  To setup scroll
+         */
+        $scope.setScroller('passport-validate');
+
+        var refreshScroller = function() {
+            $scope.refreshScroller('passport-validate');
+
+            var scroller = $scope.getScroller('passport-validate');
+
+            $timeout(function() {
+                scroller.scrollTo(0, 0, 300);
+            }, 0);
+
+        };
         /**
          * [initializeMe description]
          */
         var initializeMe = (function() {
-            $scope.setScroller('gid');
+
+
             // show back button
             $scope.$emit(zsEventConstants.HIDE_BACK_BUTTON);
             // show close button

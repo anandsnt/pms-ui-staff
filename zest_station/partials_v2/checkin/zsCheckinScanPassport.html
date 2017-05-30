@@ -224,67 +224,77 @@
 
 <!-- Wait for staff assistance to Verify IDs  -->
 <section id="main" class="guest-id-verify" role="main" ng-hide="mode !== 'ADMIN_VERIFY_PASSPORT_VIEW'" >
-    <div id="content" ng-iscroll="gid" ng-iscroll-delay="100" ng-init="setScroll()">
-        <h1>
-            <text data-ng-bind-html="getTagValue('GID_VERIFY_PASSPORT')" editable-text="GID_VERIFY_PASSPORT"></text>
-        </h1>
-        <h2>
-            <text data-ng-bind-html="getTagValue('GID_VERIFY_PASSPORT_SUB')" editable-text="GID_VERIFY_PASSPORT_SUB"></text>
-        </h2>
+        
+
+        <div id="flex-holder">
+            <div id="textual" class="review-bill scrollable" ng-iscroll="passport-validate">
+                <div class="wrapper">
+                    <div id="bill">
+                        <h1>
+                            <text data-ng-bind-html="getTagValue('GID_VERIFY_PASSPORT')" editable-text="GID_VERIFY_PASSPORT"></text>
+                        </h1>
+                        <h2>
+                            <text data-ng-bind-html="getTagValue('GID_VERIFY_PASSPORT_SUB')" editable-text="GID_VERIFY_PASSPORT_SUB"></text>
+                        </h2>
+                    
+                        <div class="entry with-label bold-label">
+                            <label>Reservation Details</label>
+                        </div>
+
+                        <div class="entry with-label">
+                            <label>Last Name</label>
+                            <input type="text" value='selectedPassportInfo.last_name' ng-model='selectedPassportInfo.last_name' class='disabled'/>
+                        </div>
+
+                        <div class="entry with-label">
+                            <label>First Name</label>
+                            <input type="text" value='selectedPassportInfo.first_name' ng-model='selectedPassportInfo.first_name' class='disabled'/>
+                        </div>
+
+                        <div class="entry with-label bold-label">
+                            <label>Passport Details</label>
+                        </div>
+
+                        <!-- Passport / Guest ID Scan preview -->
+                        <img class='gid-image-preview' 
+                                ng-src="{{gidImgSrcPath}}{{selectedPassportInfo.img_path}}" 
+                                src-error='{{gidImgErrorSrcPath}}' 
+                                ng-class='gid-img-preview'>
+
+                        <div class="entry with-label">
+                            <label>Full Name</label>
+                            <input type="text" value='selectedPassportInfo.full_name' ng-model='selectedPassportInfo.full_name' class='disabled'/>
+                        </div>
+
+                        <div class="entry with-label">
+                            <label>Date of Birth</label>
+                            <input type="text" value='selectedPassportInfo.dob' ng-model='selectedPassportInfo.dob' class='disabled'/>
+                        </div>
+
+                        <div class="entry with-label">
+                            <label>Document Number</label>
+                            <input type="text" value='selectedPassportInfo.docID' ng-model='selectedPassportInfo.docID' class='disabled'/>
+                        </div>
+
+                        <div class="entry with-label">
+                            <label>Expiry Date</label>
+                            <input type="text" value='selectedPassportInfo.docExpiry' ng-model='selectedPassportInfo.docExpiry' class='disabled'/>
+                        </div>
+
+                        <div class="entry with-label">
+                            <label>Nationality</label>
+                            <input type="text" value='selectedPassportInfo.nationality' ng-model='selectedPassportInfo.nationality' class='disabled'/>
+                        </div>
+
+                        <div class="entry with-label">
+                            <label>City</label>
+                            <input type="text" value='selectedPassportInfo.city' ng-model='selectedPassportInfo.city' class='disabled'/>
+                        </div>
 
 
-        <div class="entry with-label bold-label">
-            <label>Reservation Details</label>
-        </div>
-
-        <div class="entry with-label">
-            <label>Last Name</label>
-            <input type="text" value='selectedPassportInfo.last_name' ng-model='selectedPassportInfo.last_name' class='disabled'/>
-        </div>
-
-        <div class="entry with-label">
-            <label>First Name</label>
-            <input type="text" value='selectedPassportInfo.first_name' ng-model='selectedPassportInfo.first_name' class='disabled'/>
-        </div>
-
-        <div class="entry with-label bold-label">
-            <label>Passport Details</label>
-        </div>
-
-        <!-- Passport / Guest ID Scan preview -->
-        <img class='gid-image-preview' 
-                ng-src="{{gidImgSrcPath}}{{selectedPassportInfo.img_path}}" 
-                src-error='{{gidImgErrorSrcPath}}' 
-                ng-class='gid-img-preview'>
-
-        <div class="entry with-label">
-            <label>Full Name</label>
-            <input type="text" value='selectedPassportInfo.full_name' ng-model='selectedPassportInfo.full_name' class='disabled'/>
-        </div>
-
-        <div class="entry with-label">
-            <label>Date of Birth</label>
-            <input type="text" value='selectedPassportInfo.dob' ng-model='selectedPassportInfo.dob' class='disabled'/>
-        </div>
-
-        <div class="entry with-label">
-            <label>Document Number</label>
-            <input type="text" value='selectedPassportInfo.docID' ng-model='selectedPassportInfo.docID' class='disabled'/>
-        </div>
-
-        <div class="entry with-label">
-            <label>Expiry Date</label>
-            <input type="text" value='selectedPassportInfo.docExpiry' ng-model='selectedPassportInfo.docExpiry' class='disabled'/>
-        </div>
-
-        <div class="entry with-label">
-            <label>Nationality</label>
-            <input type="text" value='selectedPassportInfo.nationality' ng-model='selectedPassportInfo.nationality' class='disabled'/>
-        </div>
-
-        <div class="entry with-label">
-            <label>City</label>
-            <input type="text" value='selectedPassportInfo.city' ng-model='selectedPassportInfo.city' class='disabled'/>
+                    </div>
+                </div>
+            </div>
         </div>
 
         <div id='actions' class="align-center guest-id-actions">
@@ -296,5 +306,8 @@
                 <text data-ng-bind-html="getTagValue('GID_VERIFY_PASSPORT_ACCEPT')" editable-text="GID_VERIFY_PASSPORT_ACCEPT"></text>
             </button>
         </div>
-    </div>
+
+
+
+    <span ng-include="'/assets/partials_v2/zsTabletFooter.html'" click-touch='resetTime()'></span>
 </section>
