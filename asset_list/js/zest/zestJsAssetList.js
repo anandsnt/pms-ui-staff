@@ -34,11 +34,11 @@ module.exports = {
 					jsLibRoot + 'stationKeyboard/jquery.keyboard.extension-typing.min.js',
 					jsLibRoot + 'stationKeyboard/jquery.keyboard.min.js',
 					jsLibRoot + 'stationKeyboard/jquery.mousewheel.min.js',
-					jsLibRoot + 'stationKeyboard/jquery.keyboard.extension-autocomplete.min.js'
+					jsLibRoot + 'stationKeyboard/jquery.keyboard.extension-autocomplete.min.js',
+					sharedRoot + 'lib/js/jsHue/js-hue.js'
 
 				],
 				nonMinifiedFiles: [
-					sharedRoot + 'lib/js/jsHue/js-hue.js',
 					jsLibRoot + 'iscroll.js',
 					jsLibRoot + 'ng-iscroll.js',
 					jsLibRoot + 'Utils.js',
