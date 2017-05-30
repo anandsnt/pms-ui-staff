@@ -7,7 +7,7 @@
 		<td data-title="'Email'" sortable="'email'"> {{user.email}}  </td>
 		<td data-title="'Department'" sortable="'department'">{{user.department}}</td>
 		<td data-title="'Last Login'" ><span class="login">{{user.last_login_date | date : dateFormat}} {{user.last_login_time}}</span></td>
-		<td data-title="'Hotels'" class="delete"><a class="button chain-button" ng-class="{'grey': user.subscribed_hotels_count===1, 'blue': user.subscribed_hotels_count>1}">{{user.subscribed_hotels_count}}</a></td>
+		<td data-title="'Hotels'" class="delete"><a class="button chain-button" ng-class="{'grey': user.subscribed_hotels_count===1, 'blue': user.subscribed_hotels_count>1}" ng-click="subscribeButtonClick(user)">{{user.subscribed_hotels_count}}</a></td>
 	</tr>
 </table>
 <!--Custom pagination footer goes here-->

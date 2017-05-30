@@ -1,0 +1,46 @@
+<div id="modal" role="dialog" class="modal-show">
+	<div class="modal-content chain-hotels">
+		<span class="message h3">{{selectedUser.full_name}} subscriptions</span>
+		<div class="hotels-list">
+			<table id="chain-users" class="grid">
+				<thead>
+					<tr>
+						<th>Hotel</th>
+						<th class="cell-role">User Role</th>
+						<th class="cell-date">Last Active</th>
+						<th class="cell-button"></th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr ng-repeat="hotel in multiPropertyHotelDetails">
+						<td>
+							<div class="cell-wrapper">
+								<span class="hotel" ng-class="{'subscribed': hotel.id===selectedUser.hotel_id}">{{hotel.hotel_name}}, {{hotel.city}}</span>
+								<span class="icons icon-added" ng-if="hotel.id===selectedUser.hotel_id"></span>
+								<span class="chain-home-hotel" ng-if="hotel.id===homeHotelId">Home</span>
+							</div>
+						</td>
+						<td>
+							<div class="select">
+								<select ng-model="hotelDepartment" ng-init="hotelDepartment= hotel.id===selectedUser.hotel_id ? selectedUser.department : '-1'">
+									<option value="-1">Missing Role</option> <!-- Default option -->
+									<option ng-repeat="department in multiPropertyDepartmentDetails" ng-value="department.name">{{ department.name }}</option>
+								</select>
+							</div>
+						</td>
+						<td>
+							<em ng-if="hotel.id===selectedUser.hotel_id">{{selectedUser.last_login_date | date : dateFormat}} {{selectedUser.last_login_time}}</em>
+						</td>
+						<td>
+							<button type="button" class="button white red-text" ng-if="hotel.id!==homeHotelId && hotel.id===selectedUser.hotel_id">Unsubscribe</button>
+							<button type="button" class="button green" ng-if="hotel.id!==homeHotelId && hotel.id!==selectedUser.hotel_id">Subscribe</button>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div class="actions">
+			<button type="button" class="button blank modal-close" ng-click="closePopup()">Close Window</button>
+		</div>
+	</div>
+</div>

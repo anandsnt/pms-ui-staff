@@ -1,4 +1,4 @@
-admin.controller('ADUserListCtrl', ['$scope', '$rootScope', '$q', '$state', '$stateParams', 'ADUserSrv', 'ngTableParams', 'ADHotelListSrv', 'ADMPUserSettingsSrv', function($scope, $rootScope, $q, $state, $stateParams, ADUserSrv, ngTableParams, ADHotelListSrv, ADMPUserSettingsSrv) {
+admin.controller('ADUserListCtrl', ['$scope', '$rootScope', '$q', '$state', '$stateParams', 'ADUserSrv', 'ngTableParams', 'ADHotelListSrv', 'ADMPUserSettingsSrv', 'ngDialog', function($scope, $rootScope, $q, $state, $stateParams, ADUserSrv, ngTableParams, ADHotelListSrv, ADMPUserSettingsSrv, ngDialog) {
     BaseCtrl.call(this, $scope);
     $scope.hotelId = $stateParams.id;
     $scope.isAdminSnt = false;
@@ -246,4 +246,18 @@ admin.controller('ADUserListCtrl', ['$scope', '$rootScope', '$q', '$state', '$st
         $scope.reloadTable();
     };
 
+    $scope.subscribeButtonClick = function(user) {
+        console.log(user);
+        $scope.selectedUser = user;
+        ngDialog.open({
+            template: '/assets/partials/users/adMPSubscriptionModal.html',
+            scope: $scope,
+            closeByDocument: false
+        });
+    };
+
+    $scope.closePopup = function() {
+        $scope.selectedUser = null;
+        ngDialog.close();
+    };
 }]);
