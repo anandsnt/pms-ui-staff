@@ -110,7 +110,8 @@ module.exports = {
             'guestweb_circle_fairfield': [ themeCSSRoot + 'guestweb_circle_fairfield.css'],
             'guestweb_foundation_hotel_detroit': [ themeCSSRoot + 'guestweb_foundation_hotel_detroit.css'],
             'guestweb_orchard_garden_hotel': [ themeCSSRoot + 'guestweb_orchard_garden_hotel.css'],
-            'guestweb_orchard_hotel': [ themeCSSRoot + 'guestweb_orchard_hotel.css']
+            'guestweb_orchard_hotel': [ themeCSSRoot + 'guestweb_orchard_hotel.css'],
+            'guestweb_avenue_suites_georgetown': [ themeCSSRoot + 'guestweb_avenue_suites_georgetown.css']
         };     
     }
 };
