@@ -159,7 +159,7 @@
 
 				</fieldset>
 				<fieldset class="holder left">
-		           	<div class="entry full-width" ng-show="isAdminSnt">
+		           	<div class="entry full-width" ng-show="isAdminSnt && data.is_multi_property">
 						<label for="chainAdmin" >{{'CHAIN_ADMIN'|translate}}<strong > * </strong></label>
 		                <div class="switch-button single {{buttonClass}}" ng-class="{'on': data.is_chain_admin? !isChecked: isChecked}">
 							<input type="checkbox"  ng-checked="data.is_chain_admin" ng-model="data.is_chain_admin" ng-disabled="!data.is_multi_property">
