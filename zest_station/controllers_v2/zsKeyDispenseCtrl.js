@@ -75,12 +75,15 @@ sntZestStation.controller('zsKeyDispenseCtrl', [
 				"key": 1
 					// "is_kiosk": true
 			};
+			
+			// for debugging in production on ipad
+			$scope.zestStationData.makeTotalKeys = $scope.makingKey;
 
-			if ($scope.makingKey === 1) {
-				postParams.is_additional = false;
-			} else {
-				postParams.is_additional = true;
-			}
+			postParams.is_additional = $scope.noOfKeysCreated > 0;
+			console.log('requesting additional key: [ ',postParams.is_additional,']');
+
+			// for debugging in production on ipad
+			$scope.zestStationData.makingAdditionalKey = postParams.is_additional;
 
 			if (typeof cardInfo !== 'undefined') {
 				postParams.card_info = cardInfo;
