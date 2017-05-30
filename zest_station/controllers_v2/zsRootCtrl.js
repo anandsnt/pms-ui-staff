@@ -1768,8 +1768,10 @@ sntZestStation.controller('zsRootCtrl', [
             $scope.zestStationData.consecutiveKeyFailure = 0;
             listenForOptionSelectionByKeyboard();
             $scope.cardReader = new CardOperation();
-
-
+            
+            // reset number of keys to be made
+            $scope.zestStationData.makeTotalKeys = 0;
+            $scope.zestStationData.makingAdditionalKey = false;
         }());
     }
 ]);
