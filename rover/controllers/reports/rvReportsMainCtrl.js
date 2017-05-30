@@ -47,6 +47,10 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 
         $scope.showReportDetails = false;
 
+        $scope.selectedReport = {
+            report: null
+        };
+
 
         var FULL_REPORT_SCROLL = 'FULL_REPORT_SCROLL';
         /**/
@@ -2727,7 +2731,25 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
         var autoCompleteForGrp = {
             source: function(request, response) {
                 $scope.$emit( 'showLoader' );
-                reportsSubSrv.fetchGroups(request.term)
+                var selectedReport = $scope.selectedReport.report;
+                var requestParams = {};
+
+                requestParams.q = request.term;
+
+                if (!!selectedReport && selectedReport.title === reportNames['GROUP_ROOMS_REPORT']) {
+
+                    if (!!selectedReport.fromDate) {
+                        fromKey = reportParams['FROM_DATE'];
+                        requestParams[fromKey]  = $filter('date')(selectedReport.fromDate, 'yyyy/MM/dd');
+                    }
+
+                    if (!!selectedReport.untilDate) {
+                        toKey = reportParams['TO_DATE'];
+                        requestParams[toKey]  = $filter('date')(selectedReport.untilDate, 'yyyy/MM/dd');
+                    }
+
+                }
+                reportsSubSrv.fetchGroups(requestParams)
                     .then(function(data) {
                         var list = [];
                         var entry = {};
