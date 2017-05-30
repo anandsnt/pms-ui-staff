@@ -538,10 +538,20 @@ sntRover.controller('roverController', [
 
                 // CICO-41410 Set card readers to offline
                 if (sntapp.cordovaLoaded && 'rv_native' === sntapp.browser) {
-                    sntapp.cardReader.stopReader();
+                    sntapp.cardReader.stopReader({
+                        'successCallBack': function(data) {
+                            $log.info('device set to offline', data);
+                            $window.location.href = '/admin/h/' + sntAuthorizationSrv.getProperty();
+                        },
+                        'failureCallBack': function(data) {
+                            $log.info('failed to set device to offline', data);
+                            $window.location.href = '/admin/h/' + sntAuthorizationSrv.getProperty();
+                        }
+                    });
+                } else {
+                    $window.location.href = '/admin/h/' + sntAuthorizationSrv.getProperty();
                 }
 
-                $window.location.href = '/admin/h/' + sntAuthorizationSrv.getProperty();
             }
             else if (subMenu === 'changePassword') {
                 openUpdatePasswordPopup();
