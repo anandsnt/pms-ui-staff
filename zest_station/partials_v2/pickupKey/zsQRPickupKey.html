@@ -2,10 +2,10 @@
     <!-- scanning mode -->
     <div id="content" ng-hide="qrCodeScanFailed" touch-press='scanQRCode()'>
         <h1>
-            <text editable-text="QR_LOOKUP_HEADER"> {{'QR_LOOKUP_HEADER' |translate}}</text>
+            <text data-ng-bind-html="getTagValue('QR_LOOKUP_HEADER')" editable-text="QR_LOOKUP_HEADER"></text>
         </h1>
         <h3>
-            <text editable-text="QR_LOOKUP_SUB_HEADER"> {{'QR_LOOKUP_SUB_HEADER' |translate}}</text>
+            <text data-ng-bind-html="getTagValue('QR_LOOKUP_SUB_HEADER')" editable-text="QR_LOOKUP_SUB_HEADER"></text>
         </h3>
         <div id="qr-code">
             <button type="button" class="button arrow-{{arrowDirection}}">
@@ -13,17 +13,17 @@
                 <span ng-include="icons.url.qr_arrow"></span>
             </button>
             <h1>
-                <text editable-text="QR_LOOKUP_BUTTON_TEXT"> {{'QR_LOOKUP_BUTTON_TEXT' |translate}}</text>
+                <text data-ng-bind-html="getTagValue('QR_LOOKUP_BUTTON_TEXT')" editable-text="QR_LOOKUP_BUTTON_TEXT"></text>
             </h1>
         </div>
     </div>
     <!-- failure mode -->
     <div id="content" ng-show="qrCodeScanFailed">
         <h1>
-            <text editable-text="QR_SCAN_FAILED_HEADING"> {{'QR_SCAN_FAILED_HEADING' |translate}}</text>
+            <text data-ng-bind-html="getTagValue('QR_SCAN_FAILED_HEADING')" editable-text="QR_SCAN_FAILED_HEADING"></text>
         </h1>
         <h2>
-            <text editable-text="QR_SCAN_FAILED_SUB_TEXT"> {{'QR_SCAN_FAILED_SUB_TEXT' |translate}}</text>
+            <text data-ng-bind-html="getTagValue('QR_SCAN_FAILED_SUB_TEXT')" editable-text="QR_SCAN_FAILED_SUB_TEXT"></text>
         </h2>
         <nav id="options" role="nav">
             <ul role="menu">
@@ -31,11 +31,12 @@
                     <button type="button" class="button option" touch-press='retryQRScan()'>
                         <div ng-include="icons.url.qr_noarrow"></div>
                     </button>
-                    <text editable-text="QR_SCAN_RETRY"> {{'QR_SCAN_RETRY' |translate}}</text>
+                    <text data-ng-bind-html="getTagValue('QR_SCAN_RETRY')" editable-text="QR_SCAN_RETRY"></text>
                 </li>
                 <li class="break" ng-show="zestStationData.pickup_qr_scan_fail_over">
                     <span>
-                        <text editable-text="OR_TEXT"> {{'OR_TEXT' |translate}}</text>
+                        <text data-ng-bind-html="getTagValue('OR_TEXT')" editable-text="OR_TEXT"></text>
+                        
                     </span>
                 </li>
                 <li ng-show="zestStationData.pickup_qr_scan_fail_over">
@@ -43,14 +44,14 @@
                         <!--div ng-include="'/assets/zest_station/css/icons/keyboard.svg'"></div-->
                         <div ng-include="icons.url.keyboard"></div>
                     </button>
-                    <text editable-text="QR_SCAN_FAILED_SEARCH"> {{'QR_SCAN_FAILED_SEARCH' |translate}}</text>
+                    <text data-ng-bind-html="getTagValue('QR_SCAN_FAILED_SEARCH')" editable-text="QR_SCAN_FAILED_SEARCH"></text>
                     <span>
-                        <text editable-text="QR_SCAN_FAILED_BY_NAME"> {{'QR_SCAN_FAILED_BY_NAME' |translate}}</text>
+                        <text data-ng-bind-html="getTagValue('QR_SCAN_FAILED_BY_NAME')" editable-text="QR_SCAN_FAILED_BY_NAME"></text>
                     </span>
                 </li>
                 <li class="break">
                     <span>
-                        <text editable-text="OR_TEXT"> {{'OR_TEXT' |translate}}</text>
+                        <text data-ng-bind-html="getTagValue('OR_TEXT')" editable-text="OR_TEXT"></text>
                     </span>
                 </li>
                 <li>
@@ -58,9 +59,9 @@
                         <!--div ng-include="'/assets/zest_station/css/icons/staff.svg'"></div-->
                         <div ng-include="icons.url.staff"></div>
                     </button>
-                    <text editable-text="RES_SRCH_TALK"> {{'RES_SRCH_TALK' |translate}}</text>
+                    <text data-ng-bind-html="getTagValue('RES_SRCH_TALK')" editable-text="RES_SRCH_TALK"></text>
                     <span>
-                        <text editable-text="RES_SRCH_TALK_SUB"> {{'RES_SRCH_TALK_SUB' |translate}}</text>
+                        <text data-ng-bind-html="getTagValue('RES_SRCH_TALK_SUB')" editable-text="RES_SRCH_TALK_SUB"></text>
                     </span>
                 </li>
             </ul>
