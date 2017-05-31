@@ -536,6 +536,8 @@
    "ADDON_REMOVAL_ERROR_MESSAGE": "Unable To remove this from your reservation",
 
    "GID_SCAN_HEADER": "Scan Passport",
+   "GID_SCAN_PASSPORT_SUCCESS":"Success",
+   "GID_SCAN_PASSPORT_TRY_AGAIN":"Try Again",
    "GID_SCAN_SUB_HEADER": "Place your passport on the scanner and select 'Scan'",
    "GID_SCAN_BUTTON": "Scan",
 
