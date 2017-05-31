@@ -12,7 +12,7 @@ let convertDateDataForHeader = (dates, businessDate) => {
 
     dates.map(date => {
         copiedDate = tzIndependentDate(date);
-        copiedDateComponents = copiedDate.toComponents().date; //refer util.js in diary folder
+        copiedDateComponents = copiedDate.toComponents().date; // refer util.js in diary folder
 
         day = copiedDateComponents.day.toString();
         isWeekEnd = (copiedDate.getDay() === 6 || copiedDate.getDay() === 0);
@@ -43,7 +43,7 @@ let convertDateDataForHeader = (dates, businessDate) => {
 const mapStateToRateManagerGridRightSideHeaderContainerProps = (state) => {
     // app/assets/rover/react/rateManager/utils/rvRateManagerGridRightSideContainerUtils.js
     var utilMethods = new rvRateManagerRightSideContainerUtils();
-    //for every mode (all rate view, room type, single rate view), this is same
+    // for every mode (all rate view, room type, single rate view), this is same
     var propsToReturn =  {
         mode: state.mode,
         headerDataList: convertDateDataForHeader(state.dates, state.businessDate),
@@ -79,11 +79,13 @@ const mapStateToRateManagerGridRightSideHeaderContainerProps = (state) => {
 const mapDispatchToRateManagerGridRightSideHeaderContainerProps = (stateProps,dispatch) => {
 
     var onTdClick = () => {};
+
     switch(stateProps.mode) {
         case RM_RX_CONST.RATE_VIEW_MODE:
             onTdClick = (e, rowIndex, colIndex) => {
                 var date = stateProps.dates[colIndex],
                     rateIDs = [];
+
                 return stateProps.clickedOnRateCellOnRateView({
                     rateIDs,
                     date
@@ -94,6 +96,7 @@ const mapDispatchToRateManagerGridRightSideHeaderContainerProps = (stateProps,di
             onTdClick = (e, rowIndex, colIndex) => {
                 var date = stateProps.dates[colIndex],
                     roomTypeIDs = [];
+
                 return stateProps.clickedOnRoomTypeViewCell({
                     roomTypeIDs,
                     date

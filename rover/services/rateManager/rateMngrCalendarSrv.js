@@ -56,7 +56,8 @@ angular.module('sntRover').service('RateMngrCalendarSrv', ['$q', 'BaseWebSrvV2',
     };
 
 	this.updateRoomTypeOverride = function(data) {
-            data.date = data.selectedDate; data.rate_id = data.selectedRate;
+        data.date = data.selectedDate;
+        data.rate_id = data.selectedRate;
             // rate_id, date, room_type_id need to be included to clear rates
             var url =  '/api/daily_rates/' + data.selectedRate + '/remove_custom_rate?';
             var deferred = $q.defer();

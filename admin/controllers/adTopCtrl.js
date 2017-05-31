@@ -17,7 +17,7 @@ angular.module('admin').controller('adTopCtrl',
                         $window.history.pushState("initial", "Showing Dashboard", "/admin/h/" + uuid);
                         sntAuthorizationSrv.setProperty(uuid);
                     } else {
-                        //fetch uuid and then navigate
+                        // fetch uuid and then navigate
                     }
                 }
 

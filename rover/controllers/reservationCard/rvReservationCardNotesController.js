@@ -113,8 +113,10 @@ sntRover.controller('rvReservationCardNotesController', ['$scope', '$filter', '$
             // CICO-22355 Update the notesCount to be shown
             // NOTE This is necessary as we are binding the notesCount with a sepearte variable! The list of notes won't
             // be available to the UI till the user opens the notes popup for the first time!
-            $scope.notesCount = $scope.reservationData.reservation_card.notes.reservation_notes.length;
-
+            if ($scope.reservationData.reservation_card.notes &&
+                _.isArray($scope.reservationData.reservation_card.notes.reservation_notes)) {
+                $scope.notesCount = $scope.reservationData.reservation_card.notes.reservation_notes.length;
+            }
             ngDialog.close();
         };
 
