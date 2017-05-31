@@ -474,8 +474,8 @@ sntZestStation.service('zsCheckinSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
         this.acceptPassport = function(params) {
             // TODO: Update to match API spec once API part is in progress/done
             var deferred = $q.defer();
-            var url = '/api/acceptPassport';
-            param.is_kiosk = true;
+            var url = '/zest_station/log_passport_scanning';
+            params.is_kiosk = true;
 
             var data = params;
 
