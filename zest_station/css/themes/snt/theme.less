@@ -98,6 +98,11 @@
 			fill: @actionBackground;
 			stroke: @actionBackground;
 		}
+        &.icon-arrow-left,
+        &.icon-arrow-right {
+            fill: none;
+            stroke: @white;
+        }
                 &.hi-tech-demo-icon{
                     height: 72% !important;
                     width: 112.5% !important;
@@ -136,7 +141,7 @@
         }
     }
 
-    .button:not(.transparent):not(.blank) {
+    .button:not(.transparent):not(.blank):not([disabled]):not(.disabled)  {
 	    background: linear-gradient(to bottom, @gradientStart 0%, @gradientEnd 100%);
 	    box-shadow: inset 0 -2px 0 rgba(0,0,0,.2);
 
@@ -323,3 +328,14 @@
     }
 }
 
+/* 4. LAYOUT
+==========================================================*/
+
+    #snt {
+        .button {
+            &.disabled,
+            &[disabled] {
+                background: rgba(0,0,0,0.5);
+            }
+        }
+    }

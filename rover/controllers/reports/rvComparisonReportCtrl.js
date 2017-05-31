@@ -168,6 +168,7 @@ angular.module('sntRover')
             if ($scope.pgEntries[index].isPaymentGroupActive) {
                 var refreshDelay = 1000;
                 var success = function(data) {
+                    ccStore.set($scope.pgEntries[index].charge_group_id, data);
                     $scope.$emit('hideLoader');
                     $scope.pgEntries[index].paymentGroupEntries = data;
                     $scope.pgEntries[index].insidePaginationData = {
@@ -202,6 +203,7 @@ angular.module('sntRover')
                 $scope.invokeApi(RVreportsSubSrv.getPaymentValues, params, success, failed);
             } else {
                 $scope.pgEntries[index].paymentGroupEntries = {};
+                ccStore.set($scope.pgEntries[index].charge_group_id, {});
             }
 
         };
@@ -244,6 +246,8 @@ angular.module('sntRover')
                             }
                         )
                     );
+                    // CICO-40996 - Passing the index of the charge group item for fetching the charge codes
+                    var chargeGroupItemIndex = chargeGroupsCodes.length - 1;
 
                     // fill empty 50 charge codes
                     for (k = 0; k < l; k++) {
@@ -262,7 +266,7 @@ angular.module('sntRover')
                         isEmpty: true,
                         pageOptions: {
                             id: cgEntries[i].charge_group_id.toString(),
-                            api: [ $scope.fetchChargeCodes, i ],
+                            api: [ $scope.fetchChargeCodes, chargeGroupItemIndex],
                             perPage: 50
                         }
                     });
@@ -310,7 +314,7 @@ angular.module('sntRover')
          * fillAllChargeCodes - loop through the entire cgcc array and fill any already fetched cc
          *
          * @param  {array} source full array
-         * @returns {object}             undefined
+         * @returns {object} undefined
          */
         function fillAllChargeCodes (source) {
             var i, j, id, match, sourceIndex;
@@ -468,16 +472,67 @@ angular.module('sntRover')
             fillAllChargeCodes($scope.cgEntries);
         }
         /*
-         *
+         * Seperating payment group values
+         * @param {array} results fetched data from API
          */
         function paymentGroupInit (results) {
             $scope.pgEntries = [];
             $scope.pgEntries = _.where(results, { is_payment_group: true });
             _.each($scope.pgEntries, function(paymentGroupItem) {
                 paymentGroupItem.isPaymentGroupActive = false;
+
+                paymentGroupItem.paymentGroupEntries = ccStore.get(paymentGroupItem.charge_group_id);
             });
         }
-        /**
+        /*
+         * Seperating balance
+         * @param {array} results fetched data from API
+         */
+        function balanceBrought (results) {
+            $scope.balanceEntries = [];
+            $scope.balanceEntries = _.where(results, { is_balance_brought_forward: true });
+        }
+        /*
+         * Seperating ledger deposit values
+         * @param {array} results fetched data from API
+         */
+        function ledgerDepositInit (results) {
+            $scope.ledgerDepositEntries = [];
+            $scope.ledgerDepositEntries = _.where(results, { is_deposit_ledger: true });
+        }
+        /*
+         * Seperating ledger guest values
+         * @param {array} results fetched data from API
+         */
+        function ledgerGuestInit (results) {
+            $scope.ledgerGuestEntries = [];
+            $scope.ledgerGuestEntries = _.where(results, { is_guest_ledger: true });
+        }
+        /*
+         * Seperating ledger AR
+         * @param {array} results fetched data from API
+         */
+        function ledgerARInit (results) {
+            $scope.ledgerAREntries = [];
+            $scope.ledgerAREntries = _.where(results, { is_ar_ledger: true });
+        }
+        /*
+         * Total variance
+         * @param {array} results fetched data from API
+         */
+       function ledgerTotalVarianceInit (results) {
+            $scope.ledgerTotalVariance = [];
+            $scope.ledgerTotalVariance = _.where(results, { is_total_variance: true });
+        }
+        /*
+         * Total closingBalance
+         * @param {array} results fetched data from API
+         */
+        function ledgerTotalClosingBalanceInit (results) {
+            $scope.ledgerTotalClosingBalance = [];
+            $scope.ledgerTotalClosingBalance = _.where(results, {  is_total_closing_balance: true });
+        }
+         /**
          * init - bootstrap initial execution
          * @returns {object} undefined
          */
@@ -489,6 +544,12 @@ angular.module('sntRover')
             staticInit(results);
             chargeGroupInit(results);
             paymentGroupInit(results);
+            balanceBrought(results);
+            ledgerDepositInit(results);
+            ledgerGuestInit(results);
+            ledgerARInit(results);
+            ledgerTotalVarianceInit(results);
+            ledgerTotalClosingBalanceInit(results);
         }
 
         init();

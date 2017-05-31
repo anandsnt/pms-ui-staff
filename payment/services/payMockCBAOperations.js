@@ -24,10 +24,19 @@ var CBAMockOperation = function() {
             transaction_time: '001850',
             txn_id: '1'
         },
-        paymentActionFailureResponse = {
+        paymentActionFailureResponse =[{
+            RVErrorCode: 143,
+            RVErrorDesc: 'Device Not Connected.'
+        }, {
+            RVErrorCode: 144,
+            RVErrorDesc: 'Transaction was not processed by PIN pad.'
+        }, {
+            RVErrorCode: 145,
+            RVErrorDesc: 'A transaction is pending with the terminal.'
+        }, {
             RVErrorCode: 114,
             RVErrorDesc: 'The Argument \'transaction_id\' not valid.'
-        },
+        }],
         addCardSuccessResponse = {
             'RVCardReadCardIIN': '494052',
             'RVCardReadCardName': 'VISA ISMP',
@@ -88,15 +97,23 @@ var CBAMockOperation = function() {
     self.callCordovaService = function(options) {
         switch (options.action) {
             case 'doPayment':
-                window.setTimeout(() => {
-                    Math.random() > 0.5 ? options.successCallBack(paymentActionSuccessResponse)
-                        : options.failureCallBack(paymentActionFailureResponse);
-                }, 2000);
+                //  Success
+                /* options.successCallBack(paymentActionSuccessResponse) */
+                //  Failure
+                options.failureCallBack(paymentActionFailureResponse[2]);
+                //  Random
+                /* Math.random() > 0.5 ? options.successCallBack(paymentActionSuccessResponse)
+                 : options.failureCallBack(paymentActionFailureResponse); */
                 break;
             case 'doRefund':
                 window.setTimeout(() => {
-                    Math.random() > 0.5 ? options.successCallBack(paymentActionSuccessResponse)
-                        : options.failureCallBack(paymentActionFailureResponse);
+                    //  Success
+                    /* options.successCallBack(paymentActionSuccessResponse) */
+                    //  Failure
+                    /* options.failureCallBack(paymentActionFailureResponse); */
+                    //  Random
+                    /* Math.random() > 0.5 ? options.successCallBack(paymentActionSuccessResponse)
+                        : options.failureCallBack(paymentActionFailureResponse); */
                 }, 2000);
                 break;
             case 'addCard':
@@ -106,9 +123,14 @@ var CBAMockOperation = function() {
                 break;
             case 'getLastTransaction':
                 window.setTimeout(() => {
+                    //  Success
                     options.successCallBack(getLastTransactionSuccessResponse);
+                    //  Failure
+                    /* options.failureCallBack(getLastTransactionFailureResponse[1]); */
+                    //  Random
+                    /* options.successCallBack(getLastTransactionSuccessResponse);
                     Math.random() > 0.5 ? options.successCallBack(getLastTransactionSuccessResponse)
-                        : options.failureCallBack(getLastTransactionFailureResponse[1]);
+                        : options.failureCallBack(getLastTransactionFailureResponse[1]); */
                 }, 2000);
                 break;
             default:

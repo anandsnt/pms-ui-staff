@@ -7,8 +7,8 @@ const {connect} = ReactRedux;
  * @return {array}
  */
 let convertDateListForRestrictionAndAmountView = (dateList, businessDate) => {
-    //we will compute date related information first and will use this information in
-    //the view component
+    // we will compute date related information first and will use this information in
+    // the view component
     var newDateList = [],
         copiedDate = null,
         copiedDateComponents =  null,
@@ -17,7 +17,7 @@ let convertDateListForRestrictionAndAmountView = (dateList, businessDate) => {
 
     dateList.map(date => {
         copiedDate = tzIndependentDate(date);
-        copiedDateComponents = copiedDate.toComponents().date; //refer util.js in diary folder
+        copiedDateComponents = copiedDate.toComponents().date; // refer util.js in diary folder
         isWeekEnd = (copiedDate.getDay() === 6 || copiedDate.getDay() === 0);
         isPastDate = copiedDate < businessDate;
         newDateList.push({
@@ -39,24 +39,26 @@ let convertDateListForRestrictionAndAmountView = (dateList, businessDate) => {
  */
 let applyRestrictionLogicForSingleRateView = (listingData, restrictionTypes, expandedRows) => {
 
-    //adding the css class and all stuff for restriction types
+    // adding the css class and all stuff for restriction types
     restrictionTypes = restrictionTypes.map((restrictionType) => ({
         ...restrictionType,
         ...RateManagerRestrictionTypes[restrictionType.value]
     }));
 
     var restrictionTypeIDS = _.pluck(restrictionTypes, 'id'),
-        restrictionTypesBasedOnIDs = _.object(restrictionTypeIDS, restrictionTypes); //for quicker access
+        restrictionTypesBasedOnIDs = _.object(restrictionTypeIDS, restrictionTypes); // for quicker access
 
     var restrictionForMoreThanMaxAllowed = RateManagerRestrictionTypes['MORE_RESTRICTIONS'];
+
     restrictionForMoreThanMaxAllowed.days = restrictionForMoreThanMaxAllowed.defaultText;
     var listingDataToReturn = [];
+
     listingData.map((data, index) => {
         listingDataToReturn.push({
             ...data,
             expanded: (expandedRows.indexOf(index) > -1),
             restrictionList: data.restrictionList.map((dayRestrictionList) => {
-                //If we cross max restriction allowed in a single column, we will replace with single restriction
+                // If we cross max restriction allowed in a single column, we will replace with single restriction
                 if(dayRestrictionList.length >= RM_RX_CONST.MAX_RESTRICTION_IN_COLUMN) {
                     return [{ ...restrictionForMoreThanMaxAllowed }];
                 }
@@ -75,6 +77,7 @@ const mapStateToRateManagerGridRightSideRowsRestrictionListAndAmountContainerPro
     var shouldFormRowsData = state.mode === RM_RX_CONST.SINGLE_RATE_EXPANDABLE_VIEW_MODE,
     roomTypeRowsData = shouldFormRowsData ? 
         applyRestrictionLogicForSingleRateView(state.list, state.restrictionTypes, state.expandedRows) : [];
+
     return {
         roomTypeRowsData,
         mode: state.mode,
@@ -86,6 +89,7 @@ const mapStateToRateManagerGridRightSideRowsRestrictionListAndAmountContainerPro
 
 const mapDispatchToRateManagerGridRightSideRowsRestrictionListAndAmountContainerContainer = (stateProps, dispatchProps, ownProps) => {
     var onTdClick = () => {};
+
     switch(stateProps.mode) {
         case RM_RX_CONST.SINGLE_RATE_EXPANDABLE_VIEW_MODE:
             onTdClick = (e, rowIndex, colIndex) => {

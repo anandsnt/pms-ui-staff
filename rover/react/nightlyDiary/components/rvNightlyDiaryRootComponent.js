@@ -7,18 +7,20 @@ const NightlyDiaryRootComponent = createClass ({
         node.scrollTop = pos;
     },
     scrollToNthelement(n) {
-        let width = document.getElementsByClassName("room")[1].clientHeight,
+        let width = 30,
             scrollTo = n * width ;
 
         this.scrollToPos(scrollTo);
     },
     componentDidUpdate() {
-        this.scrollToNthelement(this.props.index);
+        if (this.props.scrollTo && this.props.scrollTo.index >= 0) {
+            this.scrollToNthelement(this.props.scrollTo.index);
+        }
     },
     render() {
         return (
         <div className="grid-inner">
-            {this.props.selectedReservationId !== undefined ? <NightlyDiaryStayRangeContainer/> : ''}
+            {(this.props.selectedReservationId !== undefined && this.props.selectedReservationId !== "") ? <NightlyDiaryStayRangeContainer/> : ''}
             <div id="diary-nightly-grid" className={this.props.ClassForRootDiv}>
                 <div className="wrapper">
                     {this.props.showPrevPageButton ? <GoToPreviousPageButtonContainer/> : ''}
@@ -61,5 +63,6 @@ const NightlyDiaryRootComponent = createClass ({
 NightlyDiaryRootComponent.propTypes = {
     showNextPageButton: PropTypes.bool.isRequired,
     showPrevPageButton: PropTypes.bool.isRequired,
-    ClassForRootDiv: PropTypes.string.isRequired
+    ClassForRootDiv: PropTypes.string.isRequired,
+    scrollTo: PropTypes.object
 };

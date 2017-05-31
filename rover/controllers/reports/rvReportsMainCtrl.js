@@ -47,6 +47,10 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 
         $scope.showReportDetails = false;
 
+        $scope.selectedReport = {
+            report: null
+        };
+
 
         var FULL_REPORT_SCROLL = 'FULL_REPORT_SCROLL';
         /**/
@@ -216,6 +220,8 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
                 for (i = 0, j = source.length; i < j; i++) {
                     source[i].filteredOut = false;
                 }
+
+                refreshScroller();
                 return;
             }
 
@@ -243,6 +249,8 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
             for (i = 0, j = $scope.reportList.length; i < j; i++) {
                 $scope.reportList[i].filteredOut = false;
             }
+
+            refreshScroller();
         };
 
 
@@ -354,7 +362,8 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
             item_46: false,
             item_47: false,
             item_48: false,
-            item_49: false
+            item_49: false,
+            item_50: false
         };
         $scope.toggleFilterItems = function(item) {
             if ( ! $scope.filterItemsToggle.hasOwnProperty(item) ) {
@@ -512,6 +521,23 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
         $scope.toDateOptionsSixMonthsLimit = angular.extend({
             minDate: new tzIndependentDate($rootScope.businessDate),
             maxDate: reportUtils.processDate(($rootScope.businessDate)).sixMonthsAfter
+        }, datePickerCommon);
+
+        // CICO-34733 - Added for Group Rooms report
+        $scope.fromDateOptionsThirtyOneDaysLimit = angular.extend({
+            onSelect: function(value, datePickerObj) {
+                var selectedDate = new tzIndependentDate(util.get_date_from_date_picker(datePickerObj));
+
+                $scope.toDateOptionsThirtyOneDaysLimit.minDate = selectedDate;
+                $scope.toDateOptionsThirtyOneDaysLimit.maxDate = reportUtils.processDate(selectedDate).thirtyOneDaysAfter;
+
+                $scope.touchedReport.untilDate = $scope.toDateOptionsThirtyOneDaysLimit.maxDate;
+            }
+        }, datePickerCommon);
+
+        $scope.toDateOptionsThirtyOneDaysLimit = angular.extend({
+            minDate: new tzIndependentDate($rootScope.businessDate),
+            maxDate: reportUtils.processDate(($rootScope.businessDate)).thirtyOneDaysAfter
         }, datePickerCommon);
 
         // custom from and untill date picker options
@@ -1615,6 +1641,16 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
                 }
             }
 
+            // include group
+            if ( report.hasOwnProperty('hasIncludeGroup') && !! report.chosenIncludeGroup ) {
+                key         = report.hasIncludeGroup.value.toLowerCase();
+                params[key] = report.chosenIncludeGroup;
+                /* Note: Using the ui value here */
+                if ( changeAppliedFilter ) {
+                    $scope.appliedFilter['group'] = report.uiChosenIncludeGroup;
+                }
+            }
+
             // selected markets
             if ( report.hasOwnProperty('hasMarketsList') ) {
                 selected = _.where( report['hasMarketsList']['data'], { selected: true } );
@@ -1915,7 +1951,7 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
                 }
             }
 
-            //Include accounts
+            // Include accounts
             if ( report.hasOwnProperty('hasAccountSearch') ) {
                 selected = _.where( report['hasAccountSearch']['data'], { selected: true } );
 
@@ -2117,8 +2153,28 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
                     }
                 }
             }
+            // CICO-34650
+            if (report.hasShowActionables) {
+                if ( report.showActionables ) {
+                    key         = reportParams['SHOW_ACTIONABLES'];
+                    if (report.showActionables === 'BOTH') {
+                       params[key] = ['GUEST', 'GROUP'];
+                    } else {
+                        params[key] = [report.showActionables];
+                    }
 
-            //CICO-35959 - show room revenue by default
+                    if ( changeAppliedFilter ) {
+                        if (report.showActionables === 'BOTH') {
+                            $scope.appliedFilter.show.push("GUESTS");
+                            $scope.appliedFilter.show.push("GROUPS");
+                        } else {
+                            $scope.appliedFilter.show.push(report.showActionables);
+                        }
+                    }
+                }
+            }
+
+            // CICO-35959 - show room revenue by default
             if(report.title === reportNames['MARKET_SEGMENT_STAT_REPORT']) {
                 params['show_room_revenue'] = _.isUndefined(report.showRoomRevenue) ? true : report.showRoomRevenue;
             }
@@ -2240,24 +2296,31 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
                 $scope.totalCount = response.total_count || 0;
                 $scope.currCount = response.results ? response.results.length : 0;
 
-                //CICO-36186
+                // CICO-36186
                 if(chosenReport.title === reportNames["COMPARISION_BY_DATE"]) {
                     $timeout(function() {
                         $scope.$broadcast('updatePagination', "COMPARISION_BY_DATE");
                     }, 50);
                 }
 
-                 //CICO-36269
+                 // CICO-36269
                 if(chosenReport.title === reportNames["TRAVEL_AGENT_COMMISSIONS"]) {
                     $scope.$broadcast("UPDATE_RESULTS", $scope.results);
                     $timeout(function() {
                         $scope.$broadcast('updatePagination', "TA_COMMISSION_REPORT_MAIN");
                     }, 50);
                 }
-                
+
                 if (reportPaginationIds[chosenReport.title]) {
-                  $timeout(function() {                      
+                  $timeout(function() {
                     $scope.$broadcast('updatePagination', reportPaginationIds[chosenReport.title]);
+                  }, 50);
+                }
+
+                // CICO-39128 - Added to preserve the page no while sorting and update the page no in directive
+                if(chosenReport.title == reportNames['COMPLIMENTARY_ROOM_REPORT'] && page != 1) {
+                    $timeout(function() {
+                        $scope.$broadcast('updatePageNo', page);
                   }, 50);
                 }
             };
@@ -2313,10 +2376,11 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 
             // Load API data for the pagination directive
             var loadAPIData = function(pageNo) {
+                $scope.currentPage = pageNo;
                 $scope.genReport(false, pageNo);
             };
 
-            //CICO-36186 - Implemented the new pagination for Comparison report
+            // CICO-36186 - Implemented the new pagination for Comparison report
             if(chosenReport.title === reportNames["COMPARISION_BY_DATE"]) {
                 var loadAPIData = function(pageNo) {
                     $scope.genReport(false, pageNo);
@@ -2662,5 +2726,81 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
                 collision: 'flip'
             }
         }, autoCompleteForCompTaGrp);
+
+        // for Group
+        var autoCompleteForGrp = {
+            source: function(request, response) {
+                $scope.$emit( 'showLoader' );
+                var selectedReport = $scope.selectedReport.report;
+                var requestParams = {},
+                    fromKey = '',
+                    toKey = '';
+
+                requestParams.q = request.term;
+
+                if (!!selectedReport && selectedReport.title === reportNames['GROUP_ROOMS_REPORT']) {
+
+                    if (!!selectedReport.fromDate) {
+                        fromKey = reportParams['FROM_DATE'];
+                        requestParams[fromKey]  = $filter('date')(selectedReport.fromDate, 'yyyy/MM/dd');
+                    }
+
+                    if (!!selectedReport.untilDate) {
+                        toKey = reportParams['TO_DATE'];
+                        requestParams[toKey]  = $filter('date')(selectedReport.untilDate, 'yyyy/MM/dd');
+                    }
+
+                }
+                reportsSubSrv.fetchGroups(requestParams)
+                    .then(function(data) {
+                        var list = [];
+                        var entry = {};
+
+                        $.map(data, function(each) {
+                            entry = {
+                                label: each.group_name,
+                                value: each.id,
+                                type: 'GROUP'
+                            };
+                            list.push(entry);
+                        });
+
+                        response(list);
+                        $scope.$emit( 'hideLoader' );
+                    });
+            },
+            select: function(event, ui) {
+                this.value = ui.item.label;
+                setTimeout(function() {
+                    $scope.$apply(function() {
+                        touchedReport.uiChosenIncludeGroup = ui.item.label;
+                        touchedReport.chosenIncludeGroup = ui.item.value;
+                    });
+                }, 100);
+                return false;
+            },
+            focus: function(event, ui) {
+                return false;
+            }
+        };
+
+
+        $scope.grpAutoCompleteOnList = angular.extend({
+            position: {
+                my: 'left top',
+                at: 'left bottom',
+                collision: 'flip'
+            }
+        }, autoCompleteForGrp);
+
+        $scope.grpAutoCompleteOnDetails = angular.extend({
+            position: {
+                my: 'left bottom',
+                at: 'right+20 bottom',
+                collision: 'flip'
+            }
+        }, autoCompleteForGrp);
+
+
     }
 ]);

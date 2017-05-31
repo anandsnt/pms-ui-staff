@@ -73,14 +73,17 @@ sntZestStation.controller('zsKeyDispenseCtrl', [
 				"is_additional": false,
 				"reservation_id": $scope.reservation_id,
 				"key": 1
-					//"is_kiosk": true
+					// "is_kiosk": true
 			};
+			
+			// for debugging in production on ipad
+			$scope.zestStationData.makeTotalKeys = $scope.makingKey;
 
-			if ($scope.makingKey === 1) {
-				postParams.is_additional = false;
-			} else {
-				postParams.is_additional = true;
-			}
+			postParams.is_additional = $scope.noOfKeysCreated > 0;
+			console.log('requesting additional key: [ ',postParams.is_additional,']');
+
+			// for debugging in production on ipad
+			$scope.zestStationData.makingAdditionalKey = postParams.is_additional;
 
 			if (typeof cardInfo !== 'undefined') {
 				postParams.card_info = cardInfo;
@@ -225,7 +228,8 @@ sntZestStation.controller('zsKeyDispenseCtrl', [
 				"key_no": keyNo,
 				"status": keyStatus
 			};
-			//console.log("reservation_id :" + $stateParams.reservation_id + " key :" + keyNo + " -----status :" + keyStatus);
+			// console.log("reservation_id :" + $stateParams.reservation_id + " key :" + keyNo + " -----status :" + keyStatus);
+
 			$scope.callAPI(zsGeneralSrv.logKeyStatus, {
 				params: params,
 				'loader': 'none' // to hide loader
@@ -274,6 +278,11 @@ sntZestStation.controller('zsKeyDispenseCtrl', [
 			if ($scope.noOfKeysSelected === $scope.noOfKeysCreated) {
 				// all keys are made
 				$scope.mode = 'KEY_CREATION_SUCCESS_MODE';
+				if (!$scope.inDemoMode()) {
+					$scope.trackEvent('all keys encoded', 'key_encode');	
+				}
+				
+
 			} else if ($scope.noOfKeysSelected > $scope.noOfKeysCreated) {
 				// one key has been made out of total 2
 				$scope.mode = 'KEY_ONE_CREATION_SUCCESS_MODE';
@@ -370,6 +379,8 @@ sntZestStation.controller('zsKeyDispenseCtrl', [
 			if ($scope.readyForUserToPressMakeKey) {
 				$scope.readyForUserToPressMakeKey = false;
 				startMakingKey(keyNo);
+
+            	$scope.trackEvent('MakeKey', 'user_selected');
 			}
 		};
 
@@ -381,6 +392,10 @@ sntZestStation.controller('zsKeyDispenseCtrl', [
 			if ($scope.zestStationData.consecutiveKeyFailure >= $scope.zestStationData.kioskOutOfOrderTreshold) {
 				$scope.zestStationData.workstationOooReason = $filter('translate')('KEY_CREATION_FAILED');
 				$scope.zestStationData.workstationStatus = 'out-of-order'; // go out of order when (printing or key encoding fails)
+
+				$scope.trackEvent('failure - go out of service', 'key_encode');
+			} else {
+				$scope.trackEvent('key-failure-mode', 'key_encode');
 			}
 			var keyNo = ($scope.noOfKeysCreated === 0) ? 1 : 2;
 
@@ -417,6 +432,7 @@ sntZestStation.controller('zsKeyDispenseCtrl', [
 				if (!_.isUndefined($scope.socketOperator.returnWebSocketObject()) && $scope.socketOperator.returnWebSocketObject().readyState === 1) {
 				// this param has to be set corresponding to key created
 				var is_first_key = $scope.noOfKeysCreated === 0 ? 1 : 0;
+
 				$scope.socketOperator.DispenseKey($scope.dispenseKeyData, is_first_key);
 				} else {
 					$scope.$emit('CONNECT_WEBSOCKET'); // connect socket
@@ -437,6 +453,9 @@ sntZestStation.controller('zsKeyDispenseCtrl', [
 			if ($scope.noOfKeysSelected === $scope.noOfKeysCreated) {
 				// all keys are made
 				$scope.mode = 'KEY_CREATION_SUCCESS_MODE';
+				if (!$scope.inDemoMode()) {
+					$scope.trackEvent('all keys encoded', 'key_encode');
+				}
 			} else if ($scope.noOfKeysSelected > $scope.noOfKeysCreated) {
 				// if more key is needed
 				$scope.mode = 'KEY_ONE_CREATION_SUCCESS_MODE';
@@ -521,6 +540,8 @@ sntZestStation.controller('zsKeyDispenseCtrl', [
 		 * @return {[type]} [description]
 		 */
 		$scope.reEncodeKey = function() {
+            $scope.trackEvent('retry key encode', 'user_selected');
+
             $scope.resetTime();
 			var executeKeyOperations = function() {
 				if ($scope.zestStationData.keyWriter === 'websocket') {

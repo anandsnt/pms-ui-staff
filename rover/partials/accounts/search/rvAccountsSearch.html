@@ -3,7 +3,7 @@
     
     <div class="entry search">
         <button id="accounts-clear-query" class="clear-query" 
-                ng-click="clearSearchQuery()" 
+                ng-click="clearSearchQuery($event)" 
                 ng-class="{'visible': !isEmpty(query)}"> <!-- Add class "visible" to show -->
             <span class="icons icon-clear-search" translate>CLEAR_QUERY</span>
         </button>

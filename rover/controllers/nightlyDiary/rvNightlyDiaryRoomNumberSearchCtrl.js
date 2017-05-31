@@ -13,6 +13,7 @@ angular.module('sntRover')
             var init = function() {
                 BaseCtrl.call(this, $scope);
                 $scope.diaryData.textInQueryBox = '';
+                $scope.diaryData.totalRoomNumberSearchResults = 0;
                 $scope.diaryData.showSearchResultsArea = false;
                 $scope.diaryData.roomNumberSearchResults = [];
             };
@@ -23,7 +24,7 @@ angular.module('sntRover')
                 $scope.$emit('hideLoader');
                 // $scope.diaryData is defined in (parent controller)rvNightlyDiaryController
                 $scope.diaryData.roomNumberSearchResults = data.rooms;
-                $scope.diaryData.hasOverlay = true;
+                $scope.diaryData.totalRoomNumberSearchResults = data.total_count;
             };
 
             // failure callback of fetching search results
@@ -44,6 +45,7 @@ angular.module('sntRover')
                 $scope.diaryData.textInQueryBox = '';
                 $scope.diaryData.showSearchResultsArea = false;
                 $scope.diaryData.roomNumberSearchResults = [];
+                $scope.diaryData.totalRoomNumberSearchResults = 0;
             };
 
             // function to perform filtering data, on change-event of query box

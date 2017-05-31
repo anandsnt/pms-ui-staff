@@ -21,7 +21,13 @@
         "admin": true,
         "ADBaseTableCtrl": true,
         "tzIndependentDate": true,
-        "getJqDateFormat": false
+        "getJqDateFormat": false,
+        "moment": false,
+        "getTimeFormated": true,
+        "CardReaderCtrl": false,
+        "sntCordovaInit": false,
+        "CardOperation": false,
+        "jsHue": false
     },
     "installedESLint": true,
     "parserOptions": {
@@ -105,7 +111,15 @@
                 "ignoreChainWithDepth": 2
             }
         ],
-        "no-mixed-operators": "error",
+        "no-mixed-operators": [
+            "error",
+            {
+                "groups": [
+                    ["&&", "||"]
+                ],
+                "allowSamePrecedence": true
+            }
+        ],
         "no-multiple-empty-lines": [
             "error",
             {

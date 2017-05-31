@@ -21,6 +21,10 @@ const mapStateToRateManagerGridRightSideRestrictionRowsContainerProps = (state) 
             propsToReturn.clickedOnRoomTypeViewCell = state.callBacksFromAngular.clickedOnRoomTypeViewCell;
             break;
 
+        case RM_RX_CONST.RATE_TYPE_VIEW_MODE:
+            propsToReturn.clickedOnRateTypeViewCell = state.callBacksFromAngular.clickedOnRateTypeViewCell;
+            break;
+
         default:
             break;
     }
@@ -29,6 +33,7 @@ const mapStateToRateManagerGridRightSideRestrictionRowsContainerProps = (state) 
 
 const mapDispatchToRateManagerGridRightSideRowsRestrictionContainer = (stateProps, dispatchProps, ownProps) => {
     var onTdClick = () => {};
+
     switch(stateProps.mode) {
         case RM_RX_CONST.RATE_VIEW_MODE:
             onTdClick = (e, rowIndex, colIndex) => {
@@ -55,7 +60,19 @@ const mapDispatchToRateManagerGridRightSideRowsRestrictionContainer = (stateProp
                     date
                 });
             };
-            break;                        
+            break;    
+        case RM_RX_CONST.RATE_TYPE_VIEW_MODE:
+            onTdClick = (e, rowIndex, colIndex) => {
+                var date = stateProps.dates[colIndex],
+                    rateTypeIDs = [];
+
+                rateTypeIDs = [stateProps.restrictionRows[rowIndex].id];              
+                return stateProps.clickedOnRateTypeViewCell({
+                    rateTypeIDs,
+                    date
+                });
+            };
+            break;                       
         default:
             break;
     };

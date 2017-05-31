@@ -4,5 +4,6 @@ angular.module('sntPay', [
     'pascalprecht.translate',
     'oc.lazyLoad',
     'ng-iscroll',
-    'ngDialog'
+    'ngDialog',
+    'sharedHttpInterceptor'
 ]);

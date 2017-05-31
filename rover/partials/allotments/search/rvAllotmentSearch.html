@@ -2,73 +2,76 @@
 <form method="get" action="" name="allotment-search-form" id="allotment-search-form" class="search-form has-dates" role="search" >
 
     <div class="entry search">
-        
-        <button id="allotment-clear-query" 
+
+        <button id="allotment-clear-query"
                 class="clear-query"
-                ng-click="clearSearchQuery()" 
+                type="button"
+                ng-click="clearSearchQuery()"
                 ng-class="{'visible': !isEmpty(query)}">
             <span class="icons icon-clear-search" translate>CLEAR_QUERY</span>
         </button>
 
         <button type="button" name="submit" class="icons icon-search" translate>SEARCH</button>
-        
-        <input  name="allotment-query" 
-                id="allotment-query" 
-                class="query" 
 
-                placeholder="Allotment Code, Allotment Name, Travel Agent or Company Name" 
-                type="search"  
+        <input  name="allotment-query"
+                id="allotment-query"
+                class="query"
 
-                autocomplete="off" 
-                ng-model="query"  
+                placeholder="Allotment Code, Allotment Name, Travel Agent or Company Name"
+                type="search"
+
+                autocomplete="off"
+                ng-model="query"
 
                 rv-delay-textbox
-                delay="1000" 
+                delay="1000"
                 function-to-fire="searchQueryChanged"/>
     </div>
     <div class="entry dates">
         <div class="entry-data has-datepicker">
             <label for="allotment-date-from" translate>FROM</label>
 
-            <button id="allotment-date-from-clear" 
+            <button id="allotment-date-from-clear"
+                    type="button"
                     class="clear-query" ng-class="{'visible': !isEmpty(fromDate)}" ng-click="clearFromDate()"> <!-- To hide this, remove class "visible" -->
-                    <!-- }" 
-                        " -->                       
+                    <!-- }"
+                        " -->
                     <span class="icons icon-clear-search" translate>
                         CLEAR_QUERY
                     </span>
             </button>
 
-            <input  name="allotment-date-from" 
-                    id="allotment-date-from" 
-                    class="datepicker" 
-                    readonly 
-                    type="text" 
-                    rv-clear-text-box 
+            <input  name="allotment-date-from"
+                    id="allotment-date-from"
+                    class="datepicker"
+                    readonly
+                    type="text"
+                    rv-clear-text-box
                     listen-this="fromDate"
-                    ui-date="fromDateOptions" 
+                    ui-date="fromDateOptions"
                     value="{{fromDate}}"/>
         </div>
         <div class="entry-data has-datepicker">
             <label for="allotment-date-to" translate>TO</label>
-            
-            <button id="allotment-date-to-clear" 
-                    class="clear-query"  
-                    ng-click="clearToDate()" 
+
+            <button id="allotment-date-to-clear"
+                    class="clear-query"
+                    type="button"
+                    ng-click="clearToDate()"
                     ng-class="{'visible': !isEmpty(toDate)}"> <!-- Add class visible when date is selected -->
                     <span class="icons icon-clear-search" translate>
                         CLEAR_QUERY
                     </span>
             </button>
 
-            <input  name="allotment-date-to" 
+            <input  name="allotment-date-to"
                     id="allotment-date-to"
-                    class="datepicker" 
-                    readonly 
-                    type="text" 
-                    ui-date="toDateOptions" 
-                    value="{{toDate}}" 
-                    rv-clear-text-box 
+                    class="datepicker"
+                    readonly
+                    type="text"
+                    ui-date="toDateOptions"
+                    value="{{toDate}}"
+                    rv-clear-text-box
                     listen-this="toDate"/>
         </div>
     </div>
@@ -81,7 +84,7 @@
 </div>
 
 <!-- Search panel - WITH RESULTS -->
-<section id="find-allotment" class="content scrollable" role="main" 
+<section id="find-allotment" class="content scrollable" role="main"
     ng-class="{'no-pagination': !shouldShowPagination(), 'no-results': shouldShowNoResult()}"
     ng-iscroll="result_showing_area" ng-iscroll-delay="1000" > <!-- If no pagination, add class "no-pagination" -->
     <div class="wrapper">
@@ -95,7 +98,7 @@
                     <span class="h2">Search by <strong>Allotment Name</strong> or <strong>Code</strong></span>
                 </div>
             </li>
-           
+
             <!-- If no results, show this: -->
             <li class="no-content" ng-show="shouldShowNoResult()">
                 <div class="info">

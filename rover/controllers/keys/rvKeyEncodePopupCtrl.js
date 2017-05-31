@@ -1,7 +1,11 @@
-sntRover.controller('RVKeyEncodePopupCtrl', [ '$rootScope', '$scope', '$state', 'ngDialog', 'RVKeyPopupSrv', '$filter',
-		function($rootScope, $scope, $state, ngDialog, RVKeyPopupSrv, $filter) {
+sntRover.controller('RVKeyEncodePopupCtrl', [ '$rootScope', '$scope', '$state', 'ngDialog', 'RVKeyPopupSrv', '$filter', '$timeout', '$log',
+		function($rootScope, $scope, $state, ngDialog, RVKeyPopupSrv, $filter, $timeout, $log) {
 	BaseCtrl.call(this, $scope);
 	var that = this;
+
+	var scopeState = {
+		isCheckingDeviceConnection: false
+	};
 
 	this.setStatusAndMessage = function(message, status) {
 		$scope.statusMessage = message;
@@ -11,6 +15,9 @@ sntRover.controller('RVKeyEncodePopupCtrl', [ '$rootScope', '$scope', '$state', 
             $scope.keyType = data.type;
         });
 	$scope.init = function() {
+
+		$scope.$emit('HOLD_OBSERVE_FOR_SWIPE_RESETS');
+
 		// CICO-11444 to fix the issue of poping up select box in ipad
 		$('#encoder-type').blur();
 
@@ -28,7 +35,6 @@ sntRover.controller('RVKeyEncodePopupCtrl', [ '$rootScope', '$scope', '$state', 
 		}
 
 		/** ***************************************************************************/
-
 
 		var reservationStatus = "";
 
@@ -104,9 +110,15 @@ sntRover.controller('RVKeyEncodePopupCtrl', [ '$rootScope', '$scope', '$state', 
         }
         // as per CICO-31909 Initally we check if the device is connected
         // check if it is a desktop or iPad
-        $scope.isIpad = navigator.userAgent.match(/iPad/i) !== null && window.cordova;
-
-        if (!$scope.isIpad && $scope.isRemoteEncodingEnabled) {
+        $scope.isIpad = sntapp.browser === 'rv_native' && sntapp.cordovaLoaded;
+		
+        if ($scope.isIpad && $scope.isRemoteEncodingEnabled) {
+            $scope.deviceConnecting = true;
+            that.setStatusAndMessage($filter('translate')('CONNECTING_TO_KEY_CARD_READER'), 'pending');
+            $scope.showDeviceConnectingMessge();
+            $scope.showPrintKeyOptions = true;
+            $scope.encoderSelected = '';
+        } else if (!$scope.isIpad && $scope.isRemoteEncodingEnabled) {
             $scope.showTabletOption = false;
             showPrintKeyOptions(true);
         } else {
@@ -141,11 +153,27 @@ sntRover.controller('RVKeyEncodePopupCtrl', [ '$rootScope', '$scope', '$state', 
 		$scope.$emit('hideLoader');
 		var secondsAfterCalled = 0;
 
+        scopeState.isCheckingDeviceConnection = false;
+
 		that.noOfErrorMethodCalled++;
 		secondsAfterCalled = that.noOfErrorMethodCalled * 1000;
 		setTimeout(function() {
 			if (secondsAfterCalled <= that.MAX_SEC_FOR_DEVICE_CONNECTION_CHECK) { // 10seconds
-				$scope.showDeviceConnectingMessge();
+                var checkDeviceConnection = function() {
+					$log.info('deviceready listener...');
+                    sntapp.cardReader = new CardOperation();
+                    $timeout(function() {
+                        $scope.showDeviceConnectingMessge();
+                    }, 300);
+                    document.removeEventListener("deviceready", checkDeviceConnection, false);
+                };
+
+                if (that.noOfErrorMethodCalled > 1 && $scope.isIpad) {
+                    sntCordovaInit();
+                    document.addEventListener("deviceready", checkDeviceConnection, false);
+                } else {
+                    $scope.showDeviceConnectingMessge();
+                }
 			}
 		}, 1000);
 		if (secondsAfterCalled > that.MAX_SEC_FOR_DEVICE_CONNECTION_CHECK) {
@@ -157,12 +185,15 @@ sntRover.controller('RVKeyEncodePopupCtrl', [ '$rootScope', '$scope', '$state', 
             if ($scope.isRemoteEncodingEnabled) {
                 // hide tablet option if only remote encoders and no device connected
                 $scope.showTabletOption = false;
+                that.setStatusAndMessage($filter('translate')('ERROR_CONNECTING_TO_KEY_CARD_READER'), 'error');
                 showPrintKeyOptions(true);
             } else {
                 $scope.deviceConnecting = false;
                 $scope.keysPrinted = false;
                 $scope.showPrintKeyOptions = false;
                 $scope.deviceNotConnected = true;
+            }
+            if (!$scope.$$phase) {
                 $scope.$apply();
             }
 		}
@@ -181,9 +212,18 @@ sntRover.controller('RVKeyEncodePopupCtrl', [ '$rootScope', '$scope', '$state', 
 		$scope.deviceConnecting = true;
 		$scope.deviceNotConnected = false;
 		$scope.keysPrinted = false;
-		$scope.showPrintKeyOptions = false;
+		$scope.showPrintKeyOptions = $scope.isIpad && $scope.isRemoteEncodingEnabled;
+
+		scopeState.isCheckingDeviceConnection = true;
+
+        $timeout(function() {
+            if (scopeState.isCheckingDeviceConnection) {
+                showDeviceNotConnected();
+            }
+        }, 2000);
+
 		var callBack = {
-			'successCallBack': showPrintKeyOptions,
+			'successCallBack': onDeviceConnectionSuccess,
 			'failureCallBack': showDeviceNotConnected
 		};
 
@@ -553,14 +593,29 @@ sntRover.controller('RVKeyEncodePopupCtrl', [ '$rootScope', '$scope', '$state', 
                 });
             }
             $scope.encoderSelected = '-1';
-        }
+        } else {
+            $scope.encoderSelected = '';
+		}
+
 		$scope.$emit('hideLoader');
 		$scope.deviceConnecting = false;
 		$scope.deviceNotConnected = false;
 		$scope.keysPrinted = false;
 		$scope.showPrintKeyOptions = true;
-
+        // fixed as part of CICO-38352
+        if (!$scope.$$phase) {
+            $scope.$apply();
+        }
 	};
+
+    var onDeviceConnectionSuccess = function(status) {
+    	scopeState.isCheckingDeviceConnection = false;
+
+        if (status) {
+            that.setStatusAndMessage($filter('translate')('KEY_CONNECTED_STATUS'), 'success');
+        }
+        showPrintKeyOptions(status);
+    };
 
 	var showKeysPrinted = function() {
 		$scope.$emit('hideLoader');
@@ -619,6 +674,7 @@ sntRover.controller('RVKeyEncodePopupCtrl', [ '$rootScope', '$scope', '$state', 
 
 	// Close popup
 	$scope.closeDialog = function() {
+        $scope.$emit('RESUME_OBSERVE_FOR_SWIPE_RESETS');
 		ngDialog.close();
 	};
 	// To handle close button click

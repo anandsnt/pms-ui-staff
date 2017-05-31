@@ -12,7 +12,7 @@ let convertDateDataForHeader = (dates, businessDate) => {
 
     dates.map(date => {
         copiedDate = tzIndependentDate(date);
-        copiedDateComponents = copiedDate.toComponents().date; //refer util.js in diary folder
+        copiedDateComponents = copiedDate.toComponents().date; // refer util.js in diary folder
 
         day = copiedDateComponents.day.toString();
         isWeekEnd = (copiedDate.getDay() === 6 || copiedDate.getDay() === 0);
@@ -43,9 +43,9 @@ let convertDateDataForHeader = (dates, businessDate) => {
 const mapStateToRateManagerGridRightSideHeaderContainerProps = (state) => {
     // app/assets/rover/react/rateManager/utils/rvRateManagerGridRightSideContainerUtils.js
     var utilMethods = new rvRateManagerRightSideContainerUtils();
-    //for every mode (all rate view, room type, single rate view), this is same
+    // for every mode (all rate view, room type, single rate view), this is same
     var propsToReturn =  {
-        mode: state.mode,   
+        mode: state.mode,
         headerDataList: convertDateDataForHeader(state.dates, state.businessDate),
         summary: utilMethods.convertDataForRestrictionListing(state.summary, state.restrictionTypes),
         dateList: utilMethods.convertDateListForRestrictionView(state.dates, state.businessDate),
@@ -56,7 +56,7 @@ const mapStateToRateManagerGridRightSideHeaderContainerProps = (state) => {
         case RM_RX_CONST.RATE_VIEW_MODE:
             propsToReturn.clickedOnRateCellOnRateView = state.callBacksFromAngular.clickedOnRateViewCell;
             break;
-        
+
         case RM_RX_CONST.ROOM_TYPE_VIEW_MODE:
             propsToReturn.clickedOnRoomTypeViewCell = state.callBacksFromAngular.clickedOnRoomTypeViewCell;
             break;
@@ -64,6 +64,11 @@ const mapStateToRateManagerGridRightSideHeaderContainerProps = (state) => {
         case RM_RX_CONST.SINGLE_RATE_EXPANDABLE_VIEW_MODE:
             propsToReturn.clickedOnRoomTypeAndAmountCell = state.callBacksFromAngular.clickedOnRoomTypeAndAmountCell;
             break;
+
+        case RM_RX_CONST.RATE_TYPE_VIEW_MODE:
+            propsToReturn.clickedOnRateTypeViewCell = state.callBacksFromAngular.clickedOnRateTypeViewCell;
+            break;
+
         default:
             break;
     }
@@ -74,11 +79,13 @@ const mapStateToRateManagerGridRightSideHeaderContainerProps = (state) => {
 const mapDispatchToRateManagerGridRightSideHeaderContainerProps = (stateProps,dispatch) => {
 
     var onTdClick = () => {};
+
     switch(stateProps.mode) {
         case RM_RX_CONST.RATE_VIEW_MODE:
             onTdClick = (e, rowIndex, colIndex) => {
                 var date = stateProps.dates[colIndex],
                     rateIDs = [];
+
                 return stateProps.clickedOnRateCellOnRateView({
                     rateIDs,
                     date
@@ -86,15 +93,16 @@ const mapDispatchToRateManagerGridRightSideHeaderContainerProps = (stateProps,di
             };
             break;
         case RM_RX_CONST.ROOM_TYPE_VIEW_MODE:
-            onTdClick = (e, rowIndex, colIndex) => {        
+            onTdClick = (e, rowIndex, colIndex) => {
                 var date = stateProps.dates[colIndex],
                     roomTypeIDs = [];
+
                 return stateProps.clickedOnRoomTypeViewCell({
                     roomTypeIDs,
                     date
                 });
             };
-            break; 
+            break;
         case RM_RX_CONST.SINGLE_RATE_EXPANDABLE_VIEW_MODE:
             onTdClick = (e, rowIndex, colIndex) => {
                 var date = stateProps.dates[colIndex],
@@ -105,7 +113,20 @@ const mapDispatchToRateManagerGridRightSideHeaderContainerProps = (stateProps,di
                     date
                 });
             };
-            break;                       
+            break;
+
+        case RM_RX_CONST.RATE_TYPE_VIEW_MODE:
+            onTdClick = (e, rowIndex, colIndex) => {
+                var date = stateProps.dates[colIndex],
+                    rateTypeIDs = [];
+
+                return stateProps.clickedOnRateTypeViewCell({
+                    rateTypeIDs,
+                    date
+                });
+            };
+            break;
+
         default:
             break;
     };
@@ -123,6 +144,6 @@ const mapDispatchToRateManagerGridRightSideHeaderContainerProps = (stateProps,di
 
 const RateManagerGridRightSideHeaderContainer =
         connect(mapStateToRateManagerGridRightSideHeaderContainerProps,
-        null, 
+        null,
         mapDispatchToRateManagerGridRightSideHeaderContainerProps)
     (RateManagerGridRightSideHeaderComponent);

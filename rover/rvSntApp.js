@@ -31,69 +31,42 @@ var GlobalApp = function() {
             that.browser = browser;
         }
         if (browser === 'rv_native' && !that.cordovaLoaded) {
-           // TODO: check URL
-            var url = "/assets/shared/cordova.js";
-
-            /* Using XHR instead of $HTTP service, to avoid angular dependency, as this will be invoked from
-             * webview of iOS / Android.
-             */
-            var xhr = new XMLHttpRequest(); // TODO: IE support?
-
-            xhr.onreadystatechange = function() {
-                  if (xhr.readyState === 4 && xhr.status === 200) {
-                      that.fetchCompletedOfCordovaPlugins(xhr.responseText);
-                  } else {
-                      that.fetchFailedOfCordovaPlugins();
-                  }
-              };
-              xhr.open("GET", url, true);
-
-            xhr.send(); // TODO: Loading indicator
-
+            // NOTE: Cordova JS assets has been loaded along with the other dashboardJsAssetList
+            that.fetchCompletedOfCordovaPlugins();
         }
 
     };
 
-
     // success function of coddova plugin's appending
-    this.fetchCompletedOfCordovaPlugins = function(script) {
-        $("head").append('<script type="text/javascript">' + script + '</script>');
+    this.fetchCompletedOfCordovaPlugins = function() {
         that.cordovaLoaded = true;
         try {
-
-           that.cardReader = new CardOperation();
-
-        }
-        catch (er) {
-        }
-        try {
-
+            that.cardReader = new CardOperation();
             that.iBeaconLinker = new iBeaconOperation();
-
-        }
-        catch (er) {}
-
-        try {
-
             that.uuidService = new UUIDService();
-
         }
         catch (er) {
-
+            console.log(er);
         }
-
-
     };
-
-    // success function of coddova plugin's appending
-    this.fetchFailedOfCordovaPlugins = function(errorMessage) {
-        that.cordovaLoaded = false;
-    };
-
 
     this.enableCardSwipeDebug = function() {
         that.cardSwipeDebug = true; // Mark it as true to debug cardSwype opertations
         that.cardReader = new CardOperation();
+    };
+
+    this.reInitCardOperations = function() {
+        var checkDeviceConnection = function() {
+            console.log('deviceready listener...');
+            sntapp.cardReader = new CardOperation();
+            window.setTimeout(function() {
+                document.dispatchEvent(new Event('OBSERVE_FOR_SWIPE'));
+            }, 300);
+            document.removeEventListener("deviceready", checkDeviceConnection, false);
+        };
+
+        sntCordovaInit();
+        document.addEventListener("deviceready", checkDeviceConnection, false);
     };
 };
 

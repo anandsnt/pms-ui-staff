@@ -205,10 +205,13 @@ sntGuestWeb.config(['$stateProvider', '$urlRouterProvider', function($stateProvi
                templateUrl: '/assets/common_templates/partials/greatWolf/gwBirthDataDetails.html',
                controller: 'birthDateDetailsController',
                title: 'Birthdate'
-       }).state('promptGuestDetails', {
-               url: '/promptGuestDetails',
-               templateUrl: '/assets/common_templates/partials/greatWolf/gwPromptGuestDetails.html',
-               controller: 'guestDetailsController',
-               title: 'Guest Details'
-       });
+	}).state('guestNotEligible', {	url: '/guestNotEligible',
+		templateUrl: '/assets/common_templates/partials/greatWolf/gwGuestNotEligible.html',
+		title: 'Guest Details'
+	}).state('promptGuestDetails', {
+		url: '/promptGuestDetails',
+		templateUrl: '/assets/common_templates/partials/greatWolf/gwPromptGuestDetails.html',
+		controller: 'guestDetailsController',
+		title: 'Guest Details'
+	});
 }]);

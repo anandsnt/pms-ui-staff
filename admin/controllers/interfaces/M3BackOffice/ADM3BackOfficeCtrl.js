@@ -76,6 +76,12 @@ admin.controller('ADM3BackOfficeCtrl', ['$scope', 'm3AccountingSetupValues', 'AD
         return str.toLowerCase()
             .split('_')
             .map(function(i) {
+                /** CICO-39843
+                 *  The exceptions for title case are shown as all caps
+                 */
+                if (_.contains(['ar', 'ooo', 'oos'], i)) {
+                    return i.toUpperCase();
+                }
                 return i[0].toUpperCase() + i.substring(1);
             })
             .join(' ');

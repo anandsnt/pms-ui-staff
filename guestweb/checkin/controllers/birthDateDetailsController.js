@@ -79,7 +79,7 @@
 		};
 
 		var goToNextStep = function() {
-			if ($rootScope.guestPromptAddressOn) {
+			if ($state.href('promptGuestDetails') !== null && $rootScope.guestPromptAddressOn) {
 				$state.go('promptGuestDetails');
 			}
 			else if (!$rootScope.guestAddressOn || $rootScope.isGuestAddressVerified) {

@@ -16,4 +16,4 @@ const rateManagerRootReducer = (state, action) => (
 	}
 );
 
-//callBacksFromAngular: rateManagerCallbacksFromAngularReducer(state.callBacksFromAngular, action)
+// callBacksFromAngular: rateManagerCallbacksFromAngularReducer(state.callBacksFromAngular, action)

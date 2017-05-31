@@ -348,6 +348,17 @@ angular.module('sntRover').service('RVreportsSubSrv', [
                 resKey: 'results'
             });
         };
+
+        service.fetchScheduleFormat = function() {
+            var url = 'admin/export_formats.json';
+
+            return callApi({
+                method: 'getJSON',
+                url: url,
+                resKey: 'results'
+            });
+        };
+
         service.fetchTimePeriods = function() {
             return callApi({
                 name: 'scheduleTimePeriods',
@@ -499,6 +510,18 @@ angular.module('sntRover').service('RVreportsSubSrv', [
                 method: 'getJSON',
                 url: ' /api/reports/list_travel_agents',
                 resKey: 'travel_agents'
+            });
+        };
+
+        // Search groups based on query string
+        service.fetchGroups = function(params) {
+
+            return callApi({
+                // no name here since we dont want to cache it in the store ever
+                method: 'getJSON',
+                url: '/api/groups/search',
+                resKey: 'groups',
+                params: params
             });
         };
 

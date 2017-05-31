@@ -16,6 +16,7 @@ angular.module('sntRover')
         ) {
 
         BaseCtrl.call(this, $scope);
+
         /*
          * Utility method to shift date.
          * @param {String}  - startDate : base date to be shifted.
@@ -27,6 +28,7 @@ angular.module('sntRover')
             var date = tzIndependentDate(startDate);
             /* For calculating diaryData.toDate, the shiftCount is 6. In case of diaryData.fromDate the shiftCount is 7.
                isInclusive is true in case of toDate. */
+
             if (isInclusive) {
                 shiftCount -= 1;
             }
@@ -170,12 +172,20 @@ angular.module('sntRover')
 
         // To toggle filter panel view.
         $scope.togglePanelView = function() {
-            if ($scope.diaryData.showFilterPanel) {
-                $scope.diaryData.showFilterPanel = false;
-                $scope.$emit('REFRESH_DIARY_ROOMS_AND_RESERVATIONS');
-            } else {
-                $scope.diaryData.showFilterPanel = true;
-            }
+            // if ($scope.diaryData.showFilterPanel) {
+            //     $scope.diaryData.showFilterPanel = false;
+            //     $scope.$emit('REFRESH_DIARY_ROOMS_AND_RESERVATIONS');
+            // } else {
+            //     $scope.diaryData.showFilterPanel = true;
+            // }
+            $scope.diaryData.showFilterPanel = !$scope.diaryData.showFilterPanel;
+            $scope.diaryData.showUnassignedReservations = false;
+        };
+
+        // Handle click on unassigned filter button
+        $scope.toggleUnassignedReservations = function() {
+            $scope.diaryData.showUnassignedReservations = !$scope.diaryData.showUnassignedReservations;
+            $scope.diaryData.showFilterPanel = false;
         };
 
         init();

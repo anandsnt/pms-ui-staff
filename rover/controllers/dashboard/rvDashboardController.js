@@ -1,8 +1,8 @@
 sntRover.controller('RVdashboardController',
     ['$scope', 'ngDialog', 'RVDashboardSrv', 'RVSearchSrv', 'dashBoarddata',
-        '$rootScope', '$filter', '$state', 'RVWorkstationSrv', 'roomTypes', 'jsMappings',
+        '$rootScope', '$filter', '$state', 'RVWorkstationSrv', 'roomTypes', '$timeout', '$interval', '$log',
         function($scope, ngDialog, RVDashboardSrv, RVSearchSrv, dashBoarddata,
-                 $rootScope, $filter, $state, RVWorkstationSrv, roomTypes, jsMappings) {
+                 $rootScope, $filter, $state, RVWorkstationSrv, roomTypes, $timeout, $interval, $log) {
 
             // setting the heading of the screen
             $scope.heading = 'DASHBOARD_HEADING';
@@ -17,16 +17,6 @@ sntRover.controller('RVdashboardController',
             $scope.shouldShowQueuedRooms = true;
             BaseCtrl.call(this, $scope);
 
-            /**
-             * @returns {undefined} undefined
-             */
-            function doCBAPowerFailureCheck() {
-                jsMappings.loadPaymentMapping().then(function() {
-                    jsMappings.loadPaymentModule().then(function() {
-                        $scope.$emit('CBA_PAYMENT_POWER_FAILURE_CHECK');
-                    });
-                });
-            }
 
             var init = function() {
                 // setting the heading of the screen
@@ -72,10 +62,6 @@ sntRover.controller('RVdashboardController',
 
                 if (!$rootScope.isWorkstationSet) {
                     setWorkStation();
-                }
-
-                if ($rootScope.paymentGateway === "CBA") {
-                    doCBAPowerFailureCheck();
                 }
 
                 // TODO: Add conditionally redirecting from API results
@@ -335,5 +321,18 @@ sntRover.controller('RVdashboardController',
                 $scope.$broadcast("HeaderBackButtonClicked");
             };
 
+            if ($rootScope.isDashboardSwipeEnabled) {
+                CardReaderCtrl.call(this, $scope, $rootScope, $timeout, $interval, $log);
+                $scope.observeForSwipe(6);
+            } else if (sntapp.cordovaLoaded && 'rv_native' === sntapp.browser) {
+                sntapp.cardReader.stopReader({
+                    'successCallBack': function(data) {
+                        $log.info('device set to offline', data);
+                    },
+                    'failureCallBack': function(data) {
+                        $log.info('failed to set device to offline', data);
+                    }
+                });
+            }
 
         }]);

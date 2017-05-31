@@ -1,6 +1,6 @@
 input,
 select,
-.button {
+.button:not(.ng-hide) {
     font-family: @fontFamily;
     font-size: 1.389em;
     vertical-align: middle;
@@ -9,7 +9,14 @@ select,
     #rounded > .round();
     .show;
     .transition();
-} 
+    display: initial !important;
+}
+
+li {
+    .button:not(.ng-hide) {
+        display: block !important;
+    }
+}
 
 input {
     color: @textColor;
@@ -34,29 +41,29 @@ select {
     line-height: 64px;
     height: 64px;
     padding: 0 30px;
-
-    &:active { background: darken(@actionBackground, 10); }
-
+    &:active {
+        background: darken(@actionBackground, 10);
+    }
     &.blank {
         padding: 0;
         background: transparent;
-
-         &:active { background: transparent; }
+        &:active {
+            background: transparent;
+        }
     }
-
-    &.option { padding: 0; }
-
+    &.option {
+        padding: 0;
+    }
     &.transparent {
         background: @transparentColor;
-
-        &:active { background: darken(@transparentColor, 30); }
+        &:active {
+            background: darken(@transparentColor, 30);
+        }
     }
-
     &.with-icon {
         position: relative;
         text-align: left;
         padding: 0 40px 0 80px;
-
         .icons {
             position: absolute;
             top: 50%;
@@ -64,16 +71,41 @@ select {
             margin-top: -12px;
         }
     }
+    &.only-icon {
+        .square(64px);
+        position: relative;
+        .icons {
+            .square(30px);
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            margin: auto;
+        }
+    }
+    &.text-red {
+        color: @red;
+    }
+    &.disabled,
+    &[disabled] {
+        opacity: 0.3;
+        background: rgba(255, 255, 255, 0.5);
+    }
 }
 
 .form {
+    width: 100% !important;
     #flexbox > .flex();
     #flexbox > .parent(row wrap, flex-start, flex-start, '');
-
-    &.short { 
-        width: 50%;
-        margin: 0 auto; 
+    &.short {
+        width: 50% !important;
+        margin: 0 auto;
     }
+}
+
+.form:not(.ng-hide) {
+    display: table !important;
 }
 
 .entry {
@@ -83,8 +115,7 @@ select {
         clear: both;
         padding-bottom: 2rem;
         margin-bottom: 2rem;
-        .box-shadow(0 1px 0 rgba(0,0,0,.1));
-
+        .box-shadow(0 1px 0 rgba(0, 0, 0, .1));
         &:after {
             content: '';
             position: absolute;
@@ -92,17 +123,14 @@ select {
             right: 20px;
             border-left: 6px solid transparent;
             border-right: 6px solid transparent;
-            border-top: 6px solid rgba(0,0,0,.8);
+            border-top: 6px solid rgba(0, 0, 0, .8);
             .square(0);
             .show;
         }
     }
-
-    &.input { 
-        position: relative;
-        margin-right: 10px;
-        #calc > #width > .remove(85%, 10px);
-
+    &.input {
+        display: table-cell !important;
+        width: 100% !important;
         .icons {
             position: absolute;
             top: 10px;
@@ -111,52 +139,43 @@ select {
             .square(44px);
         }
     }
-
     .read-only {
         opacity: 0.5;
         pointer-events: none;
         font-style: italic;
     }
-
     &.select-with-button {
         width: 84.1%;
-        margin-right: 0%;
+        margin-right: 3px;
     }
-
     &.with-label {
-        margin-bottom:10px;
+        margin-bottom: 10px;
         &:after {
             display: table;
-            content:'';
-            clear:both;
+            content: '';
+            clear: both;
         }
-
         .entry {
-            margin:0;
+            margin: 0;
         }
-
         > label,
         > input,
-        > .select {
-            display: inline-block;
+        > .select:not(.ng-hide) {
+            display: inline-block !important;
         }
-
         > label {
             width: 59%;
             vertical-align: middle;
-            font-size:1.5em;
+            font-size: 1.5em;
         }
-
         > input,
         > .select {
-             .size(64px, 40%);
+            .size(64px, 40%);
         }
-
         &.reverse {
             > label {
                 width: 39%;
             }
-
             > input,
             > .select {
                 .size(64px, 60%);
@@ -167,65 +186,224 @@ select {
             pointer-events: none;
         }
     }
-
     &.action {
-        width: 15%;
+        padding-left: 10px;
     }
 }
 
-.clear-nationality-btn{
+.clear-nationality-btn {
     margin-right: -35px;
 }
-.save-nationality-btn{
-    max-width:100%;
-    display:inline-block;
-    white-space:nowrap;
-    overflow:hidden;
-    text-overflow:ellipsis;
+
+.save-nationality-btn {
+    max-width: 100%;
+    display: inline-block;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
-.ui-autocomplete{
-    overflow:hidden;
+
+.ui-autocomplete {
+    overflow: hidden;
     max-height: 215px !important;
     border: 2px solid @white;
     border-radius: 2px;
 }
+
 .ui-autocomplete .ui-menu-item {
-  background:@white;
-  color:@brandColor;
-  padding:20px;
-  font-size: 1.389em;
-}
-.ui-autocomplete .ui-menu-item.ui-state-focus {
-  background-color: @white;
-  color: @brandColor;
+    background: @white;
+    color: @brandColor;
+    padding: 20px;
+    font-size: 1.389em;
 }
 
-.clear-text-icon{
+.ui-autocomplete .ui-menu-item.ui-state-focus {
+    background-color: @white;
+    color: @brandColor;
+}
+
+.clear-text-icon {
     top: 15px;
     position: relative;
     right: 73px;
 }
 
-.admin-label-description{
+.admin-label-description {
     font-size: .8em !important;
     float: left;
     position: relative;
     margin-top: -18px;
     width: 55% !important;
 }
-.admin-screen > div > #textual{
+
+.admin-screen > div > #textual {
     border-bottom-left-radius: 8px;
     border-bottom-right-radius: 8px;
 }
-.admin-screen > div > #textual:after{
+
+.admin-screen > div > #textual:after {
     border-bottom-left-radius: 8px;
     border-bottom-right-radius: 8px;
 }
-.disabled-button{
+
+.disabled-button {
     opacity: 0.5;
     pointer-events: none;
 }
 
-.demo-second-cls{
+.demo-second-cls {
     top: 20px !important;
 }
+
+.input-group {
+    #flexbox > .flex();
+    #flexbox > .parent(row wrap, '', center, '');
+    border: 1px solid fade(@black, 20%);
+    border-radius: 50px;
+    .button {
+        width: 30%;
+        font-weight: 600;
+        color: fade(@black, 30%) !important;
+        font-size: 32px !important;
+        &:hover,
+        &:active {
+            color: @brandColor;
+        }
+    }
+    input {
+        width: 40%;
+        text-align: center;
+        color: @black;
+    }
+    input,
+    .button {
+        border-radius: 0;
+        background: transparent !important;
+        border-right: 1px solid fade(@black, 20%) !important;
+        box-shadow: none !important;
+        &:first-child {
+            border-top-left-radius: 50px;
+            border-bottom-left-radius: 50px;
+        }
+        &:last-child {
+            border-top-right-radius: 50px;
+            border-bottom-right-radius: 50px;
+            border-right: 0 !important;
+        }
+    }
+}
+
+.key-text-style {
+    margin-bottom: 2px;
+    &.more {
+        margin-bottom: 2%;
+    }
+}
+
+.key-text-reasons>li {
+    text-align: left !important;
+    width: 65% !important;
+    margin-left: 25%;
+    >h4 {
+        font-weight: 500;
+    }
+}
+
+.footer-centered {
+    justify-content: center !important;
+}
+
+.select-sub-text {
+    font-size: 16px;
+}
+
+.select-icon-checked>svg {
+    height: 100%;
+    width: 60%;
+    fill: @white;
+}
+
+.options-less-space {
+    margin-top: 30px !important;
+}
+
+.checkmark-fill {
+    fill: @brandColor;
+}
+
+.editor-mode-cls {
+    min-width: 200px;
+}
+
+.action > .button:not(.ng-hide) {
+    display: table-cell !important;
+}
+
+#content > button:not(.ng-hide) {
+    display: table-cell !important;
+}
+
+.entry > .select:not(.ng-hide) {
+    &.button {
+        display: inline-block !important;
+    }
+}
+
+.centered > #content > .button:not(.ng-hide) {
+    display: block !important;
+}
+
+
+
+
+
+#icon-date {
+    position: absolute;
+    margin-left: -6%;
+    margin-top: .5%;
+    @media only screen and (min-width: 1024px) and (max-width: 1024px) { 
+        position: absolute;
+        margin-left: -6%;
+        margin-top: .5%;
+    }
+    
+    @media only screen and (min-width: 1366px) and (max-width: 1366px) { 
+        position: absolute;
+        margin-left: -5%;
+        margin-top: 1%;
+        height: 48.5%;
+        top: 40%;
+    }
+}
+
+#icon-date {
+
+    @media only screen and (min-width: 1024px) and (max-width: 1024px) { 
+        position: absolute;
+        margin-left: -6%;
+        margin-top: .5%;
+    }
+
+    @media only screen and (min-width: 1024px) and (max-width: 1024px) { 
+        position: absolute;
+        margin-left: -6%;
+        margin-top: .5%;
+    }
+}
+
+
+
+
+
+select::-ms-expand {
+    display: none;
+}
+
+select {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    padding: 2px 30px 2px 2px;
+    /*border: none; - if you want the border removed*/
+}
+

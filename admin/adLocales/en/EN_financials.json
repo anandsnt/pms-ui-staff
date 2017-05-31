@@ -34,4 +34,5 @@
 "INVOICE_NO_PREFIX" : "Invoice Number Prefix",
 "PLACEHOLDER_FIRST_INVOICE_NO" : "Enter First Invoice Number",
 "PLACEHOLDER_INVOICE_NO_PREFIX" : "Enter Invoice Number Prefix",
-"EMPTY_INVOICE_NO_PREFIX" : "Invoice Number Prefix cannot be empty"
+"EMPTY_INVOICE_NO_PREFIX" : "Invoice Number Prefix cannot be empty",
+"SELECT_PAYMENT_TYPE":"Select Payment Type"

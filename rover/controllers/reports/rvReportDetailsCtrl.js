@@ -63,6 +63,12 @@ sntRover.controller('RVReportDetailsCtrl', [
 		$scope.parsedApiFor = undefined;
 		$scope.currencySymbol = $rootScope.currencySymbol;
 
+		// CICO-39558 - Setting flags for commission print.
+		$scope.printTACommissionFlag = {
+			'summary': false,
+			'agent': false
+		};
+
         var setTotalsForReport = function(totals) {
                 var totalsForReport = [], v;
 
@@ -405,6 +411,11 @@ sntRover.controller('RVReportDetailsCtrl', [
 					$scope.rightColSpan = 4;
 					break;
 
+                case reportNames['COMPLIMENTARY_ROOM_REPORT']:
+                    $scope.leftColSpan = 5;
+                    $scope.rightColSpan = 3;
+                    break;
+
 				default:
 					$scope.leftColSpan = 2;
 					$scope.rightColSpan = 2;
@@ -534,6 +545,24 @@ sntRover.controller('RVReportDetailsCtrl', [
 			        }
 			    }
 			}
+
+			// For addon Upsell, we don't have to show Revenue, But as we are using common methods to retrieve data
+			// revenue details are also returned from API. We have to filter out revenue details for this report
+			if ($scope.chosenReport.title === reportNames['ADDON_UPSELLS']) {
+				// remove Revenue from header
+				headers.splice(_.indexOf(headers, function() {
+					return value === 'Revenue';
+				}), 1);
+				// remove values corresponding to revenue in each row (will be the last element in each row)
+				_.each(results, function(result) {
+					result.pop();
+				});
+				// remove Revenue from the totals row
+				$scope.$parent.resultsTotalRow.splice(_.indexOf($scope.$parent.resultsTotalRow, function() {
+					return label === 'Revenue';
+				}), 1);
+			}
+
 
 			// new more detailed reports
 			$scope.parsedApiFor = $scope.chosenReport.title;
@@ -716,9 +745,22 @@ sntRover.controller('RVReportDetailsCtrl', [
 				case reportNames['TRAVEL_AGENT_COMMISSIONS']:
 					$scope.hasReportTotals    = true;
 					$scope.showReportHeader   = true;
-					$scope.showPrintOption = false;
+					$scope.showPrintOption = true;
 					$scope.detailsTemplateUrl  = '/assets/partials/reports/travelAgentCommission/rvTravelAgentCommissionReportRow.html';
 					break;
+
+                case reportNames['COMPLIMENTARY_ROOM_REPORT']:
+                    $scope.hasReportTotals    = true;
+                    $scope.showReportHeader   = true;
+                    $scope.detailsTemplateUrl = '/assets/partials/reports/complimentaryRoomReport/rvComplimentaryRoomReport.html';
+
+                break;
+
+                case reportNames['GROUP_ROOMS_REPORT']:
+                    $scope.showReportHeader   = true;
+                    $scope.detailsTemplateUrl = '/assets/partials/reports/groupRoomsReport/rvGroupRoomsReport.html';
+
+                break;
 
 				default:
 					$scope.hasReportTotals    = true;
@@ -816,6 +858,10 @@ sntRover.controller('RVReportDetailsCtrl', [
 
 				case reportNames['VACANT_ROOMS_REPORT']:
 					template = '/assets/partials/reports/vacantRoomsReport/rvVacantRoomsReportRow.html';
+					break;
+
+				case reportNames['COMPLIMENTARY_ROOM_REPORT']:
+					template = '/assets/partials/reports/complimentaryRoomReport/rvComplimentaryRoomReport.html';
 					break;
 
 
@@ -971,8 +1017,15 @@ sntRover.controller('RVReportDetailsCtrl', [
 			// reset the page
 			$_pageNo = 1;
 
+            var pageNo  = 1;
+
+            // CICO-39128 - Added to preserve the page no while sorting
+            if ($scope.chosenReport.title === reportNames['COMPLIMENTARY_ROOM_REPORT']) {
+                pageNo = $scope.currentPage;
+            }
+
 			// should-we-change-view, specify-page, per-page-value
-			$scope.genReport( false, 1 );
+			$scope.genReport( false, pageNo );
 		};
 
 		// refetch the reports with new filter values
@@ -1048,6 +1101,10 @@ sntRover.controller('RVReportDetailsCtrl', [
 				case reportNames['FINANCIAL_TRANSACTIONS_ADJUSTMENT_REPORT']:
 				case reportNames['A/R_AGING']:
                 case reportNames['BUSINESS_ON_BOOKS']:
+                case reportNames['COMPLIMENTARY_ROOM_REPORT']:
+                case reportNames['GROUP_ROOMS_REPORT']:
+                case reportNames['TRAVEL_AGENT_COMMISSIONS']:
+
 					orientation = 'landscape';
 					break;
 
@@ -1071,6 +1128,11 @@ sntRover.controller('RVReportDetailsCtrl', [
 
 			// add the orientation
 			addPrintOrientation();
+
+			// CICO-39558
+			if ($scope.chosenReport.title === reportNames['TRAVEL_AGENT_COMMISSIONS']) {
+				$scope.printTACommissionFlag.summary = true;
+            }
 
 			/**
 			 * CICO-32471: icons are background image they are loaded async after render
@@ -1109,6 +1171,11 @@ sntRover.controller('RVReportDetailsCtrl', [
 
 					// remove the orientation
 					removePrintOrientation();
+
+					// CICO-39558
+					if ($scope.chosenReport.title === reportNames['TRAVEL_AGENT_COMMISSIONS']) {
+						$scope.printTACommissionFlag.summary = false;
+		            }
 
 					// If a specific report ctrl has created a pre-print 'afterPrint' method
 					// to get clear/remove anything after print

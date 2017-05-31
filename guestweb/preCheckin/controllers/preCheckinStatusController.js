@@ -9,40 +9,46 @@
 		$rootScope.userEmail = ($rootScope.userEmail === null) ? "" : $rootScope.userEmail;
 		$rootScope.userMobile = ($rootScope.userMobile === null) ? "" : $rootScope.userMobile;
 
+		// Addons
+		if ($state.href("offerAddonOptions") !== null && $rootScope.isAddonUpsellActive && !$rootScope.skipedAddons) {
+			$state.go('offerAddonOptions', {
+				'isFrom': 'checkinLater'
+			});
+		}
 		// collect oustanding stay total
-		if (parseFloat($rootScope.outStandingBalance) > 0 && $rootScope.isMLI && $rootScope.collectOutStandingBalance && !$rootScope.skipBalanceCollection) {
+		else if ($state.href('balancePaymentCCCollection') !== null && parseFloat($rootScope.outStandingBalance) > 0 && $rootScope.isMLI && $rootScope.collectOutStandingBalance && !$rootScope.skipBalanceCollection) {
 			$state.go('balancePaymentCCCollection');
 		}
 		// collect number of keys
-		else if ($rootScope.promptForKeyCount && !$rootScope.KeyCountAttemptedToSave) {
+		else if ($state.href('selectNoOfkeys') !== null && $rootScope.promptForKeyCount && !$rootScope.KeyCountAttemptedToSave) {
 			$state.go('selectNoOfkeys');
 		}
 		// collect credit card
-		else if ($rootScope.collectCCOnCheckin && $rootScope.isMLI && !$rootScope.isCcAttachedFromGuestWeb) {
+		else if ($state.href('checkinCcVerification') !== null && $rootScope.collectCCOnCheckin && $rootScope.isMLI && !$rootScope.isCcAttachedFromGuestWeb) {
 			$state.go('checkinCcVerification');
-		} else if ($rootScope.alwaysAskForMobileNumber && !$rootScope.userMobileSkipped) {
+		} else if ($state.href('roomReadyAlertUsingText') !== null && $rootScope.alwaysAskForMobileNumber && !$rootScope.userMobileSkipped) {
 			$state.go('roomReadyAlertUsingText'); // prompt user to choose the text delivery option
 		}
 		// collect mobile number with option to update already existing mobile number
-		else if (($rootScope.application === "SMS" && $rootScope.userMobile.length > 0) && !$rootScope.userMobileSkipped) {
+		else if ($state.href('mobileNumberOptions') !== null && ($rootScope.application === "SMS" && $rootScope.userMobile.length > 0) && !$rootScope.userMobileSkipped) {
 			$state.go('mobileNumberOptions'); // if user has not attached an mobile
 		}
 		// collect new mobile number
-		else if (($rootScope.application === "SMS" && $rootScope.userMobile.length === 0) && !$rootScope.userMobileSkipped) {
+		else if ($state.href('mobileNumberAddition') !== null && ($rootScope.application === "SMS" && $rootScope.userMobile.length === 0) && !$rootScope.userMobileSkipped) {
 			$state.go('mobileNumberAddition'); // if user has not attached an mobile
 		}
 		// collect email
-		else if ($rootScope.offerRoomDeliveryOptions && !$rootScope.userEmailEntered && ($rootScope.application === "SMS" || $rootScope.application === "EMAIL" || $rootScope.application === "URL")) {
+		else if ($state.href('emailAddition') !== null && $rootScope.offerRoomDeliveryOptions && !$rootScope.userEmailEntered && ($rootScope.application === "SMS" || $rootScope.application === "EMAIL" || $rootScope.application === "URL")) {
 			$state.go('emailAddition', {
 				'isFrom': 'checkinLater'
 			}); // if user has not attached an email
 		}
 		// collect deposit
-		else if ($rootScope.enforceDeposit && !$rootScope.skipDeposit) {
+		else if ($state.href('depositPayment') !== null && $rootScope.enforceDeposit && !$rootScope.skipDeposit) {
 			$state.go('depositPayment'); // checkin deposit collection
 		}
 		// conduct survey
-		else if ($rootScope.conductSurvey && !$rootScope.skipBalanceconductSurvey) {
+		else if ($state.href('conductSurvey') !== null && $rootScope.conductSurvey && !$rootScope.skipBalanceconductSurvey) {
 			$state.go('conductSurvey'); // conduct Survey
 		} else {
 			// this page will be used again after email entry

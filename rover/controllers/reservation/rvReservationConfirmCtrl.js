@@ -375,6 +375,13 @@ sntRover.controller('RVReservationConfirmCtrl', [
 				justCreatedRes: true
 			};
 
+			// CICO-40207 Before navigating to the staycard make sure only one reservation's details are persisted in scope
+			// Data pertaining to other reservations can be removed!
+			// Stay card operates in the perspective of only one reservation at a time.
+            $scope.reservationData.reservationIds.splice(1);
+            $scope.reservationData.rooms.splice(1);
+
+
 			$scope.otherData.reservationCreated = true;
 			$scope.reservationData.rateDetails = [];
 			$state.go('rover.reservation.staycard.reservationcard.reservationdetails', stateParams);
@@ -391,10 +398,19 @@ sntRover.controller('RVReservationConfirmCtrl', [
 		 */
 		$scope.clickedNewReservation = function() {
 			$scope.reservationData.roomCount = 1;
-			$scope.reservationData.rooms[0].rateId = '';
-			$scope.reservationData.rooms[0].rateName = '';
-			$scope.reservationData.rooms[0].rateAvg = '';
-			$scope.reservationData.rooms[0].rateTotal = '';
+
+            /**
+			 * CICO-40041
+			 * CICO-39612
+			 * CICO-39590
+			 * Reset the rate related details of all rooms, in case of the previous one being a multi-room booking
+             */
+            _.each($scope.reservationData.rooms, function(room) {
+                room.rateId = '';
+                room.rateName = '';
+                room.rateAvg = '';
+                room.rateTotal = '';
+            });
 
 			$scope.reservationData.totalTaxAmount = '';
 			$scope.reservationData.totalTax = '';

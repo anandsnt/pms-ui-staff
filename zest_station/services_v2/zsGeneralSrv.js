@@ -2,8 +2,8 @@
  * Service used for tablet-kiosk UI (Zest Station)
  */
 
-sntZestStation.service('zsGeneralSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWebSrv2', '$translate',
-    function($http, $q, zsBaseWebSrv, zsBaseWebSrv2, $translate) {
+sntZestStation.service('zsGeneralSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWebSrv2', '$translate', '$rootScope',
+    function($http, $q, zsBaseWebSrv, zsBaseWebSrv2, $translate, $rootScope) {
         var that = this;
 
         // this.refToLatestPulledTranslations; // used by generalRouter to fetch and store Language Locale files
@@ -14,12 +14,19 @@ sntZestStation.service('zsGeneralSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
         * themeMappings:: when mapping, on Left (key) is used for the PATH zest_station/css/themes/{theme},
         *                  --on the right, (value) is what is coming from the hotel config in SNT Admin > Templates Config, ie. in dropdown (Public ny), 
         *                  but we want to map to a path of just css/theme/public
+        *
+        *WHEN ADDING or Changing a Theme Name and path - will also need to update the Gulp Asset-list
+        * at >> asset_list > theming > zeststation > css > css_theme_mapping.js
+        * 
         */
+
         var themeMappings = {
             'zoku': 'zoku',
             'yotel': 'yotel',
             'avenue': 'avenue',
             'public': 'public ny',
+            'public_v2': 'public ny v2',
+            'duke': 'Little duke',
             'sohotel': 'sohotel',
             'epik': 'Hotel epik',
             'conscious': 'Conscious vondelpark',
@@ -179,7 +186,7 @@ sntZestStation.service('zsGeneralSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
 
         this.getDoorLockSettings = function() {
             var deferred = $q.defer(),
-                url = 'api/door_lock_interfaces.json';
+                url = '/api/door_lock_interfaces.json';
 
             zsBaseWebSrv.getJSON(url).then(function(data) {
                 deferred.resolve(data);
@@ -234,6 +241,11 @@ sntZestStation.service('zsGeneralSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
         this.fetchReservationDetails = function(param) {
             var url = '/staff/staycards/reservation_details.json?reservation_id=' + param.reservation_id;
             var deferred = $q.defer();
+
+            // To fetch the latest guest details, the following parameter has to be sent to trigger a fetchProfile OWS request
+            if (!$rootScope.isStandAlone) {
+                url += "&sync_guest_with_external_pms=true";
+            }
 
             zsBaseWebSrv2.getJSON(url).then(function(data) {
                 deferred.resolve(data);
@@ -463,7 +475,7 @@ sntZestStation.service('zsGeneralSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
 
         this.updateWorkStationOos = function(params) {
             var deferred = $q.defer(),
-                url = 'api/workstations/' + params.id + '/set_out_or_order.json';
+                url = '/api/workstations/' + params.id + '/set_out_or_order.json';
 
             zsBaseWebSrv.postJSON(url, params).then(function(data) {
                 deferred.resolve(data);
@@ -489,7 +501,7 @@ sntZestStation.service('zsGeneralSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
 
         this.validate = function(params) {
             var deferred = $q.defer(),
-                url = 'api/users/check_if_admin';
+                url = '/api/users/check_if_admin';
 
             zsBaseWebSrv.postJSON(url, params).then(function(data) {
                 deferred.resolve(data);
@@ -516,6 +528,42 @@ sntZestStation.service('zsGeneralSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
                 url = '/zest_station/log_key_activities';
 
             zsBaseWebSrv.postJSON(url, params).then(function(data) {
+                deferred.resolve(data);
+            }, function(data) {
+                deferred.reject(data);
+            });
+            return deferred.promise;
+        };
+
+        this.sendThirdPartyEmail = function(params) {
+            var deferred = $q.defer(),
+                url = '/api/reservations/' + params.reservation_id + '/send_station_offer_mobilekey_mail';
+
+            zsBaseWebSrv.postJSON(url, params).then(function(data) {
+                deferred.resolve(data);
+            }, function(data) {
+                deferred.reject(data);
+            });
+            return deferred.promise;
+        };
+      
+        this.fetchHotelLanguageList = function() {
+            var deferred = $q.defer();
+            var url = '/api/guest_languages';
+            
+            zsBaseWebSrv.getJSON(url).then(function(data) {
+                deferred.resolve(data);
+            }, function(data) {
+                deferred.reject(data);
+            });
+            return deferred.promise;
+       };
+            
+        this.getKeyEncoderInfo = function() {
+            var deferred = $q.defer();
+            var url = '/api/key_encoders';
+
+            zsBaseWebSrv.getJSON(url).then(function(data) {
                 deferred.resolve(data);
             }, function(data) {
                 deferred.reject(data);

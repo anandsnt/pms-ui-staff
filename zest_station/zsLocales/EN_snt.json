@@ -476,6 +476,113 @@
   "BY_NAME": "By Name",
 
   "GATE_ERROR_MESSAGE": "To create the second Key.Please take your first key.",
-  "GATE_CLOSE": "Close"
+  "GATE_CLOSE": "Close",
+
+  "CC_PLEASE_NOTE": "Please note:",
+  "CC_INSTRUCTION_1": "Your card will be authorized for an incidental amount of $25.00 per night",
+  "CC_INSTRUCTION_2": "Unused remaining balance will be released upon checkout",
+  "CC_INSTRUCTION_3": "If you choose to use a debit card then please note that some banks may take longer to release the funds back to your checking account",
+
+   "GET_KEYS_HEADER": "GET YOUR KEYS",
+   "GET_KEYS_SUB": "",
+   "GET_KEYS_HOW_MANY": "How many keys do you need?",
+
+
+
+
+   "THIRD_PARTY_MOBILE_SELECT_HEADER": "Get the app",
+   "THIRD_PARTY_MOBILE_SELECT_SUB_HEADER": "You need the [App Name] to use a mobile key. It supports both iPhone and Android devices",
+
+   "THIRD_PARTY_HAVE_IT": "Already Have it",
+   "THIRD_PARTY_HAVE_IT_SUB": "",
+   "THIRD_PARTY_GET_IT": "Help me get it",
+   "THIRD_PARTY_GET_IT_SUB": "",
+   "THIRD_PARTY_NO_THX": "No Thanks",
+   "THIRD_PARTY_NO_THX_SUB": "",
+
+   "THIRD_PARTY_MOBILE_HAVE_IT_INFO_HEADER": "Get the key from the app",
+   "THIRD_PARTY_MOBILE_HAVE_IT_INFO_SUB_HEADER": "To get your mobile key, sign in to the [Name of app] and do x",
+   "THIRD_PARTY_MOBILE_HAVE_IT_INFO_BODY_LARGE_TEXT": "",
+   "THIRD_PARTY_MOBILE_HAVE_IT_INFO_BODY_TEXT": "You're all done here, so select Next",
+
+   "THIRD_PARTY_MOBILE_GET_IT_INFO_HEADER": "Download the app",
+   "THIRD_PARTY_MOBILE_GET_IT_INFO_SUB_HEADER": "We will email you at",
+   "THIRD_PARTY_MOBILE_GET_IT_INFO_SUB_HEADER_AFTER": "It also includes our WiFi details so you can download it for free",
+
+   "THIRD_PARTY_MOBILE_EMAIL_SENT_HEADER": "Email Sent",
+   "THIRD_PARTY_MOBILE_EMAIL_SENT_SUB_HEADER": "Check your inbox for the email to download the app, sign up and get your key.",
    
+   "SELECT_KEY_TYPE_HEADER": "Select Key Type",
+   "SELECT_KEY_TYPE_SUB": "",
+   "SELECT_MOBILE_KEY": "Mobile key",
+   "SELECT_PHYSICAL_KEY": "Physical key",
+   "SELECT_PHYSICAL_KEY_SUB": "",
+   "SELECT_MOBILE_KEY_SUB": "",
+   "PRINT_SUCCESS": "Print was Success",
+   "PRINT_FAILED": "Print was Failed",
+   "EMAIL_SUCCESS": "Email was sent",
+   "EMAIL_FAILED": "Something went wrong on sending email",
+   
+   "ADD_ADDON": "Add",
+   "REMOVE_ADDON": "Remove",
+   "ADD_ON_HEADING": "Enhance your stay?",
+   "ADD_ON_TOTAL_TEXT": "Add Ons Total:",
+   "ADD_ON_FOOTER_1": "Showing",
+   "ADD_ON_FOOTER_2": "Of",
+   "ADD_ON_FOOTER_3" : "Addons",
+   "ADDON_ADD_ERROR_HEADER": "Something went wrong!",
+   "ADDON_REMOVAL_ERROR_HEADER": "Something went wrong!",
+   "ADDON_ADD_ERROR_MESSAGE": "Unable To add this to your reservation",
+   "ADDON_REMOVAL_ERROR_MESSAGE": "Unable To remove this from your reservation",
+
+   "GID_SCAN_HEADER": "Scan Passport",
+   "GID_SCAN_SUB_HEADER": "Place your passport on the scanner and select 'Scan'",
+   "GID_SCAN_BUTTON": "Scan",
+
+    "GID_SCANNING_IN_PROGRESS": "Scanning in progress",
+
+
+   "GID_SCAN_SUB_HEADER_FIRST": "Place",
+   "GID_SCAN_SUB_HEADER_SECOND": "'s Passport on the scanner and press 'Scan'",
+
+   "GID_SCAN_FAILURE_HEADER": "Passport Scan Unsuccessful",
+   "GID_SCAN_FAILURE_SUB_HEADER": "Scan passports for all guests to continue",
+
+   "GID_SCAN_RESULTS_HEADER": "Passport Scan Results",
+   "GID_SCAN_RESULTS_SUB_HEADER": "SCAN PASSPORTS FOR ALL GUESTS TO CONTINUE",
+
+   "GID_SCAN_SUCCESS": "Success",
+   "GID_SCAN_NOT_STARTED": "Not Started",
+
+   "GID_SCAN_FAILURE_VIEW_RESULTS": "View Results",
+
+
+
+   "GID_STAFF_REVIEW_SUCCESS": "Accepted",
+   "GID_STAFF_REVIEW_NOT_STARTED": "Not Reviewed",
+
+
+   "GID_VERIFY_PASSPORT_SUB": "Reservation Details",
+   "GID_VERIFY_PASSPORT": "Verify Passport",
+
+   "GID_ADMIN_PWD_SUB": "Enter your password",
+   "GID_ADMIN_ID_SUB": "Enter your login ID",
+   "GID_ADMIN_LOGIN_HEADER": "Staff Login",
+
+   "GID_WAIT_HEADER": "Please Wait",
+   "GID_WAIT_SUB": "A staff member will be with you soon to verify your passport information.",
+
+
+   "GID_ADMIN_VERIFY_HEADER": "Verify Passport",
+   "GID_ADMIN_VERIFY_SUB_HEADER": "Reservation Details",
+
+
+   "GATE_ERROR_CLOSE": "Ok",
+
+   "PER_NIGHT": "Per Night",
+   "TAX_TEXT": "(+Tax)",
+   "ROOM_UPSELL_FOOTER_1": "Showing",
+   "ROOM_UPSELL_FOOTER_2": "Of",
+   "ROOM_UPSELL_FOOTER_3": "rooms"
+
 }

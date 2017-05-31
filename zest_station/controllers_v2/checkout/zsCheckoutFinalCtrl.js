@@ -23,6 +23,8 @@ sntZestStation.controller('zsCheckoutFinalCtrl', [
 			$scope.$emit(zsEventConstants.HIDE_BACK_BUTTON);
 			// hide close button
 			$scope.$emit(zsEventConstants.HIDE_CLOSE_BUTTON);
+
+            $scope.trackEvent('CO', 'Flow-End-Success');
 		}());
 	}
 ]);

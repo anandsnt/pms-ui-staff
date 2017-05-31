@@ -172,6 +172,20 @@ angular.module('sntPay').controller('sntPaymentController',
 
             /**
              *
+             * @param {{String}} errorMessage errorMessage
+             * @returns {{undefined}} undefined
+             */
+            function updateErrorMessage(errorMessage) {
+                $scope.paymentErrorMessage = '';
+                $timeout(()=>{
+                    $scope.paymentErrorMessage = errorMessage;
+                    $scope.$emit('PAYMENT_FAILED', [errorMessage]);
+                    $scope.$emit('hideLoader');
+                }, 300);
+            }
+
+            /**
+             *
              * @returns {{undefined}} undefined
              */
             function initiateCBAlisteners() {
@@ -197,8 +211,13 @@ angular.module('sntPay').controller('sntPaymentController',
                     );
                 });
 
+                var listenerUpdateErrorMessage = $rootScope.$on('UPDATE_NOTIFICATION', (event, response)=> {
+                    updateErrorMessage(response);
+                });
+
                 $scope.$on('$destroy', listenerCBAPaymentFailure);
                 $scope.$on('$destroy', listenerCBAPaymentSuccess);
+                $scope.$on('$destroy', listenerUpdateErrorMessage);
             }
 
             /**
@@ -678,14 +697,15 @@ angular.module('sntPay').controller('sntPaymentController',
                 $scope.submitPayment(params);
             });
 
-            var cancelConfirmDBPaymentPopup = function() {
+            // To close the confirm DB popup.
+            var cancellConfirmDBpopup = function() {
                 $scope.$emit('SHOW_BILL_PAYMENT_POPUP');
                 ngDialog.close(paymentDialogId);
             };
 
             // CICO-33971 : Close confirmation popup.
             $scope.$on('CANCELLED_CONFIRM_DB_PAYMENT', () => {
-                cancelConfirmDBPaymentPopup();
+                cancellConfirmDBpopup();
             });
 
             $scope.submitPayment = function(payLoad) {
@@ -757,8 +777,9 @@ angular.module('sntPay').controller('sntPaymentController',
                         }
                     },
                     errorMessage => {
-                        if ($scope.payment.isConfirmedDBpayment) {
-                            cancelConfirmDBPaymentPopup();
+                        // CICO-40539 - Handle error for DB payment fron bill screen/confirm popup.
+                        if ($scope.selectedPaymentType === 'DB' && $scope.payment.isConfirmedDBpayment) {
+                            cancellConfirmDBpopup();
                             $scope.payment.isConfirmedDBpayment = false;
                         }
                         handlePaymentError(errorMessage);

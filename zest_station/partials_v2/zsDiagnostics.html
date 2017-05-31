@@ -15,7 +15,7 @@
      <span ng-show="zestStationData.editorModeEnabled == 'true'">
         In Editor-Mode - <span class='key-in-progress'>(Timers Paused)</span><br> 
     </span>
-     <span> [ {{zestStationData.workstationTimer}}/{{zestStationData.getWorkstationsAtTime}} ] Fetch Workstation Data & Refresh Station Check <br> </span>
+     <span> [ {{zestStationData.workstationTimer}}/{{zestStationData.getWorkstationsAtTime}} ] Fetch Workstation Data & <span click-touch="zestStationData.workstationTimer=zestStationData.getWorkstationsAtTime; zestStationData.workstationTimerManualTrigger=true;">Refresh Station Check</span> <br> </span>
     <span> [ {{zestStationData.userInActivityTimeInHomeScreenInSeconds}}/{{zestStationData.timeUntilLanguageResetCheck}} ] Language Reset  <br> </span>
 
     <span> [ {{zestStationData.refreshStationTimer}} >= {{zestStationData.timeUntilRefreshCheck}} ] Refresh Station Check Home Idle  <br> </span>
@@ -27,19 +27,34 @@
 
 
 <!-- WORKSTATION + Encoding Info -->
-<span ng-show="zestStationData.timeDebugger == 'true'" class="timer-debugger-right dev-cls non-center">
+<span ng-show="zestStationData.timeDebugger == 'true'" class="timer-debugger-right dev-cls non-center" click-touch='zestStationData.showMoreDebugInfo=!zestStationData.showMoreDebugInfo'>
      <br> <span>Assigned Workstation ({{zestStationData.workstationName}}) <br> </span>
-
+     <span ng-show='zestStationData.encoder_id'> Encoder <span>[ {{zestStationData.key_encoder_name}}, {{zestStationData.encoder_id}} ]</span> <br> </span>
+     <span ng-show='zestStationData.encoder_id == ""'> Encoder [ <span class='key-in-progress'>Not Set in Workstation</span> ] <br> </span>
     <span ng-show='zestStationData.workstationStatus === "out-of-order"'> Out of Order Reason: 
         <span ng-show='zestStationData.workstationOooReason.length > 0'>[ {{zestStationData.workstationOooReason}} ] </span>
         <span ng-show='zestStationData.workstationOooReason.length == 0'>[ None ] </span>
         <br>
     </span>
 
-     <span>Encoding Keys - <span ng-class='{"key-in-progress":zestStationData.makingKeyInProgress}'>({{zestStationData.makingKeyInProgress}})</span><br> </span>
-     
+     <span>Encoding Keys - <span ng-class='{"key-in-progress":zestStationData.makingKeyInProgress}'>({{zestStationData.makingKeyInProgress}}, Duplicate: {{zestStationData.makingAdditionalKey}})</span><br> </span>
+     <span>Scanning For QR Code - <span ng-class='{"key-in-progress":zestStationData.qrCodeScanning}'>({{zestStationData.qrCodeScanning}})</span><br> </span> 
      <span ng-show='inChromeApp'>
         Zest Station Handler - <span ng-class='{"key-in-progress":zestStationData.stationHandlerConnectedStatus == "Not-Connected"}'>({{zestStationData.stationHandlerConnectedStatus}})</span><br> 
     </span>
     
+    <span ng-show='zestStationData.showMoreDebugInfo'>
+        <span ng-show='isIpad'>iPad/iPhone</span>
+        <span ng-show='inChromeApp && !inElectron'>Windows App (C)</span>
+        <span ng-show='inElectron'>Windows App (E)</span>
+        <span ng-show='!isIpad && !inChromeApp'>Web Browser</span>
+        <span>Make Keys [<span>{{zestStationData.makeTotalKeys}}</span>]</span>
+        <br>
+
+        <!-- Credit Card Swipe Amount Requested -->
+        <span ng-show='zestStationData.waitingForSwipe'>Swipe for {{zestStationData.pending_deposit_amount}}</span>
+
+    </span>
+
+
 </span>

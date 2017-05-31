@@ -5,6 +5,7 @@
         
         <button id="groups-clear-query" 
                 class="clear-query"
+                type="button"
                 ng-click="clearSearchQuery()" 
                 ng-class="{'visible': !isEmpty(query)}">
             <span class="icons icon-clear-search" translate>CLEAR_QUERY</span>
@@ -30,7 +31,7 @@
         <div class="entry-data has-datepicker">
             <label for="groups-date-from" translate>FROM</label>
 
-            <button id="groups-date-from-clear" 
+            <button id="groups-date-from-clear" type="button" 
                     class="clear-query" ng-class="{'visible': !isEmpty(fromDate)}" ng-click="clearFromDate()"> <!-- To hide this, remove class "visible" -->
                     <!-- }" 
                         " -->                       
@@ -54,6 +55,7 @@
             
             <button id="groups-date-to-clear" 
                     class="clear-query"  
+                    type="button"
                     ng-click="clearToDate()" 
                     ng-class="{'visible': !isEmpty(toDate)}"> <!-- Add class visible when date is selected -->
                     <span class="icons icon-clear-search" translate>

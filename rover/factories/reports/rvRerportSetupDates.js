@@ -91,6 +91,14 @@ angular.module('reportsModule')
                         'A/R_AGING': {
                             'untilDate': getDates.yesterday
                         },
+                        'COMPLIMENTARY_ROOM_REPORT': {
+                            'fromDate': getDates.businessDate,
+                            'untilDate': getDates.businessDate
+                        },
+                        'GROUP_ROOMS_REPORT': {
+                            'fromDate': getDates.businessDate,
+                            'untilDate': getDates.thirtyOneDaysAfter
+                        },
             			/**/
             			'DEFAULT': {
             				'fromDate': getDates.aWeekAgo,
@@ -110,7 +118,9 @@ angular.module('reportsModule')
             			}
             		};
 
-            		var reportName = _.findKey(reportNames, function(value, key) { return value === report['title']; });
+                    var reportName = _.findKey(reportNames, function(value, key) {
+                        return value === report['title'];
+                    });
 
             		var dates = DATE_CONFIGS[reportName] || DATE_CONFIGS['DEFAULT'];
 

@@ -2,14 +2,14 @@
 <section id="main" class="centered" role="main" click-touch='resetTime()'>
     <div id="content">
         <h1 ng-hide="customMessagePresent">
-        	<text editable-text="SPEAK_TO_STAFF"> {{'SPEAK_TO_STAFF' |translate}}</text>
+            <text data-ng-bind-html="getTagValue('SPEAK_TO_STAFF')" editable-text="SPEAK_TO_STAFF"></text>
     	</h1>
         <h1 ng-show="customMessagePresent" ng-bind="customMessage"></h1>
         <h2 class="nocaps">
-        	<text editable-text="SPEAK_TO_STAFF_SUB"> {{'SPEAK_TO_STAFF_SUB' |translate}}</text>
+            <text data-ng-bind-html="getTagValue('SPEAK_TO_STAFF_SUB')" editable-text="SPEAK_TO_STAFF_SUB"></text>
     	</h2>
-        <button type="button" class="button" click-touch="navToHome()">
-        	<text editable-text="SPEAK_TO_STAFF_RETURN"> {{'SPEAK_TO_STAFF_RETURN' |translate}}</text>
+        <button type="button" class="button done-btn" click-touch="navToHome()">
+            <text data-ng-bind-html="getTagValue('SPEAK_TO_STAFF_RETURN')" editable-text="SPEAK_TO_STAFF_RETURN"></text>
     	</button>
     </div>
     <span ng-include="'/assets/partials_v2/zsTabletFooter.html'" ></span>

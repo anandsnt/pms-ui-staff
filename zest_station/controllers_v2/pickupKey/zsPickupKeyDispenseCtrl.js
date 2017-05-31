@@ -72,6 +72,7 @@ sntZestStation.controller('zsPickupKeyDispenseCtrl', [
                 'reservation_id': $stateParams.reservation_id,
                 'key_created': 'false'
             };
+
             $state.go('zest_station.pickUpKeyDispenseRegistrationCardPrint', stateParams);
         };
 
@@ -81,8 +82,11 @@ sntZestStation.controller('zsPickupKeyDispenseCtrl', [
                     'reservation_id': $stateParams.reservation_id,
                     'key_created': 'true'
                 };
+
                 $state.go('zest_station.pickUpKeyDispenseRegistrationCardPrint', stateParams);
             } else {
+
+                $scope.trackEvent('PUK', 'Flow-End-Success');
                 $state.go('zest_station.home');
             }
         };

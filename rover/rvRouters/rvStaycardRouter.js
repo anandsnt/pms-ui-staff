@@ -224,7 +224,7 @@ angular.module('stayCardModule', [])
         });
 
         $stateProvider.state('rover.reservation.staycard.reservationcard.reservationdetails', {
-            url: '/reservationdetails/:id/:confirmationId/:isrefresh/:justCreatedRes/:isFromCards/:isOnlineRoomMove/:isKeySystemAvailable',
+            url: '/reservationdetails/:id/:confirmationId/:isrefresh/:justCreatedRes/:isFromCards/:isOnlineRoomMove/:isKeySystemAvailable/:isFromTACommission',
             templateUrl: '/assets/partials/reservationCard/rvReservationDetails.html',
             controller: 'reservationDetailsController',
             resolve: {
@@ -266,9 +266,6 @@ angular.module('stayCardModule', [])
                 },
                 reservationBillData: function(RVBillCardSrv, $stateParams, billstaycardJsAssets) {
                     return RVBillCardSrv.fetch($stateParams.reservationId);
-                },
-                chargeCodeData: function(RVBillCardSrv, billstaycardJsAssets) {
-                    return RVBillCardSrv.fetchChargeCodes();
                 }
             }
         });

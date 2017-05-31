@@ -1,4 +1,4 @@
-sntRover.controller('RVTimeoutErrorCtrl', ['$scope', 'RVHKOWSTestSrv', '$rootScope', 'ngDialog', '$window',  function($scope, RVHKOWSTestSrv, $rootScope, ngDialog, $window) {
+sntRover.controller('RVTimeoutErrorCtrl', ['$scope', '$rootScope', 'ngDialog', '$window',  function($scope, $rootScope, ngDialog, $window) {
 
     $scope.closeThisDialog = function() {
         ngDialog.close();

@@ -24,7 +24,6 @@ var sntRover = angular.module('sntRover', [
 		'cacheVaultModule',
 		'documentTouchMovePrevent',
 		'divTouchMoveStopPropogate',
-		'pasvaz.bindonce',
 		'sharedHttpInterceptor',
 		'orientationInputBlurModule',
 		'ngDragDrop',
@@ -34,7 +33,9 @@ var sntRover = angular.module('sntRover', [
 		'oc.lazyLoad',
 		'limitInputRange',
 		'iscrollStopPropagation',
-		'emitWhen']);
+		'emitWhen',
+		'ng-augment-native-scroll'
+	]);
 
 sntRover.config([
 	'$httpProvider',
@@ -43,6 +44,8 @@ sntRover.config([
 	'$provide',
 	'$locationProvider',
 	function($httpProvider, ngDialogProvider, $provide, $provide, $locationProvider) {
+
+        $locationProvider.html5Mode(true);
 
         // $provide.decorator('$browser', ['$delegate', function ($delegate) {
         //     $delegate.onUrlChange = function () {};
@@ -390,5 +393,10 @@ sntRover.run([
 
 			$rootScope.diaryState.update(toState.name, fromState.name, fromParams);
 		});
+
+		document.addEventListener("OBSERVE_FOR_SWIPE", function() {
+            $rootScope.$broadcast("RESUME_OBSERVE_FOR_SWIPE_RESETS");
+        });
+
 	}
 ]);

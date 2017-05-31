@@ -79,6 +79,17 @@ sntRover.controller('rvBillFormatPopupCtrl', ['$scope', '$rootScope', '$filter',
         var params = getBillSettingsInfoRequestParams();
         var onBillSettingsInfoFetchSuccess = function(response) {
             $scope.$emit('hideLoader');
+
+            /** CICO-38736
+             *
+             * The default_bill_settings in the response defaults to numeric 1, the value of which is a string otherwise
+             * Hence, we cast the value as a string
+             *
+             */
+            if (response.data && response.data.default_bill_settings) {
+                response.data.default_bill_settings = response.data.default_bill_settings.toString();
+            }
+
             $scope.data = response.data;
         };
 

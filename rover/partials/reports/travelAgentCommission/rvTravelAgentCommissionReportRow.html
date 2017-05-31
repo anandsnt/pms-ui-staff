@@ -1,5 +1,5 @@
 <!-- Report content -->
-<div  id="report-content" ng-iscroll="report-details-scroll" class="report-content grid scrollable with-pagination"> <!-- Add class "with-pagination" if pagination is shown -->
+<div  id="report-content" ng-iscroll="report-details-scroll" ng-class="{'print-commission-summary': printTACommissionFlag.summary, 'print-commission-agent' : printTACommissionFlag.agent}" class="report-content grid scrollable with-pagination"> <!-- Add class "with-pagination" if pagination is shown -->
     <div class="wrapper" ng-controller="RVTravelAgentsCommissionReportCtrl">
         <div ng-repeat="travel_agents in results">
             <h2 class="padding-top-ta">{{travel_agents.travel_agent_name}}, IATA: {{travel_agents.IATA_number}}</h2>
@@ -103,6 +103,36 @@
                 </tbody>
             </table>
         </div>
+
+        <!-- Visible only on summary-->
+        <div class="travel-agent-print" ng-repeat="travel_agents in results">
+            <div class="data">
+                <h2>{{travel_agents.travel_agent_name}}</h2> 
+                <p>IATA: {{travel_agents.IATA_number}}</p> 
+            </div>
+            <ul class="info-holder">
+                <li>
+                    <strong>{{currencySymbol}}{{travel_agents.sub_total.revenue}}</strong>
+                    <span>Revenue</span>
+                </li>
+                <li>
+                    <strong>{{currencySymbol}}{{travel_agents.sub_total.net_amount}}</strong>
+                    <span>Net Amount</span>
+                </li>
+            </ul>
+        </div>
+        <!--repeat per travel-agent-->
+
+        <ul class="grid-footer">
+            <li>
+                From <span>{{ appliedFilter.fromDate | date:dateFormat }}</span> to <span>{{ appliedFilter.toDate | date:dateFormat }}</span><br/>
+            </li>
+            <li>
+                Business date <span>{{ userInfo.business_date | date:dateFormat }}</span><br/>
+                User <span>{{ userInfo.first_name }} {{ userInfo.last_name }}</span>
+            </li>
+        </ul> 
+
     </div>
 </div>
 

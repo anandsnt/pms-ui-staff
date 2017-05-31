@@ -6,7 +6,8 @@ module.exports = {
 			servicesRoot 	= 'rover/services/',
 			assetsForScreen = {
 				minifiedFiles: [
-                         jsLibRoot + 'angular-multi-select.js'
+                         jsLibRoot + 'angular-multi-select.js',
+                         'shared/directives/ng-augment-native-scroll/ng-augment-native-scroll.min.js',
 				],
 				nonMinifiedFiles: [
 

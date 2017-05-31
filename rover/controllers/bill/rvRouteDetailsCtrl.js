@@ -512,6 +512,8 @@ sntRover.controller('rvRouteDetailsCtrl', ['$scope', '$rootScope', '$filter', 'R
             }
             $scope.selectedEntity.attached_billing_groups = data.billing_groups;
 
+            $scope.selectedEntity.isBillingGroupsPresent = data.billing_groups.length > 0;
+
             if (data.credit_limit) {
                 $scope.selectedEntity.credit_limit = parseFloat(data.credit_limit).toFixed(2);
             }
@@ -523,6 +525,7 @@ sntRover.controller('rvRouteDetailsCtrl', ['$scope', '$rootScope', '$filter', 'R
             }
             // Added for CICO-22869
             $scope.selectedEntity.attached_charge_codes = data.attached_charge_codes;
+            $scope.selectedEntity.isChargeCodesPresent = data.attached_charge_codes.length > 0;
             if (!isEmptyObject(data.credit_card_details)) {
                 $scope.renderAddedPayment = data.credit_card_details;
                 $scope.saveData.payment_type = data.credit_card_details.payment_type;

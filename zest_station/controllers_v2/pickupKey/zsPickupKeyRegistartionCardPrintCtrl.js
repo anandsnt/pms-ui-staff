@@ -7,7 +7,8 @@ sntZestStation.controller('zsPickupKeyRegistartionCardPrintCtrl', [
     '$filter',
     '$timeout',
     '$window',
-    function($scope, $state, zsEventConstants, $stateParams, zsCheckinSrv, $filter, $timeout, $window) {
+    '$translate',
+    function($scope, $state, zsEventConstants, $stateParams, zsCheckinSrv, $filter, $timeout, $window, $translate) {
 
         /** ********************************************************************************************
          **     Expected state params -----> reservation_id
@@ -15,7 +16,6 @@ sntZestStation.controller('zsPickupKeyRegistartionCardPrintCtrl', [
          ***********************************************************************************************/
 
         BaseCtrl.call(this, $scope);
-
 
 
         /**
@@ -33,6 +33,7 @@ sntZestStation.controller('zsPickupKeyRegistartionCardPrintCtrl', [
 
             var setMessage = function(printSuccess) {
                 var keySucess = $stateParams.key_created === 'true';
+
                 if (printSuccess && keySucess) {
                     $scope.mode = 'PRINT_SUCCESS_AND_KEY_SUCCESS';
                 } else if (!printSuccess && keySucess) {
@@ -49,6 +50,7 @@ sntZestStation.controller('zsPickupKeyRegistartionCardPrintCtrl', [
             var printFailedActions = function(errorMessage) {
                 $scope.$emit('hideLoader');
                 var printSuccess = false;
+
                 $scope.showDoneButton = true;
                 setMessage(printSuccess);
                 errorMessage = _.isUndefined(errorMessage) ? 'DISPENSE_KEY_PRINT_FAIL' : errorMessage;
@@ -56,14 +58,21 @@ sntZestStation.controller('zsPickupKeyRegistartionCardPrintCtrl', [
                 $scope.zestStationData.workstationStatus = 'out-of-order';
                 $scope.runDigestCycle();
 
+                $scope.trackEvent('PUK - Error', 'Print-Status');
+                $scope.trackEvent('PUK', 'Flow-End-Success');
+
             };
             var printSuccessActions = function() {
 
                 $scope.$emit('hideLoader');
                 $scope.showDoneButton = true;
                 var printSuccess = true;
+
                 setMessage(printSuccess);
                 $scope.runDigestCycle();
+
+                $scope.trackEvent('PUK - Success', 'Print-Status');
+                $scope.trackEvent('PUK', 'Flow-End-Success');
 
             };
 
@@ -98,7 +107,8 @@ sntZestStation.controller('zsPickupKeyRegistartionCardPrintCtrl', [
                 };
 
                 var data = {
-                    'reservation_id': $stateParams.reservation_id
+                    'reservation_id': $stateParams.reservation_id,
+                    'language_code': $translate.use()
                 };
 
                 var startTacDataFailedActions = function() {
@@ -125,7 +135,7 @@ sntZestStation.controller('zsPickupKeyRegistartionCardPrintCtrl', [
                          * ======[ PRINTING!! JS EXECUTION IS PAUSED ]======
                          */
 
-                        if (sntapp.cordovaLoaded) {
+                        if ($scope.isIpad) { // CICO-40934 removed the sntapp load from zestJsAssetList, now just check for ipad/iphone
                             var printer = sntZestStation.selectedPrinter;
 
                             cordova.exec(function() {
@@ -190,6 +200,7 @@ sntZestStation.controller('zsPickupKeyRegistartionCardPrintCtrl', [
 
             $scope.callAPI(zsCheckinSrv.fetchRegistrationCardPrintData, options);
         };
+
         startPrint();
 
 

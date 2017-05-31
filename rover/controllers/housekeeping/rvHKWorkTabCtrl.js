@@ -7,7 +7,9 @@ angular.module('sntRover').controller('RVHKWorkTabCtrl', [
 	'RVHkRoomStatusSrv',
 	'$filter',
 	'$timeout',
-	function($scope, $rootScope, $state, $stateParams, RVHkRoomDetailsSrv, RVHkRoomStatusSrv, $filter, $timeout) {
+    'rvPermissionSrv',
+    'ngDialog',
+	function($scope, $rootScope, $state, $stateParams, RVHkRoomDetailsSrv, RVHkRoomStatusSrv, $filter, $timeout, rvPermissionSrv, ngDialog) {
 
 		BaseCtrl.call(this, $scope);
 
@@ -17,7 +19,9 @@ angular.module('sntRover').controller('RVHKWorkTabCtrl', [
 		// set the scroller
 		$scope.setScroller('room-status-content');
 
-		$timeout(function() {$scope.refreshScroller('room-status-content');}, 1500);
+        $timeout(function() {
+            $scope.refreshScroller('room-status-content');
+        }, 1500);
 
 		$scope.isTaskPresent = function () {
 			return $scope.roomDetails.task_details.length != 0;
@@ -29,11 +33,12 @@ angular.module('sntRover').controller('RVHKWorkTabCtrl', [
 		$scope.roomDetails = $scope.$parent.roomDetails;
 
 		$scope.taskDetails = $scope.roomDetails.task_details;
-		if ($scope.isTaskPresent()) { 
+		if ($scope.isTaskPresent()) {
 			$scope.currentTask = $scope.taskDetails[0];
 			$scope.currentTaskID = $scope.currentTask.id;
 		}
 
+        var currentHKStatus = $scope.roomDetails.current_hk_status;
 
 		// default cleaning status
 		// [ OPEN, IN_PROGRESS, COMPLETED ]
@@ -50,6 +55,10 @@ angular.module('sntRover').controller('RVHKWorkTabCtrl', [
 
 		$scope.disableDone  = false;
 		$scope.disableStart = false;
+
+        var HK_STATUS = {
+            INSPECTED: 'INSPECTED'
+        };
 
 		var $_updateWorkStatusFlags = function() {
 			$scope.isStarted   = $scope.currentTask.work_status === $_workStatusList['inProgress'] ? true : false;
@@ -121,6 +130,27 @@ angular.module('sntRover').controller('RVHKWorkTabCtrl', [
 				$_updateRoomDetails( 'current_hk_status', $scope.roomDetails.current_hk_status );
 			};
 
+            // CICO-28117 - Restricted the change of room status to INSPECTED based on permission
+            if ($scope.roomDetails.current_hk_status === HK_STATUS.INSPECTED) {
+                var changeRoomStatusToInspectedPermission = rvPermissionSrv.getPermissionValue ('CHANGE_ROOM_STATUS_TO_INSPECTED');
+
+                if (!changeRoomStatusToInspectedPermission && $rootScope.isStandAlone) {
+                    $timeout( function() {
+                        ngDialog.open({
+                            template: '/assets/partials/housekeeping/popups/rvRoomStatusChangeRestrictAlert.html',
+                            className: '',
+                            closeByDocument: true,
+                            scope: $scope
+                        });
+                    }, 50);
+                    $scope.roomDetails.current_hk_status = currentHKStatus;
+                    return;
+                }
+
+            }
+
+            currentHKStatus = $scope.roomDetails.current_hk_status;
+
 			var hkStatusItem = _.find($scope.roomDetails.hk_status_list, function(item) {
 				return item.value === $scope.roomDetails.current_hk_status;
 			});
@@ -133,7 +163,7 @@ angular.module('sntRover').controller('RVHKWorkTabCtrl', [
 			$scope.invokeApi(RVHkRoomDetailsSrv.updateHKStatus, data, callback);
 		};
 
-		// action for task cahnge 
+		// action for task cahnge
 
 		$scope.changedTask = function(currentTaskID) {
 
@@ -205,5 +235,6 @@ angular.module('sntRover').controller('RVHKWorkTabCtrl', [
 		$scope.$on('reloadPage', function (event, data) {
 			$scope.roomDetails = data;
 		});
+
 	}
 ]);

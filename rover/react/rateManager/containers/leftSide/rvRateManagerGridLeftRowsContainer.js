@@ -8,6 +8,7 @@ const {connect} = ReactRedux;
 let convertRatesDataForLeftListing = (rates, mode) => {
 	var ratesToReturn = [];
 	var showIndicator = (mode == RM_RX_CONST.RATE_VIEW_MODE);
+
 	rates.map((rate, index) => {
 		ratesToReturn.push({
 			id: rate.id,
@@ -32,34 +33,33 @@ let convertRatesDataForLeftListing = (rates, mode) => {
 	return ratesToReturn;
 };
 
-let getPreviousPageButtonText = (mode, paginationStateData) => {
-	let previousPageButtonText = "PREVIOUS"
-	switch(mode) {
-        case RM_RX_CONST.RATE_VIEW_MODE:
-				previousPageButtonText += " " + paginationStateData.perPage + " RATES";
-            break;
-        default:
-            break;
-    };
-    return previousPageButtonText;
-};
+let convertRateTypesDataForLeftListing = (rateTypes, mode) => {
+	var rateTypesToReturn = [];
+	var showIndicator = (mode == RM_RX_CONST.RATE_TYPE_VIEW_MODE);
 
-let getNextPageButtonText = (mode, paginationStateData) => {
-	let nextPageButtonText = "NEXT"
-	switch(mode) {
-        case RM_RX_CONST.RATE_VIEW_MODE:
-        	if (Math.ceil(paginationStateData.totalRows / paginationStateData.perPage) === paginationStateData.page + 1) {
-				// In case of navigation to last page; show remaining
-                nextPageButtonText += " " + paginationStateData.totalRows - (paginationStateData.perPage * paginationStateData.page) + " RATES";
-			} else {
-           		nextPageButtonText += " " + paginationStateData.perPage + " RATES";
-           	}
-            break;
-        default:
-            break;
-    };
-    return nextPageButtonText;
-};
+	rateTypes.map((rateType, index) => {
+		rateTypesToReturn.push({
+			id: rateType.id,
+			name: rateType.name,
+			trClassName: ('cell rate ' + (((index + 1) === rateTypes.length) ? 'last' : '')),
+			tdClassName: '',
+			leftSpanClassName: 'name ' + (rateType.based_on_rate_id && !rateType.is_copied ? 'gray' : 'base-rate')+((rateType.is_company_card||rateType.is_travel_agent)?' contracted-rate':' contracted-rate contracted-rate-missing-info'),
+			showIconBeforeText: !rateType.based_on_rate_id,
+			iconClassBeforeText: !rateType.based_on_rate_id ? 'base-rate-indicator': '',
+			textInIconArea: !rateType.based_on_rate_id ? 'B' : '',
+			leftSpanText: rateType.name,
+			// address: rate.address,
+			showRightSpan: true,
+			contractLabel: rateType.is_travel_agent?'ta':(rateType.is_company_card?'c':''),
+			contractClass: rateType.is_travel_agent?'travel-agent':'',
+			rightSpanClassName: 'icons icon-double-arrow rotate-right',
+			// accountName: rate.account_name,
+			showIndicator :showIndicator
+		})
+	});
+
+	return rateTypesToReturn;
+}
 
 /**
  * to convert the room type data coming from reducers to props
@@ -68,6 +68,7 @@ let getNextPageButtonText = (mode, paginationStateData) => {
  */
 let convertRoomTypesDataForLeftListing = (roomTypes) => {
 	var roomTypesToReturn = [];
+
 	roomTypes.map((roomType, index) => {
 		roomTypesToReturn.push({
 			...roomType,
@@ -92,6 +93,7 @@ let convertRoomTypesDataForLeftListing = (roomTypes) => {
  */
 let convertSingleRateRoomTypesDataForLeftListing = (roomTypes, expandedRows) => {
 	var roomTypesToReturn = [], isExpandedRow = false;
+
 	roomTypes.map((roomType, index) => {
 		isExpandedRow = expandedRows.indexOf(index) > -1;
 		roomTypesToReturn.push({
@@ -120,10 +122,16 @@ const mapStateToRateManagerGridLeftRowsContainerProps = (state) => {
 			mode: state.mode,
 			fromDate: state.dates[0],
 			toDate: state.dates[state.dates.length-1],
-			callBackForSingleRateFetch: state.callBacksFromAngular.singleRateViewCallback,
-			goToPrevPage: state.callBacksFromAngular.goToPrevPage,
-			goToNextPage: state.callBacksFromAngular.goToNextPage,
-			paginationStateData: state.paginationState
+			callBackForSingleRateFetch: state.callBacksFromAngular.singleRateViewCallback
+		};
+	}
+	else if(state.mode === RM_RX_CONST.RATE_TYPE_VIEW_MODE) {
+		return {
+			leftListingData: convertRateTypesDataForLeftListing(state.list),
+			mode: state.mode,
+			fromDate: state.dates[0],
+			toDate: state.dates[state.dates.length-1],
+			callBackForSingleRateTypeFetch: state.callBacksFromAngular.singleRateTypeViewCallback
 		};
 	}
 	else if(state.mode === RM_RX_CONST.ROOM_TYPE_VIEW_MODE) {
@@ -143,6 +151,7 @@ const mapDispatchToRateManagerGridLeftRowsContainerProps = (stateProps, dispatch
 	return {
 		onItemClick:(e, index) => {
 			let { dispatch } = dispatchProps;
+
 			if (stateProps.mode === RM_RX_CONST.SINGLE_RATE_EXPANDABLE_VIEW_MODE) {
 				dispatch({
 			        type: RM_RX_CONST.TOGGLE_EXPAND_COLLAPSE_ROW,
@@ -153,21 +162,24 @@ const mapDispatchToRateManagerGridLeftRowsContainerProps = (stateProps, dispatch
 			}
 			else if(stateProps.mode === RM_RX_CONST.RATE_VIEW_MODE) {
 				let clickedRate = stateProps.leftListingData[index];
+
 				stateProps.callBackForSingleRateFetch({
 					fromDate: stateProps.fromDate,
 					toDate: stateProps.toDate,
 					selectedRates: [{id: clickedRate.id, name: clickedRate.name, accountName: clickedRate.accountName, address: clickedRate.address}]
 				})
 			}
+			else if(stateProps.mode === RM_RX_CONST.RATE_TYPE_VIEW_MODE) {
+				let clickedRateType = stateProps.leftListingData[index];
+
+				stateProps.callBackForSingleRateTypeFetch({
+					fromDate: stateProps.fromDate,
+					toDate: stateProps.toDate,
+					selectedRateTypes: [{id: clickedRateType.id, name: clickedRateType.name}]
+				})
+			}
 		},
-		leftListingData: stateProps.leftListingData,
-		goToPrevPage: stateProps.goToPrevPage,
-		goToNextPage: stateProps.goToNextPage,
-		isFirstPage: stateProps.mode != RM_RX_CONST.RATE_VIEW_MODE || stateProps.paginationStateData.page === 1,
-		isLastPage: stateProps.mode != RM_RX_CONST.RATE_VIEW_MODE ||
-			Math.ceil(stateProps.paginationStateData.totalRows / stateProps.paginationStateData.perPage) ===  stateProps.paginationStateData.page,
-		topPageButtonText: getPreviousPageButtonText(stateProps.mode, stateProps.paginationStateData),
-		bottomPageButtonText: getNextPageButtonText(stateProps.mode, stateProps.paginationStateData)
+		leftListingData: stateProps.leftListingData
 	}
 };
 

@@ -24,7 +24,7 @@ sntZestStation.directive('focusOn', ['$timeout', function($timeout) {
                     // bind events to retrigger for Virtual keyboard plugin to behave properly
                     $timeout(function() {
                         var el = $(elToFocus)[0],
-                        scopeFn = angular.element(el).scope()[attrs.focusOnTrigger];
+                            scopeFn = angular.element(el).scope()[attrs.focusOnTrigger];
 
                         $(elToFocus).focus(scopeFn);
                         $(elToFocus).keydown(scopeFn);
@@ -37,12 +37,14 @@ sntZestStation.directive('focusOn', ['$timeout', function($timeout) {
                             $(elToFocus).click();
                         }, 200);
 
-                        scopeFn();
+                        if (typeof scopeFn !== 'undefined') {
+                            scopeFn();
+                        }
                     }, 0);
                 }
             }
             // we are setting delay to 2sec. if it is undefined
-            if (typeof scope.delay === "undefined") {
+            if (typeof scope.delay === 'undefined') {
                 scope.delay = 2000;
             }
         }

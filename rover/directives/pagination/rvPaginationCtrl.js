@@ -119,7 +119,12 @@ sntRover.controller('rvPaginationCtrl', ['$scope', '$attrs', function($scope, $a
         }
     });
 
+    var updatePageNoHandler = $scope.$on('updatePageNo', function( event, currentPage) {
+        $scope.pageOptions.currentPage = currentPage;
+    });
+
     $scope.$on( '$destroy', updatePaginationationHandler );
+    $scope.$on( '$destroy', updatePageNoHandler );
 
 
 }]);

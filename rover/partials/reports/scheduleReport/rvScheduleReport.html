@@ -63,7 +63,7 @@
         <div class="wrapper">
             <h3>Schedule Parameters<span>{{ selectedEntityDetails.report.title }}</span></h3>
             <div ng-include="'/assets/partials/common/notification_message.html'"></div>
-            <div class="entry">
+            <div class="entry" ng-show="!isGuestBalanceReport">
                 <label for="time-period">Time Period</label>
                 <div class="select">
                     <select ng-model="scheduleParams.time_period_id"
@@ -91,9 +91,17 @@
                 <label>Sort By</label>
                 <div class="select">
                     <select ng-model="scheduleParams.sort_field"
-                        ng-options="sortBy.value as sortBy.description for sortBy in selectedEntityDetails.sort_fields | filter:showValidSortBy" iscroll-stop-propagation
+                        ng-options="sortBy.value as sortBy.description for sortBy in selectedEntityDetails.sort_fields | filter:showValidSortBy"
                     >
                         <option value="">Sort By</option>
+                    </select>
+                </div>
+            </div>
+            <div class="entry">
+                <label for="file-format">File Format</label>
+                <div class="select">
+                    <select iscroll-stop-propagation  ng-model="scheduleParams.format_id" ng-options="format.id as format.value for format in scheduleFormat">
+                       <option value="" >File Format</option>
                     </select>
                 </div>
             </div>
@@ -113,7 +121,7 @@
         class="column-actions"
     >
         <button class="button white blue-text next-view has-arrow"
-            ng-click="goToNext()">Next</button>
+            ng-click="goToNext()">Schedule Details</button>
     </div>
 </div>
 
@@ -224,7 +232,7 @@
         class="column-actions"
     >
         <button ng-click="goToNext()"
-            class="button white blue-text next-view has-arrow">Next</button>
+            class="button white blue-text next-view has-arrow">Distribution List</button>
     </div>
 </div>
 

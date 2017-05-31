@@ -1,3 +1,4 @@
+/* eslint-disable angular/timeout-service */
 var CardOperation = function() {
     // class for handling operations with payment device
 
@@ -23,7 +24,9 @@ var CardOperation = function() {
                               'RVCardReadIsEncrypted': 0
                           };
 
-            if (typeof data !== 'undefined') { carddata = data;}
+            if (typeof data !== 'undefined') {
+                carddata = data;
+            }
             successCallBack(carddata, successCallBackParameters);
         };
 
@@ -40,9 +43,17 @@ var CardOperation = function() {
 
     };
 
+    this.observeCBADeviceConnection = function(options) {
+        options = options || {};
+        options['shouldCallRecursively'] = true;
+        options['service'] = "RVCardPlugin";
+        options['action'] = "observeCBADeviceConnection";
+        that.callCordovaService(options);
+    };
+
 
     this.startReader = function(options) {
-        options['shouldCallRecursively'] = true;
+        // the repeated calls for observeForSwipe method is now moved to the cardReaderCtrl which would be run within the controllers
         that.listenForSingleSwipe(options);
     };
 
@@ -51,6 +62,13 @@ var CardOperation = function() {
         // cordova.exec function require success and error call back
         var successCallBack = options["successCallBack"] ? options["successCallBack"] : null;
         var failureCallBack = options["failureCallBack"] ? options["failureCallBack"] : null;
+
+        // This variable is used to keep as a flag for the timeout handling scenarios
+        var isExecuting = true;
+
+        // CICO-40735 In case options has a timeout key, then the JS methods will call failure callback if the callbacks haven't
+        // been executed before the timeout duration
+        var timeoutDuration = options["timeout"] || null;
 
         // if success call back require additional parameters
         var successCallBackParameters = options["successCallBackParameters"] ? options["successCallBackParameters"] : null;
@@ -74,50 +92,74 @@ var CardOperation = function() {
         else if (action === null) {
             return false;
         }
-        else {
-            // calling cordova service
+
+        // calling cordova service
+        try {
             cordova.exec(
-                        // if success call back require any parameters
-                        function(data) {
-                            if (successCallBackParameters !== null) {
-                                successCallBack(data, successCallBackParameters);
-                                that.callRecursively(options);
-                            }
-                            else {
-                                successCallBack(data);
-                                that.callRecursively(options);
-                            }
+                // if success call back require any parameters
+                function(data) {
+                    // This flag could have been set false if the timeout happens from the UI
+                    if (isExecuting) {
+                        isExecuting = false;
 
-                        },
-                        // if failure/error call back require any parameters
-                        function(error) {
-                            if (failureCallBackParameters !== null) {
-                                failureCallBack(error, failureCallBackParameters);
-                            }
-                            else {
-                                failureCallBack(error);
-                            }
-                            /**
-                             * CICO-29248
-                             * Observe for swipe is not valid for CBA devices; as they cant be tokenized;
-                             * Hence; there is no point in recursively calling if cordovaAPI return 100
-                             * RVErrorCode : "100",
-                             * RVErrorDesc : "Device does not support the feature."
-                             */
-                            if (!error || (error.RVErrorCode !== 100 && error.RVErrorCode !== "100")) {
-                                that.callRecursively(options);
-                            }
-                        },
+                        if (successCallBackParameters !== null) {
+                            successCallBack(data, successCallBackParameters);
+                            that.callRecursively(options);
+                        }
+                        else {
+                            successCallBack(data);
+                            that.callRecursively(options);
+                        }
+                    }
+                },
+                // if failure/error call back require any parameters
+                function(error) {
+                    // This flag could have been set false if the timeout happens from the UI
+                    if (isExecuting) {
+                        isExecuting = false;
+                        if (failureCallBackParameters !== null) {
+                            failureCallBack(error, failureCallBackParameters);
+                        }
+                        else {
+                            failureCallBack(error);
+                        }
+                        /**
+                         * CICO-29248
+                         * Observe for swipe is not valid for CBA devices; as they cant be tokenized;
+                         * Hence; there is no point in recursively calling if cordovaAPI return 100
+                         * RVErrorCode : "100",
+                         * RVErrorDesc : "Device does not support the feature."
+                         */
+                        if (!error || (error.RVErrorCode !== 100 && error.RVErrorCode !== "100")) {
+                            that.callRecursively(options);
+                        }
+                    }
+                },
 
-                        // service name
-                        service,
-                        // function name
-                        action,
-                        // arguments to native
-                        arguments
-                    );
+                // service name
+                service,
+                // function name
+                action,
+                // arguments to native
+                arguments
+            );
 
+        } catch (e) {
+            // eslint-disable-next-line no-console,angular/log
+            console.log(e);
+            isExecuting = false;
+        }
 
+        if (timeoutDuration) {
+            setTimeout(function() {
+                if (isExecuting) {
+                    isExecuting = false;
+                    failureCallBack({
+                        RVErrorCode: null,
+                        RVErrorDesc: 'Request timed out: ' + action
+                    });
+                }
+            }, timeoutDuration);
         }
     };
 
@@ -141,6 +183,8 @@ var CardOperation = function() {
     this.writeKeyData = function(options) {
         options['service'] = "RVCardPlugin";
         options['action'] = "processKeyWriteOperation";
+        // CICO-40735 Timeout of 30s from in cordova method; Adding 1s or UI timeout
+        options["timeout"] = 31000;
         that.callCordovaService(options);
     };
 
@@ -166,6 +210,8 @@ var CardOperation = function() {
     this.setBandType = function(options) {
         options['service'] = "RVCardPlugin";
         options['action'] = "setBandType";
+        // CICO-40735 Timeout of 30s from in cordova method; Adding 1s or UI timeout
+        options["timeout"] = 31000;
         that.callCordovaService(options);
     };
 
@@ -216,6 +262,8 @@ var CardOperation = function() {
     this.retrieveUserID = function(options) {
         options['service'] = "RVCardPlugin";
         options['action'] = "getCLCardUID";
+        // CICO-40735 Timeout of 30s from in cordova method; Adding 1s or UI timeout
+        options["timeout"] = 31000;
         that.callCordovaService(options);
     };
     // debug mode of retrieving the Unique id
@@ -239,6 +287,8 @@ var CardOperation = function() {
     this.retrieveCardInfo = function(options) {
         options['service'] = "RVCardPlugin";
         options['action'] = "getCLCardInfo";
+        // CICO-40735 Timeout of 30s from in cordova method; Adding 1s or UI timeout
+        options["timeout"] = 31000;
         that.callCordovaService(options);
     };
 

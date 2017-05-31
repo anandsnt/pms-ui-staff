@@ -13,6 +13,7 @@ sntZestStation.controller('zsHomeCtrl', [
 		 * when we clicked on pickup key from home screen
 		 */
         $scope.clickedOnPickUpKey = function() {
+            $scope.trackEvent('PUK', 'user_selected');
             clearInterval($scope.activityTimer);
             if ($scope.zestStationData.pickup_qr_scan) {
                 $scope.setScreenIcon('key');
@@ -28,6 +29,8 @@ sntZestStation.controller('zsHomeCtrl', [
 		 * when we clicked on checkin from home screen
 		 */
         $scope.clickedOnCheckinButton = function() {
+            $scope.trackEvent('CI', 'user_selected');
+
             clearInterval($scope.activityTimer);
             $state.go('zest_station.checkInReservationSearch');
         };
@@ -36,6 +39,7 @@ sntZestStation.controller('zsHomeCtrl', [
 		 * when we clicked on checkout from home screen
 		 */
         $scope.clickedOnCheckoutButton = function() {
+            $scope.trackEvent('CO', 'user_selected');
             clearInterval($scope.activityTimer);
             if (!$scope.zestStationData.checkout_keycard_lookup) {
                 $state.go('zest_station.checkOutReservationSearch');
@@ -216,6 +220,38 @@ sntZestStation.controller('zsHomeCtrl', [
             $scope.selectedLanguage = language;
         };
 
+
+        $scope.$on('KEY_INPUT_OPTION', function(evt, option) {
+            var optionsToChooseFrom;
+
+            var keysOn = $scope.zestStationData.home_screen.pickup_keys,
+                checkinOn = $scope.zestStationData.home_screen.check_in, 
+                checkoutOn = $scope.zestStationData.home_screen.check_out;
+
+            if (option === 1) {
+                if (keysOn) {
+                    $scope.clickedOnPickUpKey();
+                } else if (checkinOn) {
+                    $scope.clickedOnCheckinButton();
+                } else {
+                    $scope.clickedOnCheckoutButton();
+                }
+
+            } else if (option === 2) {
+                if (keysOn && checkinOn) {
+                    $scope.clickedOnCheckinButton();
+
+                } else if (!keysOn && checkinOn && checkoutOn) {
+                    $scope.clickedOnCheckoutButton();
+                }
+
+            } else if (option === 3) {
+                if (keysOn && checkinOn && checkoutOn) {
+                    $scope.clickedOnCheckoutButton();
+                }
+            }
+        });
+
 		/**
 		 * [initializeMe description]
 		 */
@@ -232,6 +268,9 @@ sntZestStation.controller('zsHomeCtrl', [
             $scope.$emit('EJECT_KEYCARD');
 			// set this to false always on entering home screen
             $scope.zestStationData.keyCardInserted = false;
+            $scope.zestStationData.makeTotalKeys = 0;
+            $scope.zestStationData.makingAdditionalKey = false;
+            $scope.zestStationData.waitingForSwipe = false;
 
 			// list of languages configured for this hotel
             var combinedList = _.partition(languages.languages, {

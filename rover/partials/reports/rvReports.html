@@ -55,6 +55,12 @@
             <div class="report-header" ng-show="showReportHeader">
                 <div ng-show="hasReportTotals && !hasNoResults" ng-include="'/assets/partials/reports/shared/summaryCounts.html'"></div>
 
+                <ul class="totals legend" ng-if="isThisReport( 'GROUP_ROOMS_REPORT' )">
+                    <li><span class="icons icon-blocked"></span>Blocked<br>Rooms</li>
+                    <li><span class="icons icon-picked-up"></span>Picked Up<br>Rooms</li>
+                    <li><span class="icons icon-available"></span>Available<br>Rooms</li>
+                </ul>
+
                 <div class="actions">
                     <div class="select" ng-if="HIDE_THIS_FEATURE">
                         <select name="" id="">
