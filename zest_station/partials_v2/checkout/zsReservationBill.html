@@ -2,7 +2,7 @@
 <section id="main" role="main" class="centered" ng-hide="printOpted" click-touch='resetTime()'>
     <div id="content">
         <h1>
-            <text editable-text="BILL_REVIEW"> {{'BILL_REVIEW' |translate}}</text>
+            <text data-ng-bind-html="getTagValue('BILL_REVIEW')" editable-text="BILL_REVIEW"></text>
         </h1>
         <div id="flex-holder">
             <div id="textual" class="review-bill pull-left scrollable" ng-iscroll="bill-list">
@@ -11,24 +11,24 @@
                         <p>
                             <strong>{{first_name}}&nbsp;{{last_name}}</strong>
                             <span ng-show="!zestStationData.hotel_settings.is_hourly_rate_on">{{days_of_stay}} 
-                                <text editable-text="DAY_NIGHTS"> {{'DAY_NIGHTS' |translate}}</text>
+                                <text data-ng-bind-html="getTagValue('DAY_NIGHTS')" editable-text="DAY_NIGHTS"></text>
                             </span>
                             
                             <span ng-show="zestStationData.hotel_settings.is_hourly_rate_on">{{hours_of_stay}} 
-                                <text editable-text="HOURS"> {{'HOURS' |translate}}</text>
+                                <text data-ng-bind-html="getTagValue('HOURS')" editable-text="HOURS"></text>
                             </span>
                         </p>
                         <div id="bill-grid">
                             <div id="grid-head">
                                 <div class="row">
                                     <span class="cell date">
-                                        <text editable-text="BILL_DATE"> {{'BILL_DATE' |translate}}</text>
+                                        <text data-ng-bind-html="getTagValue('BILL_DATE')" editable-text="BILL_DATE"></text>
                                     </span>
                                     <span class="cell desc">
-                                        <text editable-text="BILL_DESC"> {{'BILL_DESC' |translate}}</text>
+                                        <text data-ng-bind-html="getTagValue('BILL_DESC')" editable-text="BILL_DESC"></text>
                                     </span>
                                     <span class="cell amount">
-                                        <text editable-text="BILL_AMT"> {{'BILL_AMT' |translate}}</text>
+                                        <text data-ng-bind-html="getTagValue('BILL_AMT')" editable-text="BILL_AMT"></text>
                                     </span>
                                 </div>
                             </div>
@@ -43,25 +43,25 @@
                     </div>
                     <ul id="rate">
                         <li class="sub">
-                            <text editable-text="BILL_SUB"> {{'BILL_SUB' |translate}}</text>
+                            <text data-ng-bind-html="getTagValue('BILL_SUB')" editable-text="BILL_SUB"></text>
                         <span>{{zestStationData.currency}}{{net_amount}}</span></li>
                         <li class="sub">
-                            <text editable-text="BILL_DEP"> {{'BILL_DEP' |translate}}</text>
+                            <text data-ng-bind-html="getTagValue('BILL_DEP')" editable-text="BILL_DEP"></text>
                         <span>{{zestStationData.currency}}{{deposit}}</span></li>
                         <li class="total">
-                            <text editable-text="BILL_BAL"> {{'BILL_BAL' |translate}}</text>
+                            <text data-ng-bind-html="getTagValue('BILL_BAL')" editable-text="BILL_BAL"></text>
                         <span>{{zestStationData.currency}}{{balance}}</span></li>
                     </ul>
                 </div>
             </div>
             <div id="actions" class="pull-right">
                 <button type="button" class="button" touch-press='nextClicked()'>
-                    <text editable-text="BILL_NEXT"> {{'BILL_NEXT' |translate}}</text>
+                    <text data-ng-bind-html="getTagValue('BILL_NEXT')" editable-text="BILL_NEXT"></text>
                 </button>
                 <p><strong>
-                    <text editable-text="BILL_QUEST"> {{'BILL_QUEST' |translate}}</text>
+                    <text data-ng-bind-html="getTagValue('BILL_QUEST')" editable-text="BILL_QUEST"></text>
                 </strong>
-                    <text editable-text="BILL_SUB_QUESTION"> {{'BILL_SUB_QUESTION' |translate}}</text>
+                    <text data-ng-bind-html="getTagValue('BILL_SUB_QUESTION')" editable-text="BILL_SUB_QUESTION"></text>
                 </p>
             </div>
         </div>
@@ -72,7 +72,7 @@
     <section id="main" role="main" class="centered" ng-show="printOpted">
         <div id="content">
             <h1>
-                <text editable-text="END_THANKS"> {{'END_THANKS' |translate}}</text>
+                <text data-ng-bind-html="getTagValue('END_THANKS')" editable-text="END_THANKS"></text>
             </h1>
             <!--h3 ng-show="email.length>0">{{'EMAILED_BILL' |translate}}
         </h3-->
@@ -83,11 +83,11 @@
                             <!--div ng-include="'/assets/zest_station/css/icons/print.svg'"></div-->
                             <div ng-include="icons.url.print"></div>
                         </button>
-                        <text editable-text="PRINT_BILL"> {{'PRINT_BILL' |translate}}</text>
+                        <text data-ng-bind-html="getTagValue('PRINT_BILL')" editable-text="PRINT_BILL"></text>
                     </li>
                     <li class="break">
                         <span>
-                            <text editable-text="OR_TEXT"> {{'OR_TEXT' |translate}}</text>
+                            <text data-ng-bind-html="getTagValue('OR_TEXT')" editable-text="OR_TEXT"></text>
                         </span>
                     </li>
                     <li>
@@ -95,7 +95,7 @@
                             <!--div ng-include="'/assets/zest_station/css/icons/no-print.svg'"></div-->
                             <div ng-include="icons.url.noprint"></div>
                         </button>
-                        <text editable-text="NO_THX"> {{'NO_THX' |translate}}</text>
+                        <text data-ng-bind-html="getTagValue('NO_THX')" editable-text="NO_THX"></text>
                     </li>
                 </ul>
             </nav>
