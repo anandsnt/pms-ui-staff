@@ -3102,6 +3102,11 @@
         }
 
          &.print-commission-agent {
+
+            &.scrollable {
+                overflow: hidden;
+            }
+
             .travel-agent {
                 &:not(.printing) {
                     .hide();
@@ -3124,11 +3129,18 @@
                 .hide();
             } 
 
+            // Fix bug with the scroll
+            &.scrollable {
+                overflow: hidden;
+            }
+
             .travel-agent {
-                &:not(:last-child) {
-                    border-bottom: 1px solid @grey2;
+                border-bottom: 1px solid @grey2;
+                &.last {
+                    border-bottom: 0
                 }
             }
+
             .travel-agent-print {
                 .float;
                 padding: 4pt 0;
