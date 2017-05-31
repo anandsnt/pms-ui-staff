@@ -47,7 +47,11 @@
             <ad-textbox ng-show="mapping.is_out_of_order" inputtype="text" value="mapping.oo_reason" 
                label = "{{'OOS_REASON' | translate}}" placeholder = "{{'OOS_REASON'| translate}}"  
                styleclass="full-width" required="yes"></ad-textbox>
-
+         </fieldset>
+         <fieldset class="holder left float">
+            <ad-textbox  inputtype="text" value="mapping.hue_light_id" 
+               label = "{{'HUE_LIGHT_ID' | translate}}"  
+               styleclass="full-width" required="yes"></ad-textbox>
          </fieldset>
          <div class="actions float">
             <button type="button" id="cancel" class="button blank add-data-inline" ng-click="clickCancel()" translate>

@@ -26,7 +26,9 @@
                   <input type="text" value="{{selectedAddonCount}}" disabled>
                   <button type="button" class="button" click-touch="incrementAddonQtyForNonRoomFlatType()" ng-class="{'disabled':selectedAddonCount ===1}" ng-disabled="selectedAddonCount === 1">+</button>
                </div>
-               <button type="button" data-action="popup" class="button transparent" click-touch="addOnDoneButtonClicked(selectedAddon)" ng-class="{'transparent text-red':selectedAddonCount === 0 && selectedAddon.is_selected}" editable-text="DONE">{{'DONE' |translate}}</button>
+               <button type="button" data-action="popup" class="button transparent" click-touch="addOnDoneButtonClicked(selectedAddon)" ng-class="{'transparent text-red':selectedAddonCount === 0 && selectedAddon.is_selected}">
+               <text data-ng-bind-html="getTagValue('DONE')" editable-text="DONE"></text>
+               </button>
             </div>
          </div>
       </div>
@@ -41,7 +43,7 @@
       </h2>
       <h3 editable-text="{{errorMessage}}"> {{errorMessage | translate}}</h3>
       <button type="button" class="button" click-touch='showErrorPopUp = false'>
-         <text editable-text="DONE"> {{'DONE' |translate}}</text>
+         <text data-ng-bind-html="getTagValue('DONE')" editable-text="DONE"></text>
       </button>
    </div>
 </div>
@@ -50,7 +52,9 @@
 <!-- Content -->
 <section id="main" class="addon-screen" role="main" ng-show="mode !== 'SINGLE_ADDON_ERROR' && loadingCompleted">
    <div id="content">
-      <h1 editable-text="ADD_ON_HEADING">{{'ADD_ON_HEADING' | translate}}</h1>
+      <h1>
+         <text data-ng-bind-html="getTagValue('ADD_ON_HEADING')" editable-text="ADD_ON_HEADING"></text>
+      </h1>
       <!--  <h3> <text editable-text="ADD_ON_TOTAL_TEXT">{{'ADD_ON_TOTAL_TEXT' | translate}}</text>&nbsp;{{zestStationData.currencySymbol}}{{getAmountTotal()}}</h3> -->
       <div id="upgrades">
          <ul class="add-on-list add-on-list-columns" ng-if="addonsList.length > 1" ng-class="{'add-on-list-rows':viewableAddons.length >= 4}">
@@ -82,9 +86,13 @@
                      <div class="action">
                         <!-- show this instead of 'add/remove' button if quantity needed -->
                         <div class="input-group" ng-show="isAddonFlatOrRoomType(selectedAddon)">
-                           <button type="button" class="button" click-touch="decrementAddonQuantity()"  ng-class="{'disabled':selectedAddonCount ===0}" ng-disabled="selectedAddonCount === 0">-</button>
+                           <button type="button" class="button" click-touch="decrementAddonQuantity()"  ng-class="{'disabled':selectedAddonCount ===0}" ng-disabled="selectedAddonCount === 0">
+                              -
+                           </button>
                            <input type="text" value="{{selectedAddonCount}}">
-                           <button type="button" class="button" click-touch="incrementAddonQty()">+</button>
+                           <button type="button" class="button" click-touch="incrementAddonQty()">
+                              +
+                           </button>
                         </div>
                         <!-- Replace 'btn-class' with 'transparent text-red' if 'Remove' -->
                         <!--  <button type="button" class="button" ng-hide="isAddonFlatOrRoomType(selectedAddon)" ng-class="{'transparent text-red':selectedAddon.is_selected}" click-touch="addRemoveAddOn(selectedAddon)">
@@ -97,7 +105,9 @@
                         </div>
                         <div> 
                            <br>
-                           <button type="button" data-action="popup" class="button transparent" click-touch="addOnDoneButtonClicked(selectedAddon)" editable-text="DONE" style="margin:0 auto;" ng-class="{'transparent text-red':selectedAddonCount === 0 && selectedAddon.is_selected}">{{'DONE' |translate}}</button>
+                           <button type="button" data-action="popup" class="button transparent" click-touch="addOnDoneButtonClicked(selectedAddon)" editable-text="DONE" style="margin:0 auto;" ng-class="{'transparent text-red':selectedAddonCount === 0 && selectedAddon.is_selected}">
+                              <text data-ng-bind-html="getTagValue('DONE')" editable-text="DONE"></text>
+                           </button>
                         </div>
                      </div>
                   </div>
@@ -108,11 +118,11 @@
       <div id="actions">
          <!-- If there is no navigation, remove the text and leave '<p class="text"></p>-->
          <p class="text">
-            <text editable-text="ADD_ON_FOOTER_1">{{'ADD_ON_FOOTER_1' |translate}}</text>
+            <text data-ng-bind-html="getTagValue('ADD_ON_FOOTER_1')" editable-text="ADD_ON_FOOTER_1"></text>
             &nbsp;{{pageStartingIndex}}-{{pageEndingIndex}}&nbsp;
-            <text editable-text="ADD_ON_FOOTER_2">{{'ADD_ON_FOOTER_2' |translate}}</text>
+            <text data-ng-bind-html="getTagValue('ADD_ON_FOOTER_2')" editable-text="ADD_ON_FOOTER_2"></text>
             &nbsp;{{addonsList.length}}&nbsp;
-            <text editable-text="ADD_ON_FOOTER_3">{{'ADD_ON_FOOTER_3' |translate}}</text>
+            <text data-ng-bind-html="getTagValue('ADD_ON_FOOTER_3')" editable-text="ADD_ON_FOOTER_3"></text>
          </p>
          <!-- Remove this .button-group element when there is no navigation -->
          <div class="button-group" ng-if="addonsList.length > 1">
@@ -133,15 +143,19 @@
                <div ng-include="icons.url.right_arrow_icon"></div>
             </button>
          </div>
-         <button type="button" class="button" click-touch="addonPurchaseCompleted()" edit-text="CONTINUE">{{'CONTINUE' | translate}}</button>
+         <button type="button" class="button" click-touch="addonPurchaseCompleted()">
+            <text data-ng-bind-html="getTagValue('CONTINUE')" editable-text="CONTINUE"></text>
+         </button>
       </div>
    </div>
 </section>
 <section id="main" class="addon-screen centered" role="main" ng-show="mode === 'SINGLE_ADDON_ERROR'">
    <div id="content">
       <h1 editable-text="{{errorHeader}}">{{ errorHeader | translate}}</h1>
-      <h3  editable-text="{{errorMessage}}">{{errorMessage | translate}}</h3>
+      <h3 editable-text="{{errorMessage}}">{{errorMessage | translate}}</h3>
       <br/>
-      <button type="button" class="button" click-touch="navigateToNextScreen()" edit-text="CONTINUE">{{'CONTINUE' | translate}}</button>
+      <button type="button" class="button" click-touch="navigateToNextScreen()">
+         <text data-ng-bind-html="getTagValue('CONTINUE')" editable-text="CONTINUE"></text>
+      </button>
    </div>
 </section>

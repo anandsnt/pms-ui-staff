@@ -176,7 +176,8 @@ angular.module('sntRover')
                     $scope.extendShortenReservationDetails = {
                         'arrival_date': reservation.arrival_date,
                         'dep_date': reservation.dept_date,
-                        'reservation_id': reservation.id
+                        'reservation_id': reservation.id,
+                        'room_number': (_.findWhere($scope.diaryData.diaryRoomsList, {id: room.id})).room_no
                     };
 
                     showReservationSelected();
@@ -203,7 +204,8 @@ angular.module('sntRover')
                                             .format('YYYY-MM-DD'),
                         'dep_date': moment(DepartureDate, $rootScope.dateFormat.toUpperCase())
                                             .format('YYYY-MM-DD'),
-                        'reservation_id': $scope.currentSelectedReservation.id
+                        'reservation_id': $scope.currentSelectedReservation.id,
+                        'room_number': (_.findWhere($scope.diaryData.diaryRoomsList, {id: $scope.currentSelectedRoom.id})).room_no
                     },
                     successCallBack = function(response) {
                         $scope.$emit('hideLoader');

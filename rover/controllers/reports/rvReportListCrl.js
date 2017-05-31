@@ -136,6 +136,7 @@ sntRover.controller('RVReportListCrl', [
 
                 report.uiChosen = true;
                 $scope.$parent.uiChosenReport = report;
+                $scope.selectedReport.report = report;
 
                 $scope.updateViewCol($scope.viewColsActions.TWO);
 
