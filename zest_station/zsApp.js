@@ -71,62 +71,9 @@ var GlobalZestStationApp = function() {
 
     this.DEBUG = true;
 
-    this.setBrowser = function(browser) {
-        if (typeof browser === 'undefined' || browser === '') {
-            that.browser = 'other';
-        } else {
-            that.browser = browser;
-        }
-        if (browser === 'rv_native' && !that.cordovaLoaded) {
-            // TODO: check URL
-            var url = '/assets/shared/cordova.js';
-
-            /* Using XHR instead of $HTTP service, to avoid angular dependency, as this will be invoked from
-             * webview of iOS / Android.
-             */
-            var xhr = new XMLHttpRequest(); // TODO: IE support?
-
-            xhr.onreadystatechange = function() {
-                if (xhr.readyState === 4 && xhr.status === 200) {
-                    that.fetchCompletedOfCordovaPlugins(xhr.responseText);
-                } else {
-                    that.fetchFailedOfCordovaPlugins();
-                }
-            };
-            xhr.open('GET', url, true);
-
-            xhr.send(); // TODO: Loading indicator
-
-        }
-
-    };
-
     this.logout = function() {
         // just log out
         window.location.href = '/station_logout';
-    };
-
-
-    // success function of coddova plugin's appending
-    this.fetchCompletedOfCordovaPlugins = function() {
-        that.cordovaLoaded = true;
-        try {
-            that.cardReader = new CardOperation();
-        } catch (er) {
-            console.info('failed get card op');
-        }
-        try {
-            that.iBeaconLinker = new iBeaconOperation();
-        } catch (er) {
-            console.warn(er);
-        }
-
-    };
-    this.fetchCompletedOfCordovaPlugins();
-
-    // success function of coddova plugin's appending
-    this.fetchFailedOfCordovaPlugins = function() {
-        that.cordovaLoaded = false;
     };
 
     this.toggleDemoModeOnOff = function() {
@@ -341,7 +288,9 @@ if (jQuery && $) {
         $.fn.getCursorPosition = function() {
             var input = this.get(0);
 
-            if (!input) {return;} // No (input) element found
+            if (!input) {
+                return;
+            } // No (input) element found
             if ('selectionStart' in input) {
                 // Standard-compliant browsers
                 return input.selectionStart;

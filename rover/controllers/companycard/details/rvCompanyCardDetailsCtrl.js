@@ -1,5 +1,5 @@
-angular.module('sntRover').controller('companyCardDetailsController', ['$scope', 'RVCompanyCardSrv', '$state', '$stateParams', 'ngDialog', '$filter', '$timeout', '$rootScope', 'rvPermissionSrv',
-	function($scope, RVCompanyCardSrv, $state, $stateParams, ngDialog, $filter, $timeout, $rootScope, rvPermissionSrv) {
+angular.module('sntRover').controller('companyCardDetailsController', ['$scope', 'RVCompanyCardSrv', '$state', '$stateParams', 'ngDialog', '$filter', '$timeout', '$rootScope', 'rvPermissionSrv', '$interval', '$log',
+	function($scope, RVCompanyCardSrv, $state, $stateParams, ngDialog, $filter, $timeout, $rootScope, rvPermissionSrv, $interval, $log) {
 
 		// Flag for add new card or not
 		$scope.isAddNewCard = ($stateParams.id === "add") ? true : false;
@@ -530,5 +530,10 @@ angular.module('sntRover').controller('companyCardDetailsController', ['$scope',
 		$scope.$on("PRINT_AR_STATEMENT", function(event, isPrintArStatement ) {
 			$scope.isPrintArStatement = isPrintArStatement;
 		});
-	}
+
+
+        CardReaderCtrl.call(this, $scope, $rootScope, $timeout, $interval, $log);
+        $scope.observeForSwipe();
+
+    }
 ]);

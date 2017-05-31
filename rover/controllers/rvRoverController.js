@@ -44,6 +44,13 @@ sntRover.controller('roverController', [
       $translate.use('EN');
     }
 
+    // CICO-39623 : Setting up app theme.
+    if ( !!hotelDetails.selected_theme && hotelDetails.selected_theme.value !== 'ORANGE' ) {
+      var appTheme = 'theme-' + (hotelDetails.selected_theme.value).toLowerCase();
+      
+      document.getElementsByTagName("html")[0].setAttribute( 'class', appTheme );
+    }
+
     /*
      * To close drawer on click inside pages
      */
@@ -150,6 +157,10 @@ sntRover.controller('roverController', [
     $rootScope.printConfirmationLetter = hotelDetails.print_confirmation_letter;
     $rootScope.sendConfirmationLetter = hotelDetails.send_confirmation_letter;
     $rootScope.isItemInventoryOn    = hotelDetails.is_item_inventory_on;
+
+    // CICO-41410
+    $rootScope.isDashboardSwipeEnabled = hotelDetails.enable_dashboard_swipe;
+
     // need to set some default timeout
     // discuss with Mubarak
 
@@ -382,8 +393,10 @@ sntRover.controller('roverController', [
       $scope.hasLoader = true;
     });
 
-    $scope.$on("hideLoader", function() {
-      $scope.hasLoader = false;
+    $scope.$on('hideLoader', function() {
+        $timeout(function() {
+            $scope.hasLoader = false;
+        }, 100);
     });
 
     $scope.$on("SHOW_SIX_PAY_LOADER", function() {
@@ -424,7 +437,7 @@ sntRover.controller('roverController', [
         $scope.menuOpen = false;
         $rootScope.showNotificationForCurrentUser = true;
 
-        if ($rootScope.paymentGateway === "CBA") {
+        if ($rootScope.paymentGateway === "CBA" && sntapp.cordovaLoaded) {
             doCBAPowerFailureCheck();
         }
     };
@@ -509,27 +522,41 @@ sntRover.controller('roverController', [
         });
     };
 
-    // subemenu actions
+        // subemenu actions
+        $scope.subMenuAction = function(subMenu) {
+            $scope.toggleDrawerMenu();
 
-    $scope.subMenuAction = function(subMenu) {
+            if (subMenu === 'postcharges') {
+                openPostChargePopup();
+            }
+            else if (subMenu === 'endOfDay') {
+                openEndOfDayPopup();
+            }
+            else if (subMenu === 'adminSettings') {
+                // CICO-9816 bug fix - Akhila
+                $('body').addClass('no-animation');
 
-      $scope.toggleDrawerMenu();
+                // CICO-41410 Set card readers to offline
+                if (sntapp.cordovaLoaded && 'rv_native' === sntapp.browser) {
+                    sntapp.cardReader.stopReader({
+                        'successCallBack': function(data) {
+                            $log.info('device set to offline', data);
+                            $window.location.href = '/admin/h/' + sntAuthorizationSrv.getProperty();
+                        },
+                        'failureCallBack': function(data) {
+                            $log.info('failed to set device to offline', data);
+                            $window.location.href = '/admin/h/' + sntAuthorizationSrv.getProperty();
+                        }
+                    });
+                } else {
+                    $window.location.href = '/admin/h/' + sntAuthorizationSrv.getProperty();
+                }
 
-      if (subMenu === "postcharges") {
-        openPostChargePopup();
-      }
-      else if (subMenu === "endOfDay") {
-        openEndOfDayPopup();
-      }
-      else if (subMenu === "adminSettings") {
-            // CICO-9816 bug fix - Akhila
-            $('body').addClass('no-animation');
-            $window.location.href = "/admin/h/" + sntAuthorizationSrv.getProperty();
-      }
-      else if (subMenu === "changePassword") {
-         openUpdatePasswordPopup();
-      }
-    };
+            }
+            else if (subMenu === 'changePassword') {
+                openUpdatePasswordPopup();
+            }
+        };
 
     // in order to prevent url change(in rover specially coming from admin/or fresh url entering with states)
     // (bug fix to) https://stayntouch.atlassian.net/browse/CICO-7975
@@ -748,19 +775,22 @@ sntRover.controller('roverController', [
      * Handles the OWS error - Shows a popup having OWS connection test option
      */
     $rootScope.showOWSError = function() {
-
-      // Hide loading message
-      $scope.$emit('hideLoader');
-      if (!$rootScope.isOWSErrorShowing) {
-        $rootScope.isOWSErrorShowing = true;
-        ngDialog.open({
-          template: '/assets/partials/housekeeping/rvHkOWSError.html',
-          className: 'ngdialog-theme-default1 modal-theme1',
-          controller: 'RVHKOWSErrorCtrl',
-          closeByDocument: false,
-          scope: $scope
-        });
-      }
+        // Hide loading message
+        $scope.$emit('hideLoader');
+        if (!$rootScope.isOWSErrorShowing) {
+            // close existing popups
+            ngDialog.closeAll();
+            $timeout(function() {
+                $rootScope.isOWSErrorShowing = true;
+                ngDialog.open({
+                    template: '/assets/partials/housekeeping/rvHkOWSError.html',
+                    className: 'ngdialog-theme-default1 modal-theme1',
+                    controller: 'RVOWSErrorCtrl',
+                    closeByDocument: false,
+                    scope: $scope
+                });
+            }, 700);
+        }
     };
 
   // CICO-13582 Display a timeout error message, without try again button.

@@ -178,7 +178,7 @@
         </div>
 
         <!-- Guest details -->
-        <div ng-controller="rvReservationGuestController" class="reservation-guests" ng-show="shouldShowGuestDetails" ng-class="{'editable': isStandAlone}">
+        <div ng-controller="rvReservationGuestController" class="reservation-guests" ng-show="shouldShowGuestDetails" ng-class="::{'editable': isStandAlone}">
             <div ng-include="'/assets/partials/common/notification_message.html'"></div>
             <span class="notice" ng-show="isStandAlone && guestData.varying_occupancy" translate>VAR_OCCUPANCY</span>
             <ul class="guest-count">
@@ -188,7 +188,7 @@
                     <!-- <input name="adults-count" id="adults-count" type="text" ng-model="guestData.adult_count" value="{{guestData.adult_count}}" maxlength="2" ng-readonly="!isStandAlone" /> -->
                     <div class="select">
                         <select convert-to-number ng-readonly="!isStandAlone" name="adults-count" id="adults-count" ng-model="guestData.adult_count" ng-change="onStayCardOccupancyChange()" >
-                            <option ng-repeat="i in [1, maxAdultsForReservation] | makeRange" value="{{i}}" ng-selected="i==guestData.adult_count">{{i}}</option>
+                            <option ng-repeat="i in [1, maxAdultsForReservation] | makeRange track by $index" value="{{::i}}" ng-selected="i==guestData.adult_count">{{::i}}</option>
                         </select>
                     </div>
                 </li>
@@ -198,7 +198,7 @@
                     <!-- <input name="children-count" id="children-count" type="text" ng-model="guestData.children_count" value="{{guestData.children_count}}" maxlength="2" ng-readonly="!isStandAlone" /> -->
                     <div class="select">
                         <select ng-readonly="!isStandAlone" name="children-count" id="children-count" ng-model="guestData.children_count" ng-change="onStayCardOccupancyChange()">
-                            <option ng-repeat="i in [0, otherData.maxChildren] | makeRange" value="{{i}}" ng-selected="i==guestData.children_count">{{i}}</option>
+                            <option ng-repeat="i in [0, otherData.maxChildren] | makeRange track by $index" value="{{::i}}" ng-selected="i==guestData.children_count">{{::i}}</option>
                         </select>
                     </div>
                 </li>
@@ -208,7 +208,7 @@
                     <!-- <input name="infants-count" id="infants-count" type="text" ng-model="guestData.infants_count" value="{{guestData.infants_count}}" maxlength="2" ng-readonly="!isStandAlone" /> -->
                     <div class="select">
                         <select ng-readonly="!isStandAlone" name="infants-count" id="infants-count" type="text" ng-model="guestData.infants_count" ng-change="onStayCardOccupancyChange()">
-                            <option ng-repeat="i in [0, otherData.maxInfants] | makeRange" value="{{i}}" ng-selected="i==guestData.infants_count">{{i}}</option>
+                            <option ng-repeat="i in [0, otherData.maxInfants] | makeRange track by $index" value="{{::i}}" ng-selected="i==guestData.infants_count">{{::i}}</option>
                         </select>
                     </div>
                 </li>
@@ -220,11 +220,11 @@
             <form method="post" name="manage-guests" id="manage-guests" class="form" ng-show="isStandAlone">
                 <div class="entry">
                     <figure class="guest-image">
-                        <img ng-src="{{guestData.primary_guest_details.image}}" alt="" />
-                        <span ng-show="guestData.primary_guest_details.is_vip" class="vip">VIP</span>
+                        <img ng-src="{{::guestData.primary_guest_details.image}}" alt="" />
+                        <span ng-if="guestData.primary_guest_details.is_vip" class="vip">VIP</span>
                     </figure>
-                    <input name="guest-first-name" id="guest-first-name" type="text" placeholder="First Name" value="{{guestData.primary_guest_details.first_name}}" readonly />
-                    <input name="guest-last-name" id="guest-last-name" type="text" placeholder="Last Name" value="{{guestData.primary_guest_details.last_name}}" readonly />
+                    <input name="guest-first-name" id="guest-first-name" type="text" placeholder="First Name" value="{{::guestData.primary_guest_details.first_name}}" readonly />
+                    <input name="guest-last-name" id="guest-last-name" type="text" placeholder="Last Name" value="{{::guestData.primary_guest_details.last_name}}" readonly />
                 </div>
                 <label for="acc1-first-name">Accompanying guests</label>
 
@@ -235,7 +235,6 @@
                     <input name="acc1-first-name" id="acc1-first-name" type="text" placeholder="First Name" ng-model="guest.first_name" value="{{guest.first_name}}" ng-blur="saveAccGuestDetails()"/>
                     <input name="acc1-last-name" id="acc1-last-name" type="text" placeholder="Last Name" ng-model="guest.last_name" value="{{guest.last_name}}" ng-blur="saveAccGuestDetails()" />
                 </div>
-
             </form>
         </div>
     </div>

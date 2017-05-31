@@ -73,6 +73,10 @@ sntZestStation.controller('zsThemeActionsCtrl', [
                 applyPrintMargin(); // zsUtils function
             }
         };
+
+        var isASpecialCase = function(theme) {
+            return theme === 'public_v2';
+        };
         var setHotelBasedTheme = function(theme) {
 			/*
 			 * This will identify the theme attached to the hotel
@@ -95,7 +99,7 @@ sntZestStation.controller('zsThemeActionsCtrl', [
 
 
                 // debugging - inProd() needs to be TRUE for loading licensed font
-                if (hotelHasLicensedFont(theme) && $scope.inProd()) {
+                if ((hotelHasLicensedFont(theme) && $scope.inProd()) || isASpecialCase(theme)) {
                     // we load fonts using two different services
                     // one provides the css as a .css and the other as a .js 
 

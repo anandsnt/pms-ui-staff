@@ -34,7 +34,8 @@ module.exports = {
 					jsLibRoot + 'stationKeyboard/jquery.keyboard.extension-typing.min.js',
 					jsLibRoot + 'stationKeyboard/jquery.keyboard.min.js',
 					jsLibRoot + 'stationKeyboard/jquery.mousewheel.min.js',
-					jsLibRoot + 'stationKeyboard/jquery.keyboard.extension-autocomplete.min.js'
+					jsLibRoot + 'stationKeyboard/jquery.keyboard.extension-autocomplete.min.js',
+					sharedRoot + 'lib/js/jsHue/js-hue.js'
 
 				],
 				nonMinifiedFiles: [
@@ -51,7 +52,7 @@ module.exports = {
 					sharedRoot + 'directives/enterPress/enterPress.js',
 					sharedRoot + 'directives/clickTouch/clickTouch.js',
 					jsLibRoot + 'date.js',
-					'rover/rvSntApp.js',
+                	sharedRoot + 'cordova.js',
 					zestRoot + 'zsApp.js',
 					zestRoot + 'zsUtils.js',
 					zestRoot + 'zsWebSocketActions.js',

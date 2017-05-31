@@ -95,8 +95,6 @@ sntZestStation.controller('zsRootCtrl', [
         $scope.runDigestCycle = function() {
             if (!$scope.$$phase) {
                 $scope.$digest();
-            } else {
-                return;
             }
         };
 		// used for making keys, checking if there is text in the locale, to hide/show the key #, 
@@ -105,10 +103,31 @@ sntZestStation.controller('zsRootCtrl', [
             if (!value) {
                 return true;
             }
-            if ($filter('translate')(value) === '') {
-                return true;
+            return $filter('translate')(value) === '';
+        };
+
+        var setupLanguageTranslations = function() {
+            if (hotelLanguages.languages.length > 0) {
+                var codeForLang, locales = zsGeneralSrv.refToLatestPulledTranslations;
+
+                $scope.tagInEdit = {
+                    language: {}// each lang code will return have tags with values
+                };
+
+                for (var i in hotelLanguages.languages) {
+                    codeForLang = hotelLanguages.languages[i].code;
+                    if (locales[codeForLang]) {
+                        $scope.tagInEdit.language[codeForLang] = locales[codeForLang];
+                    }
+                }
             }
-            return false;
+        };
+
+
+        $scope.getTagValue = function(tag) {
+            var currentLanguageCode = $scope.currentLanguageCode;
+
+            return $scope.tagInEdit.language[currentLanguageCode][tag];
         };
 
 		/**
@@ -159,36 +178,107 @@ sntZestStation.controller('zsRootCtrl', [
 
         $scope.softResetCount = 0;
         $scope.manual_refresh_requested = false;
+        
         $scope.softReset = function() {
             // when user is at the admin screen, if they tap the Logo 5x times quickly, it 
             // initiates a soft-reset, this will be helpful in quickly testing or getting new settings to the device(s)
             var currentState = $state.current.name;
+          
+            $scope.softResetCount++;
             if (currentState === 'zest_station.admin') {
-                 
-                $scope.softResetCount++;
+                
                 if ($scope.softResetCount >= 5) {
-                    if (!$scope.manual_refresh_requested){
+                    if (!$scope.manual_refresh_requested) {
                         // get a more accurate count of refresh requests
                         $scope.trackEvent(currentState, 'manual_refresh_requested');    
                         $scope.manual_refresh_requested = true;
 
                         $scope.hasLoader = true;
                         // quick loading animation so user can see request to refresh was made
-                        $timeout(function(){
+                        $timeout(function() {
                             location.reload(true);
-                        },500)
+                        }, 500);
                         
                     }
-                }
-                $timeout(function(){
-                    $scope.softResetCount = 0;
-                },2200);
+                }  
             }
+
+            if ($scope.softResetCount == 2) {
+                $timeout(function() {
+                    if ($scope.softResetCount == 2) {
+                        // when in a local testing environment, we should be able to test all hotel themes
+                        // a bit faster, to help with this~
+                        // *activate themeSwitcher (showTemplateList) on Ipad by double-tapping the logo @ admin,
+                        // then, at any screen swipe the icon up or down to change the hotel theme
+                        // !! IMPORTANT !! -> ONLY ALLOW IN DEVELOPMENT ENVIRONMENT, NOT for production
+                        if (!$scope.inProd()) { // ONLY IN DEVELOPMENT ENVIRONMENT !! IMPORTANT !!
+                            initThemeTemplateList();
+                        }
+
+                    }
+                }, 750);
+            } else if ($scope.softResetCount == 3) {
+                $timeout(function() {
+                    if ($scope.softResetCount == 3) {
+                        // when in a local testing environment, we should be able to test all hotel themes
+                        // a bit faster, to help with this~
+                        // *activate themeSwitcher (showTemplateList) on Ipad by double-tapping the logo @ admin,
+                        // then, at any screen swipe the icon up or down to change the hotel theme
+                        // !! IMPORTANT !! -> ONLY ALLOW IN DEVELOPMENT ENVIRONMENT, NOT for production
+                        if (!$scope.inProd()) { // ONLY IN DEVELOPMENT ENVIRONMENT !! IMPORTANT !!
+                            zestSntApp.getStateList();// toggle jump list
+                        }
+
+                    }
+                }, 750);
+            }
+
+            $timeout(function() {
+                $scope.softResetCount = 0;
+            }, 2200);
+        };
+        $scope.themeTemplateList = [];
+        var initThemeTemplateList = function() {
+            $scope.themeTemplateList = [];
+            for (var propertyName in $scope.cssMappings) {
+                $scope.themeTemplateList.push({
+                    'name': propertyName
+                });
+            }
+            // sorted list to find themes easier
+            $scope.themeTemplateList.sort(function(a, b) {
+                var nameA = a.name.toLowerCase(), 
+                    nameB = b.name.toLowerCase();
+
+                if (nameA < nameB) // sort string ascending
+                    {return -1;} 
+                if (nameA > nameB)
+                    {return 1;}
+                return 0; // default return value (no sorting)
+            });
+
+
+            $scope.zestStationData.showTemplateList = true;
         };
 
+        $scope.selectThemeFromTemplateList = function(theme) {
+            $scope.zestStationData.showTemplateList = false;
+            $scope.quickSetHotelTheme(theme);
+        }; 
+
+
+        $scope.adminBtnPress = 0;
         $scope.goToAdmin = function() {
-            $scope.zestStationData.fromAdminButton = true;
-            $state.go('zest_station.admin');
+            if ($state.current.name === 'zest_station.admin' && !$scope.inProd()) {
+                $scope.adminBtnPress++;
+                $timeout(function() {
+                    $scope.adminBtnPress = 0;
+                }, 2000);
+            } else {
+                $scope.adminBtnPress = 0;
+                $scope.zestStationData.fromAdminButton = true;
+                $state.go('zest_station.admin');                
+            }
         };
 
 		// check if navigator is iPad
@@ -225,7 +315,7 @@ sntZestStation.controller('zsRootCtrl', [
         };
 
 		// $scope.isIpad = (navigator.userAgent.match(/iPad/i) !== null || navigator.userAgent.match(/iPhone/i) !== null) && window.cordova;
-        $scope.isIpad = zestSntApp.cordovaLoaded && iphoneOrIpad;
+        $scope.isIpad = iphoneOrIpad;
 		/**
 		 * This is workaround till we find how to detect if app
 		 *  is invoked from chrome app, we will be hidding this tag from chrome app and
@@ -699,6 +789,7 @@ sntZestStation.controller('zsRootCtrl', [
             }
             if ($scope.zestStationData.theme === 'public_v2') {
                 $scope.icons.url.pen = $scope.icons.url.keyboard;
+                $scope.icons.url.checkmark = iconsPath + '/checkmark.svg';
             }
         };
 
@@ -730,7 +821,7 @@ sntZestStation.controller('zsRootCtrl', [
 
             if (_.contains(nonCircleNavIcons, theme)) {
                 $scope.nonCircleNavIcons = true;
-                commonIconsPath = '/assets/zest_station/css/icons/default/square_icons';
+                commonIconsPath = '/assets/zest_station/css/icons/public_v2';
             } else {
                 $scope.nonCircleNavIcons = false;
             }
@@ -1344,7 +1435,9 @@ sntZestStation.controller('zsRootCtrl', [
                 
                 $scope.zestStationData.workstationStatus = station.is_out_of_order ? 'out-of-order' : 'in-order';
                 var newWorkStationStatus = angular.copy($scope.zestStationData.workstationStatus);
-
+                
+                // set the selected Workststaion's light ID
+                $scope.zestStationData.selected_light_id = station.hue_light_id;
                 $scope.setEncoderDiagnosticInfo();
                 try {
                     $scope.zestStationData.workstationOooReason = storage.getItem(oosReasonKey);
@@ -1592,9 +1685,27 @@ sntZestStation.controller('zsRootCtrl', [
 			// call Zest station settings API
             $scope.zestStationData = zestStationSettings;
             $scope.zestStationData.hotelLanguages = hotelLanguages.languages;
+            if (hotelLanguages) {
+                setupLanguageTranslations();
+            }
+            if ($scope.zestStationData.kiosk_is_hue_active) {
+                var hue = jsHue();
+                try {
+                    bridge = hue.bridge($scope.zestStationData.hue_bridge_ip);
+                } catch (e) {
+                    $log.error(e);
+                    $log.warn('Error creating HUE bridge with bridge IP => ' + $scope.zestStationData.hue_bridge_ip);
+                }
+                try {
+                    $scope.zestStationData.hueUser = bridge.user($scope.zestStationData.hue_user_name);
+                } catch (e) {
+                    $log.error(e);
+                    $log.warn('Error creating HUE user with user name => ' + $scope.zestStationData.hue_user_name);
+                }
+            }
             $rootScope.isStandAlone = zestStationSettings.is_standalone;
             $scope.zestStationData.check_in_collect_passport = false;// TODO: link with admin setting
-
+            $scope.zestStationData.showTemplateList = false; // Only for ipad in dev environment, switch themes fast like in chrome (dashboard view)
             $scope.zestStationData.makingKeyInProgress = false;
             $scope.zestStationData.qrCodeScanning = false;
             $scope.zestStationData.demoModeEnabled = 'false'; // demo mode for hitech, only used in snt-theme
@@ -1609,13 +1720,13 @@ sntZestStation.controller('zsRootCtrl', [
             $scope.zestStationData.workstationStatus = '';
             $scope.zestStationData.wsIsOos = false;
             $scope.showLanguagePopup = false;
+            $scope.zestStationData.waitingForSwipe = false;
 			// create a websocket obj
             $scope.socketOperator = new webSocketOperations(socketOpenedSuccess, socketOpenedFailed, socketActions);
             fetchHotelSettings();
             getKeyEncoderInfo();
             getAdminWorkStations();
             $scope.zestStationData.bussinessDate = hotelTimeData.business_date;
-            zestSntApp.setBrowser();
 
             $scope.inElectron = $scope.inChromeApp && (typeof chrome === 'undefined' || typeof chrome.runtime === 'undefined');
 
@@ -1651,8 +1762,11 @@ sntZestStation.controller('zsRootCtrl', [
             // and may move to an admin in a future story 
             $scope.zestStationData.consecutiveKeyFailure = 0;
             listenForOptionSelectionByKeyboard();
-
-
+            $scope.cardReader = new CardOperation();
+            
+            // reset number of keys to be made
+            $scope.zestStationData.makeTotalKeys = 0;
+            $scope.zestStationData.makingAdditionalKey = false;
         }());
     }
 ]);

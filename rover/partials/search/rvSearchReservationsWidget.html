@@ -12,7 +12,7 @@
 	            <label for="room-type">Room Type</label>
 	            <select id="room-type" ng-model="room_type_id" ng-change="onRoomTypeChange()">
 	                <option value="" selected="" translate>SHOW_ALL</option>
-	                <option value="{{roomType.id}}" ng-repeat="roomType in roomTypes">{{roomType.name}}</option>
+	                <option value="{{::roomType.id}}" ng-repeat="roomType in ::roomTypes track by $index">{{::roomType.name}}</option>
 	            </select>
 	        </div>
     	</div>

@@ -38,6 +38,11 @@
 "STATION_LANGUAGE_ITALIAN":"Italiano",
 "STATION_LANGUAGE_CASTELLANO":"Castellano",
 
+"STATION_GUEST_ID_ACTIVATE" :"Guest ID Scan",
+"STATION_REMOVE_FILE" :"Remove File",
+
+"STATION_GUEST_ID_ACTIVATE_DESCRIPTION" :"Prompt to Scan Guest ID(s) During Check-In and Pickup Keys",
+
 "ACTIVATE_BOOKING_ENGINE_POPUP" :"Activate Booking Engine Popup",
 "BOOKING_URL":"Booking Engine URL",
 "BUTTON_LABEL":"Button Label",
@@ -109,7 +114,20 @@
 "STATION_MOBILE_PHONE_KEY_EMAIL_HEADER":"Get Mobile Phone Key Email",
 "STATION_MOBILE_PHONE_KEY_EMAIL_SETUP":"Setup Mobile Phone Key Email",
 
-"TEXT_1_MOBILE_PHONE_KEY_EMAIL": "Text"
+"TEXT_1_MOBILE_PHONE_KEY_EMAIL": "Text",
+
+"USE_HUE": "USE HUE",
+"DISCOVER_HUE_BRIDGE_INSTRUCTIONS": "There can be multiple Hue Bridges in the network. If you don't know the required bridge IP address, please click discover bridges button to list the available IPs of the connected bridges. If you already know the IP address, please fill in the Bridge IP field.",
+"DISCOVER_BRIDGES": "DISCOVER BRIDGES",
+"IP_ADDRESS": "Available Bridge IP addresses",
+"HUE_USER_NAME_INSTRUCTIONS": "If you don't have a Hue username, please click link button on top of the bridge (big round button) and then click on create user name button below. Once user name is created, please copy and paste the username in the  user name field.  If you already have an user name, please enter that user name in the User Name field.",
+"CREATE_USER_NAME": "Create User Name",
+"NEW_USER_NAME_IS": "YOUR NEW USER NAME IS",
+"GET_LIGHTS": "GET LIGHTS LIST",
+"TURN_ON_LIGHT": "Turn ON light",
+"TURN_OFF_LIGHT": "Turn OFF light",
+"TEST_SETTINGS_INSTRUCTIONS": "If you already know the required light ID, enter the ID in the light ID field. Else click on get lights list button to list all the available lights. Please note that the lights have to be reachable.",
+"HUE_LIGHT_ID": "Hue Light ID"
 
 
 

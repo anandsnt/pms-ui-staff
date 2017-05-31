@@ -105,7 +105,13 @@ module.exports = {
             'guestweb_gold_strike': [ themeCSSRoot + 'guestweb_gold_strike.css'],
             'guestweb_historic_taos_inn': [ themeCSSRoot + 'guestweb_historic_taos_inn.css'],
             'guestweb_public_ny_v2': [ themeCSSRoot + 'guestweb_public_ny_v2.css'],
-            'guestweb_mgm_grand_detroit': [ themeCSSRoot + 'guestweb_mgm_grand_detroit.css']
+            'guestweb_mgm_grand_detroit': [ themeCSSRoot + 'guestweb_mgm_grand_detroit.css'],
+            'guestweb_hotel_hiho': [ themeCSSRoot + 'guestweb_hotel_hiho.css'],
+            'guestweb_circle_fairfield': [ themeCSSRoot + 'guestweb_circle_fairfield.css'],
+            'guestweb_foundation_hotel_detroit': [ themeCSSRoot + 'guestweb_foundation_hotel_detroit.css'],
+            'guestweb_orchard_garden_hotel': [ themeCSSRoot + 'guestweb_orchard_garden_hotel.css'],
+            'guestweb_orchard_hotel': [ themeCSSRoot + 'guestweb_orchard_hotel.css'],
+            'guestweb_avenue_suites_georgetown': [ themeCSSRoot + 'guestweb_avenue_suites_georgetown.css']
         };     
     }
 };

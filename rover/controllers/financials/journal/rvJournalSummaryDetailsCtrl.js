@@ -5,7 +5,9 @@ sntRover.controller('RVJournalSummaryDetailsController', ['$scope', '$rootScope'
     $scope.setScroller('summary_content', {});
 
     var refreshSummaryScroller = function () {
-        setTimeout(function() {$scope.refreshScroller('summary_content');}, 500);
+        setTimeout(function() {
+            $scope.refreshScroller('summary_content');
+        }, 500);
     };
 
     $scope.$on("INITIALIZESUMMARYDETAILS", function() {
