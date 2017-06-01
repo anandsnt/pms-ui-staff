@@ -263,15 +263,15 @@
             </ul>
 
             <div class="entry search" ng-show="checkDeliveryType('FTP') && ftpServerList.length">
-                <label for="ftp-recipient">FTP Recipient</label>
+                <label for="ftp-recipient">SFTP Recipient</label>
                 <div class="select">
                     <select id="ftp-recipient" ng-model="scheduleParams.selectedFtpRecipient" ng-options="ftp.id as ftp.description for ftp in ftpServerList" iscroll-stop-propagation>
-                        <option value="">FTP Recipient</option>
+                        <option value="">SFTP Recipient</option>
                     </select>
                 </div>
             </div>
             <div class="entry search" ng-show="checkDeliveryType('FTP') && !ftpServerList.length">
-                <label for="ftp-recipient">No FTP configured</label>
+                <label for="ftp-recipient">No SFTP configured</label>
             </div>
         </div>
     </div>

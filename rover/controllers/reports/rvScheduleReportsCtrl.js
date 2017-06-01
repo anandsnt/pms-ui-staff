@@ -198,9 +198,9 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
 
             // fill emails
             if ( $scope.emailList.length ) {
-                params.recipients = $scope.emailList.join(', ');
+                params.emails = $scope.emailList.join(', ');
             } else {
-                params.recipients = '';
+                params.emails = '';
             }
 
             // fill sort_field and filters
@@ -292,9 +292,9 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
 
             // fill emails
             if ( $scope.emailList.length ) {
-                params.recipients = $scope.emailList.join(', ');
+                params.emails = $scope.emailList.join(', ');
             } else {
-                params.recipients = '';
+                params.emails = '';
             }
 
             // fill sort_field and filters
@@ -523,8 +523,8 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
             $scope.scheduleParams.ends_on_date = reportUtils.processDate(endsOnDate).today;
 
             // save emails
-            if ( $scope.selectedEntityDetails.recipients ) {
-                $scope.emailList = $scope.selectedEntityDetails.recipients.split(', ');
+            if ( $scope.selectedEntityDetails.emails ) {
+                $scope.emailList = $scope.selectedEntityDetails.emails.split(', ');
             } else {
                 $scope.emailList = [];
             }
