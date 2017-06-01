@@ -695,7 +695,6 @@ angular.module('sntPay').controller('sntPaymentController',
             $scope.$on('CONFIRMED_DB_PAYMENT', ( event, params ) => {
                 $scope.payment.isConfirmedDBpayment = true;
                 $scope.submitPayment(params);
-                ngDialog.close(paymentDialogId);
             });
 
             // To close the confirm DB popup.
@@ -773,11 +772,15 @@ angular.module('sntPay').controller('sntPaymentController',
                     response => {
                         $scope.onPaymentSuccess(response);
                         $scope.$emit('hideLoader');
+                        if ($scope.payment.isConfirmedDBpayment) {
+                            ngDialog.close();
+                        }
                     },
                     errorMessage => {
                         // CICO-40539 - Handle error for DB payment fron bill screen/confirm popup.
                         if ($scope.selectedPaymentType === 'DB' && $scope.payment.isConfirmedDBpayment) {
                             cancellConfirmDBpopup();
+                            $scope.payment.isConfirmedDBpayment = false;
                         }
                         handlePaymentError(errorMessage);
                     }

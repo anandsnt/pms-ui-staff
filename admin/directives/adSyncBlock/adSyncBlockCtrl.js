@@ -29,14 +29,19 @@ angular.module('admin').controller('adSyncBlockCtrl', ['$scope', '$rootScope', '
                     $scope.fromDate = $scope.toDate;
                 }
                 // NOTE: This function call is intentional.
-                $scope.endDatePickerOptions.maxDate = getFutureDate($scope.fromDate, MAX_REFRESH_SPAN_DAYS);
+                if (!$scope.syncHistoricalData) {
+                    $scope.endDatePickerOptions.maxDate = getFutureDate($scope.fromDate, MAX_REFRESH_SPAN_DAYS);
+                }
             },
             fromDateSelected = function() {
                 if (!$scope.toDate ||
                     new tzIndependentDate($scope.fromDate) > new tzIndependentDate($scope.toDate)) {
                     $scope.toDate = $scope.fromDate;
                 }
-                $scope.endDatePickerOptions.maxDate = getFutureDate($scope.fromDate, MAX_REFRESH_SPAN_DAYS);
+
+                if (!$scope.syncHistoricalData) {
+                    $scope.endDatePickerOptions.maxDate = getFutureDate($scope.fromDate, MAX_REFRESH_SPAN_DAYS);
+                }
             },
             getSyncItems = function(full_sync_items) {
                 var arr = [];
