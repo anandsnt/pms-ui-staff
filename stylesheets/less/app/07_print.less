@@ -3102,6 +3102,11 @@
         }
 
          &.print-commission-agent {
+
+            &.scrollable {
+                overflow: hidden;
+            }
+
             .travel-agent {
                 &:not(.printing) {
                     .hide();
@@ -3120,13 +3125,20 @@
         &.print-commission-summary {
             .commission-reports,
             h2,
+            .iScrollVerticalScrollbar,
             .button {
                 .hide();
             } 
 
+            // Fix bug with the scroll
+            &.scrollable {
+                overflow: hidden;
+            }
+
             .travel-agent {
-                &:not(:last-child) {
-                    border-bottom: 1px solid @grey2;
+                border-bottom: 1px solid @grey2;
+                &.last {
+                    border-bottom: 0
                 }
             }
             .grid-footer {
