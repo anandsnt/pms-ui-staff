@@ -126,7 +126,7 @@ angular.module('sntRover').controller('RVExportReportsCtrl', [
 
             var hasEmailFtpList = function() {
                 var hasEmail = $scope.checkDeliveryType('EMAIL') && $scope.emailList.length;
-                var hasFTP = $scope.checkDeliveryType('FTP') && !! $scope.scheduleParams.selectedFtpRecipient;
+                var hasFTP = $scope.checkDeliveryType('SFTP') && !! $scope.scheduleParams.selectedFtpRecipient;
 
                 return hasEmail || hasFTP;
             };
@@ -794,7 +794,7 @@ angular.module('sntRover').controller('RVExportReportsCtrl', [
             var showResponse = function () {
                 $scope.runNowData = {
                     isEmail: $scope.checkDeliveryType('EMAIL'),
-                    isFtp: $scope.checkDeliveryType('FTP'),
+                    isFtp: $scope.checkDeliveryType('SFTP'),
                     isSingleEmail: $scope.emailList.length === 1,
                     ftpAddress: getFtpAddress($scope.scheduleParams.selectedFtpRecipient)
                 };
