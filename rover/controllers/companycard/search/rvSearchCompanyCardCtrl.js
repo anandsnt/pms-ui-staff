@@ -49,10 +49,12 @@ angular.module('sntRover').controller('searchCompanyCardController', ['$scope', 
 		};
 
 
+        var debounceSearchDelay = 600;
+
 		/**
 		 * function to perform filtering/request data from service in change event of query box
 		 */
-		$scope.queryEntered = function() {
+		$scope.queryEntered = _.debounce(function() {
 			if ($scope.textInQueryBox === "" || $scope.textInQueryBox.length < 3) {
 				$scope.results = [];
 			} else {
@@ -61,7 +63,7 @@ angular.module('sntRover').controller('searchCompanyCardController', ['$scope', 
 			var queryText = $scope.textInQueryBox;
 
 			$scope.textInQueryBox = queryText.charAt(0).toUpperCase() + queryText.slice(1);
-		};
+		}, debounceSearchDelay);
 
 		$scope.clearResults = function() {
 			$scope.textInQueryBox = "";

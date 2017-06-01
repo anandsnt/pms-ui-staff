@@ -679,4 +679,15 @@ angular.module('adminModuleTwo', []).config(function($stateProvider) {
         url: '/zestStationAddons'
     });
 
+    $stateProvider.state('admin.stationHueSettings', {
+        templateUrl: '/assets/partials/zestStation/adZestStationHueSettings.html',
+        controller: 'adZestStationHueSettingsCtrl',
+        url: '/upsellAddons',
+        resolve: {
+            kioskSettings: function(ADZestStationSrv) {
+                return ADZestStationSrv.fetch();
+            }
+        }
+    });
+
 });

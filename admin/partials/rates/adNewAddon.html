@@ -23,7 +23,7 @@
 
                 <ad-textbox styleclass="full-width" value="translations.translated_name" name="name" id="name" label="{{'NAME' | translate}}" placeholder="{{'ENTER_ADDON_NAME' | translate}}" required="yes" ng-hide="isDefaulLanguageSelected()"></ad-textbox>
 
-                <ad-textbox ng-show="isConnectedToPMS" styleclass="full-width" value="singleAddon.package_code" name="name" disabled="true" id="name" label="{{'CODE' | translate}}" ></ad-textbox>
+                <ad-textbox ng-if="::isConnectedToPMS" styleclass="full-width" value="singleAddon.package_code" name="name" disabled="true" id="name" label="{{'CODE' | translate}}" ></ad-textbox>
 
                 <ad-textarea rows="4" div-class="full-width" text-area-class="full-width" value="singleAddon.description" name="desc" id="desc" label="{{'DESCRIPTION' | translate}}" placeholder="{{'ENTER_ADDON_DESCRIPTION' | translate}}" required="yes"></ad-textarea>
 
@@ -31,28 +31,28 @@
 
                 
 
-                <div ng-hide="isConnectedToPMS" class="entry full-width radio-check">
+                <div ng-if="::!isConnectedToPMS" class="entry full-width radio-check">
                     <label class="checkbox">
                         <span class="icon-form icon-checkbox" ng-class="{ checked : singleAddon.bestseller }"></span>
                         <label>{{'BESTSELLER' | translate}}</label>
                         <input type="checkbox" ng-model="singleAddon.bestseller" ng-change="bestsellerChanged()">
                     </label>
                 </div>
-                <div ng-hide="isConnectedToPMS || isHourlyRatesEnabled" class="entry full-width radio-check">
+                <div ng-if="::!isConnectedToPMS && !isHourlyRatesEnabled" class="entry full-width radio-check">
                     <label class="checkbox">
                         <span class="icon-form icon-checkbox" ng-class="{ checked : singleAddon.rate_code_only }"></span>
                         <label>{{'RATE_ONLY' | translate}}</label>
                         <input type="checkbox" ng-model="singleAddon.rate_code_only" ng-change="rateOnlyChanged()">
                     </label>
                 </div>
-                <div ng-hide="isConnectedToPMS" class="entry full-width radio-check">
+                <div ng-if="::!isConnectedToPMS" class="entry full-width radio-check">
                     <label class="checkbox">
                         <span class="icon-form icon-checkbox" ng-class="{ checked : singleAddon.is_reservation_only }"></span>
                         <label>{{'RESERVATION_ONLY' | translate}}</label>
                         <input type="checkbox" ng-model="singleAddon.is_reservation_only" ng-change="reservationOnlyChanged()">
                     </label>
                 </div>
-                <div ng-hide="isConnectedToPMS" class="entry full-width radio-check">
+                <div ng-if="::!isConnectedToPMS" class="entry full-width radio-check">
                     <ad-textbox styleclass="full-width" value="singleAddon.inventory_count" name="inventory" id="inventory" label="{{'Inventory' | translate}}" placeholder="Enter the count"></ad-textbox>
                 </div>
 
@@ -70,7 +70,7 @@
                     </span>
                 </div>
 
-                <div ng-show="isConnectedToPMS" class="entry full-width price-suffix-container">
+                <div ng-if="::isConnectedToPMS" class="entry full-width price-suffix-container">
 
 
                     <div class="form-title">
@@ -92,7 +92,7 @@
 
             </fieldset>
             <fieldset class="holder right float">
-                <div ng-hide="isConnectedToPMS" class="entry has-datepicker margin">
+                <div ng-if="::!isConnectedToPMS" class="entry has-datepicker margin">
                     <label>{{'FROM_DATE' | translate}}
                     </label>
                     <input type="text" ng-model="singleAddon.begin_date_for_display" readonly="" placeholder="Select Start Date" class="date-picker-input-small">
@@ -103,7 +103,7 @@
                         <span class="icons delete_small rate_end_delete cursor_pointer date-delete" ng-click="resetDate('From')">&nbsp;</span>
                     </div>
                 </div>
-                <div ng-hide="isConnectedToPMS" class="entry has-datepicker margin">
+                <div ng-if="::!isConnectedToPMS" class="entry has-datepicker margin">
                     <label>{{'TO_DATE' | translate}}
                     </label>
                     <input type="text" ng-model="singleAddon.end_date_for_display" readonly="" placeholder="Select End Date" class="date-picker-input-small">
@@ -114,7 +114,7 @@
                         <span class="icons delete_small rate_end_delete cursor_pointer date-delete" ng-click="resetDate('To')">&nbsp;</span>
                     </div>
                 </div>
-                <div ng-hide="isConnectedToPMS" class="entry">
+                <div ng-if="::!isConnectedToPMS" class="entry">
                     <div class="entry full-width">
                         <label for="charge-group-id">
                             {{'CHARGE_GROUP' | translate}}
@@ -125,7 +125,7 @@
                         </div>
                     </div>
                 </div>
-                <div ng-hide="isConnectedToPMS" class="entry">
+                <div ng-if="::!isConnectedToPMS" class="entry">
                     <div class="entry full-width">
                         <label for="charge-group-id">
                             {{'CHARGE_CODE' | translate}}
@@ -169,14 +169,14 @@
 
                 <ad-toggle-button is-disabled="true" is-hide="!isConnectedToPMS" div-class="full-width" label="{{'SELL_SEPARATE' | translate}}" is-checked="singleAddon.is_sell_separate"></ad-toggle-button>
 
-                <div ng-hide="isConnectedToPMS" class="entry radio-check">
+                <div ng-if="::!isConnectedToPMS" class="entry radio-check">
                     <label class="checkbox">
                         <span class="icon-form icon-checkbox" ng-class="{ checked : singleAddon.manual_posting }"></span>
                         <label>{{'MANUAL_POSTING' | translate}}</label>
                         <input type="checkbox" ng-model="singleAddon.manual_posting">
                     </label>
                 </div>
-                <div ng-hide="isConnectedToPMS" class="entry radio-check">
+                <div ng-if="::!isConnectedToPMS" class="entry radio-check">
                     <label class="checkbox">
                         <span class="icon-form icon-checkbox" ng-class="{ checked : singleAddon.forecast_for_next_day }"></span>
                         <label>{{'FORECAST_FOR_NEXT_DAY' | translate}}</label>
@@ -191,7 +191,7 @@
                     </label>
                 </div>
             </fieldset>
-            <fieldset ng-hide="isHourlyRatesEnabled" class="holder holder full-width">
+            <fieldset ng-if="::!isHourlyRatesEnabled" class="holder holder full-width">
                 <div class="form-title">
                     <h3>
                         <span>Exclude from&nbsp;</span>
@@ -199,7 +199,7 @@
                     </h3>
                 </div>
                 <ad-toggle-button div-class="full-width" label="{{'EXCLUDE_FROM_RATE' | translate}}" is-checked="singleAddon.allow_rate_exclusions"></ad-toggle-button>
-                <section ng-show="singleAddon.allow_rate_exclusions">
+                <section ng-if="singleAddon.allow_rate_exclusions">
                     <div class="entry has-sortable no-margin-right">
                         <label class="center_align">
                             <em class="rate_roomtype_text">Available Rates</em>

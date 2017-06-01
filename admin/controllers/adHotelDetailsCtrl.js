@@ -186,8 +186,7 @@ admin.controller('ADHotelDetailsCtrl', [
 			}
 			data.interface_type_ids = getSelectedInterfaceTypes(data);
 			var themeData = {
-				'value': (!!$scope.selectedTheme) ? $scope.selectedTheme.value : '',
-				'id': (!!$scope.selectedTheme) ? $scope.selectedTheme.id : ''
+				'value': (!!$scope.selectedTheme) ? $scope.selectedTheme.value : 'ORANGE'
 			};
 			
 			data.selected_theme = themeData;
@@ -224,8 +223,7 @@ admin.controller('ADHotelDetailsCtrl', [
 
 			data.interface_type_ids = getSelectedInterfaceTypes(data);
 			var themeDataHA = {
-				'value': (!!$scope.selectedTheme) ? $scope.selectedTheme.value : '',
-				'id': (!!$scope.selectedTheme) ? $scope.selectedTheme.id : ''
+				'value': (!!$scope.selectedTheme) ? $scope.selectedTheme.value : 'ORANGE'
 			};
 
 			data.selected_theme = themeDataHA;
@@ -243,6 +241,9 @@ admin.controller('ADHotelDetailsCtrl', [
 	              var appTheme = 'theme-' + ($scope.selectedTheme.value).toLowerCase();
 	              
 	              document.getElementsByTagName("html")[0].setAttribute( 'class', appTheme );
+	            }
+	            else {
+	            	document.getElementsByTagName("html")[0].removeAttribute( 'class');
 	            }
 
 				$state.go('admin.dashboard', {menu: 0});

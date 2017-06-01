@@ -2,19 +2,19 @@
     <!---- wait ---->
     <div id="content" ng-show="socketBeingConnected">
         <h1>
-            <text editable-text="PLEASE_WAIT_FOR_KEY_CARD_FOR_CHECKOUT"> {{'PLEASE_WAIT_FOR_KEY_CARD_FOR_CHECKOUT' |translate}}</text>
+            <text data-ng-bind-html="getTagValue('PLEASE_WAIT_FOR_KEY_CARD_FOR_CHECKOUT')" editable-text="PLEASE_WAIT_FOR_KEY_CARD_FOR_CHECKOUT"></text>
         </h1>
         <h2 class="nocaps">
-            <text editable-text="PLEASE_WAIT_KEY_CARD_FOR_CHECKOUT_SUB_TEXT"> {{'PLEASE_WAIT_KEY_CARD_FOR_CHECKOUT_SUB_TEXT' |translate}}</text>
+            <text data-ng-bind-html="getTagValue('PLEASE_WAIT_KEY_CARD_FOR_CHECKOUT_SUB_TEXT')" editable-text="PLEASE_WAIT_KEY_CARD_FOR_CHECKOUT_SUB_TEXT"></text>
         </h2>
     </div>
     <!-- card insert mode -->
     <div id="content" ng-hide="reservationSearchFailed || socketBeingConnected">
         <h1>
-            <text editable-text="INSERT_KEY_CARD_FOR_CHECKOUT"> {{'INSERT_KEY_CARD_FOR_CHECKOUT' |translate}}</text>
+            <text data-ng-bind-html="getTagValue('INSERT_KEY_CARD_FOR_CHECKOUT')" editable-text="INSERT_KEY_CARD_FOR_CHECKOUT"></text>
         </h1>
         <h2 class="nocaps">
-            <text editable-text="INSERT_KEY_CARD_FOR_CHECKOUT_SUB_TEXT"> {{'INSERT_KEY_CARD_FOR_CHECKOUT_SUB_TEXT' |translate}}</text>
+            <text data-ng-bind-html="getTagValue('INSERT_KEY_CARD_FOR_CHECKOUT_SUB_TEXT')" editable-text="INSERT_KEY_CARD_FOR_CHECKOUT_SUB_TEXT"></text>
         </h2>
         <nav id="options" role="nav">
             <ul role="menu">
@@ -22,7 +22,7 @@
                     <button type="button" class="button option">
                         <div ng-include="icons.url.key"></div>
                     </button>
-                    <text editable-text="INSERT_KEY_CARD"> {{'INSERT_KEY_CARD' |translate}}</text>
+                    <text data-ng-bind-html="getTagValue('INSERT_KEY_CARD')" editable-text="INSERT_KEY_CARD"></text>
                 </li>
             </ul>
         </nav>
@@ -30,10 +30,10 @@
     <!-- reservation search failed -->
     <div id="content" ng-show="reservationSearchFailed && !socketBeingConnected">
         <h1>
-            <text editable-text="KEY_CARD_LOOKUP_FAILURE_ERROR_HEADING"> {{'KEY_CARD_LOOKUP_FAILURE_ERROR_HEADING' |translate}}</text>
+            <text data-ng-bind-html="getTagValue('KEY_CARD_LOOKUP_FAILURE_ERROR_HEADING')" editable-text="KEY_CARD_LOOKUP_FAILURE_ERROR_HEADING"></text>
         </h1>
         <h2 class="nocaps">
-            <text editable-text="KEY_CARD_LOOKUP_FAILURE_ERROR_SUBTEXT"> {{'KEY_CARD_LOOKUP_FAILURE_ERROR_SUBTEXT' |translate}}</text>
+            <text data-ng-bind-html="getTagValue('KEY_CARD_LOOKUP_FAILURE_ERROR_SUBTEXT')" editable-text="KEY_CARD_LOOKUP_FAILURE_ERROR_SUBTEXT"></text>
         </h2>
         <nav id="options" role="nav">
             <ul role="menu">
@@ -41,34 +41,34 @@
                     <button type="button" class="button option" touch-press='retrySearch()'>
                         <div ng-include="icons.url.key"></div>
                     </button>
-                    <text editable-text="RETRY"> {{'RETRY' |translate}}</text>
+                    <text data-ng-bind-html="getTagValue('RETRY')" editable-text="RETRY"></text>    
                 </li>
                 <li class="break">
                     <span>
-                        <text editable-text="OR_TEXT"> {{'OR_TEXT' |translate}}</text>
+                        <text data-ng-bind-html="getTagValue('OR_TEXT')" editable-text="OR_TEXT"></text>
                     </span>
                 </li>
                 <li>
                     <button type="button" class="button option" touch-press='searchByName()'>
                         <div ng-include="icons.url.keyboard"></div>
                     </button>
-                    <text editable-text="SEARCH"> {{'SEARCH' |translate}}</text>
+                    <text data-ng-bind-html="getTagValue('SEARCH')" editable-text="SEARCH"></text>
                     <span>
-                        <text editable-text="BY_NAME"> {{'BY_NAME' |translate}}</text>
+                        <text data-ng-bind-html="getTagValue('BY_NAME')" editable-text="BY_NAME"></text>
                     </span>
                 </li>
                 <li class="break">
                     <span>
-                        <text editable-text="OR_TEXT"> {{'OR_TEXT' |translate}}</text>
+                        <text data-ng-bind-html="getTagValue('OR_TEXT')" editable-text="OR_TEXT"></text>
                     </span>
                 </li>
                 <li>
                     <button type="button" class="button option" touch-press='talkToStaff()'>
                         <div ng-include="icons.url.staff"></div>
                     </button>
-                    <text editable-text="RES_SRCH_TALK"> {{'RES_SRCH_TALK' |translate}}</text>
+                    <text data-ng-bind-html="getTagValue('RES_SRCH_TALK')" editable-text="RES_SRCH_TALK"></text>
                     <span>
-                        <text editable-text="RES_SRCH_TALK_SUB"> {{'RES_SRCH_TALK_SUB' |translate}}</text>
+                        <text data-ng-bind-html="getTagValue('RES_SRCH_TALK_SUB')" editable-text="RES_SRCH_TALK_SUB"></text>
                     </span>
                 </li>
             </ul>
@@ -79,13 +79,13 @@
 <section id="main" class="centered" role="main" ng-show="alreadyCheckedOut">
     <div id="content">
         <h1>
-            <text editable-text="USER_CHECKED_OUT_ALRDY_HEADER"> {{'USER_CHECKED_OUT_ALRDY_HEADER' |translate}}</text>
+            <text data-ng-bind-html="getTagValue('USER_CHECKED_OUT_ALRDY_HEADER')" editable-text="USER_CHECKED_OUT_ALRDY_HEADER"></text>
         </h1>
         <h2 class="nocaps">
-            <text editable-text="USER_CHECKED_OUT_ALRDY_SUB"> {{'USER_CHECKED_OUT_ALRDY_SUB' |translate}}</text>
+            <text data-ng-bind-html="getTagValue('USER_CHECKED_OUT_ALRDY_SUB')" editable-text="USER_CHECKED_OUT_ALRDY_SUB"></text>
         </h2>
         <button type="button" class="button done-btn" click-touch="alreadyCheckedOutActions()">
-            <text editable-text="USER_CHECKED_OUT_ALRDY_RTN"> {{'USER_CHECKED_OUT_ALRDY_RTN' |translate}}</text>
+            <text data-ng-bind-html="getTagValue('USER_CHECKED_OUT_ALRDY_RTN')" editable-text="USER_CHECKED_OUT_ALRDY_RTN"></text>
         </button>
     </div>
     <span ng-include="'/assets/partials_v2/zsTabletFooter.html'"></span>

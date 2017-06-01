@@ -1,4 +1,17 @@
-<header id="global-header" role="banner">
+<header ng-if='!isHotelAdmin' role="banner" id="global-header" class="float">
+	<!-- Logo -->
+	<img src="/assets/images/logo.png" class="logo" alt="">
+
+	<form role="search" name="search-form" method="get" id="search-form" class="search-form float hidden" action="index.html">
+		<div class="entry">
+			<a id="clear-query" href="#" class="icons icon-clear-search">Clear query</a>
+			<button type="submit" name="submit" class="icons icon-search">Search</button>
+			<input type="search" placeholder="Search" name="query" id="query" autocomplete="off">
+		</div>
+	</form>
+</header>
+
+<header ng-if='isHotelAdmin' id="global-header" role="banner">
     <!-- Logo -->
     <div class="logo">
         <img ng-src="{{userInfo.logo}}" alt="" />
@@ -6,7 +19,7 @@
     <!-- Title -->
     <h1>
         <strong class="hotel">{{data.current_hotel}}</strong>
-        {{ userInfo.heading | translate}}
+        {{ 'TITLE_HOTEL_ADMIN' | translate }}
         <div class="user">
             <strong>
             {{userInfo.first_name}}
