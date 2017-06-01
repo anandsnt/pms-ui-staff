@@ -321,8 +321,18 @@ sntRover.controller('RVdashboardController',
                 $scope.$broadcast("HeaderBackButtonClicked");
             };
 
-            CardReaderCtrl.call(this, $scope, $rootScope, $timeout, $interval, $log);
-            $scope.observeForSwipe(6);
-
+            if ($rootScope.isDashboardSwipeEnabled) {
+                CardReaderCtrl.call(this, $scope, $rootScope, $timeout, $interval, $log);
+                $scope.observeForSwipe(6);
+            } else if (sntapp.cordovaLoaded && 'rv_native' === sntapp.browser) {
+                sntapp.cardReader.stopReader({
+                    'successCallBack': function(data) {
+                        $log.info('device set to offline', data);
+                    },
+                    'failureCallBack': function(data) {
+                        $log.info('failed to set device to offline', data);
+                    }
+                });
+            }
 
         }]);

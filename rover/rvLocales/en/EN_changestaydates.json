@@ -35,7 +35,8 @@
 	"RESTRICTIONS": "Restrictions",
 	"RESTRICTION": "Restriction",
 	"CANCEL": "cancel",
-	"SUPPRESSED_RATES_TEXT": "SR"
+	"SUPPRESSED_RATES_TEXT": "SR",
+	"ROOM_UNAVAILABLE": "Selected room is currently occupied. Can't extend reservation for the selected date range"
 
 
 
