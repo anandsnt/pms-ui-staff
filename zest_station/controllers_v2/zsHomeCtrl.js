@@ -268,6 +268,8 @@ sntZestStation.controller('zsHomeCtrl', [
             $scope.$emit('EJECT_KEYCARD');
 			// set this to false always on entering home screen
             $scope.zestStationData.keyCardInserted = false;
+            $scope.zestStationData.makeTotalKeys = 0;
+            $scope.zestStationData.makingAdditionalKey = false;
             $scope.zestStationData.waitingForSwipe = false;
 
 			// list of languages configured for this hotel
