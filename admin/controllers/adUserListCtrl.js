@@ -246,18 +246,16 @@ admin.controller('ADUserListCtrl', ['$scope', '$rootScope', '$q', '$state', '$st
         $scope.reloadTable();
     };
 
+    // To handle subscribe button click.
     $scope.subscribeButtonClick = function(user) {
-        console.log(user);
         $scope.selectedUser = user;
         ngDialog.open({
             template: '/assets/partials/users/adMPSubscriptionModal.html',
+            controller: 'adMPSubscriptionPopupCtrl',
+            className: '',
             scope: $scope,
             closeByDocument: false
         });
     };
 
-    $scope.closePopup = function() {
-        $scope.selectedUser = null;
-        ngDialog.close();
-    };
 }]);
