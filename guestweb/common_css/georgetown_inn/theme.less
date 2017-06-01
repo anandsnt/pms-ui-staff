@@ -8,12 +8,12 @@ body {
 }
 
 body {
-    background-color: #FFF;
-    font-family: adelle, serif;
+    background-color: #F5EBD0;
 }
 
 .back-text {
-    color: #fff;
+    color: #000;
+    display: none !important;
 }
 
 a,
@@ -31,7 +31,7 @@ a:hover,
 }
 
 .header-bar {
-    background: #fff;
+    background: #F5EBD0;
 }
 
 .logo-image {
@@ -63,7 +63,7 @@ a:hover,
 
 .btn,
 .btn:hover {
-    background: #000;
+    background: #BC692E;
     color: @white;
 }
 
@@ -80,27 +80,27 @@ a:hover,
 
 .dark-button,
 .dark-button:hover {
-    background: #000;
+    background: #BC692E;
 }
 
 .light-button,
 .light-button:hover {
-    background: #3F3F3F;
+    background: #D08046;
 }
 
 .checkouttime1,
 .checkouttime1:hover {
-    background: #515151;
+    background: #D08046;
 }
 
 .checkouttime2,
 .checkouttime2:hover {
-    background: #3F3F3F;
+    background: #BC692E;
 }
 
 .checkouttime3,
 .checkouttime3:hover {
-    background: #000;
+    background: #AD5B20;
 }
 
 .no-thanks,
@@ -129,7 +129,7 @@ a:hover,
 }
 
 .upgrade-details .upgrades-btn {
-    background: #000;
+    background: #BC692E;
 }
 
 .proceed-to-checkin {
@@ -142,11 +142,9 @@ a:hover,
 
 
 /*----------------- date picker -------------------------*/
-.pickadate{
-  font-family: 'Tsukushi';
-}
+
 .pickadate-cell .pickadate-active.pickadate-outofrange-disabled a {
-    color: #000;
+    color: #BC692E;
     color: transparent;
 }
 
@@ -156,7 +154,7 @@ a:hover,
 }
 
 .pickadate-cell .pickadate-active {
-    background-color: #000 !important;
+    background-color: #BC692E !important;
     color: #fff;
 }
 
@@ -198,7 +196,7 @@ a:hover,
 }
 
 .date-picker-header {
-    background-color: #000;
+    background-color: #BC692E;
 }
 
 .calendar-back {
@@ -213,7 +211,7 @@ a:hover,
 .pickadate-next,
 .pickadate-prev:hover,
 .pickadate-next:hover {
-    color: #3F3F3F;
+    color: #D08046;
 }
 
 .date-picker-wrap {
@@ -243,21 +241,12 @@ a:hover,
 
 .res-details-heading,
 .res-details-heading:hover {
-    color: #3F3F3F;
+    color: #AD5B20;
 }
 
 .back-to-checkout {
     background: url(/assets/guestweb/common_images/black/left_arrow.png) center top no-repeat;
     height: 40px;
-}
-
-@media (min-width:990px) {
-    .main-text {
-        font-size: 36px;
-    }
-    .sub-main-text {
-    font-size: 21px!important;
-}
 }
 
 @media (max-width: 990px) {
@@ -268,13 +257,19 @@ a:hover,
     .back-to-checkout {
         display: none;
     }
-     .dual-button {
-    font-size: 24px;
+    .checkout-icon,.late-checkout-icon {
+        margin-top: 43px;
+    }
+    .accept-charges,
+    {
+        width: 300px;
+        padding: 4% 0%;
+    }
+    .dual-button {
+        font-size: 28px;
+    }
 }
-}
-// @media (max-width: 890px) {
-   
-// }
+
 @media (max-width: 480px) {
     .main-text {
         font-size: 11vw;
@@ -289,8 +284,7 @@ a:hover,
         font-size: 5.3vw;
     }
     .logo-image {
-        max-width: 200px;
-        margin: 3% auto;
+        max-width: 181px;
     }
     .dual-button {
         font-size: 32px;
@@ -298,4 +292,14 @@ a:hover,
     .section-container {
         padding-bottom: 0px;
     }
+}
+
+.btn-template {
+    font-size: 30px;
+}
+input{
+    background: #fff none repeat scroll 0 0;
+}
+.bill-hotel-logo{
+    background: #F5EBD0;
 }
