@@ -246,7 +246,7 @@ admin.service('ADUserSrv', ['$http', '$q', 'ADBaseWebSrv', 'ADBaseWebSrvV2', 'AD
 	};
 
 	/**
-    * To fetch mp hotels list on subascription popup.
+    * To fetch mp hotels list on subscription popup.
     * @param {object} data 
     * @return {object}
     */
@@ -261,5 +261,40 @@ admin.service('ADUserSrv', ['$http', '$q', 'ADBaseWebSrv', 'ADBaseWebSrvV2', 'AD
 		});
 		return deferred.promise;
 	};
+
+	/**
+    * To subascribe/unsubscribe hotels list on subascription popup.
+    * @param {object} data 
+    * @return {object}
+    */
+	this.subscribeHotel = function(data) {
+		var deferred = $q.defer(),
+			url = '/staff/multi_property/subscribe';
+
+		ADBaseWebSrvV2.postJSON(url, data).then(function(data) {
+		    deferred.resolve(data);
+		}, function(data) {
+		    deferred.reject(data);
+		});
+		return deferred.promise;
+	};
+
+	/**
+    * To update hotel role.
+    * @param {object} data 
+    * @return {object}
+    */
+	this.updateHotelRole = function(data) {
+		var deferred = $q.defer(),
+			url = '/staff/multi_property/update';
+
+		ADBaseWebSrvV2.putJSON(url, data).then(function(data) {
+		    deferred.resolve(data);
+		}, function(data) {
+		    deferred.reject(data);
+		});
+		return deferred.promise;
+	};
+
 
 }]);

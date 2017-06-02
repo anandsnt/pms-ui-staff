@@ -1,5 +1,6 @@
 <div id="modal" role="dialog" class="modal-show">
 	<div class="modal-content chain-hotels">
+		<div ng-include="'/assets/partials/common/notification_message.html'"></div>
 		<span class="message h3">{{multiPropertyHotelDetails.full_name}} subscriptions</span>
 		<div class="hotels-list">
 			<table id="chain-users" class="grid">
@@ -22,7 +23,7 @@
 						</td>
 						<td>
 							<div class="select">
-								<select ng-class="{'placeholder' : hotel.selectedHotelRole === ''}" ng-model="hotel.selectedHotelRole">
+								<select ng-class="{'placeholder' : hotel.selectedHotelRole === ''}" ng-model="hotel.selectedHotelRole" ng-change="roleChanged(hotel)">
 									<option ng-if="!hotel.is_subscribed" ng-selected = "!hotel.is_subscribed" value=''>Missing Role</option>
 									<option ng-repeat="role in hotel.roles" value='{{role.id}}' ng-selected="hotel.selected_role_id === role.id">{{ role.name }}</option>
 								</select>
@@ -32,8 +33,8 @@
 							<em ng-if="hotel.is_subscribed">{{multiPropertyHotelDetails.last_login_date | date : dateFormat}} {{multiPropertyHotelDetails.last_login_time}}</em>
 						</td>
 						<td>
-							<button type="button" class="button white red-text" ng-if="hotel.is_subscribed">Unsubscribe</button>
-							<button type="button" class="button" ng-if="!hotel.is_subscribed" ng-disabled="hotel.selectedHotelRole === ''" ng-class="{'grey': hotel.selectedHotelRole === '', 'green' : hotel.selectedHotelRole != ''}">Subscribe</button>
+							<button type="button" class="button white red-text" ng-if="hotel.is_subscribed" ng-click="clickedUnsubscribe(hotel)">Unsubscribe</button>
+							<button type="button" class="button" ng-if="!hotel.is_subscribed" ng-disabled="hotel.selectedHotelRole === ''" ng-class="{'grey': hotel.selectedHotelRole === '', 'green' : hotel.selectedHotelRole != ''}" ng-click="clickedSubscribe(hotel)">Subscribe</button>
 						</td>
 					</tr>
 				</tbody>
