@@ -221,7 +221,7 @@ admin.controller('ADUserListCtrl', ['$scope', '$rootScope', '$q', '$state', '$st
 
     /*
     * Function that maintains the selected hotel id's
-    * list with respect to the selections made inq
+    * list with respect to the selections made in
     * the hotels multi-select filter if the selection is
     * not 'All hotels'
     * CICO-41385
