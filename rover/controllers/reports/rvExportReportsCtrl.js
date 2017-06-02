@@ -126,7 +126,7 @@ angular.module('sntRover').controller('RVExportReportsCtrl', [
 
             var hasEmailFtpList = function() {
                 var hasEmail = $scope.checkDeliveryType('EMAIL') && $scope.emailList.length;
-                var hasFTP = $scope.checkDeliveryType('SFTP') && !! $scope.scheduleParams.selectedFtpRecipient;
+                var hasFTP = $scope.checkDeliveryType('FTP') && !! $scope.scheduleParams.selectedFtpRecipient;
 
                 return hasEmail || hasFTP;
             };
@@ -144,7 +144,7 @@ angular.module('sntRover').controller('RVExportReportsCtrl', [
                 $scope.createErrors.push('Repeat frequency in details');
             }
             if ( ! $scope.emailList.length ) {
-                $scope.createErrors.push('Emails/SFTP in distribution list');
+                $scope.createErrors.push('Emails/FTP in distribution list');
             }
         };
 
@@ -217,10 +217,13 @@ angular.module('sntRover').controller('RVExportReportsCtrl', [
 
             // fill emails/FTP
             if ( $scope.checkDeliveryType('EMAIL') && $scope.emailList.length ) {
-                params.emails = $scope.emailList.join(', ');
-            } else if ( $scope.checkDeliveryType('SFTP') && !! $scope.scheduleParams.selectedFtpRecipient ) {
-                params.sftp_server_id = $scope.scheduleParams.selectedFtpRecipient;
+                params.recipients = $scope.emailList.join(', ');
+            } else if ( $scope.checkDeliveryType('FTP') && !! $scope.scheduleParams.selectedFtpRecipient ) {
+                params.recipients = $scope.scheduleParams.selectedFtpRecipient;
+            } else {
+                params.recipients = '';
             }
+
             // fill sort_field and filters
             if ( $scope.scheduleParams.sort_field ) {
                 filter_values.sort_field = $scope.scheduleParams.sort_field;
@@ -310,12 +313,11 @@ angular.module('sntRover').controller('RVExportReportsCtrl', [
 
             // fill emails/FTP
             if ( $scope.checkDeliveryType('EMAIL') && $scope.emailList.length ) {
-                params.emails = $scope.emailList.join(', ');
-            } else if ( $scope.checkDeliveryType('SFTP') && !! $scope.scheduleParams.selectedFtpRecipient ) {
-                params.sftp_server_id = $scope.scheduleParams.selectedFtpRecipient;
+                params.recipients = $scope.emailList.join(', ');
+            } else if ( $scope.checkDeliveryType('FTP') && !! $scope.scheduleParams.selectedFtpRecipient ) {
+                params.recipients = $scope.scheduleParams.selectedFtpRecipient;
             } else {
-                params.emails = '';
-                params.sftp_server_id = '';
+                params.recipients = '';
             }
 
             // fill sort_field and filters
@@ -574,7 +576,8 @@ angular.module('sntRover').controller('RVExportReportsCtrl', [
             var endsOnDate = $scope.selectedEntityDetails.ends_on_date || $rootScope.businessDate;
 
             // saved emails/FTP
-            var delieveryType = $scope.selectedEntityDetails.delivery_type.value;
+            var delieveryMethod = $scope.selectedEntityDetails.delivery_method;
+            var delieveryType = delieveryMethod ? $scope.selectedEntityDetails.delivery_method.delivery_type.value : '';
 
             var hasAccOrGuest, todayTimePeriod;
 
@@ -638,16 +641,17 @@ angular.module('sntRover').controller('RVExportReportsCtrl', [
             }, datePickerCommon);
             $scope.scheduleParams.ends_on_date = reportUtils.processDate(endsOnDate).today;
 
-
-            if ( delieveryType === 'EMAIL' ) {
-                $scope.scheduleParams.delivery_id = $scope.getDeliveryId('EMAIL');
-                $scope.emailList = $scope.selectedEntityDetails.emails.split(', ');
-            } else if ( delieveryType === 'SFTP' ) {
-                $scope.scheduleParams.delivery_id = $scope.getDeliveryId('SFTP');
-                $scope.scheduleParams.selectedFtpRecipient = $scope.selectedEntityDetails.sftp_server_id;
+            if ( angular.isDefined($scope.selectedEntityDetails.recipients) ) {
+                if ( delieveryType === 'EMAIL' ) {
+                    $scope.scheduleParams.delivery_id = $scope.getDeliveryId('EMAIL');
+                    $scope.emailList = $scope.selectedEntityDetails.recipients.split(', ');
+                } else if ( delieveryType === 'FTP' ) {
+                    $scope.scheduleParams.delivery_id = $scope.getDeliveryId('FTP');
+                    $scope.scheduleParams.selectedFtpRecipient = parseInt( $scope.selectedEntityDetails.recipients, 10 );
+                }
             } else {
-               $scope.emailList = [];
-               $scope.scheduleParams.selectedFtpRecipient = '';
+                $scope.emailList = [];
+                $scope.scheduleParams.selectedFtpRecipient = '';
             }
 
             $scope.timeSlots = reportUtils.createTimeSlots(TIME_SLOTS);
@@ -794,7 +798,7 @@ angular.module('sntRover').controller('RVExportReportsCtrl', [
             var showResponse = function () {
                 $scope.runNowData = {
                     isEmail: $scope.checkDeliveryType('EMAIL'),
-                    isFtp: $scope.checkDeliveryType('SFTP'),
+                    isFtp: $scope.checkDeliveryType('FTP'),
                     isSingleEmail: $scope.emailList.length === 1,
                     ftpAddress: getFtpAddress($scope.scheduleParams.selectedFtpRecipient)
                 };

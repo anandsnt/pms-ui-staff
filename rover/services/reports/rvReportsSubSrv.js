@@ -394,7 +394,7 @@ angular.module('sntRover').service('RVreportsSubSrv', [
             return callApi({
                 name: 'ftpServerList',
                 method: 'getJSON',
-                url: '/api/sftp_servers',
+                url: '/api/ftp_servers',
                 resKey: 'results'
             });
         };
