@@ -1,6 +1,6 @@
 <div id="modal" role="dialog" class="modal-show">
 	<div class="modal-content chain-hotels">
-		<span class="message h3">{{selectedUser.full_name}} subscriptions</span>
+		<span class="message h3">{{multiPropertyHotelDetails.full_name}} subscriptions</span>
 		<div class="hotels-list">
 			<table id="chain-users" class="grid">
 				<thead>
@@ -12,28 +12,28 @@
 					</tr>
 				</thead>
 				<tbody>
-					<tr ng-repeat="hotel in multiPropertyHotelDetails">
+					<tr ng-repeat="hotel in multiPropertyHotelDetails.hotels">
 						<td>
 							<div class="cell-wrapper">
-								<span class="hotel" ng-class="{'subscribed': hotel.id===selectedUser.hotel_id}">{{hotel.hotel_name}}, {{hotel.city}}</span>
-								<span class="icons icon-added" ng-if="hotel.id===selectedUser.hotel_id"></span>
-								<span class="chain-home-hotel" ng-if="hotel.id===homeHotelId">Home</span>
+								<span class="hotel" ng-class="{ 'subscribed': hotel.is_subscribed }">{{hotel.hotel_name}}</span>
+								<span class="icons icon-added" ng-if="hotel.is_subscribed"></span>
+								<span class="chain-home-hotel" ng-if="hotel.hotel_id === multiPropertyHotelDetails.home_hotel_id">Home</span>
 							</div>
 						</td>
 						<td>
 							<div class="select">
-								<select ng-model="hotelDepartment" ng-init="hotelDepartment= hotel.id===selectedUser.hotel_id ? selectedUser.department : '-1'">
-									<option value="-1">Missing Role</option> <!-- Default option -->
-									<option ng-repeat="department in multiPropertyDepartmentDetails" ng-value="department.name">{{ department.name }}</option>
+								<select ng-class="{'placeholder' : hotel.selectedHotelRole === ''}" ng-model="hotel.selectedHotelRole">
+									<option ng-if="!hotel.is_subscribed" ng-selected = "!hotel.is_subscribed" value=''>Missing Role</option>
+									<option ng-repeat="role in hotel.roles" value='{{role.id}}' ng-selected="hotel.selected_role_id === role.id">{{ role.name }}</option>
 								</select>
 							</div>
 						</td>
 						<td>
-							<em ng-if="hotel.id===selectedUser.hotel_id">{{selectedUser.last_login_date | date : dateFormat}} {{selectedUser.last_login_time}}</em>
+							<em ng-if="hotel.is_subscribed">{{multiPropertyHotelDetails.last_login_date | date : dateFormat}} {{multiPropertyHotelDetails.last_login_time}}</em>
 						</td>
 						<td>
-							<button type="button" class="button white red-text" ng-if="hotel.id!==homeHotelId && hotel.id===selectedUser.hotel_id">Unsubscribe</button>
-							<button type="button" class="button green" ng-if="hotel.id!==homeHotelId && hotel.id!==selectedUser.hotel_id">Subscribe</button>
+							<button type="button" class="button white red-text" ng-if="hotel.is_subscribed">Unsubscribe</button>
+							<button type="button" class="button" ng-if="!hotel.is_subscribed" ng-disabled="hotel.selectedHotelRole === ''" ng-class="{'grey': hotel.selectedHotelRole === '', 'green' : hotel.selectedHotelRole != ''}">Subscribe</button>
 						</td>
 					</tr>
 				</tbody>
