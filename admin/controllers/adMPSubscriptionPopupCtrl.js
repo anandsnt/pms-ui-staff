@@ -22,7 +22,7 @@ admin.controller('adMPSubscriptionPopupCtrl', ['$scope', 'ADUserSrv', 'ngDialog'
     $scope.clickedUnsubscribe = function ( hotel ) {
         var params = {
             'user_id': $scope.multiPropertyHotelDetails.user_id,
-            'role_id': hotel.selectedHotelRole,
+            'selected_role_id': hotel.selectedHotelRole,
             'hotel_id': hotel.hotel_id,
             'is_subscribe': false
         };

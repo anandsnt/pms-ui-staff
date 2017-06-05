@@ -23,14 +23,13 @@
 						</td>
 						<td>
 							<div class="select" ng-class="{'overlay' : hotel.hotel_id === multiPropertyHotelDetails.home_hotel_id }">
-								<select ng-class="{'placeholder' : hotel.selectedHotelRole === ''}" ng-model="hotel.selectedHotelRole" ng-change="roleChanged(hotel)">
-									<option ng-if="!hotel.is_subscribed" ng-selected = "!hotel.is_subscribed" value=''>Missing Role</option>
-									<option ng-repeat="role in hotel.roles" value='{{role.id}}' ng-selected="hotel.selected_role_id === role.id">{{ role.name }}</option>
-								</select>
+								<select class="{'placeholder' : hotel.selectedHotelRole === ''}" ng-model="hotel.selectedHotelRole" ng-options="role.id as role.name for role in hotel.roles" ng-change="roleChanged(hotel)">
+			                        <option ng-if="!hotel.is_subscribed" ng-selected = "!hotel.is_subscribed" value=''>Missing Role</option>
+			                    </select>
 							</div>
 						</td>
 						<td>
-							<em ng-if="hotel.is_subscribed">{{multiPropertyHotelDetails.last_login_date | date : dateFormat}} {{multiPropertyHotelDetails.last_login_time}}</em>
+							<em ng-if="hotel.is_subscribed">{{ hotel.last_login_date | date : dateFormat }} {{ hotel.last_login_time }}</em>
 						</td>
 						<td>
 							<button type="button" class="button white red-text" ng-if="hotel.is_subscribed && !(hotel.hotel_id === multiPropertyHotelDetails.home_hotel_id)" ng-click="clickedUnsubscribe(hotel)">Unsubscribe</button>
