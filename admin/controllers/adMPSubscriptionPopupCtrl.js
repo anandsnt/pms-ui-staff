@@ -6,11 +6,7 @@ admin.controller('adMPSubscriptionPopupCtrl', ['$scope', 'ADUserSrv', 'ngDialog'
         ngDialog.close();
     };
 
-    // Success callback for subscribe/unsubscribe actions.
-    var successCallback = function() {
-        $scope.$emit('hideLoader');
-        $scope.errorMessage = '';
-    };
+
 
     // Failure callback for subscribe/unsubscribe actions.
     var failureCallback = function(errorMessage) {
@@ -20,26 +16,40 @@ admin.controller('adMPSubscriptionPopupCtrl', ['$scope', 'ADUserSrv', 'ngDialog'
 
     // Clicked unsubscribe button actions..
     $scope.clickedUnsubscribe = function ( hotel ) {
-        var params = {
+        
+        // Success callback for unsubscribe actions.
+        var successCallbackUnsubscribe = function() {
+            hotel.is_subscribed = false;
+            $scope.$emit('hideLoader');
+            $scope.errorMessage = '';
+        },
+        params = {
             'user_id': $scope.multiPropertyHotelDetails.user_id,
             'selected_role_id': hotel.selectedHotelRole,
             'hotel_id': hotel.hotel_id,
             'is_subscribe': false
         };
 
-        $scope.invokeApi(ADUserSrv.subscribeHotel, params, successCallback, failureCallback );
+        $scope.invokeApi(ADUserSrv.subscribeHotel, params, successCallbackUnsubscribe, failureCallback );
     };
 
     // Clicked subscribe button actions..
     $scope.clickedSubscribe = function ( hotel ) {
-        var params = {
+
+        // Success callback for subscribe actions.
+        var successCallbackSubscribe = function() {
+            hotel.is_subscribed = true;
+            $scope.$emit('hideLoader');
+            $scope.errorMessage = '';
+        },
+        params = {
             'user_id': $scope.multiPropertyHotelDetails.user_id,
             'selected_role_id': hotel.selectedHotelRole,
             'hotel_id': hotel.hotel_id,
             'is_subscribe': true
         };
 
-        $scope.invokeApi(ADUserSrv.subscribeHotel, params, successCallback, failureCallback );
+        $scope.invokeApi(ADUserSrv.subscribeHotel, params, successCallbackSubscribe, failureCallback );
     };
 
     // On role changes..
