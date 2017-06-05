@@ -27,13 +27,13 @@ admin.controller('ADFTPServersDetailsCtrl', ['$scope', 'ADFTPServersSrv', '$stat
         $scope.$emit('hideLoader');
         $scope.errorMessage = "";
         // Success message to show connection valid
-        $scope.successMessage = "Valid FTP connection";
+        $scope.successMessage = "Valid SFTP connection";
     };
     $scope.failureCallbackConnectionTest = function(errorMessage) {
         $scope.$emit('hideLoader');
         $scope.successMessage = "";
         // Failure message to show connection invalid
-        $scope.errorMessage = errorMessage;
+        $scope.errorMessage = "Invalid SFTP connection!";
     };
 
    /*
