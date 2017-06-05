@@ -34,7 +34,7 @@ admin.controller('adMPSubscriptionPopupCtrl', ['$scope', 'ADUserSrv', 'ngDialog'
     $scope.clickedSubscribe = function ( hotel ) {
         var params = {
             'user_id': $scope.multiPropertyHotelDetails.user_id,
-            'role_id': hotel.selectedHotelRole,
+            'selected_role_id': hotel.selectedHotelRole,
             'hotel_id': hotel.hotel_id,
             'is_subscribe': true
         };
@@ -44,13 +44,16 @@ admin.controller('adMPSubscriptionPopupCtrl', ['$scope', 'ADUserSrv', 'ngDialog'
 
     // On role changes..
     $scope.roleChanged = function ( hotel ) {
-        var params = {
-            'user_id': $scope.multiPropertyHotelDetails.user_id,
-            'role_id': hotel.selectedHotelRole,
-            'hotel_id': hotel.hotel_id
-        };
 
-        $scope.invokeApi(ADUserSrv.updateHotelRole, params, successCallback, failureCallback );
+        if ( hotel.is_subscribed ) {
+            var params = {
+                'user_id': $scope.multiPropertyHotelDetails.user_id,
+                'role_id': hotel.selectedHotelRole,
+                'hotel_id': hotel.hotel_id
+            };
+
+            $scope.invokeApi(ADUserSrv.updateHotelRole, params, successCallback, failureCallback );
+        }
     };
 
 }]);
