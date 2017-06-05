@@ -1,0 +1,91 @@
+<ad-common-parts-in-form-dir on-save-button-click="saveSettings" header-caption="Hue Settings">
+    <fieldset class="holder full-width">
+        <ad-toggle-button is-checked="hueSettings.kiosk_is_hue_active" div-class="full-width" label="{{ 'USE_HUE' | translate}}"></ad-toggle-button>
+        <ad-form-sub-title title="DISCOVER_HUE_BRIDGE_INSTRUCTIONS"></ad-form-sub-title>
+        <div class="entry full-width">
+            <button translate="" ng-click="discoverBridges()" class="button green" translate="">DISCOVER_BRIDGES</button>
+        </div>
+        <div ng-show="availableBridges.length > 0" class="entry half-width">
+            <table class="grid">
+                <!-- <col width="40%"> -->
+                <col width="30%">
+                <!-- <col width="30%"> -->
+                <thead>
+                    <!-- <th class="header">{{'ID' | translate}}</th> -->
+                    <th class="header">{{'IP_ADDRESS' | translate}}</th>
+                    <!-- <th class="header">{{'NAME' | translate}}</th> -->
+                </thead>
+                <tbody>
+                    <tr ng-repeat="bridge in availableBridges">
+                        <!-- <td>{{bridge.id}}</td> -->
+                        <td>
+                            {{bridge.internalipaddress}}
+                        </td>
+                        <!--   <td>
+                            {{bridge.name}}
+                        </td> -->
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </fieldset>
+    <fieldset class="holder full-width">
+        <ad-textbox value="hueSettings.hue_bridge_ip" name="app-name" id="app-name" label="Target Bridge IP" styleclass="half-width"></ad-textbox>
+    </fieldset>
+    <fieldset class="holder full-width">
+        <ad-form-sub-title title="HUE_USER_NAME_INSTRUCTIONS"></ad-form-sub-title>
+        <div class="entry full-width">
+            <button translate="" ng-click="createNewUser()" class="button green" translate="">CREATE_USER_NAME</button>
+        </div>
+        <div class="entry full-width" ng-show="newUsername.length > 0">
+            {{'NEW_USER_NAME_IS' | translate}} - {{newUsername}}
+        </div>
+        <ad-textbox value="hueSettings.hue_user_name" name="app-name" id="app-name" label="User Name" styleclass="half-width"></ad-textbox>
+    </fieldset>
+    <fieldset class="holder full-width">
+        <ad-form-title form-title="Test Settings"></ad-form-title>
+        <ad-form-sub-title title="TEST_SETTINGS_INSTRUCTIONS"></ad-form-sub-title>
+    </fieldset>
+    <fieldset class="holder left">
+        <div class="entry full-width">
+            <button translate="" ng-click="getLightsList()" class="button green" translate="">GET_LIGHTS</button>
+        </div>
+        <div ng-show="availableLights.length > 0">
+            <table class="grid">
+                <col width="10%">
+                <col width="20%">
+                <col width="30%">
+                <col width="20%">
+                <thead>
+                    <th class="header">Id</th>
+                    <th class="header">type</th>
+                    <th class="header">Name</th>
+                    <th class="header">Reachable</th>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="light in availableLights">
+                        <td>{{light.id}}</td>
+                        <td>
+                            {{light.type}}
+                        </td>
+                        <td>
+                            {{light.name}}
+                        </td>
+                        <td>
+                            {{light.reachable}}
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </fieldset>
+    <fieldset class="holder left">
+        <ad-textbox value="hueSettings.hue_test_light_id" name="app-name" id="app-name" label="light ID" placeholder="Enter the ID of light to test" styleclass="full-width"></ad-textbox>
+        <div class="entry">
+            <button translate="" ng-click="turnONLight()" class="button green" translate="">TURN_ON_LIGHT</button>
+        </div>
+        <div class="entry">
+            <button translate="" ng-click="turnOFFLight()" class="button orange" translate="">TURN_OFF_LIGHT</button>
+        </div>
+    </fieldset>
+</ad-common-parts-in-form-dir>

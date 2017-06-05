@@ -394,7 +394,7 @@ angular.module('sntRover').service('RVreportsSubSrv', [
             return callApi({
                 name: 'ftpServerList',
                 method: 'getJSON',
-                url: '/api/ftp_servers',
+                url: '/api/sftp_servers',
                 resKey: 'results'
             });
         };
@@ -514,14 +514,14 @@ angular.module('sntRover').service('RVreportsSubSrv', [
         };
 
         // Search groups based on query string
-        service.fetchGroups = function(query) {
-            var urlPrams = '?q=' + query;
+        service.fetchGroups = function(params) {
 
             return callApi({
                 // no name here since we dont want to cache it in the store ever
                 method: 'getJSON',
-                url: '/api/groups/search' + urlPrams,
-                resKey: 'groups'
+                url: '/api/groups/search',
+                resKey: 'groups',
+                params: params
             });
         };
 

@@ -77,7 +77,7 @@ sntZestStation.controller('zsKeyDispenseCtrl', [
 			};
 			
 			// for debugging in production on ipad
-			$scope.zestStationData.makingKey = $scope.makingKey;
+			$scope.zestStationData.makeTotalKeys = $scope.makingKey;
 
 			postParams.is_additional = $scope.noOfKeysCreated > 0;
 			console.log('requesting additional key: [ ',postParams.is_additional,']');

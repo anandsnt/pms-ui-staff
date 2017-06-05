@@ -788,6 +788,20 @@
 
 			<fieldset class="holder right" ng-if="isAdminSnt">
 				<div class="form-title">
+					<h3><span>Hotel</span> Search Reservations By CC Swipe in Dashboard</h3>
+				</div>
+
+				<div class="entry">
+					<label>Enable Dashboard Swipe</label>
+					<div class="switch-button single" ng-class="{ on : data.enable_dashboard_swipe == true }" ng-click="data.enable_dashboard_swipe = !data.enable_dashboard_swipe">
+						<input type="checkbox" value="{{data.enable_dashboard_swipe}}">
+						<span class="switch-icon"></span>
+					</div>
+				</div>
+			</fieldset>
+
+			<fieldset class="holder right" ng-if="isAdminSnt">
+				<div class="form-title">
 					<h3><span>Hotel</span> Zest App Payment Processor </h3>
 					<em class="status"> Fields marked with <strong>*</strong> are mandatory! </em>
 				</div>
