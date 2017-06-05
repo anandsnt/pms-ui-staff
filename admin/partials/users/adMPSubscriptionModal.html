@@ -18,12 +18,12 @@
 							<div class="cell-wrapper">
 								<span class="hotel" ng-class="{ 'subscribed': hotel.is_subscribed }">{{hotel.hotel_name}}</span>
 								<span class="icons icon-added" ng-if="hotel.is_subscribed"></span>
-								<span class="chain-home-hotel" ng-if="hotel.hotel_id === multiPropertyHotelDetails.home_hotel_id">Home</span>
+								<span class="chain-home-hotel" ng-if="hotel.is_home_hotel">Home</span>
 							</div>
 						</td>
 						<td>
-							<div class="select" ng-class="{'overlay' : hotel.hotel_id === multiPropertyHotelDetails.home_hotel_id }">
-								<select class="{'placeholder' : hotel.selectedHotelRole === ''}" ng-model="hotel.selectedHotelRole" ng-options="role.id as role.name for role in hotel.roles" ng-change="roleChanged(hotel)">
+							<div class="select" ng-class="{'overlay' : hotel.is_home_hotel }">
+								<select ng-class="{'placeholder' : hotel.selectedHotelRole === ''}" ng-model="hotel.selectedHotelRole" ng-options="role.id as role.name for role in hotel.roles" ng-change="roleChanged(hotel)">
 			                        <option ng-if="!hotel.is_subscribed" ng-selected = "!hotel.is_subscribed" value=''>Missing Role</option>
 			                    </select>
 							</div>
@@ -32,8 +32,8 @@
 							<em ng-if="hotel.is_subscribed">{{ hotel.last_login_date | date : dateFormat }} {{ hotel.last_login_time }}</em>
 						</td>
 						<td>
-							<button type="button" class="button white red-text" ng-if="hotel.is_subscribed && !(hotel.hotel_id === multiPropertyHotelDetails.home_hotel_id)" ng-click="clickedUnsubscribe(hotel)">Unsubscribe</button>
-							<button type="button" class="button" ng-if="!hotel.is_subscribed && !(hotel.hotel_id === multiPropertyHotelDetails.home_hotel_id)" ng-disabled="hotel.selectedHotelRole === ''" ng-class="{'grey': hotel.selectedHotelRole === '', 'green' : hotel.selectedHotelRole != ''}" ng-click="clickedSubscribe(hotel)">Subscribe</button>
+							<button type="button" class="button white red-text" ng-if="hotel.is_subscribed && !hotel.is_home_hotel" ng-click="clickedUnsubscribe(hotel)">Unsubscribe</button>
+							<button type="button" class="button" ng-if="!hotel.is_subscribed && !hotel.is_home_hotel" ng-disabled="hotel.selectedHotelRole === ''" ng-class="{'grey': hotel.selectedHotelRole === '', 'green' : hotel.selectedHotelRole != ''}" ng-click="clickedSubscribe(hotel)">Subscribe</button>
 						</td>
 					</tr>
 				</tbody>
