@@ -43,7 +43,7 @@
     })();
 
     var trackAnalyticEvent = function(event_name, event_type) {
-        if (!inLocalEnv && !inDevEnvironment) {
+        if (!inLocalEnv) {
             _gaq.push(['_trackEvent', event_name, event_type]);
         }
     }
