@@ -1,6 +1,7 @@
 <script>
     var url = document.location,
       inDevEnvironment = false,
+      inLocalEnv = false,
       analyticTrackingID;
 
     if (url.hostname) { // if btn === true, then the user is clicking continue to bypass cc screen in dev environment
@@ -43,7 +44,7 @@
     })();
 
     var trackAnalyticEvent = function(event_name, event_type) {
-        if (!inLocalEnv) {
+        if (!inLocalEnv && !inDevEnvironment) {
             _gaq.push(['_trackEvent', event_name, event_type]);
         }
     }
