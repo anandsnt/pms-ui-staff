@@ -22,7 +22,7 @@
 							</div>
 						</td>
 						<td>
-							<div class="select" ng-class="{'overlay' : hotel.is_home_hotel }">
+							<div class="select" ng-class="{'overlay' : hotel.is_home_hotel || multiPropertyHotelDetails.is_chain_admin}">
 								<select ng-class="{'placeholder' : hotel.selectedHotelRole === ''}" ng-model="hotel.selectedHotelRole" ng-options="role.id as role.name for role in hotel.roles" ng-change="roleChanged(hotel)">
 			                        <option ng-if="!hotel.is_subscribed" ng-selected = "!hotel.is_subscribed" value=''>Missing Role</option>
 			                    </select>
@@ -31,7 +31,7 @@
 						<td>
 							<em ng-if="hotel.is_subscribed">{{ hotel.last_login_date | date : dateFormat }} {{ hotel.last_login_time }}</em>
 						</td>
-						<td>
+						<td ng-class="{'overlay' : multiPropertyHotelDetails.is_chain_admin }">
 							<button type="button" class="button white red-text" ng-if="hotel.is_subscribed && !hotel.is_home_hotel" ng-click="clickedUnsubscribe(hotel)">Unsubscribe</button>
 							<button type="button" class="button" ng-if="!hotel.is_subscribed && !hotel.is_home_hotel" ng-disabled="hotel.selectedHotelRole === ''" ng-class="{'grey': hotel.selectedHotelRole === '', 'green' : hotel.selectedHotelRole != ''}" ng-click="clickedSubscribe(hotel)">Subscribe</button>
 						</td>
