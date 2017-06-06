@@ -1,5 +1,13 @@
 angular.module('adminModuleTwo', []).config(function($stateProvider) {
     // define module-specific routes here
+    // CICO-40570 -- start
+    $stateProvider.state('admin.propertyGroups', {
+        templateUrl: 'assets/partials/chainadmins/adPropertyGroups.html',
+        controller: 'ADPropertyGroupsCtrl',
+        url: '/propertyGroups'
+    });
+    // CICO-40570 -- end
+
     $stateProvider.state('admin.departments', {
         templateUrl: '/assets/partials/departments/adDepartmentsList.html',
         controller: 'ADDepartmentListCtrl',

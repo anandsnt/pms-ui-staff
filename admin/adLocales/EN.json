@@ -1163,7 +1163,8 @@
 "REG_CARD":"Registration Card",
 "ON_SCREEN_ROOM_NUMBER":"On-Screen Room Number",
 "ENFORCE_DEPOSIT":"Enforce Deposit",
-"REG_CARD_DELIVERY":"Registration card delivery options"
+"REG_CARD_DELIVERY":"Registration card delivery options",
+"PROPERTY_GROUPS":"Property Groups"
 
         
         }

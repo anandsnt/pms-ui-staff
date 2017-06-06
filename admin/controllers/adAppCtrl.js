@@ -641,10 +641,29 @@ admin.controller('ADAppCtrl', [
          * Admin menu data
          */
 
+        var chainAdmin = {
+            "components": [
+                            {
+                                "id": 1,
+                                "name": "Hotel Details",
+                                "state": "admin.hoteldetails",
+                                "action_path": "/admin/hotels/1/",
+                                "is_group": false,
+                                "icon_class": "icon-hotel",
+                                "sub_components": [],
+                                "is_bookmarked": false
+                            }],
+            header_name:"Chain Admin Setup",
+            menu_id:11,
+            menu_name:"Chain" 
+        };
 
 		$scope.data = adminMenuData;
+        $scope.data.menus.push(chainAdmin);
 		$scope.selectedMenu = $scope.data.menus[$scope.selectedIndex];
 		$scope.bookMarks = $scope.data.bookmarks;
+        
+        console.log('new menu', $scope.data.menus);
 
 		$scope.bookmarkIdList = [];
 		for (var i = 0; i < $scope.data.bookmarks.length; i++) {
