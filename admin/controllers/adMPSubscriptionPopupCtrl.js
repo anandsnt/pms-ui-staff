@@ -6,8 +6,6 @@ admin.controller('adMPSubscriptionPopupCtrl', ['$scope', 'ADUserSrv', 'ngDialog'
         ngDialog.close();
     };
 
-
-
     // Failure callback for subscribe/unsubscribe actions.
     var failureCallback = function(errorMessage) {
         $scope.$emit('hideLoader');
@@ -20,6 +18,7 @@ admin.controller('adMPSubscriptionPopupCtrl', ['$scope', 'ADUserSrv', 'ngDialog'
         // Success callback for unsubscribe actions.
         var successCallbackUnsubscribe = function() {
             hotel.is_subscribed = false;
+            hotel.selectedHotelRole = '';
             $scope.$emit('hideLoader');
             $scope.errorMessage = '';
         },
@@ -60,6 +59,11 @@ admin.controller('adMPSubscriptionPopupCtrl', ['$scope', 'ADUserSrv', 'ngDialog'
                 'user_id': $scope.multiPropertyHotelDetails.user_id,
                 'role_id': hotel.selectedHotelRole,
                 'hotel_id': hotel.hotel_id
+            },
+            // Success callback for unsubscribe actions.
+            successCallback = function() {
+                $scope.$emit('hideLoader');
+                $scope.errorMessage = '';
             };
 
             $scope.invokeApi(ADUserSrv.updateHotelRole, params, successCallback, failureCallback );
