@@ -574,7 +574,7 @@ angular.module('sntRover').controller('RVExportReportsCtrl', [
             var endsOnDate = $scope.selectedEntityDetails.ends_on_date || $rootScope.businessDate;
 
             // saved emails/FTP
-            var delieveryType = $scope.selectedEntityDetails.delivery_type.value;
+            var delieveryType = $scope.selectedEntityDetails.delivery_type ? $scope.selectedEntityDetails.delivery_type.value : '';
 
             var hasAccOrGuest, todayTimePeriod;
 
