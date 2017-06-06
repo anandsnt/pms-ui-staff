@@ -112,7 +112,8 @@ module.exports = {
             'guestweb_orchard_garden_hotel': [ themeCSSRoot + 'guestweb_orchard_garden_hotel.css'],
             'guestweb_orchard_hotel': [ themeCSSRoot + 'guestweb_orchard_hotel.css'],
             'guestweb_avenue_suites_georgetown': [ themeCSSRoot + 'guestweb_avenue_suites_georgetown.css'],
-            'guestweb_georgetown_inn': [ themeCSSRoot + 'guestweb_georgetown_inn.css']
+            'guestweb_georgetown_inn': [ themeCSSRoot + 'guestweb_georgetown_inn.css'],
+            'guestweb_hotel_de_jonker': [ themeCSSRoot + 'guestweb_hotel_de_jonker.css']
         };     
     }
 };
