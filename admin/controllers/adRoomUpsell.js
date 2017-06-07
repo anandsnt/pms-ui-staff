@@ -203,7 +203,7 @@ admin.controller('ADRoomUpsellCtrl', ['$scope', '$rootScope', '$state', 'adRoomU
       
       data.upsell_setup = upsell_setup;
       
-
+      // CICO-41721 - fixes an issue created by sending invalid params to the API
       angular.forEach($scope.upsellData.next_day_upsell_amounts, function (item, index) {
          if (item.amount === '') {
             item.amount = '0';
