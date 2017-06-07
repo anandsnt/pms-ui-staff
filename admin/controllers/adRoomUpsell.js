@@ -203,6 +203,30 @@ admin.controller('ADRoomUpsellCtrl', ['$scope', '$rootScope', '$state', 'adRoomU
       
       data.upsell_setup = upsell_setup;
       
+
+      angular.forEach($scope.upsellData.next_day_upsell_amounts, function (item, index) {
+         if (item.amount === '') {
+            item.amount = '0';
+        }
+        if (item.amount && !$scope.upsellData.next_day_upsell_amounts[index].hotel_id) {
+            // upsell amount for this range was never created, or was removed previously
+            item.level_from = index === 2 ? '2':'1';
+            item.level_to = index > 0 ? '3' : '2';
+        }
+      });
+
+      angular.forEach($scope.upsellData.upsell_amounts, function (item, index) {
+        if (item.amount === '') {
+            item.amount = '0';
+        }
+        if (item.amount && !$scope.upsellData.upsell_amounts[index].hotel_id) {
+            // upsell amount for this range was never created, or was removed previously
+            item.level_from = index === 2 ? '2':'1';
+            item.level_to = index > 0 ? '3' : '2';
+        }
+      });
+
+
       data.upsell_amounts = $scope.upsellData.upsell_amounts;
       data.next_day_upsell_amounts = $scope.upsellData.next_day_upsell_amounts;
       data.charge_code = $scope.upsellData.selected_charge_code_id;
@@ -238,10 +262,12 @@ admin.controller('ADRoomUpsellCtrl', ['$scope', '$rootScope', '$state', 'adRoomU
               $scope.$emit('hideLoader');
               $scope.successMessage = "Success";
         };
-        var updateRoomUpsellFailCallback = function (data) {
+        var updateRoomUpsellFailCallback = function (errors) {
               $scope.$emit('hideLoader');
               var err = ['Unable to Save'];
-
+              if (errors && errors.length > 0) {
+                err[0] += ', '+errors;
+              }
               $scope.errorMessage = err;
         };
 
