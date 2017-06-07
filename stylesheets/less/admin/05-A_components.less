@@ -1362,7 +1362,22 @@
             }
 
             &.search {
+                padding-left: 10px;
+                .float();
+                .box-shadow(inset 1px 0 0 rgba(0,0,0,.1));
                 .calc-width(100, 540);
+
+                input {
+                   margin-right: 10px;
+                   .pull-left;
+                   .calc-width(100, 100); 
+                }
+
+                .button {
+                    font-size: 14px;
+                    width: 90px;
+                    .pull-left;
+                }
             }
 
             &:not(:last-child) {
