@@ -184,7 +184,9 @@ admin.controller('ADRoomUpsellCtrl', ['$scope', '$rootScope', '$state', 'adRoomU
             $scope.upsellData['selected_room_type'] = "";
         }
     };
+    
     var updateParams = function(item, index, paramExists) {
+
         if (item.amount === '') {
             item.amount = '0';
         }
@@ -192,8 +194,9 @@ admin.controller('ADRoomUpsellCtrl', ['$scope', '$rootScope', '$state', 'adRoomU
             // upsell amount for this range was never created, or was removed previously
             item.level_from = index === 2 ? '2' : '1';
             item.level_to = index > 0 ? '3' : '2';
-        }
+        };
     }
+
     /**
      * To handle save button action
      *
