@@ -112,7 +112,10 @@ module.exports = {
             'guestweb_circle_fairfield': [ themeJsRoot + 'app_router_common.js'],
             'guestweb_foundation_hotel_detroit': [ themeJsRoot + 'app_router_common.js'],
             'guestweb_orchard_garden_hotel': [ themeJsRoot + 'app_router_common.js'],
-            'guestweb_orchard_hotel': [ themeJsRoot + 'app_router_common.js']
+            'guestweb_orchard_hotel': [ themeJsRoot + 'app_router_common.js'],
+            'guestweb_avenue_suites_georgetown': [ themeJsRoot + 'app_router_common.js'],
+            'guestweb_georgetown_inn': [ themeJsRoot + 'app_router_common.js'],
+            'guestweb_hotel_de_jonker': [ themeJsRoot + 'app_router_common.js']
         };
     }
 };

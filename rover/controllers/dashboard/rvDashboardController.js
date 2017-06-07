@@ -328,6 +328,9 @@ sntRover.controller('RVdashboardController',
                 sntapp.cardReader.stopReader({
                     'successCallBack': function(data) {
                         $log.info('device set to offline', data);
+                    },
+                    'failureCallBack': function(data) {
+                        $log.info('failed to set device to offline', data);
                     }
                 });
             }
