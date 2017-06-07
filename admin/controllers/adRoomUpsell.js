@@ -210,7 +210,7 @@ admin.controller('ADRoomUpsellCtrl', ['$scope', '$rootScope', '$state', 'adRoomU
         }
         if (item.amount && !$scope.upsellData.next_day_upsell_amounts[index].hotel_id) {
             // upsell amount for this range was never created, or was removed previously
-            item.level_from = index === 2 ? '2':'1';
+            item.level_from = index === 2 ? '2' : '1';
             item.level_to = index > 0 ? '3' : '2';
         }
       });
@@ -221,7 +221,7 @@ admin.controller('ADRoomUpsellCtrl', ['$scope', '$rootScope', '$state', 'adRoomU
         }
         if (item.amount && !$scope.upsellData.upsell_amounts[index].hotel_id) {
             // upsell amount for this range was never created, or was removed previously
-            item.level_from = index === 2 ? '2':'1';
+            item.level_from = index === 2 ? '2' : '1';
             item.level_to = index > 0 ? '3' : '2';
         }
       });
@@ -265,8 +265,9 @@ admin.controller('ADRoomUpsellCtrl', ['$scope', '$rootScope', '$state', 'adRoomU
         var updateRoomUpsellFailCallback = function (errors) {
               $scope.$emit('hideLoader');
               var err = ['Unable to Save'];
+
               if (errors && errors.length > 0) {
-                err[0] += ', '+errors;
+                err[0] += ', ' + errors;
               }
               $scope.errorMessage = err;
         };
