@@ -257,35 +257,41 @@ sntRover.controller('RVJournalPrintController', ['$scope', '$rootScope', '$timeo
 
 	// print the journal page
 	var printJournal = function() {
-		$scope.printFilterValues = {};
-		$scope.printFilterValues.selectedChargeGroup = $( '#revenue-charge-group option:selected' ).text();
-		$scope.printFilterValues.selectedChargeCode = $( '#revenue-charge-code:selected' ).text();
-		$scope.printFilterValues.selectedPaymentType = $( '#payments-payment-type option:selected' ).text();
+        $scope.$emit('hideLoader');
+        $timeout(function() {
 
-		// add the orientation
-		addPrintOrientation();
+			$scope.printFilterValues = {};
+			$scope.printFilterValues.selectedChargeGroup = $( '#revenue-charge-group option:selected' ).text();
+			$scope.printFilterValues.selectedChargeCode = $( '#revenue-charge-code:selected' ).text();
+			$scope.printFilterValues.selectedPaymentType = $( '#payments-payment-type option:selected' ).text();
 
-		/*
-		 *	======[ READY TO PRINT ]======
-		 */
-		// this will show the popup with full bill
-	    $timeout(function() {
-	    	/*
-	    	 *	======[ PRINTING!! JS EXECUTION IS PAUSED ]======
-	    	 */
+			// add the orientation
+			addPrintOrientation();
 
-	        $window.print();
+			/*
+			 *	======[ READY TO PRINT ]======
+			 */
+			// this will show the popup with full bill
+		    $timeout(function() {
+		    	/*
+		    	 *	======[ PRINTING!! JS EXECUTION IS PAUSED ]======
+		    	 */
 
-	        if ( sntapp.cordovaLoaded ) {
-	            cordova.exec(function(success) {}, function(error) {}, 'RVCardPlugin', 'printWebView', []);
-	        }
-	    }, 100);
+		        $window.print();
 
-	    /*
-	     *	======[ PRINTING COMPLETE. JS EXECUTION WILL UNPAUSE ]======
-	     */
+		        if ( sntapp.cordovaLoaded ) {
+		            cordova.exec(function(success) {}, function(error) {}, 'RVCardPlugin', 'printWebView', []);
+		        }
+		    }, 100);
 
-		// remove the orientation after similar delay
-		$timeout(removePrintOrientation, 100);
+		    /*
+		     *	======[ PRINTING COMPLETE. JS EXECUTION WILL UNPAUSE ]======
+		     */
+
+			// remove the orientation after similar delay
+			$timeout(removePrintOrientation, 100);
+
+    	},250);
 	};
+
 }]);
