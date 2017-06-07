@@ -291,7 +291,7 @@ sntRover.controller('RVJournalPrintController', ['$scope', '$rootScope', '$timeo
 			// remove the orientation after similar delay
 			$timeout(removePrintOrientation, 100);
 
-    	},250);
+    	}, 250);
 	};
 
 }]);
