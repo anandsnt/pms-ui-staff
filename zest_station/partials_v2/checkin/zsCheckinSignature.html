@@ -1,7 +1,7 @@
 <section id="main" class="centered" role="main" ng-hide="mode === 'TIMED_OUT'" click-touch='resetTime()'>
     <div id="content">
         <h1>
-            <text editable-text="SIGN_SCREEN"> {{'SIGN_SCREEN' |translate}}</text>
+            <text data-ng-bind-html="getTagValue('SIGN_SCREEN')" editable-text="SIGN_SCREEN"></text>
         </h1>
         <form type="post" action="" id="signature">
             <form id="signature-pad" class="complete-registration form signature-pad-layout">
@@ -17,10 +17,10 @@
     <div>
         <div id="actions" class="add-guests-footer sign">
             <button type="button" class="button transparent prev" touch-press='clearSignature()'>
-                <text editable-text="CLEAR_BTN"> {{'CLEAR_BTN' |translate}}</text>
+                <text data-ng-bind-html="getTagValue('CLEAR_BTN')" editable-text="CLEAR_BTN"></text>
             </button>
             <button type="button" class="button next" ng-mode="{{signature}}" touch-press="submitSignature()">
-                <text editable-text="NEXT_BTN"> {{'NEXT_BTN' |translate}}</text>
+                <text data-ng-bind-html="getTagValue('NEXT_BTN')" editable-text="NEXT_BTN"></text>
             </button>
         </div>
     </div>
@@ -29,10 +29,10 @@
 <section id="main" class="centered" role="main" ng-show="mode === 'TIMED_OUT'" click-touch='resetTime()'>
     <div id="content">
         <h1>
-            <text editable-text="CC_SIGN_TIMEOUT"> {{'CC_SIGN_TIMEOUT' |translate}}</text>
+            <text data-ng-bind-html="getTagValue('CC_SIGN_TIMEOUT')" editable-text="CC_SIGN_TIMEOUT"></text>
         </h1>
         <h2>
-            <text editable-text="CC_SIGN_TIMEOUT_SUB"> {{'CC_SIGN_TIMEOUT_SUB' |translate}}</text>
+            <text data-ng-bind-html="getTagValue('CC_SIGN_TIMEOUT_SUB')" editable-text="CC_SIGN_TIMEOUT_SUB"></text>
         </h2>
         <nav id="options" role="nav">
             <ul role="menu">
@@ -41,21 +41,21 @@
                         <div ng-include="icons.url.pen"></div>
                     </button>
 
-                    <text editable-text="CC_SIGN_TIMEOUT_SIGN"> {{'CC_SIGN_TIMEOUT_SIGN' |translate}}</text>
+                    <text data-ng-bind-html="getTagValue('CC_SIGN_TIMEOUT_SIGN')" editable-text="CC_SIGN_TIMEOUT_SIGN"></text>
 
                 </li>
                 <li class="break">
                     <span>
-                        <text editable-text="OR_TEXT"> {{'OR_TEXT' |translate}}</text>
+                        <text data-ng-bind-html="getTagValue('OR_TEXT')" editable-text="OR_TEXT"></text>
                     </span>
                 </li>
                 <li>
                     <button type="button" class="button option" touch-press='talkToStaff()'>
                         <div ng-include="icons.url.staff"></div>
                     </button>
-                    <text editable-text="SPEAK"> {{'SPEAK' |translate}}</text>
+                    <text data-ng-bind-html="getTagValue('SPEAK')" editable-text="SPEAK"></text>
                     <span>
-                        <text editable-text="SPEAK_SUB"> {{'SPEAK_SUB' |translate}}</text>
+                        <text data-ng-bind-html="getTagValue('SPEAK_SUB')" editable-text="SPEAK_SUB"></text>
                     </span>
                 </li>
             </ul>

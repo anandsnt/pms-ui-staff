@@ -2,7 +2,7 @@
 <section id="main" class="centered" role="main" click-touch='resetTime()' ng-show="mode === 'EMAIL_BILL_GUEST_OPTIONS'">
     <div id="content">
         <h1>
-            <text editable-text="SEND_BILL_TO"> {{'SEND_BILL_TO' |translate}}</text>
+            <text data-ng-bind-html="getTagValue('SEND_BILL_TO')" editable-text="SEND_BILL_TO"></text>
         </h1>
         <h3>{{email}}</h3>
         <nav id="options" role="nav">
@@ -12,24 +12,24 @@
                     <button type="button" class="button option" touch-press='editEmailAddress()'>
                         <div ng-include="icons.url.pen"></div>
                     </button>
-                    <text editable-text="EDIT_EMAIL"> {{'EDIT_EMAIL' |translate}}</text>
+                    <text data-ng-bind-html="getTagValue('EDIT_EMAIL')" editable-text="EDIT_EMAIL"></text>
                 </li>
                 <li class="break">
                     <span>
-                        <text editable-text="OR_TEXT"> {{'OR_TEXT' |translate}}</text>
+                        <text data-ng-bind-html="getTagValue('OR_TEXT')" editable-text="OR_TEXT"></text>
                     </span>
                 </li>
                 <li ng-hide="!zestStationData.is_standalone">
                     <button type="button" class="button option" touch-press='sendEmail()'>
                         <div ng-include="icons.url.email"></div>
                     </button>
-                    <text editable-text="SEND_EMAIL"> {{'SEND_EMAIL' |translate}}</text>
+                    <text data-ng-bind-html="getTagValue('SEND_EMAIL')" editable-text="SEND_EMAIL"></text>
                 </li>
                 <li ng-show="!zestStationData.is_standalone">
                     <button type="button" class="button option" touch-press='checkOutGuest()'>
                         <div ng-include="icons.url.email"></div>
                     </button>
-                    <text editable-text="SEND_EMAIL"> {{'SEND_EMAIL' |translate}}</text>
+                    <text data-ng-bind-html="getTagValue('SEND_EMAIL')" editable-text="SEND_EMAIL"></text>
                 </li>
             </ul>
         </nav>
@@ -39,19 +39,19 @@
 <section id="main" role="main" class="centered" ng-show="mode === 'GUEST_BILL_EMAIL_SENT'">
     <div id="content">
         <h1>
-            <text editable-text="END_THANKS"> {{'END_THANKS' |translate}}</text>
+            <text data-ng-bind-html="getTagValue('END_THANKS')" editable-text="END_THANKS"></text>
         </h1>
         <h3 ng-show="emailSent">
-            <text editable-text="EMAIL_BILL_SENT_MSG"> {{'EMAIL_BILL_SENT_MSG' |translate}}</text>
+            <text data-ng-bind-html="getTagValue('EMAIL_BILL_SENT_MSG')" editable-text="EMAIL_BILL_SENT_MSG"></text>
         </h3>
         <h3 ng-show="emailSendingFailed">
-            <text editable-text="EMAIL_BILL_NOT_SENT_MSG"> {{'EMAIL_BILL_NOT_SENT_MSG' |translate}}</text>
+            <text data-ng-bind-html="getTagValue('EMAIL_BILL_NOT_SENT_MSG')" editable-text="EMAIL_BILL_NOT_SENT_MSG"></text>
         </h3>
         <h3 ng-show="printOpted">
-            <text editable-text="BILL_PRINTED_BELOW"> {{'BILL_PRINTED_BELOW' |translate}}</text>
+            <text data-ng-bind-html="getTagValue('BILL_PRINTED_BELOW')" editable-text="BILL_PRINTED_BELOW"></text>
         </h3>
         <button type="button" class="button done-btn" click-touch='navToHome()'>
-            <text editable-text="DONE_BTN"> {{'DONE_BTN' |translate}}</text>
+            <text data-ng-bind-html="getTagValue('DONE_BTN')" editable-text="DONE_BTN"></text>
         </button>
     </div>
 </section>
@@ -60,7 +60,7 @@
     <!-- Type Email -->
     <div id="content" class="input-field-contents" ng-show="!emailError">
         <h1>
-            <text editable-text="TYPE_EMAIL"> {{'TYPE_EMAIL' |translate}}</text>
+            <text data-ng-bind-html="getTagValue('TYPE_EMAIL')" editable-text="TYPE_EMAIL"></text>
         </h1>
         <form method="post" class="form">
             <div class="entry input">
@@ -68,21 +68,21 @@
             </div>
             <div class="entry action">
                 <button type="button" class="button" touch-press='saveEmail()' ng-class="{'overlay': email.length < 1}">
-                    <text editable-text="NEXT_BTN"> {{'NEXT_BTN' |translate}}</text>
+                    <text data-ng-bind-html="getTagValue('NEXT_BTN')" editable-text="NEXT_BTN"></text>
                 </button>
             </div>
         </form>
         <button id="skipEmailInputBtn" type='button' class='button done-btn' touch-press='goToNextScreen()'>
-            <text editable-text="SKIP_BTN"> {{'SKIP_BTN' |translate}}</text>
+            <text data-ng-bind-html="getTagValue('SKIP_BTN')" editable-text="SKIP_BTN"></text>
         </button>
     </div>
     <!-- Email invalid -->
     <div id="content" ng-show="emailError">
         <h1>
-            <text editable-text="EMAIL_ERR_HEADER"> {{'EMAIL_ERR_HEADER' |translate}}</text>
+            <text data-ng-bind-html="getTagValue('EMAIL_ERR_HEADER')" editable-text="EMAIL_ERR_HEADER"></text>
         </h1>
         <h2>
-            <text editable-text="EMAIL_ERR_HEADER_SUB"> {{'EMAIL_ERR_HEADER_SUB' |translate}}</text>
+            <text data-ng-bind-html="getTagValue('EMAIL_ERR_HEADER_SUB')" editable-text="EMAIL_ERR_HEADER_SUB"></text>
         </h2>
         <nav id="options" role="nav">
             <ul role="menu">
@@ -91,7 +91,7 @@
                         <!--div ng-include="'/assets/zest_station/css/icons/keyboard.svg'"></div-->
                         <div ng-include="icons.url.keyboard"></div>
                     </button>
-                    <text editable-text="RE_TYPE"> {{'RE_TYPE' |translate}}</text>
+                    <text data-ng-bind-html="getTagValue('RE_TYPE')" editable-text="RE_TYPE"></text>
                     <span>{{email}}</span>
                 </li>
             </ul>
@@ -103,7 +103,7 @@
     <section id="main" role="main" class="centered" ng-show="mode === 'PRINT_MODE'">
         <div id="content">
             <h1>
-                <text editable-text="END_THANKS"> {{'END_THANKS' |translate}}</text>
+                <text data-ng-bind-html="getTagValue('END_THANKS')" editable-text="END_THANKS"></text>
             </h1>
             <!--h3 ng-show="email.length>0">{{'EMAILED_BILL' |translate}}
         </h3-->
@@ -114,11 +114,11 @@
                             <!--div ng-include="'/assets/zest_station/css/icons/print.svg'"></div-->
                             <div ng-include="icons.url.print"></div>
                         </button>
-                        <text editable-text="PRINT_BILL"> {{'PRINT_BILL' |translate}}</text>
+                        <text data-ng-bind-html="getTagValue('PRINT_BILL')" editable-text="PRINT_BILL"></text>
                     </li>
                     <li class="break">
                         <span>
-                            <text editable-text="OR_TEXT"> {{'OR_TEXT' |translate}}</text>
+                            <text data-ng-bind-html="getTagValue('OR_TEXT')" editable-text="OR_TEXT"></text>
                         </span>
                     </li>
                     <li>
@@ -126,7 +126,7 @@
                             <!--div ng-include="'/assets/zest_station/css/icons/no-print.svg'"></div-->
                             <div ng-include="icons.url.noprint"></div>
                         </button>
-                        <text editable-text="NO_THX"> {{'NO_THX' |translate}}</text>
+                        <text data-ng-bind-html="getTagValue('NO_THX')" editable-text="NO_THX"></text>
                     </li>
                 </ul>
             </nav>

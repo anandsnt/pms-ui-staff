@@ -1,10 +1,12 @@
 <section id="main" role="main" class="centered" click-touch='resetTime()'>
     <div id="content">
         <h1>
-        	<text editable-text="CHECKIN_SUCCESS_HEADER"> {{'CHECKIN_SUCCESS_HEADER' |translate}}</text>&nbsp;{{user_name}}&nbsp;<text editable-text="CHECKIN_SUCCESS_HEADER_ENDING">{{'CHECKIN_SUCCESS_HEADER_ENDING' |translate}}</text>
+            <text data-ng-bind-html="getTagValue('CHECKIN_SUCCESS_HEADER')" editable-text="CHECKIN_SUCCESS_HEADER"></text>
+            &nbsp;{{user_name}}&nbsp;
+            <text data-ng-bind-html="getTagValue('CHECKIN_SUCCESS_HEADER_ENDING')" editable-text="CHECKIN_SUCCESS_HEADER_ENDING"></text>
     	</h1>
         <h3>
-        	<text editable-text="CHECKIN_SUCCESS_SUB_HEADER"> {{'CHECKIN_SUCCESS_SUB_HEADER' |translate}}</text>
+            <text data-ng-bind-html="getTagValue('CHECKIN_SUCCESS_SUB_HEADER')" editable-text="CHECKIN_SUCCESS_SUB_HEADER"></text>
         </h3>
 
         <div id="room" class="room-num" ng-show="zestStationData.show_room_number && zestStationData.station_mobile_key_status === 'third_party'">
@@ -12,7 +14,7 @@
         </div>
 
         <button type="button" class="button done-btn" click-touch='checkinFinalDoneAction()'>
-            <text editable-text="CHECKIN_SUCCESS_DONE_BTN">{{'CHECKIN_SUCCESS_DONE_BTN' | translate}}</text>
+            <text data-ng-bind-html="getTagValue('CHECKIN_SUCCESS_DONE_BTN')" editable-text="CHECKIN_SUCCESS_DONE_BTN"></text>
         </button>
     </div>
 </section>

@@ -2,7 +2,7 @@
 <section id="main" class="centered" role="main"  click-touch='resetTime()'>
     <div id="content">
         <h1>
-            <text editable-text="FIND_YOUR_BILL_SUMMARY"> {{'FIND_YOUR_BILL_SUMMARY' |translate}}</text>
+            <text data-ng-bind-html="getTagValue('FIND_YOUR_BILL_SUMMARY')" editable-text="FIND_YOUR_BILL_SUMMARY"></text>
         </h1>
         <nav id="options" role="nav">
           <ul role="menu">
@@ -11,18 +11,18 @@
                         <div ng-hide='theme === "duke"' ng-include="icons.url.key"></div>
                         <div ng-show='theme === "duke"' ng-include="icons.url.creditcard"></div>
                     </button>
-                    <text editable-text="USE_KEY_CARD"> {{'USE_KEY_CARD' |translate}}</text>
+                    <text data-ng-bind-html="getTagValue('USE_KEY_CARD')" editable-text="USE_KEY_CARD"></text>
                 </li>
                 <li class="break">
                     <span>
-                        <text editable-text="OR_TEXT"> {{'OR_TEXT' |translate}}</text>
+                        <text data-ng-bind-html="getTagValue('OR_TEXT')" editable-text="OR_TEXT"></text>
                     </span>
                 </li>
                 <li>
                     <button type="button" class="button option" touch-press="searchByName()">
                         <div ng-include="icons.url.keyboard"></div>
                     </button>
-                    <text editable-text="ENTER_NAME"> {{'ENTER_NAME' |translate}}</text>
+                    <text data-ng-bind-html="getTagValue('ENTER_NAME')" editable-text="ENTER_NAME"></text>
                 </li>
             </ul>
         </nav>

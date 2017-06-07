@@ -1,25 +1,25 @@
 <section id="main" class="centered" role="main" click-touch='resetTime()'>
     <div id="content">
         <h1>
-            <text editable-text="DISPENSE_KEY_COMPLETED_HEADER"> {{'DISPENSE_KEY_COMPLETED_HEADER' |translate}}</text>
+            <text data-ng-bind-html="getTagValue('DISPENSE_KEY_COMPLETED_HEADER')" editable-text="DISPENSE_KEY_COMPLETED_HEADER"></text>
         </h1>
-           <h3 ng-show="mode === 'PRINT_SUCCESS_AND_KEY_SUCCESS'">
-            <text editable-text="PRINT_SUCCESS_AND_KEY_SUCCESS"> {{'PRINT_SUCCESS_AND_KEY_SUCCESS' |translate}}</text>
+        <h3 ng-show="mode === 'PRINT_SUCCESS_AND_KEY_SUCCESS'">
+            <text data-ng-bind-html="getTagValue('PRINT_SUCCESS_AND_KEY_SUCCESS')" editable-text="PRINT_SUCCESS_AND_KEY_SUCCESS"></text>
         </h3>
 
         <h3 ng-show="mode === 'PRINT_FAILED_AND_KEY_SUCCESS'">
-            <text editable-text="PRINT_FAILED_AND_KEY_SUCCESS"> {{'PRINT_FAILED_AND_KEY_SUCCESS' |translate}}</text>
+            <text data-ng-bind-html="getTagValue('PRINT_FAILED_AND_KEY_SUCCESS')" editable-text="PRINT_FAILED_AND_KEY_SUCCESS"></text>
         </h3>
 
         <h3 ng-show="mode === 'PRINT_SUCCESS_AND_KEY_FAILED'">
-            <text editable-text="PRINT_SUCCESS_AND_KEY_FAILED"> {{'PRINT_SUCCESS_AND_KEY_FAILED' |translate}}</text>
+            <text data-ng-bind-html="getTagValue('PRINT_SUCCESS_AND_KEY_FAILED')" editable-text="PRINT_SUCCESS_AND_KEY_FAILED"></text>
         </h3>
 
         <h3 ng-show="mode === 'PRINT_FAILED_AND_KEY_FAILED'">
-            <text editable-text="PRINT_FAILED_AND_KEY_FAILED"> {{'PRINT_FAILED_AND_KEY_FAILED' |translate}}</text>
+            <text data-ng-bind-html="getTagValue('PRINT_FAILED_AND_KEY_FAILED')" editable-text="PRINT_FAILED_AND_KEY_FAILED"></text>
         </h3>
         <button type="button" class="button done-btn" click-touch="clickedOnCloseButton()" ng-style="doneButtonStyle" ng-show="showDoneButton">
-            <text editable-text="DONE"> {{'DONE' |translate}}</text>
+            <text data-ng-bind-html="getTagValue('DONE')" editable-text="DONE"></text>
         </button>
     </div>
     <span ng-include="'/assets/partials_v2/zsTabletFooter.html'" click-touch='resetTime()' ></span>
@@ -45,7 +45,7 @@
     </div>
     <div class="room">
         <span>
-            <text editable-text="IN_ROOM"> {{'IN_ROOM' |translate}}</text>
+            <text data-ng-bind-html="getTagValue('IN_ROOM')" editable-text="IN_ROOM"></text>
         </span>
         <strong>{{printRegCardData.room_number}}</strong>
     </div>
@@ -66,7 +66,7 @@
             <br>
             <br>
             <span>
-                    <text editable-text="REGISTRATION_READY_PRINT_ROOM_NO"> {{'REGISTRATION_READY_PRINT_ROOM_NO' |translate}}</text>
+                    <text data-ng-bind-html="getTagValue('REGISTRATION_READY_PRINT_ROOM_NO')" editable-text="REGISTRATION_READY_PRINT_ROOM_NO"></text>
                 </span>
             <br>
             <br>
@@ -76,21 +76,25 @@
             <br>
             <br>
             <span ng-hide="zestStationData.isHourlyRateOn">
-                        <text editable-text="REGISTRATION_READY_PRINT_DEPART_DATE"> {{'REGISTRATION_READY_PRINT_DEPART_DATE' |translate}}</text> {{departDate | date:'dd-MMM yyyy'}}</span>
+                        <text data-ng-bind-html="getTagValue('REGISTRATION_READY_PRINT_DEPART_DATE')" editable-text="REGISTRATION_READY_PRINT_DEPART_DATE"></text>
+                        {{departDate | date:'dd-MMM yyyy'}}</span>
             <span ng-show="zestStationData.isHourlyRateOn">
-                        <text editable-text="REGISTRATION_READY_PRINT_DEPART_DATE"> {{'REGISTRATION_READY_PRINT_DEPART_DATE' |translate}}</text>{{departDate | date:'dd-MMM yyyy'}} @ {{printRegCardData.departure_time}}</span>
+                        <text data-ng-bind-html="getTagValue('REGISTRATION_READY_PRINT_DEPART_DATE')" editable-text="REGISTRATION_READY_PRINT_DEPART_DATE"></text>
+                        {{departDate | date:'dd-MMM yyyy'}} @ {{printRegCardData.departure_time}}</span>
             <br>
             <!--  {{'REGISTRATION_READY_PRINT_STD_CHECKOUT' | translate}} {{zestStationData.check_out_time.hour}}:{{zestStationData.check_out_time.minute}} {{zestStationData.check_out_time.primetime|lowercase}} -->
             </span>
             <br>
             <br>
             <br>
-            <span class="reg-text" translate>REGISTRATION_READY_PRINT_MSG_1</span>
+            <span class="reg-text">
+                <text data-ng-bind-html="getTagValue('REGISTRATION_READY_PRINT_MSG_1')" editable-text="REGISTRATION_READY_PRINT_MSG_1"></text>
+                </span>
             <br>
             <br>
             <br>
             <strong class='footer large_txt'>
-                    <text editable-text="REGISTRATION_READY_PRINT_FOOTER"> {{'REGISTRATION_READY_PRINT_FOOTER' |translate}}</text>
+                    <text data-ng-bind-html="getTagValue('REGISTRATION_READY_PRINT_FOOTER')" editable-text="REGISTRATION_READY_PRINT_FOOTER"></text>
                 </strong>
             <br>
             <br>
