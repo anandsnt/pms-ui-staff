@@ -184,7 +184,16 @@ admin.controller('ADRoomUpsellCtrl', ['$scope', '$rootScope', '$state', 'adRoomU
             $scope.upsellData['selected_room_type'] = "";
         }
     };
-
+    var updateParams = function(item, index, paramExists) {
+        if (item.amount === '') {
+            item.amount = '0';
+        }
+        if (item.amount && !paramExists) {
+            // upsell amount for this range was never created, or was removed previously
+            item.level_from = index === 2 ? '2' : '1';
+            item.level_to = index > 0 ? '3' : '2';
+        }
+    }
     /**
      * To handle save button action
      *
@@ -205,25 +214,11 @@ admin.controller('ADRoomUpsellCtrl', ['$scope', '$rootScope', '$state', 'adRoomU
       
       // CICO-41721 - fixes an issue created by sending invalid params to the API
       angular.forEach($scope.upsellData.next_day_upsell_amounts, function (item, index) {
-         if (item.amount === '') {
-            item.amount = '0';
-        }
-        if (item.amount && !$scope.upsellData.next_day_upsell_amounts[index].hotel_id) {
-            // upsell amount for this range was never created, or was removed previously
-            item.level_from = index === 2 ? '2' : '1';
-            item.level_to = index > 0 ? '3' : '2';
-        }
+          updateParams(item, index, $scope.upsellData.next_day_upsell_amounts[index].hotel_id);
       });
 
       angular.forEach($scope.upsellData.upsell_amounts, function (item, index) {
-        if (item.amount === '') {
-            item.amount = '0';
-        }
-        if (item.amount && !$scope.upsellData.upsell_amounts[index].hotel_id) {
-            // upsell amount for this range was never created, or was removed previously
-            item.level_from = index === 2 ? '2' : '1';
-            item.level_to = index > 0 ? '3' : '2';
-        }
+          updateParams(item, index, $scope.upsellData.upsell_amounts[index].hotel_id);
       });
 
 
