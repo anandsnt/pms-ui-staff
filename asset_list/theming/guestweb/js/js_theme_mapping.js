@@ -110,7 +110,8 @@ module.exports = {
             'guestweb_mgm_grand_detroit': [ themeJsRoot + 'app_router_mgm_grand_detroit.js'], // ---------------------------------------------- MGM CHAIN #- 12
             'guestweb_hotel_hiho': [ themeJsRoot + 'app_router_hotel_hiho.js'],
             'guestweb_circle_fairfield': [ themeJsRoot + 'app_router_common.js'],
-            'guestweb_foundation_hotel_detroit': [ themeJsRoot + 'app_router_common.js']
+            'guestweb_foundation_hotel_detroit': [ themeJsRoot + 'app_router_common.js'],
+            'guestweb_hotel_royal': [ themeJsRoot + 'app_router_common.js']
         };
     }
 };
