@@ -4,7 +4,7 @@
     
     <div id="content" ng-show="isReservationDetailsFetched">
         <h1>
-            <text editable-text="RES_DETAIL_HEADER"> {{'RES_DETAIL_HEADER' |translate}}</text>
+            <text data-ng-bind-html="getTagValue('RES_DETAIL_HEADER')" editable-text="RES_DETAIL_HEADER"></text>
         </h1>
         <div id="flex-holder">
             <!-- Calculate {maxheight} with this formula: window.height - combined heights of <h1>, <h2> and <h3> elements + 8
@@ -18,16 +18,16 @@
                         <p class="px-space">
                             <strong>{{selectedReservation.guest_details[0].last_name}}, {{selectedReservation.guest_details[0].first_name}} </strong>                          
                             <span>{{selectedReservation.guest_details.length}} 
-                                <text editable-text="RESIDENTS"> {{'RESIDENTS' |translate}}</text>
+                                <text data-ng-bind-html="getTagValue('RESIDENTS')" editable-text="RESIDENTS"></text>
                             </span>
                             {{selectedReservation.reservation_details.room_type_description}}
                         </p>
                         <p ng-hide="{{selectedReservation.guest_details.length == 1}} || zestStationData.is_standalone">
-                            <text editable-text="ADDTL_RESIDENTS"> {{'ADDTL_RESIDENTS' |translate}}</text>
+                            <text data-ng-bind-html="getTagValue('ADDTL_RESIDENTS')" editable-text="ADDTL_RESIDENTS"></text>
                              ({{selectedReservation.guest_details.length-1}})
                          </p>
                         <button ng-if='zestStationData.kiosk_add_remove_guests' type="button" class="button add-remove-btn" touch-press="addRemove()" >
-                            <text editable-text="ADD_REMOVE_GUESTS"> {{'ADD_REMOVE_GUESTS' |translate}}</text>
+                            <text data-ng-bind-html="getTagValue('ADD_REMOVE_GUESTS')" editable-text="ADD_REMOVE_GUESTS"></text>
                         </button>
                     </div>
                     <ul id="rate" class="reservation-details">
@@ -44,39 +44,39 @@
                            <!--  ({{addon.addon_count}}) -->
                             <span ng-show='{{!addon.is_inclusive}} && false'>{{zestStationData.currencySymbol}}{{addon.amount | number :2}}</span>
                             <span ng-show='{{addon.is_inclusive}}'>
-                                <text editable-text="INCLUDED"> {{'INCLUDED' |translate}}</text>
+                                <text data-ng-bind-html="getTagValue('INCLUDED')" editable-text="INCLUDED"></text>
                             </span>
                         </li>
                         
                         <li class="break"></li>
                         
                         <li ng-hide="isRateSuppressed()" class="sub">
-                            <text editable-text="RES_TAX_FEES"> {{'RES_TAX_FEES' |translate}}</text>
+                            <text data-ng-bind-html="getTagValue('RES_TAX_FEES')" editable-text="RES_TAX_FEES"></text>
                         <span>{{zestStationData.currencySymbol}}{{selectedReservation.reservation_details.deposit_attributes.fees | number :2}}</span></li>
                         <li ng-hide="isRateSuppressed()" class="sub">
-                            <text editable-text="RES_SUB"> {{'RES_SUB' |translate}}</text>
+                            <text data-ng-bind-html="getTagValue('RES_SUB')" editable-text="RES_SUB"></text>
                         <span>{{zestStationData.currencySymbol}}{{selectedReservation.reservation_details.deposit_attributes.sub_total | number :2}}</span></li>
                         <li ng-hide="isRateSuppressed()" class="sub">
-                            <text editable-text="RES_DEPOSITS"> {{'RES_DEPOSITS' |translate}}</text>
+                            <text data-ng-bind-html="getTagValue('RES_DEPOSITS')" editable-text="RES_DEPOSITS"></text>
                         <span>{{zestStationData.currencySymbol}}{{selectedReservation.reservation_details.deposit_attributes.deposit_paid | number :2}}</span></li>
                         <li ng-if="isRateSuppressed()" class="total">
-                            <text editable-text="RES_BAL_DUE"> {{'RES_BAL_DUE' |translate}}</text>
+                            <text data-ng-bind-html="getTagValue('RES_BAL_DUE')" editable-text="RES_BAL_DUE"></text>
                         <span>{{zestStationData.currencySymbol}}{{selectedReservation.reservation_details.balance | number :2}}</span></li>
                         <li ng-if="!isRateSuppressed()" class="total">
-                            <text editable-text="RES_BAL_DUE"> {{'RES_BAL_DUE' |translate}}</text>
+                            <text data-ng-bind-html="getTagValue('RES_BAL_DUE')" editable-text="RES_BAL_DUE"></text>
                         <span>{{zestStationData.currencySymbol}}{{selectedReservation.reservation_details.deposit_attributes.outstanding_stay_total | number :2}}</span></li>
                     </ul>
                 </div>
             </div>
             <div id="actions" class="pull-right">
                 <button type="button" class="button" touch-press="onNextFromDetails()">
-                    <text editable-text="RES_NEXT"> {{'RES_NEXT' |translate}}</text>
+                    <text data-ng-bind-html="getTagValue('RES_NEXT')" editable-text="RES_NEXT"></text>
                 </button>
                 <p>
                     <strong>
-                        <text editable-text="RES_Q"> {{'RES_Q' |translate}}</text>
+                        <text data-ng-bind-html="getTagValue('RES_Q')" editable-text="RES_Q"></text>
                     </strong>
-                    <text editable-text="RES_Q_SUB"> {{'RES_Q_SUB' |translate}}</text>
+                    <text data-ng-bind-html="getTagValue('RES_Q_SUB')" editable-text="RES_Q_SUB"></text>
                 </p>
             </div>
         </div>
@@ -90,28 +90,28 @@
 <section id="main" class="centered kiosk" role="main" click-touch='resetTime()' ng-show="mode === 'TERMS_CONDITIONS'">
     <div id="content" class='terms-content'>
         <h1>
-            <text editable-text="TERMS_CONDITIONS_VIEW_HEADER"> {{'TERMS_CONDITIONS_VIEW_HEADER' |translate}}</text>
+            <text data-ng-bind-html="getTagValue('TERMS_CONDITIONS_VIEW_HEADER')" editable-text="TERMS_CONDITIONS_VIEW_HEADER"></text>
         </h1>
         <div id="flex-holder" >
             <div id="textual" ng-iscroll="terms-container" ng-iscroll-delay="100" ng-init="setScroll()" class="pull-left station-terms scrollable fill-height"> <!-- Add ng-scroll here -->
                 <div class="wrapper">
                     <h4><label>
-                        <text editable-text="TERMS_CONDITIONS_HEADER"> {{'TERMS_CONDITIONS_HEADER' |translate}}</text>
+                        <text data-ng-bind-html="getTagValue('TERMS_CONDITIONS_HEADER')" editable-text="TERMS_CONDITIONS_HEADER"></text>
                     </label></h4>
                     <div id="terms" data-ng-bind-html="trustAsHtml(zestStationData.hotelTermsAndConditions)"></div>
                 </div>
             </div>
             <div id="actions" class="pull-right">
                 <button type="button" class="button" touch-press="agreeTerms()" ><label>
-                    <text editable-text="TERMS_CONDITIONS_ACCEPT"> {{'TERMS_CONDITIONS_ACCEPT' |translate}}</text>
+                    <text data-ng-bind-html="getTagValue('TERMS_CONDITIONS_ACCEPT')" editable-text="TERMS_CONDITIONS_ACCEPT"></text>
                 </label></button>
                 <button type="button" class="button transparent" touch-press="clickedOnCloseButton()" ><label> 
-                    <text editable-text="TERMS_CONDITIONS_CANCEL"> {{'TERMS_CONDITIONS_CANCEL' |translate}}</text>
+                    <text data-ng-bind-html="getTagValue('TERMS_CONDITIONS_CANCEL')" editable-text="TERMS_CONDITIONS_CANCEL"></text>
                 </label></button>
                 <p><strong >
-                    <text editable-text="TERMS_CONDITIONS_SUB"> {{'TERMS_CONDITIONS_SUB' |translate}}</text>
+                    <text data-ng-bind-html="getTagValue('TERMS_CONDITIONS_SUB')" editable-text="TERMS_CONDITIONS_SUB"></text>
                 </strong><label>
-                    <text editable-text="TERMS_CONDITIONS_SUB_ADDITIONAL"> {{'TERMS_CONDITIONS_SUB_ADDITIONAL' |translate}}</text>
+                    <text data-ng-bind-html="getTagValue('TERMS_CONDITIONS_SUB_ADDITIONAL')" editable-text="TERMS_CONDITIONS_SUB_ADDITIONAL"></text>
                 </label></p>
             </div>
         </div>
