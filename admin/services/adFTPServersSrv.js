@@ -11,7 +11,7 @@ admin.service('ADFTPServersSrv', ['$http', '$q', 'ADBaseWebSrvV2', function($htt
     this.fetchFtpServers = function() {
 
         var deferred = $q.defer(),
-        url = '/api/ftp_servers';
+        url = '/api/sftp_servers';
 
         ADBaseWebSrvV2.getJSON(url).then(function(data) {
             that.ftpServerData = data.results;
@@ -28,7 +28,7 @@ admin.service('ADFTPServersSrv', ['$http', '$q', 'ADBaseWebSrvV2', function($htt
     */
     this.saveFtpServer = function(data) {
         var deferred = $q.defer();
-        var url = '/api/ftp_servers';
+        var url = '/api/sftp_servers';
 
         ADBaseWebSrvV2.postJSON(url, data).then(function(data) {
             deferred.resolve(data);
@@ -46,7 +46,7 @@ admin.service('ADFTPServersSrv', ['$http', '$q', 'ADBaseWebSrvV2', function($htt
     this.getServerDetails = function(param) {
         var deferred = $q.defer();
 
-        var url = '/api/ftp_servers/' + param.id;
+        var url = '/api/sftp_servers/' + param.id;
 
         ADBaseWebSrvV2.getJSON(url).then(function(data) {
             deferred.resolve(data);
@@ -64,7 +64,7 @@ admin.service('ADFTPServersSrv', ['$http', '$q', 'ADBaseWebSrvV2', function($htt
     this.updateFtpServer = function(param) {
 
         var deferred = $q.defer();
-        var url = '/api/ftp_servers/' + param.id;
+        var url = '/api/sftp_servers/' + param.id;
 
         ADBaseWebSrvV2.putJSON(url, param).then(function(data) {
             deferred.resolve(data);
@@ -79,7 +79,7 @@ admin.service('ADFTPServersSrv', ['$http', '$q', 'ADBaseWebSrvV2', function($htt
     */
     this.deleteFTPServer = function(param) {
         var deferred = $q.defer();
-        var url = '/api/ftp_servers/' + param.id;
+        var url = '/api/sftp_servers/' + param.id;
 
         ADBaseWebSrvV2.deleteJSON(url).then(function(data) {
             deferred.resolve(data);
@@ -96,7 +96,7 @@ admin.service('ADFTPServersSrv', ['$http', '$q', 'ADBaseWebSrvV2', function($htt
     */
     this.testConnectivity = function(data) {
         var deferred = $q.defer();
-        var url = '/api/ftp_servers/test_connectivity';
+        var url = '/api/sftp_servers/test_connectivity';
 
         ADBaseWebSrvV2.postJSON(url, data).then(function(data) {
             deferred.resolve(data);

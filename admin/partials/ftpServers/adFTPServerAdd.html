@@ -2,9 +2,9 @@
     <div id="add-new-item" data-view="ItemsDetailsView">
         <header class="content-title float">
             <h2 ng-show="mode == 'edit'">Edit <span>{{serverDetails.description}} </span></h2>
-            <h2 ng-show="mode == 'add'" translate>Add New FTP Server</h2>
-            
-            <a data-type="load-details" class="action back" ng-click="goBack()" translate>Back to FTP Servers</a>
+            <h2 ng-show="mode == 'add'" translate>Add New SFTP Server</h2>
+
+            <a data-type="load-details" class="action back" ng-click="goBack()" translate>Back to SFTP Servers</a>
             <em class="status required" ng-show="mode == 'edit'">
                 {{'MANDATORY_FIELDS_MESSAGE1' | translate}}
                 <strong>*</strong>
@@ -19,7 +19,7 @@
                     <div class="form-title" >
                         <h3>
                             <span translate>ADD_NEW</span>
-                            FTP Servers
+                            SFTP Servers
                         </h3>
                         <em class="status">
                             {{'MANDATORY_FIELDS_MESSAGE1' | translate}}
@@ -31,13 +31,19 @@
                 <fieldset class="holder left float">
                     <ad-textbox value="serverDetails.description" name = "ftp_description" id = "ftp_description" label = "Server Description" placeholder = "Enter Server Description" required = "yes" styleclass="full-width" ></ad-textbox>
 
-                    <ad-textbox value="serverDetails.url" name = "address" id = "address" label = "FTP address" placeholder = "Enter FTP address" required = "no" styleclass="full-width" ></ad-textbox>
+                    <ad-textbox value="serverDetails.url" name = "address" id = "address" label = "SFTP address" placeholder = "Enter SFTP address" required = "no" styleclass="full-width" ></ad-textbox>
 
                 </fieldset>
                 <fieldset>
                      <ad-textbox value="serverDetails.username" name = "username" id = "username" label = "Username" placeholder = "Enter Username" required = "no" styleclass="full-width" ></ad-textbox>
 
                     <ad-textbox inputtype="password" value="serverDetails.password" name = "password" id = "password" label = "Password" placeholder = "Enter Password" required = "no" styleclass="full-width" ></ad-textbox>
+
+                </fieldset>
+                <fieldset class="holder left float">
+                     <ad-textbox value="serverDetails.port" name = "port" id = "port" label = "Port" placeholder = "Enter Port" required = "no" styleclass="full-width" ></ad-textbox>
+
+                    <ad-textbox value="serverDetails.filepath" name = "filePath" id = "filePath" label = "File Path" placeholder = "Enter File Path" required = "no" styleclass="full-width" ></ad-textbox>
 
                 </fieldset>
             <div class="actions float">
