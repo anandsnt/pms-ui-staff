@@ -257,6 +257,9 @@ sntRover.controller('RVchangeStayDatesController', ['$state', '$stateParams', '$
 				$scope.rightSideReservationUpdates = "ROOM_CANNOT_UNASSIGN";
 			} else if ($scope.availabilityDetails.availability_status === "room_ooo") {
 				$scope.rightSideReservationUpdates = "ROOM_OOO";
+			} else if ($scope.availabilityDetails.availability_status === "room_is_inhouse") {
+				// CICO-40534
+				$scope.rightSideReservationUpdates = "ROOM_IN_HOUSE";
 			}
 			$scope.refreshMyScroller();
 		};
