@@ -1,11 +1,13 @@
 admin.service('ADPropertyGroupsSrv', ['$http', '$q', 'ADBaseWebSrv', function($http, $q, ADBaseWebSrv) {
-	
+
 	/**
     *   A getter method to return the property groups list
     */
 	this.fetch = function(params) {
 		var deferred = $q.defer();
-		var url = '/admin/property_groups/list.json';
+		//var url = '/admin/property_groups/list.json';
+		var url = '/admin/charge_codes/list.json';
+
 
 		ADBaseWebSrv.getJSON(url, params).then(function(data) {
 		    deferred.resolve(data);

@@ -1,12 +1,6 @@
 angular.module('adminModuleTwo', []).config(function($stateProvider) {
     // define module-specific routes here
-    // CICO-40570 -- start
-    $stateProvider.state('admin.propertyGroups', {
-        templateUrl: 'assets/partials/chainadmins/adPropertyGroups.html',
-        controller: 'ADPropertyGroupsCtrl',
-        url: '/propertyGroups'
-    });
-    // CICO-40570 -- end
+
 
     $stateProvider.state('admin.departments', {
         templateUrl: '/assets/partials/departments/adDepartmentsList.html',
@@ -696,6 +690,12 @@ angular.module('adminModuleTwo', []).config(function($stateProvider) {
                 return ADZestStationSrv.fetch();
             }
         }
+    });
+
+    $stateProvider.state('admin.propertyGroups', {
+        templateUrl: '/assets/partials/chainAdmins/adPropertyGroups.html',
+        controller: 'ADPropertyGroupsCtrl',
+        url: '/propertyGroups'
     });
 
 });

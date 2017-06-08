@@ -12,8 +12,38 @@ admin.controller('ADPropertyGroupsCtrl', ['$scope', '$stateParams', 'ADPropertyG
 		$scope.fetchTableData = function($defer, params) {
 			var getParams = $scope.calculateGetParams(params);
 			var fetchSuccessOfItemList = function(data) {
+				data =  {
+		"total_count": 132,
+		"property_groups": [{
+			"id": "13290",
+			"name": "Group name one",
+			"linked_property_count": "3"
+
+		}, {
+			"id": "13290",
+			"name": "Group name two",
+			"linked_property_count": "4"
+
+		}, {
+			"id": "13290",
+			"name": "Group name ten",
+			"linked_property_count": "10"
+
+		}, {
+			"id": "13290",
+			"name": "Group name seven",
+			"linked_property_count": "7"
+
+		}, {
+			"id": "13290",
+			"name": "Group name one",
+			"linked_property_count": "3"
+
+		}]
+
+};
 				$scope.$emit('hideLoader');
-				
+
 				$scope.currentClickedElement = -1;
 				$scope.totalCount = data.total_count;
 				$scope.totalPage = Math.ceil(data.total_count / $scope.displyCount);
@@ -51,7 +81,7 @@ admin.controller('ADPropertyGroupsCtrl', ['$scope', '$stateParams', 'ADPropertyG
 
 
 			$scope.currentClickedElement = -1;
-			
+
 			$timeout(function() {
 	            $location.hash('new-form-holder');
 	            $anchorScroll();
@@ -60,7 +90,7 @@ admin.controller('ADPropertyGroupsCtrl', ['$scope', '$stateParams', 'ADPropertyG
 				$scope.$emit('hideLoader');
 				$scope.isAdd = true;
 				$scope.prefetchData = {};
-				
+
 				$scope.prefetchData = data;
 			};
 
@@ -82,7 +112,7 @@ admin.controller('ADPropertyGroupsCtrl', ['$scope', '$stateParams', 'ADPropertyG
 				$scope.currentClickedElement = index;
 				$scope.prefetchData = {};
 				$scope.prefetchData = data;
-				
+
 				$scope.isEdit = true;
 				$scope.isAdd = false;
 			};
@@ -147,7 +177,7 @@ admin.controller('ADPropertyGroupsCtrl', ['$scope', '$stateParams', 'ADPropertyG
 				}
 				$scope.successMessage = 'Success!';
 			};
-            
+
 			var postData = $scope.prefetchData;
 			$scope.invokeApi(ADPropertyGroupsSrv.save, postData, saveSuccessCallback);
 		};
