@@ -195,9 +195,11 @@ angular.module('sntRover').controller('companyCardNotesController', ['$scope',
     * @return {undefined}
     */
     $scope.clickedOnNote = function(note) {
-        $scope.editingNote  = note;
-        $scope.noteText     = note.note;
-        };
+        if ( note.is_editable ) {
+            $scope.editingNote  = note;
+            $scope.noteText     = note.note;
+        }
+    };
 
         /**
         * to cancel edit mode
