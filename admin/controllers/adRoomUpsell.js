@@ -6,6 +6,9 @@ admin.controller('ADRoomUpsellCtrl', ['$scope', '$rootScope', '$state', 'adRoomU
 
     $scope.errorMessage = '';
     $scope.successMessage = '';
+
+    $scope.upsell_amounts = [{}, {}, {}];
+    $scope.next_day_upsell_amounts = [{}, {}, {}];
     /**
      * To fetch upsell details
      *
@@ -13,11 +16,19 @@ admin.controller('ADRoomUpsellCtrl', ['$scope', '$rootScope', '$state', 'adRoomU
     $scope.fetchUpsellDetails = function () {
       var fetchRoomUpsellDetailsSuccessCallback = function (data) {
         $scope.$emit('hideLoader');
+
+        for (var i in data.upsell_amounts) {
+            setUpsellAmounts(data.upsell_amounts[i], $scope.upsell_amounts);
+        }
+        for (var i in data.next_day_upsell_amounts) {
+            setUpsellAmounts(data.next_day_upsell_amounts[i], $scope.next_day_upsell_amounts);
+        }
+        
         $scope.upsellData = data;
         $scope.levelOne = $scope.upsellData.upsell_room_levels[0].room_types;
         $scope.levelTwo = $scope.upsellData.upsell_room_levels[1].room_types;
         $scope.levelThree = $scope.upsellData.upsell_room_levels[2].room_types;
-        
+
         if (typeof $scope.upsellData.next_day_selected_charge_code_id === typeof 123) {
             $scope.upsellData.selected_next_day_charge_code_id = $scope.upsellData.next_day_selected_charge_code_id;
         }
@@ -39,12 +50,7 @@ admin.controller('ADRoomUpsellCtrl', ['$scope', '$rootScope', '$state', 'adRoomU
         isNextDayRoomTypesSelected();
         
         $scope.currency_code = getCurrencySign($scope.upsellData.upsell_setup.currency_code);
-        if (!$scope.upsellData.next_day_upsell_amounts || $scope.upsellData.next_day_upsell_amounts.length === 0) {
-            $scope.upsellData.next_day_upsell_amounts = angular.copy($scope.upsellData.upsell_amounts);
-            $scope.upsellData.next_day_upsell_amounts[0].amount = '';
-            $scope.upsellData.next_day_upsell_amounts[1].amount = '';
-            $scope.upsellData.next_day_upsell_amounts[2].amount = '';
-        }
+
         if (typeof $scope.upsellData.next_day_room_types_list !== typeof []) {
             $scope.upsellData.next_day_room_types_list = [];
         }
@@ -184,17 +190,48 @@ admin.controller('ADRoomUpsellCtrl', ['$scope', '$rootScope', '$state', 'adRoomU
             $scope.upsellData['selected_room_type'] = "";
         }
     };
-    
-    var updateParams = function(item, index, paramExists) {
 
-        if (item.amount === '') {
-            item.amount = '0';
+    var setUpsellAmounts = function(item, upsellSection) {
+        var index;
+
+        if (item.level_from === '1' && item.level_to === '2') {
+            index = 0;
+
+        } else if (item.level_from === '1' && item.level_to === '3') {
+            index = 1;
+
+        } else if (item.level_from === '2' && item.level_to === '3') {
+            index = 2;
+
         }
-        if (item.amount && !paramExists) {
-            // upsell amount for this range was never created, or was removed previously
-            item.level_from = index === 2 ? '2' : '1';
-            item.level_to = index > 0 ? '3' : '2';
+        upsellSection[index] = item;
+    };
+    
+    var updateParams = function(item, index, itemArray, nextDay) {
+        var amount = $('#'+nextDay+'amount_'+index+'>input').val();
+        console.log(nextDay,amount);
+        if (amount === '') {
+            item.amount = null;
+        } else {
+          item.amount = amount;
         }
+
+        if (index === 0){
+            item.level_from = '1';
+            item.level_to = '2';
+
+        } else if (index === 1) {
+            item.level_from = '1';
+            item.level_to = '3';
+
+        } else if (index === 2) {
+            item.level_from = '2';
+            item.level_to = '3';
+        }
+
+        itemArray[index] = item;
+
+        console.log(item.level_from,'/',item.level_to,' = ',item.amount);
     };
 
     /**
@@ -216,17 +253,15 @@ admin.controller('ADRoomUpsellCtrl', ['$scope', '$rootScope', '$state', 'adRoomU
       data.upsell_setup = upsell_setup;
       
       // CICO-41721 - fixes an issue created by sending invalid params to the API
-      angular.forEach($scope.upsellData.next_day_upsell_amounts, function (item, index) {
-          updateParams(item, index, $scope.upsellData.next_day_upsell_amounts[index].hotel_id);
+      angular.forEach($scope.next_day_upsell_amounts, function (item, index) {
+          updateParams(item, index, $scope.next_day_upsell_amounts, 'next_');
+      });
+      angular.forEach($scope.upsell_amounts, function (item, index) {
+          updateParams(item, index, $scope.upsell_amounts, '');
       });
 
-      angular.forEach($scope.upsellData.upsell_amounts, function (item, index) {
-          updateParams(item, index, $scope.upsellData.upsell_amounts[index].hotel_id);
-      });
-
-
-      data.upsell_amounts = $scope.upsellData.upsell_amounts;
-      data.next_day_upsell_amounts = $scope.upsellData.next_day_upsell_amounts;
+      data.upsell_amounts = $scope.upsell_amounts;
+      data.next_day_upsell_amounts = $scope.next_day_upsell_amounts;
       data.charge_code = $scope.upsellData.selected_charge_code_id;
       data.next_day_charge_code = $scope.upsellData.selected_next_day_charge_code_id;
       data.upsell_room_levels = $scope.upsellData.upsell_room_levels;
