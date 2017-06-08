@@ -27,6 +27,9 @@
 	                    <span class="time">{{note.time}}</span>
 	                    <span class="date">{{note.date}}</span>
 	                </time>
+	                 <!-- If MP Note from another hotel, show L15 -->
+			        <strong class="global-label">{{note.hotel_name}}</strong>
+			        <!--  If MP Note from another hotel, don't show L18 -->
 	                <button type="button" class="icons icon-trash" ng-click="deleteNote($event, note.id, $index)">Delete post</button>
 	            </div>
 	            <p>{{note.note}}</p>
