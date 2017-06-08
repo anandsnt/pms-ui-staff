@@ -36,7 +36,8 @@ admin.service('ADPropertyGroupsSrv', ['$http', '$q', 'ADBaseWebSrv', function($h
     */
 	this.fetchAddData = function() {
 		var deferred = $q.defer();
-		var url = '/admin/property_groups/new';
+		// var url = '/admin/property_groups/new';
+		var url = '/admin/charge_codes/new';
 
 		ADBaseWebSrv.getJSON(url).then(function(data) {
 		    deferred.resolve(data);

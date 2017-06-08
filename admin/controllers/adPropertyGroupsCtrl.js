@@ -13,35 +13,35 @@ admin.controller('ADPropertyGroupsCtrl', ['$scope', '$stateParams', 'ADPropertyG
 			var getParams = $scope.calculateGetParams(params);
 			var fetchSuccessOfItemList = function(data) {
 				data =  {
-		"total_count": 132,
-		"property_groups": [{
-			"id": "13290",
-			"name": "Group name one",
-			"linked_property_count": "3"
+							"total_count": 132,
+							"property_groups": [{
+									"id": "13290",
+									"name": "Group name one",
+									"linked_property_count": "3"
 
-		}, {
-			"id": "13290",
-			"name": "Group name two",
-			"linked_property_count": "4"
+								}, {
+									"id": "13290",
+									"name": "Group name two",
+									"linked_property_count": "4"
 
-		}, {
-			"id": "13290",
-			"name": "Group name ten",
-			"linked_property_count": "10"
+								}, {
+									"id": "13290",
+									"name": "Group name ten",
+									"linked_property_count": "10"
 
-		}, {
-			"id": "13290",
-			"name": "Group name seven",
-			"linked_property_count": "7"
+								}, {
+									"id": "13290",
+									"name": "Group name seven",
+									"linked_property_count": "7"
 
-		}, {
-			"id": "13290",
-			"name": "Group name one",
-			"linked_property_count": "3"
+								}, {
+									"id": "13290",
+									"name": "Group name one",
+									"linked_property_count": "3"
 
-		}]
-
-};
+								}
+							]
+						};
 				$scope.$emit('hideLoader');
 
 				$scope.currentClickedElement = -1;
@@ -87,10 +87,30 @@ admin.controller('ADPropertyGroupsCtrl', ['$scope', '$stateParams', 'ADPropertyG
 	            $anchorScroll();
         	});
 			var fetchNewDetailsSuccessCallback = function(data) {
+				data = {
+					"chain_hotels": [{
+							"id": "22",
+							"name": "Zoku Amsterdam",
+							"is_checked": false
+						},
+						{
+							"id": "23",
+							"name": "Zoku Amsterdam test",
+							"is_checked": false
+						},
+						{
+							"id": "24",
+							"name": "Zoku Amsterdam second",
+							"is_checked": false
+						}
+
+
+					]
+				};
 				$scope.$emit('hideLoader');
 				$scope.isAdd = true;
 				$scope.prefetchData = {};
-
+                
 				$scope.prefetchData = data;
 			};
 
@@ -125,7 +145,7 @@ admin.controller('ADPropertyGroupsCtrl', ['$scope', '$stateParams', 'ADPropertyG
 		 */
 		$scope.getTemplateUrl = function() {
 
-			return "/assets/partials/propertygroups/adPostingGroupDetailsForm.html";
+			return "/assets/partials/chainAdmins/adPropertyGroupDetailsForm.html";
 		};
 
 		/*
@@ -178,7 +198,15 @@ admin.controller('ADPropertyGroupsCtrl', ['$scope', '$stateParams', 'ADPropertyG
 				$scope.successMessage = 'Success!';
 			};
 
-			var postData = $scope.prefetchData;
+			var postData = {
+				"property_group_name": $scope.prefetchData.property_group_name,
+				"linked_property_ids":[angular.forEach($scope.prefetchData.chain_hotels, 
+					function(value, key) {
+						if (value.is_checked === true) {
+							value.id;
+						}
+					})]
+			};
 			$scope.invokeApi(ADPropertyGroupsSrv.save, postData, saveSuccessCallback);
 		};
 
@@ -193,4 +221,12 @@ admin.controller('ADPropertyGroupsCtrl', ['$scope', '$stateParams', 'ADPropertyG
 				$scope.isEdit = false;
 			}
 		};
+
+		/*
+	    * To handle checkbox click actions
+	    */
+
+	    $scope.checkBoxClicked = function(index) {
+	      $scope.prefetchData.chain_hotels[index].is_checked = ($scope.prefetchData.chain_hotels[index].is_checked === 'true') ? 'false' : 'true';
+	    };
 	}]);
