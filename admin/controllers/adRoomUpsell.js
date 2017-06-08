@@ -209,7 +209,6 @@ admin.controller('ADRoomUpsellCtrl', ['$scope', '$rootScope', '$state', 'adRoomU
     
     var updateParams = function(item, index, itemArray, nextDay) {
         var amount = $('#'+nextDay+'amount_'+index+'>input').val();
-        console.log(nextDay,amount);
         if (amount === '') {
             item.amount = null;
         } else {
@@ -230,8 +229,6 @@ admin.controller('ADRoomUpsellCtrl', ['$scope', '$rootScope', '$state', 'adRoomU
         }
 
         itemArray[index] = item;
-
-        console.log(item.level_from,'/',item.level_to,' = ',item.amount);
     };
 
     /**
