@@ -585,22 +585,25 @@ angular.module('sntRover').controller('RVWorkManagementMultiSheetCtrl', ['$rootS
 		 */
 		$scope.printWorkSheet = function() {
 			$scope.closeDialog();
-			$scope.$emit('showLoader');
+			// CICO-42146, loading image inside print-view, is showLoader required here?
+			// even with slow browser/network, loading is < 1sec 
+			// $scope.$emit('showLoader'); 
+			$timeout(function() {// provides just enough time for the dialog to close and also prompt for printing in safari/chrome
+				multiSheetStateBackup = angular.copy($scope.multiSheetState);
 
-			multiSheetStateBackup = angular.copy($scope.multiSheetState);
+				// set the sheet according to print settings.
+				configureMultisheetForPrinting($scope.printSettings);
 
-			// set the sheet according to print settings.
-			configureMultisheetForPrinting($scope.printSettings);
+				// reset scroll bars to top
+				var i;
 
-			// reset scroll bars to top
-			var i;
+				for (i = $scope.multiSheetState.selectedEmployees.length - 1; i >= 0; i--) {
+					$scope.$parent.myScroll[ 'assignedRoomList-' + i ].scrollTo(0, 0);
+				}
 
-			for (i = $scope.multiSheetState.selectedEmployees.length - 1; i >= 0; i--) {
-				$scope.$parent.myScroll[ 'assignedRoomList-' + i ].scrollTo(0, 0);
-			}
-
-			// add the orientation
-			addPrintOrientation();
+				// add the orientation
+				addPrintOrientation();
+			}, 750);
 
 		};
 

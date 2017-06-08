@@ -12,6 +12,8 @@ angular.module('sntRover').service('RVChangeStayDatesSrv', ['$q', 'rvBaseWebSrvV
 
             RVBaseWebSrv.getJSON(url).then(function(data) {
                 that.changeStayDetails.details = data;
+                // once this API is completed call the next one
+                that.fetchCalenderDetails(reservationId, deferred);
             }, function(errorMessage) {
                 deferred.reject(errorMessage);
             });
@@ -36,7 +38,6 @@ angular.module('sntRover').service('RVChangeStayDatesSrv', ['$q', 'rvBaseWebSrvV
             var deferred = $q.defer ();
 
             that.fetchStayBasicDetails (reservationId, deferred);
-            that.fetchCalenderDetails (reservationId, deferred);
             return deferred.promise;
         };
 

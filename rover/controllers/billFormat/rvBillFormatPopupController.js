@@ -116,6 +116,7 @@ sntRover.controller('rvBillFormatPopupCtrl', ['$scope', '$rootScope', '$filter',
 
         }
         params.bill_number = $scope.billNo;
+        $scope.$emit('hideLoader');
         return params;
     };
 
