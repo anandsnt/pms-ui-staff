@@ -118,7 +118,8 @@ module.exports = {
             'guestweb_georgetown_inn': [ themeJsRoot + 'app_router_common.js'],
             'guestweb_hotel_de_jonker': [ themeJsRoot + 'app_router_common.js'],
             'guestweb_carillon_v2': [ themeJsRoot + 'app_router_common.js'],
-            'guestweb_cachet_boutique': [ themeJsRoot + 'app_router_common.js']
+            'guestweb_cachet_boutique': [ themeJsRoot + 'app_router_common.js'],
+            'guestweb_hotel_berlaymont': [ themeJsRoot + 'app_router_common.js']
         };
     }
 };
