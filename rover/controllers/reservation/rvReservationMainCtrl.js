@@ -645,6 +645,10 @@ sntRover.controller('RVReservationMainCtrl', ['$scope',
                 lastReason: lastReason
             });
 
+            $scope.getObjectLength = function(obj) {
+                return getObjectLength(obj);
+            }
+
             ngDialog.open({
                 template: '/assets/partials/reservation/rvEditRates.html',
                 className: 'ngdialog-theme-default',
@@ -1603,6 +1607,14 @@ sntRover.controller('RVReservationMainCtrl', ['$scope',
             }
             $scope.$broadcast('TABS_MODIFIED');
             devlogRoomsArray();
+        };
+
+        // Copy the amount for one date to all the dates during the stay
+        $scope.copySingleValueToOtherCells = function(modifiedAmt, stayDates) {
+            _.each(stayDates, function (stayDate) {
+                stayDate.rateDetails.modified_amount = modifiedAmt;
+            });
+
         };
 
                 CardReaderCtrl.call(this, $scope, $rootScope, $timeout, $interval, $log);
