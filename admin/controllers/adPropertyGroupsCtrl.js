@@ -127,10 +127,32 @@ admin.controller('ADPropertyGroupsCtrl', ['$scope', '$stateParams', 'ADPropertyG
 			};
 
 			var editSuccessCallback = function(data) {
+				data = {
+					"property_group_name": "Zoku group",
+					"linked_properties": ["23", "24"],
+					"chain_hotels": [{
+							"id": "22",
+							"name": "Zoku Amsterdam"
+						},
+						{
+							"id": "23",
+							"name": "Zoku Amsterdam test"
+						},
+						{
+							"id": "24",
+							"name": "Zoku Amsterdam second"
+						}
+					]
+				};
 				$scope.$emit('hideLoader');
 				$scope.currentClickedElement = index;
 				$scope.prefetchData = {};
 				$scope.prefetchData = data;
+				var linked_properties = $scope.prefetchData.linked_properties;
+
+				angular.forEach($scope.prefetchData.chain_hotels, function(value, idx) {
+					value.is_checked = (linked_properties.include(value.id)) ? 'true' : 'false';
+				});
 
 				$scope.isEdit = true;
 				$scope.isAdd = false;
@@ -231,7 +253,7 @@ admin.controller('ADPropertyGroupsCtrl', ['$scope', '$stateParams', 'ADPropertyG
 	    		$scope.prefetchData.linked_property_ids.splice(idx, 1);
 	    	};
 
-	    	$scope.prefetchData.chain_hotels[index].is_checked = $scope.prefetchData.linked_property_ids.includes(propId);
-	        // $scope.prefetchData.chain_hotels[index].is_checked = ($scope.prefetchData.chain_hotels[index].is_checked === 'true') ? 'false' : 'true';
+	    	// $scope.prefetchData.chain_hotels[index].is_checked = ($scope.prefetchData.chain_hotels[index].is_checked === 'true') ? 'false' : 'true';
+	    	$scope.prefetchData.chain_hotels[index].is_checked = ($scope.prefetchData.linked_property_ids.includes(propId)) ? 'true' : 'false';
 	    };
 	}]);
