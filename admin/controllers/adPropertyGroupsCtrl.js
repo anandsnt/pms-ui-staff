@@ -78,8 +78,6 @@ admin.controller('ADPropertyGroupsCtrl', ['$scope', '$stateParams', 'ADPropertyG
 		 * To fetch the required details for add screen.
 		 */
 		$scope.addNewClicked = function() {
-
-
 			$scope.currentClickedElement = -1;
 
 			$timeout(function() {
@@ -91,17 +89,14 @@ admin.controller('ADPropertyGroupsCtrl', ['$scope', '$stateParams', 'ADPropertyG
 					"chain_hotels": [{
 							"id": "22",
 							"name": "Zoku Amsterdam",
-							"is_checked": false
 						},
 						{
 							"id": "23",
 							"name": "Zoku Amsterdam test",
-							"is_checked": false
 						},
 						{
 							"id": "24",
 							"name": "Zoku Amsterdam second",
-							"is_checked": false
 						}
 
 
@@ -112,6 +107,10 @@ admin.controller('ADPropertyGroupsCtrl', ['$scope', '$stateParams', 'ADPropertyG
 				$scope.prefetchData = {};
                 
 				$scope.prefetchData = data;
+				angular.forEach($scope.prefetchData.chain_hotels, function(property, index) {
+					property.is_checked = false;
+				});
+				$scope.prefetchData.linked_property_ids = [];
 			};
 
 			$scope.invokeApi(ADPropertyGroupsSrv.fetchAddData, {}, fetchNewDetailsSuccessCallback);
@@ -227,6 +226,17 @@ admin.controller('ADPropertyGroupsCtrl', ['$scope', '$stateParams', 'ADPropertyG
 	    */
 
 	    $scope.checkBoxClicked = function(index) {
-	      $scope.prefetchData.chain_hotels[index].is_checked = ($scope.prefetchData.chain_hotels[index].is_checked === 'true') ? 'false' : 'true';
+	    	var propId = $scope.prefetchData.chain_hotels[index].id;
+
+	    	if (!$scope.prefetchData.linked_property_ids.includes(propId)) {
+	    		$scope.prefetchData.linked_property_ids.push(propId);
+	    	}
+	    	else {
+	    		var idx = $scope.prefetchData.linked_property_ids.indexOf(propId);
+	    		$scope.prefetchData.linked_property_ids.splice(idx, 1);
+	    	};
+
+	    	$scope.prefetchData.chain_hotels[index].is_checked = $scope.prefetchData.linked_property_ids.includes(propId);
+	        // $scope.prefetchData.chain_hotels[index].is_checked = ($scope.prefetchData.chain_hotels[index].is_checked === 'true') ? 'false' : 'true';
 	    };
 	}]);
