@@ -18,13 +18,13 @@ admin.controller('adMPSubscriptionPopupCtrl', ['$scope', 'ADUserSrv', 'ngDialog'
         // Success callback for unsubscribe actions.
         var successCallbackUnsubscribe = function() {
             hotel.is_subscribed = false;
-            hotel.selectedHotelRole = '';
+            hotel.selected_role_id = '';
             $scope.$emit('hideLoader');
             $scope.errorMessage = '';
         },
         params = {
             'user_id': $scope.subscriptionData.user_id,
-            'selected_role_id': hotel.selectedHotelRole,
+            'selected_role_id': hotel.selected_role_id,
             'hotel_id': hotel.hotel_id,
             'is_subscribe': false
         };
@@ -43,7 +43,7 @@ admin.controller('adMPSubscriptionPopupCtrl', ['$scope', 'ADUserSrv', 'ngDialog'
         },
         params = {
             'user_id': $scope.subscriptionData.user_id,
-            'selected_role_id': hotel.selectedHotelRole,
+            'selected_role_id': hotel.selected_role_id,
             'hotel_id': hotel.hotel_id,
             'is_subscribe': true
         };
@@ -57,7 +57,7 @@ admin.controller('adMPSubscriptionPopupCtrl', ['$scope', 'ADUserSrv', 'ngDialog'
         if ( hotel.is_subscribed ) {
             var params = {
                 'user_id': $scope.subscriptionData.user_id,
-                'role_id': hotel.selectedHotelRole,
+                'role_id': hotel.selected_role_id,
                 'hotel_id': hotel.hotel_id
             },
             // Success callback for unsubscribe actions.

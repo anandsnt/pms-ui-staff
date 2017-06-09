@@ -319,10 +319,6 @@ admin.controller('ADUserListCtrl', ['$scope', '$rootScope', '$q', '$state', '$st
             $scope.subscriptionData = data;
             $scope.subscriptionData.user_id = user.id;
 
-            angular.forEach(data.hotels, function( hotel ) {
-                hotel.selectedHotelRole = (hotel.selected_role_id === '' ? '' : hotel.selected_role_id );
-            });
-
             ngDialog.open({
                 template: '/assets/partials/users/adMPSubscriptionModal.html',
                 controller: 'adMPSubscriptionPopupCtrl',

@@ -23,7 +23,7 @@
 						</td>
 						<td>
 							<div class="select" ng-class="{'overlay' : hotel.is_home_hotel || subscriptionData.is_chain_admin}">
-								<select ng-class="{'placeholder' : hotel.selectedHotelRole === ''}" ng-model="hotel.selectedHotelRole" ng-options="role.id as role.name for role in hotel.roles" ng-change="roleChanged(hotel)">
+								<select ng-class="{'placeholder' : hotel.selected_role_id === ''}" ng-model="hotel.selected_role_id" ng-options="role.id as role.name for role in hotel.roles" ng-change="roleChanged(hotel)">
 			                        <option ng-if="!hotel.is_subscribed" ng-selected = "!hotel.is_subscribed" value=''>Missing Role</option>
 			                    </select>
 							</div>
@@ -33,7 +33,7 @@
 						</td>
 						<td ng-class="{'overlay' : subscriptionData.is_chain_admin }">
 							<button type="button" class="button white red-text" ng-if="hotel.is_subscribed && !hotel.is_home_hotel" ng-click="clickedUnsubscribe(hotel)">Unsubscribe</button>
-							<button type="button" class="button" ng-if="!hotel.is_subscribed && !hotel.is_home_hotel" ng-disabled="hotel.selectedHotelRole === ''" ng-class="{'grey': hotel.selectedHotelRole === '', 'green' : hotel.selectedHotelRole != ''}" ng-click="clickedSubscribe(hotel)">Subscribe</button>
+							<button type="button" class="button" ng-if="!hotel.is_subscribed && !hotel.is_home_hotel" ng-disabled="hotel.selected_role_id === ''" ng-class="{'grey': hotel.selected_role_id === '', 'green' : hotel.selected_role_id != ''}" ng-click="clickedSubscribe(hotel)">Subscribe</button>
 						</td>
 					</tr>
 				</tbody>
