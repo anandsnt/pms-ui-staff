@@ -2,8 +2,8 @@
  * Service used for tablet-kiosk UI (Zest Station)
  */
 
-sntZestStation.service('zsGeneralSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWebSrv2', '$translate', '$rootScope',
-    function($http, $q, zsBaseWebSrv, zsBaseWebSrv2, $translate, $rootScope) {
+sntZestStation.service('zsGeneralSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWebSrv2', '$translate',
+    function($http, $q, zsBaseWebSrv, zsBaseWebSrv2, $translate) {
         var that = this;
 
         // this.refToLatestPulledTranslations; // used by generalRouter to fetch and store Language Locale files
