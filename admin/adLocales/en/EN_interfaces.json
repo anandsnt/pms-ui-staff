@@ -65,5 +65,6 @@
 	"CONFIGURE": "Configure",
 	"CONFIGURATION": "Configuration",
 	"API_CONFIGURATION_PREFIX": "API Access",
-	"VENDOR_ID": "Vendor ID"
-
+	"VENDOR_ID": "Vendor ID",
+	"AUTH_KEY": "Authorization Key",
+	"AUTH_ID": "Authorization ID"
