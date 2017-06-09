@@ -647,7 +647,7 @@ sntRover.controller('RVReservationMainCtrl', ['$scope',
 
             $scope.getObjectLength = function(obj) {
                 return getObjectLength(obj);
-            }
+            };
 
             ngDialog.open({
                 template: '/assets/partials/reservation/rvEditRates.html',
