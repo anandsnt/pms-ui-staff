@@ -199,12 +199,7 @@ admin.controller('ADPropertyGroupsCtrl', ['$scope', '$stateParams', 'ADPropertyG
 
 			var postData = {
 				"property_group_name": $scope.prefetchData.property_group_name,
-				"linked_property_ids":[angular.forEach($scope.prefetchData.chain_hotels, 
-					function(value, key) {
-						if (value.is_checked === true) {
-							value.id;
-						}
-					})]
+				"linked_property_ids": $scope.prefetchData.linked_property_ids
 			};
 			$scope.invokeApi(ADPropertyGroupsSrv.save, postData, saveSuccessCallback);
 		};
