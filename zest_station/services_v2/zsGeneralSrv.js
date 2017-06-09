@@ -237,24 +237,6 @@ sntZestStation.service('zsGeneralSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
             return deferred.promise;
         };
 
-
-        this.fetchReservationDetails = function(param) {
-            var url = '/staff/staycards/reservation_details.json?reservation_id=' + param.reservation_id;
-            var deferred = $q.defer();
-
-            // To fetch the latest guest details, the following parameter has to be sent to trigger a fetchProfile OWS request
-            if (!$rootScope.isStandAlone) {
-                url += "&sync_guest_with_external_pms=true";
-            }
-
-            zsBaseWebSrv2.getJSON(url).then(function(data) {
-                deferred.resolve(data);
-            }, function(data) {
-                deferred.reject(data);
-            });
-            return deferred.promise;
-        };
-
         this.ValidateEmail = function(email) {
             if (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email)) {
                 return false;
