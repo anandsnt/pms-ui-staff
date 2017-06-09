@@ -316,8 +316,8 @@ admin.controller('ADUserListCtrl', ['$scope', '$rootScope', '$q', '$state', '$st
     $scope.subscribeButtonClick = function(user) {
         // Success callback after fetching hotel deatails.
         var successFetchMPHotelDetails = function(data) {
-            $scope.multiPropertyHotelDetails = data;
-            $scope.multiPropertyHotelDetails.user_id = user.id;
+            $scope.subscriptionData = data;
+            $scope.subscriptionData.user_id = user.id;
 
             angular.forEach(data.hotels, function( hotel ) {
                 hotel.selectedHotelRole = (hotel.selected_role_id === '' ? '' : hotel.selected_role_id );

@@ -23,7 +23,7 @@ admin.controller('adMPSubscriptionPopupCtrl', ['$scope', 'ADUserSrv', 'ngDialog'
             $scope.errorMessage = '';
         },
         params = {
-            'user_id': $scope.multiPropertyHotelDetails.user_id,
+            'user_id': $scope.subscriptionData.user_id,
             'selected_role_id': hotel.selectedHotelRole,
             'hotel_id': hotel.hotel_id,
             'is_subscribe': false
@@ -42,7 +42,7 @@ admin.controller('adMPSubscriptionPopupCtrl', ['$scope', 'ADUserSrv', 'ngDialog'
             $scope.errorMessage = '';
         },
         params = {
-            'user_id': $scope.multiPropertyHotelDetails.user_id,
+            'user_id': $scope.subscriptionData.user_id,
             'selected_role_id': hotel.selectedHotelRole,
             'hotel_id': hotel.hotel_id,
             'is_subscribe': true
@@ -56,7 +56,7 @@ admin.controller('adMPSubscriptionPopupCtrl', ['$scope', 'ADUserSrv', 'ngDialog'
 
         if ( hotel.is_subscribed ) {
             var params = {
-                'user_id': $scope.multiPropertyHotelDetails.user_id,
+                'user_id': $scope.subscriptionData.user_id,
                 'role_id': hotel.selectedHotelRole,
                 'hotel_id': hotel.hotel_id
             },
