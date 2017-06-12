@@ -111,7 +111,8 @@ angular.module('sntRover').controller('companyCardNotesController', ['$scope',
             'note': data.note,
             'time': data.time,
             'date': data.date,
-            'id': data.id
+            'id': data.id,
+            'hotel_name': data.hotel_name
         };
 
         $scope.notes.unshift(0);
