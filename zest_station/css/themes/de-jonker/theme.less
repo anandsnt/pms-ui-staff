@@ -1,0 +1,96 @@
+/* StayNTouch Zest Station Styles | De Jonker Theme */
+
+/* 1. COLORS
+==========================================================*/
+	@brandColor:			#f28c03;
+	
+	@textColor: 			@white;
+	@backgroundColor: 		#00233b;
+	
+	@actionColor: 			@white;
+	@actionBackground: 		@brandColor;
+	
+	@inputBackground: 		#707070;
+	@transparentColor: 		rgba(0,0,0,.35);
+
+/* 2. TYPOGRAPHY
+==========================================================*/
+	@fontFamily: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+
+/* 3. IMAGES
+==========================================================*/
+	@background: @backgroundColor url("../css/themes/de-jonker/background.jpg") no-repeat center center;
+	@backgroundSize: 		cover;
+
+	@headerIconsColor: 		@black;
+	@headerIconsActive:		@brandColor;
+
+	.icons { 
+		&.icon-create-key {
+			fill: @white;
+			stroke: @white;
+		}
+
+		&.icon-no-print { stroke: @white; }
+
+		&.icon-oos {
+			fill: @white;
+		}
+
+		&.icon-arrow-left,
+        &.icon-arrow-right {
+            fill: none;
+            stroke: @white;
+        }
+	}
+
+/* 4. LAYOUT
+==========================================================*/
+	
+	#de-jonker {
+
+		#header {
+			background-color: @white;
+			height: 145px;
+		}
+
+		#main {
+			background-color: fade(@backgroundColor, 50%);
+			#calc > #height > .remove(100%, 145px);
+			top: 145px;
+			padding-top: 50px;
+		}
+
+		#actions {
+			&.pull-right {
+				p {
+					strong {
+						font-size: 18px;
+						font-weight: 400; 
+					}
+					color: @textColor;
+				}
+			}
+		}
+		 
+		#logo {
+			 
+			.logo {
+				width:150px;
+				height: auto;
+			}
+ 		}
+
+ 		#options {
+			.icons {
+				fill: @white;
+			}
+		}
+
+		#guests {
+			.button {
+				background-color: @black;
+			}
+		}
+		
+	}
