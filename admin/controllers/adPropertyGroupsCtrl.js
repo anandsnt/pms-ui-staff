@@ -108,7 +108,7 @@ admin.controller('ADPropertyGroupsCtrl', ['$scope', '$stateParams', 'ADPropertyG
 				$scope.$emit('hideLoader');
 				$scope.isAdd = true;
 				$scope.prefetchData = {};
-                
+
 				$scope.prefetchData = data;
 				angular.forEach($scope.prefetchData.chain_hotels, function(property, index) {
 					property.is_checked = false;
@@ -128,6 +128,7 @@ admin.controller('ADPropertyGroupsCtrl', ['$scope', '$stateParams', 'ADPropertyG
 			var data = {
 				'editId': value
 			};
+			$scope.isEdit = true;
 
 			var editSuccessCallback = function(data) {
 				data = {
@@ -198,7 +199,7 @@ admin.controller('ADPropertyGroupsCtrl', ['$scope', '$stateParams', 'ADPropertyG
 		/*
 		 * To handle save button click.
 		 */
-		$scope.clickedSave = function() {
+		$scope.clickedSave = function() {alert("test function")
 			var saveSuccessCallback = function(data) {
 				$scope.$emit('hideLoader');
 				if ($scope.isEdit) {
