@@ -135,7 +135,7 @@ admin.controller('ADPropertyGroupsCtrl', ['$scope', '$stateParams', 'ADPropertyG
 			var editSuccessCallback = function(data) {
 				data = {
 					"name": "Zoku group",
-					"linked_properties": [23, 24],
+					"linked_property_ids": [23, 24],
 					"chain_hotels": [{
 							"id": 22,
 							"name": "Zoku Amsterdam",
@@ -164,10 +164,10 @@ admin.controller('ADPropertyGroupsCtrl', ['$scope', '$stateParams', 'ADPropertyG
 				$scope.currentClickedElement = index;
 				$scope.prefetchData = {};
 				$scope.prefetchData = data;
-				var linked_properties = $scope.prefetchData.linked_properties;
+				var linked_properties = $scope.prefetchData.linked_property_ids;
 
 				angular.forEach($scope.prefetchData.chain_hotels, function(item) {
-					item.is_checked = (linked_properties.indexOf(item.id)!==-1) ? true : false;
+					item.is_checked = (linked_properties.includes(item.id)) ? 'true' : 'false';
 				});
 				console.log($scope.prefetchData)
 
