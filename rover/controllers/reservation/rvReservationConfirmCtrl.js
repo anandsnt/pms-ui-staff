@@ -248,7 +248,7 @@ sntRover.controller('RVReservationConfirmCtrl', [
 				});
 				if (typeof $rootScope.searchData !== "undefined") {
 					$rootScope.searchData.guestCard.email = $scope.reservationData.guest.email;
-				}				
+				}
 
 			};
 
@@ -309,7 +309,7 @@ sntRover.controller('RVReservationConfirmCtrl', [
 				postData.confirmation_custom_title 	= $scope.reservationData.confirmation_custom_title;
 				postData.confirmation_custom_text 	= $scope.reservationData.confirmation_custom_text;
 				postData.locale = $scope.reservationData.languageData.selected_language_code;
-				
+
                 // CICO-35425
                 postData.hide_rates = $scope.reservationData.hide_rates;
 
@@ -378,7 +378,9 @@ sntRover.controller('RVReservationConfirmCtrl', [
 			// CICO-40207 Before navigating to the staycard make sure only one reservation's details are persisted in scope
 			// Data pertaining to other reservations can be removed!
 			// Stay card operates in the perspective of only one reservation at a time.
-            $scope.reservationData.reservationIds.splice(1);
+            if ($scope.reservationData.reservationIds) {
+               $scope.reservationData.reservationIds.splice(1);
+            }
             $scope.reservationData.rooms.splice(1);
 
 
@@ -586,10 +588,10 @@ sntRover.controller('RVReservationConfirmCtrl', [
 				$scope.reservationData.user_id = $scope.reservationData.company.id;
 			}
 
-	    	$scope.$emit('showLoader'); 
+	    	$scope.$emit('showLoader');
            	jsMappings.fetchAssets(['addBillingInfo', 'directives'])
             .then(function() {
-            	$scope.$emit('hideLoader'); 
+            	$scope.$emit('hideLoader');
             	if ($rootScope.UPDATED_BI_ENABLED_ON['RESERVATION']) {
             		console.log("##Billing-info updated version");
 				    ngDialog.open({
