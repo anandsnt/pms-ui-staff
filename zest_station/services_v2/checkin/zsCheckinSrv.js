@@ -121,11 +121,19 @@ sntZestStation.service('zsCheckinSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
             });
             return deferred.promise;
         };
+
+        /**
+         * CICO-41520
+         * Modified the zs services so that this is the ONLY method that makes this api call!
+         * @param param
+         * @return {*|promise|{then, catch, finally}|e}
+         */
         this.fetchReservationDetails = function(param) {
             var url;
 
             param.is_kiosk = true;
-            url = '/staff/staycards/reservation_details.json?reservation=' + param.id;
+
+            url = '/staff/staycards/reservation_details.json?reservation_id=' + param.id;
             var deferred = $q.defer();
 
             // To fetch the latest guest details, the following parameter has to be sent to trigger a fetchProfile OWS request
@@ -138,6 +146,44 @@ sntZestStation.service('zsCheckinSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
             }, function(data) {
                 deferred.reject(data);
             });
+            return deferred.promise;
+        };
+
+        /**
+         * /api/reservations/:reservation_id/pre_auth
+         * @param {String} id reservation_id
+         * @return {HttpPromise} authorize_cc_at_checkin, pre_auth_amount_at_checkin, pre_auth_amount_for_zest_station
+         */
+        that.fetchReservationPreAuthInfo = function(id) {
+            return $http.get('api/reservations/' + id + '/pre_auth');
+        };
+
+        /**
+         * CICO-41520
+         * Returns reservation_details.json response along with authorize_cc_at_checkin, pre_auth_amount_at_checkin, pre_auth_amount_for_zest_station
+         * @param params
+         * @return {*|promise|{then, catch, finally}|e}
+         */
+        that.fetchReservationInfo = function(params) {
+            var deferred = $q.defer(),
+                responses = {},
+                promises = [];
+
+            promises.push(that.fetchReservationDetails(params).then(function(response) {
+                responses['details'] = response;
+            }));
+
+            promises.push(that.fetchReservationPreAuthInfo(params.id).then(function(response) {
+                responses['preAuth'] = response.data;
+            }));
+
+            $q.all(promises).then(function() {
+                var mergedReservationDetails = responses['details'];
+
+                _.extend(mergedReservationDetails.data.reservation_card, responses['preAuth']);
+                deferred.resolve(mergedReservationDetails);
+            });
+
             return deferred.promise;
         };
 
