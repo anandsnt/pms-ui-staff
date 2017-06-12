@@ -89,14 +89,17 @@ admin.controller('ADPropertyGroupsCtrl', ['$scope', '$stateParams', 'ADPropertyG
 					"chain_hotels": [{
 							"id": "22",
 							"name": "Zoku Amsterdam",
+							"is_already_linked_to_group": true
 						},
 						{
 							"id": "23",
 							"name": "Zoku Amsterdam test",
+							"is_already_linked_to_group": true
 						},
 						{
 							"id": "24",
 							"name": "Zoku Amsterdam second",
+							"is_already_linked_to_group": false
 						}
 
 
@@ -132,15 +135,18 @@ admin.controller('ADPropertyGroupsCtrl', ['$scope', '$stateParams', 'ADPropertyG
 					"linked_properties": ["23", "24"],
 					"chain_hotels": [{
 							"id": "22",
-							"name": "Zoku Amsterdam"
+							"name": "Zoku Amsterdam",
+							"is_already_linked_to_group": false
 						},
 						{
 							"id": "23",
-							"name": "Zoku Amsterdam test"
+							"name": "Zoku Amsterdam test",
+							"is_already_linked_to_group": false
 						},
 						{
 							"id": "24",
-							"name": "Zoku Amsterdam second"
+							"name": "Zoku Amsterdam second",
+							"is_already_linked_to_group": false
 						}
 					]
 				};
