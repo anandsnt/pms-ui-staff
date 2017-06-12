@@ -16,7 +16,8 @@ admin.directive('adCheckbox', function($timeout) {
             index: '@index',
             ngHide: '@hide',
             topLabel: '@',
-            isHide: '=isHide'
+            isHide: '=isHide',
+            onClick: '&'
 	    },
 
     	templateUrl: '/assets/directives/checkBox/adCheckbox.html',

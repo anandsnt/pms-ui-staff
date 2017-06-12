@@ -448,5 +448,18 @@ admin.controller('ADHotelDetailsCtrl', [
 	    }
     	event.stopPropagation();
     };
+    // Handle click on MP flag checkbox.
+    $scope.clickedMultiPropertyCheckbox = function() {
+    	if( !$scope.data.is_multi_property ) {
+			var message = 'Property Name will now be de-selected from Multi property';
+			
+    		if (confirm(message) == true) {
+				console.log("You pressed OK!");
+			} else {
+				$scope.data.is_multi_property = true;
+				console.log("You pressed Cancel!");
+			}
+    	}
+    };
 
 }]);
