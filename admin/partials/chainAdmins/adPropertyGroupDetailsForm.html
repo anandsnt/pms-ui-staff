@@ -1,9 +1,11 @@
-<div class="data-holder move50">
+<div class="data-holder">
 	<section class="content-scroll">
 		<form id="edit-like" class="form inline-form float">
 			<fieldset class="holder full-width" >
 				<div class="form-title">
-					<h3><span translate>NEW</span> {{'PROPERTY_GROUP' | translate}} </h3>
+					<h3><span ng-show="isAdd" translate>NEW</span>
+					<span ng-show="isEdit" translate>Edit</span>
+					{{'PROPERTY_GROUP' | translate}} </h3>
 					<em class="status"> Fields marked with <strong>*</strong> are mandatory! </em>
 				</div>
 				<div class="entry ng-isolate-scope">
@@ -11,7 +13,7 @@
 				        {{'GROUP_NAME' | translate}}
 				        <strong > * </strong></label>
 				    </label>
-					<input type="text" placeholder="Enter Group Name" ng-model="prefetchData.property_group_name"/>
+					<input type="text" placeholder="Enter Group Name" ng-model="prefetchData.name"/>
 				</div>
 				<div class="entry full-width float">
 				    <label>
@@ -20,8 +22,8 @@
 				    </label>
 					<div id="newspaper-options" class="boxes">
 
-						<label class="checkbox inline" ng-repeat="option in prefetchData.chain_hotels">
-							<ad-checkboxgrp toggle="checkBoxClicked($index)" label="{{option.name}}" is-checked="option.is_checked" is-disabled="option.is_already_linked_to_group"></ad-checkboxgrp>
+						<label class="checkbox inline" ng-repeat="option in prefetchData.chain_hotels">{{option.is_checked}}==
+							<ad-checkboxgrp toggle="checkBoxClicked($index)" label="{{option.name}}" is-checked="option.is_checked" sub-title="{{option.belongs_to_group}}"></ad-checkboxgrp>
 						</label>
 
 					</div>

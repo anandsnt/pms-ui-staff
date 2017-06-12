@@ -13,35 +13,34 @@ admin.controller('ADPropertyGroupsCtrl', ['$scope', '$stateParams', 'ADPropertyG
 			var getParams = $scope.calculateGetParams(params);
 			var fetchSuccessOfItemList = function(data) {
 				data =  {
-							"total_count": 132,
-							"property_groups": [{
-									"id": "13290",
-									"name": "Group name one",
-									"linked_property_count": "3"
+					"total_count": 132,
+					"property_groups": [{
+						"id": 13290,
+						"name": "Group name one",
+						"linked_property_count": 3
 
-								}, {
-									"id": "13290",
-									"name": "Group name two",
-									"linked_property_count": "4"
+					}, {
+						"id": 13290,
+						"name": "Group name two",
+						"linked_property_count": 3
 
-								}, {
-									"id": "13290",
-									"name": "Group name ten",
-									"linked_property_count": "10"
+					}, {
+						"id": 13290,
+						"name": "Group name three",
+						"linked_property_count": 3
 
-								}, {
-									"id": "13290",
-									"name": "Group name seven",
-									"linked_property_count": "7"
+					}, {
+						"id": 13290,
+						"name": "Group name four",
+						"linked_property_count": "3"
 
-								}, {
-									"id": "13290",
-									"name": "Group name one",
-									"linked_property_count": "3"
+					}, {
+						"id": 13290,
+						"name": "Group name five",
+						"linked_property_count": 3
 
-								}
-							]
-						};
+					}]
+				};
 				$scope.$emit('hideLoader');
 
 				$scope.currentClickedElement = -1;
@@ -87,19 +86,22 @@ admin.controller('ADPropertyGroupsCtrl', ['$scope', '$stateParams', 'ADPropertyG
 			var fetchNewDetailsSuccessCallback = function(data) {
 				data = {
 					"chain_hotels": [{
-							"id": "22",
+							"id": 22,
 							"name": "Zoku Amsterdam",
+							"belongs_to_group": "Zoku group",
 							"is_already_linked_to_group": true
 						},
 						{
-							"id": "23",
+							"id": 23,
 							"name": "Zoku Amsterdam test",
-							"is_already_linked_to_group": true
+							"belongs_to_group": "Zoku group",
+							"is_already_linked_to_group": false
 						},
 						{
-							"id": "24",
+							"id": 24,
 							"name": "Zoku Amsterdam second",
-							"is_already_linked_to_group": false
+							"belongs_to_group": "Zoku group",
+							"is_already_linked_to_group": true
 						}
 
 
@@ -132,37 +134,46 @@ admin.controller('ADPropertyGroupsCtrl', ['$scope', '$stateParams', 'ADPropertyG
 
 			var editSuccessCallback = function(data) {
 				data = {
-					"property_group_name": "Zoku group",
-					"linked_properties": ["23", "24"],
+					"name": "Zoku group",
+					"linked_properties": [23, 24],
 					"chain_hotels": [{
-							"id": "22",
+							"id": 22,
 							"name": "Zoku Amsterdam",
-							"is_already_linked_to_group": false
+							"belongs_to_group": "Zoku group",
+							"is_already_linked_to_group": true
 						},
 						{
-							"id": "23",
+							"id": 23,
 							"name": "Zoku Amsterdam test",
+							"belongs_to_group": "Zoku group",
 							"is_already_linked_to_group": false
 						},
 						{
-							"id": "24",
+							"id": 24,
 							"name": "Zoku Amsterdam second",
-							"is_already_linked_to_group": false
+							"belongs_to_group": "Zoku group",
+							"is_already_linked_to_group": true
 						}
+
+
 					]
 				};
+
+
 				$scope.$emit('hideLoader');
 				$scope.currentClickedElement = index;
 				$scope.prefetchData = {};
 				$scope.prefetchData = data;
 				var linked_properties = $scope.prefetchData.linked_properties;
 
-				angular.forEach($scope.prefetchData.chain_hotels, function(value, idx) {
-					value.is_checked = (linked_properties.include(value.id)) ? 'true' : 'false';
+				angular.forEach($scope.prefetchData.chain_hotels, function(item) {
+					item.is_checked = (linked_properties.indexOf(item.id)!==-1) ? true : false;
 				});
+				console.log($scope.prefetchData)
 
 				$scope.isEdit = true;
 				$scope.isAdd = false;
+
 			};
 
 			$scope.invokeApi(ADPropertyGroupsSrv.fetchEditData, data, editSuccessCallback);
@@ -174,6 +185,8 @@ admin.controller('ADPropertyGroupsCtrl', ['$scope', '$stateParams', 'ADPropertyG
 		$scope.getTemplateUrl = function() {
 
 			return "/assets/partials/chainAdmins/adPropertyGroupDetailsForm.html";
+
+
 		};
 
 		/*
