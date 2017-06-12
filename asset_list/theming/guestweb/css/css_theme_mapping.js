@@ -4,6 +4,7 @@ module.exports = {
         var themeCSSRoot = 'stylesheets/guestweb/';
 
         return {
+            'guestweb_moonrise': [ themeCSSRoot + 'guestweb_moonrise.css'],
             'guestweb_row': [ themeCSSRoot + 'guestweb_row.css'],
             'guestweb_atura': [ themeCSSRoot + 'guestweb_atura.css'],
             'guestweb_bellagio': [ themeCSSRoot + 'guestweb_bellagio.css'],
@@ -116,7 +117,9 @@ module.exports = {
             'guestweb_georgetown_inn': [ themeCSSRoot + 'guestweb_georgetown_inn.css'],
             'guestweb_hotel_de_jonker': [ themeCSSRoot + 'guestweb_hotel_de_jonker.css'],
             'guestweb_carillon_v2': [ themeCSSRoot + 'guestweb_carillon_v2.css'],
-            'guestweb_cachet_boutique': [ themeCSSRoot + 'guestweb_cachet_boutique.css']
+            'guestweb_cachet_boutique': [ themeCSSRoot + 'guestweb_cachet_boutique.css'],
+            'guestweb_hotel_berlaymont': [ themeCSSRoot + 'guestweb_hotel_berlaymont.css'],
+            'guestweb_el_cosmico': [ themeCSSRoot + 'guestweb_el_cosmico.css']
         };
     }
 };
