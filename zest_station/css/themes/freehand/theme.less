@@ -1,11 +1,11 @@
-/* StayNTouch Zest Station Styles | Freehand Theme */
+/* StayNTouch Zest Station Styles | Freehand LA Theme */
 
 /* 1. COLORS
 ==========================================================*/
-	@brandColor:			#af1f00;
+	@brandColor:			#382c4c;
 	
 	@textColor: 			@black;
-	@backgroundColor: 		#f8f7e9;
+	@backgroundColor: 		#dedbca;
 	
 	@actionColor: 			@white;
 	@actionBackground: 		@brandColor;
@@ -19,7 +19,7 @@
 
 /* 3. IMAGES
 ==========================================================*/
-	@background: @backgroundColor;
+	@background: 			@backgroundColor url("../css/themes/freehand/background.jpg") no-repeat center center;
 	@backgroundSize: 		cover;
 	
 
@@ -123,5 +123,16 @@
 			}
 		}
 
+		.add-on { 
+			.add-on-content { 
+				.price { 
+					.action  {
+						input {
+							color: @textColor;
+						}
+					}
+				}
+			}
+		}
 		
 	}
