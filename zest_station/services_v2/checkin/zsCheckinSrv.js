@@ -176,7 +176,7 @@ sntZestStation.service('zsCheckinSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
                 if (response.status !== 200) {
                     deferred.reject(response.data);
                 }
-            }
+            };
 
             promises.push(that.fetchReservationDetails(params).then(onSuccessFetchReservationDetails, onSuccessFetchReservationDetails));
 
