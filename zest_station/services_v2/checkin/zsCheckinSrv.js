@@ -166,19 +166,31 @@ sntZestStation.service('zsCheckinSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
                 responses = {},
                 promises = [];
 
-            promises.push(that.fetchReservationDetails(params).then(function(response) {
-                responses['details'] = response;
-            }));
 
-            promises.push(that.fetchReservationPreAuthInfo(params.id).then(function(response) {
+            var onSuccessFetchReservationDetails = function(response) {
+                responses['details'] = response;
+            };
+
+            var onSuccessFetchReservationPreAuth = function(response) {
                 responses['preAuth'] = response.data;
-            }));
+                if (response.status !== 200) {
+                    deferred.reject(response.data);
+                }
+            }
+
+            promises.push(that.fetchReservationDetails(params).then(onSuccessFetchReservationDetails, onSuccessFetchReservationDetails));
+
+            promises.push(that.fetchReservationPreAuthInfo(params.id).then(onSuccessFetchReservationPreAuth, onSuccessFetchReservationPreAuth));
 
             $q.all(promises).then(function() {
                 var mergedReservationDetails = responses['details'];
 
-                _.extend(mergedReservationDetails.data.reservation_card, responses['preAuth']);
-                deferred.resolve(mergedReservationDetails);
+                if (mergedReservationDetails.data) {
+                    _.extend(mergedReservationDetails.data.reservation_card, responses['preAuth']);
+                    deferred.resolve(mergedReservationDetails);
+                } else {
+                    deferred.reject(mergedReservationDetails);
+                }
             });
 
             return deferred.promise;
