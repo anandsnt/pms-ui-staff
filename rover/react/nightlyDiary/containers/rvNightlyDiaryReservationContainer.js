@@ -212,6 +212,7 @@ let convertReservationsListReadyToComponent = (reservation, diaryInitialDayOfDat
                                  ? getReservationStatusClass(reservation.status)
                                  : (isReservationFuture) ? 'future' : '';
     let reservationClass = getReservationClasses(reservation, currentBusinessDate, diaryInitialDayOfDateGrid, numberOfDays);
+    
     // CICO-41798, Show "Pending" if no name is given initially
     if (reservation.guest_details.first_name === null && reservation.guest_details.last_name === null) {
         reservation.guest_details.last_name = 'Pending';
