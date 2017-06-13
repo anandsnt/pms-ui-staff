@@ -106,8 +106,9 @@ angular.module('sntRover').service('RVNightlyDiarySrv',
             var url = '/staff/change_stay_dates/' + data.reservation_id + '/confirm';
 
             var postData = {
-                "arrival_date": data.arrival_date,
-                "dep_date": data.dep_date
+                'arrival_date': data.arrival_date,
+                'dep_date': data.dep_date,
+                'room_number': data.room_number
             };
             var deferred = $q.defer ();
 
