@@ -207,7 +207,7 @@
 							'charge': response.early_checkin_charge,
 							'id': response.early_checkin_offer_id
 						});
-					} else if (response.early_checkin_on && !response.early_checkin_available && !response.bypass_early_checkin && !response.reservation_in_early_checkin_window) {
+					} else if (response.early_checkin_on && !response.bypass_early_checkin && !response.reservation_in_early_checkin_window) {
 						$state.go('laterArrival', {
 							'time': response.checkin_time,
 							'isearlycheckin': true
