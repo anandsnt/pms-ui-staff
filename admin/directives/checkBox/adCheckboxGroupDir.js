@@ -6,6 +6,7 @@ admin.directive('adCheckboxgrp', function($timeout) {
             label: '@label',
             subTitle: '@subTitle',
             isChecked: '=isChecked',
+            isGrayed: '=isGrayed',
             deleteAction: '&deleteAction',
             toggle: '&toggle',
             optionId: '=optionId',

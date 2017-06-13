@@ -88,14 +88,14 @@ admin.controller('ADPropertyGroupsCtrl', ['$scope', '$stateParams', 'ADPropertyG
 					"chain_hotels": [{
 							"id": 22,
 							"name": "Zoku Amsterdam",
-							"belongs_to_group": "Zoku group",
-							"is_already_linked_to_group": true
+							"belongs_to_group": "",
+							"is_already_linked_to_group": false
 						},
 						{
 							"id": 23,
 							"name": "Zoku Amsterdam test",
 							"belongs_to_group": "Zoku group",
-							"is_already_linked_to_group": false
+							"is_already_linked_to_group": true
 						},
 						{
 							"id": 24,
@@ -135,7 +135,7 @@ admin.controller('ADPropertyGroupsCtrl', ['$scope', '$stateParams', 'ADPropertyG
 			var editSuccessCallback = function(data) {
 				data = {
 					"name": "Zoku group",
-					"linked_property_ids": [23, 24],
+					"linked_property_ids": [22, 29],
 					"chain_hotels": [{
 							"id": 22,
 							"name": "Zoku Amsterdam",
@@ -145,8 +145,20 @@ admin.controller('ADPropertyGroupsCtrl', ['$scope', '$stateParams', 'ADPropertyG
 						{
 							"id": 23,
 							"name": "Zoku Amsterdam test",
-							"belongs_to_group": "Zoku group",
+							"belongs_to_group": "",
 							"is_already_linked_to_group": false
+						},
+						{
+							"id": 28,
+							"name": "Zoku Amsterdam one",
+							"belongs_to_group": "DC Hotels",
+							"is_already_linked_to_group": true
+						},
+						{
+							"id": 29,
+							"name": "Zoku Amsterdam two",
+							"belongs_to_group": "Zoku group",
+							"is_already_linked_to_group": true
 						},
 						{
 							"id": 24,
@@ -169,7 +181,6 @@ admin.controller('ADPropertyGroupsCtrl', ['$scope', '$stateParams', 'ADPropertyG
 				angular.forEach($scope.prefetchData.chain_hotels, function(item) {
 					item.is_checked = (linked_properties.includes(item.id)) ? 'true' : 'false';
 				});
-				console.log($scope.prefetchData)
 
 				$scope.isEdit = true;
 				$scope.isAdd = false;

@@ -8,13 +8,20 @@
 					{{'PROPERTY_GROUP' | translate}} </h3>
 					<em class="status"> Fields marked with <strong>*</strong> are mandatory! </em>
 				</div>
-				<div class="entry ng-isolate-scope">
-					<label>
-				        {{'GROUP_NAME' | translate}}
-				        <strong > * </strong></label>
-				    </label>
-					<input type="text" placeholder="Enter Group Name" ng-model="prefetchData.name"/>
-				</div>
+				<fieldset class="holder left">
+					<div class="entry full-width">
+						<label>
+					        {{'GROUP_NAME' | translate}}
+					        <strong > * </strong></label>
+					    </label>
+						<input type="text" placeholder="Enter Group Name" ng-model="prefetchData.name" class="date-picker-input-small"/>
+						<div class="item-delete-wrapper">
+	                		<span class="icons delete_small rate_end_delete cursor_pointer item-delete" ng-click="deleteEndDate()">
+	                		</span>
+	                		<span class="item-delete-text">Delete</span>
+		                </div>
+					</div>
+				</fieldset>
 				<div class="entry full-width float">
 				    <label>
 				        {{'HOTELS_IN_GROUP' | translate}}
@@ -22,8 +29,8 @@
 				    </label>
 					<div id="newspaper-options" class="boxes">
 
-						<label class="checkbox inline" ng-repeat="option in prefetchData.chain_hotels">{{option.is_checked}}==
-							<ad-checkboxgrp toggle="checkBoxClicked($index)" label="{{option.name}}" is-checked="option.is_checked" sub-title="{{option.belongs_to_group}}"></ad-checkboxgrp>
+						<label class="checkbox inline" ng-repeat="option in prefetchData.chain_hotels">
+							<ad-checkboxgrp toggle="checkBoxClicked($index)" label="{{option.name}}" is-checked="option.is_checked" is-grayed="option.is_already_linked_to_group" sub-title="{{option.belongs_to_group}}"></ad-checkboxgrp>
 						</label>
 
 					</div>

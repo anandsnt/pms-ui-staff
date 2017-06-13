@@ -41,7 +41,7 @@
 						</td>
 
 						<td header-class="text-left width-10" data-title="'Delete'"  class="delete" ng-hide="currentClickedElement == $index && isEdit">
-							<a class="icons icon-delete large-icon delete_item" ng-click="deleteItem(item.value)">item.value</a>
+							<a class="icons icon-delete large-icon delete_item" ng-click="deleteItem(item.id)">item.id</a>
 						</td>
 
 						<td colspan="3" ng-include="getTemplateUrl()" ng-if="currentClickedElement == $index && isEdit"></td>
