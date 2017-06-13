@@ -467,10 +467,24 @@ admin.controller('ADHotelDetailsCtrl', [
             });
     	}
     };
+    // Success, Failure callbacks after De-Selecting MP flag
+    var succeessCallbackdeSelectMPFlag = function() {
+    	$scope.$emit('hideLoader');
+		$scope.errorMessage = '';
+		ngDialog.close();
+    },
+    failureCallbackdeSelectMPFlag = function( errorMessage ) {
+    	$scope.$emit('hideLoader');
+		$scope.errorMessage = errorMessage;
+    };
+
     // Handle Continue button click..	
     $scope.clickedContinue = function() {
-    	console.log('clickedContinue -- API CALL');
-    	ngDialog.close();
+    	var params = {
+    		'hotel_id': $scope.data.id
+    	};
+
+    	$scope.invokeApi(ADHotelDetailsSrv.deSelectMPFlag, params, succeessCallbackdeSelectMPFlag, failureCallbackdeSelectMPFlag);
     };
     // Handle Cancel button click..
     $scope.clickedCancel = function() {
