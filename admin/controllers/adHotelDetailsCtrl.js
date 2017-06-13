@@ -23,6 +23,9 @@ admin.controller('ADHotelDetailsCtrl', [
 	$scope.isHotelChainReadonly =  false;
 	$scope.isFieldsReadOnly = (($rootScope.isSntAdmin && $rootScope.isServiceProvider) || $rootScope.adminRole === "hotel-admin") ? "yes" : "no";
 	$scope.isFieldsReadOnlyForServiceProvider = ($rootScope.isSntAdmin && $rootScope.isServiceProvider) ? "yes" : "no";
+	// CICO-41322 - Flag needed to show MP De-selection confirm popup.
+	var isMPFlagResetConfirmPopupNeeded = false;
+
 	// pms start date setting calendar options
 	$scope.pmsStartDateOptions = {
 	    changeYear: true,
@@ -40,6 +43,8 @@ admin.controller('ADHotelDetailsCtrl', [
 		// SNT Admin -To add new hotel view
 		if ($stateParams.action === "add" || $stateParams.action === "addfromSetup") {
 			$scope.title = "Add New Hotel";
+			// CICO-41322 - No need to show MP De-selection confirm popup.
+			isMPFlagResetConfirmPopupNeeded = false;
 			var fetchSuccess = function(data) {
 				$scope.data = data.data;
 				$scope.data.brands = [];
@@ -83,6 +88,8 @@ admin.controller('ADHotelDetailsCtrl', [
 
 				setDropdownDefaults();
 				$scope.selectedTheme = data.data.selected_theme;
+				// CICO-41322 - Show MP De-selection confirm popup if it is already a multi-property.
+				isMPFlagResetConfirmPopupNeeded = data.data.is_multi_property;
 			};
 
 			$scope.invokeApi(ADHotelDetailsSrv.fetchEditData, {'id': $stateParams.id}, fetchSuccess);
@@ -448,5 +455,40 @@ admin.controller('ADHotelDetailsCtrl', [
 	    }
     	event.stopPropagation();
     };
+    // Handle click on MP flag checkbox.
+    $scope.clickedMultiPropertyCheckbox = function() {
+    	if ( !$scope.data.is_multi_property && isMPFlagResetConfirmPopupNeeded ) {
+			$scope.message = $scope.data.hotel_name + ' will now be de-selected from Multi property';
+			ngDialog.open({
+                template: '/assets/partials/hotel/adHotelMPFlagDeSelectionConfirm.html',
+                className: '',
+                scope: $scope,
+                closeByDocument: false
+            });
+    	}
+    };
+    // Success, Failure callbacks after De-Selecting MP flag
+    var succeessCallbackdeSelectMPFlag = function() {
+    	$scope.$emit('hideLoader');
+		$scope.errorMessage = '';
+		ngDialog.close();
+    },
+    failureCallbackdeSelectMPFlag = function( errorMessage ) {
+    	$scope.$emit('hideLoader');
+		$scope.errorMessage = errorMessage;
+    };
 
+    // Handle Continue button click..	
+    $scope.clickedContinue = function() {
+    	var params = {
+    		'hotel_id': $scope.data.id
+    	};
+
+    	$scope.invokeApi(ADHotelDetailsSrv.deSelectMPFlag, params, succeessCallbackdeSelectMPFlag, failureCallbackdeSelectMPFlag);
+    };
+    // Handle Cancel button click..
+    $scope.clickedCancel = function() {
+    	$scope.data.is_multi_property = true;
+    	ngDialog.close();
+    };
 }]);

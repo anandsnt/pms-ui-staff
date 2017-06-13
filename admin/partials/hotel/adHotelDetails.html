@@ -84,7 +84,7 @@
 	                            <input type="radio" name="hotel_pms_type" ng-model="data.hotel_pms_type" id="pms_overlay_service" value="OWS" />
 	                            PMS Overlay
 	                        </label>
-	                        <ad-checkbox is-checked="data.is_multi_property" is-disabled="data.is_multi_property" is-hide="data.hotel_pms_type=='OWS'" label="Multi Property" div-class="full-width"></ad-checkbox>
+	                        <ad-checkbox on-click="clickedMultiPropertyCheckbox()" is-checked="data.is_multi_property" is-hide="data.hotel_pms_type=='OWS'" label="Multi Property" div-class="full-width"></ad-checkbox>
                         </fieldset>
                         <fieldset class="holder right">
                         	<label class="checkbox" ng-repeat="interfaceType in data.interface_types">
