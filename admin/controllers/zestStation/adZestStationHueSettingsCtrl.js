@@ -35,8 +35,12 @@ admin.controller('adZestStationHueSettingsCtrl', ['$scope', '$rootScope', '$stat
 			});
 		};
 
+		var handleWebSocketResponse = function(response) {
+			if (response.Command === 'cmd_insert_key_card') {};
 
-		function connectWS() {
+		};
+
+		function createNewWebSocketConnection() {
 			ws = new WebSocket("wss://localhost:4649/CCSwipeService");
 			//Triggers when websocket connection is established.
 			ws.onopen = function() {
@@ -54,7 +58,7 @@ admin.controller('adZestStationHueSettingsCtrl', ['$scope', '$rootScope', '$stat
 
 				$log.info('Websocket:-> uid=' + response.UID + '--' + 'Websocket:-> response code:' + response.ResponseCode);
 				$log.info('Websocket: msg ->' + msg + '--' + 'Websocket: Command ->' + cmd);
-				if (response.Command === 'cmd_insert_key_card') {};
+				handleWebSocketResponse(response);
 			};
 
 			// Triggers when the server is down.
@@ -66,22 +70,21 @@ admin.controller('adZestStationHueSettingsCtrl', ['$scope', '$rootScope', '$stat
 			};
 			return ws;
 		};
-		connectWS();
+		createNewWebSocketConnection();
 
-		$scope.connectUsingWS = function(){
-			connectWS();
+		$scope.connectUsingWS = function() {
+			createNewWebSocketConnection();
 		};
 
-		var isWSReady = function(){
+		var isWSReady = function() {
 			return (ws.readyState === 1);
 		};
 
-		var setWSError = function(){
-			setTimeout(function(){
+		var setWSError = function() {
+			setTimeout(function() {
 				$scope.errorMessage = ["Web socket not ready. Please ensure that zest station handler is running in the system. If handler is not running, please run the handler and click on connect button below."];
 				scrollTop();
-			}, 500);
-			
+			}, 200);
 		};
 
 		$scope.discoverBridges = function() {
