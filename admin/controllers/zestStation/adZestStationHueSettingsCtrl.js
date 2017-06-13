@@ -37,8 +37,35 @@ admin.controller('adZestStationHueSettingsCtrl', ['$scope', '$rootScope', '$stat
 
 		// https://github.com/StayNTouch/pms/blob/develop/app/assets/admin/controllers/zestStation/adZestStationHueSettingsCtrl.js
 		var handleWebSocketResponse = function(response) {
-			if (response.Command === 'cmd_insert_key_card') {};
-
+			if (response.ResponseCode === 0 && response.Command === 'cmd_hue_light_locate_bridge_ips') {
+				$scope.availableBridges = response.bridgeIps;
+			} else if (response.Command === 'cmd_hue_light_register') {
+				if (response.ResponseCode === 0) {
+					$scope.newUsername = response.appKey;
+					runDigestCycle();
+				} else {
+					$scope.errorMessage = [response.Message];
+					scrollTop();
+				}
+			} else if (response.ResponseCode === 0 && response.Command === 'cmd_hue_light_list') {
+				// for (var key in lightsData) {
+				// 		if (lightsData.hasOwnProperty(key)) {
+				// 			$scope.availableLights.push({
+				// 				id: key,
+				// 				name: lightsData[key].name,
+				// 				type: lightsData[key].type,
+				// 				reachable: lightsData[key].state.reachable
+				// 			});
+				// 		}
+				// 	}
+				$scope.availableLights = [];
+				_.each(response.lights, function(light) {
+					$scope.availableLights.push({
+						id: light
+					});
+				});
+				runDigestCycle();
+			}
 		};
 
 		function createNewWebSocketConnection() {
@@ -51,13 +78,15 @@ admin.controller('adZestStationHueSettingsCtrl', ['$scope', '$rootScope', '$stat
 			};
 
 			// Triggers when there is a message from websocket server.
-			ws.onmessage = function(response) {
-
+			ws.onmessage = function(evt) {
+				var response = JSON.parse(evt.data)
 				var cmd = response.Command,
 					msg = response.Message;
 				// to delete after QA pass
 
 				$log.info('Websocket: msg ->' + msg + '--' + 'Websocket: Command ->' + cmd);
+
+				console.log(response.ResponseCode);
 				handleWebSocketResponse(response);
 			};
 
@@ -76,9 +105,10 @@ admin.controller('adZestStationHueSettingsCtrl', ['$scope', '$rootScope', '$stat
 			createNewWebSocketConnection();
 		};
 
-		var sendCommand = function(Command, params) {
+		var sendCommand = function(Command, Data, hueLightAppkey) {
 			if (ws.readyState === 1) {
-				ws.send("{\"Command\" : \"" + Command + "\"}");
+				ws.send("{\"Command\" : \"" + Command + "\", \"Data\" : \"" + $scope.hueSettings.hue_bridge_ip + "\", \"hueLightAppkey\" : \"" + $scope.hueSettings.hue_user_name + "\"}");
+
 			} else {
 				setTimeout(function() {
 					$scope.errorMessage = ["Web socket not ready. Please ensure that zest station handler is running in the system. If handler is not running, please run the handler and click on connect button below."];
@@ -88,23 +118,15 @@ admin.controller('adZestStationHueSettingsCtrl', ['$scope', '$rootScope', '$stat
 		};
 
 		$scope.discoverBridges = function() {
-			sendCommand('discover_bridges');
-		};
-
-		var createNewUser = function() {
-			sendCommand('discover_bridges');
+			sendCommand('cmd_hue_light_locate_bridge_ips');
 		};
 
 		$scope.createNewAppKey = function() {
-			sendCommand('discover_bridges');
-		};
-
-		$scope.createNewUser = function() {
-			sendCommand('discover_bridges');
+			sendCommand('cmd_hue_light_register');
 		};
 
 		$scope.getLightsList = function() {
-			sendCommand('discover_bridges');
+			sendCommand('cmd_hue_light_list');
 		};
 
 		$scope.turnONLight = function() {

@@ -40,10 +40,10 @@
     <fieldset class="holder full-width">
         <ad-form-sub-title title="HUE_USER_NAME_INSTRUCTIONS"></ad-form-sub-title>
         <div class="entry full-width">
-            <button translate="" ng-click="createNewUser()" class="button green" translate="">CREATE_NEW_APP_KEY</button>
+            <button translate="" ng-click="createNewAppKey()" class="button green" translate="">CREATE_NEW_APP_KEY</button>
         </div>
         <div class="entry full-width" ng-show="newUsername.length > 0">
-            {{'NEW_APP_KEY_IS' | translate}} - {{newUsername}}
+            {{'NEW_APP_KEY_IS' | translate}} => {{newUsername}}
         </div>
         <ad-textbox value="hueSettings.hue_user_name" name="app-name" id="app-name" label="App key" styleclass="half-width"></ad-textbox>
     </fieldset>
