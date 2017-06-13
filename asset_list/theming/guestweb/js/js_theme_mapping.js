@@ -111,11 +111,14 @@ module.exports = {
             'guestweb_hotel_hiho': [ themeJsRoot + 'app_router_hotel_hiho.js'],
             'guestweb_circle_fairfield': [ themeJsRoot + 'app_router_common.js'],
             'guestweb_foundation_hotel_detroit': [ themeJsRoot + 'app_router_common.js'],
+            'guestweb_hotel_royal': [ themeJsRoot + 'app_router_common.js'],
             'guestweb_orchard_garden_hotel': [ themeJsRoot + 'app_router_common.js'],
             'guestweb_orchard_hotel': [ themeJsRoot + 'app_router_common.js'],
             'guestweb_avenue_suites_georgetown': [ themeJsRoot + 'app_router_common.js'],
             'guestweb_georgetown_inn': [ themeJsRoot + 'app_router_common.js'],
             'guestweb_hotel_de_jonker': [ themeJsRoot + 'app_router_common.js'],
+            'guestweb_carillon_v2': [ themeJsRoot + 'app_router_common.js'],
+            'guestweb_cachet_boutique': [ themeJsRoot + 'app_router_common.js'],
             'guestweb_hotel_berlaymont': [ themeJsRoot + 'app_router_common.js']
         };
     }
