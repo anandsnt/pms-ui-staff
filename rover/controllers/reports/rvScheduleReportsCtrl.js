@@ -509,6 +509,7 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
             }
 
             $scope.startsOnOptions = angular.extend({
+                minDate: tzIndependentDate($rootScope.businessDate),
                 onSelect: function(value) {
                     $scope.endsOnOptions.minDate = value;
                 }
