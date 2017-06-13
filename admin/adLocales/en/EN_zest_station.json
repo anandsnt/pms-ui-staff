@@ -118,7 +118,8 @@
 
 "USE_HUE": "USE HUE",
 "CONNECT_TO_WS": "CONNECT",
-"HANDLER_INSTRUCTIONS": "Before starting, please ensure that zest station handler is running in the system. If handler is not running, please run the handler and click on connect button below.",
+"BRIDGE_IP_INSTRUCTIONS": "(If by any chance the bridge IP is changed, always create a new App key)",
+"HANDLER_INSTRUCTIONS": "Before starting, please ensure that zest station handler is running in the system. If the handler is not running, please run the handler and click on the connect button below. The bridge IP and App key have to be saved for connecting to the HUE system afterwards.",
 "DISCOVER_HUE_BRIDGE_INSTRUCTIONS": "There can be multiple Hue Bridges in the network. If you don't know the required bridge IP address, please click discover bridges button to list the available IPs of the connected bridges. If you already know the IP address, please fill in the Bridge IP field.",
 "DISCOVER_BRIDGES": "DISCOVER BRIDGES",
 "IP_ADDRESS": "Available Bridge IP addresses",

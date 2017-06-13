@@ -35,6 +35,7 @@ admin.controller('adZestStationHueSettingsCtrl', ['$scope', '$rootScope', '$stat
 			});
 		};
 
+		// https://github.com/StayNTouch/pms/blob/develop/app/assets/admin/controllers/zestStation/adZestStationHueSettingsCtrl.js
 		var handleWebSocketResponse = function(response) {
 			if (response.Command === 'cmd_insert_key_card') {};
 
@@ -56,7 +57,6 @@ admin.controller('adZestStationHueSettingsCtrl', ['$scope', '$rootScope', '$stat
 					msg = response.Message;
 				// to delete after QA pass
 
-				$log.info('Websocket:-> uid=' + response.UID + '--' + 'Websocket:-> response code:' + response.ResponseCode);
 				$log.info('Websocket: msg ->' + msg + '--' + 'Websocket: Command ->' + cmd);
 				handleWebSocketResponse(response);
 			};
@@ -76,44 +76,43 @@ admin.controller('adZestStationHueSettingsCtrl', ['$scope', '$rootScope', '$stat
 			createNewWebSocketConnection();
 		};
 
-		var isWSReady = function() {
-			return (ws.readyState === 1);
-		};
-
-		var setWSError = function() {
-			setTimeout(function() {
-				$scope.errorMessage = ["Web socket not ready. Please ensure that zest station handler is running in the system. If handler is not running, please run the handler and click on connect button below."];
-				scrollTop();
-			}, 200);
+		var sendCommand = function(Command, params) {
+			if (ws.readyState === 1) {
+				ws.send("{\"Command\" : \"" + Command + "\"}");
+			} else {
+				setTimeout(function() {
+					$scope.errorMessage = ["Web socket not ready. Please ensure that zest station handler is running in the system. If handler is not running, please run the handler and click on connect button below."];
+					scrollTop();
+				}, 200);
+			}
 		};
 
 		$scope.discoverBridges = function() {
-			isWSReady() ? ws.send("{\"Command\" : \"cmd_scan_passport\"}") : setWSError();
-
+			sendCommand('discover_bridges');
 		};
 
 		var createNewUser = function() {
-			isWSReady() ? ws.send("{\"Command\" : \"cmd_scan_passport\"}") : setWSError();
+			sendCommand('discover_bridges');
 		};
 
 		$scope.createNewAppKey = function() {
-			isWSReady() ? ws.send("{\"Command\" : \"cmd_scan_passport\"}") : setWSError();
+			sendCommand('discover_bridges');
 		};
 
 		$scope.createNewUser = function() {
-			isWSReady() ? ws.send("{\"Command\" : \"cmd_scan_passport\"}") : setWSError();
+			sendCommand('discover_bridges');
 		};
 
 		$scope.getLightsList = function() {
-			isWSReady() ? ws.send("{\"Command\" : \"cmd_scan_passport\"}") : setWSError();
+			sendCommand('discover_bridges');
 		};
 
 		$scope.turnONLight = function() {
-			isWSReady() ? ws.send("{\"Command\" : \"cmd_scan_passport\"}") : setWSError();
+			sendCommand('discover_bridges');
 		};
 
 		$scope.turnOFFLight = function() {
-			isWSReady() ? ws.send("{\"Command\" : \"cmd_scan_passport\"}") : setWSError();
+			sendCommand('discover_bridges');
 		};
 	}
 ]);
