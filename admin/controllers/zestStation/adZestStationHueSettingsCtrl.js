@@ -8,9 +8,9 @@ admin.controller('adZestStationHueSettingsCtrl', ['$scope', '$rootScope', '$stat
 		$scope.hueSettings = kioskSettings;
 		$scope.availableBridges = []; // Have to manulay discover bridges
 		$scope.availableLights = []; // Have to manulay discover lights
+		var ws;
 
-		var hue = jsHue(),
-			bridge,
+		var bridge,
 			user;
 
 		var runDigestCycle = function() {
@@ -18,7 +18,7 @@ admin.controller('adZestStationHueSettingsCtrl', ['$scope', '$rootScope', '$stat
 				$scope.$digest();
 			}
 		};
-		
+
 		var scrollTop = function() {
 			$(".content-scroll").scrollTop(0);
 			$scope.$emit('hideLoader');
@@ -35,144 +35,82 @@ admin.controller('adZestStationHueSettingsCtrl', ['$scope', '$rootScope', '$stat
 			});
 		};
 
-		$scope.discoverBridges = function() {
-			hue.discover().then(function(bridges) {
-				if (bridges.length === 0) {
-					$scope.errorMessage = ['No bridges found.'];
-					scrollTop();
-				} else {
-					$scope.availableBridges = bridges;
-				}
-				runDigestCycle();
-			})
-			.catch(function(e) {
-				$scope.errorMessage = ['Error finding bridges'];
-				$log.error(e);
+
+		function connectWS() {
+			ws = new WebSocket("wss://localhost:4649/CCSwipeService");
+			//Triggers when websocket connection is established.
+			ws.onopen = function() {
+				$log.info("Connected. Warning : Clicking on Connect multipple times will create multipple connections to the server");
+				$scope.successMessage = "Zest station handler is running.";
 				scrollTop();
-				return;
-			});
+			};
+
+			// Triggers when there is a message from websocket server.
+			ws.onmessage = function(response) {
+
+				var cmd = response.Command,
+					msg = response.Message;
+				// to delete after QA pass
+
+				$log.info('Websocket:-> uid=' + response.UID + '--' + 'Websocket:-> response code:' + response.ResponseCode);
+				$log.info('Websocket: msg ->' + msg + '--' + 'Websocket: Command ->' + cmd);
+				if (response.Command === 'cmd_insert_key_card') {};
+			};
+
+			// Triggers when the server is down.
+			ws.onclose = function() {
+				// websocket is closed.
+				$log.warn("WS Server is not running.");
+				$scope.errorMessage = ["Zest station handler is not running."];
+				scrollTop();
+			};
+			return ws;
+		};
+		connectWS();
+
+		$scope.connectUsingWS = function(){
+			connectWS();
 		};
 
-		var createBridge = function() {
-			try {
-				bridge = hue.bridge($scope.hueSettings.hue_bridge_ip);
-			} catch (e) {
-				$scope.errorMessage = ['Error creating bridge'];
-				$log.error(e);
+		var isWSReady = function(){
+			return (ws.readyState === 1);
+		};
+
+		var setWSError = function(){
+			setTimeout(function(){
+				$scope.errorMessage = ["Web socket not ready. Please ensure that zest station handler is running in the system. If handler is not running, please run the handler and click on connect button below."];
 				scrollTop();
-				return;
-			}
+			}, 500);
+			
+		};
+
+		$scope.discoverBridges = function() {
+			isWSReady() ? ws.send("{\"Command\" : \"cmd_scan_passport\"}") : setWSError();
+
 		};
 
 		var createNewUser = function() {
-			try {
-				user = bridge.user($scope.hueSettings.hue_user_name);
-			} catch (e) {
-				$scope.errorMessage = ['Error creating user'];
-				$log.error(e);
-				scrollTop();
-				return;
-			}
+			isWSReady() ? ws.send("{\"Command\" : \"cmd_scan_passport\"}") : setWSError();
 		};
 
-		/**
-		 * [createNewBridgeAndUser create new user and bridge each time so as to check with latest settings at any time]
-		 * @return {[type]} [description]
-		 */
-		var createNewBridgeAndUser = function() {
-			createBridge();
-			createNewUser();
+		$scope.createNewAppKey = function() {
+			isWSReady() ? ws.send("{\"Command\" : \"cmd_scan_passport\"}") : setWSError();
 		};
 
 		$scope.createNewUser = function() {
-			if (!bridge) {
-				createBridge();
-			}
-			// create user account (requires link button to be pressed)
-			bridge.createUser('snt#app').then(function(data) {
-				// extract bridge-generated username from returned data
-				var username = data[0].success.username;
-
-				$scope.newUsername = username;
-				// instantiate user object with username
-				user = bridge.user(username);
-				runDigestCycle();
-			})
-			.catch(function(e) {
-				$scope.errorMessage = ['Sorry, someting went wrong while creating a new user name. Please note that you have to click the link button on the Hue bridge before creating a new user name.'];
-				$log.error(e);
-				scrollTop();
-				return;
-			});
+			isWSReady() ? ws.send("{\"Command\" : \"cmd_scan_passport\"}") : setWSError();
 		};
 
 		$scope.getLightsList = function() {
-			createNewBridgeAndUser();
-			$scope.availableLights = [];
-			user.getLights().then(function(lightsData) {
-				if (lightsData.error) {
-					$scope.errorMessage = ['Sorry, someting went wrong. Please check the lights connections'];
-					scrollTop();
-				} else {
-					for (var key in lightsData) {
-						if (lightsData.hasOwnProperty(key)) {
-							$scope.availableLights.push({
-								id: key,
-								name: lightsData[key].name,
-								type: lightsData[key].type,
-								reachable: lightsData[key].state.reachable
-							});
-						}
-					}
-				}
-				runDigestCycle();
-			})
-			.catch(function(e) {
-				$scope.errorMessage = ['Sorry, someting went wrong. Please check the lights connections'];
-				$log.error(e);
-				scrollTop();
-				return;
-			});
+			isWSReady() ? ws.send("{\"Command\" : \"cmd_scan_passport\"}") : setWSError();
 		};
 
 		$scope.turnONLight = function() {
-			createNewBridgeAndUser();
-			user.setLightState($scope.hueSettings.hue_test_light_id, {
-				on: true
-			}).then(function(data) {
-				if (data[0].error) {
-					$scope.errorMessage = ['Some thing went wrong while trying to turn ON Light with ID - ' + $scope.hueSettings.hue_test_light_id + '. Make sure this light is correctly connected and is reachable'];
-				} else {
-					$scope.successMessage = 'Light with ID - ' + $scope.hueSettings.hue_test_light_id + ' is turned ON';
-				}
-				scrollTop();
-			})
-			.catch(function(e) {
-				$scope.errorMessage = ['Some thing went wrong while trying to turn ON Light with ID - ' + $scope.hueSettings.hue_test_light_id + '. Make sure this light is correctly connected and is reachable'];
-				$log.error(e);
-				scrollTop();
-				return;
-			});
+			isWSReady() ? ws.send("{\"Command\" : \"cmd_scan_passport\"}") : setWSError();
 		};
 
 		$scope.turnOFFLight = function() {
-			createNewBridgeAndUser();
-			user.setLightState($scope.hueSettings.hue_test_light_id, {
-				on: false
-			}).then(function(data) {
-				if (data[0].error) {
-					$scope.errorMessage = ['Some thing went wrong while trying to turn OFF Light with ID - ' + $scope.hueSettings.hue_test_light_id + '. Make sure this light is correctly connected and is reachable'];
-				} else {
-					$scope.successMessage = 'Light with ID - ' + $scope.hueSettings.hue_test_light_id + ' is turned OFF';
-				}
-				scrollTop();
-			})
-			.catch(function(e) {
-				$scope.errorMessage = ['Some thing went wrong while trying to turn OFF Light with ID - ' + $scope.hueSettings.hue_test_light_id + '. Make sure this light is correctly connected and is reachable'];
-				$log.error(e);
-				scrollTop();
-				return;
-			});
+			isWSReady() ? ws.send("{\"Command\" : \"cmd_scan_passport\"}") : setWSError();
 		};
 	}
 ]);
