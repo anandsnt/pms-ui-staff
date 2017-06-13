@@ -730,6 +730,15 @@ angular.module('sntPay').controller('sntPaymentController',
                     return;
                 }
 
+
+                // MLI EMV
+                if ($scope.selectedPaymentType === 'CC' &&
+                    $scope.hotelConfig.isEMVEnabled &&
+                    $scope.hotelConfig.paymentGateway === 'MLI' && !$scope.payment.isManualEntryInsideIFrame) {
+                    $scope.$broadcast('INITIATE_CHIP_AND_PIN_PAYMENT', params);
+                    return;
+                }
+
                 //  --- CBA ---
                 if ($scope.selectedPaymentType === 'CC' &&
                     $scope.hotelConfig.paymentGateway === 'CBA') {
@@ -903,11 +912,20 @@ angular.module('sntPay').controller('sntPaymentController',
                         // Add to guestcard feature for C&P
                         $scope.payment.showAddToGuestCard = !!$scope.reservationId && !$scope.payment.isManualEntryInsideIFrame;
                         refreshIFrame();
+                    } else if ($scope.hotelConfig.isEMVEnabled) {
+                        $scope.selectedCC = $scope.selectedCC || {};
+
+                        if ($scope.payment.screenMode !== 'CARD_ADD_MODE' && !$scope.selectedCC.value) {
+                            $scope.payment.isManualEntryInsideIFrame = false;
+                            $scope.selectedCC = {};
+                        }
+                        // Add to guestcard feature for C&P
+                        $scope.payment.showAddToGuestCard = !!$scope.reservationId && !$scope.payment.isManualEntryInsideIFrame;
                     } else if (!isCardSelectionDisabled() && !$scope.showSelectedCard()) {
                         //  In case no card has been selected yet, move to add card mode
                         changeToCardAddMode();
                     }
-                } else {
+                }  else {
                     $scope.payment.showAddToGuestCard = false;
                 }
             };
@@ -1212,7 +1230,10 @@ angular.module('sntPay').controller('sntPaymentController',
             };
 
             $scope.showSixPaymentsModeSelection = function() {
-                return $scope.hotelConfig.paymentGateway === 'sixpayments' &&
+                var isMLIEMV =  $scope.hotelConfig.paymentGateway === 'MLI' &&
+                    $scope.hotelConfig.isEMVEnabled;
+
+                return (isMLIEMV || $scope.hotelConfig.paymentGateway === 'sixpayments') &&
                     $scope.selectedPaymentType === 'CC' &&
                     $scope.payment.screenMode === 'PAYMENT_MODE' &&
                     (!$scope.paymentAttempted || $scope.isPaymentFailure);

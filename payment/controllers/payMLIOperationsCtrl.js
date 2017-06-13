@@ -1,6 +1,6 @@
 angular.module('sntPay').controller('payMLIOperationsController',
-    ['$scope', 'sntPaymentSrv', 'paymentAppEventConstants', 'paymentUtilSrv', 'paymentConstants',
-        function($scope, sntPaymentSrv, payEvntConst, util, paymentConstants) {
+    ['$scope', 'sntPaymentSrv', 'paymentAppEventConstants', 'paymentUtilSrv', 'paymentConstants', '$timeout', '$log',
+        function($scope, sntPaymentSrv, payEvntConst, util, paymentConstants, $timeout, $log) {
 
             /**
              * variable to keep track swiped & data coming from swipe
@@ -130,6 +130,64 @@ angular.module('sntPay').controller('payMLIOperationsController',
             $scope.$on("RENDER_SWIPED_DATA", function(e, data) {
                 renderDataFromSwipe(e, data);
             });
+
+            var proceedChipAndPinPayment = function(params) {
+                // we need to notify the parent controllers to show loader
+                // as this is an external directive
+
+                $scope.$emit("SHOW_SIX_PAY_LOADER");
+                sntPaymentSrv.submitPaymentForChipAndPin(params).then(
+                    response => {
+                        $log.info("payment success" + $scope.payment.amount);
+                        response.amountPaid = $scope.payment.amount;
+                        response.authorizationCode = response.authorization_code;
+
+                        var cardType = (response.payment_method && response.payment_method.card_type) || "";
+
+                        // NOTE: The feePaid key and value would be sent IFF a fee was applied along with the payment
+                        if ($scope.feeData) {
+                            response.feePaid = $scope.feeData.calculatedFee;
+                        }
+
+                        $scope.selectedCC = $scope.selectedCC || {};
+
+                        if (response.payment_method) {
+                            $scope.selectedCC.value = response.payment_method.id;
+                            $scope.selectedCC.card_code = cardType.toLowerCase();
+                            $scope.selectedCC.ending_with = response.payment_method.ending_with;
+                            $scope.selectedCC.expiry_date = response.payment_method.expiry_date;
+                        }
+
+                        response.cc_details = angular.copy($scope.selectedCC);
+
+                        if ($scope.payment.showAddToGuestCard) {
+                            // check if add to guest card was selected
+                            response.add_to_guest_card = $scope.payment.addToGuestCardSelected;
+                        }
+                        $scope.$emit("HIDE_SIX_PAY_LOADER");
+
+                        $timeout(()=> {
+                            $scope.onPaymentSuccess(response);
+                        }, 700);
+
+                    },
+                    errorMessage => {
+                        $log.info("payment failed" + errorMessage);
+                        $scope.$emit('PAYMENT_FAILED', errorMessage);
+                        $scope.$emit("HIDE_SIX_PAY_LOADER");
+                    });
+            };
+
+            $scope.$on('INITIATE_CHIP_AND_PIN_PAYMENT', function(event, data) {
+                var paymentParams = data;
+
+                paymentParams.postData.is_emv_request = true;
+                paymentParams.postData.workstation_id = $scope.hotelConfig.workstationId;
+                paymentParams.emvTimeout = parseInt($scope.hotelConfig.emvTimeout);
+                proceedChipAndPinPayment(data);
+            });
+
+
 
             // when destroying we have to remove the attached '$on' events
             $scope.$on('destroy', resetCardEventHandler);
