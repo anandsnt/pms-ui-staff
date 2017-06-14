@@ -1,7 +1,7 @@
 sntZestStation.controller('zsAdminCtrl', [
     '$scope',
-    '$state', 'zsEventConstants', 'zsGeneralSrv', 'zsLoginSrv', '$window', '$rootScope', '$timeout', '$log',
-    function($scope, $state, zsEventConstants, zsGeneralSrv, zsLoginSrv, $window, $rootScope, $timeout, $log) {
+    '$state', 'zsEventConstants', 'zsGeneralSrv', 'zsLoginSrv', '$window', '$rootScope', '$timeout',
+    function($scope, $state, zsEventConstants, zsGeneralSrv, zsLoginSrv, $window, $rootScope, $timeout) {
 
         BaseCtrl.call(this, $scope);
         var  isLightTurnedOn = false; // initially consider the HUE light status to be turned OFF.
@@ -87,46 +87,31 @@ sntZestStation.controller('zsAdminCtrl', [
             // do nothing as no workstation was set
         }
 
-        var turnOnLight = function() {
-            if (_.isUndefined($scope.zestStationData.hueUser)) {
-                $log.error('No Hue User present');
-            } else {
-                $scope.zestStationData.hueUser.setLightState(selectedWorkstationLightId, {
-                    on: true
-                }).then(function(data) {
-                    if (data[0].error) {
-                        $log.error('Light with ID ' + selectedWorkstationLightId + ' is unreachable.');
-                    } else {
-                        isLightTurnedOn = true;
-                        $log.info('Light with ID ' + selectedWorkstationLightId + ' is turned ON');
-                    }
-                })
-                .catch(function(e) {
-                    $log.error(e);
-                    $log.info('Some thing went wrong while trying to turn ON Light with ID - ' + $scope.zestStationData.selected_light_id + '. Make sure this light is correctly connected and is reachable');
-                });
-            }
+        $scope.turnOnLight = function() {
+          var json = {
+                "Command": "cmd_hue_light_change",
+                "Data": $scope.zestStationData.hue_bridge_ip,
+                "hueLightAppkey": $scope.zestStationData.hue_user_name,
+                "shouldLight": "1",
+                "lightColor": $scope.zestStationData.hue_light_color_hex,
+                "lightList": [selectedWorkstationLightId]
+            };
+            var jsonstring = JSON.stringify(json);
+
+            $scope.socketOperator.toggleLight(jsonstring);
         };
 
-        var turnOffLight = function() {
-            if (_.isUndefined($scope.zestStationData.hueUser)) {
-                $log.error('No Hue User present');
-            } else {
-                $scope.zestStationData.hueUser.setLightState(selectedWorkstationLightId, {
-                    on: false
-                }).then(function(data) {
-                    if (data[0].error) {
-                        $log.error('Light with ID ' + selectedWorkstationLightId + ' is unreachable.');
-                    } else {
-                        isLightTurnedOn = false;
-                        $log.info('Light with ID ' + selectedWorkstationLightId + ' is turned OFF');
-                    }
-                })
-                .catch(function(e) {
-                    $log.error(e);
-                    $log.info('Some thing went wrong while trying to turn OFF Light with ID - ' + $scope.zestStationData.selected_light_id + '. Make sure this light is correctly connected and is reachable');
-                });
-            }
+        $scope.turnOffLight = function() {
+            var json = {
+                "Command": "cmd_hue_light_change",
+                "Data": $scope.zestStationData.hue_bridge_ip,
+                "hueLightAppkey": $scope.zestStationData.hue_user_name,
+                "shouldLight": "0",
+                "lightList": [selectedWorkstationLightId]
+            };
+            var jsonstring = JSON.stringify(json);
+
+            $scope.socketOperator.toggleLight(jsonstring);
         };
 
         // if workstation changes -> change printer accordingly
@@ -137,7 +122,7 @@ sntZestStation.controller('zsAdminCtrl', [
 
             selectedWorkstationLightId = selectedWorkStation.hue_light_id;
             if (isLightTurnedOn) {
-                turnOffLight(); // turn off light, if is in ON state
+                $scope.turnOffLight(); // turn off light, if is in ON state
             }
             setPrinterLabel(selectedWorkStation.printer);
             $scope.setEncoderDiagnosticInfo(selectedWorkStation.name, selectedWorkStation.key_encoder_id); // in diagnostic info display the encoder name + id
@@ -489,13 +474,6 @@ sntZestStation.controller('zsAdminCtrl', [
             }
         };
 
-        $scope.toggleLight = function() {
-            if (isLightTurnedOn) {
-                turnOffLight();
-            } else {
-                turnOnLight();
-            }
-        };
         $scope.testRunMobileKeyCheckin = function() {
             // save settings then go to the demo area
             var demoRunStarted = true;

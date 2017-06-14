@@ -1,30 +1,32 @@
 admin.controller('adZestStationHueSettingsCtrl', ['$scope', '$rootScope', '$state', '$stateParams', 'ADZestStationSrv', 'kioskSettings', '$log',
 	function($scope, $state, $rootScope, $stateParams, ADZestStationSrv, kioskSettings, $log) {
 
-		BaseCtrl.call(this, $scope);
-		$scope.$emit('changedSelectedMenu', 10);
-		$scope.errorMessage = '';
-		$scope.successMessage = '';
-		$scope.hueSettings = kioskSettings;
-		$scope.availableBridges = []; // Have to manulay discover bridges
-		$scope.availableLights = []; // Have to manulay discover lights
 
-		var hue = jsHue(),
-			bridge,
-			user;
+		var initialize = (function() {
+			BaseCtrl.call(this, $scope);
+			$scope.$emit('changedSelectedMenu', 10);
+			$scope.errorMessage = '';
+			$scope.successMessage = '';
+			$scope.hueSettings = kioskSettings;
+			$scope.availableBridges = []; // Have to manulay discover bridges
+			$scope.availableLights = []; // Have to manulay discover lights
+		}());
 
-		var runDigestCycle = function() {
-			if (!$scope.$$phase) {
-				$scope.$digest();
-			}
-		};
-		
-		var scrollTop = function() {
-			$(".content-scroll").scrollTop(0);
-			$scope.$emit('hideLoader');
-			runDigestCycle();
-		};
+		var ws, runDigestCycle = function() {
+				if (!$scope.$$phase) {
+					$scope.$digest();
+				}
+			},
+			scrollTop = function() {
+				$(".content-scroll").scrollTop(0);
+				$scope.$emit('hideLoader');
+				runDigestCycle();
+			};
 
+		/**
+		 * [saveSettings description]
+		 * @return {[type]} [description]
+		 */
 		$scope.saveSettings = function() {
 			$scope.invokeApi(ADZestStationSrv.save, {
 				'kiosk': $scope.hueSettings
@@ -35,144 +37,135 @@ admin.controller('adZestStationHueSettingsCtrl', ['$scope', '$rootScope', '$stat
 			});
 		};
 
-		$scope.discoverBridges = function() {
-			hue.discover().then(function(bridges) {
-				if (bridges.length === 0) {
-					$scope.errorMessage = ['No bridges found.'];
-					scrollTop();
+		/**
+		 * [handleWebSocketResponse websocket response actions]
+		 * @param  {[type]} response [description]
+		 * @return {[type]}          [description]
+		 */
+		var handleWebSocketResponse = function(response) {
+			if (response.ResponseCode === 0 && response.Command === 'cmd_hue_light_locate_bridge_ips') {
+				$scope.availableBridges = response.bridgeIps;
+				$log.info('bridges -->' + $scope.availableBridges);
+			} else if (response.Command === 'cmd_hue_light_register') {
+				if (response.ResponseCode === 0) {
+					$scope.newUsername = response.appKey;
+					runDigestCycle();
 				} else {
-					$scope.availableBridges = bridges;
+					$scope.errorMessage = [response.Message];
+					scrollTop();
 				}
+			} else if (response.ResponseCode === 0 && response.Command === 'cmd_hue_light_list') {
+				$scope.availableLights = [];
+				_.each(response.lights, function(light) {
+					$scope.availableLights.push({
+						id: light.id,
+						name: light.name,
+						type: light.type,
+						reachable: light.state.reachable
+					});
+				});
 				runDigestCycle();
-			})
-			.catch(function(e) {
-				$scope.errorMessage = ['Error finding bridges'];
-				$log.error(e);
-				scrollTop();
-				return;
-			});
-		};
-
-		var createBridge = function() {
-			try {
-				bridge = hue.bridge($scope.hueSettings.hue_bridge_ip);
-			} catch (e) {
-				$scope.errorMessage = ['Error creating bridge'];
-				$log.error(e);
-				scrollTop();
-				return;
-			}
-		};
-
-		var createNewUser = function() {
-			try {
-				user = bridge.user($scope.hueSettings.hue_user_name);
-			} catch (e) {
-				$scope.errorMessage = ['Error creating user'];
-				$log.error(e);
-				scrollTop();
-				return;
+			} else if (response.Command === 'cmd_hue_light_change') {
+				if (response.ResponseCode === 0) {
+					$log.info('Selected Light is turned ON/OFF');
+				} else {
+					$log.error('Selected Light is not reachable');
+				}
 			}
 		};
 
 		/**
-		 * [createNewBridgeAndUser create new user and bridge each time so as to check with latest settings at any time]
+		 * [createNewWebSocketConnection description]
 		 * @return {[type]} [description]
 		 */
-		var createNewBridgeAndUser = function() {
-			createBridge();
-			createNewUser();
+		function createNewWebSocketConnection() {
+			ws = new WebSocket("wss://localhost:4649/CCSwipeService");
+			// Triggers when websocket connection is established.
+			ws.onopen = function() {
+				$log.info("Connected. Warning : Clicking on Connect multipple times will create multipple connections to the server");
+				$scope.successMessage = "Zest station handler is running.";
+				scrollTop();
+			};
+
+			// Triggers when there is a message from websocket server.
+			ws.onmessage = function(evt) {
+				var response = JSON.parse(evt.data);
+				var cmd = response.Command,
+					msg = response.Message;
+				// to delete after QA pass
+
+				$log.info('Websocket: msg ->' + msg + '--' + 'Websocket: Command ->' + cmd);
+				handleWebSocketResponse(response);
+			};
+
+			// Triggers when the server is down.
+			ws.onclose = function() {
+				// websocket is closed.
+				$log.warn("WS Server is not running.");
+				$scope.errorMessage = ["Zest station handler is not running."];
+				scrollTop();
+			};
+			return ws;
+		}
+		createNewWebSocketConnection();
+
+		$scope.connectUsingWS = function() {
+			createNewWebSocketConnection();
 		};
 
-		$scope.createNewUser = function() {
-			if (!bridge) {
-				createBridge();
+		var sendCommand = function(Command, lightToggleJson) {
+			if (ws.readyState === 1) {
+				if (lightToggleJson) {
+					ws.send(lightToggleJson);
+				} else {
+					ws.send("{\"Command\" : \"" + Command + "\", \"Data\" : \"" + $scope.hueSettings.hue_bridge_ip + "\", \"hueLightAppkey\" : \"" + $scope.hueSettings.hue_user_name + "\"}");
+				}
+			} else {
+				setTimeout(function() {
+					$scope.errorMessage = ["Web socket not ready. Please ensure that zest station handler is running in the system. If handler is not running, please run the handler and click on connect button below."];
+					scrollTop();
+				}, 200);
 			}
-			// create user account (requires link button to be pressed)
-			bridge.createUser('snt#app').then(function(data) {
-				// extract bridge-generated username from returned data
-				var username = data[0].success.username;
+		};
 
-				$scope.newUsername = username;
-				// instantiate user object with username
-				user = bridge.user(username);
-				runDigestCycle();
-			})
-			.catch(function(e) {
-				$scope.errorMessage = ['Sorry, someting went wrong while creating a new user name. Please note that you have to click the link button on the Hue bridge before creating a new user name.'];
-				$log.error(e);
-				scrollTop();
-				return;
-			});
+		$scope.discoverBridges = function() {
+			sendCommand('cmd_hue_light_locate_bridge_ips');
+		};
+
+		$scope.createNewAppKey = function() {
+			sendCommand('cmd_hue_light_register');
 		};
 
 		$scope.getLightsList = function() {
-			createNewBridgeAndUser();
-			$scope.availableLights = [];
-			user.getLights().then(function(lightsData) {
-				if (lightsData.error) {
-					$scope.errorMessage = ['Sorry, someting went wrong. Please check the lights connections'];
-					scrollTop();
-				} else {
-					for (var key in lightsData) {
-						if (lightsData.hasOwnProperty(key)) {
-							$scope.availableLights.push({
-								id: key,
-								name: lightsData[key].name,
-								type: lightsData[key].type,
-								reachable: lightsData[key].state.reachable
-							});
-						}
-					}
-				}
-				runDigestCycle();
-			})
-			.catch(function(e) {
-				$scope.errorMessage = ['Sorry, someting went wrong. Please check the lights connections'];
-				$log.error(e);
-				scrollTop();
-				return;
-			});
+			sendCommand('cmd_hue_light_list');
 		};
 
 		$scope.turnONLight = function() {
-			createNewBridgeAndUser();
-			user.setLightState($scope.hueSettings.hue_test_light_id, {
-				on: true
-			}).then(function(data) {
-				if (data[0].error) {
-					$scope.errorMessage = ['Some thing went wrong while trying to turn ON Light with ID - ' + $scope.hueSettings.hue_test_light_id + '. Make sure this light is correctly connected and is reachable'];
-				} else {
-					$scope.successMessage = 'Light with ID - ' + $scope.hueSettings.hue_test_light_id + ' is turned ON';
-				}
-				scrollTop();
-			})
-			.catch(function(e) {
-				$scope.errorMessage = ['Some thing went wrong while trying to turn ON Light with ID - ' + $scope.hueSettings.hue_test_light_id + '. Make sure this light is correctly connected and is reachable'];
-				$log.error(e);
-				scrollTop();
-				return;
-			});
+
+			var json = {
+				"Command": "cmd_hue_light_change",
+				"Data": $scope.hueSettings.hue_bridge_ip,
+				"hueLightAppkey": $scope.hueSettings.hue_user_name,
+				"shouldLight": "1",
+				"lightColor": $scope.hueSettings.hue_light_color_hex,
+				"lightList": [$scope.hueSettings.hue_test_light_id]
+			};
+			var jsonstring = JSON.stringify(json);
+			
+			sendCommand('cmd_hue_light_change', jsonstring);
 		};
 
 		$scope.turnOFFLight = function() {
-			createNewBridgeAndUser();
-			user.setLightState($scope.hueSettings.hue_test_light_id, {
-				on: false
-			}).then(function(data) {
-				if (data[0].error) {
-					$scope.errorMessage = ['Some thing went wrong while trying to turn OFF Light with ID - ' + $scope.hueSettings.hue_test_light_id + '. Make sure this light is correctly connected and is reachable'];
-				} else {
-					$scope.successMessage = 'Light with ID - ' + $scope.hueSettings.hue_test_light_id + ' is turned OFF';
-				}
-				scrollTop();
-			})
-			.catch(function(e) {
-				$scope.errorMessage = ['Some thing went wrong while trying to turn OFF Light with ID - ' + $scope.hueSettings.hue_test_light_id + '. Make sure this light is correctly connected and is reachable'];
-				$log.error(e);
-				scrollTop();
-				return;
-			});
+			var json = {
+				"Command": "cmd_hue_light_change",
+				"Data": $scope.hueSettings.hue_bridge_ip,
+				"hueLightAppkey": $scope.hueSettings.hue_user_name,
+				"shouldLight": "0",
+				"lightList": [$scope.hueSettings.hue_test_light_id]
+			};
+			var jsonstring = JSON.stringify(json);
+
+			sendCommand('cmd_hue_light_change', jsonstring);
 		};
 	}
 ]);
