@@ -52,7 +52,7 @@ angular.module('sntPay').controller('payMLIOperationsController',
              * @return {[type]}              [description]
              */
             var notifyParentError = function(errorMessage) {
-                console.error(errorMessage);
+                $log.error(errorMessage);
                 $scope.$emit(payEvntConst.PAYMENTAPP_ERROR_OCCURED, errorMessage);
             };
 
@@ -97,24 +97,6 @@ angular.module('sntPay').controller('payMLIOperationsController',
                 notifyParentError(error);
             };
 
-            /*
-             * Function to get MLI token on click 'Add' button in form
-             */
-            $scope.getMLIToken = function($event) {
-                $event.preventDefault();
-
-                // if swiped data is present
-                if (isSwiped) {
-                    doSwipedCardActions(swipedCCData);
-                    return;
-                }
-
-                var params = util.formParamsForFetchingTheToken($scope.cardData);
-
-                $scope.$emit("showLoader");
-                sntPaymentSrv.fetchMLIToken(params, successCallBackOfGetMLIToken, failureCallBackOfGetMLIToken);
-            };
-
             var renderDataFromSwipe = function(event, swipedCardData) {
                 isSwiped = true;
                 swipedCCData = swipedCardData;
@@ -127,9 +109,49 @@ angular.module('sntPay').controller('payMLIOperationsController',
                 $scope.payment.addCCMode = "ADD_CARD";
             };
 
-            $scope.$on("RENDER_SWIPED_DATA", function(e, data) {
-                renderDataFromSwipe(e, data);
-            });
+            var tokenize = function(params) {
+                $scope.$emit("SHOW_SIX_PAY_LOADER");
+                sntPaymentSrv.getSixPaymentToken(params).then(
+                    response => {
+                        /**
+                         * The response here is expected to be of the following format
+                         * {
+                         *  card_type: "VX",
+                         *  ending_with: "0088",
+                         *  expiry_date: "1217"
+                         *  payment_method_id: 35102,
+                         *  token: "123465498745316854"
+                         * }
+                         *
+                         * NOTE: In case the request params sends add_to_guest_card: true AND guest_id w/o reservation_id
+                         * The API response has guest_payment_method_id instead of payment_method_id
+                         */
+
+                        var cardType = response.card_type || "";
+
+                        $scope.$emit('SUCCESS_LINK_PAYMENT', {
+                            response: {
+                                id: response.payment_method_id || response.guest_payment_method_id,
+                                payment_name: "CC"
+                            },
+                            selectedPaymentType: $scope.selectedPaymentType || "CC",
+                            cardDetails: {
+                                "card_code": cardType.toLowerCase(),
+                                "ending_with": response.ending_with,
+                                "expiry_date": response.expiry_date,
+                                "card_name": ""
+                            }
+                        });
+
+                        $scope.$emit("HIDE_SIX_PAY_LOADER");
+                    },
+                    errorMessage => {
+                        $log.info("Tokenization Failed");
+                        $scope.$emit('PAYMENT_FAILED', errorMessage);
+                        $scope.$emit("HIDE_SIX_PAY_LOADER");
+                    }
+                );
+            };
 
             var proceedChipAndPinPayment = function(params) {
                 // we need to notify the parent controllers to show loader
@@ -166,7 +188,7 @@ angular.module('sntPay').controller('payMLIOperationsController',
                         }
                         $scope.$emit("HIDE_SIX_PAY_LOADER");
 
-                        $timeout(()=> {
+                        $timeout(() => {
                             $scope.onPaymentSuccess(response);
                         }, 700);
 
@@ -178,6 +200,30 @@ angular.module('sntPay').controller('payMLIOperationsController',
                     });
             };
 
+            /**
+             * Function to get MLI token on click 'Add' button in form
+             * @param {Event} $event Angular event
+             * @return {undefined}
+             */
+            $scope.getMLIToken = function($event) {
+                $event.preventDefault();
+
+                // if swiped data is present
+                if (isSwiped) {
+                    doSwipedCardActions(swipedCCData);
+                    return;
+                }
+
+                var params = util.formParamsForFetchingTheToken($scope.cardData);
+
+                $scope.$emit("showLoader");
+                sntPaymentSrv.fetchMLIToken(params, successCallBackOfGetMLIToken, failureCallBackOfGetMLIToken);
+            };
+
+            $scope.$on("RENDER_SWIPED_DATA", function(e, data) {
+                renderDataFromSwipe(e, data);
+            });
+
             $scope.$on('INITIATE_CHIP_AND_PIN_PAYMENT', function(event, data) {
                 var paymentParams = data;
 
@@ -187,6 +233,13 @@ angular.module('sntPay').controller('payMLIOperationsController',
                 proceedChipAndPinPayment(data);
             });
 
+            $scope.$on('INITIATE_CHIP_AND_PIN_TOKENIZATION', function(event, data) {
+                var paymentParams = data;
+
+                paymentParams.is_emv_request = true;
+                paymentParams.emvTimeout = parseInt($scope.hotelConfig.emvTimeout);
+                tokenize(data);
+            });
 
 
             // when destroying we have to remove the attached '$on' events

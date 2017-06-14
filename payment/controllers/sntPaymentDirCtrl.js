@@ -16,7 +16,8 @@ angular.module('sntPay').controller('sntPaymentController',
                     preventDefault: true,
                     interactiveScrollbars: true,
                     preventDefaultException: {tagName: /^(INPUT|TEXTAREA|BUTTON|SELECT|A)$/}
-                };
+                },
+                isEMVEnabled;
 
             // ---------------------------------------------------------------------------------------------------------
             $scope.payment = {
@@ -161,7 +162,7 @@ angular.module('sntPay').controller('sntPaymentController',
              * @returns {{undefined}} undefined
              */
             function handlePaymentError(errorMessage) {
-                $timeout(()=> {
+                $timeout(() => {
                     $scope.paymentAttempted = true;
                     $scope.isPaymentFailure = true;
                     $scope.paymentErrorMessage = errorMessage[0];
@@ -177,7 +178,7 @@ angular.module('sntPay').controller('sntPaymentController',
              */
             function updateErrorMessage(errorMessage) {
                 $scope.paymentErrorMessage = '';
-                $timeout(()=>{
+                $timeout(() => {
                     $scope.paymentErrorMessage = errorMessage;
                     $scope.$emit('PAYMENT_FAILED', [errorMessage]);
                     $scope.$emit('hideLoader');
@@ -189,10 +190,10 @@ angular.module('sntPay').controller('sntPaymentController',
              * @returns {{undefined}} undefined
              */
             function initiateCBAlisteners() {
-                var listenerCBAPaymentFailure = $scope.$on('CBA_PAYMENT_FAILED', (event, errorMessage)=> {
+                var listenerCBAPaymentFailure = $scope.$on('CBA_PAYMENT_FAILED', (event, errorMessage) => {
                     handlePaymentError(errorMessage);
                 });
-                var listenerCBAPaymentSuccess = $scope.$on('CBA_PAYMENT_SUCCESS', (event, response)=> {
+                var listenerCBAPaymentSuccess = $scope.$on('CBA_PAYMENT_SUCCESS', (event, response) => {
                     var params = initiateSubmitPaymentParams();
 
                     // we need to notify the parent controllers to show loader
@@ -211,7 +212,7 @@ angular.module('sntPay').controller('sntPaymentController',
                     );
                 });
 
-                var listenerUpdateErrorMessage = $rootScope.$on('UPDATE_NOTIFICATION', (event, response)=> {
+                var listenerUpdateErrorMessage = $rootScope.$on('UPDATE_NOTIFICATION', (event, response) => {
                     updateErrorMessage(response);
                 });
 
@@ -225,11 +226,11 @@ angular.module('sntPay').controller('sntPaymentController',
              * @returns {{undefined}} undefined
              */
             function initiateSHIJIListeners() {
-                var listenerSHIJIPaymentFailure = $scope.$on('SHIJI_PAYMENT_FAILED', (event, errorMessage)=> {
+                var listenerSHIJIPaymentFailure = $scope.$on('SHIJI_PAYMENT_FAILED', (event, errorMessage) => {
                     handlePaymentError(errorMessage);
                 });
 
-                var listenerSHIJIPaymentSuccess = $scope.$on('SHIJI_PAYMENT_SUCCESS', (event, response)=> {
+                var listenerSHIJIPaymentSuccess = $scope.$on('SHIJI_PAYMENT_SUCCESS', (event, response) => {
                     $scope.onPaymentSuccess(response);
                 });
 
@@ -265,8 +266,8 @@ angular.module('sntPay').controller('sntPaymentController',
              */
             $scope.shouldHidePaymentButton = function() {
                 return !$scope.selectedPaymentType || !$scope.hasPermission ||
-                $scope.isGCBalanceShort() ||
-                (!$scope.splitBillEnabled && $scope.paymentAttempted && !$scope.isPaymentFailure);
+                    $scope.isGCBalanceShort() ||
+                    (!$scope.splitBillEnabled && $scope.paymentAttempted && !$scope.isPaymentFailure);
             };
 
             /**
@@ -274,13 +275,14 @@ angular.module('sntPay').controller('sntPaymentController',
              * @returns {boolean} boolean
              */
             $scope.showSelectedCard = function() {
+                var config = $scope.hotelConfig;
                 var isCCPresent = $scope.selectedPaymentType === 'CC' &&
-                (!!$scope.selectedCC && (!!$scope.selectedCC.ending_with || !!$scope.selectedCC.card_number));
+                    (!!$scope.selectedCC && (!!$scope.selectedCC.ending_with || !!$scope.selectedCC.card_number));
                 var isManualEntry = !!PAYMENT_CONFIG[$scope.hotelConfig.paymentGateway].iFrameUrl &&
                     $scope.payment.isManualEntryInsideIFrame;
 
                 return !isCardSelectionDisabled() && (isCCPresent && $scope.payment.screenMode === 'PAYMENT_MODE' &&
-                    (isManualEntry || $scope.hotelConfig.paymentGateway !== 'sixpayments'));
+                    (isManualEntry || !isEMVEnabled));
             };
 
             /**
@@ -411,8 +413,7 @@ angular.module('sntPay').controller('sntPaymentController',
 
                 // check if chip and pin is selected in case of six payments
                 // the rest of actions will in paySixPayController
-                if ($scope.selectedPaymentType === 'CC' &&
-                    $scope.hotelConfig.paymentGateway === 'sixpayments' && !$scope.payment.isManualEntryInsideIFrame) {
+                if ($scope.selectedPaymentType === 'CC' && isEMVEnabled && !$scope.payment.isManualEntryInsideIFrame) {
                     params = {
                         workstation_id: $scope.hotelConfig.workstationId,
                         bill_number: $scope.billNumber
@@ -574,7 +575,7 @@ angular.module('sntPay').controller('sntPaymentController',
 
             let promptCreateAR = function(params) {
                 //  $scope.closeThePopup();
-                $timeout(()=> {
+                $timeout(() => {
                     ngDialog.open({
                         template: '/assets/partials/payCreateARPopup.html',
                         controller: 'payCreateARPopupCtrl',
@@ -585,13 +586,13 @@ angular.module('sntPay').controller('sntPaymentController',
                 }, 0);
             };
 
-            $scope.$on('NEW_AR_ACCOUNT_CREATED', ()=> {
+            $scope.$on('NEW_AR_ACCOUNT_CREATED', () => {
                 $scope.submitPayment({
                     is_new_ar_account: true
                 });
             });
 
-            $scope.$on('CONTINUE_DIRECT_BILL_PAYMENT', (e, data)=> {
+            $scope.$on('CONTINUE_DIRECT_BILL_PAYMENT', (e, data) => {
                 var arDetails = data.arDetails;
 
                 if (data.ar_type === 'company') {
@@ -620,7 +621,7 @@ angular.module('sntPay').controller('sntPaymentController',
             });
 
             $scope.$on(payEvntConst.PAYMENTAPP_ERROR_OCCURED, (event, errorMessage) => {
-                $timeout(()=> {
+                $timeout(() => {
                     $scope.errorMessage = errorMessage;
                 }, 100);
             });
@@ -634,7 +635,7 @@ angular.module('sntPay').controller('sntPaymentController',
             $scope.submitAccountPayment = function() {
                 if ($scope.selectedPaymentType === 'DB') {
                     //  TODO: Check if AR account is present
-                    sntPaymentSrv.checkARStatus($scope.postingAccountId).then(data=> {
+                    sntPaymentSrv.checkARStatus($scope.postingAccountId).then(data => {
                         if (data.company_present && data.travel_agent_present) {
                             $scope.$emit('SHOW_AR_SELECTION', data);
                         } else if (data.company_present) {
@@ -675,7 +676,7 @@ angular.module('sntPay').controller('sntPaymentController',
 
             // CICO-33971 : Confirm Direct Bill payment.
             let confirmDirectBillPayment = function(params) {
-                $timeout(()=> {
+                $timeout(() => {
                     ngDialog.open({
                         template: '/assets/partials/rvConfirmDirectBillPaymentPopup.html',
                         className: '',
@@ -692,7 +693,7 @@ angular.module('sntPay').controller('sntPaymentController',
                 paymentDialogId = $dialog.attr('id');
             });
             // CICO-33971 : Submit payment process after confirming as DB.
-            $scope.$on('CONFIRMED_DB_PAYMENT', ( event, params ) => {
+            $scope.$on('CONFIRMED_DB_PAYMENT', (event, params) => {
                 $scope.payment.isConfirmedDBpayment = true;
                 $scope.submitPayment(params);
             });
@@ -732,9 +733,8 @@ angular.module('sntPay').controller('sntPaymentController',
 
 
                 // MLI EMV
-                if ($scope.selectedPaymentType === 'CC' &&
-                    $scope.hotelConfig.isEMVEnabled &&
-                    $scope.hotelConfig.paymentGateway === 'MLI' && !$scope.payment.isManualEntryInsideIFrame) {
+                if ($scope.selectedPaymentType === 'CC' && isEMVEnabled
+                    && !$scope.payment.isManualEntryInsideIFrame) {
                     $scope.$broadcast('INITIATE_CHIP_AND_PIN_PAYMENT', params);
                     return;
                 }
@@ -886,7 +886,7 @@ angular.module('sntPay').controller('sntPaymentController',
                     name: $scope.selectedPaymentType
                 });
                 $scope.$emit('PAYMENT_TYPE_CHANGED', $scope.selectedPaymentType);
-                
+
                 // -- CICO-33971 :: Direct Bill Payment --
                 if ($scope.selectedPaymentType === 'DB') {
                     $scope.payment.isEditable = false;
@@ -925,7 +925,7 @@ angular.module('sntPay').controller('sntPaymentController',
                         //  In case no card has been selected yet, move to add card mode
                         changeToCardAddMode();
                     }
-                }  else {
+                } else {
                     $scope.payment.showAddToGuestCard = false;
                 }
             };
@@ -1151,7 +1151,7 @@ angular.module('sntPay').controller('sntPaymentController',
                     $scope.selectedCC.ending_with = paymentData.cardDisplayData.ending_with;
                     $scope.selectedCC.expiry_date = paymentData.cardDisplayData.expiry_date;
                     $scope.selectedCC.holder_name = paymentData.apiParams.name_on_card || paymentData.apiParams.card_name;
-                    $timeout(()=> {
+                    $timeout(() => {
                         $scope.selectedPaymentType = 'CC';
                         $scope.payment.screenMode = 'PAYMENT_MODE';
                         if (data.forceSaveRoutine) {
@@ -1230,7 +1230,7 @@ angular.module('sntPay').controller('sntPaymentController',
             };
 
             $scope.showSixPaymentsModeSelection = function() {
-                var isMLIEMV =  $scope.hotelConfig.paymentGateway === 'MLI' &&
+                var isMLIEMV = $scope.hotelConfig.paymentGateway === 'MLI' &&
                     $scope.hotelConfig.isEMVEnabled;
 
                 return (isMLIEMV || $scope.hotelConfig.paymentGateway === 'sixpayments') &&
@@ -1242,7 +1242,7 @@ angular.module('sntPay').controller('sntPaymentController',
             /** **************** init ***********************************************/
 
             (function() {
-                var paths;
+                var paths, config;
 
                 $scope.actionType = $scope.actionType || 'DEFAULT';
                 if ($scope.fetchLinkedCards !== false) {
@@ -1257,7 +1257,7 @@ angular.module('sntPay').controller('sntPaymentController',
 
                 $scope.$watch('amount', onAmountChange);
 
-                $scope.$watch('paymentTypes', ()=> {
+                $scope.$watch('paymentTypes', () => {
                     $scope.payment.creditCardTypes = getCrediCardTypesList();
                 });
 
@@ -1323,7 +1323,7 @@ angular.module('sntPay').controller('sntPaymentController',
                  * This scenario is possible in case of add payments in stay-card; guest-card and stay-card bill screens.
                  */
                 if ($scope.swipedCardData) {
-                    $timeout(()=> {
+                    $timeout(() => {
                         $scope.$broadcast('RENDER_SWIPED_DATA', JSON.parse($scope.swipedCardData));
                     }, 300);
                 }
@@ -1343,9 +1343,15 @@ angular.module('sntPay').controller('sntPaymentController',
                     'tap': true
                 });
 
-                $scope.$watch('payment.screenMode', ()=> {
+                $scope.$watch('payment.screenMode', () => {
                     $scope.$emit('PAYMENT_SCREEN_MODE_CHANGED', $scope.payment.screenMode);
                 });
+
+                config = $scope.hotelConfig;
+
+                isEMVEnabled = config.paymentGateway === 'sixpayments' ||
+                    (config.paymentGateway === 'MLI' && config.isEMVEnabled);
+
             })();
 
         }
