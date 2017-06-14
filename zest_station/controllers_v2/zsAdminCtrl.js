@@ -1,7 +1,7 @@
 sntZestStation.controller('zsAdminCtrl', [
     '$scope',
-    '$state', 'zsEventConstants', 'zsGeneralSrv', 'zsLoginSrv', '$window', '$rootScope', '$timeout', '$log',
-    function($scope, $state, zsEventConstants, zsGeneralSrv, zsLoginSrv, $window, $rootScope, $timeout, $log) {
+    '$state', 'zsEventConstants', 'zsGeneralSrv', 'zsLoginSrv', '$window', '$rootScope', '$timeout',
+    function($scope, $state, zsEventConstants, zsGeneralSrv, zsLoginSrv, $window, $rootScope, $timeout) {
 
         BaseCtrl.call(this, $scope);
         var  isLightTurnedOn = false; // initially consider the HUE light status to be turned OFF.
@@ -97,6 +97,7 @@ sntZestStation.controller('zsAdminCtrl', [
                 "lightList": [selectedWorkstationLightId]
             };
             var jsonstring = JSON.stringify(json);
+
             $scope.socketOperator.toggleLight(jsonstring);
         };
 
@@ -109,6 +110,7 @@ sntZestStation.controller('zsAdminCtrl', [
                 "lightList": [selectedWorkstationLightId]
             };
             var jsonstring = JSON.stringify(json);
+
             $scope.socketOperator.toggleLight(jsonstring);
         };
 

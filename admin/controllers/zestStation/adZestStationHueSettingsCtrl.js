@@ -74,9 +74,13 @@ admin.controller('adZestStationHueSettingsCtrl', ['$scope', '$rootScope', '$stat
 			}
 		};
 
+		/**
+		 * [createNewWebSocketConnection description]
+		 * @return {[type]} [description]
+		 */
 		function createNewWebSocketConnection() {
 			ws = new WebSocket("wss://localhost:4649/CCSwipeService");
-			//Triggers when websocket connection is established.
+			// Triggers when websocket connection is established.
 			ws.onopen = function() {
 				$log.info("Connected. Warning : Clicking on Connect multipple times will create multipple connections to the server");
 				$scope.successMessage = "Zest station handler is running.";
@@ -85,7 +89,7 @@ admin.controller('adZestStationHueSettingsCtrl', ['$scope', '$rootScope', '$stat
 
 			// Triggers when there is a message from websocket server.
 			ws.onmessage = function(evt) {
-				var response = JSON.parse(evt.data)
+				var response = JSON.parse(evt.data);
 				var cmd = response.Command,
 					msg = response.Message;
 				// to delete after QA pass
@@ -102,7 +106,7 @@ admin.controller('adZestStationHueSettingsCtrl', ['$scope', '$rootScope', '$stat
 				scrollTop();
 			};
 			return ws;
-		};
+		}
 		createNewWebSocketConnection();
 
 		$scope.connectUsingWS = function() {
@@ -147,6 +151,7 @@ admin.controller('adZestStationHueSettingsCtrl', ['$scope', '$rootScope', '$stat
 				"lightList": [$scope.hueSettings.hue_test_light_id]
 			};
 			var jsonstring = JSON.stringify(json);
+			
 			sendCommand('cmd_hue_light_change', jsonstring);
 		};
 
@@ -159,6 +164,7 @@ admin.controller('adZestStationHueSettingsCtrl', ['$scope', '$rootScope', '$stat
 				"lightList": [$scope.hueSettings.hue_test_light_id]
 			};
 			var jsonstring = JSON.stringify(json);
+
 			sendCommand('cmd_hue_light_change', jsonstring);
 		};
 	}
