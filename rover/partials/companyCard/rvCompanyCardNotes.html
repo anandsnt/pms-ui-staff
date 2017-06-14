@@ -27,7 +27,8 @@
 	                    <span class="time">{{note.time}}</span>
 	                    <span class="date">{{note.date}}</span>
 	                </time>
-	                <button type="button" class="icons icon-trash" ng-click="deleteNote($event, note.id, $index)">Delete post</button>
+			        <strong class="global-label">{{note.hotel_name}}</strong>
+	                <button ng-show="note.is_editable" type="button" class="icons icon-trash" ng-click="deleteNote($event, note.id, $index)">Delete post</button>
 	            </div>
 	            <p>{{note.note}}</p>
 	        </li>
