@@ -1064,7 +1064,7 @@ sntRover.controller('rvReservationCardActionsController', ['$scope', '$filter', 
         };
 
         $scope.getDateFromDate = function(d) {
-            var day = new Date(d);
+            var day = new tzIndependentDate(d);
             var dayString = day.getDay();
 
             switch (day.getDay()) {
