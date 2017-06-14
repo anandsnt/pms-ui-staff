@@ -225,8 +225,15 @@
                 <div class="entry with-label" ng-if="zestStationData.kiosk_is_hue_active">
                     <label>Test Hue Light</label>
                     <label class='admin-label-description'>Test the connectivity of the Hue light corresponding to the selected workstation</label>
-                    <div class="select button done-btn" type="button" touch-press="toggleLight()">
-                        Toggle Light
+                    <div class="select button done-btn" type="button" touch-press="turnOnLight()">
+                        Light ON
+                    </div>
+                </div>
+                <div class="entry with-label" ng-if="zestStationData.kiosk_is_hue_active">
+                    <label></label>
+                    <label class='admin-label-description'>Turn Off Light</label>
+                     <div class="select button done-btn" type="button" touch-press="turnOffLight()">
+                        Light OFF
                     </div>
                 </div>
 
