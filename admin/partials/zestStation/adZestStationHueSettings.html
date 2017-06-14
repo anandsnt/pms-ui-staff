@@ -46,12 +46,14 @@
             {{'NEW_APP_KEY_IS' | translate}} => {{newUsername}}
         </div>
         <ad-textbox value="hueSettings.hue_user_name" name="app-name" id="app-name" label="App key" styleclass="half-width"></ad-textbox>
+        <ad-form-sub-title title="LIGHT_COLOR_INSTRUCTIONS"></ad-form-sub-title>
+        <ad-textbox value="hueSettings.hue_light_color_hex" name="app-name" id="app-name" label="Light Color" styleclass="half-width"></ad-textbox>
     </fieldset>
     <fieldset class="holder full-width">
         <ad-form-title form-title="Test Settings"></ad-form-title>
         <ad-form-sub-title title="TEST_SETTINGS_INSTRUCTIONS"></ad-form-sub-title>
     </fieldset>
-    <fieldset class="holder left">
+    <fieldset class="holder full-width">
         <div class="entry full-width">
             <button translate="" ng-click="getLightsList()" class="button green" translate="">GET_LIGHTS</button>
         </div>

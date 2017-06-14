@@ -130,7 +130,8 @@
 "TURN_ON_LIGHT": "Turn ON light",
 "TURN_OFF_LIGHT": "Turn OFF light",
 "TEST_SETTINGS_INSTRUCTIONS": "If you already know the required light ID, enter the ID in the light ID field. Else click on get lights list button to list all the available lights. Please note that the lights have to be reachable.",
-"HUE_LIGHT_ID": "Hue Light ID"
+"HUE_LIGHT_ID": "Hue Light ID",
+"LIGHT_COLOR_INSTRUCTIONS": "Please enter the 6 digit hex color." 
 
 
 

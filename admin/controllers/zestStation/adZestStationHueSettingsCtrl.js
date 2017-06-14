@@ -1,30 +1,32 @@
 admin.controller('adZestStationHueSettingsCtrl', ['$scope', '$rootScope', '$state', '$stateParams', 'ADZestStationSrv', 'kioskSettings', '$log',
 	function($scope, $state, $rootScope, $stateParams, ADZestStationSrv, kioskSettings, $log) {
 
-		BaseCtrl.call(this, $scope);
-		$scope.$emit('changedSelectedMenu', 10);
-		$scope.errorMessage = '';
-		$scope.successMessage = '';
-		$scope.hueSettings = kioskSettings;
-		$scope.availableBridges = []; // Have to manulay discover bridges
-		$scope.availableLights = []; // Have to manulay discover lights
-		var ws;
 
-		var bridge,
-			user;
+		var initialize = (function() {
+			BaseCtrl.call(this, $scope);
+			$scope.$emit('changedSelectedMenu', 10);
+			$scope.errorMessage = '';
+			$scope.successMessage = '';
+			$scope.hueSettings = kioskSettings;
+			$scope.availableBridges = []; // Have to manulay discover bridges
+			$scope.availableLights = []; // Have to manulay discover lights
+		}());
 
-		var runDigestCycle = function() {
-			if (!$scope.$$phase) {
-				$scope.$digest();
-			}
-		};
+		var ws, runDigestCycle = function() {
+				if (!$scope.$$phase) {
+					$scope.$digest();
+				}
+			},
+			scrollTop = function() {
+				$(".content-scroll").scrollTop(0);
+				$scope.$emit('hideLoader');
+				runDigestCycle();
+			};
 
-		var scrollTop = function() {
-			$(".content-scroll").scrollTop(0);
-			$scope.$emit('hideLoader');
-			runDigestCycle();
-		};
-
+		/**
+		 * [saveSettings description]
+		 * @return {[type]} [description]
+		 */
 		$scope.saveSettings = function() {
 			$scope.invokeApi(ADZestStationSrv.save, {
 				'kiosk': $scope.hueSettings
@@ -35,10 +37,15 @@ admin.controller('adZestStationHueSettingsCtrl', ['$scope', '$rootScope', '$stat
 			});
 		};
 
-		// https://github.com/StayNTouch/pms/blob/develop/app/assets/admin/controllers/zestStation/adZestStationHueSettingsCtrl.js
+		/**
+		 * [handleWebSocketResponse websocket response actions]
+		 * @param  {[type]} response [description]
+		 * @return {[type]}          [description]
+		 */
 		var handleWebSocketResponse = function(response) {
 			if (response.ResponseCode === 0 && response.Command === 'cmd_hue_light_locate_bridge_ips') {
 				$scope.availableBridges = response.bridgeIps;
+				$log.info('bridges -->' + $scope.availableBridges);
 			} else if (response.Command === 'cmd_hue_light_register') {
 				if (response.ResponseCode === 0) {
 					$scope.newUsername = response.appKey;
@@ -48,23 +55,22 @@ admin.controller('adZestStationHueSettingsCtrl', ['$scope', '$rootScope', '$stat
 					scrollTop();
 				}
 			} else if (response.ResponseCode === 0 && response.Command === 'cmd_hue_light_list') {
-				// for (var key in lightsData) {
-				// 		if (lightsData.hasOwnProperty(key)) {
-				// 			$scope.availableLights.push({
-				// 				id: key,
-				// 				name: lightsData[key].name,
-				// 				type: lightsData[key].type,
-				// 				reachable: lightsData[key].state.reachable
-				// 			});
-				// 		}
-				// 	}
 				$scope.availableLights = [];
 				_.each(response.lights, function(light) {
 					$scope.availableLights.push({
-						id: light
+						id: light.id,
+						name: light.name,
+						type: light.type,
+						reachable: light.state.reachable
 					});
 				});
 				runDigestCycle();
+			} else if (response.Command === 'cmd_hue_light_change') {
+				if (response.ResponseCode === 0) {
+					$log.info('Selected Light is turned ON/OFF');
+				} else {
+					$log.error('Selected Light is not reachable');
+				}
 			}
 		};
 
@@ -85,8 +91,6 @@ admin.controller('adZestStationHueSettingsCtrl', ['$scope', '$rootScope', '$stat
 				// to delete after QA pass
 
 				$log.info('Websocket: msg ->' + msg + '--' + 'Websocket: Command ->' + cmd);
-
-				console.log(response.ResponseCode);
 				handleWebSocketResponse(response);
 			};
 
@@ -105,10 +109,13 @@ admin.controller('adZestStationHueSettingsCtrl', ['$scope', '$rootScope', '$stat
 			createNewWebSocketConnection();
 		};
 
-		var sendCommand = function(Command, Data, hueLightAppkey) {
+		var sendCommand = function(Command, lightToggleJson) {
 			if (ws.readyState === 1) {
-				ws.send("{\"Command\" : \"" + Command + "\", \"Data\" : \"" + $scope.hueSettings.hue_bridge_ip + "\", \"hueLightAppkey\" : \"" + $scope.hueSettings.hue_user_name + "\"}");
-
+				if (lightToggleJson) {
+					ws.send(lightToggleJson);
+				} else {
+					ws.send("{\"Command\" : \"" + Command + "\", \"Data\" : \"" + $scope.hueSettings.hue_bridge_ip + "\", \"hueLightAppkey\" : \"" + $scope.hueSettings.hue_user_name + "\"}");
+				}
 			} else {
 				setTimeout(function() {
 					$scope.errorMessage = ["Web socket not ready. Please ensure that zest station handler is running in the system. If handler is not running, please run the handler and click on connect button below."];
@@ -130,11 +137,29 @@ admin.controller('adZestStationHueSettingsCtrl', ['$scope', '$rootScope', '$stat
 		};
 
 		$scope.turnONLight = function() {
-			sendCommand('discover_bridges');
+
+			var json = {
+				"Command": "cmd_hue_light_change",
+				"Data": $scope.hueSettings.hue_bridge_ip,
+				"hueLightAppkey": $scope.hueSettings.hue_user_name,
+				"shouldLight": "1",
+				"lightColor": $scope.hueSettings.hue_light_color_hex,
+				"lightList": [$scope.hueSettings.hue_test_light_id]
+			};
+			var jsonstring = JSON.stringify(json);
+			sendCommand('cmd_hue_light_change', jsonstring);
 		};
 
 		$scope.turnOFFLight = function() {
-			sendCommand('discover_bridges');
+			var json = {
+				"Command": "cmd_hue_light_change",
+				"Data": $scope.hueSettings.hue_bridge_ip,
+				"hueLightAppkey": $scope.hueSettings.hue_user_name,
+				"shouldLight": "0",
+				"lightList": [$scope.hueSettings.hue_test_light_id]
+			};
+			var jsonstring = JSON.stringify(json);
+			sendCommand('cmd_hue_light_change', jsonstring);
 		};
 	}
 ]);
