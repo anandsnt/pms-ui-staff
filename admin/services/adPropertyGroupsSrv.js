@@ -1,15 +1,13 @@
-admin.service('ADPropertyGroupsSrv', ['$http', '$q', 'ADBaseWebSrv', function($http, $q, ADBaseWebSrv) {
+admin.service('ADPropertyGroupsSrv', ['$http', '$q', 'ADBaseWebSrv', 'ADBaseWebSrvV2', function($http, $q, ADBaseWebSrv, ADBaseWebSrvV2) {
 
 	/**
     *   A getter method to return the property groups list
     */
 	this.fetch = function(params) {
 		var deferred = $q.defer();
-		//var url = '/admin/property_groups/list.json';
-		var url = '/admin/charge_codes/list.json';
+		var url = '/api/property_groups';
 
-
-		ADBaseWebSrv.getJSON(url, params).then(function(data) {
+		ADBaseWebSrvV2.getJSON(url, params).then(function(data) {
 		    deferred.resolve(data);
 		}, function(data) {
 		    deferred.reject(data);
@@ -36,10 +34,9 @@ admin.service('ADPropertyGroupsSrv', ['$http', '$q', 'ADBaseWebSrv', function($h
     */
 	this.fetchAddData = function() {
 		var deferred = $q.defer();
-		// var url = '/admin/property_groups/new';
-		var url = '/admin/charge_codes/new';
+		var url = '/api/property_groups/new.json';
 
-		ADBaseWebSrv.getJSON(url).then(function(data) {
+		ADBaseWebSrvV2.getJSON(url).then(function(data) {
 		    deferred.resolve(data);
 		}, function(data) {
 		    deferred.reject(data);
@@ -51,10 +48,9 @@ admin.service('ADPropertyGroupsSrv', ['$http', '$q', 'ADBaseWebSrv', function($h
     */
 	this.fetchEditData = function(data) {
 		var deferred = $q.defer();
-		// var url = '/admin/property_groups/' + data.editId + '/edit.json';
-		var url = '/admin/charge_codes/' + 7990 + '/edit.json';
+		var url = '/api/property_groups/' + data.editId;
 
-		ADBaseWebSrv.getJSON(url).then(function(data) {
+		ADBaseWebSrvV2.getJSON(url).then(function(data) {
 		    deferred.resolve(data);
 		}, function(data) {
 		    deferred.reject(data);
@@ -66,9 +62,24 @@ admin.service('ADPropertyGroupsSrv', ['$http', '$q', 'ADBaseWebSrv', function($h
     */
 	this.save = function(data) {
 		var deferred = $q.defer();
-		var url = '/admin/property_groups/save';
+		var url = '/api/property_groups';
 
-		ADBaseWebSrv.postJSON(url, data).then(function(data) {
+		ADBaseWebSrvV2.postJSON(url, data).then(function(data) {
+		    deferred.resolve(data);
+		}, function(data) {
+		    deferred.reject(data);
+		});
+		return deferred.promise;
+	};
+
+    /**
+     *   A post method to add/edit the property groups data.
+     */
+	this.update = function(data) {
+		var deferred = $q.defer();
+		var url = '/api/property_groups/'+data.id;
+
+		ADBaseWebSrvV2.putJSON(url, data).then(function(data) {
 		    deferred.resolve(data);
 		}, function(data) {
 		    deferred.reject(data);

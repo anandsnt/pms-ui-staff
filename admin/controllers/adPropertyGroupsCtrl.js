@@ -12,35 +12,7 @@ admin.controller('ADPropertyGroupsCtrl', ['$scope', '$stateParams', 'ADPropertyG
 		$scope.fetchTableData = function($defer, params) {
 			var getParams = $scope.calculateGetParams(params);
 			var fetchSuccessOfItemList = function(data) {
-				data =  {
-					"total_count": 132,
-					"property_groups": [{
-						"id": 13290,
-						"name": "Group name one",
-						"linked_property_count": 3
 
-					}, {
-						"id": 13290,
-						"name": "Group name two",
-						"linked_property_count": 3
-
-					}, {
-						"id": 13290,
-						"name": "Group name three",
-						"linked_property_count": 3
-
-					}, {
-						"id": 13290,
-						"name": "Group name four",
-						"linked_property_count": "3"
-
-					}, {
-						"id": 13290,
-						"name": "Group name five",
-						"linked_property_count": 3
-
-					}]
-				};
 				$scope.$emit('hideLoader');
 
 				$scope.currentClickedElement = -1;
@@ -84,29 +56,7 @@ admin.controller('ADPropertyGroupsCtrl', ['$scope', '$stateParams', 'ADPropertyG
 	            $anchorScroll();
         	});
 			var fetchNewDetailsSuccessCallback = function(data) {
-				data = {
-					"chain_hotels": [{
-							"id": 22,
-							"name": "Zoku Amsterdam",
-							"belongs_to_group": "",
-							"is_already_linked_to_group": false
-						},
-						{
-							"id": 23,
-							"name": "Zoku Amsterdam test",
-							"belongs_to_group": "Zoku group",
-							"is_already_linked_to_group": true
-						},
-						{
-							"id": 24,
-							"name": "Zoku Amsterdam second",
-							"belongs_to_group": "Zoku group",
-							"is_already_linked_to_group": true
-						}
 
-
-					]
-				};
 				$scope.$emit('hideLoader');
 				$scope.isAdd = true;
 				$scope.prefetchData = {};
@@ -130,47 +80,8 @@ admin.controller('ADPropertyGroupsCtrl', ['$scope', '$stateParams', 'ADPropertyG
 			var data = {
 				'editId': value
 			};
-			$scope.isEdit = true;
 
 			var editSuccessCallback = function(data) {
-				data = {
-					"name": "Zoku group",
-					"linked_property_ids": [22, 29],
-					"chain_hotels": [{
-							"id": 22,
-							"name": "Zoku Amsterdam",
-							"belongs_to_group": "Zoku group",
-							"is_already_linked_to_group": true
-						},
-						{
-							"id": 23,
-							"name": "Zoku Amsterdam test",
-							"belongs_to_group": "",
-							"is_already_linked_to_group": false
-						},
-						{
-							"id": 28,
-							"name": "Zoku Amsterdam one",
-							"belongs_to_group": "DC Hotels",
-							"is_already_linked_to_group": true
-						},
-						{
-							"id": 29,
-							"name": "Zoku Amsterdam two",
-							"belongs_to_group": "Zoku group",
-							"is_already_linked_to_group": true
-						},
-						{
-							"id": 24,
-							"name": "Zoku Amsterdam second",
-							"belongs_to_group": "Zoku group",
-							"is_already_linked_to_group": true
-						}
-
-
-					]
-				};
-
 
 				$scope.$emit('hideLoader');
 				$scope.currentClickedElement = index;
@@ -223,17 +134,17 @@ admin.controller('ADPropertyGroupsCtrl', ['$scope', '$stateParams', 'ADPropertyG
 		/*
 		 * To handle save button click.
 		 */
-		$scope.clickedSave = function() {alert("test function")
+		$scope.clickedSave = function() {
 			var saveSuccessCallback = function(data) {
 				$scope.$emit('hideLoader');
 				if ($scope.isEdit) {
-                                    var p = parseInt($scope.currentClickedElement);
+                	var p = parseInt($scope.currentClickedElement);
 
-                                    if ($scope.orderedData) {
-                                    if ($scope.orderedData[p]) {
-					$scope.orderedData[parseInt($scope.currentClickedElement)].property_group = data.property_group;
-                                    }
-                                    }
+                    if ($scope.orderedData) {
+                    	if ($scope.orderedData[p]) {
+							$scope.orderedData[parseInt($scope.currentClickedElement)].property_group = data.property_group;
+                        }
+                    }
 
 				} else {
 					$scope.data.push(data);
@@ -251,10 +162,16 @@ admin.controller('ADPropertyGroupsCtrl', ['$scope', '$stateParams', 'ADPropertyG
 			};
 
 			var postData = {
-				"property_group_name": $scope.prefetchData.property_group_name,
+				"name": $scope.prefetchData.name,
 				"linked_property_ids": $scope.prefetchData.linked_property_ids
 			};
-			$scope.invokeApi(ADPropertyGroupsSrv.save, postData, saveSuccessCallback);
+			if ($scope.isEdit) {
+				postData.id = $scope.editId;
+				$scope.invokeApi(ADPropertyGroupsSrv.update, postData, saveSuccessCallback);
+			} else {
+				$scope.invokeApi(ADPropertyGroupsSrv.save, postData, saveSuccessCallback);
+			}
+
 		};
 
 		/*
