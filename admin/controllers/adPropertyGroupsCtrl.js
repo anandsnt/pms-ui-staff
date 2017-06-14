@@ -191,6 +191,7 @@ admin.controller('ADPropertyGroupsCtrl', ['$scope', '$stateParams', 'ADPropertyG
 	    */
 
 	    $scope.checkBoxClicked = function(index) {
+	    	console.log("jphme")
 	    	var propId = $scope.prefetchData.chain_hotels[index].id;
 
 	    	if (!$scope.prefetchData.linked_property_ids.includes(propId)) {
