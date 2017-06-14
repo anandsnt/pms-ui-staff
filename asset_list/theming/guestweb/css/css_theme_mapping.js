@@ -117,7 +117,8 @@ module.exports = {
 		'guestweb_maidestone_hotel': [ themeCSSRoot + 'guestweb_maidestone_hotel.css'],
             'guestweb_hotel_de_jonker': [ themeCSSRoot + 'guestweb_hotel_de_jonker.css'],
             'guestweb_carillon_v2': [ themeCSSRoot + 'guestweb_carillon_v2.css'],
-            'guestweb_cachet_boutique': [ themeCSSRoot + 'guestweb_cachet_boutique.css']
+            'guestweb_cachet_boutique': [ themeCSSRoot + 'guestweb_cachet_boutique.css'],
+            'guestweb_hotel_berlaymont': [ themeCSSRoot + 'guestweb_hotel_berlaymont.css']
         };
     }
 };
