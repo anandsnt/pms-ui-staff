@@ -67,5 +67,6 @@
 	"API_CONFIGURATION_PREFIX": "API Access",
 	"VENDOR_ID": "Vendor ID",
 	"WINDSURFER_HEADER": "Windsurfer CRS Setup",
-	"ACCESS_URL": "Access URL"
-
+	"ACCESS_URL": "Access URL",
+	"AUTH_KEY": "Authorization Key",
+	"AUTH_ID": "Authorization ID"
