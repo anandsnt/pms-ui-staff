@@ -50,6 +50,7 @@ admin.controller('ADPropertyGroupsCtrl', ['$scope', '$stateParams', 'ADPropertyG
 		 */
 		$scope.addNewClicked = function() {
 			$scope.currentClickedElement = -1;
+			$scope.isEdit = false;
 
 			$timeout(function() {
 	            $location.hash('new-form-holder');
@@ -118,10 +119,7 @@ admin.controller('ADPropertyGroupsCtrl', ['$scope', '$stateParams', 'ADPropertyG
 		 * To fetch the template for property group details add/edit screens
 		 */
 		$scope.getTemplateUrl = function() {
-
 			return "/assets/partials/chainAdmins/adPropertyGroupDetailsForm.html";
-
-
 		};
 
 		/*
@@ -216,14 +214,11 @@ admin.controller('ADPropertyGroupsCtrl', ['$scope', '$stateParams', 'ADPropertyG
 	    		$scope.prefetchData.linked_property_ids.splice(idx, 1);
 	    	};
 
-	    	// $scope.prefetchData.chain_hotels[index].is_checked = ($scope.prefetchData.chain_hotels[index].is_checked === 'true') ? 'false' : 'true';
 	    	$scope.prefetchData.chain_hotels[index].is_checked = ($scope.prefetchData.linked_property_ids.includes(propId)) ? true : false;
 	    	if ($scope.prefetchData.chain_hotels[index].is_checked) {
 	    		$scope.prefetchData.chain_hotels[index].is_already_linked_to_group = false;
 	    	} else {
 	    		$scope.prefetchData.chain_hotels[index].is_already_linked_to_group = ($scope.prefetchData.already_linked_property_ids.includes(propId)) ? true : false;
 	    	}
-	    	//$scope.prefetchData.chain_hotels[index].is_already_linked_to_group = ($scope.prefetchData.already_linked_property_ids.includes(propId)) ? true : false;
-
 	    };
 	}]);

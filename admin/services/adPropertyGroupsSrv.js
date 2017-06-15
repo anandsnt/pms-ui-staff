@@ -1,4 +1,4 @@
-admin.service('ADPropertyGroupsSrv', ['$http', '$q', 'ADBaseWebSrv', 'ADBaseWebSrvV2', function($http, $q, ADBaseWebSrv, ADBaseWebSrvV2) {
+admin.service('ADPropertyGroupsSrv', ['$http', '$q', 'ADBaseWebSrvV2', function($http, $q, ADBaseWebSrvV2) {
 
 	/**
     *   A getter method to return the property groups list
