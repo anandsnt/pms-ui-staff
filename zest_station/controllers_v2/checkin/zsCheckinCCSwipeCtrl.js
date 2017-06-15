@@ -459,9 +459,9 @@ sntZestStation.controller('zsCheckinCCSwipeCtrl', [
 
             } else {
                 // fetches reservation details, which holds the updated auth amount
-                $scope.callAPI(zsCheckinSrv.fetchReservationDetails, {
+                $scope.callAPI(zsCheckinSrv.fetchReservationInfo, {
                     params: {
-                        'id': $stateParams.confirmation_number
+                        'id': $stateParams.reservation_id
                     },
                     'successCallBack': onSuccessFetchRemainingAuth,
                     'failureCallBack': onSwipeError
