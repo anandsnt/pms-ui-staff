@@ -1688,21 +1688,6 @@ sntZestStation.controller('zsRootCtrl', [
             if (hotelLanguages) {
                 setupLanguageTranslations();
             }
-            if ($scope.zestStationData.kiosk_is_hue_active) {
-                var hue = jsHue();
-                try {
-                    bridge = hue.bridge($scope.zestStationData.hue_bridge_ip);
-                } catch (e) {
-                    $log.error(e);
-                    $log.warn('Error creating HUE bridge with bridge IP => ' + $scope.zestStationData.hue_bridge_ip);
-                }
-                try {
-                    $scope.zestStationData.hueUser = bridge.user($scope.zestStationData.hue_user_name);
-                } catch (e) {
-                    $log.error(e);
-                    $log.warn('Error creating HUE user with user name => ' + $scope.zestStationData.hue_user_name);
-                }
-            }
             $rootScope.isStandAlone = zestStationSettings.is_standalone;
             $scope.zestStationData.check_in_collect_passport = false;// TODO: link with admin setting
             $scope.zestStationData.showTemplateList = false; // Only for ipad in dev environment, switch themes fast like in chrome (dashboard view)
