@@ -20,9 +20,9 @@ admin.service('ADPropertyGroupsSrv', ['$http', '$q', 'ADBaseWebSrv', 'ADBaseWebS
     */
 	this.deleteItem = function(data) {
 		var deferred = $q.defer();
-		var url = '/admin/property_groups/' + data.value + '/delete';
+		var url = '/api/property_groups/' + data.value;
 
-		ADBaseWebSrv.getJSON(url).then(function(data) {
+		ADBaseWebSrvV2.deleteJSON(url).then(function(data) {
 		    deferred.resolve(data);
 		}, function(data) {
 		    deferred.reject(data);
