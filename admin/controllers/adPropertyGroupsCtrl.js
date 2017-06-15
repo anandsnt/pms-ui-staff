@@ -9,6 +9,9 @@ admin.controller('ADPropertyGroupsCtrl', ['$scope', '$stateParams', 'ADPropertyG
 		$scope.prefetchData = {};
 		$scope.successMessage = "";
 
+		/*
+		 * To list property groups
+		 */
 		$scope.fetchTableData = function($defer, params) {
 			var getParams = $scope.calculateGetParams(params);
 			var fetchSuccessOfItemList = function(data) {
@@ -177,6 +180,7 @@ admin.controller('ADPropertyGroupsCtrl', ['$scope', '$stateParams', 'ADPropertyG
 				"name": $scope.prefetchData.name,
 				"linked_property_ids": $scope.prefetchData.linked_property_ids
 			};
+
 			if ($scope.isEdit) {
 				postData.id = $scope.editId;
 				$scope.invokeApi(ADPropertyGroupsSrv.update, postData, saveSuccessCallback);
