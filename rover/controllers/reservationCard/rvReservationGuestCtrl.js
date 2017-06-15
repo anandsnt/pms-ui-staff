@@ -324,12 +324,10 @@ sntRover.controller('rvReservationGuestController', ['$scope', '$rootScope', 'RV
 
         // Check whether the provision to add additional accompany guests should be given based on guest count
         var applyGuestCountRuleOnAccompanyingGuests = function(adultCount, childCount, infantCount, accompanyingGuests) {
-            adultCount = parseInt(adultCount);
-            childCount = parseInt(childCount);
-            infantCount = parseInt(infantCount);
             var accompanyGuestCount = $scope.guestData.accompanying_guests_details.length,
                 guestCount = adultCount + childCount + infantCount;
 
+            // Add dummy accompany guests only if the guest count is greater that accompany guests
             if (guestCount - 1 > accompanyGuestCount ) {
 
                 var noExtraAdultsToBeAdded = (adultCount - 1) - accompanyingGuests.ADULT.length,
@@ -479,8 +477,9 @@ sntRover.controller('rvReservationGuestController', ['$scope', '$rootScope', 'RV
 			$scope.errorMessage = data;
 		});
 
+        // Checks whether the accompany guest label should be shown or not
         $scope.showAccompanyingGuestLabel = function() {
-            return $scope.accompanyingGuests && (($scope.accompanyingGuests.ADULT.length + $scope.accompanyingGuests.CHILDREN.length + $scope.accompanyingGuests.INFANT.length) > 1);
+            return ($scope.guestData.adult_count + $scope.guestData.children_count + $scope.guestData.infants_count) > 1;
         };
 
 	}

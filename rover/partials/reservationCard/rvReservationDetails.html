@@ -189,7 +189,7 @@
                     <label class="label" for="adults-count">Adults</label>
                     <!-- <input name="adults-count" id="adults-count" type="text" ng-model="guestData.adult_count" value="{{guestData.adult_count}}" maxlength="2" ng-readonly="!isStandAlone" /> -->
                     <div class="select">
-                        <select convert-to-number ng-readonly="!isStandAlone" name="adults-count" id="adults-count" ng-model="guestData.adult_count" ng-change="onStayCardOccupancyChange('ADULT')" >
+                        <select convert-to-number ng-readonly="!isStandAlone" name="adults-count" id="adults-count" ng-model="guestData.adult_count" ng-change="onStayCardOccupancyChange()" >
                             <option ng-repeat="i in [1, maxAdultsForReservation] | makeRange track by $index" value="{{::i}}" ng-selected="i==guestData.adult_count">{{::i}}</option>
                         </select>
                     </div>
@@ -201,7 +201,7 @@
                     <label class="label" for="children-count">Children</label>
                     <!-- <input name="children-count" id="children-count" type="text" ng-model="guestData.children_count" value="{{guestData.children_count}}" maxlength="2" ng-readonly="!isStandAlone" /> -->
                     <div class="select">
-                        <select ng-readonly="!isStandAlone" name="children-count" id="children-count" ng-model="guestData.children_count" ng-change="onStayCardOccupancyChange('CHILDREN')">
+                        <select convert-to-number ng-readonly="!isStandAlone" name="children-count" id="children-count" ng-model="guestData.children_count" ng-change="onStayCardOccupancyChange()">
                             <option ng-repeat="i in [0, otherData.maxChildren] | makeRange track by $index" value="{{::i}}" ng-selected="i==guestData.children_count">{{::i}}</option>
                         </select>
                     </div>
@@ -213,7 +213,7 @@
                     <label class="label" for="infants-count">Infants</label>
                     <!-- <input name="infants-count" id="infants-count" type="text" ng-model="guestData.infants_count" value="{{guestData.infants_count}}" maxlength="2" ng-readonly="!isStandAlone" /> -->
                     <div class="select">
-                        <select ng-readonly="!isStandAlone" name="infants-count" id="infants-count" type="text" ng-model="guestData.infants_count" ng-change="onStayCardOccupancyChange('INFANT')">
+                        <select convert-to-number ng-readonly="!isStandAlone" name="infants-count" id="infants-count" type="text" ng-model="guestData.infants_count" ng-change="onStayCardOccupancyChange()">
                             <option ng-repeat="i in [0, otherData.maxInfants] | makeRange track by $index" value="{{::i}}" ng-selected="i==guestData.infants_count">{{::i}}</option>
                         </select>
                     </div>
@@ -234,7 +234,7 @@
                         <input name="guest-last-name" id="guest-last-name" type="text" placeholder="Last Name" value="{{::guestData.primary_guest_details.last_name}}" readonly />
                     </div>
 
-                    <label for="acc1-first-name" >Accompanying Guests</label>
+                    <label for="acc1-first-name" ng-show="showAccompanyingGuestLabel()">Accompanying Guests</label>
 
                     <div class="entry" ng-repeat="guest in accompanyingGuests.ADULT">
                         <figure class="guest-image">
@@ -253,7 +253,7 @@
                             <!-- Use male or female avatar this already is accompanying children -->
                             <img ng-src="{{::guest.image}}" alt="" />
                             <!-- if no image use this: -->
-                            <span class="icons icon-student"></span>
+                            <span class="icons icon-student" ng-if="!guest.image"></span>
 
                         </figure>
                         <input name="{{guest.first_name}}" id="{{guest.first_name}}" type="text" placeholder="First Name" value="{{guest.first_name}}" ng-model="guest.first_name"  />
@@ -267,7 +267,7 @@
                             <!-- Use male or female avatar this already is accompanying infant -->
                             <img ng-src="{{::guest.image}}" alt="" />
                             <!-- if no image use this: -->
-                            <span class="icons icon-infant"></span>
+                            <span class="icons icon-infant" ng-if="!guest.image"></span>
 
                         </figure>
                         <input name="{{guest.first_name}}" id="{{guest.first_name}}" type="text" placeholder="First Name" value="{{guest.first_name}}" ng-model="guest.first_name"  />
