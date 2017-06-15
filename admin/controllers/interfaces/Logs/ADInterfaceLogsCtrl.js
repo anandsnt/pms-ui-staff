@@ -87,7 +87,7 @@ angular.module('admin').controller('ADInterfaceLogsCtrl', ['$scope', '$rootScope
                     params: {
                         integration: integration,
                         hotel_uuid: ADHotelListSrv.getSelectedProperty(),
-                        url: '/admin/interface_messages/' + id + '/message_request.xml'
+                        url: '/admin/interface_messages/' + id + '/message_request.xml?integration=' + integration
                     },
                     successCallBack: function(response) {
                         $log.info(response);
@@ -103,7 +103,7 @@ angular.module('admin').controller('ADInterfaceLogsCtrl', ['$scope', '$rootScope
                     params: {
                         integration: integration,
                         hotel_uuid: ADHotelListSrv.getSelectedProperty(),
-                        url: '/admin/interface_messages/' + id + '/message_response.xml'
+                        url: '/admin/interface_messages/' + id + '/message_response.xml?integration=' + integration
                     },
                     successCallBack: function(response) {
                         $log.info(response);
