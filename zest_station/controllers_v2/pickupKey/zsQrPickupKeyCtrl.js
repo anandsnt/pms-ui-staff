@@ -5,7 +5,8 @@ sntZestStation.controller('zsQrPickupKeyCtrl', [
     'zsEventConstants',
     '$timeout',
     'zsGeneralSrv',
-    function($scope, $stateParams, $state, zsEventConstants, $timeout, zsGeneralSrv) {
+    'zsCheckinSrv',
+    function($scope, $stateParams, $state, zsEventConstants, $timeout, zsGeneralSrv, zsCheckinSrv) {
 
 		/** ********************************************************************************************
 		 **		Expected state params -----> none			  
@@ -70,14 +71,14 @@ sntZestStation.controller('zsQrPickupKeyCtrl', [
 
             var options = {
                 params: {
-                    'reservation_id': reservation_id
+                    'id': reservation_id
                 },
                 successCallBack: onSuccessFetchReservation,
                 failureCallBack: onFailureFetchReservation
             };
 
             console.info('Fetching Reservation by Scanned QR Code: ', reservation_id);
-            $scope.callAPI(zsGeneralSrv.fetchReservationDetails, options);
+            $scope.callAPI(zsCheckinSrv.fetchReservationInfo, options);
 
         };
 
