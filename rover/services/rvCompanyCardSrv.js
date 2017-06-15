@@ -186,6 +186,15 @@ angular.module('sntRover').service('RVCompanyCardSrv', ['$q', 'rvBaseWebSrvV2',
             var url = '/api/rates/contract_rates';
 
             rvBaseWebSrvV2.getJSON(url, params).then(function(data) {
+                console.log(data);
+                if (data.contract_rates) {
+                    data.contract_rates[0].min_date = "2016-08-30";
+                    data.contract_rates[0].max_date = "2016-08-31";
+
+                    data.contract_rates[1].min_date = "2016-08-30";
+                    data.contract_rates[1].max_date = "2016-08-31";
+                }
+
                 deferred.resolve(data);
             }, function(data) {
                 deferred.reject(data);
