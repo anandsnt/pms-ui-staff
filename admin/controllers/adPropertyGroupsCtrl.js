@@ -94,12 +94,16 @@ admin.controller('ADPropertyGroupsCtrl', ['$scope', '$stateParams', 'ADPropertyG
 				var linked_properties = $scope.prefetchData.linked_property_ids;
 
 				// already_linked_property_ids - Used to add/remove checked and disabled class.
-				$scope.prefetchData.already_linked_property_ids = $scope.prefetchData.linked_property_ids;
+				$scope.prefetchData.already_linked_property_ids = [];
 				angular.forEach($scope.prefetchData.chain_hotels, function(item) {
 					item.is_checked = (linked_properties.includes(item.id)) ? true : false;
+					if (item.is_already_linked_to_group) {
+						$scope.prefetchData.already_linked_property_ids.push(item.id);
+					}
 					if (item.is_already_linked_to_group && item.is_checked) {
 						item.is_already_linked_to_group = false;
 					}
+
 				});
 
 				$scope.isEdit = true;
@@ -154,6 +158,7 @@ admin.controller('ADPropertyGroupsCtrl', ['$scope', '$stateParams', 'ADPropertyG
 							$scope.orderedData[parseInt($scope.currentClickedElement)].property_group = data.property_group;
                         }
                     }
+                    $scope.tableParams.reload();
 
 				} else {
 					$scope.data.push(data);
@@ -218,6 +223,7 @@ admin.controller('ADPropertyGroupsCtrl', ['$scope', '$stateParams', 'ADPropertyG
 	    	} else {
 	    		$scope.prefetchData.chain_hotels[index].is_already_linked_to_group = ($scope.prefetchData.already_linked_property_ids.includes(propId)) ? true : false;
 	    	}
+	    	//$scope.prefetchData.chain_hotels[index].is_already_linked_to_group = ($scope.prefetchData.already_linked_property_ids.includes(propId)) ? true : false;
 
 	    };
 	}]);
