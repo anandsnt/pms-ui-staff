@@ -120,7 +120,8 @@ module.exports = {
             'guestweb_hotel_de_jonker': [ themeJsRoot + 'app_router_common.js'],
             'guestweb_carillon_v2': [ themeJsRoot + 'app_router_common.js'],
             'guestweb_cachet_boutique': [ themeJsRoot + 'app_router_common.js'],
-            'guestweb_hotel_berlaymont': [ themeJsRoot + 'app_router_common.js']
+            'guestweb_hotel_berlaymont': [ themeJsRoot + 'app_router_common.js'],
+            'guestweb_one_washington_circle': [ themeJsRoot + 'app_router_common.js']
         };
     }
 };
