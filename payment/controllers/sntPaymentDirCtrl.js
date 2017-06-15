@@ -278,8 +278,7 @@ angular.module('sntPay').controller('sntPaymentController',
                 var config = $scope.hotelConfig;
                 var isCCPresent = $scope.selectedPaymentType === 'CC' &&
                     (!!$scope.selectedCC && (!!$scope.selectedCC.ending_with || !!$scope.selectedCC.card_number));
-                var isManualEntry = !!PAYMENT_CONFIG[$scope.hotelConfig.paymentGateway].iFrameUrl &&
-                    $scope.payment.isManualEntryInsideIFrame;
+                var isManualEntry = isEMVEnabled && $scope.payment.isManualEntryInsideIFrame;
 
                 return !isCardSelectionDisabled() && (isCCPresent && $scope.payment.screenMode === 'PAYMENT_MODE' &&
                     (isManualEntry || !isEMVEnabled));
