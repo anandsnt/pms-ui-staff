@@ -2,13 +2,28 @@ sntRover.controller('rvReservationGuestController', ['$scope', '$rootScope', 'RV
 	function($scope, $rootScope, RVReservationGuestSrv, $stateParams, $state, $timeout, ngDialog, dateFilter) {
 
 		BaseCtrl.call(this, $scope);
+
 		$scope.guestData = {};
 		var presentGuestInfo = {};
-		var initialGuestInfo = {};
+		var initialGuestInfo = {},
+            initialAccompanyGuests = {};
 
         $scope.isSRRate = $scope.reservationData.reservation_card.is_rate_suppressed_present_in_stay_dates === 'true';
 
 		$scope.errorMessage = '';
+
+        $scope.setScroller('accompanyGuestList');
+
+        // Refresh accompany guest section scroller
+        var refreshMyScroller = function () {
+            $timeout(function() {
+                $scope.refreshScroller('accompanyGuestList');
+            }, 500);
+        };
+
+        $scope.$on("UPDATE_ACCOMPANY_SCROLL", function() {
+            refreshMyScroller();
+        });
 
 		/**
 		 * To check the currently entered occupancy and display prompt if it is over the allowed max occupancy for the room / room type
@@ -205,20 +220,20 @@ sntRover.controller('rvReservationGuestController', ['$scope', '$rootScope', 'RV
 			dataToSend.accompanying_guests_details = [];
 			dataToSend.reservation_id = $scope.reservationData.reservation_card.reservation_id;
 
+            _.each($scope.accompanyingGuests, function (guest,type) {
 
-			angular.forEach($scope.guestData.accompanying_guests_details, function(guest, index) {
-				delete guest.image;
+                _.each($scope.accompanyingGuests[type], function (guestInfo) {
+                    dataToSend.accompanying_guests_details.push({
+                        first_name: guestInfo.first_name,
+                        last_name: guestInfo.last_name,
+                        guest_type: guestInfo.guest_type
+                    });
 
-				if (!guest.first_name && !guest.last_name) {
-					guest.first_name = "";
-					guest.last_name = "";
-				}
+                });
 
-				dataToSend.accompanying_guests_details.push({
-					first_name: guest.first_name,
-					last_name: guest.last_name
-				});
-			});
+            });
+
+
 
 			$scope.invokeApi(RVReservationGuestSrv.updateGuestTabDetails, dataToSend, successCallback, errorCallback);
 
@@ -270,7 +285,7 @@ sntRover.controller('rvReservationGuestController', ['$scope', '$rootScope', 'RV
 		$scope.saveGuestDetails = function(params) {
 			var data = JSON.parse(JSON.stringify($scope.guestData));
 
-			if (!angular.equals(data, initialGuestInfo)) {
+			if (!angular.equals(data, initialGuestInfo) || !angular.equals(initialAccompanyGuests, $scope.accompanyingGuests)) {
 				$scope.$emit('showLoader');
 
 				if (isOccupancyRateConfigured()) {
@@ -307,6 +322,29 @@ sntRover.controller('rvReservationGuestController', ['$scope', '$rootScope', 'RV
 			}
 		};
 
+        // Check whether the provision to add additional accompany guests should be given based on guest count
+        var applyGuestCountRuleOnAccompanyingGuests = function(adultCount, childCount, infantCount, accompanyingGuests) {
+            adultCount = parseInt(adultCount);
+            childCount = parseInt(childCount);
+            infantCount = parseInt(infantCount);
+            var accompanyGuestCount = $scope.guestData.accompanying_guests_details.length,
+                guestCount = adultCount + childCount + infantCount;
+
+            if (guestCount - 1 > accompanyGuestCount ) {
+
+                var noExtraAdultsToBeAdded = (adultCount - 1) - accompanyingGuests.ADULT.length,
+                    noExtraChildToBeAdded = childCount - accompanyingGuests.CHILDREN.length,
+                    noExtraInfantToBeAdded = infantCount - accompanyingGuests.INFANT.length;
+
+                createExtraAccompanyingGuest('ADULT', noExtraAdultsToBeAdded, accompanyingGuests.ADULT);
+                createExtraAccompanyingGuest('CHILDREN', noExtraChildToBeAdded, accompanyingGuests.CHILDREN );
+                createExtraAccompanyingGuest('INFANT', noExtraInfantToBeAdded, accompanyingGuests.INFANT);
+
+                $scope.$emit('UPDATE_ACCOMPANY_SCROLL');
+            }
+
+        };
+
 
 		/**
 		 * CICO-12672 Occupancy change from the staycard --
@@ -331,16 +369,60 @@ sntRover.controller('rvReservationGuestController', ['$scope', '$rootScope', 'RV
 			presentGuestInfo.adult_count = $scope.guestData.adult_count;
 			presentGuestInfo.children_count = $scope.guestData.children_count;
 			presentGuestInfo.infants_count = $scope.guestData.infants_count;
+
+            applyGuestCountRuleOnAccompanyingGuests(presentGuestInfo.adult_count, presentGuestInfo.children_count, presentGuestInfo.infants_count, $scope.accompanyingGuests);
+
+
 		};
 
+        // Group accompany guests by type
+        var groupAccompanyingGuestsByType = function(accompanyingGuests) {
+            var accompanyGuestByType = _.groupBy(accompanyingGuests, 'guest_type');
+            if (!accompanyGuestByType['ADULT']) {
+                accompanyGuestByType['ADULT'] = [];
+            }
+
+            if (!accompanyGuestByType['CHILDREN']) {
+                accompanyGuestByType['CHILDREN'] = [];
+            }
+
+            if (!accompanyGuestByType['INFANT']) {
+                accompanyGuestByType['INFANT'] = [];
+            }
+
+            return accompanyGuestByType;
+        };
+
+        // Add the dummy accompany guests based on the guest count
+        var createExtraAccompanyingGuest = function(type, noOfExtraGuests, accompanyingGuests) {
+
+            if (noOfExtraGuests > 0) {
+               for (var i = 0; i < noOfExtraGuests; i++) {
+                    accompanyingGuests.push({first_name: '', last_name: '', guest_type: type});
+                }
+            }
+
+        };
+
 		$scope.init = function() {
+
+            $scope.accompanyingGuests = {
+                ADULT : [],
+                CHILDREN: [],
+                INFANT: []
+            };
+
 
 			var successCallback = function(data) {
 				$scope.maxAdultsForReservation = $scope.otherData.maxAdults;
 				$scope.$emit('hideLoader');
 				$scope.guestData = data;
+
+                $scope.accompanyingGuests = $scope.guestData.accompanying_guests_details ? groupAccompanyingGuestsByType($scope.guestData.accompanying_guests_details) : $scope.accompanyingGuests;
+                applyGuestCountRuleOnAccompanyingGuests($scope.guestData.adult_count, $scope.guestData.children_count, $scope.guestData.infants_count,$scope.accompanyingGuests);
 				presentGuestInfo = JSON.parse(JSON.stringify($scope.guestData)); // to revert in case of exceeding occupancy
 				initialGuestInfo = JSON.parse(JSON.stringify($scope.guestData)); // to make API call to update if some change has been made
+                angular.copy($scope.accompanyingGuests,initialAccompanyGuests);
 				$scope.reservationParentData.rooms[0].accompanying_guest_details = data.accompanying_guests_details;
 				$scope.errorMessage = '';
 
@@ -351,6 +433,7 @@ sntRover.controller('rvReservationGuestController', ['$scope', '$rootScope', 'RV
 						scope.maxAdultsForReservation = $scope.otherData.maxAdults;
 					}
 				}
+
 
                // $scope.otherData.maxAdults = (guestMaxSettings.max_adults === null || guestMaxSettings.max_adults === '') ? defaultMaxvalue : guestMaxSettings.max_adults;
                 // if($scope)
@@ -395,6 +478,10 @@ sntRover.controller('rvReservationGuestController', ['$scope', '$rootScope', 'RV
 			$scope.$emit("OPENGUESTTAB");
 			$scope.errorMessage = data;
 		});
+
+        $scope.showAccompanyingGuestLabel = function() {
+            return $scope.accompanyingGuests && (($scope.accompanyingGuests.ADULT.length + $scope.accompanyingGuests.CHILDREN.length + $scope.accompanyingGuests.INFANT.length) > 1);
+        };
 
 	}
 ]);
