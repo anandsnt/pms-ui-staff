@@ -1,4 +1,9 @@
 admin.directive('sntTimeSelector', function() {
+    /**
+     * Method to generate time values for the selector
+     * @param {Integer} interval defaults to 60
+     * @return {Array} array of time intervals
+     */
     function getTimeOptions(interval) {
         var i, currentTime, options = [];
 
