@@ -1,4 +1,4 @@
-admin.controller('ADUserListCtrl', ['$scope', '$rootScope', '$q', '$state', '$stateParams', 'ADUserSrv', 'ngTableParams', 'ADHotelListSrv', 'ADMPUserSettingsSrv', function($scope, $rootScope, $q, $state, $stateParams, ADUserSrv, ngTableParams, ADHotelListSrv, ADMPUserSettingsSrv) {
+admin.controller('ADUserListCtrl', ['$scope', '$rootScope', '$q', '$state', '$stateParams', 'ADUserSrv', 'ngTableParams', 'ADHotelListSrv', 'ADMPUserSettingsSrv', 'ngDialog', function($scope, $rootScope, $q, $state, $stateParams, ADUserSrv, ngTableParams, ADHotelListSrv, ADMPUserSettingsSrv, ngDialog) {
     BaseCtrl.call(this, $scope);
     $scope.hotelId = $stateParams.id;
     $scope.isAdminSnt = false;
@@ -311,5 +311,33 @@ admin.controller('ADUserListCtrl', ['$scope', '$rootScope', '$q', '$state', '$st
     $scope.showChainAdminsOnlyFilter = function() {
         $scope.reloadTable();
     };
+
+    // To handle subscribe button click.
+    $scope.subscribeButtonClick = function(user) {
+        // Success callback after fetching hotel deatails.
+        var successFetchMPHotelDetails = function(data) {
+            $scope.subscriptionData = data;
+            $scope.subscriptionData.user_id = user.id;
+
+            ngDialog.open({
+                template: '/assets/partials/users/adMPSubscriptionModal.html',
+                controller: 'adMPSubscriptionPopupCtrl',
+                className: '',
+                scope: $scope,
+                closeByDocument: false
+            });
+            $scope.$emit('hideLoader');
+        },
+        params = {
+            'user_id': user.id
+        };
+
+        $scope.invokeApi(ADUserSrv.fetchMPHotelDetails, params, successFetchMPHotelDetails );
+    };
+
+    // Reload table data upon closing the subscription popup.
+    $scope.$on('ngDialog.closing', function () {
+        $scope.reloadTable();
+    });
 
 }]);
