@@ -339,18 +339,21 @@
             }
 
             .form {
-                margin-top: 10px;
-                max-height: 220px;
-                .float;
                 position: relative;
-
-                .iScrollVerticalScrollbar {
-                    right: 0;
-                }
+                margin-top: 10px;
+                border-top: 1px solid rgba(0,0,0,.1);
+                max-height: 220px;
 
                 .wrapper {
+                    padding: 10px 0;
                     max-width: 430px;
                     .calc-width(100, 360); 
+                }
+
+                .iScrollVerticalScrollbar {
+                    top: 10px;
+                    bottom: 10px;
+                    right: 0;
                 }
 
                 label {
@@ -367,18 +370,31 @@
                 }
 
                 .entry {
+                    float:none;
+                    position: relative;
+
+                    &:after {
+                        content:'';
+                        display: table;
+                        clear: both;
+                    }
 
                     .guest-image {
                         margin-right: 10px;
                         .pull-left;
-                        .square(40px);
+                        .square(40px); 
 
                         .icons {
-                            .square(40px);
+                            border-radius: 2px;
                             background-color: @grey2;
+                            .square(40px);
+
+                            &.icon-adult {
+                                background-position: 10px -10470px;
+                            }
 
                             &.icon-student {
-                                background-position: 10px -10530px
+                                background-position: 10px -10530px;
                             }
 
                             &.icon-infant {
@@ -391,7 +407,7 @@
                             line-height: 15px;
                             font-size: 8px;
                             left: 0;
-                        } 
+                        }
                     }
 
                     input {
@@ -401,14 +417,21 @@
 
                         &:nth-of-type(2) { margin-right: 0; }
                     }
-                }
-            }
 
-            &.editable { 
-                .guest-count {
-                    li {
-                        padding-bottom: 10px;
-                        border-bottom: 1px solid rgba(0,0,0,.1);
+                    .button {
+                        position: absolute;
+                        left: 100%;
+                        .size(40px, 110px);
+                        margin-left: 10px;
+                        padding-left: 40px;
+                        .nowrap();
+
+                        .icon-identity-card {
+                            background-position: 10px -10831px;
+                            left: 10px;
+                            top: 0;
+                            .square(40px);
+                        }
                     }
                 }
             }
