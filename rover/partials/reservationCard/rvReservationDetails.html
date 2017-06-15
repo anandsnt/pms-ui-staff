@@ -251,9 +251,9 @@
                         <figure class="guest-image">
 
                             <!-- Use male or female avatar this already is accompanying children -->
-                            <img ng-src="{{::guest.image}}" alt="" />
+                            <img ng-src="" alt="" />
                             <!-- if no image use this: -->
-                            <span class="icons icon-student" ng-if="!guest.image"></span>
+                            <span class="icons icon-student" ></span>
 
                         </figure>
                         <input name="{{guest.first_name}}" id="{{guest.first_name}}" type="text" placeholder="First Name" value="{{guest.first_name}}" ng-model="guest.first_name"  />
@@ -261,13 +261,13 @@
                     </div>
 
                     <!-- Infant Guest -->
-                    <div class="entry" ng-repeat="guest in accompanyingGuests.INFANT">
+                    <div class="entry" ng-repeat="guest in accompanyingGuests.INFANTS">
                         <figure class="guest-image">
 
                             <!-- Use male or female avatar this already is accompanying infant -->
-                            <img ng-src="{{::guest.image}}" alt="" />
+                            <img ng-src="" alt="" />
                             <!-- if no image use this: -->
-                            <span class="icons icon-infant" ng-if="!guest.image"></span>
+                            <span class="icons icon-infant" ></span>
 
                         </figure>
                         <input name="{{guest.first_name}}" id="{{guest.first_name}}" type="text" placeholder="First Name" value="{{guest.first_name}}" ng-model="guest.first_name"  />

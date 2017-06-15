@@ -47,7 +47,7 @@ sntRover.controller('roverController', [
     // CICO-39623 : Setting up app theme.
     if ( !!hotelDetails.selected_theme && hotelDetails.selected_theme.value !== 'ORANGE' ) {
       var appTheme = 'theme-' + (hotelDetails.selected_theme.value).toLowerCase();
-      
+
       document.getElementsByTagName("html")[0].setAttribute( 'class', appTheme );
     }
 
@@ -157,6 +157,7 @@ sntRover.controller('roverController', [
     $rootScope.printConfirmationLetter = hotelDetails.print_confirmation_letter;
     $rootScope.sendConfirmationLetter = hotelDetails.send_confirmation_letter;
     $rootScope.isItemInventoryOn    = hotelDetails.is_item_inventory_on;
+    $rootScope.guestTypes = hotelDetails.guest_types;
 
     // CICO-41410
     $rootScope.isDashboardSwipeEnabled = hotelDetails.enable_dashboard_swipe;
@@ -648,7 +649,7 @@ sntRover.controller('roverController', [
       sntapp.desktopCardReader.setDesktopUUIDServiceStatus(true);
     	sntapp.desktopCardReader.startDesktopReader($rootScope.ccSwipeListeningPort, options);
     };
-        
+
       /**
        * @returns {undefined} undefined
        */

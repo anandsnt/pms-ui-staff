@@ -226,7 +226,8 @@ sntRover.controller('rvReservationGuestController', ['$scope', '$rootScope', 'RV
                     dataToSend.accompanying_guests_details.push({
                         first_name: guestInfo.first_name,
                         last_name: guestInfo.last_name,
-                        guest_type: guestInfo.guest_type
+                        guest_type: guestInfo.guest_type,
+                        guest_type_id: guestInfo.guest_type_id
                     });
 
                 });
@@ -322,6 +323,12 @@ sntRover.controller('rvReservationGuestController', ['$scope', '$rootScope', 'RV
 			}
 		};
 
+        // Find guest type id by name
+        var findGuestTypeId = function (type) {
+            var guestType = _.find($rootScope.guestTypes, {value: type});
+            return guestType.id;
+        };
+
         // Check whether the provision to add additional accompany guests should be given based on guest count
         var applyGuestCountRuleOnAccompanyingGuests = function(adultCount, childCount, infantCount, accompanyingGuests) {
             var accompanyGuestCount = $scope.guestData.accompanying_guests_details.length,
@@ -332,11 +339,11 @@ sntRover.controller('rvReservationGuestController', ['$scope', '$rootScope', 'RV
 
                 var noExtraAdultsToBeAdded = (adultCount - 1) - accompanyingGuests.ADULT.length,
                     noExtraChildToBeAdded = childCount - accompanyingGuests.CHILDREN.length,
-                    noExtraInfantToBeAdded = infantCount - accompanyingGuests.INFANT.length;
+                    noExtraInfantToBeAdded = infantCount - accompanyingGuests.INFANTS.length;
 
                 createExtraAccompanyingGuest('ADULT', noExtraAdultsToBeAdded, accompanyingGuests.ADULT);
                 createExtraAccompanyingGuest('CHILDREN', noExtraChildToBeAdded, accompanyingGuests.CHILDREN );
-                createExtraAccompanyingGuest('INFANT', noExtraInfantToBeAdded, accompanyingGuests.INFANT);
+                createExtraAccompanyingGuest('INFANTS', noExtraInfantToBeAdded, accompanyingGuests.INFANTS);
 
                 $scope.$emit('UPDATE_ACCOMPANY_SCROLL');
             }
@@ -384,8 +391,8 @@ sntRover.controller('rvReservationGuestController', ['$scope', '$rootScope', 'RV
                 accompanyGuestByType['CHILDREN'] = [];
             }
 
-            if (!accompanyGuestByType['INFANT']) {
-                accompanyGuestByType['INFANT'] = [];
+            if (!accompanyGuestByType['INFANTS']) {
+                accompanyGuestByType['INFANTS'] = [];
             }
 
             return accompanyGuestByType;
@@ -396,7 +403,7 @@ sntRover.controller('rvReservationGuestController', ['$scope', '$rootScope', 'RV
 
             if (noOfExtraGuests > 0) {
                for (var i = 0; i < noOfExtraGuests; i++) {
-                    accompanyingGuests.push({first_name: '', last_name: '', guest_type: type});
+                    accompanyingGuests.push({first_name: '', last_name: '', guest_type: type, guest_type_id: findGuestTypeId(type)});
                 }
             }
 
@@ -407,7 +414,7 @@ sntRover.controller('rvReservationGuestController', ['$scope', '$rootScope', 'RV
             $scope.accompanyingGuests = {
                 ADULT : [],
                 CHILDREN: [],
-                INFANT: []
+                INFANTS: []
             };
 
 
