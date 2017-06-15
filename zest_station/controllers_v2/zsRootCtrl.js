@@ -400,6 +400,9 @@ sntZestStation.controller('zsRootCtrl', [
                 $scope.icons.url.createkey_icmp = $scope.iconsPath + '/demo_keyencoder.svg';
                 $log.warn('using demo icons for create key and credit card reading');
                 $scope.icmp = true;
+            } else if ($scope.zestStationData.theme === 'public_v2') {
+                $scope.icons.url.createkey_icmp = $scope.iconsPath + '/encode_image.svg';
+                $scope.icmp = true;
             } else {
                 $scope.icmp = false;
             }
