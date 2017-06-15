@@ -402,6 +402,7 @@ sntZestStation.controller('zsRootCtrl', [
                 $scope.icmp = true;
             } else if ($scope.zestStationData.theme === 'public_v2') {
                 $scope.icons.url.createkey_icmp = $scope.iconsPath + '/encode_image.svg';
+                $scope.icons.url.creditcard_icmp = $scope.iconsPath + '/icmp_swipe.svg';
                 $scope.icmp = true;
             } else {
                 $scope.icmp = false;
