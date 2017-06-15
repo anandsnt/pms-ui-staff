@@ -17,6 +17,7 @@
 		                        <th class="date">Date</th>
 		                        <th class="rate">Rate</th>
 		                        <th class="edit">Quoted</th>
+		                        <th class="copy" ng-if="getObjectLength(ngDialogData.room.stayDates) > 2">Copy</th>
 		                    </tr>
 		                </thead>
 		                <tbody>		                	
@@ -38,6 +39,9 @@
 		                        <td class="edit" ng-if="shouldSupressRateInput(stayDay)">
 		                        	SR
 		                        </td>
+		                        <td class="copy" ng-show="getObjectLength(ngDialogData.room.stayDates) > 2">
+                            		<span class="admin-icons icon-mover-right" ng-show="$index === 0" ng-click="copySingleValueToOtherCells(stayDay.rateDetails.modified_amount, ngDialogData.room.stayDates)">Copy rate</span>
+                        		</td>
 		                    </tr>		                    
 		                </tbody>
 		            </table>
