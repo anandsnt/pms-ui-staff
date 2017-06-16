@@ -71,7 +71,7 @@ sntZestStation.controller('zsQrPickupKeyCtrl', [
 
             var options = {
                 params: {
-                    'reservation_id': reservation_id
+                    'id': reservation_id
                 },
                 successCallBack: onSuccessFetchReservation,
                 failureCallBack: onFailureFetchReservation
