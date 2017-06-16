@@ -149,7 +149,7 @@ admin.service('ADHotelDetailsSrv', [
 		var deferred = $q.defer(),
 			url = '/admin/hotels/'+data.hotel_id+'/deselect_mp';
 
-        ADBaseWebSrv.putJSON(url, data).then(function(data) {
+        ADBaseWebSrvV2.putJSON(url, data).then(function(data) {
 		    deferred.resolve(data);
 		}, function(data) {
 		    deferred.reject(data);
