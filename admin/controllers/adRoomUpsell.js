@@ -17,11 +17,11 @@ admin.controller('ADRoomUpsellCtrl', ['$scope', '$rootScope', '$state', 'adRoomU
       var fetchRoomUpsellDetailsSuccessCallback = function (data) {
         $scope.$emit('hideLoader');
 
-        for (var i in data.upsell_amounts) {
-            setUpsellAmounts(data.upsell_amounts[i], $scope.upsell_amounts);
+        for (var a in data.upsell_amounts) {
+            setUpsellAmounts(data.upsell_amounts[a], $scope.upsell_amounts);
         }
-        for (var i in data.next_day_upsell_amounts) {
-            setUpsellAmounts(data.next_day_upsell_amounts[i], $scope.next_day_upsell_amounts);
+        for (var b in data.next_day_upsell_amounts) {
+            setUpsellAmounts(data.next_day_upsell_amounts[b], $scope.next_day_upsell_amounts);
         }
         
         $scope.upsellData = data;
@@ -208,14 +208,15 @@ admin.controller('ADRoomUpsellCtrl', ['$scope', '$rootScope', '$state', 'adRoomU
     };
     
     var updateParams = function(item, index, itemArray, nextDay) {
-        var amount = $('#'+nextDay+'amount_'+index+'>input').val();
+        var amount = $('#' + nextDay + 'amount_' + index + '>input').val();
+
         if (amount === '') {
             item.amount = null;
         } else {
           item.amount = amount;
         }
 
-        if (index === 0){
+        if (index === 0) {
             item.level_from = '1';
             item.level_to = '2';
 
@@ -238,8 +239,8 @@ admin.controller('ADRoomUpsellCtrl', ['$scope', '$rootScope', '$state', 'adRoomU
             updateParams(item, index, $scope.next_day_upsell_amounts, 'next_');
         });
 
-        angular.forEach($scope.next_day_upsell_amounts, function (item, index) {
-          if (item.amount !== null){
+        angular.forEach($scope.next_day_upsell_amounts, function (item) {
+          if (item.amount !== null) {
             next_day_upsell_amounts.push(item);
           }
         });
@@ -250,8 +251,8 @@ admin.controller('ADRoomUpsellCtrl', ['$scope', '$rootScope', '$state', 'adRoomU
         });
 
 
-        angular.forEach($scope.upsell_amounts, function (item, index) {
-          if (item.amount !== null){
+        angular.forEach($scope.upsell_amounts, function (item) {
+          if (item.amount !== null) {
             upsell_amounts.push(item);
           }
         });
@@ -276,9 +277,6 @@ admin.controller('ADRoomUpsellCtrl', ['$scope', '$rootScope', '$state', 'adRoomU
       
       data.upsell_setup = upsell_setup;
         
-      upsell_amounts = angular.copy($scope.upsell_amounts);
-      next_day_upsell_amounts = angular.copy($scope.next_day_upsell_amounts);
-
       // CICO-41721 - fixes an issue created by sending invalid params to the API
       updateAmounts();
 
