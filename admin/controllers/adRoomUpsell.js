@@ -243,19 +243,19 @@ admin.controller('ADRoomUpsellCtrl', ['$scope', '$rootScope', '$state', 'adRoomU
             next_day_upsell_amounts.push(item);
           }
         });
-        $scope.next_day_upsell_amounts = next_day_upsell_amounts;
+        $scope.next_day_upsell_amounts_data = next_day_upsell_amounts;
         
         angular.forEach($scope.upsell_amounts, function (item, index) {
             updateParams(item, index, $scope.upsell_amounts, '');
         });
 
-        
+
         angular.forEach($scope.upsell_amounts, function (item, index) {
           if (item.amount !== null){
             upsell_amounts.push(item);
           }
         });
-        $scope.upsell_amounts = upsell_amounts;
+        $scope.upsell_amounts_data = upsell_amounts;
     };
 
     /**
@@ -275,12 +275,16 @@ admin.controller('ADRoomUpsellCtrl', ['$scope', '$rootScope', '$state', 'adRoomU
       upsell_setup.total_upsell_target_rooms = $scope.upsellData.upsell_setup.total_upsell_target_rooms;
       
       data.upsell_setup = upsell_setup;
-      
+        
+      upsell_amounts = angular.copy($scope.upsell_amounts);
+      next_day_upsell_amounts = angular.copy($scope.next_day_upsell_amounts);
+
       // CICO-41721 - fixes an issue created by sending invalid params to the API
       updateAmounts();
 
-      data.upsell_amounts = $scope.upsell_amounts;
-      data.next_day_upsell_amounts = $scope.next_day_upsell_amounts;
+      data.upsell_amounts = $scope.upsell_amounts_data;
+      data.next_day_upsell_amounts = $scope.next_day_upsell_amounts_data;
+
       data.charge_code = $scope.upsellData.selected_charge_code_id;
       data.next_day_charge_code = $scope.upsellData.selected_next_day_charge_code_id;
       data.upsell_room_levels = $scope.upsellData.upsell_room_levels;
