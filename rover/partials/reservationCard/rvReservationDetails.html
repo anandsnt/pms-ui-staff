@@ -229,6 +229,8 @@
                         <figure class="guest-image">
                             <img ng-src="{{::guestData.primary_guest_details.image}}" alt="" />
                             <span ng-if="guestData.primary_guest_details.is_vip" class="vip">VIP</span>
+                            <span class="icons icon-adult" ng-if="guestData.primary_guest_details.guest_type === 'ADULT'"></span>
+                            <span class="icons icon-student" ng-if="guestData.primary_guest_details.guest_type === 'CHILDREN'"></span>
                         </figure>
                         <input name="guest-first-name" id="guest-first-name" type="text" placeholder="First Name" value="{{::guestData.primary_guest_details.first_name}}" readonly />
                         <input name="guest-last-name" id="guest-last-name" type="text" placeholder="Last Name" value="{{::guestData.primary_guest_details.last_name}}" readonly />
@@ -239,7 +241,7 @@
                     <div class="entry" ng-repeat="guest in accompanyingGuests.ADULT">
                         <figure class="guest-image">
                             <!-- Use male or female avatar this already is accompanying guest -->
-                            <img ng-src="{{::guest.image}}" alt="" />
+                            <span class="icons icon-adult"></span>
 
                         </figure>
                         <input name="{{guest.first_name}}" id="{{guest.first_name}}" type="text" placeholder="First Name" value="{{guest.first_name}}" ng-model="guest.first_name" ng-blur="saveAccGuestDetails()" />
