@@ -3,7 +3,6 @@
 
 	var rvCompanyCardSrv,
 		highlightFilter_ = null,
-		dateFilter_,
 		autocompleteEl;
 
     /**
@@ -84,8 +83,7 @@
 	    var autoCompleteSelectHandler = function(event, ui) {
 	        $scope.rate_id 	= ui.item.id;
 	        $scope.rate_name = ui.item.name;
-	        $scope.min_date = dateFilter_(ui.item.min_date, 'yyyy-MM-dd');
-	        $scope.max_date = dateFilter_(ui.item.max_date, 'yyyy-MM-dd');
+	        $scope.$emit('RATE_SELECTED', ui.item);
 	        runDigestCycle();
 	        return false;    
 	    };
@@ -146,10 +144,9 @@
     };
   
     
-	angular.module('sntRover').directive('rateAutoComplete', ['RVCompanyCardSrv', 'highlightFilter', 'dateFilter', function(RVCompanyCardSrv, highlightFilter, dateFilter) {
+	angular.module('sntRover').directive('rateAutoComplete', ['RVCompanyCardSrv', 'highlightFilter', function(RVCompanyCardSrv, highlightFilter) {
         rvCompanyCardSrv = RVCompanyCardSrv,
-        highlightFilter_ = highlightFilter,
-        dateFilter_ = dateFilter;
+        highlightFilter_ = highlightFilter;
         return {
             restrict: 'AE',
 			replace: true,
@@ -159,9 +156,7 @@
 				label: '@label',
 				entryDivClass: '@entryDivClass',
 				delay: '@delay',
-				minLengthToTrigger: '@minLengthToTrigger',
-				min_date: '=rateMinDate',
-				max_date: '=rateMaxDate'
+				minLengthToTrigger: '@minLengthToTrigger'
 			},
 			link: linkFn,
             controller: autoCompleteCtrlFn,

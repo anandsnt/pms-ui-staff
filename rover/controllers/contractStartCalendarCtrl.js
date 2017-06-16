@@ -2,21 +2,28 @@
 sntRover.controller('contractStartCalendarCtrl', ['$rootScope', '$scope', 'dateFilter', 'ngDialog', function($rootScope, $scope, dateFilter, ngDialog) {
 	$scope.setUpData = function() {
 	    $scope.isDateSelected = false;
+	    var minDate, maxDate = '';
+
 	    if ($scope.contractList.isAddMode) {
 		    if ($scope.addData.begin_date) {
 		      $scope.date = $scope.addData.begin_date;
+		      minDate = $scope.addData.begin_date;
+	 	      maxDate = $scope.addData.end_date;
 		    }
 	    }
 	    else {
 	    	if ($scope.contractData.begin_date) {
 		      $scope.date = $scope.contractData.begin_date;
+		      minDate = $scope.contractData.begin_date;
+	 	      maxDate = $scope.contractData.end_date;
 		    }
 	    }
 
 	    $scope.dateOptions = {
 		     changeYear: true,
 		     changeMonth: true,
-		     minDate: tzIndependentDate($rootScope.businessDate),
+		     minDate: tzIndependentDate(minDate),
+		     maxDate: tzIndependentDate(maxDate),
 		     yearRange: "0:+10",
 		     onSelect: function() {
 
