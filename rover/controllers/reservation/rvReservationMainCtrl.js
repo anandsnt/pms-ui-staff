@@ -640,7 +640,7 @@ sntRover.controller('RVReservationMainCtrl', ['$scope',
 
         var openRateAdjustmentPopup = function(room, index, lastReason) {
             var arrivalDate = tzIndependentDate(Object.keys(room.stayDates)[0]),
-                businessDate = tzIndependentDate($rootScope.businessDate);
+                businessDate = tzIndependentDate($rootScope.businessDate),
                 showDate = Object.keys(room.stayDates)[0];
 
             if (arrivalDate < businessDate) {
