@@ -231,6 +231,33 @@ admin.controller('ADRoomUpsellCtrl', ['$scope', '$rootScope', '$state', 'adRoomU
         itemArray[index] = item;
     };
 
+    var updateAmounts = function() {
+        var upsell_amounts = [], next_day_upsell_amounts = [];
+
+        angular.forEach($scope.next_day_upsell_amounts, function (item, index) {
+            updateParams(item, index, $scope.next_day_upsell_amounts, 'next_');
+        });
+
+        angular.forEach($scope.next_day_upsell_amounts, function (item, index) {
+          if (item.amount !== null){
+            next_day_upsell_amounts.push(item);
+          }
+        });
+        $scope.next_day_upsell_amounts = next_day_upsell_amounts;
+        
+        angular.forEach($scope.upsell_amounts, function (item, index) {
+            updateParams(item, index, $scope.upsell_amounts, '');
+        });
+
+        
+        angular.forEach($scope.upsell_amounts, function (item, index) {
+          if (item.amount !== null){
+            upsell_amounts.push(item);
+          }
+        });
+        $scope.upsell_amounts = upsell_amounts;
+    };
+
     /**
      * To handle save button action
      *
@@ -250,12 +277,7 @@ admin.controller('ADRoomUpsellCtrl', ['$scope', '$rootScope', '$state', 'adRoomU
       data.upsell_setup = upsell_setup;
       
       // CICO-41721 - fixes an issue created by sending invalid params to the API
-      angular.forEach($scope.next_day_upsell_amounts, function (item, index) {
-          updateParams(item, index, $scope.next_day_upsell_amounts, 'next_');
-      });
-      angular.forEach($scope.upsell_amounts, function (item, index) {
-          updateParams(item, index, $scope.upsell_amounts, '');
-      });
+      updateAmounts();
 
       data.upsell_amounts = $scope.upsell_amounts;
       data.next_day_upsell_amounts = $scope.next_day_upsell_amounts;
