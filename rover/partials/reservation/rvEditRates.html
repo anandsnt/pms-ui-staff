@@ -4,11 +4,11 @@
 		    <button id="modal-close" type="button" class="dark-title modal-close" ng-click="closeDialog()"><span class="icons icon-close"></button>
 
 		    <div class="modal-header">
-		        <h1>Rate Details</h1>		        
+		        <h1>Rate Details</h1>
 		        <em>{{ngDialogData.room.roomTypeName}}<br/>{{ngDialogData.room.rateName}}</em>
 		    </div>
-		    
-		    <div id="rate-grid" class="scrollable" ng-iscroll="rateDetails" ng-iscroll-delay="2000">		    	
+
+		    <div id="rate-grid" class="scrollable" ng-iscroll="rateDetails" ng-iscroll-delay="2000">
 		        <div class="wrapper">
 		        	<div ng-include="'/assets/partials/common/notification_message.html'"></div>
 		            <table class="rate-grid">
@@ -17,10 +17,11 @@
 		                        <th class="date">Date</th>
 		                        <th class="rate">Rate</th>
 		                        <th class="edit">Quoted</th>
+		                        <th class="copy" ng-if="getObjectLength(ngDialogData.room.stayDates) > 2">Copy</th>
 		                    </tr>
 		                </thead>
-		                <tbody>		                	
-		                    <tr ng-repeat="(date,stayDay) in ngDialogData.room.stayDates" ng-hide="$last && $index > 0">		                    	
+		                <tbody>
+		                    <tr ng-repeat="(date,stayDay) in ngDialogData.room.stayDates" ng-hide="$last && $index > 0">
 		                        <td class="date">{{date  | date : 'EEEE, d MMMM'}}</td>
 		                        <td class="rate" ng-if="stayDay.rateDetails.is_suppressed != 'true' && stayDay.rateDetails.actual_amount != '0.00'" >
 		                        	{{currencySymbol}}{{stayDay.rateDetails.actual_amount | number : 2}}
@@ -38,7 +39,10 @@
 		                        <td class="edit" ng-if="shouldSupressRateInput(stayDay)">
 		                        	SR
 		                        </td>
-		                    </tr>		                    
+		                        <td class="copy" ng-show="getObjectLength(ngDialogData.room.stayDates) > 2">
+                            		<span class="admin-icons icon-mover-right" ng-show="isDateEqual(date,ngDialogData.showDate)" ng-click="copySingleValueToOtherCells(stayDay.rateDetails.modified_amount, ngDialogData.room.stayDates)">Copy rate</span>
+                        		</td>
+		                    </tr>
 		                </tbody>
 		            </table>
 		            <div class="entry full-width">
@@ -46,18 +50,18 @@
 		                	Adjustment reason (<span>optional</span>)
 		                </label>
 		                <label ng-show="otherData.forceAdjustmentReason" for="adjustment-reason">
-		                	Adjustment reason 
+		                	Adjustment reason
 		                	<strong>*</strong>
-		                </label>		                
+		                </label>
 		                <textarea id="adjustment-reason" placeholder="Rate Adjusted because ...." rows="2" ng-model="adjustment_reason"/>
             		</div>
 		        </div>
-		    </div>   
+		    </div>
 
 		    <div class="actions">
 		        <button type="button" ng-click="closeDialog()" class="button blank modal-close">Close</button>
 		        <button type="button" ng-click="save(ngDialogData.room, ngDialogData.index)" class="button green modal-close">Update</button>
 		    </div>
-		</form>	
+		</form>
 	</div>
 </div>

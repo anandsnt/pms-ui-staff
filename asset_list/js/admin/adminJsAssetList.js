@@ -22,7 +22,9 @@ module.exports = {
 				jsLibRoot + 'ngDialog.min.js',
 				jsLibRoot + 'fastclick.min.js',
 				jsLibRoot + 'spectrum.js',
-				jsLibRoot + 'jsHue/js-hue.js'		
+				jsLibRoot + 'SyntaxHighlighter/shCore.js',
+				jsLibRoot + 'SyntaxHighlighter/shBrushXml.js',
+				jsLibRoot + 'SyntaxHighlighter/shBrushJScript.js'
 			],
 			nonMinifiedFiles: [
 				jsLibRoot + 'sortable.js',				
