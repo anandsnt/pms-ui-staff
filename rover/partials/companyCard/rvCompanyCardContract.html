@@ -105,7 +105,7 @@
 			
 			<div class="holder left" ng-show="contractList.isAddMode">
 				<strong class="h3" translate>DETAILS</strong>
-				<span selected-rate-id="addData.contracted_rate_selected" ng-model="addData.contractedRate" rate-auto-complete></span>
+				<span selected-rate-id="addData.contracted_rate_selected" rate-min-date="addData.begin_date" rate-max-date="addData.end_date"ng-model="addData.contractedRate" rate-auto-complete></span> 
 				<div class="entry price-adjust no-label">
 					
 					<div class="select">
