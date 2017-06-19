@@ -66,7 +66,8 @@
                     <pre class="interface-message"><xmp>{{message.request || message.response}}</xmp></pre>
                 </td>
                 <td data-title="'Created'" header-class="cell-160">
-                    {{message.sent_at | date: dateFormat}}&nbsp;{{message.sent_at | date: 'hh:mm a' }}
+                    {{message.sent_at | date: dateFormat : hotelTimeZoneAbbr}}&nbsp;{{message.sent_at | date: 'hh:mm a'
+                    : hotelTimeZoneAbbr }}
                 </td>
             </tr>
             <tr class="interface-message-details" ng-show="isExpanded">
