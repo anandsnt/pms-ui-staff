@@ -14,7 +14,7 @@ admin.controller('ADAppCtrl', [
 		var title = "Showing Settings";
 
         var successCallbackOfFtechUserInfo = function (userInfoDetails) {
-            // CICO-39623 : set current hotel details      
+            // CICO-39623 : set current hotel details
             $scope.userInfo = {
                 'first_name': userInfoDetails.first_name,
                 'last_name': userInfoDetails.last_name,
@@ -380,7 +380,7 @@ admin.controller('ADAppCtrl', [
 		} else {
 			$scope.isHotelAdmin = false;
 		}
-        
+
 		$scope.isPmsConfigured = $rootScope.isPmsConfigured;
 		$scope.isDragging = false;
 
@@ -580,7 +580,7 @@ admin.controller('ADAppCtrl', [
             // CICO-39623 : Setting up app theme.
             if ( !!data.selected_theme && data.selected_theme.value !== 'ORANGE' ) {
               var appTheme = 'theme-' + (data.selected_theme.value).toLowerCase();
-              
+
               document.getElementsByTagName("html")[0].setAttribute( 'class', appTheme );
             }
 
@@ -636,34 +636,9 @@ admin.controller('ADAppCtrl', [
 			$scope.data.current_hotel = data.new_name;
 		});
 
-
-        /*
-         * Admin menu data
-         */
-
-        var chainAdmin = {
-            "components": [
-                            {
-                                "id": 1,
-                                "name": "Hotel Details",
-                                "state": "admin.hoteldetails",
-                                "action_path": "/admin/hotels/1/",
-                                "is_group": false,
-                                "icon_class": "icon-hotel",
-                                "sub_components": [],
-                                "is_bookmarked": false
-                            }],
-            header_name:"Chain Admin Setup",
-            menu_id:11,
-            menu_name:"Chain" 
-        };
-
 		$scope.data = adminMenuData;
-        $scope.data.menus.push(chainAdmin);
 		$scope.selectedMenu = $scope.data.menus[$scope.selectedIndex];
 		$scope.bookMarks = $scope.data.bookmarks;
-        
-        console.log('new menu', $scope.data.menus);
 
 		$scope.bookmarkIdList = [];
 		for (var i = 0; i < $scope.data.bookmarks.length; i++) {
