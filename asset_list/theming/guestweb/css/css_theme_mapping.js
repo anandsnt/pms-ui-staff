@@ -119,6 +119,9 @@ module.exports = {
             'guestweb_carillon_v2': [ themeCSSRoot + 'guestweb_carillon_v2.css'],
             'guestweb_cachet_boutique': [ themeCSSRoot + 'guestweb_cachet_boutique.css'],
             'guestweb_hotel_berlaymont': [ themeCSSRoot + 'guestweb_hotel_berlaymont.css'],
+            'guestweb_el_cosmico': [ themeCSSRoot + 'guestweb_el_cosmico.css'],
+            'guestweb_quintessence_resort': [ themeCSSRoot + 'guestweb_quintessence_resort.css'],
+            'guestweb_river_inn': [ themeCSSRoot + 'guestweb_river_inn.css'],
             'guestweb_one_washington_circle': [ themeCSSRoot + 'guestweb_one_washington_circle.css']
         };
     }
