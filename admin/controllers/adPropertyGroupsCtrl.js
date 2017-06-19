@@ -15,9 +15,7 @@ admin.controller('ADPropertyGroupsCtrl', ['$scope', '$stateParams', 'ADPropertyG
 		$scope.fetchTableData = function($defer, params) {
 			var getParams = $scope.calculateGetParams(params);
 			var fetchSuccessOfItemList = function(data) {
-
 				$scope.$emit('hideLoader');
-
 				$scope.currentClickedElement = -1;
 				$scope.totalCount = data.total_count;
 				$scope.totalPage = Math.ceil(data.total_count / $scope.displyCount);
@@ -60,7 +58,6 @@ admin.controller('ADPropertyGroupsCtrl', ['$scope', '$stateParams', 'ADPropertyG
 	            $anchorScroll();
         	});
 			var fetchNewDetailsSuccessCallback = function(data) {
-
 				$scope.$emit('hideLoader');
 				$scope.isAdd = true;
 				$scope.prefetchData = {};
