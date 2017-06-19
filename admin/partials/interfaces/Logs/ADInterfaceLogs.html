@@ -56,8 +56,8 @@
                class="grid interfaces-grid" ng-show="$data.length">
             <tbody ng-repeat="message in $data" ng-init="isExpanded = false;">
             <tr ng-click="isExpanded = !isExpanded">
-                <td data-title="'ID'" header-class="cell-90">
-                    {{message.id}}
+                <td data-title="'ID'" header-class="cell-300">
+                    {{message.transaction_id}}
                 </td>
                 <td data-title="'Interface'" header-class="cell-180">
                     {{message.meta_data.integration_name}}
