@@ -240,7 +240,7 @@
                 		</div>
             		</div>
 
-            		<ad-dropdown hide="{{!reservationSettingsData.has_enabled_commissions}}" label-in-drop-down="{{'SELECT_PREPAID_COMMISSION_CHARGE_CODE' | translate}}" list="reservationSettingsData.prepaid_commission_charge_codes" selected-id='reservationSettingsData.selected_prepaid_commission_charge_code' selbox-class="placeholder" div-class="full-width" label="{{'PREPAID_COMMISSION_CHARGE_CODE' | translate}}"></ad-dropdown>
+            		<ad-dropdown ng-if="reservationSettingsData.has_enabled_commissions" label-in-drop-down="{{'SELECT_PREPAID_COMMISSION_CHARGE_CODE' | translate}}" list="reservationSettingsData.prepaid_commission_charge_codes" selected-id='reservationSettingsData.selected_prepaid_commission_charge_code' selbox-class="placeholder" div-class="full-width" label="{{'PREPAID_COMMISSION_CHARGE_CODE' | translate}}"></ad-dropdown>
 
 				</fieldset>
 
