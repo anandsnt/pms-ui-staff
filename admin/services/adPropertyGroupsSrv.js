@@ -8,7 +8,7 @@ admin.service('ADPropertyGroupsSrv', ['$http', '$q', 'ADBaseWebSrvV2', function(
 		var url = '/api/property_groups';
 
 		ADBaseWebSrvV2.getJSON(url, params).then(function(data) {
-	        deferred.resolve(data);
+			deferred.resolve(data);
 		}, function(data) {
             deferred.reject(data);
 		});
@@ -77,7 +77,7 @@ admin.service('ADPropertyGroupsSrv', ['$http', '$q', 'ADBaseWebSrvV2', function(
      */
 	this.update = function(data) {
 		var deferred = $q.defer();
-		var url = '/api/property_groups/'+data.id;
+		var url = '/api/property_groups/' + data.id;
 
 		ADBaseWebSrvV2.putJSON(url, data).then(function(data) {
             deferred.resolve(data);

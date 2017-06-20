@@ -23,7 +23,7 @@ admin.controller('ADPropertyGroupsCtrl', ['$scope', '$stateParams', 'ADPropertyG
 				$scope.is_connected_to_pms = data.is_connected_to_pms;
 				$scope.currentPage = params.page();
 				params.total(data.total_count);
-	            $defer.resolve($scope.data);
+				$defer.resolve($scope.data);
 			};
 
 			$scope.invokeApi(ADPropertyGroupsSrv.fetch, getParams, fetchSuccessOfItemList);
@@ -32,15 +32,15 @@ admin.controller('ADPropertyGroupsCtrl', ['$scope', '$stateParams', 'ADPropertyG
 
 		$scope.loadTable = function() {
 			$scope.tableParams = new ngTableParams({
-	    	        page: 1,  // show first page
-	    	        count: $scope.displyCount, // count per page
-        	        sorting: {
-	    	            property_group: 'asc' // initial sorting
-	    	        }
-	    	    }, {
-	    	        total: 0, // length of data
-	    	        getData: $scope.fetchTableData
-	    	    }
+				page: 1,  // show first page
+				count: $scope.displyCount, // count per page
+				sorting: {
+					property_group: 'asc' // initial sorting
+					}
+				}, {
+					total: 0, // length of data
+					getData: $scope.fetchTableData
+				}
 			);
 		};
 
@@ -57,7 +57,7 @@ admin.controller('ADPropertyGroupsCtrl', ['$scope', '$stateParams', 'ADPropertyG
 			$timeout(function() {
             $location.hash('new-form-holder');
                 $anchorScroll();
-        	});
+			});
 			var fetchNewDetailsSuccessCallback = function(data) {
 				$scope.$emit('hideLoader');
 				$scope.isAdd = true;
@@ -218,11 +218,11 @@ admin.controller('ADPropertyGroupsCtrl', ['$scope', '$stateParams', 'ADPropertyG
                 $scope.prefetchData.linked_property_ids.splice(idx, 1);
             }
 
-            $scope.prefetchData.chain_hotels[index].is_checked = ($scope.prefetchData.linked_property_ids.includes(propId)) ? true : false;
+            $scope.prefetchData.chain_hotels[index].is_checked = $scope.prefetchData.linked_property_ids.includes(propId);
             if ($scope.prefetchData.chain_hotels[index].is_checked) {
                 $scope.prefetchData.chain_hotels[index].is_already_linked_to_group = false;
             } else {
-                $scope.prefetchData.chain_hotels[index].is_already_linked_to_group = ($scope.prefetchData.already_linked_property_ids.includes(propId)) ? true : false;
+                $scope.prefetchData.chain_hotels[index].is_already_linked_to_group = $scope.prefetchData.already_linked_property_ids.includes(propId);
             }
         };
     }]);
