@@ -1319,10 +1319,6 @@ sntZestStation.controller('zsRootCtrl', [
                     }
                 } else {
                     $scope.callBlurEventForIpad();
-
-                    $timeout(function() {
-                        $('#' + elementId).focus();
-                    }, 500);
                 }
             }, 300);
 
