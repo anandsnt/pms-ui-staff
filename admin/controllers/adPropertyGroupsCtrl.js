@@ -52,6 +52,7 @@ admin.controller('ADPropertyGroupsCtrl', ['$scope', '$stateParams', 'ADPropertyG
 		$scope.addNewClicked = function() {
 			$scope.currentClickedElement = -1;
 			$scope.isEdit = false;
+			$scope.editId = '';
 
 			$timeout(function() {
 	            $location.hash('new-form-holder');
@@ -60,6 +61,7 @@ admin.controller('ADPropertyGroupsCtrl', ['$scope', '$stateParams', 'ADPropertyG
 			var fetchNewDetailsSuccessCallback = function(data) {
 				$scope.$emit('hideLoader');
 				$scope.isAdd = true;
+
 				$scope.prefetchData = {};
 
 				$scope.prefetchData = data;
