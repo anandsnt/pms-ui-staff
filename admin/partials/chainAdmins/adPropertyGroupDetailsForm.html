@@ -19,7 +19,7 @@
                 <span class="icon-form icon-checkbox" ng-class="{ 'checked' : (option.is_checked || option.is_already_linked_to_group) }"></span>
                 <input type="checkbox" ng-click="checkBoxClicked($index)" ng-class="{ 'checked' : option.is_checked, 'disabled': option.is_already_linked_to_group }" ng-model="option.is_checked">
                 <span>{{option.name}}</span>
-                <em>{{option.belongs_to_property_group}}</em>
+                <em ng-class="{ 'same_group' : option.belongs_to_property_group_id == editId }">{{option.belongs_to_property_group}}</em>
             </label>
         </div>
     </div>
