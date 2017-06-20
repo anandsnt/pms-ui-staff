@@ -2,7 +2,7 @@ admin.controller('ADPropertyGroupsCtrl', ['$scope', '$stateParams', 'ADPropertyG
 	function($scope, $stateParams, ADPropertyGroupsSrv, ngTableParams, $filter, $timeout, $state, $rootScope, $location, $anchorScroll) {
 
 		ADBaseTableCtrl.call(this, $scope, ngTableParams);
-		$scope.$emit("changedSelectedMenu", 11); //$stateParams.menu
+		$scope.$emit("changedSelectedMenu", 11); // $stateParams.menu
 		$scope.currentClickedElement = -1;
 		$scope.isAdd = false;
 		$scope.isEdit = false;
@@ -22,7 +22,7 @@ admin.controller('ADPropertyGroupsCtrl', ['$scope', '$stateParams', 'ADPropertyG
 				$scope.data = data.property_groups;
 				$scope.is_connected_to_pms = data.is_connected_to_pms;
 				$scope.currentPage = params.page();
-	        	params.total(data.total_count);
+				params.total(data.total_count);
 	            $defer.resolve($scope.data);
 			};
 
@@ -32,15 +32,15 @@ admin.controller('ADPropertyGroupsCtrl', ['$scope', '$stateParams', 'ADPropertyG
 
 		$scope.loadTable = function() {
 			$scope.tableParams = new ngTableParams({
-			        page: 1,  // show first page
-			        count: $scope.displyCount, // count per page
-			        sorting: {
-			            property_group: 'asc' // initial sorting
-			        }
-			    }, {
-			        total: 0, // length of data
-			        getData: $scope.fetchTableData
-			    }
+	    	        page: 1,  // show first page
+	    	        count: $scope.displyCount, // count per page
+        	        sorting: {
+	    	            property_group: 'asc' // initial sorting
+	    	        }
+	    	    }, {
+	    	        total: 0, // length of data
+	    	        getData: $scope.fetchTableData
+	    	    }
 			);
 		};
 
@@ -55,8 +55,8 @@ admin.controller('ADPropertyGroupsCtrl', ['$scope', '$stateParams', 'ADPropertyG
 			$scope.editId = '';
 
 			$timeout(function() {
-	            $location.hash('new-form-holder');
-	            $anchorScroll();
+            $location.hash('new-form-holder');
+                $anchorScroll();
         	});
 			var fetchNewDetailsSuccessCallback = function(data) {
 				$scope.$emit('hideLoader');
@@ -66,7 +66,7 @@ admin.controller('ADPropertyGroupsCtrl', ['$scope', '$stateParams', 'ADPropertyG
 
 				$scope.prefetchData = data;
 				$scope.prefetchData.already_linked_property_ids = [];
-				angular.forEach($scope.prefetchData.chain_hotels, function(property, index) {
+				angular.forEach($scope.prefetchData.chain_hotels, function(property) {
 					property.is_checked = false;
 					if (property.is_already_linked_to_group) {
 						$scope.prefetchData.already_linked_property_ids.push(property.id);
@@ -99,7 +99,7 @@ admin.controller('ADPropertyGroupsCtrl', ['$scope', '$stateParams', 'ADPropertyG
 				// already_linked_property_ids - Used to add/remove checked and disabled class.
 				$scope.prefetchData.already_linked_property_ids = [];
 				angular.forEach($scope.prefetchData.chain_hotels, function(item) {
-					item.is_checked = (linked_properties.includes(item.id)) ? true : false;
+					item.is_checked = linked_properties.includes(item.id);
 					if (item.is_already_linked_to_group) {
 						$scope.prefetchData.already_linked_property_ids.push(item.id);
 					}
@@ -128,7 +128,7 @@ admin.controller('ADPropertyGroupsCtrl', ['$scope', '$stateParams', 'ADPropertyG
 		 * To handle delete button click.
 		 */
 		$scope.deleteItem = function(value) {
-			var deleteSuccessCallback = function(data) {
+			var deleteSuccessCallback = function() {
 				$scope.$emit('hideLoader');
 				angular.forEach($scope.data.property_groups, function(item, index) {
 					if (item.value === value) {
@@ -151,10 +151,10 @@ admin.controller('ADPropertyGroupsCtrl', ['$scope', '$stateParams', 'ADPropertyG
 			var saveSuccessCallback = function(data) {
 				$scope.$emit('hideLoader');
 				if ($scope.isEdit) {
-                	var p = parseInt($scope.currentClickedElement);
+                    var p = parseInt($scope.currentClickedElement);
 
                     if ($scope.orderedData) {
-                    	if ($scope.orderedData[p]) {
+                        if ($scope.orderedData[p]) {
 							$scope.orderedData[parseInt($scope.currentClickedElement)].property_group = data.property_group;
                         }
                     }
@@ -205,23 +205,24 @@ admin.controller('ADPropertyGroupsCtrl', ['$scope', '$stateParams', 'ADPropertyG
 	    * To handle checkbox click actions
 	    */
 
-	    $scope.checkBoxClicked = function(index) {
+        $scope.checkBoxClicked = function(index) {
 
-	    	var propId = $scope.prefetchData.chain_hotels[index].id;
+            var propId = $scope.prefetchData.chain_hotels[index].id;
 
-	    	if (!$scope.prefetchData.linked_property_ids.includes(propId)) {
-	    		$scope.prefetchData.linked_property_ids.push(propId);
-	    	}
-	    	else {
-	    		var idx = $scope.prefetchData.linked_property_ids.indexOf(propId);
-	    		$scope.prefetchData.linked_property_ids.splice(idx, 1);
-	    	};
+            if (!$scope.prefetchData.linked_property_ids.includes(propId)) {
+                $scope.prefetchData.linked_property_ids.push(propId);
+            }
+            else {
+                var idx = $scope.prefetchData.linked_property_ids.indexOf(propId);
 
-	    	$scope.prefetchData.chain_hotels[index].is_checked = ($scope.prefetchData.linked_property_ids.includes(propId)) ? true : false;
-	    	if ($scope.prefetchData.chain_hotels[index].is_checked) {
-	    		$scope.prefetchData.chain_hotels[index].is_already_linked_to_group = false;
-	    	} else {
-	    		$scope.prefetchData.chain_hotels[index].is_already_linked_to_group = ($scope.prefetchData.already_linked_property_ids.includes(propId)) ? true : false;
-	    	}
-	    };
-	}]);
+                $scope.prefetchData.linked_property_ids.splice(idx, 1);
+            }
+
+            $scope.prefetchData.chain_hotels[index].is_checked = ($scope.prefetchData.linked_property_ids.includes(propId)) ? true : false;
+            if ($scope.prefetchData.chain_hotels[index].is_checked) {
+                $scope.prefetchData.chain_hotels[index].is_already_linked_to_group = false;
+            } else {
+                $scope.prefetchData.chain_hotels[index].is_already_linked_to_group = ($scope.prefetchData.already_linked_property_ids.includes(propId)) ? true : false;
+            }
+        };
+    }]);
