@@ -45,6 +45,16 @@
         }
 	}
 
+	.logo-svg{
+	    background-image: url("../css/themes/chalet-view/logo.svg");
+	    background-repeat: no-repeat;
+	    background-size: contain;
+	    width: 330px;
+	    height: 120px;
+	    background-position: center;
+	    margin-top: 3.5%;
+	}
+
 /* 4. LAYOUT
 ==========================================================*/
 	
@@ -58,12 +68,18 @@
 		#header {
 			background-color: @white;
 			height: 145px;
+			.button {
+				top: auto !important;
+			}
 		}
 
 		#main {
 			#calc > #height > .remove(100%, 145px);
 			top: 145px;
 			padding-top: 50px;
+			#content {
+				height: 100% !important;
+			}
 		}
 
 		#actions {
