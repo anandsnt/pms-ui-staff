@@ -122,7 +122,7 @@ admin.service('ADInterfaceLogsSrv', ['$http', '$q', 'ADBaseWebSrvV2',
                 responseCharacterLimit = 300,
                 isJSON = message.meta_data.type && message.meta_data.type.match(/^json$/i),
                 request = '\n' + message.request || '',
-                response = message.response || '',
+                response = '\n' + message.response || '',
                 isLongRequest = request.length > requestCharacterLimit,
                 isLongResponse = response.length > responseCharacterLimit,
                 ellipsis = '\n....';
@@ -167,6 +167,8 @@ admin.service('ADInterfaceLogsSrv', ['$http', '$q', 'ADBaseWebSrvV2',
                 // The whole messages need not be shown in the screens, as they are available for download
                 response.messages.map(shorten);
                 deferred.resolve(response);
+            }, function(response) {
+                deferred.reject(response.errors || response);
             });
             return deferred.promise;
         };
