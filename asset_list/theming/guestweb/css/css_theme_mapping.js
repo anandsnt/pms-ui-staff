@@ -5,6 +5,7 @@ module.exports = {
 
         return {
             'guestweb_windsor_suites': [ themeCSSRoot + 'guestweb_windsor_suites.css'],
+            'guestweb_moonrise': [ themeCSSRoot + 'guestweb_moonrise.css'],
             'guestweb_row': [ themeCSSRoot + 'guestweb_row.css'],
             'guestweb_atura': [ themeCSSRoot + 'guestweb_atura.css'],
             'guestweb_bellagio': [ themeCSSRoot + 'guestweb_bellagio.css'],

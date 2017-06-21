@@ -675,3 +675,8 @@ var checkIfReferencetextAvailableForCC = function(paymentTypes,selectedPaymentTy
     });
     return displayReferance;
 };
+
+// Get the length of an object
+var getObjectLength = function(obj) {
+    return Object.keys(obj).length;
+}

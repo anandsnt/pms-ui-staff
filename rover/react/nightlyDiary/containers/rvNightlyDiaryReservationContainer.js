@@ -212,6 +212,12 @@ let convertReservationsListReadyToComponent = (reservation, diaryInitialDayOfDat
                                  ? getReservationStatusClass(reservation.status)
                                  : (isReservationFuture) ? 'future' : '';
     let reservationClass = getReservationClasses(reservation, currentBusinessDate, diaryInitialDayOfDateGrid, numberOfDays);
+    
+    // CICO-41798, Show "Pending" if no name is given initially
+    if (reservation.guest_details.first_name === null && reservation.guest_details.last_name === null) {
+        reservation.guest_details.last_name = 'Pending';
+        reservation.guest_details.first_name = '';
+    }
 
     reservation.guest_details.full_name = reservation.guest_details.first_name + " " + reservation.guest_details.last_name;
     reservation.guest_details.short_name = reservation.guest_details.first_name.substring(0, 1) + "." + reservation.guest_details.last_name.substring(0, 1);
