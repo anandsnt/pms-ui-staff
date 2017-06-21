@@ -1,6 +1,10 @@
 <ad-common-parts-in-form-dir on-save-button-click="saveSettings" header-caption="Hue Settings">
     <fieldset class="holder full-width">
         <ad-toggle-button is-checked="hueSettings.kiosk_is_hue_active" div-class="full-width" label="{{ 'USE_HUE' | translate}}"></ad-toggle-button>
+        <ad-form-sub-title title="HANDLER_INSTRUCTIONS"></ad-form-sub-title>
+        <div class="entry full-width">
+            <button translate="" ng-click="connectUsingWS()" class="button green" translate="">CONNECT_TO_WS</button>
+        </div>
         <ad-form-sub-title title="DISCOVER_HUE_BRIDGE_INSTRUCTIONS"></ad-form-sub-title>
         <div class="entry full-width">
             <button translate="" ng-click="discoverBridges()" class="button green" translate="">DISCOVER_BRIDGES</button>
@@ -19,7 +23,7 @@
                     <tr ng-repeat="bridge in availableBridges">
                         <!-- <td>{{bridge.id}}</td> -->
                         <td>
-                            {{bridge.internalipaddress}}
+                            {{bridge}}
                         </td>
                         <!--   <td>
                             {{bridge.name}}
@@ -30,23 +34,25 @@
         </div>
     </fieldset>
     <fieldset class="holder full-width">
+        <ad-form-sub-title title="BRIDGE_IP_INSTRUCTIONS"></ad-form-sub-title>
         <ad-textbox value="hueSettings.hue_bridge_ip" name="app-name" id="app-name" label="Target Bridge IP" styleclass="half-width"></ad-textbox>
     </fieldset>
     <fieldset class="holder full-width">
         <ad-form-sub-title title="HUE_USER_NAME_INSTRUCTIONS"></ad-form-sub-title>
         <div class="entry full-width">
-            <button translate="" ng-click="createNewUser()" class="button green" translate="">CREATE_USER_NAME</button>
+            <button translate="" ng-click="createNewAppKey()" class="button green" translate="">CREATE_NEW_APP_KEY</button>
         </div>
         <div class="entry full-width" ng-show="newUsername.length > 0">
-            {{'NEW_USER_NAME_IS' | translate}} - {{newUsername}}
+            {{'NEW_APP_KEY_IS' | translate}} => {{newUsername}}
         </div>
-        <ad-textbox value="hueSettings.hue_user_name" name="app-name" id="app-name" label="User Name" styleclass="half-width"></ad-textbox>
+        <ad-textbox value="hueSettings.hue_user_name" name="app-name" id="app-name" label="App key" styleclass="half-width"></ad-textbox>
+        <ad-textbox value="hueSettings.hue_light_color_hex" name="app-name" id="app-name" label="Light Color" styleclass="half-width" placeholder="{{'LIGHT_COLOR_INSTRUCTIONS' | translate}}"></ad-textbox>
     </fieldset>
     <fieldset class="holder full-width">
         <ad-form-title form-title="Test Settings"></ad-form-title>
         <ad-form-sub-title title="TEST_SETTINGS_INSTRUCTIONS"></ad-form-sub-title>
     </fieldset>
-    <fieldset class="holder left">
+    <fieldset class="holder full-width">
         <div class="entry full-width">
             <button translate="" ng-click="getLightsList()" class="button green" translate="">GET_LIGHTS</button>
         </div>

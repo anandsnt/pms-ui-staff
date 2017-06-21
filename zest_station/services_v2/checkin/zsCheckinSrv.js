@@ -121,23 +121,78 @@ sntZestStation.service('zsCheckinSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
             });
             return deferred.promise;
         };
-        this.fetchReservationDetails = function(param) {
-            var url;
 
-            param.is_kiosk = true;
-            url = '/staff/staycards/reservation_details.json?reservation=' + param.id;
-            var deferred = $q.defer();
+        /**
+         * CICO-41520
+         * Modified the zs services so that this is the ONLY method that makes this api call!
+         * @param param
+         * @return {*|promise|{then, catch, finally}|e}
+         */
+        this.fetchReservationDetails = function(param) {
+            var url = '/staff/staycards/reservation_details.json?is_kiosk=true&reservation_id=' + param.id,
+                deferred = $q.defer();
 
             // To fetch the latest guest details, the following parameter has to be sent to trigger a fetchProfile OWS request
             if (!$rootScope.isStandAlone) {
-                url += "&sync_guest_with_external_pms=true";
+                url += '&sync_guest_with_external_pms=true';
             }
 
-            zsBaseWebSrv.getJSON(url,param).then(function(data) {
+            zsBaseWebSrv.getJSON(url).then(function(data) {
                 deferred.resolve(data);
             }, function(data) {
                 deferred.reject(data);
             });
+
+            return deferred.promise;
+        };
+
+        /**
+         * /api/reservations/:reservation_id/pre_auth
+         * @param {String} id reservation_id
+         * @return {HttpPromise} authorize_cc_at_checkin, pre_auth_amount_at_checkin, pre_auth_amount_for_zest_station
+         */
+        that.fetchReservationPreAuthInfo = function(id) {
+            return $http.get('api/reservations/' + id + '/pre_auth');
+        };
+
+        /**
+         * CICO-41520
+         * Returns reservation_details.json response along with authorize_cc_at_checkin, pre_auth_amount_at_checkin, pre_auth_amount_for_zest_station
+         * @param params
+         * @return {*|promise|{then, catch, finally}|e}
+         */
+        that.fetchReservationInfo = function(params) {
+            var deferred = $q.defer(),
+                responses = {},
+                promises = [];
+
+
+            var onSuccessFetchReservationDetails = function(response) {
+                responses['details'] = response;
+            };
+
+            var onSuccessFetchReservationPreAuth = function(response) {
+                responses['preAuth'] = response.data;
+                if (response.status !== 200) {
+                    deferred.reject(response.data);
+                }
+            };
+
+            promises.push(that.fetchReservationDetails(params).then(onSuccessFetchReservationDetails, onSuccessFetchReservationDetails));
+
+            promises.push(that.fetchReservationPreAuthInfo(params.id).then(onSuccessFetchReservationPreAuth, onSuccessFetchReservationPreAuth));
+
+            $q.all(promises).then(function() {
+                var mergedReservationDetails = responses['details'];
+
+                if (mergedReservationDetails.data) {
+                    _.extend(mergedReservationDetails.data.reservation_card, responses['preAuth']);
+                    deferred.resolve(mergedReservationDetails);
+                } else {
+                    deferred.reject(mergedReservationDetails);
+                }
+            });
+
             return deferred.promise;
         };
 

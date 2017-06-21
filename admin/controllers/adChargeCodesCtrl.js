@@ -71,6 +71,18 @@ admin.controller('ADChargeCodesCtrl', ['$scope', 'ADChargeCodesSrv', 'ngTablePar
 
 		$scope.loadTable();
 
+
+		var runDigestCycle = function() {
+			if (!$scope.$$phase) {
+				$scope.$digest();
+			}
+		};
+		
+		var scrollTop = function() {
+			$(".content-scroll").scrollTop(0);
+			$scope.$emit('hideLoader');
+			runDigestCycle();
+		};
 		/*
 		 * To fetch charge code list
 		 */
@@ -106,6 +118,8 @@ admin.controller('ADChargeCodesCtrl', ['$scope', 'ADChargeCodesSrv', 'ngTablePar
 				// Default amount sign for FEES and TAXES to be positive
 				$scope.prefetchData.selected_amount_sign = '+';
 				$scope.prefetchData.selected_amount_symbol = 'amount';
+				// Add New is at the top of the content window, scroll up for the user
+				scrollTop();
 			};
 
 			$scope.invokeApi(ADChargeCodesSrv.fetchAddData, {}, fetchNewDetailsSuccessCallback);

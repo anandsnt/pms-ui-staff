@@ -41,7 +41,7 @@
             {{ guests.length }} 
             possible match<span ng-if="guests.length > 1">es</span>
         </strong>
-        <button id="new-guest" ng-show="addNewCards" type="button" class="button green has-arrow skip" ng-click="createNewGuest()">New Guest</button>
+        <button id="new-guest" ng-show="addNewCards && guestSearchIntiated" type="button" class="button green has-arrow skip" ng-click="createNewGuest()">New Guest</button>
         
         <!-- Guest Card Results listing -->
         <div id="search-guests-content" class="search-cards scrollable">
