@@ -9,7 +9,8 @@ sntZestStation.controller('zsCheckinSignatureCtrl', [
     'zsModeConstants',
     'zsGeneralSrv',
     'zsUtilitySrv',
-    function($scope, $stateParams, $state, zsEventConstants, $controller, $timeout, zsCheckinSrv, zsModeConstants, zsGeneralSrv, zsUtilitySrv) {
+    '$log',
+    function($scope, $stateParams, $state, zsEventConstants, $controller, $timeout, zsCheckinSrv, zsModeConstants, zsGeneralSrv, zsUtilitySrv, $log) {
 
         /** ********************************************************************************************
          **      Please note that, not all the stateparams passed to this state will not be used in this state, 
@@ -55,7 +56,7 @@ sntZestStation.controller('zsCheckinSignatureCtrl', [
             var haveValidGuestEmail = checkIfEmailIsBlackListedOrValid(),
                 collectNationalityEnabled = $scope.zestStationData.check_in_collect_nationality;
 
-            console.warn('afterGuestCheckinCallback :: current state params: ', $stateParams);
+            $log.warn('afterGuestCheckinCallback :: current state params: ', $stateParams);
             var stateParams = {
                 'guest_id': $stateParams.guest_id,
                 'reservation_id': $stateParams.reservation_id,
@@ -65,7 +66,7 @@ sntZestStation.controller('zsCheckinSignatureCtrl', [
                 'guest_email_blacklisted': $stateParams.guest_email_blacklisted
             };
 
-            console.info('haveValidGuestEmail: ', haveValidGuestEmail);
+            $log.info('haveValidGuestEmail: ', haveValidGuestEmail);
             if ($scope.theme === 'yotel') {
                 $scope.setScreenIcon('checkin');
                 $state.go('zest_station.checkinSuccess', stateParams);
@@ -78,7 +79,7 @@ sntZestStation.controller('zsCheckinSignatureCtrl', [
                 stateParams.email = $stateParams.email;
                 $state.go('zest_station.checkinKeyDispense', stateParams);
             } else {
-                console.warn('to email collection: ', stateParams);
+                $log.warn('to email collection: ', stateParams);
                 $state.go('zest_station.checkInEmailCollection', stateParams);
             }
 
@@ -104,15 +105,25 @@ sntZestStation.controller('zsCheckinSignatureCtrl', [
             };
 
 
-            console.log('collectPassportEnabled: ', collectPassportEnabled);
             // when collectPassportEnabled (check_in_collect_passport) is enabled,
             // we should Not check in a guest until After the passports have been validated properly
             // if any passports are invalid during check-in, the user will need to see a staff member
+            if (collectPassportEnabled) {
+                $scope.zestStationData.checkinGuest = function() {// make a reference to current checkInGuest method used if passport scanning
+                    
+                    if ($scope.zestStationData.noCheckInsDebugger === 'true') {
+                        afterGuestCheckinCallback({ 'status': 'success' });
+                    } else {
+                        $scope.callAPI(zsCheckinSrv.checkInGuest, options);
+                    }
+                    
+                };   
+            }
 
             if ($scope.zestStationData.noCheckInsDebugger === 'true') {
-                console.log('skipping checkin guest, no-check-ins debugging is ON');
+                $log.log('skipping checkin guest, no-check-ins debugging is ON');
                 if (collectPassportEnabled && !$stateParams.passports_scanned) {
-                    $state.go('zest_station.checkInScanPassport');
+                    $state.go('zest_station.checkInScanPassport', $stateParams);
                 } else {
                     afterGuestCheckinCallback({ 'status': 'success' });
                 }
@@ -120,7 +131,7 @@ sntZestStation.controller('zsCheckinSignatureCtrl', [
             } else {
 
                 if (collectPassportEnabled && !$stateParams.passports_scanned) {
-                    $state.go('zest_station.checkInScanPassport');
+                    $state.go('zest_station.checkInScanPassport', $stateParams);
                 } else {
                     $scope.callAPI(zsCheckinSrv.checkInGuest, options);
                 }
