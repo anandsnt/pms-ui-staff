@@ -473,11 +473,14 @@ function getWeekDayName(dayIndexInWeek, minLetterCount){
 }
 
 function addDaysToDay(date, days) {
-    var dateToTime = tzIndependentDate(date).getTime();
-    var oneDay = 24 * 60 * 60 * 1000;
-    var dateToTimeWithDays = dateToTime + (oneDay * days);
-    var dateToTimeWithDaysObj = new Date(dateToTimeWithDays);
-    var dateToTimeWithDaysModified = dateToTimeWithDaysObj.toString("YYYY-MM-DD");
+    var dateToTime = tzIndependentDate(date).getTime(),
+        oneDay = 24 * 60 * 60 * 1000,
+        dateToTimeWithDays = dateToTime + (oneDay * days),
+        dateToTimeWithDaysObj = new Date(dateToTimeWithDays),
+        dateToTimeDate = dateToTimeWithDaysObj.getDate(),
+        dateToTimeMonth = dateToTimeWithDaysObj.getMonth() + 1, //Months are zero based
+        dateToTimeYear = dateToTimeWithDaysObj.getFullYear(),
+        dateToTimeWithDaysModified = dateToTimeYear + "-" + dateToTimeMonth + "-" + dateToTimeDate;
 
     return dateToTimeWithDaysModified;
 }
@@ -672,3 +675,8 @@ var checkIfReferencetextAvailableForCC = function(paymentTypes,selectedPaymentTy
     });
     return displayReferance;
 };
+
+// Get the length of an object
+var getObjectLength = function(obj) {
+    return Object.keys(obj).length;
+}

@@ -1,15 +1,14 @@
 <script>
     var url = document.location,
       inDevEnvironment = false,
-      analyticTrackingID,
-      inLocalEnv = false;
+      inLocalEnv = false,
+      analyticTrackingID;
 
     if (url.hostname) { // if btn === true, then the user is clicking continue to bypass cc screen in dev environment
       if (typeof url.hostname === typeof 'str') {
         if (url.hostname.indexOf('pms-dev') !== -1 ||
           url.hostname.indexOf('pms-release') !== -1 ||
-          url.hostname.indexOf('192.168.1.218') !== -1 ||
-          url.hostname.indexOf('192.168.1.239') !== -1 ||
+          url.hostname.indexOf('192.168.') !== -1 ||
           url.hostname.indexOf('localhost') !== -1) {
 
           inDevEnvironment = true, inLocalEnv = false;

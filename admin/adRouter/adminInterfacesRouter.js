@@ -187,6 +187,17 @@ angular.module('adminInterfacesRouter', []).config(function($stateProvider) {
         }
     });
 
+    $stateProvider.state('admin.digitalalchemySetup', {
+        templateUrl: '/assets/partials/interfaces/Digitalalchemy/adDigitalalchemySetup.html',
+        controller: 'adDigitalalchemySetupCtrl',
+        url: '/digitalalchemy/setup',
+        resolve: {
+            config: ['adInterfacesCommonConfigSrv', function(adInterfacesCommonConfigSrv) {
+                return adInterfacesCommonConfigSrv.fetchConfiguration('digitalalchemy');
+            }]
+        }
+    });
+
     $stateProvider.state('admin.accountViewSetup', {
         templateUrl: '/assets/partials/interfaces/AccountView/adAccountViewSetup.html',
         controller: 'adAccountViewSetupCtrl',

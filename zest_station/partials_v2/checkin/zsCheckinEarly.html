@@ -1,5 +1,5 @@
 <!-- available -->
-<section id="main" class="centered" role="main" click-touch='resetTime()'>
+<section id="main" class="centered eci-content" role="main" click-touch='resetTime()'>
     <div id="content">
         <!-- Early Checkin Unavailable -->
         <h1 ng-show="mode === 'CHECKIN_LATER'"> 
@@ -69,13 +69,13 @@
                         <div ng-include="icons.url.key"></div>
                     </button>
                     <text data-ng-bind-html="getTagValue('EARLY_AVAIL_PURCHASE')" editable-text="EARLY_AVAIL_PURCHASE"></text>
-                    <span>
+                    <h3>
                         <text data-ng-bind-html="getTagValue('EARLY_AVAIL_PURCHASE_SUB')" editable-text="EARLY_AVAIL_PURCHASE_SUB"></text>
 
                         {{early_checkin_charge}} 
 
                         <text data-ng-bind-html="getTagValue('EARLY_AVAIL_PURCHASE_SUB_2')" editable-text="EARLY_AVAIL_PURCHASE_SUB_2"></text>
-                    </span>
+                    </h3>
                 </li>
                 <li class="break">
                     <span>

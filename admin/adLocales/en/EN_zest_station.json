@@ -51,6 +51,7 @@
 "CHECKOUT":"Check Out",
 "CHECKIN":"Check In",
 "REG_CARD_TEXT":"Registration Card Text",
+"REG_CARD_HEADING": "Registration Card Heading",
 "REG_CARD":"Registration Card",
 "ON_SCREEN_ROOM_NUMBER":"On-Screen Room Number",
 "ENFORCE_DEPOSIT":"Enforce Deposit",
@@ -114,7 +115,24 @@
 "STATION_MOBILE_PHONE_KEY_EMAIL_HEADER":"Get Mobile Phone Key Email",
 "STATION_MOBILE_PHONE_KEY_EMAIL_SETUP":"Setup Mobile Phone Key Email",
 
-"TEXT_1_MOBILE_PHONE_KEY_EMAIL": "Text"
+"TEXT_1_MOBILE_PHONE_KEY_EMAIL": "Text",
+
+"USE_HUE": "USE HUE",
+"CONNECT_TO_WS": "CONNECT",
+"BRIDGE_IP_INSTRUCTIONS": "(If by any chance the bridge IP is changed, always create a new App key)",
+"HANDLER_INSTRUCTIONS": "Before starting, please ensure that zest station handler is running in the system. If the handler is not running, please run the handler and click on the connect button below. The bridge IP and App key have to be saved for connecting to the HUE system afterwards.",
+"DISCOVER_HUE_BRIDGE_INSTRUCTIONS": "There can be multiple Hue Bridges in the network. If you don't know the required bridge IP address, please click discover bridges button to list the available IPs of the connected bridges. If you already know the IP address, please fill in the Bridge IP field.",
+"DISCOVER_BRIDGES": "DISCOVER BRIDGES",
+"IP_ADDRESS": "Available Bridge IP addresses",
+"HUE_USER_NAME_INSTRUCTIONS": "If you don't have a Hue App key, please click link button on top of the bridge (big round button) and then click on create new App key button below. Once the app key is created, please copy and paste the app key in the app key field.  If you already have a App key, please enter that App key in the App key field.",
+"CREATE_NEW_APP_KEY": "Create New App Key",
+"NEW_APP_KEY_IS": "YOUR NEW USER APP KEY IS",
+"GET_LIGHTS": "GET LIGHTS LIST",
+"TURN_ON_LIGHT": "Turn ON light",
+"TURN_OFF_LIGHT": "Turn OFF light",
+"TEST_SETTINGS_INSTRUCTIONS": "If you already know the required light ID, enter the ID in the light ID field. Else click on get lights list button to list all the available lights. Please note that the lights have to be reachable.",
+"HUE_LIGHT_ID": "Hue Light ID",
+"LIGHT_COLOR_INSTRUCTIONS": "Please enter the 6 digit hex color." 
 
 
 
