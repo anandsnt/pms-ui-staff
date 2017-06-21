@@ -125,8 +125,8 @@ module.exports = {
             'guestweb_hotel_berlaymont': [ themeJsRoot + 'app_router_common.js'],
             'guestweb_el_cosmico': [ themeJsRoot + 'app_router_common.js'],
             'guestweb_quintessence_resort': [ themeJsRoot + 'app_router_common.js'],
-            'guestweb_one_washington_circle': [ themeJsRoot + 'app_router_common.js'],
-            'guestweb_river_inn': [ themeJsRoot + 'app_router_common.js']
+            'guestweb_river_inn': [ themeJsRoot + 'app_router_common.js'],
+            'guestweb_one_washington_circle': [ themeJsRoot + 'app_router_common.js']
         };
     }
 };

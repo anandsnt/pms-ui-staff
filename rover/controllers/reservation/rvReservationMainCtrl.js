@@ -639,12 +639,28 @@ sntRover.controller('RVReservationMainCtrl', ['$scope',
         };
 
         var openRateAdjustmentPopup = function(room, index, lastReason) {
+            var arrivalDate = tzIndependentDate(Object.keys(room.stayDates)[0]),
+                businessDate = tzIndependentDate($rootScope.businessDate),
+                showDate = Object.keys(room.stayDates)[0];
+
+            if (arrivalDate < businessDate) {
+                showDate = $rootScope.businessDate;
+            }
+
             var popUpData = JSON.stringify({
                 room: room,
                 index: index,
-                lastReason: lastReason
+                lastReason: lastReason,
+                showDate: showDate
             });
 
+            // Checks if two dates are equal
+            $scope.isDateEqual = function(date1, date2) {
+                return Date.parse(date1) === Date.parse(date2);
+            };
+
+
+            // Get object length based on no of keys
             $scope.getObjectLength = function(obj) {
                 return getObjectLength(obj);
             };
@@ -1611,8 +1627,10 @@ sntRover.controller('RVReservationMainCtrl', ['$scope',
 
         // Copy the amount for one date to all the dates during the stay
         $scope.copySingleValueToOtherCells = function(modifiedAmt, stayDates) {
-            _.each(stayDates, function (stayDate) {
-                stayDate.rateDetails.modified_amount = modifiedAmt;
+            _.each(stayDates, function (stayDateInfo, stayDate) {
+                if (Date.parse(stayDate) >= Date.parse($rootScope.businessDate)) {
+                    stayDateInfo.rateDetails.modified_amount = modifiedAmt;
+                }
             });
 
         };
