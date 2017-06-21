@@ -240,7 +240,7 @@
                 		</div>
             		</div>
 
-            		<ad-checkbox is-checked="reservationSettingsData.set_for_new_card" label="{{ 'Set for new card' | translate}}" div-class="" hide="{{!reservationSettingsData.commission_by_agent || !reservationSettingsData.has_enabled_commissions}}"></ad-checkbox>
+            		<ad-checkbox is-checked="reservationSettingsData.set_for_new_card" label="{{ 'SET_FOR_A_NEW_CARD' | translate }}" div-class="" hide="{{!reservationSettingsData.commission_by_agent || !reservationSettingsData.has_enabled_commissions}}"></ad-checkbox>
 
             		<ad-dropdown ng-if="reservationSettingsData.has_enabled_commissions" label-in-drop-down="{{'SELECT_PREPAID_COMMISSION_CHARGE_CODE' | translate}}" list="reservationSettingsData.prepaid_commission_charge_codes" selected-id='reservationSettingsData.selected_prepaid_commission_charge_code' selbox-class="placeholder" div-class="full-width" label="{{'PREPAID_COMMISSION_CHARGE_CODE' | translate}}"></ad-dropdown>
 
