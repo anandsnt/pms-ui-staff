@@ -33,7 +33,8 @@ sntZestStation.controller('zsCheckinScanPassportCtrl', [
          */
         
         var collectPassportEnabled = $scope.zestStationData.check_in_collect_passport;
-
+        var scanCollected = 0;
+        $scope.scannedPassportImage = [];
         var onPassportScanSuccess = function() {
 
             var readyToContinue = true;
@@ -53,6 +54,7 @@ sntZestStation.controller('zsCheckinScanPassportCtrl', [
             $scope.allPassportReady = readyToContinue;
             $scope.mode = 'SCAN_RESULTS';
             $log.log('mode: ', $scope.mode);
+            $scope.runDigestCycle();
         };
 
 
@@ -95,9 +97,13 @@ sntZestStation.controller('zsCheckinScanPassportCtrl', [
         };
 
 
-        $scope.selectGuest = function(guestInfo) {
+        $scope.selectGuest = function(guestInfo, index) {
             $scope.selectedPassport = true;
             $scope.selectedPassportInfo = guestInfo;
+            $scope.selectedPassportInfo.img_path = $scope.scannedPassportImage[index];
+            console.warn('$scope.selectedPassportInfo.img_path: ',$scope.selectedPassportInfo.img_path)
+            
+
             $log.log('guest', guestInfo);
 
             if ($scope.mode !== 'ADMIN_VERIFY_PASSPORTS') {
@@ -115,26 +121,33 @@ sntZestStation.controller('zsCheckinScanPassportCtrl', [
 
         };
 
-        $scope.scan = function() {
-            $scope.mode = 'SCANNING_IN_PROGRESS';
 
-            $log.log('mode: ', $scope.mode);
+        var samsoTechScanPassport = function() {
+            if ($scope.socketOperator.returnWebSocketObject().readyState === 1) {
+                $scope.socketOperator.CapturePassport();
+            } else {
+                listenForWebsocketActivity();
+                $scope.$emit('CONNECT_WEBSOCKET'); // connect socket
+            }
+        };
+
+
+        $scope.$on('SOCKET_FAILED', function() {
+            console.info('socket failed.');
+            $scope.$emit('PASSPORT_SCAN_FAILURE');    
+        });
+
+        $scope.scan = function() {
+            scanCollected = $scope.scannedPassportImage.length;
+            $scope.mode = 'SCANNING_IN_PROGRESS';
             $scope.resetTime();
 
+            samsoTechScanPassport();
 
             // debugging
-            $timeout(function() {
-
-                if ($scope.inDemoMode()) {
-                    $scope.$emit('PASSPORT_SCAN_SUCCESS');
-                } else {
-
-
-                    $scope.$emit('PASSPORT_SCAN_FAILURE');    
-                }
-                
-
-            }, 2000);
+            if ($scope.inDemoMode()) {
+                $scope.$emit('PASSPORT_SCAN_SUCCESS');
+            }
             
         };
 
@@ -388,8 +401,15 @@ sntZestStation.controller('zsCheckinScanPassportCtrl', [
             setTimedOut();
         });
 
+        // error image path
+        $scope.gidImgErrorSrcPath = '';
 
-        $scope.$on('PASSPORT_SCAN_SUCCESS', function() {
+        $scope.$on('PASSPORT_SCAN_SUCCESS', function(evt, response) {
+            console.log(response);
+            $scope.scannedPassportImage[scanCollected] = response.PR_DFE_FRONT_IMAGE;
+            // $scope.selectedPassportInfo.img_path = response.PR_DFE_FRONT_IMAGE;
+
+
             onPassportScanSuccess();
         });
 

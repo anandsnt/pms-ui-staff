@@ -105,7 +105,7 @@
             <text data-ng-bind-html="getTagValue('GID_ADMIN_VERIFY_SUB_HEADER')" editable-text="GID_ADMIN_VERIFY_SUB_HEADER"></text>
         </h2>
         <ul id="selection" class="editable">
-            <li ng-repeat='guest in selectedReservation.guest_details track by $index' click-touch='selectGuest(guest)'>
+            <li ng-repeat='guest in selectedReservation.guest_details track by $index' click-touch='selectGuest(guest, $index)'>
                 <span class="details" ng-class='{"passport-details":!showRemoveButton}'>
 
                     <span ng-hide="mode !== 'SCAN_RESULTS'" class="passport-scan-status" 
@@ -257,7 +257,7 @@
 
                         <!-- Passport / Guest ID Scan preview -->
                         <img class='gid-image-preview' 
-                                ng-src="{{gidImgSrcPath}}{{selectedPassportInfo.img_path}}" 
+                                data-ng-src="data:image/png;base64,{{selectedPassportInfo.img_path}}" 
                                 src-error='{{gidImgErrorSrcPath}}' 
                                 ng-class='gid-img-preview'>
 

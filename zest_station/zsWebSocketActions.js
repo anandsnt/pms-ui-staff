@@ -31,6 +31,9 @@ this.webSocketOperations = function(socketOpenedSuccessCallback, socketOpenedFai
     this.CaptureQRViaPassportScanner = function() { // captures QR code data from the ARH/Samsotech Passport scanner
         that.ws.send('{"Command" : "cmd_scan_qr_passport_scanner"}');
     };
+    this.CapturePassport = function() { // captures QR code data from the ARH/Samsotech Passport scanner
+        that.ws.send('{"Command" : "cmd_scan_passport"}');
+    };
     this.CaptureQRViaDatalogic = function() { // captures QR code data (reservation id) from the Datalogic scanner
         that.ws.send('{"Command" : "cmd_scan_qr_datalogic"}');
     };

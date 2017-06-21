@@ -1203,7 +1203,17 @@ sntZestStation.controller('zsRootCtrl', [
 
                     $scope.$broadcast('WS_PRINT_FAILED', errorData);
                 }
-            } else if (response.Command === 'cmd_scan_qr_datalogic') {
+            } 
+            else if (response.Command === 'cmd_scan_passport') {
+
+                if (response.ResponseCode === 0) {
+                    $scope.$broadcast('PASSPORT_SCAN_SUCCESS', response);
+                } else {
+                    $scope.$broadcast('PASSPORT_SCAN_FAILURE', response.ResponseCode);
+
+                }
+            }
+            else if (response.Command === 'cmd_scan_qr_datalogic') {
                 $scope.zestStationData.qrCodeScanning = false;
                 // Ren-US$1349209--Websocket: Command ->cmd_scan_qr_datalogic
                 $log.warn('got response');
