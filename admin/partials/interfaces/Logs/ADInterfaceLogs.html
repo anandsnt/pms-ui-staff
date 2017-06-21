@@ -56,8 +56,8 @@
                class="grid interfaces-grid" ng-show="$data.length">
             <tbody ng-repeat="message in $data" ng-init="isExpanded = false;">
             <tr ng-click="isExpanded = !isExpanded">
-                <td data-title="'ID'" header-class="cell-90">
-                    {{message.id}}
+                <td data-title="'ID'" header-class="cell-300">
+                    {{message.transaction_id}}
                 </td>
                 <td data-title="'Interface'" header-class="cell-180">
                     {{message.meta_data.integration_name}}
@@ -66,7 +66,8 @@
                     <pre class="interface-message"><xmp>{{message.request || message.response}}</xmp></pre>
                 </td>
                 <td data-title="'Created'" header-class="cell-160">
-                    {{message.sent_at | date: dateFormat}}&nbsp;{{message.sent_at | date: 'hh:mm a' }}
+                    {{message.sent_at | date: dateFormat : hotelTimeZoneAbbr}}&nbsp;{{message.sent_at | date: 'hh:mm a'
+                    : hotelTimeZoneAbbr }}
                 </td>
             </tr>
             <tr class="interface-message-details" ng-show="isExpanded">
