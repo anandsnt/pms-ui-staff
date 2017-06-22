@@ -35,7 +35,22 @@ sntZestStation.controller('zsCheckinScanPassportCtrl', [
         var collectPassportEnabled = $scope.zestStationData.check_in_collect_passport;
         var scanCollected = 0;
         $scope.scannedPassportImage = [];
-        var onPassportScanSuccess = function() {
+
+        var setGuestDetailsFromScan = function(guest, scanResponse) {
+            // city, nationality, docExpiry, docID, dob, full_name, first_name, last_name 
+            guest.first_name = scanResponse.FIRST_NAME;
+            guest.last_name = scanResponse.LAST_NAME;
+            guest.full_name = scanResponse.SURNAME;
+
+            guest.nationality = scanResponse.NATIONALITY;
+            guest.dob = scanResponse.BIRTH_DATE;
+
+            guest.docExpiry = scanResponse.EXPIRY_DATE;
+            guest.docID = scanResponse.DOCUMENT_NUMBER;
+
+        }
+
+        var onPassportScanSuccess = function(response) {
 
             var readyToContinue = true;
 
@@ -44,6 +59,7 @@ sntZestStation.controller('zsCheckinScanPassportCtrl', [
                 if ($scope.selectedPassport) {
                     if ($scope.selectedPassportInfo.id === $scope.selectedReservation.guest_details[i].id) {
                         $scope.selectedReservation.guest_details[i].passport_scan_status = $filter('translate')('GID_SCAN_PASSPORT_SUCCESS');
+                        setGuestDetailsFromScan(response);
                     }
                 }
 
@@ -56,6 +72,7 @@ sntZestStation.controller('zsCheckinScanPassportCtrl', [
             $log.log('mode: ', $scope.mode);
             $scope.runDigestCycle();
         };
+
 
 
         var setScroller = function(SCROLL_NAME) {
@@ -435,9 +452,32 @@ sntZestStation.controller('zsCheckinScanPassportCtrl', [
             console.log('returnedAllRequiredFields(response): ',returnedAllRequiredFields(response));
 
             if (returnedAllRequiredFields(response)) {
-                $scope.scannedPassportImage[scanCollected] = response.PR_DFE_FRONT_IMAGE;
+                
 
-                onPassportScanSuccess(response);
+                // set local params, to map to different documents/versions of samsotech devices
+                // if any updates/changes in response format, adjust here
+
+                var mappedResponse = {
+                    'FRONT_IMAGE': response.PR_DFE_FRONT_IMAGE,
+
+                    'BIRTH_DATE': response.PR_DF_BIRTH_DATE,
+                    'LAST_NAME': response.PR_DF_GIVENNAME,
+                    'FIRST_NAME': response.PR_DF_NAME,
+                    'NATIONALITY': response.PR_DF_NATIONALITY,
+                    'SEX': response.PR_DF_SEX,
+                    'SURNAME': response.PR_DF_SURNAME,
+
+                    'DOC_TYPE': response.PR_DF_DOCTYPE,
+                    'DOCUMENT_NUMBER': response.PR_DF_DOCUMENT_NUMBER,
+                    'EXPIRY_DATE': response.PR_DF_EXPIRY_DATE,
+                    'ID_ISSUE_COUNTRY': response.PR_DF_ISSUE_COUNTRY,
+                    'ID_TYPE': response.PR_DF_TYPE
+                };
+
+                $scope.scannedPassportImage[scanCollected] = mappedResponse.FRONT_IMAGE;
+                
+                console.info(mappedResponse);
+                onPassportScanSuccess(mappedResponse);
 
             } else {
                 onPassportScanfailure();
