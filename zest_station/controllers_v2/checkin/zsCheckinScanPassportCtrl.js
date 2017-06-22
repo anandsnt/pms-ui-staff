@@ -88,6 +88,7 @@ sntZestStation.controller('zsCheckinScanPassportCtrl', [
             }
             $scope.allPassportReady = readyToContinue;
             $log.log('mode: ', $scope.mode);
+            $scope.runDigestCycle();
 
         };
 
@@ -98,11 +99,11 @@ sntZestStation.controller('zsCheckinScanPassportCtrl', [
 
 
         $scope.selectGuest = function(guestInfo, index) {
+            console.log($scope.scannedPassportImage);
+
             $scope.selectedPassport = true;
             $scope.selectedPassportInfo = guestInfo;
             $scope.selectedPassportInfo.img_path = $scope.scannedPassportImage[index];
-            console.warn('$scope.selectedPassportInfo.img_path: ',$scope.selectedPassportInfo.img_path)
-            
 
             $log.log('guest', guestInfo);
 
@@ -138,6 +139,7 @@ sntZestStation.controller('zsCheckinScanPassportCtrl', [
         });
 
         $scope.scan = function() {
+            console.log('Previously Scanned (successfully): ',scanCollected);
             scanCollected = $scope.scannedPassportImage.length;
             $scope.mode = 'SCANNING_IN_PROGRESS';
             $scope.resetTime();
@@ -404,13 +406,48 @@ sntZestStation.controller('zsCheckinScanPassportCtrl', [
         // error image path
         $scope.gidImgErrorSrcPath = '';
 
+        // checks passport/ID response for all required fields,
+        // if fields are missing (maybe the image was cut off or blurry)
+        // then return failed scan instead of success
+
+        var returnedAllRequiredFields = function(response) {
+            if (!response.PR_DFE_FRONT_IMAGE ||
+                    !response.PR_DF_BIRTH_DATE ||
+                    !response.PR_DF_DOCTYPE ||
+                    !response.PR_DF_DOCUMENT_NUMBER ||
+                    !response.PR_DF_EXPIRY_DATE ||
+                    !response.PR_DF_GIVENNAME ||
+                    !response.PR_DF_ISSUE_COUNTRY ||
+                    !response.PR_DF_NAME ||
+                    !response.PR_DF_NATIONALITY ||
+                    !response.PR_DF_SEX ||
+                    !response.PR_DF_SURNAME ||
+                    !response.PR_DF_TYPE // TYPE = P (passport)
+                    ) {
+              return false;
+            } else {
+                return true;
+            }
+        };
+
         $scope.$on('PASSPORT_SCAN_SUCCESS', function(evt, response) {
             console.log(response);
-            $scope.scannedPassportImage[scanCollected] = response.PR_DFE_FRONT_IMAGE;
+            console.log('returnedAllRequiredFields(response): ',returnedAllRequiredFields(response));
+
+            if (returnedAllRequiredFields(response)) {
+                $scope.scannedPassportImage[scanCollected] = response.PR_DFE_FRONT_IMAGE;
+
+                onPassportScanSuccess(response);
+
+            } else {
+                onPassportScanfailure();
+            }
+
+            
             // $scope.selectedPassportInfo.img_path = response.PR_DFE_FRONT_IMAGE;
 
 
-            onPassportScanSuccess();
+            
         });
 
         $scope.$on('PASSPORT_SCAN_FAILURE', function() {
