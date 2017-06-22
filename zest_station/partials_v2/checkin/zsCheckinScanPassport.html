@@ -105,7 +105,7 @@
             <text data-ng-bind-html="getTagValue('GID_ADMIN_VERIFY_SUB_HEADER')" editable-text="GID_ADMIN_VERIFY_SUB_HEADER"></text>
         </h2>
         <ul id="selection" class="editable">
-            <li ng-repeat='guest in selectedReservation.guest_details track by $index' click-touch='selectGuest(guest, $index)'>
+            <li ng-repeat='guest in selectedReservation.guest_details track by $index' click-touch='selectGuest(guest)'>
                 <span class="details" ng-class='{"passport-details":!showRemoveButton}'>
 
                     <span ng-hide="mode !== 'SCAN_RESULTS'" class="passport-scan-status" 
@@ -286,7 +286,7 @@
                             <input type="text" value='selectedPassportInfo.nationality' ng-model='selectedPassportInfo.nationality' class='disabled'/>
                         </div>
 
-                        <div class="entry with-label">
+                        <div ng-show='selectedPassportInfo.city' class="entry with-label">
                             <label>City</label>
                             <input type="text" value='selectedPassportInfo.city' ng-model='selectedPassportInfo.city' class='disabled'/>
                         </div>

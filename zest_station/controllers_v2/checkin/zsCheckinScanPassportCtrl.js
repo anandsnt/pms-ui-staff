@@ -33,20 +33,21 @@ sntZestStation.controller('zsCheckinScanPassportCtrl', [
          */
         
         var collectPassportEnabled = $scope.zestStationData.check_in_collect_passport;
-        var scanCollected = 0;
         $scope.scannedPassportImage = [];
 
         var setGuestDetailsFromScan = function(guest, scanResponse) {
+            console.warn('scanResponse: ',scanResponse);
             // city, nationality, docExpiry, docID, dob, full_name, first_name, last_name 
             guest.first_name = scanResponse.FIRST_NAME;
             guest.last_name = scanResponse.LAST_NAME;
-            guest.full_name = scanResponse.SURNAME;
+            guest.full_name = scanResponse.FULL_NAME;
 
             guest.nationality = scanResponse.NATIONALITY;
             guest.dob = scanResponse.BIRTH_DATE;
 
             guest.docExpiry = scanResponse.EXPIRY_DATE;
             guest.docID = scanResponse.DOCUMENT_NUMBER;
+            guest.img_path = scanResponse.FRONT_IMAGE;
 
         }
 
@@ -59,7 +60,8 @@ sntZestStation.controller('zsCheckinScanPassportCtrl', [
                 if ($scope.selectedPassport) {
                     if ($scope.selectedPassportInfo.id === $scope.selectedReservation.guest_details[i].id) {
                         $scope.selectedReservation.guest_details[i].passport_scan_status = $filter('translate')('GID_SCAN_PASSPORT_SUCCESS');
-                        setGuestDetailsFromScan(response);
+                        $scope.selectedReservation.guest_details[i].passport_reviewed_status = $filter('translate')('GID_STAFF_REVIEW_NOT_STARTED');
+                        setGuestDetailsFromScan($scope.selectedReservation.guest_details[i], response);
                     }
                 }
 
@@ -115,12 +117,9 @@ sntZestStation.controller('zsCheckinScanPassportCtrl', [
         };
 
 
-        $scope.selectGuest = function(guestInfo, index) {
-            console.log($scope.scannedPassportImage);
-
+        $scope.selectGuest = function(guestInfo) {
             $scope.selectedPassport = true;
             $scope.selectedPassportInfo = guestInfo;
-            $scope.selectedPassportInfo.img_path = $scope.scannedPassportImage[index];
 
             $log.log('guest', guestInfo);
 
@@ -156,8 +155,9 @@ sntZestStation.controller('zsCheckinScanPassportCtrl', [
         });
 
         $scope.scan = function() {
-            console.log('Previously Scanned (successfully): ',scanCollected);
-            scanCollected = $scope.scannedPassportImage.length;
+            console.info('$scope.selectedReservation: ',$scope.selectedReservation);
+
+
             $scope.mode = 'SCANNING_IN_PROGRESS';
             $scope.resetTime();
 
@@ -231,15 +231,37 @@ sntZestStation.controller('zsCheckinScanPassportCtrl', [
             $scope.callAPI(zsGeneralSrv.validate_staff, options);
         };
 
+
+        var passportRejected = function(){
+
+            var hasRejected = false;
+
+            for (var i in $scope.selectedReservation.guest_details) {
+                if ($scope.selectedReservation.guest_details[i].passport_scan_status === $filter('translate')('GID_STAFF_REVIEW_REJECTED')) {
+                    hasRejected = true;
+                }
+            }
+            return hasRejected;
+        }
+
+
         $scope.goToNext = function() {
             if ($scope.mode === 'SCAN_RESULTS') {
                 $scope.mode = 'WAIT_FOR_STAFF';
 
             } else if ($scope.mode === 'ADMIN_VERIFY_PASSPORTS') {
-                $log.log('continue or unable to complete check-in');
+                
                 // TODO: Turn Light OFF + redirect to next screen in flow
                 // 
-                $scope.zestStationData.checkinGuest();
+                if (passportRejected()) {
+                    $log.log('continue or unable to complete check-in, re-scan rejected passports');
+                    $scope.viewResults();
+
+                } else {
+                    $scope.zestStationData.checkinGuest();
+                }
+
+
                 
             } else {
                 if ($scope.mode === 'ADMIN_LOGIN_ID') {
@@ -385,11 +407,16 @@ sntZestStation.controller('zsCheckinScanPassportCtrl', [
             }, 0);
 
         };
+
         /**
          * [initializeMe description]
          */
         var initializeMe = (function() {
+            $scope.selectedReservation.guest_details = zsCheckinSrv.selectedCheckInReservation.guest_details;
+            $scope.selectGuest($scope.selectedReservation.guest_details[0]);
 
+
+            console.log('guest_details: ',$scope.selectedReservation.guest_details);
 
             // show back button
             $scope.$emit(zsEventConstants.HIDE_BACK_BUTTON);
@@ -460,12 +487,13 @@ sntZestStation.controller('zsCheckinScanPassportCtrl', [
                 var mappedResponse = {
                     'FRONT_IMAGE': response.PR_DFE_FRONT_IMAGE,
 
-                    'BIRTH_DATE': response.PR_DF_BIRTH_DATE,
-                    'LAST_NAME': response.PR_DF_GIVENNAME,
-                    'FIRST_NAME': response.PR_DF_NAME,
+                    //'BIRTH_DATE':  returnUnformatedDateObj(response.PR_DF_BIRTH_DATE, 'MM-DD-YYYY'),
+                    'BIRTH_DATE':  response.PR_DF_BIRTH_DATE,
+                    'LAST_NAME': response.PR_DF_SURNAME,
+                    'FIRST_NAME': response.PR_DF_GIVENNAME,
                     'NATIONALITY': response.PR_DF_NATIONALITY,
                     'SEX': response.PR_DF_SEX,
-                    'SURNAME': response.PR_DF_SURNAME,
+                    'FULL_NAME': response.PR_DF_NAME,
 
                     'DOC_TYPE': response.PR_DF_DOCTYPE,
                     'DOCUMENT_NUMBER': response.PR_DF_DOCUMENT_NUMBER,
@@ -474,20 +502,13 @@ sntZestStation.controller('zsCheckinScanPassportCtrl', [
                     'ID_TYPE': response.PR_DF_TYPE
                 };
 
-                $scope.scannedPassportImage[scanCollected] = mappedResponse.FRONT_IMAGE;
-                
+
                 console.info(mappedResponse);
                 onPassportScanSuccess(mappedResponse);
 
             } else {
                 onPassportScanfailure();
             }
-
-            
-            // $scope.selectedPassportInfo.img_path = response.PR_DFE_FRONT_IMAGE;
-
-
-            
         });
 
         $scope.$on('PASSPORT_SCAN_FAILURE', function() {
