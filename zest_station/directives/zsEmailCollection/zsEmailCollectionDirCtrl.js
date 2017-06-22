@@ -6,6 +6,7 @@ sntZestStation.controller('zsEmailCollectionDirCtrl', ['$scope', 'zsUtilitySrv',
         $scope.reEnterText = function() {
             $scope.mode = 'EMAIL_ENTRY_MODE';
             $scope.onFocus('email-entry');
+            $scope.$emit('RE_EMAIL_ENTRY_MODE');
         };
 
         var checkIfEmailIsBlacklisted = function(afterBlackListValidation, onBlackListedEmailFound, onValidationAPIFailure) {
