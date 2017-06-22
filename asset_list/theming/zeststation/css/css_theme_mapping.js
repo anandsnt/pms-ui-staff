@@ -13,7 +13,8 @@ module.exports = {
 			'public': [themeCSSRoot + 'public.less'],
 			'public_v2': [themeCSSRoot + 'public_v2.less'],
 			'duke': [themeCSSRoot + 'duke.less'],
-			'snt': [themeCSSRoot + 'snt.less']
+			'snt': [themeCSSRoot + 'snt.less'],
+			'de-jonker': [themeCSSRoot + 'de-jonker.less']
 
 		}
 	}

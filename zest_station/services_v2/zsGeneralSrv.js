@@ -30,7 +30,8 @@ sntZestStation.service('zsGeneralSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
             'sohotel': 'sohotel',
             'epik': 'Hotel epik',
             'conscious': 'Conscious vondelpark',
-            'fontainebleau': 'fontainebleau'
+            'fontainebleau': 'fontainebleau',
+            'de-jonker': 'Hotel de jonker'
         };
 
         this.isThemeConfigured = function(theme) {
