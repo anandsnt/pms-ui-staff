@@ -889,6 +889,7 @@ angular.module('sntPay').controller('sntPaymentController',
                 // -- CICO-33971 :: Direct Bill Payment --
                 if ($scope.selectedPaymentType === 'DB') {
                     $scope.payment.isEditable = false;
+                    $scope.splitBillEnabled = false;
                     $scope.payment.amount = initialPaymentAmount;
                     calculateFee();
                 }
@@ -1196,7 +1197,7 @@ angular.module('sntPay').controller('sntPaymentController',
              */
             function onAmountChange() {
                 $scope.payment.amount = $scope.amount || 0;
-                initialPaymentAmount = angular.copy($scope.payment.amount);
+                initialPaymentAmount = initialPaymentAmount ? initialPaymentAmount : angular.copy($scope.payment.amount);
                 calculateFee();
             }
 
