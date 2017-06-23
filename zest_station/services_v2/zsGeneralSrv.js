@@ -32,7 +32,9 @@ sntZestStation.service('zsGeneralSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
             'conscious': 'Conscious vondelpark',
             'fontainebleau': 'fontainebleau',
             'chalet-view': 'Chalet view',
-            'freehand': 'freehand'
+            'freehand': 'freehand',
+            'de-jonker': 'Hotel de jonker',
+            'chalet-view': 'Chalet view'
         };
 
         this.isThemeConfigured = function(theme) {
