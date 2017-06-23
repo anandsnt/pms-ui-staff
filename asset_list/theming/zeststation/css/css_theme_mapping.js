@@ -13,9 +13,10 @@ module.exports = {
 			'public': [themeCSSRoot + 'public.less'],
 			'public_v2': [themeCSSRoot + 'public_v2.less'],
 			'duke': [themeCSSRoot + 'duke.less'],
-			'row-nyc': [themeCSSRoot + 'row-nyc.less'],
-			'snt': [themeCSSRoot + 'snt.less']
-
-		}
+			'snt': [themeCSSRoot + 'snt.less'],
+			'de-jonker': [themeCSSRoot + 'de-jonker.less'],
+			'chalet-view': [themeCSSRoot + 'chalet-view.less'],
+			'row-nyc': [themeCSSRoot + 'row-nyc.less']
+		};
 	}
-}
+};

@@ -12,6 +12,7 @@ admin.controller('ADEmvTerminalDetailsCtrl', ['$scope', '$rootScope', 'ADEmvTerm
 	$scope.itemDetails = {};
 	$scope.itemDetails.name = '';
 	$scope.itemDetails.terminal_identifier = '';
+	$scope.itemDetails.terminal_access_code = '';
 
 	var itemId = $stateParams.itemid;
 	// if itemid is null, means it is for add item form
@@ -47,6 +48,7 @@ admin.controller('ADEmvTerminalDetailsCtrl', ['$scope', '$rootScope', 'ADEmvTerm
 
 		postData.name = $scope.itemDetails.name;
 		postData.terminal_identifier = $scope.itemDetails.terminal_identifier;
+		postData.terminal_access_code = $scope.itemDetails.terminal_access_code;
 
 		var fetchSuccessOfSaveItemDetails = function() {
 			$timeout(function() {
