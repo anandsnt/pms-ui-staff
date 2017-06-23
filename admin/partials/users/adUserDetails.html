@@ -158,6 +158,11 @@
 					</div> 
 
 				</fieldset>
+
+				<fieldset class="holder left" ng-show="isAdminSnt && data.is_multi_property" >
+					<ad-checkbox is-checked="data.is_chain_admin" top-label="{{'CHAIN_ADMIN'| translate}}" div-class="full-width" is-disabled="!data.is_multi_property"></ad-checkbox>
+				</fieldset>
+
 				<fieldset class="holder left">
 					<div class="entry full-width">
 							<label for="defaultdashboard" >{{'DEFAULT_DASHBOARD'|translate}}<strong > * </strong></label>
