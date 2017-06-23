@@ -32,8 +32,17 @@ sntZestStation.controller('zsCheckinScanPassportCtrl', [
          * 4.SCAN_FAILURE - Try again, speak to staff
          */
         
-        var collectPassportEnabled = $scope.zestStationData.check_in_collect_passport;
         $scope.scannedPassportImage = [];
+
+
+        var onBackButtonClicked = function() {
+            if ($scope.lastMode === 'SCAN_RESULTS') {
+                $scope.mode = 'SCAN_RESULTS';
+                $scope.$emit(zsEventConstants.HIDE_BACK_BUTTON);
+            }
+
+        };
+
 
         var setGuestDetailsFromScan = function(guest, scanResponse) {
             console.warn('scanResponse: ',scanResponse);
@@ -79,7 +88,7 @@ sntZestStation.controller('zsCheckinScanPassportCtrl', [
 
         var setScroller = function(SCROLL_NAME) {
             $scope.setScroller(SCROLL_NAME, {
-                probeType: 3,
+                probeType: 1,
                 tap: true,
                 preventDefault: false,
                 scrollX: false,
@@ -87,27 +96,29 @@ sntZestStation.controller('zsCheckinScanPassportCtrl', [
             });
         };
 
-        var onPassportScanfailure = function() {
-            $scope.mode = 'SCAN_FAILURE';
-            $log.log('mode: ', $scope.mode);
+        var onPassportScanFailure = function() {
+            if ($scope.mode === 'SCANNING_IN_PROGRESS') {
+                $scope.mode = 'SCAN_FAILURE';
 
-            var readyToContinue = true;
+                var readyToContinue = true;
 
-            for (var i in $scope.selectedReservation.guest_details) {
+                for (var i in $scope.selectedReservation.guest_details) {
 
-                if ($scope.selectedPassport) {
-                    if ($scope.selectedPassportInfo.id === $scope.selectedReservation.guest_details[i].id) {
-                        $scope.selectedReservation.guest_details[i].passport_scan_status = $filter('translate')('GID_SCAN_PASSPORT_TRY_AGAIN');
+                    if ($scope.selectedPassport) {
+                        if ($scope.selectedPassportInfo.id === $scope.selectedReservation.guest_details[i].id) {
+                            $scope.selectedReservation.guest_details[i].passport_scan_status = $filter('translate')('GID_SCAN_PASSPORT_TRY_AGAIN');
+                        }
+                    }
+
+                    if ($scope.selectedReservation.guest_details[i].passport_scan_status !== $filter('translate')('GID_SCAN_PASSPORT_SUCCESS')) {
+                        readyToContinue = false;
                     }
                 }
+                $scope.allPassportReady = readyToContinue;
+                $log.log('mode: ', $scope.mode);
+                $scope.runDigestCycle();
 
-                if ($scope.selectedReservation.guest_details[i].passport_scan_status !== $filter('translate')('GID_SCAN_PASSPORT_SUCCESS')) {
-                    readyToContinue = false;
-                }
             }
-            $scope.allPassportReady = readyToContinue;
-            $log.log('mode: ', $scope.mode);
-            $scope.runDigestCycle();
 
         };
 
@@ -122,6 +133,16 @@ sntZestStation.controller('zsCheckinScanPassportCtrl', [
             $scope.selectedPassportInfo = guestInfo;
 
             $log.log('guest', guestInfo);
+
+            if ($scope.mode === 'SCAN_RESULTS') {
+                $scope.lastMode = 'SCAN_RESULTS';
+
+                $scope.$emit(zsEventConstants.SHOW_BACK_BUTTON);
+            } else {
+                $scope.lastMode = '';
+            }
+
+
 
             if ($scope.mode !== 'ADMIN_VERIFY_PASSPORTS') {
                 $scope.reScanPassport();
@@ -138,6 +159,18 @@ sntZestStation.controller('zsCheckinScanPassportCtrl', [
 
         };
 
+        var listenForWebsocketActivity = function() {
+            $scope.$on('SOCKET_CONNECTED', function() {
+                if ($scope.socketOperator.returnWebSocketObject().readyState === 1) {
+                    $scope.socketOperator.CapturePassport();
+                }    
+                
+            });
+            $scope.$on('SOCKET_FAILED', function() {
+                console.info('socket failed.');
+                onPassportScanFailure();
+            });
+        };
 
         var samsoTechScanPassport = function() {
             if ($scope.socketOperator.returnWebSocketObject().readyState === 1) {
@@ -173,6 +206,7 @@ sntZestStation.controller('zsCheckinScanPassportCtrl', [
         $scope.viewResults = function() {
             $scope.selectedPassport = false;
             $scope.mode = 'SCAN_RESULTS';
+
         };
 
         $scope.reScanPassport = function() {
@@ -187,8 +221,9 @@ sntZestStation.controller('zsCheckinScanPassportCtrl', [
 
         $scope.adminVerify = function() {
             $scope.mode = 'ADMIN_LOGIN_ID';
-
+            $scope.focusInputField('input_text');
         };
+
         $scope.adminLoginError = false;
 
         var submitLogin = function() {
@@ -227,17 +262,17 @@ sntZestStation.controller('zsCheckinScanPassportCtrl', [
                 successCallBack: onSuccess,
                 failureCallBack: onFail
             };
-
+            $scope.input.inputTextValue = '';
             $scope.callAPI(zsGeneralSrv.validate_staff, options);
         };
 
-
-        var passportRejected = function(){
-
+        var passportRejected = function() {
+            // has a Rejected or Not-Reviewed passport, will send the user back to re-scan passports
+            // 
             var hasRejected = false;
 
             for (var i in $scope.selectedReservation.guest_details) {
-                if ($scope.selectedReservation.guest_details[i].passport_scan_status === $filter('translate')('GID_STAFF_REVIEW_REJECTED')) {
+                if ($scope.selectedReservation.guest_details[i].passport_reviewed_status !== $filter('translate')('GID_STAFF_REVIEW_ACCEPTED')) {
                     hasRejected = true;
                 }
             }
@@ -246,22 +281,31 @@ sntZestStation.controller('zsCheckinScanPassportCtrl', [
 
 
         $scope.goToNext = function() {
+            $scope.$emit(zsEventConstants.HIDE_BACK_BUTTON);
+
             if ($scope.mode === 'SCAN_RESULTS') {
                 $scope.mode = 'WAIT_FOR_STAFF';
 
             } else if ($scope.mode === 'ADMIN_VERIFY_PASSPORTS') {
-                
+
                 // TODO: Turn Light OFF + redirect to next screen in flow
                 // 
                 if (passportRejected()) {
+                    $scope.allPassportReady = false;
+
                     $log.log('continue or unable to complete check-in, re-scan rejected passports');
+
+                    for (var i in $scope.selectedReservation.guest_details) {
+                        if ($scope.selectedReservation.guest_details[i].passport_reviewed_status === $filter('translate')('GID_STAFF_REVIEW_REJECTED')) {
+                            $scope.selectedReservation.guest_details[i].passport_scan_status = $filter('translate')('GID_STAFF_REVIEW_REJECTED')
+                        }
+                    }
+
                     $scope.viewResults();
 
                 } else {
                     $scope.zestStationData.checkinGuest();
                 }
-
-
                 
             } else {
                 if ($scope.mode === 'ADMIN_LOGIN_ID') {
@@ -278,6 +322,7 @@ sntZestStation.controller('zsCheckinScanPassportCtrl', [
                     $scope.adminLoginError = false;
                     $scope.passWord = angular.copy($scope.input.inputTextValue);
                     submitLogin();
+
                 }
             }
             
@@ -290,7 +335,7 @@ sntZestStation.controller('zsCheckinScanPassportCtrl', [
 
         $scope.selectedReservation = {};
         $scope.gidImgSrcPath = '/assets/images/';
-
+        // initial / demo mode reservation guest details
         $scope.selectedReservation.guest_details = [
             {
                 'last_name': 'Sample',
@@ -322,6 +367,7 @@ sntZestStation.controller('zsCheckinScanPassportCtrl', [
                 'passport_scan_status': $filter('translate')('GID_SCAN_NOT_STARTED')
             }
         ];
+
         $scope.AddGuestMode = false;
         $scope.showRemoveButton = false;
 
@@ -338,7 +384,6 @@ sntZestStation.controller('zsCheckinScanPassportCtrl', [
         $scope.staffUserToken = '';
 
         var onSuccessAdminReview = function(){
-            console.log('on success admin review passport');
             if ($scope.acceptedPassport) {
                 $scope.selectedPassportInfo.passport_reviewed_status = $filter('translate')('GID_STAFF_REVIEW_ACCEPTED');    
             } else {
@@ -408,23 +453,27 @@ sntZestStation.controller('zsCheckinScanPassportCtrl', [
 
         };
 
+
         /**
          * [initializeMe description]
          */
         var initializeMe = (function() {
-            $scope.selectedReservation.guest_details = zsCheckinSrv.selectedCheckInReservation.guest_details;
+            if (!$scope.inDemoMode()) {
+                $scope.selectedReservation.guest_details = zsCheckinSrv.selectedCheckInReservation.guest_details;    
+            }
+
             $scope.selectGuest($scope.selectedReservation.guest_details[0]);
-
-
-            console.log('guest_details: ',$scope.selectedReservation.guest_details);
+            
+            for (var i in $scope.selectedReservation.guest_details) {
+                if ($scope.selectedPassport) {
+                    $scope.selectedReservation.guest_details[i].passport_scan_status = $filter('translate')('GID_SCAN_NOT_STARTED');
+                }
+            }
 
             // show back button
             $scope.$emit(zsEventConstants.HIDE_BACK_BUTTON);
             // show close button
             $scope.$emit(zsEventConstants.SHOW_CLOSE_BUTTON);
-
-            $log.log('collectPassportEnabled: ', collectPassportEnabled);
-            $log.log('show mode: ', $scope.mode);
 
             $scope.results = [];// scan results is the array of guests + status of passport (scanned/verified, etc)
             $scope.allPassportsScanned = false;
@@ -437,6 +486,9 @@ sntZestStation.controller('zsCheckinScanPassportCtrl', [
             } else {
                 $scope.mode = 'SCAN_PASSPORT';
             }
+
+            $scope.$on(zsEventConstants.CLICKED_ON_BACK_BUTTON, onBackButtonClicked);
+
         }());
 
         var setTimedOut = function() {
@@ -507,12 +559,12 @@ sntZestStation.controller('zsCheckinScanPassportCtrl', [
                 onPassportScanSuccess(mappedResponse);
 
             } else {
-                onPassportScanfailure();
+                onPassportScanFailure();
             }
         });
 
         $scope.$on('PASSPORT_SCAN_FAILURE', function() {
-            onPassportScanfailure();
+            onPassportScanFailure();
         });
 
     }
