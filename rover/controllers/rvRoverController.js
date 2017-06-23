@@ -129,6 +129,7 @@ sntRover.controller('roverController', [
     $rootScope.dateFormat = getDateFormat(hotelDetails.date_format.value);
     $rootScope.jqDateFormat = getJqDateFormat(hotelDetails.date_format.value);
     $rootScope.MLImerchantId = hotelDetails.mli_merchant_id;
+    $rootScope.isMLIEMVEnabled =  hotelDetails.mli_emv_enabled;
     $rootScope.isQueuedRoomsTurnedOn = hotelDetails.housekeeping.is_queue_rooms_on;
     $rootScope.advanced_queue_flow_enabled = hotelDetails.advanced_queue_flow_enabled;
     $rootScope.isPmsProductionEnv = hotelDetails.is_pms_prod;
@@ -431,7 +432,8 @@ sntRover.controller('roverController', [
             emvTimeout: $rootScope.emvTimeout,
             mliMerchantId: $rootScope.MLImerchantId,
             currencySymbol: $rootScope.currencySymbol,
-            isManualCCEntryEnabled: $rootScope.isManualCCEntryEnabled
+            isManualCCEntryEnabled: $rootScope.isManualCCEntryEnabled,
+            isEMVEnabled: $rootScope.isMLIEMVEnabled
         };
 
         $scope.menuOpen = false;
