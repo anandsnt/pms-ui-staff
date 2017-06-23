@@ -643,7 +643,7 @@ admin.controller('ADRatesAddonsCtrl', [
             });
 
             $scope.translations = {};
-            $scope.translations.translated_description = _.isUndefined(selectedLanguageTranslations) ? '': selectedLanguageTranslations.translated_description;
+            $scope.translations.translated_description = _.isUndefined(selectedLanguageTranslations) ? '' : selectedLanguageTranslations.translated_description;
             $scope.translations.translated_alternate_description = _.isUndefined(selectedLanguageTranslations) ? '' : selectedLanguageTranslations.translated_alternate_description;
             $scope.translations.translated_suffix = _.isUndefined(selectedLanguageTranslations) ? '' : selectedLanguageTranslations.translated_suffix;
             $scope.translations.translated_name = _.isUndefined(selectedLanguageTranslations) ? '' : selectedLanguageTranslations.translated_name;
