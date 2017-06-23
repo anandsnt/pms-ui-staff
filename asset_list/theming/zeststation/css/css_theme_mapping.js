@@ -14,8 +14,8 @@ module.exports = {
 			'public_v2': [themeCSSRoot + 'public_v2.less'],
 			'duke': [themeCSSRoot + 'duke.less'],
 			'chalet-view': [themeCSSRoot + 'chalet-view.less'],
-			'snt': [themeCSSRoot + 'snt.less']
-
+			'snt': [themeCSSRoot + 'snt.less'],
+			'freehand': [themeCSSRoot + 'freehand.less']
 		}
 	}
 }
