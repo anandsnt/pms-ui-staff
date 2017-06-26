@@ -238,56 +238,93 @@
                         </h2>
                     
                         <div class="entry with-label bold-label">
-                            <label>Reservation Details</label>
+                            <label>
+                                <text data-ng-bind-html="getTagValue('GID_REVIEW_RES_DETAILS')" editable-text="GID_REVIEW_RES_DETAILS"></text>
+                            </label>
                         </div>
 
                         <div class="entry with-label">
-                            <label>Last Name</label>
+                            <label>
+                                <text data-ng-bind-html="getTagValue('GID_REVIEW_LAST_NAME')" editable-text="GID_REVIEW_LAST_NAME"></text>
+                            </label>
+
                             <input type="text" value='selectedPassportInfo.last_name' ng-model='selectedPassportInfo.last_name' class='disabled'/>
                         </div>
 
                         <div class="entry with-label">
-                            <label>First Name</label>
+                            <label>
+                                <text data-ng-bind-html="getTagValue('GID_REVIEW_FIRST_NAME')" editable-text="GID_REVIEW_FIRST_NAME"></text>
+                            </label>
                             <input type="text" value='selectedPassportInfo.first_name' ng-model='selectedPassportInfo.first_name' class='disabled'/>
                         </div>
 
-                        <div class="entry with-label bold-label">
-                            <label>Passport Details</label>
+
+                        <div class="entry with-label">
+                            <label>
+                                <text data-ng-bind-html="getTagValue('GID_REVIEW_IMAGE')" editable-text="GID_REVIEW_IMAGE"></text>
+                            </label>
+                            <button type="button" class="button" click-touch="rotateImage()">
+                                <text data-ng-bind-html="getTagValue('GID_REVIEW_ROTATE')" editable-text="GID_REVIEW_ROTATE"></text>
+                            </button>
                         </div>
 
                         <!-- Passport / Guest ID Scan preview -->
-                        <img class='gid-image-preview' 
+                        <img id='image-preview' class='gid-image-preview' 
                                 data-ng-src="data:image/png;base64,{{selectedPassportInfo.img_path}}" 
                                 src-error='{{gidImgErrorSrcPath}}' 
-                                ng-class='gid-img-preview'>
+                                ng-class='{"rotated":imageRotated}'>
+                        <!--// Passport / Guest ID Scan preview -->
+
+                        <div class="entry with-label bold-label">
+                            <label>
+                                <text data-ng-bind-html="getTagValue('GID_REVIEW_PASS_DETAILS')" editable-text="GID_REVIEW_PASS_DETAILS"></text>
+                            </label>
+                        </div>
 
                         <div class="entry with-label">
-                            <label>Full Name</label>
+                            <label>
+                                <text data-ng-bind-html="getTagValue('GID_REVIEW_FULL_NAME')" editable-text="GID_REVIEW_FULL_NAME"></text>
+                            </label>
                             <input type="text" value='selectedPassportInfo.full_name' ng-model='selectedPassportInfo.full_name' class='disabled'/>
                         </div>
 
                         <div class="entry with-label">
-                            <label>Date of Birth</label>
+                            <label>
+                                <text data-ng-bind-html="getTagValue('GID_REVIEW_DOB')" editable-text="GID_REVIEW_DOB"></text>
+                            </label>
+
                             <input type="text" value='selectedPassportInfo.dob' ng-model='selectedPassportInfo.dob' class='disabled'/>
                         </div>
 
                         <div class="entry with-label">
-                            <label>Document Number</label>
+                            <label>
+                                <text data-ng-bind-html="getTagValue('GID_REVIEW_DOC_NUMBER')" editable-text="GID_REVIEW_DOC_NUMBER"></text>
+                            </label>
+
                             <input type="text" value='selectedPassportInfo.docID' ng-model='selectedPassportInfo.docID' class='disabled'/>
                         </div>
 
                         <div class="entry with-label">
-                            <label>Expiry Date</label>
+                            <label>
+                                <text data-ng-bind-html="getTagValue('GID_REVIEW_EXPIRY')" editable-text="GID_REVIEW_EXPIRY"></text>
+                            </label>
+
                             <input type="text" value='selectedPassportInfo.docExpiry' ng-model='selectedPassportInfo.docExpiry' class='disabled'/>
                         </div>
 
                         <div class="entry with-label">
-                            <label>Nationality</label>
+                            <label>
+                                <text data-ng-bind-html="getTagValue('GID_REVIEW_NATIONALITY')" editable-text="GID_REVIEW_NATIONALITY"></text>
+                            </label>
+
                             <input type="text" value='selectedPassportInfo.nationality' ng-model='selectedPassportInfo.nationality' class='disabled'/>
                         </div>
 
                         <div ng-show='selectedPassportInfo.city' class="entry with-label">
-                            <label>City</label>
+                            <label>
+                                <text data-ng-bind-html="getTagValue('GID_REVIEW_CITY')" editable-text="GID_REVIEW_CITY"></text>
+                            </label>
+
                             <input type="text" value='selectedPassportInfo.city' ng-model='selectedPassportInfo.city' class='disabled'/>
                         </div>
 

@@ -541,7 +541,7 @@
    "GID_SCAN_SUB_HEADER": "Place your passport on the scanner and select 'Scan'",
    "GID_SCAN_BUTTON": "Scan",
 
-    "GID_SCANNING_IN_PROGRESS": "Scanning in progress",
+   "GID_SCANNING_IN_PROGRESS": "Scanning in progress",
 
 
    "GID_SCAN_SUB_HEADER_FIRST": "Place",
@@ -582,6 +582,25 @@
    "GID_ADMIN_VERIFY_HEADER": "Verify Passport",
    "GID_ADMIN_VERIFY_SUB_HEADER": "Reservation Details",
 
+   "GID_REVIEW_RES_DETAILS": "Reservation Details",
+
+   "GID_REVIEW_ROTATE": "Rotate",
+   "GID_REVIEW_IMAGE": "Image",
+
+   "GID_REVIEW_LAST_NAME": "Last Name",
+   "GID_REVIEW_FIRST_NAME": "First Name",
+   "GID_REVIEW_PASS_DETAILS": "Passport Details",
+
+   "GID_REVIEW_FULL_NAME": "Full Name",
+
+   "GID_REVIEW_DOB": "Date of Birth",
+   "GID_REVIEW_DOC_NUMBER": "Document Number",
+
+   "GID_REVIEW_EXPIRY": "Expiry Date",
+   "GID_REVIEW_NATIONALITY": "Nationality",
+
+   "GID_REVIEW_CITY": "City",
+   
 
    "GATE_ERROR_CLOSE": "Ok",
 
