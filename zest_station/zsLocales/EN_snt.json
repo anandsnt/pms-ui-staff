@@ -541,8 +541,13 @@
    "GID_SCAN_SUB_HEADER": "Place your passport on the scanner and select 'Scan'",
    "GID_SCAN_BUTTON": "Scan",
 
-   "GID_SCANNING_IN_PROGRESS": "Scanning in progress",
 
+   "GID_SCAN_BACK_HEADER": "Scan ID Back",
+   "GID_SCAN_BACK_SUB_HEADER": "Please turn the ID over and scan the other side",
+   "GID_SCAN_BACK_SUB_HEADER_FIRST": "Place",
+   "GID_SCAN_BACK_SUB_HEADER_SECOND": "'s Passport on the scanner and press 'Scan'",
+
+   "GID_SCANNING_IN_PROGRESS": "Scanning in progress",
 
    "GID_SCAN_SUB_HEADER_FIRST": "Place",
    "GID_SCAN_SUB_HEADER_SECOND": "'s Passport on the scanner and press 'Scan'",
@@ -584,7 +589,8 @@
 
    "GID_REVIEW_RES_DETAILS": "Reservation Details",
 
-   "GID_REVIEW_ROTATE": "Rotate",
+   "GID_REVIEW_ROTATE": "Rotate Front",
+   "GID_REVIEW_ROTATE_BACK": "Rotate Back",
    "GID_REVIEW_IMAGE": "Image",
 
    "GID_REVIEW_LAST_NAME": "Last Name",

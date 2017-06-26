@@ -28,6 +28,37 @@
     <span ng-include="'/assets/partials_v2/zsTabletFooter.html'" click-touch='resetTime()'></span>
 </section>
 
+<!-- Passport scan back  -->
+<section id="main" class="centered" role="main" ng-hide="mode !== 'SCAN_BACK'" click-touch='resetTime()'>
+    <div id="content">
+        <h1>
+            <text data-ng-bind-html="getTagValue('GID_SCAN_BACK_HEADER')" editable-text="GID_SCAN_BACK_HEADER"></text>
+        </h1>
+        <h2 ng-hide='selectedPassport'>
+            <text data-ng-bind-html="getTagValue('GID_SCAN_BACK_SUB_HEADER')" editable-text="GID_SCAN_BACK_SUB_HEADER"></text>
+        </h2>
+        <h2 ng-show='selectedPassport'>
+            <text data-ng-bind-html="getTagValue('GID_SCAN_BACK_SUB_HEADER_FIRST')" editable-text="GID_SCAN_BACK_SUB_HEADER_FIRST"></text>
+
+            {{selectedPassportInfo.first_name}}
+
+            <text data-ng-bind-html="getTagValue('GID_SCAN_BACK_SUB_HEADER_SECOND')" editable-text="GID_SCAN_BACK_SUB_HEADER_SECOND"></text>
+        </h2>
+        <div class='uploaded-key-image' id="keys" ng-show="scanpassport_image_uploaded">
+            <img src="{{icons.url.scanpassport}}">
+        </div>
+    </div>
+    <div>
+        <div id="actions" class="footer-centered">
+            <button type="button" class="button next" touch-press="scanBack()">
+                <text data-ng-bind-html="getTagValue('GID_SCAN_BUTTON')" editable-text="GID_SCAN_BUTTON"></text>
+            </button>
+        </div>
+    </div>
+    <span ng-include="'/assets/partials_v2/zsTabletFooter.html'" click-touch='resetTime()'></span>
+</section>
+
+
 <!-- Passport scanning in progress screen  -->
 <section id="main" class="centered" role="main" ng-hide="mode !== 'SCANNING_IN_PROGRESS'" click-touch='resetTime()'>
     <div id="content">
@@ -259,12 +290,15 @@
                         </div>
 
 
-                        <div class="entry with-label">
+                        <div class='ng-hide' class="entry with-label">
                             <label>
                                 <text data-ng-bind-html="getTagValue('GID_REVIEW_IMAGE')" editable-text="GID_REVIEW_IMAGE"></text>
                             </label>
-                            <button type="button" class="button" click-touch="rotateImage()">
+                            <button type="button" class="button rotate-button" click-touch="rotateImage()">
                                 <text data-ng-bind-html="getTagValue('GID_REVIEW_ROTATE')" editable-text="GID_REVIEW_ROTATE"></text>
+                            </button>
+                            <button type="button" class="button rotate-button" click-touch="rotateBackImage()">
+                                <text data-ng-bind-html="getTagValue('GID_REVIEW_ROTATE_BACK')" editable-text="GID_REVIEW_ROTATE_BACK"></text>
                             </button>
                         </div>
 
@@ -272,7 +306,17 @@
                         <img id='image-preview' class='gid-image-preview' 
                                 data-ng-src="data:image/png;base64,{{selectedPassportInfo.img_path}}" 
                                 src-error='{{gidImgErrorSrcPath}}' 
-                                ng-class='{"rotated":imageRotated}'>
+                                ng-class='{"rotated":imageRotated}'
+                                click-touch="rotateImage()"
+                                >
+
+                        <img id='image-preview-back' ng-show='selectedPassportInfo.back_img_path'  class='gid-image-preview' 
+                                data-ng-src="data:image/png;base64,{{selectedPassportInfo.back_img_path}}" 
+                                src-error='{{gidImgErrorSrcPath}}' 
+                                ng-class='{"rotated":backImageRotated}'
+                                click-touch="rotateBackImage()"
+                                >
+                                
                         <!--// Passport / Guest ID Scan preview -->
 
                         <div class="entry with-label bold-label">

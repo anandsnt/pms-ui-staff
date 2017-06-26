@@ -60,27 +60,60 @@ sntZestStation.controller('zsCheckinScanPassportCtrl', [
                 $scope.imageRotated = rotated;
         }
 
+        back_degrees = 0;
+        var back_rotated = false;
+        $scope.backImageRotated = false;
+
+        $scope.rotateBackImage = function() {
+             var div = document.getElementById('image-preview-back');
+                    back_degrees += 90;
+
+                div.style.webkitTransform = 'rotate('+back_degrees+'deg)'; 
+                div.style.mozTransform    = 'rotate('+back_degrees+'deg)'; 
+                div.style.msTransform     = 'rotate('+back_degrees+'deg)'; 
+                div.style.oTransform      = 'rotate('+back_degrees+'deg)'; 
+                div.style.transform       = 'rotate('+back_degrees+'deg)'; 
+
+                back_rotated = !back_rotated;
+                $scope.backImageRotated = back_rotated;
+        }
+
+
+
+
+
 
         var setGuestDetailsFromScan = function(guest, scanResponse) {
             // if (scanResponse.DOC_TYPE === 'PP') {
             //      scanResponse.DOC_TYPE = 'passport'
             // };
-
             console.warn('scanResponse: ',scanResponse);
-            // city, nationality, docExpiry, docID, dob, full_name, first_name, last_name 
-            guest.first_name = scanResponse.FIRST_NAME;
-            guest.last_name = scanResponse.LAST_NAME;
-            guest.full_name = scanResponse.FULL_NAME;
 
-            guest.nationality = scanResponse.NATIONALITY;
-            guest.dob = scanResponse.BIRTH_DATE;
+            if ($scope.scannedBackImage) {
+                guest.back_img_path = scanResponse.FRONT_IMAGE;
 
-            guest.docExpiry = scanResponse.EXPIRY_DATE;
-            guest.docID = scanResponse.DOCUMENT_NUMBER;
+            } else {
+                // city, nationality, docExpiry, docID, dob, full_name, first_name, last_name 
+                guest.first_name = scanResponse.FIRST_NAME;
+                guest.last_name = scanResponse.LAST_NAME;
+                guest.full_name = scanResponse.FULL_NAME;
 
-            guest.docType = scanResponse.DOC_TYPE;
-            guest.img_path = scanResponse.FRONT_IMAGE;
+                guest.nationality = scanResponse.NATIONALITY;
+                guest.dob = scanResponse.BIRTH_DATE;
 
+                guest.docExpiry = scanResponse.EXPIRY_DATE;
+                guest.docID = scanResponse.DOCUMENT_NUMBER;
+
+                guest.docType = scanResponse.DOC_TYPE;
+                guest.img_path = scanResponse.FRONT_IMAGE;
+
+            }
+        }
+        $scope.scannedBackImage = false;
+
+        var documentRequiresBackScan = function(response) {
+            // return true; // TODO: Link with document types which require both sides to be scanned
+             return response.DOC_TYPE !== 'PP';
         }
 
         var onPassportScanSuccess = function(response) {
@@ -104,12 +137,20 @@ sntZestStation.controller('zsCheckinScanPassportCtrl', [
                     readyToContinue = false;
                 }
             }
-            $scope.allPassportReady = readyToContinue;
-            $scope.mode = 'SCAN_RESULTS';
-            $log.log('mode: ', $scope.mode);
-            $scope.runDigestCycle();
-        };
 
+            if (documentRequiresBackScan(response) && !$scope.scannedBackImage) {
+                $scope.mode = 'SCAN_BACK';
+                $log.log('mode: ', $scope.mode);
+                $scope.runDigestCycle();
+
+            } else {
+                $scope.allPassportReady = readyToContinue;
+                $scope.mode = 'SCAN_RESULTS';
+                $log.log('mode: ', $scope.mode);
+                $scope.runDigestCycle();
+            }
+
+        };
 
 
         var setScroller = function(SCROLL_NAME) {
@@ -232,6 +273,23 @@ sntZestStation.controller('zsCheckinScanPassportCtrl', [
             }
             
         };
+
+        $scope.scanBack = function() {
+            $scope.scanningBackImage = true;
+
+            $scope.mode = 'SCANNING_IN_PROGRESS';
+            $scope.resetTime();
+
+            samsoTechScanPassport();
+
+            // debugging
+            if ($scope.inDemoMode()) {
+                $scope.$emit('PASSPORT_SCAN_SUCCESS');
+            }
+            
+        };
+
+        
 
         $scope.viewResults = function() {
             $scope.selectedPassport = false;
@@ -436,12 +494,11 @@ sntZestStation.controller('zsCheckinScanPassportCtrl', [
 
 
         var savePassportToAPI = function(selectedPassportInfo) {
-
             console.info('save passport info: ',arguments);
 
             var options = {
                 params: {
-                    'data': selectedPassportInfo.img_path,
+                    'front_image_data': selectedPassportInfo.img_path,
                     'reservation_id': $stateParams.reservation_id,
                     'document_type': selectedPassportInfo.docType,
                     'document_number': selectedPassportInfo.docID,
@@ -462,6 +519,12 @@ sntZestStation.controller('zsCheckinScanPassportCtrl', [
                     console.warn(arguments);
                     $scope.$emit('GENERAL_ERROR');
                 }
+            }
+
+            // Also save the back image data if there was front+back to the document scan
+            // 
+            if (selectedPassportInfo.back_img_path) {
+                options.params['back_image_data'] = selectedPassportInfo.back_img_path;
             }
 
             $scope.callAPI(zsCheckinSrv.savePassport, options);
@@ -630,13 +693,21 @@ sntZestStation.controller('zsCheckinScanPassportCtrl', [
                     };
                 }
                
-
-
                 console.info(mappedResponse);
+                onPassportScanSuccess(mappedResponse);
+
+            } else if ($scope.scanningBackImage) {
+                $scope.scanningBackImage = false;
+                $scope.scannedBackImage = true;
+                    var mappedResponse = {
+                        'FRONT_IMAGE': response.PR_DFE_FRONT_IMAGE
+                    }
+
                 onPassportScanSuccess(mappedResponse);
 
             } else {
                 onPassportScanFailure();
+
             }
         });
 
