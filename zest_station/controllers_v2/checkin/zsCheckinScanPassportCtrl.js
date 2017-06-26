@@ -113,7 +113,15 @@ sntZestStation.controller('zsCheckinScanPassportCtrl', [
 
         var documentRequiresBackScan = function(response) {
             // return true; // TODO: Link with document types which require both sides to be scanned
-             return response.DOC_TYPE !== 'PP';
+            // for debugging/testing double-sided scan type IDs
+            // set this variable
+            if  ($scope.zestStationData.doubleSidedScan) {
+                return true;
+
+            } else {
+                return response.DOC_TYPE !== 'PP';    
+            }
+            
         }
 
         var onPassportScanSuccess = function(response) {
