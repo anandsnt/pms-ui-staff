@@ -4,14 +4,14 @@ sntRover.controller('contractEndCalendarCtrl', ['$rootScope', '$scope', 'dateFil
 
 		if ($scope.contractList.isAddMode) {
   			$scope.date = $scope.addData.end_date;
-  			minDate = $scope.addData.begin_date;
-  			maxDate = $scope.addData.end_date;
+  			minDate = $scope.addData.min_date;
+  			maxDate = $scope.addData.max_date;
 	  	}
 	  	else {
 	  		if ($scope.contractData.end_date) {
 	 	      	$scope.date = $scope.contractData.end_date;
-	 	      	minDate = $scope.contractData.begin_date;
-	 	      	maxDate = $scope.contractData.end_date;
+	 	      	minDate = $scope.contractData.min_date;
+	 	      	maxDate = $scope.contractData.max_date;
 		    }
 		    else {
 		    	// set end date as one day next to bussiness date
@@ -20,11 +20,11 @@ sntRover.controller('contractEndCalendarCtrl', ['$rootScope', '$scope', 'dateFil
 				myDate.setDate(myDate.getDate() + 1);
 	     		$scope.date = dateFilter(myDate, 'yyyy-MM-dd');
 		    	$scope.contractData.end_date = $scope.date;
-		    	minDate = $scope.contractData.begin_date;
-		    	maxDate = $scope.contractData.end_date;
+		    	minDate = $scope.contractData.min_date;
+		    	maxDate = $scope.contractData.max_date;
 		    }
-
 	  	}
+
 	  	$scope.dateOptions = {
 		     changeYear: true,
 		     changeMonth: true,
@@ -43,8 +43,8 @@ sntRover.controller('contractEndCalendarCtrl', ['$rootScope', '$scope', 'dateFil
 			    }
 
     	};
-
 	};
+	
 	$scope.setUpData();
 
 }]);
