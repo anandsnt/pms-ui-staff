@@ -2,8 +2,8 @@
  * Service used for tablet-kiosk UI (Zest Station)
  */
 
-sntZestStation.service('zsGeneralSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWebSrv2', '$translate', '$rootScope',
-    function($http, $q, zsBaseWebSrv, zsBaseWebSrv2, $translate, $rootScope) {
+sntZestStation.service('zsGeneralSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWebSrv2', '$translate',
+    function($http, $q, zsBaseWebSrv, zsBaseWebSrv2, $translate) {
         var that = this;
 
         // this.refToLatestPulledTranslations; // used by generalRouter to fetch and store Language Locale files
@@ -30,7 +30,10 @@ sntZestStation.service('zsGeneralSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
             'sohotel': 'sohotel',
             'epik': 'Hotel epik',
             'conscious': 'Conscious vondelpark',
-            'fontainebleau': 'fontainebleau'
+            'fontainebleau': 'fontainebleau',
+            'freehand': 'freehand',
+            'de-jonker': 'Hotel de jonker',
+            'chalet-view': 'Chalet view'
         };
 
         this.isThemeConfigured = function(theme) {
@@ -234,24 +237,6 @@ sntZestStation.service('zsGeneralSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
                 deferred.reject(data);
             });
 
-            return deferred.promise;
-        };
-
-
-        this.fetchReservationDetails = function(param) {
-            var url = '/staff/staycards/reservation_details.json?reservation_id=' + param.reservation_id;
-            var deferred = $q.defer();
-
-            // To fetch the latest guest details, the following parameter has to be sent to trigger a fetchProfile OWS request
-            if (!$rootScope.isStandAlone) {
-                url += "&sync_guest_with_external_pms=true";
-            }
-
-            zsBaseWebSrv2.getJSON(url).then(function(data) {
-                deferred.resolve(data);
-            }, function(data) {
-                deferred.reject(data);
-            });
             return deferred.promise;
         };
 

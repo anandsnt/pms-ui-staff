@@ -574,7 +574,7 @@ angular.module('sntRover').controller('RVExportReportsCtrl', [
             var endsOnDate = $scope.selectedEntityDetails.ends_on_date || $rootScope.businessDate;
 
             // saved emails/FTP
-            var delieveryType = $scope.selectedEntityDetails.delivery_type.value;
+            var delieveryType = $scope.selectedEntityDetails.delivery_type ? $scope.selectedEntityDetails.delivery_type.value : '';
 
             var hasAccOrGuest, todayTimePeriod;
 
@@ -625,6 +625,7 @@ angular.module('sntRover').controller('RVExportReportsCtrl', [
             }
 
             $scope.startsOnOptions = angular.extend({
+                minDate: tzIndependentDate($rootScope.businessDate),
                 onSelect: function(value) {
                     $scope.endsOnOptions.minDate = value;
                 }

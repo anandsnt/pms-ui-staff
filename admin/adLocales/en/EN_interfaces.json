@@ -16,6 +16,7 @@
 	"USER_NAME" : "User Name",
 	"END_POINT" : "End Point",
 	"ACTIVATE_INACTIVATE" : "Activate / Inactivate",
+	"DISABLE_LEGACY" : "Disable legacy",
 	"CUBILIS_HEADER": "Cubilis",
 	"VERTICALBOOKING_HEADER": "VerticalBooking",
 	"DEFAULT_RATE": "Default Rate",
@@ -65,5 +66,8 @@
 	"CONFIGURE": "Configure",
 	"CONFIGURATION": "Configuration",
 	"API_CONFIGURATION_PREFIX": "API Access",
-	"VENDOR_ID": "Vendor ID"
-
+	"VENDOR_ID": "Vendor ID",
+	"AUTH_KEY": "Authorization Key",
+	"AUTH_ID": "Authorization ID",
+	"WINDSURFER_HEADER": "Windsurfer CRS Setup",
+	"ACCESS_URL": "Access URL"
