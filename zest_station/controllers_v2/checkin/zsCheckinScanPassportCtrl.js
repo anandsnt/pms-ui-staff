@@ -62,6 +62,10 @@ sntZestStation.controller('zsCheckinScanPassportCtrl', [
 
 
         var setGuestDetailsFromScan = function(guest, scanResponse) {
+            // if (scanResponse.DOC_TYPE === 'PP') {
+            //      scanResponse.DOC_TYPE = 'passport'
+            // };
+
             console.warn('scanResponse: ',scanResponse);
             // city, nationality, docExpiry, docID, dob, full_name, first_name, last_name 
             guest.first_name = scanResponse.FIRST_NAME;
@@ -73,6 +77,8 @@ sntZestStation.controller('zsCheckinScanPassportCtrl', [
 
             guest.docExpiry = scanResponse.EXPIRY_DATE;
             guest.docID = scanResponse.DOCUMENT_NUMBER;
+
+            guest.docType = scanResponse.DOC_TYPE;
             guest.img_path = scanResponse.FRONT_IMAGE;
 
         }
@@ -152,6 +158,7 @@ sntZestStation.controller('zsCheckinScanPassportCtrl', [
 
 
         $scope.selectGuest = function(guestInfo) {
+            degrees = 0;
             $scope.selectedPassport = true;
             $scope.selectedPassportInfo = guestInfo;
 
@@ -413,15 +420,54 @@ sntZestStation.controller('zsCheckinScanPassportCtrl', [
                 $scope.selectedPassportInfo.passport_reviewed_status = $filter('translate')('GID_STAFF_REVIEW_REJECTED');
             }
             
-            $scope.selectedPassport = false;
-            $scope.mode = 'ADMIN_VERIFY_PASSPORTS';
 
-            validatePassportsView();
+
+            savePassportToAPI($scope.selectedPassportInfo);
+            if ($scope.inDemoMode()) {
+                validatePassportsView();
+                $scope.selectedPassport = false;
+                $scope.mode = 'ADMIN_VERIFY_PASSPORTS';
+            }
         };
 
         var onFailAdminReview = function(){
             console.log('on fail admin review passport');
         };
+
+
+        var savePassportToAPI = function(selectedPassportInfo) {
+
+            console.info('save passport info: ',arguments);
+
+            var options = {
+                params: {
+                    'data': selectedPassportInfo.img_path,
+                    'reservation_id': $stateParams.reservation_id,
+                    'document_type': selectedPassportInfo.docType,
+                    'document_number': selectedPassportInfo.docID,
+                    'expiration_date': selectedPassportInfo.docExpiry,
+                    'full_name': selectedPassportInfo.full_name,
+                    'first_name': selectedPassportInfo.first_name,
+                    'last_name': selectedPassportInfo.last_name,
+                    'nationality': selectedPassportInfo.nationality
+                },
+                successCallBack: function() {
+                    console.warn(':: Saved! ::');
+                    validatePassportsView();
+                    $scope.selectedPassport = false;
+                    $scope.mode = 'ADMIN_VERIFY_PASSPORTS';   
+                },
+                failureCallBack: function() {
+                    console.warn('failed to save');
+                    console.warn(arguments);
+                    $scope.$emit('GENERAL_ERROR');
+                }
+            }
+
+            $scope.callAPI(zsCheckinSrv.savePassport, options);
+
+        };
+
 
         $scope.acceptPassport = function() {
             $scope.acceptedPassport = true;
