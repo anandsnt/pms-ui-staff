@@ -889,6 +889,7 @@ angular.module('sntPay').controller('sntPaymentController',
                 // -- CICO-33971 :: Direct Bill Payment --
                 if ($scope.selectedPaymentType === 'DB') {
                     $scope.payment.isEditable = false;
+                    $scope.splitBillEnabled = false;
                     $scope.payment.amount = initialPaymentAmount;
                     calculateFee();
                 }
@@ -1196,7 +1197,7 @@ angular.module('sntPay').controller('sntPaymentController',
              */
             function onAmountChange() {
                 $scope.payment.amount = $scope.amount || 0;
-                initialPaymentAmount = angular.copy($scope.payment.amount);
+                initialPaymentAmount = initialPaymentAmount ? initialPaymentAmount : angular.copy($scope.payment.amount);
                 calculateFee();
             }
 
@@ -1228,14 +1229,19 @@ angular.module('sntPay').controller('sntPaymentController',
                 $scope.errorMessage = '';
             };
 
-            $scope.showSixPaymentsModeSelection = function() {
+            $scope.showSixPaymentsModeSelection = function () {
                 var isMLIEMV = $scope.hotelConfig.paymentGateway === 'MLI' &&
-                    $scope.hotelConfig.isEMVEnabled;
+                        $scope.hotelConfig.isEMVEnabled,
+                    isPendingPayment = !$scope.paymentAttempted || // no payments attempted
+                        // attempted payment failed
+                        $scope.isPaymentFailure ||
+                        // CICO-41498 in the middle of split bill payments
+                        ($scope.splitBillEnabled && $scope.numSplits > $scope.completedSplitPayments);
 
                 return (isMLIEMV || $scope.hotelConfig.paymentGateway === 'sixpayments') &&
                     $scope.selectedPaymentType === 'CC' &&
                     $scope.payment.screenMode === 'PAYMENT_MODE' &&
-                    (!$scope.paymentAttempted || $scope.isPaymentFailure);
+                    isPendingPayment;
             };
 
             /** **************** init ***********************************************/
