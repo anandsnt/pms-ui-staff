@@ -543,6 +543,23 @@ sntZestStation.service('zsCheckinSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
             });
             return deferred.promise;
         };
+        
+        this.savePassport = function(params) {
+            var deferred = $q.defer();
+            var url = '/api/guest_identity';
+            params.is_kiosk = true;
+
+            var data = params;
+
+            data.application =  'KIOSK';
+            
+            zsBaseWebSrv.postJSON(url, data).then(function(data) {
+                deferred.resolve(data);
+            }, function(data) {
+                deferred.reject(data);
+            });
+            return deferred.promise;
+        };
 
 
 
