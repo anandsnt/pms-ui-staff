@@ -835,6 +835,36 @@
                                 background-color: @grey2;
                             }
                         }
+
+                        &.with-property {
+                            .data {
+                                 
+                                .calc-width(38, 148); 
+ 
+                            }
+
+                            .values {
+                                .calc-width(62, 148);
+
+                                .value-block {
+                                    padding: 0 10px;
+                                    &.property {
+                                        padding: 0 5px;
+                                        width: 34%;
+                                        text-align: center;
+
+                                        strong {
+                                            .nowrap();
+                                        }
+                                    }
+                                    &.revenue,
+                                    &.amount { width: 21%; }
+                                    &.type,
+                                    &.tax { width: 12%; }
+                                }
+                            }
+
+                        }
                     }
 
                     &.selected {
