@@ -33,7 +33,8 @@ sntZestStation.service('zsGeneralSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
             'fontainebleau': 'fontainebleau',
             'freehand': 'freehand',
             'de-jonker': 'Hotel de jonker',
-            'chalet-view': 'Chalet view'
+            'chalet-view': 'Chalet view',
+            'row-nyc': 'row'
         };
 
         this.isThemeConfigured = function(theme) {

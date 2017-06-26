@@ -16,7 +16,8 @@ module.exports = {
 			'de-jonker': [themeCSSRoot + 'de-jonker.less'],
 			'chalet-view': [themeCSSRoot + 'chalet-view.less'],
 			'snt': [themeCSSRoot + 'snt.less'],
-			'freehand': [themeCSSRoot + 'freehand.less']
-		}
+			'freehand': [themeCSSRoot + 'freehand.less'],
+			'row-nyc': [themeCSSRoot + 'row-nyc.less']
+		};
 	}
-}
+};
