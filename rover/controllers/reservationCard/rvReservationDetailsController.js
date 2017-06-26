@@ -51,6 +51,12 @@ sntRover.controller('reservationDetailsController',
 		$scope.hasSRViewPermission = rvPermissionSrv.getPermissionValue('VIEW_SUPPRESSED_RATE');
 		RVReservationStateService.setReservationFlag("isSRViewRateBtnClicked", false);
 
+		// CICO-38714 / CICO-41313 - Set the Guest ID Permission flag and check if each guest has an id scanned or not
+		// set to false if the hotel admin switch is turned off
+
+		$scope.guestIdAdminEnabled = $rootScope.hotelDetails.guest_id_scan.scan_guest_id_active;
+   		$scope.hasGuestIDPermission = rvPermissionSrv.getPermissionValue('ACCESS_GUEST_ID_DETAILS');
+		
 		if (!$rootScope.stayCardStateBookMark) {
 			setNavigationBookMark();
 		}
@@ -1481,4 +1487,45 @@ sntRover.controller('reservationDetailsController',
      $scope.toggleOverBookingAlert = function() {
        $scope.showChangeDatesPopup = !$scope.showChangeDatesPopup;
      }
+
+     $scope.hideGuestId = function(guest) {
+     	// TODO: 
+     	// has_guest_id_scanned should be (!guest.has_guest_id_scanned) once API is updated to support checking per guest/reservation
+     	return (guest.has_guest_id_scanned || !$scope.guestIdAdminEnabled || !guest.first_name);
+     }
+     /*
+      * show the guest id / passport when clicked "guest id" button from manage additional guests view
+      */
+     $scope.showScannedGuestID = function(isPrimaryGuest, guestData) {
+     	// $scope.guestIdData.showScannedGuestID, must be present for the guestID button to be enabled
+     	// CICO-38714
+     	// TODO: link with proper HTML once complete from design team
+     	//       fetch guest id data with front+back images from API using (guest id / reservation id for primary guest?)
+ 		
+     	$scope.guestIdData = guestData;
+     	$scope.guestIdData.isPrimaryGuest = isPrimaryGuest;
+     	// TODO: Link with API doc type
+     	// $scope.guestIdData.has_guest_id_scanned = true;
+     	
+     	$scope.guestIdData.idType = 'Passport';
+     	$scope.guestIdData.dob = '14-02-2014';
+     	$scope.guestIdData.scanDate = '14-02-2017 11:32 AM';
+     	$scope.guestIdData.twoSidedDoc = true;
+     	$scope.guestIdData.nationality = 'Slovakian';
+     	$scope.guestIdData.docID = '12312';
+     	$scope.guestIdData.docExpiry = '11/20';
+     	$scope.guestIdData.showingIdFront = true;
+     	$scope.guestIdData.hasScannedDoc = true;
+ 		$scope.guestIdData.imgFrontSrc = '/assets/images/sample_passport.png';
+ 		$scope.guestIdData.imgBackSrc = '/assets/images/sample_passport_back.png';
+
+     	// END TODO API Link parts
+
+     	ngDialog.open({
+			template: '/assets/partials/guestId/guestId.html',
+			className: 'guest-id-dialog',
+			scope: $scope
+		});
+     };
+
 }]);

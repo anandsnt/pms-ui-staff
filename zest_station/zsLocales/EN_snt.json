@@ -536,6 +536,8 @@
    "ADDON_REMOVAL_ERROR_MESSAGE": "Unable To remove this from your reservation",
 
    "GID_SCAN_HEADER": "Scan Passport",
+   "GID_SCAN_PASSPORT_SUCCESS":"Success",
+   "GID_SCAN_PASSPORT_TRY_AGAIN":"Try Again",
    "GID_SCAN_SUB_HEADER": "Place your passport on the scanner and select 'Scan'",
    "GID_SCAN_BUTTON": "Scan",
 
@@ -558,12 +560,16 @@
 
 
 
-   "GID_STAFF_REVIEW_SUCCESS": "Accepted",
+   "GID_STAFF_REVIEW_ACCEPTED": "Accepted",
+   "GID_STAFF_REVIEW_REJECTED": "Rejected",
    "GID_STAFF_REVIEW_NOT_STARTED": "Not Reviewed",
 
 
-   "GID_VERIFY_PASSPORT_SUB": "Reservation Details",
+   "GID_VERIFY_PASSPORT_SUB": "",
    "GID_VERIFY_PASSPORT": "Verify Passport",
+
+   "GID_VERIFY_PASSPORT_ACCEPT": "Accept",
+   "GID_VERIFY_PASSPORT_REJECT": "Reject",
 
    "GID_ADMIN_PWD_SUB": "Enter your password",
    "GID_ADMIN_ID_SUB": "Enter your login ID",

@@ -526,5 +526,25 @@ sntZestStation.service('zsCheckinSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
         };
 
 
+        this.acceptPassport = function(params) {
+            // TODO: Update to match API spec once API part is in progress/done
+            var deferred = $q.defer();
+            var url = '/zest_station/log_passport_scanning';
+            params.is_kiosk = true;
+
+            var data = params;
+
+            data.application =  'KIOSK';
+            
+            zsBaseWebSrv.postJSON(url, data).then(function(data) {
+                deferred.resolve(data);
+            }, function(data) {
+                deferred.reject(data);
+            });
+            return deferred.promise;
+        };
+
+
+
     }
 ]);
