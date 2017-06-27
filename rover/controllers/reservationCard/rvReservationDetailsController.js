@@ -1500,7 +1500,7 @@ sntRover.controller('reservationDetailsController',
 
       var getUserPassportInfo = function(guestResponseData, findLastName, findFirstName) {
      		for (var i in guestResponseData) {
-     			if (guestResponseData[i].last_name === findLastName && findFirstName === guestResponseData[i].first_name) {
+     			if (guestResponseData[i].last_name.toLowerCase() === findLastName.toLowerCase() && findFirstName.toLowerCase() === guestResponseData[i].first_name.toLowerCase()) {
      				return guestResponseData[i];
      			}
      		} // else for debugging...
