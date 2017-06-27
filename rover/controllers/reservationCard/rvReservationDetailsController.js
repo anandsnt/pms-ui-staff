@@ -1496,36 +1496,81 @@ sntRover.controller('reservationDetailsController',
      /*
       * show the guest id / passport when clicked "guest id" button from manage additional guests view
       */
+     
+
+      var getUserPassportInfo = function(guestResponseData, findLastName, findFirstName) {
+     		for (var i in guestResponseData) {
+     			if (guestResponseData[i].last_name.toLowerCase() === findLastName.toLowerCase() && findFirstName.toLowerCase() === guestResponseData[i].first_name.toLowerCase()) {
+     				return guestResponseData[i];
+     			}
+     		} // else for debugging...
+     		return guestResponseData[0];
+      }
+
+
      $scope.showScannedGuestID = function(isPrimaryGuest, guestData) {
      	// $scope.guestIdData.showScannedGuestID, must be present for the guestID button to be enabled
      	// CICO-38714
      	// TODO: link with proper HTML once complete from design team
      	//       fetch guest id data with front+back images from API using (guest id / reservation id for primary guest?)
- 		
-     	$scope.guestIdData = guestData;
-     	$scope.guestIdData.isPrimaryGuest = isPrimaryGuest;
-     	// TODO: Link with API doc type
-     	// $scope.guestIdData.has_guest_id_scanned = true;
-     	
-     	$scope.guestIdData.idType = 'Passport';
-     	$scope.guestIdData.dob = '14-02-2014';
-     	$scope.guestIdData.scanDate = '14-02-2017 11:32 AM';
-     	$scope.guestIdData.twoSidedDoc = true;
-     	$scope.guestIdData.nationality = 'Slovakian';
-     	$scope.guestIdData.docID = '12312';
-     	$scope.guestIdData.docExpiry = '11/20';
-     	$scope.guestIdData.showingIdFront = true;
-     	$scope.guestIdData.hasScannedDoc = true;
- 		$scope.guestIdData.imgFrontSrc = '/assets/images/sample_passport.png';
- 		$scope.guestIdData.imgBackSrc = '/assets/images/sample_passport_back.png';
 
-     	// END TODO API Link parts
+     	var successCallBack = function(responseData) {
+     		$scope.$emit('hideLoader');
+     		console.info('got data back: ',responseData);
 
-     	ngDialog.open({
-			template: '/assets/partials/guestId/guestId.html',
-			className: 'guest-id-dialog',
-			scope: $scope
-		});
+     		var findFirstName, findLastName;
+     		if (isPrimaryGuest) {// primary guest
+     			findFirstName = $scope.data.guest_details.first_name;
+     			findLastName = $scope.data.guest_details.last_name;
+     		} else {
+     			findFirstName = guestData.first_name;
+     			findLastName = guestData.last_name;
+     		}
+
+     		var guest = getUserPassportInfo(responseData, findLastName, findFirstName);
+     		console.log('guest: ',guest);
+
+	     	$scope.guestIdData = guestData;
+	     	$scope.guestIdData.isPrimaryGuest = isPrimaryGuest;
+
+
+	     	// Set data FROM GuestID (ie. passport)
+	     	$scope.guestIdData.first_name = guest.first_name;
+	     	$scope.guestIdData.last_name = guest.last_name;
+
+	     	$scope.guestIdData.idType = guest.identityType;
+	     	$scope.guestIdData.dob = guest.dob;
+	     	//$scope.guestIdData.scanDate = '14-02-2017 11:32 AM';
+	     	$scope.guestIdData.twoSidedDoc = guest.front_image_data && guest.back_image_data;
+	     	$scope.guestIdData.nationality = guest.nationality;
+
+	     	$scope.guestIdData.docID = guest.document_number;
+	     	$scope.guestIdData.docExpiry = guest.document_expiry;
+	     	$scope.guestIdData.showingIdFront = true;
+	     	//$scope.guestIdData.hasScannedDoc = true;
+	 		$scope.guestIdData.imgFrontSrc = guest.front_image_data;
+	 		$scope.guestIdData.imgBackSrc = guest.back_image_data;
+	 		// END SETTING DATA FROM GUEST ID
+
+	     	ngDialog.open({
+				template: '/assets/partials/guestId/guestId.html',
+				className: 'guest-id-dialog',
+				scope: $scope
+			});
+
+     	}
+     	var failureCallBack = function() {
+ 			$scope.$emit('hideLoader');
+     	}
+		var data = {
+			"reservation_id": $scope.reservationData.reservation_card.reservation_id,
+			"id": !guestData.id ? $scope.data.guest_details.user_id : guestData.id,
+		};
+		console.log('fetch request: ',data);
+		$scope.invokeApi(RVReservationCardSrv.fetchGuestIdentity, data, successCallBack, failureCallBack);
+
+
+
      };
 
 }]);
