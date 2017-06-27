@@ -35,7 +35,7 @@ sntZestStation.service('zsGeneralSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
             'de-jonker': 'Hotel de jonker',
             'chalet-view': 'Chalet view',
             'row-nyc': 'row',
-            'circle-inn-fairfield':'Circle fairfield'
+            'circle-inn-fairfield': 'Circle fairfield'
         };
 
         this.isThemeConfigured = function(theme) {
