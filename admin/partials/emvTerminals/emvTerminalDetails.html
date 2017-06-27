@@ -32,7 +32,7 @@
 
 					<ad-textbox value="itemDetails.terminal_identifier" name = "unit_price" id = "unit_price" label = "{{'TERMINAL_ID' |translate}}" placeholder = "{{'TERMINAL_ID_PLACEHOLDER' |translate}}" required = "yes" styleclass="full-width" ></ad-textbox>
 
-					<ad-textbox ng-show="itemDetails.display_terminal_access_code" value="itemDetails.terminal_access_code" name = "terminal_access_code" id = "terminal_access_code" label = "{{'TERMINAL_ACCESS_CODE' |translate}}" placeholder = "{{'TERMINAL_ACCESS_CODE_PLACEHOLDER' |translate}}" styleclass="full-width" ></ad-textbox>
+					<ad-textbox inputtype="password" ng-show="mli_emv_enabled" value="itemDetails.terminal_access_code" name = "terminal_access_code" id = "terminal_access_code" label = "{{'TERMINAL_ACCESS_CODE' |translate}}" placeholder = "{{'TERMINAL_ACCESS_CODE_PLACEHOLDER' |translate}}" styleclass="full-width" ></ad-textbox>
 				</fieldset>
 				
 				<div class="actions float">

@@ -619,6 +619,8 @@ admin.controller('ADAppCtrl', [
 			// CICO-27286
 			$rootScope.rateDateRangeLimit = data.rate_date_range_limit;
 
+			$rootScope.mli_emv_enabled = data.mli_emv_enabled && data.payment_gateway == 'MLI';
+
 			setupLeftMenu();
 
 		};
