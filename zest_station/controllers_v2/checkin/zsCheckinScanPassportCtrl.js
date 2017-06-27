@@ -84,9 +84,10 @@ sntZestStation.controller('zsCheckinScanPassportCtrl', [
 
 
         var setGuestDetailsFromScan = function(guest, scanResponse) {
-            // if (scanResponse.DOC_TYPE === 'PP') {
-            //      scanResponse.DOC_TYPE = 'passport'
-            // };
+             if (scanResponse.DOC_TYPE === 'PP') {
+                  scanResponse.DOC_TYPE = 'passport';
+                  // $scope.zestStationData.doubleSidedScan = false;
+             };
             console.warn('scanResponse: ',scanResponse);
 
             if ($scope.scannedBackImage) {
@@ -105,6 +106,7 @@ sntZestStation.controller('zsCheckinScanPassportCtrl', [
                 guest.docID = scanResponse.DOCUMENT_NUMBER;
 
                 guest.docType = scanResponse.DOC_TYPE;
+                guest.identity_type = scanResponse.DOC_TYPE;
                 guest.img_path = scanResponse.FRONT_IMAGE;
 
             }
@@ -115,11 +117,13 @@ sntZestStation.controller('zsCheckinScanPassportCtrl', [
             // return true; // TODO: Link with document types which require both sides to be scanned
             // for debugging/testing double-sided scan type IDs
             // set this variable
+            console.warn('$scope.zestStationData.doubleSidedScan: ',$scope.zestStationData.doubleSidedScan);
             if  ($scope.zestStationData.doubleSidedScan) {
                 return true;
 
             } else {
-                return response.DOC_TYPE !== 'PP';    
+                return false;
+                // return response.DOC_TYPE !== 'PP';    
             }
             
         }
@@ -220,8 +224,6 @@ sntZestStation.controller('zsCheckinScanPassportCtrl', [
             } else {
                 $scope.lastMode = '';
             }
-
-
 
             if ($scope.mode !== 'ADMIN_VERIFY_PASSPORTS') {
                 $scope.reScanPassport();
@@ -514,7 +516,8 @@ sntZestStation.controller('zsCheckinScanPassportCtrl', [
                     'full_name': selectedPassportInfo.full_name,
                     'first_name': selectedPassportInfo.first_name,
                     'last_name': selectedPassportInfo.last_name,
-                    'nationality': selectedPassportInfo.nationality
+                    'nationality': selectedPassportInfo.nationality,
+                    'id': selectedPassportInfo.id
                 },
                 successCallBack: function() {
                     console.warn(':: Saved! ::');
