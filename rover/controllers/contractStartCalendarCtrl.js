@@ -2,21 +2,35 @@
 sntRover.controller('contractStartCalendarCtrl', ['$rootScope', '$scope', 'dateFilter', 'ngDialog', function($rootScope, $scope, dateFilter, ngDialog) {
 	$scope.setUpData = function() {
 	    $scope.isDateSelected = false;
+	    var minDate, maxDate = '';
+
 	    if ($scope.contractList.isAddMode) {
-		    if ($scope.addData.begin_date) {
-		      $scope.date = $scope.addData.begin_date;
-		    }
+	      	$scope.date = $scope.addData.begin_date;
+	      	minDate = $scope.addData.min_date;
+ 	      	maxDate = $scope.addData.max_date;
 	    }
 	    else {
 	    	if ($scope.contractData.begin_date) {
 		      $scope.date = $scope.contractData.begin_date;
+		      minDate = $scope.contractData.min_date;
+	 	      maxDate = $scope.contractData.max_date;
+		    }
+		    else {
+		    	// set start date as bussiness date
+		    	var myDate = tzIndependentDate($rootScope.businessDate);
+
+	     		$scope.date = dateFilter(myDate, 'yyyy-MM-dd');
+		    	$scope.contractData.begin_date = $scope.date;
+		    	minDate = $scope.contractData.min_date;
+		    	maxDate = $scope.contractData.max_date;
 		    }
 	    }
 
 	    $scope.dateOptions = {
 		     changeYear: true,
 		     changeMonth: true,
-		     minDate: tzIndependentDate($rootScope.businessDate),
+		     minDate: tzIndependentDate(minDate),
+		     maxDate: tzIndependentDate(maxDate),
 		     yearRange: "0:+10",
 		     onSelect: function() {
 
@@ -42,11 +56,11 @@ sntRover.controller('contractStartCalendarCtrl', ['$rootScope', '$scope', 'dateF
 			     }
 
 			     ngDialog.close();
-	     }
+	    	}
 
     	};
 	};
+	
 	$scope.setUpData();
-
 
 }]);
