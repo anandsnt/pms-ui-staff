@@ -36,10 +36,10 @@ admin.controller('adUpsellAddonSettingsCtrl', function($scope, ADUpsellAddonSrv,
 	var returnDataForSaving = function() {
 		var data;
         
-		if ($scope.selectedLanguage.code === 'en') {
-			data = angular.copy($scope.data);
-			delete data.translations;
-		} else {
+		// if ($scope.selectedLanguage.code === 'en') {
+		// 	data = angular.copy($scope.data);
+		// 	delete data.translations;
+		// } else {
 			data = angular.copy($scope.data);
 			delete data.translations;
 			data.translation = [{
@@ -57,7 +57,7 @@ admin.controller('adUpsellAddonSettingsCtrl', function($scope, ADUpsellAddonSrv,
 			if (!_.isUndefined($scope.selectedLanguageTranslations)) {
 				data.translation[0].id = $scope.selectedLanguageTranslationId;
 			}
-		}
+		// }
 		return data;
 	};
 
