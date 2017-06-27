@@ -277,11 +277,20 @@ sntZestStation.controller('zsCheckinRegCardDeliveryOptionsCtrl', [
 		 * [reEnterText description]
 		 * @return {[type]} [description]
 		 */
-        $scope.editEmailAddress = function() {
-            $scope.trackEvent('CI - Edit Email', 'user_selected');
+        $scope.editEmailAddress = function(reenter) {
+            if (!reenter) {
+                $scope.trackEvent('CI - Edit Email', 'user_selected');    
+            } else {
+                $scope.trackEvent('CI - Re-Enter Edit Email (Reg-Delivery)', 'user_selected');
+            }
+
             $scope.mode = 'EMAIL_ENTRY_MODE';
-            $scope.focusInputField('input_text');
+            $scope.focusInputField('email-entry');
         };
+
+        $scope.$on('RE_EMAIL_ENTRY_MODE', function() {
+            $scope.editEmailAddress(true);
+        });
 
 
         $scope.$on('EMAIL_UPDATION_SUCCESS', function() {
