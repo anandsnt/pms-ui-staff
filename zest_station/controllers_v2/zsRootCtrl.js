@@ -1203,7 +1203,17 @@ sntZestStation.controller('zsRootCtrl', [
 
                     $scope.$broadcast('WS_PRINT_FAILED', errorData);
                 }
-            } else if (response.Command === 'cmd_scan_qr_datalogic') {
+            } 
+            else if (response.Command === 'cmd_scan_passport') {
+
+                if (response.ResponseCode === 0) {
+                    $scope.$broadcast('PASSPORT_SCAN_SUCCESS', response);
+                } else {
+                    $scope.$broadcast('PASSPORT_SCAN_FAILURE', response.ResponseCode);
+
+                }
+            }
+            else if (response.Command === 'cmd_scan_qr_datalogic') {
                 $scope.zestStationData.qrCodeScanning = false;
                 // Ren-US$1349209--Websocket: Command ->cmd_scan_qr_datalogic
                 $log.warn('got response');
@@ -1696,6 +1706,7 @@ sntZestStation.controller('zsRootCtrl', [
             $scope.zestStationData.check_in_collect_passport = zestStationSettings.scan_guest_id;// && zestStationSettings.scan_guest_id_active;// _active is to View from StayCard
             $scope.zestStationData.showTemplateList = false; // Only for ipad in dev environment, switch themes fast like in chrome (dashboard view)
             $scope.zestStationData.makingKeyInProgress = false;
+            $scope.zestStationData.doubleSidedScan = false;
             $scope.zestStationData.qrCodeScanning = false;
             $scope.zestStationData.demoModeEnabled = 'false'; // demo mode for hitech, only used in snt-theme
             $scope.zestStationData.noCheckInsDebugger = 'false';

@@ -116,10 +116,10 @@
                     <input touch-press id="timeout_text" ng-focus="showOnScreenKeyboard('timeout_text')" click-touch="showOnScreenKeyboard('timeout_text')" type="number" min='1' max='9999' ng-model='zestStationData.idle_timer.max' class='admin-input admin-input' />
                 </div>
 
-                <div class="entry with-label">
+                <div class="entry with-label" ng-hide="!isIpad">
                     <label>Printer</label>
                     <!-- <input touch-press id="prompt_text" disabled="true" ng-model='zestStationData.printerLabel' click-touch='openPrinterMenu()'/> -->
-                    <div class="entry select " ng-class="{'disabled':!isIpad}" touch-press='openPrinterMenu()'>
+                    <div class="entry select" touch-press='openPrinterMenu()'>
                         <select disabled="true" ng-model="zestStationData.printer_selected">
                             <option value="">{{printerLabel}}</option>
                         </select>
@@ -234,6 +234,20 @@
                     <label class='admin-label-description'>Turn Off Light</label>
                      <div class="select button done-btn" type="button" touch-press="turnOffLight()">
                         Light OFF
+                    </div>
+                </div>
+
+                <div class="entry with-label" ng-show="showDebugModeOption">
+                    <label>Test Double-Sided Scanning</label>
+                    <label class='admin-label-description'>Click to 
+                        <span ng-show='zestStationData.doubleSidedScan'>Disable</span>
+                        <span ng-show='!zestStationData.doubleSidedScan'>Enable</span>
+                    </label>
+                     <div ng-show='!zestStationData.doubleSidedScan' class="select button done-btn" type="button" touch-press="zestStationData.doubleSidedScan=true">
+                        Enable
+                    </div>
+                    <div ng-show='zestStationData.doubleSidedScan' class="select button done-btn" type="button" touch-press="zestStationData.doubleSidedScan=false">
+                        Disable
                     </div>
                 </div>
 
