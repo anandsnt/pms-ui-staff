@@ -234,6 +234,35 @@ angular.module('sntRover').controller('companyCardDetailsController', ['$scope',
 			ngDialog.close();
 		};
 
+		$scope.shouldShowGlobalButtonToggle = function() {
+			// return showGlobalToggleButton = ($rootScope.isAnMPHotel && rvPermissionSrv.getPermissionValue ('GLOBAL_CARD_UPDATE'));
+			// Commented above - For now we are not considering whether the property is MP or not
+			// We are showing it all time. So set as true.
+			return showGlobalToggleButton = true;
+		};
+		$scope.toggleGlobalButton = function() {
+			if (rvPermissionSrv.getPermissionValue ('GLOBAL_CARD_UPDATE')) {
+				$scope.contactInformation.is_global_enabled = !$scope.contactInformation.is_global_enabled;
+				$scope.contactInformation.account_type = $scope.account_type;
+				//$scope.invokeApi(RVCompanyCardSrv.saveContactInformation, $scope.contactInformation);
+			}
+
+		};
+		$scope.shouldShowCommissionsTab = function() {
+			//if ($scope.isCommissionTabAvailable && $scope.account_type == 'TRAVELAGENT' && !isEmptyObject($scope.contactInformation.commission_details))
+			if ($scope.isCommissionTabAvailable && $scope.account_type == 'TRAVELAGENT' && !isEmptyObject($scope.contactInformation.commission_details)) {
+
+			}
+
+		};
+		$scope.isUpdateEnabled = function() {
+			var isDisabledFields = false;
+			if (!rvPermissionSrv.getPermissionValue ('GLOBAL_CARD_UPDATE')) {
+				isDisabledFields = true;
+			}
+			return isDisabledFields;
+		};
+
 		var callCompanyCardServices = function() {
 			var param = {
 				"id": $scope.contactInformation.id
@@ -276,6 +305,7 @@ angular.module('sntRover').controller('companyCardDetailsController', ['$scope',
 		 */
 		var successCallbackOfInitialFetch = function(data) {
 			$scope.$emit("hideLoader");
+			data.is_global_enabled = true;
 			$scope.contactInformation = data;
 			if ($scope.contactInformation.alert_message !== "") {
 				$scope.errorMessage = [$scope.contactInformation.alert_message];

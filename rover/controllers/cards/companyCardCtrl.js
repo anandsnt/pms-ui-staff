@@ -1,5 +1,5 @@
-angular.module('sntRover').controller('RVCompanyCardCtrl', ['$scope', '$rootScope', 'RVCompanyCardSrv', '$timeout', 'ngDialog', '$filter', '$stateParams',
-	function($scope, $rootScope, RVCompanyCardSrv, $timeout, ngDialog, $filter, $stateParams) {
+angular.module('sntRover').controller('RVCompanyCardCtrl', ['$scope', '$rootScope', 'RVCompanyCardSrv', '$timeout', 'ngDialog', '$filter', '$stateParams', 'rvPermissionSrv',
+	function($scope, $rootScope, RVCompanyCardSrv, $timeout, ngDialog, $filter, $stateParams, rvPermissionSrv) {
 		$scope.searchMode = true;
 		$scope.account_type = 'COMPANY';
 		$scope.currentSelectedTab = 'cc-contact-info';
@@ -177,6 +177,24 @@ angular.module('sntRover').controller('RVCompanyCardCtrl', ['$scope', '$rootScop
 			$scope.searchMode = false;
 			$scope.$emit('hideLoader');
 		});
+
+		$scope.shouldShowGlobalButtonToggle = function() { console.log("reached here 1213")
+			return showGlobalToggleButton = ($rootScope.isAnMPHotel && rvPermissionSrv.getPermissionValue ('GLOBAL_CARD_UPDATE'));
+		};
+
+		$scope.toggleGlobalButton = function() {
+			if (rvPermissionSrv.getPermissionValue ('GLOBAL_CARD_UPDATE')) {
+				$scope.contactInformation.is_global_button_enabled = !$scope.contactInformation.is_global_button_enabled;
+			}
+
+		};
+		$scope.isUpdateEnabled = function() { console.log("::::::::::::")
+			var isDisabledFields = false;
+			if (!rvPermissionSrv.getPermissionValue ('GLOBAL_CARD_UPDATE')) {
+				isDisabledFields = true;
+			}
+			return isDisabledFields;
+		};
 
 		/**
 		 * function to handle click operation on company card, mainly used for saving
