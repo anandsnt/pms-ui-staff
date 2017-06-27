@@ -47,6 +47,12 @@ admin.controller('adUpsellAddonSettingsCtrl', function($scope, ADUpsellAddonSrv,
 				amount_types: $scope.translated_amount_types,
 				post_types: $scope.translated_post_types
 			}];
+			_.each(data.translation[0].amount_types, function(amountType) {
+				amountType.language_id = selectedLanguageTranslationLanguageId;
+			});
+			_.each(data.translation[0].post_types, function(postTypes) {
+				postTypes.language_id = selectedLanguageTranslationLanguageId;
+			});
 			// if previous translations for the language are present, add translation id
 			if (!_.isUndefined($scope.selectedLanguageTranslations)) {
 				data.translation[0].id = $scope.selectedLanguageTranslationId;
