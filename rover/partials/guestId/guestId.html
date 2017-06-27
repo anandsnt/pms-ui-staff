@@ -51,8 +51,9 @@
                 <li ng-click='guestIdData.showingIdFront = false' ng-class="{'active':!guestIdData.showingIdFront}">Back</li>
             </ul>
             
-            <img class='guest-id-img' ng-show='guestIdData.showingIdFront' ng-src="{{guestIdData.imgFrontSrc}}" alt="">
-            <img class='guest-id-img' ng-show='!guestIdData.showingIdFront' ng-src="{{guestIdData.imgBackSrc}}" alt="">
+            <img class='guest-id-img' ng-show='guestIdData.showingIdFront' data-ng-src="data:image/png;base64,{{guestIdData.imgFrontSrc}}" alt="">
+            <img class='guest-id-img' ng-show='!guestIdData.showingIdFront' data-ng-src="data:image/png;base64,{{guestIdData.imgBackSrc}}" alt="">
+
             <!-- Add other image if front & back and remove .hidden when clicked on 'Back'
             <img class="hidden" src="{img}" alt=""> -->
             
