@@ -13,7 +13,7 @@ admin.controller('ADEmvTerminalDetailsCtrl', ['$scope', '$rootScope', 'ADEmvTerm
 	$scope.itemDetails.name = '';
 	$scope.itemDetails.terminal_identifier = '';
 	$scope.itemDetails.terminal_access_code = '';
-	$scope.mli_emv_enabled = $rootScope.mli_emv_enabled;
+	$scope.mliEmvEnabled = $rootScope.mliEmvEnabled;
 
 	var itemId = $stateParams.itemid;
 	// if itemid is null, means it is for add item form
