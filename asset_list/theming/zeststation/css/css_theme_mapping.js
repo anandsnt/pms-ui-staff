@@ -17,7 +17,8 @@ module.exports = {
 			'chalet-view': [themeCSSRoot + 'chalet-view.less'],
 			'snt': [themeCSSRoot + 'snt.less'],
 			'freehand': [themeCSSRoot + 'freehand.less'],
-			'row-nyc': [themeCSSRoot + 'row-nyc.less']
+			'row-nyc': [themeCSSRoot + 'row-nyc.less'],
+			'circle-inn-fairfield': [themeCSSRoot + 'circle-inn-fairfield.less']
 		};
 	}
 };
