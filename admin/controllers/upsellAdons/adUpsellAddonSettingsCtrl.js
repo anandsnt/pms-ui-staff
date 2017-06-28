@@ -105,6 +105,9 @@ admin.controller('adUpsellAddonSettingsCtrl', function($scope, ADUpsellAddonSrv,
 			return translation.language_id === selectedLanguage.id;
 		});
 
+		selectedLanguageTranslationLanguageId = selectedLanguage.id;
+
+
 		// set up blank labels for future usage in case of newly added language
 		_.each(angular.copy(upsellData.amount_types), function(amountType) {
 			blankAmountTypes.push({
@@ -123,7 +126,6 @@ admin.controller('adUpsellAddonSettingsCtrl', function($scope, ADUpsellAddonSrv,
 
 		// check if translations were already added.
 		if (!_.isUndefined($scope.selectedLanguageTranslations)) {
-			selectedLanguageTranslationLanguageId = selectedLanguage.id;
 			$scope.selectedLanguageTranslationId = $scope.selectedLanguageTranslations.id;
 			$scope.translated_amount_types = $scope.selectedLanguageTranslations.amount_types;
 			$scope.translated_post_types = $scope.selectedLanguageTranslations.post_types;
