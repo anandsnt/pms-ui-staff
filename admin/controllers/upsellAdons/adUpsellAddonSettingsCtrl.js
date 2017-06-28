@@ -31,6 +31,7 @@ admin.controller('adUpsellAddonSettingsCtrl', function($scope, ADUpsellAddonSrv,
 
 	var returnDataForSaving = function() {
 		var data = angular.copy($scope.data);
+
 		delete data.translations;
 		delete data.post_types;
 		delete data.amount_types;
@@ -96,11 +97,10 @@ admin.controller('adUpsellAddonSettingsCtrl', function($scope, ADUpsellAddonSrv,
 		// store refernce of the image
 		addonDefaultImage = angular.copy(upsellData.addon_default_image);
 
-
-
 		var selectedLanguage = _.find(availableLanguages.locales, function(language) {
 			return language.value === 'en';
 		});
+		
 		$scope.selectedLanguageTranslations = _.find(upsellData.translations, function(translation) {
 			return translation.language_id === selectedLanguage.id;
 		});
