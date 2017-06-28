@@ -32,12 +32,6 @@
                     <th translate>AMOUNT_TYPE</th>
                     <th class="label-heading" translate>LABEL</th>
                 </tr>
-               <!--  <tr ng-repeat="amountType in data.amount_types" ng-show="selectedLanguage.code === 'en'">
-                    <td ng-bind="amountType.description"></td>
-                    <td>
-                        <ad-textbox value="amountType.label" label="" styleclass="full-width" placeholder=""></ad-textbox>
-                    </td>
-                </tr> -->
                 <tr ng-repeat="amountType in translated_amount_types">
                     <td ng-bind="amountType.description"></td>
                     <td>
@@ -50,12 +44,6 @@
                     <th translate>POST_TYPE</th>
                     <th class="label-heading" translate>LABEL</th>
                 </tr>
-              <!--   <tr ng-repeat="postType in data.post_types" ng-show="selectedLanguage.code === 'en'">
-                    <td ng-bind="postType.description"></td>
-                    <td>
-                        <ad-textbox value="postType.label" label="" styleclass="full-width" placeholder=""></ad-textbox>
-                    </td>
-                </tr> -->
                 <tr ng-repeat="postType in translated_post_types">
                     <td ng-bind="postType.description"></td>
                     <td>
