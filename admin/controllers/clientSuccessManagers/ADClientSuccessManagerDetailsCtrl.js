@@ -18,7 +18,7 @@ function($scope, ADClientSuccessManagerSrv,
 
             if ($scope.isEdit) {
                 requestData.id = $scope.id;
-                $scope.invokeApi(ADClientSuccessManagerSrv.updateClientSuccessManager, $scope.data, postSuccess);
+                $scope.invokeApi(ADClientSuccessManagerSrv.updateClientSuccessManager, requestData, postSuccess);
             }
             else {
                 $scope.invokeApi(ADClientSuccessManagerSrv.addClientSuccessManager, requestData, postSuccess);
