@@ -103,7 +103,7 @@ module.exports = function(gulp, $, options) {
 	gulp.task('zeststation-copy-css-files-prod', function(){
 		var guestwebSourceList = [];
 
-		guestwebSourceList = guestwebSourceList.concat(['zest_station/css/**/*.svg', 'zest_station/css/**/*.cur', 'zest_station/css/**/*.png'])
+		guestwebSourceList = guestwebSourceList.concat(['zest_station/css/**/*.svg', 'zest_station/css/**/*.cur', 'zest_station/css/**/*.png', 'zest_station/css/**/*.jpg'])
 		return gulp.src(guestwebSourceList, {base: '.'})
 			.pipe(gulp.dest(DEST_ROOT_PATH, { overwrite: true }));
 	});
@@ -148,7 +148,7 @@ module.exports = function(gulp, $, options) {
 		Object.keys(ZESTSTAION_THEME_CSS_LIST).map(function(theme, index){
 			guestwebSourceList 	= guestwebSourceList.concat(ZESTSTAION_THEME_CSS_LIST[theme]);			
 		});
-		guestwebSourceList = guestwebSourceList.concat(['zest_station/css/**/*.svg', 'zest_station/css/**/*.cur', 'zest_station/css/**/*.png']);
+		guestwebSourceList = guestwebSourceList.concat(['zest_station/css/**/*.svg', 'zest_station/css/**/*.cur', 'zest_station/css/**/*.png', 'zest_station/css/**/*.jpg']);
 		return gulp.src(guestwebSourceList, {base: '.'})
 			.pipe(gulp.dest(DEST_ROOT_PATH, { overwrite: true }));
 	});
