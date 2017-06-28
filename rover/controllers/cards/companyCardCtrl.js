@@ -178,7 +178,7 @@ angular.module('sntRover').controller('RVCompanyCardCtrl', ['$scope', '$rootScop
 			$scope.$emit('hideLoader');
 		});
 
-		$scope.shouldShowGlobalButtonToggle = function() { console.log("reached here 1213")
+		$scope.shouldShowGlobalButtonToggle = function() {
 			return showGlobalToggleButton = ($rootScope.isAnMPHotel && rvPermissionSrv.getPermissionValue ('GLOBAL_CARD_UPDATE'));
 		};
 
@@ -188,7 +188,7 @@ angular.module('sntRover').controller('RVCompanyCardCtrl', ['$scope', '$rootScop
 			}
 
 		};
-		$scope.isUpdateEnabled = function() { console.log("::::::::::::")
+		$scope.isUpdateEnabled = function() {
 			var isDisabledFields = false;
 			if (!rvPermissionSrv.getPermissionValue ('GLOBAL_CARD_UPDATE')) {
 				isDisabledFields = true;

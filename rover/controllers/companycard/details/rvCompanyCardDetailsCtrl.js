@@ -249,13 +249,22 @@ angular.module('sntRover').controller('companyCardDetailsController', ['$scope',
 
 		};
 		$scope.shouldShowCommissionsTab = function() {
-			//if ($scope.isCommissionTabAvailable && $scope.account_type == 'TRAVELAGENT' && !isEmptyObject($scope.contactInformation.commission_details))
-			if ($scope.isCommissionTabAvailable && $scope.account_type == 'TRAVELAGENT' && !isEmptyObject($scope.contactInformation.commission_details)) {
-
-			}
-
+			return ($scope.account_type == 'TRAVELAGENT' && rvPermissionSrv.getPermissionValue ('GLOBAL_CARD_UPDATE') && $scope.contactInformation.is_global_enabled);
 		};
 		$scope.isUpdateEnabled = function() {
+			var isDisabledFields = false;
+			if (!rvPermissionSrv.getPermissionValue ('GLOBAL_CARD_UPDATE')) {
+				isDisabledFields = true;
+			}
+			return isDisabledFields;
+		};
+		/*
+		 * Added the same method in travel agent ctrl
+		 * We are using the partials for TA and CC, when navigating thru staycard or thru revenue management
+		 * When we go to travel agent from staycard, controller is travelagentctrl
+		 * When we go to travel agent from revenue management, controller is this
+		 */
+		$scope.isUpdateEnabledForTravelAgent = function() {
 			var isDisabledFields = false;
 			if (!rvPermissionSrv.getPermissionValue ('GLOBAL_CARD_UPDATE')) {
 				isDisabledFields = true;
