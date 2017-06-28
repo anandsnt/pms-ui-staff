@@ -212,6 +212,8 @@ sntZestStation.controller('zsCheckinScanPassportCtrl', [
 
 
         $scope.selectGuest = function(guestInfo) {
+            $scope.scanningBackImage = false;
+            $scope.scannedBackImage = false;
             degrees = 0;
             $scope.selectedPassport = true;
             $scope.selectedPassportInfo = guestInfo;
@@ -280,7 +282,7 @@ sntZestStation.controller('zsCheckinScanPassportCtrl', [
 
             // debugging
             if ($scope.inDemoMode()) {
-                $scope.$emit('PASSPORT_SCAN_SUCCESS');
+                $scope.$emit('PASSPORT_SCAN_SUCCESS', {'PR_DFE_FRONT_IMAGE':''});
             }
             
         };
@@ -650,6 +652,10 @@ sntZestStation.controller('zsCheckinScanPassportCtrl', [
         // then return failed scan instead of success
 
         var returnedAllRequiredFields = function(response) {
+            // TODO: Verify minimum Required fields for passport to be 'programatically acceptable'
+            //       ---> A staff member will validate all info and fields, and will be able to override-accept any passport
+            //       CICO-41398
+
             if ($scope.inDemoMode()) {
                 return true;
             }
@@ -663,9 +669,9 @@ sntZestStation.controller('zsCheckinScanPassportCtrl', [
                     !response.PR_DF_ISSUE_COUNTRY ||
                     !response.PR_DF_NAME ||
                     !response.PR_DF_NATIONALITY ||
-                    !response.PR_DF_SEX ||
-                    !response.PR_DF_SURNAME ||
-                    !response.PR_DF_TYPE // TYPE = P (passport)
+                //  !response.PR_DF_SEX ||
+                //  !response.PR_DF_SURNAME ||
+                    !response.PR_DF_TYPE // TYPE = PP (passport)
                     ) {
               return false;
             } else {
@@ -677,7 +683,7 @@ sntZestStation.controller('zsCheckinScanPassportCtrl', [
             console.log('PASSPORT_SCAN_SUCCESS: ',response);
             console.log('returnedAllRequiredFields(response): ',returnedAllRequiredFields(response));
 
-            if (returnedAllRequiredFields(response)) {
+            if (returnedAllRequiredFields(response) && !$scope.scanningBackImage) {
                 
 
                 // set local params, to map to different documents/versions of samsotech devices
@@ -704,14 +710,17 @@ sntZestStation.controller('zsCheckinScanPassportCtrl', [
                     };
                 }
                
-                console.info(mappedResponse);
                 onPassportScanSuccess(mappedResponse);
 
-            } else if ($scope.scanningBackImage) {
+            } else if ($scope.scanningBackImage && (response.PR_DFE_FRONT_IMAGE || $scope.inDemoMode())) {
+                // if scanning the back of a document, the only requirement is that an image is returned
+                // the only failure would be if this ('PR_DFE_FRONT_IMAGE') was not returned from samsotech
+                // CICO-41398
+
                 $scope.scanningBackImage = false;
                 $scope.scannedBackImage = true;
                     var mappedResponse = {
-                        'FRONT_IMAGE': response.PR_DFE_FRONT_IMAGE
+                        'FRONT_IMAGE': response.PR_DFE_FRONT_IMAGE ? response.PR_DFE_FRONT_IMAGE : ''
                     }
 
                 onPassportScanSuccess(mappedResponse);
