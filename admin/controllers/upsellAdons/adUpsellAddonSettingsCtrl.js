@@ -13,6 +13,8 @@ admin.controller('adUpsellAddonSettingsCtrl', function($scope, ADUpsellAddonSrv,
     	$scope.selectedLanguageTranslations = _.find(upsellData.translations, function(translation) {
 			return translation.language_id === selectedLanguage.id;
 		});
+		selectedLanguageTranslationLanguageId = selectedLanguage.id;
+
     	// check if translations were already added.
 			if (!_.isUndefined($scope.selectedLanguageTranslations)) {
 				$scope.selectedLanguageTranslationId = $scope.selectedLanguageTranslations.id;
@@ -62,6 +64,8 @@ admin.controller('adUpsellAddonSettingsCtrl', function($scope, ADUpsellAddonSrv,
 		// } else {
 			data = angular.copy($scope.data);
 			delete data.translations;
+			delete data.amount_types;
+			delete data.post_types;
 			data.translation = [{
 				language_id: selectedLanguageTranslationLanguageId,
 				amount_types: $scope.translated_amount_types,
