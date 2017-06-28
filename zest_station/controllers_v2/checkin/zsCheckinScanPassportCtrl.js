@@ -14,6 +14,7 @@ sntZestStation.controller('zsCheckinScanPassportCtrl', [
     function($scope, $stateParams, $state, zsEventConstants, 
         $controller, $timeout, zsCheckinSrv, zsModeConstants, zsGeneralSrv, zsUtilitySrv, $filter, $log) {
 
+        BaseCtrl.call(this, $scope);
         /** ********************************************************************************************
          **      Please note that, not all the stateparams passed to this state will not be used in this state, 
          **      however we will have to pass this so as to pass again to future states which will use these.
@@ -337,6 +338,9 @@ sntZestStation.controller('zsCheckinScanPassportCtrl', [
                         // simulate Verification screen
                         $scope.allPassportReady = true;
                     }
+                    // Turn Light OFF after admin login is successful
+                    // 
+                    $scope.turnOffLight();
                 } else {
                     $scope.adminLoginError = true;
                     $log.warn('invalid admin login');
@@ -383,11 +387,10 @@ sntZestStation.controller('zsCheckinScanPassportCtrl', [
 
             if ($scope.mode === 'SCAN_RESULTS') {
                 $scope.mode = 'WAIT_FOR_STAFF';
+                $scope.turnOnLight();
 
             } else if ($scope.mode === 'ADMIN_VERIFY_PASSPORTS') {
 
-                // TODO: Turn Light OFF + redirect to next screen in flow
-                // 
                 if (passportRejected()) {
                     $scope.allPassportReady = false;
 

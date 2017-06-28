@@ -10,7 +10,7 @@ sntZestStation.controller('zsRootCtrl', [
     'zsEventConstants',
     '$state', 'zsGeneralSrv', '$rootScope', 'ngDialog', '$sce',
     'zsUtilitySrv', '$translate', 'zsHotelDetailsSrv', 'cssMappings', 
-    'zestStationSettings', '$timeout', 'zsModeConstants', 'hotelTimeData', 'hotelLanguages', '$filter', '$log',
+    'zestStationSettings', '$timeout', 'zsModeConstants', 'hotelTimeData', 'hotelLanguages', '$filter', '$log', '$window',
     function($scope,
 		zsEventConstants,
 		$state,
@@ -28,7 +28,9 @@ sntZestStation.controller('zsRootCtrl', [
 		hotelTimeData,
         hotelLanguages,
 		$filter,
-        $log) {
+        $log,
+        $window
+        ) {
 
 
         // in order to prevent url change or fresh url entering with states
@@ -1114,6 +1116,7 @@ sntZestStation.controller('zsRootCtrl', [
             $log.info(toParams);
             $log.info('---');
             if (to.name === 'zest_station.home' || to.name === 'zest_station.outOfService') {
+                $scope.turnOffLight();
                 if ($scope.trackEvent) {
                     $scope.trackEvent('health_check', 'status_update', from.name, to.name);
                 }
@@ -1261,6 +1264,13 @@ sntZestStation.controller('zsRootCtrl', [
             $scope.runDigestCycle();
             
             $scope.$broadcast('SOCKET_CONNECTED');
+            if ($state.current.name === 'zest_station.home' || $state.current.name === 'zest_station.outOfService') {
+                $timeout(function() {
+                    $scope.turnOffLight();// turn off the light if it was previous turned ON..ie. device restarts after the light was turned on
+                }, 500);
+                
+
+            }
         };
 
         $scope.connectToWebSocket = function() {
@@ -1693,6 +1703,42 @@ sntZestStation.controller('zsRootCtrl', [
             el.addEventListener('touchmove', optimizeTouch, false);
         };
 
+        $scope.selectedWorkstationLightId = '';
+        
+        $scope.turnOnLight = function(selected_light_id) {
+            if ($scope.zestStationData.kiosk_is_hue_active) {
+                var lightId = selected_light_id ? selected_light_id : $scope.zestStationData.selected_light_id;
+
+                var json = {
+                    "Command": "cmd_hue_light_change",
+                    "Data": $scope.zestStationData.hue_bridge_ip,
+                    "hueLightAppkey": $scope.zestStationData.hue_user_name,
+                    "shouldLight": "1",
+                    "lightColor": $scope.zestStationData.hue_light_color_hex,
+                    "lightList": [lightId]
+                };
+                var jsonstring = JSON.stringify(json);
+
+                $scope.socketOperator.toggleLight(jsonstring);
+            }
+        };
+
+        $scope.turnOffLight = function(selected_light_id) {
+            if ($scope.zestStationData.kiosk_is_hue_active) {
+                var lightId = selected_light_id ? selected_light_id : $scope.zestStationData.selected_light_id;
+                var json = {
+                    "Command": "cmd_hue_light_change",
+                    "Data": $scope.zestStationData.hue_bridge_ip,
+                    "hueLightAppkey": $scope.zestStationData.hue_user_name,
+                    "shouldLight": "0",
+                    "lightList": [lightId]
+                };
+                var jsonstring = JSON.stringify(json);
+
+                $scope.socketOperator.toggleLight(jsonstring);
+            }
+        };
+
 		/** *
 		 * [initializeMe description]
 		 * @return {[type]} [description]
@@ -1772,5 +1818,15 @@ sntZestStation.controller('zsRootCtrl', [
             $scope.zestStationData.makeTotalKeys = 0;
             $scope.zestStationData.makingAdditionalKey = false;
         }());
+
+        $scope.onExitApplication = function() {
+            // In the event the application is exited (browser exit or other app close request)
+            // 
+            // 1: turn off hue lights of they were ON
+            $scope.turnOffLight();
+            
+        };
+
+        $window.onbeforeunload =  $scope.onExitApplication;
     }
 ]);
