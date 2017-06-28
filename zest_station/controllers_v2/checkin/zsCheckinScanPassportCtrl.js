@@ -285,21 +285,18 @@ sntZestStation.controller('zsCheckinScanPassportCtrl', [
             
         };
 
-        $scope.scanBack = function() {
-            $scope.scanningBackImage = true;
-
-            $scope.mode = 'SCANNING_IN_PROGRESS';
+        $scope.scanBack = function(skip) {
             $scope.resetTime();
-
-            samsoTechScanPassport();
-
             // debugging
-            if ($scope.inDemoMode()) {
-                $scope.$emit('PASSPORT_SCAN_SUCCESS');
-            }
-            
-        };
+            if ($scope.inDemoMode() || skip) {
+                $scope.scanningBackImage = true;
+                $scope.$emit('PASSPORT_SCAN_SUCCESS', {'PR_DFE_FRONT_IMAGE':''});
+            } else {
 
+                $scope.mode = 'SCANNING_IN_PROGRESS';
+                samsoTechScanPassport();
+            }
+        };
         
 
         $scope.viewResults = function() {

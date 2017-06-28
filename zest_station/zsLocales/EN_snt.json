@@ -540,7 +540,7 @@
    "GID_SCAN_PASSPORT_TRY_AGAIN":"Try Again",
    "GID_SCAN_SUB_HEADER": "Place your passport on the scanner and select 'Scan'",
    "GID_SCAN_BUTTON": "Scan",
-
+   "GID_SKIP_SCAN_BUTTON": "Skip",
 
    "GID_SCAN_BACK_HEADER": "Scan ID Back",
    "GID_SCAN_BACK_SUB_HEADER": "Please turn the ID over and scan the other side",
