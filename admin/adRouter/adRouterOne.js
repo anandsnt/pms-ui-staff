@@ -194,6 +194,4 @@ angular.module('adminModuleOne', []).config(function($stateProvider, $urlRouterP
             url: '/clientSuccessManager/:action/:id'
         });
 
-
-
 });

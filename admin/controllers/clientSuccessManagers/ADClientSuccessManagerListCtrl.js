@@ -44,7 +44,7 @@ admin.controller('ADClientSuccessManagerListCtrl', [
     // Delete a client succes manager with given id
     $scope.deleteClientSuccessManager = function(id) {
 
-        var onDeleteSuccess = function(data) {
+        var onDeleteSuccess = function() {
             fetchClientSuccessManagerList();
         };
 

@@ -37,7 +37,7 @@ function($scope, ADClientSuccessManagerSrv,
         $scope.id = $stateParams.id;
         $scope.errorMessage = '';
         $scope.isEdit = false;
-        $scope.title = "Add new Client Success Manager"
+        $scope.title = "Add new Client Success Manager";
 
         if (!!$scope.id) {
             $scope.isEdit = true;
