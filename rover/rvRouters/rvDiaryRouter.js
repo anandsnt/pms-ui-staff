@@ -62,7 +62,7 @@ angular
                         params.start_date = $stateParams.start_date;
                     }
                     else {
-                        params.start_date = moment($rootScope.businessDate).subtract(1, 'days')
+                        params.start_date = moment(tzIndependentDate($rootScope.businessDate)).subtract(1, 'days')
                             .format($rootScope.momentFormatForAPI);
                     }
                     params.no_of_days = 7;
@@ -76,7 +76,7 @@ angular
                     params = RVNightlyDiarySrv.getCache();
                 }
                 else {
-                    params.start_date = $stateParams.start_date || moment($rootScope.businessDate).subtract(1, 'days')
+                    params.start_date = $stateParams.start_date || moment(tzIndependentDate($rootScope.businessDate)).subtract(1, 'days')
                         .format($rootScope.momentFormatForAPI);
                     params.no_of_days = 7;
                     params.page = 1;
