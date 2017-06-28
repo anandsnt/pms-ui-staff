@@ -35,6 +35,8 @@
 									</div>
 								</div>
 							</td>
+							<td data-title="'Hotel Status'" sortable="'status'" header-class="width-20" ng-bind-html="escapeNull(hotel.status)| highlightWords:searchWords" ng-show="!isAdminSnt"></td>
+							<td data-title="'Client Success Manager'" sortable="'client_success_manager'" header-class="width-20" ng-bind-html="escapeNull(hotel.client_success_manager)| highlightWords:searchWords" ng-show="!isAdminSnt"></td>
 						</tr>
 					</tbody>
 				</table>
