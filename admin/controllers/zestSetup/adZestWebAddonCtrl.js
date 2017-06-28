@@ -62,7 +62,7 @@ admin.controller('ADZestWebAddonCtrl', ['$scope', 'ADZestWebAddonSrv', 'ngTableP
 					"for_zest_web": true
 				},
 				successCallBack: function() {
-					$scope.successMessage = "save success!";
+					$scope.successMessage = "Your setting has been successfully saved.";
 					$scope.reloadTable();
 				}
 			};

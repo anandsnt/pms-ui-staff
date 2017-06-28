@@ -472,21 +472,6 @@ function getWeekDayName(dayIndexInWeek, minLetterCount){
     return n.substr(0, minLetterCount);
 }
 
-function addDaysToDay(date, days) {
-    var dateToTime = tzIndependentDate(date).getTime(),
-        oneDay = 24 * 60 * 60 * 1000,
-        dateToTimeWithDays = dateToTime + (oneDay * days),
-        dateToTimeWithDaysObj = new Date(dateToTimeWithDays),
-        dateToTimeDate = dateToTimeWithDaysObj.getDate(),
-        dateToTimeMonth = dateToTimeWithDaysObj.getMonth() + 1, //Months are zero based
-        dateToTimeYear = dateToTimeWithDaysObj.getFullYear(),
-        dateToTimeWithDaysModified = dateToTimeYear + "-" + dateToTimeMonth + "-" + dateToTimeDate;
-
-    return dateToTimeWithDaysModified;
-}
-
-
-
 function getTextWidth(text){
         // create a dummy span, we'll use this to measure text.
         var tester = $('<span>'),
