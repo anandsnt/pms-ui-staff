@@ -6,8 +6,28 @@ admin.controller('adUpsellAddonSettingsCtrl', function($scope, ADUpsellAddonSrv,
 		blankPostTypes = [],
 		selectedLanguageTranslationLanguageId = '';
 
+    (function(){
+    	var selectedLanguage = _.find(availableLanguages.languages, function(language) {
+				return language.code === 'en';
+		});
+    	$scope.selectedLanguageTranslations = _.find(upsellData.translations, function(translation) {
+			return translation.language_id === selectedLanguage.id;
+		});
+    	// check if translations were already added.
+			if (!_.isUndefined($scope.selectedLanguageTranslations)) {
+				$scope.selectedLanguageTranslationId = $scope.selectedLanguageTranslations.id;
+				$scope.translated_amount_types = $scope.selectedLanguageTranslations.amount_types;
+				$scope.translated_post_types = $scope.selectedLanguageTranslations.post_types;
+			} else {
+				// if no previously added translations, set as blank data initialy
+				$scope.translated_amount_types = angular.copy(blankAmountTypes);
+				$scope.translated_post_types = angular.copy(blankPostTypes);
+			}
+    })();
+   
+
 	$scope.onLanguageChange = function() {
-		if ($scope.selectedLanguage.code !== 'en') {
+		// if ($scope.selectedLanguage.code !== 'en') {
 			// if language is not english
 			var selectedLanguage = _.find($scope.availableLanguagesSet.locales, function(language) {
 				return language.value === $scope.selectedLanguage.code;
@@ -27,9 +47,9 @@ admin.controller('adUpsellAddonSettingsCtrl', function($scope, ADUpsellAddonSrv,
 				$scope.translated_amount_types = angular.copy(blankAmountTypes);
 				$scope.translated_post_types = angular.copy(blankPostTypes);
 			}
-		} else {
-			return;
-		}
+		// } else {
+		// 	return;
+		// }
 	};
 
 
