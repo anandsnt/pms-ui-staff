@@ -289,10 +289,10 @@ sntZestStation.controller('zsCheckinScanPassportCtrl', [
 
         $scope.scanBack = function(skip) {
             $scope.resetTime();
+             $scope.scanningBackImage = true;
             // debugging
             if ($scope.inDemoMode() || skip) {
-                $scope.scanningBackImage = true;
-                $scope.$emit('PASSPORT_SCAN_SUCCESS', {'PR_DFE_FRONT_IMAGE':''});
+                $scope.$emit('PASSPORT_SCAN_SUCCESS', {'skipScan':true});
             } else {
 
                 $scope.mode = 'SCANNING_IN_PROGRESS';
@@ -681,7 +681,7 @@ sntZestStation.controller('zsCheckinScanPassportCtrl', [
 
         $scope.$on('PASSPORT_SCAN_SUCCESS', function(evt, response) {
             console.log('PASSPORT_SCAN_SUCCESS: ',response);
-            console.log('returnedAllRequiredFields(response): ',returnedAllRequiredFields(response));
+            console.log('returnedAllRequiredFields(response): ',returnedAllRequiredFields(response), ': $scope.scanningBackImage: ',$scope.scanningBackImage);
 
             if (returnedAllRequiredFields(response) && !$scope.scanningBackImage) {
                 
@@ -712,7 +712,7 @@ sntZestStation.controller('zsCheckinScanPassportCtrl', [
                
                 onPassportScanSuccess(mappedResponse);
 
-            } else if ($scope.scanningBackImage && (response.PR_DFE_FRONT_IMAGE || $scope.inDemoMode())) {
+            } else if ($scope.scanningBackImage && (response.PR_DFE_FRONT_IMAGE || $scope.inDemoMode() || response.skipScan)) {
                 // if scanning the back of a document, the only requirement is that an image is returned
                 // the only failure would be if this ('PR_DFE_FRONT_IMAGE') was not returned from samsotech
                 // CICO-41398
