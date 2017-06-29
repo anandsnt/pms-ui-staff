@@ -1516,9 +1516,9 @@ sntRover.controller('reservationDetailsController',
 
      	var successCallBack = function(responseData) {
      		$scope.$emit('hideLoader');
-     		console.info('got data back: ',responseData);
 
      		var findFirstName, findLastName;
+
      		if (isPrimaryGuest) {// primary guest
      			findFirstName = $scope.data.guest_details.first_name;
      			findLastName = $scope.data.guest_details.last_name;
@@ -1528,7 +1528,6 @@ sntRover.controller('reservationDetailsController',
      		}
 
      		var guest = getUserPassportInfo(responseData, findLastName, findFirstName);
-     		console.log('guest: ',guest);
 
 	     	$scope.guestIdData = guestData;
 	     	$scope.guestIdData.isPrimaryGuest = isPrimaryGuest;
@@ -1540,14 +1539,13 @@ sntRover.controller('reservationDetailsController',
 
 	     	$scope.guestIdData.idType = guest.identityType;
 	     	$scope.guestIdData.dob = guest.dob;
-	     	//$scope.guestIdData.scanDate = '14-02-2017 11:32 AM';
+
 	     	$scope.guestIdData.twoSidedDoc = guest.front_image_data && guest.back_image_data;
 	     	$scope.guestIdData.nationality = guest.nationality;
 
 	     	$scope.guestIdData.docID = guest.document_number;
 	     	$scope.guestIdData.docExpiry = guest.document_expiry;
 	     	$scope.guestIdData.showingIdFront = true;
-	     	//$scope.guestIdData.hasScannedDoc = true;
 	 		$scope.guestIdData.imgFrontSrc = guest.front_image_data;
 	 		$scope.guestIdData.imgBackSrc = guest.back_image_data;
 	 		// END SETTING DATA FROM GUEST ID
@@ -1562,11 +1560,13 @@ sntRover.controller('reservationDetailsController',
      	var failureCallBack = function() {
  			$scope.$emit('hideLoader');
      	}
+
 		var data = {
 			"reservation_id": $scope.reservationData.reservation_card.reservation_id,
-			"id": !guestData.id ? $scope.data.guest_details.user_id : guestData.id,
+			"id": !guestData.id ? $scope.data.guest_details.user_id : guestData.id
 		};
-		console.log('fetch request: ',data);
+
+		console.log('fetch request: ', data);
 		$scope.invokeApi(RVReservationCardSrv.fetchGuestIdentity, data, successCallBack, failureCallBack);
 
 
