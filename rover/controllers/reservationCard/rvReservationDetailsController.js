@@ -56,6 +56,7 @@ sntRover.controller('reservationDetailsController',
 
 		$scope.guestIdAdminEnabled = $rootScope.hotelDetails.guest_id_scan.scan_guest_id_active;
    		$scope.hasGuestIDPermission = rvPermissionSrv.getPermissionValue('ACCESS_GUEST_ID_DETAILS');
+   		$scope.guestIDsAvailable = [];
 		
 		if (!$rootScope.stayCardStateBookMark) {
 			setNavigationBookMark();
@@ -214,6 +215,46 @@ sntRover.controller('reservationDetailsController',
 				$('#ui-datepicker-overlay').off('click').remove();
 			}
 		};
+		$scope.fetchedGuestIDs = false;
+		var fetchGuestIDs = function() {
+			var successCallBack = function(response) {
+				$scope.guestIdReponseData = response;
+     			$scope.$emit('hideLoader');
+
+     			console.warn($scope);
+
+				$scope.fetchedGuestIDs = true;
+				var guestOnReservation, 
+					guestIdResponse, 
+					reservation_card = $scope.reservationData.reservation_card;
+					console.log(reservation_card);
+
+				for (var i in response) {
+					guestOnReservation = response[i];
+					if (guestOnReservation.guest_id !== null && !$scope.guestIDsAvailable[guestOnReservation.guest_id]) {
+						$scope.guestIDsAvailable.push(guestOnReservation.guest_id);	
+					}
+				}
+				console.log('$scope.guestIDsAvailable: ',$scope.guestIDsAvailable);
+			};
+
+			var failureCallBack = function() {
+     			$scope.$emit('hideLoader');
+				console.warn('unable to fetch guest ids: ',arguments);
+			};
+
+			var data = {
+				"reservation_id": $scope.reservationData.reservation_card.reservation_id
+			};
+			if (!$scope.fetchedGuestIDs){
+				// do not make more than 1 request per 'fresh' staycard, to keep UI performance quick
+				console.log('fetch request: ', data);
+				$scope.invokeApi(RVReservationCardSrv.fetchGuestIdentity, data, successCallBack, failureCallBack);	
+			}
+
+		}
+
+
 		// CICO-16013, moved from rvReservationGuestCtrl.js to de-duplicate api calls
 
 		$scope.activeWakeUp = false;
@@ -326,13 +367,18 @@ sntRover.controller('reservationDetailsController',
 			$scope.shouldShowGuestDetails = !$scope.shouldShowGuestDetails;
 			if ($scope.shouldShowGuestDetails) {
 				$scope.shouldShowTimeDetails = false;
+				fetchGuestIDs();
 			}
 
 			// CICO-12454: Upon close the guest tab - save api call for guest details for standalone
 			if (!$scope.shouldShowGuestDetails && $scope.isStandAlone) {
 				$scope.$broadcast("UPDATEGUESTDEATAILS", {"isBackToStayCard": true});
 			}
+
+
+
 		};
+
 		$scope.saveAccGuestDetails = function() {
 			setTimeout(function() {
 
@@ -1488,10 +1534,19 @@ sntRover.controller('reservationDetailsController',
        $scope.showChangeDatesPopup = !$scope.showChangeDatesPopup;
      }
 
-     $scope.hideGuestId = function(guest) {
+     $scope.hideGuestId = function(guest, isPrimary) {
+     	if (isPrimary) {
+     		var guest = {
+     			'id': $scope.reservationParentData.guest.id
+     		}
+     	}
      	// TODO: 
      	// has_guest_id_scanned should be (!guest.has_guest_id_scanned) once API is updated to support checking per guest/reservation
-     	return (guest.has_guest_id_scanned || !$scope.guestIdAdminEnabled || !guest.first_name);
+     	var has_guest_id_scanned = false;
+ 		if ($scope.guestIDsAvailable.indexOf(guest.id) !== -1) {
+ 			has_guest_id_scanned = true;
+ 		}
+     	return (!has_guest_id_scanned || !$scope.guestIdAdminEnabled);
      }
      /*
       * show the guest id / passport when clicked "guest id" button from manage additional guests view
@@ -1514,60 +1569,45 @@ sntRover.controller('reservationDetailsController',
      	// TODO: link with proper HTML once complete from design team
      	//       fetch guest id data with front+back images from API using (guest id / reservation id for primary guest?)
 
-     	var successCallBack = function(responseData) {
-     		$scope.$emit('hideLoader');
+ 		$scope.$emit('hideLoader');
+ 		var responseData = $scope.guestIdReponseData,
+ 		 	findFirstName, findLastName;
 
-     		var findFirstName, findLastName;
+ 		if (isPrimaryGuest) {// primary guest
+ 			findFirstName = $scope.data.guest_details.first_name;
+ 			findLastName = $scope.data.guest_details.last_name;
+ 		} else {
+ 			findFirstName = guestData.first_name;
+ 			findLastName = guestData.last_name;
+ 		}
 
-     		if (isPrimaryGuest) {// primary guest
-     			findFirstName = $scope.data.guest_details.first_name;
-     			findLastName = $scope.data.guest_details.last_name;
-     		} else {
-     			findFirstName = guestData.first_name;
-     			findLastName = guestData.last_name;
-     		}
+ 		var guest = getUserPassportInfo(responseData, findLastName, findFirstName);
 
-     		var guest = getUserPassportInfo(responseData, findLastName, findFirstName);
+     	$scope.guestIdData = guestData;
+     	$scope.guestIdData.isPrimaryGuest = isPrimaryGuest;
 
-	     	$scope.guestIdData = guestData;
-	     	$scope.guestIdData.isPrimaryGuest = isPrimaryGuest;
+     	// Set data FROM GuestID (ie. passport)
+     	$scope.guestIdData.first_name = guest.first_name;
+     	$scope.guestIdData.last_name = guest.last_name;
 
+     	$scope.guestIdData.idType = guest.identityType;
+     	$scope.guestIdData.dob = guest.dob;
 
-	     	// Set data FROM GuestID (ie. passport)
-	     	$scope.guestIdData.first_name = guest.first_name;
-	     	$scope.guestIdData.last_name = guest.last_name;
+     	$scope.guestIdData.twoSidedDoc = guest.front_image_data && guest.back_image_data;
+     	$scope.guestIdData.nationality = guest.nationality;
 
-	     	$scope.guestIdData.idType = guest.identityType;
-	     	$scope.guestIdData.dob = guest.dob;
+     	$scope.guestIdData.docID = guest.document_number;
+     	$scope.guestIdData.docExpiry = guest.document_expiry;
+     	$scope.guestIdData.showingIdFront = true;
+ 		$scope.guestIdData.imgFrontSrc = guest.front_image_data;
+ 		$scope.guestIdData.imgBackSrc = guest.back_image_data;
+ 		// END SETTING DATA FROM GUEST ID
 
-	     	$scope.guestIdData.twoSidedDoc = guest.front_image_data && guest.back_image_data;
-	     	$scope.guestIdData.nationality = guest.nationality;
-
-	     	$scope.guestIdData.docID = guest.document_number;
-	     	$scope.guestIdData.docExpiry = guest.document_expiry;
-	     	$scope.guestIdData.showingIdFront = true;
-	 		$scope.guestIdData.imgFrontSrc = guest.front_image_data;
-	 		$scope.guestIdData.imgBackSrc = guest.back_image_data;
-	 		// END SETTING DATA FROM GUEST ID
-
-	     	ngDialog.open({
-				template: '/assets/partials/guestId/guestId.html',
-				className: 'guest-id-dialog',
-				scope: $scope
-			});
-
-     	}
-     	var failureCallBack = function() {
- 			$scope.$emit('hideLoader');
-     	}
-
-		var data = {
-			"reservation_id": $scope.reservationData.reservation_card.reservation_id,
-			"id": !guestData.id ? $scope.data.guest_details.user_id : guestData.id
-		};
-
-		console.log('fetch request: ', data);
-		$scope.invokeApi(RVReservationCardSrv.fetchGuestIdentity, data, successCallBack, failureCallBack);
+     	ngDialog.open({
+			template: '/assets/partials/guestId/guestId.html',
+			className: 'guest-id-dialog',
+			scope: $scope
+		});
 
      };
 
