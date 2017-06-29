@@ -98,6 +98,8 @@ sntRover.controller('roverController', [
     $rootScope.fullDateFullMonthYear = "dd MMMM yyyy";
     $rootScope.dayAndDateCS = "EEEE, MM-dd-yyyy"; // Wednesday, 06-04-2014
     $rootScope.dateFormatForAPI = "yyyy-MM-dd";
+        // https://momentjs.com/docs/#/displaying/format/
+    $rootScope.momentFormatForAPI = "YYYY-MM-DD";
     $rootScope.shortMonthAndDate = "MMM dd";
     $rootScope.monthAndDate = "MMMM dd";
     $rootScope.fullMonth = "MMMM";

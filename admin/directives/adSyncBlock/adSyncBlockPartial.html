@@ -8,6 +8,7 @@
 
         <ad-checkbox ng-if="config.historical_data_sync_items"
                      is-checked="syncHistoricalData"
+                     is-disabled="disableSyncHistoricalDataToggle"
                      change="onToggleHistoricalSync"
                      label="{{ 'SYNC_HISTORICAL_DATA' | translate}}"
                      div-class="full-width">
