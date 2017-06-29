@@ -350,7 +350,11 @@ sntZestStation.controller('zsRootCtrl', [
                 $scope.zestStationData.hotelDateFormat = data.date_format ? data.date_format.value : 'DD-MM-YYYY';
                 $rootScope.emvTimeout = $scope.zestStationData.hotelSettings.emv_timeout ? $scope.zestStationData.hotelSettings.emv_timeout : 60;
                 $scope.zestStationData.mliMerchantId = data.mli_merchant_id;
+                $scope.zestStationData.wsCCSwipeUrl = data.cc_swipe_listening_url;
+                $scope.zestStationData.wsCCSwipePort = data.cc_swipe_listening_port;
                 configureSwipeSettings();
+                // create a websocket obj
+                $scope.socketOperator = new webSocketOperations(socketOpenedSuccess, socketOpenedFailed, socketActions, $scope.zestStationData.wsCCSwipeUrl, $scope.zestStationData.wsCCSwipePort);
             };
             var onFailure = function() {
                 $log.log('unable to fetch hotel settings');
@@ -1290,7 +1294,7 @@ sntZestStation.controller('zsRootCtrl', [
 
             $timeout(function() {
                 // give some time for old socket to close, show activity of re-connecting and visible UI transition to 'connected' status
-                $scope.socketOperator = new webSocketOperations(socketOpenedSuccess, socketOpenedFailed, socketActions);
+                $scope.socketOperator = new webSocketOperations(socketOpenedSuccess, socketOpenedFailed, socketActions, $scope.zestStationData.wsCCSwipeUrl, $scope.zestStationData.wsCCSwipePort);
             }, 400);
         };
 
@@ -1771,8 +1775,7 @@ sntZestStation.controller('zsRootCtrl', [
             $scope.zestStationData.wsIsOos = false;
             $scope.showLanguagePopup = false;
             $scope.zestStationData.waitingForSwipe = false;
-			// create a websocket obj
-            $scope.socketOperator = new webSocketOperations(socketOpenedSuccess, socketOpenedFailed, socketActions);
+            // moved web socket creation code to fetchHotelSettings
             fetchHotelSettings();
             getKeyEncoderInfo();
             getAdminWorkStations();
