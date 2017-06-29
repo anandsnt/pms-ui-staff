@@ -2486,7 +2486,6 @@
 
                             .entry {
                                 padding: 0;
-                                .calc-width(33, 124);
                                 .box-shadow(none);
 
                                 label { margin: 0; }
@@ -2513,6 +2512,19 @@
                                             right: 11px;
                                         }
                                     }
+                                }
+
+                                &.commision-status {
+                                    width: 200px;
+                                }
+
+                                &.paid-status {
+                                    width: 140px;
+                                }
+
+                                &.property {
+                                    max-width: 260px;
+                                    .calc-width(100, 720);
                                 }
 
                                 &:not(:last-child) {
