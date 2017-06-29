@@ -229,9 +229,21 @@ sntZestStation.controller('zsCheckinAddonCtrl', [
 
 		var fetchHotelAddonLabels = function() {
 			var fetchAddonLabelSuccess = function(response) {
-				var amountTypesLabels = response.amount_types;
-				var postTypeLabels = response.post_types;
+				var amountTypesLabels;
+				var postTypeLabels;
 
+				var translatedLabels = _.find(response.translations, function(translation) {
+					return translation.language_id === $scope.languageId;
+				});
+				
+				// check if translations are added, else use english ones
+				if (_.isUndefined(translatedLabels)) {
+					amountTypesLabels = response.amount_types;
+					postTypeLabels = response.post_types;
+				} else {
+					amountTypesLabels = translatedLabels.amount_types;
+					postTypeLabels = translatedLabels.post_types;
+				}
 				// Loop through the addons list and assign the labels set in admin --> upsells --> adodn upsell
 				// amount type labels and post type labels are arrays
 
@@ -254,6 +266,7 @@ sntZestStation.controller('zsCheckinAddonCtrl', [
 					// if no custom label is present, set to post type
 					addon.post_type_label = (addon.post_type_label === '') ? addon.post_type : addon.post_type_label;
 				});
+
 				setPageNumberDetails();
 				$scope.loadingCompleted = true;
 				$scope.showPageNumberDetails = true;

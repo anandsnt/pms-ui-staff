@@ -44,7 +44,13 @@ admin.controller('adZestStationHueSettingsCtrl', ['$scope', '$rootScope', '$stat
 		 */
 		var handleWebSocketResponse = function(response) {
 			if (response.ResponseCode === 0 && response.Command === 'cmd_hue_light_locate_bridge_ips') {
-				$scope.availableBridges = response.bridgeIps;
+				$scope.availableBridges = response.bridgeIPs;
+				if ($scope.availableBridges.length === 0) {
+					setTimeout(function() {
+						$scope.errorMessage = ["No bridges found."];
+						scrollTop();
+					}, 200);
+				};
 				$log.info('bridges -->' + $scope.availableBridges);
 			} else if (response.Command === 'cmd_hue_light_register') {
 				if (response.ResponseCode === 0) {

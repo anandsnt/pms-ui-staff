@@ -13,4 +13,5 @@
     "TAX_ON_COMMISSIONS" : "Tax On Commissions",
     "TAX_TRANSACTION_CODE" : "Tax Transaction Code",
     "SELECT_PREPAID_COMMISSION_CHARGE_CODE": "Select Prepaid Commission Charge Code",
-    "SELECT_TAX_TRANSACTION_CODE" : "Select Tax Transaction Code"
+    "SELECT_TAX_TRANSACTION_CODE" : "Select Tax Transaction Code",
+    "SET_FOR_A_NEW_CARD" : "Set for new card"
