@@ -176,9 +176,11 @@ admin.controller('ADHotelDetailsCtrl', [
     *   A post method for Add New and UPDATE Existing hotel details.
     */
 	$scope.clickedSave = function() {
+		var unwantedKeys;
+		
 		// SNT Admin - To save Add/Edit data
 		if ($scope.isAdminSnt) {
-			var unwantedKeys = ["time_zones", "brands", "chains", "check_in_time", "check_out_time", "countries", "currency_list", "pms_types", "signature_display", "hotel_logo", "languages", "hotel_template_logo", "theme_list"];
+			unwantedKeys = ["time_zones", "brands", "chains", "check_in_time", "check_out_time", "countries", "currency_list", "pms_types", "signature_display", "hotel_logo", "languages", "hotel_template_logo", "theme_list"];
 			var data = dclone($scope.data, unwantedKeys);
 
 			if ($scope.mli.certificate != "") {
@@ -211,7 +213,6 @@ admin.controller('ADHotelDetailsCtrl', [
 		/** ********* Commented out to fix CICO-8508 ****************************/
 		// template logo was not updating when existing image was removed
 		/** ******************************************************************/
-			var unwantedKeys;
 
 			if ($scope.data.payment_gateway === "MLI") {
 				unwantedKeys = ["time_zones", "brands", "chains", "check_in_time", "check_out_time", "countries", "currency_list", "pms_types", "hotel_pms_type", "is_single_digit_search", "is_pms_tokenized", "signature_display", "hotel_list", "menus", "mli_hotel_code", "mli_chain_code", "mli_access_url", "languages", "date_formats", "six_merchant_id", "six_validation_code", "is_external_references_import_on", "external_references_import_freq", "is_hold_room_import_on", "hold_room_import_freq", "allow_desktop_swipe", "cc_swipe_listening_port", "theme_list", "cc_swipe_listening_url"];
