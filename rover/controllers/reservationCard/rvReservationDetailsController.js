@@ -221,11 +221,8 @@ sntRover.controller('reservationDetailsController',
 				$scope.guestIdReponseData = response;
      			$scope.$emit('hideLoader');
 
-     			console.warn($scope);
-
 				$scope.fetchedGuestIDs = true;
 				var guestOnReservation, 
-					guestIdResponse, 
 					reservation_card = $scope.reservationData.reservation_card;
 					console.log(reservation_card);
 
@@ -235,7 +232,6 @@ sntRover.controller('reservationDetailsController',
 						$scope.guestIDsAvailable.push(guestOnReservation.guest_id);	
 					}
 				}
-				console.log('$scope.guestIDsAvailable: ',$scope.guestIDsAvailable);
 			};
 
 			var failureCallBack = function() {
@@ -246,14 +242,12 @@ sntRover.controller('reservationDetailsController',
 			var data = {
 				"reservation_id": $scope.reservationData.reservation_card.reservation_id
 			};
-			if (!$scope.fetchedGuestIDs){
+
+			if (!$scope.fetchedGuestIDs) {
 				// do not make more than 1 request per 'fresh' staycard, to keep UI performance quick
-				console.log('fetch request: ', data);
 				$scope.invokeApi(RVReservationCardSrv.fetchGuestIdentity, data, successCallBack, failureCallBack);	
 			}
-
 		}
-
 
 		// CICO-16013, moved from rvReservationGuestCtrl.js to de-duplicate api calls
 
@@ -1536,13 +1530,12 @@ sntRover.controller('reservationDetailsController',
 
      $scope.hideGuestId = function(guest, isPrimary) {
      	if (isPrimary) {
-     		var guest = {
+     		guest = {
      			'id': $scope.reservationParentData.guest.id
      		}
      	}
-     	// TODO: 
-     	// has_guest_id_scanned should be (!guest.has_guest_id_scanned) once API is updated to support checking per guest/reservation
      	var has_guest_id_scanned = false;
+
  		if ($scope.guestIDsAvailable.indexOf(guest.id) !== -1) {
  			has_guest_id_scanned = true;
  		}
