@@ -232,23 +232,17 @@ sntZestStation.controller('zsCheckinAddonCtrl', [
 				var amountTypesLabels;
 				var postTypeLabels;
 
-				// check if selected language is english, if no use translations 
-				if ($translate.use() !== 'en') {
-					var translatedLabels = _.find(response.translations, function(translation) {
-						return translation.language_id === $scope.languageId;
-					});
-					
-					// check if translations are added, else use english ones
-					if (_.isUndefined(translatedLabels)) {
-						amountTypesLabels = response.amount_types;
-						postTypeLabels = response.post_types;
-					} else {
-						amountTypesLabels = translatedLabels.amount_types;
-						postTypeLabels = translatedLabels.post_types;
-					}
-				} else {
+				var translatedLabels = _.find(response.translations, function(translation) {
+					return translation.language_id === $scope.languageId;
+				});
+				
+				// check if translations are added, else use english ones
+				if (_.isUndefined(translatedLabels)) {
 					amountTypesLabels = response.amount_types;
 					postTypeLabels = response.post_types;
+				} else {
+					amountTypesLabels = translatedLabels.amount_types;
+					postTypeLabels = translatedLabels.post_types;
 				}
 				// Loop through the addons list and assign the labels set in admin --> upsells --> adodn upsell
 				// amount type labels and post type labels are arrays
