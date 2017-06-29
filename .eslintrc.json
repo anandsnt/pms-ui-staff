@@ -26,7 +26,8 @@
         "CardReaderCtrl": false,
         "sntCordovaInit": false,
         "CardOperation": false,
-        "jsHue": false
+        "jsHue": false,
+        "webSocketOperations": false
     },
     "installedESLint":true,
     "parserOptions":{

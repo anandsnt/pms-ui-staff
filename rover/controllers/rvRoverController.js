@@ -647,7 +647,7 @@ sntRover.controller('roverController', [
 
     var initiateDesktopCardReader = function() {
       sntapp.desktopCardReader.setDesktopUUIDServiceStatus(true);
-    	sntapp.desktopCardReader.startDesktopReader($rootScope.ccSwipeListeningPort, options, $rootScope.ccSwipeListeningUrl);
+      sntapp.desktopCardReader.startDesktopReader($rootScope.ccSwipeListeningPort, options, $rootScope.ccSwipeListeningUrl);
     };
         
       /**
