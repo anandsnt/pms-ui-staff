@@ -47,7 +47,7 @@ sntRover.controller('roverController', [
     // CICO-39623 : Setting up app theme.
     if ( !!hotelDetails.selected_theme && hotelDetails.selected_theme.value !== 'ORANGE' ) {
       var appTheme = 'theme-' + (hotelDetails.selected_theme.value).toLowerCase();
-      
+
       document.getElementsByTagName("html")[0].setAttribute( 'class', appTheme );
     }
 
@@ -140,6 +140,8 @@ sntRover.controller('roverController', [
     // API not removing for now - Because if we need to disable it we can use the same param
     $rootScope.isRoomDiaryEnabled = true;
     $rootScope.isManualCCEntryEnabled = hotelDetails.is_allow_manual_cc_entry;
+    $rootScope.isAnMPHotel = hotelDetails.is_multi_property;
+
       /**
        * CICO-34068
        * NOTE: Temporary Fix
@@ -652,7 +654,7 @@ sntRover.controller('roverController', [
       sntapp.desktopCardReader.setDesktopUUIDServiceStatus(true);
     	sntapp.desktopCardReader.startDesktopReader($rootScope.ccSwipeListeningPort, options);
     };
-        
+
       /**
        * @returns {undefined} undefined
        */
