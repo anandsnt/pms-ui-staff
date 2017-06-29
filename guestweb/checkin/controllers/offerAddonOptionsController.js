@@ -27,7 +27,7 @@
 			addon.amount_type = (addon.amount_type === 'Room') ? 'Per Room' : addon.amount_type;
 			addon.amount_type = (addon.amount_type === 'Flat') ? 'Flat Rate' : addon.amount_type;
 			// To deleted above
-			return addon.amount_type === 'Per Room' || $scope.selectedAddon.amount_type === 'Flat Rate';
+			return addon.amount_type === 'Per Room' || addon.amount_type === 'Flat Rate';
 		};
 
 		$scope.purchaseAddon = function() {

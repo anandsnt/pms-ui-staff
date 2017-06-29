@@ -372,30 +372,28 @@ admin.controller('ADRatesAddonsCtrl', [
 
             };
 
-            if ($scope.isConnectedToPMS) {
-                if ($scope.isDefaulLanguageSelected()) {
-                    var selectedLanguage = _.find($scope.languages.locales, function(language) {
-                        return language.value === $scope.languageFilter.locale;
-                    });
-                    var selectedLanguageTranslations = _.find($scope.singleAddon.translations, function(translation) {
-                        return parseInt(selectedLanguage.id) === parseInt(translation.language_id);
-                    });
-                    var translations = {};
+            if ($scope.isDefaulLanguageSelected()) {
+                var selectedLanguage = _.find($scope.languages.locales, function(language) {
+                    return language.value === $scope.languageFilter.locale;
+                });
+                var selectedLanguageTranslations = _.find($scope.singleAddon.translations, function(translation) {
+                    return parseInt(selectedLanguage.id) === parseInt(translation.language_id);
+                });
+                var translations = {};
 
-                    // translations.translated_description = $scope.singleAddon.description;
-                    translations.translated_alternate_description = $scope.singleAddon.alternate_description;
-                    translations.translated_suffix = $scope.singleAddon.suffix_label;
-                    translations.translated_name = $scope.singleAddon.name;
-                    translations.language_id = selectedLanguage.id;
-                    if (!_.isUndefined(selectedLanguageTranslations) && !_.isUndefined(selectedLanguageTranslations.id)) {
-                        translations.id = selectedLanguageTranslations.id
-                    }
-                    singleAddonData.translations = translations;
-                } else {
-                    singleAddonData.translations = JSON.parse(JSON.stringify($scope.translations));
+                // translations.translated_description = $scope.singleAddon.description;
+                translations.translated_alternate_description = $scope.singleAddon.alternate_description;
+                translations.translated_suffix = $scope.singleAddon.suffix_label;
+                translations.translated_name = $scope.singleAddon.name;
+                translations.language_id = selectedLanguage.id;
+                if (!_.isUndefined(selectedLanguageTranslations) && !_.isUndefined(selectedLanguageTranslations.id)) {
+                    translations.id = selectedLanguageTranslations.id;
                 }
-
+                singleAddonData.translations = translations;
+            } else {
+                singleAddonData.translations = JSON.parse(JSON.stringify($scope.translations));
             }
+
 
             // convert dates to system format yyyy-MM-dd
             // if not date null should be passed - read story CICO-7287
@@ -645,7 +643,7 @@ admin.controller('ADRatesAddonsCtrl', [
             });
 
             $scope.translations = {};
-            // $scope.translations.translated_description = _.isUndefined(selectedLanguageTranslations) ? '': selectedLanguageTranslations.translated_description;
+            $scope.translations.translated_description = _.isUndefined(selectedLanguageTranslations) ? '' : selectedLanguageTranslations.translated_description;
             $scope.translations.translated_alternate_description = _.isUndefined(selectedLanguageTranslations) ? '' : selectedLanguageTranslations.translated_alternate_description;
             $scope.translations.translated_suffix = _.isUndefined(selectedLanguageTranslations) ? '' : selectedLanguageTranslations.translated_suffix;
             $scope.translations.translated_name = _.isUndefined(selectedLanguageTranslations) ? '' : selectedLanguageTranslations.translated_name;

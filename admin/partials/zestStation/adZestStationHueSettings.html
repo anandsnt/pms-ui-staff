@@ -23,7 +23,7 @@
                     <tr ng-repeat="bridge in availableBridges">
                         <!-- <td>{{bridge.id}}</td> -->
                         <td>
-                            {{bridge.internalipaddress}}
+                            {{bridge}}
                         </td>
                         <!--   <td>
                             {{bridge.name}}
@@ -43,7 +43,7 @@
             <button translate="" ng-click="createNewAppKey()" class="button green" translate="">CREATE_NEW_APP_KEY</button>
         </div>
         <div class="entry full-width" ng-show="newUsername.length > 0">
-            {{'NEW_APP_KEY_IS' | translate}} => {{newUsername}}
+            {{'NEW_APP_KEY_IS' | translate}} &nbsp;&nbsp; <span class="hue-app-key">{{newUsername}}</span>
         </div>
         <ad-textbox value="hueSettings.hue_user_name" name="app-name" id="app-name" label="App key" styleclass="half-width"></ad-textbox>
         <ad-textbox value="hueSettings.hue_light_color_hex" name="app-name" id="app-name" label="Light Color" styleclass="half-width" placeholder="{{'LIGHT_COLOR_INSTRUCTIONS' | translate}}"></ad-textbox>

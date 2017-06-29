@@ -62,7 +62,7 @@ admin.controller('ADZestStationAddonCtrl', ['$scope', 'ADZestStationAddonSrv', '
 					"for_zest_station": true
 				},
 				successCallBack: function() {
-					$scope.successMessage = "save success!";
+					$scope.successMessage = "Your setting has been successfully saved.";
 					$scope.reloadTable();
 				}
 			};
