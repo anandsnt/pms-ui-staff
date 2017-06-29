@@ -23,7 +23,7 @@ var DesktopCardOperations = function() {
             if (_.isUndefined(that.ccSwipeURL) || that.ccSwipeURL === '') {
                 ws = new WebSocket("wss://localhost:" + that.portNumber + "/CCSwipeService");
             } else {
-                ws = new WebSocket(that.ccSwipeURL + that.portNumber + "/CCSwipeService");
+                ws = new WebSocket(that.ccSwipeURL + ':'+ that.portNumber + "/CCSwipeService");
             }
         }
         catch (e) {
