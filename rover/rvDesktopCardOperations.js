@@ -11,7 +11,7 @@ var DesktopCardOperations = function() {
         that.portNumber = portNumber;
         that.ccSwipeURL = url;
         that.swipeCallbacks = swipeCallbacks;
-        createConnection(url);
+        createConnection();
     };
 
     this.setDesktopUUIDServiceStatus = function(status) {
