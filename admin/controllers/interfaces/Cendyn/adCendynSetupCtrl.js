@@ -27,6 +27,7 @@ angular.module('admin').controller('adCendynSetupCtrl', ['$scope', '$rootScope',
         (function() {
             //    init
             $scope.config = config;
+            $scope.interface = interfaceIdentifier.toUpperCase();
         })();
     }
 ]);
