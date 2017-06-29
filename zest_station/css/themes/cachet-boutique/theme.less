@@ -1,0 +1,116 @@
+/* StayNTouch Zest Station Styles | Cachet Boutique Theme */
+
+/* 1. COLORS
+==========================================================*/
+	@brandColor:			#d1411b;
+ 
+	
+	@textColor: 			@black;
+	@backgroundColor: 		#fff;
+	
+	@actionColor: 			@white;
+	@actionBackground: 		@brandColor;
+	
+	@inputBackground: 		#707070;
+	@transparentColor: 		rgba(0,0,0,.35);
+
+/* 2. TYPOGRAPHY
+==========================================================*/
+	@fontFamily: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+
+/* 3. IMAGES
+==========================================================*/
+	@background: 			@backgroundColor url("../../cssimg/zeststation/cachet-background.png") no-repeat bottom center;
+	@backgroundSize: 		cover;
+
+	@headerIconsColor: 		@white;
+	@headerIconsActive:		@brandColor;
+
+	.icons { 
+		&.icon-create-key {
+			fill: @white;
+			stroke: @white;
+		}
+
+		&.icon-no-print { stroke: @white; }
+
+		&.icon-oos {
+			fill: @white;
+		}
+
+		&.icon-arrow-left,
+        &.icon-arrow-right {
+            fill: none;
+            stroke: @white;
+        }
+	}
+
+/* 4. LAYOUT
+==========================================================*/
+	
+	#cachet-boutique {
+
+		input,
+		select {
+			color: @white;
+		}
+
+		#header {
+			background-color: #000;
+			height: 125px;
+		}
+
+		#main {
+			 
+			#calc > #height > .remove(100%, 125px);
+			top: 125px;
+			padding-top: 70px;
+		}
+
+		#actions {
+			&.pull-right {
+				p {
+					strong {
+						font-size: 18px;
+						font-weight: 400; 
+					}
+					color: @textColor;
+				}
+			}
+		}
+
+		 
+		#logo {
+			padding-top: 0;
+			
+			.logo {
+				width:170px;
+				height: auto;
+			}
+ 		}
+
+ 		#options {
+			.icons {
+				fill: @white;
+			}
+		}
+
+		#guests {
+			.button {
+				background-color: #8b8b8b;
+			}
+		}
+
+		.add-on { 
+			.add-on-content { 
+				.price { 
+					.action  {
+						input {
+							color: @textColor;
+						}
+					}
+				}
+			}
+		}
+		
+	}
