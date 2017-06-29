@@ -26,11 +26,12 @@
 				</div>
 				<!-- Selected entity -->
 				<div class="entity guest">
-					<figure class="guest-image" ng-class = "getEntityIconClass(selectedEntity)" ng-if="escapeNull(selectedEntity.images[0].guest_image)!=''">
-						<img src="{{selectedEntity.images[0].guest_image}}" alt="" />
+					<figure class="guest-image"  ng-if="escapeNull(selectedEntity.entity_type) === 'RESERVATION'">
+						<img src="{{selectedEntity.images[0].guest_image}}" alt="" ng-if="selectedEntity.images[0].guest_image"/>
+						<span class="icons icon-{{getGuestTypeIconClass(selectedEntity)}}"></span>
 					</figure>
 
-					<figure class="guest-image" ng-if="escapeNull(selectedEntity.images[0].guest_image)==''">
+					<figure class="guest-image" ng-if="escapeNull(selectedEntity.entity_type) != 'RESERVATION'">
 	                    <div class="guest-image icons icon-company" ng-if="escapeNull(selectedEntity.entity_type)=='COMPANY_CARD'" ></div>
 	                    <div class="guest-image icons icon-travel-agent" ng-if="escapeNull(selectedEntity.entity_type)=='TRAVEL_AGENT'" ></div>
 	                    <div class="group-info" ng-if="escapeNull(selectedEntity.entity_type)=='GROUP' || escapeNull(selectedEntity.entity_type)=='HOUSE'">A</div>
@@ -83,7 +84,7 @@
 						<span class="icons icon-ok-10" ></span>
 				</div>
 
-				<!-- Add new credit card button - remove it when new card is added -->				
+				<!-- Add new credit card button - remove it when new card is added -->
 				<button type="button" class="add-new-button" ng-click = "showAddPayment()" ng-show = "showPaymentOption()">{{'NEW_PAYMENT' | translate}}</button>
 
 				<!-- For to add the new credit card, should be shown when button above is tapped -->
