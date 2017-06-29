@@ -54,10 +54,11 @@ this.webSocketOperations = function(socketOpenedSuccessCallback, socketOpenedFai
     this.connect = function() {
         try {
             var port = (!_.isUndefined(wsSwipePort) && wsSwipePort !== '') ? wsSwipePort : 4649;
+            
             if (_.isUndefined(wsSwipeUrl) || wsSwipeUrl === '') {
-                that.ws = new WebSocket('wss://localhost:'+ port +'/CCSwipeService');
+                that.ws = new WebSocket('wss://localhost:' + port + '/CCSwipeService');
             } else {
-                that.ws = new WebSocket(wsSwipeUrl + ':'+ port +'/CCSwipeService');
+                that.ws = new WebSocket(wsSwipeUrl + ':' + port + '/CCSwipeService');
             }
         } catch (e) {
             console.error(e);
