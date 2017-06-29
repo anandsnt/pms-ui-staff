@@ -14,6 +14,7 @@ sntZestStation.controller('zsCheckinScanPassportCtrl', [
     function($scope, $stateParams, $state, zsEventConstants, 
         $controller, $timeout, zsCheckinSrv, zsModeConstants, zsGeneralSrv, zsUtilitySrv, $filter, $log) {
 
+        BaseCtrl.call(this, $scope);
         /** ********************************************************************************************
          **      Please note that, not all the stateparams passed to this state will not be used in this state, 
          **      however we will have to pass this so as to pass again to future states which will use these.
@@ -42,53 +43,52 @@ sntZestStation.controller('zsCheckinScanPassportCtrl', [
 
         };
 
-        degrees = 0;
-        var rotated = false;
+        var degrees = 0,
+            back_degrees,
+            rotated = false;
+
         $scope.imageRotated = false;
 
         $scope.rotateImage = function() {
-             var div = document.getElementById('image-preview');
-                    degrees += 90;
+            var div = document.getElementById('image-preview');
 
-                div.style.webkitTransform = 'rotate('+degrees+'deg)'; 
-                div.style.mozTransform    = 'rotate('+degrees+'deg)'; 
-                div.style.msTransform     = 'rotate('+degrees+'deg)'; 
-                div.style.oTransform      = 'rotate('+degrees+'deg)'; 
-                div.style.transform       = 'rotate('+degrees+'deg)'; 
+            degrees += 90;
 
-                rotated = !rotated;
-                $scope.imageRotated = rotated;
-        }
+            div.style.webkitTransform = 'rotate(' + degrees + 'deg)'; 
+            div.style.mozTransform = 'rotate(' + degrees + 'deg)'; 
+            div.style.msTransform = 'rotate(' + degrees + 'deg)'; 
+            div.style.oTransform = 'rotate(' + degrees + 'deg)'; 
+            div.style.transform = 'rotate(' + degrees + 'deg)'; 
+
+            rotated = !rotated;
+            $scope.imageRotated = rotated;
+        };
 
         back_degrees = 0;
         var back_rotated = false;
+
         $scope.backImageRotated = false;
 
         $scope.rotateBackImage = function() {
-             var div = document.getElementById('image-preview-back');
-                    back_degrees += 90;
+            var div = document.getElementById('image-preview-back');
 
-                div.style.webkitTransform = 'rotate('+back_degrees+'deg)'; 
-                div.style.mozTransform    = 'rotate('+back_degrees+'deg)'; 
-                div.style.msTransform     = 'rotate('+back_degrees+'deg)'; 
-                div.style.oTransform      = 'rotate('+back_degrees+'deg)'; 
-                div.style.transform       = 'rotate('+back_degrees+'deg)'; 
+            back_degrees += 90;
 
-                back_rotated = !back_rotated;
-                $scope.backImageRotated = back_rotated;
-        }
+            div.style.webkitTransform = 'rotate(' + back_degrees + 'deg)'; 
+            div.style.mozTransform = 'rotate(' + back_degrees + 'deg)'; 
+            div.style.msTransform = 'rotate(' + back_degrees + 'deg)'; 
+            div.style.oTransform = 'rotate(' + back_degrees + 'deg)'; 
+            div.style.transform = 'rotate(' + back_degrees + 'deg)'; 
 
-
-
-
+            back_rotated = !back_rotated;
+            $scope.backImageRotated = back_rotated;
+        };
 
 
         var setGuestDetailsFromScan = function(guest, scanResponse) {
-             if (scanResponse.DOC_TYPE === 'PP') {
-                  scanResponse.DOC_TYPE = 'passport';
-                  // $scope.zestStationData.doubleSidedScan = false;
-             };
-            console.warn('scanResponse: ',scanResponse);
+            if (scanResponse.DOC_TYPE === 'PP') {
+                scanResponse.DOC_TYPE = 'passport';
+            }
 
             if ($scope.scannedBackImage) {
                 guest.back_img_path = scanResponse.FRONT_IMAGE;
@@ -110,23 +110,21 @@ sntZestStation.controller('zsCheckinScanPassportCtrl', [
                 guest.img_path = scanResponse.FRONT_IMAGE;
 
             }
-        }
+        };
+
         $scope.scannedBackImage = false;
 
-        var documentRequiresBackScan = function(response) {
+        var documentRequiresBackScan = function() {
             // return true; // TODO: Link with document types which require both sides to be scanned
             // for debugging/testing double-sided scan type IDs
             // set this variable
-            console.warn('$scope.zestStationData.doubleSidedScan: ',$scope.zestStationData.doubleSidedScan);
-            if  ($scope.zestStationData.doubleSidedScan) {
+            if ($scope.zestStationData.doubleSidedScan) {
                 return true;
-
-            } else {
-                return false;
-                // return response.DOC_TYPE !== 'PP';    
             }
             
-        }
+            return false;
+            // return response.DOC_TYPE !== 'PP';    
+        };
 
         var onPassportScanSuccess = function(response) {
 
@@ -138,7 +136,7 @@ sntZestStation.controller('zsCheckinScanPassportCtrl', [
                     if ($scope.selectedPassportInfo.id === $scope.selectedReservation.guest_details[i].id) {
                         $scope.selectedReservation.guest_details[i].passport_scan_status = $filter('translate')('GID_SCAN_PASSPORT_SUCCESS');
                         $scope.selectedReservation.guest_details[i].passport_reviewed_status = $filter('translate')('GID_STAFF_REVIEW_NOT_STARTED');
-                        if (!$scope.inDemoMode()){
+                        if (!$scope.inDemoMode()) {
                             setGuestDetailsFromScan($scope.selectedReservation.guest_details[i], response);
                         }
                         
@@ -164,7 +162,7 @@ sntZestStation.controller('zsCheckinScanPassportCtrl', [
 
         };
 
-
+        /*
         var setScroller = function(SCROLL_NAME) {
             $scope.setScroller(SCROLL_NAME, {
                 probeType: 2,
@@ -174,8 +172,7 @@ sntZestStation.controller('zsCheckinScanPassportCtrl', [
                 scrollY: true
             });
         };
-
-
+        */
 
 
         var onPassportScanFailure = function() {
@@ -211,6 +208,8 @@ sntZestStation.controller('zsCheckinScanPassportCtrl', [
 
 
         $scope.selectGuest = function(guestInfo) {
+            $scope.scanningBackImage = false;
+            $scope.scannedBackImage = false;
             degrees = 0;
             $scope.selectedPassport = true;
             $scope.selectedPassportInfo = guestInfo;
@@ -232,10 +231,10 @@ sntZestStation.controller('zsCheckinScanPassportCtrl', [
                 // verify passport
                 $scope.mode = 'ADMIN_VERIFY_PASSPORT_VIEW';                
 
-                $timeout(function(){
+                $timeout(function() {
                     // scroller setup
                     refreshScroller();
-                },0);
+                }, 0);
             }
 
         };
@@ -248,7 +247,7 @@ sntZestStation.controller('zsCheckinScanPassportCtrl', [
                 
             });
             $scope.$on('SOCKET_FAILED', function() {
-                console.info('socket failed.');
+                $log.warn('socket failed.');
                 onPassportScanFailure();
             });
         };
@@ -264,12 +263,12 @@ sntZestStation.controller('zsCheckinScanPassportCtrl', [
 
 
         $scope.$on('SOCKET_FAILED', function() {
-            console.info('socket failed.');
+            $log.warn('socket failed.');
             $scope.$emit('PASSPORT_SCAN_FAILURE');    
         });
 
         $scope.scan = function() {
-            console.info('$scope.selectedReservation: ',$scope.selectedReservation);
+            $log.info('$scope.selectedReservation: ', $scope.selectedReservation);
 
 
             $scope.mode = 'SCANNING_IN_PROGRESS';
@@ -279,26 +278,23 @@ sntZestStation.controller('zsCheckinScanPassportCtrl', [
 
             // debugging
             if ($scope.inDemoMode()) {
-                $scope.$emit('PASSPORT_SCAN_SUCCESS');
+                $scope.$emit('PASSPORT_SCAN_SUCCESS', {'PR_DFE_FRONT_IMAGE': ''});
             }
             
         };
 
-        $scope.scanBack = function() {
+        $scope.scanBack = function(skip) {
+            $scope.resetTime();
             $scope.scanningBackImage = true;
-
-            $scope.mode = 'SCANNING_IN_PROGRESS';
-            $scope.resetTime();
-
-            samsoTechScanPassport();
-
             // debugging
-            if ($scope.inDemoMode()) {
-                $scope.$emit('PASSPORT_SCAN_SUCCESS');
-            }
-            
-        };
+            if ($scope.inDemoMode() || skip) {
+                $scope.$emit('PASSPORT_SCAN_SUCCESS', {'skipScan': true});
+            } else {
 
+                $scope.mode = 'SCANNING_IN_PROGRESS';
+                samsoTechScanPassport();
+            }
+        };
         
 
         $scope.viewResults = function() {
@@ -337,6 +333,9 @@ sntZestStation.controller('zsCheckinScanPassportCtrl', [
                         // simulate Verification screen
                         $scope.allPassportReady = true;
                     }
+                    // Turn Light OFF after admin login is successful
+                    // 
+                    $scope.turnOffLight();
                 } else {
                     $scope.adminLoginError = true;
                     $log.warn('invalid admin login');
@@ -360,6 +359,7 @@ sntZestStation.controller('zsCheckinScanPassportCtrl', [
                 successCallBack: onSuccess,
                 failureCallBack: onFail
             };
+
             $scope.input.inputTextValue = '';
             $scope.callAPI(zsGeneralSrv.validate_staff, options);
         };
@@ -375,7 +375,7 @@ sntZestStation.controller('zsCheckinScanPassportCtrl', [
                 }
             }
             return hasRejected;
-        }
+        };
 
 
         $scope.goToNext = function() {
@@ -383,11 +383,10 @@ sntZestStation.controller('zsCheckinScanPassportCtrl', [
 
             if ($scope.mode === 'SCAN_RESULTS') {
                 $scope.mode = 'WAIT_FOR_STAFF';
+                $scope.turnOnLight();
 
             } else if ($scope.mode === 'ADMIN_VERIFY_PASSPORTS') {
 
-                // TODO: Turn Light OFF + redirect to next screen in flow
-                // 
                 if (passportRejected()) {
                     $scope.allPassportReady = false;
 
@@ -395,7 +394,7 @@ sntZestStation.controller('zsCheckinScanPassportCtrl', [
 
                     for (var i in $scope.selectedReservation.guest_details) {
                         if ($scope.selectedReservation.guest_details[i].passport_reviewed_status === $filter('translate')('GID_STAFF_REVIEW_REJECTED')) {
-                            $scope.selectedReservation.guest_details[i].passport_scan_status = $filter('translate')('GID_STAFF_REVIEW_REJECTED')
+                            $scope.selectedReservation.guest_details[i].passport_scan_status = $filter('translate')('GID_STAFF_REVIEW_REJECTED');
                         }
                     }
 
@@ -438,19 +437,19 @@ sntZestStation.controller('zsCheckinScanPassportCtrl', [
             {
                 'last_name': 'Sample',
                 'first_name': 'Connor',
-                'full_name':'Connor Sample',
-                'docID':'1234567',
+                'full_name': 'Connor Sample',
+                'docID': '1234567',
 
-                'dob':'14-02-2014',
-                'docExpiry':'03/2010',
-                'nationality':'USA',
-                'city':'Montgomery',
+                'dob': '14-02-2014',
+                'docExpiry': '03/2010',
+                'nationality': 'USA',
+                'city': 'Montgomery',
 
-                'img_path':'sample_passport.png',
+                'img_path': 'sample_passport.png',
                 'id': 1232,
                 'passport_reviewed_status': $filter('translate')('GID_STAFF_REVIEW_ACCEPTED'),
                 'passport_scan_status': $filter('translate')('GID_SCAN_PASSPORT_SUCCESS')
-            }/*, {
+            }/* , {
                 'last_name': 'walberg',
                 'first_name': 'mark',
 
@@ -469,25 +468,26 @@ sntZestStation.controller('zsCheckinScanPassportCtrl', [
         $scope.AddGuestMode = false;
         $scope.showRemoveButton = false;
 
-        var validatePassportsView = function(){
+        var validatePassportsView = function() {
             var hasIDNeedingReview = false;
-            for (var gid in $scope.selectedReservation.guest_details){
-                if (gid.passport_reviewed_status === $filter('translate')('GID_STAFF_REVIEW_NOT_STARTED')){
+
+            for (var gid in $scope.selectedReservation.guest_details) {
+                if (gid.passport_reviewed_status === $filter('translate')('GID_STAFF_REVIEW_NOT_STARTED')) {
                     hasIDNeedingReview = true;
                 }
             }
 
             $scope.allPassportReviewed = !hasIDNeedingReview;
-        }
+        };
+
         $scope.staffUserToken = '';
 
-        var onSuccessAdminReview = function(){
+        var onSuccessAdminReview = function() {
             if ($scope.acceptedPassport) {
                 $scope.selectedPassportInfo.passport_reviewed_status = $filter('translate')('GID_STAFF_REVIEW_ACCEPTED');    
             } else {
                 $scope.selectedPassportInfo.passport_reviewed_status = $filter('translate')('GID_STAFF_REVIEW_REJECTED');
             }
-            
 
 
             savePassportToAPI($scope.selectedPassportInfo);
@@ -498,13 +498,13 @@ sntZestStation.controller('zsCheckinScanPassportCtrl', [
             }
         };
 
-        var onFailAdminReview = function(){
-            console.log('on fail admin review passport');
+        var onFailAdminReview = function() {
+            $log.log('on fail admin review passport');
         };
 
 
         var savePassportToAPI = function(selectedPassportInfo) {
-            console.info('save passport info: ',arguments);
+            $log.info('save passport info: ', arguments);
 
             var options = {
                 params: {
@@ -517,20 +517,20 @@ sntZestStation.controller('zsCheckinScanPassportCtrl', [
                     'first_name': selectedPassportInfo.first_name,
                     'last_name': selectedPassportInfo.last_name,
                     'nationality': selectedPassportInfo.nationality,
-                    'id': selectedPassportInfo.id
+                    'guest_id': selectedPassportInfo.id
                 },
                 successCallBack: function() {
-                    console.warn(':: Saved! ::');
+                    $log.warn(':: Saved! ::');
                     validatePassportsView();
                     $scope.selectedPassport = false;
                     $scope.mode = 'ADMIN_VERIFY_PASSPORTS';   
                 },
                 failureCallBack: function() {
-                    console.warn('failed to save');
-                    console.warn(arguments);
+                    $log.warn('failed to save');
+                    $log.warn(arguments);
                     $scope.$emit('GENERAL_ERROR');
                 }
-            }
+            };
 
             // Also save the back image data if there was front+back to the document scan
             // 
@@ -650,6 +650,10 @@ sntZestStation.controller('zsCheckinScanPassportCtrl', [
         // then return failed scan instead of success
 
         var returnedAllRequiredFields = function(response) {
+            // TODO: Verify minimum Required fields for passport to be 'programatically acceptable'
+            //       ---> A staff member will validate all info and fields, and will be able to override-accept any passport
+            //       CICO-41398
+
             if ($scope.inDemoMode()) {
                 return true;
             }
@@ -663,33 +667,32 @@ sntZestStation.controller('zsCheckinScanPassportCtrl', [
                     !response.PR_DF_ISSUE_COUNTRY ||
                     !response.PR_DF_NAME ||
                     !response.PR_DF_NATIONALITY ||
-                    !response.PR_DF_SEX ||
-                    !response.PR_DF_SURNAME ||
-                    !response.PR_DF_TYPE // TYPE = P (passport)
+                //  !response.PR_DF_SEX ||
+                //  !response.PR_DF_SURNAME ||
+                    !response.PR_DF_TYPE // TYPE = PP (passport)
                     ) {
-              return false;
-            } else {
-                return true;
-            }
+                return false;
+            } 
+            return true;
         };
 
+        var mappedResponse;
+
         $scope.$on('PASSPORT_SCAN_SUCCESS', function(evt, response) {
-            console.log('PASSPORT_SCAN_SUCCESS: ',response);
-            console.log('returnedAllRequiredFields(response): ',returnedAllRequiredFields(response));
+            $log.log('PASSPORT_SCAN_SUCCESS: ', response);
+            $log.log('returnedAllRequiredFields(response): ', returnedAllRequiredFields(response), ': $scope.scanningBackImage: ', $scope.scanningBackImage);
 
-            if (returnedAllRequiredFields(response)) {
-                
-
+            if (returnedAllRequiredFields(response) && !$scope.scanningBackImage) {
                 // set local params, to map to different documents/versions of samsotech devices
                 // if any updates/changes in response format, adjust here
-                 if ($scope.inDemoMode()) {
-                    var mappedResponse = {};
+                if ($scope.inDemoMode()) {
+                    mappedResponse = {};
                 } else {
-                     var mappedResponse = {
+                    mappedResponse = {
                         'FRONT_IMAGE': response.PR_DFE_FRONT_IMAGE,
 
-                        //'BIRTH_DATE':  returnUnformatedDateObj(response.PR_DF_BIRTH_DATE, 'MM-DD-YYYY'),
-                        'BIRTH_DATE':  response.PR_DF_BIRTH_DATE,
+                        // 'BIRTH_DATE':  returnUnformatedDateObj(response.PR_DF_BIRTH_DATE, 'MM-DD-YYYY'),
+                        'BIRTH_DATE': response.PR_DF_BIRTH_DATE,
                         'LAST_NAME': response.PR_DF_SURNAME,
                         'FIRST_NAME': response.PR_DF_GIVENNAME,
                         'NATIONALITY': response.PR_DF_NATIONALITY,
@@ -704,15 +707,18 @@ sntZestStation.controller('zsCheckinScanPassportCtrl', [
                     };
                 }
                
-                console.info(mappedResponse);
                 onPassportScanSuccess(mappedResponse);
 
-            } else if ($scope.scanningBackImage) {
+            } else if ($scope.scanningBackImage && (response.PR_DFE_FRONT_IMAGE || $scope.inDemoMode() || response.skipScan)) {
+                // if scanning the back of a document, the only requirement is that an image is returned
+                // the only failure would be if this ('PR_DFE_FRONT_IMAGE') was not returned from samsotech
+                // CICO-41398
+
                 $scope.scanningBackImage = false;
                 $scope.scannedBackImage = true;
-                    var mappedResponse = {
-                        'FRONT_IMAGE': response.PR_DFE_FRONT_IMAGE
-                    }
+                mappedResponse = {
+                    'FRONT_IMAGE': response.PR_DFE_FRONT_IMAGE ? response.PR_DFE_FRONT_IMAGE : ''
+                };
 
                 onPassportScanSuccess(mappedResponse);
 

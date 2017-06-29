@@ -35,7 +35,8 @@ sntZestStation.service('zsGeneralSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
             'de-jonker': 'Hotel de jonker',
             'chalet-view': 'Chalet view',
             'row-nyc': 'row',
-            'circle-inn-fairfield': 'Circle fairfield'
+            'circle-inn-fairfield': 'Circle fairfield',
+            'cachet-boutique': 'Cachet Boutique'
         };
 
         this.isThemeConfigured = function(theme) {
@@ -510,8 +511,6 @@ sntZestStation.service('zsGeneralSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
             });
             return deferred.promise;
         };
-
-
 
         this.fetchCheckinReservationDetails = function(params) {
             var deferred = $q.defer();

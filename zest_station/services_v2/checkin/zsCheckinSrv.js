@@ -211,7 +211,7 @@ sntZestStation.service('zsCheckinSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
 
         this.sendThirdPartyEmail = function(params) {
             var deferred = $q.defer(),
-                url = '/api/reservations/'+params.id+'/send_station_offer_mobilekey_mail';
+                url = '/api/reservations/' + params.id + '/send_station_offer_mobilekey_mail';
 
             zsBaseWebSrv.postJSON(url, params).then(function(data) {
                 deferred.resolve(data);
@@ -237,9 +237,9 @@ sntZestStation.service('zsCheckinSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
             var deferred = $q.defer(),
                 url = '/api/guest_details/' + params.guest_id;
 
-                param = {
-                    'nationality_id': params.nationality_id
-                };
+            param = {
+                'nationality_id': params.nationality_id
+            };
 
             zsBaseWebSrv.putJSON(url, param).then(function(data) {
                 deferred.resolve(data);
@@ -417,7 +417,7 @@ sntZestStation.service('zsCheckinSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
 
         this.fetchRoomUpsellDetails = function(param) {
             var deferred = $q.defer(),
-                url =  '/zest_station/upgrade_options.json';
+                url = '/zest_station/upgrade_options.json';
 
             zsBaseWebSrv2.getJSON(url, param).then(function(data) {
                 deferred.resolve(data);
@@ -429,9 +429,9 @@ sntZestStation.service('zsCheckinSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
 
         this.fethHotelRooms = function(params) {
             var deferred = $q.defer();
-            var url =  '/staff/rooms/get_rooms';
+            var url = '/staff/rooms/get_rooms';
 
-            zsBaseWebSrv2.postJSON(url,params).then(function(data) {
+            zsBaseWebSrv2.postJSON(url, params).then(function(data) {
                 deferred.resolve(data);
             }, function(data) {
                 deferred.reject(data);
@@ -441,7 +441,7 @@ sntZestStation.service('zsCheckinSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
 
         this.selectRoomUpgrade = function(param) {
             var deferred = $q.defer();
-            var url =  '/staff/reservations/upgrade_room.json';
+            var url = '/staff/reservations/upgrade_room.json';
 
             param.is_kiosk = true;
             zsBaseWebSrv2.postJSON(url, param).then(function(data) {
@@ -449,7 +449,7 @@ sntZestStation.service('zsCheckinSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
             }, function(data) {
                 deferred.reject(data);
             });
-                return deferred.promise;
+            return deferred.promise;
         };
 
         this.fetchAddons = function(param) {
@@ -476,7 +476,7 @@ sntZestStation.service('zsCheckinSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
 
             var data = params;
 
-            data.application =  'KIOSK';
+            data.application = 'KIOSK';
 
             zsBaseWebSrv.postJSON(url, data).then(function(data) {
                 deferred.resolve(data);
@@ -491,7 +491,7 @@ sntZestStation.service('zsCheckinSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
             var url = '/api/reservations/delete_package';
             var data = params;
 
-            data.application =  'KIOSK';
+            data.application = 'KIOSK';
             
             zsBaseWebSrv.postJSON(url, data).then(function(data) {
                 deferred.resolve(data);
@@ -530,11 +530,12 @@ sntZestStation.service('zsCheckinSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
             // TODO: Update to match API spec once API part is in progress/done
             var deferred = $q.defer();
             var url = '/zest_station/log_passport_scanning';
+            
             params.is_kiosk = true;
 
             var data = params;
 
-            data.application =  'KIOSK';
+            data.application = 'KIOSK';
             
             zsBaseWebSrv.postJSON(url, data).then(function(data) {
                 deferred.resolve(data);
@@ -547,11 +548,12 @@ sntZestStation.service('zsCheckinSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
         this.savePassport = function(params) {
             var deferred = $q.defer();
             var url = '/api/guest_identity';
+
             params.is_kiosk = true;
 
             var data = params;
 
-            data.application =  'KIOSK';
+            data.application = 'KIOSK';
             
             zsBaseWebSrv.postJSON(url, data).then(function(data) {
                 deferred.resolve(data);
@@ -560,7 +562,6 @@ sntZestStation.service('zsCheckinSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
             });
             return deferred.promise;
         };
-
 
 
     }
