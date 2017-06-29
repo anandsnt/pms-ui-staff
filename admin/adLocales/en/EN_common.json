@@ -149,7 +149,8 @@
 "SELECT_ITEMS_TO_REMOVE_FROM_EXCLUDED": "Select one or more items and choose SAVE at the bottom of the screen to include them.",
 "TIMEOUT_ERROR": "Rover is having trouble to respond. Please re-try if the issue persists please contact our support team at support@stayntouch.com.",
 
-"CC_SWIPE_LISTENING_URL": "CC SWIPE LISTENER URL"
+"CC_SWIPE_LISTENING_URL": "CC SWIPE LISTENER URL",
+"CC_SWIPE_LISTENING_URL_PLACEHOLDER": "Enter CC swipe listener URL"
 
 
 
