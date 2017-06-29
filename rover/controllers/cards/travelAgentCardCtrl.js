@@ -201,14 +201,29 @@ angular.module('sntRover').controller('RVTravelAgentCardCtrl', ['$scope', '$root
 			saveContactInformation($scope.contactInformation);
 		});
 
+        $scope.toggleGlobalButton = function() {
+			if (rvPermissionSrv.getPermissionValue ('GLOBAL_CARD_UPDATE')) {
+				$scope.contactInformation.is_global_enabled = !$scope.contactInformation.is_global_enabled;
+				$scope.contactInformation.account_type = $scope.account_type;
+			}
+		};
 		$scope.shouldShowCommissionsTab = function() {
-			return ($scope.account_type == 'TRAVELAGENT' && rvPermissionSrv.getPermissionValue ('GLOBAL_CARD_UPDATE') && $scope.contactInformation.is_global_enabled);
+			//return ($scope.account_type == 'TRAVELAGENT' && rvPermissionSrv.getPermissionValue ('GLOBAL_CARD_UPDATE') && $scope.contactInformation.is_global_enabled);
+			return $scope.account_type == 'TRAVELAGENT';
 		};
 
 		$scope.isUpdateEnabledForTravelAgent = function() {
+			if ($scope.contactInformation.is_global_enabled == undefined)
+				return;
 			var isDisabledFields = false;
-			if (!rvPermissionSrv.getPermissionValue ('GLOBAL_CARD_UPDATE')) {
-				isDisabledFields = true;
+			if ($scope.contactInformation.is_global_enabled) {
+				if (!rvPermissionSrv.getPermissionValue ('GLOBAL_CARD_UPDATE')) {
+					isDisabledFields = true;
+				}
+			} else {
+				if (!rvPermissionSrv.getPermissionValue ('EDIT_TRAVEL_AGENT_CARD')) {
+					isDisabledFields = true;
+				}
 			}
 			return isDisabledFields;
 		};

@@ -137,8 +137,8 @@ sntRover.controller('roverController', [
     // API not removing for now - Because if we need to disable it we can use the same param
     $rootScope.isRoomDiaryEnabled = true;
     $rootScope.isManualCCEntryEnabled = hotelDetails.is_allow_manual_cc_entry;
-   // $rootScope.isAnMPHotel = hotelDetails.is_multi_property;
-    $rootScope.isAnMPHotel = true;
+    $rootScope.isAnMPHotel = hotelDetails.is_multi_property;
+
       /**
        * CICO-34068
        * NOTE: Temporary Fix

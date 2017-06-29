@@ -15,6 +15,7 @@ angular.module('sntRover').controller('companyCardDetailsController', ['$scope',
 		$scope.isPromptOpened = false;
 		$scope.isLogoPrint = true;
 		$scope.isPrintArStatement = false;
+		$scope.contactInformation = {};
 		// setting the heading of the screen
 		if ($stateParams.type === "COMPANY") {
 			if ($scope.isAddNewCard) {
@@ -234,17 +235,10 @@ angular.module('sntRover').controller('companyCardDetailsController', ['$scope',
 			ngDialog.close();
 		};
 
-		$scope.shouldShowGlobalButtonToggle = function() {
-			// return showGlobalToggleButton = ($rootScope.isAnMPHotel && rvPermissionSrv.getPermissionValue ('GLOBAL_CARD_UPDATE'));
-			// Commented above - For now we are not considering whether the property is MP or not
-			// We are showing it all time. So set as true.
-			return showGlobalToggleButton = true;
-		};
 		$scope.toggleGlobalButton = function() {
 			if (rvPermissionSrv.getPermissionValue ('GLOBAL_CARD_UPDATE')) {
 				$scope.contactInformation.is_global_enabled = !$scope.contactInformation.is_global_enabled;
 				$scope.contactInformation.account_type = $scope.account_type;
-				//$scope.invokeApi(RVCompanyCardSrv.saveContactInformation, $scope.contactInformation);
 			}
 
 		};
@@ -252,10 +246,19 @@ angular.module('sntRover').controller('companyCardDetailsController', ['$scope',
 			return ($scope.account_type == 'TRAVELAGENT' && rvPermissionSrv.getPermissionValue ('GLOBAL_CARD_UPDATE') && $scope.contactInformation.is_global_enabled);
 		};
 		$scope.isUpdateEnabled = function() {
+			if ($scope.contactInformation.is_global_enabled == undefined)
+				return;
 			var isDisabledFields = false;
-			if (!rvPermissionSrv.getPermissionValue ('GLOBAL_CARD_UPDATE')) {
-				isDisabledFields = true;
+			if ($scope.contactInformation.is_global_enabled) {
+				if (!rvPermissionSrv.getPermissionValue ('GLOBAL_CARD_UPDATE')) {
+					isDisabledFields = true;
+				}
+			} else {
+				if (!rvPermissionSrv.getPermissionValue ('EDIT_COMPANY_CARD')) {
+					isDisabledFields = true;
+				}
 			}
+
 			return isDisabledFields;
 		};
 		/*
@@ -265,9 +268,17 @@ angular.module('sntRover').controller('companyCardDetailsController', ['$scope',
 		 * When we go to travel agent from revenue management, controller is this
 		 */
 		$scope.isUpdateEnabledForTravelAgent = function() {
+			if ($scope.contactInformation.is_global_enabled == undefined)
+				return;
 			var isDisabledFields = false;
-			if (!rvPermissionSrv.getPermissionValue ('GLOBAL_CARD_UPDATE')) {
-				isDisabledFields = true;
+			if ($scope.contactInformation.is_global_enabled) {
+				if (!rvPermissionSrv.getPermissionValue ('GLOBAL_CARD_UPDATE')) {
+					isDisabledFields = true;
+				}
+			} else {
+				if (!rvPermissionSrv.getPermissionValue ('EDIT_TRAVEL_AGENT_CARD')) {
+					isDisabledFields = true;
+				}
 			}
 			return isDisabledFields;
 		};
@@ -314,7 +325,8 @@ angular.module('sntRover').controller('companyCardDetailsController', ['$scope',
 		 */
 		var successCallbackOfInitialFetch = function(data) {
 			$scope.$emit("hideLoader");
-			data.is_global_enabled = true;
+			console.log("-----")
+			console.log(data)
 			$scope.contactInformation = data;
 			if ($scope.contactInformation.alert_message !== "") {
 				$scope.errorMessage = [$scope.contactInformation.alert_message];

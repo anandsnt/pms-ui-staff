@@ -178,20 +178,22 @@ angular.module('sntRover').controller('RVCompanyCardCtrl', ['$scope', '$rootScop
 			$scope.$emit('hideLoader');
 		});
 
-		$scope.shouldShowGlobalButtonToggle = function() {
-			return showGlobalToggleButton = ($rootScope.isAnMPHotel && rvPermissionSrv.getPermissionValue ('GLOBAL_CARD_UPDATE'));
-		};
-
 		$scope.toggleGlobalButton = function() {
 			if (rvPermissionSrv.getPermissionValue ('GLOBAL_CARD_UPDATE')) {
-				$scope.contactInformation.is_global_button_enabled = !$scope.contactInformation.is_global_button_enabled;
+				$scope.contactInformation.is_global_enabled = !$scope.contactInformation.is_global_enabled;
 			}
 
 		};
 		$scope.isUpdateEnabled = function() {
 			var isDisabledFields = false;
-			if (!rvPermissionSrv.getPermissionValue ('GLOBAL_CARD_UPDATE')) {
-				isDisabledFields = true;
+			if ($scope.contactInformation.is_global_enabled) {
+				if (!rvPermissionSrv.getPermissionValue ('GLOBAL_CARD_UPDATE')) {
+					isDisabledFields = true;
+				}
+			} else {
+				if (!rvPermissionSrv.getPermissionValue ('EDIT_COMPANY_CARD')) {
+					isDisabledFields = true;
+				}
 			}
 			return isDisabledFields;
 		};
