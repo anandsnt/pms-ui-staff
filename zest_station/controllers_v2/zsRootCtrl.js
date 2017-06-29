@@ -400,6 +400,10 @@ sntZestStation.controller('zsRootCtrl', [
                 $scope.icons.url.createkey_icmp = $scope.iconsPath + '/demo_keyencoder.svg';
                 $log.warn('using demo icons for create key and credit card reading');
                 $scope.icmp = true;
+            } else if ($scope.zestStationData.theme === 'public_v2') {
+                $scope.icons.url.createkey_icmp = $scope.iconsPath + '/encode_image.svg';
+                $scope.icons.url.creditcard_icmp = $scope.iconsPath + '/icmp_swipe.svg';
+                $scope.icmp = true;
             } else {
                 $scope.icmp = false;
             }
@@ -815,7 +819,7 @@ sntZestStation.controller('zsRootCtrl', [
             var commonIconsPath = '/assets/zest_station/css/icons/default';
 
             // var basicHomeIcons = ['zoku'],
-            var niceHomeIcons = ['avenue', 'sohotel', 'epik', 'public', 'public_v2', 'duke'],
+            var niceHomeIcons = ['avenue', 'sohotel', 'epik', 'public', 'public_v2', 'duke', 'de-jonker', 'chalet-view', 'freehand', 'row-nyc', 'circle-inn-fairfield', 'cachet-boutique'],
                 nonCircleNavIcons = ['public_v2'];// minor adjustment to the back/close icons for some themes (only show the inner x or <)
 
 
@@ -1315,6 +1319,10 @@ sntZestStation.controller('zsRootCtrl', [
                     }
                 } else {
                     $scope.callBlurEventForIpad();
+
+                    $timeout(function() {
+                        $('#' + elementId).click();
+                    }, 500);
                 }
             }, 300);
 

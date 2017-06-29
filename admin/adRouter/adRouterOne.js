@@ -77,7 +77,7 @@ angular.module('adminModuleOne', []).config(function($stateProvider, $urlRouterP
 		$stateProvider.state('admin.addeditnotification', {
 			templateUrl: '/assets/partials/notifications/adNotifications.html',
 			controller: 'ADNotificationCtrl',
-			url: '/notification/:id/:action'			
+			url: '/notification/:id/:action'
 		});
 
 		$stateProvider.state('admin.brands', {
@@ -181,5 +181,17 @@ angular.module('adminModuleOne', []).config(function($stateProvider, $urlRouterP
 				}
 			}
 		});
+
+        $stateProvider.state('admin.clientSuccessManagers', {
+            templateUrl: '/assets/partials/clientSuccessManagers/adClientSuccessManagerList.html',
+            controller: 'ADClientSuccessManagerListCtrl',
+            url: '/clientSuccessManagers'
+        });
+
+        $stateProvider.state('admin.clientSuccessManagerDetails', {
+            templateUrl: '/assets/partials/clientSuccessManagers/adClientSuccessManagerAdd.html',
+            controller: 'ADClientSuccessManagerDetailsCtrl',
+            url: '/clientSuccessManager/:action/:id'
+        });
 
 });

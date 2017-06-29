@@ -22,9 +22,11 @@
             <text data-ng-bind-html="getTagValue('EARLY_AVAIL_PURCHASED_REALLY_EARLY')" editable-text="EARLY_AVAIL_PURCHASED_REALLY_EARLY"></text>
         </h3>
 
-        <button ng-show="mode === 'CHECKIN_LATER' || mode === 'EARLY_CHECKIN_PREPAID_NOT_READY'" type="button" class="button done-btn" touch-press='clickedOnCloseButton()'>
-            <text data-ng-bind-html="getTagValue('EARLY_DONE')" editable-text="EARLY_DONE"></text>
-        </button>
+        <div class='done-btn-div'>
+            <button ng-show="mode === 'CHECKIN_LATER' || mode === 'EARLY_CHECKIN_PREPAID_NOT_READY'" type="button" class="button" touch-press='clickedOnCloseButton()'>
+                <text data-ng-bind-html="getTagValue('EARLY_DONE')" editable-text="EARLY_DONE"></text>
+            </button>
+        </div>
     
 
 
@@ -52,9 +54,12 @@
                 <text data-ng-bind-html="getTagValue('EARLY_AVAIL_FREE')" editable-text="EARLY_AVAIL_FREE"></text>
             </h2>
             <!-- assuming within  -->
-            <button type="button" class="button done-btn" touch-press='continue(true)'>
-                <text data-ng-bind-html="getTagValue('EARLY_CONTINUE')" editable-text="EARLY_CONTINUE"></text>
-            </button>
+            <div class='done-btn-div'>
+                <button type="button" class="button" touch-press='continue(true)'>
+                    <text data-ng-bind-html="getTagValue('EARLY_CONTINUE')" editable-text="EARLY_CONTINUE"></text>
+                </button>                
+            </div>
+
 
         </div>
 
@@ -69,13 +74,13 @@
                         <div ng-include="icons.url.key"></div>
                     </button>
                     <text data-ng-bind-html="getTagValue('EARLY_AVAIL_PURCHASE')" editable-text="EARLY_AVAIL_PURCHASE"></text>
-                    <span>
+                    <h3>
                         <text data-ng-bind-html="getTagValue('EARLY_AVAIL_PURCHASE_SUB')" editable-text="EARLY_AVAIL_PURCHASE_SUB"></text>
 
                         {{early_checkin_charge}} 
 
                         <text data-ng-bind-html="getTagValue('EARLY_AVAIL_PURCHASE_SUB_2')" editable-text="EARLY_AVAIL_PURCHASE_SUB_2"></text>
-                    </span>
+                    </h3>
                 </li>
                 <li class="break">
                     <span>
