@@ -120,12 +120,10 @@ sntZestStation.controller('zsCheckinScanPassportCtrl', [
             // set this variable
             if ($scope.zestStationData.doubleSidedScan) {
                 return true;
-
-            } else {
-                return false;
-                // return response.DOC_TYPE !== 'PP';    
             }
             
+            return false;
+            // return response.DOC_TYPE !== 'PP';    
         };
 
         var onPassportScanSuccess = function(response) {
@@ -674,19 +672,16 @@ sntZestStation.controller('zsCheckinScanPassportCtrl', [
                     !response.PR_DF_TYPE // TYPE = PP (passport)
                     ) {
                 return false;
-            } else {
-                return true;
-            }
+            } 
+            return true;
         };
-        
-        var mappedResponse;
 
         $scope.$on('PASSPORT_SCAN_SUCCESS', function(evt, response) {
             $log.log('PASSPORT_SCAN_SUCCESS: ', response);
             $log.log('returnedAllRequiredFields(response): ', returnedAllRequiredFields(response), ': $scope.scanningBackImage: ', $scope.scanningBackImage);
 
             if (returnedAllRequiredFields(response) && !$scope.scanningBackImage) {
-                
+                var mappedResponse;
 
                 // set local params, to map to different documents/versions of samsotech devices
                 // if any updates/changes in response format, adjust here

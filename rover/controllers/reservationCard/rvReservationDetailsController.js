@@ -1569,8 +1569,6 @@ sntRover.controller('reservationDetailsController',
 		console.log('fetch request: ', data);
 		$scope.invokeApi(RVReservationCardSrv.fetchGuestIdentity, data, successCallBack, failureCallBack);
 
-
-
      };
 
 }]);
