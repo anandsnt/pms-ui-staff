@@ -668,9 +668,13 @@ angular.module('adminModuleTwo', []).config(function($stateProvider) {
         controller: 'adUpsellAddonSettingsCtrl',
         url: '/upsellAddons',
         resolve: {
-            data: function(ADUpsellAddonSrv) {
+            upsellData: function(ADUpsellAddonSrv) {
                 return ADUpsellAddonSrv.getSettings();
+            },
+            availableLanguages: function(ADTranslationSrv) {
+                return ADTranslationSrv.getActiveGuestLanguages();
             }
+
         }
     });
 
