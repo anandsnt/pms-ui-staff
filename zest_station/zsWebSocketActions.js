@@ -1,4 +1,4 @@
-this.webSocketOperations = function(socketOpenedSuccessCallback, socketOpenedFailureCallback, actionSuccesCallback) {
+this.webSocketOperations = function(socketOpenedSuccessCallback, socketOpenedFailureCallback, actionSuccesCallback, wsSwipeUrl) {
     var that = this;
     var wsConfig = {
         'swipeService': 'wss://localhost:4649/CCSwipeService',
@@ -53,7 +53,11 @@ this.webSocketOperations = function(socketOpenedSuccessCallback, socketOpenedFai
 
     this.connect = function() {
         try {
-            that.ws = new WebSocket('wss://localhost:4649/CCSwipeService');
+            if (_.isUndefined(wsSwipeUrl) || wsSwipeUrl === '') {
+                that.ws = new WebSocket('wss://localhost:4649/CCSwipeService');
+            } else {
+                that.ws = new WebSocket(wsSwipeUrl + '/CCSwipeService');
+            }
         } catch (e) {
             console.error(e);
             socketOpenedFailureCallback();
