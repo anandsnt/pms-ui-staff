@@ -215,6 +215,7 @@ sntRover.controller('reservationDetailsController',
 				$('#ui-datepicker-overlay').off('click').remove();
 			}
 		};
+
 		$scope.fetchedGuestIDs = false;
 		var fetchGuestIDs = function() {
 			var successCallBack = function(response) {
@@ -224,7 +225,6 @@ sntRover.controller('reservationDetailsController',
 				$scope.fetchedGuestIDs = true;
 				var guestOnReservation, 
 					reservation_card = $scope.reservationData.reservation_card;
-					console.log(reservation_card);
 
 				for (var i in response) {
 					guestOnReservation = response[i];
@@ -236,7 +236,7 @@ sntRover.controller('reservationDetailsController',
 
 			var failureCallBack = function() {
      			$scope.$emit('hideLoader');
-				console.warn('unable to fetch guest ids: ',arguments);
+				console.warn('unable to fetch guest ids: ', arguments);
 			};
 
 			var data = {
@@ -368,8 +368,6 @@ sntRover.controller('reservationDetailsController',
 			if (!$scope.shouldShowGuestDetails && $scope.isStandAlone) {
 				$scope.$broadcast("UPDATEGUESTDEATAILS", {"isBackToStayCard": true});
 			}
-
-
 
 		};
 
