@@ -19,7 +19,7 @@
 
 /* 3. IMAGES
 ==========================================================*/
-	@background: url("../css/themes/de-jonker/background.png") no-repeat;
+	@background: 			@backgroundColor url("../css/themes/de-jonker/background.jpg") no-repeat center center;
 	@backgroundSize: 		cover;
 
 	@headerIconsColor: 		@black;
@@ -67,7 +67,19 @@
 			background-color: fade(@backgroundColor, 50%);
 			#calc > #height > .remove(100%, 145px);
 			top: 145px;
-			padding-top: 50px;
+			/*
+			The change specified as global was moved here to avoid design breaks in the existing templates. 
+			Originally it was present in app/assets/zest_station/css/less/layout.less.
+			===Start===
+			*/
+			&.centered {
+				#options {
+					margin-top: 0;
+				}
+			}
+			/*
+			===End===
+			*/
 		}
 
 		#actions {
