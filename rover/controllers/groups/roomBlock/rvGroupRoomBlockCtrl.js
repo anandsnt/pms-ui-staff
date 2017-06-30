@@ -892,7 +892,8 @@ angular.module('sntRover').controller('rvGroupRoomBlockCtrl', [
 		 */
         $scope.clickedOnSaveButton = function() {
 			// do not force overbooking for the first time
-
+            // CICO-42325 Bring loader straight-away to protect from multi-clicks
+            $scope.$emit('showLoader');
             $scope.saveRoomBlock(false);
         };
 

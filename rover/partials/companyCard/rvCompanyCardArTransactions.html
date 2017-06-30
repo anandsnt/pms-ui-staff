@@ -146,7 +146,8 @@
                             </div>
                         </div>
                         <div class="group-info" ng-if="transaction.associated_type == 'PostingAccount'">A</div>
-                        <div class="data" ng-if="transaction.associated_type == 'PostingAccount'">
+                        <!-- CICO-40028: Added no-image class -->
+                        <div class="data no-image" ng-if="transaction.associated_type == 'PostingAccount'">
                             <h2><span>{{transaction.account_name}}</span></h2>
                             <span class="confirmation">{{transaction.account_number}}</span>
                             <div class="arrival">
@@ -182,9 +183,12 @@
 						<div class="data no-image">
 							<h2><em>{{transaction.payment_type}}</em></h2>
 							<span class="confirmation">{{transaction.reference_text}}</span>
-							<div class="icons small-icon icon-time">
-								{{transaction.transaction_date | date : dateFormat}}
-								<span class="time">{{getTimeConverted(transaction.transaction_time)}}</span>
+							<!-- CICO-40028: Wrapped in a div with information -->
+							<div class="information">
+								<div class="icons small-icon icon-time">
+									{{transaction.transaction_date | date : dateFormat}}
+									<span class="time">{{getTimeConverted(transaction.transaction_time)}}</span>
+								</div>
 							</div>
 						</div>
 						<div class="amount" ng-class="{'credit' : transaction.amount >= 0, 'debit' : transaction.amount < 0}">{{currencySymbol}}{{transaction.amount | number:2 }}</div>

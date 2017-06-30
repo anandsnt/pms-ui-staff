@@ -356,13 +356,17 @@ angular.module('sntRover')
          * @return {[type]} [description]
          */
         const getEditedRestrictionsForAPI = () => {
-            var editedRestrictions = _.where($scope.restrictionList, {edited:true});
+            // CICO-42484 Only restrictions that have been edited need to be sent in the update request
+            var editedRestrictions = _.filter($scope.restrictionList,
+                rstrn => rstrn.edited &&
+                    (rstrn.status !== rstrn.oldStatus ||
+                        parseInt(rstrn.value) !== parseInt(rstrn.oldValue)));
 
             return editedRestrictions.map(restriction => ({
                 action: restriction.status === 'ON' ? 'add' : 'remove',
                 restriction_type_id: restriction.id,
                 days: restriction.value
-            }))
+            }));
         };
 
 
@@ -748,11 +752,12 @@ angular.module('sntRover')
                         edited : false
                     }));
 
-            restrictions = restrictions.map(restriciton => {
-                if(restriciton.status === 'ON') {
-                   restriciton.edited = true;
-                }
-                return restriciton;
+            // CICO-42484 Keep tab of the initial values so that update request is sent only for edited restrictions
+            restrictions = restrictions.map(restriction => {
+                restriction.oldStatus = restriction.status;
+                restriction.oldValue = restriction.value;
+
+                return restriction;
             });
 
             return restrictions;
