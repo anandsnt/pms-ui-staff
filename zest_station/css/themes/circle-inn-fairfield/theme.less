@@ -42,10 +42,39 @@
 		}
 
 		&.icon-arrow-left,
-        &.icon-arrow-right {
-            fill: none;
-            stroke: @textColor;
-        }
+		&.icon-arrow-right {
+			fill: none;
+			stroke: @textColor;
+		}
+	}
+
+	.logo-svg {
+		margin-top: 25px;
+		padding-top:0;
+		position: relative;
+		border-top: 0;
+		background-color: @white;
+		.size(130px,365px);
+		border-left: 10px solid @brandColor;
+		border-right: 10px solid @brandColor;
+		border-bottom: 10px solid @brandColor;
+		background-image: url("../css/themes/circle-inn-fairfield/logo.svg");
+		background-repeat: no-repeat;
+		background-size: 290px;
+		background-position: center;
+
+		/* Blue Border */
+		&:after {
+			border-left: 3px solid @textColor;
+			border-right: 3px solid @textColor;
+			border-bottom: 3px solid @textColor;
+			position: absolute;
+			content: '';
+			width: 345px;
+			height: 120px;
+			left: 0;
+			top:0;
+		}
 	}
 
 /* 4. LAYOUT
@@ -78,6 +107,19 @@
 		#main {
 			#calc > #height > .remove(100%, 100px);
 			top: 100px;
+			/*
+			The change specified as global was moved here to avoid design breaks in the existing templates. 
+			Originally it was present in app/assets/zest_station/css/less/layout.less.
+			===Start===
+			*/
+			&.centered {
+				#options {
+					margin-top: 0;
+				}
+			}
+			/*
+			===End===
+			*/
 		}
 
 		#actions {
@@ -111,9 +153,9 @@
 				padding: 10px 25px;
 				.size(120px, auto);
 			}
- 		}
+		}
 
- 		#options {
+		#options {
 			.icons {
 				fill: @textColor;
 			}
