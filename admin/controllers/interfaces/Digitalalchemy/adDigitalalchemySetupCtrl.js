@@ -27,6 +27,7 @@ angular.module('admin').controller('adDigitalalchemySetupCtrl', ['$scope', '$roo
         (function() {
             //    init
             $scope.config = config;
+            $scope.interface = interfaceIdentifier;
         })();
     }
 ]);

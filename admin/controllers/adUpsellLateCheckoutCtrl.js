@@ -1,4 +1,4 @@
-admin.controller('ADUpsellLateCheckoutCtrl', ['$scope', '$rootScope', '$state', 'adUpsellLatecheckoutService', 'ADChargeCodesSrv',  function($scope, $rootScope, $state, adUpsellLatecheckoutService, ADChargeCodesSrv) {
+admin.controller('ADUpsellLateCheckoutCtrl', ['$scope', '$rootScope', '$state', 'adUpsellLatecheckoutService', 'ADChargeCodesSrv', 'ADRatesAddonsSrv',  function($scope, $rootScope, $state, adUpsellLatecheckoutService, ADChargeCodesSrv, ADRatesAddonsSrv) {
 
     BaseCtrl.call(this, $scope);
     $scope.$emit("changedSelectedMenu", 2);
@@ -42,9 +42,28 @@ $scope.fetchUpsellDetails = function() {
    $scope.invokeApi(adUpsellLatecheckoutService.fetch, {}, fetchUpsellDetailsSuccessCallback);
 };
 
-$scope.fetchUpsellDetails();
+
 $scope.hours = ["HH", "01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12"];
 $scope.minutes = ["00", "15", "30", "45"];
+
+
+$scope.getAddonsWithNameValues = function(addons) {
+        angular.forEach(addons, function(item, index) {
+       item.value = item.id;
+  });
+        return addons;
+};
+
+$scope.fetchAddons = function() {
+    var fetchSuccessOfAddons = function(data) {
+       $scope.addons = $scope.getAddonsWithNameValues(data.results);
+       $scope.fetchUpsellDetails();
+   };
+
+   $scope.invokeApi(ADRatesAddonsSrv.fetch, {"no_pagination": true, "ignore_inventory": true}, fetchSuccessOfAddons);
+};
+
+$scope.fetchAddons();
 /**
 * To handle switch actions
 *
