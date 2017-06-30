@@ -3146,6 +3146,23 @@
                     .guest-image {
                         .square(30px);
 
+                        .icons {
+                            .square(100%);
+                            background-color: @grey2;
+
+                            &.icon-student {
+                                background-position: 5px -10534px;
+                            }
+
+                            &.icon-infant {
+                                background-position: 6px -10595px;
+                            }
+
+                            &.icon-adult {
+                               background-position: 5px -10476px
+                            }
+                        }
+
                         &.accompany {
                             img {
                                 width: 25px;
@@ -3154,6 +3171,41 @@
                                     top: 10px;
                                     left: 10px;
                                     width: 20px;
+                                }
+                            }
+
+                            .icons {
+                                .square(25px);
+
+                                &.icon-student {
+                                    background-position: 3px -10537px;
+                                }
+
+                                &.icon-infant {
+                                    background-position: 3px -10597px;
+                                }
+
+                                &.icon-adult {
+                                   background-position: 3px -10478px;
+                                }
+
+                                &:nth-child(2) {
+                                    top: 10px;
+                                    left: 10px;
+                                    .square(20px);
+                                    background-size: 80px;
+
+                                    &.icon-student {
+                                        background-position: 3px -7022px;
+                                    }
+
+                                    &.icon-infant {
+                                        background-position: 4px -7063px;
+                                    }
+
+                                    &.icon-adult {
+                                       background-position: 3px -6983px
+                                    }
                                 }
                             }
                         }

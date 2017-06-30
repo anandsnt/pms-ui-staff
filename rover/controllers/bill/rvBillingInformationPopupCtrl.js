@@ -259,6 +259,7 @@ sntRover.controller('rvBillingInformationPopupCtrl', ['$scope', '$rootScope', '$
                     "is_primary": true,
                     "guest_image": $scope.attachedEntities.primary_guest_details.avatar
                 }];
+                $scope.selectedEntity.guest_type_id = $scope.attachedEntities.primary_guest_details.guest_type_id;
                 $scope.selectedEntity.entity_type = "RESERVATION";
             } else if (type === 'ACCOMPANY_GUEST') {
                 $scope.selectedEntity.id = $scope.reservationData.reservation_id;
@@ -270,6 +271,7 @@ sntRover.controller('rvBillingInformationPopupCtrl', ['$scope', '$rootScope', '$
                 }];
                 $scope.selectedEntity.has_accompanying_guests = true;
                 $scope.selectedEntity.entity_type = "RESERVATION";
+                $scope.selectedEntity.guest_type_id = $scope.attachedEntities.accompanying_guest_details[index].guest_type_id;
             } else if (type === 'COMPANY_CARD') {
                 $scope.selectedEntity.id = $scope.attachedEntities.company_card.id;
                 $scope.selectedEntity.name = $scope.attachedEntities.company_card.name;
@@ -530,6 +532,18 @@ sntRover.controller('rvBillingInformationPopupCtrl', ['$scope', '$rootScope', '$
             }
 
         }
+    };
+
+    // Get icon class based on guest type
+    $scope.getGuestTypeIconClass = function(entity) {
+        var iconClass = 'adult';
+        var guestType = _.find($rootScope.guestTypes, {id: entity.guest_type_id});
+        if(guestType.value === 'CHILDREN') {
+            iconClass = 'student';
+        } else if (guestType.value === 'INFANTS') {
+            iconClass = 'infant';
+        }
+        return iconClass;
     };
 
 
