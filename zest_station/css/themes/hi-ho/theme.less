@@ -43,10 +43,20 @@
 		}
 
 		&.icon-arrow-left,
-        &.icon-arrow-right {
-            fill: none;
-            stroke: #000;
-        }
+		&.icon-arrow-right {
+			fill: none;
+			stroke: #000;
+		}
+	}
+
+	.logo-svg {
+		background-image: url("../css/themes/hi-ho/logo.svg");
+		background-repeat: no-repeat;
+		background-size: contain;
+		width: 240px;
+		height: 110px;
+		background-position: center;
+		margin-top: 10px;
 	}
 
 /* 4. LAYOUT
@@ -55,7 +65,7 @@
 	#hi-ho {
 
 		#logo {
-	 		padding-top: 10px;
+			padding-top: 10px;
 			.logo {
 				width: 240px;
 				height: auto;
@@ -84,6 +94,19 @@
 			background-color: fade(@backgroundColor, 50%);
 			#calc > #height > .remove(100%, 145px);
 			top: 145px;
+			/*
+			The change specified as global was moved here to avoid design breaks in the existing templates. 
+			Originally it was present in app/assets/zest_station/css/less/layout.less.
+			===Start===
+			*/
+			&.centered {
+				#options {
+					margin-top: 0;
+				}
+			}
+			/*
+			===End===
+			*/
 		}		 
 		
 		#options {
