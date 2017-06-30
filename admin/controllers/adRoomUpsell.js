@@ -208,13 +208,15 @@ admin.controller('ADRoomUpsellCtrl', ['$scope', '$rootScope', '$state', 'adRoomU
     };
     
     var updateParams = function(item, index, itemArray, nextDay) {
-        var amount = $('#' + nextDay + 'amount_' + index + '>input').val();
+        var amount;
 
-        if (amount === '') {
-            item.amount = null;
+        if (nextDay) {
+            amount = $scope.next_day_upsell_amounts[index].amount;
         } else {
-          item.amount = amount;
+            amount = $scope.upsell_amounts[index].amount;
         }
+
+        item.amount = amount || null;
 
         if (index === 0) {
             item.level_from = '1';
