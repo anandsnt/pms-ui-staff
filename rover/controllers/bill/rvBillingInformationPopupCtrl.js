@@ -259,6 +259,7 @@ sntRover.controller('rvBillingInformationPopupCtrl', ['$scope', '$rootScope', '$
                     "is_primary": true,
                     "guest_image": $scope.attachedEntities.primary_guest_details.avatar
                 }];
+                $scope.selectedEntity.guest_type_id = $scope.attachedEntities.primary_guest_details.guest_type_id;
                 $scope.selectedEntity.entity_type = "RESERVATION";
             } else if (type === 'ACCOMPANY_GUEST') {
                 $scope.selectedEntity.id = $scope.reservationData.reservation_id;

@@ -19,8 +19,8 @@
                   <!-- image -->
 
                   <figure class="guest-image" >
-					<img src="{{attachedEntities.primary_guest_details.avatar}}" alt="" />
-          <!-- <span class="icons icon-{{getGuestTypeIconClass(attachedEntities.primary_guest_details)}}"></span> -->
+					<img src="{{attachedEntities.primary_guest_details.avatar}}" alt="" ng-if="attachedEntities.primary_guest_details.avatar"/>
+          <span class="icons icon-{{getGuestTypeIconClass(attachedEntities.primary_guest_details)}}" ng-if="!attachedEntities.primary_guest_details.avatar"></span>
 					</figure>
 
                   <!-- heading -->
@@ -36,7 +36,7 @@
                   <figure class="guest-image accompany" >
 							<img ng-src="{{entity.primary_avatar}}" alt="" ng-if="entity.primary_avatar"/>
 							<img ng-src="{{entity.avatar}}" alt="" ng-if="entity.avatar"/>
-              <span class="icons icon-{{getGuestTypeIconClass(entity)}}"></span>
+              <span class="icons icon-{{getGuestTypeIconClass(entity)}}" ng-if="!entity.primary_avatar && !entity.avatar"></span>
 					</figure>
 
 					<div class="data">
@@ -157,13 +157,8 @@
 
 					<!-- image -->
 					<figure class="guest-image" ng-show="row.images.length!=0 " ng-class="{'accompany': row.images.length >1}">
-						<img ng-repeat="image in row.images"
-						ng-src="{{image.guest_image}}"
-
-						ng-class="{'first-image':(row.images.length >1 && image.is_primary==true),
-
-						'second-image':(row.images.length >1 && image.is_primary==false)}">
-
+            <img ng-src="{{row.images[0].guest_image}}" alt="" ng-if="row.images[0].guest_image">
+            <span class="icons icon-{{getGuestTypeIconClass(row.images[0])}}" ng-if="!row.images[0].guest_image"></span>
 						<span class="vip" ng-show="row.vip==true" translate>VIP</span>
 					</figure>
 

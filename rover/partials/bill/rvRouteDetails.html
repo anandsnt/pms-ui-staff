@@ -28,7 +28,7 @@
 				<div class="entity guest">
 					<figure class="guest-image"  ng-if="escapeNull(selectedEntity.entity_type) === 'RESERVATION'">
 						<img src="{{selectedEntity.images[0].guest_image}}" alt="" ng-if="selectedEntity.images[0].guest_image"/>
-						<span class="icons icon-{{getGuestTypeIconClass(selectedEntity)}}"></span>
+						<span class="icons icon-{{getGuestTypeIconClass(selectedEntity)}}" ng-if="!selectedEntity.images[0].guest_image"></span>
 					</figure>
 
 					<figure class="guest-image" ng-if="escapeNull(selectedEntity.entity_type) != 'RESERVATION'">
