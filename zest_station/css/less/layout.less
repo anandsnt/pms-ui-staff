@@ -114,20 +114,14 @@
 
         &.centered {
             top: 0;
-            padding-top: 0;
             height: 100%;
             #flexbox > .parent('', '', center, '');
 
             #content { height: auto; }
 
-            /*
-            These changes were added as part of the design fixes for CICO-41811.
-            However they were moved to app/assets/zest_station/css/themes/row-nyc/theme.less 
-            so as to avoid design breaks for existing templates.
             #options {
                 margin-top: 0;
             }
-            */
         }
 
         @media only screen and (min-height: 1024px) { padding-top: 200px; }
@@ -347,9 +341,6 @@
 
 
 /* Upgrade Box **/
-    #main.upgrades-section{
-        padding-top:44px;
-    }
     #upgrade {
         position: relative;
         color: @black;
