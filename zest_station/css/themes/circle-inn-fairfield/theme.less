@@ -48,35 +48,6 @@
         }
 	}
 
-	.logo-svg {
-		margin-top: 25px;
-		padding-top:0;
-		position: relative;
-		border-top: 0;
-		background-color: @white;
-		.size(130px,365px);
-		border-left: 10px solid @brandColor;
-		border-right: 10px solid @brandColor;
-		border-bottom: 10px solid @brandColor;
-		background-image: url("../css/themes/circle-inn-fairfield/logo.svg");
-    	background-repeat: no-repeat;
-    	background-size: 290px;
-    	background-position: center;
-
-    	/* Blue Border */
-		&:after {
-			border-left: 3px solid @textColor;
-			border-right: 3px solid @textColor;
-			border-bottom: 3px solid @textColor;
-			position: absolute;
-			content: '';
-			width: 345px;
-			height: 120px;
-			left: 0;
-			top:0;
-		}
-	}
-
 /* 4. LAYOUT
 ==========================================================*/
 	
@@ -107,7 +78,6 @@
 		#main {
 			#calc > #height > .remove(100%, 100px);
 			top: 100px;
-			padding-top: 50px;
 		}
 
 		#actions {
