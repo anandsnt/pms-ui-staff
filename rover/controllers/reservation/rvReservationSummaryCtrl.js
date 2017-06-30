@@ -1562,7 +1562,7 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', 'jsMappings', '$s
 
             _.each(room.accompanying_guest_details, function (guest,type) {
 
-                _.each(room.accompanying_guest_details[type], function (guestInfo) {
+                _.each(guest, function (guestInfo) {
                     validGuests.push({
                         first_name: guestInfo.first_name,
                         last_name: guestInfo.last_name,
