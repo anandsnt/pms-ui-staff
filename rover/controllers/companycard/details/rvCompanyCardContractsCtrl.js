@@ -51,7 +51,6 @@ sntRover.controller('companyCardContractsCtrl', ['$rootScope', '$scope', 'RVComp
 			return rvPermissionSrv.getPermissionValue ('DELETE_CONTRACT');
 		};
 
-
 		var clientWidth = $(window).width();
 		var clientHeight = $(window).height();
 		var drawGraph = function() {
@@ -212,7 +211,6 @@ sntRover.controller('companyCardContractsCtrl', ['$rootScope', '$scope', 'RVComp
 			$scope.errorMessage = data;
 		};
 
-
 		var manipulateGraphData = function(data) {
 			var graphData = [];
 			var contracted = [];
@@ -274,7 +272,6 @@ sntRover.controller('companyCardContractsCtrl', ['$rootScope', '$scope', 'RVComp
 		};
 
 		$scope.invokeApi(RVCompanyCardSrv.fetchRates, {}, fetchRatesSuccessCallback, fetchFailureCallback);
-
 
 		$scope.fetchContractsList = function () {
 			if ($stateParams.id !== "add") {
@@ -348,7 +345,6 @@ sntRover.controller('companyCardContractsCtrl', ['$rootScope', '$scope', 'RVComp
 				$scope.contractList.history_contracts = [];
 				$scope.$emit('hideLoader');
 				$scope.fetchContractsList();
-
 			};
 
 			var deleteContractFailureCallback = function(errorMessage) {
@@ -454,16 +450,11 @@ sntRover.controller('companyCardContractsCtrl', ['$rootScope', '$scope', 'RVComp
 
 			$scope.addData = {};
 			$scope.addData.occupancy = [];
-			$scope.addData.begin_date = dateFilter(new Date($rootScope.businessDate), 'yyyy-MM-dd');
 			$scope.addData.contracted_rate_selected = "";
 			$scope.addData.selected_symbol = "+";
 			$scope.addData.selected_type = "amount";
 
 			$scope.addData.rate_value = 0;
-			var myDate = new Date($rootScope.businessDate);
-
-			myDate.setDate(myDate.getDate() + 1);
-			$scope.addData.end_date = dateFilter(myDate, 'yyyy-MM-dd');
 			$scope.addData.is_fixed_rate = false;
 			$scope.addData.is_rate_shown_on_guest_bill = false;
 			if (typeof $stateParams.type !== 'undefined' && $stateParams.type !== "") {
@@ -698,62 +689,31 @@ sntRover.controller('companyCardContractsCtrl', ['$rootScope', '$scope', 'RVComp
 			}
 		});
 
-		var rateSource = function(request, response) {
+		/**
+	     * to run angular digest loop,
+	     * will check if it is not running
+	     * return - None
+	     */
+	    var runDigestCycle = function() {
+	        if (!$scope.$$phase) {
+	            $scope.$digest();
+	        }
+	    };
 
-			// fetch data from server
-            var fetchData = function() {
-                if (request.term !== '' && $scope.autoCompleteState.lastSearchText !== request.term) {
-                    $scope.invokeApi(RVCompanyCardSrv.fetchRates, {
-                        'query': request.term
-                    }, function(data) {
-                    	$scope.$emit('hideLoader');
-                    	var processedResults = [];
-
-                    	_.each(data.contract_rates, function(result) {
-                    		processedResults.push({
-                    			label: result.name,
-	                            value: result.name,
-	                            type: 'CORP',
-	                            id: result.id
-                    		});
-                    	});
-                    	response(processedResults);
-                    });
-                    $scope.autoCompleteState.lastSearchText = request.term;
-                }
-            };
-
-
-			if (request.term.length === 0) {
-                companyCardResults = [];
-                $scope.autoCompleteState.lastSearchText = "";
-                $scope.autoCompleteState.selectedRate = {};
-            } else if (request.term.length > 2) {
-                fetchData();
-            }
-		};
-
-		var onRateSelect = function(event, rate) {
-			if (!$scope.contractList.isAddMode) {
-				$scope.contractData.contracted_rate_selected = rate.item.id;
-				$scope.contractData.contractedRate = rate.item.label;
-			} else {
-				$scope.addData.contracted_rate_selected = rate.item.id;
-				$scope.addData.contractedRate = rate.item.label;
+		// CICO-31607 : On selecting a rate from rate auto complete directive.
+		$scope.$on('RATE_SELECTED', function (event, data) {
+			if ($scope.contractList.isAddMode) {
+				$scope.addData.begin_date = data.min_date;
+				$scope.addData.end_date = data.max_date;
+				$scope.addData.min_date = data.min_date;
+				$scope.addData.max_date = data.max_date;
 			}
-		};
-
-		$scope.autoCompleteRates = {
-			delay: 0,
-            minLength: 0,
-            position: {
-                my: 'left bottom',
-                at: 'left top',
-                collision: 'flip'
-            },
-            source: rateSource,
-            select: onRateSelect
-		};
+			else {
+				$scope.contractData.min_date = data.min_date;
+				$scope.contractData.max_date = data.max_date;
+			}
+			runDigestCycle();
+		});
 
 	}
 ]);

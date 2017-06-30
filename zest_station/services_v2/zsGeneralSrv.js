@@ -30,7 +30,13 @@ sntZestStation.service('zsGeneralSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
             'sohotel': 'sohotel',
             'epik': 'Hotel epik',
             'conscious': 'Conscious vondelpark',
-            'fontainebleau': 'fontainebleau'
+            'fontainebleau': 'fontainebleau',
+            'freehand': 'freehand',
+            'de-jonker': 'Hotel de jonker',
+            'chalet-view': 'Chalet view',
+            'row-nyc': 'row',
+            'circle-inn-fairfield': 'Circle fairfield',
+            'cachet-boutique': 'Cachet Boutique'
         };
 
         this.isThemeConfigured = function(theme) {
