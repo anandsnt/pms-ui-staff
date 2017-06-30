@@ -435,7 +435,7 @@ sntRover.controller('rvReservationGuestController', ['$scope', '$rootScope', 'RV
 					if ($scope.otherData.maxAdults > 4) {
 						$scope.maxAdultsForReservation = 4;
 					} else {
-						scope.maxAdultsForReservation = $scope.otherData.maxAdults;
+						$scope.maxAdultsForReservation = $scope.otherData.maxAdults;
 					}
 				}
 
