@@ -796,10 +796,12 @@
 						<span class="switch-icon"></span>
 					</div>
 				</div>
-				<div class="entry">
+				<div class="entry" ng-show="data.allow_desktop_swipe">
 					<label for="mli-hotel-code"> CC Swipe Listening Port </label>
 					<input type="text" ng-model="data.cc_swipe_listening_port" value="{{data.cc_swipe_listening_port}}" placeholder="Enter CC swipe listening port" name="cc-swipe-listening-port">
 				</div>
+
+				<ad-textbox value="data.cc_swipe_listening_url" label="{{'CC_SWIPE_LISTENING_URL' | translate}}" placeholder="{{'CC_SWIPE_LISTENING_URL_PLACEHOLDER' | translate}}" styleclass="full-width" ng-show="data.allow_desktop_swipe"></ad-textbox>
 
 			</fieldset>
 

@@ -229,7 +229,7 @@
                     <!-- TODO: Update button background and color, link to controller action-->
 
                     <button class="button with-icon white green-text" click-touch='showScannedGuestID(true, guestData.primary_guest_details)'
-                        ng-hide='guestData.primary_guest_details.has_guest_id_scanned || !guestIdAdminEnabled'
+                        ng-if='!hideGuestId(guestData.primary_guest_details, true) && guestIdAdminEnabled'
                         ng-class='{"overlay":!hasGuestIDPermission}'>
                         <span class="icons icon-identity-card"></span>
                          {{'GUEST_ID_BUTTON' |translate}}
@@ -246,7 +246,7 @@
                     <input name="acc1-last-name" id="acc1-last-name" type="text" placeholder="Last Name" ng-model="guest.last_name" value="{{guest.last_name}}" ng-blur="saveAccGuestDetails()" />
                     <!-- placeholder: GUEST_ID -->
                     <button class="button with-icon white green-text" click-touch='showScannedGuestID(false, guest)'
-                        ng-hide='hideGuestId(guest)'
+                        ng-if='!hideGuestId(guest)'
                         ng-class='{"overlay":!hasGuestIDPermission}'>
                         <span class="icons icon-identity-card"></span>
                         {{'GUEST_ID_BUTTON' |translate}}

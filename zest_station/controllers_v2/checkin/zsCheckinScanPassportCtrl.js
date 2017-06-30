@@ -517,7 +517,7 @@ sntZestStation.controller('zsCheckinScanPassportCtrl', [
                     'first_name': selectedPassportInfo.first_name,
                     'last_name': selectedPassportInfo.last_name,
                     'nationality': selectedPassportInfo.nationality,
-                    'id': selectedPassportInfo.id
+                    'guest_id': selectedPassportInfo.id
                 },
                 successCallBack: function() {
                     $log.warn(':: Saved! ::');
@@ -676,13 +676,13 @@ sntZestStation.controller('zsCheckinScanPassportCtrl', [
             return true;
         };
 
+        var mappedResponse;
+
         $scope.$on('PASSPORT_SCAN_SUCCESS', function(evt, response) {
             $log.log('PASSPORT_SCAN_SUCCESS: ', response);
             $log.log('returnedAllRequiredFields(response): ', returnedAllRequiredFields(response), ': $scope.scanningBackImage: ', $scope.scanningBackImage);
 
             if (returnedAllRequiredFields(response) && !$scope.scanningBackImage) {
-                var mappedResponse;
-
                 // set local params, to map to different documents/versions of samsotech devices
                 // if any updates/changes in response format, adjust here
                 if ($scope.inDemoMode()) {
@@ -716,7 +716,7 @@ sntZestStation.controller('zsCheckinScanPassportCtrl', [
 
                 $scope.scanningBackImage = false;
                 $scope.scannedBackImage = true;
-                var mappedResponse = {
+                mappedResponse = {
                     'FRONT_IMAGE': response.PR_DFE_FRONT_IMAGE ? response.PR_DFE_FRONT_IMAGE : ''
                 };
 
