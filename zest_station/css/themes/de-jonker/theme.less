@@ -65,21 +65,6 @@
 
 		#main {
 			background-color: fade(@backgroundColor, 50%);
-			#calc > #height > .remove(100%, 145px);
-			top: 145px;
-			/*
-			The change specified as global was moved here to avoid design breaks in the existing templates. 
-			Originally it was present in app/assets/zest_station/css/less/layout.less.
-			===Start===
-			*/
-			&.centered {
-				#options {
-					margin-top: 0;
-				}
-			}
-			/*
-			===End===
-			*/
 		}
 
 		#actions {
@@ -114,4 +99,8 @@
 			}
 		}
 		
+	}
+	.add-guest-mode-content{
+	    height: 85% !important;
+	    margin-top: 50px;
 	}
