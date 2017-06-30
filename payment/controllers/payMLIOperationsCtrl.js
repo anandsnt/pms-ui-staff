@@ -1,6 +1,6 @@
 angular.module('sntPay').controller('payMLIOperationsController',
     ['$scope', 'sntPaymentSrv', 'paymentAppEventConstants', 'paymentUtilSrv', 'paymentConstants', '$timeout', '$log',
-        function($scope, sntPaymentSrv, payEvntConst, util, paymentConstants, $timeout, $log) {
+        function ($scope, sntPaymentSrv, payEvntConst, util, paymentConstants, $timeout, $log) {
 
             /**
              * variable to keep track swiped & data coming from swipe
@@ -36,7 +36,7 @@ angular.module('sntPay').controller('payMLIOperationsController',
              * @param  {[type]} tokenDetails [description]
              * @return {[type]}              [description]
              */
-            var notifyParent = function(tokenDetails) {
+            var notifyParent = function (tokenDetails) {
                 var paymentData = util.formCCTokenGeneratedParams({...$scope.cardData, ...tokenDetails});
 
                 $scope.$emit(payEvntConst.CC_TOKEN_GENERATED, {
@@ -51,7 +51,7 @@ angular.module('sntPay').controller('payMLIOperationsController',
              * @param  {[type]} errorMessage [description]
              * @return {[type]}              [description]
              */
-            var notifyParentError = function(errorMessage) {
+            var notifyParentError = function (errorMessage) {
                 $log.error(errorMessage);
                 $scope.$emit(payEvntConst.PAYMENTAPP_ERROR_OCCURED, errorMessage);
             };
@@ -61,7 +61,7 @@ angular.module('sntPay').controller('payMLIOperationsController',
              * @param  {[type]} swipedCardData [description]
              * @return {[type]}                [description]
              */
-            var doSwipedCardActions = function(swipedCardData) {
+            var doSwipedCardActions = function (swipedCardData) {
                 var swipedCardDataToSave = new SwipeOperation().createSWipedDataToSave(swipedCardData);
 
                 var paymentData = util.formCCTokenGeneratedParams({
@@ -83,8 +83,8 @@ angular.module('sntPay').controller('payMLIOperationsController',
              * @return {[type]}          [description]
              */
             var successCallBackOfGetMLIToken = (response) => {
-                $scope.$emit("hideLoader");
-                notifyParent(response)
+                $scope.$emit('hideLoader');
+                notifyParent(response);
             };
 
             /**
@@ -93,24 +93,28 @@ angular.module('sntPay').controller('payMLIOperationsController',
              * @return {[type]}       [description]
              */
             var failureCallBackOfGetMLIToken = (error) => {
-                $scope.$emit("hideLoader");
+                $scope.$emit('hideLoader');
                 notifyParentError(error);
             };
 
-            var renderDataFromSwipe = function(event, swipedCardData) {
+            var renderDataFromSwipe = function (event, swipedCardData) {
                 isSwiped = true;
+                if ($scope.hotelConfig.isEMVEnabled) {
+                    $scope.payment.isManualEntryInsideIFrame = true;
+                    $scope.sixPayEntryOptionChanged();
+                }
                 swipedCCData = swipedCardData;
                 $scope.cardData.cardNumber = swipedCardData.cardNumber;
                 $scope.cardData.nameOnCard = swipedCardData.nameOnCard;
                 $scope.cardData.expiryMonth = swipedCardData.cardExpiryMonth;
                 $scope.cardData.expiryYear = swipedCardData.cardExpiryYear;
                 $scope.cardData.cardType = swipedCardData.cardType;
-                $scope.payment.screenMode = "CARD_ADD_MODE";
-                $scope.payment.addCCMode = "ADD_CARD";
+                $scope.payment.screenMode = 'CARD_ADD_MODE';
+                $scope.payment.addCCMode = 'ADD_CARD';
             };
 
-            var tokenize = function(params) {
-                $scope.$emit("SHOW_SIX_PAY_LOADER");
+            var tokenize = function (params) {
+                $scope.$emit('SHOW_SIX_PAY_LOADER');
                 sntPaymentSrv.getSixPaymentToken(params).then(
                     response => {
                         /**
@@ -127,44 +131,44 @@ angular.module('sntPay').controller('payMLIOperationsController',
                          * The API response has guest_payment_method_id instead of payment_method_id
                          */
 
-                        var cardType = response.card_type || "";
+                        var cardType = response.card_type || '';
 
                         $scope.$emit('SUCCESS_LINK_PAYMENT', {
                             response: {
                                 id: response.payment_method_id || response.guest_payment_method_id,
-                                payment_name: "CC"
+                                payment_name: 'CC'
                             },
-                            selectedPaymentType: $scope.selectedPaymentType || "CC",
+                            selectedPaymentType: $scope.selectedPaymentType || 'CC',
                             cardDetails: {
-                                "card_code": cardType.toLowerCase(),
-                                "ending_with": response.ending_with,
-                                "expiry_date": response.expiry_date,
-                                "card_name": ""
+                                'card_code': cardType.toLowerCase(),
+                                'ending_with': response.ending_with,
+                                'expiry_date': response.expiry_date,
+                                'card_name': ''
                             }
                         });
 
-                        $scope.$emit("HIDE_SIX_PAY_LOADER");
+                        $scope.$emit('HIDE_SIX_PAY_LOADER');
                     },
                     errorMessage => {
-                        $log.info("Tokenization Failed");
+                        $log.info('Tokenization Failed');
                         $scope.$emit('PAYMENT_FAILED', errorMessage);
-                        $scope.$emit("HIDE_SIX_PAY_LOADER");
+                        $scope.$emit('HIDE_SIX_PAY_LOADER');
                     }
                 );
             };
 
-            var proceedChipAndPinPayment = function(params) {
+            var proceedChipAndPinPayment = function (params) {
                 // we need to notify the parent controllers to show loader
                 // as this is an external directive
 
-                $scope.$emit("SHOW_SIX_PAY_LOADER");
+                $scope.$emit('SHOW_SIX_PAY_LOADER');
                 sntPaymentSrv.submitPaymentForChipAndPin(params).then(
                     response => {
-                        $log.info("payment success" + $scope.payment.amount);
+                        $log.info('payment success' + $scope.payment.amount);
                         response.amountPaid = $scope.payment.amount;
                         response.authorizationCode = response.authorization_code;
 
-                        var cardType = (response.payment_method && response.payment_method.card_type) || "";
+                        var cardType = (response.payment_method && response.payment_method.card_type) || '';
 
                         // NOTE: The feePaid key and value would be sent IFF a fee was applied along with the payment
                         if ($scope.feeData) {
@@ -186,7 +190,7 @@ angular.module('sntPay').controller('payMLIOperationsController',
                             // check if add to guest card was selected
                             response.add_to_guest_card = $scope.payment.addToGuestCardSelected;
                         }
-                        $scope.$emit("HIDE_SIX_PAY_LOADER");
+                        $scope.$emit('HIDE_SIX_PAY_LOADER');
 
                         $timeout(() => {
                             $scope.onPaymentSuccess(response);
@@ -194,9 +198,9 @@ angular.module('sntPay').controller('payMLIOperationsController',
 
                     },
                     errorMessage => {
-                        $log.info("payment failed" + errorMessage);
+                        $log.info('payment failed' + errorMessage);
                         $scope.$emit('PAYMENT_FAILED', errorMessage);
-                        $scope.$emit("HIDE_SIX_PAY_LOADER");
+                        $scope.$emit('HIDE_SIX_PAY_LOADER');
                     });
             };
 
@@ -205,7 +209,7 @@ angular.module('sntPay').controller('payMLIOperationsController',
              * @param {Event} $event Angular event
              * @return {undefined}
              */
-            $scope.getMLIToken = function($event) {
+            $scope.getMLIToken = function ($event) {
                 $event.preventDefault();
 
                 // if swiped data is present
@@ -216,15 +220,15 @@ angular.module('sntPay').controller('payMLIOperationsController',
 
                 var params = util.formParamsForFetchingTheToken($scope.cardData);
 
-                $scope.$emit("showLoader");
+                $scope.$emit('showLoader');
                 sntPaymentSrv.fetchMLIToken(params, successCallBackOfGetMLIToken, failureCallBackOfGetMLIToken);
             };
 
-            $scope.$on("RENDER_SWIPED_DATA", function(e, data) {
+            $scope.$on('RENDER_SWIPED_DATA', function (e, data) {
                 renderDataFromSwipe(e, data);
             });
 
-            $scope.$on('INITIATE_CHIP_AND_PIN_PAYMENT', function(event, data) {
+            $scope.$on('INITIATE_CHIP_AND_PIN_PAYMENT', function (event, data) {
                 var paymentParams = data;
 
                 paymentParams.postData.is_emv_request = true;
@@ -233,7 +237,7 @@ angular.module('sntPay').controller('payMLIOperationsController',
                 proceedChipAndPinPayment(data);
             });
 
-            $scope.$on('INITIATE_CHIP_AND_PIN_TOKENIZATION', function(event, data) {
+            $scope.$on('INITIATE_CHIP_AND_PIN_TOKENIZATION', function (event, data) {
                 var paymentParams = data;
 
                 paymentParams.is_emv_request = true;
@@ -247,7 +251,7 @@ angular.module('sntPay').controller('payMLIOperationsController',
 
             /** **************** init ***********************************************/
 
-            (function() {
+            (function () {
                 initializeCardData();
 
                 $scope.modes = paymentConstants.modes;
