@@ -1688,8 +1688,9 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', 'jsMappings', '$s
             return iconClass;
         };
 
-        $scope.showAccompanyingGuestSection = function(room) {
-            return (parseInt(room.numAdults) + parseInt(room.numChildren) + parseInt(room.numInfants)) > 1;
+        // Show accompany guest section based on guest count
+        $scope.showAccompanyingGuestSectionBasedOnGuestCount = function(room) {
+            return (room && (( parseInt(room.numAdults) + parseInt(room.numChildren) + parseInt(room.numInfants) ) > 1) );
         };
 
         $scope.init();
