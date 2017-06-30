@@ -525,6 +525,17 @@ sntZestStation.service('zsCheckinSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
             return deferred.promise;
         };
 
+        this.fetchLateCheckoutSettings = function(param) {
+            var deferred = $q.defer();
+            var url = '/admin/hotel/get_late_checkout_setup.json';
+
+            zsBaseWebSrv2.getJSON(url, param).then(function(data) {
+                deferred.resolve(data);
+            }, function(data) {
+                deferred.reject(data);
+            });
+            return deferred.promise;
+        };
 
     }
 ]);

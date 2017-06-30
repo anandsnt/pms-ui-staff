@@ -7,7 +7,8 @@ sntZestStation.controller('zsCheckinAddonCtrl', [
 	'$timeout',
 	'$translate',
 	function($scope, $stateParams, $state, zsCheckinSrv, zsEventConstants, $timeout, $translate) {
-
+		
+		var lcoAddonIds = [];
 		var navigateToTermsPage = function() {
 
 			var stateParams = {
@@ -227,6 +228,56 @@ sntZestStation.controller('zsCheckinAddonCtrl', [
 			$scope.showAddonPopup = false;
 		};
 
+		var fetchLateCheckoutSettings = function() {
+			var fetchLateCheckoutSettingsSuccess = function(response) {
+				var checkIfAddonIdIsPresent = function(lco) {
+					return (!_.isUndefined(lco.addon_id) && lco.addon_id !== '');
+				};
+				if (checkIfAddonIdIsPresent(response.extended_checkout_charge_0)) {
+					lcoAddonIds.push(response.extended_checkout_charge_0.addon_id);
+				}
+				if (checkIfAddonIdIsPresent(response.extended_checkout_charge_1)) {
+					lcoAddonIds.push(response.extended_checkout_charge_1.addon_id);
+				}
+				if (checkIfAddonIdIsPresent(response.extended_checkout_charge_2)) {
+					lcoAddonIds.push(response.extended_checkout_charge_2.addon_id);
+				}
+
+				var firstLcoIndex = -1;
+				var lateCheckoutAddons = [];
+				_.each($scope.addonsList, function(addon, addonIndex) {
+					_.each(lcoAddonIds, function(lcoAddonId) {
+						if (parseInt(addon.addon_id) === parseInt(lcoAddonId)) {
+							if (firstLcoIndex === -1) {
+								firstLcoIndex = addonIndex;
+							}
+							addon.isLateCheckoutAddon = true;
+							lateCheckoutAddons.push(addon);
+							console.log(lateCheckoutAddons);
+						}
+					});
+				});
+				$scope.addonsList = _.reject($scope.addonsList, function(addon){
+					return addon.isLateCheckoutAddon;
+				});
+
+				var bundledLCOAddon = {"addons":lateCheckoutAddons,"name":"LCO"};
+
+				$scope.addonsList.splice(firstLcoIndex, 0, bundledLCOAddon);
+
+				//$scope.addonsList
+				setPageNumberDetails();
+			};
+
+			$scope.callAPI(zsCheckinSrv.fetchLateCheckoutSettings, {
+				params: {
+					reservation_id: $scope.selectedReservation.id
+				},
+				'successCallBack': fetchLateCheckoutSettingsSuccess,
+				'failureCallBack': generalError
+			});
+		};
+
 		var fetchHotelAddonLabels = function() {
 			var fetchAddonLabelSuccess = function(response) {
 				var amountTypesLabels;
@@ -266,8 +317,14 @@ sntZestStation.controller('zsCheckinAddonCtrl', [
 					// if no custom label is present, set to post type
 					addon.post_type_label = (addon.post_type_label === '') ? addon.post_type : addon.post_type_label;
 				});
+				// TO DELETE
+				islateCheckoutFlagTurnedOn = true;
+				if (islateCheckoutFlagTurnedOn) {
+					fetchLateCheckoutSettings();
+				} else {
+					setPageNumberDetails();
+				}
 
-				setPageNumberDetails();
 				$scope.loadingCompleted = true;
 				$scope.showPageNumberDetails = true;
 			};
