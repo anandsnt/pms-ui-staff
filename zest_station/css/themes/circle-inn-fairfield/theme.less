@@ -105,21 +105,11 @@
 		}
 
 		#main {
-			#calc > #height > .remove(100%, 100px);
-			top: 100px;
-			/*
-			The change specified as global was moved here to avoid design breaks in the existing templates. 
-			Originally it was present in app/assets/zest_station/css/less/layout.less.
-			===Start===
-			*/
 			&.centered {
 				#options {
-					margin-top: 0;
+					margin-top: 60px !important;
 				}
 			}
-			/*
-			===End===
-			*/
 		}
 
 		#actions {
@@ -183,6 +173,10 @@
 	}
 	
 	.add-guest-mode-content{
-	    height: 100% !important;
+	    height: 90% !important;
 	    margin-top: 50px;
+	}
+	.check_in_add_remove > .input-field-contents {
+		height: 45% !important;
+
 	}
