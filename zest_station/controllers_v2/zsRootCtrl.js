@@ -983,6 +983,9 @@ sntZestStation.controller('zsRootCtrl', [
                         reconnectToWebSocket();// if disconnected, will attempt to re-connect to the websocket
                     }
                     workstationTimer = 0;
+                    $scope.trackEvent('health_check', 'status_update', currentState, currentState);
+                } else if (workstationTimer === 60) {
+                    $scope.trackEvent('health_check', 'status_update', currentState, currentState);
                 }
 
 				// the user inactivity actions do Not need be done when user is in 
