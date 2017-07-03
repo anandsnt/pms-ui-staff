@@ -337,6 +337,39 @@ function BaseCtrl($scope) {
             zs = $scope.$parent.zestStationData ? $scope.$parent.zestStationData : $scope.zestStationData;
             if (zs) {
                 if (event_type === 'status_update') {
+                  // JSON format to parse from a string 
+                  var today = new Date();
+                  var currentTime = today.toString();
+                  // 
+                  // This data goes through Google Analytics, therefore- be very explicit in the data to send
+                  // DO NOT send any Personal Identifiable information, Credit Card info, or IP address 
+                  // configurations.
+                  // 
+                  // Only send metrics and settings like CC_SWIPE ON/OFF, or Handler ON/OFF, etc.
+                  // if you do not know if something will contain personal info, do not include it.
+                  // 
+                  var status = {
+                      'theme': zs.theme,
+                      'workstation_name': zs.workstationName,
+                      'workstation_status': zs.workstationStatus,
+                      'OOO_treshold': zs.kioskOutOfOrderTreshold,
+                      'consecutive_key_fails': zs.consecutiveKeyFailure,
+                      'handler_connected_status': zs.stationHandlerConnectedStatus,
+                      'hourly_rate_on': zs.isHourlyRateOn,
+                      'key_encoder_id': zs.key_encoder_id,
+
+                      'current_screen': (at ? at : ''),
+                      'from_screen': (from ? from : ''),
+
+                      'idle_timer': {
+                          'enabled': zs.idle_timer.enabled,
+                          'max': zs.idle_timer.max,
+                          'prompt': zs.idle_timer.prompt
+                      },
+                      'kiosk_time': currentTime
+                  };
+
+                  /*
                     var extraParams = '' +
                       'theme[' + zs.theme + '] : ' +
                       // 'hotel_time_zone_full[' + zs.hotel_time_zone_full + '] : ' +
@@ -356,8 +389,11 @@ function BaseCtrl($scope) {
                       
                       'idle_timer[enabled(' + zs.idle_timer.enabled + '), max(' + zs.idle_timer.max + '), prompt(' + zs.idle_timer.prompt + ')]';
 
-                    event_name = event_name + ' : ' + extraParams;
-                    // console.log('status update: ', event_name);
+                      event_name = event_name + ' : ' + extraParams;
+                    */
+
+                    event_name = JSON.stringify(status);
+                    console.log('as JSON: ',JSON.parse(event_name));
                 }
 
                 try {
