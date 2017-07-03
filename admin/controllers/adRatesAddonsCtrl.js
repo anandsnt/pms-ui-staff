@@ -35,19 +35,9 @@ admin.controller('ADRatesAddonsCtrl', [
             $scope.state = {
                 rates: activeRates.results
             };
-        };
 
-        $scope.isConnectedToPMS = false;
-        $scope.checkPMSConnection = function() {
-            var fetchSuccessOfHotelSettings = function(data) {
-                if (data.pms_type !== null) {
-                    $scope.isConnectedToPMS = true;
-                }
-            };
-
-            $scope.invokeApi(ADHotelSettingsSrv.fetch, {}, fetchSuccessOfHotelSettings);
+            $scope.isConnectedToPMS = !$rootScope.isStandAlone;
         };
-        $scope.checkPMSConnection();
 
         $scope.init();
         $scope.showChargeFullWeeksOnly = function() {
