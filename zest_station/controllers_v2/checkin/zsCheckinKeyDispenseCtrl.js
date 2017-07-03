@@ -142,6 +142,7 @@ sntZestStation.controller('zsCheckinKeyDispenseCtrl', [
         $scope.editEmailAddress = function() {
             $scope.mode = 'COLLECT_EMAIL';
             $scope.emailMode = 'EMAIL_ENTRY_MODE';
+            $scope.focusInputField('email-entry');
         };
         $scope.sendMobileKeyEmail = function() {
 
