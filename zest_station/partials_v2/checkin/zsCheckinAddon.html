@@ -1,5 +1,5 @@
 <!-- Add .open to show the popup -->
-<div class="popup" ng-class="{'open':showAddonPopup}">
+<div class="popup" ng-class="{'open':showAddonPopup && !selectedAddon.isLco}">
    <div class="popup-content add-on">
       <!-- <i class="close-popup" touch-press="closePopup()"></i> -->
       <div class="add-on-picture">
@@ -34,6 +34,39 @@
       </div>
    </div>
 </div>
+
+
+<!-- Add .open to show the popup -->
+<div class="popup" ng-class="{'open':showAddonPopup && selectedAddon.isLco}">
+   <div class="popup-content add-on">
+      <!-- <i class="close-popup" touch-press="closePopup()"></i> -->
+      <div class="add-on-picture">
+         <img src="{{selectedAddon.image}}" />
+      </div>
+      <div class="add-on-content" ng-repeat="addon in selectedAddon.addons" ng-class="{'selected-addon': addon.is_selected ,'un-selected-addon': !addon.is_selected && isOneLcoAdded()}">
+         <h2 style="padding:10px;background: gray;">{{addon.name}}</h2>
+         <div class="price">
+            <div class="action">
+               <button type="button" data-action="popup" class="button transparent" click-touch="addRemoveLcoAddon(addon)">
+               <text data-ng-bind-html="getTagValue('ADD_ADDON')" editable-text="ADD_ADDON" ng-hide="addon.is_selected"></text>
+               <text data-ng-bind-html="getTagValue('REMOVE_ADDON')" editable-text="REMOVE_ADDON" ng-show="addon.is_selected" class="transparent text-red"></text>
+               </button>
+            </div>
+         </div>
+      </div>
+
+      <div class="add-on-content">
+         <div class="price">
+            <div class="action">
+              <button type="button" data-action="popup" class="button transparent" click-touch="showAddonPopup = false">
+               <text data-ng-bind-html="getTagValue('NAV_BACK')" editable-text="NAV_BACK"></text>
+               </button>
+            </div>
+         </div>
+      </div>
+   </div>
+</div>
+
 <!-- Add .open to show the popup -->
 <div class="popup" ng-class="{'open':showErrorPopUp}">
    <!-- Remove class "open" to hide popup content -->
@@ -64,7 +97,7 @@
                </div>
                <div class="add-on-content">
                   <h2>{{addon.name}}<span ng-show="addon.quantity>0">&nbsp;({{addon.quantity}})</span></h2>
-                  <div class="price">
+                  <div class="price" ng-hide="addon.isLco">
                      {{zestStationData.currencySymbol}}{{addon.amount}}
                   </div>
                </div>

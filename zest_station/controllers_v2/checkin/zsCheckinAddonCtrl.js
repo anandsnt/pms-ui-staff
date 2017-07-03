@@ -152,34 +152,62 @@ sntZestStation.controller('zsCheckinAddonCtrl', [
 				navigateToTermsPage();
 			}
 		};
-		var addAddonToReservation = function(selectedAddon) {
+		var addAddonToReservation = function(addon, isLco) {
 			var params = {
 				id: $scope.selectedReservation.id,
-				addon_id: selectedAddon.addon_id
+				addon_id: addon.addon_id
 			};
 
-			if ($scope.isAddonFlatOrRoomType(selectedAddon)) {
+			if ($scope.isAddonFlatOrRoomType(addon)) {
 				params.quantity = angular.copy($scope.selectedAddonCount);
 			}
 			$scope.callAPI(zsCheckinSrv.updateAddon, {
 				params: params,
 				'successCallBack': function() {
-					addRemoveAddonSucess(selectedAddon);
+					if(!_.isUndefined(isLco)){
+						addon.is_selected = true;
+						$scope.selectedAddon.is_selected = true;
+					}else{
+						addRemoveAddonSucess(addon);
+					}
 				},
 				'failureCallBack': addonGeneralFailure
 			});
 		};
-		var removeAddonFromReservation = function(selectedAddon) {
+		var removeAddonFromReservation = function(addon, isLco) {
 			$scope.callAPI(zsCheckinSrv.deleteAddon, {
 				params: {
 					id: $scope.selectedReservation.id,
-					addon_id: selectedAddon.addon_id
+					addon_id: addon.addon_id
 				},
 				'successCallBack': function() {
-					addRemoveAddonSucess(selectedAddon);
+					if(!_.isUndefined(isLco)){
+						addon.is_selected = false;
+						$scope.selectedAddon.is_selected = false;
+					}else{
+						addRemoveAddonSucess(addon);
+					}
 				},
 				'failureCallBack': addonRemoveGeneralFailure
 			});
+		};
+
+		$scope.addRemoveLcoAddon = function(selectedAddon) {
+			if (!selectedAddon.is_selected) {
+				addAddonToReservation(selectedAddon, true);
+			} else {
+				removeAddonFromReservation(selectedAddon, true);
+			}
+		};
+
+		$scope.isOneLcoAdded = function(){
+			var lcoAddon = _.find($scope.viewableAddons, function(addon){
+				return addon.isLco;
+			});
+			var isAnyOneLcoSelected = _.some(lcoAddon.addons, function(addon){
+				return addon.is_selected;
+			});
+			return isAnyOneLcoSelected;
 		};
 
 		$scope.incrementAddonQty = function() {
@@ -260,8 +288,11 @@ sntZestStation.controller('zsCheckinAddonCtrl', [
 				$scope.addonsList = _.reject($scope.addonsList, function(addon){
 					return addon.isLateCheckoutAddon;
 				});
-
-				var bundledLCOAddon = {"addons":lateCheckoutAddons,"name":"LCO"};
+				var bundledLCOAddon = {
+					"addons": lateCheckoutAddons,
+					"name": "LCO",
+					"isLco": true
+				};
 
 				$scope.addonsList.splice(firstLcoIndex, 0, bundledLCOAddon);
 
@@ -318,8 +349,7 @@ sntZestStation.controller('zsCheckinAddonCtrl', [
 					addon.post_type_label = (addon.post_type_label === '') ? addon.post_type : addon.post_type_label;
 				});
 				// TO DELETE
-				islateCheckoutFlagTurnedOn = true;
-				if (islateCheckoutFlagTurnedOn) {
+				if ($scope.zestStationData.is_sell_late_checkout_as_addon) {
 					fetchLateCheckoutSettings();
 				} else {
 					setPageNumberDetails();
