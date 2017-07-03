@@ -114,12 +114,14 @@
 
         &.centered {
             top: 0;
-            padding-top: 0;
             height: 100%;
             #flexbox > .parent('', '', center, '');
 
             #content { height: auto; }
 
+            #options {
+                margin-top: 0;
+            }
         }
 
         @media only screen and (min-height: 1024px) { padding-top: 200px; }
@@ -339,9 +341,6 @@
 
 
 /* Upgrade Box **/
-    #main.upgrades-section{
-        padding-top:44px;
-    }
     #upgrade {
         position: relative;
         color: @black;
@@ -2073,11 +2072,6 @@
     }
 }
 
-
-.add-guest-mode-content{
-    height: 75% !important;
-    margin-top: 50px;
-}
 .signature-pad-layout {
     height: 295px; 
     border-radius: 8px;

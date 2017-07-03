@@ -36,7 +36,8 @@ sntZestStation.service('zsGeneralSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
             'chalet-view': 'Chalet view',
             'row-nyc': 'row',
             'circle-inn-fairfield': 'Circle fairfield',
-            'cachet-boutique': 'Cachet Boutique'
+            'cachet-boutique': 'Cachet Boutique',
+            'hi-ho': 'Hotel hiho'
         };
 
         this.isThemeConfigured = function(theme) {
