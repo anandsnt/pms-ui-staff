@@ -284,8 +284,8 @@ angular.module('adminInterfacesRouter', []).config(function($stateProvider) {
         controller: 'adBritePabXSetupCtrl',
         url: '/britePabX/setup',
         resolve: {
-            britePabXSetupValues: ['adBritePabXSetupSrv', function(adBritePabXSetupSrv) {
-                return adBritePabXSetupSrv.fetchBritePabXConfiguration();
+            britePabXSetupValues: ['adInterfacesCommonConfigSrv', function(adInterfacesCommonConfigSrv) {
+                return adInterfacesCommonConfigSrv.fetchConfiguration('brite');
             }]
         }
     });
