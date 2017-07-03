@@ -203,6 +203,9 @@ $scope.saveClick = function() {
 	updateData.room_types = [];
 	updateData.deleted_room_types = [];
 	updateData.deleted_room_types = $scope.upsellData.deleted_room_types;
+  updateData.is_sell_late_checkout_as_addon = $scope.upsellData.is_sell_late_checkout_as_addon;
+  updateData.is_allow_additional_late_checkout_offers = $scope.upsellData.is_allow_additional_late_checkout_offers;
+
 	// Creating room type array with available max_late_checkouts data
 	angular.forEach($scope.upsellData.room_types, function(item, index) {
 		if (item.max_late_checkouts !== '' && item.max_late_checkouts !== null) {
