@@ -16,6 +16,7 @@ angular.module('sntRover').controller('companyCardDetailsController', ['$scope',
 		$scope.isLogoPrint = true;
 		$scope.isPrintArStatement = false;
 		$scope.contactInformation = {};
+		$scope.isGlobalToggleReadOnly = !rvPermissionSrv.getPermissionValue ('GLOBAL_CARD_UPDATE');
 		// setting the heading of the screen
 		if ($stateParams.type === "COMPANY") {
 			if ($scope.isAddNewCard) {
@@ -240,8 +241,8 @@ angular.module('sntRover').controller('companyCardDetailsController', ['$scope',
 				$scope.contactInformation.is_global_enabled = !$scope.contactInformation.is_global_enabled;
 				$scope.contactInformation.account_type = $scope.account_type;
 			}
-
 		};
+
 		$scope.shouldShowCommissionsTab = function() {
 			return ($scope.account_type == 'TRAVELAGENT' && rvPermissionSrv.getPermissionValue ('GLOBAL_CARD_UPDATE') && $scope.contactInformation.is_global_enabled);
 		};
@@ -325,8 +326,6 @@ angular.module('sntRover').controller('companyCardDetailsController', ['$scope',
 		 */
 		var successCallbackOfInitialFetch = function(data) {
 			$scope.$emit("hideLoader");
-			console.log("-----")
-			console.log(data)
 			$scope.contactInformation = data;
 			if ($scope.contactInformation.alert_message !== "") {
 				$scope.errorMessage = [$scope.contactInformation.alert_message];
