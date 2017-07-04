@@ -11,6 +11,7 @@ function($scope, ADClientSuccessManagerSrv,
     // Function to save/update client service manager
     $scope.clickedSave = function() {
             var requestData = $scope.data;
+
             $scope.errorMessage = [];
             var postSuccess = function() {
                     $scope.$emit('hideLoader');
