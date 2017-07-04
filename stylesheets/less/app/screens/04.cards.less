@@ -159,6 +159,51 @@
                             .switch-icon { background: @yellow; }
                         }
 
+                        &.readonly {
+                            margin-top: 11px;
+                            background-color: rgba(0,0,0,.2);
+                            .size(20px, 60px);
+                            .box-shadow(none);
+                            #border-radius > .rounded();
+
+                            input {
+                                height: 20px;
+                                min-height: 20px;
+                            }
+                            
+                            .data-off,
+                            .data-on {
+                                top: 0;
+                                padding: 0 5px;
+                                #flexbox > .parent(row wrap, center, center, '');
+                            }                        
+
+                            .switch-icon,
+                            .value {
+                                position: static;
+                                font-size: 12px;
+                                line-height: 20px;
+                                color: @white;
+                                background-color: transparent;
+                                margin: 0;
+                                width: auto;
+                            }
+
+                            .switch-icon {
+                                order: 1;
+                                margin-right: 2px;
+                                background-color: transparent;
+                            }
+
+                            .value {
+                                order: 2;
+                            }
+
+                            &.on {
+                                background-color: @yellow;
+                            }
+                        }
+
                         &.global-flag {
                             width: 90px;
 
@@ -174,6 +219,17 @@
                                 .switch-icon { 
                                     color: @white;
                                     background: @blue; 
+                                }
+                            }
+
+                            &.readonly {
+                                .switch-icon,
+                                .value {
+                                    width: auto;
+                                }
+
+                                &.on {
+                                    background-color: @blue;
                                 }
                             }
                         }
