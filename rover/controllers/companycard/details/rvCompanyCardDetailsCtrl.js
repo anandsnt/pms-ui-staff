@@ -241,6 +241,30 @@ angular.module('sntRover').controller('companyCardDetailsController', ['$scope',
 				$scope.contactInformation.is_global_enabled = !$scope.contactInformation.is_global_enabled;
 				$scope.contactInformation.account_type = $scope.account_type;
 			}
+
+			$timeout(function() {
+				if ($scope.currentSelectedTab === 'cc-contact-info') {
+					$scope.$broadcast("ContactTabActivated");
+					$scope.$broadcast("contactTabActive");
+				}
+	            if ($scope.currentSelectedTab === 'cc-contracts') {
+					$scope.$broadcast("refreshContractsScroll");
+				}
+	            if ($scope.currentSelectedTab === 'cc-ar-accounts') {
+					$scope.$broadcast("arAccountTabActive");
+					$scope.$broadcast("refreshAccountsScroll");
+				}
+		        if ($scope.currentSelectedTab === 'cc-ar-transactions') {
+					$rootScope.$broadcast("arTransactionTabActive");
+					$scope.isWithFilters = false;
+				}
+				if ($scope.currentSelectedTab === 'cc-notes') {
+					$scope.$broadcast("fetchNotes");
+				}
+				if ($scope.currentSelectedTab === 'cc-commissions') {
+					$scope.$broadcast("commissionsTabActive");
+				}
+			}, 1000);
 		};
 
 		$scope.shouldShowCommissionsTab = function() {
