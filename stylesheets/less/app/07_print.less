@@ -813,6 +813,46 @@
                         }
                     }
                 }
+
+                .print-date {
+                    display: block;
+                    margin-top: 2pt;
+
+                    .arrival-date,
+                    .departure-date {
+                        clear: both;
+                        display: inline-block;
+                        vertical-align: middle;
+                        .float;
+
+                        .guest-status {
+                            .square(15px);
+                            background-size: 15px;
+
+                            &.check-out {
+                               background-position: -1px -16px
+                            }
+                        }
+
+                        time {
+                            line-height: 15px;
+                        }
+                    }
+
+                    .departure-date {
+                        margin-left: 2pt;
+                    }
+                    
+                }
+
+                .last-column {
+                    .pull-left;
+                    width: 20%;
+                    .service-status {
+                        width: 100%;
+                        float: none;
+                    } 
+                }
             }
 
             /* Commisions ***/
@@ -3409,6 +3449,33 @@
 
             &:last-child {
                 border-bottom: 1px solid @grey3;
+            }
+
+            .print-date { 
+                order: 4;
+
+                .arrival-date,
+                .departure-date {
+                    display: block;
+                    margin-top: 2pt; 
+
+                    .guest-status {
+                        .square(10px);
+                        background-size: 12px;
+
+                        &.check-in {
+                           background-position: -2px -2px
+                        }
+
+                        &.check-out {
+                           background-position: -2px -14px
+                        }
+                    }
+
+                    time {
+                        line-height: 10px;
+                    }
+                }
             }
         }
     }
