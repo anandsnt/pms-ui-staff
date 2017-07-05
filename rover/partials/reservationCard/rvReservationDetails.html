@@ -224,7 +224,7 @@
             <div ng-if="reservationData.reservation_card.accompaying_guests.length > 0" ng-include="'/assets/partials/reservationCard/accompanyGuest.html'"></div>
 
             <form method="post" name="manage-guests" id="manage-guests" class="form scrollable" ng-show="isStandAlone" ng-iscroll="accompanyGuestList" ng-iscroll-delay='1000'>
-                <div class="wrapper" style="height:100%;overflow:hidden;">
+                <div class="wrapper accompany-guest-wrapper">
                     <div class="entry">
                         <figure class="guest-image">
                             <img ng-src="{{::guestData.primary_guest_details.image}}" alt="" />
