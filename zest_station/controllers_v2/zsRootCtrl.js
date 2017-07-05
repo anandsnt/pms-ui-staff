@@ -1345,7 +1345,7 @@ sntZestStation.controller('zsRootCtrl', [
                     $scope.callBlurEventForIpad();
 
                     $timeout(function() {
-                        $('#' + elementId).click();
+                        document.getElementById(elementId).click(); 
                     }, 500);
                 }
             }, 300);
