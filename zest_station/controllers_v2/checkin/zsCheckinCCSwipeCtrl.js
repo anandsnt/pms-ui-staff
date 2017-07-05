@@ -379,7 +379,7 @@ sntZestStation.controller('zsCheckinCCSwipeCtrl', [
             var paymentGateway = $scope.zestStationData.paymentGateway;
 
             // EMV requests are used for six payments and MLI with EMV enabled in SNT admin
-            if (paymentGateway === 'sixpayments' || (paymentGateway === 'sixpayments' && $scope.zestStationData.mliEmvEnabled)) {
+            if (paymentGateway === 'sixpayments' || (paymentGateway === 'MLI' && $scope.zestStationData.mliEmvEnabled)) {
                 return true;
             }
             return false;
@@ -663,7 +663,7 @@ sntZestStation.controller('zsCheckinCCSwipeCtrl', [
             }
             // var sixPay = isEmvEnabled();
 
-            $log.log('sixPay: ' + sixPay);
+            $log.log('isEmvEnabled: ' + isEmvEnabled());
             // check if a Sixpay hotel or MLI
             // then depending on the swipe configuration, initialize the device
             if (!isEmvEnabled()) { // mli
