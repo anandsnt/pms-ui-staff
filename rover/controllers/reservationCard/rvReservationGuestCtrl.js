@@ -384,6 +384,7 @@ sntRover.controller('rvReservationGuestController', ['$scope', '$rootScope', 'RV
         // Group accompany guests by type
         var groupAccompanyingGuestsByType = function(accompanyingGuests) {
             var accompanyGuestByType = _.groupBy(accompanyingGuests, 'guest_type');
+
             if (!accompanyGuestByType['ADULT']) {
                 accompanyGuestByType['ADULT'] = [];
             }
