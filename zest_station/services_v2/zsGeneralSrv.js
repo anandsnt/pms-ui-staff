@@ -500,6 +500,19 @@ sntZestStation.service('zsGeneralSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
             return deferred.promise;
         };
 
+
+        this.validate_staff = function(params) {
+            var deferred = $q.defer(),
+                url = '/zest_station/validate_staff';
+
+            zsBaseWebSrv.postJSON(url, params).then(function(data) {
+                deferred.resolve(data);
+            }, function(data) {
+                deferred.reject(data);
+            });
+            return deferred.promise;
+        };
+
         this.fetchCheckinReservationDetails = function(params) {
             var deferred = $q.defer();
             var url = '/api/reservations?reservation_id=' + params.reservation_id;

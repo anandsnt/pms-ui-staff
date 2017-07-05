@@ -341,8 +341,15 @@
             .form {
                 position: relative;
                 margin-top: 10px;
-                border-top: 1px solid rgba(0,0,0,.1);
                 max-height: 220px;
+                .float;
+                position: relative;
+
+                .iScrollVerticalScrollbar {
+                    right: 0;
+                }
+
+                border-top: 1px solid rgba(0,0,0,.1);
 
                 .wrapper {
                     padding: 10px 0;
@@ -385,9 +392,9 @@
                         .square(40px); 
 
                         .icons {
-                            border-radius: 2px;
-                            background-color: @grey2;
                             .square(40px);
+                            background-color: @grey2;
+                            border-radius: 2px;
 
                             &.icon-adult {
                                 background-position: 10px -10470px;
@@ -417,6 +424,24 @@
 
                         &:nth-of-type(2) { margin-right: 0; }
                     }
+
+                    .button {
+                        position: absolute;
+                        left: 100%;
+                        .size(40px, 110px);
+                        margin-left: 10px;
+                        padding-left: 40px;
+                        .nowrap();
+
+                        .icon-identity-card {
+                            background-position: 10px -10831px;
+                            left: 10px;
+                            top: 0;
+                            .square(40px);
+                        }
+                    }
+                }
+            }
 
                     .button {
                         position: absolute;
@@ -1161,4 +1186,23 @@
             #fade > .in();
         }
     }
+}
+
+
+#manage-guests{
+    width: 100% !important;
+    /*CICO-CICO-41313*/
+}
+.guest-id-img{
+    max-width:79%!important;
+    border-radius: .5em;
+}
+.guest-id-img-div{
+    display: -webkit-inline-box;
+}
+
+.accompany-guest-wrapper, {
+    height:100%;
+    overflow:visible;
+    width: 100% !important;
 }

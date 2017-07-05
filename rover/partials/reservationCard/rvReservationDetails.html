@@ -224,7 +224,7 @@
             <div ng-if="reservationData.reservation_card.accompaying_guests.length > 0" ng-include="'/assets/partials/reservationCard/accompanyGuest.html'"></div>
 
             <form method="post" name="manage-guests" id="manage-guests" class="form scrollable" ng-show="isStandAlone" ng-iscroll="accompanyGuestList" ng-iscroll-delay='1000'>
-                <div class="wrapper" style="height:100%;overflow:hidden;">
+                <div class="wrapper accompany-guest-wrapper">
                     <div class="entry">
                         <figure class="guest-image">
                             <img ng-src="{{::guestData.primary_guest_details.image}}" alt="" />
@@ -234,6 +234,12 @@
                         </figure>
                         <input name="guest-first-name" id="guest-first-name" type="text" placeholder="First Name" value="{{::guestData.primary_guest_details.first_name}}" readonly />
                         <input name="guest-last-name" id="guest-last-name" type="text" placeholder="Last Name" value="{{::guestData.primary_guest_details.last_name}}" readonly />
+                        <button class="button with-icon white green-text" click-touch='showScannedGuestID(true, guestData.primary_guest_details)'
+                            ng-if='!hideGuestId(guestData.primary_guest_details, true) && guestIdAdminEnabled'
+                            ng-class='{"overlay":!hasGuestIDPermission}'>
+                            <span class="icons icon-identity-card"></span>
+                             {{'GUEST_ID_BUTTON' |translate}}
+                        </button>
                     </div>
 
                     <label for="acc1-first-name" ng-show="showAccompanyingGuestLabel()">Accompanying Guests</label>
@@ -246,6 +252,12 @@
                         </figure>
                         <input name="{{guest.first_name}}" id="{{guest.first_name}}" type="text" placeholder="First Name" value="{{guest.first_name}}" ng-model="guest.first_name" ng-blur="saveAccGuestDetails()" />
                         <input name="{{guest.last_name}}" id="{{guest.last_name}}" type="text" placeholder="Last Name" ng-model="guest.last_name" value="{{guest.last_name}}" ng-blur="saveAccGuestDetails()" />
+                        <button class="button with-icon white green-text" click-touch='showScannedGuestID(false, guest)'
+                            ng-if='!hideGuestId(guest)'
+                            ng-class='{"overlay":!hasGuestIDPermission}'>
+                            <span class="icons icon-identity-card"></span>
+                            {{'GUEST_ID_BUTTON' |translate}}
+                        </button>
                     </div>
 
                     <!-- Children Guest -->
@@ -260,6 +272,12 @@
                         </figure>
                         <input name="{{guest.first_name}}" id="{{guest.first_name}}" type="text" placeholder="First Name" value="{{guest.first_name}}" ng-model="guest.first_name"  />
                         <input name="{{guest.last_name}}" id="{{guest.last_name}}" type="text" placeholder="Last Name" ng-model="guest.last_name" value="{{guest.last_name}}" ng-blur="saveAccGuestDetails()"  />
+                        <button class="button with-icon white green-text" click-touch='showScannedGuestID(false, guest)'
+                            ng-if='!hideGuestId(guest)'
+                            ng-class='{"overlay":!hasGuestIDPermission}'>
+                            <span class="icons icon-identity-card"></span>
+                            {{'GUEST_ID_BUTTON' |translate}}
+                        </button>
                     </div>
 
                     <!-- Infant Guest -->
@@ -274,6 +292,12 @@
                         </figure>
                         <input name="{{guest.first_name}}" id="{{guest.first_name}}" type="text" placeholder="First Name" value="{{guest.first_name}}" ng-model="guest.first_name"  />
                         <input name="{{guest.last_name}}" id="{{guest.last_name}}" type="text" placeholder="Last Name" ng-model="guest.last_name" value="{{guest.last_name}}" ng-blur="saveAccGuestDetails()"  />
+                        <button class="button with-icon white green-text" click-touch='showScannedGuestID(false, guest)'
+                            ng-if='!hideGuestId(guest)'
+                            ng-class='{"overlay":!hasGuestIDPermission}'>
+                            <span class="icons icon-identity-card"></span>
+                            {{'GUEST_ID_BUTTON' |translate}}
+                        </button>
                     </div>
 
                 </div>
