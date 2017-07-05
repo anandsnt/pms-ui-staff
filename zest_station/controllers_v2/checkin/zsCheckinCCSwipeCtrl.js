@@ -661,7 +661,6 @@ sntZestStation.controller('zsCheckinCCSwipeCtrl', [
                 // the card to the staycard
                 setCCAuthSettings();
             }
-            // var sixPay = isEmvEnabled();
 
             $log.log('isEmvEnabled: ' + isEmvEnabled());
             // check if a Sixpay hotel or MLI
