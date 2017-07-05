@@ -1637,6 +1637,26 @@ angular.module('sntRover').controller('rvGroupRoomBlockCtrl', [
             return returnString;
         };
 
+        // Get the day of the week from date
+        $scope.getDayOfWeek = function(inputDate, dateFormat) {
+            var type_ = typeof inputDate,
+                returnString = '',
+                dateFormat = dateFormat ? dateFormat : $rootScope.dateFormat;
+
+            switch (type_) {
+                // if date string passed
+            case 'string':
+                returnString = $filter('date')(new tzIndependentDate(inputDate), dateFormat);
+                break;
+
+                    // if date object passed
+            case 'object':
+                returnString = $filter('date')(inputDate, dateFormat);
+                break;
+            }
+            return returnString;
+        };
+
 
 		/**
 		 * To get css width for grid timeline
