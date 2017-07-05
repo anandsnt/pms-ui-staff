@@ -40,7 +40,7 @@
 					<div class="color-picker" ng-hide="isToggleThemePreviewControl">
 						<ul class="colors">
 							<li ng-repeat="theme in data.theme_list">
-								<input type="radio" name="colorscheme" value="{{theme.value}}" ng-checked="(selectedTheme.value === theme.value)"/> 
+								<input type="radio" name="colorscheme" value="{{theme.value}}" ng-checked="(selectedTheme.value === theme.value)"/>
 								<label ng-click="themeSelected(theme)" class="color {{(theme.value).toLowerCase()}}" for="{{theme.value}}">
 									<span ng-show="theme.is_selected" class="icons icon-revert"></span>
 								</label>
@@ -51,6 +51,29 @@
 					<div id="color-palete" ng-click="toggleThemePreviewControl()" class="color {{(selectedTheme.value).toLowerCase()}}"></div>
 				</div>
 			</div>
+
+			<fieldset class="holder left" ng-show="isAdminSnt">
+				<div class="entry full-width">
+					<label for="hotel-status"> Hotel Status <strong>*</strong> </label>
+					<div class="select">
+						<select convert-to-number ng-model="data.status" name="hotel-status" id="hotel-status" class="placeholder">
+							<option value=""> Status </option>
+							<option ng-model="status.id" ng-repeat="status in data.status_list" value="{{status.id}}" ng-selected="status.id==data.status"> {{status.value}} </option>
+
+						</select>
+					</div>
+				</div>
+			</fieldset>
+			<fieldset class="holder right" ng-show="isAdminSnt">
+				<div class="entry full-width">
+					<label for="hotel-manager"> Client Success Manager <strong>*</strong> </label>
+					<div class="select">
+						<select  ng-model="data.client_success_manager" name="hotel-manager" id="hotel-manager" class="placeholder" ng-options="manager.id as manager.name for manager in data.client_success_managers">
+							<option value=""> Client Success Manager </option>
+						</select>
+					</div>
+				</div>
+			</fieldset>
 
 		</fieldset>
 		<fieldset class="holder full-width" >
@@ -84,7 +107,7 @@
 	                            <input type="radio" name="hotel_pms_type" ng-model="data.hotel_pms_type" id="pms_overlay_service" value="OWS" />
 	                            PMS Overlay
 	                        </label>
-	                        <ad-checkbox is-checked="data.is_multi_property" is-disabled="data.is_multi_property" is-hide="data.hotel_pms_type=='OWS'" label="Multi Property" div-class="full-width"></ad-checkbox>
+	                        <ad-checkbox on-click="clickedMultiPropertyCheckbox()" is-checked="data.is_multi_property" is-hide="data.hotel_pms_type=='OWS'" label="Multi Property" div-class="full-width"></ad-checkbox>
                         </fieldset>
                         <fieldset class="holder right">
                         	<label class="checkbox" ng-repeat="interfaceType in data.interface_types">
@@ -609,24 +632,18 @@
 					</label>
 					<input type="text" ng-model="data.mli_site_code" value="{{data.mli_site_code}}" placeholder="Enter MLI site code">
 				</div>
-				<div class="entry" ng-show="data.payment_gateway === 'MLI' && data.is_emv_enabled && data.hotel_pms_type == ''" >
-					<label>
-						Merchant Access Code
-					</label>
-					<input type="text" ng-model="data.merchant_access_code" placeholder="Enter merchant access code">
-				</div>
 				<div class="entry" ng-if="data.payment_gateway === 'MLI' && data.hotel_pms_type == ''">
 					<label for="mli-emv-enabled">
 						Enable EMV (TransactionLink)
 					</label>
-					<div class="switch-button single" ng-class="{ on : data.is_emv_enabled == true}" ng-click="data.is_emv_enabled = !data.is_emv_enabled">
-						<input type="checkbox" value="{{data.is_emv_enabled}}">
+					<div class="switch-button single" ng-class="{ on : data.mli_emv_enabled == true}" ng-click="data.mli_emv_enabled = !data.mli_emv_enabled">
+						<input type="checkbox" value="{{data.mli_emv_enabled}}">
 						<span class="switch-icon"></span>
 					</div>
 				</div>
-				<div class="entry" ng-show="data.payment_gateway === 'MLI' && data.is_emv_enabled && data.hotel_pms_type == ''">
+				<div class="entry" ng-show="data.payment_gateway === 'MLI' && data.mli_emv_enabled && data.hotel_pms_type == ''">
 					<label for="mli-transaction-access-url"> MLI Transaction Access URL </label>
-					<input type="text" ng-model="data.merchantlink_txn_access_url" value="{{data.merchantlink_txn_access_url}}" placeholder="Enter MLI transaction access url" name="merchantlink_txn_access_url" id="mli-transaction-access-url">
+					<input type="text" ng-model="data.mli_txn_access_url" value="{{data.mli_txn_access_url}}" placeholder="Enter MLI transaction access url" name="merchantlink_txn_access_url" id="mli-transaction-access-url">
 				</div>
 
 				<div class="entry full-width" ng-if="data.payment_gateway === 'MLI'">
@@ -705,7 +722,7 @@
                     </label>
                     <input type="text" ng-model="data.shiji_key" value="{{data.shiji_key}}">
                 </div>
-                
+
                 <div class="entry" ng-if="data.payment_gateway === 'SHIJI'">
                     <label for="shiji-payment-gateway-url">
                         Gateway URL
@@ -780,10 +797,12 @@
 						<span class="switch-icon"></span>
 					</div>
 				</div>
-				<div class="entry">
+				<div class="entry" ng-show="data.allow_desktop_swipe">
 					<label for="mli-hotel-code"> CC Swipe Listening Port </label>
 					<input type="text" ng-model="data.cc_swipe_listening_port" value="{{data.cc_swipe_listening_port}}" placeholder="Enter CC swipe listening port" name="cc-swipe-listening-port">
 				</div>
+
+				<ad-textbox value="data.cc_swipe_listening_url" label="{{'CC_SWIPE_LISTENING_URL' | translate}}" placeholder="{{'CC_SWIPE_LISTENING_URL_PLACEHOLDER' | translate}}" styleclass="full-width" ng-show="data.allow_desktop_swipe"></ad-textbox>
 
 			</fieldset>
 

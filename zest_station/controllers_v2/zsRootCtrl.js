@@ -348,7 +348,11 @@ sntZestStation.controller('zsRootCtrl', [
                 $scope.zestStationData.hotelDateFormat = data.date_format ? data.date_format.value : 'DD-MM-YYYY';
                 $rootScope.emvTimeout = $scope.zestStationData.hotelSettings.emv_timeout ? $scope.zestStationData.hotelSettings.emv_timeout : 60;
                 $scope.zestStationData.mliMerchantId = data.mli_merchant_id;
+                $scope.zestStationData.wsCCSwipeUrl = data.cc_swipe_listening_url;
+                $scope.zestStationData.wsCCSwipePort = data.cc_swipe_listening_port;
                 configureSwipeSettings();
+                // create a websocket obj
+                $scope.socketOperator = new webSocketOperations(socketOpenedSuccess, socketOpenedFailed, socketActions, $scope.zestStationData.wsCCSwipeUrl, $scope.zestStationData.wsCCSwipePort);
             };
             var onFailure = function() {
                 $log.log('unable to fetch hotel settings');
@@ -399,6 +403,10 @@ sntZestStation.controller('zsRootCtrl', [
                 $scope.icons.url.creditcard_icmp = $scope.iconsPath + '/demo_swiper.svg';
                 $scope.icons.url.createkey_icmp = $scope.iconsPath + '/demo_keyencoder.svg';
                 $log.warn('using demo icons for create key and credit card reading');
+                $scope.icmp = true;
+            } else if ($scope.zestStationData.theme === 'public_v2') {
+                $scope.icons.url.createkey_icmp = $scope.iconsPath + '/encode_image.svg';
+                $scope.icons.url.creditcard_icmp = $scope.iconsPath + '/icmp_swipe.svg';
                 $scope.icmp = true;
             } else {
                 $scope.icmp = false;
@@ -815,7 +823,7 @@ sntZestStation.controller('zsRootCtrl', [
             var commonIconsPath = '/assets/zest_station/css/icons/default';
 
             // var basicHomeIcons = ['zoku'],
-            var niceHomeIcons = ['avenue', 'sohotel', 'epik', 'public', 'public_v2', 'duke'],
+            var niceHomeIcons = ['avenue', 'sohotel', 'epik', 'public', 'public_v2', 'duke', 'de-jonker', 'chalet-view', 'freehand', 'row-nyc', 'circle-inn-fairfield', 'cachet-boutique'],
                 nonCircleNavIcons = ['public_v2'];// minor adjustment to the back/close icons for some themes (only show the inner x or <)
 
 
@@ -1266,7 +1274,7 @@ sntZestStation.controller('zsRootCtrl', [
 
             $timeout(function() {
                 // give some time for old socket to close, show activity of re-connecting and visible UI transition to 'connected' status
-                $scope.socketOperator = new webSocketOperations(socketOpenedSuccess, socketOpenedFailed, socketActions);
+                $scope.socketOperator = new webSocketOperations(socketOpenedSuccess, socketOpenedFailed, socketActions, $scope.zestStationData.wsCCSwipeUrl, $scope.zestStationData.wsCCSwipePort);
             }, 400);
         };
 
@@ -1315,6 +1323,10 @@ sntZestStation.controller('zsRootCtrl', [
                     }
                 } else {
                     $scope.callBlurEventForIpad();
+
+                    $timeout(function() {
+                        $('#' + elementId).click();
+                    }, 500);
                 }
             }, 300);
 
@@ -1688,21 +1700,6 @@ sntZestStation.controller('zsRootCtrl', [
             if (hotelLanguages) {
                 setupLanguageTranslations();
             }
-            if ($scope.zestStationData.kiosk_is_hue_active) {
-                var hue = jsHue();
-                try {
-                    bridge = hue.bridge($scope.zestStationData.hue_bridge_ip);
-                } catch (e) {
-                    $log.error(e);
-                    $log.warn('Error creating HUE bridge with bridge IP => ' + $scope.zestStationData.hue_bridge_ip);
-                }
-                try {
-                    $scope.zestStationData.hueUser = bridge.user($scope.zestStationData.hue_user_name);
-                } catch (e) {
-                    $log.error(e);
-                    $log.warn('Error creating HUE user with user name => ' + $scope.zestStationData.hue_user_name);
-                }
-            }
             $rootScope.isStandAlone = zestStationSettings.is_standalone;
             $scope.zestStationData.check_in_collect_passport = false;// TODO: link with admin setting
             $scope.zestStationData.showTemplateList = false; // Only for ipad in dev environment, switch themes fast like in chrome (dashboard view)
@@ -1721,8 +1718,7 @@ sntZestStation.controller('zsRootCtrl', [
             $scope.zestStationData.wsIsOos = false;
             $scope.showLanguagePopup = false;
             $scope.zestStationData.waitingForSwipe = false;
-			// create a websocket obj
-            $scope.socketOperator = new webSocketOperations(socketOpenedSuccess, socketOpenedFailed, socketActions);
+            // moved web socket creation code to fetchHotelSettings
             fetchHotelSettings();
             getKeyEncoderInfo();
             getAdminWorkStations();

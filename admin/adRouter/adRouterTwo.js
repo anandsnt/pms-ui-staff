@@ -1,5 +1,7 @@
 angular.module('adminModuleTwo', []).config(function($stateProvider) {
     // define module-specific routes here
+
+
     $stateProvider.state('admin.departments', {
         templateUrl: '/assets/partials/departments/adDepartmentsList.html',
         controller: 'ADDepartmentListCtrl',
@@ -139,10 +141,18 @@ angular.module('adminModuleTwo', []).config(function($stateProvider) {
         url: '/reservationtypes'
     });
 
-    $stateProvider.state('admin.interfaceMessages', {
-        templateUrl: '/assets/partials/interfaces/adInterfaceMessages.html',
-        controller: 'adExternalInterfaceCtrl',
-        url: '/interfaceMessages'
+    $stateProvider.state('admin.interfaceLogs', {
+        templateUrl: '/assets/partials/interfaces/Logs/ADInterfaceLogs.html',
+        controller: 'ADInterfaceLogsCtrl',
+        url: '/interfaceLogs',
+        resolve: {
+            interfaces: function(ADInterfaceLogsSrv) {
+                return ADInterfaceLogsSrv.fetchInterfaces();
+            },
+            currentTime: function(ADInterfaceLogsSrv) {
+                return ADInterfaceLogsSrv.getTime();
+            }
+        }
     });
 
 
@@ -660,9 +670,13 @@ angular.module('adminModuleTwo', []).config(function($stateProvider) {
         controller: 'adUpsellAddonSettingsCtrl',
         url: '/upsellAddons',
         resolve: {
-            data: function(ADUpsellAddonSrv) {
+            upsellData: function(ADUpsellAddonSrv) {
                 return ADUpsellAddonSrv.getSettings();
+            },
+            availableLanguages: function(ADTranslationSrv) {
+                return ADTranslationSrv.getActiveGuestLanguages();
             }
+
         }
     });
 
@@ -688,6 +702,12 @@ angular.module('adminModuleTwo', []).config(function($stateProvider) {
                 return ADZestStationSrv.fetch();
             }
         }
+    });
+
+    $stateProvider.state('admin.propertyGroups', {
+        templateUrl: '/assets/partials/chainAdmins/adPropertyGroups.html',
+        controller: 'ADPropertyGroupsCtrl',
+        url: '/propertyGroups'
     });
 
 });

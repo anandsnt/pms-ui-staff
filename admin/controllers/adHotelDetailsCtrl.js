@@ -23,6 +23,9 @@ admin.controller('ADHotelDetailsCtrl', [
 	$scope.isHotelChainReadonly =  false;
 	$scope.isFieldsReadOnly = (($rootScope.isSntAdmin && $rootScope.isServiceProvider) || $rootScope.adminRole === "hotel-admin") ? "yes" : "no";
 	$scope.isFieldsReadOnlyForServiceProvider = ($rootScope.isSntAdmin && $rootScope.isServiceProvider) ? "yes" : "no";
+	// CICO-41322 - Flag needed to show MP De-selection confirm popup.
+	var isMPFlagResetConfirmPopupNeeded = false;
+
 	// pms start date setting calendar options
 	$scope.pmsStartDateOptions = {
 	    changeYear: true,
@@ -40,6 +43,8 @@ admin.controller('ADHotelDetailsCtrl', [
 		// SNT Admin -To add new hotel view
 		if ($stateParams.action === "add" || $stateParams.action === "addfromSetup") {
 			$scope.title = "Add New Hotel";
+			// CICO-41322 - No need to show MP De-selection confirm popup.
+			isMPFlagResetConfirmPopupNeeded = false;
 			var fetchSuccess = function(data) {
 				$scope.data = data.data;
 				$scope.data.brands = [];
@@ -83,6 +88,8 @@ admin.controller('ADHotelDetailsCtrl', [
 
 				setDropdownDefaults();
 				$scope.selectedTheme = data.data.selected_theme;
+				// CICO-41322 - Show MP De-selection confirm popup if it is already a multi-property.
+				isMPFlagResetConfirmPopupNeeded = data.data.is_multi_property;
 			};
 
 			$scope.invokeApi(ADHotelDetailsSrv.fetchEditData, {'id': $stateParams.id}, fetchSuccess);
@@ -176,9 +183,11 @@ admin.controller('ADHotelDetailsCtrl', [
     *   A post method for Add New and UPDATE Existing hotel details.
     */
 	$scope.clickedSave = function() {
+		var unwantedKeys;
+		
 		// SNT Admin - To save Add/Edit data
 		if ($scope.isAdminSnt) {
-			var unwantedKeys = ["time_zones", "brands", "chains", "check_in_time", "check_out_time", "countries", "currency_list", "pms_types", "signature_display", "hotel_logo", "languages", "hotel_template_logo", "theme_list"];
+			unwantedKeys = ["time_zones", "brands", "chains", "check_in_time", "check_out_time", "countries", "currency_list", "pms_types", "signature_display", "hotel_logo", "languages", "hotel_template_logo", "theme_list"];
 			var data = dclone($scope.data, unwantedKeys);
 
 			if ($scope.mli.certificate != "") {
@@ -216,12 +225,12 @@ admin.controller('ADHotelDetailsCtrl', [
 		/** ********* Commented out to fix CICO-8508 ****************************/
 		// template logo was not updating when existing image was removed
 		/** ******************************************************************/
-			if ($scope.data.payment_gateway === "MLI") {
 
-				var unwantedKeys = ["time_zones", "brands", "chains", "check_in_time", "check_out_time", "countries", "currency_list", "pms_types", "hotel_pms_type", "is_single_digit_search", "is_pms_tokenized", "signature_display", "hotel_list", "menus", "mli_hotel_code", "mli_chain_code", "mli_access_url", "languages", "date_formats", "six_merchant_id", "six_validation_code", "is_external_references_import_on", "external_references_import_freq", "is_hold_room_import_on", "hold_room_import_freq", "allow_desktop_swipe", "cc_swipe_listening_port", "theme_list"];
-			 } else {
-			 	var unwantedKeys = ["time_zones", "brands", "chains", "check_in_time", "check_out_time", "countries", "currency_list", "pms_types", "hotel_pms_type", "is_single_digit_search", "is_pms_tokenized", "signature_display", "hotel_list", "menus", "mli_hotel_code", "mli_chain_code", "mli_access_url", "languages", "date_formats", "mli_payment_gateway_url", "mli_merchant_id", "mli_api_version", "mli_api_key", "mli_site_code", "is_external_references_import_on", "external_references_import_freq", "is_hold_room_import_on", "hold_room_import_freq", "allow_desktop_swipe", "cc_swipe_listening_port", "theme_list"];
-			 }
+			if ($scope.data.payment_gateway === "MLI") {
+				unwantedKeys = ["time_zones", "brands", "chains", "check_in_time", "check_out_time", "countries", "currency_list", "pms_types", "hotel_pms_type", "is_single_digit_search", "is_pms_tokenized", "signature_display", "hotel_list", "menus", "mli_hotel_code", "mli_chain_code", "mli_access_url", "languages", "date_formats", "six_merchant_id", "six_validation_code", "is_external_references_import_on", "external_references_import_freq", "is_hold_room_import_on", "hold_room_import_freq", "allow_desktop_swipe", "cc_swipe_listening_port", "theme_list", "cc_swipe_listening_url"];
+			} else {
+				unwantedKeys = ["time_zones", "brands", "chains", "check_in_time", "check_out_time", "countries", "currency_list", "pms_types", "hotel_pms_type", "is_single_digit_search", "is_pms_tokenized", "signature_display", "hotel_list", "menus", "mli_hotel_code", "mli_chain_code", "mli_access_url", "languages", "date_formats", "mli_payment_gateway_url", "mli_merchant_id", "mli_api_version", "mli_api_key", "mli_site_code", "is_external_references_import_on", "external_references_import_freq", "is_hold_room_import_on", "hold_room_import_freq", "allow_desktop_swipe", "cc_swipe_listening_port", "theme_list", "cc_swipe_listening_url"];
+			}
 
 
 			var data = dclone($scope.data, unwantedKeys);
@@ -448,5 +457,46 @@ admin.controller('ADHotelDetailsCtrl', [
 	    }
     	event.stopPropagation();
     };
+    // Handle click on MP flag checkbox.
+    $scope.clickedMultiPropertyCheckbox = function() {
+    	if ( !$scope.data.is_multi_property && isMPFlagResetConfirmPopupNeeded ) {
+			$scope.message = $scope.data.hotel_name + ' will now be de-selected from Multi property';
+			ngDialog.open({
+                template: '/assets/partials/hotel/adHotelMPFlagDeSelectionConfirm.html',
+                className: '',
+                scope: $scope,
+                closeByDocument: false
+            });
+    	}
+    };
+    // Close the popup.
+    var closeDialogue = function() {
+    	ngDialog.close();
+    };
 
+    // Success callbacks after De-Selecting MP flag
+    var succeessCallbackdSelectMPFlag = function() {
+    	$scope.$emit('hideLoader');
+		closeDialogue();
+    };
+
+    // Failure callbacks after De-Selecting MP flag
+    var failureCallbackdSelectMPFlag = function( errorMessage ) {
+    	$scope.$emit('hideLoader');
+		$scope.errorMessage = errorMessage;
+    };
+
+    // Handle Continue button click..	
+    $scope.clickedContinue = function() {
+    	var params = {
+    		'hotel_id': $scope.data.id
+    	};
+
+    	$scope.invokeApi(ADHotelDetailsSrv.deSelectMPFlag, params, succeessCallbackdSelectMPFlag, failureCallbackdSelectMPFlag);
+    };
+    // Handle Cancel button click..
+    $scope.clickedCancel = function() {
+    	$scope.data.is_multi_property = true;
+    	closeDialogue();
+    };
 }]);

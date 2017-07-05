@@ -14,7 +14,7 @@ admin.controller('ADAppCtrl', [
 		var title = "Showing Settings";
 
         var successCallbackOfFtechUserInfo = function (userInfoDetails) {
-            // CICO-39623 : set current hotel details      
+            // CICO-39623 : set current hotel details
             $scope.userInfo = {
                 'first_name': userInfoDetails.first_name,
                 'last_name': userInfoDetails.last_name,
@@ -380,7 +380,7 @@ admin.controller('ADAppCtrl', [
 		} else {
 			$scope.isHotelAdmin = false;
 		}
-        
+
 		$scope.isPmsConfigured = $rootScope.isPmsConfigured;
 		$scope.isDragging = false;
 
@@ -580,7 +580,7 @@ admin.controller('ADAppCtrl', [
             // CICO-39623 : Setting up app theme.
             if ( !!data.selected_theme && data.selected_theme.value !== 'ORANGE' ) {
               var appTheme = 'theme-' + (data.selected_theme.value).toLowerCase();
-              
+
               document.getElementsByTagName("html")[0].setAttribute( 'class', appTheme );
             }
 
@@ -619,6 +619,8 @@ admin.controller('ADAppCtrl', [
 			// CICO-27286
 			$rootScope.rateDateRangeLimit = data.rate_date_range_limit;
 
+			$rootScope.mliEmvEnabled = data.mli_emv_enabled && data.payment_gateway === 'MLI';
+
 			setupLeftMenu();
 
 		};
@@ -635,12 +637,6 @@ admin.controller('ADAppCtrl', [
 		$scope.$on('hotelNameChanged', function(e, data) {
 			$scope.data.current_hotel = data.new_name;
 		});
-
-
-        /*
-         * Admin menu data
-         */
-
 
 		$scope.data = adminMenuData;
 		$scope.selectedMenu = $scope.data.menus[$scope.selectedIndex];
