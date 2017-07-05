@@ -39,20 +39,20 @@
 		}
 
 		&.icon-arrow-left,
-        &.icon-arrow-right {
-            fill: none;
-            stroke: @white;
-        }
+		&.icon-arrow-right {
+			fill: none;
+			stroke: @white;
+		}
 	}
-    .logo-svg{
-        background-image: url("../css/themes/row-nyc/logo.svg");
-        background-repeat: no-repeat;
-        background-size: contain;
-        width: 100%;
-        height: 133px;
-        background-position: center;
-        margin-top: 7.9%;
-    }
+	.logo-svg{
+		background-image: url("../css/themes/row-nyc/logo.svg");
+		background-repeat: no-repeat;
+		background-size: contain;
+		width: 100%;
+		height: 133px;
+		background-position: center;
+		margin-top: 7.9%;
+	}
 
 /* 4. LAYOUT
 ==========================================================*/
@@ -60,18 +60,24 @@
 	#row-nyc {
 
 		#header {
-			height: 160px;
-
-			.button {
-				margin-top: 20px;
-				margin-bottom: auto;
-			}
+			height: 133px;
 		}
 
 		#main {
-			#calc > #height > .remove(100%, 160px);
-			top: 160px;
-			padding-top: 50px;
+			/*
+			The change specified as global was moved here to avoid design breaks in the existing templates. 
+			Originally it was present in app/assets/zest_station/css/less/layout.less.
+			===Start===
+			*/
+			&.centered {
+				#options {
+					margin-top: 0;
+
+				}
+			}
+			/*
+			===End===
+			*/
 		}
 
 		#actions {
@@ -86,20 +92,17 @@
 			}
 		}
 
-		.button.transparent {
-			 
+		.button.transparent { 
 			background-color: fade(@white, 40);
 		}
 		 
 		#logo {
-			padding-top: 80px;
-
 			.logo {
 				.size(133px, auto);
 			}
- 		}
+		}
 
- 		#options {
+		#options {
 			.icons {
 				fill: @white;
 			}
@@ -119,7 +122,13 @@
 				}
 			}
 		}
-
 		
-		
+	}
+	
+	.add-guest-mode-content{
+	    height: 87% !important;
+	    margin-top: 50px;
+	}
+	.check_in_add_remove > .input-field-contents {
+		height: 45% !important;
 	}

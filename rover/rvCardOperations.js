@@ -317,4 +317,12 @@ var CardOperation = function() {
         that.callCordovaService(options);
     };
 
+    // function for getting Device UUID
+    this.getDeviceId = function(options) {
+        options['service'] = "RVCardPlugin";
+        options['action'] = "UUIDforDevice";
+        options['timeout'] = 31000;
+        that.callCordovaService(options);
+    };
+
 };

@@ -19,10 +19,14 @@ function CardReaderCtrl($scope, $rootScope, $timeout, $interval, $log) {
     self.isObserveResetOnHold = false;
 
 
-    self.initiateCardReader = function() {
+    self.initiateCardReader = function () {
         $log.info('trying to initiate an observeForSwipe request...');
 
-        if (sntapp.cordovaLoaded && 'rv_native' === sntapp.browser) {
+        if (sntapp.cardSwipeDebug) {
+            $log.info('to simulate a card swipe run conistance.callSuccess() from browser console!');
+            sntapp.cardReader.startReaderDebug(self.options);
+            $log.info('card swipe set to work on debug mode...!');
+        } else if (sntapp.cordovaLoaded && 'rv_native' === sntapp.browser) {
             sntapp.cardReader.startReader(self.options);
             $log.info('request made to observe for swipe!');
         } else {
@@ -31,7 +35,7 @@ function CardReaderCtrl($scope, $rootScope, $timeout, $interval, $log) {
             if (self.cardReaderInitiationAttempts < self.cardReaderInitiationMaxAttempts) {
                 $log.warn($scope.$state.current.name);
                 $log.info('cordova not loaded in server! Next attempt in ' + self.cardReaderInitiationAttemptInterval + 'ms');
-                self.timeoutHandle = $timeout(function() {
+                self.timeoutHandle = $timeout(function () {
                     self.cardReaderInitiationAttempts++;
                     self.initiateCardReader();
                 }, self.cardReaderInitiationAttemptInterval);
@@ -41,11 +45,11 @@ function CardReaderCtrl($scope, $rootScope, $timeout, $interval, $log) {
         }
     };
 
-    self.clear = function() {
-        $log.warn("timeout cleared? " + $timeout.cancel(self.timeoutHandle));
+    self.clear = function () {
+        $log.warn('timeout cleared? ' + $timeout.cancel(self.timeoutHandle));
     };
 
-    $scope.observeForSwipe = function(numAttempts) {
+    $scope.observeForSwipe = function (numAttempts) {
         $log.warn('initiate attempts to observe for swipe from ' + $scope.$state.current.name);
         self.cardReaderInitiationMaxAttempts = numAttempts || self.cardReaderInitiationMaxAttempts;
         self.cardReaderInitiationAttempts++;
@@ -56,7 +60,7 @@ function CardReaderCtrl($scope, $rootScope, $timeout, $interval, $log) {
      * This handles the HOLD_OBSERVE_FOR_SWIPE_RESETS event coming in from the child controllers
      * We would need this because we will have to stop sending obeservSwipe requests when other actions like key card read/write are anticipated
      */
-    self.listenerHold = $scope.$on('HOLD_OBSERVE_FOR_SWIPE_RESETS', function() {
+    self.listenerHold = $scope.$on('HOLD_OBSERVE_FOR_SWIPE_RESETS', function () {
         self.isObserveResetOnHold = true;
         $log.info('HOLD_OBSERVE_FOR_SWIPE_RESETS');
         self.clear();
@@ -65,15 +69,15 @@ function CardReaderCtrl($scope, $rootScope, $timeout, $interval, $log) {
     /**
      * This handles the RESUME_OBSERVE_FOR_SWIPE_RESETS event coming in from the child controllers
      */
-    self.listenerResume = $scope.$on('RESUME_OBSERVE_FOR_SWIPE_RESETS', function() {
+    self.listenerResume = $scope.$on('RESUME_OBSERVE_FOR_SWIPE_RESETS', function () {
         self.isObserveResetOnHold = false;
         $log.info('RESUME_OBSERVE_FOR_SWIPE_RESETS');
         self.initiateCardReader();
     });
 
-    (function() {
+    (function () {
         self.options = {
-            'successCallBack': function(data) {
+            'successCallBack': function (data) {
                 $rootScope.$emit('BROADCAST_SWIPE_ACTION', data);
                 $log.info($scope.$state.current.name + ' SUCCESS callback received from cordova...', data);
                 // In case the callback is for a earlier request before the observeSwipe requests are put on Hold!
@@ -81,7 +85,7 @@ function CardReaderCtrl($scope, $rootScope, $timeout, $interval, $log) {
                     self.initiateCardReader();
                 }
             },
-            'failureCallBack': function(errorMessage) {
+            'failureCallBack': function (errorMessage) {
                 $scope.errorMessage = errorMessage;
                 $log.info($scope.$state.current.name + 'FAILURE callback received from cordova...', errorMessage);
                 // In case the callback is for a earlier request before the observeSwipe requests are put on Hold!
@@ -93,7 +97,7 @@ function CardReaderCtrl($scope, $rootScope, $timeout, $interval, $log) {
     })();
 
     //  ----------------------------------------------------------------------------------------------------------------
-    $scope.$on('$destroy', function() {
+    $scope.$on('$destroy', function () {
         self.clear();
         $log.warn('stopping listening to observe for swipe from ' + $scope.$state.current.name);
         self.options = null;

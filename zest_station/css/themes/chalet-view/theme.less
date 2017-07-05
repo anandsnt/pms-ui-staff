@@ -74,8 +74,11 @@
 		}
 
 		#main {
-			#calc > #height > .remove(100%, 145px);
-			top: 145px;
+			&.centered {
+				#options {
+					margin-top: 60px !important;
+				}
+			}
 		}
 
 		#actions {
@@ -120,4 +123,13 @@
 				}
 			}
 		}
+	}
+	
+	.add-guest-mode-content{
+	    height: 90% !important;
+	    margin-top: 50px;
+	}
+	
+	.check_in_add_remove > .input-field-contents {
+		height: 45% !important;
 	}
