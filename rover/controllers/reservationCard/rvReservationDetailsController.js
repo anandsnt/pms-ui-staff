@@ -38,12 +38,6 @@ sntRover.controller('reservationDetailsController',
 
 		var roomAndRatesState = 'rover.reservation.staycard.mainCard.room-rates';
 
-
-
-
-
-
-
 		// Putting this hash in parent as we have to maintain the back button in stay card even after navigating to states from stay card and coming back to the stay card.
 		var setNavigationBookMark = function() {
 			$rootScope.stayCardStateBookMark = {
@@ -320,7 +314,6 @@ sntRover.controller('reservationDetailsController',
 
 		// $scope.shouldShowGuestDetails = false;
 		$scope.toggleGuests = function() {
-
 
 			$scope.shouldShowGuestDetails = !$scope.shouldShowGuestDetails;
 			if ($scope.shouldShowGuestDetails) {
@@ -675,7 +668,6 @@ sntRover.controller('reservationDetailsController',
 		 */
 		$scope.shouldDisableExtendNightsButton = function() {
 			var isAllotmentPresent	= $scope.reservationData.allotment_id || $scope.reservationData.reservation_card.allotment_id;
-
 
 			return (isAllotmentPresent);
 		};
@@ -1471,7 +1463,6 @@ sntRover.controller('reservationDetailsController',
      $scope.isSRViewRateBtnShown = function() {
      	return $scope.isStandAlone && $scope.hasSRViewPermission && $scope.reservationData.reservation_card.is_rate_suppressed_present_in_stay_dates && !RVReservationStateService.getReservationFlag("isSRViewRateBtnClicked");
      };
-
 
       /*
      * Checks whether the rate amount needs to show or not

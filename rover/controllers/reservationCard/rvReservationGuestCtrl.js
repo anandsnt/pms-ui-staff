@@ -234,8 +234,6 @@ sntRover.controller('rvReservationGuestController', ['$scope', '$rootScope', 'RV
 
             });
 
-
-
 			$scope.invokeApi(RVReservationGuestSrv.updateGuestTabDetails, dataToSend, successCallback, errorCallback);
 
 		}
@@ -291,7 +289,6 @@ sntRover.controller('rvReservationGuestController', ['$scope', '$rootScope', 'RV
 
 				if (isOccupancyRateConfigured()) {
                     var isRateChanged = isRateChangeOcuured();
-
 
 					// CICO-13491
 					// If the occupancy Rate is configured and a rate change occured
@@ -351,7 +348,6 @@ sntRover.controller('rvReservationGuestController', ['$scope', '$rootScope', 'RV
 
         };
 
-
 		/**
 		 * CICO-12672 Occupancy change from the staycard --
 		 */
@@ -377,7 +373,6 @@ sntRover.controller('rvReservationGuestController', ['$scope', '$rootScope', 'RV
 			presentGuestInfo.infants_count = $scope.guestData.infants_count;
 
             applyGuestCountRuleOnAccompanyingGuests(presentGuestInfo.adult_count, presentGuestInfo.children_count, presentGuestInfo.infants_count, $scope.accompanyingGuests);
-
 
 		};
 
@@ -418,8 +413,6 @@ sntRover.controller('rvReservationGuestController', ['$scope', '$rootScope', 'RV
                 CHILDREN: [],
                 INFANTS: []
             };
-
-
 			var successCallback = function(data) {
 				$scope.maxAdultsForReservation = $scope.otherData.maxAdults;
 				$scope.$emit('hideLoader');
@@ -440,7 +433,6 @@ sntRover.controller('rvReservationGuestController', ['$scope', '$rootScope', 'RV
 						$scope.maxAdultsForReservation = $scope.otherData.maxAdults;
 					}
 				}
-
 
                // $scope.otherData.maxAdults = (guestMaxSettings.max_adults === null || guestMaxSettings.max_adults === '') ? defaultMaxvalue : guestMaxSettings.max_adults;
                 // if($scope)
