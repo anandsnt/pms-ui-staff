@@ -220,7 +220,7 @@ sntRover.controller('rvReservationGuestController', ['$scope', '$rootScope', 'RV
 			dataToSend.accompanying_guests_details = [];
 			dataToSend.reservation_id = $scope.reservationData.reservation_card.reservation_id;
 
-            _.each($scope.accompanyingGuests, function (guest,type) {
+            _.each($scope.accompanyingGuests, function (guest, type) {
 
                 _.each($scope.accompanyingGuests[type], function (guestInfo) {
                     dataToSend.accompanying_guests_details.push({
@@ -326,6 +326,7 @@ sntRover.controller('rvReservationGuestController', ['$scope', '$rootScope', 'RV
         // Find guest type id by name
         var findGuestTypeId = function (type) {
             var guestType = _.find($rootScope.guestTypes, {value: type});
+
             return guestType.id;
         };
 
@@ -412,7 +413,7 @@ sntRover.controller('rvReservationGuestController', ['$scope', '$rootScope', 'RV
 		$scope.init = function() {
 
             $scope.accompanyingGuests = {
-                ADULT : [],
+                ADULT: [],
                 CHILDREN: [],
                 INFANTS: []
             };
@@ -424,10 +425,10 @@ sntRover.controller('rvReservationGuestController', ['$scope', '$rootScope', 'RV
 				$scope.guestData = data;
 
                 $scope.accompanyingGuests = $scope.guestData.accompanying_guests_details ? groupAccompanyingGuestsByType($scope.guestData.accompanying_guests_details) : $scope.accompanyingGuests;
-                applyGuestCountRuleOnAccompanyingGuests($scope.guestData.adult_count, $scope.guestData.children_count, $scope.guestData.infants_count,$scope.accompanyingGuests);
+                applyGuestCountRuleOnAccompanyingGuests($scope.guestData.adult_count, $scope.guestData.children_count, $scope.guestData.infants_count, $scope.accompanyingGuests);
 				presentGuestInfo = JSON.parse(JSON.stringify($scope.guestData)); // to revert in case of exceeding occupancy
 				initialGuestInfo = JSON.parse(JSON.stringify($scope.guestData)); // to make API call to update if some change has been made
-                angular.copy($scope.accompanyingGuests,initialAccompanyGuests);
+                angular.copy($scope.accompanyingGuests, initialAccompanyGuests);
 				$scope.reservationParentData.rooms[0].accompanying_guest_details = data.accompanying_guests_details;
 				$scope.errorMessage = '';
 

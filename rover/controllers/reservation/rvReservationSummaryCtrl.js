@@ -1543,7 +1543,7 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', 'jsMappings', '$s
         $scope.addGuests = function(room) {
             if (!room.accompanying_guest_details) {
                 var accompanyingGuests = {
-                    ADULT : [],
+                    ADULT: [],
                     CHILDREN: [],
                     INFANTS: []
                 };
@@ -1560,7 +1560,7 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', 'jsMappings', '$s
             $scope.errorMessage = "";
             var validGuests = [];
 
-            _.each(room.accompanying_guest_details, function (guest,type) {
+            _.each(room.accompanying_guest_details, function (guest, type) {
 
                 _.each(guest, function (guestInfo) {
                     validGuests.push({
@@ -1641,6 +1641,7 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', 'jsMappings', '$s
         // Find guest type id by name
         var findGuestTypeId = function (type) {
             var guestType = _.find($rootScope.guestTypes, {value: type});
+
             return guestType.id;
         };
 
@@ -1667,7 +1668,7 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', 'jsMappings', '$s
             // Add dummy accompany guests only if the guest count is greater that 1
             if (guestCount > 1) {
 
-                createExtraAccompanyingGuest('ADULT', adultCount-1, accompanyingGuests.ADULT);
+                createExtraAccompanyingGuest('ADULT', adultCount - 1, accompanyingGuests.ADULT);
                 createExtraAccompanyingGuest('CHILDREN', childCount, accompanyingGuests.CHILDREN );
                 createExtraAccompanyingGuest('INFANTS', infantCount, accompanyingGuests.INFANTS);
 
@@ -1680,7 +1681,7 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', 'jsMappings', '$s
         $scope.getGuestTypeIconClass = function(guestType) {
             var iconClass = 'adult';
 
-            if(guestType === 'CHILDREN') {
+            if (guestType === 'CHILDREN') {
                 iconClass = 'student';
             } else if (guestType === 'INFANTS') {
                 iconClass = 'infant';

@@ -538,7 +538,8 @@ sntRover.controller('rvBillingInformationPopupCtrl', ['$scope', '$rootScope', '$
     $scope.getGuestTypeIconClass = function(entity) {
         var iconClass = 'adult';
         var guestType = _.find($rootScope.guestTypes, {id: entity.guest_type_id});
-        if(guestType.value === 'CHILDREN') {
+
+        if (guestType.value === 'CHILDREN') {
             iconClass = 'student';
         } else if (guestType.value === 'INFANTS') {
             iconClass = 'infant';
