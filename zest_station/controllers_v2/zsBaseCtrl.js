@@ -348,6 +348,7 @@ function BaseCtrl($scope) {
                   // Only send metrics and settings like CC_SWIPE ON/OFF, or Handler ON/OFF, etc.
                   // if you do not know if something will contain personal info, do not include it.
                   // 
+                  console.log(zs);
                   var status = {
                       'theme': zs.theme,
                       'workstation_name': zs.workstationName,
@@ -366,6 +367,8 @@ function BaseCtrl($scope) {
                           'max': zs.idle_timer.max,
                           'prompt': zs.idle_timer.prompt
                       },
+                      'upsell_addons_enabled': false,
+                      'upsell_rooms_enabled': false,
                       'kiosk_time': currentTime
                   };
 
