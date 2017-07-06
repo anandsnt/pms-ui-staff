@@ -43,7 +43,6 @@ var GlobalApp = function() {
         try {
             that.cardReader = new CardOperation();
             that.iBeaconLinker = new iBeaconOperation();
-            that.uuidService = new UUIDService();
         }
         catch (er) {
             console.log(er);

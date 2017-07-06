@@ -166,6 +166,11 @@
 					</fieldset>
 
 					<fieldset class='holder column full-width'>
+						<ad-toggle-button is-checked="upsellData.is_sell_late_checkout_as_addon" label="{{ 'OFFER_LCO_AS_ADDON_AT_CHECKIN' | translate}}"></ad-toggle-button>
+						<ad-toggle-button is-checked="upsellData.is_allow_additional_late_checkout_offers" label="{{ 'SELL_ADDITIONAL_LCO' | translate}}"></ad-toggle-button>
+					</fieldset>
+
+					<fieldset class='holder column full-width'>
 
 						<ad-dropdown label="{{'LIMITED_LATE_CHECK_OUTS_BY_ROOM_TYPE' | translate}}" label-in-drop-down="{{'SELECT_ROOM_TYPE' | translate}}" list="upsellData.room_types_list" selected-Id='upsellData.selected_room_type' selbox-class="placeholder"></ad-dropdown>
 
