@@ -126,7 +126,11 @@ sntZestStation.directive('editableText', [function() {
             };
 
             var editorModeIsEnabled = function(rootScope) {
-                return rootScope.editorModeEnabled === 'true';
+                if (rootScope) {
+                    return rootScope.editorModeEnabled === 'true';
+                } 
+                return false;
+                
             };
 
             var turnOFFTags = function(scope) {
