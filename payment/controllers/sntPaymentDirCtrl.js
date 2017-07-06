@@ -1,8 +1,8 @@
 angular.module('sntPay').controller('sntPaymentController',
     ['$scope', 'sntPaymentSrv', 'paymentAppEventConstants', '$location', 'PAYMENT_CONFIG',
         '$rootScope', '$timeout', 'ngDialog', '$filter',
-        function($scope, sntPaymentSrv, payEvntConst, $location, PAYMENT_CONFIG,
-                 $rootScope, $timeout, ngDialog, $filter) {
+        function ($scope, sntPaymentSrv, payEvntConst, $location, PAYMENT_CONFIG,
+                  $rootScope, $timeout, ngDialog, $filter) {
             // ---------------------------------------------------------------------------------------------------------
             var timeOutForScrollerRefresh = 300,
                 initialPaymentAmount = 0,
@@ -127,7 +127,7 @@ angular.module('sntPay').controller('sntPaymentController',
              * @returns {{undefined}} undefined
              */
             function refreshScroller(key) {
-                setTimeout(function() {
+                setTimeout(function () {
                     if (!!$scope.$parent && $scope.$parent.myScroll) {
                         if (key in $scope.$parent.myScroll) {
                             $scope.$parent.myScroll[key].refresh();
@@ -242,7 +242,7 @@ angular.module('sntPay').controller('sntPaymentController',
              * Method to check if the gift card balance is less than the amount to be paid
              * @returns {boolean} boolean
              */
-            $scope.isGCBalanceShort = function() {
+            $scope.isGCBalanceShort = function () {
                 var payableAmount;
 
                 if ($scope.selectedPaymentType !== 'GIFT_CARD') {
@@ -264,7 +264,7 @@ angular.module('sntPay').controller('sntPaymentController',
              * Hide payment method if there is no permission or no payment type
              * @returns {boolean} boolean
              */
-            $scope.shouldHidePaymentButton = function() {
+            $scope.shouldHidePaymentButton = function () {
                 return !$scope.selectedPaymentType || !$scope.hasPermission ||
                     $scope.isGCBalanceShort() ||
                     (!$scope.splitBillEnabled && $scope.paymentAttempted && !$scope.isPaymentFailure);
@@ -274,7 +274,7 @@ angular.module('sntPay').controller('sntPaymentController',
              *
              * @returns {boolean} boolean
              */
-            $scope.showSelectedCard = function() {
+            $scope.showSelectedCard = function () {
                 var config = $scope.hotelConfig;
                 var isCCPresent = $scope.selectedPaymentType === 'CC' &&
                     (!!$scope.selectedCC && (!!$scope.selectedCC.ending_with || !!$scope.selectedCC.card_number));
@@ -327,7 +327,7 @@ angular.module('sntPay').controller('sntPaymentController',
             }
 
             // toggle between manual card entry and six payment swipe (C&P option in UI) for sixpayments
-            $scope.sixPayEntryOptionChanged = function() {
+            $scope.sixPayEntryOptionChanged = function () {
                 if ($scope.payment.isManualEntryInsideIFrame) {
                     changeToCardAddMode();
                 } else {
@@ -339,7 +339,7 @@ angular.module('sntPay').controller('sntPaymentController',
             };
 
             // toggle between CC entry and existing card selection
-            $scope.toggleCCMOde = function(mode) {
+            $scope.toggleCCMOde = function (mode) {
                 if (mode === 'GIFT_CARD') {
                     $scope.selectedPaymentType = 'GIFT_CARD';
                     $scope.onPaymentInfoChange();
@@ -351,22 +351,22 @@ angular.module('sntPay').controller('sntPaymentController',
                     refreshIFrame();
                 }
                 // adding timeout to avoid blinking effect when the iframe reloads
-                $timeout(function() {
+                $timeout(function () {
                     $scope.payment.addCCMode = mode;
                 }, 350);
             };
 
             /** ******************* Payment Actions *****************************/
 
-            $scope.cancelAction = function(arg) {
+            $scope.cancelAction = function (arg) {
                 $scope.$emit('PAYMENT_ACTION_CANCELLED', arg);
             };
 
-            $scope.closeThePopup = function() {
+            $scope.closeThePopup = function () {
                 $scope.$emit('CLOSE_DIALOG');
             };
 
-            $scope.payLater = function() {
+            $scope.payLater = function () {
                 $scope.$emit('PAY_LATER', {
                     paymentType: $scope.selectedPaymentType,
                     cardDetails: $scope.selectedCC,
@@ -374,11 +374,11 @@ angular.module('sntPay').controller('sntPaymentController',
                 });
             };
 
-            $scope.continueAction = function(arg) {
+            $scope.continueAction = function (arg) {
                 $scope.$emit('PAYMENT_ACTION_CONTINUE', arg);
             };
 
-            $scope.resetPaymentAttempt = function() {
+            $scope.resetPaymentAttempt = function () {
                 $scope.paymentAttempted = false;
                 $scope.isPaymentFailure = false;
             };
@@ -400,7 +400,7 @@ angular.module('sntPay').controller('sntPaymentController',
              *    Request Params: {reservation_id: 1348897, payment_type: 'CK', workstation_id: 159, user_payment_type_id: '1171'}
              *    @returns {undefined} undefined
              */
-            $scope.saveReservationPaymentMethod = function() {
+            $scope.saveReservationPaymentMethod = function () {
                 var params;
 
                 //  in case of CBA and the card is not tokenized yet
@@ -572,7 +572,7 @@ angular.module('sntPay').controller('sntPaymentController',
                 }
             };
 
-            let promptCreateAR = function(params) {
+            let promptCreateAR = function (params) {
                 //  $scope.closeThePopup();
                 $timeout(() => {
                     ngDialog.open({
@@ -631,7 +631,7 @@ angular.module('sntPay').controller('sntPaymentController',
              * then there MUST be an added Company or Travel Agent Card with an AR Account
              * @returns {undefined} undefined
              */
-            $scope.submitAccountPayment = function() {
+            $scope.submitAccountPayment = function () {
                 if ($scope.selectedPaymentType === 'DB') {
                     //  TODO: Check if AR account is present
                     sntPaymentSrv.checkARStatus($scope.postingAccountId).then(data => {
@@ -674,7 +674,7 @@ angular.module('sntPay').controller('sntPaymentController',
             var paymentDialogId = null;
 
             // CICO-33971 : Confirm Direct Bill payment.
-            let confirmDirectBillPayment = function(params) {
+            let confirmDirectBillPayment = function (params) {
                 $timeout(() => {
                     ngDialog.open({
                         template: '/assets/partials/rvConfirmDirectBillPaymentPopup.html',
@@ -688,7 +688,7 @@ angular.module('sntPay').controller('sntPaymentController',
             };
 
             // CICO-33971 : To catch ngDialog id - to handle multiple popups.
-            $rootScope.$on('ngDialog.opened', function(e, $dialog) {
+            $rootScope.$on('ngDialog.opened', function (e, $dialog) {
                 paymentDialogId = $dialog.attr('id');
             });
             // CICO-33971 : Submit payment process after confirming as DB.
@@ -698,7 +698,7 @@ angular.module('sntPay').controller('sntPaymentController',
             });
 
             // To close the confirm DB popup.
-            var cancellConfirmDBpopup = function() {
+            var cancellConfirmDBpopup = function () {
                 $scope.$emit('SHOW_BILL_PAYMENT_POPUP');
                 ngDialog.close(paymentDialogId);
             };
@@ -708,7 +708,7 @@ angular.module('sntPay').controller('sntPaymentController',
                 cancellConfirmDBpopup();
             });
 
-            $scope.submitPayment = function(payLoad) {
+            $scope.submitPayment = function (payLoad) {
                 var errorMessage = ['Please enter a valid amount'],
                     paymentTypeId, // for CC payments, we need payment type id
                     params;
@@ -754,7 +754,7 @@ angular.module('sntPay').controller('sntPaymentController',
 
                 // -- CICO-33971 :: Direct Bill Payment --
                 if ($scope.selectedPaymentType === 'DB' && !$scope.payment.isConfirmedDBpayment) {
-                    $scope.$emit("HIDE_BILL_PAYMENT_POPUP");
+                    $scope.$emit('HIDE_BILL_PAYMENT_POPUP');
                     confirmDirectBillPayment();
                     return;
                 }
@@ -844,7 +844,7 @@ angular.module('sntPay').controller('sntPaymentController',
              * This method handles manual entry of Gift Card
              * @returns {undefined} undefined
              */
-            $scope.onChangeGiftCard = function() {
+            $scope.onChangeGiftCard = function () {
                 var charLength = $scope.giftCard.number.length;
 
                 if (charLength >= 8 && charLength <= 22) {
@@ -870,7 +870,7 @@ angular.module('sntPay').controller('sntPaymentController',
             };
 
             //  Payment type change action
-            $scope.onPaymentInfoChange = function(isReset) {
+            $scope.onPaymentInfoChange = function (isReset) {
                 // NOTE: Fees information is to be calculated only for standalone systems
                 // TODO: See how to handle fee in case of C&P
 
@@ -889,6 +889,7 @@ angular.module('sntPay').controller('sntPaymentController',
                 // -- CICO-33971 :: Direct Bill Payment --
                 if ($scope.selectedPaymentType === 'DB') {
                     $scope.payment.isEditable = false;
+                    $scope.splitBillEnabled = false;
                     $scope.payment.amount = initialPaymentAmount;
                     calculateFee();
                 }
@@ -929,25 +930,25 @@ angular.module('sntPay').controller('sntPaymentController',
                 }
             };
 
-            $scope.onFeeOverride = function() {
+            $scope.onFeeOverride = function () {
                 var totalAmount = parseFloat($scope.feeData.calculatedFee) + parseFloat($scope.payment.amount);
 
                 $scope.feeData.totalOfValueAndFee = totalAmount.toFixed(2);
             };
 
-            $scope.propagateAddToggle = function() {
+            $scope.propagateAddToggle = function () {
                 $scope.$emit('PAYMENT_TOGGLE_ATTACH_TO_GUEST_CARD', $scope.payment.addToGuestCardSelected);
             };
 
             /** ************** CC handling ********************/
             // if the selected card is clicked, go to card entry page
-            $scope.onCardClick = function() {
+            $scope.onCardClick = function () {
                 changeToCardAddMode();
                 refreshIFrame();
             };
 
             // cancel CC entry and go to initial page
-            $scope.cancelCardSelection = function() {
+            $scope.cancelCardSelection = function () {
                 $scope.errorMessage = '';
                 $scope.payment.screenMode = 'PAYMENT_MODE';
                 $scope.payment.showAddToGuestCard = false;
@@ -958,7 +959,7 @@ angular.module('sntPay').controller('sntPaymentController',
             };
 
             // choose among the existing cards
-            $scope.setCreditCardFromList = function(selectedCardValue) {
+            $scope.setCreditCardFromList = function (selectedCardValue) {
                 var selectedCard = _.find($scope.payment.linkedCreditCards, {
                     value: selectedCardValue
                 });
@@ -975,14 +976,14 @@ angular.module('sntPay').controller('sntPaymentController',
                 calculateFee();
             };
             // hide existing cards in some places like in guestcard add CC
-            $scope.hideCardToggles = function() {
+            $scope.hideCardToggles = function () {
                 //  Below is the original condition
                 //  TODO: Find why toggles was hidden in case of hasAccompanyGuest
                 //  return $scope.isFromGuestCard  || $scope.hasAccompanyguest || ($scope.cardsList && $scope.cardsList.length === 0)
                 return $scope.actionType === 'ADD_PAYMENT_GUEST_CARD' || $scope.actionType === 'ADD_ROUTE_PAYMENT' || !existingCardsPresent();
             };
             // list the existing cards for the reservation
-            var onFetchLinkedCreditCardListSuccess = function(data) {
+            var onFetchLinkedCreditCardListSuccess = function (data) {
                 $scope.$emit('hideLoader');
                 $scope.payment.linkedCreditCards = _.where(data.existing_payments, {
                     is_credit_card: true
@@ -994,7 +995,7 @@ angular.module('sntPay').controller('sntPaymentController',
             };
 
             // if there is reservationID fetch the linked credit card items
-            var fetchAttachedCreditCards = function() {
+            var fetchAttachedCreditCards = function () {
                 if ($scope.reservationId) {
                     $scope.$emit('showLoader');
 
@@ -1100,7 +1101,7 @@ angular.module('sntPay').controller('sntPaymentController',
             function addBillPayment(cardDetails) {
                 $scope.$emit('showLoader');
                 var params = angular.copy(cardDetails.apiParams),
-                    onSaveSuccess = function(response) {
+                    onSaveSuccess = function (response) {
 
                         $scope.selectedCC = $scope.selectedCC || {};
 
@@ -1113,7 +1114,7 @@ angular.module('sntPay').controller('sntPaymentController',
 
                         $scope.payment.screenMode = 'PAYMENT_MODE';
                         calculateFee();
-                    }, onSaveFailure = function(errorMessage) {
+                    }, onSaveFailure = function (errorMessage) {
                         $scope.errorMessage = errorMessage;
                     };
 
@@ -1135,7 +1136,7 @@ angular.module('sntPay').controller('sntPaymentController',
                     });
             }
 
-            $scope.$on(payEvntConst.CC_TOKEN_GENERATED, function(event, data) {
+            $scope.$on(payEvntConst.CC_TOKEN_GENERATED, function (event, data) {
                 var paymentData = data.paymentData;
 
                 $scope.errorMessage = '';
@@ -1173,7 +1174,7 @@ angular.module('sntPay').controller('sntPaymentController',
              * Method to find if a refund is happening
              * @returns {boolean} boolean
              */
-            $scope.isRefund = function() {
+            $scope.isRefund = function () {
                 return $scope.payment.amount < 0;
             };
 
@@ -1182,7 +1183,7 @@ angular.module('sntPay').controller('sntPaymentController',
              * Gift card is enabled as a payment type
              * @returns {boolean} boolean
              */
-            $scope.showGiftCardToggle = function() {
+            $scope.showGiftCardToggle = function () {
                 var isGiftCardEnabled = _.find($scope.paymentTypes, {
                     name: 'GIFT_CARD'
                 });
@@ -1196,11 +1197,11 @@ angular.module('sntPay').controller('sntPaymentController',
              */
             function onAmountChange() {
                 $scope.payment.amount = $scope.amount || 0;
-                initialPaymentAmount = angular.copy($scope.payment.amount);
+                initialPaymentAmount = initialPaymentAmount ? initialPaymentAmount : angular.copy($scope.payment.amount);
                 calculateFee();
             }
 
-            $scope.onPaymentSuccess = function(response) {
+            $scope.onPaymentSuccess = function (response) {
                 $scope.paymentAttempted = true;
                 $scope.isPaymentFailure = false;
                 $scope.payment.authorizationCode = response.authorization_code;
@@ -1224,23 +1225,28 @@ angular.module('sntPay').controller('sntPaymentController',
                 $scope.$emit('PAYMENT_SUCCESS', response);
             };
 
-            $scope.clearErrorMessage = function() {
+            $scope.clearErrorMessage = function () {
                 $scope.errorMessage = '';
             };
 
-            $scope.showSixPaymentsModeSelection = function() {
+            $scope.showSixPaymentsModeSelection = function () {
                 var isMLIEMV = $scope.hotelConfig.paymentGateway === 'MLI' &&
-                    $scope.hotelConfig.isEMVEnabled;
+                    $scope.hotelConfig.isEMVEnabled,
+                    isPendingPayment = !$scope.paymentAttempted || // no payments attempted
+                        // attempted payment failed
+                        $scope.isPaymentFailure ||
+                        // CICO-41498 in the middle of split bill payments
+                        ($scope.splitBillEnabled && $scope.numSplits > $scope.completedSplitPayments);
 
                 return (isMLIEMV || $scope.hotelConfig.paymentGateway === 'sixpayments') &&
                     $scope.selectedPaymentType === 'CC' &&
                     $scope.payment.screenMode === 'PAYMENT_MODE' &&
-                    (!$scope.paymentAttempted || $scope.isPaymentFailure);
+                    isPendingPayment;
             };
 
             /** **************** init ***********************************************/
 
-            (function() {
+            (function () {
                 var paths, config;
 
                 $scope.actionType = $scope.actionType || 'DEFAULT';
@@ -1323,6 +1329,10 @@ angular.module('sntPay').controller('sntPaymentController',
                  */
                 if ($scope.swipedCardData) {
                     $timeout(() => {
+                        if (isEMVEnabled) {
+                            $scope.payment.isManualEntryInsideIFrame = true;
+                            $scope.sixPayEntryOptionChanged();
+                        }
                         $scope.$broadcast('RENDER_SWIPED_DATA', JSON.parse($scope.swipedCardData));
                     }, 300);
                 }

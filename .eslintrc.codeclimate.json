@@ -28,7 +28,9 @@
         "sntCordovaInit": false,
         "CardOperation": false,
         "jsHue": false,
-        "SyntaxHighlighter": false
+        "SyntaxHighlighter": false,
+        "webSocketOperations": false,
+        "moment": false
     },
     "installedESLint": true,
     "parserOptions": {

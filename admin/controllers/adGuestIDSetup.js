@@ -24,6 +24,7 @@ admin.controller('ADGuestIDSetup', ['$scope', '$state', 'ADGuestIDSetupSrv', fun
     var successCallbackOfSaveDetails = function() {
         $scope.$emit('hideLoader');
         $scope.errorMessage = '';
+        $scope.goBackToPreviousState();
     };
 
     $scope.save = function() {
