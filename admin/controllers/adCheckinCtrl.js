@@ -397,7 +397,8 @@ admin.controller('ADCheckinCtrl', ['$scope', '$rootScope', 'adCheckinSrv', '$sta
       'zest_web_checkin_details_about_mobile_app' : $scope.checkinData.zest_web_checkin_details_about_mobile_app,
       'zest_web_checkin_mobile_app_call_to_action' : $scope.checkinData.zest_web_checkin_mobile_app_call_to_action,
       'zest_web_include_app_store_banner' : $scope.checkinData.zest_web_include_app_store_banner,
-      'zest_web_include_google_play_banner' : $scope.checkinData.zest_web_include_google_play_banner
+      'zest_web_include_google_play_banner' : $scope.checkinData.zest_web_include_google_play_banner,
+      'zestweb_cc_authorization_amount': $scope.checkinData.zestweb_cc_authorization_amount
     };
 
     if($scope.surveyQuestionImage === $scope.checkinData.survey_question_image){
