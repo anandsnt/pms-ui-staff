@@ -325,7 +325,23 @@ function BaseCtrl($scope) {
         }
 
     };
-  
+
+    var getIpadType = function(s, zs) {
+      if ((s.width === '768' || s.width === 768) && (s.height === 1024 || s.height === '1024')) {
+        return 'iPad Mini, iPad Air';
+      } else if ((s.width === '834' || s.width === 834) && (s.height === 1112 || s.height === '1112')) {
+        return 'iPad Pro 10.5';
+      } else if ((s.width === '1024' || s.width === 1024) && (s.height === 1366 || s.height === '1366')) {
+        return 'iPad Pro 12.9';
+      } else {
+        if (zs.isIpad) {
+          return 'iPhone / Watch';
+        } else { 
+          return 'Non-Ipad';
+        }
+      }
+
+    }
 
     $scope.trackEvent = function(event_name, event_type, from, at) {
     // ie. _gaq.push(['_trackEvent', eventLabel, 'clicked']);
@@ -349,8 +365,13 @@ function BaseCtrl($scope) {
                   // if you do not know if something will contain personal info, do not include it.
                   // 
                   console.log(zs);
+                  if (zs.isIpad) {
+                     //zs.version = cordova.version;
+
+                  }
+                  
                   var status = {
-                      'theme': zs.theme,
+                      'theme': zs.theme+'_'+zs.hotel_id,
                       'workstation_name': zs.workstationName,
                       'workstation_status': zs.workstationStatus,
                       'OOO_treshold': zs.kioskOutOfOrderTreshold,
@@ -358,6 +379,11 @@ function BaseCtrl($scope) {
                       'handler_connected_status': zs.stationHandlerConnectedStatus,
                       'hourly_rate_on': zs.isHourlyRateOn,
                       'key_encoder_id': zs.key_encoder_id,
+                      'ipad': zs.isIpad ? 'ipad' : 'non-ipad',
+                      'width_height': screen.width + ', ' + screen.height,
+                      'type': getIpadType(screen),
+
+                      // 'ipad_version':zs.version ? zs.version : 'unkonwn-version', // include version here once cordova passes the info
 
                       'current_screen': (at ? at : ''),
                       'from_screen': (from ? from : ''),
@@ -397,6 +423,9 @@ function BaseCtrl($scope) {
 
                     event_name = JSON.stringify(status);
                     console.log('as JSON: ',JSON.parse(event_name));
+                } else if (event_type === 'oos_reason_update') {
+                    oos_reason_update += zs.theme;
+
                 }
 
                 try {
