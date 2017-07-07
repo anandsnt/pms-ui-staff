@@ -44,7 +44,8 @@ var SwipeOperation = function() {
             'pan': swipedCardData.RVCardReadMaskedPAN,
             'etb': swipedCardData.RVCardReadETB,
             'swipeFrom': swipedCardData.swipeFrom,
-            'token': swipedCardData.token
+            'token': swipedCardData.token,
+            'isEncrypted': !!swipedCardData.RVCardReadIsEncrypted
         };
 
         return swipedCardDataToRender;
@@ -62,7 +63,9 @@ var SwipeOperation = function() {
             "payment_type": "CC",
             "expiryMonth": swipedCardData.cardExpiryMonth,
             "expiryYear": swipedCardData.cardExpiryYear,
-            "cardNumber": swipedCardData.cardNumber
+            "cardNumber": swipedCardData.cardNumber,
+            "etb": swipedCardData.etb,
+            'is_encrypted': swipedCardData.isEncrypted
         };
 
         return swipedCardDataToSave;
