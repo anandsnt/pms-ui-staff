@@ -1323,10 +1323,12 @@ sntZestStation.controller('zsRootCtrl', [
                     }
                 } else {
                     $scope.callBlurEventForIpad();
-
+                    /*
                     $timeout(function() {
                         document.getElementById(elementId).click(); 
                     }, 500);
+                    */
+
                 }
             }, 300);
 
