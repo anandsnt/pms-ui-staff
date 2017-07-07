@@ -8,7 +8,7 @@ sntZestStation.controller('zsCheckinAddonCtrl', [
 	'$translate',
 	function($scope, $stateParams, $state, zsCheckinSrv, zsEventConstants, $timeout, $translate) {
 		
-		var lcoAddonIds = [];
+		var lcoAddonList = [];
 		var navigateToTermsPage = function() {
 
 			var stateParams = {
@@ -275,12 +275,17 @@ sntZestStation.controller('zsCheckinAddonCtrl', [
 					var isFirstLcoSelected = false;
 					var isSecondLcoSelected = false;
 					var isThirdLcoSelected = false;
+					var firstLcoIndex = -1;
+					var lateCheckoutAddons = [];
+					var lcoIndex = 0;
+
 
 					// Dont offer lower LCO offers if higher level is already purchased
 					if (checkIfAddonIdIsPresent(response.extended_checkout_charge_2)) {
 						isThirdLcoSelected = checkIfLcoIsAlreadyPurchased(response.extended_checkout_charge_2.addon_id);
 						if (!isThirdLcoSelected) {
-							lcoAddonIds.push(response.extended_checkout_charge_2.addon_id);
+							lcoIndex++;
+							lcoAddonList.push({id: response.extended_checkout_charge_2.addon_id, index: lcoIndex});
 						} else {
 							updateAddonListWrTLcoPresent(response.extended_checkout_charge_2.addon_id);
 						}
@@ -288,7 +293,8 @@ sntZestStation.controller('zsCheckinAddonCtrl', [
 					if (checkIfAddonIdIsPresent(response.extended_checkout_charge_1)) {
 						isSecondLcoSelected = checkIfLcoIsAlreadyPurchased(response.extended_checkout_charge_1.addon_id);
 						if (!isSecondLcoSelected && !isThirdLcoSelected) {
-							lcoAddonIds.push(response.extended_checkout_charge_1.addon_id);
+							lcoIndex++;
+							lcoAddonList.push({id: response.extended_checkout_charge_1.addon_id, index: lcoIndex});
 						} else {
 							updateAddonListWrTLcoPresent(response.extended_checkout_charge_1.addon_id);
 						}
@@ -296,21 +302,22 @@ sntZestStation.controller('zsCheckinAddonCtrl', [
 					if (checkIfAddonIdIsPresent(response.extended_checkout_charge_0)) {
 						isFirstLcoSelected = checkIfLcoIsAlreadyPurchased(response.extended_checkout_charge_0.addon_id);
 						if (!isFirstLcoSelected && !isSecondLcoSelected && !isThirdLcoSelected) {
-							lcoAddonIds.push(response.extended_checkout_charge_0.addon_id);
+							lcoIndex++;
+							lcoAddonList.push({id: response.extended_checkout_charge_0.addon_id, index: lcoIndex});
 						} else {
 							updateAddonListWrTLcoPresent(response.extended_checkout_charge_0.addon_id);
 						}
 					}
 
-					var firstLcoIndex = -1;
-					var lateCheckoutAddons = [];
+					// create LC addons using the LC addon Ids
 					_.each($scope.addonsList, function(addon, addonIndex) {
-						_.each(lcoAddonIds, function(lcoAddonId) {
-							if (parseInt(addon.addon_id) === parseInt(lcoAddonId)) {
+						_.each(lcoAddonList, function(lcoAddon) {
+							if (parseInt(addon.addon_id) === parseInt(lcoAddon.id)) {
 								if (firstLcoIndex === -1) {
 									firstLcoIndex = addonIndex; // the bundled LCO will appear @ this index
 								}
 								addon.isLateCheckoutAddon = true;
+								addon.index = lcoAddon.index;
 								lateCheckoutAddons.push(addon);
 								console.log(lateCheckoutAddons);
 							}

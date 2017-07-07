@@ -43,7 +43,7 @@
       <div class="add-on-picture">
          <img src="{{selectedAddon.image}}" />
       </div>
-      <div class="add-on-content" ng-repeat="addon in selectedAddon.addons" ng-class="{'selected-addon': addon.is_selected ,'un-selected-addon': !addon.is_selected && isOneLcoAdded()}">
+      <div class="add-on-content" ng-repeat="addon in selectedAddon.addons | orderBy: 'index' " ng-class="{'selected-addon': addon.is_selected ,'un-selected-addon': !addon.is_selected && isOneLcoAdded()}" >
          <h2 style="padding:10px;background: gray;">{{addon.name}}</h2>
          <div class="price">
             <div class="action">
