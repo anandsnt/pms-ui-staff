@@ -258,43 +258,76 @@ sntZestStation.controller('zsCheckinAddonCtrl', [
 
 		var fetchLateCheckoutSettings = function() {
 			var fetchLateCheckoutSettingsSuccess = function(response) {
-				var checkIfAddonIdIsPresent = function(lco) {
-					return (!_.isUndefined(lco.addon_id) && lco.addon_id !== '');
-				};
-				if (checkIfAddonIdIsPresent(response.extended_checkout_charge_0)) {
-					lcoAddonIds.push(response.extended_checkout_charge_0.addon_id);
-				}
-				if (checkIfAddonIdIsPresent(response.extended_checkout_charge_1)) {
-					lcoAddonIds.push(response.extended_checkout_charge_1.addon_id);
-				}
-				if (checkIfAddonIdIsPresent(response.extended_checkout_charge_2)) {
-					lcoAddonIds.push(response.extended_checkout_charge_2.addon_id);
-				}
+					var checkIfAddonIdIsPresent = function(lco) {
+						return (!_.isUndefined(lco.addon_id) && lco.addon_id !== '');
+					};
+					var alreadyPresentAddonIds = _.pluck($scope.selectedReservation.addons, 'id');
+					var checkIfLcoIsAlreadyPurchased = function(addon_id) {
+						return _.some(alreadyPresentAddonIds, function(id) {
+							return parseInt(addon_id) === parseInt(id);
+						});
+					};
+					var isFirstLcoSelected = false;
+					var isSecondLcoSelected = false;
+					var isThirdLcoSelected = false;
 
-				var firstLcoIndex = -1;
-				var lateCheckoutAddons = [];
-				_.each($scope.addonsList, function(addon, addonIndex) {
-					_.each(lcoAddonIds, function(lcoAddonId) {
-						if (parseInt(addon.addon_id) === parseInt(lcoAddonId)) {
-							if (firstLcoIndex === -1) {
-								firstLcoIndex = addonIndex;
-							}
-							addon.isLateCheckoutAddon = true;
-							lateCheckoutAddons.push(addon);
-							console.log(lateCheckoutAddons);
+					if (checkIfAddonIdIsPresent(response.extended_checkout_charge_2)) {
+						isThirdLcoSelected = checkIfLcoIsAlreadyPurchased(response.extended_checkout_charge_2.addon_id);
+						if (!isThirdLcoSelected) {
+							lcoAddonIds.push(response.extended_checkout_charge_2.addon_id);
+						} else {
+							$scope.addonsList = _.reject($scope.addonsList, function(addon) {
+								return parseInt(addon.addon_id) === parseInt(response.extended_checkout_charge_2.addon_id);
+							});
 						}
-					});
-				});
-				$scope.addonsList = _.reject($scope.addonsList, function(addon){
-					return addon.isLateCheckoutAddon;
-				});
-				var bundledLCOAddon = {
-					"addons": lateCheckoutAddons,
-					"name": "LCO",
-					"isLco": true
-				};
+					}
+					if (checkIfAddonIdIsPresent(response.extended_checkout_charge_1)) {
+						isSecondLcoSelected = checkIfLcoIsAlreadyPurchased(response.extended_checkout_charge_1.addon_id);
+						if (!isSecondLcoSelected && !isThirdLcoSelected) {
+							lcoAddonIds.push(response.extended_checkout_charge_1.addon_id);
+						} else {
+							$scope.addonsList = _.reject($scope.addonsList, function(addon) {
+								return parseInt(addon.addon_id) === parseInt(response.extended_checkout_charge_1.addon_id);
+							});
+						}
+					}
+					if (checkIfAddonIdIsPresent(response.extended_checkout_charge_0)) {
+						isFirstLcoSelected = checkIfLcoIsAlreadyPurchased(response.extended_checkout_charge_0.addon_id);
+						if (!isFirstLcoSelected && !isSecondLcoSelected && !isThirdLcoSelected) {
+							lcoAddonIds.push(response.extended_checkout_charge_0.addon_id);
+						} else {
+							$scope.addonsList = _.reject($scope.addonsList, function(addon) {
+								return parseInt(addon.addon_id) === parseInt(response.extended_checkout_charge_0.addon_id);
+							});
+						}
+					}
 
-				$scope.addonsList.splice(firstLcoIndex, 0, bundledLCOAddon);
+					var firstLcoIndex = -1;
+					var lateCheckoutAddons = [];
+					_.each($scope.addonsList, function(addon, addonIndex) {
+						_.each(lcoAddonIds, function(lcoAddonId) {
+							if (parseInt(addon.addon_id) === parseInt(lcoAddonId)) {
+								if (firstLcoIndex === -1) {
+									firstLcoIndex = addonIndex;
+								}
+								addon.isLateCheckoutAddon = true;
+								lateCheckoutAddons.push(addon);
+								console.log(lateCheckoutAddons);
+							}
+						});
+					});
+					$scope.addonsList = _.reject($scope.addonsList, function(addon) {
+						return addon.isLateCheckoutAddon;
+					});
+					if (lateCheckoutAddons.length > 0) {
+						var bundledLCOAddon = {
+							"addons": lateCheckoutAddons,
+							"name": "LCO",
+							"isLco": true
+						};
+
+						$scope.addonsList.splice(firstLcoIndex, 0, bundledLCOAddon);
+					}
 
 				//$scope.addonsList
 				setPageNumberDetails();
