@@ -207,6 +207,7 @@ sntZestStation.controller('zsCheckinAddonCtrl', [
 			var isAnyOneLcoSelected = _.some(lcoAddon.addons, function(addon) {
 				return addon.is_selected;
 			});
+			
 			return isAnyOneLcoSelected;
 		};
 
