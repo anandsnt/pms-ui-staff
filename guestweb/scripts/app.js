@@ -123,7 +123,7 @@ sntGuestWeb.controller('homeController', ['$rootScope', '$scope', '$location', '
 		$rootScope.skipBalanceCollection = false;
 
 		// This is used for greatwolf only
-		if (!_.isUndefined(reservationAndhotelData.zestweb_cc_authorization_amount) && reservationAndhotelData.zestweb_cc_authorization_amount.length > 0)
+		if (!_.isUndefined(reservationAndhotelData.zestweb_cc_authorization_amount) && reservationAndhotelData.zestweb_cc_authorization_amount.length > 0){
 			$rootScope.ccAuthorizationAmount = reservationAndhotelData.zestweb_cc_authorization_amount;
 		} else {
 			$rootScope.ccAuthorizationAmount = '50';
