@@ -193,4 +193,11 @@ sntGuestWeb.config(['$stateProvider', '$urlRouterProvider', function($stateProvi
             controller: 'mobileOptionsController',
             title: 'Phone number entry'
         });
+
+    $stateProvider.state('offerAddonOptions', {
+        url: '/addonOptions/:isFrom',
+        templateUrl: '/assets/common_templates/partials/checkin/gwOfferAddonOptions.html',
+        controller: 'offerAddonOptionsController',
+        title: 'Addons'
+    });
 }]);
