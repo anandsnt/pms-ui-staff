@@ -122,6 +122,9 @@ sntGuestWeb.controller('homeController', ['$rootScope', '$scope', '$location', '
 		$rootScope.collectOutStandingBalance = !!reservationAndhotelData.zestweb_collect_outstanding_balance ? true : false;
 		$rootScope.skipBalanceCollection = false;
 
+		// This is used for greatwolf only
+		$rootScope.ccAuthorizationAmount = reservationAndhotelData.zestweb_cc_authorization_amount.length > 0 ? reservationAndhotelData.zestweb_cc_authorization_amount : '50';
+
 		$rootScope.conductSurvey = !!reservationAndhotelData.survey_question_prompt_on ? true : false;
 		$rootScope.skipBalanceconductSurvey = false;
 		// we will be showing the departure date as a verification option in external URL landing based
