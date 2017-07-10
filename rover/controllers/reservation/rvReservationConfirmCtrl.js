@@ -678,6 +678,6 @@ sntRover.controller('RVReservationConfirmCtrl', [
         $scope.shouldShowAccompanyingGuests = function(room) {
             return room.accompanying_guest_details && ( room.accompanying_guest_details.ADULT.length > 0 ||
             room.accompanying_guest_details.CHILDREN.length > 0 || room.accompanying_guest_details.INFANTS.length > 0 );
-        }
+        };
 	}
 ]);
