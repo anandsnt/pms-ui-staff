@@ -364,8 +364,10 @@ function BaseCtrl($scope) {
                   // Only send metrics and settings like CC_SWIPE ON/OFF, or Handler ON/OFF, etc.
                   // if you do not know if something will contain personal info, do not include it.
                   // 
-                  console.log(zs);
+                  //console.log(zs);
                   if (zs.isIpad) {
+                    // TODO: if we ever push the ios version to the client, report that too
+                    //        so we will know if hotels are running old ios version on their stations
                      //zs.version = cordova.version;
 
                   }
@@ -381,7 +383,7 @@ function BaseCtrl($scope) {
                       'key_encoder_id': zs.key_encoder_id,
                       'ipad': zs.isIpad ? 'ipad' : 'non-ipad',
                       'width_height': screen.width + ', ' + screen.height,
-                      'type': getIpadType(screen),
+                      'type': getIpadType(screen, zs),
 
                       // 'ipad_version':zs.version ? zs.version : 'unkonwn-version', // include version here once cordova passes the info
 
