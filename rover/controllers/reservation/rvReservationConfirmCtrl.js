@@ -210,13 +210,14 @@ sntRover.controller('RVReservationConfirmCtrl', [
 				_.each(rooms, function(room, index) {
 					var validGuests = [];
 
-					_.each(room.accompanying_guest_details, function(guest) {
-						if (!guest.first_name && !guest.last_name) {
-							guest.first_name = null;
-							guest.last_name = null;
-						}
-						validGuests.push(guest);
-					});
+                    _.each(room.accompanying_guest_details, function(guest) {
+                        _.each(guest, function(guestInfo) {
+                            if (guestInfo.first_name || guestInfo.last_name) {
+                                validGuests.push(guestInfo);
+                            }
+                        });
+
+                    });
 					paramsArray.push(validGuests);
 				});
 
@@ -672,5 +673,11 @@ sntRover.controller('RVReservationConfirmCtrl', [
    			$scope.reservationData.enable_confirmation_custom_text = !$scope.reservationData.enable_confirmation_custom_text;
    			$scope.refreshScroller('paymentInfo');
    		};
+
+        // Checks whether the accompanying guest section should be shown or not
+        $scope.shouldShowAccompanyingGuests = function(room) {
+            return room.accompanying_guest_details && ( room.accompanying_guest_details.ADULT.length > 0 ||
+            room.accompanying_guest_details.CHILDREN.length > 0 || room.accompanying_guest_details.INFANTS.length > 0 );
+        }
 	}
 ]);
