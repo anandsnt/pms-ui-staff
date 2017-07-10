@@ -3,6 +3,7 @@
 		var amountTypesLabels = [],
 			postTypeLabels = [],
 			selectedAddon = {},
+			existingAddons = [],
 			setSelectedAddon = function(addon, isSingleAddonAvailable) {
 				$scope.selectedAddon = addon;
 				$scope.showPurchaseStatus = false;
@@ -30,21 +31,21 @@
 			return addon.amount_type === 'Per Room' || addon.amount_type === 'Flat Rate';
 		};
 
-		$scope.purchaseAddon = function() {
+		$scope.purchaseAddon = function(addon) {
 
 			var addonAdditionSuccess = function() {
-				if ($scope.isAddonFlatOrRoomType($scope.selectedAddon)) {
-					$scope.selectedAddon.quantity = angular.copy($scope.selectedAddonQuantity);
-					if ($scope.selectedAddon.quantity > 0) {
-						$scope.selectedAddon.is_selected = true;
+				if ($scope.isAddonFlatOrRoomType(addon)) {
+					addon.quantity = angular.copy($scope.selectedAddonQuantity);
+					if (addon.quantity > 0) {
+						addon.is_selected = true;
 						$scope.purchaseStatusText = angular.copy($scope.addonSuccesMessage);
 						$scope.showPurchaseStatus = true;
 					} else {
-						$scope.selectedAddon.is_selected = false;
+						addon.is_selected = false;
 						$scope.doneClicked();
 					}
 				} else {
-					$scope.selectedAddon.is_selected = !$scope.selectedAddon.is_selected;
+					addon.is_selected = !addon.is_selected;
 					if ($scope.selectedAddon.is_selected) {
 						$scope.purchaseStatusText = angular.copy($scope.addonSuccesMessage);
 						$scope.showPurchaseStatus = true;
@@ -55,8 +56,8 @@
 				// update the data in srv with newly added addon
 				var checkinDetails = checkinDetailsService.getResponseData();
 				var newAddon = {
-					'id': $scope.selectedAddon.addon_id,
-					'name': $scope.selectedAddon.name
+					'id': addon.addon_id,
+					'name': addon.name
 				};
 
 				checkinDetails.addons_data.push(newAddon);
@@ -66,10 +67,10 @@
 
 
 			var params = {
-				'addon_id': $scope.selectedAddon.addon_id
+				'addon_id': addon.addon_id
 			};
 
-			if ($scope.isAddonFlatOrRoomType($scope.selectedAddon)) {
+			if ($scope.isAddonFlatOrRoomType(addon)) {
 				params.quantity = parseInt($scope.selectedAddonQuantity);
 			}
 			$scope.isLoading = true;
@@ -85,20 +86,20 @@
 			});
 		};
 
-		$scope.removeAddon = function() {
+		$scope.removeAddon = function(addon) {
 
 			var addonRemovalSuccess = function() {
-				if ($scope.isAddonFlatOrRoomType($scope.selectedAddon)) {
-					$scope.selectedAddon.is_selected = false;
-					$scope.selectedAddon.quantity = 0;
+				if ($scope.isAddonFlatOrRoomType(addon)) {
+					addon.is_selected = false;
+					addon.quantity = 0;
 				} else {
-					$scope.selectedAddon.is_selected = !$scope.selectedAddon.is_selected;
+					addon.is_selected = !addon.is_selected;
 				}
 				// update the data in srv by removing deleted addon
 				var checkinDetails = checkinDetailsService.getResponseData();
 
 				checkinDetails.addons_data = _.filter(checkinDetails.addons_data, function(addon) {
-					return addon.id !== $scope.selectedAddon.addon_id;
+					return addon.id !== addon.addon_id;
 				});
 				checkinDetailsService.setResponseData(checkinDetails);
 				$scope.doneClicked();
@@ -107,10 +108,10 @@
 
 
 			var params = {
-				'addon_id': $scope.selectedAddon.addon_id
+				'addon_id': addon.addon_id
 			};
-			if ($scope.isAddonFlatOrRoomType($scope.selectedAddon)) {
-				params.quantity = parseInt($scope.selectedAddonQuantity);
+			if ($scope.isAddonFlatOrRoomType(addon)) {
+				params.quantity = parseInt(addon);
 			}
 			$scope.isLoading = true;
 			checkinAddonService.deleteAddon(
@@ -161,6 +162,113 @@
 			}
 		};
 
+	$scope.isOneLcoAdded = function(){
+		var lcoAddon = _.find($scope.addonList, function(addon){
+			return addon.isLco;
+		});
+		var isAnyOneLcoSelected = _.some(lcoAddon.addons, function(addon){
+			return addon.is_selected;
+		});
+		return isAnyOneLcoSelected;
+	};
+
+	var fetchLateCheckoutSettings = function() {
+			var fetchLateCheckoutSettingsSuccess = function(response) {
+					var checkIfAddonIdIsPresent = function(lco) {
+						return (!_.isUndefined(lco.addon_id) && lco.addon_id !== '');
+					};
+					var alreadyPresentAddonIds = _.pluck(existingAddons, 'id');
+					var checkIfLcoIsAlreadyPurchased = function(addon_id) {
+						return _.some(alreadyPresentAddonIds, function(id) {
+							return parseInt(addon_id) === parseInt(id);
+						});
+					};
+					var updateAddonListWrTLcoPresent = function(lcoAddonId) {
+						$scope.addonList = _.reject($scope.addonList, function(addon) {
+							return parseInt(addon.addon_id) === parseInt(lcoAddonId);
+						});
+					};
+					var isFirstLcoSelected = false;
+					var isSecondLcoSelected = false;
+					var isThirdLcoSelected = false;
+					var firstLcoIndex = -1;
+					var lateCheckoutAddons = [];
+					var lcoIndex = 0;
+					var lcoAddonList = [];
+
+
+					// Dont offer lower LCO offers if higher level is already purchased
+					if (checkIfAddonIdIsPresent(response.extended_checkout_charge_2)) {
+						isThirdLcoSelected = checkIfLcoIsAlreadyPurchased(response.extended_checkout_charge_2.addon_id);
+						if (!isThirdLcoSelected) {
+							lcoIndex++;
+							lcoAddonList.push({id: response.extended_checkout_charge_2.addon_id, index: lcoIndex});
+						} else {
+							updateAddonListWrTLcoPresent(response.extended_checkout_charge_2.addon_id);
+						}
+					}
+					if (checkIfAddonIdIsPresent(response.extended_checkout_charge_1)) {
+						isSecondLcoSelected = checkIfLcoIsAlreadyPurchased(response.extended_checkout_charge_1.addon_id);
+						if (!isSecondLcoSelected && !isThirdLcoSelected) {
+							lcoIndex++;
+							lcoAddonList.push({id: response.extended_checkout_charge_1.addon_id, index: lcoIndex});
+						} else {
+							updateAddonListWrTLcoPresent(response.extended_checkout_charge_1.addon_id);
+						}
+					}
+					if (checkIfAddonIdIsPresent(response.extended_checkout_charge_0)) {
+						isFirstLcoSelected = checkIfLcoIsAlreadyPurchased(response.extended_checkout_charge_0.addon_id);
+						if (!isFirstLcoSelected && !isSecondLcoSelected && !isThirdLcoSelected) {
+							lcoIndex++;
+							lcoAddonList.push({id: response.extended_checkout_charge_0.addon_id, index: lcoIndex});
+						} else {
+							updateAddonListWrTLcoPresent(response.extended_checkout_charge_0.addon_id);
+						}
+					}
+
+					// create LC addons using the LC addon Ids
+					_.each($scope.addonList, function(addon, addonIndex) {
+						_.each(lcoAddonList, function(lcoAddon) {
+							if (parseInt(addon.addon_id) === parseInt(lcoAddon.id)) {
+								if (firstLcoIndex === -1) {
+									firstLcoIndex = addonIndex; // the bundled LCO will appear @ this index
+								}
+								addon.isLateCheckoutAddon = true;
+								addon.index = lcoAddon.index;
+								lateCheckoutAddons.push(addon);
+							}
+						});
+					});
+
+					// remove all LCO addons from main addons list
+					$scope.addonList = _.reject($scope.addonList, function(addon) {
+						return addon.isLateCheckoutAddon;
+					});
+
+					// create new Bunlded addon for LCO
+					if (lateCheckoutAddons.length > 0) {
+						var bundledLCOAddon = {
+							"addons": lateCheckoutAddons,
+							"name": "LCO",
+							"isLco": true,
+							"description": "Select one from listed Late checkout offers"
+						};
+
+						$scope.addonList.splice(firstLcoIndex, 0, bundledLCOAddon);
+					}
+
+				$scope.isLoading = false;
+			};
+
+			checkinAddonService.getlateCheckoutSettings().then(function(response) {
+				fetchLateCheckoutSettingsSuccess(response.data);
+			}, function() {
+				$rootScope.netWorkError = true;
+				$scope.isLoading = false;
+			});
+		};
+
+
 		var handleLabelMappings = function() {
 			_.each($scope.addonList, function(addon) {
 				addon.amount_type_label = '';
@@ -181,7 +289,11 @@
 				// if no custom label is present, set to post type
 				addon.post_type_label = (addon.post_type_label === '') ? addon.post_type : addon.post_type_label;
 			});
-			$scope.isLoading = false;
+			if (true) {
+				fetchLateCheckoutSettings();
+			} else {
+				$scope.isLoading = false;
+			}
 		};
 
 		var getAddonAdminSettings = function() {
@@ -195,7 +307,7 @@
 			});
 		};
 
-		var fetchExistingAddonsSucess = function(allAvailableAddons, existingAddons) {
+		var fetchExistingAddonsSucess = function(allAvailableAddons) {
 			var selectedAddonIds = _.pluck(existingAddons, 'id');
 			var addons = [];
 
@@ -260,8 +372,8 @@
 			$scope.quantityList = _.range(6);
 			var params = {};
 			checkinAddonService.getAddonList(params).then(function(response) {
-				var existingAddons = checkinDetailsService.getResponseData().addons_data;
-				fetchExistingAddonsSucess(response.addons, existingAddons);
+				existingAddons = checkinDetailsService.getResponseData().addons_data;
+				fetchExistingAddonsSucess(response.addons);
 			}, function() {
 				$rootScope.netWorkError = true;
 				$scope.isLoading = false;
