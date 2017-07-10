@@ -105,9 +105,9 @@
 			var url = '/admin/hotel/get_late_checkout_setup.json';
 
 			$http.get(url).success(function(response) {
-					if(response.status === 'success'){
+					if (response.status === 'success') {
 						deferred.resolve(response);
-					}else{
+					} else {
 						deferred.reject();
 					}
 				})

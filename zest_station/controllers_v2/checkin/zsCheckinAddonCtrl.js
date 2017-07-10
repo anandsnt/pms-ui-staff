@@ -164,10 +164,10 @@ sntZestStation.controller('zsCheckinAddonCtrl', [
 			$scope.callAPI(zsCheckinSrv.updateAddon, {
 				params: params,
 				'successCallBack': function() {
-					if(!_.isUndefined(isLco)){
+					if (!_.isUndefined(isLco)) {
 						addon.is_selected = true;
 						$scope.selectedAddon.is_selected = true;
-					}else{
+					} else {
 						addRemoveAddonSucess(addon);
 					}
 				},
@@ -181,10 +181,10 @@ sntZestStation.controller('zsCheckinAddonCtrl', [
 					addon_id: addon.addon_id
 				},
 				'successCallBack': function() {
-					if(!_.isUndefined(isLco)){
+					if (!_.isUndefined(isLco)) {
 						addon.is_selected = false;
 						$scope.selectedAddon.is_selected = false;
-					}else{
+					} else {
 						addRemoveAddonSucess(addon);
 					}
 				},
@@ -200,11 +200,11 @@ sntZestStation.controller('zsCheckinAddonCtrl', [
 			}
 		};
 
-		$scope.isOneLcoAdded = function(){
-			var lcoAddon = _.find($scope.viewableAddons, function(addon){
+		$scope.isOneLcoAdded = function() {
+			var lcoAddon = _.find($scope.viewableAddons, function(addon) {
 				return addon.isLco;
 			});
-			var isAnyOneLcoSelected = _.some(lcoAddon.addons, function(addon){
+			var isAnyOneLcoSelected = _.some(lcoAddon.addons, function(addon) {
 				return addon.is_selected;
 			});
 			return isAnyOneLcoSelected;
@@ -319,7 +319,6 @@ sntZestStation.controller('zsCheckinAddonCtrl', [
 								addon.isLateCheckoutAddon = true;
 								addon.index = lcoAddon.index;
 								lateCheckoutAddons.push(addon);
-								console.log(lateCheckoutAddons);
 							}
 						});
 					});
@@ -340,7 +339,6 @@ sntZestStation.controller('zsCheckinAddonCtrl', [
 						$scope.addonsList.splice(firstLcoIndex, 0, bundledLCOAddon);
 					}
 
-				//$scope.addonsList
 				setPageNumberDetails();
 			};
 

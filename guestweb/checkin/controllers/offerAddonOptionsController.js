@@ -38,8 +38,8 @@
 		};
 
 		$scope.purchaseAddon = function(addon) {
-
-			if(addon.isLateCheckoutAddon && $scope.isOneLcoAdded()){
+			// disable to purchase more than one LC addon
+			if (addon.isLateCheckoutAddon && $scope.isOneLcoAdded()) {
 				return;
 			}
 
@@ -172,15 +172,15 @@
 			}
 		};
 
-	$scope.isOneLcoAdded = function(){
-		var lcoAddon = _.find($scope.addonList, function(addon){
-			return addon.isLco;
-		});
-		var isAnyOneLcoSelected = _.some(lcoAddon.lco_addons, function(addon){
-			return addon.is_selected;
-		});
-		return isAnyOneLcoSelected;
-	};
+		$scope.isOneLcoAdded = function() {
+			var lcoAddon = _.find($scope.addonList, function(addon) {
+				return addon.isLco;
+			});
+			var isAnyOneLcoSelected = _.some(lcoAddon.lco_addons, function(addon) {
+				return addon.is_selected;
+			});
+			return isAnyOneLcoSelected;
+		};
 
 	var fetchLateCheckoutSettings = function() {
 			var fetchLateCheckoutSettingsSuccess = function(response) {
@@ -245,6 +245,7 @@
 								}
 								addon.isLateCheckoutAddon = true;
 								addon.index = lcoAddon.index;
+								addon.time = lcoAddon.time;
 								lateCheckoutAddons.push(addon);
 							}
 						});
@@ -300,7 +301,7 @@
 				addon.post_type_label = (addon.post_type_label === '') ? addon.post_type : addon.post_type_label;
 			});
 			
-			//$rootScope.sellLcoAsAddons = false;
+			// $rootScope.sellLcoAsAddons = false;
 			if ($rootScope.sellLcoAsAddons) {
 				fetchLateCheckoutSettings();
 			} else {
