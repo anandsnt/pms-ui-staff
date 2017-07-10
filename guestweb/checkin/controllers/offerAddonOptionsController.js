@@ -33,6 +33,10 @@
 
 		$scope.purchaseAddon = function(addon) {
 
+			if(addon.isLateCheckoutAddon && $scope.isOneLcoAdded()){
+				return;
+			}
+
 			var addonAdditionSuccess = function() {
 				if ($scope.isAddonFlatOrRoomType(addon)) {
 					addon.quantity = angular.copy($scope.selectedAddonQuantity);
@@ -289,7 +293,9 @@
 				// if no custom label is present, set to post type
 				addon.post_type_label = (addon.post_type_label === '') ? addon.post_type : addon.post_type_label;
 			});
-			if (true) {
+			
+			//$rootScope.sellLcoAsAddons = false;
+			if ($rootScope.sellLcoAsAddons) {
 				fetchLateCheckoutSettings();
 			} else {
 				$scope.isLoading = false;
