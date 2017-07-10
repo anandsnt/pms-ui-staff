@@ -17,6 +17,12 @@
 				}
 				$scope.selectedAddonQuantity = angular.copy($scope.selectedAddon.quantity);
 				$(document.body).scrollTop(0);
+			},
+			setText = function(cmsString, defaultString) {
+				return cmsString.length > 0 ? cmsString : defaultString;
+			},
+			fetchScreenDetails = function(screenId) {
+				return sntGuestWebSrv.extractAddonScreenDetails(screenId);
 			};
 
 		$scope.addonSelected = function(selectedAddon) {
@@ -206,7 +212,7 @@
 						isThirdLcoSelected = checkIfLcoIsAlreadyPurchased(response.extended_checkout_charge_2.addon_id);
 						if (!isThirdLcoSelected) {
 							lcoIndex++;
-							lcoAddonList.push({id: response.extended_checkout_charge_2.addon_id, index: lcoIndex});
+							lcoAddonList.push({id: response.extended_checkout_charge_2.addon_id, time: response.extended_checkout_charge_2.time, index: lcoIndex});
 						} else {
 							updateAddonListWrTLcoPresent(response.extended_checkout_charge_2.addon_id);
 						}
@@ -215,7 +221,7 @@
 						isSecondLcoSelected = checkIfLcoIsAlreadyPurchased(response.extended_checkout_charge_1.addon_id);
 						if (!isSecondLcoSelected && !isThirdLcoSelected) {
 							lcoIndex++;
-							lcoAddonList.push({id: response.extended_checkout_charge_1.addon_id, index: lcoIndex});
+							lcoAddonList.push({id: response.extended_checkout_charge_1.addon_id, time: response.extended_checkout_charge_1.time, index: lcoIndex});
 						} else {
 							updateAddonListWrTLcoPresent(response.extended_checkout_charge_1.addon_id);
 						}
@@ -224,7 +230,7 @@
 						isFirstLcoSelected = checkIfLcoIsAlreadyPurchased(response.extended_checkout_charge_0.addon_id);
 						if (!isFirstLcoSelected && !isSecondLcoSelected && !isThirdLcoSelected) {
 							lcoIndex++;
-							lcoAddonList.push({id: response.extended_checkout_charge_0.addon_id, index: lcoIndex});
+							lcoAddonList.push({id: response.extended_checkout_charge_0.addon_id, time: response.extended_checkout_charge_0.time, index: lcoIndex});
 						} else {
 							updateAddonListWrTLcoPresent(response.extended_checkout_charge_0.addon_id);
 						}
@@ -253,9 +259,9 @@
 					if (lateCheckoutAddons.length > 0) {
 						var bundledLCOAddon = {
 							"addons": lateCheckoutAddons,
-							"name": "LCO",
+							"name": setText(fetchScreenDetails("LATE-CHECKOUT-HEADING").screen_title, "Late Checkout"),
 							"isLco": true,
-							"description": "Select one from listed Late checkout offers"
+							"description": setText(fetchScreenDetails("LATE-CHECKOUT-SUB-HEADING").screen_title, "Please select a late checkout offer from the list below to extend yor stay.")
 						};
 
 						$scope.addonList.splice(firstLcoIndex, 0, bundledLCOAddon);
@@ -354,12 +360,6 @@
 		};
 
 		(function() {
-			var fetchScreenDetails = function(screenId) {
-				return sntGuestWebSrv.extractAddonScreenDetails(screenId);
-			};
-			var setText = function(cmsString, defaultString) {
-				return cmsString.length > 0 ? cmsString : defaultString;
-			};
 			// set screen texts from CMS,  find using screen id
 			$scope.addonListTitle = setText(fetchScreenDetails("ADDON-LIST").screen_title, "Enhance Your Stay");
 			$scope.addonContinue = setText(fetchScreenDetails("ADDON-CONTINUE").screen_title, "Continue");

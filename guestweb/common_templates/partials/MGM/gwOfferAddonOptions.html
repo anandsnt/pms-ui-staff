@@ -72,8 +72,9 @@
                 <p class="sub-main-text margin-top-20" ng-bind="selectedAddon.description"></p>
                 <br/>
                 <!-- submit -->
-                <div ng-repeat="addon in selectedAddon.addons | orderBy: 'index' " class="margin-top-20">
-                    <p>{{addon.name}}</p>
+                <div ng-repeat="addon in selectedAddon.addons | orderBy: 'index' " class="margin-top-40">
+                    <p class="main-text no-text-case bold-text margin-top-20">{{addon.name}}</p>
+                    <p class="sub-text no-text-case">{{addon.description}}</p>
                     <a class="btn btn-template margin-top-20" ng-click="purchaseAddon(addon)" ng-hide="addon.is_selected" ng-class="{'disabled-addon' : isOneLcoAdded() && !addon.is_selected}">{{addonPurchase}}</a>
                     <a class="btn btn-template margin-top-20" ng-click="removeAddon(addon)" ng-show="addon.is_selected">{{addonRemove}}</a>
                 </div>
