@@ -176,7 +176,7 @@
 		var lcoAddon = _.find($scope.addonList, function(addon){
 			return addon.isLco;
 		});
-		var isAnyOneLcoSelected = _.some(lcoAddon.addons, function(addon){
+		var isAnyOneLcoSelected = _.some(lcoAddon.lco_addons, function(addon){
 			return addon.is_selected;
 		});
 		return isAnyOneLcoSelected;
@@ -258,7 +258,7 @@
 					// create new Bunlded addon for LCO
 					if (lateCheckoutAddons.length > 0) {
 						var bundledLCOAddon = {
-							"addons": lateCheckoutAddons,
+							"lco_addons": lateCheckoutAddons,
 							"name": setText(fetchScreenDetails("LATE-CHECKOUT-HEADING").screen_title, "Late Checkout"),
 							"isLco": true,
 							"description": setText(fetchScreenDetails("LATE-CHECKOUT-SUB-HEADING").screen_title, "Please select a late checkout offer from the list below to extend yor stay.")
