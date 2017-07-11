@@ -187,4 +187,11 @@ sntGuestWeb.config(['$stateProvider', '$urlRouterProvider', function($stateProvi
 		title: 'Text Alert'
 	});
 
+	// Addon state
+	$stateProvider.state('offerAddonOptions', {
+		url: '/addonOptions/:isFrom',
+		templateUrl: '/assets/common_templates/partials/checkin/gwOfferAddonOptions.html',
+		controller: 'offerAddonOptionsController',
+		title: 'Addons'
+	});
 }]);

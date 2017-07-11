@@ -70,4 +70,5 @@
 	"AUTH_KEY": "Authorization Key",
 	"AUTH_ID": "Authorization ID",
 	"WINDSURFER_HEADER": "Windsurfer CRS Setup",
-	"ACCESS_URL": "Access URL"
+	"ACCESS_URL": "Access URL",
+	"MONITOR_SCREEN": "Monitor Screen"
