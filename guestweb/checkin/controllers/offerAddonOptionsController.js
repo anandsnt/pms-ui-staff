@@ -59,7 +59,13 @@
 					if ($scope.selectedAddon.is_selected) {
 						$scope.purchaseStatusText = angular.copy($scope.addonSuccesMessage);
 						$scope.showPurchaseStatus = true;
-					} else {
+					} 
+					else if(addon.isLateCheckoutAddon){
+						$scope.selectedAddon.title = addon.name;
+						$scope.purchaseStatusText = angular.copy($scope.addonSuccesMessage);
+						$scope.showPurchaseStatus = true;
+					}
+					else {
 						$scope.doneClicked();
 					}
 				}
