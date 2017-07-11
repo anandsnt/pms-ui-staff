@@ -205,6 +205,9 @@
 					var lateCheckoutAddons = [];
 					var lcoIndex = 0;
 					var lcoAddonList = [];
+					var extractTime = function(time) {
+						return time = parseInt(time) < 10 ? time.slice(1, 2) : time;
+					};
 
 
 					// Dont offer lower LCO offers if higher level is already purchased
@@ -212,7 +215,12 @@
 						isThirdLcoSelected = checkIfLcoIsAlreadyPurchased(response.extended_checkout_charge_2.addon_id);
 						if (!isThirdLcoSelected) {
 							lcoIndex++;
-							lcoAddonList.push({id: response.extended_checkout_charge_2.addon_id, time: response.extended_checkout_charge_2.time, index: lcoIndex});
+							time = extractTime(response.extended_checkout_charge_2.time);
+							lcoAddonList.push({
+								id: response.extended_checkout_charge_2.addon_id,
+								time: time,
+								index: lcoIndex
+							});
 						} else {
 							updateAddonListWrTLcoPresent(response.extended_checkout_charge_2.addon_id);
 						}
@@ -221,7 +229,12 @@
 						isSecondLcoSelected = checkIfLcoIsAlreadyPurchased(response.extended_checkout_charge_1.addon_id);
 						if (!isSecondLcoSelected && !isThirdLcoSelected) {
 							lcoIndex++;
-							lcoAddonList.push({id: response.extended_checkout_charge_1.addon_id, time: response.extended_checkout_charge_1.time, index: lcoIndex});
+							time = extractTime(response.extended_checkout_charge_1.time);
+							lcoAddonList.push({
+								id: response.extended_checkout_charge_1.addon_id,
+								time: time,
+								index: lcoIndex
+							});
 						} else {
 							updateAddonListWrTLcoPresent(response.extended_checkout_charge_1.addon_id);
 						}
@@ -230,7 +243,12 @@
 						isFirstLcoSelected = checkIfLcoIsAlreadyPurchased(response.extended_checkout_charge_0.addon_id);
 						if (!isFirstLcoSelected && !isSecondLcoSelected && !isThirdLcoSelected) {
 							lcoIndex++;
-							lcoAddonList.push({id: response.extended_checkout_charge_0.addon_id, time: response.extended_checkout_charge_0.time, index: lcoIndex});
+							time = extractTime(response.extended_checkout_charge_0.time);
+							lcoAddonList.push({
+								id: response.extended_checkout_charge_0.addon_id,
+								time: time,
+								index: lcoIndex
+							});
 						} else {
 							updateAddonListWrTLcoPresent(response.extended_checkout_charge_0.addon_id);
 						}
@@ -372,6 +390,8 @@
 			$scope.addonSuccesMessage = setText(fetchScreenDetails("ADDON-SUCCESS").screen_title, "Thanks for the purchase. Your addon will be added to your account.");
 			$scope.addonSelectQty = setText(fetchScreenDetails("ADDON-SELECT-QTY").screen_title, "Select quantity");
 			$scope.addonPurchaseMsg = setText(fetchScreenDetails("ADDON-PURCHASE-MSG").screen_title, "Would you like to add @addon_name@ to your stay?.");
+			$scope.lcoAddonStartingMsg = setText(fetchScreenDetails("LCO-ADDON-STARTING-MSG").screen_title, "Extend your stay till");
+			$scope.lcoAddonEndingMsg = setText(fetchScreenDetails("LCO-ADDON-ENDING-MSG").screen_title, "at");
 
 			$scope.addonList = [];
 			$scope.isLoading = true;

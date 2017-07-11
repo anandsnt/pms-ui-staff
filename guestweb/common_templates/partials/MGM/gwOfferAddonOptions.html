@@ -74,7 +74,7 @@
                 <!-- submit -->
                 <div ng-repeat="addon in selectedAddon.lco_addons | orderBy: 'index' " class="margin-top-40">
                     <p class="main-text no-text-case bold-text margin-top-20">{{addon.name}}</p>
-                    <p class="sub-text no-text-case">{{addon.description}}</p>
+                    <p class="sub-main-text no-text-case">{{lcoAddonStartingMsg}}&nbsp;<b>{{addon.time}} PM</b>&nbsp;{{lcoAddonEndingMsg}}&nbsp;<b>{{currencySymbol}}{{addon.amount}}</b></p>
                     <a class="btn btn-template margin-top-20" ng-click="purchaseAddon(addon)" ng-hide="addon.is_selected" ng-class="{'disabled-addon' : isOneLcoAdded() && !addon.is_selected}">{{addonPurchase}}</a>
                     <a class="btn btn-template margin-top-20" ng-click="removeAddon(addon)" ng-show="addon.is_selected">{{addonRemove}}</a>
                 </div>
