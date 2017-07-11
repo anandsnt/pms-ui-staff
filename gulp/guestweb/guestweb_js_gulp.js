@@ -16,6 +16,27 @@ module.exports = function (gulp, $, options) {
 		GUESTWEB_JS_LIST 		= require("../../asset_list/js/guestweb/guestwebAssetList").getList(),
 		guestwebGenDir 			= DEST_ROOT_PATH + 'asset_list/' + generated + 'ThemeMappings/' + generated + 'Guestweb/js/',
 		guestwebGenFile 		= guestwebGenDir + generated + 'GuestWebJsThemeMappings.json';
+
+	var extractJSMappingList = function() {
+		var argv = require('yargs').argv;
+		var guestWebThemeJsList = {};
+		if ('only' in argv && typeof argv.only === 'string') {
+			// required zest web themes are passed
+			var themeString = argv.only;
+			// strip [ and ] from string
+			themeString = themeString.substring(1, themeString.length-1)
+    		var themeArray = themeString.split(",");
+
+			for (var i = 0, len = themeArray.length; i < len; i++) {
+				guestWebThemeJsList[themeArray[i]] = GUESTWEB_THEME_JS_LIST[themeArray[i]]
+			}
+
+		} else {
+			guestWebThemeJsList = GUESTWEB_THEME_JS_LIST;
+		}
+		return guestWebThemeJsList;
+	};
+
 	//JS - Start
 	gulp.task('compile-guestweb-dashboard-js-production', function(){
 		var nonMinifiedFiles 	= GUESTWEB_JS_LIST.nonMinifiedFiles,
@@ -129,7 +150,7 @@ module.exports = function (gulp, $, options) {
 			mkdirp = require('mkdirp');
 
 		delete require.cache[require.resolve(GUESTWEB_THEME_JS_MAPPING_FILE)];
-		GUESTWEB_THEME_JS_LIST 	= require(GUESTWEB_THEME_JS_MAPPING_FILE).getThemeMappingList();
+		GUESTWEB_THEME_JS_LIST 	= extractJSMappingList();
 		
 
 		Object.keys(GUESTWEB_THEME_JS_LIST).map(function(theme, index){
@@ -167,7 +188,7 @@ module.exports = function (gulp, $, options) {
 
 	gulp.task('guestweb-copy-js-files-dev', function(){
 		delete require.cache[require.resolve(GUESTWEB_THEME_JS_MAPPING_FILE)];
-		GUESTWEB_THEME_JS_LIST 	= require(GUESTWEB_THEME_JS_MAPPING_FILE).getThemeMappingList();
+		GUESTWEB_THEME_JS_LIST 	= extractJSMappingList();
 
 		var guestwebSourceList = GUESTWEB_JS_LIST.nonMinifiedFiles.concat(GUESTWEB_JS_LIST.minifiedFiles);
 		Object.keys(GUESTWEB_THEME_JS_LIST).map(function(theme, index){
@@ -179,7 +200,7 @@ module.exports = function (gulp, $, options) {
 
 	gulp.task('guestweb-watch-js-files', function(){
 		delete require.cache[require.resolve(GUESTWEB_THEME_JS_MAPPING_FILE)];
-		GUESTWEB_THEME_JS_LIST 	= require(GUESTWEB_THEME_JS_MAPPING_FILE).getThemeMappingList();
+		GUESTWEB_THEME_JS_LIST 	= extractJSMappingList();
 
 		var guestwebSourceList = GUESTWEB_JS_LIST.nonMinifiedFiles.concat(GUESTWEB_JS_LIST.minifiedFiles);
 		Object.keys(GUESTWEB_THEME_JS_LIST).map(function(theme, index){

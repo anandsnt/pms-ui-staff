@@ -20,6 +20,25 @@ module.exports = function(gulp, $, options){
 	    guestwebGenDir 			= DEST_ROOT_PATH + 'asset_list/' + generated + 'ThemeMappings/' + generated + 'Guestweb/template/',
 		guestwebGenFile 		= guestwebGenDir + generated + 'GuestWebTemplateThemeMappings.json';
 
+	var extractThemeMappingList = function() {
+		var argv = require('yargs').argv;
+		var guestWebThemeList = {};
+		if ('only' in argv && typeof argv.only === 'string') {
+			// required zest web themes are passed
+			var themeString = argv.only;
+			// strip [ and ] from string
+			themeString = themeString.substring(1, themeString.length-1)
+    		var themeArray = themeString.split(",");
+
+			for (var i = 0, len = themeArray.length; i < len; i++) {
+				guestWebThemeList[themeArray[i]] = GUESTWEB_THEME_TEMPLATE_LIST[themeArray[i]]
+			}
+		} else {
+			guestWebThemeList = GUESTWEB_THEME_TEMPLATE_LIST;
+		}
+		return guestWebThemeList;
+	};
+
 	gulp.task('create-guestweb-theme-template-list', function(){
 		var fs = require('fs-extra');
 		return fs.outputJsonSync(guestwebGenFile, extendedMappings);
@@ -96,7 +115,7 @@ module.exports = function(gulp, $, options){
 
 		
 		delete require.cache[require.resolve(GUESTWEB_THEME_TEMPLATE_MAPPING_FILE)];
-		GUESTWEB_THEME_TEMPLATE_LIST = require(GUESTWEB_THEME_TEMPLATE_MAPPING_FILE).getThemeMappingList();
+		GUESTWEB_THEME_TEMPLATE_LIST = extractThemeMappingList();
 
 		var tasks = Object.keys(GUESTWEB_THEME_TEMPLATE_LIST).map(function(theme, index){
 			console.log ('Guestweb Theme template - mapping-generation-started: ' + theme);
