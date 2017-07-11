@@ -55,6 +55,7 @@ sntZestStation.controller('zsPickupKeyRegistartionCardPrintCtrl', [
                 setMessage(printSuccess);
                 errorMessage = _.isUndefined(errorMessage) ? 'DISPENSE_KEY_PRINT_FAIL' : errorMessage;
                 $scope.zestStationData.workstationOooReason = $filter('translate')(errorMessage);
+                $scope.addReasonToOOSLog('DISPENSE_KEY_PRINT_FAIL');
                 $scope.zestStationData.workstationStatus = 'out-of-order';
                 $scope.runDigestCycle();
 

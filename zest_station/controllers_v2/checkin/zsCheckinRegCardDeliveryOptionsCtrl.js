@@ -85,8 +85,10 @@ sntZestStation.controller('zsCheckinRegCardDeliveryOptionsCtrl', [
                 errorMessage = _.isUndefined(errorMessage) ? 'CHECKIN_PRINT_FAIL' : errorMessage;
                 if ($stateParams.key_success === 'true') {
                     $scope.zestStationData.workstationOooReason = $filter('translate')(errorMessage);
+                    $scope.addReasonToOOSLog('CHECKIN_PRINT_FAIL');
                 } else {
                     $scope.zestStationData.workstationOooReason = $filter('translate')('CHECKIN_KEY_FAIL_PRINT_FAIL');
+                    $scope.addReasonToOOSLog('CHECKIN_KEY_FAIL_PRINT_FAIL');
                 }
                 $scope.zestStationData.workstationStatus = 'out-of-order';
 

@@ -384,6 +384,8 @@ function BaseCtrl($scope) {
                       'ipad': zs.isIpad ? 'ipad' : 'non-ipad',
                       'width_height': screen.width + ', ' + screen.height,
                       'type': getIpadType(screen, zs),
+                      // one session = until a kiosk is 'refreshed', the OOS reasons will be added as an array of objects, reason + timestamp
+                      'session_oos_reasons':zs.sessionOosReason,
 
                       // 'ipad_version':zs.version ? zs.version : 'unkonwn-version', // include version here once cordova passes the info
 
@@ -454,6 +456,21 @@ function BaseCtrl($scope) {
      
     
     };
+    
+    $scope.addReasonToOOSLog = function(reason) {
+        console.warn('addReasonToOOSLog: ',reason);
+        // for each session of this station, send along the OOS reason(s) with timestamps
+        // for now, just include the workstation time
+        // 
+        var today = new Date();
+        var currentTime = today.toString();
+
+        $scope.zestStationData.sessionOosReason.push({
+            'reason': reason,
+            'datetime': currentTime
+        });
+        // at the next status-update, the kiosk will log the "$scope.zestStationData.sessionOosReason" array with all OOS reason events
+    }
 
 
 }

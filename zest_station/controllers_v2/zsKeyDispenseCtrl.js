@@ -392,7 +392,7 @@ sntZestStation.controller('zsKeyDispenseCtrl', [
 			if ($scope.zestStationData.consecutiveKeyFailure >= $scope.zestStationData.kioskOutOfOrderTreshold) {
 				$scope.zestStationData.workstationOooReason = $filter('translate')('KEY_CREATION_FAILED');
 				$scope.zestStationData.workstationStatus = 'out-of-order'; // go out of order when (printing or key encoding fails)
-
+				$scope.addReasonToOOSLog('KEY_CREATION_FAILED');
 				$scope.trackEvent('failure - go out of service', 'key_encode');
 			} else {
 				$scope.trackEvent('key-failure-mode', 'key_encode');
@@ -511,11 +511,13 @@ sntZestStation.controller('zsKeyDispenseCtrl', [
 		$scope.$on('SOCKET_FAILED', function() {
 			if ($scope.noOfKeysSelected !== $scope.noOfKeysCreated) {
 				$scope.zestStationData.workstationOooReason = $filter('translate')('SOCKET_FAILED');
+				$scope.addReasonToOOSLog('SOCKET_FAILED');
 				$scope.onGeneralFailureCase();
 			}
 		});
 		$scope.$on('DISPENSE_CARD_EMPTY', function() {
 			$scope.zestStationData.workstationOooReason = $filter('translate')('KEYS_EMPTY');
+			$scope.addReasonToOOSLog('DISPENSER_EMPTY');
 			$scope.onGeneralFailureCase();
 		});
 

@@ -1455,6 +1455,7 @@ sntZestStation.controller('zsRootCtrl', [
                 $scope.zestStationData.key_encoder_id = '';
                 $scope.zestStationData.workstationStatus = 'out-of-order';
                 $scope.zestStationData.workstationOooReason = $filter('translate')('WORK_STATION_NOT_SELECTED');
+                $scope.addReasonToOOSLog('WORK_STATION_NOT_SELECTED');
                 // if no workstation is selected, go to admin directly
                 $state.go('zest_station.admin');
             } else {
@@ -1771,6 +1772,7 @@ sntZestStation.controller('zsRootCtrl', [
             $scope.zestStationData.showMoreDebugInfo = false;
             $scope.zestStationData.themeUsesLighterSubHeader = false;
             $scope.zestStationData.jumperMinimized = false;
+            $scope.zestStationData.sessionOosReason = [];
 			// $scope.zestStationData.checkin_screen.authentication_settings.departure_date = true;//left from debuggin?
             setAUpIdleTimer();
             $scope.zestStationData.workstationOooReason = '';
