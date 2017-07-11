@@ -985,7 +985,8 @@ sntZestStation.controller('zsRootCtrl', [
                         reconnectToWebSocket();// if disconnected, will attempt to re-connect to the websocket
                     }
                     workstationTimer = 0;
-                    $scope.trackEvent('health_check', 'status_update', currentState, currentState);
+                    // $scope.trackEvent('health_check', 'status_update', currentState, currentState);
+                    // track once a minute initially
                 } else if (workstationTimer === 60) {
                     $scope.trackEvent('health_check', 'status_update', currentState, currentState);
                 }

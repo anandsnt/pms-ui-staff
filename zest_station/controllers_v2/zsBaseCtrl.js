@@ -426,11 +426,7 @@ function BaseCtrl($scope) {
                     */
 
                     event_name = JSON.stringify(status);
-                    console.log('as JSON: ',JSON.parse(event_name));
-                } else if (event_type === 'oos_reason_update') {
-                    oos_reason_update += zs.theme;
-
-                }
+                } 
 
                 try {
                     trackAnalyticEvent(event_name, event_type);
