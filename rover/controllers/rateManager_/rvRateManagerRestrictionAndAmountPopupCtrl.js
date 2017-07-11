@@ -701,6 +701,7 @@ angular.module('sntRover')
          * @return {Object}
          */
         const getDisplayingParamsForRestriction = (restriction, restrictionList) => {
+            console.log("restriction_id "+restriction.id)
             const restrictionFoundInList = _.findWhere(restrictionList, { 'restriction_type_id': restriction.id });
 
             // returning Object - default - OFF status
@@ -744,6 +745,7 @@ angular.module('sntRover')
          * @return {array}
          */
         const getRestrictionListForRateView = (restrictionTypes, restrictionList) => {
+
             var restrictions = getValidRestrictionTypes(restrictionTypes)
                     .map(restrictionType => ({
                         ...restrictionType,
@@ -795,6 +797,8 @@ angular.module('sntRover')
 
             $scope.headerBottomRightLabel = 'All Room types';
 
+            $scope.isMultiple = dialogData.isMultiple;
+
             $scope.restrictionList = getRestrictionListForRateView(
                     dialogData.restrictionTypes,
                     dialogData.variedAndCommonRestrictions);
@@ -816,6 +820,8 @@ angular.module('sntRover')
 
             $scope.headerBottomRightLabel = 'All Rates';
 
+            $scope.isMultiple = dialogData.isMultiple;
+
             $scope.restrictionList = getRestrictionListForRateView(
                     dialogData.restrictionTypes,
                     dialogData.variedAndCommonRestrictions);
@@ -833,6 +839,8 @@ angular.module('sntRover')
             $scope.headerBottomLeftLabel = formatDateForTopHeader(dialogData.date);
 
             $scope.headerBottomRightLabel = 'All Rates';
+
+            $scope.isMultiple = dialogData.isMultiple;
 
             $scope.restrictionList = getRestrictionListForRateView(
                     dialogData.restrictionTypes,
@@ -854,6 +862,8 @@ angular.module('sntRover')
             $scope.header = formatDateForTopHeader(tzIndependentDate(dialogData.date));
 
             $scope.headerBottomRightLabel = '';
+
+            $scope.isMultiple = dialogData.isMultiple;
 
             $scope.restrictionList = getRestrictionListForRateView(
                     dialogData.restrictionTypes,
@@ -878,6 +888,8 @@ angular.module('sntRover')
 
             $scope.headerBottomRightLabel = '';
 
+            $scope.isMultiple = dialogData.isMultiple;
+
             $scope.restrictionList = getRestrictionListForRateView(
                     dialogData.restrictionTypes,
                     dialogData.variedAndCommonRestrictions);
@@ -898,6 +910,8 @@ angular.module('sntRover')
             $scope.headerBottomLeftLabel = 'All Room types';
 
             $scope.headerBottomRightLabel = 'All Rates';
+
+            $scope.isMultiple = dialogData.isMultiple;
 
             $scope.restrictionList = getRestrictionListForRateView(
                     dialogData.restrictionTypes,
@@ -958,6 +972,8 @@ angular.module('sntRover')
             $scope.headerBottomLeftLabel = formatDateForTopHeader(dialogData.date);
 
             $scope.headerBottomRightLabel = dialogData.rate.name;
+
+            $scope.isMultiple = dialogData.isMultiple;
 
             $scope.restrictionList = getRestrictionListForRateView(
                     dialogData.restrictionTypes,
@@ -1054,6 +1070,8 @@ angular.module('sntRover')
             $scope.headerBottomLeftLabel = 'All room types';
 
             $scope.headerBottomRightLabel = dialogData.rate.name;
+
+            $scope.isMultiple = dialogData.isMultiple;
 
             $scope.restrictionList = getRestrictionListForRateView(
                     dialogData.restrictionTypes,
