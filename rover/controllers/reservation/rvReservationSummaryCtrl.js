@@ -875,7 +875,8 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', 'jsMappings', '$s
             };
 
             var postData = {
-                payment_type: {}
+                payment_type: {},
+                guest_detail_id: $scope.reservationData.guest.id
             };
 
             if ($scope.reservationData.paymentType.type.value !== null) {
