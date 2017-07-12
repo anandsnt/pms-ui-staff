@@ -1469,5 +1469,24 @@ angular.module('sntRover').controller('RVHkRoomStatusCtrl', [
 
     	$scope.setScroller ('tasks-summary-scroller', scrollerOptionsForSummary);
 
+        // Format the given date based on the hotel date format
+        $scope.formatDateForUI = function(date_) {
+            var type_ = typeof date_,
+                returnString = '';
+
+          switch (type_) {
+              // if date string passed
+            case 'string':
+              returnString = $filter('date')(new tzIndependentDate(date_), $rootScope.dateFormat);
+              break;
+
+              // if date object passed
+            case 'object':
+              returnString = $filter('date')(date_, $rootScope.dateFormat);
+              break;
+          }
+          return (returnString);
+        };
+
 	}
 	]);
