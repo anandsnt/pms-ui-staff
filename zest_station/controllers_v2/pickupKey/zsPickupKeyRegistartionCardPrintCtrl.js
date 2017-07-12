@@ -61,6 +61,7 @@ sntZestStation.controller('zsPickupKeyRegistartionCardPrintCtrl', [
 
                 $scope.trackEvent('PUK - Error', 'Print-Status');
                 $scope.trackEvent('PUK', 'Flow-End-Success');
+                $scope.trackSessionActivity('PUK', 'Print-Error', 'R' + $stateParams.reservation_id, 'FLOW_END_SUCCESS', true);
 
             };
             var printSuccessActions = function() {
@@ -74,7 +75,7 @@ sntZestStation.controller('zsPickupKeyRegistartionCardPrintCtrl', [
 
                 $scope.trackEvent('PUK - Success', 'Print-Status');
                 $scope.trackEvent('PUK', 'Flow-End-Success');
-
+                $scope.trackSessionActivity('PUK', 'Print-Success', 'R' + $stateParams.reservation_id, 'FLOW_END_SUCCESS', true);
             };
 
             var handleStarTacPrinterActions = function() {
