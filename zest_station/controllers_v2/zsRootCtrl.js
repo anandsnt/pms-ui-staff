@@ -1124,6 +1124,7 @@ sntZestStation.controller('zsRootCtrl', [
             $log.info(toParams);
             $log.info('---');
             if (to.name === 'zest_station.home' || to.name === 'zest_station.outOfService') {
+                $scope.resetTrackers();
                 $scope.turnOffLight();
                 if ($scope.trackEvent) {
                     $scope.trackEvent('health_check', 'status_update', from.name, to.name);
@@ -1774,6 +1775,7 @@ sntZestStation.controller('zsRootCtrl', [
             $scope.zestStationData.themeUsesLighterSubHeader = false;
             $scope.zestStationData.jumperMinimized = false;
             $scope.zestStationData.sessionOosReason = [];
+            $scope.zestStationData.sessionActivity= [];
 			// $scope.zestStationData.checkin_screen.authentication_settings.departure_date = true;//left from debuggin?
             setAUpIdleTimer();
             $scope.zestStationData.workstationOooReason = '';
@@ -1781,6 +1783,7 @@ sntZestStation.controller('zsRootCtrl', [
             $scope.zestStationData.wsIsOos = false;
             $scope.showLanguagePopup = false;
             $scope.zestStationData.waitingForSwipe = false;
+            $scope.zestStationData.session_conf = '';
             // moved web socket creation code to fetchHotelSettings
             fetchHotelSettings();
             getKeyEncoderInfo();
@@ -1826,6 +1829,14 @@ sntZestStation.controller('zsRootCtrl', [
             // reset number of keys to be made
             $scope.zestStationData.makeTotalKeys = 0;
             $scope.zestStationData.makingAdditionalKey = false;
+
+            try {
+                if (typeof AppVersion !== typeof undefined && typeof AppVersion.version !== typeof undefined) {
+                    $scope.zestStationData.app_version = AppVersion.version ? AppVersion.version : 'UNK';
+                }
+            } catch(err) {
+                console.log(err);
+            }
         }());
 
         $scope.onExitApplication = function() {

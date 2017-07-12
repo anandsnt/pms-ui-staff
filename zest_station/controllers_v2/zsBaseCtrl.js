@@ -349,13 +349,48 @@ function BaseCtrl($scope) {
         // console.log('calling track event: ', 'trackAnalyticEvent', arguments);
         var zs = {};
 
-        if (($scope && $scope.$parent) || ($scope.zestStationData)) {
+        if ($scope && $scope.$parent || $scope.zestStationData) {
             zs = $scope.$parent.zestStationData ? $scope.$parent.zestStationData : $scope.zestStationData;
             if (zs) {
-                if (event_type === 'status_update') {
-                  // JSON format to parse from a string 
-                    var today = new Date();
-                    var currentTime = today.toString();
+
+              // JSON format to parse from a string 
+                var today = new Date();
+                var currentTime = today.toString();
+
+                var status = {
+                    'theme': zs.theme + '_' + zs.hotel_id,
+                    'workstation_name': zs.workstationName,
+                    'workstation_status': zs.workstationStatus,
+                    'OOO_treshold': zs.kioskOutOfOrderTreshold,
+                    'consecutive_key_fails': zs.consecutiveKeyFailure,
+                    'handler_connected_status': zs.stationHandlerConnectedStatus,
+                    'hourly_rate_on': zs.isHourlyRateOn,
+                    'key_encoder_id': zs.key_encoder_id,
+                    'ipad': zs.isIpad ? 'ipad' : 'non-ipad',
+                    'width_height': screen.width + ', ' + screen.height,
+                    'type': getIpadType(screen, zs),
+                  // one session = until a kiosk is 'refreshed', the OOS reasons will be added as an array of objects, reason + timestamp
+                    'session_oos_reasons': zs.sessionOosReason,
+                  // session_activity, ie.  [ {'cn': '234211', 'activity':'reservation found', 'time': Tue/12/12/12, } ] 
+                    'session_activity': zs.sessionActivity,
+
+                  // 'ipad_version':zs.version ? zs.version : 'unkonwn-version', // include version here once cordova passes the info
+
+                    'current_screen': at ? at : '',
+                    'from_screen': from ? from : '',
+
+                    'idle_timer': {
+                        'enabled': zs.idle_timer.enabled,
+                        'max': zs.idle_timer.max,
+                        'prompt': zs.idle_timer.prompt
+                    },
+                    'upsell_addons_enabled': false,
+                    'upsell_rooms_enabled': false,
+                    'kiosk_time': currentTime
+                };
+
+
+                if (event_type === 'status_update' || event_type === 'activity_update') {
                   // 
                   // This data goes through Google Analytics, therefore- be very explicit in the data to send
                   // DO NOT send any Personal Identifiable information, Credit Card info, or IP address 
@@ -365,69 +400,9 @@ function BaseCtrl($scope) {
                   // if you do not know if something will contain personal info, do not include it.
                   // 
                   // console.log(zs);
-
-                    if (zs.isIpad) {
-                    // TODO: if we ever push the ios version to the client, report that too
-                    //        so we will know if hotels are running old ios version on their stations
-                     // zs.version = cordova.version;
-
-                    }
-                  
-                    var status = {
-                        'theme': zs.theme + '_' + zs.hotel_id,
-                        'workstation_name': zs.workstationName,
-                        'workstation_status': zs.workstationStatus,
-                        'OOO_treshold': zs.kioskOutOfOrderTreshold,
-                        'consecutive_key_fails': zs.consecutiveKeyFailure,
-                        'handler_connected_status': zs.stationHandlerConnectedStatus,
-                        'hourly_rate_on': zs.isHourlyRateOn,
-                        'key_encoder_id': zs.key_encoder_id,
-                        'ipad': zs.isIpad ? 'ipad' : 'non-ipad',
-                        'width_height': screen.width + ', ' + screen.height,
-                        'type': getIpadType(screen, zs),
-                      // one session = until a kiosk is 'refreshed', the OOS reasons will be added as an array of objects, reason + timestamp
-                        'session_oos_reasons': zs.sessionOosReason,
-
-                      // 'ipad_version':zs.version ? zs.version : 'unkonwn-version', // include version here once cordova passes the info
-
-                        'current_screen': at ? at : '',
-                        'from_screen': from ? from : '',
-
-                        'idle_timer': {
-                            'enabled': zs.idle_timer.enabled,
-                            'max': zs.idle_timer.max,
-                            'prompt': zs.idle_timer.prompt
-                        },
-                        'upsell_addons_enabled': false,
-                        'upsell_rooms_enabled': false,
-                        'kiosk_time': currentTime
-                    };
-
-                  /*
-                    var extraParams = '' +
-                      'theme[' + zs.theme + '] : ' +
-                      // 'hotel_time_zone_full[' + zs.hotel_time_zone_full + '] : ' +
-
-                      'workstationName[' + zs.workstationName + '] : ' +
-                      'workstationStatus[' + zs.workstationStatus + '] : ' +
-
-                      'kioskOutOfOrderTreshold[' + zs.kioskOutOfOrderTreshold + '] : ' +
-                      'consecutiveKeyFailure[' + zs.consecutiveKeyFailure + '] : ' +
-                      
-                      'stationHandlerConnectedStatus[' + zs.stationHandlerConnectedStatus + '] : ' +
-                      // 'isIpad[' + zs.isIpad + '] : ' +
-                      'isHourlyRateOn[' + zs.isHourlyRateOn + '] : ' +
-                      'key_encoder_id[' + zs.key_encoder_id + '] : ' +
-                      'atScreen[' + (at ? at : '') + '] : ' +
-                      'from[' + (from ? from : '') + '] : ' +
-                      
-                      'idle_timer[enabled(' + zs.idle_timer.enabled + '), max(' + zs.idle_timer.max + '), prompt(' + zs.idle_timer.prompt + ')]';
-
-                      event_name = event_name + ' : ' + extraParams;
-                    */
-
+                  // 
                     event_name = JSON.stringify(status);
-                } 
+                }
 
                 try {
                     trackAnalyticEvent(event_name, event_type);
@@ -466,6 +441,32 @@ function BaseCtrl($scope) {
             'reason': reason,
             'datetime': currentTime
         });
+        // at the next status-update, the kiosk will log the "$scope.zestStationData.sessionOosReason" array with all OOS reason events
+    };
+    
+    $scope.resetTrackers = function() {
+        $scope.zestStationData.session_conf = '';
+        $scope.zestStationData.sessionActivity = [];
+    };
+
+    $scope.trackSessionActivity = function(flow, activity, conf, mode, send) {
+        console.warn('activity, conf, mode: ', activity, conf, mode);
+        // for each session of this station, send along the OOS reason(s) with timestamps
+        // for now, just include the workstation time
+        // 
+        var today = new Date();
+        var currentTime = today.toString();
+
+        $scope.zestStationData.sessionActivity.push({
+            'flow': flow ? flow : '',
+            'activity': activity,
+            'conf': conf ? conf : '',
+            'mode': mode ? mode : '',
+            'datetime': currentTime
+        });
+        if (send) {
+            $scope.trackEvent('health_check', 'activity_update');
+        }
         // at the next status-update, the kiosk will log the "$scope.zestStationData.sessionOosReason" array with all OOS reason events
     };
 
