@@ -31,6 +31,11 @@ module.exports = function (gulp, $, options) {
         // for developement, we can pass only required themes as array, i.e. as follows
         // gulp <gulp-task> --only ['guestweb_moonrise','guestweb_windsor_suites'] etc
         // In this case argv.only will return string => '[guestweb_moonrise,guestweb_windsor_suites]'
+        // guestWebThemeCssList has to be generated like below
+        //  {
+	    //       guestweb_moonrise: ['stylesheets/guestweb/guestweb_moonrise.css'],
+	    //       guestweb_windsor_suites: ['stylesheets/guestweb/guestweb_windsor_suites.css']
+        //  }
         
 		if ('only' in argv && typeof argv.only === 'string') {
 			// required zest web themes are passed
