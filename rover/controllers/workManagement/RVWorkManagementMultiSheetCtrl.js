@@ -1,5 +1,5 @@
-angular.module('sntRover').controller('RVWorkManagementMultiSheetCtrl', ['$rootScope', '$scope', 'ngDialog', 'RVWorkManagementSrv', '$state', '$stateParams', '$timeout', 'allUnassigned', 'fetchHKStaffs', 'allRoomTypes', 'payload', '$window',
-	function($rootScope, $scope, ngDialog, RVWorkManagementSrv, $state, $stateParams, $timeout, allUnassigned, fetchHKStaffs, allRoomTypes, payload, $window) {
+angular.module('sntRover').controller('RVWorkManagementMultiSheetCtrl', ['$rootScope', '$scope', 'ngDialog', 'RVWorkManagementSrv', '$state', '$stateParams', '$timeout', 'allUnassigned', 'fetchHKStaffs', 'allRoomTypes', 'payload', '$window', '$filter',
+	function($rootScope, $scope, ngDialog, RVWorkManagementSrv, $state, $stateParams, $timeout, allUnassigned, fetchHKStaffs, allRoomTypes, payload, $window, $filter) {
 		BaseCtrl.call(this, $scope);
 
 		// saving in local variable, since it will be updated when user changes the date
@@ -184,7 +184,7 @@ angular.module('sntRover').controller('RVWorkManagementMultiSheetCtrl', ['$rootS
 			roomInfoToCopy = {};
 
 			function move(array, from, to) {
-				var target = array[from];                         
+				var target = array[from];
 				var increment = to < from ? -1 : 1;
 				var k = 0;
 
@@ -200,7 +200,7 @@ angular.module('sntRover').controller('RVWorkManagementMultiSheetCtrl', ['$rootS
 
 			if ( !! hasRoom ) {
 				roomCopy = angular.copy(toEmp.rooms);
-				
+
 				// only insert if this task doesnt exist already
 				if ( ! _.find(hasRoom.room_tasks, { 'id': draggedTask.id }) ) {
 					roomCopy[hasRoomIndex].room_tasks.push( draggedTask );
@@ -586,8 +586,8 @@ angular.module('sntRover').controller('RVWorkManagementMultiSheetCtrl', ['$rootS
 		$scope.printWorkSheet = function() {
 			$scope.closeDialog();
 			// CICO-42146, loading image inside print-view, is showLoader required here?
-			// even with slow browser/network, loading is < 1sec 
-			// $scope.$emit('showLoader'); 
+			// even with slow browser/network, loading is < 1sec
+			// $scope.$emit('showLoader');
 			$timeout(function() {// provides just enough time for the dialog to close and also prompt for printing in safari/chrome
 				multiSheetStateBackup = angular.copy($scope.multiSheetState);
 
@@ -958,7 +958,7 @@ angular.module('sntRover').controller('RVWorkManagementMultiSheetCtrl', ['$rootS
 		$scope.getReservationStatusClass = function(room) {
 			if ( angular.isUndefined(room) ) {
 				return 'guest';
-			} 
+			}
 
 			switch (room.reservation_status) {
 				case 'Due out':
@@ -989,7 +989,7 @@ angular.module('sntRover').controller('RVWorkManagementMultiSheetCtrl', ['$rootS
 		$scope.getReservationStatusValue = function(room) {
 			if ( angular.isUndefined(room) ) {
 				return 'default';
-			} 
+			}
 
 			switch (room.reservation_status) {
 				case 'Due out / Departed':
@@ -1024,7 +1024,7 @@ angular.module('sntRover').controller('RVWorkManagementMultiSheetCtrl', ['$rootS
 		$scope.getCurrentStatusClass = function(room) {
 			if ( angular.isUndefined(room) ) {
 				return 'room';
-			} 
+			}
 
 			switch (room.current_status) {
 				case 'DIRTY':
@@ -1098,7 +1098,7 @@ angular.module('sntRover').controller('RVWorkManagementMultiSheetCtrl', ['$rootS
                     	remove();
                     }
                 };
-                
+
                 base.findCurrCol = function() {
                     var clientx = this.getClientPos().x;
 
@@ -1140,7 +1140,7 @@ angular.module('sntRover').controller('RVWorkManagementMultiSheetCtrl', ['$rootS
                     if ( colIndex > -1 ) {
                     	selectedEmp = $scope.multiSheetState.selectedEmployees[colIndex];
                         $empNode = $( '#' + colIndex + '-' + selectedEmp.id );
-                    } else {                    
+                    } else {
                         $empNode = undefined;
                     }
 
@@ -1254,7 +1254,7 @@ angular.module('sntRover').controller('RVWorkManagementMultiSheetCtrl', ['$rootS
 
                 return base;
             })();
-            
+
             var getDimentions = function() {
                 var LEFT_OFFSET = 200,
                     TOP_OFFSET  = 260,
@@ -1264,8 +1264,8 @@ angular.module('sntRover').controller('RVWorkManagementMultiSheetCtrl', ['$rootS
 
                 var winWidth = $(window).width(),
                     winHeight = $(window).height();
-                
-                return {                
+
+                return {
                     screenStart: {
                         x: LEFT_OFFSET + TASK_OFFSET,
                         y: TOP_OFFSET + AVG_TASK_HEIGHT
@@ -1276,8 +1276,8 @@ angular.module('sntRover').controller('RVWorkManagementMultiSheetCtrl', ['$rootS
                     }
                 };
             };
-            
-            // setup dim and update on screen change, also remove listener when scope dies 
+
+            // setup dim and update on screen change, also remove listener when scope dies
             var dimOnResize = function() {
                 dim = getDimentions();
             };
@@ -1387,7 +1387,7 @@ angular.module('sntRover').controller('RVWorkManagementMultiSheetCtrl', ['$rootS
 					orderState.setClientPos(e.clientX, e.clientY);
 					addPlaceholderThrottled();
             	}
-                
+
                 // Priority for detect for horizontal scroll requirement
                 // only if the check are not positive we check for vertical scrolls
                 if ( e.clientX > dim.screenEnd.x ) {
@@ -1453,7 +1453,7 @@ angular.module('sntRover').controller('RVWorkManagementMultiSheetCtrl', ['$rootS
 		$scope.getRoomType = function (id) {
 			var quick = quickMatchCache[id];
 			var match, found;
-			
+
 			if ( angular.isDefined(quick) ) {
 				found = quick;
 			} else {
@@ -1469,5 +1469,24 @@ angular.module('sntRover').controller('RVWorkManagementMultiSheetCtrl', ['$rootS
 
 			return found;
 		};
+
+        // Formats the given date based on the hotel date format
+        $scope.formatDateForUI = function(date_) {
+            var type_ = typeof date_,
+                returnString = '';
+
+          switch (type_) {
+              // if date string passed
+            case 'string':
+              returnString = $filter('date')(new tzIndependentDate(date_), $rootScope.dateFormat);
+              break;
+
+              // if date object passed
+            case 'object':
+              returnString = $filter('date')(date_, $rootScope.dateFormat);
+              break;
+          }
+          return (returnString);
+        };
 	}
 ]);
