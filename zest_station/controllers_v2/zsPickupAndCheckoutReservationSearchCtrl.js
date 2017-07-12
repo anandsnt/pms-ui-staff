@@ -56,7 +56,7 @@ sntZestStation.controller('zsPickupAndCheckoutReservationSearchCtrl', [
             } else {
                 $scope.setScreenIcon('checkout');
             }
-            if (!jumpRefresh){
+            if (!jumpRefresh) {
                 // starting mode
                 $scope.mode = 'LAST_NAME_ENTRY';
                 $scope.focusInputField('last-name');   
@@ -96,7 +96,7 @@ sntZestStation.controller('zsPickupAndCheckoutReservationSearchCtrl', [
 
         var generalFailureActions = function() {
             $scope.mode = 'NO_MATCH';
-            $scope.trackSessionActivity($stateParams.mode, 'Failure Mode', 'R'+$scope.reservation_id, $scope.mode, true);
+            $scope.trackSessionActivity($stateParams.mode, 'Failure Mode', 'R' + $scope.reservation_id, $scope.mode, true);
 
             $scope.callBlurEventForIpad();
         };
@@ -135,7 +135,7 @@ sntZestStation.controller('zsPickupAndCheckoutReservationSearchCtrl', [
 
                 if (data.is_checked_out) {
                     $scope.alreadyCheckedOut = true;
-                    $scope.trackSessionActivity('PUK', 'Pickup, Found Reservation', 'R'+data.reservation_id, 'ALRDY_CHECKED_OUT', true);
+                    $scope.trackSessionActivity('PUK', 'Pickup, Found Reservation', 'R' + data.reservation_id, 'ALRDY_CHECKED_OUT', true);
 
                 } else if (!!$stateParams.mode && $stateParams.mode === 'PICKUP_KEY' && data.is_checked_in) {
                     var stateParams = {
@@ -144,16 +144,16 @@ sntZestStation.controller('zsPickupAndCheckoutReservationSearchCtrl', [
                         'first_name': data.first_name
                     };
 
-                    $scope.trackSessionActivity('PUK', 'Pickup, Found Reservation', 'R'+data.reservation_id, 'CONTINUE_TO_ENCODE');
+                    $scope.trackSessionActivity('PUK', 'Pickup, Found Reservation', 'R' + data.reservation_id, 'CONTINUE_TO_ENCODE');
 
                     $state.go('zest_station.pickUpKeyDispense', stateParams);
                 } else if (!!$stateParams.mode && $stateParams.mode === 'PICKUP_KEY' && !data.is_checked_in) {
                     if (data.guest_arriving_today) {
                         // go to Checkin flow -- CICO-32703
-                        $scope.trackSessionActivity('PUK', 'Pickup, Found Reservation', 'R'+data.reservation_id, 'NOT_CHECKED_IN, GO_TO_CHECK_IN_FLOW');
+                        $scope.trackSessionActivity('PUK', 'Pickup, Found Reservation', 'R' + data.reservation_id, 'NOT_CHECKED_IN, GO_TO_CHECK_IN_FLOW');
                         fetchReservationDetailsForCheckingIn(data.reservation_id);
                     } else {
-                        $scope.trackSessionActivity('PUK', 'Pickup, Found Reservation', 'R'+data.reservation_id, 'NOT_CHECKED_IN, NOT_ARRIVING_TODAY');
+                        $scope.trackSessionActivity('PUK', 'Pickup, Found Reservation', 'R' + data.reservation_id, 'NOT_CHECKED_IN, NOT_ARRIVING_TODAY');
                         generalFailureActions();
                     }
 
