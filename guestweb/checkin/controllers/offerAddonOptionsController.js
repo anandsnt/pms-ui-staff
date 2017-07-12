@@ -59,13 +59,11 @@
 					if ($scope.selectedAddon.is_selected) {
 						$scope.purchaseStatusText = angular.copy($scope.addonSuccesMessage);
 						$scope.showPurchaseStatus = true;
-					} 
-					else if(addon.isLateCheckoutAddon){
+					} else if (addon.isLateCheckoutAddon) {
 						$scope.selectedAddon.title = addon.name;
 						$scope.purchaseStatusText = angular.copy($scope.addonSuccesMessage);
 						$scope.showPurchaseStatus = true;
-					}
-					else {
+					} else {
 						$scope.doneClicked();
 					}
 				}
@@ -212,7 +210,8 @@
 					var lcoIndex = 0;
 					var lcoAddonList = [];
 					var extractTime = function(time) {
-						return time = parseInt(time) < 10 ? time.slice(1, 2) : time;
+						time = parseInt(time) < 10 ? time.slice(1, 2) : time;
+						return time;
 					};
 
 
@@ -221,7 +220,8 @@
 						isThirdLcoSelected = checkIfLcoIsAlreadyPurchased(response.extended_checkout_charge_2.addon_id);
 						if (!isThirdLcoSelected) {
 							lcoIndex++;
-							time = extractTime(response.extended_checkout_charge_2.time);
+							var time = extractTime(response.extended_checkout_charge_2.time);
+
 							lcoAddonList.push({
 								id: response.extended_checkout_charge_2.addon_id,
 								time: time,
@@ -235,7 +235,8 @@
 						isSecondLcoSelected = checkIfLcoIsAlreadyPurchased(response.extended_checkout_charge_1.addon_id);
 						if (!isSecondLcoSelected && !isThirdLcoSelected) {
 							lcoIndex++;
-							time = extractTime(response.extended_checkout_charge_1.time);
+							var time = extractTime(response.extended_checkout_charge_1.time);
+							
 							lcoAddonList.push({
 								id: response.extended_checkout_charge_1.addon_id,
 								time: time,
@@ -249,7 +250,8 @@
 						isFirstLcoSelected = checkIfLcoIsAlreadyPurchased(response.extended_checkout_charge_0.addon_id);
 						if (!isFirstLcoSelected && !isSecondLcoSelected && !isThirdLcoSelected) {
 							lcoIndex++;
-							time = extractTime(response.extended_checkout_charge_0.time);
+							var time = extractTime(response.extended_checkout_charge_0.time);
+							
 							lcoAddonList.push({
 								id: response.extended_checkout_charge_0.addon_id,
 								time: time,

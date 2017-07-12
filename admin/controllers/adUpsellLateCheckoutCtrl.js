@@ -3,8 +3,9 @@ admin.controller('ADUpsellLateCheckoutCtrl', ['$scope', '$rootScope', '$state', 
     BaseCtrl.call(this, $scope);
     $scope.$emit("changedSelectedMenu", 2);
     $scope.upsellData = {};
-    var lcoAddonImage = '';
     $scope.successMessage = '';
+    var lcoAddonImage = '';
+    
 
 
 var setUpList = function() {
