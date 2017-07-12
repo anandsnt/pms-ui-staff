@@ -85,7 +85,7 @@ sntZestStation.controller('zsPickupKeyDispenseCtrl', [
 
                 $state.go('zest_station.pickUpKeyDispenseRegistrationCardPrint', stateParams);
             } else {
-
+                $scope.trackSessionActivity('PUK', 'Flow-End-Success', 'R'+$stateParams.reservation_id, '', true);
                 $scope.trackEvent('PUK', 'Flow-End-Success');
                 $state.go('zest_station.home');
             }
