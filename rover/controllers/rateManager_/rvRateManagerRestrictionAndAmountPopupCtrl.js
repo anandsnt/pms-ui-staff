@@ -701,7 +701,7 @@ angular.module('sntRover')
          * @return {Object}
          */
         const getDisplayingParamsForRestriction = (restriction, restrictionList) => {
-            console.log("restriction_id "+restriction.id)
+
             const restrictionFoundInList = _.findWhere(restrictionList, { 'restriction_type_id': restriction.id });
 
             // returning Object - default - OFF status
