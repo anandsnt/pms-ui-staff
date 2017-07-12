@@ -23,17 +23,33 @@ module.exports = function(gulp, $, options){
 	var extractThemeMappingList = function() {
 		var argv = require('yargs').argv;
 		var guestWebThemeList = {};
+
+		/*
+		For developement purspose, we can pass only required themes as array, i.e. as follows
         
-        // for developement, we can pass only required themes as array, i.e. as follows
-        // gulp <gulp-task> --only ['guestweb_moonrise','guestweb_windsor_suites'] etc
-        // In this case argv.only will return string => '[guestweb_moonrise,guestweb_windsor_suites]'
+		gulp <gulp-task> --with_gw ['guestweb_zoku','guestweb_yotel'] etc
         
-		if ('only' in argv && typeof argv.only === 'string') {
+		In such cases, guestWebThemeList  has to be generated like below 
+		*/
+
+		// {
+		// 	guestweb_zoku: ['guestweb/**/common_templates/partials/checkin/**.html',
+		// 		......
+		// 		'guestweb/**/preCheckin/partials/*.html'
+		// 	],
+		// 	guestweb_yotel: ['guestweb/**/landing/Yotel/*.html',
+		// 		..........
+		// 		'guestweb/**/shared/**/*.html'
+		// 	]
+		// }
+
+		if ('with_gw' in argv && typeof argv.with_gw === 'string') {
 			// required zest web themes are passed
-			var themeString = argv.only;
+			var themeString = argv.with_gw;
+			// themeString will be string => '[guestweb_zoku,guestweb_yotelguestweb_zoku]'
 			// strip [ and ] from string
-			themeString = themeString.substring(1, themeString.length-1)
-    		var themeArray = themeString.split(",");
+			themeString = themeString.substring(1, themeString.length - 1)
+			var themeArray = themeString.split(",");
 
 			for (var i = 0, len = themeArray.length; i < len; i++) {
 				guestWebThemeList[themeArray[i]] = GUESTWEB_THEME_TEMPLATE_LIST[themeArray[i]]
