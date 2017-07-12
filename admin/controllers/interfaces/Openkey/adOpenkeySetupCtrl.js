@@ -10,7 +10,7 @@ angular.module('admin').controller('adOpenkeySetupCtrl', ['$scope', '$rootScope'
         $scope.saveInterfaceConfig = function() {
             $scope.callAPI(adInterfacesCommonConfigSrv.saveConfiguration, {
                 params: {
-                    config: _.omit($scope.config, 'password_hash'),
+                    config: $scope.config,
                     interfaceIdentifier: interfaceIdentifier
                 },
                 onSuccess: function() {
