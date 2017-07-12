@@ -279,6 +279,17 @@ sntZestStation.controller('zsCheckinAddonCtrl', [
 					var firstLcoIndex = -1;
 					var lateCheckoutAddons = [];
 					var lcoIndex = 0;
+					var extractTime = function(time) {
+						time = parseInt(time) < 10 ? time.slice(1, 2) : time;
+						return time;
+					};
+					var addLateCheckoutAddon = function(lco_charge){
+							lcoAddonList.push({
+								id: lco_charge.addon_id,
+								time: extractTime(lco_charge.time),
+								index: lcoIndex
+							});
+					};
 
 
 					// Dont offer lower LCO offers if higher level is already purchased
@@ -286,7 +297,7 @@ sntZestStation.controller('zsCheckinAddonCtrl', [
 						isThirdLcoSelected = checkIfLcoIsAlreadyPurchased(response.extended_checkout_charge_2.addon_id);
 						if (!isThirdLcoSelected) {
 							lcoIndex++;
-							lcoAddonList.push({id: response.extended_checkout_charge_2.addon_id, index: lcoIndex});
+							addLateCheckoutAddon(response.extended_checkout_charge_2);
 						} else {
 							updateAddonListWrTLcoPresent(response.extended_checkout_charge_2.addon_id);
 						}
@@ -295,7 +306,7 @@ sntZestStation.controller('zsCheckinAddonCtrl', [
 						isSecondLcoSelected = checkIfLcoIsAlreadyPurchased(response.extended_checkout_charge_1.addon_id);
 						if (!isSecondLcoSelected && !isThirdLcoSelected) {
 							lcoIndex++;
-							lcoAddonList.push({id: response.extended_checkout_charge_1.addon_id, index: lcoIndex});
+							addLateCheckoutAddon(response.extended_checkout_charge_1);
 						} else {
 							updateAddonListWrTLcoPresent(response.extended_checkout_charge_1.addon_id);
 						}
@@ -304,7 +315,7 @@ sntZestStation.controller('zsCheckinAddonCtrl', [
 						isFirstLcoSelected = checkIfLcoIsAlreadyPurchased(response.extended_checkout_charge_0.addon_id);
 						if (!isFirstLcoSelected && !isSecondLcoSelected && !isThirdLcoSelected) {
 							lcoIndex++;
-							lcoAddonList.push({id: response.extended_checkout_charge_0.addon_id, index: lcoIndex});
+							addLateCheckoutAddon(response.extended_checkout_charge_0);
 						} else {
 							updateAddonListWrTLcoPresent(response.extended_checkout_charge_0.addon_id);
 						}

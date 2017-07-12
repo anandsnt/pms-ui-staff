@@ -213,20 +213,22 @@
 						time = parseInt(time) < 10 ? time.slice(1, 2) : time;
 						return time;
 					};
+					var addLateCheckoutAddon = function(lco_charge){
+							lcoAddonList.push({
+								id: lco_charge.addon_id,
+								time: extractTime(lco_charge.time),
+								index: lcoIndex
+							});
+					};
 
 
-					// Dont offer lower LCO offers if higher level is already purchased
+					// Dont offer lower LCO offers if higher level is already purchased, ie if 3rd offer is purchased don't offer 1st and 2nd
+					// But if only 1st is purchased offer 2 and 3
 					if (checkIfAddonIdIsPresent(response.extended_checkout_charge_2)) {
 						isThirdLcoSelected = checkIfLcoIsAlreadyPurchased(response.extended_checkout_charge_2.addon_id);
 						if (!isThirdLcoSelected) {
 							lcoIndex++;
-							var time = extractTime(response.extended_checkout_charge_2.time);
-
-							lcoAddonList.push({
-								id: response.extended_checkout_charge_2.addon_id,
-								time: time,
-								index: lcoIndex
-							});
+							addLateCheckoutAddon(response.extended_checkout_charge_2);
 						} else {
 							updateAddonListWrTLcoPresent(response.extended_checkout_charge_2.addon_id);
 						}
@@ -235,13 +237,7 @@
 						isSecondLcoSelected = checkIfLcoIsAlreadyPurchased(response.extended_checkout_charge_1.addon_id);
 						if (!isSecondLcoSelected && !isThirdLcoSelected) {
 							lcoIndex++;
-							var time = extractTime(response.extended_checkout_charge_1.time);
-							
-							lcoAddonList.push({
-								id: response.extended_checkout_charge_1.addon_id,
-								time: time,
-								index: lcoIndex
-							});
+							addLateCheckoutAddon(response.extended_checkout_charge_1);
 						} else {
 							updateAddonListWrTLcoPresent(response.extended_checkout_charge_1.addon_id);
 						}
@@ -250,13 +246,7 @@
 						isFirstLcoSelected = checkIfLcoIsAlreadyPurchased(response.extended_checkout_charge_0.addon_id);
 						if (!isFirstLcoSelected && !isSecondLcoSelected && !isThirdLcoSelected) {
 							lcoIndex++;
-							var time = extractTime(response.extended_checkout_charge_0.time);
-							
-							lcoAddonList.push({
-								id: response.extended_checkout_charge_0.addon_id,
-								time: time,
-								index: lcoIndex
-							});
+							addLateCheckoutAddon(response.extended_checkout_charge_0);
 						} else {
 							updateAddonListWrTLcoPresent(response.extended_checkout_charge_0.addon_id);
 						}
