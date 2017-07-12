@@ -194,6 +194,7 @@ angular.module('reportsModule')
             'INCLUDE_DUE_OUT': true,
             'INCLUDE_INHOUSE': true,
             'RESTRICTED_POST_ONLY': true,
+            'EXCEEDED_ONLY': true,
 
             // for room ooo oos report
             OOO: true,
