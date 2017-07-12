@@ -347,6 +347,7 @@ sntZestStation.controller('zsRootCtrl', [
                 $scope.zestStationData.currencySymbol = data.currency.symbol;
                 $scope.zestStationData.isHourlyRateOn = data.is_hourly_rate_on;
                 $scope.zestStationData.paymentGateway = data.payment_gateway;
+                $scope.zestStationData.mliEmvEnabled = data.mli_emv_enabled || false;
                 $scope.zestStationData.hotelDateFormat = data.date_format ? data.date_format.value : 'DD-MM-YYYY';
                 $rootScope.emvTimeout = $scope.zestStationData.hotelSettings.emv_timeout ? $scope.zestStationData.hotelSettings.emv_timeout : 60;
                 $scope.zestStationData.mliMerchantId = data.mli_merchant_id;
@@ -1346,10 +1347,12 @@ sntZestStation.controller('zsRootCtrl', [
                     }
                 } else {
                     $scope.callBlurEventForIpad();
-
+                    /*
                     $timeout(function() {
                         document.getElementById(elementId).click(); 
                     }, 500);
+                    */
+
                 }
             }, 300);
 

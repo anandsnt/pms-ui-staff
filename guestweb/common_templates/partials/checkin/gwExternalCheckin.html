@@ -38,10 +38,10 @@
                     <p class="pull-left sub-text margin-top-10">CONFIRMATION NUMBER</p>
                     <input type="text" class="input-field padding-2" ng-model="confirmationNumber"></input>
                     <br/>
-                    <p class="sub-text margin-top-10">OR</p>
+                    <p class="sub-text margin-top-10" ng-if="showDepartureDateForExtUrl">OR</p>
                     <!-- Departure date -->
-                    <p class="pull-left sub-text margin-top-10">DEPARTURE DATE</p>
-                    <input class="input-field padding-2 calendar-button" ng-click="showCalender()" ng-model="departureDate" placeholder="{{dateFormatPlaceholder}}" readonly></input>
+                    <p class="pull-left sub-text margin-top-10" ng-if="showDepartureDateForExtUrl">DEPARTURE DATE</p>
+                    <input class="input-field padding-2 calendar-button" ng-click="showCalender()" ng-model="departureDate" placeholder="{{dateFormatPlaceholder}}" readonly ng-if="showDepartureDateForExtUrl"></input>
                     <!-- Submit button -->
                     <a type="submit" class="btn btn-template margin-top-20 padding-3" ng-click="nextButtonClicked()">Continue</a>
                 </form>

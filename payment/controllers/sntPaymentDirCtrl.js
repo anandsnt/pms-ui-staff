@@ -334,8 +334,8 @@ angular.module('sntPay').controller('sntPaymentController',
                     // Add to guestcard feature for C&P
                     $scope.payment.showAddToGuestCard = !!$scope.reservationId && !$scope.payment.isManualEntryInsideIFrame;
                     $scope.selectedCC = {};
-
                 }
+                calculateFee();
             };
 
             // toggle between CC entry and existing card selection
@@ -802,7 +802,8 @@ angular.module('sntPay').controller('sntPaymentController',
                 var selectedPaymentType,
                     cardTypeInfo,
                     currFee,
-                    feeInfo;
+                    feeInfo,
+                    usingChipAndPin = isEMVEnabled && !$scope.payment.isManualEntryInsideIFrame;
 
                 if (!$scope.hotelConfig.isStandAlone) {
                     return;
@@ -810,12 +811,17 @@ angular.module('sntPay').controller('sntPaymentController',
                 selectedPaymentType = _.find($scope.paymentTypes, {
                     name: $scope.selectedPaymentType
                 });
-                feeInfo = selectedPaymentType &&
+                feeInfo = (selectedPaymentType &&
                     selectedPaymentType.charge_code
-                    && selectedPaymentType.charge_code.fees_information || {};
+                    && selectedPaymentType.charge_code.fees_information) || {};
 
                 //  In case a credit card is selected; the fee information is to be that of the card
-                if (!!selectedPaymentType && selectedPaymentType.name === 'CC' && $scope.selectedCC && $scope.selectedCC.hasOwnProperty('card_code')) {
+                // CICO-42852 C&P - When C&P option is selected,  do not display CC fee
+                if (!usingChipAndPin &&
+                    !!selectedPaymentType &&
+                    selectedPaymentType.name === 'CC' &&
+                    $scope.selectedCC &&
+                    $scope.selectedCC.hasOwnProperty('card_code')) {
 
                     if ($scope.selectedCC.card_code) {
                         cardTypeInfo = _.find(selectedPaymentType.values, {
@@ -823,9 +829,9 @@ angular.module('sntPay').controller('sntPaymentController',
                         });
                     }
 
-                    feeInfo = cardTypeInfo &&
+                    feeInfo = (cardTypeInfo &&
                         cardTypeInfo.charge_code &&
-                        cardTypeInfo.charge_code.fees_information ||
+                        cardTypeInfo.charge_code.fees_information) ||
                         feeInfo;
                 }
 
