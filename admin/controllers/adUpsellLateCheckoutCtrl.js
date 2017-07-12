@@ -3,6 +3,8 @@ admin.controller('ADUpsellLateCheckoutCtrl', ['$scope', '$rootScope', '$state', 
     BaseCtrl.call(this, $scope);
     $scope.$emit("changedSelectedMenu", 2);
     $scope.upsellData = {};
+    var lcoAddonImage = '';
+    $scope.successMessage = '';
 
 
 var setUpList = function() {
@@ -31,6 +33,7 @@ $scope.fetchUpsellDetails = function() {
     var fetchUpsellDetailsSuccessCallback = function(data) {
        $scope.$emit('hideLoader');
        $scope.upsellData = data;
+       lcoAddonImage = angular.copy(data.lco_addon_image);
        setUpList();
        $scope.upsellData.deleted_room_types = [];
        isRoomTypesSelected();
@@ -205,6 +208,10 @@ $scope.saveClick = function() {
 	updateData.deleted_room_types = $scope.upsellData.deleted_room_types;
   updateData.is_sell_late_checkout_as_addon = $scope.upsellData.is_sell_late_checkout_as_addon;
   updateData.is_allow_additional_late_checkout_offers = $scope.upsellData.is_allow_additional_late_checkout_offers;
+  // check if image is changed
+  if (lcoAddonImage !== angular.copy($scope.upsellData.lco_addon_image)) {
+    updateData.lco_addon_image = $scope.upsellData.lco_addon_image;
+  }
 
 	// Creating room type array with available max_late_checkouts data
 	angular.forEach($scope.upsellData.room_types, function(item, index) {
@@ -216,6 +223,7 @@ $scope.saveClick = function() {
 	});
    	var upsellLateCheckoutSuccessCallback = function(data) {
       $scope.$emit('hideLoader');
+      $scope.successMessage = "Settings Saved";
       angular.forEach($scope.chekoutchargesArray, function(value, key) {
       var timeValue = value.time;
 
