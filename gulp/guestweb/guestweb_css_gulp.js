@@ -24,6 +24,40 @@ module.exports = function (gulp, $, options) {
 		guestwebGenFile 		= guestwebGenDir + generated + 'GuestWebCSSThemeMappings.json';
 
 
+	var extractCSSMappingList = function() {
+		var argv = require('yargs').argv;
+		var guestWebThemeCssList = {};
+
+		/*
+		For developement purspose, we can pass only required themes as array, i.e. as follows
+        
+		gulp <gulp-task> --with_gw ['guestweb_zoku','guestweb_yotelguestweb_zoku'] etc
+		        
+		In such cases, guestWebThemeCssList has to be generated like below
+		*/
+
+		//  {
+		//       guestweb_zoku: ['stylesheets/guestweb/guestweb_zoku.css'],
+		//       guestweb_yotelguestweb_zoku: ['stylesheets/guestweb/guestweb_yotelguestweb_zoku.css']
+		//  }
+
+		if ('with_gw' in argv && typeof argv.with_gw === 'string') {
+			// required zest web themes are passed
+			var themeString = argv.with_gw;
+			//themeString will be string => '[guestweb_zoku,guestweb_yotelguestweb_zoku]'
+			// strip [ and ] from string
+			themeString = themeString.substring(1, themeString.length - 1)
+			var themeArray = themeString.split(",");
+
+			for (var i = 0, len = themeArray.length; i < len; i++) {
+				guestWebThemeCssList[themeArray[i]] = GUESTWEB_THEME_CSS_LIST[themeArray[i]]
+			}
+		} else {
+			guestWebThemeCssList = GUESTWEB_THEME_CSS_LIST;
+		}
+		return guestWebThemeCssList;
+	};
+
 	gulp.task('create-guestweb-theme-css-list', function(){
 		var fs = require('fs-extra');
 		return fs.outputJsonSync(guestwebGenFile, extendedMappings);
@@ -93,7 +127,7 @@ module.exports = function (gulp, $, options) {
 			edit = require('gulp-json-editor');
 		
 		delete require.cache[require.resolve(GUESTWEB_THEME_CSS_MAPPING_FILE)];
-		GUESTWEB_THEME_CSS_LIST = require(GUESTWEB_THEME_CSS_MAPPING_FILE).getThemeMappingList();
+		GUESTWEB_THEME_CSS_LIST = extractCSSMappingList();
 
 		var tasks = Object.keys(GUESTWEB_THEME_CSS_LIST).map(function(theme, index){
 			console.log ('Guestweb Theme CSS - mapping-generation-started: ' + theme);
@@ -121,7 +155,7 @@ module.exports = function (gulp, $, options) {
 
 	gulp.task('guestweb-copy-css-files-dev', function(){
 		delete require.cache[require.resolve(GUESTWEB_THEME_CSS_MAPPING_FILE)];
-		GUESTWEB_THEME_CSS_LIST 	= require(GUESTWEB_THEME_CSS_MAPPING_FILE).getThemeMappingList();
+		GUESTWEB_THEME_CSS_LIST 	= extractCSSMappingList();
 
 		var guestwebSourceList = [];
 		Object.keys(GUESTWEB_THEME_CSS_LIST).map(function(theme, index){
@@ -134,7 +168,7 @@ module.exports = function (gulp, $, options) {
 
 	gulp.task('guestweb-watch-css-files', function(){
 		delete require.cache[require.resolve(GUESTWEB_THEME_CSS_MAPPING_FILE)];
-		GUESTWEB_THEME_CSS_LIST 	= require(GUESTWEB_THEME_CSS_MAPPING_FILE).getThemeMappingList();
+		GUESTWEB_THEME_CSS_LIST 	= extractCSSMappingList();
 
 		var guestwebSourceList = [];
 		Object.keys(GUESTWEB_THEME_CSS_LIST).map(function(theme, index){
