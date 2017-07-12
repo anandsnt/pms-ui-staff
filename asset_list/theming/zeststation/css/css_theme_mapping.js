@@ -18,7 +18,9 @@ module.exports = {
 			'snt': [themeCSSRoot + 'snt.less'],
 			'freehand': [themeCSSRoot + 'freehand.less'],
 			'row-nyc': [themeCSSRoot + 'row-nyc.less'],
-			'circle-inn-fairfield': [themeCSSRoot + 'circle-inn-fairfield.less']
+			'circle-inn-fairfield': [themeCSSRoot + 'circle-inn-fairfield.less'],
+			'cachet-boutique': [themeCSSRoot + 'cachet-boutique.less'],
+			'hi-ho': [themeCSSRoot + 'hi-ho.less']
 		};
 	}
 };

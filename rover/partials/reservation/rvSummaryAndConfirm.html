@@ -173,18 +173,37 @@
                                 ng-click="setDemographics(false, $index)">Demographics
                         </button>
                     </div>
+
                     <button class="add-new-button"
                             ng-click="showAccompanyingGuests = !showAccompanyingGuests; addGuests(room);"
-                            ng-hide="showAccompanyingGuests">+ Accompanying Guest
+                            ng-show="!showAccompanyingGuests && showAccompanyingGuestSectionBasedOnGuestCount(room)">+ Accompanying Guest
                     </button>
                     <form class="form" ng-show="showAccompanyingGuests">
                         <!-- Remove class hidden when button above clicked -->
-                        <div class="entry" ng-repeat="guest in room.accompanying_guest_details">
-                            <label>Accompanying guest {{$index + 1}}</label>
+                        <div class="entry" ng-repeat="guest in room.accompanying_guest_details.ADULT track by $index">
+                            <label ng-show="$index == 0">Accompanying guests</label>
+                            <figure class="guest-image">
+                               <span class="icons icon-{{getGuestTypeIconClass(guest.guest_type)}}"></span>
+                            </figure>
                             <input placeholder="First Name" type="text" ng-model="guest.first_name"/>
                             <input placeholder="Last Name" type="text" ng-model="guest.last_name"/>
                         </div>
-                        <div class="actions">
+                        <div class="entry" ng-repeat="guest in room.accompanying_guest_details.CHILDREN">
+                            <figure class="guest-image">
+                               <span class="icons icon-{{getGuestTypeIconClass(guest.guest_type)}}"></span>
+                            </figure>
+                            <input placeholder="First Name" type="text" ng-model="guest.first_name"/>
+                            <input placeholder="Last Name" type="text" ng-model="guest.last_name"/>
+                        </div>
+                        <div class="entry" ng-repeat="guest in room.accompanying_guest_details.INFANTS">
+                            <figure class="guest-image">
+                               <span class="icons icon-{{getGuestTypeIconClass(guest.guest_type)}}"></span>
+                            </figure>
+                            <input placeholder="First Name" type="text" ng-model="guest.first_name"/>
+                            <input placeholder="Last Name" type="text" ng-model="guest.last_name"/>
+                        </div>
+
+                        <div class="actions" ng-show="showAccompanyingGuestSectionBasedOnGuestCount(room)">
                             <!-- CICO-16940 1. Rename cancel as close 2. Save accompanying guests on close -->
                             <button type="button" class="button blank"
                                     ng-click="showAccompanyingGuests = !showAccompanyingGuests; saveAccompanyingGuests(room, roomIndex);">

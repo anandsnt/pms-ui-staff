@@ -284,8 +284,8 @@ angular.module('adminInterfacesRouter', []).config(function($stateProvider) {
         controller: 'adBritePabXSetupCtrl',
         url: '/britePabX/setup',
         resolve: {
-            britePabXSetupValues: ['adBritePabXSetupSrv', function(adBritePabXSetupSrv) {
-                return adBritePabXSetupSrv.fetchBritePabXConfiguration();
+            britePabXSetupValues: ['adInterfacesCommonConfigSrv', function(adInterfacesCommonConfigSrv) {
+                return adInterfacesCommonConfigSrv.fetchConfiguration('brite');
             }]
         }
     });
@@ -520,6 +520,17 @@ angular.module('adminInterfacesRouter', []).config(function($stateProvider) {
         templateUrl: '/assets/partials/guestIdSetup/adGuestIDSetup.html',
         controller: 'ADGuestIDSetup',
         url: '/guestIdSetup'
+    });
+
+    $stateProvider.state('admin.monitorScreen', {
+        templateUrl: '/assets/partials/interfaces/Monitor/adInterfaceMonitor.html',
+        controller: 'ADInterfaceMonitorCtrl',
+        url: '/monitorScreen',
+        resolve: {
+            interfaces: ['ADInterfaceMonitorSrv', function (ADInterfaceMonitorSrv) {
+                return ADInterfaceMonitorSrv.fetch();
+            }]
+        }
     });
 
 });
