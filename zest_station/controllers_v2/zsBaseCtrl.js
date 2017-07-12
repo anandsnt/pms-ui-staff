@@ -349,7 +349,7 @@ function BaseCtrl($scope) {
         // console.log('calling track event: ', 'trackAnalyticEvent', arguments);
         var zs = {};
 
-        if ($scope && $scope.$parent || $scope.zestStationData) {
+        if (($scope && $scope.$parent) || ($scope.zestStationData)) {
             zs = $scope.$parent.zestStationData ? $scope.$parent.zestStationData : $scope.zestStationData;
             if (zs) {
                 if (event_type === 'status_update') {
