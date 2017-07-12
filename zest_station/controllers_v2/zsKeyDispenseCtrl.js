@@ -188,7 +188,7 @@ sntZestStation.controller('zsKeyDispenseCtrl', [
 		var emitCordovaKeyError = function(response) {
 			$scope.$emit('printLocalKeyCordovaFailed', response);
 
-			$scope.trackSessionActivity('KEY_ENCODE_FAILURE, IPAD', response.toString(), 'R'+$scope.selectedReservation.reservationId, $scope.mode, true);
+			$scope.trackSessionActivity('KEY_ENCODE_FAILURE, IPAD', response.toString(), 'R' + $scope.selectedReservation.reservationId, $scope.mode, true);
 		};
 		var makeKeyViaCordova = function(data, reservation_id, keys) {
 			// to start writing process to a local device (ingenico | infinea), need to read the card info, then write back the respond onto the card
@@ -366,7 +366,7 @@ sntZestStation.controller('zsKeyDispenseCtrl', [
 				// do nothing
 			}
 
-			$scope.trackSessionActivity('KEY_ENCODE', 'Make Key', 'R'+$scope.selectedReservation.reservationId, $scope.mode);
+			$scope.trackSessionActivity('KEY_ENCODE', 'Make Key', 'R' + $scope.selectedReservation.reservationId, $scope.mode);
 
 			if ($scope.remoteEncoding || $scope.zestStationData.keyWriter === 'local') {
 				$scope.readyForUserToPressMakeKey = true;

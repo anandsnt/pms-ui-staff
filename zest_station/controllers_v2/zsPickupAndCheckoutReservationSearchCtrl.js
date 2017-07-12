@@ -96,7 +96,7 @@ sntZestStation.controller('zsPickupAndCheckoutReservationSearchCtrl', [
 
         var generalFailureActions = function() {
             $scope.mode = 'NO_MATCH';
-            $scope.trackSessionActivity($stateParams.mode, 'Failure Mode', 'R' + $scope.reservation_id, $scope.mode, true);
+            $scope.trackSessionActivity($stateParams.mode, 'Failure Mode', '', $scope.mode, true);
 
             $scope.callBlurEventForIpad();
         };
