@@ -22,7 +22,7 @@ admin.service('ADGuestIDSetupSrv', ['$http', '$q', 'ADBaseWebSrvV2', function($h
     };
     this.fetchGuestIDTypeDetails = function() {
         var deferred = $q.defer();
-        var url = '/api/id_types_for_hotel.json';
+        var url = '/api/guest_identity/hotel_guest_id_types';
 
         ADBaseWebSrvV2.getJSON(url).then(function(data) {
             deferred.resolve(data);
@@ -30,6 +30,18 @@ admin.service('ADGuestIDSetupSrv', ['$http', '$q', 'ADBaseWebSrvV2', function($h
             deferred.reject(data);
         });
 
+        return deferred.promise;
+    };
+
+    this.saveGuestIDTypes = function(params) {
+        var deferred = $q.defer();
+        var url = '/api/guest_identity/update_hotel_guest_ids/';
+
+        ADBaseWebSrvV2.postJSON(url, params).then(function(data) {
+            deferred.resolve(data);
+        }, function(data) {
+            deferred.reject(data);
+        });
         return deferred.promise;
     };
 
