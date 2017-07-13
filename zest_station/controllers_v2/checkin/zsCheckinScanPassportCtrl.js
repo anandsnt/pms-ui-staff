@@ -177,7 +177,7 @@ sntZestStation.controller('zsCheckinScanPassportCtrl', [
 
 
         var onPassportScanFailure = function() {
-            console.warn('onPassportScanFailure: ',onPassportScanFailure);
+            $log.warn('onPassportScanFailure: ',onPassportScanFailure);
             
             if ($scope.mode === 'SCANNING_IN_PROGRESS') {
                 $scope.mode = 'SCAN_FAILURE';
@@ -643,10 +643,10 @@ sntZestStation.controller('zsCheckinScanPassportCtrl', [
 
 
             var onSuccess = function(response) {
-                console.log('success got settings for passport id type');
-                console.log(response);
+                $log.log('success got settings for passport id type');
+                $log.log(response);
                 // $scope.scanning.is_double_sided_required = response.data.is_double_sided;
-                console.log('-----');
+                $log.log('-----');
             };
             var onFail = function(response) {
                 $log.warn(response);
