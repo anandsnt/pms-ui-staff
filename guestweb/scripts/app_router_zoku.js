@@ -163,4 +163,25 @@ sntGuestWeb.config(['$stateProvider', '$urlRouterProvider', function($stateProvi
 		controller: 'offerAddonOptionsController',
 		title: 'Addons'
 	});
+
+	// Adding External URL states for ZOKU (they maynot be using this. But will help us for testing)
+	$stateProvider.state('externalCheckinVerification', {
+		url: '/externalCheckinVerification',
+		templateUrl: '/assets/common_templates/partials/checkin/gwExternalCheckin.html',
+		controller: 'externalCheckinVerificationViewController',
+		title: 'External Check in verification'
+	}).state('guestCheckinTurnedOff', {
+		url: '/guestCheckinTurnedOff',
+		templateUrl: '/assets/common_templates/partials/checkin/gwExternalCheckInTurnedOff.html',
+		title: 'Check-in'
+	}).state('guestCheckinEarly', {
+		url: '/guestCheckinEarly/:date',
+		templateUrl: '/assets/common_templates/partials/checkin/gwEarlyToCheckin.html',
+		controller: 'earlyToCheckinCtrl',
+		title: 'Check-in'
+	}).state('guestCheckinLate', {
+		url: '/guestCheckinLate',
+		templateUrl: '/assets/common_templates/partials/checkin/gwLateToCheckin.html',
+		title: 'Check-in'
+	});
 }]);

@@ -75,6 +75,8 @@ sntZestStation.controller('zsCheckinFinalCtrl', [
                     }
                 }
             }
+            $scope.trackSessionActivity('CheckIn', 'Check In Success, Final Screen', $scope.zestStationData.session_conf, $scope.subtext, true);
+            $scope.resetTrackers();
         }());
 
 
