@@ -205,6 +205,8 @@ sntZestStation.controller('zsCheckinScanPassportCtrl', [
         };
 
         $scope.addAGuest = function() {
+            // placeholder for future improvement, not used by yotel singapore yet
+            return; 
             $scope.AddGuestMode = true;
             $log.log('mode: ', $scope.mode, ' - add guest mode: ', $scope.AddGuestMode);
         };
