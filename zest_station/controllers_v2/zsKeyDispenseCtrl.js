@@ -187,6 +187,8 @@ sntZestStation.controller('zsKeyDispenseCtrl', [
 
 		var emitCordovaKeyError = function(response) {
 			$scope.$emit('printLocalKeyCordovaFailed', response);
+
+			$scope.trackSessionActivity('KEY_ENCODE_FAILURE, IPAD', response.toString(), 'R' + $scope.selectedReservation.reservationId, $scope.mode, true);
 		};
 		var makeKeyViaCordova = function(data, reservation_id, keys) {
 			// to start writing process to a local device (ingenico | infinea), need to read the card info, then write back the respond onto the card
@@ -363,6 +365,9 @@ sntZestStation.controller('zsKeyDispenseCtrl', [
 			} else {
 				// do nothing
 			}
+
+			$scope.trackSessionActivity('KEY_ENCODE', 'Make Key', 'R' + $scope.selectedReservation.reservationId, $scope.mode);
+
 			if ($scope.remoteEncoding || $scope.zestStationData.keyWriter === 'local') {
 				$scope.readyForUserToPressMakeKey = true;
 				if ($scope.zestStationData.keyWriter === 'local') {
@@ -392,7 +397,7 @@ sntZestStation.controller('zsKeyDispenseCtrl', [
 			if ($scope.zestStationData.consecutiveKeyFailure >= $scope.zestStationData.kioskOutOfOrderTreshold) {
 				$scope.zestStationData.workstationOooReason = $filter('translate')('KEY_CREATION_FAILED');
 				$scope.zestStationData.workstationStatus = 'out-of-order'; // go out of order when (printing or key encoding fails)
-
+				$scope.addReasonToOOSLog('KEY_CREATION_FAILED');
 				$scope.trackEvent('failure - go out of service', 'key_encode');
 			} else {
 				$scope.trackEvent('key-failure-mode', 'key_encode');
@@ -486,6 +491,7 @@ sntZestStation.controller('zsKeyDispenseCtrl', [
 			$scope.showDispenserGateIsBlockedPopup = false;
 		};
 		$scope.$on('DISPENSE_FAILED_AS_GATE_IS_NOT_FREE', function() {
+			$scope.addReasonToOOSLog('DISPENSE_FAILED_AS_GATE_IS_NOT_FREE');
 			$scope.showDispenserGateIsBlockedPopup = true;
 			$timeout(function() {
 				$scope.readyForUserToPressMakeKey = true;
@@ -506,16 +512,19 @@ sntZestStation.controller('zsKeyDispenseCtrl', [
 
 		$scope.$on('DISPENSE_FAILED', function() {
 			$scope.zestStationData.makingKeyInProgress = false;
+			$scope.addReasonToOOSLog('DISPENSE_FAILED');
 			$scope.onGeneralFailureCase();
 		});
 		$scope.$on('SOCKET_FAILED', function() {
 			if ($scope.noOfKeysSelected !== $scope.noOfKeysCreated) {
 				$scope.zestStationData.workstationOooReason = $filter('translate')('SOCKET_FAILED');
+				$scope.addReasonToOOSLog('SOCKET_FAILED');
 				$scope.onGeneralFailureCase();
 			}
 		});
 		$scope.$on('DISPENSE_CARD_EMPTY', function() {
 			$scope.zestStationData.workstationOooReason = $filter('translate')('KEYS_EMPTY');
+			$scope.addReasonToOOSLog('DISPENSER_EMPTY');
 			$scope.onGeneralFailureCase();
 		});
 

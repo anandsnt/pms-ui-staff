@@ -124,6 +124,7 @@ sntZestStation.controller('zsCheckInReservationDetailsCtrl', [
         };
 
         var onBackButtonClicked = function() {
+            $scope.zestStationData.session_conf = '';
 
             var reservations = zsCheckinSrv.getCheckInReservations();
 
@@ -153,7 +154,12 @@ sntZestStation.controller('zsCheckInReservationDetailsCtrl', [
             $scope.$on(zsEventConstants.CLICKED_ON_BACK_BUTTON, onBackButtonClicked);
             $scope.$emit('hideLoader');
             // starting mode
+            
             $scope.mode = 'RESERVATION_DETAILS';
+            $scope.zestStationData.session_conf = $scope.selectedReservation.confirmation_number;
+
+            $scope.trackSessionActivity('CheckIn', 'Found Reservation', $scope.zestStationData.session_conf, $scope.mode);
+
             if (!$stateParams.isQuickJump || $stateParams.isQuickJump === 'false') {
                 fetchReservationDetails();
             } else {
