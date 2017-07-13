@@ -640,9 +640,12 @@ sntZestStation.controller('zsCheckinScanPassportCtrl', [
 
             var onSuccess = function(response) {
                 $log.log(response);
+                $scope.trackSessionActivity('CheckIn', 'SuccessFetching Passport Setting', '', $scope.mode);
                 $scope.scanning.is_double_sided_required = response.data.is_double_sided;
             };
             var onFail = function(response) {
+                $log.log(response);
+                $scope.trackSessionActivity('CheckIn', 'FailedFetching Passport Setting', '', $scope.mode);
                 $scope.scanning.is_double_sided_required = true;// allows user to skip if this only if API says double_sided not required
             };
 
