@@ -20,9 +20,10 @@ admin.controller('ADGuestIDSetup', ['$scope', '$state', 'ADGuestIDSetupSrv', fun
 
 	// fetching the settings details
     $scope.invokeApi(ADGuestIDSetupSrv.fetchGuestIDSetupDetails, {}, fetchCompletedOfSettingsDetails);
-    var fetchCompletedOfIDTypes = function(data){
+    var fetchCompletedOfIDTypes = function(data) {
         $scope.data.id_types = data.id_types;
-    }
+    };
+
     $scope.invokeApi(ADGuestIDSetupSrv.fetchGuestIDTypeDetails, {}, fetchCompletedOfIDTypes);
 	/*
 	* success call back of details web service call
@@ -32,9 +33,9 @@ admin.controller('ADGuestIDSetup', ['$scope', '$state', 'ADGuestIDSetupSrv', fun
         $scope.errorMessage = '';
 
         var postingDataIDTypes = {
-            "id_types": [{
-                "id": 1,
-                "is_double_sided": $scope.data.id_types[0]? $scope.data.id_types[0].is_double_sided : false
+            'id_types': [{
+                'id': 1,
+                'is_double_sided': $scope.data.id_types[0] ? $scope.data.id_types[0].is_double_sided : false
             }]
         };
 
@@ -42,7 +43,7 @@ admin.controller('ADGuestIDSetup', ['$scope', '$state', 'ADGuestIDSetupSrv', fun
     };
 
     $scope.save = function() {
-        console.log($scope.data)
+        console.log($scope.data);
         var postingData = {
             'guest_id_scan': {
                 'scan_guest_id_active': $scope.data.scan_guest_id_active
@@ -53,8 +54,6 @@ admin.controller('ADGuestIDSetup', ['$scope', '$state', 'ADGuestIDSetupSrv', fun
 
 		// calling the save api
         $scope.invokeApi(ADGuestIDSetupSrv.saveGuestIDSetup, postingData, successCallbackOfSaveDetails);
-
-
 
     };
 
