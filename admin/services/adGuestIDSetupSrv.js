@@ -20,6 +20,18 @@ admin.service('ADGuestIDSetupSrv', ['$http', '$q', 'ADBaseWebSrvV2', function($h
 
         return deferred.promise;
     };
+    this.fetchGuestIDTypeDetails = function() {
+        var deferred = $q.defer();
+        var url = '/api/id_types_for_hotel.json';
+
+        ADBaseWebSrvV2.getJSON(url).then(function(data) {
+            deferred.resolve(data);
+        }, function(data) {
+            deferred.reject(data);
+        });
+
+        return deferred.promise;
+    };
 
 	/*
 	* method to save the guest id setup details
