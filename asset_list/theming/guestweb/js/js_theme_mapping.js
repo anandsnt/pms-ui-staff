@@ -8,7 +8,7 @@ module.exports = {
             'guestweb_windsor_suites': [ themeJsRoot + 'app_router_common.js'],
             'guestweb_moonrise': [ themeJsRoot + 'app_router_common.js'],
             'guestweb_row': [ themeJsRoot + 'app_router_row_nyc.js'],
-            'guestweb_atura': [ themeJsRoot + 'app_router_atura.js'],
+            'guestweb_atura': [ themeJsRoot + 'app_router_common.js'],
             'guestweb_bellagio': [ themeJsRoot + 'app_router_mgm_chain.js', themeJsRoot + 'app_router_bellagio.js'], // ---------------------- MGM CHAIN #- 1
             'guestweb_delano': [ themeJsRoot + 'app_router_mgm_chain.js', themeJsRoot + 'app_router_delano.js'], // -------------------------- MGM CHAIN #- 2
             'guestweb_vdara': [ themeJsRoot + 'app_router_mgm_chain.js', themeJsRoot + 'app_router_vdara.js'], // ---------------------------- MGM CHAIN #- 3
