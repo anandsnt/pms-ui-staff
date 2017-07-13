@@ -128,6 +128,7 @@ sntZestStation.controller('zsCheckinScanPassportCtrl', [
         };
 
         var onPassportScanSuccess = function(response) {
+            $scope.trackSessionActivity('CheckIn', 'Passport Scan Success', '', $scope.mode);
 
             var readyToContinue = true;
 
@@ -177,7 +178,6 @@ sntZestStation.controller('zsCheckinScanPassportCtrl', [
 
 
         var onPassportScanFailure = function() {
-            $log.warn('onPassportScanFailure: ', onPassportScanFailure);
             
             if ($scope.mode === 'SCANNING_IN_PROGRESS') {
                 $scope.mode = 'SCAN_FAILURE';
@@ -201,6 +201,7 @@ sntZestStation.controller('zsCheckinScanPassportCtrl', [
                 $scope.runDigestCycle();
 
             }
+            $scope.trackSessionActivity('CheckIn', 'Passport Scan Failure', '', $scope.mode);
 
         };
 
