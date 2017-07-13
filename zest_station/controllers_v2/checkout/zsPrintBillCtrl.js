@@ -50,6 +50,7 @@ sntZestStation.controller('zsPrintBillCtrl', [
             errorMessage = _.isUndefined(errorMessage) ? 'CHECKOUT_PRINT_FAILED' : errorMessage;
             $scope.zestStationData.workstationOooReason = $filter('translate')(errorMessage);
             $scope.zestStationData.workstationStatus = 'out-of-order';
+            $scope.addReasonToOOSLog('CHECKOUT_PRINT_FAILED');
             var printopted = 'false';
 
             $scope.runDigestCycle();

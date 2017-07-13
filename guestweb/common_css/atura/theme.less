@@ -8,16 +8,12 @@ body {
 }
 
 body {
-    background-color:#fff;
-    background: url(/assets/guestweb/img/Historic_Taos_Inn/bg_taos.png) no-repeat center center; 
-    -webkit-background-size: cover;
-    -moz-background-size: cover;
-    -o-background-size: cover;
-     background-size: cover;
+    background-color: #2f2f2f;
 }
 
 .back-text {
-    display: none;
+    color: #000;
+    display: none !important;
 }
 
 a,
@@ -27,15 +23,15 @@ a:hover,
 .footer-sub-text,
 .footer-sub-text:hover,
 .phone-label {
-    color: #fff;
+    color: #DFDFDF;
 }
 
 .sub-main-text {
-    color: #fff;
+    color: #DFDFDF;
 }
 
 .header-bar {
-    background: rgba(12, 12, 12, 0.5);
+    background: #fad400;
 }
 
 .logo-image {
@@ -50,11 +46,11 @@ a:hover,
 .phone-text:hover,
 .request-text,
 .error-text {
-    color: #fff;
+    color: #DFDFDF !important;
 }
 
 .view-bill {
-    color: #fff;
+    color: #DFDFDF;
 }
 
 .sub-text,
@@ -62,14 +58,13 @@ a:hover,
 .query-text,
 .query-text:hover,
 .light-text {
-    color: #fff;
+    color: #DFDFDF;
 }
 
 .btn,
 .btn:hover {
-    background: #000;
-    color: @white;
-    box-shadow: none !important;
+    background: #fad400;
+    color: @black;
 }
 
 .dual-button {
@@ -85,27 +80,27 @@ a:hover,
 
 .dark-button,
 .dark-button:hover {
-    background: #000;
+    background: #fad400;
 }
 
 .light-button,
 .light-button:hover {
-    background: #656565;
+    background: #fde456;
 }
 
 .checkouttime1,
 .checkouttime1:hover {
-    background: #656565;
+    background: #fde456;
 }
 
 .checkouttime2,
 .checkouttime2:hover {
-    background: #404040;
+    background: #fad400;
 }
 
 .checkouttime3,
 .checkouttime3:hover {
-    background: #000000;
+    background: #d2b200;
 }
 
 .no-thanks,
@@ -126,30 +121,30 @@ a:hover,
 }
 
 .down-arrow-button {
-    background-image: url('/assets/guestweb/common_images/white/down_arrow.png');
+    background-image: url('/assets/guestweb/common_images/black/down_arrow.png');
 }
 
 .right-arrow-button {
-    background-image: url('/assets/guestweb/common_images/white/right_arrow.png');
+    background-image: url('/assets/guestweb/common_images/black/right_arrow.png');
 }
 
 .upgrade-details .upgrades-btn {
-    background: #000;
+    background: #8CC8DC;
 }
 
 .proceed-to-checkin {
-    background: #000;
+    background: #3D3D3B;
 }
 
 .upgrades-label {
-    color: #fff;
+    color: #85BDD0;
 }
 
 
 /*----------------- date picker -------------------------*/
 
 .pickadate-cell .pickadate-active.pickadate-outofrange-disabled a {
-    color: #404040;
+    color: #fad400;
     color: transparent;
 }
 
@@ -159,7 +154,7 @@ a:hover,
 }
 
 .pickadate-cell .pickadate-active {
-    background-color: #404040 !important;
+    background-color: #fad400 !important;
     color: #fff;
 }
 
@@ -201,13 +196,8 @@ a:hover,
 }
 
 .date-picker-header {
-    background-color: #404040;
+    background-color: #fad400;
 }
-
-.calendar-button{
-    background-position: 96% 12px !important; 
-}
-
 
 .calendar-back {
     background-image: url('/assets/guestweb/common_images/back_icon.png');
@@ -221,7 +211,7 @@ a:hover,
 .pickadate-next,
 .pickadate-prev:hover,
 .pickadate-next:hover {
-    color: #656565;
+    color: #fde456;
 }
 
 .date-picker-wrap {
@@ -251,7 +241,7 @@ a:hover,
 
 .res-details-heading,
 .res-details-heading:hover {
-    color: #000000;
+    color: #d2b200;
 }
 
 .back-to-checkout {
@@ -261,7 +251,6 @@ a:hover,
 
 @media (max-width: 990px) {
     .logo-image {
-        margin: 9% auto 7%;
         max-width: unset;
     }
     .back-to-checkout {
@@ -272,7 +261,7 @@ a:hover,
     }
     .accept-charges,
     {
-        width: 350px;
+        width: 300px;
         padding: 4% 0%;
     }
     .dual-button {
@@ -302,11 +291,8 @@ a:hover,
     .section-container {
         padding-bottom: 0px;
     }
-    .calendar-button{
-        background-position: 96% 15px !important; 
-    }
-    .accept-charges {
-        width: 300px;
+    .calendar-button {
+        background-position: 96% 16.5px !important;
     }
 }
 
@@ -314,9 +300,89 @@ a:hover,
     font-size: 30px;
 }
 
-.addon-container {
-  background: rgba(130,130,130,0.5);
+input {
+    border-radius: 0;
+    background: #efefef none repeat scroll 0 0;
 }
-.addon-container.selected{
-  background: rgba(12,12,12,.5);
+
+.bill-hotel-logo{
+    background: #fad400;
+}
+
+.grey-terms-button {
+    margin-top: 0.61%;
+}
+
+@media (max-width: 431px){
+.grey-terms-button {
+    margin-top: 10px !important;
+    margin-left: 0px !important;
+}
+}
+
+@media (min-width : 432 px) 
+and (max-width : 480px){
+.grey-terms-button {
+    margin-top: 0px !important;
+}
+}
+
+@media (min-width : 481px) 
+and (max-width : 495px){
+.grey-terms-button {
+    margin-left: 18px !important;
+}
+}
+
+.calendar-button {
+   background-position: 96% 12.5px;
+}
+
+/* Custom styles specific for Atura hotel */
+
+.text-comment {
+    color: @black !important;
+}
+
+.accept-charges-button.single{
+    color:#fff;
+}
+
+.viewbill-toggle{
+    a,a:hover{
+        color:#FCD600 !important;
+    }
+}
+
+.now-later-options{
+    a,a:hover{
+        color:#fff !important;
+    }
+}
+
+.checkout-icon{
+    background-image:url(/assets/guestweb/common_images/checkout-now-black.png);
+}
+.late-checkout-icon{
+    background-image:url(/assets/guestweb/common_images/late-checkout-black.png); 
+}
+.circle-bg {
+    background: url(/assets/guestweb/common_images/black/circle-bg.png) center top no-repeat;
+}
+.accept-charge-icon {
+    background-image: url(/assets/guestweb/common_images/black/creditcard_icon.png);
+}
+
+.accept-charge-icon, .checkout-icon, .late-checkout-icon, .upgrade-icon{
+    width:50px;
+}
+
+.down-arrow-button{
+    background-image:url('/assets/guestweb/common_images/gold/down_arrow.png'); 
+}
+.right-arrow-button{
+    background-image:url('/assets/guestweb/common_images/gold/right_arrow.png'); 
+}
+.addon-container.sub-main-text {
+    color: @black !important;
 }

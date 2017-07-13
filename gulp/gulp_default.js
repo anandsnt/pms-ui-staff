@@ -119,4 +119,9 @@ module.exports = function(gulp, $, options) {
         processArgs();
         return runSequence(['start-server', 'build', 'watch'], callback);
     });
+
+    // start server with only zestweb assets
+    gulp.task('only-gw', function(callback) {
+        return runSequence(['start-server', 'build-guestweb-dev', 'copy-guestweb-base-html', 'watch-guestweb-files'], callback);
+    });
 }
