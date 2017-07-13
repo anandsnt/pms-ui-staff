@@ -6,8 +6,6 @@ admin.controller('ADUpsellLateCheckoutCtrl', ['$scope', '$rootScope', '$state', 
     $scope.successMessage = '';
     var lcoAddonImage = '';
     
-
-
 var setUpList = function() {
    // remove the selected item from drop down
   var selectedIds = [];

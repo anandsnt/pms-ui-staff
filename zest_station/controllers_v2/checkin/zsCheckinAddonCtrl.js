@@ -283,14 +283,13 @@ sntZestStation.controller('zsCheckinAddonCtrl', [
 						time = parseInt(time) < 10 ? time.slice(1, 2) : time;
 						return time;
 					};
-					var addLateCheckoutAddon = function(lco_charge){
+					var addLateCheckoutAddon = function(lco_charge) {
 							lcoAddonList.push({
 								id: lco_charge.addon_id,
 								time: extractTime(lco_charge.time),
 								index: lcoIndex
 							});
 					};
-
 
 					// Dont offer lower LCO offers if higher level is already purchased
 					if (checkIfAddonIdIsPresent(response.extended_checkout_charge_2)) {

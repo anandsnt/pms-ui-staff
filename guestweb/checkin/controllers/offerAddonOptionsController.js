@@ -213,14 +213,13 @@
 						time = parseInt(time) < 10 ? time.slice(1, 2) : time;
 						return time;
 					};
-					var addLateCheckoutAddon = function(lco_charge){
+					var addLateCheckoutAddon = function(lco_charge) {
 							lcoAddonList.push({
 								id: lco_charge.addon_id,
 								time: extractTime(lco_charge.time),
 								index: lcoIndex
 							});
 					};
-
 
 					// Dont offer lower LCO offers if higher level is already purchased, ie if 3rd offer is purchased don't offer 1st and 2nd
 					// But if only 1st is purchased offer 2 and 3
