@@ -53,7 +53,7 @@
             <button type="button" class="button next" touch-press="scanBack()">
                 <text data-ng-bind-html="getTagValue('GID_SCAN_BUTTON')" editable-text="GID_SCAN_BUTTON"></text>
             </button>
-            <button type="button" class="button next skipscan" touch-press="scanBack('skip')">
+            <button type="button" class="button next skipscan" touch-press="scanBack('skip')" ng-hide='scanning.is_double_sided_required'>
                 <text data-ng-bind-html="getTagValue('GID_SKIP_SCAN_BUTTON')" editable-text="GID_SKIP_SCAN_BUTTON"></text>
             </button>
         </div>
@@ -182,7 +182,7 @@
     </div>
     <div>
         <div id="actions" class="add-guests-footer">
-            <button type="button" class="button prev" click-touch="addAGuest(); resetTime();">
+            <button type="button" class="button prev add-guest-passport" click-touch="addAGuest(); resetTime();">
                 <text data-ng-bind-html="getTagValue('ADD_BTN')" editable-text="ADD_BTN"></text>
             </button>
             <button ng-show="(allPassportReady && mode == 'SCAN_RESULTS') || (allPassportReviewed && mode == 'ADMIN_VERIFY_PASSPORTS')" type="button" class="button next" click-touch="goToNext(); resetTime();">

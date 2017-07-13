@@ -563,6 +563,22 @@ sntZestStation.service('zsCheckinSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
             return deferred.promise;
         };
 
+        this.checkIDType = function(params) {
+            var deferred = $q.defer();
+            var url = '/api/guest_identity/' + params.reservation_id + '/scan_type?guest_id_type=passport';
+
+            params.is_kiosk = true;
+
+            zsBaseWebSrv.getJSON(url).then(function(data) {
+                deferred.resolve(data);
+            }, function(data) {
+                deferred.reject(data);
+            });
+            return deferred.promise;
+        };
+
+        
+
 
     }
 ]);

@@ -34,6 +34,7 @@ sntZestStation.controller('zsCheckinScanPassportCtrl', [
          */
 
         $scope.scannedPassportImage = [];
+        $scope.scanning = {};// hold settings for this view
 
         var onBackButtonClicked = function() {
             if ($scope.lastMode === 'SCAN_RESULTS') {
@@ -176,6 +177,8 @@ sntZestStation.controller('zsCheckinScanPassportCtrl', [
 
 
         var onPassportScanFailure = function() {
+            console.warn('onPassportScanFailure: ',onPassportScanFailure);
+            
             if ($scope.mode === 'SCANNING_IN_PROGRESS') {
                 $scope.mode = 'SCAN_FAILURE';
 
@@ -601,6 +604,8 @@ sntZestStation.controller('zsCheckinScanPassportCtrl', [
          * [initializeMe description]
          */
         var initializeMe = (function() {
+            $scope.scanning.is_double_sided_required = true;// initial ID type is passport, for Yotel singapore they will do double-sided
+
             if (!$scope.inDemoMode() && $stateParams.isQuickJump !== 'true') {
                 $scope.selectedReservation.guest_details = zsCheckinSrv.selectedCheckInReservation.guest_details;    
             }
@@ -631,6 +636,30 @@ sntZestStation.controller('zsCheckinScanPassportCtrl', [
             }
 
             $scope.$on(zsEventConstants.CLICKED_ON_BACK_BUTTON, onBackButtonClicked);
+
+
+
+
+            var onSuccess = function(response) {
+                console.log('success got settings for passport id type');
+                console.log(response);
+                // $scope.scanning.is_double_sided_required = response.data.is_double_sided;
+                console.log('-----');
+            };
+            var onFail = function(response) {
+                $log.warn(response);
+                $scope.scanning.is_double_sided_required = true;// allows user to skip if this only if API says double_sided not required
+            };
+
+            var options = {
+                params: {
+                    'reservation_id': $stateParams.reservation_id,
+                },
+                successCallBack: onSuccess,
+                failureCallBack: onFail
+            };
+
+            $scope.callAPI(zsCheckinSrv.checkIDType, options);
 
         }());
 
