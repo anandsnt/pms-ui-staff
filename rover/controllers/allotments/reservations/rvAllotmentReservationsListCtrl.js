@@ -252,7 +252,7 @@ sntRover.controller('rvAllotmentReservationsListCtrl', [
 
       if (possibleStartDefaultDate < new tzIndependentDate($rootScope.businessDate)) {
         possibleStartDefaultDate = new tzIndependentDate($rootScope.businessDate);
-      }      
+      }
 
       // if we are in edit mode, we have to set the min/max date
       if (!$scope.isInAddMode()) {
@@ -1073,7 +1073,7 @@ sntRover.controller('rvAllotmentReservationsListCtrl', [
       $scope.reservations = data.results;
 
       // total result count
-      $scope.totalResultCount = data.total_count;
+      $scope.totalResultCount = data.total_result;
 
       // pickup
       $scope.totalPickUpCount = data.total_picked_count;
