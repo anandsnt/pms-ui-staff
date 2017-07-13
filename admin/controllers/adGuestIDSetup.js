@@ -43,7 +43,6 @@ admin.controller('ADGuestIDSetup', ['$scope', '$state', 'ADGuestIDSetupSrv', fun
     };
 
     $scope.save = function() {
-        console.log($scope.data);
         var postingData = {
             'guest_id_scan': {
                 'scan_guest_id_active': $scope.data.scan_guest_id_active
