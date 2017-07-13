@@ -328,7 +328,7 @@ angular.module('reportsModule')
             report['hasShow']['data'].push({
                 paramKey: filter.value.toLowerCase(),
                 description: filter.description,
-                selected: filter.value == 'EXCEEDED_ONLY' ? false : true
+                selected: filter.value === 'EXCEEDED_ONLY' ? false : true
             });
         };
 
