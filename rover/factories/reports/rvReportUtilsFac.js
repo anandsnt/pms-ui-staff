@@ -328,7 +328,7 @@ angular.module('reportsModule')
             report['hasShow']['data'].push({
                 paramKey: filter.value.toLowerCase(),
                 description: filter.description,
-                selected: true
+                selected: filter.value == 'EXCEEDED_ONLY' ? false : true
             });
         };
 
@@ -462,7 +462,7 @@ angular.module('reportsModule')
             report.hasShow = {
                 data: [],
                 options: {
-                    selectAll: true,
+                    selectAll: false,
                     hasSearch: false,
                     key: 'description',
                     allValue: 'Both',
