@@ -177,7 +177,7 @@ sntZestStation.controller('zsCheckinScanPassportCtrl', [
 
 
         var onPassportScanFailure = function() {
-            $log.warn('onPassportScanFailure: ',onPassportScanFailure);
+            $log.warn('onPassportScanFailure: ', onPassportScanFailure);
             
             if ($scope.mode === 'SCANNING_IN_PROGRESS') {
                 $scope.mode = 'SCAN_FAILURE';
@@ -207,10 +207,9 @@ sntZestStation.controller('zsCheckinScanPassportCtrl', [
         $scope.addAGuest = function() {
             // placeholder for future improvement, not used by yotel singapore yet
             return; 
-            $scope.AddGuestMode = true;
-            $log.log('mode: ', $scope.mode, ' - add guest mode: ', $scope.AddGuestMode);
+            // $scope.AddGuestMode = true;
+            // $log.log('mode: ', $scope.mode, ' - add guest mode: ', $scope.AddGuestMode);
         };
-
 
         $scope.selectGuest = function(guestInfo) {
             $scope.scanningBackImage = false;
@@ -639,9 +638,6 @@ sntZestStation.controller('zsCheckinScanPassportCtrl', [
 
             $scope.$on(zsEventConstants.CLICKED_ON_BACK_BUTTON, onBackButtonClicked);
 
-
-
-
             var onSuccess = function(response) {
                 $log.log('success got settings for passport id type');
                 $log.log(response);
@@ -655,7 +651,7 @@ sntZestStation.controller('zsCheckinScanPassportCtrl', [
 
             var options = {
                 params: {
-                    'reservation_id': $stateParams.reservation_id,
+                    'reservation_id': $stateParams.reservation_id
                 },
                 successCallBack: onSuccess,
                 failureCallBack: onFail
