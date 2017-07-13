@@ -76,7 +76,6 @@
                     ng-change="changedReservationRoom()" ng-options="roomData.id as roomData.room_number for roomData in ngDialogData.roomsFreeToAssign">
                         <!-- Add class "placeholder" if "N/A" set as option -->
                         <option value="" ng-selected="isEmptyRoomNumber(ngDialogData.room_no)">N/A</option>
-                        <!-- <option value="{{roomData.id}}" ng-selected="ngDialogData.room_id===roomData.id" ng-repeat="roomData in ngDialogData.roomsFreeToAssign">{{roomData.room_number}}</option> -->
                     </select>
                 </div>
             </div>
