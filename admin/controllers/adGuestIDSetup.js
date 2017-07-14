@@ -13,15 +13,15 @@ admin.controller('ADGuestIDSetup', ['$scope', '$state', 'ADGuestIDSetupSrv', fun
     var fetchCompletedOfSettingsDetails = function(data) {
         $scope.$emit('hideLoader');
         $scope.data = data.guest_id_scan;
-        if (!$scope.data.id_types) {
-            $scope.data.id_types = [];// passport ID type
-        }
     };
 
 	// fetching the settings details
     $scope.invokeApi(ADGuestIDSetupSrv.fetchGuestIDSetupDetails, {}, fetchCompletedOfSettingsDetails);
     var fetchCompletedOfIDTypes = function(data) {
         $scope.data.id_types = data.id_types;
+        if (!data.id_types) {
+            $scope.data.id_types = [];// passport ID type
+        }
     };
 
     $scope.invokeApi(ADGuestIDSetupSrv.fetchGuestIDTypeDetails, {}, fetchCompletedOfIDTypes);
