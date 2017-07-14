@@ -273,6 +273,11 @@
 
 					// create new Bunlded addon for LCO
 					if (lateCheckoutAddons.length > 0) {
+
+						$scope.lcoAddonMainDesciprtion = setText(fetchScreenDetails("LCO-ADDON-MAIN-DESC").screen_title, "Extend your Stay. Available Offers starting from @amount@.");
+						var minimumLcoAmount = $rootScope.currencySymbol + _.last(lateCheckoutAddons).amount.toString();
+						$scope.lcoAddonMainDesciprtion = $scope.lcoAddonMainDesciprtion.replace("@amount@", minimumLcoAmount);
+
 						var bundledLCOAddon = {
 							"lco_addons": lateCheckoutAddons,
 							"name": setText(fetchScreenDetails("LATE-CHECKOUT-HEADING").screen_title, "Late Checkout"),
@@ -389,6 +394,7 @@
 			$scope.addonPurchaseMsg = setText(fetchScreenDetails("ADDON-PURCHASE-MSG").screen_title, "Would you like to add @addon_name@ to your stay?.");
 			$scope.lcoAddonStartingMsg = setText(fetchScreenDetails("LCO-ADDON-STARTING-MSG").screen_title, "Extend your stay till");
 			$scope.lcoAddonEndingMsg = setText(fetchScreenDetails("LCO-ADDON-ENDING-MSG").screen_title, "at");
+			$scope.lcoAddonMainDesciprtion = '';
 
 			$scope.addonList = [];
 			$scope.isLoading = true;

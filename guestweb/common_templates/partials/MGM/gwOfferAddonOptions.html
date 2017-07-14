@@ -103,6 +103,10 @@
                 <div class="content-desc">
                     <p class="sub-main-text no-text-case margin-top-10">{{addon.name | limitTo: 50 }}{{addon.name.length > 50? '...' : ''}}<span ng-show="isAddonFlatOrRoomType(addon) && addon.quantity > 0">&nbsp;({{addon.quantity}})</span></p>
                     <p class="sub-main-text  no-text-case margin-top-20" ng-hide="addon.isLco">{{currencySymbol}}{{addon.amount}} <span ng-show="upsellDisplayOrderAmountFirst">{{addon.amount_type_label}}&nbsp;{{addon.post_type_label}}&nbsp;</span><span ng-hide="upsellDisplayOrderAmountFirst">{{addon.post_type_label}}&nbsp;{{addon.amount_type_label}}&nbsp;</span>&nbsp;<span ng-show="addon.display_suffix">{{addon.suffix_label}}</span></p>
+                     <!-- LCO text -->
+                    <p class="sub-main-text  no-text-case margin-top-20" ng-show="addon.isLco">
+                        {{lcoAddonMainDesciprtion}}
+                    </p>
                 </div>
             </div>
             <a class="btn btn-template margin-top-20" ng-click="noThanksClicked()">{{addonContinue}}</a>
