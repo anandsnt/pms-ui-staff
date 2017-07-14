@@ -289,6 +289,9 @@
                     .label {
                         width: 60px;
                         overflow: hidden;
+                        background: @white;
+                        .box-shadow();
+                        margin: 1px 0 0 0;
                     }
 
                     .guest-icon {
@@ -296,12 +299,20 @@
                         line-height: 30px;
                         text-transform: uppercase;
                         text-align: center;
-                        font-weight: 600;
-                        color: @white;
-                        background: @grey2;
-                        margin: 5px 10px 0 0;
-                        .square(30px);
+                        font-weight: 600; 
+                        background: @white;
+                        margin: 0;
+                        .square(40px);
                         .pull-left;
+                        background: @white;
+                        .box-shadow();
+                        margin-top: 1px;
+
+                        .icons {
+                            .size(25px, 20px);
+                            margin-top: 10px;
+                            margin-left: 10px;
+                        }
                     }
 
                     .select,
@@ -328,6 +339,7 @@
             }
 
             .form {
+                position: relative;
                 margin-top: 10px;
                 max-height: 220px;
                 .float;
@@ -337,9 +349,18 @@
                     right: 0;
                 }
 
+                border-top: 1px solid rgba(0,0,0,.1);
+
                 .wrapper {
+                    padding: 10px 0;
                     max-width: 430px;
                     .calc-width(100, 360); 
+                }
+
+                .iScrollVerticalScrollbar {
+                    top: 10px;
+                    bottom: 10px;
+                    right: 0;
                 }
 
                 label {
@@ -373,9 +394,14 @@
                         .icons {
                             .square(40px);
                             background-color: @grey2;
+                            border-radius: 2px;
+
+                            &.icon-adult {
+                                background-position: 10px -10470px;
+                            }
 
                             &.icon-student {
-                                background-position: 10px -10530px
+                                background-position: 10px -10530px;
                             }
 
                             &.icon-infant {
@@ -417,14 +443,8 @@
                 }
             }
 
-            &.editable { 
-                .guest-count {
-                    li {
-                        padding-bottom: 10px;
-                        border-bottom: 1px solid rgba(0,0,0,.1);
-                    }
-                }
-            }
+
+            
         }
 
         /* Arrival / Departure times ***/
@@ -1155,9 +1175,19 @@
 
 
 #manage-guests{
-    width: 63.5%!important;
+    width: 100% !important;
+    /*CICO-CICO-41313*/
 }
 .guest-id-img{
-    max-width:75%!important;
+    max-width:79%!important;
     border-radius: .5em;
+}
+.guest-id-img-div{
+    display: -webkit-inline-box;
+}
+
+.accompany-guest-wrapper, {
+    height:100%;
+    overflow:visible;
+    width: 100% !important;
 }

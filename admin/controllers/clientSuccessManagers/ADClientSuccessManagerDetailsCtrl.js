@@ -11,17 +11,23 @@ function($scope, ADClientSuccessManagerSrv,
     // Function to save/update client service manager
     $scope.clickedSave = function() {
             var requestData = $scope.data;
+
+            $scope.errorMessage = [];
             var postSuccess = function() {
-                $scope.$emit('hideLoader');
-                $state.go("admin.clientSuccessManagers");
-            };
+                    $scope.$emit('hideLoader');
+                    $state.go("admin.clientSuccessManagers");
+                },
+                postError = function(error) {
+                    $scope.errorMessage = error;
+                    $scope.$emit('hideLoader');
+                };
 
             if ($scope.isEdit) {
                 requestData.id = $scope.id;
-                $scope.invokeApi(ADClientSuccessManagerSrv.updateClientSuccessManager, requestData, postSuccess);
+                $scope.invokeApi(ADClientSuccessManagerSrv.updateClientSuccessManager, requestData, postSuccess, postError);
             }
             else {
-                $scope.invokeApi(ADClientSuccessManagerSrv.addClientSuccessManager, requestData, postSuccess);
+                $scope.invokeApi(ADClientSuccessManagerSrv.addClientSuccessManager, requestData, postSuccess, postError);
             }
 
     };
