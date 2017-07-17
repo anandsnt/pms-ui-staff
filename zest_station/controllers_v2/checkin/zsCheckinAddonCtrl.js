@@ -235,6 +235,7 @@ sntZestStation.controller('zsCheckinAddonCtrl', [
 				var addon = _.find($scope.selectedAddon.addons, function(addon) {
 					return parseInt(addon.addon_id) === parseInt($scope.selectedLcoAddonId);
 				});
+
 				return _.isUndefined(addon) ? false : addon.is_selected;
 			}
 			return false;
@@ -243,7 +244,7 @@ sntZestStation.controller('zsCheckinAddonCtrl', [
 		$scope.lcoRemoveMode = function() {
 			return $scope.checkIfLcoAddonWasAdded();
 		};
-		$scope.lcoAddonsBackAction =  function(){
+		$scope.lcoAddonsBackAction =  function() {
 			$scope.showAddonPopup = false;
 			$scope.selectedLcoAddonId = '';
 		};
