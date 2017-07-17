@@ -207,7 +207,6 @@
 					var isThirdLcoSelected = false;
 					var firstLcoIndex = -1;
 					var lateCheckoutAddons = [];
-					var lcoIndex = 0;
 					var lcoAddonList = [];
 					var extractTime = function(time) {
 						time = parseInt(time) < 10 ? time.slice(1, 2) : time;
@@ -216,8 +215,7 @@
 					var addLateCheckoutAddon = function(lco_charge) {
 							lcoAddonList.push({
 								id: lco_charge.addon_id,
-								time: extractTime(lco_charge.time),
-								index: lcoIndex
+								time: extractTime(lco_charge.time)
 							});
 					};
 
@@ -226,7 +224,6 @@
 					if (checkIfAddonIdIsPresent(response.extended_checkout_charge_2)) {
 						isThirdLcoSelected = checkIfLcoIsAlreadyPurchased(response.extended_checkout_charge_2.addon_id);
 						if (!isThirdLcoSelected) {
-							lcoIndex++;
 							addLateCheckoutAddon(response.extended_checkout_charge_2);
 						} else {
 							updateAddonListWrTLcoPresent(response.extended_checkout_charge_2.addon_id);
@@ -235,7 +232,6 @@
 					if (checkIfAddonIdIsPresent(response.extended_checkout_charge_1)) {
 						isSecondLcoSelected = checkIfLcoIsAlreadyPurchased(response.extended_checkout_charge_1.addon_id);
 						if (!isSecondLcoSelected && !isThirdLcoSelected) {
-							lcoIndex++;
 							addLateCheckoutAddon(response.extended_checkout_charge_1);
 						} else {
 							updateAddonListWrTLcoPresent(response.extended_checkout_charge_1.addon_id);
@@ -244,7 +240,6 @@
 					if (checkIfAddonIdIsPresent(response.extended_checkout_charge_0)) {
 						isFirstLcoSelected = checkIfLcoIsAlreadyPurchased(response.extended_checkout_charge_0.addon_id);
 						if (!isFirstLcoSelected && !isSecondLcoSelected && !isThirdLcoSelected) {
-							lcoIndex++;
 							addLateCheckoutAddon(response.extended_checkout_charge_0);
 						} else {
 							updateAddonListWrTLcoPresent(response.extended_checkout_charge_0.addon_id);
@@ -259,7 +254,6 @@
 									firstLcoIndex = addonIndex; // the bundled LCO will appear @ this index
 								}
 								addon.isLateCheckoutAddon = true;
-								addon.index = lcoAddon.index;
 								addon.time = lcoAddon.time;
 								lateCheckoutAddons.push(addon);
 							}
@@ -284,6 +278,12 @@
 							"isLco": true,
 							"description": setText(fetchScreenDetails("LATE-CHECKOUT-SUB-HEADING").screen_title, "Please select a late checkout offer from the list below to extend yor stay.")
 						};
+
+						if (!_.isUndefined(response.late_checkout_addon_image) && response.late_checkout_addon_image.length > 0) {
+							$scope.lateCheckoutBundleImage = response.late_checkout_addon_image;
+						} else {
+							$scope.lateCheckoutBundleImage = lateCheckoutAddons[0].image
+						}
 
 						$scope.addonList.splice(firstLcoIndex, 0, bundledLCOAddon);
 					}

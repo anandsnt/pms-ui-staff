@@ -72,7 +72,7 @@
                 <p class="sub-main-text margin-top-20" ng-bind="selectedAddon.description"></p>
                 <br/>
                 <!-- submit -->
-                <div ng-repeat="addon in selectedAddon.lco_addons | orderBy: 'index' " class="margin-top-40">
+                <div ng-repeat="addon in selectedAddon.lco_addons" class="margin-top-40">
                     <p class="main-text no-text-case bold-text margin-top-20">{{addon.name}}</p>
                     <p class="sub-main-text no-text-case">{{lcoAddonStartingMsg}}&nbsp;<b>{{addon.time}} PM</b>&nbsp;{{lcoAddonEndingMsg}}&nbsp;<b>{{currencySymbol}}{{addon.amount}}</b></p>
                     <a class="btn btn-template margin-top-20" ng-click="purchaseAddon(addon)" ng-hide="addon.is_selected" ng-class="{'disabled-addon' : isOneLcoAdded() && !addon.is_selected}">{{addonPurchase}}</a>
@@ -98,7 +98,7 @@
             <div ng-repeat="addon in addonList" class="addon-container" ng-click="addonSelected(addon)" ng-class="{'selected':((addon.is_selected || addon.quantity > 0) && !addon.isLco) || (addon.isLco && isOneLcoAdded())}">
                 <div class="content-image">
                     <img ng-src="{{addon.image}}" alt="" width="100%" height="auto" ng-hide="addon.isLco">
-                    <img ng-src="{{addon.lco_addons[0].image}}"  alt="" width="100%" height="auto" ng-show="addon.isLco">
+                    <img ng-src="{{lateCheckoutBundleImage}}"  alt="" width="100%" height="auto" ng-show="addon.isLco">
                 </div>
                 <div class="content-desc">
                     <p class="sub-main-text no-text-case margin-top-10">{{addon.name | limitTo: 50 }}{{addon.name.length > 50? '...' : ''}}<span ng-show="isAddonFlatOrRoomType(addon) && addon.quantity > 0">&nbsp;({{addon.quantity}})</span></p>
