@@ -20,6 +20,46 @@ module.exports = function(gulp, $, options){
 	    guestwebGenDir 			= DEST_ROOT_PATH + 'asset_list/' + generated + 'ThemeMappings/' + generated + 'Guestweb/template/',
 		guestwebGenFile 		= guestwebGenDir + generated + 'GuestWebTemplateThemeMappings.json';
 
+	var extractThemeMappingList = function() {
+		var argv = require('yargs').argv;
+		var guestWebThemeList = {};
+
+		/*
+		For developement purspose, we can pass only required themes as array, i.e. as follows
+        
+		gulp <gulp-task> --with_gw ['guestweb_zoku','guestweb_yotel'] etc
+        
+		In such cases, guestWebThemeList  has to be generated like below 
+		*/
+
+		// {
+		// 	guestweb_zoku: ['guestweb/**/common_templates/partials/checkin/**.html',
+		// 		......
+		// 		'guestweb/**/preCheckin/partials/*.html'
+		// 	],
+		// 	guestweb_yotel: ['guestweb/**/landing/Yotel/*.html',
+		// 		..........
+		// 		'guestweb/**/shared/**/*.html'
+		// 	]
+		// }
+
+		if ('with_gw' in argv && typeof argv.with_gw === 'string') {
+			// required zest web themes are passed
+			var themeString = argv.with_gw;
+			// themeString will be string => '[guestweb_zoku,guestweb_yotelguestweb_zoku]'
+			// strip [ and ] from string
+			themeString = themeString.substring(1, themeString.length - 1)
+			var themeArray = themeString.split(",");
+
+			for (var i = 0, len = themeArray.length; i < len; i++) {
+				guestWebThemeList[themeArray[i]] = GUESTWEB_THEME_TEMPLATE_LIST[themeArray[i]]
+			}
+		} else {
+			guestWebThemeList = GUESTWEB_THEME_TEMPLATE_LIST;
+		}
+		return guestWebThemeList;
+	};
+
 	gulp.task('create-guestweb-theme-template-list', function(){
 		var fs = require('fs-extra');
 		return fs.outputJsonSync(guestwebGenFile, extendedMappings);
@@ -96,7 +136,7 @@ module.exports = function(gulp, $, options){
 
 		
 		delete require.cache[require.resolve(GUESTWEB_THEME_TEMPLATE_MAPPING_FILE)];
-		GUESTWEB_THEME_TEMPLATE_LIST = require(GUESTWEB_THEME_TEMPLATE_MAPPING_FILE).getThemeMappingList();
+		GUESTWEB_THEME_TEMPLATE_LIST = extractThemeMappingList();
 
 		var tasks = Object.keys(GUESTWEB_THEME_TEMPLATE_LIST).map(function(theme, index){
 			console.log ('Guestweb Theme template - mapping-generation-started: ' + theme);

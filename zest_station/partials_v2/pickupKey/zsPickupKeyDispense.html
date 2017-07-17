@@ -49,7 +49,7 @@
         <div class='uploaded-key-image' id="keys" ng-show="zestStationData.keyWriter == 'websocket'">
             <img src="{{icons.url.createkey}}">
         </div>
-        <div id="keys" ng-show="icmp">
+        <div id="keys" ng-show="icmp" class='icmp-key-image'>
             <div ng-include="icons.url.createkey_icmp"></div>
         </div>
         <button ng-show="remoteEncoding  || localWriter" ng-class="{'overlay disabled':(!readyForUserToPressMakeKey)}" type="button" class="button make-key-now" touch-press="onReadyToPrintKey(1)">
@@ -70,7 +70,7 @@
         <div class='uploaded-key-image' id="keys" ng-show="zestStationData.keyWriter == 'websocket'">
             <img src="{{icons.url.createkey}}">
         </div>
-        <div id="keys" ng-show="icmp">
+        <div id="keys" ng-show="icmp" class='icmp-key-image'>
             <div ng-include="icons.url.createkey_icmp"></div>
         </div>
         <button ng-show="remoteEncoding  || localWriter" ng-class="{'overlay disabled':(!readyForUserToPressMakeKey)}" type="button" class="button make-key-now" touch-press="onReadyToPrintKey(1)">
@@ -91,7 +91,7 @@
         <div class='uploaded-key-image' id="keys" ng-show="zestStationData.keyWriter == 'websocket'">
             <img src="{{icons.url.createkey}}">
         </div>
-        <div id="keys" ng-show="icmp">
+        <div id="keys" ng-show="icmp" class='icmp-key-image'>
             <div ng-include="icons.url.createkey_icmp"></div>
         </div>
         <button ng-show="remoteEncoding || localWriter" ng-class="{'overlay disabled':(!readyForUserToPressMakeKey)}" type="button" class="button make-key-now" touch-press="onReadyToPrintKey(2)">
@@ -114,7 +114,7 @@
         <div class='uploaded-key-image' id="keys" ng-show="zestStationData.keyWriter == 'websocket'">
             <img src="{{icons.url.createkey}}">
         </div>
-        <div id="keys" ng-show="icmp">
+        <div id="keys" ng-show="icmp" class='icmp-key-image'>
             <div ng-include="icons.url.createkey_icmp"></div>
         </div>
         <button ng-show="remoteEncoding || localWriter" ng-class="{'overlay disabled':(!readyForUserToPressMakeKey)}" type="button" class="button make-key-now" touch-press="onReadyToPrintKey(2)">
