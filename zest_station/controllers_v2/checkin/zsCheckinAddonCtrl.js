@@ -9,6 +9,7 @@ sntZestStation.controller('zsCheckinAddonCtrl', [
 	function($scope, $stateParams, $state, zsCheckinSrv, zsEventConstants, $timeout, $translate) {
 		
 		var lcoAddonList = [];
+
 		$scope.selectedLcoAddonId = '';
 		$scope.selectedAddon = {};
 		var navigateToTermsPage = function() {
@@ -201,6 +202,7 @@ sntZestStation.controller('zsCheckinAddonCtrl', [
 			var addon = _.find($scope.selectedAddon.addons, function(addon) {
 				return parseInt(addon.addon_id) === parseInt($scope.selectedLcoAddonId);
 			});
+
 			if (!addon.is_selected) {
 				addAddonToReservation(addon, true);
 			} else {
@@ -219,10 +221,10 @@ sntZestStation.controller('zsCheckinAddonCtrl', [
 			return isAnyOneLcoSelected;
 		};
 
-		$scope.selectDeselectLco = function(lcoAddon){
-			if(!$scope.isOneLcoAdded() && !lcoAddon.is_selected){
+		$scope.selectDeselectLco = function(lcoAddon) {
+			if (!$scope.isOneLcoAdded() && !lcoAddon.is_selected) {
 				$scope.selectedLcoAddonId = lcoAddon.addon_id;
-			}else{
+			} else {
 				$scope.selectedLcoAddon = '';
 			}
 		};
@@ -244,7 +246,7 @@ sntZestStation.controller('zsCheckinAddonCtrl', [
 		$scope.lcoAddonsBackAction =  function(){
 			$scope.showAddonPopup = false;
 			$scope.selectedLcoAddonId = '';
-		}
+		};
 
 		$scope.incrementAddonQty = function() {
 			$scope.selectedAddonCount = $scope.selectedAddonCount + 1;
@@ -291,6 +293,7 @@ sntZestStation.controller('zsCheckinAddonCtrl', [
 				var selectLcoAddon = _.find($scope.selectedAddon.addons, function(addon) {
 					return addon.is_selected;
 				});
+
 				$scope.selectedLcoAddonId = _.isUndefined(selectLcoAddon) ? '' : selectLcoAddon.addon_id;
 			}
 		};
@@ -378,10 +381,11 @@ sntZestStation.controller('zsCheckinAddonCtrl', [
 					// create new Bunlded addon for LCO
 					if (lateCheckoutAddons.length > 0) {
 						var lcoImage;
+
 						if (!_.isUndefined(response.late_checkout_addon_image) && response.late_checkout_addon_image.length > 0) {
 							lcoImage = response.late_checkout_addon_image;
 						} else {
-							lcoImage = lateCheckoutAddons[0].image
+							lcoImage = lateCheckoutAddons[0].image;
 						}
 						var bundledLCOAddon = {
 							"addons": lateCheckoutAddons,
