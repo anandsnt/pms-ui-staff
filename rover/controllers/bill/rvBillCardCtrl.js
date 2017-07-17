@@ -2116,7 +2116,15 @@ sntRover.controller('RVbillCardController',
 	 	};
 	 	var getReservationDetailsSuccessCallback = function(successData) {
 			$scope.$emit('hideLoader');
-			var reservationData = successData;
+            var reservationData = successData,
+                swipeOperationObj,
+                swipedCardDataToRender;
+
+            if ($scope.swippedCard) {
+                swipeOperationObj = new SwipeOperation();
+                swipedCardDataToRender = swipeOperationObj.createSWipedDataToRender(swipedTrackDataForCheckin);
+                $scope.$broadcast('SWIPED_CARD_ADDED', swipeOperationObj.createSWipedDataToSave(swipedCardDataToRender));
+            }
 
 			reservationData.reservation_card.balance_amount = data.balance;
 			RVReservationCardSrv.updateResrvationForConfirmationNumber(data.confirm_no, reservationData);
