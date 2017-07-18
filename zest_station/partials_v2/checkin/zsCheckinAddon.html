@@ -59,7 +59,7 @@
                      {../assets/yotel/icons/checkout.svg} -->
                   </button>
                   <span class="amount">{{zestStationData.currencySymbol}}{{addon.amount | number:2}}</span>
-                  <span>(+Tax)</span>
+                  <span ng-show="addon.display_suffix">{{addon.suffix_label}}</span>
                </li>
             </ul>
          </nav>
