@@ -253,7 +253,7 @@ angular.module('sntRover').controller('RVReservationCheckInFlowCtrl',
             listeners['SWIPED_CARD_ADDED'] = $scope.$on('SWIPED_CARD_ADDED', function (event, swipedCardData) {
                 // Wait till the other modals have closed
                 if ($scope.checkInState.isListeningSwipe) {
-                    $timeout(() => {
+                    $timeout(function () {
                         $scope.checkInState.swipedCardData = swipedCardData;
                         $scope.onClickUseCardOnFile();
                     }, 700);
