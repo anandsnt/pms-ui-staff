@@ -1578,13 +1578,13 @@ sntRover.controller('reservationDetailsController',
      	$scope.guestIdData.last_name = guest.last_name;
 
      	$scope.guestIdData.idType = guest.identityType;
-     	$scope.guestIdData.dob = guest.dob;
+     	$scope.guestIdData.dob = guest.date_of_birth;
 
      	$scope.guestIdData.twoSidedDoc = guest.front_image_data && guest.back_image_data;
      	$scope.guestIdData.nationality = guest.nationality;
 
      	$scope.guestIdData.docID = guest.document_number;
-     	$scope.guestIdData.docExpiry = guest.document_expiry;
+     	$scope.guestIdData.docExpiry = guest.expiration_date;
      	$scope.guestIdData.showingIdFront = true;
  		$scope.guestIdData.imgFrontSrc = guest.front_image_data;
  		$scope.guestIdData.imgBackSrc = guest.back_image_data;

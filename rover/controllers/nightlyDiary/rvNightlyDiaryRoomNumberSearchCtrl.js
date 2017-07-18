@@ -62,6 +62,7 @@ angular.module('sntRover')
                             $scope.$apply(function() {
                                 $scope.diaryData.showSearchResultsArea = false;
                                 $scope.diaryData.roomNumberSearchResults = [];
+                                $scope.diaryData.totalRoomNumberSearchResults = 0;
                             });
                         }
                     }, 800);

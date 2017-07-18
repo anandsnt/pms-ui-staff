@@ -522,7 +522,8 @@ sntZestStation.controller('zsCheckinScanPassportCtrl', [
                     'first_name': selectedPassportInfo.first_name,
                     'last_name': selectedPassportInfo.last_name,
                     'nationality': selectedPassportInfo.nationality,
-                    'guest_id': selectedPassportInfo.id
+                    'guest_id': selectedPassportInfo.id,
+                    'date_of_birth': selectedPassportInfo.dob
                 },
                 successCallBack: function() {
                     $log.warn(':: Saved! ::');
