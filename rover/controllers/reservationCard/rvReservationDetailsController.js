@@ -1564,7 +1564,7 @@ sntRover.controller('reservationDetailsController',
  		if (isPrimaryGuest) {
  			guest_id = $scope.reservationParentData.guest.id;
  		} else {
- 			guest_id = guestData.guest_id;
+ 			guest_id = guestData.id;
  		}
 
  		var guest = getUserPassportInfo(responseData, guest_id);
