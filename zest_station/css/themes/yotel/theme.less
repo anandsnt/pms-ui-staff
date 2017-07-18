@@ -157,6 +157,50 @@
 	        }
 	    }
 
+        .add-on {
+            #options {
+                li {
+                    button.option{
+                        height:130px;
+                    }
+                    .option {
+                        color: @brandColor;
+                        position:relative;
+                        .icon-text {
+                            position:absolute;
+                            padding: 25px 0;
+                        }
+
+                        .icon-checkout-upsell {
+                            path:nth-child(2) {
+                                fill: @brandColor !important;
+                            }
+                        }
+
+                        &.not-selected {
+                            color: fade(@black, 40);
+
+                            .icon-checkout-upsell {
+                                path:nth-child(2),
+                                path:nth-child(3) {
+                                    fill: #cbcbcb !important;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            &.selected {
+                border-color: @brandColor;
+                background-color: @brandColor;
+
+                .add-on-content {
+                    color: @white;
+                }
+            }
+        }
+
 		#textual {
 			&.review-bill {
 				#rate {
@@ -569,6 +613,3 @@
 .add-guest-mode-content{
     height: 100% !important;
 }
-.add-on #options .amount{
-    color: @brandColor;
-} 
