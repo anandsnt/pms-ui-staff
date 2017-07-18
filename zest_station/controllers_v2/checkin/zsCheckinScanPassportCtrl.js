@@ -34,6 +34,7 @@ sntZestStation.controller('zsCheckinScanPassportCtrl', [
          */
 
         $scope.scannedPassportImage = [];
+        $scope.scanning = {};// hold settings for this view
 
         var onBackButtonClicked = function() {
             if ($scope.lastMode === 'SCAN_RESULTS') {
@@ -127,6 +128,7 @@ sntZestStation.controller('zsCheckinScanPassportCtrl', [
         };
 
         var onPassportScanSuccess = function(response) {
+            $scope.trackSessionActivity('CheckIn', 'Passport Scan Success', '', $scope.mode);
 
             var readyToContinue = true;
 
@@ -176,6 +178,7 @@ sntZestStation.controller('zsCheckinScanPassportCtrl', [
 
 
         var onPassportScanFailure = function() {
+            
             if ($scope.mode === 'SCANNING_IN_PROGRESS') {
                 $scope.mode = 'SCAN_FAILURE';
 
@@ -198,14 +201,16 @@ sntZestStation.controller('zsCheckinScanPassportCtrl', [
                 $scope.runDigestCycle();
 
             }
+            $scope.trackSessionActivity('CheckIn', 'Passport Scan Failure', '', $scope.mode);
 
         };
 
         $scope.addAGuest = function() {
-            $scope.AddGuestMode = true;
-            $log.log('mode: ', $scope.mode, ' - add guest mode: ', $scope.AddGuestMode);
+            // placeholder for future improvement, not used by yotel singapore yet
+            return; 
+            // $scope.AddGuestMode = true;
+            // $log.log('mode: ', $scope.mode, ' - add guest mode: ', $scope.AddGuestMode);
         };
-
 
         $scope.selectGuest = function(guestInfo) {
             $scope.scanningBackImage = false;
@@ -517,7 +522,8 @@ sntZestStation.controller('zsCheckinScanPassportCtrl', [
                     'first_name': selectedPassportInfo.first_name,
                     'last_name': selectedPassportInfo.last_name,
                     'nationality': selectedPassportInfo.nationality,
-                    'guest_id': selectedPassportInfo.id
+                    'guest_id': selectedPassportInfo.id,
+                    'date_of_birth': selectedPassportInfo.dob
                 },
                 successCallBack: function() {
                     $log.warn(':: Saved! ::');
@@ -601,6 +607,8 @@ sntZestStation.controller('zsCheckinScanPassportCtrl', [
          * [initializeMe description]
          */
         var initializeMe = (function() {
+            $scope.scanning.is_double_sided_required = true;// initial ID type is passport, for Yotel singapore they will do double-sided
+
             if (!$scope.inDemoMode() && $stateParams.isQuickJump !== 'true') {
                 $scope.selectedReservation.guest_details = zsCheckinSrv.selectedCheckInReservation.guest_details;    
             }
@@ -631,6 +639,27 @@ sntZestStation.controller('zsCheckinScanPassportCtrl', [
             }
 
             $scope.$on(zsEventConstants.CLICKED_ON_BACK_BUTTON, onBackButtonClicked);
+
+            var onSuccess = function(response) {
+                $log.log(response);
+                $scope.trackSessionActivity('CheckIn', 'SuccessFetching Passport Setting', '', $scope.mode);
+                $scope.scanning.is_double_sided_required = response.data.is_double_sided;
+            };
+            var onFail = function(response) {
+                $log.log(response);
+                $scope.trackSessionActivity('CheckIn', 'FailedFetching Passport Setting', '', $scope.mode);
+                $scope.scanning.is_double_sided_required = true;// allows user to skip if this only if API says double_sided not required
+            };
+
+            var options = {
+                params: {
+                    'reservation_id': $stateParams.reservation_id
+                },
+                successCallBack: onSuccess,
+                failureCallBack: onFail
+            };
+
+            $scope.callAPI(zsCheckinSrv.checkIDType, options);
 
         }());
 
