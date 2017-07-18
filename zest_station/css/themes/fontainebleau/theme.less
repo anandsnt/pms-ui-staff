@@ -148,16 +148,24 @@
 	    	li {
 
 	    		&:not(.selected){
-	    			border-color: #ebebeb;
-
-		    		.add-on-content {
-		    			background: #ebebeb;
-		    		}
+	    			border-color: rgba(0,0,0,.10);
 	    		}
-	    		
+	    		&:first-child:last-child {
+     				border-color: #ebebeb;
+ 					border-color: @brandColor;
+ 				}
 	    	}
 	    }
 	}
+
+.add-on #options{
+	li>span{
+		color: rgba(42,39,39,.5);
+	}
+	.amount{
+		color: @brandColor;
+	}
+} 
 
 .entry {
     

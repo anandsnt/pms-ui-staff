@@ -369,6 +369,7 @@ sntZestStation.controller('zsCheckinAddonCtrl', [
 								}
 								addon.isLateCheckoutAddon = true;
 								addon.index = lcoAddon.index;
+								addon.time = lcoAddon.time;
 								lateCheckoutAddons.push(addon);
 							}
 						});

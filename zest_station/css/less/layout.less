@@ -185,6 +185,21 @@
                 #rounded > .round(150px);
                 .square(150px);
                 .show;
+                .icon-text {
+                    top: 0;
+                    left: 0;
+                    font-size: 36px;
+                    line-height: 70px;
+                    font-weight: 700;
+                    text-align: center;
+                    width: 100%;
+                    padding: 30px 0;
+                }
+
+                &.not-selected {
+                    color: @brandColor;
+                    background: fade(@black, 10);
+                }
 
                 .icons {
                     margin: 40px;
@@ -1435,6 +1450,9 @@
             }
             >table>tbody>tr>td>button.overlay{
                 opacity: .5;
+            }
+            &.large {
+                 width: 640px;
             }
         }
 

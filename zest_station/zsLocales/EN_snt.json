@@ -614,6 +614,9 @@
    "TAX_TEXT": "(+Tax)",
    "ROOM_UPSELL_FOOTER_1": "Showing",
    "ROOM_UPSELL_FOOTER_2": "Of",
-   "ROOM_UPSELL_FOOTER_3": "rooms"
+   "ROOM_UPSELL_FOOTER_3": "rooms",
+
+   "LATE_CHECKOUT_HEADING": "Late Checkout",
+   "LATE_CHECKOUT_INSTRUCTIONS": "Please select a Late Checkout offer from the list to extend your stay"
 
 }
