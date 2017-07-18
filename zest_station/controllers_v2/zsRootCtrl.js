@@ -1349,11 +1349,12 @@ sntZestStation.controller('zsRootCtrl', [
                     }
                 } else {
                     $scope.callBlurEventForIpad();
-                    /*
-                    $timeout(function() {
-                        document.getElementById(elementId).click(); 
-                    }, 500);
-                    */
+                    if ($scope.zestStationData.autoIpadKeyboardEnabled) {
+                        $timeout(function() {
+                            document.getElementById(elementId).click(); 
+                        }, 500);   
+                    }
+                    
 
                 }
             }, 300);
@@ -1832,13 +1833,32 @@ sntZestStation.controller('zsRootCtrl', [
             // reset number of keys to be made
             $scope.zestStationData.makeTotalKeys = 0;
             $scope.zestStationData.makingAdditionalKey = false;
+            $scope.zestStationData.autoIpadKeyboardEnabled = false;
+            $scope.zestStationData.appVersion = null;
+            if ($scope.isIpad) {
+                try {
+                    // check for the method getAppInfo via rvcardplugin, if it does not exist,
+                    // leave app_version null and autoIpadKeyboardEnabled to false
+                    $timeout(function() {
+                        
+                        cordova.exec(function(success) {
+                            if (success && success.AppVersion) {
+                                $scope.zestStationData.appVersion = success.AppVersion;
+                                // if the app version is accessible, then also the cordova configuration has been updated
+                                // as of 1.3.4.3, the config for auto-prompt keyboard is enabled
+                                $scope.zestStationData.autoIpadKeyboardEnabled = true;
+                            }
 
-            try {
-                if (typeof AppVersion !== typeof undefined && typeof AppVersion.version !== typeof undefined) {
-                    $scope.zestStationData.app_version = AppVersion.version ? AppVersion.version : 'UNK';
+                        }, function(error) {
+                            $scope.zestStationData.autoIpadKeyboardEnabled = false;
+
+                        }, 'RVCardPlugin', 'getAppInfo', []);
+
+                    }, 1500);
+
+                } catch (err) {
+                    $log.log(err);
                 }
-            } catch (err) {
-                $log.log(err);
             }
         }());
 

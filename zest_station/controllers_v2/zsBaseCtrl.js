@@ -374,7 +374,7 @@ function BaseCtrl($scope) {
                   // session_activity, ie.  [ {'cn': '234211', 'activity':'reservation found', 'time': Tue/12/12/12, } ] 
                     'session_activity': zs.sessionActivity,
 
-                  // 'ipad_version':zs.version ? zs.version : 'unkonwn-version', // include version here once cordova passes the info
+                    'ipad_version':zs.appVersion ? zs.appVersion : 'unkonwn-version', // include version here once cordova passes the info
 
                     'current_screen': at ? at : '',
                     'from_screen': from ? from : '',
