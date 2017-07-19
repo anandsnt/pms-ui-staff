@@ -459,6 +459,9 @@ sntZestStation.controller('zsAdminCtrl', [
         $scope.reload = function() {
             location.reload(true);
         };
+        $scope.toggleOOSHist = function() {
+            $scope.show_oos_history = !$scope.show_oos_history;
+        };
 
         $scope.showDebugModeOption = false;
         // initialize
@@ -470,6 +473,7 @@ sntZestStation.controller('zsAdminCtrl', [
             $scope.input = {
                 'inputTextValue': ''
             };
+            $scope.show_oos_history = false;
             $scope.userName = '';
             $scope.passWord = '';
             hideNavButtons();
