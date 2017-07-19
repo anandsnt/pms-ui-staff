@@ -5,8 +5,9 @@ angular.module('sntRover').controller('RVCheckInAuthCtrl', ['$scope', '$log', 'R
             $scope.callAPI(RVCCAuthorizationSrv.manualAuthorization, {
                 params: {
                     is_emv_request: $scope.ngDialogData.is_emv_request,
-                    amount: 1 || $scope.ngDialogData.amount || 0,
-                    payment_method_id: $scope.ngDialogData.payment_method_id
+                    amount: $scope.ngDialogData.amount || 0,
+                    payment_method_id: $scope.ngDialogData.payment_method_id,
+                    reservation_id: $scope.ngDialogData.reservation_id
                 },
                 successCallBack: function (response) {
                     $scope.authResponse = response;

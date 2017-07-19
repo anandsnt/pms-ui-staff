@@ -82,14 +82,22 @@ angular.module('sntRover').controller('RVReservationCheckInFlowCtrl',
              * @return {undefined}
              */
             var authorize = function (params) {
-                ngDialog.open({
-                    template: '/assets/partials/authorization/ccAuthorization.html',
-                    className: '',
-                    closeByDocument: false,
-                    scope: $scope,
-                    controller: 'RVCheckInAuthCtrl',
-                    data: angular.toJson(params)
+                _.extend(params, {
+                    reservation_id: $scope.reservationBillData.reservation_id
                 });
+
+                if (params.amount > 0) {
+                    ngDialog.open({
+                        template: '/assets/partials/authorization/ccAuthorization.html',
+                        className: '',
+                        closeByDocument: false,
+                        scope: $scope,
+                        controller: 'RVCheckInAuthCtrl',
+                        data: angular.toJson(params)
+                    });
+                } else {
+                    completeCheckin();
+                }
             };
 
 

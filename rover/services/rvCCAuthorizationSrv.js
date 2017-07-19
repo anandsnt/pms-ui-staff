@@ -16,6 +16,7 @@ angular.module('sntRover').service('RVCCAuthorizationSrv', ['$http', '$q', 'RVBa
             if (elapsedTimeinSeconds >= parseInt($rootScope.emvTimeout, 10)) {
                 var errors = ['Request timed out. Unable to process the transaction'];
 
+                $interval.cancel(promiseIntervalTimer);
                 deferred.reject(errors);
             } else {
                 $http.get(async_callback_url).then(function (response) {
@@ -34,7 +35,9 @@ angular.module('sntRover').service('RVCCAuthorizationSrv', ['$http', '$q', 'RVBa
                     }
                 }, function (response) {
                     if (!response.data) {
-                        pollToTerminal(deferred, async_callback_url);
+                        $timeout(function () {
+                            pollToTerminal(deferred, async_callback_url);
+                        }, 2000);
                     } else {
                         $interval.cancel(promiseIntervalTimer);
                         deferred.reject(response.data);
@@ -44,7 +47,7 @@ angular.module('sntRover').service('RVCCAuthorizationSrv', ['$http', '$q', 'RVBa
         };
 
         /**
-         * functio to get list bill specific credit card info for Authorization
+         * function to get list bill specific credit card info for Authorization
          * @param {Object} - contain reservation id
          * @return {Promise} - After resolving it will return the list cards.
          */
