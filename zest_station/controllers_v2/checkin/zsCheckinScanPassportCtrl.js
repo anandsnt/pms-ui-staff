@@ -509,8 +509,6 @@ sntZestStation.controller('zsCheckinScanPassportCtrl', [
 
 
         var savePassportToAPI = function(selectedPassportInfo) {
-            $log.info('save passport info: ', arguments);
-
             var options = {
                 params: {
                     'front_image_data': selectedPassportInfo.img_path,
@@ -526,7 +524,6 @@ sntZestStation.controller('zsCheckinScanPassportCtrl', [
                     'date_of_birth': selectedPassportInfo.dob
                 },
                 successCallBack: function() {
-                    $log.warn(':: Saved! ::');
                     validatePassportsView();
                     $scope.selectedPassport = false;
                     $scope.mode = 'ADMIN_VERIFY_PASSPORTS';   
@@ -537,6 +534,10 @@ sntZestStation.controller('zsCheckinScanPassportCtrl', [
                     $scope.$emit('GENERAL_ERROR');
                 }
             };
+            if (!$scope.acceptedPassport) {
+                // do not save any data when a passport is rejected
+                return;
+            }
 
             // Also save the back image data if there was front+back to the document scan
             // 
