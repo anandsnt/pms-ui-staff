@@ -1788,6 +1788,7 @@ sntZestStation.controller('zsRootCtrl', [
             $scope.showLanguagePopup = false;
             $scope.zestStationData.waitingForSwipe = false;
             $scope.zestStationData.session_conf = '';
+            $scope.$filter = $filter;
             // moved web socket creation code to fetchHotelSettings
             fetchHotelSettings();
             getKeyEncoderInfo();
