@@ -852,7 +852,7 @@ sntRover.controller('RVbillCardController',
 		var isPaymentTypeDirectBill = false,
 			currentActiveBill = $scope.reservationBillData.bills[$scope.currentActiveBill];
 
-		if (currentActiveBill.is_account_attached && $scope.hasPermissionToDirectBillPayment()) {
+		if (currentActiveBill.is_account_attached && (currentActiveBill.credit_card_details.payment_type === 'DB') && $scope.hasPermissionToDirectBillPayment()) {
 			isPaymentTypeDirectBill = true;
 		}
 

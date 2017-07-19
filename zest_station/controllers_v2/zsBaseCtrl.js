@@ -436,11 +436,13 @@ function BaseCtrl($scope) {
         // 
         var today = new Date();
         var currentTime = today.toString();
-
-        $scope.zestStationData.sessionOosReason.push({
+        var oosReason = {
             'reason': reason,
             'datetime': currentTime
-        });
+        };
+
+        $scope.zestStationData.sessionOosReason.push(oosReason);
+        $scope.zestStationData.lastOOSReason = $scope.$filter('translate')(oosReason.reason) ? $scope.$filter('translate')(oosReason.reason) : oosReason.reason;
         // at the next status-update, the kiosk will log the "$scope.zestStationData.sessionOosReason" array with all OOS reason events
     };
     

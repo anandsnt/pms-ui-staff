@@ -1540,13 +1540,14 @@ sntRover.controller('reservationDetailsController',
       */
      
 
-      var getUserPassportInfo = function(guestResponseData, findLastName, findFirstName) {
+      var getUserPassportInfo = function(guestResponseData, guest_id) {
+
      		for (var i in guestResponseData) {
-     			if (guestResponseData[i].last_name.toLowerCase() === findLastName.toLowerCase() && findFirstName.toLowerCase() === guestResponseData[i].first_name.toLowerCase()) {
+     			if (guestResponseData[i].guest_id === guest_id) {
      				return guestResponseData[i];
      			}
-     		} // else for debugging...
-     		return guestResponseData[0];
+     		} 
+     		return null;
       }
 
 
@@ -1556,45 +1557,44 @@ sntRover.controller('reservationDetailsController',
      	// TODO: link with proper HTML once complete from design team
      	//       fetch guest id data with front+back images from API using (guest id / reservation id for primary guest?)
 
- 		$scope.$emit('hideLoader');
+        $scope.$emit('hideLoader');
  		var responseData = $scope.guestIdReponseData,
- 		 	findFirstName, findLastName;
+ 		 	guest_id;
 
- 		if (isPrimaryGuest) {// primary guest
- 			findFirstName = $scope.data.guest_details.first_name;
- 			findLastName = $scope.data.guest_details.last_name;
+ 		if (isPrimaryGuest) {
+ 			guest_id = $scope.reservationParentData.guest.id;
  		} else {
- 			findFirstName = guestData.first_name;
- 			findLastName = guestData.last_name;
+ 			guest_id = guestData.id;
  		}
 
- 		var guest = getUserPassportInfo(responseData, findLastName, findFirstName);
+ 		var guest = getUserPassportInfo(responseData, guest_id);
+ 		if (guest !== null) {
+	     	$scope.guestIdData = guestData;
+	     	$scope.guestIdData.isPrimaryGuest = isPrimaryGuest;
 
-     	$scope.guestIdData = guestData;
-     	$scope.guestIdData.isPrimaryGuest = isPrimaryGuest;
+	     	// Set data FROM GuestID (ie. passport)
+	     	$scope.guestIdData.first_name = guest.first_name;
+	     	$scope.guestIdData.last_name = guest.last_name;
 
-     	// Set data FROM GuestID (ie. passport)
-     	$scope.guestIdData.first_name = guest.first_name;
-     	$scope.guestIdData.last_name = guest.last_name;
+	     	$scope.guestIdData.idType = guest.identityType;
+	     	$scope.guestIdData.dob = guest.date_of_birth;
 
-     	$scope.guestIdData.idType = guest.identityType;
-     	$scope.guestIdData.dob = guest.dob;
+	     	$scope.guestIdData.twoSidedDoc = guest.front_image_data && guest.back_image_data;
+	     	$scope.guestIdData.nationality = guest.nationality;
 
-     	$scope.guestIdData.twoSidedDoc = guest.front_image_data && guest.back_image_data;
-     	$scope.guestIdData.nationality = guest.nationality;
+	     	$scope.guestIdData.docID = guest.document_number;
+	     	$scope.guestIdData.docExpiry = guest.expiration_date;
+	     	$scope.guestIdData.showingIdFront = true;
+	 		$scope.guestIdData.imgFrontSrc = guest.front_image_data;
+	 		$scope.guestIdData.imgBackSrc = guest.back_image_data;
+	 		// END SETTING DATA FROM GUEST ID
 
-     	$scope.guestIdData.docID = guest.document_number;
-     	$scope.guestIdData.docExpiry = guest.document_expiry;
-     	$scope.guestIdData.showingIdFront = true;
- 		$scope.guestIdData.imgFrontSrc = guest.front_image_data;
- 		$scope.guestIdData.imgBackSrc = guest.back_image_data;
- 		// END SETTING DATA FROM GUEST ID
-
-     	ngDialog.open({
-			template: '/assets/partials/guestId/guestId.html',
-			className: 'guest-id-dialog',
-			scope: $scope
-		});
+	     	ngDialog.open({
+				template: '/assets/partials/guestId/guestId.html',
+				className: 'guest-id-dialog',
+				scope: $scope
+			});
+ 		}
 
      };
 
