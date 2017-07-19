@@ -359,6 +359,10 @@ sntZestStation.controller('zsAdminCtrl', [
          **/
         $scope.saveSettings = function(runDemoClicked) {
             var getParams = function() {
+                // CICO-42233
+                if (!$scope.zestStationData.idle_timer.prompt) {
+                    $scope.zestStationData.idle_timer.prompt = 0;
+                }
                 var params = {
                     'kiosk': {
                         'idle_timer': $scope.zestStationData.idle_timer,
