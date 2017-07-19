@@ -1,16 +1,12 @@
 <!-- Passport scan start | scan primary guest  -->
 <section id="main" class="centered" role="main" ng-hide="mode !== 'SCAN_PASSPORT'" click-touch='resetTime()'>
     <div id="content">
-        
-
-
         <h1>
             <text data-ng-bind-html="getTagValue('GID_SCAN_HEADER')" editable-text="GID_SCAN_HEADER"></text>
         </h1>
         <h2 ng-hide='selectedPassport'>
             <text data-ng-bind-html="getTagValue('GID_SCAN_SUB_HEADER')" editable-text="GID_SCAN_SUB_HEADER"></text>
         </h2>
-
         <h2 ng-show='selectedPassport'>
             <text data-ng-bind-html="getTagValue('GID_SCAN_SUB_HEADER_FIRST')" editable-text="GID_SCAN_SUB_HEADER_FIRST"></text>
 
@@ -18,27 +14,52 @@
 
             <text data-ng-bind-html="getTagValue('GID_SCAN_SUB_HEADER_SECOND')" editable-text="GID_SCAN_SUB_HEADER_SECOND"></text>
         </h2>
-
         <div class='uploaded-key-image' id="keys" ng-show="scanpassport_image_uploaded">
             <img src="{{icons.url.scanpassport}}">
         </div>
-
     </div>
-
     <div>
         <div id="actions" class="footer-centered">
-            
             <button type="button" class="button next" touch-press="scan()">
                 <text data-ng-bind-html="getTagValue('GID_SCAN_BUTTON')" editable-text="GID_SCAN_BUTTON"></text>
             </button>
-
         </div>
     </div>
-
-    <span ng-include="'/assets/partials_v2/zsTabletFooter.html'" click-touch='resetTime()' ></span>
+    <span ng-include="'/assets/partials_v2/zsTabletFooter.html'" click-touch='resetTime()'></span>
 </section>
 
+<!-- Passport scan back  -->
+<section id="main" class="centered" role="main" ng-hide="mode !== 'SCAN_BACK'" click-touch='resetTime()'>
+    <div id="content">
+        <h1>
+            <text data-ng-bind-html="getTagValue('GID_SCAN_BACK_HEADER')" editable-text="GID_SCAN_BACK_HEADER"></text>
+        </h1>
+        <h2 ng-hide='selectedPassport'>
+            <text data-ng-bind-html="getTagValue('GID_SCAN_BACK_SUB_HEADER')" editable-text="GID_SCAN_BACK_SUB_HEADER"></text>
+        </h2>
+        <h2 ng-show='selectedPassport'>
+            <text data-ng-bind-html="getTagValue('GID_SCAN_BACK_SUB_HEADER_FIRST')" editable-text="GID_SCAN_BACK_SUB_HEADER_FIRST"></text>
 
+            {{selectedPassportInfo.first_name}}
+
+            <text data-ng-bind-html="getTagValue('GID_SCAN_BACK_SUB_HEADER_SECOND')" editable-text="GID_SCAN_BACK_SUB_HEADER_SECOND"></text>
+        </h2>
+        <div class='uploaded-key-image' id="keys" ng-show="scanpassport_image_uploaded">
+            <img src="{{icons.url.scanpassport}}">
+        </div>
+    </div>
+    <div>
+        <div id="actions" class="footer-centered">
+            <button type="button" class="button next" touch-press="scanBack()">
+                <text data-ng-bind-html="getTagValue('GID_SCAN_BUTTON')" editable-text="GID_SCAN_BUTTON"></text>
+            </button>
+            <button type="button" class="button next skipscan" touch-press="scanBack('skip')" ng-hide='scanning.is_double_sided_required'>
+                <text data-ng-bind-html="getTagValue('GID_SKIP_SCAN_BUTTON')" editable-text="GID_SKIP_SCAN_BUTTON"></text>
+            </button>
+        </div>
+    </div>
+    <span ng-include="'/assets/partials_v2/zsTabletFooter.html'" click-touch='resetTime()'></span>
+</section>
 
 
 <!-- Passport scanning in progress screen  -->
@@ -47,10 +68,8 @@
         <h1>
             <text data-ng-bind-html="getTagValue('GID_SCANNING_IN_PROGRESS')" editable-text="GID_SCANNING_IN_PROGRESS"></text>
         </h1>
-
     </div>
-
-    <span ng-include="'/assets/partials_v2/zsTabletFooter.html'" click-touch='resetTime()' ></span>
+    <span ng-include="'/assets/partials_v2/zsTabletFooter.html'" click-touch='resetTime()'></span>
 </section>
 
 <!-- Passport scanning failed, re-scan or speak to staff  -->
@@ -62,7 +81,6 @@
         <h2>
             <text data-ng-bind-html="getTagValue('GID_SCAN_FAILURE_SUB_HEADER')" editable-text="GID_SCAN_FAILURE_SUB_HEADER"></text>
         </h2>
-
         <nav id="options" role="nav">
             <!-- Early Checkin Purchase Nav -->
             <ul role="menu">
@@ -70,7 +88,6 @@
                     <button type="button" class="button option" click-touch="reScanPassport()">
                         <div ng-include="icons.url.creditcard"></div>
                     </button>
-
                     <text data-ng-bind-html="getTagValue('TRY_AGAIN')" editable-text="TRY_AGAIN"></text>
                 </li>
                 <li class="break">
@@ -82,7 +99,6 @@
                     <button type="button" class="button option" click-touch="viewResults()">
                         <div ng-include="icons.url.keyboard"></div>
                     </button>
-
                     <text data-ng-bind-html="getTagValue('GID_SCAN_FAILURE_VIEW_RESULTS')" editable-text="GID_SCAN_FAILURE_VIEW_RESULTS"></text>
                 </li>
                 <li ng-show='selectedPassport' class="break">
@@ -103,86 +119,59 @@
                 </li>
             </ul>
         </nav>
-
     </div>
-
-    <span ng-include="'/assets/partials_v2/zsTabletFooter.html'" click-touch='resetTime()' ></span>
+    <span ng-include="'/assets/partials_v2/zsTabletFooter.html'" click-touch='resetTime()'></span>
 </section>
-
-
-
-
 
 <!-- Scan Results | Add Guest screen  -->
 <section id="main" class="centered test add_remove_main" role="main" click-touch='resetTime()' ng-show="mode == 'SCAN_RESULTS' || mode == 'ADMIN_VERIFY_PASSPORTS'">
     <div id="content" class='add-guest-mode-content' ng-show="!AddGuestMode">
-
         <h1 ng-hide="mode !== 'SCAN_RESULTS'">
             <text data-ng-bind-html="getTagValue('GID_SCAN_RESULTS_HEADER')" editable-text="GID_SCAN_RESULTS_HEADER"></text>
         </h1>
-
         <h2 ng-hide="mode !== 'SCAN_RESULTS'">
             <text data-ng-bind-html="getTagValue('GID_SCAN_RESULTS_SUB_HEADER')" editable-text="GID_SCAN_RESULTS_SUB_HEADER"></text>
         </h2>
-
-
         <h1 ng-hide="mode !== 'ADMIN_VERIFY_PASSPORTS'">
             <text data-ng-bind-html="getTagValue('GID_ADMIN_VERIFY_HEADER')" editable-text="GID_ADMIN_VERIFY_HEADER"></text>
         </h1>
-
         <h2 ng-hide="mode !== 'ADMIN_VERIFY_PASSPORTS'">
             <text data-ng-bind-html="getTagValue('GID_ADMIN_VERIFY_SUB_HEADER')" editable-text="GID_ADMIN_VERIFY_SUB_HEADER"></text>
         </h2>
-
         <ul id="selection" class="editable">
             <li ng-repeat='guest in selectedReservation.guest_details track by $index' click-touch='selectGuest(guest)'>
-                
                 <span class="details" ng-class='{"passport-details":!showRemoveButton}'>
 
                     <span ng-hide="mode !== 'SCAN_RESULTS'" class="passport-scan-status" 
                           ng-class='{"button-margin":showRemoveButton}'>{{guest.passport_scan_status}}
                     </span>
-
-                     <span ng-hide="mode !== 'ADMIN_VERIFY_PASSPORTS'" class="passport-scan-status" 
-                          ng-class='{"button-margin":showRemoveButton}'>{{guest.passport_reviewed_status}}
-                    </span>
-
-
-                    {{guest.last_name}}, {{guest.first_name}} 
+                <span ng-hide="mode !== 'ADMIN_VERIFY_PASSPORTS'" class="passport-scan-status" ng-class='{"button-margin":showRemoveButton}'>{{guest.passport_reviewed_status}}
+                    </span> {{guest.last_name}}, {{guest.first_name}}
                 </span>
-                
-
                 <button type="button" class="button remove-btn" ng-show='showRemoveButton' click-touch='removeGuest(guest.id)' ng-class='{"overlay grey": selectedReservation.guest_details.length <= 1}'>
                     <text data-ng-bind-html="getTagValue('REMOVE_BTN')" editable-text="REMOVE_BTN"></text>
                 </button>
             </li>
-
         </ul>
     </div>
 
-
     <!-- TODO: support Adding guest to reservation, then refresh guest list -->
     <div id="content" class="input-field-contents" ng-show="AddGuestMode">
-
         <h1 ng-show='mode === "ENTER_FIRST"'>
             <text data-ng-bind-html="getTagValue('ENTER_FIRST')" editable-text="ENTER_FIRST"></text>
         </h1>
         <h3 ng-show='mode === "ENTER_FIRST"'>
             <text data-ng-bind-html="getTagValue('ENTER_FIRST_SUB')" editable-text="ENTER_FIRST_SUB"></text>
         </h3>
-
         <h1 ng-show='mode === "ENTER_LAST"'>
             <text data-ng-bind-html="getTagValue('ENTER_LAST')" editable-text="ENTER_LAST"></text>
         </h1>
         <h3 ng-show='mode === "ENTER_LAST"'>
             <text data-ng-bind-html="getTagValue('ENTER_LAST_SUB')" editable-text="ENTER_LAST_SUB"></text>
         </h3>
-
         <form class="form" click-touch='resetTime()'>
             <div class="entry input">
-                <input type="{{inputType}}" ng-focus="showOnScreenKeyboard('add-guest-name')" click-touch="showOnScreenKeyboard('add-guest-name')"
-                       class="start-focused" ng-keydown="resetTime()" ng-model='guest.Name' placeholder="{{inputTextPlaceholder}}"
-                       enter-press="firstNameEntered()" value="" id="add-guest-name" touch-press />
+                <input type="{{inputType}}" ng-focus="showOnScreenKeyboard('add-guest-name')" click-touch="showOnScreenKeyboard('add-guest-name')" class="start-focused" ng-keydown="resetTime()" ng-model='guest.Name' placeholder="{{inputTextPlaceholder}}" enter-press="firstNameEntered()" value="" id="add-guest-name" touch-press />
             </div>
             <div class="entry action">
                 <button type="button" class="button" touch-press='NameEntered()' ng-class="{'overlay': input.inputTextValue.length < 1}">
@@ -191,25 +180,18 @@
             </div>
         </form>
     </div>
-
-
-
-
     <div>
-        <div id="actions" class="add-guests-footer" >
-            <button type="button" class="button prev" click-touch="addAGuest(); resetTime();">
+        <div id="actions" class="add-guests-footer">
+            <button type="button" class="button prev add-guest-passport" click-touch="addAGuest(); resetTime();">
                 <text data-ng-bind-html="getTagValue('ADD_BTN')" editable-text="ADD_BTN"></text>
             </button>
-
             <button ng-show="(allPassportReady && mode == 'SCAN_RESULTS') || (allPassportReviewed && mode == 'ADMIN_VERIFY_PASSPORTS')" type="button" class="button next" click-touch="goToNext(); resetTime();">
                 <text data-ng-bind-html="getTagValue('DONE_BTN')" editable-text="DONE_BTN"></text>
             </button>
         </div>
     </div>
-
-    <span ng-include="'/assets/partials_v2/zsTabletFooter.html'" click-touch='resetTime()' ></span>
+    <span ng-include="'/assets/partials_v2/zsTabletFooter.html'" click-touch='resetTime()'></span>
 </section>
-
 
 <!-- Wait for staff assistance to Verify IDs  -->
 <section id="main" class="centered" role="main" ng-hide="mode !== 'WAIT_FOR_STAFF'" click-touch='resetTime()'>
@@ -217,38 +199,31 @@
         <h1>
             <text data-ng-bind-html="getTagValue('GID_WAIT_HEADER')" editable-text="GID_WAIT_HEADER"></text>
         </h1>
-         <h2>
+        <h2>
             <text data-ng-bind-html="getTagValue('GID_WAIT_SUB')" editable-text="GID_WAIT_SUB"></text>
         </h2>
     </div>
-
     <div>
         <button class='button blue invis bottom-left' click-touch="adminVerify()">
-                Admin
+            Admin
         </button>
     </div>
 </section>
-
-
-
-<section id="main" class="centered test" role="main" 
-         ng-show=" mode ===  'ADMIN_LOGIN_ID' || mode === 'ADMIN_LOGIN_PWD'">
-
+<section id="main" class="centered test" role="main" ng-show=" mode ===  'ADMIN_LOGIN_ID' || mode === 'ADMIN_LOGIN_PWD'">
     <div id="content" class="input-field-contents">
         <h1>
             <text data-ng-bind-html="getTagValue('GID_ADMIN_LOGIN_HEADER')" editable-text="GID_ADMIN_LOGIN_HEADER"></text>
         </h1>
-
         <h2 ng-hide="adminLoginError || mode ===  'ADMIN_LOGIN_PWD'">
             <text data-ng-bind-html="getTagValue('GID_ADMIN_ID_SUB')" editable-text="GID_ADMIN_ID_SUB"></text>
         </h2>
         <h2 ng-hide="adminLoginError || mode ===  'ADMIN_LOGIN_ID'">
             <text data-ng-bind-html="getTagValue('GID_ADMIN_PWD_SUB')" editable-text="GID_ADMIN_PWD_SUB"></text>
         </h2>
-
         <h2 ng-show='adminLoginError'>
             <text data-ng-bind-html="getTagValue('ADMIN_LOGIN_ERROR')" editable-text="ADMIN_LOGIN_ERROR"></text>
         </h2>
+
         <!-- user name -->
         <form method="post" class="form" ng-show="mode=='ADMIN_LOGIN_ID'">
             <div class="entry input">
@@ -256,10 +231,11 @@
             </div>
             <div class="entry action">
                 <button type="button" class="button" touch-press='goToNext()' ng-class="{'overlay': input.inputTextValue.length < 1}">
-                <text data-ng-bind-html="getTagValue('NEXT_BTN')" editable-text="NEXT_BTN"></text>
+                    <text data-ng-bind-html="getTagValue('NEXT_BTN')" editable-text="NEXT_BTN"></text>
                 </button>
             </div>
         </form>
+
         <!-- password -->
         <form method="post" class="form" ng-show="mode=='ADMIN_LOGIN_PWD'">
             <div class="entry input">
@@ -267,49 +243,155 @@
             </div>
             <div class="entry action">
                 <button type="button" class="button" touch-press='goToNext()' ng-class="{'overlay': input.inputTextValue.length < 1}">
-                <text data-ng-bind-html="getTagValue('NEXT_BTN')" editable-text="NEXT_BTN"></text>
+                    <text data-ng-bind-html="getTagValue('NEXT_BTN')" editable-text="NEXT_BTN"></text>
                 </button>
             </div>
         </form>
         <div class="entry action" ng-show='adminLoginError'>
             <button type="button" class="button centered-exit" touch-press='exitAdminLogin(); resetTime()'>
-            <text data-ng-bind-html="getTagValue('EXIT_BTN')" editable-text="EXIT_BTN"></text>
+                <text data-ng-bind-html="getTagValue('EXIT_BTN')" editable-text="EXIT_BTN"></text>
             </button>
         </div>
     </div>
-    <span ng-include="'/assets/partials_v2/zsTabletFooter.html'" click-touch='resetTime()'></span>
+    <!--span ng-include="'/assets/partials_v2/zsTabletFooter.html'" click-touch='resetTime()'></span--><!-- UI elements too close to this button, dont include here so guest / staff wont hit this by accident-->
 </section>
-
-
-
-
 
 <!-- Wait for staff assistance to Verify IDs  -->
-<section id="main" class="centered" role="main" ng-hide="mode !== 'ADMIN_VERIFY_PASSPORT_VIEW'" click-touch='resetTime()'>
-    <div id="content">
-        <h1>
-            <text data-ng-bind-html="getTagValue('GID_VERIFY_PASSPORT')" editable-text="GID_VERIFY_PASSPORT"></text>
-        </h1>
-         <h2>
-            <text data-ng-bind-html="getTagValue('GID_VERIFY_PASSPORT_SUB')" editable-text="GID_VERIFY_PASSPORT_SUB"></text>
-        </h2>
-    </div>
+<section id="main" class="guest-id-verify" role="main" ng-hide="mode !== 'ADMIN_VERIFY_PASSPORT_VIEW'" >
+        
 
+        <div id="flex-holder">
+            <div id="textual" class="review-bill scrollable" ng-iscroll="passport-validate">
+                <div class="wrapper">
+                    <div id="bill">
+                        <h1>
+                            <text data-ng-bind-html="getTagValue('GID_VERIFY_PASSPORT')" editable-text="GID_VERIFY_PASSPORT"></text>
+                        </h1>
+                        <h2>
+                            <text data-ng-bind-html="getTagValue('GID_VERIFY_PASSPORT_SUB')" editable-text="GID_VERIFY_PASSPORT_SUB"></text>
+                        </h2>
+                    
+                        <div class="entry with-label bold-label">
+                            <label>
+                                <text data-ng-bind-html="getTagValue('GID_REVIEW_RES_DETAILS')" editable-text="GID_REVIEW_RES_DETAILS"></text>
+                            </label>
+                        </div>
+
+                        <div class="entry with-label">
+                            <label>
+                                <text data-ng-bind-html="getTagValue('GID_REVIEW_LAST_NAME')" editable-text="GID_REVIEW_LAST_NAME"></text>
+                            </label>
+
+                            <input type="text" value='selectedPassportInfo.last_name' ng-model='selectedPassportInfo.last_name' class='disabled'/>
+                        </div>
+
+                        <div class="entry with-label">
+                            <label>
+                                <text data-ng-bind-html="getTagValue('GID_REVIEW_FIRST_NAME')" editable-text="GID_REVIEW_FIRST_NAME"></text>
+                            </label>
+                            <input type="text" value='selectedPassportInfo.first_name' ng-model='selectedPassportInfo.first_name' class='disabled'/>
+                        </div>
+
+
+                        <div class='ng-hide' class="entry with-label">
+                            <label>
+                                <text data-ng-bind-html="getTagValue('GID_REVIEW_IMAGE')" editable-text="GID_REVIEW_IMAGE"></text>
+                            </label>
+                            <button type="button" class="button rotate-button" click-touch="rotateImage()">
+                                <text data-ng-bind-html="getTagValue('GID_REVIEW_ROTATE')" editable-text="GID_REVIEW_ROTATE"></text>
+                            </button>
+                            <button type="button" class="button rotate-button" click-touch="rotateBackImage()">
+                                <text data-ng-bind-html="getTagValue('GID_REVIEW_ROTATE_BACK')" editable-text="GID_REVIEW_ROTATE_BACK"></text>
+                            </button>
+                        </div>
+
+                        <!-- Passport / Guest ID Scan preview -->
+                        <img id='image-preview' class='gid-image-preview' 
+                                data-ng-src="data:image/png;base64,{{selectedPassportInfo.img_path}}" 
+                                src-error='{{gidImgErrorSrcPath}}' 
+                                ng-class='{"rotated":imageRotated}'
+                                click-touch="rotateImage()"
+                                >
+
+                        <img id='image-preview-back' ng-show='selectedPassportInfo.back_img_path'  class='gid-image-preview' 
+                                data-ng-src="data:image/png;base64,{{selectedPassportInfo.back_img_path}}" 
+                                src-error='{{gidImgErrorSrcPath}}' 
+                                ng-class='{"rotated":backImageRotated}'
+                                click-touch="rotateBackImage()"
+                                >
+                                
+                        <!--// Passport / Guest ID Scan preview -->
+
+                        <div class="entry with-label bold-label">
+                            <label>
+                                <text data-ng-bind-html="getTagValue('GID_REVIEW_PASS_DETAILS')" editable-text="GID_REVIEW_PASS_DETAILS"></text>
+                            </label>
+                        </div>
+
+                        <div class="entry with-label">
+                            <label>
+                                <text data-ng-bind-html="getTagValue('GID_REVIEW_FULL_NAME')" editable-text="GID_REVIEW_FULL_NAME"></text>
+                            </label>
+                            <input type="text" value='selectedPassportInfo.full_name' ng-model='selectedPassportInfo.full_name' class='disabled'/>
+                        </div>
+
+                        <div class="entry with-label">
+                            <label>
+                                <text data-ng-bind-html="getTagValue('GID_REVIEW_DOB')" editable-text="GID_REVIEW_DOB"></text>
+                            </label>
+
+                            <input type="text" value='selectedPassportInfo.dob' ng-model='selectedPassportInfo.dob' class='disabled'/>
+                        </div>
+
+                        <div class="entry with-label">
+                            <label>
+                                <text data-ng-bind-html="getTagValue('GID_REVIEW_DOC_NUMBER')" editable-text="GID_REVIEW_DOC_NUMBER"></text>
+                            </label>
+
+                            <input type="text" value='selectedPassportInfo.docID' ng-model='selectedPassportInfo.docID' class='disabled'/>
+                        </div>
+
+                        <div class="entry with-label">
+                            <label>
+                                <text data-ng-bind-html="getTagValue('GID_REVIEW_EXPIRY')" editable-text="GID_REVIEW_EXPIRY"></text>
+                            </label>
+
+                            <input type="text" value='selectedPassportInfo.docExpiry' ng-model='selectedPassportInfo.docExpiry' class='disabled'/>
+                        </div>
+
+                        <div class="entry with-label">
+                            <label>
+                                <text data-ng-bind-html="getTagValue('GID_REVIEW_NATIONALITY')" editable-text="GID_REVIEW_NATIONALITY"></text>
+                            </label>
+
+                            <input type="text" value='selectedPassportInfo.nationality' ng-model='selectedPassportInfo.nationality' class='disabled'/>
+                        </div>
+
+                        <div ng-show='selectedPassportInfo.city' class="entry with-label">
+                            <label>
+                                <text data-ng-bind-html="getTagValue('GID_REVIEW_CITY')" editable-text="GID_REVIEW_CITY"></text>
+                            </label>
+
+                            <input type="text" value='selectedPassportInfo.city' ng-model='selectedPassportInfo.city' class='disabled'/>
+                        </div>
+
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id='actions' class="align-center guest-id-actions">
+            <button type="button" class="button" touch-press='rejectPassport(); resetTime()'>
+                <text data-ng-bind-html="getTagValue('GID_VERIFY_PASSPORT_REJECT')" editable-text="GID_VERIFY_PASSPORT_REJECT"></text>
+            </button>
+
+            <button type="button" class="button" touch-press='acceptPassport(); resetTime()'>
+                <text data-ng-bind-html="getTagValue('GID_VERIFY_PASSPORT_ACCEPT')" editable-text="GID_VERIFY_PASSPORT_ACCEPT"></text>
+            </button>
+        </div>
+
+
+
+    <span ng-include="'/assets/partials_v2/zsTabletFooter.html'" click-touch='resetTime()'></span>
 </section>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

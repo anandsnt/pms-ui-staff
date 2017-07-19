@@ -536,11 +536,18 @@
    "ADDON_REMOVAL_ERROR_MESSAGE": "Unable To remove this from your reservation",
 
    "GID_SCAN_HEADER": "Scan Passport",
+   "GID_SCAN_PASSPORT_SUCCESS":"Success",
+   "GID_SCAN_PASSPORT_TRY_AGAIN":"Try Again",
    "GID_SCAN_SUB_HEADER": "Place your passport on the scanner and select 'Scan'",
    "GID_SCAN_BUTTON": "Scan",
+   "GID_SKIP_SCAN_BUTTON": "Skip",
 
-    "GID_SCANNING_IN_PROGRESS": "Scanning in progress",
+   "GID_SCAN_BACK_HEADER": "Scan ID Back",
+   "GID_SCAN_BACK_SUB_HEADER": "Please turn the ID over and scan the other side",
+   "GID_SCAN_BACK_SUB_HEADER_FIRST": "Place",
+   "GID_SCAN_BACK_SUB_HEADER_SECOND": "'s Passport on the scanner and press 'Scan'",
 
+   "GID_SCANNING_IN_PROGRESS": "Scanning in progress",
 
    "GID_SCAN_SUB_HEADER_FIRST": "Place",
    "GID_SCAN_SUB_HEADER_SECOND": "'s Passport on the scanner and press 'Scan'",
@@ -558,12 +565,16 @@
 
 
 
-   "GID_STAFF_REVIEW_SUCCESS": "Accepted",
+   "GID_STAFF_REVIEW_ACCEPTED": "Accepted",
+   "GID_STAFF_REVIEW_REJECTED": "Rejected",
    "GID_STAFF_REVIEW_NOT_STARTED": "Not Reviewed",
 
 
-   "GID_VERIFY_PASSPORT_SUB": "Reservation Details",
+   "GID_VERIFY_PASSPORT_SUB": "",
    "GID_VERIFY_PASSPORT": "Verify Passport",
+
+   "GID_VERIFY_PASSPORT_ACCEPT": "Accept",
+   "GID_VERIFY_PASSPORT_REJECT": "Reject",
 
    "GID_ADMIN_PWD_SUB": "Enter your password",
    "GID_ADMIN_ID_SUB": "Enter your login ID",
@@ -576,6 +587,26 @@
    "GID_ADMIN_VERIFY_HEADER": "Verify Passport",
    "GID_ADMIN_VERIFY_SUB_HEADER": "Reservation Details",
 
+   "GID_REVIEW_RES_DETAILS": "Reservation Details",
+
+   "GID_REVIEW_ROTATE": "Rotate Front",
+   "GID_REVIEW_ROTATE_BACK": "Rotate Back",
+   "GID_REVIEW_IMAGE": "Image",
+
+   "GID_REVIEW_LAST_NAME": "Last Name",
+   "GID_REVIEW_FIRST_NAME": "First Name",
+   "GID_REVIEW_PASS_DETAILS": "Passport Details",
+
+   "GID_REVIEW_FULL_NAME": "Full Name",
+
+   "GID_REVIEW_DOB": "Date of Birth",
+   "GID_REVIEW_DOC_NUMBER": "Document Number",
+
+   "GID_REVIEW_EXPIRY": "Expiry Date",
+   "GID_REVIEW_NATIONALITY": "Nationality",
+
+   "GID_REVIEW_CITY": "City",
+   
 
    "GATE_ERROR_CLOSE": "Ok",
 

@@ -17,9 +17,10 @@
             	<!-- List for guests -->
                  <li class="entity guest" ng-show="attachedEntities.hasOwnProperty('primary_guest_details')" ng-click="selectAttachedEntity(-1,'GUEST')">
                   <!-- image -->
-                  
+
                   <figure class="guest-image" >
-					<img src="{{attachedEntities.primary_guest_details.avatar}}" alt="" />
+					<img src="{{attachedEntities.primary_guest_details.avatar}}" alt="" ng-if="attachedEntities.primary_guest_details.avatar"/>
+          <span class="icons icon-{{getGuestTypeIconClass(attachedEntities.primary_guest_details)}}" ng-if="!attachedEntities.primary_guest_details.avatar"></span>
 					</figure>
 
                   <!-- heading -->
@@ -31,10 +32,11 @@
                  <!-- List for accompany guests -->
                  <li class="entity accompany" ng-repeat="entity in attachedEntities.accompanying_guest_details" ng-click="selectAttachedEntity($index,'ACCOMPANY_GUEST')">
                   <!-- image -->
-                  
+
                   <figure class="guest-image accompany" >
-							<img ng-src="{{entity.primary_avatar}}" alt="" />
-							<img ng-src="{{entity.avatar}}" alt="" />
+							<img ng-src="{{entity.primary_avatar}}" alt="" ng-if="entity.primary_avatar"/>
+							<img ng-src="{{entity.avatar}}" alt="" ng-if="entity.avatar"/>
+              <span class="icons icon-{{getGuestTypeIconClass(entity)}}" ng-if="!entity.primary_avatar && !entity.avatar"></span>
 					</figure>
 
 					<div class="data">
@@ -65,7 +67,7 @@
                   		<figure class="guest-image" ng-if="escapeNull(attachedEntities.travel_agent.logo)!=''">
 	                        <img ng-src="{{attachedEntities.travel_agent.logo}}" alt="">
 	                	</figure>
-                  		<figure class="guest-image" ng-if="escapeNull(attachedEntities.travel_agent.logo)==''">		              
+                  		<figure class="guest-image" ng-if="escapeNull(attachedEntities.travel_agent.logo)==''">
 		                    <div class="guest-image icons icon-travel-agent" ></div>
 		                </figure>
 
@@ -103,7 +105,7 @@
             </ul>
          </div>
          <!-- Search results, show instead of attached entities when searching -->
-         
+
         <ul id="filter-entities" class="modal-options" ng-show="textInQueryBox!=''">
 			<li click-touch="toggleClicked(true)" ng-class="{'active':isReservationActive}" translate>
 				RESERVATIONS
@@ -148,20 +150,15 @@
 				</div>
 			</div>
 		</div>
-		
+
 		<div id="entities" class="entities-list scrollable" ng-show="textInQueryBox!='' && isReservationActive" ng-iscroll='res_search_scroller' ng-iscroll-delay="100" style="height:57%;bottom: 0px; left:0px; width: 100%;overflow:hidden;">
 			<ul class="wrapper">
 				<div class="entity" ng-repeat="row in results.reservations" ng-show="row.is_row_visible==true" ng-hide="results.reservations.length == 0 || row.images.length >1" ng-class="{'guest':row.images.length <= 1,'accompany':row.images.length >1}" ng-click="selectEntity($index,'RESERVATIONS')">
-							
+
 					<!-- image -->
-					<figure class="guest-image" ng-show="row.images.length!=0 " ng-class="{'accompany': row.images.length >1}">	
-						<img ng-repeat="image in row.images" 
-						ng-src="{{image.guest_image}}" 
-
-						ng-class="{'first-image':(row.images.length >1 && image.is_primary==true),
-
-						'second-image':(row.images.length >1 && image.is_primary==false)}">
-
+					<figure class="guest-image" ng-show="row.images.length!=0 " ng-class="{'accompany': row.images.length >1}">
+            <img ng-src="{{row.images[0].guest_image}}" alt="" ng-if="row.images[0].guest_image">
+            <span class="icons icon-{{getGuestTypeIconClass(row.images[0])}}" ng-if="!row.images[0].guest_image"></span>
 						<span class="vip" ng-show="row.vip==true" translate>VIP</span>
 					</figure>
 
@@ -170,10 +167,10 @@
 						ng-class="{'grey' : row.images.length >1}"> </h2>
 						<span class="confirmation" ng-bind-html="'#' + row.confirmation | highlight:textInQueryBox:false" ></span>
 						<span class="room">{{'ROOM_LABEL' | translate}} <strong ng-bind-html="row.room | highlight:textInQueryBox:false"></strong></span>
-					</div>	
-					
+					</div>
+
 					<span class="guest-status small-icon {{getGuestStatusMapped(row.reservation_status, row.is_opted_late_checkout)}}" ></span>
-						
+
 				</div>
 			</ul>
 			<!-- No results / no content when searched query not found-->
@@ -183,12 +180,12 @@
 					<strong class="h1" translate>NO_MATCH_FOUND_MSG</strong>
 				</div>
 			</div>
-			
+
 		</div>
 		<button ng-show="textInQueryBox!=''" type="button" id="cancel-entity-search" class="button blank" ng-click="clearResults()" translate>CANCEL_SEARCH</button>
-		
+
       </div>
-      
+
    </fieldset>
    <fieldset class="content-right">
       <div class="no-content" >
@@ -197,6 +194,6 @@
             <span class="h2" translate>SELECT_ENTITY_TO_CONFIGURE</span>
          </div>
       </div>
-        
+
    </fieldset>
 </div>

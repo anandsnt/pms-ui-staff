@@ -31,6 +31,9 @@ this.webSocketOperations = function(socketOpenedSuccessCallback, socketOpenedFai
     this.CaptureQRViaPassportScanner = function() { // captures QR code data from the ARH/Samsotech Passport scanner
         that.ws.send('{"Command" : "cmd_scan_qr_passport_scanner"}');
     };
+    this.CapturePassport = function() { // captures QR code data from the ARH/Samsotech Passport scanner
+        that.ws.send('{"Command" : "cmd_scan_passport"}');
+    };
     this.CaptureQRViaDatalogic = function() { // captures QR code data (reservation id) from the Datalogic scanner
         that.ws.send('{"Command" : "cmd_scan_qr_datalogic"}');
     };
@@ -53,7 +56,7 @@ this.webSocketOperations = function(socketOpenedSuccessCallback, socketOpenedFai
 
     this.connect = function() {
         try {
-            var port = (!_.isUndefined(wsSwipePort) && wsSwipePort !== '') ? wsSwipePort : 4649;
+            var port = (_.isUndefined(wsSwipePort) || wsSwipePort === '' || wsSwipePort === null) ? 4649 : wsSwipePort;
             
             if (_.isUndefined(wsSwipeUrl) || wsSwipeUrl === '') {
                 that.ws = new WebSocket('wss://localhost:' + port + '/CCSwipeService');

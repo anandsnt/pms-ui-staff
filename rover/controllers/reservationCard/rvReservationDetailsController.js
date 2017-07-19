@@ -38,7 +38,6 @@ sntRover.controller('reservationDetailsController',
 
 		var roomAndRatesState = 'rover.reservation.staycard.mainCard.room-rates';
 
-
 		// Putting this hash in parent as we have to maintain the back button in stay card even after navigating to states from stay card and coming back to the stay card.
 		var setNavigationBookMark = function() {
 			$rootScope.stayCardStateBookMark = {
@@ -51,6 +50,13 @@ sntRover.controller('reservationDetailsController',
 		$scope.hasSRViewPermission = rvPermissionSrv.getPermissionValue('VIEW_SUPPRESSED_RATE');
 		RVReservationStateService.setReservationFlag("isSRViewRateBtnClicked", false);
 
+		// CICO-38714 / CICO-41313 - Set the Guest ID Permission flag and check if each guest has an id scanned or not
+		// set to false if the hotel admin switch is turned off
+
+		$scope.guestIdAdminEnabled = $rootScope.hotelDetails.guest_id_scan.scan_guest_id_active;
+   		$scope.hasGuestIDPermission = rvPermissionSrv.getPermissionValue('ACCESS_GUEST_ID_DETAILS');
+   		$scope.guestIDsAvailable = [];
+		
 		if (!$rootScope.stayCardStateBookMark) {
 			setNavigationBookMark();
 		}
@@ -208,6 +214,40 @@ sntRover.controller('reservationDetailsController',
 				$('#ui-datepicker-overlay').off('click').remove();
 			}
 		};
+
+		$scope.fetchedGuestIDs = false;
+		var fetchGuestIDs = function() {
+			var successCallBack = function(response) {
+				$scope.guestIdReponseData = response;
+     			$scope.$emit('hideLoader');
+
+				$scope.fetchedGuestIDs = true;
+				var guestOnReservation, 
+					reservation_card = $scope.reservationData.reservation_card;
+
+				for (var i in response) {
+					guestOnReservation = response[i];
+					if (guestOnReservation.guest_id !== null && !$scope.guestIDsAvailable[guestOnReservation.guest_id]) {
+						$scope.guestIDsAvailable.push(guestOnReservation.guest_id);	
+					}
+				}
+			};
+
+			var failureCallBack = function() {
+     			$scope.$emit('hideLoader');
+				console.warn('unable to fetch guest ids: ', arguments);
+			};
+
+			var data = {
+				"reservation_id": $scope.reservationData.reservation_card.reservation_id
+			};
+
+			if (!$scope.fetchedGuestIDs) {
+				// do not make more than 1 request per 'fresh' staycard, to keep UI performance quick
+				$scope.invokeApi(RVReservationCardSrv.fetchGuestIdentity, data, successCallBack, failureCallBack);	
+			}
+		}
+
 		// CICO-16013, moved from rvReservationGuestCtrl.js to de-duplicate api calls
 
 		$scope.activeWakeUp = false;
@@ -316,17 +356,19 @@ sntRover.controller('reservationDetailsController',
 		// $scope.shouldShowGuestDetails = false;
 		$scope.toggleGuests = function() {
 
-
 			$scope.shouldShowGuestDetails = !$scope.shouldShowGuestDetails;
 			if ($scope.shouldShowGuestDetails) {
 				$scope.shouldShowTimeDetails = false;
+				fetchGuestIDs();
 			}
-
+            $scope.$broadcast("UPDATE_ACCOMPANY_SCROLL");
 			// CICO-12454: Upon close the guest tab - save api call for guest details for standalone
 			if (!$scope.shouldShowGuestDetails && $scope.isStandAlone) {
 				$scope.$broadcast("UPDATEGUESTDEATAILS", {"isBackToStayCard": true});
 			}
+
 		};
+
 		$scope.saveAccGuestDetails = function() {
 			setTimeout(function() {
 
@@ -670,7 +712,6 @@ sntRover.controller('reservationDetailsController',
 		 */
 		$scope.shouldDisableExtendNightsButton = function() {
 			var isAllotmentPresent	= $scope.reservationData.allotment_id || $scope.reservationData.reservation_card.allotment_id;
-
 
 			return (isAllotmentPresent);
 		};
@@ -1467,7 +1508,6 @@ sntRover.controller('reservationDetailsController',
      	return $scope.isStandAlone && $scope.hasSRViewPermission && $scope.reservationData.reservation_card.is_rate_suppressed_present_in_stay_dates && !RVReservationStateService.getReservationFlag("isSRViewRateBtnClicked");
      };
 
-
       /*
      * Checks whether the rate amount needs to show or not
      */
@@ -1481,4 +1521,81 @@ sntRover.controller('reservationDetailsController',
      $scope.toggleOverBookingAlert = function() {
        $scope.showChangeDatesPopup = !$scope.showChangeDatesPopup;
      }
+
+     $scope.hideGuestId = function(guest, isPrimary) {
+     	if (isPrimary) {
+     		guest = {
+     			'id': $scope.reservationParentData.guest.id
+     		}
+     	}
+     	var has_guest_id_scanned = false;
+
+ 		if ($scope.guestIDsAvailable.indexOf(guest.id) !== -1) {
+ 			has_guest_id_scanned = true;
+ 		}
+     	return (!has_guest_id_scanned || !$scope.guestIdAdminEnabled);
+     }
+     /*
+      * show the guest id / passport when clicked "guest id" button from manage additional guests view
+      */
+     
+
+      var getUserPassportInfo = function(guestResponseData, guest_id) {
+
+     		for (var i in guestResponseData) {
+     			if (guestResponseData[i].guest_id === guest_id) {
+     				return guestResponseData[i];
+     			}
+     		} 
+     		return null;
+      }
+
+
+     $scope.showScannedGuestID = function(isPrimaryGuest, guestData) {
+     	// $scope.guestIdData.showScannedGuestID, must be present for the guestID button to be enabled
+     	// CICO-38714
+     	// TODO: link with proper HTML once complete from design team
+     	//       fetch guest id data with front+back images from API using (guest id / reservation id for primary guest?)
+
+        $scope.$emit('hideLoader');
+ 		var responseData = $scope.guestIdReponseData,
+ 		 	guest_id;
+
+ 		if (isPrimaryGuest) {
+ 			guest_id = $scope.reservationParentData.guest.id;
+ 		} else {
+ 			guest_id = guestData.id;
+ 		}
+
+ 		var guest = getUserPassportInfo(responseData, guest_id);
+ 		if (guest !== null) {
+	     	$scope.guestIdData = guestData;
+	     	$scope.guestIdData.isPrimaryGuest = isPrimaryGuest;
+
+	     	// Set data FROM GuestID (ie. passport)
+	     	$scope.guestIdData.first_name = guest.first_name;
+	     	$scope.guestIdData.last_name = guest.last_name;
+
+	     	$scope.guestIdData.idType = guest.identityType;
+	     	$scope.guestIdData.dob = guest.date_of_birth;
+
+	     	$scope.guestIdData.twoSidedDoc = guest.front_image_data && guest.back_image_data;
+	     	$scope.guestIdData.nationality = guest.nationality;
+
+	     	$scope.guestIdData.docID = guest.document_number;
+	     	$scope.guestIdData.docExpiry = guest.expiration_date;
+	     	$scope.guestIdData.showingIdFront = true;
+	 		$scope.guestIdData.imgFrontSrc = guest.front_image_data;
+	 		$scope.guestIdData.imgBackSrc = guest.back_image_data;
+	 		// END SETTING DATA FROM GUEST ID
+
+	     	ngDialog.open({
+				template: '/assets/partials/guestId/guestId.html',
+				className: 'guest-id-dialog',
+				scope: $scope
+			});
+ 		}
+
+     };
+
 }]);

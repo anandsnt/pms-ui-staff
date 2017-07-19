@@ -5,7 +5,7 @@ sntZestStation.controller('zsAdminCtrl', [
 
         BaseCtrl.call(this, $scope);
         var  isLightTurnedOn = false; // initially consider the HUE light status to be turned OFF.
-        var selectedWorkstationLightId = '';
+        
 
         // hide nav buttons in login mode
         var hideNavButtons = function() {
@@ -76,7 +76,7 @@ sntZestStation.controller('zsAdminCtrl', [
             if (typeof selectedWorkStation !== 'undefined') {
                 $scope.workstation.selected = parseInt(selectedWorkStation.id);
                 $scope.workstation.printer = selectedWorkStation.printer;
-                selectedWorkstationLightId = selectedWorkStation.hue_light_id;
+                $scope.selectedWorkstationLightId = selectedWorkStation.hue_light_id;
             } else {
                 $scope.workstation.selected = '';
                 $scope.workstation.printer = '';
@@ -87,32 +87,6 @@ sntZestStation.controller('zsAdminCtrl', [
             // do nothing as no workstation was set
         }
 
-        $scope.turnOnLight = function() {
-          var json = {
-                "Command": "cmd_hue_light_change",
-                "Data": $scope.zestStationData.hue_bridge_ip,
-                "hueLightAppkey": $scope.zestStationData.hue_user_name,
-                "shouldLight": "1",
-                "lightColor": $scope.zestStationData.hue_light_color_hex,
-                "lightList": [selectedWorkstationLightId]
-            };
-            var jsonstring = JSON.stringify(json);
-
-            $scope.socketOperator.toggleLight(jsonstring);
-        };
-
-        $scope.turnOffLight = function() {
-            var json = {
-                "Command": "cmd_hue_light_change",
-                "Data": $scope.zestStationData.hue_bridge_ip,
-                "hueLightAppkey": $scope.zestStationData.hue_user_name,
-                "shouldLight": "0",
-                "lightList": [selectedWorkstationLightId]
-            };
-            var jsonstring = JSON.stringify(json);
-
-            $scope.socketOperator.toggleLight(jsonstring);
-        };
 
         // if workstation changes -> change printer accordingly
         $scope.worksStationChanged = function() {
@@ -120,9 +94,9 @@ sntZestStation.controller('zsAdminCtrl', [
                 return workstation.id == $scope.workstation.selected;
             });
 
-            selectedWorkstationLightId = selectedWorkStation.hue_light_id;
+            $scope.selectedWorkstationLightId = selectedWorkStation.hue_light_id;
             if (isLightTurnedOn) {
-                $scope.turnOffLight(); // turn off light, if is in ON state
+                $scope.turnOffLight($scope.selectedWorkstationLightId); // turn off light, if is in ON state
             }
             setPrinterLabel(selectedWorkStation.printer);
             $scope.setEncoderDiagnosticInfo(selectedWorkStation.name, selectedWorkStation.key_encoder_id); // in diagnostic info display the encoder name + id
@@ -333,6 +307,7 @@ sntZestStation.controller('zsAdminCtrl', [
                 // navigate to home screen
                 // 
                 if ($scope.zestStationData.workstationStatus === 'out-of-order') {
+                    $scope.addReasonToOOSLog('Admin');
                     $state.go('zest_station.outOfService');
                 } else {
                     if (runDemoClicked) {
