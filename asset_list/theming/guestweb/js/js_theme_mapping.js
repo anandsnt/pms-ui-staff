@@ -5,6 +5,7 @@ module.exports = {
         var zestRootJS = 'guestweb/zest/**/*.js';
 
         return {
+            'guestweb_made': [ themeJsRoot + 'app_router_common.js'],
             'guestweb_windsor_suites': [ themeJsRoot + 'app_router_common.js'],
             'guestweb_moonrise': [ themeJsRoot + 'app_router_common.js'],
             'guestweb_row': [ themeJsRoot + 'app_router_row_nyc.js'],
