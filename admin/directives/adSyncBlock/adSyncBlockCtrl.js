@@ -1,5 +1,5 @@
 angular.module('admin').controller('adSyncBlockCtrl', ['$scope', '$rootScope', 'adInterfacesCommonConfigSrv', 'dateFilter',
-    function($scope, $rootScope, adInterfacesCommonConfigSrv, dateFilter) {
+    function ($scope, $rootScope, adInterfacesCommonConfigSrv, dateFilter) {
 
         BaseCtrl.call(this, $scope);
 
@@ -11,19 +11,19 @@ angular.module('admin').controller('adSyncBlockCtrl', ['$scope', '$rootScope', '
                 changeYear: true,
                 minDate: new Date(),
                 changeMonth: true,
-                beforeShow: function() {
+                beforeShow: function () {
                     $('<div id="ui-datepicker-overlay">').insertAfter('#ui-datepicker-div');
                 },
-                onClose: function() {
+                onClose: function () {
                     $('#ui-datepicker-overlay').remove();
                 }
             },
-            getFutureDate = function(fromDate, addDays) {
+            getFutureDate = function (fromDate, addDays) {
                 var maxDate = new tzIndependentDate(fromDate);
 
                 return tzIndependentDate(maxDate.setDate(maxDate.getDate() + addDays));
             },
-            toDateSelected = function() {
+            toDateSelected = function () {
                 if (!$scope.fromDate ||
                     new tzIndependentDate($scope.toDate) < new tzIndependentDate($scope.fromDate)) {
                     $scope.fromDate = $scope.toDate;
@@ -33,7 +33,7 @@ angular.module('admin').controller('adSyncBlockCtrl', ['$scope', '$rootScope', '
                     $scope.endDatePickerOptions.maxDate = getFutureDate($scope.fromDate, MAX_REFRESH_SPAN_DAYS);
                 }
             },
-            fromDateSelected = function() {
+            fromDateSelected = function () {
                 if (!$scope.toDate ||
                     new tzIndependentDate($scope.fromDate) > new tzIndependentDate($scope.toDate)) {
                     $scope.toDate = $scope.fromDate;
@@ -43,10 +43,10 @@ angular.module('admin').controller('adSyncBlockCtrl', ['$scope', '$rootScope', '
                     $scope.endDatePickerOptions.maxDate = getFutureDate($scope.fromDate, MAX_REFRESH_SPAN_DAYS);
                 }
             },
-            getSyncItems = function(full_sync_items) {
+            getSyncItems = function (full_sync_items) {
                 var arr = [];
 
-                _.each(full_sync_items, function(item) {
+                _.each(full_sync_items, function (item) {
                     arr.push({id: item});
                 });
 
@@ -57,11 +57,11 @@ angular.module('admin').controller('adSyncBlockCtrl', ['$scope', '$rootScope', '
                 return arr;
             };
 
-        $scope.startSync = function() {
+        $scope.startSync = function () {
             var items = _.pluck(_.filter($scope.syncItems, {isSelected: true}), 'id'),
                 payLoad;
 
-            $scope.errorMessage = $scope.successMessage = "";
+            $scope.errorMessage = $scope.successMessage = '';
 
             if (!items.length && $scope.syncItems.length) {
                 $scope.successMessage = '';
@@ -76,7 +76,7 @@ angular.module('admin').controller('adSyncBlockCtrl', ['$scope', '$rootScope', '
             };
 
             if ($scope.syncHistoricalData) {
-                payLoad["sync_type"] = "historical";
+                payLoad['sync_type'] = 'historical';
             }
 
             $scope.callAPI(adInterfacesCommonConfigSrv.initSync, {
@@ -84,17 +84,18 @@ angular.module('admin').controller('adSyncBlockCtrl', ['$scope', '$rootScope', '
                     payLoad: payLoad,
                     interfaceIdentifier: $scope.interface
                 },
-                onSuccess: function() {
+                onSuccess: function () {
                     $scope.errorMessage = '';
                     $scope.successMessage = 'SUCCESS: Synchronization Initiated!';
                 }
             });
         };
 
-        $scope.onToggleHistoricalSync = function(adCheckbox) {
+        $scope.onToggleHistoricalSync = function (adCheckbox) {
             var fromDate;
 
-            $scope.errorMessage = $scope.successMessage = "";
+            $scope.errorMessage = $scope.successMessage = '';
+
             $scope.syncHistoricalData = adCheckbox;
 
             if (adCheckbox) {
@@ -122,12 +123,14 @@ angular.module('admin').controller('adSyncBlockCtrl', ['$scope', '$rootScope', '
             }
         };
 
-        (function(){
-            $scope.errorMessage = $scope.successMessage = "";
-            $scope.syncHistoricalData = false;
+        (function () {
+            $scope.errorMessage = $scope.successMessage = '';
             $scope.fromDate = null;
             $scope.toDate = null;
-            $scope.syncItems = getSyncItems($scope.config.real_time_data_sync_items);
+
+            // Disable toggle if either of the lists is empty!
+            $scope.disableSyncHistoricalDataToggle = !$scope.config.real_time_data_sync_items ||
+                !$scope.config.historical_data_sync_items;
 
             $scope.startDatePickerOptions = Object.assign({
                 onSelect: fromDateSelected
@@ -135,6 +138,8 @@ angular.module('admin').controller('adSyncBlockCtrl', ['$scope', '$rootScope', '
             $scope.endDatePickerOptions = Object.assign({
                 onSelect: toDateSelected
             }, commonDatePickerOptions);
+
+            $scope.onToggleHistoricalSync(!$scope.config.real_time_data_sync_items);
         })();
     }
 ]);

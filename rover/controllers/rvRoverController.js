@@ -47,7 +47,7 @@ sntRover.controller('roverController', [
     // CICO-39623 : Setting up app theme.
     if ( !!hotelDetails.selected_theme && hotelDetails.selected_theme.value !== 'ORANGE' ) {
       var appTheme = 'theme-' + (hotelDetails.selected_theme.value).toLowerCase();
-      
+
       document.getElementsByTagName("html")[0].setAttribute( 'class', appTheme );
     }
 
@@ -98,6 +98,8 @@ sntRover.controller('roverController', [
     $rootScope.fullDateFullMonthYear = "dd MMMM yyyy";
     $rootScope.dayAndDateCS = "EEEE, MM-dd-yyyy"; // Wednesday, 06-04-2014
     $rootScope.dateFormatForAPI = "yyyy-MM-dd";
+        // https://momentjs.com/docs/#/displaying/format/
+    $rootScope.momentFormatForAPI = "YYYY-MM-DD";
     $rootScope.shortMonthAndDate = "MMM dd";
     $rootScope.monthAndDate = "MMMM dd";
     $rootScope.fullMonth = "MMMM";
@@ -153,11 +155,13 @@ sntRover.controller('roverController', [
     $rootScope.isAddonOn = hotelDetails.is_addon_on;
     $rootScope.desktopSwipeEnabled = hotelDetails.allow_desktop_swipe;
 	  $rootScope.ccSwipeListeningPort = hotelDetails.cc_swipe_listening_port;
+    $rootScope.ccSwipeListeningUrl = hotelDetails.cc_swipe_listening_url;
     $rootScope.printCancellationLetter = hotelDetails.print_cancellation_letter;
     $rootScope.sendCancellationLetter = hotelDetails.send_cancellation_letter;
     $rootScope.printConfirmationLetter = hotelDetails.print_confirmation_letter;
     $rootScope.sendConfirmationLetter = hotelDetails.send_confirmation_letter;
     $rootScope.isItemInventoryOn    = hotelDetails.is_item_inventory_on;
+    $rootScope.guestTypes = hotelDetails.guest_types;
 
     // CICO-41410
     $rootScope.isDashboardSwipeEnabled = hotelDetails.enable_dashboard_swipe;
@@ -648,9 +652,9 @@ sntRover.controller('roverController', [
 
     var initiateDesktopCardReader = function() {
       sntapp.desktopCardReader.setDesktopUUIDServiceStatus(true);
-    	sntapp.desktopCardReader.startDesktopReader($rootScope.ccSwipeListeningPort, options);
+      sntapp.desktopCardReader.startDesktopReader($rootScope.ccSwipeListeningPort, options, $rootScope.ccSwipeListeningUrl);
     };
-        
+
       /**
        * @returns {undefined} undefined
        */
