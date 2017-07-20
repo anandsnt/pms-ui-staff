@@ -9,21 +9,21 @@
         </li>
 
         <li>
-            {{tomorrow|date:monthAndDate}}
+            {{::(tomorrow|date:monthAndDate)}}
         	<span class="value" ng-show="escapeNull(statisticsData.occupancy.tomorrow)!==''">
                 {{ ::(statisticsData.occupancy.tomorrow | round) }}%
             </span>
         </li>
 
         <li>
-            {{dayAfterTomorrow|date:monthAndDate}}
+            {{::(dayAfterTomorrow|date:monthAndDate)}}
         	<span class="value" ng-show="escapeNull(statisticsData.occupancy.day_after_tomorrow)!==''">
                 {{ ::(statisticsData.occupancy.day_after_tomorrow | round) }}%
             </span>
         </li>
 
         <li>
-            {{userInfo.business_date|date:fullMonth}}
+            {{::(userInfo.business_date|date:fullMonth)}}
         	<span class="value" ng-show="escapeNull(statisticsData.occupancy.current_month)!==''">
                 {{ ::(statisticsData.occupancy.current_month | round) }}%
             </span>

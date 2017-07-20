@@ -197,7 +197,7 @@ sntZestStation.config(['$stateProvider',
             templateUrl: '/assets/partials_v2/checkin/zsCheckinScanPassport.html',
             controller: 'zsCheckinScanPassportCtrl',
             jumper: true,
-            sntOnly: true,
+            sntOnly: false,
             section: 'Checkin',
             icon: 'checkin_scan_passport.png',
             // description: 'To Continue Checking-In, Guests Will Scan Passports',
@@ -206,54 +206,54 @@ sntZestStation.config(['$stateProvider',
             modes: [{
                 'name': 'SCAN_PASSPORT',
                 'label': 'Scan ID Start',
-                'sntOnly': true,
+                'sntOnly': false,
                 'description': 'Start ID Scanning, initial page after signature',
                 'icon': ''
             }, {
                 'name': 'SCANNING_IN_PROGRESS',
-                'sntOnly': true,
+                'sntOnly': false,
                 'label': 'Scanning in progress page',
                 'description': 'User has started the scanner, scanning in progress',
                 'icon': ''
             }, {
                 'name': 'SCAN_FAILURE',
                 'label': 'Scan Failed',
-                'sntOnly': true,
+                'sntOnly': false,
                 'description': 'Scanning of the ID failed',
                 'icon': ''
             }, {
                 'name': 'SCAN_RESULTS',
-                'sntOnly': true,
+                'sntOnly': false,
                 'label': 'ID Scan Results',
                 'description': 'Results of ID scans for guests on reservation',
                 'icon': ''
             }, {
                 'name': 'WAIT_FOR_STAFF',
-                'sntOnly': true,
+                'sntOnly': false,
                 'label': 'Wait for staff to verify passports',
                 'description': 'Guest must wait until a staff member to continue',
                 'icon': ''
             }, {
                 'name': 'ADMIN_LOGIN_ID',
-                'sntOnly': true,
+                'sntOnly': false,
                 'label': 'Staff Verify ID, admin Login ID',
                 'description': '',
                 'icon': ''
             }, {
                 'name': 'ADMIN_LOGIN_PWD',
-                'sntOnly': true,
+                'sntOnly': false,
                 'label': 'Staff Verify ID, admin Login Password',
                 'description': '',
                 'icon': ''
             }, {
                 'name': 'ADMIN_VERIFY_PASSPORTS',
-                'sntOnly': true,
+                'sntOnly': false,
                 'label': 'Staff Verify Passports - List View',
                 'description': '',
                 'icon': ''
             }, {
                 'name': 'ADMIN_VERIFY_PASSPORT_VIEW',
-                'sntOnly': true,
+                'sntOnly': false,
                 'label': 'Verify Passport (Selected View)',
                 'description': '',
                 'icon': ''

@@ -7,8 +7,8 @@
 <!-- main section starts here -->
 <div class="container">
     <div class="row">
-        <div class="col-md-3"></div>
-        <div class="col-md-6 top-spacing margin-top-40">
+        <div class="col-md-4"></div>
+        <div class="col-md-4 top-spacing margin-top-40 no-section-side-padding">
             <!--  -->
             <p class="res-date">RESERVATION #{{confirmationNumber}}</p>
             <p class="main-text mob-margin-bottom-3" ng-hide="ShowupgradedLabel">
@@ -85,13 +85,13 @@
                     <input type="checkbox" ng-click="termsClicked()" ng-model="checked" class="accept-checkbox" ng-checked="checkedApplyCharges">
                     <span class="footer-sub-text left-margin-10">I ACCEPT ALL TERMS AND CONDITIONS</span>
                 </div>
-                <a class="btn btn-template margin-top-10" ng-click="checkInButtonClicked()">NEXT</a>
+                <input type="submit" class="btn btn-template margin-top-40" ng-click="checkInButtonClicked()" value="NEXT" />
                 <div class="footer-sub-text margin-top-10">
                     QUESTIONS? <a href="tel:{{hotelPhone}}"><u class="phone-label">CALL US AT  {{hotelPhone}}.</u></a>
                 </div>
             </div>
         </div>
-        <div class="col-md-3">
+        <div class="col-md-4">
         </div>
     </div>
 </div>
@@ -107,9 +107,9 @@
                 <description class="terms-desc tnc" template="{{reservationData.terms_and_conditions}}">
                 </description>
             </div>
-            <div class="button-actions center-align">
-                <button type="button" ng-click="agreeClicked()" class="btn green-button white-button">I AGREE</button>
-                <button type="button" ng-click="cancel()" class="btn grey-terms-button white-button">CANCEL</button>
+            <div class="button-actions margin-top-40">
+                <button type="button" ng-click="agreeClicked()" class="btn terms-button white-button">I AGREE</button>
+                <button type="button" ng-click="cancel()" class="btn terms-button  white-button">CANCEL</button>
             </div>
         </div>
     </div>

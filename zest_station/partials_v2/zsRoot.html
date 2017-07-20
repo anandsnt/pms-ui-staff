@@ -1,14 +1,14 @@
 <script>
     var url = document.location,
       inDevEnvironment = false,
+      inLocalEnv = false,
       analyticTrackingID;
 
     if (url.hostname) { // if btn === true, then the user is clicking continue to bypass cc screen in dev environment
       if (typeof url.hostname === typeof 'str') {
         if (url.hostname.indexOf('pms-dev') !== -1 ||
           url.hostname.indexOf('pms-release') !== -1 ||
-          url.hostname.indexOf('192.168.1.218') !== -1 ||
-          url.hostname.indexOf('192.168.1.239') !== -1 ||
+          url.hostname.indexOf('192.168.') !== -1 ||
           url.hostname.indexOf('localhost') !== -1) {
 
           inDevEnvironment = true, inLocalEnv = false;
@@ -58,6 +58,7 @@
 
 <div class='oos_reason' ng-show='zestStationData.workstationStatus === "out-of-order" && zestStationData.timeDebugger !== "true" && zestStationData.theme === "yotel"'>
     {{zestStationData.workstationOooReason}}
+    <span ng-show='zestStationData.workstationOooReason==="" && zestStationData.sessionOosReason.length>0'>{{zestStationData.lastOOSReason}}</span>
 </div>
 
 <div ng-include="'/assets/partials_v2/zsDiagnostics.html'"></div>
@@ -78,15 +79,27 @@
 </div>
 
 
+<div class="popup iframe-popup open" ng-show="zestStationData.showTemplateList">
+    <div class="popup-content iframe-content">
+        <i class="close-popup" touch-press='zestStationData.showTemplateList = false' ></i>
+        <div class='template-switch-container'>
+            <div ng-repeat="(key, value) in themeTemplateList" class='template-switch-box' touch-press="selectThemeFromTemplateList(value.name)" ng-style="{'background-image':'url(/assets/zest_station/css/icons/default/previews/{{value.name}}.png)'}">
+                <span class='theme-switch-name'>
+                    {{value.name}}
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
 <!-- Popup -->
 <div class="popup" ng-class="{'open':zestStationData.timeOut && !showLanguagePopup}">
     <!-- Remove class "open" to hide popup content -->
     <div class="popup-content">
         <h2 class="nocaps">
-            <text editable-text="IDLE_TIMEOUT_MSG"> {{'IDLE_TIMEOUT_MSG' |translate}}</text>
+            <text data-ng-bind-html="getTagValue('IDLE_TIMEOUT_MSG')" editable-text="IDLE_TIMEOUT_MSG"></text>
         </h2>
         <button type="button" class="button idle-timeout-btn" click-touch='resetTime();'>
-            <text editable-text="IDLE_TIMEOUT_YES"> {{'IDLE_TIMEOUT_YES' |translate}}</text>
+            <text data-ng-bind-html="getTagValue('IDLE_TIMEOUT_YES')" editable-text="IDLE_TIMEOUT_YES"></text>
         </button>
     </div>
 </div>

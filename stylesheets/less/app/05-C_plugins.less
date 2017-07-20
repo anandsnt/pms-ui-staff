@@ -3146,6 +3146,23 @@
                     .guest-image {
                         .square(30px);
 
+                        .icons {
+                            .square(100%);
+                            background-color: @grey2;
+
+                            &.icon-student {
+                                background-position: 5px -10534px;
+                            }
+
+                            &.icon-infant {
+                                background-position: 6px -10595px;
+                            }
+
+                            &.icon-adult {
+                               background-position: 5px -10476px
+                            }
+                        }
+
                         &.accompany {
                             img {
                                 width: 25px;
@@ -3154,6 +3171,41 @@
                                     top: 10px;
                                     left: 10px;
                                     width: 20px;
+                                }
+                            }
+
+                            .icons {
+                                .square(25px);
+
+                                &.icon-student {
+                                    background-position: 3px -10537px;
+                                }
+
+                                &.icon-infant {
+                                    background-position: 3px -10597px;
+                                }
+
+                                &.icon-adult {
+                                   background-position: 3px -10478px;
+                                }
+
+                                &:nth-child(2) {
+                                    top: 10px;
+                                    left: 10px;
+                                    .square(20px);
+                                    background-size: 80px;
+
+                                    &.icon-student {
+                                        background-position: 3px -7022px;
+                                    }
+
+                                    &.icon-infant {
+                                        background-position: 4px -7063px;
+                                    }
+
+                                    &.icon-adult {
+                                       background-position: 3px -6983px
+                                    }
                                 }
                             }
                         }
@@ -3843,7 +3895,7 @@
             /* Modify rate ***/
             &.modify-rate {
                 padding: 0;
-                width: 540px;
+                width: 620px;
                 max-height: 540px;
 
                 .modal-header {
@@ -3877,11 +3929,23 @@
 
                     th,
                     td { 
-                        padding: 5px 20px; 
+                        padding: 5px 10px 5px 0; 
 
-                        &.date { .calc-width(100, 300); }
+                        &.date { .calc-width(100, 320); }
                         &.rate { width: 120px; }
                         &.edit { width: 160px; }
+                        &.copy { 
+                            width: 40px;
+                            padding: 5px 20px 0 0;
+                        }
+
+                        &:first-child {
+                            padding-left: 20px;
+                        }
+
+                        &:last-child {
+                            padding-right: 20px;
+                        }
                     }
 
                     thead {
@@ -3891,11 +3955,21 @@
                     tbody {
                         tr {
                             td {
+                                font-size: 16px;
+
                                 &.date { font-weight: 600; }
                                 &.edit {
                                     input { 
-                                        width: 80px;
-                                        margin-left: 10px;
+                                        margin-left: 5px;
+                                        .calc-width(100, 20);
+                                    }
+                                }
+                                &.copy {
+                                    .icon-mover-right {
+                                        cursor: pointer;
+                                        .hide-text;
+                                        .square(40px);
+                                        .rotate(90deg);
                                     }
                                 }
                             }
@@ -6701,8 +6775,171 @@
                     .square(640px);
                 }
             }
+
+           
         }
     }
+     /* Guest Passport/ID Scan */
+            .guest-id-dialog > .ngdialog-content{
+                background: transparent !important;
+            }
+            .guest-id {
+                padding:0;
+                .square(100%);
+
+                padding: 7% 20% 7% 20%;
+                width: 100% !important;
+
+                .modal-close{
+                    &.dark-title{
+                        top: -10px;
+                        left: -20px;
+                        position: relative;
+                        border-style: solid;
+                        border-color: @gcard;
+                        border-width: 4px;
+                        border-radius: 1em;
+                    }
+                }
+
+                @media screen and ( min-width:768px ){
+                   width: 430px;
+                   min-height: 500px;
+              
+                }
+
+                &.with-details {
+                    @media screen and ( min-width:768px ){
+                        width: 640px;
+                    }
+                    .modal-body {
+                        background-color:@white;
+                        .content-left {
+                            .show();
+                        }
+                        .content-right {
+                            .calc-width(100, 210);
+                        }
+                    }   
+                }
+
+                .modal-header {
+                    margin-top:-24px;
+                    background-color:@gcard;
+                    color: white;
+                    height: 85px;
+                    padding: 20px;
+                  
+                    h2 {
+                        font-size:30px;
+                        font-weight: bold;
+                        white-space: nowrap;
+                        overflow: hidden;
+                        text-overflow: ellipsis;
+                        line-height: .8;
+                    }
+
+                    em {
+                        font-size:16px;
+                    } 
+                }
+
+                .modal-body {
+                    .calc-height(100, 85);
+                    min-height: 415px;
+                    #flexbox > .display();
+
+                    .content-left {
+                        .hide();
+                        width: 210px;
+                        background-color: rgba(0, 0, 0, .1);
+                    }
+
+                    .content-right {
+                        width: 100%; 
+                        .box-shadow(0 -2px 4px rgba(0,0,0,.3));
+                        padding: 30px 20px 10px 20px;
+                        text-align: center;
+
+                        img {
+                            max-width: 100%;
+                            height: auto;
+                        }
+                    }
+
+                    .details {
+
+                        li {
+                            margin:0;
+                            padding: 0px 20px;
+                            height: 50px;
+                            border-bottom: 1px solid rgba(0,0,0,.1);
+                            line-height: 1; 
+                            #flexbox > .parent(column, center, '', '' );
+                            span {
+                                display: block;
+                                font-size: 14px;
+                                text-transform: uppercase;
+                                color: @grey3;
+                            }
+                        }
+
+                    }
+
+                    .guest-id-title,
+                    .guest-id-desc {
+                        text-transform: uppercase;
+                    }
+
+                    .guest-id-title {
+                        font-weight: 600;
+                        font-size: 24px;
+                    }
+
+                    .guest-id-desc {
+                        color: @grey3;
+                    }
+
+                    .guest-id-switch {
+                        width: 180px;
+                        margin: 0 auto 20px auto;
+                        #flexbox > .parent( row, flex-start, center, '');
+
+                        li { 
+                            cursor: pointer; 
+                            font-size: 14px;
+                            line-height: 40px;
+                            text-align: center;
+                            color: @textColor; 
+                            text-transform: uppercase;
+                            width: 50%;
+                            margin:0;
+                            font-weight: 600;
+                            .clickable;
+                            #border-radius > .rounded(0);
+
+                            &:hover { 
+                                color: @logoPrimary; 
+                                .box-shadow();
+                            }
+
+                            &.active {
+                                cursor: default;
+                                color: @white;
+                                 
+                                
+                                .gradient (@logoGradientStart, @logoGradientEnd);
+                            }
+
+                            &:first-child { 
+                                #border-radius > .left(); 
+                            }
+
+                            &:last-child { #border-radius > .right(); }
+                        }
+                    }
+                }
+            }
 
     /* SPL_CASE: Auto-close notice message inside post charge ***/
     #modal .modal-content.post-charge .content-right {

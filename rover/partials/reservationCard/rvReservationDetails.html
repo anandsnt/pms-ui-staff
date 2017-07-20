@@ -33,7 +33,7 @@
 			</span>
 
 
-            <a ng-click="toggleTime()" ng-class="{'not-set':!reservationData.reservation_card.arrival_time, 'active': shouldShowTimeDetails}" ng-if="!reservationData.reservation_card.is_opted_late_checkout && (reservationData.reservation_card.reservation_status == 'CHECKING_IN' || reservationData.reservation_card.reservation_status == 'RESERVED')" class="button times check-in toggle">
+            <a ng-click="toggleTime()" ng-class="{'not-set':!reservationData.reservation_card.arrival_time, 'active': shouldShowTimeDetails}" ng-if="(reservationData.reservation_card.reservation_status == 'CHECKING_IN' || reservationData.reservation_card.reservation_status == 'RESERVED')" class="button times check-in toggle">
                 <span class="icons time check-in"></span>{{reservationData.reservation_card.arrival_time ? reservationData.reservation_card.arrival_time : 'NOT SET' }}
             </a>
             <a ng-click="toggleTime()" ng-class="{'not-set':!reservationData.reservation_card.departure_time ,'active': shouldShowTimeDetails}" ng-if="!reservationData.reservation_card.is_opted_late_checkout && (reservationData.reservation_card.reservation_status == 'CHECKEDIN' || reservationData.reservation_card.reservation_status == 'CHECKING_OUT' || reservationData.reservation_card.reservation_status == 'CHECKEDOUT')" class="button times check-out toggle">
@@ -178,37 +178,43 @@
         </div>
 
         <!-- Guest details -->
-        <div ng-controller="rvReservationGuestController" class="reservation-guests" ng-show="shouldShowGuestDetails" ng-class="{'editable': isStandAlone}">
+        <div ng-controller="rvReservationGuestController" class="reservation-guests" ng-show="shouldShowGuestDetails" ng-class="::{'editable': isStandAlone}">
             <div ng-include="'/assets/partials/common/notification_message.html'"></div>
             <span class="notice" ng-show="isStandAlone && guestData.varying_occupancy" translate>VAR_OCCUPANCY</span>
             <ul class="guest-count">
                 <li>
-                    <span class="guest-icon">18+</span>
+                    <span class="guest-icon">
+                        <span class="icons icon-adult"></span>
+                    </span>
                     <label class="label" for="adults-count">Adults</label>
                     <!-- <input name="adults-count" id="adults-count" type="text" ng-model="guestData.adult_count" value="{{guestData.adult_count}}" maxlength="2" ng-readonly="!isStandAlone" /> -->
                     <div class="select">
                         <select convert-to-number ng-readonly="!isStandAlone" name="adults-count" id="adults-count" ng-model="guestData.adult_count" ng-change="onStayCardOccupancyChange()" >
-                            <option ng-repeat="i in [1, maxAdultsForReservation] | makeRange" value="{{i}}" ng-selected="i==guestData.adult_count">{{i}}</option>
+                            <option ng-repeat="i in [1, maxAdultsForReservation] | makeRange track by $index" value="{{::i}}" ng-selected="i==guestData.adult_count">{{::i}}</option>
                         </select>
                     </div>
                 </li>
                 <li>
-                    <span class="guest-icon">3-18</span>
+                    <span class="guest-icon">
+                        <span class="icons icon-student"></span>
+                    </span>
                     <label class="label" for="children-count">Children</label>
                     <!-- <input name="children-count" id="children-count" type="text" ng-model="guestData.children_count" value="{{guestData.children_count}}" maxlength="2" ng-readonly="!isStandAlone" /> -->
                     <div class="select">
-                        <select ng-readonly="!isStandAlone" name="children-count" id="children-count" ng-model="guestData.children_count" ng-change="onStayCardOccupancyChange()">
-                            <option ng-repeat="i in [0, otherData.maxChildren] | makeRange" value="{{i}}" ng-selected="i==guestData.children_count">{{i}}</option>
+                        <select convert-to-number ng-readonly="!isStandAlone" name="children-count" id="children-count" ng-model="guestData.children_count" ng-change="onStayCardOccupancyChange()">
+                            <option ng-repeat="i in [0, otherData.maxChildren] | makeRange track by $index" value="{{::i}}" ng-selected="i==guestData.children_count">{{::i}}</option>
                         </select>
                     </div>
                 </li>
                 <li>
-                    <span class="guest-icon">0-3</span>
+                    <span class="guest-icon">
+                        <span class="icons icon-infant"></span>
+                    </span>
                     <label class="label" for="infants-count">Infants</label>
                     <!-- <input name="infants-count" id="infants-count" type="text" ng-model="guestData.infants_count" value="{{guestData.infants_count}}" maxlength="2" ng-readonly="!isStandAlone" /> -->
                     <div class="select">
-                        <select ng-readonly="!isStandAlone" name="infants-count" id="infants-count" type="text" ng-model="guestData.infants_count" ng-change="onStayCardOccupancyChange()">
-                            <option ng-repeat="i in [0, otherData.maxInfants] | makeRange" value="{{i}}" ng-selected="i==guestData.infants_count">{{i}}</option>
+                        <select convert-to-number ng-readonly="!isStandAlone" name="infants-count" id="infants-count" type="text" ng-model="guestData.infants_count" ng-change="onStayCardOccupancyChange()">
+                            <option ng-repeat="i in [0, otherData.maxInfants] | makeRange track by $index" value="{{::i}}" ng-selected="i==guestData.infants_count">{{::i}}</option>
                         </select>
                     </div>
                 </li>
@@ -217,25 +223,84 @@
             <!-- Accompany in guest card -->
             <div ng-if="reservationData.reservation_card.accompaying_guests.length > 0" ng-include="'/assets/partials/reservationCard/accompanyGuest.html'"></div>
 
-            <form method="post" name="manage-guests" id="manage-guests" class="form" ng-show="isStandAlone">
-                <div class="entry">
-                    <figure class="guest-image">
-                        <img ng-src="{{guestData.primary_guest_details.image}}" alt="" />
-                        <span ng-show="guestData.primary_guest_details.is_vip" class="vip">VIP</span>
-                    </figure>
-                    <input name="guest-first-name" id="guest-first-name" type="text" placeholder="First Name" value="{{guestData.primary_guest_details.first_name}}" readonly />
-                    <input name="guest-last-name" id="guest-last-name" type="text" placeholder="Last Name" value="{{guestData.primary_guest_details.last_name}}" readonly />
-                </div>
-                <label for="acc1-first-name">Accompanying guests</label>
+            <form method="post" name="manage-guests" id="manage-guests" class="form scrollable" ng-show="isStandAlone" ng-iscroll="accompanyGuestList" ng-iscroll-delay='1000'>
+                <div class="wrapper accompany-guest-wrapper">
+                    <div class="entry">
+                        <figure class="guest-image">
+                            <img ng-src="{{::guestData.primary_guest_details.image}}" alt="" />
+                            <span ng-if="guestData.primary_guest_details.is_vip" class="vip">VIP</span>
+                            <span class="icons icon-adult" ng-if="guestData.primary_guest_details.guest_type === 'ADULT'"></span>
+                            <span class="icons icon-student" ng-if="guestData.primary_guest_details.guest_type === 'CHILDREN'"></span>
+                        </figure>
+                        <input name="guest-first-name" id="guest-first-name" type="text" placeholder="First Name" value="{{::guestData.primary_guest_details.first_name}}" readonly />
+                        <input name="guest-last-name" id="guest-last-name" type="text" placeholder="Last Name" value="{{::guestData.primary_guest_details.last_name}}" readonly />
+                        <button class="button with-icon white green-text" click-touch='showScannedGuestID(true, guestData.primary_guest_details)'
+                            ng-if='!hideGuestId(guestData.primary_guest_details, true) && guestIdAdminEnabled'
+                            ng-class='{"overlay":!hasGuestIDPermission}'>
+                            <span class="icons icon-identity-card"></span>
+                             {{'GUEST_ID_BUTTON' |translate}}
+                        </button>
+                    </div>
 
-                <div class="entry" ng-repeat="guest in guestData.accompanying_guests_details">
-                    <figure class="guest-image">
-                        <img ng-src="{{guest.image}}" alt="" />
-                    </figure>
-                    <input name="acc1-first-name" id="acc1-first-name" type="text" placeholder="First Name" ng-model="guest.first_name" value="{{guest.first_name}}" ng-blur="saveAccGuestDetails()"/>
-                    <input name="acc1-last-name" id="acc1-last-name" type="text" placeholder="Last Name" ng-model="guest.last_name" value="{{guest.last_name}}" ng-blur="saveAccGuestDetails()" />
-                </div>
+                    <label for="acc1-first-name" ng-show="showAccompanyingGuestLabel()">Accompanying Guests</label>
 
+                    <div class="entry" ng-repeat="guest in accompanyingGuests.ADULT">
+                        <figure class="guest-image">
+                            <!-- Use male or female avatar this already is accompanying guest -->
+                            <span class="icons icon-adult"></span>
+
+                        </figure>
+                        <input name="{{guest.first_name}}" id="{{guest.first_name}}" type="text" placeholder="First Name" value="{{guest.first_name}}" ng-model="guest.first_name" ng-blur="saveAccGuestDetails()" />
+                        <input name="{{guest.last_name}}" id="{{guest.last_name}}" type="text" placeholder="Last Name" ng-model="guest.last_name" value="{{guest.last_name}}" ng-blur="saveAccGuestDetails()" />
+                        <button class="button with-icon white green-text" click-touch='showScannedGuestID(false, guest)'
+                            ng-if='!hideGuestId(guest)'
+                            ng-class='{"overlay":!hasGuestIDPermission}'>
+                            <span class="icons icon-identity-card"></span>
+                            {{'GUEST_ID_BUTTON' |translate}}
+                        </button>
+                    </div>
+
+                    <!-- Children Guest -->
+                    <div class="entry" ng-repeat="guest in accompanyingGuests.CHILDREN">
+                        <figure class="guest-image">
+
+                            <!-- Use male or female avatar this already is accompanying children -->
+                            <img ng-src="" alt="" />
+                            <!-- if no image use this: -->
+                            <span class="icons icon-student" ></span>
+
+                        </figure>
+                        <input name="{{guest.first_name}}" id="{{guest.first_name}}" type="text" placeholder="First Name" value="{{guest.first_name}}" ng-model="guest.first_name"  />
+                        <input name="{{guest.last_name}}" id="{{guest.last_name}}" type="text" placeholder="Last Name" ng-model="guest.last_name" value="{{guest.last_name}}" ng-blur="saveAccGuestDetails()"  />
+                        <button class="button with-icon white green-text" click-touch='showScannedGuestID(false, guest)'
+                            ng-if='!hideGuestId(guest)'
+                            ng-class='{"overlay":!hasGuestIDPermission}'>
+                            <span class="icons icon-identity-card"></span>
+                            {{'GUEST_ID_BUTTON' |translate}}
+                        </button>
+                    </div>
+
+                    <!-- Infant Guest -->
+                    <div class="entry" ng-repeat="guest in accompanyingGuests.INFANTS">
+                        <figure class="guest-image">
+
+                            <!-- Use male or female avatar this already is accompanying infant -->
+                            <img ng-src="" alt="" />
+                            <!-- if no image use this: -->
+                            <span class="icons icon-infant" ></span>
+
+                        </figure>
+                        <input name="{{guest.first_name}}" id="{{guest.first_name}}" type="text" placeholder="First Name" value="{{guest.first_name}}" ng-model="guest.first_name"  />
+                        <input name="{{guest.last_name}}" id="{{guest.last_name}}" type="text" placeholder="Last Name" ng-model="guest.last_name" value="{{guest.last_name}}" ng-blur="saveAccGuestDetails()"  />
+                        <button class="button with-icon white green-text" click-touch='showScannedGuestID(false, guest)'
+                            ng-if='!hideGuestId(guest)'
+                            ng-class='{"overlay":!hasGuestIDPermission}'>
+                            <span class="icons icon-identity-card"></span>
+                            {{'GUEST_ID_BUTTON' |translate}}
+                        </button>
+                    </div>
+
+                </div>
             </form>
         </div>
     </div>

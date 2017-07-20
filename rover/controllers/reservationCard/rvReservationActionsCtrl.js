@@ -211,7 +211,7 @@ sntRover.controller('reservationActionsController', [
                 res_end = getTwentyFourHourTime(reservationData.departure_date, reservationData.departure_time),
                 isOOORoom = false;
 
-            //CICO-36544
+            // CICO-36544
             if (reservationData.ooo_array) {
                 // loop through all the ooo date and times
                 reservationData.ooo_array.forEach(function(oooTimings) {
@@ -1068,7 +1068,7 @@ sntRover.controller('reservationActionsController', [
 
 			var resData = $scope.reservationData.reservation_card;
 
-			return resData.reservation_status === 'CANCELED' && // ONLY cancelled reservations can be reinstated
+			return (resData.reservation_status === 'CANCELED' || resData.reservation_status === 'NOSHOW') && // ONLY cancelled and noshow reservations  can be reinstated
 				new TZIDate(resData.departure_date) > new TZIDate($rootScope.businessDate) && // can't reinstate if the reservation's dates have passed
 				rvPermissionSrv.getPermissionValue('REINSTATE_RESERVATION'); // also check for permissions
 		};

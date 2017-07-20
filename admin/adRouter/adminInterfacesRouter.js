@@ -43,24 +43,24 @@ angular.module('adminInterfacesRouter', []).config(function($stateProvider) {
     });
 
     $stateProvider.state('admin.goMomentIvySetup', {
-        templateUrl: '/assets/partials/interfaces/GoMomentIvy/goMomentIvySetup.html',
+        templateUrl: '/assets/partials/interfaces/TextMessagingSystems/adTextMessagingSystemsSetup.html',
         controller: 'adGoMomentIvySetupCtrl',
         url: '/gomomentivy/setup',
         resolve: {
-            goMomentIvySetupValues: ['adGoMomentIvySetupSrv', function(adGoMomentIvySetupSrv) {
-                return adGoMomentIvySetupSrv.fetchGoMomentIvyConfiguration();
+            goMomentIvySetupValues: ['adInterfacesCommonConfigSrv', function(adInterfacesCommonConfigSrv) {
+                return adInterfacesCommonConfigSrv.fetchConfiguration('gomomentivy');
             }]
         }
     });
 
 
     $stateProvider.state('admin.checkmate', {
-        templateUrl: '/assets/partials/interfaces/Checkmate/checkmateSetup.html',
+        templateUrl: '/assets/partials/interfaces/TextMessagingSystems/adTextMessagingSystemsSetup.html',
         controller: 'adCheckmateSetupCtrl',
         url: '/checkmate/setup',
         resolve: {
-            checkmateSetupValues: ['adCheckmateSetupSrv', function(adCheckmateSetupSrv) {
-                return adCheckmateSetupSrv.fetchCheckmateConfiguration();
+            checkmateSetupValues: ['adInterfacesCommonConfigSrv', function(adInterfacesCommonConfigSrv) {
+                return adInterfacesCommonConfigSrv.fetchConfiguration('checkmate');
             }]
         }
     });
@@ -78,12 +78,15 @@ angular.module('adminInterfacesRouter', []).config(function($stateProvider) {
     });
 
     $stateProvider.state('admin.windsurferCRSSetup', {
-        templateUrl: '/assets/partials/WindsurferCRS/setup/adWindsurferCRSSetup.html',
-        controller: 'adWindsurferCRSSetupCtrl',
-        url: '/windsurfercrs/setup',
+        templateUrl: '/assets/partials/interfaces/CRS/adCRSCommonSetup.html',
+        controller: 'adCRSCommonCtrl',
+        url: '/interfaces/setup/:id',
+        onEnter: ['$stateParams', function($stateParams) {
+            $stateParams.id = 'windsurfer';
+        }],
         resolve: {
-            windsurferCRSSetupValues: ['adWindsurferCRSSetupSrv', function(adWindsurferCRSSetupSrv) {
-                return adWindsurferCRSSetupSrv.fetchWindsurferCRSConfiguration();
+           config: ['adInterfacesCommonConfigSrv', function(adInterfacesCommonConfigSrv) {
+                return adInterfacesCommonConfigSrv.fetchConfiguration('windsurfer');
             }]
         }
     });
@@ -187,6 +190,17 @@ angular.module('adminInterfacesRouter', []).config(function($stateProvider) {
         }
     });
 
+    $stateProvider.state('admin.digitalalchemySetup', {
+        templateUrl: '/assets/partials/interfaces/Digitalalchemy/adDigitalalchemySetup.html',
+        controller: 'adDigitalalchemySetupCtrl',
+        url: '/digitalalchemy/setup',
+        resolve: {
+            config: ['adInterfacesCommonConfigSrv', function(adInterfacesCommonConfigSrv) {
+                return adInterfacesCommonConfigSrv.fetchConfiguration('digitalalchemy');
+            }]
+        }
+    });
+
     $stateProvider.state('admin.accountViewSetup', {
         templateUrl: '/assets/partials/interfaces/AccountView/adAccountViewSetup.html',
         controller: 'adAccountViewSetupCtrl',
@@ -270,8 +284,8 @@ angular.module('adminInterfacesRouter', []).config(function($stateProvider) {
         controller: 'adBritePabXSetupCtrl',
         url: '/britePabX/setup',
         resolve: {
-            britePabXSetupValues: ['adBritePabXSetupSrv', function(adBritePabXSetupSrv) {
-                return adBritePabXSetupSrv.fetchBritePabXConfiguration();
+            britePabXSetupValues: ['adInterfacesCommonConfigSrv', function(adInterfacesCommonConfigSrv) {
+                return adInterfacesCommonConfigSrv.fetchConfiguration('brite');
             }]
         }
     });
@@ -381,9 +395,32 @@ angular.module('adminInterfacesRouter', []).config(function($stateProvider) {
     });
 
     $stateProvider.state('admin.doorlockInterface', {
+      templateUrl: '/assets/partials/interfaces/adInterfacesSubMenuList.html',
+      controller: 'ADInterfaceSubMenuCtrl',
+      url: '/doorlockinterface'
+    });
+
+    $stateProvider.state('admin.directInterface', {
         templateUrl: '/assets/partials/doorLockInterface/adDoorLockInterface.html',
         controller: 'ADDoorLockInterfaceCtrl',
-        url: '/doorlockinterface'
+        url: '/directinterface'
+    });
+
+    $stateProvider.state('admin.mobileKey', {
+      templateUrl: '/assets/partials/interfaces/adInterfacesSubMenuList.html',
+      controller: 'ADInterfaceSubMenuCtrl',
+      url: '/directinterface'
+    });
+
+    $stateProvider.state('admin.keypr', {
+        templateUrl: '/assets/partials/interfaces/MobileKeys/Keypr/adKeyprSetup.html',
+        controller: 'adKeyprSetupCtrl',
+        url: '/keypr/setup',
+        resolve: {
+            config: ['adInterfacesCommonConfigSrv', function(adInterfacesCommonConfigSrv) {
+                return adInterfacesCommonConfigSrv.fetchConfiguration('keypr');
+            }]
+        }
     });
 
     $stateProvider.state('admin.sitemindersSetup', {
@@ -418,13 +455,29 @@ angular.module('adminInterfacesRouter', []).config(function($stateProvider) {
         }
     });
 
+	$stateProvider.state('admin.guestrevSetup', {
+        templateUrl: '/assets/partials/interfaces/Guestrev/adGuestrevSetup.html',
+        controller: 'adCRSCommonCtrl',
+        url: '/interfaces/setup/:id',
+        onEnter: ['$stateParams', function($stateParams) {
+            $stateParams.id = 'guestrev';
+        }],
+        resolve: {
+            config: ['adInterfacesCommonConfigSrv', function(adInterfacesCommonConfigSrv) {
+                return adInterfacesCommonConfigSrv.fetchConfiguration('guestrev');
+            }]
+        }
+    });
+
     $stateProvider.state('admin.zDirectSetup', {
         templateUrl: '/assets/partials/ZDirectSetup/adZDirectSetup.html',
-        controller: 'adExternalInterfaceCtrl',
-        // interface_id: 4,
-        interface_id: 'ZDIRECT',
-        simple_name: 'ZDirect',
-        url: '/zDirectSetup'
+        controller: 'adZDirectSetupCtrl',
+        url: '/zdirect/setup',
+        resolve: {
+            config: ['adInterfacesCommonConfigSrv', function(adInterfacesCommonConfigSrv) {
+                return adInterfacesCommonConfigSrv.fetchConfiguration('zdirect');
+            }]
+        }
     });
 
     $stateProvider.state('admin.travelTripperSetup', {
@@ -460,6 +513,35 @@ angular.module('adminInterfacesRouter', []).config(function($stateProvider) {
         templateUrl: '/assets/partials/snapshotSetup/adSnapshotSubGroupMapping.html',
         controller: 'adsnapshotSubGroupMappingCtrl',
         url: '/snapshotSetup/subGroupMapping'
+    });
+
+
+    $stateProvider.state('admin.guestIdSetup', {
+        templateUrl: '/assets/partials/guestIdSetup/adGuestIDSetup.html',
+        controller: 'ADGuestIDSetup',
+        url: '/guestIdSetup'
+    });
+
+    $stateProvider.state('admin.monitorScreen', {
+        templateUrl: '/assets/partials/interfaces/Monitor/adInterfaceMonitor.html',
+        controller: 'ADInterfaceMonitorCtrl',
+        url: '/monitorScreen',
+        resolve: {
+            interfaces: ['ADInterfaceMonitorSrv', function (ADInterfaceMonitorSrv) {
+                return ADInterfaceMonitorSrv.fetch();
+            }]
+        }
+    });
+
+    $stateProvider.state('admin.openkey', {
+        templateUrl: '/assets/partials/interfaces/MobileKeys/Openkey/adOpenkeySetup.html',
+        controller: 'adOpenkeySetupCtrl',
+        url: '/openkey/setup',
+        resolve: {
+            config: ['adInterfacesCommonConfigSrv', function (adInterfacesCommonConfigSrv) {
+                return adInterfacesCommonConfigSrv.fetchConfiguration('openkey');
+            }]
+        }
     });
 
 });

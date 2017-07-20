@@ -86,7 +86,6 @@ admin.controller('ADUserDetailsCtrl',
          */
 
 
-
    /*
     * Handle action when clicked on assigned role
     * @param {int} index of the clicked role

@@ -2,15 +2,15 @@
     <!---------------------------------- last name -------------------------------->
     <div id="content" ng-show="mode === 'LAST_NAME_ENTRY'" class="input-field-contents">
         <h1>
-            <text editable-text="TYPE_LAST"> {{'TYPE_LAST' |translate}}</text>
+            <text data-ng-bind-html="getTagValue('TYPE_LAST')" editable-text="TYPE_LAST"></text>
         </h1>
         <form method="post" class="form">
             <div class="entry input">
-                <input type="text" placeholder="" ng-focus="showOnScreenKeyboard('last-name')" click-touch="showOnScreenKeyboard('input_text')" ng-model="reservationParams.last_name" enter-press="lastNameEntered()" id="last-name" touch-press/>
+                <input type="text" placeholder="" ng-focus="showOnScreenKeyboard('last-name')" click-touch="showOnScreenKeyboard('input_text')" ng-model="reservationParams.last_name" enter-press="lastNameEntered()" id="last-name" ng-keydown="resetTime()" touch-press/>
             </div>
             <div class="entry action">
                 <button type="button" class="button" click-touch="lastNameEntered();">
-                    <text editable-text="NEXT_BTN"> {{'NEXT_BTN' |translate}}</text>
+                    <text data-ng-bind-html="getTagValue('NEXT_BTN')" editable-text="NEXT_BTN"></text>
                 </button>
             </div>
         </form>
@@ -18,15 +18,15 @@
     <!---------------------------------- first name -------------------------------->
     <div id="content" ng-show="mode === 'FIRST_NAME_ENTRY_MODE'" class="input-field-contents">
         <h1>
-            <text editable-text="TYPE_FIRST_NAME"> {{'TYPE_FIRST_NAME' |translate}}</text>
+            <text data-ng-bind-html="getTagValue('TYPE_FIRST_NAME')" editable-text="TYPE_FIRST_NAME"></text>
         </h1>
         <form method="post" class="form">
             <div class="entry input">
-                <input type="text" placeholder="" ng-focus="showOnScreenKeyboard('first-name')" click-touch="showOnScreenKeyboard('input_text')" ng-model="reservationParams.first_name" enter-press="firstNameEntered()" id="first-name" touch-press/>
+                <input type="text" placeholder="" ng-focus="showOnScreenKeyboard('first-name')" click-touch="showOnScreenKeyboard('input_text')" ng-model="reservationParams.first_name" enter-press="firstNameEntered()" id="first-name" ng-keydown="resetTime()" touch-press/>
             </div>
             <div class="entry action">
                 <button type="button" class="button" click-touch="firstNameEntered();">
-                    <text editable-text="NEXT_BTN"> {{'NEXT_BTN' |translate}}</text>
+                    <text data-ng-bind-html="getTagValue('NEXT_BTN')" editable-text="NEXT_BTN"></text>
                 </button>
             </div>
         </form>
@@ -34,7 +34,7 @@
     <!---------------------------------- choose options -------------------------------->
     <div id="content" ng-show="mode === 'CHOOSE_OPTIONS'">
         <h1>
-            <text editable-text="CHECK_IN_SELECT_HEADER"> {{'CHECK_IN_SELECT_HEADER' |translate}}</text>
+            <text data-ng-bind-html="getTagValue('CHECK_IN_SELECT_HEADER')" editable-text="CHECK_IN_SELECT_HEADER"></text>
         </h1>
         <nav id="options" role="nav">
             <ul role="menu">
@@ -43,11 +43,11 @@
                         <!--div ng-include="'/assets/zest_station/css/icons/moon.svg'"></div-->
                         <div ng-include="icons.url.moon"></div>
                     </button>
-                    <text editable-text="CHECK_IN_SELECT_DATE"> {{'CHECK_IN_SELECT_DATE' |translate}}</text>
+                    <text data-ng-bind-html="getTagValue('CHECK_IN_SELECT_DATE')" editable-text="CHECK_IN_SELECT_DATE"></text>
                 </li>
                 <li class="break" ng-show="showOrBetweenDateAndNoOfNights">
                     <span>
-                        <text editable-text="OR_TEXT"> {{'OR_TEXT' |translate}}</text>
+                        <text data-ng-bind-html="getTagValue('OR_TEXT')" editable-text="OR_TEXT"></text>
                     </span>
                 </li>
                 <li ng-show="zestStationData.checkin_screen.authentication_settings.number_of_nights">
@@ -55,14 +55,14 @@
                         <!--div ng-include="'/assets/zest_station/css/icons/moon.svg'"></div-->
                         <div ng-include="icons.url.moon"></div>
                     </button>
-                    <text editable-text="CHECK_IN_NO_OF_NIGHTS"> {{'CHECK_IN_NO_OF_NIGHTS' |translate}}</text>
+                    <text data-ng-bind-html="getTagValue('CHECK_IN_NO_OF_NIGHTS')" editable-text="CHECK_IN_NO_OF_NIGHTS"></text>
                     <span>
-                        <text editable-text="CHECK_IN_NO_OF_NIGHTS_SUB"> {{'CHECK_IN_NO_OF_NIGHTS_SUB' |translate}}</text>
+                        <text data-ng-bind-html="getTagValue('CHECK_IN_NO_OF_NIGHTS_SUB')" editable-text="CHECK_IN_NO_OF_NIGHTS_SUB"></text>
                     </span>
                 </li>
                 <li class="break" ng-show="showOrBetweenNoOfNightsAndEmail">
                     <span>
-                        <text editable-text="OR_TEXT"> {{'OR_TEXT' |translate}}</text>
+                        <text data-ng-bind-html="getTagValue('OR_TEXT')" editable-text="OR_TEXT"></text>
                     </span>
                 </li>
                 <li ng-show="zestStationData.checkin_screen.authentication_settings.email">
@@ -70,14 +70,14 @@
                         <!--div ng-include="'/assets/zest_station/css/icons/email.svg'"></div-->
                         <div ng-include="icons.url.email"></div>
                     </button>
-                    <text editable-text="CHECK_IN_SELECT_EMAIL"> {{'CHECK_IN_SELECT_EMAIL' |translate}}</text>
+                        <text data-ng-bind-html="getTagValue('CHECK_IN_SELECT_EMAIL')" editable-text="CHECK_IN_SELECT_EMAIL"></text>
                     <span>
-                        <text editable-text="CHECK_IN_SELECT_EMAIL_SUB"> {{'CHECK_IN_SELECT_EMAIL_SUB' |translate}}</text>
+                        <text data-ng-bind-html="getTagValue('CHECK_IN_SELECT_EMAIL_SUB')" editable-text="CHECK_IN_SELECT_EMAIL_SUB"></text>
                     </span>
                 </li>
                 <li class="break" ng-show="showOrBetweenEmailAndConfirmNo">
                     <span>
-                        <text editable-text="OR_TEXT"> {{'OR_TEXT' |translate}}</text>
+                        <text data-ng-bind-html="getTagValue('OR_TEXT')" editable-text="OR_TEXT"></text>
                     </span>
                 </li>
                 <li ng-show="zestStationData.checkin_screen.authentication_settings.confirmation">
@@ -85,9 +85,9 @@
                         <!--div ng-include="'/assets/zest_station/css/icons/confirmation.svg'"></div-->
                         <div ng-include="icons.url.confirmation"></div>
                     </button>
-                    <text editable-text="CHECK_IN_SELECT_CONF"> {{'CHECK_IN_SELECT_CONF' |translate}}</text>
+                    <text data-ng-bind-html="getTagValue('CHECK_IN_SELECT_CONF')" editable-text="CHECK_IN_SELECT_CONF"></text>
                     <span>
-                        <text editable-text="CHECK_IN_SELECT_CONF_SUB"> {{'CHECK_IN_SELECT_CONF_SUB' |translate}}</text>
+                        <text data-ng-bind-html="getTagValue('CHECK_IN_SELECT_CONF_SUB')" editable-text="CHECK_IN_SELECT_CONF_SUB"></text>
                     </span>
                 </li>
             </ul>
@@ -96,17 +96,17 @@
     <!---------------------------------- date -------------------------------->
     <div id="content" ng-show="mode === 'FIND_BY_DATE'">
         <h1>
-            <text editable-text="FIND_BY_DATE"> {{'FIND_BY_DATE' |translate}}</text>
+            <text data-ng-bind-html="getTagValue('FIND_BY_DATE')" editable-text="FIND_BY_DATE"></text>
         </h1>
         <form method="post" class="form short">
             <div class="entry input" click-touch="showDatePicker(); resetTime();">
                 <!--div ng-include="'/assets/css/icons/date.svg'"></div-->
-                <div ng-include="icons.url.date"></div>
                 <input placeholder="" class="hasDatepicker start-focused" ng-model="reservationParams.date" id="departure-date" readonly>
             </div>
+            <div ng-include="icons.url.date" click-touch="showDatePicker(); resetTime();"></div>
             <div class="entry action">
                 <button type="button" class="button" click-touch="dateEntered()">
-                    <text editable-text="NEXT_BTN"> {{'NEXT_BTN' |translate}}</text>
+                    <text data-ng-bind-html="getTagValue('NEXT_BTN')" editable-text="NEXT_BTN"></text>
                 </button>
             </div>
         </form>
@@ -114,16 +114,16 @@
     <!---------------------------------- conf number -------------------------------->
     <div id="content" ng-show="mode === 'CONFIRM_NO_MODE'" class="input-field-contents">
         <h1>
-            <text editable-text="TYPE_CONF"> {{'TYPE_CONF' |translate}}</text>
+            <text data-ng-bind-html="getTagValue('TYPE_CONF')" editable-text="TYPE_CONF"></text>
         </h1>
         <form method="post" class="form">
             <div class="entry input">
                 <!--div ng-include="icons.url.confirmation"></div--><!-- input text icon placeholder, if needed in future -->
-                <input type="text" placeholder="" ng-focus="showOnScreenKeyboard('conf-number')" click-touch="showOnScreenKeyboard('conf-number'); resetTime();" ng-model="reservationParams.alt_confirmation_number" enter-press="confNumberEntered()" id="conf-number" touch-press/>
+                <input type="text" placeholder="" ng-focus="showOnScreenKeyboard('conf-number')" click-touch="showOnScreenKeyboard('conf-number'); resetTime();" ng-model="reservationParams.alt_confirmation_number" enter-press="confNumberEntered()" ng-keydown="resetTime()" id="conf-number" touch-press/>
             </div>
             <div class="entry action">
                 <button type="button" class="button" click-touch="confNumberEntered()">
-                    <text editable-text="NEXT_BTN"> {{'NEXT_BTN' |translate}}</text>
+                    <text data-ng-bind-html="getTagValue('NEXT_BTN')" editable-text="NEXT_BTN"></text>
                 </button>
             </div>
         </form>
@@ -131,7 +131,7 @@
     <!---------------------------------- no of nights -------------------------------->
     <div id="content" ng-show="mode === 'NO_OF_NIGHTS_MODE'" class="input-field-contents">
         <h1>
-            <text editable-text="FIND_BY_DATE_SUB"> {{'FIND_BY_DATE_SUB' |translate}}</text>
+            <text data-ng-bind-html="getTagValue('FIND_BY_DATE_SUB')" editable-text="FIND_BY_DATE_SUB"></text>
         </h1>
         <form method="post" class="form">
             <div class="entry input">
@@ -140,7 +140,7 @@
             </div>
             <div class="entry action">
                 <button type="button" class="button" click-touch="noOfNightsEntered()">
-                    <text editable-text="NEXT_BTN"> {{'NEXT_BTN' |translate}}</text>
+                    <text data-ng-bind-html="getTagValue('NEXT_BTN')" editable-text="NEXT_BTN"></text>
                 </button>
             </div>
         </form>
@@ -148,7 +148,7 @@
     <!---------------------------------- email -------------------------------->
     <div id="content" ng-show="mode === 'EMAIL_ENTRY_MODE'" class="input-field-contents">
         <h1>
-            <text editable-text="TYPE_EMAIL"> {{'TYPE_EMAIL' |translate}}</text>
+            <text data-ng-bind-html="getTagValue('TYPE_EMAIL')" editable-text="TYPE_EMAIL"></text>
         </h1>
         <form method="post" class="form">
             <div class="entry input">
@@ -157,7 +157,7 @@
             </div>
             <div class="entry action">
                 <button type="button" class="button" click-touch="emailEntered();">
-                    <text editable-text="NEXT_BTN"> {{'NEXT_BTN' |translate}}</text>
+                    <text data-ng-bind-html="getTagValue('NEXT_BTN')" editable-text="NEXT_BTN"></text>
                 </button>
             </div>
         </form>
@@ -165,10 +165,10 @@
     <!---------------------------------- no match -------------------------------->
     <div id="content" ng-show="mode === 'NO_MATCH'">
         <h1>
-            <text editable-text="RES_SRCH_SRY"> {{'RES_SRCH_SRY' |translate}}</text>
+            <text data-ng-bind-html="getTagValue('RES_SRCH_SRY')" editable-text="RES_SRCH_SRY"></text>
         </h1>
         <h2>
-            <text editable-text="RES_SRCH_SRY_SUB"> {{'RES_SRCH_SRY_SUB' |translate}}</text>
+            <text data-ng-bind-html="getTagValue('RES_SRCH_SRY_SUB')" editable-text="RES_SRCH_SRY_SUB"></text>
         </h2>
         <nav id="options" role="nav">
             <ul role="menu">
@@ -177,12 +177,12 @@
                         <!--div ng-include="'/assets/zest_station/css/icons/keyboard.svg'"></div-->
                         <div ng-include="icons.url.keyboard"></div>
                     </button>
-                    <text editable-text="RES_SRCH_RE_ENTER_LAST"> {{'RES_SRCH_RE_ENTER_LAST' |translate}}</text>
+                    <text data-ng-bind-html="getTagValue('RES_SRCH_RE_ENTER_LAST')" editable-text="RES_SRCH_RE_ENTER_LAST"></text>
                     <span ng-bind="reservationParams.last_name"></span>
                 </li>
                 <li class="break">
                     <span>
-                        <text editable-text="OR_TEXT"> {{'OR_TEXT' |translate}}</text>
+                        <text data-ng-bind-html="getTagValue('OR_TEXT')" editable-text="OR_TEXT"></text>
                     </span>
                 </li>
                 <li>
@@ -194,12 +194,12 @@
                         <!-- confirmation number -->
                         <div ng-include="icons.url.confirmation" ng-show="reservationParams.alt_confirmation_number.length>0"></div>
                     </button>
-                    <text editable-text="RES_SRCH_RE_ENTER_ROOM"> {{'RES_SRCH_RE_ENTER_ROOM' |translate}}</text>
+                    <text data-ng-bind-html="getTagValue('RES_SRCH_RE_ENTER_ROOM')" editable-text="RES_SRCH_RE_ENTER_ROOM"></text>
                     <span>{{reservationParams.email||reservationParams.no_of_nights||reservationParams.date||reservationParams.alt_confirmation_number}}</span>
                 </li>
                 <li class="break">
                     <span>
-                        <text editable-text="OR_TEXT"> {{'OR_TEXT' |translate}}</text>
+                        <text data-ng-bind-html="getTagValue('OR_TEXT')" editable-text="OR_TEXT"></text>
                     </span>
                 </li>
                 <li>
@@ -207,9 +207,9 @@
                         <!--div ng-include="'/assets/zest_station/css/icons/staff.svg'"></div-->
                         <div ng-include="icons.url.staff"></div>
                     </button>
-                    <text editable-text="RES_SRCH_TALK"> {{'RES_SRCH_TALK' |translate}}</text>
+                    <text data-ng-bind-html="getTagValue('RES_SRCH_TALK')" editable-text="RES_SRCH_TALK"></text>
                     <span>
-                        <text editable-text="RES_SRCH_TALK_SUB"> {{'RES_SRCH_TALK_SUB' |translate}}</text>
+                        <text data-ng-bind-html="getTagValue('RES_SRCH_TALK_SUB')" editable-text="RES_SRCH_TALK_SUB"></text>
                     </span>
                 </li>
             </ul>

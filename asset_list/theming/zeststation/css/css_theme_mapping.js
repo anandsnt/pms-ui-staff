@@ -13,8 +13,14 @@ module.exports = {
 			'public': [themeCSSRoot + 'public.less'],
 			'public_v2': [themeCSSRoot + 'public_v2.less'],
 			'duke': [themeCSSRoot + 'duke.less'],
-			'snt': [themeCSSRoot + 'snt.less']
-
-		}
+			'de-jonker': [themeCSSRoot + 'de-jonker.less'],
+			'chalet-view': [themeCSSRoot + 'chalet-view.less'],
+			'snt': [themeCSSRoot + 'snt.less'],
+			'freehand': [themeCSSRoot + 'freehand.less'],
+			'row-nyc': [themeCSSRoot + 'row-nyc.less'],
+			'circle-inn-fairfield': [themeCSSRoot + 'circle-inn-fairfield.less'],
+			'cachet-boutique': [themeCSSRoot + 'cachet-boutique.less'],
+			'hi-ho': [themeCSSRoot + 'hi-ho.less']
+		};
 	}
-}
+};

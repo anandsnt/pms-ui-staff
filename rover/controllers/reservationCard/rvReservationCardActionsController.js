@@ -561,7 +561,9 @@ sntRover.controller('rvReservationCardActionsController', ['$scope', '$filter', 
             var year, month, day;
             var spl = dateStr.split(delim);
 
-            day = spl[1]; month = spl[0]; year = spl[2];
+            day = spl[1];
+            month = spl[0];
+            year = spl[2];
 
             return {day: day, month: month, year: year};
         };
@@ -857,14 +859,16 @@ sntRover.controller('rvReservationCardActionsController', ['$scope', '$filter', 
             } else if ((!(($scope.actions.totalCount > 0 || $scope.refreshing) && !$scope.refreshToEmpty) &&
                         !(($scope.actions.totalCount === 0 && $scope.actionSelected === "none") || $scope.refreshToEmpty))) {
                 return false;
-            } else return true;
+            }
+            return true;
         };
         $scope.isDeletePending = function(id, a) {
             for (var i in a) {
                 if (a[i] === id) {
                     return true;
                 }
-            } return false;
+            }
+            return false;
         };
         
         $scope.capped = function(str) {
@@ -1060,7 +1064,7 @@ sntRover.controller('rvReservationCardActionsController', ['$scope', '$filter', 
         };
 
         $scope.getDateFromDate = function(d) {
-            var day = new Date(d);
+            var day = new tzIndependentDate(d);
             var dayString = day.getDay();
 
             switch (day.getDay()) {

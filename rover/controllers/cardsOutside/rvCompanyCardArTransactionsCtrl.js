@@ -539,8 +539,7 @@ sntRover.controller('RVCompanyCardArTransactionsCtrl', ['$scope', '$rootScope', 
 
 			var dataFetchSuccess = function(data) {
 				$scope.$emit('hideLoader');
-				$scope.filterData.statementEmailAddress = data.data.to_address;
-
+				$scope.filterData.statementEmailAddress = (!!data.data.to_address) ? data.data.to_address : '';
 				ngDialog.open({
 		      		template: '/assets/partials/companyCard/rvArStatementPopup.html',
 			        className: '',
@@ -676,6 +675,7 @@ sntRover.controller('RVCompanyCardArTransactionsCtrl', ['$scope', '$rootScope', 
 			}
 			else {
 				var transaction = $scope.arTransactionDetails.ar_transactions[index];
+
 				transaction.details = [];
 
 				if (!transaction.active) {

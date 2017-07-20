@@ -1852,15 +1852,38 @@
                     .faux-clickable;
                     background-color: @grey1;
 
-                    .entry {
+                     .entry {
                         float: none;
                         .float;
 
+                        .guest-image {
+                            .square(40px);
+                            margin-right: 10px;
+
+                            .icons {
+                                .square(40px);
+                                background-color: @grey2;
+
+                                &.icon-student {
+                                    background-position: 10px -10530px
+                                }
+
+                                &.icon-infant {
+                                    background-position: 10px -10590px;
+                                }
+
+                                &.icon-adult {
+                                    background-position: 10px -10471px;
+                                }
+                            }
+                        }
+
                         input {
                             width: 47%;
-                            .pull-left;
+                            .calc-width(49, 25);
+                            .pull-left; 
 
-                            &:first-of-type { margin-right: 6%; }
+                            &:first-of-type { margin-right: 2%; }
                         }
                     }
 

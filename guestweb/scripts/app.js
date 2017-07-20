@@ -122,6 +122,14 @@ sntGuestWeb.controller('homeController', ['$rootScope', '$scope', '$location', '
 		$rootScope.collectOutStandingBalance = !!reservationAndhotelData.zestweb_collect_outstanding_balance ? true : false;
 		$rootScope.skipBalanceCollection = false;
 
+		// This is used for greatwolf only
+		if (!_.isUndefined(reservationAndhotelData.zestweb_cc_authorization_amount) && reservationAndhotelData.zestweb_cc_authorization_amount.length > 0){
+			$rootScope.ccAuthorizationAmount = reservationAndhotelData.zestweb_cc_authorization_amount;
+		} else {
+			$rootScope.ccAuthorizationAmount = '50';
+		}
+
+
 		$rootScope.conductSurvey = !!reservationAndhotelData.survey_question_prompt_on ? true : false;
 		$rootScope.skipBalanceconductSurvey = false;
 		// we will be showing the departure date as a verification option in external URL landing based
@@ -153,6 +161,8 @@ sntGuestWeb.controller('homeController', ['$rootScope', '$scope', '$location', '
 		$rootScope.isAddonUpsellActive = reservationAndhotelData.addon_upsell_availability;
 		$rootScope.upsellDisplayOrderAmountFirst =  (reservationAndhotelData.addon_upsell_display_order === 'amount_then_post_type'); 
 
+		$rootScope.sellLcoAsAddons = reservationAndhotelData.is_sell_late_checkout_as_addon;
+		
 		if (!!$rootScope.footerSettings.display_footer) {
 			// active footer count
 			var footerCount = _.filter($rootScope.footerSettings.footers, function(footer) {

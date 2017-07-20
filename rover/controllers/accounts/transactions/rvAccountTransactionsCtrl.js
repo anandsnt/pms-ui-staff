@@ -207,7 +207,7 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 		var onTransactionFetchSuccess = function(data) {
 
 			$scope.transactionsDetails = data;
-			
+
 			configSummaryDateFlags();
 			loadDefaultBillDateData();
 
@@ -447,10 +447,10 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 			}, 100);
 		});
 
-		$scope.okButtonClicked = function() {		
+		$scope.okButtonClicked = function() {
 			cancelPopup();
 		};
-		var cancelPopup = function() {		
+		var cancelPopup = function() {
 			ngDialog.close();
 		};
 
@@ -881,7 +881,7 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 		 * @param  {[type]} currentTab){		} [description]
 		 * @return {[type]}                   [description]
 		 */
-		$scope.$on ('ACCOUNT_TAB_SWITCHED', function(event, currentTab) {			
+		$scope.$on ('ACCOUNT_TAB_SWITCHED', function(event, currentTab) {
 			if (currentTab === "TRANSACTIONS") {
 				callInitialAPIs();
 			}
@@ -891,8 +891,8 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 				}
 			}
 		});
-		
-		var updateBillingReferenceNumber = function() {				
+
+		var updateBillingReferenceNumber = function() {
 			if (rvPermissionSrv.getPermissionValue('EDIT_ACCOUNT')) {
 				var onAccountUpdateSuccess = function(data) {
 						// client controllers should get an infromation whether updation was success
@@ -920,7 +920,7 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 				$scope.$emit('showErrorMessage', ['Sorry, Changes will not get saved as you don\'t have enough permission']);
 			}
 		};
-		
+
 
 		/**
 		 * When there is a TAB switch, we will get this. We will initialize things from here
@@ -932,6 +932,12 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 			if (currentTab === "TRANSACTIONS") {
 				callInitialAPIs();
 			}
+            // CICO-40931 -Fixed the issue of not updating the bill reference no from group screen
+            else {
+                if ($scope.isBillingReferenceNumberChanged) {
+                    updateBillingReferenceNumber();
+                }
+            }
 		});
 
 		/*
@@ -982,7 +988,7 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 				$scope.refreshScroller('registration-content');
 			}, 500);
 		};
-		
+
     	// Handle the summary day shift functionality.
         $scope.summaryDateBtnGroup = {
             showCount: 5,
@@ -997,7 +1003,7 @@ sntRover.controller('rvAccountTransactionsCtrl', [
                         billData.disableNext = true;
                     }
                     billData.disablePrev = false;
-                } 
+                }
             },
             prev: function(billData) {
                 if (billData.currentActive >= this.showCount) {
@@ -1025,7 +1031,7 @@ sntRover.controller('rvAccountTransactionsCtrl', [
                 dateCount = bill.days.length;
 
                 if (dateCount > showCount) {
-                    bill.disablePrev = false;                    
+                    bill.disablePrev = false;
                     while (i < (dateCount - showCount)) {
                         bill.days[i].isShown = false;
                         i++;
@@ -1046,7 +1052,7 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 
         // Success callback for transaction fetch API.
     	var onBillTransactionFetchSuccess = function(data) {
-    		
+
     		var activebillTab = $scope.transactionsDetails.bills[$scope.currentActiveBill];
 
     		activebillTab.transactions = [];

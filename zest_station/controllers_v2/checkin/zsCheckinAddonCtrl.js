@@ -7,7 +7,11 @@ sntZestStation.controller('zsCheckinAddonCtrl', [
 	'$timeout',
 	'$translate',
 	function($scope, $stateParams, $state, zsCheckinSrv, zsEventConstants, $timeout, $translate) {
+		
+		var lcoAddonList = [];
 
+		$scope.selectedLcoAddonId = '';
+		$scope.selectedAddon = {};
 		var navigateToTermsPage = function() {
 
 			var stateParams = {
@@ -151,34 +155,98 @@ sntZestStation.controller('zsCheckinAddonCtrl', [
 				navigateToTermsPage();
 			}
 		};
-		var addAddonToReservation = function(selectedAddon) {
+		var addAddonToReservation = function(addon, isLco) {
 			var params = {
 				id: $scope.selectedReservation.id,
-				addon_id: selectedAddon.addon_id
+				addon_id: addon.addon_id
 			};
 
-			if ($scope.isAddonFlatOrRoomType(selectedAddon)) {
+			if ($scope.isAddonFlatOrRoomType(addon)) {
 				params.quantity = angular.copy($scope.selectedAddonCount);
 			}
 			$scope.callAPI(zsCheckinSrv.updateAddon, {
 				params: params,
 				'successCallBack': function() {
-					addRemoveAddonSucess(selectedAddon);
+					if (!_.isUndefined(isLco)) {
+						addon.is_selected = true;
+						$scope.selectedAddon.is_selected = true;
+						$scope.showAddonPopup = false;
+					} else {
+						addRemoveAddonSucess(addon);
+					}
 				},
 				'failureCallBack': addonGeneralFailure
 			});
 		};
-		var removeAddonFromReservation = function(selectedAddon) {
+		var removeAddonFromReservation = function(addon, isLco) {
 			$scope.callAPI(zsCheckinSrv.deleteAddon, {
 				params: {
 					id: $scope.selectedReservation.id,
-					addon_id: selectedAddon.addon_id
+					addon_id: addon.addon_id
 				},
 				'successCallBack': function() {
-					addRemoveAddonSucess(selectedAddon);
+					if (!_.isUndefined(isLco)) {
+						addon.is_selected = false;
+						$scope.selectedAddon.is_selected = false;
+						$scope.selectedLcoAddonId = '';
+						$scope.showAddonPopup = false;
+					} else {
+						addRemoveAddonSucess(addon);
+					}
 				},
 				'failureCallBack': addonRemoveGeneralFailure
 			});
+		};
+
+		$scope.addRemoveLcoAddon = function() {
+			var addon = _.find($scope.selectedAddon.addons, function(addon) {
+				return parseInt(addon.addon_id) === parseInt($scope.selectedLcoAddonId);
+			});
+
+			if (!addon.is_selected) {
+				addAddonToReservation(addon, true);
+			} else {
+				removeAddonFromReservation(addon, true);
+			}
+		};
+
+		$scope.isOneLcoAdded = function() {
+			var lcoAddon = _.find($scope.viewableAddons, function(addon) {
+				return addon.isLco;
+			});
+			var isAnyOneLcoSelected = _.some(lcoAddon.addons, function(addon) {
+				return addon.is_selected;
+			});
+			
+			return isAnyOneLcoSelected;
+		};
+
+		$scope.selectDeselectLco = function(lcoAddon) {
+			if (!$scope.isOneLcoAdded() && !lcoAddon.is_selected) {
+				$scope.selectedLcoAddonId = lcoAddon.addon_id;
+			} else {
+				$scope.selectedLcoAddon = '';
+			}
+		};
+
+		// check if the the Late checkout addon already added or not
+		$scope.checkIfLcoAddonWasAdded = function() {
+			if ($scope.selectedAddon.isLco) {
+				var addon = _.find($scope.selectedAddon.addons, function(addon) {
+					return parseInt(addon.addon_id) === parseInt($scope.selectedLcoAddonId);
+				});
+
+				return _.isUndefined(addon) ? false : addon.is_selected;
+			}
+			return false;
+		};
+		// show late checout add button if one LCO addon is selected and it wasn't added before, else show remove
+		$scope.lcoRemoveMode = function() {
+			return $scope.checkIfLcoAddonWasAdded();
+		};
+		$scope.lcoAddonsBackAction =  function() {
+			$scope.showAddonPopup = false;
+			$scope.selectedLcoAddonId = '';
 		};
 
 		$scope.incrementAddonQty = function() {
@@ -222,16 +290,144 @@ sntZestStation.controller('zsCheckinAddonCtrl', [
 			$scope.selectedAddon = addon;
 			$scope.showAddonPopup = true;
 			$scope.selectedAddonCount = addon.quantity;
+			if (addon.isLco) {
+				var selectLcoAddon = _.find($scope.selectedAddon.addons, function(addon) {
+					return addon.is_selected;
+				});
+
+				$scope.selectedLcoAddonId = _.isUndefined(selectLcoAddon) ? '' : selectLcoAddon.addon_id;
+			}
 		};
 		$scope.closePopup = function() {
 			$scope.showAddonPopup = false;
 		};
 
+		var fetchLateCheckoutSettings = function() {
+			var fetchLateCheckoutSettingsSuccess = function(response) {
+					var checkIfAddonIdIsPresent = function(lco) {
+						return (!_.isUndefined(lco.addon_id) && lco.addon_id !== '');
+					};
+					var alreadyPresentAddonIds = _.pluck($scope.selectedReservation.addons, 'id');
+					var checkIfLcoIsAlreadyPurchased = function(addon_id) {
+						return _.some(alreadyPresentAddonIds, function(id) {
+							return parseInt(addon_id) === parseInt(id);
+						});
+					};
+					var updateAddonListWrTLcoPresent = function(lcoAddonId) {
+						$scope.addonsList = _.reject($scope.addonsList, function(addon) {
+							return parseInt(addon.addon_id) === parseInt(lcoAddonId);
+						});
+					};
+					var isFirstLcoSelected = false;
+					var isSecondLcoSelected = false;
+					var isThirdLcoSelected = false;
+					var firstLcoIndex = -1;
+					var lateCheckoutAddons = [];
+					var extractTime = function(time) {
+						time = parseInt(time) < 10 ? time.slice(1, 2) : time;
+						return time;
+					};
+					var addLateCheckoutAddon = function(lco_charge) {
+							lcoAddonList.push({
+								id: lco_charge.addon_id,
+								time: extractTime(lco_charge.time)
+							});
+					};
+
+					// Dont offer lower LCO offers if higher level is already purchased
+					if (checkIfAddonIdIsPresent(response.extended_checkout_charge_2)) {
+						isThirdLcoSelected = checkIfLcoIsAlreadyPurchased(response.extended_checkout_charge_2.addon_id);
+						if (!isThirdLcoSelected) {
+							addLateCheckoutAddon(response.extended_checkout_charge_2);
+						} else {
+							updateAddonListWrTLcoPresent(response.extended_checkout_charge_2.addon_id);
+						}
+					}
+					if (checkIfAddonIdIsPresent(response.extended_checkout_charge_1)) {
+						isSecondLcoSelected = checkIfLcoIsAlreadyPurchased(response.extended_checkout_charge_1.addon_id);
+						if (!isSecondLcoSelected && !isThirdLcoSelected) {
+							addLateCheckoutAddon(response.extended_checkout_charge_1);
+						} else {
+							updateAddonListWrTLcoPresent(response.extended_checkout_charge_1.addon_id);
+						}
+					}
+					if (checkIfAddonIdIsPresent(response.extended_checkout_charge_0)) {
+						isFirstLcoSelected = checkIfLcoIsAlreadyPurchased(response.extended_checkout_charge_0.addon_id);
+						if (!isFirstLcoSelected && !isSecondLcoSelected && !isThirdLcoSelected) {
+							addLateCheckoutAddon(response.extended_checkout_charge_0);
+						} else {
+							updateAddonListWrTLcoPresent(response.extended_checkout_charge_0.addon_id);
+						}
+					}
+
+					// create LC addons using the LC addon Ids
+					_.each($scope.addonsList, function(addon, addonIndex) {
+						_.each(lcoAddonList, function(lcoAddon) {
+							if (parseInt(addon.addon_id) === parseInt(lcoAddon.id)) {
+								if (firstLcoIndex === -1) {
+									firstLcoIndex = addonIndex; // the bundled LCO will appear @ this index
+								}
+								addon.isLateCheckoutAddon = true;
+								addon.index = lcoAddon.index;
+								addon.time = lcoAddon.time;
+								lateCheckoutAddons.push(addon);
+							}
+						});
+					});
+
+					// remove all LCO addons from main addons list
+					$scope.addonsList = _.reject($scope.addonsList, function(addon) {
+						return addon.isLateCheckoutAddon;
+					});
+
+					// create new Bunlded addon for LCO
+					if (lateCheckoutAddons.length > 0) {
+						var lcoImage;
+
+						if (!_.isUndefined(response.late_checkout_addon_image) && response.late_checkout_addon_image.length > 0) {
+							lcoImage = response.late_checkout_addon_image;
+						} else {
+							lcoImage = lateCheckoutAddons[0].image;
+						}
+						var bundledLCOAddon = {
+							"addons": lateCheckoutAddons,
+							"name": "LCO",
+							"isLco": true,
+							"image": lcoImage
+						};
+
+						$scope.addonsList.splice(firstLcoIndex, 0, bundledLCOAddon);
+					}
+
+				setPageNumberDetails();
+			};
+
+			$scope.callAPI(zsCheckinSrv.fetchLateCheckoutSettings, {
+				params: {
+					reservation_id: $scope.selectedReservation.id
+				},
+				'successCallBack': fetchLateCheckoutSettingsSuccess,
+				'failureCallBack': generalError
+			});
+		};
+
 		var fetchHotelAddonLabels = function() {
 			var fetchAddonLabelSuccess = function(response) {
-				var amountTypesLabels = response.amount_types;
-				var postTypeLabels = response.post_types;
+				var amountTypesLabels;
+				var postTypeLabels;
 
+				var translatedLabels = _.find(response.translations, function(translation) {
+					return translation.language_id === $scope.languageId;
+				});
+				
+				// check if translations are added, else use english ones
+				if (_.isUndefined(translatedLabels)) {
+					amountTypesLabels = response.amount_types;
+					postTypeLabels = response.post_types;
+				} else {
+					amountTypesLabels = translatedLabels.amount_types;
+					postTypeLabels = translatedLabels.post_types;
+				}
 				// Loop through the addons list and assign the labels set in admin --> upsells --> adodn upsell
 				// amount type labels and post type labels are arrays
 
@@ -254,7 +450,13 @@ sntZestStation.controller('zsCheckinAddonCtrl', [
 					// if no custom label is present, set to post type
 					addon.post_type_label = (addon.post_type_label === '') ? addon.post_type : addon.post_type_label;
 				});
-				setPageNumberDetails();
+				// TO DELETE
+				if ($scope.zestStationData.is_sell_late_checkout_as_addon) {
+					fetchLateCheckoutSettings();
+				} else {
+					setPageNumberDetails();
+				}
+
 				$scope.loadingCompleted = true;
 				$scope.showPageNumberDetails = true;
 			};
