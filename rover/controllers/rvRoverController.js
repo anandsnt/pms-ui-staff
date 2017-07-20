@@ -283,7 +283,7 @@ sntRover.controller('roverController', [
       $scope.searchBackButtonCaption = caption; // if it is not blank, backbutton will show, otherwise dont
     });
 
-    if ($rootScope.adminRole === "Hotel Admin") {
+    if ($rootScope.adminRole === "Hotel Admin" || $rootScope.adminRole === "Chain Admin User") {
       $scope.isHotelAdmin = true;
     }
     /**
