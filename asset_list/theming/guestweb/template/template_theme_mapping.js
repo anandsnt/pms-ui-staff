@@ -361,7 +361,8 @@ module.exports = {
             'guestweb_el_cosmico': commonNonMgmTemplates,
             'guestweb_quintessence_resort': commonNonMgmTemplates,
             'guestweb_one_washington_circle': commonNonMgmTemplates,
-            'guestweb_river_inn': commonNonMgmTemplates
+            'guestweb_river_inn': commonNonMgmTemplates,
+            'guestweb_first_hotel_breiseth': commonNonMgmTemplates
         };
     }
 };
