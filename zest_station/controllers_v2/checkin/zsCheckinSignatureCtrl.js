@@ -26,6 +26,14 @@ sntZestStation.controller('zsCheckinSignatureCtrl', [
          * 2.TIMED_OUT
          */
 
+        // CICO-36696 : Method to get canvas data in Base64 Format, includes the line inside canvas.
+        var getSignatureBase64Data = function () {
+           var canvasElement   = angular.element( document.querySelector('canvas.jSignature'))[0],
+               signatureURL    = (canvasElement) ? canvasElement.toDataURL() : '';
+
+           return signatureURL;
+         };
+
         /**
          * [clearSignature description]
          * @return {[type]} [description]
@@ -87,7 +95,8 @@ sntZestStation.controller('zsCheckinSignatureCtrl', [
         var collectPassportEnabled = $scope.zestStationData.check_in_collect_passport;
 
         var checkInGuest = function() {
-            var signature = $scope.signatureData;
+            var signatureBase64Data = getSignatureBase64Data();
+
             var checkinParams = {
                 'reservation_id': $stateParams.reservation_id,
                 'workstation_id': $scope.zestStationData.set_workstation_id,
@@ -96,7 +105,7 @@ sntZestStation.controller('zsCheckinSignatureCtrl', [
                 'is_promotions_and_email_set': false,
                 //                "no_post": "",//handled by the API CICO-35315
                 'is_kiosk': true,
-                'signature': signature
+                'signature': signatureBase64Data
             };
             var options = {
                 params: checkinParams,
@@ -140,6 +149,7 @@ sntZestStation.controller('zsCheckinSignatureCtrl', [
              * this method will check the guest in after swiping a card
              */
             $scope.signatureData = JSON.stringify($('#signature').jSignature('getData', 'native'));
+
             if ($scope.signatureData !== [] && $scope.signatureData !== null && $scope.signatureData !== '' && $scope.signatureData !== '[]') {
                 checkInGuest();
             } else {
