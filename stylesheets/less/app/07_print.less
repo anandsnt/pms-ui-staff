@@ -280,7 +280,7 @@
         &.icon-group { background-position: 0 -120px; }
         &.icon-guest-company { background-position: 0 -140px; }
         &.icon-guest-travelagent { background-position: 0 -160px; }
-        &.icon-hold { background-position: 0 -180px;  
+        &.icon-hold { background-position: 0 -180px;
             &.red {
                 background-position: 0 -180px;
                 }
@@ -295,7 +295,7 @@
 ==========================================================*/
 
 /* Action Manager ========================================*/
-    
+
     /* Hide Content */
     .actions-content {
         .content-left,
@@ -309,7 +309,7 @@
     }
 
 /* Availability             ==============================*/
-    
+
     /* Hide everything except availability ***/
     .availability-print {
         .container,
@@ -329,7 +329,7 @@
 
             col {
                 width: 16%;
-                
+
                 &.grid-col { width: 6%; }
             }
 
@@ -374,7 +374,7 @@
                             border-bottom: 2px solid @grey2;
                         }
                     }
-                }                
+                }
             }
         }
 
@@ -457,7 +457,7 @@
                     }
 
                     .confirmation {
-                        
+
                         color: @grey3;
                         margin-right: 8pt;
 
@@ -493,7 +493,7 @@
 
                         .guest-status { margin-right: 4pt; }
 
-                        .time { 
+                        .time {
                             color: @grey3;
                             .show;
                         }
@@ -517,7 +517,7 @@
                     &.paid { color: @grey3; }
                 }
 
-                .switch-button { 
+                .switch-button {
                     line-height: 20px;
                     text-align: right;
                     .size(20px, 4cm);
@@ -530,16 +530,16 @@
                         .switch-icon { .hide; }
                     }
 
-                    .data-on { 
-                        .hide; 
+                    .data-on {
+                        .hide;
 
                         .value { color: @grey3; }
                     }
 
-                    .data-off { 
-                        .show; 
+                    .data-off {
+                        .show;
 
-                        .value { 
+                        .value {
                             color: @textColor;
                             font-weight: 600;
                         }
@@ -670,7 +670,7 @@
                 position: relative;
 
                 a,
-                .faux-anchor { 
+                .faux-anchor {
                     .show();
                 }
 
@@ -682,7 +682,7 @@
                     position: relative;
                     padding-right: 10%;
 
-                    h2 { 
+                    h2 {
                         margin: 0;
                         line-height: 10px;
                         .nowrap();
@@ -692,7 +692,7 @@
                         .icons {
                             display: inline-block;
                             vertical-align: middle;
-                            .size(8pt, 15pt); 
+                            .size(8pt, 15pt);
                             margin-left: 2pt;
 
                             &.icon-suite {
@@ -702,9 +702,9 @@
                     }
 
                     .room-type,
-                    .room-status { 
+                    .room-status {
                         line-height: 10px;
-                        .nowrap(); 
+                        .nowrap();
                         display: block;
                     }
 
@@ -726,9 +726,9 @@
                     width: 30%;
                     .pull-left;
 
-                    .guest-status { 
+                    .guest-status {
                         background-image: none;
-                        margin-right: 4pt; 
+                        margin-right: 4pt;
                     }
 
                     .current,
@@ -737,7 +737,7 @@
                         line-height: 20px;
                         .pull-left;
                         .size(20px, 50%);
-                    } 
+                    }
                 }
 
                 .assigned,
@@ -763,7 +763,7 @@
 
                 .guest-image,
                 .icon-queued,
-                .show-vacant { 
+                .show-vacant {
                     position: absolute;
                     top: 5px;
                     right: 0;
@@ -774,9 +774,9 @@
                     .square(20px);
                 }
 
-                .show-vacant { 
+                .show-vacant {
                     text-align: right;
-                    line-height: 20px; 
+                    line-height: 20px;
                     width: 10%;
                 }
 
@@ -795,7 +795,7 @@
                     padding: 2pt;
                     background-color: @grey1;
                     .pull-left;
-                    
+
                     li {
                         font-style: italic;
                         line-height: 10pt;
@@ -842,7 +842,7 @@
                     .departure-date {
                         margin-left: 2pt;
                     }
-                    
+
                 }
 
                 .last-column {
@@ -851,7 +851,7 @@
                     .service-status {
                         width: 100%;
                         float: none;
-                    } 
+                    }
                 }
             }
 
@@ -873,40 +873,56 @@
                 .values {
                     margin: 0;
                     .pull-left;
+				}
 
-                    .value-block {
-                        line-height: 1;
-                        color: @grey3;
-                        padding: 0 16pt;
-                        .pull-left;
+                .value-block {
+                    line-height: 1;
+                    color: @grey3;
+                    .pull-left;
 
-                        strong {
-                            color: @textColor;
-                            font-weight: 600;
-                            .show;
-                        }
-
-                        &.revenue,
-                        &.amount { width: 30%; }
-                        &.type,
-                        &.tax { width: 20%; }
-
-                        &:not(:last-child) { border-right: 1px solid @grey2; }
+                    strong {
+                        color: @textColor;
+                        font-weight: 600;
+                        .show;
                     }
+
+                    &.revenue,
+                    &.amount { width: 30%; }
+
+                    &.type,
+                    &.tax { width: 20%; }
+
+					&:not(:first-child) {
+						padding-left: 10px;
+					}
+
+					&:not(:last-child) {
+						padding-right: 10px;
+						border-right: 1px solid @grey2;
+					}
                 }
 
                 &.in-card {
-                    .data { .calc-width(35, 30); }
+					position: relative;
+					padding-right: 40px;
 
-                    .values { .calc-width(65, 30); }
+					.data {
+						.calc-width(100, 260);
+					}
+
+                    .values {
+						width: 240px;
+					}
 
                     .prepaid,
                     .switch-button {
+						position: absolute;
+						top: 4pt;
+						right: 0;
                         line-height: 20px;
                         text-align: right;
                         text-transform: uppercase;
-                        .size(20px, 60px);
-                        .pull-left;
+                        .size(20px, 40px);
                     }
 
                     .prepaid { color: @grey3; }
@@ -993,7 +1009,8 @@
                     .card-actions { .hide; }
 
                     &.second,
-                    &.third { .hide; }
+                    &.third,
+					&.fourth { .hide; }
                 }
             }
 
@@ -1127,7 +1144,7 @@
                                             .show;
                                         }
 
-                                        &:not(:nth-last-child(4)) {
+                                        &:not(:nth-last-child(3)) {
                                             margin-right: 8pt;
                                             padding-right: 8pt;
                                             border-right: 1px solid @grey2;
@@ -1170,7 +1187,7 @@
                     .invoice-footer {
                         text-align: justify;
                     }
-                    
+
                     img {
                         -webkit-filter: grayscale(100%); /* Chrome, Safari, Opera */
                         filter: grayscale(100%);
@@ -1189,12 +1206,12 @@
                         background-color: @grey2;
                         padding:4pt 0;
                         font-size: 5pt;
-                        
+
                         &:last-child {
                             padding-right: 4pt;
                         }
-                        
-                        
+
+
                         &.charge-date,
                         &.charge-code,
                         &.charge-amount {
@@ -1327,7 +1344,7 @@
                                 padding-left: 4pt;
                             }
                         }
-                        
+
                         tfoot td {
                             background-color: @grey2;
                             font-weight: bold;
@@ -1358,7 +1375,7 @@
                         margin-bottom:0.1cm;
 
                         strong { display:block; }
-                        
+
 
                         &:nth-child(3) {
                             clear: both;
@@ -1428,11 +1445,11 @@
             &.legend {
                 li {
                     .float;
-                    .icons { 
+                    .icons {
                         .square(20px);
                         display: block;
                         float: left;
-                    } 
+                    }
                 }
             }
         }
@@ -1719,11 +1736,11 @@
                             padding-left: 0;
                             border-top: 1px solid @grey1;
 
-                            span { 
-                                .show(); 
+                            span {
+                                .show();
                             }
 
-                            strong { 
+                            strong {
                                 color: @grey4;
                                 text-transform: uppercase;
                                 font-weight: 600;
@@ -1731,7 +1748,7 @@
                                 .show();
                             }
 
-                            p { 
+                            p {
                                 line-height: 1;
                             }
 
@@ -1749,7 +1766,7 @@
                                         &.icon-unassigned { background-position: 0 -220px; }
                                         &.icon-assigned { background-position: 0 -240px; }
                                         &.icon-completed { background-position: 0 -260px; }
-                                    }                                    
+                                    }
                                 }
                             }
                         }
@@ -1987,7 +2004,7 @@
             &.balance-reports {
                 thead {
                     th {
-                        padding: 4pt 8pt 4pt 4pt; 
+                        padding: 4pt 8pt 4pt 4pt;
 
                         &:last-child { padding-right: 0; }
                     }
@@ -2247,10 +2264,10 @@
 
                                     &.active {
                                         td {
-                                            border-bottom-color: rgba(0,0,0,0.04);  
+                                            border-bottom-color: rgba(0,0,0,0.04);
                                         }
                                     }
-                                    
+
                                 }
                             }
                             // Used in Comparison Report
@@ -2259,8 +2276,8 @@
                                     &.code {
                                         padding-left: 20px;
                                     }
-                                    border-bottom-color: rgba(0,0,0,0.03);  
-                                } 
+                                    border-bottom-color: rgba(0,0,0,0.03);
+                                }
 
                                 &.last {
                                     td {
@@ -2281,12 +2298,12 @@
                         tr {
                             th {
                                 .switch-button {
-                                     
+
                                     .value,
                                     input {
                                         .hide();
                                     }
-                                    
+
                                     &:not(.on) {
                                         .data-on {
                                             .hide();
@@ -2395,7 +2412,7 @@
                     tbody {
                         tr {
                             &.total {
-                             
+
                                 td {
                                     border-top: 1px solid @black;
                                     border-bottom: 1px solid @black;
@@ -2408,7 +2425,7 @@
                                         }
                                     }
                                 }
-                                
+
                             }
                         }
                     }
@@ -2419,14 +2436,14 @@
                 tbody {
                     tr {
                         td {
-                            width: 3.4cm; 
+                            width: 3.4cm;
 
                             &.entity-name {
                                 width: -webkit-calc(~'100% - 19cm');
                                 width: -moz-calc(~'100% - 19cm');
                                 width: calc(~'100% - 19cm');
                             }
-                            
+
                             &.red,
                             &.penalty { color: @grey3; position:relative }
 
@@ -2440,10 +2457,10 @@
                                 color: white;
                                 width: 15px;
                                 text-align: center;
-                                height: 15px; 
+                                height: 15px;
                                 line-height: 15px;
                                 font-weight: 600;
-                            } 
+                            }
 
                             &:first-child {
                                 width: 2cm;
@@ -2461,7 +2478,7 @@
                 thead {
                     tr {
                         th {
-                            
+
 
                             &.amount {
                                 width: 100pt;
@@ -2481,25 +2498,25 @@
                         }
 
                         &.bottom-row {
-                                
-                            th { 
-                                
+
+                            th {
+
                                 text-transform: none;
                                 font-style: italic;
                                 background: @grey1;
                                 border-bottom: 0;
-                                font-weight: 400; 
+                                font-weight: 400;
 
                                 &.break {
-                                    border-left: 1px solid rgba(0,0,0,.4); 
+                                    border-left: 1px solid rgba(0,0,0,.4);
                                 }
                                 &:not(.break) {
-                                     border-left: 1px solid rgba(0,0,0,.1); 
+                                     border-left: 1px solid rgba(0,0,0,.1);
                                 }
-                               
+
                                 .box-shadow(inset 0 1px 0 rgba(0,0,0,.1));
 
-                                 
+
                                 &:first-child { border-left: 0; }
 
                                 &:not(:first-child) {
@@ -2522,7 +2539,7 @@
                                         color: inherit;
                                     }
                                 }
-                                 
+
                                 .data {
                                     display: block;
                                 }
@@ -2535,10 +2552,10 @@
                                         display: block;
                                         line-height: 20px;
                                     }
- 
+
                                     span {
                                         margin:0 2pt;
-                                    } 
+                                    }
                                 }
                             }
 
@@ -2547,18 +2564,18 @@
                             &:nth-child(7) {
                                 padding-left: 4pt;
                             }
-                        } 
+                        }
 
                         &.rate-row {
                             td {
                                  padding-left:0;
                             }
-                        } 
+                        }
                     }
                 }
 
-                tfoot { 
-                    
+                tfoot {
+
                     tr {
                         &.totals {
                             td {
@@ -2566,13 +2583,13 @@
                             }
                         }
                         &.pagination {
-                            display: none; 
+                            display: none;
                         }
                     }
-                   
+
                 }
             }
-            
+
 
             &.group-rooms-reports {
                 table-layout: fixed;
@@ -2583,8 +2600,8 @@
                             text-align: center;
                             font-weight: 600;
 
-                            &[colspan] { 
-                                border-right: 1px solid @grey2; 
+                            &[colspan] {
+                                border-right: 1px solid @grey2;
 
                                 &:last-child { border-right: 0; }
                             }
@@ -2592,7 +2609,7 @@
 
                         &:first-child {
                             th {
-                                
+
                                 .nowrap();
 
                                 &[colspan="1"] {
@@ -2605,11 +2622,11 @@
                             th {
                                 text-transform: none;
                                 font-style: italic;
-                                font-weight: 400; 
+                                font-weight: 400;
                                 background: @grey1;
                                 border-bottom: 0;
                                 border-right: 1px solid @grey2;
-                                 
+
                                 &:last-child { border-right: 0; }
                             }
                         }
@@ -2621,7 +2638,7 @@
                     td {
                         text-align: center;
 
-                        &.empty { 
+                        &.empty {
                             border-color: @grey1;
 
                             // Shifting the border to left and bottom instead of right and bottom
@@ -2629,8 +2646,8 @@
                             // Adding left border to the first filled day
                             &+td:not(.empty) {
                                 border-width: 0 1px 1px 1px;
-                            } 
-                           
+                            }
+
                         }
 
                         &.zero {
@@ -2829,7 +2846,7 @@
             }
 
             &.books {
-                .statistics-headings { 
+                .statistics-headings {
                     width: 75px;
 
                     th.action-row {
@@ -2998,7 +3015,7 @@
 
         &.occupancy-footer { display: table; }
 
-        &.card-authorization-check { 
+        &.card-authorization-check {
             .grid-footer {
                 li {
                     .pull-right;
@@ -3014,9 +3031,9 @@
                 &:last-child {
                     border-bottom: 1px solid @grey2;
                 }
-                
+
             }
-            
+
             .group-info {
                 padding: 4pt 10pt;
                 border-top: 1px solid @grey2;
@@ -3045,29 +3062,29 @@
 
                         &:not(:last-child) {
                             margin-right: 15pt;
-                        } 
+                        }
 
                         span {
                             color: @grey3;
                         }
                     }
                 }
-                
+
             }
 
-            .group-data { 
+            .group-data {
                 .float;
 
                 ul {
                     .pull-left;
-                    width: 75px; 
+                    width: 75px;
 
                     .main-heading {
                         height: 36px;
                         line-height: 36px;
                         font-size: 12px;
                         text-align: center;
-                        background: @grey1; 
+                        background: @grey1;
                         text-transform: uppercase;
                         font-weight: 600;
                         border-right: 1px solid rgba(0, 0, 0, 0.1)
@@ -3088,10 +3105,10 @@
                         }
 
                         .icons {
-                            margin-top: 1pt; 
+                            margin-top: 1pt;
                             .pull-left;
                             .square(12pt);
-                            
+
                             &.icon-blocked { background-position: 2px -277px; }
 
                             &.icon-picked-up { background-position: 2px -318px; }
@@ -3112,7 +3129,7 @@
                 }
 
                 &.totals {
-                     
+
 
                     table {
                         thead {
@@ -3123,7 +3140,7 @@
                                 th {
                                     text-align: left;
                                     &:first-child {
-                            
+
                                         &:not(:last-child) {
                                             text-align: right;
                                         }
@@ -3132,8 +3149,8 @@
                             }
                         }
                         tbody {
-                            td { 
-                                font-weight: 600;  
+                            td {
+                                font-weight: 600;
                             }
                         }
                     }
@@ -3168,7 +3185,7 @@
             .iScrollVerticalScrollbar,
             .button {
                 .hide();
-            } 
+            }
 
             // Fix bug with the scroll
             &.scrollable {
@@ -3187,20 +3204,20 @@
             .travel-agent-print {
                 .float;
                 padding: 4pt 0;
- 
+
                 .data {
-                    width: 40%; 
+                    width: 40%;
                     margin-top: 10px;
                     .pull-left;
 
                     h2 {
-                        .show(); 
-                        width:100%;   
+                        .show();
+                        width:100%;
                         line-height: 1;
                         white-space: normal;
                         margin-bottom: 6px;
                         padding-right: 5px;
-                        display: block; 
+                        display: block;
                         font-size: 10pt
 
                     }
@@ -3275,7 +3292,7 @@
 
             &:not(:last-child) { margin-right: 20pt; }
         }
-    } 
+    }
 
 /* Work Management          ==============================*/
     #worksheet-content {
@@ -3452,13 +3469,13 @@
                 border-bottom: 1px solid @grey3;
             }
 
-            .print-date { 
+            .print-date {
                 order: 4;
 
                 .arrival-date,
                 .departure-date {
                     display: block;
-                    margin-top: 2pt; 
+                    margin-top: 2pt;
 
                     .guest-status {
                         .square(10px);
@@ -3936,9 +3953,9 @@
                 font-size:18pt;
                 font-weight: 600;
                 line-height: 40px;
-                }  
+                }
             }
-            
+
 
             img {
                 .size(40px, auto);
@@ -3950,7 +3967,7 @@
                 height: 4.8cm;
                 h1 {
                     font-size: 10pt;
-                    font-weight: 600; 
+                    font-weight: 600;
                 }
 
                 .type {
@@ -3977,10 +3994,10 @@
                 display: block;
                 margin-top: 0.25cm;
             }
-            
+
             .info-right {
                 text-align: right;
-                
+
             }
 
             &.account-info {
@@ -4020,18 +4037,18 @@
             text-align: center;
             margin-top: 0;
             clear: both;
-            
+
             &.top-header {
                 height: 1.5cm;
                 position: relative;
-                
+
                 img {
                     position: absolute;
                     height: 30px;
                     top: -30px;
                     right: 0;
                 }
-                
+
                 h1 {
                     font-size:18pt;
                     font-weight: 600;
@@ -4421,7 +4438,7 @@
                     position: relative;
                     .float;
                     .data {
-                         
+
                         width: 40%;
                         .pull-left();
                         .meta-data {
@@ -4438,12 +4455,12 @@
                             display: block;
                             vertical-align: top;
                         }
-       
+
                         .icons {
                             display: inline;
                             line-height: 20px;
                             height: 20px;
-                            overflow: hidden; 
+                            overflow: hidden;
                         }
 
                         .icon-hold {
@@ -4470,7 +4487,7 @@
                         .icon-location {
                                 width: 70%;
                         }
-                         .icon-guest-travelagent { 
+                         .icon-guest-travelagent {
                                 width: 30%;
                          }
                     }
@@ -4509,5 +4526,3 @@
 ==========================================================*/
 /* 7. RESPONSIVE
 ==========================================================*/
-
-
