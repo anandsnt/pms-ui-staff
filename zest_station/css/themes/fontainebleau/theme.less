@@ -148,13 +148,12 @@
 	    	li {
 
 	    		&:not(.selected){
-	    			border-color: #ebebeb;
-
-		    		.add-on-content {
-		    			background: #ebebeb;
-		    		}
+	    			border-color: rgba(0,0,0,.10);
 	    		}
-	    		
+	    		&:first-child:last-child {
+     				border-color: #ebebeb;
+ 					border-color: @brandColor;
+ 				}
 	    	}
 	    }
 	}

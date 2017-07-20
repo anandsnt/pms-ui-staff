@@ -4,6 +4,7 @@ module.exports = {
         var themeCSSRoot = 'stylesheets/guestweb/';
 
         return {
+            'guestweb_made': [ themeCSSRoot + 'guestweb_made.css'],
             'guestweb_windsor_suites': [ themeCSSRoot + 'guestweb_windsor_suites.css'],
             'guestweb_moonrise': [ themeCSSRoot + 'guestweb_moonrise.css'],
             'guestweb_row': [ themeCSSRoot + 'guestweb_row.css'],
@@ -125,7 +126,8 @@ module.exports = {
             'guestweb_el_cosmico': [ themeCSSRoot + 'guestweb_el_cosmico.css'],
             'guestweb_quintessence_resort': [ themeCSSRoot + 'guestweb_quintessence_resort.css'],
             'guestweb_river_inn': [ themeCSSRoot + 'guestweb_river_inn.css'],
-            'guestweb_one_washington_circle': [ themeCSSRoot + 'guestweb_one_washington_circle.css']
+            'guestweb_one_washington_circle': [ themeCSSRoot + 'guestweb_one_washington_circle.css'],
+            'guestweb_first_hotel_breiseth': [ themeCSSRoot + 'guestweb_first_hotel_breiseth.css']
         };
     }
 };

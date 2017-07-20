@@ -769,6 +769,7 @@ sntZestStation.controller('zsRootCtrl', [
                     clear_icon: iconBasePath + '/x.svg',
                     left_arrow_icon: commonIconsPath + '/arrow-left.svg',
                     right_arrow_icon: commonIconsPath + '/arrow-right.svg',
+                    late_checkout_icon: iconBasePath + '/late-checkout.svg',
                     scanpassport: iconBasePath + ($scope.zestStationData.scan_passport_file_uploaded.length > 0) ? $scope.zestStationData.scan_passport_file_uploaded : ''
                 }
             };
@@ -826,7 +827,7 @@ sntZestStation.controller('zsRootCtrl', [
             var commonIconsPath = '/assets/zest_station/css/icons/default';
 
             // var basicHomeIcons = ['zoku'],
-            var niceHomeIcons = ['avenue', 'sohotel', 'epik', 'public', 'public_v2', 'duke', 'de-jonker', 'chalet-view', 'freehand', 'row-nyc', 'circle-inn-fairfield', 'cachet-boutique', 'hi-ho'],
+            var niceHomeIcons = ['avenue', 'sohotel', 'epik', 'public', 'public_v2', 'duke', 'de-jonker', 'chalet-view', 'freehand', 'row-nyc', 'circle-inn-fairfield', 'cachet-boutique', 'hi-ho', 'first'],
                 nonCircleNavIcons = ['public_v2'];// minor adjustment to the back/close icons for some themes (only show the inner x or <)
 
 
@@ -1788,6 +1789,7 @@ sntZestStation.controller('zsRootCtrl', [
             $scope.showLanguagePopup = false;
             $scope.zestStationData.waitingForSwipe = false;
             $scope.zestStationData.session_conf = '';
+            $scope.$filter = $filter;
             // moved web socket creation code to fetchHotelSettings
             fetchHotelSettings();
             getKeyEncoderInfo();

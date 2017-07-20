@@ -18,6 +18,7 @@ module.exports = {
                 precheckinPartials + '*.html'];
 
         return {
+            'guestweb_made':  commonNonMgmTemplates,
             'guestweb_windsor_suites': [ 'guestweb/**/common_templates/partials/checkin/**.html',
                 'guestweb/**/common_templates/partials/checkout/**.html',
                 'guestweb/**/common_templates/partials/gwNoOption.html',
@@ -361,7 +362,8 @@ module.exports = {
             'guestweb_el_cosmico': commonNonMgmTemplates,
             'guestweb_quintessence_resort': commonNonMgmTemplates,
             'guestweb_one_washington_circle': commonNonMgmTemplates,
-            'guestweb_river_inn': commonNonMgmTemplates
+            'guestweb_river_inn': commonNonMgmTemplates,
+            'guestweb_first_hotel_breiseth': commonNonMgmTemplates
         };
     }
 };
