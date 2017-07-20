@@ -1,17 +1,19 @@
 const { createClass, PropTypes } = React;
 const { findDOMNode } = ReactDOM;
 const NightlyDiaryRootComponent = createClass ({
-    scrollToPos() {
-        const highlightedNodeList = document.getElementsByClassName('room not-clickable highlighted');
-        let highlightedNode = '';
+    scrollToPos(pos) {
+        const node = document.getElementById('diary-nightly-grid');
+        node.scrollTop = pos;
 
-        if (highlightedNodeList.length > 0) {
-            highlightedNode = highlightedNodeList[0];
-            highlightedNode.scrollIntoView();
-        }
+    },
+    scrollToNthelement(n) {
+         let width = document.getElementsByClassName("room")[1].clientHeight,
+             scrollTo = n * width ;
+ 
+        this.scrollToPos(scrollTo);
     },
     componentDidUpdate() {
-        this.scrollToPos();
+        this.scrollToNthelement(this.props.index);
     },
     render() {
         return (
