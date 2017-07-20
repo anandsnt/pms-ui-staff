@@ -21,6 +21,42 @@ module.exports = function(gulp, $, options) {
 	    zestStationGenDir 		= DEST_ROOT_PATH + 'asset_list/' + generated + 'ThemeMappings/' + generated + 'ZestStation/css/',
 		zeststationGenFile 		= zestStationGenDir + generated + 'ZestStationCSSThemeMappings.json';
 
+	var extractCSSMappingList = function() {
+		var argv = require('yargs').argv,
+			zestStationThemeCssList = {};
+
+		/*
+		For developement purspose, we can pass only required themes as array, i.e. as follows
+		      
+		gulp <gulp-task> --with_zs ['fontainebleau','avenue'] etc.
+
+		The mappings can be found in app/assets/asset_list/theming/zeststation/css/css_theme_mapping.js
+		        
+		In such cases, zestStationThemeCssList has to be generated like below
+		*/
+
+		// {
+		// 	fontainebleau: ['zest_station/css/fontainebleau.less'],
+		// 	avenue: ['zest_station/css/avenue.less']
+		// }
+
+		if ('with_zs' in argv && typeof argv.with_zs === 'string') {
+			// required zest web themes are passed
+			var themeString = argv.with_zs;
+			// themeString will be string => '[fontainebleau,avenue]'
+			// strip [ and ] from string
+			themeString = themeString.substring(1, themeString.length - 1)
+			var themeArray = themeString.split(",");
+
+			for (var i = 0, len = themeArray.length; i < len; i++) {
+				zestStationThemeCssList[themeArray[i]] = ZESTSTAION_THEME_CSS_LIST[themeArray[i]]
+			}
+		} else {
+			zestStationThemeCssList = ZESTSTAION_THEME_CSS_LIST;
+		}
+		return zestStationThemeCssList;
+	};
+
 	gulp.task('create-zest-theme-mapping-css-production', function(){
 	    var mkdirp = require('mkdirp'),
 			fs = require('fs'),
@@ -73,7 +109,7 @@ module.exports = function(gulp, $, options) {
 			mkdirp = require('mkdirp'),
 			stream = require('merge-stream'),
 			edit = require('gulp-json-editor');
-
+		ZESTSTAION_THEME_CSS_LIST = extractCSSMappingList();
 		var tasks = Object.keys(ZESTSTAION_THEME_CSS_LIST).map(function(theme, index){
 			console.log ('Zest Station Theme CSS - mapping-generation-started: ' + theme);
 			var mappingList  = ZESTSTAION_THEME_CSS_LIST[theme],
@@ -117,6 +153,7 @@ module.exports = function(gulp, $, options) {
 			stream = require('merge-stream'),
 			edit = require('gulp-json-editor');
 
+		ZESTSTAION_THEME_CSS_LIST = extractCSSMappingList();
 		var tasks = Object.keys(ZESTSTAION_THEME_CSS_LIST).map(function(theme, index){
 			console.log ('Zest Station Theme CSS - mapping-generation-started: ' + theme);
 			var mappingList = ZESTSTAION_THEME_CSS_LIST[theme],
@@ -142,7 +179,7 @@ module.exports = function(gulp, $, options) {
 
 	gulp.task('zeststation-copy-css-files-dev', function(){
 		delete require.cache[require.resolve(ZESTSTAION_THEME_CSS_MAPPING_FILE)];
-		ZESTSTAION_THEME_CSS_LIST 	= require(ZESTSTAION_THEME_CSS_MAPPING_FILE).getThemeMappingList();
+		ZESTSTAION_THEME_CSS_LIST = extractCSSMappingList();
 
 		var guestwebSourceList = [];
 		Object.keys(ZESTSTAION_THEME_CSS_LIST).map(function(theme, index){
@@ -155,7 +192,7 @@ module.exports = function(gulp, $, options) {
 
 	gulp.task('zeststation-watch-css-files', function(){
 		delete require.cache[require.resolve(ZESTSTAION_THEME_CSS_MAPPING_FILE)];
-		ZESTSTAION_THEME_CSS_LIST 	= require(ZESTSTAION_THEME_CSS_MAPPING_FILE).getThemeMappingList();
+		ZESTSTAION_THEME_CSS_LIST = extractCSSMappingList();
 
 		var guestwebSourceList = [];
 		Object.keys(ZESTSTAION_THEME_CSS_LIST).map(function(theme, index){
