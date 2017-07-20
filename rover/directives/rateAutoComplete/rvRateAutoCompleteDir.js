@@ -83,6 +83,7 @@
 	    var autoCompleteSelectHandler = function(event, ui) {
 	        $scope.rate_id 	= ui.item.id;
 	        $scope.rate_name = ui.item.name;
+	        $scope.$emit('RATE_SELECTED', ui.item);
 	        runDigestCycle();
 	        return false;    
 	    };

@@ -3,7 +3,7 @@
 <!-- Navbar -->
 <div ng-include="'/assets/partials/common/header.html'"></div>
 
-<div id="pull-refresh-page" ng-hide="filterOpen" ng-class="{'has-options': isStandAlone }">
+<div id="pull-refresh-page" ng-hide="filterOpen" ng-class="::{'has-options': isStandAlone }">
   <span id="refresh-icon"></span>
   <span id="refresh-text" translate>PULL_REFRESH</span>
 </div>
@@ -22,14 +22,14 @@
     <button type="button" class="entry button white with-icon only-icon refresh"
         ng-click="refreshData()">
         <span class="icons icon-reset"></span>
-        {{ 'Refresh' | translate}}
+        {{::( 'Refresh' | translate)}}
     </button>
 
     <!-- Filter list -->
     <button type="button" class="entry button white with-icon only-icon filter"
         ng-click="showFilters()">
         <span class="icons icon-filter"></span>
-        {{ 'FILTER_ROOMS' | translate}}
+        {{::('FILTER_ROOMS' | translate)}}
     </button>
 
     <!-- Search -->
@@ -44,12 +44,12 @@
             MENU_SEARCH
         </button>
         <input name="rooms-query" id="rooms-query" class="query"
-            placeholder="{{ 'SEARCH_BY_ROOM_NO' | translate }}" type="search"
+            placeholder="{{::('SEARCH_BY_ROOM_NO' | translate)}}" type="search"
             autocomplete="off" ng-model="query" ng-change="filterByQuery()" />
     </div>
 
     <!-- Room or Task View, default to Room -->
-    <div class="entry switch" ng-if="isStandAlone && !isHourlyRateOn">
+    <div class="entry switch" ng-if="::(isStandAlone && !isHourlyRateOn)">
         <div class="switch-button"
             ng-class="{ 'on': currentView === 'ROOMS', 'off': currentView==='TASKS' }">
             <input id="room-task-toggle" value="" type="checkbox"
@@ -68,7 +68,7 @@
     <!-- Select All Rooms from list -->
     <!-- Add class "rooms-checked" when some/all rooms are checked -->
     <div class="entry check" id="hk-multi-select"
-        ng-if="isStandAlone" ng-class="{ 'rooms-checked': multiRoomAction.anyChosen }">
+        ng-if="::isStandAlone" ng-class="{ 'rooms-checked': multiRoomAction.anyChosen }">
         <!-- Hidden until at least 1 room is selected -->
         <button type="button" class="button purple with-icon only-icon hidden"
             ng-class="{ 'hidden': !multiRoomAction.anyChosen }"
@@ -100,14 +100,14 @@
     <ul class="wrapper" style="width: {{getWidthForSummary()}}px"> <!-- width:{160*no.of list items + 40px}; -->
         <li>
             <strong class="title">Time Allocated</strong>
-            <span class="value">{{summary.total_time_allocated}}</span>
-            <span class="total">{{summary.shift_length}}</span>
+            <span class="value">{{::summary.total_time_allocated}}</span>
+            <span class="total">{{::summary.shift_length}}</span>
         </li>
 
-        <li ng-repeat="item in summary.work_types">
-            <strong class="title">{{item.name}}</strong>
-            <span class="value">{{item.tasks_completed_count}}</span>
-            <span class="total">{{item.tasks_assigned_count}}</span>
+        <li ng-repeat="item in ::summary.work_types track by $index">
+            <strong class="title">{{::item.name}}</strong>
+            <span class="value">{{::item.tasks_completed_count}}</span>
+            <span class="total">{{::item.tasks_assigned_count}}</span>
         </li>
     </ul>
 </div>
@@ -122,10 +122,10 @@
         </li>
 
         <li class="room" ng-repeat="room in rooms track by $index" emit-when="{event: 'ALL_RENDERED', condition: $last}">
-            <div ng-if="isStandAlone" class="check">
-                <label class="checkbox inline" for="{{ room.id }}" ng-click="roomSelectChange(room, $index)">
+            <div ng-if="::isStandAlone" class="check">
+                <label class="checkbox inline" ng-click="roomSelectChange(room, $index)">
                     <span class="icon-form icon-checkbox" ng-class="{ 'checked' : room.selected }"></span>
-                    <input id="{{ room.id }}" type="checkbox" ng-model="room.selected" />
+                    <input type="checkbox" ng-model="room.selected" />
                 </label>
             </div>
 
@@ -136,38 +136,59 @@
                         <span>{{ ::room.room_no }}</span>
                         <span class="icons icon-suite" ng-show="room.is_suite">Suite Room</span>
                     </h2> <!-- If room is ooo or oos, class should be 'out'. Otherwise, use {room-status} -->
-                    <span class="room-type">{{room.room_type.name}}</span>
+                    <span class="room-type">{{::room.room_type.name}}</span>
                     <span class="room-status {{ room.roomStatusClass }}">{{room.hk_status.value}}</span>
                 </div>
 
                 <!-- {reservation-status} classes here are used from reservation screens, so sometimes they might be different than the actual status -->
                 <div class="reservation-status">
                     <!-- {reservation-status} can be late-checkout-out, check-out(for due out or departed) or inhouse(for stayover) -->
-                    <div class="current {{ room.leaveStatusClass }}">
-                      <span class="guest-status {{ room.leaveStatusClass }}">{{ ::room.room_reservation_status }}</span>
+                    <div class="current {{ ::room.leaveStatusClass }}">
+                      <span class="guest-status {{ ::room.leaveStatusClass }}">{{ ::room.room_reservation_status }}</span>
                       <!-- Show only if applicable, {departure-time} can be time or 'out' if departed -->
                       <span>{{ ::room.timeOrOut }}</span>
                     </div>
                     <!-- {reservation-status} can be check-in(for arrival or arrived) or no-show(if room is not allocated to guest) -->
-                    <div class="next {{ room.enterStatusClass }}">
-                      <span class="guest-status {{ room.enterStatusClass }}">{{ ::room.room_reservation_status }}</span>
+                    <div class="next {{ ::room.enterStatusClass }}">
+                      <span class="guest-status {{ ::room.enterStatusClass }}">{{ ::room.room_reservation_status }}</span>
                       <!-- Show only if applicable, {arrival-time} can be time or 'IN' if arrived -->
                       <span>{{ ::room.timeOrIn }}</span>
                     </div>
                 </div>
 
                 <!-- Show only if room is assigned -->
-                <span class="{{room.assigned_staff.class}}" >{{room.assigned_staff.name}}</span>
-                <!-- Show only if room is not in service -->
-                <span ng-show="isStandAlone && room.ooOsTitle">
-                    <span> &nbsp; </span> <!-- for print spacing issues -->
-                    <span class="service-status" ng-hide="isHourlyRateOn">
-                        {{room.ooOsTitle}} until <strong>{{room.service_status.end_date}}</strong>
+                <span class="{{::room.assigned_staff.class}}" >{{::room.assigned_staff.name}}</span>
+
+                <div class="last-column">
+                    <!-- Show only if room is not in service -->
+                    <span ng-if="::isStandAlone && room.ooOsTitle">
+                        <span class="service-status" ng-if="::!isHourlyRateOn">
+                            {{::room.ooOsTitle}} until <strong>{{::room.service_status.end_date}}</strong>
+                        </span>
+                        <span class="service-status" ng-if="::isHourlyRateOn">
+                            {{::room.ooOsTitle}} until <strong>{{::room.service_status.end_date}} {{::room.service_status.end_time}}</strong>
+                        </span>
                     </span>
-                    <span class="service-status" ng-show="isHourlyRateOn">
-                        {{room.ooOsTitle}} until <strong>{{room.service_status.end_date}} {{room.service_status.end_time}}</strong>
-                    </span>
-                </span>
+
+                    <!-- Show if room is occupied -->
+                    <div class="print-date" ng-show="room.is_occupied && room.arrival_date && room.departure_date">
+
+                        <div class="arrival-date">
+                            <span class="guest-status check-in">check-in</span>
+                            <time datetime="{{room.arrival_date}}">
+                                {{formatDateForUI(room.arrival_date)}}
+                            </time>
+                        </div>
+
+                        <div class="departure-date">
+                            <span class="guest-status check-out">check-out</span>
+                            <time datetime="{{room.departure_date}}">
+                                {{formatDateForUI(room.departure_date)}}
+                            </time>
+                        </div>
+
+                    </div>
+                </div>
 
                 <!-- Show only if room is occupied -->
                 <figure class="guest-image" ng-if="!room.is_queued && room.is_occupied">
@@ -179,16 +200,16 @@
                 <div ng-if="!room.is_queued && !room.is_occupied" class="show-vacant">VACANT</div>
 
                 <!-- Show only if room is queued -->
-                <div ng-if="room.is_queued" class="icons icon-queued has-time">
+                <div ng-if="::room.is_queued" class="icons icon-queued has-time">
                     Queued
-                    <span class="time" pretty-time-ago="room.is_queued_till"></span>
+                    <span class="time" pretty-time-ago="::room.is_queued_till"></span>
                 </div>
 
                 <!-- IF VIEW BY TASK, ADD THIS: -->
                 <ul class="tasks" ng-if="currentView === 'TASKS'">
                     <!-- Add class "completed" if task is completed -->
-                    <li ng-repeat="task in room.room_tasks" ng-class="{ 'completed': task.is_completed }">
-                        {{task.name}}
+                    <li ng-repeat="task in ::room.room_tasks track by $index" ng-class="{ 'completed': task.is_completed }">
+                        {{::task.name}}
                     </li>
                 </ul>
             </a>
@@ -226,7 +247,7 @@
     <div id="filter-options" class="content scrollable" ng-iscroll="room-status-filter">
         <div class="wrapper">
             <!-- Work Type / Employee filter -->
-            <div class="holder" ng-if="isStandAlone">
+            <div class="holder" ng-if="::isStandAlone">
                 <strong class="title" translate>WORK_TYPE</strong>
                 <div class="entry">
                     <div class="select">
@@ -267,7 +288,7 @@
                             <div class="select">
                                 <select name="floor-filter-single" id="floor-filter-single" class="placeholder floor-filter" ng-model="currentFilters.floorFilterSingle" ng-change="validateFloorSelection('SINGLE_FLOOR')" iscroll-stop-propagation>
                                   <option selected translate>FLOOR_#</option>
-                                  <option ng-repeat="floor in floors" value="{{floor.floor_number}}" ng-selected="floor.floor_number==currentFilters.floorFilterSingle"> {{floor.floor_number}}</option>
+                                  <option ng-repeat="floor in ::floors track by $index" value="{{::floor.floor_number}}" ng-selected="floor.floor_number==currentFilters.floorFilterSingle"> {{::floor.floor_number}}</option>
                                 </select>
                             </div>
                         </div>
@@ -276,13 +297,13 @@
                             <div class="select">
                                 <select name="floor-filter-start" id="floor-filter-start" class="placeholder floor-filter" ng-model="currentFilters.floorFilterStart" ng-change="validateFloorSelection('FROM_FLOOR')" iscroll-stop-propagation>
                                   <option selected translate>HK_FROM</option>
-                                  <option ng-repeat="floor in floors" value="{{floor.floor_number}}" ng-selected="floor.floor_number==currentFilters.floorFilterStart"> {{floor.floor_number}}</option>
+                                  <option ng-repeat="floor in ::floors track by $index" value="{{::floor.floor_number}}" ng-selected="floor.floor_number==currentFilters.floorFilterStart"> {{::floor.floor_number}}</option>
                                 </select>
                             </div>
                             <div class="select">
                                 <select name="floor-filter-stop" id="floor-filter-stop" class="placeholder floor-filter" ng-model='currentFilters.floorFilterEnd' ng-change="validateFloorSelection('TO_FLOOR')" iscroll-stop-propagation>
                                   <option selected translate>HK_TO</option>
-                                  <option ng-repeat="floor in floors" value="{{floor.floor_number}}" ng-selected="floor.floor_number==currentFilters.floorFilterEnd"> {{floor.floor_number}}</option>
+                                  <option ng-repeat="floor in ::floors track by $index" value="{{::floor.floor_number}}" ng-selected="floor.floor_number==currentFilters.floorFilterEnd"> {{::floor.floor_number}}</option>
                                 </select>
                             </div>
                         </div>
@@ -334,7 +355,7 @@
                     </label>
                 </div>
             </div>
-            <div class="holder" ng-if="roomTypes.length">
+            <div class="holder" ng-if="::roomTypes.length">
                 <strong class="title" translate>ROOM_TYPE_FILTER_TITLE</strong>
                 <div class="entry rooms">
                     <div class="select">
@@ -436,8 +457,8 @@
             </div>
 
             <!--
-                DEPRICATED!! 
-                Note: Since previously we could chose multiple room, controller 
+                DEPRICATED!!
+                Note: Since previously we could chose multiple room, controller
                 has code to compare mutilpe values (filterDoneButtonPressed method).
                 The code is not removed. Keeping for future.
             -->

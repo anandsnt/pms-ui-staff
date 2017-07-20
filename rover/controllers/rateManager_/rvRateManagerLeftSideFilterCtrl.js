@@ -108,10 +108,10 @@ angular.module('sntRover').controller('rvRateManagerLeftSideFilterCtrl', [
         if (!!selectedRateTypeFromRTT && !alreadyExistInSelectedRateTypeListFromRTT) {
           $scope.selectedRateTypesFromRTT.push(selectedRateTypeFromRTT);
 
-          //adding the elements will change the height
+          // adding the elements will change the height
           refreshScroller();
 
-          //setting the focus to newly added rate type
+          // setting the focus to newly added rate type
           scrollTo('#selected-rate-type-list br');
         }
 
@@ -124,11 +124,12 @@ angular.module('sntRover').controller('rvRateManagerLeftSideFilterCtrl', [
        */
       $scope.deleteSelectedRateType = (rateTypeID) => {
         var indexToDelete = _.findIndex($scope.selectedRateTypes , {id: parseInt(rateTypeID)});
+
         $scope.selectedRateTypes.splice(indexToDelete, 1);
 
         $scope.selectedRateTypeID = '';
 
-        //deleting the node will change the height
+        // deleting the node will change the height
         refreshScroller();
       };
 
@@ -138,11 +139,12 @@ angular.module('sntRover').controller('rvRateManagerLeftSideFilterCtrl', [
        */
       $scope.deleteSelectedRateTypeFromRTT = (rateTypeID) => {
         var indexToDelete = _.findIndex($scope.selectedRateTypesFromRTT , {id: parseInt(rateTypeID)});
+
         $scope.selectedRateTypesFromRTT.splice(indexToDelete, 1);
 
         $scope.selectedRateTypeIDFromRTT = '';
 
-        //deleting the node will change the height
+        // deleting the node will change the height
         refreshScroller();
       };
 
@@ -167,8 +169,9 @@ angular.module('sntRover').controller('rvRateManagerLeftSideFilterCtrl', [
        * @param {node} [cssSelector]
        */
       var scrollTo = (cssSelector) => {
-        //scrolling to bottom
+        // scrolling to bottom
         var scroller = $scope.getScroller('filter_details');
+
         setTimeout(function() {
           scroller.scrollToElement(cssSelector, 700);
         }, 301);
@@ -188,10 +191,10 @@ angular.module('sntRover').controller('rvRateManagerLeftSideFilterCtrl', [
           if (!!selectedRate && !alreadyExistInSelectedRateList) {
             $scope.selectedRates.push(selectedRate);
 
-            //adding the elements will change the height
+            // adding the elements will change the height
             refreshScroller();
 
-            //setting the focus to newly added rate
+            // setting the focus to newly added rate
             scrollTo('#selected-rate-list br');
           }
 
@@ -205,11 +208,12 @@ angular.module('sntRover').controller('rvRateManagerLeftSideFilterCtrl', [
        */
       $scope.deleteSelectedRate = (rateID) => {
         var indexToDelete = _.findIndex($scope.selectedRates , {id: parseInt(rateID)});
+
         $scope.selectedRates.splice(indexToDelete, 1);
 
         $scope.selectedRateID = '';
 
-        //deleting the node will change the height
+        // deleting the node will change the height
         refreshScroller();
       };
 
@@ -220,7 +224,7 @@ angular.module('sntRover').controller('rvRateManagerLeftSideFilterCtrl', [
         $scope.selectedRates = [];
         $scope.selectedRateID = '';
 
-        //deleting the node will change the height
+        // deleting the node will change the height
         refreshScroller();
       };
 
@@ -336,7 +340,7 @@ angular.module('sntRover').controller('rvRateManagerLeftSideFilterCtrl', [
           maxRange: maxRangeBetweenFromAndToDate
         };
 
-        //if there is already two date choosed
+        // if there is already two date choosed
         if ($scope.selectedDateRange !== '') {
           dataForCalendar.fromDate = new tzIndependentDate($scope.fromDate);
           dataForCalendar.toDate = new tzIndependentDate($scope.toDate);
@@ -359,7 +363,7 @@ angular.module('sntRover').controller('rvRateManagerLeftSideFilterCtrl', [
         $scope.deleteAllSelectedRateTypes();
         $scope.deleteAllSelectedRateTypesFromRTT();
 
-        //deleting the node will change the height
+        // deleting the node will change the height
         refreshScroller();
       }
 
@@ -372,6 +376,7 @@ angular.module('sntRover').controller('rvRateManagerLeftSideFilterCtrl', [
         }
         else {
           let selectedCardIDs = _.pluck($scope.selectedCards, 'id');
+
           if (selectedCardIDs.indexOf(ui.item.id) < 0) {
             $scope.selectedCards.push(ui.item);
           }
@@ -383,10 +388,10 @@ angular.module('sntRover').controller('rvRateManagerLeftSideFilterCtrl', [
 
         runDigestCycle();
 
-        //we're adding nodes
+        // we're adding nodes
         refreshScroller();
 
-        //scrolling to the added position
+        // scrolling to the added position
         scrollTo('#rm-selected-card-list span:last-child');
       };
 
@@ -396,11 +401,12 @@ angular.module('sntRover').controller('rvRateManagerLeftSideFilterCtrl', [
        */
       $scope.deleteSelectedCard = (cardID) => {
         var indexToDelete = _.findIndex($scope.selectedCards , {id: parseInt(cardID)});
+
         $scope.selectedCards.splice(indexToDelete, 1);
 
         $scope.cardSearchText = '';
 
-        //deleting the node will change the height
+        // deleting the node will change the height
         refreshScroller();
       };
 
@@ -410,7 +416,7 @@ angular.module('sntRover').controller('rvRateManagerLeftSideFilterCtrl', [
       $scope.deleteAllSelectedCards = () => {
         $scope.selectedCards = [];
         $scope.cardSearchText = '';
-        //deleting the nodes will change the height
+        // deleting the nodes will change the height
         refreshScroller();
       };
 
@@ -484,30 +490,30 @@ angular.module('sntRover').controller('rvRateManagerLeftSideFilterCtrl', [
       var fillAndSetRateRateTypesAndSortOptions = () => {
         var promises = [];
 
-        //we are not using our normal API calling since we have multiple API calls needed
+        // we are not using our normal API calling since we have multiple API calls needed
         $scope.$emit('showLoader');
 
-        //sort values
+        // sort values
         promises.push(
           RateMngrCalendarSrv.fetchSortOptions().then(successCallBackOfSortOptionsFetch)
         );
 
-        //sort preference
+        // sort preference
         promises.push(
           RateMngrCalendarSrv.fetchSortPreferences().then(successCallBackOfSortPreferenceFetch)
         );
 
-        //rates
+        // rates
         promises.push(
           RMFilterOptionsSrv.fetchAllRates().then(successCallBackOfRatesFetch)
         );
 
-        //rate types
+        // rate types
         promises.push(
           RMFilterOptionsSrv.fetchRateTypes().then(successCallBackOfRateTypeFetch)
         );
 
-        //Fire
+        // Fire
         $q.all(promises)
           .then(successFetchOfFillAndSetRateRateTypesAndSortOptions, failedToFillAndSetRateRateTypesAndSortOptions);
       };
@@ -517,7 +523,8 @@ angular.module('sntRover').controller('rvRateManagerLeftSideFilterCtrl', [
        */
       $scope.clickedOnShowRates = () => {
         var selectedRateTypeList;
-        //PAGINATION stuff will be handled from RateManagerCtrl
+        // PAGINATION stuff will be handled from RateManagerCtrl
+
         if ($scope.chosenTab === 'RATES') {
           selectedRateTypeList = [];
         }
@@ -549,41 +556,41 @@ angular.module('sntRover').controller('rvRateManagerLeftSideFilterCtrl', [
        * data model for UI will be initialized from here
        */
       var initializeDataModelForMe = () => {
-        //we have to open the filter on the left side
+        // we have to open the filter on the left side
         $scope.isFilterVisible = true;
 
-        //date range
+        // date range
         $scope.fromDate = null;
         $scope.toDate = null;
         $scope.selectedDateRange = '';
 
-        //order by values
-        $scope.orderBySelectedValue = null; //will be assigning to the preferred from the admin
-        $scope.orderByValues = []; //will be filled from API
+        // order by values
+        $scope.orderBySelectedValue = null; // will be assigning to the preferred from the admin
+        $scope.orderByValues = []; // will be filled from API
         $scope.orderByValueMappings = rvRateManagerOrderByConstants;
 
-        //group by values
-        $scope.groupBySelectedValue = ''; //default unselected
+        // group by values
+        $scope.groupBySelectedValue = ''; // default unselected
         $scope.groupByValues = rvRateManagerGroupByConstants;
 
-        //tab selection
+        // tab selection
         $scope.chosenTab = 'RATES';
 
-        //rate type related
-        $scope.rateTypes = []; //will be filled from API once we get to th = view
+        // rate type related
+        $scope.rateTypes = []; // will be filled from API once we get to th = view
         $scope.selectedRateTypes = [];
-        $scope.selectedRateTypeID = ''; //ng-model for rate type selection
+        $scope.selectedRateTypeID = ''; // ng-model for rate type selection
 
-        //rate type from Rate Type Tab
-        $scope.selectedRateTypeIDFromRTT = ''; //ng-model for rate type selection
+        // rate type from Rate Type Tab
+        $scope.selectedRateTypeIDFromRTT = ''; // ng-model for rate type selection
         $scope.selectedRateTypesFromRTT = [];
 
-        //rate related
-        $scope.rates = []; //will be filled from API once we get to th = view
+        // rate related
+        $scope.rates = []; // will be filled from API once we get to th = view
         $scope.selectedRates = [];
-        $scope.selectedRateID = ''; //ng-model for rate selection
+        $scope.selectedRateID = ''; // ng-model for rate selection
 
-        //card search area
+        // card search area
         $scope.selectedCards = [];
         $scope.cardSearchResults = [];
         $scope.cardSearchText = '';

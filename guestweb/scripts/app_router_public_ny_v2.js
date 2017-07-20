@@ -93,7 +93,7 @@ sntGuestWeb.config(['$stateProvider', '$urlRouterProvider', function($stateProvi
         })
         .state('checkinSuccess', {
             url: '/checkinSuccess',
-            templateUrl: '/assets/common_templates/partials/checkin/gwAlreadyCheckedIn.html',
+            templateUrl: '/assets/common_templates/partials/public_ny_v2/gwAlreadyCheckedIn.html',
             title: 'Status - Check-in'
         })
         .state('checkinArrival', {
@@ -193,4 +193,12 @@ sntGuestWeb.config(['$stateProvider', '$urlRouterProvider', function($stateProvi
             controller: 'mobileOptionsController',
             title: 'Phone number entry'
         });
+
+    // Addon state
+    $stateProvider.state('offerAddonOptions', {
+        url: '/addonOptions/:isFrom',
+        templateUrl: '/assets/common_templates/partials/checkin/gwOfferAddonOptions.html',
+        controller: 'offerAddonOptionsController',
+        title: 'Addons'
+    });
 }]);

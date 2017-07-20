@@ -187,7 +187,9 @@ sntRover.controller('rvSearchAndAttachEntityCtrl', ['$scope', '$rootScope', '$fi
 
 				excludeActiveReservationFromsSearch();
 		}
-		setTimeout(function() {$scope.refreshScroller('res_search_scroller');}, 750);
+        setTimeout(function() {
+            $scope.refreshScroller('res_search_scroller');
+        }, 750);
 	};
 
 	/**

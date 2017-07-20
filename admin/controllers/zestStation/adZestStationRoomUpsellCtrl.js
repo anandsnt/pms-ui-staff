@@ -12,6 +12,7 @@ admin.controller('ADZestStationRoomUpsellCtrl', ['$scope', 'ADZestStationSrv', '
             var tier3Value = parseInt($scope.data.upsell_compositions_in_percentage.tier_3);
             // if the changed value is valid(ie, a number and is less than 100, to adjust the perscentage)
             // change the other value
+
             if (isTier2Changed && !_.isNaN(tier2Value)) {
                 $scope.data.upsell_compositions_in_percentage.tier_3 = 100 - tier2Value;
                 $scope.data.upsell_compositions_in_percentage.tier_2 = tier2Value;
@@ -30,12 +31,14 @@ admin.controller('ADZestStationRoomUpsellCtrl', ['$scope', 'ADZestStationSrv', '
                 params: $scope.data,
                 successCallBack: $scope.goBackToPreviousState
             };
+
             $scope.callAPI(ADZestStationSrv.save, options);
         };
         (function() {
             BaseCtrl.call(this, $scope);
             var upsellData = {};
             // extract the required values
+
             upsellData.offer_kiosk_room_upsell = roomUpsellData.offer_kiosk_room_upsell;
             upsellData.room_upsell_options_order = roomUpsellData.room_upsell_options_order;
             upsellData.enforce_max_upsell_offered = roomUpsellData.enforce_max_upsell_offered;
@@ -48,10 +51,11 @@ admin.controller('ADZestStationRoomUpsellCtrl', ['$scope', 'ADZestStationSrv', '
                 value = !_.isNull(value) ? value : 50;
                 return value;
             };
+
             upsellData.upsell_compositions_in_percentage.tier_2 = chechAndAssignValue(upsellData.upsell_compositions_in_percentage.tier_2);
             upsellData.upsell_compositions_in_percentage.tier_3 = chechAndAssignValue(upsellData.upsell_compositions_in_percentage.tier_3);
             $scope.data = upsellData;
-            //upsellData.number_of_room_types_in_higher_level = 1;
+            // upsellData.number_of_room_types_in_higher_level = 1;
             // create an array with max number as the number
             // of upsell room types available
             $scope.maxUpsellOptions = _.range(1, roomUpsellData.number_of_room_types_in_higher_level + 1);

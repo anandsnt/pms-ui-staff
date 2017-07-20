@@ -89,6 +89,16 @@
 		</div>
 	</div>
 
+	<!-- Room in house, can not extend stay date -->
+	<!-- CICO-40534 -->
+	<div id="room-locked" class="updates-content no-content" ng-show="rightSideReservationUpdates=='ROOM_IN_HOUSE'" ng-class="{'hidden': rightSideReservationUpdates!='ROOM_IN_HOUSE'}">
+		<div class="info">
+			<strong class="h1" translate>ROOM_UNAVAILABLE</strong>
+			<span class="h2" translate>PLEASE_SEE_FRONT_DESK</span>
+			<button type="button" id="reset-dates" class="button blank" ng-click="resetDates()" translate>RESET_DATES</button>
+		</div>
+	</div>	
+
 	<!-- Room is under Maintenance -->
 	<div id="room-locked" class="updates-content no-content" ng-show="rightSideReservationUpdates=='MAINTENANCE'" ng-class="{'hidden': rightSideReservationUpdates!='MAINTENANCE'}">
 		<div class="info">

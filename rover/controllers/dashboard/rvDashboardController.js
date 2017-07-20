@@ -25,7 +25,6 @@ sntRover.controller('RVdashboardController',
                 $scope.statisticsData = dashBoarddata.dashboardStatistics;
                 $scope.lateCheckoutDetails = dashBoarddata.lateCheckoutDetails;
                 $rootScope.adminRole = $scope.userDetails.user_role;
-                $scope.isIpad = (navigator.userAgent.match(/iPad/i) !== null || navigator.userAgent.match(/iPhone/i) !== null) && window.cordova;
 
                 // update left nav bar
                 $scope.$emit("updateRoverLeftMenu", "dashboard");
@@ -155,9 +154,9 @@ sntRover.controller('RVdashboardController',
                 };
 
                 try {
-                    sntapp.uuidService.getDeviceId(options);
+                    sntapp.cardReader.getDeviceId(options);
                 } catch (err) {
-
+                    $log.info(err);
                 }
             };
 
@@ -184,11 +183,10 @@ sntRover.controller('RVdashboardController',
                 // Variable to avoid calling the set work station api, when
                 // its already invoked when navigating to the dashboard for the first time
                 $rootScope.isWorkstationSet = true;
-                if ($scope.isIpad) {
-                    document.addEventListener("deviceready", function() {
-                        setDeviceId();
+                if (sntapp.cordovaLoaded && 'rv_native' === sntapp.browser) {
+                    // NOTE: Cordova is loaded always available
+                    setDeviceId();
 
-                    }, false);
                 } else {
 
                     // Check whether UUID is set from the WS response. We will check it 3 times
@@ -321,8 +319,18 @@ sntRover.controller('RVdashboardController',
                 $scope.$broadcast("HeaderBackButtonClicked");
             };
 
-            CardReaderCtrl.call(this, $scope, $rootScope, $timeout, $interval, $log);
-            $scope.observeForSwipe(6);
-
+            if ($rootScope.isDashboardSwipeEnabled) {
+                CardReaderCtrl.call(this, $scope, $rootScope, $timeout, $interval, $log);
+                $scope.observeForSwipe(6);
+            } else if (sntapp.cordovaLoaded && 'rv_native' === sntapp.browser) {
+                sntapp.cardReader.stopReader({
+                    'successCallBack': function(data) {
+                        $log.info('device set to offline', data);
+                    },
+                    'failureCallBack': function(data) {
+                        $log.info('failed to set device to offline', data);
+                    }
+                });
+            }
 
         }]);

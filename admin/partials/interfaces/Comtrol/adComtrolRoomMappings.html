@@ -19,15 +19,17 @@
                                 {{'MANDATORY_FIELDS_MESSAGE2' | translate}} </em>
                         </div>
                         <fieldset class="holder left float">
-                            <ad-dropdown-name label-in-drop-down="{{'SELECT_ROOM_NO_PLACEHOLDER' | translate}}"
-                                              savemodel="state.new.room_no"
-                                              valueproperty="room_no"
-                                              label-properties="['room_no']"
-                                              required="yes"
-                                              list="state.roomNumbers"
-                                              label="{{'ROOM_NO' | translate}}"
-                                              class="full-width">
-                            </ad-dropdown-name>
+                            <div class='entry full-width'>
+                                <label>{{'ROOM_NO' | translate}}</label>
+                                <div class='select'>
+                                    <select ng-model='state.new.room_no'>
+                                        <option value="">{{'SELECT_ROOM_NO_PLACEHOLDER' | translate}}</option>
+                                        <option ng-repeat='room in state.roomNumbers' value='{{room.room_number}}'>
+                                            {{room.room_number}}
+                                        </option>
+                                    </select>
+                                </div>
+                            </div>
                         </fieldset>
                         <fieldset class="holder left float">
                             <ad-textbox styleclass="full-width" value="state.new.external_room"
@@ -91,15 +93,19 @@
                                             {{'MANDATORY_FIELDS_MESSAGE2' | translate}} </em>
                                     </div>
                                     <fieldset class="holder left float">
-                                        <ad-dropdown-name label-in-drop-down="{{'SELECT_ROOM_NO_PLACEHOLDER' | translate}}"
-                                                          savemodel="mapping.room_no"
-                                                          valueproperty="room_no"
-                                                          label-properties="['room_no']"
-                                                          required="yes"
-                                                          list="state.roomNumbers"
-                                                          label="{{'ROOM_NO' | translate}}"
-                                                          class="full-width">
-                                        </ad-dropdown-name>
+                                        <div class='entry full-width'>
+                                            <label>{{'ROOM_NO' | translate}}</label>
+                                            <div class='select'>
+                                                <select ng-model='mapping.room_no'>
+                                                    <option value="">{{'SELECT_ROOM_NO_PLACEHOLDER' | translate}}
+                                                    </option>
+                                                    <option ng-repeat='room in state.roomNumbers'
+                                                            value='{{room.room_number}}'>
+                                                        {{room.room_number}}
+                                                    </option>
+                                                </select>
+                                            </div>
+                                        </div>
                                     </fieldset>
                                     <fieldset class="holder left float">
                                         <ad-textbox styleclass="full-width" value="mapping.external_room"

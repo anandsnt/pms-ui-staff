@@ -13,7 +13,6 @@ angular.module('sntRover')
             DELAY_1000 = 1000;
 
 
-
         // Set scrollers for left and right pane
         var setScroller = function() {
             $scope.setScroller(LEFT_PANE_SCROLL, {

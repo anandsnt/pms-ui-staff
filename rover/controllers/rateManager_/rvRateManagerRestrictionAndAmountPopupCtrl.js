@@ -147,6 +147,7 @@ angular.module('sntRover')
                 dialogData: $scope.ngDialogData,
                 isFromPopup: true
             }
+
             $scope.$emit(rvRateManagerEventConstants.RELOAD_RESULTS, dataFromPopupToParent);
             $scope.closeDialog();
         };
@@ -264,7 +265,7 @@ angular.module('sntRover')
                 $scope.priceDetails[key + '_amount_operator'] = $scope.priceDetails[clickedAgainstKey + '_amount_operator'];
                 $scope.priceDetails[key + '_amount_perc_cur_symbol'] = $scope.priceDetails[clickedAgainstKey + '_amount_perc_cur_symbol'];
             });
-            //height will change with showing apply to all restrictin button showing
+            // height will change with showing apply to all restrictin button showing
             refreshScroller();
         };
 
@@ -305,6 +306,7 @@ angular.module('sntRover')
          */
         $scope.clickedOnRestrictionRemoveButton = () => {
             var restriction = _.findWhere($scope.restrictionList, {id: $scope.restrictionForShowingTheDetails.id});
+
             restriction.value = null;
             restriction.edited = true;
             restriction.status = 'OFF';
@@ -327,6 +329,7 @@ angular.module('sntRover')
                 params,
                 onSuccess: onUpdateRateRestrictionData
             }
+
             $scope.callAPI(rvRateManagerCoreSrv.removeCustomRate, options);
         };
 
@@ -353,12 +356,17 @@ angular.module('sntRover')
          * @return {[type]} [description]
          */
         const getEditedRestrictionsForAPI = () => {
-            var editedRestrictions = _.where($scope.restrictionList, {edited:true});
+            // CICO-42484 Only restrictions that have been edited need to be sent in the update request
+            var editedRestrictions = _.filter($scope.restrictionList,
+                rstrn => rstrn.edited &&
+                    (rstrn.status !== rstrn.oldStatus ||
+                        parseInt(rstrn.value) !== parseInt(rstrn.oldValue)));
+
             return editedRestrictions.map(restriction => ({
                 action: restriction.status === 'ON' ? 'add' : 'remove',
                 restriction_type_id: restriction.id,
                 days: restriction.value
-            }))
+            }));
         };
 
 
@@ -377,7 +385,7 @@ angular.module('sntRover')
 
             if($scope.applyRestrictionsToDates) {
                 if($scope.untilDate === '') {
-                    //$scope.errorMessage = ['Please choose until date'];
+                    // $scope.errorMessage = ['Please choose until date'];
                     return;
                 }
                 params.details.push({
@@ -386,6 +394,7 @@ angular.module('sntRover')
                     restrictions: editedRestrictions
                 });
                 let index = params.details.length - 1;
+
                 params.details[index].weekdays = {};
                 $scope.weekDayRepeatSelection.filter(weekDay => weekDay.selected)
                     .map(weekDay => params.details[index].weekdays[weekDay.weekDay] = weekDay.selected);
@@ -427,6 +436,7 @@ angular.module('sntRover')
                     to_date: formatDateForAPI(dialogData.date)
                 });
                 const index = params.details.length - 1;
+
                 priceKeys.map( key => addAmountParamForAPI(key, params.details[index]));
             }
 
@@ -442,7 +452,7 @@ angular.module('sntRover')
 
             if($scope.applyPriceToDates) {
                 if($scope.untilDate === '') {
-                    //$scope.errorMessage = ['Please choose until date'];
+                    // $scope.errorMessage = ['Please choose until date'];
                     return;
                 }
                 params.details.push({
@@ -496,7 +506,7 @@ angular.module('sntRover')
             else if(mode === $scope.modeConstants.RM_MULTIPLE_RATE_RESTRICTION_MODE) {
                 let rate_ids = _.pluck(dialogData.rates, 'id');
 
-                //if there is no rate_ids passed, checking for rate_type is being passed
+                // if there is no rate_ids passed, checking for rate_type is being passed
                 if(!rate_ids.length && _.has(dialogData, 'rateTypes') && dialogData.rateTypes.length) {
                     params.rate_type_ids = _.pluck(dialogData.rateTypes, 'id');
                 }
@@ -515,6 +525,7 @@ angular.module('sntRover')
                 params,
                 onSuccess: onUpdateRateRestrictionData
             };
+
             $scope.callAPI(rvRateManagerCoreSrv.updateSingleRateRestrictionData, options);
         };
 
@@ -543,6 +554,7 @@ angular.module('sntRover')
                 params,
                 onSuccess: onUpdateRateRestrictionData
             };
+
             $scope.callAPI(rvRateManagerCoreSrv.updateSingleRateRestrictionData, options);
         };
 
@@ -569,6 +581,7 @@ angular.module('sntRover')
                 params,
                 onSuccess: onUpdateRateRestrictionData
             };
+
             $scope.callAPI(rvRateManagerCoreSrv.updateSingleRateRestrictionData, options);
         };
 
@@ -600,6 +613,7 @@ angular.module('sntRover')
                 params,
                 onSuccess: onUpdateRateRestrictionData
             };
+
             $scope.callAPI(rvRateManagerCoreSrv.updateSingleRateRestrictionData, options);
         };
 
@@ -622,6 +636,7 @@ angular.module('sntRover')
                 params: { rate_id },
                 onSuccess: onFetchRateDetailsAndUpdateParentRateName
             };
+
             $scope.callAPI(rvRateManagerCoreSrv.fetchRateDetails, options);
         };
 
@@ -659,17 +674,17 @@ angular.module('sntRover')
         $scope.changeRestrictionStatus = (restriction) => {
             if (restriction.status === 'ON' && !restriction.hasInputField) {
                 restriction.status = 'OFF';
-                restriction.edited = true; //will be using while calling the api ;)
+                restriction.edited = true; // will be using while calling the api ;)
                 return;
             }
             else if (restriction.status === 'OFF' && !restriction.hasInputField) {
                 restriction.status = 'ON';
-                restriction.edited = true; //will be using while calling the api ;)
+                restriction.edited = true; // will be using while calling the api ;)
                 return;
             }
             else {
                 $scope.contentMiddleMode = 'RESTRICTION_EDITING';
-                //deselecting the previous ones
+                // deselecting the previous ones
                 deSelectAllRestriction();
                 restriction.selected = true;
                 $scope.restrictionForShowingTheDetails = util.deepCopy(restriction);
@@ -688,7 +703,7 @@ angular.module('sntRover')
         const getDisplayingParamsForRestriction = (restriction, restrictionList) => {
             const restrictionFoundInList = _.findWhere(restrictionList, { 'restriction_type_id': restriction.id });
 
-            //returning Object - default - OFF status
+            // returning Object - default - OFF status
             var returningRestrictionDisplayParams = {
                 status: 'OFF',
                 value : '',
@@ -700,22 +715,22 @@ angular.module('sntRover')
                     isRestrictionOn = (restrictionFoundInList.status.toLowerCase() === 'on'),
                     isRestrictionVaried = (restrictionFoundInList.status.toLowerCase() === 'varied');
 
-                //if the restriction on the rate (set from the admin), we will disable it
+                // if the restriction on the rate (set from the admin), we will disable it
                 returningRestrictionDisplayParams.isDisabled = ($scope.isPastDate || restrictionFoundInList.is_on_rate);
 
-                //forming the diff. value based on the restr. status
-                //restriction status - OFF
+                // forming the diff. value based on the restr. status
+                // restriction status - OFF
                 if( isRestrictionOff ) {
-                    //for now, nothing to DO
+                    // for now, nothing to DO
                 }
 
-                //restriction status - ON
+                // restriction status - ON
                 else if( isRestrictionOn ) {
                     returningRestrictionDisplayParams.status = 'ON';
                     returningRestrictionDisplayParams.value = Number.isInteger(restrictionFoundInList.days) ? restrictionFoundInList.days : '';
                 }
 
-                //restriction status - VARIED
+                // restriction status - VARIED
                 else if( isRestrictionVaried ) {
                     returningRestrictionDisplayParams.status = 'VARIED';
                     returningRestrictionDisplayParams.value = RateManagerRestrictionTypes[restriction.value].hasInputField ? '??' : '';
@@ -737,11 +752,12 @@ angular.module('sntRover')
                         edited : false
                     }));
 
-            restrictions = restrictions.map(restriciton => {
-                if(restriciton.status === 'ON') {
-                   restriciton.edited = true;
-                }
-                return restriciton;
+            // CICO-42484 Keep tab of the initial values so that update request is sent only for edited restrictions
+            restrictions = restrictions.map(restriction => {
+                restriction.oldStatus = restriction.status;
+                restriction.oldValue = restriction.value;
+
+                return restriction;
             });
 
             return restrictions;
@@ -902,7 +918,7 @@ angular.module('sntRover')
                 $scope.contentMiddleMode = 'SINGLE_RATE_SINGLE_ROOM_TYPE_HOURLY_AMOUNT_EDIT';
                 $scope.priceDetails = {...roomTypePricesAndRestrictions.room_types[0]};
 
-                //some defult values used in templates
+                // some defult values used in templates
                 setDefaultPriceAdjustValues('single', $scope.priceDetails);
 
                 $scope.priceDetailsCopy = {...$scope.priceDetails};
@@ -920,6 +936,7 @@ angular.module('sntRover')
                 $scope.contentMiddleMode = 'SINGLE_RATE_ROOM_TYPE_CHILD_RATE';
 
                 var parentRate = _.findWhere(dialogData.rates, {id:dialogData.rate.based_on_rate_id})
+
                 if(parentRate) {
                     $scope.parentRateName = parentRate.name;
                 }
@@ -952,7 +969,7 @@ angular.module('sntRover')
 
             initializeSingleRateRestrictionAndAmountMiddlePane();
 
-            //if overriden, we need to notify in header (if it is not a child rate)
+            // if overriden, we need to notify in header (if it is not a child rate)
             if(!dialogData.rate.based_on_rate_id){
                 let headerToAdd = '';
 
@@ -977,7 +994,7 @@ angular.module('sntRover')
          * will modify the price details passing
          */
         const setDefaultPriceAdjustValues = (key, priceDetails) => {
-            //check the templates pls, you will get there, these are the model &it's values used in templates
+            // check the templates pls, you will get there, these are the model &it's values used in templates
             priceDetails[key + '_amount_operator'] = '+';
             priceDetails[key + '_amount_perc_cur_symbol'] = $rootScope.currencySymbol;
             priceDetails[key + '_changing_value'] =  '';
@@ -995,7 +1012,7 @@ angular.module('sntRover')
 
                 $scope.priceDetails = {...roomTypePricesAndRestrictions.room_types[0]};
 
-                //some defult values used in templates
+                // some defult values used in templates
                 setDefaultPriceAdjustValues('single', $scope.priceDetails);
 
                 $scope.priceDetailsCopy = {...$scope.priceDetails};
@@ -1004,7 +1021,7 @@ angular.module('sntRover')
                 $scope.contentMiddleMode = 'SINGLE_RATE_MULTIPLE_ROOM_TYPE_NIGHTLY_AMOUNT_EDIT';
                 $scope.priceDetails = {};
 
-                //forming the default model key value pairs used in templates
+                // forming the default model key value pairs used in templates
                 priceKeys.map(priceKey => setDefaultPriceAdjustValues(priceKey, $scope.priceDetails));
 
                 $scope.priceDetailsCopy = {...$scope.priceDetails};
@@ -1013,6 +1030,7 @@ angular.module('sntRover')
             if(dialogData.rate.based_on_rate_id && !dialogData.rate.is_copied) {
                 $scope.contentMiddleMode = 'SINGLE_RATE_ROOM_TYPE_CHILD_RATE';
                 var parentRate = _.findWhere(dialogData.rates, {id:dialogData.rate.based_on_rate_id})
+
                 if(parentRate) {
                     $scope.parentRateName = parentRate.name;
                 }
@@ -1053,12 +1071,12 @@ angular.module('sntRover')
          */
         const initializeModeBasedValues = () => {
             switch($scope.ngDialogData.mode) {
-                //when we click a restriciton cell on rate view mode
+                // when we click a restriciton cell on rate view mode
                 case $scope.modeConstants.RM_SINGLE_RATE_RESTRICTION_MODE:
                     initializeSingleRateRestrictionMode();
                     break;
 
-                //when we click a header restriciton cell on rate view mode
+                // when we click a header restriciton cell on rate view mode
                 case $scope.modeConstants.RM_MULTIPLE_RATE_RESTRICTION_MODE:
                     initializeMultipleRateRestrictionMode();
                     break;
@@ -1071,7 +1089,7 @@ angular.module('sntRover')
                     initializeMultipleRateTypeRestrictionMode();
                     break;
 
-                //when we click a restriciton cell on room type view mode
+                // when we click a restriciton cell on room type view mode
                 case $scope.modeConstants.RM_SINGLE_ROOMTYPE_RESTRICTION_MODE:
                     initializeSingleRoomTypeRestrictionMode();
                     break;
@@ -1112,7 +1130,7 @@ angular.module('sntRover')
 
             $scope.restrictionList =  [];
 
-            $scope.contentMiddleMode = ''; //values possible: 'ROOM_TYPE_PRICE_LISTING', 'RESTRICTION_EDITING'
+            $scope.contentMiddleMode = ''; // values possible: 'ROOM_TYPE_PRICE_LISTING', 'RESTRICTION_EDITING'
 
             $scope.modeConstants = rvRateManagerPopUpConstants;
 
@@ -1131,16 +1149,16 @@ angular.module('sntRover')
          * initialization stuffs
          */
         (() => {
-            //variables
+            // variables
             initializeDataModels();
 
-            //mode base setup values
+            // mode base setup values
             initializeModeBasedValues();
 
-            //setting the scroller
+            // setting the scroller
             setScroller();
 
-            //datepicker
+            // datepicker
             setDatePicker();
         })();
 }]);

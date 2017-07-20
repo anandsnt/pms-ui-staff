@@ -44,6 +44,13 @@ sntRover.controller('roverController', [
       $translate.use('EN');
     }
 
+    // CICO-39623 : Setting up app theme.
+    if ( !!hotelDetails.selected_theme && hotelDetails.selected_theme.value !== 'ORANGE' ) {
+      var appTheme = 'theme-' + (hotelDetails.selected_theme.value).toLowerCase();
+
+      document.getElementsByTagName("html")[0].setAttribute( 'class', appTheme );
+    }
+
     /*
      * To close drawer on click inside pages
      */
@@ -91,6 +98,8 @@ sntRover.controller('roverController', [
     $rootScope.fullDateFullMonthYear = "dd MMMM yyyy";
     $rootScope.dayAndDateCS = "EEEE, MM-dd-yyyy"; // Wednesday, 06-04-2014
     $rootScope.dateFormatForAPI = "yyyy-MM-dd";
+        // https://momentjs.com/docs/#/displaying/format/
+    $rootScope.momentFormatForAPI = "YYYY-MM-DD";
     $rootScope.shortMonthAndDate = "MMM dd";
     $rootScope.monthAndDate = "MMMM dd";
     $rootScope.fullMonth = "MMMM";
@@ -122,6 +131,7 @@ sntRover.controller('roverController', [
     $rootScope.dateFormat = getDateFormat(hotelDetails.date_format.value);
     $rootScope.jqDateFormat = getJqDateFormat(hotelDetails.date_format.value);
     $rootScope.MLImerchantId = hotelDetails.mli_merchant_id;
+    $rootScope.isMLIEMVEnabled =  hotelDetails.mli_emv_enabled;
     $rootScope.isQueuedRoomsTurnedOn = hotelDetails.housekeeping.is_queue_rooms_on;
     $rootScope.advanced_queue_flow_enabled = hotelDetails.advanced_queue_flow_enabled;
     $rootScope.isPmsProductionEnv = hotelDetails.is_pms_prod;
@@ -145,11 +155,17 @@ sntRover.controller('roverController', [
     $rootScope.isAddonOn = hotelDetails.is_addon_on;
     $rootScope.desktopSwipeEnabled = hotelDetails.allow_desktop_swipe;
 	  $rootScope.ccSwipeListeningPort = hotelDetails.cc_swipe_listening_port;
+    $rootScope.ccSwipeListeningUrl = hotelDetails.cc_swipe_listening_url;
     $rootScope.printCancellationLetter = hotelDetails.print_cancellation_letter;
     $rootScope.sendCancellationLetter = hotelDetails.send_cancellation_letter;
     $rootScope.printConfirmationLetter = hotelDetails.print_confirmation_letter;
     $rootScope.sendConfirmationLetter = hotelDetails.send_confirmation_letter;
     $rootScope.isItemInventoryOn    = hotelDetails.is_item_inventory_on;
+    $rootScope.guestTypes = hotelDetails.guest_types;
+
+    // CICO-41410
+    $rootScope.isDashboardSwipeEnabled = hotelDetails.enable_dashboard_swipe;
+
     // need to set some default timeout
     // discuss with Mubarak
 
@@ -382,8 +398,10 @@ sntRover.controller('roverController', [
       $scope.hasLoader = true;
     });
 
-    $scope.$on("hideLoader", function() {
-      $scope.hasLoader = false;
+    $scope.$on('hideLoader', function() {
+        $timeout(function() {
+            $scope.hasLoader = false;
+        }, 100);
     });
 
     $scope.$on("SHOW_SIX_PAY_LOADER", function() {
@@ -418,13 +436,14 @@ sntRover.controller('roverController', [
             emvTimeout: $rootScope.emvTimeout,
             mliMerchantId: $rootScope.MLImerchantId,
             currencySymbol: $rootScope.currencySymbol,
-            isManualCCEntryEnabled: $rootScope.isManualCCEntryEnabled
+            isManualCCEntryEnabled: $rootScope.isManualCCEntryEnabled,
+            isEMVEnabled: $rootScope.isMLIEMVEnabled
         };
 
         $scope.menuOpen = false;
         $rootScope.showNotificationForCurrentUser = true;
 
-        if ($rootScope.paymentGateway === "CBA") {
+        if ($rootScope.paymentGateway === "CBA" && sntapp.cordovaLoaded) {
             doCBAPowerFailureCheck();
         }
     };
@@ -509,27 +528,41 @@ sntRover.controller('roverController', [
         });
     };
 
-    // subemenu actions
+        // subemenu actions
+        $scope.subMenuAction = function(subMenu) {
+            $scope.toggleDrawerMenu();
 
-    $scope.subMenuAction = function(subMenu) {
+            if (subMenu === 'postcharges') {
+                openPostChargePopup();
+            }
+            else if (subMenu === 'endOfDay') {
+                openEndOfDayPopup();
+            }
+            else if (subMenu === 'adminSettings') {
+                // CICO-9816 bug fix - Akhila
+                $('body').addClass('no-animation');
 
-      $scope.toggleDrawerMenu();
+                // CICO-41410 Set card readers to offline
+                if (sntapp.cordovaLoaded && 'rv_native' === sntapp.browser) {
+                    sntapp.cardReader.stopReader({
+                        'successCallBack': function(data) {
+                            $log.info('device set to offline', data);
+                            $window.location.href = '/admin/h/' + sntAuthorizationSrv.getProperty();
+                        },
+                        'failureCallBack': function(data) {
+                            $log.info('failed to set device to offline', data);
+                            $window.location.href = '/admin/h/' + sntAuthorizationSrv.getProperty();
+                        }
+                    });
+                } else {
+                    $window.location.href = '/admin/h/' + sntAuthorizationSrv.getProperty();
+                }
 
-      if (subMenu === "postcharges") {
-        openPostChargePopup();
-      }
-      else if (subMenu === "endOfDay") {
-        openEndOfDayPopup();
-      }
-      else if (subMenu === "adminSettings") {
-            // CICO-9816 bug fix - Akhila
-            $('body').addClass('no-animation');
-            $window.location.href = "/admin/h/" + sntAuthorizationSrv.getProperty();
-      }
-      else if (subMenu === "changePassword") {
-         openUpdatePasswordPopup();
-      }
-    };
+            }
+            else if (subMenu === 'changePassword') {
+                openUpdatePasswordPopup();
+            }
+        };
 
     // in order to prevent url change(in rover specially coming from admin/or fresh url entering with states)
     // (bug fix to) https://stayntouch.atlassian.net/browse/CICO-7975
@@ -619,9 +652,9 @@ sntRover.controller('roverController', [
 
     var initiateDesktopCardReader = function() {
       sntapp.desktopCardReader.setDesktopUUIDServiceStatus(true);
-    	sntapp.desktopCardReader.startDesktopReader($rootScope.ccSwipeListeningPort, options);
+      sntapp.desktopCardReader.startDesktopReader($rootScope.ccSwipeListeningPort, options, $rootScope.ccSwipeListeningUrl);
     };
-        
+
       /**
        * @returns {undefined} undefined
        */
@@ -748,19 +781,22 @@ sntRover.controller('roverController', [
      * Handles the OWS error - Shows a popup having OWS connection test option
      */
     $rootScope.showOWSError = function() {
-
-      // Hide loading message
-      $scope.$emit('hideLoader');
-      if (!$rootScope.isOWSErrorShowing) {
-        $rootScope.isOWSErrorShowing = true;
-        ngDialog.open({
-          template: '/assets/partials/housekeeping/rvHkOWSError.html',
-          className: 'ngdialog-theme-default1 modal-theme1',
-          controller: 'RVHKOWSErrorCtrl',
-          closeByDocument: false,
-          scope: $scope
-        });
-      }
+        // Hide loading message
+        $scope.$emit('hideLoader');
+        if (!$rootScope.isOWSErrorShowing) {
+            // close existing popups
+            ngDialog.closeAll();
+            $timeout(function() {
+                $rootScope.isOWSErrorShowing = true;
+                ngDialog.open({
+                    template: '/assets/partials/housekeeping/rvHkOWSError.html',
+                    className: 'ngdialog-theme-default1 modal-theme1',
+                    controller: 'RVOWSErrorCtrl',
+                    closeByDocument: false,
+                    scope: $scope
+                });
+            }, 700);
+        }
     };
 
   // CICO-13582 Display a timeout error message, without try again button.
