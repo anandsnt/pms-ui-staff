@@ -1742,6 +1742,7 @@ sntRover.controller('RVbillCardController',
 
 		} else {
 			var signature = getSignatureBase64Data();
+			
                     $scope.initCompleteCheckin(isCheckinWithoutPreAuthPopup, signature );
 		}
 
