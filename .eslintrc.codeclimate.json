@@ -30,7 +30,8 @@
         "jsHue": false,
         "SyntaxHighlighter": false,
         "webSocketOperations": false,
-        "moment": false
+        "moment": false,
+        "SwipeOperation": false
     },
     "installedESLint": true,
     "parserOptions": {

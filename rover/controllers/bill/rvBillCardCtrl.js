@@ -492,15 +492,7 @@ sntRover.controller('RVbillCardController',
 		     	});
 			}
 	    });
-	    if ($scope.clickedButton === "checkinButton" && !isAlreadyShownPleaseSwipeForCheckingIn) {
-	     	isAlreadyShownPleaseSwipeForCheckingIn = true;
-	     	setTimeout(function() {
-	     		if (($scope.reservationBillData.is_disabled_cc_swipe === "false" || $scope.reservationBillData.is_disabled_cc_swipe === "" || $scope.reservationBillData.is_disabled_cc_swipe === null) && !$scope.reservation.reservation_card.is_pre_checkin) {
-	     			$scope.openPleaseSwipe();
-	     		}
 
-	        }, 200);
-	    }
 		$scope.reservationBillData = reservationBillData;
 		$scope.routingArrayCount = $scope.reservationBillData.routing_array.length;
 		$scope.incomingRoutingArrayCount = $scope.reservationBillData.incoming_routing_array.length;
@@ -514,6 +506,20 @@ sntRover.controller('RVbillCardController',
      	$scope.billingData.billingInfoTitle = ($scope.reservationBillData.routing_array.length > 0) ? $filter('translate')('BILLING_INFO_TITLE') : $filter('translate')('ADD_BILLING_INFO_TITLE');
 		setChargeCodesSelectedStatus(false);
 	};
+
+        $scope.$on('INIT_CHECKIN_FLOW', function () {
+            if ($scope.clickedButton === 'checkinButton' && !isAlreadyShownPleaseSwipeForCheckingIn) {
+                isAlreadyShownPleaseSwipeForCheckingIn = true;
+                $timeout(function () {
+                    if (($scope.reservationBillData.is_disabled_cc_swipe === 'false' ||
+                            $scope.reservationBillData.is_disabled_cc_swipe === '' ||
+                            $scope.reservationBillData.is_disabled_cc_swipe === null) &&
+                        !$scope.reservation.reservation_card.is_pre_checkin) {
+                        $scope.openPleaseSwipe();
+                    }
+                }, 200);
+            }
+        });
 
 	/*
 		 * set the status for the room charge no post button,
@@ -1557,7 +1563,7 @@ sntRover.controller('RVbillCardController',
 	    $scope.message_out_going_to_comp_tra = false;
 	    $scope.enableIncedentalOnlyOption = false;
 
-	    if ($scope.reservationBillData.routing_info.incoming_from_room) {
+	    if ($scope.reservationBillData.routi$scope.reservationBillData.routing_info.incoming_from_roomng_info.incoming_from_room) {
 	    	$scope.message_incoming_from_room = true;
 	    }
 	    else if ($scope.reservationBillData.routing_info.out_going_to_room) {
@@ -2128,7 +2134,15 @@ sntRover.controller('RVbillCardController',
 	 	};
 	 	var getReservationDetailsSuccessCallback = function(successData) {
 			$scope.$emit('hideLoader');
-			var reservationData = successData;
+            var reservationData = successData,
+                swipeOperationObj,
+                swipedCardDataToRender;
+
+            if ($scope.swippedCard) {
+                swipeOperationObj = new SwipeOperation();
+                swipedCardDataToRender = swipeOperationObj.createSWipedDataToRender(swipedTrackDataForCheckin);
+                $scope.$broadcast('SWIPED_CARD_ADDED', swipeOperationObj.createSWipedDataToSave(swipedCardDataToRender));
+            }
 
 			reservationData.reservation_card.balance_amount = data.balance;
 			RVReservationCardSrv.updateResrvationForConfirmationNumber(data.confirm_no, reservationData);
@@ -2767,5 +2781,9 @@ sntRover.controller('RVbillCardController',
     };
 
     $scope.$emit("OBSERVE_FOR_SWIPE");
+
+    $scope.billHasCreditCard = function () {
+        return $scope.reservationBillData.bills[$scope.currentActiveBill].credit_card_details.payment_type === "CC";
+    };
 
 }]);

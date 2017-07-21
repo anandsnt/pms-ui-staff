@@ -448,7 +448,7 @@ angular.module('sntRover').controller('rvGroupReservationEditCtrl', [
             canChekin: !!reservation.room_no && rStatus === "CHECKING_IN",
             isNoShow: rStatus === "NOSHOW",
             isGuestAttached: !!reservation.lastname,
-            isPastArrival: new tzIndependentDate($rootScope.businessDate) >= new tzIndependentDate(reservation.arrival_date)
+            isPastArrival: new tzIndependentDate($rootScope.businessDate) >= new tzIndependentDate(reservation.arrival_date.split('T')[0])
         };
     };
 
