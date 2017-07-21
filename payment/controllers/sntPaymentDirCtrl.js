@@ -1083,7 +1083,9 @@ angular.module('sntPay').controller('sntPaymentController',
                 if ($scope.allotmentId) {
                     params['allotment_id'] = $scope.allotmentId;
                 }
-
+                if ($scope.actionType === 'DEPOSIT_PAYMENT_RES_SUMMARY') {
+                    params['reservation_id'] = $scope.reservationId;
+                }
                 sntPaymentSrv.savePaymentDetails(params).then(
                     response => {
                         if (response.status === 'success') {
