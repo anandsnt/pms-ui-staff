@@ -113,7 +113,7 @@ angular.module('sntRover').controller('RVReservationCheckInFlowCtrl',
 
 
                 if (signature !== 'isSigned' && signature !== '[]') {
-                    params.signature = signature;
+                    params.signature = $scope.getSignatureBase64Data();
                 }
 
                 // This flag is set from the rvBillCardCtrl
