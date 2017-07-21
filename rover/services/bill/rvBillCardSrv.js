@@ -69,6 +69,8 @@ angular.module('sntRover').service('RVBillCardSrv', ['$http', '$q', 'BaseWebSrvV
 	};
 
 	this.completeCheckin = function(data) {
+		console.log("Service - completeCheckin");
+		console.log(data);
 		var deferred = $q.defer();
 		var url = '/staff/checkin';
 

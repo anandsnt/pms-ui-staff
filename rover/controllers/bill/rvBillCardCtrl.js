@@ -1705,7 +1705,7 @@ sntRover.controller('RVbillCardController',
 
 	// To handle complete checkin button click
 	$scope.clickedCompleteCheckin = function(isCheckinWithoutPreAuthPopup, checkInQueuedRoom) {
-
+		console.log("clickedCompleteCheckin");
         // CICO-36122 - Set this to keep the promos and news opt in check-in screen in sync with guest card
         if ( !!$scope.guestCardData && !!$scope.guestCardData.contactInfo) {
            $scope.guestCardData.contactInfo.is_opted_promotion_email = $scope.saveData.promotions;
@@ -1742,13 +1742,13 @@ sntRover.controller('RVbillCardController',
 
 		} else {
 			var signature = getSignatureBase64Data();
-			
+
                     $scope.initCompleteCheckin(isCheckinWithoutPreAuthPopup, signature );
 		}
 
 	};
         $scope.clickedCompleteAddToQueue = function(isCheckinWithoutPreAuthPopup, checkInQueuedRoom) {
-
+        	console.log("clickedCompleteAddToQueue");
 		if ($scope.hasAnySharerCheckedin()) {
 			// Do nothing , Keep going checkin process , it is a sharer reservation..
 		}
