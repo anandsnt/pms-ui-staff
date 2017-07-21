@@ -513,7 +513,6 @@ sntRover.controller('RVReservationConfirmCtrl', [
 		};
 
 		$scope.checkin = function() {
-			console.log("checkin");
 			/*
 				Please one min..
 				We create a list of promises against each API call
