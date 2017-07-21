@@ -98,6 +98,7 @@ sntRover.controller('RVbillCardController',
 	// CICO-6089 : Flag for Guest Bill: Check out without Settlement
 	$scope.isCheckoutWithoutSettlement = false;
 
+
 	// set up flags for checkbox actions
 	$scope.hasMoveToOtherBillPermission = function() {
         return ($rootScope.isStandAlone && rvPermissionSrv.getPermissionValue ('MOVE_CHARGES_RESERVATION_ACCOUNT'));
@@ -1510,6 +1511,8 @@ sntRover.controller('RVbillCardController',
 
 	// Handle checkin process with Autherization..
 	var performCCAuthAndCheckinProcess = function(data, isCheckinWithoutAuth, queueRoom) {
+		console.log("PerfromAuth");
+		console.log(data);
             /*
              * put in Queue should not attempt to auth CC during normal workflow in Overlay,
              * in Standalone, $scope.putInQueue should always be false; (until we start supporting standalone put in queue)
@@ -1731,7 +1734,7 @@ sntRover.controller('RVbillCardController',
 			return false;
 		}
 
-		var errorMsg = "", signatureData = $scope.getSignature(), signatureWithLine = getSignatureBase64Data();
+		var errorMsg = "", signatureData = $scope.getSignature();
 
 		if ($scope.signatureNeeded(signatureData) && !$scope.reservation.reservation_card.is_pre_checkin) {
 			errorMsg = "Signature is missing";
@@ -1744,7 +1747,9 @@ sntRover.controller('RVbillCardController',
 
 
 		} else {
-                    $scope.initCompleteCheckin(isCheckinWithoutPreAuthPopup, signatureWithLine);
+			var signature = getSignatureBase64Data();
+			
+                    $scope.initCompleteCheckin(isCheckinWithoutPreAuthPopup, signature );
 		}
 
 	};
@@ -1754,7 +1759,7 @@ sntRover.controller('RVbillCardController',
 			// Do nothing , Keep going checkin process , it is a sharer reservation..
 		}
 
-		var errorMsg = "", signatureData = $scope.getSignature(), signatureWithLine = getSignatureBase64Data();
+		var errorMsg = "", signatureData = $scope.getSignature();
 
 		if ($scope.signatureNeeded(signatureData)) {
 			errorMsg = "Signature is missing";
@@ -1767,15 +1772,17 @@ sntRover.controller('RVbillCardController',
 
 
 		} else {
-                    var queueRoom = true;
+                    var queueRoom = true,
+                    	signature = getSignatureBase64Data();
 
-                    $scope.initCompleteCheckin(isCheckinWithoutPreAuthPopup, signatureWithLine, queueRoom);
+                    $scope.initCompleteCheckin(isCheckinWithoutPreAuthPopup, signature, queueRoom);
 		}
 
 	};
 
         $scope.initCompleteCheckin = function(isCheckinWithoutPreAuthPopup, signatureData, queueRoom) {
-
+        	console.log("initCompleteCheckin");
+        	console.log(signatureData);
 			if ($scope.validateEmailNeeded()) {
                             ngDialog.open({
                                 template: '/assets/partials/validateCheckin/rvAskEmailFromCheckin.html',
