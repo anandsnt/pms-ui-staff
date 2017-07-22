@@ -1,14 +1,16 @@
 <section id="main" role="main" class="centered search-content" click-touch='resetTime()' ng-hide="alreadyCheckedOut">
     <!-- last name -->
     <div id="content" class="input-field-contents" ng-show="mode === 'LAST_NAME_ENTRY'">
-        <h1><text editable-text="TYPE_LAST">{{'TYPE_LAST' | translate}}</text></h1>
+        <h1>
+            <text data-ng-bind-html="getTagValue('TYPE_LAST')" editable-text="TYPE_LAST"></text>
+        </h1>
         <form method="post" class="form">
             <div class="entry input">
-                <input type="text" placeholder="" ng-focus="showOnScreenKeyboard('last-name')" click-touch="showOnScreenKeyboard('last-name')" ng-model="reservationParams.last_name" enter-press="lastNameEntered()" id="last-name" touch-press/>
+                <input type="text" placeholder="" ng-focus="showOnScreenKeyboard('last-name')" click-touch="showOnScreenKeyboard('last-name')" ng-model="reservationParams.last_name" enter-press="lastNameEntered()" id="last-name" ng-keydown="resetTime()" touch-press />
             </div>
             <div class="entry action">
                 <button type="button" class="button" click-touch="lastNameEntered()">
-                    <text editable-text="NEXT_BTN">{{'NEXT_BTN' | translate}}</text>
+                    <text data-ng-bind-html="getTagValue('NEXT_BTN')" editable-text="NEXT_BTN"></text>
                 </button>
             </div>
         </form>
@@ -16,9 +18,9 @@
     <!-- room number -->
     <div id="content" class="input-field-contents" ng-show="mode === 'ROOM_NUMBER_ENTRY'">
         <h1>
-            <text editable-text="NEXT_ROOM_NUMBER">{{'NEXT_ROOM_NUMBER' | translate}}</text>
+            <text data-ng-bind-html="getTagValue('NEXT_ROOM_NUMBER')" editable-text="NEXT_ROOM_NUMBER"></text>
         </h1>
-         <form class="form" ng-if='showTowers'>
+        <form class="form" ng-if='showTowers'>
             <div class="entry">
                 <select ng-model="tower.selected" class="checkout-screen-select-box" ng-change="changedTheSelectedTower()">
                     <option ng-repeat="tower in towerList" ng-selected="tower.value === tower.selected" value="{{tower.value}}">{{tower.name}}</option>
@@ -27,11 +29,11 @@
         </form>
         <form method="post" class="form">
             <div class="entry input">
-                <input type="tel" placeholder="" ng-focus="showOnScreenKeyboard('room-number')" click-touch="showOnScreenKeyboard('room-number')" ng-model="reservationParams.room_no" enter-press="roomNumberEntered()" id="room-number" touch-press/>
+                <input type="tel" placeholder="" ng-focus="showOnScreenKeyboard('room-number')" click-touch="showOnScreenKeyboard('room-number')" ng-model="reservationParams.room_no" enter-press="roomNumberEntered()" id="room-number" ng-keydown="resetTime()" touch-press/>
             </div>
             <div class="entry action">
                 <button type="button" class="button" click-touch="roomNumberEntered()">
-                    <text editable-text="NEXT_BTN">{{'NEXT_BTN' | translate}}</text>
+                    <text data-ng-bind-html="getTagValue('NEXT_BTN')" editable-text="NEXT_BTN"></text>
                 </button>
             </div>
         </form>
@@ -39,10 +41,10 @@
     <!-- no match -->
     <div id="content" ng-show="mode === 'NO_MATCH'">
         <h1>
-            <text editable-text="RES_SRCH_SRY">{{'RES_SRCH_SRY' | translate}}</text>
+             <text data-ng-bind-html="getTagValue('RES_SRCH_SRY')" editable-text="RES_SRCH_SRY"></text>
         </h1>
         <h2>
-            <text editable-text="RES_SRCH_SRY_SUB">{{'RES_SRCH_SRY_SUB' | translate}}</text>
+            <text data-ng-bind-html="getTagValue('RES_SRCH_SRY_SUB')" editable-text="RES_SRCH_SRY_SUB"></text>
         </h2>
         <nav id="options" role="nav">
             <ul role="menu">
@@ -51,12 +53,12 @@
                         <!--div ng-include="'/assets/zest_station/css/icons/keyboard.svg'"></div-->
                         <div ng-include="icons.url.keyboard"></div>
                     </button>
-                    <text editable-text="RES_SRCH_RE_ENTER_LAST">{{'RES_SRCH_RE_ENTER_LAST' | translate}}</text>
+                    <text data-ng-bind-html="getTagValue('RES_SRCH_RE_ENTER_LAST')" editable-text="RES_SRCH_RE_ENTER_LAST"></text>
                     <span ng-bind="reservationParams.last_name"></span>
                 </li>
                 <li class="break">
                     <span>
-                        <text editable-text="OR_TEXT">{{'OR_TEXT' | translate}}</text>
+                        <text data-ng-bind-html="getTagValue('OR_TEXT')" editable-text="OR_TEXT"></text>
                     </span>
                 </li>
                 <li>
@@ -64,12 +66,12 @@
                         <!--div ng-include="'/assets/zest_station/css/icons/keyboard.svg'"></div-->
                         <div ng-include="icons.url.keyboard"></div>
                     </button>
-                    <text editable-text="RES_SRCH_RE_ENTER_ROOM">{{'RES_SRCH_RE_ENTER_ROOM' | translate}}</text>
+                    <text data-ng-bind-html="getTagValue('RES_SRCH_RE_ENTER_ROOM')" editable-text="RES_SRCH_RE_ENTER_ROOM"></text>
                     <span ng-bind="reservationParams.room_no"></span>
                 </li>
                 <li class="break">
                     <span>
-                        <text editable-text="OR_TEXT">{{'OR_TEXT' | translate}}</text>
+                        <text data-ng-bind-html="getTagValue('OR_TEXT')" editable-text="OR_TEXT"></text>
                     </span>
                 </li>
                 <li>
@@ -77,9 +79,9 @@
                         <!--div ng-include="'/assets/zest_station/css/icons/staff.svg'"></div-->
                         <div ng-include="icons.url.staff"></div>
                     </button>
-                    <text editable-text="RES_SRCH_TALK">{{'RES_SRCH_TALK' | translate}}</text>
+                    <text data-ng-bind-html="getTagValue('RES_SRCH_TALK')" editable-text="RES_SRCH_TALK"></text>
                     <span>
-                        <text editable-text="RES_SRCH_TALK_SUB">{{'RES_SRCH_TALK_SUB' | translate}}</text>
+                        <text data-ng-bind-html="getTagValue('RES_SRCH_TALK_SUB')" editable-text="RES_SRCH_TALK_SUB"></text>
                     </span>
                 </li>
             </ul>
@@ -92,22 +94,14 @@
 <section id="main" class="centered" role="main" ng-show="alreadyCheckedOut">
     <div id="content">
         <h1>
-            <text editable-text="USER_CHECKED_OUT_ALRDY_HEADER">{{'USER_CHECKED_OUT_ALRDY_HEADER' | translate}}</text>
+            <text data-ng-bind-html="getTagValue('USER_CHECKED_OUT_ALRDY_HEADER')" editable-text="USER_CHECKED_OUT_ALRDY_HEADER"></text>
         </h1>
         <h2 class="nocaps">
-            <text editable-text="USER_CHECKED_OUT_ALRDY_SUB">{{'USER_CHECKED_OUT_ALRDY_SUB' | translate}}</text>
+            <text data-ng-bind-html="getTagValue('USER_CHECKED_OUT_ALRDY_SUB')" editable-text="USER_CHECKED_OUT_ALRDY_SUB"></text>
         </h2>
         <button type="button" class="button done-btn" click-touch="alreadyCheckedOutActions()">
-            <text editable-text="USER_CHECKED_OUT_ALRDY_RTN">{{'USER_CHECKED_OUT_ALRDY_RTN' | translate}}</text>
+            <text data-ng-bind-html="getTagValue('USER_CHECKED_OUT_ALRDY_RTN')" editable-text="USER_CHECKED_OUT_ALRDY_RTN"></text>
         </button>
     </div>
     <span ng-include="'/assets/partials_v2/zsTabletFooter.html'"></span>
 </section>
-
-
-
-
-
-
-
-

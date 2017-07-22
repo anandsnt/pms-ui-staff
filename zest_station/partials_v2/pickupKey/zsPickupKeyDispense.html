@@ -3,10 +3,10 @@
     <!-- Remove class "open" to hide popup content -->
     <div class="popup-content">
         <h2 class="nocaps">
-            <text editable-text="GATE_ERROR_MESSAGE"> {{'GATE_ERROR_MESSAGE' |translate}}</text>
+            <text data-ng-bind-html="getTagValue('GATE_ERROR_MESSAGE')" editable-text="GATE_ERROR_MESSAGE"></text>
         </h2>
         <button type="button" class="button" click-touch='closeGateErrorWarning();'>
-            <text editable-text="GATE_ERROR_CLOSE"> {{'GATE_ERROR_CLOSE' |translate}}</text>
+            <text data-ng-bind-html="getTagValue('GATE_ERROR_CLOSE')" editable-text="GATE_ERROR_CLOSE"></text>
         </button>
     </div>
 </div>
@@ -16,21 +16,21 @@
     <div id="content" class='select-keys'>
         <h1 class="no-margin">{{selectedReservation.first_name}}</h1>
         <h1>
-            <text editable-text="PUK_CHKED_IN_MSG"> {{'PUK_CHKED_IN_MSG' |translate}}</text>
+            <text data-ng-bind-html="getTagValue('PUK_CHKED_IN_MSG')" editable-text="PUK_CHKED_IN_MSG"></text>
         </h1>
         <div id="room" ng-show="zestStationData.show_room_number">
             <span class="number">{{selectedReservation.room}}</span>
         </div>
         <div id="keys">
             <h2>
-                <text editable-text="HOW_MANY_KEYS"> {{'HOW_MANY_KEYS' |translate}}</text>
+                <text data-ng-bind-html="getTagValue('HOW_MANY_KEYS')" editable-text="HOW_MANY_KEYS"></text>
             </h2>
             <div id="key-options">
                 <button ng-hide="isEmpty('UNO_KEY')" type="button" class="button make-key-btn" touch-press="makeKeys(1)">
-                    <text editable-text="UNO_KEY"> {{'UNO_KEY' |translate}}</text>
+                    <text data-ng-bind-html="getTagValue('UNO_KEY')" editable-text="UNO_KEY"></text>
                 </button>
                 <button ng-hide="isEmpty('DOS_KEY')" type="button" class="button make-key-btn" touch-press="makeKeys(2)">
-                    <text editable-text="DOS_KEY"> {{'DOS_KEY' |translate}}</text>
+                    <text data-ng-bind-html="getTagValue('DOS_KEY')" editable-text="DOS_KEY"></text>
                 </button>
             </div>
         </div>
@@ -41,19 +41,19 @@
 <section id="main" class="centered" role="main" click-touch='resetTime()' ng-show="mode === 'SOLO_KEY_CREATION_IN_PROGRESS_MODE'">
     <div id="content">
         <h1>
-            <text editable-text="MAKE_KEY"> {{'MAKE_KEY' |translate}}</text>
+            <text data-ng-bind-html="getTagValue('MAKE_KEY')" editable-text="MAKE_KEY"></text>
         </h1>
         <h2>
-            <text editable-text="MAKE_KEY_MSG"> {{'MAKE_KEY_MSG' |translate}}</text>
+            <text data-ng-bind-html="getTagValue('MAKE_KEY_MSG')" editable-text="MAKE_KEY_MSG"></text>
         </h2>
         <div class='uploaded-key-image' id="keys" ng-show="zestStationData.keyWriter == 'websocket'">
             <img src="{{icons.url.createkey}}">
         </div>
-        <div id="keys" ng-show="icmp">
+        <div id="keys" ng-show="icmp" class='icmp-key-image'>
             <div ng-include="icons.url.createkey_icmp"></div>
         </div>
         <button ng-show="remoteEncoding  || localWriter" ng-class="{'overlay disabled':(!readyForUserToPressMakeKey)}" type="button" class="button make-key-now" touch-press="onReadyToPrintKey(1)">
-            <text editable-text="MAKE_KEY_TEXT_ONE"> {{'MAKE_KEY_TEXT_ONE' |translate}}</text>
+            <text data-ng-bind-html="getTagValue('MAKE_KEY_TEXT_ONE')" editable-text="MAKE_KEY_TEXT_ONE"></text>
         </button>
     </div>
     <span ng-include="'/assets/partials_v2/zsTabletFooter.html'" click-touch='resetTime()'></span>
@@ -62,19 +62,19 @@
 <section id="main" class="centered" role="main" click-touch='resetTime()' ng-show="mode === 'KEY_ONE_CREATION_IN_PROGRESS_MODE'">
     <div id="content">
         <h1>
-            <text editable-text="MAKE_FIRST_KEY"> {{'MAKE_FIRST_KEY' |translate}}</text>
+            <text data-ng-bind-html="getTagValue('MAKE_FIRST_KEY')" editable-text="MAKE_FIRST_KEY"></text>
         </h1>
         <h2>
-            <text editable-text="MAKE_FIRST_KEY_SUB"> {{'MAKE_FIRST_KEY_SUB' |translate}}</text>
+            <text data-ng-bind-html="getTagValue('MAKE_FIRST_KEY_SUB')" editable-text="MAKE_FIRST_KEY_SUB"></text>
         </h2>
         <div class='uploaded-key-image' id="keys" ng-show="zestStationData.keyWriter == 'websocket'">
             <img src="{{icons.url.createkey}}">
         </div>
-        <div id="keys" ng-show="icmp">
+        <div id="keys" ng-show="icmp" class='icmp-key-image'>
             <div ng-include="icons.url.createkey_icmp"></div>
         </div>
         <button ng-show="remoteEncoding  || localWriter" ng-class="{'overlay disabled':(!readyForUserToPressMakeKey)}" type="button" class="button make-key-now" touch-press="onReadyToPrintKey(1)">
-            <text editable-text="MAKE_KEY_TEXT_ONE"> {{'MAKE_KEY_TEXT_ONE' |translate}}</text>
+            <text data-ng-bind-html="getTagValue('MAKE_KEY_TEXT_ONE')" editable-text="MAKE_KEY_TEXT_ONE"></text>
         </button>
     </div>
     <span ng-include="'/assets/partials_v2/zsTabletFooter.html'" click-touch='resetTime()'></span>
@@ -83,22 +83,22 @@
 <section id="main" class="centered" role="main" click-touch='resetTime()' ng-show="mode === 'KEY_ONE_SUCCESS_KEY_TWO_FAILED'">
     <div id="content">
         <h1>
-            <text editable-text="KEY_TWO_FAILED"> {{'KEY_TWO_FAILED' |translate}}</text>
+            <text data-ng-bind-html="getTagValue('KEY_TWO_FAILED')" editable-text="KEY_TWO_FAILED"></text>
         </h1>
         <h2>
-            <text editable-text="RETRY_CREATING_KEY_TWO"> {{'RETRY_CREATING_KEY_TWO' |translate}}</text>
+            <text data-ng-bind-html="getTagValue('RETRY_CREATING_KEY_TWO')" editable-text="RETRY_CREATING_KEY_TWO"></text>
         </h2>
         <div class='uploaded-key-image' id="keys" ng-show="zestStationData.keyWriter == 'websocket'">
             <img src="{{icons.url.createkey}}">
         </div>
-        <div id="keys" ng-show="icmp">
+        <div id="keys" ng-show="icmp" class='icmp-key-image'>
             <div ng-include="icons.url.createkey_icmp"></div>
         </div>
         <button ng-show="remoteEncoding || localWriter" ng-class="{'overlay disabled':(!readyForUserToPressMakeKey)}" type="button" class="button make-key-now" touch-press="onReadyToPrintKey(2)">
-            <text editable-text="MAKE_KEY_TEXT_TWO"> {{'MAKE_KEY_TEXT_TWO' |translate}}</text>
+            <text data-ng-bind-html="getTagValue('MAKE_KEY_TEXT_TWO')" editable-text="MAKE_KEY_TEXT_TWO"></text>
         </button>
         <button ng-hide="remoteEncoding || localWriter" ng-class="{'overlay disabled':(!readyForUserToPressMakeKey)}" type="button" class="button make-key-now" touch-press="dispenseKey()">
-            <text editable-text="MAKE_KEY_TEXT_TWO"> {{'MAKE_KEY_TEXT_TWO' |translate}}</text>
+            <text data-ng-bind-html="getTagValue('MAKE_KEY_TEXT_TWO')" editable-text="MAKE_KEY_TEXT_TWO"></text>
         </button>
     </div>
 </section>
@@ -106,22 +106,22 @@
 <section id="main" class="centered" role="main" click-touch='resetTime()' ng-show="mode === 'KEY_ONE_CREATION_SUCCESS_MODE'">
     <div id="content">
         <h1>
-            <text editable-text="MADE_FIRST_KEY_MSG"> {{'MADE_FIRST_KEY_MSG' |translate}}</text>
+            <text data-ng-bind-html="getTagValue('MADE_FIRST_KEY_MSG')" editable-text="MADE_FIRST_KEY_MSG"></text>
         </h1>
         <h2>
-            <text editable-text="MADE_FIRST_KEY_MSG_SUB"> {{'MADE_FIRST_KEY_MSG_SUB' |translate}}</text>
+            <text data-ng-bind-html="getTagValue('MADE_FIRST_KEY_MSG_SUB')" editable-text="MADE_FIRST_KEY_MSG_SUB"></text>
         </h2>
         <div class='uploaded-key-image' id="keys" ng-show="zestStationData.keyWriter == 'websocket'">
             <img src="{{icons.url.createkey}}">
         </div>
-        <div id="keys" ng-show="icmp">
+        <div id="keys" ng-show="icmp" class='icmp-key-image'>
             <div ng-include="icons.url.createkey_icmp"></div>
         </div>
         <button ng-show="remoteEncoding || localWriter" ng-class="{'overlay disabled':(!readyForUserToPressMakeKey)}" type="button" class="button make-key-now" touch-press="onReadyToPrintKey(2)">
-            <text editable-text="MAKE_KEY_TEXT_TWO"> {{'MAKE_KEY_TEXT_TWO' |translate}}</text>
+            <text data-ng-bind-html="getTagValue('MAKE_KEY_TEXT_TWO')" editable-text="MAKE_KEY_TEXT_TWO"></text>
         </button>
         <button ng-hide="remoteEncoding || localWriter" ng-class="{'overlay disabled':(!readyForUserToPressMakeKey)}" type="button" class="button make-key-now" touch-press="dispenseKey()">
-            <text editable-text="MAKE_KEY_TEXT_TWO"> {{'MAKE_KEY_TEXT_TWO' |translate}}</text>
+            <text data-ng-bind-html="getTagValue('MAKE_KEY_TEXT_TWO')" editable-text="MAKE_KEY_TEXT_TWO"></text>
         </button>
     </div>
     <span ng-include="'/assets/partials_v2/zsTabletFooter.html'" click-touch='resetTime()'></span>
@@ -130,16 +130,16 @@
 <section id="main" class="centered" role="main" click-touch='resetTime()' ng-show="mode === 'KEY_CREATION_SUCCESS_MODE'">
     <div id="content">
         <h1>
-            <text editable-text="SUCCESS_HDR"> {{'SUCCESS_HDR' |translate}}</text>
+            <text data-ng-bind-html="getTagValue('SUCCESS_HDR')" editable-text="SUCCESS_HDR"></text>
         </h1>
         <h2>
-            <text editable-text="GRAB_KEYS"> {{'GRAB_KEYS' |translate}}</text>
+            <text data-ng-bind-html="getTagValue('GRAB_KEYS')" editable-text="GRAB_KEYS"></text>
         </h2>
         <div id="room" class='success-key' ng-show="zestStationData.show_room_number">
             <span class="number">{{selectedReservation.room}}</span>
         </div>
         <button type="button" class="button done-btn" click-touch="pickupKeyNextPageAction()" ng-style="doneButtonStyle">
-            <text editable-text="DONE"> {{'DONE' |translate}}</text>
+            <text data-ng-bind-html="getTagValue('DONE')" editable-text="DONE"></text>
         </button>
     </div>
     <span ng-include="'/assets/partials_v2/zsTabletFooter.html'" click-touch='resetTime()'></span>
@@ -148,10 +148,10 @@
 <section id="main" class="centered" role="main" click-touch='resetTime()' ng-show="mode === 'DISPENSE_KEY_FAILURE_MODE'">
     <div id="content">
         <h1>
-            <text editable-text="NO_KEYS_MADE"> {{'NO_KEYS_MADE' |translate}}</text>
+            <text data-ng-bind-html="getTagValue('NO_KEYS_MADE')" editable-text="NO_KEYS_MADE"></text>
         </h1>
         <h2>
-            <text editable-text="NO_KEYS_MADE_SUB"> {{'NO_KEYS_MADE_SUB' |translate}}</text>
+            <text data-ng-bind-html="getTagValue('NO_KEYS_MADE_SUB')" editable-text="NO_KEYS_MADE_SUB"></text>
         </h2>
         <nav id="options" role="nav">
             <ul role="menu">
@@ -161,12 +161,12 @@
                         <div ng-include="icons.url.key"></div>
                     </button>
                     <h1>
-                        <text editable-text="TRY_AGAIN"> {{'TRY_AGAIN' |translate}}</text>
+                        <text data-ng-bind-html="getTagValue('TRY_AGAIN')" editable-text="TRY_AGAIN"></text>
                     </h1>
                 </li>
                 <li class="break">
                     <span>
-                        <text editable-text="OR_TEXT"> {{'OR_TEXT' |translate}}</text>
+                        <text data-ng-bind-html="getTagValue('OR_TEXT')" editable-text="OR_TEXT"></text>
                     </span>
                 </li>
                 <li ng-if="zestStationData.pickup_key_reg_print === 'auto_print'">
@@ -174,12 +174,12 @@
                         <div ng-include="icons.url.keyboard"></div>
                     </button>
                     <h1>
-                        <text editable-text="CONTINUE"> {{'CONTINUE' |translate}}</text>
+                        <text data-ng-bind-html="getTagValue('CONTINUE')" editable-text="CONTINUE"></text>
                     </h1>
                 </li>
                 <li class="break" ng-if="zestStationData.pickup_key_reg_print === 'auto_print'">
                     <span>
-                        <text editable-text="OR_TEXT"> {{'OR_TEXT' |translate}}</text>
+                        <text data-ng-bind-html="getTagValue('OR_TEXT')" editable-text="OR_TEXT"></text>
                     </span>
                 </li>
                 <li>
@@ -187,10 +187,10 @@
                         <div ng-include="icons.url.staff"></div>
                     </button>
                     <h1>
-                        <text editable-text="SPEAK"> {{'SPEAK' |translate}}</text>
+                        <text data-ng-bind-html="getTagValue('SPEAK')" editable-text="SPEAK"></text>
                     </h1>
                     <h4>
-                        <text editable-text="SPEAK_SUB"> {{'SPEAK_SUB' |translate}}</text>
+                        <text data-ng-bind-html="getTagValue('SPEAK_SUB')" editable-text="SPEAK_SUB"></text>
                     </h4>
                 </li>
             </ul>

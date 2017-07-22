@@ -695,57 +695,29 @@ angular.module('sntRover').controller('cardContractsCtrl', ['$rootScope', '$scop
 			}
 		});
 
-		var rateSource = function(request, response) {
+		/**
+	     * to run angular digest loop,
+	     * will check if it is not running
+	     * return - None
+	     */
+	    var runDigestCycle = function() {
+	        if (!$scope.$$phase) {
+	            $scope.$digest();
+	        }
+	    };
 
-			// fetch data from server
-            var fetchData = function() {
-                if (request.term !== '' && $scope.autoCompleteState.lastSearchText !== request.term) {
-                    $scope.invokeApi(RVCompanyCardSrv.fetchRates, {
-                        'query': request.term
-                    }, function(data) {
-                    	$scope.$emit('hideLoader');
-                    	var processedResults = [];
-
-                    	_.each(data.contract_rates, function(result) {
-                    		processedResults.push({
-                    			label: result.name,
-	                            value: result.name,
-	                            type: 'GROUP',
-	                            id: group.id,
-	                            code: group.code
-                    		});
-                    	});
-                    	response(processedResults);
-                    });
-                    $scope.autoCompleteState.lastSearchText = request.term;
-                }
-            };
-
-
-			if (request.term.length === 0) {
-                companyCardResults = [];
-                $scope.autoCompleteState.lastSearchText = "";
-                $scope.autoCompleteState.selectedRate = {};
-            } else if (request.term.length > 2) {
-                fetchData();
-            }
-		};
-
-		var onRateSelect = function() {
-
-		};
-
-		$scope.autoCompleteRates = {
-			delay: 0,
-            minLength: 0,
-            position: {
-                my: 'left bottom',
-                at: 'left top',
-                collision: 'flip'
-            },
-            source: rateSource,
-            select: onRateSelect
-		};
+		// CICO-31607 : On selecting a rate from rate auto complete directive.
+		$scope.$on('RATE_SELECTED', function (event, data) {
+			if ($scope.contractList.isAddMode) {
+				$scope.addData.begin_date = data.min_date;
+				$scope.addData.end_date = data.max_date;
+			}
+			else {
+				$scope.contractData.begin_date = data.min_date;
+				$scope.contractData.end_date = data.max_date;
+			}
+			runDigestCycle();
+		});
 
 	}
 ]);

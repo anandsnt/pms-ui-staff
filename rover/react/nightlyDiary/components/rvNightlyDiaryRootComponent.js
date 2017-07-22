@@ -3,13 +3,14 @@ const { findDOMNode } = ReactDOM;
 const NightlyDiaryRootComponent = createClass ({
     scrollToPos(pos) {
         const node = document.getElementById('diary-nightly-grid');
-
+        
         node.scrollTop = pos;
+
     },
     scrollToNthelement(n) {
-        let width = document.getElementsByClassName("room")[1].clientHeight,
-            scrollTo = n * width ;
-
+         let width = document.getElementsByClassName("room")[1].clientHeight,
+             scrollTo = n * width ;
+ 
         this.scrollToPos(scrollTo);
     },
     componentDidUpdate() {
@@ -61,5 +62,6 @@ const NightlyDiaryRootComponent = createClass ({
 NightlyDiaryRootComponent.propTypes = {
     showNextPageButton: PropTypes.bool.isRequired,
     showPrevPageButton: PropTypes.bool.isRequired,
-    ClassForRootDiv: PropTypes.string.isRequired
+    ClassForRootDiv: PropTypes.string.isRequired,
+    scrollTo: PropTypes.object
 };

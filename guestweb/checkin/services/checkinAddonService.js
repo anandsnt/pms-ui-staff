@@ -100,12 +100,30 @@
 			return deferred.promise;
 		};
 
+		var getlateCheckoutSettings = function() {
+			var deferred = $q.defer();
+			var url = '/admin/hotel/get_late_checkout_setup.json';
+
+			$http.get(url).success(function(response) {
+					if (response.status === 'success') {
+						deferred.resolve(response);
+					} else {
+						deferred.reject();
+					}
+				})
+				.error(function() {
+					deferred.reject();
+				});
+			return deferred.promise;
+		};
+
 		return {
 			getAddonList: getAddonList,
 			updateAddon: updateAddon,
 			deleteAddon: deleteAddon,
 			getExistingAddonsList: getExistingAddonsList,
-			getAddonAdminSettings: getAddonAdminSettings
+			getAddonAdminSettings: getAddonAdminSettings,
+			getlateCheckoutSettings: getlateCheckoutSettings
 		};
 	};
 

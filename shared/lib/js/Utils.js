@@ -472,18 +472,6 @@ function getWeekDayName(dayIndexInWeek, minLetterCount){
     return n.substr(0, minLetterCount);
 }
 
-function addDaysToDay(date, days) {
-    var dateToTime = tzIndependentDate(date).getTime();
-    var oneDay = 24 * 60 * 60 * 1000;
-    var dateToTimeWithDays = dateToTime + (oneDay * days);
-    var dateToTimeWithDaysObj = new Date(dateToTimeWithDays);
-    var dateToTimeWithDaysModified = dateToTimeWithDaysObj.toString("YYYY-MM-DD");
-
-    return dateToTimeWithDaysModified;
-}
-
-
-
 function getTextWidth(text){
         // create a dummy span, we'll use this to measure text.
         var tester = $('<span>'),
@@ -672,3 +660,8 @@ var checkIfReferencetextAvailableForCC = function(paymentTypes,selectedPaymentTy
     });
     return displayReferance;
 };
+
+// Get the length of an object
+var getObjectLength = function(obj) {
+    return Object.keys(obj).length;
+}

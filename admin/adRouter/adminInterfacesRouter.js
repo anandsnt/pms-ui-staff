@@ -78,12 +78,15 @@ angular.module('adminInterfacesRouter', []).config(function($stateProvider) {
     });
 
     $stateProvider.state('admin.windsurferCRSSetup', {
-        templateUrl: '/assets/partials/WindsurferCRS/setup/adWindsurferCRSSetup.html',
-        controller: 'adWindsurferCRSSetupCtrl',
-        url: '/windsurfercrs/setup',
+        templateUrl: '/assets/partials/interfaces/CRS/adCRSCommonSetup.html',
+        controller: 'adCRSCommonCtrl',
+        url: '/interfaces/setup/:id',
+        onEnter: ['$stateParams', function($stateParams) {
+            $stateParams.id = 'windsurfer';
+        }],
         resolve: {
-            windsurferCRSSetupValues: ['adWindsurferCRSSetupSrv', function(adWindsurferCRSSetupSrv) {
-                return adWindsurferCRSSetupSrv.fetchWindsurferCRSConfiguration();
+           config: ['adInterfacesCommonConfigSrv', function(adInterfacesCommonConfigSrv) {
+                return adInterfacesCommonConfigSrv.fetchConfiguration('windsurfer');
             }]
         }
     });
@@ -187,6 +190,17 @@ angular.module('adminInterfacesRouter', []).config(function($stateProvider) {
         }
     });
 
+    $stateProvider.state('admin.digitalalchemySetup', {
+        templateUrl: '/assets/partials/interfaces/Digitalalchemy/adDigitalalchemySetup.html',
+        controller: 'adDigitalalchemySetupCtrl',
+        url: '/digitalalchemy/setup',
+        resolve: {
+            config: ['adInterfacesCommonConfigSrv', function(adInterfacesCommonConfigSrv) {
+                return adInterfacesCommonConfigSrv.fetchConfiguration('digitalalchemy');
+            }]
+        }
+    });
+
     $stateProvider.state('admin.accountViewSetup', {
         templateUrl: '/assets/partials/interfaces/AccountView/adAccountViewSetup.html',
         controller: 'adAccountViewSetupCtrl',
@@ -270,8 +284,8 @@ angular.module('adminInterfacesRouter', []).config(function($stateProvider) {
         controller: 'adBritePabXSetupCtrl',
         url: '/britePabX/setup',
         resolve: {
-            britePabXSetupValues: ['adBritePabXSetupSrv', function(adBritePabXSetupSrv) {
-                return adBritePabXSetupSrv.fetchBritePabXConfiguration();
+            britePabXSetupValues: ['adInterfacesCommonConfigSrv', function(adInterfacesCommonConfigSrv) {
+                return adInterfacesCommonConfigSrv.fetchConfiguration('brite');
             }]
         }
     });
@@ -499,6 +513,35 @@ angular.module('adminInterfacesRouter', []).config(function($stateProvider) {
         templateUrl: '/assets/partials/snapshotSetup/adSnapshotSubGroupMapping.html',
         controller: 'adsnapshotSubGroupMappingCtrl',
         url: '/snapshotSetup/subGroupMapping'
+    });
+
+
+    $stateProvider.state('admin.guestIdSetup', {
+        templateUrl: '/assets/partials/guestIdSetup/adGuestIDSetup.html',
+        controller: 'ADGuestIDSetup',
+        url: '/guestIdSetup'
+    });
+
+    $stateProvider.state('admin.monitorScreen', {
+        templateUrl: '/assets/partials/interfaces/Monitor/adInterfaceMonitor.html',
+        controller: 'ADInterfaceMonitorCtrl',
+        url: '/monitorScreen',
+        resolve: {
+            interfaces: ['ADInterfaceMonitorSrv', function (ADInterfaceMonitorSrv) {
+                return ADInterfaceMonitorSrv.fetch();
+            }]
+        }
+    });
+
+    $stateProvider.state('admin.openkey', {
+        templateUrl: '/assets/partials/interfaces/MobileKeys/Openkey/adOpenkeySetup.html',
+        controller: 'adOpenkeySetupCtrl',
+        url: '/openkey/setup',
+        resolve: {
+            config: ['adInterfacesCommonConfigSrv', function (adInterfacesCommonConfigSrv) {
+                return adInterfacesCommonConfigSrv.fetchConfiguration('openkey');
+            }]
+        }
     });
 
 });

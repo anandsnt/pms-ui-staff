@@ -1,68 +1,56 @@
-admin.controller('adBritePabXSetupCtrl', ['$scope', 'britePabXSetupValues', 'adBritePabXSetupSrv', '$timeout',
-	function($scope, britePabXSetupValues, adBritePabXSetupSrv, $timeout) {
-	
-	BaseCtrl.call (this, $scope);
-	
-	/**
-	 * when clicked on check box to enable/diable pabx 
-	 * @return {undefiend}
-	 */
-	$scope.toggleBritePabXEnabled = function() {
-		$scope.brite.enabled = !$scope.brite.enabled;
-	};
+admin.controller('adBritePabXSetupCtrl', ['$scope', 'britePabXSetupValues', 'adInterfacesCommonConfigSrv', '$timeout',
+    function ($scope, britePabXSetupValues, adInterfacesCommonConfigSrv, $timeout) {
 
-	/**
-	 * when the save is success
-	 */
-	var successCallBackOfSaveBritePabXSetup = function(data) {
-		$scope.goBackToPreviousState();
-	};
+        BaseCtrl.call(this, $scope);
 
-	// if there is any error occured
-	$scope.$on("showErrorMessage", function($event, errorMessage) {
-		$event.stopPropagation();
-		$scope.errorMessage = errorMessage;
-	});
-
-	var clearConfigValues = function() {
-        $scope.brite.charge_code_id 	= '';
-        $scope.brite.charge_code_name 	= '';
-	};	
-	/**
-	 * when we clicked on save button
-	 * @return {undefiend}
-	 */
-
-	$scope.savePabXSetup = function() {
-		var params 	= {
-			brite: _.omit( dclone($scope.brite), 'charge_code_name')
-		};
-
-		if (!$scope.brite.enabled) {
-			params.brite = _.omit(params.brite, 'charge_code_id', 'account_number');
-		}
-
-		if (params.brite.charge_code_id === '') {
-			$timeout(function() {
-				$scope.errorMessage = ['Please search a charge code, pick from the list and proceed'];
-				clearConfigValues();
-			}, 20);
-			return;
-		}
-
-        var options = {
-            params: params,
-            successCallBack: successCallBackOfSaveBritePabXSetup
+        /**
+         * when clicked on check box to enable/diable pabx
+         * @return {undefined}
+         */
+        $scope.toggleBritePabXEnabled = function () {
+            $scope.brite.enabled = !$scope.brite.enabled;
         };
 
-        $scope.callAPI(adBritePabXSetupSrv.saveBritePabXConfiguration, options);
-	};
+        // if there is any error occured
+        $scope.$on('showErrorMessage', function ($event, errorMessage) {
+            $event.stopPropagation();
+            $scope.errorMessage = errorMessage;
+        });
 
-	/**
-	 * Initialization stuffs
-	 * @return {undefiend}
-	 */
-	var initializeMe = (function() {
-		$scope.brite = britePabXSetupValues;
-	}());
-}]);
+        var clearConfigValues = function () {
+            $scope.brite.charge_code_id = '';
+            $scope.brite.charge_code_name = '';
+        };
+
+        /**
+         * when we clicked on save button
+         * @return {undefined}
+         */
+        $scope.savePabXSetup = function () {
+            var params = {
+                interfaceIdentifier: 'brite',
+                config: _.omit(angular.copy($scope.brite), 'charge_code_name')
+            };
+
+            if (params.config.charge_code_id === '') {
+                $timeout(function () {
+                    $scope.errorMessage = ['Please search a charge code, pick from the list and proceed'];
+                    clearConfigValues();
+                }, 20);
+                return;
+            }
+
+            $scope.callAPI(adInterfacesCommonConfigSrv.saveConfiguration, {
+                params: params,
+                successCallBack: $scope.goBackToPreviousState
+            });
+        };
+
+        /**
+         * Initialization stuffs
+         * @return {undefined}
+         */
+        (function () {
+            $scope.brite = britePabXSetupValues;
+        }());
+    }]);

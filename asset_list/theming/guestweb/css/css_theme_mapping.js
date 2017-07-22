@@ -4,6 +4,9 @@ module.exports = {
         var themeCSSRoot = 'stylesheets/guestweb/';
 
         return {
+            'guestweb_made': [ themeCSSRoot + 'guestweb_made.css'],
+            'guestweb_windsor_suites': [ themeCSSRoot + 'guestweb_windsor_suites.css'],
+            'guestweb_moonrise': [ themeCSSRoot + 'guestweb_moonrise.css'],
             'guestweb_row': [ themeCSSRoot + 'guestweb_row.css'],
             'guestweb_atura': [ themeCSSRoot + 'guestweb_atura.css'],
             'guestweb_bellagio': [ themeCSSRoot + 'guestweb_bellagio.css'],
@@ -91,6 +94,7 @@ module.exports = {
             'guestweb_hive': [ themeCSSRoot + 'guestweb_hive.css'],
             'guestweb_pod_dc': [ themeCSSRoot + 'guestweb_pod_dc.css'],
             'guestweb_snt': [ themeCSSRoot + 'guestweb_snt.css'],
+            'guestweb_snt_v2': [ themeCSSRoot + 'guestweb_snt.css'],
             'guestweb_silver_stone': [ themeCSSRoot + 'guestweb_silver_stone.css'],
             'guestweb_koa_kea': [ themeCSSRoot + 'guestweb_koa_kea.css'],
             'guestweb_hotel_chicago': [ themeCSSRoot + 'guestweb_hotel_chicago.css'],
@@ -107,7 +111,23 @@ module.exports = {
             'guestweb_public_ny_v2': [ themeCSSRoot + 'guestweb_public_ny_v2.css'],
             'guestweb_mgm_grand_detroit': [ themeCSSRoot + 'guestweb_mgm_grand_detroit.css'],
             'guestweb_hotel_hiho': [ themeCSSRoot + 'guestweb_hotel_hiho.css'],
-            'guestweb_circle_fairfield': [ themeCSSRoot + 'guestweb_circle_fairfield.css']
-        };     
+            'guestweb_circle_fairfield': [ themeCSSRoot + 'guestweb_circle_fairfield.css'],
+            'guestweb_foundation_hotel_detroit': [ themeCSSRoot + 'guestweb_foundation_hotel_detroit.css'],
+            'guestweb_hotel_royal': [ themeCSSRoot + 'guestweb_hotel_royal.css'],
+            'guestweb_orchard_garden_hotel': [ themeCSSRoot + 'guestweb_orchard_garden_hotel.css'],
+            'guestweb_orchard_hotel': [ themeCSSRoot + 'guestweb_orchard_hotel.css'],
+            'guestweb_avenue_suites_georgetown': [ themeCSSRoot + 'guestweb_avenue_suites_georgetown.css'],
+            'guestweb_georgetown_inn': [ themeCSSRoot + 'guestweb_georgetown_inn.css'],
+		'guestweb_maidestone_hotel': [ themeCSSRoot + 'guestweb_maidestone_hotel.css'],
+            'guestweb_hotel_de_jonker': [ themeCSSRoot + 'guestweb_hotel_de_jonker.css'],
+            'guestweb_carillon_v2': [ themeCSSRoot + 'guestweb_carillon_v2.css'],
+            'guestweb_cachet_boutique': [ themeCSSRoot + 'guestweb_cachet_boutique.css'],
+            'guestweb_hotel_berlaymont': [ themeCSSRoot + 'guestweb_hotel_berlaymont.css'],
+            'guestweb_el_cosmico': [ themeCSSRoot + 'guestweb_el_cosmico.css'],
+            'guestweb_quintessence_resort': [ themeCSSRoot + 'guestweb_quintessence_resort.css'],
+            'guestweb_river_inn': [ themeCSSRoot + 'guestweb_river_inn.css'],
+            'guestweb_one_washington_circle': [ themeCSSRoot + 'guestweb_one_washington_circle.css'],
+            'guestweb_first_hotel_breiseth': [ themeCSSRoot + 'guestweb_first_hotel_breiseth.css']
+        };
     }
 };

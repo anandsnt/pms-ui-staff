@@ -7,8 +7,9 @@ var DesktopCardOperations = function() {
     that.isDesktopUUIDServiceInvoked = false;
 
     this.swipeCallbacks;
-    this.startDesktopReader = function(portNumber, swipeCallbacks) {
+    this.startDesktopReader = function(portNumber, swipeCallbacks, url) {
         that.portNumber = portNumber;
+        that.ccSwipeURL = url;
         that.swipeCallbacks = swipeCallbacks;
         createConnection();
     };
@@ -19,7 +20,11 @@ var DesktopCardOperations = function() {
 
     var createConnection = function() {
         try {
-            ws = new WebSocket("wss://localhost:" + that.portNumber + "/CCSwipeService");
+            if (_.isUndefined(that.ccSwipeURL) || that.ccSwipeURL === '') {
+                ws = new WebSocket("wss://localhost:" + that.portNumber + "/CCSwipeService");
+            } else {
+                ws = new WebSocket(that.ccSwipeURL + ':' + that.portNumber + "/CCSwipeService");
+            }
         }
         catch (e) {
             console.warn("Could not connect to card reader. Please check if the port number is valid!!");

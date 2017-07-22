@@ -1,6 +1,6 @@
 
 <div class="content" id="login">
-	<div ng-show="hasLoader" id="loading"><div id="loading-spinner" ></div></div> 
+	<div ng-show="hasLoader" id="loading"><div id="loading-spinner" ></div></div>
 	<img alt="" class="logo" src="/assets/images/logo.png" />
 
 	<span class="notice error" ng-show="errorMessage!=''" >
@@ -8,7 +8,7 @@
 			<li ng-repeat="message in errorMessage">
 				{{message}}
 			</li>
-		</ul>	
+		</ul>
 	</span>
 
 	<span class="notice success" ng-show="successMessage!=''" >
@@ -16,7 +16,7 @@
 			<li>
 				{{successMessage}}
 			</li>
-		</ul>	
+		</ul>
 	</span>
 
 	<form accept-charset="UTF-8" ng-submit="submit()" autocomplete="off" class="form" id="login-form" method="post" name="login-form" novalidate>

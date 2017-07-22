@@ -210,13 +210,14 @@ sntRover.controller('RVReservationConfirmCtrl', [
 				_.each(rooms, function(room, index) {
 					var validGuests = [];
 
-					_.each(room.accompanying_guest_details, function(guest) {
-						if (!guest.first_name && !guest.last_name) {
-							guest.first_name = null;
-							guest.last_name = null;
-						}
-						validGuests.push(guest);
-					});
+                    _.each(room.accompanying_guest_details, function(guest) {
+                        _.each(guest, function(guestInfo) {
+                            if (guestInfo.first_name || guestInfo.last_name) {
+                                validGuests.push(guestInfo);
+                            }
+                        });
+
+                    });
 					paramsArray.push(validGuests);
 				});
 
@@ -248,7 +249,7 @@ sntRover.controller('RVReservationConfirmCtrl', [
 				});
 				if (typeof $rootScope.searchData !== "undefined") {
 					$rootScope.searchData.guestCard.email = $scope.reservationData.guest.email;
-				}				
+				}
 
 			};
 
@@ -309,7 +310,7 @@ sntRover.controller('RVReservationConfirmCtrl', [
 				postData.confirmation_custom_title 	= $scope.reservationData.confirmation_custom_title;
 				postData.confirmation_custom_text 	= $scope.reservationData.confirmation_custom_text;
 				postData.locale = $scope.reservationData.languageData.selected_language_code;
-				
+
                 // CICO-35425
                 postData.hide_rates = $scope.reservationData.hide_rates;
 
@@ -378,7 +379,9 @@ sntRover.controller('RVReservationConfirmCtrl', [
 			// CICO-40207 Before navigating to the staycard make sure only one reservation's details are persisted in scope
 			// Data pertaining to other reservations can be removed!
 			// Stay card operates in the perspective of only one reservation at a time.
-            $scope.reservationData.reservationIds.splice(1);
+            if ($scope.reservationData.reservationIds) {
+               $scope.reservationData.reservationIds.splice(1);
+            }
             $scope.reservationData.rooms.splice(1);
 
 
@@ -586,10 +589,10 @@ sntRover.controller('RVReservationConfirmCtrl', [
 				$scope.reservationData.user_id = $scope.reservationData.company.id;
 			}
 
-	    	$scope.$emit('showLoader'); 
+	    	$scope.$emit('showLoader');
            	jsMappings.fetchAssets(['addBillingInfo', 'directives'])
             .then(function() {
-            	$scope.$emit('hideLoader'); 
+            	$scope.$emit('hideLoader');
             	if ($rootScope.UPDATED_BI_ENABLED_ON['RESERVATION']) {
             		console.log("##Billing-info updated version");
 				    ngDialog.open({
@@ -670,5 +673,11 @@ sntRover.controller('RVReservationConfirmCtrl', [
    			$scope.reservationData.enable_confirmation_custom_text = !$scope.reservationData.enable_confirmation_custom_text;
    			$scope.refreshScroller('paymentInfo');
    		};
+
+        // Checks whether the accompanying guest section should be shown or not
+        $scope.shouldShowAccompanyingGuests = function(room) {
+            return room.accompanying_guest_details && ( room.accompanying_guest_details.ADULT.length > 0 ||
+            room.accompanying_guest_details.CHILDREN.length > 0 || room.accompanying_guest_details.INFANTS.length > 0 );
+        };
 	}
 ]);

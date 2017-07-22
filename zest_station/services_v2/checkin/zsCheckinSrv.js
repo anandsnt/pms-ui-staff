@@ -121,23 +121,78 @@ sntZestStation.service('zsCheckinSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
             });
             return deferred.promise;
         };
-        this.fetchReservationDetails = function(param) {
-            var url;
 
-            param.is_kiosk = true;
-            url = '/staff/staycards/reservation_details.json?reservation=' + param.id;
-            var deferred = $q.defer();
+        /**
+         * CICO-41520
+         * Modified the zs services so that this is the ONLY method that makes this api call!
+         * @param param
+         * @return {*|promise|{then, catch, finally}|e}
+         */
+        this.fetchReservationDetails = function(param) {
+            var url = '/staff/staycards/reservation_details.json?is_kiosk=true&reservation_id=' + param.id,
+                deferred = $q.defer();
 
             // To fetch the latest guest details, the following parameter has to be sent to trigger a fetchProfile OWS request
             if (!$rootScope.isStandAlone) {
-                url += "&sync_guest_with_external_pms=true";
+                url += '&sync_guest_with_external_pms=true';
             }
 
-            zsBaseWebSrv.getJSON(url,param).then(function(data) {
+            zsBaseWebSrv.getJSON(url).then(function(data) {
                 deferred.resolve(data);
             }, function(data) {
                 deferred.reject(data);
             });
+
+            return deferred.promise;
+        };
+
+        /**
+         * /api/reservations/:reservation_id/pre_auth
+         * @param {String} id reservation_id
+         * @return {HttpPromise} authorize_cc_at_checkin, pre_auth_amount_at_checkin, pre_auth_amount_for_zest_station
+         */
+        that.fetchReservationPreAuthInfo = function(id) {
+            return $http.get('api/reservations/' + id + '/pre_auth');
+        };
+
+        /**
+         * CICO-41520
+         * Returns reservation_details.json response along with authorize_cc_at_checkin, pre_auth_amount_at_checkin, pre_auth_amount_for_zest_station
+         * @param params
+         * @return {*|promise|{then, catch, finally}|e}
+         */
+        that.fetchReservationInfo = function(params) {
+            var deferred = $q.defer(),
+                responses = {},
+                promises = [];
+
+
+            var onSuccessFetchReservationDetails = function(response) {
+                responses['details'] = response;
+            };
+
+            var onSuccessFetchReservationPreAuth = function(response) {
+                responses['preAuth'] = response.data;
+                if (response.status !== 200) {
+                    deferred.reject(response.data);
+                }
+            };
+
+            promises.push(that.fetchReservationDetails(params).then(onSuccessFetchReservationDetails, onSuccessFetchReservationDetails));
+
+            promises.push(that.fetchReservationPreAuthInfo(params.id).then(onSuccessFetchReservationPreAuth, onSuccessFetchReservationPreAuth));
+
+            $q.all(promises).then(function() {
+                var mergedReservationDetails = responses['details'];
+
+                if (mergedReservationDetails.data) {
+                    _.extend(mergedReservationDetails.data.reservation_card, responses['preAuth']);
+                    deferred.resolve(mergedReservationDetails);
+                } else {
+                    deferred.reject(mergedReservationDetails);
+                }
+            });
+
             return deferred.promise;
         };
 
@@ -156,7 +211,7 @@ sntZestStation.service('zsCheckinSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
 
         this.sendThirdPartyEmail = function(params) {
             var deferred = $q.defer(),
-                url = '/api/reservations/'+params.id+'/send_station_offer_mobilekey_mail';
+                url = '/api/reservations/' + params.id + '/send_station_offer_mobilekey_mail';
 
             zsBaseWebSrv.postJSON(url, params).then(function(data) {
                 deferred.resolve(data);
@@ -182,9 +237,9 @@ sntZestStation.service('zsCheckinSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
             var deferred = $q.defer(),
                 url = '/api/guest_details/' + params.guest_id;
 
-                param = {
-                    'nationality_id': params.nationality_id
-                };
+            param = {
+                'nationality_id': params.nationality_id
+            };
 
             zsBaseWebSrv.putJSON(url, param).then(function(data) {
                 deferred.resolve(data);
@@ -362,7 +417,7 @@ sntZestStation.service('zsCheckinSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
 
         this.fetchRoomUpsellDetails = function(param) {
             var deferred = $q.defer(),
-                url =  '/zest_station/upgrade_options.json';
+                url = '/zest_station/upgrade_options.json';
 
             zsBaseWebSrv2.getJSON(url, param).then(function(data) {
                 deferred.resolve(data);
@@ -374,9 +429,9 @@ sntZestStation.service('zsCheckinSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
 
         this.fethHotelRooms = function(params) {
             var deferred = $q.defer();
-            var url =  '/staff/rooms/get_rooms';
+            var url = '/staff/rooms/get_rooms';
 
-            zsBaseWebSrv2.postJSON(url,params).then(function(data) {
+            zsBaseWebSrv2.postJSON(url, params).then(function(data) {
                 deferred.resolve(data);
             }, function(data) {
                 deferred.reject(data);
@@ -386,7 +441,7 @@ sntZestStation.service('zsCheckinSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
 
         this.selectRoomUpgrade = function(param) {
             var deferred = $q.defer();
-            var url =  '/staff/reservations/upgrade_room.json';
+            var url = '/staff/reservations/upgrade_room.json';
 
             param.is_kiosk = true;
             zsBaseWebSrv2.postJSON(url, param).then(function(data) {
@@ -394,7 +449,7 @@ sntZestStation.service('zsCheckinSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
             }, function(data) {
                 deferred.reject(data);
             });
-                return deferred.promise;
+            return deferred.promise;
         };
 
         this.fetchAddons = function(param) {
@@ -421,7 +476,7 @@ sntZestStation.service('zsCheckinSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
 
             var data = params;
 
-            data.application =  'KIOSK';
+            data.application = 'KIOSK';
 
             zsBaseWebSrv.postJSON(url, data).then(function(data) {
                 deferred.resolve(data);
@@ -436,7 +491,7 @@ sntZestStation.service('zsCheckinSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
             var url = '/api/reservations/delete_package';
             var data = params;
 
-            data.application =  'KIOSK';
+            data.application = 'KIOSK';
             
             zsBaseWebSrv.postJSON(url, data).then(function(data) {
                 deferred.resolve(data);
@@ -470,6 +525,68 @@ sntZestStation.service('zsCheckinSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
             return deferred.promise;
         };
 
+        this.fetchLateCheckoutSettings = function(param) {
+            var deferred = $q.defer();
+            var url = '/admin/hotel/get_late_checkout_setup.json';
+
+            zsBaseWebSrv2.getJSON(url, param).then(function(data) {
+                deferred.resolve(data);
+            }, function(data) {
+                deferred.reject(data);
+            });
+            return deferred.promise;
+        };
+
+        this.acceptPassport = function(params) {
+            // TODO: Update to match API spec once API part is in progress/done
+            var deferred = $q.defer();
+            var url = '/zest_station/log_passport_scanning';
+            
+            params.is_kiosk = true;
+
+            var data = params;
+
+            data.application = 'KIOSK';
+            
+            zsBaseWebSrv.postJSON(url, data).then(function(data) {
+                deferred.resolve(data);
+            }, function(data) {
+                deferred.reject(data);
+            });
+            return deferred.promise;
+        };
+        
+        this.savePassport = function(params) {
+            var deferred = $q.defer();
+            var url = '/api/guest_identity';
+
+            params.is_kiosk = true;
+
+            var data = params;
+
+            data.application = 'KIOSK';
+            
+            zsBaseWebSrv.postJSON(url, data).then(function(data) {
+                deferred.resolve(data);
+            }, function(data) {
+                deferred.reject(data);
+            });
+            return deferred.promise;
+        };
+
+        this.checkIDType = function(params) {
+            var deferred = $q.defer();
+            var url = '/api/guest_identity/' + params.reservation_id + '/scan_type?guest_id_type=passport';
+
+            params.is_kiosk = true;
+
+            zsBaseWebSrv.getJSON(url).then(function(data) {
+                deferred.resolve(data);
+            }, function(data) {
+                deferred.reject(data);
+            });
+            return deferred.promise;
+        };
 
     }
 ]);

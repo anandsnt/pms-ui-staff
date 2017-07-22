@@ -4,6 +4,8 @@ sntZestStation.controller('zsAdminCtrl', [
     function($scope, $state, zsEventConstants, zsGeneralSrv, zsLoginSrv, $window, $rootScope, $timeout) {
 
         BaseCtrl.call(this, $scope);
+        var  isLightTurnedOn = false; // initially consider the HUE light status to be turned OFF.
+        
 
         // hide nav buttons in login mode
         var hideNavButtons = function() {
@@ -74,6 +76,7 @@ sntZestStation.controller('zsAdminCtrl', [
             if (typeof selectedWorkStation !== 'undefined') {
                 $scope.workstation.selected = parseInt(selectedWorkStation.id);
                 $scope.workstation.printer = selectedWorkStation.printer;
+                $scope.selectedWorkstationLightId = selectedWorkStation.hue_light_id;
             } else {
                 $scope.workstation.selected = '';
                 $scope.workstation.printer = '';
@@ -84,12 +87,17 @@ sntZestStation.controller('zsAdminCtrl', [
             // do nothing as no workstation was set
         }
 
+
         // if workstation changes -> change printer accordingly
         $scope.worksStationChanged = function() {
             var selectedWorkStation = _.find($scope.zestStationData.workstations, function(workstation) {
                 return workstation.id == $scope.workstation.selected;
             });
 
+            $scope.selectedWorkstationLightId = selectedWorkStation.hue_light_id;
+            if (isLightTurnedOn) {
+                $scope.turnOffLight($scope.selectedWorkstationLightId); // turn off light, if is in ON state
+            }
             setPrinterLabel(selectedWorkStation.printer);
             $scope.setEncoderDiagnosticInfo(selectedWorkStation.name, selectedWorkStation.key_encoder_id); // in diagnostic info display the encoder name + id
         };
@@ -291,12 +299,15 @@ sntZestStation.controller('zsAdminCtrl', [
                     'status': $scope.zestStationData.workstationStatus,
                     'reason': $scope.zestStationData.workstationOooReason
                 });
+                // set new Light ID
+                $scope.zestStationData.selected_light_id = station.hue_light_id;
                 var workStationstorageKey = 'snt_zs_workstation';
 
                 localStorage.setItem(workStationstorageKey, $scope.savedSettings.kiosk.workstation.station_identifier);
                 // navigate to home screen
                 // 
                 if ($scope.zestStationData.workstationStatus === 'out-of-order') {
+                    $scope.addReasonToOOSLog('Admin');
                     $state.go('zest_station.outOfService');
                 } else {
                     if (runDemoClicked) {
@@ -348,6 +359,10 @@ sntZestStation.controller('zsAdminCtrl', [
          **/
         $scope.saveSettings = function(runDemoClicked) {
             var getParams = function() {
+                // CICO-42233
+                if (!$scope.zestStationData.idle_timer.prompt) {
+                    $scope.zestStationData.idle_timer.prompt = 0;
+                }
                 var params = {
                     'kiosk': {
                         'idle_timer': $scope.zestStationData.idle_timer,
@@ -448,6 +463,9 @@ sntZestStation.controller('zsAdminCtrl', [
         $scope.reload = function() {
             location.reload(true);
         };
+        $scope.toggleOOSHist = function() {
+            $scope.show_oos_history = !$scope.show_oos_history;
+        };
 
         $scope.showDebugModeOption = false;
         // initialize
@@ -459,6 +477,7 @@ sntZestStation.controller('zsAdminCtrl', [
             $scope.input = {
                 'inputTextValue': ''
             };
+            $scope.show_oos_history = false;
             $scope.userName = '';
             $scope.passWord = '';
             hideNavButtons();

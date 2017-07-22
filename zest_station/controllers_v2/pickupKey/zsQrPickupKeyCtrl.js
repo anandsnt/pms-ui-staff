@@ -5,7 +5,8 @@ sntZestStation.controller('zsQrPickupKeyCtrl', [
     'zsEventConstants',
     '$timeout',
     'zsGeneralSrv',
-    function($scope, $stateParams, $state, zsEventConstants, $timeout, zsGeneralSrv) {
+    'zsCheckinSrv',
+    function($scope, $stateParams, $state, zsEventConstants, $timeout, zsGeneralSrv, zsCheckinSrv) {
 
 		/** ********************************************************************************************
 		 **		Expected state params -----> none			  
@@ -41,6 +42,7 @@ sntZestStation.controller('zsQrPickupKeyCtrl', [
                 var reservation_status = response.reservation_card.reservation_status;
 				
                 if (reservation_status !== 'CHECKEDIN' && reservation_status !== 'CHECKING_OUT') {
+                    $scope.trackSessionActivity('PUK', 'Fetch Failure', 'R' + reservation_id, 'reservation_status: ' + reservation_status, true);
                     onFailureFetchReservation('Reservation Status: ' + reservation_status);
                 } else {
                     var room_no = response.reservation_card.room_number;
@@ -51,6 +53,7 @@ sntZestStation.controller('zsQrPickupKeyCtrl', [
                             'first_name': guest_response.primary_guest_details.first_name
                         };
 
+                        $scope.trackSessionActivity('PUK', 'Fetch Success', 'R' + reservation_id, 'TO_KEY_DISPENSE');
                         $state.go('zest_station.pickUpKeyDispense', stateParams);
                     };
 
@@ -70,14 +73,14 @@ sntZestStation.controller('zsQrPickupKeyCtrl', [
 
             var options = {
                 params: {
-                    'reservation_id': reservation_id
+                    'id': reservation_id
                 },
                 successCallBack: onSuccessFetchReservation,
                 failureCallBack: onFailureFetchReservation
             };
 
             console.info('Fetching Reservation by Scanned QR Code: ', reservation_id);
-            $scope.callAPI(zsGeneralSrv.fetchReservationDetails, options);
+            $scope.callAPI(zsCheckinSrv.fetchReservationInfo, options);
 
         };
 
@@ -87,6 +90,7 @@ sntZestStation.controller('zsQrPickupKeyCtrl', [
 		 **/
         var onDatalogicQRScanSuccess = function(event, data) {
             console.info('QR scanned reservation_id:------>' + data.reservation_id);
+            $scope.trackSessionActivity('PUK', 'QR Scan Success', 'R' + data.reservation_id, 'NEXT_FETCH_RESERVATION', true);
             fetchReservationDetails(data.reservation_id);
         };
 
@@ -111,7 +115,7 @@ sntZestStation.controller('zsQrPickupKeyCtrl', [
                 if (info.msg.indexOf('Invalid') !== -1) {
                     $scope.at = 'input-qr-code';
                     onQRScanFail();
-                    console.warn('QR Scan failed: invalid. ',info.msg);
+                    console.warn('QR Scan failed: invalid. ', info.msg);
                     $scope.runDigestCycle();
                 } else if (info.msg.indexOf(' : ') !== -1) {
 					// qr code coming from the samsotech will look like "PR_DF_BC1 : somevalue"

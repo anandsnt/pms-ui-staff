@@ -148,13 +148,12 @@
 	    	li {
 
 	    		&:not(.selected){
-	    			border-color: #ebebeb;
-
-		    		.add-on-content {
-		    			background: #ebebeb;
-		    		}
+	    			border-color: rgba(0,0,0,.10);
 	    		}
-	    		
+	    		&:first-child:last-child {
+     				border-color: #ebebeb;
+ 					border-color: @brandColor;
+ 				}
 	    	}
 	    }
 	}
@@ -195,4 +194,12 @@ select {
     appearance: none;
     padding: 2px 30px 2px 2px;
     /*border: none; - if you want the border removed*/
+}
+
+.add-guest-mode-content{
+    height: 100% !important;
+    margin-top: 50px;
+}
+.check_in_add_remove > .input-field-contents {
+	height: 45% !important;
 }
