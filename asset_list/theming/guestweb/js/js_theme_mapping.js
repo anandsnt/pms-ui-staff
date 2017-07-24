@@ -5,10 +5,11 @@ module.exports = {
         var zestRootJS = 'guestweb/zest/**/*.js';
 
         return {
+            'guestweb_made': [ themeJsRoot + 'app_router_common.js'],
             'guestweb_windsor_suites': [ themeJsRoot + 'app_router_common.js'],
             'guestweb_moonrise': [ themeJsRoot + 'app_router_common.js'],
             'guestweb_row': [ themeJsRoot + 'app_router_row_nyc.js'],
-            'guestweb_atura': [ themeJsRoot + 'app_router_atura.js'],
+            'guestweb_atura': [ themeJsRoot + 'app_router_common.js'],
             'guestweb_bellagio': [ themeJsRoot + 'app_router_mgm_chain.js', themeJsRoot + 'app_router_bellagio.js'], // ---------------------- MGM CHAIN #- 1
             'guestweb_delano': [ themeJsRoot + 'app_router_mgm_chain.js', themeJsRoot + 'app_router_delano.js'], // -------------------------- MGM CHAIN #- 2
             'guestweb_vdara': [ themeJsRoot + 'app_router_mgm_chain.js', themeJsRoot + 'app_router_vdara.js'], // ---------------------------- MGM CHAIN #- 3
@@ -95,6 +96,7 @@ module.exports = {
             'guestweb_hive': [ themeJsRoot + 'app_router_common.js'],
             'guestweb_pod_dc': [ themeJsRoot + 'app_router_common.js'],
             'guestweb_snt': [ themeJsRoot + 'app_router_new_common.js'],
+            'guestweb_snt_v2': [ themeJsRoot + 'app_router_new_common.js'],
             'guestweb_silver_stone': [ themeJsRoot + 'app_router_common.js'],
             'guestweb_koa_kea': [ themeJsRoot + 'app_router_common.js'],
             'guestweb_hotel_chicago': [ themeJsRoot + 'app_router_common.js'],
@@ -126,7 +128,8 @@ module.exports = {
             'guestweb_el_cosmico': [ themeJsRoot + 'app_router_common.js'],
             'guestweb_quintessence_resort': [ themeJsRoot + 'app_router_common.js'],
             'guestweb_river_inn': [ themeJsRoot + 'app_router_common.js'],
-            'guestweb_one_washington_circle': [ themeJsRoot + 'app_router_common.js']
+            'guestweb_one_washington_circle': [ themeJsRoot + 'app_router_common.js'],
+            'guestweb_first_hotel_breiseth': [ themeJsRoot + 'app_router_common.js']
         };
     }
 };

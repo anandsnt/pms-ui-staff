@@ -307,6 +307,7 @@ sntZestStation.controller('zsAdminCtrl', [
                 // navigate to home screen
                 // 
                 if ($scope.zestStationData.workstationStatus === 'out-of-order') {
+                    $scope.addReasonToOOSLog('Admin');
                     $state.go('zest_station.outOfService');
                 } else {
                     if (runDemoClicked) {
@@ -358,6 +359,10 @@ sntZestStation.controller('zsAdminCtrl', [
          **/
         $scope.saveSettings = function(runDemoClicked) {
             var getParams = function() {
+                // CICO-42233
+                if (!$scope.zestStationData.idle_timer.prompt) {
+                    $scope.zestStationData.idle_timer.prompt = 0;
+                }
                 var params = {
                     'kiosk': {
                         'idle_timer': $scope.zestStationData.idle_timer,
@@ -458,6 +463,9 @@ sntZestStation.controller('zsAdminCtrl', [
         $scope.reload = function() {
             location.reload(true);
         };
+        $scope.toggleOOSHist = function() {
+            $scope.show_oos_history = !$scope.show_oos_history;
+        };
 
         $scope.showDebugModeOption = false;
         // initialize
@@ -469,6 +477,7 @@ sntZestStation.controller('zsAdminCtrl', [
             $scope.input = {
                 'inputTextValue': ''
             };
+            $scope.show_oos_history = false;
             $scope.userName = '';
             $scope.passWord = '';
             hideNavButtons();

@@ -152,8 +152,13 @@
 "UPSELL_ADONS": "Upsell Add Ons",
 "ADDONS_INSTRUCTION": "Control the Add Ons offered during check in. Drag and drop to control display order",
 
+"AUTHORIZATION_AMOUNT": "Authorization amount",
+
 "GUEST_ID_SETUP":"Guest ID Scan Setup",
-"VIEW_GUEST_ID":"View Scanned Guest IDs"
+"VIEW_GUEST_ID":"View Scanned Guest IDs",
+"GUEST_ID_TYPES":"ID Types",
+"ID_TYPES_PASSPORT":"Passport"
+
 
 
 

@@ -1771,7 +1771,8 @@ angular.module('sntRover').controller('rvGroupRoomingListCtrl', [
         $scope.fetchReservationsForPrintingRoomingList = function() {
             var params = {
                 group_id: $scope.groupConfigData.summary.group_id,
-                per_page: 1000
+                per_page: 1000,
+                exclude_cancel: $scope.exclude_cancel
             };
             var options = {
                 params: params,
