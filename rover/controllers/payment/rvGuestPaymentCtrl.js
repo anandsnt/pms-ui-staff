@@ -14,7 +14,7 @@ sntRover.controller('RVPaymentGuestCtrl', ['$rootScope', '$scope', '$state', 'RV
 	$scope.updateErrorMessage = function(message) {
 		$scope.errorMessage = message;
 	};
-	$scope.openAddNewPaymentModel = function(data) {
+	$scope.openAddNewPaymentModel = function() {
 
 		// NOTE: Need to send payment methods from here
 		$scope.callAPI(RVPaymentSrv.renderPaymentScreen, {
@@ -63,13 +63,17 @@ sntRover.controller('RVPaymentGuestCtrl', ['$rootScope', '$scope', '$state', 'RV
 	});
 
 
-	 $scope.$on('ADDEDNEWPAYMENTTOGUEST', function(event, data) {
-	 	if (typeof $scope.paymentData.data === "undefined") {
-	 			$scope.paymentData.data = [];
-	 	}
-	 	$scope.paymentData.data.push(data);
-	 	$scope.refreshScroller('paymentList');
-	 });
+    $scope.$on('ADDEDNEWPAYMENTTOGUEST', function (event, data) {
+        if (typeof $scope.paymentData.data === 'undefined') {
+            $scope.paymentData.data = [];
+        }
+        // In case of a duplicate addition
+        if (!_.find($scope.paymentData.data, {id: data.id})) {
+            $scope.paymentData.data.push(data);
+        }
+
+        $scope.refreshScroller('paymentList');
+    });
 
 
 }]);
