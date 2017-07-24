@@ -2130,7 +2130,9 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
                     if ( key === 'group_by_date' || key === 'group_by_user' || key === 'group_by_charge_type' || key === 'group_by_group_name' || key === 'page' || key === 'per_page' ) {
                         continue;
                     } else if ( params[key] !== $scope.oldParams[key] ) {
-                        report.chosenGroupBy = 'BLANK';
+                        // For Reservations by user report, if no grouping is present the chosenGroupBy is expected as ''. Else it will load another HTML 
+                        // and will cause the rvPagination directive to call link function again.
+                        report.chosenGroupBy = (reportNames['RESERVATIONS_BY_USER'] === report.title) ? '' : 'BLANK';
                         /**/
                         if ( params.hasOwnProperty('group_by_date') ) {
                             params['group_by_date'] = undefined;

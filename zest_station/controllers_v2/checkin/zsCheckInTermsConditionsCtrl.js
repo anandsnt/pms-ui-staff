@@ -102,6 +102,8 @@ sntZestStation.controller('zsCheckInTermsConditionsCtrl', [
             }
 
         };
+        
+        var collectPassportEnabled = $scope.zestStationData.check_in_collect_passport;
 
         var checkInGuest = function() {
             var signature = $scope.signatureData;
@@ -120,12 +122,33 @@ sntZestStation.controller('zsCheckInTermsConditionsCtrl', [
                 successCallBack: afterGuestCheckinCallback
             };
 
+            if (collectPassportEnabled) {
+                $scope.zestStationData.checkinGuest = function() {// make a reference to current checkInGuest method used if passport scanning
+                    
+                    if ($scope.zestStationData.noCheckInsDebugger === 'true') {
+                        afterGuestCheckinCallback({ 'status': 'success' });
+                    } else {
+                        $scope.callAPI(zsCheckinSrv.checkInGuest, options);
+                    }
+                    
+                };   
+            }
 
             if ($scope.zestStationData.noCheckInsDebugger === 'true') {
-                console.log('skipping checkin guest, no-check-ins debugging is ON');
-                afterGuestCheckinCallback({'status': 'success'});
+                if (collectPassportEnabled && !$stateParams.passports_scanned) {
+                    $state.go('zest_station.checkInScanPassport', $stateParams);
+                } else {
+                    afterGuestCheckinCallback({ 'status': 'success' });
+                }
+                
             } else {
-                $scope.callAPI(zsCheckinSrv.checkInGuest, options);;
+
+                if (collectPassportEnabled && !$stateParams.passports_scanned) {
+                    $state.go('zest_station.checkInScanPassport', $stateParams);
+                } else {
+                    $scope.callAPI(zsCheckinSrv.checkInGuest, options);
+                }
+
             }
         };
 

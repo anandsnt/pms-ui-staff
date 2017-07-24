@@ -1,5 +1,5 @@
 <!-- Add .open to show the popup -->
-<div class="popup" ng-class="{'open':showAddonPopup}">
+<div class="popup" ng-class="{'open':showAddonPopup && !selectedAddon.isLco}">
    <div class="popup-content add-on">
       <!-- <i class="close-popup" touch-press="closePopup()"></i> -->
       <div class="add-on-picture">
@@ -34,7 +34,52 @@
       </div>
    </div>
 </div>
+
+
 <!-- Add .open to show the popup -->
+<div class="popup" ng-class="{'open':showAddonPopup && selectedAddon.isLco}">
+    <div class="popup-content add-on large">
+        <div class="add-on-content">
+        <h2> 
+            <text data-ng-bind-html="getTagValue('LATE_CHECKOUT_HEADING')" editable-text="LATE_CHECKOUT_HEADING">
+            </text>
+         </h2>
+         <p>
+            <text data-ng-bind-html="getTagValue('LATE_CHECKOUT_INSTRUCTIONS')" editable-text="LATE_CHECKOUT_INSTRUCTIONS">
+            </text>
+         </p>
+        <!-- CASE 2: Late Checkout Addon (use this instead of L21-L40) -->
+         <nav id="options" role="nav">
+            <ul role="menu">
+               <li ng-repeat="addon in selectedAddon.addons">
+                  <button type="button" class="button option" ng-class="{'not-selected': addon.addon_id !== selectedLcoAddonId}" ng-click="selectDeselectLco(addon)"><!-- When time is selected, add class 'not-selected' to all slots which are NOT SELECTED. If there's not time slot selected, remove class 'not-selected' from all. -->
+                     <span class="icon-text">{{addon.time}} PM</span>
+                     <span ng-show="theme === 'yotel'" class="icon-img"ng-include="icons.url.late_checkout_icon"></span>
+                     <!-- If Yotel, show icon:
+                     {../assets/yotel/icons/checkout.svg} -->
+                  </button>
+                  <span class="amount">{{zestStationData.currencySymbol}}{{addon.amount | number:2}}</span>
+                  <span ng-show="addon.display_suffix">{{addon.suffix_label}}</span>
+               </li>
+            </ul>
+         </nav>
+         <div class="price">
+         <div class="action">
+            <button type="button" data-action="popup" class="button transparent" click-touch="addRemoveLcoAddon()" ng-show="selectedLcoAddonId !== ''" ng-class="{'text-red':lcoRemoveMode()}">
+            <text data-ng-bind-html="getTagValue('ADD_ADDON')" editable-text="ADD_ADDON" ng-hide="lcoRemoveMode()"></text>
+            <text data-ng-bind-html="getTagValue('REMOVE_ADDON')" editable-text="REMOVE_ADDON" ng-show="lcoRemoveMode()" class="transparent text-red"></text>
+            </button>
+            <button type="button" data-action="popup" class="button transparent" click-touch="lcoAddonsBackAction()">
+            <text data-ng-bind-html="getTagValue('NAV_BACK')" editable-text="NAV_BACK"></text>
+            </button>
+         </div>
+         </div>
+        </div>
+    </div>
+</div>
+
+
+      <!-- Add .open to show the popup -->
 <div class="popup" ng-class="{'open':showErrorPopUp}">
    <!-- Remove class "open" to hide popup content -->
    <div class="popup-content">
@@ -63,8 +108,12 @@
                   <img src="{{addon.image}}">
                </div>
                <div class="add-on-content">
-                  <h2>{{addon.name}}<span ng-show="addon.quantity>0">&nbsp;({{addon.quantity}})</span></h2>
-                  <div class="price">
+                  <h2 ng-hide="addon.isLco">{{addon.name}}<span ng-show="addon.quantity>0">&nbsp;({{addon.quantity}})</span></h2>
+                  <h2 ng-show="addon.isLco">
+                      <text data-ng-bind-html="getTagValue('LATE_CHECKOUT_HEADING')" editable-text="LATE_CHECKOUT_HEADING">
+                      </text>
+                  </h2>
+                  <div class="price" ng-hide="addon.isLco">
                      {{zestStationData.currencySymbol}}{{addon.amount}}
                   </div>
                </div>
