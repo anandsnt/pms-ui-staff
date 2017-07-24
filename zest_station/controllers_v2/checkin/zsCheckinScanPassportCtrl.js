@@ -549,7 +549,7 @@ sntZestStation.controller('zsCheckinScanPassportCtrl', [
             if ($scope.inDemoMode()) {
                 $timeout(function() {
                     options.successCallBack();
-                },1000);
+                }, 1000);
             } else {
                 $scope.callAPI(zsCheckinSrv.savePassport, options);    
             }

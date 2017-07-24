@@ -122,8 +122,6 @@ sntZestStation.controller('zsCheckInTermsConditionsCtrl', [
                 successCallBack: afterGuestCheckinCallback
             };
 
-
-
             if (collectPassportEnabled) {
                 $scope.zestStationData.checkinGuest = function() {// make a reference to current checkInGuest method used if passport scanning
                     
