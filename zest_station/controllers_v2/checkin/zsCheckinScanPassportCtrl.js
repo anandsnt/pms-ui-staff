@@ -545,7 +545,15 @@ sntZestStation.controller('zsCheckinScanPassportCtrl', [
                 options.params['back_image_data'] = selectedPassportInfo.back_img_path;
             }
 
-            $scope.callAPI(zsCheckinSrv.savePassport, options);
+
+            if ($scope.inDemoMode()) {
+                $timeout(function() {
+                    options.successCallBack();
+                },1000);
+            } else {
+                $scope.callAPI(zsCheckinSrv.savePassport, options);    
+            }
+            
 
         };
 
