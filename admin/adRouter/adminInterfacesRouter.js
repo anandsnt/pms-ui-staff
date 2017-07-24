@@ -522,4 +522,26 @@ angular.module('adminInterfacesRouter', []).config(function($stateProvider) {
         url: '/guestIdSetup'
     });
 
+    $stateProvider.state('admin.monitorScreen', {
+        templateUrl: '/assets/partials/interfaces/Monitor/adInterfaceMonitor.html',
+        controller: 'ADInterfaceMonitorCtrl',
+        url: '/monitorScreen',
+        resolve: {
+            interfaces: ['ADInterfaceMonitorSrv', function (ADInterfaceMonitorSrv) {
+                return ADInterfaceMonitorSrv.fetch();
+            }]
+        }
+    });
+
+    $stateProvider.state('admin.openkey', {
+        templateUrl: '/assets/partials/interfaces/MobileKeys/Openkey/adOpenkeySetup.html',
+        controller: 'adOpenkeySetupCtrl',
+        url: '/openkey/setup',
+        resolve: {
+            config: ['adInterfacesCommonConfigSrv', function (adInterfacesCommonConfigSrv) {
+                return adInterfacesCommonConfigSrv.fetchConfiguration('openkey');
+            }]
+        }
+    });
+
 });

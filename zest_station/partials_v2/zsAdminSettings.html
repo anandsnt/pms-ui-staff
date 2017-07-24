@@ -79,10 +79,21 @@
                         </select>
                     </div>
                 </div>
+
+
                 <div id="order-reason" class="entry with-label" ng-show="zestStationData.workstationStatus === 'out-of-order'">
-                    <label>Out of Order Reason</label>
+                    <label click-touch='toggleOOSHist()'>Out of Order Reason</label>
+                    <label click-touch='toggleOOSHist()' ng-if="zestStationData.sessionOosReason.length > 0" class='admin-label-description' >Tap here to see history of Out of Order Reasons</label>
+                    <label ng-if="zestStationData.sessionOosReason.length===0" class='admin-label-description'>No Out of Order history this session</label>
                     <input readonly="" class="read-only" ng-model="zestStationData.workstationOooReason">
                 </div>
+
+                <div class="entry with-label oos-reason-hist" ng-hide="!show_oos_history" ng-repeat="reason in zestStationData.sessionOosReason">
+                    <label></label>
+                    <label class='admin-label-description'>{{reason.datetime}}</label>
+                    <input readonly="" class="read-only" type='text' value='{{reason.reason}}'>
+                </div>
+
                 <div class="entry with-label">
                     <label class='admin-item-label'>Station Idle Timer</label>
                     <div class="entry select">
@@ -92,6 +103,7 @@
                         </select>
                     </div>
                 </div>
+
                 <div class="entry with-label">
                     <label>Idle Screen Prompt After (seconds)</label>
                     <label class='admin-label-description'>Prompt user to see if they are still using the Station after {{zestStationData.idle_timer.prompt}} seconds of no activity</label>

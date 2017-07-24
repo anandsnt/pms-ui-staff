@@ -214,4 +214,12 @@ sntGuestWeb.config(['$stateProvider', '$urlRouterProvider', function($stateProvi
 		controller: 'guestDetailsController',
 		title: 'Guest Details'
 	});
+
+
+	$stateProvider.state('offerAddonOptions', {
+		url: '/addonOptions/:isFrom',
+		templateUrl: '/assets/common_templates/partials/checkin/gwOfferAddonOptions.html',
+		controller: 'offerAddonOptionsController',
+		title: 'Addons'
+	});
 }]);
