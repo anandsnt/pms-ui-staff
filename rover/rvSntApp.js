@@ -44,6 +44,7 @@ var GlobalApp = function() {
                 'connection_status': connection_status
             }
         };
+        
         document.dispatchEvent(new CustomEvent('OBSERVE_DEVICE_STATUS_CHANGE', params));
     };
 
