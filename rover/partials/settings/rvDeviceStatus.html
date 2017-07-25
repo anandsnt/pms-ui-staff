@@ -1,0 +1,42 @@
+<div role="dialog" id="modal" class="modal-show" >
+	<form name="update-settings" id="update-settings" class="modal-content form admin-form">
+		<button type="button" id="modal-close"  ng-click="closeDialog()" class="modal-close">
+		<span class="icons icon-close invert"></span>
+		</button>
+		<p style="font-size:26px;font-weight 500;margin-bottom:20px;">Devices</p>
+		<table cellpadding="10" ng-repeat="device in connectedDeviceDetails" style="border-bottom:1px dashed black; margin-bottom:20px;margin-top: 10px;width: 100%;">
+			<tr>
+				<td colspan="2">Device short name</td><td>:</td>
+				<td colspan="2">{{device.device_short_name}}</td>
+			</tr>
+			<tr>
+				<td colspan="2">Device Identified Name</td><td>:</td>
+				<td colspan="2">{{device.device_identified_name}}</td>
+			</tr>
+			<tr>
+				<td colspan="2">Connection status</td><td>:</td>
+				<td colspan="2">{{device.device_connection_sate}}</td>
+			</tr>
+			<tr>
+				<td colspan="2">Battery State</td><td>:</td>
+				<td colspan="2">{{device.battery_state}}</td>
+			</tr>
+			<tr>
+				<td colspan="2">Battery percentage</td><td>:</td>
+				<td colspan="2">{{device.battery_percentage}}%</td>
+			</tr>
+			<tr>
+				<td colspan="2">Library Version</td><td>:</td>
+				<td colspan="2">{{device.library_version}}</td>
+			</tr>
+			<tr>
+				<td colspan="2">Firmware version</td><td>:</td>
+				<td colspan="2">{{device.firmware_version}}</td>
+			</tr>
+			<tr>
+				<td colspan="2">Serial Number</td><td>:</td>
+				<td colspan="2">{{device.serial_number}}</td>
+			</tr>
+		</table>
+	</form>
+</div>

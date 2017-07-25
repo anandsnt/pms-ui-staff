@@ -349,6 +349,47 @@ sntRover.controller('roverController', [
         });
     };
 
+    /*
+     * to run angular digest loop,
+     * will check if it is not running
+     * return - None
+     */
+    $scope.runDigestCycle = function() {
+      if (!$scope.$$phase) {
+        $scope.$digest();
+      }
+    };
+    $scope.showDeviceConnectivityStatus = false;
+
+    document.addEventListener("OBSERVE_DEVICE_STATUS_CHANGE", function(e) {
+        $scope.deviceDetails = {
+          'name': e.detail.device_name,
+          'connection_status': e.detail.connection_status
+        };
+        $scope.showDeviceConnectivityStatus = true;
+        $timeout(function() {
+            $scope.showDeviceConnectivityStatus = false;
+        }, 10000);
+        $scope.runDigestCycle();
+    });
+
+    /*
+    * Show the connected devices status
+     */
+    var fetchDeviceStatus = function() {
+      cordova.exec(function(response) {
+        // alert(JSON.stringify(response));
+        $scope.connectedDeviceDetails = response;
+        ngDialog.open({
+          template: '/assets/partials/settings/rvDeviceStatus.html',
+          scope: $scope,
+          className: 'calendar-modal'
+        });
+      }, function(error) {
+        // alert(error);
+      }, 'RVDevicePlugin', 'getDevicesStates', []);
+    };
+
 
     $rootScope.updateSubMenu = function(idx, item) {
       if (item && item.submenu && item.submenu.length > 0) {
@@ -561,6 +602,9 @@ sntRover.controller('roverController', [
             }
             else if (subMenu === 'changePassword') {
                 openUpdatePasswordPopup();
+            }
+            else if (subMenu === 'deviceStatus') {
+                fetchDeviceStatus();
             }
         };
 

@@ -37,6 +37,16 @@ var GlobalApp = function() {
 
     };
 
+    this.notifyDeviceStateChange = function(device_name, connection_status) {
+        var params = {
+            'detail': {
+                'device_name': device_name,
+                'connection_status': connection_status
+            }
+        };
+        document.dispatchEvent(new CustomEvent('OBSERVE_DEVICE_STATUS_CHANGE', params));
+    };
+
     // success function of coddova plugin's appending
     this.fetchCompletedOfCordovaPlugins = function() {
         that.cordovaLoaded = true;

@@ -1,4 +1,17 @@
 <div ng-show="hasLoader" id="loading"><div id="loading-spinner" ></div></div> 
+<div>
+
+<!-- loader for EMV terminal actions -->
+<div ng-show="showDeviceConnectivityStatus">
+    <div style="top: 10;
+    left: 100px;
+    position: fixed;
+    border: 1px dashed green;z-index: 1000;padding: 5px;">
+        <div class="centeralign alert-box">
+            {{deviceDetails.name}} &nbsp; {{deviceDetails.connection_status}}
+        </div>
+    </div>
+</div>
 
 <!-- loader for EMV terminal actions -->
 <div ng-show="showSixPayLoader" id="loading">
