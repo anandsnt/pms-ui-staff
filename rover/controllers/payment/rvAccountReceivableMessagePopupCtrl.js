@@ -35,7 +35,7 @@ sntRover.controller('RVAccountReceivableMessagePopupCtrl', ['$rootScope', '$scop
 	$scope.createAccountReceivable = function( isAutoAssignARNumber ) {
 
 		var data = {
-			"id": $scope.account_id,
+			"id": $scope.reservationBillData.bills[$scope.currentActiveBill].account_id,
 			"ar_number": isAutoAssignARNumber ? "" : $scope.ar_number
 		};
 
