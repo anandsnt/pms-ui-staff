@@ -21,10 +21,10 @@ const RateManagerGridRightSideHeaderComponent = createClass({
 		return (
 			<div className='calendar-rate-table calendar-rate-table-days scrollable'>
 				<div className='wrapper'>
-					<table className='rate-calendar'>	
+					<table className='rate-calendar'>
 						<thead>
 							<tr className="cell">
-								{this.props.headerDataList.map( (headerData, index) => 
+								{this.props.headerDataList.map( (headerData, index) =>
 									<th className={headerData.headerClass} key={"header-data-" + index}>
 										<div className={headerData.cellClass}>
 											<span className={headerData.topLabelContainerClass}>
@@ -45,7 +45,7 @@ const RateManagerGridRightSideHeaderComponent = createClass({
 										<td onClick={(e) => this.props.onTdClick(e, rowIndex, colIndex)} key={'key-' + colIndex} className='cell'>
 											<div className={'cell-container ' + (this.props.dateList[colIndex].isWeekEnd ? 'weekend_day': '')}>
 												<div className={'cell-content ' + (this.props.dateList[colIndex].isPastDate ? 'isHistory-cell-content': '')}>
-													{eachDayRestrictions.map((restriction, restrictionIndex) => 
+													{eachDayRestrictions.map((restriction, restrictionIndex) =>
 														<RateManagerRestrictionIconComponent
 															key={'key-' + restrictionIndex}
 															className={'' + restriction.className}
