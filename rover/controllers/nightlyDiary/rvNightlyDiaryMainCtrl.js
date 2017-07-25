@@ -95,10 +95,10 @@ angular.module('sntRover')
              * method to get Pagination parametrs
              * @return {Object} with pagination params
              */
-            var getPaginationParams = function(offset) {
+            var getPaginationParams = function() {
                 return {
                     per_page: $scope.diaryData.paginationData.perPage,
-                    page: $scope.diaryData.paginationData.page + offset,
+                    page: $scope.diaryData.paginationData.page,
                     total_count: $scope.diaryData.paginationData.totalCount
                 };
             };
@@ -112,7 +112,7 @@ angular.module('sntRover')
             };
 
             // Method to update room list data.
-            var fetchRoomListDataAndReservationListData = function(roomId, offset) {
+            var fetchRoomListDataAndReservationListData = function(roomId) {
                 var successCallBackFetchRoomList = function(data) {
                         $scope.$emit('hideLoader');
                         $scope.errorMessage = '';
@@ -127,7 +127,7 @@ angular.module('sntRover')
                         }
                     },
                     postData = {
-                        ...getPaginationParams(offset),
+                        ...getPaginationParams(),
                         'start_date': $scope.diaryData.fromDate,
                         'no_of_days': $scope.diaryData.numberOfDays,
                         'selected_room_type_ids': $scope.diaryData.selectedRoomTypes,
@@ -149,7 +149,8 @@ angular.module('sntRover')
              */
             var goToPrevPage = () => {
                 cancelReservationEditing();
-                fetchRoomListDataAndReservationListData(null, -1);
+                $scope.diaryData.paginationData.page--;
+                fetchRoomListDataAndReservationListData();
             };
 
             /*
@@ -158,7 +159,8 @@ angular.module('sntRover')
              */
             var goToNextPage = () => {
                 cancelReservationEditing();
-                fetchRoomListDataAndReservationListData(null, 1);
+                $scope.diaryData.paginationData.page++;
+                fetchRoomListDataAndReservationListData();
             };
             /*
              * Show selected reservation highlighted and enable edit bar
