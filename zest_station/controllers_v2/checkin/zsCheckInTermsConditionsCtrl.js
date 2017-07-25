@@ -84,7 +84,7 @@ sntZestStation.controller('zsCheckInTermsConditionsCtrl', [
 
             console.info('haveValidGuestEmail: ', haveValidGuestEmail);
 
-            if ($scope.theme === 'yotel') {
+            if ($scope.zestStationData.is_kiosk_ows_messages_active) {
                 $scope.setScreenIcon('checkin');
                 $state.go('zest_station.checkinSuccess', stateParams);
             }

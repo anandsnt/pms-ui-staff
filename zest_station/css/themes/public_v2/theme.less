@@ -66,6 +66,26 @@
 		    border-radius: 0em !important;
 		}
 	}
+	.button-class{
+		background: white !important;
+	    color: black !important;
+	    border-style: solid !important;
+	    border-width: 1px !important;
+	    border-radius: 0em !important;
+	}
+	.popup .popup-content #message-action {
+		.button{
+			.button-class;
+		    &.print,&.email{
+		    	.button-class;
+		    }
+		}
+	}
+	.ows-msg-section{
+		.button{
+			.button-class;
+		}
+	}
 	.room-upsell-content,.addon-screen>#content {
     	padding-top: 0;
     	height: 90% !important;
