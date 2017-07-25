@@ -355,45 +355,37 @@ select {
 
 
 
+/*
+    Specify which icon-date 
+    Check-in > Select by Date (inside input field)
+    or
+    Home Screen "Book-Now"
+ */
+/*Check-in > Select by Date (inside input field)*/
+.entry&.input > ng-include > .icons&.icon-date {
+    position: absolute !important;
+    margin-left: -6% !important;
+    top: 57%!important;
+    left: 66%;
 
-
-#icon-date {
-    position: absolute;
-    margin-left: -6%;
-    margin-top: .5%;
     @media only screen and (min-width: 1024px) and (max-width: 1024px) { 
-        position: absolute;
-        margin-left: -6%;
+        margin-left: -11% !important;
         margin-top: .5%;
+        top: 52.5%!important;
+        left: 66%;
     }
-    
+
     @media only screen and (min-width: 1366px) and (max-width: 1366px) { 
-        position: absolute;
-        margin-left: -5%;
-        margin-top: 1%;
-        height: 48.5%;
-        top: 40%;
+        margin-left: -11% !important;
+        margin-top: 0% !important;
+        top: 57%!important;
+        left: 71%;
     }
 }
-
-#icon-date {
-
-    @media only screen and (min-width: 1024px) and (max-width: 1024px) { 
-        position: absolute;
-        margin-left: -6%;
-        margin-top: .5%;
-    }
-
-    @media only screen and (min-width: 1024px) and (max-width: 1024px) { 
-        position: absolute;
-        margin-left: -6%;
-        margin-top: .5%;
-    }
+/*Home Screen "Book-Now"*/
+.button&.option>div>#icon-date {
+    position: initial !important;
 }
-
-
-
-
 
 select::-ms-expand {
     display: none;
