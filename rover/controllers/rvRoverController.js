@@ -362,6 +362,7 @@ sntRover.controller('roverController', [
     $scope.showDeviceConnectivityStatus = false;
 
     document.addEventListener("OBSERVE_DEVICE_STATUS_CHANGE", function(e) {
+        $scope.$emit("closeDrawer");
         $scope.deviceDetails = {
           'name': e.detail.device_name,
           'connection_status': e.detail.connection_status
