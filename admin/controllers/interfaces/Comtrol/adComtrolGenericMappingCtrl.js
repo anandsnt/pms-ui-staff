@@ -190,6 +190,22 @@ admin.controller('adComtrolGenericMappingCtrl', ['$scope', 'genericMappings', 'a
             return mappedExternalCode && mappedExternalCode.value;
         };
 
+        $scope.onChangeExternalType = function () {
+            if ($scope.state.new.external_type === 'tip_charge_code') {
+                $scope.state.new.external_code = 295;
+            } else {
+                $scope.state.new.external_code = '';
+            }
+        };
+
+        $scope.onChangeExternalType = function (externalType, mapping) {
+            if (externalType === 'tip_charge_code') {
+                mapping.external_code = 295;
+            } else {
+                mapping.external_code = '';
+            }
+        };
+
         // --------------------------------------------------------------------------------------------------------------
         /**
          * Initialization method for the controller
