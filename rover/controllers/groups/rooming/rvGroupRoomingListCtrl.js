@@ -855,7 +855,7 @@ angular.module('sntRover').controller('rvGroupRoomingListCtrl', [
 
             $scope.callAPI(rvGroupRoomingListSrv.fetchReservations, options);
         };
-        
+
         $scope.filterReservation = function() {
             initialisePagination();
             $timeout( $scope.fetchReservations, 10 );
@@ -1821,7 +1821,8 @@ angular.module('sntRover').controller('rvGroupRoomingListCtrl', [
             var params = {
                 "to_address": mailTo,
                 "group_id": $scope.groupConfigData.summary.group_id,
-                "is_include_rate": !$scope.groupConfigData.summary.hide_rates
+                "is_include_rate": !$scope.groupConfigData.summary.hide_rates,
+                "exclude_cancel": $scope.exclude_cancel
             };
 
             $scope.callAPI(rvGroupRoomingListSrv.emailInvoice, {
