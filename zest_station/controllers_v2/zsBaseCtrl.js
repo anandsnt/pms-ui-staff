@@ -343,6 +343,14 @@ function BaseCtrl($scope) {
 
     };
 
+    $scope.reservationHasPassportsScanned = function() {
+        // placeholder
+        console.log(':: reservationHasPassportsScanned ::');
+        // TODO check reservation for flag that says Needs Passport scan
+        // or lack of passports scanned
+        return false;
+    };
+
     $scope.trackEvent = function(event_name, event_type, from, at) {
     // ie. _gaq.push(['_trackEvent', eventLabel, 'clicked']);
     // 

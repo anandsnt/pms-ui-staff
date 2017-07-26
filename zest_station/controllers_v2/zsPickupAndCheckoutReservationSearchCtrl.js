@@ -127,6 +127,24 @@ sntZestStation.controller('zsPickupAndCheckoutReservationSearchCtrl', [
             $scope.callAPI(zsGeneralSrv.fetchCheckinReservationDetails, options);
         };
 
+        var fetchReservationForPassportScanning = function(reservation_id, stateParams) {
+            var onSuccess = function(response) {
+                zsCheckinSrv.setSelectedCheckInReservation(response.results);// important
+
+                $state.go('zest_station.checkInScanPassport', stateParams);
+            };
+
+            var options = {
+                params: {
+                    'reservation_id': reservation_id
+                },
+                successCallBack: onSuccess,
+                failureCallBack: generalFailureActions
+            };
+
+            $scope.callAPI(zsGeneralSrv.fetchCheckinReservationDetails, options);
+        };
+
         var searchReservation = function() {
             var checkoutVerificationSuccess = function(data) {
                 if (typeof data !== typeof undefined) {
@@ -143,10 +161,32 @@ sntZestStation.controller('zsPickupAndCheckoutReservationSearchCtrl', [
                         'room_no': $scope.reservationParams.room_no,
                         'first_name': data.first_name
                     };
+                    /*
+                        send through Passport scanning flow if Reservation 
+                            *(has not scanned passports) 
+                            station setting is active
+                     */
+                    
+                    if ($scope.zestStationData.check_in_collect_passport && !$scope.reservationHasPassportsScanned()) {
+                        $scope.trackSessionActivity('PUK', 'Fetch Success', 'R' + data.reservation_id, 'TO_SCAN_PASSPORTS');
+                            // 
+                            // get reservation details object,
+                            // then set the currently selected reservation
+                            // then go to passport screen
+                            //
+                        $scope.zestStationData.continuePickupFlow = function() {
+                            $scope.trackSessionActivity('PUK', 'Continue From Passport', 'R' + data.reservation_id, 'CONTINUE_TO_ENCODE');
+                            $state.go('zest_station.pickUpKeyDispense', stateParams);                                
+                        };
 
-                    $scope.trackSessionActivity('PUK', 'Pickup, Found Reservation', 'R' + data.reservation_id, 'CONTINUE_TO_ENCODE');
+                        stateParams.from_pickup_key = true;
+                        fetchReservationForPassportScanning(data.reservation_id, stateParams);
 
-                    $state.go('zest_station.pickUpKeyDispense', stateParams);
+                    } else {
+                        $scope.trackSessionActivity('PUK', 'Pickup, Found Reservation', 'R' + data.reservation_id, 'CONTINUE_TO_ENCODE');
+                        $state.go('zest_station.pickUpKeyDispense', stateParams);
+                    }
+
                 } else if (!!$stateParams.mode && $stateParams.mode === 'PICKUP_KEY' && !data.is_checked_in) {
                     if (data.guest_arriving_today) {
                         // go to Checkin flow -- CICO-32703
