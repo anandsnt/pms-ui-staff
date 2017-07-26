@@ -202,6 +202,7 @@ sntZestStation.controller('zsPickupAndCheckoutReservationSearchCtrl', [
         var roomNumberEntered = false;
 
         $scope.lastNameEntered = function() {
+            $scope.hideKeyboardIfUp();
             // if room is already entered, no need to enter again
             if (roomNumberEntered) {
                 if ($scope.reservationParams.room_no.length > 0) {
@@ -220,6 +221,7 @@ sntZestStation.controller('zsPickupAndCheckoutReservationSearchCtrl', [
         };
 
         $scope.roomNumberEntered = function() {
+            $scope.hideKeyboardIfUp();
             roomNumberEntered = true;
             $scope.reservationParams.room_no.length > 0 ? searchReservation() : '';
             $scope.callBlurEventForIpad();
