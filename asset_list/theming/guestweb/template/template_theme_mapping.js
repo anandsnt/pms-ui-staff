@@ -18,6 +18,7 @@ module.exports = {
                 precheckinPartials + '*.html'];
 
         return {
+            'guestweb_made':  commonNonMgmTemplates,
             'guestweb_windsor_suites': [ 'guestweb/**/common_templates/partials/checkin/**.html',
                 'guestweb/**/common_templates/partials/checkout/**.html',
                 'guestweb/**/common_templates/partials/gwNoOption.html',
