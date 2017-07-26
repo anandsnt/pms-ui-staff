@@ -70,22 +70,20 @@
 
 
 <div ng-include="'/assets/partials_v2/zsTabletHeader.html'"></div>
-<!--PopUp For External webPage-->
-<div class="popup iframe-popup open" ng-if="showExternalWebPage">
-    <div class="popup-content iframe-content">
-        <i class="close-popup" touch-press="closeExternalWebPage()"></i>
-        <iframe click-touch="showKeyboardOnInput()" id="booking_iframe" src="{{zestStationData.home_screen.booking_pop_up.booking_engine_url| trustAsResourceUrl}}" seamless sandbox="allow-same-origin allow-scripts allow-forms allow-pointer-lock"></iframe>
-    </div>
-</div>
 
 
 <div class="popup iframe-popup open" ng-show="zestStationData.showTemplateList">
+<i class="close-popup" touch-press='zestStationData.showTemplateList = false' ></i>
     <div class="popup-content iframe-content">
-        <i class="close-popup" touch-press='zestStationData.showTemplateList = false' ></i>
         <div class='template-switch-container'>
             <div ng-repeat="(key, value) in themeTemplateList" class='template-switch-box' touch-press="selectThemeFromTemplateList(value.name)" ng-style="{'background-image':'url(/assets/zest_station/css/icons/default/previews/{{value.name}}.png)'}">
                 <span class='theme-switch-name'>
                     {{value.name}}
+                </span>
+            </div>
+            <div ng-show='softResetCount==0' class='template-switch-box' touch-press="selectThemeFromTemplateList('sonic')" ng-style="{'background-image':'url(/assets/zest_station/css/icons/default/previews/sonic.png)'}">
+                <span class='theme-switch-name'>
+                    Sonic Switcher
                 </span>
             </div>
         </div>

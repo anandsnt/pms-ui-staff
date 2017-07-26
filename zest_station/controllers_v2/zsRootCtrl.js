@@ -263,9 +263,39 @@ sntZestStation.controller('zsRootCtrl', [
             $scope.zestStationData.showTemplateList = true;
         };
 
-        $scope.selectThemeFromTemplateList = function(theme) {
-            $scope.zestStationData.showTemplateList = false;
-            $scope.quickSetHotelTheme(theme);
+        $scope.sonicTestTemplatesCount = 0;
+        $scope.selectThemeFromTemplateList = function(theme, sonicTesting, themeToTest) {
+            var totalTemplates = $scope.themeTemplateList.length;
+            /*
+                Sonic Testing: loop through all the themes for the current page,
+                good for verifying changes applied to all themes without having to 
+                press/switch each theme manually
+             */
+            if (theme === 'sonic' && $scope.softResetCount === 0) {
+
+                $scope.zestStationData.showTemplateList = false;
+                if (!sonicTesting) {
+                    $scope.sonicTestTemplatesCount = 0;    
+                }
+                if ($scope.sonicTestTemplatesCount < totalTemplates) {
+                   
+                    
+                    $scope.resetTime();
+                    $timeout(function() {
+                        themeToTest = $scope.themeTemplateList[$scope.sonicTestTemplatesCount].name;
+                        $scope.sonicTestTemplatesCount++;
+                        $scope.selectThemeFromTemplateList('sonic', true, themeToTest);
+                        $scope.quickSetHotelTheme(themeToTest);
+                    }, 2500);
+                }
+
+
+            } else {
+                $scope.zestStationData.showTemplateList = false;
+                $scope.quickSetHotelTheme(theme);
+            }
+
+
         }; 
 
 
