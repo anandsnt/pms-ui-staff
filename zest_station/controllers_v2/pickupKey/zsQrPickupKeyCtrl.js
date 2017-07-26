@@ -79,12 +79,12 @@ sntZestStation.controller('zsQrPickupKeyCtrl', [
                             'room_no': room_no,
                             'first_name': guest_response.primary_guest_details.first_name
                         };
-                        
                         /*
                             send through Passport if Reservation 
                                     *(has not scanned passports) 
                                     setting is active
                          */
+
                         if ($scope.zestStationData.check_in_collect_passport && !$scope.reservationHasPassportsScanned()) {
                             $scope.trackSessionActivity('PUK', 'Fetch Success', 'R' + reservation_id, 'TO_SCAN_PASSPORTS');
                             stateParams.from_pickup_key = true;
