@@ -207,7 +207,7 @@ admin.controller('ADHotelDetailsCtrl', [
 			data.isSNTAdmin = true;
 
 			// CICO-42171 : For overlay hotels, param : is_multi_property should be false.
-			if( $scope.data.hotel_pms_type === 'OWS') {
+			if ($scope.data.hotel_pms_type === 'OWS') {
 				data.is_multi_property = false;
 			}
 
