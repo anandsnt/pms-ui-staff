@@ -23,7 +23,8 @@ admin.directive('adDropdownName', function($timeout) {
             prefixValue: '@',
             labelProperties: '=',
             isDisabled: '=',
-            changeHandler: '='
+            changeHandler: '=',
+            changeHandlerParam: '='
         },
         link: function($scope) {
             if (typeof $scope.options !== 'undefined') {
@@ -39,7 +40,7 @@ admin.directive('adDropdownName', function($timeout) {
             $scope.onChange = function() {
                 if ($scope.changeHandler) {
                     $timeout(function() {
-                        $scope.changeHandler($scope.ngModel);
+                        $scope.changeHandler($scope.ngModel, $scope.changeHandlerParam);
                     });
                 }
             };
