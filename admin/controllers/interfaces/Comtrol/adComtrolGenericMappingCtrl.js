@@ -198,7 +198,7 @@ admin.controller('adComtrolGenericMappingCtrl', ['$scope', 'genericMappings', 'a
             }
         };
 
-        $scope.onChangeExternalType = function (externalType, mapping) {
+        $scope.onChangeMappingExternalType = function (externalType, mapping) {
             if (externalType === 'tip_charge_code') {
                 mapping.external_code = 295;
             } else {
