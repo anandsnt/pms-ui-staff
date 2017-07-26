@@ -1,5 +1,5 @@
-sntRover.controller('rvReservationGuestController', ['$scope', '$rootScope', 'RVReservationGuestSrv', '$stateParams', '$state', '$timeout', 'ngDialog', 'dateFilter',
-	function($scope, $rootScope, RVReservationGuestSrv, $stateParams, $state, $timeout, ngDialog, dateFilter) {
+sntRover.controller('rvReservationGuestController', ['$scope', '$rootScope', 'RVReservationGuestSrv', '$stateParams', '$state', '$timeout', 'ngDialog', 'dateFilter', 'rvPermissionSrv',
+	function($scope, $rootScope, RVReservationGuestSrv, $stateParams, $state, $timeout, ngDialog, dateFilter, rvPermissionSrv) {
 
 		BaseCtrl.call(this, $scope);
 
@@ -479,8 +479,11 @@ sntRover.controller('rvReservationGuestController', ['$scope', '$rootScope', 'RV
 		});
 
         // Checks whether the accompany guest label should be shown or not
+
+		var guestIdAdminEnabled = $rootScope.hotelDetails.guest_id_scan.scan_guest_id_active;
+
         $scope.showAccompanyingGuestLabel = function() {
-            return ($scope.guestData.adult_count + $scope.guestData.children_count + $scope.guestData.infants_count) > 1;
+            return ($scope.guestData.adult_count + $scope.guestData.children_count + $scope.guestData.infants_count) > 1 || guestIdAdminEnabled;
         };
 
 	}
