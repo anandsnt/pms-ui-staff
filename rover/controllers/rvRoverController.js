@@ -157,11 +157,13 @@ sntRover.controller('roverController', [
     $rootScope.isAddonOn = hotelDetails.is_addon_on;
     $rootScope.desktopSwipeEnabled = hotelDetails.allow_desktop_swipe;
 	  $rootScope.ccSwipeListeningPort = hotelDetails.cc_swipe_listening_port;
+    $rootScope.ccSwipeListeningUrl = hotelDetails.cc_swipe_listening_url;
     $rootScope.printCancellationLetter = hotelDetails.print_cancellation_letter;
     $rootScope.sendCancellationLetter = hotelDetails.send_cancellation_letter;
     $rootScope.printConfirmationLetter = hotelDetails.print_confirmation_letter;
     $rootScope.sendConfirmationLetter = hotelDetails.send_confirmation_letter;
     $rootScope.isItemInventoryOn    = hotelDetails.is_item_inventory_on;
+    $rootScope.guestTypes = hotelDetails.guest_types;
 
     // CICO-41410
     $rootScope.isDashboardSwipeEnabled = hotelDetails.enable_dashboard_swipe;
@@ -288,7 +290,7 @@ sntRover.controller('roverController', [
       $scope.searchBackButtonCaption = caption; // if it is not blank, backbutton will show, otherwise dont
     });
 
-    if ($rootScope.adminRole === "Hotel Admin") {
+    if ($rootScope.adminRole === "Hotel Admin" || $rootScope.adminRole === "Chain Admin User") {
       $scope.isHotelAdmin = true;
     }
     /**
@@ -652,7 +654,7 @@ sntRover.controller('roverController', [
 
     var initiateDesktopCardReader = function() {
       sntapp.desktopCardReader.setDesktopUUIDServiceStatus(true);
-    	sntapp.desktopCardReader.startDesktopReader($rootScope.ccSwipeListeningPort, options);
+      sntapp.desktopCardReader.startDesktopReader($rootScope.ccSwipeListeningPort, options, $rootScope.ccSwipeListeningUrl);
     };
 
       /**

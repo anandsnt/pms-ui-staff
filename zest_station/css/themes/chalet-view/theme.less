@@ -74,11 +74,10 @@
 		}
 
 		#main {
-			#calc > #height > .remove(100%, 145px);
-			top: 145px;
-			padding-top: 50px;
-			#content {
-				height: 100% !important;
+			&.centered {
+				#options {
+					margin-top: 60px !important;
+				}
 			}
 		}
 
@@ -95,8 +94,7 @@
 		}
 
 		 
-		#logo {
-			 
+		#logo { 
 			.logo {
 				.size(auto, 330px);
 			}
@@ -125,5 +123,13 @@
 				}
 			}
 		}
-		
+	}
+	
+	.add-guest-mode-content{
+	    height: 90% !important;
+	    margin-top: 50px;
+	}
+	
+	.check_in_add_remove > .input-field-contents {
+		height: 45% !important;
 	}

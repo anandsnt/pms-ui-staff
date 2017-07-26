@@ -147,7 +147,7 @@ admin.service('ADHotelDetailsSrv', [
     */
 	that.deSelectMPFlag = function(data) {
 		var deferred = $q.defer(),
-			url = '/admin/hotels/'+data.hotel_id+'/deselect_mp';
+			url = '/admin/hotels/' + data.hotel_id + '/deselect_mp';
 
         ADBaseWebSrvV2.putJSON(url, data).then(function(data) {
 		    deferred.resolve(data);

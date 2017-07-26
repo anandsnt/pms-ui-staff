@@ -159,16 +159,36 @@
                 <!-- Show only if room is assigned -->
                 <span class="{{::room.assigned_staff.class}}" >{{::room.assigned_staff.name}}</span>
 
-                <!-- Show only if room is not in service -->
-                <span ng-if="::isStandAlone && room.ooOsTitle">
-                    <span> &nbsp; </span> <!-- for print spacing issues -->
-                    <span class="service-status" ng-if="::!isHourlyRateOn">
-                        {{::room.ooOsTitle}} until <strong>{{::room.service_status.end_date}}</strong>
+                <div class="last-column">
+                    <!-- Show only if room is not in service -->
+                    <span ng-if="::isStandAlone && room.ooOsTitle">
+                        <span class="service-status" ng-if="::!isHourlyRateOn">
+                            {{::room.ooOsTitle}} until <strong>{{::room.service_status.end_date}}</strong>
+                        </span>
+                        <span class="service-status" ng-if="::isHourlyRateOn">
+                            {{::room.ooOsTitle}} until <strong>{{::room.service_status.end_date}} {{::room.service_status.end_time}}</strong>
+                        </span>
                     </span>
-                    <span class="service-status" ng-if="::isHourlyRateOn">
-                        {{::room.ooOsTitle}} until <strong>{{::room.service_status.end_date}} {{::room.service_status.end_time}}</strong>
-                    </span>
-                </span>
+
+                    <!-- Show if room is occupied -->
+                    <div class="print-date" ng-show="room.is_occupied && room.arrival_date && room.departure_date">
+
+                        <div class="arrival-date">
+                            <span class="guest-status check-in">check-in</span>
+                            <time datetime="{{room.arrival_date}}">
+                                {{formatDateForUI(room.arrival_date)}}
+                            </time>
+                        </div>
+
+                        <div class="departure-date">
+                            <span class="guest-status check-out">check-out</span>
+                            <time datetime="{{room.departure_date}}">
+                                {{formatDateForUI(room.departure_date)}}
+                            </time>
+                        </div>
+
+                    </div>
+                </div>
 
                 <!-- Show only if room is occupied -->
                 <figure class="guest-image" ng-if="!room.is_queued && room.is_occupied">
@@ -437,8 +457,8 @@
             </div>
 
             <!--
-                DEPRICATED!! 
-                Note: Since previously we could chose multiple room, controller 
+                DEPRICATED!!
+                Note: Since previously we could chose multiple room, controller
                 has code to compare mutilpe values (filterDoneButtonPressed method).
                 The code is not removed. Keeping for future.
             -->

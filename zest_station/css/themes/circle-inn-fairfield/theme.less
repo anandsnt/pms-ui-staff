@@ -42,10 +42,10 @@
 		}
 
 		&.icon-arrow-left,
-        &.icon-arrow-right {
-            fill: none;
-            stroke: @textColor;
-        }
+		&.icon-arrow-right {
+			fill: none;
+			stroke: @textColor;
+		}
 	}
 
 	.logo-svg {
@@ -59,11 +59,11 @@
 		border-right: 10px solid @brandColor;
 		border-bottom: 10px solid @brandColor;
 		background-image: url("../css/themes/circle-inn-fairfield/logo.svg");
-    	background-repeat: no-repeat;
-    	background-size: 290px;
-    	background-position: center;
+		background-repeat: no-repeat;
+		background-size: 290px;
+		background-position: center;
 
-    	/* Blue Border */
+		/* Blue Border */
 		&:after {
 			border-left: 3px solid @textColor;
 			border-right: 3px solid @textColor;
@@ -105,9 +105,11 @@
 		}
 
 		#main {
-			#calc > #height > .remove(100%, 100px);
-			top: 100px;
-			padding-top: 50px;
+			&.centered {
+				#options {
+					margin-top: 60px !important;
+				}
+			}
 		}
 
 		#actions {
@@ -141,9 +143,9 @@
 				padding: 10px 25px;
 				.size(120px, auto);
 			}
- 		}
+		}
 
- 		#options {
+		#options {
 			.icons {
 				fill: @textColor;
 			}
@@ -166,6 +168,27 @@
 					}
 				}
 			}
+			#options .amount{
+				color: @brandColor;
+			} 
 		}
 		
 	}
+	
+	.add-guest-mode-content{
+	    height: 90% !important;
+	    margin-top: 50px;
+	}
+	.check_in_add_remove > .input-field-contents {
+		height: 45% !important;
+
+	}
+	.jumper {
+		background-color: #d6d6d6 !important;
+	}
+
+    .iframe-content{
+    	position: fixed !important;
+    	-webkit-overflow-scrolling: touch !important;
+  		overflow-y: scroll !important;
+    }

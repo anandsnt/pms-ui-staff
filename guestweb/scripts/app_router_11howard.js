@@ -161,4 +161,12 @@ sntGuestWeb.config(['$stateProvider', '$urlRouterProvider', function($stateProvi
 		templateUrl: '/assets/common_templates/partials/checkin/gwLateToCheckin.html',
 		title: 'Check-in'
 	});
+
+	// Addon state
+	$stateProvider.state('offerAddonOptions', {
+		url: '/addonOptions/:isFrom',
+		templateUrl: '/assets/common_templates/partials/checkin/gwOfferAddonOptions.html',
+		controller: 'offerAddonOptionsController',
+		title: 'Addons'
+	});
 }]);

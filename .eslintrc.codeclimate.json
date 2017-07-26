@@ -29,7 +29,9 @@
         "CardOperation": false,
         "jsHue": false,
         "SyntaxHighlighter": false,
-        "moment": false
+        "webSocketOperations": false,
+        "moment": false,
+        "SwipeOperation": false
     },
     "installedESLint": true,
     "parserOptions": {

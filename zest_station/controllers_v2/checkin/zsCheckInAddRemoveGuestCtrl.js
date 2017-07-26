@@ -67,11 +67,11 @@ sntZestStation.controller('zsCheckInAddRemoveGuestCtrl', [
 
                 if ($scope.isIpad) {
                     $scope.callBlurEventForIpad();
-                } else {
-                    $timeout(function() {
-                        $scope.focusInputField('add-guest-name');
-                    }, 300);
                 }
+                
+                $timeout(function() {
+                    $scope.focusInputField('add-guest-name');
+                }, 300);
             } else {
                 $scope.guest.lastName = $scope.guest.Name;
                 $scope.guest.Name = '';
@@ -82,12 +82,10 @@ sntZestStation.controller('zsCheckInAddRemoveGuestCtrl', [
                 $scope.guest.firstNameEntered = false;
                 if ($scope.isIpad) {
                     $scope.callBlurEventForIpad();
-                } else {
-                    $timeout(function() {
-                        $scope.focusInputField('add-guest-name');
-                    }, 300);
-
                 }
+                $timeout(function() {
+                    $scope.focusInputField('add-guest-name');
+                }, 300);
             }
         };
         $scope.removeGuest = function(toDeleteId) {
