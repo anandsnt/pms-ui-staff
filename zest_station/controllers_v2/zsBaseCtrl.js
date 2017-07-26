@@ -394,9 +394,9 @@ function BaseCtrl($scope) {
                     },
                     'upsell_addons_enabled': false,
                     'upsell_rooms_enabled': false,
-                    'kiosk_time': currentTime
+                    'kiosk_time': currentTime,
+                    'origin': location.origin ? location.origin : location.href
                 };
-
 
                 if (event_type === 'status_update' || event_type === 'activity_update') {
                   // 
