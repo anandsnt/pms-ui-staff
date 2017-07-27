@@ -98,6 +98,7 @@ sntRover.controller('RVbillCardController',
 	// CICO-6089 : Flag for Guest Bill: Check out without Settlement
 	$scope.isCheckoutWithoutSettlement = false;
 
+
 	// set up flags for checkbox actions
 	$scope.hasMoveToOtherBillPermission = function() {
         return ($rootScope.isStandAlone && rvPermissionSrv.getPermissionValue ('MOVE_CHARGES_RESERVATION_ACCOUNT'));
@@ -762,8 +763,6 @@ sntRover.controller('RVbillCardController',
 		 * Failure Callback of move action
 		 */
 		var moveToBillFailureCallback = function(errorMessage) {
-			console.log("@moveToBillFailureCallback");
-			console.log(errorMessage);
 			$scope.$emit('hideLoader');
 			$scope.errorMessage = errorMessage;
 		};
@@ -1620,7 +1619,7 @@ sntRover.controller('RVbillCardController',
         };
 
         // CICO-36696 : Method to get canvas data in Base64 Format, includes the line inside canvas.
-        var getSignatureBase64Data = function () {
+        $scope.getSignatureBase64Data = function () {
  	      	var canvasElement 	= angular.element( document.querySelector('canvas.jSignature'))[0],
 				signatureURL 	= (canvasElement) ? canvasElement.toDataURL() : '';
 
@@ -1708,7 +1707,6 @@ sntRover.controller('RVbillCardController',
 
 	// To handle complete checkin button click
 	$scope.clickedCompleteCheckin = function(isCheckinWithoutPreAuthPopup, checkInQueuedRoom) {
-
         // CICO-36122 - Set this to keep the promos and news opt in check-in screen in sync with guest card
         if ( !!$scope.guestCardData && !!$scope.guestCardData.contactInfo) {
            $scope.guestCardData.contactInfo.is_opted_promotion_email = $scope.saveData.promotions;
@@ -1731,7 +1729,7 @@ sntRover.controller('RVbillCardController',
 			return false;
 		}
 
-		var errorMsg = "", signatureData = $scope.getSignature(), signatureWithLine = getSignatureBase64Data();
+		var errorMsg = "", signatureData = $scope.getSignature();
 
 		if ($scope.signatureNeeded(signatureData) && !$scope.reservation.reservation_card.is_pre_checkin) {
 			errorMsg = "Signature is missing";
@@ -1744,17 +1742,19 @@ sntRover.controller('RVbillCardController',
 
 
 		} else {
-                    $scope.initCompleteCheckin(isCheckinWithoutPreAuthPopup, signatureWithLine);
+			var signature = $scope.getSignatureBase64Data();
+
+                    $scope.initCompleteCheckin(isCheckinWithoutPreAuthPopup, signature );
 		}
 
 	};
         $scope.clickedCompleteAddToQueue = function(isCheckinWithoutPreAuthPopup, checkInQueuedRoom) {
-
+        
 		if ($scope.hasAnySharerCheckedin()) {
 			// Do nothing , Keep going checkin process , it is a sharer reservation..
 		}
 
-		var errorMsg = "", signatureData = $scope.getSignature(), signatureWithLine = getSignatureBase64Data();
+		var errorMsg = "", signatureData = $scope.getSignature();
 
 		if ($scope.signatureNeeded(signatureData)) {
 			errorMsg = "Signature is missing";
@@ -1767,15 +1767,15 @@ sntRover.controller('RVbillCardController',
 
 
 		} else {
-                    var queueRoom = true;
+                    var queueRoom = true,
+                    	signature = $scope.getSignatureBase64Data();
 
-                    $scope.initCompleteCheckin(isCheckinWithoutPreAuthPopup, signatureWithLine, queueRoom);
+                    $scope.initCompleteCheckin(isCheckinWithoutPreAuthPopup, signature, queueRoom);
 		}
 
 	};
 
         $scope.initCompleteCheckin = function(isCheckinWithoutPreAuthPopup, signatureData, queueRoom) {
-
 			if ($scope.validateEmailNeeded()) {
                             ngDialog.open({
                                 template: '/assets/partials/validateCheckin/rvAskEmailFromCheckin.html',
@@ -1891,7 +1891,7 @@ sntRover.controller('RVbillCardController',
 
 		// To check for ar account details in case of direct bills
 		var index = $scope.reservationBillData.bills.length - 1;
-		var signatureBase64Data = getSignatureBase64Data();
+		var signatureBase64Data = $scope.getSignatureBase64Data();
 
 		if ($scope.isArAccountNeeded(index)) {
 			return;

@@ -70,6 +70,9 @@ angular.module('sntRover').controller('RVReservationCheckInFlowCtrl',
                     });
                 } else {
                     $log.info('prompt for swipe disabled in settings AND cannot authorize WITHOUT card on file');
+                    // CICO-43681 Authorization is applicable only for credit cards; as there is no credit card and
+                    // prompting for card is disabled; continue to check-in
+                    completeCheckin();
                 }
             };
 
@@ -113,7 +116,7 @@ angular.module('sntRover').controller('RVReservationCheckInFlowCtrl',
 
 
                 if (signature !== 'isSigned' && signature !== '[]') {
-                    params.signature = signature;
+                    params.signature = $scope.getSignatureBase64Data();
                 }
 
                 // This flag is set from the rvBillCardCtrl
@@ -235,9 +238,10 @@ angular.module('sntRover').controller('RVReservationCheckInFlowCtrl',
 
                     // is_cc_authorize_at_checkin_enabled is returned in /api/reservations/:reservation_id/pre_auth
                     if ($scope.authorizationInfo.is_cc_authorize_at_checkin_enabled) {
-                        if ($scope.authorizationInfo.routingToRoom ||
-                            $scope.authorizationInfo.routingFromRoom ||
-                            $scope.authorizationInfo.routingToAccount) {
+                        if ($scope.checkInState.hasCardOnFile &&
+                            ($scope.authorizationInfo.routingToRoom ||
+                                $scope.authorizationInfo.routingFromRoom ||
+                                $scope.authorizationInfo.routingToAccount)) {
                             // https://stayntouch.atlassian.net/browse/CICO-17287
                             promptForAuthorizationAmount();
                         } else {
