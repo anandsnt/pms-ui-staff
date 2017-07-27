@@ -41,7 +41,7 @@ var GlobalApp = function() {
         var displayString;
 
         if (type === 'device_battery_below_threshold') {
-            displayString = device_name + ': Battery low(' + value+'%)';
+            displayString = device_name + ': Battery low(' + value +'%)';
         } else {
             displayString = device_name + ': ' + value;
         }
