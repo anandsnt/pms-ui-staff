@@ -1881,7 +1881,7 @@ sntZestStation.controller('zsRootCtrl', [
                                 $scope.zestStationData.autoIpadKeyboardEnabled = true;
                             }
 
-                        }, function(error) {
+                        }, function() {
                             $scope.zestStationData.autoIpadKeyboardEnabled = false;
 
                         }, 'RVCardPlugin', 'getAppInfo', []);
