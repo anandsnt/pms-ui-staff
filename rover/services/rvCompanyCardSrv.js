@@ -55,8 +55,11 @@ angular.module('sntRover').service('RVCompanyCardSrv', ['$q', 'rvBaseWebSrvV2',
             rvBaseWebSrvV2.getJSON(url).then(function(data) {
                 data = {
                     "multi_properties": [{
-                            "id": 23,
-                            "name": "Grand Hotel"
+                            "id": 50,
+                            "name": "Grand Hotel one"
+                        },{
+                            "id": 80,
+                            "name": "Grand Hotel Bethesda"
                         },
                         {
                             "id": 25,

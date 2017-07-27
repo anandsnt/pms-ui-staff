@@ -47,7 +47,7 @@
             <div class="entry property">
                 <label for="commision-property">Property</label>
                 <div class="select">
-                    <select ng-model="filterData.multiProperty" ng-change="onFilterChange()">
+                    <select ng-model="filterData.selectedHotel" ng-change="onFilterChange()">
                         <option value="{{mps.id}}" ng-repeat="mps in multiProperies">{{mps.name}}</option>                   
                     </select>
                 </div>
@@ -154,7 +154,7 @@
                     <!-- Clicking L40 block should open Stay Card for this reservation -->
                     <div class="faux-anchor has-arrow next-view" ng-click="goToStayCard(commissionDetail.reservation_id, commissionDetail.reservation_no)">
                         <div class="data">
-                            <h2>{{commissionDetail.guest_name}}</h2>
+                            <h2>{{commissionDetail.guest_name}}=={{currentHotelData.name}}++{{currentHotelData.id}}</h2>
                             <span class="confirmation">{{commissionDetail.reservation_no}}</span>
                         </div>
                         <div class="values">
