@@ -469,6 +469,20 @@ angular.module('adminInterfacesRouter', []).config(function($stateProvider) {
         }
     });
 
+    $stateProvider.state('admin.revControlSetup', {
+        templateUrl: '/assets/partials/interfaces/Revcontrol/adRevcontrolSetup.html',
+        controller: 'adCRSCommonCtrl',
+        url: '/interfaces/setup/:id',
+        onEnter: ['$stateParams', function($stateParams) {
+            $stateParams.id = 'revcontrol';
+        }],
+        resolve: {
+            config: ['adInterfacesCommonConfigSrv', function(adInterfacesCommonConfigSrv) {
+                return adInterfacesCommonConfigSrv.fetchConfiguration('revcontrol');
+            }]
+        }
+    });
+
     $stateProvider.state('admin.zDirectSetup', {
         templateUrl: '/assets/partials/ZDirectSetup/adZDirectSetup.html',
         controller: 'adZDirectSetupCtrl',
@@ -529,6 +543,17 @@ angular.module('adminInterfacesRouter', []).config(function($stateProvider) {
         resolve: {
             interfaces: ['ADInterfaceMonitorSrv', function (ADInterfaceMonitorSrv) {
                 return ADInterfaceMonitorSrv.fetch();
+            }]
+        }
+    });
+
+    $stateProvider.state('admin.openkey', {
+        templateUrl: '/assets/partials/interfaces/MobileKeys/Openkey/adOpenkeySetup.html',
+        controller: 'adOpenkeySetupCtrl',
+        url: '/openkey/setup',
+        resolve: {
+            config: ['adInterfacesCommonConfigSrv', function (adInterfacesCommonConfigSrv) {
+                return adInterfacesCommonConfigSrv.fetchConfiguration('openkey');
             }]
         }
     });

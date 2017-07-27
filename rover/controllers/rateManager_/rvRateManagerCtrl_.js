@@ -1497,7 +1497,8 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
                 restrictionData,
                 restrictionTypes,
                 date: successCallBackParameters.date,
-                variedAndCommonRestrictions
+                variedAndCommonRestrictions,
+                'isMultiple': true
             };
 
             showRateRestrictionPopup(data);
@@ -1559,7 +1560,8 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
                 roomTypesAndPrices,
                 restrictionData,
                 restrictionTypes,
-                variedAndCommonRestrictions
+                variedAndCommonRestrictions,
+                'isMultiple': false
             };
 
             showRateRestrictionPopup(data);
@@ -1593,7 +1595,8 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
                 rateAndRestrictions,
                 restrictionData,
                 restrictionTypes,
-                variedAndCommonRestrictions
+                variedAndCommonRestrictions,
+                'isMultiple': false
             };
 
             showRateRestrictionPopup(data);
@@ -1627,7 +1630,8 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
                 rateAndRestrictions,
                 restrictionData,
                 restrictionTypes,
-                variedAndCommonRestrictions
+                variedAndCommonRestrictions,
+                'isMultiple': true
             };
 
             showRateRestrictionPopup(data);
@@ -1771,7 +1775,8 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
                 mode: rvRateManagerPopUpConstants.RM_SINGLE_ROOMTYPE_RESTRICTION_MODE,
                 roomType: _.findWhere(cachedRoomTypeList, { id: successCallBackParameters.roomTypeID }),
                 date: successCallBackParameters.date,
-                variedAndCommonRestrictions
+                variedAndCommonRestrictions,
+                'isMultiple': false
             };
 
             showRateRestrictionPopup(data);
@@ -1825,7 +1830,8 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
                 restrictionData,
                 restrictionTypes,
                 mode: rvRateManagerPopUpConstants.RM_MULTIPLE_ROOMTYPE_RESTRICTION_MODE,
-                date: successCallBackParameters.date
+                date: successCallBackParameters.date,
+                'isMultiple': true
             };
 
             showRateRestrictionPopup(data);
@@ -1909,7 +1915,8 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
                 date: successCallBackParameters.date,
                 restrictionTypes,
                 roomTypePricesAndRestrictions,
-                variedAndCommonRestrictions
+                variedAndCommonRestrictions,
+                'isMultiple': false
             };
 
             showRateRestrictionPopup(data);
@@ -1965,7 +1972,8 @@ angular.module('sntRover').controller('rvRateManagerCtrl_', [
                 mode: rvRateManagerPopUpConstants.RM_SINGLE_RATE_MULTIPLE_ROOMTYPE_RESTRICTION_AMOUNT_MODE,
                 rate: _.findWhere(cachedRateList, { id: successCallBackParameters.rateID }),
                 rates: cachedRateList,
-                date: successCallBackParameters.date
+                date: successCallBackParameters.date,
+                'isMultiple': false
             };
 
             showRateRestrictionPopup(data);

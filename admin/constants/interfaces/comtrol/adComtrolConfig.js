@@ -19,7 +19,8 @@ angular.module('admin').constant("COMTROL_REF", Object.freeze(Object.seal({
         {id: 7, value: 'In-Room Safe', code: 'in_room_safe'},
         {id: 8, value: 'Point of Sale', code: 'point_of_sale'},
         {id: 9, value: 'Minibar', code: 'minibar'},
-        {id: 10, value: 'Voice Mail', code: 'voice_mail'}
+        {id: 10, value: 'Voice Mail', code: 'voice_mail'},
+        {id: 11, value: 'Tips', code: 'tip_charge_code'}
     ],
     POS_POSTING_CATEGORIES: [
         {id: 0, value: 'General Items', code: 'general_items'},

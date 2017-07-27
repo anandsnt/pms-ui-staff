@@ -1297,6 +1297,20 @@ sntRover.controller('rvAllotmentRoomBlockCtrl', [
 				// we changed data, so
 				refreshScroller();
 				$scope.$emit("hideLoader");
+					
+				var ROOM_BLOCK_SCROLL 	= "room_block_scroller",
+					TIMELINE_SCROLL 	= "room_rates_timeline_scroller",
+					RATE_GRID_SCROLL 	= "room_rates_grid_scroller";
+
+				var timeline = getScrollerObject(TIMELINE_SCROLL),
+					rategrid = getScrollerObject(RATE_GRID_SCROLL),
+					roomblock = getScrollerObject(ROOM_BLOCK_SCROLL);
+
+				timeline.scrollTo(9999, 0);
+				rategrid.scrollTo(9999, 0);
+				roomblock.scrollTo(9999, 0);
+
+				runDigestCycle();
 			}, 0);
 		};
 

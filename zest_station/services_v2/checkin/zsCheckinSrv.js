@@ -525,9 +525,19 @@ sntZestStation.service('zsCheckinSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
             return deferred.promise;
         };
 
+        this.fetchLateCheckoutSettings = function(param) {
+            var deferred = $q.defer();
+            var url = '/admin/hotel/get_late_checkout_setup.json';
+
+            zsBaseWebSrv2.getJSON(url, param).then(function(data) {
+                deferred.resolve(data);
+            }, function(data) {
+                deferred.reject(data);
+            });
+            return deferred.promise;
+        };
 
         this.acceptPassport = function(params) {
-            // TODO: Update to match API spec once API part is in progress/done
             var deferred = $q.defer();
             var url = '/zest_station/log_passport_scanning';
             
@@ -563,6 +573,19 @@ sntZestStation.service('zsCheckinSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
             return deferred.promise;
         };
 
+        this.checkIDType = function(params) {
+            var deferred = $q.defer();
+            var url = '/api/guest_identity/' + params.reservation_id + '/scan_type?guest_id_type=passport';
+
+            params.is_kiosk = true;
+
+            zsBaseWebSrv.getJSON(url).then(function(data) {
+                deferred.resolve(data);
+            }, function(data) {
+                deferred.reject(data);
+            });
+            return deferred.promise;
+        };
 
     }
 ]);

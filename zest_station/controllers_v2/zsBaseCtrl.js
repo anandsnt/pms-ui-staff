@@ -374,7 +374,7 @@ function BaseCtrl($scope) {
                   // session_activity, ie.  [ {'cn': '234211', 'activity':'reservation found', 'time': Tue/12/12/12, } ] 
                     'session_activity': zs.sessionActivity,
 
-                  // 'ipad_version':zs.version ? zs.version : 'unkonwn-version', // include version here once cordova passes the info
+                    'ipad_version': zs.appVersion ? zs.appVersion : 'unkonwn-version', // include version here once cordova passes the info
 
                     'current_screen': at ? at : '',
                     'from_screen': from ? from : '',
@@ -436,11 +436,13 @@ function BaseCtrl($scope) {
         // 
         var today = new Date();
         var currentTime = today.toString();
-
-        $scope.zestStationData.sessionOosReason.push({
+        var oosReason = {
             'reason': reason,
             'datetime': currentTime
-        });
+        };
+
+        $scope.zestStationData.sessionOosReason.push(oosReason);
+        $scope.zestStationData.lastOOSReason = $scope.$filter('translate')(oosReason.reason) ? $scope.$filter('translate')(oosReason.reason) : oosReason.reason;
         // at the next status-update, the kiosk will log the "$scope.zestStationData.sessionOosReason" array with all OOS reason events
     };
     
