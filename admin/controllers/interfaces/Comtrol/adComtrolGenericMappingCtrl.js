@@ -1,6 +1,9 @@
 admin.controller('adComtrolGenericMappingCtrl', ['$scope', 'genericMappings', 'adComtrolGenericMappingSrv', 'COMTROL_REF',
     function($scope, genericMappings, adComtrolGenericMappingSrv, COMTROL_REF) {
 
+        // CICO-42895 This value doesn't change
+        var _TIP_CHARGE_CODE_EXT_VALUE = 295;
+
         // private methods and variables
         var resetNew = function() {
                 $scope.state.new = {
@@ -188,6 +191,22 @@ admin.controller('adComtrolGenericMappingCtrl', ['$scope', 'genericMappings', 'a
             });
 
             return mappedExternalCode && mappedExternalCode.value;
+        };
+
+        $scope.onChangeExternalType = function () {
+            if ($scope.state.new.external_type === 'tip_charge_code') {
+                $scope.state.new.external_code = _TIP_CHARGE_CODE_EXT_VALUE;
+            } else {
+                $scope.state.new.external_code = '';
+            }
+        };
+
+        $scope.onChangeMappingExternalType = function (externalType, mapping) {
+            if (externalType === 'tip_charge_code') {
+                mapping.external_code = _TIP_CHARGE_CODE_EXT_VALUE;
+            } else {
+                mapping.external_code = '';
+            }
         };
 
         // --------------------------------------------------------------------------------------------------------------
