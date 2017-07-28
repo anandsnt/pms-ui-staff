@@ -7,7 +7,7 @@ admin.service('ADMPUserSettingsSrv', ['$q', 'ADBaseWebSrvV2', function($q, ADBas
     */
     this.fetchMPHotelDetails = function() {
         var deferred = $q.defer();
-        var hotelDetailsUrl = '/admin/multi_property/hotels';
+        var hotelDetailsUrl = '/admin/multi_properties/hotels';
         
         var successCallbackfetchMPHotelDetails = function(data) {
             deferred.resolve(data);
@@ -28,7 +28,7 @@ admin.service('ADMPUserSettingsSrv', ['$q', 'ADBaseWebSrvV2', function($q, ADBas
     */
     this.fetchMPDeptDetails = function() {
         var deferred = $q.defer();
-        var departmentDetailsUrl = '/admin/multi_property/departments';
+        var departmentDetailsUrl = '/admin/multi_properties/departments';
         var successCallbackfetchMPDeptDetails = function(data) {
             deferred.resolve(data);
         };
@@ -49,7 +49,7 @@ admin.service('ADMPUserSettingsSrv', ['$q', 'ADBaseWebSrvV2', function($q, ADBas
     */
     this.fetchMPUserDetails = function(params) {
         var deferred = $q.defer();
-        var url = '/admin/multi_property/users';
+        var url = '/admin/multi_properties/users';
         var successCallbackfetchMPUserDetails = function(data) {
             deferred.resolve(data);
         };

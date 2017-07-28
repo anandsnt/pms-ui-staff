@@ -252,7 +252,7 @@ admin.service('ADUserSrv', ['$http', '$q', 'ADBaseWebSrv', 'ADBaseWebSrvV2', 'AD
     */
 	this.fetchMPHotelDetails = function(data) {
 		var deferred = $q.defer(),
-			url = '/admin/multi_property/subscription_list';
+			url = '/admin/multi_properties/subscription_list';
 
 		ADBaseWebSrvV2.getJSON(url, data).then(function(data) {
 		    deferred.resolve(data);
@@ -269,7 +269,7 @@ admin.service('ADUserSrv', ['$http', '$q', 'ADBaseWebSrv', 'ADBaseWebSrvV2', 'AD
     */
 	this.subscribeHotel = function(data) {
 		var deferred = $q.defer(),
-			url = '/admin/multi_property/subscribe';
+			url = '/admin/multi_properties/subscribe';
 
 		ADBaseWebSrvV2.postJSON(url, data).then(function(data) {
 		    deferred.resolve(data);
@@ -286,7 +286,7 @@ admin.service('ADUserSrv', ['$http', '$q', 'ADBaseWebSrv', 'ADBaseWebSrvV2', 'AD
     */
 	this.updateHotelRole = function(data) {
 		var deferred = $q.defer(),
-			url = '/admin/multi_property/update';
+			url = '/admin/multi_properties/update';
 
 		ADBaseWebSrvV2.putJSON(url, data).then(function(data) {
 		    deferred.resolve(data);
