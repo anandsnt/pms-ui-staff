@@ -1256,6 +1256,7 @@ sntRover.controller('rvAllotmentRoomBlockCtrl', [
 					_.each(eachRoomType.dates, function(dateData) {
 						// CICO-43700
 						var formattedDate = new tzIndependentDate(dateData.date);
+						
 						dateData.isModifiable = formattedDate >= businessDate;
 						// we need indivual room type total bookings of each date initially,
 						// we are using this for overbooking calculation
