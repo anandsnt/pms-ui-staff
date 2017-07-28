@@ -1,49 +1,818 @@
 admin.controller('adAnalyticSetupCtrl', ['$scope', 'adAnalyticSetupSrv', '$state', '$filter', '$stateParams', function($scope, adAnalyticSetupSrv, $state, $filter, $stateParams) {
 
- /*
-  * To retrieve previous state
-  */
+    /*
+     * To retrieve previous state
+     */
 
-  $scope.errorMessage = '';
-  $scope.successMessage = '';
-  $scope.isLoading = true;
+    $scope.errorMessage = '';
+    $scope.successMessage = '';
+    $scope.isLoading = true;
 
-  BaseCtrl.call(this, $scope);
+    BaseCtrl.call(this, $scope);
 
 
-  $scope.fetchAnalyticSetup = function() {
+    $scope.fetchAnalyticSetup = function() {
 
-    var fetchAnalyticSetupSuccessCallback = function(data) {
-        $scope.isLoading = false;
-        $scope.$emit('hideLoader');
+        var fetchAnalyticSetupSuccessCallback = function(data) {
+            $scope.isLoading = false;
+            $scope.$emit('hideLoader');
 
-        // NOTE: This is required as the unset values are expected to be empty string and not null
-        if (!data.product_customer_proprietary.selected_tracker) {
-            data.product_customer_proprietary.selected_tracker = '';
+            // NOTE: This is required as the unset values are expected to be empty string and not null
+            if (!data.product_customer_proprietary.selected_tracker) {
+                data.product_customer_proprietary.selected_tracker = '';
+            }
+            $scope.data = data;
+
+        };
+
+        $scope.emailDatas = [];
+        $scope.invokeApi(adAnalyticSetupSrv.fetchSetup, {}, fetchAnalyticSetupSuccessCallback);
+
+    };
+    $scope.fetchAnalyticSetup();
+
+    $scope.saveAnalyticSetup = function() {
+
+        var saveAnalyticSetupSuccessCallback = function(data) {
+            $scope.isLoading = false;
+            $scope.$emit('hideLoader');
+
+
+        };
+        var unwantedKeys = ['available_trackers'];
+        var saveData = dclone($scope.data, unwantedKeys);
+
+        $scope.invokeApi(adAnalyticSetupSrv.saveSetup, saveData, saveAnalyticSetupSuccessCallback);
+
+    };
+
+    $scope.showStationDashboard = false;
+    $scope.toggleStationDashboard = function() {
+        $scope.showStationDashboard = !$scope.showStationDashboard;
+    };
+
+
+    $scope.loading = false;
+    $scope.signedIn = false;
+    $scope.formattedDate = function(d) {
+        var date = new Date(d);
+        var options = {
+            weekday: 'long',
+            year: 'numeric',
+            month: 'short',
+            day: 'numeric',
+            hour: '2-digit',
+            minute: '2-digit'
+        };
+        var formatted = date.toLocaleTimeString('en-us', options);
+
+        return formatted;
+    };
+    $scope.clickedMask = function() {
+        $scope.showDeviceDetails = '';
+    };
+
+    var getHotelNameFromId = function(id) {
+        var hotels = {
+            '4': 'NYC',
+            '165': 'Boston'
+        };
+
+        if (hotels[id]) {
+            return hotels[id];
+        } else {
+            return id;
         }
-        $scope.data = data;
+    };
 
-  };
+    $scope.getHotelName = function(themeIdentifier) {
+        if (themeIdentifier && themeIdentifier.indexOf('_') !== -1) {
+            var nameSplit = themeIdentifier.split('_');
+            var hotel_id = nameSplit[nameSplit.length - 1];
+            var name = '';
 
-  $scope.emailDatas = [];
-  $scope.invokeApi(adAnalyticSetupSrv.fetchSetup, {}, fetchAnalyticSetupSuccessCallback);
-
-  };
-  $scope.fetchAnalyticSetup();
-
-  $scope.saveAnalyticSetup = function() {
-
-    var saveAnalyticSetupSuccessCallback = function(data) {
-        $scope.isLoading = false;
-        $scope.$emit('hideLoader');
+            for (var n in nameSplit) {
+                if (hotel_id !== nameSplit[n]) {
+                    name += ' ' + nameSplit[n];
+                    name = camelize(name);
+                }
+            }
 
 
-  };
-  var unwantedKeys = ["available_trackers"];
-  var saveData = dclone($scope.data, unwantedKeys);
+            hotel_id = getHotelNameFromId(hotel_id);
 
-  $scope.invokeApi(adAnalyticSetupSrv.saveSetup, saveData, saveAnalyticSetupSuccessCallback);
 
-  };
+            return name + ' (' + hotel_id + ')';
+        } else {
+            return 'unk';
+        }
+    };
 
-  }]);
+    // $http.get("customers.php")
+    // .then(function (response) {$scope.names = response.data.records;});
+    //
+    //
+    $scope.hotelList = [];
+    $scope.showHotelDetails = '';
+    $scope.showDeviceDetails = '';
+    $scope.deviceDetailsToShow = {};
+
+    $scope.viewDeviceDetails = function(device) {
+
+        if ($scope.showDeviceDetails === device.name) {
+            $scope.showDeviceDetails = '';
+            $scope.deviceDetailsToShow = {};
+        } else {
+            $scope.showDeviceDetails = device.name;
+            $scope.deviceDetailsToShow = device;
+        }
+
+    };
+    $scope.showEvts = '';
+    $scope.showEvtDetails = function(e, index) {
+        if ($scope.showEvts === index) {
+            $scope.showEvts = '';
+        } else {
+            $scope.showEvts = index;
+        }
+
+    };
+
+    $scope.hideEvtDetails = function(index) {
+        $scope.showEvts = '';
+    };
+
+    $scope.viewHotelDetails = function(hotel) {
+        console.log(hotel);
+
+        if ($scope.showHotelDetails === hotel.name) {
+            $scope.showHotelDetails = '';
+        } else {
+            $scope.showHotelDetails = hotel.name;
+        }
+
+    };
+
+    $scope.$on('CLEAR_SCREEN', function() {
+        $scope.hotelList = [];
+    });
+    $scope.showHotelInfo = function(hotel) {
+        console.log(hotel);
+
+        for (var i in $scope.hotelList) {
+            if ($scope.hotelList[i].name === hotel.name) {
+                return true;
+            }
+        }
+        return false;
+    };
+    $scope.logDevice = function(d) {
+        console.log(d);
+    };
+
+    $scope.$on('UPDATE_DATA', function() {
+        // update response returned,
+        // update chart/visualizations
+        $scope.$apply();
+    });
+    $scope.$on('LOADING_COMPLETE', function() {
+        $scope.loading = false;
+    });
+
+    $scope.queryEvents = function() {
+        $scope.loading = true;
+        $scope.hotelList = [];
+        $scope.$apply();
+        queryEvents();
+    };
+
+    $(function() {
+        $('#datepicker-from').datepicker();
+        $('#datepicker-to').datepicker();
+    });
+
+
+    var overrideFromDate = false,
+        overrideFromDateValue = '2017-07-24',
+        overrideToDate = false,
+        overrideToDateValue = '2017-07-24';
+
+    var PMS_DEV = '147323835',
+        PMS_PRODUCTION = '147335247',
+        CLIENT_ID_LOCAL = '864320523517-3knpgsou4qd4nd878s4rs3fffuvoo4gg.apps.googleusercontent.com',
+        CLIENT_ID_DEV = '864320523517-vpu1oua25tiavok0eqfen2tqt58gdtf0.apps.googleusercontent.com';
+
+    // clientsecret: 70WSoGx7nC_mmREHgvBn0JDu
+    // 
+    var VIEW_ID = PMS_PRODUCTION,
+        WEB_CLIENT_ID = CLIENT_ID_DEV,
+        API_KEY = 'AIzaSyAvQKgo6elOcn6A49UPCiWVSmE5c24K3Yc',
+        profile = {};
+
+    var getMonthN = function(mo) {
+        var monthNames = ['January', 'February', 'March', 'April', 'May', 'June',
+            'July', 'August', 'September', 'October', 'November', 'December'
+        ];
+
+        for (var i in monthNames) {
+            if (monthNames[i].toLowerCase() == mo.toLowerCase() || monthNames[i].toLowerCase().indexOf(mo.toLowerCase()) != -1) { // exact or not
+                if (i < 10) {
+                    return '0' + i;
+                } else {
+                    return i;
+                }
+            }
+        }
+    };
+    var getTodayAsFormattedDateString = function() {
+        var t = new Date();
+        var to = t.toString();
+        var tod = to.split(' ');
+
+        var day = tod[2],
+            month = getMonthN(tod[1]),
+            yr = tod[3];
+
+        // var today = yr + '-' + month + '-' + day;
+
+        var today = yr + '-' + month + '-' + 25;
+
+        return today;
+    };
+
+    var makeApiCall = function(pagetoken) {
+        var today = getTodayAsFormattedDateString();
+
+
+        var params = {
+            'ids': profile.El,
+            'start-date': today,
+            'end-date': today,
+            'start-index': 10,
+            'metrics': 'ga:sessions',
+            'dimensions': 'ga:source,ga:medium,ga:browser,ga:city,ga:date,ga:hour,ga:minute,ga:pagepath', // TODO: try with hour and minute here
+
+            'sort': '-ga:sessions,ga:source',
+            // 'filters': 'ga:hour==12',// TODO: filter by Hour or minute, near real-time would be < 5 min intervals
+            'max-results': 5000
+        };
+
+        if (pagetoken) {
+            params.pageToken = pagetoken;
+        }
+        // console.log('request: ',params);
+
+        gapi.client.analytics.data.ga.get(params);
+
+        /*
+            To fetch specific from hour, or filter based on hour(s),
+            try:
+            
+            prifileId = "ga:xxxxxx" -  viewId
+            startDate = "2016-10-18"
+            endDate = "2016-10-18"
+            metrics= "ga:sessions,ga:users"
+            dims="ga:dimension5,ga:city,ga:browser,ga:date,ga:hour,ga:minute"
+            fltrs="ga:hour==02;ga:minute=10" 
+             
+            GaData result = googleAnalytics.data().ga().get(profileId, startDate, endDate, metrics).setDimensions(dims).setFilters(fltrs);
+
+         */
+
+        // console.log('user profile', profile);
+        initV2Stuff();
+    };
+
+    // 
+    // Handle all the google analytics (v3) authorization work.
+    // 
+    var loadAnalyticsV3Lib = function() {
+        gapi.client.load('analytics', 'v3', makeApiCall);
+    };
+
+    // metricLabelIndex is used to match the metric label with its value, 
+    // the response data is returned in the same order as its passed
+    var metricLabelIndex = [];
+    // 
+
+    var getReportMetric = function(startDate, endDate, expression, label, dimension, pageToken) {
+        // returns a metric object used to fetch metrics for a given date range
+        //
+        metricLabelIndex.push(label);
+
+        var requestObj = {
+            'viewId': VIEW_ID,
+
+            'dateRanges': [{
+                'startDate': startDate,
+                'endDate': endDate
+            }],
+
+            'metrics': [{
+                'expression': expression
+            }],
+            'dimensions': [{
+                // "name": "ga:city"
+                'name': dimension ? dimension : 'ga:city'
+            }]
+
+        };
+
+        if (pageToken) {
+            requestObj.pageToken = pageToken;
+        }
+
+        return requestObj;
+    };
+
+
+    var updateHotelStatus = function($scope) {
+        var hotel, device;
+
+        for (var i in $scope.deviceByHotel) {
+            hotel = $scope.deviceByHotel[i];
+
+            // console.warn(hotel);
+
+            for (var d in hotel.devices) {
+                device = hotel.devices[d];
+                // console.warn('device: [', device.workstation_name, ']: ', device.status);
+                if (hotel.status === 'In-Order' && device.status !== 'In-Order') {
+                    hotel.status = device.status;
+                }
+            }
+
+            // hotel.devices[i];
+
+            // if ($scope.deviceByHotel[hotel].status === 'In-Order' && e.workstation_status !== 'in-order') {
+            //      $scope.deviceByHotel[hotel].status = $scope.deviceByHotel[hotel].devices[s].status
+            //  }
+        }
+    };
+
+
+    var camelize = function(str) {
+        return str.replace(/\W+(.)/g, function(match, chr) {
+            return chr.toUpperCase();
+        });
+    };
+
+
+    var filterByHotel = function(events, $scope) {
+        console.log('--filterByHotel--');
+        $scope.deviceByHotel = {};
+        // ie. deviceByHotel.yotel_131 = {
+        //      events: [],
+        //      info: {latest event JSON info}
+        // }
+        var e, hotel, station, station_in_list; // station = device associated with the event
+
+        // list of hotels for UI to loop through and render a hotel list
+        // so users can select by hotel > then device
+        // 
+        // $scope.hotelList = [];
+        console.warn(events.length + ' total events');
+        for (var i in events) {
+            e = events[i];
+
+            if (typeof e.workstation_name === typeof undefined) {
+                continue;
+            }
+
+            hotel = e.theme;
+            station = e.workstation_name ? e.workstation_name.replace(/\s+/g, '') : '',
+                latestDeviceEvt = {},
+                hotelDevice = {},
+                hotelDeviceEvtTime = '',
+                station_in_list = false,
+                currentDeviceInfo = {};
+
+            if (!$scope.deviceByHotel[hotel]) {
+
+                // init info for hotel
+                // 
+                // init workstation-specific event
+
+                e.lastUpdate = $scope.formattedDate(e.kiosk_time);
+
+                // HOTEL overview
+                $scope.deviceByHotel[hotel] = {
+                    'events': [e],
+                    'info': e,
+                    'name': $scope.getHotelName(e.theme),
+                    'devices': [],
+                    'status': e.workstation_status === 'in-order' ? 'In-Order' : 'Out-of-Order' // rollup of lowest kiosk status, if any kiosk has a lower status, then it should override this
+                };
+
+                // Station-Specific
+
+                $scope.deviceByHotel[hotel].devices.push({
+                    'workstation_name': station,
+                    'events': [e],
+                    'info': e,
+                    'status': e.workstation_status === 'in-order' ? 'In-Order' : 'Out-of-Order'
+                });
+
+                $scope.hotelList.push($scope.deviceByHotel[hotel]);
+
+            } else {
+                $scope.deviceByHotel[hotel].events.push(e);
+                // compare time stamps and use the latest info 
+                if (e.kiosk_time) {
+                    var thisEvent = new Date(e.kiosk_time),
+                        currentInfo = new Date($scope.deviceByHotel[hotel].info.kiosk_time);
+
+                    //
+                    // if current workstation is not registered yet...
+                    //
+                    station_in_list = false;
+
+                    for (var s in $scope.deviceByHotel[hotel].devices) {
+                        hotelDevice = $scope.deviceByHotel[hotel].devices[s].info;
+
+
+                        hotelDeviceEvtTime = new Date(hotelDevice.kiosk_time);
+
+
+                        if (eventForCurrentWorkstation(hotelDevice, station)) {
+
+                            station_in_list = true;
+
+                            //
+                            // if this event timestamp is later than the currently attached
+                            // info timestamp, update status of device and append the other info as the 'latest known' info
+                            // by assigning info as the latest event object
+                            // 
+                            if (thisEvent > hotelDeviceEvtTime) {
+
+                                $scope.deviceByHotel[hotel].devices[s].info = e;
+                                $scope.deviceByHotel[hotel].devices[s].info.lastUpdate = $scope.formattedDate(thisEvent);
+
+                                $scope.deviceByHotel[hotel].devices[s].status = e.workstation_status === 'in-order' ? 'In-Order' : 'Out-of-Order';
+
+                            }
+
+                            // include the event to the device events
+                            //
+                            $scope.deviceByHotel[hotel].devices[s].events.push(e);
+                        }
+                    }
+
+                    if (!station_in_list) {
+                        addDeviceToHotel($scope, hotel, e, station);
+                    }
+
+
+                    if (thisEvent > currentInfo) {
+                        $scope.deviceByHotel[hotel].info = e;
+                    }
+
+
+                }
+
+            }
+
+        }
+
+        updateHotelStatus($scope);
+
+        // TODO: Sort events for each hotel by date/time stamp in the event "kiosk_time"
+        // 
+        console.info($scope.hotelList);
+        console.log(':: filterByHotel, COMPLETE::');
+        sortHotelEvents($scope);
+    };
+
+    var sortHotelEvents = function($scope) {
+        var hotel, device, aT, bT, aTime, bTime;
+
+        for (var a in $scope.deviceByHotel) {
+            hotel = $scope.deviceByHotel[a];
+
+            hotel.devices.sort(function(a, b) {
+                aT = new Date(a.info.kiosk_time);
+                bT = new Date(b.info.kiosk_time);
+
+                aTime = aT.valueOf(), bTime = bT.valueOf();
+
+                return aTime - bTime;
+            });
+            hotel.devices.reverse(); // reverse the list so the latest events display first
+
+            for (var d in hotel.devices) {
+                device = hotel.devices[d];
+                // reverse the list so the latest events display first
+                if (device.events.length > 1) {
+                    device.events.sort(function(a, b) {
+                        aT = new Date(a.kiosk_time);
+                        bT = new Date(b.kiosk_time);
+
+                        aTime = aT.valueOf(), bTime = bT.valueOf();
+
+                        return aTime - bTime;
+                    });
+                    device.events.reverse();
+                }
+            }
+
+
+        }
+    };
+
+
+    var eventForCurrentWorkstation = function(hotelDevice, station) {
+        return hotelDevice.workstation_name.replace(/\s+/g, '') === station;
+    };
+
+
+    var addDeviceToHotel = function($scope, hotel, e, station) {
+        /*
+            deviceByHotel: an object of hotels,
+                           which contains an array of devices
+         */
+        $scope.deviceByHotel[hotel].devices.push({
+            'workstation_name': station,
+            'events': [e],
+            'info': e,
+            'status': e.workstation_status === 'in-order' ? 'In-Order' : 'Out-of-Order'
+        });
+
+
+    };
+
+
+    var renderEventData = function(events) {
+        var el = angular.element(document.querySelector('#header'));
+
+        var wrappedResult = angular.element(el)[0];
+
+        var scope = getScope();
+
+        scope.renderEventData = events;
+
+        // console.log('render events: ',events);
+
+        filterByHotel(events, scope);
+
+        scope.$emit('LOADING_COMPLETE');
+        scope.$emit('UPDATE_DATA');
+    };
+
+    var visualizeEventData = function(data) {
+        var validResponse = false;
+
+        if (data.rows) {
+            var status_update_events = [],
+                rowData = data.rows;
+
+            // pull out the events which have a theme associated to them,
+            // other events not being used at this time
+            // 
+            // TODO: remove 2nd for loop to include parsing out the row data after validating format matches expected response
+            // 
+            for (var i in rowData) {
+                if (rowData[i].dimensions[0].indexOf('theme') !== -1) {
+                    status_update_events.push(rowData[i].dimensions[0]);
+                }
+            }
+
+            var events = [];
+
+            for (var x in status_update_events) {
+                if (status_update_events[x].indexOf('theme') !== -1 && status_update_events[x].indexOf('{') !== -1 && status_update_events[x].indexOf('}') !== -1) {
+                    try {
+                        events.push(JSON.parse(status_update_events[x]));
+                        validResponse = true;
+                    } catch (er) {
+                        console.log(status_update_events[x]);
+                    }
+
+                }
+            }
+            // 
+            //
+            renderEventData(events);
+
+        } else {
+            console.warn('an error occurred, invalid data');
+            console.warn(data);
+        }
+
+    };
+
+    var initV2Stuff = function() {
+        // console.log('init v2 stuff now...');
+
+        function start() {
+            // 2. Initialize the JavaScript client library.
+            gapi.client.init({
+                'apiKey': API_KEY,
+                // Your API key will be automatically added to the Discovery Document URLs.
+                'discoveryDocs': ['https://people.googleapis.com/$discovery/rest'],
+                // clientId and scope are optional if auth is not required.
+                'clientId': WEB_CLIENT_ID,
+                'scope': 'profile'
+            }).then(function() {
+                // 3. Initialize and make the API request.
+                return gapi.client.people.people.get({
+                    'resourceName': 'people/me',
+                    'requestMask.includeField': 'person.names'
+                });
+            }).then(function(response) {
+                //  console.log('with results now');
+                console.log(response.result);
+            }, function(reason) {
+                console.warn(reason);
+                console.warn('Error: ' + reason.error.message);
+            });
+        }
+        // 1. Load the JavaScript client library.
+        gapi.load('client', start);
+    };
+
+    var displayResults = function(response) {
+        console.warn('display results called');
+        // makeApiCall();// Moved to v3 call, remove from here?
+        queryEvents();
+
+    };
+
+    // Query the API and print the results to the page.
+    //
+    // Latest query for reports metric data
+    //
+    // use this to test new reports or data
+    //
+    //
+
+    var getNextPageToken = function(responseData) {
+        try {
+            if (responseData.result.reports[0].nextPageToken) {
+                return responseData.result.reports[0].nextPageToken;
+            }
+        } catch (err) {
+            return null;
+        }
+
+    };
+
+    var getEventRequestParams = function(pageToken) {
+
+        var fromDate = overrideFromDate ? overrideFromDateValue : 'today',
+            toDate = overrideToDate ? overrideToDateValue : 'today';
+
+        console.log('search from (', fromDate, '), to (', toDate, ')');
+        var requestParams = {
+            path: '/v4/reports:batchGet',
+            root: 'https://analyticsreporting.googleapis.com/',
+            method: 'POST',
+            body: {
+                reportRequests: [
+                    // TODO: need to track which report's label should be at which index for the response data 
+                    // ie. if i send ga:sessions as [1], then the response totals will be at:
+                    //   --> reports[1].data.totals[0].values[0]
+                    //   
+                    //   
+                    getReportMetric(fromDate, toDate, 'ga:sessions', 'Sessions', 'ga:eventCategory', pageToken)
+                ]
+            }
+        };
+
+        return requestParams;
+    };
+
+    $scope.searchByDate = function() {
+        var from = $('#datepicker-from').val(),
+            to = $('#datepicker-to').val();
+
+        if (from) {
+            var fromD = from.split('/');
+
+            overrideFromDateValue = fromD[2] + '-' + fromD[0] + '-' + fromD[1];
+            overrideFromDate = true;
+        } else {
+            overrideFromDate = false;
+        }
+
+        if (to) {
+            var toD = to.split('/');
+
+            overrideToDateValue = toD[2] + '-' + toD[0] + '-' + toD[1];
+            overrideToDate = true;
+        } else {
+            overrideToDate = false;
+        }
+        // clears old data and then calls queryEvents
+
+        $scope.queryEvents();
+    };
+
+    $scope.queryEvents = function() {
+        var requestParams = getEventRequestParams();
+        // 
+        // fetch all pages of data first,
+        // on-response of each fetch (page)
+        // -dump into this array
+        // 
+        var dataToVisualize = {
+                'rows': []
+            },
+            request = 0;
+
+        var onRequestSuccess = function(eventDataResponse) {
+            if (eventDataResponse.status !== 200) {
+                onRequestFailure(eventDataResponse);
+            } else {
+                console.info(' ::RESPONSE ' + request + ':: '); // ,eventDataResponse);
+                if (eventDataResponse.result) {
+                    // dataToVisualize.rows.push();
+                    Array.prototype.push.apply(dataToVisualize.rows, eventDataResponse.result.reports[0].data.rows);
+                    console.warn('rows fetched: ', dataToVisualize.rows.length);
+                }
+
+                var next = getNextPageToken(eventDataResponse);
+
+                var msg = next ? 'Fetching More...' : ':: Visualize Data ::';
+
+                console.info(msg);
+
+                if (!next) {
+                    visualizeEventData(dataToVisualize);
+                } else {
+                    // 
+                    // fetch next pages..
+                    // 
+                    requestParams = getEventRequestParams(next);
+                    request++;
+                    gapi.client.request(requestParams).then(onRequestSuccess, onRequestSuccess);
+                }
+            }
+
+        };
+        var onRequestFailure = function(response) {
+            console.warn(response);
+
+            if (response && response.status === 401) {
+                var scope = getScope();
+
+                scope.loading = false;
+                scope.$apply();
+                setTimeout(function() {
+                    alert('Please sign into google');
+                    scope.signedIn = false;
+                }, 500);
+            }
+        };
+
+        request++;
+        gapi.client.request(requestParams).then(onRequestSuccess, onRequestSuccess);
+    };
+
+    console.warn('no errors till here');
+
+
+    $scope.signOut = function() {
+        console.warn(': signOut: ');
+        var auth2 = gapi.auth2.getAuthInstance();
+
+        auth2.signOut().then(function() {
+            console.log('User signed out.');
+            $('#sign-out-btn').hide();
+            $('#sign-in-btn').show();
+            var scope = getScope();
+
+            scope.$emit('CLEAR_SCREEN');
+            scope.$emit('UPDATE_DATA');
+        });
+    };
+
+
+}]);
+
+
+function onSigninSuccess(profileObject) {
+    console.log(':: onSigninSuccess ::');
+    $('#sign-in-btn').hide();
+    $('#sign-out-btn').show();
+    var scope = getScope();
+
+    scope.signedIn = true;
+    scope.$emit('CLEAR_SCREEN');
+
+    // scope.queryReports(profileObject);
+}
+
+function onSignInFailure() {
+    console.warn('sign-in failed');
+    scope.signedIn = false;
+    console.info(arguments);
+    var scope = getScope();
+
+    scope.$emit('CLEAR_SCREEN');
+    scope.$emit('UPDATE_DATA');
+
+}
+
+function getScope() {
+    return angular.element(angular.element(document.querySelector('#header'))).scope();
+}

@@ -1,147 +1,42 @@
-<div id="wrapper" class="content current admin-scrollfix" div-touch-move-stop-propogate ng-click="clearErrorMessage()" >
-	<header class="content-title float">
-		
 
-		<h2 ng-hide='showStationDashboard' translate>ANALYTIC_SETUP_HEADER</h2>
-		<a ng-hide='showStationDashboard' ng-click="goBackToPreviousState()" class="action back" translate>BACK</a>
-		<a ng-show='!isHotelAdmin && !showStationDashboard' ng-click="toggleStationDashboard()" class="action" style='background-position-y: 100px;' translate>STATION_DASHBOARD</a>
-
-		<h2 ng-show='showStationDashboard' translate>STATION_DASHBOARD</h2>
-		<a ng-show='showStationDashboard' ng-click="toggleStationDashboard()" class="action back" translate>BACK</a>
-
-	</header>
-
-	<section class="content-scroll">
-		<div ng-include="'/assets/partials/common/notification_message.html'"></div>
-		<div ng-include="'/assets/partials/common/notification_success_message.html'"></div> 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-		<form class="form float" ng-hide='showStationDashboard'>	
-
-		    <fieldset class="holder left" ng-show="!isHotelAdmin">
-			
-		    	<ad-textbox value="data.product_cross_customer.tracker_guest_web"  name = "zest-web" id = "zest-web" label = "{{'ZEST_WEB_LABEL' | translate}}" placeholder = "{{'PLACEHOLDER_TRACKING_ID' | translate }}" styleclass="full-width" ></ad-textbox>
-				
-				<ad-textbox value="data.product_cross_customer.tracker_zest_ios"  name = "zest-ios" id = "zest-ios" label = "{{'ZEST_IOS_LABEL' | translate}}" placeholder = "{{'PLACEHOLDER_TRACKING_ID' | translate }}"  readonly="{{readOnly}}" styleclass="full-width"></ad-textbox>
-
-				<ad-textbox label="{{'ZEST_ANDROID_LABEL' | translate}}" value="data.product_cross_customer.tracker_zest_android"  placeholder="{{'PLACEHOLDER_TRACKING_ID' | translate }}" name="zest-android" id="zest-android" styleclass="full-width"></ad-textbox>		
-				
-			</fieldset>	
-
-			<fieldset class="holder left" ng-show="isHotelAdmin">
-				<div class="form-title full-width">
-							<h3><span translate>SNT_TRACKERS_TITLE</span> </h3>
-						</div>
-			
-		    	<ad-textbox value="data.product_customer.tracker_guest_web"  name = "zest-web" id = "zest-web" label = "{{'ZEST_WEB_LABEL' | translate}}" placeholder = "{{'PLACEHOLDER_TRACKING_ID' | translate }}"  styleclass="full-width"></ad-textbox>
-				
-				<ad-textbox value="data.product_customer.tracker_zest_ios"  name = "zest-ios" id = "zest-ios" label = "{{'ZEST_IOS_LABEL' | translate}}" placeholder = "{{'PLACEHOLDER_TRACKING_ID' | translate }}"  readonly="{{readOnly}}" styleclass="full-width"></ad-textbox>
-
-				<ad-textbox label="{{'ZEST_ANDROID_LABEL' | translate}}" value="data.product_customer.tracker_zest_android"   placeholder="{{'PLACEHOLDER_TRACKING_ID' | translate }}" name="zest-android" id="zest-android" styleclass="full-width"></ad-textbox>		
-				
-			</fieldset>
-			
-			<fieldset class="holder right" ng-show="isHotelAdmin">
-				<div class="form-title full-width">
-							<h3><span translate>HOTEL_TRACKERS_TITLE</span> </h3>
-						</div>
-
-			    <ad-select-number label-in-drop-down="{{'SELECT_SERVICE' | translate}}"
-								  items="data.available_trackers"
-								  selected-id='data.product_customer_proprietary.selected_tracker'
-								  selbox-class="placeholder"
-								  div-class="full-width" label="{{'ANALYTIC_SERVICE_LABEL' | translate}}">
-				</ad-select-number>
-				
-				<ad-textbox value="data.product_customer_proprietary.tracker_guest_web"  name = "zest-web" id = "zest-web" label = "{{'ZEST_WEB_LABEL' | translate}}" placeholder = "{{'PLACEHOLDER_TRACKING_ID' | translate }}"  styleclass="full-width"></ad-textbox>
-				
-				<ad-textbox value="data.product_customer_proprietary.tracker_zest_ios"  name = "zest-ios" id = "zest-ios" label = "{{'ZEST_IOS_LABEL' | translate}}" placeholder = "{{'PLACEHOLDER_TRACKING_ID' | translate }}"  readonly="{{readOnly}}" styleclass="full-width"></ad-textbox>
-
-				<ad-textbox label="{{'ZEST_ANDROID_LABEL' | translate}}" value="data.product_customer_proprietary.tracker_zest_android"  placeholder="{{'PLACEHOLDER_TRACKING_ID' | translate }}" name="zest-android" id="zest-android" styleclass="full-width"></ad-textbox>			
-				
-			</fieldset>		
-
-			<div class="actions float">
-				<button type="button" id="cancel" class="button blank add-data-inline" ng-click="goBackToPreviousState()" translate>
-					CANCEL
-				</button>
-				<button type="button" like-type="common" id="update" class="button  ng-binding green" ng-click="saveAnalyticSetup()" translate>
-					SAVE_CHANGES
-				</button>
-			</div>
-
-		</form>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-		<form class="form float" ng-show='showStationDashboard'>	
-			<script src="https://apis.google.com/js/client:platform.js"></script>
-		    <fieldset class="holder left" ng-show="!isHotelAdmin">
-				  <meta name="google-signin-client_id" content="864320523517-3knpgsou4qd4nd878s4rs3fffuvoo4gg.apps.googleusercontent.com">
-				    <meta name="google-signin-scope" content="https://www.googleapis.com/auth/analytics.readonly">
-				  
-		    	<h1 ng-show='!signedIn'>Please Sign In</h1>
-			    <!-- The Sign-in button. This will run `queryReports()` on success. -->
-			    <p id='sign-in-btn' class="g-signin2" data-onsuccess="onSigninSuccess" data-onfailure="onSignInFailure">Sign-In</p>
-
-			    <p id='sign-out-btn' style='position:absolute; top: 15%; left: 1%; display:none; ' class="g-signin" ng-click='signOut()'><button class="button blue">Google Sign-Out</button></p>
-
-
-
-
+    <link href="../vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <!-- MetisMenu CSS -->
+    <link href="../vendor/metisMenu/metisMenu.min.css" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link href="../dist/css/sb-admin-2.css" rel="stylesheet">
+    <!-- Morris Charts CSS -->
+    <link href="../vendor/morrisjs/morris.css" rel="stylesheet">
+    <!-- Custom Fonts -->
+    <link href="../vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    <!-- ------------------------- -->
+    <!-- App-specific Override CSS -->
+    <!-- ------------------------- -->
+    <link href="../dist/css/analytic_dashboard.css" rel="stylesheet" type="text/css">
+    <script src='../js/app.js' type='text/javascript'></script>
+ 
+
+    <link href = "https://code.jquery.com/ui/1.10.4/themes/ui-lightness/jquery-ui.css"
+         rel = "stylesheet">
+      <script src = "https://code.jquery.com/jquery-1.10.2.js"></script>
+      <script src = "https://code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
+      
+      <!-- Javascript -->
+      <script>
+      </script>
+
+
+    
+    
+    <!-- Load the JavaScript API client and Sign-in library. -->
+    <script src="https://apis.google.com/js/client:platform.js"></script>
+    </script>
+    <div>
         <!--h1>Welcome SNT!</h1>
         <h3>From here you can check the status of Hotel Zest Station sessions, and gather some information for support and diagnostics
         <br> If you haven't already done so, sign-in to Google using the button at the bottom-right of the screen, this will check your permissions see if you're allowed to view the analytic data or not.
         </h3><br>
         <h3>Questions? Contact one of the developers at jaguars@stayntouch.com</h3-->
-        <!--div ng-click='queryEvents()' class='abcRioButtonContentWrapper'>
+        <div ng-click='queryEvents()' class='abcRioButtonContentWrapper'>
             <span class='refresh-btn-cls'>
                     <svg class='refresh-svg' height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg">
                         <path d="M19 8l-4 4h3c0 3.31-2.69 6-6 6-1.01 0-1.97-.25-2.8-.7l-1.46 1.46C8.97 19.54 10.43 20 12 20c4.42 0 8-3.58 8-8h3l-4-4zM6 12c0-3.31 2.69-6 6-6 1.01 0 1.97.25 2.8.7l1.46-1.46C15.03 4.46 13.57 4 12 4c-4.42 0-8 3.58-8 8H1l4 4 4-4H6z"/>
@@ -156,14 +51,13 @@
                         <path d="M0 0h24v24H0z" fill="none"/>
                     </svg>
                 </span>
-        </div-->
+        </div>
 
 
 
         <input style='position: absolute;right: 51%; top: 15%;' placeholder="From Date" type="text" id="datepicker-from"></p>
         <input style='position: absolute;right: 40%;top: 15%;' placeholder="To Date" type="text" id="datepicker-to">
-        <button style='position: absolute;right: 35%;top: 15%; margin-left: 15px;' 
-        	class="button green" ng-click='searchByDate()'>Search</button>
+        <button style='position: absolute;right: 35%;top: 15%; background-color: lightsteelblue;border-radius: .25em;border-width: 0px;color: white;' onclick='searchByDate()'>Search</button>
 
         <div class='lmask' ng-click='clickedMask()' ng-show='showDeviceDetails!==""'></div>
         <div class='loader' ng-show='loading'></div>
@@ -265,32 +159,6 @@
             </div>
 
 
+    </div>
 
 
-
-			</fieldset>	
-
-			<div class="actions float">
-				<button type="button" id="close" class="button blank add-data-inline" ng-click="toggleStationDashboard()" translate>
-					BACK
-				</button>
-			</div>
-
-		</form>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-	</section>
-</div>
