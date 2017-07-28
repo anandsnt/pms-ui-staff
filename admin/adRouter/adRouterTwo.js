@@ -702,4 +702,22 @@ angular.module('adminModuleTwo', []).config(function($stateProvider) {
         }
     });
 
+    $stateProvider.state('admin.emailTemplatesSettingsGroup', {
+        templateUrl: '/assets/partials/zestEmailTemplates/adZestEmailTemplateList.html',
+        controller: 'ADZestEmailMenuCtrl',
+        url: '/emailTemplates'
+    });
+
+    $stateProvider.state('admin.zestEmailGeneralSettings', {
+        template: 'hii',
+        //controller: 'ADZestEmailMenuCtrl',
+        url: '/generalSettings'
+    });
+
+    $stateProvider.state('admin.zestPreCheckinEmailSettings', {
+        template: 'pre',
+        //controller: 'ADZestEmailMenuCtrl',
+        url: '/precheckinSettings'
+    });
+
 });
