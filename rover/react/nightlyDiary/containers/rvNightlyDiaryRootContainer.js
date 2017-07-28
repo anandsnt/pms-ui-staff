@@ -67,7 +67,7 @@ const mapStateToNightlyDiaryRootContainerProps = (state) => ({
     showNextPageButton: getNextPageButtonStatus(state),
     showPrevPageButton: getPrevPageButtonStatus(state),
     ClassForRootDiv: getClassForRootDiv(state),
-    scrollTo: { index: calculateScrollIndex(state) },
+    index: calculateScrollIndex(state),
     page: state.paginationData.page,
     selectedReservationId: state.selectedReservationId,
     selectedRoom: state.selectedRoom

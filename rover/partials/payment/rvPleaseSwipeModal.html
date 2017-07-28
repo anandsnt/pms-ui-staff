@@ -1,8 +1,24 @@
 <div role="dialog" id="modal" class="modal-show" ng-class="{'modal-show': !modalClosing}">
-	<div class="modal-content">
-		<span class="h3 message">PLEASE SWIPE CREDIT CARD</span>
-		<button id="ok" class="button red modal-close" ng-click="closeDialog()">
-			NO SWIPE
-		</button>
-	</div>
+    <div class="modal-content swipe-cc-prompt">
+
+        <span ng-if="!checkInState.hasActiveEMV" class="h3 message">PLEASE SWIPE NOW</span>
+        <span ng-if="!checkInState.hasActiveEMV" class="message">OR</span>
+
+        <button ng-if="checkInState.hasActiveEMV"
+                class="button orange modal-close c-and-p"
+                style="margin-bottom: 12px;"
+                ng-click="onClickEMV()">
+            C&P
+        </button>
+        <button ng-if="checkInState.hasCardOnFile"
+                class="button blue"
+                ng-click="onClickUseCardOnFile()">
+            USE CARD ON FILE
+        </button>
+        <button ng-if="!checkInState.hasCardOnFile"
+                class="button red"
+                ng-click="onClickNoSwipe()">
+            NO SWIPE
+        </button>
+    </div>
 </div>

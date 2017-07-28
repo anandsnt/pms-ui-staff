@@ -9,6 +9,7 @@ sntRover.controller('RVDepositBalanceCtrl', [
     '$timeout',
     'rvPermissionSrv',
     'RVReservationCardSrv',
+    '$state',
     function($scope,
              ngDialog,
              $rootScope,
@@ -16,7 +17,7 @@ sntRover.controller('RVDepositBalanceCtrl', [
              RVPaymentSrv,
              $stateParams,
              $filter,
-             $timeout, rvPermissionSrv, RVReservationCardSrv) {
+             $timeout, rvPermissionSrv, RVReservationCardSrv, $state) {
 
         BaseCtrl.call(this, $scope);
 
@@ -153,7 +154,7 @@ sntRover.controller('RVDepositBalanceCtrl', [
                     buttonClass = "grey";
                 }
             }
-            
+
             return buttonClass;
         };
 
@@ -165,7 +166,7 @@ sntRover.controller('RVDepositBalanceCtrl', [
             } else {
                 buttonClass = "grey";
             }
-            
+
             return buttonClass;
         };
 
@@ -234,7 +235,7 @@ sntRover.controller('RVDepositBalanceCtrl', [
 
                 iFrame.src = iFrame.src;
             }
-            
+
         };
 
         /*
@@ -392,6 +393,9 @@ sntRover.controller('RVDepositBalanceCtrl', [
             // Update reservation type
             $rootScope.$broadcast('UPDATERESERVATIONTYPE', data.reservation_type_id);
             $rootScope.$broadcast('UPDATE_DEPOSIT_BALANCE_FLAG', false);
+
+            // CICO-42399 - Reload staycard after successful payment
+            $state.reload($state.$current.name);
         };
 
 
