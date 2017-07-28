@@ -48,6 +48,10 @@ sntZestStation.controller('zsQrPickupKeyCtrl', [
             $scope.callAPI(zsGeneralSrv.fetchCheckinReservationDetails, options);
         };
 
+        var goToKeyDispense = function(stateParams) {
+            $state.go('zest_station.pickUpKeyDispense', stateParams);
+        };
+
         var fetchReservationDetails = function(reservation_id) {
             $scope.zestStationData.qrCodeScanning = false;
 			/*
@@ -85,7 +89,7 @@ sntZestStation.controller('zsQrPickupKeyCtrl', [
                                     setting is active
                          */
 
-                        if ($scope.zestStationData.check_in_collect_passport && !$scope.reservationHasPassportsScanned()) {
+                        if ($scope.zestStationData.check_in_collect_passport && !$scope.reservationHasPassportsScanned(guest_response)) {
                             $scope.trackSessionActivity('PUK', 'Fetch Success', 'R' + reservation_id, 'TO_SCAN_PASSPORTS');
                             stateParams.from_pickup_key = true;
                             fetchReservationForPassportScanning(reservation_id, stateParams);
@@ -93,11 +97,11 @@ sntZestStation.controller('zsQrPickupKeyCtrl', [
 
                             $scope.zestStationData.continuePickupFlow = function() {
                                 $scope.trackSessionActivity('PUK', 'Continue From Passport', 'R' + reservation_id, 'TO_KEY_DISPENSE');
-                                $state.go('zest_station.pickUpKeyDispense', stateParams);                                
+                                goToKeyDispense(stateParams);
                             };
                         } else {
                             $scope.trackSessionActivity('PUK', 'Fetch Success', 'R' + reservation_id, 'TO_KEY_DISPENSE');
-                            $state.go('zest_station.pickUpKeyDispense', stateParams);
+                            goToKeyDispense(stateParams);
                         }
 
 

@@ -145,6 +145,10 @@ sntZestStation.controller('zsPickupAndCheckoutReservationSearchCtrl', [
             $scope.callAPI(zsGeneralSrv.fetchCheckinReservationDetails, options);
         };
 
+        var goToKeyDispense = function(stateParams) {
+            $state.go('zest_station.pickUpKeyDispense', stateParams);
+        };
+
         var searchReservation = function() {
             var checkoutVerificationSuccess = function(data) {
                 if (typeof data !== typeof undefined) {
@@ -167,24 +171,53 @@ sntZestStation.controller('zsPickupAndCheckoutReservationSearchCtrl', [
                             station setting is active
                      */
                     
-                    if ($scope.zestStationData.check_in_collect_passport && !$scope.reservationHasPassportsScanned()) {
-                        $scope.trackSessionActivity('PUK', 'Fetch Success', 'R' + data.reservation_id, 'TO_SCAN_PASSPORTS');
-                            // 
-                            // get reservation details object,
-                            // then set the currently selected reservation
-                            // then go to passport screen
-                            //
-                        $scope.zestStationData.continuePickupFlow = function() {
-                            $scope.trackSessionActivity('PUK', 'Continue From Passport', 'R' + data.reservation_id, 'CONTINUE_TO_ENCODE');
-                            $state.go('zest_station.pickUpKeyDispense', stateParams);                                
+
+
+                    if ($scope.zestStationData.check_in_collect_passport) {
+                         // if passport setting is ON, 
+                         //  call api to fetch guest details prior to continuing
+                         //  
+                         //  If any of the reservation guests do not have passport scanned
+                         //  then go to passport scan, otherwise go to key dispense
+                         //  
+
+                        var successCallBack = function(guest_details) {
+
+                            if (!$scope.reservationHasPassportsScanned(guest_details)) {
+
+                                $scope.trackSessionActivity('PUK', 'Fetch Success', 'R' + data.reservation_id, 'TO_SCAN_PASSPORTS');
+                                    // 
+                                    // get reservation details object,
+                                    // then set the currently selected reservation
+                                    // then go to passport screen
+                                    //
+                                $scope.zestStationData.continuePickupFlow = function() {
+                                    $scope.trackSessionActivity('PUK', 'Continue From Passport', 'R' + data.reservation_id, 'CONTINUE_TO_ENCODE');
+                                    goToKeyDispense(stateParams);                           
+                                };
+
+                                stateParams.from_pickup_key = true;
+                                fetchReservationForPassportScanning(data.reservation_id, stateParams);
+
+                            } else {
+                                $scope.trackSessionActivity('PUK', 'Pickup, Found Reservation', 'R' + data.reservation_id, 'CONTINUE_TO_ENCODE');
+                                goToKeyDispense(stateParams);
+                            }
                         };
 
-                        stateParams.from_pickup_key = true;
-                        fetchReservationForPassportScanning(data.reservation_id, stateParams);
+                        var options = {
+                            params: {
+                                'id': data.reservation_id
+                            },
+                            successCallBack: successCallBack,
+                            failureCallBack: generalFailureActions
+                        };
+
+                        $scope.callAPI(zsGeneralSrv.fetchGuestDetails, options);
 
                     } else {
                         $scope.trackSessionActivity('PUK', 'Pickup, Found Reservation', 'R' + data.reservation_id, 'CONTINUE_TO_ENCODE');
-                        $state.go('zest_station.pickUpKeyDispense', stateParams);
+                        goToKeyDispense(stateParams);
                     }
 
                 } else if (!!$stateParams.mode && $stateParams.mode === 'PICKUP_KEY' && !data.is_checked_in) {
