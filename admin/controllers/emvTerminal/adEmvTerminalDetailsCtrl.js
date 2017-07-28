@@ -1,68 +1,94 @@
-admin.controller('ADEmvTerminalDetailsCtrl', ['$scope', '$rootScope', 'ADEmvTerminalsSrv', '$state', '$stateParams', '$timeout', function($scope, $rootScope, ADEmvTerminalsSrv, $state, $stateParams, $timeout) {
-	/*
-	* Controller class for Room List
-	*/
+admin.controller('ADEmvTerminalDetailsCtrl', ['$scope', '$rootScope', 'ADEmvTerminalsSrv', '$state', '$stateParams', '$timeout',
+    function ($scope, $rootScope, ADEmvTerminalsSrv, $state, $stateParams, $timeout) {
+        /*
+        * Controller class for Room List
+        */
 
-	$scope.errorMessage = '';
-	$scope.mod = 'edit';
+        $scope.errorMessage = '';
+        $scope.mod = 'edit';
 
-	// inheriting from base controller
-	BaseCtrl.call(this, $scope);
+        // inheriting from base controller
+        BaseCtrl.call(this, $scope);
 
-	$scope.itemDetails = {};
-	$scope.itemDetails.name = '';
-	$scope.itemDetails.terminal_identifier = '';
-	$scope.itemDetails.terminal_access_code = '';
-	$scope.mliEmvEnabled = $rootScope.mliEmvEnabled;
+        $scope.itemDetails = {};
+        $scope.itemDetails.name = '';
+        $scope.itemDetails.terminal_identifier = '';
+        $scope.itemDetails.terminal_access_code = '';
+        $scope.mliEmvEnabled = $rootScope.mliEmvEnabled;
 
-	var itemId = $stateParams.itemid;
-	// if itemid is null, means it is for add item form
+        var itemId = $stateParams.itemid;
+        // if itemid is null, means it is for add item form
 
-	if (typeof itemId === 'undefined' || itemId.trim() === '') {
-		$scope.mod = 'add';
-	}
+        if (typeof itemId === 'undefined' || itemId.trim() === '') {
+            $scope.mod = 'add';
+        }
 
-	var fetchSuccessOfItemDetails = function(data) {
-		$scope.$emit('hideLoader');
-		$scope.itemDetails = data;
-	};
+        var fetchSuccessOfItemDetails = function (data) {
+            $scope.$emit('hideLoader');
+            $scope.itemDetails = data;
+        };
 
-	var fetchFailedOfItemDetails = function(errorMessage) {
-		$scope.$emit('hideLoader');
-		$scope.errorMessage = errorMessage ;
-	};
+        var fetchFailedOfItemDetails = function (errorMessage) {
+            $scope.$emit('hideLoader');
+            $scope.errorMessage = errorMessage;
+        };
 
-	if ($scope.mod === 'edit') {
-		$scope.invokeApi(ADEmvTerminalsSrv.getItemDetails, {'item_id': itemId}, fetchSuccessOfItemDetails, fetchFailedOfItemDetails);
-	}
+        if ($scope.mod === 'edit') {
+            $scope.invokeApi(ADEmvTerminalsSrv.getItemDetails, {'item_id': itemId}, fetchSuccessOfItemDetails, fetchFailedOfItemDetails);
+        }
 
-	$scope.goBack = function() {
-		$state.go('admin.emvTerminals');
-	};
+        $scope.goBack = function () {
+            $state.go('admin.emvTerminals');
+        };
 
-	$scope.saveItemDetails = function()	{
-		var postData = {};
+        $scope.saveItemDetails = function () {
+            var postData = {};
 
-		if ($scope.mod === 'edit') {
-			postData.id = $scope.itemDetails.id;
-		}
+            if ($scope.mod === 'edit') {
+                postData.id = $scope.itemDetails.id;
+            }
 
-		postData.name = $scope.itemDetails.name;
-		postData.terminal_identifier = $scope.itemDetails.terminal_identifier;
-		postData.terminal_access_code = $scope.itemDetails.terminal_access_code;
+            postData.name = $scope.itemDetails.name;
+            postData.terminal_identifier = $scope.itemDetails.terminal_identifier;
+            postData.terminal_access_code = $scope.itemDetails.terminal_access_code;
 
-		var fetchSuccessOfSaveItemDetails = function() {
-			$timeout(function() {
-				$scope.goBack();
-			}, 3000);
-		};
+            var fetchSuccessOfSaveItemDetails = function () {
+                $timeout(function () {
+                    $scope.goBack();
+                }, 3000);
+            };
 
-		if ($scope.mod === 'edit') {
-			$scope.invokeApi(ADEmvTerminalsSrv.updateItemDetails, postData, fetchSuccessOfSaveItemDetails);
-		}
-		else {
-			$scope.invokeApi(ADEmvTerminalsSrv.saveItemDetails, postData, fetchSuccessOfSaveItemDetails);
-		}
-	};
+            if ($scope.mod === 'edit') {
+                $scope.invokeApi(ADEmvTerminalsSrv.updateItemDetails, postData, fetchSuccessOfSaveItemDetails);
+            }
+            else {
+                $scope.invokeApi(ADEmvTerminalsSrv.saveItemDetails, postData, fetchSuccessOfSaveItemDetails);
+            }
+        };
 
-}]);
+        $scope.runTerminalCommand = function () {
+            $scope.pinpadData = {};
+
+            $scope.callAPI(ADEmvTerminalsSrv.runTerminalCommand, {
+                params: {
+                    terminalId: $scope.itemDetails.id,
+                    command: $scope.selectedTerminalCommand
+                },
+                successCallBack: function (data) {
+                    var pinpadRequest = data.request || '',
+                        pinpadResponse = data.response || '';
+
+                    $scope.pinpadData = {
+                        request: pinpadRequest,
+                        response: pinpadResponse
+                    };
+                }
+            });
+        };
+
+        (function () {
+            $scope.selectedTerminalCommand = '';
+            $scope.pinpadData = {};
+        })();
+
+    }]);
