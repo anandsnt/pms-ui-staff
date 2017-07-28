@@ -262,7 +262,7 @@ sntRover.controller('rvAllotmentRoomBlockCtrl', [
 		 * @return {Boolean}
 		 */
 		$scope.shouldDisableSingleEntryBox = function(dateData, roomType) {
-			return (!roomType.can_edit || !!$scope.allotmentConfigData.summary.is_cancelled);
+			return (!roomType.can_edit || !!$scope.allotmentConfigData.summary.is_cancelled || !dateData.isModifiable);
 		};
 
 		/**
@@ -272,7 +272,7 @@ sntRover.controller('rvAllotmentRoomBlockCtrl', [
 		 * @return {Boolean}
 		 */
 		$scope.shouldDisableDoubleEntryBox = function(dateData, roomType) {
-			return (!roomType.can_edit || !!$scope.allotmentConfigData.summary.is_cancelled);
+			return (!roomType.can_edit || !!$scope.allotmentConfigData.summary.is_cancelled || !dateData.isModifiable);
 		};
 
 		/**
@@ -282,7 +282,7 @@ sntRover.controller('rvAllotmentRoomBlockCtrl', [
 		 * @return {Boolean}
 		 */
 		$scope.shouldDisableTripleEntryBox = function(dateData, roomType) {
-			return (!roomType.can_edit || !!$scope.allotmentConfigData.summary.is_cancelled);
+			return (!roomType.can_edit || !!$scope.allotmentConfigData.summary.is_cancelled || !dateData.isModifiable);
 		};
 
 		/**
@@ -292,7 +292,7 @@ sntRover.controller('rvAllotmentRoomBlockCtrl', [
 		 * @return {Boolean}
 		 */
 		$scope.shouldDisableQuadrupleEntryBox = function(dateData, roomType) {
-			return (!roomType.can_edit || !!$scope.allotmentConfigData.summary.is_cancelled);
+			return (!roomType.can_edit || !!$scope.allotmentConfigData.summary.is_cancelled || !dateData.isModifiable);
 		};
 
 		/**
@@ -1244,7 +1244,8 @@ sntRover.controller('rvAllotmentRoomBlockCtrl', [
 		var successCallBackOfFetchRoomBlockGridDetails = function(data) {
 			$scope.$emit("showLoader");
 			$timeout(function() {
-				var roomBlockData = $scope.allotmentConfigData.roomblock;
+				var roomBlockData = $scope.allotmentConfigData.roomblock,
+					businessDate = new tzIndependentDate($rootScope.businessDate);
 
 				// We have resetted the data.
 				$scope.hasBookingDataChanged = false;
@@ -1253,7 +1254,9 @@ sntRover.controller('rvAllotmentRoomBlockCtrl', [
 					eachRoomType.copy_values_to_all = false;
 					eachRoomType.start_date = formatDateForAPI($scope.timeLineStartDate);
 					_.each(eachRoomType.dates, function(dateData) {
-
+						// CICO-43700
+						var formattedDate = new tzIndependentDate(dateData.date);
+						dateData.isModifiable = formattedDate >= businessDate;
 						// we need indivual room type total bookings of each date initially,
 						// we are using this for overbooking calculation
 						dateData.old_total = $scope.getTotalHeldOfIndividualRoomType(dateData);
