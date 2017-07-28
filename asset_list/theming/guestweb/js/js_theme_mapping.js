@@ -5,6 +5,7 @@ module.exports = {
         var zestRootJS = 'guestweb/zest/**/*.js';
 
         return {
+            'guestweb_made': [ themeJsRoot + 'app_router_common.js'],
             'guestweb_windsor_suites': [ themeJsRoot + 'app_router_common.js'],
             'guestweb_moonrise': [ themeJsRoot + 'app_router_common.js'],
             'guestweb_row': [ themeJsRoot + 'app_router_row_nyc.js'],
@@ -127,7 +128,8 @@ module.exports = {
             'guestweb_el_cosmico': [ themeJsRoot + 'app_router_common.js'],
             'guestweb_quintessence_resort': [ themeJsRoot + 'app_router_common.js'],
             'guestweb_river_inn': [ themeJsRoot + 'app_router_common.js'],
-            'guestweb_one_washington_circle': [ themeJsRoot + 'app_router_common.js']
+            'guestweb_one_washington_circle': [ themeJsRoot + 'app_router_common.js'],
+            'guestweb_first_hotel_breiseth': [ themeJsRoot + 'app_router_common.js']
         };
     }
 };
