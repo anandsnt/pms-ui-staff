@@ -1086,6 +1086,10 @@ angular.module('sntPay').controller('sntPaymentController',
                 if ($scope.actionType === 'DEPOSIT_PAYMENT_RES_SUMMARY') {
                     params['reservation_id'] = $scope.reservationId;
                 }
+                if (params.mli_token) {
+                    params['do_not_attach_cc_to_bill'] = true;
+                    params['reservation_id'] = $scope.reservationId;
+                }
                 sntPaymentSrv.savePaymentDetails(params).then(
                     response => {
                         if (response.status === 'success') {
