@@ -32,7 +32,8 @@
 		 */
 		var fetchRates = function(callBackToAutoComplete) {
 			var params = {
-	            query: $scope.rate_name
+	            query: $scope.rate_name,
+	            is_global_enabled: $scope.is_global_enabled
 	        };
 	        var options = {
 	            params: params,
@@ -156,7 +157,8 @@
 				label: '@label',
 				entryDivClass: '@entryDivClass',
 				delay: '@delay',
-				minLengthToTrigger: '@minLengthToTrigger'
+				minLengthToTrigger: '@minLengthToTrigger',
+				is_global_enabled: '=isGlobalEnabled'
 			},
 			link: linkFn,
             controller: autoCompleteCtrlFn,
