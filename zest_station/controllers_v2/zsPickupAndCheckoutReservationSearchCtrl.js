@@ -29,11 +29,11 @@ sntZestStation.controller('zsPickupAndCheckoutReservationSearchCtrl', [
                 'last_name': 'mike',
                 'room_no': '102'
             };
-            setTimeout(function() {
+            $timeout(function() {
                 $scope.lastNameEntered();
             }, 300);
 
-            setTimeout(function() {
+            $timeout(function() {
                 $scope.roomNumberEntered();
             }, 500);
         };
@@ -170,8 +170,6 @@ sntZestStation.controller('zsPickupAndCheckoutReservationSearchCtrl', [
                             *(has not scanned passports) 
                             station setting is active
                      */
-                    
-
 
                     if ($scope.zestStationData.check_in_collect_passport) {
                          // if passport setting is ON, 
