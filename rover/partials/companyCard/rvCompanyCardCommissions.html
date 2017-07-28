@@ -47,8 +47,7 @@
             <div class="entry property">
                 <label for="commision-property">Property</label>
                 <div class="select">
-                    <select ng-model="filterData.selectedHotel" ng-change="onFilterChange()">
-                        <option value="{{mps.id}}" ng-repeat="mps in multiProperies">{{mps.name}}</option>                   
+                    <select ng-model="filterData.selectedHotel" ng-change="onFilterChange()" ng-options="mps.id as mps.name for mps in multiProperies">          
                     </select>
                 </div>
             </div>
