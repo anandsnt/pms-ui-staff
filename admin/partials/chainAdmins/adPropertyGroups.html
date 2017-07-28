@@ -13,8 +13,8 @@
 		<section class="content-scroll">
 			<div ng-include="'/assets/partials/common/notification_message.html'"></div>
 			<div ng-include="'/assets/partials/common/notification_success_message.html'"></div>
-			<div id="new-form-holder" ng-if="isAdd" ng-include="getTemplateUrl()"></div>
-
+			<div id="new-form-holder"  class="grid" ng-if="isAdd" ng-include="getTemplateUrl()"></div>
+			<br />
 			<span class="count-show">Show</span>
 			<div class="select table-count rates-table-count">
 				<select ng-model="displyCount"	ng-options="opt for opt in displayCountList"></select>
@@ -27,7 +27,7 @@
 				<input placeholder="" autocomplete="off" type="text" ad-delay-textbox ng-model="searchTerm" delay="1000" function-to-fire="searchEntered" />
 		    </div>
 
-			<div id="new-form-holder"></div>
+			
 			<table class="grid datatable" ng-table="tableParams" template-pagination="custom/pager">
 				<tbody>
 					<tr ng-repeat="item in $data">
