@@ -15,6 +15,8 @@ angular.module('sntRover').controller('companyCardDetailsController', ['$scope',
 		$scope.isPromptOpened = false;
 		$scope.isLogoPrint = true;
 		$scope.isPrintArStatement = false;
+		$scope.contactInformation = {};
+		$scope.isGlobalToggleReadOnly = !rvPermissionSrv.getPermissionValue ('GLOBAL_CARD_UPDATE');
 		// setting the heading of the screen
 		if ($stateParams.type === "COMPANY") {
 			if ($scope.isAddNewCard) {
@@ -232,6 +234,78 @@ angular.module('sntRover').controller('companyCardDetailsController', ['$scope',
 
 		$scope.clikedDiscardDeleteAr = function() {
 			ngDialog.close();
+		};
+
+		$scope.toggleGlobalButton = function() {
+			if (rvPermissionSrv.getPermissionValue ('GLOBAL_CARD_UPDATE')) {
+				$scope.contactInformation.is_global_enabled = !$scope.contactInformation.is_global_enabled;
+				$scope.contactInformation.account_type = $scope.account_type;
+			}
+
+			$timeout(function() {
+				if ($scope.currentSelectedTab === 'cc-contact-info') {
+					$scope.$broadcast("ContactTabActivated");
+					$scope.$broadcast("contactTabActive");
+				}
+	            if ($scope.currentSelectedTab === 'cc-contracts') {
+					$scope.$broadcast("refreshContractsScroll");
+				}
+	            if ($scope.currentSelectedTab === 'cc-ar-accounts') {
+					$scope.$broadcast("arAccountTabActive");
+					$scope.$broadcast("refreshAccountsScroll");
+				}
+		        if ($scope.currentSelectedTab === 'cc-ar-transactions') {
+					$rootScope.$broadcast("arTransactionTabActive");
+					$scope.isWithFilters = false;
+				}
+				if ($scope.currentSelectedTab === 'cc-notes') {
+					$scope.$broadcast("fetchNotes");
+				}
+				if ($scope.currentSelectedTab === 'cc-commissions') {
+					$scope.$broadcast("commissionsTabActive");
+				}
+			}, 1000);
+		};
+
+		$scope.shouldShowCommissionsTab = function() {
+			return ($scope.account_type == 'TRAVELAGENT' && rvPermissionSrv.getPermissionValue ('GLOBAL_CARD_UPDATE') && $scope.contactInformation.is_global_enabled);
+		};
+		$scope.isUpdateEnabled = function() {
+			if ($scope.contactInformation.is_global_enabled == undefined)
+				return;
+			var isDisabledFields = false;
+			if ($scope.contactInformation.is_global_enabled) {
+				if (!rvPermissionSrv.getPermissionValue ('GLOBAL_CARD_UPDATE')) {
+					isDisabledFields = true;
+				}
+			} else {
+				if (!rvPermissionSrv.getPermissionValue ('EDIT_COMPANY_CARD')) {
+					isDisabledFields = true;
+				}
+			}
+
+			return isDisabledFields;
+		};
+		/*
+		 * Added the same method in travel agent ctrl
+		 * We are using the partials for TA and CC, when navigating thru staycard or thru revenue management
+		 * When we go to travel agent from staycard, controller is travelagentctrl
+		 * When we go to travel agent from revenue management, controller is this
+		 */
+		$scope.isUpdateEnabledForTravelAgent = function() {
+			if ($scope.contactInformation.is_global_enabled == undefined)
+				return;
+			var isDisabledFields = false;
+			if ($scope.contactInformation.is_global_enabled) {
+				if (!rvPermissionSrv.getPermissionValue ('GLOBAL_CARD_UPDATE')) {
+					isDisabledFields = true;
+				}
+			} else {
+				if (!rvPermissionSrv.getPermissionValue ('EDIT_TRAVEL_AGENT_CARD')) {
+					isDisabledFields = true;
+				}
+			}
+			return isDisabledFields;
 		};
 
 		var callCompanyCardServices = function() {

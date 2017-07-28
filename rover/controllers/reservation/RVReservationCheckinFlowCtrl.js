@@ -70,6 +70,9 @@ angular.module('sntRover').controller('RVReservationCheckInFlowCtrl',
                     });
                 } else {
                     $log.info('prompt for swipe disabled in settings AND cannot authorize WITHOUT card on file');
+                    // CICO-43681 Authorization is applicable only for credit cards; as there is no credit card and
+                    // prompting for card is disabled; continue to check-in
+                    completeCheckin();
                 }
             };
 

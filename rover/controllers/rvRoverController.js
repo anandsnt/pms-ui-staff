@@ -140,6 +140,8 @@ sntRover.controller('roverController', [
     // API not removing for now - Because if we need to disable it we can use the same param
     $rootScope.isRoomDiaryEnabled = true;
     $rootScope.isManualCCEntryEnabled = hotelDetails.is_allow_manual_cc_entry;
+    $rootScope.isAnMPHotel = hotelDetails.is_multi_property;
+
       /**
        * CICO-34068
        * NOTE: Temporary Fix
@@ -288,7 +290,7 @@ sntRover.controller('roverController', [
       $scope.searchBackButtonCaption = caption; // if it is not blank, backbutton will show, otherwise dont
     });
 
-    if ($rootScope.adminRole === "Hotel Admin") {
+    if ($rootScope.adminRole === "Hotel Admin" || $rootScope.adminRole === "Chain Admin User") {
       $scope.isHotelAdmin = true;
     }
     /**
