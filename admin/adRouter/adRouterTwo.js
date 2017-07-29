@@ -709,7 +709,7 @@ angular.module('adminModuleTwo', []).config(function($stateProvider) {
     });
 
     $stateProvider.state('admin.zestEmailGeneralSettings', {
-        template: 'hii',
+        templateUrl: '/assets/partials/zestEmailTemplates/adZestEmailGeneralSettings.html',
         //controller: 'ADZestEmailMenuCtrl',
         url: '/generalSettings'
     });
