@@ -3,7 +3,7 @@
         <h2 translate>GENERAL SETTINGS</h2>
         <a ng-click="goBackToPreviousState()" class="action back" translate>BACK</a>
     </header>
-    <section class="content-scroll" on-scroll="pageScrolled">
+    <section class="content-scroll">
         <div ng-include="'/assets/partials/common/notification_err_message_basic.html'"></div>
         <div ng-include="'/assets/partials/common/notification_success_message.html'"></div>
         <div>
@@ -47,8 +47,8 @@
                     <ad-textbox value="generalSettings.mail_greetings_text" label="{{'MAIL_GREETINGS_TEXT' | translate}}" styleclass="full-width"></ad-textbox>
                     <ad-textbox value="generalSettings.privacy_policy_text" label="{{'PRIVACY_POLICY_TEXT' | translate}}" styleclass="full-width"></ad-textbox>
                     <ad-textbox value="generalSettings.privacy_policy_link" label="{{'PRIVACY_POLICY_LINK' | translate}}" styleclass="full-width"></ad-textbox>
-                    <ad-textbox value="generalSettings.terms_n_condition_text" label="{{'TERMS_AND_CONDITIONS_TEXT' | translate}}" styleclass="full-width"></ad-textbox>
-                    <ad-textbox value="generalSettings.terms_n_condition_link" label="{{'TERMS_AND_CONDITIONS_LINK' | translate}}" styleclass="full-width"></ad-textbox>
+                    <ad-textbox value="generalSettings.terms_n_conditions_text" label="{{'TERMS_AND_CONDITIONS_TEXT' | translate}}" styleclass="full-width"></ad-textbox>
+                    <ad-textbox value="generalSettings.terms_n_conditions_link" label="{{'TERMS_AND_CONDITIONS_LINK' | translate}}" styleclass="full-width"></ad-textbox>
                     <ad-textbox value="generalSettings.rights_reserved_text" label="{{'RIGHTS_RESERVED_TEXT' | translate}}" styleclass="full-width"></ad-textbox>
                 </fieldset>
                 <fieldset class="holder right">

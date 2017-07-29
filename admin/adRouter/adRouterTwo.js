@@ -710,8 +710,13 @@ angular.module('adminModuleTwo', []).config(function($stateProvider) {
 
     $stateProvider.state('admin.zestEmailGeneralSettings', {
         templateUrl: '/assets/partials/zestEmailTemplates/adZestEmailGeneralSettings.html',
-        //controller: 'ADZestEmailMenuCtrl',
-        url: '/generalSettings'
+        controller: 'ADZestEmailGeneralSettings',
+        url: '/generalSettings',
+        resolve: {
+            generalSettings:  function(adZestEmailTemplateSrv){
+                return adZestEmailTemplateSrv.getGeneralSettings();
+            }
+        }
     });
 
     $stateProvider.state('admin.zestPreCheckinEmailSettings', {
