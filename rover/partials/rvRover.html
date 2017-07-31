@@ -1,18 +1,5 @@
 <div ng-show="hasLoader" id="loading"><div id="loading-spinner" ></div></div> 
 <div>
-
-<!-- loader for EMV terminal actions -->
-<div ng-show="showDeviceConnectivityStatus">
-    <div style="top: 10;
-    left: 100px;
-    position: fixed;
-    border: 1px dashed green;z-index: 1000;padding: 5px;" ng-click="fetchDeviceStatus()">
-        <div class="centeralign alert-box">
-            {{deviceDetails}}
-        </div>
-    </div>
-</div>
-
 <!-- loader for EMV terminal actions -->
 <div ng-show="showSixPayLoader" id="loading">
     <div id="six-payment-loader">
@@ -43,3 +30,13 @@
 <nav id="main-menu" role="navigation"  ng-include="'/assets/partials/dashboard/rvLeftNavbar.html'"
      ng-class-without-animation="{'menu-open': menuOpen, 'menu-hotel':showHotelSwitchList, 'ng-animate': !menuOpen}">
 </nav>
+
+<div class="release-notes" ng-show="showDeviceConnectivityStatus && isIpad">
+    <div class="release-notes_content">
+        <strong class="release-notes_text">{{deviceDetails}}</strong>
+        <div class="release-notes_action">
+            <button class="button blank" ng-click="showDeviceConnectivityStatus = false">Close</button>
+            <a class="button blue" target="_blank" ng-click="fetchDeviceStatus()">View Details</a>
+        </div>
+    </div>
+</div>  

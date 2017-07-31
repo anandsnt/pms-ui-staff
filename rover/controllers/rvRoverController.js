@@ -371,21 +371,22 @@ sntRover.controller('roverController', [
         $scope.runDigestCycle();
     });
 
+    $scope.connectedDeviceDetails = [];
+
     /*
     * Show the connected devices status
      */
     $scope.fetchDeviceStatus = function() {
+      $scope.showDeviceConnectivityStatus = false;
+      $scope.connectedDeviceDetails = [];
       cordova.exec(function(response) {
-        // alert(JSON.stringify(response));
         $scope.connectedDeviceDetails = response;
         ngDialog.open({
           template: '/assets/partials/settings/rvDeviceStatus.html',
           scope: $scope,
           className: 'calendar-modal'
         });
-      }, function(error) {
-        // alert(error);
-      }, 'RVDevicePlugin', 'getDevicesStates', []);
+      }, function(error) {}, 'RVDevicePlugin', 'getDevicesStates', []);
     };
 
 
@@ -487,6 +488,7 @@ sntRover.controller('roverController', [
         }
         // for iPad we need to show the connected device status
         if (sntapp.browser === 'rv_native' && sntapp.cordovaLoaded) {
+          $scope.isIpad = true;
           $scope.fetchDeviceStatus();
         }
     };
