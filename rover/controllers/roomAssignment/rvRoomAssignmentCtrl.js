@@ -573,11 +573,13 @@ sntRover.controller('RVroomAssignmentController', [
 		if ($scope.clickedButton === "checkinButton") {
 			$scope.$emit('hideLoader');
 			$state.go('rover.reservation.staycard.billcard', {"reservationId": $scope.reservationData.reservation_card.reservation_id, "clickedButton": "checkinButton"});
-                } else {
-
-			$scope.$emit('hideLoader');
+        } else {
+            /*$timeout( function() {
+                $scope.$emit('hideLoader');
+            }, 3000);*/
 			$scope.backToStayCard();
 		}
+
 	};
 
 	/**
