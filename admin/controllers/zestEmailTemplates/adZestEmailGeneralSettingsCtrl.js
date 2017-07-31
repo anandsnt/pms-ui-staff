@@ -14,7 +14,7 @@ admin.controller('ADZestEmailGeneralSettings', ['$scope', '$state','generalSetti
                 // }),
                 closeByDocument: true,
                 template: '/assets/partials/zestEmailTemplates/adzestMailPreview.html',
-                className: 'ngdialog-theme-default ipad-preview',
+                className: 'ngdialog-theme-default email-template-preview',
                 scope:$scope
             });
         };
