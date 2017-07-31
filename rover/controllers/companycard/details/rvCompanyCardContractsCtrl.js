@@ -271,7 +271,7 @@ sntRover.controller('companyCardContractsCtrl', ['$rootScope', '$scope', 'RVComp
 			$scope.errorMessage = "";
 		};
 
-		$scope.invokeApi(RVCompanyCardSrv.fetchRates, {}, fetchRatesSuccessCallback, fetchFailureCallback);
+		// $scope.invokeApi(RVCompanyCardSrv.fetchRates, {}, fetchRatesSuccessCallback, fetchFailureCallback);
 
 		$scope.fetchContractsList = function () {
 			if ($stateParams.id !== "add") {
