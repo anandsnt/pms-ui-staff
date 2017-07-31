@@ -377,10 +377,12 @@ sntRover.controller('roverController', [
     * Show the connected devices status
      */
     $scope.fetchDeviceStatus = function() {
+      ngDialog.close();
       $scope.showDeviceConnectivityStatus = false;
       $scope.connectedDeviceDetails = [];
       cordova.exec(function(response) {
         $scope.connectedDeviceDetails = response;
+        $scope.widthStyle =(response.length === 1) ? { 'width' : '320px'} : '';
         ngDialog.open({
           template: '/assets/partials/settings/rvDeviceStatus.html',
           scope: $scope,

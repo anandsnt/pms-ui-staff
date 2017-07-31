@@ -32,9 +32,9 @@
 	            <li translate>DEVICE_SERIAL_NO</li>
 	        </ul>
 	        <div class="device-list scrollable">
-	            <div class="wrapper" style="width:{{connectedDeviceDetails.length * 160}}px">
+	            <div class="wrapper" style="width:{{(connectedDeviceDetails.length === 1) ? '320': connectedDeviceDetails.length * 160}}px">
 	                <!-- CASE 1: Device is connected -->
-	                <ul class="device" ng-repeat="device in connectedDeviceDetails">
+	                <ul class="device" ng-repeat="device in connectedDeviceDetails" ng-style="widthStyle">
 	                    <li class="title">{{device.device_short_name}}</li>
 	                    <li ng-class="{'text-grey': !device.device_short_name}">{{device.device_identified_name}}</li> <!-- Use <li class="text-grey">N/A</li> if value unknown -->
 	                    <li ng-if="device.device_connection_sate === 'Connected'"><em class="text-green">Connected</em></li>
@@ -67,8 +67,9 @@
 	        </div>
 	    </div>
 
-	    <div class="actions">
+	    <div class="entry button-grp">
 	        <button type="button" class="button blank" ng-click="closeDialog()" translate>CLOSE_WINDOW</button>
+	        <button type="button" class="button green" ng-click="fetchDeviceStatus()" translate>REFRESH</button>
 	    </div>
 	</div>
 </div>
