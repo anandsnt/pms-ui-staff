@@ -406,7 +406,11 @@ sntZestStation.controller('zsCheckinScanPassportCtrl', [
                     $scope.viewResults();
 
                 } else {
-                    $scope.zestStationData.checkinGuest();
+                    if ($scope.fromPickupKeyPassportScan) {
+                        $scope.zestStationData.continuePickupFlow();
+                    } else {
+                        $scope.zestStationData.checkinGuest();    
+                    }
                 }
                 
             } else {
@@ -643,6 +647,8 @@ sntZestStation.controller('zsCheckinScanPassportCtrl', [
             } else {
                 $scope.mode = 'SCAN_PASSPORT';
             }
+
+            $scope.fromPickupKeyPassportScan = $stateParams.from_pickup_key === 'true';
 
             $scope.$on(zsEventConstants.CLICKED_ON_BACK_BUTTON, onBackButtonClicked);
 

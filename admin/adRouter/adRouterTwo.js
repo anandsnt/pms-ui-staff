@@ -710,7 +710,7 @@ angular.module('adminModuleTwo', []).config(function($stateProvider) {
 
     $stateProvider.state('admin.zestEmailGeneralSettings', {
         templateUrl: '/assets/partials/zestEmailTemplates/adZestEmailGeneralSettings.html',
-        controller: 'ADZestEmailGeneralSettings',
+        controller: 'ADZestEmailGeneralSettingsCtrl',
         url: '/generalSettings',
         resolve: {
             generalSettings:  function(adZestEmailTemplateSrv){
@@ -720,9 +720,17 @@ angular.module('adminModuleTwo', []).config(function($stateProvider) {
     });
 
     $stateProvider.state('admin.zestPreCheckinEmailSettings', {
-        template: 'pre',
-        //controller: 'ADZestEmailMenuCtrl',
-        url: '/precheckinSettings'
+        templateUrl: '/assets/partials/zestEmailTemplates/adZestPrecheckinEmailSettings.html',
+        controller: 'ADZestEmailPrecheckinSettingsCtrl',
+        url: '/precheckinSettings',
+        resolve: {
+            generalSettings:  function(adZestEmailTemplateSrv){
+                return adZestEmailTemplateSrv.getGeneralSettings();
+            },
+            precheckinSettings: function(adZestEmailTemplateSrv){
+                return adZestEmailTemplateSrv.getPrecheckinSettings();
+            }
+        }
     });
 
 });

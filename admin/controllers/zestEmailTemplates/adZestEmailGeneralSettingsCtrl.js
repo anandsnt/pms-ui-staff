@@ -1,4 +1,4 @@
-admin.controller('ADZestEmailGeneralSettings', ['$scope', '$state','generalSettings','ngDialog',
+admin.controller('ADZestEmailGeneralSettingsCtrl', ['$scope', '$state','generalSettings','ngDialog',
     function($scope, $state,generalSettings,ngDialog) {
         console.log(generalSettings);
         $scope.generalSettings = generalSettings;

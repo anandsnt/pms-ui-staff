@@ -14,4 +14,8 @@
 "EMAIL_TOP_PORTION_TEXT_SIZE": "Email top portion text font size (in px)",
 "EMAIL_BOTTOM_PORTION_TEXT_SIZE": "Email bottom portion text font size (in px)",
 "EMAIL_BUTTON_TEXT_SIZE": "Button text font size (in px)",
-"FOOTER_TEXT_FONT_SIZE": "Footer text font size (in px)"
+"FOOTER_TEXT_FONT_SIZE": "Footer text font size (in px)",
+"PRECHECKIN_TEXT_SETTINGS": "Pre checkin Settings",
+"EMAIL_BOTTOM_PORTION_TEXT": "Email bottom portion text",
+"EMAIL_TOP_PORTION_TEXT":  "Email top portion text",
+"EMAIL_BUTTON_TEXT":  "Email Button text"
