@@ -68,7 +68,6 @@
     "DEVICES" :"Devices",
     "DEVICE_TYPE":"Type",
     "DEVICE_NAME": "Device Name",
-    "DEVICE_STATUS": "Status",
     "DEVICE_BATTERY": "Battery",
     "DEVICE_LIBRARY_VERSION": "Library Ver.",
     "DEVICE_FIRMWARE_VERSION": "Firmware Ver.",
