@@ -44,6 +44,42 @@ angular.module('sntRover').service('RVCompanyCardSrv', ['$q', 'rvBaseWebSrvV2',
             return deferred.promise;
         };
 
+        /**
+         * Fetch multiproperties under this chain
+         * @return {promise|{then, catch, finally}|*|e} Promise
+         */
+        this.fetchMultiProperties = function() {
+            var deferred = $q.defer();
+            var url = '/api/hotel_settings/default_agent_commission_details';
+
+            rvBaseWebSrvV2.getJSON(url).then(function(data) {
+                data = {
+                    "multi_properties": [{
+                            "id": 50,
+                            "name": "Grand Hotel one"
+                        },{
+                            "id": 80,
+                            "name": "Grand Hotel Bethesda"
+                        },
+                        {
+                            "id": 25,
+                            "name": "Parkhotel"
+                        },
+                        {
+                            "id": 28,
+                            "name": "Kingsley"
+                        }
+                    ]
+                }
+                deferred.resolve(data);
+            }, function(data) {
+                deferred.reject(data);
+            });
+            return deferred.promise;
+        };
+
+        
+
 
         /**
          * service function used for retreive country list

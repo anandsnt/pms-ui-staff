@@ -27,6 +27,7 @@ function($scope, $state, $rootScope, $stateParams, RVCompanyCardSrv, ngDialog, $
         params.commission_status = $scope.filterData.commissionStatus;
         params.per_page = $scope.filterData.perPage;
         params.page = $scope.filterData.page;
+        params.hotel_id = parseInt($scope.filterData.selectedHotel);
         return params;
 
     };
@@ -113,7 +114,10 @@ function($scope, $state, $rootScope, $stateParams, RVCompanyCardSrv, ngDialog, $
      * @param confirmation_no confirmation no
      */
     $scope.goToStayCard = function(reservation_id, confirmation_no) {
-        $state.go('rover.reservation.staycard.reservationcard.reservationdetails', {"id": reservation_id, "confirmationId": confirmation_no, "isrefresh": true, "isFromTACommission": true});
+        if($rootScope.hotelDetails.userHotelsData.current_hotel_id === parseInt($scope.filterData.selectedHotel))
+        {            
+            $state.go('rover.reservation.staycard.reservationcard.reservationdetails', {"id": reservation_id, "confirmationId": confirmation_no, "isrefresh": true, "isFromTACommission": true});
+        }
     };
 
     $scope.isNextButtonDisabled = function() {
@@ -436,6 +440,20 @@ function($scope, $state, $rootScope, $stateParams, RVCompanyCardSrv, ngDialog, $
         $scope.invokeApi(RVCompanyCardSrv.recalculateCommission, postData, recalculateCommissionSuccess, recalculateCommissionFailure);
     };
 
+    var fetchMultiProperties = function() {
+        var onPropertyFetchSuccess = function(data) {
+
+               $scope.multiProperies = data.multi_properties;
+            };
+
+        var requestData = {};
+
+        requestData.accountId = $scope.accountId;
+        
+        $scope.invokeApi(RVCompanyCardSrv.fetchMultiProperties, requestData, onPropertyFetchSuccess);
+
+    };
+
     // Initailizes the controller
     var init = function() {
         $scope.commissionDetails = [];
@@ -450,7 +468,9 @@ function($scope, $state, $rootScope, $stateParams, RVCompanyCardSrv, ngDialog, $
             start: 1,
             selectAll: false,
             toggleCommission: false,
-            commssionRecalculationValue: ''
+            commssionRecalculationValue: '',
+             // By default set the value to current hotel
+            selectedHotel: parseInt($rootScope.hotelDetails.userHotelsData.current_hotel_id)
         };
         $scope.accountId = $stateParams.id;
         $scope.isEmpty = util.isEmpty;
@@ -471,6 +491,9 @@ function($scope, $state, $rootScope, $stateParams, RVCompanyCardSrv, ngDialog, $
         $vault.set('travelAgentId', $stateParams.id);
         $vault.set('travelAgentType', $stateParams.type);
         $vault.set('travelAgentQuery', $stateParams.query);
+        fetchMultiProperties();
+       
+
     };
 
     init();
