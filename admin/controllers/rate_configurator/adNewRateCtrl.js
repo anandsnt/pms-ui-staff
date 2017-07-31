@@ -432,6 +432,13 @@ admin.controller('ADAddnewRate', ['$scope', 'ADRatesRangeSrv', 'ADRatesSrv', '$s
          * init call
          */
         $scope.init();
+        var a=10;
+        if(a){
+            console.log(a);
+        }
+        var x = function(){
+
+        };
 
 
     }
