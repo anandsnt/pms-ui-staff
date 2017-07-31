@@ -574,9 +574,9 @@ sntRover.controller('RVroomAssignmentController', [
 			$scope.$emit('hideLoader');
 			$state.go('rover.reservation.staycard.billcard', {"reservationId": $scope.reservationData.reservation_card.reservation_id, "clickedButton": "checkinButton"});
         } else {
-            /*$timeout( function() {
+            $timeout( function() {
                 $scope.$emit('hideLoader');
-            }, 3000);*/
+            }, 3000);
 			$scope.backToStayCard();
 		}
 
