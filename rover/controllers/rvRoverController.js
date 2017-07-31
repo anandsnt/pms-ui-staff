@@ -367,14 +367,14 @@ sntRover.controller('roverController', [
         $scope.showDeviceConnectivityStatus = true;
         $timeout(function() {
             $scope.showDeviceConnectivityStatus = false;
-        }, 10000);
+        }, 15000);
         $scope.runDigestCycle();
     });
 
     /*
     * Show the connected devices status
      */
-    var fetchDeviceStatus = function() {
+    $scope.fetchDeviceStatus = function() {
       cordova.exec(function(response) {
         // alert(JSON.stringify(response));
         $scope.connectedDeviceDetails = response;
@@ -484,6 +484,10 @@ sntRover.controller('roverController', [
 
         if ($rootScope.paymentGateway === "CBA" && sntapp.cordovaLoaded) {
             doCBAPowerFailureCheck();
+        }
+        // for iPad we need to show the connected device status
+        if (sntapp.browser === 'rv_native' && sntapp.cordovaLoaded) {
+          $scope.fetchDeviceStatus();
         }
     };
 
@@ -602,7 +606,7 @@ sntRover.controller('roverController', [
                 openUpdatePasswordPopup();
             }
             else if (subMenu === 'deviceStatus') {
-                fetchDeviceStatus();
+                $scope.fetchDeviceStatus();
             }
         };
 
