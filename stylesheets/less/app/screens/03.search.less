@@ -758,7 +758,7 @@
                         }}
                     }
 
-					.prepaid,
+					.payment-status,
                     .switch-button {
                         position: absolute;
                         top: 15px;
@@ -767,12 +767,23 @@
                         .size(40px, 150px);
                     }
 
-                    .prepaid {
+                    .payment-status {
                         text-align: center;
                         font-size: 14px;
                         line-height: 40px;
                         text-transform: uppercase;
-                        color: @logoPrimary;
+                        
+                        &.prepaid {
+                            color: @logoPrimary;
+                        }
+
+                        &.paid {
+                            color: @green;
+                        }
+
+                        &.open {
+                            color: @red;
+                        }
                     }
 
                     .switch-button {
