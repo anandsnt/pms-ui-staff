@@ -502,7 +502,7 @@ angular.module('sntRover').service('rvMenuSrv',
 	this.hasRolePermission = function(menuIndex) {
 		var user = RVDashboardSrv.getUserDetails(),
 			role = user.user_role,
-			isHotelAdmin = (role === "Hotel Admin" || role === "Chain Admin User"),
+			isHotelAdmin = (role === "Hotel Admin" || role === "Chain Admin"),
 			isHotelStaff = user.is_staff,
 			returnValue = false;
 
