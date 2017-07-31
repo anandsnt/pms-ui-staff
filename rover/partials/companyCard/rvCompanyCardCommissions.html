@@ -26,8 +26,8 @@
                 <label for="commision-status" translate>COMMISSION_STATUS</label>
                 <div class="select">
                     <select id="commision-status" ng-model="filterData.commissionStatus" ng-change="onFilterChange()">
-                        <option value="Commissionable" selected translate>COMMISSION_COMMISSIONABLE</option>
-                        <option value="Non-commissionable" translate>COMMISSION_NON_COMMISSIONABLE</option>
+                        <option value="Commissionable"  selected translate>COMMISSION_COMMISSIONABLE</option>
+                        <option value="Non-commissionable" ng-hide="hotelDetails.userHotelsData.current_hotel_id !== filterData.selectedHotel" translate>COMMISSION_NON_COMMISSIONABLE</option>
                     </select>
                 </div>
             </div>
@@ -129,7 +129,7 @@
                 <li class="reservation commision in-card" ng-repeat="commissionDetail in commissionDetails" ng-class="{'selected' : (filterData.selectAll || commissionDetail.is_checked)}">
 
 
-                    <div class="switch-button" ng-class="{'on': commissionDetail.commission_data.paid_status === 'Paid','overlay' : !hasPermissionToEditPaid()}" ng-show="commissionDetail.commission_data.paid_status == 'Paid' || commissionDetail.commission_data.paid_status == 'Unpaid'">
+                    <div class="switch-button" ng-class="{'on': commissionDetail.commission_data.paid_status === 'Paid','overlay' : !hasPermissionToEditPaid()}" ng-show="isTogglePaidStatusEnabled && (commissionDetail.commission_data.paid_status == 'Paid' || commissionDetail.commission_data.paid_status == 'Unpaid')">
                         <input value="" type="checkbox" ng-click="togglePaidStatus(commissionDetail)"/>
                         <label class="data-off">
                             <span class="value" translate>COMMISSION_UNPAID</span>
@@ -140,6 +140,8 @@
                             <span class="value" translate>COMMISSION_PAID</span>
                         </label>
                     </div>
+                    <div class="payment-status open" ng-show="commissionDetail.commission_data.paid_status === 'Open' && !isTogglePaidStatusEnabled">Open</div>
+                    <div class="payment-status paid" ng-show="commissionDetail.commission_data.paid_status === 'Paid' && !isTogglePaidStatusEnabled">Paid</div>
                     <!-- If prepaid, replace L22-L32 with this:
                     <div class="prepaid">Prepaid</div> -->
                     <div class="prepaid" ng-show="commissionDetail.commission_data.paid_status == 'Prepaid'" translate>COMMISSION_PREPAID</div>
@@ -153,7 +155,7 @@
                     <!-- Clicking L40 block should open Stay Card for this reservation -->
                     <div class="faux-anchor has-arrow next-view" ng-click="goToStayCard(commissionDetail.reservation_id, commissionDetail.reservation_no)">
                         <div class="data">
-                            <h2>{{commissionDetail.guest_name}}=={{currentHotelData.name}}++{{currentHotelData.id}}</h2>
+                            <h2>{{commissionDetail.guest_name}}</h2>
                             <span class="confirmation">{{commissionDetail.reservation_no}}</span>
                         </div>
                         <div class="values">

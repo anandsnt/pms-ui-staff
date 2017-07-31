@@ -301,18 +301,43 @@ function($scope, $state, $rootScope, $stateParams, RVCompanyCardSrv, ngDialog, $
         $scope.filterData.selectAll = false;
     };
 
+    $scope.isTogglePaidStatusEnabled = function() {
+        var isToggleEnabled = true;
+        if ($scope.contactInformation.is_global_enabled) {
+            isToggleEnabled = false;
+            console.log(rvPermissionSrv.getPermissionValue ('GLOBAL_CARD_UPDATE'))
+            if (rvPermissionSrv.getPermissionValue ('GLOBAL_CARD_UPDATE')){
+                isToggleEnabled = true;
+            }
+            
+        }
+        return isToggleEnabled;
+    };
+
     // Action for the paid/unpaid toggle button for individual record
     $scope.togglePaidStatus = function(commission) {
-        var commissionToUpdate = {};
+        // var isToggleEnabled = true;
+        // if ($scope.contactInformation.is_global_enabled) {
+        //     isToggleEnabled = false;
+        //     console.log(rvPermissionSrv.getPermissionValue ('GLOBAL_CARD_UPDATE'))
+        //     if (rvPermissionSrv.getPermissionValue ('GLOBAL_CARD_UPDATE')){
+        //         isToggleEnabled = true;
+        //     }
+            
+        // }
+        // if (isToggleEnabled) {
+            console.log("----reached----")
+           /* var commissionToUpdate = {};
 
-        commissionToUpdate.reservation_id = commission.reservation_id;
-        commissionToUpdate.status = commission.commission_data.paid_status == "Paid" ? "Unpaid" : "Paid";
+            commissionToUpdate.reservation_id = commission.reservation_id;
+            commissionToUpdate.status = commission.commission_data.paid_status == "Paid" ? "Unpaid" : "Paid";
 
-        var requestData = {};
+            var requestData = {};
 
-        requestData.accountId = $scope.accountId;
-        requestData.commissionDetails = [commissionToUpdate];
-        updatePaidStatus(requestData);
+            requestData.accountId = $scope.accountId;
+            requestData.commissionDetails = [commissionToUpdate];
+            updatePaidStatus(requestData);*/
+        // }
     };
 
     // Updates the paid status of all the selected records

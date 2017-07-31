@@ -68,7 +68,7 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 
             if ( !! noReset ) {
                 return;
-            } else if ( $scope.$parent.myScroll.hasOwnProperty(FULL_REPORT_SCROLL) ) {
+            } else if ( $scope.$parent.myScroll && $scope.$parent.myScroll.hasOwnProperty(FULL_REPORT_SCROLL) ) {
                 $scope.$parent.myScroll[FULL_REPORT_SCROLL].scrollTo(0, 0, 100);
             }
         };

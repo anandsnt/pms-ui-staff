@@ -268,7 +268,7 @@ angular.module('sntRover').controller('companyCardDetailsController', ['$scope',
 		};
 
 		$scope.shouldShowCommissionsTab = function() {
-			return ($scope.account_type == 'TRAVELAGENT' && rvPermissionSrv.getPermissionValue ('GLOBAL_CARD_UPDATE') && $scope.contactInformation.is_global_enabled);
+			return ($scope.account_type == 'TRAVELAGENT');
 		};
 		$scope.isUpdateEnabled = function() {
 			if ($scope.contactInformation.is_global_enabled == undefined)

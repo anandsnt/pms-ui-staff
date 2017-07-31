@@ -48,29 +48,12 @@ angular.module('sntRover').service('RVCompanyCardSrv', ['$q', 'rvBaseWebSrvV2',
          * Fetch multiproperties under this chain
          * @return {promise|{then, catch, finally}|*|e} Promise
          */
-        this.fetchMultiProperties = function() {
+        this.fetchMultiProperties = function(data) {
             var deferred = $q.defer();
-            var url = '/api/hotel_settings/default_agent_commission_details';
+            var url = '/api/accounts/'+data.accountId+'/subscribed_properties';
 
             rvBaseWebSrvV2.getJSON(url).then(function(data) {
-                data = {
-                    "multi_properties": [{
-                            "id": 50,
-                            "name": "Grand Hotel one"
-                        },{
-                            "id": 80,
-                            "name": "Grand Hotel Bethesda"
-                        },
-                        {
-                            "id": 25,
-                            "name": "Parkhotel"
-                        },
-                        {
-                            "id": 28,
-                            "name": "Kingsley"
-                        }
-                    ]
-                }
+
                 deferred.resolve(data);
             }, function(data) {
                 deferred.reject(data);
