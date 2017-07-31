@@ -367,26 +367,35 @@
 	height: 90% !important;
 }
 
-
-
-
-#icon-date {
-	height: 50% !important;
+.entry&.input > ng-include > #icon-date {
+ 	height: 50% !important;
 	padding: 10px;
 	margin-top: 24px !important;
 	margin-left:-6.25% !important;
+	margin-bottom: -38.5px;
 
-	 @media only screen and (min-width: 1024px) and (max-width: 1024px) { 
-        position: absolute;
-
-		height: 50% !important;
-		padding: 9px;
-		margin-top: -9px !important;
-		margin-left: -8.25% !important
+    @media only screen and (min-width: 1024px) and (max-width: 1024px) { 
+      	position: absolute;
+	    margin-bottom: 0!important;
+	    height: 63%!important;
+	    padding: 8px;
+	    margin-top: -8px!important;
+        margin-left: -3.25%!important;
     }
 
+    @media only screen and (min-width: 1366px) and (max-width: 1366px) { 
+	    position: absolute;
+	    margin-bottom: 0!important;
+	    height: 65%!important;
+	    padding: 9px;
+	    margin-top: -9px!important;
+	    margin-left: -2.25%!important;
+    }
 }
-
+/*Home Screen "Book-Now"*/
+.button&.option>div>#icon-date {
+    position: initial !important;
+}
 
 .details {
 	border-bottom-style: solid;
@@ -497,4 +506,7 @@
 }
 .station-terms{
     margin-bottom: 100px;
+}
+.add-on-content #options li .option{
+		border-radius: 150px !important;
 }

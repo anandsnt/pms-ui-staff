@@ -263,9 +263,39 @@ sntZestStation.controller('zsRootCtrl', [
             $scope.zestStationData.showTemplateList = true;
         };
 
-        $scope.selectThemeFromTemplateList = function(theme) {
-            $scope.zestStationData.showTemplateList = false;
-            $scope.quickSetHotelTheme(theme);
+        $scope.sonicTestTemplatesCount = 0;
+        $scope.selectThemeFromTemplateList = function(theme, sonicTesting, themeToTest) {
+            var totalTemplates = $scope.themeTemplateList.length;
+            /*
+                Sonic Testing: loop through all the themes for the current page,
+                good for verifying changes applied to all themes without having to 
+                press/switch each theme manually
+             */
+            if (theme === 'sonic' && $scope.softResetCount === 0) {
+
+                $scope.zestStationData.showTemplateList = false;
+                if (!sonicTesting) {
+                    $scope.sonicTestTemplatesCount = 0;    
+                }
+                if ($scope.sonicTestTemplatesCount < totalTemplates) {
+                   
+                    
+                    $scope.resetTime();
+                    $timeout(function() {
+                        themeToTest = $scope.themeTemplateList[$scope.sonicTestTemplatesCount].name;
+                        $scope.sonicTestTemplatesCount++;
+                        $scope.selectThemeFromTemplateList('sonic', true, themeToTest);
+                        $scope.quickSetHotelTheme(themeToTest);
+                    }, 2500);
+                }
+
+
+            } else {
+                $scope.zestStationData.showTemplateList = false;
+                $scope.quickSetHotelTheme(theme);
+            }
+
+
         }; 
 
 
@@ -769,6 +799,7 @@ sntZestStation.controller('zsRootCtrl', [
                     clear_icon: iconBasePath + '/x.svg',
                     left_arrow_icon: commonIconsPath + '/arrow-left.svg',
                     right_arrow_icon: commonIconsPath + '/arrow-right.svg',
+                    late_checkout_icon: iconBasePath + '/late-checkout.svg',
                     scanpassport: iconBasePath + ($scope.zestStationData.scan_passport_file_uploaded.length > 0) ? $scope.zestStationData.scan_passport_file_uploaded : ''
                 }
             };
@@ -826,7 +857,7 @@ sntZestStation.controller('zsRootCtrl', [
             var commonIconsPath = '/assets/zest_station/css/icons/default';
 
             // var basicHomeIcons = ['zoku'],
-            var niceHomeIcons = ['avenue', 'sohotel', 'epik', 'public', 'public_v2', 'duke', 'de-jonker', 'chalet-view', 'freehand', 'row-nyc', 'circle-inn-fairfield', 'cachet-boutique', 'hi-ho'],
+            var niceHomeIcons = ['avenue', 'sohotel', 'epik', 'public', 'public_v2', 'duke', 'de-jonker', 'chalet-view', 'freehand', 'row-nyc', 'circle-inn-fairfield', 'cachet-boutique', 'hi-ho', 'first'],
                 nonCircleNavIcons = ['public_v2'];// minor adjustment to the back/close icons for some themes (only show the inner x or <)
 
 
@@ -1349,11 +1380,12 @@ sntZestStation.controller('zsRootCtrl', [
                     }
                 } else {
                     $scope.callBlurEventForIpad();
-                    /*
-                    $timeout(function() {
-                        document.getElementById(elementId).click(); 
-                    }, 500);
-                    */
+                    if ($scope.zestStationData.autoIpadKeyboardEnabled) {
+                        $timeout(function() {
+                            document.getElementById(elementId).click(); 
+                        }, 500);   
+                    }
+                    
 
                 }
             }, 300);
@@ -1787,6 +1819,7 @@ sntZestStation.controller('zsRootCtrl', [
             $scope.showLanguagePopup = false;
             $scope.zestStationData.waitingForSwipe = false;
             $scope.zestStationData.session_conf = '';
+            $scope.$filter = $filter;
             // moved web socket creation code to fetchHotelSettings
             fetchHotelSettings();
             getKeyEncoderInfo();
@@ -1832,13 +1865,32 @@ sntZestStation.controller('zsRootCtrl', [
             // reset number of keys to be made
             $scope.zestStationData.makeTotalKeys = 0;
             $scope.zestStationData.makingAdditionalKey = false;
+            $scope.zestStationData.autoIpadKeyboardEnabled = false;
+            $scope.zestStationData.appVersion = null;
+            if ($scope.isIpad) {
+                try {
+                    // check for the method getAppInfo via rvcardplugin, if it does not exist,
+                    // leave app_version null and autoIpadKeyboardEnabled to false
+                    $timeout(function() {
+                        
+                        cordova.exec(function(success) {
+                            if (success && success.AppVersion) {
+                                $scope.zestStationData.appVersion = success.AppVersion;
+                                // if the app version is accessible, then also the cordova configuration has been updated
+                                // as of 1.3.4.3, the config for auto-prompt keyboard is enabled
+                                $scope.zestStationData.autoIpadKeyboardEnabled = true;
+                            }
 
-            try {
-                if (typeof AppVersion !== typeof undefined && typeof AppVersion.version !== typeof undefined) {
-                    $scope.zestStationData.app_version = AppVersion.version ? AppVersion.version : 'UNK';
+                        }, function() {
+                            $scope.zestStationData.autoIpadKeyboardEnabled = false;
+
+                        }, 'RVCardPlugin', 'getAppInfo', []);
+
+                    }, 1500);
+
+                } catch (err) {
+                    $log.log(err);
                 }
-            } catch (err) {
-                $log.log(err);
             }
         }());
 
