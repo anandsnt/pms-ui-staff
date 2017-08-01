@@ -521,14 +521,14 @@ admin.controller('adAnalyticSetupCtrl', ['$scope', 'adAnalyticSetupSrv', '$state
 
 
     var renderEventData = function(events) {
-        var scope = getScope();
+        
 
-        scope.renderEventData = events;
+        $scope.renderEventData = events;
 
         filterByHotel(events, scope);
 
-        scope.$emit('LOADING_COMPLETE');
-        scope.$emit('UPDATE_DATA');
+        $scope.$emit('LOADING_COMPLETE');
+        $scope.$emit('UPDATE_DATA');
     };
 
     var visualizeEventData = function(data) {
@@ -693,13 +693,13 @@ admin.controller('adAnalyticSetupCtrl', ['$scope', 'adAnalyticSetupSrv', '$state
             console.warn(response);
 
             if (response && response.status === 401) {
-                var scope = getScope();
+                
 
-                scope.loading = false;
-                scope.$apply();
+                $scope.loading = false;
+                $scope.$apply();
                 setTimeout(function() {
                     alert('Please sign into google');
-                    scope.signedIn = false;
+                    $scope.signedIn = false;
                 }, 500);
             }
         };
@@ -716,10 +716,10 @@ admin.controller('adAnalyticSetupCtrl', ['$scope', 'adAnalyticSetupSrv', '$state
             console.log('User signed out.');
             $('#sign-out-btn').hide();
             $('#sign-in-btn').show();
-            var scope = getScope();
+            
 
-            scope.$emit('CLEAR_SCREEN');
-            scope.$emit('UPDATE_DATA');
+            $scope.$emit('CLEAR_SCREEN');
+            $scope.$emit('UPDATE_DATA');
         });
     };
 
@@ -735,8 +735,6 @@ function onSigninSuccess(profileObject) {
 
     scope.signedIn = true;
     scope.$emit('CLEAR_SCREEN');
-
-    // scope.queryReports(profileObject);
 }
 
 function onSignInFailure() {
