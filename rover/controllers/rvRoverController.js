@@ -351,6 +351,47 @@ sntRover.controller('roverController', [
         });
     };
 
+    /*
+     * to run angular digest loop,
+     * will check if it is not running
+     * return - None
+     */
+    $scope.runDigestCycle = function() {
+      if (!$scope.$$phase) {
+        $scope.$digest();
+      }
+    };
+    $scope.showDeviceConnectivityStatus = false;
+
+    document.addEventListener("OBSERVE_DEVICE_STATUS_CHANGE", function(e) {
+        $scope.$emit("closeDrawer");
+        $scope.deviceDetails = e.detail;
+        $scope.showDeviceConnectivityStatus = true;
+        $scope.runDigestCycle();
+    });
+
+    $scope.connectedDeviceDetails = [];
+
+    /*
+    * Show the connected devices status
+     */
+    $scope.fetchDeviceStatus = function() {
+      ngDialog.close();
+      $scope.showDeviceConnectivityStatus = false;
+      $scope.connectedDeviceDetails = [];
+      cordova.exec(function(response) {
+        $scope.connectedDeviceDetails = response;
+        $scope.widthStyle = (response.length === 1) ? {
+          'width': '320px'
+        } : '';
+        ngDialog.open({
+          template: '/assets/partials/settings/rvDeviceStatus.html',
+          scope: $scope,
+          className: 'calendar-modal'
+        });
+      }, function(error) {}, 'RVDevicePlugin', 'getDevicesStates', []);
+    };
+
 
     $rootScope.updateSubMenu = function(idx, item) {
       if (item && item.submenu && item.submenu.length > 0) {
@@ -447,6 +488,11 @@ sntRover.controller('roverController', [
 
         if ($rootScope.paymentGateway === "CBA" && sntapp.cordovaLoaded) {
             doCBAPowerFailureCheck();
+        }
+        // for iPad we need to show the connected device status
+        if (sntapp.browser === 'rv_native' && sntapp.cordovaLoaded) {
+          $scope.isIpad = true;
+          $scope.fetchDeviceStatus();
         }
     };
 
@@ -563,6 +609,9 @@ sntRover.controller('roverController', [
             }
             else if (subMenu === 'changePassword') {
                 openUpdatePasswordPopup();
+            }
+            else if (subMenu === 'deviceStatus') {
+                $scope.fetchDeviceStatus();
             }
         };
 
