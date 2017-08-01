@@ -255,11 +255,14 @@
 
 
         <div class='device-details-view' ng-class='{"hidden":showDeviceDetails===""}' style='margin-top: 5%'>
+        
+            <input placeholder='Filter events' type='text' ng-model='eventFilter' style='position: absolute;right: 4%;top: 15%;background-color: lightgrey;'>
+
             <div class='device-view-cls'>
                 <span style='font-size: x-large; color:black'>{{getHotelName(deviceDetailsToShow.info.theme)}}, {{deviceDetailsToShow.workstation_name}}</span>
                 <!--span style='color:black; position: absolute;right: 2.25%;'>Filter: <input type='text' ng-model='deviceEventFilter'></span-->
                 <div class="list-group device-view">
-                    <a class="list-group-item" ng-repeat="evt in deviceDetailsToShow.events | limitTo:evtLimit track by $index">
+                    <a class="list-group-item" ng-repeat="evt in deviceDetailsToShow.events | limitTo:evtLimit | filter:eventFilter track by $index">
                         <div>
                             <div ng-click='showEvtDetails(evt, $index)'>
 

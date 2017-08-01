@@ -127,6 +127,13 @@ admin.controller('adAnalyticSetupCtrl', ['$scope', 'adAnalyticSetupSrv', '$state
     $scope.deviceDetailsToShow = {};
     $scope.evtLimit = 50;
     $scope.defaultEvtLimit = 50;
+    $scope.eventFilter = '';
+
+    $scope.$watch("eventFilter", function (newValue, oldValue) {
+        if ($scope.eventFilter.length > 2) {
+            $scope.evtLimit = $scope.deviceDetailsToShow.events.length;
+        }
+    });
 
     var limitStep = 25;
 
