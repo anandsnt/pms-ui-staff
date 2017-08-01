@@ -123,7 +123,7 @@
 
 		<form class="form float" ng-show='showStationDashboard'>	
 			<script src="https://apis.google.com/js/client:platform.js"></script>
-		    <fieldset class="holder left" ng-show="!isHotelAdmin">
+		    <fieldset class="" ng-show="!isHotelAdmin">
 				  <meta name="google-signin-client_id" content="864320523517-3knpgsou4qd4nd878s4rs3fffuvoo4gg.apps.googleusercontent.com">
 				    <meta name="google-signin-scope" content="https://www.googleapis.com/auth/analytics.readonly">
 				  
@@ -132,8 +132,6 @@
 			    <p id='sign-in-btn' class="g-signin2" data-onsuccess="onSigninSuccess" data-onfailure="onSignInFailure">Sign-In</p>
 
 			    <p id='sign-out-btn' style='position:absolute; top: 15%; left: 1%; display:none; ' class="g-signin" ng-click='signOut()'><button class="button blue">Google Sign-Out</button></p>
-
-
 
 
         <!--h1>Welcome SNT!</h1>
@@ -159,7 +157,6 @@
         </div-->
 
 
-
         <input style='position: absolute;right: 51%; top: 15%;' placeholder="From Date" type="text" id="datepicker-from"></p>
         <input style='position: absolute;right: 40%;top: 15%;' placeholder="To Date" type="text" id="datepicker-to">
         <button style='position: absolute;right: 35%;top: 15%; margin-left: 15px;' 
@@ -170,9 +167,8 @@
         <!-- Do not remove this header id, its used to inject new data on refresh calls -->
         <p id='header'></p>
         <!-- // -->
-        <div class="row row-of-hotels">
             <!--    TODO:  MOVE TO TEMPLATE   -->
-            <div class="col-lg-3 col-md-6" style='' ng-repeat="hotel in hotelList">
+            <!--div class="col-lg-3 col-md-6" style='' ng-repeat="hotel in hotelList">
                 <div class="panel panel-primary">
                     <div class="panel-heading" ng-class='{"all-good":hotel.status==="In-Order", "small-problem":hotel.status==="Out-of-Order", "no-bueno":hotel.status==="bad"}'>
                         <div class="row">
@@ -180,7 +176,7 @@
                                 <span>{{hotel.name.toUpperCase()}}</span>
                                 <i class="fa fa-laptop fa-5x"></i>
                                 <!-- Change Icon to ipad or pc based on type of kiosk, yotel's PC vs other ipads -->
-                            </div>
+                            <!--/div>
                             <div class="col-xs-9 text-right">
                                 <div class="large-text">{{hotel.devices.length}} online</div>
                                 <div>{{hotel.events.length}} Events Today!</div>
@@ -188,6 +184,10 @@
                             </div>
                         </div>
                     </div>
+
+
+
+
                     <a href="#" ng-click='viewHotelDetails(hotel)'>
                         <div class="panel-footer">
                             <span class="pull-left">View Info</span>
@@ -195,21 +195,71 @@
                             <div class="clearfix"></div>
                         </div>
                     </a>
+
+
+
                     <div ng-show='showHotelDetails === hotel.name'>
-                        <div ng-repeat="device in hotel.devices" class='hotel-device-item' ng-class='{"small-problem":device.status==="Out-of-Order", "no-bueno":device.status==="bad"}' ng-click='logDevice(device);viewDeviceDetails(device);'>
+                        <div ng-repeat="device in hotel.devices" class='hotel-device-item' ng-class='{"small-problem":device.status==="Out-of-Order", "no-bueno":device.status==="bad"}' ng-click='viewDeviceDetails(device);'>
                             {{device.workstation_name}} <span class='device-status-cls'>{{device.status}} <br><span style='font-size:xx-small; position: relative; top: -12px;left: -3%;'> {{device.info.lastUpdate}}</span>
                         </div>
                     </div>
                 </div>
-            </div>
+            </div-->
             <!--  //  TODO:  MOVE TO TEMPLATE   -->
-        </div>
-        <div class='device-details-view' ng-class='{"hidden":showDeviceDetails===""}'>
+         
+
+                <section ng-hide='showDeviceDetails!==""' class="">
+                    
+                    <table class="grid" style='padding-top: 5%'>
+                        <tbody>
+                            <tr ng-repeat="hotel in hotelList" > 
+                                <td ng-click="viewHotelDetails(hotel)" >
+                                    <a data-item="3" data-colspan="2" class="edit-data-inline"> {{hotel.name.toUpperCase()}}, {{hotel.devices.length}} online</a>
+
+                                    <div ng-show='showHotelDetails === hotel.name' ng-repeat="device in hotel.devices" class='station-device'> 
+                                        <div ng-class='{"small-problem":device.status==="Out-of-Order", "no-bueno":device.status==="bad"}' ng-click='viewDeviceDetails(device);' >
+
+                                            <a data-item="1" data-colspan="1" class="edit-data-inline" style=''> 
+
+                                                {{device.workstation_name}} 
+                                                <span class='device-status-cls' style='float:right'>
+                                                    {{device.status}} 
+                                                </span>
+                                                <br>
+                                                <span style='float:right'> 
+                                                    {{device.info.lastUpdate}}
+                                                </span>
+                                                <br>
+                                            </a>
+                                        </div> 
+                                        <hr> 
+                                    </div>
+
+                                </td>
+
+                            </tr>
+                        </tbody>
+
+
+                    </table>
+
+                </section>
+
+
+
+
+
+
+
+
+
+
+        <div class='device-details-view' ng-class='{"hidden":showDeviceDetails===""}' style='margin-top: 5%'>
             <div class='device-view-cls'>
                 <span style='font-size: x-large; color:black'>{{getHotelName(deviceDetailsToShow.info.theme)}}, {{deviceDetailsToShow.workstation_name}}</span>
                 <!--span style='color:black; position: absolute;right: 2.25%;'>Filter: <input type='text' ng-model='deviceEventFilter'></span-->
                 <div class="list-group device-view">
-                    <a class="list-group-item" ng-repeat="evt in deviceDetailsToShow.events track by $index">
+                    <a class="list-group-item" ng-repeat="evt in deviceDetailsToShow.events | limitTo:evtLimit track by $index">
                         <div>
                             <div ng-click='showEvtDetails(evt, $index)'>
                                 <i class="fa fa-fw" ng-class='{"fa-thumbs-down":evt.workstation_status==="out-of-order", "fa-thumbs-up":evt.workstation_status==="in-order"}'></i> {{evt.workstation_status}}
@@ -219,7 +269,7 @@
                                     </div>
                                     
 
-                                    <div class='event-details ' ng-show='showEvts===$index '>
+                                    <div class='event-details ' ng-show='showEvts===$index ' style='border-width: 1px;border-style: solid;border-radius: .5em;padding: 2px;'>
                                         <!-- instead of coding to specific params, 
                                              just dump anything sent from the json object in station/baseCtrl.js 
                                              *format Reasons and Activity items
@@ -251,13 +301,15 @@
                                             </div>
 
                                         </div>
-                                        <button ng-click='showEvtDetails(evt, $index) ' class='fa fa-long-arrow-up close-event ' ></button>
 
                                     </div>
+                                    <hr>
                                 </div>
 
 
                             </a>
+                            <a href ng-click="incrementLimit()" class='more-cls'>more</a>
+                            <a href ng-click="decrementLimit()" class='less-cls'>less</a>
                     </div>
 
                     

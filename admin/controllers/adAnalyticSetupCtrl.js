@@ -33,10 +33,9 @@ admin.controller('adAnalyticSetupCtrl', ['$scope', 'adAnalyticSetupSrv', '$state
 
     $scope.saveAnalyticSetup = function() {
 
-        var saveAnalyticSetupSuccessCallback = function(data) {
+        var saveAnalyticSetupSuccessCallback = function() {
             $scope.isLoading = false;
             $scope.$emit('hideLoader');
-
 
         };
         var unwantedKeys = ['available_trackers'];
@@ -48,7 +47,17 @@ admin.controller('adAnalyticSetupCtrl', ['$scope', 'adAnalyticSetupSrv', '$state
 
     $scope.showStationDashboard = false;
     $scope.toggleStationDashboard = function() {
-        $scope.showStationDashboard = !$scope.showStationDashboard;
+
+        if ($scope.showDeviceDetails !== '') {
+            $scope.showDeviceDetails = '';
+        } else {
+
+            $scope.showStationDashboard = !$scope.showStationDashboard;
+            if ($scope.showStationDashboard) {
+
+            }
+        }
+
     };
 
 
@@ -80,9 +89,9 @@ admin.controller('adAnalyticSetupCtrl', ['$scope', 'adAnalyticSetupSrv', '$state
 
         if (hotels[id]) {
             return hotels[id];
-        } else {
-            return id;
-        }
+        } 
+        return id;
+        
     };
 
     $scope.getHotelName = function(themeIdentifier) {
@@ -103,9 +112,9 @@ admin.controller('adAnalyticSetupCtrl', ['$scope', 'adAnalyticSetupSrv', '$state
 
 
             return name + ' (' + hotel_id + ')';
-        } else {
-            return 'unk';
-        }
+        } 
+        return 'unk';
+        
     };
 
     // $http.get("customers.php")
@@ -116,8 +125,21 @@ admin.controller('adAnalyticSetupCtrl', ['$scope', 'adAnalyticSetupSrv', '$state
     $scope.showHotelDetails = '';
     $scope.showDeviceDetails = '';
     $scope.deviceDetailsToShow = {};
+    $scope.evtLimit = 25;
+
+    var limitStep = 25;
+
+    $scope.limit = limitStep;
+    $scope.incrementLimit = function() {
+        $scope.evtLimit += limitStep;
+    };
+    $scope.decrementLimit = function() {
+        $scope.evtLimit -= limitStep;
+    };
 
     $scope.viewDeviceDetails = function(device) {
+        $scope.showEvts = '';
+        $scope.evtLimit = 25;
 
         if ($scope.showDeviceDetails === device.name) {
             $scope.showDeviceDetails = '';
@@ -138,12 +160,11 @@ admin.controller('adAnalyticSetupCtrl', ['$scope', 'adAnalyticSetupSrv', '$state
 
     };
 
-    $scope.hideEvtDetails = function(index) {
+    $scope.hideEvtDetails = function() {
         $scope.showEvts = '';
     };
 
     $scope.viewHotelDetails = function(hotel) {
-        console.log(hotel);
 
         if ($scope.showHotelDetails === hotel.name) {
             $scope.showHotelDetails = '';
@@ -156,8 +177,8 @@ admin.controller('adAnalyticSetupCtrl', ['$scope', 'adAnalyticSetupSrv', '$state
     $scope.$on('CLEAR_SCREEN', function() {
         $scope.hotelList = [];
     });
+    
     $scope.showHotelInfo = function(hotel) {
-        console.log(hotel);
 
         for (var i in $scope.hotelList) {
             if ($scope.hotelList[i].name === hotel.name) {
@@ -165,9 +186,6 @@ admin.controller('adAnalyticSetupCtrl', ['$scope', 'adAnalyticSetupSrv', '$state
             }
         }
         return false;
-    };
-    $scope.logDevice = function(d) {
-        console.log(d);
     };
 
     $scope.$on('UPDATE_DATA', function() {
@@ -215,12 +233,12 @@ admin.controller('adAnalyticSetupCtrl', ['$scope', 'adAnalyticSetupSrv', '$state
         ];
 
         for (var i in monthNames) {
-            if (monthNames[i].toLowerCase() == mo.toLowerCase() || monthNames[i].toLowerCase().indexOf(mo.toLowerCase()) != -1) { // exact or not
+            if (monthNames[i].toLowerCase() === mo.toLowerCase() || monthNames[i].toLowerCase().indexOf(mo.toLowerCase()) !== -1) { // exact or not
                 if (i < 10) {
                     return '0' + i;
-                } else {
-                    return i;
-                }
+                } 
+                return i;
+                
             }
         }
     };
@@ -238,56 +256,6 @@ admin.controller('adAnalyticSetupCtrl', ['$scope', 'adAnalyticSetupSrv', '$state
         var today = yr + '-' + month + '-' + 25;
 
         return today;
-    };
-
-    var makeApiCall = function(pagetoken) {
-        var today = getTodayAsFormattedDateString();
-
-
-        var params = {
-            'ids': profile.El,
-            'start-date': today,
-            'end-date': today,
-            'start-index': 10,
-            'metrics': 'ga:sessions',
-            'dimensions': 'ga:source,ga:medium,ga:browser,ga:city,ga:date,ga:hour,ga:minute,ga:pagepath', // TODO: try with hour and minute here
-
-            'sort': '-ga:sessions,ga:source',
-            // 'filters': 'ga:hour==12',// TODO: filter by Hour or minute, near real-time would be < 5 min intervals
-            'max-results': 5000
-        };
-
-        if (pagetoken) {
-            params.pageToken = pagetoken;
-        }
-        // console.log('request: ',params);
-
-        gapi.client.analytics.data.ga.get(params);
-
-        /*
-            To fetch specific from hour, or filter based on hour(s),
-            try:
-            
-            prifileId = "ga:xxxxxx" -  viewId
-            startDate = "2016-10-18"
-            endDate = "2016-10-18"
-            metrics= "ga:sessions,ga:users"
-            dims="ga:dimension5,ga:city,ga:browser,ga:date,ga:hour,ga:minute"
-            fltrs="ga:hour==02;ga:minute=10" 
-             
-            GaData result = googleAnalytics.data().ga().get(profileId, startDate, endDate, metrics).setDimensions(dims).setFilters(fltrs);
-
-         */
-
-        // console.log('user profile', profile);
-        initV2Stuff();
-    };
-
-    // 
-    // Handle all the google analytics (v3) authorization work.
-    // 
-    var loadAnalyticsV3Lib = function() {
-        gapi.client.load('analytics', 'v3', makeApiCall);
     };
 
     // metricLabelIndex is used to match the metric label with its value, 
@@ -515,7 +483,8 @@ admin.controller('adAnalyticSetupCtrl', ['$scope', 'adAnalyticSetupSrv', '$state
                 }
             }
 
-
+            $scope.isLoading = false;
+            $scope.$emit('hideLoader');
         }
     };
 
@@ -632,7 +601,6 @@ admin.controller('adAnalyticSetupCtrl', ['$scope', 'adAnalyticSetupSrv', '$state
 
     var displayResults = function(response) {
         console.warn('display results called');
-        // makeApiCall();// Moved to v3 call, remove from here?
         queryEvents();
 
     };
@@ -708,6 +676,10 @@ admin.controller('adAnalyticSetupCtrl', ['$scope', 'adAnalyticSetupSrv', '$state
     };
 
     $scope.queryEvents = function() {
+
+        $scope.isLoading = true;
+        $scope.$emit('showLoader');
+
         var requestParams = getEventRequestParams();
         // 
         // fetch all pages of data first,
@@ -767,9 +739,6 @@ admin.controller('adAnalyticSetupCtrl', ['$scope', 'adAnalyticSetupSrv', '$state
         request++;
         gapi.client.request(requestParams).then(onRequestSuccess, onRequestSuccess);
     };
-
-    console.warn('no errors till here');
-
 
     $scope.signOut = function() {
         console.warn(': signOut: ');
