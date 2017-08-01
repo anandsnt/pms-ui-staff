@@ -46,10 +46,11 @@
 	                    <li>
 	                        <div class="battery">
 	                           <!--  <em class="battery-status text-{'green' if charged/charging or 'red' if discharging}" ng-class="{'green': device.battery_state === 'Charged' || device.battery_state === 'Charging',' red': device.battery_state === 'Discharging'}">{{device.battery_state}}</em> -->
-	                            <strong class="battery-value text" ng-class="{'red': device.battery_percentage < 25 , 'orange': device.battery_percentage >= 25 && device.battery_percentage < 50, 'green': device.battery_percentage >=50}">{{device.battery_percentage}}%</strong>
-	                            <div class="battery-bar" ng-class="{'background-red': device.battery_percentage < 25 , 'background-orange': device.battery_percentage < 50, 'background-green': device.battery_percentage >=50}">
+	                            <strong class="battery-value text" ng-class="{'red': device.battery_percentage < 25 , 'orange': device.battery_percentage >= 25 && device.battery_percentage < 50, 'green': device.battery_percentage >=50}" ng-if="device.device_connection_sate === 'Connected'">{{device.battery_percentage}}%</strong>
+	                            <div class="battery-bar" ng-class="{'background-red': device.battery_percentage < 25 , 'background-orange': device.battery_percentage < 50, 'background-green': device.battery_percentage >=50}" ng-if="device.device_connection_sate === 'Connected'">
 	                                <span class="battery-graph" style="width: {{device.battery_percentage}}%;"></span>
 	                            </div>
+	                            <span ng-if="device.device_connection_sate !== 'Connected'">NA</span>
 	                        </div>
 	                    </li>
 	                    <li ng-class="{'text-grey': device.library_name == 'NA'}">{{device.library_name}}</li>
