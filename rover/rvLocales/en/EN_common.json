@@ -68,6 +68,7 @@
     "DEVICES" :"Devices",
     "DEVICE_TYPE":"Type",
     "DEVICE_NAME": "Device Name",
+    "DEVICE_ID": "Device Id",
     "DEVICE_BATTERY": "Battery",
     "DEVICE_LIBRARY_NAME": "Library Name",
     "DEVICE_LIBRARY_VERSION": "Library Ver.",

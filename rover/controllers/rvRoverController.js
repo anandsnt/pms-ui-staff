@@ -374,7 +374,6 @@ sntRover.controller('roverController', [
     * Show the connected devices status
      */
     $scope.fetchDeviceStatus = function() {
-      ngDialog.close();
       $scope.showDeviceConnectivityStatus = false;
       $scope.connectedDeviceDetails = [];
       cordova.exec(function(response) {
@@ -387,9 +386,18 @@ sntRover.controller('roverController', [
           scope: $scope,
           className: 'calendar-modal'
         });
+        $scope.runDigestCycle();
       }, function(error) {}, 'RVDevicePlugin', 'getDevicesStates', []);
     };
 
+    $scope.refreshDeviceStatus = function() {
+      $scope.$emit("showLoader");
+      $timeout(function() {
+        ngDialog.close();
+        $scope.$emit("hideLoader");
+        $scope.fetchDeviceStatus();
+      }, 1000);
+    };
 
     $rootScope.updateSubMenu = function(idx, item) {
       if (item && item.submenu && item.submenu.length > 0) {
