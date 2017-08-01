@@ -1,8 +1,9 @@
-admin.controller('ADEmvTerminalDetailsCtrl', ['$scope', '$rootScope', 'ADEmvTerminalsSrv', '$state', '$stateParams', '$timeout',
-    function ($scope, $rootScope, ADEmvTerminalsSrv, $state, $stateParams, $timeout) {
+admin.controller('ADEmvTerminalDetailsCtrl', ['$scope', '$rootScope', 'ADEmvTerminalsSrv', '$state', '$stateParams', '$timeout', 'ngDialog',
+    function ($scope, $rootScope, ADEmvTerminalsSrv, $state, $stateParams, $timeout, ngDialog) {
         /*
         * Controller class for Room List
         */
+        var pinpadCommandsRequiringConfirmation = ['RESETPINPAD', 'PPREBOOT', 'PPRESET'];
 
         $scope.errorMessage = '';
         $scope.mod = 'edit';
@@ -31,6 +32,15 @@ admin.controller('ADEmvTerminalDetailsCtrl', ['$scope', '$rootScope', 'ADEmvTerm
         var fetchFailedOfItemDetails = function (errorMessage) {
             $scope.$emit('hideLoader');
             $scope.errorMessage = errorMessage;
+        };
+
+        var promptConfirmation = function () {
+            ngDialog.open({
+                template: '/assets/partials/emvTerminals/adEMVPinpadCommandWarning.html',
+                scope: $scope,
+                class: '',
+                closeByDocument: true
+            });
         };
 
         if ($scope.mod === 'edit') {
@@ -66,7 +76,17 @@ admin.controller('ADEmvTerminalDetailsCtrl', ['$scope', '$rootScope', 'ADEmvTerm
             }
         };
 
-        $scope.runTerminalCommand = function () {
+        $scope.runTerminalCommand = function (confirmedFromDialog) {
+            if (!confirmedFromDialog &&
+                pinpadCommandsRequiringConfirmation.indexOf($scope.selectedTerminalCommand) >= 0) {
+                promptConfirmation();
+                return;
+            }
+
+            if (confirmedFromDialog) {
+                ngDialog.close();
+            }
+
             $scope.pinpadData = {};
 
             $scope.callAPI(ADEmvTerminalsSrv.runTerminalCommand, {

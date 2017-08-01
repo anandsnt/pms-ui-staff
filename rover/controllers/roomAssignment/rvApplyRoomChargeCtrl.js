@@ -146,8 +146,7 @@ sntRover.controller('rvApplyRoomChargeCtrl', [
 			.updateResrvationForConfirmationNumber(reservationData.confirmation_num, $scope.reservationData);
 
 		// CICO-10152 : Upto here..
-		$scope.closeDialog();
-		$scope.goToNextView();
+		$scope.goToNextView(true);
 
 	};
 
@@ -165,9 +164,11 @@ sntRover.controller('rvApplyRoomChargeCtrl', [
 				"is_preassigned": $scope.assignedRoom.is_preassigned
 			},
             successCallBack: $scope.successCallbackUpgrade,
-            failureCallBack: $scope.failureCallbackUpgrade
+            failureCallBack: $scope.failureCallbackUpgrade,
+            loader: 'NONE'
         };
 
+        $scope.$emit('showLoader');
         $scope.callAPI(RVUpgradesSrv.selectUpgrade, options);
 	};
 
