@@ -53,9 +53,8 @@ admin.controller('adAnalyticSetupCtrl', ['$scope', 'adAnalyticSetupSrv', '$state
         } else {
 
             $scope.showStationDashboard = !$scope.showStationDashboard;
-            if ($scope.showStationDashboard) {
-
-            }
+            // if ($scope.showStationDashboard) {
+            // }
         }
 
     };
@@ -89,9 +88,9 @@ admin.controller('adAnalyticSetupCtrl', ['$scope', 'adAnalyticSetupSrv', '$state
 
         if (hotels[id]) {
             return hotels[id];
-        } 
+        }
         return id;
-        
+
     };
 
     $scope.getHotelName = function(themeIdentifier) {
@@ -112,9 +111,9 @@ admin.controller('adAnalyticSetupCtrl', ['$scope', 'adAnalyticSetupSrv', '$state
 
 
             return name + ' (' + hotel_id + ')';
-        } 
+        }
         return 'unk';
-        
+
     };
 
     // $http.get("customers.php")
@@ -129,7 +128,7 @@ admin.controller('adAnalyticSetupCtrl', ['$scope', 'adAnalyticSetupSrv', '$state
     $scope.defaultEvtLimit = 50;
     $scope.eventFilter = '';
 
-    $scope.$watch("eventFilter", function (newValue, oldValue) {
+    $scope.$watch('eventFilter', function() {
         if ($scope.eventFilter.length > 2) {
             $scope.evtLimit = $scope.deviceDetailsToShow.events.length;
         }
@@ -185,7 +184,7 @@ admin.controller('adAnalyticSetupCtrl', ['$scope', 'adAnalyticSetupSrv', '$state
     $scope.$on('CLEAR_SCREEN', function() {
         $scope.hotelList = [];
     });
-    
+
     $scope.showHotelInfo = function(hotel) {
 
         for (var i in $scope.hotelList) {
@@ -205,12 +204,6 @@ admin.controller('adAnalyticSetupCtrl', ['$scope', 'adAnalyticSetupSrv', '$state
         $scope.loading = false;
     });
 
-    $scope.queryEvents = function() {
-        $scope.loading = true;
-        $scope.hotelList = [];
-        $scope.$apply();
-        queryEvents();
-    };
 
     $(function() {
         $('#datepicker-from').datepicker();
@@ -244,12 +237,13 @@ admin.controller('adAnalyticSetupCtrl', ['$scope', 'adAnalyticSetupSrv', '$state
             if (monthNames[i].toLowerCase() === mo.toLowerCase() || monthNames[i].toLowerCase().indexOf(mo.toLowerCase()) !== -1) { // exact or not
                 if (i < 10) {
                     return '0' + i;
-                } 
+                }
                 return i;
-                
+
             }
         }
     };
+    /* 
     var getTodayAsFormattedDateString = function() {
         var t = new Date();
         var to = t.toString();
@@ -260,11 +254,10 @@ admin.controller('adAnalyticSetupCtrl', ['$scope', 'adAnalyticSetupSrv', '$state
             yr = tod[3];
 
         // var today = yr + '-' + month + '-' + day;
-
         var today = yr + '-' + month + '-' + 25;
-
         return today;
     };
+    */
 
     // metricLabelIndex is used to match the metric label with its value, 
     // the response data is returned in the same order as its passed
@@ -341,7 +334,15 @@ admin.controller('adAnalyticSetupCtrl', ['$scope', 'adAnalyticSetupSrv', '$state
         //      events: [],
         //      info: {latest event JSON info}
         // }
-        var e, hotel, station, station_in_list; // station = device associated with the event
+        var e, 
+            hotel, 
+            station, 
+            station_in_list, 
+            currentDeviceInfo, 
+            latestDeviceEvt, 
+            station_in_list, 
+            hotelDevice, 
+            hotelDeviceEvtTime; // station = device associated with the event
 
         // list of hotels for UI to loop through and render a hotel list
         // so users can select by hotel > then device
@@ -356,12 +357,12 @@ admin.controller('adAnalyticSetupCtrl', ['$scope', 'adAnalyticSetupSrv', '$state
             }
 
             hotel = e.theme;
-            station = e.workstation_name ? e.workstation_name.replace(/\s+/g, '') : '',
-                latestDeviceEvt = {},
-                hotelDevice = {},
-                hotelDeviceEvtTime = '',
-                station_in_list = false,
-                currentDeviceInfo = {};
+            station = e.workstation_name ? e.workstation_name.replace(/\s+/g, '') : '';
+            latestDeviceEvt = {};
+            hotelDevice = {};
+            hotelDeviceEvtTime = '';
+            station_in_list = false;
+            currentDeviceInfo = {};
 
             if (!$scope.deviceByHotel[hotel]) {
 
@@ -469,7 +470,8 @@ admin.controller('adAnalyticSetupCtrl', ['$scope', 'adAnalyticSetupSrv', '$state
                 aT = new Date(a.info.kiosk_time);
                 bT = new Date(b.info.kiosk_time);
 
-                aTime = aT.valueOf(), bTime = bT.valueOf();
+                aTime = aT.valueOf();
+                bTime = bT.valueOf();
 
                 return aTime - bTime;
             });
@@ -483,7 +485,8 @@ admin.controller('adAnalyticSetupCtrl', ['$scope', 'adAnalyticSetupSrv', '$state
                         aT = new Date(a.kiosk_time);
                         bT = new Date(b.kiosk_time);
 
-                        aTime = aT.valueOf(), bTime = bT.valueOf();
+                        aTime = aT.valueOf();
+                        bTime = bT.valueOf();
 
                         return aTime - bTime;
                     });
@@ -519,15 +522,9 @@ admin.controller('adAnalyticSetupCtrl', ['$scope', 'adAnalyticSetupSrv', '$state
 
 
     var renderEventData = function(events) {
-        var el = angular.element(document.querySelector('#header'));
-
-        var wrappedResult = angular.element(el)[0];
-
         var scope = getScope();
 
         scope.renderEventData = events;
-
-        // console.log('render events: ',events);
 
         filterByHotel(events, scope);
 
@@ -574,42 +571,6 @@ admin.controller('adAnalyticSetupCtrl', ['$scope', 'adAnalyticSetupSrv', '$state
             console.warn('an error occurred, invalid data');
             console.warn(data);
         }
-
-    };
-
-    var initV2Stuff = function() {
-        // console.log('init v2 stuff now...');
-
-        function start() {
-            // 2. Initialize the JavaScript client library.
-            gapi.client.init({
-                'apiKey': API_KEY,
-                // Your API key will be automatically added to the Discovery Document URLs.
-                'discoveryDocs': ['https://people.googleapis.com/$discovery/rest'],
-                // clientId and scope are optional if auth is not required.
-                'clientId': WEB_CLIENT_ID,
-                'scope': 'profile'
-            }).then(function() {
-                // 3. Initialize and make the API request.
-                return gapi.client.people.people.get({
-                    'resourceName': 'people/me',
-                    'requestMask.includeField': 'person.names'
-                });
-            }).then(function(response) {
-                //  console.log('with results now');
-                console.log(response.result);
-            }, function(reason) {
-                console.warn(reason);
-                console.warn('Error: ' + reason.error.message);
-            });
-        }
-        // 1. Load the JavaScript client library.
-        gapi.load('client', start);
-    };
-
-    var displayResults = function(response) {
-        console.warn('display results called');
-        queryEvents();
 
     };
 
@@ -685,6 +646,8 @@ admin.controller('adAnalyticSetupCtrl', ['$scope', 'adAnalyticSetupSrv', '$state
 
     $scope.queryEvents = function() {
 
+        $scope.hotelList = [];
+        $scope.$apply();
         $scope.isLoading = true;
         $scope.$emit('showLoader');
 
