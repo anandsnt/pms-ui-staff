@@ -125,7 +125,8 @@ admin.controller('adAnalyticSetupCtrl', ['$scope', 'adAnalyticSetupSrv', '$state
     $scope.showHotelDetails = '';
     $scope.showDeviceDetails = '';
     $scope.deviceDetailsToShow = {};
-    $scope.evtLimit = 25;
+    $scope.evtLimit = 50;
+    $scope.defaultEvtLimit = 50;
 
     var limitStep = 25;
 
@@ -139,7 +140,7 @@ admin.controller('adAnalyticSetupCtrl', ['$scope', 'adAnalyticSetupSrv', '$state
 
     $scope.viewDeviceDetails = function(device) {
         $scope.showEvts = '';
-        $scope.evtLimit = 25;
+        $scope.evtLimit = $scope.defaultEvtLimit;
 
         if ($scope.showDeviceDetails === device.name) {
             $scope.showDeviceDetails = '';
