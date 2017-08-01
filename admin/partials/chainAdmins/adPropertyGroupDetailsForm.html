@@ -15,7 +15,7 @@
         <label class="no-margin">{{'HOTELS_IN_GROUP' | translate}} <strong>*</strong></label>
         <em class="entry-description">Selecting a hotel from another group will remove it from that group once you save changes.</em>
         <div class="boxes col3">
-            <label class="checkbox inline with-description" ng-repeat="option in prefetchData.chain_hotels" ng-class="{ 'checked' : option.is_checked, 'disabled': option.is_already_linked_to_group }">
+            <label class="checkbox inline with-description with-margin" ng-repeat="option in prefetchData.chain_hotels" ng-class="{ 'checked' : option.is_checked, 'disabled': option.is_already_linked_to_group }">
                 <span class="icon-form icon-checkbox" ng-class="{ 'checked' : (option.is_checked || option.is_already_linked_to_group) }"></span>
                 <input type="checkbox" ng-click="checkBoxClicked($index)" ng-class="{ 'checked' : option.is_checked, 'disabled': option.is_already_linked_to_group }" ng-model="option.is_checked">
                 <span>{{option.name}}</span>
@@ -24,7 +24,7 @@
         </div>
     </div>
 
-    <div class="actions">
+    <div class="actions float">
         <button type="button" ng-click="clickedCancel()" class="button blank">Cancel</button>
         <button type="button" ng-click="clickedSave()" class="button green">Save</button>
     </div>
