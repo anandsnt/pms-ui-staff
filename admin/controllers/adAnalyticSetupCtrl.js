@@ -710,10 +710,11 @@ admin.controller('adAnalyticSetupCtrl', ['$scope', 'adAnalyticSetupSrv', '$state
                 
 
                 $scope.loading = false;
-                $scope.$digest();
+                $scope.signedIn = false;
+                $scope.$emit('hideLoader');
+                $scope.$apply();
                 setTimeout(function() {
                     alert('Please sign into google');
-                    $scope.signedIn = false;
                 }, 500);
             }
         };
@@ -728,6 +729,7 @@ admin.controller('adAnalyticSetupCtrl', ['$scope', 'adAnalyticSetupSrv', '$state
 
         auth2.signOut().then(function() {
             console.log('User signed out.');
+            $scope.signedIn = false;
             $('#sign-out-btn').hide();
             $('#sign-in-btn').show();
             
@@ -749,6 +751,7 @@ function onSigninSuccess(profileObject) {
 
     scope.signedIn = true;
     scope.$emit('CLEAR_SCREEN');
+    scope.$apply();
 }
 
 function onSignInFailure() {
