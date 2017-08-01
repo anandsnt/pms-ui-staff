@@ -27,6 +27,7 @@
 	            <li translate>DEVICE_NAME</li>
 	            <li translate>STATUS</li>
 	            <li translate>DEVICE_BATTERY</li>
+	            <li translate>DEVICE_LIBRARY_NAME</li>
 	            <li translate>DEVICE_LIBRARY_VERSION</li>
 	            <li translate>DEVICE_FIRMWARE_VERSION</li>
 	            <li translate>DEVICE_SERIAL_NO</li>
@@ -49,6 +50,7 @@
 	                            </div>
 	                        </div>
 	                    </li>
+	                    <li ng-class="{'text-grey': device.library_version == 'NA'}">{{device.library_name}}</li>
 	                    <li ng-class="{'text-grey': device.library_version == 'NA'}">{{device.library_version}}</li>
 	                    <li ng-class="{'text-grey': device.firmware_version == 'NA'}">{{device.firmware_version}}</li>
 	                    <li ng-class="{'text-grey': device.serial_number == 'NA'}">{{device.serial_number}}</li>
