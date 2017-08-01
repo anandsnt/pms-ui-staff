@@ -198,7 +198,7 @@ admin.controller('adAnalyticSetupCtrl', ['$scope', 'adAnalyticSetupSrv', '$state
     $scope.$on('UPDATE_DATA', function() {
         // update response returned,
         // update chart/visualizations
-        $scope.$apply();
+        $scope.$digest();
     });
     $scope.$on('LOADING_COMPLETE', function() {
         $scope.loading = false;
@@ -456,10 +456,10 @@ admin.controller('adAnalyticSetupCtrl', ['$scope', 'adAnalyticSetupSrv', '$state
         // 
         console.info($scope.hotelList);
         console.log(':: filterByHotel, COMPLETE::');
-        sortHotelEvents($scope);
+        sortHotelEvents();
     };
 
-    var sortHotelEvents = function($scope) {
+    var sortHotelEvents = function() {
         var hotel, device, aT, bT, aTime, bTime;
 
         for (var a in $scope.deviceByHotel) {
@@ -492,10 +492,11 @@ admin.controller('adAnalyticSetupCtrl', ['$scope', 'adAnalyticSetupSrv', '$state
                     device.events.reverse();
                 }
             }
-
-            $scope.isLoading = false;
-            $scope.$emit('hideLoader');
         }
+
+        $scope.isLoading = false;
+        $scope.$emit('hideLoader');
+        $scope.$apply();
     };
 
 
@@ -525,7 +526,7 @@ admin.controller('adAnalyticSetupCtrl', ['$scope', 'adAnalyticSetupSrv', '$state
 
         $scope.renderEventData = events;
 
-        filterByHotel(events, scope);
+        filterByHotel(events, $scope);
 
         $scope.$emit('LOADING_COMPLETE');
         $scope.$emit('UPDATE_DATA');
@@ -644,7 +645,7 @@ admin.controller('adAnalyticSetupCtrl', ['$scope', 'adAnalyticSetupSrv', '$state
     $scope.queryEvents = function() {
 
         $scope.hotelList = [];
-        $scope.$apply();
+        // $scope.$digest();
         $scope.isLoading = true;
         $scope.$emit('showLoader');
 
@@ -696,7 +697,7 @@ admin.controller('adAnalyticSetupCtrl', ['$scope', 'adAnalyticSetupSrv', '$state
                 
 
                 $scope.loading = false;
-                $scope.$apply();
+                $scope.$digest();
                 setTimeout(function() {
                     alert('Please sign into google');
                     $scope.signedIn = false;
@@ -738,10 +739,10 @@ function onSigninSuccess(profileObject) {
 }
 
 function onSignInFailure() {
+    var scope = getScope();
     console.warn('sign-in failed');
     scope.signedIn = false;
     console.info(arguments);
-    var scope = getScope();
 
     scope.$emit('CLEAR_SCREEN');
     scope.$emit('UPDATE_DATA');
