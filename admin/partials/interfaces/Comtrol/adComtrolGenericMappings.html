@@ -27,7 +27,8 @@
                                               required="yes"
                                               list="state.extTypes"
                                               label="{{'EXTERNAL_TYPE' | translate}}"
-                                              class="full-width">
+                                              class="full-width"
+                                              change-handler="onChangeExternalType">
                             </ad-dropdown-name>
                             <ad-dropdown-name label-in-drop-down="{{'SELECT_CHARGE_CODE_PLACEHOLDER' | translate}}"
                                               savemodel="state.new.charge_code_name"
@@ -40,7 +41,7 @@
                                               class="full-width">
                             </ad-dropdown-name>
                         </fieldset>
-                        <fieldset class="holder right float">
+                        <fieldset class="holder right float" ng-if="state.new.external_type !== 'tip_charge_code'">
                             <ad-textbox ng-if="state.new.external_type !== 'call_accounting'"
                                         styleclass="full-width" value="state.new.external_code"
                                         label="{{'EXTERNAL_CODE' | translate}}"
@@ -131,7 +132,9 @@
                                                           required="yes"
                                                           list="state.extTypes"
                                                           label="{{'EXTERNAL_TYPE' | translate}}"
-                                                          class="full-width">
+                                                          class="full-width"
+                                                          change-handler="onChangeMappingExternalType"
+                                                          change-handler-param="mapping">
                                         </ad-dropdown-name>
                                         <ad-dropdown-name label-in-drop-down="{{'SELECT_CHARGE_CODE_PLACEHOLDER' | translate}}"
                                                           savemodel="mapping.charge_code_name"
@@ -145,12 +148,12 @@
                                         </ad-dropdown-name>
                                     </fieldset>
                                     <fieldset class="holder right float">
-                                        <ad-textbox ng-if="mapping.external_type !== 'call_accounting'"
+                                        <ad-textbox ng-if="mapping.external_type !== 'tip_charge_code' && mapping.external_type !== 'call_accounting'"
                                                     styleclass="full-width" value="mapping.external_code"
                                                     label="{{'EXTERNAL_CODE' | translate}}"
                                                     required="yes"
                                                     placeholder="{{'EXTERNAL_CODE_PLACEHOLDER' | translate}}"></ad-textbox>
-                                        <ad-dropdown-name ng-if="mapping.external_type === 'call_accounting'"
+                                        <ad-dropdown-name ng-if="mapping.external_type !== 'tip_charge_code' && mapping.external_type === 'call_accounting'"
                                                           label-in-drop-down="{{'EXTERNAL_CODE_PLACEHOLDER' | translate}}"
                                                           savemodel="mapping.external_code"
                                                           valueproperty="code"
