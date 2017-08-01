@@ -47,62 +47,42 @@
             <fieldset class="" ng-show="!isHotelAdmin">
                 <meta name="google-signin-client_id" content="864320523517-3knpgsou4qd4nd878s4rs3fffuvoo4gg.apps.googleusercontent.com">
                 <meta name="google-signin-scope" content="https://www.googleapis.com/auth/analytics.readonly">
-                <h1 ng-show='!signedIn'>Please Sign In</h1>
-                <!-- The Sign-in button. This will run `queryReports()` on success. -->
-                <p id='sign-in-btn' class="g-signin2" data-onsuccess="onSigninSuccess" data-onfailure="onSignInFailure">Sign-In</p>
-                <p id='sign-out-btn' style='position:absolute; top: 15%; left: 1%; display:none; ' class="g-signin" ng-click='signOut()'>
-                    <button class="button blue">Google Sign-Out</button>
-                </p>
-                <!--h1>Welcome SNT!</h1>
-        <h3>From here you can check the status of Hotel Zest Station sessions, and gather some information for support and diagnostics
-        <br> If you haven't already done so, sign-in to Google using the button at the bottom-right of the screen, this will check your permissions see if you're allowed to view the analytic data or not.
-        </h3><br>
-        <h3>Questions? Contact one of the developers at jaguars@stayntouch.com</h3-->
-                <!--div ng-click='queryEvents()' class='abcRioButtonContentWrapper'>
-            <span class='refresh-btn-cls'>
-                    <svg class='refresh-svg' height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M19 8l-4 4h3c0 3.31-2.69 6-6 6-1.01 0-1.97-.25-2.8-.7l-1.46 1.46C8.97 19.54 10.43 20 12 20c4.42 0 8-3.58 8-8h3l-4-4zM6 12c0-3.31 2.69-6 6-6 1.01 0 1.97.25 2.8.7l1.46-1.46C15.03 4.46 13.57 4 12 4c-4.42 0-8 3.58-8 8H1l4 4 4-4H6z"/>
-                        <path d="M0 0h24v24H0z" fill="none"/>
-                    </svg>
-                </span>
-
-                <span class='refresh-btn-cls'>
-
-                    <svg class='refresh-svg' height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M19 8l-4 4h3c0 3.31-2.69 6-6 6-1.01 0-1.97-.25-2.8-.7l-1.46 1.46C8.97 19.54 10.43 20 12 20c4.42 0 8-3.58 8-8h3l-4-4zM6 12c0-3.31 2.69-6 6-6 1.01 0 1.97.25 2.8.7l1.46-1.46C15.03 4.46 13.57 4 12 4c-4.42 0-8 3.58-8 8H1l4 4 4-4H6z"/>
-                        <path d="M0 0h24v24H0z" fill="none"/>
-                    </svg>
-                </span>
-        </div-->
-                <input style='position: absolute;right: 51%; top: 15%;' placeholder="From Date" type="text" id="datepicker-from">
-                </p>
-                <input style='position: absolute;right: 40%;top: 15%;' placeholder="To Date" type="text" id="datepicker-to">
-
-                <button style='position: absolute;right: 35%;top: 15%; margin-left: 15px;' class="button green" ng-click='searchByDate()'>Search</button>
-                <label class="radio" style='margin-top: 5%'>
-                    <span class="icon-form icon-radio" ng-class="{'checked': VIEW_ID_SELECTED =='PMS_PRODUCTION'}"></span>
-                    <input name="audience" value="PMS_PRODUCTION" type="radio" ng-model="VIEW_ID_SELECTED"/>
-                    <span>Production</span>
-                </label>
-                <label class="radio" style='margin-bottom: -5%'>
-                    <span class="icon-form icon-radio" ng-class="{'checked': VIEW_ID_SELECTED =='PMS_DEV'}"></span>
-                    <input name="audience" value="PMS_DEV" type="radio" ng-model="VIEW_ID_SELECTED"/>
-                    <span>Dev/Release</span>
-                </label>
-
+                <fieldset class="holder left">
+                    <h1 ng-show='!signedIn'>Please Sign In</h1>
+                    <!-- The Sign-in button. This will run `queryReports()` on success. -->
+                    <p id='sign-in-btn' class="g-signin2" data-onsuccess="onSigninSuccess" data-onfailure="onSignInFailure">Sign-In</p>
+                    <p id='sign-out-btn' style='display:none; ' class="g-signin" ng-click='signOut()'>
+                        <button class="button blue">Google Sign-Out</button>
+                    </p>
+                    <label class="radio" style='margin-top: 5%'>
+                        <span class="icon-form icon-radio" ng-class="{'checked': VIEW_ID_SELECTED =='PMS_PRODUCTION'}"></span>
+                        <input name="audience" value="PMS_PRODUCTION" type="radio" ng-model="VIEW_ID_SELECTED" />
+                        <span>Production</span>
+                    </label>
+                    <label class="radio" style='margin-bottom: -5%'>
+                        <span class="icon-form icon-radio" ng-class="{'checked': VIEW_ID_SELECTED =='PMS_DEV'}"></span>
+                        <input name="audience" value="PMS_DEV" type="radio" ng-model="VIEW_ID_SELECTED" />
+                        <span>Dev/Release</span>
+                    </label>
+                </fieldset>
+                <fieldset class="holder right">
+                    <div style='display: -webkit-box;'>
+                        <input placeholder="From Date" type="text" id="datepicker-from">
+                        </p>
+                        <input placeholder="To Date" type="text" id="datepicker-to">
+                        <button class="button green" ng-click='searchByDate()'>Search</button>
+                    </div>
+                </fieldset>
                 <div class='lmask' ng-click='clickedMask()' ng-show='showDeviceDetails!==""'></div>
-
-
                 <div class='loader' ng-show='loading'></div>
                 <!-- Do not remove this header id, its used to inject new data on refresh calls -->
                 <p id='header'></p>
                 <section ng-hide='showDeviceDetails!==""' class="">
-                    <table class="grid" style='padding-top: 5%'>
+                    <table class="grid">
                         <tbody>
                             <tr ng-repeat="hotel in hotelList">
                                 <td ng-click="viewHotelDetails(hotel)">
                                     <a data-item="3" data-colspan="2" class="edit-data-inline"> {{hotel.name.toUpperCase()}}, {{hotel.devices.length}} online</a>
-
                                     <div ng-show='showHotelDetails === hotel.name' ng-repeat="device in hotel.devices" class='station-device'>
                                         <div ng-class='{"small-problem":device.status==="Out-of-Order", "no-bueno":device.status==="bad"}' ng-click='viewDeviceDetails(device);'>
                                             <a data-item="1" data-colspan="1" class="edit-data-inline" style=''> 
