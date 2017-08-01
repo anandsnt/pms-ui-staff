@@ -44,7 +44,7 @@
                 </div>
             </div>
 
-            <div class="entry property">
+            <div class="entry property" ng-show="contactInformation.is_global_enabled">
                 <label for="commision-property">Property</label>
                 <div class="select">
                     <select ng-model="filterData.selectedHotel" ng-change="onFilterChange()" ng-options="mps.id as mps.name for mps in multiProperies">          

@@ -305,7 +305,6 @@ function($scope, $state, $rootScope, $stateParams, RVCompanyCardSrv, ngDialog, $
         var isToggleEnabled = true;
         if ($scope.contactInformation.is_global_enabled) {
             isToggleEnabled = false;
-            console.log(rvPermissionSrv.getPermissionValue ('GLOBAL_CARD_UPDATE'))
             if (rvPermissionSrv.getPermissionValue ('GLOBAL_CARD_UPDATE')){
                 isToggleEnabled = true;
             }
@@ -316,18 +315,9 @@ function($scope, $state, $rootScope, $stateParams, RVCompanyCardSrv, ngDialog, $
 
     // Action for the paid/unpaid toggle button for individual record
     $scope.togglePaidStatus = function(commission) {
-        // var isToggleEnabled = true;
-        // if ($scope.contactInformation.is_global_enabled) {
-        //     isToggleEnabled = false;
-        //     console.log(rvPermissionSrv.getPermissionValue ('GLOBAL_CARD_UPDATE'))
-        //     if (rvPermissionSrv.getPermissionValue ('GLOBAL_CARD_UPDATE')){
-        //         isToggleEnabled = true;
-        //     }
-            
-        // }
-        // if (isToggleEnabled) {
+
             console.log("----reached----")
-           /* var commissionToUpdate = {};
+            var commissionToUpdate = {};
 
             commissionToUpdate.reservation_id = commission.reservation_id;
             commissionToUpdate.status = commission.commission_data.paid_status == "Paid" ? "Unpaid" : "Paid";
@@ -336,8 +326,8 @@ function($scope, $state, $rootScope, $stateParams, RVCompanyCardSrv, ngDialog, $
 
             requestData.accountId = $scope.accountId;
             requestData.commissionDetails = [commissionToUpdate];
-            updatePaidStatus(requestData);*/
-        // }
+            updatePaidStatus(requestData);
+
     };
 
     // Updates the paid status of all the selected records
@@ -516,7 +506,13 @@ function($scope, $state, $rootScope, $stateParams, RVCompanyCardSrv, ngDialog, $
         $vault.set('travelAgentId', $stateParams.id);
         $vault.set('travelAgentType', $stateParams.type);
         $vault.set('travelAgentQuery', $stateParams.query);
-        fetchMultiProperties();
+        $timeout(function() {
+            if ($scope.contactInformation.is_global_enabled) {
+              fetchMultiProperties();  
+            }
+        }, 1000);
+        
+        
        
 
     };
