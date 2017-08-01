@@ -116,10 +116,6 @@ admin.controller('adAnalyticSetupCtrl', ['$scope', 'adAnalyticSetupSrv', '$state
 
     };
 
-    // $http.get("customers.php")
-    // .then(function (response) {$scope.names = response.data.records;});
-    //
-    //
     $scope.hotelList = [];
     $scope.showHotelDetails = '';
     $scope.showDeviceDetails = '';
@@ -137,8 +133,12 @@ admin.controller('adAnalyticSetupCtrl', ['$scope', 'adAnalyticSetupSrv', '$state
     var limitStep = 25;
 
     $scope.limit = limitStep;
-    $scope.incrementLimit = function() {
+    $scope.incrementLimit = function(showAll) {
+
         $scope.evtLimit += limitStep;
+        if (showAll) {
+            $scope.evtLimit = $scope.deviceDetailsToShow.events.length;
+        }
     };
     $scope.decrementLimit = function() {
         $scope.evtLimit -= limitStep;
@@ -221,12 +221,20 @@ admin.controller('adAnalyticSetupCtrl', ['$scope', 'adAnalyticSetupSrv', '$state
         CLIENT_ID_LOCAL = '864320523517-3knpgsou4qd4nd878s4rs3fffuvoo4gg.apps.googleusercontent.com',
         CLIENT_ID_DEV = '864320523517-vpu1oua25tiavok0eqfen2tqt58gdtf0.apps.googleusercontent.com';
 
+    var selectedEnv = {
+        'PMS_DEV': PMS_DEV,
+        'PMS_PRODUCTION': PMS_PRODUCTION
+    };
     // clientsecret: 70WSoGx7nC_mmREHgvBn0JDu
     // 
-    var VIEW_ID = PMS_PRODUCTION,
+
+    $scope.VIEW_ID_SELECTED = 'PMS_PRODUCTION';
+
+    var VIEW_ID = selectedEnv[$scope.VIEW_ID_SELECTED],
         WEB_CLIENT_ID = CLIENT_ID_DEV,
         API_KEY = 'AIzaSyAvQKgo6elOcn6A49UPCiWVSmE5c24K3Yc',
         profile = {};
+
     /* 
     var getMonthN = function(mo) {
         var monthNames = ['January', 'February', 'March', 'April', 'May', 'June',
@@ -617,6 +625,11 @@ admin.controller('adAnalyticSetupCtrl', ['$scope', 'adAnalyticSetupSrv', '$state
     };
 
     $scope.searchByDate = function() {
+        // update search env before fetching results
+        VIEW_ID = selectedEnv[$scope.VIEW_ID_SELECTED];
+
+        console.log('searching [' + $scope.VIEW_ID_SELECTED + '] view id: ', VIEW_ID);
+
         var from = $('#datepicker-from').val(),
             to = $('#datepicker-to').val();
 
@@ -740,6 +753,7 @@ function onSigninSuccess(profileObject) {
 
 function onSignInFailure() {
     var scope = getScope();
+
     console.warn('sign-in failed');
     scope.signedIn = false;
     console.info(arguments);

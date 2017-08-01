@@ -77,8 +77,22 @@
                 <input style='position: absolute;right: 51%; top: 15%;' placeholder="From Date" type="text" id="datepicker-from">
                 </p>
                 <input style='position: absolute;right: 40%;top: 15%;' placeholder="To Date" type="text" id="datepicker-to">
+
                 <button style='position: absolute;right: 35%;top: 15%; margin-left: 15px;' class="button green" ng-click='searchByDate()'>Search</button>
+                <label class="radio" style='margin-top: 5%'>
+                    <span class="icon-form icon-radio" ng-class="{'checked': VIEW_ID_SELECTED =='PMS_PRODUCTION'}"></span>
+                    <input name="audience" value="PMS_PRODUCTION" type="radio" ng-model="VIEW_ID_SELECTED"/>
+                    <span>Production</span>
+                </label>
+                <label class="radio" style='margin-bottom: -5%'>
+                    <span class="icon-form icon-radio" ng-class="{'checked': VIEW_ID_SELECTED =='PMS_DEV'}"></span>
+                    <input name="audience" value="PMS_DEV" type="radio" ng-model="VIEW_ID_SELECTED"/>
+                    <span>Dev/Release</span>
+                </label>
+
                 <div class='lmask' ng-click='clickedMask()' ng-show='showDeviceDetails!==""'></div>
+
+
                 <div class='loader' ng-show='loading'></div>
                 <!-- Do not remove this header id, its used to inject new data on refresh calls -->
                 <p id='header'></p>
@@ -199,8 +213,9 @@
                                     <hr>
                                 </div>
                             </a>
-                            <a href ng-click="incrementLimit()" class='more-cls' ng-hide='deviceDetailsToShow.events.length <= evtLimit'>more</a>
-                            <a href ng-click="decrementLimit()" class='less-cls' ng-show='evtLimit > defaultEvtLimit'>less</a>
+                            <a href ng-click="incrementLimit('all')" class='more-cls all' ng-hide='deviceDetailsToShow.events.length <= evtLimit'>All</a>
+                            <a href ng-click="incrementLimit()" class='more-cls' ng-hide='deviceDetailsToShow.events.length <= evtLimit'>More</a>
+                            <a href ng-click="decrementLimit()" class='less-cls' ng-show='evtLimit > defaultEvtLimit'>Less</a>
                         </div>
                     </div>
                 </div>
