@@ -22,7 +22,7 @@
                     <input id="commision-date-to" type="text" class="datepicker" value="{{ filterData.toDate | date : dateFormat }}" ng-click="clickedToDate()"  readonly />
                 </div>
             </div>
-            <div class="entry">
+            <div class="entry commision-status">
                 <label for="commision-status" translate>COMMISSION_STATUS</label>
                 <div class="select">
                     <select id="commision-status" ng-model="filterData.commissionStatus" ng-change="onFilterChange()">
@@ -31,7 +31,7 @@
                     </select>
                 </div>
             </div>
-            <div class="entry" >
+            <div class="entry paid-status" >
                 <label for="commision-paid" translate>COMMISSION_PAID_STATUS</label>
                 <div class="select">
                     <select id="commision-paid" ng-model="filterData.paidStatus" ng-change="onFilterChange()">
@@ -127,9 +127,9 @@
         <div id="travel-agent-commision-list" class="scrollable" ng-class="{ 'print-selected' : (filterData.selectAll || selectedCommissions.length > 0 || prePaidCommissions.length > 0)}" ng-iscroll="commission-list" >
             <ul class="search-results wrapper">
                 <li class="reservation commision in-card" ng-repeat="commissionDetail in commissionDetails" ng-class="{'selected' : (filterData.selectAll || commissionDetail.is_checked)}">
+             
 
-
-                    <div class="switch-button" ng-class="{'on': commissionDetail.commission_data.paid_status === 'Paid','overlay' : !hasPermissionToEditPaid()}" ng-show="isTogglePaidStatusEnabled && (commissionDetail.commission_data.paid_status == 'Paid' || commissionDetail.commission_data.paid_status == 'Unpaid')">
+                    <div class="switch-button" ng-class="{'on': commissionDetail.commission_data.paid_status === 'Paid','overlay' : !hasPermissionToEditPaid()}" ng-show="isTogglePaidStatusEnabled() && (commissionDetail.commission_data.paid_status == 'Paid' || commissionDetail.commission_data.paid_status == 'Unpaid')">
                         <input value="" type="checkbox" ng-click="togglePaidStatus(commissionDetail)"/>
                         <label class="data-off">
                             <span class="value" translate>COMMISSION_UNPAID</span>
@@ -140,12 +140,12 @@
                             <span class="value" translate>COMMISSION_PAID</span>
                         </label>
                     </div>
-                    <div class="payment-status open" ng-show="commissionDetail.commission_data.paid_status === 'Open' && !isTogglePaidStatusEnabled">Open</div>
-                    <div class="payment-status paid" ng-show="commissionDetail.commission_data.paid_status === 'Paid' && !isTogglePaidStatusEnabled">Paid</div>
+                    <div class="payment-status open" ng-show="commissionDetail.commission_data.paid_status === 'Unpaid' && !isTogglePaidStatusEnabled()">Open</div>
+                    <div class="payment-status paid" ng-show="commissionDetail.commission_data.paid_status === 'Paid' && !isTogglePaidStatusEnabled()">Paid</div>
                     <!-- If prepaid, replace L22-L32 with this:
                     <div class="prepaid">Prepaid</div> -->
-                    <div class="prepaid" ng-show="commissionDetail.commission_data.paid_status == 'Prepaid'" translate>COMMISSION_PREPAID</div>
-                    <div class="prepaid" ng-show="isEmptyObject(commissionDetail.commission_data)" translate></div>
+                    <div class="payment-status prepaid" ng-show="commissionDetail.commission_data.paid_status == 'Prepaid'" translate>COMMISSION_PREPAID</div>
+                   <!--  <div class="prepaid" ng-show="isEmptyObject(commissionDetail.commission_data)" translate></div> -->
                     <label class="checkbox inline" ng-class="{'checked' : commissionDetail.is_checked}" >
                         <!-- add class "checked" when L56 checked -->
                         <span class="icon-form icon-checkbox" ng-class="{'checked' : commissionDetail.is_checked}"></span>

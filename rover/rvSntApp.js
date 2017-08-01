@@ -37,6 +37,18 @@ var GlobalApp = function() {
 
     };
 
+    this.notifyDeviceStateChange = function(device_name, type, value) {
+        var displayString;
+
+        if (type === 'device_battery_below_threshold') {
+            displayString = device_name + ': Battery low (' + value + '%)';
+        } else {
+            displayString = device_name + ': ' + value;
+        }
+
+        document.dispatchEvent(new CustomEvent('OBSERVE_DEVICE_STATUS_CHANGE', {'detail': displayString}));
+    };
+
     // success function of coddova plugin's appending
     this.fetchCompletedOfCordovaPlugins = function() {
         that.cordovaLoaded = true;
