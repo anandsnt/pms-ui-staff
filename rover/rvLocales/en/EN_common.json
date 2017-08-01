@@ -62,5 +62,14 @@
     "CHANGE_STAY_DATES_TITLE": "Change Stay Dates",
     "SETTINGS":"Settings",
     "CAHNGE_PASSWORD":"Change Password",
-    "WEBSOCKET_CONNECTION_ERROR":"Could not connect to the card handler service. The card swipe facility will not be available for this session."
-
+    "WEBSOCKET_CONNECTION_ERROR":"Could not connect to the card handler service. The card swipe facility will not be available for this session.",
+    "DEVICE_STATUS": "Device Status",
+    "NO_DEVICES_FOUND": "0 Devices Found",
+    "DEVICES" :"Devices",
+    "DEVICE_TYPE":"Type",
+    "DEVICE_NAME": "Device Name",
+    "DEVICE_BATTERY": "Battery",
+    "DEVICE_LIBRARY_VERSION": "Library Ver.",
+    "DEVICE_FIRMWARE_VERSION": "Firmware Ver.",
+    "DEVICE_SERIAL_NO": "Serial No.",
+    "EMAIL_STATUS_TO": "Email status to:"
