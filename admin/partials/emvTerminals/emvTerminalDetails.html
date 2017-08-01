@@ -45,7 +45,7 @@
                                 styleclass="full-width"></ad-textbox>
                 </fieldset>
 
-                <fieldset class="holder right float" ng-show="::mliEmvEnabled">
+                <fieldset class="holder right float" ng-show="::mliEmvEnabled && adminRole === 'hotel-admin'">
                     <div class="entry">
                         <label>PINPAD COMMANDS</label>
                         <div class="select">
