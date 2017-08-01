@@ -227,7 +227,7 @@ admin.controller('adAnalyticSetupCtrl', ['$scope', 'adAnalyticSetupSrv', '$state
         WEB_CLIENT_ID = CLIENT_ID_DEV,
         API_KEY = 'AIzaSyAvQKgo6elOcn6A49UPCiWVSmE5c24K3Yc',
         profile = {};
-
+    /* 
     var getMonthN = function(mo) {
         var monthNames = ['January', 'February', 'March', 'April', 'May', 'June',
             'July', 'August', 'September', 'October', 'November', 'December'
@@ -243,7 +243,7 @@ admin.controller('adAnalyticSetupCtrl', ['$scope', 'adAnalyticSetupSrv', '$state
             }
         }
     };
-    /* 
+    
     var getTodayAsFormattedDateString = function() {
         var t = new Date();
         var to = t.toString();
@@ -338,9 +338,8 @@ admin.controller('adAnalyticSetupCtrl', ['$scope', 'adAnalyticSetupSrv', '$state
             hotel, 
             station, 
             station_in_list, 
-            currentDeviceInfo, 
-            latestDeviceEvt, 
-            station_in_list, 
+            // currentDeviceInfo, 
+            // latestDeviceEvt, 
             hotelDevice, 
             hotelDeviceEvtTime; // station = device associated with the event
 
@@ -358,11 +357,11 @@ admin.controller('adAnalyticSetupCtrl', ['$scope', 'adAnalyticSetupSrv', '$state
 
             hotel = e.theme;
             station = e.workstation_name ? e.workstation_name.replace(/\s+/g, '') : '';
-            latestDeviceEvt = {};
+            // latestDeviceEvt = {};
             hotelDevice = {};
             hotelDeviceEvtTime = '';
             station_in_list = false;
-            currentDeviceInfo = {};
+            // currentDeviceInfo = {};
 
             if (!$scope.deviceByHotel[hotel]) {
 
@@ -533,7 +532,6 @@ admin.controller('adAnalyticSetupCtrl', ['$scope', 'adAnalyticSetupSrv', '$state
     };
 
     var visualizeEventData = function(data) {
-        var validResponse = false;
 
         if (data.rows) {
             var status_update_events = [],
@@ -556,7 +554,6 @@ admin.controller('adAnalyticSetupCtrl', ['$scope', 'adAnalyticSetupSrv', '$state
                 if (status_update_events[x].indexOf('theme') !== -1 && status_update_events[x].indexOf('{') !== -1 && status_update_events[x].indexOf('}') !== -1) {
                     try {
                         events.push(JSON.parse(status_update_events[x]));
-                        validResponse = true;
                     } catch (er) {
                         console.log(status_update_events[x]);
                     }
