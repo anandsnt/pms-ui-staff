@@ -600,6 +600,7 @@ admin.controller('ADAppCtrl', [
 			$rootScope.isSuiteRoomsAvailable = data.suite_enabled;
 			$rootScope.hotelTimeZoneFull = data.hotel_time_zone_full;
 			$rootScope.hotelTimeZoneAbbr = data.hotel_time_zone_abbr;
+			$rootScope.emvTimeout = data.emv_timeout || 120; // default timeout is 120s
 
             // CICO-40544 - Now we have to enable menu in all standalone hotels
             // API not removing for now - Because if we need to disable it we can use the same param
