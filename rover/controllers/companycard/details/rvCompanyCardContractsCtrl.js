@@ -272,7 +272,7 @@ sntRover.controller('companyCardContractsCtrl', ['$rootScope', '$scope', 'RVComp
 		};
 		
 		var param = {
-			'account_id': $scope.contactInformation.id
+			'account_id': $stateParams.id
 		};
 
 		$scope.invokeApi(RVCompanyCardSrv.fetchRates, param, fetchRatesSuccessCallback, fetchFailureCallback);
