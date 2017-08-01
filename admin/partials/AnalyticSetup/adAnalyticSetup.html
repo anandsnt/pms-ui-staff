@@ -102,11 +102,13 @@
                             <tr ng-repeat="hotel in hotelList">
                                 <td ng-click="viewHotelDetails(hotel)">
                                     <a data-item="3" data-colspan="2" class="edit-data-inline"> {{hotel.name.toUpperCase()}}, {{hotel.devices.length}} online</a>
+
                                     <div ng-show='showHotelDetails === hotel.name' ng-repeat="device in hotel.devices" class='station-device'>
                                         <div ng-class='{"small-problem":device.status==="Out-of-Order", "no-bueno":device.status==="bad"}' ng-click='viewDeviceDetails(device);'>
                                             <a data-item="1" data-colspan="1" class="edit-data-inline" style=''> 
-
-                                                {{device.workstation_name}} 
+                                                <span class='device-title-cls'>
+                                                    {{device.workstation_name}}
+                                                </span>
                                                 <span class='device-status-cls' style='float:right'>
                                                     {{device.status}} 
                                                 </span>
@@ -115,6 +117,12 @@
                                                     {{device.info.lastUpdate}}
                                                 </span>
                                                 <br>
+
+                                                <span style='float:right'> 
+                                                    {{device.events.length}} events found
+                                                </span>
+                                                <br>
+
                                             </a>
                                         </div>
                                         <hr>
