@@ -25,8 +25,10 @@
 	        <ul class="device-labels">
 	            <li translate>DEVICE_TYPE</li>
 	            <li translate>DEVICE_NAME</li>
+	            <li translate>DEVICE_ID</li>
 	            <li translate>STATUS</li>
 	            <li translate>DEVICE_BATTERY</li>
+	            <li translate>DEVICE_LIBRARY_NAME</li>
 	            <li translate>DEVICE_LIBRARY_VERSION</li>
 	            <li translate>DEVICE_FIRMWARE_VERSION</li>
 	            <li translate>DEVICE_SERIAL_NO</li>
@@ -36,7 +38,8 @@
 	                <!-- CASE 1: Device is connected -->
 	                <ul class="device" ng-repeat="device in connectedDeviceDetails" ng-style="widthStyle">
 	                    <li class="title">{{device.device_short_name}}</li>
-	                    <li ng-class="{'text-grey': !device.device_short_name}">{{device.device_identified_name}}</li> <!-- Use <li class="text-grey">N/A</li> if value unknown -->
+	                    <li ng-class="{'text-grey': !device.device_identified_name}">{{device.device_identified_name}}</li> <!-- Use <li class="text-grey">N/A</li> if value unknown -->
+	                    <li ng-class="{'text-grey': !device.device_id}">{{device.device_id}}</li>
 	                    <li ng-if="device.device_connection_sate === 'Connected'"><em class="text-green">Connected</em></li>
 	                    <!-- <li ng-if="device.device_connection_sate !== 'Connected' && device.device_short_name ==='Ingenico'"><button type="button" class="button blue">Connect</button></li> -->
 	                    <li ng-if="device.device_connection_sate !== 'Connected'"><em class="text-orange">Not Connected</em></li>
@@ -49,6 +52,7 @@
 	                            </div>
 	                        </div>
 	                    </li>
+	                    <li ng-class="{'text-grey': device.library_name == 'NA'}">{{device.library_name}}</li>
 	                    <li ng-class="{'text-grey': device.library_version == 'NA'}">{{device.library_version}}</li>
 	                    <li ng-class="{'text-grey': device.firmware_version == 'NA'}">{{device.firmware_version}}</li>
 	                    <li ng-class="{'text-grey': device.serial_number == 'NA'}">{{device.serial_number}}</li>
@@ -69,7 +73,7 @@
 
 	    <div class="entry button-grp">
 	        <button type="button" class="button blank" ng-click="closeDialog()" translate>CLOSE_WINDOW</button>
-	        <button type="button" class="button green" ng-click="fetchDeviceStatus()" translate>REFRESH</button>
+	        <button type="button" class="button green" ng-click="refreshDeviceStatus()" translate>REFRESH</button>
 	    </div>
 	</div>
 </div>
