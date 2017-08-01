@@ -167,6 +167,7 @@ sntRover.controller('rvApplyRoomChargeCtrl', [
             failureCallBack: $scope.failureCallbackUpgrade,
             loader: 'NONE'
         };
+
         $scope.$emit('showLoader');
         $scope.callAPI(RVUpgradesSrv.selectUpgrade, options);
 	};
