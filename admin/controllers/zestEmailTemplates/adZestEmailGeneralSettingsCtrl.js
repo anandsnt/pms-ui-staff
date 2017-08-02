@@ -15,8 +15,8 @@ admin.controller('ADZestEmailGeneralSettingsCtrl', ['$scope', '$state','generalS
             function() {
                 return $scope.generalSettings.main_bg_image;
             },
-            function(logo) {
-                if (logo === 'false') {
+            function(img) {
+                if (img === '') {
                     $scope.fileName = "Choose File....";
                 }
                 $scope.email_main_bg_image = $scope.fileName;
