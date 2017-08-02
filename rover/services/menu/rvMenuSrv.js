@@ -436,7 +436,8 @@ angular.module('sntRover').service('rvMenuSrv',
 				title: "DEVICE_STATUS",
 				action: "",
 				menuIndex: "deviceStatus",
-				actionPopup: true
+				actionPopup: true,
+				hideItem: _.isNull($rootScope.iosAppVersion) || _.isUndefined($rootScope.iosAppVersion)
 			});
 		}
 
