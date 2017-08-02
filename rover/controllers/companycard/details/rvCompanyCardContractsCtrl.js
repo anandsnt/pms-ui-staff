@@ -529,7 +529,7 @@ sntRover.controller('companyCardContractsCtrl', ['$rootScope', '$scope', 'RVComp
 			} else {
 				contractInfo = dataToUpdate;
 			}
-			if (!dataUpdated) {
+			if (!dataUpdated && !$scope.contractList.isAddMode) {
 				var data = dclone($scope.contractData, ['occupancy', 'statistics', 'rates', 'total_contracted_nights']);
 
 				if ($stateParams.id === "add") {
