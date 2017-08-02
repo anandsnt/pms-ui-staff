@@ -16,7 +16,8 @@
 						</select>
 					</div>
 				</div>
-				<div class="entry full-width">
+				<ad-toggle-button is-checked="hotelConfig.use_common_email_templates" label="Use common email templates"></ad-toggle-button>
+				<div class="entry full-width" ng-hide="hotelConfig.use_common_email_templates">
 					<div id="room-features" class="col2">
 						<ad-checkbox ng-repeat="template in hotelConfig.email_templates" ng-model="template.selected" is-checked="template.selected" label="{{template.title}}" parent-label-class="room-likes" span-class="checkbox-background"></ad-checkbox>
 					</div>
