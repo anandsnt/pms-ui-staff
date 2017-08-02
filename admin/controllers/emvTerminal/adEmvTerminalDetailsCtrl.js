@@ -100,7 +100,8 @@ admin.controller('ADEmvTerminalDetailsCtrl', ['$scope', '$rootScope', 'ADEmvTerm
 
                     $scope.pinpadData = {
                         request: pinpadRequest,
-                        response: pinpadResponse
+                        response: pinpadResponse,
+                        isSuccess: data.message === 'SUCCESS'
                     };
                 }
             });
