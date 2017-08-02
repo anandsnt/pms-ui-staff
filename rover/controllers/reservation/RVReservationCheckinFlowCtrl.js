@@ -70,6 +70,9 @@ angular.module('sntRover').controller('RVReservationCheckInFlowCtrl',
                     });
                 } else {
                     $log.info('prompt for swipe disabled in settings AND cannot authorize WITHOUT card on file');
+                    // CICO-43681 Authorization is applicable only for credit cards; as there is no credit card and
+                    // prompting for card is disabled; continue to check-in
+                    completeCheckin();
                 }
             };
 
@@ -132,6 +135,7 @@ angular.module('sntRover').controller('RVReservationCheckInFlowCtrl',
 
             // ------------------------------------------------------------------------------------ state
             $scope.checkInState = {
+                authorizeIncidentalOnly: false,
                 authorizationAmount: 0,
                 hasActiveEMV: RVHotelDetailsSrv.isActiveMLIEMV(),
                 hasSuccessfulAuthorization: false,
@@ -146,9 +150,17 @@ angular.module('sntRover').controller('RVReservationCheckInFlowCtrl',
 
             // ------------------------------------------------------------------------------------ onUserAction
             $scope.onClickEMV = function () {
+                var amountToAuth = $scope.checkInState.authorizationAmount;
+
+                // In case of EMV, if user hasn't chosen incidentals only
+                // we will have to authorize for the original Amount;
+                if (!$scope.checkInState.authorizeIncidentalOnly) {
+                    amountToAuth = $scope.authorizationInfo.original_pre_auth_amount_at_checkin;
+                }
+
                 authorize({
                     is_emv_request: true,
-                    amount: $scope.checkInState.authorizationAmount
+                    amount: amountToAuth
                 });
             };
 
@@ -166,6 +178,7 @@ angular.module('sntRover').controller('RVReservationCheckInFlowCtrl',
             };
 
             $scope.onClickIncidentalsOnly = function () {
+                $scope.checkInState.authorizeIncidentalOnly = true;
                 // set the authorization amount to incidentals
                 $scope.checkInState.authorizationAmount = $scope.authorizationInfo.pre_auth_amount_for_incidentals;
                 ngDialog.close();
@@ -173,6 +186,8 @@ angular.module('sntRover').controller('RVReservationCheckInFlowCtrl',
             };
 
             $scope.onClickFullAuth = function () {
+                $scope.checkInState.authorizeIncidentalOnly = false;
+                $scope.checkInState.authorizationAmount = $scope.authorizationInfo.pre_auth_amount_at_checkin;
                 ngDialog.close();
                 $timeout(promptForSwipe, 700);
             };
@@ -271,6 +286,7 @@ angular.module('sntRover').controller('RVReservationCheckInFlowCtrl',
 
             listeners['STOP_CHECKIN_PROCESS'] = $scope.$on('STOP_CHECKIN_PROCESS', function () {
                 $scope.checkInState.isListeningSwipe = false;
+                $scope.checkInState.authorizationAmount = $scope.authorizationInfo.pre_auth_amount_at_checkin;
                 ngDialog.close();
             });
 

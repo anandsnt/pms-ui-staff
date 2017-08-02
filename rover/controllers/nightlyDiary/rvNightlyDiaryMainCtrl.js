@@ -98,7 +98,7 @@ angular.module('sntRover')
             var getPaginationParams = function(offset) {
                 return {
                     per_page: $scope.diaryData.paginationData.perPage,
-                    page: $scope.diaryData.paginationData.page + offset,
+                    page: offset ? $scope.diaryData.paginationData.page + offset : $scope.diaryData.paginationData.page,
                     total_count: $scope.diaryData.paginationData.totalCount
                 };
             };

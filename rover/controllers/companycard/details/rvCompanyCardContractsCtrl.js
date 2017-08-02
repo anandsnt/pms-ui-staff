@@ -270,8 +270,12 @@ sntRover.controller('companyCardContractsCtrl', ['$rootScope', '$scope', 'RVComp
 			$scope.addData.rates = ratesList;
 			$scope.errorMessage = "";
 		};
+		
+		var param = {
+			'account_id': $stateParams.id
+		};
 
-		$scope.invokeApi(RVCompanyCardSrv.fetchRates, {}, fetchRatesSuccessCallback, fetchFailureCallback);
+		$scope.invokeApi(RVCompanyCardSrv.fetchRates, param, fetchRatesSuccessCallback, fetchFailureCallback);
 
 		$scope.fetchContractsList = function () {
 			if ($stateParams.id !== "add") {

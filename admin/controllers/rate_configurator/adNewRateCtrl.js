@@ -286,6 +286,7 @@ admin.controller('ADAddnewRate', ['$scope', 'ADRatesRangeSrv', 'ADRatesSrv', '$s
             $scope.rateData.charge_code_id = data.charge_code_id;
             $scope.rateData.currency_code_id = data.currency_code_id;
             $scope.rateData.tax_inclusive_or_exclusive = data.tax_inclusive_or_exclusive;
+            $scope.rateData.is_global_contract = data.is_global_contract;
 
             manipulateAdditionalDetails(data);
 
@@ -431,7 +432,5 @@ admin.controller('ADAddnewRate', ['$scope', 'ADRatesRangeSrv', 'ADRatesSrv', '$s
          * init call
          */
         $scope.init();
-
-
     }
 ]);
