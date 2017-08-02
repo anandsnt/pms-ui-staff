@@ -495,10 +495,28 @@ sntRover.controller('roverController', [
         if ($rootScope.paymentGateway === "CBA" && sntapp.cordovaLoaded) {
             doCBAPowerFailureCheck();
         }
+
         // for iPad we need to show the connected device status
         if (sntapp.browser === 'rv_native' && sntapp.cordovaLoaded) {
           $scope.isIpad = true;
-          $scope.fetchDeviceStatus();
+          $rootScope.iosAppVersion = null;
+          // check for the method getAppInfo via rvcardplugin, if it does not exist,
+          // leave app_version null. Only latest versions of APP returns APP version 
+          // and methods to fetch device status
+          $timeout(function() {
+            cordova.exec(function(response) {
+              if (response && response.AppVersion) {
+                $rootScope.iosAppVersion = response.AppVersion;
+                // reset the left menu (add device status)
+                $scope.formMenu();
+                // Initially fetch device log
+                $scope.fetchDeviceStatus();
+              }
+            }, function() {
+
+            }, 'RVCardPlugin', 'getAppInfo', []);
+
+          }, 500);
         }
     };
 
