@@ -316,7 +316,6 @@ function($scope, $state, $rootScope, $stateParams, RVCompanyCardSrv, ngDialog, $
     // Action for the paid/unpaid toggle button for individual record
     $scope.togglePaidStatus = function(commission) {
 
-            console.log("----reached----")
             var commissionToUpdate = {};
 
             commissionToUpdate.reservation_id = commission.reservation_id;
