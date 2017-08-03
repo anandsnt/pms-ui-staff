@@ -221,6 +221,7 @@ let convertReservationsListReadyToComponent = (reservation, diaryInitialDayOfDat
     console.log("------------")
     console.log(reservation)
     console.log(roomObject)
+    console.log(selectedRoomId)
 
     reservation.guest_details.full_name = reservation.guest_details.first_name + " " + reservation.guest_details.last_name;
     reservation.guest_details.short_name = reservation.guest_details.first_name.substring(0, 1) + "." + reservation.guest_details.last_name.substring(0, 1);
@@ -231,7 +232,7 @@ let convertReservationsListReadyToComponent = (reservation, diaryInitialDayOfDat
     reservation.style = {};
     reservation.style.width = duration;
     reservation.style.transform = "translateX(" + positionAndDuration.reservationPosition + "px)";
-    if (reservation.id === selectedReservationId) {
+    if (reservation.id === selectedReservationId && roomObject.id === selectedRoomId) {
         reservationEditClass = "editing";
         if (newArrivalPosition !== '' || newDeparturePosition !== '') {
             let newDuration = newDeparturePosition - newArrivalPosition;
