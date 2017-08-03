@@ -1,6 +1,6 @@
 admin.controller('ADZestEmailPrecheckinSettingsCtrl', ['$scope', '$state', 'generalSettings', 'precheckinSettings', 'ngDialog',
     function($scope, $state, generalSettings, precheckinSettings, ngDialog) {
-        console.log(generalSettings);
+        // console.log(generalSettings);
         $scope.generalSettings = generalSettings;
         $scope.currentYear = new Date().getFullYear();
 
