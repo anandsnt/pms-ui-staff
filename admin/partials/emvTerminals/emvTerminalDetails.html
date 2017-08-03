@@ -67,8 +67,22 @@
                                 class="button ng-binding blue sm-refresh-btn">RUN
                         </button>
                     </div>
+                    <div class="entry full-width" ng-if="pinpadData.request || pinpadData.request">
+                        <label>
+                            <span style="font-weight: bold">Response Status&nbsp;&nbsp;</span>
+                            <span class="oauth-status success" ng-if="pinpadData.isSuccess">
+                                {{'PINPAD_SUCCESS' | translate}}
+                            </span>
+                            <span class="oauth-status" ng-if="!pinpadData.isSuccess">
+                                {{'PINPAD_ERROR' | translate}}
+                            </span>
+                        </label>
+
+                    </div>
                     <div class="entry full-width" snt-highlight-syntax ng-if="pinpadData.request">
-                        Request
+                        <label>
+                            Request
+                        </label>
                         <pre class="interface-message auto-links: false; brush: xml">
                             {{pinpadData.request}}
                         </pre>
@@ -76,12 +90,6 @@
                     <div class="entry full-width" snt-highlight-syntax ng-if="pinpadData.response">
                         <label>
                             Response
-                            <span class="oauth-status success" ng-if="pinpadData.isSuccess">
-                                {{'PINPAD_SUCCESS' | translate}}
-                            </span>
-                            <span class="oauth-status" ng-if="!pinpadData.isSuccess">
-                                {{'PINPAD_ERROR' | translate}}
-                            </span>
                         </label>
                         <pre class="interface-message auto-links: false; brush: xml">
                             {{pinpadData.response}}
