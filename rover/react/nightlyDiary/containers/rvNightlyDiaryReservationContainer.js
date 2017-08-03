@@ -218,10 +218,6 @@ let convertReservationsListReadyToComponent = (reservation, diaryInitialDayOfDat
         reservation.guest_details.last_name = 'Pending';
         reservation.guest_details.first_name = '';
     }
-    console.log("------------")
-    console.log(reservation)
-    console.log(roomObject)
-    console.log(selectedRoomId)
 
     reservation.guest_details.full_name = reservation.guest_details.first_name + " " + reservation.guest_details.last_name;
     reservation.guest_details.short_name = reservation.guest_details.first_name.substring(0, 1) + "." + reservation.guest_details.last_name.substring(0, 1);
