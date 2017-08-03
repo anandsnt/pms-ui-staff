@@ -7,7 +7,7 @@ admin.service('adZestEmailTemplateSrv', function(ADBaseWebSrvV2) {
 	};
 
 	this.getGeneralSettings = function() {
-		url = '/sample_json/zest_email_templates/general_settings.json';
+		var url = '/sample_json/zest_email_templates/general_settings.json';
 
 		return ADBaseWebSrvV2.getJSON(url);
 	};
@@ -19,7 +19,7 @@ admin.service('adZestEmailTemplateSrv', function(ADBaseWebSrvV2) {
 	};
 
 	this.getPrecheckinSettings = function() {
-		url = '/sample_json/zest_email_templates/precheckin_settings.json';
+		var url = '/sample_json/zest_email_templates/precheckin_settings.json';
 
 		return ADBaseWebSrvV2.getJSON(url);
 	};

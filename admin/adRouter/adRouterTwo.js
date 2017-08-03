@@ -713,7 +713,7 @@ angular.module('adminModuleTwo', []).config(function($stateProvider) {
         controller: 'ADZestEmailGeneralSettingsCtrl',
         url: '/generalSettings',
         resolve: {
-            generalSettings:  function(adZestEmailTemplateSrv){
+            generalSettings: function(adZestEmailTemplateSrv) {
                 return adZestEmailTemplateSrv.getGeneralSettings();
             }
         }
@@ -724,10 +724,10 @@ angular.module('adminModuleTwo', []).config(function($stateProvider) {
         controller: 'ADZestEmailPrecheckinSettingsCtrl',
         url: '/precheckinSettings',
         resolve: {
-            generalSettings:  function(adZestEmailTemplateSrv){
+            generalSettings: function(adZestEmailTemplateSrv) {
                 return adZestEmailTemplateSrv.getGeneralSettings();
             },
-            precheckinSettings: function(adZestEmailTemplateSrv){
+            precheckinSettings: function(adZestEmailTemplateSrv) {
                 return adZestEmailTemplateSrv.getPrecheckinSettings();
             }
         }
