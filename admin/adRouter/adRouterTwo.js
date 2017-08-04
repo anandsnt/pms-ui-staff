@@ -1,5 +1,7 @@
 angular.module('adminModuleTwo', []).config(function($stateProvider) {
     // define module-specific routes here
+
+
     $stateProvider.state('admin.departments', {
         templateUrl: '/assets/partials/departments/adDepartmentsList.html',
         controller: 'ADDepartmentListCtrl',
@@ -731,6 +733,12 @@ angular.module('adminModuleTwo', []).config(function($stateProvider) {
                 return adZestEmailTemplateSrv.getPrecheckinSettings();
             }
         }
+    });
+    
+    $stateProvider.state('admin.propertyGroups', {
+        templateUrl: '/assets/partials/chainAdmins/adPropertyGroups.html',
+        controller: 'ADPropertyGroupsCtrl',
+        url: '/propertyGroups'
     });
 
 });

@@ -436,7 +436,8 @@ angular.module('sntRover').service('rvMenuSrv',
 				title: "DEVICE_STATUS",
 				action: "",
 				menuIndex: "deviceStatus",
-				actionPopup: true
+				actionPopup: true,
+				hideItem: _.isNull($rootScope.iosAppVersion) || _.isUndefined($rootScope.iosAppVersion)
 			});
 		}
 
@@ -512,7 +513,7 @@ angular.module('sntRover').service('rvMenuSrv',
 	this.hasRolePermission = function(menuIndex) {
 		var user = RVDashboardSrv.getUserDetails(),
 			role = user.user_role,
-			isHotelAdmin = (role === "Hotel Admin"),
+			isHotelAdmin = (role === "Hotel Admin" || role === "Chain Admin"),
 			isHotelStaff = user.is_staff,
 			returnValue = false;
 
