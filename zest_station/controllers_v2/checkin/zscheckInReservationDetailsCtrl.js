@@ -306,8 +306,7 @@ sntZestStation.controller('zsCheckInReservationDetailsCtrl', [
             };
 
             if ($scope.usingFakeReservation()) {
-                var response = zsCheckinSrv.eciDemoData;
-                onSuccessResponse(response);
+                onSuccessResponse(zsCheckinSrv.eciDemoData);
             } else {
                 // this will also update the arrival time via backend, 
                 // we should fetch upsell details and continue
@@ -515,7 +514,7 @@ sntZestStation.controller('zsCheckInReservationDetailsCtrl', [
 
         $scope.onNextFromDetails = function() {
             if ($scope.usingFakeReservation()) {
-                console.warn(':: usingFakeReservation ::');
+                $log.warn(':: usingFakeReservation ::');
                 if (!$scope.zestStationData.kiosk_display_terms_and_condition) {
                     routeToNext();
                 } else {

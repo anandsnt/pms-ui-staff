@@ -366,7 +366,7 @@ sntZestStation.controller('zsCheckinScanPassportCtrl', [
             };
 
             if ($scope.inDemoMode()) {
-                onSuccess({'status':'success'});
+                onSuccess({'status': 'success'});
             } else {
                 $scope.input.inputTextValue = '';
                 $scope.callAPI(zsGeneralSrv.validate_staff, options);   

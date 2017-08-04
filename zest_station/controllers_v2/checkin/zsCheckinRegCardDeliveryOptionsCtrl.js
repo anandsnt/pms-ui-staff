@@ -271,6 +271,7 @@ sntZestStation.controller('zsCheckinRegCardDeliveryOptionsCtrl', [
                 successCallBack: registrationCardSent,
                 failureCallBack: registrationCardSendingFailed
             };
+            
             if ($scope.inDemoMode()) {
                 registrationCardSent();
             } else {
