@@ -1,5 +1,5 @@
-sntRover.controller('RVCancelReservationDepositController', ['$rootScope', '$scope', 'ngDialog', '$stateParams', '$state', 'RVReservationCardSrv', 'RVPaymentSrv', '$timeout', '$filter',
-	function($rootScope, $scope, ngDialog, $stateParams, $state, RVReservationCardSrv, RVPaymentSrv, $timeout, $filter) {
+sntRover.controller('RVCancelReservationDepositController', ['$rootScope', '$scope', 'ngDialog', '$stateParams', '$state', 'RVReservationCardSrv', 'RVPaymentSrv', '$timeout', '$filter', 'RVNightlyDiarySrv',
+	function($rootScope, $scope, ngDialog, $stateParams, $state, RVReservationCardSrv, RVPaymentSrv, $timeout, $filter, RVNightlyDiarySrv) {
 
 		BaseCtrl.call(this, $scope);
 		$scope.errorMessage = "";
@@ -29,6 +29,17 @@ sntRover.controller('RVCancelReservationDepositController', ['$rootScope', '$sco
 				// Since RVCancelReservation and RVCancelReservationDepositController do the same above,
 				// its functions are written in parent controller.Ie reservationActionsController
 				$scope.DailogeState.isCancelled = true ;
+
+				var params = RVNightlyDiarySrv.getCache();
+				if(typeof params !== 'undefined'){
+					params.currentSelectedReservationId = "";
+	                params.currentSelectedRoomId = "";
+	                params.currentSelectedReservation = "";
+				}
+                
+
+                RVNightlyDiarySrv.updateCache(params);
+
 				$scope.$emit('hideLoader');
 			};
 
