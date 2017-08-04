@@ -270,8 +270,12 @@ sntRover.controller('companyCardContractsCtrl', ['$rootScope', '$scope', 'RVComp
 			$scope.addData.rates = ratesList;
 			$scope.errorMessage = "";
 		};
+		
+		var param = {
+			'account_id': $stateParams.id
+		};
 
-		$scope.invokeApi(RVCompanyCardSrv.fetchRates, {}, fetchRatesSuccessCallback, fetchFailureCallback);
+		$scope.invokeApi(RVCompanyCardSrv.fetchRates, param, fetchRatesSuccessCallback, fetchFailureCallback);
 
 		$scope.fetchContractsList = function () {
 			if ($stateParams.id !== "add") {
@@ -529,7 +533,7 @@ sntRover.controller('companyCardContractsCtrl', ['$rootScope', '$scope', 'RVComp
 			} else {
 				contractInfo = dataToUpdate;
 			}
-			if (!dataUpdated) {
+			if (!dataUpdated && !$scope.contractList.isAddMode) {
 				var data = dclone($scope.contractData, ['occupancy', 'statistics', 'rates', 'total_contracted_nights']);
 
 				if ($stateParams.id === "add") {
