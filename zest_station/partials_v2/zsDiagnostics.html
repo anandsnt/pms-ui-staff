@@ -1,6 +1,9 @@
 <!-- DEMO MODE -->
 
-<span ng-show="zestStationData.demoModeEnabled == 'true'" class="demo-text dev-cls top-left-demo">demo</span>
+<span ng-show="zestStationData.demoModeEnabled == 'true'" class="demo-text dev-cls top-left-demo">demo
+    <span ng-show="zestStationData.fakeReservation == 'true'" class=""> + R</span>
+</span>
+
 
 <!-- NO-CHECK-IN -->
 <span ng-show="zestStationData.noCheckInsDebugger == 'true'" class="demo-text dev-cls top-left-demo" ng-class="{'demo-second-cls':zestStationData.demoModeEnabled == 'true'}">NCI</span>
