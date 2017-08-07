@@ -45,10 +45,17 @@ admin.controller('ADUserRolePermissionsCtrl', [
 	$scope.fetchUserRolePermission();
 
 	$scope.calculateArrayDifferance = function(source, toRemove) {
-    		return source.filter(function(value) {
-        	return toRemove.indexOf(value) === -1;
-    		});
-		};
+		
+    	var unassignedPermissionsList = _.difference(source, toRemove);
+    	// CICO-44012 : Omitting Chain Admin permission based on Role.
+		if (!$scope.selectedUserRole.is_chain_admin) {
+			unassignedPermissionsList = _.reject( unassignedPermissionsList, function(item) { 
+                return item.name == "Chain Admin"; 
+            });
+		}
+
+		return unassignedPermissionsList;
+	};
 
     $scope.initiatePermissionforSelectedUserRole = function() {
 

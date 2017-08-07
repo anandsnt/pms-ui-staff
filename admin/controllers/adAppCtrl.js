@@ -14,7 +14,7 @@ admin.controller('ADAppCtrl', [
 		var title = "Showing Settings";
 
         var successCallbackOfFtechUserInfo = function (userInfoDetails) {
-            // CICO-39623 : set current hotel details      
+            // CICO-39623 : set current hotel details
             $scope.userInfo = {
                 'first_name': userInfoDetails.first_name,
                 'last_name': userInfoDetails.last_name,
@@ -380,7 +380,7 @@ admin.controller('ADAppCtrl', [
 		} else {
 			$scope.isHotelAdmin = false;
 		}
-        
+
 		$scope.isPmsConfigured = $rootScope.isPmsConfigured;
 		$scope.isDragging = false;
 
@@ -580,7 +580,7 @@ admin.controller('ADAppCtrl', [
             // CICO-39623 : Setting up app theme.
             if ( !!data.selected_theme && data.selected_theme.value !== 'ORANGE' ) {
               var appTheme = 'theme-' + (data.selected_theme.value).toLowerCase();
-              
+
               document.getElementsByTagName("html")[0].setAttribute( 'class', appTheme );
             }
 
@@ -600,6 +600,7 @@ admin.controller('ADAppCtrl', [
 			$rootScope.isSuiteRoomsAvailable = data.suite_enabled;
 			$rootScope.hotelTimeZoneFull = data.hotel_time_zone_full;
 			$rootScope.hotelTimeZoneAbbr = data.hotel_time_zone_abbr;
+			$rootScope.emvTimeout = data.emv_timeout || 120; // default timeout is 120s
 
             // CICO-40544 - Now we have to enable menu in all standalone hotels
             // API not removing for now - Because if we need to disable it we can use the same param
@@ -637,12 +638,6 @@ admin.controller('ADAppCtrl', [
 		$scope.$on('hotelNameChanged', function(e, data) {
 			$scope.data.current_hotel = data.new_name;
 		});
-
-
-        /*
-         * Admin menu data
-         */
-
 
 		$scope.data = adminMenuData;
 		$scope.selectedMenu = $scope.data.menus[$scope.selectedIndex];
