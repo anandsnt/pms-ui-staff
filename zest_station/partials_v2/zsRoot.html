@@ -12,7 +12,7 @@
           url.hostname.indexOf('localhost') !== -1) {
 
           inDevEnvironment = true, inLocalEnv = false;
-            if (url.hostname.indexOf('localhost') !== -1) {
+            if (url.hostname.indexOf('localhost') !== -1 || url.hostname.indexOf('192.168.') !== -1) {
                 // dont track in local environment
                 inLocalEnv = true;
             }

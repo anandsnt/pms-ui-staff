@@ -179,6 +179,7 @@ admin.service('ADInterfaceLogsSrv', ['$http', '$q', 'ADBaseWebSrvV2',
             $http({
                 method: 'GET',
                 url: params.url,
+                transformResponse: false,
                 data: params.payload
             }).then(function(response) {
 

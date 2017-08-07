@@ -193,7 +193,7 @@ sntZestStation.config(['$stateProvider',
 
         // passport scanning flow
         $stateProvider.state('zest_station.checkInScanPassport', {
-            url: '/checkInScanPassport/:reservation_id/:email/:first_name/:room_no/:guest_id/:guest_email_blacklisted/:signature/:passports_scanned/:quickJumpMode/:isQuickJump',
+            url: '/checkInScanPassport/:reservation_id/:email/:first_name/:room_no/:guest_id/:guest_email_blacklisted/:signature/:passports_scanned/:quickJumpMode/:isQuickJump/:from_pickup_key',
             templateUrl: '/assets/partials_v2/checkin/zsCheckinScanPassport.html',
             controller: 'zsCheckinScanPassportCtrl',
             jumper: true,
