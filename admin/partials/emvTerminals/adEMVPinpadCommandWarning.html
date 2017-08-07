@@ -1,0 +1,8 @@
+<div id="modal" class="modal-show" ng-class="{'modal-show': !modalClosing}" role="dialog" ng-cloak>
+    <div class="modal-content alert">
+        <span class="icons icon-popup-alert"></span>
+        <span class="message h2" translate>SURE_LABEL</span>
+        <button type="button" class="button green modal-close" ng-click="runTerminalCommand(true)">RUN</button>
+        <button type="button" class="button blank modal-close" ng-click="closeThisDialog()">CANCEL</button>
+    </div>
+</div>

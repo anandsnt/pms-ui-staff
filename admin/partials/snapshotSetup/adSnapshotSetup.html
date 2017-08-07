@@ -19,6 +19,10 @@
                     <ad-textbox value="snapshotData.url" label="URL" required="yes"></ad-textbox>
                     <ad-textbox value="snapshotData.system_name" label="{{ 'SYS_NAME' | translate}}"></ad-textbox>
                     <ad-textbox value="snapshotData.system_version" label="{{ 'SYS_VERSION' | translate}}"></ad-textbox>
+                    <ad-textarea rows="4" div-class="holder right" text-area-class="full-width"
+                                 value="snapshotData.incremental_export_validation_recipients"
+                                 label="{{ 'EMAIL_ACCOUNTS_SEPERATED_BY_SEMICOLON' | translate}}" placeholder="">
+                    </ad-textarea>
                     <ad-form-title full-width="true" form-title="{{'FULL_EXPORT' | translate}}"></ad-form-title>
                     <div class="form-subtitle-title">
                         <h6><span translate>SNAPSHOT_PUBLISH_INSTRUCTIONS</span></h6>
@@ -176,12 +180,6 @@
                 <div class="holder right" ng-show="snapshotData.incremental_export_enabled">
                     <ad-toggle-button is-checked="snapshotData.incremental_export_validation_enabled"
                                       label="{{'VALIDATE_INCREMENTAL_EXPORT'| translate}}"></ad-toggle-button>
-                    <div class="entry full-width" ng-show="snapshotData.incremental_export_validation_enabled">
-                        <ad-textarea rows="4" div-class="full-width" text-area-class="full-width"
-                                     value="snapshotData.incremental_export_validation_recipients"
-                                     label="{{ 'EMAIL_ACCOUNTS_SEPERATED_BY_SEMICOLON' | translate}}" placeholder="">
-                        </ad-textarea>
-                    </div>
                 </div>
 
                 <ad-form-title full-width="true" form-title="{{'INCREMENTAL_EXPORT_RESULTS_LABEL' | translate}}"

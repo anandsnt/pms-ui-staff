@@ -483,6 +483,20 @@ angular.module('adminInterfacesRouter', []).config(function($stateProvider) {
         }
     });
 
+    $stateProvider.state('admin.siteminderMessageExchangeSetup', {
+        templateUrl: '/assets/partials/interfaces/Sitemindermx/adSitemindermxSetup.html',
+        controller: 'adCRSCommonCtrl',
+        url: '/interfaces/setup/:id',
+        onEnter: ['$stateParams', function($stateParams) {
+            $stateParams.id = 'sitemindermx';
+        }],
+        resolve: {
+            config: ['adInterfacesCommonConfigSrv', function(adInterfacesCommonConfigSrv) {
+                return adInterfacesCommonConfigSrv.fetchConfiguration('sitemindermx');
+            }]
+        }
+    });
+
     $stateProvider.state('admin.zDirectSetup', {
         templateUrl: '/assets/partials/ZDirectSetup/adZDirectSetup.html',
         controller: 'adZDirectSetupCtrl',
