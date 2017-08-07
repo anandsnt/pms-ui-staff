@@ -1,6 +1,6 @@
 <div style="display: block;" id="add-new" class="edit-data">
 	<div class="data-holder" >
-		
+
 		<!-- Add chain -->
 		<form class="form inline-form float">
 			<div class="form-title">
@@ -28,6 +28,10 @@
 				<!-- name  -->
 
 				<ad-textbox value="editData.name"   label = "Chain Name" placeholder = "Enter chain name" required = "yes" styleclass="full-width"></ad-textbox>
+
+
+        <ad-toggle-button is-checked="editData.share_multiple_ows_instances" label="SHARE MULTIPLE OWS INSTANCES" ></ad-toggle-button>
+
 
 			</fieldset>
 			<div class="form-title">
@@ -61,7 +65,7 @@
 
 			</fieldset>
 
-                    
+
                         <div class="form-title">
 				<h3>
 					<span></span>
@@ -70,7 +74,7 @@
 			</div>
                     <div>
                         <label style="vertical-align: super;" class="switch-label">ACTIVE</label>
-                        <div class="switch-button single" 
+                        <div class="switch-button single"
                              ng-class="{ on: editData.smtp_active }" ng-click="editData.smtp_active = !editData.smtp_active">
                             <input type="checkbox">
                             <span class="switch-icon"></span>
@@ -84,10 +88,10 @@
                     <span class="switch-icon"></span>
                 </div>
             </div>
-                    
-                    
-                    
-			<fieldset class="holder left float">  
+
+
+
+			<fieldset class="holder left float">
 				<ad-textbox value="editData.smtp_address"   label = "Address" placeholder = "Enter Email Server Address"  styleclass="full-width"></ad-textbox>
 				<ad-textbox value="editData.smtp_port"      label = "Port" placeholder = "Enter Port"  styleclass="full-width"></ad-textbox>
 			</fieldset>
@@ -96,8 +100,8 @@
 				<ad-textbox value="editData.smtp_password"   label = "Password" placeholder = "Enter Password"  styleclass="full-width" inputtype="password"></ad-textbox>
 			</fieldset>
 
-                    
-                    
+
+
 			<div class="form-title">
 				<h3>
 					<span></span>
@@ -105,7 +109,7 @@
 				</h3>
 			</div>
 			<fieldset class="holder right float">
-	
+
 				 <div class="entry full-width">
 					<label for="certificate">CA Certificate </label>
 					<div class="file-upload">
@@ -113,9 +117,9 @@
 						<input type="file" ng-model="editData.ca_certificate" accept="*" app-filereader />
 						<button type="button" class="button brand-colors">
 							 Attach Certificate
-						</button> 
+						</button>
 					</div>
-					
+
 				</div>
 			</fieldset>
 
@@ -126,7 +130,7 @@
 				</h3>
 			</div>
 			<fieldset class="holder left float">
-	
+
 				<ad-textbox value="editData.gcm_server_key"   label = "GCM Server Key" placeholder = "Enter GCM Server Key"  styleclass="full-width"></ad-textbox>
 			</fieldset>
 
@@ -137,7 +141,7 @@
 				</h3>
 			</div>
 			<fieldset class="holder left float">
-	
+
 				 <div class="entry full-width">
 					<label for="certificate">APNS Pem Certificate </label>
 					<div class="file-upload">
@@ -145,9 +149,9 @@
 						<input type="file" ng-model="editData.apns_certificate" file-name-key="apns_file" accept="*" app-filereader />
 						<button type="button" class="button brand-colors">
 							 Attach Certificate
-						</button> 
+						</button>
 					</div>
-					
+
 				</div>
 			</fieldset>
 
@@ -160,7 +164,7 @@
 
 
 			<fieldset class="full-width">
-                    
+
 						<div class="form-title key-server-details-title">
 							<h3><span translate>ZEST APP FORCE UPGRADE SETTINGS</span></h3>
 							<em class="status"> Fields marked with <strong>*</strong> are mandatory! </em>
@@ -169,7 +173,7 @@
 						<div class = "holder left">
 						     <div class="form-title">
 							<h3><span translate>IOS</span></h3>
-							
+
 						    </div>
 
 						    <ad-toggle-button is-checked="editData.ios_force_upgrade_enabled" label="ENABLE FORCE UPGRADE" ></ad-toggle-button>
@@ -182,19 +186,19 @@
 
 						    <ad-textbox value="editData.ios_force_upgrade_button_label"   label = "ACTION LABEL" disabled = "!editData.ios_force_upgrade_enabled" required = "yes" placeholder = "Enter action label"  styleclass="full-width"></ad-textbox>
 
-						    
+
 						</div>
 						<div class = "holder right">
                             <div class="form-title">
 							<h3><span translate>ANDROID</span></h3>
-							
+
 						    </div>
 						    <ad-toggle-button is-checked="editData.android_force_upgrade_enabled" label="ENABLE FORCE UPGRADE" required = "yes"></ad-toggle-button>
 
 						    <ad-textbox value="editData.android_force_upgrade_version"   label = "UPGRADE VERSION" required = "yes" placeholder = "Enter version"  styleclass="full-width" disabled = "!editData.android_force_upgrade_enabled"></ad-textbox>
 
 						    <ad-textbox value="editData.android_force_upgrade_url"   label = "UPGRADE URL" required = "yes" placeholder = "Enter url"  styleclass="full-width" disabled = "!editData.android_force_upgrade_enabled"></ad-textbox>
-						    
+
 						    <ad-textbox value="editData.android_force_upgrade_message"   label = "UPGRADE MESSAGE" required = "yes" placeholder = "Enter message"  styleclass="full-width" disabled = "!editData.android_force_upgrade_enabled"></ad-textbox>
 
 						    <ad-textbox value="editData.android_force_upgrade_button_label"   label = "ACTION LABEL" required = "yes" placeholder = "Enter action label"  styleclass="full-width" disabled = "!editData.android_force_upgrade_enabled"></ad-textbox>
@@ -217,7 +221,7 @@
                                         <span class="switch-icon"></span>
                                     </div>
                                 </div>
-                            
+
 				<!-- program name -->
 				<ad-textbox value="editData.loyalty_program_name"   label = "Program Name" placeholder = "Enter Program Name"  styleclass="full-width"></ad-textbox>
 				<!--  program code-->
@@ -263,12 +267,12 @@
 				<ad-textbox value="editData.terms_cond_email"   label = "CONTACT EMAIL FOR T&amp;C" placeholder = "Enter e-mail"  styleclass="full-width"></ad-textbox>
 
 			</fieldset>
-                    
-                    
-                    
-                    
+
+
+
+
                     <!--  SMS / Shortcode title-->
-                    
+
 			<div class="form-title">
 				<h3>
 					<span></span>
@@ -285,7 +289,7 @@
                                         <span class="switch-icon"></span>
                                     </div>
                                 </div>
-                            
+
                             <!-- Short code ownership -->
                                 <label class="radio overlay" ng-class="{'checked':editData.shortcode_owner === 'customer'}">
                                         <span class="icon-form icon-radio checked" ></span>
@@ -303,19 +307,19 @@
                                 <ad-textbox value="editData.sms_code"   label = "SMS Code" placeholder = "" required = "yes" styleclass="full-width"></ad-textbox>
                                 <ad-textbox value="editData.sms_auth_token"   label = "SMS Auth Token" placeholder = "" required = "no" styleclass="full-width"></ad-textbox>
                                 <ad-textbox value="editData.sms_account_sid"   label = "SMS Account SID" placeholder = "" required = "no" styleclass="full-width"></ad-textbox>
-                                
-                               
+
+
 			</fieldset>
-                    
-                    
+
+
 			<fieldset class="holder right float">
 				<!-- Help Keywords + response-->
                                 <ad-textbox value="editData.sms_stop_keywords"  label = "Stop Keywords" placeholder = "Enter Keywords" required = "no" styleclass="full-width overlay"></ad-textbox>
-                                
+
                                  <ad-textbox value="editData.sms_help_keywords"  label = "Help Keywords" placeholder = "Enter Help Keywords" required = "no" styleclass="full-width"></ad-textbox>
                                 <div class="entry full-width">
 					<label for="sms_help_response">
-                                            Help Response 
+                                            Help Response
                                             (<span ng-class='{"green-color-force":editData.sms_help_response.length <= charLimitPerText, "snt-color-force":editData.sms_help_response.length > charLimitPerText}'>
                                                 {{charLimitPerText-editData.sms_help_response.length}}
                                             </span>)
@@ -325,15 +329,15 @@
 					<textarea value="" type="" required="" placeholder="Enter Help Response" name="sms_help_response" ng-model="editData.sms_help_response" class="full-width" maxlength="{{charMaxLimit}}"></textarea>
 				</div>
                                 <span class='overlay'>* Separate help keywords with (;) for multiple keywords </span>
-                                
-                                
-                                
+
+
+
 			</fieldset>
-                    
-                    
-                    
-                    
-                    
+
+
+
+
+
 
 			<div class="actions float">
 				<button type="button" ng-click="cancelClicked()" class="button blank edit-data-inline">Cancel</button>
