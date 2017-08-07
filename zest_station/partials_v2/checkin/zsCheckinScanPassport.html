@@ -140,13 +140,19 @@
         </h2>
         <ul id="selection" class="editable">
             <li ng-repeat='guest in selectedReservation.guest_details track by $index' click-touch='selectGuest(guest)'>
-                <span class="details" ng-class='{"passport-details":!showRemoveButton}'>
+                <span class="details icon-adult" ng-class='{"passport-details":!showRemoveButton}'>
 
                     <span ng-hide="mode !== 'SCAN_RESULTS'" class="passport-scan-status" 
                           ng-class='{"button-margin":showRemoveButton}'>{{guest.passport_scan_status}}
                     </span>
-                <span ng-hide="mode !== 'ADMIN_VERIFY_PASSPORTS'" class="passport-scan-status" ng-class='{"button-margin":showRemoveButton}'>{{guest.passport_reviewed_status}}
-                    </span> {{guest.last_name}}, {{guest.first_name}}
+
+                    <span ng-hide="mode !== 'ADMIN_VERIFY_PASSPORTS'" class="passport-scan-status" ng-class='{"button-margin":showRemoveButton}'>{{guest.passport_reviewed_status}}
+                    </span> 
+                    <!-- guest icons, adult, student, infant -->
+                    <figure ng-show='guest.guest_type === "ADULT" || !guest.guest_type' class="guest-image guest-icons icon-adult"></figure>
+                    <figure ng-show='guest.guest_type === "CHILDREN"' class="guest-image guest-icons icon-student"></figure>
+                    <figure ng-show='guest.guest_type === "INFANTS"' class="guest-image guest-icons icon-infant"></figure>
+                    {{guest.last_name}}, {{guest.first_name}}
                 </span>
                 <button type="button" class="button remove-btn" ng-show='showRemoveButton' click-touch='removeGuest(guest.id)' ng-class='{"overlay grey": selectedReservation.guest_details.length <= 1}'>
                     <text data-ng-bind-html="getTagValue('REMOVE_BTN')" editable-text="REMOVE_BTN"></text>
