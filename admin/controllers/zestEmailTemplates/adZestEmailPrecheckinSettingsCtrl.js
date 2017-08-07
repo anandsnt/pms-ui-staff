@@ -8,6 +8,7 @@ admin.controller('ADZestEmailPrecheckinSettingsCtrl', ['$scope', '$state', 'gene
         $scope.email_text_1 = precheckinSettings.email_text_1;
         $scope.email_text_2 = precheckinSettings.email_text_2;
         $scope.button_text = precheckinSettings.button_text;
+        $scope.subject_text = precheckinSettings.subject_text;
 
         $scope.previewClicked = function() {
             ngDialog.open({
