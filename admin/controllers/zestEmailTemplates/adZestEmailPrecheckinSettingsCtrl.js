@@ -11,6 +11,11 @@ admin.controller('ADZestEmailPrecheckinSettingsCtrl', ['$scope', '$state', 'gene
         $scope.subject_text = precheckinSettings.subject_text;
 
         $scope.previewClicked = function() {
+            if ($scope.generalSettings.main_bg_image.length > 0) {
+                $scope.main_bg_style = "background-image:url(" + $scope.generalSettings.main_bg_image + ");";
+            } else {
+                $scope.main_bg_style = 'background:' + $scope.generalSettings.main_bg + ';';
+            }
             ngDialog.open({
                 // controller: $controller('adZestWebPreviewCtrl', {
                 //     $scope: $scope
