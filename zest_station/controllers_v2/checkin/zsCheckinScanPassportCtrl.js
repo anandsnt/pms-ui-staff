@@ -500,7 +500,7 @@ sntZestStation.controller('zsCheckinScanPassportCtrl', [
 
         var onFailAdminReview = function() {
             $log.warn('on fail admin review passport');
-            $scope.trackSessionActivity('CheckIn', 'Error Saving Passport', 'R'+$stateParams.reservation_id, $scope.mode, true);
+            $scope.trackSessionActivity('CheckIn', 'Error Saving Passport', 'R' + $stateParams.reservation_id, $scope.mode, true);
             $scope.$emit('GENERAL_ERROR');
         };
 
