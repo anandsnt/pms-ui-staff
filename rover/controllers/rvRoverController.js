@@ -376,7 +376,6 @@ sntRover.controller('roverController', [
     * Show the connected devices status
      */
     $scope.fetchDeviceStatus = function() {
-      ngDialog.close();
       $scope.showDeviceConnectivityStatus = false;
       $scope.connectedDeviceDetails = [];
       cordova.exec(function(response) {
@@ -389,9 +388,18 @@ sntRover.controller('roverController', [
           scope: $scope,
           className: 'calendar-modal'
         });
+        $scope.runDigestCycle();
       }, function(error) {}, 'RVDevicePlugin', 'getDevicesStates', []);
     };
 
+    $scope.refreshDeviceStatus = function() {
+      $scope.$emit("showLoader");
+      $timeout(function() {
+        ngDialog.close();
+        $scope.$emit("hideLoader");
+        $scope.fetchDeviceStatus();
+      }, 1000);
+    };
 
     $rootScope.updateSubMenu = function(idx, item) {
       if (item && item.submenu && item.submenu.length > 0) {
@@ -489,10 +497,28 @@ sntRover.controller('roverController', [
         if ($rootScope.paymentGateway === "CBA" && sntapp.cordovaLoaded) {
             doCBAPowerFailureCheck();
         }
+
         // for iPad we need to show the connected device status
         if (sntapp.browser === 'rv_native' && sntapp.cordovaLoaded) {
           $scope.isIpad = true;
-          $scope.fetchDeviceStatus();
+          $rootScope.iosAppVersion = null;
+          // check for the method getAppInfo via rvcardplugin, if it does not exist,
+          // leave app_version null. Only latest versions of APP returns APP version 
+          // and methods to fetch device status
+          $timeout(function() {
+            cordova.exec(function(response) {
+              if (response && response.AppVersion) {
+                $rootScope.iosAppVersion = response.AppVersion;
+                // reset the left menu (add device status)
+                $scope.formMenu();
+                // Initially fetch device log
+                $scope.fetchDeviceStatus();
+              }
+            }, function() {
+
+            }, 'RVCardPlugin', 'getAppInfo', []);
+
+          }, 500);
         }
     };
 

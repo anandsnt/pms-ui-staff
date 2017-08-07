@@ -45,11 +45,12 @@
                                 styleclass="full-width"></ad-textbox>
                 </fieldset>
 
-                <fieldset class="holder right float" ng-show="::mliEmvEnabled">
+                <fieldset class="holder right float" ng-show="::mliEmvEnabled && adminRole === 'hotel-admin'">
                     <div class="entry">
                         <label>PINPAD COMMANDS</label>
                         <div class="select">
-                            <select ng-model="selectedTerminalCommand" ng-class="{'placeholder': !selectedTerminalCommand}">
+                            <select ng-model="selectedTerminalCommand"
+                                    ng-class="{'placeholder': !selectedTerminalCommand}">
                                 <option value="">Select a command</option>
                                 <option ng-repeat="command in itemDetails.pinpad_commands"
                                         value="{{command}}">
@@ -66,14 +67,30 @@
                                 class="button ng-binding blue sm-refresh-btn">RUN
                         </button>
                     </div>
+                    <div class="entry full-width" ng-if="pinpadData.request || pinpadData.request">
+                        <label>
+                            <span style="font-weight: bold">Response Status&nbsp;&nbsp;</span>
+                            <span class="oauth-status success" ng-if="pinpadData.isSuccess">
+                                {{'PINPAD_SUCCESS' | translate}}
+                            </span>
+                            <span class="oauth-status" ng-if="!pinpadData.isSuccess">
+                                {{'PINPAD_ERROR' | translate}}
+                            </span>
+                        </label>
+
+                    </div>
                     <div class="entry full-width" snt-highlight-syntax ng-if="pinpadData.request">
-                        <strong>Request</strong>
+                        <label>
+                            Request
+                        </label>
                         <pre class="interface-message auto-links: false; brush: xml">
                             {{pinpadData.request}}
                         </pre>
                     </div>
                     <div class="entry full-width" snt-highlight-syntax ng-if="pinpadData.response">
-                        <strong>Response</strong>
+                        <label>
+                            Response
+                        </label>
                         <pre class="interface-message auto-links: false; brush: xml">
                             {{pinpadData.response}}
                         </pre>
