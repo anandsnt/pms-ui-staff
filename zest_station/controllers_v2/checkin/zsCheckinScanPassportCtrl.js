@@ -499,7 +499,9 @@ sntZestStation.controller('zsCheckinScanPassportCtrl', [
         };
 
         var onFailAdminReview = function() {
-            $log.log('on fail admin review passport');
+            $log.warn('on fail admin review passport');
+            $scope.trackSessionActivity('CheckIn', 'Error Saving Passport', 'R'+$stateParams.reservation_id, $scope.mode, true);
+            $scope.$emit('GENERAL_ERROR');
         };
 
         var savePassportToAPI = function(selectedPassportInfo) {
