@@ -303,6 +303,7 @@ function($scope, $state, $rootScope, $stateParams, RVCompanyCardSrv, ngDialog, $
 
     $scope.isTogglePaidStatusEnabled = function() {
         var isToggleEnabled = true;
+
         if ($scope.contactInformation.is_global_enabled) {
             isToggleEnabled = false;
             if (rvPermissionSrv.getPermissionValue ('GLOBAL_CARD_UPDATE')){
@@ -315,6 +316,7 @@ function($scope, $state, $rootScope, $stateParams, RVCompanyCardSrv, ngDialog, $
 
     $scope.shouldShowProperty = function() {
         var shouldShowPropertyDropDown = false;
+        
         if ($scope.contactInformation.is_global_enabled && rvPermissionSrv.getPermissionValue ('GLOBAL_CARD_UPDATE') && $rootScope.isAnMPHotel) {
             shouldShowPropertyDropDown = true;
         }
