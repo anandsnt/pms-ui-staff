@@ -512,14 +512,6 @@ function($scope, $state, $rootScope, $stateParams, RVCompanyCardSrv, ngDialog, $
         $vault.set('travelAgentId', $stateParams.id);
         $vault.set('travelAgentType', $stateParams.type);
         $vault.set('travelAgentQuery', $stateParams.query);
-        // $timeout(function() {
-        //     if ($scope.contactInformation.is_global_enabled) {
-              
-        //     }
-        // }, 1000);
-        
-        
-       
 
     };
 
