@@ -351,6 +351,7 @@ angular.module('sntRover').controller('companyCardDetailsController', ['$scope',
 		var successCallbackOfInitialFetch = function(data) {
 			$scope.$emit("hideLoader");
 			$scope.contactInformation = data;
+			$scope.$broadcast("LOAD_SUBSCRIBED_MPS");
 			if ($scope.contactInformation.alert_message !== "") {
 				$scope.errorMessage = [$scope.contactInformation.alert_message];
 			}
