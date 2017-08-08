@@ -44,7 +44,7 @@
                 </div>
             </div>
 
-            <div class="entry property" ng-show="contactInformation.is_global_enabled">
+            <div class="entry property" ng-show="shouldShowProperty()">
                 <label for="commision-property">Property</label>
                 <div class="select">
                     <select ng-model="filterData.selectedHotel" ng-change="onFilterChange()" ng-options="mps.id as mps.name for mps in multiProperies">          
@@ -106,8 +106,8 @@
                     <span class="icons icon-print"></span>
                 </button>
             </li>
-            <li class="action">
-                <label class="checkbox inline" ng>
+            <li class="action" >
+                <label class="checkbox inline" ng-show="isTogglePaidStatusEnabled()">
                     Select
                     <span class="icon-form icon-checkbox" ng-class="{'checked' : filterData.selectAll}"></span>
                     <input id="commisions-select" ng-model="filterData.selectAll" type="checkbox" ng-change="toggleSelection()" />
@@ -146,7 +146,7 @@
                     <div class="prepaid">Prepaid</div> -->
                     <div class="payment-status prepaid" ng-show="commissionDetail.commission_data.paid_status == 'Prepaid'" translate>COMMISSION_PREPAID</div>
                    <!--  <div class="prepaid" ng-show="isEmptyObject(commissionDetail.commission_data)" translate></div> -->
-                    <label class="checkbox inline" ng-class="{'checked' : commissionDetail.is_checked}" >
+                    <label class="checkbox inline" ng-class="{'checked' : commissionDetail.is_checked}" ng-show="isTogglePaidStatusEnabled()">
                         <!-- add class "checked" when L56 checked -->
                         <span class="icon-form icon-checkbox" ng-class="{'checked' : commissionDetail.is_checked}"></span>
                         <!-- add class "checked" when L56 checked -->

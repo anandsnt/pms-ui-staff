@@ -313,6 +313,14 @@ function($scope, $state, $rootScope, $stateParams, RVCompanyCardSrv, ngDialog, $
         return isToggleEnabled;
     };
 
+    $scope.shouldShowProperty = function() {
+        var shouldShowPropertyDropDown = false;
+        if ($scope.contactInformation.is_global_enabled && rvPermissionSrv.getPermissionValue ('GLOBAL_CARD_UPDATE') && $rootScope.isAnMPHotel) {
+            shouldShowPropertyDropDown = true;
+        }
+        return shouldShowPropertyDropDown;
+    };
+
     // Action for the paid/unpaid toggle button for individual record
     $scope.togglePaidStatus = function(commission) {
 
@@ -469,7 +477,7 @@ function($scope, $state, $rootScope, $stateParams, RVCompanyCardSrv, ngDialog, $
     };
 
     $scope.$on("LOAD_SUBSCRIBED_MPS", function() {
-        if ($scope.contactInformation.is_global_enabled && $rootScope.isAnMPHotel) {
+        if ($scope.contactInformation.is_global_enabled && $rootScope.isAnMPHotel && rvPermissionSrv.getPermissionValue ('GLOBAL_CARD_UPDATE')) {
             fetchMultiProperties();
         }
         
