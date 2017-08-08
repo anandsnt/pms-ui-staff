@@ -82,7 +82,7 @@ var CurrencyInfoMappings = {
     'MNT': [0, '\u20AE', 'MN₮'],
     'MXN': [2, '$', 'Mex$'],
     'MYR': [2, 'RM', 'RM'],
-    'NOK': [18, 'kr', 'NOkr'],
+    'NOK': [18, 'kr.', 'NOkr'],
     'PAB': [2, 'B/.', 'B/.'],
     'PEN': [2, 'S/.', 'S/.'],
     'PHP': [2, '\u20B1', 'Php'],
