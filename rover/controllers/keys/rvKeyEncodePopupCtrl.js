@@ -6,7 +6,7 @@ sntRover.controller('RVKeyEncodePopupCtrl', [ '$rootScope', '$scope', '$state', 
 	var scopeState = {
 		isCheckingDeviceConnection: false
 	};
-    var maxConnectionExceededCheckTimer, deviceConnectionAvailableCheckTimer, deviceConnectionCheckTimer;
+    var deviceConnectionCheckTimer;
 
 	this.setStatusAndMessage = function(message, status) {
 		$scope.statusMessage = message;
@@ -161,12 +161,12 @@ sntRover.controller('RVKeyEncodePopupCtrl', [ '$rootScope', '$scope', '$state', 
 		that.noOfErrorMethodCalled++;
 		secondsAfterCalled = that.noOfErrorMethodCalled * 1000;
 
-		deviceConnectionCheckTimer = setTimeout(function() {
+		deviceConnectionCheckTimer = $timeout(function() {
 			if (secondsAfterCalled <= that.MAX_SEC_FOR_DEVICE_CONNECTION_CHECK) { // 10seconds
                 var checkDeviceConnection = function() {
 					$log.info('deviceready listener...');
                     sntapp.cardReader = new CardOperation();
-                    maxConnectionExceededCheckTimer = $timeout(function() {
+                    $timeout(function() {
                         $scope.showDeviceConnectingMessge();
                     }, 300);
                     document.removeEventListener("deviceready", checkDeviceConnection, false);
@@ -221,7 +221,7 @@ sntRover.controller('RVKeyEncodePopupCtrl', [ '$rootScope', '$scope', '$state', 
 
 		scopeState.isCheckingDeviceConnection = true;
 
-        deviceConnectionAvailableCheckTimer = $timeout(function() {
+        $timeout(function() {
             if (scopeState.isCheckingDeviceConnection) {
                 showDeviceNotConnected();
             }
@@ -652,7 +652,7 @@ sntRover.controller('RVKeyEncodePopupCtrl', [ '$rootScope', '$scope', '$state', 
 		$scope.deviceNotConnected = false;
 		$scope.pressedCancelStatus = true;
         // CICO-43771
-        clearTimeout(deviceConnectionCheckTimer);
+        $timeout.cancel(deviceConnectionCheckTimer);
 
 		$('#encoder-type').blur();
 		// TODO:verfiy if required
