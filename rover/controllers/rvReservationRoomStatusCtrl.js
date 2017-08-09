@@ -176,6 +176,7 @@ angular.module('sntRover').controller('reservationRoomStatus',
                                      scope: $scope
                             });
                     };
+                    
                     // why is success always assumed, and failure not handled? no possibility of failure?
                     $scope.invokeApi(RVKeyPopupSrv.fetchKeyQRCodeData, { "reservationId": reservationId }, successCallback);
 		}
