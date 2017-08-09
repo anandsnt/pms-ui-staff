@@ -825,6 +825,10 @@ sntRover.controller('roverController', [
         $scope.$apply();
       }, 700);
     };
+
+    $scope.closeDialogImmidietly = function(){
+      ngDialog.close();
+    };
     /*
      * To fix issue with ipad keypad - 7702
      */
