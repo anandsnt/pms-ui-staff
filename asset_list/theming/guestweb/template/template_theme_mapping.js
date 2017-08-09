@@ -364,8 +364,7 @@ module.exports = {
             'guestweb_one_washington_circle': commonNonMgmTemplates,
             'guestweb_river_inn': commonNonMgmTemplates,
             'guestweb_first_hotel_breiseth': commonNonMgmTemplates,
-            'guestweb_hotel_blackhawk': commonNonMgmTemplates,
-            'guestweb_viceroy_chicago': commonNonMgmTemplates
+            'guestweb_hotel_blackhawk': commonNonMgmTemplates
         };
     }
 };
