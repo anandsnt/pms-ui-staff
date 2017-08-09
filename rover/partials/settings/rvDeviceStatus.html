@@ -2,7 +2,7 @@
 <div role="dialog" id="modal" class="modal-show" ng-cloak>
 	<!-- CASE 1: 0 Devices -->
 	<div class="modal-content alert" ng-if="connectedDeviceDetails.length === 0" ng-cloak>
-	    <button class="modal-close" id="modal-close" type="button" ng-click="closeDialogImmidietly()">
+	    <button class="modal-close" id="modal-close" type="button" ng-click="closeDialogImmediately()">
 	        <span class="icons icon-close invert"></span>
 	    </button>
 
@@ -10,13 +10,13 @@
 	    <span class="h2 message" translate>NO_DEVICES_FOUND</span>
 
 	    <div class="actions">
-	        <button type="button" class="button blank" ng-click="closeDialogImmidietly()" translate>CLOSE_WINDOW</button>
+	        <button type="button" class="button blank" ng-click="closeDialogImmediately()" translate>CLOSE_WINDOW</button>
 	    </div>
 	</div>
 
 	<!-- CASE 2: Devices found -->
 	<div class="modal-content device-status" ng-if="connectedDeviceDetails.length > 0" ng-cloak>
-	    <button class="modal-close" id="modal-close" type="button" ng-click="closeDialogImmidietly()">
+	    <button class="modal-close" id="modal-close" type="button" ng-click="closeDialogImmediately()">
 	        <span class="icons icon-close invert"></span>
 	    </button>
 
@@ -73,7 +73,7 @@
 	    </div>
 
 	    <div class="entry button-grp">
-	        <button type="button" class="button blank" ng-click="closeDialogImmidietly()" translate>CLOSE_WINDOW</button>
+	        <button type="button" class="button blank" ng-click="closeDialogImmediately()" translate>CLOSE_WINDOW</button>
 	        <button type="button" class="button green" ng-click="refreshDeviceStatus()" translate>REFRESH</button>
 	    </div>
 	</div>
