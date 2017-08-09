@@ -294,6 +294,7 @@ admin.controller('ADRulesRestrictionCtrl', [
                 saveCallback,
                 updateCallback;
             // if we are in update (or edit) mode
+
             if ( $scope.updateRule ) {
                 updateCallback = function(data) {
                     fetchRuleCancellationPenalitiesList({

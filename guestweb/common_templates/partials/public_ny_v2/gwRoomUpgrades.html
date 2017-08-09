@@ -26,17 +26,17 @@
     </div>
     <div class="row" ng-hide="isFetching || netWorkError">
         <div class="col-md-4"></div>
-        <div class="col-md-4 top-spacing mob-margin-top-1">
-            <p class="main-text mob-margin-bottom-3">WANT TO UPGRADE?</p>
-            <div class="section-container">
-                <div class="carousel-view">
+        <div class="col-md-4 top-spacing no-section-side-padding room-upgrades-container">
+            <div class="section-container room-upgrades-container">
+                <p class="main-text mob-margin-bottom-3">WANT TO UPGRADE ?</p>
+                <div class="carousel-view margin-top-40">
                     <carousel>
                         <slide ng-repeat="slide in slides" active="slide.active">
                             <div class="centeralign">
                                 <img ng-src="{{(slide.room_type_image.length > 0) ? slide.room_type_image : 'room-image.png'}}" err-Src="/assets/guestweb/img/image_not_available.png" style="width:100%;" />
                             </div>
                             <div class="upgrade-details" style="overflow: hidden">
-                                <div class="col-xs-9 room-info mob-paddding-top-5">
+                                <div class="col-xs-8  col-sm-9 room-info margin-top-20">
                                     <p class="room-name mob-margin-bottom-3">
                                         {{slide.upgrade_room_type_name}}
                                     </p>
@@ -50,9 +50,9 @@
                                         </p>
                                     </div>
                                 </div>
-                                <div class="col-xs-3 upgrades-btn mob-paddding-top-5" ng-click="upgradeClicked(slide.upgrade_room_type_id,slide.upgrade_room_number)">
-                                    <div class="upgrade-icon"></div>
-                                    <p class="center-align mob-margin-top-3">SELECT THIS
+                                <div class="col-xs-4 col-sm-3 upgrades-btn" ng-click="upgradeClicked(slide.upgrade_room_type_id,slide.upgrade_room_number)">
+                                    <!-- <div class="upgrade-icon"></div> -->
+                                    <p class="center-align">SELECT THIS
                                         <br /> UPGRADE</p>
                                 </div>
                                 <div class="col-xs-12 room-info">
@@ -64,7 +64,7 @@
                     </carousel>
                     <br/>
                     <div ng-click="noThanksClicked()" class="proceed-to-checkin">
-                        <span>NO, THANKS. PROCEED TO <strong>CHECK IN</strong></span>
+                        <span>NO THANKS, PROCEED TO CHECK IN</span>
                     </div>
                 </div>
             </div>

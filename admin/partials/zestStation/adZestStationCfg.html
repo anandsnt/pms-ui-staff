@@ -201,7 +201,8 @@
                         <img class='station-image-preview' ng-show="uploadedIcon.preview_createkey && hasKeyImageFileUpdatedOrUploading('keyCreate')" src="{{uploadedIcon.createkey}}">
                     </div>
                     <button ng-show="hasKeyImageFileUpdatedOrUploading('keyCreate')" type="button" class="button brand-colors with-remove-file" ng-click="zestSettings.key_create_file_uploaded = 'false'">
-                        Remove file
+                        {{'STATION_REMOVE_FILE' | translate}}
+                        
                     </button>
                 </div>
             </fieldset>
@@ -212,6 +213,14 @@
                 <ad-toggle-button is-checked="zestSettings.kiosk_out_of_order_treshold_is_active" label="{{'ACTIVE'| translate}}" div-class=""></ad-toggle-button>
                 <ad-textbox ng-show="zestSettings.kiosk_out_of_order_treshold_is_active" value="zestSettings.kiosk_out_of_order_treshold_value" name="zest-web" id="zest-web" label="{{'LIMIT'| translate}}" placeholder="" styleclass="full-width"></ad-textbox>
             </fieldset>
+
+            <fieldset class="holder right">
+                <div class="form-title full-width">
+                    <h3><span translate>STATION_GUEST_ID_ACTIVATE</span> </h3>
+                </div>
+                <ad-toggle-button is-checked="zestSettings.scan_guest_id" label="{{'STATION_GUEST_ID_ACTIVATE_DESCRIPTION'| translate}}" div-class="full-width"></ad-toggle-button>
+            </fieldset>
+
             <div class="actions float">
                 <button type="button" id="cancel" class="button blank add-data-inline" ng-click="goBackToPreviousState()" translate>
                     CANCEL

@@ -81,9 +81,8 @@ function($scope, $state, $rootScope, $stateParams, RVCompanyCardSrv, ngDialog, $
 
         requestData.params = getRequestParams();
         requestData.accountId = $scope.accountId;
-        $timeout(function() {
-            $scope.invokeApi(RVCompanyCardSrv.fetchTACommissionDetails, requestData, onCommissionFetchSuccess, onCommissionFetchFailure);
-        }, 1000);
+        
+        $scope.invokeApi(RVCompanyCardSrv.fetchTACommissionDetails, requestData, onCommissionFetchSuccess, onCommissionFetchFailure);
 
     };
 
@@ -243,6 +242,11 @@ function($scope, $state, $rootScope, $stateParams, RVCompanyCardSrv, ngDialog, $
 
            updateCommissionSummary(commissionList);
        }
+
+       if ($scope.selectedCommissions.length === 0) {
+            $scope.filterData.selectAll = false;
+            $scope.toggleSelection();
+       }
     };
 
     // Updates the checked status of the current  page records while making the whole selection
@@ -259,7 +263,7 @@ function($scope, $state, $rootScope, $stateParams, RVCompanyCardSrv, ngDialog, $
 
         if ($scope.filterData.selectAll) {
             updateCheckedStatus(true);
-            $scope.selectedCommissions = [];
+            $scope.selectedCommissions = Object.assign([], $scope.commissionDetails);
             $scope.prePaidCommissions = [];
             updateCommissionSummary($scope.commissionDetails);
             $scope.status.groupPaidStatus = "";
@@ -413,7 +417,10 @@ function($scope, $state, $rootScope, $stateParams, RVCompanyCardSrv, ngDialog, $
 
         var recalculateCommissionSuccess = function(data) {
             clearCurrentSelection();
-            fetchCommissionDetails(false);
+
+            $timeout(function() {
+                fetchCommissionDetails(false);
+            }, 2000);
         },
         recalculateCommissionFailure = function(error) {
             $scope.errorMessage = error;

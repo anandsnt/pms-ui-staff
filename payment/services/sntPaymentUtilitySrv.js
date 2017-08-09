@@ -52,9 +52,9 @@ angular.module('sntPay').service('paymentUtilSrv',
      * @return {object}
      */
     this.formCardDisplayData = (object) => {
-        var card_code = object.cardType; //for session coming from api
+        var card_code = object.cardType; // for session coming from api
         
-        //if it is MLI
+        // if it is MLI
         if(mliSwipeKey in object) {
             card_code = this.getCreditCardTypeForMLI(object.cardType);
         }
@@ -77,17 +77,17 @@ angular.module('sntPay').service('paymentUtilSrv',
     this.formApiParamsForCreditCardSaving = (object) => {
         var tokenDetails = {};
 
-        //session coming from the api
+        // session coming from the api
         if(normalSwipeKeyInObject in object) {
             tokenDetails.token = object.session;
             tokenDetails.card_code = object.cardType;
         }
-        //MLI
+        // MLI
         else if(mliSwipeKey in object) {
             tokenDetails = {
                 credit_card: object.cardType
             };
-            ['et2', 'ksn', 'pan', 'mli_token'].map(key => {
+            ['et2', 'ksn', 'pan', 'mli_token', 'etb', 'is_encrypted'].map(key => {
                 tokenDetails[key] = object[key];
             });
         }

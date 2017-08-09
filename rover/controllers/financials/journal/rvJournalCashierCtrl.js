@@ -15,8 +15,12 @@ sntRover.controller('RVJournalCashierController', ['$scope', 'RVJournalSrv', '$r
             $scope.details = ($scope.detailsList.length > 0) ?  $scope.detailsList[0] : {};// set first one as selected
             $scope.selectedHistoryId = ($scope.detailsList.length > 0) ? $scope.detailsList[0].id : "";
             $scope.isLoading = false;
-            setTimeout(function() {$scope.refreshScroller('cashier_history');}, 200);
-            setTimeout(function() {$scope.refreshScroller('cashier_shift');}, 200);
+             setTimeout(function() {
+                 $scope.refreshScroller('cashier_history');
+             }, 200);
+             setTimeout(function() {
+                 $scope.refreshScroller('cashier_shift');
+             }, 200);
         };
 
         var data =  {"user_id": $scope.data.filterData.selectedCashier, "date": $scope.data.cashierDate, "report_type_id": $scope.data.reportType};
@@ -107,8 +111,12 @@ sntRover.controller('RVJournalCashierController', ['$scope', 'RVJournalSrv', '$r
     */
 
     $scope.$on('cashierTabActive', function() {
-        setTimeout(function() {$scope.refreshScroller('cashier_history');}, 200);
-        setTimeout(function() {$scope.refreshScroller('cashier_shift');}, 200);
+        setTimeout(function() {
+            $scope.refreshScroller('cashier_history');
+        }, 200);
+        setTimeout(function() {
+            $scope.refreshScroller('cashier_shift');
+        }, 200);
     });
 
     /**

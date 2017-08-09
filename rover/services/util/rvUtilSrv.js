@@ -24,7 +24,7 @@ angular.module('sntRover').service('rvUtilSrv', ['$filter', function($filter) {
 	  		if ((typeof replaceWith !== "undefined") && (replaceWith !== null)) {
 	  			newValue = replaceWith;
 	  		}
-	  		var valueToReturn = ((value === null || typeof value === 'undefined' ) ? newValue : value);
+            var valueToReturn = ((value === null || typeof value === 'undefined' ) ? newValue : value);
 
 	  		return valueToReturn;
 		};
@@ -179,7 +179,9 @@ angular.module('sntRover').service('rvUtilSrv', ['$filter', function($filter) {
     	*/
     	this.convertToInteger = function(string, withWhatToBeReplacedifNotANumber) {
     		withWhatToBeReplacedifNotANumber = withWhatToBeReplacedifNotANumber ? withWhatToBeReplacedifNotANumber : 0;
-    		if (self.isNumeric (string)) { return parseInt (string);}
+            if (self.isNumeric(string)) {
+                return parseInt(string);
+            }
     		return withWhatToBeReplacedifNotANumber;
     	};
 
@@ -191,7 +193,9 @@ angular.module('sntRover').service('rvUtilSrv', ['$filter', function($filter) {
     	*/
     	this.convertToDouble = function(string, withWhatToBeReplacedifNotANumber) {
     		withWhatToBeReplacedifNotANumber = withWhatToBeReplacedifNotANumber ? withWhatToBeReplacedifNotANumber : 0;
-    		if (self.isNumeric (string)) { return parseFloat (string);}
+            if (self.isNumeric(string)) {
+                return parseFloat(string);
+            }
     		return withWhatToBeReplacedifNotANumber;
     	};
 

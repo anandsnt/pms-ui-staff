@@ -208,7 +208,9 @@ angular.module('sntRover').controller('RVHkRoomStatusCtrl', [
 
 		$scope.showFilters = function() {
 			$scope.filterOpen = true;
-			setTimeout(function() { $scope.refreshScroller('room-status-filter'); }, 1500);
+            setTimeout(function() {
+                $scope.refreshScroller('room-status-filter');
+            }, 1500);
 		};
 
 		$scope.refreshData = function() {
@@ -730,7 +732,9 @@ angular.module('sntRover').controller('RVHkRoomStatusCtrl', [
 				room_service_status_id: $scope.updateServiceData.room_service_status_id
 			};
 
-			var roomsToAdd = _.filter($scope.completedData.assignedRoomsList, function(room) { return room.is_add_to_update;});
+            var roomsToAdd = _.filter($scope.completedData.assignedRoomsList, function(room) {
+                return room.is_add_to_update;
+            });
 
 			params.room_id = _.pluck(roomsToAdd, 'id');
 			// as per CICO-32168 comments
@@ -806,7 +810,6 @@ angular.module('sntRover').controller('RVHkRoomStatusCtrl', [
 			$scope.closeHkStatusDialog();
 			$scope.refreshData();
 		};
-
 
 
 		$scope.submitHkStatusChange = function() {
@@ -1465,6 +1468,25 @@ angular.module('sntRover').controller('RVHkRoomStatusCtrl', [
 		var scrollerOptionsForSummary = {scrollX: true, scrollY: false, click: true, preventDefault: true, mouseWheel: false};
 
     	$scope.setScroller ('tasks-summary-scroller', scrollerOptionsForSummary);
+
+        // Format the given date based on the hotel date format
+        $scope.formatDateForUI = function(date_) {
+            var type_ = typeof date_,
+                returnString = '';
+
+          switch (type_) {
+              // if date string passed
+            case 'string':
+              returnString = $filter('date')(new tzIndependentDate(date_), $rootScope.dateFormat);
+              break;
+
+              // if date object passed
+            case 'object':
+              returnString = $filter('date')(date_, $rootScope.dateFormat);
+              break;
+          }
+          return (returnString);
+        };
 
 	}
 	]);

@@ -8,6 +8,7 @@ const {connect} = ReactRedux;
 let convertRatesDataForLeftListing = (rates, mode) => {
 	var ratesToReturn = [];
 	var showIndicator = (mode == RM_RX_CONST.RATE_VIEW_MODE);
+
 	rates.map((rate, index) => {
 		ratesToReturn.push({
 			id: rate.id,
@@ -67,6 +68,7 @@ let convertRateTypesDataForLeftListing = (rateTypes, mode) => {
  */
 let convertRoomTypesDataForLeftListing = (roomTypes) => {
 	var roomTypesToReturn = [];
+
 	roomTypes.map((roomType, index) => {
 		roomTypesToReturn.push({
 			...roomType,
@@ -91,6 +93,7 @@ let convertRoomTypesDataForLeftListing = (roomTypes) => {
  */
 let convertSingleRateRoomTypesDataForLeftListing = (roomTypes, expandedRows) => {
 	var roomTypesToReturn = [], isExpandedRow = false;
+
 	roomTypes.map((roomType, index) => {
 		isExpandedRow = expandedRows.indexOf(index) > -1;
 		roomTypesToReturn.push({
@@ -148,6 +151,7 @@ const mapDispatchToRateManagerGridLeftRowsContainerProps = (stateProps, dispatch
 	return {
 		onItemClick:(e, index) => {
 			let { dispatch } = dispatchProps;
+
 			if (stateProps.mode === RM_RX_CONST.SINGLE_RATE_EXPANDABLE_VIEW_MODE) {
 				dispatch({
 			        type: RM_RX_CONST.TOGGLE_EXPAND_COLLAPSE_ROW,
@@ -158,6 +162,7 @@ const mapDispatchToRateManagerGridLeftRowsContainerProps = (stateProps, dispatch
 			}
 			else if(stateProps.mode === RM_RX_CONST.RATE_VIEW_MODE) {
 				let clickedRate = stateProps.leftListingData[index];
+
 				stateProps.callBackForSingleRateFetch({
 					fromDate: stateProps.fromDate,
 					toDate: stateProps.toDate,
@@ -166,6 +171,7 @@ const mapDispatchToRateManagerGridLeftRowsContainerProps = (stateProps, dispatch
 			}
 			else if(stateProps.mode === RM_RX_CONST.RATE_TYPE_VIEW_MODE) {
 				let clickedRateType = stateProps.leftListingData[index];
+
 				stateProps.callBackForSingleRateTypeFetch({
 					fromDate: stateProps.fromDate,
 					toDate: stateProps.toDate,

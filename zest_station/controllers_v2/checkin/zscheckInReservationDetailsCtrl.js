@@ -63,14 +63,28 @@ sntZestStation.controller('zsCheckInReservationDetailsCtrl', [
             };
 
 
-            $scope.callAPI(zsCheckinSrv.fetchReservationDetails, {
+            $scope.callAPI(zsCheckinSrv.fetchReservationInfo, {
                 params: {
-                    'id': $scope.selectedReservation.confirmation_number
+                    'id': $scope.selectedReservation.id
                 },
                 'successCallBack': onSuccessFetchReservationDetails,
                 'failureCallBack': onSuccessFetchReservationDetails
             });
 
+        };
+
+        var checkIfRoomUpgradeIsPresent = function() {
+            var fetchCompleted = function(data) {
+                $scope.selectedReservation.reservation_details.is_upsell_available = data.is_upsell_available;
+                $scope.isReservationDetailsFetched = true;
+            };
+
+            $scope.callAPI(zsCheckinSrv.fetchRoomUpsellAvailability, {
+                params: {
+                    'id': $scope.selectedReservation.reservation_details.reservation_id
+                },
+                'successCallBack': fetchCompleted
+            });
         };
 
         var fetchAddons = function() {
@@ -79,10 +93,10 @@ sntZestStation.controller('zsCheckInReservationDetailsCtrl', [
                 setSelectedReservation();
                 setDisplayContentHeight();
                 refreshScroller();
-                $scope.isReservationDetailsFetched = true;
                 if ($scope.zestStationData.is_kiosk_ows_messages_active && !$scope.zestStationData.is_standalone) {
                     $scope.$broadcast('FETCH_OWS_MESSAGES');
                 }
+                checkIfRoomUpgradeIsPresent();
             };
 
 
@@ -110,6 +124,7 @@ sntZestStation.controller('zsCheckInReservationDetailsCtrl', [
         };
 
         var onBackButtonClicked = function() {
+            $scope.zestStationData.session_conf = '';
 
             var reservations = zsCheckinSrv.getCheckInReservations();
 
@@ -139,7 +154,12 @@ sntZestStation.controller('zsCheckInReservationDetailsCtrl', [
             $scope.$on(zsEventConstants.CLICKED_ON_BACK_BUTTON, onBackButtonClicked);
             $scope.$emit('hideLoader');
             // starting mode
+            
             $scope.mode = 'RESERVATION_DETAILS';
+            $scope.zestStationData.session_conf = $scope.selectedReservation.confirmation_number;
+
+            $scope.trackSessionActivity('CheckIn', 'Found Reservation', $scope.zestStationData.session_conf, $scope.mode);
+
             if (!$stateParams.isQuickJump || $stateParams.isQuickJump === 'false') {
                 fetchReservationDetails();
             } else {
@@ -166,19 +186,6 @@ sntZestStation.controller('zsCheckInReservationDetailsCtrl', [
 
             $scope.callAPI(zsCheckinSrv.fetchDetailsPlaceholderData, options);
         };
-
-        (function() {
-            if ($stateParams.isQuickJump === 'true') {
-                $log.warn('FROM QUICK JUMP');
-                // set some dummy data when quick jumping here
-                setPlaceholderDataForDemo();
-            } else {
-                // init
-                // the data is service will be reset after the process from zscheckInReservationSearchCtrl
-                $scope.selectedReservation = zsCheckinSrv.getSelectedCheckInReservation();
-                initComplete();
-            }
-        }());
 
         $scope.addRemove = function() {
             var stateParams = {};
@@ -372,7 +379,7 @@ sntZestStation.controller('zsCheckInReservationDetailsCtrl', [
                 if (!$scope.zestStationData.kiosk_display_terms_and_condition) {
                     routeToNext();
                 }
-                else{
+                else {
                     showTermsAndCondition();
                 }
             } else {
@@ -524,5 +531,23 @@ sntZestStation.controller('zsCheckInReservationDetailsCtrl', [
             }
 
         };
+        
+
+        (function() {
+            if ($stateParams.isQuickJump === 'true') {
+                if ($stateParams.quickJumpMode === 'TERMS_CONDITIONS') {
+                    showTermsAndCondition();
+                } else {
+                    // set some dummy data when quick jumping here
+                    setPlaceholderDataForDemo();   
+                }
+            } else {
+                // init
+                // the data is service will be reset after the process from zscheckInReservationSearchCtrl
+                $scope.selectedReservation = zsCheckinSrv.getSelectedCheckInReservation();
+                initComplete();
+            }
+        }());
+        
     }
 ]);

@@ -1070,7 +1070,7 @@
                 padding-right: 10px;
                 border-right: 1px solid rgba(0,0,0,.1);
 
-                span {
+                span:not(.currency) {
                     font-size: 21px;
                     line-height: 18px;
                     font-weight: 300;
@@ -1205,6 +1205,42 @@
             }
 
             &:first-child { margin-top: 0; }
+        }
+
+        /* For Travel Commission Report*/
+        .travel-agent {
+
+            h2 {
+                margin-top: 20px;
+                .pull-left;
+            }
+
+           .ta-print {
+                .pull-left();
+                margin-left: 10px;
+                margin-top: 17px;
+                .size(24px, 30px);
+                padding: 0;
+
+                .icons {
+                    background-size: 80px;
+
+                    &.icon-print {
+                        background-position: 3px -743px;
+                    }
+                }
+            }
+
+            &:first-child {
+                h2 {
+                    margin-top: 0;
+                }
+
+                .ta-print {
+                    margin-top: -3px;
+                }
+            }
+
         }
 
         table {
@@ -3318,7 +3354,7 @@
                 .float;
 
                 strong,
-                span {
+                span:not(.currency) {
                     .nowrap();
                     .pull-left;
                 }
@@ -3330,7 +3366,7 @@
                     &.name { .calc-width(100, 400); }
                 }
 
-                span { width: 100px; }
+                span:not(.currency) { width: 100px; }
 
                 &.has-arrow {
                     background-position: -webkit-calc(~"100% - 10px") 50%;
@@ -3620,6 +3656,10 @@
                 }
             }
         }
+    }
+
+    .travel-agent-print {
+        .hide();
     }
 }
 

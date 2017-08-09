@@ -50,6 +50,7 @@ sntZestStation.controller('zsPrintBillCtrl', [
             errorMessage = _.isUndefined(errorMessage) ? 'CHECKOUT_PRINT_FAILED' : errorMessage;
             $scope.zestStationData.workstationOooReason = $filter('translate')(errorMessage);
             $scope.zestStationData.workstationStatus = 'out-of-order';
+            $scope.addReasonToOOSLog('CHECKOUT_PRINT_FAILED');
             var printopted = 'false';
 
             $scope.runDigestCycle();
@@ -114,7 +115,7 @@ sntZestStation.controller('zsPrintBillCtrl', [
                 /*
                  * ======[ PRINTING!! JS EXECUTION IS PAUSED ]======
                  */
-                    if (sntapp.cordovaLoaded) {
+                    if ($scope.isIpad) { // CICO-40934 removed the sntapp load from zestJsAssetList, now just check for ipad/iphone
                         var printer = sntZestStation.selectedPrinter;
 
                         cordova.exec(function(success) {

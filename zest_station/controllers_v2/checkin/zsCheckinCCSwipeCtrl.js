@@ -211,7 +211,7 @@ sntZestStation.controller('zsCheckinCCSwipeCtrl', [
 
         var goToSwipeError = function() {
             if (atCardSwipeScreen()) {
-                $scope.waitingForSwipe = false;
+                $scope.zestStationData.waitingForSwipe = false;
                 $scope.swipeTimeout = false;
                 $scope.swipeError = true;
             }
@@ -285,23 +285,23 @@ sntZestStation.controller('zsCheckinCCSwipeCtrl', [
             $scope.currencySymbol = $scope.zestStationData.currencySymbol;
             $scope.depositAmount = $stateParams.deposit_amount;
             $scope.showSwipeNav = true;
-            $scope.waitingForSwipe = true;
+            $scope.zestStationData.waitingForSwipe = true;
         };
 
         var setCCAuthSettings = function() {
-            $scope.waitingForSwipe = true;
+            $scope.zestStationData.waitingForSwipe = true;
             $scope.swipeError = false;
             $scope.swipeTimeout = false;
         };
 
         var swipeTimeoutCC = function() {
-            $scope.waitingForSwipe = false;
+            $scope.zestStationData.waitingForSwipe = false;
             $scope.swipeError = false;
             $scope.swipeTimeout = true;
         };
 
         var swipeTimeoutDeposit = function() {
-            $scope.waitingForSwipe = false;
+            $scope.zestStationData.waitingForSwipe = false;
             $scope.swipeError = false;
             $scope.swipeTimeout = true;
         };
@@ -309,7 +309,7 @@ sntZestStation.controller('zsCheckinCCSwipeCtrl', [
         var listenForSwipe = function() {
             $timeout(function() {
                 $log.log('waiting for swipe..');
-                $scope.waitingForSwipe = true;
+                $scope.zestStationData.waitingForSwipe = true;
                 $scope.swipeError = false;
                 $scope.swipeTimeout = false;
             }, 1000);
@@ -375,8 +375,11 @@ sntZestStation.controller('zsCheckinCCSwipeCtrl', [
             }
         };
 
-        var isSixpay = function() {
-            if ($scope.zestStationData.paymentGateway === 'sixpayments') {
+        var isEmvEnabled = function() {
+            var paymentGateway = $scope.zestStationData.paymentGateway;
+
+            // EMV requests are used for six payments and MLI with EMV enabled in SNT admin
+            if (paymentGateway === 'sixpayments' || (paymentGateway === 'MLI' && $scope.zestStationData.mliEmvEnabled)) {
                 return true;
             }
             return false;
@@ -459,9 +462,9 @@ sntZestStation.controller('zsCheckinCCSwipeCtrl', [
 
             } else {
                 // fetches reservation details, which holds the updated auth amount
-                $scope.callAPI(zsCheckinSrv.fetchReservationDetails, {
+                $scope.callAPI(zsCheckinSrv.fetchReservationInfo, {
                     params: {
-                        'id': $stateParams.confirmation_number
+                        'id': $stateParams.reservation_id
                     },
                     'successCallBack': onSuccessFetchRemainingAuth,
                     'failureCallBack': onSwipeError
@@ -513,6 +516,8 @@ sntZestStation.controller('zsCheckinCCSwipeCtrl', [
             } else {
                 data.amount = '1.00';
             }
+            $scope.zestStationData.pending_deposit_amount = data.amount;
+
             data.reservation_id = $stateParams.reservation_id;
             data.is_emv_request = isEmv;
             $log.info('authorizing with: ', data);
@@ -566,8 +571,8 @@ sntZestStation.controller('zsCheckinCCSwipeCtrl', [
 
         };
 
-        var startSixPayPayment = function() {
-            $log.log(':: starting six pay payment ::');
+        var startEmvTerminalActions = function() {
+            $log.log(':: starting EMV pay payment ::');
             $log.log('isDepositMode(): ', isDepositMode());
             // If starting from deposit mode, we will be taking a (payment) which is different than an auth
             // payment will be paid but not saved to the reservation staycard,
@@ -611,7 +616,6 @@ sntZestStation.controller('zsCheckinCCSwipeCtrl', [
 
             $scope.numberOfCordovaCalls = 0;
 
-            $scope.cardReader = new CardOperation();
             initiateiPadCardReader();
         };
 
@@ -638,6 +642,9 @@ sntZestStation.controller('zsCheckinCCSwipeCtrl', [
             $scope.setScreenIcon('card');
 
             $log.warn('$stateParams: ', $stateParams);
+            if ($stateParams.deposit_amount) {// for debugging detect the deposit/swipe amount
+                $scope.zestStationData.pending_deposit_amount = $stateParams.deposit_amount;
+            }
             // if at the deposit screen, set the currency symbol and amount due, which should be passed from reservation details
             /*
              * 
@@ -654,12 +661,11 @@ sntZestStation.controller('zsCheckinCCSwipeCtrl', [
                 // the card to the staycard
                 setCCAuthSettings();
             }
-            var sixPay = isSixpay();
 
-            $log.log('sixPay: ' + sixPay);
+            $log.log('isEmvEnabled: ' + isEmvEnabled());
             // check if a Sixpay hotel or MLI
             // then depending on the swipe configuration, initialize the device
-            if (!sixPay) { // mli
+            if (!isEmvEnabled()) { // mli
                 $log.info('mli');
                     // socket = Sankyo
                 if (swipeFromSocket()) {
@@ -677,7 +683,7 @@ sntZestStation.controller('zsCheckinCCSwipeCtrl', [
                 }
             } else { // sixpay
                 $log.info('sixpay payment');
-                startSixPayPayment();
+                startEmvTerminalActions();
 
             }
         };

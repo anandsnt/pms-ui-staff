@@ -194,6 +194,7 @@ angular.module('reportsModule')
             'INCLUDE_DUE_OUT': true,
             'INCLUDE_INHOUSE': true,
             'RESTRICTED_POST_ONLY': true,
+            'EXCEEDED_ONLY': true,
 
             // for room ooo oos report
             OOO: true,
@@ -327,7 +328,7 @@ angular.module('reportsModule')
             report['hasShow']['data'].push({
                 paramKey: filter.value.toLowerCase(),
                 description: filter.description,
-                selected: true
+                selected: filter.value === 'EXCEEDED_ONLY' ? false : true
             });
         };
 
@@ -461,7 +462,7 @@ angular.module('reportsModule')
             report.hasShow = {
                 data: [],
                 options: {
-                    selectAll: true,
+                    selectAll: false,
                     hasSearch: false,
                     key: 'description',
                     allValue: 'Both',
@@ -1201,12 +1202,17 @@ angular.module('reportsModule')
 
                         // CICO-37341 - Added new entry UNDEFINED for custom rate
                         if (report['title'] === reportNames['RESERVATIONS_BY_USER']) {
-                            var customRate = {
-                                id: -1,
-                                description: "UNDEFINED"
-                            };
+                            var hasCustomRateItemPresent = _.find(data, {id: -1});
 
-                            data.push(customRate);
+                            if (!hasCustomRateItemPresent) {
+                                var customRate = {
+                                    id: -1,
+                                    description: "UNDEFINED"
+                                };
+
+                                data.push(customRate);
+                            }
+
                         }
 
                         report.hasRateCodeFilter = {

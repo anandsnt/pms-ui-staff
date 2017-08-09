@@ -1488,7 +1488,8 @@ body { overflow: hidden; }
 		}
 
 		&.accompany {
-			img { 
+			img,
+			.icons { 
 				position: absolute;
 				top: 0;
 				left: 0;
@@ -2507,6 +2508,16 @@ body { overflow: hidden; }
 	                .pull-left;
 	            }
 
+	            .global-label {
+	                color: @grey3;
+	                font-size: 12px;
+	                line-height: 1;
+	                font-weight: 600;
+	                width: 100%;
+	                clear: both;
+	                .show();
+	            }
+
 	            .topic { .hide; }
 
 	            .icon-trash {
@@ -3233,6 +3244,9 @@ body { overflow: hidden; }
     .release-notes_content {
         .calc-width(100, 200);
         #flexbox > .parent(row wrap, '', '', '');
+    }
+    .release-notes_content.device-status {
+    	width:100%;
     }
 
     .release-notes_action {

@@ -32,6 +32,11 @@
 		var charges = LateCheckOutChargesService.charges;
 		var id = $stateParams.id;
 
+
+		$scope.goTocheckOutConfirmation = function() {
+			$state.go('checkOutConfirmation');
+		};
+
 		$scope.reservationID = $rootScope.reservationID;
 		$scope.id = id;
 		$scope.netWorkError = false;

@@ -15,7 +15,7 @@ sntZestStation.config(['$stateProvider',
 
         // checkin reservation details 
         $stateProvider.state('zest_station.checkInReservationDetails', {
-            url: '/checkInReservationDetails/:pickup_key_mode/:isQuickJump',
+            url: '/checkInReservationDetails/:pickup_key_mode/:isQuickJump/:quickJumpMode',
             templateUrl: '/assets/partials_v2/checkin/zsCheckinReservationDetails.html',
             controller: 'zsCheckInReservationDetailsCtrl',
             jumper: true,
@@ -23,7 +23,14 @@ sntZestStation.config(['$stateProvider',
             section: 'Checkin',
             description: 'Cost Details, Link to add/remove guests',
             icon: 'checkin_res_details.png',
-            label: 'Reservation Details'
+            label: 'Reservation Details',
+            modes: [
+            {
+                'name': 'TERMS_CONDITIONS',
+                'label': 'Terms and Conditions',
+                'description': 'After Reservation Details, Show Hotel Terms and Conditions',
+                'icon': 'checkin_terms.png'
+            }]
         });
         // select checkin reservation from array of reservations.
         $stateProvider.state('zest_station.selectReservationForCheckIn', {
@@ -85,7 +92,7 @@ sntZestStation.config(['$stateProvider',
             url: '/checkInTermsAndConditions/:guest_id/:reservation_id/:payment_type_id/:deposit_amount/:guest_email/:guest_email_blacklisted/:room_no/:room_status/:first_name/:balance_amount/:pre_auth_amount_for_zest_station/:authorize_cc_at_checkin/:confirmation_number/:pickup_key_mode/:is_from_room_upsell/:is_from_addons',
             templateUrl: '/assets/partials_v2/checkin/zsCheckinTermsConditions.html',
             controller: 'zsCheckInTermsConditionsCtrl',
-            jumper: true,
+            jumper: false,
             section: 'Checkin',
             icon: 'checkin_terms.png',
             description: 'Terms and Conditions',
@@ -186,11 +193,11 @@ sntZestStation.config(['$stateProvider',
 
         // passport scanning flow
         $stateProvider.state('zest_station.checkInScanPassport', {
-            url: '/checkInScanPassport/:reservation_id/:email/:first_name/:room_no/:guest_id/:guest_email_blacklisted/:signature/:passports_scanned/:quickJumpMode/:isQuickJump',
+            url: '/checkInScanPassport/:reservation_id/:email/:first_name/:room_no/:guest_id/:guest_email_blacklisted/:signature/:passports_scanned/:quickJumpMode/:isQuickJump/:from_pickup_key',
             templateUrl: '/assets/partials_v2/checkin/zsCheckinScanPassport.html',
             controller: 'zsCheckinScanPassportCtrl',
             jumper: true,
-            sntOnly: true,
+            sntOnly: false,
             section: 'Checkin',
             icon: 'checkin_scan_passport.png',
             // description: 'To Continue Checking-In, Guests Will Scan Passports',
@@ -199,54 +206,54 @@ sntZestStation.config(['$stateProvider',
             modes: [{
                 'name': 'SCAN_PASSPORT',
                 'label': 'Scan ID Start',
-                'sntOnly': true,
+                'sntOnly': false,
                 'description': 'Start ID Scanning, initial page after signature',
                 'icon': ''
             }, {
                 'name': 'SCANNING_IN_PROGRESS',
-                'sntOnly': true,
+                'sntOnly': false,
                 'label': 'Scanning in progress page',
                 'description': 'User has started the scanner, scanning in progress',
                 'icon': ''
             }, {
                 'name': 'SCAN_FAILURE',
                 'label': 'Scan Failed',
-                'sntOnly': true,
+                'sntOnly': false,
                 'description': 'Scanning of the ID failed',
                 'icon': ''
             }, {
                 'name': 'SCAN_RESULTS',
-                'sntOnly': true,
+                'sntOnly': false,
                 'label': 'ID Scan Results',
                 'description': 'Results of ID scans for guests on reservation',
                 'icon': ''
             }, {
                 'name': 'WAIT_FOR_STAFF',
-                'sntOnly': true,
+                'sntOnly': false,
                 'label': 'Wait for staff to verify passports',
                 'description': 'Guest must wait until a staff member to continue',
                 'icon': ''
             }, {
                 'name': 'ADMIN_LOGIN_ID',
-                'sntOnly': true,
+                'sntOnly': false,
                 'label': 'Staff Verify ID, admin Login ID',
                 'description': '',
                 'icon': ''
             }, {
                 'name': 'ADMIN_LOGIN_PWD',
-                'sntOnly': true,
+                'sntOnly': false,
                 'label': 'Staff Verify ID, admin Login Password',
                 'description': '',
                 'icon': ''
             }, {
                 'name': 'ADMIN_VERIFY_PASSPORTS',
-                'sntOnly': true,
+                'sntOnly': false,
                 'label': 'Staff Verify Passports - List View',
                 'description': '',
                 'icon': ''
             }, {
                 'name': 'ADMIN_VERIFY_PASSPORT_VIEW',
-                'sntOnly': true,
+                'sntOnly': false,
                 'label': 'Verify Passport (Selected View)',
                 'description': '',
                 'icon': ''
@@ -361,10 +368,11 @@ sntZestStation.config(['$stateProvider',
 
         // room upsells
         $stateProvider.state('zest_station.roomUpsell', {
-            url: '/checkinRoomUpsell',
+            url: '/checkinRoomUpsell/:isQuickJump/:quickJumpMode',
             templateUrl: '/assets/partials_v2/checkin/zsCheckinRoomUpsell.html',
             controller: 'zsCheckinRoomUpsellCtrl',
             jumper: false,
+            placeholderData: true,
             section: 'Checkin',
             description: '',
             label: 'Room Upsell'
@@ -372,12 +380,13 @@ sntZestStation.config(['$stateProvider',
 
          // addon upsells
         $stateProvider.state('zest_station.addOnUpsell', {
-            url: '/checkinAddon/:is_from_room_upsell',
+            url: '/checkinAddon/:is_from_room_upsell/:isQuickJump/:quickJumpMode',
             templateUrl: '/assets/partials_v2/checkin/zsCheckinAddon.html',
             controller: 'zsCheckinAddonCtrl',
             jumper: false,
             section: 'Checkin',
-            description: '',
+            description: 'Check-In Add-on Upsell',
+            placeholderData: true,
             label: 'Addon'
         });
 

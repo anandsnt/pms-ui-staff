@@ -1,10 +1,11 @@
-admin.controller('ADUpsellLateCheckoutCtrl', ['$scope', '$rootScope', '$state', 'adUpsellLatecheckoutService', 'ADChargeCodesSrv',  function($scope, $rootScope, $state, adUpsellLatecheckoutService, ADChargeCodesSrv) {
+admin.controller('ADUpsellLateCheckoutCtrl', ['$scope', '$rootScope', '$state', 'adUpsellLatecheckoutService', 'ADChargeCodesSrv', 'ADRatesAddonsSrv',  function($scope, $rootScope, $state, adUpsellLatecheckoutService, ADChargeCodesSrv, ADRatesAddonsSrv) {
 
     BaseCtrl.call(this, $scope);
     $scope.$emit("changedSelectedMenu", 2);
     $scope.upsellData = {};
-
-
+    $scope.successMessage = '';
+    var lcoAddonImage = '';
+    
 var setUpList = function() {
    // remove the selected item from drop down
   var selectedIds = [];
@@ -31,6 +32,7 @@ $scope.fetchUpsellDetails = function() {
     var fetchUpsellDetailsSuccessCallback = function(data) {
        $scope.$emit('hideLoader');
        $scope.upsellData = data;
+       lcoAddonImage = angular.copy(data.late_checkout_addon_image);
        setUpList();
        $scope.upsellData.deleted_room_types = [];
        isRoomTypesSelected();
@@ -42,9 +44,28 @@ $scope.fetchUpsellDetails = function() {
    $scope.invokeApi(adUpsellLatecheckoutService.fetch, {}, fetchUpsellDetailsSuccessCallback);
 };
 
-$scope.fetchUpsellDetails();
+
 $scope.hours = ["HH", "01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12"];
 $scope.minutes = ["00", "15", "30", "45"];
+
+
+$scope.getAddonsWithNameValues = function(addons) {
+        angular.forEach(addons, function(item, index) {
+       item.value = item.id;
+  });
+        return addons;
+};
+
+$scope.fetchAddons = function() {
+    var fetchSuccessOfAddons = function(data) {
+       $scope.addons = $scope.getAddonsWithNameValues(data.results);
+       $scope.fetchUpsellDetails();
+   };
+
+   $scope.invokeApi(ADRatesAddonsSrv.fetch, {"no_pagination": true, "ignore_inventory": true}, fetchSuccessOfAddons);
+};
+
+$scope.fetchAddons();
 /**
 * To handle switch actions
 *
@@ -184,6 +205,13 @@ $scope.saveClick = function() {
 	updateData.room_types = [];
 	updateData.deleted_room_types = [];
 	updateData.deleted_room_types = $scope.upsellData.deleted_room_types;
+  updateData.is_sell_late_checkout_as_addon = $scope.upsellData.is_sell_late_checkout_as_addon;
+  updateData.is_allow_additional_late_checkout_offers = $scope.upsellData.is_allow_additional_late_checkout_offers;
+  // check if image is changed
+  if (lcoAddonImage !== angular.copy($scope.upsellData.late_checkout_addon_image)) {
+    updateData.late_checkout_addon_image = $scope.upsellData.late_checkout_addon_image;
+  }
+
 	// Creating room type array with available max_late_checkouts data
 	angular.forEach($scope.upsellData.room_types, function(item, index) {
 		if (item.max_late_checkouts !== '' && item.max_late_checkouts !== null) {
@@ -194,6 +222,7 @@ $scope.saveClick = function() {
 	});
    	var upsellLateCheckoutSuccessCallback = function(data) {
       $scope.$emit('hideLoader');
+      $scope.successMessage = "Settings Saved";
       angular.forEach($scope.chekoutchargesArray, function(value, key) {
       var timeValue = value.time;
 

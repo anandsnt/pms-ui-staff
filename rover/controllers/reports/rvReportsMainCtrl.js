@@ -47,6 +47,10 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 
         $scope.showReportDetails = false;
 
+        $scope.selectedReport = {
+            report: null
+        };
+
 
         var FULL_REPORT_SCROLL = 'FULL_REPORT_SCROLL';
         /**/
@@ -64,7 +68,7 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 
             if ( !! noReset ) {
                 return;
-            } else if ( $scope.$parent.myScroll.hasOwnProperty(FULL_REPORT_SCROLL) ) {
+            } else if ( $scope.$parent.myScroll && $scope.$parent.myScroll.hasOwnProperty(FULL_REPORT_SCROLL) ) {
                 $scope.$parent.myScroll[FULL_REPORT_SCROLL].scrollTo(0, 0, 100);
             }
         };
@@ -521,12 +525,13 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 
         // CICO-34733 - Added for Group Rooms report
         $scope.fromDateOptionsThirtyOneDaysLimit = angular.extend({
-            minDate: new tzIndependentDate($rootScope.businessDate),
             onSelect: function(value, datePickerObj) {
                 var selectedDate = new tzIndependentDate(util.get_date_from_date_picker(datePickerObj));
 
                 $scope.toDateOptionsThirtyOneDaysLimit.minDate = selectedDate;
                 $scope.toDateOptionsThirtyOneDaysLimit.maxDate = reportUtils.processDate(selectedDate).thirtyOneDaysAfter;
+
+                $scope.touchedReport.untilDate = $scope.toDateOptionsThirtyOneDaysLimit.maxDate;
             }
         }, datePickerCommon);
 
@@ -1946,7 +1951,7 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
                 }
             }
 
-            //Include accounts
+            // Include accounts
             if ( report.hasOwnProperty('hasAccountSearch') ) {
                 selected = _.where( report['hasAccountSearch']['data'], { selected: true } );
 
@@ -2125,7 +2130,9 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
                     if ( key === 'group_by_date' || key === 'group_by_user' || key === 'group_by_charge_type' || key === 'group_by_group_name' || key === 'page' || key === 'per_page' ) {
                         continue;
                     } else if ( params[key] !== $scope.oldParams[key] ) {
-                        report.chosenGroupBy = 'BLANK';
+                        // For Reservations by user report, if no grouping is present the chosenGroupBy is expected as ''. Else it will load another HTML 
+                        // and will cause the rvPagination directive to call link function again.
+                        report.chosenGroupBy = (reportNames['RESERVATIONS_BY_USER'] === report.title) ? '' : 'BLANK';
                         /**/
                         if ( params.hasOwnProperty('group_by_date') ) {
                             params['group_by_date'] = undefined;
@@ -2291,14 +2298,14 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
                 $scope.totalCount = response.total_count || 0;
                 $scope.currCount = response.results ? response.results.length : 0;
 
-                //CICO-36186
+                // CICO-36186
                 if(chosenReport.title === reportNames["COMPARISION_BY_DATE"]) {
                     $timeout(function() {
                         $scope.$broadcast('updatePagination', "COMPARISION_BY_DATE");
                     }, 50);
                 }
 
-                 //CICO-36269
+                 // CICO-36269
                 if(chosenReport.title === reportNames["TRAVEL_AGENT_COMMISSIONS"]) {
                     $scope.$broadcast("UPDATE_RESULTS", $scope.results);
                     $timeout(function() {
@@ -2375,7 +2382,7 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
                 $scope.genReport(false, pageNo);
             };
 
-            //CICO-36186 - Implemented the new pagination for Comparison report
+            // CICO-36186 - Implemented the new pagination for Comparison report
             if(chosenReport.title === reportNames["COMPARISION_BY_DATE"]) {
                 var loadAPIData = function(pageNo) {
                     $scope.genReport(false, pageNo);
@@ -2726,7 +2733,27 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
         var autoCompleteForGrp = {
             source: function(request, response) {
                 $scope.$emit( 'showLoader' );
-                reportsSubSrv.fetchGroups(request.term)
+                var selectedReport = $scope.selectedReport.report;
+                var requestParams = {},
+                    fromKey = '',
+                    toKey = '';
+
+                requestParams.q = request.term;
+
+                if (!!selectedReport && selectedReport.title === reportNames['GROUP_ROOMS_REPORT']) {
+
+                    if (!!selectedReport.fromDate) {
+                        fromKey = reportParams['FROM_DATE'];
+                        requestParams[fromKey]  = $filter('date')(selectedReport.fromDate, 'yyyy/MM/dd');
+                    }
+
+                    if (!!selectedReport.untilDate) {
+                        toKey = reportParams['TO_DATE'];
+                        requestParams[toKey]  = $filter('date')(selectedReport.untilDate, 'yyyy/MM/dd');
+                    }
+
+                }
+                reportsSubSrv.fetchGroups(requestParams)
                     .then(function(data) {
                         var list = [];
                         var entry = {};

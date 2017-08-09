@@ -4,7 +4,9 @@ sntRover.controller('RVJournalPaymentController', ['$scope', '$rootScope', 'RVJo
 
 	$scope.setScroller('payment_content', {});
     var refreshPaymentScroll = function() {
-        setTimeout(function() {$scope.refreshScroller('payment_content');}, 500);
+        setTimeout(function() {
+            $scope.refreshScroller('payment_content');
+        }, 500);
     };
 
     $rootScope.$on('REFRESHPAYMENTCONTENT', function() {

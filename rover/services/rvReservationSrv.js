@@ -340,5 +340,19 @@ angular.module('sntRover').service('RVReservationCardSrv', ['$http', '$q', 'RVBa
 			return deferred.promise;
 		};
 
+
+		this.fetchGuestIdentity = function(data) {
+			var deferred = $q.defer(),
+				url = '/api/guest_identity/' + data.reservation_id;
+
+			rvBaseWebSrvV2.getJSON(url, data).then(function(response) {
+				deferred.resolve(response);
+			}, function(response) {
+				deferred.reject(response);
+			});
+			return deferred.promise;
+		};
+
+
 	}
 ]);

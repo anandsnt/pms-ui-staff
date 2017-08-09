@@ -86,7 +86,6 @@ admin.controller('ADUserDetailsCtrl',
          */
 
 
-
    /*
     * Handle action when clicked on assigned role
     * @param {int} index of the clicked role
@@ -187,9 +186,9 @@ admin.controller('ADUserDetailsCtrl',
 		var unwantedKeys = [];
 
 		if ($scope.image.indexOf("data:") !== -1) {
-			unwantedKeys = ["departments", "roles"];
+			unwantedKeys = ["departments", "roles", 'is_multi_property'];
 		} else {
-			unwantedKeys = ["departments", "roles", "user_photo"];
+			unwantedKeys = ["departments", "roles", "user_photo", 'is_multi_property'];
 		}
 		var userRoles = [];
 
@@ -201,6 +200,11 @@ admin.controller('ADUserDetailsCtrl',
 
 
 		$scope.data.user_roles = userRoles;
+
+        if ($scope.data.is_chain_admin === undefined || $scope.data.is_chain_admin === null) {
+            $scope.data.is_chain_admin = false;
+        }
+
 		var data = dclone($scope.data, unwantedKeys);
 		// Remove user_photo field if image is not uploaded. Checking base64 encoded data exist or not
 

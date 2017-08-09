@@ -36,6 +36,7 @@ module.exports = {
 				sharedRoot + 'directives/**/*.js',
 				sharedRoot + 'baseCtrl.js',
                 sharedRoot + 'cardReaderCtrl.js',
+                sharedRoot + 'cordova.js',
 
 				roverRoot + 'rvRouters/**/*.js',
 				roverRoot + 'rvApp.js',
@@ -54,13 +55,14 @@ module.exports = {
 				controllerRoot + 'search/**/*.js',
 				controllerRoot + 'errorPopup/rvTimeoutErrorCtrl.js',
 				controllerRoot + 'workstation/rvWorkstationCtrl.js',
+                controllerRoot + 'rvOWSErrorCtrl.js',
 
 				serviceRoot + 'baseWebSrvV2.js',
 				serviceRoot + 'rvBaseWebSrv.js',
 				serviceRoot + 'rvBaseWebSrvV2.js',
 				serviceRoot + 'rvDashboardSrv.js',
 				serviceRoot + 'menu/rvMenuSrv.js',
-				serviceRoot + 'rvHKOWSTestSrv.js',
+				serviceRoot + 'rvOWSTestSrv.js',
 				serviceRoot + 'jsMappings/jsMappingsSrv.js',
 				serviceRoot + 'permissions/rvPermissionSrv.js',
 				serviceRoot + 'rvSearchSrv.js',

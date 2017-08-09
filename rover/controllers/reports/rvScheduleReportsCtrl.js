@@ -11,7 +11,7 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
     'rvUtilSrv',
     'ngDialog',
     function($rootScope, $scope, reportsSrv, reportUtils, reportParams, reportMsgs, reportNames, $filter, $timeout, util, ngDialog) {
-        
+
 
         var REPORT_SCHEDULES_SCROLL = 'REPORT_SCHEDULES_SCROLL';
         var SECOND_COLUMN_SCROLL = 'SECOND_COLUMN_SCROLL';
@@ -198,9 +198,9 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
 
             // fill emails
             if ( $scope.emailList.length ) {
-                params.recipients = $scope.emailList.join(', ');
+                params.emails = $scope.emailList.join(', ');
             } else {
-                params.recipients = '';
+                params.emails = '';
             }
 
             // fill sort_field and filters
@@ -226,7 +226,7 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
                 hotel_id: $rootScope.hotelDetails.userHotelsData.current_hotel_id,
                 /**/
                 format_id: $scope.scheduleParams.format_id,
-                delivery_method_id: $scope.selectedEntityDetails.delivery_method.delivery_type.id
+                delivery_method_id: $scope.selectedEntityDetails.delivery_type.id
             };
 
             var filter_values = {
@@ -292,9 +292,9 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
 
             // fill emails
             if ( $scope.emailList.length ) {
-                params.recipients = $scope.emailList.join(', ');
+                params.emails = $scope.emailList.join(', ');
             } else {
-                params.recipients = '';
+                params.emails = '';
             }
 
             // fill sort_field and filters
@@ -365,7 +365,7 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
             _.each($scope.selectedEntityDetails.filters, function(filter) {
                 var selected = false,
                     mustSend = false;
-                
+
 
                 if (filter.value === 'ACCOUNT' || filter.value === 'GUEST') {
                     selected = true;
@@ -394,7 +394,7 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
 
                     if ( $scope.selectedEntityDetails.report.description === 'Restricted Post only' && filter.value === 'RESTRICTED_POST_ONLY' ) {
                         selected = false;
-                    }                    
+                    }
 
                     $scope.filters.hasGeneralOptions.data.push({
                         paramKey: filter.value.toLowerCase(),
@@ -441,7 +441,7 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
 
         var processScheduleDetails = function(report) {
             var TIME_SLOT = 30;
-            var hasAccOrGuest, todayTimePeriod;
+            var hasAccOrGuest;
 
             var datePickerCommon = {
                 dateFormat: $rootScope.jqDateFormat,
@@ -466,6 +466,10 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
             if (angular.isDefined($scope.selectedEntityDetails.schedule_formats)) {
                 $scope.schedule_formats = $scope.selectedEntityDetails.schedule_formats;
                 $scope.scheduleParams.format_id = $scope.selectedEntityDetails.format.id;
+            } else {
+                if ($scope.selectedEntityDetails.report.title !== reportNames['COMPARISION_BY_DATE'] ) {
+                   $scope.scheduleParams.format_id = _.find($scope.scheduleFormat, {value: 'PDF'}).id;
+                }
             }
 
             hasAccOrGuest = _.find(report.filters, function(filter) {
@@ -473,11 +477,7 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
             });
 
             if ( angular.isDefined(hasAccOrGuest) ) {
-                todayTimePeriod = _.find($scope.scheduleTimePeriods, function(each) {
-                    return each.value === 'TODAY';
-                });
-
-                $scope.scheduleParams.time_period_id = todayTimePeriod.id;
+                $scope.scheduleParams.time_period_id = _.find($scope.originalScheduleTimePeriods, { value: "ALL" }).id;
                 $scope.isGuestBalanceReport = true;
             } else if ( angular.isDefined($scope.selectedEntityDetails.time_period_id) ) {
                 $scope.scheduleParams.time_period_id = $scope.selectedEntityDetails.time_period_id;
@@ -513,6 +513,7 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
             }
 
             $scope.startsOnOptions = angular.extend({
+                minDate: tzIndependentDate($rootScope.businessDate),
                 onSelect: function(value) {
                     $scope.endsOnOptions.minDate = value;
                 }
@@ -527,8 +528,8 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
             $scope.scheduleParams.ends_on_date = reportUtils.processDate(endsOnDate).today;
 
             // save emails
-            if ( $scope.selectedEntityDetails.recipients ) {
-                $scope.emailList = $scope.selectedEntityDetails.recipients.split(', ');
+            if ( $scope.selectedEntityDetails.emails ) {
+                $scope.emailList = $scope.selectedEntityDetails.emails.split(', ');
             } else {
                 $scope.emailList = [];
             }
@@ -554,7 +555,7 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
                         return 'Per';
                     }
                 };
-                
+
                 $scope.originalScheduleTimePeriods = payload.scheduleTimePeriods;
                 $scope.scheduleFrequency = payload.scheduleFrequency;
                 $scope.scheduleFormat = payload.scheduleFormat;
@@ -904,6 +905,11 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
             return $scope.addingStage === STAGES.SHOW_SCHEDULE_LIST ||
                 $scope.addingStage === STAGES.SHOW_PARAMETERS ||
                 $scope.addingStage === STAGES.SHOW_DETAILS;
+        };
+
+        // Checks whether file format dropdown should be shown or not
+        $scope.shouldShowFileFormat = function (selectedEntity) {
+            return selectedEntity.report && selectedEntity.report.title === reportNames['COMPARISION_BY_DATE'];
         };
 
         /**

@@ -28,7 +28,7 @@ angular.module('sntRover').controller('rvGroupConfigurationCtrl', [
         };
 
         var roomAndRatesState = 'rover.reservation.staycard.mainCard.room-rates';
-        
+
 
         /**
          * whether current screen is in Add Mode
@@ -499,6 +499,12 @@ angular.module('sntRover').controller('rvGroupConfigurationCtrl', [
                     $scope.errorMessage = error;
                     lastFailureCallback (error);
                 }
+            };
+
+            // Set callbacks while extending the group dates during the room block save
+            $scope.setCallBacks = function(options) {
+                lastSuccessCallback = options['successCallBack'];
+                lastFailureCallback = options['failureCallBack'];
             };
 
             /**
