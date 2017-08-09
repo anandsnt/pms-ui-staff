@@ -202,7 +202,7 @@ admin.controller('ADZestStationCtrl', ['$scope', '$rootScope', '$state', '$state
             $scope.downloadPromptFileName = lang + '.json';
             var link = document.getElementById('download-link-popup'); // ie. en-download-link
 
-            link.href = 'staff/locales/download/' + lang + '?hotel_uuid='+ sntAuthorizationSrv.getProperty();
+            link.href = 'staff/locales/download/' + lang + '?hotel_uuid=' + sntAuthorizationSrv.getProperty();
         }, 500);
         ngDialog.open({
             template: '/assets/partials/zestStation/adZestStationLanguageFile.html',
