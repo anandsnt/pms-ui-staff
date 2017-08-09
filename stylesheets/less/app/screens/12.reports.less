@@ -1070,7 +1070,7 @@
                 padding-right: 10px;
                 border-right: 1px solid rgba(0,0,0,.1);
 
-                span {
+                span:not(.currency) {
                     font-size: 21px;
                     line-height: 18px;
                     font-weight: 300;
@@ -3354,7 +3354,7 @@
                 .float;
 
                 strong,
-                span {
+                span:not(.currency) {
                     .nowrap();
                     .pull-left;
                 }
@@ -3366,7 +3366,7 @@
                     &.name { .calc-width(100, 400); }
                 }
 
-                span { width: 100px; }
+                span:not(.currency) { width: 100px; }
 
                 &.has-arrow {
                     background-position: -webkit-calc(~"100% - 10px") 50%;
