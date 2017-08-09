@@ -170,10 +170,6 @@ sntRover.controller('RVdashboardController',
                         }
                     } else {
                         $rootScope.workstation_id = data.id;
-                        // show connected devices if no workstation popup is shown
-                        if (sntapp.browser === 'rv_native' && sntapp.cordovaLoaded) {
-                            $scope.fetchDeviceStatus();
-                        }
                         $scope.$emit('hideLoader');
                     }
                 },
