@@ -131,10 +131,7 @@ sntRover.controller('RVKeyEncodePopupCtrl', [ '$rootScope', '$scope', '$state', 
 			return false;
 		}
 		if ($scope.numberOfKeysSelected > 0) {
-			if ($scope.isRemoteEncodingEnabled && $scope.encoderSelected === "") {
-				return false;
-			}
-			return true;
+			return !($scope.isRemoteEncodingEnabled && $scope.encoderSelected === "");
 		}
 	};
 
@@ -265,12 +262,13 @@ sntRover.controller('RVKeyEncodePopupCtrl', [ '$rootScope', '$scope', '$state', 
 	};
 
 	$scope.clickedPrintKey = function() {
-		if ($scope.numberOfKeysSelected === 0) {
+		if ($scope.numberOfKeysSelected === 0 || !$scope.isPrintKeyEnabled()) {
 			return;
 		}
         // if tablet chosen it means we need to get the details of device connected
         if ($scope.encoderSelected === '-1') {
             $scope.writingInProgress = true;
+
             that.getCardInfo();
             return false;
         }
@@ -316,7 +314,7 @@ sntRover.controller('RVKeyEncodePopupCtrl', [ '$rootScope', '$scope', '$state', 
 	* Server call to fetch the key data.
 	*/
 	this.callKeyFetchAPI = function(cardInfo) {
-		$scope.$emit('hideLoader');
+		$scope.$emit('showLoader');
 		that.setStatusAndMessage($filter('translate')('KEY_GETTING_KEY_IMAGE_STATUS'), 'pending');
 		var reservationId = '';
 
@@ -674,11 +672,17 @@ sntRover.controller('RVKeyEncodePopupCtrl', [ '$rootScope', '$scope', '$state', 
 
 	// Close popup
 	$scope.closeDialog = function() {
-        $scope.$emit('RESUME_OBSERVE_FOR_SWIPE_RESETS');
-		ngDialog.close();
+		if ($scope.fromView === 'checkin') {
+			$scope.pressedCancel();
+
+		} else {
+	        $scope.$emit('RESUME_OBSERVE_FOR_SWIPE_RESETS');
+			ngDialog.close();	
+		}
 	};
 	// To handle close button click
 	$scope.goToStaycard = function() {
+		$scope.fromView = '';
 		$scope.closeDialog();
 		$state.go('rover.reservation.staycard.reservationcard.reservationdetails',
 				{"id": $scope.reservationBillData.reservation_id,
@@ -686,6 +690,7 @@ sntRover.controller('RVKeyEncodePopupCtrl', [ '$rootScope', '$scope', '$state', 
 
 	};
 	$scope.goToSearch = function() {
+		$scope.fromView = '';
 		$scope.closeDialog();
 		$state.go('rover.search');
 
