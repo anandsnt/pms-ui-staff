@@ -47,8 +47,8 @@ module.exports = {
                 checkinPartials + '*.html',
                 precheckinPartials + '*.html'],
             'guestweb_carillon': [landingPartials + 'Carillon/*.html',
-                checkoutNowPartials + 'Carillon/*.html', checkoutNowPartials + '*.html',
-                checkoutNowlaterPartials + '*.html',
+                checkoutNowPartials + 'Carillon/*.html',
+                checkoutNowlaterPartials + 'Carillon/*.html',
                 checkinPartials + 'Carillon/*.html', checkinPartials + '*.html',
                 precheckinPartials + 'Carillon/*.html', precheckinPartials + '*.html',
                 sharedHtml],
@@ -363,7 +363,8 @@ module.exports = {
             'guestweb_quintessence_resort': commonNonMgmTemplates,
             'guestweb_one_washington_circle': commonNonMgmTemplates,
             'guestweb_river_inn': commonNonMgmTemplates,
-            'guestweb_first_hotel_breiseth': commonNonMgmTemplates
+            'guestweb_first_hotel_breiseth': commonNonMgmTemplates,
+            'guestweb_hotel_blackhawk': commonNonMgmTemplates
         };
     }
 };

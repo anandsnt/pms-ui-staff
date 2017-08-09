@@ -511,8 +511,6 @@ sntRover.controller('roverController', [
                 $rootScope.iosAppVersion = response.AppVersion;
                 // reset the left menu (add device status)
                 $scope.formMenu();
-                // Initially fetch device log
-                $scope.fetchDeviceStatus();
               }
             }, function() {
 

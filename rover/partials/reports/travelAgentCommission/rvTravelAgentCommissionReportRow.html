@@ -15,7 +15,7 @@
                     <tr class="bottom-row">
 
                         <th class="amount break">Revenue</th>
-                        <th>%/{{currencySymbol}}</th>
+                        <th>%/<span class="currency"><span class="currency">{{currencySymbol}}</span></span></th>
                         <th class="amount">Net Amt</th>
                     </tr>
 
@@ -33,11 +33,11 @@
                             Subtotals
                         </td>
                         <td>
-                           {{currencySymbol}}{{travel_agents.sub_total.revenue}}
+                           <span class="currency"><span class="currency">{{currencySymbol}}</span>{{travel_agents.sub_total.revenue}}
                         </td>
                         <td></td>
                         <td>
-                            {{currencySymbol}}{{travel_agents.sub_total.net_amount}}
+                            <span class="currency">{{currencySymbol}}</span>{{travel_agents.sub_total.net_amount}}
                         </td>
                     </tr>
                 </tfoot>
@@ -75,21 +75,21 @@
                             {{reservation.rate_details[0].rate_code}}
                         </td>
                         <td>
-                            {{currencySymbol}}{{reservation.rate_details[0].rate_amount}}
+                            <span class="currency">{{currencySymbol}}</span>{{reservation.rate_details[0].rate_amount}}
                         </td>
                         <td rowspan="{{reservation.rate_details.length}}">
-                            {{currencySymbol}}{{reservation.commission_revenue}}
+                            <span class="currency">{{currencySymbol}}</span>{{reservation.commission_revenue}}
                         </td>
                         <td rowspan="{{reservation.rate_details.length}}">
                             <span>{{reservation.commission_amount}}</span>
                         </td>
                         <td rowspan="{{reservation.rate_details.length}}">
-                            {{currencySymbol}}{{reservation.net_amount}}
+                            <span class="currency">{{currencySymbol}}</span>{{reservation.net_amount}}
                         </td>
                     </tr>
                     <tr class="rate-row" ng-repeat="rate_details in reservation.rate_details"  ng-if="$index > 0" ng-repeat-end >
                         <td>{{rate_details.rate_code}}</td>
-                        <td>{{currencySymbol}}{{rate_details.rate_amount}}</td>
+                        <td><span class="currency">{{currencySymbol}}</span>{{rate_details.rate_amount}}</td>
                     </tr>
 
                     <tr ng-if="travel_agents.reservation_details.reservations.length == 0">
@@ -110,11 +110,11 @@
                 </div>
                 <ul class="info-holder">
                     <li>
-                        <strong>{{currencySymbol}}{{travel_agents.sub_total.revenue}}</strong>
+                        <strong><span class="currency">{{currencySymbol}}</span>{{travel_agents.sub_total.revenue}}</strong>
                         <span>Revenue</span>
                     </li>
                     <li>
-                        <strong>{{currencySymbol}}{{travel_agents.sub_total.net_amount}}</strong>
+                        <strong><span class="currency">{{currencySymbol}}</span>{{travel_agents.sub_total.net_amount}}</strong>
                         <span>Net Amount</span>
                     </li>
                 </ul>
