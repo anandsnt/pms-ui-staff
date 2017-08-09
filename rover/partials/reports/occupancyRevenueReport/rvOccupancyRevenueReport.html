@@ -103,21 +103,21 @@
                                                     </td>
                                             </tr>
                                             <tr ng-repeat="revenue in stateStore.revenues track by $index">
-                                                    <td ng-repeat="n in getNumber() track by $index" class={{getClass($index)}}>
-                                                            {{ getValue(revenue.key,$index) | currency:currencySymbol:2 }}
+                                                    <td ng-repeat="n in getNumber() track by $index" class={{getClass($index)}}><span class="currency">
+                                                            {{ getValue(revenue.key,$index) | currency:currencySymbol:2 }}</span>
                                                     </td>
                                             </tr>
                                             <tr ng-show="marketExists">
                                                 <th ng-repeat="date in selectedDays track by $index" colspan="{{1 + !!chosenLastYear + !!chosenVariance}}">{{date | date : shortMonthAndDate }}</th>
                                             </tr>
                                             <tr ng-repeat="market in markets.data" ng-show="market.selected" ng-init="outerIndex = $index">
-                                                    <td ng-repeat="n in getNumber() track by $index" ng-class="getClass($index)">
-                                                            {{getMarketRevenueValue(outerIndex,$index) | currency:currencySymbol:2 }}
+                                                    <td ng-repeat="n in getNumber() track by $index" ng-class="getClass($index)"><span class="currency">
+                                                            {{getMarketRevenueValue(outerIndex,$index) | currency:currencySymbol:2 }}</span>
                                                     </td>
                                             </tr>
                                             <tr ng-show="markets.options.selectAll" ng-init="outerIndex = markets.data.length">
-                                                <td ng-repeat="n in getNumber() track by $index" ng-class="getClass($index)">
-                                                    {{ absoulte(getMarketRevenueValue(outerIndex, $index)) | currency:currencySymbol:2 }}
+                                                <td ng-repeat="n in getNumber() track by $index" ng-class="getClass($index)"><span class="currency">
+                                                    {{ absoulte(getMarketRevenueValue(outerIndex, $index)) | currency:currencySymbol:2 }}</span>
                                                 </td>
                                             </tr>
                                             <tr>
@@ -125,12 +125,12 @@
                                             </tr>
                                             <tr ng-repeat="chargeGroup in results.charge_groups" ng-init="outerIndex = $index">
                                                     <td ng-repeat="n in getNumber() track by $index" class={{getClass($index)}}>
-                                                            {{getChargeCodeValue(outerIndex,$index) | currency:currencySymbol:2 }}
+                                                            <span class="currency">{{getChargeCodeValue(outerIndex,$index) | currency:currencySymbol:2 }}</span>
                                                     </td>
                                             </tr>
                                             <tr ng-repeat="revenueTotal in stateStore.revenueTotals">
                                                     <td ng-repeat="n in getNumber() track by $index" class={{getClass($index)}}>
-                                                            <strong>{{getValue(revenueTotal.key,$index) | currency:currencySymbol:2 }}</strong>
+                                                            <strong><span class="currency">{{getValue(revenueTotal.key,$index) | currency:currencySymbol:2 }}</span></strong>
                                                     </td>
                                             </tr>
                                     </tbody>

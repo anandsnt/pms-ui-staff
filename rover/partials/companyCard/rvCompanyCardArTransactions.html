@@ -63,25 +63,25 @@
 			<li>
 				<div class="data">
 					<span class="label">Total Payments</span>
-					<span class="value">{{currencySymbol}}{{arTransactionDetails.total_payments | number: precisonTwo}}</span>
+					<span class="value"><span class="currency">{{currencySymbol}}</span>{{arTransactionDetails.total_payments | number: precisonTwo}}</span>
 				</div>
 			</li>
 			<li>
 				<div class="data">
 					<span class="label">Total Charges</span>
-					<span class="value grey">{{currencySymbol}}{{arTransactionDetails.total_charges | number: precisonTwo }}</span>
+					<span class="value grey"><span class="currency">{{currencySymbol}}</span>{{arTransactionDetails.total_charges | number: precisonTwo }}</span>
 				</div>
 			</li>
 			<li>
 				<div class="data">
 					<span class="label">Current Balance</span>
-					<span class="value red">{{currencySymbol}}{{arTransactionDetails.current_balance | number: precisonTwo}}</span>
+					<span class="value red"><span class="currency">{{currencySymbol}}</span>{{arTransactionDetails.current_balance | number: precisonTwo}}</span>
 				</div>
 			</li>
 			<li>
 				<div class="data">
 					<span class="label">Unallocated Credit</span>
-					<span class="value green">{{currencySymbol}}{{arTransactionDetails.unallocated_credit | number: precisonTwo}}</span>
+					<span class="value green"><span class="currency">{{currencySymbol}}</span>{{arTransactionDetails.unallocated_credit | number: precisonTwo}}</span>
 				</div>
 				<button type="button" class="button green with-icon only-icon" ng-click="payAmount()">
 					<span class="icons icon-wallet"></span>
@@ -165,7 +165,7 @@
                                 </time>
                             </div>
                         </div>
-                        <div class="amount">{{currencySymbol}}{{transaction.amount | number:precisonTwo }}</div>
+                        <div class="amount"><span class="currency">{{currencySymbol}}</span>{{transaction.amount | number:precisonTwo }}</div>
 
 						<div class="switch-button" ng-class="{'on': transaction.paid}">
 							<input value="" type="checkbox" />
@@ -191,7 +191,7 @@
 								</div>
 							</div>
 						</div>
-						<div class="amount" ng-class="{'credit' : transaction.amount >= 0, 'debit' : transaction.amount < 0}">{{currencySymbol}}{{transaction.amount | number:2 }}</div>
+						<div class="amount" ng-class="{'credit' : transaction.amount >= 0, 'debit' : transaction.amount < 0}"><span class="currency">{{currencySymbol}}</span>{{transaction.amount | number:2 }}</div>
 						<span class="employee">{{transaction.user_name}}</span>
 					</div>
 					<div class="faux-anchor" ng-show="transaction.transaction_type == 'CREDIT' && transaction.is_cc_payment">
@@ -208,7 +208,7 @@
 								<span class="time">{{getTimeConverted(transaction.transaction_time)}}</span>
 							</div>
 						</div>
-						<div class="amount" ng-class="{'credit' : transaction.amount >= 0, 'debit' : transaction.amount < 0}">{{currencySymbol}}{{transaction.amount | number:2 }}</div>
+						<div class="amount" ng-class="{'credit' : transaction.amount >= 0, 'debit' : transaction.amount < 0}"><span class="currency">{{currencySymbol}}</span>{{transaction.amount | number:2 }}</div>
 						<span class="employee">{{transaction.user_name}}</span>
 					</div>
 
@@ -241,15 +241,15 @@
 										</ul>
 									</td>
 									<td ng-if="item.fees">
-										{{currencySymbol}}{{item.fees | number:2 }}
+										<span class="currency">{{currencySymbol}}</span>{{item.fees | number:2 }}
 										<ul class = 'charge-items' ng-if = "isStandAlone && item.is_group_by_ref" ng-class = "{'hidden': !item.isExpanded}">
 											<li ng-repeat = "object in item.light_speed_data">
-												<span class = "cost">{{currencySymbol}}{{object.amount | number:precisonTwo }}</span>
+												<span class = "cost"><span class="currency">{{currencySymbol}}</span>{{object.amount | number:precisonTwo }}</span>
 											</li>
 										</ul>
 									</td>
 									<td ng-if="!item.fees"></td>
-									<td ng-if="item.credits">{{currencySymbol}}{{item.credits | number:2 }}</td>
+									<td ng-if="item.credits"><span class="currency">{{currencySymbol}}</span>{{item.credits | number:2 }}</td>
 									<td ng-if="!item.credits"></td>
 								</tr>
 							</tbody>
