@@ -40,6 +40,7 @@ angular.module('admin').controller('adTopCtrl',
                 $rootScope.hotelId = adminDashboardConfigData['hotel_id'];
                 $rootScope.isPmsConfigured = adminDashboardConfigData['is_pms_configured'] === 'true';
                 $rootScope.isSntAdmin = $rootScope.adminRole === 'snt-admin';
+                $rootScope.isChainAdmin = adminDashboardConfigData['is_chain_admin'];
 
                 if ($stateParams.uuid || ( $rootScope.isSntAdmin && 'snt' === $state.current.name)) {
                     setPropertyAndNavigate($stateParams.uuid);

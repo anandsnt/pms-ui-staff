@@ -29,11 +29,11 @@ sntZestStation.controller('zsPickupAndCheckoutReservationSearchCtrl', [
                 'last_name': 'mike',
                 'room_no': '102'
             };
-            setTimeout(function() {
+            $timeout(function() {
                 $scope.lastNameEntered();
             }, 300);
 
-            setTimeout(function() {
+            $timeout(function() {
                 $scope.roomNumberEntered();
             }, 500);
         };
@@ -127,6 +127,28 @@ sntZestStation.controller('zsPickupAndCheckoutReservationSearchCtrl', [
             $scope.callAPI(zsGeneralSrv.fetchCheckinReservationDetails, options);
         };
 
+        var fetchReservationForPassportScanning = function(reservation_id, stateParams) {
+            var onSuccess = function(response) {
+                zsCheckinSrv.setSelectedCheckInReservation(response.results);// important
+
+                $state.go('zest_station.checkInScanPassport', stateParams);
+            };
+
+            var options = {
+                params: {
+                    'reservation_id': reservation_id
+                },
+                successCallBack: onSuccess,
+                failureCallBack: generalFailureActions
+            };
+
+            $scope.callAPI(zsGeneralSrv.fetchCheckinReservationDetails, options);
+        };
+
+        var goToKeyDispense = function(stateParams) {
+            $state.go('zest_station.pickUpKeyDispense', stateParams);
+        };
+
         var searchReservation = function() {
             var checkoutVerificationSuccess = function(data) {
                 if (typeof data !== typeof undefined) {
@@ -143,10 +165,59 @@ sntZestStation.controller('zsPickupAndCheckoutReservationSearchCtrl', [
                         'room_no': $scope.reservationParams.room_no,
                         'first_name': data.first_name
                     };
+                    /*
+                        send through Passport scanning flow if Reservation 
+                            *(has not scanned passports) 
+                            station setting is active
+                     */
 
-                    $scope.trackSessionActivity('PUK', 'Pickup, Found Reservation', 'R' + data.reservation_id, 'CONTINUE_TO_ENCODE');
+                    if ($scope.zestStationData.check_in_collect_passport) {
+                         // if passport setting is ON, 
+                         //  call api to fetch guest details prior to continuing
+                         //  
+                         //  If any of the reservation guests do not have passport scanned
+                         //  then go to passport scan, otherwise go to key dispense
+                         //  
 
-                    $state.go('zest_station.pickUpKeyDispense', stateParams);
+                        var successCallBack = function(guest_details) {
+
+                            if (!$scope.reservationHasPassportsScanned(guest_details)) {
+
+                                $scope.trackSessionActivity('PUK', 'Fetch Success', 'R' + data.reservation_id, 'TO_SCAN_PASSPORTS');
+                                    // 
+                                    // get reservation details object,
+                                    // then set the currently selected reservation
+                                    // then go to passport screen
+                                    //
+                                $scope.zestStationData.continuePickupFlow = function() {
+                                    $scope.trackSessionActivity('PUK', 'Continue From Passport', 'R' + data.reservation_id, 'CONTINUE_TO_ENCODE');
+                                    goToKeyDispense(stateParams);                           
+                                };
+
+                                stateParams.from_pickup_key = true;
+                                fetchReservationForPassportScanning(data.reservation_id, stateParams);
+
+                            } else {
+                                $scope.trackSessionActivity('PUK', 'Pickup, Found Reservation', 'R' + data.reservation_id, 'CONTINUE_TO_ENCODE');
+                                goToKeyDispense(stateParams);
+                            }
+                        };
+
+                        var options = {
+                            params: {
+                                'id': data.reservation_id
+                            },
+                            successCallBack: successCallBack,
+                            failureCallBack: generalFailureActions
+                        };
+
+                        $scope.callAPI(zsGeneralSrv.fetchGuestDetails, options);
+
+                    } else {
+                        $scope.trackSessionActivity('PUK', 'Pickup, Found Reservation', 'R' + data.reservation_id, 'CONTINUE_TO_ENCODE');
+                        goToKeyDispense(stateParams);
+                    }
+
                 } else if (!!$stateParams.mode && $stateParams.mode === 'PICKUP_KEY' && !data.is_checked_in) {
                     if (data.guest_arriving_today) {
                         // go to Checkin flow -- CICO-32703
@@ -202,6 +273,7 @@ sntZestStation.controller('zsPickupAndCheckoutReservationSearchCtrl', [
         var roomNumberEntered = false;
 
         $scope.lastNameEntered = function() {
+            $scope.hideKeyboardIfUp();
             // if room is already entered, no need to enter again
             if (roomNumberEntered) {
                 if ($scope.reservationParams.room_no.length > 0) {
@@ -220,6 +292,7 @@ sntZestStation.controller('zsPickupAndCheckoutReservationSearchCtrl', [
         };
 
         $scope.roomNumberEntered = function() {
+            $scope.hideKeyboardIfUp();
             roomNumberEntered = true;
             $scope.reservationParams.room_no.length > 0 ? searchReservation() : '';
             $scope.callBlurEventForIpad();

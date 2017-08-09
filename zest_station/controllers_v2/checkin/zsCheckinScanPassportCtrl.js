@@ -406,7 +406,11 @@ sntZestStation.controller('zsCheckinScanPassportCtrl', [
                     $scope.viewResults();
 
                 } else {
-                    $scope.zestStationData.checkinGuest();
+                    if ($scope.fromPickupKeyPassportScan) {
+                        $scope.zestStationData.continuePickupFlow();
+                    } else {
+                        $scope.zestStationData.checkinGuest();    
+                    }
                 }
                 
             } else {
@@ -534,10 +538,6 @@ sntZestStation.controller('zsCheckinScanPassportCtrl', [
                     $scope.$emit('GENERAL_ERROR');
                 }
             };
-            if (!$scope.acceptedPassport) {
-                // do not save any data when a passport is rejected
-                return;
-            }
 
             // Also save the back image data if there was front+back to the document scan
             // 
@@ -545,7 +545,16 @@ sntZestStation.controller('zsCheckinScanPassportCtrl', [
                 options.params['back_image_data'] = selectedPassportInfo.back_img_path;
             }
 
-            $scope.callAPI(zsCheckinSrv.savePassport, options);
+            // in demo mode or rejected passport
+            // go back to verify passports screen where admin can continue the flow
+            if ($scope.inDemoMode() || !$scope.acceptedPassport) {
+                $timeout(function() {
+                    options.successCallBack();
+                }, 1000);
+            } else {
+                $scope.callAPI(zsCheckinSrv.savePassport, options);    
+            }
+            
 
         };
 
@@ -638,6 +647,8 @@ sntZestStation.controller('zsCheckinScanPassportCtrl', [
             } else {
                 $scope.mode = 'SCAN_PASSPORT';
             }
+
+            $scope.fromPickupKeyPassportScan = $stateParams.from_pickup_key === 'true';
 
             $scope.$on(zsEventConstants.CLICKED_ON_BACK_BUTTON, onBackButtonClicked);
 

@@ -87,7 +87,7 @@ angular.module('sntPay').service('paymentUtilSrv',
             tokenDetails = {
                 credit_card: object.cardType
             };
-            ['et2', 'ksn', 'pan', 'mli_token'].map(key => {
+            ['et2', 'ksn', 'pan', 'mli_token', 'etb', 'is_encrypted'].map(key => {
                 tokenDetails[key] = object[key];
             });
         }

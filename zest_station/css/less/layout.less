@@ -185,6 +185,24 @@
                 #rounded > .round(150px);
                 .square(150px);
                 .show;
+                .icon-text {
+                    top: 0;
+                    left: 0;
+                    font-size: 36px;
+                    line-height: 70px;
+                    font-weight: 700;
+                    text-align: center;
+                    width: 100%;
+                    padding: 30px 0;
+                }
+                .icon-img{
+                    max-height:130px;
+                }
+
+                &.not-selected {
+                    color: @brandColor;
+                    background: fade(@black, 10);
+                }
 
                 .icons {
                     margin: 40px;
@@ -648,6 +666,15 @@
     }
    
     .add-on {
+        #options  {
+            li>span{
+                color: rgba(42,39,39,.5);
+            }
+            li .amount{
+                font-size: 32px;
+                color:@brandColor;
+            }
+        }
         .add-on-picture {
             width: 40%;
             overflow: hidden;
@@ -1435,6 +1462,9 @@
             }
             >table>tbody>tr>td>button.overlay{
                 opacity: .5;
+            }
+            &.large {
+                 width: 640px;
             }
         }
 
@@ -2368,8 +2398,8 @@ div.jumper-box-li {
 }
 
 .template-switch-box{
-    height: 22%;
-    width: 21%;
+    height: 15%;
+    width: 15%;
     display: -webkit-inline-box;
     margin: 10px;
     border-radius: 1em;
@@ -2417,9 +2447,21 @@ div.jumper-box-li {
         margin-left: 0;
     }
 }
+
 .skipscan{
     margin-left: 1%;
 }
+
+
+.selected-addon{
+    border: 1px solid black;
+}
+.un-selected-addon{
+    border: 1px solid yellow;
+    background: gray;
+}
+
 .add-guest-passport{
     opacity: 0;
 }
+

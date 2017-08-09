@@ -430,6 +430,17 @@ angular.module('sntRover').service('rvMenuSrv',
 				]
 		    }];
 
+		// if the device is iPad, add extra menu Item to see details
+		if (sntapp.browser === 'rv_native' && sntapp.cordovaLoaded) {
+			menu[0].submenu.splice(1, 0, {
+				title: "DEVICE_STATUS",
+				action: "",
+				menuIndex: "deviceStatus",
+				actionPopup: true,
+				hideItem: _.isNull($rootScope.iosAppVersion) || _.isUndefined($rootScope.iosAppVersion)
+			});
+		}
+
 		return processMenuList (menu);
 	};
 
@@ -502,7 +513,7 @@ angular.module('sntRover').service('rvMenuSrv',
 	this.hasRolePermission = function(menuIndex) {
 		var user = RVDashboardSrv.getUserDetails(),
 			role = user.user_role,
-			isHotelAdmin = (role === "Hotel Admin"),
+			isHotelAdmin = (role === "Hotel Admin" || role === "Chain Admin"),
 			isHotelStaff = user.is_staff,
 			returnValue = false;
 
