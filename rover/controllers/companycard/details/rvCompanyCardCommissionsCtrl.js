@@ -81,8 +81,10 @@ function($scope, $state, $rootScope, $stateParams, RVCompanyCardSrv, ngDialog, $
 
         requestData.params = getRequestParams();
         requestData.accountId = $scope.accountId;
-        
-        $scope.invokeApi(RVCompanyCardSrv.fetchTACommissionDetails, requestData, onCommissionFetchSuccess, onCommissionFetchFailure);
+        // CICO-44105 : Removing api call on creating new cards.
+        if ( $scope.accountId !== 'add') {
+            $scope.invokeApi(RVCompanyCardSrv.fetchTACommissionDetails, requestData, onCommissionFetchSuccess, onCommissionFetchFailure);
+        }
 
     };
 
