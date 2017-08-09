@@ -826,7 +826,7 @@ sntRover.controller('roverController', [
       }, 700);
     };
 
-    $scope.closeDialogImmediately = function(){
+    $scope.closeDialogImmediately = function() {
       ngDialog.close();
     };
     /*
