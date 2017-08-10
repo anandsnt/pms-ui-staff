@@ -1556,7 +1556,7 @@ sntRover.controller('RVbillCardController',
 	    $scope.message_out_going_to_comp_tra = false;
 	    $scope.enableIncedentalOnlyOption = false;
 
-	    if ($scope.reservationBillData.routi$scope.reservationBillData.routing_info.incoming_from_roomng_info.incoming_from_room) {
+	    if ($scope.reservationBillData.routing_info.incoming_from_room) {
 	    	$scope.message_incoming_from_room = true;
 	    }
 	    else if ($scope.reservationBillData.routing_info.out_going_to_room) {
