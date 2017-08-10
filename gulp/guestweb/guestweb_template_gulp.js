@@ -6,9 +6,9 @@ module.exports = function(gulp, $, options){
 	    GUESTWEB_TEMPLATES_FILE = 'guest_web_templates.min.js',
 		GUESTWEB_TEMPLATE_ROOT  = options['GUESTWEB_TEMPLATE_ROOT'],
 	    GUESTWEB_HTML_FILE     	= options['GUESTWEB_HTML_FILE'],
-	    GUESTWEB_THEME_TEMPLATE_MAPPING_FILE = '../../asset_list/theming/guestweb/template/template_theme_mapping_a',
+	    GUESTWEB_THEME_TEMPLATE_MAPPING_FILE = '../../asset_list/theming/guestweb/template/template_theme_mapping',
 	    GUESTWEB_THEME_TEMPLATE_LIST = require(GUESTWEB_THEME_TEMPLATE_MAPPING_FILE).getThemeMappingList(),
-	    GUESTWEB_NEW_THEME_TEMPLATE_LIST = require('../../asset_list/theming/guestweb/template/template_theme_mappings_b').getThemeMappingList(),
+	    // GUESTWEB_NEW_THEME_TEMPLATE_LIST = require('../../asset_list/theming/guestweb/template/template_theme_mappings_b').getThemeMappingList(),
 	    GUESTWEB_PARTIALS 		= ['guestweb/**/**/*.html'],
 	    GUESTWEB_TEMPLTE_MANFEST_FILE = "guest_web_template_manifest.json",
 	    GUESTWEB_JS_COMBINED_FILE  = 'guest_web.min.js',
@@ -132,9 +132,9 @@ module.exports = function(gulp, $, options){
 		return es.merge(tasks);
 	};
 
-	gulp.task('guestweb-template-theme-generate-mapping-list-prod-v2', function(){
-		return prodGenerateMappingListTasks(GUESTWEB_NEW_THEME_TEMPLATE_LIST);
-	});
+	// gulp.task('guestweb-template-theme-generate-mapping-list-prod-v2', function(){
+	// 	return prodGenerateMappingListTasks(GUESTWEB_NEW_THEME_TEMPLATE_LIST);
+	// });
 
 	gulp.task('guestweb-template-theme-generate-mapping-list-prod', function(){
 		return prodGenerateMappingListTasks(GUESTWEB_THEME_TEMPLATE_LIST);
