@@ -1,5 +1,5 @@
-	sntRover.controller('RVCancelReservation', ['$rootScope', '$scope', '$stateParams', 'RVPaymentSrv', '$timeout', 'RVReservationCardSrv', '$state', '$filter', '$q', 'RVReservationSummarySrv', '$window',
-		function($rootScope, $scope, $stateParams, RVPaymentSrv, $timeout, RVReservationCardSrv, $state, $filter, $q, RVReservationSummarySrv, $window) {
+	sntRover.controller('RVCancelReservation', ['$rootScope', '$scope', '$stateParams', 'RVPaymentSrv', '$timeout', 'RVReservationCardSrv', '$state', '$filter', '$q', 'RVReservationSummarySrv', '$window', 'RVNightlyDiarySrv',
+		function($rootScope, $scope, $stateParams, RVPaymentSrv, $timeout, RVReservationCardSrv, $state, $filter, $q, RVReservationSummarySrv, $window, RVNightlyDiarySrv) {
 
 			BaseCtrl.call(this, $scope);
 			$scope.errorMessage = '';
@@ -285,6 +285,17 @@
 						// its functions are written in parent controller.Ie reservationActionsController
 						$scope.$emit('hideLoader');
 						$scope.DailogeState.isCancelled = true ;
+						var params = RVNightlyDiarySrv.getCache();
+
+						if (typeof params !== 'undefined') {
+							params.currentSelectedReservationId = "";
+			                params.currentSelectedRoomId = "";
+			                params.currentSelectedReservation = "";
+						}
+		                
+
+		                RVNightlyDiarySrv.updateCache(params);
+
 					},
 					onCancelFailure = function(data) {
 						$scope.$emit('hideLoader');
