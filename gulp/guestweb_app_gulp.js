@@ -32,6 +32,6 @@ module.exports = function(gulp, $, options) {
 
     gulp.task('guestweb-asset-prod-precompile', function (callback) {
         return runSequence('guestweb-js-production', 'guestweb-template-theme-generate-mapping-list-prod',
-            'guestweb-css-theme-generate-mapping-list-prod', 'guestweb-copy-css-files-dev', callback);
+            'guestweb-template-theme-generate-mapping-list-prod-v2', 'guestweb-css-theme-generate-mapping-list-prod', 'guestweb-copy-css-files-dev', callback);
     });
 }
