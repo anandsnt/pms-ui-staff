@@ -5,7 +5,8 @@
 sntZestStation.service('zsCheckinSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWebSrv2', '$rootScope',
     function($http, $q, zsBaseWebSrv, zsBaseWebSrv2, $rootScope) {
 
-        var that = this;
+        var that = this,
+            TERMINAL_POLLING_INTERVAL_MS = 3000;
 
         this.checkInReservations = [];
         this.setCheckInReservations = function(data) {
@@ -72,7 +73,7 @@ sntZestStation.service('zsCheckinSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
                             setTimeout(function() {
                                 console.info('POLLING::-> for emv terminal response');
                                 pollToTerminal(async_callback_url);
-                            }, 5000);
+                            }, TERMINAL_POLLING_INTERVAL_MS);
                         } else {
                             clearInterval(refreshIntervalId);
                             deferred.resolve(data);
