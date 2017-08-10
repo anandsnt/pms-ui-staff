@@ -493,7 +493,8 @@ sntRover.controller('RVbillCardController',
 			}
 	    });
 
-        if ($scope.putInQueue && $scope.clickedButton === 'checkinButton' && !isAlreadyShownPleaseSwipeForCheckingIn) {
+		// CICO-44240 Checkin and Putting in Q should work as earlier for overlays
+        if (!$rootScope.isStandAlone && $scope.clickedButton === 'checkinButton' && !isAlreadyShownPleaseSwipeForCheckingIn) {
             isAlreadyShownPleaseSwipeForCheckingIn = true;
             $timeout(function () {
                 if (!$scope.reservationBillData.is_disabled_cc_swipe &&
