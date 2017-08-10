@@ -9,7 +9,7 @@
                function-to-fire="onChangeGiftCard"
                type="text"/>
 
-        <label ng-show="giftCard.amountAvailable"> Available Card Balance ({{currencySymbol}}) </label>
+        <label ng-show="giftCard.amountAvailable"> Available Card Balance (<span class="currency">{{currencySymbol}}</span>) </label>
 
         <input ng-show="giftCard.amountAvailable"
                ng-readonly="true"
@@ -17,7 +17,7 @@
                type="text"/>
     </section>
 
-    <label>Amount to pay (<span>{{currencySymbol}}</span>)</label>
+    <label>Amount to pay (<span><span class="currency">{{currencySymbol}}</span></span>)</label>
 
     <input ng-change="onPaymentInfoChange()"
            ng-model="payment.amount"
@@ -52,7 +52,7 @@
     <span ng-show="feeData.showFee" class="total">
           Total:
           <strong ng-if="!payment.isRateSuppressed">
-              {{currencySymbol}}{{feeData.totalOfValueAndFee}}
+              <span class="currency">{{currencySymbol}}</span>{{feeData.totalOfValueAndFee}}
           </strong>
           <strong ng-if="payment.isRateSuppressed">
               {{'SUPPRESSED_RATES_TEXT' | translate}}
@@ -86,12 +86,12 @@
             ng-disabled="shouldHidePaymentButton()"
             ng-class="{'blue': !shouldHidePaymentButton(),'grey':shouldHidePaymentButton()}"
             ng-show="isRefund() && !splitBillEnabled">
-        REFUND {{currencySymbol}}{{ -1 * payment.amount | number:2 }}
+        REFUND <span class="currency">{{currencySymbol}}</span>{{ -1 * payment.amount | number:2 }}
     </button>
     <button type="button" class="button" click-touch="submitPayment()"
             ng-disabled="shouldHidePaymentButton()"
             ng-class="{'blue': !shouldHidePaymentButton(),'grey':shouldHidePaymentButton()}"
             ng-show="isRefund() && splitBillEnabled">
-        REFUND {{currencySymbol}}{{ -1 * payment.amount | number:2 }} ({{ completedSplitPayments + 1}}/{{ numSplits }})
+        REFUND <span class="currency">{{currencySymbol}}</span>{{ -1 * payment.amount | number:2 }} ({{ completedSplitPayments + 1}}/{{ numSplits }})
     </button>
 </div>

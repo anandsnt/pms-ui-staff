@@ -23,7 +23,7 @@
                 <a href="#addon-{date}" class="title-1 toggle" ng-class="{ 'has-arrow': item1.addon_groups.length }" ng-click="toggleSub(item1)">
                     <strong>{{ key1 | date : dateFormat }}</strong>
                     <span>{{ item1.guests }}</span>
-                    <span>{{ item1.revenue | currency:currencySymbol:2 }}</span>
+                    <span><span class="currency">{{ item1.revenue | currency:currencySymbol:2 }}</span></span>
                 </a>
                 <div ng-repeat="item2 in item1.addon_groups" ng-init="item2Values = getKeyValues(item2)" class="grid-content" ng-class="{ 'hidden': !openGroup && !item1.hidden }"  emit-when="{event: 'ALL_RENDERED', condition: $parent.$last && $last}"> <!-- Toggle class hidden when L135-139 tapped -->
                     <!-- Level 2 - Add-On Group -->
@@ -47,7 +47,7 @@
                                 <span>{{ item3Values.booked }}</span>
                                 <span>{{ item3Values.remaining }}</span>
                                 <span>{{ item3Values.guests }}</span>
-                                <span>{{ item3Values.revenue | currency:currencySymbol:2 }}</span>
+                                <span><span class="currency">{{ item3Values.revenue | currency:currencySymbol:2 }}</span></span>
                             </a>
 
                             <table ng-if="item3Values.hasData" class="grid-content" ng-class="{ 'hidden': !openResrv && !item3.hidden }"> <!-- Toggle class hidden when L156-162 tapped -->
@@ -83,7 +83,7 @@
                                             <span>{{ item4.accompanying_guests.join(', ') }}</span>
                                         </td>
                                         <td>
-                                            {{ item4.price | currency:currencySymbol:2 }}
+                                            <span class="currency">{{ item4.price | currency:currencySymbol:2 }}</span>
                                         </td>
                                     </tr>
                                     <!-- Pagination // Shown when needed -->
