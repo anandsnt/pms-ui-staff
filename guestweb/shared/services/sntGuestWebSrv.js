@@ -153,6 +153,7 @@ sntGuestWeb.service('sntGuestWebSrv', ['$q', '$http', '$rootScope', '$ocLazyLoad
 	this.fetchJsAssets = function(key, modules_to_inject) {
 		if (!!jsMappingList) {
 			var jsFile = jsMappingList[key] || jsMappingList['guestweb_common_js_files']
+            
 			return $ocLazyLoad.load({
 				insertBefore: '.main-container',
 				serie: true,
