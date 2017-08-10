@@ -493,6 +493,16 @@ sntRover.controller('RVbillCardController',
 			}
 	    });
 
+        if ($scope.putInQueue && $scope.clickedButton === 'checkinButton' && !isAlreadyShownPleaseSwipeForCheckingIn) {
+            isAlreadyShownPleaseSwipeForCheckingIn = true;
+            $timeout(function () {
+                if (!$scope.reservationBillData.is_disabled_cc_swipe &&
+                    !$scope.reservation.reservation_card.is_pre_checkin) {
+                    $scope.openPleaseSwipe();
+                }
+            }, 200);
+        }
+
 		$scope.reservationBillData = reservationBillData;
 		$scope.routingArrayCount = $scope.reservationBillData.routing_array.length;
 		$scope.incomingRoutingArrayCount = $scope.reservationBillData.incoming_routing_array.length;
@@ -506,20 +516,6 @@ sntRover.controller('RVbillCardController',
      	$scope.billingData.billingInfoTitle = ($scope.reservationBillData.routing_array.length > 0) ? $filter('translate')('BILLING_INFO_TITLE') : $filter('translate')('ADD_BILLING_INFO_TITLE');
 		setChargeCodesSelectedStatus(false);
 	};
-
-        $scope.$on('INIT_CHECKIN_FLOW', function () {
-            if ($scope.clickedButton === 'checkinButton' && !isAlreadyShownPleaseSwipeForCheckingIn) {
-                isAlreadyShownPleaseSwipeForCheckingIn = true;
-                $timeout(function () {
-                    if (($scope.reservationBillData.is_disabled_cc_swipe === 'false' ||
-                            $scope.reservationBillData.is_disabled_cc_swipe === '' ||
-                            $scope.reservationBillData.is_disabled_cc_swipe === null) &&
-                        !$scope.reservation.reservation_card.is_pre_checkin) {
-                        $scope.openPleaseSwipe();
-                    }
-                }, 200);
-            }
-        });
 
 	/*
 		 * set the status for the room charge no post button,
@@ -579,7 +575,7 @@ sntRover.controller('RVbillCardController',
 	$scope.init(reservationBillData);
 	$scope.openPleaseSwipe = function() {
 		ngDialog.open({
-    		template: '/assets/partials/payment/rvPleaseSwipeModal.html',
+    		template: '/assets/partials/payment/rvInitialPleaseSwipeModal.html',
     		controller: 'RVPleaseSwipeCtrl',
     		className: '',
     		scope: $scope
