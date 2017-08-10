@@ -52,6 +52,7 @@ function($scope, $state, $rootScope, $stateParams, RVCompanyCardSrv, ngDialog, $
                 _.each(data.commission_details, function(element, index) {
                     _.extend(element, {is_checked: false});
                 });
+                $scope.selectedHotelCurrency = getCurrencySign(data.currency.value);
                 $scope.commissionDetails = data.commission_details;
                 $scope.commissionSummary.totalRevenue = data.total_revenue;
                 $scope.commissionSummary.totalCommission = data.total_commission;
