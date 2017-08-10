@@ -307,6 +307,7 @@ sntZestStation.controller('zsHomeCtrl', [
                 params.reason = $scope.zestStationData.workstationOooReason;
                 params.status = 'out-of-order';
                 $scope.$emit(zsEventConstants.UPDATE_LOCAL_STORAGE_FOR_WS, params);
+                $scope.addReasonToOOSLog('WORKSTATION_OOS');
                 $state.go('zest_station.outOfService');
             } else {
                 $scope.setScreenIcon('bed');
