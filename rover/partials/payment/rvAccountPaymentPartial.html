@@ -12,7 +12,7 @@
                function-to-fire="onChangeGiftCard"
                type="text"/>
 
-        <label ng-show="giftCard.amountAvailable"> Available Card Balance ({{currencySymbol}}) </label>
+        <label ng-show="giftCard.amountAvailable"> Available Card Balance (<span class="currency">{{currencySymbol}}</span>) </label>
 
         <input ng-show="giftCard.amountAvailable"
                ng-readonly="true"
@@ -20,7 +20,7 @@
                type="text"/>
     </section>
 
-    <label>Amount to pay (<span>{{currencySymbol}}</span>)</label>
+    <label>Amount to pay (<span><span class="currency">{{currencySymbol}}</span></span>)</label>
 
     <input ng-change="onPaymentInfoChange()"
            ng-model="payment.amount"
@@ -42,7 +42,7 @@
     <span ng-show="feeData.showFee" class="total">
           Total:
           <strong>
-              {{currencySymbol}}{{feeData.totalOfValueAndFee}}
+              <span class="currency">{{currencySymbol}}</span>{{feeData.totalOfValueAndFee}}
           </strong>
         </span>
 </div>
@@ -62,13 +62,13 @@
         <li ng-if="feeData.showFee">
             Amount paid:
             <span class="value">
-                {{currencySymbol}}{{payment.amount |number:2}} + {{currencySymbol}}{{feeData.calculatedFee|number:2}} fee
+                <span class="currency">{{currencySymbol}}</span>{{payment.amount |number:2}} + <span class="currency">{{currencySymbol}}</span>{{feeData.calculatedFee|number:2}} fee
             </span>
         </li>
         <li ng-if="!feeData.showFee">
             Amount paid:
             <span class="value">
-                {{currencySymbol}}{{payment.amount}}
+                <span class="currency">{{currencySymbol}}</span>{{payment.amount}}
             </span>
         </li>
     </ul>
@@ -89,7 +89,7 @@
             ng-disabled="shouldHidePaymentButton()"
             ng-class="{'green': !shouldHidePaymentButton(),'grey':shouldHidePaymentButton()}"
             ng-show="isRefund()">
-        REFUND {{currencySymbol}}{{ -1 * payment.amount | number:2 }}
+        REFUND <span class="currency">{{currencySymbol}}</span>{{ -1 * payment.amount | number:2 }}
     </button>
 </div>
 <div class="actions" ng-show="paymentAttempted && !isPaymentFailure">

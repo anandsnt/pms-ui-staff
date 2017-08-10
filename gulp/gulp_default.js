@@ -22,16 +22,12 @@ module.exports = function(gulp, $, options) {
                     'zest-asset-prod-precompile',
                     'login-asset-prod-precompile',
                     'station-login-asset-prod-precompile',
-                    'guestweb-asset-prod-precompile',
-                    'guestweb-v2-asset-prod-precompile',
                     'payment-asset-prod-precompile'
                 ],
 
         tasksAfterCompilation = [
                     'rover-inject-assets-to-templates', 
-                    'admin-inject-assets-to-templates', 
-                    'guestweb-inject-assets-to-templates',
-                    'guestweb-v2-inject-assets-to-templates', 
+                    'admin-inject-assets-to-templates',
                     'login-inject-assets-to-templates', 
                     'station-login-inject-assets-to-templates', 
                     'zest-inject-assets-to-templates'
@@ -42,10 +38,8 @@ module.exports = function(gulp, $, options) {
                     'copy-station-login-base-html', 
                     'copy-admin-base-html', 
                     'copy-zest-base-html',
-                    'copy-rover-base-html', 
-                    'copy-guestweb-base-html', 
-                    'compress-images-loselessly',
-                    'copy-guestweb-v2-base-html'
+                    'copy-rover-base-html',
+                    'compress-images-loselessly'
                 ],
 
         developmentTasks = [
@@ -103,7 +97,11 @@ module.exports = function(gulp, $, options) {
         return runSequence(copyBaseHtmlToPublicAssets, callback)
     });
 
-    gulp.task('asset-precompile', function(callback){
+    gulp.task('gw-asset-precompile', function (callback) {
+        return runSequence('guestweb-asset-prod-precompile', 'guestweb-inject-assets-to-templates', 'copy-guestweb-base-html', callback);
+    });
+
+    gulp.task('asset-precompile', ['gw-asset-precompile'], function (callback) {
         return runSequence(compilationTasks, tasksAfterCompilation, copyBaseHtmlToPublicAssets, callback);
     });
 
