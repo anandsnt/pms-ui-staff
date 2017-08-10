@@ -89,7 +89,7 @@ angular.module('sntRover').controller('RVReservationCheckInFlowCtrl',
                     reservation_id: $scope.reservationBillData.reservation_id
                 });
 
-                if (params.amount > 0) {
+                if (params.amount > 0 && $rootScope.isStandAlone) {
                     ngDialog.open({
                         template: '/assets/partials/authorization/ccAuthorization.html',
                         className: '',
