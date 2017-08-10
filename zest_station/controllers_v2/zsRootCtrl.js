@@ -389,6 +389,7 @@ sntZestStation.controller('zsRootCtrl', [
             };
             var onFailure = function() {
                 $log.log('unable to fetch hotel settings');
+                $scope.addReasonToOOSLog('GET_CONFIGURATION_FAILED');
                 $scope.$emit(zsEventConstants.PUT_OOS);
             };
             var options = {
@@ -1557,6 +1558,7 @@ sntZestStation.controller('zsRootCtrl', [
             };
             var onFail = function(response) {
                 $log.warn('fetching workstation list failed:', response);
+                $scope.addReasonToOOSLog('GET_WORKSTATION_FAILED');
                 $scope.$emit(zsEventConstants.PUT_OOS);
             };
             var options = {
