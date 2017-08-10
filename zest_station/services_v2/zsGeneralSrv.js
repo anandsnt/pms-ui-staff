@@ -37,8 +37,8 @@ sntZestStation.service('zsGeneralSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
             'row-nyc': 'row',
             'circle-inn-fairfield': 'Circle fairfield',
             'cachet-boutique': 'Cachet Boutique',
-            'hi-ho': 'Hotel hiho'
-            // 'first': 'First Hotel Breiseth' // pending css fixes
+            'hi-ho': 'Hotel hiho',
+            'first': 'First Hotel Breiseth'
         };
 
         this.isThemeConfigured = function(theme) {
