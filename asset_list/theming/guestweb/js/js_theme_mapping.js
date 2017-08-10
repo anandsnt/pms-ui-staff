@@ -3,10 +3,13 @@ module.exports = {
     getThemeMappingList: function () {
         var themeJsRoot = 'guestweb/scripts/';
         var zestRootJS = 'guestweb/zest/**/*.js';
-
-        // IMPORTANT: If the theme is using common non MGM templates,
-        // there is no need to add separately. It will load by default by guestweb_common_js_files
-        // THE COMMENTED THEMES USING '[ themeJsRoot + 'app_router_common.js']' will be removed later    
+        
+        /**
+            IMPORTANT: If the theme is using common non MGM templates,
+            there is no need to add separately. It will load by default by guestweb_common_js_files
+            THE COMMENTED THEMES USING '[ themeJsRoot + 'app_router_common.js']' will be removed later
+            MOVING FORWARD WE DONT HAVE TO ADD JS MAPPING FOR NON MGM COMMON THEMES  
+        **/  
         return {
             'guestweb_common_js_files': [ themeJsRoot + 'app_router_common.js'],
             // 'guestweb_made': [ themeJsRoot + 'app_router_common.js'],
