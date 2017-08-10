@@ -208,7 +208,16 @@ const NightlyDiaryStayRangeComponent = createClass ({
 
         // If flag moved to set for 0 night stay
         if (state.departurePosition === state.oneNightDeparturePosition) {
-            currentDay = state.arrivalDate;
+
+            if (props.currentSelectedReservation.isArrivalFlagVisible) {
+                currentDay = state.arrivalDate;
+            } else {                
+                currentDay = moment(props.currentSelectedReservation.deptDate, state.dateFormat.toUpperCase())
+                        .add(parseInt(addDays)-1, 'days')
+                        .format(state.dateFormat.toUpperCase());
+                
+            }
+            
             curentPosition = state.oneNightDeparturePosition;
         } else {
             curentPosition = curentPosition + ((this.props.numberOfDays === NIGHTLY_DIARY_CONST.DAYS_21) ? NIGHTLY_DIARY_CONST.EXTEND_21_DAYS : NIGHTLY_DIARY_CONST.EXTEND_7_DAYS);
