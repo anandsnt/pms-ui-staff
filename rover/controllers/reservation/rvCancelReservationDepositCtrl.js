@@ -1,5 +1,5 @@
-sntRover.controller('RVCancelReservationDepositController', ['$rootScope', '$scope', 'ngDialog', '$stateParams', '$state', 'RVReservationCardSrv', 'RVPaymentSrv', '$timeout', '$filter', 'RVNightlyDiarySrv',
-	function($rootScope, $scope, ngDialog, $stateParams, $state, RVReservationCardSrv, RVPaymentSrv, $timeout, $filter, RVNightlyDiarySrv) {
+sntRover.controller('RVCancelReservationDepositController', ['$rootScope', '$scope', 'ngDialog', '$stateParams', '$state', 'RVReservationCardSrv', 'RVPaymentSrv', '$timeout', 'RVNightlyDiarySrv',
+	function($rootScope, $scope, ngDialog, $stateParams, $state, RVReservationCardSrv, RVPaymentSrv, $timeout, RVNightlyDiarySrv) {
 
 		BaseCtrl.call(this, $scope);
 		$scope.errorMessage = "";
