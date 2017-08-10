@@ -31,7 +31,8 @@ sntRover.controller('RVCancelReservationDepositController', ['$rootScope', '$sco
 				$scope.DailogeState.isCancelled = true ;
 
 				var params = RVNightlyDiarySrv.getCache();
-				if(typeof params !== 'undefined'){
+
+				if (typeof params !== 'undefined') {
 					params.currentSelectedReservationId = "";
 	                params.currentSelectedRoomId = "";
 	                params.currentSelectedReservation = "";
