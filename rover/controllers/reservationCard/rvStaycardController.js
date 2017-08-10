@@ -206,5 +206,5 @@ sntRover.controller('staycardController', ['$scope', '$rootScope', 'RVGuestCardS
                     return viewStatus;
                 };
 
-	       }
+	}
 ]);
