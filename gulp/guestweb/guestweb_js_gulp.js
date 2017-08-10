@@ -47,9 +47,14 @@ module.exports = function (gulp, $, options) {
 			// strip [ and ] from string
 			themeString = themeString.substring(1, themeString.length - 1)
 			var themeArray = themeString.split(",");
-
 			for (var i = 0, len = themeArray.length; i < len; i++) {
-				guestWebThemeJsList[themeArray[i]] = GUESTWEB_THEME_JS_LIST[themeArray[i]]
+				var themeJSlist;
+				if( typeof GUESTWEB_THEME_JS_LIST[themeArray[i]] === 'undefined'){
+					themeJSlist = GUESTWEB_THEME_JS_LIST['guestweb_common_js_files'];
+				}else{
+					themeJSlist = GUESTWEB_THEME_JS_LIST[themeArray[i]];
+				}
+				guestWebThemeJsList[themeArray[i]] = themeJSlist;
 			}
 
 		} else {
