@@ -105,8 +105,6 @@ angular.module('sntRover').controller('RVReservationCheckInFlowCtrl',
 
 
             var completeCheckin = function () {
-                return true;
-
                 var signature = $scope.getSignature(),
                     params = {
                         is_promotions_and_email_set: $scope.saveData.promotions,
