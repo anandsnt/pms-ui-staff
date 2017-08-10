@@ -62,7 +62,7 @@ angular.module('sntRover').controller('RVReservationCheckInFlowCtrl',
                         className: '',
                         scope: $scope
                     });
-                } else if ($scope.checkInState.hasCardOnFile) {
+                } else if ($scope.checkInState.hasCardOnFile && $rootScope.isStandAlone) {
                     authorize({
                         is_emv_request: false,
                         amount: $scope.checkInState.authorizationAmount,
@@ -251,7 +251,8 @@ angular.module('sntRover').controller('RVReservationCheckInFlowCtrl',
                     // is_cc_authorize_at_checkin_enabled is returned in /api/reservations/:reservation_id/pre_auth
                     if ($scope.authorizationInfo.is_cc_authorize_at_checkin_enabled ||
                         !$scope.reservationBillData.is_disabled_cc_swipe) {
-                        if ($scope.checkInState.hasCardOnFile &&
+                        if ($rootScope.isStandAlone &&
+                            $scope.checkInState.hasCardOnFile &&
                             ($scope.authorizationInfo.routingToRoom ||
                                 $scope.authorizationInfo.routingFromRoom ||
                                 $scope.authorizationInfo.routingToAccount)) {
