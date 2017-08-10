@@ -82,7 +82,7 @@
                             font-weight: 600;
                             .pull-left;
 
-                            span { 
+                            span:not(.currency) { 
                                 font-size: 14px;
                                 font-weight: 400;
                                 .show;
@@ -961,7 +961,7 @@
                                 }
                             }
 
-                            span,
+                            span:not(.currency),
                             strong {
                                 line-height: 1;
                                 .show();
@@ -1006,6 +1006,7 @@
                                 .cost {
                                     width: 100px;
                                     text-align: right;
+                                    text-transform: none;
                                 }
                             }
                         }
