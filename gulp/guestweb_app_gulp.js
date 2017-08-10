@@ -30,6 +30,8 @@ module.exports = function(gulp, $, options) {
         'create-theme-mapping-css-production', callback);
     });
 
-    gulp.task('guestweb-asset-prod-precompile', ['guestweb-js-production', 'guestweb-template-theme-generate-mapping-list-prod',
-     'guestweb-css-theme-generate-mapping-list-prod', 'guestweb-copy-css-files-dev']); 
+    gulp.task('guestweb-asset-prod-precompile', function (callback) {
+        return runSequence('guestweb-js-production', 'guestweb-template-theme-generate-mapping-list-prod',
+            'guestweb-css-theme-generate-mapping-list-prod', 'guestweb-copy-css-files-dev', callback);
+    });
 }
