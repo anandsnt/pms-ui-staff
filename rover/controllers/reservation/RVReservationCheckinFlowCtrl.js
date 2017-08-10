@@ -20,7 +20,7 @@ angular.module('sntRover').controller('RVReservationCheckInFlowCtrl',
                     successCallBack: function (response) {
                         var billRoutingInfo = $scope.reservationBillData.routing_info,
                             canPayIncidentalsOnly = response.is_cc_authorize_for_incidentals_active &&
-                                (billRoutingInfo.incoming_from_room || billRoutingInfo.out_going_to_comp_tra);
+                                (billRoutingInfo.out_going_to_room || billRoutingInfo.out_going_to_comp_tra);
 
 
                         $scope.authorizationInfo = response;
