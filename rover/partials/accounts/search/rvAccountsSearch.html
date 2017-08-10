@@ -97,7 +97,7 @@
                         </span>
                     </div>
                     <div class="info">
-                        <strong ng-class="getClassAgainstBalance(account)">{{currencySymbol}}{{account.balance | number: precisonTwo}}</strong> <!-- Add class="red" if > 0 -->
+                        <strong ng-class="getClassAgainstBalance(account)"><span class="currency currency-decoration">{{currencySymbol}}</span>{{account.balance | number: precisonTwo}}</strong> <!-- Add class="red" if > 0 -->
                         <span translate>BALANCE</span>
                     </div>     
                     
