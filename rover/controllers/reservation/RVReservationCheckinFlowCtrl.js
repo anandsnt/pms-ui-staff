@@ -261,7 +261,7 @@ angular.module('sntRover').controller('RVReservationCheckInFlowCtrl',
                     // is_cc_authorize_at_checkin_enabled is returned in /api/reservations/:reservation_id/pre_auth
                     if ($scope.authorizationInfo.is_cc_authorize_at_checkin_enabled ||
                         !$scope.reservationBillData.is_disabled_cc_swipe) {
-                        if (hasAnyRouting &&
+                        if (hasAnyRouting && $scope.authorizationInfo.is_cc_authorize_at_checkin_enabled &&
                             ($scope.checkInState.hasCardOnFile || !$scope.reservationBillData.is_disabled_cc_swipe)) {
                             // https://stayntouch.atlassian.net/browse/CICO-17287
                             promptForAuthorizationAmount();
