@@ -213,7 +213,7 @@ const NightlyDiaryStayRangeComponent = createClass ({
                 currentDay = state.arrivalDate;
             } else {                
                 currentDay = moment(props.currentSelectedReservation.deptDate, state.dateFormat.toUpperCase())
-                        .add(parseInt(addDays)-1, 'days')
+                        .add(parseInt(addDays) - 1, 'days')
                         .format(state.dateFormat.toUpperCase());
                 
             }
