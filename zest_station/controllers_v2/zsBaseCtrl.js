@@ -457,6 +457,12 @@ function BaseCtrl($scope) {
             'datetime': currentTime
         };
 
+        if (reason === 'GET_CONFIGURATION_FAILED' || reason === 'GET_WORKSTATION_FAILED') {
+            var onlineOffline = navigator.onLine ?  'online' : 'offline';
+
+            oosReason.reason += ': (' + onlineOffline + ')';
+        }
+
         $scope.zestStationData.sessionOosReason.push(oosReason);
         $scope.zestStationData.lastOOSReason = $scope.$filter('translate')(oosReason.reason) ? $scope.$filter('translate')(oosReason.reason) : oosReason.reason;
         // at the next status-update, the kiosk will log the "$scope.zestStationData.sessionOosReason" array with all OOS reason events
