@@ -133,21 +133,6 @@ angular.module('sntRover').controller('RVReservationCheckInFlowCtrl',
                 });
             };
 
-            var authorizeFromTerminal = function () {
-                var amountToAuth = $scope.checkInState.authorizationAmount;
-
-                // In case of EMV, if user hasn't chosen incidentals only
-                // we will have to authorize for the original Amount;
-                if (!$scope.checkInState.authorizeIncidentalOnly) {
-                    amountToAuth = $scope.authorizationInfo.original_pre_auth_amount_at_checkin;
-                }
-
-                authorize({
-                    is_emv_request: true,
-                    amount: amountToAuth
-                });
-            };
-
             // ------------------------------------------------------------------------------------ state
             $scope.checkInState = {
                 authorizeIncidentalOnly: false,
@@ -165,18 +150,18 @@ angular.module('sntRover').controller('RVReservationCheckInFlowCtrl',
 
             // ------------------------------------------------------------------------------------ onUserAction
             $scope.onClickEMV = function () {
-                $scope.checkInState.useCardReader = true;
+                var amountToAuth = $scope.checkInState.authorizationAmount;
 
-                if ($scope.checkInState.hasCardOnFile) {
-                    authorizeFromTerminal();
-                } else if ($scope.authorizationInfo.routingToRoom ||
-                    $scope.authorizationInfo.routingFromRoom ||
-                    $scope.authorizationInfo.routingToAccount) {
-                    // in case they haven't had a card on file; they wouldn't have chosen the amount to authorize
-                    promptForAuthorizationAmount();
-                } else {
-                    authorizeFromTerminal();
+                // In case of EMV, if user hasn't chosen incidentals only
+                // we will have to authorize for the original Amount;
+                if (!$scope.checkInState.authorizeIncidentalOnly) {
+                    amountToAuth = $scope.authorizationInfo.original_pre_auth_amount_at_checkin;
                 }
+
+                authorize({
+                    is_emv_request: true,
+                    amount: amountToAuth
+                });
             };
 
             $scope.onClickUseCardOnFile = function () {
@@ -197,26 +182,14 @@ angular.module('sntRover').controller('RVReservationCheckInFlowCtrl',
                 // set the authorization amount to incidentals
                 $scope.checkInState.authorizationAmount = $scope.authorizationInfo.pre_auth_amount_for_incidentals;
                 ngDialog.close();
-                if ($scope.checkInState.isNewCardAdded) {
-                    $scope.onClickUseCardOnFile();
-                } else if ($scope.checkInState.useCardReader) {
-                    authorizeFromTerminal();
-                } else {
-                    $timeout(promptForSwipe, 700);
-                }
+                $timeout(promptForSwipe, 700);
             };
 
             $scope.onClickFullAuth = function () {
                 $scope.checkInState.authorizeIncidentalOnly = false;
                 $scope.checkInState.authorizationAmount = $scope.authorizationInfo.pre_auth_amount_at_checkin;
                 ngDialog.close();
-                if ($scope.checkInState.isNewCardAdded) {
-                    $scope.onClickUseCardOnFile();
-                } else if ($scope.checkInState.useCardReader) {
-                    authorizeFromTerminal();
-                } else {
-                    $timeout(promptForSwipe, 700);
-                }
+                $timeout(promptForSwipe, 700);
             };
 
             $scope.onClickManualAuth = function () {
@@ -234,9 +207,6 @@ angular.module('sntRover').controller('RVReservationCheckInFlowCtrl',
                     $scope.clickedCompleteCheckin();
                     return false;
                 }
-
-                $scope.checkInState.isNewCardAdded = false;
-                $scope.checkInState.useCardReader = false;
 
                 if ($scope.signatureNeeded(signatureData) && !$scope.reservation.reservation_card.is_pre_checkin) {
                     errorMsg = 'Signature is missing';
@@ -318,17 +288,7 @@ angular.module('sntRover').controller('RVReservationCheckInFlowCtrl',
                     if ($scope.checkInState.isListeningSwipe) {
                         $timeout(function () {
                             $scope.checkInState.swipedCardData = swipedCardData;
-                            $scope.checkInState.isNewCardAdded = true;
-                            if ($scope.checkInState.hasCardOnFile) {
-                                $scope.onClickUseCardOnFile();
-                            } else if ($scope.authorizationInfo.routingToRoom ||
-                                $scope.authorizationInfo.routingFromRoom ||
-                                $scope.authorizationInfo.routingToAccount) {
-                                // in case they haven't had a card on file; they wouldn't have chosen the amount to authorize
-                                promptForAuthorizationAmount();
-                            } else {
-                                $scope.onClickUseCardOnFile();
-                            }
+                            $scope.onClickUseCardOnFile();
                         }, 700);
                     }
                 });
@@ -360,3 +320,7 @@ angular.module('sntRover').controller('RVReservationCheckInFlowCtrl',
         }
     ]
 );
+
+// DONE: Handle payment method update from the check-in screen; the $scope.checkInState will have to be re-computed
+// DONE: Enable complete check-in button only after the signature; terms and conditions are checked (take note of the settings)
+// DONE: Handle EMV polling
