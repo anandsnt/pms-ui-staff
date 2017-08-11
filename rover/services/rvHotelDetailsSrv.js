@@ -98,9 +98,9 @@ angular.module('sntRover').service('RVHotelDetailsSrv', ['$q', 'rvBaseWebSrvV2',
                 return false;
             }
 
-            return service.hotelDetails['payment_gateway'] === 'MLI' &&
+            return (service.hotelDetails['payment_gateway'] === 'MLI' &&
                 service.hotelDetails['mli_emv_enabled'] &&
-                workstationInfo.emv_terminal_id;
+                workstationInfo.emv_terminal_id) || service.hotelDetails['payment_gateway'] === 'sixpayments';
         };
 
     }]
