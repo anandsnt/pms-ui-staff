@@ -77,11 +77,11 @@
                         <input id="recalculate-commission" value="" type="checkbox" ng-click="toggleCommission()">
                         <label class="data-off">
                             <span class="switch-icon">%</span>
-                            <span class="value">{{ selectedHotelCurrency }}</span>
+                            <span class="value"><span class="currency">{{ selectedHotelCurrency }}</span></span>
                         </label>
                         <label class="data-on">
                             <span class="value">%</span>
-                            <span class="switch-icon">{{ selectedHotelCurrency }}</span>
+                            <span class="switch-icon"><span class="currency">{{ selectedHotelCurrency }}</span></span>
                         </label>
                     </div>
                 </div>
