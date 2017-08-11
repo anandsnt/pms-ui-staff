@@ -410,6 +410,16 @@ function BaseCtrl($scope) {
                     status.current_screen = 'device.going_offline';
                 }
 
+                if (!navigator.onLine) {
+                    $scope.wasOffline = true;
+
+                } else if (navigator.onLine && $scope.wasOffline) {
+                    $scope.wasOffline = false;
+                    status.current_screen = 'device.back_online';
+                    // detect if kiosk was offline, then came back online
+                    $scope.trackSessionActivity('STATION_ONLINE', 'BackOnline', '', '', true);
+                }
+
                 if (event_type === 'status_update' || event_type === 'activity_update') {
                     // 
                     // This data goes through Google Analytics, therefore- be very explicit in the data to send
@@ -423,17 +433,6 @@ function BaseCtrl($scope) {
                     // 
                     event_name = JSON.stringify(status);
                 }
-
-                if (!navigator.onLine) {
-                    $scope.wasOffline = true;
-
-                } else if (navigator.onLine && $scope.wasOffline) {
-                    $scope.wasOffline = false;
-                    status.current_screen = 'device.back_online';
-                    // detect if kiosk was offline, then came back online
-                    $scope.trackSessionActivity('STATION_ONLINE', 'BackOnline', '', '', true);
-                }
-
                 try {
                     // throw 500; // test catch
                     trackAnalyticEvent(event_name, event_type);
