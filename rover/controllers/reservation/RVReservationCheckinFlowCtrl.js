@@ -254,12 +254,15 @@ angular.module('sntRover').controller('RVReservationCheckInFlowCtrl',
                     // This step is required as the user can edit the payment method from the check-in screen
                     $scope.checkInState.hasCardOnFile = $scope.billHasCreditCard();
 
+                    var hasAnyRouting = $scope.authorizationInfo.routingToRoom ||
+                        $scope.authorizationInfo.routingFromRoom ||
+                        $scope.authorizationInfo.routingToAccount;
+
                     // is_cc_authorize_at_checkin_enabled is returned in /api/reservations/:reservation_id/pre_auth
                     if ($scope.authorizationInfo.is_cc_authorize_at_checkin_enabled ||
                         !$scope.reservationBillData.is_disabled_cc_swipe) {
-                        if ($scope.authorizationInfo.routingToRoom ||
-                            $scope.authorizationInfo.routingFromRoom ||
-                            $scope.authorizationInfo.routingToAccount) {
+                        if (hasAnyRouting &&
+                            ($scope.checkInState.hasCardOnFile || !$scope.reservationBillData.is_disabled_cc_swipe)) {
                             // https://stayntouch.atlassian.net/browse/CICO-17287
                             promptForAuthorizationAmount();
                         } else {
