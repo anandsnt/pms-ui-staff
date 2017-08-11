@@ -272,13 +272,9 @@ sntRover.controller('companyCardContractsCtrl', ['$rootScope', '$scope', 'RVComp
 			$scope.errorMessage = "";
 		};
 		
-		var param = {
-			'account_id': $stateParams.id
-		};
-		
 		// CICO-44105 : Removing api call on creating new cards.
 		if ($stateParams.id !== 'add') {
-			$scope.invokeApi(RVCompanyCardSrv.fetchRates, param, fetchRatesSuccessCallback, fetchFailureCallback);
+			$scope.invokeApi(RVCompanyCardSrv.fetchRates, {}, fetchRatesSuccessCallback, fetchFailureCallback);
 		}
 
 		$scope.fetchContractsList = function () {
