@@ -18,7 +18,7 @@ module.exports = {
                 precheckinPartials + '*.html'];
         /**
             IMPORTANT: If the theme is using common non MGM templates,
-            there is no need to add separately. It will load by default by guestweb_common_templates
+            there is no need to add separately. It will load by default files in  'guestweb_common_templates'
             THE COMMENTED THEMES USING 'commonNonMgmTemplates' will be removed later  
             MOVING FORWARD WE DONT HAVE TO ADD TEMPLATE MAPPING FOR NON MGM COMMON THEMES
         **/
