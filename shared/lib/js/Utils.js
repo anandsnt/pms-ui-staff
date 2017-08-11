@@ -667,9 +667,12 @@ var getObjectLength = function(obj) {
 }
 
 // Replace a value with in object with another value
-var replaceValueWithinObject = function (jsonObj, findStr, replaceObj ) {
-    return _.each( jsonObj, function (value, key, obj) {
-        if (value == findStr) {
+var replaceValueWithinObject = function (obj, findStr, replaceObj ) {
+
+    Object.keys(obj).forEach(function (key) {
+        if ( obj[key] != null && typeof obj[key] === 'object') {
+            return replaceValueWithinObject(obj[key], findStr, replaceObj);
+        } else if (obj[key] == findStr) {
             obj[key] = replaceObj;
         }
     });
