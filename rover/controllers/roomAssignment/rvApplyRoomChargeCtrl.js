@@ -162,7 +162,7 @@ sntRover.controller('rvApplyRoomChargeCtrl', [
 				"room_no": $scope.assignedRoom.room_number,
 				"forcefully_assign_room": wanted_to_forcefully_assign,
 				"is_preassigned": $scope.assignedRoom.is_preassigned,
-                upsell_amount: 0 // CICO-44174 Pass 0 in upsell_amount if they select "No Charge".
+                upsell_amount: "0" // CICO-44174 Pass 0 in upsell_amount if they select "No Charge".
                 // This will ensure that we override configured upsell amount to $0 if they select "No Charge"
 			},
             successCallBack: $scope.successCallbackUpgrade,
