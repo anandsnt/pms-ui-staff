@@ -54,8 +54,10 @@ angular.module('sntRover').controller('RVReservationCheckInFlowCtrl',
 
             // STEP B PROMPT FOR SWIPE
             var promptForSwipe = function () {
-                // prompting for swipe can be disabled from admin > reservations > reservation settings
-                if (!$scope.reservationBillData.is_disabled_cc_swipe) {
+                if ($scope.checkInState.isEMVEnabled && !$scope.authorizationInfo.is_cc_authorize_at_checkin_enabled) {
+                    completeCheckin();
+                } else if (!$scope.reservationBillData.is_disabled_cc_swipe) {
+                    // prompting for swipe can be disabled from admin > reservations > reservation settings
                     $scope.checkInState.isListeningSwipe = true;
                     ngDialog.open({
                         template: '/assets/partials/payment/rvPleaseSwipeModal.html',
@@ -89,7 +91,7 @@ angular.module('sntRover').controller('RVReservationCheckInFlowCtrl',
                     reservation_id: $scope.reservationBillData.reservation_id
                 });
 
-                if (params.amount > 0) {
+                if (params.amount > 0 && $scope.authorizationInfo.is_cc_authorize_at_checkin_enabled) {
                     ngDialog.open({
                         template: '/assets/partials/authorization/ccAuthorization.html',
                         className: '',
@@ -254,14 +256,15 @@ angular.module('sntRover').controller('RVReservationCheckInFlowCtrl',
                     // This step is required as the user can edit the payment method from the check-in screen
                     $scope.checkInState.hasCardOnFile = $scope.billHasCreditCard();
 
+                    var hasAnyRouting = $scope.authorizationInfo.routingToRoom ||
+                        $scope.authorizationInfo.routingFromRoom ||
+                        $scope.authorizationInfo.routingToAccount;
+
                     // is_cc_authorize_at_checkin_enabled is returned in /api/reservations/:reservation_id/pre_auth
                     if ($scope.authorizationInfo.is_cc_authorize_at_checkin_enabled ||
                         !$scope.reservationBillData.is_disabled_cc_swipe) {
-                        if ($rootScope.isStandAlone &&
-                            $scope.checkInState.hasCardOnFile &&
-                            ($scope.authorizationInfo.routingToRoom ||
-                                $scope.authorizationInfo.routingFromRoom ||
-                                $scope.authorizationInfo.routingToAccount)) {
+                        if (hasAnyRouting && $scope.authorizationInfo.is_cc_authorize_at_checkin_enabled &&
+                            ($scope.checkInState.hasCardOnFile || !$scope.reservationBillData.is_disabled_cc_swipe)) {
                             // https://stayntouch.atlassian.net/browse/CICO-17287
                             promptForAuthorizationAmount();
                         } else {
