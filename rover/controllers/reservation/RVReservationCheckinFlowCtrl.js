@@ -54,8 +54,10 @@ angular.module('sntRover').controller('RVReservationCheckInFlowCtrl',
 
             // STEP B PROMPT FOR SWIPE
             var promptForSwipe = function () {
-                // prompting for swipe can be disabled from admin > reservations > reservation settings
-                if (!$scope.reservationBillData.is_disabled_cc_swipe) {
+                if ($scope.checkInState.isEMVEnabled && !$scope.authorizationInfo.is_cc_authorize_at_checkin_enabled) {
+                    completeCheckin();
+                } else if (!$scope.reservationBillData.is_disabled_cc_swipe) {
+                    // prompting for swipe can be disabled from admin > reservations > reservation settings
                     $scope.checkInState.isListeningSwipe = true;
                     ngDialog.open({
                         template: '/assets/partials/payment/rvPleaseSwipeModal.html',
