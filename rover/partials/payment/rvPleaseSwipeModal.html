@@ -13,14 +13,13 @@
                 USE CARD READER
             </button>
 
-            <section ng-if="checkInState.hasCardOnFile">
+            <section ng-if="checkInState.hasCardOnFile && authorizationInfo.is_cc_authorize_at_checkin_enabled">
                 <button class="button blue"
                         ng-click="onClickUseCardOnFile()">
                     USE CARD ON FILE
                 </button>
-
             </section>
-            <section ng-if="!checkInState.hasCardOnFile">
+            <section ng-if="!checkInState.hasCardOnFile || !authorizationInfo.is_cc_authorize_at_checkin_enabled">
                 <button ng-if="checkInState.hasActiveEMV"
                         class="button blank modal-close"
                         ng-click="onClickNoSwipe()">

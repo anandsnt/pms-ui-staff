@@ -353,6 +353,8 @@ angular.module('sntRover').service('rvGroupConfigurationSrv', ['$q', 'rvBaseWebS
 			var deferred = $q.defer(),
 				url = 'api/groups/' + data.summary.group_id;
 
+            self.processGroupUpdatePostData (data.summary);
+
 			rvBaseWebSrvV2.putJSON(url, data.summary)
 				.then(function(data) {
 					deferred.resolve(data);
@@ -604,5 +606,21 @@ angular.module('sntRover').service('rvGroupConfigurationSrv', ['$q', 'rvBaseWebS
                 });
             return deferred.promise;
         };
+
+        // Process the group update post data
+       this.processGroupUpdatePostData = function (summary) {
+            var isCompanyObjEmpty = isObjectAllValuesEmpty(summary.company),
+                isTravelAgentObjEmpty = isObjectAllValuesEmpty(summary.travel_agent);
+
+            if (isCompanyObjEmpty) {
+                summary.company = {};
+            }
+            if (isTravelAgentObjEmpty) {
+                summary.travel_agent = {};
+            }
+            summary = replaceValueWithinObject(summary, "", null);
+       };
 	}
+
+
 ]);
