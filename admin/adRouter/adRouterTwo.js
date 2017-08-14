@@ -710,4 +710,10 @@ angular.module('adminModuleTwo', []).config(function($stateProvider) {
         url: '/propertyGroups'
     });
 
+    $stateProvider.state('admin.webhooks', {
+        templateUrl: '/assets/partials/webhookSettings/adWebhookSettings.html',
+        controller: 'ADWebhookSettingsCtrl',
+        url: '/propertyGroups'
+    });
+
 });
