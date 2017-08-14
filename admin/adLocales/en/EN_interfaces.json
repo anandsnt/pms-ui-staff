@@ -72,4 +72,6 @@
 	"WINDSURFER_HEADER": "Windsurfer CRS Setup",
 	"ACCESS_URL": "Access URL",
 	"MONITOR_SCREEN": "Monitor Screen",
-	"VALIDATE_INCREMENTAL_EXPORT": "Validate Incremental Export"
+	"VALIDATE_INCREMENTAL_EXPORT": "Validate Incremental Export",
+	"PINPAD_SUCCESS": "SUCCESS",
+	"PINPAD_ERROR": "FAILURE"
