@@ -1013,6 +1013,7 @@ sntZestStation.controller('zsRootCtrl', [
                 }
 
                 if (workstationTimer >= getWorkstationsAtTime) {
+                    $scope.trackEvent('health_check', 'status_update', currentState, currentState);
                     getAdminWorkStations(); // fetch workstations with latest status details
                     if ($scope.inChromeApp) {
                         reconnectToWebSocket();// if disconnected, will attempt to re-connect to the websocket
@@ -1020,8 +1021,7 @@ sntZestStation.controller('zsRootCtrl', [
                     workstationTimer = 0;
                     // $scope.trackEvent('health_check', 'status_update', currentState, currentState);
                     // track once a minute initially
-                } else if (workstationTimer === 60) {
-                    $scope.trackEvent('health_check', 'status_update', currentState, currentState);
+                    
                 }
 
 				// the user inactivity actions do Not need be done when user is in 
@@ -1337,7 +1337,10 @@ sntZestStation.controller('zsRootCtrl', [
         };
 
         $scope.$on('CONNECT_WEBSOCKET', function() {
-            $scope.connectToWebSocket();
+            if (!$scope.isIpad) {
+                $scope.connectToWebSocket();
+            }
+
         });
 
         $scope.$on('EJECT_KEYCARD', function() {
@@ -1786,6 +1789,10 @@ sntZestStation.controller('zsRootCtrl', [
             }
         };
 
+        $scope.reportGoingOffline = function() {
+            $scope.trackSessionActivity('EXIT_APP', 'APP_CLOSE_EVT', 'GOING_OFFLINE', 'GOING_OFFLINE', true);
+        };
+
 		/** *
 		 * [initializeMe description]
 		 * @return {[type]} [description]
@@ -1900,8 +1907,9 @@ sntZestStation.controller('zsRootCtrl', [
             // In the event the application is exited (browser exit or other app close request)
             // 
             // 1: turn off hue lights of they were ON
+            // 2: report app exit activity
             $scope.turnOffLight();
-            
+            $scope.reportGoingOffline();
         };
 
         $window.onbeforeunload = $scope.onExitApplication;
