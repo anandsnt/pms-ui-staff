@@ -27,7 +27,7 @@ angular.module('qtip2', [])
             text: function(event, api) {
               category = api.elements.target.attr('category');
               url = api.elements.target.attr('url');
-              separator = url.indexOf('?') != -1 ? '&' : '?'; 
+              separator = url.indexOf('?') !== -1 ? '&' : '?'; 
 
               // include hotel uuid in case of multi-property user
               fetchURL = url + separator + 'hotel_uuid=' + sntAuthorizationSrv.getProperty();
