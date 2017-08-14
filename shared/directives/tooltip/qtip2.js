@@ -1,5 +1,5 @@
 angular.module('qtip2', [])
-  .directive('qtip', function($compile, $filter, $rootScope) {
+  .directive('qtip', function($compile, $filter, $rootScope, sntAuthorizationSrv) {
     return {
       restrict: 'A',
       link: function(scope, element, attrs) {
@@ -8,7 +8,8 @@ angular.module('qtip2', [])
           qtipClass = attrs.class || 'qtip-tipsy',
           content,
           htmlString,
-          category; // variable to handle dynamic content tooltip( for eg: dateRange, rateType) - this should be passed as element attr
+          category,// variable to handle dynamic content tooltip( for eg: dateRange, rateType) - this should be passed as element attr
+          fetchURL; 
 
         if (attrs.title) {
           content = {
@@ -23,8 +24,11 @@ angular.module('qtip2', [])
           content: {
             text: function(event, api) {
               category = api.elements.target.attr('category');
+              // include hotel uuid in case of multi-property user
+              fetchURL = api.elements.target.attr('url') + '?hotel_uuid=' + sntAuthorizationSrv.getProperty();
+
               $.ajax({
-                url: api.elements.target.attr('url') // Use href attribute as URL
+                url: fetchURL // Use href attribute as URL
               })
                 .then(function(resultSet) {
                   scope.isActiveDateRange = function(beginDateTime, endDateTime) {
