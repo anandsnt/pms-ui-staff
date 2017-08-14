@@ -9,7 +9,9 @@ angular.module('qtip2', [])
           content,
           htmlString,
           category, // variable to handle dynamic content tooltip( for eg: dateRange, rateType) - this should be passed as element attr
-          fetchURL; 
+          fetchURL,
+          url,
+          p; 
 
         if (attrs.title) {
           content = {
@@ -24,8 +26,11 @@ angular.module('qtip2', [])
           content: {
             text: function(event, api) {
               category = api.elements.target.attr('category');
+              url = api.elements.target.attr('url');
+              p = url.indexOf('?') != -1 ? '&' : '?'; 
+
               // include hotel uuid in case of multi-property user
-              fetchURL = api.elements.target.attr('url') + '?hotel_uuid=' + sntAuthorizationSrv.getProperty();
+              fetchURL = url + p + 'hotel_uuid=' + sntAuthorizationSrv.getProperty();
 
               $.ajax({
                 url: fetchURL // Use href attribute as URL
