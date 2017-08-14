@@ -509,8 +509,6 @@ sntRover.controller('roverController', [
                 $rootScope.iosAppVersion = response.AppVersion;
                 // reset the left menu (add device status)
                 $scope.formMenu();
-                // Initially fetch device log
-                $scope.fetchDeviceStatus();
               }
             }, function() {
 
@@ -826,6 +824,10 @@ sntRover.controller('roverController', [
         window.scrollTo(0, 0);
         $scope.$apply();
       }, 700);
+    };
+
+    $scope.closeDialogImmediately = function() {
+      ngDialog.close();
     };
     /*
      * To fix issue with ipad keypad - 7702

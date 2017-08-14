@@ -94,6 +94,14 @@ angular.module('sntPay').controller('sntPaymentController',
                     params.postData.reservation_ids = $scope.reservationIds;
                 }
 
+                // CICO-43933
+                if ($scope.selectedCC.params) {
+                    params.postData = {
+                        ...$scope.selectedCC.params,
+                        ...params.postData
+                    };
+                }
+
                 return params;
             }
 
@@ -1049,6 +1057,7 @@ angular.module('sntPay').controller('sntPaymentController',
                     if (!$scope.selectedPaymentType) {
                         $scope.selectedPaymentType = 'CC';
                     }
+
                     $scope.selectedCC = $scope.selectedCC || {};
                     $scope.selectedCC.value = response.data.id;
                     $scope.selectedCard = $scope.selectedCC.value;
@@ -1058,6 +1067,11 @@ angular.module('sntPay').controller('sntPaymentController',
                     $scope.selectedCC.holder_name = cardDetails.cardDisplayData.name_on_card;
                     $scope.payment.screenMode = 'PAYMENT_MODE';
                     $scope.$emit('PAYMENT_SAVE_CARD_SUCCESS');
+
+                    if (response.params) {
+                        $scope.selectedCC.params = params;
+                    }
+
                     calculateFee();
                     showAddtoGuestCardBox();
                 }
@@ -1089,6 +1103,17 @@ angular.module('sntPay').controller('sntPaymentController',
                 if (params.mli_token) {
                     params['do_not_attach_cc_to_bill'] = true;
                     params['reservation_id'] = $scope.reservationId;
+                    // CICO-43933
+                    $scope.$emit('hideLoader');
+                    onSaveSuccess({
+                        params,
+                        data: {
+                            id: null,
+                            credit_card_type: null,
+                        }
+                    });
+                    // Don't make save payment call for swipes during submit payment
+                    return;
                 }
                 sntPaymentSrv.savePaymentDetails(params).then(
                     response => {
