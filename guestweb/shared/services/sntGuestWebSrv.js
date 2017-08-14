@@ -152,10 +152,12 @@ sntGuestWeb.service('sntGuestWebSrv', ['$q', '$http', '$rootScope', '$ocLazyLoad
 	 */
 	this.fetchJsAssets = function(key, modules_to_inject) {
 		if (!!jsMappingList) {
+			var jsFile = jsMappingList[key] || jsMappingList['guestweb_common_js_files'];
+            
 			return $ocLazyLoad.load({
 				insertBefore: '.main-container',
 				serie: true,
-				files: jsMappingList[key]
+				files: jsFile
 			}).then(function() {
 				if (typeof modules_to_inject !== "undefined") {
 					$ocLazyLoad.inject(modules_to_inject);
@@ -175,11 +177,13 @@ sntGuestWeb.service('sntGuestWebSrv', ['$q', '$http', '$rootScope', '$ocLazyLoad
 	 */
 	this.fetchTemplateAssets = function(key, modules_to_inject) {
 		if (!!templateMappingList) {
+			var themeFile = templateMappingList[key] || templateMappingList['guestweb_common_templates'];
+			
 			return $ocLazyLoad.load({
 				insertBefore: '.main-container',
 				reconfig: true,
 				serie: true,
-				files: templateMappingList[key]
+				files: themeFile
 			}).then(function() {
 				if (typeof modules_to_inject !== "undefined") {
 					$ocLazyLoad.inject(modules_to_inject);
