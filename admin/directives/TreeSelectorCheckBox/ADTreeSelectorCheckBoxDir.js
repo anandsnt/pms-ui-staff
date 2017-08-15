@@ -13,6 +13,7 @@ admin.directive('adTreeSelectorCheckbox', function (ivhTreeviewMgr) {
         link: function (scope, element, attrs, ctrl) {
             element.on('click', function () {
                 ivhTreeviewMgr.select(ctrl.root(), scope.node, !scope.node.selected);
+                scope.$emit('SELECTION_CHANGED');
                 scope.$apply();
             });
         }

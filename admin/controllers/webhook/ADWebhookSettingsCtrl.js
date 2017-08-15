@@ -17,7 +17,8 @@ angular.module('admin').controller('ADWebhookSettingsCtrl', ['$scope',
         (function () {
             $scope.name = '';
             $scope.config = {
-                webhook_type: 1,
+                selected_subscriptions: 'RESERVATIONS',
+                webhook_type: 'mlife',
                 webhook_types: [{
                     id: 1,
                     name: 'mLife'

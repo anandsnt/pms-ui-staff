@@ -1,45 +1,53 @@
-<ad-common-parts-in-form-dir on-save-button-click="saveWebhookConfig"
-                             header-caption="{{ 'WEBHOOK_SETTINGS' | translate}}">
+<fieldset class="holder full-width">
+    <div class="form-title">
+        <h3>Settings</h3>
+    </div>
+    <fieldset class="holder left">
+        <ad-dropdown-name savemodel="config.webhook_type"
+                          valueproperty="delivery_type"
+                          property="delivery_type"
+                          list="deliveryTypes"
+                          label="{{'WEBHOOK_TYPE'| translate}}"
+                          div-class="full-width">
+        </ad-dropdown-name>
 
-    <fieldset class="holder full-width">
-        <div class="form-title">
-            <h3>Settings</h3>
-        </div>
-        <fieldset class="holder left">
-            <ad-dropdown-name savemodel="config.webhook_type"
-                              valueproperty="id"
-                              property="name"
-                              list="config.webhook_types"
-                              label="{{'WEBHOOK_TYPE'| translate}}"
-                              div-class="full-width">
-            </ad-dropdown-name>
-        </fieldset>
+        <ad-textbox value="config.password"
+                    label="{{'URL'| translate}}"
+                    styleclass="full-width"></ad-textbox>
     </fieldset>
+</fieldset>
 
-    <fieldset class="holder full-width">
-        <div class="form-title">
-            <h3>Subscriptions</h3>
-        </div>
-        <fieldset class="holder left">
-            <ad-textbox inputtype="text"
-                        value="eventSearch"
-                        label="{{'SEARCH'| translate}}"></ad-textbox>
-            <div class="entry full-width">
-                <div ivh-treeview="subscriptions"
-                     ivh-treeview-expand-to-depth="-1"
-                     ivh-treeview-filter="eventSearch">
-                    <script type="text/ng-template">
-                        <span ivh-treeview-toggle>
+<fieldset class="holder full-width">
+    <div class="form-title">
+        <h3>Subscriptions</h3>
+    </div>
+    <fieldset class="holder left">
+        <ad-textarea rows="2" div-class="full-width"
+                     text-area-class="full-width"
+                     value="config.selected_subscriptions"
+                     label="{{ 'SELECTED_SUBSCRIPTIONS' | translate}}" placeholder="">
+        </ad-textarea>
+    </fieldset>
+    <fieldset class="holder right">
+        <ad-textbox inputtype="text"
+                    value="eventSearch"
+                    label="{{'SEARCH'| translate}}"></ad-textbox>
+        <div class="entry full-width">
+            <div ivh-treeview="subscriptions"
+                 ivh-treeview-expand-to-depth="-1"
+                 ivh-treeview-filter="eventSearch">
+                <script type="text/ng-template">
+                    <span ivh-treeview-toggle>
                             <span ivh-treeview-twistie></span>
                         </span>
-                        <ad-tree-selector-checkbox></ad-tree-selector-checkbox>
-                        <span class="ivh-treeview-node-label" style="padding-left: 10px;" ivh-treeview-toggle>
+                    <ad-tree-selector-checkbox></ad-tree-selector-checkbox>
+                    <span class="ivh-treeview-node-label" style="padding-left: 10px;" ivh-treeview-toggle>
                             {{trvw.label(node)}}
                         </span>
-                        <div style="margin-top: 1em;" ivh-treeview-children></div>
-                    </script>
-                </div>
+                    <div style="margin-top: 1em;" ivh-treeview-children></div>
+                </script>
             </div>
-        </fieldset>
+        </div>
     </fieldset>
-</ad-common-parts-in-form-dir>
+</fieldset>
+
