@@ -53,7 +53,9 @@ module.exports = function(gulp, $, options){
 			var themeArray = themeString.split(",");
 
 			for (var i = 0, len = themeArray.length; i < len; i++) {
-				guestWebThemeList[themeArray[i]] = GUESTWEB_THEME_TEMPLATE_LIST[themeArray[i]]
+				var themelist = GUESTWEB_THEME_TEMPLATE_LIST[themeArray[i]] || GUESTWEB_THEME_TEMPLATE_LIST['guestweb_common_templates'];
+				
+				guestWebThemeList[themeArray[i]] = themelist;
 			}
 		} else {
 			guestWebThemeList = GUESTWEB_THEME_TEMPLATE_LIST;

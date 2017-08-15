@@ -406,6 +406,20 @@ function BaseCtrl($scope) {
                     'origin': location.origin ? location.origin : location.href
                 };
 
+                if ($scope.goingOffline) {
+                    status.current_screen = 'device.going_offline';
+                }
+
+                if (!navigator.onLine) {
+                    $scope.wasOffline = true;
+
+                } else if (navigator.onLine && $scope.wasOffline) {
+                    $scope.wasOffline = false;
+                    status.current_screen = 'device.back_online';
+                    // detect if kiosk was offline, then came back online
+                    $scope.trackSessionActivity('STATION_ONLINE', 'BackOnline', '', '', true);
+                }
+
                 if (event_type === 'status_update' || event_type === 'activity_update') {
                     // 
                     // This data goes through Google Analytics, therefore- be very explicit in the data to send
@@ -419,11 +433,16 @@ function BaseCtrl($scope) {
                     // 
                     event_name = JSON.stringify(status);
                 }
-
                 try {
+                    // throw 500; // test catch
                     trackAnalyticEvent(event_name, event_type);
+                    $scope.zestStationData.ltrack = 'online';
                 } catch (err) {
-                    console.log('not tracking', err);
+                    // visually see on ipad if analytics are being sent ok or not
+                    // if not, check from diagnostics info > top-right > addt'l info (tap)
+                    $scope.zestStationData.ltrack = 'offline';
+                    console.warn('diagnostics logging failed: ', err);
+
                 }
             }
 
@@ -441,12 +460,11 @@ function BaseCtrl($scope) {
           stationHandlerConnectedStatus
           isIpad
          */
-
-
     };
 
+    $scope.wasOffline = false;
+
     $scope.addReasonToOOSLog = function(reason) {
-        console.warn('addReasonToOOSLog: ', reason);
         // for each session of this station, send along the OOS reason(s) with timestamps
         // for now, just include the workstation time
         // 
@@ -456,6 +474,12 @@ function BaseCtrl($scope) {
             'reason': reason,
             'datetime': currentTime
         };
+
+        if (reason === 'GET_CONFIGURATION_FAILED' || reason === 'GET_WORKSTATION_FAILED') {
+            var onlineOffline = navigator.onLine ?  'online' : 'offline';
+
+            oosReason.reason += ': (' + onlineOffline + ')';
+        }
 
         $scope.zestStationData.sessionOosReason.push(oosReason);
         $scope.zestStationData.lastOOSReason = $scope.$filter('translate')(oosReason.reason) ? $scope.$filter('translate')(oosReason.reason) : oosReason.reason;
@@ -468,12 +492,15 @@ function BaseCtrl($scope) {
     };
 
     $scope.trackSessionActivity = function(flow, activity, conf, mode, send) {
-        console.warn('activity, conf, mode: ', activity, conf, mode);
         // for each session of this station, send along the OOS reason(s) with timestamps
         // for now, just include the workstation time
         // 
         var today = new Date();
         var currentTime = today.toString();
+
+        if (activity === 'APP_CLOSE_EVT') {
+            $scope.goingOffline = true;
+        }
 
         $scope.zestStationData.sessionActivity.push({
             'flow': flow ? flow : '',

@@ -665,3 +665,27 @@ var checkIfReferencetextAvailableForCC = function(paymentTypes,selectedPaymentTy
 var getObjectLength = function(obj) {
     return Object.keys(obj).length;
 }
+
+// Replace a value with in object with another value
+var replaceValueWithinObject = function (obj, findStr, replaceObj ) {
+
+    Object.keys(obj).forEach(function (key) {
+        if ( obj[key] != null && typeof obj[key] === 'object') {
+            return replaceValueWithinObject(obj[key], findStr, replaceObj);
+        } else if (obj[key] == findStr) {
+            obj[key] = replaceObj;
+        }
+    });
+};
+
+// Check whether the object has got all key values as empty
+var isObjectAllValuesEmpty = function (obj) {
+    var emptyKeys = [];
+
+    _.each ( obj, function (value, key) {
+        if (value == "") {
+            emptyKeys.push(key);
+        }
+    });
+    return ( emptyKeys.length == Object.keys(obj).length );
+};
