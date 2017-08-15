@@ -95,7 +95,7 @@ angular.module('sntPay').controller('sntPaymentController',
                 }
 
                 // CICO-43933
-                if ($scope.selectedCC.params) {
+                if ($scope.selectedCC && $scope.selectedCC.params) {
                     params.postData = {
                         ...$scope.selectedCC.params,
                         ...params.postData
