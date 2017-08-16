@@ -98,5 +98,35 @@ angular.module('admin').service('ADWebhookSrv', ['$http', '$q', 'ADBaseWebSrvV2'
 
             return deferred.promise;
         };
+
+        service.update = function (params) {
+            var deferred = $q.defer();
+            var url = 'admin/webhooks/' + params.uuid;
+
+            ADBaseWebSrvV2.putJSON(url, params).then(function (data) {
+                deferred.resolve(data);
+            }, function (data) {
+                deferred.reject(data);
+            });
+
+            return deferred.promise;
+        };
+
+        service.delete = function (params) {
+            var deferred = $q.defer();
+            var url = 'admin/webhooks/' + params.uuid;
+
+            ADBaseWebSrvV2.deleteJSON(url).then(function (response) {
+                if (response.status) {
+                    deferred.resolve(response);
+                } else {
+                    deferred.reject(response.errors);
+                }
+            }, function (data) {
+                deferred.reject(data);
+            });
+
+            return deferred.promise;
+        };
     }
 ]);

@@ -7,33 +7,33 @@
                     {{'MANDATORY_FIELDS_MESSAGE2' | translate}} </em>
             </div>
             <fieldset class="holder left">
-                <ad-dropdown-name savemodel="webHook.delivery_type"
+                <ad-dropdown-name savemodel="state.new.delivery_type"
                                   valueproperty="delivery_type"
                                   label-in-drop-down="Select a Delivery Type"
                                   required="yes"
                                   change-handler="onWebHookTypeChange"
-                                  change-handler-param="webHook"
+                                  change-handler-param="state.new"
                                   property="delivery_type"
                                   list="meta.deliveryTypes"
                                   label="{{'WEBHOOK_TYPE'| translate}}"
                                   div-class="full-width">
                 </ad-dropdown-name>
 
-                <ad-textbox value="webHook.url"
+                <ad-textbox value="state.new.url"
                             required="yes"
                             label="{{'URL'| translate}}"
                             styleclass="full-width"></ad-textbox>
             </fieldset>
         </fieldset>
 
-        <fieldset class="holder full-width" ng-show="webHook.canEditEvents">
+        <fieldset class="holder full-width" ng-show="state.new.canEditEvents">
             <div class="form-title">
                 <h3>Subscriptions</h3>
             </div>
             <fieldset class="holder left">
                 <ad-textarea rows="2" div-class="full-width"
                              text-area-class="full-width"
-                             value="webHook.selectedEvents"
+                             value="state.new.selectedEvents"
                              disabled="true"
                              label="{{ 'SELECTED_SUBSCRIPTIONS' | translate}}" placeholder="">
                 </ad-textarea>
@@ -44,7 +44,7 @@
                             div-class="full-width"
                             label="{{'SEARCH'| translate}}"></ad-textbox>
                 <div class="entry full-width">
-                    <div ivh-treeview="webHook.availableEvents"
+                    <div ivh-treeview="state.new.availableEvents"
                          ivh-treeview-expand-to-depth="-1"
                          ivh-treeview-filter="eventSearch">
                         <script type="text/ng-template">
@@ -64,15 +64,15 @@
             </fieldset>
         </fieldset>
         <div class="actions float">
-            <button type="button" ng-click="onCancelEdit()" class="button blank edit-data-inline"
+            <button type="button" ng-click="onCancelAdd()" class="button blank edit-data-inline"
                     translate>
                 CANCEL
             </button>
-            <button type="button" ng-click="onUpdate(webHook)" class="button green edit-data-inline"
-                    ng-class="{'grey' : webHook.url == '' || webHook.delivery_type == ''}"
-                    ng-disabled="webHook.url == '' || webHook.delivery_type == ''"
+            <button type="button" ng-click="onSave()" class="button green edit-data-inline"
+                    ng-class="{'grey' : state.new.url == '' || state.new.delivery_type == ''}"
+                    ng-disabled="state.new.url == '' || state.new.delivery_type == ''"
                     translate>
-                SAVE_CHANGES
+                ADD WEBHOOK
             </button>
         </div>
     </form>
