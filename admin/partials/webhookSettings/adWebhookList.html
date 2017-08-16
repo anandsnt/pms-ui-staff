@@ -3,7 +3,7 @@
     <header class="content-title float">
         <h2>WEBHOOKS</h2>
         <span class="count">({{totalCount}})</span>
-        <a ng-click="navigateBack()" class="action back" translate>BACK</a>
+        <a ng-click="goBackToPreviousState()" class="action back" translate>BACK</a>
         <button ng-click="onClickAdd()" class="action add" scrollup="replacing-div-first">Add new</button>
     </header>
     <section class="content-scroll">
@@ -18,7 +18,7 @@
                ng-table="itemList" template-pagination="nil">
             <tbody>
             <tr ng-repeat="webHook in webHooks track by $index" ng-hide="webHook.isDeleted">
-                <td data-item="1" data-title="'DELIVERY_TYPE'" ng-click="onSelect($index, webHook)"
+                <td data-item="1" data-title="'DELIVERY TYPE'" ng-click="onSelect($index, webHook)"
                     header-class="width-20" ng-hide="state.selected === $index">
                     <a class="edit-data-inline">
                         {{webHook.delivery_type}}
