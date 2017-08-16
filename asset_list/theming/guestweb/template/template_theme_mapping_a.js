@@ -23,8 +23,8 @@ module.exports = {
             MOVING FORWARD WE DONT HAVE TO ADD TEMPLATE MAPPING FOR NON MGM COMMON THEMES
         **/
         return {
-            'guestweb_hollywood_roosevelt': commonNonMgmTemplates,
-            'guestweb_made':  commonNonMgmTemplates,
+            //'guestweb_hollywood_roosevelt': commonNonMgmTemplates,
+            //'guestweb_made':  commonNonMgmTemplates,
             'guestweb_common_templates': commonNonMgmTemplates,
             // 'guestweb_made':  commonNonMgmTemplates,
             'guestweb_windsor_suites': [ 'guestweb/**/common_templates/partials/checkin/**.html',

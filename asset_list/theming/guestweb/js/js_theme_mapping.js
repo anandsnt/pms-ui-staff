@@ -11,10 +11,10 @@ module.exports = {
             MOVING FORWARD WE DONT HAVE TO ADD JS MAPPING FOR NON MGM COMMON THEMES  
         **/  
         return {
-            'guestweb_hollywood_roosevelt': [ themeJsRoot + 'app_router_common.js'],
-            'guestweb_made': [ themeJsRoot + 'app_router_common.js'],
-            'guestweb_windsor_suites': [ themeJsRoot + 'app_router_common.js'],
-            'guestweb_moonrise': [ themeJsRoot + 'app_router_common.js'],
+            // 'guestweb_hollywood_roosevelt': [ themeJsRoot + 'app_router_common.js'],
+            // 'guestweb_made': [ themeJsRoot + 'app_router_common.js'],
+            // 'guestweb_windsor_suites': [ themeJsRoot + 'app_router_common.js'],
+            // 'guestweb_moonrise': [ themeJsRoot + 'app_router_common.js'],
             'guestweb_common_js_files': [ themeJsRoot + 'app_router_common.js'],
             'guestweb_row': [ themeJsRoot + 'app_router_row_nyc.js'],
             // 'guestweb_atura': [ themeJsRoot + 'app_router_common.js'],
