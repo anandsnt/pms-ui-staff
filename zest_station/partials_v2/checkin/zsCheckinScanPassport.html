@@ -149,7 +149,9 @@
                     <span ng-hide="mode !== 'ADMIN_VERIFY_PASSPORTS'" class="passport-scan-status" ng-class='{"button-margin":showRemoveButton}'>{{guest.passport_reviewed_status}}
                     </span> 
                     <!-- guest icons, adult, student, infant -->
+                    <!-- primaryGuest is always an adult , and wont have guest_type included -->
                     <figure ng-show='guest.guest_type === "ADULT" || !guest.guest_type' class="guest-image guest-icons icon-adult"></figure>
+
                     <figure ng-show='guest.guest_type === "CHILDREN"' class="guest-image guest-icons icon-student"></figure>
                     <figure ng-show='guest.guest_type === "INFANTS"' class="guest-image guest-icons icon-infant"></figure>
                     {{guest.last_name}}, {{guest.first_name}}
