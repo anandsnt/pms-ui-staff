@@ -294,18 +294,28 @@
                 &.transaction {
                     
                     .faux-anchor {
-                        padding: 13px 15px;
+                        padding: 12px 15px;
+                        height: 60px;
                         #flexbox > .parent(row wrap, '', center, '');
-                    }
 
-                    .has-arrow {
-                        cursor: pointer;
-                        background-position: -webkit-calc(~'100% - 15px') 50%;
-                        background-position: -moz-calc(~'100% - 15px') 50%;
-                        background-position: calc(~'100% - 15px') 50%;
-                        
-                        &.active {
-                            #border-radius > .bottom(0);
+                        &.has-arrow {
+                            cursor: pointer;
+                            background-position: -webkit-calc(~'100% - 15px') 50%;
+                            background-position: -moz-calc(~'100% - 15px') 50%;
+                            background-position: calc(~'100% - 15px') 50%;
+                            
+                            &.active {
+                                #border-radius > .bottom(0);
+                            }
+                        }
+
+                        &:not(.has-arrow) {
+                            cursor: default;
+
+                            &:hover,
+                            &:active {
+                                .box-shadow();
+                            }
                         }
                     }
 
@@ -357,18 +367,20 @@
 
                     &.with-checkbox {
                         position: relative;
-                        
+
                         .checkbox {
                             position: absolute;
-                            display: block;
-                            .square(20px);
                             top: 20px;
                             left: 15px;
+                            .square(20px);
 
                             .icon-form {
                                 top: 0;
                                 left: 0;
-                                &:not(.checked){ background: @background; }
+
+                                &:not(.checked){ 
+                                    background-color: @grey1;
+                                }
                             }
                         }
 
@@ -405,10 +417,6 @@
                     }
 
                     &.payment {
-                        
-                        .faux-anchor {
-                           height: 60px; 
-                        }
 
                         .data {
                             .calc-width(100, 255);
@@ -473,6 +481,7 @@
 
                             .transaction {
                                 .faux-anchor {
+                                    cursor: default;
                                     background: @grey1;
 
                                     .data {
@@ -498,6 +507,11 @@
                                             top:0;
                                             .square(40px);
                                         }
+                                    }
+
+                                    &:hover,
+                                    &:active {
+                                        .box-shadow();
                                     }
                                 }
                             }
@@ -674,14 +688,14 @@
                         }
 
                         &.input {
-                            .hide();
+                            position: relative;
                             width: 165px;
                             height: 30px;
-                             
-                            position: relative;
+                            .hide();
+                            
 
                             input { 
-                                width:110px; 
+                                width: 110px; 
                                 background: @grey1; 
                                 font-weight: 600; 
                                 font-size: 18px; 
@@ -692,11 +706,13 @@
 
                             .currency {
                                 position: absolute;
-                                top:0;
+                                top: 0;
                                 line-height: 30px;
-                                left: 30px;
+                                right: 120px;
                                 font-size: 18px;
                                 font-weight: 600;
+                                text-align: right;
+                                width: 55px;
                             }
                         }
                     } 
@@ -867,6 +883,10 @@
                             .icon-double-arrow {
                                 background-position: 3px -798px;
                                 .icons > .rotate-up;
+                            }
+
+                            &:hover {
+                                .box-shadow();
                             }
                         }
                     }
