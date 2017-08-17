@@ -2,13 +2,20 @@ angular.module('sntRover').controller('RVCheckInAuthCtrl', ['$scope', '$log', 'R
     function ($scope, $log, RVCCAuthorizationSrv, rvPermissionSrv) {
 
         var authorize = function () {
+            var params = {};
+
+            // CICO-43933
+            if ($scope.checkInState.swipedCardData) {
+                params = angular.copy($scope.checkInState.swipedCardData);
+            }
+
             $scope.callAPI(RVCCAuthorizationSrv.manualAuthorization, {
-                params: {
+                params: _.extend(params, {
                     is_emv_request: $scope.ngDialogData.is_emv_request,
                     amount: $scope.ngDialogData.amount || 0,
                     payment_method_id: $scope.ngDialogData.payment_method_id,
                     reservation_id: $scope.ngDialogData.reservation_id
-                },
+                }),
                 successCallBack: function (response) {
                     $scope.authResponse = response;
                     $scope.authState = 'SUCCESS';

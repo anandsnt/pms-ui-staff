@@ -570,18 +570,19 @@ sntRover.controller('RVroomAssignmentController', [
 
 
 	$scope.goToNextView = function(shouldCloseDialog) {
-		if ($scope.clickedButton === "checkinButton") {
-			$scope.$emit('hideLoader');
-			$state.go('rover.reservation.staycard.billcard', {"reservationId": $scope.reservationData.reservation_card.reservation_id, "clickedButton": "checkinButton"});
-        } else {
-            $timeout( function() {
+		// CICO-44115
+		$timeout( function() {
                 if (shouldCloseDialog) {
                     ngDialog.close();
                 }
-            }, 500);
+        }, 500);
+
+		if ($scope.clickedButton === "checkinButton") {
+			$scope.$emit('hideLoader');
+			$state.go('rover.reservation.staycard.billcard', {"reservationId": $scope.reservationData.reservation_card.reservation_id, "clickedButton": "checkinButton"});
+        } else {            
 			$scope.backToStayCard();
 		}
-
 	};
 
 	/**

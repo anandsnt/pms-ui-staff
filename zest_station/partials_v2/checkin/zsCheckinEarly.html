@@ -22,12 +22,13 @@
             <text data-ng-bind-html="getTagValue('EARLY_AVAIL_PURCHASED_REALLY_EARLY')" editable-text="EARLY_AVAIL_PURCHASED_REALLY_EARLY"></text>
         </h3>
 
-        <div class='done-btn-div'>
-            <button ng-show="mode === 'CHECKIN_LATER' || mode === 'EARLY_CHECKIN_PREPAID_NOT_READY'" type="button" class="button" touch-press='clickedOnCloseButton()'>
-                <text data-ng-bind-html="getTagValue('EARLY_DONE')" editable-text="EARLY_DONE"></text>
-            </button>
+        <div id="message" ng-show="mode === 'CHECKIN_LATER' || mode === 'EARLY_CHECKIN_PREPAID_NOT_READY'">
+            <div class='done-btn-div eci-done'>
+                <button type="button" class="button" touch-press='clickedOnCloseButton()'>
+                    <text data-ng-bind-html="getTagValue('EARLY_DONE')" editable-text="EARLY_DONE"></text>
+                </button>
+            </div>
         </div>
-    
 
 
         <!-- Early Checkin Purchase Nav -->
