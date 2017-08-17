@@ -1,0 +1,162 @@
+<ul class="search-results">
+
+    <!-- if checked, add class .selected -->
+    <li class="reservation transaction with-checkbox">
+        <label class="checkbox inline">
+            <span class="icon-form icon-checkbox"></span>
+            <input value="4" type="checkbox">
+        </label>
+
+        <!-- Add class .active when clicked to show details -->
+        <div class="faux-anchor has-arrow toggle">
+            <div class="data">
+                <!-- add class .group/.allotment if group or allotment -->
+                <h2>
+                    {Lastname, Firstname}
+                </h2>
+
+                <span class="invoice">
+                    Invoice #<span class="value">{invoice}</span>
+                </span>
+                <span class="confirmation">
+                    Ext #<span class="value">{conf/ext}</span>
+                </span>
+            </div>
+            <div class="guest-date arrival">
+                <span class="guest-status small-icon check-in">check-in</span>
+                <time datetime="{arrival-timestamp}">
+                    <span class="date">{arrival date}</span>
+                    <span class="time">{arrival time}</span>
+                </time>
+            </div>
+            <div class="guest-date departure">
+                <span class="guest-status small-icon check-out">check-out</span>
+                <time datetime="{departure-timestamp}">
+                    <span class="date">{departure date}</span>
+                    <span class="time">{departure time}</span>
+                </time>
+            </div>
+            <div class="balance balance-now">
+                Balance Now
+                <strong class="red">${balance-now}</strong>
+            </div>
+            <div class="balance balance-after">
+                Balance After
+                <strong class="green">${balance-after}</strong>
+            </div>
+            <!-- if partially paid, add .partially-paid-->
+            <div class="amount unpaid">
+                <!-- Add if partially paid
+                    <span class="icons icon-wallet-green"></span>
+                -->
+                ${amount}
+            </div>
+            <div class="amount input">
+                <span class="currency">$</span>
+                <input type="text" value="{amunt}">
+            </div>
+        </div>
+
+        <div class="grid-items hidden"><!-- Add/remove class 'hidden' when L11 is clicked -->
+            <table>
+                <thead>
+                    <tr>
+                        <th class="date" scope="col">Date</th>
+                        <th   scope="col">Charge Code</th>
+                        <th class="description" scope="col">Description</th>
+                        <th class="fees" scope="col">Fees</th>
+                        <th class="credits" scope="col">Credits</th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                    <!-- 'row-class' => 'odd' or 'even' on each new charge item
+                          1. tr => 'odd',
+                          2. tr => 'even',
+                             'If charge item has charge items'
+                             tr.charge-items => 'even'
+                          3. tr => 'odd' ...
+                     -->
+                    <tr class="{row-class}">
+                        <td>{Date}</td>
+
+                        
+                        <td>
+                            {Charge Code}
+                            
+                        </td>
+
+                        <!-- If there are sub charges 
+                             add .toggle -->
+                        <!-- On click, toggle class .active -->
+                        <td class="description">
+                            {Description}
+                            <!-- If there are sub charges, render
+                                <span class="icons icon-double-arrow"></span>
+                            -->
+                            <!-- if it's a payment type:
+                                -- Card:
+                                    <div class="payment-data">
+                                        <figure class="card-logo">
+                                            <img src="http://localhost/stayntouch/images/visa.png" alt="">
+                                        </figure>
+                                        <span class="number">5987</span>
+                                        <span class="date"><span class="value">12/14</span></span>
+                                        <span class="reference">53806949</span>
+                                    </div>
+                                -- Other:
+                                    <div class="payment-data">
+                                        <span class="type">Cash</span>
+                                        <span class="reference">34507941</span>
+                                    </div>
+                            -->
+
+                        </td>
+                        <td class="fees"><span class="currency">{currency}</span>{Fee Amount}</td>
+                        <td class="credits">
+                            <span class="currency">{currency}</span>{Credit Amount}
+                            <!-- Add if payment that can be unallocated
+                                <button class="icons icon-remove-40"></button>
+                             -->
+                        </td>
+                    </tr>
+                    <!-- Render if the current charge item has sub charges (POS)
+                         Remove 'hidden' on {Charge Code} click 
+                    <tr class="{row-class} charge-items hidden">
+                        <td class="date"></td>
+                        <td></td>
+                        <td class="description">
+                            <ul>
+                                <li>{Item}</li>
+                                ... repeat for each item
+                            </ul>
+                        </td>
+                        <td class="fees">
+                            <ul>
+                                <li><span class="currency">{currency}</span>{price}</li>
+                                ... repeat for each item
+                            </ul>
+                        </td>
+                        <td class="credits"></td>
+                    </tr>
+                    -->
+                    ... repeat L60-L65 for every fee/credit
+
+                </tbody>
+            </table>
+            <div class="actions">
+                <button type="button" class="button brand-colors">StayCard</button>
+                <button type="button" class="button purple">Move Invoice</button>
+                <button type="button" class="button blue">Print Invoice</button>
+                <button type="button" class="button white green-text">Post Charge</button>
+                <button type="button" class="button white purple-text">Edit Charges</button>
+            </div>
+        </div>
+
+    </li>
+
+    <li>
+        <!-- On click Show Manual Balance Billing Content -->
+        <button class="add-new-button">Add Manual Balance</button>
+    </li>
+</ul>
