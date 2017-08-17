@@ -478,6 +478,15 @@ sntZestStation.controller('zsRootCtrl', [
             return false;
         };
 
+        $scope.usingFakeReservation = function() {
+            if ($scope.zestStationData.fakeReservation === 'true') {
+                $log.warn('using demo reservation');
+                return true;
+            }
+            return false;
+        };
+
+
         var readLocally = function() {
             if ($scope.zestStationData.ccReader === 'local') {
                 return true;
