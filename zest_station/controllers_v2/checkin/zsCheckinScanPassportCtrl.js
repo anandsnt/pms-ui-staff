@@ -392,6 +392,8 @@ sntZestStation.controller('zsCheckinScanPassportCtrl', [
             $scope.$emit(zsEventConstants.HIDE_BACK_BUTTON);
 
             if ($scope.mode === 'SCAN_RESULTS') {
+                $scope.currentPage = 1;
+
                 $scope.mode = 'WAIT_FOR_STAFF';
                 $scope.turnOnLight();
 
@@ -602,6 +604,94 @@ sntZestStation.controller('zsCheckinScanPassportCtrl', [
 
         };
 
+        var setGuestType = function(guest) {
+            for (var x in $scope.selectedReservation.guest_details) {
+                if (guest.id === $scope.selectedReservation.guest_details[x].id) {
+                    $scope.selectedReservation.guest_details[x].guest_type = guest.guest_type;
+                }
+            }
+        };
+
+        $scope.totalGuests = 1;
+        $scope.totalPages = 1;
+        $scope.viewPage = 1;
+        $scope.perPage = 3; // view 4 guests per page, select next to view more
+        $scope.currentPage = 1;
+
+        $scope.showGuest = function(index) {
+            var guestNumber = index + 1;
+
+            var guestOnPage = Math.ceil(guestNumber / $scope.perPage);
+
+            return guestOnPage === $scope.currentPage;
+        };
+
+        $scope.viewPreviousPage = function() {
+            if ($scope.currentPage > 1) {
+                $scope.currentPage--;    
+            }
+
+        };
+
+        $scope.viewNextPage = function() {
+            if ($scope.currentPage < $scope.totalPages) {
+                $scope.currentPage++;
+            }
+        };
+
+        var fetchGuestDetails = function() {
+            var onSuccess = function(response) {
+                $log.log(response);
+                $scope.totalGuests = 1 + response.accompanying_guests_details.length;
+                $scope.viewPage = 1;
+                $scope.totalPages = Math.ceil($scope.totalGuests / $scope.perPage);
+
+                $scope.accompanying_guests_details = response.accompanying_guests_details;
+
+                for (var i in response.accompanying_guests_details) {
+                    setGuestType(response.accompanying_guests_details[i]);
+                }
+            };
+            var onFail = function(response) {
+                $log.log(response);
+                $scope.trackSessionActivity('CheckIn-PP', 'FailedFetching Guest Tab Details', 'R' + $stateParams.reservation_id, $scope.mode);
+                $scope.$emit('GENERAL_ERROR');
+            };
+
+            var options = {
+                params: {
+                    'reservation_id': $stateParams.reservation_id
+                },
+                successCallBack: onSuccess,
+                failureCallBack: onFail
+            };
+
+            $scope.callAPI(zsCheckinSrv.getGuestTabDetails, options);
+        };
+
+        var fetchGuestIdType = function() {
+            var onSuccess = function(response) {
+                $log.log(response);
+                $scope.trackSessionActivity('CheckIn', 'SuccessFetching Passport Setting', '', $scope.mode);
+                $scope.scanning.is_double_sided_required = response.data.is_double_sided;
+            };
+            var onFail = function(response) {
+                $log.log(response);
+                $scope.trackSessionActivity('CheckIn', 'FailedFetching Passport Setting', '', $scope.mode);
+                $scope.scanning.is_double_sided_required = true;// allows user to skip if this only if API says double_sided not required
+            };
+
+            var options = {
+                params: {
+                    'reservation_id': $stateParams.reservation_id
+                },
+                successCallBack: onSuccess,
+                failureCallBack: onFail
+            };
+
+            $scope.callAPI(zsCheckinSrv.checkIDType, options);
+        };
+
         /**
          * [initializeMe description]
          */
@@ -641,26 +731,8 @@ sntZestStation.controller('zsCheckinScanPassportCtrl', [
 
             $scope.$on(zsEventConstants.CLICKED_ON_BACK_BUTTON, onBackButtonClicked);
 
-            var onSuccess = function(response) {
-                $log.log(response);
-                $scope.trackSessionActivity('CheckIn', 'SuccessFetching Passport Setting', '', $scope.mode);
-                $scope.scanning.is_double_sided_required = response.data.is_double_sided;
-            };
-            var onFail = function(response) {
-                $log.log(response);
-                $scope.trackSessionActivity('CheckIn', 'FailedFetching Passport Setting', '', $scope.mode);
-                $scope.scanning.is_double_sided_required = true;// allows user to skip if this only if API says double_sided not required
-            };
-
-            var options = {
-                params: {
-                    'reservation_id': $stateParams.reservation_id
-                },
-                successCallBack: onSuccess,
-                failureCallBack: onFail
-            };
-
-            $scope.callAPI(zsCheckinSrv.checkIDType, options);
+            fetchGuestIdType();
+            fetchGuestDetails();
 
         }());
 
