@@ -139,7 +139,9 @@
             <text data-ng-bind-html="getTagValue('GID_ADMIN_VERIFY_SUB_HEADER')" editable-text="GID_ADMIN_VERIFY_SUB_HEADER"></text>
         </h2>
         <ul id="selection" class="editable">
-            <li ng-repeat='guest in selectedReservation.guest_details track by $index' click-touch='selectGuest(guest)'>
+            <li ng-repeat='guest in selectedReservation.guest_details track by $index' click-touch='selectGuest(guest)' ng-show='showGuest($index)'>
+
+
                 <span class="details icon-adult" ng-class='{"passport-details":!showRemoveButton}'>
 
                     <span ng-hide="mode !== 'SCAN_RESULTS'" class="passport-scan-status" 
@@ -196,6 +198,22 @@
             <button ng-show="(allPassportReady && mode == 'SCAN_RESULTS') || (allPassportReviewed && mode == 'ADMIN_VERIFY_PASSPORTS')" type="button" class="button next" click-touch="goToNext(); resetTime();">
                 <text data-ng-bind-html="getTagValue('DONE_BTN')" editable-text="DONE_BTN"></text>
             </button>
+
+
+             <div class="button-group" ng-if="totalPages > 1">
+                <!-- add 'disabled="disabled"' if there is no previous page -->
+                <button type="button" class="button only-icon next" click-touch="viewPreviousPage()" ng-class='{"disabled":currentPage===1}'>
+                   <div ng-include="icons.url.left_arrow_icon"></div>
+                </button>
+
+                <!-- add 'disabled="disabled"' if there is no next page -->
+                <button type="button" class="button only-icon next" click-touch="viewNextPage()" ng-class='{"disabled":currentPage==totalPages}'>
+                   <div ng-include="icons.url.right_arrow_icon"></div>
+                </button>
+             </div>
+
+
+
         </div>
     </div>
     <span ng-include="'/assets/partials_v2/zsTabletFooter.html'" click-touch='resetTime()'></span>
