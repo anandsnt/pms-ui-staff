@@ -1,31 +1,42 @@
 <div role="dialog" id="modal" class="modal-show" ng-class="{'modal-show': !modalClosing}">
     <div class="modal-content swipe-cc-prompt">
+        <section ng-if="isStandAlone">
+            <section ng-if="!checkInState.hasActiveEMV">
+                <span class="h3 message">PLEASE SWIPE NOW</span>
+                <span class="message">OR</span>
+            </section>
 
-        <section ng-if="!checkInState.hasActiveEMV">
-            <span class="h3 message">PLEASE SWIPE NOW</span>
-            <span class="message">OR</span>
-        </section>
-
-        <button ng-if="checkInState.hasActiveEMV"
-                class="button orange modal-close c-and-p"
-                style="margin-bottom: 12px;"
-                ng-click="onClickEMV()">
-            C&P
-        </button>
-
-        <section ng-if="checkInState.hasCardOnFile">
-            <button class="button blue"
-                    ng-click="onClickUseCardOnFile()">
-                USE CARD ON FILE
-            </button>
-
-        </section>
-        <section ng-if="!checkInState.hasCardOnFile">
             <button ng-if="checkInState.hasActiveEMV"
-                    class="button blank modal-close"
-                    ng-click="onClickNoSwipe()">
-                CANCEL
+                    class="button orange modal-close c-and-p"
+                    style="margin-bottom: 12px;"
+                    ng-click="onClickEMV()">
+                USE CARD READER
             </button>
+
+            <section ng-if="checkInState.hasCardOnFile && authorizationInfo.is_cc_authorize_at_checkin_enabled">
+                <button class="button blue"
+                        ng-click="onClickUseCardOnFile()">
+                    USE CARD ON FILE
+                </button>
+            </section>
+            <section ng-if="!checkInState.hasCardOnFile || !authorizationInfo.is_cc_authorize_at_checkin_enabled">
+                <button ng-if="checkInState.hasActiveEMV"
+                        class="button blank modal-close"
+                        ng-click="onClickNoSwipe()">
+                    CANCEL
+                </button>
+                <button ng-if="!checkInState.hasActiveEMV"
+                        class="button red"
+                        ng-click="onClickNoSwipe()">
+                    NO SWIPE
+                </button>
+            </section>
+        </section>
+        <section ng-if="!isStandAlone">
+            <section>
+                <span class="h3 message">PLEASE SWIPE NOW</span>
+                <span class="message">OR</span>
+            </section>
             <button ng-if="!checkInState.hasActiveEMV"
                     class="button red"
                     ng-click="onClickNoSwipe()">
