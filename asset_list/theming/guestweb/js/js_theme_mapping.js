@@ -11,10 +11,11 @@ module.exports = {
             MOVING FORWARD WE DONT HAVE TO ADD JS MAPPING FOR NON MGM COMMON THEMES  
         **/  
         return {
-            'guestweb_common_js_files': [ themeJsRoot + 'app_router_common.js'],
+            // 'guestweb_hollywood_roosevelt': [ themeJsRoot + 'app_router_common.js'],
             // 'guestweb_made': [ themeJsRoot + 'app_router_common.js'],
             // 'guestweb_windsor_suites': [ themeJsRoot + 'app_router_common.js'],
             // 'guestweb_moonrise': [ themeJsRoot + 'app_router_common.js'],
+            'guestweb_common_js_files': [ themeJsRoot + 'app_router_common.js'],
             'guestweb_row': [ themeJsRoot + 'app_router_row_nyc.js'],
             // 'guestweb_atura': [ themeJsRoot + 'app_router_common.js'],
             'guestweb_bellagio': [ themeJsRoot + 'app_router_mgm_chain.js', themeJsRoot + 'app_router_bellagio.js'], // ---------------------- MGM CHAIN #- 1
@@ -138,7 +139,8 @@ module.exports = {
   //           'guestweb_one_washington_circle': [ themeJsRoot + 'app_router_common.js'],
   //           'guestweb_first_hotel_breiseth': [ themeJsRoot + 'app_router_common.js'],
   //           'guestweb_hotel_blackhawk': [ themeJsRoot + 'app_router_common.js'],
-  //           'guestweb_viceroy_chicago': [ themeJsRoot + 'app_router_common.js']
+  //           'guestweb_viceroy_chicago': [ themeJsRoot + 'app_router_common.js'],
+  //           'guestweb_hotel_alessandra': [ themeJsRoot + 'app_router_common.js']
         };
     }
 };
