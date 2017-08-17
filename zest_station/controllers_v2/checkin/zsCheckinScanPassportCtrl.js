@@ -654,7 +654,7 @@ sntZestStation.controller('zsCheckinScanPassportCtrl', [
             };
             var onFail = function(response) {
                 $log.log(response);
-                $scope.trackSessionActivity('CheckIn-PP', 'FailedFetching Guest Tab Details', 'R'+$stateParams.reservation_id, $scope.mode);
+                $scope.trackSessionActivity('CheckIn-PP', 'FailedFetching Guest Tab Details', 'R' + $stateParams.reservation_id, $scope.mode);
                 $scope.$emit('GENERAL_ERROR');
             };
 
@@ -690,7 +690,7 @@ sntZestStation.controller('zsCheckinScanPassportCtrl', [
             };
 
             $scope.callAPI(zsCheckinSrv.checkIDType, options);
-        }
+        };
 
         /**
          * [initializeMe description]
