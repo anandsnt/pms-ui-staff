@@ -4,6 +4,7 @@ module.exports = {
         var themeCSSRoot = 'stylesheets/guestweb/';
 
         return {
+            'guestweb_hollywood_roosevelt': [ themeCSSRoot + 'guestweb_hollywood_roosevelt.css'],
             'guestweb_made': [ themeCSSRoot + 'guestweb_made.css'],
             'guestweb_windsor_suites': [ themeCSSRoot + 'guestweb_windsor_suites.css'],
             'guestweb_moonrise': [ themeCSSRoot + 'guestweb_moonrise.css'],
@@ -129,7 +130,8 @@ module.exports = {
             'guestweb_one_washington_circle': [ themeCSSRoot + 'guestweb_one_washington_circle.css'],
             'guestweb_first_hotel_breiseth': [ themeCSSRoot + 'guestweb_first_hotel_breiseth.css'],
             'guestweb_hotel_blackhawk': [ themeCSSRoot + 'guestweb_hotel_blackhawk.css'],
-            'guestweb_viceroy_chicago': [ themeCSSRoot + 'guestweb_viceroy_chicago.css']
+            'guestweb_viceroy_chicago': [ themeCSSRoot + 'guestweb_viceroy_chicago.css'],
+            'guestweb_hotel_alessandra': [ themeCSSRoot + 'guestweb_hotel_alessandra.css']
         };
     }
 };

@@ -256,7 +256,14 @@ sntZestStation.controller('zsCheckInTermsConditionsCtrl', [
             };
 
             if ($scope.zestStationData.bypass_cc_for_prepaid_reservation) {
-                $scope.callAPI(zsCheckinSrv.fetchReservationBalanceDetails, options);
+                if ($scope.usingFakeReservation()) {
+                    nextPageActions(false);
+                    
+                } else {
+                    $scope.callAPI(zsCheckinSrv.fetchReservationBalanceDetails, options);    
+                }
+                
+
             } else {
                 var byPassCC = false;
 
