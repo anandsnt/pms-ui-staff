@@ -109,7 +109,7 @@
         </div>
 
         <!-- show footer when .with-footer -->
-        <div class="billing-footer hidden">
+        <div class="billing-footer" ng-class="{'hidden': (arFlags.currentSelectedArTab !== 'balance' || !arFlags.isAddBalanceScreenVisible)}">
     
             <ul class="actions">
                 <li>
@@ -126,7 +126,7 @@
 <!-- Paid Bills Billing Content -->
     <!-- remove .hidden to show this screen -->
     <!-- add .with-pagination when showing pagination -->
-    <div class="billing-content scrollable" ng-class="{'hidden': arFlags.currentSelectedArTab !== 'paid-bills'}">
+    <div class="billing-content scrollable" ng-controller="RvArPaidController" ng-class="{'hidden': arFlags.currentSelectedArTab !== 'paid-bills'}">
  
         <div class="wrapper" ng-include="'/assets/partials/companyCard/arTransactions/rvCompanyTravelAgentArPaid.html'">
      <!--        {ar-transactions/paid-bills.html} -->
@@ -141,7 +141,7 @@
     <!-- Add .with-pagination when showing pagination -->
     <div class="billing-content scrollable" ng-class="{'hidden': arFlags.currentSelectedArTab !== 'unallocated'}">
 
-        <div class="wrapper" ng-include="'/assets/partials/companyCard/arTransactions/rvCompanyTravelAgentArUnallocated.html'">
+        <div class="wrapper" ng-controller="RvArUnallocatedController" ng-include="'/assets/partials/companyCard/arTransactions/rvCompanyTravelAgentArUnallocated.html'">
            <!--  {ar-transactions/unallocated-payments.html} -->
         </div>
         <!-- show the number-pagination when .with-pagination -->
@@ -154,7 +154,7 @@
     <!-- Add .with-pagination when showing pagination -->
     <div class="billing-content scrollable" ng-class="{'hidden': arFlags.currentSelectedArTab !== 'allocated'}">
 
-         <div class="wrapper" ng-include="'/assets/partials/companyCard/arTransactions/rvCompanyTravelAgentArAllocated.html'">
+         <div class="wrapper" ng-controller="RvArAllocatedController" ng-include="'/assets/partials/companyCard/arTransactions/rvCompanyTravelAgentArAllocated.html'">
             <!-- {ar-transactions/allocated-payments.html} -->
         </div>
         
