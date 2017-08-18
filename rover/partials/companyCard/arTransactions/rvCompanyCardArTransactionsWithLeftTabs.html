@@ -2,19 +2,19 @@
     <ul class="totals">
         <!-- Remove .active if the billing-content is not active-->
         <!-- Add .active on click & show appropriate billing-content-->
-        <li ng-class="{'active': currentSelectedArTab === 'balance'}" ng-click="switchArTransactionTab('balance')">
+        <li ng-class="{'active': arFlags.currentSelectedArTab === 'balance'}" ng-click="switchArTransactionTab('balance')">
             Balance
             <strong class="{totalClass}">$0.00</strong>
         </li>
-        <li ng-class="{'active': currentSelectedArTab === 'paid-bills'}" ng-click="switchArTransactionTab('paid-bills')">
+        <li ng-class="{'active': arFlags.currentSelectedArTab === 'paid-bills'}" ng-click="switchArTransactionTab('paid-bills')">
             Paid bills
             <strong>$135,550.00</strong>
         </li>
-        <li ng-class="{'active': currentSelectedArTab === 'unallocated'}"  ng-click="switchArTransactionTab('unallocated')">
+        <li ng-class="{'active': arFlags.currentSelectedArTab === 'unallocated'}"  ng-click="switchArTransactionTab('unallocated')">
             Unallocated
             <strong class="{totalClass}">$10,000.00</strong>
         </li>
-        <li ng-class="{'active': currentSelectedArTab === 'allocated'}"  ng-click="switchArTransactionTab('allocated')">
+        <li ng-class="{'active': arFlags.currentSelectedArTab === 'allocated'}"  ng-click="switchArTransactionTab('allocated')">
             Allocated
             <strong>$135,550.00</strong>
         </li>
@@ -26,7 +26,7 @@
 <!-- Open Bills Billing Content -->
     <!-- Add .hidden if not active-->
     <!-- Add .with-footer to show footer -->
-    <div class="billing-content scrollable" ng-class="{'hidden': currentSelectedArTab !== 'balance'}">
+    <div class="billing-content scrollable" ng-class="{'hidden': (arFlags.currentSelectedArTab !== 'balance' || arFlags.isAddBalanceScreenVisible)}">
         <!-- if no open bills --
             <div class="no-content">
                 <div class="info"><span class="icon-no-content icon-ok"></span
@@ -101,10 +101,10 @@
 <!-- Manual Balance Billing Content -->
     <!-- remove .hidden to show this screen -->
     <!-- add .with-footer when showing footer -->
-    <div class="billing-content scrollable hidden">
+    <div class="billing-content scrollable" ng-class="{'hidden': (arFlags.currentSelectedArTab !== 'balance' || !arFlags.isAddBalanceScreenVisible)}" >
        
 
-        <div class="wrapper" ng-include="'/assets/partials/companyCard/arTransactions/rvCompanyTravelAgentArAddBalance.html'">
+        <div class="wrapper" ng-controller="RvArBalanceController" ng-include="'/assets/partials/companyCard/arTransactions/rvCompanyTravelAgentArAddBalance.html'">
             <!-- {ar-transactions/manual-balance.html} -->
         </div>
 
@@ -126,7 +126,7 @@
 <!-- Paid Bills Billing Content -->
     <!-- remove .hidden to show this screen -->
     <!-- add .with-pagination when showing pagination -->
-    <div class="billing-content scrollable" ng-class="{'hidden': currentSelectedArTab !== 'paid-bills'}">
+    <div class="billing-content scrollable" ng-class="{'hidden': arFlags.currentSelectedArTab !== 'paid-bills'}">
  
         <div class="wrapper" ng-include="'/assets/partials/companyCard/arTransactions/rvCompanyTravelAgentArPaid.html'">
      <!--        {ar-transactions/paid-bills.html} -->
@@ -139,7 +139,7 @@
 <!-- Unallocated Billing Content -->
     <!-- remove .hidden to show this screen -->
     <!-- Add .with-pagination when showing pagination -->
-    <div class="billing-content scrollable" ng-class="{'hidden': currentSelectedArTab !== 'unallocated'}">
+    <div class="billing-content scrollable" ng-class="{'hidden': arFlags.currentSelectedArTab !== 'unallocated'}">
 
         <div class="wrapper" ng-include="'/assets/partials/companyCard/arTransactions/rvCompanyTravelAgentArUnallocated.html'">
            <!--  {ar-transactions/unallocated-payments.html} -->
@@ -152,7 +152,7 @@
 <!-- Allocated Billing Content -->
     <!-- remove .hidden to show this screen -->
     <!-- Add .with-pagination when showing pagination -->
-    <div class="billing-content scrollable" ng-class="{'hidden': currentSelectedArTab !== 'allocated'}">
+    <div class="billing-content scrollable" ng-class="{'hidden': arFlags.currentSelectedArTab !== 'allocated'}">
 
          <div class="wrapper" ng-include="'/assets/partials/companyCard/arTransactions/rvCompanyTravelAgentArAllocated.html'">
             <!-- {ar-transactions/allocated-payments.html} -->

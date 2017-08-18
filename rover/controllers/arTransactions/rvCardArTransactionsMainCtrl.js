@@ -4,8 +4,9 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl', ['$scope', '$rootScop
 
 		BaseCtrl.call(this, $scope);
 		$scope.errorMessage = '';
-		$scope.currentSelectedArTab = 'balance';
-		// Refresh the scroller when the tab is active.
+		$scope.arFlags = {};
+		$scope.arFlags.currentSelectedArTab = 'balance';
+		$scope.arFlags.isAddBalanceScreenVisible = false;
 
 		$rootScope.$on("arTransactionTabActive", function(event) {
 			console.log("----------------")
@@ -13,8 +14,15 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl', ['$scope', '$rootScop
 		});
 
 		$scope.switchArTransactionTab = function(tab) {
-			$scope.currentSelectedArTab = tab;
-		};		
+			$scope.arFlags.currentSelectedArTab = tab;
+			if (tab !== 'balance') {
+				$scope.arFlags.isAddBalanceScreenVisible = false;
+			}
+		};	
+		
+		$scope.showAddBalanceScreen = function () {
+			$scope.arFlags.isAddBalanceScreenVisible = true;
+		};	
 
 		var init = function() {
 			console.log("--init")

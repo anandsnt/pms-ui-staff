@@ -3,9 +3,7 @@ sntRover.controller('RvArBalanceController', ['$scope', '$rootScope', 'RVCompany
 	function($scope, $rootScope, RVCompanyCardSrv, $timeout, $stateParams, ngDialog, $state, $vault, $window, RVReservationCardSrv, $filter) {
 
 		BaseCtrl.call(this, $scope);
+
 		
-		$scope.showAddBalanceScreen = function () {
-			console.log("hhhe");
-		};
 		
 }]);
