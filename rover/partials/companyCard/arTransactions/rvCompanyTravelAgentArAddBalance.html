@@ -1,0 +1,91 @@
+<div class="manual-balance">
+    <table>
+        <thead>
+            <tr>
+                <th class="name">Name</th>
+                <th class="invoice-no">Invoice No</th>
+                <th class="date">Departure Date</th>
+                <th class="amount">Amount</th>
+                <th class="action"></th>
+            </tr>
+        </thead>
+        <tbody>
+
+            <tr>
+                <td class="name">
+                    <div class="entry">
+                        <input type="text" value="Manual Balance"/>
+                    </div>
+                </td>
+                <td class="invoice-no">
+                    <div class="entry">
+                        <input type="text" value="121333"/>
+                    </div>
+                </td>
+                <td class="date">
+                    <div class="entry has-datepicker"> 
+                        <!-- add class .visible to show clear -->
+                        <button class="clear-query">
+                            <span class="icons icon-clear-search">Clear query</span>
+                        </button>
+                        <input name="{name}" type="text" class="datepicker hasDatepicker" value="" readonly="">
+                    </div>
+                </td>
+                <td class="amount">
+                    <span class="currency">$</span>
+                    <div class="entry">
+                        <input type="text" value="1234.00" />
+                    </div>
+                </td>
+                <td class="action">
+                    <button class="button icon-only">
+                        <!-- Show if added, so we can remove it -->
+                        <span class="icons icon-remove-40"></span>
+                    <button>
+                </td>
+            </tr>
+            <!-- add another one which we can add -->
+            <tr>
+                <td class="name">
+                    <div class="entry">
+                        <input type="text" value="Manual Balance"/>
+                    </div>
+                </td>
+                <td class="invoice-no">
+                    <div class="entry">
+                        <input type="text" value=""/>
+                    </div>
+                </td>
+                <td class="date">
+                    <div class="entry has-datepicker"> 
+                        <!-- add class .visible to show clear -->
+                        <button class="clear-query">
+                            <span class="icons icon-clear-search">Clear query</span></button>
+                        <input name="{name}" type="text" class="datepicker hasDatepicker" value="" readonly="">
+                    </div>
+                </td>
+                <td class="amount">
+                    <span class="currency">$</span>
+                    <div class="entry">
+                        <input type="text" value="" />
+                    </div>
+                </td>
+                <td class="action">
+                    <button class="button icon-only">
+                        <!-- Show when we did not add it, so we can. After that, show the remove icon and add a new row-->
+                        <span class="icons icon-add-60"></span>
+                    <button>
+                </td>
+            </tr>
+        </tbody>
+        <tfoot>
+            <tr>
+                <td colspan="4">
+                    Total
+                    <strong><span class="currency">$</span>4,500.00</strong>
+                </td>
+                <td></td>
+            </tr>
+        </tfoot>
+    </table>
+</div>

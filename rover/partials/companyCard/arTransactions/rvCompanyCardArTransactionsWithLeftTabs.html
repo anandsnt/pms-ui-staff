@@ -39,7 +39,7 @@
         -->
 
         <!-- If there are open bills -->
-        <div class="wrapper" ng-include="'/assets/partials/companyCard/arTransactions/rvCompanyTravelAgentArTransactionBalanceList.html'">
+        <div class="wrapper" ng-controller="RvArBalanceController"  ng-include="'/assets/partials/companyCard/arTransactions/rvCompanyTravelAgentArTransactionBalanceList.html'">
           <!--   {ar-transactions/open-bills.html} -->
         </div>
 
@@ -104,8 +104,8 @@
     <div class="billing-content scrollable hidden">
        
 
-        <div class="wrapper">
-            {ar-transactions/manual-balance.html}
+        <div class="wrapper" ng-include="'/assets/partials/companyCard/arTransactions/rvCompanyTravelAgentArAddBalance.html'">
+            <!-- {ar-transactions/manual-balance.html} -->
         </div>
 
         <!-- show footer when .with-footer -->

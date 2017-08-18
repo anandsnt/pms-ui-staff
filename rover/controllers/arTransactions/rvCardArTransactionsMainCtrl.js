@@ -14,7 +14,7 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl', ['$scope', '$rootScop
 
 		$scope.switchArTransactionTab = function(tab) {
 			$scope.currentSelectedArTab = tab;
-		};
+		};		
 
 		var init = function() {
 			console.log("--init")
