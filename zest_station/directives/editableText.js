@@ -271,7 +271,7 @@ sntZestStation.directive('editableText', [function() {
                             onWindowsDevice = window.navigator.userAgent.toLowerCase().indexOf('window') !== -1;
 
                         if (!isTouchDevice || !onWindowsDevice) {
-                            $inputField.one('blur', save).focus();
+                            $inputField.on('blur', save).focus();
                         }
 
                     }, 0); // wait for the dom to be ready, otherwise element listeners wont set properly

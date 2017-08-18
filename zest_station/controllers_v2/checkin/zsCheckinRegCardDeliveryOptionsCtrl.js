@@ -271,8 +271,13 @@ sntZestStation.controller('zsCheckinRegCardDeliveryOptionsCtrl', [
                 successCallBack: registrationCardSent,
                 failureCallBack: registrationCardSendingFailed
             };
-
-            $scope.callAPI(zsCheckinSrv.sendRegistrationByEmail, options);
+            
+            if ($scope.inDemoMode()) {
+                registrationCardSent();
+            } else {
+                $scope.callAPI(zsCheckinSrv.sendRegistrationByEmail, options);    
+            }
+            
         };
 
 		/**
