@@ -22,4 +22,6 @@
 "EMAIL_MAIN_BG": "MAIN BACKGROUND IMAGE (655 × 1166 px)",
 "EMAIL_SUBJECT_TEXT": "Email Subject",
 "CHECKIN_TEXT_SETTINGS": "Checkin Email Settings",
-"GENERAL_EMAIL_SETTINGS": "General Email Settings"
+"GENERAL_EMAIL_SETTINGS": "General Email Settings",
+"CHECKOUT_TEXT_SETTINGS": "Checkout Email Settings",
+"LATE_CHECKOUT_TEXT_SETTINGS": "Late Checkout Email Settings"

@@ -1,14 +1,14 @@
-admin.controller('ADZestEmailPrecheckinSettingsCtrl', ['$scope', '$state', 'generalSettings', 'precheckinSettings', 'ngDialog', '$translate', '$filter',
-    function($scope, $state, generalSettings, precheckinSettings, ngDialog, $translate, $filter) {
+admin.controller('ADZestEmailPrecheckinSettingsCtrl', ['$scope', '$state', 'generalSettings', 'datadata', 'ngDialog', '$translate', '$filter',
+    function($scope, $state, generalSettings, datadata, ngDialog, $translate, $filter) {
         $scope.mainHeading = $filter('translate')('PRECHECKIN_TEXT_SETTINGS');
         $scope.generalSettings = generalSettings;
         $scope.currentYear = new Date().getFullYear();
 
 
-        $scope.email_text_1 = precheckinSettings.email_text_1;
-        $scope.email_text_2 = precheckinSettings.email_text_2;
-        $scope.button_text = precheckinSettings.button_text;
-        $scope.subject_text = precheckinSettings.subject_text;
+        $scope.email_text_1 = data.email_text_1;
+        $scope.email_text_2 = data.email_text_2;
+        $scope.button_text = data.button_text;
+        $scope.subject_text = data.subject_text;
 
         $scope.previewClicked = function() {
             if ($scope.generalSettings.main_bg_image.length > 0) {

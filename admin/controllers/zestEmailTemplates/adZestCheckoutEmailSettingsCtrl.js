@@ -1,6 +1,6 @@
-admin.controller('ADZestCheckinEmailSettingsCtrl', ['$scope', '$state', 'generalSettings', 'data', 'ngDialog', '$filter',
+admin.controller('ADZestCheckoutEmailSettingsCtrl', ['$scope', '$state', 'generalSettings', 'data', 'ngDialog', '$filter',
     function($scope, $state, generalSettings, data, ngDialog, $filter) {
-        $scope.mainHeading = $filter('translate')('CHECKIN_TEXT_SETTINGS');
+        $scope.mainHeading = $filter('translate')('CHECKOUT_TEXT_SETTINGS');
         $scope.generalSettings = generalSettings;
         $scope.currentYear = new Date().getFullYear();
 

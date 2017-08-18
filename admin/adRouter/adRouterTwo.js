@@ -731,7 +731,7 @@ angular.module('adminModuleTwo', []).config(function($stateProvider) {
             generalSettings: function(adZestEmailTemplateSrv) {
                 return adZestEmailTemplateSrv.getGeneralSettings();
             },
-            precheckinSettings: function(adZestEmailTemplateSrv) {
+            data: function(adZestEmailTemplateSrv) {
                 return adZestEmailTemplateSrv.getPrecheckinSettings();
             }
         }
@@ -745,7 +745,35 @@ angular.module('adminModuleTwo', []).config(function($stateProvider) {
             generalSettings: function(adZestEmailTemplateSrv) {
                 return adZestEmailTemplateSrv.getGeneralSettings();
             },
-            checkinSettings: function(adZestEmailTemplateSrv) {
+            data: function(adZestEmailTemplateSrv) {
+                return adZestEmailTemplateSrv.getPrecheckinSettings();
+            }
+        }
+    });
+
+     $stateProvider.state('admin.zestCheckoutEmailSettings', {
+        templateUrl: '/assets/partials/zestEmailTemplates/adZestCommonEmailSettings.html',
+        controller: 'ADZestCheckoutEmailSettingsCtrl',
+        url: '/precheckinSettings',
+        resolve: {
+            generalSettings: function(adZestEmailTemplateSrv) {
+                return adZestEmailTemplateSrv.getGeneralSettings();
+            },
+            data: function(adZestEmailTemplateSrv) {
+                return adZestEmailTemplateSrv.getPrecheckinSettings();
+            }
+        }
+    });
+
+     $stateProvider.state('admin.zestLateCheckoutEmailSettings', {
+        templateUrl: '/assets/partials/zestEmailTemplates/adZestCommonEmailSettings.html',
+        controller: 'ADZestLateCheckoutEmailSettingsCtrl',
+        url: '/precheckinSettings',
+        resolve: {
+            generalSettings: function(adZestEmailTemplateSrv) {
+                return adZestEmailTemplateSrv.getGeneralSettings();
+            },
+            data: function(adZestEmailTemplateSrv) {
                 return adZestEmailTemplateSrv.getPrecheckinSettings();
             }
         }
