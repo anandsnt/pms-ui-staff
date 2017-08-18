@@ -30,7 +30,7 @@ angular.module('admin').controller('ADWebhookListCtrl', ['$scope', 'webHooks', '
             getTreeSelectorData = function (available, selected) {
                 available = angular.fromJson(angular.toJson(available));
 
-                _.each(available, event => {
+                _.each(available, function (event) {
                     if (selected.indexOf(event.value) > -1) {
                         event.selected = true;
                     }
