@@ -131,7 +131,8 @@ module.exports = {
             'guestweb_first_hotel_breiseth': [ themeCSSRoot + 'guestweb_first_hotel_breiseth.css'],
             'guestweb_hotel_blackhawk': [ themeCSSRoot + 'guestweb_hotel_blackhawk.css'],
             'guestweb_viceroy_chicago': [ themeCSSRoot + 'guestweb_viceroy_chicago.css'],
-            'guestweb_hotel_alessandra': [ themeCSSRoot + 'guestweb_hotel_alessandra.css']
+            'guestweb_hotel_alessandra': [ themeCSSRoot + 'guestweb_hotel_alessandra.css'],
+            'guestweb_george_texas': [ themeCSSRoot + 'guestweb_george_texas.css']
         };
     }
 };
