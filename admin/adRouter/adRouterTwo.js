@@ -704,6 +704,8 @@ angular.module('adminModuleTwo', []).config(function($stateProvider) {
         }
     });
 
+    // =================================================================================================
+
     $stateProvider.state('admin.emailTemplatesSettingsGroup', {
         templateUrl: '/assets/partials/zestEmailTemplates/adZestEmailTemplateList.html',
         controller: 'ADZestEmailMenuCtrl',
@@ -722,7 +724,7 @@ angular.module('adminModuleTwo', []).config(function($stateProvider) {
     });
 
     $stateProvider.state('admin.zestPreCheckinEmailSettings', {
-        templateUrl: '/assets/partials/zestEmailTemplates/adZestPrecheckinEmailSettings.html',
+        templateUrl: '/assets/partials/zestEmailTemplates/adZestCommonEmailSettings.html',
         controller: 'ADZestEmailPrecheckinSettingsCtrl',
         url: '/precheckinSettings',
         resolve: {
@@ -734,6 +736,21 @@ angular.module('adminModuleTwo', []).config(function($stateProvider) {
             }
         }
     });
+
+    $stateProvider.state('admin.zestCheckinEmailSettings', {
+        templateUrl: '/assets/partials/zestEmailTemplates/adZestCommonEmailSettings.html',
+        controller: 'ADZestCheckinEmailSettingsCtrl',
+        url: '/precheckinSettings',
+        resolve: {
+            generalSettings: function(adZestEmailTemplateSrv) {
+                return adZestEmailTemplateSrv.getGeneralSettings();
+            },
+            checkinSettings: function(adZestEmailTemplateSrv) {
+                return adZestEmailTemplateSrv.getPrecheckinSettings();
+            }
+        }
+    });
+    // =================================================================================================
     
     $stateProvider.state('admin.propertyGroups', {
         templateUrl: '/assets/partials/chainAdmins/adPropertyGroups.html',

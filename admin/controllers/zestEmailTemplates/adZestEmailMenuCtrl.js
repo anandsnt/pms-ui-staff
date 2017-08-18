@@ -1,16 +1,7 @@
 admin.controller('ADZestEmailMenuCtrl', ['$scope', '$state',
     function($scope, $state) {
-        switch ($state.current.name) {
-            case "admin.zestEmailGeneralSettings":
-                $scope.sectionTitle = "General Settings";
-                break;
-            case "admin.zestPreCheckinEmailSettings":
-                $scope.sectionTitle = "PreCheckin Email Settings";
-                break;
-            default:
-                $scope.sectionTitle = "Email Templates Settings";
-        }
-
+        $scope.sectionTitle = "Email Templates Settings";
+    
         var menu = _.find($scope.selectedMenu.components, {state: $state.current.name});
 
         if (!menu) {
