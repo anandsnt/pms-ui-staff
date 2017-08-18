@@ -1,7 +1,7 @@
 <div role="dialog" id="modal" class="modal-show" ng-class="{'modal-show': !modalClosing}">
 	
 	<form id="print-key" name="print-key" class="modal-content form key-delivery" ng-class="data.colorCodeClass">
-		<button ng-if="!viewFromBillScreen" id="modal-close" type="button" class="modal-close" ng-click="closeDialog()" ng-class="data.colorCodeClassForClose">
+		<button ng-if="!viewFromBillScreen" id="modal-close" type="button" class="modal-close" click-touch="closeDialog()" ng-class="data.colorCodeClassForClose">
 			<span class="icons icon-close">
 		</button>
 		<div ng-include="'/assets/partials/common/notification_message.html'"></div>
@@ -31,8 +31,7 @@
 				<em class="status icon-key error" translate>ERROR_CONNECTING_TO_KEY_CARD_READER</em>
 				<div class="action">
 					<button type="button" id="try-again" class="button blue" ng-click="tryAgainButtonPressed()" translate>TRY_AGAIN</button>
-					<button type="button" ng-hide="fromView=='checkin'" id="cancel" class="button blank" ng-click="closeDialog()" translate>CANCEL</button> 
-					<button type="button" ng-show="fromView=='checkin'" id="cancel" class="button blank" ng-click="pressedCancel()" translate>CANCEL</button> 
+					<button type="button" class="button blank" click-touch="closeDialog();" translate>CANCEL</button>
 				</div>
 			</span>
 
@@ -59,7 +58,7 @@
 
 							<label ng-repeat="i in [1,2,3,4]"  ng-class="{'checked':numberOfKeysSelected>=($index+1), 'printed' :printedKeysCount>=($index+1)}" class="only-number" >
 
-								<input name="keys" id="key{{$index+1}}" value="{{$index+1}}" type="checkbox" ng-checked="numberOfKeysSelected>=($index+1)" ng-click="keySelected($index+1)" ng-disabled="writingInProgress"/> 
+								<input name="keys" id="key{{$index+1}}" value="{{$index+1}}" type="checkbox" ng-checked="numberOfKeysSelected>=($index+1)" click-touch="keySelected($index+1)" ng-disabled="writingInProgress"/> 
 								{{$index+1}}
 
 							</label>
@@ -67,8 +66,7 @@
 						</div>		
 						<div class="actions float">
 							<button type="button" id="create-key" class="button " ng-class="{'grey':!isPrintKeyEnabled() , 'green': isPrintKeyEnabled()}" ng-disabled="!isPrintKeyEnabled()" click-touch="clickedPrintKey()">{{buttonText}}</button>
-							<button type="button" ng-hide="fromView=='checkin'" id="cancel" class="button blank" click-touch="closeDialog()" translate>CANCEL</button>
-							<button type="button" ng-show="fromView=='checkin'" id="cancel" class="button blank" click-touch="pressedCancel()" translate>CANCEL</button>
+							<button type="button" class="button blank" click-touch="closeDialog();" translate>CANCEL</button>
 						</div>
 					</div>
 			</span>
