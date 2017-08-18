@@ -268,12 +268,14 @@ angular.module('sntRover').controller('companyCardDetailsController', ['$scope',
 		};
 
 		$scope.shouldShowCommissionsTab = function() {
-			return ($scope.account_type == 'TRAVELAGENT');
+			return ($scope.account_type === 'TRAVELAGENT');
 		};
 		$scope.isUpdateEnabled = function() {
-			if ($scope.contactInformation.is_global_enabled == undefined)
+			if ($scope.contactInformation.is_global_enabled == undefined) {
 				return;
+			}
 			var isDisabledFields = false;
+			
 			if ($scope.contactInformation.is_global_enabled) {
 				if (!rvPermissionSrv.getPermissionValue ('GLOBAL_CARD_UPDATE')) {
 					isDisabledFields = true;
@@ -293,9 +295,11 @@ angular.module('sntRover').controller('companyCardDetailsController', ['$scope',
 		 * When we go to travel agent from revenue management, controller is this
 		 */
 		$scope.isUpdateEnabledForTravelAgent = function() {
-			if ($scope.contactInformation.is_global_enabled == undefined)
+			if ($scope.contactInformation.is_global_enabled == undefined) {
 				return;
+			}
 			var isDisabledFields = false;
+
 			if ($scope.contactInformation.is_global_enabled) {
 				if (!rvPermissionSrv.getPermissionValue ('GLOBAL_CARD_UPDATE')) {
 					isDisabledFields = true;

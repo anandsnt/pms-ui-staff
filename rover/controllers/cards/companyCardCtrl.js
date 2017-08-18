@@ -187,6 +187,7 @@ angular.module('sntRover').controller('RVCompanyCardCtrl', ['$scope', '$rootScop
 		};
 		$scope.isUpdateEnabled = function() {
 			var isDisabledFields = false;
+			
 			if ($scope.contactInformation.is_global_enabled) {
 				if (!rvPermissionSrv.getPermissionValue ('GLOBAL_CARD_UPDATE')) {
 					isDisabledFields = true;

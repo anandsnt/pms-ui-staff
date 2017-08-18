@@ -209,14 +209,15 @@ angular.module('sntRover').controller('RVTravelAgentCardCtrl', ['$scope', '$root
 			}
 		};
 		$scope.shouldShowCommissionsTab = function() {
-			//return ($scope.account_type == 'TRAVELAGENT' && rvPermissionSrv.getPermissionValue ('GLOBAL_CARD_UPDATE') && $scope.contactInformation.is_global_enabled);
-			return $scope.account_type == 'TRAVELAGENT';
+			return $scope.account_type === 'TRAVELAGENT';
 		};
 
 		$scope.isUpdateEnabledForTravelAgent = function() {
-			if ($scope.contactInformation.is_global_enabled == undefined)
+			if ($scope.contactInformation.is_global_enabled === undefined) {
 				return;
+			}
 			var isDisabledFields = false;
+
 			if ($scope.contactInformation.is_global_enabled) {
 				if (!rvPermissionSrv.getPermissionValue ('GLOBAL_CARD_UPDATE')) {
 					isDisabledFields = true;

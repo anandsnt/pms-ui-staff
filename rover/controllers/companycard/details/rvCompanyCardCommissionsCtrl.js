@@ -117,7 +117,7 @@ function($scope, $state, $rootScope, $stateParams, RVCompanyCardSrv, ngDialog, $
      * @param confirmation_no confirmation no
      */
     $scope.goToStayCard = function(reservation_id, confirmation_no) {
-        if($rootScope.hotelDetails.userHotelsData.current_hotel_id === parseInt($scope.filterData.selectedHotel))
+        if ($rootScope.hotelDetails.userHotelsData.current_hotel_id === parseInt($scope.filterData.selectedHotel))
         {            
             $state.go('rover.reservation.staycard.reservationcard.reservationdetails', {"id": reservation_id, "confirmationId": confirmation_no, "isrefresh": true, "isFromTACommission": true});
         }
@@ -309,7 +309,7 @@ function($scope, $state, $rootScope, $stateParams, RVCompanyCardSrv, ngDialog, $
 
         if ($scope.contactInformation.is_global_enabled) {
             isToggleEnabled = false;
-            if (rvPermissionSrv.getPermissionValue ('GLOBAL_CARD_UPDATE')){
+            if (rvPermissionSrv.getPermissionValue ('GLOBAL_CARD_UPDATE')) {
                 isToggleEnabled = true;
             }
             

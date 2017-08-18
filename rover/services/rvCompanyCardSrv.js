@@ -50,7 +50,7 @@ angular.module('sntRover').service('RVCompanyCardSrv', ['$q', 'rvBaseWebSrvV2',
          */
         this.fetchMultiProperties = function(data) {
             var deferred = $q.defer();
-            var url = '/api/accounts/'+data.accountId+'/subscribed_properties';
+            var url = '/api/accounts/' + data.accountId + '/subscribed_properties';
 
             rvBaseWebSrvV2.getJSON(url).then(function(data) {
 
@@ -60,9 +60,6 @@ angular.module('sntRover').service('RVCompanyCardSrv', ['$q', 'rvBaseWebSrvV2',
             });
             return deferred.promise;
         };
-
-        
-
 
         /**
          * service function used for retreive country list
