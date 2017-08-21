@@ -1,5 +1,5 @@
-admin.controller('ADZestEmailPrecheckinSettingsCtrl', ['$scope', '$state', 'generalSettings', 'datadata', 'ngDialog', '$translate', '$filter',
-    function($scope, $state, generalSettings, datadata, ngDialog, $translate, $filter) {
+admin.controller('ADZestEmailPrecheckinSettingsCtrl', ['$scope', '$state', 'generalSettings', 'data', 'ngDialog', '$translate', '$filter',
+    function($scope, $state, generalSettings, data, ngDialog, $translate, $filter) {
         $scope.mainHeading = $filter('translate')('PRECHECKIN_TEXT_SETTINGS');
         $scope.generalSettings = generalSettings;
         $scope.currentYear = new Date().getFullYear();
