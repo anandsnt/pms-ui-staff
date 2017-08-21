@@ -1732,6 +1732,10 @@ body { overflow: hidden; }
             		right: 40px;
             	}
             }
+
+            &.disabled {
+	            opacity: 0.75
+	        } 
         }
 
 		/* Data ***/
@@ -1943,6 +1947,14 @@ body { overflow: hidden; }
 	                }
                 }
         	}
+
+        	/* Allocate AR Transaction/Payment ***/
+	        &.allocate {
+	            border-top: 1px solid rgba(0, 0, 0, 0.1);
+	            padding-top: 10px;
+	            margin-top: 20px;
+	            margin-bottom: -10px;
+	        }
 		}
 
 		/* Iframe ***/

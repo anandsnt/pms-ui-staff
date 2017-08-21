@@ -22,6 +22,10 @@ sntRover.controller('staycardController', ['$scope', '$rootScope', 'RVGuestCardS
 
 		$scope.paymentData = {};
 
+        if ($scope.reservationData.justCreatedRes) {
+            $rootScope.$broadcast('reload-loyalty-section-data', {});
+        }
+
 		/*
 		 * To get the payment tab payments list
 		 */
