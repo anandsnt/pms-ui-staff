@@ -165,6 +165,11 @@ admin.controller('adAnalyticSetupCtrl', ['$scope', 'adAnalyticSetupSrv', '$state
             $scope.showEvts = index;
         }
 
+        $scope.showOOSEvts = false;
+    };
+
+    $scope.showEvtOOSHistory = function() {
+        $scope.showOOSEvts = !$scope.showOOSEvts;
     };
 
     $scope.hideEvtDetails = function() {
@@ -308,8 +313,6 @@ admin.controller('adAnalyticSetupCtrl', ['$scope', 'adAnalyticSetupSrv', '$state
 
         for (var i in $scope.deviceByHotel) {
             hotel = $scope.deviceByHotel[i];
-
-            // console.warn(hotel);
 
             for (var d in hotel.devices) {
                 device = hotel.devices[d];
@@ -467,6 +470,22 @@ admin.controller('adAnalyticSetupCtrl', ['$scope', 'adAnalyticSetupSrv', '$state
         sortHotelEvents();
     };
 
+    var sortOOSReasonHistory = function(listOfHistory) {
+        var aT, bT, aTime, bTime;
+
+            listOfHistory.sort(function(a, b) {
+                aT = new Date(a.datetime);
+                bT = new Date(b.datetime);
+
+                aTime = aT.valueOf();
+                bTime = bT.valueOf();
+
+                return aTime - bTime;
+            });
+            listOfHistory.reverse(); // reverse the list so the latest events display first
+        return listOfHistory;
+    };
+
     var sortHotelEvents = function() {
         var hotel, device, aT, bT, aTime, bTime;
 
@@ -557,12 +576,30 @@ admin.controller('adAnalyticSetupCtrl', ['$scope', 'adAnalyticSetupSrv', '$state
                 }
             }
 
-            var events = [];
+            var events = [], evtObj, tmpHistorical, historicalEvt, historical_oos_reasons = [];
 
             for (var x in status_update_events) {
                 if (status_update_events[x].indexOf('theme') !== -1 && status_update_events[x].indexOf('{') !== -1 && status_update_events[x].indexOf('}') !== -1) {
                     try {
-                        events.push(JSON.parse(status_update_events[x]));
+
+                        evtObj = JSON.parse(status_update_events[x]);
+                        if (evtObj.historical_oos_reasons && evtObj.historical_oos_reasons.indexOf('||') !== -1) {
+                            tmpHistorical = evtObj.historical_oos_reasons.split('||');
+                            historical_oos_reasons = [];
+                            for (var e in tmpHistorical) {
+                                if (tmpHistorical[e].indexOf('{') !== -1) {
+                                    historicalEvt = JSON.parse(tmpHistorical[e]);
+                                    historical_oos_reasons.push(historicalEvt);
+                                }
+                                
+                            }
+
+                            historical_oos_reasons = sortOOSReasonHistory(historical_oos_reasons);
+
+                            evtObj.historical_oos_reasons = historical_oos_reasons;
+                        }
+                        events.push(evtObj);
+
                     } catch (er) {
                         console.log(status_update_events[x]);
                     }

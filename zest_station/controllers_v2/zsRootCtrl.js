@@ -1471,6 +1471,7 @@ sntZestStation.controller('zsRootCtrl', [
 
         var workStationstorageKey = 'snt_zs_workstation',
             oosStorageKey = 'snt_zs_workstation.in_oos',
+            oosStorageHistKey = 'snt_zs_workstation.oos_history',
             oosReasonKey = 'snt_zs_workstation.oos_reason',
             refreshedKey = 'snt_zs_workstation.recent_refresh',
             storage = localStorage,
@@ -1655,6 +1656,33 @@ sntZestStation.controller('zsRootCtrl', [
             }
         };
 
+
+
+        $scope.$on('PUSH_OOS_REASON', function(event, reason) {
+            // 
+            // push all logs available to localstorage
+            // 
+            var separator = '||';
+            var reasonString = JSON.stringify(reason) + separator;
+
+            try {
+                var oosStorageHist = storage.getItem(oosStorageHistKey);
+
+                oosStorageHist = (oosStorageHist) ? oosStorageHist += reasonString : reasonString;
+
+                // keep in localstorage in case 
+                // the station is offline and we need logs from when the device is offline or not reporting
+                $scope.zestStationData.historicalOosReason = oosStorageHist;
+
+                storage.setItem(oosStorageHistKey, oosStorageHist);
+
+            } catch (err) {
+                $log.warn(err);
+            }
+
+        });
+
+
 		/** 
 		 * work station status change event 
 		 * This will be invoke everytime some actions
@@ -1798,7 +1826,28 @@ sntZestStation.controller('zsRootCtrl', [
             }
         };
 
-        $scope.reportGoingOffline = function() {
+        var setHistoricalOOSReasons = function() {
+
+            try {
+                var oosStorageHist = storage.getItem(oosStorageHistKey);
+
+                oosStorageHist = (oosStorageHist) ? oosStorageHist : [];
+
+                // fetch from localstorage in case device was restarted
+                // we need logs from when the device is offline or not reporting
+                $scope.zestStationData.historicalOosReason = oosStorageHist;
+
+            } catch (err) {
+                $log.warn(err);
+            }
+        };
+
+        $scope.reportGoingOffline = function(fromLogOut) {
+            if (fromLogOut) {
+                $scope.addReasonToOOSLog('STAFF_LOGGED_OFF');
+                $scope.trackSessionActivity('STATION_LOGOUT', 'LOGGED_OFF', '', '', true);    
+            }
+
             $scope.trackSessionActivity('EXIT_APP', 'APP_CLOSE_EVT', 'GOING_OFFLINE', 'GOING_OFFLINE', true);
         };
 
@@ -1828,7 +1877,10 @@ sntZestStation.controller('zsRootCtrl', [
             $scope.zestStationData.themeUsesLighterSubHeader = false;
             $scope.zestStationData.jumperMinimized = false;
             $scope.zestStationData.sessionOosReason = [];
+            $scope.zestStationData.historicalOosReason = [];
             $scope.zestStationData.sessionActivity = [];
+            setHistoricalOOSReasons();
+
 			// $scope.zestStationData.checkin_screen.authentication_settings.departure_date = true;//left from debuggin?
             setAUpIdleTimer();
             $scope.zestStationData.workstationOooReason = '';
