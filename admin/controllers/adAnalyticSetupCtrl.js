@@ -559,6 +559,19 @@ admin.controller('adAnalyticSetupCtrl', ['$scope', 'adAnalyticSetupSrv', '$state
         $scope.$emit('UPDATE_DATA');
     };
 
+    var getHistoricalOOSReasons = function(tmpHistorical) {
+        var historicalEvt, historical_oos_reasons = [];
+
+        for (var e in tmpHistorical) {
+            if (tmpHistorical[e].indexOf('{') !== -1) {
+                historicalEvt = JSON.parse(tmpHistorical[e]);
+                historical_oos_reasons.push(historicalEvt);
+            }
+        }
+
+        return historical_oos_reasons;
+    };
+
     var visualizeEventData = function(data) {
 
         if (data.rows) {
@@ -576,7 +589,7 @@ admin.controller('adAnalyticSetupCtrl', ['$scope', 'adAnalyticSetupSrv', '$state
                 }
             }
 
-            var events = [], evtObj, tmpHistorical, historicalEvt, historical_oos_reasons = [];
+            var events = [], evtObj, tmpHistorical, historical_oos_reasons = [];
 
             for (var x in status_update_events) {
                 if (status_update_events[x].indexOf('theme') !== -1 && status_update_events[x].indexOf('{') !== -1 && status_update_events[x].indexOf('}') !== -1) {
@@ -585,14 +598,8 @@ admin.controller('adAnalyticSetupCtrl', ['$scope', 'adAnalyticSetupSrv', '$state
                         evtObj = JSON.parse(status_update_events[x]);
                         if (evtObj.historical_oos_reasons && evtObj.historical_oos_reasons.indexOf('||') !== -1) {
                             tmpHistorical = evtObj.historical_oos_reasons.split('||');
-                            historical_oos_reasons = [];
-                            for (var e in tmpHistorical) {
-                                if (tmpHistorical[e].indexOf('{') !== -1) {
-                                    historicalEvt = JSON.parse(tmpHistorical[e]);
-                                    historical_oos_reasons.push(historicalEvt);
-                                }
-                                
-                            }
+                            
+                            historical_oos_reasons = getHistoricalOOSReasons(tmpHistorical);
 
                             historical_oos_reasons = sortOOSReasonHistory(historical_oos_reasons);
 

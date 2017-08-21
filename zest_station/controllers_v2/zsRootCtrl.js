@@ -1634,7 +1634,6 @@ sntZestStation.controller('zsRootCtrl', [
             }
         };
 
-
 		// store workstation status in localstorage
         var updateLocalStorage = function(oosReason, workstationStatus) {
             var selectedWorkStation = _.find($scope.zestStationData.workstations, function(workstation) {
@@ -1655,8 +1654,6 @@ sntZestStation.controller('zsRootCtrl', [
                 $log.warn(err);
             }
         };
-
-
 
         $scope.$on('PUSH_OOS_REASON', function(event, reason) {
             // 
