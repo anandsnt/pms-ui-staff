@@ -24,6 +24,10 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl', ['$scope', '$rootScop
 			$scope.arFlags.isAddBalanceScreenVisible = true;
 		};	
 
+		$scope.clickedCancelAddBalance = function () {
+			$scope.arFlags.isAddBalanceScreenVisible = false;
+		}
+
 		var init = function() {
 			console.log("--init")
 		}

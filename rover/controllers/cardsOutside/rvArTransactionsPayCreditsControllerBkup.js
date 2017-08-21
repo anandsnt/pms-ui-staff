@@ -1,4 +1,4 @@
-sntRover.controller('RVArTransactionsPayCreditsController', ['$scope', 'RVPaymentSrv', 'ngDialog', '$rootScope', '$timeout', '$filter', 'rvAccountTransactionsSrv', 'rvPermissionSrv', function($scope, RVPaymentSrv, ngDialog, $rootScope, $timeout, $filter, rvAccountTransactionsSrv, rvPermissionSrv) {
+sntRover.controller('RVArTransactionsPayCreditsControllerBkup', ['$scope', 'RVPaymentSrv', 'ngDialog', '$rootScope', '$timeout', '$filter', 'rvAccountTransactionsSrv', 'rvPermissionSrv', function($scope, RVPaymentSrv, ngDialog, $rootScope, $timeout, $filter, rvAccountTransactionsSrv, rvPermissionSrv) {
     BaseCtrl.call(this, $scope);
 
     $scope.feeData = {};
