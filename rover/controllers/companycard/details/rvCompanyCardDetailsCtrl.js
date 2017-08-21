@@ -271,7 +271,7 @@ angular.module('sntRover').controller('companyCardDetailsController', ['$scope',
 			return ($scope.account_type === 'TRAVELAGENT');
 		};
 		$scope.isUpdateEnabled = function() {
-			if ($scope.contactInformation.is_global_enabled == undefined) {
+			if ($scope.contactInformation.is_global_enabled === undefined) {
 				return;
 			}
 			var isDisabledFields = false;
@@ -295,7 +295,7 @@ angular.module('sntRover').controller('companyCardDetailsController', ['$scope',
 		 * When we go to travel agent from revenue management, controller is this
 		 */
 		$scope.isUpdateEnabledForTravelAgent = function() {
-			if ($scope.contactInformation.is_global_enabled == undefined) {
+			if ($scope.contactInformation.is_global_enabled === undefined) {
 				return;
 			}
 			var isDisabledFields = false;
