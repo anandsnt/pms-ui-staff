@@ -56,7 +56,7 @@ sntRover.controller('reservationDetailsController',
 		$scope.guestIdAdminEnabled = $rootScope.hotelDetails.guest_id_scan.scan_guest_id_active;
    		$scope.hasGuestIDPermission = rvPermissionSrv.getPermissionValue('ACCESS_GUEST_ID_DETAILS');
    		$scope.guestIDsAvailable = [];
-		
+
 		if (!$rootScope.stayCardStateBookMark) {
 			setNavigationBookMark();
 		}
@@ -222,13 +222,13 @@ sntRover.controller('reservationDetailsController',
      			$scope.$emit('hideLoader');
 
 				$scope.fetchedGuestIDs = true;
-				var guestOnReservation, 
+				var guestOnReservation,
 					reservation_card = $scope.reservationData.reservation_card;
 
 				for (var i in response) {
 					guestOnReservation = response[i];
 					if (guestOnReservation.guest_id !== null && !$scope.guestIDsAvailable[guestOnReservation.guest_id]) {
-						$scope.guestIDsAvailable.push(guestOnReservation.guest_id);	
+						$scope.guestIDsAvailable.push(guestOnReservation.guest_id);
 					}
 				}
 			};
@@ -244,7 +244,7 @@ sntRover.controller('reservationDetailsController',
 
 			if (!$scope.fetchedGuestIDs) {
 				// do not make more than 1 request per 'fresh' staycard, to keep UI performance quick
-				$scope.invokeApi(RVReservationCardSrv.fetchGuestIdentity, data, successCallBack, failureCallBack);	
+				$scope.invokeApi(RVReservationCardSrv.fetchGuestIdentity, data, successCallBack, failureCallBack);
 			}
 		}
 
@@ -999,6 +999,9 @@ sntRover.controller('reservationDetailsController',
                         $scope.showOverBookingAlert = !response.data.is_room_type_available && rvPermissionSrv.getPermissionValue('OVERBOOK_ROOM_TYPE');
                         $scope.showChangeDatesPopup = !rvPermissionSrv.getPermissionValue('OVERBOOK_ROOM_TYPE') || response.data.is_room_type_available || !response.data.is_house_available;
 
+                        // CICO-44438
+                        $scope.shouldShowAssignedRoomUnavailable = !response.data.is_room_available && !!$scope.reservationData.reservation_card.room_number;
+
 						ngDialog.open({
 							template: '/assets/partials/reservation/alerts/editDatesInStayCard.html',
 							className: '',
@@ -1538,7 +1541,7 @@ sntRover.controller('reservationDetailsController',
      /*
       * show the guest id / passport when clicked "guest id" button from manage additional guests view
       */
-     
+
 
       var getUserPassportInfo = function(guestResponseData, guest_id) {
 
@@ -1546,7 +1549,7 @@ sntRover.controller('reservationDetailsController',
      			if (guestResponseData[i].guest_id === guest_id) {
      				return guestResponseData[i];
      			}
-     		} 
+     		}
      		return null;
       }
 
