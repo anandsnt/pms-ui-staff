@@ -1,0 +1,96 @@
+<form method="post" action="" class="modal-content form ar-transaction payment-unallocation">
+	<button class="modal-close" id="modal-close" type="button"><span class="icons icon-close invert"></span></button>
+	
+	<strong class="h2 message">Unallocate payment</strong>
+	<span class="text">This will unallocate the payment from this invoice.</span>
+
+	<div class="amount">
+	 	<strong>$250.00</strong>
+	 	Allocated 29-07-2017 09:35 am
+	</div>
+	 
+	<div class="information">
+		<span>From Bill</span>
+		<ul class="search-results">
+			<li class="reservation transaction">
+				<div class="faux-anchor">
+
+					<div class="data">
+						<h2>{Last Name, First Name}</h2>
+						<span class="invoice">Invoice #<span class="value">58340025</span></span>
+						<span class="confirmation">Ext #<span class="value">618544</span></span>
+					
+					</div>
+
+					<div class="guest-date arrival">
+						<span class="guest-status small-icon check-in">check-in</span>
+						<time datetime="{arrival-datetime}">
+							<span class="date">{arrival-date}</span>
+							<span class="time">{arrival-time}</span>
+						</time>
+					</div>
+
+					<div class="guest-date departure">
+						<span class="guest-status small-icon check-out">check-out</span>
+						<time datetime="{departure-datetime}">
+							<span class="date">{departure-date}</span>
+							<span class="time">{departure-time}</span>
+						</time>
+					</div>
+
+					<div class="balance balance-after">
+						Balance After
+						<strong class="red">${balance-after}</strong>
+					</div>
+
+
+				</div>
+			</li>
+		</ul>
+	</div>
+ 
+
+	<div class="information">
+		<span>To payment</span>
+		<ul class="search-results">
+			<li class="reservation transaction payment">
+				<div class="faux-anchor">
+				<div class="data">
+					<h2>{Payment Name}</h2>
+					<div class="payment-data">
+						<!-- if has logo -->
+						<figure class="card-logo">
+                            <img src="{card-logo}" alt="">
+                        </figure>
+                        <!-- if has ending number -->
+                        <span class="number">5987</span>
+                        <!-- if has exp date -->
+                        <span class="date">Date <span class="value">12/14</span></span>
+                        <!-- if has reference -->
+                        <span class="reference">Reference <span class="value">5513515523526a</span></span>
+                    </div>
+				</div>
+				<div class="payment-date">
+					<span class="icons small-icon icon-time time-black"></span>
+					<time datetime="{payment-datetime}">
+						<span class="date">{payment-date}</span>
+						<span class="time">{payment-time}</span>
+					</time>
+				</div>
+
+				<div class="balance balance-after">
+					Credit After
+					<strong class="green">${credit}</strong>
+				</div>
+
+
+			</div>
+			</li>
+		</ul>
+	</div>
+
+	<div class="actions">
+		<button class="button blank">Cancel</button>
+		<button class="button red">Unallocate</button>
+	</div>
+</form>
