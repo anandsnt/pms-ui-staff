@@ -9,7 +9,10 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl', ['$scope', '$rootScop
 			'currentSelectedArTab': 'balance',
 			'isAddBalanceScreenVisible': false
 		};
-		
+
+		/*
+		 * Data Object set to handle various AR transaction lists.
+		 */
 		$scope.arDataObj = {
 			'balanceList': [],
 			'paidList': [],
@@ -22,10 +25,14 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl', ['$scope', '$rootScop
 			'unallocatedCredit': ''
 		};
 
+		/*
+		 * Successcallback of API after fetching Ar Transaction details.
+		 * Handling data based on tabs currently active.
+		 */
 		var successCallbackOfAPIcall = function( data ) {
 
 			$scope.arDataObj.unpaidAmount = data.unpaid_amount;
-			$scope.arDataObj.paidAmount = data.unpaid_amount;
+			$scope.arDataObj.paidAmount = data.paid_amount;
 			$scope.arDataObj.allocatedCredit = data.allocated_credit;
 			$scope.arDataObj.unallocatedCredit = data.unallocated_credit;
 
