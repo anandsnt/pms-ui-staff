@@ -4,7 +4,6 @@
 "GENERAL_TEXT_SETTINGS":"General text settings",
 "SHOW_GUEST_LAST_NAME":"Show guest's last name",
 "HOTEL_GREETINGS_TEXT": "Hotel greetings text",
-"MAIL_GREETINGS_TEXT": "Mail greetings text",
 "PRIVACY_POLICY_TEXT": "Privacy policy text",
 "PRIVACY_POLICY_LINK": "Privacy policy LINK",
 "TERMS_AND_CONDITIONS_TEXT" : "T&C Text",
@@ -24,4 +23,5 @@
 "CHECKIN_TEXT_SETTINGS": "Checkin Email Settings",
 "GENERAL_EMAIL_SETTINGS": "General Email Settings",
 "CHECKOUT_TEXT_SETTINGS": "Checkout Email Settings",
-"LATE_CHECKOUT_TEXT_SETTINGS": "Late Checkout Email Settings"
+"LATE_CHECKOUT_TEXT_SETTINGS": "Late Checkout Email Settings",
+"FOOTER_STARTING_TEXT": "Footer Starting text"
