@@ -83,7 +83,10 @@ admin.controller('adAnalyticSetupCtrl', ['$scope', 'adAnalyticSetupSrv', '$state
     var getHotelNameFromId = function(id) {
         var hotels = {
             '4': 'NYC',
-            '165': 'Boston'
+            '165': 'Boston',
+            '166': 'Singapore',
+            '53': 'Paris',
+            '13': 'London Heathrow'
         };
 
         if (hotels[id]) {
