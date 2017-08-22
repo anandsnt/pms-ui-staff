@@ -149,7 +149,7 @@
                                                 <td>
                                                     <table border="0" cellpadding="0" cellspacing="0" width="100%">
                                                         <tr>
-                                                            <td align="center" class="padding-copy" style="font-size: {{generalSettings.email_text_1_font_size}}px; font-family: Helvetica, Arial, sans-serif; padding-top: 10px;color: {{generalSettings.text_color}};text-align: center;">
+                                                            <td align="center" class="padding-copy" style="font-size: {{generalSettings.text_1_font_size}}px; font-family: Helvetica, Arial, sans-serif; padding-top: 10px;color: {{generalSettings.text_color}};text-align: center;">
                                                                 {{generalSettings.hotel_greetings_text}} first_name<span ng-show="generalSettings.show_last_name">&nbsp;last_name</span>
                                                                 , {{data.email_text_1}}
                                                             </td>
@@ -177,7 +177,7 @@
                                                                 <table border="0" cellpadding="0" cellspacing="0" class="mobile-button-container" style="margin: 0 auto;">
                                                                     <tr>
                                                                         <td align="center" bgcolor="{{generalSettings.button_bg}}" style="border-radius: 3px;">
-                                                                            <a class="mobile-button" style="font-size: {{generalSettings.email_button_font_size}}px; font-family: Helvetica, Arial, sans-serif;text-decoration: none; color: {{generalSettings.button_text_color}}; text-decoration: none; border-radius: 3px; padding: 15px 25px; border: 1px solid {{generalSettings.button_border_color}}; display: inline-block;" target="_blank">
+                                                                            <a class="mobile-button" style="font-size: {{generalSettings.button_font_size}}px; font-family: Helvetica, Arial, sans-serif;text-decoration: none; color: {{generalSettings.button_text_color}}; text-decoration: none; border-radius: 3px; padding: 15px 25px; border: 1px solid {{generalSettings.button_border_color}}; display: inline-block;" target="_blank">
                                                                                 {{data.button_text}}
                                                                             </a>
                                                                         </td>
@@ -189,7 +189,7 @@
                                                             <td>
                                                                 <table border="0" cellpadding="0" cellspacing="0" width="100%">
                                                                     <tr>
-                                                                        <td align="center" class="padding-copy" style="padding: 60px 0 0 0; font-size: {{generalSettings.email_text_2_font_size}}px;text-align: center; line-height: 25px; font-family: Helvetica, Arial, sans-serif;color: {{generalSettings.text_color}};">
+                                                                        <td align="center" class="padding-copy" style="padding: 60px 0 0 0; font-size: {{generalSettings.text_2_font_size}}px;text-align: center; line-height: 25px; font-family: Helvetica, Arial, sans-serif;color: {{generalSettings.text_color}};">
                                                                             {{data.email_text_2}}
                                                                         </td>
                                                                     </tr>
@@ -209,7 +209,7 @@
                         <td align="center" style="padding: 20px 0px;">
                             <table align="center" border="0" cellpadding="0" cellspacing="0" class="responsive-table" style="max-width: 700px;" width="100%">
                                 <tr>
-                                    <td align="center" style="font-size: {{generalSettings.email_footer_font_size}}px; line-height: 18px; font-family: Helvetica, Arial, sans-serif;text-align: center;">
+                                    <td align="center" style="font-size: {{generalSettings.footer_font_size}}px; line-height: 18px; font-family: Helvetica, Arial, sans-serif;text-align: center;">
                                         <a href="{{generalSettings.hotel_address}}" style="color: {{generalSettings.text_color}}">
                                             {{generalSettings.footer_starting_text}}&nbsp;{{generalSettings.hotel_address}}
                                         </a>
@@ -222,7 +222,7 @@
                                         <p>
                                             <a style="color: {{generalSettings.text_color}};" href="{{generalSettings.privacy_policy_link}}" target="_blank">
                                                 {{generalSettings.privacy_policy_text}}
-                                            </a>&nbsp;|&nbsp;
+                                            </a><span style="color:{{generalSettings.text_color}}">&nbsp;|&nbsp;</span>
                                             <a style="color: {{generalSettings.text_color}};" href="{{generalSettings.terms_n_conditions_link}}" target="_blank">
                                                 {{generalSettings.terms_n_conditions_text}}
                                             </a>
