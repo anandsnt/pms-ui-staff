@@ -105,9 +105,32 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 			console.log("reached succes");
 		}
 
-		$scope.filterChanged = function() {
-			
+		$scope.fetchTransactions = function (dataToSend) {
+			$scope.invokeApi(rvAccountsArTransactionsSrv.fetchTransactionDetails, dataToSend, successCallbackOfFetchAPI );
 		}
+		/*
+		 * Here is the method to fetch the data in each tab
+		 * Params will be different on each tab
+		 */
+
+		$scope.filterChanged = function() {
+			// Params need to change while doing the stories on each area
+			var dataToSend = {
+				account_id: $stateParams.id,
+				get_params : {
+					page: 1,
+					per_page: 50,
+					transaction_type: 'CHARGES',
+					paid: false,
+					from_date: $scope.filterData.from_date,
+					to_date: $scope.filterData.to_date,
+					query: $scope.filterData.query
+				}
+			}
+			$scope.fetchTransactions(dataToSend);
+		}
+
+
 
 		var init = function() {
 			console.log("--init")
@@ -121,7 +144,8 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 					paid: false
 				}
 			}
-			$scope.invokeApi(rvAccountsArTransactionsSrv.fetchTransactionDetails, dataToSend, successCallbackOfFetchAPI );
+			$scope.fetchTransactions(dataToSend);
+			
 		}
 
 		init();
