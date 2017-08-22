@@ -2,8 +2,10 @@
 sntRover.controller('RVCompanyCardArTransactionsMainCtrl', 
 	['$scope', 
 	'$rootScope', 
+	'$stateParams',
+	'ngDialog',
 	'rvAccountsArTransactionsSrv', 
-	function($scope, $rootScope, rvAccountsArTransactionsSrv) {
+	function($scope, $rootScope, $stateParams, ngDialog, rvAccountsArTransactionsSrv) {
 
 		BaseCtrl.call(this, $scope);
 		$scope.errorMessage = '';
@@ -12,6 +14,12 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 			'currentSelectedArTab': 'balance',
 			'isAddBalanceScreenVisible': false
 		};
+
+		$scope.filterData = {
+			'query': '',
+			'from_date': '',
+			'to_date': ''
+		}
 
 		/*
 		 * Data Object set to handle various AR transaction lists.
@@ -32,7 +40,7 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 		 * Successcallback of API after fetching Ar Transaction details.
 		 * Handling data based on tabs currently active.
 		 */
-		var successCallbackOfAPIcall = function( data ) {
+		var successCallbackOfFetchAPI = function( data ) {
 
 			$scope.arDataObj.unpaidAmount = data.unpaid_amount;
 			$scope.arDataObj.paidAmount = data.paid_amount;
@@ -75,14 +83,45 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 			$scope.arFlags.isAddBalanceScreenVisible = false;
 		}
 
+		/* Handling different date picker clicks */
+		$scope.clickedFromDate = function() {
+			$scope.popupCalendar('FROM');
+		};
+		$scope.clickedToDate = function() {
+			$scope.popupCalendar('TO');
+		};
+		// Show calendar popup.
+		$scope.popupCalendar = function(clickedOn) {
+			$scope.clickedOn = clickedOn;
+	      	ngDialog.open({
+	      		template: '/assets/partials/companyCard/rvCompanyCardContractsCalendar.html',
+		        controller: 'RVArTransactionsDatePickerController',
+		        className: '',
+		        scope: $scope
+	      	});
+	    };
+
 		var successCallbackOfsaveARDetailsWithoutARNumber = function (){
 			console.log("reached succes");
 		}
 
+		$scope.filterChanged = function() {
+			
+		}
+
 		var init = function() {
 			console.log("--init")
-			console.log($scope.accountId)
-			//$scope.invokeApi(rvAccountsArTransactionsSrv.fetchTransactionDetails, dataToSend, successCallbackOfsaveARDetailsWithoutARNumber );
+			console.log($stateParams.id)
+			var dataToSend = {
+				account_id: $stateParams.id,
+				get_params : {
+					page: 1,
+					per_page: 50,
+					transaction_type: 'CHARGES',
+					paid: false
+				}
+			}
+			$scope.invokeApi(rvAccountsArTransactionsSrv.fetchTransactionDetails, dataToSend, successCallbackOfFetchAPI );
 		}
 
 		init();
