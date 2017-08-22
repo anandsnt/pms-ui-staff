@@ -119,11 +119,7 @@ sntZestStation.controller('zsCheckinScanPassportCtrl', [
             // return true; // TODO: Link with document types which require both sides to be scanned
             // for debugging/testing double-sided scan type IDs
             // set this variable
-            if ($scope.zestStationData.doubleSidedScan) {
-                return true;
-            }
-            
-            return false;
+            return ($scope.zestStationData.doubleSidedScan);
             // return response.DOC_TYPE !== 'PP';    
         };
 
