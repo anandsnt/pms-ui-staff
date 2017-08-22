@@ -1,6 +1,9 @@
 
-sntRover.controller('RVCompanyCardArTransactionsMainCtrl', ['$scope', '$rootScope', 'RVCompanyCardSrv', '$timeout', '$stateParams', 'ngDialog', '$state', '$vault', '$window', 'RVReservationCardSrv', '$filter',
-	function($scope, $rootScope, RVCompanyCardSrv, $timeout, $stateParams, ngDialog, $state, $vault, $window, RVReservationCardSrv, $filter) {
+sntRover.controller('RVCompanyCardArTransactionsMainCtrl', 
+	['$scope', 
+	'$rootScope', 
+	'rvAccountsArTransactionsSrv', 
+	function($scope, $rootScope, rvAccountsArTransactionsSrv) {
 
 		BaseCtrl.call(this, $scope);
 		$scope.errorMessage = '';
@@ -28,8 +31,14 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl', ['$scope', '$rootScop
 			$scope.arFlags.isAddBalanceScreenVisible = false;
 		}
 
+		var successCallbackOfsaveARDetailsWithoutARNumber = function (){
+			console.log("reached succes");
+		}
+
 		var init = function() {
 			console.log("--init")
+			console.log($scope.accountId)
+			//$scope.invokeApi(rvAccountsArTransactionsSrv.fetchTransactionDetails, dataToSend, successCallbackOfsaveARDetailsWithoutARNumber );
 		}
 
 		init();
