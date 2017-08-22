@@ -1,9 +1,9 @@
 admin.service('adZestEmailTemplateSrv', function(ADBaseWebSrvV2) {
 
-	this.saveGeneralSettings = function(data) {
-		var url = '';
+	this.saveSettings = function(data) {
+		var url = '/api/email_templates/save_settings';
 
-		return ADBaseWebSrvV2.putJSON(url, data);
+		return ADBaseWebSrvV2.postJSON(url, data);
 	};
 
 	this.getGeneralSettings = function() {

@@ -1,7 +1,8 @@
-admin.controller('ADZestEmailGeneralSettingsCtrl', ['$scope', '$state', 'generalSettings', 'ngDialog',
-    function($scope, $state, generalSettings, ngDialog) {
+admin.controller('ADZestEmailGeneralSettingsCtrl', ['$scope', '$state', 'generalSettings', 'ngDialog', 'adZestEmailTemplateSrv',
+    function($scope, $state, generalSettings, ngDialog, adZestEmailTemplateSrv) {
         // console.log(generalSettings);
         $scope.generalSettings = generalSettings;
+         $scope.successMessage = '';
         // var main_bg_image = angular.copy(generalSettings.main_bg_image);
         $scope.data = {};
         $scope.data.currentYear = new Date().getFullYear();
@@ -39,6 +40,20 @@ admin.controller('ADZestEmailGeneralSettingsCtrl', ['$scope', '$state', 'general
                 className: 'ngdialog-theme-default email-template-preview',
                 scope: $scope
             });
+        };
+
+        $scope.saveSettings = function(){
+        var params  = {
+            general_email_template_settings: $scope.generalSettings
+        };
+        var options = {
+            params: params,
+            successCallBack: function(){
+                 $scope.successMessage = 'Sucess!';
+            }
+        };
+
+        $scope.callAPI(adZestEmailTemplateSrv.saveSettings, options);
         };
     }
 ]);
