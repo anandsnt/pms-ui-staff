@@ -61,7 +61,8 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 			        $scope.arDataObj.allocatedList = data.ar_transactions;
 			        break;
 			}
-		};		
+			$scope.$emit('hideLoader');
+		};
 
 		/*
 		 * Switching btw different tabs in AR transaction screen
@@ -158,7 +159,5 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 		$rootScope.$on("arTransactionTabActive", function(event) {
 			init();
 		});
-
-		
 		
 }]);
