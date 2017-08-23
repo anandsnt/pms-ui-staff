@@ -19,6 +19,7 @@ admin.controller('ADAccountReceivablesCtrl', ['$scope', '$state', 'ADHotelSettin
 			var data = {};
 
 			data.ar_number_settings = $scope.data.ar_number_settings;
+			
 			var postSuccess = function() {
 				$scope.$emit('hideLoader');
 
