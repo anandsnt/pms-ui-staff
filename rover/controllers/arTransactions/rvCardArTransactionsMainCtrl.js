@@ -1,6 +1,11 @@
 
-sntRover.controller('RVCompanyCardArTransactionsMainCtrl', ['$scope', '$rootScope', 'RVCompanyCardSrv', '$timeout', '$stateParams', 'ngDialog', '$state', '$vault', '$window', 'RVReservationCardSrv', '$filter',
-	function($scope, $rootScope, RVCompanyCardSrv, $timeout, $stateParams, ngDialog, $state, $vault, $window, RVReservationCardSrv, $filter) {
+sntRover.controller('RVCompanyCardArTransactionsMainCtrl', 
+	['$scope', 
+	'$rootScope', 
+	'$stateParams',
+	'ngDialog',
+	'rvAccountsArTransactionsSrv', 
+	function($scope, $rootScope, $stateParams, ngDialog, rvAccountsArTransactionsSrv) {
 
 		BaseCtrl.call(this, $scope);
 		$scope.errorMessage = '';
@@ -8,6 +13,12 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl', ['$scope', '$rootScop
 		$scope.arFlags = {
 			'currentSelectedArTab': 'balance',
 			'isAddBalanceScreenVisible': false
+		};
+
+		$scope.filterData = {
+			'query': '',
+			'fromDate': '',
+			'toDate': ''
 		};
 
 		/*
@@ -29,7 +40,7 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl', ['$scope', '$rootScop
 		 * Successcallback of API after fetching Ar Transaction details.
 		 * Handling data based on tabs currently active.
 		 */
-		var successCallbackOfAPIcall = function( data ) {
+		var successCallbackOfFetchAPI = function( data ) {
 
 			$scope.arDataObj.unpaidAmount = data.unpaid_amount;
 			$scope.arDataObj.paidAmount = data.paid_amount;
@@ -53,30 +64,100 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl', ['$scope', '$rootScop
 			$scope.$emit('hideLoader');
 		};
 
-		$rootScope.$on("arTransactionTabActive", function(event) {
-			console.log("----------------")
-			// refreshArTabScroller();
-		});
-
+		/*
+		 * Switching btw different tabs in AR transaction screen
+		 * @param tab is selected tab
+		 */
 		$scope.switchArTransactionTab = function(tab) {
 			$scope.arFlags.currentSelectedArTab = tab;
 			if (tab !== 'balance') {
 				$scope.arFlags.isAddBalanceScreenVisible = false;
 			}
-		};	
-		
+		};
+		/*
+		 * Show Add balance screen
+		 */			
 		$scope.showAddBalanceScreen = function () {
 			$scope.arFlags.isAddBalanceScreenVisible = true;
 		};	
-
+		/*
+		 * Show Add balance screen - Cancel action
+		 */
 		$scope.clickedCancelAddBalance = function () {
 			$scope.arFlags.isAddBalanceScreenVisible = false;
-		}
+		};
 
+		/* Handling different date picker clicks */
+		$scope.clickedFromDate = function() {
+			$scope.popupCalendar('FROM');
+		};
+		$scope.clickedToDate = function() {
+			$scope.popupCalendar('TO');
+		};
+		// Show calendar popup.
+		$scope.popupCalendar = function(clickedOn) {
+			$scope.clickedOn = clickedOn;
+	      	ngDialog.open({
+	      		template: '/assets/partials/companyCard/rvCompanyCardContractsCalendar.html',
+		        controller: 'RVArTransactionsDatePickerController',
+		        className: '',
+		        scope: $scope
+	      	});
+	    };
+	    /*
+	     * Fetch transactions API
+	     * @param dataToSend data object to API
+	     */
+		$scope.fetchTransactions = function (dataToSend) {
+			$scope.invokeApi(rvAccountsArTransactionsSrv.fetchTransactionDetails, dataToSend, successCallbackOfFetchAPI );
+		};
+		/*
+		 * Here is the method to fetch the data in each tab
+		 * Params will be different on each tab
+		 */
+
+		$scope.filterChanged = function() {
+			// Params need to change while doing the stories on each area
+			var dataToSend = {
+				account_id: $stateParams.id,
+				getParams : {
+					page: 1,
+					per_page: 50,
+					transaction_type: 'CHARGES',
+					paid: false,
+					from_date: $scope.filterData.fromDate,
+					to_date: $scope.filterData.toDate,
+					query: $scope.filterData.query
+				}
+			}
+			$scope.fetchTransactions(dataToSend);
+		};
+
+		/*
+		 * Initial loading of the screen
+		 *
+		 */
 		var init = function() {
-			console.log("--init")
-		}
+			var dataToSend = {
+				account_id: $stateParams.id,
+				getParams : {
+					page: 1,
+					per_page: 50,
+					transaction_type: 'CHARGES',
+					paid: false
+				}
+			};
 
-		init();
+			$scope.fetchTransactions(dataToSend);
+			
+		};
+
+		/*
+		 * Initial loading of this AR transactions tab
+		 */
+
+		$rootScope.$on("arTransactionTabActive", function(event) {
+			init();
+		});
 		
 }]);

@@ -140,7 +140,8 @@ module.exports = {
   //           'guestweb_first_hotel_breiseth': [ themeJsRoot + 'app_router_common.js'],
   //           'guestweb_hotel_blackhawk': [ themeJsRoot + 'app_router_common.js'],
   //           'guestweb_viceroy_chicago': [ themeJsRoot + 'app_router_common.js'],
-  //           'guestweb_hotel_alessandra': [ themeJsRoot + 'app_router_common.js']
+  //           'guestweb_hotel_alessandra': [ themeJsRoot + 'app_router_common.js'],
+  //           'guestweb_george_texas': [ themeJsRoot + 'app_router_common.js']
         };
     }
 };

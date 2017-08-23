@@ -169,5 +169,14 @@ sntRover.controller('companyCardArAccountCtrl', ['$scope', 'RVCompanyCardSrv', '
 			return rvPermissionSrv.getPermissionValue ('EDIT_DIRECT_BILL_RESTRICTION');
 		};
 
+		/**
+		* function to check whether the user has permission
+		* to create/edit AR Account.
+		* @return {Boolean}
+		*/
+		$scope.hasPermissionToCreateArAccount = function() {
+			return rvPermissionSrv.getPermissionValue ('CREATE_AR_ACCOUNT');
+		};
+
 	}
 ]);
