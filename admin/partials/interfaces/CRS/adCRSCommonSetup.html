@@ -7,6 +7,12 @@
             <!-- TODO: Remove below toggle button once windusurfer new-gen is a blockbuster -->
             <ad-toggle-button is-checked="config.disable_legacy" ng-if="availableSettings.indexOf('disable_legacy') > -1"
                               label="{{'DISABLE_LEGACY'| translate}}"></ad-toggle-button>
+            <!-- This following config setting is currently for iHotelier(travelclick) ONLY; As this is the only exception
+                we are currently adding this to the common template; In case of additional outliers; we will have to create a
+                separate template for the above said interface-->
+            <ad-toggle-button is-checked="config.europe_mode"
+                              ng-if="availableSettings.indexOf('europe_mode') > -1"
+                              label="{{'EUROPE_MODE'| translate}}"></ad-toggle-button>
         </fieldset>
     </div>
 
