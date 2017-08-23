@@ -10,6 +10,15 @@ angular.module('sntRover').controller('companyCardDetailsController', ['$scope',
 			return rvPermissionSrv.getPermissionValue ('VIEW_COMMISSIONS_TAB');
 		};
 
+		/**
+		* function to check whether the user has permission
+		* to create/edit AR Account.
+		* @return {Boolean}
+		*/
+		$scope.hasPermissionToCreateArAccount = function() {
+			return rvPermissionSrv.getPermissionValue ('CREATE_AR_ACCOUNT');
+		};
+
 		$scope.isCommissionTabAvailable = $scope.hasPermissionToViewCommissionTab();
 		$scope.isDiscard = false;
 		$scope.isPromptOpened = false;

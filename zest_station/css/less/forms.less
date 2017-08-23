@@ -353,8 +353,6 @@ select {
     display: block !important;
 }
 
-
-
 /*
     Specify which icon-date 
     Check-in > Select by Date (inside input field)
@@ -405,4 +403,24 @@ select {
     border-style: ridge;
     border-bottom-width: 1px;
     border-spacing: 2px;
+}
+
+.guest-icons {
+    height: 50px;
+    width: 50px;
+    background-image: @guesticons;
+    background-repeat: no-repeat;
+    border: 0;
+    .show;
+    &.icon-student {
+        background-position: 5px -21073px;
+    }
+
+    &.icon-infant {
+        background-position: 5px -21197px;
+    }
+
+    &.icon-adult {
+        background-position: 5px -20957px;
+    }
 }

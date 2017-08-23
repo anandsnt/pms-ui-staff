@@ -31,6 +31,7 @@
     "AR_ACCOUNT_NIL": "Account Receivable Not Created",
     "ENTER_AR_ACCOUNT_NUMBER": "Enter A/R Account Number",
     "AR_ACCOUNT_NOT_CREATED": "AR account not yet created for this card",
+    "AR_ACCOUNT_NO_PERMISSION": "You do not have permission to create AR account",
     "CREATE_AR_ACCOUNT": "Create Account",
     "SELECT_WINDOW": "Select Bill",
 
