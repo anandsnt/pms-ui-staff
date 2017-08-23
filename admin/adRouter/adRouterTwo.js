@@ -739,39 +739,30 @@ angular.module('adminModuleTwo', []).config(function($stateProvider) {
         controller: 'ADZestCheckinEmailSettingsCtrl',
         url: '/precheckinSettings',
         resolve: {
-            generalSettings: function(adZestEmailTemplateSrv) {
-                return adZestEmailTemplateSrv.getGeneralSettings();
-            },
             data: function(adZestEmailTemplateSrv) {
-                return adZestEmailTemplateSrv.getPrecheckinSettings();
+                return adZestEmailTemplateSrv.getSettings();
             }
         }
     });
 
-     $stateProvider.state('admin.zestCheckoutEmailSettings', {
+    $stateProvider.state('admin.zestCheckoutEmailSettings', {
         templateUrl: '/assets/partials/zestEmailTemplates/adZestCommonEmailSettings.html',
         controller: 'ADZestCheckoutEmailSettingsCtrl',
         url: '/precheckinSettings',
         resolve: {
-            generalSettings: function(adZestEmailTemplateSrv) {
-                return adZestEmailTemplateSrv.getGeneralSettings();
-            },
             data: function(adZestEmailTemplateSrv) {
-                return adZestEmailTemplateSrv.getPrecheckinSettings();
+                return adZestEmailTemplateSrv.getSettings();
             }
         }
     });
 
-     $stateProvider.state('admin.zestLateCheckoutEmailSettings', {
+    $stateProvider.state('admin.zestLateCheckoutEmailSettings', {
         templateUrl: '/assets/partials/zestEmailTemplates/adZestCommonEmailSettings.html',
         controller: 'ADZestLateCheckoutEmailSettingsCtrl',
         url: '/precheckinSettings',
         resolve: {
-            generalSettings: function(adZestEmailTemplateSrv) {
-                return adZestEmailTemplateSrv.getGeneralSettings();
-            },
             data: function(adZestEmailTemplateSrv) {
-                return adZestEmailTemplateSrv.getPrecheckinSettings();
+                return adZestEmailTemplateSrv.getSettings();
             }
         }
     });

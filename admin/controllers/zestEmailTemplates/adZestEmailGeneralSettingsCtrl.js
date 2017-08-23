@@ -1,10 +1,10 @@
 admin.controller('ADZestEmailGeneralSettingsCtrl', ['$scope', '$state', 'data', 'ngDialog', 'adZestEmailTemplateSrv',
     function($scope, $state, data, ngDialog, adZestEmailTemplateSrv) {
-        // console.log(generalSettings);
+        
         $scope.generalSettings = data.general_email_template_settings;
-        var main_bg_image = angular.copy($scope.generalSettings.main_bg_img)
+        var main_bg_image = angular.copy($scope.generalSettings.main_bg_img);
+
         $scope.successMessage = '';
-        // var main_bg_image = angular.copy(generalSettings.main_bg_image);
         $scope.data = {};
         $scope.data.currentYear = new Date().getFullYear();
         $scope.data.email_text_1 = "This is a sample text for testing. You can enter the required texts in the individual settings for each process.";
@@ -47,8 +47,8 @@ admin.controller('ADZestEmailGeneralSettingsCtrl', ['$scope', '$state', 'data', 
             var params = {
                 general_email_template_settings: angular.copy($scope.generalSettings)
             };
-            if(main_bg_image === $scope.generalSettings.main_bg_img){
-                var unwantedKeys = ["main_bg_img"];  
+            if (main_bg_image === $scope.generalSettings.main_bg_img) {
+                var unwantedKeys = ["main_bg_img"];
                 params.general_email_template_settings = dclone(params.general_email_template_settings, unwantedKeys);
             }
             var options = {
