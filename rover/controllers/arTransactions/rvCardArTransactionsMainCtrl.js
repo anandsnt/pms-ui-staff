@@ -50,6 +50,7 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl', ['$scope', '$rootScop
 			        $scope.arDataObj.allocatedList = data.ar_transactions;
 			        break;
 			}
+			$scope.$emit('hideLoader');
 		};
 
 		$rootScope.$on("arTransactionTabActive", function(event) {
