@@ -1,8 +1,8 @@
 angular.module('sntPay').controller('sntPaymentController',
     ['$scope', 'sntPaymentSrv', 'paymentAppEventConstants', '$location', 'PAYMENT_CONFIG',
-        '$rootScope', '$timeout', 'ngDialog', '$filter',
+        '$rootScope', '$timeout', 'ngDialog', '$filter', '$state',
         function ($scope, sntPaymentSrv, payEvntConst, $location, PAYMENT_CONFIG,
-                  $rootScope, $timeout, ngDialog, $filter) {
+                  $rootScope, $timeout, ngDialog, $filter, $state) {
             // ---------------------------------------------------------------------------------------------------------
             var timeOutForScrollerRefresh = 300,
                 initialPaymentAmount = 0,
@@ -95,7 +95,7 @@ angular.module('sntPay').controller('sntPaymentController',
                 }
 
                 // CICO-43933
-                if ($scope.selectedCC.params) {
+                if ($scope.selectedCC && $scope.selectedCC.params) {
                     params.postData = {
                         ...$scope.selectedCC.params,
                         ...params.postData
@@ -1100,7 +1100,9 @@ angular.module('sntPay').controller('sntPaymentController',
                 if ($scope.actionType === 'DEPOSIT_PAYMENT_RES_SUMMARY') {
                     params['reservation_id'] = $scope.reservationId;
                 }
-                if (params.mli_token) {
+
+                if (params.mli_token &&
+                    $state.current.name !== "rover.reservation.staycard.mainCard.summaryAndConfirm") { // CICO-44480
                     params['do_not_attach_cc_to_bill'] = true;
                     params['reservation_id'] = $scope.reservationId;
                     // CICO-43933
@@ -1109,7 +1111,7 @@ angular.module('sntPay').controller('sntPaymentController',
                         params,
                         data: {
                             id: null,
-                            credit_card_type: null,
+                            credit_card_type: null
                         }
                     });
                     // Don't make save payment call for swipes during submit payment

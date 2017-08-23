@@ -120,7 +120,7 @@ sntZestStation.controller('zsCheckinSignatureCtrl', [
             if (collectPassportEnabled) {
                 $scope.zestStationData.checkinGuest = function() {// make a reference to current checkInGuest method used if passport scanning
                     
-                    if ($scope.zestStationData.noCheckInsDebugger === 'true') {
+                    if ($scope.zestStationData.noCheckInsDebugger === 'true' || $scope.inDemoMode()) {
                         afterGuestCheckinCallback({ 'status': 'success' });
                     } else {
                         $scope.callAPI(zsCheckinSrv.checkInGuest, options);
@@ -142,7 +142,13 @@ sntZestStation.controller('zsCheckinSignatureCtrl', [
                 if (collectPassportEnabled && !$stateParams.passports_scanned) {
                     $state.go('zest_station.checkInScanPassport', $stateParams);
                 } else {
-                    $scope.callAPI(zsCheckinSrv.checkInGuest, options);
+                    if ($scope.inDemoMode()) {
+                        afterGuestCheckinCallback({ 'status': 'success' });
+                    } else {
+                        $scope.callAPI(zsCheckinSrv.checkInGuest, options);
+                    }
+                    
+
                 }
 
             }
