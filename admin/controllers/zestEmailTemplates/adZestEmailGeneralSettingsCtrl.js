@@ -2,7 +2,7 @@ admin.controller('ADZestEmailGeneralSettingsCtrl', ['$scope', '$state', 'data', 
     function($scope, $state, data, ngDialog, adZestEmailTemplateSrv) {
         
         $scope.generalSettings = data.general_email_template_settings;
-        var main_bg_image = angular.copy($scope.generalSettings.main_bg_img);
+        var main_bg_image = angular.copy($scope.generalSettings.main_bg_image);
 
         $scope.successMessage = '';
         $scope.data = {};
@@ -47,8 +47,8 @@ admin.controller('ADZestEmailGeneralSettingsCtrl', ['$scope', '$state', 'data', 
             var params = {
                 general_email_template_settings: angular.copy($scope.generalSettings)
             };
-            if (main_bg_image === $scope.generalSettings.main_bg_img) {
-                var unwantedKeys = ["main_bg_img"];
+            if (main_bg_image === $scope.generalSettings.main_bg_image) {
+                var unwantedKeys = ["main_bg_image"];
                 params.general_email_template_settings = dclone(params.general_email_template_settings, unwantedKeys);
             }
             var options = {
