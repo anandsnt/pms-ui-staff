@@ -17,8 +17,8 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 
 		$scope.filterData = {
 			'query': '',
-			'from_date': '',
-			'to_date': ''
+			'fromDate': '',
+			'toDate': ''
 		};
 
 		/*
@@ -61,27 +61,30 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 			        $scope.arDataObj.allocatedList = data.ar_transactions;
 			        break;
 			}
-		};
+		};		
 
-		$rootScope.$on("arTransactionTabActive", function(event) {
-			console.log("----------------")
-			// refreshArTabScroller();
-		});
-
+		/*
+		 * Switching btw different tabs in AR transaction screen
+		 * @param tab is selected tab
+		 */
 		$scope.switchArTransactionTab = function(tab) {
 			$scope.arFlags.currentSelectedArTab = tab;
 			if (tab !== 'balance') {
 				$scope.arFlags.isAddBalanceScreenVisible = false;
 			}
-		};	
-		
+		};
+		/*
+		 * Show Add balance screen
+		 */			
 		$scope.showAddBalanceScreen = function () {
 			$scope.arFlags.isAddBalanceScreenVisible = true;
 		};	
-
+		/*
+		 * Show Add balance screen - Cancel action
+		 */
 		$scope.clickedCancelAddBalance = function () {
 			$scope.arFlags.isAddBalanceScreenVisible = false;
-		}
+		};
 
 		/* Handling different date picker clicks */
 		$scope.clickedFromDate = function() {
@@ -100,14 +103,13 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 		        scope: $scope
 	      	});
 	    };
-
-		var successCallbackOfsaveARDetailsWithoutARNumber = function (){
-			console.log("reached succes");
-		}
-
+	    /*
+	     * Fetch transactions API
+	     * @param dataToSend data object to API
+	     */
 		$scope.fetchTransactions = function (dataToSend) {
 			$scope.invokeApi(rvAccountsArTransactionsSrv.fetchTransactionDetails, dataToSend, successCallbackOfFetchAPI );
-		}
+		};
 		/*
 		 * Here is the method to fetch the data in each tab
 		 * Params will be different on each tab
@@ -117,37 +119,46 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 			// Params need to change while doing the stories on each area
 			var dataToSend = {
 				account_id: $stateParams.id,
-				get_params : {
+				getParams : {
 					page: 1,
 					per_page: 50,
 					transaction_type: 'CHARGES',
 					paid: false,
-					from_date: $scope.filterData.from_date,
-					to_date: $scope.filterData.to_date,
+					from_date: $scope.filterData.fromDate,
+					to_date: $scope.filterData.toDate,
 					query: $scope.filterData.query
 				}
 			}
 			$scope.fetchTransactions(dataToSend);
-		}
+		};
 
-
-
+		/*
+		 * Initial loading of the screen
+		 *
+		 */
 		var init = function() {
-			console.log("--init")
-			console.log($stateParams.id)
 			var dataToSend = {
 				account_id: $stateParams.id,
-				get_params : {
+				getParams : {
 					page: 1,
 					per_page: 50,
 					transaction_type: 'CHARGES',
 					paid: false
 				}
-			}
+			};
+
 			$scope.fetchTransactions(dataToSend);
 			
-		}
+		};
 
-		init();
+		/*
+		 * Initial loading of this AR transactions tab
+		 */
+
+		$rootScope.$on("arTransactionTabActive", function(event) {
+			init();
+		});
+
+		
 		
 }]);
