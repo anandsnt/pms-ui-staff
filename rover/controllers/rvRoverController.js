@@ -443,16 +443,6 @@ sntRover.controller('roverController', [
       return $scope.menuOpen ? true : false;
     };
 
-    $scope.$on("showLoader", function() {
-      $scope.hasLoader = true;
-    });
-
-    $scope.$on('hideLoader', function() {
-        $timeout(function() {
-            $scope.hasLoader = false;
-        }, 100);
-    });
-
     $scope.$on("SHOW_SIX_PAY_LOADER", function() {
       $scope.showSixPayLoader = true;
     });
