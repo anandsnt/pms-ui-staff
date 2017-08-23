@@ -31,6 +31,9 @@
 
 			var fetchEarlyCheckinData =  function(data) {
 				var deferred = $q.defer();
+                
+				data.set_arrival_time_to_current_time = true;
+
 				var url = '/guest_web/reservations/' + data.reservation_id + '.json';
 
 				$http.get(url, {params: data}).success(function(response) {

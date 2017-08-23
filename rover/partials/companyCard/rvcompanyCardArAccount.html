@@ -1,5 +1,5 @@
 <!-- Company Card Tab 3 -->
-<form method="post" id="cc-ar-accounts" name="cc-ar-accounts" class="form card-tab scrollable" ng-show="currentSelectedTab == 'cc-ar-accounts'" ng-iscroll="cardAccountsScroller" ng-iscroll-delay="2000" ng-click="clearErrorMessage()">
+<form method="post" id="cc-ar-accounts" name="cc-ar-accounts" class="form card-tab scrollable" ng-show="currentSelectedTab == 'cc-ar-accounts'" ng-iscroll="cardAccountsScroller" ng-iscroll-delay="2000" ng-click="clearErrorMessage()" ng-class="{'overlay' : !hasPermissionToCreateArAccount()}">
    <div class="wrapper" ng-click="clearMessage()">
       <div ng-include="'/assets/partials/common/notification_message.html'"></div>
       <div class="holder left">
