@@ -91,8 +91,11 @@ sntZestStation.controller('zsCheckinScanPassportCtrl', [
                 scanResponse.DOC_TYPE = 'passport';
             }
 
+            // prepend image data format, and save to API
+            var imageFormat = 'data:image/png;base64,';
+
             if ($scope.scannedBackImage) {
-                guest.back_img_path = scanResponse.FRONT_IMAGE;
+                guest.back_img_path = imageFormat + scanResponse.FRONT_IMAGE;
 
             } else {
                 // city, nationality, docExpiry, docID, dob, full_name, first_name, last_name 
@@ -108,7 +111,7 @@ sntZestStation.controller('zsCheckinScanPassportCtrl', [
 
                 guest.docType = scanResponse.DOC_TYPE;
                 guest.identity_type = scanResponse.DOC_TYPE;
-                guest.img_path = scanResponse.FRONT_IMAGE;
+                guest.img_path = imageFormat + scanResponse.FRONT_IMAGE;
 
             }
         };
@@ -119,11 +122,7 @@ sntZestStation.controller('zsCheckinScanPassportCtrl', [
             // return true; // TODO: Link with document types which require both sides to be scanned
             // for debugging/testing double-sided scan type IDs
             // set this variable
-            if ($scope.zestStationData.doubleSidedScan) {
-                return true;
-            }
-            
-            return false;
+            return ($scope.zestStationData.doubleSidedScan);
             // return response.DOC_TYPE !== 'PP';    
         };
 
