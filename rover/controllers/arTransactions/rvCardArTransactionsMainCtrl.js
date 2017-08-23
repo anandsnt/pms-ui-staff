@@ -19,7 +19,7 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 			'query': '',
 			'from_date': '',
 			'to_date': ''
-		}
+		};
 
 		/*
 		 * Data Object set to handle various AR transaction lists.
