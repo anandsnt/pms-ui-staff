@@ -24,7 +24,7 @@ admin.controller('ADAccountReceivablesCtrl', ['$scope', '$state', 'ADHotelSettin
 				}
 			};
 
-			if(!!settings.selected_manual_charge_code_id) {
+			if (!!settings.selected_manual_charge_code_id) {
 				postData.ar_number_settings.selected_manual_charge_code_id = settings.selected_manual_charge_code_id;
 			}
 			
