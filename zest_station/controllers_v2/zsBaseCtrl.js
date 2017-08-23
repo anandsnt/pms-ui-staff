@@ -387,6 +387,7 @@ function BaseCtrl($scope) {
                     'type': getIpadType(screen, zs),
                     // one session = until a kiosk is 'refreshed', the OOS reasons will be added as an array of objects, reason + timestamp
                     'session_oos_reasons': zs.sessionOosReason,
+                    'historical_oos_reasons': zs.historicalOosReason,
                     // session_activity, ie.  [ {'cn': '234211', 'activity':'reservation found', 'time': Tue/12/12/12, } ] 
                     'session_activity': zs.sessionActivity,
 
@@ -462,29 +463,34 @@ function BaseCtrl($scope) {
          */
     };
 
-    $scope.wasOffline = false;
+
+    $scope.wasOffline = true;
 
     $scope.addReasonToOOSLog = function(reason) {
         // for each session of this station, send along the OOS reason(s) with timestamps
         // for now, just include the workstation time
         // 
         var today = new Date();
-        var currentTime = today.toString();
+        var currentTime = today.toString(),
+            onlineOffline = navigator.onLine ?  'online' : 'offline';
+            
         var oosReason = {
             'reason': reason,
-            'datetime': currentTime
+            'datetime': currentTime,
+            'internet_status': onlineOffline
         };
 
         if (reason === 'GET_CONFIGURATION_FAILED' || reason === 'GET_WORKSTATION_FAILED') {
-            var onlineOffline = navigator.onLine ?  'online' : 'offline';
-
             oosReason.reason += ': (' + onlineOffline + ')';
         }
+        // append to localstorage log in case device is offline
+        $scope.$emit('PUSH_OOS_REASON', oosReason);
 
         $scope.zestStationData.sessionOosReason.push(oosReason);
         $scope.zestStationData.lastOOSReason = $scope.$filter('translate')(oosReason.reason) ? $scope.$filter('translate')(oosReason.reason) : oosReason.reason;
         // at the next status-update, the kiosk will log the "$scope.zestStationData.sessionOosReason" array with all OOS reason events
     };
+
 
     $scope.resetTrackers = function() {
         $scope.zestStationData.session_conf = '';

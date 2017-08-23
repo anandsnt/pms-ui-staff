@@ -240,7 +240,11 @@ sntZestStation.controller('zsAdminCtrl', [
             } else {
                 console.info('login out');
             }
-            $window.location.href = '/station_logout';
+            $scope.reportGoingOffline('logout');
+             $timeout(function() {
+                $window.location.href = '/station_logout';
+            }, 500);
+            
         };
 
         var setStationVariables = function() {
