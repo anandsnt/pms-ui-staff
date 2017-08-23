@@ -1,0 +1,78 @@
+<ul class="search-results">
+    <li class="reservation transaction payment unallocated">
+
+        <!-- Add .toggle.has-arrow when partially unallocated -->
+        <!-- if .toggle clicked, add .active -->
+        <div class="faux-anchor">
+            <div class="data">
+                <h2>Credit Card</h2>
+                <div class="payment-data">
+                    <!-- if card, show card logo -->
+                    <figure class="card-logo">
+                        <img src="{card-logo-img}" alt="">
+                    </figure>
+                    <!-- if number, show ending number -->
+                    <span class="number">9987</span>
+                    <!-- if exp date, show exp date -->
+                    <span class="date">Date <span class="value">09/20</span></span>
+                    <!-- if reference, show reference -->
+                    <span class="reference">Reference <span class="value">5513515523526a</span></span>
+                </div>
+            </div>
+            <div class="payment-date">
+                <span class="icons small-icon icon-time time-black"></span>
+                <time datetime="2017-08-12 12:08 AM">
+                    <span class="date">2017-08-12</span>
+                    <span class="time">12:08 AM</span>
+                </time>
+            </div>
+            <!-- if partially unallocated add .partially-paid -->
+            <div class="amount green">
+                <!-- if partially unallocated, show icon --
+                <span class="icons icon-wallet-green"></span>
+                -->
+                <span class="currency">kr</span>44,991.11
+            </div>
+
+            <button type="button" class="button green">Allocate</button>
+        </div>
+
+        <!-- if partially unallocated, show --
+        <!-- remove .hidden when clicked on .toggle
+        <ul class="search-results hidden">
+            <li class="reservation transaction ">
+                <div class="faux-anchor">
+                    <div class="data">
+                        <h2>{Last Name, First Name}</h2>
+                        <span class="invoice">Invoice #<span class="value">39134823</span></span>
+                        <span class="confirmation">Conf #<span class="value">2987998</span></span>
+                    </div>
+                    <div class="guest-date arrival">
+                        <span class="guest-status small-icon check-in">check-in</span>
+                        <time datetime="2017-08-17T12:00:00">
+                            <span class="date">08-17-2017</span>
+                            <span class="time">6:00 PM</span>
+                        </time>
+                    </div>
+                    <div class="guest-date departure">
+                        <span class="guest-status small-icon check-out">check-out</span>
+                        <time datetime="2017-08-24T12:00:00">
+                            <span class="date">08-24-2017</span>
+                            <span class="time">3:00 PM</span>
+                        </time>
+                    </div>
+                    <div class="amount paid">
+                         
+                        $107,188.21
+                    </div>
+                    <button type="button" class="button white with-icon">
+                        <span class="icons icon-remove-40"></span>
+                    </button>
+                </div>
+            </li> 
+            ... repeat for each allocated
+          
+        </ul>-->
+    </li>
+    ... repeat for each unallocated
+</ul>
