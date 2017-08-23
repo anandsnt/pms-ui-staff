@@ -1,8 +1,8 @@
-admin.controller('ADZestEmailGeneralSettingsCtrl', ['$scope', '$state', 'generalSettings', 'ngDialog', 'adZestEmailTemplateSrv',
-    function($scope, $state, generalSettings, ngDialog, adZestEmailTemplateSrv) {
+admin.controller('ADZestEmailGeneralSettingsCtrl', ['$scope', '$state', 'data', 'ngDialog', 'adZestEmailTemplateSrv',
+    function($scope, $state, data, ngDialog, adZestEmailTemplateSrv) {
         // console.log(generalSettings);
-        $scope.generalSettings = generalSettings;
-         $scope.successMessage = '';
+        $scope.generalSettings = data.general_email_template_settings;
+        $scope.successMessage = '';
         // var main_bg_image = angular.copy(generalSettings.main_bg_image);
         $scope.data = {};
         $scope.data.currentYear = new Date().getFullYear();
@@ -42,18 +42,18 @@ admin.controller('ADZestEmailGeneralSettingsCtrl', ['$scope', '$state', 'general
             });
         };
 
-        $scope.saveSettings = function(){
-        var params  = {
-            general_email_template_settings: $scope.generalSettings
-        };
-        var options = {
-            params: params,
-            successCallBack: function(){
-                 $scope.successMessage = 'Sucess!';
-            }
-        };
+        $scope.saveSettings = function() {
+            var params = {
+                general_email_template_settings: $scope.generalSettings
+            };
+            var options = {
+                params: params,
+                successCallBack: function() {
+                    $scope.successMessage = 'Sucess!';
+                }
+            };
 
-        $scope.callAPI(adZestEmailTemplateSrv.saveSettings, options);
+            $scope.callAPI(adZestEmailTemplateSrv.saveSettings, options);
         };
     }
 ]);

@@ -717,8 +717,8 @@ angular.module('adminModuleTwo', []).config(function($stateProvider) {
         controller: 'ADZestEmailGeneralSettingsCtrl',
         url: '/generalSettings',
         resolve: {
-            generalSettings: function(adZestEmailTemplateSrv) {
-                return adZestEmailTemplateSrv.getGeneralSettings();
+            data: function(adZestEmailTemplateSrv) {
+                return adZestEmailTemplateSrv.getSettings();
             }
         }
     });
@@ -728,11 +728,8 @@ angular.module('adminModuleTwo', []).config(function($stateProvider) {
         controller: 'ADZestEmailPrecheckinSettingsCtrl',
         url: '/precheckinSettings',
         resolve: {
-            generalSettings: function(adZestEmailTemplateSrv) {
-                return adZestEmailTemplateSrv.getGeneralSettings();
-            },
             data: function(adZestEmailTemplateSrv) {
-                return adZestEmailTemplateSrv.getPrecheckinSettings();
+                return adZestEmailTemplateSrv.getSettings();
             }
         }
     });

@@ -1,10 +1,10 @@
-admin.controller('ADZestEmailPrecheckinSettingsCtrl', ['$scope', '$state', 'generalSettings', 'data', 'ngDialog', '$translate', '$filter', '$controller', 'adZestEmailTemplateSrv',
-	function($scope, $state, generalSettings, data, ngDialog, $translate, $filter, $controller, adZestEmailTemplateSrv) {
+admin.controller('ADZestEmailPrecheckinSettingsCtrl', ['$scope', '$state', 'data', 'ngDialog', '$translate', '$filter', '$controller', 'adZestEmailTemplateSrv',
+	function($scope, $state, data, ngDialog, $translate, $filter, $controller, adZestEmailTemplateSrv) {
 		$controller('ADZestBaseEmailSettingsCtrl', {
 			$scope: $scope
 		});
-		$scope.generalSettings = generalSettings;
-		$scope.data = data;
+		$scope.generalSettings = data.general_email_template_settings;
+		$scope.data = data.precheckin_email_template_settings;
 		$scope.mainHeading = $filter('translate')('PRECHECKIN_TEXT_SETTINGS');
 
 		$scope.saveSettings = function() {
