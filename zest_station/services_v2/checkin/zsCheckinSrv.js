@@ -38,6 +38,18 @@ sntZestStation.service('zsCheckinSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
             });
             return deferred.promise;
         };
+        // add / remove additional guests from reservation
+        this.getGuestTabDetails = function(data) {
+            var deferred = $q.defer();
+            var url = '/api/reservations/' + data.reservation_id + '/reservations_guest_details';
+
+            zsBaseWebSrv.getJSON(url, data).then(function(data) {
+                deferred.resolve(data);
+            }, function(data) {
+                deferred.reject(data);
+            });
+            return deferred.promise;
+        };
 
         this.authorizeCC = function(postData) {
             // send is_emv_request = true, to init sixpay device and capture card
