@@ -210,32 +210,32 @@
                             <table align="center" border="0" cellpadding="0" cellspacing="0" class="responsive-table" style="max-width: 700px;" width="100%">
                                 <tr>
                                     <td align="center" style="font-size: {{generalSettings.footer_font_size}}px; line-height: 18px; font-family: Helvetica, Arial, sans-serif;text-align: center;">
-                                        <a href="{{generalSettings.hotel_address}}" style="color: {{generalSettings.text_color}}">
-                                            {{generalSettings.footer_starting_text}}&nbsp;{{generalSettings.hotel_address}}
-                                        </a>
-                                        <br/>
-                                        <p style="color:{{generalSettings.text_color}}">
-                                            {{data.currentYear}} {{generalSettings.hotel_brand}}
-                                            <span style="color: {{generalSettings.text_color}}">&nbsp;|&nbsp;</span>
-                                            {{generalSettings.rights_reserved_text}}
-                                        </p>
-                                        <p style="color:{{generalSettings.text_color}}">    {{generalSettings.address}}
-                                        </p>
-                                        <p>
-                                            <a style="color: {{generalSettings.text_color}};" href="{{generalSettings.privacy_policy_link}}" target="_blank">
-                                                {{generalSettings.privacy_policy_text}}
-                                            </a><span style="color:{{generalSettings.text_color}}">&nbsp;|&nbsp;</span>
-                                            <a style="color: {{generalSettings.text_color}};" href="{{generalSettings.terms_n_conditions_link}}" target="_blank">
-                                                {{generalSettings.terms_n_conditions_text}}
-                                            </a>
-                                        </p>
-                                    </td>
-                                </tr>
-                            </table>
-                        </td>
-                    </tr>
-                </table>
-            </div>
-        </div>
-    </body>
-</html>
+                                            <p style="color: {{generalSettings.text_color}}">
+                                                {{generalSettings.footer_starting_text}}&nbsp; <a href="{{hotelDetails.hotel_address}}" style="color: {{generalSettings.text_color}}">{{hotelDetails.hotel_name}} - {{hotelDetails.hotel_address}}
+                                                </a>
+                                            </p>
+                                            <p style="color:{{generalSettings.text_color}}">
+                                                {{hotelDetails.current_year}} {{hotelDetails.hotel_brand}}
+                                                <span style="color: {{generalSettings.text_color}}">&nbsp;|&nbsp;</span>
+                                                {{generalSettings.rights_reserved_text}}
+                                            </p>
+                                            <p style="color:{{generalSettings.text_color}}">    {{hotelDetails.location_adress}}
+                                            </p>
+                                            <p>
+                                                <a style="color: {{generalSettings.text_color}};" href="{{generalSettings.privacy_policy_link}}" target="_blank">
+                                                    {{generalSettings.privacy_policy_text}}
+                                                    </a><span style="color:{{generalSettings.text_color}}">&nbsp;|&nbsp;</span>
+                                                    <a style="color: {{generalSettings.text_color}};" href="{{generalSettings.terms_n_conditions_link}}" target="_blank">
+                                                        {{generalSettings.terms_n_conditions_text}}
+                                                    </a>
+                                                </p>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </body>
+        </html>

@@ -4,6 +4,7 @@ admin.controller('ADZestEmailPrecheckinSettingsCtrl', ['$scope', '$state', 'data
 			$scope: $scope
 		});
 		$scope.generalSettings = data.general_email_template_settings;
+		$scope.hotelDetails = data.hotel_details;
 		$scope.data = data.precheckin_email_template_settings;
 		$scope.mainHeading = $filter('translate')('PRECHECKIN_TEXT_SETTINGS');
 
