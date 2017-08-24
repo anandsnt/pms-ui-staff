@@ -36,9 +36,9 @@
                     </div>
                 </td>
                 <td class="action">
-                    <button class="button icon-only">
-                        <span ng-hide="$last" class="icons icon-remove-40" ng-click="removeBalanceRow($index)"></span>
-                        <span ng-show="$last" class="icons icon-add-60" ng-disabled="balanceObjIsEmpty($index)" ng-click="addBalanceRow($index)"></span>
+                    <button class="button icon-only" ng-class="{'grey overlay': balanceObjIsEmpty($index) && $last }">
+                        <span class="icons icon-add-60" ng-if="$last" ng-click="addBalanceRow($index)"></span>
+                        <span class="icons icon-remove-40" ng-if="!$last" ng-click="removeBalanceRow($index)"></span>
                     <button>
                 </td>
             </tr>
@@ -48,7 +48,7 @@
             <tr>
                 <td colspan="4">
                     Total
-                    <strong><span class="currency">{{currencySymbol}}</span>{{manualBalanceObj.totalAmount}}</strong>
+                    <strong><span class="currency">{{currencySymbol}}</span>{{ calculateTotalBalance() | number:2 }}</strong>
                 </td>
                 <td></td>
             </tr>

@@ -14,7 +14,6 @@ sntRover.controller('RvArAddBalanceController', ['$scope', '$rootScope', 'ngDial
 						'amount': ''
 					}
 				],
-				'totalAmount': '0.00',
 				'selectedIndex': 0
 			};
 		};
@@ -89,7 +88,7 @@ sntRover.controller('RvArAddBalanceController', ['$scope', '$rootScope', 'ngDial
 				$scope.invokeApi(rvAccountsArTransactionsSrv.saveArBalance, dataToSend, successCallbackOfSaveArBalanceAPI );
 			}
 			else {
-				console.log("No data to save");
+				$log.info('Data Validation :: No data to save !!');
 			}
 		};
 
@@ -105,10 +104,28 @@ sntRover.controller('RvArAddBalanceController', ['$scope', '$rootScope', 'ngDial
 		        scope: $scope
 	      	});
 	    };
+	    // Clear date selected.
+	    $scope.clearDateSelection = function( index ) {
+	    	$scope.manualBalanceObj.manualBalanceList[index].departureDate = '';
+	    };
 	    // Check whether we need to disable the add new row button (+),
 	    // If the row having all fields empty.
-	    $scope.balanceObjIsempty = function( index ) {
+	    $scope.balanceObjIsEmpty = function( index ) {
 	    	return isBalanceObjEmpty(index);
+	    };
+	    // Method to find total balance amount.
+	    $scope.calculateTotalBalance = function() {
+	    	var totalBalance = 0.00, 
+	    		manualBalanceList = $scope.manualBalanceObj.manualBalanceList;
+
+	    	if ( manualBalanceList.length > 0 ) {
+		    	_.each(manualBalanceList, function(value, key) {
+		    		if (value.amount !== '') {
+			    		totalBalance += parseFloat(value.amount);
+			    	}
+		    	});
+		    }
+	    	return totalBalance;
 	    };
 		
 		init();
