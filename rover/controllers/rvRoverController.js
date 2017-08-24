@@ -21,9 +21,11 @@ sntRover.controller('roverController', [
     'sntAuthorizationSrv',
     '$location',
     '$interval',
+    'sntActivity',
     function($rootScope, $scope, $state, $window, RVDashboardSrv, RVHotelDetailsSrv,
              ngDialog, $translate, hotelDetails, userInfoDetails, $stateParams,
-             rvMenuSrv, rvPermissionSrv, $timeout, rvUtilSrv, jsMappings, $q, $sce, $log, sntAuthorizationSrv, $location, $interval) {
+             rvMenuSrv, rvPermissionSrv, $timeout, rvUtilSrv, jsMappings, $q, $sce,
+             $log, sntAuthorizationSrv, $location, $interval, sntActivity) {
 
 
     var observeDeviceInterval;
@@ -642,31 +644,36 @@ sntRover.controller('roverController', [
 
     // when state change start happens, we need to show the activity activator to prevent further clicking
     // this will happen when prefetch the data
-    $rootScope.$on('$stateChangeStart', function(event, toState, toParams, fromState, fromParams) {
-      // Show a loading message until promises are not resolved
-      $scope.$emit('showLoader');
+        $rootScope.$on('$stateChangeStart', function (event, toState) {
+            // Show a loading message until promises are not resolved
+            $scope.$emit('showLoader');
+            sntActivity.start('STATE_CHANGE' + toState.name.toUpperCase());
 
-      // if menu is open, close it
-      if ($scope.menuOpen) {
-        $scope.menuOpen = !$scope.menuOpen;
-        $scope.showSubMenu = false;
-      }
-    });
+            sntActivity.stop('API_REQUEST_' + url.name.toUpperCase());
 
-    $rootScope.$on('$stateChangeSuccess', function(e, curr, currParams, from, fromParams) {
-      // Hide loading message
-      $scope.$emit('hideLoader');
-      $rootScope.previousState = from;
-      $rootScope.previousStateParams = fromParams;
+            // if menu is open, close it
+            if ($scope.menuOpen) {
+                $scope.menuOpen = !$scope.menuOpen;
+                $scope.showSubMenu = false;
+            }
+        });
+
+        $rootScope.$on('$stateChangeSuccess', function (e, curr, currParams, from, fromParams) {
+            sntActivity.stop('STATE_CHANGE' + curr.name.toUpperCase());
+            // Hide loading message
+            $scope.$emit('hideLoader');
+            $rootScope.previousState = from;
+            $rootScope.previousStateParams = fromParams;
 
 
-    });
-    $rootScope.$on('$stateChangeError', function(event, toState, toParams, fromState, fromParams, error) {
-      // Hide loading message
-      $scope.$emit('hideLoader');
-      console.error(error);
-      $scope.$broadcast("showErrorMessage", error);
-    });
+        });
+        $rootScope.$on('$stateChangeError', function (event, toState, toParams, fromState, fromParams, error) {
+            // Hide loading message
+            sntActivity.stop('STATE_CHANGE' + toState.name.toUpperCase());
+            $scope.$emit('hideLoader');
+            console.error(error);
+            $scope.$broadcast('showErrorMessage', error);
+        });
 
     // This variable is used to identify whether guest card is visible
     // Depends on $scope.guestCardVisible in rvguestcardcontroller.js

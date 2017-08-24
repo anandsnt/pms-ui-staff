@@ -12,6 +12,7 @@ angular.module('sntActivityIndicator', [])
                     $scope.$on('showLoader', function () {
                         $scope.hasLoader = true;
                         stats.showLoader++;
+                        $log.info(stats);
                     });
 
                     $scope.$on('hideLoader', function () {
@@ -19,8 +20,29 @@ angular.module('sntActivityIndicator', [])
                             $scope.hasLoader = false;
                         }, 100);
                         stats.hideLoader++;
+                        $log.info(stats);
                     });
                 }]
             };
         }
-    );
+    )
+    .service('sntActivity', ['$log',
+        function ($log) {
+            var service = this,
+                activityStack = [];
+
+            service.start = function (activity) {
+                $log.info('start...', activity);
+                activityStack.push(activity);
+            };
+
+            service.stop = function (activity) {
+                $log.info('stop...', activity);
+            };
+
+            // ?
+            service.pause = function (activity) {
+                $log.info('stop...', activity);
+            };
+        }
+    ]);
