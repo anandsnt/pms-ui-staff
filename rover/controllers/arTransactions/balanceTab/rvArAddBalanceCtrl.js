@@ -36,22 +36,35 @@ sntRover.controller('RvArAddBalanceController', ['$scope', '$rootScope', 'ngDial
 		};
 		// Handle balance tab cancel action.
 		$scope.clickedCancelAddBalance = function() {
-			console.log('Cancel');
 			init();
+			$scope.arFlags.isAddBalanceScreenVisible = false;
 		};
+		// Checks whether a balance object is empty.
+		var isBalanceObjEmpty = function( index ) {
+			var obj = $scope.manualBalanceObj.manualBalanceList[index], isBalanceObjIsEmpty = false;
+
+			if ( obj.name === '' && obj.invoiceNo === '' && obj.departureDate === '' && obj.amount === '') {
+				isBalanceObjIsEmpty = true;
+			}
+			return isBalanceObjIsEmpty;
+		};
+
 		// Generate data to send.
 		var getDataToSend = function() {
 			var manualBalanceList = [];
 
 			_.each($scope.manualBalanceObj.manualBalanceList, function(value, key) {
-			    var obj = {
-			    	'manual_charge_name': value.name,
-					'invoice_number': value.invoiceNo,
-					'dep_date': value.departureDate,
-					'amount': value.amount
-			    };
 
-			    manualBalanceList.push(obj);
+				if (!isBalanceObjEmpty(key)) {
+				    var obj = {
+				    	'manual_charge_name': value.name,
+						'invoice_number': value.invoiceNo,
+						'dep_date': value.departureDate,
+						'amount': value.amount
+				    };
+
+				    manualBalanceList.push(obj);
+				}
 			});
 
 			var dataToSend = {
@@ -67,11 +80,17 @@ sntRover.controller('RvArAddBalanceController', ['$scope', '$rootScope', 'ngDial
 
 			var successCallbackOfSaveArBalanceAPI = function() {
 				$scope.$emit('hideLoader');
+				$scope.arFlags.isAddBalanceScreenVisible = false;
 			};
 
 			var dataToSend = getDataToSend();
 
-			$scope.invokeApi(rvAccountsArTransactionsSrv.saveArBalance, dataToSend, successCallbackOfSaveArBalanceAPI );
+			if (dataToSend.manual_balance_data.length > 0) {
+				$scope.invokeApi(rvAccountsArTransactionsSrv.saveArBalance, dataToSend, successCallbackOfSaveArBalanceAPI );
+			}
+			else {
+				console.log("No data to save");
+			}
 		};
 
 		// Show calendar popup.
@@ -85,6 +104,11 @@ sntRover.controller('RvArAddBalanceController', ['$scope', '$rootScope', 'ngDial
 		        className: '',
 		        scope: $scope
 	      	});
+	    };
+	    // Check whether we need to disable the add new row button (+),
+	    // If the row having all fields empty.
+	    $scope.balanceObjIsempty = function( index ) {
+	    	return isBalanceObjEmpty(index);
 	    };
 		
 		init();

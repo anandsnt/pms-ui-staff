@@ -38,7 +38,7 @@
                 <td class="action">
                     <button class="button icon-only">
                         <span ng-hide="$last" class="icons icon-remove-40" ng-click="removeBalanceRow($index)"></span>
-                        <span ng-show="$last" class="icons icon-add-60" ng-click="addBalanceRow($index)"></span>
+                        <span ng-show="$last" class="icons icon-add-60" ng-disabled="balanceObjIsEmpty($index)" ng-click="addBalanceRow($index)"></span>
                     <button>
                 </td>
             </tr>

@@ -1,4 +1,4 @@
-sntRover.controller('RVArAddBalanceDatePickerController', ['$scope', 'ngDialog', function($scope, $rootScope, ngDialog ) {
+sntRover.controller('RVArAddBalanceDatePickerController', ['$scope', '$rootScope', 'ngDialog', function($scope, $rootScope, ngDialog ) {
 
 	$scope.date = tzIndependentDate($rootScope.businessDate) ;
     // Setup date picker..
