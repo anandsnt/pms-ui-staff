@@ -151,7 +151,7 @@
                                                         <tr>
                                                             <td align="center" class="padding-copy" style="font-size: {{generalSettings.text_1_font_size}}px; font-family: Helvetica, Arial, sans-serif; padding-top: 10px;color: {{generalSettings.text_color}};text-align: center;">
                                                                 {{generalSettings.hotel_greetings_text}} first_name<span ng-show="generalSettings.show_last_name">&nbsp;last_name</span>
-                                                                , {{data.email_text_1}}
+                                                                , <span ng-bind-html="data.email_text_1 | unsafe"></span>
                                                             </td>
                                                         </tr>
                                                     </table>
@@ -178,7 +178,7 @@
                                                                     <tr>
                                                                         <td align="center" bgcolor="{{generalSettings.button_bg}}" style="border-radius: 3px;">
                                                                             <a class="mobile-button" style="font-size: {{generalSettings.button_font_size}}px; font-family: Helvetica, Arial, sans-serif;text-decoration: none; color: {{generalSettings.button_text_color}}; text-decoration: none; border-radius: 3px; padding: 15px 25px; border: 1px solid {{generalSettings.button_border_color}}; display: inline-block;" target="_blank">
-                                                                                {{data.button_text}}
+                                                                                <span ng-bind-html="data.button_text | unsafe"></span>
                                                                             </a>
                                                                         </td>
                                                                     </tr>
@@ -190,7 +190,7 @@
                                                                 <table border="0" cellpadding="0" cellspacing="0" width="100%">
                                                                     <tr>
                                                                         <td align="center" class="padding-copy" style="padding: 60px 0 0 0; font-size: {{generalSettings.text_2_font_size}}px;text-align: center; line-height: 25px; font-family: Helvetica, Arial, sans-serif;color: {{generalSettings.text_color}};">
-                                                                            {{data.email_text_2}}
+                                                                             <span ng-bind-html="data.email_text_2 | unsafe"></span>
                                                                         </td>
                                                                     </tr>
                                                                 </table>
