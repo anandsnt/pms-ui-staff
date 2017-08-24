@@ -50,6 +50,7 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 			switch($scope.arFlags.currentSelectedArTab) {
 			    case 'balance':
 			        $scope.arDataObj.balanceList = data.ar_transactions;
+			        $scope.$broadcast("FETCH_COMPLETE_BALANCE_LIST");
 			        break;
 			    case 'paid-bills':
 			        $scope.arDataObj.paidList = data.ar_transactions;

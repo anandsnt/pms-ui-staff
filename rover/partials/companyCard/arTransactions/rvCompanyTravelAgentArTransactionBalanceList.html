@@ -1,7 +1,7 @@
 <ul class="search-results">
 
     <!-- if checked, add class .selected -->
-    <li class="reservation transaction with-checkbox">
+    <li class="reservation transaction with-checkbox" ng-repeat="balance in arDataObj.balanceList">
         <label class="checkbox inline">
             <span class="icon-form icon-checkbox"></span>
             <input value="4" type="checkbox">
@@ -12,7 +12,7 @@
             <div class="data">
                 <!-- add class .group/.allotment if group or allotment -->
                 <h2>
-                    {Lastname, Firstname}
+                    {{balance.guest_first_name}},  {{balance.guest_last_name}}
                 </h2>
 
                 <span class="invoice">
