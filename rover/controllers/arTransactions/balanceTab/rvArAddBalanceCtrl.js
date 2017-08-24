@@ -1,7 +1,15 @@
-sntRover.controller('RvArAddBalanceController', ['$scope', '$rootScope', 'ngDialog', 'rvAccountsArTransactionsSrv', '$stateParams',
-	function($scope, $rootScope, ngDialog, rvAccountsArTransactionsSrv, $stateParams ) {
+sntRover.controller('RvArAddBalanceController', ['$scope', '$rootScope', 'ngDialog', 'rvAccountsArTransactionsSrv', '$stateParams', '$timeout', '$log',
+	function($scope, $rootScope, ngDialog, rvAccountsArTransactionsSrv, $stateParams, $timeout, $log ) {
 
 		BaseCtrl.call(this, $scope);
+		// Method to refresh the scrollbar
+		var refreshScroller = function() {
+			$timeout(function() {
+				$scope.refreshScroller('arAddBalanceScroller');
+			}, 500);
+		};
+
+		$scope.setScroller('arAddBalanceScroller');
 
 		var init = function() {
 			// Data object to add new manual balance.
@@ -16,11 +24,13 @@ sntRover.controller('RvArAddBalanceController', ['$scope', '$rootScope', 'ngDial
 				],
 				'selectedIndex': 0
 			};
+			refreshScroller();
 		};
 
 		// Remove a row from balance add screen.
 		$scope.removeBalanceRow = function( index ) {
 			$scope.manualBalanceObj.manualBalanceList.splice( index, 1 );
+			refreshScroller();
 		};
 		// Add a new row from balance add screen.
 		$scope.addBalanceRow = function( index ) {
@@ -32,6 +42,7 @@ sntRover.controller('RvArAddBalanceController', ['$scope', '$rootScope', 'ngDial
 			};
 
 			$scope.manualBalanceObj.manualBalanceList.push( newBalanceRowObj );
+			refreshScroller();
 		};
 		// Handle balance tab cancel action.
 		$scope.clickedCancelAddBalance = function() {
@@ -80,12 +91,15 @@ sntRover.controller('RvArAddBalanceController', ['$scope', '$rootScope', 'ngDial
 			var successCallbackOfSaveArBalanceAPI = function() {
 				$scope.$emit('hideLoader');
 				$scope.arFlags.isAddBalanceScreenVisible = false;
+			},
+			failureCallbackOfSaveArBalanceAPI = function( errorMessage ) {
+				$scope.errorMessage = errorMessage;
 			};
 
 			var dataToSend = getDataToSend();
 
 			if (dataToSend.manual_balance_data.length > 0) {
-				$scope.invokeApi(rvAccountsArTransactionsSrv.saveArBalance, dataToSend, successCallbackOfSaveArBalanceAPI );
+				$scope.invokeApi(rvAccountsArTransactionsSrv.saveArBalance, dataToSend, successCallbackOfSaveArBalanceAPI, failureCallbackOfSaveArBalanceAPI );
 			}
 			else {
 				$log.info('Data Validation :: No data to save !!');
