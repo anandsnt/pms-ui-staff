@@ -14,7 +14,7 @@ admin.controller('ADZestEmailMenuCtrl', ['$scope', '$state',
         $scope.subComponents = (menu && menu.sub_components) || [];
 
         // To hide menus till implemented
-        $scope.subComponents = _.filter($scope.subComponents, function(component){
+        $scope.subComponents = _.filter($scope.subComponents, function(component) {
             return (component.name === 'General Email Settings' || component.name === 'PreCheckin Email');
         });
 
