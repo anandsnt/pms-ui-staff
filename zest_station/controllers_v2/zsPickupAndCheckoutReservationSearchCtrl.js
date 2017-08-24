@@ -211,7 +211,14 @@ sntZestStation.controller('zsPickupAndCheckoutReservationSearchCtrl', [
                             failureCallBack: generalFailureActions
                         };
 
-                        $scope.callAPI(zsGeneralSrv.fetchGuestDetails, options);
+
+                        if ($scope.usingFakeReservation()) {
+                            successCallBack(zsCheckinSrv.guestDetailsDemoData);
+
+                        } else {
+                            $scope.callAPI(zsGeneralSrv.fetchGuestDetails, options);
+                        }
+
 
                     } else {
                         $scope.trackSessionActivity('PUK', 'Pickup, Found Reservation', 'R' + data.reservation_id, 'CONTINUE_TO_ENCODE');
@@ -267,7 +274,15 @@ sntZestStation.controller('zsPickupAndCheckoutReservationSearchCtrl', [
                 failureCallBack: generalFailureActions
             };
 
-            $scope.callAPI(zsCheckoutSrv.findReservation, options);
+            if ($scope.usingFakeReservation()) {
+                var data = zsCheckinSrv.findResDemoData;
+
+                data.last_name = $scope.reservationParams.last_name;
+                checkoutVerificationSuccess(data);
+            } else {
+                $scope.callAPI(zsCheckoutSrv.findReservation, options);
+            }
+
         };
 
         var roomNumberEntered = false;

@@ -156,8 +156,13 @@
 
     #message {
         margin-top: 120px;
-
         .button { margin: 80px auto 0; }
+    }
+    .eci-done { 
+        margin-top: 0px !important;
+        .button { 
+            margin-top: 0px !important; 
+        }
     }
 
     
@@ -1104,7 +1109,12 @@
             }
 
             &.sub,
-            &.total { padding-left: 60px; }
+            &.total { 
+                padding-left: 60px;
+            }
+            &.total > text {
+                font-size: x-large;
+            }
 
             &.sub { color: lighten(@black, 60); }
             
@@ -1672,6 +1682,10 @@
             padding: 0 60px;
             &.sign{
                 padding: 25 60px;
+            }
+            .button-group {
+                position: absolute;
+                margin-left: 40%;
             }
         }
         
@@ -2465,3 +2479,6 @@ div.jumper-box-li {
     opacity: 0;
 }
 
+.guest-image {
+    margin-right: 15px;
+}
