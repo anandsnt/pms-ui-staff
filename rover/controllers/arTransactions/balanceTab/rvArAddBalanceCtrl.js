@@ -1,5 +1,5 @@
-sntRover.controller('RvArAddBalanceController', ['$scope', '$rootScope', 'ngDialog', 
-	function($scope, $rootScope, ngDialog ) {
+sntRover.controller('RvArAddBalanceController', ['$scope', '$rootScope', 'ngDialog', 'rvAccountsArTransactionsSrv', '$stateParams',
+	function($scope, $rootScope, ngDialog, rvAccountsArTransactionsSrv, $stateParams ) {
 
 		BaseCtrl.call(this, $scope);
 
@@ -14,7 +14,8 @@ sntRover.controller('RvArAddBalanceController', ['$scope', '$rootScope', 'ngDial
 						'amount': ''
 					}
 				],
-				'totalAmount': '0.00'
+				'totalAmount': '0.00',
+				'selectedIndex': 0
 			};
 		};
 
@@ -38,17 +39,49 @@ sntRover.controller('RvArAddBalanceController', ['$scope', '$rootScope', 'ngDial
 			console.log('Cancel');
 			init();
 		};
+		// Generate data to send.
+		var getDataToSend = function() {
+			var manualBalanceList = [];
+
+			_.each($scope.manualBalanceObj.manualBalanceList, function(value, key) {
+			    var obj = {
+			    	'manual_charge_name': value.name,
+					'invoice_number': value.invoiceNo,
+					'dep_date': value.departureDate,
+					'amount': value.amount
+			    };
+
+			    manualBalanceList.push(obj);
+			});
+
+			var dataToSend = {
+				'manual_balance_data': manualBalanceList,
+				'account_id': $stateParams.id
+			};
+
+			return dataToSend;
+		};
+
 		// Handle balance tab save action.
 		$scope.clickedSaveAddBalance = function() {
-			console.log('Save');
+
+			var successCallbackOfSaveArBalanceAPI = function() {
+				$scope.$emit('hideLoader');
+			};
+
+			var dataToSend = getDataToSend();
+
+			$scope.invokeApi(rvAccountsArTransactionsSrv.saveArBalance, dataToSend, successCallbackOfSaveArBalanceAPI );
 		};
 
 		// Show calendar popup.
-		$scope.popupCalendar = function(clickedOn) {
-			$scope.clickedOn = clickedOn;
+		$scope.popupArDateCalendar = function( index ) {
+
+			$scope.manualBalanceObj.selectedIndex = index;
+
 	      	ngDialog.open({
 	      		template: '/assets/partials/companyCard/rvCompanyCardContractsCalendar.html',
-		        controller: 'RVArTransactionsDatePickerController',
+		        controller: 'RVArAddBalanceDatePickerController',
 		        className: '',
 		        scope: $scope
 	      	});
