@@ -146,7 +146,14 @@
                           ng-class='{"button-margin":showRemoveButton}'>{{guest.passport_scan_status}}
                     </span>
                 <span ng-hide="mode !== 'ADMIN_VERIFY_PASSPORTS'" class="passport-scan-status" ng-class='{"button-margin":showRemoveButton}'>{{guest.passport_reviewed_status}}
-                    </span> {{guest.last_name}}, {{guest.first_name}}
+                    </span> 
+                    <span ng-if='guest.last_name !== guest.first_name'>
+                        {{guest.last_name}}, {{guest.first_name}}    
+                    </span>
+                    <span ng-if='guest.last_name === guest.first_name'>
+                        {{guest.full_name}}    
+                    </span>
+
                 </span>
                 <button type="button" class="button remove-btn" ng-show='showRemoveButton' click-touch='removeGuest(guest.id)' ng-class='{"overlay grey": selectedReservation.guest_details.length <= 1}'>
                     <text data-ng-bind-html="getTagValue('REMOVE_BTN')" editable-text="REMOVE_BTN"></text>
@@ -277,7 +284,7 @@
                             </label>
                         </div>
 
-                        <div class="entry with-label">
+                        <div class="entry with-label" ng-if='selectedPassportInfo.full_name !== selectedPassportInfo.last_name'>
                             <label>
                                 <text data-ng-bind-html="getTagValue('GID_REVIEW_LAST_NAME')" editable-text="GID_REVIEW_LAST_NAME"></text>
                             </label>
@@ -285,11 +292,19 @@
                             <input type="text" value='selectedPassportInfo.last_name' ng-model='selectedPassportInfo.last_name' class='disabled'/>
                         </div>
 
-                        <div class="entry with-label">
+                        <div class="entry with-label" ng-if='selectedPassportInfo.full_name !== selectedPassportInfo.last_name'>
                             <label>
                                 <text data-ng-bind-html="getTagValue('GID_REVIEW_FIRST_NAME')" editable-text="GID_REVIEW_FIRST_NAME"></text>
                             </label>
                             <input type="text" value='selectedPassportInfo.first_name' ng-model='selectedPassportInfo.first_name' class='disabled'/>
+                        </div>
+
+
+                        <div class="entry with-label" ng-if='selectedPassportInfo.full_name === selectedPassportInfo.last_name'>
+                            <label>
+                                <text data-ng-bind-html="getTagValue('GID_REVIEW_FULL_NAME')" editable-text="GID_REVIEW_FULL_NAME"></text>
+                            </label>
+                            <input type="text" value='selectedPassportInfo.full_name' ng-model='selectedPassportInfo.full_name' class='disabled'/>
                         </div>
 
 
@@ -328,7 +343,8 @@
                             </label>
                         </div>
 
-                        <div class="entry with-label">
+                        <!-- show full name above passport images if only the full name is given for first/last name -->
+                        <div class="entry with-label" ng-hide='selectedPassportInfo.full_name === selectedPassportInfo.last_name'>
                             <label>
                                 <text data-ng-bind-html="getTagValue('GID_REVIEW_FULL_NAME')" editable-text="GID_REVIEW_FULL_NAME"></text>
                             </label>
