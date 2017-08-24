@@ -5,7 +5,8 @@
             <ad-toggle-button is-checked="config.enabled"
                               label="{{'ACTIVATE_INACTIVATE'| translate}}"></ad-toggle-button>
             <!-- TODO: Remove below toggle button once windusurfer new-gen is a blockbuster -->
-            <ad-toggle-button is-checked="config.disable_legacy" ng-if="availableSettings.indexOf('disable_legacy') > -1"
+            <ad-toggle-button is-checked="config.disable_legacy"
+                              ng-if="availableSettings.indexOf('disable_legacy') > -1"
                               label="{{'DISABLE_LEGACY'| translate}}"></ad-toggle-button>
             <!-- This following config setting is currently for iHotelier(travelclick) ONLY; As this is the only exception
                 we are currently adding this to the common template; In case of additional outliers; we will have to create a
@@ -63,14 +64,32 @@
             <ad-toggle-button negative-logic="true"
                               is-checked="config.disable_feature_upload_inventory"
                               label="{{'FEATURE_UPLOAD_INVENTORY'| translate}}"></ad-toggle-button>
-        </fieldset>
-        <fieldset class="holder left">
             <ad-toggle-button negative-logic="true"
                               is-checked="config.disable_feature_upload_rate"
                               label="{{'FEATURE_UPLOAD_RATE'| translate}}"></ad-toggle-button>
             <ad-toggle-button negative-logic="true"
                               is-checked="config.disable_feature_upload_restriction"
                               label="{{'FEATURE_UPLOAD_RESTRICTION'| translate}}"></ad-toggle-button>
+        </fieldset>
+        <fieldset class="holder right"
+                  ng-if="availableSettings.indexOf('calculate_rate_after_tax') > -1">
+            <div class="entry full-width">
+                <label>RATE CALCULATION</label>
+                <div class="switch-container">
+                    <div class="switch-button with-text"
+                         ng-class="{'on' : config.calculate_rate_after_tax}">
+                        <input type="checkbox" ng-model="config.calculate_rate_after_tax"/>
+                        <label class="data-off">
+                            <span class="value">AFTER TAX</span>
+                            <span class="button orange">BEFORE TAX</span>
+                        </label>
+                        <label class="data-on">
+                            <span class="button orange">AFTER TAX</span>
+                            <span class="value">BEFORE TAX</span>
+                        </label>
+                    </div>
+                </div>
+            </div>
         </fieldset>
     </fieldset>
 
