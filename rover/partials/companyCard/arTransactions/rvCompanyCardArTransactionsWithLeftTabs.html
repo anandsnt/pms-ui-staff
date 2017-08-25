@@ -27,19 +27,19 @@
     <!-- Add .hidden if not active-->
     <!-- Add .with-footer to show footer -->
     <div class="billing-content scrollable"  ng-controller="RvArBalanceController" ng-class="{'hidden': (arFlags.currentSelectedArTab !== 'balance' || arFlags.isAddBalanceScreenVisible)}" id="balance-list-div" ng-iscroll="balance-list">
-        <!-- if no open bills --
-            <div class="no-content">
+        <!-- if no open bills -->
+            <div class="no-content" ng-show="arDataObj.balanceList.length === 0">
                 <div class="info"><span class="icon-no-content icon-ok"></span
                     <strong class="h1">No Transactions</strong>
                     <span class="h2">Outstanding Guest Bills paid</span>
-                    <!-- On Click show manual balance billing content --
-                    <a href="" class="add-new-button">Add Manual Balance</a>
+                    <!-- On Click show manual balance billing content -->
+                    <a class="add-new-button" ng-click="showAddBalanceScreen()">Add Manual Balance</a>
                 </div>
             </div> 
-        -->
+
 
         <!-- If there are open bills -->
-        <div class="wrapper" ng-include="'/assets/partials/companyCard/arTransactions/rvCompanyTravelAgentArTransactionBalanceList.html'">
+        <div class="wrapper" ng-show="arDataObj.balanceList.length > 0" ng-include="'/assets/partials/companyCard/arTransactions/rvCompanyTravelAgentArTransactionBalanceList.html'">
           <!--   {ar-transactions/open-bills.html} -->
         </div>
 
