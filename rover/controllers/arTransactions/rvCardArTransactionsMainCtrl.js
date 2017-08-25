@@ -4,9 +4,53 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl', ['$scope', '$rootScop
 
 		BaseCtrl.call(this, $scope);
 		$scope.errorMessage = '';
-		$scope.arFlags = {};
-		$scope.arFlags.currentSelectedArTab = 'balance';
-		$scope.arFlags.isAddBalanceScreenVisible = false;
+
+		$scope.arFlags = {
+			'currentSelectedArTab': 'balance',
+			'isAddBalanceScreenVisible': false
+		};
+
+		/*
+		 * Data Object set to handle various AR transaction lists.
+		 */
+		$scope.arDataObj = {
+			'balanceList': [],
+			'paidList': [],
+			'unallocatedList': [],
+			'allocatedList': [],
+
+			'unpaidAmount': '',
+			'paidAmount': '',
+			'allocatedCredit': '',
+			'unallocatedCredit': ''
+		};
+
+		/*
+		 * Successcallback of API after fetching Ar Transaction details.
+		 * Handling data based on tabs currently active.
+		 */
+		var successCallbackOfAPIcall = function( data ) {
+
+			$scope.arDataObj.unpaidAmount = data.unpaid_amount;
+			$scope.arDataObj.paidAmount = data.paid_amount;
+			$scope.arDataObj.allocatedCredit = data.allocated_credit;
+			$scope.arDataObj.unallocatedCredit = data.unallocated_credit;
+
+			switch($scope.arFlags.currentSelectedArTab) {
+			    case 'balance':
+			        $scope.arDataObj.balanceList = data.ar_transactions;
+			        break;
+			    case 'paid-bills':
+			        $scope.arDataObj.paidList = data.ar_transactions;
+			        break;
+			    case 'unallocated':
+			        $scope.arDataObj.unallocatedList = data.ar_transactions;
+			        break;
+			    case 'allocated':
+			        $scope.arDataObj.allocatedList = data.ar_transactions;
+			        break;
+			}
+		};
 
 		$rootScope.$on("arTransactionTabActive", function(event) {
 			console.log("----------------")
@@ -23,6 +67,10 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl', ['$scope', '$rootScop
 		$scope.showAddBalanceScreen = function () {
 			$scope.arFlags.isAddBalanceScreenVisible = true;
 		};	
+
+		$scope.clickedCancelAddBalance = function () {
+			$scope.arFlags.isAddBalanceScreenVisible = false;
+		}
 
 		var init = function() {
 			console.log("--init")

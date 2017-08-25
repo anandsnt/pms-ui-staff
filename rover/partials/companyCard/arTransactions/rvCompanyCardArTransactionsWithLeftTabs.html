@@ -26,7 +26,7 @@
 <!-- Open Bills Billing Content -->
     <!-- Add .hidden if not active-->
     <!-- Add .with-footer to show footer -->
-    <div class="billing-content scrollable" ng-class="{'hidden': (arFlags.currentSelectedArTab !== 'balance' || arFlags.isAddBalanceScreenVisible)}">
+    <div class="billing-content scrollable"  ng-controller="RvArBalanceController" ng-class="{'hidden': (arFlags.currentSelectedArTab !== 'balance' || arFlags.isAddBalanceScreenVisible)}">
         <!-- if no open bills --
             <div class="no-content">
                 <div class="info"><span class="icon-no-content icon-ok"></span
@@ -39,7 +39,7 @@
         -->
 
         <!-- If there are open bills -->
-        <div class="wrapper" ng-controller="RvArBalanceController"  ng-include="'/assets/partials/companyCard/arTransactions/rvCompanyTravelAgentArTransactionBalanceList.html'">
+        <div class="wrapper" ng-include="'/assets/partials/companyCard/arTransactions/rvCompanyTravelAgentArTransactionBalanceList.html'">
           <!--   {ar-transactions/open-bills.html} -->
         </div>
 
@@ -101,19 +101,19 @@
 <!-- Manual Balance Billing Content -->
     <!-- remove .hidden to show this screen -->
     <!-- add .with-footer when showing footer -->
-    <div class="billing-content scrollable" ng-class="{'hidden': (arFlags.currentSelectedArTab !== 'balance' || !arFlags.isAddBalanceScreenVisible)}" >
+    <div class="billing-content scrollable" ng-controller="RvArBalanceController"  ng-class="{'hidden': (arFlags.currentSelectedArTab !== 'balance' || !arFlags.isAddBalanceScreenVisible)}" >
        
 
-        <div class="wrapper" ng-controller="RvArBalanceController" ng-include="'/assets/partials/companyCard/arTransactions/rvCompanyTravelAgentArAddBalance.html'">
+        <div class="wrapper" ng-include="'/assets/partials/companyCard/arTransactions/rvCompanyTravelAgentArAddBalance.html'">
             <!-- {ar-transactions/manual-balance.html} -->
         </div>
 
         <!-- show footer when .with-footer -->
-        <div class="billing-footer hidden">
+        <div class="billing-footer" ng-class="{'hidden': (arFlags.currentSelectedArTab !== 'balance' || !arFlags.isAddBalanceScreenVisible)}">
     
             <ul class="actions">
                 <li>
-                    <button type="button" class="button blank">Cancel</button>
+                    <button type="button" class="button blank" ng-click="clickedCancelAddBalance()">Cancel</button>
                 </li>
                 <li>
                     <button type="button" class="button green">Save</button>
@@ -126,7 +126,7 @@
 <!-- Paid Bills Billing Content -->
     <!-- remove .hidden to show this screen -->
     <!-- add .with-pagination when showing pagination -->
-    <div class="billing-content scrollable" ng-class="{'hidden': arFlags.currentSelectedArTab !== 'paid-bills'}">
+    <div class="billing-content scrollable" ng-controller="RvArPaidController" ng-class="{'hidden': arFlags.currentSelectedArTab !== 'paid-bills'}">
  
         <div class="wrapper" ng-include="'/assets/partials/companyCard/arTransactions/rvCompanyTravelAgentArPaid.html'">
      <!--        {ar-transactions/paid-bills.html} -->
@@ -139,7 +139,7 @@
 <!-- Unallocated Billing Content -->
     <!-- remove .hidden to show this screen -->
     <!-- Add .with-pagination when showing pagination -->
-    <div class="billing-content scrollable" ng-class="{'hidden': arFlags.currentSelectedArTab !== 'unallocated'}">
+    <div class="billing-content scrollable" ng-controller="RvArUnallocatedController" ng-class="{'hidden': arFlags.currentSelectedArTab !== 'unallocated'}">
 
         <div class="wrapper" ng-include="'/assets/partials/companyCard/arTransactions/rvCompanyTravelAgentArUnallocated.html'">
            <!--  {ar-transactions/unallocated-payments.html} -->
@@ -152,9 +152,9 @@
 <!-- Allocated Billing Content -->
     <!-- remove .hidden to show this screen -->
     <!-- Add .with-pagination when showing pagination -->
-    <div class="billing-content scrollable" ng-class="{'hidden': arFlags.currentSelectedArTab !== 'allocated'}">
+    <div class="billing-content scrollable" ng-controller="RvArAllocatedController" ng-class="{'hidden': arFlags.currentSelectedArTab !== 'allocated'}">
 
-         <div class="wrapper" ng-include="'/assets/partials/companyCard/arTransactions/rvCompanyTravelAgentArAllocated.html'">
+         <div class="wrapper"  ng-include="'/assets/partials/companyCard/arTransactions/rvCompanyTravelAgentArAllocated.html'">
             <!-- {ar-transactions/allocated-payments.html} -->
         </div>
         
