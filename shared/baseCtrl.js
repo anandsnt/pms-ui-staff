@@ -67,8 +67,9 @@ function BaseCtrl($scope) {
     };
 
     $scope.callAPI = function (serviceApi, options) {
-        var options = options ? options : {},
-            identifier = _.uniqueId('API_REQ_'),
+        options = options || {};
+
+        var identifier = _.uniqueId('API_REQ_'),
             params = options['params'] ? options['params'] : null,
             loader = options['loader'] ? options['loader'] : 'BLOCKER',
             showLoader = loader.toUpperCase() === 'BLOCKER',
@@ -80,7 +81,10 @@ function BaseCtrl($scope) {
 
         if (showLoader) {
             $scope.$emit('showLoader');
-            $scope.startActivity && $scope.startActivity(identifier);
+            // This method has to be implemented in the root controllers
+            if ($scope.startActivity) {
+                $scope.startActivity(identifier);
+            }
         }
 
         return serviceApi(params).then(
@@ -88,7 +92,10 @@ function BaseCtrl($scope) {
             function (data) {
                 if (showLoader) {
                     $scope.$emit('hideLoader');
-                    $scope.startActivity && $scope.stopActivity(identifier);
+                    // This method has to be implemented in the root controllers
+                    if ($scope.stopActivity) {
+                        $scope.stopActivity(identifier);
+                    }
                 }
                 if (successCallBack) {
                     if (successCallBackParameters) {
@@ -102,7 +109,10 @@ function BaseCtrl($scope) {
             function (error) {
                 if (showLoader) {
                     $scope.$emit('hideLoader');
-                    $scope.startActivity && $scope.stopActivity(identifier);
+                    // This method has to be implemented in the root controllers
+                    if ($scope.stopActivity) {
+                        $scope.stopActivity(identifier);
+                    }
                 }
                 if (failureCallBack) {
                     if (failureCallBackParameters) {

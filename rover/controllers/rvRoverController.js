@@ -391,7 +391,7 @@ sntRover.controller('roverController', [
                     className: 'calendar-modal'
                 });
                 $scope.runDigestCycle();
-            }, function (error) {
+            }, function () {
             }, 'RVDevicePlugin', 'getDevicesStates', []);
         };
 
