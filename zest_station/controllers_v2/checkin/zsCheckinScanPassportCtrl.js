@@ -764,9 +764,9 @@ sntZestStation.controller('zsCheckinScanPassportCtrl', [
                     !response.PR_DF_DOCTYPE ||
                     !response.PR_DF_DOCUMENT_NUMBER ||
                     !response.PR_DF_EXPIRY_DATE ||
-                    !response.PR_DF_GIVENNAME ||
+                    // !response.PR_DF_GIVENNAME ||
                     !response.PR_DF_ISSUE_COUNTRY ||
-                    !response.PR_DF_NAME ||
+                    // !response.PR_DF_NAME ||
                     !response.PR_DF_NATIONALITY ||
                 //  !response.PR_DF_SEX ||
                 //  !response.PR_DF_SURNAME ||
@@ -789,6 +789,13 @@ sntZestStation.controller('zsCheckinScanPassportCtrl', [
                 if ($scope.inDemoMode()) {
                     mappedResponse = {};
                 } else {
+                    // 
+                    // If given name (first name) is not available, map to first name instead
+                    // 
+                    if (!response.PR_DF_GIVENNAME && response.PR_DF_NAME) {
+                        response.PR_DF_GIVENNAME = response.PR_DF_NAME;
+                    }
+
                     mappedResponse = {
                         'FRONT_IMAGE': response.PR_DFE_FRONT_IMAGE,
 
