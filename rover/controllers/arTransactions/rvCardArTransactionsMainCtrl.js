@@ -4,15 +4,17 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 	'$rootScope', 
 	'$stateParams',
 	'ngDialog',
+	'$timeout', 
 	'rvAccountsArTransactionsSrv', 
-	function($scope, $rootScope, $stateParams, ngDialog, rvAccountsArTransactionsSrv) {
+	function($scope, $rootScope, $stateParams, ngDialog, $timeout, rvAccountsArTransactionsSrv) {
 
 		BaseCtrl.call(this, $scope);
 		$scope.errorMessage = '';
 
 		$scope.arFlags = {
 			'currentSelectedArTab': 'balance',
-			'isAddBalanceScreenVisible': false
+			'isAddBalanceScreenVisible': false,
+			'isArTabActive': false
 		};
 
 		$scope.filterData = {
@@ -47,9 +49,19 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 			$scope.arDataObj.allocatedCredit = data.allocated_credit;
 			$scope.arDataObj.unallocatedCredit = data.unallocated_credit;
 
+			
+            
+            $timeout(function () {                
+
+                 $scope.$broadcast('updatePagination', $scope.arFlags.currentSelectedArTab );                
+
+            }, 2000);
+
+
 			switch($scope.arFlags.currentSelectedArTab) {
 			    case 'balance':
 			        $scope.arDataObj.balanceList = data.ar_transactions;
+			        $scope.arDataObj.totalCount = data.totalCount;
 			        $scope.$broadcast("FETCH_COMPLETE_BALANCE_LIST");
 			        break;
 			    case 'paid-bills':
@@ -109,7 +121,8 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 	     * Fetch transactions API
 	     * @param dataToSend data object to API
 	     */
-		$scope.fetchTransactions = function (dataToSend) {
+		$scope.fetchTransactions = function (dataToSend, pageNo) {
+			dataToSend.getParams.page = pageNo ? pageNo : 1;
 			$scope.invokeApi(rvAccountsArTransactionsSrv.fetchTransactionDetails, dataToSend, successCallbackOfFetchAPI );
 		};
 		/*
@@ -142,14 +155,19 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 			var dataToSend = {
 				account_id: $stateParams.id,
 				getParams : {
-					page: 1,
 					per_page: 50,
 					transaction_type: 'CHARGES',
 					paid: false
 				}
 			};
 
-			$scope.fetchTransactions(dataToSend);
+			$scope.paginationData = {
+                id: $scope.arFlags.currentSelectedArTab,
+                api: [$scope.fetchTransactions, dataToSend],
+                perPage: 50
+            };
+
+			$scope.fetchTransactions(dataToSend, 1);
 			
 		};
 
@@ -159,6 +177,7 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 
 		$rootScope.$on("arTransactionTabActive", function(event) {
 			init();
+			$scope.arFlags.isArTabActive = true;
 		});
 		
 }]);

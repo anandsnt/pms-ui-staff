@@ -8,7 +8,7 @@ sntRover.controller('RvArBalanceController', ['$scope', '$rootScope', 'RVCompany
 	    var refreshScroll = function() {
 	        $timeout(function() { 
 	            $scope.refreshScroller('balance-list');
-	        }, 6000);
+	        }, 3000);
 	    };
 
 	    $scope.$on("FETCH_COMPLETE_BALANCE_LIST", function() {
