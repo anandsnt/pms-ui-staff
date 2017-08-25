@@ -26,7 +26,8 @@ var admin = angular.module('admin',
     'uiColorpicker',
     'onScroll',
     'limitInputRange',
-    'convertToNumber']);
+    'convertToNumber',
+    'ADChainRouter']);
 
 // adding shared http interceptor, which is handling our webservice errors & in future our authentication if needed
 admin.config([
