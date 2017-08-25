@@ -7,6 +7,11 @@
         </fieldset>
     </div>
 
+    <ad-sync-block ng-if="config.enabled"
+                   interface="{{interface}}"
+                   config="config">
+    </ad-sync-block>
+
     <fieldset class="holder full-width">
         <div class="form-title">
             <h3>API Access Configuration</h3>

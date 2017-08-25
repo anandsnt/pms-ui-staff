@@ -91,8 +91,11 @@ sntZestStation.controller('zsCheckinScanPassportCtrl', [
                 scanResponse.DOC_TYPE = 'passport';
             }
 
+            // prepend image data format, and save to API
+            var imageFormat = 'data:image/png;base64,';
+
             if ($scope.scannedBackImage) {
-                guest.back_img_path = scanResponse.FRONT_IMAGE;
+                guest.back_img_path = imageFormat + scanResponse.FRONT_IMAGE;
 
             } else {
                 // city, nationality, docExpiry, docID, dob, full_name, first_name, last_name 
@@ -108,7 +111,7 @@ sntZestStation.controller('zsCheckinScanPassportCtrl', [
 
                 guest.docType = scanResponse.DOC_TYPE;
                 guest.identity_type = scanResponse.DOC_TYPE;
-                guest.img_path = scanResponse.FRONT_IMAGE;
+                guest.img_path = imageFormat + scanResponse.FRONT_IMAGE;
 
             }
         };
@@ -761,9 +764,9 @@ sntZestStation.controller('zsCheckinScanPassportCtrl', [
                     !response.PR_DF_DOCTYPE ||
                     !response.PR_DF_DOCUMENT_NUMBER ||
                     !response.PR_DF_EXPIRY_DATE ||
-                    !response.PR_DF_GIVENNAME ||
+                    // !response.PR_DF_GIVENNAME ||
                     !response.PR_DF_ISSUE_COUNTRY ||
-                    !response.PR_DF_NAME ||
+                    // !response.PR_DF_NAME ||
                     !response.PR_DF_NATIONALITY ||
                 //  !response.PR_DF_SEX ||
                 //  !response.PR_DF_SURNAME ||
@@ -786,6 +789,13 @@ sntZestStation.controller('zsCheckinScanPassportCtrl', [
                 if ($scope.inDemoMode()) {
                     mappedResponse = {};
                 } else {
+                    // 
+                    // If given name (first name) is not available, map to first name instead
+                    // 
+                    if (!response.PR_DF_GIVENNAME && response.PR_DF_NAME) {
+                        response.PR_DF_GIVENNAME = response.PR_DF_NAME;
+                    }
+
                     mappedResponse = {
                         'FRONT_IMAGE': response.PR_DFE_FRONT_IMAGE,
 
