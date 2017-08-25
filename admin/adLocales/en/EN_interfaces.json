@@ -74,4 +74,5 @@
 	"MONITOR_SCREEN": "Monitor Screen",
 	"VALIDATE_INCREMENTAL_EXPORT": "Validate Incremental Export",
 	"PINPAD_SUCCESS": "SUCCESS",
-	"PINPAD_ERROR": "FAILURE"
+	"PINPAD_ERROR": "FAILURE",
+    "EUROPE_MODE": "Europe Mode"
