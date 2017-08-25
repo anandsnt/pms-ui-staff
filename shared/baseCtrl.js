@@ -66,49 +66,54 @@ function BaseCtrl($scope) {
 
   };
 
-  $scope.callAPI = function(serviceApi, options) {
-    var options = options ? options : {},
-    params = options['params'] ? options['params'] : null,
-    loader = options['loader'] ? options['loader'] : 'BLOCKER',
-    showLoader = loader.toUpperCase() === 'BLOCKER' ? true : false,
-    successCallBack = options['successCallBack'] ? options['successCallBack'] : (options['onSuccess'] ? options['onSuccess'] : $scope.fetchedCompleted),
-    failureCallBack = options['failureCallBack'] ? options['failureCallBack'] : $scope.fetchedFailed,
-    successCallBackParameters = options['successCallBackParameters'] ? options['successCallBackParameters'] : null,
-    failureCallBackParameters = options['failureCallBackParameters'] ? options['failureCallBackParameters'] : null;
+    $scope.callAPI = function (serviceApi, options) {
+        var options = options ? options : {},
+            identifier = _.uniqueId('API_REQ_'),
+            params = options['params'] ? options['params'] : null,
+            loader = options['loader'] ? options['loader'] : 'BLOCKER',
+            showLoader = loader.toUpperCase() === 'BLOCKER',
+            successCallBack = options['successCallBack'] ? options['successCallBack'] :
+                (options['onSuccess'] ? options['onSuccess'] : $scope.fetchedCompleted),
+            failureCallBack = options['failureCallBack'] ? options['failureCallBack'] : $scope.fetchedFailed,
+            successCallBackParameters = options['successCallBackParameters'] ? options['successCallBackParameters'] : null,
+            failureCallBackParameters = options['failureCallBackParameters'] ? options['failureCallBackParameters'] : null;
 
-    if (showLoader) {
-      $scope.$emit('showLoader');
-    }
+        if (showLoader) {
+            $scope.$emit('showLoader');
+            $scope.startActivity && $scope.startActivity(identifier);
+        }
 
-    return serviceApi(params).then(
-    // success call back
-            function(data) {
-  if (showLoader) {
-    $scope.$emit('hideLoader');
-  }
-  if (successCallBack) {
-    if (successCallBackParameters) {
-      successCallBack(data, successCallBackParameters);
-    } else {
-      successCallBack(data);
-    }
-  }
+        return serviceApi(params).then(
+            // success call back
+            function (data) {
+                if (showLoader) {
+                    $scope.$emit('hideLoader');
+                    $scope.startActivity && $scope.stopActivity(identifier);
+                }
+                if (successCallBack) {
+                    if (successCallBackParameters) {
+                        successCallBack(data, successCallBackParameters);
+                    } else {
+                        successCallBack(data);
+                    }
+                }
             },
             // failure callback
-            function(error) {
-  if (showLoader) {
-    $scope.$emit('hideLoader');
-  }
-  if (failureCallBack) {
-    if (failureCallBackParameters) {
-      failureCallBack(error, failureCallBackParameters);
-    } else {
-      failureCallBack(error);
-    }
-  }
+            function (error) {
+                if (showLoader) {
+                    $scope.$emit('hideLoader');
+                    $scope.startActivity && $scope.stopActivity(identifier);
+                }
+                if (failureCallBack) {
+                    if (failureCallBackParameters) {
+                        failureCallBack(error, failureCallBackParameters);
+                    } else {
+                        failureCallBack(error);
+                    }
+                }
             }
         );
-  };
+    };
 
   // handle drag and drop events
   $scope.hideCurrentDragItem = function(ev, ui) {

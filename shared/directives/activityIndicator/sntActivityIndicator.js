@@ -3,46 +3,53 @@ angular.module('sntActivityIndicator', [])
         function () {
             return {
                 template: '<div ng-show="hasLoader" id="loading"><div id="loading-spinner" ></div></div> ',
-                controller: ['$log', '$scope', '$timeout', function ($log, $scope, $timeout) {
-                    var stats = {
-                        showLoader: 0,
-                        hideLoader: 0
-                    };
+                controller: ['$log', '$scope', '$timeout', '$rootScope', 'sntActivity',
+                    function ($log, $scope, $timeout, $rootScope, sntActivity) {
+                        var stats = {
+                            showLoader: 0,
+                            hideLoader: 0
+                        };
 
-                    $scope.$on('showLoader', function () {
-                        $scope.hasLoader = true;
-                        stats.showLoader++;
-                        $log.info(stats);
-                    });
+                        $scope.$on('showLoader', function () {
+                            stats.showLoader++;
+                            sntActivity.handleLegacyShow();
+                        });
 
-                    $scope.$on('hideLoader', function () {
-                        $timeout(function () {
-                            $scope.hasLoader = false;
-                        }, 100);
-                        stats.hideLoader++;
-                        $log.info(stats);
-                    });
-                }]
+                        $scope.$on('hideLoader', function () {
+                            $timeout(function () {
+                                sntActivity.handleLegacyHide();
+                            }, 100);
+                            stats.hideLoader++;
+                        });
+                    }]
             };
         }
     )
-    .service('sntActivity', ['$log',
-        function ($log) {
+    .service('sntActivity', ['$log', '$rootScope',
+        function ($log, $rootScope) {
             var service = this,
-                activityStack = [];
+                activityStack = [],
+                updateIndicator = function () {
+                    $rootScope.hasLoader = activityStack.length;
+                };
 
             service.start = function (activity) {
-                $log.info('start...', activity);
                 activityStack.push(activity);
+                updateIndicator();
             };
 
             service.stop = function (activity) {
-                $log.info('stop...', activity);
+                activityStack.splice(_.indexOf(activityStack, activityStack.indexOf(activity)));
+                updateIndicator();
             };
 
-            // ?
-            service.pause = function (activity) {
-                $log.info('stop...', activity);
+            service.handleLegacyHide = function () {
+                updateIndicator();
             };
+
+            service.handleLegacyShow = function () {
+                $rootScope.hasLoader = true;
+            };
+
         }
     ]);
