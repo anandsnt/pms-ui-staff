@@ -28,19 +28,25 @@ angular.module('sntActivityIndicator', [])
     .service('sntActivity', ['$log', '$rootScope',
         function ($log, $rootScope) {
             var service = this,
-                activityStack = [],
+                activities = [],
                 updateIndicator = function () {
-                    $rootScope.hasLoader = activityStack.length;
+                    $rootScope.hasLoader = activities.length;
                 };
 
             service.start = function (activity) {
-                activityStack.push(activity);
+                activities.push(activity);
                 updateIndicator();
             };
 
             service.stop = function (activity) {
-                activityStack.splice(_.indexOf(activityStack, activityStack.indexOf(activity)));
-                updateIndicator();
+                var index = activities.indexOf(activity);
+
+                if (activities.length && index > -1) {
+                    activities.splice(_.indexOf(activities, index), 1);
+                    updateIndicator();
+                } else if (index === -1) {
+                    $log.warn('trying to stop a non-existent activity...', activity);
+                }
             };
 
             service.handleLegacyHide = function () {
