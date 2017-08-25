@@ -11,78 +11,44 @@
         </thead>
         <tbody>
 
-            <tr>
+            <tr ng-repeat = "item in manualBalanceObj.manualBalanceList" >
                 <td class="name">
                     <div class="entry">
-                        <input type="text" value="Manual Balance"/>
+                        <input type="text" ng-model="item.name"/>
                     </div>
                 </td>
                 <td class="invoice-no">
                     <div class="entry">
-                        <input type="text" value="121333"/>
+                        <input type="text" ng-model="item.invoiceNo"/>
                     </div>
                 </td>
                 <td class="date">
-                    <div class="entry has-datepicker"> 
-                        <!-- add class .visible to show clear -->
-                        <button class="clear-query">
-                            <span class="icons icon-clear-search">Clear query</span>
+                    <div class="entry has-datepicker">
+                        <button class="clear-query" ng-class="{'visible': escapeNull(item.departureDate) !=''}">    <span class="icons icon-clear-search">Clear query</span>
                         </button>
-                        <input name="{name}" type="text" class="datepicker hasDatepicker" value="" readonly="">
+                        <input type="text" class="datepicker hasDatepicker" value="{{ item.departureDate | date : dateFormat }}" ng-click="popupArDateCalendar($index)" readonly />
                     </div>
                 </td>
                 <td class="amount">
-                    <span class="currency">$</span>
+                    <span class="currency">{{currencySymbol}}</span>
                     <div class="entry">
-                        <input type="text" value="1234.00" />
+                        <input type="text" ng-model="item.amount"/>
                     </div>
                 </td>
                 <td class="action">
                     <button class="button icon-only">
-                        <!-- Show if added, so we can remove it -->
-                        <span class="icons icon-remove-40"></span>
+                        <span ng-hide="$last" class="icons icon-remove-40" ng-click="removeBalanceRow($index)"></span>
+                        <span ng-show="$last" class="icons icon-add-60" ng-disabled="balanceObjIsEmpty($index)" ng-click="addBalanceRow($index)"></span>
                     <button>
                 </td>
             </tr>
-            <!-- add another one which we can add -->
-            <tr>
-                <td class="name">
-                    <div class="entry">
-                        <input type="text" value="Manual Balance"/>
-                    </div>
-                </td>
-                <td class="invoice-no">
-                    <div class="entry">
-                        <input type="text" value=""/>
-                    </div>
-                </td>
-                <td class="date">
-                    <div class="entry has-datepicker"> 
-                        <!-- add class .visible to show clear -->
-                        <button class="clear-query">
-                            <span class="icons icon-clear-search">Clear query</span></button>
-                        <input name="{name}" type="text" class="datepicker hasDatepicker" value="" readonly="">
-                    </div>
-                </td>
-                <td class="amount">
-                    <span class="currency">$</span>
-                    <div class="entry">
-                        <input type="text" value="" />
-                    </div>
-                </td>
-                <td class="action">
-                    <button class="button icon-only">
-                        <!-- Show when we did not add it, so we can. After that, show the remove icon and add a new row-->
-                        <span class="icons icon-add-60"></span>
-                    <button>
-                </td>
-            </tr>
+
         </tbody>
         <tfoot>
             <tr>
                 <td colspan="4">
                     Total
-                    <strong><span class="currency">$</span>4,500.00</strong>
+                    <strong><span class="currency">{{currencySymbol}}</span>{{manualBalanceObj.totalAmount}}</strong>
                 </td>
                 <td></td>
             </tr>

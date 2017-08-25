@@ -101,7 +101,7 @@
 <!-- Manual Balance Billing Content -->
     <!-- remove .hidden to show this screen -->
     <!-- add .with-footer when showing footer -->
-    <div class="billing-content scrollable" ng-controller="RvArBalanceController"  ng-class="{'hidden': (arFlags.currentSelectedArTab !== 'balance' || !arFlags.isAddBalanceScreenVisible)}" >
+    <div class="billing-content scrollable" ng-controller="RvArAddBalanceController"  ng-class="{'hidden': (arFlags.currentSelectedArTab !== 'balance' || !arFlags.isAddBalanceScreenVisible)}" >
        
 
         <div class="wrapper" ng-include="'/assets/partials/companyCard/arTransactions/rvCompanyTravelAgentArAddBalance.html'">
@@ -116,7 +116,7 @@
                     <button type="button" class="button blank" ng-click="clickedCancelAddBalance()">Cancel</button>
                 </li>
                 <li>
-                    <button type="button" class="button green">Save</button>
+                    <button type="button" class="button green" ng-click="clickedSaveAddBalance()">Save</button>
                 </li> 
             </ul>
          

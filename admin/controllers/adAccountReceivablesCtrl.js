@@ -16,15 +16,23 @@ admin.controller('ADAccountReceivablesCtrl', ['$scope', '$state', 'ADHotelSettin
 
 	$scope.saveAccountReceivableStatus = function() {
 
-			var data = {};
+			var settings = $scope.data.ar_number_settings;
 
-			data.ar_number_settings = $scope.data.ar_number_settings;
-			var postSuccess = function() {
-				$scope.$emit('hideLoader');
-
+			var postData = {
+				'ar_number_settings' : {
+					'is_auto_assign_ar_numbers': settings.is_auto_assign_ar_numbers
+				}
 			};
 
-			$scope.invokeApi(ADHotelSettingsSrv.update, data, postSuccess);
+			if (!!settings.selected_manual_charge_code_id) {
+				postData.ar_number_settings.selected_manual_charge_code_id = settings.selected_manual_charge_code_id;
+			}
+			
+			var postSuccess = function() {
+				$scope.$emit('hideLoader');
+			};
+
+			$scope.invokeApi(ADHotelSettingsSrv.update, postData, postSuccess);
 	};
 	$scope.fetchAccountReceivableStatus();
 
