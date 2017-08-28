@@ -1,13 +1,15 @@
-admin.controller('ADZestCheckinEmailSettingsCtrl', ['$scope', '$state', 'data', 'ngDialog', '$filter', '$controller', 'adZestEmailTemplateSrv',
-    function($scope, $state, data, ngDialog, $filter, $controller, adZestEmailTemplateSrv) {
-        $controller('ADZestBaseEmailSettingsCtrl', {
-            $scope: $scope
-        });
-        $scope.generalSettings = data.general_email_template_settings;
-		$scope.data = data.precheckin_email_template_settings;
-        $scope.mainHeading = $filter('translate')('CHECKIN_TEXT_SETTINGS');
+admin.controller('ADZestCheckinEmailSettingsCtrl', ['$scope', 'data', 'ngDialog', '$filter', '$controller', 'adZestEmailTemplateSrv',
+	function($scope, data, ngDialog, $filter, $controller, adZestEmailTemplateSrv) {
+		$controller('ADZestBaseEmailSettingsCtrl', {
+			$scope: $scope
+		});
 
-        $scope.saveSettings = function() {
+		$scope.generalSettings = data.general_email_template_settings;
+		$scope.data = data.checkin_email_template_settings;
+		$scope.hotelDetails = data.hotel_details;
+		$scope.mainHeading = $filter('translate')('CHECKIN_TEXT_SETTINGS');
+
+		$scope.saveSettings = function() {
 			var params = {
 				checkin_email_template_settings: {
 					"email_text_1": $scope.data.email_text_1,
@@ -25,5 +27,5 @@ admin.controller('ADZestCheckinEmailSettingsCtrl', ['$scope', '$state', 'data', 
 
 			$scope.callAPI(adZestEmailTemplateSrv.saveSettings, options);
 		};
-    }
+	}
 ]);
