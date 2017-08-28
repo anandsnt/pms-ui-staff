@@ -988,7 +988,11 @@ sntZestStation.controller('zsRootCtrl', [
 				 *  Check if admin has set back the status of the
 				 *  selected workstation to in order
 				 */
-
+                if ($scope.workstationTimerWhenOffline) {
+                    workstationTimer = 104;
+                    $scope.workstationTimerWhenOffline = false;
+                }
+                
                 workstationTimer = workstationTimer + 1;
 				// Use Debugger Time If Enabled
                 if (zestSntApp.timeDebugger) {
@@ -1560,7 +1564,8 @@ sntZestStation.controller('zsRootCtrl', [
 		 * [getAdminWorkStations description]
 		 * @return {[type]} [description]
 		 */
-        var getAdminWorkStations = function() {
+        $scope.workstationTimerWhenOffline = false;
+        var getAdminWorkStations = function(workstationTimer) {
             var onSuccess = function(response) {
                 $scope.zestStationData.workstations = response.work_stations;
                 setWorkStationForAdmin();
@@ -1571,8 +1576,14 @@ sntZestStation.controller('zsRootCtrl', [
             };
             var onFail = function(response) {
                 $log.warn('fetching workstation list failed:', response);
+                if ($state.current.name === 'zest_station.home') {
+                    $scope.$emit(zsEventConstants.PUT_OOS);
+                }
                 $scope.addReasonToOOSLog('GET_WORKSTATION_FAILED');
-                $scope.$emit(zsEventConstants.PUT_OOS);
+
+                // if (offline) / not connected to the internet, then fetch every 15s
+                // by fast-forwarding the fetch timer to 105s (120 - 15)
+                $scope.workstationTimerWhenOffline = true;
             };
             var options = {
 
