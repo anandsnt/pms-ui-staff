@@ -715,7 +715,7 @@ sntZestStation.controller('zsRootCtrl', [
                 $log.info('Success Save Language text update ');
                 
             };
-            var onFail = function() {
+            var onFail = function(response) {
                 $scope.$emit('hideLoader');
                 $log.warn('Failure, Save Language text update failed: ', response);
                 // TODO: need to somehow alert user save failed, ie. alert('Saving failed, please try again later'), or other popup
