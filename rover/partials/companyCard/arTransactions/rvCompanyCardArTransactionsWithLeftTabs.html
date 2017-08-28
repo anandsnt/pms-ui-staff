@@ -102,9 +102,8 @@
 <!-- Manual Balance Billing Content -->
     <!-- remove .hidden to show this screen -->
     <!-- add .with-footer when showing footer -->
-    <div class="billing-content scrollable" ng-controller="RvArBalanceController"  ng-class="{'hidden': (arFlags.currentSelectedArTab !== 'balance' || !arFlags.isAddBalanceScreenVisible)}" >
-       
-
+    <div class="billing-content scrollable" ng-controller="RvArAddBalanceController" ng-iscroll="arAddBalanceScroller" ng-iscroll-delay="100" ng-class="{'hidden': (arFlags.currentSelectedArTab !== 'balance' || !arFlags.isAddBalanceScreenVisible)}" >
+        
         <div class="wrapper" ng-include="'/assets/partials/companyCard/arTransactions/rvCompanyTravelAgentArAddBalance.html'">
             <!-- {ar-transactions/manual-balance.html} -->
         </div>

@@ -1,7 +1,15 @@
-sntRover.controller('RvArAddBalanceController', ['$scope', '$rootScope', 'ngDialog', 'rvAccountsArTransactionsSrv', '$stateParams',
-	function($scope, $rootScope, ngDialog, rvAccountsArTransactionsSrv, $stateParams ) {
+sntRover.controller('RvArAddBalanceController', ['$scope', '$rootScope', 'ngDialog', 'rvAccountsArTransactionsSrv', '$stateParams', '$timeout', '$log',
+	function($scope, $rootScope, ngDialog, rvAccountsArTransactionsSrv, $stateParams, $timeout, $log ) {
 
 		BaseCtrl.call(this, $scope);
+		// Method to refresh the scrollbar
+		var refreshScroller = function() {
+			$timeout(function() {
+				$scope.refreshScroller('arAddBalanceScroller');
+			}, 500);
+		};
+
+		$scope.setScroller('arAddBalanceScroller');
 
 		var init = function() {
 			// Data object to add new manual balance.
@@ -14,14 +22,15 @@ sntRover.controller('RvArAddBalanceController', ['$scope', '$rootScope', 'ngDial
 						'amount': ''
 					}
 				],
-				'totalAmount': '0.00',
 				'selectedIndex': 0
 			};
+			refreshScroller();
 		};
 
 		// Remove a row from balance add screen.
 		$scope.removeBalanceRow = function( index ) {
 			$scope.manualBalanceObj.manualBalanceList.splice( index, 1 );
+			refreshScroller();
 		};
 		// Add a new row from balance add screen.
 		$scope.addBalanceRow = function( index ) {
@@ -33,6 +42,7 @@ sntRover.controller('RvArAddBalanceController', ['$scope', '$rootScope', 'ngDial
 			};
 
 			$scope.manualBalanceObj.manualBalanceList.push( newBalanceRowObj );
+			refreshScroller();
 		};
 		// Handle balance tab cancel action.
 		$scope.clickedCancelAddBalance = function() {
@@ -81,15 +91,19 @@ sntRover.controller('RvArAddBalanceController', ['$scope', '$rootScope', 'ngDial
 			var successCallbackOfSaveArBalanceAPI = function() {
 				$scope.$emit('hideLoader');
 				$scope.arFlags.isAddBalanceScreenVisible = false;
+			},
+			failureCallbackOfSaveArBalanceAPI = function( errorMessage ) {
+				$scope.$emit('hideLoader');
+				$scope.$emit('SHOW_ERROR_MSG', errorMessage);
 			};
 
 			var dataToSend = getDataToSend();
 
 			if (dataToSend.manual_balance_data.length > 0) {
-				$scope.invokeApi(rvAccountsArTransactionsSrv.saveArBalance, dataToSend, successCallbackOfSaveArBalanceAPI );
+				$scope.invokeApi(rvAccountsArTransactionsSrv.saveArBalance, dataToSend, successCallbackOfSaveArBalanceAPI, failureCallbackOfSaveArBalanceAPI );
 			}
 			else {
-				console.log("No data to save");
+				$log.info('Data Validation :: No data to save !!');
 			}
 		};
 
@@ -105,10 +119,28 @@ sntRover.controller('RvArAddBalanceController', ['$scope', '$rootScope', 'ngDial
 		        scope: $scope
 	      	});
 	    };
+	    // Clear date selected.
+	    $scope.clearDateSelection = function( index ) {
+	    	$scope.manualBalanceObj.manualBalanceList[index].departureDate = '';
+	    };
 	    // Check whether we need to disable the add new row button (+),
 	    // If the row having all fields empty.
-	    $scope.balanceObjIsempty = function( index ) {
+	    $scope.balanceObjIsEmpty = function( index ) {
 	    	return isBalanceObjEmpty(index);
+	    };
+	    // Method to find total balance amount.
+	    $scope.calculateTotalBalance = function() {
+	    	var totalBalance = 0.00, 
+	    		manualBalanceList = $scope.manualBalanceObj.manualBalanceList;
+
+	    	if ( manualBalanceList.length > 0 ) {
+		    	_.each(manualBalanceList, function(value, key) {
+		    		if (value.amount !== '') {
+			    		totalBalance += parseFloat(value.amount);
+			    	}
+		    	});
+		    }
+	    	return totalBalance;
 	    };
 		
 		init();
