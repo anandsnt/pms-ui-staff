@@ -29,6 +29,15 @@
                     Ext #<span class="value">{{balance.external_reference_number}}</span>
                 </span>
             </div>
+
+            <div class="data" ng-if="balance.is_manual_balance">
+                <!-- add class .group/.allotment if group or allotment -->
+                <h2>
+                    {{balance.guest_first_name}}
+                </h2>                 
+               
+            </div>
+
             <div class="data" ng-if="balance.associated_type === 'PostingAccount'">
                 <!-- add class .group/.allotment if group or allotment -->
                 <h2>
@@ -40,14 +49,16 @@
                 </span>
                
             </div>
-            <div class="guest-date arrival" ng-if="balance.associated_type==='Reservation'">
-                <span class="guest-status small-icon check-in">check-in</span>
+            <!-- This HTML is added even if the item is manual balance to fix the design issue. The icon kept hide -->
+            <div class="guest-date arrival" ng-if="balance.associated_type==='Reservation' || balance.is_manual_balance">
+                <span class="guest-status small-icon check-in" ng-hide="balance.is_manual_balance">check-in</span>
                 <time datetime="{arrival-timestamp}">
                     <span class="date">{{balance.reservation_arrival_date}}</span>
                     <span class="time">{{balance.reservation_arrival_time}}</span>
                 </time>
             </div>
-            <div class="guest-date departure" ng-if="balance.associated_type==='Reservation'">
+
+            <div class="guest-date departure" ng-if="balance.associated_type==='Reservation' || balance.is_manual_balance">
                 <span class="guest-status small-icon check-out">check-out</span>
                 <time >
                     <span class="date">{{balance.reservation_dep_date}}</span>
