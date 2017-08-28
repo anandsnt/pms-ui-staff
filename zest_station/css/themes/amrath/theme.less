@@ -1,11 +1,11 @@
-/* StayNTouch Zest Station Styles | First Theme */
+/* StayNTouch Zest Station Styles | Amrath Theme */
 
 /* 1. COLORS
 ==========================================================*/
-	@brandColor:			#000;
+	@brandColor:			#18467d;
 	
-	@textColor: 			@brandColor;
-	@backgroundColor: 		@white;
+	@textColor: 			@black;
+	@backgroundColor: 		#e6e6e6;
 	
 	@actionColor: 			@white;
 	@actionBackground: 		@brandColor;
@@ -21,7 +21,7 @@
 
 /* 3. IMAGES
 ==========================================================*/
-	@background: @white;
+	@background: @backgroundColor;
 	@backgroundSize: '';
 	
 	@headerIconsColor: 		@brandColor;
@@ -47,36 +47,39 @@
 	
 	}
 
-	.logo-svg {
-		background-image: url("../css/themes/first/logo.svg");
-		background-repeat: no-repeat;
-		background-size: contain;
-		width: 90px;
-		height: 122px;
-		background-position: center;
-		margin-top: 0px;
+	.logo-svg{
+	    background-image: url("../css/themes/amrath/logo.svg");
+	    background-repeat: no-repeat;
+	    background-size: contain;
+	    width: 152px;
+	    height: 105px;
+	    background-position: center; 
 	}
 
 /* 4. LAYOUT
 ==========================================================*/
 	
-	#first {
+	#amrath {
  
 		#header {
-			height: 120px;
+			height: 125px;
+			background: @white;
 		}
 
 		#main {
-			#calc > #height > .remove(100%, 120px);
-			top: 120px;
-			&.centered {
-				padding-top: 0;
-			}
+			#calc > #height > .remove(100%, 125px);
+			top: 125px;
 		}
 		.entry.input {
 			.icons {
 				fill: @brandColor;
 			}
+		}
+
+		input,
+		select,
+		button {
+			font-size: 1.3em;
 		}
 
 		input,
@@ -106,7 +109,7 @@
 
 			.logo {
 				width: auto;
-				height: 122px;
+				height: 105px;
 			}
 		}
 
@@ -130,14 +133,6 @@
 			}
 		}
 
-		#selection {
-			li {
-				.details {
-					background-color: fade(@brandColor, 5);
-				}
-			}
-		}
-
 		#guests {
 			.button {
 				color: @white;
@@ -146,18 +141,16 @@
 		} 
 
 		.add-on-list {
-	    	li {
 
-	    		&:not(.selected){
-	    			border-color: rgba(0,0,0,0.05);
-
-		    		.add-on-content {
-		    			background: rgba(0,0,0,0.05);
-		    		}
-	    		}
-	    		
-	    	}
-	    }
+			// The second row is getting chunked on lower viewport height
+			@media screen and (max-height:800px) {
+				&.add-on-list-rows {
+					li:nth-child(n+4) {
+						margin-top: 0;
+					}
+				}
+			}
+		}
 
 	    .add-on {
 
@@ -169,12 +162,12 @@
 	    }
 
 	    #textual {
-	    	background: #ececec;
+	    	background: @white;
 	    	 
 
 	    	&:before,
 	    	&:after {
-	    		background: #ececec;
+	    		background: @white;
 	    	}
 
 	    }
@@ -193,20 +186,4 @@
 				fill: @white;
 			}
 		}
-
-		.add-guest-mode-content{
-		    height: 100% !important;
-		    margin-top: 50px;
-		}
-
-		.check_in_add_remove > .input-field-contents {
-			height: 45% !important;
-		}
-	}
-
-
-	.iframe-content{
-		position: fixed !important;
-		-webkit-overflow-scrolling: touch !important;
-		overflow-y: scroll !important;
 	}
