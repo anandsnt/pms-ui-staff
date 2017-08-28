@@ -143,5 +143,12 @@ sntRover.controller('RvArAddBalanceController', ['$scope', '$rootScope', 'ngDial
 	    	return totalBalance;
 	    };
 		
+		/*
+		 * Loading of this Add Balance Tab by +ADD BALANCE button.
+		 */
+		$scope.$on('ADD_BALANCE_TAB', function(event) {
+			init();
+		});
+
 		init();
 }]);

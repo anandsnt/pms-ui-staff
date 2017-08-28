@@ -79,6 +79,7 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 		 */			
 		$scope.showAddBalanceScreen = function () {
 			$scope.arFlags.isAddBalanceScreenVisible = true;
+			$scope.$broadcast('ADD_BALANCE_TAB');
 		};	
 		/*
 		 * Show Add balance screen - Cancel action
