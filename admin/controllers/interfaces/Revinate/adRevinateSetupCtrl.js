@@ -1,4 +1,4 @@
-admin.controller('adRevinateSetupCtrl', ['$scope', '$rootScope', 'config', 'adInterfacesCommonConfigSrv', 'dateFilter', 
+admin.controller('adRevinateSetupCtrl', ['$scope', '$rootScope', 'config', 'adInterfacesCommonConfigSrv', 'dateFilter',
     function($scope, $rootScope, config, adInterfacesCommonConfigSrv, dateFilter) {
 
         var interfaceIdentifier = 'revinate';
@@ -63,6 +63,7 @@ admin.controller('adRevinateSetupCtrl', ['$scope', '$rootScope', 'config', 'adIn
         (function() {
             //    init
             $scope.config = config;
+            $scope.interface = interfaceIdentifier;
         })();
     }
 ]);

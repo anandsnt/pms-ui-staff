@@ -90,6 +90,10 @@ sntRover.controller('rvApplyRoomChargeCtrl', [
 		// ngDialog.close();
 		// since we are expecting some custom http error status in the response
 		// and we are using that to differentiate among errors
+
+        // CICO-44726 Hide Activity Indicator in case of error in room upgrade
+        $scope.$emit('hideLoader');
+
 		if (error.hasOwnProperty ('httpStatus')) {
 			switch (error.httpStatus) {
 				case 470:
