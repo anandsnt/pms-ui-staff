@@ -170,6 +170,10 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 			$scope.fetchTransactions(dataToSend, 1);
 			
 		};
+		// Catch error messges from child controllers.
+		$scope.$on('SHOW_ERROR_MSG', function( errorMessage ) {
+			$scope.errorMessage = errorMessage;
+		});
 
 		/*
 		 * Initial loading of this AR transactions tab
