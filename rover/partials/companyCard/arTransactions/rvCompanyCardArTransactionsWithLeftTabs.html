@@ -127,7 +127,7 @@
 <!-- Paid Bills Billing Content -->
     <!-- remove .hidden to show this screen -->
     <!-- add .with-pagination when showing pagination -->
-    <div class="billing-content scrollable" ng-controller="RvArPaidController" ng-class="{'hidden': arFlags.currentSelectedArTab !== 'paid-bills'}">
+    <div class="billing-content scrollable" ng-controller="RvArPaidController" ng-class="{'hidden': arFlags.currentSelectedArTab !== 'paid-bills'}" ng-iscroll="paid-list">
  
         <div class="wrapper" ng-include="'/assets/partials/companyCard/arTransactions/rvCompanyTravelAgentArPaid.html'">
      <!--        {ar-transactions/paid-bills.html} -->

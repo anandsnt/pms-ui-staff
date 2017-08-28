@@ -66,6 +66,8 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 			        break;
 			    case 'paid-bills':
 			        $scope.arDataObj.paidList = data.ar_transactions;
+			        $scope.arDataObj.totalCount = data.totalCount;
+			        $scope.$broadcast("FETCH_COMPLETE_PAID_LIST");
 			        break;
 			    case 'unallocated':
 			        $scope.arDataObj.unallocatedList = data.ar_transactions;
@@ -86,6 +88,36 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 			if (tab !== 'balance') {
 				$scope.arFlags.isAddBalanceScreenVisible = false;
 			}
+
+			var dataToSend = {
+				account_id: $stateParams.id,
+				getParams : {
+					page: 1,
+					per_page: 50,
+					from_date: $scope.filterData.fromDate,
+					to_date: $scope.filterData.toDate,
+					query: $scope.filterData.query
+				}
+			}
+
+			switch($scope.arFlags.currentSelectedArTab) {
+			    case 'balance':
+			        dataToSend.getParams.transaction_type = 'CHARGES';
+					dataToSend.getParams.paid = false;
+			        break;
+			    case 'paid-bills':
+			        dataToSend.getParams.transaction_type = 'CHARGES';
+					dataToSend.getParams.paid = true;
+			        break;
+			    case 'unallocated':
+			        $scope.arDataObj.unallocatedList = data.ar_transactions;
+			        break;
+			    case 'allocated':
+			        $scope.arDataObj.allocatedList = data.ar_transactions;
+			        break;
+			}
+
+			$scope.fetchTransactions(dataToSend);
 		};
 		/*
 		 * Show Add balance screen

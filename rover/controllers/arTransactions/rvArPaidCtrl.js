@@ -4,6 +4,16 @@ sntRover.controller('RvArPaidController', ['$scope', '$rootScope', 'RVCompanyCar
 
 		BaseCtrl.call(this, $scope);
 
-		
+		$scope.setScroller('paid-list');
+	    var refreshScroll = function() {
+	        $timeout(function() { 
+	            $scope.refreshScroller('paid-list');
+	        }, 3000);
+	    };
+
+	    $scope.$on("FETCH_COMPLETE_PAID_LIST", function() {
+	    	refreshScroll();
+	    });
+
 		
 }]);
