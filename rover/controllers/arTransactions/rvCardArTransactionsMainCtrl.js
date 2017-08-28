@@ -35,7 +35,18 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 			'unpaidAmount': '',
 			'paidAmount': '',
 			'allocatedCredit': '',
-			'unallocatedCredit': ''
+			'unallocatedCredit': '',
+
+			'perPage': 50,
+			'balancePageNo': 1,
+			'paidPageNo': 1,
+			'allocatePageNo': 1,
+			'unallocatePageNo': 1,
+
+			'balanceTotalCount': 0,
+			'paidTotalCount': 0,
+			'allocatedTotalCount': 0,
+			'unallocatedTotalCount': 0
 		};
 
 		/*
@@ -48,32 +59,37 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 			$scope.arDataObj.paidAmount = data.paid_amount;
 			$scope.arDataObj.allocatedCredit = data.allocated_credit;
 			$scope.arDataObj.unallocatedCredit = data.unallocated_credit;
-
-			
             
-            $timeout(function () {                
-
-                 $scope.$broadcast('updatePagination', $scope.arFlags.currentSelectedArTab );                
-
-            }, 2000);
-
-
 			switch($scope.arFlags.currentSelectedArTab) {
 			    case 'balance':
 			        $scope.arDataObj.balanceList = data.ar_transactions;
-			        $scope.arDataObj.totalCount = data.totalCount;
+			        $scope.arDataObj.balanceTotalCount = data.total_count;
 			        $scope.$broadcast("FETCH_COMPLETE_BALANCE_LIST");
+
+		            $timeout(function () {                
+		                 $scope.$broadcast('updatePagination', 'BALANCE' );                
+		            }, 1000);
+
 			        break;
 			    case 'paid-bills':
 			        $scope.arDataObj.paidList = data.ar_transactions;
-			        $scope.arDataObj.totalCount = data.totalCount;
+			        $scope.arDataObj.paidTotalCount = data.total_count;
 			        $scope.$broadcast("FETCH_COMPLETE_PAID_LIST");
+
+			        $timeout(function () {                
+		                 $scope.$broadcast('updatePagination', 'PAID' );                
+		            }, 1000);
+			        
 			        break;
 			    case 'unallocated':
 			        $scope.arDataObj.unallocatedList = data.ar_transactions;
+			        $scope.arDataObj.unallocatedTotalCount = data.total_count;
+			        $scope.$broadcast('updatePagination', 'UNALLOCATE' );
 			        break;
 			    case 'allocated':
 			        $scope.arDataObj.allocatedList = data.ar_transactions;
+			        $scope.arDataObj.allocatedTotalCount = data.total_count;
+			        $scope.$broadcast('updatePagination', 'ALLOCATE' );
 			        break;
 			}
 			$scope.$emit('hideLoader');
@@ -92,8 +108,7 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 			var dataToSend = {
 				account_id: $stateParams.id,
 				getParams : {
-					page: 1,
-					per_page: 50,
+					per_page: $scope.arDataObj.perPage,
 					from_date: $scope.filterData.fromDate,
 					to_date: $scope.filterData.toDate,
 					query: $scope.filterData.query
@@ -104,10 +119,12 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 			    case 'balance':
 			        dataToSend.getParams.transaction_type = 'CHARGES';
 					dataToSend.getParams.paid = false;
+					dataToSend.getParams.page = $scope.arDataObj.balancePageNo;
 			        break;
 			    case 'paid-bills':
 			        dataToSend.getParams.transaction_type = 'CHARGES';
 					dataToSend.getParams.paid = true;
+					dataToSend.getParams.page = $scope.arDataObj.paidPageNo;
 			        break;
 			    case 'unallocated':
 			        $scope.arDataObj.unallocatedList = data.ar_transactions;
@@ -168,7 +185,7 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 				account_id: $stateParams.id,
 				getParams : {
 					page: 1,
-					per_page: 50,
+					per_page: $scope.arDataObj.perPage,
 					transaction_type: 'CHARGES',
 					paid: false,
 					from_date: $scope.filterData.fromDate,
@@ -187,21 +204,13 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 			var dataToSend = {
 				account_id: $stateParams.id,
 				getParams : {
-					per_page: 50,
+					per_page: $scope.arDataObj.perPage,
 					transaction_type: 'CHARGES',
 					paid: false
 				}
-			};
-
-			$scope.paginationData = {
-                id: $scope.arFlags.currentSelectedArTab,
-                api: [$scope.fetchTransactions, dataToSend],
-                perPage: 50
-            };
-
-			$scope.fetchTransactions(dataToSend, 1);
-			
+			};	
 		};
+
 		// Catch error messges from child controllers.
 		$scope.$on('SHOW_ERROR_MSG', function( errorMessage ) {
 			$scope.errorMessage = errorMessage;
@@ -212,8 +221,71 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 		 */
 
 		$rootScope.$on("arTransactionTabActive", function(event) {
-			init();
+			//init();
 			$scope.arFlags.isArTabActive = true;
 		});
+
+
+		// -------/ PAGINATION LOGIC /----------- //
+
+		var getDataToSend = function() {
+
+			var dataToSend = {
+				account_id: $stateParams.id,
+				getParams : {
+					per_page: $scope.arDataObj.perPage,
+					transaction_type: 'CHARGES',
+					paid: false,
+					page: $scope.arDataObj.balancePageNo
+				}
+			};
+
+			return dataToSend;
+		};
+
+		/*
+	     * Fetch transactions APIs
+	     * @param pageType { String } , Page No { String }to API
+	     */
+		var loadAPIData = function ( pageType, pageNo ) {
+			
+			if ( pageType === 'BALANCE' ) {
+				$scope.arDataObj.balancePageNo = pageNo;
+			}
+
+			$scope.invokeApi(rvAccountsArTransactionsSrv.fetchTransactionDetails, getDataToSend(), successCallbackOfFetchAPI );
+
+		};
+	    
+	    // Pagination options for BALANCE
+	    $scope.balancePagination = {
+	        id: 'BALANCE',
+	        api: [ loadAPIData, 'BALANCE' ],
+	        perPage: $scope.arDataObj.perPage
+	    };
+
+	    // Pagination options for PAID
+	    $scope.paidPagination = {
+	        id: 'PAID',
+	        api: [ loadAPIData, 'PAID' ],
+	        perPage: $scope.arDataObj.perPage
+	    };
+
+	    // Pagination options for AR_BALANCE
+	    $scope.allocatePagination = {
+	        id: 'ALLOCATE',
+	        api: [ loadAPIData, 'ALLOCATE' ],
+	        perPage: $scope.arDataObj.perPage
+	    };
 		
+		// Pagination options for AR_BALANCE
+	    $scope.unallocatePagination = {
+	        id: 'UNALLOCATE',
+	        api: [ loadAPIData, 'UNALLOCATE' ],
+	        perPage: $scope.arDataObj.perPage
+	    };
+
+	    loadAPIData('BALANCE', 1);
+
+	    // -------/ PAGINATION LOGIC /----------- //
 }]);
