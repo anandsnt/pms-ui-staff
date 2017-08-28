@@ -56,9 +56,11 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 			        break;
 			    case 'unallocated':
 			        $scope.arDataObj.unallocatedList = data.ar_transactions;
+			        $scope.$broadcast('REFRESH_UNALLOCATED_LIST_SCROLLER');
 			        break;
 			    case 'allocated':
 			        $scope.arDataObj.allocatedList = data.ar_transactions;
+			        $scope.$broadcast('REFRESH_ALLOCATED_LIST_SCROLLER');
 			        break;
 			}
 			$scope.$emit('hideLoader');

@@ -138,7 +138,7 @@
 <!-- Unallocated Billing Content -->
     <!-- remove .hidden to show this screen -->
     <!-- Add .with-pagination when showing pagination -->
-    <div class="billing-content scrollable" ng-controller="RvArUnallocatedController" ng-class="{'hidden': arFlags.currentSelectedArTab !== 'unallocated'}">
+    <div class="billing-content scrollable" ng-controller="RvArUnallocatedController" ng-class="{'hidden': arFlags.currentSelectedArTab !== 'unallocated'}" ng-if="arFlags.currentSelectedArTab === 'unallocated' " ng-iscroll="unallocated-list-scroller">
 
         <div class="wrapper" ng-include="'/assets/partials/companyCard/arTransactions/rvCompanyTravelAgentArUnallocated.html'">
            <!--  {ar-transactions/unallocated-payments.html} -->
@@ -151,7 +151,7 @@
 <!-- Allocated Billing Content -->
     <!-- remove .hidden to show this screen -->
     <!-- Add .with-pagination when showing pagination -->
-    <div class="billing-content scrollable" ng-controller="RvArAllocatedController" ng-class="{'hidden': arFlags.currentSelectedArTab !== 'allocated'}">
+    <div class="billing-content scrollable" ng-controller="RvArAllocatedController" ng-class="{'hidden': arFlags.currentSelectedArTab !== 'allocated'}" ng-if="arFlags.currentSelectedArTab === 'allocated' " ng-iscroll="allocated-list-scroller">
 
          <div class="wrapper"  ng-include="'/assets/partials/companyCard/arTransactions/rvCompanyTravelAgentArAllocated.html'">
             <!-- {ar-transactions/allocated-payments.html} -->
