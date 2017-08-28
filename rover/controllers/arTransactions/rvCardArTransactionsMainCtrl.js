@@ -105,36 +105,9 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 				$scope.arFlags.isAddBalanceScreenVisible = false;
 			}
 
-			var dataToSend = {
-				account_id: $stateParams.id,
-				getParams : {
-					per_page: $scope.arDataObj.perPage,
-					from_date: $scope.filterData.fromDate,
-					to_date: $scope.filterData.toDate,
-					query: $scope.filterData.query
-				}
-			}
+			var dataToApi = createParametersFetchTheData();
 
-			switch($scope.arFlags.currentSelectedArTab) {
-			    case 'balance':
-			        dataToSend.getParams.transaction_type = 'CHARGES';
-					dataToSend.getParams.paid = false;
-					dataToSend.getParams.page = $scope.arDataObj.balancePageNo;
-			        break;
-			    case 'paid-bills':
-			        dataToSend.getParams.transaction_type = 'CHARGES';
-					dataToSend.getParams.paid = true;
-					dataToSend.getParams.page = $scope.arDataObj.paidPageNo;
-			        break;
-			    case 'unallocated':
-			        $scope.arDataObj.unallocatedList = data.ar_transactions;
-			        break;
-			    case 'allocated':
-			        $scope.arDataObj.allocatedList = data.ar_transactions;
-			        break;
-			}
-
-			$scope.fetchTransactions(dataToSend);
+			$scope.fetchTransactions(dataToApi);
 		};
 		/*
 		 * Show Add balance screen
@@ -166,6 +139,7 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 	     */
 		$scope.fetchTransactions = function (dataToSend, pageNo) {
 			dataToSend.getParams.page = pageNo ? pageNo : 1;
+
 			$scope.invokeApi(rvAccountsArTransactionsSrv.fetchTransactionDetails, dataToSend, successCallbackOfFetchAPI );
 		};
 		/*
@@ -175,19 +149,49 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 
 		$scope.filterChanged = function() {
 			// Params need to change while doing the stories on each area
+			var dataToApi = createParametersFetchTheData();
+
+			$scope.fetchTransactions(dataToApi);
+		};
+
+		/*
+		 * To create the parameters which is to be passed to API
+		 */
+
+		var createParametersFetchTheData = function () {
 			var dataToSend = {
 				account_id: $stateParams.id,
 				getParams : {
-					page: 1,
 					per_page: $scope.arDataObj.perPage,
-					transaction_type: 'CHARGES',
-					paid: false,
 					from_date: $scope.filterData.fromDate,
 					to_date: $scope.filterData.toDate,
 					query: $scope.filterData.query
 				}
+			};
+
+			switch($scope.arFlags.currentSelectedArTab) {
+			    case 'balance':
+			        dataToSend.getParams.transaction_type = 'CHARGES';
+					dataToSend.getParams.paid = false;
+					dataToSend.getParams.page = $scope.arDataObj.balancePageNo;
+			        break;
+			    case 'paid-bills':
+			        dataToSend.getParams.transaction_type = 'CHARGES';
+					dataToSend.getParams.paid = true;
+					dataToSend.getParams.page = $scope.arDataObj.paidPageNo;
+			        break;
+			    case 'unallocated':
+			        dataToSend.getParams.transaction_type = 'PAYMENTS';
+					dataToSend.getParams.allocated = false;
+					dataToSend.getParams.page = $scope.arDataObj.allocatePageNo;
+			        break;
+			    case 'allocated':
+			        dataToSend.getParams.transaction_type = 'PAYMENTS';
+					dataToSend.getParams.allocated = true;
+					dataToSend.getParams.page = $scope.arDataObj.unallocatePageNo;
+			        break;
 			}
-			$scope.fetchTransactions(dataToSend);
+			return dataToSend;
 		};
 
 		/*
@@ -195,14 +199,9 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 		 *
 		 */
 		var init = function() {
-			var dataToSend = {
-				account_id: $stateParams.id,
-				getParams : {
-					per_page: $scope.arDataObj.perPage,
-					transaction_type: 'CHARGES',
-					paid: false
-				}
-			};	
+			var dataToApi = createParametersFetchTheData();
+
+			$scope.fetchTransactions(dataToApi);
 		};
 
 		// Catch error messges from child controllers.
@@ -210,32 +209,22 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 			$scope.errorMessage = errorMessage;
 		});
 
+		$scope.$on('REFRESH_BALANCE_LIST', function() {
+			var dataToApi = createParametersFetchTheData();
+
+			$scope.fetchTransactions(dataToApi);
+		});
+
 		/*
 		 * Initial loading of this AR transactions tab
 		 */
 
 		$rootScope.$on("arTransactionTabActive", function(event) {
-			//init();
+			init();
 			$scope.arFlags.isArTabActive = true;
 		});
 
 
-		// -------/ PAGINATION LOGIC /----------- //
-
-		var getDataToSend = function() {
-
-			var dataToSend = {
-				account_id: $stateParams.id,
-				getParams : {
-					per_page: $scope.arDataObj.perPage,
-					transaction_type: 'CHARGES',
-					paid: false,
-					page: $scope.arDataObj.balancePageNo
-				}
-			};
-
-			return dataToSend;
-		};
 
 		/*
 	     * Fetch transactions APIs
@@ -247,7 +236,7 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 				$scope.arDataObj.balancePageNo = pageNo;
 			}
 
-			$scope.invokeApi(rvAccountsArTransactionsSrv.fetchTransactionDetails, getDataToSend(), successCallbackOfFetchAPI );
+			$scope.invokeApi(rvAccountsArTransactionsSrv.fetchTransactionDetails, createParametersFetchTheData(), successCallbackOfFetchAPI );
 
 		};
 	    
@@ -279,7 +268,7 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 	        perPage: $scope.arDataObj.perPage
 	    };
 
-	    loadAPIData('BALANCE', 1);
+	    //loadAPIData('BALANCE', 1);
 
 	    // -------/ PAGINATION LOGIC /----------- //
 }]);

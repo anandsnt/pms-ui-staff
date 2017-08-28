@@ -25,8 +25,11 @@
                 <span class="invoice">
                     Invoice #<span class="value">{{balance.invoice_number}}</span>
                 </span>
-                <span class="confirmation" ng-if="balance.external_reference_number!==''">
+                <span class="confirmation" ng-if="balance.external_reference_number!==null">
                     Ext #<span class="value">{{balance.external_reference_number}}</span>
+                </span>
+                <span class="confirmation" ng-if="balance.external_reference_number===null">
+                    Conf #<span class="value">{{balance.reservation_confirm_no}}</span>
                 </span>
             </div>
 

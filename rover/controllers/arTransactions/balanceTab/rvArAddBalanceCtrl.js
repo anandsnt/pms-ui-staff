@@ -90,6 +90,7 @@ sntRover.controller('RvArAddBalanceController', ['$scope', '$rootScope', 'ngDial
 
 			var successCallbackOfSaveArBalanceAPI = function() {
 				$scope.$emit('hideLoader');
+				$scope.$emit('REFRESH_BALANCE_LIST');
 				$scope.arFlags.isAddBalanceScreenVisible = false;
 			},
 			failureCallbackOfSaveArBalanceAPI = function( errorMessage ) {
