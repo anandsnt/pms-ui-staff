@@ -6,7 +6,7 @@ admin.controller('ADZestBaseEmailSettingsCtrl', ['$scope', '$state', 'ngDialog',
             return $sce.trustAsHtml(str);
         };
         $scope.previewClicked = function() {
-            if ($scope.generalSettings.main_bg_image.length > 0) {
+            if ($scope.generalSettings.use_main_bg_image && $scope.generalSettings.main_bg_image.length > 0) {
                 $scope.data.main_bg_style = "background-image:url(" + $scope.generalSettings.main_bg_image + ");";
             } else {
                 $scope.data.main_bg_style = 'background:' + $scope.generalSettings.main_bg + ';';
