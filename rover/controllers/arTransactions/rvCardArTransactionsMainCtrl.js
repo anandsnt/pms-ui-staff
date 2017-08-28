@@ -152,7 +152,7 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 			
 		};
 		// Catch error messges from child controllers.
-		$scope.$on('SHOW_ERROR_MSG', function( errorMessage ) {
+		$scope.$on('SHOW_ERROR_MSG', function( event, errorMessage ) {
 			$scope.errorMessage = errorMessage;
 		});
 
