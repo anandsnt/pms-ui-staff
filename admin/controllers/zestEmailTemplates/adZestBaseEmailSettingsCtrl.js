@@ -1,6 +1,10 @@
-admin.controller('ADZestBaseEmailSettingsCtrl', ['$scope', '$state', 'ngDialog',
-    function($scope, $state, ngDialog) {
+admin.controller('ADZestBaseEmailSettingsCtrl', ['$scope', '$state', 'ngDialog', '$sce',
+    function($scope, $state, ngDialog, $sce) {
         $scope.currentYear = new Date().getFullYear();
+
+        $scope.trustHtml = function(str){
+            return $sce.trustAsHtml(str);
+        };
         $scope.previewClicked = function() {
             if ($scope.generalSettings.main_bg_image.length > 0) {
                 $scope.data.main_bg_style = "background-image:url(" + $scope.generalSettings.main_bg_image + ");";
