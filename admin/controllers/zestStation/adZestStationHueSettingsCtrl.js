@@ -1,4 +1,4 @@
-admin.controller('adZestStationHueSettingsCtrl', ['$scope', '$rootScope', '$state', '$stateParams', 'ADZestStationSrv', 'kioskSettings', '$log',
+admin.controller('adZestStationHueSettingsCtrl', ['$scope', '$state', '$rootScope', '$stateParams', 'ADZestStationSrv', 'kioskSettings', '$log',
 	function($scope, $state, $rootScope, $stateParams, ADZestStationSrv, kioskSettings, $log) {
 
 
@@ -85,7 +85,15 @@ admin.controller('adZestStationHueSettingsCtrl', ['$scope', '$rootScope', '$stat
 		 * @return {[type]} [description]
 		 */
 		function createNewWebSocketConnection() {
-			ws = new WebSocket("wss://localhost:4649/CCSwipeService");
+			var wsSwipeUrl = $rootScope.wsCCSwipeUrl;
+			var wsSwipePort = $rootScope.wsCCSwipePort;
+			var port = (_.isUndefined(wsSwipePort) || wsSwipePort === '' || wsSwipePort === null) ? 4649 : wsSwipePort;
+
+			if (_.isUndefined(wsSwipeUrl) || wsSwipeUrl === '') {
+				ws = new WebSocket('wss://localhost:' + port + '/CCSwipeService');
+			} else {
+				ws = new WebSocket(wsSwipeUrl + ':' + port + '/CCSwipeService');
+			}
 			// Triggers when websocket connection is established.
 			ws.onopen = function() {
 				$log.info("Connected. Warning : Clicking on Connect multipple times will create multipple connections to the server");
