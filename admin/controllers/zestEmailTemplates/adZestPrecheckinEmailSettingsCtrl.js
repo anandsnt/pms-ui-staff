@@ -1,5 +1,5 @@
-admin.controller('ADZestEmailPrecheckinSettingsCtrl', ['$scope', '$state', 'data', 'ngDialog', '$translate', '$filter', '$controller', 'adZestEmailTemplateSrv',
-	function($scope, $state, data, ngDialog, $translate, $filter, $controller, adZestEmailTemplateSrv) {
+admin.controller('ADZestEmailPrecheckinSettingsCtrl', ['$scope', '$state', 'data', 'ngDialog', '$translate', '$filter', '$controller', 'adZestEmailTemplateSrv', '$compile',
+	function($scope, $state, data, ngDialog, $translate, $filter, $controller, adZestEmailTemplateSrv, $compile) {
 		$controller('ADZestBaseEmailSettingsCtrl', {
 			$scope: $scope
 		});

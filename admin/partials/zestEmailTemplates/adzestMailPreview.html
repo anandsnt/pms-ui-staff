@@ -133,7 +133,7 @@
                             <table border="0" cellpadding="0" cellspacing="0" class="wrapper" style="max-width: 700px;" width="100%">
                                 <tr>
                                     <td align="center" class="logo" style="padding: 40px 0;" valign="top">
-                                        <img border="0" src="{{generalSettings.hotel_logo}}" style="display: block; font-family: Helvetica, Arial, sans-serif; color: #ffffff; font-size: 16px;margin: 0 auto;" alt=''/>
+                                        <img border="0" src="{{hotelDetails.hotel_logo}}" style="display: block; font-family: Helvetica, Arial, sans-serif; color: #ffffff; font-size: 16px;margin: 0 auto;" alt=''/>
                                     </td>
                                 </tr>
                             </table>
@@ -149,9 +149,9 @@
                                                 <td>
                                                     <table border="0" cellpadding="0" cellspacing="0" width="100%">
                                                         <tr>
-                                                            <td align="center" class="padding-copy" style="font-size: {{generalSettings.text_1_font_size}}px; font-family: Helvetica, Arial, sans-serif; padding-top: 10px;color: {{generalSettings.text_color}};text-align: center;">
+                                                            <td align="center" class="padding-copy" style="font-size: {{generalSettings.text_1_font_size}}px; font-family: Helvetica, Arial, sans-serif; padding-top: 10px;color: {{generalSettings.text_color}};text-align: {{generalSettings.email_top_text_alignment}};">
                                                                 {{generalSettings.hotel_greetings_text}} first_name<span ng-show="generalSettings.show_last_name">&nbsp;last_name</span>
-                                                                , <span ng-bind-html="data.email_text_1 | unsafe"></span>
+                                                                , <text ng-bind-html="data.email_text_1 | unsafe"></text>
                                                             </td>
                                                         </tr>
                                                     </table>
@@ -189,7 +189,7 @@
                                                             <td>
                                                                 <table border="0" cellpadding="0" cellspacing="0" width="100%">
                                                                     <tr>
-                                                                        <td align="center" class="padding-copy" style="padding: 60px 0 0 0; font-size: {{generalSettings.text_2_font_size}}px;text-align: center; line-height: 25px; font-family: Helvetica, Arial, sans-serif;color: {{generalSettings.text_color}};">
+                                                                        <td align="center" class="padding-copy" style="padding: 60px 0 0 0; font-size: {{generalSettings.text_2_font_size}}px;text-align: {{generalSettings.email_bottom_text_alignment}}; line-height: 25px; font-family: Helvetica, Arial, sans-serif;color: {{generalSettings.text_color}};">
                                                                              <span ng-bind-html="data.email_text_2 | unsafe"></span>
                                                                         </td>
                                                                     </tr>

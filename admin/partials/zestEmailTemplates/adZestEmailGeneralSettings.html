@@ -58,7 +58,33 @@
                     <div class="form-title full-width">
                         <h3><span translate>GENERAL_TEXT_SETTINGS</span></h3>
                     </div>
-                    <ad-toggle-button is-checked="generalSettings.show_last_name" label="{{ 'SHOW_GUEST_LAST_NAME' | translate}}"></ad-toggle-button>
+                    <ad-toggle-button is-checked="generalSettings.show_last_name" label="{{ 'SHOW_GUEST_LAST_NAME' | translate}}" div-class="full-width"></ad-toggle-button>
+                     <div id="options" class="entry">
+                        <label>
+                            {{ 'EMAIL_TOP_PORTION_TEXT_ALIGNMENT' | translate}}
+                        </label>
+                        <label class="radio" ng-class="{'checked':generalSettings.email_top_text_alignment == 'center'}">
+                            <span class="icon-form icon-radio " ng-class="{checked:generalSettings.email_top_text_alignment=='center'}"></span>
+                            <input type="radio" value="center" ng-model="generalSettings.email_top_text_alignment"> {{ 'CENTER' | translate}}
+                        </label>
+                        <label class="radio" ng-class="{'checked':generalSettings.email_top_text_alignment == 'left'}">
+                            <span class="icon-form icon-radio " ng-class="{checked:generalSettings.email_top_text_alignment == 'left'}"></span>
+                            <input type="radio" value="left" ng-model="generalSettings.email_top_text_alignment"> {{ 'LEFT' | translate}}
+                        </label>
+                    </div>
+                    <div id="options" class="entry">
+                        <label>
+                            {{ 'EMAIL_BOTTOM_PORTION_TEXT_ALIGNMENT' | translate}}
+                        </label>
+                        <label class="radio" ng-class="{'checked':generalSettings.email_bottom_text_alignment == 'center'}">
+                            <span class="icon-form icon-radio " ng-class="{checked:generalSettings.email_bottom_text_alignment=='center'}"></span>
+                            <input type="radio" value="center" ng-model="generalSettings.email_bottom_text_alignment"> {{ 'CENTER' | translate}}
+                        </label>
+                        <label class="radio" ng-class="{'checked':generalSettings.email_bottom_text_alignment == 'left'}">
+                            <span class="icon-form icon-radio " ng-class="{checked:generalSettings.email_bottom_text_alignment == 'left'}"></span>
+                            <input type="radio" value="left" ng-model="generalSettings.email_bottom_text_alignment"> {{ 'LEFT' | translate}}
+                        </label>
+                    </div>
                     <ad-textbox value="generalSettings.hotel_greetings_text" label="{{'HOTEL_GREETINGS_TEXT' | translate}}" styleclass="full-width"></ad-textbox>
                      <ad-textbox value="generalSettings.footer_starting_text" label="{{'FOOTER_STARTING_TEXT' | translate}}" styleclass="full-width"></ad-textbox>
                     <ad-textbox value="generalSettings.privacy_policy_text" label="{{'PRIVACY_POLICY_TEXT' | translate}}" styleclass="full-width"></ad-textbox>
