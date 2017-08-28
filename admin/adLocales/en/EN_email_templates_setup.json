@@ -26,4 +26,5 @@
 "LATE_CHECKOUT_TEXT_SETTINGS": "Late Checkout E-mail Settings",
 "FOOTER_STARTING_TEXT": "Footer Starting text",
 "EMAIL_BOTTOM_PORTION_TEXT_ALIGNMENT": "E-mail bottom portion text alignment",
-"EMAIL_TOP_PORTION_TEXT_ALIGNMENT":  "E-mail top portion text alignment"
+"EMAIL_TOP_PORTION_TEXT_ALIGNMENT":  "E-mail top portion text alignment",
+"USE_BG_IMAGE": "Use background Image"

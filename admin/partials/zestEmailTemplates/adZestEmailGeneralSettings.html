@@ -41,7 +41,8 @@
                     </div>
                 </fieldset>
                    <fieldset class="holder right">
-                    <div class="entry full-width">
+                    <ad-toggle-button is-checked="generalSettings.use_main_bg_image" label="{{ 'USE_BG_IMAGE' | translate}}" div-class="full-width"></ad-toggle-button>
+                    <div class="entry full-width" ng-show="generalSettings.use_main_bg_image">
                         <label translate="">EMAIL_MAIN_BG</label>
                         <div class="file-upload with-preview">
                             <span class="input">{{email_main_bg_image}}</span>
