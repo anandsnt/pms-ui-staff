@@ -1739,9 +1739,11 @@ sntRover.controller('RVbillCardController',
 
 
 		} else {
-			var signature = $scope.getSignatureBase64Data();
+            if (signatureData !== 'isSigned' && signatureData !== '[]') {
+                signatureData = $scope.getSignatureBase64Data();
+            }
 
-                    $scope.initCompleteCheckin(isCheckinWithoutPreAuthPopup, signature );
+            $scope.initCompleteCheckin(isCheckinWithoutPreAuthPopup, signatureData);
 		}
 
 	};
