@@ -43,7 +43,7 @@
         <div class="wrapper" ng-include="'/assets/partials/companyCard/arTransactions/rvCompanyTravelAgentArTransactionBalanceList.html'">
           <!--   {ar-transactions/open-bills.html} -->
         </div>
-        <rv-pagination ng-if="arDataObj.balanceList.length > 0" page-options="paginationData" page-data="arDataObj.balanceList"></rv-pagination>
+        <rv-pagination page-options="balancePagination" page-data="arDataObj.balanceTotalCount"></rv-pagination>
         <!-- remove hidden when .with-footer-->
         <div class="billing-footer hidden">
         
