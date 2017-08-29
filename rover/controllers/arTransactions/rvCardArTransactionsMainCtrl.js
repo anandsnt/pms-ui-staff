@@ -233,10 +233,20 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 	     */
 		var loadAPIData = function ( pageType, pageNo ) {
 			
-			if ( pageType === 'BALANCE' ) {
-				$scope.arDataObj.balancePageNo = pageNo;
+			switch(pageType) {
+			    case 'BALANCE':
+			        $scope.arDataObj.balancePageNo = pageNo;
+					break;
+			    case 'PAID':
+			        $scope.arDataObj.paidPageNo = pageNo;
+			        break;
+			    case 'ALLOCATE':
+			        $scope.arDataObj.allocatePageNo = pageNo;
+			        break;
+			    case 'UNALLOCATE':
+			        $scope.arDataObj.unallocatePageNo = pageNo;
+			        break;
 			}
-
 			$scope.invokeApi(rvAccountsArTransactionsSrv.fetchTransactionDetails, createParametersFetchTheData(), successCallbackOfFetchAPI );
 
 		};
@@ -268,8 +278,6 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 	        api: [ loadAPIData, 'UNALLOCATE' ],
 	        perPage: $scope.arDataObj.perPage
 	    };
-
-	    //loadAPIData('BALANCE', 1);
 
 	    // -------/ PAGINATION LOGIC /----------- //
 }]);
