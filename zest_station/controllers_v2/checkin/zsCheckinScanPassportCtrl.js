@@ -122,7 +122,7 @@ sntZestStation.controller('zsCheckinScanPassportCtrl', [
             // return true; // TODO: Link with document types which require both sides to be scanned
             // for debugging/testing double-sided scan type IDs
             // set this variable
-            return ($scope.zestStationData.doubleSidedScan);
+            return $scope.zestStationData.doubleSidedScan;
             // return response.DOC_TYPE !== 'PP';    
         };
 
@@ -829,30 +829,30 @@ sntZestStation.controller('zsCheckinScanPassportCtrl', [
                     'EXPIRY_DATE': mapping.PR_DF_EXPIRY_DATE,
                     'ID_ISSUE_COUNTRY': mapping.PR_DF_ISSUE_COUNTRY,
                     'ID_TYPE': mapping.PR_DF_TYPE
-                }
-            } else {
-                // v2
-                return {
+                };
+            } 
+            // v2
+            return {
                     /*
                         details.lastName || // may only have lastName and not first name, which has full name in some countries
                      */
-                    'FRONT_IMAGE': mapping.docImge ? mapping.docImge : mapping.docImage1,
+                'FRONT_IMAGE': mapping.docImge ? mapping.docImge : mapping.docImage1,
 
                     // 'BIRTH_DATE':  returnUnformatedDateObj(mapping.PR_DF_BIRTH_DATE, 'MM-DD-YYYY'),
-                    'BIRTH_DATE': mapping.dateOfBirth,
-                    'LAST_NAME': mapping.lastName,
-                    'FIRST_NAME': mapping.firstName,
-                    'NATIONALITY': mapping.nationality_fullname,
-                    'SEX': mapping.gender,
-                    'FULL_NAME': mapping.fullName ? mapping.fullName : mapping.lastName,
+                'BIRTH_DATE': mapping.dateOfBirth,
+                'LAST_NAME': mapping.lastName,
+                'FIRST_NAME': mapping.firstName,
+                'NATIONALITY': mapping.nationality_fullname,
+                'SEX': mapping.gender,
+                'FULL_NAME': mapping.fullName ? mapping.fullName : mapping.lastName,
 
-                    'DOC_TYPE': mapping.documentType,
-                    'DOCUMENT_NUMBER': mapping.documentNumber,
-                    'EXPIRY_DATE': mapping.expiryDate,
-                    'ID_ISSUE_COUNTRY': mapping.issueCountry_fullname,
-                    'ID_TYPE': mapping.documentType
-                }
-            }
+                'DOC_TYPE': mapping.documentType,
+                'DOCUMENT_NUMBER': mapping.documentNumber,
+                'EXPIRY_DATE': mapping.expiryDate,
+                'ID_ISSUE_COUNTRY': mapping.issueCountry_fullname,
+                'ID_TYPE': mapping.documentType
+            };
+            
 
         };
 
