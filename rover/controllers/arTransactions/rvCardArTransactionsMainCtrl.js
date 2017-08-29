@@ -122,6 +122,15 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 		$scope.clickedToDate = function() {
 			$scope.popupCalendar('TO');
 		};
+		// To handle from date change
+	    $scope.$on('fromDateChanged', function() {
+	       $scope.filterChanged();
+	    });
+
+	    // To handle to date change
+	    $scope.$on('toDateChanged', function() {
+	        $scope.filterChanged();
+	    });
 		// Show calendar popup.
 		$scope.popupCalendar = function(clickedOn) {
 			$scope.clickedOn = clickedOn;
