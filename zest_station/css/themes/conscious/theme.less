@@ -145,3 +145,26 @@
 .check_in_add_remove > .input-field-contents {
 	height: 45% !important;
 }
+
+/*
+	=======
+	The following styles were added as part of CICO-44466. 
+	These changes needs to be implemented across all Zest Station Templates and removed from here afterwards.
+*/
+.add-on-list {
+    &:not(.add-on-list-columns) {
+        &:not(.add-on-list-rows) {
+            .add-on-picture {
+            	flex-flow: column nowrap;
+            	align-items: center;
+            }
+        }
+    }
+}
+
+.add-on .add-on-picture {
+    display: flex;
+}
+/*
+	=======
+*/

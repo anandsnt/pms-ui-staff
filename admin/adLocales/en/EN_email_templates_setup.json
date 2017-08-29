@@ -27,4 +27,11 @@
 "FOOTER_STARTING_TEXT": "Footer Starting text",
 "EMAIL_BOTTOM_PORTION_TEXT_ALIGNMENT": "E-mail bottom portion text alignment",
 "EMAIL_TOP_PORTION_TEXT_ALIGNMENT":  "E-mail top portion text alignment",
-"USE_BG_IMAGE": "Use background Image"
+"USE_BG_IMAGE": "Use background Image",
+"KEY_DELIVERY_COMMON_SETTINGS": "Key Delivery Common Settings",
+"SHOW_ROOM_NO": "Show room number",
+"ROOM_NO_DETAILS_TEXT": "Room Number details text",
+"ROOM_NO_DETAILS_FONT_SIZE": "Room Number details font size (in PX)",
+"ROOM_NO_FONT_SIZE": "Room Number font size (in PX)",
+"ROOM_NO_SETTINGS": "Room number Settings",
+"SHOW_MOBILE_APPS": "Show Mobile Apps"

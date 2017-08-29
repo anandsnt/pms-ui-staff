@@ -19,7 +19,8 @@ admin.controller('ADZestEmailMenuCtrl', ['$scope', '$state',
              component.name === 'PreCheckin Email' ||
              component.name === 'Checkin Email' ||
              component.name === 'Checkout Email' ||
-             component.name === 'Late Checkout Email');
+             component.name === 'Late Checkout Email' ||
+             component.name === 'key delivery Common');
         });
 
         $scope.$on("STATE_CHANGE_FAILURE", function(event, errorMessage) {

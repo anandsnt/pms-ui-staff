@@ -737,7 +737,7 @@ angular.module('adminModuleTwo', []).config(function($stateProvider) {
     $stateProvider.state('admin.zestCheckinEmailSettings', {
         templateUrl: '/assets/partials/zestEmailTemplates/adZestCommonEmailSettings.html',
         controller: 'ADZestCheckinEmailSettingsCtrl',
-        url: '/precheckinSettings',
+        url: '/checkinSettings',
         resolve: {
             data: function(adZestEmailTemplateSrv) {
                 return adZestEmailTemplateSrv.getSettings();
@@ -748,7 +748,7 @@ angular.module('adminModuleTwo', []).config(function($stateProvider) {
     $stateProvider.state('admin.zestCheckoutEmailSettings', {
         templateUrl: '/assets/partials/zestEmailTemplates/adZestCommonEmailSettings.html',
         controller: 'ADZestCheckoutEmailSettingsCtrl',
-        url: '/precheckinSettings',
+        url: '/checkoutSettings',
         resolve: {
             data: function(adZestEmailTemplateSrv) {
                 return adZestEmailTemplateSrv.getSettings();
@@ -759,13 +759,25 @@ angular.module('adminModuleTwo', []).config(function($stateProvider) {
     $stateProvider.state('admin.zestLateCheckoutEmailSettings', {
         templateUrl: '/assets/partials/zestEmailTemplates/adZestCommonEmailSettings.html',
         controller: 'ADZestLateCheckoutEmailSettingsCtrl',
-        url: '/precheckinSettings',
+        url: '/lateCheckoutSettings',
         resolve: {
             data: function(adZestEmailTemplateSrv) {
                 return adZestEmailTemplateSrv.getSettings();
             }
         }
     });
+    $stateProvider.state('admin.zestKeyDeliveryCommonSettings', {
+        templateUrl: '/assets/partials/zestEmailTemplates/adZestKeyDeliveryCommonSettings.html',
+        controller: 'ADZestKeyDeliveryCommonCtrl',
+        url: '/keyCommonSettings',
+        resolve: {
+            data: function(adZestEmailTemplateSrv) {
+                return adZestEmailTemplateSrv.getSettings();
+            }
+        }
+    });
+
+    
     // =================================================================================================
     
     $stateProvider.state('admin.propertyGroups', {
