@@ -805,6 +805,57 @@ sntZestStation.controller('zsCheckinScanPassportCtrl', [
 
         var mappedResponse;
 
+        var getResponseMappings = function(mapping) {
+
+            // v1
+            if (mapping.PR_DF_TYPE && mapping.PR_DF_DOCUMENT_NUMBER) {
+                if (!mapping.PR_DF_GIVENNAME && mapping.PR_DF_NAME) {
+                    mapping.PR_DF_GIVENNAME = mapping.PR_DF_NAME;
+                }
+
+                return {
+                    'FRONT_IMAGE': mapping.PR_DFE_FRONT_IMAGE,
+
+                    // 'BIRTH_DATE':  returnUnformatedDateObj(mapping.PR_DF_BIRTH_DATE, 'MM-DD-YYYY'),
+                    'BIRTH_DATE': mapping.PR_DF_BIRTH_DATE,
+                    'LAST_NAME': mapping.PR_DF_SURNAME,
+                    'FIRST_NAME': mapping.PR_DF_GIVENNAME,
+                    'NATIONALITY': mapping.PR_DF_NATIONALITY,
+                    'SEX': mapping.PR_DF_SEX,
+                    'FULL_NAME': mapping.PR_DF_NAME,
+
+                    'DOC_TYPE': mapping.PR_DF_DOCTYPE,
+                    'DOCUMENT_NUMBER': mapping.PR_DF_DOCUMENT_NUMBER,
+                    'EXPIRY_DATE': mapping.PR_DF_EXPIRY_DATE,
+                    'ID_ISSUE_COUNTRY': mapping.PR_DF_ISSUE_COUNTRY,
+                    'ID_TYPE': mapping.PR_DF_TYPE
+                }
+            } else {
+                // v2
+                return {
+                    /*
+                        details.lastName || // may only have lastName and not first name, which has full name in some countries
+                     */
+                    'FRONT_IMAGE': mapping.docImge ? mapping.docImge : mapping.docImage1,
+
+                    // 'BIRTH_DATE':  returnUnformatedDateObj(mapping.PR_DF_BIRTH_DATE, 'MM-DD-YYYY'),
+                    'BIRTH_DATE': mapping.dateOfBirth,
+                    'LAST_NAME': mapping.lastName,
+                    'FIRST_NAME': mapping.firstName,
+                    'NATIONALITY': mapping.nationality_fullname,
+                    'SEX': mapping.gender,
+                    'FULL_NAME': mapping.fullName ? mapping.fullName : mapping.lastName,
+
+                    'DOC_TYPE': mapping.documentType,
+                    'DOCUMENT_NUMBER': mapping.documentNumber,
+                    'EXPIRY_DATE': mapping.expiryDate,
+                    'ID_ISSUE_COUNTRY': mapping.issueCountry_fullname,
+                    'ID_TYPE': mapping.documentType
+                }
+            }
+
+        };
+
         $scope.$on('PASSPORT_SCAN_SUCCESS', function(evt, response) {
             $log.log('PASSPORT_SCAN_SUCCESS: ', response);
             $log.log('returnedAllRequiredFields(response): ', returnedAllRequiredFields(response), ': $scope.scanningBackImage: ', $scope.scanningBackImage);
@@ -818,27 +869,9 @@ sntZestStation.controller('zsCheckinScanPassportCtrl', [
                     // 
                     // If given name (first name) is not available, map to first name instead
                     // 
-                    if (!response.PR_DF_GIVENNAME && response.PR_DF_NAME) {
-                        response.PR_DF_GIVENNAME = response.PR_DF_NAME;
-                    }
+                    var mapping = getResponseMappings(response);
 
-                    mappedResponse = {
-                        'FRONT_IMAGE': response.PR_DFE_FRONT_IMAGE,
-
-                        // 'BIRTH_DATE':  returnUnformatedDateObj(response.PR_DF_BIRTH_DATE, 'MM-DD-YYYY'),
-                        'BIRTH_DATE': response.PR_DF_BIRTH_DATE,
-                        'LAST_NAME': response.PR_DF_SURNAME,
-                        'FIRST_NAME': response.PR_DF_GIVENNAME,
-                        'NATIONALITY': response.PR_DF_NATIONALITY,
-                        'SEX': response.PR_DF_SEX,
-                        'FULL_NAME': response.PR_DF_NAME,
-
-                        'DOC_TYPE': response.PR_DF_DOCTYPE,
-                        'DOCUMENT_NUMBER': response.PR_DF_DOCUMENT_NUMBER,
-                        'EXPIRY_DATE': response.PR_DF_EXPIRY_DATE,
-                        'ID_ISSUE_COUNTRY': response.PR_DF_ISSUE_COUNTRY,
-                        'ID_TYPE': response.PR_DF_TYPE
-                    };
+                    mappedResponse = mapping;
                 }
 
                 onPassportScanSuccess(mappedResponse);
