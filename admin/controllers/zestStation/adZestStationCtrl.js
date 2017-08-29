@@ -46,22 +46,22 @@ admin.controller('ADZestStationCtrl', ['$scope', '$rootScope', '$state', '$state
 
     $scope.offlineReconnectValueList = [
         {
-            'name': '10s',
+            'name': '10',
             'value': '10'
         }, {
-            'name': '20s',
+            'name': '20',
             'value': '20'
         }, {
-            'name': '30s',
+            'name': '30',
             'value': '30'
         }, {
-            'name': '40s',
+            'name': '40',
             'value': '40'
         }, {
-            'name': '50s',
+            'name': '50',
             'value': '50'
         }, {
-            'name': '60s',
+            'name': '60',
             'value': '60'
         }
     ];
