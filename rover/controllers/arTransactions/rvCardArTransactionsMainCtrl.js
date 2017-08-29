@@ -114,7 +114,8 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 		 */			
 		$scope.showAddBalanceScreen = function () {
 			$scope.arFlags.isAddBalanceScreenVisible = true;
-		};			
+			$scope.$broadcast('ADD_BALANCE_TAB');
+		};	
 
 		/* Handling different date picker clicks */
 		$scope.clickedFromDate = function() {
@@ -205,7 +206,7 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 		};
 
 		// Catch error messges from child controllers.
-		$scope.$on('SHOW_ERROR_MSG', function( errorMessage ) {
+		$scope.$on('SHOW_ERROR_MSG', function( event, errorMessage ) {
 			$scope.errorMessage = errorMessage;
 		});
 
