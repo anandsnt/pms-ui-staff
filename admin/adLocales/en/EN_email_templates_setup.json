@@ -30,8 +30,9 @@
 "USE_BG_IMAGE": "Use background Image",
 "KEY_DELIVERY_COMMON_SETTINGS": "Key Delivery Common Settings",
 "SHOW_ROOM_NO": "Show room number",
-"ROOM_NO_DETAILS_TEXT": "Room Number details text",
-"ROOM_NO_DETAILS_FONT_SIZE": "Room Number details font size (in PX)",
+"ROOM_TEXT": "Room text",
+"ROOM_TEXT_SIZE": "Room Text font size (in PX)",
 "ROOM_NO_FONT_SIZE": "Room Number font size (in PX)",
 "ROOM_NO_SETTINGS": "Room number Settings",
-"SHOW_MOBILE_APPS": "Show Mobile Apps"
+"SHOW_MOBILE_APPS": "Show Mobile Apps",
+"MOBILE_APPS_SETTINGS": "Mobile App settings"
