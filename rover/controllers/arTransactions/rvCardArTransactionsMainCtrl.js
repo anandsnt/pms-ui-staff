@@ -139,7 +139,7 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 		$scope.fetchTransactions = function () {
 			var dataToApi = createParametersFetchTheData();
 
-			$scope.invokeApi(rvAccountsArTransactionsSrv.fetchTransactionDetails, dataToSend, successCallbackOfFetchAPI );
+			$scope.invokeApi(rvAccountsArTransactionsSrv.fetchTransactionDetails, dataToApi, successCallbackOfFetchAPI );
 		};
 		/*
 		 * Here is the method to fetch the data in each tab
