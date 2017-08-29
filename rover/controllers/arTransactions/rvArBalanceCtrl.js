@@ -10,13 +10,8 @@ sntRover.controller('RvArBalanceController', ['$scope', '$rootScope', 'RVCompany
 	            $scope.refreshScroller('balance-list');
 	        }, 2000);
 	    };
-
+        // Refresh scroll after completing fetch data
 	    $scope.$on("FETCH_COMPLETE_BALANCE_LIST", function() {
 	    	refreshScroll();
-	    });
-
-	   
-
-		
-		
+	    });		
 }]);
