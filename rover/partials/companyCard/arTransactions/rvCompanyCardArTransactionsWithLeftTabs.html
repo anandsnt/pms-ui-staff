@@ -4,19 +4,19 @@
         <!-- Add .active on click & show appropriate billing-content-->
         <li ng-class="{'active': arFlags.currentSelectedArTab === 'balance'}" ng-click="switchArTransactionTab('balance')">
             Balance
-            <strong class="{totalClass}">$0.00</strong>
+            <strong class="{totalClass}"><span class="currency">{{currencySymbol}}</span>{{arDataObj.unpaidAmount}}</strong>
         </li>
         <li ng-class="{'active': arFlags.currentSelectedArTab === 'paid-bills'}" ng-click="switchArTransactionTab('paid-bills')">
             Paid bills
-            <strong>$135,550.00</strong>
+            <strong> <span class="currency">{{currencySymbol}}</span>{{arDataObj.paidAmount}}</strong>
         </li>
         <li ng-class="{'active': arFlags.currentSelectedArTab === 'unallocated'}"  ng-click="switchArTransactionTab('unallocated')">
             Unallocated
-            <strong class="{totalClass}">$10,000.00</strong>
+            <strong class="{totalClass}"> <span class="currency">{{currencySymbol}}</span>{{arDataObj.allocatedCredit}}</strong>
         </li>
         <li ng-class="{'active': arFlags.currentSelectedArTab === 'allocated'}"  ng-click="switchArTransactionTab('allocated')">
             Allocated
-            <strong>$135,550.00</strong>
+            <strong> <span class="currency">{{currencySymbol}}</span>{{arDataObj.unallocatedCredit}}</strong>
         </li>
     </ul>
     <button type="button" class="button green">Add Payment</button>
@@ -26,23 +26,24 @@
 <!-- Open Bills Billing Content -->
     <!-- Add .hidden if not active-->
     <!-- Add .with-footer to show footer -->
-    <div class="billing-content scrollable"  ng-controller="RvArBalanceController" ng-class="{'hidden': (arFlags.currentSelectedArTab !== 'balance' || arFlags.isAddBalanceScreenVisible)}">
-        <!-- if no open bills --
-            <div class="no-content">
-                <div class="info"><span class="icon-no-content icon-ok"></span
-                    <strong class="h1">No Transactions</strong>
-                    <span class="h2">Outstanding Guest Bills paid</span>
-                    <!-- On Click show manual balance billing content --
-                    <a href="" class="add-new-button">Add Manual Balance</a>
-                </div>
-            </div> 
-        -->
+    <div class="billing-content scrollable"  ng-controller="RvArBalanceController" ng-class="{'hidden': (arFlags.currentSelectedArTab !== 'balance' || arFlags.isAddBalanceScreenVisible)}" ng-show="arDataObj.balanceList.length === 0">
+        <!-- if no open bills -->
+        <div class="no-content" >
+            <div class="info"><span class="icon-no-content icon-ok"></span
+                <strong class="h1">No Transactions</strong>
+                <span class="h2">Outstanding Guest Bills paid</span>
+                <!-- On Click show manual balance billing content -->
+                <a class="add-new-button" ng-click="showAddBalanceScreen()">Add Manual Balance</a>
+            </div>
+        </div> 
+    </div>
+    <div class="billing-content scrollable" ng-show="arDataObj.balanceList.length > 0"  ng-controller="RvArBalanceController" ng-class="{'hidden': (arFlags.currentSelectedArTab !== 'balance' || arFlags.isAddBalanceScreenVisible)}" id="balance-list-div" ng-iscroll="balance-list">
 
         <!-- If there are open bills -->
         <div class="wrapper" ng-include="'/assets/partials/companyCard/arTransactions/rvCompanyTravelAgentArTransactionBalanceList.html'">
           <!--   {ar-transactions/open-bills.html} -->
         </div>
-
+        <rv-pagination page-options="balancePagination" page-data="arDataObj.balanceTotalCount"></rv-pagination>
         <!-- remove hidden when .with-footer-->
         <div class="billing-footer hidden">
         
@@ -125,13 +126,14 @@
 <!-- Paid Bills Billing Content -->
     <!-- remove .hidden to show this screen -->
     <!-- add .with-pagination when showing pagination -->
-    <div class="billing-content scrollable" ng-controller="RvArPaidController" ng-class="{'hidden': arFlags.currentSelectedArTab !== 'paid-bills'}">
+    <div class="billing-content scrollable" ng-controller="RvArPaidController" ng-class="{'hidden': arFlags.currentSelectedArTab !== 'paid-bills'}" ng-iscroll="paid-list">
  
         <div class="wrapper" ng-include="'/assets/partials/companyCard/arTransactions/rvCompanyTravelAgentArPaid.html'">
      <!--        {ar-transactions/paid-bills.html} -->
         </div>
         <!-- show the number-pagination when .with-pagination -->
         <!-- {../_shared/pagination.html} -->
+         <rv-pagination page-options="paidPagination" page-data="arDataObj.paidTotalCount"></rv-pagination>
         
     </div>
 

@@ -1,35 +1,43 @@
 <ul class="search-results">
 
-    <li class="reservation transaction">
+    <li class="reservation transaction" ng-repeat="paidInvoice in arDataObj.paidList">
 
         <!-- add .active when clicked -->
         <div class="faux-anchor has-arrow toggle">
-            <div class="data">
+            <div class="data" ng-if="paidInvoice.associated_type === 'Reservation'">
 
                 <!-- add class .group/allotment if group or allotment -->
                 <h2>
-                    <span>White</span>, <span>Ronald</span>
+                    <span>{{paidInvoice.guest_first_name}}</span>, <span>{{paidInvoice.guest_last_name}}</span>
                 </h2>
-                <span class="invoice">Invoice #<span class="value">73355939</span></span>
-                <span class="confirmation">Conf #<span class="value">2987998</span></span>
+                <span class="invoice">Invoice #<span class="value">{{paidInvoice.invoice_number}}</span></span>
+                <span class="confirmation" ng-if="paidInvoice.external_reference_number !== null">Ext #<span class="value">{{paidInvoice.external_reference_number}}</span></span>
+                <span class="confirmation" ng-if="paidInvoice.external_reference_number === null">Conf #<span class="value">{{paidInvoice.reservation_confirm_no}}</span></span>
             </div>
-            <div class="guest-date arrival">
-                <span class="guest-status small-icon check-in">check-in</span>
-                <time datetime="2017-08-17T12:00:00">
-                    <span class="date">08-17-2017</span>
-                    <span class="time">6:00 PM</span>
-                </time>
-            </div>
-            <div class="guest-date departure">
-                <span class="guest-status small-icon check-out">check-out</span>
-                <time datetime="2017-08-24T12:00:00">
-                    <span class="date">08-24-2017</span>
-                    <span class="time">3:00 PM</span>
-                </time>
+            <div class="data" ng-if="paidInvoice.associated_type === 'PostingAccount'">
+                <h2>
+                    <span>{{paidInvoice.account_name}}</span>
+                </h2>
+                <span class="invoice">Account #<span class="value">{{paidInvoice.account_number}}</span></span>
             </div>
 
+            <div class="guest-date arrival" ng-if="paidInvoice.associated_type === 'Reservation'">
+                <span class="guest-status small-icon check-in">check-in</span>
+                <time datetime="2017-08-17T12:00:00">
+                    <span class="date">{{paidInvoice.reservation_arrival_date}}</span>
+                    <span class="time">{{paidInvoice.reservation_arrival_time}}</span>
+                </time>
+            </div>
+            <div class="guest-date departure" ng-if="paidInvoice.associated_type === 'Reservation'">
+                <span class="guest-status small-icon check-out">check-out</span>
+                <time datetime="2017-08-24T12:00:00">
+                    <span class="date">{{paidInvoice.reservation_dep_date}}</span>
+                    <span class="time">{{paidInvoice.reservation_dep_time}}</span>
+                </time>
+            </div>
+            
             <div class="amount paid">
-                $94,501.16
+                <span class="currency">{{currencySymbol}}</span>{{paidInvoice.amount}}
             </div>
  
         </div>
