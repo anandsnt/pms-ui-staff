@@ -852,7 +852,6 @@ sntZestStation.controller('zsCheckinScanPassportCtrl', [
                 'ID_ISSUE_COUNTRY': mapping.issueCountry_fullname,
                 'ID_TYPE': mapping.documentType
             };
-            
 
         };
 

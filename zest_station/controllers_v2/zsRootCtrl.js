@@ -989,7 +989,9 @@ sntZestStation.controller('zsRootCtrl', [
 				 *  selected workstation to in order
 				 */
                 if ($scope.workstationTimerWhenOffline) {
-                    workstationTimer = 104;
+                    // set the workstation time to count down with the settings 
+                    // from hotel admin > station > general > Offline Re-Connect Settings
+                    workstationTimer = getWorkstationsAtTime - $scope.zestStationData.kiosk_offline_reconnect_time;
                     $scope.workstationTimerWhenOffline = false;
                 }
                 
@@ -1934,6 +1936,13 @@ sntZestStation.controller('zsRootCtrl', [
             } else {
                 $scope.zestStationData.kioskOutOfOrderTreshold = parseInt($scope.zestStationData.kiosk_out_of_order_treshold_value);
             }
+            
+            if (!$scope.zestStationData.kiosk_offline_reconnect_time || _.isNaN(parseInt($scope.zestStationData.kiosk_offline_reconnect_time))) {
+                $scope.zestStationData.kiosk_offline_reconnect_time = 5; // default to be 5-second intervals if the settings value is blank
+            } else {
+                $scope.zestStationData.kiosk_offline_reconnect_time = parseInt($scope.zestStationData.kiosk_offline_reconnect_time);
+            }
+            
             // CICO-36953 - moves nationality collection to after res. details, using this flag to make optional
             // and may move to an admin in a future story 
             $scope.zestStationData.consecutiveKeyFailure = 0;
