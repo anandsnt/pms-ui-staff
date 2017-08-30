@@ -3,7 +3,7 @@ admin.controller('ADZestTextKeyDeliverySettingsCtrl', ['$scope', 'data', '$filte
 		$controller('ADZestBaseEmailSettingsCtrl', {
 			$scope: $scope
 		});
-		$scope.setData(data, data.text_key_delivery_email_template_settings);
+		$scope.setData(data, data.text_key_delivery_email_template_settings, 'KEY_EMAIL');
 		$scope.hideButtonField = true;
 		$scope.mainHeading = $filter('translate')('TEXT_KEY_DELIVERY_SETTINGS');
 		$scope.saveSettings = function() {

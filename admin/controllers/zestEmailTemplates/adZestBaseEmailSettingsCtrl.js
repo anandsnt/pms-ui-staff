@@ -1,12 +1,14 @@
 admin.controller('ADZestBaseEmailSettingsCtrl', ['$scope', '$state', 'ngDialog', '$sce', 'adZestEmailTemplateSrv',
     function($scope, $state, ngDialog, $sce, adZestEmailTemplateSrv) {
         $scope.currentYear = new Date().getFullYear();
+        var emailType;
 
         $scope.trustHtml = function(str) {
             return $sce.trustAsHtml(str);
         };
 
-        $scope.setData = function(data, processData) {
+        $scope.setData = function(data, processData, type) {
+            emailType = type;
             $scope.data = processData;
             $scope.generalSettings = data.general_email_template_settings;
             $scope.hotelDetails = data.hotel_details;
@@ -14,7 +16,7 @@ admin.controller('ADZestBaseEmailSettingsCtrl', ['$scope', '$state', 'ngDialog',
 
         $scope.saveAdminSettings = function(type, isKeyEmail) {
             var params = {};
-            
+
             params[type] = {
                 "email_text_1": $scope.data.email_text_1,
                 "email_text_2": $scope.data.email_text_2,
@@ -39,12 +41,20 @@ admin.controller('ADZestBaseEmailSettingsCtrl', ['$scope', '$state', 'ngDialog',
             } else {
                 $scope.data.main_bg_style = 'background:' + $scope.generalSettings.main_bg + ';';
             }
+            var template;
+
+            if (!_.isUndefined(emailType) && emailType === 'KEY_EMAIL') {
+                template = '/assets/partials/zestEmailTemplates/adZestKeyDeliveryEmailPreview.html'
+            } else {
+                template = '/assets/partials/zestEmailTemplates/adzestMailPreview.html'
+            }
             ngDialog.open({
                 closeByDocument: true,
-                template: '/assets/partials/zestEmailTemplates/adzestMailPreview.html',
+                template: template,
                 className: 'ngdialog-theme-default email-template-preview',
                 scope: $scope
             });
+
         };
     }
 ]);

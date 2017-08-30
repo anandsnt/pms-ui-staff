@@ -3,7 +3,7 @@ admin.controller('ADZestQRKeyDeliverySettingsCtrl', ['$scope', 'data', '$filter'
 		$controller('ADZestBaseEmailSettingsCtrl', {
 			$scope: $scope
 		});
-		$scope.setData(data, data.qr_key_delivery_email_template_settings);
+		$scope.setData(data, data.qr_key_delivery_email_template_settings, 'KEY_EMAIL');
 		$scope.hideButtonField = true;
 		$scope.mainHeading = $filter('translate')('QR_EMAIL_TEXT_SETTINGS');
 		$scope.saveSettings = function() {
