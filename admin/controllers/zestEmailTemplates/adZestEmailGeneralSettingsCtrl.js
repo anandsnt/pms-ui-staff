@@ -1,5 +1,5 @@
-admin.controller('ADZestEmailGeneralSettingsCtrl', ['$scope', '$state', 'data', 'ngDialog', 'adZestEmailTemplateSrv', '$compile',
-    function($scope, $state, data, ngDialog, adZestEmailTemplateSrv, $compile) {
+admin.controller('ADZestEmailGeneralSettingsCtrl', ['$scope', '$state', 'data', 'ngDialog', 'adZestEmailTemplateSrv',
+    function($scope, $state, data, ngDialog, adZestEmailTemplateSrv) {
         
         $scope.generalSettings = data.general_email_template_settings;
         $scope.hotelDetails = data.hotel_details;

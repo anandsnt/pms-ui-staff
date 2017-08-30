@@ -5,7 +5,7 @@ admin.controller('ADZestKeyDeliveryCommonCtrl', ['$scope', 'data', '$filter', '$
 		});
 		$scope.keyDeliveryCommonSettings = data.key_delivery_common_settings;
 
-		$scope.saveSettings = function(type) {
+		$scope.saveSettings = function() {
 			var params = {
 				'key_delivery_common_settings': $scope.keyDeliveryCommonSettings
 			};

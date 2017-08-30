@@ -13,7 +13,8 @@ admin.controller('ADZestBaseEmailSettingsCtrl', ['$scope', '$state', 'ngDialog',
         };
 
         $scope.saveAdminSettings = function(type) {
-            var params = {}
+            var params = {};
+            
             params[type] = {
                 "email_text_1": $scope.data.email_text_1,
                 "email_text_2": $scope.data.email_text_2,
