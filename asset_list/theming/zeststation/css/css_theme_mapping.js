@@ -22,7 +22,8 @@ module.exports = {
 			'cachet-boutique': [themeCSSRoot + 'cachet-boutique.less'],
 			'hi-ho': [themeCSSRoot + 'hi-ho.less'],
 			'first': [themeCSSRoot + 'first.less'],
-			'viceroy-chicago': [themeCSSRoot + 'viceroy-chicago.less']
+			'viceroy-chicago': [themeCSSRoot + 'viceroy-chicago.less'],
+			'amrath': [themeCSSRoot + 'amrath.less']
 		};
 	}
 };
