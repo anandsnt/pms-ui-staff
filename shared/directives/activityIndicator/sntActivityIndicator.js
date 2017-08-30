@@ -42,7 +42,7 @@ angular.module('sntActivityIndicator', [])
                 var index = activities.indexOf(activity);
 
                 if (activities.length && index > -1) {
-                    activities.splice(_.indexOf(activities, index), 1);
+                    activities.splice(index, 1);
                     updateIndicator();
                 } else if (index === -1) {
                     $log.warn('trying to stop a non-existent activity...', activity);
