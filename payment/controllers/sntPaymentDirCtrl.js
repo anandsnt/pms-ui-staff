@@ -925,7 +925,6 @@ angular.module('sntPay').controller('sntPaymentController',
                         }
                         // Add to guestcard feature for C&P
                         $scope.payment.showAddToGuestCard = !!$scope.reservationId && !$scope.payment.isManualEntryInsideIFrame;
-                        // refreshIFrame();
                     } else if ($scope.hotelConfig.isEMVEnabled) {
                         $scope.selectedCC = $scope.selectedCC || {};
 
