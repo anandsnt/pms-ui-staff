@@ -6,6 +6,7 @@ admin.controller('ADZestKeyDeliveryCommonCtrl', ['$scope', 'data', '$filter', '$
 		$scope.generalSettings = data.general_email_template_settings;
         $scope.hotelDetails = data.hotel_details;
 		$scope.keyDeliveryCommonSettings = data.key_delivery_common_settings;
+		//for preview set sample data
 		$scope.data.email_text_1 = "This is a sample text for testing. You can enter the required texts in the individual settings for each process.";
         $scope.data.email_text_2 = "This is a sample text for testing. You can enter the required texts in the individual settings for each process.";
         $scope.room_number = '101';

@@ -4,7 +4,10 @@ admin.controller('ADZestTextKeyDeliverySettingsCtrl', ['$scope', 'data', '$filte
 			$scope: $scope
 		});
 		$scope.setData(data, data.text_key_delivery_email_template_settings, 'KEY_EMAIL');
+		$scope.keyDeliveryCommonSettings = data.key_delivery_common_settings;
+		//for preview set sample data
 		$scope.hideButtonField = true;
+		$scope.room_number = '101';
 		$scope.mainHeading = $filter('translate')('TEXT_KEY_DELIVERY_SETTINGS');
 		$scope.saveSettings = function() {
 			$scope.saveAdminSettings('text_key_delivery_email_template_settings', true);
