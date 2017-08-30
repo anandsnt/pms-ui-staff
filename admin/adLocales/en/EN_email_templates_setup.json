@@ -37,4 +37,5 @@
 "SHOW_MOBILE_APPS": "Show Mobile Apps",
 "MOBILE_APPS_SETTINGS": "Mobile App settings",
 "QR_EMAIL_TEXT_SETTINGS": "QR - Key Delivery Email Settings",
-"TEXT_KEY_DELIVERY_SETTINGS": "Text- Key Delivery Email Settings"
+"TEXT_KEY_DELIVERY_SETTINGS": "Text- Key Delivery Email Settings",
+"STATION_MOBILE_KEY_DELIVERY_SETTINGS": "Mobile Key Email Settings"

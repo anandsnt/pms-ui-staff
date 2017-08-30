@@ -799,6 +799,17 @@ angular.module('adminModuleTwo', []).config(function($stateProvider) {
         }
     });
 
+    $stateProvider.state('admin.zestMobileKeyEmailSettings', {
+        templateUrl: '/assets/partials/zestEmailTemplates/adZestCommonEmailSettings.html',
+        controller: 'ADZestMobileKeyEmailSettingsCtrl',
+        url: '/mobileKeyEmailSettings',
+        resolve: {
+            data: function(adZestEmailTemplateSrv) {
+                return adZestEmailTemplateSrv.getSettings();
+            }
+        }
+    });
+
 
     
     // =================================================================================================

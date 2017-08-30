@@ -174,7 +174,7 @@
                                           <tr>
                                              <td align="center" class="padding" style="padding-top: 25px;">
                                                 <table width="100%" border="0" cellspacing="0" cellpadding="0">
-                                                   <tr ng-if="!data.is_mobile_key_email">
+                                                   <tr ng-if="!isMobileKeyEmail">
                                                       <td>
                                                          <!-- COPY -->
                                                          <table width="100%" border="0" cellspacing="0" cellpadding="0">
@@ -189,7 +189,7 @@
                                                          </table>
                                                       </td>
                                                    </tr>
-                                                   <tr ng-if="!data.is_mobile_key_email">
+                                                   <tr ng-if="!isMobileKeyEmail">
                                                       <td style="padding-top:60px;">
                                                          <!-- COPY -->
                                                          <table width="100%" border="0" cellspacing="0" cellpadding="0">
@@ -216,7 +216,7 @@
                                                       <td align="center">
                                                          <!-- COPY -->
                                                          <!-- both present -->
-                                                         <table width="100%" border="0" cellspacing="0" cellpadding="0" ng-if=" keyDeliveryCommonSettings.show_mobile_apps">
+                                                         <table width="100%" border="0" cellspacing="0" cellpadding="0" ng-if=" keyDeliveryCommonSettings.show_mobile_apps || isMobileKeyEmail">
                                                             <tr>
                                                                <td></td>
                                                                <td align="center" style="padding: 60px 0 0 0;" ng-if="hotelDetails.app_store_app_present">
