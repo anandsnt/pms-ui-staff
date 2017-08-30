@@ -14,7 +14,7 @@
                     </div> -->
                     <ad-textbox value="data.subject_text" label="{{'EMAIL_SUBJECT_TEXT' | translate}}" styleclass="full-width"></ad-textbox>
                     <ad-textarea rows="4" div-class="full-width" text-area-class="full-width" value="data.email_text_1" label="{{ 'EMAIL_TOP_PORTION_TEXT' | translate}}" placeholder=""></ad-textarea>
-                    <ad-textbox value="data.button_text" label="{{'EMAIL_BUTTON_TEXT' | translate}}" styleclass="full-width"></ad-textbox>
+                    <ad-textbox ng-hide="hideButtonField" value="data.button_text" label="{{'EMAIL_BUTTON_TEXT' | translate}}" styleclass="full-width"></ad-textbox>
                     <ad-textarea rows="4" div-class="full-width" text-area-class="full-width" value="data.email_text_2" label="{{ 'EMAIL_BOTTOM_PORTION_TEXT' | translate}}" placeholder=""></ad-textarea>
                 </fieldset>
                 <div class="actions float">

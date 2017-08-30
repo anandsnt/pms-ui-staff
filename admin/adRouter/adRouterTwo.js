@@ -777,6 +777,29 @@ angular.module('adminModuleTwo', []).config(function($stateProvider) {
         }
     });
 
+    $stateProvider.state('admin.zestTextKeyDeliveryEmailSettings', {
+        templateUrl: '/assets/partials/zestEmailTemplates/adZestCommonEmailSettings.html',
+        controller: 'ADZestTextKeyDeliverySettingsCtrl',
+        url: '/keyTextEmailSettings',
+        resolve: {
+            data: function(adZestEmailTemplateSrv) {
+                return adZestEmailTemplateSrv.getSettings();
+            }
+        }
+    });
+
+    $stateProvider.state('admin.zestQRKeyDeliveryEmailSettings', {
+        templateUrl: '/assets/partials/zestEmailTemplates/adZestCommonEmailSettings.html',
+        controller: 'ADZestQRKeyDeliverySettingsCtrl',
+        url: '/keyQREmailSettings',
+        resolve: {
+            data: function(adZestEmailTemplateSrv) {
+                return adZestEmailTemplateSrv.getSettings();
+            }
+        }
+    });
+
+
     
     // =================================================================================================
     

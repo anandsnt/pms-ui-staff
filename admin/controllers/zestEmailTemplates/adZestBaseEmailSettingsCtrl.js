@@ -12,15 +12,17 @@ admin.controller('ADZestBaseEmailSettingsCtrl', ['$scope', '$state', 'ngDialog',
             $scope.hotelDetails = data.hotel_details;
         };
 
-        $scope.saveAdminSettings = function(type) {
+        $scope.saveAdminSettings = function(type, isKeyEmail) {
             var params = {};
             
             params[type] = {
                 "email_text_1": $scope.data.email_text_1,
                 "email_text_2": $scope.data.email_text_2,
-                "button_text": $scope.data.button_text,
                 "subject_text": $scope.data.subject_text
             };
+            if (_.isUndefined(isKeyEmail)) {
+                params[type].button_text = $scope.data.button_text;
+            }
             var options = {
                 params: params,
                 successCallBack: function() {

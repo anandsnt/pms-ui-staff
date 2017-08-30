@@ -35,4 +35,6 @@
 "ROOM_NO_FONT_SIZE": "Room Number font size (in PX)",
 "ROOM_NO_SETTINGS": "Room number Settings",
 "SHOW_MOBILE_APPS": "Show Mobile Apps",
-"MOBILE_APPS_SETTINGS": "Mobile App settings"
+"MOBILE_APPS_SETTINGS": "Mobile App settings",
+"QR_EMAIL_TEXT_SETTINGS": "QR - Key Delivery Email Settings",
+"TEXT_KEY_DELIVERY_SETTINGS": "Text- Key Delivery Email Settings"

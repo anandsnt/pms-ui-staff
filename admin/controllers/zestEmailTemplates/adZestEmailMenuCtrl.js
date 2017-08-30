@@ -14,13 +14,8 @@ admin.controller('ADZestEmailMenuCtrl', ['$scope', '$state',
         $scope.subComponents = (menu && menu.sub_components) || [];
 
         // To hide menus till implemented
-        $scope.subComponents = _.filter($scope.subComponents, function(component) {
-            return (component.name === 'General Email Settings' ||
-             component.name === 'PreCheckin Email' ||
-             component.name === 'Checkin Email' ||
-             component.name === 'Checkout Email' ||
-             component.name === 'Late Checkout Email' ||
-             component.name === 'key delivery Common');
+        $scope.subComponents = _.reject($scope.subComponents, function(component) {
+            return component.name === 'Mobile key Email';
         });
 
         $scope.$on("STATE_CHANGE_FAILURE", function(event, errorMessage) {
