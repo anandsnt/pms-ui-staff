@@ -13,14 +13,14 @@
             <div class="entry dates">
                 <div class="entry-data has-datepicker">
                     <label for="ar-transaction-date-from">From</label>
-                    <button class="clear-query" ng-class="{'visible': escapeNull(filterData.from_date) !=''}"><span class="icons icon-clear-search">Clear query</span></button>
+                    <button class="clear-query" ng-class="{'visible': escapeNull(filterData.fromDate) !=''}"><span class="icons icon-clear-search">Clear query</span></button>
                    
-                    <input id="ar-transaction-date-from" type="text" class="datepicker" value="{{ filterData.from_date | date : dateFormat }}" ng-click="clickedFromDate()" readonly />
+                    <input id="ar-transaction-date-from" type="text" class="datepicker" value="{{ filterData.fromDate | date : dateFormat }}" ng-click="clickedFromDate()" readonly />
                 </div>
                 <div class="entry-data has-datepicker">
                     <label for="ar-transaction-date-to">To</label>
-                    <button class="clear-query" ng-class="{'visible': escapeNull(filterData.to_date) !=''}"><span class="icons icon-clear-search">Clear query</span></button>
-                    <input id="ar-transaction-date-to" type="text" class="datepicker" value="{{ filterData.to_date | date : dateFormat }}" ng-click="clickedToDate()" readonly />
+                    <button class="clear-query" ng-class="{'visible': escapeNull(filterData.toDate) !=''}"><span class="icons icon-clear-search">Clear query</span></button>
+                    <input id="ar-transaction-date-to" type="text" class="datepicker" value="{{ filterData.toDate | date : dateFormat }}" ng-click="clickedToDate()" readonly />
                    
                 </div>
             </div>

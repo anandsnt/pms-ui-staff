@@ -8,9 +8,9 @@ sntRover.controller('RvArPaidController', ['$scope', '$rootScope', 'RVCompanyCar
 	    var refreshScroll = function() {
 	        $timeout(function() { 
 	            $scope.refreshScroller('paid-list');
-	        }, 3000);
+	        }, 2000);
 	    };
-
+	    // Refresh scroll after completing fetch data
 	    $scope.$on("FETCH_COMPLETE_PAID_LIST", function() {
 	    	refreshScroll();
 	    });

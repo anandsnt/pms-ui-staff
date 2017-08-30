@@ -105,9 +105,7 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 				$scope.arFlags.isAddBalanceScreenVisible = false;
 			}
 
-			var dataToApi = createParametersFetchTheData();
-
-			$scope.fetchTransactions(dataToApi);
+			$scope.fetchTransactions();
 		};
 		/*
 		 * Show Add balance screen
@@ -124,6 +122,15 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 		$scope.clickedToDate = function() {
 			$scope.popupCalendar('TO');
 		};
+		// To handle from date change
+	    $scope.$on('fromDateChanged', function() {
+	       $scope.filterChanged();
+	    });
+
+	    // To handle to date change
+	    $scope.$on('toDateChanged', function() {
+	        $scope.filterChanged();
+	    });
 		// Show calendar popup.
 		$scope.popupCalendar = function(clickedOn) {
 			$scope.clickedOn = clickedOn;
@@ -138,10 +145,10 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 	     * Fetch transactions API
 	     * @param dataToSend data object to API
 	     */
-		$scope.fetchTransactions = function (dataToSend, pageNo) {
-			dataToSend.getParams.page = pageNo ? pageNo : 1;
+		$scope.fetchTransactions = function () {
+			var dataToApi = createParametersFetchTheData();
 
-			$scope.invokeApi(rvAccountsArTransactionsSrv.fetchTransactionDetails, dataToSend, successCallbackOfFetchAPI );
+			$scope.invokeApi(rvAccountsArTransactionsSrv.fetchTransactionDetails, dataToApi, successCallbackOfFetchAPI );
 		};
 		/*
 		 * Here is the method to fetch the data in each tab
@@ -149,10 +156,7 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 		 */
 
 		$scope.filterChanged = function() {
-			// Params need to change while doing the stories on each area
-			var dataToApi = createParametersFetchTheData();
-
-			$scope.fetchTransactions(dataToApi);
+			$scope.fetchTransactions();
 		};
 
 		/*
@@ -200,9 +204,7 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 		 *
 		 */
 		var init = function() {
-			var dataToApi = createParametersFetchTheData();
-
-			$scope.fetchTransactions(dataToApi);
+			$scope.fetchTransactions();
 		};
 
 		// Catch error messges from child controllers.
@@ -211,9 +213,7 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 		});
 
 		$scope.$on('REFRESH_BALANCE_LIST', function() {
-			var dataToApi = createParametersFetchTheData();
-
-			$scope.fetchTransactions(dataToApi);
+			$scope.fetchTransactions();
 		});
 
 		/*
@@ -225,20 +225,26 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 			$scope.arFlags.isArTabActive = true;
 		});
 
-
-
 		/*
 	     * Fetch transactions APIs
 	     * @param pageType { String } , Page No { String }to API
 	     */
 		var loadAPIData = function ( pageType, pageNo ) {
-
-			if ( pageType === 'BALANCE' ) {
-				$scope.arDataObj.balancePageNo = pageNo;
+			switch(pageType) {
+			    case 'BALANCE':
+			        $scope.arDataObj.balancePageNo = pageNo;
+					break;
+			    case 'PAID':
+			        $scope.arDataObj.paidPageNo = pageNo;
+			        break;
+			    case 'ALLOCATE':
+			        $scope.arDataObj.allocatePageNo = pageNo;
+			        break;
+			    case 'UNALLOCATE':
+			        $scope.arDataObj.unallocatePageNo = pageNo;
+			        break;
 			}
-
 			$scope.invokeApi(rvAccountsArTransactionsSrv.fetchTransactionDetails, createParametersFetchTheData(), successCallbackOfFetchAPI );
-
 		};
 
 	    // Pagination options for BALANCE
@@ -268,8 +274,6 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 	        api: [ loadAPIData, 'UNALLOCATE' ],
 	        perPage: $scope.arDataObj.perPage
 	    };
-
-	    //loadAPIData('BALANCE', 1);
 
 	    // -------/ PAGINATION LOGIC /----------- //
 }]);
