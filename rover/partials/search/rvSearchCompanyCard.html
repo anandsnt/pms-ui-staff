@@ -13,9 +13,10 @@
     </form>
 
     <section id="find-cards" class="content scrollable" ng-iscroll="company_card_scroll" >
-
+        <div ng-include="'/assets/partials/common/notification_message.html'"></div>
         <!-- Results / content -->
         <div class="wrapper">
+        
             <ul id="search-cards-results" class="search-results" >
                  <li class="card all-cards" ng-repeat="row in results" ng-show="row.is_row_visible==true" ng-hide="results.length==0 || textInQueryBox==''">
                     <!-- TODO: add class="company-card" or class="travel-agent" on <a> element -->

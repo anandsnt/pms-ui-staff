@@ -819,6 +819,7 @@ sntRover.controller('rvRouteDetailsCtrl', ['$scope', '$rootScope', '$filter', 'R
             $scope.$emit('hideLoader');
             $scope.selectedEntity.to_bill = data.id;
             $scope.bills[$scope.bills.length - 1].id = data.id;
+            $scope.bills[$scope.bills.length - 1].bill_number = data.bill_number;
             if ($scope.saveData.payment_type !== null && $scope.saveData.payment_type !== "") {
                 $scope.savePayment();
             } else {
@@ -1072,7 +1073,7 @@ sntRover.controller('rvRouteDetailsCtrl', ['$scope', '$rootScope', '$filter', 'R
      */
     $scope.getSelectedBillNumber = function() {
         for (var i = 0; i < $scope.bills.length; i++) {
-            if ($scope.bills[i].id === $scope.selectedEntity.to_bill) {
+            if (parseInt($scope.bills[i].id) === parseInt($scope.selectedEntity.to_bill)) {
                 return $scope.bills[i].bill_number;
             }
         }
