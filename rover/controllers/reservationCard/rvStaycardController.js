@@ -184,31 +184,5 @@ sntRover.controller('staycardController', ['$scope', '$rootScope', 'RVGuestCardS
                     });
                 };
 
-                // Get reservation status based style class
-                $scope.getGuestStatusIcon = function(reservationStatus, isOptedLateCheckOut) {
-                    var viewStatus = "";
-
-                    if ("CHECKING_OUT" === reservationStatus) {
-                        viewStatus = "check-out";
-                    } else if ("CHECKEDOUT" === reservationStatus || "DEPARTED" === reservationStatus) {
-                        viewStatus = "departed";
-                    } else if ( ("CHECKEDIN" === reservationStatus || "CHECKING_IN" === reservationStatus) && isOptedLateCheckOut === true) {
-                        viewStatus = "late-check-out";
-                    } else if ("CHECKING_IN" === reservationStatus) {
-                        viewStatus = "check-in";
-                    } else if ("CHECKEDIN" === reservationStatus) {
-                        viewStatus = "inhouse";
-                    } else if ("RESERVED" === reservationStatus) {
-                        viewStatus = "arrival";
-                    } else if (("NOSHOW" === reservationStatus) || ("NOSHOW_CURRENT" === reservationStatus)) {
-                        viewStatus = "no-show";
-                    } else if ("CANCELED" === reservationStatus) {
-                        viewStatus = "cancel";
-                    } else if ("DEPARTED" === reservationStatus) {
-                        viewStatus = "check-out";
-                    }
-                    return viewStatus;
-                };
-
 	}
 ]);
