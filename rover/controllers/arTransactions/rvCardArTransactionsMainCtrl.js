@@ -1,18 +1,20 @@
 
-sntRover.controller('RVCompanyCardArTransactionsMainCtrl', 
-	['$scope', 
-	'$rootScope', 
+sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
+	['$scope',
+	'$rootScope',
 	'$stateParams',
 	'ngDialog',
-	'rvAccountsArTransactionsSrv', 
-	function($scope, $rootScope, $stateParams, ngDialog, rvAccountsArTransactionsSrv) {
+	'$timeout',
+	'rvAccountsArTransactionsSrv',
+	function($scope, $rootScope, $stateParams, ngDialog, $timeout, rvAccountsArTransactionsSrv) {
 
 		BaseCtrl.call(this, $scope);
 		$scope.errorMessage = '';
 
 		$scope.arFlags = {
 			'currentSelectedArTab': 'balance',
-			'isAddBalanceScreenVisible': false
+			'isAddBalanceScreenVisible': false,
+			'isArTabActive': false
 		};
 
 		$scope.filterData = {
@@ -33,7 +35,18 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 			'unpaidAmount': '',
 			'paidAmount': '',
 			'allocatedCredit': '',
-			'unallocatedCredit': ''
+			'unallocatedCredit': '',
+
+			'perPage': 50,
+			'balancePageNo': 1,
+			'paidPageNo': 1,
+			'allocatePageNo': 1,
+			'unallocatePageNo': 1,
+
+			'balanceTotalCount': 0,
+			'paidTotalCount': 0,
+			'allocatedTotalCount': 0,
+			'unallocatedTotalCount': 0
 		};
 
 		/*
@@ -50,17 +63,33 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 			switch($scope.arFlags.currentSelectedArTab) {
 			    case 'balance':
 			        $scope.arDataObj.balanceList = data.ar_transactions;
+			        $scope.arDataObj.balanceTotalCount = data.total_count;
+			        $scope.$broadcast("FETCH_COMPLETE_BALANCE_LIST");
+
+		            $timeout(function () {
+		                 $scope.$broadcast('updatePagination', 'BALANCE' );
+		            }, 1000);
+
 			        break;
 			    case 'paid-bills':
 			        $scope.arDataObj.paidList = data.ar_transactions;
+			        $scope.arDataObj.paidTotalCount = data.total_count;
+			        $scope.$broadcast("FETCH_COMPLETE_PAID_LIST");
+
+			        $timeout(function () {
+		                 $scope.$broadcast('updatePagination', 'PAID' );
+		            }, 1000);
+
 			        break;
 			    case 'unallocated':
 			        $scope.arDataObj.unallocatedList = data.ar_transactions;
-			        $scope.$broadcast('REFRESH_UNALLOCATED_LIST_SCROLLER');
+			        $scope.arDataObj.unallocatedTotalCount = data.total_count;
+			        $scope.$broadcast('updatePagination', 'UNALLOCATE' );
 			        break;
 			    case 'allocated':
 			        $scope.arDataObj.allocatedList = data.ar_transactions;
-			        $scope.$broadcast('REFRESH_ALLOCATED_LIST_SCROLLER');
+			        $scope.arDataObj.allocatedTotalCount = data.total_count;
+			        $scope.$broadcast('updatePagination', 'ALLOCATE' );
 			        break;
 			}
 			$scope.$emit('hideLoader');
@@ -75,19 +104,17 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 			if (tab !== 'balance') {
 				$scope.arFlags.isAddBalanceScreenVisible = false;
 			}
+
+			var dataToApi = createParametersFetchTheData();
+
+			$scope.fetchTransactions(dataToApi);
 		};
 		/*
 		 * Show Add balance screen
-		 */			
+		 */
 		$scope.showAddBalanceScreen = function () {
 			$scope.arFlags.isAddBalanceScreenVisible = true;
 			$scope.$broadcast('ADD_BALANCE_TAB');
-		};	
-		/*
-		 * Show Add balance screen - Cancel action
-		 */
-		$scope.clickedCancelAddBalance = function () {
-			$scope.arFlags.isAddBalanceScreenVisible = false;
 		};
 
 		/* Handling different date picker clicks */
@@ -111,7 +138,9 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 	     * Fetch transactions API
 	     * @param dataToSend data object to API
 	     */
-		$scope.fetchTransactions = function (dataToSend) {
+		$scope.fetchTransactions = function (dataToSend, pageNo) {
+			dataToSend.getParams.page = pageNo ? pageNo : 1;
+
 			$scope.invokeApi(rvAccountsArTransactionsSrv.fetchTransactionDetails, dataToSend, successCallbackOfFetchAPI );
 		};
 		/*
@@ -121,19 +150,49 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 
 		$scope.filterChanged = function() {
 			// Params need to change while doing the stories on each area
+			var dataToApi = createParametersFetchTheData();
+
+			$scope.fetchTransactions(dataToApi);
+		};
+
+		/*
+		 * To create the parameters which is to be passed to API
+		 */
+
+		var createParametersFetchTheData = function () {
 			var dataToSend = {
 				account_id: $stateParams.id,
 				getParams : {
-					page: 1,
-					per_page: 50,
-					transaction_type: 'CHARGES',
-					paid: false,
+					per_page: $scope.arDataObj.perPage,
 					from_date: $scope.filterData.fromDate,
 					to_date: $scope.filterData.toDate,
 					query: $scope.filterData.query
 				}
+			};
+
+			switch($scope.arFlags.currentSelectedArTab) {
+			    case 'balance':
+			        dataToSend.getParams.transaction_type = 'CHARGES';
+					dataToSend.getParams.paid = false;
+					dataToSend.getParams.page = $scope.arDataObj.balancePageNo;
+			        break;
+			    case 'paid-bills':
+			        dataToSend.getParams.transaction_type = 'CHARGES';
+					dataToSend.getParams.paid = true;
+					dataToSend.getParams.page = $scope.arDataObj.paidPageNo;
+			        break;
+			    case 'unallocated':
+			        dataToSend.getParams.transaction_type = 'PAYMENTS';
+					dataToSend.getParams.allocated = false;
+					dataToSend.getParams.page = $scope.arDataObj.allocatePageNo;
+			        break;
+			    case 'allocated':
+			        dataToSend.getParams.transaction_type = 'PAYMENTS';
+					dataToSend.getParams.allocated = true;
+					dataToSend.getParams.page = $scope.arDataObj.unallocatePageNo;
+			        break;
 			}
-			$scope.fetchTransactions(dataToSend);
+			return dataToSend;
 		};
 
 		/*
@@ -141,22 +200,20 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 		 *
 		 */
 		var init = function() {
-			var dataToSend = {
-				account_id: $stateParams.id,
-				getParams : {
-					page: 1,
-					per_page: 50,
-					transaction_type: 'CHARGES',
-					paid: false
-				}
-			};
+			var dataToApi = createParametersFetchTheData();
 
-			$scope.fetchTransactions(dataToSend);
-			
+			$scope.fetchTransactions(dataToApi);
 		};
+
 		// Catch error messges from child controllers.
 		$scope.$on('SHOW_ERROR_MSG', function( event, errorMessage ) {
 			$scope.errorMessage = errorMessage;
+		});
+
+		$scope.$on('REFRESH_BALANCE_LIST', function() {
+			var dataToApi = createParametersFetchTheData();
+
+			$scope.fetchTransactions(dataToApi);
 		});
 
 		/*
@@ -165,6 +222,54 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 
 		$rootScope.$on("arTransactionTabActive", function(event) {
 			init();
+			$scope.arFlags.isArTabActive = true;
 		});
-		
+
+
+
+		/*
+	     * Fetch transactions APIs
+	     * @param pageType { String } , Page No { String }to API
+	     */
+		var loadAPIData = function ( pageType, pageNo ) {
+
+			if ( pageType === 'BALANCE' ) {
+				$scope.arDataObj.balancePageNo = pageNo;
+			}
+
+			$scope.invokeApi(rvAccountsArTransactionsSrv.fetchTransactionDetails, createParametersFetchTheData(), successCallbackOfFetchAPI );
+
+		};
+
+	    // Pagination options for BALANCE
+	    $scope.balancePagination = {
+	        id: 'BALANCE',
+	        api: [ loadAPIData, 'BALANCE' ],
+	        perPage: $scope.arDataObj.perPage
+	    };
+
+	    // Pagination options for PAID
+	    $scope.paidPagination = {
+	        id: 'PAID',
+	        api: [ loadAPIData, 'PAID' ],
+	        perPage: $scope.arDataObj.perPage
+	    };
+
+	    // Pagination options for AR_BALANCE
+	    $scope.allocatePagination = {
+	        id: 'ALLOCATE',
+	        api: [ loadAPIData, 'ALLOCATE' ],
+	        perPage: $scope.arDataObj.perPage
+	    };
+
+		// Pagination options for AR_BALANCE
+	    $scope.unallocatePagination = {
+	        id: 'UNALLOCATE',
+	        api: [ loadAPIData, 'UNALLOCATE' ],
+	        perPage: $scope.arDataObj.perPage
+	    };
+
+	    //loadAPIData('BALANCE', 1);
+
+	    // -------/ PAGINATION LOGIC /----------- //
 }]);
