@@ -925,7 +925,6 @@ angular.module('sntPay').controller('sntPaymentController',
                         }
                         // Add to guestcard feature for C&P
                         $scope.payment.showAddToGuestCard = !!$scope.reservationId && !$scope.payment.isManualEntryInsideIFrame;
-                        refreshIFrame();
                     } else if ($scope.hotelConfig.isEMVEnabled) {
                         $scope.selectedCC = $scope.selectedCC || {};
 
@@ -970,6 +969,7 @@ angular.module('sntPay').controller('sntPaymentController',
                 $scope.$emit('PAYMENT_TYPE_CHANGED', $scope.selectedPaymentType);
                 $scope.selectedCC = {};
                 calculateFee();
+                refreshIFrame();
             };
 
             // choose among the existing cards
@@ -1207,6 +1207,11 @@ angular.module('sntPay').controller('sntPaymentController',
                 else if (!/^ADD_PAYMENT_/.test($scope.actionType)) {
                     saveCCPayment(paymentData);
                 }
+                
+                $timeout(() => {
+                    refreshIFrame();
+                }, 600);
+                
             });
 
             /**
