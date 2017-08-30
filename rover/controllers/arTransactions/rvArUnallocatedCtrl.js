@@ -1,41 +1,17 @@
 
 sntRover.controller('RvArUnallocatedController',
-			 ['$scope',
-			  '$rootScope',
-			  'RVCompanyCardSrv', 
-			  '$timeout',
-			  '$stateParams',
-			  'ngDialog',
-			  '$state',
-			  '$vault',
-			  '$window',
-			  'RVReservationCardSrv', 
-			  '$filter',
-			  'rvAccountsArTransactionsSrv',
-	function($scope, $rootScope, RVCompanyCardSrv, $timeout, $stateParams, ngDialog, $state, $vault, $window, RVReservationCardSrv, $filter) {
+	['$scope',
+	 '$timeout',
+	  function($scope, $timeout) {
 
 		BaseCtrl.call(this, $scope);
-		var UNALLOCATED_LIST_SCROLLER = 'unallocated-list-scroller';
 
-		// Get the request parameters for fetching the unallocated ar transactions
-		var getRequestParams = function () {
-			var dataToSend = {
-				account_id: $stateParams.id,
-				getParams : {
-					page: 1,
-					per_page: 50,
-					transaction_type: 'PAYMENTS',
-					allocated: false
-				}
-			};
-
-			return dataToSend;			
-		};
+        $scope.setScroller('unallocated-list-scroller');
 
 		// Refreshes the scroller for the unallocated lists
 		var refreshScroll = function() {
 	        $timeout(function() {
-	            $scope.refreshScroller(UNALLOCATED_LIST_SCROLLER);
+	            $scope.refreshScroller('unallocated-list-scroller');
 	        }, 1500);
     	};
 
@@ -44,15 +20,4 @@ sntRover.controller('RvArUnallocatedController',
     		refreshScroll();
     	});
 
-		// Initialize the controller
-		var init = function () {
-			$scope.setScroller(UNALLOCATED_LIST_SCROLLER);
-			$scope.fetchTransactions( getRequestParams() );
-		};
-
-		init();
-
-
-		
-		
 }]);

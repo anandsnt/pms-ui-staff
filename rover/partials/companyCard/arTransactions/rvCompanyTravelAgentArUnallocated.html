@@ -14,14 +14,14 @@
                     <!-- if number, show ending number -->
                     <span class="number" ng-show="unallocatedCreditTransaction.is_cc_payment">{{unallocatedCreditTransaction.card_details.last_digits}}</span>
                     <!-- if exp date, show exp date -->
-                    <span class="date" ng-show="unallocatedCreditTransaction.is_cc_payment">Date <span class="value">{{unallocatedCreditTransaction.card_details.expire_date}}</span></span>
+                    <span class="date" ng-show="unallocatedCreditTransaction.is_cc_payment">Date <span class="value">{{unallocatedCreditTransaction.card_details.expire_date | date:dateFormat}}</span></span>
                     <!-- if reference, show reference -->
                     <span class="reference" ng-show="unallocatedCreditTransaction.reference_text">Reference <span class="value">{{unallocatedCreditTransaction.reference_text}}</span></span>
                 </div>
             </div>
             <div class="payment-date">
                 <span class="icons small-icon icon-time time-black"></span>
-                <time datetime="{{unallocatedCreditTransaction.transaction_date}}">
+                <time datetime="">
                     <span class="date">{{unallocatedCreditTransaction.transaction_date | date:dateFormat}}</span>
                     <span class="time">{{unallocatedCreditTransaction.transaction_time}}</span>
                 </time>
@@ -30,7 +30,7 @@
             <div class="amount green" ng-class="{'partially-paid': unallocatedCreditTransaction.is_partially_paid}">
                 <!-- if partially unallocated, show icon -->
                 <span class="icons icon-wallet-green" ng-show="unallocatedCreditTransaction.is_partially_paid"></span>
-                
+
                 <span class="currency">{{currencySymbol}}</span>{{unallocatedCreditTransaction.amount}}
             </div>
 
@@ -62,16 +62,16 @@
                         </time>
                     </div>
                     <div class="amount paid">
-                         
+
                         $107,188.21
                     </div>
                     <button type="button" class="button white with-icon">
                         <span class="icons icon-remove-40"></span>
                     </button>
                 </div>
-            </li> 
+            </li>
             ... repeat for each allocated
-          
+
         </ul>-->
     </li>
     <!-- ... repeat for each unallocated -->

@@ -84,12 +84,22 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 			    case 'unallocated':
 			        $scope.arDataObj.unallocatedList = data.ar_transactions;
 			        $scope.arDataObj.unallocatedTotalCount = data.total_count;
-			        $scope.$broadcast('updatePagination', 'UNALLOCATE' );
+                    $scope.$broadcast('REFRESH_UNALLOCATED_LIST_SCROLLER');
+
+                    $timeout(function () {
+                         $scope.$broadcast('updatePagination', 'UNALLOCATE' );
+                    }, 1000);
+
 			        break;
 			    case 'allocated':
 			        $scope.arDataObj.allocatedList = data.ar_transactions;
 			        $scope.arDataObj.allocatedTotalCount = data.total_count;
-			        $scope.$broadcast('updatePagination', 'ALLOCATE' );
+                    $scope.$broadcast('REFRESH_ALLOCATED_LIST_SCROLLER');
+
+                    $timeout(function () {
+                         $scope.$broadcast('updatePagination', 'ALLOCATE' );
+                    }, 1000);
+
 			        break;
 			}
 			$scope.$emit('hideLoader');
@@ -188,12 +198,12 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 			    case 'unallocated':
 			        dataToSend.getParams.transaction_type = 'PAYMENTS';
 					dataToSend.getParams.allocated = false;
-					dataToSend.getParams.page = $scope.arDataObj.allocatePageNo;
+					dataToSend.getParams.page = $scope.arDataObj.unallocatePageNo;
 			        break;
 			    case 'allocated':
 			        dataToSend.getParams.transaction_type = 'PAYMENTS';
 					dataToSend.getParams.allocated = true;
-					dataToSend.getParams.page = $scope.arDataObj.unallocatePageNo;
+                    dataToSend.getParams.page = $scope.arDataObj.allocatePageNo;
 			        break;
 			}
 			return dataToSend;

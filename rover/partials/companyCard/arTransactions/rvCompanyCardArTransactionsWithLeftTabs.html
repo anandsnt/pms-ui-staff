@@ -35,7 +35,7 @@
                 <!-- On Click show manual balance billing content -->
                 <a class="add-new-button" ng-click="showAddBalanceScreen()">Add Manual Balance</a>
             </div>
-        </div> 
+        </div>
     </div>
     <div class="billing-content scrollable" ng-show="arDataObj.balanceList.length > 0"  ng-controller="RvArBalanceController" ng-class="{'hidden': (arFlags.currentSelectedArTab !== 'balance' || arFlags.isAddBalanceScreenVisible)}" id="balance-list-div" ng-iscroll="balance-list">
 
@@ -46,26 +46,26 @@
         <rv-pagination page-options="balancePagination" page-data="arDataObj.balanceTotalCount"></rv-pagination>
         <!-- remove hidden when .with-footer-->
         <div class="billing-footer hidden">
-        
+
             <!-- If no payment method selected -->
                 <button type="button" class="select-payment payment-data">
                     Please Select Payment!
                 </button>
             <!-- if payment method selected --
                 <div class="payment-data has-arrow toggle active">
-                    
+
                     <h2 class="type">{Payment Type | exp. Credit Card, Cash}</h2>
                     <div class="card-data">
                         <figure class="card-logo">
-                            <img src="{card-image}" alt="" /> 
-                        </figure> 
+                            <img src="{card-image}" alt="" />
+                        </figure>
                         <span class="number">Ending With<span class="value">5987</span></span>
-                        <span class="date">Expires<span class="value">12/14</span></span> 
+                        <span class="date">Expires<span class="value">12/14</span></span>
                     </div>
-            
+
                 </div>
             -->
-          
+
             <ul class="balance">
                 <li>
                     Available
@@ -93,33 +93,33 @@
                         <button type="button" class="button blue">Pay All</button>
                     </li>
                 -->
-               
+
             </ul>
-            
+
         </div>
-            
+
     </div>
 <!-- Manual Balance Billing Content -->
     <!-- remove .hidden to show this screen -->
     <!-- add .with-footer when showing footer -->
     <div class="billing-content scrollable" ng-controller="RvArAddBalanceController" ng-iscroll="arAddBalanceScroller" ng-iscroll-delay="100" ng-class="{'hidden': (arFlags.currentSelectedArTab !== 'balance' || !arFlags.isAddBalanceScreenVisible)}" >
-        
+
         <div class="wrapper" ng-include="'/assets/partials/companyCard/arTransactions/rvCompanyTravelAgentArAddBalance.html'">
             <!-- {ar-transactions/manual-balance.html} -->
         </div>
 
         <!-- show footer when .with-footer -->
         <div class="billing-footer" ng-class="{'hidden': (arFlags.currentSelectedArTab !== 'balance' || !arFlags.isAddBalanceScreenVisible)}">
-    
+
             <ul class="actions">
                 <li>
                     <button type="button" class="button blank" ng-click="clickedCancelAddBalance()">Cancel</button>
                 </li>
                 <li>
                     <button type="button" class="button green" ng-click="clickedSaveAddBalance()">Save</button>
-                </li> 
+                </li>
             </ul>
-         
+
         </div>
     </div>
 
@@ -127,39 +127,41 @@
     <!-- remove .hidden to show this screen -->
     <!-- add .with-pagination when showing pagination -->
     <div class="billing-content scrollable" ng-controller="RvArPaidController" ng-class="{'hidden': arFlags.currentSelectedArTab !== 'paid-bills'}" ng-iscroll="paid-list">
- 
+
         <div class="wrapper" ng-include="'/assets/partials/companyCard/arTransactions/rvCompanyTravelAgentArPaid.html'">
      <!--        {ar-transactions/paid-bills.html} -->
         </div>
         <!-- show the number-pagination when .with-pagination -->
         <!-- {../_shared/pagination.html} -->
          <rv-pagination page-options="paidPagination" page-data="arDataObj.paidTotalCount"></rv-pagination>
-        
+
     </div>
 
 <!-- Unallocated Billing Content -->
     <!-- remove .hidden to show this screen -->
     <!-- Add .with-pagination when showing pagination -->
-    <div class="billing-content scrollable" ng-controller="RvArUnallocatedController" ng-class="{'hidden': arFlags.currentSelectedArTab !== 'unallocated'}" ng-if="arFlags.currentSelectedArTab === 'unallocated' " ng-iscroll="unallocated-list-scroller">
+    <div class="billing-content scrollable" ng-controller="RvArUnallocatedController" ng-class="{'hidden': arFlags.currentSelectedArTab !== 'unallocated'}"  ng-iscroll="unallocated-list-scroller">
 
         <div class="wrapper" ng-include="'/assets/partials/companyCard/arTransactions/rvCompanyTravelAgentArUnallocated.html'">
            <!--  {ar-transactions/unallocated-payments.html} -->
         </div>
         <!-- show the number-pagination when .with-pagination -->
         <!-- {../_shared/pagination.html} -->
-        
+        <rv-pagination page-options="unallocatePagination" page-data="arDataObj.unallocatedTotalCount"></rv-pagination>
+
     </div>
 
 <!-- Allocated Billing Content -->
     <!-- remove .hidden to show this screen -->
     <!-- Add .with-pagination when showing pagination -->
-    <div class="billing-content scrollable" ng-controller="RvArAllocatedController" ng-class="{'hidden': arFlags.currentSelectedArTab !== 'allocated'}" ng-if="arFlags.currentSelectedArTab === 'allocated' " ng-iscroll="allocated-list-scroller">
+    <div class="billing-content scrollable" ng-controller="RvArAllocatedController" ng-class="{'hidden': arFlags.currentSelectedArTab !== 'allocated'}"  ng-iscroll="allocated-list-scroller">
 
          <div class="wrapper"  ng-include="'/assets/partials/companyCard/arTransactions/rvCompanyTravelAgentArAllocated.html'">
             <!-- {ar-transactions/allocated-payments.html} -->
         </div>
-        
+
         <!-- show the number-pagination when .with-pagination -->
         <!-- {../_shared/pagination.html} -->
-        
+        <rv-pagination page-options="allocatePagination" page-data="arDataObj.allocatedTotalCount"></rv-pagination>
+
     </div>
