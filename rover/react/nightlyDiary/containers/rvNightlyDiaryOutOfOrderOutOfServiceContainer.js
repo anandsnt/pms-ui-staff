@@ -89,9 +89,9 @@ let  calculateOutOfOrderOutOfServicePositionAndDuration = (diaryInitialDayOfDate
             numberOfNightsVisibleInGrid = Math.abs((outOfOrderOutOfServiceEndDate.getTime() - diaryInitialDate.getTime()) / (oneDay));
         }
         durationOfOutOfOrderOutOfService = numberOfNightsVisibleInGrid * nightDuration;
-        if (outOfOrderOutOfServiceStartDate.getTime() <= diaryInitialDate.getTime()) {
-            durationOfOutOfOrderOutOfService = durationOfOutOfOrderOutOfService;
-        } else {
+        if (outOfOrderOutOfServiceStartDate.getTime() >= diaryInitialDate.getTime()) {
+           // durationOfOutOfOrderOutOfService = durationOfOutOfOrderOutOfService;
+       
             if (numberOfDays === NIGHTLY_DIARY_CONST.DAYS_7) {
                 durationOfOutOfOrderOutOfService = durationOfOutOfOrderOutOfService - NIGHTLY_DIARY_CONST.DAYS_POSITION_ADD_7;
             } else if (numberOfDays === NIGHTLY_DIARY_CONST.DAYS_21) {
