@@ -215,7 +215,8 @@ angular.module('sntRover').controller('reservationRoomStatus',
 		    template: '/assets/partials/keys/rvKeyEncodePopup.html',
 		    controller: 'RVKeyEncodePopupCtrl',
 		    className: '',
-		    scope: $scope
+		    scope: $scope,
+            closeByDocument: false
 		});
         
         $timeout(function() {

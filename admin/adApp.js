@@ -27,19 +27,30 @@ var admin = angular.module('admin',
     'onScroll',
     'limitInputRange',
     'convertToNumber',
-    'ADChainRouter']);
+    'ADChainRouter',
+    'ivh.treeview']);
 
 // adding shared http interceptor, which is handling our webservice errors & in future our authentication if needed
 admin.config([
     '$httpProvider',
     '$locationProvider',
-    function($httpProvider, $locationProvider) {
+    'ivhTreeviewOptionsProvider',
+    function($httpProvider, $locationProvider, ivhTreeviewOptionsProvider) {
         $httpProvider.interceptors.push('sharedHttpInterceptor');
         $locationProvider.html5Mode(true);
+
+        ivhTreeviewOptionsProvider.set({
+            validate: true,
+            expandToDepth: -1,
+            defaultSelectedState: false,
+            twistieCollapsedTpl: '',
+            twistieExpandedTpl: '',
+            twistieLeafTpl: ''
+        });
     }
 ]);
 
-admin.run(['$rootScope', '$state', '$stateParams', '$location', function($rootScope, $state, $stateParams, $location) {
+admin.run(['$rootScope', '$state', '$stateParams', '$location', function($rootScope, $state, $stateParams) {
     $rootScope.$state = $state;
     $rootScope.$stateParams = $stateParams;
 
@@ -115,9 +126,3 @@ admin.filter('makeRange', function() {
         return result;
     };
 });
-
-admin.controller('rootController', ['$scope',
-    function($scope) {
-
-    }
-]);
