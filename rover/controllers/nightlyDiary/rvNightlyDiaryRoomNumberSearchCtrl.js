@@ -1,5 +1,5 @@
 angular.module('sntRover')
-.controller('rvNightlyDiaryRoomNumberSearchController', 
+.controller('rvNightlyDiaryRoomNumberSearchController',
     [   '$scope',
         '$filter',
         '$rootScope',
@@ -18,7 +18,7 @@ angular.module('sntRover')
                 $scope.diaryData.roomNumberSearchResults = [];
             };
             var searchRoomCall = null;
-  
+
             // success callback of fetching search results
             var successCallbackFunction = function(data) {
                 $scope.$emit('hideLoader');
@@ -31,7 +31,7 @@ angular.module('sntRover')
             var failureCallbackFunction = function(error) {
                 $scope.errorMessage = error;
             };
-            // function to perform filtering on search.     
+            // function to perform filtering on search.
             var displayFilteredResults = function() {
                 var params = {};
 
@@ -62,12 +62,14 @@ angular.module('sntRover')
                             $scope.$apply(function() {
                                 $scope.diaryData.showSearchResultsArea = false;
                                 $scope.diaryData.roomNumberSearchResults = [];
+                                $scope.diaryData.totalRoomNumberSearchResults = 0;
                             });
                         }
                     }, 800);
                 } else {
                     $scope.diaryData.showSearchResultsArea = false;
                     $scope.diaryData.roomNumberSearchResults = [];
+                    $scope.diaryData.totalRoomNumberSearchResults = 0;
                 }
             };
 

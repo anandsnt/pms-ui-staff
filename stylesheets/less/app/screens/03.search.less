@@ -1344,6 +1344,11 @@
                     line-height: 20px;
                     text-transform: uppercase;
                 }
+
+                /* Arrival & Departure Date will show only on print ***/
+                .print-date {
+                    display: none;
+                }
             }
 
             /* Cards ***/
@@ -1895,7 +1900,7 @@
                         font-size: 20px;
                         line-height: 1em;
                         font-weight: 600;
-                        text-transform: uppercase;
+                        text-transform: none;
                         color: @textColor;
                         .show;
 

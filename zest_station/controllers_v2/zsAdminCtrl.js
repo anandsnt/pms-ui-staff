@@ -1,11 +1,11 @@
 sntZestStation.controller('zsAdminCtrl', [
     '$scope',
-    '$state', 'zsEventConstants', 'zsGeneralSrv', 'zsLoginSrv', '$window', '$rootScope', '$timeout', '$log',
-    function($scope, $state, zsEventConstants, zsGeneralSrv, zsLoginSrv, $window, $rootScope, $timeout, $log) {
+    '$state', 'zsEventConstants', 'zsGeneralSrv', 'zsLoginSrv', '$window', '$rootScope', '$timeout',
+    function($scope, $state, zsEventConstants, zsGeneralSrv, zsLoginSrv, $window, $rootScope, $timeout) {
 
         BaseCtrl.call(this, $scope);
         var  isLightTurnedOn = false; // initially consider the HUE light status to be turned OFF.
-        var selectedWorkstationLightId = '';
+        
 
         // hide nav buttons in login mode
         var hideNavButtons = function() {
@@ -76,7 +76,7 @@ sntZestStation.controller('zsAdminCtrl', [
             if (typeof selectedWorkStation !== 'undefined') {
                 $scope.workstation.selected = parseInt(selectedWorkStation.id);
                 $scope.workstation.printer = selectedWorkStation.printer;
-                selectedWorkstationLightId = selectedWorkStation.hue_light_id;
+                $scope.selectedWorkstationLightId = selectedWorkStation.hue_light_id;
             } else {
                 $scope.workstation.selected = '';
                 $scope.workstation.printer = '';
@@ -87,47 +87,6 @@ sntZestStation.controller('zsAdminCtrl', [
             // do nothing as no workstation was set
         }
 
-        var turnOnLight = function() {
-            if (_.isUndefined($scope.zestStationData.hueUser)) {
-                $log.error('No Hue User present');
-            } else {
-                $scope.zestStationData.hueUser.setLightState(selectedWorkstationLightId, {
-                    on: true
-                }).then(function(data) {
-                    if (data[0].error) {
-                        $log.error('Light with ID ' + selectedWorkstationLightId + ' is unreachable.');
-                    } else {
-                        isLightTurnedOn = true;
-                        $log.info('Light with ID ' + selectedWorkstationLightId + ' is turned ON');
-                    }
-                })
-                .catch(function(e) {
-                    $log.error(e);
-                    $log.info('Some thing went wrong while trying to turn ON Light with ID - ' + $scope.zestStationData.selected_light_id + '. Make sure this light is correctly connected and is reachable');
-                });
-            }
-        };
-
-        var turnOffLight = function() {
-            if (_.isUndefined($scope.zestStationData.hueUser)) {
-                $log.error('No Hue User present');
-            } else {
-                $scope.zestStationData.hueUser.setLightState(selectedWorkstationLightId, {
-                    on: false
-                }).then(function(data) {
-                    if (data[0].error) {
-                        $log.error('Light with ID ' + selectedWorkstationLightId + ' is unreachable.');
-                    } else {
-                        isLightTurnedOn = false;
-                        $log.info('Light with ID ' + selectedWorkstationLightId + ' is turned OFF');
-                    }
-                })
-                .catch(function(e) {
-                    $log.error(e);
-                    $log.info('Some thing went wrong while trying to turn OFF Light with ID - ' + $scope.zestStationData.selected_light_id + '. Make sure this light is correctly connected and is reachable');
-                });
-            }
-        };
 
         // if workstation changes -> change printer accordingly
         $scope.worksStationChanged = function() {
@@ -135,9 +94,9 @@ sntZestStation.controller('zsAdminCtrl', [
                 return workstation.id == $scope.workstation.selected;
             });
 
-            selectedWorkstationLightId = selectedWorkStation.hue_light_id;
+            $scope.selectedWorkstationLightId = selectedWorkStation.hue_light_id;
             if (isLightTurnedOn) {
-                turnOffLight(); // turn off light, if is in ON state
+                $scope.turnOffLight($scope.selectedWorkstationLightId); // turn off light, if is in ON state
             }
             setPrinterLabel(selectedWorkStation.printer);
             $scope.setEncoderDiagnosticInfo(selectedWorkStation.name, selectedWorkStation.key_encoder_id); // in diagnostic info display the encoder name + id
@@ -281,7 +240,11 @@ sntZestStation.controller('zsAdminCtrl', [
             } else {
                 console.info('login out');
             }
-            $window.location.href = '/station_logout';
+            $scope.reportGoingOffline('logout');
+             $timeout(function() {
+                $window.location.href = '/station_logout';
+            }, 500);
+            
         };
 
         var setStationVariables = function() {
@@ -348,6 +311,7 @@ sntZestStation.controller('zsAdminCtrl', [
                 // navigate to home screen
                 // 
                 if ($scope.zestStationData.workstationStatus === 'out-of-order') {
+                    $scope.addReasonToOOSLog('Admin');
                     $state.go('zest_station.outOfService');
                 } else {
                     if (runDemoClicked) {
@@ -399,6 +363,10 @@ sntZestStation.controller('zsAdminCtrl', [
          **/
         $scope.saveSettings = function(runDemoClicked) {
             var getParams = function() {
+                // CICO-42233
+                if (!$scope.zestStationData.idle_timer.prompt) {
+                    $scope.zestStationData.idle_timer.prompt = 0;
+                }
                 var params = {
                     'kiosk': {
                         'idle_timer': $scope.zestStationData.idle_timer,
@@ -489,13 +457,6 @@ sntZestStation.controller('zsAdminCtrl', [
             }
         };
 
-        $scope.toggleLight = function() {
-            if (isLightTurnedOn) {
-                turnOffLight();
-            } else {
-                turnOnLight();
-            }
-        };
         $scope.testRunMobileKeyCheckin = function() {
             // save settings then go to the demo area
             var demoRunStarted = true;
@@ -505,6 +466,9 @@ sntZestStation.controller('zsAdminCtrl', [
         };
         $scope.reload = function() {
             location.reload(true);
+        };
+        $scope.toggleOOSHist = function() {
+            $scope.show_oos_history = !$scope.show_oos_history;
         };
 
         $scope.showDebugModeOption = false;
@@ -517,6 +481,7 @@ sntZestStation.controller('zsAdminCtrl', [
             $scope.input = {
                 'inputTextValue': ''
             };
+            $scope.show_oos_history = false;
             $scope.userName = '';
             $scope.passWord = '';
             hideNavButtons();

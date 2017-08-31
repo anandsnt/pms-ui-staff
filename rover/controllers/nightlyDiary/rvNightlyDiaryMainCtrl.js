@@ -49,7 +49,8 @@ angular.module('sntRover')
                     srvParams = RVNightlyDiarySrv.getCache();
                 }
                 else {
-                    srvParams.start_date = addDaysToDay($rootScope.businessDate, -1);
+                    srvParams.start_date = moment(tzIndependentDate($rootScope.businessDate)).subtract(1, 'days')
+                        .format($rootScope.momentFormatForAPI);
                     srvParams.no_of_days = 7;
                     srvParams.page = 1;
                     srvParams.per_page = 50;
@@ -94,10 +95,10 @@ angular.module('sntRover')
              * method to get Pagination parametrs
              * @return {Object} with pagination params
              */
-            var getPaginationParams = function() {
+            var getPaginationParams = function(offset) {
                 return {
                     per_page: $scope.diaryData.paginationData.perPage,
-                    page: $scope.diaryData.paginationData.page,
+                    page: offset ? $scope.diaryData.paginationData.page + offset : $scope.diaryData.paginationData.page,
                     total_count: $scope.diaryData.paginationData.totalCount
                 };
             };
@@ -111,7 +112,7 @@ angular.module('sntRover')
             };
 
             // Method to update room list data.
-            var fetchRoomListDataAndReservationListData = function(roomId) {
+            var fetchRoomListDataAndReservationListData = function(roomId, offset) {
                 var successCallBackFetchRoomList = function(data) {
                         $scope.$emit('hideLoader');
                         $scope.errorMessage = '';
@@ -126,7 +127,7 @@ angular.module('sntRover')
                         }
                     },
                     postData = {
-                        ...getPaginationParams(),
+                        ...getPaginationParams(offset),
                         'start_date': $scope.diaryData.fromDate,
                         'no_of_days': $scope.diaryData.numberOfDays,
                         'selected_room_type_ids': $scope.diaryData.selectedRoomTypes,
@@ -148,8 +149,7 @@ angular.module('sntRover')
              */
             var goToPrevPage = () => {
                 cancelReservationEditing();
-                $scope.diaryData.paginationData.page--;
-                fetchRoomListDataAndReservationListData();
+                fetchRoomListDataAndReservationListData(null, -1);
             };
 
             /*
@@ -158,8 +158,7 @@ angular.module('sntRover')
              */
             var goToNextPage = () => {
                 cancelReservationEditing();
-                $scope.diaryData.paginationData.page++;
-                fetchRoomListDataAndReservationListData();
+                fetchRoomListDataAndReservationListData(null, 1);
             };
             /*
              * Show selected reservation highlighted and enable edit bar
@@ -176,7 +175,8 @@ angular.module('sntRover')
                     $scope.extendShortenReservationDetails = {
                         'arrival_date': reservation.arrival_date,
                         'dep_date': reservation.dept_date,
-                        'reservation_id': reservation.id
+                        'reservation_id': reservation.id,
+                        'room_number': (_.findWhere($scope.diaryData.diaryRoomsList, {id: room.id})).room_no
                     };
 
                     showReservationSelected();
@@ -203,7 +203,8 @@ angular.module('sntRover')
                                             .format('YYYY-MM-DD'),
                         'dep_date': moment(DepartureDate, $rootScope.dateFormat.toUpperCase())
                                             .format('YYYY-MM-DD'),
-                        'reservation_id': $scope.currentSelectedReservation.id
+                        'reservation_id': $scope.currentSelectedReservation.id,
+                        'room_number': (_.findWhere($scope.diaryData.diaryRoomsList, {id: $scope.currentSelectedRoom.id})).room_no
                     },
                     successCallBack = function(response) {
                         $scope.$emit('hideLoader');

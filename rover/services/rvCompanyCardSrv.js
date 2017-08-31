@@ -182,8 +182,8 @@ angular.module('sntRover').service('RVCompanyCardSrv', ['$q', 'rvBaseWebSrvV2',
          * @return {promise|{then, catch, finally}|*|e} Promise
          */
         this.fetchRates = function(params) {
-            var deferred = $q.defer();
-            var url = '/api/rates/contract_rates';
+            var deferred = $q.defer(),
+                url = '/api/rates/contract_rates';
 
             rvBaseWebSrvV2.getJSON(url, params).then(function(data) {
                 deferred.resolve(data);

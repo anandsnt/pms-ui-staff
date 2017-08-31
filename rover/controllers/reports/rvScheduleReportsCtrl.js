@@ -466,6 +466,10 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
             if (angular.isDefined($scope.selectedEntityDetails.schedule_formats)) {
                 $scope.schedule_formats = $scope.selectedEntityDetails.schedule_formats;
                 $scope.scheduleParams.format_id = $scope.selectedEntityDetails.format.id;
+            } else {
+                if ($scope.selectedEntityDetails.report.title !== reportNames['COMPARISION_BY_DATE'] ) {
+                   $scope.scheduleParams.format_id = _.find($scope.scheduleFormat, {value: 'PDF'}).id;
+                }
             }
 
             hasAccOrGuest = _.find(report.filters, function(filter) {
@@ -509,6 +513,7 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
             }
 
             $scope.startsOnOptions = angular.extend({
+                minDate: tzIndependentDate($rootScope.businessDate),
                 onSelect: function(value) {
                     $scope.endsOnOptions.minDate = value;
                 }
@@ -900,6 +905,11 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
             return $scope.addingStage === STAGES.SHOW_SCHEDULE_LIST ||
                 $scope.addingStage === STAGES.SHOW_PARAMETERS ||
                 $scope.addingStage === STAGES.SHOW_DETAILS;
+        };
+
+        // Checks whether file format dropdown should be shown or not
+        $scope.shouldShowFileFormat = function (selectedEntity) {
+            return selectedEntity.report && selectedEntity.report.title === reportNames['COMPARISION_BY_DATE'];
         };
 
         /**

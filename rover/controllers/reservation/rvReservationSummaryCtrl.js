@@ -582,8 +582,10 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', 'jsMappings', '$s
                 $scope.setupFeeData();
                 // CICO-15107 --
                 var aptSegment = ""; // Variable to store the suitable segment ID
+                // CICO-42023
+                var segmentsSortedByLOS = _.sortBy($scope.otherData.segments, 'los');
 
-                angular.forEach($scope.otherData.segments, function(segment) {
+                angular.forEach(segmentsSortedByLOS, function(segment) {
                     if ($scope.reservationData.stayDays.length - 1 <= segment.los) {
                         if (!aptSegment) {
                             aptSegment = segment.value;
@@ -875,7 +877,8 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', 'jsMappings', '$s
             };
 
             var postData = {
-                payment_type: {}
+                payment_type: {},
+                guest_detail_id: $scope.reservationData.guest.id // CICO-42714
             };
 
             if ($scope.reservationData.paymentType.type.value !== null) {
@@ -1305,7 +1308,7 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', 'jsMappings', '$s
             $scope.$emit('showLoader');
             jsMappings.fetchAssets(['addBillingInfo', 'directives'])
             .then(function() {
-                $scope.$emit('hideLoader'); 
+                $scope.$emit('hideLoader');
                 if ($rootScope.UPDATED_BI_ENABLED_ON['RESERVATION']) {
                     console.log("##Billing-info updated version");
                     ngDialog.open({
@@ -1542,17 +1545,15 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', 'jsMappings', '$s
 
         $scope.addGuests = function(room) {
             if (!room.accompanying_guest_details) {
+                var accompanyingGuests = {
+                    ADULT: [],
+                    CHILDREN: [],
+                    INFANTS: []
+                };
+
+                $scope.applyGuestCountRuleOnAccompanyingGuests(room.numAdults, room.numChildren, room.numInfants, accompanyingGuests);
                 angular.extend(room, {
-                    accompanying_guest_details: [{
-                        first_name: '',
-                        last_name: ''
-                    }, {
-                        first_name: '',
-                        last_name: ''
-                    }, {
-                        first_name: '',
-                        last_name: ''
-                    }]
+                    accompanying_guest_details: accompanyingGuests
                 });
             }
             refreshScrolls();
@@ -1562,12 +1563,18 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', 'jsMappings', '$s
             $scope.errorMessage = "";
             var validGuests = [];
 
-            _.each(room.accompanying_guest_details, function(guest) {
-                if (!guest.first_name && !guest.last_name) {
-                    guest.first_name = null;
-                    guest.last_name = null;
-                }
-                validGuests.push(guest);
+            _.each(room.accompanying_guest_details, function (guest, type) {
+
+                _.each(guest, function (guestInfo) {
+                    validGuests.push({
+                        first_name: guestInfo.first_name,
+                        last_name: guestInfo.last_name,
+                        guest_type: guestInfo.guest_type,
+                        guest_type_id: guestInfo.guest_type_id
+                    });
+
+                });
+
             });
 
             var onupdateSuccess = function() {
@@ -1633,6 +1640,62 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', 'jsMappings', '$s
             }, 300);
 
         });
+
+        // Find guest type id by name
+        var findGuestTypeId = function (type) {
+            var guestType = _.find($rootScope.guestTypes, {value: type});
+
+            return guestType.id;
+        };
+
+        // Add the dummy accompany guests based on the guest count
+        var createExtraAccompanyingGuest = function(type, noOfExtraGuests, accompanyingGuests) {
+
+            if (noOfExtraGuests > 0) {
+               for (var i = 0; i < noOfExtraGuests; i++) {
+                    accompanyingGuests.push({first_name: '', last_name: '', guest_type: type, guest_type_id: findGuestTypeId(type)});
+                }
+            }
+
+        };
+
+        // Check whether the provision to add additional accompany guests should be given based on guest count
+        $scope.applyGuestCountRuleOnAccompanyingGuests = function(adultCount, childCount, infantCount, accompanyingGuests) {
+            adultCount = parseInt(adultCount),
+            childCount = parseInt(childCount),
+            infantCount = parseInt(infantCount);
+
+            var guestCount = adultCount + childCount + infantCount;
+
+
+            // Add dummy accompany guests only if the guest count is greater that 1
+            if (guestCount > 1) {
+
+                createExtraAccompanyingGuest('ADULT', adultCount - 1, accompanyingGuests.ADULT);
+                createExtraAccompanyingGuest('CHILDREN', childCount, accompanyingGuests.CHILDREN );
+                createExtraAccompanyingGuest('INFANTS', infantCount, accompanyingGuests.INFANTS);
+
+
+            }
+
+        };
+
+        // Get icon class based on guest type
+        $scope.getGuestTypeIconClass = function(guestType) {
+            var iconClass = 'adult';
+
+            if (guestType === 'CHILDREN') {
+                iconClass = 'student';
+            } else if (guestType === 'INFANTS') {
+                iconClass = 'infant';
+            }
+            return iconClass;
+        };
+
+        // Show accompany guest section based on guest count
+        $scope.showAccompanyingGuestSectionBasedOnGuestCount = function(room) {
+            return (room && (( parseInt(room.numAdults) + parseInt(room.numChildren) + parseInt(room.numInfants) ) > 1) );
+        };
 
         $scope.init();
     }

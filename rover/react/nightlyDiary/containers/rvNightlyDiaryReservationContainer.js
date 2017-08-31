@@ -184,7 +184,7 @@ let findIsReservationFuture = (reservation, currentBusinessDate) => {
  * Adding different logics to the reservations to pass to component
  */
 
-let convertReservationsListReadyToComponent = (reservation, diaryInitialDayOfDateGrid, numberOfDays, currentBusinessDate, selectedReservationId, newArrivalPosition, newDeparturePosition) => {
+let convertReservationsListReadyToComponent = (reservation, diaryInitialDayOfDateGrid, numberOfDays, currentBusinessDate, selectedReservationId, newArrivalPosition, newDeparturePosition, selectedRoomId, roomObject) => {
 
     let positionAndDuration = calculateReservationDurationAndPosition(diaryInitialDayOfDateGrid, reservation, numberOfDays);
     let duration = positionAndDuration.durationOfReservation + "px";
@@ -212,6 +212,12 @@ let convertReservationsListReadyToComponent = (reservation, diaryInitialDayOfDat
                                  ? getReservationStatusClass(reservation.status)
                                  : (isReservationFuture) ? 'future' : '';
     let reservationClass = getReservationClasses(reservation, currentBusinessDate, diaryInitialDayOfDateGrid, numberOfDays);
+    
+    // CICO-41798, Show "Pending" if no name is given initially
+    if (reservation.guest_details.first_name === null && reservation.guest_details.last_name === null) {
+        reservation.guest_details.last_name = 'Pending';
+        reservation.guest_details.first_name = '';
+    }
 
     reservation.guest_details.full_name = reservation.guest_details.first_name + " " + reservation.guest_details.last_name;
     reservation.guest_details.short_name = reservation.guest_details.first_name.substring(0, 1) + "." + reservation.guest_details.last_name.substring(0, 1);
@@ -222,7 +228,7 @@ let convertReservationsListReadyToComponent = (reservation, diaryInitialDayOfDat
     reservation.style = {};
     reservation.style.width = duration;
     reservation.style.transform = "translateX(" + positionAndDuration.reservationPosition + "px)";
-    if (reservation.id === selectedReservationId) {
+    if (reservation.id === selectedReservationId && roomObject.id === selectedRoomId) {
         reservationEditClass = "editing";
         if (newArrivalPosition !== '' || newDeparturePosition !== '') {
             let newDuration = newDeparturePosition - newArrivalPosition;
@@ -240,7 +246,7 @@ let convertReservationsListReadyToComponent = (reservation, diaryInitialDayOfDat
 const mapStateToNightlyDiaryReservationContainerProps = (state, ownProps) => ({
     reservation: convertReservationsListReadyToComponent(
         ownProps.reservation, state.diaryInitialDayOfDateGrid,
-        state.numberOfDays, state.currentBusinessDate, state.selectedReservationId, state.newArrivalPosition, state.newDeparturePosition),
+        state.numberOfDays, state.currentBusinessDate, state.selectedReservationId, state.newArrivalPosition, state.newDeparturePosition, state.selectedRoomId, ownProps.room),
     selectReservation: state.callBackFromAngular.selectReservation,
     selectedReservationId: state.selectedReservationId,
     selectedRoom: ownProps.room,

@@ -85,8 +85,10 @@ sntZestStation.controller('zsCheckinRegCardDeliveryOptionsCtrl', [
                 errorMessage = _.isUndefined(errorMessage) ? 'CHECKIN_PRINT_FAIL' : errorMessage;
                 if ($stateParams.key_success === 'true') {
                     $scope.zestStationData.workstationOooReason = $filter('translate')(errorMessage);
+                    $scope.addReasonToOOSLog('CHECKIN_PRINT_FAIL');
                 } else {
                     $scope.zestStationData.workstationOooReason = $filter('translate')('CHECKIN_KEY_FAIL_PRINT_FAIL');
+                    $scope.addReasonToOOSLog('CHECKIN_KEY_FAIL_PRINT_FAIL');
                 }
                 $scope.zestStationData.workstationStatus = 'out-of-order';
 
@@ -269,19 +271,33 @@ sntZestStation.controller('zsCheckinRegCardDeliveryOptionsCtrl', [
                 successCallBack: registrationCardSent,
                 failureCallBack: registrationCardSendingFailed
             };
-
-            $scope.callAPI(zsCheckinSrv.sendRegistrationByEmail, options);
+            
+            if ($scope.inDemoMode()) {
+                registrationCardSent();
+            } else {
+                $scope.callAPI(zsCheckinSrv.sendRegistrationByEmail, options);    
+            }
+            
         };
 
 		/**
 		 * [reEnterText description]
 		 * @return {[type]} [description]
 		 */
-        $scope.editEmailAddress = function() {
-            $scope.trackEvent('CI - Edit Email', 'user_selected');
+        $scope.editEmailAddress = function(reenter) {
+            if (!reenter) {
+                $scope.trackEvent('CI - Edit Email', 'user_selected');    
+            } else {
+                $scope.trackEvent('CI - Re-Enter Edit Email (Reg-Delivery)', 'user_selected');
+            }
+
             $scope.mode = 'EMAIL_ENTRY_MODE';
-            $scope.focusInputField('input_text');
+            $scope.focusInputField('email-entry');
         };
+
+        $scope.$on('RE_EMAIL_ENTRY_MODE', function() {
+            $scope.editEmailAddress(true);
+        });
 
 
         $scope.$on('EMAIL_UPDATION_SUCCESS', function() {

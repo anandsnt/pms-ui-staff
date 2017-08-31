@@ -76,22 +76,49 @@ var GlobalZestStationApp = function() {
         window.location.href = '/station_logout';
     };
 
-    this.toggleDemoModeOnOff = function() {
+    this.setStationProperty = function(p, v) {
+        angular.element('#header').scope().$parent.zestStationData[p] = v;
+    };
+
+    this.getStationProperty = function(p) {
+        return angular.element('#header').scope().$parent.zestStationData[p];
+    };
+
+    this.toggleDemoModeOnOff = function(enableFakeReservation) {
         var el = angular.element('#header');
 
         if (el) {
             var demoModeEnabled = el.scope().$parent.zestStationData.demoModeEnabled;
 
             if (demoModeEnabled === 'true') {
-                angular.element('#header').scope().$parent.zestStationData.demoModeEnabled = 'false';
+                if (enableFakeReservation === 'enableFakeReservation') {
+                    if (that.getStationProperty('fakeReservation') === 'false') {
+                        that.setStationProperty('fakeReservation', 'true');
+
+                    } else {
+                        that.setStationProperty('fakeReservation', 'false');
+                    }
+                } else {
+                    // fake reservation should only be used with demo mode
+                    that.setStationProperty('demoModeEnabled', 'false');
+                    that.setStationProperty('fakeReservation', 'false');
+                }
             } else {
-                angular.element('#header').scope().$parent.zestStationData.demoModeEnabled = 'true';
+                if (enableFakeReservation === 'enableFakeReservation') {
+                    that.setStationProperty('fakeReservation', 'true');
+                }
+                that.setStationProperty('demoModeEnabled', 'true');
             }
             angular.element('#header').scope()
                 .$apply();
 
         }
     };
+
+    this.toggleDemoFlowModeOnOff = function() {
+        that.toggleDemoModeOnOff('enableFakeReservation');
+    };
+
     this.runDigest = function() {
         try {
             setTimeout(function() {

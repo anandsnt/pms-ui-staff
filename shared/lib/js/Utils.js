@@ -82,7 +82,7 @@ var CurrencyInfoMappings = {
     'MNT': [0, '\u20AE', 'MN₮'],
     'MXN': [2, '$', 'Mex$'],
     'MYR': [2, 'RM', 'RM'],
-    'NOK': [18, 'kr', 'NOkr'],
+    'NOK': [18, 'kr.', 'NOkr'],
     'PAB': [2, 'B/.', 'B/.'],
     'PEN': [2, 'S/.', 'S/.'],
     'PHP': [2, '\u20B1', 'Php'],
@@ -472,18 +472,6 @@ function getWeekDayName(dayIndexInWeek, minLetterCount){
     return n.substr(0, minLetterCount);
 }
 
-function addDaysToDay(date, days) {
-    var dateToTime = tzIndependentDate(date).getTime();
-    var oneDay = 24 * 60 * 60 * 1000;
-    var dateToTimeWithDays = dateToTime + (oneDay * days);
-    var dateToTimeWithDaysObj = new Date(dateToTimeWithDays);
-    var dateToTimeWithDaysModified = dateToTimeWithDaysObj.toString("YYYY-MM-DD");
-
-    return dateToTimeWithDaysModified;
-}
-
-
-
 function getTextWidth(text){
         // create a dummy span, we'll use this to measure text.
         var tester = $('<span>'),
@@ -671,4 +659,33 @@ var checkIfReferencetextAvailableForCC = function(paymentTypes,selectedPaymentTy
         }
     });
     return displayReferance;
+};
+
+// Get the length of an object
+var getObjectLength = function(obj) {
+    return Object.keys(obj).length;
+}
+
+// Replace a value with in object with another value
+var replaceValueWithinObject = function (obj, findStr, replaceObj ) {
+
+    Object.keys(obj).forEach(function (key) {
+        if ( obj[key] != null && typeof obj[key] === 'object') {
+            return replaceValueWithinObject(obj[key], findStr, replaceObj);
+        } else if (obj[key] == findStr) {
+            obj[key] = replaceObj;
+        }
+    });
+};
+
+// Check whether the object has got all key values as empty
+var isObjectAllValuesEmpty = function (obj) {
+    var emptyKeys = [];
+
+    _.each ( obj, function (value, key) {
+        if (value == "") {
+            emptyKeys.push(key);
+        }
+    });
+    return ( emptyKeys.length == Object.keys(obj).length );
 };

@@ -1,5 +1,5 @@
 angular.module('qtip2', [])
-  .directive('qtip', function($compile, $filter, $rootScope) {
+  .directive('qtip', function($compile, $filter, $rootScope, sntAuthorizationSrv) {
     return {
       restrict: 'A',
       link: function(scope, element, attrs) {
@@ -8,7 +8,10 @@ angular.module('qtip2', [])
           qtipClass = attrs.class || 'qtip-tipsy',
           content,
           htmlString,
-          category; // variable to handle dynamic content tooltip( for eg: dateRange, rateType) - this should be passed as element attr
+          category, // variable to handle dynamic content tooltip( for eg: dateRange, rateType) - this should be passed as element attr
+          fetchURL,
+          url,
+          separator; 
 
         if (attrs.title) {
           content = {
@@ -23,8 +26,14 @@ angular.module('qtip2', [])
           content: {
             text: function(event, api) {
               category = api.elements.target.attr('category');
+              url = api.elements.target.attr('url');
+              separator = url.indexOf('?') !== -1 ? '&' : '?'; 
+
+              // include hotel uuid in case of multi-property user
+              fetchURL = url + separator + 'hotel_uuid=' + sntAuthorizationSrv.getProperty();
+
               $.ajax({
-                url: api.elements.target.attr('url') // Use href attribute as URL
+                url: fetchURL // Use href attribute as URL
               })
                 .then(function(resultSet) {
                   scope.isActiveDateRange = function(beginDateTime, endDateTime) {
@@ -48,7 +57,8 @@ angular.module('qtip2', [])
                       break;
                     case 'rateType':
                       htmlString = "<ul>";
-                      content.title = resultSet.total_count + " " + content.title;
+                      // content.title = resultSet.total_count + " " + content.title;
+                      content.title = content.title;
                       angular.forEach(resultSet.results, function(result, index) {
                         htmlString += "<li ng-click=editRatesClicked(" + result.id + "," + index + ")>" + result.name + "</li>";
                       });
@@ -60,7 +70,8 @@ angular.module('qtip2', [])
                   api.set('content.text', $compile(htmlString)(scope));
                 }, function(xhr, status, error) {
                   // Upon failure... set the tooltip content to error
-                  api.set('content.text', status + ': ' + error);
+                  // api.set('content.text', status + ': ' + error);
+                  console.warn('qtip error: ', error);
                 });
 
               // return 'Loading...'; // Set some initial text

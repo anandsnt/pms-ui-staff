@@ -1,4 +1,4 @@
-this.webSocketOperations = function(socketOpenedSuccessCallback, socketOpenedFailureCallback, actionSuccesCallback) {
+this.webSocketOperations = function(socketOpenedSuccessCallback, socketOpenedFailureCallback, actionSuccesCallback, wsSwipeUrl, wsSwipePort) {
     var that = this;
     var wsConfig = {
         'swipeService': 'wss://localhost:4649/CCSwipeService',
@@ -31,12 +31,19 @@ this.webSocketOperations = function(socketOpenedSuccessCallback, socketOpenedFai
     this.CaptureQRViaPassportScanner = function() { // captures QR code data from the ARH/Samsotech Passport scanner
         that.ws.send('{"Command" : "cmd_scan_qr_passport_scanner"}');
     };
+    this.CapturePassport = function() { // captures QR code data from the ARH/Samsotech Passport scanner
+        that.ws.send('{"Command" : "cmd_scan_passport"}');
+    };
     this.CaptureQRViaDatalogic = function() { // captures QR code data (reservation id) from the Datalogic scanner
         that.ws.send('{"Command" : "cmd_scan_qr_datalogic"}');
     };
     this.InsertKeyCard = function() { // use key for checkout takes key in
         that.ws.send('{"Command" : "cmd_insert_key_card"}');
     };
+    this.toggleLight = function(Command) {
+        that.ws.send(Command);
+    };
+
     this.startPrint = function(data) {
         var printBillJson = {
             'Command': 'cmd_print_bill',
@@ -49,7 +56,13 @@ this.webSocketOperations = function(socketOpenedSuccessCallback, socketOpenedFai
 
     this.connect = function() {
         try {
-            that.ws = new WebSocket('wss://localhost:4649/CCSwipeService');
+            var port = (_.isUndefined(wsSwipePort) || wsSwipePort === '' || wsSwipePort === null) ? 4649 : wsSwipePort;
+            
+            if (_.isUndefined(wsSwipeUrl) || wsSwipeUrl === '') {
+                that.ws = new WebSocket('wss://localhost:' + port + '/CCSwipeService');
+            } else {
+                that.ws = new WebSocket(wsSwipeUrl + ':' + port + '/CCSwipeService');
+            }
         } catch (e) {
             console.error(e);
             socketOpenedFailureCallback();

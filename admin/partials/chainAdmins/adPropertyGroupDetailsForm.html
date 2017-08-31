@@ -1,0 +1,31 @@
+<form method="post" action="{action}" id="new-property-group" class="form inline-form float">
+    <div class="form-title">
+        <h3><span ng-show="isAdd" translate>NEW</span>
+			<span ng-show="isEdit" translate>Edit</span>
+					{{'PROPERTY_GROUP' | translate}}
+		</h3>
+        <em class="status">Fields marked with <strong>*</strong> are mandatory!</em>
+    </div>
+    <div class="entry with-button float">
+        <label for="name">{{'GROUP_NAME' | translate}} <strong>*</strong></label>
+        <input id="name" value="" ng-model="prefetchData.name" placeholder="Enter group name" type="text" required />
+        <button type="button" class="button red" ng-show="isEdit" ng-click="deleteItem(editId)">Delete Group</button>
+    </div>
+    <div class="entry full-width">
+        <label class="no-margin">{{'HOTELS_IN_GROUP' | translate}} <strong>*</strong></label>
+        <em class="entry-description">Selecting a hotel from another group will remove it from that group once you save changes.</em>
+        <div class="boxes col3">
+            <label class="checkbox inline with-description with-no-margin-left" ng-repeat="option in prefetchData.chain_hotels" ng-class="{ 'checked' : option.is_checked, 'disabled': option.is_already_linked_to_group }">
+                <span class="icon-form icon-checkbox" ng-class="{ 'checked' : (option.is_checked || option.is_already_linked_to_group) }"></span>
+                <input type="checkbox" ng-click="checkBoxClicked($index)" ng-class="{ 'checked' : option.is_checked, 'disabled': option.is_already_linked_to_group }" ng-model="option.is_checked">
+                <span>{{option.name}}</span>
+                <em ng-class="{ 'same_group' : option.belongs_to_property_group_id == editId }">{{option.belongs_to_property_group}}</em>
+            </label>
+        </div>
+    </div>
+
+    <div class="actions float">
+        <button type="button" ng-click="clickedCancel()" class="button blank">Cancel</button>
+        <button type="button" ng-click="clickedSave()" class="button green">Save</button>
+    </div>
+</form>

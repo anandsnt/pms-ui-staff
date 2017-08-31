@@ -356,13 +356,17 @@ angular.module('sntRover')
          * @return {[type]} [description]
          */
         const getEditedRestrictionsForAPI = () => {
-            var editedRestrictions = _.where($scope.restrictionList, {edited:true});
+            // CICO-42484 Only restrictions that have been edited need to be sent in the update request
+            var editedRestrictions = _.filter($scope.restrictionList,
+                rstrn => rstrn.edited &&
+                    (rstrn.status !== rstrn.oldStatus ||
+                        parseInt(rstrn.value) !== parseInt(rstrn.oldValue)));
 
             return editedRestrictions.map(restriction => ({
                 action: restriction.status === 'ON' ? 'add' : 'remove',
                 restriction_type_id: restriction.id,
                 days: restriction.value
-            }))
+            }));
         };
 
 
@@ -697,6 +701,7 @@ angular.module('sntRover')
          * @return {Object}
          */
         const getDisplayingParamsForRestriction = (restriction, restrictionList) => {
+
             const restrictionFoundInList = _.findWhere(restrictionList, { 'restriction_type_id': restriction.id });
 
             // returning Object - default - OFF status
@@ -740,6 +745,7 @@ angular.module('sntRover')
          * @return {array}
          */
         const getRestrictionListForRateView = (restrictionTypes, restrictionList) => {
+
             var restrictions = getValidRestrictionTypes(restrictionTypes)
                     .map(restrictionType => ({
                         ...restrictionType,
@@ -748,11 +754,12 @@ angular.module('sntRover')
                         edited : false
                     }));
 
-            restrictions = restrictions.map(restriciton => {
-                if(restriciton.status === 'ON') {
-                   restriciton.edited = true;
-                }
-                return restriciton;
+            // CICO-42484 Keep tab of the initial values so that update request is sent only for edited restrictions
+            restrictions = restrictions.map(restriction => {
+                restriction.oldStatus = restriction.status;
+                restriction.oldValue = restriction.value;
+
+                return restriction;
             });
 
             return restrictions;
@@ -790,6 +797,8 @@ angular.module('sntRover')
 
             $scope.headerBottomRightLabel = 'All Room types';
 
+            $scope.isMultiple = dialogData.isMultiple;
+
             $scope.restrictionList = getRestrictionListForRateView(
                     dialogData.restrictionTypes,
                     dialogData.variedAndCommonRestrictions);
@@ -811,6 +820,8 @@ angular.module('sntRover')
 
             $scope.headerBottomRightLabel = 'All Rates';
 
+            $scope.isMultiple = dialogData.isMultiple;
+
             $scope.restrictionList = getRestrictionListForRateView(
                     dialogData.restrictionTypes,
                     dialogData.variedAndCommonRestrictions);
@@ -828,6 +839,8 @@ angular.module('sntRover')
             $scope.headerBottomLeftLabel = formatDateForTopHeader(dialogData.date);
 
             $scope.headerBottomRightLabel = 'All Rates';
+
+            $scope.isMultiple = dialogData.isMultiple;
 
             $scope.restrictionList = getRestrictionListForRateView(
                     dialogData.restrictionTypes,
@@ -849,6 +862,8 @@ angular.module('sntRover')
             $scope.header = formatDateForTopHeader(tzIndependentDate(dialogData.date));
 
             $scope.headerBottomRightLabel = '';
+
+            $scope.isMultiple = dialogData.isMultiple;
 
             $scope.restrictionList = getRestrictionListForRateView(
                     dialogData.restrictionTypes,
@@ -873,6 +888,8 @@ angular.module('sntRover')
 
             $scope.headerBottomRightLabel = '';
 
+            $scope.isMultiple = dialogData.isMultiple;
+
             $scope.restrictionList = getRestrictionListForRateView(
                     dialogData.restrictionTypes,
                     dialogData.variedAndCommonRestrictions);
@@ -893,6 +910,8 @@ angular.module('sntRover')
             $scope.headerBottomLeftLabel = 'All Room types';
 
             $scope.headerBottomRightLabel = 'All Rates';
+
+            $scope.isMultiple = dialogData.isMultiple;
 
             $scope.restrictionList = getRestrictionListForRateView(
                     dialogData.restrictionTypes,
@@ -953,6 +972,8 @@ angular.module('sntRover')
             $scope.headerBottomLeftLabel = formatDateForTopHeader(dialogData.date);
 
             $scope.headerBottomRightLabel = dialogData.rate.name;
+
+            $scope.isMultiple = dialogData.isMultiple;
 
             $scope.restrictionList = getRestrictionListForRateView(
                     dialogData.restrictionTypes,
@@ -1049,6 +1070,8 @@ angular.module('sntRover')
             $scope.headerBottomLeftLabel = 'All room types';
 
             $scope.headerBottomRightLabel = dialogData.rate.name;
+
+            $scope.isMultiple = dialogData.isMultiple;
 
             $scope.restrictionList = getRestrictionListForRateView(
                     dialogData.restrictionTypes,

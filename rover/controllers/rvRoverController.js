@@ -47,7 +47,7 @@ sntRover.controller('roverController', [
     // CICO-39623 : Setting up app theme.
     if ( !!hotelDetails.selected_theme && hotelDetails.selected_theme.value !== 'ORANGE' ) {
       var appTheme = 'theme-' + (hotelDetails.selected_theme.value).toLowerCase();
-      
+
       document.getElementsByTagName("html")[0].setAttribute( 'class', appTheme );
     }
 
@@ -98,6 +98,8 @@ sntRover.controller('roverController', [
     $rootScope.fullDateFullMonthYear = "dd MMMM yyyy";
     $rootScope.dayAndDateCS = "EEEE, MM-dd-yyyy"; // Wednesday, 06-04-2014
     $rootScope.dateFormatForAPI = "yyyy-MM-dd";
+        // https://momentjs.com/docs/#/displaying/format/
+    $rootScope.momentFormatForAPI = "YYYY-MM-DD";
     $rootScope.shortMonthAndDate = "MMM dd";
     $rootScope.monthAndDate = "MMMM dd";
     $rootScope.fullMonth = "MMMM";
@@ -129,6 +131,7 @@ sntRover.controller('roverController', [
     $rootScope.dateFormat = getDateFormat(hotelDetails.date_format.value);
     $rootScope.jqDateFormat = getJqDateFormat(hotelDetails.date_format.value);
     $rootScope.MLImerchantId = hotelDetails.mli_merchant_id;
+    $rootScope.isMLIEMVEnabled =  hotelDetails.mli_emv_enabled;
     $rootScope.isQueuedRoomsTurnedOn = hotelDetails.housekeeping.is_queue_rooms_on;
     $rootScope.advanced_queue_flow_enabled = hotelDetails.advanced_queue_flow_enabled;
     $rootScope.isPmsProductionEnv = hotelDetails.is_pms_prod;
@@ -152,11 +155,13 @@ sntRover.controller('roverController', [
     $rootScope.isAddonOn = hotelDetails.is_addon_on;
     $rootScope.desktopSwipeEnabled = hotelDetails.allow_desktop_swipe;
 	  $rootScope.ccSwipeListeningPort = hotelDetails.cc_swipe_listening_port;
+    $rootScope.ccSwipeListeningUrl = hotelDetails.cc_swipe_listening_url;
     $rootScope.printCancellationLetter = hotelDetails.print_cancellation_letter;
     $rootScope.sendCancellationLetter = hotelDetails.send_cancellation_letter;
     $rootScope.printConfirmationLetter = hotelDetails.print_confirmation_letter;
     $rootScope.sendConfirmationLetter = hotelDetails.send_confirmation_letter;
     $rootScope.isItemInventoryOn    = hotelDetails.is_item_inventory_on;
+    $rootScope.guestTypes = hotelDetails.guest_types;
 
     // CICO-41410
     $rootScope.isDashboardSwipeEnabled = hotelDetails.enable_dashboard_swipe;
@@ -283,7 +288,7 @@ sntRover.controller('roverController', [
       $scope.searchBackButtonCaption = caption; // if it is not blank, backbutton will show, otherwise dont
     });
 
-    if ($rootScope.adminRole === "Hotel Admin") {
+    if ($rootScope.adminRole === "Hotel Admin" || $rootScope.adminRole === "Chain Admin") {
       $scope.isHotelAdmin = true;
     }
     /**
@@ -344,6 +349,55 @@ sntRover.controller('roverController', [
         });
     };
 
+    /*
+     * to run angular digest loop,
+     * will check if it is not running
+     * return - None
+     */
+    $scope.runDigestCycle = function() {
+      if (!$scope.$$phase) {
+        $scope.$digest();
+      }
+    };
+    $scope.showDeviceConnectivityStatus = false;
+
+    document.addEventListener("OBSERVE_DEVICE_STATUS_CHANGE", function(e) {
+        $scope.$emit("closeDrawer");
+        $scope.deviceDetails = e.detail;
+        $scope.showDeviceConnectivityStatus = true;
+        $scope.runDigestCycle();
+    });
+
+    $scope.connectedDeviceDetails = [];
+
+    /*
+    * Show the connected devices status
+     */
+    $scope.fetchDeviceStatus = function() {
+      $scope.showDeviceConnectivityStatus = false;
+      $scope.connectedDeviceDetails = [];
+      cordova.exec(function(response) {
+        $scope.connectedDeviceDetails = response;
+        $scope.widthStyle = (response.length === 1) ? {
+          'width': '320px'
+        } : '';
+        ngDialog.open({
+          template: '/assets/partials/settings/rvDeviceStatus.html',
+          scope: $scope,
+          className: 'calendar-modal'
+        });
+        $scope.runDigestCycle();
+      }, function(error) {}, 'RVDevicePlugin', 'getDevicesStates', []);
+    };
+
+    $scope.refreshDeviceStatus = function() {
+      $scope.$emit("showLoader");
+      $timeout(function() {
+        ngDialog.close();
+        $scope.$emit("hideLoader");
+        $scope.fetchDeviceStatus();
+      }, 1000);
+    };
 
     $rootScope.updateSubMenu = function(idx, item) {
       if (item && item.submenu && item.submenu.length > 0) {
@@ -431,7 +485,8 @@ sntRover.controller('roverController', [
             emvTimeout: $rootScope.emvTimeout,
             mliMerchantId: $rootScope.MLImerchantId,
             currencySymbol: $rootScope.currencySymbol,
-            isManualCCEntryEnabled: $rootScope.isManualCCEntryEnabled
+            isManualCCEntryEnabled: $rootScope.isManualCCEntryEnabled,
+            isEMVEnabled: $rootScope.isMLIEMVEnabled
         };
 
         $scope.menuOpen = false;
@@ -439,6 +494,27 @@ sntRover.controller('roverController', [
 
         if ($rootScope.paymentGateway === "CBA" && sntapp.cordovaLoaded) {
             doCBAPowerFailureCheck();
+        }
+
+        // for iPad we need to show the connected device status
+        if (sntapp.browser === 'rv_native' && sntapp.cordovaLoaded) {
+          $scope.isIpad = true;
+          $rootScope.iosAppVersion = null;
+          // check for the method getAppInfo via rvcardplugin, if it does not exist,
+          // leave app_version null. Only latest versions of APP returns APP version 
+          // and methods to fetch device status
+          $timeout(function() {
+            cordova.exec(function(response) {
+              if (response && response.AppVersion) {
+                $rootScope.iosAppVersion = response.AppVersion;
+                // reset the left menu (add device status)
+                $scope.formMenu();
+              }
+            }, function() {
+
+            }, 'RVCardPlugin', 'getAppInfo', []);
+
+          }, 500);
         }
     };
 
@@ -556,6 +632,9 @@ sntRover.controller('roverController', [
             else if (subMenu === 'changePassword') {
                 openUpdatePasswordPopup();
             }
+            else if (subMenu === 'deviceStatus') {
+                $scope.fetchDeviceStatus();
+            }
         };
 
     // in order to prevent url change(in rover specially coming from admin/or fresh url entering with states)
@@ -646,9 +725,9 @@ sntRover.controller('roverController', [
 
     var initiateDesktopCardReader = function() {
       sntapp.desktopCardReader.setDesktopUUIDServiceStatus(true);
-    	sntapp.desktopCardReader.startDesktopReader($rootScope.ccSwipeListeningPort, options);
+      sntapp.desktopCardReader.startDesktopReader($rootScope.ccSwipeListeningPort, options, $rootScope.ccSwipeListeningUrl);
     };
-        
+
       /**
        * @returns {undefined} undefined
        */
@@ -745,6 +824,10 @@ sntRover.controller('roverController', [
         window.scrollTo(0, 0);
         $scope.$apply();
       }, 700);
+    };
+
+    $scope.closeDialogImmediately = function() {
+      ngDialog.close();
     };
     /*
      * To fix issue with ipad keypad - 7702

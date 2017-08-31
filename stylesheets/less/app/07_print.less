@@ -813,6 +813,46 @@
                         }
                     }
                 }
+
+                .print-date {
+                    display: block;
+                    margin-top: 2pt;
+
+                    .arrival-date,
+                    .departure-date {
+                        clear: both;
+                        display: inline-block;
+                        vertical-align: middle;
+                        .float;
+
+                        .guest-status {
+                            .square(15px);
+                            background-size: 15px;
+
+                            &.check-out {
+                               background-position: -1px -16px
+                            }
+                        }
+
+                        time {
+                            line-height: 15px;
+                        }
+                    }
+
+                    .departure-date {
+                        margin-left: 2pt;
+                    }
+                    
+                }
+
+                .last-column {
+                    .pull-left;
+                    width: 20%;
+                    .service-status {
+                        width: 100%;
+                        float: none;
+                    } 
+                }
             }
 
             /* Commisions ***/
@@ -1360,7 +1400,7 @@
                 padding-right: 8pt;
                 border-right: 1px solid @grey2;
 
-                span {
+                span:not(.currency) {
                     font-size: 12pt;
                     line-height: 1;
                     font-weight: 300;
@@ -2890,7 +2930,7 @@
                 .float;
 
                 strong,
-                span {
+                span:not(.currency) {
                     .nowrap();
                     .pull-left;
                 }
@@ -2902,7 +2942,7 @@
                     &.name { .calc-width(100, 240); }
                 }
 
-                span { width: 60px; }
+                span:not(.children) { width: 60px; }
 
                 /* Title Levels ***/
                 &.title-1 { border-bottom: 2px solid @grey3; }
@@ -3347,6 +3387,7 @@
                 font-size: 8pt;
                 font-weight: 600;
                 .show;
+                width: 5cm;
             }
 
             .icon-ok-10 {
@@ -3410,6 +3451,33 @@
             &:last-child {
                 border-bottom: 1px solid @grey3;
             }
+
+            .print-date { 
+                order: 4;
+
+                .arrival-date,
+                .departure-date {
+                    display: block;
+                    margin-top: 2pt; 
+
+                    .guest-status {
+                        .square(10px);
+                        background-size: 12px;
+
+                        &.check-in {
+                           background-position: -2px -2px
+                        }
+
+                        &.check-out {
+                           background-position: -2px -14px
+                        }
+                    }
+
+                    time {
+                        line-height: 10px;
+                    }
+                }
+            }
         }
     }
 
@@ -3441,7 +3509,7 @@
         li {
             text-align: center;
 
-            span {
+            span:not(.currency) {
                 font-size: 12pt;
                 line-height: 1;
                 font-weight: 300;
@@ -3520,7 +3588,7 @@
                     width: calc(~'25% - 1cm');
                     .pull-left;
 
-                    span {
+                    span:not(.currency) {
                         font-size: 14pt;
                         font-weight: 300;
                         color: @textColor;
@@ -3545,7 +3613,7 @@
                 }
 
                 li {
-                    span { font-weight: 400; }
+                    span:not(currency) { font-weight: 400; }
                 }
             }
         }
@@ -3604,7 +3672,7 @@
                 .float;
 
                 strong,
-                span { .pull-left; }
+                span:not(.currency) { .pull-left; }
 
                 .name { font-weight: 600; }
                 .value { width: 80px; }

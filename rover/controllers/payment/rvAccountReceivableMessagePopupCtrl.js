@@ -1,4 +1,4 @@
-sntRover.controller('RVAccountReceivableMessagePopupCtrl', ['$rootScope', '$scope', '$state', 'ngDialog', 'RVCompanyCardSrv', function($rootScope, $scope, $state, ngDialog, RVCompanyCardSrv) {
+sntRover.controller('RVAccountReceivableMessagePopupCtrl', ['$rootScope', '$scope', '$state', 'ngDialog', 'RVCompanyCardSrv', 'rvPermissionSrv', function($rootScope, $scope, $state, ngDialog, RVCompanyCardSrv, rvPermissionSrv) {
 	BaseCtrl.call(this, $scope);
 
 	$scope.isCreateNewARAccountMode = false;
@@ -35,7 +35,7 @@ sntRover.controller('RVAccountReceivableMessagePopupCtrl', ['$rootScope', '$scop
 	$scope.createAccountReceivable = function( isAutoAssignARNumber ) {
 
 		var data = {
-			"id": $scope.account_id,
+			"id": $scope.reservationBillData.bills[$scope.currentActiveBill].account_id,
 			"ar_number": isAutoAssignARNumber ? "" : $scope.ar_number
 		};
 
@@ -49,6 +49,15 @@ sntRover.controller('RVAccountReceivableMessagePopupCtrl', ['$rootScope', '$scop
 	$scope.cancelButtonClick = function() {
 		$scope.errorMessage = "";
 		$scope.isCreateNewARAccountMode = false;
+	};
+
+	/**
+	* function to check whether the user has permission
+	* to create/edit AR Account.
+	* @return {Boolean}
+	*/
+	$scope.hasPermissionToCreateArAccount = function() {
+		return rvPermissionSrv.getPermissionValue ('CREATE_AR_ACCOUNT');
 	};
 
 }]);

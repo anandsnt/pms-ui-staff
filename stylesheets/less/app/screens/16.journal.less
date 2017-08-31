@@ -168,7 +168,7 @@
                 .show;
                 .pull-left;
 
-                span {
+                span:not(.currency) {
                     padding-top: 50px;
                     font-size: 16px;
                     font-weight: 600;
@@ -478,7 +478,7 @@
                     .pull-left;
                     .calc-width(25, 20);
 
-                    span {
+                    span:not(.currency) {
                         font-size: 26px;
                         line-height: 40px;
                         font-weight: 300;
@@ -508,7 +508,7 @@
                 h3 { color: @textColor; }
 
                 li {
-                    span { font-weight: 600; }
+                    span:not(.currency) { font-weight: 600; }
                 }
             }
         }
@@ -566,7 +566,7 @@
                     padding-left: -moz-calc(~"90% - 95px");
                     padding-left: calc(~"90% - 95px");
 
-                    span { margin-left: 20px; }
+                    span:not(.currency) { margin-left: 20px; }
                 }
 
                 .filters-applied { .hide; }
@@ -581,14 +581,14 @@
                 .float;
 
                 strong,
-                span { .pull-left; }
+                span:not(.currency) { .pull-left; }
 
                 .code,
                 .name,
                 .number { margin-right: 20px; }
 
                 .name { font-weight: 600; }
-                .value { width: 80px; }
+                .value { width: 80px; text-transform: none; }
                 
                 &.has-arrow {
                     background-position: -webkit-calc(~"100% - 10px") 50%;
@@ -805,12 +805,14 @@
                         font-size: 18px;
                         font-weight: 600;
                         text-align: right;
+                        text-transform: none;
 
                         &.entry { 
                             font-size: 14px;
                             font-weight: 400;
                             width: 100%;
                             padding: 0;
+                            text-transform: uppercase;
 
                             input { 
                                 text-align: right;

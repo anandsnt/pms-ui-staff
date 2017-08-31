@@ -375,8 +375,11 @@ sntZestStation.controller('zsCheckinCCSwipeCtrl', [
             }
         };
 
-        var isSixpay = function() {
-            if ($scope.zestStationData.paymentGateway === 'sixpayments') {
+        var isEmvEnabled = function() {
+            var paymentGateway = $scope.zestStationData.paymentGateway;
+
+            // EMV requests are used for six payments and MLI with EMV enabled in SNT admin
+            if (paymentGateway === 'sixpayments' || (paymentGateway === 'MLI' && $scope.zestStationData.mliEmvEnabled)) {
                 return true;
             }
             return false;
@@ -459,9 +462,9 @@ sntZestStation.controller('zsCheckinCCSwipeCtrl', [
 
             } else {
                 // fetches reservation details, which holds the updated auth amount
-                $scope.callAPI(zsCheckinSrv.fetchReservationDetails, {
+                $scope.callAPI(zsCheckinSrv.fetchReservationInfo, {
                     params: {
-                        'id': $stateParams.confirmation_number
+                        'id': $stateParams.reservation_id
                     },
                     'successCallBack': onSuccessFetchRemainingAuth,
                     'failureCallBack': onSwipeError
@@ -568,8 +571,8 @@ sntZestStation.controller('zsCheckinCCSwipeCtrl', [
 
         };
 
-        var startSixPayPayment = function() {
-            $log.log(':: starting six pay payment ::');
+        var startEmvTerminalActions = function() {
+            $log.log(':: starting EMV pay payment ::');
             $log.log('isDepositMode(): ', isDepositMode());
             // If starting from deposit mode, we will be taking a (payment) which is different than an auth
             // payment will be paid but not saved to the reservation staycard,
@@ -658,12 +661,11 @@ sntZestStation.controller('zsCheckinCCSwipeCtrl', [
                 // the card to the staycard
                 setCCAuthSettings();
             }
-            var sixPay = isSixpay();
 
-            $log.log('sixPay: ' + sixPay);
+            $log.log('isEmvEnabled: ' + isEmvEnabled());
             // check if a Sixpay hotel or MLI
             // then depending on the swipe configuration, initialize the device
-            if (!sixPay) { // mli
+            if (!isEmvEnabled()) { // mli
                 $log.info('mli');
                     // socket = Sankyo
                 if (swipeFromSocket()) {
@@ -681,7 +683,7 @@ sntZestStation.controller('zsCheckinCCSwipeCtrl', [
                 }
             } else { // sixpay
                 $log.info('sixpay payment');
-                startSixPayPayment();
+                startEmvTerminalActions();
 
             }
         };
