@@ -485,7 +485,7 @@ angular.module('adminInterfacesRouter', []).config(function($stateProvider) {
 
     $stateProvider.state('admin.pmiSetup', {
         templateUrl: '/assets/partials/interfaces/PMI/adPMISetup.html',
-        controller: 'adCRSCommonCtrl',
+        controller: 'adInterfaceCommonCtrl',
         url: '/interfaces/setup/:id',
         onEnter: ['$stateParams', function($stateParams) {
             $stateParams.id = 'pmi';

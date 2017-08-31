@@ -18,6 +18,9 @@ angular.module('admin').controller('adSyncBlockCtrl', ['$scope', '$rootScope', '
                     $('#ui-datepicker-overlay').remove();
                 }
             },
+            diffDays = function (from, to) {
+                return Math.abs((to - from) / (1000 * 3600 * 24));
+            },
             getFutureDate = function (fromDate, addDays) {
                 var maxDate = new tzIndependentDate(fromDate);
 
@@ -31,6 +34,11 @@ angular.module('admin').controller('adSyncBlockCtrl', ['$scope', '$rootScope', '
                 // NOTE: This function call is intentional.
                 if (!$scope.syncHistoricalData) {
                     $scope.endDatePickerOptions.maxDate = getFutureDate($scope.fromDate, MAX_REFRESH_SPAN_DAYS);
+                } else if ($scope.historicalDateRangeDays) {
+                    // Maintain a date range of 30 days or less
+                    if (diffDays($scope.fromDate, $scope.toDate) > parseInt($scope.historicalDateRangeDays)) {
+                        $scope.fromDate = new Date($scope.toDate.setDate($scope.toDate.getDate() - parseInt($scope.historicalDateRangeDays)));
+                    }
                 }
             },
             fromDateSelected = function () {
@@ -41,6 +49,11 @@ angular.module('admin').controller('adSyncBlockCtrl', ['$scope', '$rootScope', '
 
                 if (!$scope.syncHistoricalData) {
                     $scope.endDatePickerOptions.maxDate = getFutureDate($scope.fromDate, MAX_REFRESH_SPAN_DAYS);
+                } else if ($scope.historicalDateRangeDays) {
+                    // Maintain a date range of 30 days or less
+                    if (diffDays($scope.fromDate, $scope.toDate) > parseInt($scope.historicalDateRangeDays)) {
+                        $scope.toDate = new Date($scope.fromDate.setDate($scope.fromDate.getDate() + parseInt($scope.historicalDateRangeDays)));
+                    }
                 }
             },
             getSyncItems = function (full_sync_items) {
@@ -103,13 +116,20 @@ angular.module('admin').controller('adSyncBlockCtrl', ['$scope', '$rootScope', '
 
                 $scope.toDate = new Date();
                 fromDate = new Date();
-                $scope.fromDate = new Date(fromDate.setFullYear(fromDate.getFullYear() - HISTORICAL_SYNC_LIMIT));
 
-                $scope.endDatePickerOptions.minDate = $scope.fromDate;
+                var maxDate = new Date(new Date().setFullYear(new Date().getFullYear() - HISTORICAL_SYNC_LIMIT));
+
+                $scope.endDatePickerOptions.minDate = maxDate;
                 $scope.endDatePickerOptions.maxDate = new Date();
 
-                $scope.startDatePickerOptions.minDate = $scope.fromDate;
+                $scope.startDatePickerOptions.minDate = maxDate;
                 $scope.startDatePickerOptions.maxDate = new Date();
+
+                if ($scope.historicalDateRangeDays) {
+                    $scope.fromDate = new Date(fromDate.setDate(fromDate.getDate() - parseInt($scope.historicalDateRangeDays)));
+                } else {
+                    $scope.fromDate = maxDate;
+                }
 
             } else {
                 $scope.syncItems = getSyncItems($scope.config.real_time_data_sync_items);
@@ -140,6 +160,7 @@ angular.module('admin').controller('adSyncBlockCtrl', ['$scope', '$rootScope', '
             }, commonDatePickerOptions);
 
             $scope.onToggleHistoricalSync(!$scope.config.real_time_data_sync_items);
+
         })();
     }
 ]);
