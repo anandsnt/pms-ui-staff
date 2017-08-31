@@ -8,7 +8,7 @@
         </label>
 
         <!-- Add class .active when clicked to show details -->
-        <div class="faux-anchor has-arrow toggle">
+        <div class="faux-anchor has-arrow toggle" ng-click="clickedBalanceListItem( $index )" ng-class="{'active': balance.active }">
                 <!-- add class .group/.allotment if group or allotment -->
             <div class="data" ng-if="balance.associated_type === 'Reservation'">
                 <!-- add class .group/.allotment if group or allotment -->
@@ -89,7 +89,7 @@
             </div>
         </div>
 
-        <div class="grid-items hidden"><!-- Add/remove class 'hidden' when L11 is clicked -->
+        <div class="grid-items" ng-show="balance.active"><!-- Add/remove class 'hidden' when L11 is clicked -->
             <table>
                 <thead>
                     <tr>
@@ -178,10 +178,10 @@
             </table>
             <div class="actions">
                 <button type="button" class="button brand-colors">StayCard</button>
-                <button type="button" class="button purple">Move Invoice</button>
-                <button type="button" class="button blue">Print Invoice</button>
-                <button type="button" class="button white green-text">Post Charge</button>
-                <button type="button" class="button white purple-text">Edit Charges</button>
+                <button type="button" class="button purple hidden">Move Invoice</button>
+                <button type="button" class="button blue hidden">Print Invoice</button>
+                <button type="button" class="button white green-text hidden">Post Charge</button>
+                <button type="button" class="button white purple-text hidden">Edit Charges</button>
             </div>
         </div>
 

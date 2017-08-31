@@ -31,5 +31,39 @@ angular.module('sntRover').service('rvAccountsArTransactionsSrv', ['$q', 'rvBase
 
 		return deferred.promise;
 	};
-    
+
+	// Expand Manual Balance Listing
+	this.expandPaidAndUnpaidList = function( param ) {
+		var deferred = $q.defer(),
+			url = '/api/ar_transactions/' + param.id + '/invoice_details';
+
+		rvBaseWebSrvV2.getJSON(url, param).then(
+			function(data) {
+				deferred.resolve(data);
+			},
+			function(errorMessage) {
+				deferred.reject(errorMessage);
+			}
+		);
+
+		return deferred.promise;
+	};
+
+	// Expand Unallocated Listing
+	this.expandAllocateAndUnallocatedList = function( param ) {
+		var deferred = $q.defer(),
+			url = '/api/ar_transactions/' + param.id + '/payment_details';
+
+		rvBaseWebSrvV2.getJSON(url, param).then(
+			function(data) {
+				deferred.resolve(data);
+			},
+			function(errorMessage) {
+				deferred.reject(errorMessage);
+			}
+		);
+
+		return deferred.promise;
+	};
+
 }]);

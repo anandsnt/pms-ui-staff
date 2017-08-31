@@ -49,6 +49,13 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 			'unallocatedTotalCount': 0
 		};
 
+		// Append active class
+		var appendActiveClass = function( list ) {
+			 _.each( list , function(obj) {
+                obj.active = false;
+             });
+		};
+
 		/*
 		 * Successcallback of API after fetching Ar Transaction details.
 		 * Handling data based on tabs currently active.
@@ -64,6 +71,7 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 			    case 'balance':
 			        $scope.arDataObj.balanceList = data.ar_transactions;
 			        $scope.arDataObj.balanceTotalCount = data.total_count;
+			        appendActiveClass($scope.arDataObj.balanceList);
 			        $scope.$broadcast("FETCH_COMPLETE_BALANCE_LIST");
 
 		            $timeout(function () {                
@@ -74,6 +82,7 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 			    case 'paid-bills':
 			        $scope.arDataObj.paidList = data.ar_transactions;
 			        $scope.arDataObj.paidTotalCount = data.total_count;
+			        appendActiveClass($scope.arDataObj.paidList);
 			        $scope.$broadcast("FETCH_COMPLETE_PAID_LIST");
 
 			        $timeout(function () {                
@@ -84,11 +93,13 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 			    case 'unallocated':
 			        $scope.arDataObj.unallocatedList = data.ar_transactions;
 			        $scope.arDataObj.unallocatedTotalCount = data.total_count;
+			        appendActiveClass($scope.arDataObj.unallocatedList);
 			        $scope.$broadcast('updatePagination', 'UNALLOCATE' );
 			        break;
 			    case 'allocated':
 			        $scope.arDataObj.allocatedList = data.ar_transactions;
 			        $scope.arDataObj.allocatedTotalCount = data.total_count;
+			        appendActiveClass($scope.arDataObj.allocatedList);
 			        $scope.$broadcast('updatePagination', 'ALLOCATE' );
 			        break;
 			}

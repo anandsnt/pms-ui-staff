@@ -1,6 +1,6 @@
 
-sntRover.controller('RvArPaidController', ['$scope', '$rootScope', 'RVCompanyCardSrv', '$timeout', '$stateParams', 'ngDialog', '$state', '$vault', '$window', 'RVReservationCardSrv', '$filter',
-	function($scope, $rootScope, RVCompanyCardSrv, $timeout, $stateParams, ngDialog, $state, $vault, $window, RVReservationCardSrv, $filter) {
+sntRover.controller('RvArPaidController', ['$scope', '$timeout', 'rvAccountsArTransactionsSrv',
+	function($scope, $timeout, rvAccountsArTransactionsSrv) {
 
 		BaseCtrl.call(this, $scope);
 
@@ -15,5 +15,37 @@ sntRover.controller('RvArPaidController', ['$scope', '$rootScope', 'RVCompanyCar
 	    	refreshScroll();
 	    });
 
+	    // Handle paid tab save action.
+		var callExpansionAPI = function( item ) {
+
+			var successCallbackOfExpansionAPI = function() {
+				$scope.$emit('hideLoader');
+				item.active = true;
+			},
+			failureCallbackOfExpansionAPI = function( errorMessage ) {
+				$scope.$emit('hideLoader');
+				$scope.$emit('SHOW_ERROR_MSG', errorMessage);
+			};
+
+			var dataToSend = {
+				'id': item.transaction_id
+			};
+			
+			$scope.invokeApi(rvAccountsArTransactionsSrv.expandPaidAndUnpaidList, dataToSend, successCallbackOfExpansionAPI, failureCallbackOfExpansionAPI );
+			
+		};
+
+	    // Handle Toggle button click to expand list item
+	    $scope.clickedPaidListItem = function( index ) {
+	    	var clikedItem = $scope.arDataObj.paidList[index];
+
+	    	if (!clikedItem.active) {
+	    		// callExpansionAPI(clikedItem);
+	    		clikedItem.active = true;
+	    	}
+	    	else {
+	    		clikedItem.active = false;
+	    	}
+	    };
 		
 }]);
