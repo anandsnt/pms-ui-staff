@@ -27,7 +27,8 @@ var admin = angular.module('admin',
     'onScroll',
     'limitInputRange',
     'convertToNumber',
-        'ivh.treeview']);
+    'ADChainRouter',
+    'ivh.treeview']);
 
 // adding shared http interceptor, which is handling our webservice errors & in future our authentication if needed
 admin.config([
