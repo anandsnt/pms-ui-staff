@@ -1111,7 +1111,7 @@ angular.module('sntPay').controller('sntPaymentController',
                         params,
                         data: {
                             id: null,
-                            credit_card_type: null
+                            credit_card_type: $scope.selectedCC.card_code
                         }
                     });
                     // Don't make save payment call for swipes during submit payment
