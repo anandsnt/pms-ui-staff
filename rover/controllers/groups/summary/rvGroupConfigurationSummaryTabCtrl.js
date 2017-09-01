@@ -365,7 +365,7 @@ angular.module('sntRover').controller('rvGroupConfigurationSummaryTab', ['$scope
                 $scope.groupSummaryData.isDemographicsPopupOpen ||
                 $scope.isUpdateInProgress ||
                 $scope.changeDatesActions.isInCompleteMoveMode() ||
-                $scope.changeDatesActions.isInChangeDatesMode() ) {
+                $scope.changeDatesActions.isInChangeDatesMode() || $scope.hasAnyActivePopups ) {
 
                 return;
             }
@@ -1516,6 +1516,8 @@ angular.module('sntRover').controller('rvGroupConfigurationSummaryTab', ['$scope
 
             // since we are recieving two ouside click event on tapping outside, we wanted to check and act
             $scope.isUpdateInProgress = false;
+
+            $scope.hasAnyActivePopups = false;
         };
         // CICO-23143
 
@@ -1537,6 +1539,11 @@ angular.module('sntRover').controller('rvGroupConfigurationSummaryTab', ['$scope
 
             return ('activeScreen' in sumData && sumData.activeScreen === 'STAY_CARD');
         };
+
+        // CICO-40537 - Update popup state to decided whether update group api needs to be invoked
+        $scope.$on('UPDATE_POPUP_STATE', function (event, data) {
+            $scope.hasAnyActivePopups = data.isActive;
+        });
 
         /**
          * Function used to initialize summary view
