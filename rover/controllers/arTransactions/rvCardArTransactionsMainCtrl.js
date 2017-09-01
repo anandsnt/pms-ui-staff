@@ -14,7 +14,8 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 		$scope.arFlags = {
 			'currentSelectedArTab': 'balance',
 			'isAddBalanceScreenVisible': false,
-			'isArTabActive': false
+			'isArTabActive': false,
+			'viewFromOutside': (typeof $stateParams.type !== 'undefined') ? true : false
 		};
 
 		$scope.filterData = {

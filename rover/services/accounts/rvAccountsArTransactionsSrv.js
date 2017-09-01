@@ -35,7 +35,7 @@ angular.module('sntRover').service('rvAccountsArTransactionsSrv', ['$q', 'rvBase
 	// Expand Manual Balance & Paid Listing
 	this.expandPaidAndUnpaidList = function( param ) {
 		var deferred = $q.defer(),
-			url = '/api/ar_transactions/' + param.id + '/invoice_details';
+			url = '/api/accounts/' + param.account_id + '/ar_transactions/' + param.id + '/invoice_details';
 
 		rvBaseWebSrvV2.getJSON(url, param).then(
 			function(data) {
@@ -52,7 +52,7 @@ angular.module('sntRover').service('rvAccountsArTransactionsSrv', ['$q', 'rvBase
 	// Expand Allocated & Unallocated Listing
 	this.expandAllocateAndUnallocatedList = function( param ) {
 		var deferred = $q.defer(),
-			url = '/api/ar_transactions/' + param.id + '/payment_details';
+			url = '/api/accounts/' + param.account_id + '/ar_transactions/' + param.id + '/payment_details';
 
 		rvBaseWebSrvV2.getJSON(url, param).then(
 			function(data) {

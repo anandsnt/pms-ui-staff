@@ -1,6 +1,6 @@
 
-sntRover.controller('RvArBalanceController', ['$scope', '$timeout', 'rvAccountsArTransactionsSrv',
-	function($scope, $timeout, rvAccountsArTransactionsSrv) {
+sntRover.controller('RvArBalanceController', ['$scope', '$timeout', 'rvAccountsArTransactionsSrv', '$vault', '$stateParams', '$state',
+	function($scope, $timeout, rvAccountsArTransactionsSrv, $vault, $stateParams, $state) {
 
 		BaseCtrl.call(this, $scope);
 
@@ -41,11 +41,43 @@ sntRover.controller('RvArBalanceController', ['$scope', '$timeout', 'rvAccountsA
 	    	var clikedItem = $scope.arDataObj.balanceList[index];
 
 	    	if (!clikedItem.active) {
-	    		// callExpansionAPI(clikedItem);
-	    		clikedItem.active = true;
+	    		callExpansionAPI(clikedItem);
 	    	}
 	    	else {
 	    		clikedItem.active = false;
 	    	}
 	    };
+
+	    /*
+		 * function to execute on clicking on each result
+		 */
+		$scope.goToReservationDetails = function(index) {
+
+			var item = $scope.arDataObj.balanceList[index];
+
+			if ($scope.arFlags.viewFromOutside) {
+				$vault.set('cardId', $stateParams.id);
+				$vault.set('type', $stateParams.type);
+				$vault.set('query', $stateParams.query);
+
+				var associatedType = item.associated_type,
+					associatedId = item.associated_id;
+
+				if (associatedType === 'Reservation') {
+					$state.go("rover.reservation.staycard.reservationcard.reservationdetails", {
+						id: associatedId,
+						confirmationId: item.reservation_confirm_no,
+						isrefresh: true,
+						isFromCards: true
+					});
+				} 
+				else if (associatedType === 'PostingAccount') {
+					$state.go('rover.accounts.config', {
+						id: associatedId,
+						activeTab: 'ACCOUNT',
+						isFromArTransactions: true
+					});
+				}
+			}
+		};
 }]);

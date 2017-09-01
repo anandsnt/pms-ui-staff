@@ -34,7 +34,8 @@ sntRover.controller('RvArAllocatedController',
             };
 
             var dataToSend = {
-                'id': item.transaction_id
+                'id': item.transaction_id,
+                'account_id': $scope.arDataObj.accountId
             };
             
             $scope.invokeApi(rvAccountsArTransactionsSrv.expandAllocateAndUnallocatedList, dataToSend, successCallbackOfExpansionAPI, failureCallbackOfExpansionAPI );
