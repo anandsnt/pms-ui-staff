@@ -46,7 +46,9 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 			'balanceTotalCount': 0,
 			'paidTotalCount': 0,
 			'allocatedTotalCount': 0,
-			'unallocatedTotalCount': 0
+			'unallocatedTotalCount': 0,
+
+			'accountId': $stateParams.id
 		};
 
 		// Append active class
@@ -186,7 +188,7 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 
 		var createParametersFetchTheData = function () {
 			var dataToSend = {
-				account_id: $stateParams.id,
+				account_id: $scope.arDataObj.accountId,
 				getParams : {
 					per_page: $scope.arDataObj.perPage,
 					from_date: $scope.filterData.fromDate,

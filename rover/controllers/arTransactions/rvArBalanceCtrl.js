@@ -15,7 +15,7 @@ sntRover.controller('RvArBalanceController', ['$scope', '$timeout', 'rvAccountsA
 	    	refreshScroll();
 	    });
 
-	    // Handle balance tab toggle action.
+	    // Handle balance tab api call.
 		var callExpansionAPI = function( item ) {
 
 			var successCallbackOfExpansionAPI = function() {
@@ -28,7 +28,8 @@ sntRover.controller('RvArBalanceController', ['$scope', '$timeout', 'rvAccountsA
 			};
 
 			var dataToSend = {
-				'id': item.transaction_id
+				'id': item.transaction_id,
+				'account_id': $scope.arDataObj.accountId
 			};
 			
 			$scope.invokeApi(rvAccountsArTransactionsSrv.expandPaidAndUnpaidList, dataToSend, successCallbackOfExpansionAPI, failureCallbackOfExpansionAPI );

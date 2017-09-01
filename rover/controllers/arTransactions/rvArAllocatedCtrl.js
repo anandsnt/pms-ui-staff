@@ -2,7 +2,8 @@
 sntRover.controller('RvArAllocatedController',
         ['$scope',
          '$timeout',
-	      function($scope, $timeout) {
+         'rvAccountsArTransactionsSrv',
+	      function($scope, $timeout, rvAccountsArTransactionsSrv) {
 
 		BaseCtrl.call(this, $scope);
 
@@ -19,5 +20,37 @@ sntRover.controller('RvArAllocatedController',
     	$scope.$on( 'REFRESH_ALLOCATED_LIST_SCROLLER' , function () {
     		refreshScroll();
     	});
+
+        // Handle allocated tab expansion api call.
+        var callExpansionAPI = function( item ) {
+
+            var successCallbackOfExpansionAPI = function() {
+                $scope.$emit('hideLoader');
+                item.active = true;
+            },
+            failureCallbackOfExpansionAPI = function( errorMessage ) {
+                $scope.$emit('hideLoader');
+                $scope.$emit('SHOW_ERROR_MSG', errorMessage);
+            };
+
+            var dataToSend = {
+                'id': item.transaction_id
+            };
+            
+            $scope.invokeApi(rvAccountsArTransactionsSrv.expandAllocateAndUnallocatedList, dataToSend, successCallbackOfExpansionAPI, failureCallbackOfExpansionAPI );
+        };
+
+        // Handle Toggle button click to expand list item
+        $scope.clickedAllocatedListItem = function( index ) {
+            var clikedItem = $scope.arDataObj.allocatedList[index];
+
+            if (!clikedItem.active) {
+                // callExpansionAPI(clikedItem);
+                clikedItem.active = true;
+            }
+            else {
+                clikedItem.active = false;
+            }
+        };
 
 }]);

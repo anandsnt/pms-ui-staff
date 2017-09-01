@@ -15,7 +15,7 @@ sntRover.controller('RvArPaidController', ['$scope', '$timeout', 'rvAccountsArTr
 	    	refreshScroll();
 	    });
 
-	    // Handle paid tab save action.
+	    // Handle paid tab expansion api call.
 		var callExpansionAPI = function( item ) {
 
 			var successCallbackOfExpansionAPI = function() {
@@ -28,7 +28,8 @@ sntRover.controller('RvArPaidController', ['$scope', '$timeout', 'rvAccountsArTr
 			};
 
 			var dataToSend = {
-				'id': item.transaction_id
+				'id': item.transaction_id,
+				'account_id': $scope.arDataObj.accountId
 			};
 			
 			$scope.invokeApi(rvAccountsArTransactionsSrv.expandPaidAndUnpaidList, dataToSend, successCallbackOfExpansionAPI, failureCallbackOfExpansionAPI );
