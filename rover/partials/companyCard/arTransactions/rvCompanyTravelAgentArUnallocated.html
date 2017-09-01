@@ -1,37 +1,37 @@
 <ul class="search-results">
-    <li class="reservation transaction payment unallocated">
+    <li class="reservation transaction payment unallocated" ng-repeat="unallocatedCreditTransaction in arDataObj.unallocatedList track by $index">
 
         <!-- Add .toggle.has-arrow when partially unallocated -->
         <!-- if .toggle clicked, add .active -->
-        <div class="faux-anchor">
+        <div class="faux-anchor" ng-class="{'toggle has-arrow': unallocatedCreditTransaction.is_partially_paid}">
             <div class="data">
-                <h2>Credit Card</h2>
+                <h2>{{unallocatedCreditTransaction.payment_type}}</h2>
                 <div class="payment-data">
                     <!-- if card, show card logo -->
-                    <figure class="card-logo">
-                        <img src="{card-logo-img}" alt="">
+                    <figure class="card-logo" ng-show="unallocatedCreditTransaction.is_cc_payment">
+                        <img ng-src="/assets/images/{{unallocatedCreditTransaction.card_details.card_code.toLowerCase()}}.png" alt="">
                     </figure>
                     <!-- if number, show ending number -->
-                    <span class="number">9987</span>
+                    <span class="number" ng-show="unallocatedCreditTransaction.is_cc_payment">{{unallocatedCreditTransaction.card_details.last_digits}}</span>
                     <!-- if exp date, show exp date -->
-                    <span class="date">Date <span class="value">09/20</span></span>
+                    <span class="date" ng-show="unallocatedCreditTransaction.is_cc_payment">Date <span class="value">{{unallocatedCreditTransaction.card_details.expire_date | date:dateFormat}}</span></span>
                     <!-- if reference, show reference -->
-                    <span class="reference">Reference <span class="value">5513515523526a</span></span>
+                    <span class="reference" ng-show="unallocatedCreditTransaction.reference_text">Reference <span class="value">{{unallocatedCreditTransaction.reference_text}}</span></span>
                 </div>
             </div>
             <div class="payment-date">
                 <span class="icons small-icon icon-time time-black"></span>
-                <time datetime="2017-08-12 12:08 AM">
-                    <span class="date">2017-08-12</span>
-                    <span class="time">12:08 AM</span>
+                <time datetime="">
+                    <span class="date">{{unallocatedCreditTransaction.transaction_date | date:dateFormat}}</span>
+                    <span class="time">{{unallocatedCreditTransaction.transaction_time}}</span>
                 </time>
             </div>
             <!-- if partially unallocated add .partially-paid -->
-            <div class="amount green">
-                <!-- if partially unallocated, show icon --
-                <span class="icons icon-wallet-green"></span>
-                -->
-                <span class="currency">kr</span>44,991.11
+            <div class="amount green" ng-class="{'partially-paid': unallocatedCreditTransaction.is_partially_paid}">
+                <!-- if partially unallocated, show icon -->
+                <span class="icons icon-wallet-green" ng-show="unallocatedCreditTransaction.is_partially_paid"></span>
+
+                <span class="currency">{{currencySymbol}}</span>{{unallocatedCreditTransaction.amount}}
             </div>
 
             <button type="button" class="button green">Allocate</button>
@@ -62,16 +62,16 @@
                         </time>
                     </div>
                     <div class="amount paid">
-                         
+
                         $107,188.21
                     </div>
                     <button type="button" class="button white with-icon">
                         <span class="icons icon-remove-40"></span>
                     </button>
                 </div>
-            </li> 
+            </li>
             ... repeat for each allocated
-          
+
         </ul>-->
     </li>
     <!-- ... repeat for each unallocated -->
