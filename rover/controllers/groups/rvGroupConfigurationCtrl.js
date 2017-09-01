@@ -1103,7 +1103,6 @@ angular.module('sntRover').controller('rvGroupConfigurationCtrl', [
                         }
                     };
 
-               // var summaryData = _.extend({}, $scope.groupConfigData.summary);
                 var summaryData = JSON.parse(JSON.stringify($scope.groupConfigData.summary));
 
                 summaryData.block_from = $filter('date')(summaryData.block_from, $rootScope.dateFormatForAPI);
