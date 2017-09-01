@@ -11,6 +11,7 @@ module.exports = {
             MOVING FORWARD WE DONT HAVE TO ADD JS MAPPING FOR NON MGM COMMON THEMES  
         **/  
         return {
+            //'guestweb_amrath_apart_hotel': [ themeJsRoot + 'app_router_common.js'],
             // 'guestweb_hollywood_roosevelt': [ themeJsRoot + 'app_router_common.js'],
             // 'guestweb_made': [ themeJsRoot + 'app_router_common.js'],
             // 'guestweb_windsor_suites': [ themeJsRoot + 'app_router_common.js'],
@@ -141,7 +142,8 @@ module.exports = {
   //           'guestweb_hotel_blackhawk': [ themeJsRoot + 'app_router_common.js'],
   //           'guestweb_viceroy_chicago': [ themeJsRoot + 'app_router_common.js'],
   //           'guestweb_hotel_alessandra': [ themeJsRoot + 'app_router_common.js'],
-  //           'guestweb_george_texas': [ themeJsRoot + 'app_router_common.js']
+  //           'guestweb_george_texas': [ themeJsRoot + 'app_router_common.js'],
+  //           'guestweb_eden_v2': [ themeJsRoot + 'app_router_common.js']
         };
     }
 };

@@ -148,6 +148,7 @@
                           ng-class='{"button-margin":showRemoveButton}'>{{guest.passport_scan_status}}
                     </span>
 
+
                     <span ng-hide="mode !== 'ADMIN_VERIFY_PASSPORTS'" class="passport-scan-status" ng-class='{"button-margin":showRemoveButton}'>{{guest.passport_reviewed_status}}
                     </span> 
                     <!-- guest icons, adult, student, infant -->
@@ -156,7 +157,13 @@
 
                     <figure ng-show='guest.guest_type === "CHILDREN"' class="guest-image guest-icons icon-student"></figure>
                     <figure ng-show='guest.guest_type === "INFANTS"' class="guest-image guest-icons icon-infant"></figure>
-                    {{guest.last_name}}, {{guest.first_name}}
+                    
+                    <span ng-if='guest.last_name !== guest.first_name'>
+                        {{guest.last_name}}, {{guest.first_name}}    
+                    </span>
+                    <span ng-if='guest.last_name === guest.first_name'>
+                        {{guest.full_name}}    
+                    </span>
                 </span>
                 <button type="button" class="button remove-btn" ng-show='showRemoveButton' click-touch='removeGuest(guest.id)' ng-class='{"overlay grey": selectedReservation.guest_details.length <= 1}'>
                     <text data-ng-bind-html="getTagValue('REMOVE_BTN')" editable-text="REMOVE_BTN"></text>
@@ -303,7 +310,7 @@
                             </label>
                         </div>
 
-                        <div class="entry with-label">
+                        <div class="entry with-label" ng-if='selectedPassportInfo.full_name !== selectedPassportInfo.last_name'>
                             <label>
                                 <text data-ng-bind-html="getTagValue('GID_REVIEW_LAST_NAME')" editable-text="GID_REVIEW_LAST_NAME"></text>
                             </label>
@@ -311,11 +318,19 @@
                             <input type="text" value='selectedPassportInfo.last_name' ng-model='selectedPassportInfo.last_name' class='disabled'/>
                         </div>
 
-                        <div class="entry with-label">
+                        <div class="entry with-label" ng-if='selectedPassportInfo.full_name !== selectedPassportInfo.last_name'>
                             <label>
                                 <text data-ng-bind-html="getTagValue('GID_REVIEW_FIRST_NAME')" editable-text="GID_REVIEW_FIRST_NAME"></text>
                             </label>
                             <input type="text" value='selectedPassportInfo.first_name' ng-model='selectedPassportInfo.first_name' class='disabled'/>
+                        </div>
+
+
+                        <div class="entry with-label" ng-if='selectedPassportInfo.full_name === selectedPassportInfo.last_name'>
+                            <label>
+                                <text data-ng-bind-html="getTagValue('GID_REVIEW_FULL_NAME')" editable-text="GID_REVIEW_FULL_NAME"></text>
+                            </label>
+                            <input type="text" value='selectedPassportInfo.full_name' ng-model='selectedPassportInfo.full_name' class='disabled'/>
                         </div>
 
 
@@ -333,14 +348,14 @@
 
                         <!-- Passport / Guest ID Scan preview -->
                         <img id='image-preview' class='gid-image-preview' 
-                                data-ng-src="data:image/png;base64,{{selectedPassportInfo.img_path}}" 
+                                data-ng-src="{{selectedPassportInfo.img_path}}" 
                                 src-error='{{gidImgErrorSrcPath}}' 
                                 ng-class='{"rotated":imageRotated}'
                                 click-touch="rotateImage()"
                                 >
 
                         <img id='image-preview-back' ng-show='selectedPassportInfo.back_img_path'  class='gid-image-preview' 
-                                data-ng-src="data:image/png;base64,{{selectedPassportInfo.back_img_path}}" 
+                                data-ng-src="{{selectedPassportInfo.back_img_path}}" 
                                 src-error='{{gidImgErrorSrcPath}}' 
                                 ng-class='{"rotated":backImageRotated}'
                                 click-touch="rotateBackImage()"
@@ -354,7 +369,8 @@
                             </label>
                         </div>
 
-                        <div class="entry with-label">
+                        <!-- show full name above passport images if only the full name is given for first/last name -->
+                        <div class="entry with-label" ng-hide='selectedPassportInfo.full_name === selectedPassportInfo.last_name'>
                             <label>
                                 <text data-ng-bind-html="getTagValue('GID_REVIEW_FULL_NAME')" editable-text="GID_REVIEW_FULL_NAME"></text>
                             </label>
