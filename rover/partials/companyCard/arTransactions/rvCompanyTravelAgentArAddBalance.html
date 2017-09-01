@@ -25,7 +25,7 @@
                 <td class="date">
                     <div class="entry has-datepicker">
                         <button class="clear-query" ng-class="{'visible': escapeNull(item.departureDate) !=''}">
-                            <span class="icons icon-clear-search" translate>CLEAR_QUERY</span>
+                            <span class="icons icon-clear-search" ng-click="clearDateSelection($index)" translate>CLEAR_QUERY</span>
                         </button>
                         <input type="text" class="datepicker hasDatepicker" value="{{ item.departureDate | date : dateFormat }}" ng-click="popupArDateCalendar($index)" readonly />
                     </div>
