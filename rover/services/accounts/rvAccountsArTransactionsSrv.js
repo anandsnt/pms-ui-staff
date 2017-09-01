@@ -32,7 +32,7 @@ angular.module('sntRover').service('rvAccountsArTransactionsSrv', ['$q', 'rvBase
 		return deferred.promise;
 	};
 
-	// Expand Manual Balance Listing
+	// Expand Manual Balance & Paid Listing
 	this.expandPaidAndUnpaidList = function( param ) {
 		var deferred = $q.defer(),
 			url = '/api/ar_transactions/' + param.id + '/invoice_details';
@@ -49,7 +49,7 @@ angular.module('sntRover').service('rvAccountsArTransactionsSrv', ['$q', 'rvBase
 		return deferred.promise;
 	};
 
-	// Expand Unallocated Listing
+	// Expand Allocated & Unallocated Listing
 	this.expandAllocateAndUnallocatedList = function( param ) {
 		var deferred = $q.defer(),
 			url = '/api/ar_transactions/' + param.id + '/payment_details';

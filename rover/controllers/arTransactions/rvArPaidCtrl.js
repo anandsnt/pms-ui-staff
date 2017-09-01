@@ -33,7 +33,6 @@ sntRover.controller('RvArPaidController', ['$scope', '$timeout', 'rvAccountsArTr
 			};
 			
 			$scope.invokeApi(rvAccountsArTransactionsSrv.expandPaidAndUnpaidList, dataToSend, successCallbackOfExpansionAPI, failureCallbackOfExpansionAPI );
-			
 		};
 
 	    // Handle Toggle button click to expand list item

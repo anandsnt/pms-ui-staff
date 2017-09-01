@@ -53,9 +53,9 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 
 		// Append active class
 		var appendActiveClass = function( list ) {
-			 _.each( list , function(obj) {
-                obj.active = false;
-             });
+			_.each( list , function(obj) {
+            	obj.active = false;
+            });
 		};
 
 		/*
@@ -69,7 +69,7 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 			$scope.arDataObj.allocatedCredit = data.allocated_credit;
 			$scope.arDataObj.unallocatedCredit = data.unallocated_credit;
 
-			switch($scope.arFlags.currentSelectedArTab) {
+			switch ($scope.arFlags.currentSelectedArTab) {
 			    case 'balance':
 			        $scope.arDataObj.balanceList = data.ar_transactions;
 			        $scope.arDataObj.balanceTotalCount = data.total_count;
@@ -197,7 +197,7 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 				}
 			};
 
-			switch($scope.arFlags.currentSelectedArTab) {
+			switch ($scope.arFlags.currentSelectedArTab) {
 			    case 'balance':
 			        dataToSend.getParams.transaction_type = 'CHARGES';
 					dataToSend.getParams.paid = false;
@@ -219,6 +219,7 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
                     dataToSend.getParams.page = $scope.arDataObj.allocatePageNo;
 			        break;
 			}
+
 			return dataToSend;
 		};
 
@@ -248,12 +249,14 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 			$scope.arFlags.isArTabActive = true;
 		});
 
+		// -------/ PAGINATION LOGIC /----------- //
+		
 		/*
 	     * Fetch transactions APIs
 	     * @param pageType { String } , Page No { String }to API
 	     */
 		var loadAPIData = function ( pageType, pageNo ) {
-			switch(pageType) {
+			switch (pageType) {
 			    case 'BALANCE':
 			        $scope.arDataObj.balancePageNo = pageNo;
 					break;
