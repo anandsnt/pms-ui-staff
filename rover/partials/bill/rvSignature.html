@@ -107,7 +107,7 @@
 
 		<div class="actions" ng-show="($index+1) === reservationBillData.bills.length">
 			<button type="submit" click-touch="clickedCompleteCheckout()" id="complete-checkout-button" data-reseravation-status="CHECKEDIN" data-required-signature="CHECKIN" class="button red"
-			ng-class='{"overlay":checkoutInProgress}'>
+			ng-class='{"overlay":checkoutInProgress}' ng-disabled='checkoutInProgress'>
 				{{ 'REVIEW_BILL' | translate }}
 				{{ billData.bill_number }}
 				{{ 'AND_COMPLETE_CHECKOUT' | translate }}
