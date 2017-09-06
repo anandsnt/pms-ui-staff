@@ -1,7 +1,7 @@
 angular.module('admin').service('ADCertificateSrv', ['$http', '$q', 'ADBaseWebSrvV2',
     function ($http, $q, ADBaseWebSrvV2) {
 
-        var url = '/admin/certificates.json';
+        var url = '/admin/certificates/qr_code_encryption.json';
 
         this.fetch = function () {
             return ADBaseWebSrvV2.getJSON(url);
