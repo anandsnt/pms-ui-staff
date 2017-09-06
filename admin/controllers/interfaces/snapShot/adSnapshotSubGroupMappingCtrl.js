@@ -6,14 +6,6 @@ admin.controller('adsnapshotSubGroupMappingCtrl', ['$scope', 'ADChargeCodesSrv',
 		$scope.successMessage = "";
 		$scope.subgroups = ['FB', 'AUX', 'ACC'];
 
-		/*
-	    * To fetch charge groups list
-	    */
-		var fetchChargeGroupsSuccessCallback = function(data) {
-			$scope.chargeGroups = $scope.subgroups;
-			$scope.fetchSettings();
-		};
-
         $scope.fetchSettings = function() {
 			var onFetchSettingsSucces = function(data) {
 					$scope.snapshotData = data;
@@ -57,6 +49,7 @@ admin.controller('adsnapshotSubGroupMappingCtrl', ['$scope', 'ADChargeCodesSrv',
 		};
 
 		$scope.loadTable();
+		$scope.fetchSettings();
 
 		$scope.saveMapping = function() {
 			var mappedChargeCodes = [], mapped_charge_code;
@@ -91,11 +84,5 @@ admin.controller('adsnapshotSubGroupMappingCtrl', ['$scope', 'ADChargeCodesSrv',
 
 			$scope.callAPI(adSnapShotSetupSrv.saveChargeGroupMapping, options);
 		};
-
-		(function init() {
-			$scope.errorMessage = '';
-			$scope.successMessage = '';
-			$scope.invokeApi(ADChargeGroupsSrv.fetch, {}, fetchChargeGroupsSuccessCallback);
-		}());
 	}
 ]);
