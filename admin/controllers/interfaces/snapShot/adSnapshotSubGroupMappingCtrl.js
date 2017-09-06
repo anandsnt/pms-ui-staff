@@ -1,11 +1,29 @@
-admin.controller('adsnapshotSubGroupMappingCtrl', ['$scope', 'ADChargeCodesSrv', 'adSnapShotSetupSrv', 'ngTableParams',
-	function($scope, ADChargeCodesSrv, adSnapShotSetupSrv, ngTableParams) {
+admin.controller('adsnapshotSubGroupMappingCtrl', ['$scope', 'ADChargeCodesSrv', 'ADChargeGroupsSrv', 'adSnapShotSetupSrv', 'ngTableParams',
+	function($scope, ADChargeCodesSrv, ADChargeGroupsSrv, adSnapShotSetupSrv, ngTableParams) {
 
 		ADBaseTableCtrl.call(this, $scope, ngTableParams);
 		
 		$scope.successMessage = "";
 		$scope.subgroups = ['FB', 'AUX', 'ACC'];
 
+		/*
+	    * To fetch charge groups list
+	    */
+		var fetchChargeGroupsSuccessCallback = function(data) {
+			$scope.chargeGroups = $scope.subgroups;
+			$scope.fetchSettings();
+		};
+
+        $scope.fetchSettings = function() {
+			var onFetchSettingsSucces = function(data) {
+					$scope.snapshotData = data;
+				},
+				options = {
+					successCallBack: onFetchSettingsSucces
+				};
+
+			$scope.callAPI(adSnapShotSetupSrv.fetchChargeGroupMapping, options);
+		};
 
 		$scope.fetchTableData = function($defer, params) {
 			var getParams = $scope.calculateGetParams(params);
@@ -24,7 +42,6 @@ admin.controller('adsnapshotSubGroupMappingCtrl', ['$scope', 'ADChargeCodesSrv',
 
 			$scope.invokeApi(ADChargeCodesSrv.fetch, getParams, fetchSuccessOfItemList);
 		};
-
 
 		$scope.loadTable = function() {
 			$scope.tableParams = new ngTableParams({
@@ -63,5 +80,22 @@ admin.controller('adsnapshotSubGroupMappingCtrl', ['$scope', 'ADChargeCodesSrv',
 			
 		};
 
+        $scope.saveSettings = function() {
+			var onSaveSettingsSucces = function() {
+					$scope.successMessage = 'Success, Your settings has been saved.';
+				},
+				options = {
+					params: $scope.snapshotData,
+					successCallBack: onSaveSettingsSucces
+				};
+
+			$scope.callAPI(adSnapShotSetupSrv.saveChargeGroupMapping, options);
+		};
+
+		(function init() {
+			$scope.errorMessage = '';
+			$scope.successMessage = '';
+			$scope.invokeApi(ADChargeGroupsSrv.fetch, {}, fetchChargeGroupsSuccessCallback);
+		}());
 	}
 ]);
