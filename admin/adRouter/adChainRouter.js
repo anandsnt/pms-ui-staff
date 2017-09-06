@@ -17,7 +17,7 @@ angular.module('ADChainRouter', []).config(function ($stateProvider) {
         url: '/QRKey',
         controller: 'ADCertificatesCtrl',
         resolve: {
-            certificates: ['ADCertificateSrv', function (ADCertificateSrv) {
+            config: ['ADCertificateSrv', function (ADCertificateSrv) {
                 return ADCertificateSrv.fetch();
             }]
         }
