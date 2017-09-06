@@ -1081,10 +1081,15 @@ angular.module('sntRover').controller('rvGroupRoomBlockCtrl', [
 		 * @return - undefined
 		 */
         var openAddRoomsAndRatesPopup = function() {
+           // CICO-40537
+           $rootScope.$broadcast('UPDATE_POPUP_STATE', { isActive: true}); 
             ngDialog.open({
                 template: '/assets/partials/groups/roomBlock/rvGroupAddRoomAndRatesPopup.html',
                 scope: $scope,
-                controller: 'rvGroupAddRoomsAndRatesPopupCtrl'
+                controller: 'rvGroupAddRoomsAndRatesPopupCtrl',
+                preCloseCallback: function() {
+                    $rootScope.$broadcast('UPDATE_POPUP_STATE', { isActive: false}); 
+                }
             });
         };
 
