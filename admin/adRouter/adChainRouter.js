@@ -12,7 +12,7 @@ angular.module('ADChainRouter', []).config(function ($stateProvider) {
         url: '/certificates'
     });
 
-    $stateProvider.state('admin.chain.qr_code_encrption_certificate', {
+    $stateProvider.state('admin.chain.qr_code_encryption_certificate', {
         templateUrl: '/assets/partials/chains/certificates/ADChainCertificatesSetup.html',
         url: '/QRKey',
         controller: 'ADCertificatesCtrl',
