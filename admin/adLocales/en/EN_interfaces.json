@@ -75,4 +75,5 @@
 	"VALIDATE_INCREMENTAL_EXPORT": "Validate Incremental Export",
 	"PINPAD_SUCCESS": "SUCCESS",
 	"PINPAD_ERROR": "FAILURE",
-	"VISMA_HEADER": "Visma"
+	"VISMA_HEADER": "Visma",
+    "PMI_HEADER": "PMI - D2O Interface Setup"
