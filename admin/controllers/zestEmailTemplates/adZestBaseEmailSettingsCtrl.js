@@ -44,9 +44,9 @@ admin.controller('ADZestBaseEmailSettingsCtrl', ['$scope', '$state', 'ngDialog',
             var template;
 
             if (!_.isUndefined(emailType) && emailType === 'KEY_EMAIL') {
-                template = '/assets/partials/zestEmailTemplates/adZestKeyDeliveryEmailPreview.html'
+                template = '/assets/partials/zestEmailTemplates/adZestKeyDeliveryEmailPreview.html';
             } else {
-                template = '/assets/partials/zestEmailTemplates/adzestMailPreview.html'
+                template = '/assets/partials/zestEmailTemplates/adzestMailPreview.html';
             }
             ngDialog.open({
                 closeByDocument: true,
