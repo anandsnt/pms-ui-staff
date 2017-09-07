@@ -8,7 +8,7 @@ sntRover.controller('RvArBalanceController', ['$scope', '$timeout', 'rvAccountsA
 	    var refreshScroll = function() {
 	        $timeout(function() { 
 	            $scope.refreshScroller('balance-list');
-	        }, 2000);
+	        }, 500);
 	    };
 
         // Refresh scroll after completing fetch data
@@ -19,9 +19,11 @@ sntRover.controller('RvArBalanceController', ['$scope', '$timeout', 'rvAccountsA
 	    // Handle balance tab api call.
 		var callExpansionAPI = function( item ) {
 
-			var successCallbackOfExpansionAPI = function() {
+			var successCallbackOfExpansionAPI = function(data) {
 				$scope.$emit('hideLoader');
 				item.active = true;
+				item.debits = data.debits;
+				item.payments = data.payments;
 				refreshScroll();
 			},
 			failureCallbackOfExpansionAPI = function( errorMessage ) {

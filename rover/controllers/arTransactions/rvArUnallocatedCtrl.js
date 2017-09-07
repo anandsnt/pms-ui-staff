@@ -13,7 +13,7 @@ sntRover.controller('RvArUnallocatedController',
 		var refreshScroll = function() {
 	        $timeout(function() {
 	            $scope.refreshScroller('unallocated-list-scroller');
-	        }, 1500);
+	        }, 500);
     	};
 
     	// Refresh scroller while updating the results from parent controller

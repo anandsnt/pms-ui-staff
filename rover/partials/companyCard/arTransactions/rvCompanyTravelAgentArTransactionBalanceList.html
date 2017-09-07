@@ -76,11 +76,8 @@
                 Balance After
                 <strong class="green"><span class="currency">{{currencySymbol}}</span>{balance-after}</strong>
             </div>
-            <!-- if partially paid, add .partially-paid-->
-            <div class="amount unpaid">
-                <!-- Add if partially paid
-                    <span class="icons icon-wallet-green"></span>
-                -->
+            <div class="amount unpaid" ng-class="{'partially-paid':balance.is_partially_paid}">
+                <span ng-if="balance.is_partially_paid" class="icons icon-wallet-green"></span>
                 <span class="currency">{{currencySymbol}}</span>{{balance.amount}}
             </div>
             <div class="amount input">
@@ -89,12 +86,12 @@
             </div>
         </div>
 
-        <div class="grid-items" ng-show="balance.active"><!-- Add/remove class 'hidden' when L11 is clicked -->
+        <div class="grid-items" ng-show="balance.active">
             <table>
                 <thead>
                     <tr>
                         <th class="date" scope="col">Date</th>
-                        <th   scope="col">Charge Code</th>
+                        <th scope="col">Charge Code</th>
                         <th class="description" scope="col">Description</th>
                         <th class="fees" scope="col">Fees</th>
                         <th class="credits" scope="col">Credits</th>
@@ -111,40 +108,18 @@
                      -->
                     <tr ng-repeat="debit in balance.debits" ng-class="{'odd': $odd, 'even': $even}">
                         <td>{{ debit.date }}</td>
-                        <td>{{ debit.charge_code}}</td>
+                        <td>{{ debit.charge_code }}</td>
 
                         <!-- If there are sub charges 
                              add .toggle -->
                         <!-- On click, toggle class .active -->
-                        <td class="description">
-                            {Description}
-                            <!-- If there are sub charges, render
-                                <span class="icons icon-double-arrow"></span>
-                            -->
-                            <!-- if it's a payment type:
-                                -- Card:
-                                    <div class="payment-data">
-                                        <figure class="card-logo">
-                                            <img src="http://localhost/stayntouch/images/visa.png" alt="">
-                                        </figure>
-                                        <span class="number">5987</span>
-                                        <span class="date"><span class="value">12/14</span></span>
-                                        <span class="reference">53806949</span>
-                                    </div>
-                                -- Other:
-                                    <div class="payment-data">
-                                        <span class="type">Cash</span>
-                                        <span class="reference">34507941</span>
-                                    </div>
-                            -->
-
+                        <td class="description" ng-class="{'toggle':debit.is_group_by_ref}">
+                            {{ debit.description }}
+                            <span class="icons icon-double-arrow" ng-if="debit.is_group_by_ref"></span>
                         </td>
-                        <td class="fees"><span class="currency">{currency}</span>{Fee Amount}</td>
+                        <td class="fees"><span class="currency">{{ currencySymbol }}</span>{{ debit.fees }}</td>
                         <td class="credits">
-                            <span class="currency">{currency}</span>{Credit Amount}
-                            <!-- Add if payment that can be unallocated
-                                <button class="icons icon-remove-40"></button>
-                             -->
+                            <span class="currency"></span>
                         </td>
                     </tr>
                     
