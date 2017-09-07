@@ -16,7 +16,6 @@ sntRover.controller('RVArTransactionsPayCreditsController', ['$scope', 'RVPaymen
         tokenDetails = {},
         cardDetails = {};
 
-
     $scope.addmode = ($scope.cardsList.length > 0) ? false : true;
     /*
      * if no payment type is selected disable payment button
@@ -65,7 +64,7 @@ sntRover.controller('RVArTransactionsPayCreditsController', ['$scope', 'RVPaymen
         $scope.$emit("hideLoader");
         $scope.depositPaidSuccesFully = true;
         $scope.arDataObj.unallocatedCredit = parseFloat(data.amountPaid).toFixed(2);
-         $scope.depositPaidSuccesFully = true;
+        $scope.depositPaidSuccesFully = true;
         $scope.authorizedCode = data.authorization_code;
         // Reload the ar transaction listing after payment
         if (data.allocatePaymentAfterPosting) {
