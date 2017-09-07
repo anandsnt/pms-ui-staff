@@ -70,7 +70,8 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 			    	_.each(data.ar_transactions, function (eachItem) {
 				    	eachItem.isSelected = false;
 				    	eachItem.balanceNow = eachItem.amount;
-				    	eachItem.balanceAfter = eachItem.amount;
+				    	eachItem.balanceAfter = 0;
+				    	eachItem.initialAmount = eachItem.amount;
 				    });
 			        $scope.arDataObj.balanceList = data.ar_transactions;
 			        $scope.arDataObj.balanceTotalCount = data.total_count;
