@@ -54,4 +54,9 @@ sntRover.controller('RvArAllocatedController',
             }
         };
 
+        // Handle unallocate button click.
+        $scope.clickedUnallocateButton = function() {
+            console.log('clickedUnallocateButton');
+        };
+
 }]);

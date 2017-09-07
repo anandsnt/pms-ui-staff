@@ -190,10 +190,10 @@
                         <td class="fees"><span class="currency"></span></td>
                         <td class="credits">
                             <span class="currency">{{ currencySymbol }}</span>{{payment.amount}}
-                                <button class="icons icon-remove-40"></button>
+                                <button class="icons icon-remove-40" ng-click="clickedUnallocateButton()"></button>
                         </td>
                     </tr>
-                    
+
                 </tbody>
             </table>
             <div class="actions">

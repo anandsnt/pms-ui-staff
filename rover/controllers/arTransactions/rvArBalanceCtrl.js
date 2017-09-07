@@ -10,6 +10,7 @@ sntRover.controller('RvArBalanceController', ['$scope', '$timeout', 'rvAccountsA
 	            $scope.refreshScroller('balance-list');
 	        }, 2000);
 	    };
+
         // Refresh scroll after completing fetch data
 	    $scope.$on("FETCH_COMPLETE_BALANCE_LIST", function() {
 	    	refreshScroll();
@@ -33,7 +34,6 @@ sntRover.controller('RvArBalanceController', ['$scope', '$timeout', 'rvAccountsA
 			};
 			
 			$scope.invokeApi(rvAccountsArTransactionsSrv.expandPaidAndUnpaidList, dataToSend, successCallbackOfExpansionAPI, failureCallbackOfExpansionAPI );
-			
 		};
 
 	    // Handle Toggle button click to expand list item
@@ -79,5 +79,10 @@ sntRover.controller('RvArBalanceController', ['$scope', '$timeout', 'rvAccountsA
 					});
 				}
 			}
+		};
+
+		// Handle unallocate button click.
+		$scope.clickedUnallocateButton = function() {
+			console.log('clickedUnallocateButton');
 		};
 }]);
