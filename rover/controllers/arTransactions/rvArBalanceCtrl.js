@@ -22,6 +22,7 @@ sntRover.controller('RvArBalanceController', ['$scope', '$timeout', 'rvAccountsA
 			var successCallbackOfExpansionAPI = function() {
 				$scope.$emit('hideLoader');
 				item.active = true;
+				refreshScroll();
 			},
 			failureCallbackOfExpansionAPI = function( errorMessage ) {
 				$scope.$emit('hideLoader');
@@ -45,6 +46,7 @@ sntRover.controller('RvArBalanceController', ['$scope', '$timeout', 'rvAccountsA
 	    	}
 	    	else {
 	    		clikedItem.active = false;
+	    		refreshScroll();
 	    	}
 	    };
 

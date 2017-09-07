@@ -27,6 +27,7 @@ sntRover.controller('RvArUnallocatedController',
             var successCallbackOfExpansionAPI = function() {
                 $scope.$emit('hideLoader');
                 item.active = true;
+                refreshScroll();
             },
             failureCallbackOfExpansionAPI = function( errorMessage ) {
                 $scope.$emit('hideLoader');
@@ -51,6 +52,7 @@ sntRover.controller('RvArUnallocatedController',
             }
             else {
                 clikedItem.active = false;
+                refreshScroll();
             }
         };
 

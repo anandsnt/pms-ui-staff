@@ -24,6 +24,7 @@ sntRover.controller('RvArPaidController', ['$scope', '$timeout', 'rvAccountsArTr
 				item.debits = data.debits;
 				item.payments = data.payments;
 				$scope.$emit("FETCH_COMPLETE_PAID_LIST");
+				refreshScroll();
 			},
 			failureCallbackOfExpansionAPI = function( errorMessage ) {
 				$scope.$emit('hideLoader');
@@ -47,6 +48,7 @@ sntRover.controller('RvArPaidController', ['$scope', '$timeout', 'rvAccountsArTr
 	    	}
 	    	else {
 	    		clikedItem.active = false;
+	    		refreshScroll();
 	    	}
 	    };
 
