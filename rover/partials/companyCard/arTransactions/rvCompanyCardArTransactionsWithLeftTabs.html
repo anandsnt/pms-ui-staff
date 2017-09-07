@@ -12,11 +12,11 @@
         </li>
         <li ng-class="{'active': arFlags.currentSelectedArTab === 'unallocated'}"  ng-click="switchArTransactionTab('unallocated')">
             Unallocated
-            <strong class="{totalClass}"> <span class="currency">{{currencySymbol}}</span>{{arDataObj.allocatedCredit}}</strong>
+            <strong class="{totalClass}"> <span class="currency">{{currencySymbol}}</span>{{arDataObj.unallocatedCredit}}</strong>
         </li>
         <li ng-class="{'active': arFlags.currentSelectedArTab === 'allocated'}"  ng-click="switchArTransactionTab('allocated')">
             Allocated
-            <strong> <span class="currency">{{currencySymbol}}</span>{{arDataObj.unallocatedCredit}}</strong>
+            <strong> <span class="currency">{{currencySymbol}}</span>{{arDataObj.allocatedCredit}}</strong>
         </li>
     </ul>
     <button type="button" class="button green" ng-click="addPayment()">Add Payment</button>
