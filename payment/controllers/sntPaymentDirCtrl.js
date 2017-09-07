@@ -889,11 +889,6 @@ angular.module('sntPay').controller('sntPaymentController',
                 // NOTE: Fees information is to be calculated only for standalone systems
                 // TODO: See how to handle fee in case of C&P
 
-                // if ($scope.actionType === 'AR_SUBMIT_PAYMENT' && $scope.payment.amount < 0) {
-                //     $scope.payment.amount = Math.abs($scope.payment.amount);
-                //     return;
-                // }
-
                 var selectedPaymentType;
 
                 if (isReset && $scope.payment.isEditable && $scope.selectedPaymentType === 'GIFT_CARD') {

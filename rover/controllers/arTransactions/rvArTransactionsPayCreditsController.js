@@ -11,10 +11,10 @@ sntRover.controller('RVArTransactionsPayCreditsController', ['$scope', 'RVPaymen
     var bill_id = $scope.arDataObj.company_or_ta_bill_id;
 
     $scope.cardsList = [];
-    // $scope.allocatePaymentAfterPosting = false;
-    var isSixPayment = false;
-    var tokenDetails = {};
-    var cardDetails = {};
+
+    var isSixPayment = false,
+        tokenDetails = {},
+        cardDetails = {};
 
 
     $scope.addmode = ($scope.cardsList.length > 0) ? false : true;
@@ -99,11 +99,6 @@ sntRover.controller('RVArTransactionsPayCreditsController', ['$scope', 'RVPaymen
         $scope.paymentErrorMessage = '';
     };
 
-    /*
-     * Action - On click submit payment button
-     */
-
-
     /**
      * function to check whether the user has permission
      * to make payment
@@ -135,14 +130,13 @@ sntRover.controller('RVArTransactionsPayCreditsController', ['$scope', 'RVPaymen
         tokenDetails = angular.copy($scope.newPaymentInfo.tokenDetails);
         cardDetails = angular.copy($scope.newPaymentInfo.cardDetails);
 
-        var cardToken = !isSixPayment ? tokenDetails.session : data.tokenDetails.token_no;
-        var expiryMonth = isSixPayment ? tokenDetails.expiry.substring(2, 4) : cardDetails.expiryMonth;
-        var expiryYear = isSixPayment ? tokenDetails.expiry.substring(0, 2) : cardDetails.expiryYear;
-        var expiryDate = (expiryMonth && expiryYear ) ? ("20" + expiryYear + "-" + expiryMonth + "-01") : "";
-        var cardCode = isSixPayment ?
+        var cardToken = !isSixPayment ? tokenDetails.session : data.tokenDetails.token_no,
+            expiryMonth = isSixPayment ? tokenDetails.expiry.substring(2, 4) : cardDetails.expiryMonth,
+            expiryYear = isSixPayment ? tokenDetails.expiry.substring(0, 2) : cardDetails.expiryYear,
+            expiryDate = (expiryMonth && expiryYear ) ? ("20" + expiryYear + "-" + expiryMonth + "-01") : "",
+            cardCode = isSixPayment ?
             getSixCreditCardType(tokenDetails.card_type).toLowerCase() :
             cardDetails.cardType;
-
 
         $scope.callAPI(rvAccountTransactionsSrv.savePaymentDetails, {
             successCallBack: successNewPayment,
@@ -158,18 +152,16 @@ sntRover.controller('RVArTransactionsPayCreditsController', ['$scope', 'RVPaymen
             }
         });
     };
-
-
     /*
      * Success call back of save new card
      */
     var successNewPayment = function(data) {
 
         $scope.$emit("hideLoader");
-        var cardType = "";
-        var cardNumberEndingWith = "";
-        var cardExpiry = "";
-        var swipedData = angular.copy($scope.swipedCardDataToSave);
+        var cardType = "",
+            cardNumberEndingWith = "",
+            cardExpiry = "",
+            swipedData = angular.copy($scope.swipedCardDataToSave);
 
         if (!isEmptyObject(swipedData)) {
             cardType = swipedData.cardType.toLowerCase();
@@ -181,7 +173,6 @@ sntRover.controller('RVArTransactionsPayCreditsController', ['$scope', 'RVPaymen
             cardType = retrieveCardtype(isSixPayment, tokenDetails, cardDetails);
             cardNumberEndingWith = retrieveCardNumber(isSixPayment, tokenDetails, cardDetails);
             cardExpiry = retrieveCardExpiryDate(isSixPayment, tokenDetails, cardDetails);
-
         }
 
         $scope.defaultPaymentTypeCard = cardType;
@@ -190,7 +181,6 @@ sntRover.controller('RVArTransactionsPayCreditsController', ['$scope', 'RVPaymen
 
         // check if the selected card has reference
         checkReferencetextAvailableForCC();
-
         // check if the selected card has fees
         _.each($scope.renderData.paymentTypes, function(paymentType) {
             if (paymentType.name === "CC") {
@@ -205,14 +195,12 @@ sntRover.controller('RVArTransactionsPayCreditsController', ['$scope', 'RVPaymen
             
         });
 
-
         $scope.saveData.payment_type_id = data.id;
         $scope.showCCPage = false;
         $scope.swippedCard = false;
         $scope.showCreditCardInfo = true;
         $scope.newCardAdded = true;
         $scope.swipedCardDataToSave = {};
-
     };
 
     /*
