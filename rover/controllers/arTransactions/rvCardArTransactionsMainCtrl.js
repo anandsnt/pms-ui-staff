@@ -161,6 +161,20 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 		        scope: $scope
 	      	});
 	    };
+        // Show payment allocate popup.
+        $scope.popupPaymentForAllocation = function () {
+            ngDialog.open({
+                template: '/assets/partials/companyCard/arTransactions/rvCompanyTravelAgentCardArPaymentPopup.html',
+                controller: 'RVArPaymentForAllocationController',
+                scope: $scope
+            });
+        };
+        // update allocated payment.
+        $scope.updateAllocatedPayment = function(payment){
+            $scope.allocatedPayment = payment;
+            console.log(payment);
+            ngDialog.close();
+        }
 	    /*
 	     * Fetch transactions API
 	     * @param dataToSend data object to API
@@ -256,6 +270,10 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 		 */
 		var init = function() {
 			$scope.fetchTransactions();
+            $scope.allocatedPayment = {
+                    available_amount : 0.00,
+                    amount :0.00
+                }
 		};
 
 		// Catch error messges from child controllers.
