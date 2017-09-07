@@ -18,9 +18,12 @@ sntRover.controller('RvArPaidController', ['$scope', '$timeout', 'rvAccountsArTr
 	    // Handle paid tab expansion api call.
 		var callExpansionAPI = function( item ) {
 
-			var successCallbackOfExpansionAPI = function() {
+			var successCallbackOfExpansionAPI = function(data) {
 				$scope.$emit('hideLoader');
 				item.active = true;
+				item.debits = data.debits;
+				item.payments = data.payments;
+				$scope.$emit("FETCH_COMPLETE_PAID_LIST");
 			},
 			failureCallbackOfExpansionAPI = function( errorMessage ) {
 				$scope.$emit('hideLoader');

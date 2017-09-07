@@ -42,12 +42,12 @@
  
         </div>
 
-        <div class="grid-items" ng-show="paidInvoice.active"><!-- Add/remove class 'hidden' when L7 is clicked -->
+        <div class="grid-items" ng-show="paidInvoice.active">
             <table>
                 <thead>
                     <tr>
                         <th class="date" scope="col">Date</th>
-                        <th   scope="col">Charge Code</th>
+                        <th scope="col">Charge Code</th>
                         <th class="description" scope="col">Description</th>
                         <th class="fees" scope="col">Fees</th>
                         <th class="credits" scope="col">Credits</th>
@@ -62,20 +62,35 @@
                              tr.charge-items => 'even'
                           3. tr => 'odd' ...
                      -->
-                    <tr class="{row-class}">
+                    <tr ng-repeat="debit in paidInvoice.debits" ng-class="{'odd': $odd, even: $even}" >
+                        <td>{{ debit.date }}</td>
+                        <td>{{ debit.charge_code}}</td>
+                        <td class="description">
+                         {{ debit.description }}
+                        </td>
+                        <td class="fees">
+                            <span class="currency" ng-hide="debit.fees===null">{{ currencySymbol }}</span>
+                            {{ debit.fees }}
+                        </td>
+                        <td class="credits">
+                            <span class="currency" ng-hide="debit.credits===null">{{ currencySymbol }}</span>{{ debit.credits }}
+                        </td>
+                    </tr>
+
+                    <!-- <tr class="odd">
                         <td>{Date}</td>
 
                         
                         <td>
                             {Charge Code}
                             
-                        </td>
+                        </td> -->
 
                         <!-- If there are sub charges 
                              add .toggle -->
                         <!-- On click, toggle class .active -->
-                        <td class="description">
-                            {Description}
+                        <!-- <td class="description">
+                            {Description} -->
                             <!-- If there are sub charges, render
                                 <span class="icons icon-double-arrow"></span>
                             -->
@@ -96,15 +111,15 @@
                                     </div>
                             -->
 
-                        </td>
+                        <!-- </td>
                         <td class="fees"><span class="currency">{currency}</span>{Fee Amount}</td>
                         <td class="credits">
-                            <span class="currency">{currency}</span>{Credit Amount}
+                            <span class="currency">{currency}</span>{Credit Amount} -->
                             <!-- Add if payment that can be unallocated
                                 <button class="icons icon-remove-40"></button>
                              -->
-                        </td>
-                    </tr>
+                        <!-- </td>
+                    </tr> -->
                     <!-- Render if the current charge item has sub charges (POS)
                          Remove 'hidden' on {Charge Code} click 
                     <tr class="{row-class} charge-items hidden">
