@@ -32,6 +32,7 @@ angular.module('sntPay').controller('sntPaymentController',
                 creditCardTypes: [],
                 showAddToGuestCard: false,
                 addToGuestCardSelected: false,
+                allocatePaymentAfterPosting: false,
                 guestFirstName: '',
                 guestLastName: '',
                 isManualEntryInsideIFrame: false,
@@ -1264,6 +1265,11 @@ angular.module('sntPay').controller('sntPaymentController',
                 if ($scope.payment.showAddToGuestCard) {
                     // check if add to guest card was selected
                     response.add_to_guest_card = $scope.payment.addToGuestCardSelected;
+                }
+
+                if ($scope.actionType === 'AR_SUBMIT_PAYMENT') {
+                    // check if allocate payment after posting selected
+                    response.allocatePaymentAfterPosting = $scope.payment.allocatePaymentAfterPosting;
                 }
 
                 $scope.$emit('PAYMENT_SUCCESS', response);

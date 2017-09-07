@@ -36,6 +36,7 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 			'paidAmount': '',
 			'allocatedCredit': '',
 			'unallocatedCredit': '',
+			'company_or_ta_bill_id': '',
 
 			'perPage': 50,
 			'balancePageNo': 1,
@@ -59,6 +60,7 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 			$scope.arDataObj.paidAmount = data.paid_amount;
 			$scope.arDataObj.allocatedCredit = data.allocated_credit;
 			$scope.arDataObj.unallocatedCredit = data.unallocated_credit;
+			$scope.arDataObj.company_or_ta_bill_id = data.company_or_ta_bill_id;
 
 			switch($scope.arFlags.currentSelectedArTab) {
 			    case 'balance':
@@ -168,6 +170,20 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 		$scope.filterChanged = function() {
 			$scope.fetchTransactions();
 		};
+		/* 
+		 * Add payment method
+		 */
+		$scope.addPayment = function() {
+			$scope.passData = getPassData();
+			ngDialog.open({
+	      		template: '/assets/partials/companyCard/arTransactions/rvArTransactionsPayCredits.html',
+		        controller: 'RVArTransactionsPayCreditsController',
+		        className: '',
+		        scope: $scope
+	      	});
+	      	$scope.paymentModalOpened = true;
+		};
+
 
 		/*
 		 * To create the parameters which is to be passed to API
@@ -209,6 +225,23 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 			return dataToSend;
 		};
 
+
+	    /*
+		* Data object to pass to the credit pay controller
+		*/
+	    var getPassData = function() {
+			var passData = {
+				"account_id": $stateParams.id,
+				"is_swiped": false,
+				"details": {
+					"firstName": "",
+					"lastName": ""
+				}
+			};
+
+			return passData;
+		};
+
 		/*
 		 * Initial loading of the screen
 		 *
@@ -221,8 +254,14 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 		$scope.$on('SHOW_ERROR_MSG', function( event, errorMessage ) {
 			$scope.errorMessage = errorMessage;
 		});
-
+        // Refresh balance list - after adding new manual balance 
+        // and after succesfull payment with Allocate payment after posting checked
 		$scope.$on('REFRESH_BALANCE_LIST', function() {
+			$scope.arFlags.currentSelectedArTab = 'balance';
+			$scope.fetchTransactions();
+		});
+		// Refresh selected list
+		$scope.$on("REFRESH_SELECTED_LIST", function() {
 			$scope.fetchTransactions();
 		});
 
