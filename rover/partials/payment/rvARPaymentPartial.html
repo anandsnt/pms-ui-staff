@@ -5,8 +5,8 @@
 
     <input ng-change="onPaymentInfoChange()"
            ng-model="payment.amount"
-           type="text"
-           class="amount"/>
+           type="number"
+           class="amount" onkeypress="return event.charCode >= 48"/>
 
     <span ng-show="feeData.showFee" class="delimiter">+</span>
 
@@ -55,6 +55,13 @@
             </span>
         </li>
     </ul>
+</div>
+
+<div class="entry full-width" ng-hide="paymentAttempted && !isPaymentFailure">
+    <label class="checkbox inline" for="add-in-guest-card" ng-class="{'checked': payment.allocatePaymentAfterPosting}">
+        <span class="icon-form icon-checkbox" ng-class="{'checked': payment.allocatePaymentAfterPosting}"></span>
+        <input ng-model="payment.allocatePaymentAfterPosting" id="add-in-guest-card" value="1" type="checkbox" /> {{'ALLOCATE_PAYMENT_AFTER_POSTING' | translate}}
+    </label>
 </div>
 
 <!-- Buttons -->
