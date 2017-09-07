@@ -1,194 +1,194 @@
 <ul class="search-results">
 
-    <!-- if checked, add class .selected -->
-    <li class="reservation transaction with-checkbox" ng-class="{'selected': balance.isSelected }" ng-repeat="balance in arDataObj.balanceList">
-        <label class="checkbox inline" ng-class="{'checked': balance.isSelected }" ng-click = "selectInvoice(balance.transaction_id)">
-            <span class="icon-form icon-checkbox" ng-class="{'checked': balance.isSelected }"></span>
-            <input value="4" type="checkbox" ng-class="{'checked': balance.isSelected }">
-        </label>
+	<!-- if checked, add class .selected -->
+	<li class="reservation transaction with-checkbox" ng-class="{'selected': balance.isSelected }" ng-repeat="balance in arDataObj.balanceList">
+		<label class="checkbox inline" ng-class="{'checked': balance.isSelected }" ng-click = "selectInvoice(balance.transaction_id)">
+			<span class="icon-form icon-checkbox" ng-class="{'checked': balance.isSelected }"></span>
+			<input value="4" type="checkbox" ng-class="{'checked': balance.isSelected }">
+		</label>
 
-        <!-- Add class .active when clicked to show details -->
-        <div class="faux-anchor has-arrow toggle">
-                <!-- add class .group/.allotment if group or allotment -->
-            <div class="data" ng-if="balance.associated_type === 'Reservation'">
-                <!-- add class .group/.allotment if group or allotment -->
-                <h2 ng-if="balance.guest_first_name!==null && balance.guest_last_name!==null">
-                    {{balance.guest_first_name}},  {{balance.guest_last_name}}
-                </h2>
-                <h2 ng-if="balance.guest_first_name!=='' && balance.guest_last_name===''">
-                    {{balance.guest_first_name}}
-                </h2>
-                <h2 ng-if="balance.guest_first_name==='' && balance.guest_last_name!==''">
-                    {{balance.guest_last_name}}
-                </h2>
+		<!-- Add class .active when clicked to show details -->
+		<div class="faux-anchor has-arrow toggle">
+				<!-- add class .group/.allotment if group or allotment -->
+			<div class="data" ng-if="balance.associated_type === 'Reservation'">
+				<!-- add class .group/.allotment if group or allotment -->
+				<h2 ng-if="balance.guest_first_name!==null && balance.guest_last_name!==null">
+					{{balance.guest_first_name}},  {{balance.guest_last_name}}
+				</h2>
+				<h2 ng-if="balance.guest_first_name!=='' && balance.guest_last_name===''">
+					{{balance.guest_first_name}}
+				</h2>
+				<h2 ng-if="balance.guest_first_name==='' && balance.guest_last_name!==''">
+					{{balance.guest_last_name}}
+				</h2>
 
-                <span class="invoice">
-                    Invoice #<span class="value">{{balance.invoice_number}}</span>
-                </span>
-                <span class="confirmation" ng-if="balance.external_reference_number!==null">
-                    Ext #<span class="value">{{balance.external_reference_number}}</span>
-                </span>
-                <span class="confirmation" ng-if="balance.external_reference_number===null">
-                    Conf #<span class="value">{{balance.reservation_confirm_no}}</span>
-                </span>
-            </div>
+				<span class="invoice">
+					Invoice #<span class="value">{{balance.invoice_number}}</span>
+				</span>
+				<span class="confirmation" ng-if="balance.external_reference_number!==null">
+					Ext #<span class="value">{{balance.external_reference_number}}</span>
+				</span>
+				<span class="confirmation" ng-if="balance.external_reference_number===null">
+					Conf #<span class="value">{{balance.reservation_confirm_no}}</span>
+				</span>
+			</div>
 
-            <div class="data" ng-if="balance.is_manual_balance">
-                <!-- add class .group/.allotment if group or allotment -->
-                <h2>
-                    {{balance.guest_first_name}}
-                </h2>                 
-               
-            </div>
+			<div class="data" ng-if="balance.is_manual_balance">
+				<!-- add class .group/.allotment if group or allotment -->
+				<h2>
+					{{balance.guest_first_name}}
+				</h2>                 
+			   
+			</div>
 
-            <div class="data" ng-if="balance.associated_type === 'PostingAccount'">
-                <!-- add class .group/.allotment if group or allotment -->
-                <h2>
-                    {{balance.account_name}}
-                </h2>                
+			<div class="data" ng-if="balance.associated_type === 'PostingAccount'">
+				<!-- add class .group/.allotment if group or allotment -->
+				<h2>
+					{{balance.account_name}}
+				</h2>                
 
-                <span class="invoice">
-                    Account #<span class="value">{{balance.account_number}}</span>
-                </span>
-               
-            </div>
-            <!-- This HTML is added even if the item is manual balance to fix the design issue. The icon kept hide -->
-            <div class="guest-date arrival" ng-if="balance.associated_type==='Reservation' || balance.is_manual_balance">
-                <span class="guest-status small-icon check-in" ng-hide="balance.is_manual_balance">check-in</span>
-                <time datetime="{arrival-timestamp}">
-                    <span class="date">{{balance.reservation_arrival_date}}</span>
-                    <span class="time">{{balance.reservation_arrival_time}}</span>
-                </time>
-            </div>
+				<span class="invoice">
+					Account #<span class="value">{{balance.account_number}}</span>
+				</span>
+			   
+			</div>
+			<!-- This HTML is added even if the item is manual balance to fix the design issue. The icon kept hide -->
+			<div class="guest-date arrival" ng-if="balance.associated_type==='Reservation' || balance.is_manual_balance">
+				<span class="guest-status small-icon check-in" ng-hide="balance.is_manual_balance">check-in</span>
+				<time datetime="{arrival-timestamp}">
+					<span class="date">{{balance.reservation_arrival_date}}</span>
+					<span class="time">{{balance.reservation_arrival_time}}</span>
+				</time>
+			</div>
 
-            <div class="guest-date departure" ng-if="balance.associated_type==='Reservation' || balance.is_manual_balance">
-                <span class="guest-status small-icon check-out">check-out</span>
-                <time >
-                    <span class="date">{{balance.reservation_dep_date}}</span>
-                    <span class="time">{{balance.reservation_dep_time}}</span>
-                </time>
-            </div>
-            <div class="balance balance-now">
-                Balance Now
-                <strong class="red"><span class="currency">{{currencySymbol}}</span>{{balance.balanceNow}}</strong>
-            </div>
-            <div class="balance balance-after">
-                Balance After
-                <strong class="green"><span class="currency">{{currencySymbol}}</span>{{balance.balanceAfter}}</strong>
-            </div>
-            <!-- if partially paid, add .partially-paid-->
-            <div class="amount unpaid">
-                <!-- Add if partially paid
-                    <span class="icons icon-wallet-green"></span>
-                -->
-                <span class="currency">{{currencySymbol}}</span>{{balance.amount}}
-            </div>
-            <div class="amount input">
-                <span class="currency">{{currencySymbol}}</span>
-                <input type="text" value="{{balance.amount}}">
-            </div>
-        </div>
+			<div class="guest-date departure" ng-if="balance.associated_type==='Reservation' || balance.is_manual_balance">
+				<span class="guest-status small-icon check-out">check-out</span>
+				<time >
+					<span class="date">{{balance.reservation_dep_date}}</span>
+					<span class="time">{{balance.reservation_dep_time}}</span>
+				</time>
+			</div>
+			<div class="balance balance-now">
+				Balance Now
+				<strong class="red"><span class="currency">{{currencySymbol}}</span>{{balance.balanceNow}}</strong>
+			</div>
+			<div class="balance balance-after">
+				Balance After
+				<strong class="green"><span class="currency">{{currencySymbol}}</span>{{balance.balanceAfter}}</strong>
+			</div>
+			<!-- if partially paid, add .partially-paid-->
+			<div class="amount unpaid">
+				<!-- Add if partially paid
+					<span class="icons icon-wallet-green"></span>
+				-->
+				<span class="currency">{{currencySymbol}}</span>{{balance.amount}}
+			</div>
+			<div class="amount input">
+				<span class="currency">{{currencySymbol}}</span>
+				<input type="text" value="{{balance.amount}}" ng-change="changeBalanceAmount(balance.transaction_id)">
+			</div>
+		</div>
 
-        <div class="grid-items hidden"><!-- Add/remove class 'hidden' when L11 is clicked -->
-            <table>
-                <thead>
-                    <tr>
-                        <th class="date" scope="col">Date</th>
-                        <th   scope="col">Charge Code</th>
-                        <th class="description" scope="col">Description</th>
-                        <th class="fees" scope="col">Fees</th>
-                        <th class="credits" scope="col">Credits</th>
-                    </tr>
-                </thead>
-                <tbody>
+		<div class="grid-items hidden"><!-- Add/remove class 'hidden' when L11 is clicked -->
+			<table>
+				<thead>
+					<tr>
+						<th class="date" scope="col">Date</th>
+						<th   scope="col">Charge Code</th>
+						<th class="description" scope="col">Description</th>
+						<th class="fees" scope="col">Fees</th>
+						<th class="credits" scope="col">Credits</th>
+					</tr>
+				</thead>
+				<tbody>
 
-                    <!-- 'row-class' => 'odd' or 'even' on each new charge item
-                          1. tr => 'odd',
-                          2. tr => 'even',
-                             'If charge item has charge items'
-                             tr.charge-items => 'even'
-                          3. tr => 'odd' ...
-                     -->
-                    <tr class="{row-class}">
-                        <td>{Date}</td>
+					<!-- 'row-class' => 'odd' or 'even' on each new charge item
+						  1. tr => 'odd',
+						  2. tr => 'even',
+							 'If charge item has charge items'
+							 tr.charge-items => 'even'
+						  3. tr => 'odd' ...
+					 -->
+					<tr class="{row-class}">
+						<td>{Date}</td>
 
-                        
-                        <td>
-                            {Charge Code}
-                            
-                        </td>
+						
+						<td>
+							{Charge Code}
+							
+						</td>
 
-                        <!-- If there are sub charges 
-                             add .toggle -->
-                        <!-- On click, toggle class .active -->
-                        <td class="description">
-                            {Description}
-                            <!-- If there are sub charges, render
-                                <span class="icons icon-double-arrow"></span>
-                            -->
-                            <!-- if it's a payment type:
-                                -- Card:
-                                    <div class="payment-data">
-                                        <figure class="card-logo">
-                                            <img src="http://localhost/stayntouch/images/visa.png" alt="">
-                                        </figure>
-                                        <span class="number">5987</span>
-                                        <span class="date"><span class="value">12/14</span></span>
-                                        <span class="reference">53806949</span>
-                                    </div>
-                                -- Other:
-                                    <div class="payment-data">
-                                        <span class="type">Cash</span>
-                                        <span class="reference">34507941</span>
-                                    </div>
-                            -->
+						<!-- If there are sub charges 
+							 add .toggle -->
+						<!-- On click, toggle class .active -->
+						<td class="description">
+							{Description}
+							<!-- If there are sub charges, render
+								<span class="icons icon-double-arrow"></span>
+							-->
+							<!-- if it's a payment type:
+								-- Card:
+									<div class="payment-data">
+										<figure class="card-logo">
+											<img src="http://localhost/stayntouch/images/visa.png" alt="">
+										</figure>
+										<span class="number">5987</span>
+										<span class="date"><span class="value">12/14</span></span>
+										<span class="reference">53806949</span>
+									</div>
+								-- Other:
+									<div class="payment-data">
+										<span class="type">Cash</span>
+										<span class="reference">34507941</span>
+									</div>
+							-->
 
-                        </td>
-                        <td class="fees"><span class="currency">{currency}</span>{Fee Amount}</td>
-                        <td class="credits">
-                            <span class="currency">{currency}</span>{Credit Amount}
-                            <!-- Add if payment that can be unallocated
-                                <button class="icons icon-remove-40"></button>
-                             -->
-                        </td>
-                    </tr>
-                    <!-- Render if the current charge item has sub charges (POS)
-                         Remove 'hidden' on {Charge Code} click 
-                    <tr class="{row-class} charge-items hidden">
-                        <td class="date"></td>
-                        <td></td>
-                        <td class="description">
-                            <ul>
-                                <li>{Item}</li>
-                                ... repeat for each item
-                            </ul>
-                        </td>
-                        <td class="fees">
-                            <ul>
-                                <li><span class="currency">{currency}</span>{price}</li>
-                                ... repeat for each item
-                            </ul>
-                        </td>
-                        <td class="credits"></td>
-                    </tr>
-                    -->
-                    ... repeat L60-L65 for every fee/credit
+						</td>
+						<td class="fees"><span class="currency">{currency}</span>{Fee Amount}</td>
+						<td class="credits">
+							<span class="currency">{currency}</span>{Credit Amount}
+							<!-- Add if payment that can be unallocated
+								<button class="icons icon-remove-40"></button>
+							 -->
+						</td>
+					</tr>
+					<!-- Render if the current charge item has sub charges (POS)
+						 Remove 'hidden' on {Charge Code} click 
+					<tr class="{row-class} charge-items hidden">
+						<td class="date"></td>
+						<td></td>
+						<td class="description">
+							<ul>
+								<li>{Item}</li>
+								... repeat for each item
+							</ul>
+						</td>
+						<td class="fees">
+							<ul>
+								<li><span class="currency">{currency}</span>{price}</li>
+								... repeat for each item
+							</ul>
+						</td>
+						<td class="credits"></td>
+					</tr>
+					-->
+					... repeat L60-L65 for every fee/credit
 
-                </tbody>
-            </table>
-            <div class="actions">
-                <button type="button" class="button brand-colors">StayCard</button>
-                <button type="button" class="button purple">Move Invoice</button>
-                <button type="button" class="button blue">Print Invoice</button>
-                <button type="button" class="button white green-text">Post Charge</button>
-                <button type="button" class="button white purple-text">Edit Charges</button>
-            </div>
-        </div>
+				</tbody>
+			</table>
+			<div class="actions">
+				<button type="button" class="button brand-colors">StayCard</button>
+				<button type="button" class="button purple">Move Invoice</button>
+				<button type="button" class="button blue">Print Invoice</button>
+				<button type="button" class="button white green-text">Post Charge</button>
+				<button type="button" class="button white purple-text">Edit Charges</button>
+			</div>
+		</div>
 
-    </li>
+	</li>
 
-    <li>
-        <!-- On click Show Manual Balance Billing Content -->
-        <button class="add-new-button" ng-click="showAddBalanceScreen()">Add Manual Balance</button>
-    </li>
+	<li>
+		<!-- On click Show Manual Balance Billing Content -->
+		<button class="add-new-button" ng-click="showAddBalanceScreen()">Add Manual Balance</button>
+	</li>
 </ul>

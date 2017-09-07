@@ -16,7 +16,10 @@ sntRover.controller('RvArBalanceController', ['$scope', '$rootScope', 'RVCompany
 	    $scope.$on("FETCH_COMPLETE_BALANCE_LIST", function() {
 	    	refreshScroll();
 	    });	
-
+	    /*
+	     * Select individual invoices in balance tab
+	     * update the selected invoices variable
+	     */ 
 	    $scope.selectInvoice = function (transactionId) {
 	    	_.each($scope.arDataObj.balanceList, function (eachItem) {
 		    	if (eachItem.transaction_id === transactionId) {
