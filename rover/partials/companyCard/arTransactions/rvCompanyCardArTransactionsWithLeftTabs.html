@@ -48,32 +48,30 @@
         <div class="billing-footer" ng-class="{'hidden': arDataObj.selectedInvoices.length === 0}">
 
             <!-- If no payment method selected -->
-                <button type="button" class="select-payment payment-data">
+                <button type="button" class="select-payment payment-data" ng-show="!allocatedPayment.payment_type" ng-click="popupPaymentForAllocation()">
                     Please Select Payment!
                 </button>
-            <!-- if payment method selected --
-                <div class="payment-data has-arrow toggle active">
 
-                    <h2 class="type">{Payment Type | exp. Credit Card, Cash}</h2>
+                <div class="payment-data has-arrow toggle active" ng-show="!!allocatedPayment.payment_type">
+
+                    <h2 class="type">{{allocatedPayment.payment_type}}</h2>
                     <div class="card-data">
                         <figure class="card-logo">
-                            <img src="{card-image}" alt="" />
+                            <img ng-src="/assets/images/{{allocatedPayment.card_details.card_code.toLowerCase()}}.png" alt="">
                         </figure>
-                        <span class="number">Ending With<span class="value">5987</span></span>
-                        <span class="date">Expires<span class="value">12/14</span></span>
+                        <span class="number" ng-if="!!allocatedPayment.card_details">Ending With<span class="value">{{::allocatedPayment.card_details.last_digits}}</span></span>
+                        <span class="date" ng-if="!!allocatedPayment.card_details">Expires<span class="value">{{::allocatedPayment.card_details.expire_date}}</span></span>
                     </div>
-
                 </div>
-            -->
 
             <ul class="balance">
                 <li>
                     Available
-                    <strong class="red"> <span class="currency">{{currencySymbol}}</span>0.00</strong>
+                    <strong class="red"> <span class="currency">{{currencySymbol}}</span>{{allocatedPayment.available_amount | number:2}}</strong>
                 </li>
                 <li>
                     Allocated
-                    <strong class="green"> <span class="currency">{{currencySymbol}}</span>{{arDataObj.totalAllocatedAmount | number:2}}</strong>
+                    <strong class="green"> <span class="currency">{{currencySymbol}}</span>{{allocatedPayment.amount | number:2}}</strong>
                 </li>
             </ul>
 
