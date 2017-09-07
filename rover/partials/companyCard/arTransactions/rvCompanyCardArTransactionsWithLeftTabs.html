@@ -45,7 +45,7 @@
         </div> {{arDataObj.selectedInvoices.length}}
         
         <!-- remove hidden when .with-footer-->
-        <div class="billing-footer hidden" ng-class="{'hidden': arDataObj.selectedInvoices.length === 0}">
+        <div class="billing-footer" ng-class="{'hidden': arDataObj.selectedInvoices.length === 0}">
 
             <!-- If no payment method selected -->
                 <button type="button" class="select-payment payment-data">
@@ -97,7 +97,8 @@
             </ul>
 
         </div>
-        <rv-pagination page-options="balancePagination" page-data="arDataObj.balanceTotalCount"></rv-pagination>
+
+        <rv-pagination ng-show="arDataObj.selectedInvoices.length === 0" page-options="balancePagination" page-data="arDataObj.balanceTotalCount"></rv-pagination>
 
     </div>
 <!-- Manual Balance Billing Content -->
