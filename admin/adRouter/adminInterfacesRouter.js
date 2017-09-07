@@ -559,12 +559,6 @@ angular.module('adminInterfacesRouter', []).config(function($stateProvider) {
         url: '/snapshotSetup/general'
     });
 
-    $stateProvider.state('admin.snapshotChargeGroupMapping', {
-        templateUrl: '/assets/partials/snapshotSetup/adSnapshotChargeGroupMapping.html',
-        controller: 'adSnapshotChargeGroupMappingCtrl',
-        url: '/snapshotSetup/chargeGroupMapping'
-    });
-
     $stateProvider.state('admin.snapshotSubGroupMapping', {
         templateUrl: '/assets/partials/snapshotSetup/adSnapshotSubGroupMapping.html',
         controller: 'adsnapshotSubGroupMappingCtrl',
