@@ -2107,6 +2107,8 @@ sntRover.controller('RVbillCardController',
 	$scope.showSuccessPopup = function(successMessage) {
 		$scope.status = "success";
 		$scope.popupMessage = successMessage;
+		$scope.checkoutStatus = $scope.status; // CICO-45029 handle room status dialog after checkout (see jira notes)
+
 		$scope.callBackMethod = function() {
 			// CICO-11807 issue fixed
 			if ($scope.saveData.isEarlyDepartureFlag === true) {
