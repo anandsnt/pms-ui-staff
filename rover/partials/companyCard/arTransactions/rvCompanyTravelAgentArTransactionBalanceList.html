@@ -1,10 +1,10 @@
 <ul class="search-results">
 
     <!-- if checked, add class .selected -->
-    <li class="reservation transaction with-checkbox" ng-repeat="balance in arDataObj.balanceList">
-        <label class="checkbox inline">
-            <span class="icon-form icon-checkbox"></span>
-            <input value="4" type="checkbox">
+    <li class="reservation transaction with-checkbox" ng-class="{'selected': balance.isSelected }" ng-repeat="balance in arDataObj.balanceList">
+        <label class="checkbox inline" ng-class="{'checked': balance.isSelected }" ng-click = "selectInvoice(balance.transaction_id)">
+            <span class="icon-form icon-checkbox" ng-class="{'checked': balance.isSelected }"></span>
+            <input value="4" type="checkbox" ng-class="{'checked': balance.isSelected }">
         </label>
 
         <!-- Add class .active when clicked to show details -->
@@ -70,11 +70,11 @@
             </div>
             <div class="balance balance-now">
                 Balance Now
-                <strong class="red"><span class="currency">{{currencySymbol}}</span>{balance-now}</strong>
+                <strong class="red"><span class="currency">{{currencySymbol}}</span>{{balance.balanceNow}}</strong>
             </div>
             <div class="balance balance-after">
                 Balance After
-                <strong class="green"><span class="currency">{{currencySymbol}}</span>{balance-after}</strong>
+                <strong class="green"><span class="currency">{{currencySymbol}}</span>{{balance.balanceAfter}}</strong>
             </div>
             <!-- if partially paid, add .partially-paid-->
             <div class="amount unpaid">

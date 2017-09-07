@@ -37,7 +37,7 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 			'allocatedCredit': '',
 			'unallocatedCredit': '',
 
-			'perPage': 50,
+			'perPage': 5,
 			'balancePageNo': 1,
 			'paidPageNo': 1,
 			'allocatePageNo': 1,
@@ -46,7 +46,10 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 			'balanceTotalCount': 0,
 			'paidTotalCount': 0,
 			'allocatedTotalCount': 0,
-			'unallocatedTotalCount': 0
+			'unallocatedTotalCount': 0,
+			// Params - Balance tab
+			'selectedInvoices': [],
+			'totalAllocatedAmount': 0
 		};
 
 		/*
@@ -62,6 +65,11 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 
 			switch($scope.arFlags.currentSelectedArTab) {
 			    case 'balance':
+			    	_.each(data.ar_transactions, function (eachItem) {
+				    	eachItem.isSelected = false;
+				    	eachItem.balanceNow = eachItem.amount;
+				    	eachItem.balanceAfter = eachItem.amount;
+				    });
 			        $scope.arDataObj.balanceList = data.ar_transactions;
 			        $scope.arDataObj.balanceTotalCount = data.total_count;
 			        $scope.$broadcast("FETCH_COMPLETE_BALANCE_LIST");

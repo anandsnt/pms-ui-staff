@@ -42,10 +42,10 @@
         <!-- If there are open bills -->
         <div class="wrapper" ng-include="'/assets/partials/companyCard/arTransactions/rvCompanyTravelAgentArTransactionBalanceList.html'">
           <!--   {ar-transactions/open-bills.html} -->
-        </div>
-        <rv-pagination page-options="balancePagination" page-data="arDataObj.balanceTotalCount"></rv-pagination>
+        </div> {{arDataObj.selectedInvoices.length}}
+        
         <!-- remove hidden when .with-footer-->
-        <div class="billing-footer hidden">
+        <div class="billing-footer hidden" ng-class="{'hidden': arDataObj.selectedInvoices.length === 0}">
 
             <!-- If no payment method selected -->
                 <button type="button" class="select-payment payment-data">
@@ -69,11 +69,11 @@
             <ul class="balance">
                 <li>
                     Available
-                    <strong class="red">$0.00</strong>
+                    <strong class="red"> <span class="currency">{{currencySymbol}}</span>0.00</strong>
                 </li>
                 <li>
                     Allocated
-                    <strong class="green">$4,906.00</strong>
+                    <strong class="green"> <span class="currency">{{currencySymbol}}</span>{{arDataObj.totalAllocatedAmount | number:2}}</strong>
                 </li>
             </ul>
 
@@ -97,6 +97,7 @@
             </ul>
 
         </div>
+        <rv-pagination page-options="balancePagination" page-data="arDataObj.balanceTotalCount"></rv-pagination>
 
     </div>
 <!-- Manual Balance Billing Content -->
