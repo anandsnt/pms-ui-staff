@@ -109,14 +109,9 @@
                              tr.charge-items => 'even'
                           3. tr => 'odd' ...
                      -->
-                    <tr class="{row-class}">
-                        <td>{Date}</td>
-
-                        
-                        <td>
-                            {Charge Code}
-                            
-                        </td>
+                    <tr ng-repeat="debit in balance.debits" ng-class="{'odd': $odd, 'even': $even}">
+                        <td>{{ debit.date }}</td>
+                        <td>{{ debit.charge_code}}</td>
 
                         <!-- If there are sub charges 
                              add .toggle -->
@@ -152,6 +147,7 @@
                              -->
                         </td>
                     </tr>
+                    
                     <!-- Render if the current charge item has sub charges (POS)
                          Remove 'hidden' on {Charge Code} click 
                     <tr class="{row-class} charge-items hidden">
@@ -171,9 +167,33 @@
                         </td>
                         <td class="credits"></td>
                     </tr>
-                    -->
-                    ... repeat L60-L65 for every fee/credit
+                    
+                    ... repeat L60-L65 for every fee/credit -->
 
+                    <tr ng-repeat="payment in balance.payments" ng-class="{'odd': $odd, 'even': $even}">
+                        <td>{{ payment.transaction_date }}</td>
+                        <td>{{ payment.charge_code}}</td>
+                        <td class="description">
+                            <div class="payment-data" ng-if="payment.is_cc_payment">
+                                <figure class="card-logo">
+                                    <img ng-src="/assets/images/{{payment.card_details.card_code.toLowerCase()}}.png" alt="">
+                                </figure>
+                                <span class="number">{{payment.card_details.last_digits}}</span>
+                                <span class="date"><span class="value">{{payment.card_details.expire_date}}</span></span>
+                                <span class="reference">{{payment.reference_text}}</span>
+                            </div>
+                            <div class="payment-data" ng-if="!payment.is_cc_payment">
+                                <span class="type">{{payment.payment_type}}</span>
+                                <span class="reference">{{payment.reference_text}}</span>
+                            </div>
+                        </td>
+                        <td class="fees"><span class="currency"></span></td>
+                        <td class="credits">
+                            <span class="currency">{{ currencySymbol }}</span>{{payment.amount}}
+                                <button class="icons icon-remove-40"></button>
+                        </td>
+                    </tr>
+                    
                 </tbody>
             </table>
             <div class="actions">
