@@ -1,6 +1,7 @@
-sntRover.controller('RVKeyEncodePopupCtrl', [ '$rootScope', '$scope', '$state', 'ngDialog', 'RVKeyPopupSrv', '$filter', '$timeout', '$log',
-		function($rootScope, $scope, $state, ngDialog, RVKeyPopupSrv, $filter, $timeout, $log) {
-	BaseCtrl.call(this, $scope);
+sntRover.controller('RVKeyEncodePopupCtrl', [
+    '$rootScope', '$scope', '$state', 'ngDialog', 'RVKeyPopupSrv', '$filter', '$timeout', '$log', 'sntActivity',
+    function ($rootScope, $scope, $state, ngDialog, RVKeyPopupSrv, $filter, $timeout, $log, sntActivity) {
+        BaseCtrl.call(this, $scope);
 	var that = this;
 
 	var scopeState = {
@@ -198,6 +199,8 @@ sntRover.controller('RVKeyEncodePopupCtrl', [ '$rootScope', '$scope', '$state', 
             if (!$scope.$$phase) {
                 $scope.$apply();
             }
+
+            sntActivity.stop('CHECK_DEVICE_CONNECTION');
 		}
 
 	};
@@ -234,10 +237,11 @@ sntRover.controller('RVKeyEncodePopupCtrl', [ '$rootScope', '$scope', '$state', 
 		}
 		else {
 			try {
+                sntActivity.start('CHECK_DEVICE_CONNECTION');
 				sntapp.cardReader.checkDeviceConnected(callBack);
 			} catch (e) {
-
 				showDeviceNotConnected();
+                sntActivity.stop('CHECK_DEVICE_CONNECTION');
 			}
 		}
 	};
@@ -302,14 +306,15 @@ sntRover.controller('RVKeyEncodePopupCtrl', [ '$rootScope', '$scope', '$state', 
 			sntapp.cardReader.retrieveCardInfoDebug(options);
 		}
 		else {
+            sntActivity.start('RETRIEVE_CARD_INFO');
 			sntapp.cardReader.retrieveCardInfo(options);
 		}
 
 	};
 
 	that.showCardInfoFetchFailedMsg = function(errorObject) {
-		$scope.$emit('hideLoader');
-		// Asynchrounous action. so we need to notify angular that a change has occured.
+        sntActivity.stop('RETRIEVE_CARD_INFO');
+        // Asynchrounous action. so we need to notify angular that a change has occured.
 		// It lets you to start the digestion cycle explicitly
 		$scope.$apply();
 		var message = $filter('translate')('KEY_UNABLE_TO_READ_STATUS') + errorObject['RVErrorDesc'];
@@ -349,7 +354,7 @@ sntRover.controller('RVKeyEncodePopupCtrl', [ '$rootScope', '$scope', '$state', 
         }
 
 	    $scope.invokeApi(RVKeyPopupSrv.fetchKeyFromServer, postParams, that.keyFetchSuccess, that.keyFetchFailed);
-
+        sntActivity.stop('RETRIEVE_CARD_INFO');
 	};
 
 	/*
@@ -438,15 +443,16 @@ sntRover.controller('RVKeyEncodePopupCtrl', [ '$rootScope', '$scope', '$state', 
 				$scope.printedKeysCount = index;
 				$scope.buttonText = 'Print key ' + (index + 1) + '/' + that.printKeyStatus.length;
 				$scope.$apply();
+
+                sntActivity.stop('WRITE_KEY_CARD');
+
 				if (that.numOfKeys === 0) {
 					that.showKeyPrintSuccess();
 					return true;
 				}
-
-
 			},
 			'failureCallBack': function(errorObject) {
-				$scope.$emit('hideLoader');
+
 				if (that.numOfKeys > 0) {
 					that.setStatusAndMessage($filter('translate')('KEY_CREATION_FAILED_STATUS_LONG') + ': '  + errorObject['RVErrorDesc'], 'error');
 				}
@@ -455,8 +461,10 @@ sntRover.controller('RVKeyEncodePopupCtrl', [ '$rootScope', '$scope', '$state', 
 
 					that.showKeyPrintFailure(message);
 				}
+
 				$scope.$apply();
 
+                sntActivity.stop('WRITE_KEY_CARD');
 			},
 			arguments: keyData
 		};
@@ -465,6 +473,7 @@ sntRover.controller('RVKeyEncodePopupCtrl', [ '$rootScope', '$scope', '$state', 
 			sntapp.cardReader.writeKeyDataDebug(options);
 		}
 		else {
+            sntActivity.start('WRITE_KEY_CARD');
 			sntapp.cardReader.writeKeyData(options);
 		}
 
@@ -621,6 +630,7 @@ sntRover.controller('RVKeyEncodePopupCtrl', [ '$rootScope', '$scope', '$state', 
         }
 
         showPrintKeyOptions(status);
+        sntActivity.stop('CHECK_DEVICE_CONNECTION');
     };
 
 	var showKeysPrinted = function() {
