@@ -1,4 +1,13 @@
-sntRover.controller('RVArTransactionsPayCreditsController', ['$scope', 'RVPaymentSrv', 'ngDialog', '$rootScope', '$timeout', '$filter', 'rvAccountTransactionsSrv', 'rvPermissionSrv', function($scope, RVPaymentSrv, ngDialog, $rootScope, $timeout, $filter, rvAccountTransactionsSrv, rvPermissionSrv) {
+sntRover.controller('RVArTransactionsPayCreditsController', 
+    ['$scope', 
+    'RVPaymentSrv', 
+    'ngDialog', 
+    '$rootScope', 
+    '$timeout', 
+    '$filter', 
+    'rvAccountTransactionsSrv', 
+    'rvPermissionSrv', 
+    function($scope, RVPaymentSrv, ngDialog, $rootScope, $timeout, $filter, rvAccountTransactionsSrv, rvPermissionSrv) {
     BaseCtrl.call(this, $scope);
 
     $scope.feeData = {};
@@ -16,17 +25,12 @@ sntRover.controller('RVArTransactionsPayCreditsController', ['$scope', 'RVPaymen
         tokenDetails = {},
         cardDetails = {};
 
-    $scope.addmode = ($scope.cardsList.length > 0) ? false : true;
+    $scope.addmode = $scope.cardsList.length > 0;
     /*
      * if no payment type is selected disable payment button
      */
-    $scope.disableMakePayment = function() {
-        if ($scope.saveData.paymentType.length > 0) {
-            return false;
-        }
-        else {
-            return true;
-        }
+    $scope.disableMakePayment = function() {       
+        return $scope.saveData.paymentType.length;
         
     };
     $scope.handleCloseDialog = function() {
@@ -83,13 +87,15 @@ sntRover.controller('RVArTransactionsPayCreditsController', ['$scope', 'RVPaymen
         $scope.errorMessage = data;
     };
 
-    $scope.$on("PAYMENT_SUCCESS", function(e, response) {
+    var paymentSuccess = $scope.$on("PAYMENT_SUCCESS", function(e, response) {
         successPayment(response);
     });
 
-    $scope.$on("PAYMENT_FAILED", function(e, response) {
+    var paymentFailed = $scope.$on("PAYMENT_FAILED", function(e, response) {
         failedPayment(response);
     });
+    $scope.$on( '$destroy', paymentSuccess );
+    $scope.$on( '$destroy', paymentFailed );
 
     /*
      * Clears paymentErrorMessage
@@ -114,7 +120,7 @@ sntRover.controller('RVArTransactionsPayCreditsController', ['$scope', 'RVPaymen
         $scope.newPaymentInfo = data;
         $scope.showCCPage = false;
         $scope.swippedCard = false;
-        setTimeout(function() {
+        $timeout(function() {
             savePayment(data);
         }, 200);
         runDigestCycle();
@@ -223,7 +229,7 @@ sntRover.controller('RVArTransactionsPayCreditsController', ['$scope', 'RVPaymen
 
     // Added for CICO-26730
     $scope.changeOnsiteCallIn = function() {
-        $scope.showCCPage = ($scope.isManual) ? true : false;
+        $scope.showCCPage = !!$scope.isManual;
     };
 
     // Added for CICO-26730
