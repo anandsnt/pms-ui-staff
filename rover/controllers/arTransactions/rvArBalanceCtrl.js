@@ -39,8 +39,24 @@ sntRover.controller('RvArBalanceController', ['$scope', '$timeout', 'rvAccountsA
 			$scope.invokeApi(rvAccountsArTransactionsSrv.expandPaidAndUnpaidList, dataToSend, successCallbackOfExpansionAPI, failureCallbackOfExpansionAPI );
 		};
 
+		// Handle click events on balance list
+		$scope.clickedOnParentList = function( event, index ) {
+			var clikedItem = $scope.arDataObj.balanceList[index],
+	    		element = event.target;	
+
+	    	event.stopImmediatePropagation();
+  			event.stopPropagation();
+
+	    	if (element.parentElement.classList.contains('checkbox') || element.classList.contains('checkbox')){
+	    		// Checkbox selection logic will be called here..
+	    	}
+	    	else if ( element.parentElement.classList.contains('has-arrow') || element.classList.contains('has-arrow')) {
+	    		clickedBalanceListItem(index);
+	    	}
+		};
+
 	    // Handle Toggle button click to expand list item
-	    $scope.clickedBalanceListItem = function( index ) {
+	    var clickedBalanceListItem = function( index ) {
 	    	var clikedItem = $scope.arDataObj.balanceList[index];
 
 	    	if (!clikedItem.active) {
