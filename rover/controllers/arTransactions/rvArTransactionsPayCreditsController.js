@@ -29,8 +29,7 @@ sntRover.controller('RVArTransactionsPayCreditsController',
      * if no payment type is selected disable payment button
      */
     $scope.disableMakePayment = function() {       
-        return $scope.saveData.paymentType.length;
-        
+        return $scope.saveData.paymentType.length;        
     };
     $scope.handleCloseDialog = function() {
         $scope.$emit('HANDLE_MODAL_OPENED');
@@ -38,7 +37,6 @@ sntRover.controller('RVArTransactionsPayCreditsController',
     };
 
     $scope.$on("CLOSE_DIALOG", $scope.handleCloseDialog);
-
     /*
      * Success call back - for initial screen
      */
@@ -62,8 +60,6 @@ sntRover.controller('RVArTransactionsPayCreditsController',
     };
 
     init();
-
-
     /*
      * Success call back of success payment
      */
@@ -114,7 +110,6 @@ sntRover.controller('RVArTransactionsPayCreditsController',
     $scope.hasPermissionToMakePayment = function() {
         return rvPermissionSrv.getPermissionValue('MAKE_PAYMENT');
     };
-
     /**
      * retrieve token from paymnet gateway - from cards ctrl
      */
@@ -126,7 +121,6 @@ sntRover.controller('RVArTransactionsPayCreditsController',
             savePayment(data);
         }, 200);
     });
-
     /*
      * To save new card
      */
@@ -208,7 +202,6 @@ sntRover.controller('RVArTransactionsPayCreditsController',
         $scope.newCardAdded = true;
         $scope.swipedCardDataToSave = {};
     };
-
     /*
      * Checks whether the selected credit card btn needs to show or not
      */
@@ -219,7 +212,6 @@ sntRover.controller('RVArTransactionsPayCreditsController',
             && $scope.saveData.paymentType === 'CC' 
             && !$scope.depositPaidSuccesFully;            
     };
-
     /*
      * Checks whether reference text is available for CC
      */
@@ -227,18 +219,15 @@ sntRover.controller('RVArTransactionsPayCreditsController',
         // call utils fn
         $scope.referenceTextAvailable = checkIfReferencetextAvailableForCC($scope.renderData.paymentTypes, $scope.defaultPaymentTypeCard);
     };
-
     // Added for CICO-26730
     $scope.changeOnsiteCallIn = function() {
         $scope.showCCPage = !!$scope.isManual;
     };
-
     // Added for CICO-26730
     $scope.$on('changeOnsiteCallIn', function(event) {
         $scope.isManual = !$scope.isManual;
         $scope.changeOnsiteCallIn();
     });
-
     /*
      * Success call back of MLI swipe - from cards ctrl
      */
@@ -271,14 +260,12 @@ sntRover.controller('RVArTransactionsPayCreditsController',
         });
 
     });
-
     /**
      * MLI error - from cards ctrl
      */
     $scope.$on("MLI_ERROR", function(e, data) {
         $scope.errorMessage = data;
     });
-
     /*
      * Invoke this method to show the refund amount on the button in the payment screen
      */
@@ -289,8 +276,6 @@ sntRover.controller('RVArTransactionsPayCreditsController',
             $scope.shouldShowMakePaymentButton = false;
         } else {
             $scope.shouldShowMakePaymentButton = true;
-        }
-        
+        }        
     };
-
 }]);
