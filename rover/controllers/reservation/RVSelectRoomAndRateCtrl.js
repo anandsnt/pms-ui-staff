@@ -592,6 +592,13 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 									generateRatesGrid(response.results, true);
 									$scope.refreshScroll();
 								});
+							} else if (sc.activeView === 'RECOMMENDED' && sc.baseInfo.maxAvblRates > ratesCount) {
+								sc.pagination.rate.page++;
+								fetchRatesList(null, null, sc.pagination.rate.page, function(response) {
+									$scope.stateCheck.baseInfo.maxAvblRates = response.total_count;
+									generateRatesGrid(response.results, true);
+									$scope.refreshScroll();
+								});
 							}
 						}
 						scrollPosition = this.y;
@@ -1071,6 +1078,7 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 				// Reset search
 				$scope.stateCheck.rateFilterText = "";
 				fetchRatesList(null, null, $scope.stateCheck.pagination.rate.page, function(response) {
+					$scope.stateCheck.baseInfo.maxAvblRates = response.total_count;
 					generateRatesGrid(response.results);
 					$scope.refreshScroll();
 				});
@@ -1838,6 +1846,7 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 					pageToFetch = (room.ratesArray.length / $scope.stateCheck.pagination.roomType.ratesList.perPage) + 1;
 				}
 				fetchRatesList(room.id, null, pageToFetch, function(response) {
+					
 					var datesInitial = RVReservationDataService.getDatesModel(ARRIVAL_DATE, DEPARTURE_DATE);
 
 					room.totalRatesCount = response.total_count;
@@ -1945,7 +1954,6 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 				$scope.stateCheck.pagination.rate.page = 1;
 				// Populate with the selected
 				fetchRatesList(null, ui.item.id, 1, function(response) {
-					$scope.stateCheck.baseInfo.maxAvblRates = response.total_count;
 					generateRatesGrid(response.results);
 					$scope.refreshScroll();
 				});
@@ -1968,7 +1976,6 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 			$scope.stateCheck.pagination.rate.page = 1;
 			// Populate with the selected
 			fetchRatesList(null, selectedRate.id, 1, function(response) {
-				$scope.stateCheck.baseInfo.maxAvblRates = response.total_count;
 				generateRatesGrid(response.results);
 				$scope.refreshScroll();
 			});
@@ -1995,6 +2002,7 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 			} else {
 				$scope.filteredRates = [];
 				fetchRatesList(null, null, 1, function(response) {
+					
 					generateRatesGrid(response.results);
 					$scope.refreshScroll();
 				});
