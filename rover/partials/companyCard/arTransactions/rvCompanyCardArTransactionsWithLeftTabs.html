@@ -48,11 +48,11 @@
         <div class="billing-footer" ng-class="{'hidden': arDataObj.selectedInvoices.length === 0}">
 
             <!-- If no payment method selected -->
-                <button type="button" class="select-payment payment-data" ng-show="!allocatedPayment.payment_type" ng-click="popupPaymentForAllocation()">
+                <button type="button" class="select-payment payment-data" ng-show="!arFlags.isPaymentSelected" ng-click="popupPaymentForAllocation()">
                     Please Select Payment!
                 </button>
 
-                <div class="payment-data has-arrow toggle active" ng-show="!!allocatedPayment.payment_type" ng-click="popupPaymentForAllocation()">
+                <div class="payment-data has-arrow toggle active" ng-show="!!arFlags.isPaymentSelected" ng-click="popupPaymentForAllocation()">
 
                     <h2 class="type">{{allocatedPayment.payment_type}}</h2>
                     <div class="card-data">
@@ -83,7 +83,7 @@
                 <li>
                     <!-- remove .green, add .grey if can't pay
                          add disabled="disabled" if can't pay -->
-                    <button type="button" class="button green">Pay Selected</button>
+                    <button type="button" ng-disabled="!arFlags.isPaymentSelected" class="button" ng-class="{'green': arFlags.isPaymentSelected, 'grey': !arFlags.isPaymentSelected }" ng-click="paySelectedInvoices()">Pay Selected</button>
                 </li>
 
                 <!-- if we can Pay All --

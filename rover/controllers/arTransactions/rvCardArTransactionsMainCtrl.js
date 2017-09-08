@@ -14,7 +14,8 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 		$scope.arFlags = {
 			'currentSelectedArTab': 'balance',
 			'isAddBalanceScreenVisible': false,
-			'isArTabActive': false
+			'isArTabActive': false,
+			'isPaymentSelected': false
 		};
 
 		$scope.filterData = {
@@ -53,6 +54,8 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 			'totalAllocatedAmount': 0,
 			'availableAmount': 0
 		};
+		// Allocated payment object
+		$scope.allocatedPayment = {};
 
 		/*
 		 * Successcallback of API after fetching Ar Transaction details.
@@ -173,10 +176,9 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
         };
         // update allocated payment.
         $scope.updateAllocatedPayment = function(payment) {
-        	console.log("---------+++++-----------")
-        	console.log(payment);
+        	$scope.allocatedPayment = payment;
             $scope.arDataObj.availableAmount = payment.available_amount;
-            console.log(payment);
+            $scope.arFlags.isPaymentSelected = true;
             ngDialog.close();
         }
 	    /*
@@ -209,8 +211,17 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 	      	});
 	      	$scope.paymentModalOpened = true;
 		};
-
-
+		/*
+		 * Pay selected invoices
+		 */
+		$scope.paySelectedInvoices = function() {
+			var postParamsToPay = {};
+			postParamsToPay.credit_id = $scope.allocatedPayment.transaction_id;
+			postParamsToPay.invoices = $scope.arDataObj.selectedInvoices;
+			console.log("---------*************----------");
+			console.log(postParamsToPay);
+			$scope.invokeApi(rvAccountsArTransactionsSrv.paySelected, postParamsToPay );
+		};
 		/*
 		 * To create the parameters which is to be passed to API
 		 */
@@ -274,10 +285,6 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 		 */
 		var init = function() {
 			$scope.fetchTransactions();
-            // $scope.allocatedPayment = {
-            //         available_amount : 0.00,
-            //         amount :0.00
-            //     }
 		};
 
 		// Catch error messges from child controllers.
