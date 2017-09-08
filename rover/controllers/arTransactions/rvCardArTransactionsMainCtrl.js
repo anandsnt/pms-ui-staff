@@ -14,7 +14,8 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 		$scope.arFlags = {
 			'currentSelectedArTab': 'balance',
 			'isAddBalanceScreenVisible': false,
-			'isArTabActive': false
+			'isArTabActive': false,
+			'viewFromOutside': (typeof $stateParams.type !== 'undefined') ? true : false
 		};
 
 		$scope.filterData = {
@@ -47,7 +48,15 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 			'balanceTotalCount': 0,
 			'paidTotalCount': 0,
 			'allocatedTotalCount': 0,
-			'unallocatedTotalCount': 0
+			'unallocatedTotalCount': 0,
+			'accountId': $stateParams.id
+		};
+
+		// Append active class
+		var appendActiveClass = function( list ) {
+			_.each( list , function(obj) {
+            	obj.active = false;
+            });
 		};
 
 		/*
@@ -62,10 +71,11 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 			$scope.arDataObj.unallocatedCredit = data.unallocated_credit;
 			$scope.arDataObj.company_or_ta_bill_id = data.company_or_ta_bill_id;
 
-			switch($scope.arFlags.currentSelectedArTab) {
+			switch ($scope.arFlags.currentSelectedArTab) {
 			    case 'balance':
 			        $scope.arDataObj.balanceList = data.ar_transactions;
 			        $scope.arDataObj.balanceTotalCount = data.total_count;
+			        appendActiveClass($scope.arDataObj.balanceList);
 			        $scope.$broadcast("FETCH_COMPLETE_BALANCE_LIST");
 
 		            $timeout(function () {
@@ -76,6 +86,7 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 			    case 'paid-bills':
 			        $scope.arDataObj.paidList = data.ar_transactions;
 			        $scope.arDataObj.paidTotalCount = data.total_count;
+			        appendActiveClass($scope.arDataObj.paidList);
 			        $scope.$broadcast("FETCH_COMPLETE_PAID_LIST");
 
 			        $timeout(function () {
@@ -86,6 +97,7 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 			    case 'unallocated':
 			        $scope.arDataObj.unallocatedList = data.ar_transactions;
 			        $scope.arDataObj.unallocatedTotalCount = data.total_count;
+					appendActiveClass($scope.arDataObj.unallocatedList);
                     $scope.$broadcast('REFRESH_UNALLOCATED_LIST_SCROLLER');
 
                     $timeout(function () {
@@ -96,6 +108,7 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 			    case 'allocated':
 			        $scope.arDataObj.allocatedList = data.ar_transactions;
 			        $scope.arDataObj.allocatedTotalCount = data.total_count;
+					appendActiveClass($scope.arDataObj.allocatedList);
                     $scope.$broadcast('REFRESH_ALLOCATED_LIST_SCROLLER');
 
                     $timeout(function () {
@@ -191,7 +204,7 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 
 		var createParametersFetchTheData = function () {
 			var dataToSend = {
-				account_id: $stateParams.id,
+				account_id: $scope.arDataObj.accountId,
 				getParams : {
 					per_page: $scope.arDataObj.perPage,
 					from_date: $scope.filterData.fromDate,
@@ -200,7 +213,7 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 				}
 			};
 
-			switch($scope.arFlags.currentSelectedArTab) {
+			switch ($scope.arFlags.currentSelectedArTab) {
 			    case 'balance':
 			        dataToSend.getParams.transaction_type = 'CHARGES';
 					dataToSend.getParams.paid = false;
@@ -222,6 +235,7 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
                     dataToSend.getParams.page = $scope.arDataObj.allocatePageNo;
 			        break;
 			}
+
 			return dataToSend;
 		};
 
@@ -274,12 +288,14 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 			$scope.arFlags.isArTabActive = true;
 		});
 
+		// -------/ PAGINATION LOGIC /----------- //
+		
 		/*
 	     * Fetch transactions APIs
 	     * @param pageType { String } , Page No { String }to API
 	     */
 		var loadAPIData = function ( pageType, pageNo ) {
-			switch(pageType) {
+			switch (pageType) {
 			    case 'BALANCE':
 			        $scope.arDataObj.balancePageNo = pageNo;
 					break;
