@@ -8,7 +8,7 @@
         </label>
 
         <!-- Add class .active when clicked to show details -->
-        <div class="faux-anchor has-arrow toggle">
+        <div class="faux-anchor" ng-click="clickedBalanceListItem( $index )" ng-class="{'has-arrow toggle':!balance.is_manual_balance, 'active': balance.active }">
                 <!-- add class .group/.allotment if group or allotment -->
             <div class="data" ng-if="balance.associated_type === 'Reservation'">
                 <!-- add class .group/.allotment if group or allotment -->
@@ -76,11 +76,8 @@
                 Balance After
                 <strong class="green"><span class="currency">{{currencySymbol}}</span>{balance-after}</strong>
             </div>
-            <!-- if partially paid, add .partially-paid-->
-            <div class="amount unpaid">
-                <!-- Add if partially paid
-                    <span class="icons icon-wallet-green"></span>
-                -->
+            <div class="amount unpaid" ng-class="{'partially-paid':balance.is_partially_paid}">
+                <span ng-if="balance.is_partially_paid" class="icons icon-wallet-green"></span>
                 <span class="currency">{{currencySymbol}}</span>{{balance.amount}}
             </div>
             <div class="amount input">
@@ -89,12 +86,12 @@
             </div>
         </div>
 
-        <div class="grid-items hidden"><!-- Add/remove class 'hidden' when L11 is clicked -->
+        <div class="grid-items" ng-show="balance.active">
             <table>
                 <thead>
                     <tr>
                         <th class="date" scope="col">Date</th>
-                        <th   scope="col">Charge Code</th>
+                        <th scope="col">Charge Code</th>
                         <th class="description" scope="col">Description</th>
                         <th class="fees" scope="col">Fees</th>
                         <th class="credits" scope="col">Credits</th>
@@ -109,49 +106,22 @@
                              tr.charge-items => 'even'
                           3. tr => 'odd' ...
                      -->
-                    <tr class="{row-class}">
-                        <td>{Date}</td>
-
-                        
-                        <td>
-                            {Charge Code}
-                            
-                        </td>
+                    <tr ng-repeat="debit in balance.debits" ng-class="{'odd': $odd, 'even': $even}">
+                        <td>{{ debit.date }}</td>
+                        <td>{{ debit.charge_code }}</td>
 
                         <!-- If there are sub charges 
                              add .toggle -->
                         <!-- On click, toggle class .active -->
-                        <td class="description">
-                            {Description}
-                            <!-- If there are sub charges, render
-                                <span class="icons icon-double-arrow"></span>
-                            -->
-                            <!-- if it's a payment type:
-                                -- Card:
-                                    <div class="payment-data">
-                                        <figure class="card-logo">
-                                            <img src="http://localhost/stayntouch/images/visa.png" alt="">
-                                        </figure>
-                                        <span class="number">5987</span>
-                                        <span class="date"><span class="value">12/14</span></span>
-                                        <span class="reference">53806949</span>
-                                    </div>
-                                -- Other:
-                                    <div class="payment-data">
-                                        <span class="type">Cash</span>
-                                        <span class="reference">34507941</span>
-                                    </div>
-                            -->
-
+                        <td class="description" ng-class="{'toggle':debit.is_group_by_ref}">
+                            {{ debit.description }}
+                            <span class="icons icon-double-arrow" ng-if="debit.is_group_by_ref"></span>
                         </td>
-                        <td class="fees"><span class="currency">{currency}</span>{Fee Amount}</td>
+                        <td class="fees"><span class="currency">{{ currencySymbol }}</span>{{ debit.fees }}</td>
                         <td class="credits">
-                            <span class="currency">{currency}</span>{Credit Amount}
-                            <!-- Add if payment that can be unallocated
-                                <button class="icons icon-remove-40"></button>
-                             -->
                         </td>
                     </tr>
+                    
                     <!-- Render if the current charge item has sub charges (POS)
                          Remove 'hidden' on {Charge Code} click 
                     <tr class="{row-class} charge-items hidden">
@@ -171,17 +141,41 @@
                         </td>
                         <td class="credits"></td>
                     </tr>
-                    -->
-                    ... repeat L60-L65 for every fee/credit
+                    
+                    ... repeat L60-L65 for every fee/credit -->
+
+                    <tr ng-repeat="payment in balance.payments" ng-class="{'odd': $odd, 'even': $even}">
+                        <td>{{ payment.transaction_date }}</td>
+                        <td>{{ payment.charge_code}}</td>
+                        <td class="description">
+                            <div class="payment-data" ng-if="payment.is_cc_payment">
+                                <figure class="card-logo">
+                                    <img ng-src="/assets/images/{{payment.card_details.card_code.toLowerCase()}}.png" alt="">
+                                </figure>
+                                <span class="number">{{payment.card_details.last_digits}}</span>
+                                <span class="date"><span class="value">{{payment.card_details.expire_date}}</span></span>
+                                <span class="reference">{{payment.reference_text}}</span>
+                            </div>
+                            <div class="payment-data" ng-if="!payment.is_cc_payment">
+                                <span class="type">{{payment.payment_type}}</span>
+                                <span class="reference">{{payment.reference_text}}</span>
+                            </div>
+                        </td>
+                        <td class="fees"></td>
+                        <td class="credits">
+                            <span class="currency">{{ currencySymbol }}</span>{{payment.amount}}
+                                <button class="icons icon-remove-40" ng-click="clickedUnallocateButton()"></button>
+                        </td>
+                    </tr>
 
                 </tbody>
             </table>
             <div class="actions">
-                <button type="button" class="button brand-colors">StayCard</button>
-                <button type="button" class="button purple">Move Invoice</button>
-                <button type="button" class="button blue">Print Invoice</button>
-                <button type="button" class="button white green-text">Post Charge</button>
-                <button type="button" class="button white purple-text">Edit Charges</button>
+                <button type="button" class="button brand-colors" ng-click="goToReservationDetails($index)">StayCard</button>
+                <button type="button" class="button purple hidden">Move Invoice</button>
+                <button type="button" class="button blue hidden">Print Invoice</button>
+                <button type="button" class="button white green-text hidden">Post Charge</button>
+                <button type="button" class="button white purple-text hidden">Edit Charges</button>
             </div>
         </div>
 
