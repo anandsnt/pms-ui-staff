@@ -10,7 +10,7 @@
          <!-- ng-hide added For CICO-21697  -->
             <li ng-repeat="submenu in selectedMenu.components" ng-hide ="(isStandAlone || isEnabledRoomTypeByRoomClass == false ) && submenu.name =='Room classes'">
                <a data-type="load-listing"  
-                  class="{{submenu.icon_class}}" 
+                  class="{{submenu.icon_class || 'icon-admin-menu icon-settings'}}"
 
                   data-drag="{{bookMarks.length<=7&&!submenu.is_bookmarked}}"
                   data-jqyoui-options="{revert: 'invalid', helper: 'clone',appendTo: 'body'}" 

@@ -34,7 +34,8 @@ var sntRover = angular.module('sntRover', [
 		'limitInputRange',
 		'iscrollStopPropagation',
 		'emitWhen',
-		'ng-augment-native-scroll'
+		'ng-augment-native-scroll',
+        'sntActivityIndicator'
 	]);
 
 sntRover.config([
