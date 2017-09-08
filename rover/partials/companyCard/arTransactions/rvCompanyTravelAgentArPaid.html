@@ -24,20 +24,20 @@
             <div class="guest-date arrival" ng-if="paidInvoice.associated_type === 'Reservation'">
                 <span class="guest-status small-icon check-in">check-in</span>
                 <time datetime="2017-08-17T12:00:00">
-                    <span class="date">{{paidInvoice.reservation_arrival_date}}</span>
+                    <span class="date">{{paidInvoice.reservation_arrival_date | date : dateFormat}}</span>
                     <span class="time">{{paidInvoice.reservation_arrival_time}}</span>
                 </time>
             </div>
             <div class="guest-date departure" ng-if="paidInvoice.associated_type === 'Reservation'">
                 <span class="guest-status small-icon check-out">check-out</span>
                 <time datetime="2017-08-24T12:00:00">
-                    <span class="date">{{paidInvoice.reservation_dep_date}}</span>
+                    <span class="date">{{paidInvoice.reservation_dep_date | date : dateFormat}}</span>
                     <span class="time">{{paidInvoice.reservation_dep_time}}</span>
                 </time>
             </div>
             
             <div class="amount paid">
-                <span class="currency">{{currencySymbol}}</span>{{paidInvoice.amount}}
+                <span class="currency">{{currencySymbol}}</span>{{ paidInvoice.amount | number:2 }}
             </div>
  
         </div>
@@ -62,18 +62,19 @@
                              tr.charge-items => 'even'
                           3. tr => 'odd' ...
                      -->
-                    <tr ng-repeat="debit in paidInvoice.debits" ng-class="{'odd': $odd, even: $even}" >
-                        <td>{{ debit.date }}</td>
+                    <tr ng-repeat="debit in paidInvoice.debits" ng-class="{'odd': $odd, 'even': $even}" >
+                        <td>{{ debit.date | date : dateFormat}}</td>
                         <td>{{ debit.charge_code}}</td>
                         <td class="description">
                          {{ debit.description }}
                         </td>
                         <td class="fees">
-                            <span class="currency" ng-hide="debit.fees===null">{{ currencySymbol }}</span>
-                            {{ debit.fees }}
+                            <span ng-if="debit.fees" class="currency">{{ currencySymbol }}</span>
+                            {{ debit.fees | number:2 }}
                         </td>
                         <td class="credits">
-                            <span class="currency" ng-hide="debit.credits===null">{{ currencySymbol }}</span>{{ debit.credits }}
+                            <span ng-if="debit.credits" class="currency">{{ currencySymbol }}</span>
+                            {{ debit.credits | number:2 }}
                         </td>
                     </tr>
 
@@ -143,7 +144,7 @@
                     <!-- ... repeat L60-L65 for every fee/credit -->
 
                     <tr ng-repeat="payment in balance.payments" ng-class="{'odd': $odd, 'even': $even}">
-                        <td>{{ payment.transaction_date }}</td>
+                        <td>{{ payment.transaction_date | date : dateFormat}}</td>
                         <td>{{ payment.charge_code}}</td>
                         <td class="description">
                             <div class="payment-data" ng-if="payment.is_cc_payment">
@@ -161,7 +162,7 @@
                         </td>
                         <td class="fees"><span class="currency"></span></td>
                         <td class="credits">
-                            <span class="currency">{{ currencySymbol }}</span>{{payment.amount}}
+                            <span class="currency">{{ currencySymbol }}</span>{{payment.amount | number:2}}
                                 <button class="icons icon-remove-40" ng-click="clickedUnallocateButton()"></button>
                         </td>
                     </tr>

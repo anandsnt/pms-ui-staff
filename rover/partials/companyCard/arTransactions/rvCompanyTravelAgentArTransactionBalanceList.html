@@ -56,7 +56,7 @@
             <div class="guest-date arrival" ng-if="balance.associated_type==='Reservation' || balance.is_manual_balance">
                 <span class="guest-status small-icon check-in" ng-hide="balance.is_manual_balance">check-in</span>
                 <time datetime="{arrival-timestamp}">
-                    <span class="date">{{balance.reservation_arrival_date}}</span>
+                    <span class="date">{{balance.reservation_arrival_date | date : dateFormat}}</span>
                     <span class="time">{{balance.reservation_arrival_time}}</span>
                 </time>
             </div>
@@ -64,7 +64,7 @@
             <div class="guest-date departure" ng-if="balance.associated_type==='Reservation' || balance.is_manual_balance">
                 <span class="guest-status small-icon check-out">check-out</span>
                 <time >
-                    <span class="date">{{balance.reservation_dep_date}}</span>
+                    <span class="date">{{balance.reservation_dep_date | date : dateFormat}}</span>
                     <span class="time">{{balance.reservation_dep_time}}</span>
                 </time>
             </div>
@@ -78,11 +78,11 @@
             </div>
             <div class="amount unpaid" ng-class="{'partially-paid':balance.is_partially_paid}">
                 <span ng-if="balance.is_partially_paid" class="icons icon-wallet-green"></span>
-                <span class="currency">{{currencySymbol}}</span>{{balance.amount}}
+                <span class="currency">{{currencySymbol}}</span>{{balance.amount | number:2 }}
             </div>
             <div class="amount input">
                 <span class="currency">{{currencySymbol}}</span>
-                <input type="text" value="{{balance.amount}}">
+                <input type="text" value="{{balance.amount | number:2 }}">
             </div>
         </div>
 
@@ -107,18 +107,16 @@
                           3. tr => 'odd' ...
                      -->
                     <tr ng-repeat="debit in balance.debits" ng-class="{'odd': $odd, 'even': $even}">
-                        <td>{{ debit.date }}</td>
+                        <td>{{ debit.date | date : dateFormat}}</td>
                         <td>{{ debit.charge_code }}</td>
-
-                        <!-- If there are sub charges 
-                             add .toggle -->
-                        <!-- On click, toggle class .active -->
                         <td class="description" ng-class="{'toggle':debit.is_group_by_ref}">
                             {{ debit.description }}
                             <span class="icons icon-double-arrow" ng-if="debit.is_group_by_ref"></span>
                         </td>
-                        <td class="fees"><span class="currency">{{ currencySymbol }}</span>{{ debit.fees }}</td>
+                        <td class="fees">
+                            <span ng-if="debit.fees" class="currency">{{ currencySymbol }}</span>{{ debit.fees | number:2 }}</td>
                         <td class="credits">
+                            <span ng-if="debit.credits" class="currency">{{ currencySymbol }}</span>{{ debit.credits | number:2 }}
                         </td>
                     </tr>
                     
@@ -145,7 +143,7 @@
                     ... repeat L60-L65 for every fee/credit -->
 
                     <tr ng-repeat="payment in balance.payments" ng-class="{'odd': $odd, 'even': $even}">
-                        <td>{{ payment.transaction_date }}</td>
+                        <td>{{ payment.transaction_date | date : dateFormat}}</td>
                         <td>{{ payment.charge_code}}</td>
                         <td class="description">
                             <div class="payment-data" ng-if="payment.is_cc_payment">
@@ -153,7 +151,7 @@
                                     <img ng-src="/assets/images/{{payment.card_details.card_code.toLowerCase()}}.png" alt="">
                                 </figure>
                                 <span class="number">{{payment.card_details.last_digits}}</span>
-                                <span class="date"><span class="value">{{payment.card_details.expire_date}}</span></span>
+                                <span class="date"><span class="value">{{payment.card_details.expire_date | date : dateFormat}}</span></span>
                                 <span class="reference">{{payment.reference_text}}</span>
                             </div>
                             <div class="payment-data" ng-if="!payment.is_cc_payment">
@@ -163,7 +161,7 @@
                         </td>
                         <td class="fees"></td>
                         <td class="credits">
-                            <span class="currency">{{ currencySymbol }}</span>{{payment.amount}}
+                            <span class="currency">{{ currencySymbol }}</span>{{payment.amount | number:2 }}
                                 <button class="icons icon-remove-40" ng-click="clickedUnallocateButton()"></button>
                         </td>
                     </tr>
