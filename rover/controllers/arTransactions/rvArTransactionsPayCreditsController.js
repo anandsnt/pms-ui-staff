@@ -11,7 +11,6 @@ sntRover.controller('RVArTransactionsPayCreditsController',
     BaseCtrl.call(this, $scope);
 
     $scope.feeData = {};
-    var zeroAmount = parseFloat("0.00");
 
     $scope.saveData = {'paymentType': ''};
     $scope.billNumber = 1;
@@ -55,7 +54,11 @@ sntRover.controller('RVArTransactionsPayCreditsController',
         $scope.referenceTextAvailable = false;
         $scope.showInitalPaymentScreen = true;
         $scope.depositPaidSuccesFully = false;
-        $scope.invokeApi(RVPaymentSrv.renderPaymentScreen, {}, $scope.getPaymentListSuccess);
+        var options = {
+            successCallBack: $scope.getPaymentListSuccess
+        };
+
+        $scope.callAPI(RVPaymentSrv.renderPaymentScreen, options);
     };
 
     init();
@@ -65,7 +68,7 @@ sntRover.controller('RVArTransactionsPayCreditsController',
      * Success call back of success payment
      */
     var successPayment = function(data) {
-        $scope.$emit("hideLoader");
+       // $scope.$emit("hideLoader");
         $scope.depositPaidSuccesFully = true;
         $scope.arDataObj.unallocatedCredit = parseFloat(data.amountPaid).toFixed(2);
         $scope.depositPaidSuccesFully = true;
@@ -78,12 +81,11 @@ sntRover.controller('RVArTransactionsPayCreditsController',
         }
         
     };
-
     /*
      * Failure call back of submitpayment
      */
     var failedPayment = function(data) {
-        $scope.$emit("hideLoader");
+      //  $scope.$emit("hideLoader");
         $scope.errorMessage = data;
     };
 
@@ -123,7 +125,6 @@ sntRover.controller('RVArTransactionsPayCreditsController',
         $timeout(function() {
             savePayment(data);
         }, 200);
-        runDigestCycle();
     });
 
     /*
@@ -212,11 +213,11 @@ sntRover.controller('RVArTransactionsPayCreditsController',
      * Checks whether the selected credit card btn needs to show or not
      */
     $scope.showSelectedCreditCardButton = function() {
-        if ($scope.showCreditCardInfo && !$scope.showCCPage && ($scope.paymentGateway !== 'sixpayments' || $scope.isManual) && $scope.saveData.paymentType === 'CC' && !$scope.depositPaidSuccesFully) {
-            return true;
-        } else {
-            return false;
-        }
+        return $scope.showCreditCardInfo && 
+            !$scope.showCCPage && 
+            ($scope.paymentGateway !== 'sixpayments' || $scope.isManual) 
+            && $scope.saveData.paymentType === 'CC' 
+            && !$scope.depositPaidSuccesFully;            
     };
 
     /*
@@ -237,17 +238,6 @@ sntRover.controller('RVArTransactionsPayCreditsController',
         $scope.isManual = !$scope.isManual;
         $scope.changeOnsiteCallIn();
     });
-
-    /**
-     * to run angular digest loop,
-     * will check if it is not running
-     * return - None
-     */
-    var runDigestCycle = function() {
-        if (!$scope.$$phase) {
-            $scope.$digest();
-        }
-    };
 
     /*
      * Success call back of MLI swipe - from cards ctrl
