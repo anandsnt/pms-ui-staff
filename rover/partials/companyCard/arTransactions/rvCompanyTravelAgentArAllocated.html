@@ -1,0 +1,75 @@
+<ul class="search-results">
+    <li class="reservation transaction payment" ng-repeat="allocatedCreditTransaction in arDataObj.allocatedList track by $index">
+        <!-- if .toggle clicked, add .active -->
+        <div class="faux-anchor toggle has-arrow">
+            <div class="data">
+                <h2>{{allocatedCreditTransaction.payment_type}}</h2>
+                <div class="payment-data">
+                    <!-- if card, show card logo -->
+                    <figure class="card-logo" ng-show="allocatedCreditTransaction.is_cc_payment">
+                        <img ng-src="/assets/images/{{allocatedCreditTransaction.card_details.card_code.toLowerCase()}}.png" alt="">
+                    </figure>
+                    <!-- if number, show ending number -->
+                    <span class="number" ng-show="allocatedCreditTransaction.is_cc_payment">{{allocatedCreditTransaction.card_details.last_digits}}</span>
+                    <!-- if exp date, show exp date -->
+                    <span class="date" ng-show="allocatedCreditTransaction.is_cc_payment">Date <span class="value">{{allocatedCreditTransaction.card_details.expire_date | date:dateFormat}}</span></span>
+                    <!-- if reference, show reference -->
+                    <span class="reference" ng-show="allocatedCreditTransaction.reference_text">Reference <span class="value">{{allocatedCreditTransaction.reference_text}}</span></span>
+                </div>
+            </div>
+            <div class="payment-date">
+                <span class="icons small-icon icon-time time-black"></span>
+                <time datetime="{{allocatedCreditTransaction.transaction_date}}">
+                    <span class="date">{{allocatedCreditTransaction.transaction_date | date:dateFormat}}</span>
+                    <span class="time">{{allocatedCreditTransaction.transaction_time}}</span>
+                </time>
+            </div>
+            <!-- if partially unallocated add .partially-paid -->
+            <div class="amount green" ng-class="{'partially-paid': allocatedCreditTransaction.is_partially_paid}">
+                <!-- if partially unallocated, show icon -->
+                <span class="icons icon-wallet-green" ng-show="allocatedCreditTransaction.is_partially_paid"></span>
+
+                <span class="currency">{{currencySymbol}}</span>{{allocatedCreditTransaction.amount}}
+            </div>
+        </div>
+
+
+        <!-- remove .hidden when clicked on .toggle-->
+        <ul class="search-results hidden">
+            <li class="reservation transaction ">
+                <div class="faux-anchor">
+                    <div class="data">
+                        <h2>{Last Name, First Name}</h2>
+                        <span class="invoice">Invoice #<span class="value">39134823</span></span>
+                        <span class="confirmation">Conf #<span class="value">2987998</span></span>
+                    </div>
+                    <div class="guest-date arrival">
+                        <span class="guest-status small-icon check-in">check-in</span>
+                        <time datetime="2017-08-17T12:00:00">
+                            <span class="date">08-17-2017</span>
+                            <span class="time">6:00 PM</span>
+                        </time>
+                    </div>
+                    <div class="guest-date departure">
+                        <span class="guest-status small-icon check-out">check-out</span>
+                        <time datetime="2017-08-24T12:00:00">
+                            <span class="date">08-24-2017</span>
+                            <span class="time">3:00 PM</span>
+                        </time>
+                    </div>
+                    <div class="amount paid">
+
+                        $107,188.21
+                    </div>
+                    <button type="button" class="button white with-icon">
+                        <span class="icons icon-remove-40"></span>
+                    </button>
+                </div>
+
+            </li>
+            <!-- ... repeat for each allocated -->
+
+        </ul>
+    </li>
+    <!-- ... repeat for each allocated -->
+</ul>
