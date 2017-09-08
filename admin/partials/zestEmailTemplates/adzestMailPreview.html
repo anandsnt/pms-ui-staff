@@ -17,6 +17,9 @@
         -webkit-text-size-adjust: 100%;
         -ms-text-size-adjust: 100%;
         }
+        a {
+            text-decoration: underline;
+        }
         /* Prevent WebKit and Windows mobile changing default text sizes */
         
         table,
@@ -155,7 +158,7 @@
                                                 <td>
                                                     <table border="0" cellpadding="0" cellspacing="0" width="100%">
                                                         <tr>
-                                                            <td align="center" class="padding-copy" style="font-size: {{generalSettings.text_1_font_size}}px; font-family: Helvetica, Arial, sans-serif; padding-top: 10px;color: {{generalSettings.text_color}};text-align: {{generalSettings.email_top_text_alignment}};">
+                                                            <td align="center" class="padding-copy" style="font-size: {{generalSettings.text_1_font_size}}px; font-family: Helvetica, Arial, sans-serif; padding: 20px 50px;color: {{generalSettings.text_color}};text-align: {{generalSettings.email_top_text_alignment}};">
                                                                 {{generalSettings.hotel_greetings_text}} first_name<span ng-show="generalSettings.show_last_name">&nbsp;last_name</span>
                                                                 , <text ng-bind-html="trustHtml(data.email_text_1)"></text>
                                                             </td>
@@ -195,7 +198,9 @@
                                                             <td>
                                                                 <table border="0" cellpadding="0" cellspacing="0" width="100%">
                                                                     <tr>
-                                                                        <td align="center" class="padding-copy" style="padding: 60px 0 0 0; font-size: {{generalSettings.text_2_font_size}}px;text-align: {{generalSettings.email_bottom_text_alignment}}; line-height: 25px; font-family: Helvetica, Arial, sans-serif;color: {{generalSettings.text_color}};">
+                                                                        <td align="center" class="padding-copy" style="padding: 50px 50px 40px; font-size: {{generalSettings.text_2_font_size}}px;text-align: {{generalSettings.email_bottom_text_alignment}}; line-height: 25px; font-family: Helvetica, Arial, sans-serif;color: {{generalSettings.text_color}};">
+                                                                            <br/>
+                                                                            <br/>
                                                                              <span ng-bind-html="trustHtml(data.email_text_2)"></span>
                                                                         </td>
                                                                     </tr>
@@ -217,7 +222,7 @@
                                 <tr>
                                     <td align="center" style="font-size: {{generalSettings.footer_font_size}}px; line-height: 18px; font-family: Helvetica, Arial, sans-serif;text-align: center;">
                                             <p style="color: {{generalSettings.text_color}}">
-                                                {{generalSettings.footer_starting_text}}&nbsp; <a href="{{hotelDetails.hotel_address}}" style="color: {{generalSettings.text_color}}">{{hotelDetails.hotel_name}} - {{hotelDetails.hotel_address}}
+                                                {{generalSettings.footer_starting_text}}&nbsp;{{hotelDetails.hotel_name}} - <a href="{{hotelDetails.hotel_address}}" style="color: {{generalSettings.text_color}}"> {{hotelDetails.hotel_address}}
                                                 </a>
                                             </p>
                                             <p style="color:{{generalSettings.text_color}}">

@@ -1,9 +1,13 @@
-admin.controller('ADZestEmailGeneralSettingsCtrl', ['$scope', '$state', 'data', 'ngDialog', 'adZestEmailTemplateSrv',
-    function($scope, $state, data, ngDialog, adZestEmailTemplateSrv) {
+admin.controller('ADZestEmailGeneralSettingsCtrl', ['$scope', '$sce', 'data', 'ngDialog', 'adZestEmailTemplateSrv',
+    function($scope, $sce, data, ngDialog, adZestEmailTemplateSrv) {
         
         $scope.generalSettings = data.general_email_template_settings;
         $scope.hotelDetails = data.hotel_details;
         var main_bg_image = angular.copy($scope.generalSettings.main_bg_image);
+
+        $scope.trustHtml = function(str) {
+            return $sce.trustAsHtml(str);
+        };
 
         $scope.successMessage = '';
         $scope.data = {};
