@@ -2,8 +2,8 @@
 sntRover.controller('RvArUnallocatedController',
 	['$scope',
 	 '$timeout',
-	 'rvAccountsArTransactionsSrv',
-	  function($scope, $timeout, rvAccountsArTransactionsSrv) {
+	 'rvAccountsArTransactionsSrv','sntActivity',
+	  function($scope, $timeout, rvAccountsArTransactionsSrv, sntActivity) {
 
 		BaseCtrl.call(this, $scope);
 
@@ -23,14 +23,14 @@ sntRover.controller('RvArUnallocatedController',
 
     	// Handle Unallocated tab expansion api call.
         var callExpansionAPI = function( item ) {
-
+            sntActivity.start('EXPAND_UNALLOCATED');
             var successCallbackOfExpansionAPI = function() {
-                $scope.$emit('hideLoader');
+                sntActivity.stop('EXPAND_UNALLOCATED');
                 item.active = true;
                 refreshScroll();
             },
             failureCallbackOfExpansionAPI = function( errorMessage ) {
-                $scope.$emit('hideLoader');
+                sntActivity.stop('EXPAND_UNALLOCATED');
                 $scope.$emit('SHOW_ERROR_MSG', errorMessage);
             };
 
@@ -47,8 +47,7 @@ sntRover.controller('RvArUnallocatedController',
             var clikedItem = $scope.arDataObj.unallocatedList[index];
 
             if (!clikedItem.active) {
-                // callExpansionAPI(clikedItem);
-                clikedItem.active = true;
+                callExpansionAPI(clikedItem);
             }
             else {
                 clikedItem.active = false;

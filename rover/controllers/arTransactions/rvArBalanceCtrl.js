@@ -1,6 +1,6 @@
 
-sntRover.controller('RvArBalanceController', ['$scope', '$timeout', 'rvAccountsArTransactionsSrv', '$vault', '$stateParams', '$state',
-	function($scope, $timeout, rvAccountsArTransactionsSrv, $vault, $stateParams, $state) {
+sntRover.controller('RvArBalanceController', ['$scope', '$timeout', 'rvAccountsArTransactionsSrv', '$vault', '$stateParams', '$state','sntActivity',
+	function($scope, $timeout, rvAccountsArTransactionsSrv, $vault, $stateParams, $state, sntActivity) {
 
 		BaseCtrl.call(this, $scope);
 
@@ -18,16 +18,16 @@ sntRover.controller('RvArBalanceController', ['$scope', '$timeout', 'rvAccountsA
 
 	    // Handle balance tab api call.
 		var callExpansionAPI = function( item ) {
-
+			sntActivity.start('EXPAND_BALANCE');
 			var successCallbackOfExpansionAPI = function(data) {
-				$scope.$emit('hideLoader');
+				sntActivity.stop('EXPAND_BALANCE');
 				item.active = true;
 				item.debits = data.debits;
 				item.payments = data.payments;
 				refreshScroll();
 			},
 			failureCallbackOfExpansionAPI = function( errorMessage ) {
-				$scope.$emit('hideLoader');
+				sntActivity.stop('EXPAND_BALANCE');
 				$scope.$emit('SHOW_ERROR_MSG', errorMessage);
 			};
 

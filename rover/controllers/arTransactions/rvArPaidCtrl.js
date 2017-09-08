@@ -1,6 +1,6 @@
 
-sntRover.controller('RvArPaidController', ['$scope', '$timeout', 'rvAccountsArTransactionsSrv', '$vault', '$stateParams', '$state',
-	function($scope, $timeout, rvAccountsArTransactionsSrv, $vault, $stateParams, $state) {
+sntRover.controller('RvArPaidController', ['$scope', '$timeout', 'rvAccountsArTransactionsSrv', '$vault', '$stateParams', '$state','sntActivity',
+	function($scope, $timeout, rvAccountsArTransactionsSrv, $vault, $stateParams, $state, sntActivity) {
 
 		BaseCtrl.call(this, $scope);
 
@@ -17,16 +17,16 @@ sntRover.controller('RvArPaidController', ['$scope', '$timeout', 'rvAccountsArTr
 
 	    // Handle paid tab expansion api call.
 		var callExpansionAPI = function( item ) {
-
+			sntActivity.start('EXPAND_PAID');
 			var successCallbackOfExpansionAPI = function(data) {
-				$scope.$emit('hideLoader');
+				sntActivity.stop('EXPAND_PAID');
 				item.active = true;
 				item.debits = data.debits;
 				item.payments = data.payments;
 				refreshScroll();
 			},
 			failureCallbackOfExpansionAPI = function( errorMessage ) {
-				$scope.$emit('hideLoader');
+				sntActivity.stop('EXPAND_PAID');
 				$scope.$emit('SHOW_ERROR_MSG', errorMessage);
 			};
 
