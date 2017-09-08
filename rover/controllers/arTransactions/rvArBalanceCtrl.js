@@ -87,6 +87,5 @@ sntRover.controller('RvArBalanceController', ['$scope', '$timeout', 'rvAccountsA
 
 		// Handle unallocate button click.
 		$scope.clickedUnallocateButton = function() {
-			console.log('clickedUnallocateButton');
 		};
 }]);

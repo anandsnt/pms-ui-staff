@@ -26,6 +26,7 @@ sntRover.controller('RvArUnallocatedController',
             sntActivity.start('EXPAND_UNALLOCATED');
             var successCallbackOfExpansionAPI = function() {
                 sntActivity.stop('EXPAND_UNALLOCATED');
+                item.transactions = data.allocated_transactions;
                 item.active = true;
                 refreshScroll();
             },
@@ -57,7 +58,6 @@ sntRover.controller('RvArUnallocatedController',
 
         // Handle unallocate button click.
         $scope.clickedUnallocateButton = function() {
-            console.log('clickedUnallocateButton');
         };
 
 }]);

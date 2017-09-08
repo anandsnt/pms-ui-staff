@@ -49,7 +49,6 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 			'paidTotalCount': 0,
 			'allocatedTotalCount': 0,
 			'unallocatedTotalCount': 0,
-
 			'accountId': $stateParams.id
 		};
 

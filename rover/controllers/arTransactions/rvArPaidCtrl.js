@@ -86,7 +86,6 @@ sntRover.controller('RvArPaidController', ['$scope', '$timeout', 'rvAccountsArTr
 
 		// Handle unallocate button click.
 		$scope.clickedUnallocateButton = function() {
-			console.log('clickedUnallocateButton');
 		};
 		
 }]);

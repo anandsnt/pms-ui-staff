@@ -24,8 +24,9 @@ sntRover.controller('RvArAllocatedController',
         // Handle allocated tab expansion api call.
         var callExpansionAPI = function( item ) {
             sntActivity.start('EXPAND_ALLOCATED');
-            var successCallbackOfExpansionAPI = function() {
+            var successCallbackOfExpansionAPI = function( data ) {
                 sntActivity.stop('EXPAND_ALLOCATED');
+                item.transactions = data.allocated_transactions;
                 item.active = true;
                 refreshScroll();
             },
@@ -57,7 +58,6 @@ sntRover.controller('RvArAllocatedController',
 
         // Handle unallocate button click.
         $scope.clickedUnallocateButton = function() {
-            console.log('clickedUnallocateButton');
         };
 
 }]);
