@@ -21,15 +21,15 @@
                 <span class="invoice">Account #<span class="value">{{paidInvoice.account_number}}</span></span>
             </div>
 
-            <div class="guest-date arrival" ng-if="paidInvoice.associated_type === 'Reservation'">
-                <span class="guest-status small-icon check-in">check-in</span>
+            <div class="guest-date arrival">
+                <span class="guest-status small-icon check-in" ng-hide="paidInvoice.is_manual_balance || paidInvoice.associated_type === 'PostingAccount'">check-in</span>
                 <time datetime="2017-08-17T12:00:00">
                     <span class="date">{{paidInvoice.reservation_arrival_date | date : dateFormat}}</span>
                     <span class="time">{{paidInvoice.reservation_arrival_time}}</span>
                 </time>
             </div>
-            <div class="guest-date departure" ng-if="paidInvoice.associated_type === 'Reservation'">
-                <span class="guest-status small-icon check-out">check-out</span>
+            <div class="guest-date departure">
+                <span class="guest-status small-icon check-out" ng-hide="paidInvoice.associated_type === 'PostingAccount'">check-out</span>
                 <time datetime="2017-08-24T12:00:00">
                     <span class="date">{{paidInvoice.reservation_dep_date | date : dateFormat}}</span>
                     <span class="time">{{paidInvoice.reservation_dep_time}}</span>
