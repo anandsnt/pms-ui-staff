@@ -1954,7 +1954,6 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 				$scope.stateCheck.pagination.rate.page = 1;
 				// Populate with the selected
 				fetchRatesList(null, ui.item.id, 1, function(response) {
-					$scope.stateCheck.baseInfo.maxAvblRates = response.total_count;
 					generateRatesGrid(response.results);
 					$scope.refreshScroll();
 				});
@@ -1977,7 +1976,6 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 			$scope.stateCheck.pagination.rate.page = 1;
 			// Populate with the selected
 			fetchRatesList(null, selectedRate.id, 1, function(response) {
-				$scope.stateCheck.baseInfo.maxAvblRates = response.total_count;
 				generateRatesGrid(response.results);
 				$scope.refreshScroll();
 			});
