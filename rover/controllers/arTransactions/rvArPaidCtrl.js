@@ -23,7 +23,6 @@ sntRover.controller('RvArPaidController', ['$scope', '$timeout', 'rvAccountsArTr
 				item.active = true;
 				item.debits = data.debits;
 				item.payments = data.payments;
-				$scope.$emit("FETCH_COMPLETE_PAID_LIST");
 				refreshScroll();
 			},
 			failureCallbackOfExpansionAPI = function( errorMessage ) {
