@@ -143,7 +143,7 @@
                     -->
                     <!-- ... repeat L60-L65 for every fee/credit -->
 
-                    <tr ng-repeat="payment in balance.payments" ng-class="{'odd': $odd, 'even': $even}">
+                    <tr ng-repeat="payment in paidInvoice.payments" ng-class="{'odd': $odd, 'even': $even}">
                         <td>{{ payment.transaction_date | date : dateFormat}}</td>
                         <td>{{ payment.charge_code}}</td>
                         <td class="description">
@@ -152,7 +152,7 @@
                                     <img ng-src="/assets/images/{{payment.card_details.card_code.toLowerCase()}}.png" alt="">
                                 </figure>
                                 <span class="number">{{payment.card_details.last_digits}}</span>
-                                <span class="date"><span class="value">{{payment.card_details.expire_date}}</span></span>
+                                <span class="date"><span class="value">{{payment.card_details.expire_date | date : dateFormat}}</span></span>
                                 <span class="reference">{{payment.reference_text}}</span>
                             </div>
                             <div class="payment-data" ng-if="!payment.is_cc_payment">
@@ -160,9 +160,9 @@
                                 <span class="reference">{{payment.reference_text}}</span>
                             </div>
                         </td>
-                        <td class="fees"><span class="currency"></span></td>
+                        <td class="fees"></td>
                         <td class="credits">
-                            <span class="currency">{{ currencySymbol }}</span>{{payment.amount | number:2}}
+                            <span class="currency">{{ currencySymbol }}</span>{{ payment.amount | number:2 }}
                                 <button class="icons icon-remove-40" ng-click="clickedUnallocateButton()"></button>
                         </td>
                     </tr>
