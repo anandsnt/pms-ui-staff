@@ -69,11 +69,11 @@
             </div>
             <div class="balance balance-now">
                 Balance Now
-                <strong class="red"><span class="currency">{{currencySymbol}}</span>{balance-now}</strong>
+                <strong class="red"><span class="currency">{{currencySymbol}}</span>{{balance.balanceNow}}</strong>
             </div>
             <div class="balance balance-after">
                 Balance After
-                <strong class="green"><span class="currency">{{currencySymbol}}</span>{balance-after}</strong>
+                <strong class="green"><span class="currency">{{currencySymbol}}</span>{{balance.balanceAfter}}</strong>
             </div>
             <div class="amount unpaid" ng-class="{'partially-paid':balance.is_partially_paid}">
                 <span ng-if="balance.is_partially_paid" class="icons icon-wallet-green"></span>
