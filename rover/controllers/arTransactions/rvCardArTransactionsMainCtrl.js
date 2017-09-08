@@ -50,7 +50,8 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 			'unallocatedTotalCount': 0,
 			// Params - Balance tab
 			'selectedInvoices': [],
-			'totalAllocatedAmount': 0
+			'totalAllocatedAmount': 0,
+			'availableAmount': 0
 		};
 
 		/*
@@ -171,8 +172,10 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
             });
         };
         // update allocated payment.
-        $scope.updateAllocatedPayment = function(payment){
-            $scope.allocatedPayment = payment;
+        $scope.updateAllocatedPayment = function(payment) {
+        	console.log("---------+++++-----------")
+        	console.log(payment);
+            $scope.arDataObj.availableAmount = payment.available_amount;
             console.log(payment);
             ngDialog.close();
         }
@@ -271,10 +274,10 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 		 */
 		var init = function() {
 			$scope.fetchTransactions();
-            $scope.allocatedPayment = {
-                    available_amount : 0.00,
-                    amount :0.00
-                }
+            // $scope.allocatedPayment = {
+            //         available_amount : 0.00,
+            //         amount :0.00
+            //     }
 		};
 
 		// Catch error messges from child controllers.

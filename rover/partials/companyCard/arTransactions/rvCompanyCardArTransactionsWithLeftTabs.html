@@ -52,7 +52,7 @@
                     Please Select Payment!
                 </button>
 
-                <div class="payment-data has-arrow toggle active" ng-show="!!allocatedPayment.payment_type">
+                <div class="payment-data has-arrow toggle active" ng-show="!!allocatedPayment.payment_type" ng-click="popupPaymentForAllocation()">
 
                     <h2 class="type">{{allocatedPayment.payment_type}}</h2>
                     <div class="card-data">
@@ -67,11 +67,11 @@
             <ul class="balance">
                 <li>
                     Available
-                    <strong class="red"> <span class="currency">{{currencySymbol}}</span>{{allocatedPayment.available_amount | number:2}}</strong>
+                    <strong class="red"> <span class="currency">{{currencySymbol}}</span>{{arDataObj.availableAmount | number:2}}</strong>
                 </li>
                 <li>
                     Allocated
-                    <strong class="green"> <span class="currency">{{currencySymbol}}</span>{{allocatedPayment.amount | number:2}}</strong>
+                    <strong class="green"> <span class="currency">{{currencySymbol}}</span>{{arDataObj.totalAllocatedAmount | number:2}}</strong>
                 </li>
             </ul>
 
