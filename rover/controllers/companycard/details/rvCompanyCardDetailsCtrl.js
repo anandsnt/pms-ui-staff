@@ -213,9 +213,18 @@ angular.module('sntRover').controller('companyCardDetailsController', ['$scope',
 			/*
 				****
 			*/
-			$scope.currentSelectedTab = 'cc-ar-transactions';
-			$scope.$broadcast('setgenerateNewAutoAr', true);
-			$scope.switchTabTo('', 'cc-ar-transactions');
+			/*
+				----
+				CICO-45268 - Added $timeout to fix issue with data not being displayed on returning from Staycard.
+			*/
+			$timeout(function() {
+				$scope.currentSelectedTab = 'cc-ar-transactions';
+				$scope.$broadcast('setgenerateNewAutoAr', true);
+				$scope.switchTabTo('', 'cc-ar-transactions');
+			}, 50);
+			/*
+				----
+			*/
 		}
 		// CICO-36080 - Back from staycard - Commissions tab as selected
 		if ($stateParams.isBackToTACommission) {
