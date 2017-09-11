@@ -16,7 +16,9 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 			'isAddBalanceScreenVisible': false,
 			'isArTabActive': false,
 			'isPaymentSelected': false,
-			'viewFromOutside': (typeof $stateParams.type !== 'undefined') ? true : false
+			'viewFromOutside': (typeof $stateParams.type !== 'undefined') ? true : false,
+			'shouldShowPayAllButton': false,
+			'shouldShowFooter': false
 		};
 
 		$scope.filterData = {
@@ -227,15 +229,20 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 		 * Pay selected invoices
 		 */
 		$scope.paySelectedInvoices = function() {
-			var postParamsToPay = {};
-			postParamsToPay.credit_id = $scope.allocatedPayment.transaction_id;
-			postParamsToPay.invoices = $scope.arDataObj.selectedInvoices;
-			postParamsToPay.selected_amount = $scope.arDataObj.totalAllocatedAmount ;
-			postParamsToPay.available_amount = $scope.arDataObj.availableAmount;
-			console.log("---------*************----------");
-			console.log(postParamsToPay);
+			var postParamsToPay = {},
+				postData = {};
+			postData.credit_id = $scope.allocatedPayment.transaction_id;
+			postData.invoices = $scope.arDataObj.selectedInvoices;
+			postData.selected_amount = $scope.arDataObj.totalAllocatedAmount ;
+			postData.available_amount = $scope.arDataObj.availableAmount;
+			postParamsToPay.account_id = $scope.arDataObj.accountId;
+			postParamsToPay.data = postData;
 			$scope.invokeApi(rvAccountsArTransactionsSrv.paySelected, postParamsToPay );
-		};		
+		};
+		$scope.shouldShowFooter = function() {
+			//console.log("---"+($scope.arFlags.shouldShowPayAllButton) ? true : ($scope.arDataObj.selectedInvoices.length === 0) ? false : true;));
+			return ($scope.arFlags.shouldShowPayAllButton) ? true : ($scope.arDataObj.selectedInvoices.length === 0) ? false : true;
+		};
 		/*
 		 * To create the parameters which is to be passed to API
 		 */
@@ -315,6 +322,14 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 		// Refresh selected list
 		$scope.$on("REFRESH_SELECTED_LIST", function() {
 			$scope.fetchTransactions();
+		});
+		// Clicked allocate button from unallocated tab
+		$scope.$on("CLICKED_ALLOCATE_BUTTON", function(event, selectedPaymentData) {
+			console.log(selectedPaymentData);
+			$scope.arFlags.shouldShowPayAllButton = true;
+			$scope.arFlags.currentSelectedArTab = 'balance';
+			$scope.allocatedPayment = selectedPaymentData;
+			
 		});
 
 		/*

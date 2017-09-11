@@ -56,8 +56,13 @@ sntRover.controller('RvArUnallocatedController',
             }
         };
 
-        // Handle unallocate button click.
-        $scope.clickedUnallocateButton = function() {
+        // Handle allocate button click.
+        $scope.clickedAllocateButton = function(index) {
+            event.cancelBubble = true;
+            if(event.stopPropagation) event.stopPropagation();
+            console.log($scope.arDataObj.unallocatedList[index]);
+            console.log("----")
+            $scope.$emit("CLICKED_ALLOCATE_BUTTON", $scope.arDataObj.unallocatedList[index]);
         };
 
 }]);

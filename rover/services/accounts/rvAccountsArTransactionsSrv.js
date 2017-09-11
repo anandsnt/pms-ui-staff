@@ -51,9 +51,9 @@ angular.module('sntRover').service('rvAccountsArTransactionsSrv', ['$q', 'rvBase
     // To pay/allocate the selected invoices amount
     this.paySelected = function(data) {
 		var deferred = $q.defer(),
-        url = 'api/accounts/ar_transactions/allocate_payment';
+        url = '/api/accounts/' + data.account_id + '/ar_transactions/allocate_payment';
 
-        rvBaseWebSrvV2.postJSON(url, data).then(
+        rvBaseWebSrvV2.postJSON(url, data.data).then(
             function(data) {
                 deferred.resolve(data);
             },
