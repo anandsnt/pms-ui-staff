@@ -1,8 +1,8 @@
 <!-- Company Card Tab - AR Transactions -->
 <form method="post" id="cc-ar-transactions" name="cc-ar-transactions" class="form card-tab inner-header transactions">
-    
+
     <div class="tab-header">
-        <div class="search-form has-dates">  
+        <div class="search-form has-dates">
             <div class="entry search">
                 <button class="clear-query">
                     <span class="icons icon-clear-search">Clear query</span>
@@ -14,48 +14,49 @@
                 <div class="entry-data has-datepicker">
                     <label for="ar-transaction-date-from">From</label>
                     <button class="clear-query" ng-class="{'visible': escapeNull(filterData.fromDate) !=''}"><span class="icons icon-clear-search">Clear query</span></button>
-                   
+
                     <input id="ar-transaction-date-from" type="text" class="datepicker" value="{{ filterData.fromDate | date : dateFormat }}" ng-click="clickedFromDate()" readonly />
                 </div>
                 <div class="entry-data has-datepicker">
                     <label for="ar-transaction-date-to">To</label>
                     <button class="clear-query" ng-class="{'visible': escapeNull(filterData.toDate) !=''}"><span class="icons icon-clear-search">Clear query</span></button>
                     <input id="ar-transaction-date-to" type="text" class="datepicker" value="{{ filterData.toDate | date : dateFormat }}" ng-click="clickedToDate()" readonly />
-                   
+
                 </div>
             </div>
-        </div> 
+        </div>
         <div class="actions">
-            <div class="entry">
+            <div class="entry" ng-show="showIncludePayments()">
                 <label class="checkbox inline">
                     <span class="icon-form icon-checkbox"></span>
-                    <input type="checkbox" value="1">
+                    <input type="checkbox" ng-model="filterData.includePayments" ng-change="toggleIncludePaymentSelection()" value="{{filterData.includePayments}}">
                     Include Payments
                 </label>
             </div>
-            <button type="button" class="button orange with-icon">
+            <button type="button" class="button orange with-icon" ng-click="clickedArStatementButton()">
                 <span class="icons icon-invoice"></span>
                 Statement
             </button>
         </div>
     </div>
-    
+
     <div ng-include="'/assets/partials/common/notification_message.html'"></div>
- 
-    <div class="tab-details" ng-include="'/assets/partials/companyCard/arTransactions/rvCompanyCardArTransactionsWithLeftTabs.html'">  
-         
+
+    <div class="tab-details">
+
+        <div include-replace ng-include="'/assets/partials/companyCard/arTransactions/rvCompanyCardArTransactionsWithLeftTabs.html'"></div>
         <!-- {tabs/ar-transactions.html} -->
 
-        
-         
+        <div include-replace ng-include="'/assets/partials/companyCard/arTransactions/rvArStatementPrintTemplate.html'"></div>
+
         <!-- {tabs/ar-statement.html} -->
-        
+
     </div>
 
     <!-- Pagination: Show when needed
     {../_shared/pagination.html} -->
 
-    <!-- When no open bills / all bills paid 
+    <!-- When no open bills / all bills paid
     <div class="tab-details no-content">
         <div class="info">
             <span class="icon-no-content icon-ok"></span>

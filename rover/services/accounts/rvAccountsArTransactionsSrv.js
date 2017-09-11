@@ -31,5 +31,53 @@ angular.module('sntRover').service('rvAccountsArTransactionsSrv', ['$q', 'rvBase
 
 		return deferred.promise;
 	};
-    
+
+    // To fetch statement data
+    this.fetchArStatementData = function(params) {
+        var deferred = $q.defer();
+        var url = '/api/ar_transactions/get_email?id=' + params.id;
+
+        rvBaseWebSrvV2.getJSON(url).then(function(data) {
+            deferred.resolve(data.data);
+        }, function(data) {
+            deferred.reject(data);
+        });
+        return deferred.promise;
+    };
+
+    // Fetch AR satement print data
+    this.fetchArStatementPrintData = function(data) {
+        var deferred = $q.defer(),
+        url = '/api/ar_transactions/print';
+
+        rvBaseWebSrvV2.postJSON(url, data).then(
+            function(data) {
+                deferred.resolve(data);
+            },
+            function(errorMessage) {
+                deferred.reject(errorMessage);
+            }
+        );
+
+        return deferred.promise;
+    };
+
+    // Send email AR statement
+    this.emailArStatement = function(data) {
+        var deferred = $q.defer(),
+        url = '/api/ar_transactions/email';
+
+        rvBaseWebSrvV2.postJSON(url, data).then(
+            function(data) {
+                deferred.resolve(data);
+            },
+            function(errorMessage) {
+                deferred.reject(errorMessage);
+            }
+        );
+
+        return deferred.promise;
+    };
+
+
 }]);

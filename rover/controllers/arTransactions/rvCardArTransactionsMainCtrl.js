@@ -6,7 +6,9 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 	'ngDialog',
 	'$timeout',
 	'rvAccountsArTransactionsSrv',
-	function($scope, $rootScope, $stateParams, ngDialog, $timeout, rvAccountsArTransactionsSrv) {
+    '$window',
+    '$filter',
+	function($scope, $rootScope, $stateParams, ngDialog, $timeout, rvAccountsArTransactionsSrv, $window, $filter) {
 
 		BaseCtrl.call(this, $scope);
 		$scope.errorMessage = '';
@@ -20,8 +22,11 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 		$scope.filterData = {
 			'query': '',
 			'fromDate': '',
-			'toDate': ''
+			'toDate': '',
+            'includePayments': false,
+            'statementEmailAddress': ''
 		};
+
 
 		/*
 		 * Data Object set to handle various AR transaction lists.
@@ -170,7 +175,7 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 		$scope.filterChanged = function() {
 			$scope.fetchTransactions();
 		};
-		/* 
+		/*
 		 * Add payment method
 		 */
 		$scope.addPayment = function() {
@@ -254,7 +259,7 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 		$scope.$on('SHOW_ERROR_MSG', function( event, errorMessage ) {
 			$scope.errorMessage = errorMessage;
 		});
-        // Refresh balance list - after adding new manual balance 
+        // Refresh balance list - after adding new manual balance
         // and after succesfull payment with Allocate payment after posting checked
 		$scope.$on('REFRESH_BALANCE_LIST', function() {
 			$scope.arFlags.currentSelectedArTab = 'balance';
@@ -325,4 +330,178 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 	    };
 
 	    // -------/ PAGINATION LOGIC /----------- //
+
+        // Handler for statement button click
+        $scope.clickedArStatementButton = function() {
+
+            var dataFetchSuccess = function(data) {
+                $scope.$emit('hideLoader');
+                $scope.statementEmailAddress = !!data.to_address ? data.to_address : '';
+                ngDialog.open({
+                    template: '/assets/partials/companyCard/arTransactions/rvArStatementPopup.html',
+                    className: '',
+                    closeByDocument: false,
+                    scope: $scope
+                });
+            },
+            dataFailureCallback = function(errorData) {
+                $scope.$emit('hideLoader');
+                $scope.errorMessage = errorData;
+            };
+            var params = { 'id': $stateParams.id };
+
+            $scope.invokeApi(rvAccountsArTransactionsSrv.fetchArStatementData, params, dataFetchSuccess, dataFailureCallback);
+        };
+
+        // Checks whether include payment checkbox should be shown or not
+        $scope.showIncludePayments = function() {
+            return ( $scope.arFlags.currentSelectedArTab === 'balance' || $scope.arFlags.currentSelectedArTab === 'paid-bills' );
+        };
+
+        // Toggle the value of include payments filter
+        $scope.toggleIncludePaymentSelection = function() {
+            $scope.filterData.includePayments = !$scope.filterData.includePayments;
+        };
+
+        // Get parameters for fetch data
+        var getParamsToSend = function() {
+            var paramsToSend = {
+                "id": $stateParams.id,
+                "from_date": $scope.filterData.fromDate,
+                "to_date": $scope.filterData.toDate,
+                "query": $scope.filterData.textInQueryBox,
+                "transaction_type": "PAYMENTS"
+            };
+
+            if ($scope.arFlags.currentSelectedArTab === 'balance') {
+                paramsToSend.paid = 'false';
+                paramsToSend.transaction_type = 'CHARGES';
+                paramsToSend.include_payments = $scope.filterData.includePayments;
+            } else if ($scope.arFlags.currentSelectedArTab === 'paid-bills') {
+                paramsToSend.paid = 'true';
+                paramsToSend.transaction_type = 'CHARGES';
+                paramsToSend.include_payments = $scope.filterData.includePayments;
+            } else if ($scope.arFlags.currentSelectedArTab === 'unallocated') {
+                paramsToSend.transaction_type = 'PAYMENTS';
+                paramsToSend.allocated = 'false';
+            } else if ($scope.arFlags.currentSelectedArTab === 'allocated') {
+                paramsToSend.transaction_type = 'PAYMENTS';
+                paramsToSend.allocated = 'true';
+            }
+            // CICO-10323. for hotels with single digit search,
+            // If it is a numeric query with less than 3 digits, then lets assume it is room serach.
+
+            if ($rootScope.isSingleDigitSearch &&
+                !isNaN($scope.filterData.textInQueryBox) &&
+                $scope.filterData.textInQueryBox.length < 3) {
+
+                paramsToSend.room_search = true;
+            }
+            return paramsToSend;
+        };
+
+        // add the print orientation before printing
+        var addPrintOrientation = function() {
+            $( 'head' ).append( "<style id='print-orientation'>@page { size: portrait; }</style>" );
+        };
+
+        // add the print orientation after printing
+        var removePrintOrientation = function() {
+            $( '#print-orientation' ).remove();
+        };
+
+        // print AR Statement
+        var printArStatement = function(params) {
+            var printDataFetchSuccess = function(successData) {
+                $scope.$emit('hideLoader');
+                $scope.printData = successData;
+                $scope.errorMessage = "";
+                // hide hotel logo
+                $("header .logo").addClass('logo-hide');
+                $("#invoiceDiv.invoice").addClass('no-print');
+                $("#regDiv.registration-card").addClass('no-print');
+                // inoder to set class 'print-statement' on rvCompanyCardDetails.html
+                $scope.$emit("PRINT_AR_STATEMENT", true);
+                // add the orientation
+                addPrintOrientation();
+
+                /*
+                *   ======[ READY TO PRINT ]======
+                */
+                // this will show the popup with full bill
+                $timeout(function() {
+                    /*
+                    *   ======[ PRINTING!! JS EXECUTION IS PAUSED ]======
+                    */
+
+                    $window.print();
+                    if ( sntapp.cordovaLoaded ) {
+                        cordova.exec(function(success) {}, function(error) {}, 'RVCardPlugin', 'printWebView', []);
+                    }
+                }, 1000);
+
+                /*
+                *   ======[ PRINTING COMPLETE. JS EXECUTION WILL UNPAUSE ]======
+                */
+
+                $timeout(function() {
+                    $("header .logo").removeClass('logo-hide');
+                    $("#invoiceDiv.invoice").removeClass('no-print');
+                    $("#regDiv.registration-card").removeClass('no-print');
+                    // inoder to re-set/remove class 'print-statement' on rvCompanyCardDetails.html
+                    $scope.$emit("PRINT_AR_STATEMENT", false);
+                    // remove the orientation after similar delay
+                    removePrintOrientation();
+                }, 1000);
+            };
+
+            var printDataFailureCallback = function(errorData) {
+                $scope.$emit('hideLoader');
+                $scope.errorMessage = errorData;
+            };
+
+            $scope.invokeApi(rvAccountsArTransactionsSrv.fetchArStatementPrintData, params, printDataFetchSuccess, printDataFailureCallback);
+        };
+
+        // Handler for AR statement print
+        $scope.pritArStatement = function () {
+            var params = getParamsToSend();
+
+            printArStatement( params );
+
+        };
+
+        // To show email sent callbacks
+        $scope.showEmailSentStatusPopup = function(status) {
+            ngDialog.open({
+                template: '/assets/partials/popups/rvEmailSentStatusPopup.html',
+                className: '',
+                scope: $scope
+            });
+        };
+
+        // Send email AR statement
+        $scope.emailArStatement = function() {
+            var params = getParamsToSend();
+
+            params.to_address = $scope.filterData.statementEmailAddress;
+            $scope.closeDialog();
+
+            var emailSuccess = function(successData) {
+                $scope.$emit('hideLoader');
+                $scope.errorMessage = "";
+                $scope.statusMsg = $filter('translate')('EMAIL_SENT_SUCCESSFULLY');
+                $scope.status = "success";
+                $scope.showEmailSentStatusPopup();
+            },
+            emailFailureCallback = function(errorData) {
+                $scope.$emit('hideLoader');
+                $scope.errorMessage = errorData;
+                $scope.statusMsg = $filter('translate')('EMAIL_SEND_FAILED');
+                $scope.status = "alert";
+                $scope.showEmailSentStatusPopup();
+            };
+
+            $scope.invokeApi(rvAccountsArTransactionsSrv.emailArStatement, params, emailSuccess, emailFailureCallback);
+        };
 }]);
