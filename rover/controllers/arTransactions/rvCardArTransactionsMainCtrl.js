@@ -18,7 +18,8 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 			'isPaymentSelected': false,
 			'viewFromOutside': (typeof $stateParams.type !== 'undefined') ? true : false,
 			'shouldShowPayAllButton': false,
-			'shouldShowFooter': false
+			'shouldShowFooter': false,
+			'insufficientAmount': false
 		};
 
 		$scope.filterData = {
@@ -225,6 +226,16 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 	      	});
 	      	$scope.paymentModalOpened = true;
 		};
+		var successCallBackOfPayment = function() {
+			$scope.arFlags.insufficientAmount = false;
+		};
+		var failureCallBackOfPayment = function(errorMessage) {
+			
+			if(errorMessage[0] === "Insufficient Funds.Please 'Add payment' first") {
+				$scope.errorMessage = [];
+				$scope.arFlags.insufficientAmount = true;
+			}
+		};
 		/*
 		 * Pay selected invoices
 		 */
@@ -238,7 +249,14 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 			postData.available_amount = $scope.arDataObj.availableAmount;
 			postParamsToPay.account_id = $scope.arDataObj.accountId;
 			postParamsToPay.data = postData;
-			$scope.invokeApi(rvAccountsArTransactionsSrv.paySelected, postParamsToPay );
+
+			var options = {
+				params: postParamsToPay,
+				successCallBack: successCallBackOfPayment,
+				failureCallBack: failureCallBackOfPayment
+			};
+
+			$scope.callAPI(rvAccountsArTransactionsSrv.paySelected, options);			
 		};
 		/*
 		 * Pay All Button click
@@ -264,7 +282,14 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 			postData.available_amount = $scope.arDataObj.availableAmount;
 			postParamsToPay.account_id = $scope.arDataObj.accountId;
 			postParamsToPay.data = postData;
-			$scope.invokeApi(rvAccountsArTransactionsSrv.paySelected, postParamsToPay);
+			//$scope.invokeApi(rvAccountsArTransactionsSrv.paySelected, postParamsToPay);
+			var options = {
+				params: postParamsToPay,
+				successCallBack: successCallBackOfPayment,
+				failureCallBack: failureCallBackOfPayment
+			};
+
+			$scope.callAPI(rvAccountsArTransactionsSrv.paySelected, options);
 		};
 		/*
 		 * Should show footer instead of pagination

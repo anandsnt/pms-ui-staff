@@ -46,7 +46,7 @@ sntRover.controller('RvArBalanceController', ['$scope', '$timeout', 'rvAccountsA
 	     * update the selected invoices variable
 	     */ 
 	    var selectInvoice = function (transactionId) {
-
+	    	$scope.arFlags.insufficientAmount = false;
 	    	_.each($scope.arDataObj.balanceList, function (eachItem) {
 		    	if (eachItem.transaction_id === transactionId) {
 		    		eachItem.isSelected = !eachItem.isSelected;
