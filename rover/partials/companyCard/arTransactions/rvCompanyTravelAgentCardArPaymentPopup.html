@@ -5,7 +5,7 @@
         <!-- If selecting payment for allocation -->
         <strong class="h2 message">Select payment for allocation</strong>
         <span class="text">Please select one of the unallocated payments to proceed.</span>
-        <div class="payments scrollable">
+        <div class="payments scrollable" id="payment-allocation" ng-iscroll="payment-allocation">
             <div class="wrapper">
                 <ul class="search-results">
                     <li class="reservation transaction payment  unallocated" ng-repeat="payment in payments">
@@ -25,7 +25,7 @@
                                 <span class="icons small-icon icon-time time-black"></span>
                                 <time datetime="2017-08-15 12:08 AM">
                                     <span class="date">{{::payment.transaction_date}}</span>
-                                    <span class="time">12:08 AM</span>
+                                    <span class="time">{{::payment.transaction_time}}</span>
                                 </time>
                             </div>
                             <div class="amount  green">
