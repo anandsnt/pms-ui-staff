@@ -200,6 +200,19 @@ angular.module('sntRover').controller('companyCardDetailsController', ['$scope',
 		// To default the AR transactions tab while navigating back from staycard
 		if ($stateParams.isBackFromStaycard) {
 			$scope.isArTabAvailable = true;
+			/*
+				****
+				CICO-45240 - Fixes loop that was caused when navigating in the following flow.
+				Search for AR Trans -> Balance/Paid Tabs of a CC -> Reservation's Stay Card -> Back to Balance/Paid tabs -> Back to AR Trans search
+			*/
+			$rootScope.setPrevState = {
+				title: "Accounts Receivables",
+				name: "rover.financials.accountsReceivables",
+				param: {}
+			};
+			/*
+				****
+			*/
 			$scope.currentSelectedTab = 'cc-ar-transactions';
 			$scope.$broadcast('setgenerateNewAutoAr', true);
 			$scope.switchTabTo('', 'cc-ar-transactions');
