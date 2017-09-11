@@ -1502,7 +1502,7 @@ sntZestStation.controller('zsRootCtrl', [
         storage.setItem(refreshedKey, 'false');
 
 
-        $scope.$on('SYNC_GUEST_ID_SCAN_SETTING', function(event) {
+        $scope.$on('SYNC_GUEST_ID_SCAN_SETTING', function() {
             // to be removed in or after sprint 92 (3.0 release), once yotel is fully utilized enhanced engine
             // at which point we will stop using v1 samsotech logic all togther
             try {
