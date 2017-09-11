@@ -1,6 +1,6 @@
 
-sntRover.controller('RvArPaidController', ['$scope', '$rootScope', 'RVCompanyCardSrv', '$timeout', '$stateParams', 'ngDialog', '$state', '$vault', '$window', 'RVReservationCardSrv', '$filter',
-	function($scope, $rootScope, RVCompanyCardSrv, $timeout, $stateParams, ngDialog, $state, $vault, $window, RVReservationCardSrv, $filter) {
+sntRover.controller('RvArPaidController', ['$scope', '$timeout', 'rvAccountsArTransactionsSrv', '$vault', '$stateParams', '$state','sntActivity',
+	function($scope, $timeout, rvAccountsArTransactionsSrv, $vault, $stateParams, $state, sntActivity) {
 
 		BaseCtrl.call(this, $scope);
 
@@ -8,12 +8,84 @@ sntRover.controller('RvArPaidController', ['$scope', '$rootScope', 'RVCompanyCar
 	    var refreshScroll = function() {
 	        $timeout(function() { 
 	            $scope.refreshScroller('paid-list');
-	        }, 2000);
+	        }, 500);
 	    };
 	    // Refresh scroll after completing fetch data
 	    $scope.$on("FETCH_COMPLETE_PAID_LIST", function() {
 	    	refreshScroll();
 	    });
 
+	    // Handle paid tab expansion api call.
+		var callExpansionAPI = function( item ) {
+			sntActivity.start('EXPAND_PAID');
+			var successCallbackOfExpansionAPI = function(data) {
+				sntActivity.stop('EXPAND_PAID');
+				item.active = true;
+				item.debits = data.debits;
+				item.payments = data.payments;
+				refreshScroll();
+			},
+			failureCallbackOfExpansionAPI = function( errorMessage ) {
+				sntActivity.stop('EXPAND_PAID');
+				$scope.$emit('SHOW_ERROR_MSG', errorMessage);
+			};
+
+			var dataToSend = {
+				'id': item.transaction_id,
+				'account_id': $scope.arDataObj.accountId
+			};
+			
+			$scope.invokeApi(rvAccountsArTransactionsSrv.expandPaidAndUnpaidList, dataToSend, successCallbackOfExpansionAPI, failureCallbackOfExpansionAPI );
+		};
+
+	    // Handle Toggle button click to expand list item
+	    $scope.clickedPaidListItem = function( index ) {
+	    	var clikedItem = $scope.arDataObj.paidList[index];
+
+	    	if (!clikedItem.active) {
+	    		callExpansionAPI(clikedItem);
+	    	}
+	    	else {
+	    		clikedItem.active = false;
+	    		refreshScroll();
+	    	}
+	    };
+
+	   	/*
+		 * function to execute on clicking on each result
+		 */
+		$scope.goToReservationDetails = function(index) {
+
+			var item = $scope.arDataObj.balanceList[index];
+
+			if ($scope.arFlags.viewFromOutside) {
+				$vault.set('cardId', $stateParams.id);
+				$vault.set('type', $stateParams.type);
+				$vault.set('query', $stateParams.query);
+
+				var associatedType = item.associated_type,
+					associatedId = item.associated_id;
+
+				if (associatedType === 'Reservation') {
+					$state.go("rover.reservation.staycard.reservationcard.reservationdetails", {
+						id: associatedId,
+						confirmationId: item.reservation_confirm_no,
+						isrefresh: true,
+						isFromCards: true
+					});
+				} 
+				else if (associatedType === 'PostingAccount') {
+					$state.go('rover.accounts.config', {
+						id: associatedId,
+						activeTab: 'ACCOUNT',
+						isFromArTransactions: true
+					});
+				}
+			}
+		};
+
+		// Handle unallocate button click.
+		$scope.clickedUnallocateButton = function() {
+		};
 		
 }]);

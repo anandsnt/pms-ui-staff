@@ -3,7 +3,7 @@
 
         <!-- Add .toggle.has-arrow when partially unallocated -->
         <!-- if .toggle clicked, add .active -->
-        <div class="faux-anchor" ng-class="{'toggle has-arrow': unallocatedCreditTransaction.is_partially_paid}">
+        <div class="faux-anchor toggle has-arrow" ng-class="{'active': unallocatedCreditTransaction.active , 'toggle has-arrow': unallocatedCreditTransaction.is_partially_paid}" ng-click="clickedUnallocatedListItem( $index )" >
             <div class="data">
                 <h2>{{unallocatedCreditTransaction.payment_type}}</h2>
                 <div class="payment-data">
@@ -37,9 +37,7 @@
             <button type="button" class="button green">Allocate</button>
         </div>
 
-        <!-- if partially unallocated, show --
-        <!-- remove .hidden when clicked on .toggle
-        <ul class="search-results hidden">
+        <ul class="search-results" ng-show="unallocatedCreditTransaction.active">
             <li class="reservation transaction ">
                 <div class="faux-anchor">
                     <div class="data">
@@ -70,9 +68,7 @@
                     </button>
                 </div>
             </li>
-            ... repeat for each allocated
 
-        </ul>-->
+        </ul>
     </li>
-    <!-- ... repeat for each unallocated -->
 </ul>

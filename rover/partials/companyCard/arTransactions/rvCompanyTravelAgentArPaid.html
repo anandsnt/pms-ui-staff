@@ -3,7 +3,7 @@
     <li class="reservation transaction" ng-repeat="paidInvoice in arDataObj.paidList">
 
         <!-- add .active when clicked -->
-        <div class="faux-anchor has-arrow toggle">
+        <div class="faux-anchor has-arrow toggle" ng-click="clickedPaidListItem( $index )" ng-class="{'active': paidInvoice.active }">
             <div class="data" ng-if="paidInvoice.associated_type === 'Reservation'">
 
                 <!-- add class .group/allotment if group or allotment -->
@@ -21,15 +21,15 @@
                 <span class="invoice">Account #<span class="value">{{paidInvoice.account_number}}</span></span>
             </div>
 
-            <div class="guest-date arrival" ng-if="paidInvoice.associated_type === 'Reservation'">
-                <span class="guest-status small-icon check-in">check-in</span>
+            <div class="guest-date arrival">
+                <span class="guest-status small-icon check-in" ng-hide="paidInvoice.is_manual_balance || paidInvoice.associated_type === 'PostingAccount'">check-in</span>
                 <time datetime="2017-08-17T12:00:00">
                     <span class="date">{{paidInvoice.reservation_arrival_date}}</span>
                     <span class="time">{{paidInvoice.reservation_arrival_time}}</span>
                 </time>
             </div>
-            <div class="guest-date departure" ng-if="paidInvoice.associated_type === 'Reservation'">
-                <span class="guest-status small-icon check-out">check-out</span>
+            <div class="guest-date departure">
+                <span class="guest-status small-icon check-out" ng-hide="paidInvoice.associated_type === 'PostingAccount'">check-out</span>
                 <time datetime="2017-08-24T12:00:00">
                     <span class="date">{{paidInvoice.reservation_dep_date}}</span>
                     <span class="time">{{paidInvoice.reservation_dep_time}}</span>
@@ -42,12 +42,12 @@
  
         </div>
 
-        <div class="grid-items hidden"><!-- Add/remove class 'hidden' when L7 is clicked -->
+        <div class="grid-items" ng-show="paidInvoice.active">
             <table>
                 <thead>
                     <tr>
                         <th class="date" scope="col">Date</th>
-                        <th   scope="col">Charge Code</th>
+                        <th scope="col">Charge Code</th>
                         <th class="description" scope="col">Description</th>
                         <th class="fees" scope="col">Fees</th>
                         <th class="credits" scope="col">Credits</th>
@@ -62,20 +62,35 @@
                              tr.charge-items => 'even'
                           3. tr => 'odd' ...
                      -->
-                    <tr class="{row-class}">
+                    <tr ng-repeat="debit in paidInvoice.debits" ng-class="{'odd': $odd, even: $even}" >
+                        <td>{{ debit.date }}</td>
+                        <td>{{ debit.charge_code}}</td>
+                        <td class="description">
+                         {{ debit.description }}
+                        </td>
+                        <td class="fees">
+                            <span class="currency" ng-hide="debit.fees===null">{{ currencySymbol }}</span>
+                            {{ debit.fees }}
+                        </td>
+                        <td class="credits">
+                            <span class="currency" ng-hide="debit.credits===null">{{ currencySymbol }}</span>{{ debit.credits }}
+                        </td>
+                    </tr>
+
+                    <!-- <tr class="odd">
                         <td>{Date}</td>
 
                         
                         <td>
                             {Charge Code}
                             
-                        </td>
+                        </td> -->
 
                         <!-- If there are sub charges 
                              add .toggle -->
                         <!-- On click, toggle class .active -->
-                        <td class="description">
-                            {Description}
+                        <!-- <td class="description">
+                            {Description} -->
                             <!-- If there are sub charges, render
                                 <span class="icons icon-double-arrow"></span>
                             -->
@@ -96,15 +111,15 @@
                                     </div>
                             -->
 
-                        </td>
+                        <!-- </td>
                         <td class="fees"><span class="currency">{currency}</span>{Fee Amount}</td>
                         <td class="credits">
-                            <span class="currency">{currency}</span>{Credit Amount}
+                            <span class="currency">{currency}</span>{Credit Amount} -->
                             <!-- Add if payment that can be unallocated
                                 <button class="icons icon-remove-40"></button>
                              -->
-                        </td>
-                    </tr>
+                        <!-- </td>
+                    </tr> -->
                     <!-- Render if the current charge item has sub charges (POS)
                          Remove 'hidden' on {Charge Code} click 
                     <tr class="{row-class} charge-items hidden">
@@ -127,18 +142,39 @@
                     -->
                     <!-- ... repeat L60-L65 for every fee/credit -->
 
+                    <tr ng-repeat="payment in balance.payments" ng-class="{'odd': $odd, 'even': $even}">
+                        <td>{{ payment.transaction_date }}</td>
+                        <td>{{ payment.charge_code}}</td>
+                        <td class="description">
+                            <div class="payment-data" ng-if="payment.is_cc_payment">
+                                <figure class="card-logo">
+                                    <img ng-src="/assets/images/{{payment.card_details.card_code.toLowerCase()}}.png" alt="">
+                                </figure>
+                                <span class="number">{{payment.card_details.last_digits}}</span>
+                                <span class="date"><span class="value">{{payment.card_details.expire_date}}</span></span>
+                                <span class="reference">{{payment.reference_text}}</span>
+                            </div>
+                            <div class="payment-data" ng-if="!payment.is_cc_payment">
+                                <span class="type">{{payment.payment_type}}</span>
+                                <span class="reference">{{payment.reference_text}}</span>
+                            </div>
+                        </td>
+                        <td class="fees"><span class="currency"></span></td>
+                        <td class="credits">
+                            <span class="currency">{{ currencySymbol }}</span>{{payment.amount}}
+                                <button class="icons icon-remove-40" ng-click="clickedUnallocateButton()"></button>
+                        </td>
+                    </tr>
+
                 </tbody>
             </table>
             <div class="actions">
-                <button type="button" class="button brand-colors">StayCard</button>
-                <button type="button" class="button purple">Move Invoice</button>
-                <button type="button" class="button blue">Print Invoice</button>
-                <button type="button" class="button white green-text">Post Charge</button>
-                <button type="button" class="button white purple-text">Edit Charges</button>
+                <button type="button" class="button brand-colors" ng-click="goToReservationDetails($index)">StayCard</button>
+                <button type="button" class="button purple hidden">Move Invoice</button>
+                <button type="button" class="button blue hidden">Print Invoice</button>
+                <button type="button" class="button white green-text hidden">Post Charge</button>
+                <button type="button" class="button white purple-text hidden">Edit Charges</button>
             </div>
         </div>
-
     </li>
-    <!-- ... repeat for all reservations -->
-
 </ul>
