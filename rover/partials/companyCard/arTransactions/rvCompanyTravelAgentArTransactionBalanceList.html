@@ -1,14 +1,13 @@
 <ul class="search-results">
 
-	<!-- if checked, add class .selected -->
-	<li class="reservation transaction with-checkbox" ng-class="{'selected': balance.isSelected }" ng-repeat="balance in arDataObj.balanceList">
-		<label class="checkbox inline" ng-class="{'checked': balance.isSelected }" ng-click = "selectInvoice(balance.transaction_id)">
-			<span class="icon-form icon-checkbox" ng-class="{'checked': balance.isSelected }"></span>
-			<input value="4" type="checkbox" ng-class="{'checked': balance.isSelected }">
-		</label>
-
+    <!-- if checked, add class .selected -->
+    <li class="reservation transaction with-checkbox" ng-class="{'selected': balance.isSelected }" ng-repeat="balance in arDataObj.balanceList" ng-click="clickedOnParentList( $event, $index )">
+        <label class="checkbox inline" ng-class="{'checked': balance.isSelected }" ng-click = "selectInvoice(balance.transaction_id)">
+            <span class="icon-form icon-checkbox" ng-class="{'checked': balance.isSelected }"></span>
+            <input value="4" type="checkbox" ng-class="{'checked': balance.isSelected }">
+        </label>
         <!-- Add class .active when clicked to show details -->
-        <div class="faux-anchor" ng-click="clickedBalanceListItem( $index )" ng-class="{'has-arrow toggle':!balance.is_manual_balance, 'active': balance.active }">
+        <div class="faux-anchor" ng-class="{'has-arrow toggle':!balance.is_manual_balance, 'active': balance.active }">
                 <!-- add class .group/.allotment if group or allotment -->
             <div class="data" ng-if="balance.associated_type === 'Reservation'">
                 <!-- add class .group/.allotment if group or allotment -->

@@ -207,7 +207,6 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 		 * Here is the method to fetch the data in each tab
 		 * Params will be different on each tab
 		 */
-
 		$scope.filterChanged = function() {
 			$scope.fetchTransactions();
 		};
@@ -231,10 +230,12 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 			var postParamsToPay = {};
 			postParamsToPay.credit_id = $scope.allocatedPayment.transaction_id;
 			postParamsToPay.invoices = $scope.arDataObj.selectedInvoices;
+			postParamsToPay.selected_amount = $scope.arDataObj.totalAllocatedAmount ;
+			postParamsToPay.available_amount = $scope.arDataObj.availableAmount;
 			console.log("---------*************----------");
 			console.log(postParamsToPay);
 			$scope.invokeApi(rvAccountsArTransactionsSrv.paySelected, postParamsToPay );
-		};
+		};		
 		/*
 		 * To create the parameters which is to be passed to API
 		 */
