@@ -1264,7 +1264,7 @@ sntZestStation.controller('zsRootCtrl', [
                     $scope.$broadcast('WS_PRINT_FAILED', errorData);
                 }
             } 
-            else if (response.Command === 'cmd_scan_passport') {
+            else if (response.Command === 'cmd_scan_passport' || response.Command === 'cmd_samsotech_scan_passport') {
 
                 if (response.ResponseCode === 0) {
                     $scope.$broadcast('PASSPORT_SCAN_SUCCESS', response);
@@ -1482,7 +1482,10 @@ sntZestStation.controller('zsRootCtrl', [
             refreshedKey = 'snt_zs_workstation.recent_refresh',
             storage = localStorage,
             storedWorkStation = '',
-            recently_refreshed;
+            recently_refreshed,
+            // remove (guest_id_scan_version, v1GuestIDScanning) refs after 3.0 release if v1 samsotech logic not needed
+            guest_id_scan_version = 'guest_id_scan_version',
+            v1GuestIDScanning;
 
         try {
             recently_refreshed = storage.getItem(refreshedKey);
@@ -1491,11 +1494,29 @@ sntZestStation.controller('zsRootCtrl', [
             } else {
                 recently_refreshed = false;
             }
+
         } catch (err) {
             recently_refreshed = false;
             $log.log(err);
         }
         storage.setItem(refreshedKey, 'false');
+
+
+        $scope.$on('SYNC_GUEST_ID_SCAN_SETTING', function(event) {
+            // to be removed in or after sprint 92 (3.0 release), once yotel is fully utilized enhanced engine
+            // at which point we will stop using v1 samsotech logic all togther
+            try {
+                var v1GuestIDScanning = $scope.zestStationData.v1GuestIDScanning ? $scope.zestStationData.v1GuestIDScanning : 'false';
+
+                storage.setItem(guest_id_scan_version, v1GuestIDScanning);
+
+            } catch (err) {
+                $log.warn(err);
+            }
+
+        });
+
+
 		/**
 		 * [setWorkStationForAdmin description]
 		 *  The workstation, status and oos reason are stored in
@@ -1876,6 +1897,15 @@ sntZestStation.controller('zsRootCtrl', [
             }
             $rootScope.isStandAlone = zestStationSettings.is_standalone;
             $scope.zestStationData.check_in_collect_passport = zestStationSettings.scan_guest_id;// && zestStationSettings.scan_guest_id_active;// _active is to View from StayCard
+
+            v1GuestIDScanning = storage.getItem(guest_id_scan_version);
+            
+            if (v1GuestIDScanning === 'true') {
+                $scope.zestStationData.v1GuestIDScanning = 'true';
+            } else {
+                $scope.zestStationData.v1GuestIDScanning = 'false';
+            }
+
             $scope.zestStationData.showTemplateList = false; // Only for ipad in dev environment, switch themes fast like in chrome (dashboard view)
             $scope.zestStationData.makingKeyInProgress = false;
             $scope.zestStationData.doubleSidedScan = true;// by default scan 2 sides, user can elect to Skip the 2nd side. TODO: //link to a setting

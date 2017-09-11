@@ -831,6 +831,9 @@ sntZestStation.controller('zsCheckinScanPassportCtrl', [
                     'ID_TYPE': mapping.PR_DF_TYPE
                 };
             } 
+            if (!mapping.lastName && mapping.doc) {
+                mapping = mapping.doc;
+            }
             // v2
             return {
                     /*
@@ -841,7 +844,8 @@ sntZestStation.controller('zsCheckinScanPassportCtrl', [
                     // 'BIRTH_DATE':  returnUnformatedDateObj(mapping.PR_DF_BIRTH_DATE, 'MM-DD-YYYY'),
                 'BIRTH_DATE': mapping.dateOfBirth,
                 'LAST_NAME': mapping.lastName,
-                'FIRST_NAME': mapping.firstName,
+                 // FIRST_NAME, in partials it will show only last name if first&last are the same
+                'FIRST_NAME': mapping.firstName ? mapping.firstName : mapping.lastName,
                 'NATIONALITY': mapping.nationality_fullname,
                 'SEX': mapping.gender,
                 'FULL_NAME': mapping.fullName ? mapping.fullName : mapping.lastName,

@@ -209,6 +209,18 @@
                         </select>
                     </div>
                 </div>
+
+                <div class="entry with-label" ng-if='zestStationData.check_in_collect_passport'>
+                    <label>Guest ID Scan Override</label>
+                    <label class='admin-label-description'>Enable Samsotech Scanning with for Passports or Passports and Guest IDs </label>
+                    <div class="entry select">
+                        <select class='admin-editor-toggle' ng-model="zestStationData.v1GuestIDScanning">
+                            <option value="true">Scan Passports Only</option>
+                            <option value="false">Passports + Guest IDs</option>
+                        </select>
+                    </div>
+                </div>
+
                 <div class="entry with-label" ng-show="showDebugModeOption && zestStationData.kiosk_is_hue_active">
                     <label>Test Hue Light</label>
                     <label class='admin-label-description'>Test the connectivity of the Hue light corresponding to the selected workstation</label>
