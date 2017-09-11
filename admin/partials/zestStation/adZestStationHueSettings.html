@@ -47,7 +47,32 @@
         </div>
         <ad-textbox value="hueSettings.hue_user_name" name="app-name" id="app-name" label="App key" styleclass="half-width"></ad-textbox>
         <ad-textbox value="hueSettings.hue_light_color_hex" name="app-name" id="app-name" label="Light Color" styleclass="half-width" placeholder="{{'LIGHT_COLOR_INSTRUCTIONS' | translate}}"></ad-textbox>
-    </fieldset>
+
+        <div class="entry half-width bri-quick-set" >
+            <label>
+                {{'LIGHT_BRIGHTNESS' | translate}}
+            </label>
+            <input
+            ng-model="hueSettings.hue_brightness"/>
+            <div class="quick-set">
+                <i>quick set:</i>
+                <button class="bri-set" ng-repeat="brightness in brightnessQuickSet" ng-click="hueSettings.hue_brightness = brightness">{{brightness}}</button>
+            </div>
+        </div>
+      
+        <div class="entry half-width-width">
+        <label>
+            {{ 'LIGHT_BLINKING_EFFECT' | translate}}
+        </label>
+        <div class="entry">
+            <div class="select">
+                <select ng-options="item.id as item.name for item  in lightEffects" ng-model="hueSettings.hue_blinking_effect">
+                    <option style="display:none" value="">SELECT</option>
+                </select>
+            </div>
+        </div>
+        </div>
+        </fieldset>
     <fieldset class="holder full-width">
         <ad-form-title form-title="Test Settings"></ad-form-title>
         <ad-form-sub-title title="TEST_SETTINGS_INSTRUCTIONS"></ad-form-sub-title>

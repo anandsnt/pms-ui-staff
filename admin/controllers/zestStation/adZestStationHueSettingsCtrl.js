@@ -10,6 +10,17 @@ admin.controller('adZestStationHueSettingsCtrl', ['$scope', '$state', '$rootScop
 			$scope.hueSettings = kioskSettings;
 			$scope.availableBridges = []; // Have to manulay discover bridges
 			$scope.availableLights = []; // Have to manulay discover lights
+			$scope.lightEffects = [{
+				id: 0,
+				name: "None"
+			}, {
+				id: 1,
+				name: "Once"
+			}, {
+				id: 2,
+				name: "Multiple"
+			}];
+			$scope.brightnessQuickSet = [0, 36, 73, 109, 145, 181, 218, 254];
 		}());
 
 		var ws, runDigestCycle = function() {
@@ -162,7 +173,9 @@ admin.controller('adZestStationHueSettingsCtrl', ['$scope', '$state', '$rootScop
 				"hueLightAppkey": $scope.hueSettings.hue_user_name,
 				"shouldLight": "1",
 				"lightColor": $scope.hueSettings.hue_light_color_hex,
-				"lightList": [$scope.hueSettings.hue_test_light_id]
+				"lightList": [$scope.hueSettings.hue_test_light_id],
+				"brightness": $scope.hueSettings.hue_brightness,
+				"blink": $scope.hueSettings.blinking_effect
 			};
 			var jsonstring = JSON.stringify(json);
 			

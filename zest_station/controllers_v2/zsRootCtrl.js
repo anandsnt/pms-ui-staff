@@ -1799,7 +1799,9 @@ sntZestStation.controller('zsRootCtrl', [
                     'hueLightAppkey': $scope.zestStationData.hue_user_name,
                     'shouldLight': '1',
                     'lightColor': $scope.zestStationData.hue_light_color_hex,
-                    'lightList': [lightId]
+                    'lightList': [lightId],
+                    'brightness': $scope.zestStationData.hue_brightness,
+                    'blink': $scope.zestStationData.hue_blinking_effect
                 };
                 var jsonstring = JSON.stringify(json);
 
