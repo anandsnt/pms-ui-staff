@@ -46,13 +46,15 @@ sntRover.controller('RvArAllocatedController',
         // Handle Toggle button click to expand list item
         $scope.clickedAllocatedListItem = function( index ) {
             var clikedItem = $scope.arDataObj.allocatedList[index];
-
-            if (!clikedItem.active) {
-                callExpansionAPI(clikedItem);
-            }
-            else {
-                clikedItem.active = false;
-                refreshScroll();
+            
+            if (clikedItem.is_partially_paid) {
+                if (!clikedItem.active) {
+                    callExpansionAPI(clikedItem);
+                }
+                else {
+                    clikedItem.active = false;
+                    refreshScroll();
+                }
             }
         };
 
