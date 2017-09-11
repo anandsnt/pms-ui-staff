@@ -231,6 +231,7 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 		$scope.paySelectedInvoices = function() {
 			var postParamsToPay = {},
 				postData = {};
+
 			postData.credit_id = $scope.allocatedPayment.transaction_id;
 			postData.invoices = $scope.arDataObj.selectedInvoices;
 			postData.selected_amount = $scope.arDataObj.totalAllocatedAmount ;
@@ -239,9 +240,41 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 			postParamsToPay.data = postData;
 			$scope.invokeApi(rvAccountsArTransactionsSrv.paySelected, postParamsToPay );
 		};
-		$scope.shouldShowFooter = function() {
-			//console.log("---"+($scope.arFlags.shouldShowPayAllButton) ? true : ($scope.arDataObj.selectedInvoices.length === 0) ? false : true;));
-			return ($scope.arFlags.shouldShowPayAllButton) ? true : ($scope.arDataObj.selectedInvoices.length === 0) ? false : true;
+		/*
+		 * Pay All Button click
+		 */
+		$scope.clickedPayAllButton = function() {
+			var postParamsToPay = {},
+				postData = {},
+				totalAllocatedAmount = 0;
+
+			_.each($scope.arDataObj.balanceList, function (eachItem) {
+			    	var selectedInvoiceObj = {};
+
+		    		selectedInvoiceObj.invoice_id = eachItem.transaction_id;
+		    		selectedInvoiceObj.amount = eachItem.amount;
+		    		$scope.arDataObj.selectedInvoices.push(selectedInvoiceObj);	   			
+		    		totalAllocatedAmount = totalAllocatedAmount + eachItem.amount;
+    	    });
+			$scope.arDataObj.totalAllocatedAmount  = totalAllocatedAmount;
+
+			postData.credit_id = $scope.allocatedPayment.transaction_id;
+			postData.invoices = $scope.arDataObj.selectedInvoices;
+			postData.selected_amount = $scope.arDataObj.totalAllocatedAmount;
+			postData.available_amount = $scope.arDataObj.availableAmount;
+			postParamsToPay.account_id = $scope.arDataObj.accountId;
+			postParamsToPay.data = postData;
+			$scope.invokeApi(rvAccountsArTransactionsSrv.paySelected, postParamsToPay);
+		};
+		/*
+		 * Should show footer instead of pagination
+		 * 2 cases - one if invoice selected 
+		 *         - if selected payment from add payment or from unallocate tab
+		 */
+		$scope.shouldShowFooter = function() {			
+			var flag = ($scope.arFlags.shouldShowPayAllButton) ? true : ($scope.arDataObj.selectedInvoices.length === 0) ? false : true;
+			
+			return flag;
 		};
 		/*
 		 * To create the parameters which is to be passed to API
@@ -329,7 +362,8 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 			$scope.arFlags.shouldShowPayAllButton = true;
 			$scope.arFlags.currentSelectedArTab = 'balance';
 			$scope.allocatedPayment = selectedPaymentData;
-			
+			$scope.arFlags.isPaymentSelected = true;	
+			$scope.arDataObj.availableAmount = selectedPaymentData.available_amount;		
 		});
 
 		/*

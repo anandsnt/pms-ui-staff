@@ -83,20 +83,20 @@
                 <li>
                     <!-- remove .green, add .grey if can't pay
                          add disabled="disabled" if can't pay -->
-                    <button type="button" ng-disabled="!arFlags.isPaymentSelected" class="button" ng-class="{'green': arFlags.isPaymentSelected, 'grey': !arFlags.isPaymentSelected }" ng-click="paySelectedInvoices()">Pay Selected</button>
+                    <button type="button" ng-disabled="!arFlags.isPaymentSelected || arDataObj.selectedInvoices.length === 0" class="button" ng-class="{'green': arFlags.isPaymentSelected && arDataObj.selectedInvoices.length > 0, 'grey': !arFlags.isPaymentSelected || arDataObj.selectedInvoices.length === 0}" ng-click="paySelectedInvoices()">Pay Selected</button>
                 </li>
 
-                <!-- if we can Pay All --
-                    <li class="break">
-                        <button type="button" class="button blue">Pay All</button>
+                <!-- if we can Pay All -->
+                    <li class="break" ng-show="arFlags.shouldShowPayAllButton">
+                        <button type="button" class="button blue" ng-click="clickedPayAllButton()">Pay All</button>
                     </li>
-                -->
+                
 
             </ul>
 
         </div>
 
-        <rv-pagination ng-show="arDataObj.selectedInvoices.length === 0" page-options="balancePagination" page-data="arDataObj.balanceTotalCount"></rv-pagination>
+        <rv-pagination ng-show="!shouldShowFooter()" page-options="balancePagination" page-data="arDataObj.balanceTotalCount"></rv-pagination>
 
     </div>
 <!-- Manual Balance Billing Content -->
