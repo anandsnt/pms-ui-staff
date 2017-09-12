@@ -75,14 +75,14 @@
  
                 <tr class="payment" ng-repeat="statement in printData.payment_details" ng-if="printData.is_payments">
                     <td class="person-info">
-                        <strong class="name">{{statement.payment_details.name}}</strong>
+                        <strong class="name">{{statement.name}}</strong>
                     </td>
-                    <td class="charge-date">{{statement.payment_details.date_of_charge | date:dateFormat }}</td>
-                    <td class="charge-code">{{statement.payment_details.charge_code}}</td>
-                    <td class="charge-description">{{statement.payment_details.charge_description}}</td>
+                    <td class="charge-date">{{statement.date_of_charge | date:dateFormat }}</td>
+                    <td class="charge-code">{{statement.charge_code}}</td>
+                    <td class="charge-description">{{statement.charge_description}}</td>
                     <td></td>
                     <td></td>
-                    <td class="align-right">{{currencySymbol}}{{statement.payment_details.credits | number: precisonTwo}}</td>
+                    <td class="align-right">{{currencySymbol}}{{statement.credits | number: precisonTwo}}</td>
                 </tr>
                
             </tbody>
