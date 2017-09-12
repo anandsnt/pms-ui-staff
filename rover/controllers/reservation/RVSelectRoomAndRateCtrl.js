@@ -333,7 +333,7 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 
 				if ($scope.stateCheck.activeView === 'ROOM_TYPE') {
 					payLoad.per_page = $scope.stateCheck.pagination.roomType.ratesList.perPage;
-				} else if ($scope.stateCheck.activeView === 'RATE') {
+				} else {
 					payLoad.per_page = $scope.stateCheck.pagination.rate.perPage;
 					payLoad.order = "ALPHABETICAL";
 					if (!!$scope.stateCheck.preferredType && !roomTypeId) {
