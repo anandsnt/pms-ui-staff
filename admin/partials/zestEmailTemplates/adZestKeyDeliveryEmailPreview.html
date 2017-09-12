@@ -141,8 +141,8 @@
                   </td>
                </tr>
                <tr>
-                  <td align="center" class="section-padding" style="padding: 30px 15px 30px 15px;">
-                     <table border="0" cellpadding="0" cellspacing="0" class="responsive-table" width="80%" style="margin:0 auto;">
+                  <td align="center" class="section-padding" style="padding: 30px 50px;">
+                     <table border="0" cellpadding="0" cellspacing="0" class="responsive-table" style="margin:0 auto;">
                         <tr>
                            <td>
                               <table border="0" cellpadding="0" cellspacing="0" width="100%">
@@ -193,15 +193,14 @@
                                                       </td>
                                                    </tr>
                                                    <tr ng-if="!isMobileKeyEmail">
-                                                      <td style="padding-top:60px;">
+                                                      <td style="padding:60px 50px;">
                                                          <!-- COPY -->
-                                                         <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                                                         <table border="0" cellspacing="0" cellpadding="0" style="margin: 0 auto;" width="100%">
                                                             <tr>
-                                                               <td></td>
-                                                               <td>
+                                                               <td ng-if="isQRMail">
                                                                   <img src="{{keyImage}}" alt="" />
                                                                </td>
-                                                               <td colspan="5" style="padding:20px 10px 20px 20px;font-size: {{generalSettings.text_2_font_size}}px;font-family: Helvetica, Arial, sans-serif;text-align: {{generalSettings.email_bottom_text_alignment}}">
+                                                               <td colspan="5" style="padding:20px 0px;font-size: {{generalSettings.text_2_font_size}}px;font-family: Helvetica, Arial, sans-serif;text-align: {{generalSettings.email_bottom_text_alignment}}">
                                                                   <p style="color:{{generalSettings.text_color}};;">
                                                                      <span ng-bind-html="trustHtml(data.email_text_2)"></span>
                                                                   </p>
