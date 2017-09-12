@@ -47,7 +47,7 @@ sntRover.controller('RvArBalanceController', ['$scope', '$timeout', 'rvAccountsA
 	    	event.stopImmediatePropagation();
   			event.stopPropagation();
 
-	    	if (element.parentElement.classList.contains('checkbox') || element.classList.contains('checkbox')){
+	    	if (element.parentElement.classList.contains('checkbox') || element.classList.contains('checkbox')) {
 	    		// Checkbox selection logic will be called here..
 	    	}
 	    	else if ( element.parentElement.classList.contains('has-arrow') || element.classList.contains('has-arrow')) {
@@ -58,14 +58,16 @@ sntRover.controller('RvArBalanceController', ['$scope', '$timeout', 'rvAccountsA
 	    // Handle Toggle button click to expand list item
 	    var clickedBalanceListItem = function( index ) {
 	    	var clikedItem = $scope.arDataObj.balanceList[index];
-
-	    	if (!clikedItem.active) {
-	    		callExpansionAPI(clikedItem);
-	    	}
-	    	else {
-	    		clikedItem.active = false;
-	    		refreshScroll();
-	    	}
+	    	
+			if ( !clikedItem.is_manual_balance || ( clikedItem.is_manual_balance && clikedItem.is_partially_paid) ) {
+		    	if (!clikedItem.active) {
+		    		callExpansionAPI(clikedItem);
+		    	}
+		    	else {
+		    		clikedItem.active = false;
+		    		refreshScroll();
+		    	}
+		    }
 	    };
 
 	    /*
