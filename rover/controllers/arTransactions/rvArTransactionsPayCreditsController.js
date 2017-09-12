@@ -64,11 +64,25 @@ sntRover.controller('RVArTransactionsPayCreditsController',
      * Success call back of success payment
      */
     var successPayment = function(data) {
-       // $scope.$emit("hideLoader");
+
         $scope.depositPaidSuccesFully = true;
         $scope.arDataObj.unallocatedCredit = parseFloat(data.amountPaid).toFixed(2);
         $scope.depositPaidSuccesFully = true;
         $scope.authorizedCode = data.authorization_code;
+
+        $scope.allocatedPayment.payment_type = data.selectedPaymentTypeDescription;
+        if(data.selectedPaymentType === "CC") {
+            data.cc_details.last_digits = data.cc_details.ending_with;
+            data.cc_details.expire_date = data.cc_details.expiry_date;
+            $scope.allocatedPayment.card_details = data.cc_details;
+        }
+        $scope.arFlags.shouldShowPayAllButton = true;
+        $scope.arFlags.currentSelectedArTab = 'balance';
+        $scope.arFlags.isPaymentSelected = true;   
+        $scope.arFlags.insufficientAmount = false; 
+        // $scope.arDataObj.availableAmount = selectedPaymentData.available_amount;
+
+
         // Reload the ar transaction listing after payment
         if (data.allocatePaymentAfterPosting) {
             $scope.$emit('REFRESH_BALANCE_LIST');

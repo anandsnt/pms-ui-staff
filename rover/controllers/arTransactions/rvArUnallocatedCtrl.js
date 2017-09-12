@@ -47,12 +47,14 @@ sntRover.controller('RvArUnallocatedController',
         $scope.clickedUnallocatedListItem = function( index ) {
             var clikedItem = $scope.arDataObj.unallocatedList[index];
 
-            if (!clikedItem.active) {
-                callExpansionAPI(clikedItem);
-            }
-            else {
-                clikedItem.active = false;
-                refreshScroll();
+            if (clikedItem.is_partially_paid) {
+                if (!clikedItem.active) {
+                    callExpansionAPI(clikedItem);
+                }
+                else {
+                    clikedItem.active = false;
+                    refreshScroll();
+                }
             }
         };
 

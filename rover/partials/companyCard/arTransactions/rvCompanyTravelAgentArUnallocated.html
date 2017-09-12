@@ -1,9 +1,7 @@
 <ul class="search-results">
     <li class="reservation transaction payment unallocated" ng-repeat="unallocatedCreditTransaction in arDataObj.unallocatedList track by $index">
 
-        <!-- Add .toggle.has-arrow when partially unallocated -->
-        <!-- if .toggle clicked, add .active -->
-        <div class="faux-anchor toggle has-arrow" ng-class="{'active': unallocatedCreditTransaction.active , 'toggle has-arrow': unallocatedCreditTransaction.is_partially_paid}" ng-click="clickedUnallocatedListItem( $index )" >
+        <div class="faux-anchor" ng-class="{'active': unallocatedCreditTransaction.active , 'toggle has-arrow': unallocatedCreditTransaction.is_partially_paid}" ng-click="clickedUnallocatedListItem( $index )" >
             <div class="data">
                 <h2>{{unallocatedCreditTransaction.payment_type}}</h2>
                 <div class="payment-data">
@@ -31,39 +29,38 @@
                 <!-- if partially unallocated, show icon -->
                 <span class="icons icon-wallet-green" ng-show="unallocatedCreditTransaction.is_partially_paid"></span>
 
-                <span class="currency">{{currencySymbol}}</span>{{unallocatedCreditTransaction.amount}}
+                <span class="currency">{{currencySymbol}}</span>{{unallocatedCreditTransaction.amount | number:2 }}
             </div>
 
             <button type="button" class="button green" ng-click="clickedAllocateButton($index)">Allocate</button>
         </div>
 
         <ul class="search-results" ng-show="unallocatedCreditTransaction.active">
-            <li class="reservation transaction ">
+            <li class="reservation transaction" ng-repeat="item in unallocatedCreditTransaction.transactions">
                 <div class="faux-anchor">
                     <div class="data">
-                        <h2>{Last Name, First Name}</h2>
-                        <span class="invoice">Invoice #<span class="value">39134823</span></span>
-                        <span class="confirmation">Conf #<span class="value">2987998</span></span>
+                        <h2>{{item.guest_last_name}} {{item.guest_first_name}}</h2>
+                        <span class="invoice">Invoice #<span class="value">{{item.invoice_number}}</span></span>
+                        <span class="confirmation">Conf #<span class="value">{{item.reservation_confirm_no}}</span></span>
                     </div>
                     <div class="guest-date arrival">
                         <span class="guest-status small-icon check-in">check-in</span>
                         <time datetime="2017-08-17T12:00:00">
-                            <span class="date">08-17-2017</span>
-                            <span class="time">6:00 PM</span>
+                            <span class="date">{{item.reservation_arrival_date | date : dateFormat}}</span>
+                            <span class="time">{{item.reservation_arrival_time}}</span>
                         </time>
                     </div>
                     <div class="guest-date departure">
                         <span class="guest-status small-icon check-out">check-out</span>
                         <time datetime="2017-08-24T12:00:00">
-                            <span class="date">08-24-2017</span>
-                            <span class="time">3:00 PM</span>
+                            <span class="date">{{item.reservation_dep_date | date : dateFormat}}</span>
+                            <span class="time">{{item.reservation_dep_time}}</span>
                         </time>
                     </div>
                     <div class="amount paid">
-
-                        $107,188.21
+                        {{currencySymbol}} {{item.amount | number:2 }}
                     </div>
-                    <button type="button" class="button white with-icon">
+                    <button type="button" class="button white with-icon" ng-click="clickedUnallocateButton()">
                         <span class="icons icon-remove-40"></span>
                     </button>
                 </div>
