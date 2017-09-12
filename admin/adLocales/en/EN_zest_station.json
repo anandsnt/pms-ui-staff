@@ -132,7 +132,11 @@
 "TURN_OFF_LIGHT": "Turn OFF light",
 "TEST_SETTINGS_INSTRUCTIONS": "If you already know the required light ID, enter the ID in the light ID field. Else click on get lights list button to list all the available lights. Please note that the lights have to be reachable.",
 "HUE_LIGHT_ID": "Hue Light ID",
-"LIGHT_COLOR_INSTRUCTIONS": "Please enter the 6 digit hex color." 
+"LIGHT_COLOR_INSTRUCTIONS": "Please enter the 6 digit hex color." ,
+"LIGHT_BRIGHTNESS": "Light Brightness (0-254)",
+"LIGHT_BLINKING_EFFECT": "Blinking effect",
+"HUE": "Hue (0-65535)",
+"SATURATION": "Saturation (0-254)"
 
 
 
