@@ -39,7 +39,7 @@
             </thead>
             <tbody>
                     
-                <tr class="person" ng-repeat="statement in printData.statement_details" ng-if="!statement.is_payment_method">
+                <tr class="person" ng-repeat="statement in printData.statement_details" ng-if="!statement.is_payments">
                     <td class="person-info">
                         <strong class="name">{{statement.reservation_details.guest_name}}</strong><br>
                         <span class="person-meta">
@@ -73,7 +73,7 @@
                     <td></td>
                 </tr>                         
  
-                <tr class="payment" ng-repeat="statement in printData.statement_details" ng-if="statement.is_payment_method">
+                <tr class="payment" ng-repeat="statement in printData.statement_details" ng-if="statement.is_payments">
                     <td class="person-info">
                         <strong class="name">{{statement.payment_details.name}}</strong>
                     </td>
