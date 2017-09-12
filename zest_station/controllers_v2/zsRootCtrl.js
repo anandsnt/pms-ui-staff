@@ -1792,7 +1792,13 @@ sntZestStation.controller('zsRootCtrl', [
         $scope.turnOnLight = function(selected_light_id) {
             if ($scope.zestStationData.kiosk_is_hue_active) {
                 var lightId = selected_light_id ? selected_light_id : $scope.zestStationData.selected_light_id;
-
+                var brightness;
+                if (typeof $scope.hueSettings.hue_brightness === 'number'){
+                    brightness =  $scope.hueSettings.hue_brightness.toString() 
+                }
+                else{
+                    brightness = '145';
+                }
                 var json = {
                     'Command': 'cmd_hue_light_change',
                     'Data': $scope.zestStationData.hue_bridge_ip,
@@ -1800,7 +1806,7 @@ sntZestStation.controller('zsRootCtrl', [
                     'shouldLight': '1',
                     'lightColor': $scope.zestStationData.hue_light_color_hex,
                     'lightList': [lightId],
-                    'brightness': $scope.zestStationData.hue_brightness,
+                    'brightness': brightness,
                     'blink': $scope.zestStationData.hue_blinking_effect
                 };
                 var jsonstring = JSON.stringify(json);
