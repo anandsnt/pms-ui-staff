@@ -197,9 +197,10 @@ angular.module('sntRover').controller('companyCardDetailsController', ['$scope',
 		};
 
 		/*
-			****
-			CICO-45240 - Fixes loop that was caused when navigating in the following flows:
-			- Search for AR Trans/Company & TA Cards -> Balance/Paid Tabs of a CC -> Reservation's Stay Card -> Back to Balance/Paid tabs -> Back to AR Trans search/Company & TA Cards search
+		*	CICO-45240
+		*	Fixes loop caused when navigating in the following flows:
+		*	- Search AR Trans/Company & TA Cards -> Balance/Paid Tabs of CC -> Reservation Stay Card -> 
+		*		Back to Balance/Paid tabs -> Back to AR Trans/Company & TA Cards search
 		*/
 		if (!$stateParams.isBackFromStaycard) {
 
@@ -209,16 +210,12 @@ angular.module('sntRover').controller('companyCardDetailsController', ['$scope',
 			};
 
 		}
-		/*
-			****
-		*/
 		// CICO-11664
 		// To default the AR transactions tab while navigating back from staycard
 		if ($stateParams.isBackFromStaycard) {
 			$scope.isArTabAvailable = true;
 			/*
-				####
-				CICO-45240
+			*	CICO-45240 - Replace prevState data to that which we stored before going to Staycard.
 			*/
 			if ($rootScope.prevStateBookmarkFromAR.title === $filter('translate')('FIND_CARDS') || $rootScope.prevStateBookmarkFromAR.title === $filter('translate')('MENU_ACCOUNTS_RECEIVABLES')) {
 				$rootScope.setPrevState = {
@@ -227,20 +224,13 @@ angular.module('sntRover').controller('companyCardDetailsController', ['$scope',
 				};
 			}
 			/*
-				####
-			*/
-			/*
-				----
-				CICO-45268 - Added $timeout to fix issue with data not being displayed on returning from Staycard.
+			*	CICO-45268 - Added $timeout to fix issue with data not being displayed on returning from Staycard.
 			*/
 			$timeout(function() {
 				$scope.currentSelectedTab = 'cc-ar-transactions';
 				$scope.$broadcast('setgenerateNewAutoAr', true);
 				$scope.switchTabTo('', 'cc-ar-transactions');
 			}, 50);
-			/*
-				----
-			*/
 		}
 		// CICO-36080 - Back from staycard - Commissions tab as selected
 		if ($stateParams.isBackToTACommission) {

@@ -111,30 +111,25 @@ sntRover.controller('RvArBalanceController', ['$scope', '$timeout', 'rvAccountsA
 		 *Function which fetches and returns the charge details of a grouped charge.
 		*/
 		$scope.expandGroupedCharge = function(item) {
-			// Success callback for the charge detail fetch for grouped charges.
-			var fetchChargeDataSuccessCallback = function(data) {
-				item.light_speed_data = data.data;
-				item.isExpanded = true;
-				$scope.$emit('hideLoader');
-				refreshScroll();
-			};
-			// Failure callback for the charge detail fetch for grouped charges.
-			var fetchChargeDataFailureCallback = function(errorMessage) {
-				$scope.errorMessage = errorMessage;
-				$scope.emit('hideLoader');
-			};
 
 			// If the flag for toggle is false, perform api call to get the data.
 			if (!item.isExpanded) {
-				var params = {
-					'reference_number': item.reference_number,
-					'date': item.date,
-					'bill_id': item.bill_id
-				};
-
-				$scope.invokeApi(RVCompanyCardSrv.groupChargeDetailsFetch, params, fetchChargeDataSuccessCallback, fetchChargeDataFailureCallback);
-			}
-			else {
+				$scope.callAPI(RVCompanyCardSrv.groupChargeDetailsFetch, {
+					params: {
+						'reference_number': item.reference_number,
+						'date': item.date,
+						'bill_id': item.bill_id
+					},
+					successCallBack: function(data) {
+						item.light_speed_data = data.data;
+						item.isExpanded = true;
+						refreshScroll();
+					},
+					failureCallBack: function(errorMessage) {
+						$scope.errorMessage = errorMessage;
+					}
+				});
+			} else {
 				// If the flag for toggle is true, then it is simply reverted to hide the data.
 				item.isExpanded = false;
 				refreshScroll();
