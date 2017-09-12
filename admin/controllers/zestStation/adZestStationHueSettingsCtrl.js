@@ -221,13 +221,6 @@ admin.controller('adZestStationHueSettingsCtrl', ['$scope', '$state', '$rootScop
 
 		$scope.turnONLight = function() {
 
-			var brightness;
-			if (typeof $scope.hueSettings.hue_brightness === 'number'){
-				brightness =  $scope.hueSettings.hue_brightness.toString() 
-			}
-			else{
-				brightness = '145';
-			}
 			var json = {
 				"Command": "cmd_hue_light_change",
 				"Data": $scope.hueSettings.hue_bridge_ip,
@@ -235,7 +228,7 @@ admin.controller('adZestStationHueSettingsCtrl', ['$scope', '$state', '$rootScop
 				"shouldLight": "1",
 				"lightColor": $scope.hueSettings.hue_light_color_hex,
 				"lightList": [$scope.hueSettings.hue_test_light_id],
-				"brightness": brightness,
+				"brightness": $scope.hueSettings.hue_brightness,
 				"blink": $scope.hueSettings.hue_blinking_effect
 				// "hue": $scope.hueSettings.light_hue,
 				// "saturation": $scope.hueSettings.hue_light_saturation
