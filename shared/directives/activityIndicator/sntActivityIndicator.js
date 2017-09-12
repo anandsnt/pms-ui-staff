@@ -25,12 +25,14 @@ angular.module('sntActivityIndicator', [])
             };
         }
     )
-    .service('sntActivity', ['$log', '$rootScope',
-        function ($log, $rootScope) {
+    .service('sntActivity', ['$log', '$rootScope', '$timeout',
+        function ($log, $rootScope, $timeout) {
             var service = this,
                 activities = [],
                 updateIndicator = function () {
-                    $rootScope.hasLoader = activities.length;
+                    $timeout(function () {
+                        $rootScope.hasLoader = activities.length;
+                    }, 300);
                 };
 
             service.start = function (activity) {
