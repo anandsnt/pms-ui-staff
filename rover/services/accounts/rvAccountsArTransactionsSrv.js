@@ -130,5 +130,22 @@ angular.module('sntRover').service('rvAccountsArTransactionsSrv', ['$q', 'rvBase
 
         return deferred.promise;
     };
+
+    // Show unallocate popup data
+    this.unAllocateData = function(data) {
+        var deferred = $q.defer(),
+            url = '/api/accounts/' + data.account_id + '/ar_transactions/unallocate_info';
+
+        rvBaseWebSrvV2.getJSON(url, data.data).then(
+            function(data) {
+                deferred.resolve(data);
+            },
+            function(errorMessage) {
+                deferred.reject(errorMessage);
+            }
+        );
+
+        return deferred.promise;
+    };
     
 }]);

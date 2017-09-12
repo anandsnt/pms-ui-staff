@@ -159,24 +159,32 @@ sntRover.controller('RvArBalanceController', ['$scope', '$timeout', 'rvAccountsA
              * Handle unallocate button click
              */
         $scope.clickedUnallocateButton = function( payment ) {
-            var dataToSend = {
-                invoice_id: 56,
-                credit_id: 11,
-                amount: 777
-            }, successCallback = function(data){
-                console.log(data);
-                ngDialog.open({
+
+            var successCallBackOfUnallocateData = function() {
+
+				ngDialog.open({
                     template: '/assets/partials/companyCard/arTransactions/rvCompanyTravelAgentUnallocatePopup.html',
                     //controller: 'RVArUnAllocationController',
                     scope: $scope
                 });
             };
-            // $scope.invokeApi(rvAccountsArTransactionsSrv.getUnAllocateDetails, dataToSend, successCallback);
-            ngDialog.open({
-                template: '/assets/partials/companyCard/arTransactions/rvCompanyTravelAgentUnallocatePopup.html',
-                // controller: 'RVArUnAllocationController',
-                scope: $scope
-            });
+
+            var requestParams = {},
+            	paramsToService = {};
+
+            // requestParams.credit_id = payment.transaction_id;
+            requestParams.allocation_id = payment.id;
+            // requestParams.amount = payment.amount;
+            
+            paramsToService.account_id = $scope.arDataObj.accountId;
+			paramsToService.data = requestParams;
+
+            var options = {
+				params: paramsToService,
+				successCallBack: successCallBackOfUnallocateData
+			};
+
+			$scope.callAPI(rvAccountsArTransactionsSrv.unAllocateData, options);
         };
         /*
          * Un allocate selected payment

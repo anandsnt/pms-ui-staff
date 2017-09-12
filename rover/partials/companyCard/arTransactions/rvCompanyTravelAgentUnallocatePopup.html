@@ -1,6 +1,6 @@
 <div role="dialog" id="modal" class="modal-show" ng-class="{'modal-show': !modalClosing}">
 	<form method="post" class="modal-content form ar-transaction payment-unallocation">
-		<button class="modal-close" id="modal-close" type="button"><span class="icons icon-close invert"></span></button>
+		<button class="modal-close" id="modal-close" type="button" ng-click="closeDialog()"><span class="icons icon-close invert"></span></button>
 		
 		<strong class="h2 message">Unallocate payment</strong>
 		<span class="text">This will unallocate the payment from this invoice.</span>
