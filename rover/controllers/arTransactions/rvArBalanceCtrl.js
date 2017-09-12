@@ -1,6 +1,6 @@
 
-sntRover.controller('RvArBalanceController', ['$scope', '$timeout', 'rvAccountsArTransactionsSrv', '$vault', '$stateParams', '$state','sntActivity',
-	function($scope, $timeout, rvAccountsArTransactionsSrv, $vault, $stateParams, $state, sntActivity) {
+sntRover.controller('RvArBalanceController', ['$scope', '$timeout', 'rvAccountsArTransactionsSrv', 'RVCompanyCardSrv', '$vault', '$stateParams', '$state','sntActivity',
+	function($scope, $timeout, rvAccountsArTransactionsSrv, RVCompanyCardSrv, $vault, $stateParams, $state, sntActivity) {
 
 		BaseCtrl.call(this, $scope);		
 
@@ -99,7 +99,7 @@ sntRover.controller('RvArBalanceController', ['$scope', '$timeout', 'rvAccountsA
 	    	event.stopImmediatePropagation();
   			event.stopPropagation();
 
-	    	if (element.parentElement.classList.contains('checkbox') || element.classList.contains('checkbox')){
+	    	if (element.parentElement.classList.contains('checkbox') || element.classList.contains('checkbox')) {
 	    		// Checkbox selection logic will be called here..
 	    		selectInvoice(clikedItem.transaction_id)
 	    	}
@@ -111,14 +111,16 @@ sntRover.controller('RvArBalanceController', ['$scope', '$timeout', 'rvAccountsA
 	    // Handle Toggle button click to expand list item
 	    var clickedBalanceListItem = function( index ) {
 	    	var clikedItem = $scope.arDataObj.balanceList[index];
-
-	    	if (!clikedItem.active) {
-	    		callExpansionAPI(clikedItem);
-	    	}
-	    	else {
-	    		clikedItem.active = false;
-	    		refreshScroll();
-	    	}
+	    	
+			if ( !clikedItem.is_manual_balance || ( clikedItem.is_manual_balance && clikedItem.is_partially_paid) ) {
+		    	if (!clikedItem.active) {
+		    		callExpansionAPI(clikedItem);
+		    	}
+		    	else {
+		    		clikedItem.active = false;
+		    		refreshScroll();
+		    	}
+		    }
 	    };
 
 	    /*
@@ -156,5 +158,34 @@ sntRover.controller('RvArBalanceController', ['$scope', '$timeout', 'rvAccountsA
 
 		// Handle unallocate button click.
 		$scope.clickedUnallocateButton = function() {
+		};
+
+		/*
+		 *Function which fetches and returns the charge details of a grouped charge.
+		*/
+		$scope.expandGroupedCharge = function(item) {
+
+			// If the flag for toggle is false, perform api call to get the data.
+			if (!item.isExpanded) {
+				$scope.callAPI(RVCompanyCardSrv.groupChargeDetailsFetch, {
+					params: {
+						'reference_number': item.reference_number,
+						'date': item.date,
+						'bill_id': item.bill_id
+					},
+					successCallBack: function(data) {
+						item.light_speed_data = data.data;
+						item.isExpanded = true;
+						refreshScroll();
+					},
+					failureCallBack: function(errorMessage) {
+						$scope.errorMessage = errorMessage;
+					}
+				});
+			} else {
+				// If the flag for toggle is true, then it is simply reverted to hide the data.
+				item.isExpanded = false;
+				refreshScroll();
+			}
 		};
 }]);
