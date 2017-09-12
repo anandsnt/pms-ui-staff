@@ -1,6 +1,9 @@
 <div role="dialog" id="modal" class="modal-show" ng-class="{'modal-show': !modalClosing}">
 	<div class="modal-content">
-		<button type="button" id="modal-close" class="modal-close" ng-click="closeDialog()">
+		<button ng-if='checkoutStatus !== "success"' type="button" id="modal-close" class="modal-close" ng-click="closeDialog()">
+			<span class="icons icon-close invert"></span>
+		</button>
+		<button ng-if='checkoutStatus === "success"' type="button" id="modal-close" class="modal-close" ng-click="okButtonClicked()">
 			<span class="icons icon-close invert"></span>
 		</button>
 		<div class="h3 message">{{popupMessage}}</div>
