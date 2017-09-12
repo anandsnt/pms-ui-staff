@@ -35,7 +35,8 @@ sntRover.controller('RvArBalanceController', ['$scope', '$timeout', 'rvAccountsA
 	    	$scope.arDataObj.balanceList[index].balanceAfter = $scope.arDataObj.balanceList[index].initialAmount - $scope.arDataObj.balanceList[index].amount;
 	    	$scope.arDataObj.balanceList[index].balanceNow = $scope.arDataObj.balanceList[index].amount;
 
-	    	var selectedItem = _.findWhere($scope.arDataObj.selectedInvoices, {invoice_id: $scope.arDataObj.balanceList[index].transaction_id}) 
+	    	var selectedItem = _.findWhere($scope.arDataObj.selectedInvoices, {invoice_id: $scope.arDataObj.balanceList[index].transaction_id}) ;
+	    	
 	    	selectedItem.amount = parseFloat($scope.arDataObj.balanceList[index].amount);
 
 	    	calculateTotalAmount();

@@ -226,11 +226,17 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 	      	});
 	      	$scope.paymentModalOpened = true;
 		};
+		/*
+		 * Success callback of payment
+		 */
 		var successCallBackOfPayment = function() {
 			$scope.arFlags.insufficientAmount = false;
 		};
+		/*
+		 * Failure callback of payment
+		 */
 		var failureCallBackOfPayment = function(errorMessage) {
-			
+			// In this case - we have to show the error in footer
 			if(errorMessage[0] === "Insufficient Funds.Please 'Add payment' first") {
 				$scope.errorMessage = [];
 				$scope.arFlags.insufficientAmount = true;
@@ -290,6 +296,18 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 			};
 
 			$scope.callAPI(rvAccountsArTransactionsSrv.paySelected, options);
+		};
+		/*
+		 * Clicked Cancel from footer
+		 */
+		$scope.clickCancelFromFooter = function() {
+			$scope.arFlags.isPaymentSelected = false;
+			$scope.arFlags.shouldShowFooter = false;
+			$scope.arFlags.insufficientAmount = false;
+			$scope.arDataObj.selectedInvoices = [];
+			_.each($scope.arDataObj.balanceList, function (eachItem) {
+			    eachItem.isSelected = false;
+		    });
 		};
 		/*
 		 * Should show footer instead of pagination
@@ -383,7 +401,6 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 		});
 		// Clicked allocate button from unallocated tab
 		$scope.$on("CLICKED_ALLOCATE_BUTTON", function(event, selectedPaymentData) {
-			console.log(selectedPaymentData);
 			$scope.arFlags.shouldShowPayAllButton = true;
 			$scope.arFlags.currentSelectedArTab = 'balance';
 			$scope.allocatedPayment = selectedPaymentData;

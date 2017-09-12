@@ -1253,6 +1253,9 @@ angular.module('sntPay').controller('sntPaymentController',
 
                 response.amountPaid = $scope.payment.amount;
                 response.authorizationCode = response.authorization_code;
+
+                response.selectedPaymentType = $scope.selectedPaymentType;
+                response.selectedPaymentTypeDescription = _.findWhere($scope.paymentTypes, {name: $scope.selectedPaymentType}).description;
                 //  NOTE: The feePaid key and value would be sent IFF a fee was applied along with the payment
                 if ($scope.feeData) {
                     response.feePaid = $scope.feeData.calculatedFee;

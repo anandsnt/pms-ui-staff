@@ -46,7 +46,7 @@
         
         <!-- remove hidden when .with-footer-->
         <div class="billing-footer error" ng-show="arFlags.insufficientAmount">
-            Insufficient Funds. Please <button type="button" class="button green">Add Payment</button> first.
+            Insufficient Funds. Please <button type="button" class="button green" ng-click="addPayment()">Add Payment</button> first.
         </div>
         <div class="billing-footer" ng-show="shouldShowFooter() && !arFlags.insufficientAmount">
 
@@ -81,7 +81,7 @@
             <ul class="actions">
 
                 <li>
-                    <button type="button" class="button blank">Cancel</button>
+                    <button type="button" class="button blank" ng-click="clickCancelFromFooter()">Cancel</button>
                 </li>
                 <li>
                     <!-- remove .green, add .grey if can't pay
