@@ -1,6 +1,6 @@
 
-sntRover.controller('RvArPaidController', ['$scope', '$timeout', 'rvAccountsArTransactionsSrv', '$vault', '$stateParams', '$state','sntActivity',
-	function($scope, $timeout, rvAccountsArTransactionsSrv, $vault, $stateParams, $state, sntActivity) {
+sntRover.controller('RvArPaidController', ['$scope', '$timeout', 'RVCompanyCardSrv', 'rvAccountsArTransactionsSrv', '$vault', '$stateParams', '$state','sntActivity',
+	function($scope, $timeout, RVCompanyCardSrv, rvAccountsArTransactionsSrv, $vault, $stateParams, $state, sntActivity) {
 
 		BaseCtrl.call(this, $scope);
 
@@ -87,5 +87,33 @@ sntRover.controller('RvArPaidController', ['$scope', '$timeout', 'rvAccountsArTr
 		// Handle unallocate button click.
 		$scope.clickedUnallocateButton = function() {
 		};
-		
+
+		/*
+		 *Function which fetches and returns the charge details of a grouped charge.
+		*/
+		$scope.expandGroupedCharge = function(item) {
+
+			// If the flag for toggle is false, perform api call to get the data.
+			if (!item.isExpanded) {
+				$scope.callAPI(RVCompanyCardSrv.groupChargeDetailsFetch, {
+					params: {
+						'reference_number': item.reference_number,
+						'date': item.date,
+						'bill_id': item.bill_id
+					},
+					successCallBack: function(data) {
+						item.light_speed_data = data.data;
+						item.isExpanded = true;
+						refreshScroll();
+					},
+					failureCallBack: function(errorMessage) {
+						$scope.errorMessage = errorMessage;
+					}
+				});
+			} else {
+				// If the flag for toggle is true, then it is simply reverted to hide the data.
+				item.isExpanded = false;
+				refreshScroll();
+			}
+		};
 }]);
