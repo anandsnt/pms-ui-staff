@@ -18,6 +18,10 @@ var DesktopCardOperations = function() {
         that.isDesktopUUIDServiceInvoked = true;
     };
 
+    this.startReader = function () {
+        ws.send("observeForSwipe");
+    };
+
     var createConnection = function() {
         try {
             if (_.isUndefined(that.ccSwipeURL) || that.ccSwipeURL === '') {

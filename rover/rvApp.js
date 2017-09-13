@@ -82,17 +82,30 @@ sntRover.config([
  */
 
 sntRover.run([
-	'$rootScope',
-	'$state',
-	'$stateParams',
-	'RVHkRoomStatusSrv',
-	'$$animateJs',
-	function ($rootScope, $state, $stateParams, RVHkRoomStatusSrv,$$animateJs) {
-		$rootScope.$state = $state;
-		$rootScope.$stateParams = $stateParams;
+    '$rootScope',
+    '$state',
+    '$stateParams',
+    'RVHkRoomStatusSrv',
+    '$$animateJs',
+    '$log',
+    function ($rootScope, $state, $stateParams, RVHkRoomStatusSrv, $$animateJs, $log) {
+        var hidden, visibilityChange;
 
-		$rootScope.setPrevState = {};
-		$rootScope.setNextState = {};
+        $rootScope.$state = $state;
+        $rootScope.$stateParams = $stateParams;
+        $rootScope.setPrevState = {};
+        $rootScope.setNextState = {};
+
+        if (typeof document.hidden !== 'undefined') { // Opera 12.10 and Firefox 18 and later support
+            hidden = 'hidden';
+            visibilityChange = 'visibilitychange';
+        } else if (typeof document.msHidden !== 'undefined') {
+            hidden = 'msHidden';
+            visibilityChange = 'msvisibilitychange';
+        } else if (typeof document.webkitHidden !== 'undefined') {
+            hidden = 'webkitHidden';
+            visibilityChange = 'webkitvisibilitychange';
+        }
 
 		/**
 		*	if this is true animation will be revesed, no more checks
@@ -397,6 +410,14 @@ sntRover.run([
 
 		document.addEventListener("OBSERVE_FOR_SWIPE", function() {
             $rootScope.$broadcast("RESUME_OBSERVE_FOR_SWIPE_RESETS");
+        });
+
+        document.addEventListener(visibilityChange, function () {
+            if (!document[hidden] && sntapp.desktopCardReader.isActive) {
+
+                $log.info('invoke... sntapp.desktopCardReader.startReader');
+                sntapp.desktopCardReader.startReader();
+            }
         });
 
 	}
