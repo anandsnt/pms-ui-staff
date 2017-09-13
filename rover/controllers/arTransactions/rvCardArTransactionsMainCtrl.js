@@ -238,10 +238,6 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 	      	$scope.paymentModalOpened = true;
 		};
 
-
-
-
-
 	    /*
 		* Data object to pass to the credit pay controller
 		*/
