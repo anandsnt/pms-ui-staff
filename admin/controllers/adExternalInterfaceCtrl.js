@@ -1,6 +1,18 @@
-admin.controller('adExternalInterfaceCtrl', ['$scope', '$rootScope', '$controller', 'ngDialog', 'adExternalInterfaceCommonSrv', 'adSiteminderSetupSrv', 'adSynxisSetupSrv', 'adZDirectSetupSrv', 'adTravelTripperSetupSrv', 'adGivexSetupSrv', 'ADChannelMgrSrv', '$state', '$filter', '$stateParams',
-  function ($scope, $rootScope, $controller, ngDialog, adExternalInterfaceCommonSrv, adSiteminderSetupSrv, adSynxisSetupSrv, adZDirectSetupSrv, adTravelTripperSetupSrv, adGivexSetupSrv, ADChannelMgrSrv, $state, $filter, $stateParams) {
-    $scope.$emit("changedSelectedMenu", 8);
+admin.controller('adExternalInterfaceCtrl',
+    ['$scope', '$rootScope', '$controller', 'ngDialog', 'adExternalInterfaceCommonSrv', 'adSiteminderSetupSrv',
+        'adSynxisSetupSrv', 'adZDirectSetupSrv', 'adTravelTripperSetupSrv', 'adGivexSetupSrv',
+        'ADChannelMgrSrv', '$state', '$filter',
+        function ($scope, $rootScope, $controller, ngDialog, adExternalInterfaceCommonSrv, adSiteminderSetupSrv,
+                  adSynxisSetupSrv, adZDirectSetupSrv, adTravelTripperSetupSrv, adGivexSetupSrv,
+                  ADChannelMgrSrv, $state, $filter) {
+
+            $scope.$emit('changedSelectedMenu', (function () {
+                return _.indexOf($scope.data.menus,
+                    _.findWhere($scope.data.menus, {
+                        menu_id: 9 // 9 is ID returned by API for the Interfaces Menu
+                    }));
+            })());
+
     $scope.errorMessage = '';
     $scope.successMessage = '';
     $scope.isLoading = true;
@@ -389,11 +401,18 @@ admin.controller('adExternalInterfaceCtrl', ['$scope', '$rootScope', '$controlle
         $scope.successMessage = $scope.interfaceName + ' Save Success';
         $scope.$emit('hideLoader');
       };
+
       $scope.saveSetupFailureCallback = function (data) {
-        $scope.isLoading = false;
-        $scope.errorMessage = $scope.interfaceName + ' Save Failed ';
-        $scope.$emit('hideLoader');
+          $scope.isLoading = false;
+          if (data && data.length) {
+              $scope.errorMessage = data;
+          } else {
+              $scope.errorMessage = $scope.interfaceName + ' Save Failed ';
+          }
+
+          $scope.$emit('hideLoader');
       };
+
     $scope.saveSetup = function () {
         var saveData;
 
