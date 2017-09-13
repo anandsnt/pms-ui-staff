@@ -49,7 +49,48 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 			'paidTotalCount': 0,
 			'allocatedTotalCount': 0,
 			'unallocatedTotalCount': 0,
-			'accountId': $stateParams.id
+			'accountId': ( !!$stateParams.isFromCards ) ? $scope.contactInformation.id : $stateParams.id
+		};
+
+		/*
+		 * To create the parameters which is to be passed to API
+		 */
+
+		var createParametersFetchTheData = function () {
+			var dataToSend = {
+				account_id: $scope.arDataObj.accountId,
+				getParams : {
+					per_page: $scope.arDataObj.perPage,
+					from_date: $scope.filterData.fromDate,
+					to_date: $scope.filterData.toDate,
+					query: $scope.filterData.query
+				}
+			};
+
+			switch ($scope.arFlags.currentSelectedArTab) {
+			    case 'balance':
+			        dataToSend.getParams.transaction_type = 'CHARGES';
+					dataToSend.getParams.paid = false;
+					dataToSend.getParams.page = $scope.arDataObj.balancePageNo;
+			        break;
+			    case 'paid-bills':
+			        dataToSend.getParams.transaction_type = 'CHARGES';
+					dataToSend.getParams.paid = true;
+					dataToSend.getParams.page = $scope.arDataObj.paidPageNo;
+			        break;
+			    case 'unallocated':
+			        dataToSend.getParams.transaction_type = 'PAYMENTS';
+					dataToSend.getParams.allocated = false;
+					dataToSend.getParams.page = $scope.arDataObj.unallocatePageNo;
+			        break;
+			    case 'allocated':
+			        dataToSend.getParams.transaction_type = 'PAYMENTS';
+					dataToSend.getParams.allocated = true;
+                    dataToSend.getParams.page = $scope.arDataObj.allocatePageNo;
+			        break;
+			}
+
+			return dataToSend;
 		};
 
 		// Append active class
@@ -197,49 +238,6 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 	      	$scope.paymentModalOpened = true;
 		};
 
-
-		/*
-		 * To create the parameters which is to be passed to API
-		 */
-
-		var createParametersFetchTheData = function () {
-			var dataToSend = {
-				account_id: $scope.arDataObj.accountId,
-				getParams : {
-					per_page: $scope.arDataObj.perPage,
-					from_date: $scope.filterData.fromDate,
-					to_date: $scope.filterData.toDate,
-					query: $scope.filterData.query
-				}
-			};
-
-			switch ($scope.arFlags.currentSelectedArTab) {
-			    case 'balance':
-			        dataToSend.getParams.transaction_type = 'CHARGES';
-					dataToSend.getParams.paid = false;
-					dataToSend.getParams.page = $scope.arDataObj.balancePageNo;
-			        break;
-			    case 'paid-bills':
-			        dataToSend.getParams.transaction_type = 'CHARGES';
-					dataToSend.getParams.paid = true;
-					dataToSend.getParams.page = $scope.arDataObj.paidPageNo;
-			        break;
-			    case 'unallocated':
-			        dataToSend.getParams.transaction_type = 'PAYMENTS';
-					dataToSend.getParams.allocated = false;
-					dataToSend.getParams.page = $scope.arDataObj.unallocatePageNo;
-			        break;
-			    case 'allocated':
-			        dataToSend.getParams.transaction_type = 'PAYMENTS';
-					dataToSend.getParams.allocated = true;
-                    dataToSend.getParams.page = $scope.arDataObj.allocatePageNo;
-			        break;
-			}
-
-			return dataToSend;
-		};
-
-
 	    /*
 		* Data object to pass to the credit pay controller
 		*/
@@ -283,7 +281,7 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 		 * Initial loading of this AR transactions tab
 		 */
 
-		$rootScope.$on("arTransactionTabActive", function(event) {
+		$scope.$on("arTransactionTabActive", function() {
 			init();
 			$scope.arFlags.isArTabActive = true;
 		});
