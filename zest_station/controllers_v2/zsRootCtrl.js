@@ -1792,14 +1792,15 @@ sntZestStation.controller('zsRootCtrl', [
         $scope.turnOnLight = function(selected_light_id) {
             if ($scope.zestStationData.kiosk_is_hue_active) {
                 var lightId = selected_light_id ? selected_light_id : $scope.zestStationData.selected_light_id;
-
                 var json = {
                     'Command': 'cmd_hue_light_change',
                     'Data': $scope.zestStationData.hue_bridge_ip,
                     'hueLightAppkey': $scope.zestStationData.hue_user_name,
                     'shouldLight': '1',
                     'lightColor': $scope.zestStationData.hue_light_color_hex,
-                    'lightList': [lightId]
+                    'lightList': [lightId],
+                    'brightness': $scope.zestStationData.hue_brightness,
+                    'blink': $scope.zestStationData.hue_blinking_effect
                 };
                 var jsonstring = JSON.stringify(json);
 
