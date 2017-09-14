@@ -32,13 +32,7 @@
                     <option ng-repeat="workType in workTypes" value="{{workType.id}}" ng-if="workType.is_active">{{workType.name}}</option>
                 </select>
             </div>
-        </div>
-        <div class="entry task">
-            <button type="button" class="button blue with-icon only-icon"
-                    ng-click="executeAutoAssign()">
-                    <span class="icons icon-print"></span>
-            </button>
-        </div>
+        </div>        
         <div class="entry actions">
             <div class="action" ng-hide="workSheetChanged">
                 <label translate>PRINT</label>
@@ -67,6 +61,9 @@
     <!-- Unassigned rooms -->
     <section id="unassigned-rooms">
         <h2 translate>UNASSIGNED</h2>
+        <button type="button" class="button orange" ng-click="executeAutoAssign()">
+ 			{{'AUTO_ASSIGN' | translate}}
+        </button>
         <button type="button" class="button white with-icon only-icon"
                 ng-click="showFilter()">
             <span class="icons icon-filter"></span>
