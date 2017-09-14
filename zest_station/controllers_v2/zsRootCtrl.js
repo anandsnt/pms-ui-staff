@@ -1501,22 +1501,6 @@ sntZestStation.controller('zsRootCtrl', [
         }
         storage.setItem(refreshedKey, 'false');
 
-
-        $scope.$on('SYNC_GUEST_ID_SCAN_SETTING', function() {
-            // to be removed in or after sprint 92 (3.0 release), once yotel is fully utilized enhanced engine
-            // at which point we will stop using v1 samsotech logic all togther
-            try {
-                var v1GuestIDScanning = $scope.zestStationData.v1GuestIDScanning ? $scope.zestStationData.v1GuestIDScanning : 'false';
-
-                storage.setItem(guest_id_scan_version, v1GuestIDScanning);
-
-            } catch (err) {
-                $log.warn(err);
-            }
-
-        });
-
-
 		/**
 		 * [setWorkStationForAdmin description]
 		 *  The workstation, status and oos reason are stored in
@@ -1897,15 +1881,8 @@ sntZestStation.controller('zsRootCtrl', [
                 setupLanguageTranslations();
             }
             $rootScope.isStandAlone = zestStationSettings.is_standalone;
-            $scope.zestStationData.check_in_collect_passport = zestStationSettings.scan_guest_id;// && zestStationSettings.scan_guest_id_active;// _active is to View from StayCard
-
-            v1GuestIDScanning = storage.getItem(guest_id_scan_version);
-            
-            if (v1GuestIDScanning === 'true') {
-                $scope.zestStationData.v1GuestIDScanning = 'true';
-            } else {
-                $scope.zestStationData.v1GuestIDScanning = 'false';
-            }
+            $scope.zestStationData.check_in_collect_passport = zestStationSettings.scan_guest_id;// && zestStationSettings.scan_guest_id_active;// _active is to View from StayCard       
+            $scope.zestStationData.v1GuestIDScanning =  $scope.zestStationData.scanner_use_v1_lib ? 'true' : false;
 
             $scope.zestStationData.showTemplateList = false; // Only for ipad in dev environment, switch themes fast like in chrome (dashboard view)
             $scope.zestStationData.makingKeyInProgress = false;
