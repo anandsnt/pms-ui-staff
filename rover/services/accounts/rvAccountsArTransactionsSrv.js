@@ -114,12 +114,29 @@ angular.module('sntRover').service('rvAccountsArTransactionsSrv', ['$q', 'rvBase
         return deferred.promise;
     };
 
-    // To pay/allocate the selected invoices amount
+    // To unallocate the selected invoices amount
     this.unAllocateSelectedPayment = function(data) {
         var deferred = $q.defer(),
-            url = '/api/accounts/' + data.account_id + '/ar_transactions/allocate_payment';
+            url = '/api/accounts/' + data.account_id + '/ar_transactions/unallocate_payment';
 
         rvBaseWebSrvV2.postJSON(url, data.data).then(
+            function(data) {
+                deferred.resolve(data);
+            },
+            function(errorMessage) {
+                deferred.reject(errorMessage);
+            }
+        );
+
+        return deferred.promise;
+    };
+
+    // Show unallocate popup data
+    this.unAllocateData = function(data) {
+        var deferred = $q.defer(),
+            url = '/api/accounts/' + data.account_id + '/ar_transactions/unallocate_info';
+
+        rvBaseWebSrvV2.getJSON(url, data.data).then(
             function(data) {
                 deferred.resolve(data);
             },
