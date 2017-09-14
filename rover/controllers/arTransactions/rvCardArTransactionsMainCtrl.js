@@ -54,9 +54,10 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 			'paidTotalCount': 0,
 			'allocatedTotalCount': 0,
 			'unallocatedTotalCount': 0,
-			'accountId': ( !!$stateParams.isFromCards ) ? $scope.contactInformation.id : $stateParams.id
+			'accountId': ( typeof $scope.contactInformation === 'undefined' ) ? $stateParams.id : $scope.contactInformation.id,
+			'isOnStayCardView': !!$scope.contactInformation
 		};
-
+		
 		/*
 		 * To create the parameters which is to be passed to API
 		 */
