@@ -1491,10 +1491,8 @@ angular.module('sntRover').controller('RVWorkManagementMultiSheetCtrl', ['$rootS
 
         // Get the ids of the selected employees
         var getSelectedEmployees = function () {
-            var currIds = _.where($scope.employeeList, { ticked: true });
-            
-            currIds     = _.pluck(currIds, 'id');
-
+            var currIds = _.pluck(_.where($scope.employeeList, { ticked: true }), 'id');
+                        
             return currIds;
         };
 
@@ -1522,11 +1520,6 @@ angular.module('sntRover').controller('RVWorkManagementMultiSheetCtrl', ['$rootS
             };
 
             $scope.callAPI(RVWorkManagementSrv.executeAutoAssign, options);
-
         };
-
-
 	}
-
-
 ]);
