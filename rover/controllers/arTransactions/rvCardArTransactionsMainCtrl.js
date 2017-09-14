@@ -273,6 +273,7 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 		 */
 		var successCallBackOfPayment = function() {
 			$scope.arFlags.insufficientAmount = false;
+			$scope.fetchTransactions();
 		};
 		/*
 		 * Failure callback of payment
@@ -470,6 +471,12 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 			$scope.arFlags.currentSelectedArTab = 'balance';
 			$scope.fetchTransactions();
 		});
+        //Refresh balance list - after adding new manual balance
+        // and after succesfull payment with Allocate payment after posting checked
+        $scope.$on('REFRESH_UNALLOCATED', function() {
+            $scope.arFlags.currentSelectedArTab = 'unallocated';
+            $scope.fetchTransactions();
+        });
         // Refresh balance list - after adding new manual balance
         // and after succesfull payment with Allocate payment after posting checked
         $scope.$on('REFRESH_PAID_BILLS', function() {
