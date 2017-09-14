@@ -6,7 +6,8 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 	'ngDialog',
 	'$timeout',
 	'rvAccountsArTransactionsSrv',
-	function($scope, $rootScope, $stateParams, ngDialog, $timeout, rvAccountsArTransactionsSrv) {
+	'RVReservationCardSrv',
+	function($scope, $rootScope, $stateParams, ngDialog, $timeout, rvAccountsArTransactionsSrv, RVReservationCardSrv) {
 
 		BaseCtrl.call(this, $scope);
 		$scope.errorMessage = '';
@@ -57,7 +58,48 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 			'selectedInvoices': [],
 			'totalAllocatedAmount': 0,
 			'availableAmount': 0,
-			'accountId': $stateParams.id
+			'accountId': ( !!$stateParams.isFromCards ) ? $scope.contactInformation.id : $stateParams.id
+		};
+
+		/*
+		 * To create the parameters which is to be passed to API
+		 */
+
+		var createParametersFetchTheData = function () {
+			var dataToSend = {
+				account_id: $scope.arDataObj.accountId,
+				getParams : {
+					per_page: $scope.arDataObj.perPage,
+					from_date: $scope.filterData.fromDate,
+					to_date: $scope.filterData.toDate,
+					query: $scope.filterData.query
+				}
+			};
+
+			switch ($scope.arFlags.currentSelectedArTab) {
+			    case 'balance':
+			        dataToSend.getParams.transaction_type = 'CHARGES';
+					dataToSend.getParams.paid = false;
+					dataToSend.getParams.page = $scope.arDataObj.balancePageNo;
+			        break;
+			    case 'paid-bills':
+			        dataToSend.getParams.transaction_type = 'CHARGES';
+					dataToSend.getParams.paid = true;
+					dataToSend.getParams.page = $scope.arDataObj.paidPageNo;
+			        break;
+			    case 'unallocated':
+			        dataToSend.getParams.transaction_type = 'PAYMENTS';
+					dataToSend.getParams.allocated = false;
+					dataToSend.getParams.page = $scope.arDataObj.unallocatePageNo;
+			        break;
+			    case 'allocated':
+			        dataToSend.getParams.transaction_type = 'PAYMENTS';
+					dataToSend.getParams.allocated = true;
+                    dataToSend.getParams.page = $scope.arDataObj.allocatePageNo;
+			        break;
+			}
+
+			return dataToSend;
 		};
 
 		// Append active class
@@ -360,7 +402,6 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 			return dataToSend;
 		};
 
-
 	    /*
 		* Data object to pass to the credit pay controller
 		*/
@@ -376,6 +417,40 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 
 			return passData;
 		};
+
+		/*
+		 *	MLI SWIPE actions
+		 */
+		var processSwipedData = function(swipedCardData) {
+
+			var passData = getPassData();
+			var swipeOperationObj = new SwipeOperation();
+			var swipedCardDataToRender = swipeOperationObj.createSWipedDataToRender(swipedCardData);
+
+			passData.details.swipedDataToRenderInScreen = swipedCardDataToRender;
+			$scope.$broadcast('SHOW_SWIPED_DATA_ON_PAY_SCREEN', swipedCardDataToRender);
+
+		};
+
+		/*
+		 * Handle swipe action
+		 */
+
+		$scope.$on('SWIPE_ACTION', function(event, swipedCardData) {
+			if ($scope.paymentModalOpened) {
+				var swipeOperationObj = new SwipeOperation();
+				var getTokenFrom = swipeOperationObj.createDataToTokenize(swipedCardData);
+				var tokenizeSuccessCallback = function(tokenValue) {
+					$scope.$emit('hideLoader');
+					swipedCardData.token = tokenValue;
+					processSwipedData(swipedCardData);
+				};
+
+				$scope.invokeApi(RVReservationCardSrv.tokenize, getTokenFrom, tokenizeSuccessCallback);
+			} else {
+				return;
+			}
+		});
 
 		/*
 		 * Initial loading of the screen
@@ -412,7 +487,7 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 		 * Initial loading of this AR transactions tab
 		 */
 
-		$rootScope.$on("arTransactionTabActive", function(event) {
+		$scope.$on("arTransactionTabActive", function() {
 			init();
 			$scope.arFlags.isArTabActive = true;
 		});
