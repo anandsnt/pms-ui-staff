@@ -193,7 +193,8 @@ sntRover.controller('RvArBalanceController', ['$scope', '$timeout', 'rvAccountsA
             var requestParams = {},
                 paramsToService = {},
                 successCallBackOfUnallocate = function (data) {
-                    console.log(data);
+                    $scope.$emit('REFRESH_BALANCE_LIST');
+                    ngDialog.close();
                 };
             requestParams.allocation_id = $scope.selectedUnAllocatedItem.allocation_id;
             requestParams.credit_id = $scope.selectedUnAllocatedItem.from_bill.transaction_id;
