@@ -273,6 +273,7 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 		 */
 		var successCallBackOfPayment = function() {
 			$scope.arFlags.insufficientAmount = false;
+            $scope.arDataObj.selectedInvoices = [];
 			$scope.fetchTransactions();
 		};
 		/*

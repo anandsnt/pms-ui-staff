@@ -55,7 +55,6 @@ sntRover.controller('RvArBalanceController', ['$scope', '$timeout', 'rvAccountsA
 		    		selectedInvoiceObj.invoice_id = transactionId;
 		    		selectedInvoiceObj.amount = eachItem.amount;
 		    		if (eachItem.isSelected) {
-                        $scope.arDataObj.selectedInvoices = [];
 		    			$scope.arDataObj.selectedInvoices.push(selectedInvoiceObj);		    			
 		    		} else { 
 		    			
