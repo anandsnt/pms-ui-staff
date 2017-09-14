@@ -6,7 +6,8 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 	'ngDialog',
 	'$timeout',
 	'rvAccountsArTransactionsSrv',
-	function($scope, $rootScope, $stateParams, ngDialog, $timeout, rvAccountsArTransactionsSrv) {
+	'RVReservationCardSrv',
+	function($scope, $rootScope, $stateParams, ngDialog, $timeout, rvAccountsArTransactionsSrv, RVReservationCardSrv) {
 
 		BaseCtrl.call(this, $scope);
 		$scope.errorMessage = '';
@@ -255,6 +256,40 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 
 			return passData;
 		};
+
+		/*
+		 *	MLI SWIPE actions
+		 */
+		var processSwipedData = function(swipedCardData) {
+
+			var passData = getPassData();
+			var swipeOperationObj = new SwipeOperation();
+			var swipedCardDataToRender = swipeOperationObj.createSWipedDataToRender(swipedCardData);
+
+			passData.details.swipedDataToRenderInScreen = swipedCardDataToRender;
+			$scope.$broadcast('SHOW_SWIPED_DATA_ON_PAY_SCREEN', swipedCardDataToRender);
+
+		};
+
+		/*
+		 * Handle swipe action
+		 */
+
+		$scope.$on('SWIPE_ACTION', function(event, swipedCardData) {
+			if ($scope.paymentModalOpened) {
+				var swipeOperationObj = new SwipeOperation();
+				var getTokenFrom = swipeOperationObj.createDataToTokenize(swipedCardData);
+				var tokenizeSuccessCallback = function(tokenValue) {
+					$scope.$emit('hideLoader');
+					swipedCardData.token = tokenValue;
+					processSwipedData(swipedCardData);
+				};
+
+				$scope.invokeApi(RVReservationCardSrv.tokenize, getTokenFrom, tokenizeSuccessCallback);
+			} else {
+				return;
+			}
+		});
 
 		/*
 		 * Initial loading of the screen
