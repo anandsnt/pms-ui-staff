@@ -307,6 +307,10 @@ sntZestStation.controller('zsAdminCtrl', [
                 $scope.zestStationData.selected_light_id = station.hue_light_id;
                 var workStationstorageKey = 'snt_zs_workstation';
 
+                if ($scope.zestStationData.check_in_collect_passport) {
+                    $scope.$emit('SYNC_GUEST_ID_SCAN_SETTING');    
+                }
+
                 localStorage.setItem(workStationstorageKey, $scope.savedSettings.kiosk.workstation.station_identifier);
                 // navigate to home screen
                 // 

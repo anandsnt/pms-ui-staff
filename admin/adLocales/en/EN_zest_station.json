@@ -96,6 +96,12 @@
 "USE_ZEST_STATION_HANDLER" : "Use Zest Station Handler",
 "USE_ADD_REMOVE_GUESTS" : "Add/Remove Guests",
 "ZEST_STATION_OUT_OF_ORDER_TRESHOLD" : "Out of Order Threshold",
+
+"ZEST_STATION_OFFLINE_SETTINGS" : "Offline Re-Connect Settings",
+"ZEST_STATION_OFFLINE_RECONNECT" : "Retry Connect (in seconds)",
+"ZEST_STATION_OFFLINE_RECONNECT_SELECT" : "Select",
+
+
 "UPSELL_INSTRUCTIONS" : "Control the room upsells offered to the guest on Zest Station",
 "OFFER_ROOM_UPSELLS_TO_GUEST" : "Offer room upsells to guests",
 "DISPLAY_ROOM_UPSELL_OFFER_BY" : "Display the room upsell offers by:",
