@@ -1,6 +1,6 @@
 
-sntRover.controller('RvArPaidController', ['$scope', '$timeout', 'RVCompanyCardSrv', 'rvAccountsArTransactionsSrv', '$vault', '$stateParams', '$state','sntActivity',
-	function($scope, $timeout, RVCompanyCardSrv, rvAccountsArTransactionsSrv, $vault, $stateParams, $state, sntActivity) {
+sntRover.controller('RvArPaidController', ['$scope', '$timeout', 'RVCompanyCardSrv', 'rvAccountsArTransactionsSrv', '$vault', '$stateParams', '$state','sntActivity', 'ngDialog',
+	function($scope, $timeout, RVCompanyCardSrv, rvAccountsArTransactionsSrv, $vault, $stateParams, $state, sntActivity, ngDialog) {
 
 		BaseCtrl.call(this, $scope);
 
@@ -84,9 +84,62 @@ sntRover.controller('RvArPaidController', ['$scope', '$timeout', 'RVCompanyCardS
 			}
 		};
 
-		// Handle unallocate button click.
-		$scope.clickedUnallocateButton = function() {
-		};
+        /*
+         * Handle unallocate button click
+         */
+        $scope.clickedUnallocateButton = function( payment ) {
+
+            var successCallBackOfUnallocateData = function(data) {
+                $scope.selectedUnAllocatedItem = data;
+                ngDialog.open({
+                    template: '/assets/partials/companyCard/arTransactions/rvCompanyTravelAgentUnallocatePopup.html',
+                    //controller: 'RVArUnAllocationController',
+                    scope: $scope
+                });
+            };
+
+            var requestParams = {},
+                paramsToService = {};
+
+            // requestParams.credit_id = payment.transaction_id;
+            requestParams.allocation_id = payment.id;
+            // requestParams.amount = payment.amount;
+
+            paramsToService.account_id = $scope.arDataObj.accountId;
+            paramsToService.data = requestParams;
+
+            var options = {
+                params: paramsToService,
+                successCallBack: successCallBackOfUnallocateData
+            };
+
+            $scope.callAPI( rvAccountsArTransactionsSrv.unAllocateData, options );
+        };
+        /*
+         * Un allocate selected payment
+         */
+        $scope.unAllocate = function(){
+            var requestParams = {},
+                paramsToService = {},
+                successCallBackOfUnallocate = function (data) {
+                    $scope.$emit('REFRESH_PAID_BILLS');
+                    ngDialog.close();
+                };
+            requestParams.allocation_id = $scope.selectedUnAllocatedItem.allocation_id;
+            requestParams.credit_id = $scope.selectedUnAllocatedItem.from_bill.transaction_id;
+            requestParams.debit_id = $scope.selectedUnAllocatedItem.to_payment.transaction_id;
+            requestParams.amount = $scope.selectedUnAllocatedItem.amount;
+
+            paramsToService.account_id = $scope.arDataObj.accountId;
+            paramsToService.data = requestParams;
+
+            var options = {
+                params: paramsToService,
+                successCallBack: successCallBackOfUnallocate
+            };
+
+            $scope.callAPI( rvAccountsArTransactionsSrv.unAllocateSelectedPayment, options );
+        }
 
 		/*
 		 *Function which fetches and returns the charge details of a grouped charge.
