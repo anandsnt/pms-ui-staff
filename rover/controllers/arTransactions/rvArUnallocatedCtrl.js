@@ -24,7 +24,7 @@ sntRover.controller('RvArUnallocatedController',
     	// Handle Unallocated tab expansion api call.
         var callExpansionAPI = function( item ) {
             sntActivity.start('EXPAND_UNALLOCATED');
-            var successCallbackOfExpansionAPI = function() {
+            var successCallbackOfExpansionAPI = function( data ) {
                 sntActivity.stop('EXPAND_UNALLOCATED');
                 item.transactions = data.allocated_transactions;
                 item.active = true;
