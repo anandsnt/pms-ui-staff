@@ -196,13 +196,41 @@ angular.module('sntRover').controller('companyCardDetailsController', ['$scope',
 			$scope.showArAccountButtonClick($event);
 		};
 
+		/*
+		*	CICO-45240
+		*	Fixes loop caused when navigating in the following flows:
+		*	- Search AR Trans/Company & TA Cards -> Balance/Paid Tabs of CC -> Reservation Stay Card -> 
+		*		Back to Balance/Paid tabs -> Back to AR Trans/Company & TA Cards search
+		*/
+		if (!$stateParams.isBackFromStaycard) {
+
+			$rootScope.prevStateBookmarkFromAR = {
+				title: $scope.searchBackButtonCaption,
+				name: $rootScope.previousState.name
+			};
+
+		}
 		// CICO-11664
 		// To default the AR transactions tab while navigating back from staycard
 		if ($stateParams.isBackFromStaycard) {
 			$scope.isArTabAvailable = true;
-			$scope.currentSelectedTab = 'cc-ar-transactions';
-			$scope.$broadcast('setgenerateNewAutoAr', true);
-			$scope.switchTabTo('', 'cc-ar-transactions');
+			/*
+			*	CICO-45240 - Replace prevState data to that which we stored before going to Staycard.
+			*/
+			if ($rootScope.prevStateBookmarkFromAR.title === $filter('translate')('FIND_CARDS') || $rootScope.prevStateBookmarkFromAR.title === $filter('translate')('MENU_ACCOUNTS_RECEIVABLES')) {
+				$rootScope.setPrevState = {
+					title: $rootScope.prevStateBookmarkFromAR.title,
+					name: $rootScope.prevStateBookmarkFromAR.name
+				};
+			}
+			/*
+			*	CICO-45268 - Added $timeout to fix issue with data not being displayed on returning from Staycard.
+			*/
+			$timeout(function() {
+				$scope.currentSelectedTab = 'cc-ar-transactions';
+				$scope.$broadcast('setgenerateNewAutoAr', true);
+				$scope.switchTabTo('', 'cc-ar-transactions');
+			}, 500);
 		}
 		// CICO-36080 - Back from staycard - Commissions tab as selected
 		if ($stateParams.isBackToTACommission) {

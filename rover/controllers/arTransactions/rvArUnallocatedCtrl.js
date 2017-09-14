@@ -24,7 +24,7 @@ sntRover.controller('RvArUnallocatedController',
     	// Handle Unallocated tab expansion api call.
         var callExpansionAPI = function( item ) {
             sntActivity.start('EXPAND_UNALLOCATED');
-            var successCallbackOfExpansionAPI = function() {
+            var successCallbackOfExpansionAPI = function( data ) {
                 sntActivity.stop('EXPAND_UNALLOCATED');
                 item.transactions = data.allocated_transactions;
                 item.active = true;
@@ -47,12 +47,14 @@ sntRover.controller('RvArUnallocatedController',
         $scope.clickedUnallocatedListItem = function( index ) {
             var clikedItem = $scope.arDataObj.unallocatedList[index];
 
-            if (!clikedItem.active) {
-                callExpansionAPI(clikedItem);
-            }
-            else {
-                clikedItem.active = false;
-                refreshScroll();
+            if (clikedItem.is_partially_paid) {
+                if (!clikedItem.active) {
+                    callExpansionAPI(clikedItem);
+                }
+                else {
+                    clikedItem.active = false;
+                    refreshScroll();
+                }
             }
         };
 
