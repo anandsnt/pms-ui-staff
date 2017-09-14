@@ -230,7 +230,7 @@ angular.module('sntRover').controller('companyCardDetailsController', ['$scope',
 				$scope.currentSelectedTab = 'cc-ar-transactions';
 				$scope.$broadcast('setgenerateNewAutoAr', true);
 				$scope.switchTabTo('', 'cc-ar-transactions');
-			}, 50);
+			}, 500);
 		}
 		// CICO-36080 - Back from staycard - Commissions tab as selected
 		if ($stateParams.isBackToTACommission) {

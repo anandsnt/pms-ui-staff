@@ -32,7 +32,7 @@
                 <span class="currency">{{currencySymbol}}</span>{{unallocatedCreditTransaction.amount | number:2 }}
             </div>
 
-            <button type="button" class="button green">Allocate</button>
+            <button type="button" class="button green" ng-click="clickedAllocateButton($index)">Allocate</button>
         </div>
 
         <ul class="search-results" ng-show="unallocatedCreditTransaction.active">

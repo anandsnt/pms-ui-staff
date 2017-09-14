@@ -15,7 +15,11 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 			'currentSelectedArTab': 'balance',
 			'isAddBalanceScreenVisible': false,
 			'isArTabActive': false,
-			'viewFromOutside': (typeof $stateParams.type !== 'undefined') ? true : false
+			'isPaymentSelected': false,
+			'viewFromOutside': (typeof $stateParams.type !== 'undefined') ? true : false,
+			'shouldShowPayAllButton': false,
+			'shouldShowFooter': false,
+			'insufficientAmount': false
 		};
 
 		$scope.filterData = {
@@ -39,7 +43,7 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 			'unallocatedCredit': '',
 			'company_or_ta_bill_id': '',
 
-			'perPage': 50,
+			'perPage': 5,
 			'balancePageNo': 1,
 			'paidPageNo': 1,
 			'allocatePageNo': 1,
@@ -49,7 +53,52 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 			'paidTotalCount': 0,
 			'allocatedTotalCount': 0,
 			'unallocatedTotalCount': 0,
-			'accountId': $stateParams.id
+			// Params - Balance tab
+			'selectedInvoices': [],
+			'totalAllocatedAmount': 0,
+			'availableAmount': 0,
+			'accountId': ( !!$stateParams.isFromCards ) ? $scope.contactInformation.id : $stateParams.id
+		};
+
+		/*
+		 * To create the parameters which is to be passed to API
+		 */
+
+		var createParametersFetchTheData = function () {
+			var dataToSend = {
+				account_id: $scope.arDataObj.accountId,
+				getParams : {
+					per_page: $scope.arDataObj.perPage,
+					from_date: $scope.filterData.fromDate,
+					to_date: $scope.filterData.toDate,
+					query: $scope.filterData.query
+				}
+			};
+
+			switch ($scope.arFlags.currentSelectedArTab) {
+			    case 'balance':
+			        dataToSend.getParams.transaction_type = 'CHARGES';
+					dataToSend.getParams.paid = false;
+					dataToSend.getParams.page = $scope.arDataObj.balancePageNo;
+			        break;
+			    case 'paid-bills':
+			        dataToSend.getParams.transaction_type = 'CHARGES';
+					dataToSend.getParams.paid = true;
+					dataToSend.getParams.page = $scope.arDataObj.paidPageNo;
+			        break;
+			    case 'unallocated':
+			        dataToSend.getParams.transaction_type = 'PAYMENTS';
+					dataToSend.getParams.allocated = false;
+					dataToSend.getParams.page = $scope.arDataObj.unallocatePageNo;
+			        break;
+			    case 'allocated':
+			        dataToSend.getParams.transaction_type = 'PAYMENTS';
+					dataToSend.getParams.allocated = true;
+                    dataToSend.getParams.page = $scope.arDataObj.allocatePageNo;
+			        break;
+			}
+
+			return dataToSend;
 		};
 
 		// Append active class
@@ -58,6 +107,8 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
             	obj.active = false;
             });
 		};
+		// Allocated payment object
+		$scope.allocatedPayment = {};
 
 		/*
 		 * Successcallback of API after fetching Ar Transaction details.
@@ -73,6 +124,12 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 
 			switch ($scope.arFlags.currentSelectedArTab) {
 			    case 'balance':
+			    	_.each(data.ar_transactions, function (eachItem) {
+				    	eachItem.isSelected = false;
+				    	eachItem.balanceNow = eachItem.amount;
+				    	eachItem.balanceAfter = 0;
+				    	eachItem.initialAmount = eachItem.amount;
+				    });
 			        $scope.arDataObj.balanceList = data.ar_transactions;
 			        $scope.arDataObj.balanceTotalCount = data.total_count;
 			        appendActiveClass($scope.arDataObj.balanceList);
@@ -166,6 +223,21 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 		        scope: $scope
 	      	});
 	    };
+        // Show payment allocate popup.
+        $scope.popupPaymentForAllocation = function () {
+            ngDialog.open({
+                template: '/assets/partials/companyCard/arTransactions/rvCompanyTravelAgentCardArPaymentPopup.html',
+                controller: 'RVArPaymentForAllocationController',
+                scope: $scope
+            });
+        };
+        // update allocated payment.
+        $scope.updateAllocatedPayment = function(payment) {
+        	$scope.allocatedPayment = payment;
+            $scope.arDataObj.availableAmount = payment.available_amount;
+            $scope.arFlags.isPaymentSelected = true;
+            ngDialog.close();
+        }
 	    /*
 	     * Fetch transactions API
 	     * @param dataToSend data object to API
@@ -179,7 +251,6 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 		 * Here is the method to fetch the data in each tab
 		 * Params will be different on each tab
 		 */
-
 		$scope.filterChanged = function() {
 			$scope.fetchTransactions();
 		};
@@ -196,8 +267,99 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 	      	});
 	      	$scope.paymentModalOpened = true;
 		};
+		/*
+		 * Success callback of payment
+		 */
+		var successCallBackOfPayment = function() {
+			$scope.arFlags.insufficientAmount = false;
+		};
+		/*
+		 * Failure callback of payment
+		 */
+		var failureCallBackOfPayment = function(errorMessage) {
+			// In this case - we have to show the error in footer
+			if(errorMessage[0] === "Insufficient Funds.Please 'Add payment' first") {
+				$scope.errorMessage = [];
+				$scope.arFlags.insufficientAmount = true;
+			}
+		};
+		/*
+		 * Pay selected invoices
+		 */
+		$scope.paySelectedInvoices = function() {
+			var postParamsToPay = {},
+				postData = {};
 
+			postData.credit_id = $scope.allocatedPayment.transaction_id;
+			postData.invoices = $scope.arDataObj.selectedInvoices;
+			postData.selected_amount = $scope.arDataObj.totalAllocatedAmount ;
+			postData.available_amount = $scope.arDataObj.availableAmount;
+			postParamsToPay.account_id = $scope.arDataObj.accountId;
+			postParamsToPay.data = postData;
 
+			var options = {
+				params: postParamsToPay,
+				successCallBack: successCallBackOfPayment,
+				failureCallBack: failureCallBackOfPayment
+			};
+
+			$scope.callAPI(rvAccountsArTransactionsSrv.paySelected, options);			
+		};
+		/*
+		 * Pay All Button click
+		 */
+		$scope.clickedPayAllButton = function() {
+			var postParamsToPay = {},
+				postData = {},
+				totalAllocatedAmount = 0;
+
+			_.each($scope.arDataObj.balanceList, function (eachItem) {
+			    	var selectedInvoiceObj = {};
+
+		    		selectedInvoiceObj.invoice_id = eachItem.transaction_id;
+		    		selectedInvoiceObj.amount = eachItem.amount;
+		    		$scope.arDataObj.selectedInvoices.push(selectedInvoiceObj);	   			
+		    		totalAllocatedAmount = totalAllocatedAmount + eachItem.amount;
+    	    });
+			$scope.arDataObj.totalAllocatedAmount  = totalAllocatedAmount;
+
+			postData.credit_id = $scope.allocatedPayment.transaction_id;
+			postData.invoices = $scope.arDataObj.selectedInvoices;
+			postData.selected_amount = $scope.arDataObj.totalAllocatedAmount;
+			postData.available_amount = $scope.arDataObj.availableAmount;
+			postParamsToPay.account_id = $scope.arDataObj.accountId;
+			postParamsToPay.data = postData;
+			//$scope.invokeApi(rvAccountsArTransactionsSrv.paySelected, postParamsToPay);
+			var options = {
+				params: postParamsToPay,
+				successCallBack: successCallBackOfPayment,
+				failureCallBack: failureCallBackOfPayment
+			};
+
+			$scope.callAPI(rvAccountsArTransactionsSrv.paySelected, options);
+		};
+		/*
+		 * Clicked Cancel from footer
+		 */
+		$scope.clickCancelFromFooter = function() {
+			$scope.arFlags.isPaymentSelected = false;
+			$scope.arFlags.shouldShowFooter = false;
+			$scope.arFlags.insufficientAmount = false;
+			$scope.arDataObj.selectedInvoices = [];
+			_.each($scope.arDataObj.balanceList, function (eachItem) {
+			    eachItem.isSelected = false;
+		    });
+		};
+		/*
+		 * Should show footer instead of pagination
+		 * 2 cases - one if invoice selected 
+		 *         - if selected payment from add payment or from unallocate tab
+		 */
+		$scope.shouldShowFooter = function() {			
+			var flag = ($scope.arFlags.shouldShowPayAllButton) ? true : ($scope.arDataObj.selectedInvoices.length === 0) ? false : true;
+			
+			return flag;
+		};
 		/*
 		 * To create the parameters which is to be passed to API
 		 */
@@ -239,7 +401,6 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 			return dataToSend;
 		};
 
-
 	    /*
 		* Data object to pass to the credit pay controller
 		*/
@@ -278,12 +439,20 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 		$scope.$on("REFRESH_SELECTED_LIST", function() {
 			$scope.fetchTransactions();
 		});
+		// Clicked allocate button from unallocated tab
+		$scope.$on("CLICKED_ALLOCATE_BUTTON", function(event, selectedPaymentData) {
+			$scope.arFlags.shouldShowPayAllButton = true;
+			$scope.arFlags.currentSelectedArTab = 'balance';
+			$scope.allocatedPayment = selectedPaymentData;
+			$scope.arFlags.isPaymentSelected = true;	
+			$scope.arDataObj.availableAmount = selectedPaymentData.available_amount;		
+		});
 
 		/*
 		 * Initial loading of this AR transactions tab
 		 */
 
-		$rootScope.$on("arTransactionTabActive", function(event) {
+		$scope.$on("arTransactionTabActive", function() {
 			init();
 			$scope.arFlags.isArTabActive = true;
 		});
