@@ -95,7 +95,7 @@ sntZestStation.controller('zsCheckinScanPassportCtrl', [
             var imageFormat = 'data:image/png;base64,';
 
             if ($scope.scannedBackImage) {
-                guest.back_img_path = imageFormat + scanResponse.FRONT_IMAGE;
+                guest.back_img_path = imageFormat + scanResponse.BACK_IMAGE;
 
             } else {
                 // city, nationality, docExpiry, docID, dob, full_name, first_name, last_name 
@@ -877,16 +877,23 @@ sntZestStation.controller('zsCheckinScanPassportCtrl', [
 
                 onPassportScanSuccess(mappedResponse);
 
-            } else if ($scope.scanningBackImage && (response.PR_DFE_FRONT_IMAGE || $scope.inDemoMode() || response.skipScan)) {
+            } else if ($scope.scanningBackImage && ((response.PR_DFE_FRONT_IMAGE  || response.doc.docImge) || $scope.inDemoMode() || response.skipScan)) {
                 // if scanning the back of a document, the only requirement is that an image is returned
                 // the only failure would be if this ('PR_DFE_FRONT_IMAGE') was not returned from samsotech
                 // CICO-41398
 
                 $scope.scanningBackImage = false;
                 $scope.scannedBackImage = true;
-                mappedResponse = {
-                    'FRONT_IMAGE': response.PR_DFE_FRONT_IMAGE ? response.PR_DFE_FRONT_IMAGE : ''
-                };
+                if ($scope.zestStationData.v1GuestIDScanning) {
+                    mappedResponse = {
+                        'BACK_IMAGE': response.PR_DFE_FRONT_IMAGE ? response.PR_DFE_FRONT_IMAGE : ''
+                    };
+                } else {
+                    mappedResponse = {
+                        'BACK_IMAGE': response.doc.docImge ? response.doc.docImge : ''
+                    };
+                }
+               
 
                 onPassportScanSuccess(mappedResponse);
 
