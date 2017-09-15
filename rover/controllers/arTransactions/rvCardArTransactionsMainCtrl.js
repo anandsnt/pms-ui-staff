@@ -19,7 +19,7 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 			'isAddBalanceScreenVisible': false,
 			'isArTabActive': false,
 			'viewFromOutside': (typeof $stateParams.type !== 'undefined') ? true : false,
-			'hasAllocateUnallocatePermission': $scope.hasAllocateUnallocatePermission()
+			'hasAllocateUnallocatePermission': rvPermissionSrv.getPermissionValue ('ALLOCATE_UNALLOCATE_PAYMENT')
 		};
 
 		$scope.filterData = {
@@ -563,16 +563,12 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
             };
 
             var options = {
-                    params: params,
-                    successCallBack: emailSuccess,
-                    failureCallBack: emailFailureCallback
-                };
+                params: params,
+                successCallBack: emailSuccess,
+                failureCallBack: emailFailureCallback
+            };
+
             $scope.callAPI(rvAccountsArTransactionsSrv.emailArStatement, options);
         };
-
-        // Flag for Allocate/Unallocate permission
-	    $scope.hasAllocateUnallocatePermission = function() {
-	        return rvPermissionSrv.getPermissionValue ('ALLOCATE_UNALLOCATE_PAYMENT');
-	    };
 
 }]);
