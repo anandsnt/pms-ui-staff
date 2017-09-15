@@ -325,7 +325,7 @@ sntRover.controller('RVKeyEncodePopupCtrl', [
 	* Server call to fetch the key data.
 	*/
 	this.callKeyFetchAPI = function(cardInfo) {
-		$scope.$emit('showLoader');
+        sntActivity.start('GET_KEY_IMAGE');
 		that.setStatusAndMessage($filter('translate')('KEY_GETTING_KEY_IMAGE_STATUS'), 'pending');
 		var reservationId = '';
 
@@ -361,20 +361,20 @@ sntRover.controller('RVKeyEncodePopupCtrl', [
 	* Success callback for key fetching
 	*/
 	this.keyFetchSuccess = function(response) {
-		$scope.$emit('hideLoader');
 		that.keyData = response;
 		that.printKeys();
+        sntActivity.stop('GET_KEY_IMAGE');
 	};
 
 	/*
 	* Key fetch failed callback. Show a print key failure status
 	*/
 	this.keyFetchFailed = function(errorMessage) {
-		$scope.$emit('hideLoader');
-		$scope.errorMessage = errorMessage;
+        $scope.errorMessage = errorMessage;
 		var message = $filter('translate')('KEY_CREATION_FAILED_STATUS');
 
 		that.showKeyPrintFailure(message);
+        sntActivity.stop('GET_KEY_IMAGE');
 
 	};
 
