@@ -18,7 +18,8 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 			'currentSelectedArTab': 'balance',
 			'isAddBalanceScreenVisible': false,
 			'isArTabActive': false,
-			'viewFromOutside': (typeof $stateParams.type !== 'undefined') ? true : false
+			'viewFromOutside': (typeof $stateParams.type !== 'undefined') ? true : false,
+			'hasAllocateUnallocatePermission': $scope.hasAllocateUnallocatePermission()
 		};
 
 		$scope.filterData = {
