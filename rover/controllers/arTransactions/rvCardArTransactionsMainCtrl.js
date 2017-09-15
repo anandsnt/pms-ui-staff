@@ -248,7 +248,7 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 		*/
 	    var getPassData = function() {
 			var passData = {
-				"account_id": $stateParams.id,
+				"account_id": $scope.arDataObj.accountId,
 				"is_swiped": false,
 				"details": {
 					"firstName": "",
@@ -393,7 +393,7 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
             dataFailureCallback = function(errorData) {
                 $scope.errorMessage = errorData;
             };
-            var params = { 'id': $stateParams.id };
+            var params = { 'id': $scope.arDataObj.accountId };
 
             var options = {
                     params: params,
@@ -412,7 +412,7 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
         // Get parameters for fetch data
         var getParamsToSend = function() {
             var paramsToSend = {
-                "id": $stateParams.id,
+                "id": $scope.arDataObj.accountId,
                 "from_date": $scope.filterData.fromDate,
                 "to_date": $scope.filterData.toDate,
                 "query": $scope.filterData.textInQueryBox
