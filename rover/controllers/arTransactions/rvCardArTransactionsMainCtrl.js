@@ -321,15 +321,7 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 		 * Initial loading of this AR transactions tab
 		 */
 		$scope.$on("arTransactionTabActive", function() {
-			// CICO-44250 : Added timeout to fix loading issue back from staycard.
-            if ($stateParams.isBackFromStaycard) {
-				$timeout(function() {
-					init();
-				}, 1000);
-			}
-			else {
-				init();
-			}
+			init();
 			$scope.arFlags.isArTabActive = true;
 		});
 
