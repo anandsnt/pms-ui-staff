@@ -1,29 +1,32 @@
 sntRover.controller('RVArPaymentForAllocationController', ['$scope', '$rootScope','$stateParams', '$timeout',  'rvAccountsArTransactionsSrv', 'ngDialog', function($scope, $rootScope, $stateParams, $timeout, rvAccountsArTransactionsSrv, ngDialog ) {
 
     BaseCtrl.call(this, $scope);
-    //Initialization
-    var init = function(){
+    // Initialization
+    var init = function() {
         $scope.setScroller('payment-allocation');
         fetchPaymentMethods();
     };
-    //refresh scroller
+    // refresh scroller
     var refreshScroll = function() {
         $timeout(function() {
             $scope.refreshScroller('payment-allocation');
         }, 500);
     };
-    //Function to fetch payment methods
-    var fetchPaymentMethods = function(){
+    // Function to fetch payment methods
+    var fetchPaymentMethods = function() {
         var dataToApi = {
             id: $stateParams.id
-        };
-        $scope.invokeApi(rvAccountsArTransactionsSrv.fetchPaymentMethods, dataToApi, (data) => {
+        },
+        successCallback = function (data) {
             $scope.payments = data.payments;
             refreshScroll();
             $scope.$emit('hideLoader');
-        } );
+        };
+
+        $scope.invokeApi(rvAccountsArTransactionsSrv.fetchPaymentMethods, dataToApi, successCallback );
     };
-    //Close popup
+
+    // Close popup
     $scope.closePopup = function () {
         ngDialog.close();
     };
