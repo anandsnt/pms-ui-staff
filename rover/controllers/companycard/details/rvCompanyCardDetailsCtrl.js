@@ -137,6 +137,7 @@ angular.module('sntRover').controller('companyCardDetailsController', ['$scope',
 				$event.stopPropagation();
 				$event.stopImmediatePropagation();
 			}
+
 			// CICO-28058 - checking whether AR Number is present or not.
 			var isArNumberAvailable = !!$scope.contactInformation && !!$scope.contactInformation.account_details && !!$scope.contactInformation.account_details.accounts_receivable_number;
 
@@ -204,7 +205,7 @@ angular.module('sntRover').controller('companyCardDetailsController', ['$scope',
 		*/
 		if (!$stateParams.isBackFromStaycard) {
 
-			$rootScope.prevStateBookmarkFromAR = {
+			$rootScope.prevStateBookmarkDataFromAR = {
 				title: $scope.searchBackButtonCaption,
 				name: $rootScope.previousState.name
 			};
@@ -217,11 +218,17 @@ angular.module('sntRover').controller('companyCardDetailsController', ['$scope',
 			/*
 			*	CICO-45240 - Replace prevState data to that which we stored before going to Staycard.
 			*/
-			if ($rootScope.prevStateBookmarkFromAR.title === $filter('translate')('FIND_CARDS') || $rootScope.prevStateBookmarkFromAR.title === $filter('translate')('MENU_ACCOUNTS_RECEIVABLES')) {
+			if ($rootScope.prevStateBookmarkDataFromAR.title === $filter('translate')('FIND_CARDS') || $rootScope.prevStateBookmarkDataFromAR.title === $filter('translate')('MENU_ACCOUNTS_RECEIVABLES')) {
 				$rootScope.setPrevState = {
-					title: $rootScope.prevStateBookmarkFromAR.title,
-					name: $rootScope.prevStateBookmarkFromAR.name
+					title: $rootScope.prevStateBookmarkDataFromAR.title,
+					name: $rootScope.prevStateBookmarkDataFromAR.name
 				};
+			}
+
+			// CICO-44250 - The deep copy of contactInformation made is applied here
+			//		in case it becomes undefined while coming back from StayCard
+			if (typeof($scope.contactInformation) === 'undefined') {
+				$scope.contactInformation = angular.copy($rootScope.prevStateBookmarkDataFromAR.contactInformation);
 			}
 			/*
 			*	CICO-45268 - Added $timeout to fix issue with data not being displayed on returning from Staycard.
@@ -324,6 +331,8 @@ angular.module('sntRover').controller('companyCardDetailsController', ['$scope',
 			// taking a deep copy of copy of contact info. for handling save operation
 			// we are not associating with scope in order to avoid watch
 			presentContactInfo = JSON.parse(JSON.stringify($scope.contactInformation));
+			// CICO-44250 - Keeps a deep copy of contact information to use when coming back from Staycard if needed.
+			$rootScope.prevStateBookmarkDataFromAR.contactInformation = angular.copy($scope.contactInformation);
 
 			// CICO-20567-Select default to AR Transactions Tab
 			if ($stateParams.origin === 'AR_OVERVIEW') {
