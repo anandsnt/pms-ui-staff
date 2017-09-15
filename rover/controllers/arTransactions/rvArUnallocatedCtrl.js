@@ -74,7 +74,6 @@ sntRover.controller('RvArUnallocatedController',
                   $scope.selectedUnAllocatedItem = data;
                   ngDialog.open({
                       template: '/assets/partials/companyCard/arTransactions/rvCompanyTravelAgentUnallocatePopup.html',
-                      //controller: 'RVArUnAllocationController',
                       scope: $scope
                   });
               };
@@ -82,10 +81,7 @@ sntRover.controller('RvArUnallocatedController',
               var requestParams = {},
                   paramsToService = {};
 
-              // requestParams.credit_id = payment.transaction_id;
               requestParams.allocation_id = payment.id;
-              // requestParams.amount = payment.amount;
-
               paramsToService.account_id = $scope.arDataObj.accountId;
               paramsToService.data = requestParams;
 

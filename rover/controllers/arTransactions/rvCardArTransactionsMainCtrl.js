@@ -337,7 +337,6 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 			postData.available_amount = $scope.arDataObj.availableAmount;
 			postParamsToPay.account_id = $scope.arDataObj.accountId;
 			postParamsToPay.data = postData;
-			//$scope.invokeApi(rvAccountsArTransactionsSrv.paySelected, postParamsToPay);
 			var options = {
 				params: postParamsToPay,
 				successCallBack: successCallBackOfPayment,
