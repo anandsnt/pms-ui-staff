@@ -1,8 +1,9 @@
+sntRover.controller('RvArBalanceController', ['$scope', '$timeout', 'rvAccountsArTransactionsSrv', 'RVCompanyCardSrv', '$vault', '$stateParams', '$state','sntActivity', 'ngDialog',
+	function($scope, $timeout, rvAccountsArTransactionsSrv, RVCompanyCardSrv, $vault, $stateParams, $state, sntActivity, ngDialog) {
 
-sntRover.controller('RvArBalanceController', ['$scope', '$timeout', 'rvAccountsArTransactionsSrv', 'RVCompanyCardSrv', '$vault', '$stateParams', '$state','sntActivity',
-	function($scope, $timeout, rvAccountsArTransactionsSrv, RVCompanyCardSrv, $vault, $stateParams, $state, sntActivity) {
+		BaseCtrl.call(this, $scope);		
 
-		BaseCtrl.call(this, $scope);
+		var sumOfAllocatedAmount = 0;
 
 		$scope.setScroller('balance-list');
 	    var refreshScroll = function() {
@@ -14,7 +15,58 @@ sntRover.controller('RvArBalanceController', ['$scope', '$timeout', 'rvAccountsA
         // Refresh scroll after completing fetch data
 	    $scope.$on("FETCH_COMPLETE_BALANCE_LIST", function() {
 	    	refreshScroll();
-	    });
+	    });	
+	    /*
+	     * Calculate the total amount of selected invoices - Footer
+	     */
+	    var calculateTotalAmount = function() {
+	    	$scope.arDataObj.totalAllocatedAmount = 0;
+	    	_.each($scope.arDataObj.balanceList, function (eachItem) {
+		    	if (eachItem.isSelected) {				    	    
+		    		$scope.arDataObj.totalAllocatedAmount = parseFloat($scope.arDataObj.totalAllocatedAmount) + parseFloat(eachItem.amount);		    		
+		    	} 	    	
+		    });
+	    }
+	    /*
+	     * Changing amount in invoices
+	     */
+	    $scope.changeBalanceAmount = function(index) {
+	    	$scope.arDataObj.balanceList[index].amount = ($scope.arDataObj.balanceList[index].amount > $scope.arDataObj.balanceList[index].initialAmount) ? $scope.arDataObj.balanceList[index].initialAmount : $scope.arDataObj.balanceList[index].amount;
+	    	$scope.arDataObj.balanceList[index].balanceAfter = $scope.arDataObj.balanceList[index].initialAmount - $scope.arDataObj.balanceList[index].amount;
+	    	$scope.arDataObj.balanceList[index].balanceNow = $scope.arDataObj.balanceList[index].amount;
+
+	    	var selectedItem = _.findWhere($scope.arDataObj.selectedInvoices, {invoice_id: $scope.arDataObj.balanceList[index].transaction_id}) ;
+	    	
+	    	selectedItem.amount = parseFloat($scope.arDataObj.balanceList[index].amount);
+
+	    	calculateTotalAmount();
+	    };
+	    
+	    /*
+	     * Select individual invoices in balance tab
+	     * update the selected invoices variable
+	     */ 
+	    var selectInvoice = function (transactionId) {
+	    	$scope.arFlags.insufficientAmount = false;
+	    	_.each($scope.arDataObj.balanceList, function (eachItem) {
+		    	if (eachItem.transaction_id === transactionId) {
+		    		eachItem.isSelected = !eachItem.isSelected;
+		    		var selectedInvoiceObj = {};
+
+		    		selectedInvoiceObj.invoice_id = transactionId;
+		    		selectedInvoiceObj.amount = eachItem.amount;
+		    		if (eachItem.isSelected) {
+		    			$scope.arDataObj.selectedInvoices.push(selectedInvoiceObj);		    			
+		    		} else { 
+		    			
+		    			$scope.arDataObj.selectedInvoices = _.filter($scope.arDataObj.selectedInvoices, function (item) {
+		    				return item.invoice_id !== transactionId;
+		    			})		    			
+		    		}
+		    	} 	    	
+		    });
+		    calculateTotalAmount();
+	    };
 
 	    // Handle balance tab api call.
 		var callExpansionAPI = function( item ) {
@@ -49,6 +101,7 @@ sntRover.controller('RvArBalanceController', ['$scope', '$timeout', 'rvAccountsA
 
 	    	if (element.parentElement.classList.contains('checkbox') || element.classList.contains('checkbox')) {
 	    		// Checkbox selection logic will be called here..
+	    		selectInvoice(clikedItem.transaction_id)
 	    	}
 	    	else if ( element.parentElement.classList.contains('has-arrow') || element.classList.contains('has-arrow')) {
 	    		clickedBalanceListItem(index);
@@ -103,10 +156,58 @@ sntRover.controller('RvArBalanceController', ['$scope', '$timeout', 'rvAccountsA
 			}
 		};
 
-		// Handle unallocate button click.
-		$scope.clickedUnallocateButton = function() {
-		};
+        /*
+         * Handle unallocate button click
+         */
+        $scope.clickedUnallocateButton = function( payment ) {
 
+            var successCallBackOfUnallocateData = function(data) {
+                $scope.selectedUnAllocatedItem = data;
+				ngDialog.open({
+                    template: '/assets/partials/companyCard/arTransactions/rvCompanyTravelAgentUnallocatePopup.html',
+                    scope: $scope
+                });
+            };
+
+            var requestParams = {},
+            	paramsToService = {};
+
+            requestParams.allocation_id = payment.id;
+            paramsToService.account_id = $scope.arDataObj.accountId;
+			paramsToService.data = requestParams;
+
+            var options = {
+				params: paramsToService,
+				successCallBack: successCallBackOfUnallocateData
+			};
+
+			$scope.callAPI( rvAccountsArTransactionsSrv.unAllocateData, options );
+        };
+        /*
+         * Un allocate selected payment
+         */
+        $scope.unAllocate = function(){
+            var requestParams = {},
+                paramsToService = {},
+                successCallBackOfUnallocate = function (data) {
+                    $scope.$emit('REFRESH_BALANCE_LIST');
+                    ngDialog.close();
+                };
+            requestParams.allocation_id = $scope.selectedUnAllocatedItem.allocation_id;
+            requestParams.credit_id = $scope.selectedUnAllocatedItem.from_bill.transaction_id;
+            requestParams.debit_id = $scope.selectedUnAllocatedItem.to_payment.transaction_id;
+            requestParams.amount = $scope.selectedUnAllocatedItem.amount;
+
+            paramsToService.account_id = $scope.arDataObj.accountId;
+            paramsToService.data = requestParams;
+
+            var options = {
+                params: paramsToService,
+                successCallBack: successCallBackOfUnallocate
+            };
+
+            $scope.callAPI( rvAccountsArTransactionsSrv.unAllocateSelectedPayment, options );
+        }
 		/*
 		 *Function which fetches and returns the charge details of a grouped charge.
 		*/
