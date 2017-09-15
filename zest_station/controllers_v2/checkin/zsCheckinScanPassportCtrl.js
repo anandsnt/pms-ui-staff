@@ -759,7 +759,7 @@ sntZestStation.controller('zsCheckinScanPassportCtrl', [
                 return true;
             }
 
-            var isV1 = false,
+            var isV1 = $scope.zestStationData.v1GuestIDScanning,
                 details;
 
 
@@ -877,7 +877,7 @@ sntZestStation.controller('zsCheckinScanPassportCtrl', [
 
                 onPassportScanSuccess(mappedResponse);
 
-            } else if ($scope.scanningBackImage && ((response.PR_DFE_FRONT_IMAGE  || response.doc.docImge) || $scope.inDemoMode() || response.skipScan)) {
+            } else if ($scope.scanningBackImage && ((response.PR_DFE_FRONT_IMAGE  || !$scope.zestStationData.v1GuestIDScanning) || $scope.inDemoMode() || response.skipScan)) {
                 // if scanning the back of a document, the only requirement is that an image is returned
                 // the only failure would be if this ('PR_DFE_FRONT_IMAGE') was not returned from samsotech
                 // CICO-41398
@@ -890,7 +890,7 @@ sntZestStation.controller('zsCheckinScanPassportCtrl', [
                     };
                 } else {
                     mappedResponse = {
-                        'BACK_IMAGE': response.doc.docImge ? response.doc.docImge : ''
+                        'BACK_IMAGE': response.doc ? response.doc.docImge : ''
                     };
                 }
                
