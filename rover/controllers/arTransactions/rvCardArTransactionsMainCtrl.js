@@ -62,8 +62,8 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 			'selectedInvoices': [],
 			'totalAllocatedAmount': 0,
 			'availableAmount': 0,
-			'accountId': ( typeof $scope.contactInformation === 'undefined' ) ? $stateParams.id : $scope.contactInformation.id,
-			'isOnStayCardView': !!$scope.contactInformation
+			'accountId': ( typeof $scope.contactInformation === 'undefined' ) ? $stateParams.id : $scope.contactInformation.id
+
 		};
 		
 		/*
@@ -506,15 +506,7 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 		 * Initial loading of this AR transactions tab
 		 */
 		$scope.$on("arTransactionTabActive", function() {
-			// CICO-44250 : Added timeout to fix loading issue back from staycard.
-            if ($stateParams.isBackFromStaycard) {
-				$timeout(function() {
-					init();
-				}, 1000);
-			}
-			else {
-				init();
-			}
+			init();
 			$scope.arFlags.isArTabActive = true;
 		});
 
