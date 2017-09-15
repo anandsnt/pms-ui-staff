@@ -54,8 +54,7 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 			'paidTotalCount': 0,
 			'allocatedTotalCount': 0,
 			'unallocatedTotalCount': 0,
-			'accountId': ( typeof $scope.contactInformation === 'undefined' ) ? $stateParams.id : $scope.contactInformation.id,
-			'isOnStayCardView': !!$scope.contactInformation
+			'accountId': ( typeof $scope.contactInformation === 'undefined' ) ? $stateParams.id : $scope.contactInformation.id
 		};
 		
 		/*
