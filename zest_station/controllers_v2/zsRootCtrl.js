@@ -38,7 +38,7 @@ sntZestStation.controller('zsRootCtrl', [
 
         $scope.isUndefined = function(thing) {
             return (typeof thing === "undefined");
-        }
+        };
 
         $scope.cssMappings = cssMappings;
         $scope.inElectron = false;

@@ -264,10 +264,12 @@ sntZestStation.controller('zsCheckinScanPassportCtrl', [
 
             // debugging
             if ($scope.inDemoMode()) {
+                var response;
+                
                 $scope.hasLoader = true;
-                if($scope.zestStationData.v1GuestIDScanning){
+                if ($scope.zestStationData.v1GuestIDScanning) {
                     response = zsCheckinSrv.v1ScannerDemoData;
-                }else{
+                } else {
                     response = zsCheckinSrv.v2ScannerDemoData.doc;
                 }
                 $timeout(function() {
@@ -275,7 +277,7 @@ sntZestStation.controller('zsCheckinScanPassportCtrl', [
                     $scope.hasLoader = false;
                 }, 1000);
 
-            } else{
+            } else {
                 samsoTechScanPassport();
             }
 
@@ -805,7 +807,6 @@ sntZestStation.controller('zsCheckinScanPassportCtrl', [
             return true;
         };
 
-        var mappedResponse;
 
         var getResponseMappings = function(mapping) {
 

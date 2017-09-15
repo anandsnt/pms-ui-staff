@@ -673,13 +673,13 @@ sntZestStation.service('zsCheckinSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
           "PR_DF_TRANSACTION_CODE": null,
           "PR_DF_TYPE": "P",
           "PR_DF_WEIGHT": null
-        }
+        };
 
         this.v2ScannerDemoData = {
           "Command": "cmd_samsotech_scan_passport",
           "Message": "",
           "ResponseCode": 0,
-          "otherside": "",//This will be "" or null or Y, if Y it indicates other side also to be scanned. TBD : passport always null, shall we relay on this flag.
+          "otherside": "", // This will be "" or null or Y, if Y it indicates other side also to be scanned. TBD : passport always null, shall we relay on this flag.
           "doc": {
             "PassportExpiryDate": "",
             "PassportIssueCountry": "",
@@ -700,9 +700,9 @@ sntZestStation.service('zsCheckinSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
             "countryofresidence_full": "Malaysia",
             "dateOfBirth": "11/05/1955",
             "docImage1": null,
-            "docImge": "/9j/4AAQSkZJRgABAQEB9AH0AAD/4QBaRXhpZgAATU0AK gAAAAgABQMBAAUAAAABAAAASgMDAAEAAAABAAAA==",
+            "docImge": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3f/Polish_passport_biodata_page.png/250px-Polish_passport_biodata_page.png",
             "documentNumber": "A18150305",
-            "documentType": "Passport",//This field value can be "Identification Card", "Passport", ... TBD with Samsotech to know other type values.
+            "documentType": "Passport", // This field value can be "Identification Card", "Passport", ... TBD with Samsotech to know other type values.
             "expiryDate": "18/02/2013",
             "faceImgae": "/9j/4AAQSkZJRgABAQEB2wHbAAD/2wBDAAgGBgcGBQgHBwcJCQgKDBQNDAsLDBkSEw8UHRofHh0aHBwgJC4nICIsIxwcKDcpLDAxNDQ0Hyc5PTgyPC4zNDL/2wBDAQkJCQwLDBgNDRgyIRwhMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjIyMjL/wAARCAGfAWYDASIAAhEBAxEB/8QAHwAAAQUBAQEBAQEAAAAAAAAAAAECAwQFBgcICQoL/8QAtRAAAgEDAwIEAwUFBAQAAAF9AQIDAAQRBRIhMUEGE1F",
             "fathersName": "",
@@ -731,6 +731,6 @@ sntZestStation.service('zsCheckinSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
             "visitpurpose": "",
             "zip": ""
           }
-        }
+        };
     }
 ]);
