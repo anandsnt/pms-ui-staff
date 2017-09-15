@@ -6,8 +6,10 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 	'ngDialog',
 	'$timeout',
 	'rvAccountsArTransactionsSrv',
-	function($scope, $rootScope, $stateParams, ngDialog, $timeout, rvAccountsArTransactionsSrv) {
-
+	'RVReservationCardSrv',
+	'$window',
+    '$filter',
+	function($scope, $rootScope, $stateParams, ngDialog, $timeout, rvAccountsArTransactionsSrv, RVReservationCardSrv, $window, $filter) {
 		BaseCtrl.call(this, $scope);
 		$scope.errorMessage = '';
 
@@ -25,8 +27,11 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 		$scope.filterData = {
 			'query': '',
 			'fromDate': '',
-			'toDate': ''
+			'toDate': '',
+            'includePayments': false,
+            'statementEmailAddress': ''
 		};
+
 
 		/*
 		 * Data Object set to handle various AR transaction lists.
@@ -57,9 +62,10 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 			'selectedInvoices': [],
 			'totalAllocatedAmount': 0,
 			'availableAmount': 0,
-			'accountId': ( !!$stateParams.isFromCards ) ? $scope.contactInformation.id : $stateParams.id
-		};
+			'accountId': ( typeof $scope.contactInformation === 'undefined' ) ? $stateParams.id : $scope.contactInformation.id
 
+		};
+		
 		/*
 		 * To create the parameters which is to be passed to API
 		 */
@@ -254,7 +260,7 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 		$scope.filterChanged = function() {
 			$scope.fetchTransactions();
 		};
-		/* 
+		/*
 		 * Add payment method
 		 */
 		$scope.addPayment = function() {
@@ -272,6 +278,8 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 		 */
 		var successCallBackOfPayment = function() {
 			$scope.arFlags.insufficientAmount = false;
+            $scope.arDataObj.selectedInvoices = [];
+			$scope.fetchTransactions();
 		};
 		/*
 		 * Failure callback of payment
@@ -329,7 +337,6 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 			postData.available_amount = $scope.arDataObj.availableAmount;
 			postParamsToPay.account_id = $scope.arDataObj.accountId;
 			postParamsToPay.data = postData;
-			//$scope.invokeApi(rvAccountsArTransactionsSrv.paySelected, postParamsToPay);
 			var options = {
 				params: postParamsToPay,
 				successCallBack: successCallBackOfPayment,
@@ -406,7 +413,7 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 		*/
 	    var getPassData = function() {
 			var passData = {
-				"account_id": $stateParams.id,
+				"account_id": $scope.arDataObj.accountId,
 				"is_swiped": false,
 				"details": {
 					"firstName": "",
@@ -416,6 +423,40 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 
 			return passData;
 		};
+
+		/*
+		 *	MLI SWIPE actions
+		 */
+		var processSwipedData = function(swipedCardData) {
+
+			var passData = getPassData();
+			var swipeOperationObj = new SwipeOperation();
+			var swipedCardDataToRender = swipeOperationObj.createSWipedDataToRender(swipedCardData);
+
+			passData.details.swipedDataToRenderInScreen = swipedCardDataToRender;
+			$scope.$broadcast('SHOW_SWIPED_DATA_ON_PAY_SCREEN', swipedCardDataToRender);
+
+		};
+
+		/*
+		 * Handle swipe action
+		 */
+
+		$scope.$on('SWIPE_ACTION', function(event, swipedCardData) {
+			if ($scope.paymentModalOpened) {
+				var swipeOperationObj = new SwipeOperation();
+				var getTokenFrom = swipeOperationObj.createDataToTokenize(swipedCardData);
+				var tokenizeSuccessCallback = function(tokenValue) {
+					$scope.$emit('hideLoader');
+					swipedCardData.token = tokenValue;
+					processSwipedData(swipedCardData);
+				};
+
+				$scope.invokeApi(RVReservationCardSrv.tokenize, getTokenFrom, tokenizeSuccessCallback);
+			} else {
+				return;
+			}
+		});
 
 		/*
 		 * Initial loading of the screen
@@ -429,12 +470,24 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 		$scope.$on('SHOW_ERROR_MSG', function( event, errorMessage ) {
 			$scope.errorMessage = errorMessage;
 		});
-        // Refresh balance list - after adding new manual balance 
+        // Refresh balance list - after adding new manual balance
         // and after succesfull payment with Allocate payment after posting checked
 		$scope.$on('REFRESH_BALANCE_LIST', function() {
 			$scope.arFlags.currentSelectedArTab = 'balance';
 			$scope.fetchTransactions();
 		});
+        //Refresh balance list - after adding new manual balance
+        // and after succesfull payment with Allocate payment after posting checked
+        $scope.$on('REFRESH_UNALLOCATED', function() {
+            $scope.arFlags.currentSelectedArTab = 'unallocated';
+            $scope.fetchTransactions();
+        });
+        // Refresh balance list - after adding new manual balance
+        // and after succesfull payment with Allocate payment after posting checked
+        $scope.$on('REFRESH_PAID_BILLS', function() {
+            $scope.arFlags.currentSelectedArTab = 'paid-bills';
+            $scope.fetchTransactions();
+        });
 		// Refresh selected list
 		$scope.$on("REFRESH_SELECTED_LIST", function() {
 			$scope.fetchTransactions();
@@ -451,14 +504,13 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 		/*
 		 * Initial loading of this AR transactions tab
 		 */
-
 		$scope.$on("arTransactionTabActive", function() {
 			init();
 			$scope.arFlags.isArTabActive = true;
 		});
 
 		// -------/ PAGINATION LOGIC /----------- //
-		
+
 		/*
 	     * Fetch transactions APIs
 	     * @param pageType { String } , Page No { String }to API
@@ -510,4 +562,187 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 	    };
 
 	    // -------/ PAGINATION LOGIC /----------- //
+
+        // Handler for statement button click
+        $scope.clickedArStatementButton = function() {
+
+            var dataFetchSuccess = function(data) {
+                $scope.statementEmailAddress = !!data.to_address ? data.to_address : '';
+                ngDialog.open({
+                    template: '/assets/partials/companyCard/arTransactions/rvArStatementPopup.html',
+                    className: '',
+                    closeByDocument: false,
+                    scope: $scope
+                });
+            },
+            dataFailureCallback = function(errorData) {
+                $scope.errorMessage = errorData;
+            };
+            
+            var params = { 'id': $scope.arDataObj.accountId };
+
+            var options = {
+                params: params,
+                successCallBack: dataFetchSuccess,
+                failureCallBack: dataFailureCallback
+            };
+
+            $scope.callAPI(rvAccountsArTransactionsSrv.fetchArStatementData, options);
+        };
+
+        // Checks whether include payment checkbox should be shown or not
+        $scope.showIncludePayments = function() {
+            return ( $scope.arFlags.currentSelectedArTab === 'balance' || $scope.arFlags.currentSelectedArTab === 'paid-bills' );
+        };
+
+        // Get parameters for fetch data
+        var getParamsToSend = function() {
+            var paramsToSend = {
+                "id": $scope.arDataObj.accountId,
+                "from_date": $scope.filterData.fromDate,
+                "to_date": $scope.filterData.toDate,
+                "query": $scope.filterData.query
+            };
+
+            if ($scope.arFlags.currentSelectedArTab === 'balance') {
+                paramsToSend.paid = false;
+                paramsToSend.transaction_type = 'CHARGES';
+                paramsToSend.include_payments = $scope.filterData.includePayments;
+            } else if ($scope.arFlags.currentSelectedArTab === 'paid-bills') {
+                paramsToSend.paid = true;
+                paramsToSend.transaction_type = 'CHARGES';
+                paramsToSend.include_payments = $scope.filterData.includePayments;
+            } else if ($scope.arFlags.currentSelectedArTab === 'unallocated') {
+                paramsToSend.transaction_type = 'PAYMENTS';
+                paramsToSend.allocated = false;
+            } else if ($scope.arFlags.currentSelectedArTab === 'allocated') {
+                paramsToSend.transaction_type = 'PAYMENTS';
+                paramsToSend.allocated = true;
+            }
+            // CICO-10323. for hotels with single digit search,
+            // If it is a numeric query with less than 3 digits, then lets assume it is room serach.
+
+            if ($rootScope.isSingleDigitSearch &&
+                !isNaN($scope.filterData.textInQueryBox) &&
+                $scope.filterData.textInQueryBox.length < 3) {
+
+                paramsToSend.room_search = true;
+            }
+            return paramsToSend;
+        };
+
+        // add the print orientation before printing
+        var addPrintOrientation = function() {
+            $( 'head' ).append( "<style id='print-orientation'>@page { size: portrait; }</style>" );
+        };
+
+        // add the print orientation after printing
+        var removePrintOrientation = function() {
+            $( '#print-orientation' ).remove();
+        };
+
+        // print AR Statement
+        var printArStatement = function(params) {
+            var printDataFetchSuccess = function(successData) {
+                $scope.printData = successData;
+                $scope.errorMessage = "";
+                // hide hotel logo
+                $("header .logo").addClass('logo-hide');
+                $("#invoiceDiv.invoice").addClass('no-print');
+                $("#regDiv.registration-card").addClass('no-print');
+                $("#cc-ar-transactions .billing-sidebar").addClass('no-print');
+                // inoder to set class 'print-statement' on rvCompanyCardDetails.html
+                $scope.$emit("PRINT_AR_STATEMENT", true);
+                // add the orientation
+                addPrintOrientation();
+
+                /*
+                *   ======[ READY TO PRINT ]======
+                */
+                // this will show the popup with full bill
+                $timeout(function() {
+                    /*
+                    *   ======[ PRINTING!! JS EXECUTION IS PAUSED ]======
+                    */
+
+                    $window.print();
+                    if ( sntapp.cordovaLoaded ) {
+                        cordova.exec(function(success) {}, function(error) {}, 'RVCardPlugin', 'printWebView', []);
+                    }
+                }, 1000);
+
+                /*
+                *   ======[ PRINTING COMPLETE. JS EXECUTION WILL UNPAUSE ]======
+                */
+
+                $timeout(function() {
+                    $("header .logo").removeClass('logo-hide');
+                    $("#invoiceDiv.invoice").removeClass('no-print');
+                    $("#regDiv.registration-card").removeClass('no-print');
+                    $("#cc-ar-transactions .billing-sidebar").addClass('no-print');
+                    // inoder to re-set/remove class 'print-statement' on rvCompanyCardDetails.html
+                    $scope.$emit("PRINT_AR_STATEMENT", false);
+
+                    // remove the orientation after similar delay
+                    removePrintOrientation();
+                }, 1000);
+            };
+
+            var printDataFailureCallback = function(errorData) {
+                $scope.errorMessage = errorData;
+            };
+
+            var options = {
+                params: params,
+                successCallBack: printDataFetchSuccess,
+                failureCallBack: printDataFailureCallback
+            };
+
+            $scope.callAPI(rvAccountsArTransactionsSrv.fetchArStatementPrintData, options);
+        };
+
+        // Handler for AR statement print
+        $scope.pritArStatement = function () {
+            var params = getParamsToSend();
+
+            printArStatement( params );
+        };
+
+        // To show email sent callbacks
+        $scope.showEmailSentStatusPopup = function(status) {
+            ngDialog.open({
+                template: '/assets/partials/popups/rvEmailSentStatusPopup.html',
+                className: '',
+                scope: $scope
+            });
+        };
+
+        // Send email AR statement
+        $scope.emailArStatement = function() {
+            var params = getParamsToSend();
+
+            params.to_address = $scope.filterData.statementEmailAddress;
+            $scope.closeDialog();
+
+            var emailSuccess = function(successData) {
+                $scope.errorMessage = "";
+                $scope.statusMsg = $filter('translate')('EMAIL_SENT_SUCCESSFULLY');
+                $scope.status = "success";
+                $scope.showEmailSentStatusPopup();
+            },
+            emailFailureCallback = function(errorData) {
+                $scope.errorMessage = errorData;
+                $scope.statusMsg = $filter('translate')('EMAIL_SEND_FAILED');
+                $scope.status = "alert";
+                $scope.showEmailSentStatusPopup();
+            };
+
+            var options = {
+                params: params,
+                successCallBack: emailSuccess,
+                failureCallBack: emailFailureCallback
+            };
+
+            $scope.callAPI(rvAccountsArTransactionsSrv.emailArStatement, options);
+        };
 }]);
