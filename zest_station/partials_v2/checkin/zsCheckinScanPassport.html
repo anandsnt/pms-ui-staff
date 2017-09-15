@@ -157,14 +157,13 @@
 
                     <figure ng-show='guest.guest_type === "CHILDREN"' class="guest-image guest-icons icon-student"></figure>
                     <figure ng-show='guest.guest_type === "INFANTS"' class="guest-image guest-icons icon-infant"></figure>
-                    
                     <span ng-if='guest.last_name !== guest.first_name'>
                         {{guest.last_name}}, {{guest.first_name}}    
                     </span>
-                    <span ng-if="guest.last_name === guest.first_name && guest.full_name !== '' ">
+                    <span ng-if="guest.last_name === guest.first_name && !isUndefined(guest.full_name) ">
                         {{guest.full_name}}    
                     </span>
-                    <span ng-if="guest.last_name === guest.first_name && guest.full_name == '' ">
+                    <span ng-if="guest.last_name === guest.first_name && isUndefined(guest.full_name)">
                         {{guest.first_name}}    
                     </span>
                 </span>

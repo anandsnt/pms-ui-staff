@@ -36,6 +36,10 @@ sntZestStation.controller('zsRootCtrl', [
         // in order to prevent url change or fresh url entering with states
         BaseCtrl.call(this, $scope);
 
+        $scope.isUndefined = function(thing) {
+            return (typeof thing === "undefined");
+        }
+
         $scope.cssMappings = cssMappings;
         $scope.inElectron = false;
 
