@@ -160,10 +160,10 @@
                     <span ng-if='guest.last_name !== guest.first_name'>
                         {{guest.last_name}}, {{guest.first_name}}    
                     </span>
-                    <span ng-if="guest.last_name === guest.first_name && !isUndefined(guest.full_name) ">
+                    <span ng-if="guest.last_name === guest.first_name && guest.full_name !== undefined ">
                         {{guest.full_name}}    
                     </span>
-                    <span ng-if="guest.last_name === guest.first_name && isUndefined(guest.full_name)">
+                    <span ng-if="guest.last_name === guest.first_name && guest.full_name === undefined ">
                         {{guest.first_name}}    
                     </span>
                 </span>
