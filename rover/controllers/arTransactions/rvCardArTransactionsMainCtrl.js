@@ -393,13 +393,14 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
             dataFailureCallback = function(errorData) {
                 $scope.errorMessage = errorData;
             };
+            
             var params = { 'id': $scope.arDataObj.accountId };
 
             var options = {
-                    params: params,
-                    successCallBack: dataFetchSuccess,
-                    failureCallBack: dataFailureCallback
-                };
+                params: params,
+                successCallBack: dataFetchSuccess,
+                failureCallBack: dataFailureCallback
+            };
 
             $scope.callAPI(rvAccountsArTransactionsSrv.fetchArStatementData, options);
         };
@@ -415,7 +416,7 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
                 "id": $scope.arDataObj.accountId,
                 "from_date": $scope.filterData.fromDate,
                 "to_date": $scope.filterData.toDate,
-                "query": $scope.filterData.textInQueryBox
+                "query": $scope.filterData.query
             };
 
             if ($scope.arFlags.currentSelectedArTab === 'balance') {
@@ -507,12 +508,12 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
             };
 
             var options = {
-                    params: params,
-                    successCallBack: printDataFetchSuccess,
-                    failureCallBack: printDataFailureCallback
-                };
-            $scope.callAPI(rvAccountsArTransactionsSrv.fetchArStatementPrintData, options);
+                params: params,
+                successCallBack: printDataFetchSuccess,
+                failureCallBack: printDataFailureCallback
+            };
 
+            $scope.callAPI(rvAccountsArTransactionsSrv.fetchArStatementPrintData, options);
         };
 
         // Handler for AR statement print
@@ -520,7 +521,6 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
             var params = getParamsToSend();
 
             printArStatement( params );
-
         };
 
         // To show email sent callbacks
@@ -553,11 +553,11 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
             };
 
             var options = {
-                    params: params,
-                    successCallBack: emailSuccess,
-                    failureCallBack: emailFailureCallback
-                };
-            $scope.callAPI(rvAccountsArTransactionsSrv.emailArStatement, options);
+                params: params,
+                successCallBack: emailSuccess,
+                failureCallBack: emailFailureCallback
+            };
 
+            $scope.callAPI(rvAccountsArTransactionsSrv.emailArStatement, options);
         };
 }]);
