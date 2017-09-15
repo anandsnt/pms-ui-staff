@@ -9,7 +9,8 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 	'RVReservationCardSrv',
 	'$window',
     '$filter',
-	function($scope, $rootScope, $stateParams, ngDialog, $timeout, rvAccountsArTransactionsSrv, RVReservationCardSrv, $window, $filter) {
+    'rvPermissionSrv',
+	function($scope, $rootScope, $stateParams, ngDialog, $timeout, rvAccountsArTransactionsSrv, RVReservationCardSrv, $window, $filter, rvPermissionSrv) {
 		BaseCtrl.call(this, $scope);
 		$scope.errorMessage = '';
 
@@ -566,6 +567,11 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
                     failureCallBack: emailFailureCallback
                 };
             $scope.callAPI(rvAccountsArTransactionsSrv.emailArStatement, options);
-
         };
+
+        // Flag for Allocate/Unallocate permission
+	    $scope.hasAllocateUnallocatePermission = function() {
+	        return rvPermissionSrv.getPermissionValue ('ALLOCATE_UNALLOCATE_PAYMENT');
+	    };
+
 }]);
