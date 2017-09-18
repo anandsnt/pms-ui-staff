@@ -13,7 +13,7 @@ sntRover.controller('RvArAllocatedController',
 		var refreshScroll = function() {
 	        $timeout(function() {
 	            $scope.refreshScroller('allocated-list-scroller');
-	        }, 500);
+	        }, 1000);
     	};
 
     	// Refresh scroller while updating the results from parent controller

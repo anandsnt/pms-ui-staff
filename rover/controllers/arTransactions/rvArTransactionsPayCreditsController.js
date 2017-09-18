@@ -76,7 +76,7 @@ sntRover.controller('RVArTransactionsPayCreditsController',
             data.cc_details.expire_date = data.cc_details.expiry_date;
             $scope.allocatedPayment.card_details = data.cc_details;
         }
-        $scope.arFlags.shouldShowPayAllButton = true;
+        $scope.arFlags.shouldShowPayAllButton = ($scope.arDataObj.balanceList.length >0) ? true : false;
         $scope.arFlags.currentSelectedArTab = 'balance';
         $scope.arFlags.isPaymentSelected = true;   
         $scope.arFlags.insufficientAmount = false; 
