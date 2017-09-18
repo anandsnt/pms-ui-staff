@@ -41,9 +41,9 @@
                     <div class="data">
                         <h2>{{item.guest_last_name}} {{item.guest_first_name}}</h2>
                         <span class="invoice">Invoice #<span class="value">{{item.invoice_number}}</span></span>
-                        <span ng-hide="unallocatedCreditTransaction.isExpandedByManualBalance" class="confirmation">Conf #<span class="value">{{item.reservation_confirm_no}}</span></span>
+                        <span ng-hide="item.is_manual_balance" class="confirmation">Conf #<span class="value">{{item.reservation_confirm_no}}</span></span>
                     </div>
-                    <div class="guest-date arrival" ng-hide="unallocatedCreditTransaction.isExpandedByManualBalance">
+                    <div class="guest-date arrival" ng-hide="item.is_manual_balance">
                         <span class="guest-status small-icon check-in">check-in</span>
                         <time datetime="2017-08-17T12:00:00">
                             <span class="date">{{item.reservation_arrival_date | date : dateFormat}}</span>
