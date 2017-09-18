@@ -61,9 +61,9 @@ sntRover.controller('RvArUnallocatedController',
         // Handle allocate button click.
         $scope.clickedAllocateButton = function(index) {
             event.cancelBubble = true;
-            if(event.stopPropagation) event.stopPropagation();
-            console.log($scope.arDataObj.unallocatedList[index]);
-            console.log("----")
+            if (event.stopPropagation) {
+              event.stopPropagation();
+            }
             $scope.$emit("CLICKED_ALLOCATE_BUTTON", $scope.arDataObj.unallocatedList[index]);
         };
           /*
