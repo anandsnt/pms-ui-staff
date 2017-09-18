@@ -157,12 +157,14 @@
 
                     <figure ng-show='guest.guest_type === "CHILDREN"' class="guest-image guest-icons icon-student"></figure>
                     <figure ng-show='guest.guest_type === "INFANTS"' class="guest-image guest-icons icon-infant"></figure>
-                    
                     <span ng-if='guest.last_name !== guest.first_name'>
                         {{guest.last_name}}, {{guest.first_name}}    
                     </span>
-                    <span ng-if='guest.last_name === guest.first_name'>
+                    <span ng-if="guest.last_name === guest.first_name && guest.full_name !== undefined ">
                         {{guest.full_name}}    
+                    </span>
+                    <span ng-if="guest.last_name === guest.first_name && guest.full_name === undefined ">
+                        {{guest.first_name}}    
                     </span>
                 </span>
                 <button type="button" class="button remove-btn" ng-show='showRemoveButton' click-touch='removeGuest(guest.id)' ng-class='{"overlay grey": selectedReservation.guest_details.length <= 1}'>
@@ -406,7 +408,9 @@
                                 <text data-ng-bind-html="getTagValue('GID_REVIEW_NATIONALITY')" editable-text="GID_REVIEW_NATIONALITY"></text>
                             </label>
 
-                            <input type="text" value='selectedPassportInfo.nationality' ng-model='selectedPassportInfo.nationality' class='disabled'/>
+                            <input type="text" value='selectedPassportInfo.nationality' ng-model='selectedPassportInfo.nationality_fullname' class='disabled'/>
+
+                           <!--  <input type="text" value='selectedPassportInfo.nationality' ng-model='selectedPassportInfo.nationality' class='disabled'/> -->
                         </div>
 
                         <div ng-show='selectedPassportInfo.city' class="entry with-label">
