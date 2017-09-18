@@ -48,7 +48,7 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 			'unallocatedCredit': '',
 			'company_or_ta_bill_id': '',
 
-			'perPage': 50,
+			'perPage': 5,
 			'balancePageNo': 1,
 			'paidPageNo': 1,
 			'allocatePageNo': 1,
