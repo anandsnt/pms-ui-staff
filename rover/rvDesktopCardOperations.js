@@ -47,16 +47,17 @@ var DesktopCardOperations = function() {
 
         // Triggers when there is a message from websocket server.
         ws.onmessage = function (event) {
-            var cardData = event.data;
-            var cardDataJSON = JSON.parse(cardData);
+            var response = event.data;
 
-            if (cardDataJSON.ResponseType) {
-                that.swipeCallbacks.uuidServiceSuccessCallBack(cardDataJSON);
+            response = JSON.parse(response);
+            if (response.ResponseType === 'UUIDforDeviceResponse') {
+                that.swipeCallbacks.uuidServiceSuccessCallBack(response);
+            } else if (response['RVCardReadPAN']) {
+                that.swipeCallbacks.successCallBack(response);
+            } else {
+                // Any other scenario other than above is NOT handled in Rover
+                console.error(response);
             }
-            else {
-                that.swipeCallbacks.successCallBack(cardDataJSON);
-            }
-
         };
 
         ws.onclose = function () {
