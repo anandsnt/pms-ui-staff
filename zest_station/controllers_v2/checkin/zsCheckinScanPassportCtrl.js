@@ -797,7 +797,7 @@ sntZestStation.controller('zsCheckinScanPassportCtrl', [
                         !details.documentNumber ||
                         !details.expiryDate ||
                         // !details.PR_DF_ISSUE_COUNTRY ||
-                        !details.nationality_code3
+                        !details.nationality_code2
                     ) {
                         return false;
                     }
@@ -849,7 +849,7 @@ sntZestStation.controller('zsCheckinScanPassportCtrl', [
                 'LAST_NAME': mapping.lastName,
                  // FIRST_NAME, in partials it will show only last name if first&last are the same
                 'FIRST_NAME': mapping.firstName ? mapping.firstName : mapping.lastName,
-                'NATIONALITY': mapping.nationality_code3,
+                'NATIONALITY': mapping.nationality_code2,
                 'SEX': mapping.gender,
                 'FULL_NAME': mapping.fullName ? mapping.fullName : mapping.lastName,
 
