@@ -715,7 +715,7 @@ sntZestStation.controller('zsRootCtrl', [
                 $log.info('Success Save Language text update ');
                 
             };
-            var onFail = function() {
+            var onFail = function(response) {
                 $scope.$emit('hideLoader');
                 $log.warn('Failure, Save Language text update failed: ', response);
                 // TODO: need to somehow alert user save failed, ie. alert('Saving failed, please try again later'), or other popup
@@ -988,7 +988,13 @@ sntZestStation.controller('zsRootCtrl', [
 				 *  Check if admin has set back the status of the
 				 *  selected workstation to in order
 				 */
-
+                if ($scope.workstationTimerWhenOffline) {
+                    // set the workstation time to count down with the settings 
+                    // from hotel admin > station > general > Offline Re-Connect Settings
+                    workstationTimer = getWorkstationsAtTime - $scope.zestStationData.kiosk_offline_reconnect_time;
+                    $scope.workstationTimerWhenOffline = false;
+                }
+                
                 workstationTimer = workstationTimer + 1;
 				// Use Debugger Time If Enabled
                 if (zestSntApp.timeDebugger) {
@@ -1258,7 +1264,7 @@ sntZestStation.controller('zsRootCtrl', [
                     $scope.$broadcast('WS_PRINT_FAILED', errorData);
                 }
             } 
-            else if (response.Command === 'cmd_scan_passport') {
+            else if (response.Command === 'cmd_scan_passport' || response.Command === 'cmd_samsotech_scan_passport') {
 
                 if (response.ResponseCode === 0) {
                     $scope.$broadcast('PASSPORT_SCAN_SUCCESS', response);
@@ -1476,7 +1482,10 @@ sntZestStation.controller('zsRootCtrl', [
             refreshedKey = 'snt_zs_workstation.recent_refresh',
             storage = localStorage,
             storedWorkStation = '',
-            recently_refreshed;
+            recently_refreshed,
+            // remove (guest_id_scan_version, v1GuestIDScanning) refs after 3.0 release if v1 samsotech logic not needed
+            guest_id_scan_version = 'guest_id_scan_version',
+            v1GuestIDScanning;
 
         try {
             recently_refreshed = storage.getItem(refreshedKey);
@@ -1485,11 +1494,13 @@ sntZestStation.controller('zsRootCtrl', [
             } else {
                 recently_refreshed = false;
             }
+
         } catch (err) {
             recently_refreshed = false;
             $log.log(err);
         }
         storage.setItem(refreshedKey, 'false');
+
 		/**
 		 * [setWorkStationForAdmin description]
 		 *  The workstation, status and oos reason are stored in
@@ -1560,7 +1571,8 @@ sntZestStation.controller('zsRootCtrl', [
 		 * [getAdminWorkStations description]
 		 * @return {[type]} [description]
 		 */
-        var getAdminWorkStations = function() {
+        $scope.workstationTimerWhenOffline = false;
+        var getAdminWorkStations = function(workstationTimer) {
             var onSuccess = function(response) {
                 $scope.zestStationData.workstations = response.work_stations;
                 setWorkStationForAdmin();
@@ -1571,8 +1583,14 @@ sntZestStation.controller('zsRootCtrl', [
             };
             var onFail = function(response) {
                 $log.warn('fetching workstation list failed:', response);
+                if ($state.current.name === 'zest_station.home') {
+                    $scope.$emit(zsEventConstants.PUT_OOS);
+                }
                 $scope.addReasonToOOSLog('GET_WORKSTATION_FAILED');
-                $scope.$emit(zsEventConstants.PUT_OOS);
+
+                // if (offline) / not connected to the internet, then fetch every 15s
+                // by fast-forwarding the fetch timer to 105s (120 - 15)
+                $scope.workstationTimerWhenOffline = true;
             };
             var options = {
 
@@ -1863,7 +1881,9 @@ sntZestStation.controller('zsRootCtrl', [
                 setupLanguageTranslations();
             }
             $rootScope.isStandAlone = zestStationSettings.is_standalone;
-            $scope.zestStationData.check_in_collect_passport = zestStationSettings.scan_guest_id;// && zestStationSettings.scan_guest_id_active;// _active is to View from StayCard
+            $scope.zestStationData.check_in_collect_passport = zestStationSettings.scan_guest_id;// && zestStationSettings.scan_guest_id_active;// _active is to View from StayCard       
+            $scope.zestStationData.v1GuestIDScanning =  $scope.zestStationData.scanner_use_v1_lib ? 'true' : false;
+
             $scope.zestStationData.showTemplateList = false; // Only for ipad in dev environment, switch themes fast like in chrome (dashboard view)
             $scope.zestStationData.makingKeyInProgress = false;
             $scope.zestStationData.doubleSidedScan = true;// by default scan 2 sides, user can elect to Skip the 2nd side. TODO: //link to a setting
@@ -1924,6 +1944,13 @@ sntZestStation.controller('zsRootCtrl', [
             } else {
                 $scope.zestStationData.kioskOutOfOrderTreshold = parseInt($scope.zestStationData.kiosk_out_of_order_treshold_value);
             }
+
+            if (!$scope.zestStationData.kiosk_offline_reconnect_time || _.isNaN(parseInt($scope.zestStationData.kiosk_offline_reconnect_time))) {
+                $scope.zestStationData.kiosk_offline_reconnect_time = 10; // default (in seconds) if the settings value is blank
+            } else {
+                $scope.zestStationData.kiosk_offline_reconnect_time = parseInt($scope.zestStationData.kiosk_offline_reconnect_time);
+            }
+
             // CICO-36953 - moves nationality collection to after res. details, using this flag to make optional
             // and may move to an admin in a future story 
             $scope.zestStationData.consecutiveKeyFailure = 0;
