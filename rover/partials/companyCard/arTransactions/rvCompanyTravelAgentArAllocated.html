@@ -1,7 +1,7 @@
 <ul class="search-results">
     <li class="reservation transaction payment" ng-repeat="allocatedCreditTransaction in arDataObj.allocatedList track by $index">
         <!-- if .toggle clicked, add .active -->
-        <div class="faux-anchor" ng-class="{'active': allocatedCreditTransaction.active , 'toggle has-arrow': allocatedCreditTransaction.is_partially_paid}" ng-click="clickedAllocatedListItem( $index )">
+        <div class="faux-anchor toggle has-arrow" ng-class="{'active': allocatedCreditTransaction.active }" ng-click="clickedAllocatedListItem( $index )">
             <div class="data">
                 <h2>{{allocatedCreditTransaction.payment_type}}</h2>
                 <div class="payment-data">
