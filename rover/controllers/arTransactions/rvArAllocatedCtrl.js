@@ -27,6 +27,7 @@ sntRover.controller('RvArAllocatedController',
             var successCallbackOfExpansionAPI = function( data ) {
                 sntActivity.stop('EXPAND_ALLOCATED');
                 item.transactions = data.allocated_transactions;
+                item.isExpandedByManualBalance = item.is_manual_balance;
                 item.active = true;
                 refreshScroll();
             },
