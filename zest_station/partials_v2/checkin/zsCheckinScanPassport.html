@@ -332,7 +332,7 @@
                             <label>
                                 <text data-ng-bind-html="getTagValue('GID_REVIEW_FULL_NAME')" editable-text="GID_REVIEW_FULL_NAME"></text>
                             </label>
-                            <input type="text" value='selectedPassportInfo.full_name' ng-model='selectedPassportInfo.full_name' class='disabled'/>
+                            <input type="text" value='selectedPassportInfo.full_name' ng-model='selectedPassportInfo.full_name' ng-class="{'disabled': selectedPassportInfo.full_name !== null }"/>
                         </div>
 
 
@@ -376,23 +376,21 @@
                             <label>
                                 <text data-ng-bind-html="getTagValue('GID_REVIEW_FULL_NAME')" editable-text="GID_REVIEW_FULL_NAME"></text>
                             </label>
-                            <input type="text" value='selectedPassportInfo.full_name' ng-model='selectedPassportInfo.full_name' class='disabled'/>
+                            <input type="text" value='selectedPassportInfo.full_name' ng-model='selectedPassportInfo.full_name' ng-class="{'disabled': selectedPassportInfo.full_name !== null }"/>
                         </div>
 
                         <div class="entry with-label">
                             <label>
                                 <text data-ng-bind-html="getTagValue('GID_REVIEW_DOB')" editable-text="GID_REVIEW_DOB"></text>
                             </label>
-
-                            <input type="text" value='selectedPassportInfo.dob' ng-model='selectedPassportInfo.dob' class='disabled'/>
+                            <input type="text" value='selectedPassportInfo.dob' ng-model='selectedPassportInfo.dob'  ng-class="{'disabled': selectedPassportInfo.dob !== null }"/>
                         </div>
-
                         <div class="entry with-label">
                             <label>
                                 <text data-ng-bind-html="getTagValue('GID_REVIEW_DOC_NUMBER')" editable-text="GID_REVIEW_DOC_NUMBER"></text>
                             </label>
 
-                            <input type="text" value='selectedPassportInfo.docID' ng-model='selectedPassportInfo.docID' class='disabled'/>
+                            <input type="text" value='selectedPassportInfo.docID' ng-model='selectedPassportInfo.docID'  ng-class="{'disabled': selectedPassportInfo.docID !== null }"/>
                         </div>
 
                         <div class="entry with-label">
@@ -400,7 +398,7 @@
                                 <text data-ng-bind-html="getTagValue('GID_REVIEW_EXPIRY')" editable-text="GID_REVIEW_EXPIRY"></text>
                             </label>
 
-                            <input type="text" value='selectedPassportInfo.docExpiry' ng-model='selectedPassportInfo.docExpiry' class='disabled'/>
+                            <input type="text" value='selectedPassportInfo.docExpiry' ng-model='selectedPassportInfo.docExpiry'  ng-class="{'disabled': selectedPassportInfo.docExpiry !== null }"/>
                         </div>
 
                         <div class="entry with-label">
@@ -408,7 +406,7 @@
                                 <text data-ng-bind-html="getTagValue('GID_REVIEW_NATIONALITY')" editable-text="GID_REVIEW_NATIONALITY"></text>
                             </label>
 
-                            <input type="text" value='selectedPassportInfo.nationality' ng-model='selectedPassportInfo.nationality_fullname' class='disabled'/>
+                            <input type="text" value='selectedPassportInfo.nationality' ng-model='selectedPassportInfo.nationality_fullname'  ng-class="{'disabled': selectedPassportInfo.nationality_fullname !== null }"/>
 
                            <!--  <input type="text" value='selectedPassportInfo.nationality' ng-model='selectedPassportInfo.nationality' class='disabled'/> -->
                         </div>
@@ -418,7 +416,7 @@
                                 <text data-ng-bind-html="getTagValue('GID_REVIEW_CITY')" editable-text="GID_REVIEW_CITY"></text>
                             </label>
 
-                            <input type="text" value='selectedPassportInfo.city' ng-model='selectedPassportInfo.city' class='disabled'/>
+                            <input type="text" value='selectedPassportInfo.city' ng-model='selectedPassportInfo.city'  ng-class="{'disabled': selectedPassportInfo.full_name !== null }"/>
                         </div>
 
 

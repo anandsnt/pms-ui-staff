@@ -256,6 +256,7 @@ sntZestStation.controller('zsCheckinScanPassportCtrl', [
             $scope.$emit('PASSPORT_SCAN_FAILURE');
         });
 
+        var demoModeScanCount = 0; // for debuging
         $scope.scan = function() {
             $log.info('$scope.selectedReservation: ', $scope.selectedReservation);
 
@@ -268,8 +269,13 @@ sntZestStation.controller('zsCheckinScanPassportCtrl', [
                 var response;
                 
                 $scope.hasLoader = true;
+                demoModeScanCount++;
+
                 if ($scope.zestStationData.v1GuestIDScanning) {
                     response = zsCheckinSrv.v1ScannerDemoData;
+                } 
+                else if( demoModeScanCount % 2 == 0){
+                    response = zsCheckinSrv.sampleBlankV2Scan.doc;
                 } else {
                     response = zsCheckinSrv.v2ScannerDemoData.doc;
                 }
