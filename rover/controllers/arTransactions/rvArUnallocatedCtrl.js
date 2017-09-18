@@ -13,7 +13,7 @@ sntRover.controller('RvArUnallocatedController',
 		var refreshScroll = function() {
 	        $timeout(function() {
 	            $scope.refreshScroller('unallocated-list-scroller');
-	        }, 500);
+	        }, 1000);
     	};
 
     	// Refresh scroller while updating the results from parent controller
@@ -59,11 +59,11 @@ sntRover.controller('RvArUnallocatedController',
         };
 
         // Handle allocate button click.
-        $scope.clickedAllocateButton = function(index) {
+        $scope.clickedAllocateButton = function(event, index) {
             event.cancelBubble = true;
-            if(event.stopPropagation) event.stopPropagation();
-            console.log($scope.arDataObj.unallocatedList[index]);
-            console.log("----")
+            if (event.stopPropagation) {
+              event.stopPropagation();
+            }
             $scope.$emit("CLICKED_ALLOCATE_BUTTON", $scope.arDataObj.unallocatedList[index]);
         };
           /*

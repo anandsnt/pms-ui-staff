@@ -15,7 +15,7 @@ sntRover.controller('RVArPaymentForAllocationController', ['$scope', '$rootScope
     // Function to fetch payment methods
     var fetchPaymentMethods = function() {
         var dataToApi = {
-            id: $stateParams.id
+            id: $scope.arDataObj.accountId
         },
         successCallback = function (data) {
             $scope.payments = data.payments;

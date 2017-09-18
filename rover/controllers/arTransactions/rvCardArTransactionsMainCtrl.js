@@ -48,7 +48,7 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 			'unallocatedCredit': '',
 			'company_or_ta_bill_id': '',
 
-			'perPage': 5,
+			'perPage': 50,
 			'balancePageNo': 1,
 			'paidPageNo': 1,
 			'allocatePageNo': 1,
@@ -131,6 +131,7 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 			switch ($scope.arFlags.currentSelectedArTab) {
 			    case 'balance':
 			    	_.each(data.ar_transactions, function (eachItem) {
+			    		eachItem.amount = parseFloat(eachItem.amount).toFixed(2);
 				    	eachItem.isSelected = false;
 				    	eachItem.balanceNow = eachItem.amount;
 				    	eachItem.balanceAfter = 0;
@@ -279,6 +280,11 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 		var successCallBackOfPayment = function() {
 			$scope.arFlags.insufficientAmount = false;
             $scope.arDataObj.selectedInvoices = [];
+			$scope.arFlags.isPaymentSelected = false;
+			$scope.arFlags.shouldShowPayAllButton = false;
+			$scope.arFlags.shouldShowFooter = false;
+			$scope.arDataObj.availableAmount = 0;
+						
 			$scope.fetchTransactions();
 		};
 		/*
@@ -352,6 +358,7 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 			$scope.arFlags.isPaymentSelected = false;
 			$scope.arFlags.shouldShowFooter = false;
 			$scope.arFlags.insufficientAmount = false;
+			$scope.arFlags.shouldShowPayAllButton = false;
 			$scope.arDataObj.selectedInvoices = [];
 			_.each($scope.arDataObj.balanceList, function (eachItem) {
 			    eachItem.isSelected = false;
