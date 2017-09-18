@@ -59,7 +59,7 @@ sntRover.controller('RvArUnallocatedController',
         };
 
         // Handle allocate button click.
-        $scope.clickedAllocateButton = function(index) {
+        $scope.clickedAllocateButton = function(event, index) {
             event.cancelBubble = true;
             if (event.stopPropagation) {
               event.stopPropagation();
