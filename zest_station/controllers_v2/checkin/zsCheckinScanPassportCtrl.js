@@ -294,7 +294,7 @@ sntZestStation.controller('zsCheckinScanPassportCtrl', [
                 } else {
                     $scope.mode = 'SCANNING_IN_PROGRESS';
                     $timeout(function() {
-                        $scope.$emit('PASSPORT_SCAN_SUCCESS', { 'skipScan': true });
+                        $scope.$emit('PASSPORT_SCAN_SUCCESS', zsCheckinSrv.v2ScannerDemoData);
                     }, 1000);
                 }
 
