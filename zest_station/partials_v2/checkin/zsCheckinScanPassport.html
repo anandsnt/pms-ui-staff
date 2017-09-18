@@ -408,7 +408,9 @@
                                 <text data-ng-bind-html="getTagValue('GID_REVIEW_NATIONALITY')" editable-text="GID_REVIEW_NATIONALITY"></text>
                             </label>
 
-                            <input type="text" value='selectedPassportInfo.nationality' ng-model='selectedPassportInfo.nationality' class='disabled'/>
+                            <input type="text" value='selectedPassportInfo.nationality' ng-model='selectedPassportInfo.nationality_fullname' class='disabled'/>
+
+                           <!--  <input type="text" value='selectedPassportInfo.nationality' ng-model='selectedPassportInfo.nationality' class='disabled'/> -->
                         </div>
 
                         <div ng-show='selectedPassportInfo.city' class="entry with-label">

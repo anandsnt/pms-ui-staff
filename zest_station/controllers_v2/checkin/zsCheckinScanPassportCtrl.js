@@ -104,6 +104,7 @@ sntZestStation.controller('zsCheckinScanPassportCtrl', [
                 guest.full_name = scanResponse.FULL_NAME;
 
                 guest.nationality = scanResponse.NATIONALITY;
+                guest.nationality_fullname = scanResponse.NATIONALITY_FULL_NAME;
                 guest.dob = scanResponse.BIRTH_DATE;
 
                 guest.docExpiry = scanResponse.EXPIRY_DATE;
@@ -515,8 +516,8 @@ sntZestStation.controller('zsCheckinScanPassportCtrl', [
                     'document_type': selectedPassportInfo.docType,
                     'document_number': selectedPassportInfo.docID,
                     'expiration_date': selectedPassportInfo.docExpiry,
-                    'full_name': selectedPassportInfo.full_name,
-                    'first_name': selectedPassportInfo.first_name,
+                    'full_name': 'test',
+                    'first_name': 'test',
                     'last_name': selectedPassportInfo.last_name,
                     'nationality': selectedPassportInfo.nationality,
                     'guest_id': selectedPassportInfo.id,
@@ -797,7 +798,8 @@ sntZestStation.controller('zsCheckinScanPassportCtrl', [
                         !details.documentNumber ||
                         !details.expiryDate ||
                         // !details.PR_DF_ISSUE_COUNTRY ||
-                        !details.nationality_code2
+                        !details.nationality_code2 ||
+                        !details.nationality_fullname
                     ) {
                         return false;
                     }
@@ -850,6 +852,7 @@ sntZestStation.controller('zsCheckinScanPassportCtrl', [
                  // FIRST_NAME, in partials it will show only last name if first&last are the same
                 'FIRST_NAME': mapping.firstName ? mapping.firstName : mapping.lastName,
                 'NATIONALITY': mapping.nationality_code2,
+                'NATIONALITY_FULL_NAME': mapping.nationality_fullname,
                 'SEX': mapping.gender,
                 'FULL_NAME': mapping.fullName ? mapping.fullName : mapping.lastName,
 
