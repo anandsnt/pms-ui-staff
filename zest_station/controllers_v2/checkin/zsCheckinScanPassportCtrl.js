@@ -119,13 +119,13 @@ sntZestStation.controller('zsCheckinScanPassportCtrl', [
 
         $scope.scannedBackImage = false;
 
-        var documentRequiresBackScan = function() {
-            // return true; // TODO: Link with document types which require both sides to be scanned
-            // for debugging/testing double-sided scan type IDs
-            // set this variable
-            return $scope.zestStationData.doubleSidedScan;
-            // return response.DOC_TYPE !== 'PP';    
-        };
+        // var documentRequiresBackScan = function() {
+        //     // return true; // TODO: Link with document types which require both sides to be scanned
+        //     // for debugging/testing double-sided scan type IDs
+        //     // set this variable
+        //     return $scope.zestStationData.doubleSidedScan;
+        //     // return response.DOC_TYPE !== 'PP';    
+        // };
 
         var onPassportScanSuccess = function(response) {
             $scope.trackSessionActivity('CheckIn', 'Passport Scan Success', '', $scope.mode);
@@ -274,7 +274,7 @@ sntZestStation.controller('zsCheckinScanPassportCtrl', [
                 if ($scope.zestStationData.v1GuestIDScanning) {
                     response = zsCheckinSrv.v1ScannerDemoData;
                 } 
-                else if( demoModeScanCount % 2 == 0){
+                else if (demoModeScanCount % 2 == 0) {
                     response = zsCheckinSrv.idCardDemoScanData;
                 } else {
                     response = zsCheckinSrv.v2ScannerDemoData;
@@ -817,6 +817,7 @@ sntZestStation.controller('zsCheckinScanPassportCtrl', [
 
 
         var getResponseMappings = function(mapping) {
+            var docDetails;
 
             // v1
             if (mapping.PR_DF_TYPE && mapping.PR_DF_DOCUMENT_NUMBER) {
