@@ -489,12 +489,18 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
             $scope.arFlags.currentSelectedArTab = 'unallocated';
             $scope.fetchTransactions();
         });
-        // Refresh balance list - after adding new manual balance
+        // Refresh paid bills list - after adding new manual balance
         // and after succesfull payment with Allocate payment after posting checked
         $scope.$on('REFRESH_PAID_BILLS', function() {
             $scope.arFlags.currentSelectedArTab = 'paid-bills';
             $scope.fetchTransactions();
         });
+        // Refresh allacated list - After unallocate
+        $scope.$on('REFRESH_ALLOCATED', function() {
+            $scope.arFlags.currentSelectedArTab = 'allocated';
+            $scope.fetchTransactions();
+        });
+        
 		// Refresh selected list
 		$scope.$on("REFRESH_SELECTED_LIST", function() {
 			$scope.fetchTransactions();
