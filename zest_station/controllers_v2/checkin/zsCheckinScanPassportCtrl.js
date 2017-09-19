@@ -147,7 +147,7 @@ sntZestStation.controller('zsCheckinScanPassportCtrl', [
                 }
             }
 
-            if (documentRequiresBackScan(response) && !$scope.scannedBackImage) {
+            if (response.OTHER_SIDE_SCAN === 'Y' && !$scope.scannedBackImage) {
                 $scope.mode = 'SCAN_BACK';
                 $log.log('mode: ', $scope.mode);
                 $scope.runDigestCycle();
@@ -275,9 +275,9 @@ sntZestStation.controller('zsCheckinScanPassportCtrl', [
                     response = zsCheckinSrv.v1ScannerDemoData;
                 } 
                 else if( demoModeScanCount % 2 == 0){
-                    response = zsCheckinSrv.sampleBlankV2Scan.doc;
+                    response = zsCheckinSrv.idCardDemoScanData;
                 } else {
-                    response = zsCheckinSrv.v2ScannerDemoData.doc;
+                    response = zsCheckinSrv.v2ScannerDemoData;
                 }
                 $timeout(function() {
                     $scope.$emit('PASSPORT_SCAN_SUCCESS', response);
@@ -843,30 +843,31 @@ sntZestStation.controller('zsCheckinScanPassportCtrl', [
                 };
             } 
             if (!mapping.lastName && mapping.doc) {
-                mapping = mapping.doc;
+                docDetails = mapping.doc;
             }
             // v2
             return {
                     /*
                         details.lastName || // may only have lastName and not first name, which has full name in some countries
                      */
-                'FRONT_IMAGE': mapping.docImge ? mapping.docImge : mapping.docImage1,
+                'FRONT_IMAGE': docDetails.docImge ? docDetails.docImge : docDetails.docImage1,
 
                     // 'BIRTH_DATE':  returnUnformatedDateObj(mapping.PR_DF_BIRTH_DATE, 'MM-DD-YYYY'),
-                'BIRTH_DATE': mapping.dateOfBirth,
-                'LAST_NAME': mapping.lastName,
+                'BIRTH_DATE': docDetails.dateOfBirth,
+                'LAST_NAME': docDetails.lastName,
                  // FIRST_NAME, in partials it will show only last name if first&last are the same
-                'FIRST_NAME': mapping.firstName ? mapping.firstName : mapping.lastName,
-                'NATIONALITY': mapping.nationality_code2,
-                'NATIONALITY_FULL_NAME': mapping.nationality_fullname,
-                'SEX': mapping.gender,
-                'FULL_NAME': mapping.fullName ? mapping.fullName : mapping.lastName,
+                'FIRST_NAME': docDetails.firstName ? docDetails.firstName : docDetails.lastName,
+                'NATIONALITY': docDetails.nationality_code2,
+                'NATIONALITY_FULL_NAME': docDetails.nationality_fullname,
+                'SEX': docDetails.gender,
+                'FULL_NAME': docDetails.fullName ? docDetails.fullName : docDetails.lastName,
 
-                'DOC_TYPE': mapping.documentType,
-                'DOCUMENT_NUMBER': mapping.documentNumber,
-                'EXPIRY_DATE': mapping.expiryDate,
-                'ID_ISSUE_COUNTRY': mapping.issueCountry_fullname,
-                'ID_TYPE': mapping.documentType
+                'DOC_TYPE': docDetails.documentType,
+                'DOCUMENT_NUMBER': docDetails.documentNumber,
+                'EXPIRY_DATE': docDetails.expiryDate,
+                'ID_ISSUE_COUNTRY': docDetails.issueCountry_fullname,
+                'ID_TYPE': docDetails.documentType,
+                'OTHER_SIDE_SCAN': mapping.otherside
             };
 
         };
