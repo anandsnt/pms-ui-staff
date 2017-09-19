@@ -274,7 +274,7 @@ sntZestStation.controller('zsCheckinScanPassportCtrl', [
                 if ($scope.zestStationData.v1GuestIDScanning) {
                     response = zsCheckinSrv.v1ScannerDemoData;
                 } 
-                else if (demoModeScanCount % 2 == 0) {
+                else if (demoModeScanCount % 2 === 0) {
                     response = zsCheckinSrv.idCardDemoScanData;
                 } else {
                     response = zsCheckinSrv.v2ScannerDemoData;
