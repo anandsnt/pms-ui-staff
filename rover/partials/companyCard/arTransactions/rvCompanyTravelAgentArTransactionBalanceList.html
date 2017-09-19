@@ -51,8 +51,8 @@
 			</div>
 			<!-- This HTML is added even if the item is manual balance to fix the design issue. The icon kept hide -->
 			<div class="guest-date arrival">
-				<span class="guest-status small-icon check-in" ng-hide="balance.is_manual_balance || balance.associated_type === 'PostingAccount'">check-in</span>
-				<time datetime="{arrival-timestamp}">
+				<span class="guest-status small-icon check-in" ng-if="!balance.is_manual_balance && balance.associated_type !== 'PostingAccount'">check-in</span>
+				<time ng-if="!balance.is_manual_balance && balance.associated_type !== 'PostingAccount'">
 					<span class="date">{{balance.reservation_arrival_date  | date : dateFormat}}</span>
 					<span class="time">{{balance.reservation_arrival_time}}</span>
 				</time>

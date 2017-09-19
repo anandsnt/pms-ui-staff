@@ -56,7 +56,7 @@ sntRover.controller('RvArPaidController', ['$scope', '$timeout', 'RVCompanyCardS
 		 */
 		$scope.goToReservationDetails = function(index) {
 
-			var item = $scope.arDataObj.balanceList[index];
+			var item = $scope.arDataObj.paidList[index];
 
 			if ($scope.arFlags.viewFromOutside) {
 				$vault.set('cardId', $stateParams.id);
