@@ -181,6 +181,7 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 
 			        break;
 			}
+
 			$scope.$emit('hideLoader');
 		};
 
@@ -208,8 +209,19 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 		$scope.clickedFromDate = function() {
 			$scope.popupCalendar('FROM');
 		};
+
 		$scope.clickedToDate = function() {
 			$scope.popupCalendar('TO');
+		};
+		// Clear from date
+		$scope.clearFromDate = function() {
+			$scope.filterData.fromDate = '';
+			$scope.filterChanged();
+		};
+		// Clear to date
+		$scope.clearToDate = function() {
+			$scope.filterData.toDate = '';
+			$scope.filterChanged();
 		};
 		// To handle from date change
 	    $scope.$on('fromDateChanged', function() {
@@ -244,7 +256,7 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
             $scope.arDataObj.availableAmount = payment.available_amount;
             $scope.arFlags.isPaymentSelected = true;
             ngDialog.close();
-        }
+        };
 	    /*
 	     * Fetch transactions API
 	     * @param dataToSend data object to API
@@ -259,6 +271,22 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 		 * Params will be different on each tab
 		 */
 		$scope.filterChanged = function() {
+			
+			switch ($scope.arFlags.currentSelectedArTab) {
+			    case 'balance':
+					$scope.arDataObj.balancePageNo = 1;
+			        break;
+			    case 'paid-bills':
+					$scope.arDataObj.paidPageNo = 1;
+			        break;
+			    case 'unallocated':
+					$scope.arDataObj.unallocatePageNo = 1;
+			        break;
+			    case 'allocated':
+                    $scope.arDataObj.allocatePageNo = 1;
+			        break;
+			}
+
 			$scope.fetchTransactions();
 		};
 		/*
