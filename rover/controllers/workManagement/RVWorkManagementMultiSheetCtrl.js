@@ -731,7 +731,7 @@ angular.module('sntRover').controller('RVWorkManagementMultiSheetCtrl', ['$rootS
 			$scope.multiSheetState._lastSelectedIds  = [];
 
             // CICO-45484 - Need to restore the filter values while reloading the state after auto-assign
-            var isStateReload = $stateParams.filterParams ? true : false,
+            var isStateReload = !!$stateParams.filterParams,
                 selectedEmployeeIds = ($stateParams.filterParams && $stateParams.filterParams.employee_ids);
 
             if (fetchHKStaffs) {
@@ -1524,8 +1524,6 @@ angular.module('sntRover').controller('RVWorkManagementMultiSheetCtrl', ['$rootS
             }
 
             var onAutoAssignSuccess = function(data) {
-                    $scope.$emit("hideLoader");
-                    //$state.reload();
                     $state.go('rover.workManagement.multiSheet', {
                         filterParams: {
                             selectedDate: $scope.multiSheetState.selectedDate,
@@ -1535,7 +1533,6 @@ angular.module('sntRover').controller('RVWorkManagementMultiSheetCtrl', ['$rootS
                     });
                 },
                 onAutoAssignFailure = function (error) {
-                    $scope.$emit("hideLoader");
                     $scope.errorMessage = error;
                 };
 
