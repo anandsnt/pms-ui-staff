@@ -1488,5 +1488,38 @@ angular.module('sntRover').controller('RVWorkManagementMultiSheetCtrl', ['$rootS
           }
           return (returnString);
         };
+
+        // Get the ids of the selected employees
+        var getSelectedEmployees = function () {
+            var currIds = _.pluck(_.where($scope.employeeList, { ticked: true }), 'id');
+                        
+            return currIds;
+        };
+
+        // Execute auto assign from work management screen based on the admin configuration
+        $scope.executeAutoAssign = function () {
+
+            var onAutoAssignSuccess = function(data) {
+                    $scope.$emit("hideLoader");
+                    $state.reload();
+                },
+                onAutoAssignFailure = function (error) {
+                    $scope.$emit("hideLoader");
+                    $scope.errorMessage = error;
+                };
+
+            var options = {
+                successCallBack: onAutoAssignSuccess,
+                failureCallBack: onAutoAssignFailure,
+                params: {
+                    date: $scope.dateSelected,
+                    employee_ids: getSelectedEmployees(),
+                    worktype_id: $scope.multiSheetState.header.work_type_id,
+                    unassigned_room_tasks: payload.unassignedRoomTasks
+                }
+            };
+
+            $scope.callAPI(RVWorkManagementSrv.executeAutoAssign, options);
+        };
 	}
 ]);

@@ -1845,11 +1845,17 @@ sntRover.controller('RVbillCardController',
 	$scope.completeCheckoutSuccessCallback = function(response) {
 		$scope.$emit('hideLoader');
 		$scope.showSuccessPopup(response);
+		$timeout(function() {
+			// slight delay on-success so user doesnt re-click review & checkout again and initiate an error
+			// CICO-45029
+			$scope.checkoutInProgress = false;
+		}, 500);
 	};
 	// To handle failure callback of complete checkout
 	$scope.completeCheckoutFailureCallback = function(data) {
 		$scope.$emit('hideLoader');
 		$scope.errorMessage = data;
+		$scope.checkoutInProgress = false;
 	};
 
 	// To handle ar account details in case of direct bills
@@ -1879,12 +1885,16 @@ sntRover.controller('RVbillCardController',
 		}
 	};
 
+	// CICO-45029 - handle check-out in progress tracking so user doesnt initiate errors
+	// due to having already clicked the review bill & complete check-out button
+	$scope.checkoutInProgress = false;
 	// To handle complete checkout button click
 	$scope.clickedCompleteCheckout = function() {
-
+		$scope.checkoutInProgress = true;
 		$scope.findNextBillToReview();	// Verifying wheather any bill is remaing for reviewing.
 
 		if (!$scope.isAllBillsReviewed) {
+			$scope.checkoutInProgress = false;
 			return;
 		}
 
@@ -1893,6 +1903,7 @@ sntRover.controller('RVbillCardController',
 		var signatureBase64Data = $scope.getSignatureBase64Data();
 
 		if ($scope.isArAccountNeeded(index)) {
+			$scope.checkoutInProgress = false;
 			return;
 		}
 
@@ -1932,10 +1943,12 @@ sntRover.controller('RVbillCardController',
 		}
 		else if ($rootScope.isStandAlone && finalBillBalance !== "0.00" && paymentType === "DB"  && !$scope.performCompleteCheckoutAction  && !reservationBillData.bills[$scope.currentActiveBill].is_allow_direct_debit ) {
 			showDirectDebitDisabledPopup();
+			$scope.checkoutInProgress = false;
 		}
 		else if ($rootScope.isStandAlone && finalBillBalance !== "0.00" && paymentType !== "DB") {
 			$scope.reservationBillData.isCheckout = true;
 			$scope.clickedPayButton(true);
+			$scope.checkoutInProgress = false;
 		}
 		else if (!$scope.guestCardData.contactInfo.email && !$scope.saveData.isEmailPopupFlag) {
 			// Popup to accept and save email address.
@@ -1947,6 +1960,7 @@ sntRover.controller('RVbillCardController',
 	        		template: '/assets/partials/validateCheckout/rvValidateEmail.html',
 	        		controller: 'RVValidateEmailCtrl',
 	        		className: '',
+	        		closeByDocument: false,
 	        		scope: $scope
 	        });
 		}
@@ -1959,16 +1973,19 @@ sntRover.controller('RVbillCardController',
         		template: '/assets/partials/earlyCheckout/rvEarlyCheckout.html',
         		controller: 'RVEarlyCheckoutCtrl',
         		className: '',
+        		closeByDocument: false,
         		scope: $scope
 	        });
 		}
 		else if (signatureData === "[]" && $scope.reservationBillData.required_signature_at === "CHECKOUT") {
 			errorMsg = "Signature is missing";
 			$scope.showErrorPopup(errorMsg);
+			$scope.checkoutInProgress = false;
 		}
 		else if (!$scope.saveData.acceptCharges) {
 			errorMsg = "Please check the box to accept the charges";
 			$scope.showErrorPopup(errorMsg);
+			$scope.checkoutInProgress = false;
 		}
 		else {
 			var data = {
@@ -2090,6 +2107,8 @@ sntRover.controller('RVbillCardController',
 	$scope.showSuccessPopup = function(successMessage) {
 		$scope.status = "success";
 		$scope.popupMessage = successMessage;
+		$scope.checkoutStatus = $scope.status; // CICO-45029 handle room status dialog after checkout (see jira notes)
+
 		$scope.callBackMethod = function() {
 			// CICO-11807 issue fixed
 			if ($scope.saveData.isEarlyDepartureFlag === true) {
@@ -2115,6 +2134,7 @@ sntRover.controller('RVbillCardController',
     		template: '/assets/partials/validateCheckin/rvShowValidation.html',
     		controller: 'RVShowValidationErrorCtrl',
     		className: '',
+    		closeByDocument: false,
     		scope: $scope
     	});
 	};
@@ -2731,6 +2751,7 @@ sntRover.controller('RVbillCardController',
 
     $scope.closeDialog = function() {
         ngDialog.close();
+		$scope.checkoutInProgress = false;
     };
 
     /*

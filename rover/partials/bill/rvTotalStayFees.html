@@ -262,7 +262,7 @@
 							<span ng-show="!isBalanceShown(feesData.is_rate_suppressed) && description.fees_amount != '' && description.fees_amount != NIL">
 								{{'SUPPRESSED_RATES_TEXT' | translate}}
 							</span>
-							<span ng-show="description.fees_amount != NIL && isBalanceShown(feesData.is_rate_suppressed)">
+                            <span ng-show="description.fees_amount != '' && description.fees_amount != NIL && isBalanceShown(feesData.is_rate_suppressed)">
 								<span class="currency">{{currencySymbol}}</span>{{description.fees_amount | number: precisonTwo}}
 							</span>
 							<br />
