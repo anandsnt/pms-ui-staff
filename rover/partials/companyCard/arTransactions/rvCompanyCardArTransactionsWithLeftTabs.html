@@ -55,10 +55,10 @@
                     Please Select Payment!
                 </button>
 
-                <div class="payment-data has-arrow toggle active" ng-show="!!arFlags.isPaymentSelected" ng-click="popupPaymentForAllocation()">
+                <div class="payment-data has-arrow toggle active" ng-show="!!arFlags.isPaymentSelected" ng-click="popupPaymentForAllocation()" ng-class="{'no-cc': !allocatedPayment.card_details}">
 
                     <h2 class="type">{{allocatedPayment.payment_type}}</h2>
-                    <div class="card-data">
+                    <div class="card-data" ng-if="allocatedPayment.card_details">
                         <figure class="card-logo">
                             <img ng-src="/assets/images/{{allocatedPayment.card_details.card_code.toLowerCase()}}.png" alt="">
                         </figure>
