@@ -1,5 +1,5 @@
 
-sntRover.controller('RVCompanyCardArTransactionsCtrl', ['$scope', '$rootScope', 'RVCompanyCardSrv', '$timeout', '$stateParams', 'ngDialog', '$state', '$vault', '$window', 'RVReservationCardSrv', '$filter',
+sntRover.controller('RVCompanyCardArTransactionsCtrlBkup', ['$scope', '$rootScope', 'RVCompanyCardSrv', '$timeout', '$stateParams', 'ngDialog', '$state', '$vault', '$window', 'RVReservationCardSrv', '$filter',
 	function($scope, $rootScope, RVCompanyCardSrv, $timeout, $stateParams, ngDialog, $state, $vault, $window, RVReservationCardSrv, $filter) {
 
 		BaseCtrl.call(this, $scope);
@@ -20,10 +20,11 @@ sntRover.controller('RVCompanyCardArTransactionsCtrl', ['$scope', '$rootScope', 
 			}, 100);
 		};
 		// Refresh the scroller when the tab is active.
-
-		$rootScope.$on("arTransactionTabActive", function(event) {
-			refreshArTabScroller();
-		});
+		// CICO-44249 - Commenting this - Not to call this 
+		// We need to remove this file after completing AR new stories
+		// $rootScope.$on("arTransactionTabActive", function(event) {
+		// 	refreshArTabScroller();
+		// });
 
 		// Initializing filter data
 
