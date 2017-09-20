@@ -730,13 +730,31 @@ angular.module('sntRover').controller('RVWorkManagementMultiSheetCtrl', ['$rootS
 			$scope.multiSheetState._selectedIndexMap = {};
 			$scope.multiSheetState._lastSelectedIds  = [];
 
+            // CICO-45484 - Need to restore the filter values while reloading the state after auto-assign
+            var isStateReload = $stateParams.filterParams ? true : false,
+                selectedEmployeeIds = ($stateParams.filterParams && $stateParams.filterParams.employee_ids);
+
             if (fetchHKStaffs) {
                 $scope.employeeList = fetchHKStaffs.results;
             }
-			_.each($scope.employeeList, function(emp) {
-				emp.ticked = true;
-				initingEmpList(emp);
-			});
+
+            var isSelectedEmp = false;
+
+            _.each($scope.employeeList, function (emp) {
+                if (isStateReload) {
+                    isSelectedEmp = _.where(selectedEmployeeIds, emp.id);
+
+                    if (isSelectedEmp) {
+                        emp.ticked = true;
+                        initingEmpList(emp);
+                    }
+                } else {
+                    emp.ticked = true;
+                    initingEmpList(emp);
+                }
+
+            });
+
 		};
 
 		var reInitEmployeesList = function() {
@@ -894,10 +912,10 @@ angular.module('sntRover').controller('RVWorkManagementMultiSheetCtrl', ['$rootS
 						'_lastSelectedIds': []
 					}, {
 						'dndEnabled': true,
-						'selectedDate': $scope.dateSelected || $stateParams.date || $rootScope.businessDate,
+						'selectedDate': ($stateParams.filterParams && $stateParams.filterParams.selectedDate) || $scope.dateSelected || $stateParams.date || $rootScope.businessDate,
 						'summary': {},
 						'header': {
-							work_type_id: $scope.workTypeSelected || ""
+							work_type_id: ($stateParams.filterParams && $stateParams.filterParams.worktype_id) || $scope.workTypeSelected || ""
 						}
 					}
 				);
@@ -1507,7 +1525,14 @@ angular.module('sntRover').controller('RVWorkManagementMultiSheetCtrl', ['$rootS
 
             var onAutoAssignSuccess = function(data) {
                     $scope.$emit("hideLoader");
-                    $state.reload();
+                    //$state.reload();
+                    $state.go('rover.workManagement.multiSheet', {
+                        filterParams: {
+                            selectedDate: $scope.multiSheetState.selectedDate,
+                            worktype_id: $scope.multiSheetState.header.work_type_id,
+                            employee_ids: getSelectedEmployees()
+                        }
+                    });
                 },
                 onAutoAssignFailure = function (error) {
                     $scope.$emit("hideLoader");
