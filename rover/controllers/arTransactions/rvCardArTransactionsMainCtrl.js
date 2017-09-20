@@ -194,6 +194,8 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 			if (tab !== 'balance') {
 				$scope.arFlags.isAddBalanceScreenVisible = false;
 			}
+			$scope.arDataObj.balancePageNo = $scope.arDataObj.paidPageNo 
+			= $scope.arDataObj.unallocatePageNo = $scope.arDataObj.allocatePageNo = 1;
 
 			$scope.fetchTransactions();
 		};
