@@ -294,7 +294,7 @@ sntZestStation.controller('zsCheckinScanPassportCtrl', [
                     response = zsCheckinSrv.v1ScannerDemoData;
                 } 
                 else if (demoModeScanCount % 2 === 0) {
-                    response = zsCheckinSrv.sampleIdFrontData;
+                    response = zsCheckinSrv.sampleIdFrontSideScanData;
                 } else {
                     response = zsCheckinSrv.v2ScannerDemoData;
                 }
@@ -319,7 +319,7 @@ sntZestStation.controller('zsCheckinScanPassportCtrl', [
                 } else {
                     $scope.mode = 'SCANNING_IN_PROGRESS';
                     $timeout(function() {
-                        $scope.$emit('PASSPORT_SCAN_SUCCESS', zsCheckinSrv.sampleBackSideScan);
+                        $scope.$emit('PASSPORT_SCAN_SUCCESS', zsCheckinSrv.sampleIdBackSideScanData);
                     }, 1000);
                 }
 

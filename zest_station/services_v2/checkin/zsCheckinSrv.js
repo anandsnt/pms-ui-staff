@@ -849,7 +849,7 @@ sntZestStation.service('zsCheckinSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
                 "otherside": "Y"
             };
 
-            this.sampleIdFrontData = {
+            this.sampleIdFrontSideScanData = {
                 "Command": "cmd_samsotech_scan_passport",
                 "Message": "",
                 "ResponseCode": 0,
@@ -907,7 +907,7 @@ sntZestStation.service('zsCheckinSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
                 "otherside": "Y"
             };
 
-            this.sampleBackSideScan = {
+            this.sampleIdBackSideScanData = {
                "Command": "cmd_samsotech_scan_passport",
                "Message": "",
                "ResponseCode": 0,
