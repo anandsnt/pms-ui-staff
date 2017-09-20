@@ -86,7 +86,7 @@ sntZestStation.controller('zsCheckinScanPassportCtrl', [
         };
 
         var setValueIfPresent = function(key, value, data) {
-            if (!_.isNull(value)) {
+            if (value) {
                 data[key] = value;
             }
         };
