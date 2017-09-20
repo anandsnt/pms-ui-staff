@@ -1173,7 +1173,12 @@ sntZestStation.controller('zsRootCtrl', [
             $log.info('---');
             if (to.name === 'zest_station.home' || to.name === 'zest_station.outOfService') {
                 $scope.resetTrackers();
-                $scope.turnOffLight();
+                // turn OFF lights on state change and if turned ON
+                if ($scope.zestStationData.kiosk_is_hue_active &&
+                    $scope.socketOperator.returnWebSocketObject() &&
+                    $scope.socketOperator.returnWebSocketObject().readyState === 1) {
+                    $scope.turnOffLight();
+                }
                 if ($scope.trackEvent) {
                     $scope.trackEvent('health_check', 'status_update', from.name, to.name);
                 }
