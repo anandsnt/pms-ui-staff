@@ -53,9 +53,10 @@
             <button type="button" class="button next" touch-press="scanBack()">
                 <text data-ng-bind-html="getTagValue('GID_SCAN_BUTTON')" editable-text="GID_SCAN_BUTTON"></text>
             </button>
-            <button type="button" class="button next skipscan" touch-press="scanBack('skip')" ng-hide='scanning.is_double_sided_required'>
+            <!-- Backside scan is determined by library, so no skip option needed -->
+            <!-- <button type="button" class="button next skipscan" touch-press="scanBack('skip')" ng-hide='scanning.is_double_sided_required'>
                 <text data-ng-bind-html="getTagValue('GID_SKIP_SCAN_BUTTON')" editable-text="GID_SKIP_SCAN_BUTTON"></text>
-            </button>
+            </button> -->
         </div>
     </div>
     <span ng-include="'/assets/partials_v2/zsTabletFooter.html'" click-touch='resetTime()'></span>
