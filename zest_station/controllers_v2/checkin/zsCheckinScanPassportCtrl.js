@@ -88,7 +88,7 @@ sntZestStation.controller('zsCheckinScanPassportCtrl', [
         var setValueIfPresent = function(key, value, data) {
             if (!_.isNull(value)) {
                 data[key] = value;
-            };
+            }
         };
 
         var setGuestDetailsFromScan = function(guest, scanResponse) {
@@ -101,11 +101,9 @@ sntZestStation.controller('zsCheckinScanPassportCtrl', [
 
             if ($scope.scannedBackImage) {
                 guest.back_img_path = imageFormat + scanResponse.BACK_IMAGE;
-                if(scanResponse.FIRST_NAME){ 
-                    guest.first_name = scanResponse.FIRST_NAME
-                };
                 // some ID cards have data in the backside. if Not null set them from
                 // backside scan
+                setValueIfPresent('first_name', scanResponse.FIRST_NAME, guest);
                 setValueIfPresent('last_name', scanResponse.LAST_NAME, guest);
                 setValueIfPresent('full_name', scanResponse.FULL_NAME, guest);
                 setValueIfPresent('nationality', scanResponse.NATIONALITY, guest);
@@ -920,8 +918,8 @@ sntZestStation.controller('zsCheckinScanPassportCtrl', [
                         'BACK_IMAGE': response.PR_DFE_FRONT_IMAGE ? response.PR_DFE_FRONT_IMAGE : ''
                     };
                 } else {
-                    var mappedResponse = getResponseMappings(response);
-                    mappedResponse.BACK_IMAGE =response.doc ? response.doc.docImge : '';
+                    mappedResponse = getResponseMappings(response);
+                    mappedResponse.BACK_IMAGE = response.doc ? response.doc.docImge : '';
                 }
                
 
