@@ -14,6 +14,11 @@
                 <span class="confirmation" ng-if="paidInvoice.external_reference_number !== null">Ext #<span class="value">{{paidInvoice.external_reference_number}}</span></span>
                 <span class="confirmation" ng-if="paidInvoice.external_reference_number === null">Conf #<span class="value">{{paidInvoice.reservation_confirm_no}}</span></span>
             </div>
+            <div class="data" ng-if="balance.is_manual_balance">
+                <h2>
+                    {{balance.guest_first_name}}
+                </h2>
+            </div>
             <div class="data" ng-if="paidInvoice.associated_type === 'PostingAccount'">
                 <h2>
                     <span>{{paidInvoice.account_name}}</span>
