@@ -1492,12 +1492,18 @@ angular.module('sntRover').controller('RVWorkManagementMultiSheetCtrl', ['$rootS
         // Get the ids of the selected employees
         var getSelectedEmployees = function () {
             var currIds = _.pluck(_.where($scope.employeeList, { ticked: true }), 'id');
-                        
+
             return currIds;
         };
 
         // Execute auto assign from work management screen based on the admin configuration
         $scope.executeAutoAssign = function () {
+
+            // CICO-45459 - Prompt the user to save the worksheet first before proceeding for auto assignment
+            if ($scope.workSheetChanged) {
+               openSaveConfirmationPopup();
+               return false;
+            }
 
             var onAutoAssignSuccess = function(data) {
                     $scope.$emit("hideLoader");
