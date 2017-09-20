@@ -85,7 +85,7 @@ sntZestStation.controller('zsCheckinScanPassportCtrl', [
             $scope.backImageRotated = back_rotated;
         };
 
-        var setIfNotNull = function(key, value, data) {
+        var setValueIfPresent = function(key, value, data) {
             if (!_.isNull(value)) {
                 data[key] = value;
             };
@@ -106,15 +106,15 @@ sntZestStation.controller('zsCheckinScanPassportCtrl', [
                 };
                 // some ID cards have data in the backside. if Not null set them from
                 // backside scan
-                setIfNotNull('last_name', scanResponse.LAST_NAME, guest);
-                setIfNotNull('full_name', scanResponse.FULL_NAME, guest);
-                setIfNotNull('nationality', scanResponse.NATIONALITY, guest);
-                setIfNotNull('nationality_fullname', scanResponse.NATIONALITY_FULL_NAME, guest);
-                setIfNotNull('dob', scanResponse.BIRTH_DATE, guest);
-                setIfNotNull('docExpiry', scanResponse.EXPIRY_DATE, guest);
-                setIfNotNull('docID', scanResponse.DOCUMENT_NUMBER, guest);
-                setIfNotNull('docType', scanResponse.DOC_TYPE, guest);
-                setIfNotNull('identity_type', scanResponse.DOC_TYPE, guest);
+                setValueIfPresent('last_name', scanResponse.LAST_NAME, guest);
+                setValueIfPresent('full_name', scanResponse.FULL_NAME, guest);
+                setValueIfPresent('nationality', scanResponse.NATIONALITY, guest);
+                setValueIfPresent('nationality_fullname', scanResponse.NATIONALITY_FULL_NAME, guest);
+                setValueIfPresent('dob', scanResponse.BIRTH_DATE, guest);
+                setValueIfPresent('docExpiry', scanResponse.EXPIRY_DATE, guest);
+                setValueIfPresent('docID', scanResponse.DOCUMENT_NUMBER, guest);
+                setValueIfPresent('docType', scanResponse.DOC_TYPE, guest);
+                setValueIfPresent('identity_type', scanResponse.DOC_TYPE, guest);
 
             } else {
                 // city, nationality, docExpiry, docID, dob, full_name, first_name, last_name 
