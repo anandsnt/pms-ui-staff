@@ -9,7 +9,8 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 	'RVReservationCardSrv',
 	'$window',
     '$filter',
-	function($scope, $rootScope, $stateParams, ngDialog, $timeout, rvAccountsArTransactionsSrv, RVReservationCardSrv, $window, $filter) {
+    'rvPermissionSrv',
+	function($scope, $rootScope, $stateParams, ngDialog, $timeout, rvAccountsArTransactionsSrv, RVReservationCardSrv, $window, $filter, rvPermissionSrv) {
 		BaseCtrl.call(this, $scope);
 		$scope.errorMessage = '';
 
@@ -21,7 +22,8 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 			'viewFromOutside': (typeof $stateParams.type !== 'undefined') ? true : false,
 			'shouldShowPayAllButton': false,
 			'shouldShowFooter': false,
-			'insufficientAmount': false
+			'insufficientAmount': false,
+			'isArSynced': false
 		};
 
 		$scope.filterData = {
@@ -128,6 +130,15 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 			$scope.arDataObj.allocatedCredit = data.allocated_credit;
 			$scope.arDataObj.unallocatedCredit = data.unallocated_credit;
 			$scope.arDataObj.company_or_ta_bill_id = data.company_or_ta_bill_id;
+			$scope.arFlags.isArSynced = data.is_ar_synced;
+			
+	        // CICO-45436 : To be removed 
+	        if ( !$scope.arFlags.isArSynced ) {
+	        	$scope.errorMessage = ['Your AR is being updated, please try again later. For further information please contact your system administrator.'];
+	        }
+	        else {
+	        	$scope.errorMessage = '';
+	        }
 
 			switch ($scope.arFlags.currentSelectedArTab) {
 				case 'balance':
@@ -790,4 +801,14 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 
             $scope.callAPI(rvAccountsArTransactionsSrv.emailArStatement, options);
         };
+
+        /**
+		* function to check whether the user has permission
+		* to create/edit AR Account.
+		* @return {Boolean}
+		*/
+		$scope.hasPermissionToCreateArAccount = function() {
+			return ( rvPermissionSrv.getPermissionValue ('CREATE_AR_ACCOUNT') && $scope.arFlags.isArSynced );
+		};
+
 }]);
