@@ -18,7 +18,7 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 			'isAddBalanceScreenVisible': false,
 			'isArTabActive': false,
 			'isPaymentSelected': false,
-			'viewFromOutside': (typeof $stateParams.type !== 'undefined') ? true : false,
+			'viewFromOutside': (typeof $stateParams.type === 'undefined'),
 			'shouldShowPayAllButton': false,
 			'shouldShowFooter': false,
 			'insufficientAmount': false
@@ -403,8 +403,11 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 		 *         - if selected payment from add payment or from unallocate tab
 		 */
 		$scope.shouldShowFooter = function() {			
-			var flag = ($scope.arFlags.shouldShowPayAllButton) ? true : ($scope.arDataObj.selectedInvoices.length === 0) ? false : true;
-			
+			var flag = true;
+
+			if ($scope.arDataObj.selectedInvoices.length === 0) {
+				flag = false;
+			}
 			return flag;
 		};
 		/*
