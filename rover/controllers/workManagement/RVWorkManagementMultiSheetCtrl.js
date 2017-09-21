@@ -1549,7 +1549,8 @@ angular.module('sntRover').controller('RVWorkManagementMultiSheetCtrl', ['$rootS
                             selectedDate: $scope.multiSheetState.selectedDate,
                             worktype_id: $scope.multiSheetState.header.work_type_id,
                             employee_ids: getSelectedEmployees()
-                        }
+                        },
+                        date: $scope.multiSheetState.selectedDate
                     });
                 },
                 onAutoAssignFailure = function (error) {
