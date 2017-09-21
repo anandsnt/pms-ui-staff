@@ -25,7 +25,7 @@ sntRover.controller('RvArBalanceController', ['$scope', '$timeout', 'rvAccountsA
 					$scope.arDataObj.totalAllocatedAmount = parseFloat($scope.arDataObj.totalAllocatedAmount) + parseFloat(eachItem.amount);		    		
 				}
 			});
-		}
+		};
 
 		/*
 		 * Changing amount in invoices
@@ -61,7 +61,7 @@ sntRover.controller('RvArBalanceController', ['$scope', '$timeout', 'rvAccountsA
 						
 						$scope.arDataObj.selectedInvoices = _.filter($scope.arDataObj.selectedInvoices, function (item) {
 							return item.invoice_id !== transactionId;
-						})
+						});
 					}
 				}
 			});
@@ -101,7 +101,7 @@ sntRover.controller('RvArBalanceController', ['$scope', '$timeout', 'rvAccountsA
 
 			if (element.parentElement.classList.contains('checkbox') || element.classList.contains('checkbox')) {
 				// Checkbox selection logic will be called here..
-				selectInvoice(clikedItem.transaction_id)
+				selectInvoice(clikedItem.transaction_id);
 			}
 			else if ( element.parentElement.classList.contains('has-arrow') || element.classList.contains('has-arrow')) {
 				clickedBalanceListItem(index);
@@ -186,7 +186,7 @@ sntRover.controller('RvArBalanceController', ['$scope', '$timeout', 'rvAccountsA
 		/*
 		 * Un allocate selected payment
 		 */
-		$scope.unAllocate = function(){
+		$scope.unAllocate = function() {
 			var requestParams = {},
 				paramsToService = {},
 				successCallBackOfUnallocate = function () {

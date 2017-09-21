@@ -241,7 +241,7 @@ sntRover.controller('RVArTransactionsPayCreditsController',
         $scope.showCCPage = !!$scope.isManual;
     };
     // Added for CICO-26730
-    $scope.$on('changeOnsiteCallIn', function(event) {
+    $scope.$on('changeOnsiteCallIn', function() {
         $scope.isManual = !$scope.isManual;
         $scope.changeOnsiteCallIn();
     });
