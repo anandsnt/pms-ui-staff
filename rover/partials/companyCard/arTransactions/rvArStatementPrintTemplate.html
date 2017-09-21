@@ -39,25 +39,36 @@
             </thead>
             <tbody>
                     
-                <tr class="person" ng-repeat="statement in printData.statement_details" ng-if="!printData.is_payments">
+                <tr class="person" ng-repeat="statement in printData.reservation_details">
                     <td class="person-info">
-                        <strong class="name">{{statement.reservation_details.guest_name}}</strong><br>
+                        <strong class="name">{{statement.name}}</strong><br>
                         <span class="person-meta">
                             <strong translate>RESERV</strong> 
-                            {{statement.reservation_details.reservation_no}}
+                            {{statement.reservation_no}}
                         </span>
                         <span class="person-meta">
                             <strong translate>ARRIVAL_DATE</strong> 
-                            {{statement.reservation_details.arrival_date | date:dateFormat }}
+                            {{statement.arrival_date | date:dateFormat }}
                         </span>
                         <span class="person-meta">
                             <strong translate>DEPARTURE_DATE</strong> 
-                            {{statement.reservation_details.departure_date | date:dateFormat }}
+                            {{statement.departure_date | date:dateFormat }}
                         </span>
                     </td>
                     <td class="charges-table-container" colspan="5">
                         <table class="charges-table">
-                            <tr ng-repeat="item in statement.reservation_details.charge_details">
+                            <tr ng-repeat="item in statement.charge_details">
+                                <td class="charge-date">{{item.date | date :dateFormat }}</td>
+                                <td class="charge-code">{{item.charge_code}}</td>
+                                <td class="charge-description">
+                                    <span>{{item.description}}</span>
+                                    <span class="reference">{{item.reference_number}}</span>
+                                    <span class="reference">{{item.reference_text}}</span>
+                                </td>
+                                <td class="charge-amount align-right">{{currencySymbol}}{{item.amount | number: precisonTwo}}</td>
+                                <td class="charge-amount align-right">{{currencySymbol}}{{item.amount | number: precisonTwo}}</td>
+                            </tr>
+                            <tr ng-repeat="item in statement.payment_details">
                                 <td class="charge-date">{{item.date | date :dateFormat }}</td>
                                 <td class="charge-code">{{item.charge_code}}</td>
                                 <td class="charge-description">
