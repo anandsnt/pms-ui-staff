@@ -129,7 +129,7 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 			$scope.arDataObj.allocatedCredit = data.allocated_credit;
 			$scope.arDataObj.unallocatedCredit = data.unallocated_credit;
 			$scope.arDataObj.company_or_ta_bill_id = data.company_or_ta_bill_id;
-			$scope.arFlags.isArSynced = data.is_ar_synced && false;
+			$scope.arFlags.isArSynced = data.is_ar_synced;
 			
 	        // CICO-45436 : To be removed 
 	        if ( !$scope.arFlags.isArSynced ) {
