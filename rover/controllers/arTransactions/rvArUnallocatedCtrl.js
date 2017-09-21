@@ -2,7 +2,7 @@
 sntRover.controller('RvArUnallocatedController',
     ['$scope',
     '$timeout',
-    'rvAccountsArTransactionsSrv','sntActivity', 'ngDialog',
+    'rvAccountsArTransactionsSrv', 'sntActivity', 'ngDialog',
     function($scope, $timeout, rvAccountsArTransactionsSrv, sntActivity, ngDialog) {
 
       BaseCtrl.call(this, $scope);
@@ -17,7 +17,7 @@ sntRover.controller('RvArUnallocatedController',
       };
 
       // Refresh scroller while updating the results from parent controller
-      $scope.$on( 'REFRESH_UNALLOCATED_LIST_SCROLLER' , function () {
+      $scope.$on('REFRESH_UNALLOCATED_LIST_SCROLLER', function () {
         refreshScroll();
       });
 
@@ -70,7 +70,7 @@ sntRover.controller('RvArUnallocatedController',
            * Handle unallocate button click
            */
           $scope.clickedUnallocate = function(payment) {
-              var successCallBackOfUnallocateData = function() {
+              var successCallBackOfUnallocateData = function(data) {
                   $scope.selectedUnAllocatedItem = data;
                   ngDialog.open({
                       template: '/assets/partials/companyCard/arTransactions/rvCompanyTravelAgentUnallocatePopup.html',
@@ -95,10 +95,10 @@ sntRover.controller('RvArUnallocatedController',
           /*
            * Un allocate selected payment
            */
-          $scope.unAllocate = function(){
+          $scope.unAllocate = function() {
               var requestParams = {},
                   paramsToService = {},
-                  successCallBackOfUnallocate = function (data) {
+                  successCallBackOfUnallocate = function () {
                       $scope.$emit('REFRESH_UNALLOCATED');
                       ngDialog.close();
                   };

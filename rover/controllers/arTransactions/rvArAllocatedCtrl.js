@@ -4,9 +4,9 @@ sntRover.controller('RvArAllocatedController',
          '$timeout',
          'ngDialog',
          'rvAccountsArTransactionsSrv', 'sntActivity',
-	      function($scope, $timeout, ngDialog, rvAccountsArTransactionsSrv, sntActivity) {
+        function($scope, $timeout, ngDialog, rvAccountsArTransactionsSrv, sntActivity) {
 
-		    BaseCtrl.call(this, $scope);
+        BaseCtrl.call(this, $scope);
 
         $scope.setScroller('allocated-list-scroller');
 
@@ -86,10 +86,10 @@ sntRover.controller('RvArAllocatedController',
         /*
          * Un allocate selected payment
          */
-        $scope.unAllocate = function(){
+        $scope.unAllocate = function() {
             var requestParams = {},
               paramsToService = {},
-              successCallBackOfUnallocate = function (data) {
+              successCallBackOfUnallocate = function () {
                   $scope.$emit('REFRESH_ALLOCATED');
                   ngDialog.close();
               };
@@ -108,5 +108,5 @@ sntRover.controller('RvArAllocatedController',
             };
 
             $scope.callAPI( rvAccountsArTransactionsSrv.unAllocateSelectedPayment, options );
-        }
+        };
 }]);

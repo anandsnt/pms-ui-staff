@@ -1,5 +1,5 @@
 
-sntRover.controller('RvArPaidController', ['$scope', '$timeout', 'RVCompanyCardSrv', 'rvAccountsArTransactionsSrv', '$vault', '$stateParams', '$state','sntActivity', 'ngDialog',
+sntRover.controller('RvArPaidController', ['$scope', '$timeout', 'RVCompanyCardSrv', 'rvAccountsArTransactionsSrv', '$vault', '$stateParams', '$state', 'sntActivity', 'ngDialog',
 	function($scope, $timeout, RVCompanyCardSrv, rvAccountsArTransactionsSrv, $vault, $stateParams, $state, sntActivity, ngDialog) {
 
 		BaseCtrl.call(this, $scope);
@@ -10,6 +10,7 @@ sntRover.controller('RvArPaidController', ['$scope', '$timeout', 'RVCompanyCardS
 				$scope.refreshScroller('paid-list');
 			}, 700);
 		};
+
 		// Refresh scroll after completing fetch data
 		$scope.$on("FETCH_COMPLETE_PAID_LIST", function() {
 			refreshScroll();
@@ -114,13 +115,13 @@ sntRover.controller('RvArPaidController', ['$scope', '$timeout', 'RVCompanyCardS
 		/*
 		* Un allocate selected payment
 		*/
-		$scope.unAllocate = function(){
-		var requestParams = {},
-			paramsToService = {},
-			successCallBackOfUnallocate = function (data) {
-				$scope.$emit('REFRESH_PAID_BILLS');
-				ngDialog.close();
-			};
+		$scope.unAllocate = function() {
+			var requestParams = {},
+				paramsToService = {},
+				successCallBackOfUnallocate = function () {
+					$scope.$emit('REFRESH_PAID_BILLS');
+					ngDialog.close();
+				};
 			
 			requestParams.allocation_id = $scope.selectedUnAllocatedItem.allocation_id;
 			requestParams.credit_id = $scope.selectedUnAllocatedItem.from_bill.transaction_id;
@@ -136,7 +137,7 @@ sntRover.controller('RvArPaidController', ['$scope', '$timeout', 'RVCompanyCardS
 			};
 
 			$scope.callAPI( rvAccountsArTransactionsSrv.unAllocateSelectedPayment, options );
-		}
+		};
 
 		/*
 		 *Function which fetches and returns the charge details of a grouped charge.
