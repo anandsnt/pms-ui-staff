@@ -133,7 +133,7 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 			
 	        // CICO-45436 : To be removed 
 	        if ( !$scope.arFlags.isArSynced ) {
-	        	$scope.errorMessage = ['You are not able to do further activity in AR tab. Please sync existing AR transactions for this hotel chain.'];
+	        	$scope.errorMessage = ['Your AR is being updated, please try again later. For further information please contact your system administrator.'];
 	        }
 	        else {
 	        	$scope.errorMessage = '';
