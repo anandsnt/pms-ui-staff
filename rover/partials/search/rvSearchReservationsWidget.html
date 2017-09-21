@@ -1,5 +1,5 @@
 <div ng-controller = "rvReservationSearchWidgetController" >
-	<form method="get" action="" name="reservations-search-form" id="reservations-search-form" class="search-form has-dates has-room-types" role="search" ng-class="{'enable-adding' :showAddNewGuestButton && showSearchResultsArea && textInQueryBox.length !== 0}" outside-click-handler><!--TODO: verify enable-adding -->
+	<form method="get" action="" name="reservations-search-form" id="reservations-search-form" class="search-form has-dates has-room-types enable-adding" role="search"  outside-click-handler><!--TODO: verify enable-adding -->
 	    <div class="entry search">
 	    	<button id="dashboard-clear-query" class="clear-query" ng-click="clearResults()" ng-class="{'visible': textInQueryBox!=''}">
 	    	    <span class="icons icon-clear-search">Clear query</span>
@@ -33,7 +33,7 @@
             </div>
         </div>
         <!-- Add reservation -->
-    	<a class="add-new-button" ui-sref="rover.reservation.search" ng-show="showAddNewGuestButton && showSearchResultsArea && textInQueryBox.length !== 0">+ New</a>
+    	<a class="add-new-button" ui-sref="rover.reservation.search" ng-show="isStandAlone">+ New</a>
 	</form>
 	<div class="search-pagination" ng-show="totalSearchResults > searchPerPage && results.length > 0 && showSearchResultsArea">
 	    <button type="button" class="button dark-grey next" ng-click="loadNextSet()" ng-disabled="isNextButtonDisabled()">Next</button>

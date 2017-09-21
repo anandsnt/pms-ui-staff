@@ -33,7 +33,7 @@ sntRover.controller('RvArAddBalanceController', ['$scope', '$rootScope', 'ngDial
 			refreshScroller();
 		};
 		// Add a new row from balance add screen.
-		$scope.addBalanceRow = function( index ) {
+		$scope.addBalanceRow = function() {
 			var newBalanceRowObj = {
 					'name': 'Manual Balance',
 					'invoiceNo': '',
@@ -66,14 +66,14 @@ sntRover.controller('RvArAddBalanceController', ['$scope', '$rootScope', 'ngDial
 			_.each($scope.manualBalanceObj.manualBalanceList, function(value, key) {
 
 				if (!isBalanceObjEmpty(key)) {
-				    var obj = {
-				    	'manual_charge_name': value.name,
+					var obj = {
+						'manual_charge_name': value.name,
 						'invoice_number': value.invoiceNo,
 						'dep_date': value.departureDate,
 						'amount': value.amount
-				    };
+					};
 
-				    manualBalanceList.push(obj);
+					manualBalanceList.push(obj);
 				}
 			});
 
@@ -113,41 +113,41 @@ sntRover.controller('RvArAddBalanceController', ['$scope', '$rootScope', 'ngDial
 
 			$scope.manualBalanceObj.selectedIndex = index;
 
-	      	ngDialog.open({
-	      		template: '/assets/partials/companyCard/rvCompanyCardContractsCalendar.html',
-		        controller: 'RVArAddBalanceDatePickerController',
-		        className: '',
-		        scope: $scope
-	      	});
-	    };
-	    // Clear date selected.
-	    $scope.clearDateSelection = function( index ) {
-	    	$scope.manualBalanceObj.manualBalanceList[index].departureDate = '';
-	    };
-	    // Check whether we need to disable the add new row button (+),
-	    // If the row having all fields empty.
-	    $scope.balanceObjIsEmpty = function( index ) {
-	    	return isBalanceObjEmpty(index);
-	    };
-	    // Method to find total balance amount.
-	    $scope.calculateTotalBalance = function() {
-	    	var totalBalance = 0.00, 
-	    		manualBalanceList = $scope.manualBalanceObj.manualBalanceList;
+			ngDialog.open({
+				template: '/assets/partials/companyCard/rvCompanyCardContractsCalendar.html',
+				controller: 'RVArAddBalanceDatePickerController',
+				className: '',
+				scope: $scope
+			});
+		};
+		// Clear date selected.
+		$scope.clearDateSelection = function( index ) {
+			$scope.manualBalanceObj.manualBalanceList[index].departureDate = '';
+		};
+		// Check whether we need to disable the add new row button (+),
+		// If the row having all fields empty.
+		$scope.balanceObjIsEmpty = function( index ) {
+			return isBalanceObjEmpty(index);
+		};
+		// Method to find total balance amount.
+		$scope.calculateTotalBalance = function() {
+			var totalBalance = 0.00, 
+				manualBalanceList = $scope.manualBalanceObj.manualBalanceList;
 
-	    	if ( manualBalanceList.length > 0 ) {
-		    	_.each(manualBalanceList, function(value, key) {
-		    		if (value.amount !== '') {
-			    		totalBalance += parseFloat(value.amount);
-			    	}
-		    	});
-		    }
-	    	return totalBalance;
-	    };
+			if ( manualBalanceList.length > 0 ) {
+				_.each(manualBalanceList, function(value) {
+					if (value.amount !== '') {
+						totalBalance += parseFloat(value.amount);
+					}
+				});
+			}
+			return totalBalance;
+		};
 		
 		/*
 		 * Loading of this Add Balance Tab by +ADD BALANCE button.
 		 */
-		$scope.$on('ADD_BALANCE_TAB', function(event) {
+		$scope.$on('ADD_BALANCE_TAB', function() {
 			init();
 		});
 

@@ -5,17 +5,17 @@ sntRover.controller('RvArPaidController', ['$scope', '$timeout', 'RVCompanyCardS
 		BaseCtrl.call(this, $scope);
 
 		$scope.setScroller('paid-list');
-	    var refreshScroll = function() {
-	        $timeout(function() { 
-	            $scope.refreshScroller('paid-list');
-	        }, 1000);
-	    };
-	    // Refresh scroll after completing fetch data
-	    $scope.$on("FETCH_COMPLETE_PAID_LIST", function() {
-	    	refreshScroll();
-	    });
+		var refreshScroll = function() {
+			$timeout(function() { 
+				$scope.refreshScroller('paid-list');
+			}, 700);
+		};
+		// Refresh scroll after completing fetch data
+		$scope.$on("FETCH_COMPLETE_PAID_LIST", function() {
+			refreshScroll();
+		});
 
-	    // Handle paid tab expansion api call.
+		// Handle paid tab expansion api call.
 		var callExpansionAPI = function( item ) {
 			sntActivity.start('EXPAND_PAID');
 			var successCallbackOfExpansionAPI = function(data) {
@@ -38,25 +38,25 @@ sntRover.controller('RvArPaidController', ['$scope', '$timeout', 'RVCompanyCardS
 			$scope.invokeApi(rvAccountsArTransactionsSrv.expandPaidAndUnpaidList, dataToSend, successCallbackOfExpansionAPI, failureCallbackOfExpansionAPI );
 		};
 
-	    // Handle Toggle button click to expand list item
-	    $scope.clickedPaidListItem = function( index ) {
-	    	var clikedItem = $scope.arDataObj.paidList[index];
+		// Handle Toggle button click to expand list item
+		$scope.clickedPaidListItem = function( index ) {
+			var clikedItem = $scope.arDataObj.paidList[index];
 
-	    	if (!clikedItem.active) {
-	    		callExpansionAPI(clikedItem);
-	    	}
-	    	else {
-	    		clikedItem.active = false;
-	    		refreshScroll();
-	    	}
-	    };
+			if (!clikedItem.active) {
+				callExpansionAPI(clikedItem);
+			}
+			else {
+				clikedItem.active = false;
+				refreshScroll();
+			}
+		};
 
-	   	/*
+		/*
 		 * function to execute on clicking on each result
 		 */
 		$scope.goToReservationDetails = function(index) {
 
-			var item = $scope.arDataObj.balanceList[index];
+			var item = $scope.arDataObj.paidList[index];
 
 			if ($scope.arFlags.viewFromOutside) {
 				$vault.set('cardId', $stateParams.id);
@@ -84,58 +84,59 @@ sntRover.controller('RvArPaidController', ['$scope', '$timeout', 'RVCompanyCardS
 			}
 		};
 
-        /*
+		/*
          * Handle unallocate button click
          */
-        $scope.clickedUnallocateButton = function( payment ) {
+		$scope.clickedUnallocateButton = function( payment ) {
 
-            var successCallBackOfUnallocateData = function(data) {
-                $scope.selectedUnAllocatedItem = data;
-                ngDialog.open({
-                    template: '/assets/partials/companyCard/arTransactions/rvCompanyTravelAgentUnallocatePopup.html',
-                    scope: $scope
-                });
-            };
+			var successCallBackOfUnallocateData = function(data) {
+				$scope.selectedUnAllocatedItem = data;
+				ngDialog.open({
+					template: '/assets/partials/companyCard/arTransactions/rvCompanyTravelAgentUnallocatePopup.html',
+					scope: $scope
+				});
+			};
 
-            var requestParams = {},
-                paramsToService = {};
+			var requestParams = {},
+				paramsToService = {};
 
-            requestParams.allocation_id = payment.id;
-            paramsToService.account_id = $scope.arDataObj.accountId;
-            paramsToService.data = requestParams;
+			requestParams.allocation_id = payment.id;
+			paramsToService.account_id = $scope.arDataObj.accountId;
+			paramsToService.data = requestParams;
 
-            var options = {
-                params: paramsToService,
-                successCallBack: successCallBackOfUnallocateData
-            };
+			var options = {
+				params: paramsToService,
+				successCallBack: successCallBackOfUnallocateData
+			};
 
-            $scope.callAPI( rvAccountsArTransactionsSrv.unAllocateData, options );
-        };
-        /*
-         * Un allocate selected payment
-         */
-        $scope.unAllocate = function(){
-            var requestParams = {},
-                paramsToService = {},
-                successCallBackOfUnallocate = function (data) {
-                    $scope.$emit('REFRESH_PAID_BILLS');
-                    ngDialog.close();
-                };
-            requestParams.allocation_id = $scope.selectedUnAllocatedItem.allocation_id;
-            requestParams.credit_id = $scope.selectedUnAllocatedItem.from_bill.transaction_id;
-            requestParams.debit_id = $scope.selectedUnAllocatedItem.to_payment.transaction_id;
-            requestParams.amount = $scope.selectedUnAllocatedItem.amount;
+			$scope.callAPI( rvAccountsArTransactionsSrv.unAllocateData, options );
+		};
+		/*
+		* Un allocate selected payment
+		*/
+		$scope.unAllocate = function(){
+		var requestParams = {},
+			paramsToService = {},
+			successCallBackOfUnallocate = function (data) {
+				$scope.$emit('REFRESH_PAID_BILLS');
+				ngDialog.close();
+			};
+			
+			requestParams.allocation_id = $scope.selectedUnAllocatedItem.allocation_id;
+			requestParams.credit_id = $scope.selectedUnAllocatedItem.from_bill.transaction_id;
+			requestParams.debit_id = $scope.selectedUnAllocatedItem.to_payment.transaction_id;
+			requestParams.amount = $scope.selectedUnAllocatedItem.amount;
 
-            paramsToService.account_id = $scope.arDataObj.accountId;
-            paramsToService.data = requestParams;
+			paramsToService.account_id = $scope.arDataObj.accountId;
+			paramsToService.data = requestParams;
 
-            var options = {
-                params: paramsToService,
-                successCallBack: successCallBackOfUnallocate
-            };
+			var options = {
+				params: paramsToService,
+				successCallBack: successCallBackOfUnallocate
+			};
 
-            $scope.callAPI( rvAccountsArTransactionsSrv.unAllocateSelectedPayment, options );
-        }
+			$scope.callAPI( rvAccountsArTransactionsSrv.unAllocateSelectedPayment, options );
+		}
 
 		/*
 		 *Function which fetches and returns the charge details of a grouped charge.

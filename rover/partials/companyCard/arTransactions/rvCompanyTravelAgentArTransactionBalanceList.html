@@ -51,8 +51,8 @@
 			</div>
 			<!-- This HTML is added even if the item is manual balance to fix the design issue. The icon kept hide -->
 			<div class="guest-date arrival">
-				<span class="guest-status small-icon check-in" ng-hide="balance.is_manual_balance || balance.associated_type === 'PostingAccount'">check-in</span>
-				<time datetime="{arrival-timestamp}">
+				<span class="guest-status small-icon check-in" ng-if="!balance.is_manual_balance && balance.associated_type !== 'PostingAccount'">check-in</span>
+				<time ng-if="!balance.is_manual_balance && balance.associated_type !== 'PostingAccount'">
 					<span class="date">{{balance.reservation_arrival_date  | date : dateFormat}}</span>
 					<span class="time">{{balance.reservation_arrival_time}}</span>
 				</time>
@@ -66,11 +66,11 @@
                 </time>
             </div>
             <div class="balance balance-now">
-                Balance Now
+                Invoiced Amount 
                 <strong class="red"><span class="currency">{{currencySymbol}}</span>{{balance.balanceNow | number:2}}</strong>
             </div>
             <div class="balance balance-after">
-                Balance After
+                Remaining Balance
                 <strong class="green"><span class="currency">{{currencySymbol}}</span>{{balance.balanceAfter | number:2}}</strong>
             </div>
             <div class="amount unpaid" ng-class="{'partially-paid':balance.is_partially_paid}">
