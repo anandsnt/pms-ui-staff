@@ -410,7 +410,6 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 			}
 			return flag;
 		};
-		
 		/*
 		* Data object to pass to the credit pay controller
 		*/
