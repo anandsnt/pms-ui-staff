@@ -66,11 +66,11 @@
                 </time>
             </div>
             <div class="balance balance-now">
-                Balance Now
+                Invoiced Amount 
                 <strong class="red"><span class="currency">{{currencySymbol}}</span>{{balance.balanceNow | number:2}}</strong>
             </div>
             <div class="balance balance-after">
-                Balance After
+                Remaining Balance
                 <strong class="green"><span class="currency">{{currencySymbol}}</span>{{balance.balanceAfter | number:2}}</strong>
             </div>
             <div class="amount unpaid" ng-class="{'partially-paid':balance.is_partially_paid}">
