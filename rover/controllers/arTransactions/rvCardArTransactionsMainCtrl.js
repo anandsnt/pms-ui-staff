@@ -132,13 +132,13 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 			$scope.arDataObj.company_or_ta_bill_id = data.company_or_ta_bill_id;
 			$scope.arFlags.isArSynced = data.is_ar_synced;
 			
-	        // CICO-45436 : To be removed 
-	        if ( !$scope.arFlags.isArSynced ) {
-	        	$scope.errorMessage = ['Your AR is being updated, please try again later. For further information please contact your system administrator.'];
-	        }
-	        else {
-	        	$scope.errorMessage = '';
-	        }
+			// CICO-45436 : To be removed 
+			if ( !$scope.arFlags.isArSynced ) {
+				$scope.errorMessage = ['Your AR is being updated, please try again later. For further information please contact your system administrator.'];
+			}
+			else {
+				$scope.errorMessage = '';
+			}
 
 			switch ($scope.arFlags.currentSelectedArTab) {
 				case 'balance':
