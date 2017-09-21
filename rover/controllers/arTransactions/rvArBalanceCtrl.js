@@ -4,6 +4,7 @@ sntRover.controller('RvArBalanceController', ['$scope', '$timeout', 'rvAccountsA
 		BaseCtrl.call(this, $scope);		
 
 		$scope.setScroller('balance-list');
+
 		var refreshScroll = function() {
 			$timeout(function() { 
 				$scope.refreshScroller('balance-list');
