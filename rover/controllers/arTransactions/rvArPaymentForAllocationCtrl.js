@@ -1,4 +1,4 @@
-sntRover.controller('RVArPaymentForAllocationController', ['$scope', '$rootScope','$stateParams', '$timeout',  'rvAccountsArTransactionsSrv', 'ngDialog', function($scope, $rootScope, $stateParams, $timeout, rvAccountsArTransactionsSrv, ngDialog ) {
+sntRover.controller('RVArPaymentForAllocationController', ['$scope', '$rootScope', '$stateParams', '$timeout',  'rvAccountsArTransactionsSrv', 'ngDialog', function($scope, $rootScope, $stateParams, $timeout, rvAccountsArTransactionsSrv, ngDialog ) {
 
     BaseCtrl.call(this, $scope);
     // Initialization
