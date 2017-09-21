@@ -18,7 +18,7 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 			'isAddBalanceScreenVisible': false,
 			'isArTabActive': false,
 			'isPaymentSelected': false,
-			'viewFromOutside': (typeof $stateParams.type !== 'undefined') ? true : false,
+			'viewFromOutside': (typeof $stateParams.type === 'undefined'),
 			'shouldShowPayAllButton': false,
 			'shouldShowFooter': false,
 			'insufficientAmount': false
@@ -403,49 +403,12 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 		 *         - if selected payment from add payment or from unallocate tab
 		 */
 		$scope.shouldShowFooter = function() {			
-			var flag = ($scope.arFlags.shouldShowPayAllButton) ? true : ($scope.arDataObj.selectedInvoices.length === 0) ? false : true;
-			
+			var flag = true;
+
+			if ($scope.arDataObj.selectedInvoices.length === 0) {
+				flag = false;
+			}
 			return flag;
-		};
-		/*
-		 * To create the parameters which is to be passed to API
-		 */
-
-		var createParametersFetchTheData = function () {
-			var dataToSend = {
-				account_id: $scope.arDataObj.accountId,
-				getParams: {
-					per_page: $scope.arDataObj.perPage,
-					from_date: $scope.filterData.fromDate,
-					to_date: $scope.filterData.toDate,
-					query: $scope.filterData.query
-				}
-			};
-
-			switch ($scope.arFlags.currentSelectedArTab) {
-				case 'balance':
-					dataToSend.getParams.transaction_type = 'CHARGES';
-					dataToSend.getParams.paid = false;
-					dataToSend.getParams.page = $scope.arDataObj.balancePageNo;
-					break;
-				case 'paid-bills':
-					dataToSend.getParams.transaction_type = 'CHARGES';
-					dataToSend.getParams.paid = true;
-					dataToSend.getParams.page = $scope.arDataObj.paidPageNo;
-					break;
-				case 'unallocated':
-					dataToSend.getParams.transaction_type = 'PAYMENTS';
-					dataToSend.getParams.allocated = false;
-					dataToSend.getParams.page = $scope.arDataObj.unallocatePageNo;
-					break;
-				case 'allocated':
-					dataToSend.getParams.transaction_type = 'PAYMENTS';
-					dataToSend.getParams.allocated = true;
-					dataToSend.getParams.page = $scope.arDataObj.allocatePageNo;
-					break;
-				}
-
-			return dataToSend;
 		};
 		/*
 		* Data object to pass to the credit pay controller
