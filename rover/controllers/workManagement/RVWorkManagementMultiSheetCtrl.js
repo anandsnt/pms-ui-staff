@@ -742,7 +742,7 @@ angular.module('sntRover').controller('RVWorkManagementMultiSheetCtrl', ['$rootS
 
             _.each($scope.employeeList, function (emp) {
                 if (isStateReload) {
-                    isSelectedEmp = _.where(selectedEmployeeIds, emp.id);
+                     isSelectedEmp = selectedEmployeeIds.indexOf(emp.id) > -1;
 
                     if (isSelectedEmp) {
                         emp.ticked = true;
