@@ -389,7 +389,7 @@
                         }
                     }
 
-                    &:not(.selected) {
+                    &:not(.selected)Â {
                         .has-arrow {
                             padding-right: 40px;
                         }
@@ -447,7 +447,7 @@
                             .icon-time {
                                 .square(20px);
                                 background-color: @grey2;
-                                background-position: 5px -11016px;
+                                background-position: 5px -11015px;
                                 margin-right: 5px;
                             }
 
@@ -474,7 +474,7 @@
                         }
                         
 
-                        .search-results {
+                        .search-resultsÂ {
                             background: @white;
                             border-top: 1px solid rgba(0,0,0,0.15);
                             .box-shadow();
@@ -510,7 +510,7 @@
                                     }
 
                                     &:hover,
-                                    &:active {
+                                    &:activeÂ {
                                         .box-shadow();
                                     }
                                 }
@@ -614,7 +614,7 @@
                         }
 
                         &.balance-after {
-                            width: 115px;
+                            width: 130px;
                         }
                     }
 
@@ -689,7 +689,7 @@
 
                         &.input {
                             position: relative;
-                            width: 165px;
+                            width: 150px;
                             height: 30px;
                             .hide();
                             
@@ -712,7 +712,7 @@
                                 font-size: 18px;
                                 font-weight: 600;
                                 text-align: right;
-                                width: 55px;
+                                width: 40px;
                             }
                         }
                     } 
@@ -771,11 +771,7 @@
                             &.credits {
                                 
                                 text-align: right;
-                            }
-
-                            &.credits {
-                                padding-right: 40px;
-                            }
+                            } 
                         }
 
                         td {
@@ -812,17 +808,37 @@
                             }
 
                             &.credits {
-                                width: 118px;
-                                padding-right: 40px;
-                                position: relative;
-                                .icons {
-                                    position: absolute;
-                                    top: 0;
-                                    right: 0;
-                                    background-size: 70px;
+                                width: 118px; 
+                            }
 
-                                    &.icon-remove-40 {
-                                        background-position: 14px -2179px;
+                            &.action {
+                                width: 40px;
+                                padding: 0 5px;
+
+                                button {
+                                    .box-shadow(1px 1px 1px rgba(0,0,0,0.15));
+                                    .square(30px);
+
+                                    &:hover,
+                                    &:focus,
+                                    &:active {
+                                        .box-shadow(~"inset 1px 1px 1px rgba(0,0,0,0.15)");
+                                    }
+
+                                    &.blank {
+                                        background: @grey1;
+                                    }
+
+                                    .icons {
+                                        background-size: 72px;
+                                        
+                                        &.icon-edit-40 {
+                                            background-position: 4px -6716px;
+                                        }
+
+                                        &.icon-remove-40 {
+                                            background-position: 4px -2252px;
+                                        }
                                     }
                                 }
                             }
@@ -833,7 +849,17 @@
                         }
 
                         tr.odd {
-                            td { background: @grey1; }
+                            td { 
+                                background: @grey1; 
+
+                                &.action {
+                                    button {
+                                        &.blank {
+                                            background: @white;
+                                        }
+                                    }
+                                }
+                            }
                         }
 
                         /** Charge Items in AR Transactions */
@@ -850,11 +876,11 @@
                                     border-bottom: 1px solid rgba(0,0,0,0.1)
                                 }
 
-                                &.description {
+                                &.descriptionÂ {
                                     padding-left: 9px;
                                 }
 
-                                &.description + td {
+                                &.descriptionÂ + td {
                                     padding-right: 12px;
                                     text-align: right;
                                     li {
