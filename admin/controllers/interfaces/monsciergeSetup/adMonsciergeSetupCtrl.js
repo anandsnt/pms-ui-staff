@@ -1,5 +1,5 @@
-admin.controller('adMonsciergeSetupCtrl', ['$scope', 'adMonsciergeSetupSrv', 'ngTableParams',
-	function($scope, adMonsciergeSetupSrv, ngTableParams) {
+admin.controller('adMonsciergeSetupCtrl', ['$scope', 'adMonsciergeSetupSrv',
+	function($scope, adMonsciergeSetupSrv) {
 		BaseCtrl.call(this, $scope);
 
 		$scope.saveSettings = function() {
