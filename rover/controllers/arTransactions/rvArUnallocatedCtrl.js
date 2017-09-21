@@ -1,27 +1,27 @@
 
 sntRover.controller('RvArUnallocatedController',
-	['$scope',
-	 '$timeout',
-	 'rvAccountsArTransactionsSrv','sntActivity', 'ngDialog',
-	  function($scope, $timeout, rvAccountsArTransactionsSrv, sntActivity, ngDialog) {
+    ['$scope',
+    '$timeout',
+    'rvAccountsArTransactionsSrv','sntActivity', 'ngDialog',
+    function($scope, $timeout, rvAccountsArTransactionsSrv, sntActivity, ngDialog) {
 
-		BaseCtrl.call(this, $scope);
+      BaseCtrl.call(this, $scope);
 
-        $scope.setScroller('unallocated-list-scroller');
+      $scope.setScroller('unallocated-list-scroller');
 
-		// Refreshes the scroller for the unallocated lists
-		var refreshScroll = function() {
-	        $timeout(function() {
-	            $scope.refreshScroller('unallocated-list-scroller');
-	        }, 700);
-    	};
+      // Refreshes the scroller for the unallocated lists
+      var refreshScroll = function() {
+          $timeout(function() {
+              $scope.refreshScroller('unallocated-list-scroller');
+          }, 700);
+      };
 
-    	// Refresh scroller while updating the results from parent controller
-    	$scope.$on( 'REFRESH_UNALLOCATED_LIST_SCROLLER' , function () {
-    		refreshScroll();
-    	});
+      // Refresh scroller while updating the results from parent controller
+      $scope.$on( 'REFRESH_UNALLOCATED_LIST_SCROLLER' , function () {
+        refreshScroll();
+      });
 
-    	// Handle Unallocated tab expansion api call.
+      // Handle Unallocated tab expansion api call.
         var callExpansionAPI = function( item ) {
             sntActivity.start('EXPAND_UNALLOCATED');
             var successCallbackOfExpansionAPI = function( data ) {
@@ -70,7 +70,7 @@ sntRover.controller('RvArUnallocatedController',
            * Handle unallocate button click
            */
           $scope.clickedUnallocate = function(payment) {
-              var successCallBackOfUnallocateData = function(data) {
+              var successCallBackOfUnallocateData = function() {
                   $scope.selectedUnAllocatedItem = data;
                   ngDialog.open({
                       template: '/assets/partials/companyCard/arTransactions/rvCompanyTravelAgentUnallocatePopup.html',
@@ -102,6 +102,7 @@ sntRover.controller('RvArUnallocatedController',
                       $scope.$emit('REFRESH_UNALLOCATED');
                       ngDialog.close();
                   };
+
               requestParams.allocation_id = $scope.selectedUnAllocatedItem.allocation_id;
               requestParams.credit_id = $scope.selectedUnAllocatedItem.from_bill.transaction_id;
               requestParams.debit_id = $scope.selectedUnAllocatedItem.to_payment.transaction_id;
@@ -116,6 +117,6 @@ sntRover.controller('RvArUnallocatedController',
               };
 
               $scope.callAPI( rvAccountsArTransactionsSrv.unAllocateSelectedPayment, options );
-          }
+          };
 
-}]);
+    }]);
