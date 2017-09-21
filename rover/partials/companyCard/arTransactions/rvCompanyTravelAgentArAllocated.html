@@ -1,0 +1,74 @@
+<ul class="search-results">
+    <li class="reservation transaction payment" ng-repeat="allocatedCreditTransaction in arDataObj.allocatedList track by $index">
+        <!-- if .toggle clicked, add .active -->
+        <div class="faux-anchor toggle has-arrow" ng-class="{'active': allocatedCreditTransaction.active }" ng-click="clickedAllocatedListItem( $index )">
+            <div class="data">
+                <h2>{{allocatedCreditTransaction.payment_type}}</h2>
+                <div class="payment-data">
+                    <!-- if card, show card logo -->
+                    <figure class="card-logo" ng-show="allocatedCreditTransaction.is_cc_payment">
+                        <img ng-src="/assets/images/{{allocatedCreditTransaction.card_details.card_code.toLowerCase()}}.png" alt="">
+                    </figure>
+                    <!-- if number, show ending number -->
+                    <span class="number" ng-show="allocatedCreditTransaction.is_cc_payment">{{allocatedCreditTransaction.card_details.last_digits}}</span>
+                    <!-- if exp date, show exp date -->
+                    <span class="date" ng-show="allocatedCreditTransaction.is_cc_payment">Date <span class="value">{{allocatedCreditTransaction.card_details.expire_date | date:dateFormat}}</span></span>
+                    <!-- if reference, show reference -->
+                    <span class="reference" ng-show="allocatedCreditTransaction.reference_text">Reference <span class="value">{{allocatedCreditTransaction.reference_text}}</span></span>
+                </div>
+            </div>
+            <div class="payment-date">
+                <span class="icons small-icon icon-time time-black"></span>
+                <time datetime="{{allocatedCreditTransaction.transaction_date}}">
+                    <span class="date">{{allocatedCreditTransaction.transaction_date | date:dateFormat}}</span>
+                    <span class="time">{{allocatedCreditTransaction.transaction_time}}</span>
+                </time>
+            </div>
+            <!-- if partially unallocated add .partially-paid -->
+            <div class="amount green" ng-class="{'partially-paid': allocatedCreditTransaction.is_partially_paid}">
+                <!-- if partially unallocated, show icon -->
+                <span class="icons icon-wallet-green" ng-show="allocatedCreditTransaction.is_partially_paid"></span>
+
+                <span class="currency">{{currencySymbol}}</span>{{allocatedCreditTransaction.amount | number:2 }}
+            </div>
+        </div>
+
+        <ul class="search-results" ng-show="allocatedCreditTransaction.active">
+            <li class="reservation transaction" ng-repeat="item in allocatedCreditTransaction.transactions">
+                <div class="faux-anchor">
+                    <div class="data">
+                        <h2>{{item.guest_last_name}} {{item.guest_first_name}}</h2>
+                        <span class="invoice">Invoice #<span class="value">{{item.invoice_number}}</span></span>
+                        <span ng-hide="item.is_manual_balance" class="confirmation">Conf #<span class="value">{{item.reservation_confirm_no}}</span></span>
+                    </div>
+                    <div class="guest-date arrival">
+                        <span ng-if="!item.is_manual_balance" class="guest-status small-icon check-in">check-in</span>
+                        <time ng-if="!item.is_manual_balance">
+                            <span class="date">{{item.reservation_arrival_date | date : dateFormat}}</span>
+                            <span class="time">{{item.reservation_arrival_time}}</span>
+                        </time>
+                    </div>
+                    <div class="guest-date departure">
+                        <span class="guest-status small-icon check-out">check-out</span>
+                        <time>
+                            <span class="date">{{item.reservation_dep_date | date : dateFormat}}</span>
+                            <span class="time">{{item.reservation_dep_time}}</span>
+                        </time>
+                    </div>
+                    <div class="amount paid">
+                        {{currencySymbol}} {{item.amount | number:2 }}
+                    </div>
+                    <button type="button" class="button white with-icon" ng-click="clickedUnallocateButton(item)">
+                        <span class="icons icon-remove-40"></span>
+                    </button>
+                </div>
+            </li>
+        </ul>
+
+    </li>
+    <li>
+        <!-- To fix scroll: The footer for pagination and select payment is coming above the list so the last entry will 
+        not be visible-->
+        <div>&nbsp;</div>
+    </li>
+</ul>
