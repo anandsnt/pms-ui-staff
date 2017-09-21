@@ -1,5 +1,5 @@
-admin.controller('adMonsciergeSetupCtrl', ['$scope', 'adMonsciergeSetupSrv', 'ngTableParams', '$filter',
-	function($scope, adMonsciergeSetupSrv, ngTableParams, $filter) {
+admin.controller('adMonsciergeSetupCtrl', ['$scope', 'adMonsciergeSetupSrv', 'ngTableParams',
+	function($scope, adMonsciergeSetupSrv, ngTableParams) {
 		BaseCtrl.call(this, $scope);
 
 		$scope.saveSettings = function() {
@@ -7,7 +7,7 @@ admin.controller('adMonsciergeSetupCtrl', ['$scope', 'adMonsciergeSetupSrv', 'ng
 					$scope.successMessage = 'Success, Your settings has been saved.';
 				},
 				options = {
-					params: { 'monscierge':$scope.data },
+					params: { 'monscierge': $scope.data },
 					successCallBack: onSaveSettingsSucces
 				};
 
