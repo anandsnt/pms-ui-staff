@@ -2,7 +2,7 @@ sntRover.controller('RVAccountReceivableMessagePopupCtrl', ['$rootScope', '$scop
 	BaseCtrl.call(this, $scope);
 
 	$scope.isCreateNewARAccountMode = false;
-	$scope.data.ar_number = "";
+	$scope.data = {};
 
 	$scope.createAccountAction = function() {
 
