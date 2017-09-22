@@ -1,6 +1,8 @@
 angular.module('sntPay').controller('payCBACtrl',
-    ['$scope', 'sntPaymentSrv', 'paymentAppEventConstants', 'paymentUtilSrv', 'sntCBAGatewaySrv', '$log',
-        function($scope, sntPaymentSrv, payEvntConst, util, sntCBAGatewaySrv, $log) {
+    ['$scope', 'sntPaymentSrv', 'paymentAppEventConstants', 'paymentUtilSrv',
+        'sntCBAGatewaySrv', '$log', 'sntActivity',
+        function($scope, sntPaymentSrv, payEvntConst, util,
+                 sntCBAGatewaySrv, $log, sntActivity) {
 
             var transaction = {
                     id: null,
@@ -85,17 +87,18 @@ angular.module('sntPay').controller('payCBACtrl',
                     }, onSubmitSuccess, onSubmitFailure);
                 },
                 initiatePaymentProcess = function(event, params) {
-                    $scope.$emit('showLoader');
+                    sntActivity.start('INIT_CBA_PAYMENT');
                     sntCBAGatewaySrv.initiateTransaction(
                         params.postData.amount,
                         params.bill_id
                     ).then(response => {
-                        $scope.$emit('hideLoader');
                         transaction.id = response.data.id;
                         Number(params.postData.amount) > 0 ? doPayment() : doRefund();
+                        sntActivity.stop('INIT_CBA_PAYMENT');
                     }, errorMessage => {
                         $scope.$emit('hideLoader');
                         $scope.$emit('CBA_PAYMENT_FAILED', errorMessage.data);
+                        sntActivity.stop('INIT_CBA_PAYMENT');
                     });
                 };
 
