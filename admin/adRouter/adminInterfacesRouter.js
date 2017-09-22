@@ -594,4 +594,10 @@ angular.module('adminInterfacesRouter', []).config(function($stateProvider) {
         }
     });
 
+    $stateProvider.state('admin.monsciergeSetup', {
+        templateUrl: '/assets/partials/monsciergeSetup/adMonsciergeSetup.html',
+        controller: 'adMonsciergeSetupCtrl',
+        url: '/monsciergeSetup'
+    });
+
 });

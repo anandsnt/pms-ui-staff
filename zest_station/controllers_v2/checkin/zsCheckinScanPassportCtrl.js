@@ -85,6 +85,11 @@ sntZestStation.controller('zsCheckinScanPassportCtrl', [
             $scope.backImageRotated = back_rotated;
         };
 
+        var setValueIfPresent = function(key, value, data) {
+            if (value) {
+                data[key] = value;
+            }
+        };
 
         var setGuestDetailsFromScan = function(guest, scanResponse) {
             if (scanResponse.DOC_TYPE === 'PP') {
@@ -96,6 +101,18 @@ sntZestStation.controller('zsCheckinScanPassportCtrl', [
 
             if ($scope.scannedBackImage) {
                 guest.back_img_path = imageFormat + scanResponse.BACK_IMAGE;
+                // some ID cards have data in the backside. if Not null set them from
+                // backside scan
+                setValueIfPresent('first_name', scanResponse.FIRST_NAME, guest);
+                setValueIfPresent('last_name', scanResponse.LAST_NAME, guest);
+                setValueIfPresent('full_name', scanResponse.FULL_NAME, guest);
+                setValueIfPresent('nationality', scanResponse.NATIONALITY, guest);
+                setValueIfPresent('nationality_fullname', scanResponse.NATIONALITY_FULL_NAME, guest);
+                setValueIfPresent('dob', scanResponse.BIRTH_DATE, guest);
+                setValueIfPresent('docExpiry', scanResponse.EXPIRY_DATE, guest);
+                setValueIfPresent('docID', scanResponse.DOCUMENT_NUMBER, guest);
+                setValueIfPresent('docType', scanResponse.DOC_TYPE, guest);
+                setValueIfPresent('identity_type', scanResponse.DOC_TYPE, guest);
 
             } else {
                 // city, nationality, docExpiry, docID, dob, full_name, first_name, last_name 
@@ -275,7 +292,7 @@ sntZestStation.controller('zsCheckinScanPassportCtrl', [
                     response = zsCheckinSrv.v1ScannerDemoData;
                 } 
                 else if (demoModeScanCount % 2 === 0) {
-                    response = zsCheckinSrv.idCardDemoScanData;
+                    response = zsCheckinSrv.sampleIdFrontSideScanData;
                 } else {
                     response = zsCheckinSrv.v2ScannerDemoData;
                 }
@@ -300,7 +317,7 @@ sntZestStation.controller('zsCheckinScanPassportCtrl', [
                 } else {
                     $scope.mode = 'SCANNING_IN_PROGRESS';
                     $timeout(function() {
-                        $scope.$emit('PASSPORT_SCAN_SUCCESS', zsCheckinSrv.v2ScannerDemoData);
+                        $scope.$emit('PASSPORT_SCAN_SUCCESS', zsCheckinSrv.sampleIdBackSideScanData);
                     }, 1000);
                 }
 
@@ -901,9 +918,8 @@ sntZestStation.controller('zsCheckinScanPassportCtrl', [
                         'BACK_IMAGE': response.PR_DFE_FRONT_IMAGE ? response.PR_DFE_FRONT_IMAGE : ''
                     };
                 } else {
-                    mappedResponse = {
-                        'BACK_IMAGE': response.doc ? response.doc.docImge : ''
-                    };
+                    mappedResponse = getResponseMappings(response);
+                    mappedResponse.BACK_IMAGE = response.doc ? response.doc.docImge : '';
                 }
                
 
