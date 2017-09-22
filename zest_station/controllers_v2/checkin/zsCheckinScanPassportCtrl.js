@@ -103,9 +103,9 @@ sntZestStation.controller('zsCheckinScanPassportCtrl', [
                 guest.back_img_path = imageFormat + scanResponse.BACK_IMAGE;
                 // some ID cards have data in the backside. if Not null set them from
                 // backside scan
-                setValueIfPresent('first_name', scanResponse.FIRST_NAME, guest);
-                setValueIfPresent('last_name', scanResponse.LAST_NAME, guest);
-                setValueIfPresent('full_name', scanResponse.FULL_NAME, guest);
+                setValueIfPresent('scanned_first_name', scanResponse.FIRST_NAME, guest);
+                setValueIfPresent('scanned_last_name', scanResponse.LAST_NAME, guest);
+                setValueIfPresent('scanned_full_name', scanResponse.FULL_NAME, guest);
                 setValueIfPresent('nationality', scanResponse.NATIONALITY, guest);
                 setValueIfPresent('nationality_fullname', scanResponse.NATIONALITY_FULL_NAME, guest);
                 setValueIfPresent('dob', scanResponse.BIRTH_DATE, guest);
@@ -116,9 +116,9 @@ sntZestStation.controller('zsCheckinScanPassportCtrl', [
 
             } else {
                 // city, nationality, docExpiry, docID, dob, full_name, first_name, last_name 
-                guest.first_name = scanResponse.FIRST_NAME;
-                guest.last_name = scanResponse.LAST_NAME;
-                guest.full_name = scanResponse.FULL_NAME;
+                guest.scanned_first_name = scanResponse.FIRST_NAME;
+                guest.scanned_last_name = scanResponse.LAST_NAME;
+                guest.scanned_full_name = scanResponse.FULL_NAME;
 
                 guest.nationality = scanResponse.NATIONALITY;
                 guest.nationality_fullname = scanResponse.NATIONALITY_FULL_NAME;
@@ -539,9 +539,9 @@ sntZestStation.controller('zsCheckinScanPassportCtrl', [
                     'document_type': selectedPassportInfo.docType,
                     'document_number': selectedPassportInfo.docID,
                     'expiration_date': selectedPassportInfo.docExpiry,
-                    'full_name': selectedPassportInfo.full_name,
-                    'first_name': selectedPassportInfo.first_name,
-                    'last_name': selectedPassportInfo.last_name,
+                    'full_name': selectedPassportInfo.scanned_full_name,
+                    'first_name': selectedPassportInfo.scanned_first_name,
+                    'last_name': selectedPassportInfo.scanned_last_name,
                     'nationality': selectedPassportInfo.nationality,
                     'guest_id': selectedPassportInfo.id,
                     'date_of_birth': selectedPassportInfo.dob
@@ -857,7 +857,8 @@ sntZestStation.controller('zsCheckinScanPassportCtrl', [
                     'DOCUMENT_NUMBER': mapping.PR_DF_DOCUMENT_NUMBER,
                     'EXPIRY_DATE': mapping.PR_DF_EXPIRY_DATE,
                     'ID_ISSUE_COUNTRY': mapping.PR_DF_ISSUE_COUNTRY,
-                    'ID_TYPE': mapping.PR_DF_TYPE
+                    'ID_TYPE': mapping.PR_DF_TYPE,
+                    'NATIONALITY_FULL_NAME':  mapping.PR_DF_NATIONALITY
                 };
             } 
             if (!mapping.lastName && mapping.doc) {
@@ -878,7 +879,7 @@ sntZestStation.controller('zsCheckinScanPassportCtrl', [
                 'NATIONALITY': docDetails.nationality_code2,
                 'NATIONALITY_FULL_NAME': docDetails.nationality_fullname,
                 'SEX': docDetails.gender,
-                'FULL_NAME': docDetails.fullName ? docDetails.fullName : docDetails.lastName,
+                'FULL_NAME': docDetails.fullName,
 
                 'DOC_TYPE': docDetails.documentType,
                 'DOCUMENT_NUMBER': docDetails.documentNumber,

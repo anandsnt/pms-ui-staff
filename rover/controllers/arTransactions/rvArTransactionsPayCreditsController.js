@@ -77,11 +77,12 @@ sntRover.controller('RVArTransactionsPayCreditsController',
             $scope.allocatedPayment.card_details = data.cc_details;
         }
         $scope.arFlags.shouldShowPayAllButton = $scope.arDataObj.balanceList.length > 0;
-        $scope.arFlags.currentSelectedArTab = 'balance';
+        if (data.allocatePaymentAfterPosting) {
+            $scope.arFlags.currentSelectedArTab = 'balance';
+        }
         $scope.arFlags.isPaymentSelected = true;   
         $scope.arFlags.insufficientAmount = false; 
         // $scope.arDataObj.availableAmount = selectedPaymentData.available_amount;
-
 
         // Reload the ar transaction listing after payment
         if (data.allocatePaymentAfterPosting) {
