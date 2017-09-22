@@ -951,6 +951,11 @@ angular.module('sntRover').controller('RVWorkManagementMultiSheetCtrl', ['$rootS
 					}
 				}
 			};
+
+            // Clear the date once its used for preserving the previous state before load
+            if ($stateParams.filterParams) {
+                $stateParams.filterParams.selectedDate = null;
+            }
 		};
 
 		var initializeVariables = function() {
