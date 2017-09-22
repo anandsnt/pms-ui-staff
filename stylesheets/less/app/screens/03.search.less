@@ -389,7 +389,7 @@
                         }
                     }
 
-                    &:not(.selected)Â {
+                    &:not(.selected) {
                         .has-arrow {
                             padding-right: 40px;
                         }
@@ -397,7 +397,7 @@
 
                     &.selected { 
                         .data {
-                            .calc-width(100, 420);
+                            .calc-width(100, 435);
 
                             h2 {
                                 color: @orange;
@@ -447,7 +447,7 @@
                             .icon-time {
                                 .square(20px);
                                 background-color: @grey2;
-                                background-position: 5px -11015px;
+                                background-position: 5px -11016px;
                                 margin-right: 5px;
                             }
 
@@ -474,7 +474,7 @@
                         }
                         
 
-                        .search-resultsÂ {
+                        .search-results {
                             background: @white;
                             border-top: 1px solid rgba(0,0,0,0.15);
                             .box-shadow();
@@ -510,7 +510,7 @@
                                     }
 
                                     &:hover,
-                                    &:activeÂ {
+                                    &:active {
                                         .box-shadow();
                                     }
                                 }
@@ -667,7 +667,7 @@
                         font-weight: 300;
                         color: @textColor;
                         text-align: right;
-                        width: 130px; 
+                        width: 105px; 
 
                         &.unallocated { color: @green; }
                         &.unpaid { color: @red; }
@@ -689,7 +689,7 @@
 
                         &.input {
                             position: relative;
-                            width: 150px;
+                            width: 165px;
                             height: 30px;
                             .hide();
                             
@@ -712,7 +712,7 @@
                                 font-size: 18px;
                                 font-weight: 600;
                                 text-align: right;
-                                width: 40px;
+                                width: 55px;
                             }
                         }
                     } 
@@ -808,37 +808,17 @@
                             }
 
                             &.credits {
-                                width: 118px; 
-                            }
+                              width: 118px;
+                                 padding-right: 40px;
+                                 position: relative;
+                                .icons {
+                                    position: absolute;
+                                    top: 0;
+                                    right: 0;
+                                    background-size: 70px;
 
-                            &.action {
-                                width: 40px;
-                                padding: 0 5px;
-
-                                button {
-                                    .box-shadow(1px 1px 1px rgba(0,0,0,0.15));
-                                    .square(30px);
-
-                                    &:hover,
-                                    &:focus,
-                                    &:active {
-                                        .box-shadow(~"inset 1px 1px 1px rgba(0,0,0,0.15)");
-                                    }
-
-                                    &.blank {
-                                        background: @grey1;
-                                    }
-
-                                    .icons {
-                                        background-size: 72px;
-                                        
-                                        &.icon-edit-40 {
-                                            background-position: 4px -6716px;
-                                        }
-
-                                        &.icon-remove-40 {
-                                            background-position: 4px -2252px;
-                                        }
+                                    &.icon-remove-40 {
+                                       background-position: 14px -2179px;
                                     }
                                 }
                             }
@@ -849,17 +829,7 @@
                         }
 
                         tr.odd {
-                            td { 
-                                background: @grey1; 
-
-                                &.action {
-                                    button {
-                                        &.blank {
-                                            background: @white;
-                                        }
-                                    }
-                                }
-                            }
+                            td { background: @grey1; }
                         }
 
                         /** Charge Items in AR Transactions */
@@ -876,11 +846,11 @@
                                     border-bottom: 1px solid rgba(0,0,0,0.1)
                                 }
 
-                                &.descriptionÂ {
+                                &.description {
                                     padding-left: 9px;
                                 }
 
-                                &.descriptionÂ + td {
+                                &.description + td {
                                     padding-right: 12px;
                                     text-align: right;
                                     li {
