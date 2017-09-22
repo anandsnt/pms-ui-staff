@@ -19,7 +19,7 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 			'isAddBalanceScreenVisible': false,
 			'isArTabActive': false,
 			'isPaymentSelected': false,
-			'viewFromOutside':  (typeof $stateParams.type !== 'undefined') ? true : false,
+			'viewFromOutside': (typeof $stateParams.type !== 'undefined') ? true : false,
 			'shouldShowPayAllButton': false,
 			'shouldShowFooter': false,
 			'insufficientAmount': false,
@@ -314,7 +314,7 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 				scope: $scope
 			});
 			$scope.paymentModalOpened = true;
-			};
+		};
 		/*
 		 * Success callback of payment
 		 */
@@ -508,7 +508,7 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 
 		// Refresh selected list
 		$scope.$on("REFRESH_SELECTED_LIST", function() {
-		$scope.fetchTransactions();
+			$scope.fetchTransactions();
 		});
 		// Clicked allocate button from unallocated tab
 		$scope.$on("CLICKED_ALLOCATE_BUTTON", function(event, selectedPaymentData) {
