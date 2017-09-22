@@ -32,6 +32,7 @@ angular.module('sntPay').controller('sntPaymentController',
                 creditCardTypes: [],
                 showAddToGuestCard: false,
                 addToGuestCardSelected: false,
+                allocatePaymentAfterPosting: false,
                 guestFirstName: '',
                 guestLastName: '',
                 isManualEntryInsideIFrame: false,
@@ -1252,6 +1253,9 @@ angular.module('sntPay').controller('sntPaymentController',
 
                 response.amountPaid = $scope.payment.amount;
                 response.authorizationCode = response.authorization_code;
+
+                response.selectedPaymentType = $scope.selectedPaymentType;
+                response.selectedPaymentTypeDescription = _.findWhere($scope.paymentTypes, {name: $scope.selectedPaymentType}).description;
                 //  NOTE: The feePaid key and value would be sent IFF a fee was applied along with the payment
                 if ($scope.feeData) {
                     response.feePaid = $scope.feeData.calculatedFee;
@@ -1264,6 +1268,11 @@ angular.module('sntPay').controller('sntPaymentController',
                 if ($scope.payment.showAddToGuestCard) {
                     // check if add to guest card was selected
                     response.add_to_guest_card = $scope.payment.addToGuestCardSelected;
+                }
+
+                if ($scope.actionType === 'AR_SUBMIT_PAYMENT') {
+                    // check if allocate payment after posting selected
+                    response.allocatePaymentAfterPosting = $scope.payment.allocatePaymentAfterPosting;
                 }
 
                 $scope.$emit('PAYMENT_SUCCESS', response);
