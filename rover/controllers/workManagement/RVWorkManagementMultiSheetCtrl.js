@@ -1514,6 +1514,27 @@ angular.module('sntRover').controller('RVWorkManagementMultiSheetCtrl', ['$rootS
             return currIds;
         };
 
+        // CICO-45485 - Get all the rooms which are having tasks for the given work type
+        var getUnAssignedRoomTasksByWorkType = function (workTypeId, unAssignedRoomTasks) {
+            if (workTypeId) {
+                var rooms = [];
+
+                _.each (unAssignedRoomTasks, function (roomInfo) {
+
+                    roomInfo.room_tasks = _.filter(roomInfo.room_tasks, function (task) {
+                        return task.work_type_id == $scope.multiSheetState.header.work_type_id;
+                    });
+
+                    if (roomInfo.room_tasks.length) {
+                        rooms.push(roomInfo);
+                    }
+
+                });
+                return rooms;
+            }
+            return unAssignedRoomTasks;
+        };
+
         // Execute auto assign from work management screen based on the admin configuration
         $scope.executeAutoAssign = function () {
 
@@ -1529,7 +1550,8 @@ angular.module('sntRover').controller('RVWorkManagementMultiSheetCtrl', ['$rootS
                             selectedDate: $scope.multiSheetState.selectedDate,
                             worktype_id: $scope.multiSheetState.header.work_type_id,
                             employee_ids: getSelectedEmployees()
-                        }
+                        },
+                        date: $scope.multiSheetState.selectedDate
                     });
                 },
                 onAutoAssignFailure = function (error) {
@@ -1543,7 +1565,7 @@ angular.module('sntRover').controller('RVWorkManagementMultiSheetCtrl', ['$rootS
                     date: $scope.dateSelected,
                     employee_ids: getSelectedEmployees(),
                     worktype_id: $scope.multiSheetState.header.work_type_id,
-                    unassigned_room_tasks: payload.unassignedRoomTasks
+                    unassigned_room_tasks: getUnAssignedRoomTasksByWorkType($scope.multiSheetState.header.work_type_id, payload.unassignedRoomTasks)
                 }
             };
 
