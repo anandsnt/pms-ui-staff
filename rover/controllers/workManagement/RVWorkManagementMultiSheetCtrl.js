@@ -1518,6 +1518,7 @@ angular.module('sntRover').controller('RVWorkManagementMultiSheetCtrl', ['$rootS
         var getUnAssignedRoomTasksByWorkType = function (workTypeId, unAssignedRoomTasks) {
             if (workTypeId) {
                 var rooms = [];
+
                 _.each (unAssignedRoomTasks, function (roomInfo) {
 
                     roomInfo.room_tasks = _.filter(roomInfo.room_tasks, function (task) {
