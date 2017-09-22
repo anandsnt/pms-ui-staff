@@ -192,7 +192,7 @@ sntRover.controller('reservationActionsController', [
 				}
 				$scope.depositPopupData.isShown = true;
 			}
-		}
+		}		
 
 	    var getTwentyFourHourTime = function(resDate, amPmString) {
             var d = new Date(resDate + " " + amPmString);
