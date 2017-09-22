@@ -7,7 +7,7 @@ sntRover.controller('RVArAddBalanceDatePickerController', ['$scope', '$rootScope
             changeYear: true,
             changeMonth: true,
             yearRange: "0:+5", // Show 5 years in past & 5 years in future
-            onSelect: function(dateText, inst) {
+            onSelect: function() {
                 var item = $scope.manualBalanceObj;
 
                 item.manualBalanceList[item.selectedIndex].departureDate = $scope.date;

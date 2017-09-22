@@ -19,7 +19,7 @@ admin.controller('ADAccountReceivablesCtrl', ['$scope', '$state', 'ADHotelSettin
 			var settings = $scope.data.ar_number_settings;
 
 			var postData = {
-				'ar_number_settings' : {
+				'ar_number_settings': {
 					'is_auto_assign_ar_numbers': settings.is_auto_assign_ar_numbers
 				}
 			};

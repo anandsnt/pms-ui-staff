@@ -3,24 +3,24 @@ sntRover.controller('RvArAllocatedController',
         ['$scope',
          '$timeout',
          'ngDialog',
-         'rvAccountsArTransactionsSrv','sntActivity',
-	      function($scope, $timeout, ngDialog, rvAccountsArTransactionsSrv, sntActivity) {
+         'rvAccountsArTransactionsSrv', 'sntActivity',
+        function($scope, $timeout, ngDialog, rvAccountsArTransactionsSrv, sntActivity) {
 
-		BaseCtrl.call(this, $scope);
+        BaseCtrl.call(this, $scope);
 
         $scope.setScroller('allocated-list-scroller');
 
-		// Refreshes the scroller for the allocated lists
-		var refreshScroll = function() {
-	        $timeout(function() {
-	            $scope.refreshScroller('allocated-list-scroller');
-	        }, 700);
-    	};
+        // Refreshes the scroller for the allocated lists
+        var refreshScroll = function() {
+            $timeout(function() {
+                $scope.refreshScroller('allocated-list-scroller');
+            }, 700);
+        };
 
-    	// Refresh scroller while updating the results from parent controller
-    	$scope.$on( 'REFRESH_ALLOCATED_LIST_SCROLLER' , function () {
-    		refreshScroll();
-    	});
+        // Refresh scroller while updating the results from parent controller
+        $scope.$on('REFRESH_ALLOCATED_LIST_SCROLLER', function () {
+          refreshScroll();
+        });
 
         // Handle allocated tab expansion api call.
         var callExpansionAPI = function( item ) {
@@ -86,10 +86,10 @@ sntRover.controller('RvArAllocatedController',
         /*
          * Un allocate selected payment
          */
-        $scope.unAllocate = function(){
+        $scope.unAllocate = function() {
             var requestParams = {},
               paramsToService = {},
-              successCallBackOfUnallocate = function (data) {
+              successCallBackOfUnallocate = function () {
                   $scope.$emit('REFRESH_ALLOCATED');
                   ngDialog.close();
               };
@@ -108,5 +108,5 @@ sntRover.controller('RvArAllocatedController',
             };
 
             $scope.callAPI( rvAccountsArTransactionsSrv.unAllocateSelectedPayment, options );
-        }
+        };
 }]);
