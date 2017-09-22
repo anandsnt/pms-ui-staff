@@ -857,7 +857,8 @@ sntZestStation.controller('zsCheckinScanPassportCtrl', [
                     'DOCUMENT_NUMBER': mapping.PR_DF_DOCUMENT_NUMBER,
                     'EXPIRY_DATE': mapping.PR_DF_EXPIRY_DATE,
                     'ID_ISSUE_COUNTRY': mapping.PR_DF_ISSUE_COUNTRY,
-                    'ID_TYPE': mapping.PR_DF_TYPE
+                    'ID_TYPE': mapping.PR_DF_TYPE,
+                    'NATIONALITY_FULL_NAME':  mapping.PR_DF_NATIONALITY
                 };
             } 
             if (!mapping.lastName && mapping.doc) {
