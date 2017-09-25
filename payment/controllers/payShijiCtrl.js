@@ -22,7 +22,7 @@ angular.module('sntPay').controller('payShijiCtrl',
              * @return {undefined}
              */
             function showQRCode(response) {
-                $scope.$emit('SHOW_SIX_PAY_LOADER');
+                sntActivity.startEMVActivity();
 
                 $scope.shijiPaymentState.modal = ngDialog.open({
                     template: '/assets/partials/payShijiQRPopup.html',
@@ -31,7 +31,7 @@ angular.module('sntPay').controller('payShijiCtrl',
                     data: angular.toJson(response.data),
                     preCloseCallback: function() {
                         if ($scope.shijiPaymentState.isSuccess || $scope.shijiPaymentState.isFailure) {
-                            $scope.$emit('HIDE_SIX_PAY_LOADER');
+                            sntActivity.stopEMVActivity();
                             $timeout(()=> {
                                 if ($scope.shijiPaymentState.isSuccess) {
                                     $scope.$emit('SHIJI_PAYMENT_SUCCESS', $scope.shijiPaymentState.response);

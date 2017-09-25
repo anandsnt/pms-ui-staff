@@ -116,7 +116,7 @@ angular.module('sntPay').controller('payMLIOperationsController',
             };
 
             var tokenize = function (params) {
-                $scope.$emit('SHOW_SIX_PAY_LOADER');
+                sntActivity.startEMVActivity();
                 sntPaymentSrv.getSixPaymentToken(params).then(
                     response => {
                         /**
@@ -150,12 +150,12 @@ angular.module('sntPay').controller('payMLIOperationsController',
                             }
                         });
 
-                        $scope.$emit('HIDE_SIX_PAY_LOADER');
+                        sntActivity.stopEMVActivity();
                     },
                     errorMessage => {
                         $log.info('Tokenization Failed');
                         $scope.$emit('PAYMENT_FAILED', errorMessage);
-                        $scope.$emit('HIDE_SIX_PAY_LOADER');
+                        sntActivity.stopEMVActivity();
                     }
                 );
             };
