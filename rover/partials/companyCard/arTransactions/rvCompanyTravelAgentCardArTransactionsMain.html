@@ -1,5 +1,5 @@
 <!-- Company Card Tab - AR Transactions -->
-<form method="post" id="cc-ar-transactions" name="cc-ar-transactions" class="form card-tab inner-header transactions">
+<form method="post" id="cc-ar-transactions" name="cc-ar-transactions" class="form card-tab inner-header transactions" ng-class="{'overlay': !hasPermissionToCreateArAccount()}" >
 
     <div class="tab-header">
         <div class="search-form has-dates">
@@ -13,13 +13,13 @@
             <div class="entry dates">
                 <div class="entry-data has-datepicker">
                     <label for="ar-transaction-date-from">From</label>
-                    <button class="clear-query" ng-class="{'visible': escapeNull(filterData.fromDate) !=''}"><span class="icons icon-clear-search">Clear query</span></button>
+                    <button ng-click="clearFromDate()" class="clear-query" ng-class="{'visible': escapeNull(filterData.fromDate) !=''}"><span class="icons icon-clear-search">Clear query</span></button>
 
                     <input id="ar-transaction-date-from" type="text" class="datepicker" value="{{ filterData.fromDate | date : dateFormat }}" ng-click="clickedFromDate()" readonly />
                 </div>
                 <div class="entry-data has-datepicker">
                     <label for="ar-transaction-date-to">To</label>
-                    <button class="clear-query" ng-class="{'visible': escapeNull(filterData.toDate) !=''}"><span class="icons icon-clear-search">Clear query</span></button>
+                    <button ng-click="clearToDate()" class="clear-query" ng-class="{'visible': escapeNull(filterData.toDate) !=''}"><span class="icons icon-clear-search">Clear query</span></button>
                     <input id="ar-transaction-date-to" type="text" class="datepicker" value="{{ filterData.toDate | date : dateFormat }}" ng-click="clickedToDate()" readonly />
 
                 </div>

@@ -2,24 +2,25 @@
 sntRover.controller('RvArAllocatedController',
         ['$scope',
          '$timeout',
-         'rvAccountsArTransactionsSrv','sntActivity',
-	      function($scope, $timeout, rvAccountsArTransactionsSrv, sntActivity) {
+         'ngDialog',
+         'rvAccountsArTransactionsSrv', 'sntActivity',
+        function($scope, $timeout, ngDialog, rvAccountsArTransactionsSrv, sntActivity) {
 
-		BaseCtrl.call(this, $scope);
+        BaseCtrl.call(this, $scope);
 
         $scope.setScroller('allocated-list-scroller');
 
-		// Refreshes the scroller for the allocated lists
-		var refreshScroll = function() {
-	        $timeout(function() {
-	            $scope.refreshScroller('allocated-list-scroller');
-	        }, 1000);
-    	};
+        // Refreshes the scroller for the allocated lists
+        var refreshScroll = function() {
+            $timeout(function() {
+                $scope.refreshScroller('allocated-list-scroller');
+            }, 700);
+        };
 
-    	// Refresh scroller while updating the results from parent controller
-    	$scope.$on( 'REFRESH_ALLOCATED_LIST_SCROLLER' , function () {
-    		refreshScroll();
-    	});
+        // Refresh scroller while updating the results from parent controller
+        $scope.$on('REFRESH_ALLOCATED_LIST_SCROLLER', function () {
+          refreshScroll();
+        });
 
         // Handle allocated tab expansion api call.
         var callExpansionAPI = function( item ) {
@@ -56,8 +57,56 @@ sntRover.controller('RvArAllocatedController',
             }
         };
 
-        // Handle unallocate button click.
-        $scope.clickedUnallocateButton = function() {
-        };
+        /*
+         * Handle unallocate button click
+         */
+        $scope.clickedUnallocateButton = function(payment) {
+          var successCallBackOfUnallocateData = function(data) {
+              $scope.selectedUnAllocatedItem = data;
+              ngDialog.open({
+                  template: '/assets/partials/companyCard/arTransactions/rvCompanyTravelAgentUnallocatePopup.html',
+                  scope: $scope
+              });
+          };
 
+          var requestParams = {},
+              paramsToService = {};
+
+          requestParams.allocation_id = payment.id;
+          paramsToService.account_id = $scope.arDataObj.accountId;
+          paramsToService.data = requestParams;
+
+          var options = {
+              params: paramsToService,
+              successCallBack: successCallBackOfUnallocateData
+          };
+
+          $scope.callAPI( rvAccountsArTransactionsSrv.unAllocateData, options );
+        };
+        /*
+         * Un allocate selected payment
+         */
+        $scope.unAllocate = function() {
+            var requestParams = {},
+              paramsToService = {},
+              successCallBackOfUnallocate = function () {
+                  $scope.$emit('REFRESH_ALLOCATED');
+                  ngDialog.close();
+              };
+
+            requestParams.allocation_id = $scope.selectedUnAllocatedItem.allocation_id;
+            requestParams.credit_id = $scope.selectedUnAllocatedItem.from_bill.transaction_id;
+            requestParams.debit_id = $scope.selectedUnAllocatedItem.to_payment.transaction_id;
+            requestParams.amount = $scope.selectedUnAllocatedItem.amount;
+
+            paramsToService.account_id = $scope.arDataObj.accountId;
+            paramsToService.data = requestParams;
+
+            var options = {
+              params: paramsToService,
+              successCallBack: successCallBackOfUnallocate
+            };
+
+            $scope.callAPI( rvAccountsArTransactionsSrv.unAllocateSelectedPayment, options );
+        };
 }]);

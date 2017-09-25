@@ -53,9 +53,10 @@
             <button type="button" class="button next" touch-press="scanBack()">
                 <text data-ng-bind-html="getTagValue('GID_SCAN_BUTTON')" editable-text="GID_SCAN_BUTTON"></text>
             </button>
-            <button type="button" class="button next skipscan" touch-press="scanBack('skip')" ng-hide='scanning.is_double_sided_required'>
+            <!-- Backside scan is determined by library, so no skip option needed -->
+            <!-- <button type="button" class="button next skipscan" touch-press="scanBack('skip')" ng-hide='scanning.is_double_sided_required'>
                 <text data-ng-bind-html="getTagValue('GID_SKIP_SCAN_BUTTON')" editable-text="GID_SKIP_SCAN_BUTTON"></text>
-            </button>
+            </button> -->
         </div>
     </div>
     <span ng-include="'/assets/partials_v2/zsTabletFooter.html'" click-touch='resetTime()'></span>
@@ -157,13 +158,15 @@
 
                     <figure ng-show='guest.guest_type === "CHILDREN"' class="guest-image guest-icons icon-student"></figure>
                     <figure ng-show='guest.guest_type === "INFANTS"' class="guest-image guest-icons icon-infant"></figure>
-                    
-                    <span>
-                        {{guest.last_name}}, {{guest.first_name}}    
+                    <span ng-if='guest.last_name !== guest.first_name'>
+                        {{guest.first_name}}&nbsp;{{guest.last_name}}
                     </span>
-                   <!--  <span ng-if='guest.last_name === guest.first_name'>
+                    <span ng-if="guest.last_name === guest.first_name && guest.full_name !== undefined ">
                         {{guest.full_name}}    
-                    </span> -->
+                    </span>
+                    <span ng-if="guest.last_name === guest.first_name && guest.full_name === undefined ">
+                        {{guest.first_name}}    
+                    </span>
                 </span>
                 <button type="button" class="button remove-btn" ng-show='showRemoveButton' click-touch='removeGuest(guest.id)' ng-class='{"overlay grey": selectedReservation.guest_details.length <= 1}'>
                     <text data-ng-bind-html="getTagValue('REMOVE_BTN')" editable-text="REMOVE_BTN"></text>
@@ -310,27 +313,27 @@
                             </label>
                         </div>
 
-                        <div class="entry with-label" ng-if='selectedPassportInfo.full_name !== selectedPassportInfo.last_name'>
+                        <div class="entry with-label" ng-if='selectedPassportInfo.scanned_first_name !== selectedPassportInfo.scanned_last_name'>
                             <label>
                                 <text data-ng-bind-html="getTagValue('GID_REVIEW_LAST_NAME')" editable-text="GID_REVIEW_LAST_NAME"></text>
                             </label>
 
-                            <input type="text" value='selectedPassportInfo.last_name' ng-model='selectedPassportInfo.last_name' class='disabled'/>
+                            <input type="text" ng-model='selectedPassportInfo.scanned_last_name' class='disabled'/>
                         </div>
 
-                        <div class="entry with-label" ng-if='selectedPassportInfo.full_name !== selectedPassportInfo.last_name'>
+                        <div class="entry with-label" ng-if='selectedPassportInfo.scanned_first_name !== selectedPassportInfo.scanned_last_name'>
                             <label>
                                 <text data-ng-bind-html="getTagValue('GID_REVIEW_FIRST_NAME')" editable-text="GID_REVIEW_FIRST_NAME"></text>
                             </label>
-                            <input type="text" value='selectedPassportInfo.first_name' ng-model='selectedPassportInfo.first_name' class='disabled'/>
+                            <input type="text" ng-model='selectedPassportInfo.scanned_first_name' class='disabled' />
                         </div>
 
 
-                        <div class="entry with-label" ng-if='selectedPassportInfo.full_name === selectedPassportInfo.last_name'>
+                        <div class="entry with-label" ng-if='selectedPassportInfo.scanned_first_name === selectedPassportInfo.scanned_last_name'>
                             <label>
                                 <text data-ng-bind-html="getTagValue('GID_REVIEW_FULL_NAME')" editable-text="GID_REVIEW_FULL_NAME"></text>
                             </label>
-                            <input type="text" value='selectedPassportInfo.full_name' ng-model='selectedPassportInfo.full_name' class='disabled'/>
+                            <input type="text" ng-model='selectedPassportInfo.scanned_full_name' class="disabled"/>
                         </div>
 
 
@@ -370,27 +373,25 @@
                         </div>
 
                         <!-- show full name above passport images if only the full name is given for first/last name -->
-                        <div class="entry with-label" ng-hide='selectedPassportInfo.full_name === selectedPassportInfo.last_name'>
+                        <div class="entry with-label" ng-hide='selectedPassportInfo.scanned_first_name === selectedPassportInfo.scanned_last_name'>
                             <label>
                                 <text data-ng-bind-html="getTagValue('GID_REVIEW_FULL_NAME')" editable-text="GID_REVIEW_FULL_NAME"></text>
                             </label>
-                            <input type="text" value='selectedPassportInfo.full_name' ng-model='selectedPassportInfo.full_name' class='disabled'/>
+                            <input type="text" ng-model='selectedPassportInfo.scanned_full_name' class="disabled"/>
                         </div>
 
                         <div class="entry with-label">
                             <label>
                                 <text data-ng-bind-html="getTagValue('GID_REVIEW_DOB')" editable-text="GID_REVIEW_DOB"></text>
                             </label>
-
-                            <input type="text" value='selectedPassportInfo.dob' ng-model='selectedPassportInfo.dob' class='disabled'/>
+                            <input type="text" value='selectedPassportInfo.dob' ng-model='selectedPassportInfo.dob' class="disabled"/>
                         </div>
-
                         <div class="entry with-label">
                             <label>
                                 <text data-ng-bind-html="getTagValue('GID_REVIEW_DOC_NUMBER')" editable-text="GID_REVIEW_DOC_NUMBER"></text>
                             </label>
 
-                            <input type="text" value='selectedPassportInfo.docID' ng-model='selectedPassportInfo.docID' class='disabled'/>
+                            <input type="text" value='selectedPassportInfo.docID' ng-model='selectedPassportInfo.docID' class="disabled"/>
                         </div>
 
                         <div class="entry with-label">
@@ -398,7 +399,7 @@
                                 <text data-ng-bind-html="getTagValue('GID_REVIEW_EXPIRY')" editable-text="GID_REVIEW_EXPIRY"></text>
                             </label>
 
-                            <input type="text" value='selectedPassportInfo.docExpiry' ng-model='selectedPassportInfo.docExpiry' class='disabled'/>
+                            <input type="text" value='selectedPassportInfo.docExpiry' ng-model='selectedPassportInfo.docExpiry' class="disabled"/>
                         </div>
 
                         <div class="entry with-label">
@@ -406,7 +407,9 @@
                                 <text data-ng-bind-html="getTagValue('GID_REVIEW_NATIONALITY')" editable-text="GID_REVIEW_NATIONALITY"></text>
                             </label>
 
-                            <input type="text" value='selectedPassportInfo.nationality' ng-model='selectedPassportInfo.nationality' class='disabled'/>
+                            <input type="text" value='selectedPassportInfo.nationality' ng-model='selectedPassportInfo.nationality_fullname' class="disabled"/>
+
+                           <!--  <input type="text" value='selectedPassportInfo.nationality' ng-model='selectedPassportInfo.nationality' class='disabled'/> -->
                         </div>
 
                         <div ng-show='selectedPassportInfo.city' class="entry with-label">
@@ -414,7 +417,7 @@
                                 <text data-ng-bind-html="getTagValue('GID_REVIEW_CITY')" editable-text="GID_REVIEW_CITY"></text>
                             </label>
 
-                            <input type="text" value='selectedPassportInfo.city' ng-model='selectedPassportInfo.city' class='disabled'/>
+                            <input type="text" value='selectedPassportInfo.city' ng-model='selectedPassportInfo.city' class="disabled"/>
                         </div>
 
 
