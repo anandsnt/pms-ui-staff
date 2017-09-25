@@ -23,7 +23,8 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 			'shouldShowPayAllButton': false,
 			'shouldShowFooter': false,
 			'insufficientAmount': false,
-			'isArSynced': false
+			'isArSynced': false,
+			'isFromAddPayment': false
 		};
 
 		$scope.filterData = {
@@ -404,6 +405,8 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 			$scope.arFlags.insufficientAmount = false;
 			$scope.arFlags.shouldShowPayAllButton = false;
 			$scope.arDataObj.selectedInvoices = [];
+			$scope.arFlags.isFromAddPayment = false;
+			$scope.arDataObj.availableAmount = 0;
 			_.each($scope.arDataObj.balanceList, function (eachItem) {
 				eachItem.isSelected = false;
 			});
@@ -416,7 +419,7 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 		$scope.shouldShowFooter = function() {			
 			var flag = true;
 
-			if ($scope.arDataObj.selectedInvoices.length === 0) {
+			if ($scope.arDataObj.selectedInvoices.length === 0 && !$scope.arFlags.isFromAddPayment) {
 				flag = false;
 			}
 			return flag;
