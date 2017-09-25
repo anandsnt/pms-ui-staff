@@ -775,5 +775,10 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 		$scope.hasPermissionToCreateArAccount = function() {
 			return ( rvPermissionSrv.getPermissionValue ('CREATE_AR_ACCOUNT') && $scope.arFlags.isArSynced );
 		};
+		// CICO-45342 Handle clear search button click
+		$scope.clearResults = function () {
+			$scope.filterData.query = '';
+			$scope.filterChanged();
+		};
 
 }]);
