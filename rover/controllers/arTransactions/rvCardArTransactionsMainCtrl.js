@@ -73,6 +73,7 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 		 */
 
 		var createParametersFetchTheData = function () {
+			$scope.arDataObj.accountId = ( typeof $scope.contactInformation === 'undefined' ) ? $stateParams.id : $scope.contactInformation.id;
 			var dataToSend = {
 				account_id: $scope.arDataObj.accountId,
 				getParams: {
@@ -670,6 +671,7 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
                 $("#regDiv.registration-card").addClass('no-print');
                 $("#cc-ar-transactions .billing-sidebar").addClass('no-print');
                 $("#cc-ar-transactions .no-content").addClass('no-print');
+				$("#cc-ar-transactions .billing-footer").addClass('no-print');
                 // inoder to set class 'print-statement' on rvCompanyCardDetails.html
                 $scope.$emit("PRINT_AR_STATEMENT", true);
                 // add the orientation
@@ -700,6 +702,7 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
                     $("#regDiv.registration-card").removeClass('no-print');
                     $("#cc-ar-transactions .billing-sidebar").removeClass('no-print');
                     $("#cc-ar-transactions .no-content").removeClass('no-print');
+					$("#cc-ar-transactions .billing-footer").removeClass('no-print');
                     // inoder to re-set/remove class 'print-statement' on rvCompanyCardDetails.html
                     $scope.$emit("PRINT_AR_STATEMENT", false);
 
@@ -773,6 +776,11 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 		*/
 		$scope.hasPermissionToCreateArAccount = function() {
 			return ( rvPermissionSrv.getPermissionValue ('CREATE_AR_ACCOUNT') && $scope.arFlags.isArSynced );
+		};
+		// CICO-45342 Handle clear search button click
+		$scope.clearResults = function () {
+			$scope.filterData.query = '';
+			$scope.filterChanged();
 		};
 
 }]);

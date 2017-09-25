@@ -4,7 +4,7 @@
     <div class="tab-header">
         <div class="search-form has-dates">
             <div class="entry search">
-                <button class="clear-query">
+                <button class="clear-query" ng-click="clearResults()" ng-class="{'visible': filterData.query!=''}">
                     <span class="icons icon-clear-search">Clear query</span>
                 </button>
                 <button type="submit" name="submit" class="icons icon-search">Search</button>
