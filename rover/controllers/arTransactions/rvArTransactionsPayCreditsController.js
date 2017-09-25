@@ -66,7 +66,7 @@ sntRover.controller('RVArTransactionsPayCreditsController',
     var successPayment = function(data) {
 
         $scope.depositPaidSuccesFully = true;
-        $scope.arDataObj.unallocatedCredit = parseFloat(data.amountPaid).toFixed(2);
+        $scope.arDataObj.availableAmount = parseFloat(data.amountPaid).toFixed(2);
         $scope.depositPaidSuccesFully = true;
         $scope.authorizedCode = data.authorization_code;
 
@@ -79,6 +79,7 @@ sntRover.controller('RVArTransactionsPayCreditsController',
         $scope.arFlags.shouldShowPayAllButton = $scope.arDataObj.balanceList.length > 0;
         if (data.allocatePaymentAfterPosting) {
             $scope.arFlags.currentSelectedArTab = 'balance';
+            $scope.arFlags.isFromAddPayment = true;
         }
         $scope.arFlags.isPaymentSelected = true;   
         $scope.arFlags.insufficientAmount = false; 
