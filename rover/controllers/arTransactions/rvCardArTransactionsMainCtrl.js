@@ -671,7 +671,7 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
                 $("#regDiv.registration-card").addClass('no-print');
                 $("#cc-ar-transactions .billing-sidebar").addClass('no-print');
                 $("#cc-ar-transactions .no-content").addClass('no-print');
-                $("#cc-ar-transactions .billing-footer").addClass('no-print');
+				$("#cc-ar-transactions .billing-footer").addClass('no-print');
                 // inoder to set class 'print-statement' on rvCompanyCardDetails.html
                 $scope.$emit("PRINT_AR_STATEMENT", true);
                 // add the orientation
@@ -702,7 +702,7 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
                     $("#regDiv.registration-card").removeClass('no-print');
                     $("#cc-ar-transactions .billing-sidebar").removeClass('no-print');
                     $("#cc-ar-transactions .no-content").removeClass('no-print');
-                    $("#cc-ar-transactions .billing-footer").removeClass('no-print');
+					$("#cc-ar-transactions .billing-footer").removeClass('no-print');
                     // inoder to re-set/remove class 'print-statement' on rvCompanyCardDetails.html
                     $scope.$emit("PRINT_AR_STATEMENT", false);
 
