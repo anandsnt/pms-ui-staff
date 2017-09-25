@@ -88,7 +88,8 @@ sntRover.run([
     'RVHkRoomStatusSrv',
     '$$animateJs',
     '$log',
-    function ($rootScope, $state, $stateParams, RVHkRoomStatusSrv, $$animateJs, $log) {
+    '$window',
+    function ($rootScope, $state, $stateParams, RVHkRoomStatusSrv, $$animateJs, $log, $window) {
         var hidden, visibilityChange;
 
         $rootScope.$state = $state;
@@ -420,5 +421,12 @@ sntRover.run([
             }
         });
 
+        $window.onfocus = function () {
+            if (sntapp.desktopCardReader.isActive) {
+
+                $log.info('focus... sntapp.desktopCardReader.startReader');
+                sntapp.desktopCardReader.startReader();
+            }
+        };
 	}
 ]);
