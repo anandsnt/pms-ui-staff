@@ -73,6 +73,7 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 		 */
 
 		var createParametersFetchTheData = function () {
+			$scope.arDataObj.accountId = ( typeof $scope.contactInformation === 'undefined' ) ? $stateParams.id : $scope.contactInformation.id;
 			var dataToSend = {
 				account_id: $scope.arDataObj.accountId,
 				getParams: {
