@@ -1542,6 +1542,7 @@ angular.module('sntRover').controller('RVWorkManagementMultiSheetCtrl', ['$rootS
             var room = _.find (payload.unassignedRoomTasks, function(unAssignedRoom) {
                             return unAssignedRoom.room_id == roomId;
                         });
+
             return JSON.parse(JSON.stringify(room));
         };
 
@@ -1554,6 +1555,7 @@ angular.module('sntRover').controller('RVWorkManagementMultiSheetCtrl', ['$rootS
                 var employee = _.find(payload.assignedRoomTasks, function (assignedTask) {
                                         return assignedTask.id == empId;
                                     });
+
                 employee.only_tasks = employee.only_tasks.concat(tasks);
 
                 var taskRooms = _.uniq(_.pluck(tasks, 'room_id'));
@@ -1603,7 +1605,7 @@ angular.module('sntRover').controller('RVWorkManagementMultiSheetCtrl', ['$rootS
             _.each (roomIds, function (roomId) {
                     var room = _.find (payload.unassignedRoomTasks, function (roomTask) {
                                     return roomTask.room_id == roomId;
-                                 });
+                                 }),
 
                         roomIdx = _.findIndex(payload.unassignedRoomTasks, function(roomInfo) {
                             return roomInfo.room_id == roomId;
@@ -1613,9 +1615,10 @@ angular.module('sntRover').controller('RVWorkManagementMultiSheetCtrl', ['$rootS
                                             return task.room_id == roomId;
 
                                         });
-                        var roomTaskIds = _.pluck(roomTasks, 'id');
 
-                        var roomCloned = angular.copy(room);
+                        var roomTaskIds = _.pluck(roomTasks, 'id'),
+                            roomCloned = angular.copy(room);
+
                         roomCloned.room_tasks = _.filter(roomCloned.room_tasks, function (roomTask) {
                                          return roomTaskIds.indexOf(roomTask.id) < 0 ;
                                     });
