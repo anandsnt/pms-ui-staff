@@ -1,5 +1,5 @@
-angular.module('sntRover').controller('RVWorkManagementMultiSheetCtrl', ['$rootScope', '$scope', 'ngDialog', 'RVWorkManagementSrv', '$state', '$stateParams', '$timeout', 'allUnassigned', 'fetchHKStaffs', 'allRoomTypes', 'payload', '$window', '$filter',
-	function($rootScope, $scope, ngDialog, RVWorkManagementSrv, $state, $stateParams, $timeout, allUnassigned, fetchHKStaffs, allRoomTypes, payload, $window, $filter) {
+angular.module('sntRover').controller('RVWorkManagementMultiSheetCtrl', ['$rootScope', '$scope', 'ngDialog', 'RVWorkManagementSrv', '$state', '$stateParams', '$timeout', 'allUnassigned', 'fetchHKStaffs', 'allRoomTypes', 'payload', '$window', '$filter', 'sntActivity',
+	function($rootScope, $scope, ngDialog, RVWorkManagementSrv, $state, $stateParams, $timeout, allUnassigned, fetchHKStaffs, allRoomTypes, payload, $window, $filter, sntActivity) {
 		BaseCtrl.call(this, $scope);
 
 		// saving in local variable, since it will be updated when user changes the date
@@ -19,6 +19,7 @@ angular.module('sntRover').controller('RVWorkManagementMultiSheetCtrl', ['$rootS
 		$rootScope.$on('$stateChangeStart', function(e, toState, toParams, fromState, fromParams) {
 			if ('rover.workManagement.multiSheet' === fromState.name && $scope.workSheetChanged) {
 				e.preventDefault();
+                sntActivity.stop('STATE_CHANGE' + toState.name.toUpperCase());
 				$scope.$emit("hideLoader");
 				$_stateChangeInterrupted = true;
 
