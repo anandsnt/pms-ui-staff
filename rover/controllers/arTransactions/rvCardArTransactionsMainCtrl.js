@@ -24,7 +24,7 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 			'shouldShowFooter': false,
 			'insufficientAmount': false,
 			'isArSynced': false,
-			'isFromAddPayment': false
+			'isFromAddPaymentOrAllocateButton': false
 		};
 
 		$scope.filterData = {
@@ -405,7 +405,7 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 			$scope.arFlags.insufficientAmount = false;
 			$scope.arFlags.shouldShowPayAllButton = false;
 			$scope.arDataObj.selectedInvoices = [];
-			$scope.arFlags.isFromAddPayment = false;
+			$scope.arFlags.isFromAddPaymentOrAllocateButton = false;
 			$scope.arDataObj.availableAmount = 0;
 			_.each($scope.arDataObj.balanceList, function (eachItem) {
 				eachItem.isSelected = false;
@@ -419,7 +419,7 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 		$scope.shouldShowFooter = function() {			
 			var flag = true;
 
-			if ($scope.arDataObj.selectedInvoices.length === 0 && !$scope.arFlags.isFromAddPayment) {
+			if ($scope.arDataObj.selectedInvoices.length === 0 && !$scope.arFlags.isFromAddPaymentOrAllocateButton) {
 				flag = false;
 			}
 			return flag;
@@ -490,7 +490,7 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 		// and after succesfull payment with Allocate payment after posting checked
 		$scope.$on('REFRESH_BALANCE_LIST', function() {
 			$scope.arFlags.currentSelectedArTab = 'balance';
-			$scope.fetchTransactions();
+			$scope.fetchTransactions();			
 		});
 		// Refresh balance list - after adding new manual balance
 		// and after succesfull payment with Allocate payment after posting checked
@@ -520,7 +520,14 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 			$scope.arFlags.currentSelectedArTab = 'balance';
 			$scope.allocatedPayment = selectedPaymentData;
 			$scope.arFlags.isPaymentSelected = true;	
-			$scope.arDataObj.availableAmount = selectedPaymentData.available_amount;		
+			$scope.arDataObj.availableAmount = selectedPaymentData.available_amount;
+			$scope.arFlags.isFromAddPaymentOrAllocateButton = true;	
+			var totalAllocatedAmount = 0;
+
+            _.each($scope.arDataObj.balanceList, function (eachItem) {
+                totalAllocatedAmount = parseFloat(totalAllocatedAmount) + parseFloat(eachItem.amount);
+            });
+            $scope.arDataObj.totalAllocatedAmount = totalAllocatedAmount;	
 		});
 
 		/*
