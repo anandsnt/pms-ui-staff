@@ -2,7 +2,6 @@ admin.controller('adMonsciergeSetupCtrl', ['$scope', 'adMonsciergeSetupSrv', '$r
 	function($scope, adMonsciergeSetupSrv, $rootScope) {
 		BaseCtrl.call(this, $scope);
 
-		$scope.isPmsProductionEnv = $rootScope.isPmsProductionEnv;
 		$scope.saveSettings = function() {
 			var onSaveSettingsSucces = function() {
 					$scope.successMessage = 'Success, Your settings has been saved.';
