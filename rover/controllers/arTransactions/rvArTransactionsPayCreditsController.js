@@ -75,11 +75,19 @@ sntRover.controller('RVArTransactionsPayCreditsController',
             data.cc_details.last_digits = data.cc_details.ending_with;
             data.cc_details.expire_date = data.cc_details.expiry_date;
             $scope.allocatedPayment.card_details = data.cc_details;
+        } else {
+           $scope.allocatedPayment = _.omit($scope.allocatedPayment, 'card_details');
         }
         $scope.arFlags.shouldShowPayAllButton = $scope.arDataObj.balanceList.length > 0;
         if (data.allocatePaymentAfterPosting) {
             $scope.arFlags.currentSelectedArTab = 'balance';
-            $scope.arFlags.isFromAddPayment = true;
+            $scope.arFlags.isFromAddPaymentOrAllocateButton = true;
+            var totalAllocatedAmount = 0;
+
+            _.each($scope.arDataObj.balanceList, function (eachItem) {
+                totalAllocatedAmount = parseFloat(totalAllocatedAmount) + parseFloat(eachItem.amount);
+            });
+            $scope.arDataObj.totalAllocatedAmount = totalAllocatedAmount;
         }
         $scope.arFlags.isPaymentSelected = true;   
         $scope.arFlags.insufficientAmount = false; 
@@ -87,7 +95,7 @@ sntRover.controller('RVArTransactionsPayCreditsController',
 
         // Reload the ar transaction listing after payment
         if (data.allocatePaymentAfterPosting) {
-            $scope.$emit('REFRESH_BALANCE_LIST');
+            $scope.$emit('REFRESH_BALANCE_LIST');            
         } else {
             $scope.$emit('REFRESH_SELECTED_LIST');
         }
