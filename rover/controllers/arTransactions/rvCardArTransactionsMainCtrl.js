@@ -372,6 +372,7 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 				postData = {},
 				totalAllocatedAmount = 0;
 
+			$scope.arDataObj.selectedInvoices = [];
 			_.each($scope.arDataObj.balanceList, function (eachItem) {
 				var selectedInvoiceObj = {};
 
