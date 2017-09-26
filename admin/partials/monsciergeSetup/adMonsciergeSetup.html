@@ -8,7 +8,7 @@
             <div ng-include="'/assets/partials/common/notification_message.html'"></div>
             <div ng-include="'/assets/partials/common/notification_success_message.html'"></div>
             <div style="overflow-y:auto;" name="edit-guest-review" method="post" class="form float">
-                <ad-toggle-button is-checked="data.enabled"
+                <ad-toggle-button is-checked="data.enabled" is-disabled = "isPmsProductionEnv && hotel_code != 'YOBOS'"
                                       label="{{'ACTIVE'| translate}}"></ad-toggle-button>
                 <fieldset class="holder full-width" ng-show="data.enabled">
                     <ad-form-title full-width="true" form-title="{{'MONSCIERGE_SETTINGS' | translate}}"></ad-form-title>

@@ -1,7 +1,8 @@
-admin.controller('adMonsciergeSetupCtrl', ['$scope', 'adMonsciergeSetupSrv',
-	function($scope, adMonsciergeSetupSrv) {
+admin.controller('adMonsciergeSetupCtrl', ['$scope', 'adMonsciergeSetupSrv', '$rootScope',
+	function($scope, adMonsciergeSetupSrv, $rootScope) {
 		BaseCtrl.call(this, $scope);
 
+		$scope.isPmsProductionEnv = $rootScope.isPmsProductionEnv;
 		$scope.saveSettings = function() {
 			var onSaveSettingsSucces = function() {
 					$scope.successMessage = 'Success, Your settings has been saved.';
@@ -17,6 +18,7 @@ admin.controller('adMonsciergeSetupCtrl', ['$scope', 'adMonsciergeSetupSrv',
 		$scope.fetchSettings = function() {
 			var onFetchSettingsSucces = function(data) {
 					$scope.data = data.monscierge;
+					$scope.hotel_code = data.hotel_code;
 				},
 				options = {
 					successCallBack: onFetchSettingsSucces
