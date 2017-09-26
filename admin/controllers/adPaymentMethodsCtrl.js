@@ -7,7 +7,12 @@ function($scope, $state, ADPaymentMethodsSrv, $anchorScroll, $timeout, $location
 	$scope.currentClickedElement = -1;
 
 	var fetchSuccess = function(data) {
+		// set empty string as linked_reservation_type_id if null
+		angular.forEach(data.payments, function(payment) {
+			payment.linked_reservation_type_id = payment.linked_reservation_type_id === null ? "" : payment.linked_reservation_type_id;
+		});
 		$scope.data = data;
+
 		$scope.$emit('hideLoader');
 	};
 
@@ -113,6 +118,7 @@ function($scope, $state, ADPaymentMethodsSrv, $anchorScroll, $timeout, $location
 		var successCallbackSavePaymentMethod = function(data) {
 
 			if (data.value === "CC") {
+				data.linked_reservation_type_id  = data.linked_reservation_type_id === null ? "" : data.linked_reservation_type_id;
 				// Edited CC - LINKED RESERVATION TYPE only
 				$scope.data.payments[parseInt($scope.currentClickedElement)] = data;
 			}
