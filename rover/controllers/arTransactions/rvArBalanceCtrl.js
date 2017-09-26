@@ -41,6 +41,12 @@ sntRover.controller('RvArBalanceController', ['$scope', '$timeout', 'rvAccountsA
 
 			calculateTotalAmount();
 		};
+		/*
+		 * Adding decimals to text field
+		 */
+		$scope.addDecimal = function(index) {
+			$scope.arDataObj.balanceList[index].amount = parseFloat($scope.arDataObj.balanceList[index].amount).toFixed(2);
+		};
 
 		/*
 		 * Select individual invoices in balance tab
