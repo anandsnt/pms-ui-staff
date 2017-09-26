@@ -723,16 +723,13 @@ angular.module('sntRover').controller('RVWorkManagementMultiSheetCtrl', ['$rootS
 		/**
 		 * Auto select employees based on daily worksheet employee data
 		 */
-		var initializeEmployeesList = function() {
+		var initializeEmployeesList = function(employeeIds) {
 			var foundIndex, key;
 
 			$scope.multiSheetState.selectedEmployees = [];
 			$scope.multiSheetState._selectedIndexMap = {};
 			$scope.multiSheetState._lastSelectedIds  = [];
 
-            // CICO-45484 - Need to restore the filter values while reloading the state after auto-assign
-            var isStateReload = !!$stateParams.filterParams,
-                selectedEmployeeIds = ($stateParams.filterParams && $stateParams.filterParams.employee_ids);
 
             if (fetchHKStaffs) {
                 $scope.employeeList = fetchHKStaffs.results;
@@ -741,8 +738,8 @@ angular.module('sntRover').controller('RVWorkManagementMultiSheetCtrl', ['$rootS
             var isSelectedEmp = false;
 
             _.each($scope.employeeList, function (emp) {
-                if (isStateReload) {
-                     isSelectedEmp = selectedEmployeeIds.indexOf(emp.id) > -1;
+                if (employeeIds) {
+                     isSelectedEmp = employeeIds.indexOf(emp.id) > -1;
 
                     if (isSelectedEmp) {
                         emp.ticked = true;
@@ -1444,8 +1441,7 @@ angular.module('sntRover').controller('RVWorkManagementMultiSheetCtrl', ['$rootS
 		 * Function to bootstrap multisheet.
 		 * @return {Undefined}
 		 */
-		var init = function() {
-
+		var init = function(employeeIds) {
 			// state settings
 			setBackNavAndTitle();
 
@@ -1456,7 +1452,7 @@ angular.module('sntRover').controller('RVWorkManagementMultiSheetCtrl', ['$rootS
 			initializeMultiSheetDataModel();
 
 			// Update employee selection list
-			initializeEmployeesList();
+			initializeEmployeesList(employeeIds);
 
 			// Update filters
 			$scope.filterUnassigned();
@@ -1525,19 +1521,118 @@ angular.module('sntRover').controller('RVWorkManagementMultiSheetCtrl', ['$rootS
                 var rooms = [];
 
                 _.each (unAssignedRoomTasks, function (roomInfo) {
+                    var roomCloned = angular.copy(roomInfo);
 
-                    roomInfo.room_tasks = _.filter(roomInfo.room_tasks, function (task) {
+                    roomCloned.room_tasks = _.filter(roomCloned.room_tasks, function (task) {
                         return task.work_type_id == $scope.multiSheetState.header.work_type_id;
                     });
 
-                    if (roomInfo.room_tasks.length) {
-                        rooms.push(roomInfo);
+                    if (roomCloned.room_tasks.length) {
+                        rooms.push(roomCloned);
                     }
 
                 });
                 return rooms;
             }
             return unAssignedRoomTasks;
+        };
+
+        // Get the room info from the unassigned list
+        var populateRoomInfo = function (roomId) {
+            var room = _.find (payload.unassignedRoomTasks, function(unAssignedRoom) {
+                            return unAssignedRoom.room_id == roomId;
+                        });
+
+            return JSON.parse(JSON.stringify(room));
+        };
+
+        // // Update the assignment list after auto assignment
+        var updateAssignedRoomList = function (data) {
+            var assignedTasks = data;
+
+            _.each (assignedTasks, function (tasks, empId) {
+
+                var employee = _.find(payload.assignedRoomTasks, function (assignedTask) {
+                                        return assignedTask.id == empId;
+                                    });
+
+                employee.only_tasks = employee.only_tasks.concat(tasks);
+
+                var taskRooms = _.uniq(_.pluck(tasks, 'room_id'));
+
+                _.each (taskRooms, function (roomId) {
+                    var selectedRoom = _.find(employee.rooms, function (room) {
+                        return room.id == roomId;
+                    });
+
+                    var selectedRoomIndex = _.findIndex(employee.rooms, function(roomInfo) {
+                            return roomInfo.id == roomId;
+                        });
+
+                    var roomCloned = angular.copy(selectedRoom);
+
+                    if (selectedRoom) {
+                        roomCloned.room_tasks = roomCloned.room_tasks.concat(_.filter(tasks, function(task) {
+                            return task.room_id == roomId;
+                         }));
+                        employee.rooms[selectedRoomIndex] = roomCloned;
+                    } else {
+                        var roomInfo = populateRoomInfo(roomId);
+
+                        roomInfo.room_tasks = _.filter(tasks, function(task) {
+                            return task.room_id == roomId;
+                         });
+                        employee.rooms.push(roomInfo);
+                    }
+
+                });
+                employee.touched_work_types = _.uniq(_.pluck(employee.only_tasks, 'work_type_id'));
+
+            });
+        };
+
+        // Update the unassigned list after auto assignment
+        var updateUnAssignedRoomList = function (data) {
+
+            var assignedTasks = [];
+
+            _.each (data, function (tasks) {
+                assignedTasks = assignedTasks.concat(tasks);
+            });
+
+            var roomIds = _.uniq(_.pluck(assignedTasks, 'room_id'));
+
+            _.each (roomIds, function (roomId) {
+                    var room = _.find (payload.unassignedRoomTasks, function (roomTask) {
+                                    return roomTask.room_id == roomId;
+                                 }),
+
+                        roomIdx = _.findIndex(payload.unassignedRoomTasks, function(roomInfo) {
+                            return roomInfo.room_id == roomId;
+                        });
+
+                        var roomTasks = _.filter(assignedTasks, function (task) {
+                                            return task.room_id == roomId;
+
+                                        });
+
+                        var roomTaskIds = _.pluck(roomTasks, 'id'),
+                            roomCloned = angular.copy(room);
+
+                        roomCloned.room_tasks = _.filter(roomCloned.room_tasks, function (roomTask) {
+                                         return roomTaskIds.indexOf(roomTask.id) < 0 ;
+                                    });
+                         payload.unassignedRoomTasks[roomIdx] = roomCloned;
+
+            });
+
+        };
+
+        // Process the response after the auto assignment to update the UI
+        var processDataAfterAutoAssign = function (data) {
+            updateAssignedRoomList(data.assigned_tasks);
+            updateUnAssignedRoomList(data.assigned_tasks);
+            init(getSelectedEmployees());
         };
 
         // Execute auto assign from work management screen based on the admin configuration
@@ -1550,14 +1645,7 @@ angular.module('sntRover').controller('RVWorkManagementMultiSheetCtrl', ['$rootS
             }
 
             var onAutoAssignSuccess = function(data) {
-                    $state.go('rover.workManagement.multiSheet', {
-                        filterParams: {
-                            selectedDate: $scope.multiSheetState.selectedDate,
-                            worktype_id: $scope.multiSheetState.header.work_type_id,
-                            employee_ids: getSelectedEmployees()
-                        },
-                        date: $scope.multiSheetState.selectedDate
-                    });
+                    processDataAfterAutoAssign(data);
                 },
                 onAutoAssignFailure = function (error) {
                     $scope.errorMessage = error;
