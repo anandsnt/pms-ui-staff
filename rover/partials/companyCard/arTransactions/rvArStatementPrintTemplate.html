@@ -91,6 +91,14 @@
                             <strong translate>ACCOUNT_NO</strong> 
                             {{statement.account_no}}
                         </span>
+                        <span class="person-meta" ng-if="statement.arrival_date">
+                            <strong translate>ARRIVAL_DATE</strong> 
+                            {{statement.arrival_date | date:dateFormat }}
+                        </span>
+                        <span class="person-meta" ng-if="statement.departure_date">
+                            <strong translate>DEPARTURE_DATE</strong> 
+                            {{statement.departure_date | date:dateFormat }}
+                        </span>
                     </td>
                     <td class="charges-table-container" colspan="5">
                         <table class="charges-table">
