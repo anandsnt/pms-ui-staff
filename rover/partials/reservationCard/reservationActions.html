@@ -12,7 +12,7 @@
     <a class="button purple" ng-click = "unAvailablePopup()" ng-show = "(reservationData.reservation_card.reservation_status == 'CHECKING_IN' || reservationData.reservation_card.reservation_status == 'NOSHOW_CURRENT') && (reservationData.reservation_card.is_exclude_from_manual_checkin)&&(!isStandAlone)">
             Unavailable
     </a>
-    <!-- Show balance -->    
+    <!-- Show balance -->
     <div class="balance break" ng-hide="isSRViewRateBtnShown()">
         <span class="label">Balance</span>
         <!-- According to CICO-15833, we need SR in both connected & stanalone -->
@@ -56,7 +56,7 @@
     <a ui-sref="rover.reservation.staycard.billcard({reservationId:reservationData.reservation_card.reservation_id, clickedButton: 'viewBillButton', userId:guestCardData.userId})" class="button staycard-button icon-bill routing" ng-show="reservationData.reservation_card.is_routing_available == 'true'">
 			Bill &amp; Charges <span>Routing</span>
 		</a>
-    <a ui-sref="rover.reservation.staycard.billcard({reservationId:reservationData.reservation_card.reservation_id, clickedButton: 'viewBillButton', userId:guestCardData.userId})" class="button staycard-button icon-bill" ng-hide="reservationData.reservation_card.is_routing_available == 'true'">Bill &amp; Charges</a>
+    <a class="button staycard-button icon-bill" ng-hide="reservationData.reservation_card.is_routing_available == 'true'" ng-click="navigateToBillAndCharges()">Bill &amp; Charges</a>
     <!-- show smartbands -->
     <a class="button staycard-button icon-smartband" ng-click="openSmartBands()" ng-show="showSmartBandsButton(reservationData.reservation_card.reservation_status, reservationData.reservation_card.icare_enabled, reservationData.reservation_card.has_smartbands)">SmartBands</a>
     <div class="bottom-buttons">
