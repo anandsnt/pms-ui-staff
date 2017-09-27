@@ -116,9 +116,9 @@ function($scope, $state, ADPaymentMethodsSrv, $anchorScroll, $timeout, $location
 		};
 
 		var successCallbackSavePaymentMethod = function(data) {
+			data.linked_reservation_type_id  = data.linked_reservation_type_id === null ? "" : data.linked_reservation_type_id;
 
 			if (data.value === "CC") {
-				data.linked_reservation_type_id  = data.linked_reservation_type_id === null ? "" : data.linked_reservation_type_id;
 				// Edited CC - LINKED RESERVATION TYPE only
 				$scope.data.payments[parseInt($scope.currentClickedElement)] = data;
 			}
