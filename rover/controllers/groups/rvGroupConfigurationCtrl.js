@@ -1066,6 +1066,7 @@ angular.module('sntRover').controller('rvGroupConfigurationCtrl', [
         };
 
         var updateGroupSummaryInProgress =  false;
+
         /**
          * Update the group data
          * @return boolean
