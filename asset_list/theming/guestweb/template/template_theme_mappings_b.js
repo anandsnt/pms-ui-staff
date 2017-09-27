@@ -142,7 +142,8 @@ module.exports = {
    //          'guestweb_hotel_blackhawk': commonNonMgmTemplates,
    //          'guestweb_viceroy_chicago': commonNonMgmTemplates,
    //          'guestweb_hotel_alessandra': commonNonMgmTemplates,
-   //          'guestweb_george_texas': commonNonMgmTemplates
+   //          'guestweb_george_texas': commonNonMgmTemplates,
+   //          'guestweb_eden_v2': commonNonMgmTemplates
         };
     }
 };

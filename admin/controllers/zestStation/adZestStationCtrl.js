@@ -44,6 +44,28 @@ admin.controller('ADZestStationCtrl', ['$scope', '$rootScope', '$state', '$state
         validateDefaultLang();
     };
 
+    $scope.offlineReconnectValueList = [
+        {
+            'name': '10',
+            'value': '10'
+        }, {
+            'name': '20',
+            'value': '20'
+        }, {
+            'name': '30',
+            'value': '30'
+        }, {
+            'name': '40',
+            'value': '40'
+        }, {
+            'name': '50',
+            'value': '50'
+        }, {
+            'name': '60',
+            'value': '60'
+        }
+    ];
+
     var validateDefaultLang = function() {
         var lang = $scope.zestSettings.zest_lang.default_language;
         var enabledLanguages = getEnabledLanguages();
