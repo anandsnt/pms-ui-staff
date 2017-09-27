@@ -420,6 +420,22 @@
                             <input type="text" value='selectedPassportInfo.city' ng-model='selectedPassportInfo.city' class="disabled"/>
                         </div>
 
+                        <br/><br/>
+                        <div  class="entry with-label">
+                            <label>
+                                <text data-ng-bind-html="getTagValue('SIGNATURE')" editable-text="GID_REVIEW_CITY"></text>
+                            </label>
+                            <form type="post" action="" id="signature" style="width:40%;float: right;">
+                                <form id="signature-pad" class="complete-registration form signature-pad-layout">
+                                    <div>
+                                        <div class="sig">
+                                            <div width='100%' class='station-sign' id="signature" ui-jq="jSignature" ui-options="signaturePluginOptions" ng-mouseover="disableScroll()" ng-mouseleave="enableScroll()" style="background: #d9d9d9;text-align: center;">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                            </form>
+                        </div>
 
                     </div>
                 </div>
@@ -433,6 +449,10 @@
 
             <button type="button" class="button" touch-press='acceptPassport(); resetTime()'>
                 <text data-ng-bind-html="getTagValue('GID_VERIFY_PASSPORT_ACCEPT')" editable-text="GID_VERIFY_PASSPORT_ACCEPT"></text>
+            </button>
+
+             <button type="button" class="button" touch-press='clearSignature(); resetTime()'>
+                <text data-ng-bind-html="getTagValue('GID_VERIFY_CLEAR_SIGNATURE')" editable-text="GID_VERIFY_CLEAR_SIGNATURE"></text>
             </button>
         </div>
 

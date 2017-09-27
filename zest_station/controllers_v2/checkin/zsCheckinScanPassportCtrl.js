@@ -36,6 +36,33 @@ sntZestStation.controller('zsCheckinScanPassportCtrl', [
         $scope.scannedPassportImage = [];
         $scope.scanning = {}; // hold settings for this view
 
+        // disable scroll on signature canvas mousehover 
+        // (jSignature will not work when scroll is active)
+        $scope.disableScroll = function () {
+            $scope.getScroller('passport-validate').disable();
+        };
+        // enable scroll on signature canvas mouseleave
+        $scope.enableScroll = function () {
+            $scope.getScroller('passport-validate').enable();
+        }
+        $scope.signaturePluginOptions = {
+            height: 230,
+            width: 300,
+            lineWidth: 1
+        };
+
+        $scope.clearSignature = function() {
+            $scope.signatureData = '';
+            $('#signature').jSignature('clear');
+        };
+
+        var getSignatureBase64Data = function () {
+           var canvasElement   = angular.element( document.querySelector('canvas.jSignature'))[0],
+               signatureURL    = (canvasElement) ? canvasElement.toDataURL() : '';
+
+           return signatureURL;
+        };
+
         var onBackButtonClicked = function() {
             if ($scope.lastMode === 'SCAN_RESULTS') {
                 $scope.mode = 'SCAN_RESULTS';
@@ -236,7 +263,12 @@ sntZestStation.controller('zsCheckinScanPassportCtrl', [
             } else {
                 // verify passport
                 $scope.mode = 'ADMIN_VERIFY_PASSPORT_VIEW';
-
+                // if guest has already added signature, set signature
+                if (guestInfo.signature && guestInfo.signature.length > 0) {
+                    $("#signature").jSignature("setData", "data:" + guestInfo.signature.join(","));
+                } else {
+                    $scope.clearSignature();
+                }
                 $timeout(function() {
                     // scroller setup
                     refreshScroller();
@@ -544,11 +576,20 @@ sntZestStation.controller('zsCheckinScanPassportCtrl', [
                     'last_name': selectedPassportInfo.scanned_last_name,
                     'nationality': selectedPassportInfo.nationality,
                     'guest_id': selectedPassportInfo.id,
-                    'date_of_birth': selectedPassportInfo.dob
+                    'date_of_birth': selectedPassportInfo.dob,
+                    'signature': getSignatureBase64Data()
                 },
                 successCallBack: function() {
                     validatePassportsView();
                     $scope.selectedPassport = false;
+                    // on guest details is saved successfully, save the signature
+                    var guestDetails = _.find($scope.selectedReservation.guest_details, function(guest) {
+                        return guest.id == selectedPassportInfo.id
+                    });
+
+                    if(guestDetails){
+                        guestDetails.signature = $("#signature").jSignature("getData", "base30");
+                    };
                     $scope.mode = 'ADMIN_VERIFY_PASSPORTS';
                 },
                 failureCallBack: function() {
