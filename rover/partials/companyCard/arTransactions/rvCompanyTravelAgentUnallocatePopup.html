@@ -7,7 +7,7 @@
 
 		<div class="amount">
 		 	<strong>{{currencySymbol}}{{selectedUnAllocatedItem.amount}}</strong>
-		 	Allocated {{selectedUnAllocatedItem.allocation_date_time}}
+		 	Allocated {{selectedUnAllocatedItem.allocation_date | date : dateFormat}} {{selectedUnAllocatedItem.allocation_time}}
 		</div>
 		 
 		<div class="information">
@@ -26,7 +26,7 @@
 						<div class="guest-date arrival">
 							<span class="guest-status small-icon check-in">check-in</span>
 							<time datetime="{arrival-datetime}">
-								<span class="date">{{selectedUnAllocatedItem.from_bill.transaction_date}}</span>
+								<span class="date">{{selectedUnAllocatedItem.from_bill.transaction_date | date : dateFormat}}</span>
 								<span class="time">{{selectedUnAllocatedItem.from_bill.transaction_time}}</span>
 							</time>
 						</div>
@@ -34,14 +34,14 @@
 						<div class="guest-date departure">
 							<span class="guest-status small-icon check-out">check-out</span>
 							<time datetime="{departure-datetime}">
-								<span class="date">{{selectedUnAllocatedItem.from_bill.dep_date}}</span>
+								<span class="date">{{selectedUnAllocatedItem.from_bill.dep_date | date : dateFormat}}</span>
 								<span class="time">{{selectedUnAllocatedItem.from_bill.dep_time}}</span>
 							</time>
 						</div>
 
 						<div class="balance balance-after">
-							Balance After
-							<strong class="red">${{selectedUnAllocatedItem.from_bill.balance_after}}</strong>
+							Balance Remaining
+							<strong class="red"><span class="currency">{{currencySymbol}}</span>{{selectedUnAllocatedItem.from_bill.balance_after}}</strong>
 						</div>
 
 
@@ -74,7 +74,7 @@
 					<div class="payment-date">
 						<span class="icons small-icon icon-time time-black"></span>
 						<time datetime="{payment-datetime}">
-							<span class="date">{{selectedUnAllocatedItem.to_payment.transaction_date}}</span>
+							<span class="date">{{selectedUnAllocatedItem.to_payment.transaction_date | date : dateFormat}}</span>
 							<span class="time">{{selectedUnAllocatedItem.to_payment.transaction_time}}</span>
 						</time>
 					</div>

@@ -91,7 +91,7 @@
 
                 <!-- if we can Pay All -->
                     <li class="break" ng-show="arFlags.shouldShowPayAllButton">
-                        <button type="button" class="button blue" ng-click="clickedPayAllButton()">Pay All</button>
+                        <button type="button" class="button blue" ng-disabled="arDataObj.availableAmount < arDataObj.totalAllocatedAmount" ng-class="{'blue':  arDataObj.availableAmount >= arDataObj.totalAllocatedAmount, 'grey':  arDataObj.availableAmount < arDataObj.totalAllocatedAmount}" ng-click="clickedPayAllButton()">Pay All</button>
                     </li>
                 
 

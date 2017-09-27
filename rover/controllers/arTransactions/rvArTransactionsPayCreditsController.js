@@ -66,26 +66,35 @@ sntRover.controller('RVArTransactionsPayCreditsController',
     var successPayment = function(data) {
 
         $scope.depositPaidSuccesFully = true;
-        $scope.arDataObj.unallocatedCredit = parseFloat(data.amountPaid).toFixed(2);
+        $scope.arDataObj.availableAmount = parseFloat(data.amountPaid).toFixed(2);
         $scope.depositPaidSuccesFully = true;
         $scope.authorizedCode = data.authorization_code;
 
         $scope.allocatedPayment.payment_type = data.selectedPaymentTypeDescription;
-        if(data.selectedPaymentType === "CC") {
+        if (data.selectedPaymentType === "CC") {
             data.cc_details.last_digits = data.cc_details.ending_with;
             data.cc_details.expire_date = data.cc_details.expiry_date;
             $scope.allocatedPayment.card_details = data.cc_details;
+        } else {
+           $scope.allocatedPayment = _.omit($scope.allocatedPayment, 'card_details');
         }
-        $scope.arFlags.shouldShowPayAllButton = ($scope.arDataObj.balanceList.length >0) ? true : false;
-        $scope.arFlags.currentSelectedArTab = 'balance';
+        $scope.arFlags.shouldShowPayAllButton = $scope.arDataObj.balanceList.length > 0;
+        if (data.allocatePaymentAfterPosting) {
+            $scope.arFlags.currentSelectedArTab = 'balance';
+            $scope.arFlags.isFromAddPaymentOrAllocateButton = true;
+            var totalAllocatedAmount = 0;
+
+            _.each($scope.arDataObj.balanceList, function (eachItem) {
+                totalAllocatedAmount = parseFloat(totalAllocatedAmount) + parseFloat(eachItem.amount);
+            });
+            $scope.arDataObj.totalAllocatedAmount = totalAllocatedAmount;
+        }
         $scope.arFlags.isPaymentSelected = true;   
         $scope.arFlags.insufficientAmount = false; 
-        // $scope.arDataObj.availableAmount = selectedPaymentData.available_amount;
-
 
         // Reload the ar transaction listing after payment
         if (data.allocatePaymentAfterPosting) {
-            $scope.$emit('REFRESH_BALANCE_LIST');
+            $scope.$emit('REFRESH_BALANCE_LIST');            
         } else {
             $scope.$emit('REFRESH_SELECTED_LIST');
         }
@@ -106,6 +115,7 @@ sntRover.controller('RVArTransactionsPayCreditsController',
     var paymentFailed = $scope.$on("PAYMENT_FAILED", function(e, response) {
         failedPayment(response);
     });
+
     $scope.$on( '$destroy', paymentSuccess );
     $scope.$on( '$destroy', paymentFailed );
 
@@ -216,6 +226,7 @@ sntRover.controller('RVArTransactionsPayCreditsController',
         $scope.newCardAdded = true;
         $scope.swipedCardDataToSave = {};
     };
+
     /*
      * Checks whether the selected credit card btn needs to show or not
      */
@@ -233,12 +244,13 @@ sntRover.controller('RVArTransactionsPayCreditsController',
         // call utils fn
         $scope.referenceTextAvailable = checkIfReferencetextAvailableForCC($scope.renderData.paymentTypes, $scope.defaultPaymentTypeCard);
     };
+    
     // Added for CICO-26730
     $scope.changeOnsiteCallIn = function() {
         $scope.showCCPage = !!$scope.isManual;
     };
     // Added for CICO-26730
-    $scope.$on('changeOnsiteCallIn', function(event) {
+    $scope.$on('changeOnsiteCallIn', function() {
         $scope.isManual = !$scope.isManual;
         $scope.changeOnsiteCallIn();
     });

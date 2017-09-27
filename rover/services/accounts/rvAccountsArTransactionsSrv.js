@@ -19,7 +19,7 @@ angular.module('sntRover').service('rvAccountsArTransactionsSrv', ['$q', 'rvBase
   // Save AR Balance details.
   this.saveArBalance = function(data) {
     var deferred = $q.defer(),
-    url = '/api/accounts/'+ data.account_id +'/ar_transactions/create_manual_balances';
+    url = '/api/accounts/' + data.account_id + '/ar_transactions/create_manual_balances';
 
     rvBaseWebSrvV2.postJSON(url, data).then(
       function(data) {
@@ -35,7 +35,8 @@ angular.module('sntRover').service('rvAccountsArTransactionsSrv', ['$q', 'rvBase
   // To fetch the payments - to show in dialog
     this.fetchPaymentMethods = function(data) {
         var deferred = $q.defer(),
-            url = 'api/accounts/'+ data.id +'/ar_transactions/payments_for_allocation';
+            url = 'api/accounts/' + data.id + '/ar_transactions/payments_for_allocation';
+        
         rvBaseWebSrvV2.getJSON(url).then(
             function(data) {
                 deferred.resolve(data);
@@ -67,6 +68,7 @@ angular.module('sntRover').service('rvAccountsArTransactionsSrv', ['$q', 'rvBase
   this.expandPaidAndUnpaidList = function( param ) {
     var deferred = $q.defer(),
       url = '/api/accounts/' + param.account_id + '/ar_transactions/' + param.id + '/invoice_details';
+        
         rvBaseWebSrvV2.getJSON(url).then(function(data) {
             deferred.resolve(data.data);
         }, function(data) {
@@ -154,7 +156,7 @@ angular.module('sntRover').service('rvAccountsArTransactionsSrv', ['$q', 'rvBase
 
         return deferred.promise;
     };
-  //get Unallocate data
+   // Get Unallocate data
     this.getUnAllocateDetails = function( param ) {
         var deferred = $q.defer(),
             url = '/api/accounts/' + param.account_id + '/ar_transactions/' + param.id + '/payment_details';
