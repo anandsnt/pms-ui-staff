@@ -66,7 +66,7 @@ sntRover.controller('RVArTransactionsPayCreditsController',
     var successPayment = function(data) {
 
         $scope.depositPaidSuccesFully = true;
-        $scope.arDataObj.unallocatedCredit = parseFloat(data.amountPaid).toFixed(2);
+        $scope.arDataObj.availableAmount = parseFloat(data.amountPaid).toFixed(2);
         $scope.depositPaidSuccesFully = true;
         $scope.authorizedCode = data.authorization_code;
 
@@ -75,18 +75,26 @@ sntRover.controller('RVArTransactionsPayCreditsController',
             data.cc_details.last_digits = data.cc_details.ending_with;
             data.cc_details.expire_date = data.cc_details.expiry_date;
             $scope.allocatedPayment.card_details = data.cc_details;
+        } else {
+           $scope.allocatedPayment = _.omit($scope.allocatedPayment, 'card_details');
         }
         $scope.arFlags.shouldShowPayAllButton = $scope.arDataObj.balanceList.length > 0;
         if (data.allocatePaymentAfterPosting) {
             $scope.arFlags.currentSelectedArTab = 'balance';
+            $scope.arFlags.isFromAddPaymentOrAllocateButton = true;
+            var totalAllocatedAmount = 0;
+
+            _.each($scope.arDataObj.balanceList, function (eachItem) {
+                totalAllocatedAmount = parseFloat(totalAllocatedAmount) + parseFloat(eachItem.amount);
+            });
+            $scope.arDataObj.totalAllocatedAmount = totalAllocatedAmount;
         }
         $scope.arFlags.isPaymentSelected = true;   
         $scope.arFlags.insufficientAmount = false; 
-        // $scope.arDataObj.availableAmount = selectedPaymentData.available_amount;
 
         // Reload the ar transaction listing after payment
         if (data.allocatePaymentAfterPosting) {
-            $scope.$emit('REFRESH_BALANCE_LIST');
+            $scope.$emit('REFRESH_BALANCE_LIST');            
         } else {
             $scope.$emit('REFRESH_SELECTED_LIST');
         }

@@ -1,6 +1,8 @@
 angular.module('sntPay').controller('payMLIOperationsController',
-    ['$scope', 'sntPaymentSrv', 'paymentAppEventConstants', 'paymentUtilSrv', 'paymentConstants', '$timeout', '$log',
-        function ($scope, sntPaymentSrv, payEvntConst, util, paymentConstants, $timeout, $log) {
+    ['$scope', 'sntPaymentSrv', 'paymentAppEventConstants', 'paymentUtilSrv',
+        'paymentConstants', '$timeout', '$log', 'sntActivity',
+        function ($scope, sntPaymentSrv, payEvntConst, util,
+                  paymentConstants, $timeout, $log, sntActivity) {
 
             /**
              * variable to keep track swiped & data coming from swipe
@@ -83,8 +85,8 @@ angular.module('sntPay').controller('payMLIOperationsController',
              * @return {[type]}          [description]
              */
             var successCallBackOfGetMLIToken = (response) => {
-                $scope.$emit('hideLoader');
                 notifyParent(response);
+                sntActivity.stop('FETCH_MLI_TOKEN');
             };
 
             /**
@@ -93,8 +95,8 @@ angular.module('sntPay').controller('payMLIOperationsController',
              * @return {[type]}       [description]
              */
             var failureCallBackOfGetMLIToken = (error) => {
-                $scope.$emit('hideLoader');
                 notifyParentError(error);
+                sntActivity.stop('FETCH_MLI_TOKEN');
             };
 
             var renderDataFromSwipe = function (event, swipedCardData) {
@@ -114,7 +116,7 @@ angular.module('sntPay').controller('payMLIOperationsController',
             };
 
             var tokenize = function (params) {
-                $scope.$emit('SHOW_SIX_PAY_LOADER');
+                sntActivity.startEMVActivity();
                 sntPaymentSrv.getSixPaymentToken(params).then(
                     response => {
                         /**
@@ -148,12 +150,12 @@ angular.module('sntPay').controller('payMLIOperationsController',
                             }
                         });
 
-                        $scope.$emit('HIDE_SIX_PAY_LOADER');
+                        sntActivity.stopEMVActivity();
                     },
                     errorMessage => {
                         $log.info('Tokenization Failed');
                         $scope.$emit('PAYMENT_FAILED', errorMessage);
-                        $scope.$emit('HIDE_SIX_PAY_LOADER');
+                        sntActivity.stopEMVActivity();
                     }
                 );
             };
@@ -221,7 +223,7 @@ angular.module('sntPay').controller('payMLIOperationsController',
 
                 var params = util.formParamsForFetchingTheToken($scope.cardData);
 
-                $scope.$emit('showLoader');
+                sntActivity.start('FETCH_MLI_TOKEN');
                 sntPaymentSrv.fetchMLIToken(params, successCallBackOfGetMLIToken, failureCallBackOfGetMLIToken);
             };
 

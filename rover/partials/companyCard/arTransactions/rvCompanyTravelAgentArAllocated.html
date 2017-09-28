@@ -26,9 +26,7 @@
             </div>
             <!-- if partially unallocated add .partially-paid -->
             <div class="amount green" ng-class="{'partially-paid': allocatedCreditTransaction.is_partially_paid}">
-                <!-- if partially unallocated, show icon -->
-                <span class="icons icon-wallet-green" ng-show="allocatedCreditTransaction.is_partially_paid"></span>
-
+                
                 <span class="currency">{{currencySymbol}}</span>{{allocatedCreditTransaction.amount | number:2 }}
             </div>
         </div>
