@@ -128,22 +128,8 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 		var successCallbackOfFetchAPI = function( data ) {
 
 			if (data.ar_transactions.length === 0) {
-				switch ($scope.arFlags.currentSelectedArTab) {
-					case 'balance':
-						if ($scope.arDataObj.balancePageNo != 1) {
-								loadAPIData('BALANCE', 1);
-							return
-						}
-						break;
-					case 'paid':
-						$scope.arDataObj.paidPageNo = pageNo;
-						break;
-					case 'allocate':
-						$scope.arDataObj.allocatePageNo = pageNo;
-						break;
-					case 'unallocate':
-						$scope.arDataObj.unallocatePageNo = pageNo;
-						break;
+				if ($scope.arFlags.currentSelectedArTab === 'balance' && $scope.arDataObj.balancePageNo != 1) {
+					loadAPIData('BALANCE', 1);										
 				}
 			}
 			
