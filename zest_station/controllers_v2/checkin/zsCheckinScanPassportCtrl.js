@@ -44,7 +44,7 @@ sntZestStation.controller('zsCheckinScanPassportCtrl', [
         // enable scroll on signature canvas mouseleave
         $scope.enableScroll = function () {
             $scope.getScroller('passport-validate').enable();
-        }
+        };
         $scope.signaturePluginOptions = {
             height: 230,
             width: 300,
@@ -584,12 +584,12 @@ sntZestStation.controller('zsCheckinScanPassportCtrl', [
                     $scope.selectedPassport = false;
                     // on guest details is saved successfully, save the signature
                     var guestDetails = _.find($scope.selectedReservation.guest_details, function(guest) {
-                        return guest.id == selectedPassportInfo.id
+                        return guest.id === selectedPassportInfo.id;
                     });
 
-                    if(guestDetails){
+                    if (guestDetails) {
                         guestDetails.signature = $("#signature").jSignature("getData", "base30");
-                    };
+                    }
                     $scope.mode = 'ADMIN_VERIFY_PASSPORTS';
                 },
                 failureCallBack: function() {
