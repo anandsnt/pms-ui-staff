@@ -863,6 +863,10 @@ sntZestStation.controller('zsCheckinScanPassportCtrl', [
             } 
             if (!mapping.lastName && mapping.doc) {
                 docDetails = mapping.doc;
+                // if first name and last name are not present, assign full name as last name
+                if (!docDetails.lastName && !docDetails.firstName) {
+                    docDetails.lastName = docDetails.fullName;
+                }
             }
             // v2
             return {
@@ -875,7 +879,7 @@ sntZestStation.controller('zsCheckinScanPassportCtrl', [
                 'BIRTH_DATE': docDetails.dateOfBirth,
                 'LAST_NAME': docDetails.lastName,
                  // FIRST_NAME, in partials it will show only last name if first&last are the same
-                'FIRST_NAME': docDetails.firstName ? docDetails.firstName : docDetails.lastName,
+                'FIRST_NAME': docDetails.firstName,
                 'NATIONALITY': docDetails.nationality_code2,
                 'NATIONALITY_FULL_NAME': docDetails.nationality_fullname,
                 'SEX': docDetails.gender,
