@@ -5,6 +5,8 @@
 "IATA_NO" : "IATA No.",
 "INVOICE_NO" : "Invoice Number",
 "PAYMENT_DUE_DAYS" : "Payment Due Days",
+"RESERV_NO" : "Resv. No:",
+"ACCOUNT_NO" : "Account No:",
 "RESERV" : "Resv.:",
 "ARRIVAL_DATE" : "Arrival Date:",
 "DEPARTURE_DATE" : "Departure Date:",

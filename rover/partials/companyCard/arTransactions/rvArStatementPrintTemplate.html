@@ -39,11 +39,11 @@
             </thead>
             <tbody>
                     
-                <tr class="person" ng-repeat="statement in printData.reservation_details">
+                <tr ng-if="printData.reservation_details.length > 0" class="person" ng-repeat="statement in printData.reservation_details">
                     <td class="person-info">
                         <strong class="name">{{statement.name}}</strong><br>
                         <span class="person-meta">
-                            <strong translate>RESERV</strong> 
+                            <strong translate>RESERV_NO</strong>
                             {{statement.reservation_no}}
                         </span>
                         <span class="person-meta">
@@ -65,10 +65,12 @@
                                     <span class="reference">{{item.reference_number}}</span>
                                     <span class="reference">{{item.reference_text}}</span>
                                 </td>
-                                <td class="charge-amount align-right">{{currencySymbol}} {{item.debits | number: precisonTwo}}</td>
-                                <td class="charge-amount align-right"></td>
+                                <td ng-if="item.debits" class="charge-amount align-right">{{currencySymbol}} {{item.debits | number: precisonTwo}}</td>
+                                <td ng-if="item.debits"></td>
+                                <td ng-if="item.credits"></td>
+                                <td ng-if="item.credits" class="charge-amount align-right">{{currencySymbol}} {{item.credits | number: precisonTwo}}</td>
                             </tr>
-                            <tr ng-repeat="item in statement.payment_details">
+                            <tr ng-repeat="item in statement.allocated_payment_details">
                                 <td class="charge-date">{{item.date | date :dateFormat }}</td>
                                 <td class="charge-code">{{item.charge_code}}</td>
                                 <td class="charge-description">
@@ -84,7 +86,7 @@
                     <td class="amount-due align-right">{{currencySymbol}}{{statement.amount_due | number: precisonTwo}}</td>
                 </tr>
 
-                <tr class="person" ng-repeat="statement in printData.posting_account_details">
+                <tr ng-if="printData.posting_account_details.length > 0" class="person" ng-repeat="statement in printData.posting_account_details">
                     <td class="person-info">
                         <strong class="name">{{statement.name}}</strong><br>
                         <span class="person-meta">
@@ -110,10 +112,12 @@
                                     <span class="reference">{{item.reference_number}}</span>
                                     <span class="reference">{{item.reference_text}}</span>
                                 </td>
-                                <td class="charge-amount align-right">{{currencySymbol}} {{item.debits | number: precisonTwo}}</td>
-                                <td class="charge-amount align-right"></td>
+                                <td ng-if="item.debits" class="charge-amount align-right">{{currencySymbol}} {{item.debits | number: precisonTwo}}</td>
+                                <td ng-if="item.debits"></td>
+                                <td ng-if="item.credits"></td>
+                                <td ng-if="item.credits" class="charge-amount align-right">{{currencySymbol}} {{item.credits | number: precisonTwo}}</td>
                             </tr>
-                            <tr ng-repeat="item in statement.payment_details">
+                            <tr ng-repeat="item in statement.allocated_payment_details">
                                 <td class="charge-date">{{item.date | date :dateFormat }}</td>
                                 <td class="charge-code">{{item.charge_code}}</td>
                                 <td class="charge-description">
@@ -129,7 +133,7 @@
                     <td class="amount-due align-right">{{currencySymbol}}{{statement.amount_due | number: precisonTwo}}</td>
                 </tr>         
 
-                <tr class="person" ng-repeat="statement in printData.manual_balance_details">
+                <tr ng-if="printData.manual_balance_details.length > 0" class="person" ng-repeat="statement in printData.manual_balance_details">
                     <td class="person-info">
                         <strong class="name">{{statement.name}}</strong><br>
                         <span class="person-meta">
@@ -151,7 +155,7 @@
                                 <td class="charge-amount align-right">{{currencySymbol}} {{statement.charge_details.debits | number: precisonTwo}}</td>
                                 <td class="charge-amount align-right"></td>
                             </tr>
-                            <tr ng-repeat="item in statement.payment_details">
+                            <tr ng-repeat="item in statement.allocated_payment_details">
                                 <td class="charge-date">{{item.date | date :dateFormat }}</td>
                                 <td class="charge-code">{{item.charge_code}}</td>
                                 <td class="charge-description">
@@ -167,7 +171,7 @@
                     <td class="amount-due align-right">{{currencySymbol}}{{statement.amount_due | number: precisonTwo}}</td>
                 </tr>               
  
-                <tr class="payment" ng-repeat="statement in printData.payment_details">
+                <tr ng-if="printData.payment_details.length > 0" class="payment" ng-repeat="statement in printData.payment_details">
                     <td class="person-info">
                         <strong class="name">{{statement.name}}</strong>
                     </td>
