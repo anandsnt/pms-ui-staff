@@ -51,7 +51,7 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 			'unallocatedCredit': '',
 			'company_or_ta_bill_id': '',
 
-			'perPage': 15,
+			'perPage': 6,
 			'balancePageNo': 1,
 			'paidPageNo': 1,
 			'allocatePageNo': 1,
@@ -126,6 +126,27 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 		 * Handling data based on tabs currently active.
 		 */
 		var successCallbackOfFetchAPI = function( data ) {
+
+			if (data.ar_transactions.length === 0) {
+				switch ($scope.arFlags.currentSelectedArTab) {
+					case 'balance':
+						if ($scope.arDataObj.balancePageNo != 1) {
+								loadAPIData('BALANCE', 1);
+							return
+						}
+						break;
+					case 'paid':
+						$scope.arDataObj.paidPageNo = pageNo;
+						break;
+					case 'allocate':
+						$scope.arDataObj.allocatePageNo = pageNo;
+						break;
+					case 'unallocate':
+						$scope.arDataObj.unallocatePageNo = pageNo;
+						break;
+				}
+			}
+			
 
 			$scope.arDataObj.unpaidAmount = data.unpaid_amount;
 			$scope.arDataObj.paidAmount = data.paid_amount;
@@ -491,6 +512,7 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 		// and after succesfull payment with Allocate payment after posting checked
 		$scope.$on('REFRESH_BALANCE_LIST', function() {
 			$scope.arFlags.currentSelectedArTab = 'balance';
+			$scope.arDataObj.balancePageNo = 1;
 			$scope.fetchTransactions();			
 		});
 		// Refresh balance list - after adding new manual balance
