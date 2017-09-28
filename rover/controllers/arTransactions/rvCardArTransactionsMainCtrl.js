@@ -51,7 +51,7 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 			'unallocatedCredit': '',
 			'company_or_ta_bill_id': '',
 
-			'perPage': 15,
+			'perPage': 6,
 			'balancePageNo': 1,
 			'paidPageNo': 1,
 			'allocatePageNo': 1,
@@ -128,7 +128,7 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 		var successCallbackOfFetchAPI = function( data ) {
 
 			if (data.ar_transactions.length === 0) {
-				if ($scope.arFlags.currentSelectedArTab === 'balance' && $scope.arDataObj.balancePageNo != 1) {
+				if ($scope.arFlags.currentSelectedArTab === 'balance' && $scope.arDataObj.balancePageNo !== 1) {
 					loadAPIData('BALANCE', 1);										
 				}
 			}
