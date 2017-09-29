@@ -430,16 +430,20 @@ angular.module('sntRover').service('rvMenuSrv',
 				]
 		    }];
 
-		// if the device is iPad, add extra menu Item to see details
-		if (sntapp.browser === 'rv_native' && sntapp.cordovaLoaded) {
-			menu[0].submenu.splice(1, 0, {
-				title: "DEVICE_STATUS",
-				action: "",
-				menuIndex: "deviceStatus",
-				actionPopup: true,
-				hideItem: _.isNull($rootScope.iosAppVersion) || _.isUndefined($rootScope.iosAppVersion)
-			});
-		}
+        // if the device is iPad, add extra menu Item to see details
+        if ((sntapp.browser === 'rv_native' && sntapp.cordovaLoaded) ||
+                // CICO-45053 Device Status menu to be made available also when active WS connection is available
+            sntapp.desktopCardReader.isActive) {
+
+            menu[0].submenu.splice(1, 0, {
+                title: 'DEVICE_STATUS',
+                action: '',
+                menuIndex: 'deviceStatus',
+                actionPopup: true,
+                hideItem: !sntapp.desktopCardReader.isActive &&
+                            (_.isNull($rootScope.iosAppVersion) || _.isUndefined($rootScope.iosAppVersion))
+            });
+        }
 
 		return processMenuList (menu);
 	};
