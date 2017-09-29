@@ -296,7 +296,7 @@
 <section id="main" class="guest-id-verify" role="main" ng-hide="mode !== 'ADMIN_VERIFY_PASSPORT_VIEW'" >
         
 
-        <div id="flex-holder">
+        <div id="flex-holder" click-touch="enableScroll()"">
             <div id="textual" class="review-bill scrollable" ng-iscroll="passport-validate">
                 <div class="wrapper">
                     <div id="bill">
@@ -427,7 +427,7 @@
                                 <form id="signature-pad" class="complete-registration form signature-pad-layout">
                                     <div>
                                         <div class="sig">
-                                            <div width='100%' class='station-sign' id="signature" ui-jq="jSignature" ui-options="signaturePluginOptions" ng-mouseover="disableScroll()" ng-mouseleave="enableScroll()" style="background: #d9d9d9;text-align: center;">
+                                            <div width='100%' class='station-sign' id="signature" ui-jq="jSignature" ui-options="signaturePluginOptions" ng-mouseover="disableScroll()" click-touch="disableScroll()" ng-mouseleave="enableScroll()" style="background: #d9d9d9;text-align: center;">
                                             </div>
                                         </div>
                                     </div>
