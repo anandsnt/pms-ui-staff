@@ -24,8 +24,8 @@
                 <text data-ng-bind-html="getTagValue('GID_SCAN_BUTTON')" editable-text="GID_SCAN_BUTTON"></text>
             </button>
         </div>
-    </div>
-    <span ng-include="'/assets/partials_v2/zsTabletFooter.html'" click-touch='resetTime()'></span>
+    </div><!-- 
+    <span ng-include="'/assets/partials_v2/zsTabletFooter.html'" click-touch='resetTime()'></span> -->
 </section>
 
 <!-- Passport scan back  -->
@@ -58,8 +58,8 @@
                 <text data-ng-bind-html="getTagValue('GID_SKIP_SCAN_BUTTON')" editable-text="GID_SKIP_SCAN_BUTTON"></text>
             </button> -->
         </div>
-    </div>
-    <span ng-include="'/assets/partials_v2/zsTabletFooter.html'" click-touch='resetTime()'></span>
+    </div><!-- 
+    <span ng-include="'/assets/partials_v2/zsTabletFooter.html'" click-touch='resetTime()'></span> -->
 </section>
 
 
@@ -69,8 +69,8 @@
         <h1>
             <text data-ng-bind-html="getTagValue('GID_SCANNING_IN_PROGRESS')" editable-text="GID_SCANNING_IN_PROGRESS"></text>
         </h1>
-    </div>
-    <span ng-include="'/assets/partials_v2/zsTabletFooter.html'" click-touch='resetTime()'></span>
+    </div><!-- 
+    <span ng-include="'/assets/partials_v2/zsTabletFooter.html'" click-touch='resetTime()'></span> -->
 </section>
 
 <!-- Passport scanning failed, re-scan or speak to staff  -->
@@ -120,8 +120,8 @@
                 </li>
             </ul>
         </nav>
-    </div>
-    <span ng-include="'/assets/partials_v2/zsTabletFooter.html'" click-touch='resetTime()'></span>
+    </div><!-- 
+    <span ng-include="'/assets/partials_v2/zsTabletFooter.html'" click-touch='resetTime()'></span> -->
 </section>
 
 <!-- Scan Results | Add Guest screen  -->
@@ -225,8 +225,8 @@
 
 
         </div>
-    </div>
-    <span ng-include="'/assets/partials_v2/zsTabletFooter.html'" click-touch='resetTime()'></span>
+    </div><!-- 
+    <span ng-include="'/assets/partials_v2/zsTabletFooter.html'" click-touch='resetTime()'></span> -->
 </section>
 
 <!-- Wait for staff assistance to Verify IDs  -->
@@ -298,7 +298,7 @@
 
         <div id="flex-holder">
             <div id="textual" class="review-bill scrollable" ng-iscroll="passport-validate">
-                <div class="wrapper">
+                <div class="wrapper passport-details">
                     <div id="bill">
                         <h1>
                             <text data-ng-bind-html="getTagValue('GID_VERIFY_PASSPORT')" editable-text="GID_VERIFY_PASSPORT"></text>
@@ -313,7 +313,7 @@
                             </label>
                         </div>
 
-                        <div class="entry with-label" ng-if='selectedPassportInfo.scanned_first_name !== selectedPassportInfo.scanned_last_name'>
+                        <div class="entry with-label">
                             <label>
                                 <text data-ng-bind-html="getTagValue('GID_REVIEW_LAST_NAME')" editable-text="GID_REVIEW_LAST_NAME"></text>
                             </label>
@@ -321,21 +321,12 @@
                             <input type="text" ng-model='selectedPassportInfo.scanned_last_name' class='disabled'/>
                         </div>
 
-                        <div class="entry with-label" ng-if='selectedPassportInfo.scanned_first_name !== selectedPassportInfo.scanned_last_name'>
+                        <div class="entry with-label">
                             <label>
                                 <text data-ng-bind-html="getTagValue('GID_REVIEW_FIRST_NAME')" editable-text="GID_REVIEW_FIRST_NAME"></text>
                             </label>
                             <input type="text" ng-model='selectedPassportInfo.scanned_first_name' class='disabled' />
                         </div>
-
-
-                        <div class="entry with-label" ng-if='selectedPassportInfo.scanned_first_name === selectedPassportInfo.scanned_last_name'>
-                            <label>
-                                <text data-ng-bind-html="getTagValue('GID_REVIEW_FULL_NAME')" editable-text="GID_REVIEW_FULL_NAME"></text>
-                            </label>
-                            <input type="text" ng-model='selectedPassportInfo.scanned_full_name' class="disabled"/>
-                        </div>
-
 
                         <div class='ng-hide' class="entry with-label">
                             <label>
@@ -354,14 +345,12 @@
                                 data-ng-src="{{selectedPassportInfo.img_path}}" 
                                 src-error='{{gidImgErrorSrcPath}}' 
                                 ng-class='{"rotated":imageRotated}'
-                                click-touch="rotateImage()"
                                 >
 
                         <img id='image-preview-back' ng-show='selectedPassportInfo.back_img_path'  class='gid-image-preview' 
                                 data-ng-src="{{selectedPassportInfo.back_img_path}}" 
                                 src-error='{{gidImgErrorSrcPath}}' 
                                 ng-class='{"rotated":backImageRotated}'
-                                click-touch="rotateBackImage()"
                                 >
                                 
                         <!--// Passport / Guest ID Scan preview -->
@@ -373,12 +362,12 @@
                         </div>
 
                         <!-- show full name above passport images if only the full name is given for first/last name -->
-                        <div class="entry with-label" ng-hide='selectedPassportInfo.scanned_first_name === selectedPassportInfo.scanned_last_name'>
+                        <!-- <div class="entry with-label" ng-hide='selectedPassportInfo.scanned_first_name === selectedPassportInfo.scanned_last_name'>
                             <label>
                                 <text data-ng-bind-html="getTagValue('GID_REVIEW_FULL_NAME')" editable-text="GID_REVIEW_FULL_NAME"></text>
                             </label>
                             <input type="text" ng-model='selectedPassportInfo.scanned_full_name' class="disabled"/>
-                        </div>
+                        </div> -->
 
                         <div class="entry with-label">
                             <label>
@@ -437,6 +426,6 @@
         </div>
 
 
-
-    <span ng-include="'/assets/partials_v2/zsTabletFooter.html'" click-touch='resetTime()'></span>
+<!-- 
+    <span ng-include="'/assets/partials_v2/zsTabletFooter.html'" click-touch='resetTime()'></span> -->
 </section>
