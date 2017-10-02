@@ -994,9 +994,6 @@ sntZestStation.controller('zsCheckinScanPassportCtrl', [
                     setSelectedReservation();
                     setDisplayContentHeight();
                     refreshScroller();
-                    if ($scope.zestStationData.is_kiosk_ows_messages_active && !$scope.zestStationData.is_standalone) {
-                        $scope.$broadcast('FETCH_OWS_MESSAGES');
-                    }
                     $scope.isReservationDetailsFetched = true;
                 };
 
