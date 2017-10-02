@@ -14,6 +14,9 @@ sntZestStation.controller('zsCheckInAddRemoveGuestCtrl', [
          ***********************************************************************************************/
 
         BaseCtrl.call(this, $scope);
+        var refreshScroller = function() {
+            $scope.refreshScroller('guests-list');
+        };
         /**
          * when the back button clicked
          * @param  {[type]} event
@@ -43,6 +46,12 @@ sntZestStation.controller('zsCheckInAddRemoveGuestCtrl', [
             $scope.guest = {};
             $scope.guest.firstNameEntered = false;
             getSelectedReservations();
+
+            $scope.setScroller('guests-list', {
+                disablePointer: true, // important to disable the pointer events that causes the issues
+                disableTouch: false, // false if you want the slider to be usable with touch devices
+                disableMouse: false // false if you want the slider to be usable with a mouse (desktop)
+            });
         };
         $scope.addAGuest = function() {
             $scope.AddGuestMode = true;
@@ -100,9 +109,6 @@ sntZestStation.controller('zsCheckInAddRemoveGuestCtrl', [
                 return guest.id === toDeleteId;
             });
 
-            toDeleteItem.last_name = null;
-            toDeleteItem.first_name = null;
-
             // accompanyingGuestData[index].last_name = null;
             // accompanyingGuestData[index].first_name = null;
             var guestDetails = {
@@ -114,6 +120,7 @@ sntZestStation.controller('zsCheckInAddRemoveGuestCtrl', [
                 $scope.selectedReservation.guest_details = _.without($scope.selectedReservation.guest_details, _.findWhere($scope.selectedReservation.guest_details, _.find($scope.selectedReservation.guest_details, function(guest) {
                     return guest.id === toDeleteId;
                 })));
+                refreshScroller();
             };
             var onFailureResponse = function(response) {
                 // do nothing for now..i don't know what to be done in that case
@@ -158,6 +165,7 @@ sntZestStation.controller('zsCheckInAddRemoveGuestCtrl', [
                         first_name: $scope.guest.firstName,
                         id: response[response.length - 1]
                     });
+                    refreshScroller();
                 };
                 var onFailureResponse = function(response) {
                     // do nothing for now..i don't know what to be done in that case
