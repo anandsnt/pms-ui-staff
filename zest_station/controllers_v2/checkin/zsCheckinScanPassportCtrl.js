@@ -616,7 +616,11 @@ sntZestStation.controller('zsCheckinScanPassportCtrl', [
         /* 
          *  To setup scroll
          */
-        $scope.setScroller('passport-validate');
+        $scope.setScroller('passport-validate', {
+            disablePointer: true, // important to disable the pointer events that causes the issues
+            disableTouch: false, // false if you want the slider to be usable with touch devices
+            disableMouse: false // false if you want the slider to be usable with a mouse (desktop)
+        });
 
         var refreshScroller = function() {
             $scope.refreshScroller('passport-validate');
@@ -863,6 +867,10 @@ sntZestStation.controller('zsCheckinScanPassportCtrl', [
             } 
             if (!mapping.lastName && mapping.doc) {
                 docDetails = mapping.doc;
+                // if first name and last name are not present, assign full name as last name
+                if (!docDetails.lastName && !docDetails.firstName) {
+                    docDetails.lastName = docDetails.fullName;
+                }
             }
             // v2
             return {
@@ -875,7 +883,7 @@ sntZestStation.controller('zsCheckinScanPassportCtrl', [
                 'BIRTH_DATE': docDetails.dateOfBirth,
                 'LAST_NAME': docDetails.lastName,
                  // FIRST_NAME, in partials it will show only last name if first&last are the same
-                'FIRST_NAME': docDetails.firstName ? docDetails.firstName : docDetails.lastName,
+                'FIRST_NAME': docDetails.firstName,
                 'NATIONALITY': docDetails.nationality_code2,
                 'NATIONALITY_FULL_NAME': docDetails.nationality_fullname,
                 'SEX': docDetails.gender,
