@@ -47,7 +47,7 @@
             </p>
             <ul class="guest-id-switch">
                 <li ng-click="guestIdData.displayMode = 'FRONT_SIDE'" ng-class="{'active':guestIdData.displayMode === 'FRONT_SIDE'}">Front</li>
-                <li ng-click="guestIdData.displayMode = 'BACK_SIDE'" ng-class="{'active': guestIdData.displayMode === 'BACK_SIDE'}" ng-show='guestIdData.twoSidedDoc'>Back</li>
+                <li ng-click="guestIdData.displayMode = 'BACK_SIDE'" ng-class="{'active': guestIdData.displayMode === 'BACK_SIDE'}" ng-if='guestIdData.twoSidedDoc'>Back</li>
                 <li ng-click="guestIdData.displayMode = 'SIGNATURE'" ng-class="{'active': guestIdData.displayMode === 'SIGNATURE'}">Signature</li>
             </ul>
             <div class='guest-id-img-div' ng-show="guestIdData.displayMode === 'FRONT_SIDE'">

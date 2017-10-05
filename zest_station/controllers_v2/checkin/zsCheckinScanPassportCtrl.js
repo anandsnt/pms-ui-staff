@@ -56,13 +56,6 @@ sntZestStation.controller('zsCheckinScanPassportCtrl', [
             $('#signature').jSignature('clear');
         };
 
-        var getSignatureBase64Data = function () {
-           var canvasElement   = angular.element( document.querySelector('canvas.jSignature'))[0],
-               signatureURL    = (canvasElement) ? canvasElement.toDataURL() : '';
-
-           return signatureURL;
-        };
-
         var onBackButtonClicked = function() {
             if ($scope.lastMode === 'SCAN_RESULTS') {
                 $scope.mode = 'SCAN_RESULTS';
@@ -264,17 +257,16 @@ sntZestStation.controller('zsCheckinScanPassportCtrl', [
                 // verify passport
                 $scope.mode = 'ADMIN_VERIFY_PASSPORT_VIEW';
                 // if guest has already added signature, set signature
-                if (guestInfo.signature && guestInfo.signature.length > 0) {
+                if (guestInfo.signature && guestInfo.signature.length > 0 && guestInfo.signature !== "image/jsignature;base30") {
                     $("#signature").jSignature("setData", "data:" + guestInfo.signature.join(","));
                 } else {
                     $scope.clearSignature();
                 }
-                $timeout(function() {
-                    // scroller setup
-                    refreshScroller();
-                }, 0);
             }
-
+            $timeout(function() {
+                // scroller setup
+                refreshScroller();
+            }, 100);
         };
 
         var listenForWebsocketActivity = function() {
@@ -577,7 +569,7 @@ sntZestStation.controller('zsCheckinScanPassportCtrl', [
                     'nationality': selectedPassportInfo.nationality,
                     'guest_id': selectedPassportInfo.id,
                     'date_of_birth': selectedPassportInfo.dob,
-                    'signature': getSignatureBase64Data()
+                    'signature': $("#signature").jSignature("getData")
                 },
                 successCallBack: function() {
                     validatePassportsView();
