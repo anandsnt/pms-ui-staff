@@ -1,9 +1,9 @@
-angular.module('admin').controller('ADCertificatesCtrl', ['$scope', 'certificates', 'ADCertificateSrv',
-    function ($scope, certificates, ADCertificateSrv) {
+angular.module('admin').controller('ADCertificatesCtrl', ['$scope', 'config', 'ADCertificateSrv',
+    function ($scope, config, ADCertificateSrv) {
 
         $scope.onSaveCertificates = function () {
             $scope.callAPI(ADCertificateSrv.save, {
-                params: $scope.certificates,
+                params: $scope.config,
                 successCallBack: function () {
                     $scope.goBackToPreviousState();
                 }
@@ -12,7 +12,7 @@ angular.module('admin').controller('ADCertificatesCtrl', ['$scope', 'certificate
 
         // Initialization
         (function () {
-            $scope.certificates = certificates;
+            $scope.config = config;
         })();
     }
 ]);

@@ -43,60 +43,63 @@
         <div class="wrapper" ng-include="'/assets/partials/companyCard/arTransactions/rvCompanyTravelAgentArTransactionBalanceList.html'">
           <!--   {ar-transactions/open-bills.html} -->
         </div>
-        <rv-pagination page-options="balancePagination" page-data="arDataObj.balanceTotalCount"></rv-pagination>
+        
         <!-- remove hidden when .with-footer-->
-        <div class="billing-footer hidden">
+        <div class="billing-footer error" ng-show="arFlags.insufficientAmount">
+            Insufficient Funds. Please <button type="button" class="button green" ng-click="addPayment()">Add Payment</button> first.
+        </div>
+        <div class="billing-footer" ng-show="shouldShowFooter() && !arFlags.insufficientAmount">
 
             <!-- If no payment method selected -->
-                <button type="button" class="select-payment payment-data">
+                <button type="button" class="select-payment payment-data" ng-show="!arFlags.isPaymentSelected" ng-click="popupPaymentForAllocation()">
                     Please Select Payment!
                 </button>
-            <!-- if payment method selected --
-                <div class="payment-data has-arrow toggle active">
 
-                    <h2 class="type">{Payment Type | exp. Credit Card, Cash}</h2>
-                    <div class="card-data">
+                <div class="payment-data has-arrow toggle active" ng-show="!!arFlags.isPaymentSelected" ng-click="popupPaymentForAllocation()" ng-class="{'no-cc': !allocatedPayment.card_details}">
+
+                    <h2 class="type">{{allocatedPayment.payment_type}}</h2>
+                    <div class="card-data" ng-if="allocatedPayment.card_details">
                         <figure class="card-logo">
-                            <img src="{card-image}" alt="" />
+                            <img ng-src="/assets/images/{{allocatedPayment.card_details.card_code.toLowerCase()}}.png" alt="">
                         </figure>
-                        <span class="number">Ending With<span class="value">5987</span></span>
-                        <span class="date">Expires<span class="value">12/14</span></span>
+                        <span class="number" ng-if="!!allocatedPayment.card_details">Ending With<span class="value">{{::allocatedPayment.card_details.last_digits}}</span></span>
+                        <span class="date" ng-if="!!allocatedPayment.card_details">Expires<span class="value">{{::allocatedPayment.card_details.expire_date}}</span></span>
                     </div>
-
                 </div>
-            -->
 
             <ul class="balance">
                 <li>
                     Available
-                    <strong class="red">$0.00</strong>
+                    <strong class="red"> <span class="currency">{{currencySymbol}}</span>{{arDataObj.availableAmount | number:2}}</strong>
                 </li>
                 <li>
                     Allocated
-                    <strong class="green">$4,906.00</strong>
+                    <strong class="green"> <span class="currency">{{currencySymbol}}</span>{{arDataObj.totalAllocatedAmount | number:2}}</strong>
                 </li>
             </ul>
 
             <ul class="actions">
 
                 <li>
-                    <button type="button" class="button blank">Cancel</button>
+                    <button type="button" class="button blank" ng-click="clickCancelFromFooter()">Cancel</button>
                 </li>
                 <li>
                     <!-- remove .green, add .grey if can't pay
                          add disabled="disabled" if can't pay -->
-                    <button type="button" class="button green">Pay Selected</button>
+                    <button type="button" ng-disabled="!arFlags.isPaymentSelected || arDataObj.selectedInvoices.length === 0 || arDataObj.availableAmount < arDataObj.totalAllocatedAmount" class="button" ng-class="{'green': arFlags.isPaymentSelected && arDataObj.selectedInvoices.length > 0 && arDataObj.availableAmount >= arDataObj.totalAllocatedAmount, 'grey': !arFlags.isPaymentSelected || arDataObj.selectedInvoices.length === 0 || arDataObj.availableAmount < arDataObj.totalAllocatedAmount}" ng-click="paySelectedInvoices()">Pay Selected</button>
                 </li>
 
-                <!-- if we can Pay All --
-                    <li class="break">
-                        <button type="button" class="button blue">Pay All</button>
+                <!-- if we can Pay All -->
+                    <li class="break" ng-show="arFlags.shouldShowPayAllButton">
+                        <button type="button" class="button blue" ng-disabled="arDataObj.availableAmount < arDataObj.totalAllocatedAmount" ng-class="{'blue':  arDataObj.availableAmount >= arDataObj.totalAllocatedAmount, 'grey':  arDataObj.availableAmount < arDataObj.totalAllocatedAmount}" ng-click="clickedPayAllButton()">Pay All</button>
                     </li>
-                -->
+                
 
             </ul>
 
         </div>
+
+        <rv-pagination ng-show="!shouldShowFooter()" page-options="balancePagination" page-data="arDataObj.balanceTotalCount"></rv-pagination>
 
     </div>
 <!-- Manual Balance Billing Content -->

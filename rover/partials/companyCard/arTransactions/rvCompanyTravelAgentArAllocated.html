@@ -1,7 +1,7 @@
 <ul class="search-results">
     <li class="reservation transaction payment" ng-repeat="allocatedCreditTransaction in arDataObj.allocatedList track by $index">
         <!-- if .toggle clicked, add .active -->
-        <div class="faux-anchor" ng-class="{'active': allocatedCreditTransaction.active , 'toggle has-arrow': allocatedCreditTransaction.is_partially_paid}" ng-click="clickedAllocatedListItem( $index )">
+        <div class="faux-anchor toggle has-arrow" ng-class="{'active': allocatedCreditTransaction.active }" ng-click="clickedAllocatedListItem( $index )">
             <div class="data">
                 <h2>{{allocatedCreditTransaction.payment_type}}</h2>
                 <div class="payment-data">
@@ -26,9 +26,7 @@
             </div>
             <!-- if partially unallocated add .partially-paid -->
             <div class="amount green" ng-class="{'partially-paid': allocatedCreditTransaction.is_partially_paid}">
-                <!-- if partially unallocated, show icon -->
-                <span class="icons icon-wallet-green" ng-show="allocatedCreditTransaction.is_partially_paid"></span>
-
+                
                 <span class="currency">{{currencySymbol}}</span>{{allocatedCreditTransaction.amount | number:2 }}
             </div>
         </div>
@@ -39,18 +37,18 @@
                     <div class="data">
                         <h2>{{item.guest_last_name}} {{item.guest_first_name}}</h2>
                         <span class="invoice">Invoice #<span class="value">{{item.invoice_number}}</span></span>
-                        <span class="confirmation">Conf #<span class="value">{{item.reservation_confirm_no}}</span></span>
+                        <span ng-hide="item.is_manual_balance" class="confirmation">Conf #<span class="value">{{item.reservation_confirm_no}}</span></span>
                     </div>
                     <div class="guest-date arrival">
-                        <span class="guest-status small-icon check-in">check-in</span>
-                        <time datetime="2017-08-17T12:00:00">
+                        <span ng-if="!item.is_manual_balance" class="guest-status small-icon check-in">check-in</span>
+                        <time ng-if="!item.is_manual_balance">
                             <span class="date">{{item.reservation_arrival_date | date : dateFormat}}</span>
                             <span class="time">{{item.reservation_arrival_time}}</span>
                         </time>
                     </div>
                     <div class="guest-date departure">
                         <span class="guest-status small-icon check-out">check-out</span>
-                        <time datetime="2017-08-24T12:00:00">
+                        <time>
                             <span class="date">{{item.reservation_dep_date | date : dateFormat}}</span>
                             <span class="time">{{item.reservation_dep_time}}</span>
                         </time>
@@ -58,12 +56,17 @@
                     <div class="amount paid">
                         {{currencySymbol}} {{item.amount | number:2 }}
                     </div>
-                    <button ng-show="arFlags.hasAllocateUnallocatePermission" type="button" class="button white with-icon" ng-click="clickedUnallocateButton()">
+                    <button ng-show="arFlags.hasAllocateUnallocatePermission" type="button" class="button white with-icon" ng-click="clickedUnallocateButton(item)">
                         <span class="icons icon-remove-40"></span>
                     </button>
                 </div>
             </li>
         </ul>
 
+    </li>
+    <li>
+        <!-- To fix scroll: The footer for pagination and select payment is coming above the list so the last entry will 
+        not be visible-->
+        <div>&nbsp;</div>
     </li>
 </ul>

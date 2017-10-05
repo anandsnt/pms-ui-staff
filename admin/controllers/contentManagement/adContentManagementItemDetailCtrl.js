@@ -178,7 +178,9 @@ $scope.getSelectedAddonPrice = function() {
 	$scope.fetchItem = function() {
 		var fetchItemSuccessCallback = function(data) {
 			$scope.data = data;
-			$scope.data.addon_id = data.addon_id.toString();
+			if (data.addon_id) {
+				$scope.data.addon_id = data.addon_id.toString();
+			}
 			$scope.initialIcon =  data.icon;
 			$scope.initialImage = data.image;
 			if (data.page_template === 'ADDON') {

@@ -13,24 +13,20 @@
     <div class="modal-body">
         <div class="content-left">
             <ul class="details">
-                <li ng-if='guestIdData.last_name === guestIdData.first_name'>
+                <li>
                     <span>Name</span>
-                    {{guestIdData.last_name}} 
+                    {{guestIdData.first_name}} 
                 </li>
-                <li ng-if='guestIdData.last_name !== guestIdData.first_name'>
+                <li>
                     <span>Last Name</span>
                     {{guestIdData.last_name}} 
-                </li>
-                <li ng-if='guestIdData.last_name !== guestIdData.first_name'>
-                    <span>First Name</span>
-                    {{guestIdData.first_name}} 
                 </li>
                 <li>
                     <span>Date of Birth</span>
                     {{guestIdData.dob}} 
                 </li>
                 <li>
-                    <span>Nationlity</span>
+                    <span>Nationality</span>
                     {{guestIdData.nationality}} 
                 </li>
                 <li>
