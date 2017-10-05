@@ -380,8 +380,9 @@ sntRover.controller('roverController', [
          */
         $scope.fetchDeviceStatus = function () {
             var callBacks = {
-                'successCallBack': function (response) {
+                'successCallBack': function (response, versionDetails) {
                     $scope.connectedDeviceDetails = response;
+                    $scope.serviceDetails = versionDetails;
                     $scope.widthStyle = (response.length === 1) ? {
                         'width': '320px'
                     } : '';

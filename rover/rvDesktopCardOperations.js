@@ -3,7 +3,8 @@
 var DesktopCardOperations = function () {
     var that = this;
     var ws = {};
-    var callBacks = {};
+
+    that.callBacks = {};
 
     // Set to true if the desktop swipe is enabled and a WebSocket connection is established.
     that.isActive = false;
@@ -19,7 +20,7 @@ var DesktopCardOperations = function () {
     var commandMap = {
         observeForSwipe: JSON.stringify({'Command': 'cmd_observe_for_swipe'}),
         UUIDforDevice: JSON.stringify({'Command': 'cmd_device_uid'}),
-        getDevicesStates: JSON.stringify({'Command': 'cmd_get_device_states'})
+        getConnectedDeviceDetails: JSON.stringify({'Command': 'cmd_get_device_states'})
     };
 
     var handleServiceMessages = function (response) {
@@ -31,10 +32,13 @@ var DesktopCardOperations = function () {
                 that.swipeCallbacks.uuidServiceSuccessCallBack(response.Message);
                 break;
             case 'cmd_get_device_states':
-                if (response.status === 'SUCCESS') {
-                    callBacks['getConnectedDeviceDetails'].successCallBack(response);
+                if (response.ResponseCode === 0) {
+                    that.callBacks['getConnectedDeviceDetails'].successCallBack(response.device_states, {
+                        version: response.service_version,
+                        activeClients: response.number_of_clients
+                    });
                 } else { // Handle failure and response.responseCode
-                    callBacks['getConnectedDeviceDetails'].failureCallBack(response);
+                    that.callBacks['getConnectedDeviceDetails'].failureCallBack(response);
                 }
                 break;
             case 'an_invalid_command':
@@ -63,7 +67,7 @@ var DesktopCardOperations = function () {
     };
 
     this.getConnectedDeviceDetails = function (callBacks) {
-        callBacks['getConnectedDeviceDetails'] = callBacks;
+        that.callBacks['getConnectedDeviceDetails'] = callBacks;
         ws.send(commands['getConnectedDeviceDetails']);
     };
 
