@@ -220,9 +220,9 @@ sntZestStation.controller('zsCheckInTermsConditionsCtrl', [
 
         var nextPageActions = function(byPassCC) {
 			// check if depsoit is to be paid
-            if (depositRequired()) {
+            if (depositRequired() && !$scope.zestStationData.bypass_kiosk_cc_auth) {
                 goToDepositScreen();
-            } else if (!byPassCC) {
+            } else if (!byPassCC && !$scope.zestStationData.bypass_kiosk_cc_auth) {
                 goToCreditCardAuthScreen();
             } else {
                 checkInGuest(); // by-pass CC
