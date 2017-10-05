@@ -65,10 +65,10 @@
                                     <span class="reference">{{item.reference_number}}</span>
                                     <span class="reference">{{item.reference_text}}</span>
                                 </td>
-                                <td ng-if="!item.is_credit" class="charge-amount align-right">{{currencySymbol}} {{item.amount | number: precisonTwo}}</td>
+                                <td ng-if="!item.is_credit" class="charge-amount align-right"><span class="currency">{{currencySymbol}}</span> {{item.amount | number: precisonTwo}}</td>
                                 <td ng-if="!item.is_credit"></td>
                                 <td ng-if="item.is_credit"></td>
-                                <td ng-if="item.is_credit" class="charge-amount align-right">{{currencySymbol}} {{item.amount | number: precisonTwo}}</td>
+                                <td ng-if="item.is_credit" class="charge-amount align-right"><span class="currency">{{currencySymbol}}</span> {{item.amount | number: precisonTwo}}</td>
                             </tr>
                             <tr ng-repeat="item in statement.allocated_payment_details">
                                 <td class="charge-date">{{item.date | date :dateFormat }}</td>
@@ -79,11 +79,11 @@
                                     <span class="reference">{{item.reference_text}}</span>
                                 </td>
                                 <td class="charge-amount align-right"></td>
-                                <td class="charge-amount align-right">{{currencySymbol}}{{item.credits | number: precisonTwo}}</td>
+                                <td class="charge-amount align-right"><span class="currency">{{currencySymbol}}</span>{{item.credits | number: precisonTwo}}</td>
                             </tr>
                         </table>
                     </td>
-                    <td class="amount-due align-right">{{currencySymbol}}{{statement.amount_due | number: precisonTwo}}</td>
+                    <td class="amount-due align-right"><span class="currency">{{currencySymbol}}</span>{{statement.amount_due | number: precisonTwo}}</td>
                 </tr>
 
                 <tr ng-if="printData.posting_account_details.length > 0" class="person" ng-repeat="statement in printData.posting_account_details">
@@ -112,10 +112,10 @@
                                     <span class="reference">{{item.reference_number}}</span>
                                     <span class="reference">{{item.reference_text}}</span>
                                 </td>
-                                <td ng-if="!item.is_credit" class="charge-amount align-right">{{currencySymbol}} {{item.amount | number: precisonTwo}}</td>
+                                <td ng-if="!item.is_credit" class="charge-amount align-right"><span class="currency">{{currencySymbol}}</span> {{item.amount | number: precisonTwo}}</td>
                                 <td ng-if="!item.is_credit"></td>
                                 <td ng-if="item.is_credit"></td>
-                                <td ng-if="item.is_credit" class="charge-amount align-right">{{currencySymbol}} {{item.amount | number: precisonTwo}}</td>
+                                <td ng-if="item.is_credit" class="charge-amount align-right"><span class="currency">{{currencySymbol}}</span> {{item.amount | number: precisonTwo}}</td>
                             </tr>
                             <tr ng-repeat="item in statement.allocated_payment_details">
                                 <td class="charge-date">{{item.date | date :dateFormat }}</td>
@@ -126,11 +126,11 @@
                                     <span class="reference">{{item.reference_text}}</span>
                                 </td>
                                 <td class="charge-amount align-right"></td>
-                                <td class="charge-amount align-right">{{currencySymbol}}{{item.credits | number: precisonTwo}}</td>
+                                <td class="charge-amount align-right"><span class="currency">{{currencySymbol}}</span>{{item.credits | number: precisonTwo}}</td>
                             </tr>
                         </table>
                     </td>
-                    <td class="amount-due align-right">{{currencySymbol}}{{statement.amount_due | number: precisonTwo}}</td>
+                    <td class="amount-due align-right"><span class="currency">{{currencySymbol}}</span>{{statement.amount_due | number: precisonTwo}}</td>
                 </tr>         
 
                 <tr ng-if="printData.manual_balance_details.length > 0" class="person" ng-repeat="statement in printData.manual_balance_details">
@@ -152,7 +152,7 @@
                                     <span class="reference">{{statement.charge_details.reference_number}}</span>
                                     <span class="reference">{{statement.charge_details.reference_text}}</span>
                                 </td>
-                                <td class="charge-amount align-right">{{currencySymbol}} {{statement.charge_details.debits | number: precisonTwo}}</td>
+                                <td class="charge-amount align-right"><span class="currency">{{currencySymbol}}</span> {{statement.charge_details.debits | number: precisonTwo}}</td>
                                 <td class="charge-amount align-right"></td>
                             </tr>
                             <tr ng-repeat="item in statement.allocated_payment_details">
@@ -164,11 +164,11 @@
                                     <span class="reference">{{item.reference_text}}</span>
                                 </td>
                                 <td class="charge-amount align-right"></td>
-                                <td class="charge-amount align-right">{{currencySymbol}}{{item.credits | number: precisonTwo}}</td>
+                                <td class="charge-amount align-right"><span class="currency">{{currencySymbol}}</span>{{item.credits | number: precisonTwo}}</td>
                             </tr>
                         </table>
                     </td>
-                    <td class="amount-due align-right">{{currencySymbol}}{{statement.amount_due | number: precisonTwo}}</td>
+                    <td class="amount-due align-right"><span class="currency">{{currencySymbol}}</span>{{statement.amount_due | number: precisonTwo}}</td>
                 </tr>               
  
                 <tr ng-if="printData.payment_details.length > 0" class="payment" ng-repeat="statement in printData.payment_details">
@@ -179,7 +179,7 @@
                     <td class="charge-code">{{statement.charge_code}}</td>
                     <td class="charge-description">{{statement.charge_description}}</td>
                     <td class="charge-amount align-right"></td>
-                    <td class="charge-amount align-right">{{currencySymbol}}{{statement.credits | number: precisonTwo}}</td>
+                    <td class="charge-amount align-right"><span class="currency">{{currencySymbol}}</span>{{statement.credits | number: precisonTwo}}</td>
                     <td class="amount-due align-right"></td>
                 </tr>
                
@@ -187,17 +187,17 @@
             <tfoot>
                 <tr>
                     <td colspan="6"><strong translate>TOTAL_AMOUNT</strong></td>
-                    <td><strong>{{currencySymbol}}{{printData.total_amount | number: precisonTwo}}</strong></td>
+                    <td><strong><span class="currency">{{currencySymbol}}</span>{{printData.total_amount | number: precisonTwo}}</strong></td>
                 </tr>
 
                 <tr>
                     <td colspan="6"><strong translate>TOTAL_AMOUNT_DUE</strong></td>
-                    <td><strong>{{currencySymbol}}{{printData.total_amount_due | number: precisonTwo}}</strong></td>
+                    <td><strong><span class="currency">{{currencySymbol}}</span>{{printData.total_amount_due | number: precisonTwo}}</strong></td>
                 </tr>
 
                 <tr ng-if="!printData.has_enabled_extended_tax_breakdown" ng-repeat="tax in printData.tax_details">
                     <td colspan="6">{{tax.description}}</td>
-                    <td>{{currencySymbol}}{{tax.tax_amount | number: precisonTwo}}</td>
+                    <td><span class="currency">{{currencySymbol}}</span>{{tax.tax_amount | number: precisonTwo}}</td>
                 </tr>
 
             </tfoot>
@@ -219,13 +219,13 @@
                         {{item.description}}
                     </td>
                     <td>
-                        {{currencySymbol}}{{item.gross_amount | number: precisonTwo}}
+                        <span class="currency">{{currencySymbol}}</span>{{item.gross_amount | number: precisonTwo}}
                     </td>
                     <td>
-                        {{currencySymbol}}{{item.net_amount | number: precisonTwo}}
+                        <span class="currency">{{currencySymbol}}</span>{{item.net_amount | number: precisonTwo}}
                     </td>
                     <td>
-                        {{currencySymbol}}{{item.tax_amount | number: precisonTwo}}
+                        <span class="currency">{{currencySymbol}}</span>{{item.tax_amount | number: precisonTwo}}
                     </td>
                 </tr>
             </tbody>
@@ -233,13 +233,13 @@
                 <tr>
                     <td>Total</td>
                     <td>
-                        {{currencySymbol}}{{printData.extended_tax_breakdown.total_gross_amount | number: precisonTwo}}
+                        <span class="currency">{{currencySymbol}}</span>{{printData.extended_tax_breakdown.total_gross_amount | number: precisonTwo}}
                     </td>
                     <td>
-                        {{currencySymbol}}{{printData.extended_tax_breakdown.total_net_amount | number: precisonTwo}}
+                        <span class="currency">{{currencySymbol}}</span>{{printData.extended_tax_breakdown.total_net_amount | number: precisonTwo}}
                     </td>
                     <td>
-                        {{currencySymbol}}{{printData.extended_tax_breakdown.total_tax_amount | number: precisonTwo}}
+                        <span class="currency">{{currencySymbol}}</span>{{printData.extended_tax_breakdown.total_tax_amount | number: precisonTwo}}
                     </td>
                 </tr>
             </tfoot>
