@@ -1,4 +1,5 @@
-var DesktopCardOperations = function() {
+/* eslint-disable angular/timeout-service,angular/json-functions */
+var DesktopCardOperations = function () {
     var that = this;
     var ws = {};
     // Set to true if the desktop swipe is enabled and a WebSocket connection is established.
@@ -6,53 +7,92 @@ var DesktopCardOperations = function() {
     that.isActive = false;
     that.isDesktopUUIDServiceInvoked = false;
 
+    var commands = commands = {
+        observeForSwipe: 'observeForSwipe',
+        UUIDforDevice: 'UUIDforDevice'
+    };
+
     this.swipeCallbacks;
-    this.startDesktopReader = function(portNumber, swipeCallbacks, url) {
+    this.startDesktopReader = function (portNumber, swipeCallbacks, url) {
         that.portNumber = portNumber;
         that.ccSwipeURL = url;
         that.swipeCallbacks = swipeCallbacks;
         createConnection();
     };
 
-    this.setDesktopUUIDServiceStatus = function(status) {
+    this.setDesktopUUIDServiceStatus = function () {
         that.isDesktopUUIDServiceInvoked = true;
     };
 
-    var createConnection = function() {
+    this.startReader = function () {
+        ws.send(commands['observeForSwipe']);
+    };
+
+    var handleServiceMessages = function (response) {
+        switch (response['Command']) {
+            case 'cmd_observe_for_swipe':
+                that.swipeCallbacks.successCallBack(response.Card);
+                break;
+            case 'cmd_device_uid':
+                that.swipeCallbacks.uuidServiceSuccessCallBack(response.Message);
+                break;
+            case 'an_invalid_command':
+                if (response.ResponseCode === 10) {
+                    commands = {
+                        observeForSwipe: JSON.stringify({'Command': 'cmd_observe_for_swipe'}),
+                        UUIDforDevice: JSON.stringify({'Command': 'cmd_device_uid'})
+                    };
+                }
+                break;
+            default:
+                console.error('Unhandled Command');
+        }
+
+    };
+
+    var init = function () {
+        that.isActive = true;
+        ws.send(commands['observeForSwipe']);
+
+        if (that.isDesktopUUIDServiceInvoked) {
+            ws.send(commands['UUIDforDevice']);
+        }
+    };
+
+    var createConnection = function () {
         try {
             if (_.isUndefined(that.ccSwipeURL) || that.ccSwipeURL === '') {
-                ws = new WebSocket("wss://localhost:" + that.portNumber + "/CCSwipeService");
+                ws = new WebSocket('wss://localhost:' + that.portNumber + '/CCSwipeService');
             } else {
-                ws = new WebSocket(that.ccSwipeURL + ':' + that.portNumber + "/CCSwipeService");
+                ws = new WebSocket(that.ccSwipeURL + ':' + that.portNumber + '/CCSwipeService');
             }
         }
         catch (e) {
-            console.warn("Could not connect to card reader. Please check if the port number is valid!!");
+            console.warn('Could not connect to card reader. Please check if the port number is valid!!');
         }
 
         // Triggers when websocket connection is established.
         ws.onopen = function () {
-            that.isActive = true;
-            ws.send("observeForSwipe");
-
-            if (that.isDesktopUUIDServiceInvoked) {
-                ws.send("UUIDforDevice");
-            }
-
+            ws.send(JSON.stringify({Command: 'an_invalid_command'}));
+            setTimeout(init, 2000);
         };
 
         // Triggers when there is a message from websocket server.
         ws.onmessage = function (event) {
-            var cardData = event.data;
-            var cardDataJSON = JSON.parse(cardData);
+            var response = event.data;
 
-            if (cardDataJSON.ResponseType) {
-                that.swipeCallbacks.uuidServiceSuccessCallBack(cardDataJSON);
-            }
-            else {
-                that.swipeCallbacks.successCallBack(cardDataJSON);
-            }
+            response = JSON.parse(response);
 
+            if (response['Command']) {
+                handleServiceMessages(response);
+            } else if (response['ResponseType'] === 'UUIDforDeviceResponse') {
+                that.swipeCallbacks.uuidServiceSuccessCallBack(response);
+            } else if (response['RVCardReadPAN']) {
+                that.swipeCallbacks.successCallBack(response);
+            } else {
+                // Any other scenario other than above is NOT handled in Rover
+                console.error(response);
+            }
         };
 
         ws.onclose = function () {
@@ -60,6 +100,4 @@ var DesktopCardOperations = function() {
             that.swipeCallbacks.failureCallBack();
         };
     };
-
-
 };

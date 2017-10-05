@@ -4,7 +4,9 @@ sntRover.controller('RvArPaidController', ['$scope', '$timeout', 'RVCompanyCardS
 
 		BaseCtrl.call(this, $scope);
 
-		$scope.setScroller('paid-list');
+		var scrollOptions =  {preventDefaultException: { tagName: /^(INPUT|LI)$/ }, preventDefault: false};	
+
+		$scope.setScroller('paid-list', scrollOptions);
 		var refreshScroll = function() {
 			$timeout(function() { 
 				$scope.refreshScroller('paid-list');

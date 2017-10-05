@@ -363,12 +363,6 @@ sntRover.controller('RVBillPayCtrl', ['$scope', 'RVBillPaymentSrv', 'RVPaymentSr
 		+  $filter("number")($scope.renderData.defaultPaymentAmount.toString().replace(/,/g, ""), 2) + " PAID SUCCESSFULLY !" + "<br/>";
 		// Clears older failure messages.
 		$scope.clearPaymentErrorMessage();
-		// TO CONFIRM AND REMOVE COMMENT OR TO DELETE
-
-		// ($scope.reservationBillData.isCheckout || !$scope.splitBillEnabled) -> this was the condtition before
-		// had to remove the isCheckout flag which was causing the popup to close even if split payment is
-		// selected
-		(!$scope.splitBillEnabled) ? $scope.closeDialog() : '';
 	};
 	/*
 	* updates DefaultPaymentAmount
@@ -405,15 +399,25 @@ sntRover.controller('RVBillPayCtrl', ['$scope', 'RVBillPaymentSrv', 'RVPaymentSr
 			$rootScope.$broadcast('ADDEDNEWPAYMENTTOGUEST', dataToGuestList);
 		}
 	};
-	/*
-	* Success call back of success payment
-	*/
-	var successPayment = function(e, data) {
-		$scope.errorMessage = "";
-		$scope.authorizedCode = data.authorization_code;
-		paymentFinalDetails =  data;
-		processeRestOfPaymentOperations();
-	};
+
+    /*
+    * Success call back of success payment
+    */
+    var successPayment = function (e, data) {
+        $scope.errorMessage = '';
+        $scope.authorizedCode = data.authorization_code;
+        paymentFinalDetails = data;
+
+        // CICO-42851 Show Authorization code for CC payments in the Reservation Bill Screen
+        $scope.paymentDetails = {
+            paymentSuccess: true,
+            authorizationCode: data.authorizationCode || data.authorization_code,
+            amount: data.amountPaid,
+            feePaid: parseFloat(data.feePaid)
+        };
+
+        processeRestOfPaymentOperations();
+    };
 
 	/*
 	* Failure call back of submitpayment
