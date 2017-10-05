@@ -24,7 +24,7 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 			'shouldShowFooter': false,
 			'insufficientAmount': false,
 			'isArSynced': false,
-			'isFromAddPayment': false
+			'isFromAddPaymentOrAllocateButton': false
 		};
 
 		$scope.filterData = {
@@ -51,7 +51,7 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 			'unallocatedCredit': '',
 			'company_or_ta_bill_id': '',
 
-			'perPage': 5,
+			'perPage': 15,
 			'balancePageNo': 1,
 			'paidPageNo': 1,
 			'allocatePageNo': 1,
@@ -126,6 +126,13 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 		 * Handling data based on tabs currently active.
 		 */
 		var successCallbackOfFetchAPI = function( data ) {
+
+			if (data.ar_transactions.length === 0) {
+				if ($scope.arFlags.currentSelectedArTab === 'balance' && $scope.arDataObj.balancePageNo !== 1) {
+					loadAPIData('BALANCE', 1);										
+				}
+			}
+			
 
 			$scope.arDataObj.unpaidAmount = data.unpaid_amount;
 			$scope.arDataObj.paidAmount = data.paid_amount;
@@ -372,6 +379,7 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 				postData = {},
 				totalAllocatedAmount = 0;
 
+			$scope.arDataObj.selectedInvoices = [];
 			_.each($scope.arDataObj.balanceList, function (eachItem) {
 				var selectedInvoiceObj = {};
 
@@ -405,7 +413,7 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 			$scope.arFlags.insufficientAmount = false;
 			$scope.arFlags.shouldShowPayAllButton = false;
 			$scope.arDataObj.selectedInvoices = [];
-			$scope.arFlags.isFromAddPayment = false;
+			$scope.arFlags.isFromAddPaymentOrAllocateButton = false;
 			$scope.arDataObj.availableAmount = 0;
 			_.each($scope.arDataObj.balanceList, function (eachItem) {
 				eachItem.isSelected = false;
@@ -419,7 +427,7 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 		$scope.shouldShowFooter = function() {			
 			var flag = true;
 
-			if ($scope.arDataObj.selectedInvoices.length === 0 && !$scope.arFlags.isFromAddPayment) {
+			if ($scope.arDataObj.selectedInvoices.length === 0 && !$scope.arFlags.isFromAddPaymentOrAllocateButton) {
 				flag = false;
 			}
 			return flag;
@@ -490,7 +498,8 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 		// and after succesfull payment with Allocate payment after posting checked
 		$scope.$on('REFRESH_BALANCE_LIST', function() {
 			$scope.arFlags.currentSelectedArTab = 'balance';
-			$scope.fetchTransactions();
+			$scope.arDataObj.balancePageNo = 1;
+			$scope.fetchTransactions();			
 		});
 		// Refresh balance list - after adding new manual balance
 		// and after succesfull payment with Allocate payment after posting checked
@@ -520,7 +529,14 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 			$scope.arFlags.currentSelectedArTab = 'balance';
 			$scope.allocatedPayment = selectedPaymentData;
 			$scope.arFlags.isPaymentSelected = true;	
-			$scope.arDataObj.availableAmount = selectedPaymentData.available_amount;		
+			$scope.arDataObj.availableAmount = selectedPaymentData.available_amount;
+			$scope.arFlags.isFromAddPaymentOrAllocateButton = true;	
+			var totalAllocatedAmount = 0;
+
+            _.each($scope.arDataObj.balanceList, function (eachItem) {
+                totalAllocatedAmount = parseFloat(totalAllocatedAmount) + parseFloat(eachItem.amount);
+            });
+            $scope.arDataObj.totalAllocatedAmount = totalAllocatedAmount;	
 		});
 
 		/*

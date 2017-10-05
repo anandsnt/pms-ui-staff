@@ -1,4 +1,4 @@
-admin.controller('adMonsciergeSetupCtrl', ['$scope', 'adMonsciergeSetupSrv',
+admin.controller('adMonsciergeSetupCtrl', ['$scope', 'adMonsciergeSetupSrv', 
 	function($scope, adMonsciergeSetupSrv) {
 		BaseCtrl.call(this, $scope);
 
@@ -17,6 +17,7 @@ admin.controller('adMonsciergeSetupCtrl', ['$scope', 'adMonsciergeSetupSrv',
 		$scope.fetchSettings = function() {
 			var onFetchSettingsSucces = function(data) {
 					$scope.data = data.monscierge;
+					$scope.hotel_code = data.hotel_code;
 				},
 				options = {
 					successCallBack: onFetchSettingsSucces

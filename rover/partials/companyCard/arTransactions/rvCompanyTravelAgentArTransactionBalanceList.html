@@ -50,7 +50,7 @@
 			   
 			</div>
 			<!-- This HTML is added even if the item is manual balance to fix the design issue. The icon kept hide -->
-			<div class="guest-date arrival">
+			<div class="guest-date arrival" ng-if="!balance.isSelected">
 				<span class="guest-status small-icon check-in" ng-hide="balance.is_manual_balance || balance.associated_type === 'PostingAccount'">check-in</span>
 				<time>
 					<span class="date">{{balance.reservation_arrival_date  | date : dateFormat}}</span>
@@ -58,7 +58,7 @@
 				</time>
 			</div>
 
-            <div class="guest-date departure">
+            <div class="guest-date departure" ng-if="!balance.isSelected">
                 <span class="guest-status small-icon check-out" ng-hide="balance.associated_type === 'PostingAccount'">check-out</span>
                 <time ng-hide="balance.associated_type === 'PostingAccount'">
                     <span class="date">{{balance.reservation_dep_date | date : dateFormat}}</span>
@@ -79,7 +79,7 @@
             </div>
             <div class="amount input">
                 <span class="currency">{{currencySymbol}}</span>
-                <input type="text" value="{{balance.amount}}" ng-model="balance.amount" ng-change="changeBalanceAmount($index)">
+                <input type="text" value="{{balance.amount}}" ng-model="balance.amount" ng-change="changeBalanceAmount($index)" ng-blur="addDecimal($index)">
             </div>
         </div>
 
@@ -108,7 +108,7 @@
                         <td><span ng-if="isStandAlone && !debit.is_group_by_ref">{{ debit.charge_code }}</span></td>
                         <td class="description" ng-class="{'toggle':isStandAlone && debit.is_group_by_ref, 'active': debit.isExpanded}" ng-click = "expandGroupedCharge(debit)">{{ debit.description }}<span class="icons icon-double-arrow" ng-if="isStandAlone && debit.is_group_by_ref"></span>
                             <!-- Lightspeed Data -->
-                            <ul class = 'charge-items' ng-if = "isStandAlone && debit.is_group_by_ref" ng-class = "{'hidden': !debit.isExpanded}">
+                            <ul class = 'charge-items light-speed-data' ng-if = "isStandAlone && debit.is_group_by_ref" ng-class = "{'hidden': !debit.isExpanded}">
                                 <li ng-repeat = "object in debit.light_speed_data"><span>{{object.description}}</span></li>
                             </ul>
                             <!-- Lightspeed Data -->
@@ -116,7 +116,7 @@
                         <td class="fees">
                             <span ng-if="debit.fees" class="currency">{{ currencySymbol }}</span>{{ debit.fees | number:2 }}
                             <!-- Lightspeed Data -->
-                            <ul class = 'charge-items' ng-if = "isStandAlone && debit.is_group_by_ref" ng-class = "{'hidden': !debit.isExpanded}">
+                            <ul class = 'charge-items light-speed-data' ng-if = "isStandAlone && debit.is_group_by_ref" ng-class = "{'hidden': !debit.isExpanded}">
                                 <li ng-repeat = "object in debit.light_speed_data"><span class = "cost"><span class="currency">{{currencySymbol}}</span>{{object.amount | number:2 }}</span></li>
                             </ul>
                             <!-- Lightspeed Data -->

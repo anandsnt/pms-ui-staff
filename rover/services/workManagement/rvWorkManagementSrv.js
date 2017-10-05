@@ -335,8 +335,8 @@ angular.module('sntRover').service('RVWorkManagementSrv', ['$q', 'rvBaseWebSrvV2
 					this.payload = {
 						'allTasks': tasksResponse,
 						'allRooms': allRooms,
-						'unassignedRoomTasks': compileUnassignedRooms(unassignedRoomsResponse, tasksResponse, allRooms),
-						'assignedRoomTasks': compileAssignedRooms(assignedRoomsResponse, tasksResponse, allRooms)
+						'unassignedRoomTasks': compileUnassignedRooms(unassignedRoomsResponse, tasksResponse, JSON.parse(JSON.stringify(allRooms))),
+						'assignedRoomTasks': compileAssignedRooms(assignedRoomsResponse, tasksResponse, JSON.parse(JSON.stringify(allRooms)))
 					};
 
 					deferred.resolve( this.payload );

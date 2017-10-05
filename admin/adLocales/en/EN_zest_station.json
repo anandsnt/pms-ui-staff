@@ -143,7 +143,10 @@
 "LIGHT_BRIGHTNESS": "Light Brightness (0-254)",
 "LIGHT_BLINKING_EFFECT": "Blinking effect",
 "HUE": "Hue (0-65535)",
-"SATURATION": "Saturation (0-254)"
+"SATURATION": "Saturation (0-254)",
+"CREDIT_CARD_AND_PAYMENT_OPTIONS": "Credit Card & Payment Options",
+"BYPASS_SIGNATURE_CAPTURE": "Bypass Signature Capture",
+"BYPASS_CC_AUTH": "Bypass CC Authorization"
 
 
 
