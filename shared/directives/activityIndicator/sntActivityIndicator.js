@@ -2,7 +2,16 @@ angular.module('sntActivityIndicator', [])
     .directive('activityIndicator',
         function () {
             return {
-                template: '<div ng-show="hasLoader" id="loading"><div id="loading-spinner" ></div></div> ',
+                template: '<div ng-show="hasLoader" id="loading"><div id="loading-spinner" ></div></div> ' +
+                '<!-- loader for EMV terminal actions -->\n' +
+                '<div ng-show="emvActivity" id="loading">\n' +
+                '    <div id="six-payment-loader">\n' +
+                '        <div class="centeralign alert-box">\n' +
+                '            WAITING FOR PAYMENT COMPLETION\n' +
+                '        </div>\n' +
+                '        <div class="waiting-payment">&nbsp;</div>\n' +
+                '    </div>\n' +
+                '</div>',
                 controller: ['$log', '$scope', '$timeout', '$rootScope', 'sntActivity',
                     function ($log, $scope, $timeout, $rootScope, sntActivity) {
                         var stats = {
@@ -49,6 +58,15 @@ angular.module('sntActivityIndicator', [])
                 } else if (index === -1) {
                     $log.warn('trying to stop a non-existent activity...', activity);
                 }
+            };
+
+            // NOTE: The EMV Terminal can be used to do only one act at a time!
+            service.startEMVActivity = function () {
+                $rootScope.emvActivity = true;
+            };
+
+            service.stopEMVActivity = function () {
+                $rootScope.emvActivity = false;
             };
 
             service.handleLegacyHide = function () {

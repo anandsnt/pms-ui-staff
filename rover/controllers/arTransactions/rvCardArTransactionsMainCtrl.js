@@ -127,6 +127,13 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 		 */
 		var successCallbackOfFetchAPI = function( data ) {
 
+			if (data.ar_transactions.length === 0) {
+				if ($scope.arFlags.currentSelectedArTab === 'balance' && $scope.arDataObj.balancePageNo !== 1) {
+					loadAPIData('BALANCE', 1);										
+				}
+			}
+			
+
 			$scope.arDataObj.unpaidAmount = data.unpaid_amount;
 			$scope.arDataObj.paidAmount = data.paid_amount;
 			$scope.arDataObj.allocatedCredit = data.allocated_credit;
@@ -491,6 +498,7 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 		// and after succesfull payment with Allocate payment after posting checked
 		$scope.$on('REFRESH_BALANCE_LIST', function() {
 			$scope.arFlags.currentSelectedArTab = 'balance';
+			$scope.arDataObj.balancePageNo = 1;
 			$scope.fetchTransactions();			
 		});
 		// Refresh balance list - after adding new manual balance

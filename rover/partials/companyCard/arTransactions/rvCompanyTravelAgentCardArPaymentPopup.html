@@ -24,7 +24,7 @@
                             <div class="payment-date">
                                 <span class="icons small-icon icon-time time-black"></span>
                                 <time datetime="2017-08-15 12:08 AM">
-                                    <span class="date">{{::payment.transaction_date}}</span>
+                                    <span class="date">{{::payment.transaction_date | date : dateFormat}}</span>
                                     <span class="time">{{::payment.transaction_time}}</span>
                                 </time>
                             </div>
