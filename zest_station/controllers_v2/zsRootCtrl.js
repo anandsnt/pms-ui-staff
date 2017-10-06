@@ -1177,7 +1177,7 @@ sntZestStation.controller('zsRootCtrl', [
                 if ($scope.zestStationData.kiosk_is_hue_active &&
                     $scope.socketOperator.returnWebSocketObject() &&
                     $scope.socketOperator.returnWebSocketObject().readyState === 1) {
-                    $scope.turnOffLight();
+                    $scope.turnOnLightWithWhiteColor();
                 }
                 if ($scope.trackEvent) {
                     $scope.trackEvent('health_check', 'status_update', from.name, to.name);
@@ -1328,7 +1328,7 @@ sntZestStation.controller('zsRootCtrl', [
             $scope.$broadcast('SOCKET_CONNECTED');
             if ($state.current.name === 'zest_station.home' || $state.current.name === 'zest_station.outOfService') {
                 $timeout(function() {
-                    $scope.turnOffLight();// turn off the light if it was previous turned ON..ie. device restarts after the light was turned on
+                    $scope.turnOnLightWithWhiteColor();// turn off the light if it was previous turned ON..ie. device restarts after the light was turned on
                 }, 500);
                 
 
@@ -1831,15 +1831,18 @@ sntZestStation.controller('zsRootCtrl', [
             }
         };
 
-        $scope.turnOffLight = function(selected_light_id) {
+        $scope.turnOnLightWithWhiteColor = function(selected_light_id) {
             if ($scope.zestStationData.kiosk_is_hue_active) {
                 var lightId = selected_light_id ? selected_light_id : $scope.zestStationData.selected_light_id;
                 var json = {
                     'Command': 'cmd_hue_light_change',
                     'Data': $scope.zestStationData.hue_bridge_ip,
                     'hueLightAppkey': $scope.zestStationData.hue_user_name,
-                    'shouldLight': '0',
-                    'lightList': [lightId]
+                    'shouldLight': '1',
+                    'lightList': [lightId],
+                    'blink': 0,
+                    'lightColor': '#ffffff',
+                    'brightness': $scope.zestStationData.hue_brightness || 254
                 };
                 var jsonstring = JSON.stringify(json);
 
@@ -1999,7 +2002,7 @@ sntZestStation.controller('zsRootCtrl', [
             // 
             // 1: turn off hue lights of they were ON
             // 2: report app exit activity
-            $scope.turnOffLight();
+            $scope.turnOnLightWithWhiteColor();
             $scope.reportGoingOffline();
         };
 

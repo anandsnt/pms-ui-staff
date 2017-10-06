@@ -367,7 +367,7 @@ sntZestStation.controller('zsCheckinScanPassportCtrl', [
                     }
                     // Turn Light OFF after admin login is successful
                     // 
-                    $scope.turnOffLight();
+                    $scope.turnOnLightWithWhiteColor();
                 } else {
                     $scope.adminLoginError = true;
                     $log.warn('invalid admin login');
