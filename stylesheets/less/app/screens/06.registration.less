@@ -142,6 +142,29 @@
                         }
                     }
 
+                    &.with-button {
+                        position: relative;
+
+                        .button {
+                            display: none;
+                            position: absolute;
+                            top: 0;
+                            background-color: #fff;
+                            width: 20px;
+                            height: 20px;
+                            padding: 0;
+                            background-size: 100px;
+                            right: 10px;
+                            bottom: 0;
+                            margin: auto;
+
+                            &.icon-remove-10 {
+                                background-position: 5px -3279px;
+                            }
+
+                        }
+                    }
+
                     &.ui-tabs-active,
                     &.active {
                         line-height: 1em;
@@ -149,6 +172,14 @@
                         height: 50px;
                         background: rgba(0,0,0,.1);
                         .box-shadow(none);
+
+                        &.with-button {
+                            padding-right: 30px;
+
+                            .button {
+                                display: block;
+                            }
+                        }
 
                         a {
                             color: @textColor;
