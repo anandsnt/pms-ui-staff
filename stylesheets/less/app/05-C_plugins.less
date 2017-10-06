@@ -7292,7 +7292,6 @@
                             font-weight: 600;
                             .clickable;
                             #border-radius > .rounded(0);
-                            border-right: 2px solid #eee;
 
                             &:hover { 
                                 color: @logoPrimary; 
@@ -7312,6 +7311,10 @@
                             }
 
                             &:last-child { #border-radius > .right(); }
+
+                            &:not(:last-child) { 
+                                border-right: 1px solid #e5e5e5;
+                            }
                         }
                     }
                 }
