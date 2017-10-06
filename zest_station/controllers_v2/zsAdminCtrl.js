@@ -96,7 +96,7 @@ sntZestStation.controller('zsAdminCtrl', [
 
             $scope.selectedWorkstationLightId = selectedWorkStation.hue_light_id;
             if (isLightTurnedOn) {
-                $scope.turnOnLightWithWhiteColor($scope.selectedWorkstationLightId); // turn off light, if is in ON state
+                $scope.turnOffLight($scope.selectedWorkstationLightId); // turn off light, if is in ON state
             }
             setPrinterLabel(selectedWorkStation.printer);
             $scope.setEncoderDiagnosticInfo(selectedWorkStation.name, selectedWorkStation.key_encoder_id); // in diagnostic info display the encoder name + id

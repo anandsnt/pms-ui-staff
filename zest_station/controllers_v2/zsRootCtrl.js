@@ -1177,7 +1177,7 @@ sntZestStation.controller('zsRootCtrl', [
                 if ($scope.zestStationData.kiosk_is_hue_active &&
                     $scope.socketOperator.returnWebSocketObject() &&
                     $scope.socketOperator.returnWebSocketObject().readyState === 1) {
-                    $scope.turnOnLightWithWhiteColor();
+                    $scope.turnOffLight();
                 }
                 if ($scope.trackEvent) {
                     $scope.trackEvent('health_check', 'status_update', from.name, to.name);
@@ -1328,7 +1328,7 @@ sntZestStation.controller('zsRootCtrl', [
             $scope.$broadcast('SOCKET_CONNECTED');
             if ($state.current.name === 'zest_station.home' || $state.current.name === 'zest_station.outOfService') {
                 $timeout(function() {
-                    $scope.turnOnLightWithWhiteColor();// turn off the light if it was previous turned ON..ie. device restarts after the light was turned on
+                    $scope.turnOffLight();// turn off the light if it was previous turned ON..ie. device restarts after the light was turned on
                 }, 500);
                 
 
@@ -1831,7 +1831,12 @@ sntZestStation.controller('zsRootCtrl', [
             }
         };
 
-        $scope.turnOnLightWithWhiteColor = function(selected_light_id) {
+        /**
+         * [turnOffLight Yotel needs lights to be in white color in inactive state]
+         * @param  {[type]} selected_light_id [description]
+         * @return {[type]}                   [description]
+         */
+        $scope.turnOffLight = function(selected_light_id) {
             if ($scope.zestStationData.kiosk_is_hue_active) {
                 var lightId = selected_light_id ? selected_light_id : $scope.zestStationData.selected_light_id;
                 var json = {
@@ -2002,7 +2007,7 @@ sntZestStation.controller('zsRootCtrl', [
             // 
             // 1: turn off hue lights of they were ON
             // 2: report app exit activity
-            $scope.turnOnLightWithWhiteColor();
+            $scope.turnOffLight();
             $scope.reportGoingOffline();
         };
 
