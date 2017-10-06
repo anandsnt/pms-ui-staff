@@ -12,6 +12,7 @@ sntRover.controller('RvArPostChargeController',
 	$scope.selectedItem = {};
 	$scope.totalAmount = 0;
 	$scope.showCalculationArea = false;
+	$scope.quantity = 1;
 	
 	// Close popup
 	$scope.closeDialog = function() {
@@ -83,6 +84,10 @@ sntRover.controller('RvArPostChargeController',
 
     $scope.postCharge = function() {
 
-    }	
+    };
+
+    $scope.changedQuantity = function() {
+    	$scope.totalAmount = $scope.selectedItem.unit_price * $scope.quantity;
+    };
 
 }]);
