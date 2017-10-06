@@ -1831,6 +1831,11 @@ sntZestStation.controller('zsRootCtrl', [
             }
         };
 
+        /**
+         * [turnOffLight Yotel needs lights to be in white color in inactive state]
+         * @param  {[type]} selected_light_id [description]
+         * @return {[type]}                   [description]
+         */
         $scope.turnOffLight = function(selected_light_id) {
             if ($scope.zestStationData.kiosk_is_hue_active) {
                 var lightId = selected_light_id ? selected_light_id : $scope.zestStationData.selected_light_id;
@@ -1838,8 +1843,11 @@ sntZestStation.controller('zsRootCtrl', [
                     'Command': 'cmd_hue_light_change',
                     'Data': $scope.zestStationData.hue_bridge_ip,
                     'hueLightAppkey': $scope.zestStationData.hue_user_name,
-                    'shouldLight': '0',
-                    'lightList': [lightId]
+                    'shouldLight': '1',
+                    'lightList': [lightId],
+                    'blink': 0,
+                    'lightColor': '#ffffff',
+                    'brightness': $scope.zestStationData.hue_brightness || 254
                 };
                 var jsonstring = JSON.stringify(json);
 
