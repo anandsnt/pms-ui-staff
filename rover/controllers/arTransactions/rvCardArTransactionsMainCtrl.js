@@ -24,7 +24,8 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 			'shouldShowFooter': false,
 			'insufficientAmount': false,
 			'isArSynced': false,
-			'isFromAddPaymentOrAllocateButton': false
+			'isFromAddPaymentOrAllocateButton': false,
+			'hasAllocateUnallocatePermission': rvPermissionSrv.getPermissionValue ('ALLOCATE_UNALLOCATE_PAYMENT')
 		};
 
 		$scope.filterData = {
