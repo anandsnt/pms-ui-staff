@@ -32,18 +32,25 @@ var DesktopCardOperations = function () {
                 that.swipeCallbacks.uuidServiceSuccessCallBack(response.Message);
                 break;
             case 'cmd_get_device_states':
-                if (response.ResponseCode === 0) {
+                if (response.ResponseCode === 0 && that.callBacks['getConnectedDeviceDetails']) {
                     that.callBacks['getConnectedDeviceDetails'].successCallBack(response.device_states, {
                         version: response.service_version,
                         activeClients: response.number_of_clients
-                    });
+                    }); // First *intentional* call to find version won't have callback
+                } else if (response.ResponseCode === 0 && !that.callBacks['getConnectedDeviceDetails']) {
+                    // Using feature recognition to identify if the version
+                    // v1.3.1.2 and above would respond to cmd_get_device_states
+                    commands = commandMap;
+                    // Set a flag that can be used
+                    that.canGetDeviceStatus = true;
+                    // Rover listens to this event and updates the menu to include Device Status
+                    document.dispatchEvent(new Event('WS_CONNECTION_ESTABLISHED'));
+                } else if (response.ResponseCode === 10) {
+                    // Using feature recognition to identify if the version
+                    // Versions that use newer request status but don't support cmd_get_device_states yet!
+                    commands = commandMap;
                 } else { // Handle failure and response.responseCode
                     that.callBacks['getConnectedDeviceDetails'].failureCallBack(response);
-                }
-                break;
-            case 'an_invalid_command':
-                if (response.ResponseCode === 10) {
-                    commands = commandMap;
                 }
                 break;
             default:
@@ -99,8 +106,10 @@ var DesktopCardOperations = function () {
              *   only available with an active web socket connection
              */
             that.isActive = true;
-            document.dispatchEvent(new Event('WS_CONNECTION_ESTABLISHED'));
-            ws.send(JSON.stringify({Command: 'an_invalid_command'}));
+
+            // Make a call to identify version of the web service being used!
+            ws.send(JSON.stringify({Command: 'cmd_get_device_states'}));
+
             setTimeout(init, 2000);
         };
 
