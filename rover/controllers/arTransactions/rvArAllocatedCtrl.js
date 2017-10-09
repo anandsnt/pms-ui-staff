@@ -8,7 +8,9 @@ sntRover.controller('RvArAllocatedController',
 
         BaseCtrl.call(this, $scope);
 
-        $scope.setScroller('allocated-list-scroller');
+        var scrollOptions =  {preventDefaultException: { tagName: /^(INPUT|LI)$/ }, preventDefault: false}; 
+
+        $scope.setScroller('allocated-list-scroller', scrollOptions);
 
         // Refreshes the scroller for the allocated lists
         var refreshScroll = function() {

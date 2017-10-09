@@ -1,9 +1,11 @@
 sntRover.controller('RvArBalanceController', ['$scope', '$timeout', 'rvAccountsArTransactionsSrv', 'RVCompanyCardSrv', '$vault', '$stateParams', '$state', 'sntActivity', 'ngDialog',
 	function($scope, $timeout, rvAccountsArTransactionsSrv, RVCompanyCardSrv, $vault, $stateParams, $state, sntActivity, ngDialog) {
 
-		BaseCtrl.call(this, $scope);		
+		BaseCtrl.call(this, $scope);	
 
-		$scope.setScroller('balance-list');
+		var scrollOptions =  {preventDefaultException: { tagName: /^(INPUT|LI)$/ }, preventDefault: false};	
+
+		$scope.setScroller('balance-list', scrollOptions);
 
 		var refreshScroll = function() {
 			$timeout(function() { 
@@ -52,7 +54,7 @@ sntRover.controller('RvArBalanceController', ['$scope', '$timeout', 'rvAccountsA
 		 * Select individual invoices in balance tab
 		 * update the selected invoices variable
 		 */ 
-		var selectInvoice = function (transactionId) {
+		var selectInvoice = function (transactionId) { 
 			$scope.arFlags.insufficientAmount = false;
 			_.each($scope.arDataObj.balanceList, function (eachItem) {
 				if (eachItem.transaction_id === transactionId) {
@@ -98,7 +100,7 @@ sntRover.controller('RvArBalanceController', ['$scope', '$timeout', 'rvAccountsA
 		};
 
 		// Handle click events on balance list
-		$scope.clickedOnParentList = function( event, index ) {
+		$scope.clickedOnParentList = function( event, index ) { 
 			var clikedItem = $scope.arDataObj.balanceList[index],
 				element = event.target;	
 
@@ -109,7 +111,7 @@ sntRover.controller('RvArBalanceController', ['$scope', '$timeout', 'rvAccountsA
 				// Checkbox selection logic will be called here..
 				selectInvoice(clikedItem.transaction_id);
 			}
-			else if ( element.parentElement.classList.contains('has-arrow') || element.classList.contains('has-arrow')) {
+			else {
 				clickedBalanceListItem(index);
 			}
 		};
