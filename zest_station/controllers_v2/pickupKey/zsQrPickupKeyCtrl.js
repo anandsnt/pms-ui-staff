@@ -212,7 +212,7 @@ sntZestStation.controller('zsQrPickupKeyCtrl', [
             console.info('::Starting QR Code Scanner via Handler::');
             if (qrWithHandler) {
 				// use datalogic with the handler / websocket (*new for yotel CICO-39515)
-                if ($scope.socketOperator.returnWebSocketObject().readyState === 1) {
+                if ($scope.socketOperator.returnWebSocketObject() && $scope.socketOperator.returnWebSocketObject().readyState === 1) {
                     console.info('websocket :: Ready');
                     $scope.socketOperator.CaptureQRViaDatalogic();
                 } else {
