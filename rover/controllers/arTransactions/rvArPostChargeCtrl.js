@@ -99,7 +99,7 @@ sntRover.controller('RvArPostChargeController',
     	postChargeData.amount    = $scope.selectedItem.unit_price;
     	dataToSrv.postChargeData = postChargeData;
     	dataToSrv.accountId      = $scope.arDataObj.accountId;
-    	dataToSrv.arTransactionId= $scope.selectedItemToPostCharge.bill_id; 
+    	dataToSrv.arTransactionId= $scope.selectedItemToPostCharge.transaction_id; 
     	sntActivity.start("POST_CHARGE_FROM_AR_INVOICE");
     	$scope.invokeApi( RVPostChargeSrvV2.postChargesFromArInvoice, dataToSrv, successCallBackOfPostCharge );
     };
