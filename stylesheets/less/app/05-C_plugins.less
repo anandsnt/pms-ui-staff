@@ -6537,6 +6537,7 @@
                             }
                         }
                     }
+                    
                     .content-middle {
                         width: 45%;
                         position: relative;
@@ -7291,6 +7292,160 @@
                                         }
                                     }
                                 }
+
+            /* AR Transactions ***/
+            &.ar-transaction {
+
+                .message {
+                    margin-bottom: 5px;
+                }
+
+                .text {
+                    text-transform: none;
+                    font-style: italic;
+                }
+                    
+                &.payment-allocation {
+                    width: 845px;
+                    height: 460px;
+
+                    
+                    .payments {
+                        .calc-max-height( 100, 85 );
+                        .iScrollVerticalScrollbar { top: 95px; bottom: 30px; }
+                    }
+
+                    .search-results {
+                        padding: 0;
+
+                        .payment {
+
+                            .button {
+                                position: absolute;
+                                width: 90px;
+                                font-size: 14px;
+                                padding: 0;
+                                line-height: 40px;
+                            }
+
+                            &.unallocated {
+
+                                .data {
+                                    .calc-width(100, 370);
+                                }
+                                .amount {
+                                    width: 180px;
+                                    padding-left: 20px;
+                                }
+                            }
+                        }
+                    }
+                }
+
+                &.payment-unallocation {
+                    width: 735px;
+                    height: 480px;
+
+                    .amount {
+                        .size(85px,400px);
+                        #flexbox > .parent( column, center, center, '');
+                        background: fade(@red,10);
+                        border: 1px solid @red;
+                        text-align: center;
+                        margin: 0 auto 20px auto;
+                        text-transform: uppercase;
+                        font-size: 14px;
+                        color: @grey4;
+                        padding: 15px 0;
+
+                        strong {
+                            font-weight: 300;
+                            font-size: 36px;
+                            color: @red;
+                            display: block;
+                        }
+                    }
+
+                    .information {
+                        margin-bottom: 20px;
+
+                        > span {
+                            text-transform: uppercase;
+                            display: block;
+                            font-size: 14px;
+                        }
+                    }
+
+                    .search-results {
+                        padding: 0;
+
+
+                        .faux-anchor {
+                            padding: 10px;
+                            .box-shadow(none);
+                            cursor: default;
+                            height: 50px;
+
+                            .data {
+                                .calc-width(100, 380);
+                            }
+
+                             
+                            .payment-data {
+                                 
+                                .date,
+                                .reference {
+                                    .value {
+                                        font-weight: 400;
+                                    }
+                                }
+
+                                .card-logo,
+                                .date,
+                                .number,
+                                .reference {
+                                    display: block;
+                                } 
+
+                                .reference {
+                                    margin-left: 10px;
+                                    .nowrap();
+                                    width: 170px;
+                                }
+
+                            }
+
+                            .payment-date {
+                                width: auto;
+                            }
+                            
+                        }
+
+                        
+
+                        .departure {
+                            width: auto
+                        }
+
+                        .balance {
+                            .show();
+                            text-align: right;
+                            align-self: flex-end;
+                            margin-left: auto;
+                        }
+                    }
+
+                    .actions {
+                        padding-top: 20px;
+                        border-top: 1px solid rgba(0,0,0,0.1);
+                        #flexbox > .parent( row, center, center, '');
+
+                        .button {
+                            width: auto;
+
+                            &:not(:last-child) {
+                                margin-right: 10px;
+
                             }
                         }
                     }
@@ -7422,7 +7577,7 @@
                     }
 
                     .guest-id-switch {
-                        width: 180px;
+                        width: 50%;
                         margin: 0 auto 20px auto;
                         #flexbox > .parent( row, flex-start, center, '');
 
@@ -7457,6 +7612,10 @@
                             }
 
                             &:last-child { #border-radius > .right(); }
+
+                            &:not(:last-child) { 
+                                border-right: 1px solid #e5e5e5;
+                            }
                         }
                     }
                 }

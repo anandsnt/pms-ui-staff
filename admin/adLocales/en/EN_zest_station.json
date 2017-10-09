@@ -40,6 +40,7 @@
 
 "STATION_GUEST_ID_ACTIVATE" :"Guest ID Scan",
 "STATION_REMOVE_FILE" :"Remove File",
+"USE_V1_SCAN": "Use V1 lib for passport scan",
 
 "STATION_GUEST_ID_ACTIVATE_DESCRIPTION" :"Prompt to Scan Guest ID(s) During Check-In and Pickup Keys",
 
@@ -96,6 +97,12 @@
 "USE_ZEST_STATION_HANDLER" : "Use Zest Station Handler",
 "USE_ADD_REMOVE_GUESTS" : "Add/Remove Guests",
 "ZEST_STATION_OUT_OF_ORDER_TRESHOLD" : "Out of Order Threshold",
+
+"ZEST_STATION_OFFLINE_SETTINGS" : "Offline Re-Connect Settings",
+"ZEST_STATION_OFFLINE_RECONNECT" : "Retry Connect (in seconds)",
+"ZEST_STATION_OFFLINE_RECONNECT_SELECT" : "Select",
+
+
 "UPSELL_INSTRUCTIONS" : "Control the room upsells offered to the guest on Zest Station",
 "OFFER_ROOM_UPSELLS_TO_GUEST" : "Offer room upsells to guests",
 "DISPLAY_ROOM_UPSELL_OFFER_BY" : "Display the room upsell offers by:",
@@ -132,7 +139,14 @@
 "TURN_OFF_LIGHT": "Turn OFF light",
 "TEST_SETTINGS_INSTRUCTIONS": "If you already know the required light ID, enter the ID in the light ID field. Else click on get lights list button to list all the available lights. Please note that the lights have to be reachable.",
 "HUE_LIGHT_ID": "Hue Light ID",
-"LIGHT_COLOR_INSTRUCTIONS": "Please enter the 6 digit hex color." 
+"LIGHT_COLOR_INSTRUCTIONS": "Please enter the 6 digit hex color." ,
+"LIGHT_BRIGHTNESS": "Light Brightness (0-254)",
+"LIGHT_BLINKING_EFFECT": "Blinking effect",
+"HUE": "Hue (0-65535)",
+"SATURATION": "Saturation (0-254)",
+"CREDIT_CARD_AND_PAYMENT_OPTIONS": "Credit Card & Payment Options",
+"BYPASS_SIGNATURE_CAPTURE": "Bypass Signature Capture",
+"BYPASS_CC_AUTH": "Bypass CC Authorization"
 
 
 

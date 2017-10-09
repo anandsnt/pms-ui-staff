@@ -1160,5 +1160,14 @@ sntRover.controller('reservationActionsController', [
         $scope.enableConfirmationCustomText = function() {
    			$scope.ngData.enable_confirmation_custom_text = !$scope.ngData.enable_confirmation_custom_text;
    		};
+
+        // Set the navigation for bill and charges screen
+        $scope.navigateToBillAndCharges = function () {
+            $state.go('rover.reservation.staycard.billcard', {
+                reservationId: $scope.reservationData.reservation_card.reservation_id,
+                clickedButton: 'viewBillButton',
+                userId: $scope.guestCardData.userId
+            });
+        };
 	}
 ]);
