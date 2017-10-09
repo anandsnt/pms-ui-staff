@@ -5,6 +5,7 @@ module.exports = {
 
         return {
             'guestweb_the_gotham_hotel': [ themeCSSRoot + 'guestweb_the_gotham_hotel.css'],
+            'guestweb_basecamp_boulder_tahoe_city': [ themeCSSRoot + 'guestweb_basecamp_boulder_tahoe_city.css'],
             'guestweb_maplewood_suites_syracuse': [ themeCSSRoot + 'guestweb_maplewood_suites_syracuse.css'],
             'guestweb_jupiter_hotel': [ themeCSSRoot + 'guestweb_jupiter_hotel.css'],
             'guestweb_maplewood_suites_syracuse': [ themeCSSRoot + 'guestweb_maplewood_suites_syracuse.css'],
