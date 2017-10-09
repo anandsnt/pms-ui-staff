@@ -259,7 +259,7 @@ sntZestStation.controller('zsCheckinScanPassportCtrl', [
                 // verify passport
                 $scope.mode = 'ADMIN_VERIFY_PASSPORT_VIEW';
                 // if guest has already added signature, set signature
-                if (guestInfo.signature && guestInfo.signature.length > 0 && guestInfo.signature !== "image/jsignature;base30") {
+                if (guestInfo.signature && guestInfo.signature.length > 0 && guestInfo.signature[0] !== "image/jsignature;base30") {
                     $("#signature").jSignature("setData", "data:" + guestInfo.signature.join(","));
                 } else {
                     $scope.clearSignature();
