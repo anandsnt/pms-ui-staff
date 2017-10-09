@@ -84,6 +84,23 @@ sntRover.controller('RvArPostChargeController',
 
     $scope.postCharge = function() {
 
+    	var successCallBackOfPostCharge = function() {
+    		sntActivity.stop("POST_CHARGE_FROM_AR_INVOICE");
+    	};
+    	
+    	var postChargeData = {},
+    		dataToSrv = {};
+
+    	postChargeData.item_id   = $scope.selectedItem.id;
+    	postChargeData.quantity  = $scope.quantity;
+    	postChargeData.reference = $scope.reference;
+    	postChargeData.is_item   = $scope.selectedItem.type === "ITEM";
+    	postChargeData.amount    = $scope.selectedItem.unit_price;
+    	dataToSrv.postChargeData = postChargeData;
+    	dataToSrv.accountId      = $scope.arDataObj.accountId;
+    	dataToSrv.arTransactionId= $scope.selectedItemToPostCharge.bill_id; 
+    	sntActivity.start("POST_CHARGE_FROM_AR_INVOICE");
+    	$scope.invokeApi( RVPostChargeSrvV2.postChargesFromArInvoice, dataToSrv, successCallBackOfPostCharge );
     };
 
     $scope.changedQuantity = function() {
