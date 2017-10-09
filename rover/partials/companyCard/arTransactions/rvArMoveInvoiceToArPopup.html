@@ -1,0 +1,157 @@
+<div role="dialog" id="modal" class="modal-show" ng-class="{'modal-show': !modalClosing}">
+	<!-- Add class .confirm when showing to confirm the invoice -->
+	<div class="modal-content ar-move-invoice">
+		<button class="modal-close dark-title" id="modal-close" type="button"><span class="icons icon-close"></span></button>
+		<div class="modal-header">
+			<div class="modal-header-left">
+				<figure class="guest-image">
+					<img src="{guest-image-src}" alt="">
+				</figure>
+				<div class="data">
+					<h2>{{moveInvoiceData.firstName}} {{moveInvoiceData.lastName}}</h2>
+					<div class="information">
+						<span class="invoice">Invoice #<span class="value">{{moveInvoiceData.invoiceNumber}}</span></span>
+						<span class="confirmation">Conf #<span class="value">{{moveInvoiceData.confirmationNumber}}</span></span>		
+					</div>
+				</div>
+			</div>
+			<div class="modal-header-right">
+				<div class="guest-dates">
+					<div class="guest-date arrival"> 
+		                <span class="guest-status small-icon check-in">check-in</span> 
+		                <time datetime="{Check In datetime | exp. 2017-08-31T12:00:00}"> 
+		                    <span class="date">{{moveInvoiceData.arrivalDate | date:dateFormat }}</span> 
+		                    <span class="time">{{moveInvoiceData.arrivalTime}}</span> 
+		                </time> 
+		            </div> 
+		            <div class="guest-date departure"> 
+		                <span class="guest-status small-icon check-out">check-out</span> 
+		                <time datetime="{Check Out datetime | exp. 2017-08-31T12:00:00}"> 
+		                    <span class="date">{{moveInvoiceData.departureDate | date:dateFormat }}</span> 
+		                    <span class="time">{{moveInvoiceData.departureTime}}</span> 
+		                </time> 
+		            </div> 
+				</div>
+				<div class="stay-cost">
+					<span class="currency">{{currencySymbol}}</span>
+					{{moveInvoiceData.amount | number:2 }}
+				</div>
+			</div>
+		</div>
+		<div class="modal-body">
+
+			<div class="search-form">
+				<div class="entry search">
+					<!-- Add Class .visible when we have text in input -->
+		            <button id="{id-clear}" class="clear-query">
+		                <span class="icons icon-clear-search">Clear query</span>
+		            </button>
+		            <button type="submit" name="submit" class="icons icon-search">Search</button>
+		            <input name="{name}" id="{id}" class="query" placeholder="Search by AR Account Name or Number, Display Name, Address or City" type="search" autocomplete="off">
+		        </div>
+			</div>
+			<!-- Remove class .no-results when we have results -->
+			<!-- Add class .with-pagination if we have pagination -->
+			<section class="ar-card-results scrollable no-results" role="complementary">
+			    <div class="wrapper" >
+			        <ul class="search-results">
+			        	<!-- Show when no content has been found or we did not search anything yet -->
+			        	<li class="no-content">
+			        		<div class="info">
+			        			<span class="icon-no-content icon-groups"></span>
+			        			<strong class="h1">Move to another AR Account</strong>
+			        			<span class="h2">
+			        				Search by <strong>Name</strong>, <strong>Number</strong>, <strong>Display Name</strong>, <strong>Address</strong> or <strong>City</strong>
+			        			</span>
+			        		</div>
+			        	</li>
+
+			        	<li class="card all-cards">
+	 						<div class="faux-anchor">
+	 							<!-- 'type-image' is:
+	 								- company : when it's a company
+	 								- travelagent : when it's a travel agent
+	 							-->
+	 							<div class="guest-image icons icon-{type-image}"></div>
+	 							<div class="data">
+	 								<h2>{Account Name}</h2>
+	 								<div class="information">
+	 									<span class="number">{number}</span>
+	 									<span class="icons icon-location">{location}</span>
+	 									<span class="icons icon-guest-company">{co/ta}</span>
+	 									<span class="icons icon-time">{date} <span class="time">{time}</span></span>
+	 								</div>
+	 							</div>
+	 						</div>
+	 					</li>
+			        </ul>
+			    </div>
+	 		</section>
+	 		<!-- Include if we need pagination -->
+	 		{include numbers-pagination from _shared/pagination.html}
+
+	 		<div class="confirm-move">
+	 			<strong class="h2 message">Confirm invoice move</strong>
+	 			<div class="confirm-card confirm-from">
+	 				<span class="type">From</span>
+	 				<div class="ar-card-results">
+		 				<ul class="search-results">
+		 					<li class="card all-cards">
+		 						<div class="faux-anchor">
+		 							<!-- 'type-image' is:
+		 								- company : when it's a company
+		 								- travelagent : when it's a travel agent
+		 							-->
+		 							<div class="guest-image icons icon-{type-image}"></div>
+		 							<div class="data">
+		 								<h2>{Account Name}</h2>
+		 								<div class="information">
+		 									<span class="number">{number}</span>
+		 									<span class="icons icon-location">{location}</span>
+		 									<span class="icons icon-guest-company">{co/ta}</span>
+		 									<span class="icons icon-time">{date} <span class="time">{time}</span></span>
+		 								</div>
+		 							</div>
+		 						</div>
+		 					</li>
+		 				</ul>
+		 			</div>
+	 			</div>
+	 			<div class="confirm-card confirm-to">
+	 				<span class="type">To</span>
+	 				<div class="ar-card-results">
+		 				<ul class="search-results">
+		 					<li class="card all-cards">
+		 						<div class="faux-anchor with-button">
+		 							<!-- 'type-image' is:
+		 								- company : when it's a company
+		 								- travelagent : when it's a travel agent
+		 							-->
+		 							<div class="guest-image icons icon-{type-image}"></div>
+		 							<div class="data">
+		 								<h2>{Account Name}</h2>
+		 								<div class="information">
+		 									<span class="number">{number}</span>
+		 									<span class="icons icon-location">{location}</span>
+		 									<span class="icons icon-guest-company">{co/ta}</span>
+		 									<span class="icons icon-time">{date} <span class="time">{time}</span></span>
+		 								</div>
+		 							</div>
+		 							<!-- Remove class .confirm on .modal-content to choose another account -->
+		 							<button type="button" class="button blue">Change</button>
+		 						</a>
+		 					</li>
+		 				</ul>
+		 			</div>
+	 			</div>
+	 			<div class="actions">
+
+	 				<!-- Close modal on click -->
+	 				<button type="button" class="button blank">Cancel</button>
+
+					<button type="button" class="button green">Move Invoice</button>
+	 			</div>
+	 		</div>
+		</div>
+	</div>
+</div>

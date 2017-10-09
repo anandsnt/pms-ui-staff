@@ -245,4 +245,30 @@ sntRover.controller('RvArBalanceController', ['$scope', '$timeout', 'rvAccountsA
 				refreshScroll();
 			}
 		};
+
+		// CICO-43352 : Handle MOVE INVOICE.
+		$scope.moveInvoiceButtonClick = function( data ) {
+			// Mapping the data to be passed to move invoice popup.
+			var passData = {
+				firstName: data.guest_first_name,
+				lastName: data.guest_last_name,
+				invoiceNumber: data.invoice_number,
+				confirmationNumber: data.reservation_confirm_no,
+				arrivalDate: data.reservation_arrival_date,
+				arrivalTime: data.reservation_arrival_time,
+				departureDate: data.reservation_dep_date,
+				departureTime: data.reservation_dep_time,
+				amount: data.amount
+			};
+
+			$scope.moveInvoiceData = passData;
+			
+			ngDialog.open({
+                template: '/assets/partials/companyCard/arTransactions/rvArMoveInvoiceToArPopup.html',
+                controller: 'rvArMoveInvoiceCtrl',
+                className: '',
+                closeByDocument: true,
+                scope: $scope
+            });
+		};
 }]);
