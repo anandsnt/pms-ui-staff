@@ -1,4 +1,4 @@
-sntRover.controller('rvArMoveInvoiceCtrl', ['$scope', 'ngDialog', 'RVAccountsReceivablesSrv', function($scope, ngDialog, RVAccountsReceivablesSrv ) {
+sntRover.controller('rvArMoveInvoiceCtrl', ['$scope', 'ngDialog', 'rvAccountsArTransactionsSrv', function($scope, ngDialog, rvAccountsArTransactionsSrv ) {
 
     BaseCtrl.call(this, $scope);
     /**
@@ -42,13 +42,13 @@ sntRover.controller('rvArMoveInvoiceCtrl', ['$scope', 'ngDialog', 'RVAccountsRec
             'per_page': $scope.moveInvoiceData.perPage
         };
 
-        $scope.invokeApi(RVAccountsReceivablesSrv.fetchAccountsReceivables, params, successCallBack );
+        $scope.invokeApi(rvAccountsArTransactionsSrv.fetchAccountsReceivables, params, successCallBack );
     };
 
     // Filter block starts here ..
     $scope.changedSearchQuery = function() {
 
-        if ($scope.moveInvoiceData.query.length > 2 || $scope.moveInvoiceData.query === "") {
+        if ($scope.moveInvoiceData.query.length > 2 ) {
             getSearchResult();
         }
     };

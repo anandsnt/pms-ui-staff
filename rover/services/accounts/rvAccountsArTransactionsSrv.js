@@ -206,4 +206,21 @@ angular.module('sntRover').service('rvAccountsArTransactionsSrv', ['$q', 'rvBase
         return deferred.promise;
     };
     
+    /*
+     * Service function to fetch Accounts Receivables
+     * @return {object} payments
+     */
+
+    this.fetchAccountsReceivables = function (params) {
+
+        var deferred = $q.defer();
+        var url = "/api/accounts/ar_overview";
+
+        rvBaseWebSrvV2.getJSON(url, params).then(function (data) {
+            deferred.resolve(data);
+        }, function (data) {
+            deferred.reject(data);
+        });
+        return deferred.promise;
+    };
 }]);
