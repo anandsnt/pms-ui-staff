@@ -86,6 +86,7 @@ sntRover.controller('RvArPostChargeController',
 
     	var successCallBackOfPostCharge = function() {
     		sntActivity.stop("POST_CHARGE_FROM_AR_INVOICE");
+    		$scope.$emit('REFRESH_BALANCE_LIST');
     	};
     	
     	var postChargeData = {},
