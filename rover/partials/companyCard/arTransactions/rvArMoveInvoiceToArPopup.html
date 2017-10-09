@@ -42,21 +42,19 @@
 
 			<div class="search-form">
 				<div class="entry search">
-					<!-- Add Class .visible when we have text in input -->
-		            <button id="{id-clear}" class="clear-query">
+		            <button ng-click="clearSearchQuery()" ng-show="moveInvoiceData.query.length > 0" class="clear-query">
 		                <span class="icons icon-clear-search">Clear query</span>
 		            </button>
 		            <button type="submit" name="submit" class="icons icon-search">Search</button>
-		            <input name="{name}" id="{id}" class="query" placeholder="Search by AR Account Name or Number, Display Name, Address or City" type="search" autocomplete="off">
+		            <input ng-change="changedSearchQuery()" ng-model="moveInvoiceData.query" class="query" placeholder="Search by AR Account Name or Number, Display Name, Address or City" type="search" autocomplete="off">
 		        </div>
 			</div>
 			<!-- Remove class .no-results when we have results -->
 			<!-- Add class .with-pagination if we have pagination -->
-			<section class="ar-card-results scrollable no-results" role="complementary">
+			<section class="ar-card-results scrollable" ng-class="{'no-results': moveInvoiceData.searchResult.accounts.length === 0 }" role="complementary">
 			    <div class="wrapper" >
 			        <ul class="search-results">
-			        	<!-- Show when no content has been found or we did not search anything yet -->
-			        	<li class="no-content">
+			        	<li class="no-content" ng-show="moveInvoiceData.searchResult.accounts.length === 0">
 			        		<div class="info">
 			        			<span class="icon-no-content icon-groups"></span>
 			        			<strong class="h1">Move to another AR Account</strong>
@@ -66,20 +64,17 @@
 			        		</div>
 			        	</li>
 
-			        	<li class="card all-cards">
-	 						<div class="faux-anchor">
-	 							<!-- 'type-image' is:
-	 								- company : when it's a company
-	 								- travelagent : when it's a travel agent
-	 							-->
-	 							<div class="guest-image icons icon-{type-image}"></div>
+			        	<li class="card all-cards" ng-show="moveInvoiceData.searchResult.accounts.length > 0 ">
+	 						<div class="faux-anchor" ng-repeat="account in moveInvoiceData.searchResult.accounts">
+	 							<div class="guest-image icons" ng-class="{'icon-company': account.type === 'COMPANY', 'icon-travelagent': account.type === 'TRAVELAGENT' }"></div>
 	 							<div class="data">
-	 								<h2>{Account Name}</h2>
+	 								<h2>{{account.account_name}}</h2>
 	 								<div class="information">
-	 									<span class="number">{number}</span>
-	 									<span class="icons icon-location">{location}</span>
-	 									<span class="icons icon-guest-company">{co/ta}</span>
-	 									<span class="icons icon-time">{date} <span class="time">{time}</span></span>
+	 									<span class="number">{{account.ar_number}}</span>
+	 									<span class="icons icon-location">{{account.location}}</span>
+	 									<span ng-if="account.type === 'COMPANY'" class="icons icon-guest-company">{{account.account_number}}</span>
+	 									<span ng-if="account.type === 'TRAVELAGENT'" class="icons icon-guest-travelagent">{{account.account_number}}</span>
+	 									<span class="icons icon-time">{{account.date}}<span class="time">{{account.time}}</span></span>
 	 								</div>
 	 							</div>
 	 						</div>
@@ -90,7 +85,7 @@
 	 		<!-- Include if we need pagination -->
 	 		{include numbers-pagination from _shared/pagination.html}
 
-	 		<div class="confirm-move">
+	 		<div class="confirm-move" ng-show="moveInvoiceData.isConfirmInvoiceMoveScreen">
 	 			<strong class="h2 message">Confirm invoice move</strong>
 	 			<div class="confirm-card confirm-from">
 	 				<span class="type">From</span>
