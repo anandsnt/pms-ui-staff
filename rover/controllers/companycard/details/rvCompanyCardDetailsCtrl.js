@@ -328,6 +328,7 @@ angular.module('sntRover').controller('companyCardDetailsController', ['$scope',
 				$scope.contactInformation.id = $stateParams.id;
 				callCompanyCardServices();
 			}
+			$scope.contactInformation.accountType = $scope.account_type;
 			// taking a deep copy of copy of contact info. for handling save operation
 			// we are not associating with scope in order to avoid watch
 			presentContactInfo = JSON.parse(JSON.stringify($scope.contactInformation));

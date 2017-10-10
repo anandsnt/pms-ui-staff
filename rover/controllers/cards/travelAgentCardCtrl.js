@@ -130,6 +130,7 @@ angular.module('sntRover').controller('RVTravelAgentCardCtrl', ['$scope', '$root
 			$scope.searchMode = false;
 			$scope.contactInformation = $scope.travelAgentInformation;
 			$scope.contactInformation.id = $scope.reservationDetails.travelAgent.id;
+			$scope.contactInformation.accountType = $scope.account_type;
 			// object holding copy of contact information
 			// before save we will compare 'contactInformation' against 'presentContactInfo'
 			// to check whether data changed

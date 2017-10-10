@@ -136,6 +136,7 @@ angular.module('sntRover').controller('RVCompanyCardCtrl', ['$scope', '$rootScop
 		$scope.$on('companyCardAvailable', function(obj, isNew) {
 			$scope.searchMode = false;
 			$scope.contactInformation = $scope.companyContactInformation;
+			$scope.contactInformation.accountType = $scope.account_type;
 			// object holding copy of contact information
 			// before save we will compare 'contactInformation' against 'presentContactInfo'
 			// to check whether data changed
