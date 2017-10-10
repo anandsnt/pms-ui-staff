@@ -7155,7 +7155,7 @@
 
             /* AR Move Invoice ***/
             &.ar-move-invoice {
-                .size(700px, 820px);
+                .size(360px, 820px);
                 padding: 0;
     
                 .confirm-move {
@@ -7454,6 +7454,14 @@
                             }
                         }
                     }
+                }
+
+                @media only screen and (min-height: 560px) {
+                    height: 500px;
+                }
+
+                @media only screen and (min-height: 768px) {
+                    height: 700px;
                 }
             }
         }
