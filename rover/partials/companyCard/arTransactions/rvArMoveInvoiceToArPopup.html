@@ -1,7 +1,7 @@
 <div role="dialog" id="modal" class="modal-show" ng-class="{'modal-show': !modalClosing}">
 	<!-- Add class .confirm when showing to confirm the invoice -->
 	<div class="modal-content ar-move-invoice" ng-class="{'confirm': moveInvoiceData.isConfirmInvoiceMoveScreen }">
-		<button class="modal-close dark-title" id="modal-close" type="button"><span class="icons icon-close"></span></button>
+		<button ng-click="closeDialog()" class="modal-close dark-title" id="modal-close" type="button"><span class="icons icon-close"></span></button>
 		<div class="modal-header">
 			<div class="modal-header-left">
 				<figure class="guest-image">
@@ -51,10 +51,10 @@
 			</div>
 			<!-- Remove class .no-results when we have results -->
 			<!-- Add class .with-pagination if we have pagination -->
-			<section ng-hide="moveInvoiceData.isConfirmInvoiceMoveScreen" class="ar-card-results scrollable" ng-class="{'no-results': moveInvoiceData.searchResult.accounts.length === 0 , 'with-pagination': moveInvoiceData.searchResult.accounts.length >0 }" role="complementary" ng-iscroll="arMoveInvoiceListScroll" ng-isroll-delay="500">
+			<section ng-hide="moveInvoiceData.isConfirmInvoiceMoveScreen" class="ar-card-results scrollable" ng-class="{'no-results': moveInvoiceData.searchResult.accounts.length === 0 , 'with-pagination': showPagination() }" role="complementary" ng-iscroll="arMoveInvoiceListScroll" ng-isroll-delay="500">
 			    <div class="wrapper" >
 			        <ul class="search-results">
-			        	<li class="no-content" ng-show="moveInvoiceData.searchResult.accounts.length === 0">
+			        	<li class="no-content" ng-hide="moveInvoiceData.searchResult.accounts.length > 0">
 			        		<div class="info">
 			        			<span class="icon-no-content icon-groups"></span>
 			        			<strong class="h1">Move to another AR Account</strong>
@@ -83,7 +83,7 @@
 			    </div>
 	 		</section>
 	 		<!-- Include if we need pagination -->
-	 		<rv-pagination ng-show="!moveInvoiceData.isConfirmInvoiceMoveScreen" page-options="accountListPagination" page-data="moveInvoiceData.searchResult"></rv-pagination>
+	 		<rv-pagination ng-show="showPagination()" page-options="accountListPagination" page-data="moveInvoiceData.searchResult.total_result"></rv-pagination>
 
 	 		<div class="confirm-move" ng-show="moveInvoiceData.isConfirmInvoiceMoveScreen">
 	 			<strong class="h2 message">Confirm invoice move</strong>
@@ -92,19 +92,15 @@
 	 				<div class="ar-card-results">
 		 				<ul class="search-results">
 		 					<li class="card all-cards">
-		 						<div class="faux-anchor">
-		 							<!-- 'type-image' is:
-		 								- company : when it's a company
-		 								- travelagent : when it's a travel agent
-		 							-->
-		 							<div class="guest-image icons icon-{type-image}"></div>
+		 						<div class="faux-anchor disabled">
+		 							<div class="guest-image icons" ng-class="{'icon-company': moveInvoiceData.fromAccount.type === 'COMPANY', 'icon-travelagent': moveInvoiceData.fromAccount.type === 'TRAVELAGENT' }"></div>
 		 							<div class="data">
-		 								<h2>{Account Name}</h2>
+		 								<h2>{{moveInvoiceData.fromAccount.accountName}}</h2>
 		 								<div class="information">
-		 									<span class="number">{number}</span>
-		 									<span class="icons icon-location">{location}</span>
-		 									<span class="icons icon-guest-company">{co/ta}</span>
-		 									<span class="icons icon-time">{date} <span class="time">{time}</span></span>
+		 									<span class="number">{{moveInvoiceData.fromAccount.accountName}}</span>
+		 									<span class="icons icon-location">{{moveInvoiceData.fromAccount.location}}</span>
+		 									<span ng-if="moveInvoiceData.fromAccount.type === 'COMPANY'" class="icons icon-guest-company">{{moveInvoiceData.fromAccount.accountNumber}}</span>
+	 										<span ng-if="moveInvoiceData.fromAccount.type === 'TRAVELAGENT'" class="icons icon-guest-travelagent">{{moveInvoiceData.fromAccount.accountNumber}}</span>
 		 								</div>
 		 							</div>
 		 						</div>
@@ -133,18 +129,15 @@
 		 								</div>
 		 							</div>
 		 							<!-- Remove class .confirm on .modal-content to choose another account -->
-		 							<button type="button" class="button blue">Change</button>
-		 						</a>
+		 							<button ng-click="changeButtonClick()" type="button" class="button blue">Change</button>
+		 						</div>
 		 					</li>
 		 				</ul>
 		 			</div>
 	 			</div>
 	 			<div class="actions">
-
-	 				<!-- Close modal on click -->
-	 				<button type="button" class="button blank">Cancel</button>
-
-					<button type="button" class="button green">Move Invoice</button>
+	 				<button ng-click="closeDialog()" type="button" class="button blank">Cancel</button>
+					<button ng-click="moveInvoiceButtonClick()" type="button" class="button green">Move Invoice</button>
 	 			</div>
 	 		</div>
 		</div>

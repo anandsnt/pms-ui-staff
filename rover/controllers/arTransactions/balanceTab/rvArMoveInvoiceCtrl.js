@@ -18,11 +18,27 @@ sntRover.controller('rvArMoveInvoiceCtrl', ['$scope', 'ngDialog', 'rvAccountsArT
     $scope.moveInvoiceData = {
         isConfirmInvoiceMoveScreen: false,
         searchResult: {},
-        selectedAccount: {},
+        fromAccount: {},
+        toAccount: {},
         query: '',
         perPage: 5,
         page: 1
     };
+
+    if ( $scope.contactInformation && $scope.contactInformation.account_details) {
+
+        var accountData = $scope.contactInformation.account_details,
+            addressData = $scope.contactInformation.address_details;
+
+        $scope.moveInvoiceData.fromAccount = {
+            accountName: accountData.account_name,
+            accountNumber: accountData.account_number,
+            arNumber: accountData.accounts_receivable_number,
+            type: $scope.contactInformation.accountType,
+            location: addressData.city
+        }
+    }
+
 
     /*
      *   Method to initialize the AR Overview Data set.
@@ -56,22 +72,56 @@ sntRover.controller('rvArMoveInvoiceCtrl', ['$scope', 'ngDialog', 'rvAccountsArT
         if ($scope.moveInvoiceData.query.length > 2 ) {
             getSearchResult();
         }
+        else {
+            $scope.moveInvoiceData.searchResult = {};
+        }
     };
     // Clear search query.
     $scope.clearSearchQuery = function() {
         $scope.moveInvoiceData.query = '';
+        $scope.moveInvoiceData.searchResult = {};
     };
     // Select one card.
     $scope.clickedOnCard = function( selectedCard ) {
         console.log(selectedCard);
         $scope.moveInvoiceData.isConfirmInvoiceMoveScreen = true;
+        $scope.moveInvoiceData.selectedAccount = {};
     };
 
     // Pagination options for ACCOUNT_LIST
     $scope.accountListPagination = {
         id: 'ACCOUNT_LIST',
-        api: [ getSearchResult, 'ACCOUNT_LIST' ],
+        api: getSearchResult,
         perPage: $scope.moveInvoiceData.perPage
+    };
+
+    // Show pagination or not.
+    $scope.showPagination = function() {
+        var showPagination = false,
+            searchResult = $scope.moveInvoiceData.searchResult,
+            isConfirmInvoiceMoveScreen = $scope.moveInvoiceData.isConfirmInvoiceMoveScreen;
+        
+        if(isConfirmInvoiceMoveScreen) {
+            showPagination = false;
+        }
+        else if ( searchResult && searchResult.accounts.length > 0 &&  (searchResult.total_result > searchResult.accounts.length) ) {
+            showPagination = true;
+        }
+        return showPagination;
+    };
+
+    // Change button click
+    $scope.changeButtonClick = function() {
+        $scope.moveInvoiceData.isConfirmInvoiceMoveScreen = false;
+        $scope.moveInvoiceData.selectedAccount = {};
+    };
+    // Close dialog.
+    $scope.closeDialog = function() {
+        ngDialog.close();
+    };
+    // Move Invoice button click..
+    $scope.moveInvoiceButtonClick = function() {
+        console.log("Move Invoice button click..");
     };
 
 }]);
