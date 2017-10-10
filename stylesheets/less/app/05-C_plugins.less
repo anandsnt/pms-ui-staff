@@ -7382,7 +7382,7 @@
                     }
 
                     .guest-id-switch {
-                        width: 180px;
+                        width: 50%;
                         margin: 0 auto 20px auto;
                         #flexbox > .parent( row, flex-start, center, '');
 
@@ -7417,6 +7417,10 @@
                             }
 
                             &:last-child { #border-radius > .right(); }
+
+                            &:not(:last-child) { 
+                                border-right: 1px solid #e5e5e5;
+                            }
                         }
                     }
                 }
