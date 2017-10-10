@@ -20,20 +20,25 @@ sntRover.controller('rvArMoveInvoiceCtrl', ['$scope', 'ngDialog', 'rvAccountsArT
         searchResult: {},
         selectedAccount: {},
         query: '',
-        perPage: 10,
+        perPage: 5,
         page: 1
     };
 
     /*
      *   Method to initialize the AR Overview Data set.
      */  
-    var getSearchResult = function() {
+    var getSearchResult = function( pageNo ) {
+
+        $scope.moveInvoiceData.page = !!pageNo ? pageNo : 1;
+
         var successCallBack = function(data) {
 
             $scope.moveInvoiceData.searchResult = data;
 
             $scope.errorMessage = "";
             $scope.$emit('hideLoader');
+            refreshScroll();
+            $scope.$broadcast('updatePagination', 'ACCOUNT_LIST' );
         };
 
         var params = {
@@ -52,9 +57,21 @@ sntRover.controller('rvArMoveInvoiceCtrl', ['$scope', 'ngDialog', 'rvAccountsArT
             getSearchResult();
         }
     };
-
+    // Clear search query.
     $scope.clearSearchQuery = function() {
         $scope.moveInvoiceData.query = '';
+    };
+    // Select one card.
+    $scope.clickedOnCard = function( selectedCard ) {
+        console.log(selectedCard);
+        $scope.moveInvoiceData.isConfirmInvoiceMoveScreen = true;
+    };
+
+    // Pagination options for ACCOUNT_LIST
+    $scope.accountListPagination = {
+        id: 'ACCOUNT_LIST',
+        api: [ getSearchResult, 'ACCOUNT_LIST' ],
+        perPage: $scope.moveInvoiceData.perPage
     };
 
 }]);
