@@ -146,7 +146,22 @@
                         <td class="fees"></td>
                         <td class="credits">
                             <span class="currency">{{ currencySymbol }}</span>{{payment.amount | number:2}}
-                                <button ng-show="arFlags.hasAllocateUnallocatePermission" class="icons icon-remove-40" ng-click="clickedUnallocateButton(payment)"></button>
+                               
+                        </td>
+                         <td class="action">
+                            <!-- Show this if possible to edit charge
+                                 opens /modals/ar-edit-charge.html
+                             -->
+                            <button class="button blank with-icon only-icon open-modal">
+                                <span class="icons icon-edit-40"></span>
+                            </button>
+
+                            <!--Show if payment can be unallocated
+                                <button class="button blank with-icon only-icon">
+                                    <span class="icons icon-remove-40"></span>
+                                </button>
+                             -->
+
                         </td>
                     </tr>
 
