@@ -6,7 +6,7 @@
         <h1>
             <text data-ng-bind-html="getTagValue('ADDTL_RESIDENTS')" editable-text="ADDTL_RESIDENTS"></text>
         </h1>
-        <div id="textual" class="add-remove-guest pull-left scrollable fill-height" ng-iscroll="guests-list" ng-iscroll-delay="100" ng-init="setScroll()">
+        <div id="textual" class="add-remove-guest pull-left scrollable fill-height" ng-iscroll="guests-list" ng-iscroll-delay="100">
             <ul id="selection" class="editable wrapper">
 
                 <li ng-repeat='guest in selectedReservation.guest_details track by $index' ng-hide='guest.is_primary'>

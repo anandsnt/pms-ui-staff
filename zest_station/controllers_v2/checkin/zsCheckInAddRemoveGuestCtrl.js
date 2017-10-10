@@ -17,6 +17,7 @@ sntZestStation.controller('zsCheckInAddRemoveGuestCtrl', [
         var refreshScroller = function() {
             $scope.refreshScroller('guests-list');
         };
+
         /**
          * when the back button clicked
          * @param  {[type]} event
@@ -104,10 +105,6 @@ sntZestStation.controller('zsCheckInAddRemoveGuestCtrl', [
             accompanyingGuestData = _.without($scope.selectedReservation.guest_details, _.findWhere($scope.selectedReservation.guest_details, _.find($scope.selectedReservation.guest_details, function(guest) {
                 return guest.is_primary === true;
             })));
-
-            var toDeleteItem = _.find(accompanyingGuestData, function(guest) {
-                return guest.id === toDeleteId;
-            });
 
             // accompanyingGuestData[index].last_name = null;
             // accompanyingGuestData[index].first_name = null;
