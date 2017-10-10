@@ -53,15 +53,15 @@
                     <li ng-if="!splitBillEnabled && paymentDetails.feePaid">
                         Amount paid:
                         <span class="value">
-                            <span class="currency">{{currencySymbol}}</span>
-                            {{paymentDetails.amount |number:2}} + <span class="currency">{{currencySymbol}}</span>
+                            <i class="currency">{{currencySymbol}}</i>
+                            {{paymentDetails.amount |number:2}} + <i class="currency">{{currencySymbol}}</i>
                             {{paymentDetails.feePaid |number:2}} fee
                         </span>
                     </li>
                     <li ng-if="!splitBillEnabled && !paymentDetails.feePaid">
                         Amount paid:
                         <span class="value">
-                        <span class="currency">{{currencySymbol}}</span>{{paymentDetails.amount}}</span>
+                        <i class="currency">{{currencySymbol}}</i>{{paymentDetails.amount}}</span>
                     </li>
                 </ul>
             </div>
