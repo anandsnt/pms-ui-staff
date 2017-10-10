@@ -51,7 +51,7 @@
 			</div>
 			<!-- Remove class .no-results when we have results -->
 			<!-- Add class .with-pagination if we have pagination -->
-			<section ng-hide="moveInvoiceData.isConfirmInvoiceMoveScreen" class="ar-card-results scrollable" ng-class="{'no-results': moveInvoiceData.searchResult.accounts.length === 0 }" role="complementary" ng-iscroll="arMoveInvoiceListScroll" ng-isroll-delay="500">
+			<section ng-hide="moveInvoiceData.isConfirmInvoiceMoveScreen" class="ar-card-results scrollable" ng-class="{'no-results': moveInvoiceData.searchResult.accounts.length === 0 , 'with-pagination': moveInvoiceData.searchResult.accounts.length >0 }" role="complementary" ng-iscroll="arMoveInvoiceListScroll" ng-isroll-delay="500">
 			    <div class="wrapper" >
 			        <ul class="search-results">
 			        	<li class="no-content" ng-show="moveInvoiceData.searchResult.accounts.length === 0">
