@@ -1,18 +1,63 @@
-/* eslint-disable angular/timeout-service,angular/json-functions */
+/* eslint-disable angular/timeout-service,angular/json-functions,angular/document-service,angular/log,no-console */
+// eslint-disable-next-line no-unused-vars
 var DesktopCardOperations = function () {
     var that = this;
     var ws = {};
-    // Set to true if the desktop swipe is enabled and a WebSocket connection is established.
 
+    that.callBacks = {};
+
+    // Set to true if the desktop swipe is enabled and a WebSocket connection is established.
     that.isActive = false;
     that.isDesktopUUIDServiceInvoked = false;
 
-    var commands = commands = {
+    // This is a map for the legacy Windows Service
+    var commands = {
         observeForSwipe: 'observeForSwipe',
         UUIDforDevice: 'UUIDforDevice'
     };
 
-    this.swipeCallbacks;
+    // This is the map for the current commands
+    var commandMap = {
+        observeForSwipe: JSON.stringify({'Command': 'cmd_observe_for_swipe'}),
+        UUIDforDevice: JSON.stringify({'Command': 'cmd_device_uid'}),
+        getConnectedDeviceDetails: JSON.stringify({'Command': 'cmd_get_device_states'})
+    };
+
+    var handleServiceMessages = function (response) {
+        switch (response['Command']) {
+            case 'cmd_observe_for_swipe':
+                that.swipeCallbacks.successCallBack(response.Card);
+                break;
+            case 'cmd_device_uid':
+                that.swipeCallbacks.uuidServiceSuccessCallBack(response.Message);
+                break;
+            case 'cmd_get_device_states':
+                if (response.ResponseCode === 0 && that.callBacks['getConnectedDeviceDetails']) {
+                    that.callBacks['getConnectedDeviceDetails'].successCallBack(response.device_states, {
+                        version: response.service_version,
+                        activeClients: response.number_of_clients
+                    }); // First *intentional* call to find version won't have callback
+                } else if (response.ResponseCode === 0 && !that.callBacks['getConnectedDeviceDetails']) {
+                    // Using feature recognition to identify if the version
+                    // v1.3.1.2 and above would respond to cmd_get_device_states
+                    commands = commandMap;
+                    // Set a flag that can be used
+                    that.canGetDeviceStatus = true;
+                    // Rover listens to this event and updates the menu to include Device Status
+                    document.dispatchEvent(new Event('WS_CONNECTION_ESTABLISHED'));
+                } else if (response.ResponseCode === 10) {
+                    // Using feature recognition to identify if the version
+                    // Versions that use newer request status but don't support cmd_get_device_states yet!
+                    commands = commandMap;
+                } else { // Handle failure and response.responseCode
+                    that.callBacks['getConnectedDeviceDetails'].failureCallBack(response);
+                }
+                break;
+            default:
+                console.error('Unhandled Command');
+        }
+    };
+
     this.startDesktopReader = function (portNumber, swipeCallbacks, url) {
         that.portNumber = portNumber;
         that.ccSwipeURL = url;
@@ -28,30 +73,12 @@ var DesktopCardOperations = function () {
         ws.send(commands['observeForSwipe']);
     };
 
-    var handleServiceMessages = function (response) {
-        switch (response['Command']) {
-            case 'cmd_observe_for_swipe':
-                that.swipeCallbacks.successCallBack(response.Card);
-                break;
-            case 'cmd_device_uid':
-                that.swipeCallbacks.uuidServiceSuccessCallBack(response.Message);
-                break;
-            case 'an_invalid_command':
-                if (response.ResponseCode === 10) {
-                    commands = {
-                        observeForSwipe: JSON.stringify({'Command': 'cmd_observe_for_swipe'}),
-                        UUIDforDevice: JSON.stringify({'Command': 'cmd_device_uid'})
-                    };
-                }
-                break;
-            default:
-                console.error('Unhandled Command');
-        }
-
+    this.getConnectedDeviceDetails = function (callBacks) {
+        that.callBacks['getConnectedDeviceDetails'] = callBacks;
+        ws.send(commands['getConnectedDeviceDetails']);
     };
 
     var init = function () {
-        that.isActive = true;
         ws.send(commands['observeForSwipe']);
 
         if (that.isDesktopUUIDServiceInvoked) {
@@ -73,7 +100,16 @@ var DesktopCardOperations = function () {
 
         // Triggers when websocket connection is established.
         ws.onopen = function () {
-            ws.send(JSON.stringify({Command: 'an_invalid_command'}));
+
+            /**
+             *   The below event is used by listeners inside Rover app to enable functionality
+             *   only available with an active web socket connection
+             */
+            that.isActive = true;
+
+            // Make a call to identify version of the web service being used!
+            ws.send(JSON.stringify({Command: 'cmd_get_device_states'}));
+
             setTimeout(init, 2000);
         };
 
@@ -97,6 +133,8 @@ var DesktopCardOperations = function () {
 
         ws.onclose = function () {
             // websocket is closed.
+            that.isActive = false;
+            document.dispatchEvent(new Event('WS_CONNECTION_LOST'));
             that.swipeCallbacks.failureCallBack();
         };
     };
