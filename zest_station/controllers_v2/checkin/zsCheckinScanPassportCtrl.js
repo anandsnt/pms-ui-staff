@@ -36,6 +36,28 @@ sntZestStation.controller('zsCheckinScanPassportCtrl', [
         $scope.scannedPassportImage = [];
         $scope.scanning = {}; // hold settings for this view
 
+        // disable scroll on signature canvas mousehover 
+        // (jSignature will not work when scroll is active)
+        $scope.disableScroll = function () {
+            $scope.getScroller('passport-validate').disable();
+        };
+        // enable scroll on signature canvas mouseleave
+        $scope.enableScroll = function () {
+            $scope.getScroller('passport-validate').enable();
+        };
+        $scope.signaturePluginOptions = {
+            height: 230,
+            width: 300,
+            lineWidth: 1,
+            'background-color': 'transparent',
+            'decor-color': 'transparent'
+        };
+
+        $scope.clearSignature = function() {
+            $scope.signatureData = '';
+            $('#signature').jSignature('clear');
+        };
+
         var onBackButtonClicked = function() {
             if ($scope.lastMode === 'SCAN_RESULTS') {
                 $scope.mode = 'SCAN_RESULTS';
@@ -236,13 +258,17 @@ sntZestStation.controller('zsCheckinScanPassportCtrl', [
             } else {
                 // verify passport
                 $scope.mode = 'ADMIN_VERIFY_PASSPORT_VIEW';
-
-                $timeout(function() {
-                    // scroller setup
-                    refreshScroller();
-                }, 0);
+                // if guest has already added signature, set signature
+                if (guestInfo.signature && guestInfo.signature.length > 1 && guestInfo.signature[1].length > 0) {
+                    $("#signature").jSignature("setData", "data:" + guestInfo.signature.join(","));
+                } else {
+                    $scope.clearSignature();
+                }
             }
-
+            $timeout(function() {
+                // scroller setup
+                refreshScroller();
+            }, 100);
         };
 
         var listenForWebsocketActivity = function() {
@@ -443,7 +469,9 @@ sntZestStation.controller('zsCheckinScanPassportCtrl', [
                     if ($scope.fromPickupKeyPassportScan) {
                         $scope.zestStationData.continuePickupFlow();
                     } else {
-                        $scope.zestStationData.checkinGuest();
+                        $scope.mode = 'RESERVATION_DETAILS';
+                        $scope.runDigestCycle();
+                        showReservationDetails();
                     }
                 }
 
@@ -544,11 +572,20 @@ sntZestStation.controller('zsCheckinScanPassportCtrl', [
                     'last_name': selectedPassportInfo.scanned_last_name,
                     'nationality': selectedPassportInfo.nationality,
                     'guest_id': selectedPassportInfo.id,
-                    'date_of_birth': selectedPassportInfo.dob
+                    'date_of_birth': selectedPassportInfo.dob,
+                    'signature': $("#signature").jSignature("getData")
                 },
                 successCallBack: function() {
                     validatePassportsView();
                     $scope.selectedPassport = false;
+                    // on guest details is saved successfully, save the signature
+                    var guestDetails = _.find($scope.selectedReservation.guest_details, function(guest) {
+                        return guest.id === selectedPassportInfo.id;
+                    });
+
+                    if (guestDetails) {
+                        guestDetails.signature = $("#signature").jSignature("getData", "base30");
+                    }
                     $scope.mode = 'ADMIN_VERIFY_PASSPORTS';
                 },
                 failureCallBack: function() {
@@ -619,7 +656,8 @@ sntZestStation.controller('zsCheckinScanPassportCtrl', [
         $scope.setScroller('passport-validate', {
             disablePointer: true, // important to disable the pointer events that causes the issues
             disableTouch: false, // false if you want the slider to be usable with touch devices
-            disableMouse: false // false if you want the slider to be usable with a mouse (desktop)
+            disableMouse: false, // false if you want the slider to be usable with a mouse (desktop)
+            preventDefaultException: { className: /(^|\s)signature-pad-layout(\s|$)/ }
         });
 
         var refreshScroller = function() {
@@ -944,5 +982,90 @@ sntZestStation.controller('zsCheckinScanPassportCtrl', [
             onPassportScanFailure();
         });
 
+        // Show Reservation details after scaninng
+
+        function showReservationDetails() {
+            $scope.setScroller('res-details');
+
+            var refreshScroller = function() {
+                $scope.refreshScroller('res-details');
+            };
+
+            var setSelectedReservation = function() {
+                zsCheckinSrv.setSelectedCheckInReservation([$scope.selectedReservation]);
+            };
+
+            var fetchReservationDetails = function() {
+                var onSuccessFetchReservationDetails = function(data) {
+                    if (data.data) {
+                        $scope.selectedReservation.reservation_details = data.data.reservation_card;
+                        $scope.zestStationData.selectedReservation = $scope.selectedReservation;
+                        if ($scope.isRateSuppressed()) {
+                            $scope.selectedReservation.reservation_details.balance = 0;
+                        }
+                        fetchAddons();
+                        setDisplayContentHeight(); // utils function
+                        refreshScroller();
+                    } else {
+                        // else some error occurred
+                        $log.warn('failed to fech Reservation details');
+                        $log.warn(arguments);
+                        $scope.$emit('GENERAL_ERROR');
+                    }
+                };
+
+
+                $scope.callAPI(zsCheckinSrv.fetchReservationInfo, {
+                    params: {
+                        'id': $scope.selectedReservation.id
+                    },
+                    'successCallBack': onSuccessFetchReservationDetails,
+                    'failureCallBack': onSuccessFetchReservationDetails
+                });
+            };
+
+            var fetchAddons = function() {
+                var fetchCompleted = function(data) {
+                    $scope.selectedReservation.addons = data.existing_packages;
+                    setSelectedReservation();
+                    setDisplayContentHeight();
+                    refreshScroller();
+                    $scope.isReservationDetailsFetched = true;
+                };
+
+
+                $scope.callAPI(zsCheckinSrv.fetchAddonDetails, {
+                    params: {
+                        'id': $scope.selectedReservation.reservation_details.reservation_id
+                    },
+                    'successCallBack': fetchCompleted,
+                    'failureCallBack': fetchCompleted
+                });
+
+
+            };
+
+            $scope.isRateSuppressed = function() {
+                if (typeof $scope.selectedReservation === 'undefined') {
+                    return false;
+                }
+                // need to wait for api to update
+                // this is used in HTML to hide things
+                if (typeof $scope.selectedReservation.reservation_details !== 'undefined') {
+                    if ($scope.selectedReservation.reservation_details.is_rates_suppressed === 'true') {
+                        return true;
+                    }
+                }
+                return false;
+            };
+
+            $scope.onNextFromDetails = function() {
+                $scope.zestStationData.checkinGuest();
+            };
+            $scope.selectedReservation = zsCheckinSrv.getSelectedCheckInReservation();
+            fetchReservationDetails();
+        }
+         
+       
     }
 ]);
