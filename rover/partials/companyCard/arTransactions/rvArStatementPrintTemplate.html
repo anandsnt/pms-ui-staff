@@ -66,8 +66,8 @@
                                     <span class="reference">{{item.reference_text}}</span>
                                 </td>
                                 <td ng-if="!item.is_credit" class="charge-amount align-right"><span class="currency">{{currencySymbol}}</span> {{item.amount | number: precisonTwo}}</td>
-                                <td ng-if="!item.is_credit"></td>
-                                <td ng-if="item.is_credit"></td>
+                                <td class="charge-amount align-right" ng-if="!item.is_credit"></td>
+                                <td class="charge-amount align-right" ng-if="item.is_credit"></td>
                                 <td ng-if="item.is_credit" class="charge-amount align-right"><span class="currency">{{currencySymbol}}</span> {{item.amount | number: precisonTwo}}</td>
                             </tr>
                             <tr ng-repeat="item in statement.allocated_payment_details">
@@ -113,8 +113,8 @@
                                     <span class="reference">{{item.reference_text}}</span>
                                 </td>
                                 <td ng-if="!item.is_credit" class="charge-amount align-right"><span class="currency">{{currencySymbol}}</span> {{item.amount | number: precisonTwo}}</td>
-                                <td ng-if="!item.is_credit"></td>
-                                <td ng-if="item.is_credit"></td>
+                                <td class="charge-amount align-right" ng-if="!item.is_credit"></td>
+                                <td class="charge-amount align-right" ng-if="item.is_credit"></td>
                                 <td ng-if="item.is_credit" class="charge-amount align-right"><span class="currency">{{currencySymbol}}</span> {{item.amount | number: precisonTwo}}</td>
                             </tr>
                             <tr ng-repeat="item in statement.allocated_payment_details">
