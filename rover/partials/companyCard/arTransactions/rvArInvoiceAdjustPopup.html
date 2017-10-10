@@ -8,45 +8,45 @@
         <span class="h2 message">Adjust charge code</span>
 
         <span class="text" ng-show="!selectedTransaction.is_group_by_ref">
-            {{selectedTransaction.description}}
+            {{adjustData[0].charge_desc}}
             <!-- if not a grouped charge show this: -->
-            <strong><span class="currency">{{currencySymbol}}</span> {{selectedTransaction.fees}}</strong>
+            <strong><span class="currency">{{currencySymbol}}</span> {{adjustData[0].amount}}</strong>
         </span>
         
         <!-- if a grouped charge
-                -- If a charge is not selected, disable the adjust button--
-                <div id="choose-charge" class="entry full-width">
-                    <label for="new-amount">Charge:</label>
-                    <div class="select">
-                        <select class="placeholder">
-                            <option value="" class="placeholder">Select a Charge</option>
-                            <option value="{charge-value}">{Charge} ({currency}{amount})</option>
-                            ... repeat for each charge
-                        </select>
-                    </div>
-                </div>
-        -->
+                If a charge is not selected, disable the adjust button-->
+        <div id="choose-charge" class="entry full-width" ng-show="selectedTransaction.is_group_by_ref">
+            <label for="new-amount">Charge:</label>
+            <div class="select">
+                <select class="placeholder">
+                    <option value="" class="placeholder">Select a Charge</option>
+                    <option ng-repeat="group in groupItems.charge_details">{{group.charge_desc}}(<span class="currency">{{currencySymbol}}</span> {{group.amount}})</option>
+                   
+                </select>
+            </div>
+        </div>
+  
 
         <div id="edit-amount" class="entry full-width">
             <label for="new-amount">New Amount (<span class="currency">{{currencySymbol}}</span>)</label>
-            <input name="new-amount" id="new-amount" placeholder="Enter value" value="" type="text" />
+            <input name="new-amount" id="new-amount" placeholder="Enter value" value="" type="text" ng-model="new_amount" />
         </div>
         
         <div class="entry full-width reference">
             <label for="reference">Reference</label>
-             <input name="reference" id="reference" placeholder="Enter Reference" value="" type="text" />
+             <input name="reference" id="reference" placeholder="Enter Reference" value="" type="text" ng-model="reference" />
         </div>
 
         <div class="entry full-width">
             <label for="check-reference" class="checkbox inline">
-                 <input name="check-reference" id="check-reference" placeholder="Enter Reference" value="" type="text" />
+                 <input name="check-reference" id="check-reference" placeholder="Enter Reference" value="" type="checkbox" />
                  Show Reference on AR Invoice
              </label>
             
         </div>        
 
         <div class="actions">
-            <button type="button"  class="button green">Adjust</button>
+            <button type="button"  class="button green" ng-click="clickedAdjust()">Adjust</button>
             <button type="button"  class="button blank" ng-click="closeDialog()">Cancel</button> 
         </div>
 
