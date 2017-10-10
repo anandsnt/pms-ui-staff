@@ -79,7 +79,7 @@
                                     <span class="reference">{{item.reference_text}}</span>
                                 </td>
                                 <td class="charge-amount align-right"></td>
-                                <td class="charge-amount align-right"><span class="currency">{{currencySymbol}}</span>{{item.credits | number: precisonTwo}}</td>
+                                <td class="charge-amount align-right"><span class="currency">{{currencySymbol}}</span>{{item.credit | number: precisonTwo}}</td>
                             </tr>
                         </table>
                     </td>
@@ -126,7 +126,7 @@
                                     <span class="reference">{{item.reference_text}}</span>
                                 </td>
                                 <td class="charge-amount align-right"></td>
-                                <td class="charge-amount align-right"><span class="currency">{{currencySymbol}}</span>{{item.credits | number: precisonTwo}}</td>
+                                <td class="charge-amount align-right"><span class="currency">{{currencySymbol}}</span>{{item.credit | number: precisonTwo}}</td>
                             </tr>
                         </table>
                     </td>
@@ -152,7 +152,7 @@
                                     <span class="reference">{{statement.charge_details.reference_number}}</span>
                                     <span class="reference">{{statement.charge_details.reference_text}}</span>
                                 </td>
-                                <td class="charge-amount align-right"><span class="currency">{{currencySymbol}}</span> {{statement.charge_details.debits | number: precisonTwo}}</td>
+                                <td class="charge-amount align-right"><span class="currency">{{currencySymbol}}</span> {{statement.charge_details.debit | number: precisonTwo}}</td>
                                 <td class="charge-amount align-right"></td>
                             </tr>
                             <tr ng-repeat="item in statement.allocated_payment_details">
@@ -164,7 +164,7 @@
                                     <span class="reference">{{item.reference_text}}</span>
                                 </td>
                                 <td class="charge-amount align-right"></td>
-                                <td class="charge-amount align-right"><span class="currency">{{currencySymbol}}</span>{{item.credits | number: precisonTwo}}</td>
+                                <td class="charge-amount align-right"><span class="currency">{{currencySymbol}}</span>{{item.credit | number: precisonTwo}}</td>
                             </tr>
                         </table>
                     </td>
@@ -179,7 +179,7 @@
                     <td class="charge-code">{{statement.charge_code}}</td>
                     <td class="charge-description">{{statement.charge_description}}</td>
                     <td class="charge-amount align-right"></td>
-                    <td class="charge-amount align-right"><span class="currency">{{currencySymbol}}</span>{{statement.credits | number: precisonTwo}}</td>
+                    <td class="charge-amount align-right"><span class="currency">{{currencySymbol}}</span>{{statement.credit | number: precisonTwo}}</td>
                     <td class="amount-due align-right"></td>
                 </tr>
                
