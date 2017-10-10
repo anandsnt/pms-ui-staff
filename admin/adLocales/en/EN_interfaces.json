@@ -84,6 +84,7 @@
     "MONSCIERGE_IOS_LABEL": "iOS",
     "MONSCIERGE_ANDROID_LABEL": "Android",
     "MONSCIERGE_CLIENT_ID": "Client Id",
-    "MONSCIERGE_CLIENT_SECRET": "Client Secret"
+    "MONSCIERGE_CLIENT_SECRET": "Client Secret",
+    "INFANTS_INCLUDED": "Include Infants Count With Guest Nights"
     
     
