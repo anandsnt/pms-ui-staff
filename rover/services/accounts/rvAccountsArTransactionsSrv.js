@@ -205,5 +205,21 @@ angular.module('sntRover').service('rvAccountsArTransactionsSrv', ['$q', 'rvBase
 
         return deferred.promise;
     };
+
+    this.getAdjustmentInfo = function(data) {
+      var deferred = $q.defer(),
+      url = 'api/accounts/' + data.accountId + '/ar_transactions/' + data.arTransactionId + '/adjustment_info';
+
+      rvBaseWebSrvV2.getJSON(url, data.requestParams).then(
+        function(data) {
+          deferred.resolve(data);
+        },
+        function(errorMessage) {
+          deferred.reject(errorMessage);
+        }
+      );
+
+      return deferred.promise;
+    };
     
 }]);

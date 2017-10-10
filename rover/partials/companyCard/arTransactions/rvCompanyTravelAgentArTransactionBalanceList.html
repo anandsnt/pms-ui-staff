@@ -124,6 +124,14 @@
                         <td class="credits">
                             <span ng-if="debit.credits" class="currency">{{ currencySymbol }}</span>{{ debit.credits | number:2 }}
                         </td>
+                        <td class="action">
+                            <!-- Show this if possible to edit charge
+                                 opens /modals/ar-edit-charge.html
+                             -->
+                            <button class="button blank with-icon only-icon open-modal" ng-click="clickedEditIconToAdjustInvoice($parent.$index, $index)">
+                                <span class="icons icon-edit-40"></span>
+                            </button>
+                        </td>
                     </tr>
 
                     <tr ng-repeat="payment in balance.payments" ng-class="{'odd': $odd, 'even': $even}">
@@ -149,12 +157,8 @@
                                
                         </td>
                          <td class="action">
-                            <!-- Show this if possible to edit charge
-                                 opens /modals/ar-edit-charge.html
-                             -->
-                            <button class="button blank with-icon only-icon open-modal">
-                                <span class="icons icon-edit-40"></span>
-                            </button>
+                            
+                             <button ng-show="arFlags.hasAllocateUnallocatePermission" class="icons icon-remove-40" ng-click="clickedUnallocateButton(payment)"></button>
 
                             <!--Show if payment can be unallocated
                                 <button class="button blank with-icon only-icon">

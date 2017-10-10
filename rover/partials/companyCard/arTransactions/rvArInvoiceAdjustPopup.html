@@ -1,0 +1,55 @@
+<div role="dialog" id="modal" class="modal-show" ng-class="{'modal-show': !modalClosing}" >
+	<form method="post" id="ar-edit-charge-options" name="ar-edit-charge" class="modal-content form edit-charge ar-charge">
+    <button class="modal-close" id="modal-close" type="button" ng-click="closeDialog()">
+        <span class="icons icon-close invert"></span>
+    </button>
+    
+    <fieldset id="edit-charge" name="edit-charge" class="edit-charge">
+        <span class="h2 message">Adjust charge code</span>
+
+        <span class="text" ng-show="!selectedTransaction.is_group_by_ref">
+            {{selectedTransaction.description}}
+            <!-- if not a grouped charge show this: -->
+            <strong><span class="currency">{{currencySymbol}}</span> {{selectedTransaction.fees}}</strong>
+        </span>
+        
+        <!-- if a grouped charge
+                -- If a charge is not selected, disable the adjust button--
+                <div id="choose-charge" class="entry full-width">
+                    <label for="new-amount">Charge:</label>
+                    <div class="select">
+                        <select class="placeholder">
+                            <option value="" class="placeholder">Select a Charge</option>
+                            <option value="{charge-value}">{Charge} ({currency}{amount})</option>
+                            ... repeat for each charge
+                        </select>
+                    </div>
+                </div>
+        -->
+
+        <div id="edit-amount" class="entry full-width">
+            <label for="new-amount">New Amount (<span class="currency">{{currencySymbol}}</span>)</label>
+            <input name="new-amount" id="new-amount" placeholder="Enter value" value="" type="text" />
+        </div>
+        
+        <div class="entry full-width reference">
+            <label for="reference">Reference</label>
+             <input name="reference" id="reference" placeholder="Enter Reference" value="" type="text" />
+        </div>
+
+        <div class="entry full-width">
+            <label for="check-reference" class="checkbox inline">
+                 <input name="check-reference" id="check-reference" placeholder="Enter Reference" value="" type="text" />
+                 Show Reference on AR Invoice
+             </label>
+            
+        </div>        
+
+        <div class="actions">
+            <button type="button"  class="button green">Adjust</button>
+            <button type="button"  class="button blank" ng-click="closeDialog()">Cancel</button> 
+        </div>
+
+    </fieldset>
+</form>
+</div>
