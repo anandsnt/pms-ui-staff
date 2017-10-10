@@ -6,7 +6,7 @@
             <input value="4" type="checkbox" ng-class="{'checked': balance.isSelected }">
         </label>
 
-        <div class="faux-anchor" ng-class="{ 'active': balance.active , 'has-arrow toggle': ( !balance.is_manual_balance || ( balance.is_manual_balance && balance.is_partially_paid) ) }">
+        <div class="faux-anchor has-arrow toggle" ng-class="{ 'active': balance.active}">
                 <!-- add class .group/.allotment if group or allotment -->
             <div class="data" ng-if="balance.associated_type === 'Reservation'">
                 <!-- add class .group/.allotment if group or allotment -->

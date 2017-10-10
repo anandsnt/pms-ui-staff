@@ -120,7 +120,7 @@ sntRover.controller('RvArBalanceController', ['$scope', '$timeout', 'rvAccountsA
 		var clickedBalanceListItem = function( index ) {
 			var clikedItem = $scope.arDataObj.balanceList[index];
 			
-			if ( !clikedItem.is_manual_balance || ( clikedItem.is_manual_balance && clikedItem.is_partially_paid) ) {
+			//if ( !clikedItem.is_manual_balance || ( clikedItem.is_manual_balance && clikedItem.is_partially_paid) ) {
 				if (!clikedItem.active) {
 					callExpansionAPI(clikedItem);
 				}
@@ -128,7 +128,7 @@ sntRover.controller('RvArBalanceController', ['$scope', '$timeout', 'rvAccountsA
 					clikedItem.active = false;
 					refreshScroll();
 				}
-			}
+			//}
 		};
 
 		/*

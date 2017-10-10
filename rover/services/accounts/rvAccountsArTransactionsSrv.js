@@ -210,7 +210,7 @@ angular.module('sntRover').service('rvAccountsArTransactionsSrv', ['$q', 'rvBase
       var deferred = $q.defer(),
       url = 'api/accounts/' + data.accountId + '/ar_transactions/' + data.arTransactionId + '/adjustment_info';
 
-      rvBaseWebSrvV2.getJSON(url, data.requestParams).then(
+      rvBaseWebSrvV2.postJSON(url, data.requestParams).then(
         function(data) {
           deferred.resolve(data);
         },
@@ -221,5 +221,20 @@ angular.module('sntRover').service('rvAccountsArTransactionsSrv', ['$q', 'rvBase
 
       return deferred.promise;
     };
-    
+    this.postAdjustmentInfo = function(data) {
+        var deferred = $q.defer(),
+      url = 'api/accounts/' + data.accountId + '/ar_transactions/' + data.arTransactionId + '/post_adjustment';
+
+      rvBaseWebSrvV2.postJSON(url, data.postData).then(
+        function(data) {
+          deferred.resolve(data);
+        },
+        function(errorMessage) {
+          deferred.reject(errorMessage);
+        }
+      );
+
+      return deferred.promise;
+
+    }
 }]);
