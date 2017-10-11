@@ -260,10 +260,11 @@ sntRover.controller('RvArBalanceController', ['$scope', '$timeout', 'rvAccountsA
 				departureTime: data.reservation_dep_time,
 				amount: data.amount,
 				image: data.icon_url,
-				transactionId: data.transaction_id
+				transactionId: data.transaction_id,
+				associatedType: data.associated_type
 			};
 
-			$scope.moveInvoiceData = passData;
+			$scope.moveInvoiceHeaderData = passData;
 			
 			ngDialog.open({
                 template: '/assets/partials/companyCard/arTransactions/rvArMoveInvoiceToArPopup.html',

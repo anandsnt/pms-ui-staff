@@ -1,4 +1,4 @@
-sntRover.controller('rvArMoveInvoiceCtrl', ['$scope', 'ngDialog', 'rvAccountsArTransactionsSrv', function($scope, ngDialog, rvAccountsArTransactionsSrv ) {
+sntRover.controller('rvArMoveInvoiceCtrl', ['$scope', 'ngDialog', 'rvAccountsArTransactionsSrv', '$timeout', function($scope, ngDialog, rvAccountsArTransactionsSrv, $timeout) {
 
     BaseCtrl.call(this, $scope);
     /**
@@ -12,33 +12,44 @@ sntRover.controller('rvArMoveInvoiceCtrl', ['$scope', 'ngDialog', 'rvAccountsArT
         }, 500);
     };
 
-    refreshScroll();
+    var init = function () {
+        // Data set ninitialization
+        $scope.moveInvoiceData = {
+            isConfirmInvoiceMoveScreen: false,
+            searchResult: {},
+            fromAccount: {},
+            toAccount: {},
+            query: '',
+            perPage: 5,
+            page: 1
+        };
+        // Setting up the account ( COMPANY/TA Card ) details
+        if ( $scope.contactInformation && $scope.contactInformation.account_details ) {
 
-    // Data set ninitialization
-    $scope.moveInvoiceData = {
-        isConfirmInvoiceMoveScreen: false,
-        searchResult: {},
-        fromAccount: {},
-        toAccount: {},
-        query: '',
-        perPage: 5,
-        page: 1
-    };
+            var accountData = $scope.contactInformation.account_details,
+                addressData = $scope.contactInformation.address_details;
 
-    if ( $scope.contactInformation && $scope.contactInformation.account_details) {
-
-        var accountData = $scope.contactInformation.account_details,
-            addressData = $scope.contactInformation.address_details;
-
-        $scope.moveInvoiceData.fromAccount = {
-            id: $scope.contactInformation.id,
-            accountName: accountData.account_name,
-            accountNumber: accountData.account_number,
-            arNumber: accountData.accounts_receivable_number,
-            type: $scope.contactInformation.accountType,
-            location: addressData.city
+            // Mapping moving FROM account details.
+            $scope.moveInvoiceData.fromAccount = {
+                id: $scope.contactInformation.id,
+                accountName: accountData.account_name,
+                accountNumber: accountData.account_number,
+                arNumber: accountData.accounts_receivable_number,
+                type: $scope.contactInformation.accountType || accountData.account_type,
+                location: addressData.city || addressData.location,
+                ageingDate: accountData.ageing_date
+            }
         }
-    }
+
+        // Pagination options for ACCOUNT_LIST
+        $scope.accountListPagination = {
+            id: 'ACCOUNT_LIST',
+            api: getSearchResult,
+            perPage: $scope.moveInvoiceData.perPage
+        };
+
+        refreshScroll();
+    };
 
     /*
      *   Method to initialize the AR Overview Data set.
@@ -57,7 +68,9 @@ sntRover.controller('rvArMoveInvoiceCtrl', ['$scope', 'ngDialog', 'rvAccountsArT
                 $scope.moveInvoiceData.searchResult = data;
                 $scope.errorMessage = '';
                 refreshScroll();
-                $scope.$broadcast('updatePagination', 'ACCOUNT_LIST');
+                $timeout(function () {
+                    $scope.$broadcast('updatePagination', 'ACCOUNT_LIST');
+                }, 1000);
             },
             failureCallBack: function( errorMessage ) {
                 $scope.errorMessage = errorMessage;
@@ -87,22 +100,16 @@ sntRover.controller('rvArMoveInvoiceCtrl', ['$scope', 'ngDialog', 'rvAccountsArT
     // Select one card.
     $scope.clickedOnCard = function( selectedCard ) {
         $scope.moveInvoiceData.isConfirmInvoiceMoveScreen = true;
-        // Mapping to account data.
+        // Mapping moving TO account data.
         $scope.moveInvoiceData.toAccount = {
             id: selectedCard.id,
             accountName: selectedCard.account_name,
             accountNumber: selectedCard.account_number,
             arNumber: selectedCard.ar_number,
             type: selectedCard.type,
-            location: selectedCard.location
+            location: selectedCard.location,
+            ageingDate: selectedCard.ageing_date
         }
-    };
-
-    // Pagination options for ACCOUNT_LIST
-    $scope.accountListPagination = {
-        id: 'ACCOUNT_LIST',
-        api: getSearchResult,
-        perPage: $scope.moveInvoiceData.perPage
     };
 
     // Show pagination or not.
@@ -110,12 +117,9 @@ sntRover.controller('rvArMoveInvoiceCtrl', ['$scope', 'ngDialog', 'rvAccountsArT
         var showPagination = false,
             searchResult = $scope.moveInvoiceData.searchResult,
             isConfirmInvoiceMoveScreen = $scope.moveInvoiceData.isConfirmInvoiceMoveScreen;
-        
-        if(isConfirmInvoiceMoveScreen) {
-            showPagination = false;
-        }
-        else if ( typeof searchResult !== 'undefined' && typeof searchResult.accounts !== 'undefined' ) {
-            if( searchResult.accounts.length > 0 &&  (searchResult.total_result > searchResult.accounts.length) ) {
+
+        if ( typeof searchResult !== 'undefined' && typeof searchResult.accounts !== 'undefined' ) {
+            if ( searchResult.accounts.length > 0 && !isConfirmInvoiceMoveScreen ) {
                 showPagination = true;
             }
         }
@@ -152,5 +156,7 @@ sntRover.controller('rvArMoveInvoiceCtrl', ['$scope', 'ngDialog', 'rvAccountsArT
 
         $scope.callAPI(rvAccountsArTransactionsSrv.moveInvoice, dataToSend );
     };
+
+    init();
 
 }]);
