@@ -18,11 +18,11 @@
         <div id="choose-charge" class="entry full-width" ng-show="selectedTransaction.is_group_by_ref">
             <label for="new-amount">Charge:</label>
             <div class="select">
-               <!--  <select class="placeholder" ng-model="selectCharge">
+                <select class="placeholder" ng-model="selectCharge">
                     <option value="" class="placeholder">Select a Charge</option>
-                    <option ng-repeat="group in adjustData.charge_details">{{group.charge_desc}}(<span class="currency">{{currencySymbol}}</span> {{group.amount}})</option>                   
-                </select> -->
-                <select class="placeholder" ng-model="selectCharge" ng-options="group.charge_desc for group in adjustData.charge_details"  ></select>
+                    <option ng-repeat="group in adjustData.charge_details" value="{{group.financial_transaction_id}}">{{group.charge_desc}}(<span class="currency">{{currencySymbol}}</span> {{group.amount}})</option>                   
+                </select>
+             <!--    <select class="placeholder" ng-model="selectCharge" ng-options="group.charge_desc for group in adjustData.charge_details"  ></select> -->
             </div>
         </div>
   

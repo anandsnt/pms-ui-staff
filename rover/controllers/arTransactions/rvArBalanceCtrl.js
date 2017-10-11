@@ -111,7 +111,7 @@ sntRover.controller('RvArBalanceController', ['$scope', '$timeout', 'rvAccountsA
 				// Checkbox selection logic will be called here..
 				selectInvoice(clikedItem.transaction_id);
 			}
-			else if (!element.parentElement.classList.contains('actions')) { 
+			else if (!element.parentElement.classList.contains('actions') && !element.classList.contains('icon-edit-40')) { 
 				clickedBalanceListItem(index);				
 			}
 		};
