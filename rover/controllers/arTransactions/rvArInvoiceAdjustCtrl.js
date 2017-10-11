@@ -25,6 +25,7 @@ sntRover.controller('RvArInvoiceAdjustController',
             requestParams.financial_transaction_id = $scope.selectedTransaction.id;
             requestParams.ar_transaction_id = $scope.selectedInvoice.transaction_id;
             requestParams.item_ids = $scope.selectedTransaction.item_ids;
+            requestParams.is_manual_balance = $scope.selectedInvoice.is_manual_balance;
             paramsToService.requestParams = requestParams;
             paramsToService.accountId = $scope.arDataObj.accountId;
             paramsToService.arTransactionId = $scope.selectedInvoice.transaction_id;
