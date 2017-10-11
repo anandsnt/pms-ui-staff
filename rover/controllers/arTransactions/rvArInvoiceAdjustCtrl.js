@@ -22,7 +22,9 @@ sntRover.controller('RvArInvoiceAdjustController',
             requestParams.is_group_by_ref = $scope.selectedTransaction.is_group_by_ref;
             requestParams.reference_number = $scope.selectedTransaction.reference_number;
             requestParams.bill_id = $scope.selectedTransaction.bill_id;
-            requestParams.financial_transaction_id = $scope.selectedTransaction.id;
+            if(!$scope.selectedInvoice.is_manual_balance) {
+              requestParams.financial_transaction_id = $scope.selectedTransaction.id;
+            }            
             requestParams.ar_transaction_id = $scope.selectedInvoice.transaction_id;
             requestParams.item_ids = $scope.selectedTransaction.item_ids;
             requestParams.is_manual_balance = $scope.selectedInvoice.is_manual_balance;
