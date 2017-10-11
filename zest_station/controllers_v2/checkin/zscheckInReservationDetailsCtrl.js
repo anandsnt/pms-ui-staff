@@ -36,7 +36,9 @@ sntZestStation.controller('zsCheckInReservationDetailsCtrl', [
         $scope.setScroller('terms-container');
 
         var refreshScroller = function() {
-            $scope.refreshScroller('res-details');
+            $timeout(function() {
+                $scope.refreshScroller('res-details');
+            }, 500);
         };
 
         var setSelectedReservation = function() {
