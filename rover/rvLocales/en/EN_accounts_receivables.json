@@ -13,5 +13,6 @@
 "UNPAID_BALANCE" 	: "Unpaid Balance",
 "OPEN_BILLS" 		: "Open Bills",
 "BALANCE" 			: "Balance",
-"ALLOCATE_PAYMENT_AFTER_POSTING": "Allocate Payment After Posting"
+"ALLOCATE_PAYMENT_AFTER_POSTING": "Allocate Payment After Posting",
+"SHOW_REFERENCE_ON_GUEST_INVOICE": "Show reference on guest invoice"
 
