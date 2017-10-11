@@ -5,13 +5,13 @@ sntRover.controller('rvArMoveInvoiceCtrl', ['$scope', 'ngDialog', 'rvAccountsArT
      * Setting up scroller with refresh options..
      */
     $scope.setScroller('arMoveInvoiceListScroll', {});
-
+    // refresh scroller.
     var refreshScroll = function() {
         setTimeout(function() {
             $scope.refreshScroller('arMoveInvoiceListScroll');
         }, 500);
     };
-
+    // Initialization.
     var init = function () {
         // Data set ninitialization
         $scope.moveInvoiceData = {
@@ -38,7 +38,7 @@ sntRover.controller('rvArMoveInvoiceCtrl', ['$scope', 'ngDialog', 'rvAccountsArT
                 type: $scope.contactInformation.accountType || accountData.account_type,
                 location: addressData.city || addressData.location,
                 ageingDate: accountData.ageing_date
-            }
+            };
         }
 
         // Pagination options for ACCOUNT_LIST
@@ -87,7 +87,7 @@ sntRover.controller('rvArMoveInvoiceCtrl', ['$scope', 'ngDialog', 'rvAccountsArT
         if (queryLength > 2 ) {
             getSearchResult();
         }
-        else if (queryLength === 0 ){
+        else if (queryLength === 0 ) {
             $scope.moveInvoiceData.searchResult = {};
             refreshScroll();
         }
@@ -109,7 +109,7 @@ sntRover.controller('rvArMoveInvoiceCtrl', ['$scope', 'ngDialog', 'rvAccountsArT
             type: selectedCard.type,
             location: selectedCard.location,
             ageingDate: selectedCard.ageing_date
-        }
+        };
     };
 
     // Show pagination or not.
