@@ -19,7 +19,23 @@
 	    <button class="modal-close" id="modal-close" type="button" ng-click="closeDialogImmediately()">
 	        <span class="icons icon-close invert"></span>
 	    </button>
-
+        <section ng-if="serviceDetails">
+            <span class="h2 message" translate>Rover Service</span>
+            <div class="devices-grid">
+                <ul class="device-labels">
+                    <li translate>VERSION</li>
+                    <li translate>CLIENTS</li>
+                </ul>
+                <div class="device-list scrollable">
+                    <div class="wrapper">
+                        <ul class="device" style="width:320px;">
+                            <li>{{serviceDetails.version}}</li>
+                            <li>{{serviceDetails.activeClients}}</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
 	    <span class="h2 message" translate>DEVICES</span>
 	    <div class="devices-grid">
 	        <ul class="device-labels">
@@ -43,7 +59,10 @@
 	                    <li ng-if="device.device_connection_sate === 'Connected'"><em class="text-green">Connected</em></li>
 	                    <!-- <li ng-if="device.device_connection_sate !== 'Connected' && device.device_short_name ==='Ingenico'"><button type="button" class="button blue">Connect</button></li> -->
 	                    <li ng-if="device.device_connection_sate !== 'Connected'"><em class="text-orange">Not Connected</em></li>
-	                    <li>
+                        <li ng-if="device.battery_percentage === null" class="text-grey">
+                            NA
+                        </li>
+	                    <li ng-if="device.battery_percentage !== null">
 	                        <div class="battery">
 	                           <!--  <em class="battery-status text-{'green' if charged/charging or 'red' if discharging}" ng-class="{'green': device.battery_state === 'Charged' || device.battery_state === 'Charging',' red': device.battery_state === 'Discharging'}">{{device.battery_state}}</em> -->
 	                            <strong class="battery-value text" ng-class="{'red': device.battery_percentage < 25 , 'orange': device.battery_percentage >= 25 && device.battery_percentage < 50, 'green': device.battery_percentage >=50}" ng-if="device.device_connection_sate === 'Connected'">{{device.battery_percentage}}%</strong>
@@ -53,10 +72,18 @@
 	                            <span ng-if="device.device_connection_sate !== 'Connected'">NA</span>
 	                        </div>
 	                    </li>
-	                    <li ng-class="{'text-grey': device.library_name == 'NA'}">{{device.library_name}}</li>
-	                    <li ng-class="{'text-grey': device.library_version == 'NA'}">{{device.library_version}}</li>
-	                    <li ng-class="{'text-grey': device.firmware_version == 'NA'}">{{device.firmware_version}}</li>
-	                    <li ng-class="{'text-grey': device.serial_number == 'NA'}">{{device.serial_number}}</li>
+	                    <li ng-class="{'text-grey': !device.library_name || device.library_name == 'NA'}">
+                            {{device.library_name || 'NA'}}
+                        </li>
+	                    <li ng-class="{'text-grey': !device.library_version ||device.library_version == 'NA'}">
+                            {{device.library_version || 'NA'}}
+                        </li>
+	                    <li ng-class="{'text-grey': !device.firmware_version || device.firmware_version == 'NA'}">
+                            {{device.firmware_version || 'NA'}}
+                        </li>
+	                    <li ng-class="{'text-grey': !device.serial_number || device.serial_number == 'NA'}">
+                            {{device.serial_number || 'NA'}}
+                        </li>
 	                </ul>
 	            </div>
 	        </div>

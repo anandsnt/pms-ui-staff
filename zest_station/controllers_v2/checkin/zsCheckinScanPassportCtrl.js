@@ -259,7 +259,7 @@ sntZestStation.controller('zsCheckinScanPassportCtrl', [
                 // verify passport
                 $scope.mode = 'ADMIN_VERIFY_PASSPORT_VIEW';
                 // if guest has already added signature, set signature
-                if (guestInfo.signature && guestInfo.signature.length > 0 && guestInfo.signature !== "image/jsignature;base30") {
+                if (guestInfo.signature && guestInfo.signature.length > 1 && guestInfo.signature[1].length > 0) {
                     $("#signature").jSignature("setData", "data:" + guestInfo.signature.join(","));
                 } else {
                     $scope.clearSignature();
@@ -469,7 +469,9 @@ sntZestStation.controller('zsCheckinScanPassportCtrl', [
                     if ($scope.fromPickupKeyPassportScan) {
                         $scope.zestStationData.continuePickupFlow();
                     } else {
-                        $scope.zestStationData.checkinGuest();
+                        $scope.mode = 'RESERVATION_DETAILS';
+                        $scope.runDigestCycle();
+                        showReservationDetails();
                     }
                 }
 
@@ -980,5 +982,90 @@ sntZestStation.controller('zsCheckinScanPassportCtrl', [
             onPassportScanFailure();
         });
 
+        // Show Reservation details after scaninng
+
+        function showReservationDetails() {
+            $scope.setScroller('res-details');
+
+            var refreshScroller = function() {
+                $scope.refreshScroller('res-details');
+            };
+
+            var setSelectedReservation = function() {
+                zsCheckinSrv.setSelectedCheckInReservation([$scope.selectedReservation]);
+            };
+
+            var fetchReservationDetails = function() {
+                var onSuccessFetchReservationDetails = function(data) {
+                    if (data.data) {
+                        $scope.selectedReservation.reservation_details = data.data.reservation_card;
+                        $scope.zestStationData.selectedReservation = $scope.selectedReservation;
+                        if ($scope.isRateSuppressed()) {
+                            $scope.selectedReservation.reservation_details.balance = 0;
+                        }
+                        fetchAddons();
+                        setDisplayContentHeight(); // utils function
+                        refreshScroller();
+                    } else {
+                        // else some error occurred
+                        $log.warn('failed to fech Reservation details');
+                        $log.warn(arguments);
+                        $scope.$emit('GENERAL_ERROR');
+                    }
+                };
+
+
+                $scope.callAPI(zsCheckinSrv.fetchReservationInfo, {
+                    params: {
+                        'id': $scope.selectedReservation.id
+                    },
+                    'successCallBack': onSuccessFetchReservationDetails,
+                    'failureCallBack': onSuccessFetchReservationDetails
+                });
+            };
+
+            var fetchAddons = function() {
+                var fetchCompleted = function(data) {
+                    $scope.selectedReservation.addons = data.existing_packages;
+                    setSelectedReservation();
+                    setDisplayContentHeight();
+                    refreshScroller();
+                    $scope.isReservationDetailsFetched = true;
+                };
+
+
+                $scope.callAPI(zsCheckinSrv.fetchAddonDetails, {
+                    params: {
+                        'id': $scope.selectedReservation.reservation_details.reservation_id
+                    },
+                    'successCallBack': fetchCompleted,
+                    'failureCallBack': fetchCompleted
+                });
+
+
+            };
+
+            $scope.isRateSuppressed = function() {
+                if (typeof $scope.selectedReservation === 'undefined') {
+                    return false;
+                }
+                // need to wait for api to update
+                // this is used in HTML to hide things
+                if (typeof $scope.selectedReservation.reservation_details !== 'undefined') {
+                    if ($scope.selectedReservation.reservation_details.is_rates_suppressed === 'true') {
+                        return true;
+                    }
+                }
+                return false;
+            };
+
+            $scope.onNextFromDetails = function() {
+                $scope.zestStationData.checkinGuest();
+            };
+            $scope.selectedReservation = zsCheckinSrv.getSelectedCheckInReservation();
+            fetchReservationDetails();
+        }
+         
+       
     }
 ]);

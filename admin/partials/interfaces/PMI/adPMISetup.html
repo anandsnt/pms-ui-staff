@@ -5,6 +5,10 @@
             <ad-toggle-button is-checked="config.enabled"
                               label="{{'ACTIVATE_INACTIVATE'| translate}}"></ad-toggle-button>
         </fieldset>
+        <fieldset class="holder left">
+            <ad-toggle-button is-checked="config.add_infants_to_guest_count"
+                              label="{{'INFANTS_INCLUDED'| translate}}"></ad-toggle-button>
+        </fieldset>
     </div>
 
     <ad-sync-block ng-if="config.enabled"
