@@ -61,13 +61,17 @@ sntRover.controller('RvArPostChargeController',
             queryEntered();
         }
     };
-
+    /*
+     * auto complete select handler
+     */
     var autoCompleteSelectHandler = function(event, ui) {
     	$scope.selectedItem = ui.item;
     	$scope.totalAmount = ui.item.unit_price;
     	$scope.showCalculationArea = true;
     };
-
+    /*
+     * Options - for auto completion
+     */
 	$scope.autocompleteOptions = {
         delay: 0,
         minLength: 0,
@@ -81,12 +85,14 @@ sntRover.controller('RvArPostChargeController',
         source: autoCompleteSourceHandler,
         select: autoCompleteSelectHandler
     };
-
+    /*
+     * Post charges to invoice
+     */
     $scope.postCharge = function() {
 
     	var successCallBackOfPostCharge = function() {
-    		sntActivity.stop("POST_CHARGE_FROM_AR_INVOICE");
     		$scope.$emit('REFRESH_BALANCE_LIST');
+            $scope.closeDialog();
     	};
     	
     	var postChargeData = {},
@@ -100,10 +106,17 @@ sntRover.controller('RvArPostChargeController',
     	dataToSrv.postChargeData = postChargeData;
     	dataToSrv.accountId      = $scope.arDataObj.accountId;
     	dataToSrv.arTransactionId= $scope.selectedItemToPostCharge.transaction_id; 
-    	sntActivity.start("POST_CHARGE_FROM_AR_INVOICE");
-    	$scope.invokeApi( RVPostChargeSrvV2.postChargesFromArInvoice, dataToSrv, successCallBackOfPostCharge );
-    };
 
+        var options = {
+            params: dataToSrv,
+            successCallBack: successCallBackOfPostCharge
+        };
+
+        $scope.callAPI( RVPostChargeSrvV2.postChargesFromArInvoice, options );
+    };
+    /*
+     * Calculating total amount on changing quantity
+     */
     $scope.changedQuantity = function() {
     	$scope.totalAmount = $scope.selectedItem.unit_price * $scope.quantity;
     };

@@ -20,9 +20,9 @@
             <!-- remove .hidden when a charge has been selected -->
             <div id="charge-total" class="entry full-width charge-total" ng-show="showCalculationArea">
                 <label>Charge Amount (<span class="currency">{{currencySymbol}}</span>)</label>
-                <input name="charge-amount" class="disabled amount" type="number" disabled="disabled" ng-model="selectedItem.unit_price" value="{{selectedItem.unit_price}}" />
+                <input name="charge-amount" class="disabled amount" type="text" disabled="disabled" ng-model="selectedItem.unit_price" value="{{selectedItem.unit_price}}" />
                 <span class="delimeter">x</span>
-                <input name="charge-quantity" ng-model="quantity" class="quantity" type="number" value="1" ng-change="changedQuantity()"/>
+                <input name="charge-quantity" ng-model="quantity" class="quantity" type="text" value="1" ng-change="changedQuantity()"/>
                 <span class="total">Total: <strong>{{totalAmount}}</strong></span>
             </div>
             
