@@ -32,12 +32,12 @@
             <input name="new-amount" id="new-amount" placeholder="Enter value" value="" type="text" ng-model="new_amount" />
         </div>
         
-        <div class="entry full-width reference">
+        <div class="entry full-width reference" ng-hide="selectedInvoice.is_manual_balance">
             <label for="reference">Reference</label>
              <input name="reference" id="reference" placeholder="Enter Reference" value="" type="text" ng-model="reference" />
         </div>
 
-        <div class="entry full-width" >
+        <div class="entry full-width" ng-hide="selectedInvoice.is_manual_balance">
 		    <label class="checkbox inline" for="add-in-guest-card" ng-class="{'checked': show_reference_on_guest_invoice}">
 		        <span class="icon-form icon-checkbox" ng-class="{'checked': show_reference_on_guest_invoice}"></span>
 		        <input ng-model="show_reference_on_guest_invoice" id="add-in-guest-card" value="1" type="checkbox" /> {{'SHOW_REFERENCE_ON_GUEST_INVOICE' | translate}}
