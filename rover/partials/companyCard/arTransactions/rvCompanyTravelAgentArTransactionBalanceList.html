@@ -106,7 +106,12 @@
                     <tr ng-repeat="debit in balance.debits" ng-class="{'odd': $odd, 'even': $even}">
                         <td>{{ debit.date | date : dateFormat}}</td>
                         <td><span ng-if="isStandAlone && !debit.is_group_by_ref">{{ debit.charge_code }}</span></td>
-                        <td class="description" ng-class="{'toggle':isStandAlone && debit.is_group_by_ref, 'active': debit.isExpanded}" ng-click = "expandGroupedCharge(debit)">{{ debit.description }}<span class="icons icon-double-arrow" ng-if="isStandAlone && debit.is_group_by_ref"></span>
+                        <td class="description" ng-class="{'toggle':isStandAlone && debit.is_group_by_ref, 'active': debit.isExpanded}" ng-click = "expandGroupedCharge(debit)">
+                        <div class="payment-data">
+                            <span class="type">{{ debit.description }}</span>
+                            <span class="reference">{{ debit.reference_text }}</span>
+                        </div>
+                        <span class="icons icon-double-arrow" ng-if="isStandAlone && debit.is_group_by_ref"></span>
                             <!-- Lightspeed Data -->
                             <ul class = 'charge-items light-speed-data' ng-if = "isStandAlone && debit.is_group_by_ref" ng-class = "{'hidden': !debit.isExpanded}">
                                 <li ng-repeat = "object in debit.light_speed_data"><span>{{object.description}}</span></li>
@@ -128,7 +133,7 @@
                             <!-- Show this if possible to edit charge
                                  opens /modals/ar-edit-charge.html
                              -->
-                            <button class="button blank with-icon only-icon open-modal" ng-click="clickedEditIconToAdjustInvoice($parent.$index, $index)">
+                            <button class="button blank with-icon only-icon open-modal" ng-show="!balance.is_partially_paid" ng-click="clickedEditIconToAdjustInvoice($parent.$index, $index)">
                                 <span class="icons icon-edit-40"></span>
                             </button>
                         </td>
