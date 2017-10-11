@@ -47,34 +47,36 @@ sntRover.controller('rvArMoveInvoiceCtrl', ['$scope', 'ngDialog', 'rvAccountsArT
 
         $scope.moveInvoiceData.page = !!pageNo ? pageNo : 1;
 
-        var successCallBack = function(data) {
-
-            $scope.moveInvoiceData.searchResult = data;
-
-            $scope.errorMessage = "";
-            $scope.$emit('hideLoader');
-            refreshScroll();
-            $scope.$broadcast('updatePagination', 'ACCOUNT_LIST' );
+        var dataToSend = {
+            params: {
+                'query': $scope.moveInvoiceData.query,
+                'page': $scope.moveInvoiceData.page,
+                'per_page': $scope.moveInvoiceData.perPage
+            },
+            successCallBack: function( data ) {
+                $scope.moveInvoiceData.searchResult = data;
+                $scope.errorMessage = '';
+                refreshScroll();
+                $scope.$broadcast('updatePagination', 'ACCOUNT_LIST');
+            },
+            failureCallBack: function( errorMessage ) {
+                $scope.errorMessage = errorMessage;
+            }
         };
 
-        var params = {
-            'query': $scope.moveInvoiceData.query,
-            'page': $scope.moveInvoiceData.page,
-            'per_page': $scope.moveInvoiceData.perPage
-        };
-
-        $scope.invokeApi(rvAccountsArTransactionsSrv.fetchAccountsReceivables, params, successCallBack );
+        $scope.callAPI(rvAccountsArTransactionsSrv.fetchAccountsReceivables, dataToSend );
     };
 
-    // Filter block starts here ..
+    // Search by query handled here.
     $scope.changedSearchQuery = function() {
         var queryLength = $scope.moveInvoiceData.query.length;
-        
+
         if (queryLength > 2 ) {
             getSearchResult();
         }
         else if (queryLength === 0 ){
             $scope.moveInvoiceData.searchResult = {};
+            refreshScroll();
         }
     };
     // Clear search query.
@@ -112,8 +114,10 @@ sntRover.controller('rvArMoveInvoiceCtrl', ['$scope', 'ngDialog', 'rvAccountsArT
         if(isConfirmInvoiceMoveScreen) {
             showPagination = false;
         }
-        else if ( searchResult && searchResult.accounts.length > 0 &&  (searchResult.total_result > searchResult.accounts.length) ) {
-            showPagination = true;
+        else if ( typeof searchResult !== 'undefined' && typeof searchResult.accounts !== 'undefined' ) {
+            if( searchResult.accounts.length > 0 &&  (searchResult.total_result > searchResult.accounts.length) ) {
+                showPagination = true;
+            }
         }
         return showPagination;
     };
@@ -129,7 +133,24 @@ sntRover.controller('rvArMoveInvoiceCtrl', ['$scope', 'ngDialog', 'rvAccountsArT
     };
     // Move Invoice button click..
     $scope.moveInvoiceButtonClick = function() {
-        console.log("Move Invoice button click..");
+
+        var dataToSend = {
+            params: {
+                'account_id': $scope.moveInvoiceData.fromAccount.id,
+                'to_account_id': $scope.moveInvoiceData.toAccount.id,
+                'transaction_id': $scope.moveInvoiceData.transactionId
+            },
+            successCallBack: function() {
+                $scope.moveInvoiceData.isConfirmInvoiceMoveScreen = false;
+                $scope.$emit('REFRESH_BALANCE_LIST');
+                $scope.errorMessage = '';
+            },
+            failureCallBack: function( errorMessage ) {
+                $scope.errorMessage = errorMessage;
+            }
+        };
+
+        $scope.callAPI(rvAccountsArTransactionsSrv.moveInvoice, dataToSend );
     };
 
 }]);

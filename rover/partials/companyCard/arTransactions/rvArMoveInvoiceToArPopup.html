@@ -39,7 +39,7 @@
 			</div>
 		</div>
 		<div class="modal-body">
-
+			<div ng-include="'/assets/partials/common/notification_message.html'"></div>
 			<div class="search-form" ng-hide="moveInvoiceData.isConfirmInvoiceMoveScreen">
 				<div class="entry search">
 		            <button ng-click="clearSearchQuery()" ng-show="moveInvoiceData.query.length > 0" class="clear-query" ng-class="{'visible': moveInvoiceData.query.length > 0 }">
@@ -66,7 +66,7 @@
 
 			        	<li ng-click="clickedOnCard(account)" class="card all-cards" ng-show="moveInvoiceData.searchResult.accounts.length > 0 " ng-repeat="account in moveInvoiceData.searchResult.accounts">
 	 						<div class="faux-anchor">
-	 							<div class="guest-image icons" ng-class="{'icon-company': account.type === 'COMPANY', 'icon-travelagent': account.type === 'TRAVELAGENT' }"></div>
+	 							<div class="guest-image icons" ng-class="{'icon-company': account.type === 'COMPANY', 'icon-travel-agent': account.type === 'TRAVELAGENT' }"></div>
 	 							<div class="data">
 	 								<h2>{{account.account_name}}</h2>
 	 								<div class="information">

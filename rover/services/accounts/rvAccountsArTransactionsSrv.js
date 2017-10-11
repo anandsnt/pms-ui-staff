@@ -213,8 +213,8 @@ angular.module('sntRover').service('rvAccountsArTransactionsSrv', ['$q', 'rvBase
 
     this.fetchAccountsReceivables = function (params) {
 
-        var deferred = $q.defer();
-        var url = "/api/accounts/ar_overview";
+        var deferred = $q.defer(),
+            url = "/api/accounts/ar_overview";
 
         rvBaseWebSrvV2.getJSON(url, params).then(function (data) {
             deferred.resolve(data);
@@ -223,4 +223,23 @@ angular.module('sntRover').service('rvAccountsArTransactionsSrv', ['$q', 'rvBase
         });
         return deferred.promise;
     };
+
+    /*
+     * Service function to Move invoices
+     * @return {object}
+     */
+
+    this.moveInvoice = function (params) {
+
+        var deferred = $q.defer(),
+            url = "/api/accounts/" + params.account_id + "/ar_transactions/move_invoice";
+
+        rvBaseWebSrvV2.postJSON(url, params).then(function (data) {
+            deferred.resolve(data);
+        }, function (data) {
+            deferred.reject(data);
+        });
+        return deferred.promise;
+    };
+
 }]);
