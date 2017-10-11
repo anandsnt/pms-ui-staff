@@ -47,7 +47,7 @@ sntZestStation.controller('zsCheckinScanPassportCtrl', [
         };
         $scope.signaturePluginOptions = {
             height: 230,
-            width: 300,
+            width: 350,
             lineWidth: 1,
             'background-color': 'transparent',
             'decor-color': 'transparent'
