@@ -5,7 +5,7 @@
 		<div class="modal-header">
 			<div class="modal-header-left">
 				<figure class="guest-image">
-					<img src="{guest-image-src}" alt="">
+					<img ng-src="{{moveInvoiceData.image}}" alt="">
 				</figure>
 				<div class="data">
 					<h2>{{moveInvoiceData.firstName}} {{moveInvoiceData.lastName}}</h2>
@@ -73,7 +73,7 @@
 	 									<span class="number">{{account.ar_number}}</span>
 	 									<span class="icons icon-location">{{account.location}}</span>
 	 									<span ng-if="account.type === 'COMPANY'" class="icons icon-guest-company">{{account.account_number}}</span>
-	 									<span ng-if="account.type === 'TRAVELAGENT'" class="icons icon-guest-travelagent">{{account.account_number}}</span>
+	 									<span ng-if="account.type === 'TRAVELAGENT'" class="icons icon-guest-travel-agent">{{account.account_number}}</span>
 	 									<span class="icons icon-time">{{account.date}}<span class="time">{{account.time}}</span></span>
 	 								</div>
 	 							</div>
@@ -100,7 +100,7 @@
 		 									<span class="number">{{moveInvoiceData.fromAccount.accountName}}</span>
 		 									<span class="icons icon-location">{{moveInvoiceData.fromAccount.location}}</span>
 		 									<span ng-if="moveInvoiceData.fromAccount.type === 'COMPANY'" class="icons icon-guest-company">{{moveInvoiceData.fromAccount.accountNumber}}</span>
-	 										<span ng-if="moveInvoiceData.fromAccount.type === 'TRAVELAGENT'" class="icons icon-guest-travelagent">{{moveInvoiceData.fromAccount.accountNumber}}</span>
+	 										<span ng-if="moveInvoiceData.fromAccount.type === 'TRAVELAGENT'" class="icons icon-guest-travel-agent">{{moveInvoiceData.fromAccount.accountNumber}}</span>
 		 								</div>
 		 							</div>
 		 						</div>
@@ -114,21 +114,16 @@
 		 				<ul class="search-results">
 		 					<li class="card all-cards">
 		 						<div class="faux-anchor with-button">
-		 							<!-- 'type-image' is:
-		 								- company : when it's a company
-		 								- travelagent : when it's a travel agent
-		 							-->
-		 							<div class="guest-image icons icon-{type-image}"></div>
+			 						<div class="guest-image icons" ng-class="{'icon-company': moveInvoiceData.toAccount.type === 'COMPANY', 'icon-travelagent': moveInvoiceData.toAccount.type === 'TRAVELAGENT' }"></div>
 		 							<div class="data">
-		 								<h2>{Account Name}</h2>
+		 								<h2>{{moveInvoiceData.toAccount.accountName}}</h2>
 		 								<div class="information">
-		 									<span class="number">{number}</span>
-		 									<span class="icons icon-location">{location}</span>
-		 									<span class="icons icon-guest-company">{co/ta}</span>
-		 									<span class="icons icon-time">{date} <span class="time">{time}</span></span>
+		 									<span class="number">{{moveInvoiceData.toAccount.accountName}}</span>
+		 									<span class="icons icon-location">{{moveInvoiceData.toAccount.location}}</span>
+		 									<span ng-if="moveInvoiceData.toAccount.type === 'COMPANY'" class="icons icon-guest-company">{{moveInvoiceData.toAccount.accountNumber}}</span>
+	 										<span ng-if="moveInvoiceData.toAccount.type === 'TRAVELAGENT'" class="icons icon-guest-travel-agent">{{moveInvoiceData.toAccount.accountNumber}}</span>
 		 								</div>
 		 							</div>
-		 							<!-- Remove class .confirm on .modal-content to choose another account -->
 		 							<button ng-click="changeButtonClick()" type="button" class="button blue">Change</button>
 		 						</div>
 		 					</li>

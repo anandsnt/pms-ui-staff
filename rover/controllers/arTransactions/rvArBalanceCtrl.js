@@ -258,7 +258,8 @@ sntRover.controller('RvArBalanceController', ['$scope', '$timeout', 'rvAccountsA
 				arrivalTime: data.reservation_arrival_time,
 				departureDate: data.reservation_dep_date,
 				departureTime: data.reservation_dep_time,
-				amount: data.amount
+				amount: data.amount,
+				image: data.icon_url
 			};
 
 			$scope.moveInvoiceData = passData;

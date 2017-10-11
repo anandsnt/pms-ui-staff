@@ -31,6 +31,7 @@ sntRover.controller('rvArMoveInvoiceCtrl', ['$scope', 'ngDialog', 'rvAccountsArT
             addressData = $scope.contactInformation.address_details;
 
         $scope.moveInvoiceData.fromAccount = {
+            id: $scope.contactInformation.id,
             accountName: accountData.account_name,
             accountNumber: accountData.account_number,
             arNumber: accountData.accounts_receivable_number,
@@ -38,7 +39,6 @@ sntRover.controller('rvArMoveInvoiceCtrl', ['$scope', 'ngDialog', 'rvAccountsArT
             location: addressData.city
         }
     }
-
 
     /*
      *   Method to initialize the AR Overview Data set.
@@ -68,11 +68,12 @@ sntRover.controller('rvArMoveInvoiceCtrl', ['$scope', 'ngDialog', 'rvAccountsArT
 
     // Filter block starts here ..
     $scope.changedSearchQuery = function() {
-
-        if ($scope.moveInvoiceData.query.length > 2 ) {
+        var queryLength = $scope.moveInvoiceData.query.length;
+        
+        if (queryLength > 2 ) {
             getSearchResult();
         }
-        else {
+        else if (queryLength === 0 ){
             $scope.moveInvoiceData.searchResult = {};
         }
     };
@@ -83,9 +84,16 @@ sntRover.controller('rvArMoveInvoiceCtrl', ['$scope', 'ngDialog', 'rvAccountsArT
     };
     // Select one card.
     $scope.clickedOnCard = function( selectedCard ) {
-        console.log(selectedCard);
         $scope.moveInvoiceData.isConfirmInvoiceMoveScreen = true;
-        $scope.moveInvoiceData.selectedAccount = {};
+        // Mapping to account data.
+        $scope.moveInvoiceData.toAccount = {
+            id: selectedCard.id,
+            accountName: selectedCard.account_name,
+            accountNumber: selectedCard.account_number,
+            arNumber: selectedCard.ar_number,
+            type: selectedCard.type,
+            location: selectedCard.location
+        }
     };
 
     // Pagination options for ACCOUNT_LIST
@@ -113,7 +121,7 @@ sntRover.controller('rvArMoveInvoiceCtrl', ['$scope', 'ngDialog', 'rvAccountsArT
     // Change button click
     $scope.changeButtonClick = function() {
         $scope.moveInvoiceData.isConfirmInvoiceMoveScreen = false;
-        $scope.moveInvoiceData.selectedAccount = {};
+        $scope.moveInvoiceData.toAccount = {};
     };
     // Close dialog.
     $scope.closeDialog = function() {
