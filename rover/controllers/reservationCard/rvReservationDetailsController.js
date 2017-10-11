@@ -1585,10 +1585,12 @@ sntRover.controller('reservationDetailsController',
 
 	     	$scope.guestIdData.docID = guest.document_number;
 	     	$scope.guestIdData.docExpiry = guest.expiration_date;
-	     	$scope.guestIdData.showingIdFront = true;
+	     	$scope.guestIdData.displayMode = 'FRONT_SIDE';
 	 		$scope.guestIdData.imgFrontSrc = guest.front_image_data;
 	 		$scope.guestIdData.imgBackSrc = guest.back_image_data;
 	 		// END SETTING DATA FROM GUEST ID
+	 		$scope.guestIdData.signature = guest.signature;
+	 		
 
 	     	ngDialog.open({
 				template: '/assets/partials/guestId/guestId.html',
