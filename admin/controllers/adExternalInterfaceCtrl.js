@@ -304,7 +304,7 @@ admin.controller('adExternalInterfaceCtrl',
     var fetchRoomTypesSuccess = function(data) {
         if ($scope.interfaceName !== 'Givex' && $scope.interfaceName !== 'ZDirect') {
             $scope.roomTypes = data.room_types;
-        };
+        }
     };
 
     if ($scope.interfaceName !== 'Givex') {

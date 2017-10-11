@@ -73,7 +73,6 @@ admin.service('adInterfacesCommonConfigSrv', ['$http', '$q', 'ADBaseWebSrvV2', '
 
             if (metaLists.indexOf('ROOM_TYPES') > -1) {
                 promises.push(adExternalInterfaceCommonSrv.fetchRoomTypes().then(function(response) {
-                    console.log(response);
                     meta.roomTypes = response.room_types;
                 }));
             }
