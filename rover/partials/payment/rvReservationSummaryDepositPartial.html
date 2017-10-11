@@ -100,13 +100,13 @@
             <li ng-if="feeData.showFee">
                 Amount paid:
                 <span class="value">
-                    <span class="currency">{{currencySymbol}}</span>{{payment.amount}} + <span class="currency">{{currencySymbol}}</span>{{feeData.calculatedFee}} fee
+                    <i class="currency">{{currencySymbol}}</i>{{payment.amount}} + <i class="currency">{{currencySymbol}}</i>{{feeData.calculatedFee}} fee
                 </span>
             </li>
             <li ng-if="!feeData.showFee">
                 Amount paid:
                 <span class="value">
-                    <span class="currency">{{currencySymbol}}</span>{{payment.amount}}
+                    <i class="currency">{{currencySymbol}}</i>{{payment.amount}}
                 </span>
             </li>
         </ul>
