@@ -251,6 +251,7 @@ admin.controller('adExternalInterfaceCtrl',
         // load up origins and payment methods
         $scope.invokeApi(adExternalInterfaceCommonSrv.fetchOrigins, {}, fetchOriginsSuccessCallback);
         $scope.invokeApi(adExternalInterfaceCommonSrv.fetchPaymethods, {}, fetchPaymethodsSuccess);
+        $scope.invokeApi(adExternalInterfaceCommonSrv.fetchRoomTypes, {}, fetchRoomTypesSuccess);
 
         $scope.setRefreshTime();
       }
@@ -299,6 +300,13 @@ admin.controller('adExternalInterfaceCtrl',
       }
     };
 
+    $scope.roomTypes = [];
+    var fetchRoomTypesSuccess = function(data) {
+        if ($scope.interfaceName !== 'Givex' && $scope.interfaceName !== 'ZDirect') {
+            $scope.roomTypes = data.room_types;
+        };
+    };
+
     if ($scope.interfaceName !== 'Givex') {
         // Set the selected payment and origin
         var setPayment = function() {
@@ -337,7 +345,7 @@ admin.controller('adExternalInterfaceCtrl',
         }
     };
     $scope.rateSelection = [];
-    
+
     $scope.fetchManagerDetails = function() {
         var fetchSuccess = function (data) {
             $scope.$emit('hideLoader');
