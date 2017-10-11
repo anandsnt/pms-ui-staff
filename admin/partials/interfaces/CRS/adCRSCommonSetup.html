@@ -31,6 +31,11 @@
                         value="config.password"
                         label="{{'PASSWORD'| translate}}"
                         styleclass="full-width"></ad-textbox>
+            <ad-textbox ng-if="availableSettings.indexOf('inbound_end_point') > -1"
+                        inputtype="text"
+                        value="config.inbound_end_point"
+                        label="{{'INBOUND_URL'| translate}}"
+                        styleclass="full-width"></ad-textbox>
         </fieldset>
 
         <fieldset class="holder right">
