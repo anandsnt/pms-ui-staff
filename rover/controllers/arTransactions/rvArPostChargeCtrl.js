@@ -3,8 +3,7 @@ sntRover.controller('RvArPostChargeController',
 	'$scope', 
 	'ngDialog',
 	'RVPostChargeSrvV2',
-	'sntActivity',
-    function($rootScope, $scope, ngDialog, RVPostChargeSrvV2, sntActivity) {
+    function($rootScope, $scope, ngDialog, RVPostChargeSrvV2) {
 	BaseCtrl.call(this, $scope);
 	$scope.searchedItems = [];
 	$scope.isItemsToShow = false;
