@@ -1,11 +1,8 @@
 sntRover.controller('rvArMoveInvoiceCtrl', ['$scope', 'ngDialog', 'rvAccountsArTransactionsSrv', '$timeout', function($scope, ngDialog, rvAccountsArTransactionsSrv, $timeout) {
 
     BaseCtrl.call(this, $scope);
-    /**
-     * Setting up scroller with refresh options..
-     */
-    $scope.setScroller('arMoveInvoiceListScroll', {});
-    // refresh scroller.
+    
+    // Refresh scroller.
     var refreshScroll = function() {
         setTimeout(function() {
             $scope.refreshScroller('arMoveInvoiceListScroll');
@@ -31,12 +28,12 @@ sntRover.controller('rvArMoveInvoiceCtrl', ['$scope', 'ngDialog', 'rvAccountsArT
 
             // Mapping moving FROM account details.
             $scope.moveInvoiceData.fromAccount = {
-                id: $scope.contactInformation.id,
+                accountId: $scope.arDataObj.accountId,
                 accountName: accountData.account_name,
                 accountNumber: accountData.account_number,
                 arNumber: accountData.accounts_receivable_number,
-                type: $scope.contactInformation.accountType || accountData.account_type,
-                location: addressData.city || addressData.location,
+                type: accountData.account_type,
+                location: addressData.location,
                 ageingDate: accountData.ageing_date
             };
         }
@@ -48,11 +45,14 @@ sntRover.controller('rvArMoveInvoiceCtrl', ['$scope', 'ngDialog', 'rvAccountsArT
             perPage: $scope.moveInvoiceData.perPage
         };
 
+        // Setting up scroller with refresh options.
+        $scope.setScroller('arMoveInvoiceListScroll', {});
         refreshScroll();
     };
 
     /*
-     *   Method to initialize the AR Overview Data set.
+     *   Method to search the AR Overview Data set.
+     *   @param { Number | undefined } - page number.
      */  
     var getSearchResult = function( pageNo ) {
 
@@ -96,13 +96,14 @@ sntRover.controller('rvArMoveInvoiceCtrl', ['$scope', 'ngDialog', 'rvAccountsArT
     $scope.clearSearchQuery = function() {
         $scope.moveInvoiceData.query = '';
         $scope.moveInvoiceData.searchResult = {};
+        refreshScroll();
     };
     // Select one card.
     $scope.clickedOnCard = function( selectedCard ) {
         $scope.moveInvoiceData.isConfirmInvoiceMoveScreen = true;
         // Mapping moving TO account data.
         $scope.moveInvoiceData.toAccount = {
-            id: selectedCard.id,
+            accountId: selectedCard.id,
             accountName: selectedCard.account_name,
             accountNumber: selectedCard.account_number,
             arNumber: selectedCard.ar_number,
@@ -140,8 +141,8 @@ sntRover.controller('rvArMoveInvoiceCtrl', ['$scope', 'ngDialog', 'rvAccountsArT
 
         var dataToSend = {
             params: {
-                'account_id': $scope.moveInvoiceData.fromAccount.id,
-                'to_account_id': $scope.moveInvoiceData.toAccount.id,
+                'account_id': $scope.moveInvoiceData.fromAccount.accountId,
+                'to_account_id': $scope.moveInvoiceData.toAccount.accountId,
                 'transaction_id': $scope.moveInvoiceData.transactionId
             },
             successCallBack: function() {

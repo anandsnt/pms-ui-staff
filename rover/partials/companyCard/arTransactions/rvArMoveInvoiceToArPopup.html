@@ -53,8 +53,9 @@
 			<!-- Remove class .no-results when we have results -->
 			<!-- Add class .with-pagination if we have pagination -->
 			<section ng-hide="moveInvoiceData.isConfirmInvoiceMoveScreen" class="ar-card-results scrollable" ng-class="{'no-results': moveInvoiceData.searchResult.accounts.length === 0 , 'with-pagination': showPagination() }" role="complementary" ng-iscroll="arMoveInvoiceListScroll" ng-isroll-delay="500">
-			    <div class="wrapper" >
+			    <div class="wrapper">
 			        <ul class="search-results">
+
 			        	<li class="no-content" ng-hide="moveInvoiceData.searchResult.accounts.length > 0">
 			        		<div class="info">
 			        			<span class="icon-no-content icon-groups"></span>
@@ -65,7 +66,7 @@
 			        		</div>
 			        	</li>
 
-			        	<li ng-click="clickedOnCard(account)" class="card all-cards" ng-show="moveInvoiceData.searchResult.accounts.length > 0 " ng-repeat="account in moveInvoiceData.searchResult.accounts">
+			        	<li ng-click="clickedOnCard(account)" class="card all-cards" ng-if="moveInvoiceData.searchResult.accounts.length > 0 " ng-repeat="account in moveInvoiceData.searchResult.accounts">
 	 						<div class="faux-anchor">
 	 							<div class="guest-image icons" ng-class="{'icon-company': account.type === 'COMPANY', 'icon-travel-agent': account.type === 'TRAVELAGENT' }"></div>
 	 							<div class="data">
@@ -80,6 +81,7 @@
 	 							</div>
 	 						</div>
 	 					</li>
+
 			        </ul>
 			    </div>
 	 		</section>
