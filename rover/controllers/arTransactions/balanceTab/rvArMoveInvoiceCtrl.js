@@ -143,7 +143,7 @@ sntRover.controller('rvArMoveInvoiceCtrl', ['$scope', 'ngDialog', 'rvAccountsArT
             params: {
                 'account_id': $scope.moveInvoiceData.fromAccount.accountId,
                 'to_account_id': $scope.moveInvoiceData.toAccount.accountId,
-                'transaction_id': $scope.moveInvoiceData.transactionId
+                'transaction_id': $scope.moveInvoiceHeaderData.transactionId
             },
             successCallBack: function() {
                 $scope.moveInvoiceData.isConfirmInvoiceMoveScreen = false;
