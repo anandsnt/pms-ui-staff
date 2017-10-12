@@ -17,7 +17,7 @@ sntRover.controller('rvArMoveInvoiceCtrl', ['$scope', 'ngDialog', 'rvAccountsArT
             fromAccount: {},
             toAccount: {},
             query: '',
-            perPage: 5,
+            perPage: 50,
             page: 1
         };
         // Setting up the account ( COMPANY/TA Card ) details
@@ -120,7 +120,7 @@ sntRover.controller('rvArMoveInvoiceCtrl', ['$scope', 'ngDialog', 'rvAccountsArT
             isConfirmInvoiceMoveScreen = $scope.moveInvoiceData.isConfirmInvoiceMoveScreen;
 
         if ( typeof searchResult !== 'undefined' && typeof searchResult.accounts !== 'undefined' ) {
-            if ( searchResult.accounts.length > 0 && !isConfirmInvoiceMoveScreen ) {
+            if ( searchResult.accounts.length < searchResult.total_result &&  searchResult.accounts.length > 0 && !isConfirmInvoiceMoveScreen ) {
                 showPagination = true;
             }
         }
@@ -146,9 +146,9 @@ sntRover.controller('rvArMoveInvoiceCtrl', ['$scope', 'ngDialog', 'rvAccountsArT
                 'transaction_id': $scope.moveInvoiceHeaderData.transactionId
             },
             successCallBack: function() {
-                $scope.moveInvoiceData.isConfirmInvoiceMoveScreen = false;
                 $scope.$emit('REFRESH_BALANCE_LIST');
                 $scope.errorMessage = '';
+                ngDialog.close();
             },
             failureCallBack: function( errorMessage ) {
                 $scope.errorMessage = errorMessage;

@@ -270,7 +270,7 @@ sntRover.controller('RvArBalanceController', ['$scope', '$timeout', 'rvAccountsA
                 template: '/assets/partials/companyCard/arTransactions/rvArMoveInvoiceToArPopup.html',
                 controller: 'rvArMoveInvoiceCtrl',
                 className: '',
-                closeByDocument: true,
+                closeByDocument: false,
                 scope: $scope
             });
 		};

@@ -1,5 +1,4 @@
 <div role="dialog" id="modal" class="modal-show" ng-class="{'modal-show': !modalClosing}">
-	<!-- Add class .confirm when showing to confirm the invoice -->
 	<div class="modal-content ar-move-invoice" ng-class="{'confirm': moveInvoiceData.isConfirmInvoiceMoveScreen }">
 		<button ng-click="closeDialog()" class="modal-close dark-title" id="modal-close" type="button"><span class="icons icon-close"></span></button>
 		<div class="modal-header">
@@ -10,23 +9,23 @@
 				<div class="data">
 					<h2>{{moveInvoiceHeaderData.firstName}} {{moveInvoiceHeaderData.lastName}}</h2>
 					<div class="information">
-						<span ng-if="moveInvoiceHeaderData.invoiceNumber && moveInvoiceHeaderData.associatedType !== 'PostingAccount'" class="invoice">Invoice #<span class="value">{{moveInvoiceHeaderData.invoiceNumber}}</span></span>
-						<span ng-if="moveInvoiceHeaderData.invoiceNumber && moveInvoiceHeaderData.associatedType === 'PostingAccount'" class="invoice">Account #<span class="value">{{moveInvoiceHeaderData.invoiceNumber}}</span></span>
-						<span ng-if="moveInvoiceHeaderData.confirmationNumber" class="confirmation">Conf #<span class="value">{{moveInvoiceHeaderData.confirmationNumber}}</span></span>		
+						<span ng-if="moveInvoiceHeaderData.invoiceNumber && moveInvoiceHeaderData.associatedType !== 'PostingAccount'" class="invoice">{{ 'INVOICE#' | translate }}<span class="value">{{moveInvoiceHeaderData.invoiceNumber}}</span></span>
+						<span ng-if="moveInvoiceHeaderData.invoiceNumber && moveInvoiceHeaderData.associatedType === 'PostingAccount'" class="invoice">{{ 'ACCOUNT#' | translate }}<span class="value">{{moveInvoiceHeaderData.invoiceNumber}}</span></span>
+						<span ng-if="moveInvoiceHeaderData.confirmationNumber" class="confirmation">{{ 'CONF#' | translate }}<span class="value">{{moveInvoiceHeaderData.confirmationNumber}}</span></span>		
 					</div>
 				</div>
 			</div>
 			<div class="modal-header-right">
 				<div class="guest-dates">
 					<div class="guest-date arrival" ng-if="moveInvoiceHeaderData.arrivalDate"> 
-		                <span class="guest-status small-icon check-in">check-in</span> 
+		                <span class="guest-status small-icon check-in" translate>CHECKIN</span> 
 		                <time datetime="{Check In datetime | exp. 2017-08-31T12:00:00}"> 
 		                    <span class="date">{{moveInvoiceHeaderData.arrivalDate | date:dateFormat }}</span> 
 		                    <span class="time">{{moveInvoiceHeaderData.arrivalTime}}</span> 
 		                </time> 
 		            </div> 
 		            <div class="guest-date departure" ng-if="moveInvoiceHeaderData.departureDate"> 
-		                <span class="guest-status small-icon check-out">check-out</span> 
+		                <span class="guest-status small-icon check-out" translate>CHECKOUT</span> 
 		                <time datetime="{Check Out datetime | exp. 2017-08-31T12:00:00}"> 
 		                    <span class="date">{{moveInvoiceHeaderData.departureDate | date:dateFormat }}</span> 
 		                    <span class="time">{{moveInvoiceHeaderData.departureTime}}</span> 
@@ -44,24 +43,23 @@
 			<div class="search-form" ng-hide="moveInvoiceData.isConfirmInvoiceMoveScreen">
 				<div class="entry search">
 		            <button ng-click="clearSearchQuery()" ng-show="moveInvoiceData.query.length > 0" class="clear-query" ng-class="{'visible': moveInvoiceData.query.length > 0 }">
-		                <span class="icons icon-clear-search">Clear query</span>
+		                <span class="icons icon-clear-search" translate>CLEAR_QUERY</span>
 		            </button>
-		            <button type="submit" name="submit" class="icons icon-search">Search</button>
-		            <input ng-change="changedSearchQuery()" ng-model="moveInvoiceData.query" class="query" placeholder="Search by AR Account Name or Number, Display Name, Address or City" type="search" autocomplete="off">
+		            <button type="submit" name="submit" class="icons icon-search" translate>SEARCH</button>
+		            <input ng-change="changedSearchQuery()" ng-model="moveInvoiceData.query" class="query" placeholder="{{ 'SEARCH_TXT_AR_ACCOUNT' | translate }}" type="search" autocomplete="off">
 		        </div>
 			</div>
-			<!-- Remove class .no-results when we have results -->
-			<!-- Add class .with-pagination if we have pagination -->
-			<section ng-hide="moveInvoiceData.isConfirmInvoiceMoveScreen" class="ar-card-results scrollable" ng-class="{'no-results': moveInvoiceData.searchResult.accounts.length === 0 , 'with-pagination': showPagination() }" role="complementary" ng-iscroll="arMoveInvoiceListScroll" ng-isroll-delay="500">
+
+			<section ng-hide="moveInvoiceData.isConfirmInvoiceMoveScreen" class="ar-card-results scrollable" ng-class="{'no-results': !moveInvoiceData.searchResult.accounts.length > 0, 'with-pagination': showPagination() }" role="complementary" ng-iscroll="arMoveInvoiceListScroll" ng-isroll-delay="500">
 			    <div class="wrapper">
 			        <ul class="search-results">
 
 			        	<li class="no-content" ng-hide="moveInvoiceData.searchResult.accounts.length > 0">
 			        		<div class="info">
 			        			<span class="icon-no-content icon-groups"></span>
-			        			<strong class="h1">Move to another AR Account</strong>
+			        			<strong class="h1" translate>MOVE_TO_ANOTHER_AR_ACCOUNT</strong>
 			        			<span class="h2">
-			        				Search by <strong>Name</strong>, <strong>Number</strong>, <strong>Display Name</strong>, <strong>Address</strong> or <strong>City</strong>
+			        				{{ 'SEARCH_BY' | translate }}<strong>{{'NAME' | translate }}</strong>, <strong>{{'NUMBER' | translate }}</strong>, <strong>{{ 'DISPLAY_NAME' | translate }}</strong>, <strong>{{ 'ADDRESS' | translate }}</strong> {{ 'OR' | translate }}<strong>{{ 'CITY' | translate }}</strong>
 			        			</span>
 			        		</div>
 			        	</li>
@@ -89,9 +87,9 @@
 	 		<rv-pagination ng-show="showPagination()" page-options="accountListPagination" page-data="moveInvoiceData.searchResult.total_result"></rv-pagination>
 
 	 		<div class="confirm-move" ng-show="moveInvoiceData.isConfirmInvoiceMoveScreen">
-	 			<strong class="h2 message">Confirm invoice move</strong>
+	 			<strong class="h2 message" translate>CONFIRM_INVOICE_MOVE</strong>
 	 			<div class="confirm-card confirm-from">
-	 				<span class="type">From</span>
+	 				<span class="type" translate>FROM</span>
 	 				<div class="ar-card-results">
 		 				<ul class="search-results">
 		 					<li class="card all-cards">
@@ -113,7 +111,7 @@
 		 			</div>
 	 			</div>
 	 			<div class="confirm-card confirm-to">
-	 				<span class="type">To</span>
+	 				<span class="type" translate>TO</span>
 	 				<div class="ar-card-results">
 		 				<ul class="search-results">
 		 					<li class="card all-cards">
@@ -129,15 +127,15 @@
 	 										<span class="icons icon-time">{{moveInvoiceData.toAccount.ageingDate}}</span>
 		 								</div>
 		 							</div>
-		 							<button ng-click="changeButtonClick()" type="button" class="button blue">Change</button>
+		 							<button ng-click="changeButtonClick()" type="button" class="button blue" translate>CHANGE</button>
 		 						</div>
 		 					</li>
 		 				</ul>
 		 			</div>
 	 			</div>
 	 			<div class="actions">
-	 				<button ng-click="closeDialog()" type="button" class="button blank">Cancel</button>
-					<button ng-click="moveInvoiceButtonClick()" type="button" class="button green">Move Invoice</button>
+	 				<button ng-click="closeDialog()" type="button" class="button blank" translate>CANCEL</button>
+					<button ng-click="moveInvoiceButtonClick()" type="button" class="button green" translate>MOVE_INVOICE</button>
 	 			</div>
 	 		</div>
 		</div>
