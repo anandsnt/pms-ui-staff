@@ -497,7 +497,7 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 		});
 		// Refresh balance list - after adding new manual balance
 		// and after succesfull payment with Allocate payment after posting checked
-		$scope.$on('REFRESH_BALANCE_LIST', function() {
+		$scope.$on('REFRESH_BALANCE_LIST', function() { 
 			$scope.arFlags.currentSelectedArTab = 'balance';
 			$scope.arDataObj.balancePageNo = 1;
 			$scope.fetchTransactions();			

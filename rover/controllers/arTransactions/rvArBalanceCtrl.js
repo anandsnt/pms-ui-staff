@@ -104,15 +104,15 @@ sntRover.controller('RvArBalanceController', ['$scope', '$timeout', 'rvAccountsA
 			var clikedItem = $scope.arDataObj.balanceList[index],
 				element = event.target;	
 
-			event.stopImmediatePropagation();
+				event.stopImmediatePropagation();
 				event.stopPropagation();
 
 			if (element.parentElement.classList.contains('checkbox') || element.classList.contains('checkbox')) {
 				// Checkbox selection logic will be called here..
 				selectInvoice(clikedItem.transaction_id);
 			}
-			else {
-				clickedBalanceListItem(index);
+			else if (!element.parentElement.classList.contains('actions')) { 
+				clickedBalanceListItem(index);				
 			}
 		};
 
@@ -244,5 +244,17 @@ sntRover.controller('RvArBalanceController', ['$scope', '$timeout', 'rvAccountsA
 				item.isExpanded = false;
 				refreshScroll();
 			}
+		};
+		/*
+		 * Open dialog to post charge
+		 * @param index - index of the item
+		 */
+		$scope.clickedPostCharge = function(index) {
+			$scope.selectedItemToPostCharge = $scope.arDataObj.balanceList[index];
+			ngDialog.open({
+				template: '/assets/partials/companyCard/arTransactions/rvArTransactionPostCharge.html',
+				controller: 'RvArPostChargeController',
+				scope: $scope
+			});
 		};
 }]);
