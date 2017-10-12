@@ -256,5 +256,5 @@ sntRover.controller('RvArBalanceController', ['$scope', '$timeout', 'rvAccountsA
 				controller: 'RvArPostChargeController',
 				scope: $scope
 			});
-		}
+		};
 }]);
