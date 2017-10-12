@@ -99,7 +99,7 @@ sntRover.controller('RvArPostChargeController',
     		dataToSrv = {};
 
     	postChargeData.item_id   = $scope.selectedItem.id;
-    	postChargeData.quantity  = $scope.quantity;
+    	postChargeData.quantity  = parseInt($scope.quantity);
     	postChargeData.reference = $scope.reference;
     	postChargeData.is_item   = $scope.selectedItem.type === "ITEM";
     	postChargeData.amount    = parseFloat($scope.selectedItem.unit_price);
