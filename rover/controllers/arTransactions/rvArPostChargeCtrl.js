@@ -47,6 +47,7 @@ sntRover.controller('RvArPostChargeController',
 				"charge_group_id": '',
 				"is_favorite": 0
 			};
+            
 			$scope.invokeApi( RVPostChargeSrvV2.searchChargeItems, params, successCallBackFetchChargeCodes );
         };
 
@@ -64,6 +65,7 @@ sntRover.controller('RvArPostChargeController',
         $scope.totalAmount = ui.item.unit_price;
         $scope.showCalculationArea = true;
     };
+
     /*
      * Options - for auto completion
      */
@@ -93,14 +95,14 @@ sntRover.controller('RvArPostChargeController',
         var postChargeData = {},
             dataToSrv = {};
 
-        postChargeData.item_id   = $scope.selectedItem.id;
-        postChargeData.quantity  = parseInt($scope.quantity);
-        postChargeData.reference = $scope.reference;
-        postChargeData.is_item   = $scope.selectedItem.type === "ITEM";
-        postChargeData.amount    = parseFloat($scope.selectedItem.unit_price);
-        dataToSrv.postChargeData = postChargeData;
-        dataToSrv.accountId      = $scope.arDataObj.accountId;
-        dataToSrv.arTransactionId= $scope.selectedItemToPostCharge.transaction_id; 
+        postChargeData.item_id    = $scope.selectedItem.id;
+        postChargeData.quantity   = parseInt($scope.quantity);
+        postChargeData.reference  = $scope.reference;
+        postChargeData.is_item    = $scope.selectedItem.type === "ITEM";
+        postChargeData.amount     = parseFloat($scope.selectedItem.unit_price);
+        dataToSrv.postChargeData  = postChargeData;
+        dataToSrv.accountId       = $scope.arDataObj.accountId;
+        dataToSrv.arTransactionId = $scope.selectedItemToPostCharge.transaction_id; 
 
         var options = {
             params: dataToSrv,
