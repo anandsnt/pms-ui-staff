@@ -375,6 +375,43 @@
 
         &.find-user { width: auto; }
 
+        &.find-charges {
+            width: auto;
+            max-width: 420px !important;
+            height: 200px;
+
+            li {
+                a {
+                    position: relative;
+                    padding: 10px 20px 10px 20px;
+                    font-size: 18px;
+                    line-height: 30px;
+                    font-weight: 600;
+                    color: @textColor;
+                    .show;
+
+                    .highlight { color: @logoPrimary; }
+
+                    .info {
+                        font-size: 14px;
+                        line-height: 14px; 
+                        font-weight: 600; 
+                        color: @grey3;
+                        display: block; 
+
+                        .code,
+                        .price { display: inline-block; .nowrap(); }
+
+                        .code {
+                            
+                            margin-right: 15px;
+                            max-width: 200px
+                        }
+                    }
+                }
+            }
+        }
+
         .autocomplete-result {
             position: relative;
             padding: 10px 20px 10px 20px;
@@ -1255,6 +1292,75 @@
                     #fade > .in();
 
                     &.hidden { #fade > .out(); }
+                }
+
+                &.ar-charge {
+                    label {
+                        text-transform: uppercase;
+                        margin-bottom: 0;
+
+                        &.checkbox {
+                            font-size: 14px;
+                        }
+                    }
+
+                    .reference {
+                        padding-top: 10px;
+                        border-top: 1px solid rgba(0,0,0,0.1);
+                        margin-bottom: 0;
+                    }
+
+                    .actions {
+                        padding-top: 10px;
+                        border-top: 1px solid rgba(0,0,0,0.1);
+                    }
+
+                    &.ar-post-charge {
+
+                        .icon-search {
+                            text-indent: inherit;
+                            background-color: @white;
+                            background-position: 10px 12px;
+                            padding-left: 35px;
+                        }
+
+                        .reference {
+                            margin-bottom: 10px;
+                        }
+
+                        .charge-total { 
+                            .float;
+                            margin-bottom: 15px;
+
+                            input {
+                                float: left;
+                                width: 25%;
+        
+                                &.amount {
+                                    width: 30%;
+                                }
+                            }
+
+                            .delimeter {
+                                font-size: 14px;
+                                text-align: center;
+                                width: 30px;
+                                float: left;
+                                height: 40px;
+                                line-height: 40px;
+                            }
+
+                            .total {
+                                text-align: right;
+                                margin-left: 10px;
+                                .calc-width(45, 40); 
+                                transition: none;
+                                float: right;
+                                height: 40px;
+                                line-height: 40px;
+                            }
+                        } 
+                    }
                 }
             }
 
