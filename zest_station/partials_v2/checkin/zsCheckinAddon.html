@@ -94,6 +94,8 @@
 </div>
 <!-- add .open when showing popuo -->
 <div id="popup-overlay" ng-class="{'open':showAddonPopup || showErrorPopUp}"></div>
+<!-- Show blank section -->
+<section id="main" ng-hide="loadingCompleted"></section>
 <!-- Content -->
 <section id="main" class="addon-screen" role="main" ng-show="mode !== 'SINGLE_ADDON_ERROR' && loadingCompleted">
    <div id="content">
