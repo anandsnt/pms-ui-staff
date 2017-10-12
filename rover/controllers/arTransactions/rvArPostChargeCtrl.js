@@ -28,7 +28,7 @@ sntRover.controller('RvArPostChargeController',
          * Successcallback 
          */
         var successCallBackFetchChargeCodes = function (data) {
-			sntActivity.stop("SEARCH_ITEMS_IN_AR_POST_CHARGE");
+
 			angular.forEach(data.results, function(item) {
                 item.label = item.name;
                 item.curreny = $rootScope.currencySymbol;
@@ -39,7 +39,7 @@ sntRover.controller('RvArPostChargeController',
 
         // fetch data from server
         var queryEntered = function() {
-            sntActivity.start("SEARCH_ITEMS_IN_AR_POST_CHARGE");
+
             var params = {
 				"query": $scope.queryValue ? $scope.queryValue.toLowerCase() : '',
 				"page": 1,
@@ -47,8 +47,13 @@ sntRover.controller('RvArPostChargeController',
 				"charge_group_id": '',
 				"is_favorite": 0
 			};
-            
-			$scope.invokeApi( RVPostChargeSrvV2.searchChargeItems, params, successCallBackFetchChargeCodes );
+
+            var options = {
+                params: params,
+                successCallBack: successCallBackFetchChargeCodes
+            };
+
+            $scope.callAPI( RVPostChargeSrvV2.searchChargeItems, options );			
         };
 
         if (request.term.length === 0) {
