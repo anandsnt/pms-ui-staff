@@ -11,8 +11,7 @@ sntRover.directive('arTransactionPostChargeAutoComplete', ['highlightFilter',
                 ulClass: '@ulClass',
                 insertEmail: '=insertEmail'
             },
-            link: function(scope, el, attrs) {
-                // CICO-26513
+            link: function(scope, el) {
                 var ulElement = null;
 
                 $(el).autocomplete(scope.autoOptions)
@@ -20,7 +19,6 @@ sntRover.directive('arTransactionPostChargeAutoComplete', ['highlightFilter',
                     ._renderItem = function(ul, item) { 
                         ul.addClass(scope.ulClass);
 
-                        // CICO-26513
                         ulElement = ul;
                         ul.off('touchmove').on('touchmove', function(e) {
                             e.stopPropagation();
@@ -29,7 +27,7 @@ sntRover.directive('arTransactionPostChargeAutoComplete', ['highlightFilter',
                          var $content = highlightFilter(item.label, scope.ngModel),
                              $result = $("<a></a>").html($content);
 
-                            var $liItem = "<span class='info'><span class='code'>"+item.charge_code+"</span><span class='price'><span class='currency'>"+item.curreny+"</span>"+item.unit_price+"</span></span>";
+                            var $liItem = "<span class='info'><span class='code'>" + item.charge_code + "</span><span class='price'><span class='currency'>" + item.curreny + "</span>" + item.unit_price + "</span></span>";
 
                              $result.append($liItem);
                       
