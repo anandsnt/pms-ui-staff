@@ -205,7 +205,9 @@ angular.module('sntRover').service('rvAccountsArTransactionsSrv', ['$q', 'rvBase
 
         return deferred.promise;
     };
-
+    /*
+     * To get the adjustment onfo - to show in dialog
+     */
     this.getAdjustmentInfo = function(data) {
       var deferred = $q.defer(),
       url = 'api/accounts/' + data.accountId + '/ar_transactions/' + data.arTransactionId + '/adjustment_info';
@@ -221,6 +223,9 @@ angular.module('sntRover').service('rvAccountsArTransactionsSrv', ['$q', 'rvBase
 
       return deferred.promise;
     };
+    /*
+     * POst adjustment
+     */
     this.postAdjustmentInfo = function(data) {
         var deferred = $q.defer(),
       url = 'api/accounts/' + data.accountId + '/ar_transactions/' + data.arTransactionId + '/post_adjustment';
@@ -235,6 +240,5 @@ angular.module('sntRover').service('rvAccountsArTransactionsSrv', ['$q', 'rvBase
       );
 
       return deferred.promise;
-
-    }
+    };
 }]);

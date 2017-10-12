@@ -2,8 +2,8 @@
 sntRover.controller('RvArInvoiceAdjustController',
     ['$scope',
     '$timeout',
-    'rvAccountsArTransactionsSrv', 'sntActivity', 'ngDialog',
-    function($scope, $timeout, rvAccountsArTransactionsSrv, sntActivity, ngDialog) {
+    'rvAccountsArTransactionsSrv', 'sntActivity', 
+    function($scope, $timeout, rvAccountsArTransactionsSrv, sntActivity) {
 
       BaseCtrl.call(this, $scope);
 
@@ -22,7 +22,7 @@ sntRover.controller('RvArInvoiceAdjustController',
             requestParams.is_group_by_ref = $scope.selectedTransaction.is_group_by_ref;
             requestParams.reference_number = $scope.selectedTransaction.reference_number;
             requestParams.bill_id = $scope.selectedInvoice.bill_id;
-            if(!$scope.selectedInvoice.is_manual_balance) {
+            if (!$scope.selectedInvoice.is_manual_balance) {
               requestParams.financial_transaction_id = $scope.selectedTransaction.id;
             }            
             requestParams.ar_transaction_id = $scope.selectedInvoice.transaction_id;
@@ -38,7 +38,8 @@ sntRover.controller('RvArInvoiceAdjustController',
         };
 
         $scope.callAPI( rvAccountsArTransactionsSrv.getAdjustmentInfo, options );
-      }
+      };
+
       /*
        * Adjust AR invoice
        */
@@ -50,8 +51,8 @@ sntRover.controller('RvArInvoiceAdjustController',
           is_manual_balance: $scope.selectedInvoice.is_manual_balance
         };
 
-        if(!$scope.selectedTransaction.is_group_by_ref) {
-          if($scope.selectedInvoice.is_manual_balance) {
+        if (!$scope.selectedTransaction.is_group_by_ref) {
+          if ($scope.selectedInvoice.is_manual_balance) {
             postData.ar_transaction_id = $scope.selectedTransaction.id;
           } else {
             postData.financial_transaction_id = $scope.selectedTransaction.id
@@ -64,6 +65,7 @@ sntRover.controller('RvArInvoiceAdjustController',
           $scope.closeDialog();
           $scope.$emit('REFRESH_BALANCE_LIST');
         };
+
         var paramsToService = {};
 
           paramsToService.accountId = $scope.arDataObj.accountId;
@@ -74,8 +76,9 @@ sntRover.controller('RvArInvoiceAdjustController',
           params: paramsToService,
           successCallBack: successCallBackOfAdjust
         };
+
         $scope.callAPI( rvAccountsArTransactionsSrv.postAdjustmentInfo, options );
-      }
+      };
 
       init();
 

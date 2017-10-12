@@ -118,17 +118,15 @@ sntRover.controller('RvArBalanceController', ['$scope', '$timeout', 'rvAccountsA
 
 		// Handle Toggle button click to expand list item
 		var clickedBalanceListItem = function( index ) {
-			var clikedItem = $scope.arDataObj.balanceList[index];
+			var clikedItem = $scope.arDataObj.balanceList[index];			
 			
-			//if ( !clikedItem.is_manual_balance || ( clikedItem.is_manual_balance && clikedItem.is_partially_paid) ) {
-				if (!clikedItem.active) {
-					callExpansionAPI(clikedItem);
-				}
-				else {
-					clikedItem.active = false;
-					refreshScroll();
-				}
-			//}
+			if (!clikedItem.active) {
+				callExpansionAPI(clikedItem);
+			}
+			else {
+				clikedItem.active = false;
+				refreshScroll();
+			}
 		};
 
 		/*
