@@ -56,7 +56,7 @@
                     <div class="amount paid">
                         {{currencySymbol}} {{item.amount | number:2 }}
                     </div>
-                    <button type="button" class="button white with-icon" ng-click="clickedUnallocateButton(item)">
+                    <button ng-show="arFlags.hasAllocateUnallocatePermission" type="button" class="button white with-icon" ng-click="clickedUnallocateButton(item)">
                         <span class="icons icon-remove-40"></span>
                     </button>
                 </div>

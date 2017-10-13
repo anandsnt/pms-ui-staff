@@ -206,4 +206,77 @@ angular.module('sntRover').service('rvAccountsArTransactionsSrv', ['$q', 'rvBase
         return deferred.promise;
     };
     
+    /*
+     * Service function to fetch Accounts Receivables
+     * @return {object} payments
+     */
+
+    this.fetchAccountsReceivables = function (params) {
+
+        var deferred = $q.defer(),
+            url = "/api/accounts/ar_overview";
+
+        rvBaseWebSrvV2.getJSON(url, params).then(function (data) {
+            deferred.resolve(data);
+        }, function (data) {
+            deferred.reject(data);
+        });
+        return deferred.promise;
+    };
+
+    /*
+     * Service function to Move invoices
+     * @return {object}
+     */
+
+    this.moveInvoice = function (params) {
+
+        var deferred = $q.defer(),
+            url = "/api/accounts/" + params.account_id + "/ar_transactions/move_invoice";
+
+        rvBaseWebSrvV2.postJSON(url, params).then(function (data) {
+            deferred.resolve(data);
+        }, function (data) {
+            deferred.reject(data);
+        });
+        return deferred.promise;
+    };
+
+    /*
+     * To get the adjustment onfo - to show in dialog
+     */
+    this.getAdjustmentInfo = function(data) {
+      var deferred = $q.defer(),
+      url = 'api/accounts/' + data.accountId + '/ar_transactions/' + data.arTransactionId + '/adjustment_info';
+
+      rvBaseWebSrvV2.postJSON(url, data.requestParams).then(
+        function(data) {
+          deferred.resolve(data);
+        },
+        function(errorMessage) {
+          deferred.reject(errorMessage);
+        }
+      );
+
+      return deferred.promise;
+    };
+    /*
+     * POst adjustment
+     */
+    this.postAdjustmentInfo = function(data) {
+        var deferred = $q.defer(),
+      url = 'api/accounts/' + data.accountId + '/ar_transactions/' + data.arTransactionId + '/post_adjustment';
+
+      rvBaseWebSrvV2.postJSON(url, data.postData).then(
+        function(data) {
+          deferred.resolve(data);
+        },
+        function(errorMessage) {
+          deferred.reject(errorMessage);
+        }
+      );
+
+      return deferred.promise;
+    };
+
 }]);

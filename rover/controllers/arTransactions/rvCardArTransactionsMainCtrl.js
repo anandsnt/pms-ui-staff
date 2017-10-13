@@ -24,7 +24,8 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 			'shouldShowFooter': false,
 			'insufficientAmount': false,
 			'isArSynced': false,
-			'isFromAddPaymentOrAllocateButton': false
+			'isFromAddPaymentOrAllocateButton': false,
+			'hasAllocateUnallocatePermission': rvPermissionSrv.getPermissionValue ('ALLOCATE_UNALLOCATE_PAYMENT')
 		};
 
 		$scope.filterData = {
@@ -126,6 +127,13 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 		 * Handling data based on tabs currently active.
 		 */
 		var successCallbackOfFetchAPI = function( data ) {
+
+			if (data.ar_transactions.length === 0) {
+				if ($scope.arFlags.currentSelectedArTab === 'balance' && $scope.arDataObj.balancePageNo !== 1) {
+					loadAPIData('BALANCE', 1);										
+				}
+			}
+			
 
 			$scope.arDataObj.unpaidAmount = data.unpaid_amount;
 			$scope.arDataObj.paidAmount = data.paid_amount;
@@ -489,8 +497,9 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 		});
 		// Refresh balance list - after adding new manual balance
 		// and after succesfull payment with Allocate payment after posting checked
-		$scope.$on('REFRESH_BALANCE_LIST', function() {
+		$scope.$on('REFRESH_BALANCE_LIST', function() { 
 			$scope.arFlags.currentSelectedArTab = 'balance';
+			$scope.arDataObj.balancePageNo = 1;
 			$scope.fetchTransactions();			
 		});
 		// Refresh balance list - after adding new manual balance

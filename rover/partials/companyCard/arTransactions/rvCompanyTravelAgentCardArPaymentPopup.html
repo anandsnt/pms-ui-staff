@@ -24,7 +24,7 @@
                             <div class="payment-date">
                                 <span class="icons small-icon icon-time time-black"></span>
                                 <time datetime="2017-08-15 12:08 AM">
-                                    <span class="date">{{::payment.transaction_date}}</span>
+                                    <span class="date">{{::payment.transaction_date | date : dateFormat}}</span>
                                     <span class="time">{{::payment.transaction_time}}</span>
                                 </time>
                             </div>
@@ -32,7 +32,7 @@
                                 <span class="currency">{{currencySymbol}}</span>{{::payment.available_amount}}
                             </div>
                             <!-- if allocation -->
-                            <button type="button" class="button green" ng-click="updateAllocatedPayment(payment)">Allocate</button>
+                            <button ng-show="arFlags.hasAllocateUnallocatePermission" type="button" class="button green" ng-click="updateAllocatedPayment(payment)">Allocate</button>
                         </div>
                     </li>
                 </ul>
