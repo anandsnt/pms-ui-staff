@@ -641,7 +641,7 @@
 						<span class="switch-icon"></span>
 					</div>
 				</div>
-				<div class="entry" ng-if="data.payment_gateway === 'MLI'"
+				<div class="entry full-width" ng-if="data.payment_gateway === 'MLI'"
                      ng-show="data.payment_gateway === 'MLI' && data.mli_emv_enabled && data.hotel_pms_type == ''">
 					<label for="mli-transaction-access-url"> MLI Transaction Access URL </label>
 					<input type="text" ng-model="data.mli_txn_access_url" value="{{data.mli_txn_access_url}}"
