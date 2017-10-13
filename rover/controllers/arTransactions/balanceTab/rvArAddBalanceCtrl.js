@@ -79,7 +79,7 @@ sntRover.controller('RvArAddBalanceController', ['$scope', '$rootScope', 'ngDial
 
 			var dataToSend = {
 				'manual_balance_data': manualBalanceList,
-				'account_id': $scope.arDataObj.accountId
+				'account_id': $stateParams.id
 			};
 
 			return dataToSend;
