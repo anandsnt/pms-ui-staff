@@ -128,11 +128,17 @@ sntZestStation.controller('zsCheckinSignatureCtrl', [
                     
                 };   
             }
+            var goToPassportScan = function() {
+                var stateparams = $stateParams;
+                
+                stateparams.signature = getSignatureBase64Data();
+                $state.go('zest_station.checkInScanPassport', $stateParams);
+            };
 
             if ($scope.zestStationData.noCheckInsDebugger === 'true') {
                 $log.log('skipping checkin guest, no-check-ins debugging is ON');
                 if (collectPassportEnabled && !$stateParams.passports_scanned) {
-                    $state.go('zest_station.checkInScanPassport', $stateParams);
+                    goToPassportScan();
                 } else {
                     afterGuestCheckinCallback({ 'status': 'success' });
                 }
@@ -140,7 +146,7 @@ sntZestStation.controller('zsCheckinSignatureCtrl', [
             } else {
 
                 if (collectPassportEnabled && !$stateParams.passports_scanned) {
-                    $state.go('zest_station.checkInScanPassport', $stateParams);
+                    goToPassportScan();
                 } else {
                     if ($scope.inDemoMode()) {
                         afterGuestCheckinCallback({ 'status': 'success' });
@@ -196,6 +202,15 @@ sntZestStation.controller('zsCheckinSignatureCtrl', [
                 lineWidth: 1
             };
             $scope.setScreenIcon('card');
+
+            // As there are too many switches (entry and exit points from signature page),
+            // handling the bypass within signature ctrl will be the safest and easiest way.
+            if ($scope.zestStationData.bypass_kiosk_signature) {
+                $scope.hideSignatureFields = true;
+                checkInGuest();
+            } else {
+                $scope.hideSignatureFields = false;
+            }
         }());
 
         var setTimedOut = function() {
