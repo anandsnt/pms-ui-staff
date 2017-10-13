@@ -1068,13 +1068,13 @@ sntZestStation.controller('zsCheckinScanPassportCtrl', [
                 return email.length > 0 && !($stateParams.guest_email_blacklisted === 'true') && zsUtilitySrv.isValidEmail(email);
             };
 
-            var afterGuestCheckinCallback = function(response) {
+            var afterGuestCheckinCallback = function() {
                 $scope.checkinInProgress = false;
                 // if email is valid and is not blacklisted
                 var haveValidGuestEmail = checkIfEmailIsBlackListedOrValid(),
                     collectNationalityEnabled = $scope.zestStationData.check_in_collect_nationality;
 
-                console.warn('afterGuestCheckinCallback :: current state params: ', $stateParams);
+                $log.warn('afterGuestCheckinCallback :: current state params: ', $stateParams);
 
                 var stateParams = {
                     'guest_id': $stateParams.guest_id,
@@ -1095,7 +1095,7 @@ sntZestStation.controller('zsCheckinScanPassportCtrl', [
                     $state.go('zest_station.checkinKeyDispense', stateParams);
                 } else {
                     // if email is invalid, collect email
-                    console.warn('to email collection: ', stateParams);
+                    $log.warn('to email collection: ', stateParams);
                     $state.go('zest_station.checkInEmailCollection', stateParams);
                 }
             };

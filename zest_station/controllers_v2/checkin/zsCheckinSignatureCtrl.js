@@ -128,8 +128,9 @@ sntZestStation.controller('zsCheckinSignatureCtrl', [
                     
                 };   
             }
-            var goToPassportScan = function(){
+            var goToPassportScan = function() {
                 var stateparams = $stateParams;
+                
                 stateparams.signature = getSignatureBase64Data();
                 $state.go('zest_station.checkInScanPassport', $stateParams);
             };
