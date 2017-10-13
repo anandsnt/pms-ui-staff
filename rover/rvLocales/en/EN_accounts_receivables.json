@@ -17,7 +17,6 @@
 "SHOW_REFERENCE_ON_GUEST_INVOICE": "Show reference on guest invoice",
 "POST_CHARGE"       : "Post Charge",
 "NEW_CHARGE"        : "New Charge",
-"CHARGE_AMOUNT"     : "Charge Amount",
 "TOTAL"     		: "Total",
 "REFERENCE"     	: "Reference",
 "POST"     			: "Post"

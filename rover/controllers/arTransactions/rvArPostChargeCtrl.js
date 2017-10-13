@@ -2,8 +2,9 @@ sntRover.controller('RvArPostChargeController',
 	[ '$rootScope', 
 	'$scope', 
 	'ngDialog',
+    '$timeout',
 	'RVPostChargeSrvV2',
-    function($rootScope, $scope, ngDialog, RVPostChargeSrvV2) {
+    function($rootScope, $scope, ngDialog, $timeout, RVPostChargeSrvV2) {
 	BaseCtrl.call(this, $scope);
 	$scope.searchedItems = [];
 	$scope.isItemsToShow = false;
@@ -67,7 +68,9 @@ sntRover.controller('RvArPostChargeController',
     var autoCompleteSelectHandler = function(event, ui) {
         $scope.selectedItem = ui.item;
         $scope.totalAmount = ui.item.unit_price;
-        $scope.showCalculationArea = true;
+        $timeout(function() {
+            $scope.showCalculationArea = true;
+        }, 200);        
     };
 
     /*
