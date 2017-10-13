@@ -71,6 +71,7 @@ sntZestStation.controller('zsCheckinScanPassportCtrl', [
             rotated = false;
 
         $scope.imageRotated = false;
+        $scope.checkinInProgress = false;
 
         $scope.rotateImage = function() {
             var div = document.getElementById('image-preview');
@@ -1059,9 +1060,76 @@ sntZestStation.controller('zsCheckinScanPassportCtrl', [
                 return false;
             };
 
-            $scope.onNextFromDetails = function() {
-                $scope.zestStationData.checkinGuest();
+            var checkIfEmailIsBlackListedOrValid = function() {
+                // from some states mail is sent as guest_email and some email
+                var email = $stateParams.guest_email ? $stateParams.guest_email : $stateParams.email;
+                email = (!email) ? '' : email;
+
+                return email.length > 0 && !($stateParams.guest_email_blacklisted === 'true') && zsUtilitySrv.isValidEmail(email);
             };
+
+            var afterGuestCheckinCallback = function(response) {
+                $scope.checkinInProgress = false;
+                // if email is valid and is not blacklisted
+                var haveValidGuestEmail = checkIfEmailIsBlackListedOrValid(),
+                    collectNationalityEnabled = $scope.zestStationData.check_in_collect_nationality;
+
+                console.warn('afterGuestCheckinCallback :: current state params: ', $stateParams);
+
+                var stateParams = {
+                    'guest_id': $stateParams.guest_id,
+                    'reservation_id': $stateParams.reservation_id,
+                    'room_no': $stateParams.room_no,
+                    'first_name': $stateParams.first_name,
+                    'email': $stateParams.email
+                };
+
+                if ($scope.zestStationData.is_kiosk_ows_messages_active) {
+                    $scope.setScreenIcon('checkin');
+                    $state.go('zest_station.checkinSuccess', stateParams);
+                }
+                // if collectiing nationality after email, but email is already valid
+                else if (collectNationalityEnabled && haveValidGuestEmail) {
+                    $state.go('zest_station.collectNationality', stateParams);
+                } else if (haveValidGuestEmail) {
+                    $state.go('zest_station.checkinKeyDispense', stateParams);
+                } else {
+                    // if email is invalid, collect email
+                    console.warn('to email collection: ', stateParams);
+                    $state.go('zest_station.checkInEmailCollection', stateParams);
+                }
+            };
+
+            $scope.onNextFromDetails = function() {
+                var checkinParams = {
+                    'reservation_id': $stateParams.reservation_id,
+                    'workstation_id': $scope.zestStationData.set_workstation_id,
+                    'authorize_credit_card': false,
+                    'do_not_cc_auth': false,
+                    'is_promotions_and_email_set': false,
+                    'is_kiosk': true,
+                    'signature': $stateParams.signature
+                };
+                var options = {
+                    params: checkinParams,
+                    successCallBack: afterGuestCheckinCallback,
+                    failureCallBack: function() {
+                        var stateParams = {
+                            'message': 'Checkin Failed.'
+                        };
+                        $state.go('zest_station.speakToStaff', stateParams);
+                        $scope.checkinInProgress = false;
+                    }
+                };
+                // disable further click actions based on this flag
+                $scope.checkinInProgress = true;
+                if ($scope.inDemoMode()) {
+                    afterGuestCheckinCallback();
+                } else {
+                    $scope.callAPI(zsCheckinSrv.checkInGuest, options);
+                }
+            };
+
             $scope.selectedReservation = zsCheckinSrv.getSelectedCheckInReservation();
             fetchReservationDetails();
         }
