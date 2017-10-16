@@ -85,7 +85,15 @@
                                               label="{{'DEFAULT_EXTERNAL_RATE_CODE'| translate}}"
                                               div-class="full-width">
                             </ad-dropdown-name>
+                            <ad-dropdown-name required="yes" name="default-room-type"
+                                              savemodel="data.data.product_cross_customer.default_room_type_id"
+                                              id="room-type" valueproperty="id" property="name" list="roomTypes"
+                                              label="{{'DEFAULT_ROOM_TYPE'| translate}}" styleclass="full-width"
+                                              div-class="full-width">
+                            </ad-dropdown-name>
 
+                        </fieldset>
+                        <fieldset class="holder right">
                             <ad-dropdown-name savemodel="data.data.product_cross_customer.default_origin"
                                               id="default-origin"
                                               valueproperty="value"
@@ -94,8 +102,6 @@
                                               label="{{'TRAVELTRIPPER_DEFAULT_BOOKING_ORIGIN'| translate}}"
                                               div-class="full-width">
                             </ad-dropdown-name>
-                        </fieldset>
-                        <fieldset class="holder right">
                             <ad-dropdown-name savemodel="data.data.product_cross_customer.default_payment_id"
                                               id="default-payment"
                                               valueproperty="id"

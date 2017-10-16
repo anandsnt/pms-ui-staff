@@ -102,6 +102,7 @@
                               valueproperty="id"
                               property="name"
                               list="rates"
+                              required="yes"
                               label="{{'DEFAULT_RATE'| translate}}"
                               div-class="full-width">
             </ad-dropdown-name>
@@ -121,6 +122,15 @@
                               property="description"
                               list="paymentMethods"
                               label="{{'DEFAULT_PAYMENT_METHOD'| translate}}"
+                              div-class="full-width">
+            </ad-dropdown-name>
+            <ad-dropdown-name ng-if="availableSettings.indexOf('room_type_id') > -1"
+                              savemodel="config.room_type_id"
+                              valueproperty="id"
+                              property="name"
+                              required="yes"
+                              list="roomTypes"
+                              label="{{'DEFAULT_ROOM_TYPE'| translate}}"
                               div-class="full-width">
             </ad-dropdown-name>
         </fieldset>
