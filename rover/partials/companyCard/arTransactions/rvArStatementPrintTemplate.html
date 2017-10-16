@@ -144,16 +144,18 @@
 
                     <td class="charges-table-container" colspan="5">
                         <table class="charges-table">
-                            <tr>
-                                <td class="charge-date">{{statement.charge_details.date | date :dateFormat }}</td>
-                                <td class="charge-code">{{statement.charge_details.charge_code}}</td>
+                            <tr ng-repeat="item in statement.charge_details">
+                                <td class="charge-date">{{item.date | date :dateFormat }}</td>
+                                <td class="charge-code">{{item.charge_code}}</td>
                                 <td class="charge-description">
-                                    <span>{{statement.charge_details.charge_description}}</span>
-                                    <span class="reference">{{statement.charge_details.reference_number}}</span>
-                                    <span class="reference">{{statement.charge_details.reference_text}}</span>
+                                    <span>{{item.charge_description}}</span>
+                                    <span class="reference">{{item.reference_number}}</span>
+                                    <span class="reference">{{item.reference_text}}</span>
                                 </td>
-                                <td class="charge-amount align-right"><span class="currency">{{currencySymbol}}</span> {{statement.charge_details.debit | number: precisonTwo}}</td>
-                                <td class="charge-amount align-right"></td>
+                                <td ng-if="!item.is_credit" class="charge-amount align-right"><span class="currency">{{currencySymbol}}</span> {{item.amount | number: precisonTwo}}</td>
+                                <td class="charge-amount align-right" ng-if="!item.is_credit"></td>
+                                <td class="charge-amount align-right" ng-if="item.is_credit"></td>
+                                <td ng-if="item.is_credit" class="charge-amount align-right"><span class="currency">{{currencySymbol}}</span> {{item.amount | number: precisonTwo}}</td>
                             </tr>
                             <tr ng-repeat="item in statement.allocated_payment_details">
                                 <td class="charge-date">{{item.date | date :dateFormat }}</td>
