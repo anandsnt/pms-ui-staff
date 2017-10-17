@@ -113,7 +113,11 @@
                         <td class="fees"></td>
                         <td class="credits">
                             <span class="currency">{{ currencySymbol }}</span>{{ payment.amount | number:2 }}
-                                <button ng-show="arFlags.hasAllocateUnallocatePermission" class="icons icon-remove-40" ng-click="clickedUnallocateButton(payment)"></button>
+                        </td>
+                        <td class="action">
+                            <button class="button blank with-icon only-icon open-modal" ng-show="arFlags.hasAllocateUnallocatePermission" ng-click="clickedUnallocateButton(payment)">
+                                <span class="icons icon-remove-40"></span>
+                            </button>
                         </td>
                     </tr>
 
