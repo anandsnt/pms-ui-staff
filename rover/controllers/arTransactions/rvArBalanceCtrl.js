@@ -250,6 +250,7 @@ sntRover.controller('RvArBalanceController', ['$scope', '$timeout', 'rvAccountsA
 			var passData = {
 				firstName: data.guest_first_name,
 				lastName: data.guest_last_name,
+				accountName: data.account_name,
 				invoiceNumber: data.invoice_number,
 				confirmationNumber: data.reservation_confirm_no,
 				arrivalDate: data.reservation_arrival_date,
