@@ -47,7 +47,7 @@ angular.module('sntRover').service('RVreportsSrv', [
              'Last Week Reservations': [
                 'LAST_SEVEN_DAYS'
              ],
-             'Last Month Reservations': [
+             'Past Reservations - Monthly': [
                 'ALL',
                 'LAST_MONTH',
                 'LAST_JANUARY',
