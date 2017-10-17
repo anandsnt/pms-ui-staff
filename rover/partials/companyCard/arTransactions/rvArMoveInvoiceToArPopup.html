@@ -7,7 +7,8 @@
 					<img ng-src="{{moveInvoiceHeaderData.image}}" alt="">
 				</figure>
 				<div class="data">
-					<h2>{{moveInvoiceHeaderData.firstName}} {{moveInvoiceHeaderData.lastName}}</h2>
+					<h2 ng-if="moveInvoiceHeaderData.associatedType !== 'PostingAccount'">{{moveInvoiceHeaderData.firstName}} {{moveInvoiceHeaderData.lastName}}</h2>
+					<h2 ng-if="moveInvoiceHeaderData.associatedType === 'PostingAccount'">{{moveInvoiceHeaderData.accountName}}</h2>
 					<div class="information">
 						<span ng-if="moveInvoiceHeaderData.invoiceNumber && moveInvoiceHeaderData.associatedType !== 'PostingAccount'" class="invoice">{{ 'INVOICE#' | translate }}<span class="value">{{moveInvoiceHeaderData.invoiceNumber}}</span></span>
 						<span ng-if="moveInvoiceHeaderData.invoiceNumber && moveInvoiceHeaderData.associatedType === 'PostingAccount'" class="invoice">{{ 'ACCOUNT#' | translate }}<span class="value">{{moveInvoiceHeaderData.invoiceNumber}}</span></span>

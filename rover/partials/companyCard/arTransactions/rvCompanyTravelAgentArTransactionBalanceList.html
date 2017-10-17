@@ -162,15 +162,10 @@
                                
                         </td>
                          <td class="action">
-                            
-                             <button ng-show="arFlags.hasAllocateUnallocatePermission" class="icons icon-remove-40" ng-click="clickedUnallocateButton(payment)"></button>
 
-                            <!--Show if payment can be unallocated
-                                <button class="button blank with-icon only-icon">
-                                    <span class="icons icon-remove-40"></span>
-                                </button>
-                             -->
-
+                            <button class="button blank with-icon only-icon open-modal" ng-show="arFlags.hasAllocateUnallocatePermission" ng-click="clickedUnallocateButton(payment)">
+                                <span class="icons icon-remove-40"></span>
+                            </button>                     
                         </td>
                     </tr>
 
