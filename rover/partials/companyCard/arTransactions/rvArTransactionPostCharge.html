@@ -30,7 +30,12 @@
                 <label for="reference">{{'REFERENCE' | translate}}</label>
                 <input name="reference" id="reference" ng-model="reference" placeholder="Enter Reference" value="" type="text" />
             </div>
-
+            <div class="entry full-width">
+                <label class="checkbox inline" for="add-in-guest-card" ng-class="{'checked': show_reference_on_guest_invoice}">
+                    <span class="icon-form icon-checkbox" ng-class="{'checked': show_reference_on_guest_invoice}"></span>
+                    <input ng-model="show_reference_on_guest_invoice" id="add-in-guest-card" value="1" type="checkbox" /> {{'SHOW_REFERENCE_ON_GUEST_INVOICE' | translate}}
+                </label>
+            </div>
              
             <div class="actions">
                 <button type="button" class="button green" ng-click="postCharge()">{{'POST' | translate}}</button>

@@ -107,6 +107,7 @@ sntRover.controller('RvArPostChargeController',
         postChargeData.reference  = $scope.reference;
         postChargeData.is_item    = $scope.selectedItem.type === "ITEM";
         postChargeData.amount     = parseFloat($scope.selectedItem.unit_price);
+        postChargeData.show_ref_on_invoice = $scope.show_reference_on_guest_invoice;
         dataToSrv.postChargeData  = postChargeData;
         dataToSrv.accountId       = $scope.arDataObj.accountId;
         dataToSrv.arTransactionId = $scope.selectedItemToPostCharge.transaction_id; 
