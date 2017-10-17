@@ -71,10 +71,10 @@
 	 								<h2 ng-bind-html="getHighlightedHTML(account.account_name, moveInvoiceData.query)"></h2>
 	 								<div class="information">
 	 									<span class="number">{{account.ar_number}}</span>
-	 									<span class="icons icon-location">{{account.location}}</span>
-	 									<span ng-if="account.type === 'COMPANY'" class="icons icon-guest-company">{{account.account_number}}</span>
-	 									<span ng-if="account.type === 'TRAVELAGENT'" class="icons icon-guest-travelagent">{{account.account_number}}</span>
-	 									<span class="icons icon-time">{{account.ageing_date}}</span>
+	 									<span ng-class="{'icons': account.location}" class="icon-location">{{account.location}}</span>
+	 									<span ng-if="account.type === 'COMPANY'" ng-class="{'icons': account.account_number}" class="icon-guest-company">{{account.account_number}}</span>
+	 									<span ng-if="account.type === 'TRAVELAGENT'" ng-class="{'icons': account.account_number}" class="icon-guest-travelagent">{{account.account_number}}</span>
+	 									<span ng-class="{'icons': account.ageing_date}" class="icon-time">{{account.ageing_date}}</span>
 	 								</div>
 	 							</div>
 	 						</div>
@@ -99,10 +99,10 @@
 		 								<h2>{{moveInvoiceData.fromAccount.accountName}}</h2>
 		 								<div class="information">
 		 									<span class="number">{{moveInvoiceData.fromAccount.accountName}}</span>
-		 									<span class="icons icon-location">{{moveInvoiceData.fromAccount.location}}</span>
-		 									<span ng-if="moveInvoiceData.fromAccount.type === 'COMPANY'" class="icons icon-guest-company">{{moveInvoiceData.fromAccount.accountNumber}}</span>
-	 										<span ng-if="moveInvoiceData.fromAccount.type === 'TRAVELAGENT'" class="icons icon-guest-travelagent">{{moveInvoiceData.fromAccount.accountNumber}}</span>
-	 										<span class="icons icon-time">{{moveInvoiceData.fromAccount.ageingDate}}</span>
+		 									<span ng-class="{'icons': moveInvoiceData.fromAccount.location}" class="icon-location">{{moveInvoiceData.fromAccount.location}}</span>
+		 									<span ng-if="moveInvoiceData.fromAccount.type === 'COMPANY'" ng-class="{'icons': moveInvoiceData.fromAccount.accountNumber}" class="icon-guest-company">{{moveInvoiceData.fromAccount.accountNumber}}</span>
+	 										<span ng-if="moveInvoiceData.fromAccount.type === 'TRAVELAGENT'" ng-class="{'icons': moveInvoiceData.fromAccount.accountNumber}" class="icon-guest-travelagent">{{moveInvoiceData.fromAccount.accountNumber}}</span>
+	 										<span ng-class="{'icons': moveInvoiceData.fromAccount.ageingDate}" class="icon-time">{{moveInvoiceData.fromAccount.ageingDate}}</span>
 		 								</div>
 		 							</div>
 		 						</div>
@@ -121,10 +121,10 @@
 		 								<h2>{{moveInvoiceData.toAccount.accountName}}</h2>
 		 								<div class="information">
 		 									<span class="number">{{moveInvoiceData.toAccount.accountName}}</span>
-		 									<span class="icons icon-location">{{moveInvoiceData.toAccount.location}}</span>
-		 									<span ng-if="moveInvoiceData.toAccount.type === 'COMPANY'" class="icons icon-guest-company">{{moveInvoiceData.toAccount.accountNumber}}</span>
-	 										<span ng-if="moveInvoiceData.toAccount.type === 'TRAVELAGENT'" class="icons icon-guest-travelagent">{{moveInvoiceData.toAccount.accountNumber}}</span>
-	 										<span class="icons icon-time">{{moveInvoiceData.toAccount.ageingDate}}</span>
+		 									<span ng-class="{'icons': moveInvoiceData.toAccount.location}" class="icon-location">{{moveInvoiceData.toAccount.location}}</span>
+		 									<span ng-if="moveInvoiceData.toAccount.type === 'COMPANY'" ng-class="{'icons': moveInvoiceData.toAccount.accountNumber}" class="icon-guest-company">{{moveInvoiceData.toAccount.accountNumber}}</span>
+	 										<span ng-if="moveInvoiceData.toAccount.type === 'TRAVELAGENT'" ng-class="{'icons': moveInvoiceData.toAccount.accountNumber}" class="icon-guest-travelagent">{{moveInvoiceData.toAccount.accountNumber}}</span>
+	 										<span ng-class="{'icons': moveInvoiceData.toAccount.ageingDate}" class="icon-time">{{moveInvoiceData.toAccount.ageingDate}}</span>
 		 								</div>
 		 							</div>
 		 							<button ng-click="changeButtonClick()" type="button" class="button blue" translate>CHANGE</button>

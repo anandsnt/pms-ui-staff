@@ -128,11 +128,17 @@ sntZestStation.controller('zsCheckinSignatureCtrl', [
                     
                 };   
             }
+            var goToPassportScan = function() {
+                var stateparams = $stateParams;
+                
+                stateparams.signature = getSignatureBase64Data();
+                $state.go('zest_station.checkInScanPassport', $stateParams);
+            };
 
             if ($scope.zestStationData.noCheckInsDebugger === 'true') {
                 $log.log('skipping checkin guest, no-check-ins debugging is ON');
                 if (collectPassportEnabled && !$stateParams.passports_scanned) {
-                    $state.go('zest_station.checkInScanPassport', $stateParams);
+                    goToPassportScan();
                 } else {
                     afterGuestCheckinCallback({ 'status': 'success' });
                 }
@@ -140,7 +146,7 @@ sntZestStation.controller('zsCheckinSignatureCtrl', [
             } else {
 
                 if (collectPassportEnabled && !$stateParams.passports_scanned) {
-                    $state.go('zest_station.checkInScanPassport', $stateParams);
+                    goToPassportScan();
                 } else {
                     if ($scope.inDemoMode()) {
                         afterGuestCheckinCallback({ 'status': 'success' });
