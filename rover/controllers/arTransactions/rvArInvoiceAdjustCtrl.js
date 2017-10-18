@@ -40,6 +40,7 @@ sntRover.controller('RvArInvoiceAdjustController',
 
         $scope.callAPI( rvAccountsArTransactionsSrv.getAdjustmentInfo, options );
       };
+      
       /*
        * amount to decimal
        */
