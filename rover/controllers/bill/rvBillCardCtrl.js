@@ -2522,7 +2522,7 @@ sntRover.controller('RVbillCardController',
 		    	if ( sntapp.cordovaLoaded ) {
 		    		cordova.exec(function(success) {}, function(error) {}, 'RVCardPlugin', 'printWebView', []);
 		    	}
-		    }, 200);
+		    }, 500);
 
 		    /*
 		    *	======[ PRINTING COMPLETE. JS EXECUTION WILL UNPAUSE ]======
@@ -2535,7 +2535,7 @@ sntRover.controller('RVbillCardController',
 				$("header .h2").addClass('text-hide');
 				// remove the orientation after similar delay
 		    	removePrintOrientation();
-		    }, 200);
+		    }, 500);
 
 		};
 
