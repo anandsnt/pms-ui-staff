@@ -41,8 +41,8 @@ module.exports = function(gulp, $, options) {
                     'copy-admin-base-html', 
                     'copy-zest-base-html',
                     'copy-rover-base-html',
-                    'compress-images-loselessly',
-                    'copy-guestweb-v2-base-html'
+                    'copy-guestweb-v2-base-html',
+                    'compress-images-loselessly'
                 ],
 
         developmentTasks = [
