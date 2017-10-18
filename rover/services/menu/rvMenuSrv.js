@@ -267,7 +267,8 @@ angular.module('sntRover').service('rvMenuSrv',
 		        }, {
 		            title: "MENU_MAINTAENANCE",
 		            action: "",
-		            menuIndex: "maintanance"
+		            menuIndex: "maintanance",
+		            hidden: true
 		        }]
 		    }, {
 		        title: "MENU_FINANCIALS",

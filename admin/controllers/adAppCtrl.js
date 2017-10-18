@@ -220,7 +220,8 @@ admin.controller('ADAppCtrl', [
                             hidden: ( $rootScope.isHourlyRatesEnabled || !showTaskManagementInHKMenu )
                         }, {
                             title: 'MENU_MAINTAENANCE',
-                            action: ''
+                            action: '',
+                            hidden: true
                         }]
                     }, {
                         title: 'MENU_FINANCIALS',
