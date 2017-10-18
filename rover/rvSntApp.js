@@ -12,7 +12,8 @@ var GlobalApp = function() {
         this.MLIOperator = new MLIOperation();
         this.desktopUUIDService = new DesktopUUIDService();
     }
-        catch (er) {
+    catch (er) {
+        console.log(er);
     }
 
 

@@ -105,6 +105,13 @@ admin.service('adExternalInterfaceCommonSrv', ['$http', '$q', 'ADBaseWebSrv', 'A
 		return deferred.promise;
 	};
 
+    /**
+     * Fetch the hotels room types
+     */
+    this.fetchRoomTypes = function() {
+        return ADBaseWebSrv.getJSON('/admin/room_types.json');
+    };
+
 	this.testSetup = function(data) {
 		var deferred = $q.defer();
 		var url = 'admin/test_ota_connection/' + data.interface;

@@ -97,7 +97,7 @@
 			<span class="h2" translate>PLEASE_SEE_FRONT_DESK</span>
 			<button type="button" id="reset-dates" class="button blank" ng-click="resetDates()" translate>RESET_DATES</button>
 		</div>
-	</div>	
+	</div>
 
 	<!-- Room is under Maintenance -->
 	<div id="room-locked" class="updates-content no-content" ng-show="rightSideReservationUpdates=='MAINTENANCE'" ng-class="{'hidden': rightSideReservationUpdates!='MAINTENANCE'}">
@@ -194,6 +194,14 @@
 			<button type="button"id="reset-dates" class="button blank" ng-click="resetDates()" translate>
 				RESET_DATES
 			</button>
+		</div>
+	</div>
+
+	<div id="room-locked" class="updates-content no-content" ng-show="rightSideReservationUpdates=='NO_ROOM_MOVE'" ng-class="{'hidden': rightSideReservationUpdates!='NO_ROOM_MOVE'}">
+		<div class="info">
+			<strong class="h1" translate>NO_ROOM_MOVE</strong>
+			<span class="h2" translate>PLEASE_SEE_FRONT_DESK</span>
+			<button type="button" id="reset-dates" class="button blank" ng-click="resetDates()" translate>RESET_DATES</button>
 		</div>
 	</div>
 

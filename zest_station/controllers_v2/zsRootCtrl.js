@@ -867,7 +867,7 @@ sntZestStation.controller('zsRootCtrl', [
             var commonIconsPath = '/assets/zest_station/css/icons/default';
 
             // var basicHomeIcons = ['zoku'],
-            var niceHomeIcons = ['avenue', 'sohotel', 'epik', 'public', 'public_v2', 'duke', 'de-jonker', 'chalet-view', 'freehand', 'row-nyc', 'circle-inn-fairfield', 'cachet-boutique', 'hi-ho', 'first', 'viceroy-chicago', 'amrath'],
+            var niceHomeIcons = ['avenue', 'sohotel', 'epik', 'public', 'public_v2', 'duke', 'de-jonker', 'chalet-view', 'freehand', 'row-nyc', 'circle-inn-fairfield', 'cachet-boutique', 'hi-ho', 'first', 'viceroy-chicago', 'amrath', 'jupiter'],
                 nonCircleNavIcons = ['public_v2'];// minor adjustment to the back/close icons for some themes (only show the inner x or <)
 
 
@@ -1831,6 +1831,11 @@ sntZestStation.controller('zsRootCtrl', [
             }
         };
 
+        /**
+         * [turnOffLight Yotel needs lights to be in white color in inactive state]
+         * @param  {[type]} selected_light_id [description]
+         * @return {[type]}                   [description]
+         */
         $scope.turnOffLight = function(selected_light_id) {
             if ($scope.zestStationData.kiosk_is_hue_active) {
                 var lightId = selected_light_id ? selected_light_id : $scope.zestStationData.selected_light_id;
@@ -1838,8 +1843,11 @@ sntZestStation.controller('zsRootCtrl', [
                     'Command': 'cmd_hue_light_change',
                     'Data': $scope.zestStationData.hue_bridge_ip,
                     'hueLightAppkey': $scope.zestStationData.hue_user_name,
-                    'shouldLight': '0',
-                    'lightList': [lightId]
+                    'shouldLight': '1',
+                    'lightList': [lightId],
+                    'blink': 0,
+                    'lightColor': '#ffffff',
+                    'brightness': $scope.zestStationData.hue_brightness || 254
                 };
                 var jsonstring = JSON.stringify(json);
 

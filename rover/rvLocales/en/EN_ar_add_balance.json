@@ -1,6 +1,6 @@
 "NAME": "Name",
 "INVOICE_NO": "Invoice No",
-"DEPARTURE_DATE":"Departure Date",
+"AGING_DATE":"Aging Date",
 "AMOUNT":"Amount",
 "TOTAL":"Total",
 "CLEAR_QUERY":"Clear query"

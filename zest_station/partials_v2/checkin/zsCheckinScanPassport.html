@@ -296,7 +296,7 @@
 <section id="main" class="guest-id-verify" role="main" ng-hide="mode !== 'ADMIN_VERIFY_PASSPORT_VIEW'" >
         
 
-        <div id="flex-holder">
+        <div id="flex-holder" click-touch="enableScroll()"">
             <div id="textual" class="review-bill scrollable" ng-iscroll="passport-validate">
                 <div class="wrapper passport-details">
                     <div id="bill">
@@ -409,6 +409,22 @@
                             <input type="text" value='selectedPassportInfo.city' ng-model='selectedPassportInfo.city' class="disabled"/>
                         </div>
 
+                        <br/><br/>
+                        <div  class="entry with-label">
+                            <label>
+                                <text data-ng-bind-html="getTagValue('SIGNATURE')" editable-text="GID_REVIEW_CITY"></text>
+                            </label>
+                            <form type="post" action="" id="signature" style="width:40%;float: right;">
+                                <form id="signature-pad" class="complete-registration form signature-pad-layout">
+                                    <div>
+                                        <div class="sig">
+                                            <div width='100%' class='station-sign' id="signature" ui-jq="jSignature" ui-options="signaturePluginOptions" ng-mouseover="disableScroll()" click-touch="disableScroll()" ng-mouseleave="enableScroll()" style="background: #d9d9d9;text-align: center;">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                            </form>
+                        </div>
 
                     </div>
                 </div>
@@ -420,6 +436,10 @@
                 <text data-ng-bind-html="getTagValue('GID_VERIFY_PASSPORT_REJECT')" editable-text="GID_VERIFY_PASSPORT_REJECT"></text>
             </button>
 
+             <button type="button" class="button" touch-press='clearSignature(); resetTime()'>
+                <text data-ng-bind-html="getTagValue('GID_VERIFY_CLEAR_SIGNATURE')" editable-text="GID_VERIFY_CLEAR_SIGNATURE"></text>
+            </button>
+
             <button type="button" class="button" touch-press='acceptPassport(); resetTime()'>
                 <text data-ng-bind-html="getTagValue('GID_VERIFY_PASSPORT_ACCEPT')" editable-text="GID_VERIFY_PASSPORT_ACCEPT"></text>
             </button>
@@ -428,4 +448,87 @@
 
 <!-- 
     <span ng-include="'/assets/partials_v2/zsTabletFooter.html'" click-touch='resetTime()'></span> -->
+</section>
+
+<!-- Content -->
+<section id="main" class="centered" role="main" click-touch='resetTime()' ng-show="mode === 'RESERVATION_DETAILS'">
+    <div id="content" ng-show="isReservationDetailsFetched">
+        <h1>
+            <text data-ng-bind-html="getTagValue('RES_DETAIL_HEADER')" editable-text="RES_DETAIL_HEADER"></text>
+        </h1>
+        <div id="flex-holder">
+            <!-- Calculate {maxheight} with this formula: window.height - combined heights of <h1>, <h2> and <h3> elements + 8
+                - if some <h> elements are missing just exclude them or use 0.
+                - 8 is added to make sure bottom rounded corner is set off screen
+            -->
+
+            <div id="textual" class="reservation-details pull-left scrollable fill-height" ng-iscroll="res-details" ng-iscroll-delay="100" ng-init="setScroll()"> <!-- Add ng-scroll here style="max-height:{maxheight}px;" -->
+                <div class="wrapper">
+                    <div id="guests">
+                        <p class="px-space">
+                            <strong>{{selectedReservation.guest_details[0].last_name}}, {{selectedReservation.guest_details[0].first_name}} </strong>
+                            <span>{{selectedReservation.reservation_details.guests_total}}
+                                <text data-ng-bind-html="getTagValue('RESIDENTS')" editable-text="RESIDENTS"></text>
+                            </span>
+                            {{selectedReservation.reservation_details.room_type_description}}
+                        </p>
+                        <p ng-hide="{{selectedReservation.guest_details.length == 1}} || zestStationData.is_standalone">
+                            <text data-ng-bind-html="getTagValue('ADDTL_RESIDENTS')" editable-text="ADDTL_RESIDENTS"></text>
+                             ({{selectedReservation.guest_details.length-1}})
+                         </p>
+                      <!--   <button ng-if='zestStationData.kiosk_add_remove_guests' type="button" class="button add-remove-btn" touch-press="addRemove()" >
+                            <text data-ng-bind-html="getTagValue('ADD_REMOVE_GUESTS')" editable-text="ADD_REMOVE_GUESTS"></text>
+                        </button> -->
+                    </div>
+                    <ul id="rate" class="reservation-details">
+                        <li >
+                            {{zestStationData.isHourlyRateOn ? 'HOURS' :'DAY_NIGHTS'|translate}}<span>{{zestStationData.isHourlyRateOn ? selectedReservation.reservation_details.no_of_hours :
+                            selectedReservation.reservation_details.total_nights}}</span>
+                        </li>
+                        <li ng-hide="isRateSuppressed()">
+                            {{zestStationData.isHourlyRateOn ? 'HOURLY_RATE' : 'AVG_DAILY' |translate}}<span>{{zestStationData.currencySymbol}}{{selectedReservation.reservation_details.avg_daily_rate | number :2}}</span>
+                        </li>
+                        <li ng-hide="isRateSuppressed()" ng-repeat="addon in selectedReservation.addons">
+                            {{addon.name}}
+                            <!-- hide the addon qty and addon amount till the calculations are done in API -->
+                           <!--  ({{addon.addon_count}}) -->
+                            <span ng-show='{{!addon.is_inclusive}} && false'>{{zestStationData.currencySymbol}}{{addon.amount | number :2}}</span>
+                            <span ng-show='{{addon.is_inclusive}}'>
+                                <text data-ng-bind-html="getTagValue('INCLUDED')" editable-text="INCLUDED"></text>
+                            </span>
+                        </li>
+
+                        <li class="break"></li>
+
+                        <li ng-hide="isRateSuppressed()" class="sub">
+                            <text data-ng-bind-html="getTagValue('RES_TAX_FEES')" editable-text="RES_TAX_FEES"></text>
+                        <span>{{zestStationData.currencySymbol}}{{selectedReservation.reservation_details.deposit_attributes.fees | number :2}}</span></li>
+                        <li ng-hide="isRateSuppressed()" class="sub">
+                            <text data-ng-bind-html="getTagValue('RES_SUB')" editable-text="RES_SUB"></text>
+                        <span>{{zestStationData.currencySymbol}}{{selectedReservation.reservation_details.deposit_attributes.sub_total | number :2}}</span></li>
+                        <li ng-hide="isRateSuppressed()" class="sub">
+                            <text data-ng-bind-html="getTagValue('RES_DEPOSITS')" editable-text="RES_DEPOSITS"></text>
+                        <span>{{zestStationData.currencySymbol}}{{selectedReservation.reservation_details.deposit_attributes.deposit_paid | number :2}}</span></li>
+                        <li ng-if="isRateSuppressed()" class="total">
+                            <text data-ng-bind-html="getTagValue('RES_BAL_DUE')" editable-text="RES_BAL_DUE"></text>
+                        <span>{{zestStationData.currencySymbol}}{{selectedReservation.reservation_details.balance | number :2}}</span></li>
+                        <li ng-if="!isRateSuppressed()" class="total">
+                            <text data-ng-bind-html="getTagValue('RES_BAL_DUE')" editable-text="RES_BAL_DUE"></text>
+                        <span>{{zestStationData.currencySymbol}}{{selectedReservation.reservation_details.deposit_attributes.outstanding_stay_total | number :2}}</span></li>
+                    </ul>
+                </div>
+            </div>
+            <div id="actions" class="pull-right">
+                <button type="button" class="button" touch-press="onNextFromDetails()" ng-class="{'overlay disabled': checkinInProgress}">
+                    <text data-ng-bind-html="getTagValue('RES_NEXT')" editable-text="RES_NEXT"></text>
+                </button>
+                <p>
+                    <strong>
+                        <text data-ng-bind-html="getTagValue('RES_Q')" editable-text="RES_Q"></text>
+                    </strong>
+                    <text data-ng-bind-html="getTagValue('RES_Q_SUB')" editable-text="RES_Q_SUB"></text>
+                </p>
+            </div>
+        </div>
+    </div>
 </section>
