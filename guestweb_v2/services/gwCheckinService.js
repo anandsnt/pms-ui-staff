@@ -222,4 +222,22 @@ sntGuestWeb.service('GwCheckinSrv', [
 		return deferred.promise;
 	};
 
+	this.sampleETAupdationResponse = {
+		"early_checkin_on": true,
+		"early_checkin_available": true,
+		"reservation_in_early_checkin_window": true,
+		"checkin_time": " 3:00 PM",
+		"last_early_checkin_hour": "12",
+		"last_early_checkin_minute": "00",
+		"last_early_checkin_primetime": "PM",
+		"early_checkin_restrict_hour_for_display": " 2",
+		"early_checkin_restrict_hour": "02",
+		"early_checkin_restrict_minute": "30",
+		"early_checkin_restrict_primetime": "PM",
+		"early_checkin_restrict_time": "02:30:00 PM",
+		"bypass_early_checkin": false,
+		"early_checkin_offer_id": 12,
+		"early_checkin_charge": '$30'
+	};
+
 }]);

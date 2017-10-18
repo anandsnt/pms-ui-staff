@@ -17,11 +17,6 @@ sntGuestWeb.controller('gwRoomUpgradeController', ['$scope', '$state', '$control
 		 * Room Upgrades fetch actions starts here
 		 */
 
-		$scope.returnUpgradeRoomImage = function(room_type_image) {
-			console.log((room_type_image.length > 0) ? room_type_image : 'room-image.png');
-			return (room_type_image.length > 0) ? room_type_image : 'room-image.png';
-		};
-
 		var onUpgradeFetchSuccess = function(response) {
 			$scope.upgradeOptions = response;
 			$scope.isUpgradesFetching = false;

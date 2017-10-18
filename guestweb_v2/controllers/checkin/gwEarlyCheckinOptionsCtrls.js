@@ -34,7 +34,11 @@ sntGuestWeb.controller('gwEarlyCheckinOptionsController', ['$scope', '$state', '
 				successCallBack: applyEarlyCheckinSuccess
 			};
 
-			$scope.callAPI(GwCheckinSrv.applyEarlyCheckin, options);
+			if (GwWebSrv.zestwebData.isInZestwebDemoMode) {
+				applyEarlyCheckinSuccess();
+			} else {
+				$scope.callAPI(GwCheckinSrv.applyEarlyCheckin, options);
+			}
 		};
 		$scope.changeArrivalTime = function() {
 			var stateParams = {

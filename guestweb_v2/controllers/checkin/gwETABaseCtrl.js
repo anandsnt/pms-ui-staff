@@ -59,8 +59,11 @@ sntGuestWeb.controller('gwETABaseController', ['$scope', '$state', '$controller'
 					params: params,
 					successCallBack: updateReservationDetailsSuccess
 				};
-
-				$scope.callAPI(GwCheckinSrv.updateReservationDetails, options);
+				if (GwWebSrv.zestwebData.isInZestwebDemoMode) {
+					updateReservationDetailsSuccess(GwCheckinSrv.sampleETAupdationResponse);
+				} else {
+					$scope.callAPI(GwCheckinSrv.updateReservationDetails, options);
+				}
 			}
 		};
 	}
