@@ -29,7 +29,7 @@
 
         <div id="edit-amount" class="entry full-width">
             <label for="new-amount">New Amount (<span class="currency">{{currencySymbol}}</span>)</label>
-            <input name="new-amount" id="new-amount" placeholder="Enter value" value="" type="text" ng-model="new_amount" />
+            <input name="new-amount" id="new-amount" placeholder="Enter value" value="" type="text" ng-model="new_amount" ng-blur="enteredAmount()" />
         </div>
         
         <div class="entry full-width reference" ng-hide="selectedInvoice.is_manual_balance">

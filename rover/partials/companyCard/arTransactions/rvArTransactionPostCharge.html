@@ -20,7 +20,7 @@
             <!-- remove .hidden when a charge has been selected -->
             <div id="charge-total" class="entry full-width charge-total" ng-show="showCalculationArea">
                 <label>{{'CHARGE_AMOUNT' | translate}} (<span class="currency">{{currencySymbol}}</span>)</label>
-                <input name="charge-amount" class="amount" type="text" ng-model="selectedItem.unit_price" value="{{selectedItem.unit_price}}" ng-change="changedQuantity()"/>
+                <input name="charge-amount" class="amount" type="text" ng-model="selectedItem.unit_price" value="{{selectedItem.unit_price}}" ng-change="changedQuantity()" ng-blur="enteredAmount()"/>
                 <span class="delimeter">x</span>
                 <input name="charge-quantity" ng-model="quantity" class="quantity" type="text" value="1" ng-change="changedQuantity()"/>
                 <span class="total">{{'TOTAL' | translate}}: <strong>{{totalAmount}}</strong></span>
