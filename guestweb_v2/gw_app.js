@@ -62,7 +62,7 @@ sntGuestWeb.controller('HomeController', ['$scope', '$rootScope', '$state', '$co
         GwWebSrv.zestwebData.isInZestwebDemoMode = !!reservationAndhotelDetails.zest_web ? reservationAndhotelDetails.zest_web.is_zestweb_demo_mode_on : false;
         
         // /to delete afterwards
-        GwWebSrv.zestwebData.isInZestwebDemoMode = true;
+        // GwWebSrv.zestwebData.isInZestwebDemoMode = true;
 
         // set static items
         $rootScope.hotelLogo = reservationAndhotelDetails.hotel_logo;
