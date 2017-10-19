@@ -1793,7 +1793,8 @@ angular.module('sntRover').controller('guestCardController', [
 			} else {
 				if (!$scope.reservationDetails.guestCard.futureReservations || $scope.reservationDetails.guestCard.futureReservations <= 0) {
                     // CICO-41517
-                    var hasMultipleReservations = $scope.reservationData && $scope.reservationData.reservationIds.length ? true : false;
+                    var hasMultipleReservations = $scope.reservationData && $scope.reservationData.reservationIds.length > 0;
+
 					$scope.replaceCardCaller('guest', guest, hasMultipleReservations);
 				} else {
 					$scope.checkFuture('guest', guest);
