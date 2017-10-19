@@ -908,6 +908,9 @@ angular.module('sntPay').controller('sntPaymentController',
                     $scope.payment.amount = initialPaymentAmount;
                     calculateFee();
                 }
+                else if(!$scope.isEditable){
+                    $scope.payment.isEditable = false;
+                }
                 else {
                     $scope.payment.isEditable = true;
                 }
