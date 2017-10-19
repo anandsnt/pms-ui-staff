@@ -95,5 +95,23 @@ sntGuestWeb.controller('HomeController', ['$scope', '$rootScope', '$state', '$co
         } else if (reservationAndhotelDetails.is_checkin === "true" && reservationAndhotelDetails.access_token.length > 0) {
             $state.go('checkinLanding');
         }
+
+        document.addEventListener("keydown", function(event) {
+            if (event.altKey) {
+                switch (event.keyCode) {
+                    // ALT + e --> Turn on edit mode
+                    case 69:
+                        break;
+                    // ALT + d --> Toggle demo mode
+                    case 68:
+                        GwWebSrv.zestwebData.isInZestwebDemoMode = !GwWebSrv.zestwebData.isInZestwebDemoMode;
+                        break;
+                    default:
+                        return;
+                }
+            } else {
+                return;
+            }
+        });
     }
 ]);
