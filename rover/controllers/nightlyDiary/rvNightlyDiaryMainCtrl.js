@@ -137,8 +137,6 @@ angular.module('sntRover')
                 if (roomId) {
                     postData.room_id = roomId;
                     $scope.diaryData.selectedRoomId = roomId;
-                } else {
-                    $scope.diaryData.selectedRoomId = null;
                 }
                 $scope.invokeApi(RVNightlyDiarySrv.fetchRoomsListAndReservationList, postData, successCallBackFetchRoomList);
             };
