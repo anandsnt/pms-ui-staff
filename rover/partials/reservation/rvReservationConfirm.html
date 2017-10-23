@@ -189,7 +189,7 @@
                             {{ 'CONFIRM_RESERVATION' | translate }}
                         </button>
                         <button type="button" class="button blue with-icon"
-                            ng-show="sendConfirmationLetter && printConfirmationLetter"
+                            ng-if="sendConfirmationLetter && printConfirmationLetter"
                             ng-click="printConfirmationReservation()">
                             <span class="icons icon-print"></span>
                             {{'PRINT_CONFIRMATION' | translate}}
