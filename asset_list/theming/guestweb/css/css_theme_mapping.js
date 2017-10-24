@@ -4,6 +4,7 @@ module.exports = {
         var themeCSSRoot = 'stylesheets/guestweb/';
 
         return {
+            'guestweb_basecamp_boulder_south_lake_tahoe': [ themeCSSRoot + 'guestweb_basecamp_boulder_south_lake_tahoe.css'],
             'guestweb_sage_inn': [ themeCSSRoot + 'guestweb_sage_inn.css'],
             'guestweb_the_gotham_hotel': [ themeCSSRoot + 'guestweb_the_gotham_hotel.css'],
             'guestweb_basecamp_boulder_tahoe_city': [ themeCSSRoot + 'guestweb_basecamp_boulder_tahoe_city.css'],
