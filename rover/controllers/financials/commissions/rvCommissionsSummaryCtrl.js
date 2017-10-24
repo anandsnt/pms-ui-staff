@@ -29,9 +29,26 @@ sntRover.controller('RVCommissionsSummaryController', ['$scope', '$rootScope', '
     };
     $scope.expandCommision = function(account) {
         $scope.expandedSubmenuId = ($scope.expandedSubmenuId === account.id) ? -1 : account.id;
+
+        $scope.selectedReservationIds = [];
+        $scope.selectedCommisionReservations = RVCommissionsSrv.sampleReservationData;
+        _.each($scope.selectedCommisionReservations, function(reservation) {
+            reservation.isSelected = false;
+        });
+
     };
 
-    $scope.selectionChanged = function() {
+    $scope.reservationSelectionChanged = function(){
+        $scope.selectedReservationIds = [];
+         _.each($scope.selectedCommisionReservations, function(reservation) {
+            if (reservation.isSelected) {
+                $scope.selectedReservationIds.push(reservation.id);
+                console.log($scope.selectedReservationIds);
+            }
+        });
+    };
+
+    $scope.commisionSelectionChanged = function() {
         $scope.isAnyCommisionSelected = false;
         $scope.noOfBillsSelected = 0;
         $scope.selectedAccountIds = [];
@@ -124,18 +141,22 @@ sntRover.controller('RVCommissionsSummaryController', ['$scope', '$rootScope', '
     $scope.exportCommisions = function(){
         console.log('export');
         console.log($scope.selectedAccountIds);
+        console.log($scope.selectedReservationIds);
     };
     $scope.putOnHoldCommisions = function(){
         console.log('putOnHold');
         console.log($scope.selectedAccountIds);
+        console.log($scope.selectedReservationIds);
     };
     $scope.releaseCommisions = function(){
         console.log('release');
         console.log($scope.selectedAccountIds);
+        console.log($scope.selectedReservationIds);
     };
     $scope.setRecordsToPaid = function(){
         console.log('setRecordsToPaid');
         console.log($scope.selectedAccountIds);
+        console.log($scope.selectedReservationIds);
     };
 
     $scope.printButtonClick = function() {
@@ -169,6 +190,7 @@ sntRover.controller('RVCommissionsSummaryController', ['$scope', '$rootScope', '
         $scope.isAnyCommisionSelected = false;
         $scope.expandedSubmenuId = -1;
         $scope.selectedAccountIds = [];
+        $scope.selectedReservationIds = [];
         $scope.setScroller('commissionOverViewScroll', {});
     };
 

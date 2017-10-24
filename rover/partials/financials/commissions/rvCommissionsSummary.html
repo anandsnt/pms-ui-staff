@@ -172,7 +172,7 @@
                            <!-- add .checked when checked -->
                            <span class="icon-form icon-checkbox" ng-class="{'checked': account.isSelected}"></span>
                            <!-- add checked="checked" when checked -->
-                           <input type="checkbox" ng-model="account.isSelected" ng-change="selectionChanged()">
+                           <input type="checkbox" ng-model="account.isSelected" ng-change="commisionSelectionChanged()">
                         </label>
                      </div>
                      <a class="has-arrow" ng-click="navigateToTA(account)">
@@ -210,25 +210,28 @@
                               </tr>
                            </thead>
                            <tbody>
+                              <tr ng-show="selectedCommisionReservations.length == 0"><td colspan="3">No data present.</td></tr>
                               <!-- Add class .odd or .even based on the row number -->
-                              <tr class="odd">
+                              <tr ng-class="{'odd': $index % 2 != 0, 'even': $index % 2 == 0}" ng-repeat="reservation in selectedCommisionReservations">
                                  <td>
                                     <label class="checkbox inline">
-                                    <span class="icon-form icon-checkbox"></span>
-                                    <input type="checkbox">
+                                      <!-- add .checked when checked -->
+                                       <span class="icon-form icon-checkbox" ng-class="{'checked': reservation.isSelected}"></span>
+                                       <!-- add checked="checked" when checked -->
+                                       <input type="checkbox" ng-model="reservation.isSelected" ng-change="reservationSelectionChanged()">
                                     </label>
                                  </td>
-                                 <td class="name">Mohammed, Resheil</td>
+                                 <td class="name">{{ ::reservation.last_name }}, {{ reservation.first_name}}</td>
                                  <!-- Show this only if active filter: Payable -->
-                                 <td class="amount">233333</td>
+                                 <td class="amount">{{ ::currencySymbol}} {{  reservation.conf_no}}</td>
                                  <td class="amount">
-                                    {{ ::currencySymbol }}3
+                                    {{ ::currencySymbol }} {{ reservation.revenue}}
                                  </td>
                                  <td class="amount">
-                                    {{ ::currencySymbol }}3
+                                    {{ ::currencySymbol }} {{ reservation.commission}}
                                  </td>
                                  <!-- Add .red if more than 0 -->
-                                 <td class="owing" ng-class="{'red': amount>0}">{{ ::currencySymbol }}3</td>
+                                 <td class="owing" ng-class="{'red': reservation.owing>0}">{{ ::currencySymbol }} {{ reservation.owing}}</td>
                               </tr>
                            </tbody>
                         </table>

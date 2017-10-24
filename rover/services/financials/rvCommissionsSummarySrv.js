@@ -59,4 +59,24 @@ sntRover.service('RVCommissionsSrv', ['$http', '$q', 'BaseWebSrvV2', function($h
         }]
     };
 
+    this.sampleReservationData = [{
+        'id': 12,
+        'last_name': 'M',
+        'first_name': 'resheil',
+        'conf_no': 2244554,
+        'revenue': 33,
+        'commission': 34,
+        'owing': 55
+
+    }, {
+        'id': 13,
+        'last_name': 'M',
+        'first_name': 'resheil 2',
+        'conf_no': 2244555,
+        'revenue': 12,
+        'commission': 10,
+        'owing': 40
+
+    }];
+
 }]);
