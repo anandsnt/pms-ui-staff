@@ -19,8 +19,6 @@ sntRover.controller('RVCommissionsSummaryController', ['$scope', '$rootScope', '
         }, 500);
     };
 
-    refreshArOverviewScroll();
-
     /*
      *   Method to initialize the AR Overview Data set.
      */
@@ -55,7 +53,7 @@ sntRover.controller('RVCommissionsSummaryController', ['$scope', '$rootScope', '
             'perPage': 50,
             'searchQuery': '',
             'minAmount': '',
-            'billStatus': {'value': 'OPEN', 'name': 'OPEN'},
+            'billStatus': {'value': 'ALL', 'name': 'ALL'},
             'sort_by': {'value': 'NAME_ASC', 'name': 'NAME_ASC'},
             'billStatusOptions': [
                 {'value': 'OPEN', 'name': 'OPEN'},
@@ -94,10 +92,7 @@ sntRover.controller('RVCommissionsSummaryController', ['$scope', '$rootScope', '
         fetchCommissionsData();
     };
     $scope.isNextButtonDisabled = function() {
-        if ($scope.filterData.page > $scope.commissionsData.total_results / $scope.filterData.perPage) {
-            return true;
-        } else {
-            return false;}
+        return ($scope.filterData.page > $scope.commissionsData.total_results / $scope.filterData.perPage);
     };
     $scope.printButtonClick = function() {
         $timeout(function() {
@@ -118,11 +113,16 @@ sntRover.controller('RVCommissionsSummaryController', ['$scope', '$rootScope', '
         });
     };
 
+    $scope.expandedSubmenuId = -1;
+    $scope.resetExpandedView = function(){
+        $scope.expandedSubmenuId = -1;
+    };
+    $scope.expandCommision = function(account){
+        $scope.expandedSubmenuId = ($scope.expandedSubmenuId === account.id) ? -1 : account.id;
+    };
+
     $scope.isPrevButtonDisabled = function() {
-        if ($scope.filterData.page == 1) {
-            return true;
-        } else {
-            return false;}
+        return ($scope.filterData.page == 1);
     };
 
     var init = function() {
