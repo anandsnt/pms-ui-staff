@@ -20,4 +20,43 @@ sntRover.service('RVCommissionsSrv', ['$http', '$q', 'BaseWebSrvV2', function($h
         return deferred.promise;
     };
 
+    this.filterData = {
+        'page': 1,
+        'perPage': 50,
+        'searchQuery': '',
+        'minAmount': '',
+        'billStatus': {
+            'value': 'ALL',
+            'name': 'ALL'
+        },
+        'sort_by': {
+            'value': 'NAME_ASC',
+            'name': 'NAME_ASC'
+        },
+        'filterTab': 'PAYABLE',
+        'billStatusOptions': [{
+            'value': 'OPEN',
+            'name': 'OPEN'
+        }, {
+            'value': 'PAID',
+            'name': 'PAID'
+        }, {
+            'value': 'ALL',
+            'name': 'ALL'
+        }],
+        'sortOptions': [{
+            'value': 'NAME_ASC',
+            'name': 'NAME ASC'
+        }, {
+            'value': 'NAME_DSC',
+            'name': 'NAME DESC'
+        }, {
+            'value': 'AMOUNT_ASC',
+            'name': 'AMOUNT ASC'
+        }, {
+            'value': 'AMOUNT_DSC',
+            'name': 'AMOUNT DESC'
+        }]
+    };
+
 }]);

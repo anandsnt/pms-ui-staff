@@ -8,23 +8,56 @@ sntRover.controller('RVCommissionsSummaryController', ['$scope', '$rootScope', '
         $scope.setTitle($filter('translate')('MENU_COMMISSIONS'));
         $scope.$emit("updateRoverLeftMenu", "commisions");
     };
-    /**
-     * Setting up scroller with refresh options..
-     */
 
-    $scope.setScroller('commissionOverViewScroll', {});
     var refreshArOverviewScroll = function() {
         setTimeout(function() {
             $scope.refreshScroller('commissionOverViewScroll');
         }, 500);
     };
 
-    /*
-     *   Method to initialize the AR Overview Data set.
-     */
+    $scope.resetSelections = function(){
+        $scope.isAnyCommisionSelected = false;
+        $scope.noOfBillsSelected = 0;
+        $scope.selectedAccountIds = [];
+        _.each($scope.commissionsData.accounts, function(account) {
+            account.isSelected = false;
+        });
+    };
+
+    $scope.resetExpandedView = function() {
+        $scope.expandedSubmenuId = -1;
+    };
+    $scope.expandCommision = function(account) {
+        $scope.expandedSubmenuId = ($scope.expandedSubmenuId === account.id) ? -1 : account.id;
+    };
+
+    $scope.selectionChanged = function() {
+        $scope.isAnyCommisionSelected = false;
+        $scope.noOfBillsSelected = 0;
+        $scope.selectedAccountIds = [];
+        _.each($scope.commissionsData.accounts, function(account) {
+            if (account.isSelected) {
+                $scope.isAnyCommisionSelected = true;
+                $scope.noOfBillsSelected++;
+                $scope.selectedAccountIds.push(account.id);
+                console.log($scope.selectedAccountIds);
+            }
+        });
+    };
+
+    $scope.setFilterTab = function(selectedTab) {
+        $scope.commissionsData = {};
+        $scope.filterData.billStatus.value = selectedTab === 'ON_HOLD' ? 'PAID' : 'ALL'; 
+        $scope.searchAccounts();
+        $scope.filterData.filterTab = selectedTab;
+    };
+
+    /***************** Search starts here *****************/
+
     var fetchCommissionsData = function() {
         var successCallBack = function(data) {
             $scope.commissionsData = data;
+            $scope.resetSelections();
             updatePaginationParams();
             $scope.errorMessage = "";
             $scope.$emit('hideLoader');
@@ -40,31 +73,12 @@ sntRover.controller('RVCommissionsSummaryController', ['$scope', '$rootScope', '
             'min_commission_amount': $scope.filterData.minAmount
         };
 
-        $scope.invokeApi(RVCommissionsSrv.fetchCommissions, params, successCallBack );
+        $scope.invokeApi(RVCommissionsSrv.fetchCommissions, params, successCallBack);
     };
 
     $scope.searchAccounts = function() {
         initPaginationParams();
         fetchCommissionsData();
-    };
-    var initSearchParams = function() {
-        $scope.filterData = {
-            'page': 1,
-            'perPage': 50,
-            'searchQuery': '',
-            'minAmount': '',
-            'billStatus': {'value': 'ALL', 'name': 'ALL'},
-            'sort_by': {'value': 'NAME_ASC', 'name': 'NAME_ASC'},
-            'billStatusOptions': [
-                {'value': 'OPEN', 'name': 'OPEN'},
-                {'value': 'PAID', 'name': 'PAID'},
-                {'value': 'ALL', 'name': 'ALL'}],
-            'sortOptions': [
-                {'value': 'NAME_ASC', 'name': 'NAME ASC'},
-                {'value': 'NAME_DSC', 'name': 'NAME DESC'},
-                {'value': 'AMOUNT_ASC', 'name': 'AMOUNT ASC'},
-                {'value': 'AMOUNT_DSC', 'name': 'AMOUNT DESC'}]
-        };
     };
 
     $scope.clearSearchQuery = function() {
@@ -72,15 +86,19 @@ sntRover.controller('RVCommissionsSummaryController', ['$scope', '$rootScope', '
         initPaginationParams();
         fetchCommissionsData();
     };
+    /***************** search ends here *****************************/
+
+    /***************** Pagination starts here ***********************/
+
     var updatePaginationParams = function() {
         $scope.showPagination = ($scope.commissionsData.total_results <= 50) ? false : true;
-        $scope.start = ($scope.filterData.page == 1) ? 1 : (($scope.filterData.page - 1) * $scope.filterData.perPage) + 1 ;
-        $scope.end = (($scope.filterData.page * $scope.filterData.perPage ) >= $scope.commissionsData.total_results) ? $scope.commissionsData.total_results : ($scope.filterData.page * $scope.filterData.perPage );
+        $scope.start = ($scope.filterData.page == 1) ? 1 : (($scope.filterData.page - 1) * $scope.filterData.perPage) + 1;
+        $scope.end = (($scope.filterData.page * $scope.filterData.perPage) >= $scope.commissionsData.total_results) ? $scope.commissionsData.total_results : ($scope.filterData.page * $scope.filterData.perPage);
 
     };
     var initPaginationParams = function() {
         $scope.filterData.page = 1,
-        $scope.filterData.perPage = 50;
+            $scope.filterData.perPage = 50;
     };
 
     $scope.loadNextPage = function() {
@@ -94,14 +112,42 @@ sntRover.controller('RVCommissionsSummaryController', ['$scope', '$rootScope', '
     $scope.isNextButtonDisabled = function() {
         return ($scope.filterData.page > $scope.commissionsData.total_results / $scope.filterData.perPage);
     };
+
+    $scope.isPrevButtonDisabled = function() {
+        return ($scope.filterData.page == 1);
+    };
+
+    /***************** Pagination ends here *****************/
+
+    /***************** Actions starts here *******************/
+
+    $scope.exportCommisions = function(){
+        console.log('export');
+        console.log($scope.selectedAccountIds);
+    };
+    $scope.putOnHoldCommisions = function(){
+        console.log('putOnHold');
+        console.log($scope.selectedAccountIds);
+    };
+    $scope.releaseCommisions = function(){
+        console.log('release');
+        console.log($scope.selectedAccountIds);
+    };
+    $scope.setRecordsToPaid = function(){
+        console.log('setRecordsToPaid');
+        console.log($scope.selectedAccountIds);
+    };
+
     $scope.printButtonClick = function() {
         $timeout(function() {
             $window.print();
-            if ( sntapp.cordovaLoaded ) {
+            if (sntapp.cordovaLoaded) {
                 cordova.exec(function(success) {}, function(error) {}, 'RVCardPlugin', 'printWebView', []);
             }
         }, 100);
     };
+
+    /***************** Actions ends here *******************/
 
     $scope.navigateToTA = function(account) {
         // https://stayntouch.atlassian.net/browse/CICO-40583
@@ -113,24 +159,17 @@ sntRover.controller('RVCommissionsSummaryController', ['$scope', '$rootScope', '
         });
     };
 
-    $scope.expandedSubmenuId = -1;
-    $scope.resetExpandedView = function(){
-        $scope.expandedSubmenuId = -1;
-    };
-    $scope.expandCommision = function(account){
-        $scope.expandedSubmenuId = ($scope.expandedSubmenuId === account.id) ? -1 : account.id;
-    };
-
-    $scope.isPrevButtonDisabled = function() {
-        return ($scope.filterData.page == 1);
-    };
-
     var init = function() {
         $scope.commissionsData = {};
         $scope.filterData = {};
         updateHeader();
-        initSearchParams();
+        $scope.filterData = RVCommissionsSrv.filterData;
         fetchCommissionsData();
+        $scope.noOfBillsSelected = 0;
+        $scope.isAnyCommisionSelected = false;
+        $scope.expandedSubmenuId = -1;
+        $scope.selectedAccountIds = [];
+        $scope.setScroller('commissionOverViewScroll', {});
     };
 
     init();
