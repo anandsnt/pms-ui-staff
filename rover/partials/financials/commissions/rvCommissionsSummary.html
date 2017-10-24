@@ -170,9 +170,9 @@
                         <!-- add .checked when checked -->
                         <label class="checkbox inline">
                            <!-- add .checked when checked -->
-                           <span class="icon-form icon-checkbox" ng-class="{'checked': account.isSelected}"></span>
+                           <span class="icon-form icon-checkbox" ng-class="{'checked': account.isSelected, 'semi-checked': account.isSemiSelected}"></span>
                            <!-- add checked="checked" when checked -->
-                           <input type="checkbox" ng-model="account.isSelected" ng-change="commisionSelectionChanged()">
+                           <input type="checkbox" ng-model="account.isSelected" ng-change="commisionSelectionChanged(account)">
                         </label>
                      </div>
                      <a class="has-arrow" ng-click="navigateToTA(account)">

@@ -21,6 +21,7 @@ sntRover.controller('RVCommissionsSummaryController', ['$scope', '$rootScope', '
         $scope.selectedAccountIds = [];
         _.each($scope.commissionsData.accounts, function(account) {
             account.isSelected = false;
+            account.isSemiSelected = false;
         });
     };
 
@@ -28,27 +29,40 @@ sntRover.controller('RVCommissionsSummaryController', ['$scope', '$rootScope', '
         $scope.expandedSubmenuId = -1;
     };
     $scope.expandCommision = function(account) {
-        $scope.expandedSubmenuId = ($scope.expandedSubmenuId === account.id) ? -1 : account.id;
 
         $scope.selectedReservationIds = [];
-        $scope.selectedCommisionReservations = RVCommissionsSrv.sampleReservationData;
-        _.each($scope.selectedCommisionReservations, function(reservation) {
-            reservation.isSelected = false;
-        });
+        // if already expanded, collapse
+        if ($scope.expandedSubmenuId === account.id) {
+            $scope.expandedSubmenuId = -1;
+            $scope.expandedAccount = {};
+        } else {
+            $scope.expandedSubmenuId = account.id;
+            $scope.expandedAccount = account;
+            $scope.selectedCommisionReservations = RVCommissionsSrv.sampleReservationData;
+            _.each($scope.selectedCommisionReservations, function(reservation) {
+                reservation.isSelected = account.isSelected;
+            });
+        }
 
     };
 
     $scope.reservationSelectionChanged = function(){
         $scope.selectedReservationIds = [];
-         _.each($scope.selectedCommisionReservations, function(reservation) {
+        _.each($scope.selectedCommisionReservations, function(reservation) {
             if (reservation.isSelected) {
                 $scope.selectedReservationIds.push(reservation.id);
                 console.log($scope.selectedReservationIds);
             }
         });
+        // set the checked status of the outer account, based on inner checkbox selections
+        if($scope.selectedReservationIds.length && $scope.selectedReservationIds.length !== $scope.selectedCommisionReservations.length){
+            $scope.expandedAccount.isSelected = false;
+            $scope.expandedAccount.isSemiSelected = true;
+        };
     };
 
-    $scope.commisionSelectionChanged = function() {
+    $scope.commisionSelectionChanged = function(account) {
+        account.isSemiSelected = false;
         $scope.isAnyCommisionSelected = false;
         $scope.noOfBillsSelected = 0;
         $scope.selectedAccountIds = [];
@@ -60,6 +74,12 @@ sntRover.controller('RVCommissionsSummaryController', ['$scope', '$rootScope', '
                 console.log($scope.selectedAccountIds);
             }
         });
+        // set the checked status of the inner reservations list
+        if($scope.expandedSubmenuId !== -1){
+            _.each($scope.selectedCommisionReservations, function(reservation) {
+               reservation.isSelected = account.isSelected;
+            });
+        }
     };
 
     $scope.setFilterTab = function(selectedTab) {
