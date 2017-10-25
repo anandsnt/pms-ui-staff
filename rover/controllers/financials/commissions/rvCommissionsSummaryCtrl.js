@@ -149,7 +149,7 @@ sntRover.controller('RVCommissionsSummaryController', ['$scope', '$rootScope', '
         // check/ uncheck all the commisions appearing
         _.each($scope.commissionsData.accounts, function(account) {
             account.isSelected = $scope.allCommisionsSelected;
-            account.isSemiSelected =  false;
+            account.isSemiSelected = false;
             if (account.isSelected) {
                 $scope.selectedAgentIds.push(account.id);
             }
@@ -174,14 +174,19 @@ sntRover.controller('RVCommissionsSummaryController', ['$scope', '$rootScope', '
 
     /***************** Search starts here *****************/
 
-    var fetchCommissionsData = function() {
+    var fetchCommissionsData = function(pageNo) {
+        $scope.filterData.page = !!pageNo ? pageNo : 1;
+
         var successCallBack = function(data) {
             $scope.commissionsData = data;
             $scope.resetSelections();
-            updatePaginationParams();
+            $scope.showPagination = ($scope.commissionsData.total_results <= 50) ? false : true;
             $scope.errorMessage = "";
             $scope.$emit('hideLoader');
             refreshArOverviewScroll();
+            $timeout(function() {
+                $scope.$broadcast('updatePagination', 'TA_LIST');
+            }, 100);
         };
 
         var params = {
@@ -197,45 +202,16 @@ sntRover.controller('RVCommissionsSummaryController', ['$scope', '$rootScope', '
     };
 
     $scope.searchAccounts = function() {
-        initPaginationParams();
         fetchCommissionsData();
     };
 
     $scope.clearSearchQuery = function() {
         $scope.filterData.searchQuery = '';
-        initPaginationParams();
         fetchCommissionsData();
     };
     /***************** search ends here *****************************/
 
     /***************** Pagination starts here ***********************/
-
-    var updatePaginationParams = function() {
-        $scope.showPagination = ($scope.commissionsData.total_results <= 50) ? false : true;
-        $scope.start = ($scope.filterData.page == 1) ? 1 : (($scope.filterData.page - 1) * $scope.filterData.perPage) + 1;
-        $scope.end = (($scope.filterData.page * $scope.filterData.perPage) >= $scope.commissionsData.total_results) ? $scope.commissionsData.total_results : ($scope.filterData.page * $scope.filterData.perPage);
-
-    };
-    var initPaginationParams = function() {
-        $scope.filterData.page = 1,
-            $scope.filterData.perPage = 50;
-    };
-
-    $scope.loadNextPage = function() {
-        $scope.filterData.page++;
-        fetchCommissionsData();
-    };
-    $scope.loadPrevPage = function() {
-        $scope.filterData.page--;
-        fetchCommissionsData();
-    };
-    $scope.isNextButtonDisabled = function() {
-        return ($scope.filterData.page > $scope.commissionsData.total_results / $scope.filterData.perPage);
-    };
-
-    $scope.isPrevButtonDisabled = function() {
-        return ($scope.filterData.page == 1);
-    };
 
     // reservations
 
@@ -340,8 +316,14 @@ sntRover.controller('RVCommissionsSummaryController', ['$scope', '$rootScope', '
         $scope.expandedSubmenuId = -1;
         $scope.selectedAgentIds = [];
         $scope.selectedReservationIds = [];
+        $scope.pageNo = 1;
         // fetch initial data
         fetchCommissionsData();
+        $scope.paginationData = {
+            id: 'TA_LIST',
+            api: fetchCommissionsData,
+            perPage: $scope.filterData.perPage
+        };
         $scope.setScroller('commissionOverViewScroll', {});
     };
 
