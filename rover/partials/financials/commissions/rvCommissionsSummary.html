@@ -48,7 +48,7 @@
          </li>
       </ul>
       <!-- Hide if 1 or more agents are selected (checked) -->
-      <ul class="commissions-info" ng-hide="isAnyCommisionSelected">
+      <ul class="commissions-info" ng-hide="checkAndSetIfAnyCommisionSelected()">
          <!-- Show if active filter: Payable -->
          <li>
             <span>Eligible for payment</span>
@@ -67,7 +67,7 @@
          </li>
       </ul>
       <!-- Show if active filer: Payable & 1 or more agents are selected (checked) (remove .hidden) -->
-      <ul class="commissions-selected commissions-info" ng-show="isAnyCommisionSelected && filterData.filterTab === 'PAYABLE' ">
+      <ul class="commissions-selected commissions-info" ng-show="checkAndSetIfAnyCommisionSelected() && filterData.filterTab === 'PAYABLE' ">
          <li>
             <span>Bills Selected</span>
             <span class="amount">{{ noOfBillsSelected }}</span>
@@ -85,7 +85,7 @@
          </li>
       </ul>
       <!-- Show if active filer: On Hold & 1 or more agents are selected (checked) (remove .hidden) -->
-      <ul class="commissions-selected commissions-info" ng-show="isAnyCommisionSelected && filterData.filterTab === 'ON_HOLD' ">
+      <ul class="commissions-selected commissions-info" ng-show="checkAndSetIfAnyCommisionSelected() && filterData.filterTab === 'ON_HOLD' ">
          <li>
             <span>Bills Selected</span>
             <span class="amount">{{ noOfBillsSelected }}</span>
@@ -125,7 +125,7 @@
             <!-- Add .checked if checked -->
             <label class="checkbox inline">
                <!-- Add .checked if all are checked, add .semi-checked if some of the agents are checked -->
-               <span class="icon-form icon-checkbox" ng-class="{'checked': allCommisionsSelected, 'semi-checked': isAnyCommisionSelected && !allCommisionsSelected}"></span>
+               <span class="icon-form icon-checkbox" ng-class="{'checked': allCommisionsSelected, 'semi-checked': checkAndSetIfAnyCommisionSelected() && !allCommisionsSelected}"></span>
                <!-- add checked="checked" when checked -->
                <input type="checkbox" ng-model="allCommisionsSelected" ng-change="allCommisionsSelectionChanged()">
             </label>
