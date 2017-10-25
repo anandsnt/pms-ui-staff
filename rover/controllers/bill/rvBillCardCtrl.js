@@ -102,7 +102,7 @@ sntRover.controller('RVbillCardController',
 		 $timeout(function() {
 		 	$scope.showAdvancedBillDialog();
 		 	$scope.$emit("hideLoader");
-		 }, 1000)
+		 }, 1000);
 		 
 	});
 	// set up flags for checkbox actions
