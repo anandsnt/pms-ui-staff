@@ -39,7 +39,7 @@
       <ul class="filters">
          <!-- Add .active to current filter -->
          <li ng-class="{ 'active' : filterData.filterTab === 'PAYABLE' }" ng-click="setFilterTab('PAYABLE')">
-            Payable
+            To pay
             <strong>{{ ::currencySymbol }}44</strong>
          </li>
          <li ng-class="{ 'active' : filterData.filterTab === 'ON_HOLD' }" ng-click="setFilterTab('ON_HOLD')">
@@ -79,7 +79,7 @@
          <li class="actions">
             <button type="button" class="button red with-icon" ng-click="putOnHoldCommisions()"><span class="icons icon-hold"></span>Hold</button>
             <button type="button" class="button purple with-icon" ng-click="exportCommisions()"><span class="icons icon-save"></span>Export</button>
-            <button type="button" class="button green with-icon" ng-click="setRecordsToPaid()"><span class="icons icon-wallet"></span>Set records to paid</button>
+            <button type="button" class="button green with-icon" ng-click="setRecordsToPaid()"><span class="icons icon-wallet"></span>Set to paid</button>
             <!-- Clear checked agents -->
             <button type="button" class="button white">Cancel</button>
          </li>
@@ -116,7 +116,7 @@
    <!-- Add .no-commisions-header when there is no header -->
    <div class="commissions-list">
       <!-- Add .hidden if no results (Hide)-->
-      <ul class="commissions-list-header">
+      <ul class="commissions-list-header" ng-show="commissionsData.accounts.length">
          <li class="expand">
             <span class="icons icon-double-arrow black expand-arrow"></span>
          </li>
@@ -157,7 +157,7 @@
                   <div class="info">
                      <span class="icon-no-content icon-ok"></span>
                      <strong class="h1">No Commissions</strong>
-                     <!-- <span class="h2">{no-content-message}</span> -->
+                     <span class="h2">Please switch tab and try again</span>
                   </div>
                </li>
                <li class="commision-item" ng-repeat ="account in commissionsData.accounts">

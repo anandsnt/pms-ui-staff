@@ -78,15 +78,21 @@ sntRover.controller('RVCommissionsSummaryController', ['$scope', '$rootScope', '
     $scope.commisionSelectionChanged = function(account) {
         account.isSemiSelected = false;
         $scope.isAnyCommisionSelected = false;
-        $scope.noOfBillsSelected = 0;
         $scope.selectedAccountIds = [];
+        
+        if (account.isSelected) {
+            $scope.noOfBillsSelected++;
+        } else if ($scope.noOfBillsSelected > 0) {
+            $scope.noOfBillsSelected--;
+        } else {
+            $scope.noOfBillsSelected = 0;
+        }
         _.each($scope.commissionsData.accounts, function(account) {
             if (account.isSelected) {
                 $scope.isAnyCommisionSelected = true;
-                $scope.noOfBillsSelected++;
                 $scope.selectedAccountIds.push(account.id);
                 console.log($scope.selectedAccountIds);
-            }
+            } 
         });
         // set the checked status of the inner reservations list
         if ($scope.expandedSubmenuId !== -1) {
@@ -106,6 +112,7 @@ sntRover.controller('RVCommissionsSummaryController', ['$scope', '$rootScope', '
             account.isSelected = $scope.allCommisionsSelected;
         });
         $scope.isAnyCommisionSelected = $scope.allCommisionsSelected;
+        $scope.noOfBillsSelected = $scope.allCommisionsSelected ? $scope.commissionsData.total_results : 0;
     };
 
     $scope.setFilterTab = function(selectedTab) {
