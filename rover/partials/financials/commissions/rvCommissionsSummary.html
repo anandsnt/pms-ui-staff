@@ -179,7 +179,7 @@
                      <a class="has-arrow" ng-click="navigateToTA(account)">
                         <span class="account-image icons icon-travel-agent"></span>
                         <div class="data">
-                           <h2>{{$index +1}} {{ ::account.account_name }}</h2>
+                           <h2>{{ ::account.account_name }}</h2>
                            <div class="meta-data">
                               <span class="icons icon-guest-travelagent">{{ ::account.iata_number }}</span>
                               <span class="icons icon-location">{{ ::account.location }}</span>
@@ -211,9 +211,9 @@
                               </tr>
                            </thead>
                            <tbody>
-                              <tr ng-show="selectedCommisionReservations.length == 0"><td colspan="3">No data present.</td></tr>
+                              <tr ng-show="selectedCommisionReservations.reservations.length == 0"><td colspan="3">No data present.</td></tr>
                               <!-- Add class .odd or .even based on the row number -->
-                              <tr ng-class="{'odd': $index % 2 != 0, 'even': $index % 2 == 0}" ng-repeat="reservation in selectedCommisionReservations">
+                              <tr ng-class="{'odd': $index % 2 != 0, 'even': $index % 2 == 0}" ng-repeat="reservation in selectedCommisionReservations.reservations">
                                  <td>
                                     <label class="checkbox inline">
                                       <!-- add .checked when checked -->
@@ -236,10 +236,10 @@
                               </tr>
                            </tbody>
                         </table>
-                        <div class="search-pagination" ng-show="showPagination">
-                           <button type="button" class="button dark-grey next" ng-click="loadNextPage()" ng-disabled="isNextButtonDisabled()" translate>NEXT</button>
-                           <button type="button" class="button dark-grey prev" ng-click="loadPrevPage()" ng-disabled="isPrevButtonDisabled()" translate>PREVIOUS</button>
-                           <p>{{'SHOWING' | translate}} <strong>{{start}}-{{end}}</strong> {{'OF' | translate}} <strong id="total-count">{{ ::commissionsData.total_results }}</strong> {{'ITEMS' | translate}}</p>
+                        <div class="search-pagination" ng-show="showResPagination">
+                           <button type="button" class="button dark-grey next" ng-click="loadNextReservationPage()" ng-disabled="disableReservationNextPage()" translate>NEXT</button>
+                           <button type="button" class="button dark-grey prev" ng-click="loadPrevReservationPage()" ng-disabled="reservationsPageNo === 1" translate>PREVIOUS</button>
+                           <p>{{'SHOWING' | translate}} <strong>{{startRes}}-{{endRes}}</strong> {{'OF' | translate}} <strong id="total-count">{{ ::selectedCommisionReservations.total_count }}</strong> {{'ITEMS' | translate}}</p>
                         </div>
                      </div>
                   </div>

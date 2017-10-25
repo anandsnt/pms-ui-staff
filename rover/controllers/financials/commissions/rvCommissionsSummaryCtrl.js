@@ -43,9 +43,11 @@ sntRover.controller('RVCommissionsSummaryController', ['$scope', '$rootScope', '
             $scope.expandedSubmenuId = account.id;
             $scope.expandedAccount = account;
             $scope.selectedCommisionReservations = RVCommissionsSrv.sampleReservationData;
-            _.each($scope.selectedCommisionReservations, function(reservation) {
+            _.each($scope.selectedCommisionReservations.reservations, function(reservation) {
                 reservation.isSelected = account.isSelected;
             });
+            $scope.reservationsPageNo = 1;
+            $scope.showResPagination = ($scope.selectedCommisionReservations.total_count <= 2) ? false : true;
         }
         refreshArOverviewScroll();
 
@@ -53,17 +55,24 @@ sntRover.controller('RVCommissionsSummaryController', ['$scope', '$rootScope', '
 
     $scope.reservationSelectionChanged = function() {
         $scope.selectedReservationIds = [];
-        _.each($scope.selectedCommisionReservations, function(reservation) {
+        _.each($scope.selectedCommisionReservations.reservations, function(reservation) {
             if (reservation.isSelected) {
                 $scope.selectedReservationIds.push(reservation.id);
                 console.log($scope.selectedReservationIds);
             }
         });
         // set the checked status of the outer account, based on inner checkbox selections
-        if ($scope.selectedReservationIds.length && $scope.selectedReservationIds.length !== $scope.selectedCommisionReservations.length) {
+        if ($scope.selectedReservationIds.length === 0) {
+            // if no items are selected
+            $scope.expandedAccount.isSelected = false;
+            $scope.expandedAccount.isSemiSelected = false;
+        } else if ($scope.selectedReservationIds.length !== $scope.selectedCommisionReservations.length) {
+            // check if only some are selected
             $scope.expandedAccount.isSelected = false;
             $scope.expandedAccount.isSemiSelected = true;
-        };
+        } else {
+            return;
+        }
     };
 
     $scope.commisionSelectionChanged = function(account) {
@@ -81,7 +90,7 @@ sntRover.controller('RVCommissionsSummaryController', ['$scope', '$rootScope', '
         });
         // set the checked status of the inner reservations list
         if ($scope.expandedSubmenuId !== -1) {
-            _.each($scope.selectedCommisionReservations, function(reservation) {
+            _.each($scope.selectedCommisionReservations.reservations, function(reservation) {
                 reservation.isSelected = account.isSelected;
             });
         }
@@ -169,6 +178,37 @@ sntRover.controller('RVCommissionsSummaryController', ['$scope', '$rootScope', '
 
     $scope.isPrevButtonDisabled = function() {
         return ($scope.filterData.page == 1);
+    };
+
+    // reservations
+    
+    var updateReservationPagination =  function(){
+        var perPage = 2;
+        $scope.startRes = ($scope.reservationsPageNo == 1) ? 1 : (($scope.reservationsPageNo - 1) * perPage) + 1;
+        $scope.endRes = (($scope.reservationsPageNo * perPage) >= $scope.selectedCommisionReservations.total_count) ? $scope.selectedCommisionReservations.total_count : ($scope.reservationsPageNo * perPage);
+    };
+    $scope.loadNextReservationPage = function() {
+        $scope.selectedCommisionReservations = RVCommissionsSrv.sampleNextPageReservationData;
+        _.each($scope.selectedCommisionReservations.reservations, function(reservation) {
+            reservation.isSelected = $scope.expandedAccount.isSelected;
+        });
+        $scope.reservationsPageNo++;
+        updateReservationPagination();
+    };
+    $scope.loadPrevReservationPage = function() {
+        $scope.selectedCommisionReservations = RVCommissionsSrv.sampleReservationData;
+        _.each($scope.selectedCommisionReservations.reservations, function(reservation) {
+            reservation.isSelected = $scope.expandedAccount.isSelected;
+        });
+        $scope.reservationsPageNo--;
+        updateReservationPagination();
+    };
+    $scope.disableReservationNextPage = function() {
+        if($scope.selectedCommisionReservations){
+            return $scope.reservationsPageNo >= $scope.selectedCommisionReservations.total_count / $scope.reservationsPageNo; 
+        }else{
+            return false;
+        }
     };
 
     /***************** Pagination ends here *****************/
