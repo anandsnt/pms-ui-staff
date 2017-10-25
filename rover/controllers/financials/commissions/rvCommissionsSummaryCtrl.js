@@ -21,7 +21,7 @@ sntRover.controller('RVCommissionsSummaryController', ['$scope', '$rootScope', '
         $scope.isAnyCommisionSelected = false;
         $scope.allCommisionsSelected = false;
         $scope.expandedSubmenuId = -1;
-        $scope.selectedAccountIds = [];
+        $scope.selectedAgentIds = [];
         $scope.selectedReservationIds = [];
         _.each($scope.commissionsData.accounts, function(account) {
             account.isSelected = false;
@@ -39,10 +39,10 @@ sntRover.controller('RVCommissionsSummaryController', ['$scope', '$rootScope', '
         // if already expanded, collapse
         if ($scope.expandedSubmenuId === account.id) {
             $scope.expandedSubmenuId = -1;
-            $scope.expandedAccount = {};
+            $scope.expandedAgent = {};
         } else {
             $scope.expandedSubmenuId = account.id;
-            $scope.expandedAccount = account;
+            $scope.expandedAgent = account;
             $scope.selectedCommisionReservations = RVCommissionsSrv.sampleReservationData;
             _.each($scope.selectedCommisionReservations.reservations, function(reservation) {
                 // if the account is selected, the reservation list 
@@ -79,8 +79,10 @@ sntRover.controller('RVCommissionsSummaryController', ['$scope', '$rootScope', '
         } else if (!reservation.isSelected && selectedIndex !== -1) {
             // was unchecked and was added before --> remove the item from array
             $scope.selectedReservationIds.splice(selectedIndex, 1);
-            $scope.expandedAccount.isSelected = false;
-            $scope.noOfBillsSelected--;
+            if ($scope.expandedAgent.isSelected) {
+                $scope.noOfBillsSelected--;
+            }
+            $scope.expandedAgent.isSelected = false;
             $scope.allCommisionsSelected = false;
         }
         console.log($scope.selectedReservationIds);
@@ -88,20 +90,20 @@ sntRover.controller('RVCommissionsSummaryController', ['$scope', '$rootScope', '
         // set the checked status of the outer account, based on inner checkbox selections
         if ($scope.selectedReservationIds.length === 0) {
             // if no items are selected
-            $scope.expandedAccount.isSelected = false;
-            $scope.expandedAccount.isSemiSelected = false;
+            $scope.expandedAgent.isSelected = false;
+            $scope.expandedAgent.isSemiSelected = false;
         } else if ($scope.selectedReservationIds.length !== $scope.selectedCommisionReservations.total_count) {
             // check if only some are selected
-            $scope.expandedAccount.isSelected = false;
-            $scope.expandedAccount.isSemiSelected = true;
+            $scope.expandedAgent.isSelected = false;
+            $scope.expandedAgent.isSemiSelected = true;
         } else if ($scope.selectedReservationIds.length === $scope.selectedCommisionReservations.total_count) {
             // check if ALL reservations are selected
             // if so turn ON corresponding commision and based on other 
             // commisions, turn ON main allCommisionsSelected
-            $scope.expandedAccount.isSelected = true;
-            $scope.expandedAccount.isSemiSelected = false;
+            $scope.expandedAgent.isSelected = true;
+            $scope.expandedAgent.isSemiSelected = false;
             $scope.noOfBillsSelected++;
-            if ($scope.commissionsData.total_results === $scope.selectedAccountIds.length + $scope.noOfBillsInOtherPagesSelected) {
+            if ($scope.commissionsData.total_results === $scope.selectedAgentIds.length + $scope.noOfBillsInOtherPagesSelected) {
                 $scope.allCommisionsSelected = true;
             }
         } else {
@@ -111,7 +113,7 @@ sntRover.controller('RVCommissionsSummaryController', ['$scope', '$rootScope', '
 
     $scope.commisionSelectionChanged = function(account) {
         account.isSemiSelected = false;
-        $scope.selectedAccountIds = [];
+        $scope.selectedAgentIds = [];
         // based on selection, update no of bills
         if (account.isSelected) {
             $scope.noOfBillsSelected++;
@@ -123,8 +125,8 @@ sntRover.controller('RVCommissionsSummaryController', ['$scope', '$rootScope', '
         // check if any one of the entity is selected
         _.each($scope.commissionsData.accounts, function(account) {
             if (account.isSelected) {
-                $scope.selectedAccountIds.push(account.id);
-                console.log($scope.selectedAccountIds);
+                $scope.selectedAgentIds.push(account.id);
+                console.log($scope.selectedAgentIds);
             }
         });
         // set the checked status of the inner reservations list
@@ -136,19 +138,20 @@ sntRover.controller('RVCommissionsSummaryController', ['$scope', '$rootScope', '
         // based on the count of selected items, turn ON select ALL checkbox
         if (!account.isSelected) {
             $scope.allCommisionsSelected = false;
-        } else if ($scope.commissionsData.total_results === $scope.selectedAccountIds.length + $scope.noOfBillsInOtherPagesSelected) {
+        } else if ($scope.commissionsData.total_results === $scope.selectedAgentIds.length + $scope.noOfBillsInOtherPagesSelected) {
             $scope.allCommisionsSelected = true;
         }
     };
 
     // check/ uncheck all commisions dispayed based on the main selection
     $scope.allCommisionsSelectionChanged = function() {
-        $scope.selectedAccountIds = [];
+        $scope.selectedAgentIds = [];
         // check/ uncheck all the commisions appearing
         _.each($scope.commissionsData.accounts, function(account) {
             account.isSelected = $scope.allCommisionsSelected;
+            account.isSemiSelected =  false;
             if (account.isSelected) {
-                $scope.selectedAccountIds.push(account.id);
+                $scope.selectedAgentIds.push(account.id);
             }
         });
 
@@ -246,7 +249,7 @@ sntRover.controller('RVCommissionsSummaryController', ['$scope', '$rootScope', '
         _.each($scope.selectedCommisionReservations.reservations, function(reservation) {
             reservation.isSelected = false;
             // if expanded account is selected ALL, then mark all as checked
-            if ($scope.expandedAccount.isSelected) {
+            if ($scope.expandedAgent.isSelected) {
                 reservation.isSelected = true;
             } else {
                 // check for selections on other pages
@@ -285,22 +288,22 @@ sntRover.controller('RVCommissionsSummaryController', ['$scope', '$rootScope', '
 
     $scope.exportCommisions = function() {
         console.log('export');
-        console.log($scope.selectedAccountIds);
+        console.log($scope.selectedAgentIds);
         console.log($scope.selectedReservationIds);
     };
     $scope.putOnHoldCommisions = function() {
         console.log('putOnHold');
-        console.log($scope.selectedAccountIds);
+        console.log($scope.selectedAgentIds);
         console.log($scope.selectedReservationIds);
     };
     $scope.releaseCommisions = function() {
         console.log('release');
-        console.log($scope.selectedAccountIds);
+        console.log($scope.selectedAgentIds);
         console.log($scope.selectedReservationIds);
     };
     $scope.setRecordsToPaid = function() {
         console.log('setRecordsToPaid');
-        console.log($scope.selectedAccountIds);
+        console.log($scope.selectedAgentIds);
         console.log($scope.selectedReservationIds);
     };
 
@@ -335,7 +338,7 @@ sntRover.controller('RVCommissionsSummaryController', ['$scope', '$rootScope', '
         $scope.noOfBillsInOtherPagesSelected = 0;
         $scope.allCommisionsSelected = false;
         $scope.expandedSubmenuId = -1;
-        $scope.selectedAccountIds = [];
+        $scope.selectedAgentIds = [];
         $scope.selectedReservationIds = [];
         // fetch initial data
         fetchCommissionsData();
