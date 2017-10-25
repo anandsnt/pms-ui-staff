@@ -219,7 +219,7 @@
                                       <!-- add .checked when checked -->
                                        <span class="icon-form icon-checkbox" ng-class="{'checked': reservation.isSelected}"></span>
                                        <!-- add checked="checked" when checked -->
-                                       <input type="checkbox" ng-model="reservation.isSelected" ng-change="reservationSelectionChanged()">
+                                       <input type="checkbox" ng-model="reservation.isSelected" ng-change="reservationSelectionChanged(reservation)">
                                     </label>
                                  </td>
                                  <td class="name">{{ ::reservation.last_name }}, {{ reservation.first_name}}</td>
