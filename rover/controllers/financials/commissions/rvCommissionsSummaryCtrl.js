@@ -17,6 +17,7 @@ sntRover.controller('RVCommissionsSummaryController', ['$scope', '$rootScope', '
 
     $scope.resetSelections = function() {
         $scope.noOfBillsSelected = 0;
+        $scope.noOfBillsInOtherPagesSelected = 0;
         $scope.isAnyCommisionSelected = false;
         $scope.allCommisionsSelected = false;
         $scope.expandedSubmenuId = -1;
@@ -79,7 +80,7 @@ sntRover.controller('RVCommissionsSummaryController', ['$scope', '$rootScope', '
         account.isSemiSelected = false;
         $scope.isAnyCommisionSelected = false;
         $scope.selectedAccountIds = [];
-        
+
         if (account.isSelected) {
             $scope.noOfBillsSelected++;
         } else if ($scope.noOfBillsSelected > 0) {
@@ -100,9 +101,11 @@ sntRover.controller('RVCommissionsSummaryController', ['$scope', '$rootScope', '
                 reservation.isSelected = account.isSelected;
             });
         }
-        // check if any item is unchecked
+        // based on the count of selected items, turn ON select ALL checkbox
         if (!account.isSelected) {
             $scope.allCommisionsSelected = false;
+        } else if ($scope.commissionsData.total_results === $scope.selectedAccountIds.length + $scope.noOfBillsInOtherPagesSelected) {
+            $scope.allCommisionsSelected = true;
         }
     };
 
@@ -111,8 +114,16 @@ sntRover.controller('RVCommissionsSummaryController', ['$scope', '$rootScope', '
         _.each($scope.commissionsData.accounts, function(account) {
             account.isSelected = $scope.allCommisionsSelected;
         });
-        $scope.isAnyCommisionSelected = $scope.allCommisionsSelected;
-        $scope.noOfBillsSelected = $scope.allCommisionsSelected ? $scope.commissionsData.total_results : 0;
+
+        if ($scope.allCommisionsSelected) {
+            $scope.isAnyCommisionSelected = true;
+            $scope.noOfBillsSelected = $scope.commissionsData.total_results;
+            $scope.noOfBillsInOtherPagesSelected = $scope.commissionsData.total_results - $scope.commissionsData.accounts.length;
+        } else {
+            $scope.isAnyCommisionSelected = false;
+            $scope.noOfBillsSelected = 0;
+            $scope.noOfBillsInOtherPagesSelected = 0;
+        }
     };
 
     $scope.setFilterTab = function(selectedTab) {
@@ -275,6 +286,7 @@ sntRover.controller('RVCommissionsSummaryController', ['$scope', '$rootScope', '
         $scope.expandedSubmenuId = -1;
         $scope.selectedAccountIds = [];
         $scope.selectedReservationIds = [];
+        $scope.noOfBillsInOtherPagesSelected = 0;
         // fetch initial data
         fetchCommissionsData();
         $scope.setScroller('commissionOverViewScroll', {});
