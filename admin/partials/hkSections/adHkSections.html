@@ -4,11 +4,11 @@
         <span class="count"> ({{data.length}}) </span>
         <a class="action add" ng-click="gotoAddSection()"  ng-show="stateVariables.activeTab === 'MANAGE'" translate>ADD_NEW</a>
         <div class="actions float pull-right">
-            <button type="button" class="button add-data-inline toggle-tab" ng-click="toggleAssignFloors()"
+            <button type="button" class="button add-data-inline toggle-tab" ng-click="toggleAssignSection()"
                 ng-class="{'orange' : stateVariables.activeTab === 'MANAGE', 'white' : stateVariables.activeTab !== 'MANAGE'}" translate>
                 MANAGE_SECTIONS
             </button>
-            <button type="button" class="button add-data-inline toggle-tab" ng-click="toggleAssignFloors()"
+            <button type="button" class="button add-data-inline toggle-tab" ng-click="toggleAssignSection()"
                 ng-class="{'orange' : stateVariables.activeTab === 'ASSIGN', 'white' : stateVariables.activeTab !== 'ASSIGN'}" translate>
                 MANAGE_ROOMS
             </button>
@@ -40,5 +40,6 @@
         </table>
     </section>
     <!-- Assign Rooms Section -->
-    <section ng-include="'/assets/partials/floorSetups/adAssignRooms.html'"></section>
+    <section ng-include="'/assets/partials/hkSections/adAssignRoomsToHkSections.html'"></section>
 </section>
+

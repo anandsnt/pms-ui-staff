@@ -90,6 +90,10 @@ admin.controller('ADHKSectionListCtrl', [
             };
         };
 
+         $scope.toggleAssignSection = function() {
+            $scope.stateVariables.activeTab = $scope.stateVariables.activeTab === 'MANAGE' ?  'ASSIGN' : 'MANAGE';
+         };
+
         init();
 
 
