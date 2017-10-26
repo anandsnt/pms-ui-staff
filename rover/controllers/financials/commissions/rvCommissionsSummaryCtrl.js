@@ -75,11 +75,19 @@ sntRover.controller('RVCommissionsSummaryController', ['$scope',
             }
         };
 
-        $scope.arePartialsBillsSelected = function() {
+        $scope.areBillsPartialySelected = function() {
             if ($scope.commissionsData && $scope.noOfBillsSelected) {
                 return $scope.commissionsData.total_results !== $scope.noOfBillsSelected;
             } else {
                 return false;
+            }
+        };
+
+        $scope.areAnyReservationsPartialySelected = function() {
+            if ($scope.expandedSubmenuId === -1) {
+                return false
+            } else {
+                return $scope.expandedAgent.isSelected || $scope.expandedAgent.isSemiSelected;
             }
         };
 
@@ -168,6 +176,9 @@ sntRover.controller('RVCommissionsSummaryController', ['$scope',
         // check/ uncheck all commisions dispayed based on the main selection
         $scope.allCommisionsSelectionChanged = function() {
             $scope.selectedAgentIds = [];
+            $scope.expandedSubmenuId = -1;
+            $scope.selectedReservationIds = [];
+
             // check/ uncheck all the commisions appearing
             _.each($scope.commissionsData.accounts, function(account) {
                 account.isSelected = $scope.allCommisionsSelected;
@@ -180,7 +191,6 @@ sntRover.controller('RVCommissionsSummaryController', ['$scope',
             if ($scope.allCommisionsSelected) {
                 $scope.noOfBillsSelected = $scope.commissionsData.total_results;
                 $scope.noOfBillsInOtherPagesSelected = $scope.commissionsData.total_results - $scope.commissionsData.accounts.length;
-                $scope.expandedSubmenuId = -1;
             } else {
                 $scope.noOfBillsSelected = 0;
                 $scope.noOfBillsInOtherPagesSelected = 0;
@@ -293,23 +303,30 @@ sntRover.controller('RVCommissionsSummaryController', ['$scope',
         $scope.popupBtnAction = function(action) {
 
             var params = {};
+            
             params.action = action;
-            params.selected_agents = [];
-            _.each($scope.selectedAgentIds, function(id) {
-                params.selected_agents.push({
-                    'id': id,
-                    'update_all': true
+            if ($scope.areAllBillsSelected()) {
+                params.update_all_bill = true;
+            } else {
+                params.selected_agents = [];
+                _.each($scope.selectedAgentIds, function(id) {
+                    params.selected_agents.push({
+                        'id': id,
+                        'update_all': true
+                    });
                 });
-            });
-            if ($scope.expandedAgent && $scope.expandedAgent.isSemiSelected) {
-                var data = {
-                    'id': $scope.expandedSubmenuId,
-                    'update_all': false,
-                    'selected_res_ids': $scope.selectedReservationIds
-                };
-                params.selected_agents.push(data);
+                if ($scope.expandedAgent && $scope.expandedAgent.isSemiSelected) {
+                    var data = {
+                        'id': $scope.expandedSubmenuId,
+                        'update_all': false,
+                        'selected_res_ids': $scope.selectedReservationIds
+                    };
+                    params.selected_agents.push(data);
+                }
             }
+            
             console.log(params);
+            console.log(JSON.stringify(params));
             var successCallBack = function() {
                 ngDialog.close();
                 fetchCommissionsData();

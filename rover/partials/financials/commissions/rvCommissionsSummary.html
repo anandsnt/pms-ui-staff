@@ -33,7 +33,7 @@
 <section class="content commissions-content" role="main">
    <!-- When searching, add .searching-->
    <div class="commissions-header searching">
-      <ul class="filters" ng-hide="areAllBillsSelected() || arePartialsBillsSelected()">
+      <ul class="filters" ng-hide="areAllBillsSelected() || areBillsPartialySelected() || areAnyReservationsPartialySelected()">
          <!-- Add .active to current filter -->
          <li ng-class="{ 'active' : filterData.filterTab === 'PAYABLE' }" ng-click="setFilterTab('PAYABLE')">
             To pay
@@ -45,7 +45,7 @@
          </li>
       </ul>
       <!-- Hide if 1 or more agents are selected (checked) -->
-      <ul class="commissions-info" ng-hide="areAllBillsSelected() || arePartialsBillsSelected()">
+      <ul class="commissions-info" ng-hide="areAllBillsSelected() || areBillsPartialySelected() || areAnyReservationsPartialySelected()">
          <!-- Show if active filter: Payable -->
          <li>
             <span>Eligible for payment</span>
@@ -64,7 +64,7 @@
          </li>
       </ul>
       <!-- Show if active filer: Payable & 1 or more agents are selected (checked) (remove .hidden) -->
-      <ul class="commissions-selected commissions-info" ng-show="(areAllBillsSelected() || arePartialsBillsSelected()) && filterData.filterTab === 'PAYABLE' ">
+      <ul class="commissions-selected commissions-info" ng-show="(areAllBillsSelected() || areBillsPartialySelected() || areAnyReservationsPartialySelected()) && filterData.filterTab === 'PAYABLE' ">
          <li>
             <span>Bills Selected</span>
             <span class="amount">{{ noOfBillsSelected }}</span>
@@ -82,7 +82,7 @@
          </li>
       </ul>
       <!-- Show if active filer: On Hold & 1 or more agents are selected (checked) (remove .hidden) -->
-      <ul class="commissions-selected commissions-info" ng-show="(areAllBillsSelected() || arePartialsBillsSelected()) && filterData.filterTab === 'ON_HOLD' ">
+      <ul class="commissions-selected commissions-info" ng-show="(areAllBillsSelected() || areBillsPartialySelected() || areAnyReservationsPartialySelected()) && filterData.filterTab === 'ON_HOLD' ">
          <li>
             <span>Bills Selected</span>
             <span class="amount">{{ noOfBillsSelected }}</span>
@@ -122,7 +122,7 @@
             <!-- Add .checked if checked -->
             <label class="checkbox inline">
                <!-- Add .checked if all are checked, add .semi-checked if some of the agents are checked -->
-               <span class="icon-form icon-checkbox" ng-class="{'checked': areAllBillsSelected(), 'semi-checked': arePartialsBillsSelected()}"></span>
+               <span class="icon-form icon-checkbox" ng-class="{'checked': areAllBillsSelected(), 'semi-checked': areBillsPartialySelected()}"></span>
                <!-- add checked="checked" when checked -->
                <input type="checkbox" ng-model="allCommisionsSelected" ng-change="allCommisionsSelectionChanged()">
             </label>
