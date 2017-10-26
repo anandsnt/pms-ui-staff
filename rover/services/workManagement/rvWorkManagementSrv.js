@@ -335,8 +335,8 @@ angular.module('sntRover').service('RVWorkManagementSrv', ['$q', 'rvBaseWebSrvV2
 					this.payload = {
 						'allTasks': tasksResponse,
 						'allRooms': allRooms,
-						'unassignedRoomTasks': compileUnassignedRooms(unassignedRoomsResponse, tasksResponse, allRooms),
-						'assignedRoomTasks': compileAssignedRooms(assignedRoomsResponse, tasksResponse, allRooms)
+						'unassignedRoomTasks': compileUnassignedRooms(unassignedRoomsResponse, tasksResponse, JSON.parse(JSON.stringify(allRooms))),
+						'assignedRoomTasks': compileAssignedRooms(assignedRoomsResponse, tasksResponse, JSON.parse(JSON.stringify(allRooms)))
 					};
 
 					deferred.resolve( this.payload );
@@ -428,7 +428,7 @@ angular.module('sntRover').service('RVWorkManagementSrv', ['$q', 'rvBaseWebSrvV2
 
 						roomsSorted.push(copyRoom);
 					});
-					
+
 					employee.rooms = roomsSorted;
 				}
 			}
@@ -601,12 +601,12 @@ angular.module('sntRover').service('RVWorkManagementSrv', ['$q', 'rvBaseWebSrvV2
 					});
 
 					roomInfo = getRoomInfo(roomTasksInit[k].room_id);
-					
+
 					copyRoom = $.extend(
 							{},
 							{ 'room_id': roomTasksInit[k].room_id },
-							{ 'room_type': roomInfo.room_type },	
-							{ 'is_vip': roomInfo.is_vip },												
+							{ 'room_type': roomInfo.room_type },
+							{ 'is_vip': roomInfo.is_vip },
 							{ 'room_index': roomIndex },
 							{ 'room_tasks': [] }
 						);
@@ -812,6 +812,19 @@ angular.module('sntRover').service('RVWorkManagementSrv', ['$q', 'rvBaseWebSrvV2
 
 			return complied;
 		}
+
+        // Execute the auto assign functionality in task management
+        this.executeAutoAssign = function (params) {
+            var deferred = $q.defer(),
+                url = 'api/work_assignments/auto_assign';
+
+            RVBaseWebSrvV2.postJSON(url, params).then(function(data) {
+                deferred.resolve(data);
+            }, function(data) {
+                deferred.reject(data);
+            });
+            return deferred.promise;
+        };
 
 		// ALL APIS
 		// ========

@@ -5,19 +5,19 @@
 @import "stylesheets/less/common/01-A_reset.less";
 
 @import "stylesheets/less/common/01-B_variables.less";
-@import "stylesheets/less/app/01-B_variables.less"; 
+@import "stylesheets/less/app/01-B_variables.less";
 
-@import "stylesheets/less/common/01-C_mixins.less"; 
-@import "stylesheets/less/common/01-D_mixins-animations.less"; 
+@import "stylesheets/less/common/01-C_mixins.less";
+@import "stylesheets/less/common/01-D_mixins-animations.less";
 
 /* 2. TYPOGRAPHY
 ==========================================================*/
-@import "stylesheets/less/common/02_typography.less"; 
+@import "stylesheets/less/common/02_typography.less";
 
 /* 3. GRAPHICAL ELEMENTS
 ==========================================================*/
-@import "stylesheets/less/common/03_graphics.less"; 
-@import "stylesheets/less/app/03_graphics.less"; 
+@import "stylesheets/less/common/03_graphics.less";
+@import "stylesheets/less/app/03_graphics.less";
 
 /* 4. LAYOUT
 ==========================================================*/
@@ -33,19 +33,19 @@
 @import "stylesheets/less/app/05-B_forms.less";
 
 @import "stylesheets/less/common/05-C_plugins.less";
-@import "stylesheets/less/app/05-C_plugins.less"; 
+@import "stylesheets/less/app/05-C_plugins.less";
 
 /* 6. IE
 ==========================================================*/
-@import "stylesheets/less/app/06_ie.less"; 
+@import "stylesheets/less/app/06_ie.less";
 
-/* 7. MEDIA QUERIES    
-==========================================================*/   
-@media only print {    
-    @import "stylesheets/less/app/07_print.less";    
+/* 7. MEDIA QUERIES
+==========================================================*/
+@media only print {
+    @import "stylesheets/less/app/07_print.less";
 }
 
-@import "stylesheets/less/app/08_smartband.less"; 
+@import "stylesheets/less/app/08_smartband.less";
 
 
 /* x. Rover Angular Animations
@@ -1095,11 +1095,6 @@ Padding for the ows error popup
 
 }
 
-#modal .modal-content.shared-room {
-  width: 480px !important;
-  height: 600px !important;
-}
-
 
 .no-animation   * {
   -webkit-transition: none !important;
@@ -1601,7 +1596,7 @@ span.keys-msg-bold{
 #six-payment-loader {
     position: absolute;
     padding: 40px;
-      top: calc(~"50% - 70px"); 
+      top: calc(~"50% - 70px");
       height: 140px;
       width: 360px;
       left: calc(~"50% - 180px");
@@ -1609,3 +1604,7 @@ span.keys-msg-bold{
       background: #fff;
       z-index: 21000;
   }
+
+div#guest-id.modal-content{
+  height:auto;
+}

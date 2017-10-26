@@ -4,6 +4,18 @@ module.exports = {
         var themeCSSRoot = 'stylesheets/guestweb/';
 
         return {
+            'guestweb_basecamp_boulder_south_lake_tahoe': [ themeCSSRoot + 'guestweb_basecamp_boulder_south_lake_tahoe.css'],
+            'guestweb_anvil_hotel': [ themeCSSRoot + 'guestweb_anvil_hotel.css'],
+            'guestweb_lamington_hammersmith': [ themeCSSRoot + 'guestweb_lamington_hammersmith.css'],
+            'guestweb_sage_inn': [ themeCSSRoot + 'guestweb_sage_inn.css'],
+            'guestweb_the_gotham_hotel': [ themeCSSRoot + 'guestweb_the_gotham_hotel.css'],
+            'guestweb_basecamp_boulder_tahoe_city': [ themeCSSRoot + 'guestweb_basecamp_boulder_tahoe_city.css'],
+            'guestweb_maplewood_suites_syracuse': [ themeCSSRoot + 'guestweb_maplewood_suites_syracuse.css'],
+            'guestweb_jupiter_hotel': [ themeCSSRoot + 'guestweb_jupiter_hotel.css'],
+            'guestweb_maplewood_suites_syracuse': [ themeCSSRoot + 'guestweb_maplewood_suites_syracuse.css'],
+            'guestweb_sage_inn': [ themeCSSRoot + 'guestweb_sage_inn.css'],
+            'guestweb_pacific_inn': [ themeCSSRoot + 'guestweb_pacific_inn.css'],
+            'guestweb_taj_boston': [ themeCSSRoot + 'guestweb_taj_boston.css'],
             'guestweb_amrath_apart_hotel': [ themeCSSRoot + 'guestweb_amrath_apart_hotel.css'],
             'guestweb_hollywood_roosevelt': [ themeCSSRoot + 'guestweb_hollywood_roosevelt.css'],
             'guestweb_made': [ themeCSSRoot + 'guestweb_made.css'],

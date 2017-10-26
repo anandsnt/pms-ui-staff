@@ -27,7 +27,7 @@
                   <button type="button" class="button" click-touch="incrementAddonQtyForNonRoomFlatType()" ng-class="{'disabled':selectedAddonCount ===1}" ng-disabled="selectedAddonCount === 1">+</button>
                </div>
                <button type="button" data-action="popup" class="button transparent" click-touch="addOnDoneButtonClicked(selectedAddon)" ng-class="{'transparent text-red':selectedAddonCount === 0 && selectedAddon.is_selected}">
-               <text data-ng-bind-html="getTagValue('DONE')" editable-text="DONE"></text>
+               <text data-ng-bind-html="getTagValue('DONE_BTN')" editable-text="DONE"></text>
                </button>
             </div>
          </div>
@@ -88,12 +88,14 @@
       </h2>
       <h3 editable-text="{{errorMessage}}"> {{errorMessage | translate}}</h3>
       <button type="button" class="button" click-touch='showErrorPopUp = false'>
-         <text data-ng-bind-html="getTagValue('DONE')" editable-text="DONE"></text>
+         <text data-ng-bind-html="getTagValue('DONE_BTN')" editable-text="DONE"></text>
       </button>
    </div>
 </div>
 <!-- add .open when showing popuo -->
 <div id="popup-overlay" ng-class="{'open':showAddonPopup || showErrorPopUp}"></div>
+<!-- Show blank section -->
+<section id="main" ng-hide="loadingCompleted"></section>
 <!-- Content -->
 <section id="main" class="addon-screen" role="main" ng-show="mode !== 'SINGLE_ADDON_ERROR' && loadingCompleted">
    <div id="content">
@@ -155,7 +157,7 @@
                         <div> 
                            <br>
                            <button type="button" data-action="popup" class="button transparent" click-touch="addOnDoneButtonClicked(selectedAddon)" editable-text="DONE" style="margin:0 auto;" ng-class="{'transparent text-red':selectedAddonCount === 0 && selectedAddon.is_selected}">
-                              <text data-ng-bind-html="getTagValue('DONE')" editable-text="DONE"></text>
+                              <text data-ng-bind-html="getTagValue('DONE_BTN')" editable-text="DONE"></text>
                            </button>
                         </div>
                      </div>

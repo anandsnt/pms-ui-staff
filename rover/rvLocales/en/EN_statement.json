@@ -5,9 +5,12 @@
 "IATA_NO" : "IATA No.",
 "INVOICE_NO" : "Invoice Number",
 "PAYMENT_DUE_DAYS" : "Payment Due Days",
+"RESERV_NO" : "Resv. No:",
+"ACCOUNT_NO" : "Account No:",
 "RESERV" : "Resv.:",
 "ARRIVAL_DATE" : "Arrival Date:",
 "DEPARTURE_DATE" : "Departure Date:",
 "EXT_REF_NO" : "EXTERNAL REF.",
-"TOTAL_AMOUNT" : "Total Amount"
-
+"TOTAL_AMOUNT" : "Total Amount",
+"TOTAL_AMOUNT_DUE" : "Total Amount Due",
+"DEBITS" : "Debits"
