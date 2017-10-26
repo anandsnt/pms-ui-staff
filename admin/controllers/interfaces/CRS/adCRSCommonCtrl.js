@@ -25,6 +25,7 @@ angular.module('admin').controller('adCRSCommonCtrl', ['$scope', '$rootScope', '
                 $scope.rates = response.rates;
                 $scope.bookingOrigins = response.bookingOrigins;
                 $scope.paymentMethods = response.paymentMethods;
+                $scope.roomTypes = response.roomTypes;
             };
 
             $scope.callAPI(adInterfacesCommonConfigSrv.fetchOptionsList, {

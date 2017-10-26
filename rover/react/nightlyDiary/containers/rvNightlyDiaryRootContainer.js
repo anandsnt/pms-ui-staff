@@ -60,7 +60,7 @@ var calculateScrollIndex = function(state) {
     if (getPrevPageButtonStatus(state)) {
         return roomindex + 1;
     }
-    return roomindex;
+    return roomindex - 10;
 };
 
 const mapStateToNightlyDiaryRootContainerProps = (state) => ({

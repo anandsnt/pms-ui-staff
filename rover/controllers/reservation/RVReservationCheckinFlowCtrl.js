@@ -111,7 +111,7 @@ angular.module('sntRover').controller('RVReservationCheckInFlowCtrl',
                     params = {
                         is_promotions_and_email_set: $scope.saveData.promotions,
                         reservation_id: $scope.reservationBillData.reservation_id,
-                        no_post: $scope.reservationBillData.roomChargeEnabled === '' ? false : !$scope.reservationBillData.roomChargeEnabled
+                        restrict_post: $scope.reservationBillData.roomChargeEnabled === '' ? false : !$scope.reservationBillData.roomChargeEnabled
                     };
 
                 $log.info('completeCheckIn', params);

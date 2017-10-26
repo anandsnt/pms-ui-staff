@@ -947,7 +947,7 @@
 
                         .button { 
                             font-size: 14px;
-                            padding: 0 20px; 
+                            padding: 0 10px; 
                             height: 40px;
 
                             &:not(:last-child) { margin-right: 10px; }
@@ -1891,8 +1891,7 @@
                     }
                 }
 
-                /* AR Transactions, Rooming List , Bills, Activity***/
-                &.transactions,
+                /* Rooming List , Bills, Activity***/
                 &.rooming-list,
                 &.bills,
                 &.activity {
@@ -2008,6 +2007,10 @@
                                     }
                                 }
                             }
+
+                            @media @highdpi {
+                                background-size: 40px;
+                            }
                         }
 
                         .totals {
@@ -2021,90 +2024,437 @@
 
                 /* AR Transactions ***/
                 &.transactions {
+
+                    .numbers-pagination,
+                    .billing-footer {
+                        position: absolute;
+                        bottom: 0;
+                        right: 0;
+                        left: auto;
+                        .calc-width(100, 140); 
+                    }
+
+                    .billing-footer {
+                        height: 60px;
+                        overflow: hidden;
+                        background: @white;
+                        .box-shadow(0px -1px 1px rgba(0,0,0,.2));
+                        #flexbox > .parent(row wrap, flex-end, '', '');
+                        
+                        &.error {
+                            background: fade(@red, 10);
+                            color: @red;
+                            justify-content: center;
+                            align-items: center;
+                            text-transform: uppercase;
+                            font-size: 14px;
+                            font-weight: 600;
+
+                            .button {
+                                font-size: 14px;
+                                padding: 0 10px;
+                                margin: 0 5px;
+                            }
+                        }
+                        
+                        .payment-data {
+                            width: 300px;
+
+                            &.select-payment {
+                                background: fade(@red, 10);
+                                color: @red;
+                                text-align: center;
+                                line-height: 60px;
+                                font-size: 14px;
+                                font-weight: 600;
+                                text-transform: uppercase;
+                            }
+
+                            &:not(.select-payment) {
+                                padding: 15px 15px 15px 10px;
+                                line-height: 1;
+                                border-right: 1px solid rgba(0,0,0,0.1);
+                            }
+
+                            .type {
+                                font-size: 18px;
+                                font-weight: bold;
+                            }
+
+                            .card-data {
+                                #flexbox > .parent(row wrap, '', center, '');
+                            }
+
+                            .card-logo {
+                                height: 15px;
+                                display: inline-block;
+
+                                img {
+                                    display: block;
+                                    max-height: 100%;
+                                    width: auto;
+                                }
+
+                            }
+
+                            .number,
+                            .date {
+                                text-transform: uppercase;
+                                color: @grey3;
+                                font-size: 14px; 
+                            }
+
+                            .date {
+                                margin-left: 15px;
+                            }
+
+                            .number {
+                                margin-left: 5px;
+                            }
+
+                            .value {
+                                color: @textColor;
+                                margin-left: 3px;
+                            }
+                        }
+
+                        .balance {
+                            padding: 15px 20px;
+                            width: 220px;
+                            #flexbox > .parent(row wrap, '', center, '');
+                            
+                            li {
+                                margin: 0 20px 0 0;
+                                line-height: 1;
+                                text-transform: uppercase;
+                                color: @grey3;
+                                font-size: 14px;
+
+                                &:last-child {
+                                    margin-right: 0;
+                                }
+
+                                strong {
+                                    display: block;
+                                    font-size: 18px;
+                                    font-weight: 600;
+
+                                    &.red {color: @red}
+                                    &.green {color: @green}
+                                }
+                            }
+                        }
+
+                        .actions {
+                            height: 100%;
+                            .calc-width(100, 520);
+                            #flexbox > .parent(row wrap, flex-end, center, '');
+
+                            li {
+                                padding: 10px 0;
+                                margin: 0 10px 0 0;
+
+                                .button {
+                                    font-size: 14px;
+                                    padding: 0 10px;
+                                }
+
+                                &.break {
+                                    padding-left: 10px;
+                                    border-left: 1px solid rgba(0,0,0,0.1);
+                                }
+                            }
+                        }
+                    }
+
                     .tab-header {
-                        .float;
+                        height: 60px;
 
                         .search-form {
-                            padding: 20px;
+                            padding: 10px;
+                            .calc-width(100, 290);
+                            height: 60px;
+                            .pull-left;
+                            .box-shadow(none);
 
                             .entry {
                                 height: 42px;
-
-                                &.filter {
-                                    width: 50px;
-
-                                    .button { 
-                                         &.active { .gradient(@logoGradientStart, @logoGradientEnd); }
-                                    }
-                                }
-
-                                &.showing { width: 160px; }
+                                visibility: visible;
+                                box-shadow: none;
 
                                 &.search {
-                                    .calc-width(100, 670);
+                                    .calc-width(100, 260);
+
+                                    input {
+                                        font-size: 18px;
+                                        font-weight: 600;
+                                    }
 
                                     .clear-query { right: 10px; }
+
                                     .query { width: 100%; }
                                 }
 
                                 &.dates {
                                     width: 260px;
 
-                                    .entry-data { width: 125px; }
+                                    input {
+                                        font-size: 16px;
+                                    }
+
+                                    .entry-data { width: 120px; }
                                 }
                             }
                         }
 
-                        .totals {
-                            li {
-                                padding: 0 5px 10px 5px;
+                        .actions {
+                            .pull-left;
+                            background: @rcardTexture1;
+                            width: 290px;
+                            height: 60px;
+                            padding: 10px 10px 10px 12px;
+                            border-left: 2px solid rgba(0,0,0,0.1);
+                            
+                            .checkbox {
+                                text-transform: uppercase;
+                                font-size: 14px;
+                            }
 
-                                .data {
-                                    .label { line-height: 20px; }
+                            .button {
+                                &.with-icon {
+                                    padding-left: 30px;
+                                    width: auto;
 
-                                    .value { 
-                                        font-size: 26px;
-                                        line-height: 30px;
+                                    .icons {
+                                        top: 10px;
+                                        left: 16px;
                                     }
                                 }
+                            }
 
-                                > .button {  .pull-right; }
-
-                                .with-button {
-                                    position: relative;
-
-                                    .button {
-                                        position: absolute;
-                                        bottom: 0;
-                                        right: 0;
-                                        line-height: 30px;
-                                        height: 30px;
-                                        padding: 0 10px;
-                                    }
-                                }
-
-                                &:last-child {
-                                    top: 0;
-                                    right: 0;
-                                    padding: 20px;
-                                    border-left: 1px solid rgba(0,0,0,.1);
-
-                                    .button { 
-                                        .pull-left; 
-
-                                        &:first-child { margin-right: 20px; }
-                                    }
-                                }
-                            }                                     
+                            @media @highdpi {
+                                background-size: 40px;
+                            }                             
                         }
                     }
 
                     .tab-details {
+                        .calc-height(100, 60);
+                        #flexbox > .parent(row wrap, '', '', '');
+
+                        .invoice,
+                        .ar-statement { .hide; }
+
                         .wrapper { padding: 0; }
 
-                        &.with-pagination { .calc-height(100, 140); }
+                        /* Content ***/
+                        .billing-content {
+                            height: 100%;
+                            .calc-width(100, 140); 
+                            
+                            &.with-pagination,
+                            &.with-footer { 
+                                .calc-height(100, 60); 
+                                .iScrollVerticalScrollbar { bottom: 70px; }
+                            }
+
+                            .manual-balance {
+                                margin: 20px 20px 10px 20px;
+                                padding-bottom: 10px;
+                                background: @white;
+                                .box-shadow(1px 1px 0 rgba(0, 0, 0, 0.1));
+                                
+                                table {
+                                    table-layout: auto;
+                                    width: 100%;
+                                    margin-bottom: 0;
+
+                                    tfoot {
+                                        td {
+                                            border-top: 1px solid rgba(0,0,0,0.05);
+                                            text-align: right;
+                                            font-size: 14px;
+                                            color: @grey3;
+                                            text-transform: uppercase;
+                                            padding-top: 10px;
+
+                                            strong {
+                                                font-size: 18px;
+                                                font-weight: 600;
+                                                display: block;
+                                                color: @textColor;
+                                            }
+                                        }
+                                    }
+                                }
+
+                                th {
+                                    font-weight: 600;
+                                    text-transform: uppercase;
+                                    padding-top: 20px; 
+                                    font-size: 14px;
+                                }
+
+                                td,
+                                th {
+                                    padding-left: 10px;
+
+                                    &.date,
+                                    &.invoice-no {
+                                        width: 160px;
+                                    }
+                                    
+                                    &.name {
+                                        padding-left: 15px;
+                                    }
+
+                                    &.amount {
+                                        width: 150px;
+                                        padding-left: 30px;
+
+                                    }
+
+                                    &.action {
+                                        width: 50px;
+                                        padding-right: 15px;
+                                    }
+                                }
+
+                                td {
+                                    height: 50px;
+                                    line-height: 14px;
+                                    vertical-align: top;
+
+                                    .entry {
+                                        width: 100%;
+                                        margin: 0;
+
+                                        &.has-datepicker {
+                                            position: relative;
+
+                                            .clear-query { 
+                                                visibility: hidden;
+                                                position: absolute;
+                                                right: 2px;
+                                                background: #f5f5f5;
+                                                height: 38px;
+                                                width: 38px;
+                                                z-index: 0;
+                                                top: 2px;
+
+                                                .icons {
+                                                    visibility: hidden;
+                                                    background-color: rgba(0,0,0,0.05);
+                                                    border-radius: 50%;
+                                                    margin: 0 auto;
+                                                }
+
+                                                &.visible {
+                                                    visibility: visible;
+                                                    .icons {
+                                                        visibility: visible;
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+
+                                    input {
+                                        background-color: @grey1;
+                                        font-weight: 600;
+                                    }
+
+                                    &.amount {
+                                        position: relative;
+
+                                        .currency {
+                                            position: absolute;
+                                            left: 10px;
+                                            top:0;
+                                            bottom: 0;
+                                            font-weight: 600;
+                                            line-height: 40px;
+                                        }
+                                    }
+
+                                    &.action {
+                                        .button {
+                                            background: @grey1;
+                                            padding: 0;
+
+                                            .icons {
+                                                background-size: 80px;
+                                                .square( 40px );
+                                                &.icon-remove-40 {
+                                                    background-position: 13px -2493px;
+                                                }
+
+                                                &.icon-add-60 {
+                                                    background-position: 13px -2453px;
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+
+                            .no-content {
+                                .add-new-button {
+                                    width: 200px;
+                                    font-size: 16px;
+                                    margin-top: 10px;
+                                    display: inline-block;
+                                }
+                            }
+                        }
+                        
+                        /* Sidebar ***/
+                        .billing-sidebar {
+                            width: 140px;
+                            background: rgba(0,0,0,0.05);
+                            .box-shadow(inset -1px 0px 1px rgba(0,0,0,.2));
+                            font-size: 14px;
+                            
+                            li {
+                                padding: 12px 10px 8px 10px;
+                                text-transform: uppercase;
+                                text-align: right;
+                                line-height: 1;
+                                margin: 0;
+                                color: @grey3;
+                                border-bottom: 1px solid rgba(0,0,0,0.1);
+                                cursor: pointer;
+
+                                strong {
+                                    font-size: 18px;
+                                    font-weight: 600;
+                                    color: @black;
+                                    .show();
+
+                                    &.green {
+                                        color: @green;
+                                    }
+
+                                    &.red {
+                                        color: @red;
+                                    }
+                                }
+
+                                &.active {
+                                    background: @background;
+                                }
+                            }
+
+                            .button {
+                                font-size: 14px;
+                                margin: 10px 10px 0 10px;
+                                padding: 0 15px;
+                                .calc-width(100, 20);
+                                display: block;
+                            }
+                        }
                     }
-                }                        
+                }                    
 
                 /* Rooming List ***/
                 &.rooming-list {

@@ -1,4 +1,4 @@
-sntRover.controller('RVAccountsReceivablesController', ['$scope', '$rootScope', '$stateParams', '$filter', 'RVAccountsReceivablesSrv', function($scope, $rootScope, $stateParams, $filter, RVAccountsReceivablesSrv ) {
+sntRover.controller('RVAccountsReceivablesController', ['$scope', '$rootScope', '$stateParams', '$filter', 'rvAccountsArTransactionsSrv', function($scope, $rootScope, $stateParams, $filter, rvAccountsArTransactionsSrv ) {
 
 	BaseCtrl.call(this, $scope);
 	// Setting up the screen heading and browser title.
@@ -58,7 +58,7 @@ sntRover.controller('RVAccountsReceivablesController', ['$scope', '$rootScope', 
             'sort_by': $scope.filterData.sortBy
         };
 
-        $scope.invokeApi(RVAccountsReceivablesSrv.fetchAccountsReceivables, params, successCallBackFetchAccountsReceivables );
+        $scope.invokeApi(rvAccountsArTransactionsSrv.fetchAccountsReceivables, params, successCallBackFetchAccountsReceivables );
     };
 
     // Setting filter data set for pagination and filter options..
