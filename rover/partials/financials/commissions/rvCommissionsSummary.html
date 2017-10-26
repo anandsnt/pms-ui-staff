@@ -32,8 +32,8 @@
 <!-- Search panel - WITH RESULTS -->
 <section class="content commissions-content" role="main">
    <!-- When searching, add .searching-->
-   <div class="commissions-header">
-      <ul class="filters">
+   <div class="commissions-header searching">
+      <ul class="filters" ng-hide="checkAndSetIfAnyCommisionSelected()">
          <!-- Add .active to current filter -->
          <li ng-class="{ 'active' : filterData.filterTab === 'PAYABLE' }" ng-click="setFilterTab('PAYABLE')">
             To pay
@@ -78,7 +78,7 @@
             <button type="button" class="button purple with-icon" ng-click="exportCommisions()"><span class="icons icon-save"></span>Export</button>
             <button type="button" class="button green with-icon" ng-click="setRecordsToPaid()"><span class="icons icon-wallet"></span>Set to paid</button>
             <!-- Clear checked agents -->
-            <button type="button" class="button white">Cancel</button>
+            <button type="button" class="button white" ng-click="resetSelections()">Clear selection</button>
          </li>
       </ul>
       <!-- Show if active filer: On Hold & 1 or more agents are selected (checked) (remove .hidden) -->
@@ -94,7 +94,7 @@
          <li class="actions">
             <button type="button" class="button blue with-icon" ng-click="releaseCommisions()"><span class="icons icon-release"></span>Release</button>
             <!-- Clear checked agents -->
-            <button type="button" class="button white" ng-click="resetSelections()">Cancel</button>
+            <button type="button" class="button white" ng-click="resetSelections()">Clear selection</button>
          </li>
       </ul>
       <!-- Hide if 1 or more agents are selected (checked) or searching -->
@@ -181,9 +181,9 @@
                               <span class="icons icon-guest-travelagent">{{ ::account.iata_number }}</span>
                               <span class="icons icon-location">{{ ::account.location }}</span>
                            </div>
+                            <!-- Show only if on hold -->
+                           <span class="icons icon-hold red" ng-show="true"></span>
                         </div>
-                        <!-- Show only if on hold -->
-                        <span class="icons icon-hold red" ng-show="true"></span>
                         <ul class="info">
                            <li>
                               {{ ::account.number_of_unpaid_bills }}
