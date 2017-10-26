@@ -490,7 +490,9 @@
         font-size: 18px;
         line-height: 14px;
         font-weight: 600;
-
+        width: 100%;
+        .show();
+        
         &.clean,
         &.inspected{ color: @green; }
 
@@ -501,6 +503,8 @@
     }
 
     .room-type {
+        width: 100%;
+        .show();
         .nowrap();
     }
 
@@ -1591,7 +1595,7 @@
     &.with-reservation-overlay {
         overflow: visible;
 
-        &:after {
+        &:before {
             content:'';
             position: absolute;
             top: 0px;
@@ -1606,6 +1610,12 @@
             @media screen and (min-width: ~'@{containerWidth}px') {
                 left: ~'@{roomsWidth}px';
                 .calc-width(100, @roomsWidth);
+            }
+        }
+
+        .grid-content {
+            &.scroll-vertical {
+                overflow-y: hidden !important;
             }
         }
 
