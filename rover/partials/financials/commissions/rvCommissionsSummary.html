@@ -37,11 +37,11 @@
          <!-- Add .active to current filter -->
          <li ng-class="{ 'active' : filterData.filterTab === 'PAYABLE' }" ng-click="setFilterTab('PAYABLE')">
             To pay
-            <strong>{{ ::currencySymbol }}44</strong>
+            <strong>44</strong>
          </li>
          <li ng-class="{ 'active' : filterData.filterTab === 'ON_HOLD' }" ng-click="setFilterTab('ON_HOLD')">
             On Hold
-            <strong>{{ ::currencySymbol }}44</strong>
+            <strong>44</strong>
          </li>
       </ul>
       <!-- Hide if 1 or more agents are selected (checked) -->
@@ -182,7 +182,7 @@
                               <span class="icons icon-location">{{ ::account.location }}</span>
                            </div>
                             <!-- Show only if on hold -->
-                           <span class="icons icon-hold red" ng-show="true"></span>
+                           <span class="icons icon-hold red" ng-show="filterData.filterTab === 'PAYABLE'"></span>
                         </div>
                         <ul class="info">
                            <li>
