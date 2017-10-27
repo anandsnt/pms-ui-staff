@@ -194,7 +194,7 @@
                         </ul>
                      </a>
                      <!-- Remove .hidden when expanded -->
-                     <div class="commission-details" ng-class="{'hidden' :expandedSubmenuId !== account.id}">
+                     <div class="commission-details" ng-show="account.isExpanded">
                         <table style="margin-bottom: 60px;">
                            <thead>
                               <tr>
@@ -210,13 +210,13 @@
                            <tbody>
                               <tr ng-show="selectedCommisionReservations.reservations.length == 0"><td colspan="3">No data present.</td></tr>
                               <!-- Add class .odd or .even based on the row number -->
-                              <tr ng-class="{'odd': $index % 2 != 0, 'even': $index % 2 == 0}" ng-repeat="reservation in selectedCommisionReservations.reservations">
+                              <tr ng-class="{'odd': $index % 2 != 0, 'even': $index % 2 == 0}" ng-repeat="reservation in account.reservationsData.reservations">
                                  <td>
                                     <label class="checkbox inline">
                                       <!-- add .checked when checked -->
                                        <span class="icon-form icon-checkbox" ng-class="{'checked': reservation.isSelected}"></span>
                                        <!-- add checked="checked" when checked -->
-                                       <input type="checkbox" ng-model="reservation.isSelected" ng-change="reservationSelectionChanged(reservation)">
+                                       <input type="checkbox" ng-model="reservation.isSelected" ng-change="reservationSelectionChanged(account, reservation)">
                                     </label>
                                  </td>
                                  <td class="name">{{ ::reservation.last_name }}, {{ reservation.first_name}}</td>
@@ -233,10 +233,10 @@
                               </tr>
                            </tbody>
                         </table>
-                        <div class="search-pagination" ng-show="showResPagination">
-                           <button type="button" class="button dark-grey next" ng-click="loadNextReservationPage()" ng-disabled="disableReservationNextPage()" translate>NEXT</button>
-                           <button type="button" class="button dark-grey prev" ng-click="loadPrevReservationPage()" ng-disabled="reservationsPageNo === 1" translate>PREVIOUS</button>
-                           <p>{{'SHOWING' | translate}} <strong>{{startRes}}-{{endRes}}</strong> {{'OF' | translate}} <strong id="total-count">{{ ::selectedCommisionReservations.total_count }}</strong> {{'ITEMS' | translate}}</p>
+                        <div class="search-pagination" ng-show="account.showResPagination">
+                           <button type="button" class="button dark-grey next" ng-click="loadNextReservationPage(account)" ng-disabled="disableReservationNextPage(account)" translate>NEXT</button>
+                           <button type="button" class="button dark-grey prev" ng-click="loadPrevReservationPage(account)" ng-disabled="account.reservationsPageNo === 1" translate>PREVIOUS</button>
+                           <p>{{'SHOWING' | translate}} <strong>{{account.startRes}}-{{account.endRes}}</strong> {{'OF' | translate}} <strong id="total-count">{{ ::account.reservationsData.total_count }}</strong> {{'ITEMS' | translate}}</p>
                         </div>
                      </div>
                   </div>
