@@ -167,16 +167,23 @@ sntRover.controller('RVCommissionsSummaryController', ['$scope',
             });
             // set the checked status of the inner reservations list
             if (account.isExpanded) {
-                _.each(account.reservationsData.reservations, function(reservation) {
-                    reservation.isSelected = account.isSelected;
-                    var indexOfRes = account.selectedReservations.indexOf(reservation.id);
+                if (account.isSelected) {
+                    _.each(account.reservationsData.reservations, function(reservation) {
+                        reservation.isSelected = true;
+                        var indexOfRes = account.selectedReservations.indexOf(reservation.id);
 
-                    if (reservation.isSelected && indexOfRes === -1) {
-                        account.selectedReservations.push(reservation.id);
-                    } else if (!reservation.isSelected && indexOfRes !== -1) {
-                        account.selectedReservations.splice(indexOfRes, 1);
-                    }
-                });
+                        if (reservation.isSelected && indexOfRes === -1) {
+                            account.selectedReservations.push(reservation.id);
+                        } else if (!reservation.isSelected && indexOfRes !== -1) {
+                            account.selectedReservations.slice(indexOfRes, 1);
+                        }
+                    });
+                } else {
+                    _.each(account.reservationsData.reservations, function(reservation) {
+                        reservation.isSelected = false;
+                    });
+                    account.selectedReservations = [];
+                }
             }
         };
 
@@ -343,7 +350,7 @@ sntRover.controller('RVCommissionsSummaryController', ['$scope',
                         }
                     });
                 }
-                
+
 
                 _.each($scope.commissionsData.accounts, function(account) {
                     if (account.isExpanded && account.selectedReservations.length) {
@@ -355,7 +362,7 @@ sntRover.controller('RVCommissionsSummaryController', ['$scope',
                     }
                 });
 
-                if(!params.partialy_selected_agents.length){
+                if (!params.partialy_selected_agents.length) {
                     delete params.partialy_selected_agents;
                 }
             }
