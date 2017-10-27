@@ -318,17 +318,32 @@ sntRover.controller('RVCommissionsSummaryController', ['$scope',
             var params = {};
 
             params.action = action;
+            params.no_of_bills_selected = $scope.noOfBillsSelected;
+
             if ($scope.areAllBillsSelected()) {
                 params.update_all_bill = true;
             } else {
-                params.selected_agents = [];
                 params.partialy_selected_agents = [];
-                _.each($scope.selectedAgentIds, function(id) {
-                    params.selected_agents.push({
-                        'id': id,
-                        'update_all': true
+                // if only items in the existing page are selected
+                if (params.no_of_bills_selected <= 50) {
+                    params.selected_agents = [];
+                    _.each($scope.selectedAgentIds, function(id) {
+                        params.selected_agents.push({
+                            'id': id,
+                            'update_all': true
+                        });
                     });
-                });
+                } else {
+                    // when more than per page items are selected and
+                    // some of the current page items are unchecked
+                    params.un_selected_agents = [];
+                    _.each($scope.commissionsData.accounts, function(account) {
+                        if (!account.isSelected) {
+                            params.un_selected_agents.push(account.id);
+                        }
+                    });
+                }
+                
 
                 _.each($scope.commissionsData.accounts, function(account) {
                     if (account.isExpanded && account.selectedReservations.length) {
@@ -339,6 +354,10 @@ sntRover.controller('RVCommissionsSummaryController', ['$scope',
                         params.partialy_selected_agents.push(data);
                     }
                 });
+
+                if(!params.partialy_selected_agents.length){
+                    delete params.partialy_selected_agents;
+                }
             }
 
             console.log(params);
