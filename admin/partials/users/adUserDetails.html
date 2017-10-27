@@ -20,8 +20,8 @@
 					<div></div>
 					<ad-textbox value="data.job_title" name = "job-title" id = "job-title" label = "Job title" placeholder = "Enter job title" required = "yes" ></ad-textbox>
 					<ad-textbox value="data.phone" name = "phone" id = "phone" label = "Phone" placeholder = "Enter phone" required = "no" ></ad-textbox>
-
-
+					
+					<ad-dropdown-name name="work-shift" savemodel="data.shift_id" id="work-shift" valueproperty="id" property="name" list="data.shifts" label="Working shift" styleclass="full-width"  style="padding-left: 0px;" label-in-drop-down="Working Shift" div-class="{{ getStyleClass() }}"></ad-dropdown-name>
 
 					
 
