@@ -4,13 +4,12 @@ module.exports = {
         var themeCSSRoot = 'stylesheets/guestweb/';
 
         return {
-            'guestweb_basecamp_boulder_south_lake_tahoe': [ themeCSSRoot + 'guestweb_basecamp_boulder_south_lake_tahoe.css'],
-            'guestweb_anvil_hotel': [ themeCSSRoot + 'guestweb_anvil_hotel.css'],
+            'guestweb_room_2_hammersmith': [ themeCSSRoot + 'guestweb_room_2_hammersmith.css'],
             'guestweb_lamington_hammersmith': [ themeCSSRoot + 'guestweb_lamington_hammersmith.css'],
-            'guestweb_sage_inn': [ themeCSSRoot + 'guestweb_sage_inn.css'],
+            'guestweb_anvil_hotel': [ themeCSSRoot + 'guestweb_anvil_hotel.css'],
+            'guestweb_basecamp_boulder_south_lake_tahoe': [ themeCSSRoot + 'guestweb_basecamp_boulder_south_lake_tahoe.css'],
             'guestweb_the_gotham_hotel': [ themeCSSRoot + 'guestweb_the_gotham_hotel.css'],
             'guestweb_basecamp_boulder_tahoe_city': [ themeCSSRoot + 'guestweb_basecamp_boulder_tahoe_city.css'],
-            'guestweb_maplewood_suites_syracuse': [ themeCSSRoot + 'guestweb_maplewood_suites_syracuse.css'],
             'guestweb_jupiter_hotel': [ themeCSSRoot + 'guestweb_jupiter_hotel.css'],
             'guestweb_maplewood_suites_syracuse': [ themeCSSRoot + 'guestweb_maplewood_suites_syracuse.css'],
             'guestweb_sage_inn': [ themeCSSRoot + 'guestweb_sage_inn.css'],
