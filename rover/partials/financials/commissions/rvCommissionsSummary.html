@@ -47,18 +47,18 @@
       <!-- Hide if 1 or more agents are selected (checked) -->
       <ul class="commissions-info" ng-hide="areAllBillsSelected() || areBillsPartialySelected() || areAnyReservationsPartialySelected()">
          <!-- Show if active filter: Payable -->
-         <li>
+         <li ng-show="filterData.filterTab === 'PAYABLE'">
             <span>Eligible for payment</span>
             <span class="amount">{{ ::currencySymbol }}444</span>
          </li>
          <!-- Show if active filter: Payable -->
-         <li class="actions">
+         <li class="actions" ng-show="filterData.filterTab === 'PAYABLE'">
             <button type="button" class="button purple with-icon" ng-click="exportCommisions()">
             <span class="icons icon-save"></span>Export
             </button>
          </li>
          <!-- Show if active filter: On Hold (remove .hidden) -->
-         <li class="hidden">
+         <li ng-show="filterData.filterTab === 'ON_HOLD'">
             <span>Amount on Hold</span>
             <span class="amount">{{ ::currencySymbol }}444</span>
          </li>
