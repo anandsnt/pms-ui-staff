@@ -27,7 +27,6 @@ sntRover.controller('RVCommissionsSummaryController', ['$scope',
         $scope.resetSelections = function() {
             $scope.noOfBillsSelected = 0;
             $scope.noOfBillsInOtherPagesSelected = 0;
-            $scope.isAnyCommisionSelected = false;
             $scope.allCommisionsSelected = false;
             $scope.selectedAgentIds = [];
             _.each($scope.commissionsData.accounts, function(account) {
@@ -36,6 +35,7 @@ sntRover.controller('RVCommissionsSummaryController', ['$scope',
             });
         };
 
+        // clicked on the expandable icon
         $scope.expandCommision = function(account) {
             account.reservationsData = {};
             account.selectedReservations = [];
@@ -47,9 +47,9 @@ sntRover.controller('RVCommissionsSummaryController', ['$scope',
                 account.isExpanded = true;
                 account.reservationsData = angular.copy(RVCommissionsSrv.sampleReservationData);
                 account.selectedReservations = [];
+                // if the account is selected, the reservation list 
+                // inside should be selected
                 _.each(account.reservationsData.reservations, function(reservation) {
-                    // if the account is selected, the reservation list 
-                    // inside should be selected
                     reservation.isSelected = account.isSelected;
                     var indexOfRes = account.selectedReservations.indexOf(reservation.id);
 
@@ -57,13 +57,16 @@ sntRover.controller('RVCommissionsSummaryController', ['$scope',
                         account.selectedReservations.push(reservation.id);
                     }
                 });
+                // start with page 1
                 account.reservationsPageNo = 1;
                 account.showResPagination = account.reservationsData.total_count > 2;
             }
             refreshArOverviewScroll();
         };
 
-        $scope.areAllBillsSelected = function() {
+        // based on selections, the top menu changes.
+        // check if all agents are selected
+        $scope.areAllAgentsSelected = function() {
             if ($scope.commissionsData) {
                 return $scope.commissionsData.total_results === $scope.noOfBillsSelected;
             } else {
@@ -71,7 +74,8 @@ sntRover.controller('RVCommissionsSummaryController', ['$scope',
             }
         };
 
-        $scope.areBillsPartialySelected = function() {
+        // check if any one of the agents is selected
+        $scope.areAgentsPartialySelected = function() {
             if ($scope.commissionsData && $scope.noOfBillsSelected) {
                 return $scope.commissionsData.total_results !== $scope.noOfBillsSelected;
             } else {
@@ -79,6 +83,7 @@ sntRover.controller('RVCommissionsSummaryController', ['$scope',
             }
         };
 
+        // check if any one of the reservation inside any agent is selected
         $scope.areAnyReservationsPartialySelected = function() {
             if ($scope.commissionsData && $scope.commissionsData.accounts) {
                 var isAnyReservationIsSelected = false;
@@ -93,6 +98,8 @@ sntRover.controller('RVCommissionsSummaryController', ['$scope',
             }
         };
 
+        // based on the change in reservation selection, the corresponding 
+        // agent and all agent selected/ semi selected flag need to be set.
         $scope.reservationSelectionChanged = function(account, reservation) {
             // if selected, add to the array
             var selectedIndex = account.selectedReservations.indexOf(reservation.id);
@@ -145,6 +152,7 @@ sntRover.controller('RVCommissionsSummaryController', ['$scope',
             }
         };
 
+        // based on the commision selection, set the no of bills.
         $scope.commisionSelectionChanged = function(account) {
             account.isSemiSelected = false;
             $scope.selectedAgentIds = [];
@@ -185,7 +193,7 @@ sntRover.controller('RVCommissionsSummaryController', ['$scope',
             }
         };
 
-        // check/ uncheck all commisions dispayed based on the main selection
+        // check / uncheck all commisions dispayed based on the main selection
         $scope.allCommisionsSelectionChanged = function() {
             $scope.selectedAgentIds = [];
 
@@ -210,6 +218,7 @@ sntRover.controller('RVCommissionsSummaryController', ['$scope',
             }
         };
 
+        // main tab switch - On Hold and To pay
         $scope.setFilterTab = function(selectedTab) {
             $scope.commissionsData = {};
             $scope.filterData.billStatus.value = selectedTab === 'ON_HOLD' ? 'PAID' : 'ALL';
@@ -219,7 +228,7 @@ sntRover.controller('RVCommissionsSummaryController', ['$scope',
 
         /***************** Search starts here *****************/
 
-        var fetchCommissionsData = function(pageNo) {
+        var fetchAgentsData = function(pageNo) {
             $scope.filterData.page = !!pageNo ? pageNo : 1;
 
             var successCallBack = function(data) {
@@ -250,12 +259,12 @@ sntRover.controller('RVCommissionsSummaryController', ['$scope',
         };
 
         $scope.searchAccounts = function() {
-            fetchCommissionsData();
+            fetchAgentsData();
         };
 
         $scope.clearSearchQuery = function() {
             $scope.filterData.searchQuery = '';
-            fetchCommissionsData();
+            fetchAgentsData();
         };
         /***************** search ends here *****************************/
 
@@ -322,7 +331,7 @@ sntRover.controller('RVCommissionsSummaryController', ['$scope',
             params.action = action;
             params.no_of_bills_selected = $scope.noOfBillsSelected;
 
-            if ($scope.areAllBillsSelected()) {
+            if ($scope.areAllAgentsSelected()) {
                 params.update_all_bill = true;
             } else {
                 params.partialy_selected_agents = [];
@@ -366,7 +375,7 @@ sntRover.controller('RVCommissionsSummaryController', ['$scope',
             console.log(JSON.stringify(params));
             var successCallBack = function() {
                 ngDialog.close();
-                fetchCommissionsData();
+                fetchAgentsData();
             };
             successCallBack();
         };
@@ -431,10 +440,10 @@ sntRover.controller('RVCommissionsSummaryController', ['$scope',
             $scope.selectedAgentIds = [];
             $scope.pageNo = 1;
             // fetch initial data
-            fetchCommissionsData();
+            fetchAgentsData();
             $scope.paginationData = {
                 id: 'TA_LIST',
-                api: fetchCommissionsData,
+                api: fetchAgentsData,
                 perPage: $scope.filterData.perPage
             };
             $scope.setScroller('commissionOverViewScroll', {});
