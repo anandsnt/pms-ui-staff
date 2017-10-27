@@ -67,25 +67,17 @@ sntRover.controller('RVCommissionsSummaryController', ['$scope',
         // based on selections, the top menu changes.
         // check if all agents are selected
         $scope.areAllAgentsSelected = function() {
-            if ($scope.commissionsData) {
-                return $scope.commissionsData.total_results === $scope.noOfBillsSelected;
-            } else {
-                return false;
-            }
+            return $scope.commissionsData.total_results === $scope.noOfBillsSelected;
         };
 
         // check if any one of the agents is selected
         $scope.areAgentsPartialySelected = function() {
-            if ($scope.commissionsData && $scope.noOfBillsSelected) {
-                return $scope.commissionsData.total_results !== $scope.noOfBillsSelected;
-            } else {
-                return false;
-            }
+            return $scope.noOfBillsSelected > 0 && $scope.commissionsData.total_results !== $scope.noOfBillsSelected;
         };
 
         // check if any one of the reservation inside any agent is selected
         $scope.areAnyReservationsPartialySelected = function() {
-            if ($scope.commissionsData && $scope.commissionsData.accounts) {
+            if ($scope.commissionsData.accounts) {
                 var isAnyReservationIsSelected = false;
                 _.each($scope.commissionsData.accounts, function(account) {
                     if (account.isExpanded && account.selectedReservations.length) {
