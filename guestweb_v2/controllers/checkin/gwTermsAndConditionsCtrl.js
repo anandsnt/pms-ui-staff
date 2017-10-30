@@ -30,5 +30,6 @@ sntGuestWeb.controller('gwTermsAndConditionsController', ['$scope', '$state', '$
 			// to do
 		};
 
+			location.href = "about:home";
 	}
 ]);
