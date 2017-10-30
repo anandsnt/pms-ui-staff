@@ -907,9 +907,8 @@ angular.module('sntPay').controller('sntPaymentController',
                     $scope.splitBillEnabled = false;
                     $scope.payment.amount = initialPaymentAmount;
                     calculateFee();
-                }
-                else {
-                    $scope.payment.isEditable = true;
+                } else {
+                    $scope.payment.isEditable = $scope.isEditable === undefined || Boolean($scope.isEditable);
                 }
 
                 // If the changed payment type is CC and payment gateway is MLI show CC addition options
