@@ -27,9 +27,8 @@ sntGuestWeb.controller('gwTermsAndConditionsController', ['$scope', '$state', '$
 		    }
 		};
 		$scope.cancelClicked = function() {
-			// to do
+			location.href = "about:home";
 		};
 
-			location.href = "about:home";
 	}
 ]);
