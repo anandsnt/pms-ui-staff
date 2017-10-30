@@ -403,6 +403,7 @@ sntGuestWeb.controller('GWAddonsController', ['$scope', '$state', '$stateParams'
 			var options = {
 				params: {},
 				successCallBack: function(response) {
+					existingAddons = GwCheckinSrv.getcheckinData().addons_data;
 					fetchExistingAddonsSucess(response.addons);
 				}
 			};

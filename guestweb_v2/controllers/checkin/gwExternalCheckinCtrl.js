@@ -60,6 +60,7 @@ sntGuestWeb.controller('GwExternalCheckInVerificationController', ['$scope', '$s
 				zestwebData.roomUpgradeheading = "Your trip details";
 				reservation_data.terms_and_conditions = (typeof zestwebData.termsAndConditions !== "undefined") ? zestwebData.termsAndConditions : "";
 				// set in service for future usage
+				reservation_data.addons_data = token_response.addons_data;
 				GwCheckinSrv.setcheckinData(reservation_data);
 				zestwebData.upgradesAvailable = (reservation_data.is_upgrades_available === "true") ? true : false;
 				zestwebData.isCCOnFile = (reservation_data.is_cc_attached === "true") ? true : false;
