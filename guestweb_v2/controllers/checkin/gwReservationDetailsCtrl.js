@@ -24,7 +24,11 @@ sntGuestWeb.controller('gwReservationDetailsController', ['$scope', '$state', '$
 			// to do : show terms and conditions
 			if ( GwWebSrv.zestwebData.upgradesAvailable && !GwWebSrv.zestwebData.roomUpgraded) {
 				$state.go('roomUpgrade');
-			} else {
+			}
+			else if(GwWebSrv.isAddonUpsellActive){
+				$state.go('offerAddons');
+			} 
+			else {
 				$state.go('termsAndConditions');
 			}
 		};

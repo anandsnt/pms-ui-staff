@@ -108,7 +108,14 @@ sntGuestWeb.config(['$stateProvider', function($stateProvider) {
 		data: {
 			pageTitle: 'Add-ons'
 		}
-	})
+	}).state('collectEmail', {
+	 	url: '/collectEmail',
+	 	templateUrl: '/assets/partials/checkin/gwCollectEmail.html',
+	 	controller: 'gwCollectEmailController',
+	 	data: {
+	 		title: 'E-mail collection'
+	 	}
+	 });
 
 
 	// // checkin states

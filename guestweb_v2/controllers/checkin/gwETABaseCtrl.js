@@ -50,6 +50,9 @@ sntGuestWeb.controller('gwETABaseController', ['$scope', '$state', '$controller'
 						};
 
 						$state.go('laterArrival', stateParams);
+					} 
+					else if (GwWebSrv.zestwebData.application !== 'WEB' && GwWebSrv.zestwebData.offerRoomDeliveryOptions) {
+						$state.go('collectEmail');
 					} else {
 						$state.go('autoCheckinFinal');
 					}

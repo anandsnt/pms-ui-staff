@@ -26,11 +26,7 @@ sntGuestWeb.controller('gwAutoCheckinController', ['$scope', '$controller', 'GwW
 			},
 			successCallBack: completeAutoCheckinSuccess
 		};
-		if ($state.href("offerAddons") !== null && GwWebSrv.isAddonUpsellActive && !GwWebSrv.skipedAddons) {
-				$state.go('offerAddons', {
-					'isFrom': 'checkinLater'
-				});
-		}else if(!GwWebSrv.zestwebData.isInZestwebDemoMode){
+		if(!GwWebSrv.zestwebData.isInZestwebDemoMode){
 			$scope.callAPI(GwCheckinSrv.completeAutoCheckin, options);
 		}else{
 			completeAutoCheckinSuccess({'confirmation_message': 'Please wait till you receive a mail from us. Thank You'});

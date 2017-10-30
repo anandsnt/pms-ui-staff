@@ -165,7 +165,7 @@
 				that.zestwebData.termsAndConditions = zestwebData.terms_and_conditions;
 				that.zestwebData.isBirthdayVerified = false;
 
-				that.zestwebData.application = zestwebData.application;
+				that.zestwebData.application = zestwebData.application ? zestwebData.application : 'WEB';
 				that.zestwebData.urlSuffix = zestwebData.url_suffix;
 				that.zestwebData.collectCCOnCheckin = (zestwebData.checkin_collect_cc === "true") ? true : false;
 				that.zestwebData.isMLI = (zestwebData.payment_gateway = "MLI") ? true : false;

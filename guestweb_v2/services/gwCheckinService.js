@@ -172,7 +172,7 @@ sntGuestWeb.service('GwCheckinSrv', [
 
 	this.postGuestDetails = function(params) {
 		var deferred = $q.defer();
-		var url = '/guest_web/guest_details/' + params.reservation_id + '.json';
+		var url = '/guest_web/guest_details/' + GwWebSrv.zestwebData.reservationID + '.json';
 
 		params.application = (typeof GwWebSrv.zestwebData.application !== "undefined") ? GwWebSrv.zestwebData.application : "";
 		GWBaseWebSrv2.putJSON(url, params.data).then(function(data) {

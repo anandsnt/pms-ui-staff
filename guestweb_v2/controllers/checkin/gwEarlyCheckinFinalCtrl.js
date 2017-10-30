@@ -16,7 +16,11 @@ sntGuestWeb.controller('gwEarlyCheckinFinalController', ['$scope', '$state', '$s
 		}());
 
 		$scope.nextButtonClicked = function() {
-			$state.go('autoCheckinFinal');
+			if (GwWebSrv.zestwebData.application !== 'WEB' && GwWebSrv.zestwebData.offerRoomDeliveryOptions) {
+				$state.go('collectEmail');
+			} else {
+				$state.go('autoCheckinFinal');
+			}
 		};
 	}
 ]);

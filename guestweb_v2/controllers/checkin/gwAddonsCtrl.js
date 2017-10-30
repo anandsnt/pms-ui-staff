@@ -1,6 +1,10 @@
 sntGuestWeb.controller('GWAddonsController', ['$scope', '$state', '$stateParams', '$controller', 'GwWebSrv', '$sce', 'GwCheckinSrv',
 	function($scope, $state, $stateParams, $controller, GwWebSrv, $sce, GwCheckinSrv) {
 
+		$controller('BaseController', {
+			$scope: $scope
+		});
+		
 		var amountTypesLabels = [],
 			postTypeLabels = [],
 			selectedAddon = {},
@@ -148,13 +152,7 @@ sntGuestWeb.controller('GWAddonsController', ['$scope', '$state', '$stateParams'
 			}
 		};
 		var goToNextScreen = function() {
-			GwWebSrv.skipedAddons = true;
-			if ($stateParams.isFrom === "checkinLater") {
-				$state.go('autoCheckinFinal')
-			} else {
-				$state.go('checkinFinal')
-			}
-
+			$state.go('termsAndConditions');
 		};
 
 		$scope.doneClicked = function() {
