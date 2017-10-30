@@ -178,7 +178,10 @@
 				that.zestwebData.zestCheckinNoServiceMsg = zestwebData.zest_checkin_no_service_msg;
 
 				that.zestwebData.offerRoomDeliveryOptions = (zestwebData.offer_room_delivery_options === "true") ? true : false;
+				that.isAddonUpsellActive = zestwebData.addon_upsell_availability;
 
+				that.sellLcoAsAddons = zestwebData.is_sell_late_checkout_as_addon;
+				
 				// Params for zest mobile and desktop screens
 				if (zestwebData.hasOwnProperty('is_password_reset')) {
 					that.zestwebData.isPasswordResetView = zestwebData.is_password_reset = "true";

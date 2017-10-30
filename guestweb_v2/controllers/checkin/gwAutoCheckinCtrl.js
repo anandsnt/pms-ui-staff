@@ -1,8 +1,8 @@
 /**
  * Checkin -Auto checkin Controller
  */
-sntGuestWeb.controller('gwAutoCheckinController', ['$scope', '$controller', 'GwWebSrv', 'GwCheckinSrv', '$rootScope',
-	function($scope, $controller, GwWebSrv, GwCheckinSrv, $rootScope) {
+sntGuestWeb.controller('gwAutoCheckinController', ['$scope', '$controller', 'GwWebSrv', 'GwCheckinSrv', '$rootScope', '$state',
+	function($scope, $controller, GwWebSrv, GwCheckinSrv, $rootScope, $state) {
 
 		$controller('BaseController', {
 			$scope: $scope
@@ -10,7 +10,6 @@ sntGuestWeb.controller('gwAutoCheckinController', ['$scope', '$controller', 'GwW
 		
 		var init = (function() {
 			var screenIdentifier = "AUTO_CHECKIN_FINAL";
-
 			$scope.screenCMSDetails = GwWebSrv.extractScreenDetails(screenIdentifier);
 			$scope.isLoading = true;
 		}());
@@ -27,7 +26,11 @@ sntGuestWeb.controller('gwAutoCheckinController', ['$scope', '$controller', 'GwW
 			},
 			successCallBack: completeAutoCheckinSuccess
 		};
-		if(!GwWebSrv.zestwebData.isInZestwebDemoMode){
+		if ($state.href("offerAddons") !== null && GwWebSrv.isAddonUpsellActive && !GwWebSrv.skipedAddons) {
+				$state.go('offerAddons', {
+					'isFrom': 'checkinLater'
+				});
+		}else if(!GwWebSrv.zestwebData.isInZestwebDemoMode){
 			$scope.callAPI(GwCheckinSrv.completeAutoCheckin, options);
 		}else{
 			completeAutoCheckinSuccess({'confirmation_message': 'Please wait till you receive a mail from us. Thank You'});

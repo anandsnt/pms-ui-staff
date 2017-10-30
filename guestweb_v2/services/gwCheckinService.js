@@ -52,7 +52,7 @@ sntGuestWeb.service('GwCheckinSrv', [
 		params.application = (typeof GwWebSrv.zestwebData.application !== "undefined") ? GwWebSrv.zestwebData.application : "";
 		// if controller didn't send the url suffix
 		if (typeof params.url_suffix === "undefined") {
-			params.url_suffix = (typeof $rootScope.urlSuffix !== "undefined") ? $rootScope.urlSuffix : "";
+			params.url_suffix = (typeof GwWebSrv.zestwebData.urlSuffix !== "undefined") ? GwWebSrv.zestwebData.urlSuffix : "";
 		}
 		var url = '/guest_web/authenticate_checkin_guest';
 
@@ -147,7 +147,7 @@ sntGuestWeb.service('GwCheckinSrv', [
 
 		// if controller didn't send the url suffix
 		if (typeof params.url_suffix === "undefined") {
-			params.url_suffix = (typeof $rootScope.urlSuffix !== "undefined") ? $rootScope.urlSuffix : "";
+			params.url_suffix = (typeof GwWebSrv.zestwebData.urlSuffix !== "undefined") ? GwWebSrv.zestwebData.urlSuffix : "";
 		}
 
 		GWBaseWebSrv.postJSON(url, params).then(function(data) {
@@ -238,6 +238,103 @@ sntGuestWeb.service('GwCheckinSrv', [
 		"bypass_early_checkin": false,
 		"early_checkin_offer_id": 12,
 		"early_checkin_charge": '$30'
+	};
+
+	this.getAddonList = function() {
+
+		var deferred = $q.defer();
+		var url = '/api/upsell_addons';
+		var params = {
+			'for_zest_web': true,
+			'reservation_id': GwWebSrv.zestwebData.reservationID
+		};
+
+		params.application = (typeof GwWebSrv.zestwebData.application !== "undefined") ? GwWebSrv.zestwebData.application : "WEB";
+		params.url_suffix = (typeof GwWebSrv.zestwebData.urlSuffix !== "undefined") ? GwWebSrv.zestwebData.urlSuffix : "";
+
+		GWBaseWebSrv2.getJSON(url, params).then(function(data) {
+			deferred.resolve(data);
+		}, function(data) {
+			deferred.reject(data);
+		});
+		return deferred.promise;
+	};
+
+	this.updateAddon = function(params) {
+
+		var deferred = $q.defer();
+		var url = '/api/reservations/update_package';
+
+		params.application = (typeof GwWebSrv.zestwebData.application !== "undefined") ? GwWebSrv.zestwebData.application : "WEB";
+		params.url_suffix = (typeof GwWebSrv.zestwebData.urlSuffix !== "undefined") ? GwWebSrv.zestwebData.urlSuffix : "";
+		params.id = GwWebSrv.zestwebData.reservationID;
+
+		GWBaseWebSrv2.postJSON(url, params).then(function(data) {
+			deferred.resolve(data);
+		}, function(data) {
+			deferred.reject(data);
+		});
+		return deferred.promise;
+	};
+
+	this.deleteAddon = function(params) {
+
+		var deferred = $q.defer();
+		var url = '/api/reservations/delete_package';
+
+		params.id = GwWebSrv.zestwebData.reservationID;
+		params.application = (typeof GwWebSrv.zestwebData.application !== "undefined") ? GwWebSrv.zestwebData.application : "WEB";
+		params.url_suffix = (typeof GwWebSrv.zestwebData.urlSuffix !== "undefined") ? GwWebSrv.zestwebData.urlSuffix : "";
+		GWBaseWebSrv2.postJSON(url, params).then(function(data) {
+			deferred.resolve(data);
+		}, function(data) {
+			deferred.reject(data);
+		});
+		return deferred.promise;
+	};
+
+	this.getExistingAddonsList = function() {
+
+		var deferred = $q.defer();
+		var url = '/staff/staycards/reservation_addons';
+		var params = {
+			'reservation_id': GwWebSrv.zestwebData.reservationID,
+			'sync_with_pms': true
+		};
+
+		GWBaseWebSrv.getJSON(url, params).then(function(data) {
+			deferred.resolve(data);
+		}, function(data) {
+			deferred.reject(data);
+		});
+		return deferred.promise;
+	};
+
+	this.getAddonAdminSettings = function() {
+		var deferred = $q.defer();
+		var url = '/api/upsell_addons_setups';
+		var params = {
+			'reservation_id': GwWebSrv.zestwebData.reservationID
+		};
+
+		GWBaseWebSrv2.getJSON(url, params).then(function(data) {
+			deferred.resolve(data);
+		}, function(data) {
+			deferred.reject(data);
+		});
+		return deferred.promise;
+	};
+
+	this.getlateCheckoutSettings = function() {
+		var deferred = $q.defer();
+		var url = '/admin/hotel/get_late_checkout_setup.json';
+
+		GWBaseWebSrv.getJSON(url).then(function(data) {
+			deferred.resolve(data);
+		}, function(data) {
+			deferred.reject(data);
+		});
+		return deferred.promise;
 	};
 
 }]);

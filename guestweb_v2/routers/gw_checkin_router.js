@@ -101,6 +101,16 @@ sntGuestWeb.config(['$stateProvider', function($stateProvider) {
 	 });
 
 
+	$stateProvider.state('offerAddons', {
+		url: '/addons',
+		templateUrl: '/assets/partials/checkin/gwAddons.html',
+		controller: 'GWAddonsController',
+		data: {
+			pageTitle: 'Add-ons'
+		}
+	})
+
+
 	// // checkin states
 
 	// $stateProvider.state('checkinConfirmation', {
