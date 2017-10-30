@@ -23,7 +23,7 @@
 
 
 
-					
+
 
 
 
@@ -34,10 +34,12 @@
 							<input type="file" ng-model="image" accept="image/*" app-filereader />
 							<button type="button" class="button brand-colors">
 								 Choose file
-							</button> 
+							</button>
 						</div>
 						<span class="file-preview"> <img ng-src="{{image}}" id="file-preview" alt=""> </span>
 					</div>
+					<ad-dropdown-name savemodel="data.hk_section_id" id="section" selbox-class="placeholder" label="Housekeeping Section" div-class="full-width" label-in-drop-down="Housekeeping Section" list="data.hk_sections" selected-Id='data.hk_section_id' valueproperty="id" property="number">
+					</ad-dropdown-name>
 
 				</fieldset>
 				<fieldset class="holder right">
@@ -88,28 +90,28 @@
 
 					<div class="entry has-sortable">
 						<label>Assigned Roles</label>
-						<ul id="assigned-roles" 
+						<ul id="assigned-roles"
 						data-placeholder="Drop a role here to assign it to the user"
 
 						data-jqyoui-options="{accept:'.unassigned-user-roles'}"
-						
-						class="boxes sortable empty short-list" data-drop="true" 
-						ng-model='assignedRoles' 
+
+						class="boxes sortable empty short-list" data-drop="true"
+						ng-model='assignedRoles'
 
 						jqyoui-droppable="{multiple:true, onOver: 'reachedAssignedRoles', onDrop: 'onRoleChange'}"
 
 						data-type="target">
 
-							<li ng-repeat="role in assignedRoles" 
+							<li ng-repeat="role in assignedRoles"
 							class="assigned-user-roles li-draggable"
 
 							data-drag="!(isChainAdmin && role.name==='Chain Admin')" data-jqyoui-options="{revert: 'invalid', helper:'clone',appendTo: 'body'}"
-							ng-model="assignedRoles" 
+							ng-model="assignedRoles"
 
-							jqyoui-draggable="{index: {{$index}}, placeholder:false, animate:false, onStart:'hideCurrentDragItem', onStop:'showCurrentDragItem'}" 
-							ng-hide="!role.name" 
+							jqyoui-draggable="{index: {{$index}}, placeholder:false, animate:false, onStart:'hideCurrentDragItem', onStop:'showCurrentDragItem'}"
+							ng-hide="!role.name"
 
-							ng-class="{selected: selectedAssignedRole == $index, justDropped: justDropped == $index}" 
+							ng-class="{selected: selectedAssignedRole == $index, justDropped: justDropped == $index}"
 
 							ng-click="selectAssignedRole($event, $index)">
 
@@ -131,23 +133,23 @@
 
 					<div class="entry has-sortable" >
 						<label>Not Assigned Roles</label>
-						<ul data-placeholder="To remove a role for the user simply drop it here" 
+						<ul data-placeholder="To remove a role for the user simply drop it here"
 
 						class="boxes sortable short-list"
-						data-drop="true" ng-model='unAssignedRoles' 
+						data-drop="true" ng-model='unAssignedRoles'
 
 						data-jqyoui-options="{accept:'.assigned-user-roles'}"
 						jqyoui-droppable="{multiple:true, onOver: 'reachedUnAssignedRoles', onDrop: 'onRoleChange' }" data-type="source">
-						
-							<li ng-repeat="role in unAssignedRoles" 
+
+							<li ng-repeat="role in unAssignedRoles"
 							class="unassigned-user-roles li-draggable"
-							data-drag="true" data-jqyoui-options="{revert: 'invalid', helper:'clone',appendTo: 'body'}" 
+							data-drag="true" data-jqyoui-options="{revert: 'invalid', helper:'clone',appendTo: 'body'}"
 
-							ng-model="unAssignedRoles" 
+							ng-model="unAssignedRoles"
 
-							jqyoui-draggable="{index: {{$index}}, placeholder:false,animate:false, onStart:'hideCurrentDragItem', onStop:'showCurrentDragItem'}" 
+							jqyoui-draggable="{index: {{$index}}, placeholder:false,animate:false, onStart:'hideCurrentDragItem', onStop:'showCurrentDragItem'}"
 
-							ng-hide="!role.name" ng-class="{selected: selectedUnassignedRole == $index}" 
+							ng-hide="!role.name" ng-class="{selected: selectedUnassignedRole == $index}"
 
 							ng-click="selectUnAssignedRole($event, $index)">
 								<span class="icons icon-handle"></span>
@@ -155,7 +157,7 @@
 								{{role.name}}
 							</li>
 						</ul>
-					</div> 
+					</div>
 
 				</fieldset>
 
