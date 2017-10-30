@@ -23,8 +23,10 @@ sntGuestWeb.controller('gwCollectEmailController', ['$scope', '$state', '$contro
 		};
 
 		$scope.emailSubmitted = function() {
-
-			if (!validateEmail($scope.guestDetails.email)) {
+			if (GwWebSrv.zestwebData.isInZestwebDemoMode) {
+			    $scope.emailUpdated = true;
+			}
+			else if (!validateEmail($scope.guestDetails.email)) {
 				openErrorPopup('INVALID_EMAIL');
 			} else {
 				var options = {
@@ -37,8 +39,6 @@ sntGuestWeb.controller('gwCollectEmailController', ['$scope', '$state', '$contro
 					,
 					'successCallBack': function() {
 						$scope.emailUpdated = true;
-						$rootScope.userEmail = $scope.guestDetails.email;
-						$rootScope.userEmailEntered = true;
 					},
 					'failureCallBack': function() {
 						openErrorPopup('EMAIL_ERROR');

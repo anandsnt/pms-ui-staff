@@ -46,7 +46,7 @@ sntGuestWeb.controller('gwRoomUpgradeController', ['$scope', '$state', '$control
 				'upgrade_room_type_id': upsellOption.upgrade_room_type_id
 			};
 			var onUpgradeSuccess = function() {
-				GwWebSrv.zestwebData.roomUpgraded  = false;
+				GwWebSrv.zestwebData.roomUpgraded = false;
 				$state.go('checkinReservationDetails');
 			};
 			var onUpgradeFailure = function() {
@@ -59,16 +59,19 @@ sntGuestWeb.controller('gwRoomUpgradeController', ['$scope', '$state', '$control
 			};
 
 			if (GwWebSrv.zestwebData.isInZestwebDemoMode) {
-				GwWebSrv.zestwebData.roomUpgraded  = true;
+				GwWebSrv.zestwebData.roomUpgraded = true;
 				$state.go('checkinReservationDetails');
-			}
-			else {
+			} else {
 				$scope.callAPI(GwCheckinSrv.upgradeRoom, options);
 			}
 		};
 
 		$scope.noThanksClicked = function() {
-			$state.go('termsAndConditions');
+			if (GwWebSrv.isAddonUpsellActive) {
+				$state.go('offerAddons');
+			} else {
+				$state.go('termsAndConditions');
+			}
 		};
 	}
 ]);
