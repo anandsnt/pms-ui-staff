@@ -8,7 +8,7 @@ admin.service('ADHKSectionSrv', [
     */
     this.fetchHotelSectionList = function() {
         var deferred = $q.defer();
-        var url = '/admin/hk_sections';
+        var url = '/api/hk_sections';
 
         ADBaseWebSrvV2.getJSON(url).then(function(data) {
             deferred.resolve(data);
@@ -24,7 +24,7 @@ admin.service('ADHKSectionSrv', [
     */
     this.addHKSection = function(data) {
         var deferred = $q.defer();
-        var url = '/admin/hk_sections';
+        var url = '/api/hk_sections';
 
         ADBaseWebSrvV2.postJSON(url, data).then(function(data) {
             deferred.resolve(data);
@@ -40,7 +40,7 @@ admin.service('ADHKSectionSrv', [
     */
     this.updateHKSection = function(data) {
         var deferred = $q.defer();
-        var url = '/admin/hk_sections/' + data.sectionId;
+        var url = '/api/hk_sections/' + data.sectionId;
 
         delete data.sectionId;
 
@@ -57,22 +57,7 @@ admin.service('ADHKSectionSrv', [
     */
     this.getHkSectionDetails = function(sectionId) {
         var deferred = $q.defer();
-        var url = '/admin/hk_sections/' + sectionId;
-
-        ADBaseWebSrvV2.getJSON(url).then(function(data) {
-            deferred.resolve(data);
-        }, function(data) {
-            deferred.reject(data);
-        });
-        return deferred.promise;
-    };
-
-    /**
-    *   Service to fetch the initial data for adding new service provider
-    */
-    this.fetchServiceProviderAddData = function() {
-        var deferred = $q.defer();
-        var url = '/admin/service_providers/new.json';
+        var url = '/api/hk_sections/' + sectionId;
 
         ADBaseWebSrvV2.getJSON(url).then(function(data) {
             deferred.resolve(data);
@@ -88,7 +73,7 @@ admin.service('ADHKSectionSrv', [
     */
     this.deleteHKSection = function(params) {
         var deferred = $q.defer();
-        var url = '/admin/hk_sections/' + params.id;
+        var url = '/api/hk_sections/' + params.id;
 
         ADBaseWebSrvV2.deleteJSON(url).then(function(data) {
             deferred.resolve(data);
