@@ -115,6 +115,13 @@ sntGuestWeb.config(['$stateProvider', function($stateProvider) {
 	 	data: {
 	 		title: 'E-mail collection'
 	 	}
+	 }).state('checkinCCAddition', {
+	 	url: '/ccAddition',
+	 	templateUrl: '/assets/partials/checkin/gwCcEntry.html',
+	 	controller: 'GwCheckinCCAdditionController',
+	 	data: {
+			pageTitle: 'CC Addition'
+		}
 	 });
 
 

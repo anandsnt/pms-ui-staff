@@ -18,6 +18,8 @@ sntGuestWeb.controller('gwEarlyCheckinFinalController', ['$scope', '$state', '$s
 		$scope.nextButtonClicked = function() {
 			if (GwWebSrv.zestwebData.application !== 'WEB' && GwWebSrv.zestwebData.offerRoomDeliveryOptions) {
 				$state.go('collectEmail');
+			} else if (GwWebSrv.zestwebData.collectCCOnCheckin && GwWebSrv.zestwebData.isMLI) {
+				$state.go('checkinCCAddition');
 			} else {
 				$state.go('autoCheckinFinal');
 			}

@@ -53,7 +53,11 @@ sntGuestWeb.controller('gwETABaseController', ['$scope', '$state', '$controller'
 					} 
 					else if (GwWebSrv.zestwebData.application !== 'WEB' && GwWebSrv.zestwebData.offerRoomDeliveryOptions) {
 						$state.go('collectEmail');
-					} else {
+					} 
+					else if (GwWebSrv.zestwebData.collectCCOnCheckin && GwWebSrv.zestwebData.isMLI){
+						$state.go('checkinCCAddition');
+					}
+					else {
 						$state.go('autoCheckinFinal');
 					}
 

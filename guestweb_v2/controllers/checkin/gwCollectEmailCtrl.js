@@ -24,19 +24,16 @@ sntGuestWeb.controller('gwCollectEmailController', ['$scope', '$state', '$contro
 
 		$scope.emailSubmitted = function() {
 			if (GwWebSrv.zestwebData.isInZestwebDemoMode) {
-			    $scope.emailUpdated = true;
-			}
-			else if (!validateEmail($scope.guestDetails.email)) {
+				$scope.emailUpdated = true;
+			} else if (!validateEmail($scope.guestDetails.email)) {
 				openErrorPopup('INVALID_EMAIL');
 			} else {
 				var options = {
-					'params': 
-						{
-							'data': {
-								"email": $scope.guestDetails.email
-							}
+					'params': {
+						'data': {
+							"email": $scope.guestDetails.email
 						}
-					,
+					},
 					'successCallBack': function() {
 						$scope.emailUpdated = true;
 					},
@@ -51,7 +48,12 @@ sntGuestWeb.controller('gwCollectEmailController', ['$scope', '$state', '$contro
 		};
 
 		$scope.continueToPrecheckin = function() {
-			$state.go('autoCheckinFinal');
+			if (GwWebSrv.zestwebData.collectCCOnCheckin && GwWebSrv.zestwebData.isMLI) {
+				$state.go('checkinCCAddition');
+			} else {
+				$state.go('autoCheckinFinal');
+
+			}
 		};
 		$scope.changeEmail = function() {
 			$scope.emailUpdated = false;

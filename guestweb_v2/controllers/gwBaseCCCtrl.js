@@ -1,8 +1,6 @@
-/**
- *	CC addition
- */
-sntGuestWeb.controller('GwCCAdditionController', ['$scope', '$rootScope', '$state', '$controller', '$modal', 'GwWebSrv', 'GwCheckoutSrv', '$stateParams',
+sntGuestWeb.controller('gwBaseCCCollectionController', ['$scope', '$rootScope', '$state', '$controller', '$modal', 'GwWebSrv', 'GwCheckoutSrv', '$stateParams',
 	function($scope, $rootScope, $state, $controller, $modal, GwWebSrv, GwCheckoutSrv, $stateParams) {
+
 		$controller('BaseController', {
 			$scope: $scope
 		});
@@ -50,30 +48,19 @@ sntGuestWeb.controller('GwCCAdditionController', ['$scope', '$rootScope', '$stat
 		$scope.showCcvPopup = function() {
 			$modal.open(ccvOpts); // error modal popup
 		};
-		var navigateToNextPage = function() {
-			if ($stateParams.isFromCheckoutNow === "true") {
-				$state.go('checkOutFinal');
-			} else {
-				$state.go('checkOutLaterFinal', {
-						time: $stateParams.time,
-						ap: $stateParams.ap,
-						amount: $stateParams.amount
-				});
-			}
-		};
 
 		// save payment method and proceed
 		var goToNextStep = function() {
 			var cardExpiryDate = $scope.yearSelected + "-" + $scope.monthSelected + "-" + "01";
 			var onSuccess = function() {
-				navigateToNextPage();
+				$scope.$emit('NAVIGATE_TO_NEXT_PAGE');
 			};
 			var onFailure = function() {
 				$state.go('seeFrontDesk');
 			};
 			var options = {
 				params: {
-					'reservation_id': $rootScope.reservationID,
+					'reservation_id': GwWebSrv.zestwebData.reservationID,
 					'token': MLISessionId,
 					'card_expiry': cardExpiryDate,
 					'payment_type': "CC"
@@ -115,11 +102,12 @@ sntGuestWeb.controller('GwCCAdditionController', ['$scope', '$rootScope', '$stat
 			};
 
 			if (GwWebSrv.zestwebData.isInZestwebDemoMode) {
-				navigateToNextPage();
+				$scope.emit('NAVIGATE_TO_NEXT_PAGE');
 			} else {
 				fetchMLISessionId();
 			}
 
 		};
+
 	}
 ]);

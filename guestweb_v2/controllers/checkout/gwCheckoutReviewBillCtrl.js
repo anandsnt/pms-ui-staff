@@ -37,9 +37,12 @@ sntGuestWeb.controller('GwCheckoutReviewBillController', ['$scope', '$state', '$
 			// if payment gateway is MLI
 			// and balance >0 and CC is not attached
 			if (!GwWebSrv.zestwebData.isCCOnFile && parseInt($scope.billData.balance) > 0.00 && GwWebSrv.zestwebData.isMLI) {
-				$state.go('ccAddition', {'fee': $scope.billData.balance, 'message': 'Check-out fee', 'isFromCheckoutNow': true});
-			}
-			else {
+				$state.go('ccAddition', {
+					'fee': $scope.billData.balance,
+					'message': 'Check-out fee',
+					'isFrom': 'CHECK_OUT_NOW'
+				});
+			} else {
 				$state.go('checkOutFinal');
 			}
 		};
