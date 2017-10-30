@@ -238,9 +238,9 @@ admin.controller('ADUserDetailsCtrl',
 			$scope.assignedRoles = [];
 			$scope.$emit('hideLoader');
 			// This for displaying the placeholder text in dropdown
-			if (data.shift_id == null) {
+			if (data.shift_id === null) {
 				data.shift_id = "";
-			}			
+			}
 			$scope.data = data;
 			$scope.unAssignedRoles = $scope.rolesWithDashboards.slice(0);
 			if (data.user_photo === "") {
