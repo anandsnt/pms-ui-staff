@@ -10,7 +10,7 @@ admin.controller('ADCheckinCtrl', ['$scope', '$rootScope', 'adCheckinSrv', '$sta
    * To set the preveous state as admin.dashboard/Zest in all cases
    */
   $rootScope.previousState = 'admin.dashboard';
-  $rootScope.previousStateParam = ($scope.isChainAdminMenuPresent.length === 0) ? '1' : '2';
+  $rootScope.previousStateParam = ($scope.isChainAdminMenuPresent && $scope.isChainAdminMenuPresent.length === 0) ? '1' : '2';
 
   $scope.init = function () {
     $scope.checkinData = {};
