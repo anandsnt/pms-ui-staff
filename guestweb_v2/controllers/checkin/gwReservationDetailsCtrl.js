@@ -16,6 +16,7 @@ sntGuestWeb.controller('gwReservationDetailsController', ['$scope', '$state', '$
 		$scope.reservationData = GwCheckinSrv.getcheckinData();
 		GwWebSrv.zestwebData.confirmationNo = $scope.reservationData.confirm_no;
 		$scope.ShowupgradedLabel = GwWebSrv.zestwebData.roomUpgraded;
+		$scope.isAddonUpsellActive = GwWebSrv.isAddonUpsellActive;
 		/*
 		 *	if room upgrade is present, go there else go to terms and conditions
 		 */

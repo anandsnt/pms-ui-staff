@@ -87,7 +87,11 @@ sntGuestWeb.controller('GWAddonsController', ['$scope', '$state', '$stateParams'
 			}
 			var options = {
 				params: params,
-				successCallBack: addonAdditionSuccess
+				successCallBack: addonAdditionSuccess,
+				failureCallBack: function(){
+					$scope.showPurchaseStatus = true;
+					$scope.purchaseStatusText = angular.copy($scope.addonFailureMessage);
+				}
 			};
 
 			if (GwWebSrv.zestwebData.isInZestwebDemoMode) {
@@ -128,10 +132,13 @@ sntGuestWeb.controller('GWAddonsController', ['$scope', '$state', '$stateParams'
 			if ($scope.isAddonFlatOrRoomType(addon)) {
 				params.quantity = parseInt(addon);
 			}
-			$scope.isLoading = true;
 			var options = {
 				params: params,
-				successCallBack: addonRemovalSuccess
+				successCallBack: addonRemovalSuccess,
+				failureCallBack: function(){
+					$scope.showPurchaseStatus = true;
+					$scope.purchaseStatusText = angular.copy($scope.addonRemovalFailureMessage);
+				}
 			};
 
 			if (GwWebSrv.zestwebData.isInZestwebDemoMode) {
@@ -288,8 +295,6 @@ sntGuestWeb.controller('GWAddonsController', ['$scope', '$state', '$stateParams'
 
 					$scope.addonList.splice(firstLcoIndex, 0, bundledLCOAddon);
 				}
-
-				$scope.isLoading = false;
 			};
 
 			var options = {
@@ -326,8 +331,6 @@ sntGuestWeb.controller('GWAddonsController', ['$scope', '$state', '$stateParams'
 			// $rootScope.sellLcoAsAddons = false;
 			if (GwWebSrv.sellLcoAsAddons) {
 				fetchLateCheckoutSettings();
-			} else {
-				$scope.isLoading = false;
 			}
 		};
 
@@ -386,22 +389,14 @@ sntGuestWeb.controller('GWAddonsController', ['$scope', '$state', '$stateParams'
 
 		(function() {
 			// set screen texts from CMS,  find using screen id
-			$scope.addonListTitle = "Enhance Your Stay";
-			$scope.addonContinue = "Continue";
-			$scope.addonSkip = "No Thanks.";
-			$scope.addonPurchase = "Add";
-			$scope.addonRemove = "Remove";
+		
 			$scope.addonRemovalFailureMessage = "Sorry, Something went wrong.";
 			$scope.addonFailureMessage = "Sorry, This addon can't be added to your reservation";
 			$scope.addonSuccesMessage = "Thanks for the purchase. Your addon will be added to your account.";
-			$scope.addonSelectQty = "Select quantity";
 			$scope.addonPurchaseMsg = "Would you like to add @addon_name@ to your stay?.";
-			$scope.lcoAddonStartingMsg = "Extend your stay till";
-			$scope.lcoAddonEndingMsg = "at";
-			$scope.lcoAddonMainDesciprtion = '';
+		
 
 			$scope.addonList = [];
-			$scope.isLoading = true;
 			$scope.selectedAddon = {};
 			$scope.quantityList = _.range(6);
 
