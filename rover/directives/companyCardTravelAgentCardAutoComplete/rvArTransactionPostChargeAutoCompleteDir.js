@@ -27,7 +27,7 @@ sntRover.directive('arTransactionPostChargeAutoComplete', ['highlightFilter',
                          var $content = highlightFilter(item.label, scope.ngModel),
                              $result = $("<a></a>").html($content);
 
-                            var $liItem = "<span class='info'><span class='code'>" + item.charge_code + "</span><span class='price'><span class='currency'>" + item.curreny + "</span>" + parseFloat(item.unit_price).toFixed(2) + "</span></span>";
+                            var $liItem = "<span class='info'><span class='code'>" + item.charge_code + "</span><span class='price'><span class='currency'>" + item.curreny + "</span>" + item.unit_price + "</span></span>";
 
                             $result.append($liItem);
                       

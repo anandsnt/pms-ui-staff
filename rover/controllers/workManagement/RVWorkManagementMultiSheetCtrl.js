@@ -709,6 +709,8 @@ angular.module('sntRover').controller('RVWorkManagementMultiSheetCtrl', ['$rootS
 			});
 
 			if ( foundIndex > -1 ) {
+                // CICO-44442
+                $scope.multiSheetState.assigned[foundIndex].shiftId = emp.shift_id;
 				// push employee from assigned to selected
 				$scope.multiSheetState.selectedEmployees.push( $scope.multiSheetState.assigned[foundIndex] );
 
@@ -840,8 +842,8 @@ angular.module('sntRover').controller('RVWorkManagementMultiSheetCtrl', ['$rootS
 				/* Shift length to be calculated from api/shifts. need shift_id for that.
 				   Displaying full shift length for now.*/
 				// shift = _.findWhere($scope.shifts, { id: employee.shift_id });
-				shift = _.findWhere($scope.shifts, { name: "Full Shift" });
-				summaryModel.shiftLength    = (shift && shift.time) || "08:00";
+				shift = _.findWhere($scope.shifts, { id: employee.shiftId });
+				summaryModel.shiftLength    = (shift && shift.time) || "00:00";
 				// Shift length must be corrected in future
 
 			var i;
