@@ -364,7 +364,7 @@ admin.controller('ADUserDetailsCtrl',
 
     // Get the style class based on whether the hotel is standalone or not
     $scope.getStyleClass = function () {
-    	return !$scope.isStandAlone ? 'ng-hide' : '';
+     return !$scope.isStandAlone ? 'ng-hide' : '';
     };
 
     (function() {
