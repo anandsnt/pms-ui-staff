@@ -20,10 +20,16 @@ sntRover.controller('RVCompanyCardActivityLogCtrl',
         // Data set ninitialization
         $scope.activityLogData = {
             response: {},
-            perPage: 50,
+            perPage: 5,
             page: 1,
-            sortField: 'USERNAME',
+            sortField: 'DATE',
             sortOrder: 'asc'
+        };
+
+        $scope.activityLogFilter = {
+        	user: '',
+        	date: 'asc',
+        	action: ''
         };
 
         // Pagination options for Activity Log
@@ -47,7 +53,7 @@ sntRover.controller('RVCompanyCardActivityLogCtrl',
             response = $scope.activityLogData.response;
 
         if ( typeof response !== 'undefined' && typeof response.results !== 'undefined' ) {
-            if ( response.results.length < response.total_result &&  response.results.length > 0 ) {
+            if ( response.results.length < response.total_count &&  response.results.length > 0 ) {
                 showPagination = true;
             }
         }
@@ -83,6 +89,49 @@ sntRover.controller('RVCompanyCardActivityLogCtrl',
 	    };
 
 		$scope.callAPI(RVCompanyCardActivityLogSrv.fetchActivityLog, dataToSend);
+	};
+
+	// Handle sortby action..
+	var toggleFilterAction = function( type ) {
+		$scope.activityLogData.sortField = type;
+		var filterObj = $scope.activityLogFilter;
+
+		switch ( type ) {
+
+			case 'USERNAME' :
+				if ( filterObj.user === '' | filterObj.user === 'asc' ) {
+					filterObj.user = 'desc';
+				}
+				else {
+					filterObj.user = 'asc';
+				}
+				$scope.activityLogData.sortOrder = filterObj.user;
+
+			case 'DATE' :
+				if ( filterObj.date === '' | filterObj.date === 'asc' ) {
+					filterObj.date = 'desc';
+				}
+				else {
+					filterObj.date = 'asc';
+				}
+				$scope.activityLogData.sortOrder = filterObj.date;
+
+			case 'ACTION' :
+				if ( filterObj.action === '' | filterObj.action === 'asc' ) {
+					filterObj.action = 'desc';
+				}
+				else {
+					filterObj.action = 'asc';
+				}
+				$scope.activityLogData.sortOrder = filterObj.action;
+		}
+
+		loadAPIData();
+	};
+
+	// Sort by User/Date/Action
+	$scope.sortByAction = function( type ) {
+		toggleFilterAction( type );
 	};
 
 	// Refresh the scroller when the tab is active.
