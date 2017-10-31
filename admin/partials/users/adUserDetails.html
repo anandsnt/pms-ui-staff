@@ -23,6 +23,7 @@
 					<ad-dropdown id="work-shift" selbox-class="placeholder" label="Working Shift" div-class="full-width" label-in-drop-down="Working Shift" list="data.shifts" selected-Id='data.shift_id' div-class="{{ getStyleClass() }}" >
 
 
+
 					<div class="entry full-width">
 						<label for="user-picture"> Picture </label>
 						<div class="file-upload with-preview">
@@ -34,6 +35,8 @@
 						</div>
 						<span class="file-preview"> <img ng-src="{{image}}" id="file-preview" alt=""> </span>
 					</div>
+					<ad-dropdown-name savemodel="data.hk_section_id" id="section" selbox-class="placeholder" label="Housekeeping Section" div-class="full-width" label-in-drop-down="Housekeeping Section" list="data.hk_sections" selected-Id='data.hk_section_id' valueproperty="id" property="number">
+					</ad-dropdown-name>
 
 				</fieldset>
 				<fieldset class="holder right">

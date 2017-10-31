@@ -721,4 +721,31 @@ angular.module('adminModuleTwo', []).config(function ($stateProvider) {
         }
     });
 
+    $stateProvider.state('admin.houseKeepingSections', {
+        templateUrl: '/assets/partials/hkSections/adHkSections.html',
+        controller: 'ADHKSectionListCtrl',
+        url: '/hkSections'
+    });
+
+    $stateProvider.state('admin.addHKSection', {
+        templateUrl: '/assets/partials/hkSections/adSectionDetails.html',
+        controller: 'ADHKSectionDetailsCtrl',
+        url: '/hkSectionDetails',
+        resolve: {
+            sectionDetails: function () {
+                return {};
+            }
+        }
+    });
+    $stateProvider.state('admin.editHKSection', {
+        templateUrl: '/assets/partials/hkSections/adSectionDetails.html',
+        controller: 'ADHKSectionDetailsCtrl',
+        url: '/hkSectionDetails/:sectionId',
+        resolve: {
+            sectionDetails: function (ADHKSectionSrv, $stateParams) {
+                return ADHKSectionSrv.getHkSectionDetails($stateParams.sectionId);
+            }
+        }
+    });
+
 });
