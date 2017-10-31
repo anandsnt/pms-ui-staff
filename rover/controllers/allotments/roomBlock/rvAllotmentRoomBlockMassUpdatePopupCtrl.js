@@ -137,7 +137,8 @@ sntRover.controller('rvAllotmentRoomBlockMassUpdatePopupCtrl', [
 					}
 				}
 			} else {
-				$scope.errorMessage = error;
+                $scope.$emit('UPDATE_ERR_MSG', error);
+                $scope.closeDialog();
 			}
 		};
 

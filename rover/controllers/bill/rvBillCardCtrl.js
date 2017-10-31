@@ -98,7 +98,13 @@ sntRover.controller('RVbillCardController',
 	// CICO-6089 : Flag for Guest Bill: Check out without Settlement
 	$scope.isCheckoutWithoutSettlement = false;
 
-
+	$rootScope.$on('arAccountCreated', function() {
+		 $timeout(function() {
+		 	$scope.showAdvancedBillDialog();
+		 	$scope.$emit("hideLoader");
+		 }, 1000);
+		 
+	});
 	// set up flags for checkbox actions
 	$scope.hasMoveToOtherBillPermission = function() {
         return ($rootScope.isStandAlone && rvPermissionSrv.getPermissionValue ('MOVE_CHARGES_RESERVATION_ACCOUNT'));
