@@ -9,7 +9,7 @@ sntGuestWeb.controller('gwTermsAndConditionsController', ['$scope', '$state', '$
 		});
 		var init = (function() {
 			var screenIdentifier = "TERMS_AND_CONDITIONS";
-
+			GwWebSrv.zestwebData.showedTermsAndConditions = true;
 			$scope.screenCMSDetails = GwWebSrv.extractScreenDetails(screenIdentifier);
 		}());
 

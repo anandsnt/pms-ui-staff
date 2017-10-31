@@ -46,7 +46,10 @@ sntGuestWeb.controller('gwRoomUpgradeController', ['$scope', '$state', '$control
 				'upgrade_room_type_id': upsellOption.upgrade_room_type_id
 			};
 			var onUpgradeSuccess = function() {
-				GwWebSrv.zestwebData.roomUpgraded = false;
+				GwWebSrv.zestwebData.roomUpgraded = true;
+				reservationDetails = GwCheckinSrv.getcheckinData();
+				reservationDetails.room_type = upsellOption.upgrade_room_type_name;
+				GwCheckinSrv.setcheckinData(reservationDetails);
 				$state.go('checkinReservationDetails');
 			};
 			var onUpgradeFailure = function() {
