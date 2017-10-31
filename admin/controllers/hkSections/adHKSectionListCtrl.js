@@ -45,6 +45,7 @@
                 var options = {
                     successCallBack: onHKSectionFetchSuccess
                 };
+
                 $scope.callAPI(ADHKSectionSrv.fetchHotelSectionList, options);
             };
 
@@ -67,8 +68,9 @@
                 params.id = sectionId;
                 var onSectionDeleteSuccess = function() {
                     var pos = _.findIndex($scope.data, function (item) {
-                        return item.id == sectionId;
+                        return item.id === sectionId;
                     });
+
                     $scope.data.splice(pos, 1);
                     $scope.tableParams.page(1);
                     $scope.tableParams.reload();
@@ -78,6 +80,7 @@
                     params: params,
                     successCallBack: onSectionDeleteSuccess
                 };
+
                 $scope.callAPI(ADHKSectionSrv.deleteHKSection, options);
             };
 

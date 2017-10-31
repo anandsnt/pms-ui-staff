@@ -1,145 +1,133 @@
-admin.controller('ADHKSectionDetailsCtrl',
-    [   '$scope',
-        '$state',
-        'ADHKSectionSrv',
-        '$filter',
-        '$stateParams',
-        'sectionDetails',
-    function(
-        $scope,
-        $state,
-        ADHKSectionSrv,
-        $filter,
-        $stateParams, sectionDetails) {
+    admin.controller('ADHKSectionDetailsCtrl',
+        [   '$scope',
+            '$state',
+            'ADHKSectionSrv',
+            '$filter',
+            '$stateParams',
+            'sectionDetails',
+        function(
+            $scope,
+            $state,
+            ADHKSectionSrv,
+            $filter,
+            $stateParams, sectionDetails) {
 
-    BaseCtrl.call(this, $scope);
+        BaseCtrl.call(this, $scope);
 
-    /**
-    * To clear error message
-    * @return - None
-    */
-    var clearErrorMessage = function() {
-        $scope.errorMessage = '';
-    };
+        /**
+        * To clear error message
+        * @return - None
+        */
+        var clearErrorMessage = function() {
+            $scope.errorMessage = '';
+        };
 
-    /**
-    * set of initial settings - edit mode
-    * @return - None
-    */
-    var setUpForAddMode = function() {
-        $scope.sectionData = {};
-        // list of unassigned rooms
-        $scope.unassignedRooms = [];
+        /**
+        * set of initial settings - edit mode
+        * @return - None
+        */
+        var setUpForAddMode = function() {
+            $scope.sectionData = {};
+            // list of unassigned rooms
+            $scope.unassignedRooms = [];
 
-        // list of assigned rooms
-        $scope.assignedRooms = [];
-    };
+            // list of assigned rooms
+            $scope.assignedRooms = [];
+        };
 
-    $scope.navigateToSectionListing = function () {
-        $state.go ('admin.houseKeepingSections');
-    };
+        $scope.navigateToSectionListing = function () {
+            $state.go ('admin.houseKeepingSections');
+        };
 
-    /*
-    * Upon cancelling, navigate to the section listing screen
-    * @return - None
-    */
-    $scope.clickCancel = function() {
-        $scope.navigateToSectionListing();
-    };
-
-    /**
-    * To enable/disable save button
-    * @return {Boolean}
-    */
-    $scope.shouldDisableSaveButton = function() {
-        if ($scope.sectionData.number &&
-            $scope.sectionData.number.trim() !== '') {
-            return false;
-        }
-        return true;
-    };
-
-    /*
-    * To save/update room type details
-    * @return - None
-    */
-    $scope.saveSection = function() {
-        clearErrorMessage();
-
-        var params = {},
-            sectionDetails = {};
-
-        sectionDetails.number = $scope.sectionData.number;
-        sectionDetails.description = $scope.sectionData.description;
-
-        params.hk_section = sectionDetails;
-        params.sectionId = $scope.sectionData.id;
-
-        var serviceToInvoke = null;
-
-        if ($scope.isAddMode) {
-            serviceToInvoke = ADHKSectionSrv.addHKSection;
-        } else {
-            serviceToInvoke = ADHKSectionSrv.updateHKSection;
-        }
-        var onHKSectionFetchSuccess = function(data) {
+        /*
+        * Upon cancelling, navigate to the section listing screen
+        * @return - None
+        */
+        $scope.clickCancel = function() {
             $scope.navigateToSectionListing();
         };
 
-        var options = {
-                params: params,
-                successCallBack: onHKSectionFetchSuccess
+        /**
+        * To enable/disable save button
+        * @return {Boolean}
+        */
+        $scope.shouldDisableSaveButton = function() {
+            if ($scope.sectionData.number &&
+                $scope.sectionData.number.trim() !== '') {
+                return false;
+            }
+            return true;
         };
 
-        $scope.callAPI(serviceToInvoke, options);
-    };
+        /*
+        * To save/update room type details
+        * @return - None
+        */
+        $scope.saveSection = function() {
+            clearErrorMessage();
 
-    var setUpForEditMode = function() {
-        $scope.sectionData = sectionDetails;
+            var params = {},
+                sectionDetails = {};
 
-        // duplicate of floor number
-        //$scope.floorData.floor_number_old = floorDetails.floor_number;
+            sectionDetails.number = $scope.sectionData.number;
+            sectionDetails.description = $scope.sectionData.description;
 
-        // list of unassigned rooms
-        /*$scope.unassignedRooms = [];
-        $scope.assignedRooms = [];
+            params.hk_section = sectionDetails;
+            params.sectionId = $scope.sectionData.id;
 
-        // list of assigned rooms
-        _.each(floorDetails.rooms, function(room) {
-            room.isFromAssigned = true;
-            $scope.assignedRooms.push(room);
-        });*/
+            var serviceToInvoke = null;
 
-    };
+            if ($scope.isAddMode) {
+                serviceToInvoke = ADHKSectionSrv.addHKSection;
+            } else {
+                serviceToInvoke = ADHKSectionSrv.updateHKSection;
+            }
+            var onHKSectionFetchSuccess = function() {
+                $scope.navigateToSectionListing();
+            };
 
-    /**
-    * set of initial settings
-    * @return - None
-    */
-    var init = function() {
-        $scope.errorMessage = '';
+            var options = {
+                    params: params,
+                    successCallBack: onHKSectionFetchSuccess
+            };
 
-        // if we have id in stateparams, we have to switch to edit mode
-        $scope.isAddMode = $stateParams.sectionId ? false : true;
+            $scope.callAPI(serviceToInvoke, options);
+        };
 
-        $scope.isSearchResult = false ;
+        // Set up the data for edit
+        var setUpForEditMode = function() {
+            $scope.sectionData = sectionDetails;
 
-        // if it is in editMode
-        if (!$scope.isAddMode) {
-            setUpForEditMode();
-        }
-        // if it is in addMode
-        if ($scope.isAddMode) {
-            setUpForAddMode();
-        }
-        // list of selected rooms from unassigned rooms list
-        $scope.selectedUnassignedRooms = [];
+        };
 
-        $scope.selectedAssignedRooms = [];
+        /**
+        * set of initial settings
+        * @return - None
+        */
+        var init = function() {
+            $scope.errorMessage = '';
 
-    };
+            // if we have id in stateparams, we have to switch to edit mode
+            $scope.isAddMode = !$stateParams.sectionId;
 
-    init();
+            $scope.isSearchResult = false ;
 
-}]);
+            // if it is in editMode
+            if (!$scope.isAddMode) {
+                setUpForEditMode();
+            }
+            // if it is in addMode
+            if ($scope.isAddMode) {
+                setUpForAddMode();
+            }
+            // list of selected rooms from unassigned rooms list
+            $scope.selectedUnassignedRooms = [];
+
+            $scope.selectedAssignedRooms = [];
+
+        };
+
+        init();
+
+    }]);
 
