@@ -1,5 +1,5 @@
-admin.controller('ADAssignRoomsToSectionsCtrl', ['$scope', 'ADFloorSetupSrv', 'ngTableParams',
-    function($scope, ADFloorSetupSrv, ngTableParams) {
+admin.controller('ADAssignRoomsToSectionsCtrl', ['$scope', 'ADHKSectionSrv', 'ngTableParams',
+    function($scope, ADHKSectionSrv, ngTableParams) {
 
         BaseCtrl.call(this, $scope);
         ADBaseTableCtrl.call(this, $scope, ngTableParams);
