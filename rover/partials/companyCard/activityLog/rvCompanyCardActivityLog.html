@@ -1,21 +1,54 @@
-<table>
-    <thead>
-        <tr>
-            <th><span>User</span></th> 
-            <th><span class="sort sorting-asc">Date &amp; Time</span></th>
-            <th><span class="sort">Action</span></th>
-            <th><span>Details</span></th> 
-        </tr>
-    </thead>
-    <tbody>
-        <tr>
-            <td class="name">
-                {user}
-                <span class="property">{property}</span>
-            </td>
-            <td class="date">{date | exp,07-10-2017}, {time | exp. 12:00 AM }</td>
-            <td class="action">{action}</td>
-            <td>{action details}</td>
-        </tr>
-    </tbody>
-</table>
+<form method="post" action="{action}" id="cc-activity-log" name="cc-activity-log" class="form card-tab inner-header activity-log">
+    
+    <div class="tab-header with-filters">
+        <div class="entry">
+            <div class="select">
+                <select id="company-module">
+                    <option value="all" selected="">All Modules</option>
+                    <option value="payments">Commission</option>
+                    <option value="payments">Contracts</option>
+                    ... repeat for each module
+                </select>
+            </div>
+        </div>
+
+        <div class="entry">
+            <button type="button" class="button green">Show</button>
+        </div>
+    </div>
+
+    <!-- If there are open bills: -->
+    <div class="tab-details scrollable"> <!-- Add class "with-pagination" when pagination is shown -->
+        <div class="wrapper">
+            <table>
+                <thead>
+                    <tr>
+                        <th><span>User</span></th> 
+                        <th><span class="sort sorting-asc">Date &amp; Time</span></th>
+                        <th><span class="sort">Action</span></th>
+                        <th><span>Details</span></th> 
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="name">
+                            {user}
+                            <span class="property">{property}</span>
+                        </td>
+                        <td class="date">{date | exp,07-10-2017}, {time | exp. 12:00 AM }</td>
+                        <td class="action">{action}</td>
+                        <td>{action details}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        
+    </div>
+
+    <!-- Pagination: Show when needed
+    {../_shared/pagination.html} -->
+
+</form>
+
+
+
