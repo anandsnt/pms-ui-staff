@@ -26,8 +26,8 @@ sntRover.service('RVCommissionsSrv', ['$http', '$q', 'BaseWebSrvV2', function($h
         'searchQuery': '',
         'minAmount': '',
         'billStatus': {
-            'value': 'ALL',
-            'name': 'ALL'
+            'value': 'OPEN',
+            'name': 'OPEN'
         },
         'sort_by': {
             'value': 'NAME_ASC',
