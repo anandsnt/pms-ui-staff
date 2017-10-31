@@ -60,6 +60,15 @@ sntRover.controller('RVCommissionsSummaryController', ['$scope',
                 // start with page 1
                 account.reservationsPageNo = 1;
                 account.showResPagination = account.reservationsData.total_count > 2;
+
+                var onFetchListSuccess = function(response){
+                    console.log(response);
+                };
+
+                $scope.callAPI(RVCommissionsSrv.fetchReservationOfCommissions, {
+                    params: {id: account.id},
+                    successCallBack: onFetchListSuccess
+                });
             }
             refreshArOverviewScroll();
         };
