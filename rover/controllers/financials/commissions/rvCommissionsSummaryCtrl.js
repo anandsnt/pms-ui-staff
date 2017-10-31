@@ -44,25 +44,27 @@ sntRover.controller('RVCommissionsSummaryController', ['$scope',
                 account.isExpanded = false;
                 account.isSemiSelected = false;
             } else {
-                account.isExpanded = true;
-                account.reservationsData = angular.copy(RVCommissionsSrv.sampleReservationData);
-                account.selectedReservations = [];
-                // if the account is selected, the reservation list 
-                // inside should be selected
-                _.each(account.reservationsData.reservations, function(reservation) {
-                    reservation.isSelected = account.isSelected;
-                    var indexOfRes = account.selectedReservations.indexOf(reservation.id);
-
-                    if (reservation.isSelected && indexOfRes === -1) {
-                        account.selectedReservations.push(reservation.id);
-                    }
-                });
-                // start with page 1
-                account.reservationsPageNo = 1;
-                account.showResPagination = account.reservationsData.total_count > 2;
-
-                var onFetchListSuccess = function(response){
+               
+                var onFetchListSuccess = function(response) {
                     console.log(response);
+                    account.isExpanded = true;
+                    account.reservationsData = response;
+                    account.selectedReservations = [];
+                    // if the account is selected, the reservation list 
+                    // inside should be selected
+                    _.each(account.reservationsData.reservations, function(reservation) {
+                        reservation.isSelected = account.isSelected;
+                        var indexOfRes = account.selectedReservations.indexOf(reservation.id);
+
+                        if (reservation.isSelected && indexOfRes === -1) {
+                            account.selectedReservations.push(reservation.id);
+                        }
+                    });
+                    // start with page 1
+                    account.reservationsPageNo = 1;
+                    account.showResPagination = account.reservationsData.total_count > 2;
+                    refreshArOverviewScroll();
+
                 };
 
                 $scope.callAPI(RVCommissionsSrv.fetchReservationOfCommissions, {
@@ -70,7 +72,6 @@ sntRover.controller('RVCommissionsSummaryController', ['$scope',
                     successCallBack: onFetchListSuccess
                 });
             }
-            refreshArOverviewScroll();
         };
 
         // based on selections, the top menu changes.
