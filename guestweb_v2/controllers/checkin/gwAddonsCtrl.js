@@ -152,7 +152,13 @@ sntGuestWeb.controller('GWAddonsController', ['$scope', '$state', '$stateParams'
 			}
 		};
 		var goToNextScreen = function() {
-			$state.go('termsAndConditions');
+			if (GwWebSrv.zestwebData.guestAddressOn) {
+				$state.go('updateGuestDetails');
+			} else if (GwWebSrv.zestwebData.isAutoCheckinOn) {
+				$state.go('etaUpdation');
+			} else {
+				$state.go('checkinFinal');
+			}
 		};
 
 		$scope.doneClicked = function() {
@@ -326,8 +332,7 @@ sntGuestWeb.controller('GWAddonsController', ['$scope', '$state', '$stateParams'
 				addon.post_type_label = (addon.post_type_label === '') ? addon.post_type : addon.post_type_label;
 			});
 
-			// $rootScope.sellLcoAsAddons = false;
-			if (GwWebSrv.sellLcoAsAddons) {
+			if (GwWebSrv.zestwebData.sellLcoAsAddons) {
 				fetchLateCheckoutSettings();
 			}
 		};

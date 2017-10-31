@@ -67,10 +67,14 @@ sntGuestWeb.controller('gwRoomUpgradeController', ['$scope', '$state', '$control
 		};
 
 		$scope.noThanksClicked = function() {
-			if (GwWebSrv.isAddonUpsellActive) {
+			if (GwWebSrv.zestwebData.isAddonUpsellActive) {
 				$state.go('offerAddons');
+			} else if (GwWebSrv.zestwebData.guestAddressOn) {
+				$state.go('updateGuestDetails');
+			} else if (GwWebSrv.zestwebData.isAutoCheckinOn) {
+				$state.go('etaUpdation');
 			} else {
-				$state.go('termsAndConditions');
+				$state.go('checkinFinal');
 			}
 		};
 	}

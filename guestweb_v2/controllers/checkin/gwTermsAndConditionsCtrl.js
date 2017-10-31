@@ -16,15 +16,17 @@ sntGuestWeb.controller('gwTermsAndConditionsController', ['$scope', '$state', '$
 		$scope.termsAndConditions = GwWebSrv.zestwebData.termsAndConditions;
 
 		$scope.agreeClicked = function() {
-			if (GwWebSrv.zestwebData.guestPromptAddressOn) {
+			if (GwWebSrv.zestwebData.upgradesAvailable && !GwWebSrv.zestwebData.roomUpgraded) {
+				$state.go('roomUpgrade');
+			} else if (GwWebSrv.zestwebData.isAddonUpsellActive) {
+				$state.go('offerAddons');
+			} else if (GwWebSrv.zestwebData.guestAddressOn) {
 				$state.go('updateGuestDetails');
+			} else if (GwWebSrv.zestwebData.isAutoCheckinOn) {
+				$state.go('etaUpdation');
+			} else {
+				$state.go('checkinFinal');
 			}
-			else if (GwWebSrv.zestwebData.isAutoCheckinOn) {
-		      	$state.go('etaUpdation');
-		    }
-		    else {
-		       $state.go('checkinFinal');
-		    }
 		};
 		$scope.cancelClicked = function() {
 			location.href = "about:home";

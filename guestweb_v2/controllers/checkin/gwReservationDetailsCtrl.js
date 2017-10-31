@@ -21,15 +21,16 @@ sntGuestWeb.controller('gwReservationDetailsController', ['$scope', '$state', '$
 		 *	if room upgrade is present, go there else go to terms and conditions
 		 */
 		$scope.checkInButtonClicked = function() {
-			// to do : show terms and conditions
-			if ( GwWebSrv.zestwebData.upgradesAvailable && !GwWebSrv.zestwebData.roomUpgraded) {
-				$state.go('roomUpgrade');
-			}
-			else if(GwWebSrv.isAddonUpsellActive){
-				$state.go('offerAddons');
-			} 
-			else {
+			if (!GwWebSrv.zestwebData.showedTermsAndConditions) {
 				$state.go('termsAndConditions');
+			} else if (GwWebSrv.zestwebData.upgradesAvailable && !GwWebSrv.zestwebData.roomUpgraded) {
+				$state.go('roomUpgrade');
+			} else if (GwWebSrv.zestwebData.isAddonUpsellActive) {
+				$state.go('offerAddons');
+			} else if (GwWebSrv.zestwebData.guestAddressOn) {
+				$state.go('updateGuestDetails');
+			} else {
+				$state.go('etaUpdation');
 			}
 		};
 	}
