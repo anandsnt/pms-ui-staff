@@ -37,11 +37,11 @@
          <!-- Add .active to current filter -->
          <li ng-class="{ 'active' : filterData.filterTab === 'PAYABLE' }" ng-click="setFilterTab('PAYABLE')">
             {{ 'TO_PAY' | translate}}
-            <strong>44</strong>
+            <strong>{{commissionsData.bill_count_totals.open}}</strong>
          </li>
          <li ng-class="{ 'active' : filterData.filterTab === 'ON_HOLD' }" ng-click="setFilterTab('ON_HOLD')">
             {{ 'ON_HOLD' | translate}}
-            <strong>44</strong>
+            <strong>{{commissionsData.bill_count_totals.on_hold}}</strong>
          </li>
       </ul>
       <!-- Hide if 1 or more agents are selected (checked) -->
