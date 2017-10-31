@@ -20,6 +20,10 @@ sntGuestWeb.controller('gwRoomUpgradeController', ['$scope', '$state', '$control
 		var onUpgradeFetchSuccess = function(response) {
 			$scope.upgradeOptions = response;
 			$scope.isUpgradesFetching = false;
+			// if no upgrades are available
+			if(!response.upsell_room_types.length){
+				$scope.noThanksClicked();
+			}
 		};
 		var onUpgradeFetchFailure = function(response) {
 			// to do - continue process - no fatal error
