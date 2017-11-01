@@ -20,7 +20,7 @@ sntRover.controller('RVCompanyCardActivityLogCtrl',
         // Data set ninitialization
         $scope.activityLogData = {
             response: {},
-            perPage: 5,
+            perPage: 50,
             page: 1,
             sortField: 'DATE',
             sortOrder: 'asc'
@@ -39,7 +39,7 @@ sntRover.controller('RVCompanyCardActivityLogCtrl',
 			perPage: $scope.activityLogData.perPage
 		};
 
-		loadAPIData();
+		
         // Setting up scroller with refresh options.
         $scope.setScroller('rvCompanyCardActivityLogScroll', {});
         refreshScroll();
@@ -106,6 +106,7 @@ sntRover.controller('RVCompanyCardActivityLogCtrl',
 					filterObj.user = 'asc';
 				}
 				$scope.activityLogData.sortOrder = filterObj.user;
+				break;
 
 			case 'DATE' :
 				if ( filterObj.date === '' | filterObj.date === 'asc' ) {
@@ -115,6 +116,7 @@ sntRover.controller('RVCompanyCardActivityLogCtrl',
 					filterObj.date = 'asc';
 				}
 				$scope.activityLogData.sortOrder = filterObj.date;
+				break;
 
 			case 'ACTION' :
 				if ( filterObj.action === '' | filterObj.action === 'asc' ) {
@@ -124,6 +126,7 @@ sntRover.controller('RVCompanyCardActivityLogCtrl',
 					filterObj.action = 'asc';
 				}
 				$scope.activityLogData.sortOrder = filterObj.action;
+				break;
 		}
 
 		loadAPIData();
@@ -136,7 +139,9 @@ sntRover.controller('RVCompanyCardActivityLogCtrl',
 
 	// Refresh the scroller when the tab is active.
     $scope.$on("activityLogTabActive", function() {
-    	init();
+    	loadAPIData();
     });
+
+    init();
 
 }]);

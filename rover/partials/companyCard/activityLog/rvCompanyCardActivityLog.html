@@ -1,6 +1,6 @@
 <form method="post" id="cc-activity-log" name="cc-activity-log" class="form card-tab inner-header activity-log">
     
-    <div class="tab-header with-filters">
+    <div class="tab-header with-filters hidden">
         <div class="entry">
             <div class="select">
                 <select id="company-module">
@@ -23,16 +23,18 @@
             <table>
                 <thead>
                     <tr>
-                        <th ng-click="sortByAction('USERNAME')">
-                            <span class="sort" ng-class="{'sorting-asc':activityLogFilter.user == 'asc','sorting-desc':activityLogFilter.user == 'desc'}">User</span>
+                        <th>
+                            <span ng-click="sortByAction('USERNAME')" class="sort" ng-class="{'sorting-asc':activityLogFilter.user == 'asc','sorting-desc':activityLogFilter.user == 'desc'}">User</span>
                         </th> 
-                        <th ng-click="sortByAction('DATE')">
-                            <span class="sort" ng-class="{'sorting-asc':activityLogFilter.date == 'asc','sorting-desc':activityLogFilter.date == 'desc'}">Date &amp; Time</span>
+                        <th>
+                            <span ng-click="sortByAction('DATE')" class="sort" ng-class="{'sorting-asc':activityLogFilter.date == 'asc','sorting-desc':activityLogFilter.date == 'desc'}">Date &amp; Time</span>
                         </th>
-                        <th ng-click="sortByAction('ACTION')">
-                            <span class="sort" ng-class="{'sorting-asc':activityLogFilter.action == 'asc','sorting-desc':activityLogFilter.action == 'desc'}">Action</span>
+                        <th>
+                            <span ng-click="sortByAction('ACTION')" class="sort" ng-class="{'sorting-asc':activityLogFilter.action == 'asc','sorting-desc':activityLogFilter.action == 'desc'}">Action</span>
                         </th>
-                        <th><span>Details</span></th> 
+                        <th>
+                            <span>Details</span>
+                        </th> 
                     </tr>
                 </thead>
                 <tbody>
