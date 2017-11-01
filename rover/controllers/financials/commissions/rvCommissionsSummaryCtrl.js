@@ -48,7 +48,7 @@ sntRover.controller('RVCommissionsSummaryController', ['$scope',
                 var onFetchListSuccess = function(response) {
                     console.log(response);
                     account.isExpanded = true;
-                    account.reservationsData = response;
+                    account.reservationsData = {reservations:response};
                     account.selectedReservations = [];
                     // if the account is selected, the reservation list 
                     // inside should be selected
@@ -77,12 +77,12 @@ sntRover.controller('RVCommissionsSummaryController', ['$scope',
         // based on selections, the top menu changes.
         // check if all agents are selected
         $scope.areAllAgentsSelected = function() {
-            return $scope.commissionsData.total_results === $scope.noOfBillsSelected;
+            return $scope.commissionsData.total_count === $scope.noOfBillsSelected;
         };
 
         // check if any one of the agents is selected
         $scope.areAgentsPartialySelected = function() {
-            return $scope.noOfBillsSelected > 0 && $scope.commissionsData.total_results !== $scope.noOfBillsSelected;
+            return $scope.noOfBillsSelected > 0 && $scope.commissionsData.total_count !== $scope.noOfBillsSelected;
         };
 
         // check if any one of the reservation inside any agent is selected
@@ -204,7 +204,7 @@ sntRover.controller('RVCommissionsSummaryController', ['$scope',
                 account.isSelected = $scope.allCommisionsSelected;
                 account.isExpanded = false;
                 account.reservationsData = {};
-                account.sele
+                account.selectedReservations = [];
                 account.isSemiSelected = false;
                 if (account.isSelected) {
                     $scope.selectedAgentIds.push(account.id);
@@ -212,8 +212,8 @@ sntRover.controller('RVCommissionsSummaryController', ['$scope',
             });
 
             if ($scope.allCommisionsSelected) {
-                $scope.noOfBillsSelected = $scope.commissionsData.total_results;
-                $scope.noOfBillsInOtherPagesSelected = $scope.commissionsData.total_results - $scope.commissionsData.accounts.length;
+                $scope.noOfBillsSelected = $scope.commissionsData.total_count;
+                $scope.noOfBillsInOtherPagesSelected = $scope.commissionsData.total_count - $scope.commissionsData.accounts.length;
             } else {
                 $scope.noOfBillsSelected = 0;
                 $scope.noOfBillsInOtherPagesSelected = 0;
@@ -239,7 +239,7 @@ sntRover.controller('RVCommissionsSummaryController', ['$scope',
                     account.isExpanded = false;
                 });
                 $scope.resetSelections();
-                $scope.showPagination = ($scope.commissionsData.total_results <= 50) ? false : true;
+                $scope.showPagination = ($scope.commissionsData.total_count <= 50) ? false : true;
                 $scope.errorMessage = "";
                 $scope.$emit('hideLoader');
                 refreshArOverviewScroll();

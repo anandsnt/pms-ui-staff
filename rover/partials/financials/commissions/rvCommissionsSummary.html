@@ -196,7 +196,7 @@
                      <!-- Remove .hidden when expanded -->
                      <div class="commission-details" ng-show="account.isExpanded">
                         <table style="margin-bottom: 60px;">
-                           <thead ng-hide="account.reservationsData.length == 0">
+                           <thead ng-hide="account.reservationsData.reservations.length == 0">
                               <tr>
                                  <th></th>
                                  <th class="name" translate>GUEST</th>
@@ -208,13 +208,13 @@
                               </tr>
                            </thead>
                            <tbody>
-                              <tr ng-show="account.reservationsData.length == 0">
+                              <tr ng-show="account.reservationsData.reservations.length == 0">
                                  <td colspan="6">
                                     <p style="text-align:center;">Nothing to display</p>
                                  </td>
                               </tr>
                               <!-- Add class .odd or .even based on the row number -->
-                              <tr ng-class="{'odd': $index % 2 != 0, 'even': $index % 2 == 0}" ng-repeat="reservation in account.reservationsData">
+                              <tr ng-class="{'odd': $index % 2 != 0, 'even': $index % 2 == 0}" ng-repeat="reservation in account.reservationsData.reservations">
                                  <td>
                                     <label class="checkbox inline">
                                       <!-- add .checked when checked -->
