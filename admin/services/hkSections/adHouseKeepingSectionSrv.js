@@ -83,5 +83,73 @@ admin.service('ADHKSectionSrv', [
         return deferred.promise;
     };
 
+    /*
+    * Get available rooms which is not assigned to any hk section
+    * @params {object} with query
+    */
+    this.getUnAssignedRooms = function(params) {
+        var deferred = $q.defer();
+
+        params = _.extend(params, {
+            section_unassigned: true
+        });
+        var url = '/api/hk_sections/rooms';
+
+        ADBaseWebSrvV2.getJSON(url, params).then(function(data) {
+            deferred.resolve(data);
+        }, function(data) {
+            deferred.reject(data);
+        });
+        return deferred.promise;
+    };
+
+    /*
+    * Get hk section details
+    * @params {object} with sectionId
+    */
+    this.getHKSectionDetails = function(params) {
+        var deferred = $q.defer();
+        var url = '/api/hk_sections/' + params.hKsectionId + ".json";
+
+        ADBaseWebSrvV2.getJSON(url, params).then(function(data) {
+            deferred.resolve(data);
+        }, function(data) {
+            deferred.reject(data);
+        });
+        return deferred.promise;
+    };
+
+    /*
+    * Bulk assignment of rooms to a particular section
+    * @params {object} array of room ids
+    */
+    this.assignRooms = function(params) {
+        var deferred = $q.defer();
+        var url = '/api/hk_sections/' + params.hkSectionId + "/assign";
+
+        ADBaseWebSrvV2.putJSON(url, params.payLoad).then(function(data) {
+            deferred.resolve(data);
+        }, function(data) {
+            deferred.reject(data);
+        });
+        return deferred.promise;
+    };
+
+    /*
+    * Unassign a set of rooms from a particular section
+    * @params {object} array of room ids
+    */
+    this.unAssignRooms = function(params) {
+        var deferred = $q.defer();
+        var url = '/api/hk_sections/' + params.hkSectionId + "/unassign";
+
+        ADBaseWebSrvV2.putJSON(url, params.payLoad).then(function(data) {
+            deferred.resolve(data);
+        }, function(data) {
+            deferred.reject(data);
+        });
+        return deferred.promise;
+    };
+
 
 }]);

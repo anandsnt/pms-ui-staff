@@ -4,7 +4,7 @@
     <div id="permissions" class="tabs ui-tabs ui-widget ui-widget-content ui-corner-all" data-tabs="details-tabs">
         <div class="entry has-sortable locked">
             <ul id="roles-menu" class="float ui-tabs-nav ui-helper-reset ui-helper-clearfix ui-widget-header ui-corner-all" role="tablist" ng-model='UserRoles'>
-                <li ng-repeat="section in data" ng-click="selectFloor($index)" ng-class="{'ui-tabs-active': roomAssignment.selectedFloorIndex === $index }">
+                <li ng-repeat="section in hkSections" ng-click="selectHKSection($index)" ng-class="{'ui-tabs-active': roomAssignment.selectedHkSectionIndex === $index }">
                     <a class="ui-tabs-anchor" role="presentation">
                         {{section.number}}
                     </a>
@@ -19,7 +19,7 @@
                 </button>
                 <button type="button" class="button add-data-inline toggle-tab" ng-click="toggleAvailableRooms()" ng-class="{'orange' : roomAssignment.activeTab === 'ASSIGNED', 'white grey-bg' : roomAssignment.activeTab!== 'ASSIGNED'}">
                     ASSIGNED
-                    <span class="bubble" ng-class="{'selected' : floorsList[roomAssignment.selectedFloorIndex].assigned_rooms_count > 0}"> {{floorsList[roomAssignment.selectedFloorIndex].assigned_rooms_count}} </span>
+                    <span class="bubble" ng-class="{'selected' : hkSections[roomAssignment.selectedHkSectionIndex].assigned_rooms_count > 0}"> {{hkSections[roomAssignment.selectedHkSectionIndex].assigned_rooms_count}} </span>
                 </button>
             </div>
             <!-- Config section and search come here! -->

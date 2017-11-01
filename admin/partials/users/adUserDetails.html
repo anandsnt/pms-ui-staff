@@ -20,9 +20,9 @@
 					<div></div>
 					<ad-textbox value="data.job_title" name = "job-title" id = "job-title" label = "Job title" placeholder = "Enter job title" required = "yes" ></ad-textbox>
 					<ad-textbox value="data.phone" name = "phone" id = "phone" label = "Phone" placeholder = "Enter phone" required = "no" ></ad-textbox>
-					<ad-dropdown id="work-shift" selbox-class="placeholder" label="Working Shift" div-class="full-width" label-in-drop-down="Working Shift" list="data.shifts" selected-Id='data.shift_id' div-class="{{ getStyleClass() }}" >
 
-
+					<ad-dropdown id="work-shift" selbox-class="placeholder" label="Working Shift" div-class="full-width" label-in-drop-down="Working Shift" list="data.shifts" selected-Id='data.shift_id' div-class="{{ getStyleClass() }}" ></ad-dropdown>
+					<ad-dropdown id="section" selbox-class="placeholder" label="Housekeeping Section" div-class="full-width" label-in-drop-down="Housekeeping Section" list="data.hk_sections" selected-Id='data.hk_section_id'></ad-dropdown>
 
 					<div class="entry full-width">
 						<label for="user-picture"> Picture </label>
@@ -35,8 +35,6 @@
 						</div>
 						<span class="file-preview"> <img ng-src="{{image}}" id="file-preview" alt=""> </span>
 					</div>
-					<ad-dropdown-name savemodel="data.hk_section_id" id="section" selbox-class="placeholder" label="Housekeeping Section" div-class="full-width" label-in-drop-down="Housekeeping Section" list="data.hk_sections" selected-Id='data.hk_section_id' valueproperty="id" property="number">
-					</ad-dropdown-name>
 
 				</fieldset>
 				<fieldset class="holder right">
