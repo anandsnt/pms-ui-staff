@@ -53,7 +53,6 @@
             $scope.fetchTableData = function($defer, params) {
                 var getParams = $scope.calculateGetParams(params),
                     fetchSuccessOfItemList = function(data) {
-                        $scope.$emit('hideLoader');
                         $scope.currentClickedElement = -1;
                         $scope.totalCount = data.total_count;
                         $scope.totalPage = Math.ceil(data.total_count / $scope.displyCount);
@@ -62,15 +61,20 @@
                         params.total(data.total_count);
                         $defer.resolve($scope.data);
                         updateSelectedList();
+                    },
+                    options = {
+                        params: getParams,
+                        successCallBack: fetchSuccessOfItemList
                     };
 
                 if ($scope.roomAssignment.activeTab === "AVAILABLE") {
-                    $scope.invokeApi(ADHKSectionSrv.getUnAssignedRooms, getParams, fetchSuccessOfItemList);
+                    $scope.callAPI(ADHKSectionSrv.getUnAssignedRooms, options);
                 } else {
                     getParams = _.extend(getParams, {
                         hKsectionId: $scope.hkSections[$scope.roomAssignment.selectedHkSectionIndex].id
                     });
-                    $scope.invokeApi(ADHKSectionSrv.getHKSectionDetails, getParams, fetchSuccessOfItemList);
+                    options.params = getParams;
+                    $scope.callAPI(ADHKSectionSrv.getHKSectionDetails, options);
                 }
             };
 
