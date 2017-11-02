@@ -857,12 +857,75 @@
 
             /* Commisions ***/
             &.commision {
+                .faux-anchor {
+                    #flexbox > .parent( row wrap, flex-start, center, '' );
+                }
 
-                .has-arrow { background: transparent; }
+                .has-arrow { 
+                    background: transparent; 
+                    #flexbox > .parent( row wrap, flex-start, center, '' );
+                    flex-grow: 1;
+
+                    .data {
+                        flex-grow: 1;
+                        margin: 0;
+
+                        h2 {
+                            font-size: 14px;
+                            margin: 0;
+                            line-height: 1;
+                        }
+
+                        .confirmation {
+                            font-size: 14px;
+                            height: auto;
+                            line-height: 1;
+                        }
+                    }
+
+                    .revenue,
+                    .commission {
+                        width: 80px;
+                        font-size: 14px;
+                    }
+
+                    .amount {
+                        width: 95px;
+                    }
+
+                    .revenue,
+                    .commission,
+                    .amount {
+                        text-align: right;
+                    }
+                }
+
+                .paid-status {
+                    width: 60px;
+                    color: @grey3;
+                    text-align: right;
+                    text-transform: uppercase; 
+                }
+
+                .hold-status {
+                    width: 70px;
+                    text-align: center;
+
+                    .button {
+                        .box-shadow(none);
+                        .square(30px); 
+
+                        .icon-hold {
+                            top: 5px;
+                        }
+                        
+                        &:not(.active){
+                            .hide(); 
+                        }
+                    }
+                }
 
                 .data {
-                    .pull-left;
-
                     .confirmation {
                         line-height: 10px;
                         color: @grey3;
@@ -870,78 +933,47 @@
                     }
                 }
 
-                .values {
-                    margin: 0;
-                    .pull-left;
+                .switch-button {
+                    position: relative;
+                    text-align: right;
+                    text-transform: uppercase;
+                }
 
-                    .value-block {
-                        line-height: 1;
-                        color: @grey3;
-                        padding: 0 16pt;
-                        .pull-left;
+                .switch-button {
+                    input { .hide(); }
 
-                        strong {
+                    .data-on,
+                    .data-off {
+                        .value { .hide(); }
+                    }
+
+                    .data-on {
+                        .hide();
+
+                        .switch-icon { 
                             color: @textColor;
                             font-weight: 600;
-                            .show;
                         }
+                    }
 
-                        &.revenue,
-                        &.amount { width: 30%; }
-                        &.type,
-                        &.tax { width: 20%; }
+                    .data-off {
+                        .show();
 
-                        &:not(:last-child) { border-right: 1px solid @grey2; }
+                        .switch-icon {
+                            color: @grey3; 
+                        }
+                    }
+
+                    &.on {
+                        .data-on { .show(); }
+                        .data-off { .hide(); }
                     }
                 }
 
-                &.in-card {
-                    .data { .calc-width(35, 30); }
-
-                    .values { .calc-width(65, 30); }
-
-                    .prepaid,
-                    .switch-button {
-                        line-height: 20px;
-                        text-align: right;
-                        text-transform: uppercase;
-                        .size(20px, 60px);
-                        .pull-left;
-                    }
-
-                    .prepaid { color: @grey3; }
-
-                    .switch-button {
-                        input { .hide; }
-
-                        .data-on,
-                        .data-off {
-                            .switch-icon { .hide; }
-                        }
-
-                        .data-on {
-                            .hide;
-
-                            .value { color: @grey3; }
-                        }
-
-                        .data-off {
-                            .show;
-
-                            .value {
-                                color: @textColor;
-                                font-weight: 600;
-                            }
-                        }
-
-                        &.on {
-                            .data-on { .show; }
-                            .data-off { .hide; }
-                        }
-                    }
-
-                    .checkbox { .hide; }
+                .checkbox {
+                    .hide();
                 }
+                
 
                 &:last-child { border-bottom: 0; }
             }
@@ -1104,44 +1136,62 @@
                         }
 
                         /* Commisions ***/
-                        &.commisions {
-                            .tab-details {
-                                .totals {
-                                    margin-bottom: 8pt;
-                                    clear: both;
-                                    .float;
-
+                        .commisions {
+                            .tab-header {
+                                .totals { 
                                     li {
-                                        font-size: 8pt;
-                                        line-height: 1;
-                                        text-align: left;
-                                        color: @grey3;
-                                        text-transform: uppercase;
-                                        .pull-left;
-
-                                        .value {
-                                            font-size: 12pt;
-                                            line-height: 1;
-                                            font-weight: 300;
-                                            color: @textColor;
-                                            .show;
-                                        }
-
-                                        &:not(:nth-last-child(4)) {
-                                            margin-right: 8pt;
-                                            padding-right: 8pt;
-                                            border-right: 1px solid @grey2;
-                                        }
-
-                                        &.action { .hide; }
+                                        display: inline-block;
+                                        padding: 0 4pt 0 0;
                                     }
                                 }
+                            }
+                            .tab-details {
+
+                                .search-results-header {
+                                    #flexbox > .parent(row, flex-start, center, center);
+                                    
+                                    li {
+                                        margin:0;
+
+                                        &.action {
+                                            .hide();
+                                        }
+
+                                        &.paid {
+                                            width: 60px;
+                                            text-align: right;
+                                        }
+
+                                        &.hold {
+                                            width: 70px;
+                                            text-align: center;
+                                        }
+
+                                        &.amount {
+                                            width: 160px;
+                                            padding-right: 65px;
+                                            text-align: right;
+                                        }
+
+                                        &.commission,
+                                        &.revenue {
+                                            width: 80px;
+                                            text-align: right;
+                                        }
+                                        
+                                        &.reservation {
+                                            flex-grow: 1;
+                                        }
+                                    }
+                                    
+                                } 
 
                                 .print-selected {
                                     .reservation:not(.selected) { .hide; }
                                 }
                             }
                         }
+
                     }
                 }
             }
