@@ -260,7 +260,7 @@ angular.module('adminModuleTwo', []).config(function ($stateProvider) {
         controller: 'ADAddnewRate',
         url: '/ratedetails/:rateId',
         resolve: {
-            rateInitialData: function (ADRatesAddDetailsSrv, $stateParams) {
+            rateInitialData: function (ADRatesAddDetailsSrv) {
                 return ADRatesAddDetailsSrv.fetchRateTypes();
             },
             rateDetails: function (ADRatesSrv, $stateParams) {
