@@ -261,11 +261,7 @@ angular.module('adminModuleTwo', []).config(function ($stateProvider) {
         url: '/ratedetails/:rateId',
         resolve: {
             rateInitialData: function (ADRatesAddDetailsSrv, $stateParams) {
-                var params = {
-                    rateId: parseInt($stateParams.rateId)
-                };
-
-                return ADRatesAddDetailsSrv.fetchRateTypes(params);
+                return ADRatesAddDetailsSrv.fetchRateTypes();
             },
             rateDetails: function (ADRatesSrv, $stateParams) {
                 var params = {

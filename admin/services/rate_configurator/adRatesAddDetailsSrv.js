@@ -2,16 +2,13 @@ admin.service('ADRatesAddDetailsSrv', ['$q', 'ADBaseWebSrvV2',
     function ($q, ADBaseWebSrvV2) {
 
         this.addRatesDetailsData = {};
-        this.rateId = '';
         var that = this;
 
         /*
          * Service function to fetch rate types
          * @return {object} rate types
          */
-        this.fetchRateTypes = function (params) {
-
-            that.rateId = params.rateId;
+        this.fetchRateTypes = function () {
 
             var deferred = $q.defer();
 
@@ -59,8 +56,7 @@ admin.service('ADRatesAddDetailsSrv', ['$q', 'ADBaseWebSrvV2',
                     "page": 1,
                     "ignore_inventory": true,
                     "ignore_tax": true
-                   // "rate_id": that.rateId
-                };console.log(params)
+                };
                 var url = "/api/addons";
 
                 ADBaseWebSrvV2.getJSON(url, params).then(function (data) {
