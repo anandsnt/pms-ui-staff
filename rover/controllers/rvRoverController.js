@@ -714,7 +714,8 @@ sntRover.controller('roverController', [
         };
 
         $scope.uuidServiceSuccessCallBack = function (response) {
-            $rootScope.UUID = response.Data;
+            // latest versions of RoverService return the device identifier as a string!
+            $rootScope.UUID = response.Data || response;
         };
 
         $scope.uuidServiceFailureCallBack = function (error) {
