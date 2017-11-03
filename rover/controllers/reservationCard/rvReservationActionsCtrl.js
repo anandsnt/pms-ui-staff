@@ -856,15 +856,17 @@ sntRover.controller('reservationActionsController', [
 			$scope.ngData.languageData = {};
 
 			var successCallBackForLanguagesFetch = function(data) {
-		      	$scope.$emit('hideLoader');
+		      	
 		      	$scope.ngData.languageData = data;
 
 		      	ngDialog.open({
 					template: '/assets/partials/reservationCard/rvReservationConfirmationPrintPopup.html',
 					className: '',
 					scope: $scope,
-					closeByDocument: true
+					closeByDocument: false
 				});
+
+				$scope.$emit('hideLoader');
 		    };
 
 		    /**

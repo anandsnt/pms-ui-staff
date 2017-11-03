@@ -79,7 +79,7 @@
             </div>
             <div class="amount input">
                 <span class="currency">{{currencySymbol}}</span>
-                <input type="text" value="{{balance.amount}}" ng-model="balance.amount" ng-change="changeBalanceAmount($index)" ng-blur="addDecimal($index)">
+                <input class="text-box" type="text" value="{{balance.amount}}" ng-model="balance.amount" ng-change="changeBalanceAmount($index)" ng-blur="addDecimal($index)">
             </div>
         </div>
 
@@ -133,7 +133,7 @@
                             <!-- Show this if possible to edit charge
                                  opens /modals/ar-edit-charge.html
                              -->
-                            <button class="button blank with-icon only-icon open-modal" ng-show="!balance.is_partially_paid && !debit.is_adjustment && debit.credits === null" ng-click="clickedEditIconToAdjustInvoice($parent.$index, $index)">
+                            <button class="button blank with-icon only-icon open-modal button-edit" ng-show="!balance.is_partially_paid && !debit.is_adjustment && debit.credits === null" ng-click="clickedEditIconToAdjustInvoice($parent.$index, $index)">
                                 <span class="icons icon-edit-40"></span>
                             </button>
                         </td>
@@ -162,15 +162,10 @@
                                
                         </td>
                          <td class="action">
-                            
-                             <button ng-show="arFlags.hasAllocateUnallocatePermission" class="icons icon-remove-40" ng-click="clickedUnallocateButton(payment)"></button>
 
-                            <!--Show if payment can be unallocated
-                                <button class="button blank with-icon only-icon">
-                                    <span class="icons icon-remove-40"></span>
-                                </button>
-                             -->
-
+                            <button class="button blank with-icon only-icon open-modal" ng-show="arFlags.hasAllocateUnallocatePermission" ng-click="clickedUnallocateButton(payment)">
+                                <span class="icons icon-remove-40"></span>
+                            </button>                     
                         </td>
                     </tr>
 

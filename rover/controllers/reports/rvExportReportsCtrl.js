@@ -494,7 +494,7 @@ angular.module('sntRover').controller('RVExportReportsCtrl', [
                 'Rooms': true,
                 'Future Reservations': true,
                 'Last Week Reservations': true,
-                'Last Month Reservations': true,
+                'Past Reservations - Monthly': true,
                 'Nationality Statistics': true,
                 'Commissions': true
             };
@@ -505,7 +505,7 @@ angular.module('sntRover').controller('RVExportReportsCtrl', [
             };
             var forMonthly = {
                 'Future Reservations': true,
-                'Last Month Reservations': true,
+                'Past Reservations - Monthly': true,
                 'Nationality Statistics': true,
                 'Commissions': true
             };

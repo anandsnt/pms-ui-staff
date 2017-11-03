@@ -29,7 +29,7 @@ sntRover.directive('arTransactionPostChargeAutoComplete', ['highlightFilter',
 
                             var $liItem = "<span class='info'><span class='code'>" + item.charge_code + "</span><span class='price'><span class='currency'>" + item.curreny + "</span>" + item.unit_price + "</span></span>";
 
-                             $result.append($liItem);
+                            $result.append($liItem);
                       
                         return $('<li></li>').append($result).appendTo(ul);
                     };

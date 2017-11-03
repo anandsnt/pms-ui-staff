@@ -32,6 +32,7 @@ sntRover.controller('RvArPostChargeController',
 			angular.forEach(data.results, function(item) {
                 item.label = item.name;
                 item.curreny = $rootScope.currencySymbol;
+                item.unit_price = parseFloat(item.unit_price).toFixed(2);
             });
 			chargeCodeResults = data.results;
 			response(chargeCodeResults);
@@ -102,11 +103,13 @@ sntRover.controller('RvArPostChargeController',
         var postChargeData = {},
             dataToSrv = {};
 
-        postChargeData.item_id    = $scope.selectedItem.id;
-        postChargeData.quantity   = parseInt($scope.quantity);
-        postChargeData.reference  = $scope.reference;
-        postChargeData.is_item    = $scope.selectedItem.type === "ITEM";
-        postChargeData.amount     = parseFloat($scope.selectedItem.unit_price);
+        postChargeData.item_id              = $scope.selectedItem.id;
+        postChargeData.quantity             = parseInt($scope.quantity);
+        postChargeData.reference            = $scope.reference;
+        postChargeData.is_item              = $scope.selectedItem.type === "ITEM";
+        postChargeData.amount               = parseFloat($scope.selectedItem.unit_price);
+        postChargeData.show_ref_on_invoice  = $scope.show_reference_on_guest_invoice;
+        
         dataToSrv.postChargeData  = postChargeData;
         dataToSrv.accountId       = $scope.arDataObj.accountId;
         dataToSrv.arTransactionId = $scope.selectedItemToPostCharge.transaction_id; 
@@ -121,8 +124,14 @@ sntRover.controller('RvArPostChargeController',
     /*
      * Calculating total amount on changing quantity
      */
-    $scope.changedQuantity = function() {
-        $scope.totalAmount = $scope.selectedItem.unit_price * $scope.quantity;
+    $scope.changedQuantity = function() {        
+        $scope.totalAmount = ($scope.selectedItem.unit_price * $scope.quantity).toFixed(2);
+    };
+    /*
+     * amount to decimal
+     */
+    $scope.enteredAmount = function() {
+        $scope.selectedItem.unit_price = parseFloat($scope.selectedItem.unit_price).toFixed(2);
     };
 
 }]);
