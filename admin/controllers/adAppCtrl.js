@@ -645,6 +645,7 @@ admin.controller('ADAppCtrl', [
 		$scope.data = adminMenuData;
 		$scope.selectedMenu = $scope.data.menus[$scope.selectedIndex];
 		$scope.bookMarks = $scope.data.bookmarks;
+        $scope.isChainAdminMenuPresent = _.where(adminMenuData.menus, {menu_name: "Chain"});
 
 		$scope.bookmarkIdList = [];
 		for (var i = 0; i < $scope.data.bookmarks.length; i++) {

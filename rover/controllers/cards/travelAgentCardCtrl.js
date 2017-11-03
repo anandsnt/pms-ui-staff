@@ -4,6 +4,12 @@ angular.module('sntRover').controller('RVTravelAgentCardCtrl', ['$scope', '$root
 		$scope.searchMode = true;
 		$scope.account_type = 'TRAVELAGENT';
 		$scope.currentSelectedTab = 'cc-contact-info';
+		$stateParams.id = $scope.reservationDetails.travelAgent.id;
+
+		$scope.hasPermissionToViewCommissionTab = function() {
+			return rvPermissionSrv.getPermissionValue ('VIEW_COMMISSIONS_TAB');
+		};
+		$scope.isCommissionTabAvailable = $scope.hasPermissionToViewCommissionTab();
 
 		$scope.switchTabTo = function($event, tabToSwitch) {
 			$event.stopPropagation();
@@ -42,7 +48,10 @@ angular.module('sntRover').controller('RVTravelAgentCardCtrl', ['$scope', '$root
 				$scope.$broadcast("fetchNotes");
 				$scope.isWithFilters = false;
 			}
-			if (tabToSwitch === 'cc-activity-log') {
+			else if (tabToSwitch === 'cc-commissions') {
+				$scope.$broadcast("commissionsTabActive");
+			}
+			else if (tabToSwitch === 'cc-activity-log') {
 				$scope.$broadcast("activityLogTabActive");
 			}
 			if (tabToSwitch === 'cc-ar-transactions' && !isArNumberAvailable) {
