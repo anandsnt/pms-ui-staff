@@ -218,12 +218,12 @@ sntRover.controller('RVCommissionsSummaryController', ['$scope',
                             console.log(response);
                             account.isExpanded = true;
                             account.reservationsData = response;
-                            account.selectedReservations = [];
                             // if the account is selected, the reservation list 
                             // inside should be selected
                             _.each(account.reservationsData.reservations, function(reservation) {
-                                reservation.isSelected = account.isSelected;
                                 var indexOfRes = account.selectedReservations.indexOf(reservation.id);
+                                
+                                reservation.isSelected = account.isSelected || indexOfRes !== -1;
 
                                 if (reservation.isSelected && indexOfRes === -1) {
                                     account.selectedReservations.push(reservation.id);
