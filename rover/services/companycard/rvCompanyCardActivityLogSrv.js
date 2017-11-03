@@ -10,7 +10,7 @@ angular.module('sntRover').service('RVCompanyCardActivityLogSrv', [
 			rvBaseWebSrvV2.getJSON(url, params)
 			.then(function(data) {
 				deferred.resolve(data);
-			}.bind(this), function(data) {
+			}, function(data) {
 				deferred.reject(data);
 			});
 

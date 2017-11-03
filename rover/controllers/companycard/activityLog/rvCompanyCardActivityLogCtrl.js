@@ -27,9 +27,9 @@ sntRover.controller('RVCompanyCardActivityLogCtrl',
         };
 
         $scope.activityLogFilter = {
-        	user: '',
-        	date: 'asc',
-        	action: ''
+			user: '',
+			date: 'asc',
+			action: ''
         };
 
         // Pagination options for Activity Log
@@ -65,28 +65,28 @@ sntRover.controller('RVCompanyCardActivityLogCtrl',
 	 */
 	var loadAPIData = function ( pageNo ) {
 
-		$scope.activityLogData.page = !!pageNo ? pageNo : 1;
+		$scope.activityLogData.page = pageNo ? pageNo : 1;
 
 		var dataToSend = {
-	        params: {
-	            'page': $scope.activityLogData.page,
-	            'per_page': $scope.activityLogData.perPage,
-	            'sort_field': $scope.activityLogData.sortField,
-	            'sort_order': $scope.activityLogData.sortOrder,
-	            'id': 1489131
-	        },
-	        successCallBack: function( data ) {
-	            $scope.activityLogData.response = data;
-	            $scope.errorMessage = '';
-	            refreshScroll();
-	            $timeout(function () {
-	                $scope.$broadcast('updatePagination', 'ACTIVITY_LOG');
-	            }, 1000);
-	        },
-	        failureCallBack: function( errorMessage ) {
-	            $scope.errorMessage = errorMessage;
-	        }
-	    };
+			params: {
+				'page': $scope.activityLogData.page,
+				'per_page': $scope.activityLogData.perPage,
+				'sort_field': $scope.activityLogData.sortField,
+				'sort_order': $scope.activityLogData.sortOrder,
+				'id': 1489131
+			},
+			successCallBack: function( data ) {
+				$scope.activityLogData.response = data;
+				$scope.errorMessage = '';
+				refreshScroll();
+				$timeout(function () {
+					$scope.$broadcast('updatePagination', 'ACTIVITY_LOG');
+				}, 1000);
+			},
+			failureCallBack: function( errorMessage ) {
+				$scope.errorMessage = errorMessage;
+			}
+		};
 
 		$scope.callAPI(RVCompanyCardActivityLogSrv.fetchActivityLog, dataToSend);
 	};
@@ -139,7 +139,7 @@ sntRover.controller('RVCompanyCardActivityLogCtrl',
 
 	// Refresh the scroller when the tab is active.
     $scope.$on("activityLogTabActive", function() {
-    	loadAPIData();
+		loadAPIData();
     });
 
     init();
