@@ -18,12 +18,13 @@ sntRover.controller('RVCompanyCardActivityLogCtrl',
     // Initialization.
     var init = function () {
         // Data set ninitialization
-        $scope.activityLogData = {
+        $scope.activityLogObj = {
             response: {},
             perPage: 50,
             page: 1,
             sortField: 'DATE',
-            sortOrder: 'asc'
+            sortOrder: 'asc',
+            accountId: ''
         };
 
         $scope.activityLogFilter = {
@@ -36,7 +37,7 @@ sntRover.controller('RVCompanyCardActivityLogCtrl',
 		$scope.activityLogPagination = {
 			id: 'ACTIVITY_LOG',
 			api: loadAPIData,
-			perPage: $scope.activityLogData.perPage
+			perPage: $scope.activityLogObj.perPage
 		};
 
 		
@@ -50,7 +51,7 @@ sntRover.controller('RVCompanyCardActivityLogCtrl',
 	// Show pagination or not.
     $scope.showPagination = function() {
         var showPagination = false,
-            response = $scope.activityLogData.response;
+            response = $scope.activityLogObj.response;
 
         if ( typeof response !== 'undefined' && typeof response.results !== 'undefined' ) {
             if ( response.results.length < response.total_count &&  response.results.length > 0 ) {
@@ -65,18 +66,19 @@ sntRover.controller('RVCompanyCardActivityLogCtrl',
 	 */
 	var loadAPIData = function ( pageNo ) {
 
-		$scope.activityLogData.page = pageNo ? pageNo : 1;
+		$scope.activityLogObj.page = pageNo ? pageNo : 1;
+		$scope.activityLogObj.accountId = ( typeof $scope.contactInformation === 'undefined' ) ? $stateParams.id : $scope.contactInformation.id;
 
 		var dataToSend = {
 			params: {
-				'page': $scope.activityLogData.page,
-				'per_page': $scope.activityLogData.perPage,
-				'sort_field': $scope.activityLogData.sortField,
-				'sort_order': $scope.activityLogData.sortOrder,
-				'id': 1489131
+				'page': $scope.activityLogObj.page,
+				'per_page': $scope.activityLogObj.perPage,
+				'sort_field': $scope.activityLogObj.sortField,
+				'sort_order': $scope.activityLogObj.sortOrder,
+				'id': $scope.activityLogObj.accountId
 			},
 			successCallBack: function( data ) {
-				$scope.activityLogData.response = data;
+				$scope.activityLogObj.response = data;
 				$scope.errorMessage = '';
 				refreshScroll();
 				$timeout(function () {
@@ -93,7 +95,7 @@ sntRover.controller('RVCompanyCardActivityLogCtrl',
 
 	// Handle sortby action..
 	var toggleFilterAction = function( type ) {
-		$scope.activityLogData.sortField = type;
+		$scope.activityLogObj.sortField = type;
 		var filterObj = $scope.activityLogFilter;
 
 		switch ( type ) {
@@ -105,7 +107,7 @@ sntRover.controller('RVCompanyCardActivityLogCtrl',
 				else {
 					filterObj.user = 'asc';
 				}
-				$scope.activityLogData.sortOrder = filterObj.user;
+				$scope.activityLogObj.sortOrder = filterObj.user;
 				break;
 
 			case 'DATE' :
@@ -115,7 +117,7 @@ sntRover.controller('RVCompanyCardActivityLogCtrl',
 				else {
 					filterObj.date = 'asc';
 				}
-				$scope.activityLogData.sortOrder = filterObj.date;
+				$scope.activityLogObj.sortOrder = filterObj.date;
 				break;
 
 			case 'ACTION' :
@@ -125,7 +127,7 @@ sntRover.controller('RVCompanyCardActivityLogCtrl',
 				else {
 					filterObj.action = 'asc';
 				}
-				$scope.activityLogData.sortOrder = filterObj.action;
+				$scope.activityLogObj.sortOrder = filterObj.action;
 				break;
 		}
 
@@ -138,7 +140,7 @@ sntRover.controller('RVCompanyCardActivityLogCtrl',
 	};
 
 	// Refresh the scroller when the tab is active.
-    $scope.$on("activityLogTabActive", function() {
+    $scope.$on('activityLogTabActive', function() {
 		loadAPIData();
     });
 

@@ -1,6 +1,6 @@
 <form method="post" id="cc-activity-log" name="cc-activity-log" class="form card-tab inner-header activity-log">
     
-    <div class="tab-header with-filters hidden">
+    <div class="tab-header with-filters overlay">
         <div class="entry">
             <div class="select">
                 <select id="company-module">
@@ -38,7 +38,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr ng-repeat="item in activityLogData.response.results">
+                    <tr ng-repeat="item in activityLogObj.response.results">
                         <td class="name">
                             {{item.user_name}}
                             <span class="property">{{item.property}}</span>
@@ -53,7 +53,7 @@
         
     </div>
 
-    <rv-pagination ng-show="showPagination()" page-options="activityLogPagination" page-data="activityLogData.response"></rv-pagination>
+    <rv-pagination ng-show="showPagination()" page-options="activityLogPagination" page-data="activityLogObj.response"></rv-pagination>
 
 </form>
 
