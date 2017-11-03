@@ -49,7 +49,7 @@
          <!-- Show if active filter: Payable -->
          <li ng-show="filterData.filterTab === 'PAYABLE'">
             <span translate>ELIGIBLE_FOR_PAYMENT</span>
-            <span class="amount">{{ ::currencySymbol }}444</span>
+            <span class="amount">{{ ::currencySymbol }}{{::commissionsData.amount_totals.unpaid}}</span>
          </li>
          <!-- Show if active filter: Payable -->
          <li class="actions" ng-show="filterData.filterTab === 'PAYABLE'">
@@ -60,7 +60,7 @@
          <!-- Show if active filter: On Hold (remove .hidden) -->
          <li ng-show="filterData.filterTab === 'ON_HOLD'">
             <span translate>AMOUNT_ON_HOLD</span>
-            <span class="amount">{{ ::currencySymbol }}444</span>
+            <span class="amount">{{ ::currencySymbol }}{{::commissionsData.amount_totals.unpaid}}</span>
          </li>
       </ul>
       <!-- Show if active filer: Payable & 1 or more agents are selected (checked) (remove .hidden) -->
@@ -98,14 +98,14 @@
          </li>
       </ul>
       <!-- Hide if 1 or more agents are selected (checked) or searching -->
-      <ul class="commissions-info totals">
+      <ul class="commissions-info totals" style="display:block" ng-hide="(areAllAgentsSelected() || areAgentsPartialySelected() || areAnyReservationsPartialySelected())">
          <li>
             <span translate>OPEN_BILLS</span>
-            <span class="amount">{{ ::commissionsData.total_number_of_unpaid_bills }}</span>
+            <span class="amount">{{ commissionsData.bill_count_totals.open +commissionsData.bill_count_totals.hold  }}</span>
          </li>
          <li>
             <span translate>TOTAL_OWING</span>
-            <span class="amount red">{{ ::currencySymbol }}{{ ::commissionsData.total_commission_owing | number: precisonTwo }}</span>
+            <span class="amount red">{{ ::currencySymbol }}{{ ::commissionsData.amount_totals.owing | number: precisonTwo }}</span>
          </li>
       </ul>
    </div>
