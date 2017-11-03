@@ -9,7 +9,7 @@ admin.controller('ADCheckoutCtrl', ['$scope', '$rootScope', 'adCheckoutSrv', '$s
     * To fetch checkin details
     */
     $rootScope.previousState = 'admin.dashboard';
-    $rootScope.previousStateParam = '1';
+    $rootScope.previousStateParam = ($scope.isChainAdminMenuPresent && $scope.isChainAdminMenuPresent.length === 0) ? '1' : '2';
 
     $scope.init = function() {
     	$scope.checkoutData = {};
