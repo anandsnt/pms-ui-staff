@@ -246,6 +246,7 @@ sntRover.controller('RVCommissionsSummaryController', ['$scope',
                 $timeout(function() {
                     $scope.$broadcast('updatePagination', 'TA_LIST');
                 }, 100);
+                $scope.initialLoading = false;
             };
 
             var params = {
@@ -449,6 +450,7 @@ sntRover.controller('RVCommissionsSummaryController', ['$scope',
                 perPage: $scope.filterData.perPage
             };
             $scope.setScroller('commissionOverViewScroll', {});
+            $scope.initialLoading = true;
         };
 
         init();

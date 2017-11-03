@@ -30,7 +30,7 @@
 <rv-pagination ng-show="showPagination" page-options="paginationData" page-data="commissionsData.total_results"></rv-pagination>
 <!--  -->
 <!-- Search panel - WITH RESULTS -->
-<section class="content commissions-content" role="main">
+<section class="content commissions-content" role="main" ng-hide="initialLoading">
    <!-- When searching, add .searching-->
    <div class="commissions-header searching">
       <ul class="filters" ng-hide="areAllAgentsSelected() || areAgentsPartialySelected() || areAnyReservationsPartialySelected()">
