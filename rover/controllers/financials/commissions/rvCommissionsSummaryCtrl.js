@@ -44,33 +44,7 @@ sntRover.controller('RVCommissionsSummaryController', ['$scope',
                 account.isExpanded = false;
                 account.isSemiSelected = false;
             } else {
-               
-                var onFetchListSuccess = function(response) {
-                    console.log(response);
-                    account.isExpanded = true;
-                    account.reservationsData = {reservations:response};
-                    account.selectedReservations = [];
-                    // if the account is selected, the reservation list 
-                    // inside should be selected
-                    _.each(account.reservationsData.reservations, function(reservation) {
-                        reservation.isSelected = account.isSelected;
-                        var indexOfRes = account.selectedReservations.indexOf(reservation.id);
-
-                        if (reservation.isSelected && indexOfRes === -1) {
-                            account.selectedReservations.push(reservation.id);
-                        }
-                    });
-                    // start with page 1
-                    account.reservationsPageNo = 1;
-                    account.showResPagination = account.reservationsData.total_count > 2;
-                    refreshArOverviewScroll();
-
-                };
-
-                $scope.callAPI(RVCommissionsSrv.fetchReservationOfCommissions, {
-                    params: {id: account.id},
-                    successCallBack: onFetchListSuccess
-                });
+                account.fetchReservationData();
             }
         };
 
@@ -237,6 +211,45 @@ sntRover.controller('RVCommissionsSummaryController', ['$scope',
                 $scope.commissionsData = data;
                 _.each($scope.commissionsData.accounts, function(account) {
                     account.isExpanded = false;
+                    account.fetchReservationData = function(pageNo) {
+                        var page = !!pageNo ? pageNo : 1;
+
+                        var onFetchListSuccess = function(response) {
+                            console.log(response);
+                            account.isExpanded = true;
+                            account.reservationsData = response;
+                            account.selectedReservations = [];
+                            // if the account is selected, the reservation list 
+                            // inside should be selected
+                            _.each(account.reservationsData.reservations, function(reservation) {
+                                reservation.isSelected = account.isSelected;
+                                var indexOfRes = account.selectedReservations.indexOf(reservation.id);
+
+                                if (reservation.isSelected && indexOfRes === -1) {
+                                    account.selectedReservations.push(reservation.id);
+                                }
+                            });
+                            // start with page 1
+                            account.reservationsPageNo = 1;
+                            account.showResPagination = account.reservationsData.total_count > 5;
+                            $timeout(function() {
+                                $scope.$broadcast('updatePagination', 'RESERVATION_LIST_' + account.id);
+                            }, 100);
+                            refreshArOverviewScroll();
+
+                        };
+                        $scope.callAPI(RVCommissionsSrv.fetchReservationOfCommissions, {
+                            params: {
+                                id: account.id
+                            },
+                            successCallBack: onFetchListSuccess
+                        });
+                    };
+                    account.paginationData = {
+                        id: 'RESERVATION_LIST_' + account.id,
+                        api: account.fetchReservationData,
+                        perPage: 5
+                    };
                 });
                 $scope.resetSelections();
                 $scope.showPagination = ($scope.commissionsData.total_count <= 50) ? false : true;
