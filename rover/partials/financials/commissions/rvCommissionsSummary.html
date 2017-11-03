@@ -37,11 +37,11 @@
          <!-- Add .active to current filter -->
          <li ng-class="{ 'active' : filterData.filterTab === 'PAYABLE' }" ng-click="setFilterTab('PAYABLE')">
             {{ 'TO_PAY' | translate}}
-            <strong>44</strong>
+            <strong>{{commissionsData.bill_count_totals.open}}</strong>
          </li>
          <li ng-class="{ 'active' : filterData.filterTab === 'ON_HOLD' }" ng-click="setFilterTab('ON_HOLD')">
             {{ 'ON_HOLD' | translate}}
-            <strong>44</strong>
+            <strong>{{commissionsData.bill_count_totals.on_hold}}</strong>
          </li>
       </ul>
       <!-- Hide if 1 or more agents are selected (checked) -->
@@ -196,10 +196,10 @@
                      <!-- Remove .hidden when expanded -->
                      <div class="commission-details" ng-show="account.isExpanded">
                         <table style="margin-bottom: 60px;">
-                           <thead>
+                           <thead ng-hide="account.reservationsData.reservations.length == 0">
                               <tr>
                                  <th></th>
-                                 <th class="name">Guest</th>
+                                 <th class="name" translate>GUEST</th>
                                  <!-- Show this only if active filter: Payable -->
                                  <th class="amount" translate>COMMISSION_CONF_NO</th>
                                  <th class="amount" translate="">COMMISSION_REVENUE</th>
@@ -208,7 +208,11 @@
                               </tr>
                            </thead>
                            <tbody>
-                              <tr ng-show="selectedCommisionReservations.reservations.length == 0"><td colspan="3">No data present.</td></tr>
+                              <tr ng-show="account.reservationsData.reservations.length == 0">
+                                 <td colspan="6">
+                                    <p style="text-align:center;">Nothing to display</p>
+                                 </td>
+                              </tr>
                               <!-- Add class .odd or .even based on the row number -->
                               <tr ng-class="{'odd': $index % 2 != 0, 'even': $index % 2 == 0}" ng-repeat="reservation in account.reservationsData.reservations">
                                  <td>
@@ -219,17 +223,17 @@
                                        <input type="checkbox" ng-model="reservation.isSelected" ng-change="reservationSelectionChanged(account, reservation)">
                                     </label>
                                  </td>
-                                 <td class="name">{{ ::reservation.last_name }}, {{ reservation.first_name}}</td>
+                                 <td class="name">{{ ::reservation.guest.last_name }}, {{ reservation.guest.first_name}}</td>
                                  <!-- Show this only if active filter: Payable -->
-                                 <td class="amount">{{ ::currencySymbol}} {{  reservation.conf_no}}</td>
+                                 <td class="amount">{{  reservation.confirm_no}}</td>
                                  <td class="amount">
                                     {{ ::currencySymbol }} {{ reservation.revenue}}
                                  </td>
                                  <td class="amount">
-                                    {{ ::currencySymbol }} {{ reservation.commission}}
+                                    {{ reservation.commission_rate}}
                                  </td>
                                  <!-- Add .red if more than 0 -->
-                                 <td class="owing" ng-class="{'red': reservation.owing>0}">{{ ::currencySymbol }} {{ reservation.owing}}</td>
+                                 <td class="owing" ng-class="{'red': reservation.amount_owing>0}">{{ ::currencySymbol }} {{ reservation.amount_owing}}</td>
                               </tr>
                            </tbody>
                         </table>

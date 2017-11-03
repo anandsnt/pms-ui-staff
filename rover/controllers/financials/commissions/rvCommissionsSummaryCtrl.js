@@ -44,25 +44,27 @@ sntRover.controller('RVCommissionsSummaryController', ['$scope',
                 account.isExpanded = false;
                 account.isSemiSelected = false;
             } else {
-                account.isExpanded = true;
-                account.reservationsData = angular.copy(RVCommissionsSrv.sampleReservationData);
-                account.selectedReservations = [];
-                // if the account is selected, the reservation list 
-                // inside should be selected
-                _.each(account.reservationsData.reservations, function(reservation) {
-                    reservation.isSelected = account.isSelected;
-                    var indexOfRes = account.selectedReservations.indexOf(reservation.id);
-
-                    if (reservation.isSelected && indexOfRes === -1) {
-                        account.selectedReservations.push(reservation.id);
-                    }
-                });
-                // start with page 1
-                account.reservationsPageNo = 1;
-                account.showResPagination = account.reservationsData.total_count > 2;
-
-                var onFetchListSuccess = function(response){
+               
+                var onFetchListSuccess = function(response) {
                     console.log(response);
+                    account.isExpanded = true;
+                    account.reservationsData = {reservations:response};
+                    account.selectedReservations = [];
+                    // if the account is selected, the reservation list 
+                    // inside should be selected
+                    _.each(account.reservationsData.reservations, function(reservation) {
+                        reservation.isSelected = account.isSelected;
+                        var indexOfRes = account.selectedReservations.indexOf(reservation.id);
+
+                        if (reservation.isSelected && indexOfRes === -1) {
+                            account.selectedReservations.push(reservation.id);
+                        }
+                    });
+                    // start with page 1
+                    account.reservationsPageNo = 1;
+                    account.showResPagination = account.reservationsData.total_count > 2;
+                    refreshArOverviewScroll();
+
                 };
 
                 $scope.callAPI(RVCommissionsSrv.fetchReservationOfCommissions, {
@@ -70,18 +72,17 @@ sntRover.controller('RVCommissionsSummaryController', ['$scope',
                     successCallBack: onFetchListSuccess
                 });
             }
-            refreshArOverviewScroll();
         };
 
         // based on selections, the top menu changes.
         // check if all agents are selected
         $scope.areAllAgentsSelected = function() {
-            return $scope.commissionsData.total_results === $scope.noOfBillsSelected;
+            return $scope.commissionsData.total_count === $scope.noOfBillsSelected;
         };
 
         // check if any one of the agents is selected
         $scope.areAgentsPartialySelected = function() {
-            return $scope.noOfBillsSelected > 0 && $scope.commissionsData.total_results !== $scope.noOfBillsSelected;
+            return $scope.noOfBillsSelected > 0 && $scope.commissionsData.total_count !== $scope.noOfBillsSelected;
         };
 
         // check if any one of the reservation inside any agent is selected
@@ -203,7 +204,7 @@ sntRover.controller('RVCommissionsSummaryController', ['$scope',
                 account.isSelected = $scope.allCommisionsSelected;
                 account.isExpanded = false;
                 account.reservationsData = {};
-                account.sele
+                account.selectedReservations = [];
                 account.isSemiSelected = false;
                 if (account.isSelected) {
                     $scope.selectedAgentIds.push(account.id);
@@ -211,8 +212,8 @@ sntRover.controller('RVCommissionsSummaryController', ['$scope',
             });
 
             if ($scope.allCommisionsSelected) {
-                $scope.noOfBillsSelected = $scope.commissionsData.total_results;
-                $scope.noOfBillsInOtherPagesSelected = $scope.commissionsData.total_results - $scope.commissionsData.accounts.length;
+                $scope.noOfBillsSelected = $scope.commissionsData.total_count;
+                $scope.noOfBillsInOtherPagesSelected = $scope.commissionsData.total_count - $scope.commissionsData.accounts.length;
             } else {
                 $scope.noOfBillsSelected = 0;
                 $scope.noOfBillsInOtherPagesSelected = 0;
@@ -238,7 +239,7 @@ sntRover.controller('RVCommissionsSummaryController', ['$scope',
                     account.isExpanded = false;
                 });
                 $scope.resetSelections();
-                $scope.showPagination = ($scope.commissionsData.total_results <= 50) ? false : true;
+                $scope.showPagination = ($scope.commissionsData.total_count <= 50) ? false : true;
                 $scope.errorMessage = "";
                 $scope.$emit('hideLoader');
                 refreshArOverviewScroll();
