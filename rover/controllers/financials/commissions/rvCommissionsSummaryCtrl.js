@@ -394,7 +394,7 @@ sntRover.controller('RVCommissionsSummaryController', ['$scope',
             });
         };
 
-        var init = function() {
+        (function() {
             updateHeader();
             $scope.commissionsData = {};
             $scope.filterData = RVCommissionsSrv.filterData;
@@ -414,9 +414,7 @@ sntRover.controller('RVCommissionsSummaryController', ['$scope',
             };
             $scope.setScroller('commissionOverViewScroll', {});
             $scope.initialLoading = true;
-        };
-
-        init();
+        })();
 
     }
 ]);
