@@ -32,7 +32,7 @@
                 <span class="currency">{{currencySymbol}}</span>{{unallocatedCreditTransaction.amount | number:2 }}
             </div>
 
-            <button type="button" class="button green" ng-click="clickedAllocateButton($event, $index)">Allocate</button>
+            <button ng-show="arFlags.hasAllocateUnallocatePermission" type="button" class="button green" ng-click="clickedAllocateButton($event, $index)">Allocate</button>
         </div>
 
         <ul class="search-results" ng-show="unallocatedCreditTransaction.active">
@@ -60,7 +60,7 @@
                     <div class="amount paid">
                         {{currencySymbol}} {{item.amount | number:2 }}
                     </div>
-                    <button type="button" class="button white with-icon" ng-click="clickedUnallocate(item)">
+                    <button ng-show="arFlags.hasAllocateUnallocatePermission" type="button" class="button white with-icon" ng-click="clickedUnallocate(item)">
                         <span class="icons icon-remove-40"></span>
                     </button>
                 </div>

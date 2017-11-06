@@ -67,6 +67,7 @@ angular.module('sntRover').controller('searchCompanyCardController', ['$scope', 
 
 		$scope.clearResults = function() {
 			$scope.textInQueryBox = "";
+			$scope.results = [];
 		};
 
 		/**

@@ -104,30 +104,28 @@ sntRover.controller('RvArBalanceController', ['$scope', '$timeout', 'rvAccountsA
 			var clikedItem = $scope.arDataObj.balanceList[index],
 				element = event.target;	
 
-			event.stopImmediatePropagation();
+				event.stopImmediatePropagation();
 				event.stopPropagation();
 
 			if (element.parentElement.classList.contains('checkbox') || element.classList.contains('checkbox')) {
 				// Checkbox selection logic will be called here..
 				selectInvoice(clikedItem.transaction_id);
 			}
-			else {
-				clickedBalanceListItem(index);
+			else if (!element.parentElement.classList.contains('actions') && !element.classList.contains('icon-edit-40') && !element.classList.contains('icon-double-arrow') && !element.classList.contains("text-box") && !element.classList.contains('button-edit')) { 
+				clickedBalanceListItem(index);				
 			}
 		};
 
 		// Handle Toggle button click to expand list item
 		var clickedBalanceListItem = function( index ) {
-			var clikedItem = $scope.arDataObj.balanceList[index];
+			var clikedItem = $scope.arDataObj.balanceList[index];			
 			
-			if ( !clikedItem.is_manual_balance || ( clikedItem.is_manual_balance && clikedItem.is_partially_paid) ) {
-				if (!clikedItem.active) {
-					callExpansionAPI(clikedItem);
-				}
-				else {
-					clikedItem.active = false;
-					refreshScroll();
-				}
+			if (!clikedItem.active) {
+				callExpansionAPI(clikedItem);
+			}
+			else {
+				clikedItem.active = false;
+				refreshScroll();
 			}
 		};
 
@@ -244,5 +242,60 @@ sntRover.controller('RvArBalanceController', ['$scope', '$timeout', 'rvAccountsA
 				item.isExpanded = false;
 				refreshScroll();
 			}
+		};
+
+		// CICO-43352 : Handle MOVE INVOICE.
+		$scope.moveInvoiceButtonClick = function( data ) {
+			// Mapping the data to be passed to move invoice popup.
+			var passData = {
+				firstName: data.guest_first_name,
+				lastName: data.guest_last_name,
+				accountName: data.account_name,
+				invoiceNumber: data.invoice_number,
+				confirmationNumber: data.reservation_confirm_no,
+				arrivalDate: data.reservation_arrival_date,
+				arrivalTime: data.reservation_arrival_time,
+				departureDate: data.reservation_dep_date,
+				departureTime: data.reservation_dep_time,
+				amount: data.amount,
+				image: data.icon_url,
+				transactionId: data.transaction_id,
+				associatedType: data.associated_type
+			};
+
+			$scope.moveInvoiceHeaderData = passData;
+			
+			ngDialog.open({
+                template: '/assets/partials/companyCard/arTransactions/rvArMoveInvoiceToArPopup.html',
+                controller: 'rvArMoveInvoiceCtrl',
+                className: '',
+                closeByDocument: false,
+                scope: $scope
+            });
+        };
+        
+		/*
+		 *Function to open adjust invoiece dialog
+		 */
+		$scope.clickedEditIconToAdjustInvoice = function(invoiceIndex, transactionIndex) {
+			$scope.selectedInvoice = $scope.arDataObj.balanceList[invoiceIndex];
+			$scope.selectedTransaction = $scope.arDataObj.balanceList[invoiceIndex].debits[transactionIndex];
+			ngDialog.open({
+				template: '/assets/partials/companyCard/arTransactions/rvArInvoiceAdjustPopup.html',
+				scope: $scope,
+				controller: 'RvArInvoiceAdjustController'
+			});
+		};
+        /*
+		 * Open dialog to post charge
+		 * @param index - index of the item
+		 */
+		$scope.clickedPostCharge = function(index) {
+			$scope.selectedItemToPostCharge = $scope.arDataObj.balanceList[index];
+			ngDialog.open({
+				template: '/assets/partials/companyCard/arTransactions/rvArTransactionPostCharge.html',
+				controller: 'RvArPostChargeController',
+				scope: $scope
+			});
 		};
 }]);

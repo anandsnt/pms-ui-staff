@@ -808,17 +808,36 @@
                             }
 
                             &.credits {
-                              width: 118px;
-                                 padding-right: 40px;
-                                 position: relative;
-                                .icons {
-                                    position: absolute;
-                                    top: 0;
-                                    right: 0;
-                                    background-size: 70px;
+                                width: 118px; 
+                            }
 
-                                    &.icon-remove-40 {
-                                       background-position: 14px -2179px;
+                            &.action {
+                                width: 40px;
+                                padding: 0 5px;
+
+                                button {
+                                    .box-shadow(1px 1px 1px rgba(0,0,0,0.15));
+                                    .square(30px);
+
+                                    &:hover                    
+                                    {
+                                        .box-shadow(~"inset 1px 1px 1px rgba(0,0,0,0.15)");
+                                    }
+
+                                    &.blank {
+                                        background: @grey1;
+                                    }
+
+                                    .icons {
+                                        background-size: 72px;
+                                        
+                                        &.icon-edit-40 {
+                                            background-position: 4px -6716px;
+                                        }
+
+                                        &.icon-remove-40 {
+                                            background-position: 4px -2252px;
+                                        }
                                     }
                                 }
                             }
@@ -829,7 +848,17 @@
                         }
 
                         tr.odd {
-                            td { background: @grey1; }
+                            td { 
+                                background: @grey1; 
+
+                                &.action {
+                                    button {
+                                        &.blank {
+                                            background: @white;
+                                        }
+                                    }
+                                }
+                            }
                         }
 
                         /** Charge Items in AR Transactions */
@@ -860,7 +889,7 @@
                             }
                         }
                     }
-
+                    
                     /** Toggle in AR Transactions */
                     .toggle {
                         cursor: pointer;

@@ -22,9 +22,9 @@ sntRover.controller('rvReservationCardActivityLogCtrl',
 
         };
 
-        $scope.showDetails = function() {
+        $scope.showDetails = function() { 
             $state.go('rover.reservation.staycard.activitylog', {
-                id: $stateParams.id
+                id: $scope.reservationData.reservation_card.reservation_id
             });
         };
         init();

@@ -69,7 +69,7 @@ sntRover.controller('RvArAddBalanceController', ['$scope', '$rootScope', 'ngDial
 					var obj = {
 						'manual_charge_name': value.name,
 						'invoice_number': value.invoiceNo,
-						'dep_date': value.departureDate,
+						'aging_date': value.departureDate,
 						'amount': value.amount
 					};
 
@@ -79,7 +79,7 @@ sntRover.controller('RvArAddBalanceController', ['$scope', '$rootScope', 'ngDial
 
 			var dataToSend = {
 				'manual_balance_data': manualBalanceList,
-				'account_id': $stateParams.id
+				'account_id': $scope.arDataObj.accountId
 			};
 
 			return dataToSend;

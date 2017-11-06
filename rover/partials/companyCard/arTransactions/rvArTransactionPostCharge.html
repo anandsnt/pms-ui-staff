@@ -1,0 +1,47 @@
+<div role="dialog" id="modal" class="modal-show" ng-class="{'modal-show': !modalClosing}">
+    <form method="post" id="ar-post-charge-options" name="ar-post-charge" class="modal-content form edit-charge ar-charge ar-post-charge">
+        <button class="modal-close" id="modal-close" type="button" ng-click="closeDialog()">
+            <span class="icons icon-close invert"></span>
+        </button>
+        
+        <fieldset class="edit-charge">
+            <span class="h2 message">{{'POST_CHARGE' | translate}}</span>
+
+            <span class="text">Invoice #{{selectedItemToPostCharge.invoice_number}}</span>
+            
+            <div id="new-charge" class="entry full-width">
+                <label for="new-charge">{{'NEW_CHARGE' | translate}}</label>
+               <!--  <input ar-transaction-post-charge-auto-complete auto-options="autocompleteOptions" name="new-charge-input" id="new-charge-input" class="icons icon-search" ng-model="query" placeholder="Search by Charge Code or Name" value="" type="text" ul-class="find-charges" /> -->
+               <input ar-transaction-post-charge-auto-complete auto-options="autocompleteOptions" name="new-charge-input" id="new-charge-input" data-card-type="" type="text" class="icons icon-search" placeholder="Search by Charge Code or Name" value="" autocomplete="off" ng-model="queryValue" ul-class="find-charges" />
+                <!-- {Autocomplete Item LI Structure: ../_shared/autocomplete.html} -->
+               
+            </div>
+
+            <!-- remove .hidden when a charge has been selected -->
+            <div id="charge-total" class="entry full-width charge-total" ng-show="showCalculationArea">
+                <label>{{'CHARGE_AMOUNT' | translate}} (<span class="currency">{{currencySymbol}}</span>)</label>
+                <input name="charge-amount" class="amount" type="text" ng-model="selectedItem.unit_price" value="{{selectedItem.unit_price}}" ng-change="changedQuantity()" ng-blur="enteredAmount()"/>
+                <span class="delimeter">x</span>
+                <input name="charge-quantity" ng-model="quantity" class="quantity" type="text" value="1" ng-change="changedQuantity()"/>
+                <span class="total">{{'TOTAL' | translate}}: <strong>{{totalAmount}}</strong></span>
+            </div>
+            
+            <div class="entry full-width reference">
+                <label for="reference">{{'REFERENCE' | translate}}</label>
+                <input name="reference" id="reference" ng-model="reference" placeholder="Enter Reference" value="" type="text" />
+            </div>
+            <div class="entry full-width">
+                <label class="checkbox inline" for="add-in-guest-card" ng-class="{'checked': show_reference_on_guest_invoice}">
+                    <span class="icon-form icon-checkbox" ng-class="{'checked': show_reference_on_guest_invoice}"></span>
+                    <input ng-model="show_reference_on_guest_invoice" id="add-in-guest-card" value="1" type="checkbox" /> {{'SHOW_REFERENCE_ON_GUEST_INVOICE' | translate}}
+                </label>
+            </div>
+             
+            <div class="actions">
+                <button type="button" class="button green" ng-click="postCharge()">{{'POST' | translate}}</button>
+                <button type="button" class="button blank" ng-click="closeDialog()">{{'CANCEL' | translate}}</button> 
+            </div>
+
+        </fieldset>
+    </form>
+</div>
