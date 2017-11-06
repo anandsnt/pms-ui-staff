@@ -1,5 +1,5 @@
-angular.module('sntRover').controller('RVWorkManagementMultiSheetCtrl', ['$rootScope', '$scope', 'ngDialog', 'RVWorkManagementSrv', '$state', '$stateParams', '$timeout', 'allUnassigned', 'fetchHKStaffs', 'allRoomTypes', 'payload', '$window', '$filter',
-	function($rootScope, $scope, ngDialog, RVWorkManagementSrv, $state, $stateParams, $timeout, allUnassigned, fetchHKStaffs, allRoomTypes, payload, $window, $filter) {
+angular.module('sntRover').controller('RVWorkManagementMultiSheetCtrl', ['$rootScope', '$scope', 'ngDialog', 'RVWorkManagementSrv', '$state', '$stateParams', '$timeout', 'allUnassigned', 'fetchHKStaffs', 'allRoomTypes', 'payload', '$window', '$filter', 'sntActivity',
+	function($rootScope, $scope, ngDialog, RVWorkManagementSrv, $state, $stateParams, $timeout, allUnassigned, fetchHKStaffs, allRoomTypes, payload, $window, $filter, sntActivity) {
 		BaseCtrl.call(this, $scope);
 
 		// saving in local variable, since it will be updated when user changes the date
@@ -19,6 +19,7 @@ angular.module('sntRover').controller('RVWorkManagementMultiSheetCtrl', ['$rootS
 		$rootScope.$on('$stateChangeStart', function(e, toState, toParams, fromState, fromParams) {
 			if ('rover.workManagement.multiSheet' === fromState.name && $scope.workSheetChanged) {
 				e.preventDefault();
+                sntActivity.stop('STATE_CHANGE' + toState.name.toUpperCase());
 				$scope.$emit("hideLoader");
 				$_stateChangeInterrupted = true;
 
@@ -708,6 +709,8 @@ angular.module('sntRover').controller('RVWorkManagementMultiSheetCtrl', ['$rootS
 			});
 
 			if ( foundIndex > -1 ) {
+                // CICO-44442
+                $scope.multiSheetState.assigned[foundIndex].shiftId = emp.shift_id;
 				// push employee from assigned to selected
 				$scope.multiSheetState.selectedEmployees.push( $scope.multiSheetState.assigned[foundIndex] );
 
@@ -723,20 +726,35 @@ angular.module('sntRover').controller('RVWorkManagementMultiSheetCtrl', ['$rootS
 		/**
 		 * Auto select employees based on daily worksheet employee data
 		 */
-		var initializeEmployeesList = function() {
+		var initializeEmployeesList = function(employeeIds) {
 			var foundIndex, key;
 
 			$scope.multiSheetState.selectedEmployees = [];
 			$scope.multiSheetState._selectedIndexMap = {};
 			$scope.multiSheetState._lastSelectedIds  = [];
 
+
             if (fetchHKStaffs) {
                 $scope.employeeList = fetchHKStaffs.results;
             }
-			_.each($scope.employeeList, function(emp) {
-				emp.ticked = true;
-				initingEmpList(emp);
-			});
+
+            var isSelectedEmp = false;
+
+            _.each($scope.employeeList, function (emp) {
+                if (employeeIds) {
+                     isSelectedEmp = employeeIds.indexOf(emp.id) > -1;
+
+                    if (isSelectedEmp) {
+                        emp.ticked = true;
+                        initingEmpList(emp);
+                    }
+                } else {
+                    emp.ticked = true;
+                    initingEmpList(emp);
+                }
+
+            });
+
 		};
 
 		var reInitEmployeesList = function() {
@@ -824,8 +842,8 @@ angular.module('sntRover').controller('RVWorkManagementMultiSheetCtrl', ['$rootS
 				/* Shift length to be calculated from api/shifts. need shift_id for that.
 				   Displaying full shift length for now.*/
 				// shift = _.findWhere($scope.shifts, { id: employee.shift_id });
-				shift = _.findWhere($scope.shifts, { name: "Full Shift" });
-				summaryModel.shiftLength    = (shift && shift.time) || "08:00";
+				shift = _.findWhere($scope.shifts, { id: employee.shiftId });
+				summaryModel.shiftLength    = (shift && shift.time) || "00:00";
 				// Shift length must be corrected in future
 
 			var i;
@@ -894,10 +912,10 @@ angular.module('sntRover').controller('RVWorkManagementMultiSheetCtrl', ['$rootS
 						'_lastSelectedIds': []
 					}, {
 						'dndEnabled': true,
-						'selectedDate': $scope.dateSelected || $stateParams.date || $rootScope.businessDate,
+						'selectedDate': ($stateParams.filterParams && $stateParams.filterParams.selectedDate) || $scope.dateSelected || $stateParams.date || $rootScope.businessDate,
 						'summary': {},
 						'header': {
-							work_type_id: $scope.workTypeSelected || ""
+							work_type_id: ($stateParams.filterParams && $stateParams.filterParams.worktype_id) || $scope.workTypeSelected || ""
 						}
 					}
 				);
@@ -933,6 +951,11 @@ angular.module('sntRover').controller('RVWorkManagementMultiSheetCtrl', ['$rootS
 					}
 				}
 			};
+
+            // Clear the date once its used for preserving the previous state before load
+            if ($stateParams.filterParams) {
+                $stateParams.filterParams.selectedDate = null;
+            }
 		};
 
 		var initializeVariables = function() {
@@ -1421,8 +1444,7 @@ angular.module('sntRover').controller('RVWorkManagementMultiSheetCtrl', ['$rootS
 		 * Function to bootstrap multisheet.
 		 * @return {Undefined}
 		 */
-		var init = function() {
-
+		var init = function(employeeIds) {
 			// state settings
 			setBackNavAndTitle();
 
@@ -1433,7 +1455,7 @@ angular.module('sntRover').controller('RVWorkManagementMultiSheetCtrl', ['$rootS
 			initializeMultiSheetDataModel();
 
 			// Update employee selection list
-			initializeEmployeesList();
+			initializeEmployeesList(employeeIds);
 
 			// Update filters
 			$scope.filterUnassigned();
@@ -1487,6 +1509,169 @@ angular.module('sntRover').controller('RVWorkManagementMultiSheetCtrl', ['$rootS
               break;
           }
           return (returnString);
+        };
+
+        // Get the ids of the selected employees
+        var getSelectedEmployees = function () {
+            var currIds = _.pluck(_.where($scope.employeeList, { ticked: true }), 'id');
+
+            return currIds;
+        };
+
+        // CICO-45485 - Get all the rooms which are having tasks for the given work type
+        var getUnAssignedRoomTasksByWorkType = function (workTypeId, unAssignedRoomTasks) {
+                var rooms = [];
+
+                _.each (unAssignedRoomTasks, function (roomInfo) {
+                    var roomCloned = angular.copy(roomInfo),
+                        roomDetails = _.find ($scope.multiSheetState.allRooms, function (room) {
+                                            return room.id == roomCloned.room_id;
+                                      });
+
+                    if (roomDetails) {
+                        roomCloned.hk_section_id = roomDetails.hk_section_id;
+                    }
+
+                    if (workTypeId) {
+                       roomCloned.room_tasks = _.filter(roomCloned.room_tasks, function (task) {
+                            return task.work_type_id == $scope.multiSheetState.header.work_type_id;
+                        });
+                    }
+
+                    if (roomCloned.room_tasks.length) {
+                        rooms.push(roomCloned);
+                    }
+
+                });
+                return rooms;
+        };
+
+        // Get the room info from the unassigned list
+        var populateRoomInfo = function (roomId) {
+            var room = _.find (payload.unassignedRoomTasks, function(unAssignedRoom) {
+                            return unAssignedRoom.room_id == roomId;
+                        });
+
+            return JSON.parse(JSON.stringify(room));
+        };
+
+        // // Update the assignment list after auto assignment
+        var updateAssignedRoomList = function (data) {
+            var assignedTasks = data;
+
+            _.each (assignedTasks, function (tasks, empId) {
+
+                var employee = _.find(payload.assignedRoomTasks, function (assignedTask) {
+                                        return assignedTask.id == empId;
+                                    });
+
+                employee.only_tasks = employee.only_tasks.concat(tasks);
+
+                var taskRooms = _.uniq(_.pluck(tasks, 'room_id'));
+
+                _.each (taskRooms, function (roomId) {
+                    var selectedRoom = _.find(employee.rooms, function (room) {
+                        return room.id == roomId;
+                    });
+
+                    var selectedRoomIndex = _.findIndex(employee.rooms, function(roomInfo) {
+                            return roomInfo.id == roomId;
+                        });
+
+                    var roomCloned = angular.copy(selectedRoom);
+
+                    if (selectedRoom) {
+                        roomCloned.room_tasks = roomCloned.room_tasks.concat(_.filter(tasks, function(task) {
+                            return task.room_id == roomId;
+                         }));
+                        employee.rooms[selectedRoomIndex] = roomCloned;
+                    } else {
+                        var roomInfo = populateRoomInfo(roomId);
+
+                        roomInfo.room_tasks = _.filter(tasks, function(task) {
+                            return task.room_id == roomId;
+                         });
+                        employee.rooms.push(roomInfo);
+                    }
+
+                });
+                employee.touched_work_types = _.uniq(_.pluck(employee.only_tasks, 'work_type_id'));
+
+            });
+        };
+
+        // Update the unassigned list after auto assignment
+        var updateUnAssignedRoomList = function (data) {
+
+            var assignedTasks = [];
+
+            _.each (data, function (tasks) {
+                assignedTasks = assignedTasks.concat(tasks);
+            });
+
+            var roomIds = _.uniq(_.pluck(assignedTasks, 'room_id'));
+
+            _.each (roomIds, function (roomId) {
+                    var room = _.find (payload.unassignedRoomTasks, function (roomTask) {
+                                    return roomTask.room_id == roomId;
+                                 }),
+
+                        roomIdx = _.findIndex(payload.unassignedRoomTasks, function(roomInfo) {
+                            return roomInfo.room_id == roomId;
+                        });
+
+                        var roomTasks = _.filter(assignedTasks, function (task) {
+                                            return task.room_id == roomId;
+
+                                        });
+
+                        var roomTaskIds = _.pluck(roomTasks, 'id'),
+                            roomCloned = angular.copy(room);
+
+                        roomCloned.room_tasks = _.filter(roomCloned.room_tasks, function (roomTask) {
+                                         return roomTaskIds.indexOf(roomTask.id) < 0 ;
+                                    });
+                         payload.unassignedRoomTasks[roomIdx] = roomCloned;
+
+            });
+
+        };
+
+        // Process the response after the auto assignment to update the UI
+        var processDataAfterAutoAssign = function (data) {
+            updateAssignedRoomList(data.assigned_tasks);
+            updateUnAssignedRoomList(data.assigned_tasks);
+            init(getSelectedEmployees());
+        };
+
+        // Execute auto assign from work management screen based on the admin configuration
+        $scope.executeAutoAssign = function () {
+
+            // CICO-45459 - Prompt the user to save the worksheet first before proceeding for auto assignment
+            if ($scope.workSheetChanged) {
+               openSaveConfirmationPopup();
+               return false;
+            }
+
+            var onAutoAssignSuccess = function(data) {
+                    processDataAfterAutoAssign(data);
+                },
+                onAutoAssignFailure = function (error) {
+                    $scope.errorMessage = error;
+                };
+
+            var options = {
+                successCallBack: onAutoAssignSuccess,
+                failureCallBack: onAutoAssignFailure,
+                params: {
+                    date: $scope.dateSelected,
+                    employee_ids: getSelectedEmployees(),
+                    worktype_id: $scope.multiSheetState.header.work_type_id,
+                    unassigned_room_tasks: getUnAssignedRoomTasksByWorkType($scope.multiSheetState.header.work_type_id, payload.unassignedRoomTasks)
+                }
+            };
+
+            $scope.callAPI(RVWorkManagementSrv.executeAutoAssign, options);
         };
 	}
 ]);

@@ -6,8 +6,9 @@ module.exports = function(gulp, $, options){
 	    GUESTWEB_TEMPLATES_FILE = 'guest_web_templates.min.js',
 		GUESTWEB_TEMPLATE_ROOT  = options['GUESTWEB_TEMPLATE_ROOT'],
 	    GUESTWEB_HTML_FILE     	= options['GUESTWEB_HTML_FILE'],
-	    GUESTWEB_THEME_TEMPLATE_MAPPING_FILE = '../../asset_list/theming/guestweb/template/template_theme_mapping',
+	    GUESTWEB_THEME_TEMPLATE_MAPPING_FILE = '../../asset_list/theming/guestweb/template/template_theme_mapping_a',
 	    GUESTWEB_THEME_TEMPLATE_LIST = require(GUESTWEB_THEME_TEMPLATE_MAPPING_FILE).getThemeMappingList(),
+	    GUESTWEB_NEW_THEME_TEMPLATE_LIST = require('../../asset_list/theming/guestweb/template/template_theme_mappings_b').getThemeMappingList(),
 	    GUESTWEB_PARTIALS 		= ['guestweb/**/**/*.html'],
 	    GUESTWEB_TEMPLTE_MANFEST_FILE = "guest_web_template_manifest.json",
 	    GUESTWEB_JS_COMBINED_FILE  = 'guest_web.min.js',
@@ -52,7 +53,9 @@ module.exports = function(gulp, $, options){
 			var themeArray = themeString.split(",");
 
 			for (var i = 0, len = themeArray.length; i < len; i++) {
-				guestWebThemeList[themeArray[i]] = GUESTWEB_THEME_TEMPLATE_LIST[themeArray[i]]
+				var themelist = GUESTWEB_THEME_TEMPLATE_LIST[themeArray[i]] || GUESTWEB_THEME_TEMPLATE_LIST['guestweb_common_templates'];
+				
+				guestWebThemeList[themeArray[i]] = themelist;
 			}
 		} else {
 			guestWebThemeList = GUESTWEB_THEME_TEMPLATE_LIST;
@@ -84,7 +87,7 @@ module.exports = function(gulp, $, options){
 	        }));
 	});
 
-	gulp.task('guestweb-template-theme-generate-mapping-list-prod', function(){
+	var prodGenerateMappingListTasks = function(theme_list){
 		var glob = require('glob-all'),
 			fileList = [],
 			fs = require('fs'),
@@ -93,9 +96,9 @@ module.exports = function(gulp, $, options){
 			stream = require('merge-stream'),
 			edit = require('gulp-json-editor');
 
-		var tasks = Object.keys(GUESTWEB_THEME_TEMPLATE_LIST).map(function(theme, index){
+		var tasks = Object.keys(theme_list).map(function(theme, index){
 			console.log ('Guestweb Theme template - mapping-generation-started: ' + theme);
-			var mappingList  = GUESTWEB_THEME_TEMPLATE_LIST[theme],
+			var mappingList  = theme_list[theme],
 				fileName 	 = theme.replace(/\./g, "-")+"-template.min.js";
 
 			return gulp.src(mappingList)
@@ -123,6 +126,14 @@ module.exports = function(gulp, $, options){
 	        }));
 		});
 		return es.merge(tasks);
+	};
+
+	gulp.task('guestweb-template-theme-generate-mapping-list-prod-v2', function(){
+		return prodGenerateMappingListTasks(GUESTWEB_NEW_THEME_TEMPLATE_LIST);
+	});
+
+	gulp.task('guestweb-template-theme-generate-mapping-list-prod', function(){
+		return prodGenerateMappingListTasks(GUESTWEB_THEME_TEMPLATE_LIST);
 	});
 
 	gulp.task('guestweb-template-cache-dev', function () {

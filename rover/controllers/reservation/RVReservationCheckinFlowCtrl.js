@@ -1,8 +1,8 @@
 angular.module('sntRover').controller('RVReservationCheckInFlowCtrl',
     ['$scope', '$rootScope', 'RVHotelDetailsSrv', '$log', 'RVCCAuthorizationSrv', 'ngDialog', '$timeout', 'RVBillCardSrv',
-        '$state',
+        '$state', 'sntActivity',
         function ($scope, $rootScope, RVHotelDetailsSrv, $log, RVCCAuthorizationSrv, ngDialog, $timeout, RVBillCardSrv,
-                  $state) {
+                  $state, sntActivity) {
 
             // NOTE rvBillCardCtrl is a parent for this controller! and a few variables and methods from the parent's scope are used in here
 
@@ -20,7 +20,7 @@ angular.module('sntRover').controller('RVReservationCheckInFlowCtrl',
                     successCallBack: function (response) {
                         var billRoutingInfo = $scope.reservationBillData.routing_info,
                             canPayIncidentalsOnly = response.is_cc_authorize_for_incidentals_active &&
-                                (billRoutingInfo.incoming_from_room || billRoutingInfo.out_going_to_comp_tra);
+                                (billRoutingInfo.out_going_to_room || billRoutingInfo.out_going_to_comp_tra);
 
 
                         $scope.authorizationInfo = response;
@@ -54,15 +54,17 @@ angular.module('sntRover').controller('RVReservationCheckInFlowCtrl',
 
             // STEP B PROMPT FOR SWIPE
             var promptForSwipe = function () {
-                // prompting for swipe can be disabled from admin > reservations > reservation settings
-                if (!$scope.reservationBillData.is_disabled_cc_swipe) {
+                if ($scope.checkInState.isEMVEnabled && !$scope.authorizationInfo.is_cc_authorize_at_checkin_enabled) {
+                    completeCheckin();
+                } else if (!$scope.reservationBillData.is_disabled_cc_swipe) {
+                    // prompting for swipe can be disabled from admin > reservations > reservation settings
                     $scope.checkInState.isListeningSwipe = true;
                     ngDialog.open({
                         template: '/assets/partials/payment/rvPleaseSwipeModal.html',
                         className: '',
                         scope: $scope
                     });
-                } else if ($scope.checkInState.hasCardOnFile) {
+                } else if ($scope.checkInState.hasCardOnFile && $rootScope.isStandAlone) {
                     authorize({
                         is_emv_request: false,
                         amount: $scope.checkInState.authorizationAmount,
@@ -70,6 +72,9 @@ angular.module('sntRover').controller('RVReservationCheckInFlowCtrl',
                     });
                 } else {
                     $log.info('prompt for swipe disabled in settings AND cannot authorize WITHOUT card on file');
+                    // CICO-43681 Authorization is applicable only for credit cards; as there is no credit card and
+                    // prompting for card is disabled; continue to check-in
+                    completeCheckin();
                 }
             };
 
@@ -86,7 +91,7 @@ angular.module('sntRover').controller('RVReservationCheckInFlowCtrl',
                     reservation_id: $scope.reservationBillData.reservation_id
                 });
 
-                if (params.amount > 0) {
+                if (params.amount > 0 && $scope.authorizationInfo.is_cc_authorize_at_checkin_enabled) {
                     ngDialog.open({
                         template: '/assets/partials/authorization/ccAuthorization.html',
                         className: '',
@@ -106,7 +111,7 @@ angular.module('sntRover').controller('RVReservationCheckInFlowCtrl',
                     params = {
                         is_promotions_and_email_set: $scope.saveData.promotions,
                         reservation_id: $scope.reservationBillData.reservation_id,
-                        no_post: $scope.reservationBillData.roomChargeEnabled === '' ? false : !$scope.reservationBillData.roomChargeEnabled
+                        restrict_post: $scope.reservationBillData.roomChargeEnabled === '' ? false : !$scope.reservationBillData.roomChargeEnabled
                     };
 
                 $log.info('completeCheckIn', params);
@@ -132,6 +137,7 @@ angular.module('sntRover').controller('RVReservationCheckInFlowCtrl',
 
             // ------------------------------------------------------------------------------------ state
             $scope.checkInState = {
+                authorizeIncidentalOnly: false,
                 authorizationAmount: 0,
                 hasActiveEMV: RVHotelDetailsSrv.isActiveMLIEMV(),
                 hasSuccessfulAuthorization: false,
@@ -146,9 +152,17 @@ angular.module('sntRover').controller('RVReservationCheckInFlowCtrl',
 
             // ------------------------------------------------------------------------------------ onUserAction
             $scope.onClickEMV = function () {
+                var amountToAuth = $scope.checkInState.authorizationAmount;
+
+                // In case of EMV, if user hasn't chosen incidentals only
+                // we will have to authorize for the original Amount;
+                if (!$scope.checkInState.authorizeIncidentalOnly) {
+                    amountToAuth = $scope.authorizationInfo.original_pre_auth_amount_at_checkin;
+                }
+
                 authorize({
                     is_emv_request: true,
-                    amount: $scope.checkInState.authorizationAmount
+                    amount: amountToAuth
                 });
             };
 
@@ -166,6 +180,7 @@ angular.module('sntRover').controller('RVReservationCheckInFlowCtrl',
             };
 
             $scope.onClickIncidentalsOnly = function () {
+                $scope.checkInState.authorizeIncidentalOnly = true;
                 // set the authorization amount to incidentals
                 $scope.checkInState.authorizationAmount = $scope.authorizationInfo.pre_auth_amount_for_incidentals;
                 ngDialog.close();
@@ -173,6 +188,8 @@ angular.module('sntRover').controller('RVReservationCheckInFlowCtrl',
             };
 
             $scope.onClickFullAuth = function () {
+                $scope.checkInState.authorizeIncidentalOnly = false;
+                $scope.checkInState.authorizationAmount = $scope.authorizationInfo.pre_auth_amount_at_checkin;
                 ngDialog.close();
                 $timeout(promptForSwipe, 700);
             };
@@ -186,6 +203,12 @@ angular.module('sntRover').controller('RVReservationCheckInFlowCtrl',
                 var errorMsg,
                     signatureData = $scope.getSignature(),
                     reservationStatus = $scope.reservationBillData.reservation_status;
+
+                // CICO-44240 Stick to legacy flow in case of standalone!
+                if (!$rootScope.isStandAlone) {
+                    $scope.clickedCompleteCheckin();
+                    return false;
+                }
 
                 if ($scope.signatureNeeded(signatureData) && !$scope.reservation.reservation_card.is_pre_checkin) {
                     errorMsg = 'Signature is missing';
@@ -229,15 +252,19 @@ angular.module('sntRover').controller('RVReservationCheckInFlowCtrl',
 
                 // see if the auth info fetch has been completed! else show loader
                 if ($scope.checkInState.isAuthInfoFetchComplete) {
-                    $scope.$emit('hideLoader');
+                    sntActivity.stop('FETCH_PRE_AUTH');
                     // This step is required as the user can edit the payment method from the check-in screen
                     $scope.checkInState.hasCardOnFile = $scope.billHasCreditCard();
 
+                    var hasAnyRouting = $scope.authorizationInfo.routingToRoom ||
+                        $scope.authorizationInfo.routingFromRoom ||
+                        $scope.authorizationInfo.routingToAccount;
+
                     // is_cc_authorize_at_checkin_enabled is returned in /api/reservations/:reservation_id/pre_auth
-                    if ($scope.authorizationInfo.is_cc_authorize_at_checkin_enabled) {
-                        if ($scope.authorizationInfo.routingToRoom ||
-                            $scope.authorizationInfo.routingFromRoom ||
-                            $scope.authorizationInfo.routingToAccount) {
+                    if ($scope.authorizationInfo.is_cc_authorize_at_checkin_enabled ||
+                        !$scope.reservationBillData.is_disabled_cc_swipe) {
+                        if (hasAnyRouting && $scope.authorizationInfo.is_cc_authorize_at_checkin_enabled &&
+                            ($scope.checkInState.hasCardOnFile || !$scope.reservationBillData.is_disabled_cc_swipe)) {
                             // https://stayntouch.atlassian.net/browse/CICO-17287
                             promptForAuthorizationAmount();
                         } else {
@@ -248,43 +275,52 @@ angular.module('sntRover').controller('RVReservationCheckInFlowCtrl',
                         completeCheckin();
                     }
                 } else {
-                    $scope.$emit('showLoader');
+                    sntActivity.start('FETCH_PRE_AUTH');
+
                     $timeout($scope.checkIn, 700);
                 }
             };
 
-            listeners['CONTINUE_CHECKIN'] = $scope.$on('CONTINUE_CHECKIN', function (response) {
-                $log.info('CONTINUE_CHECKIN', response);
-                completeCheckin();
-            });
+            var initListeners = function () {
+                listeners['CONTINUE_CHECKIN'] = $scope.$on('CONTINUE_CHECKIN', function (response) {
+                    $log.info('CONTINUE_CHECKIN', response);
+                    completeCheckin();
+                });
 
-            listeners['SWIPED_CARD_ADDED'] = $scope.$on('SWIPED_CARD_ADDED', function (event, swipedCardData) {
-                // Wait till the other modals have closed
-                if ($scope.checkInState.isListeningSwipe) {
-                    $timeout(function () {
-                        $scope.checkInState.swipedCardData = swipedCardData;
-                        $scope.onClickUseCardOnFile();
-                    }, 700);
-                }
-            });
+                listeners['SWIPED_CARD_ADDED'] = $scope.$on('SWIPED_CARD_ADDED', function (event, swipedCardData) {
+                    // Wait till the other modals have closed
+                    if ($scope.checkInState.isListeningSwipe) {
+                        $timeout(function () {
+                            $scope.checkInState.swipedCardData = swipedCardData;
+                            $scope.onClickUseCardOnFile();
+                        }, 700);
+                    }
+                });
 
-            listeners['STOP_CHECKIN_PROCESS'] = $scope.$on('STOP_CHECKIN_PROCESS', function () {
-                $scope.checkInState.isListeningSwipe = false;
-                ngDialog.close();
-            });
+                listeners['STOP_CHECKIN_PROCESS'] = $scope.$on('STOP_CHECKIN_PROCESS', function () {
+                    $scope.checkInState.isListeningSwipe = false;
+                    $scope.checkInState.authorizationAmount = $scope.authorizationInfo.pre_auth_amount_at_checkin;
+                    ngDialog.close();
+                });
+
+                // ------------------------------------------------------------------------------------ Clean up...
+
+                $scope.$on('$destroy', listeners['CONTINUE_CHECKIN']);
+                $scope.$on('$destroy', listeners['SWIPED_CARD_ADDED']);
+                $scope.$on('$destroy', listeners['STOP_CHECKIN_PROCESS']);
+            };
 
             // ------------------------------------------------------------------------------------ Init
             (function () {
                 $scope.authorizationInfo = null;
                 // Do an async fetch of the auth info... needn't show blocker
                 fetchAuthInfo();
+
+                if ($rootScope.isStandAlone) {
+                    initListeners();
+                }
+
             })();
-
-            // ------------------------------------------------------------------------------------ Clean up...
-
-            $scope.$on('$destroy', listeners['CONTINUE_CHECKIN']);
-            $scope.$on('$destroy', listeners['SWIPED_CARD_ADDED']);
-            $scope.$on('$destroy', listeners['STOP_CHECKIN_PROCESS']);
         }
     ]
 );

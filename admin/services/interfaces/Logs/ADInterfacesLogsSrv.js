@@ -128,7 +128,7 @@ admin.service('ADInterfaceLogsSrv', ['$http', '$q', 'ADBaseWebSrvV2',
                 ellipsis = '\n....';
 
             if (isJSON) {
-                message.request = indentJSON(request.substring(0, requestCharacterLimit));
+                message.request = indentJSON(request).substring(0, requestCharacterLimit);
             } else {
                 message.request = indentXML(request.substring(0, requestCharacterLimit));
             }
@@ -179,6 +179,7 @@ admin.service('ADInterfaceLogsSrv', ['$http', '$q', 'ADBaseWebSrvV2',
             $http({
                 method: 'GET',
                 url: params.url,
+                transformResponse: false,
                 data: params.payload
             }).then(function(response) {
 

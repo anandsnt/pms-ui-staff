@@ -6,16 +6,18 @@
         <h1>
             <text data-ng-bind-html="getTagValue('ADDTL_RESIDENTS')" editable-text="ADDTL_RESIDENTS"></text>
         </h1>
-        <ul id="selection" class="editable">
+        <div id="textual" class="add-remove-guest pull-left scrollable fill-height" ng-iscroll="guests-list" ng-iscroll-delay="100">
+            <ul id="selection" class="editable wrapper">
 
-            <li ng-repeat='guest in selectedReservation.guest_details track by $index' ng-hide='guest.is_primary'>
-                <span class="details">{{guest.last_name}}, {{guest.first_name}}</span>
-                <button type="button" class="button remove-btn" click-touch='removeGuest(guest.id)' ng-class='{"overlay grey": selectedReservation.guest_details.length <= 1}'>
-                    <text data-ng-bind-html="getTagValue('REMOVE_BTN')" editable-text="REMOVE_BTN"></text>
-                </button>
-            </li>
+                <li ng-repeat='guest in selectedReservation.guest_details track by $index' ng-hide='guest.is_primary'>
+                    <span class="details">{{guest.last_name}}, {{guest.first_name}}</span>
+                    <button type="button" class="button remove-btn" click-touch='removeGuest(guest.id)' ng-class='{"overlay grey": selectedReservation.guest_details.length <= 1}'>
+                        <text data-ng-bind-html="getTagValue('REMOVE_BTN')" editable-text="REMOVE_BTN"></text>
+                    </button>
+                </li>
 
-        </ul>
+            </ul>
+        </div>
     </div>
     <div id="content" class="input-field-contents" ng-show="AddGuestMode">
 
@@ -48,7 +50,8 @@
     </div>
     <span ng-include="'/assets/partials_v2/zsTabletFooter.html'" click-touch='resetTime()' ></span>
     <div>
-        <div id="actions" class="add-guests-footer" >
+        <div id="actions" class="add-guests-footer" ng-hide='AddGuestMode'>
+        
             <button type="button" class="button prev" click-touch="addAGuest(); resetTime();" ng-class='{"overlay grey": selectedReservation.guest_details.length >= maxAddGuests}'>
                 <text data-ng-bind-html="getTagValue('ADD_BTN')" editable-text="ADD_BTN"></text>
             </button>

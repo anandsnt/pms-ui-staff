@@ -9,7 +9,7 @@
     <td><em>{{ each.room_nights.cancelled }}</em></td>
     <td><em>{{ each.reservations.noshow }}</em></td>
 
-    <td><strong>{{ each.revenue.total | currency:currencySymbol:2 }}</strong></td>
-    <td>{{ each.revenue.room | currency:currencySymbol:2 }}</td>
-    <td>{{ each.revenue.adr | currency:currencySymbol:2 }}</td>
+    <td><strong><span class="currency">{{ each.revenue.total | currency:currencySymbol:2 }}</span></strong></td>
+    <td><span class="currency">{{ each.revenue.room | currency:currencySymbol:2 }}</span></td>
+    <td><span class="currency">{{ each.revenue.adr | currency:currencySymbol:2 }}</span></td>
 </tr>

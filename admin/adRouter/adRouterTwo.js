@@ -1,5 +1,7 @@
-angular.module('adminModuleTwo', []).config(function($stateProvider) {
+angular.module('adminModuleTwo', []).config(function ($stateProvider) {
     // define module-specific routes here
+
+
     $stateProvider.state('admin.departments', {
         templateUrl: '/assets/partials/departments/adDepartmentsList.html',
         controller: 'ADDepartmentListCtrl',
@@ -35,13 +37,13 @@ angular.module('adminModuleTwo', []).config(function($stateProvider) {
         controller: 'ADChannelMgrEditCtrl',
         url: '/channelManagerEditRates',
         resolve: {
-            availableRates: function(ADChannelMgrSrv) {
-                return ADChannelMgrSrv.fetchRates().then(function(data) {
+            availableRates: function (ADChannelMgrSrv) {
+                return ADChannelMgrSrv.fetchRates().then(function (data) {
                     return data.results;
                 });
             },
-            availableRoomTypes: function(ADChannelMgrSrv) {
-                return ADChannelMgrSrv.fetchRoomTypes().then(function(data) {
+            availableRoomTypes: function (ADChannelMgrSrv) {
+                return ADChannelMgrSrv.fetchRoomTypes().then(function (data) {
                     return data.data.room_types;
                 });
             }
@@ -53,7 +55,7 @@ angular.module('adminModuleTwo', []).config(function($stateProvider) {
         controller: 'ADRateTypeCtrl',
         url: '/ratetypes',
         resolve: {
-            rateClassifications: function(ADRateTypeSrv) {
+            rateClassifications: function (ADRateTypeSrv) {
                 return ADRateTypeSrv.fetchClassification();
             }
         }
@@ -100,7 +102,7 @@ angular.module('adminModuleTwo', []).config(function($stateProvider) {
         controller: 'ADFloorDetailsCtrl',
         url: '/floors/add',
         resolve: {
-            floorDetails: function() {
+            floorDetails: function () {
                 return [];
             }
         }
@@ -112,7 +114,7 @@ angular.module('adminModuleTwo', []).config(function($stateProvider) {
         url: '/floors/:id',
         resolve: {
             floorDetails: ['ADFloorSetupSrv', '$stateParams',
-                function(ADFloorSetupSrv, $stateParams) {
+                function (ADFloorSetupSrv, $stateParams) {
                     var params = {
                         floorID: $stateParams.id
                     };
@@ -144,10 +146,10 @@ angular.module('adminModuleTwo', []).config(function($stateProvider) {
         controller: 'ADInterfaceLogsCtrl',
         url: '/interfaceLogs',
         resolve: {
-            interfaces: function(ADInterfaceLogsSrv) {
+            interfaces: function (ADInterfaceLogsSrv) {
                 return ADInterfaceLogsSrv.fetchInterfaces();
             },
-            currentTime: function(ADInterfaceLogsSrv) {
+            currentTime: function (ADInterfaceLogsSrv) {
                 return ADInterfaceLogsSrv.getTime();
             }
         }
@@ -165,7 +167,7 @@ angular.module('adminModuleTwo', []).config(function($stateProvider) {
         controller: 'ADBalanceInventoryCtrl',
         url: '/balanceInventory',
         resolve: {
-            allJobs: function(ADReservationToolsSrv) {
+            allJobs: function (ADReservationToolsSrv) {
                 return ADReservationToolsSrv.fetchAllJobs();
             }
         }
@@ -244,10 +246,10 @@ angular.module('adminModuleTwo', []).config(function($stateProvider) {
         controller: 'ADAddnewRate',
         url: '/addNewRate',
         resolve: {
-            rateInitialData: function(ADRatesAddDetailsSrv) {
+            rateInitialData: function (ADRatesAddDetailsSrv) {
                 return ADRatesAddDetailsSrv.fetchRateTypes();
             },
-            rateDetails: function() {
+            rateDetails: function () {
                 return {};
             }
         }
@@ -258,10 +260,10 @@ angular.module('adminModuleTwo', []).config(function($stateProvider) {
         controller: 'ADAddnewRate',
         url: '/ratedetails/:rateId',
         resolve: {
-            rateInitialData: function(ADRatesAddDetailsSrv) {
+            rateInitialData: function (ADRatesAddDetailsSrv) {
                 return ADRatesAddDetailsSrv.fetchRateTypes();
             },
-            rateDetails: function(ADRatesSrv, $stateParams) {
+            rateDetails: function (ADRatesSrv, $stateParams) {
                 var params = {
                     rateId: $stateParams.rateId
                 };
@@ -300,7 +302,7 @@ angular.module('adminModuleTwo', []).config(function($stateProvider) {
         controller: 'ADCheckoutCtrl',
         url: '/checkout',
         resolve: {
-            roomTypes: function(ADRoomTypesSrv) {
+            roomTypes: function (ADRoomTypesSrv) {
                 return ADRoomTypesSrv.fetch();
             }
         }
@@ -364,10 +366,10 @@ angular.module('adminModuleTwo', []).config(function($stateProvider) {
         controller: 'ADRatesAddonsCtrl',
         url: '/rates_addons',
         resolve: {
-            activeRates: function(ADPromotionsSrv) {
+            activeRates: function (ADPromotionsSrv) {
                 return ADPromotionsSrv.getActiveRates();
             },
-            availableLanguages: function(ADTranslationSrv) {
+            availableLanguages: function (ADTranslationSrv) {
                 return ADTranslationSrv.getActiveGuestLanguages();
             }
         }
@@ -384,7 +386,7 @@ angular.module('adminModuleTwo', []).config(function($stateProvider) {
         controller: 'ADPromotionsCtrl',
         url: '/promotions',
         resolve: {
-            activeRates: function(ADPromotionsSrv) {
+            activeRates: function (ADPromotionsSrv) {
                 return ADPromotionsSrv.getActiveRates();
             }
         }
@@ -395,7 +397,7 @@ angular.module('adminModuleTwo', []).config(function($stateProvider) {
         controller: 'ADUserRolesCtrl',
         url: '/UserRoles',
         resolve: {
-            userRolesData: function(ADUserRolesSrv) {
+            userRolesData: function (ADUserRolesSrv) {
                 return ADUserRolesSrv.fetchUserRoles();
             }
         }
@@ -407,7 +409,7 @@ angular.module('adminModuleTwo', []).config(function($stateProvider) {
         controller: 'ADReservationSettingsCtrl',
         url: '/reservationSettings',
         resolve: {
-            reservationSettingsData: function(ADReservationSettingsSrv) {
+            reservationSettingsData: function (ADReservationSettingsSrv) {
                 return ADReservationSettingsSrv.fetchReservationSettingsData();
             }
         }
@@ -425,7 +427,7 @@ angular.module('adminModuleTwo', []).config(function($stateProvider) {
         controller: 'ADEarlyCheckinCtrl',
         url: '/earlyCheckin',
         resolve: {
-            blockCodeData: function(adCheckinSrv) {
+            blockCodeData: function (adCheckinSrv) {
                 return adCheckinSrv.getBlockCodes();
             }
         }
@@ -436,23 +438,23 @@ angular.module('adminModuleTwo', []).config(function($stateProvider) {
         controller: 'ADiBeaconDetailsCtrl',
         url: '/iBeaconDetails/:action',
         resolve: {
-            beaconNeighbours: function(adiBeaconSettingsSrv) {
+            beaconNeighbours: function (adiBeaconSettingsSrv) {
                 return adiBeaconSettingsSrv.fetchBeaconList();
             },
-            triggerTypes: function(adiBeaconSettingsSrv) {
+            triggerTypes: function (adiBeaconSettingsSrv) {
                 return adiBeaconSettingsSrv.fetchBeaconTriggerTypes();
             },
-            beaconTypes: function(adiBeaconSettingsSrv) {
+            beaconTypes: function (adiBeaconSettingsSrv) {
                 return adiBeaconSettingsSrv.fetchBeaconTypes();
             },
-            beaconDetails: function(adiBeaconSettingsSrv, $stateParams) {
+            beaconDetails: function (adiBeaconSettingsSrv, $stateParams) {
                 var params = {
                     'id': $stateParams.action
                 };
 
                 return adiBeaconSettingsSrv.fetchBeaconDetails(params);
             },
-            defaultBeaconDetails: function() {
+            defaultBeaconDetails: function () {
                 return {};
             }
         }
@@ -463,19 +465,19 @@ angular.module('adminModuleTwo', []).config(function($stateProvider) {
         controller: 'ADiBeaconDetailsCtrl',
         url: '/iBeaconDetails/:action',
         resolve: {
-            beaconNeighbours: function(adiBeaconSettingsSrv) {
+            beaconNeighbours: function (adiBeaconSettingsSrv) {
                 return adiBeaconSettingsSrv.fetchBeaconList();
             },
-            triggerTypes: function(adiBeaconSettingsSrv) {
+            triggerTypes: function (adiBeaconSettingsSrv) {
                 return adiBeaconSettingsSrv.fetchBeaconTriggerTypes();
             },
-            beaconTypes: function(adiBeaconSettingsSrv) {
+            beaconTypes: function (adiBeaconSettingsSrv) {
                 return adiBeaconSettingsSrv.fetchBeaconTypes();
             },
-            beaconDetails: function() {
+            beaconDetails: function () {
                 return {};
             },
-            defaultBeaconDetails: function(adiBeaconSettingsSrv) {
+            defaultBeaconDetails: function (adiBeaconSettingsSrv) {
                 return adiBeaconSettingsSrv.fetchBeaconDeafultDetails();
             }
         }
@@ -486,10 +488,10 @@ angular.module('adminModuleTwo', []).config(function($stateProvider) {
         controller: 'settingsAndParamsCtrl',
         url: '/settingsAndParams',
         resolve: {
-            settingsAndParamsData: function(settingsAndParamsSrv) {
+            settingsAndParamsData: function (settingsAndParamsSrv) {
                 return settingsAndParamsSrv.fetchsettingsAndParams();
             },
-            chargeCodes: function(settingsAndParamsSrv) {
+            chargeCodes: function (settingsAndParamsSrv) {
                 return settingsAndParamsSrv.fetchChargeCodes();
             }
         }
@@ -566,10 +568,10 @@ angular.module('adminModuleTwo', []).config(function($stateProvider) {
         controller: 'ADStationaryCtrl',
         url: '/stationary',
         resolve: {
-            availableGuestLanguages: function(ADTranslationSrv) {
+            availableGuestLanguages: function (ADTranslationSrv) {
                 return ADTranslationSrv.getGuestLanguages();
             },
-            availableHoldStatus: function(ADHoldStatusSrv) {
+            availableHoldStatus: function (ADHoldStatusSrv) {
                 return ADHoldStatusSrv.fetch();
             }
         }
@@ -617,7 +619,7 @@ angular.module('adminModuleTwo', []).config(function($stateProvider) {
         controller: 'ADInvoiceSettingsCtrl',
         url: '/invoiceSettings',
         resolve: {
-            invoiceSettingsData: function(ADInvoiceSettingsSrv) {
+            invoiceSettingsData: function (ADInvoiceSettingsSrv) {
                 return ADInvoiceSettingsSrv.fetchInvoiceSettings();
             }
         }
@@ -628,10 +630,10 @@ angular.module('adminModuleTwo', []).config(function($stateProvider) {
         controller: 'ADTranslationCtrl',
         url: '/translation',
         resolve: {
-            availableLanguages: function(ADTranslationSrv) {
+            availableLanguages: function (ADTranslationSrv) {
                 return ADTranslationSrv.getGuestLanguages();
             },
-            menuDetails: function(ADTranslationSrv) {
+            menuDetails: function (ADTranslationSrv) {
                 return ADTranslationSrv.getMenuOptionDetails();
             }
         }
@@ -642,10 +644,10 @@ angular.module('adminModuleTwo', []).config(function($stateProvider) {
         controller: 'ADZestwebCommonSettingsCtrl',
         url: '/zestWebCommonSettings',
         resolve: {
-            zestWebCommonSettings: function(ADzestwebCommonSettingsSrv) {
+            zestWebCommonSettings: function (ADzestwebCommonSettingsSrv) {
                 return ADzestwebCommonSettingsSrv.fetchSettings();
             },
-            initialFooterSettings: function(ADzestwebCommonSettingsSrv) {
+            initialFooterSettings: function (ADzestwebCommonSettingsSrv) {
                 return ADzestwebCommonSettingsSrv.fetchInitialFooterSettings();
             }
         }
@@ -656,7 +658,7 @@ angular.module('adminModuleTwo', []).config(function($stateProvider) {
         controller: 'ADZestWebRoomReadyEmailSetupCtrl',
         url: '/zestWebRoomReadyEmailSetup',
         resolve: {
-            data: function(ADZestWebRoomReadyEmailSetupSrv) {
+            data: function (ADZestWebRoomReadyEmailSetupSrv) {
                 return ADZestWebRoomReadyEmailSetupSrv.getRoomReayEmailSettings();
             }
         }
@@ -668,10 +670,10 @@ angular.module('adminModuleTwo', []).config(function($stateProvider) {
         controller: 'adUpsellAddonSettingsCtrl',
         url: '/upsellAddons',
         resolve: {
-            upsellData: function(ADUpsellAddonSrv) {
+            upsellData: function (ADUpsellAddonSrv) {
                 return ADUpsellAddonSrv.getSettings();
             },
-            availableLanguages: function(ADTranslationSrv) {
+            availableLanguages: function (ADTranslationSrv) {
                 return ADTranslationSrv.getActiveGuestLanguages();
             }
 
@@ -696,8 +698,52 @@ angular.module('adminModuleTwo', []).config(function($stateProvider) {
         controller: 'adZestStationHueSettingsCtrl',
         url: '/upsellAddons',
         resolve: {
-            kioskSettings: function(ADZestStationSrv) {
+            kioskSettings: function (ADZestStationSrv) {
                 return ADZestStationSrv.fetch();
+            }
+        }
+    });
+
+    $stateProvider.state('admin.propertyGroups', {
+        templateUrl: '/assets/partials/chainAdmins/adPropertyGroups.html',
+        controller: 'ADPropertyGroupsCtrl',
+        url: '/propertyGroups'
+    });
+
+    $stateProvider.state('admin.webhooks', {
+        templateUrl: '/assets/partials/webhookSettings/adWebhookList.html',
+        controller: 'ADWebhookListCtrl',
+        url: '/webhook',
+        resolve: {
+            webHooks: ['ADWebhookSrv', function (ADWebhookSrv) {
+                return ADWebhookSrv.fetchWebHooks();
+            }]
+        }
+    });
+
+    $stateProvider.state('admin.houseKeepingSections', {
+        templateUrl: '/assets/partials/hkSections/adHkSections.html',
+        controller: 'ADHKSectionListCtrl',
+        url: '/hkSections'
+    });
+
+    $stateProvider.state('admin.addHKSection', {
+        templateUrl: '/assets/partials/hkSections/adSectionDetails.html',
+        controller: 'ADHKSectionDetailsCtrl',
+        url: '/hkSectionDetails',
+        resolve: {
+            sectionDetails: function () {
+                return {};
+            }
+        }
+    });
+    $stateProvider.state('admin.editHKSection', {
+        templateUrl: '/assets/partials/hkSections/adSectionDetails.html',
+        controller: 'ADHKSectionDetailsCtrl',
+        url: '/hkSectionDetails/:sectionId',
+        resolve: {
+            sectionDetails: function (ADHKSectionSrv, $stateParams) {
+                return ADHKSectionSrv.getHkSectionDetails($stateParams.sectionId);
             }
         }
     });

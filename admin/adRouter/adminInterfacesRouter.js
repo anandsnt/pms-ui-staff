@@ -469,6 +469,62 @@ angular.module('adminInterfacesRouter', []).config(function($stateProvider) {
         }
     });
 
+    $stateProvider.state('admin.vismaSetup', {
+        templateUrl: '/assets/partials/interfaces/Visma/adVismaSetup.html',
+        controller: 'adCRSCommonCtrl',
+        url: '/interfaces/setup/:id',
+        onEnter: ['$stateParams', function($stateParams) {
+            $stateParams.id = 'visma';
+        }],
+        resolve: {
+            config: ['adInterfacesCommonConfigSrv', function(adInterfacesCommonConfigSrv) {
+                return adInterfacesCommonConfigSrv.fetchConfiguration('visma');
+            }]
+        }
+    });
+
+    $stateProvider.state('admin.pmiSetup', {
+        templateUrl: '/assets/partials/interfaces/PMI/adPMISetup.html',
+        controller: 'adInterfaceCommonCtrl',
+        url: '/interfaces/setup/:id',
+        onEnter: ['$stateParams', function($stateParams) {
+            $stateParams.id = 'pmi';
+        }],
+        resolve: {
+            config: ['adInterfacesCommonConfigSrv', function(adInterfacesCommonConfigSrv) {
+                return adInterfacesCommonConfigSrv.fetchConfiguration('pmi');
+            }]
+        }
+    });
+
+    $stateProvider.state('admin.revControlSetup', {
+        templateUrl: '/assets/partials/interfaces/Revcontrol/adRevcontrolSetup.html',
+        controller: 'adCRSCommonCtrl',
+        url: '/interfaces/setup/:id',
+        onEnter: ['$stateParams', function($stateParams) {
+            $stateParams.id = 'revcontrol';
+        }],
+        resolve: {
+            config: ['adInterfacesCommonConfigSrv', function(adInterfacesCommonConfigSrv) {
+                return adInterfacesCommonConfigSrv.fetchConfiguration('revcontrol');
+            }]
+        }
+    });
+
+    $stateProvider.state('admin.siteminderMessageExchangeSetup', {
+        templateUrl: '/assets/partials/interfaces/Sitemindermx/adSitemindermxSetup.html',
+        controller: 'adCRSCommonCtrl',
+        url: '/interfaces/setup/:id',
+        onEnter: ['$stateParams', function($stateParams) {
+            $stateParams.id = 'sitemindermx';
+        }],
+        resolve: {
+            config: ['adInterfacesCommonConfigSrv', function(adInterfacesCommonConfigSrv) {
+                return adInterfacesCommonConfigSrv.fetchConfiguration('sitemindermx');
+            }]
+        }
+    });
+
     $stateProvider.state('admin.zDirectSetup', {
         templateUrl: '/assets/partials/ZDirectSetup/adZDirectSetup.html',
         controller: 'adZDirectSetupCtrl',
@@ -501,12 +557,6 @@ angular.module('adminInterfacesRouter', []).config(function($stateProvider) {
         templateUrl: '/assets/partials/snapshotSetup/adSnapshotSetup.html',
         controller: 'adsnapshotSetupCtrl',
         url: '/snapshotSetup/general'
-    });
-
-    $stateProvider.state('admin.snapshotChargeGroupMapping', {
-        templateUrl: '/assets/partials/snapshotSetup/adSnapshotChargeGroupMapping.html',
-        controller: 'adSnapshotChargeGroupMappingCtrl',
-        url: '/snapshotSetup/chargeGroupMapping'
     });
 
     $stateProvider.state('admin.snapshotSubGroupMapping', {
@@ -542,6 +592,12 @@ angular.module('adminInterfacesRouter', []).config(function($stateProvider) {
                 return adInterfacesCommonConfigSrv.fetchConfiguration('openkey');
             }]
         }
+    });
+
+    $stateProvider.state('admin.monsciergeSetup', {
+        templateUrl: '/assets/partials/monsciergeSetup/adMonsciergeSetup.html',
+        controller: 'adMonsciergeSetupCtrl',
+        url: '/monsciergeSetup'
     });
 
 });

@@ -89,24 +89,27 @@
 						<ad-select-number label="{{'POST_TYPE' | translate}}" div-class="full-width"  label-in-drop-down="{{'Select Post Type' | translate}}" items="prefetchData.post_types" selected-Id="prefetchData.selected_post_type" ></ad-select-number>
 					</div>
 				</div>
-
-				<div class="form-title" ng-if="prefetchData.is_snapshot_active">
-					<h3>Snapshot<span translate> Settings</span></h3>
-				</div>
-				<div class="entry full-width" ng-if="prefetchData.is_snapshot_active">
-					<label>
-						Snapshot subgroup
-						<strong>*</strong>
-					</label>
-					<div class="select">
-						<select ng-model="prefetchData.snapshot_subgroup">
-							<option value="">none</option>
-							<option value="FB">FB</option>
-							<option value="AUX">AUX</option>
-							<option value="ACC">ACC</option>
-						</select>
+				<section ng-if="prefetchData.is_snapshot_active &&
+							prefetchData.selected_charge_code_type &&
+						 	prefetchData.selected_charge_code_type !== '1' &&
+						 	prefetchData.selected_charge_code_type !== '2'">
+					<div class="form-title" >
+						<h3>Snapshot<span translate> Settings</span></h3>
 					</div>
-				</div>
+					<div class="entry full-width">
+						<label>
+							Snapshot subgroup
+						</label>
+						<div class="select">
+							<select ng-model="prefetchData.snapshot_subgroup">
+								<option value="">&lt;default&gt;</option>
+								<option value="FB">FB</option>
+								<option value="AUX">AUX</option>
+								<option value="ACC">ACC</option>
+							</select>
+						</div>
+					</div>
+				</section>
 				
 
 			</fieldset>

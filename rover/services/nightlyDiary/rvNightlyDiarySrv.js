@@ -18,15 +18,11 @@ angular.module('sntRover').service('RVNightlyDiarySrv',
          * return object
          */
         this.fetchRoomsList = function (data) {
-            var paramsToApi = {};
-
-            paramsToApi.page = data.page;
-            paramsToApi.per_page = data.per_page;
 
             var deferred = $q.defer(),
                 url = '/api/nightly_diary/room_list';
 
-            BaseWebSrvV2.postJSON(url, paramsToApi).then(function(response) {
+            BaseWebSrvV2.postJSON(url, data).then(function(response) {
                 deferred.resolve(response);
             }, function(error) {
                 deferred.reject(error);
@@ -82,6 +78,8 @@ angular.module('sntRover').service('RVNightlyDiarySrv',
             paramsToApi.no_of_days = data.no_of_days;
             paramsToApi.page = data.page;
             paramsToApi.per_page = data.per_page;
+            paramsToApi.selected_room_type_ids = data.selected_room_type_ids;
+            paramsToApi.selected_floor_ids = data.selected_floor_ids;
 
             BaseWebSrvV2.postJSON(url, paramsToApi).then(function(response) {
                 deferred.resolve(response);

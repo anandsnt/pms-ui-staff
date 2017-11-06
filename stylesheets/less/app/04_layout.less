@@ -1732,6 +1732,10 @@ body { overflow: hidden; }
             		right: 40px;
             	}
             }
+
+            &.disabled {
+	            opacity: 0.75
+	        } 
         }
 
 		/* Data ***/
@@ -1943,6 +1947,14 @@ body { overflow: hidden; }
 	                }
                 }
         	}
+
+        	/* Allocate AR Transaction/Payment ***/
+	        &.allocate {
+	            border-top: 1px solid rgba(0, 0, 0, 0.1);
+	            padding-top: 10px;
+	            margin-top: 20px;
+	            margin-bottom: -10px;
+	        }
 		}
 
 		/* Iframe ***/
@@ -2506,6 +2518,16 @@ body { overflow: hidden; }
 	                margin-right: 20px;
 	                .show;
 	                .pull-left;
+	            }
+
+	            .global-label {
+	                color: @grey3;
+	                font-size: 12px;
+	                line-height: 1;
+	                font-weight: 600;
+	                width: 100%;
+	                clear: both;
+	                .show();
 	            }
 
 	            .topic { .hide; }
@@ -3234,6 +3256,9 @@ body { overflow: hidden; }
     .release-notes_content {
         .calc-width(100, 200);
         #flexbox > .parent(row wrap, '', '', '');
+    }
+    .release-notes_content.device-status {
+    	width:100%;
     }
 
     .release-notes_action {

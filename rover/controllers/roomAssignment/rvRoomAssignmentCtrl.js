@@ -73,6 +73,10 @@ sntRover.controller('RVroomAssignmentController', [
 				$scope.rooms.push(value);
 			}
 		});
+        // CICO-44286
+        $scope.filteredRooms = _.sortBy($scope.filteredRooms, function (room) {
+                                    return room.room_number.toUpperCase();
+                                });
 		$scope.setSelectedFiltersList();
 		$scope.setRoomsListWithPredefinedFilters();
 		$scope.applyFilterToRooms();
@@ -569,13 +573,18 @@ sntRover.controller('RVroomAssignmentController', [
         }
 
 
-	$scope.goToNextView = function() {
+	$scope.goToNextView = function(shouldCloseDialog) {
+		// CICO-44115
+		$timeout( function() {
+                if (shouldCloseDialog) {
+                    ngDialog.close();
+                }
+        }, 500);
+
 		if ($scope.clickedButton === "checkinButton") {
 			$scope.$emit('hideLoader');
 			$state.go('rover.reservation.staycard.billcard', {"reservationId": $scope.reservationData.reservation_card.reservation_id, "clickedButton": "checkinButton"});
-                } else {
-
-			$scope.$emit('hideLoader');
+        } else {
 			$scope.backToStayCard();
 		}
 	};
@@ -841,6 +850,10 @@ sntRover.controller('RVroomAssignmentController', [
 				// If No floor filter applied,Directly pushed.
 					$scope.filteredRooms.push(room);
 				}
+                // CICO-44286
+                $scope.filteredRooms = _.sortBy($scope.filteredRooms, function (room) {
+                                            return room.room_number.toUpperCase();
+                                        });
 			}
 
 		});

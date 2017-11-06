@@ -1161,7 +1161,10 @@
 
             .transactions {
                 .tab-header,
-                .search-results { .hide; }
+                .search-results,
+                .billing-sidebar,
+                .no-content,
+                .billing-footer  { .hide; }
 
                 .ar-statement {
                     display: block;
@@ -1227,11 +1230,12 @@
 
                                 &.charge-description {
                                     padding-right:8pt;
+                                    word-break: break-word;
                                 }
 
-                                &:last-child {
-                                    padding-right: 4pt;
-                                }
+                                &.amount-due {
+                                    vertical-align: bottom;
+                                } 
                             }
                         }
 
@@ -1400,7 +1404,7 @@
                 padding-right: 8pt;
                 border-right: 1px solid @grey2;
 
-                span {
+                span:not(.currency) {
                     font-size: 12pt;
                     line-height: 1;
                     font-weight: 300;
@@ -2930,7 +2934,7 @@
                 .float;
 
                 strong,
-                span {
+                span:not(.currency) {
                     .nowrap();
                     .pull-left;
                 }
@@ -2942,7 +2946,7 @@
                     &.name { .calc-width(100, 240); }
                 }
 
-                span { width: 60px; }
+                span:not(.children) { width: 60px; }
 
                 /* Title Levels ***/
                 &.title-1 { border-bottom: 2px solid @grey3; }
@@ -3509,7 +3513,7 @@
         li {
             text-align: center;
 
-            span {
+            span:not(.currency) {
                 font-size: 12pt;
                 line-height: 1;
                 font-weight: 300;
@@ -3588,7 +3592,7 @@
                     width: calc(~'25% - 1cm');
                     .pull-left;
 
-                    span {
+                    span:not(.currency) {
                         font-size: 14pt;
                         font-weight: 300;
                         color: @textColor;
@@ -3613,7 +3617,7 @@
                 }
 
                 li {
-                    span { font-weight: 400; }
+                    span:not(currency) { font-weight: 400; }
                 }
             }
         }
@@ -3672,7 +3676,7 @@
                 .float;
 
                 strong,
-                span { .pull-left; }
+                span:not(.currency) { .pull-left; }
 
                 .name { font-weight: 600; }
                 .value { width: 80px; }

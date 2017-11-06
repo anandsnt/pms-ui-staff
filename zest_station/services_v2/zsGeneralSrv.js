@@ -38,7 +38,10 @@ sntZestStation.service('zsGeneralSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
             'circle-inn-fairfield': 'Circle fairfield',
             'cachet-boutique': 'Cachet Boutique',
             'hi-ho': 'Hotel hiho',
-            'first': 'First Hotel Breiseth'
+            'first': 'First Hotel Breiseth',
+            'viceroy-chicago': 'Viceroy Chicago',
+            'amrath': 'Amrath apart hotel',
+            'jupiter': 'Jupiter hotel'
         };
 
         this.isThemeConfigured = function(theme) {

@@ -1,9 +1,15 @@
-angular.module('sntRover').controller('RVTravelAgentCardCtrl', ['$scope', '$rootScope', '$timeout', 'RVCompanyCardSrv', 'ngDialog', '$filter', '$stateParams',
-	function($scope, $rootScope, $timeout, RVCompanyCardSrv, ngDialog, $filter, $stateParams) {
+angular.module('sntRover').controller('RVTravelAgentCardCtrl', ['$scope', '$rootScope', '$timeout', 'RVCompanyCardSrv', 'ngDialog', '$filter', '$stateParams', 'rvPermissionSrv',
+	function($scope, $rootScope, $timeout, RVCompanyCardSrv, ngDialog, $filter, $stateParams, rvPermissionSrv) {
 
 		$scope.searchMode = true;
 		$scope.account_type = 'TRAVELAGENT';
 		$scope.currentSelectedTab = 'cc-contact-info';
+		$stateParams.id = $scope.reservationDetails.travelAgent.id;
+
+		$scope.hasPermissionToViewCommissionTab = function() {
+			return rvPermissionSrv.getPermissionValue ('VIEW_COMMISSIONS_TAB');
+		};
+		$scope.isCommissionTabAvailable = $scope.hasPermissionToViewCommissionTab();
 
 		$scope.switchTabTo = function($event, tabToSwitch) {
 			$event.stopPropagation();
@@ -41,6 +47,9 @@ angular.module('sntRover').controller('RVTravelAgentCardCtrl', ['$scope', '$root
 			else if (tabToSwitch === 'cc-notes') {
 				$scope.$broadcast("fetchNotes");
 				$scope.isWithFilters = false;
+			}
+			else if (tabToSwitch === 'cc-commissions') {
+				$scope.$broadcast("commissionsTabActive");
 			}
 			if (tabToSwitch === 'cc-ar-transactions' && !isArNumberAvailable) {
 			  	console.warn("Save AR Account and Navigate to AR Transactions");
@@ -300,6 +309,15 @@ angular.module('sntRover').controller('RVTravelAgentCardCtrl', ['$scope', '$root
 				dataToSend.account_type = $scope.account_type;
 				$scope.invokeApi(RVCompanyCardSrv.saveContactInformation, dataToSend, successCallbackOfContactSaveData, failureCallbackOfContactSaveData);
 			}
+		};
+
+		/**
+		* function to check whether the user has permission
+		* to create/edit AR Account.
+		* @return {Boolean}
+		*/
+		$scope.hasPermissionToCreateArAccount = function() {
+			return rvPermissionSrv.getPermissionValue ('CREATE_AR_ACCOUNT');
 		};
 	}
 ]);

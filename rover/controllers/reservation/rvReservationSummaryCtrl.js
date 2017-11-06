@@ -582,8 +582,10 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', 'jsMappings', '$s
                 $scope.setupFeeData();
                 // CICO-15107 --
                 var aptSegment = ""; // Variable to store the suitable segment ID
+                // CICO-42023
+                var segmentsSortedByLOS = _.sortBy($scope.otherData.segments, 'los');
 
-                angular.forEach($scope.otherData.segments, function(segment) {
+                angular.forEach(segmentsSortedByLOS, function(segment) {
                     if ($scope.reservationData.stayDays.length - 1 <= segment.los) {
                         if (!aptSegment) {
                             aptSegment = segment.value;
@@ -856,7 +858,7 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', 'jsMappings', '$s
                 $scope.setDemographics(true);
                 return;
             }
-            $scope.proceedCreatingReservation();
+            $scope.confirmReservation(true);
         };
 
         var savePayment = function(callback, addToGuestCard) {
@@ -866,7 +868,7 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', 'jsMappings', '$s
 
             var updateSuccess = function(data) {
                 $scope.$emit('hideLoader');
-                callback();
+                callback(true);
             };
 
             var updateFailure = function(data) {

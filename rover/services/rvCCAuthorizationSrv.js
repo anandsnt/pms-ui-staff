@@ -3,7 +3,8 @@ angular.module('sntRover').service('RVCCAuthorizationSrv', ['$http', '$q', 'RVBa
 
         var service = this,
             elapsedTimeinSeconds = 0,
-            promiseIntervalTimer; // holds the promise returned by $interval
+            promiseIntervalTimer, // holds the promise returned by $interval
+            TERMINAL_POLLING_INTERVAL_MS = 3000;
 
         var incrementTimer = function () {
             elapsedTimeinSeconds++;
@@ -28,7 +29,7 @@ angular.module('sntRover').service('RVCCAuthorizationSrv', ['$http', '$q', 'RVBa
                         $timeout(function () {
                             $log.info('POLLING::-> for emv terminal response');
                             pollToTerminal(deferred, async_callback_url);
-                        }, 5000);
+                        }, TERMINAL_POLLING_INTERVAL_MS);
                     } else {
                         $interval.cancel(promiseIntervalTimer);
                         deferred.resolve(data);

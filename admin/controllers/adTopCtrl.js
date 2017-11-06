@@ -36,10 +36,12 @@ angular.module('admin').controller('adTopCtrl',
 
             (function() {
                 $rootScope.adminRole = adminDashboardConfigData['admin_role'];
-                $rootScope.isServiceProvider = adminDashboardConfigData['is_service_provider'];
+                $rootScope.isServiceProvider = adminDashboardConfigData['is_service_provider'] ||
+                    adminDashboardConfigData['is_service_provider_admin'];
                 $rootScope.hotelId = adminDashboardConfigData['hotel_id'];
                 $rootScope.isPmsConfigured = adminDashboardConfigData['is_pms_configured'] === 'true';
                 $rootScope.isSntAdmin = $rootScope.adminRole === 'snt-admin';
+                $rootScope.isChainAdmin = adminDashboardConfigData['is_chain_admin'];
 
                 if ($stateParams.uuid || ( $rootScope.isSntAdmin && 'snt' === $state.current.name)) {
                     setPropertyAndNavigate($stateParams.uuid);

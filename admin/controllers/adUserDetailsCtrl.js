@@ -186,9 +186,9 @@ admin.controller('ADUserDetailsCtrl',
 		var unwantedKeys = [];
 
 		if ($scope.image.indexOf("data:") !== -1) {
-			unwantedKeys = ["departments", "roles"];
+			unwantedKeys = ["departments", "roles", 'is_multi_property'];
 		} else {
-			unwantedKeys = ["departments", "roles", "user_photo"];
+			unwantedKeys = ["departments", "roles", "user_photo", 'is_multi_property'];
 		}
 		var userRoles = [];
 
@@ -200,6 +200,11 @@ admin.controller('ADUserDetailsCtrl',
 
 
 		$scope.data.user_roles = userRoles;
+
+        if ($scope.data.is_chain_admin === undefined || $scope.data.is_chain_admin === null) {
+            $scope.data.is_chain_admin = false;
+        }
+
 		var data = dclone($scope.data, unwantedKeys);
 		// Remove user_photo field if image is not uploaded. Checking base64 encoded data exist or not
 
@@ -232,6 +237,10 @@ admin.controller('ADUserDetailsCtrl',
 		var successCallbackRender = function(data) {
 			$scope.assignedRoles = [];
 			$scope.$emit('hideLoader');
+			// This for displaying the placeholder text in dropdown
+			if (data.shift_id === null) {
+				data.shift_id = "";
+			}
 			$scope.data = data;
 			$scope.unAssignedRoles = $scope.rolesWithDashboards.slice(0);
 			if (data.user_photo === "") {
@@ -351,6 +360,11 @@ admin.controller('ADUserDetailsCtrl',
 	$scope.onRoleChange = function() {
 		// CICO-37238 Find and update the dashboards related to the roles
 		refreshDashboardsList();
+    };
+
+    // Get the style class based on whether the hotel is standalone or not
+    $scope.getStyleClass = function () {
+     return !$scope.isStandAlone ? 'ng-hide' : '';
     };
 
     (function() {

@@ -156,8 +156,13 @@
 
     #message {
         margin-top: 120px;
-
         .button { margin: 80px auto 0; }
+    }
+    .eci-done { 
+        margin-top: 0px !important;
+        .button { 
+            margin-top: 0px !important; 
+        }
     }
 
     
@@ -805,6 +810,9 @@
             }
         }
     }
+    .single-addon-image > img {
+        min-height: 300px;
+    }
 
     .add-on-list {
         margin: 0;
@@ -1104,7 +1112,12 @@
             }
 
             &.sub,
-            &.total { padding-left: 60px; }
+            &.total { 
+                padding-left: 60px;
+            }
+            &.total > text {
+                font-size: x-large;
+            }
 
             &.sub { color: lighten(@black, 60); }
             
@@ -1672,6 +1685,10 @@
             padding: 0 60px;
             &.sign{
                 padding: 25 60px;
+            }
+            .button-group {
+                position: absolute;
+                margin-left: 40%;
             }
         }
         
@@ -2465,3 +2482,20 @@ div.jumper-box-li {
     opacity: 0;
 }
 
+.guest-image {
+    margin-right: 15px;
+}
+
+.passport-details .entry.with-label input {
+    color: #000;
+    opacity: 0.8;
+}
+
+#textual.add-remove-guest, 
+#textual.add-remove-guest:after, 
+#textual.add-remove-guest:before{
+    background:none;
+}
+#textual.add-remove-guest{
+    width: 100%;
+}

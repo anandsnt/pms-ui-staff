@@ -3,7 +3,7 @@
 	<button class="toggle with-rate" type="button" ng-click="toggleFeesDetails($parent.$index)" ng-hide="billData.hasFeesArray" ng-class="showFeesDetailsOpenClose(billData.isOpenFeesDetails)">
 		<span class="title" translate>GUEST_BALANCE</span>		
 		<span class="value" ng-show="isBalanceShown(totalFees.is_rate_suppressed)" ng-class="getBalanceClass(totalFees.balance_amount)">
-			{{currencySymbol}}{{totalFees.balance_amount | number: precisonTwo}}
+			<span class="currency">{{currencySymbol}}</span>{{totalFees.balance_amount | number: precisonTwo}}
 		</span>
 		<span class="value" ng-show="!isBalanceShown(totalFees.is_rate_suppressed)" ng-class="getBalanceClass(totalFees.balance_amount)">
 			{{'SUPPRESSED_RATES_TEXT' | translate}}
@@ -25,7 +25,7 @@
 		Registration Card
 	</button>
 
-	<label ng-show="isStandAlone" class="checkbox inline" for="no-rate-print" ng-class="{ 'checked':reservationBillData.hide_rates }">
+	<label ng-show="isStandAlone && reservationBillData.is_show_registration_card_button" class="checkbox inline" for="no-rate-print" ng-class="{ 'checked':reservationBillData.hide_rates }">
         <span class="icon-form icon-checkbox" ng-class="{ 'checked':reservationBillData.hide_rates }"></span>
         <input ng-click="clickedShowRate()" id="no-rate-print" value="" type="checkbox">
         {{ 'DONT_PRINT_RATE' | translate }}
@@ -36,7 +36,7 @@
 	<p class="toggle with-rate">
 		<span class="title" translate>GUEST_BALANCE</span>
 		<span class="value" ng-show="!reservationBillData.is_rate_suppressed_present_in_stay_dates">
-			{{currencySymbol}} 0.00
+			<span class="currency">{{currencySymbol}}</span> 0.00
 		</span>
 		<span class="value" ng-show="reservationBillData.is_rate_suppressed_present_in_stay_dates" translate>
 			SUPPRESSED_RATES_TEXT
@@ -156,7 +156,7 @@
 				</td>
 				<td colspan="3" class="total-value" >
 					<strong ng-show="isBalanceShown(totalFeesArray.is_rate_suppressed)">
-						{{currencySymbol}} {{totalFeesArray.total_amount | number: precisonTwo}}
+						<span class="currency">{{currencySymbol}}</span> {{totalFeesArray.total_amount | number: precisonTwo}}
 					</strong>
 					<strong ng-show="!isBalanceShown(totalFeesArray.is_rate_suppressed)">
 						{{'SUPPRESSED_RATES_TEXT' | translate}}
@@ -187,7 +187,7 @@
 				</td>
 				<td colspan="3" ng-show="isBalanceShown(totalFeesArray.is_rate_suppressed)" class="total-value" ng-class="getBalanceClass(totalFeesArray.balance_amount)">
 					<strong>
-						{{currencySymbol}} {{totalFeesArray.balance_amount | number: precisonTwo}}
+						<span class="currency">{{currencySymbol}}</span> {{totalFeesArray.balance_amount | number: precisonTwo}}
 					</strong>
 				</td>
 				<td colspan="3" ng-show="!isBalanceShown(totalFeesArray.is_rate_suppressed)" class="total-value" ng-class="getBalanceClass(billData.total_fees.balance_amount)">
@@ -210,7 +210,7 @@
 				</td>
 				<td colspan="3" ng-show="isBalanceShown(totalFeesArray.is_rate_suppressed)" class="total-value" ng-class="getBalanceClass(totalFeesArray.balance_amount)">
 					<strong>
-						{{currencySymbol}} {{totalFeesArray.balance_amount | number: precisonTwo}}
+						<span class="currency">{{currencySymbol}}</span> {{totalFeesArray.balance_amount | number: precisonTwo}}
 					</strong>
 				</td>
 				<td colspan="3" ng-show="!isBalanceShown(totalFeesArray.is_rate_suppressed)" class="total-value" ng-class="getBalanceClass(billData.total_fees.balance_amount)">
@@ -262,8 +262,8 @@
 							<span ng-show="!isBalanceShown(feesData.is_rate_suppressed) && description.fees_amount != '' && description.fees_amount != NIL">
 								{{'SUPPRESSED_RATES_TEXT' | translate}}
 							</span>
-							<span ng-show="description.fees_amount != NIL && isBalanceShown(feesData.is_rate_suppressed)">
-								{{currencySymbol}}{{description.fees_amount | number: precisonTwo}}
+                            <span ng-show="description.fees_amount != '' && description.fees_amount != NIL && isBalanceShown(feesData.is_rate_suppressed)">
+								<span class="currency">{{currencySymbol}}</span>{{description.fees_amount | number: precisonTwo}}
 							</span>
 							<br />
 						</span>
@@ -271,7 +271,7 @@
 				</td>
 				<td>
 					<strong ng-show="feesData.credits!='' && isBalanceShown(feesData.is_rate_suppressed)">
-						{{currencySymbol}}{{feesData.credits}}
+						<span class="currency">{{currencySymbol}}</span>{{feesData.credits}}
 					</strong>
 					<strong ng-show="!isBalanceShown(feesData.is_rate_suppressed) && feesData.credits!=''">
 						{{'SUPPRESSED_RATES_TEXT' | translate}}

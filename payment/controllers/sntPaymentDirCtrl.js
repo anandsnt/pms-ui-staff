@@ -1,8 +1,8 @@
 angular.module('sntPay').controller('sntPaymentController',
     ['$scope', 'sntPaymentSrv', 'paymentAppEventConstants', '$location', 'PAYMENT_CONFIG',
-        '$rootScope', '$timeout', 'ngDialog', '$filter',
+        '$rootScope', '$timeout', 'ngDialog', '$filter', '$state', 'sntActivity',
         function ($scope, sntPaymentSrv, payEvntConst, $location, PAYMENT_CONFIG,
-                  $rootScope, $timeout, ngDialog, $filter) {
+                  $rootScope, $timeout, ngDialog, $filter, $state, sntActivity) {
             // ---------------------------------------------------------------------------------------------------------
             var timeOutForScrollerRefresh = 300,
                 initialPaymentAmount = 0,
@@ -32,6 +32,7 @@ angular.module('sntPay').controller('sntPaymentController',
                 creditCardTypes: [],
                 showAddToGuestCard: false,
                 addToGuestCardSelected: false,
+                allocatePaymentAfterPosting: false,
                 guestFirstName: '',
                 guestLastName: '',
                 isManualEntryInsideIFrame: false,
@@ -92,6 +93,14 @@ angular.module('sntPay').controller('sntPaymentController',
 
                 if ($scope.reservationIds) {
                     params.postData.reservation_ids = $scope.reservationIds;
+                }
+
+                // CICO-43933
+                if ($scope.selectedCC && $scope.selectedCC.params) {
+                    params.postData = {
+                        ...$scope.selectedCC.params,
+                        ...params.postData
+                    };
                 }
 
                 return params;
@@ -167,6 +176,7 @@ angular.module('sntPay').controller('sntPaymentController',
                     $scope.isPaymentFailure = true;
                     $scope.paymentErrorMessage = errorMessage[0];
                     $scope.$emit('PAYMENT_FAILED', errorMessage);
+                    sntActivity.stop('SUBMIT_PAYMENT');
                     $scope.$emit('hideLoader');
                 }, 300);
             }
@@ -198,13 +208,13 @@ angular.module('sntPay').controller('sntPaymentController',
 
                     // we need to notify the parent controllers to show loader
                     // as this is an external directive
-                    $scope.$emit('showLoader');
+                    sntActivity.start('SUBMIT_PAYMENT');
                     params.postData.payment_type_id = response.payment_method_id;
                     params.postData.credit_card_transaction_id = response.id;
                     sntPaymentSrv.submitPayment(params).then(
                         response => {
                             $scope.onPaymentSuccess(response);
-                            $scope.$emit('hideLoader');
+                            sntActivity.stop('SUBMIT_PAYMENT');
                         },
                         errorMessage => {
                             handlePaymentError(errorMessage);
@@ -449,7 +459,7 @@ angular.module('sntPay').controller('sntPaymentController',
                 if ($scope.actionType === 'ADD_PAYMENT_GUEST_CARD') {
                     var cardDetails;
 
-                    $scope.$emit('showLoader');
+                    sntActivity.start('ADD_PAYMENT_GUEST_CARD');
                     sntPaymentSrv.addCardToGuest({
                         ...$scope.payment.tokenizedCardData.apiParams,
                         add_to_guest_card: true,
@@ -468,17 +478,17 @@ angular.module('sntPay').controller('sntPaymentController',
                                 'card_name': cardDetails.apiParams.name_on_card
                             }
                         });
-                        $scope.$emit('hideLoader');
+                        sntActivity.stop('ADD_PAYMENT_GUEST_CARD');
                     }, errorMessage => {
                         $scope.$emit('ERROR_OCCURED', errorMessage);
-                        $scope.$emit('hideLoader');
+                        sntActivity.stop('ADD_PAYMENT_GUEST_CARD');
                     });
                 } else if ($scope.selectedPaymentType === 'CC'
                     && /^ADD_PAYMENT_/.test($scope.actionType)
                     && $scope.payment.tokenizedCardData
                     && $scope.payment.tokenizedCardData.apiParams) {
 
-                    $scope.$emit('showLoader');
+                    sntActivity.start('ADD_PAYMENT');
                     sntPaymentSrv.savePaymentDetails({
                         ...$scope.payment.tokenizedCardData.apiParams,
                         workstation_id: $scope.hotelConfig.workstationId,
@@ -501,14 +511,14 @@ angular.module('sntPay').controller('sntPaymentController',
                                 'card_name': cardDetails.apiParams.name_on_card || cardDetails.apiParams.card_name
                             }
                         });
-                        $scope.$emit('hideLoader');
+                        sntActivity.stop('ADD_PAYMENT');
                     }, errorMessage => {
                         $scope.$emit('ERROR_OCCURED', errorMessage);
-                        $scope.$emit('hideLoader');
+                        sntActivity.stop('ADD_PAYMENT');
                     });
                 } else if ($scope.selectedPaymentType !== 'CC') {
                     //  NOTE: This block of code handles all payment types except
-                    $scope.$emit('showLoader');
+                    sntActivity.start('ADD_PAYMENT_CC');
                     sntPaymentSrv.savePaymentDetails({
                         bill_number: $scope.billNumber,
                         reservation_id: $scope.reservationId,
@@ -519,10 +529,10 @@ angular.module('sntPay').controller('sntPaymentController',
                             response: response.data,
                             selectedPaymentType: $scope.selectedPaymentType
                         });
-                        $scope.$emit('hideLoader');
+                        sntActivity.stop('ADD_PAYMENT_CC');
                     }, errorMessage => {
                         $scope.$emit('ERROR_OCCURED', errorMessage);
-                        $scope.$emit('hideLoader');
+                        sntActivity.stop('ADD_PAYMENT_CC');
                     });
                 } else if (!!$scope.accountId || !!$scope.groupId || !!$scope.allotmentId) {
                     $scope.$emit('SUCCESS_LINK_PAYMENT', {
@@ -531,7 +541,7 @@ angular.module('sntPay').controller('sntPaymentController',
                     });
                 } else if (!!$scope.payment.tokenizedCardData && !!$scope.payment.tokenizedCardData.apiParams.mli_token) {
                     //  NOTE: credit card is selected and coming through swipe
-                    $scope.$emit('showLoader');
+                    sntActivity.start('ADD_PAYMENT_SWIPE');
                     sntPaymentSrv.savePaymentDetails({
                         ...$scope.payment.tokenizedCardData.apiParams,
                         bill_number: $scope.billNumber,
@@ -544,13 +554,13 @@ angular.module('sntPay').controller('sntPaymentController',
                             selectedPaymentType: $scope.selectedPaymentType,
                             cardDetails: $scope.selectedCC
                         });
-                        $scope.$emit('hideLoader');
+                        sntActivity.stop('ADD_PAYMENT_SWIPE');
                     }, errorMessage => {
                         $scope.$emit('ERROR_OCCURED', errorMessage);
-                        $scope.$emit('hideLoader');
+                        sntActivity.stop('ADD_PAYMENT_SWIPE');
                     });
                 } else if ($scope.reservationId) { //  NOTE: This is the scenario where the user has selected an existing credit card from the list
-                    $scope.$emit('showLoader');
+                    sntActivity.start('ADD_EXISTING_PAYMENT_TYPE');
                     sntPaymentSrv.mapPaymentToReservation({
                         bill_number: $scope.billNumber,
                         reservation_id: $scope.reservationId,
@@ -564,10 +574,10 @@ angular.module('sntPay').controller('sntPaymentController',
                             selectedPaymentType: $scope.selectedPaymentType,
                             cardDetails: $scope.selectedCC
                         });
-                        $scope.$emit('hideLoader');
+                        sntActivity.stop('ADD_EXISTING_PAYMENT_TYPE');
                     }, errorMessage => {
                         $scope.$emit('ERROR_OCCURED', errorMessage);
-                        $scope.$emit('hideLoader');
+                        sntActivity.stop('ADD_EXISTING_PAYMENT_TYPE');
                     });
                 }
             };
@@ -772,20 +782,19 @@ angular.module('sntPay').controller('sntPaymentController',
                     params.postData.payment_type_id = paymentTypeId;
                 }
 
-                // we need to notify the parent controllers to show loader
-                // as this is an external directive
-                $scope.$emit('showLoader');
+
+                sntActivity.start('SUBMIT_PAYMENT');
 
                 sntPaymentSrv.submitPayment(params).then(
                     response => {
                         $scope.onPaymentSuccess(response);
-                        $scope.$emit('hideLoader');
+                        sntActivity.stop('SUBMIT_PAYMENT');
                         if ($scope.payment.isConfirmedDBpayment) {
                             ngDialog.close();
                         }
                     },
                     errorMessage => {
-                        // CICO-40539 - Handle error for DB payment fron bill screen/confirm popup.
+                        // CICO-40539 - Handle error for DB payment from bill screen/confirm popup.
                         if ($scope.selectedPaymentType === 'DB' && $scope.payment.isConfirmedDBpayment) {
                             cancellConfirmDBpopup();
                             $scope.payment.isConfirmedDBpayment = false;
@@ -855,17 +864,17 @@ angular.module('sntPay').controller('sntPaymentController',
 
                 if (charLength >= 8 && charLength <= 22) {
 
-                    $scope.$emit('showLoader');
+                    sntActivity.start('FETCH_GIFT_CARD_BALANCE');
 
                     sntPaymentSrv.fetchGiftCardBalance($scope.giftCard.number).then(response => {
                         // NOTE: response.expiry_date is unused at this time
                         $scope.giftCard.availableBalance = response.amount;
                         $scope.giftCard.amountAvailable = true;
-                        $scope.$emit('hideLoader');
+                        sntActivity.stop('FETCH_GIFT_CARD_BALANCE');
                     }, errorMessage => {
                         $scope.giftCard.amountAvailable = false;
                         $scope.errorMessage = errorMessage;
-                        $scope.$emit('hideLoader');
+                        sntActivity.stop('FETCH_GIFT_CARD_BALANCE');
                     });
 
                 } else {
@@ -898,9 +907,8 @@ angular.module('sntPay').controller('sntPaymentController',
                     $scope.splitBillEnabled = false;
                     $scope.payment.amount = initialPaymentAmount;
                     calculateFee();
-                }
-                else {
-                    $scope.payment.isEditable = true;
+                } else {
+                    $scope.payment.isEditable = $scope.isEditable === undefined || Boolean($scope.isEditable);
                 }
 
                 // If the changed payment type is CC and payment gateway is MLI show CC addition options
@@ -917,7 +925,6 @@ angular.module('sntPay').controller('sntPaymentController',
                         }
                         // Add to guestcard feature for C&P
                         $scope.payment.showAddToGuestCard = !!$scope.reservationId && !$scope.payment.isManualEntryInsideIFrame;
-                        refreshIFrame();
                     } else if ($scope.hotelConfig.isEMVEnabled) {
                         $scope.selectedCC = $scope.selectedCC || {};
 
@@ -962,6 +969,7 @@ angular.module('sntPay').controller('sntPaymentController',
                 $scope.$emit('PAYMENT_TYPE_CHANGED', $scope.selectedPaymentType);
                 $scope.selectedCC = {};
                 calculateFee();
+                refreshIFrame();
             };
 
             // choose among the existing cards
@@ -1003,16 +1011,16 @@ angular.module('sntPay').controller('sntPaymentController',
             // if there is reservationID fetch the linked credit card items
             var fetchAttachedCreditCards = function () {
                 if ($scope.reservationId) {
-                    $scope.$emit('showLoader');
+                    sntActivity.start('FETCH_ATTACHED_CARDS');
 
                     sntPaymentSrv.getLinkedCardList($scope.reservationId).then(
                         response => {
                             onFetchLinkedCreditCardListSuccess(response);
-                            $scope.$emit('hideLoader');
+                            sntActivity.stop('FETCH_ATTACHED_CARDS');
                         },
                         errorMessage => {
                             $scope.$emit('PAYMENT_FAILED', errorMessage);
-                            $scope.$emit('hideLoader');
+                            sntActivity.stop('FETCH_ATTACHED_CARDS');
                         });
                 } else {
                     $scope.payment.linkedCreditCards = [];
@@ -1023,13 +1031,13 @@ angular.module('sntPay').controller('sntPaymentController',
              * Extract the credit card types
              * @returns {*|Array} List of credit card types configured
              */
-            function getCrediCardTypesList() {
+            function getCreditCardTypesList() {
                 // filter CC types from payment types
                 var creditCardTypes = _.find($scope.paymentTypes, {
                     name: 'CC'
                 });
 
-                return creditCardTypes && creditCardTypes.values || [];
+                return (creditCardTypes && creditCardTypes.values) || [];
             }
 
             /**
@@ -1049,6 +1057,7 @@ angular.module('sntPay').controller('sntPaymentController',
                     if (!$scope.selectedPaymentType) {
                         $scope.selectedPaymentType = 'CC';
                     }
+
                     $scope.selectedCC = $scope.selectedCC || {};
                     $scope.selectedCC.value = response.data.id;
                     $scope.selectedCard = $scope.selectedCC.value;
@@ -1058,6 +1067,11 @@ angular.module('sntPay').controller('sntPaymentController',
                     $scope.selectedCC.holder_name = cardDetails.cardDisplayData.name_on_card;
                     $scope.payment.screenMode = 'PAYMENT_MODE';
                     $scope.$emit('PAYMENT_SAVE_CARD_SUCCESS');
+
+                    if (response.params) {
+                        $scope.selectedCC.params = params;
+                    }
+
                     calculateFee();
                     showAddtoGuestCardBox();
                 }
@@ -1071,7 +1085,8 @@ angular.module('sntPay').controller('sntPaymentController',
                     $scope.errorMessage = errorMessage;
                 }
 
-                $scope.$emit('showLoader');
+                sntActivity.start('SAVE_CC_PAYMENT');
+
                 params = angular.copy(cardDetails.apiParams);
 
                 if ($scope.accountId) {
@@ -1086,6 +1101,23 @@ angular.module('sntPay').controller('sntPaymentController',
                 if ($scope.actionType === 'DEPOSIT_PAYMENT_RES_SUMMARY') {
                     params['reservation_id'] = $scope.reservationId;
                 }
+
+                if (params.mli_token &&
+                    $state.current.name !== 'rover.reservation.staycard.mainCard.summaryAndConfirm') { // CICO-44480
+                    params['do_not_attach_cc_to_bill'] = true;
+                    params['reservation_id'] = $scope.reservationId;
+                    // CICO-43933
+                    sntActivity.stop('SAVE_CC_PAYMENT');
+                    onSaveSuccess({
+                        params,
+                        data: {
+                            id: null,
+                            credit_card_type: $scope.selectedCC.card_code
+                        }
+                    });
+                    // Don't make save payment call for swipes during submit payment
+                    return;
+                }
                 sntPaymentSrv.savePaymentDetails(params).then(
                     response => {
                         if (response.status === 'success') {
@@ -1093,11 +1125,11 @@ angular.module('sntPay').controller('sntPaymentController',
                         } else {
                             onSaveFailure(response.errors);
                         }
-                        $scope.$emit('hideLoader');
+                        sntActivity.stop('SAVE_CC_PAYMENT');
                     },
                     errorMessage => {
                         onSaveFailure(errorMessage);
-                        $scope.$emit('hideLoader');
+                        sntActivity.stop('SAVE_CC_PAYMENT');
                     });
             }
 
@@ -1107,7 +1139,8 @@ angular.module('sntPay').controller('sntPaymentController',
              * @returns {undefined} undefined
              */
             function addBillPayment(cardDetails) {
-                $scope.$emit('showLoader');
+                sntActivity.start('ADD_PAYMENT_METHOD_ON_BILL');
+
                 var params = angular.copy(cardDetails.apiParams),
                     onSaveSuccess = function (response) {
 
@@ -1136,11 +1169,11 @@ angular.module('sntPay').controller('sntPaymentController',
                 }).then(
                     response => {
                         onSaveSuccess(response);
-                        $scope.$emit('hideLoader');
+                        sntActivity.stop('ADD_PAYMENT_METHOD_ON_BILL');
                     },
                     errorMessage => {
                         onSaveFailure(errorMessage);
-                        $scope.$emit('hideLoader');
+                        sntActivity.stop('ADD_PAYMENT_METHOD_ON_BILL');
                     });
             }
 
@@ -1176,6 +1209,11 @@ angular.module('sntPay').controller('sntPaymentController',
                 else if (!/^ADD_PAYMENT_/.test($scope.actionType)) {
                     saveCCPayment(paymentData);
                 }
+
+                $timeout(() => {
+                    refreshIFrame();
+                }, 600);
+
             });
 
             /**
@@ -1216,6 +1254,9 @@ angular.module('sntPay').controller('sntPaymentController',
 
                 response.amountPaid = $scope.payment.amount;
                 response.authorizationCode = response.authorization_code;
+
+                response.selectedPaymentType = $scope.selectedPaymentType;
+                response.selectedPaymentTypeDescription = _.findWhere($scope.paymentTypes, {name: $scope.selectedPaymentType}).description;
                 //  NOTE: The feePaid key and value would be sent IFF a fee was applied along with the payment
                 if ($scope.feeData) {
                     response.feePaid = $scope.feeData.calculatedFee;
@@ -1228,6 +1269,11 @@ angular.module('sntPay').controller('sntPaymentController',
                 if ($scope.payment.showAddToGuestCard) {
                     // check if add to guest card was selected
                     response.add_to_guest_card = $scope.payment.addToGuestCardSelected;
+                }
+
+                if ($scope.actionType === 'AR_SUBMIT_PAYMENT') {
+                    // check if allocate payment after posting selected
+                    response.allocatePaymentAfterPosting = $scope.payment.allocatePaymentAfterPosting;
                 }
 
                 $scope.$emit('PAYMENT_SUCCESS', response);
@@ -1271,7 +1317,7 @@ angular.module('sntPay').controller('sntPaymentController',
                 $scope.$watch('amount', onAmountChange);
 
                 $scope.$watch('paymentTypes', () => {
-                    $scope.payment.creditCardTypes = getCrediCardTypesList();
+                    $scope.payment.creditCardTypes = getCreditCardTypesList();
                 });
 
                 $scope.$watch('isEditable', setEditableFlag);
@@ -1284,7 +1330,7 @@ angular.module('sntPay').controller('sntPaymentController',
 
                 $scope.payment.screenMode = 'PAYMENT_MODE';
                 $scope.payment.addCCMode = 'ADD_CARD';
-                $scope.payment.creditCardTypes = getCrediCardTypesList();
+                $scope.payment.creditCardTypes = getCreditCardTypesList();
                 $scope.payment.guestFirstName = $scope.firstName || '';
                 $scope.payment.guestLastName = $scope.lastName || '';
 

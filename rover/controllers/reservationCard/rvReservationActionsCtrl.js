@@ -856,15 +856,17 @@ sntRover.controller('reservationActionsController', [
 			$scope.ngData.languageData = {};
 
 			var successCallBackForLanguagesFetch = function(data) {
-		      	$scope.$emit('hideLoader');
+		      	
 		      	$scope.ngData.languageData = data;
 
 		      	ngDialog.open({
 					template: '/assets/partials/reservationCard/rvReservationConfirmationPrintPopup.html',
 					className: '',
 					scope: $scope,
-					closeByDocument: true
+					closeByDocument: false
 				});
+
+				$scope.$emit('hideLoader');
 		    };
 
 		    /**
@@ -1160,5 +1162,14 @@ sntRover.controller('reservationActionsController', [
         $scope.enableConfirmationCustomText = function() {
    			$scope.ngData.enable_confirmation_custom_text = !$scope.ngData.enable_confirmation_custom_text;
    		};
+
+        // Set the navigation for bill and charges screen
+        $scope.navigateToBillAndCharges = function () {
+            $state.go('rover.reservation.staycard.billcard', {
+                reservationId: $scope.reservationData.reservation_card.reservation_id,
+                clickedButton: 'viewBillButton',
+                userId: $scope.guestCardData.userId
+            });
+        };
 	}
 ]);

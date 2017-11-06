@@ -699,7 +699,19 @@ angular.module('sntRover').controller('rvGroupRoomBlockCtrl', [
 			// let the date update if it is future group as well is in edit mode
             else if (!$scope.isInAddMode() && !refData.is_a_past_group) {
                 $timeout(function() {
-                    $scope.updateGroupSummary();
+                    var options = {},
+                        requestData = {};
+
+                    requestData.changeInArr = true;
+                    requestData.oldFromDate = oldBlockFrom;
+                    requestData.fromDate = newBlockFrom;
+                    options['dataset'] = requestData;
+                    options['successCallBack'] = successCallBackOfEarlierArrivalDateChange;
+                    options['failureCallBack'] = failureCallBackOfEarlierArrivalDateChange;
+
+                    $scope.setCallBacks(options);
+                    $scope.callChangeDatesAPI(options);
+
                 }, 100);
             }
 
@@ -748,7 +760,20 @@ angular.module('sntRover').controller('rvGroupRoomBlockCtrl', [
 			// let the date update if it is future group as well is in edit mode
             else if (!$scope.isInAddMode() && !refData.is_a_past_group) {
                 $timeout(function() {
-                    $scope.updateGroupSummary();
+                    var options = {},
+                        requestData = {};
+
+                    requestData.changeInDep = true;
+                    requestData.oldToDate = oldBlockTo;
+                    requestData.toDate = newBlockTo;
+                    options['dataset'] = requestData;
+                    options['successCallBack'] = successCallBackOfLaterDepartureDateChange;
+                    options['failureCallBack'] = failureCallBackOfLaterDepartureDateChange;
+
+                    $scope.setCallBacks(options);
+                    $scope.callChangeDatesAPI(options);
+
+
 					// for updating the room block after udating the summary
                     $scope.hasBlockDataUpdated = true; // as per variable name, it should be false, but in this contrler it should be given as true other wise its not working
                 }, 100);
@@ -1056,10 +1081,15 @@ angular.module('sntRover').controller('rvGroupRoomBlockCtrl', [
 		 * @return - undefined
 		 */
         var openAddRoomsAndRatesPopup = function() {
+           // CICO-40537
+           $rootScope.$broadcast('UPDATE_POPUP_STATE', { isActive: true}); 
             ngDialog.open({
                 template: '/assets/partials/groups/roomBlock/rvGroupAddRoomAndRatesPopup.html',
                 scope: $scope,
-                controller: 'rvGroupAddRoomsAndRatesPopupCtrl'
+                controller: 'rvGroupAddRoomsAndRatesPopupCtrl',
+                preCloseCallback: function() {
+                    $rootScope.$broadcast('UPDATE_POPUP_STATE', { isActive: false}); 
+                }
             });
         };
 
