@@ -64,7 +64,6 @@ sntRover.controller('RVBillPayCtrl', ['$scope', 'RVBillPaymentSrv', 'RVPaymentSr
 			}
 
 		}
-		console.log("---"+isShowFees)
 		return isShowFees;
 	};
 
