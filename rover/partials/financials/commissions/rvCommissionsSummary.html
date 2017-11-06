@@ -159,10 +159,10 @@
                </li>
                <li class="commision-item" ng-repeat ="account in commissionsData.accounts">
                   <!-- Add .expanded if expanded -->
-                  <div class="faux-anchor" ng-class="{'expanded' : expandedSubmenuId === account.id}">
+                  <div class="faux-anchor" ng-class="{'expanded' : account.isExpanded}">
                      <div class="expand toggle" ng-click="expandCommision(account)">
                         <!-- Add .active if expanded -->
-                        <span class="icons icon-double-arrow black expand-arrow" ng-class="{'active' : expandedSubmenuId === account.id}"></span>
+                        <span class="icons icon-double-arrow black expand-arrow" ng-class="{'active' : account.isExpanded}"></span>
                      </div>
                      <div class="check">
                         <!-- add .checked when checked -->
