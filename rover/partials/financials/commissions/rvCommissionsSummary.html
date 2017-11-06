@@ -176,7 +176,7 @@
                      <a class="has-arrow" ng-click="navigateToTA(account)">
                         <span class="account-image icons icon-travel-agent"></span>
                         <div class="data">
-                           <h2>{{ ::account.account_name }}</h2>
+                           <h2>{{ ::account.name }}</h2>
                            <div class="meta-data">
                               <span class="icons icon-guest-travelagent">{{ ::account.iata_number }}</span>
                               <span class="icons icon-location">{{ ::account.location }}</span>
@@ -188,9 +188,9 @@
                            <li>
                               {{ ::account.number_of_unpaid_bills }}
                            </li>
-                           <li>{{ ::currencySymbol }}{{ ::account.commission_owing | number: precisonTwo }}</li>
-                           <!-- Remove class .red if 0 -->
-                           <li ng-class="{'red': account.commission_owing > 0 }">{{ ::currencySymbol }}{{ ::account.commission_owing | number: precisonTwo }}</li>
+                           <li ng-show="account.commission_info.rate.type == 'amount'">{{ ::currencySymbol }}{{ ::account.commission_info.rate.value | number: precisonTwo }}</li>
+                           <li ng-hide="account.commission_info.rate.type == 'amount'">{{ ::account.commission_info.rate.value}}%</li>                           <!-- Remove class .red if 0 -->
+                           <li ng-class="{'red': account.amount_owing > 0 }">{{ ::currencySymbol }}{{ ::account.amount_owing | number: precisonTwo }}</li>
                         </ul>
                      </a>
                      <!-- Remove .hidden when expanded -->
