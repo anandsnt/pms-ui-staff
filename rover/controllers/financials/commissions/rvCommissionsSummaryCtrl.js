@@ -94,7 +94,6 @@ sntRover.controller('RVCommissionsSummaryController', ['$scope',
                 }
                 account.isSelected = false;
             }
-            console.log(account.selectedReservations);
             var deleteFromSelectedAgentList = function() {
                 var indexOfOpenedAccount = $scope.selectedAgentIds.indexOf(account.id);
                 if (indexOfOpenedAccount !== -1) {
@@ -206,7 +205,6 @@ sntRover.controller('RVCommissionsSummaryController', ['$scope',
 
         var fetchAgentsData = function(pageNo) {
             $scope.filterData.page = !!pageNo ? pageNo : 1;
-
             var successCallBack = function(data) {
                 $scope.commissionsData = data;
                 _.each($scope.commissionsData.accounts, function(account) {
@@ -217,7 +215,7 @@ sntRover.controller('RVCommissionsSummaryController', ['$scope',
                         var onFetchListSuccess = function(response) {
                             console.log(response);
                             account.isExpanded = true;
-                            account.reservationsData = response;
+                            account.reservationsData = {"reservations" : response , "total_count":6};
                             // if the account is selected, the reservation list 
                             // inside should be selected
                             _.each(account.reservationsData.reservations, function(reservation) {
@@ -287,7 +285,6 @@ sntRover.controller('RVCommissionsSummaryController', ['$scope',
         /***************** Actions starts here *******************/
 
         $scope.exportCommisions = function() {
-            console.log('export');
             console.log($scope.selectedAgentIds);
         };
 
@@ -321,8 +318,6 @@ sntRover.controller('RVCommissionsSummaryController', ['$scope',
                         }
                     });
                 }
-
-
                 _.each($scope.commissionsData.accounts, function(account) {
                     if (account.isExpanded && account.selectedReservations.length) {
                         var data = {
@@ -337,8 +332,6 @@ sntRover.controller('RVCommissionsSummaryController', ['$scope',
                     delete params.partialy_selected_agents;
                 }
             }
-
-            console.log(params);
             console.log(JSON.stringify(params));
             var successCallBack = function() {
                 ngDialog.close();
@@ -346,10 +339,8 @@ sntRover.controller('RVCommissionsSummaryController', ['$scope',
             };
             successCallBack();
         };
-        
-        $scope.putOnHoldCommisions = function() {
-            console.log('putOnHold');
 
+        $scope.putOnHoldCommisions = function() {
             ngDialog.open({
                 template: '/assets/partials/financials/commissions/rvCommisionsHoldPopup.html',
                 className: '',
@@ -357,7 +348,6 @@ sntRover.controller('RVCommissionsSummaryController', ['$scope',
             });
         };
         $scope.releaseCommisions = function() {
-            console.log('release');
             ngDialog.open({
                 template: '/assets/partials/financials/commissions/rvCommisionsReleasePopup.html',
                 className: '',
@@ -365,7 +355,6 @@ sntRover.controller('RVCommissionsSummaryController', ['$scope',
             });
         };
         $scope.setRecordsToPaid = function() {
-            console.log('setRecordsToPaid');
             ngDialog.open({
                 template: '/assets/partials/financials/commissions/rvCommisionsSetAsPaidPopup.html',
                 className: '',
