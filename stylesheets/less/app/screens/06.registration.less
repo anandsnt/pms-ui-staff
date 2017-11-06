@@ -143,25 +143,15 @@
                     }
 
                     &.with-button {
-                        position: relative;
+                        #flexbox > .parent(row wrap, '', center, '');
 
                         .button {
-                            display: none;
-                            position: absolute;
-                            top: 0;
-                            background-color: #fff;
-                            width: 20px;
-                            height: 20px;
+                            margin-right: 8px;
                             padding: 0;
-                            background-size: 100px;
-                            right: 10px;
-                            bottom: 0;
-                            margin: auto;
-
-                            &.icon-remove-10 {
-                                background-position: 5px -3279px;
-                            }
-
+                            background-position: 12px -3929px;
+                            background-color: @white;
+                            .hide();
+                            .square(35px);
                         }
                     }
 
