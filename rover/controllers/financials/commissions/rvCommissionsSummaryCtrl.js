@@ -284,15 +284,7 @@ sntRover.controller('RVCommissionsSummaryController', ['$scope',
         };
         /***************** search ends here *****************************/
 
-        /***************** Pagination starts here ***********************/
 
-        // reservations
-
-        var updateReservationPagination = function(account) {
-            var perPage = 2;
-            account.startRes = (account.reservationsPageNo == 1) ? 1 : ((account.reservationsPageNo - 1) * perPage) + 1;
-            account.endRes = ((account.reservationsPageNo * perPage) >= account.reservationsData.total_count) ? account.reservationsData.total_count : (account.reservationsPageNo * perPage);
-        };
 
         var setFlagBasedOnSelections = function(account) {
             _.each(account.reservationsData.reservations, function(reservation) {
@@ -310,29 +302,7 @@ sntRover.controller('RVCommissionsSummaryController', ['$scope',
                 }
             });
         };
-
-        $scope.loadNextReservationPage = function(account) {
-            account.reservationsData = angular.copy(RVCommissionsSrv.sampleNextPageReservationData);
-            setFlagBasedOnSelections(account);
-            account.reservationsPageNo++;
-            updateReservationPagination(account);
-        };
-        $scope.loadPrevReservationPage = function(account) {
-            account.reservationsData = angular.copy(RVCommissionsSrv.sampleReservationData);
-            setFlagBasedOnSelections(account);
-            account.reservationsPageNo--;
-            updateReservationPagination(account);
-        };
-        $scope.disableReservationNextPage = function(account) {
-            if (account.reservationsData && account.reservationsData.reservations) {
-                return account.reservationsPageNo >= account.reservationsData.total_count / account.reservationsPageNo;
-            } else {
-                return false;
-            }
-        };
-
-        /***************** Pagination ends here *****************/
-
+        
         /***************** Actions starts here *******************/
 
         $scope.exportCommisions = function() {
