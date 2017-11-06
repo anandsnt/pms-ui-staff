@@ -189,11 +189,11 @@ sntRover.controller('RVdashboardController',
 
                 } else {
 
-                    // Check whether UUID is set from the WS response. We will check it 4 times
-                    // in an interval of 500ms. If the UUID is not set by that time, we will use the default
+                    // Check whether UUID is set from the WS response. We will check it 14 times (2800ms)
+                    // in an interval of 200ms. If the UUID is not set by that time, we will use the default
                     // value 'DEFAULT'
                     if (!$scope.getDeviceId()) {
-                        var count = 4;
+                        var count = 14;
                         var deviceIdCheckTimer = $interval(function () {
                             if ($scope.getDeviceId()) {
                                 $interval.cancel(deviceIdCheckTimer);
@@ -204,7 +204,7 @@ sntRover.controller('RVdashboardController',
                                 invokeSetWorkstationApi();
                             }
                             count--;
-                        }, 700);
+                        }, 200);
                     } else {
                         invokeSetWorkstationApi();
                     }

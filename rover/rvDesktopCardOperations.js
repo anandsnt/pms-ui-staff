@@ -137,6 +137,10 @@ var DesktopCardOperations = function () {
             }
         };
 
+        ws.onerror = function () {
+            console.warn('Could NOT connect to WS. Will be identified as DEFAULT');
+        };
+
         ws.onclose = function () {
             // websocket is closed.
             that.isActive = false;
