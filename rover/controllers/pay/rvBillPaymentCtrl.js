@@ -64,6 +64,7 @@ sntRover.controller('RVBillPayCtrl', ['$scope', 'RVBillPaymentSrv', 'RVPaymentSr
 			}
 
 		}
+		console.log("---"+isShowFees)
 		return isShowFees;
 	};
 
@@ -413,7 +414,8 @@ sntRover.controller('RVBillPayCtrl', ['$scope', 'RVBillPaymentSrv', 'RVPaymentSr
             paymentSuccess: true,
             authorizationCode: data.authorizationCode || data.authorization_code,
             amount: data.amountPaid,
-            feePaid: parseFloat(data.feePaid)
+            feePaid: parseFloat(data.feePaid),
+            showFee: data.showFee
         };
 
         processeRestOfPaymentOperations();
