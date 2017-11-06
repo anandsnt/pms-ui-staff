@@ -197,7 +197,7 @@ sntRover.controller('RVCommissionsSummaryController', ['$scope',
         // main tab switch - On Hold and To pay
         $scope.setFilterTab = function(selectedTab) {
             $scope.commissionsData = {};
-            $scope.filterData.billStatus.value = selectedTab === 'ON_HOLD' ? 'HOLD' : 'OPEN';
+            $scope.filterData.billStatus.value = selectedTab === 'ON_HOLD' ? 'ON_HOLD' : 'UN_PAID';
             $scope.searchAccounts();
             $scope.filterData.filterTab = selectedTab;
         };
