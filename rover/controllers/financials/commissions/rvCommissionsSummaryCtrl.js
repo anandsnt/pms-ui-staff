@@ -51,7 +51,7 @@ sntRover.controller('RVCommissionsSummaryController', ['$scope',
         // based on selections, the top menu changes.
         // check if all agents are selected
         $scope.areAllAgentsSelected = function() {
-            return $scope.commissionsData.total_count === $scope.noOfBillsSelected;
+            return $scope.commissionsData.total_count>0 && $scope.commissionsData.total_count === $scope.noOfBillsSelected;
         };
 
         // check if any one of the agents is selected
