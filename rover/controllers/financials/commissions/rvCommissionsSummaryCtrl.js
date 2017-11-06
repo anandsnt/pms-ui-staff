@@ -346,8 +346,7 @@ sntRover.controller('RVCommissionsSummaryController', ['$scope',
             };
             successCallBack();
         };
-        // to do
-        $scope.eligibleForPayment = 34;
+        
         $scope.putOnHoldCommisions = function() {
             console.log('putOnHold');
 
