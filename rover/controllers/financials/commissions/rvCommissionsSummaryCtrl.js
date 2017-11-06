@@ -284,25 +284,6 @@ sntRover.controller('RVCommissionsSummaryController', ['$scope',
         };
         /***************** search ends here *****************************/
 
-
-
-        var setFlagBasedOnSelections = function(account) {
-            _.each(account.reservationsData.reservations, function(reservation) {
-                reservation.isSelected = false;
-                // if expanded account is selected ALL, then mark all as checked
-                if (account.isSelected) {
-                    reservation.isSelected = true;
-                } else {
-                    // check for selections on other pages
-                    _.each(account.selectedReservations, function(id) {
-                        if (id === reservation.id) {
-                            reservation.isSelected = true;
-                        }
-                    });
-                }
-            });
-        };
-        
         /***************** Actions starts here *******************/
 
         $scope.exportCommisions = function() {
