@@ -26,6 +26,7 @@
 "ON_CHECKIN_DELAY_LABEL": "Delay after checkin",
 "MINUTES_LABEL": "(min)",
 "EXTERNAL_CHECKOUT":"External Checkout",
+"MONSCIERGE": "Monscierge",
 
 "MESSAGE":"Message",
 "IN_APP":"in App",
@@ -71,9 +72,3 @@
 "CLOSE":"Close",
 "URL_LABEL": "URL",
 "SCREEN_LABEL": "SCREEN"
-
-
-
-
-
-
