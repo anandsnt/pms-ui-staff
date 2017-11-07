@@ -803,7 +803,7 @@ angular.module('sntRover').controller('stayCardMainCtrl', ['$rootScope', '$scope
 			} else {
 				// Replace card with the selected one
 				$scope.invokeApi(RVCompanyCardSrv.replaceCard, {
-					'reservation': typeof $stateParams.id === "undefined" ? $scope.reservationData.reservationId : $stateParams.id,
+					'reservation': (typeof $stateParams.id === "undefined" || $stateParams.id === "" ) ? $scope.reservationData.reservationId : $stateParams.id,
 					'cardType': card,
 					'id': cardData.id,
 					'future': typeof future === 'undefined' ? false : future,
