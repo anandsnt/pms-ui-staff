@@ -375,7 +375,7 @@ sntRover.controller('RVBillPayCtrl', ['$scope', 'RVBillPaymentSrv', 'RVPaymentSr
 
 	var processeRestOfPaymentOperations  = function() {
 		$scope.$emit('BILL_PAYMENT_SUCCESS', paymentFinalDetails);
-		$scope.$emit("hideLoader");
+		// $scope.$emit("hideLoader");
 		updateSplitPaymentDetail();
 		updateSuccessMessage();
 		updateDefaultPaymentAmount();
