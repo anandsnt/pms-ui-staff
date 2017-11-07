@@ -569,7 +569,7 @@ angular.module('sntRover').controller('stayCardMainCtrl', ['$rootScope', '$scope
 
 			var callRemoveCardsAPIforReservation = function(card, cardId) {
 				var params = {
-					'reservation': (typeof $stateParams.id === "undefined") ? $scope.reservationData.reservationId : $stateParams.id,
+					'reservation': $scope.reservationData.reservationId,
 					'cardType': card,
 					'cardId': cardId
 				};
