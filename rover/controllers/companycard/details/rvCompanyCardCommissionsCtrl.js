@@ -469,7 +469,7 @@ function($scope, $state, $rootScope, $stateParams, RVCompanyCardSrv, ngDialog, $
         };
         $scope.businessDate = $rootScope.businessDate;
         // CICO-46891
-        if ($scope.currentSelectedTab == 'cc-commissions') {
+        if ($scope.currentSelectedTab === 'cc-commissions') {
           fetchCommissionDetails(true);
         }
         $vault.set('travelAgentId', $stateParams.id);
