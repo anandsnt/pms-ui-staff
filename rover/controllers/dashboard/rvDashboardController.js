@@ -319,7 +319,7 @@ sntRover.controller('RVdashboardController',
                 $scope.$broadcast("HeaderBackButtonClicked");
             };
 
-            if ($rootScope.isDashboardSwipeEnabled) {
+            if ($rootScope.isDashboardSwipeEnabled && !$rootScope.disableObserveForSwipe) {
                 CardReaderCtrl.call(this, $scope, $rootScope, $timeout, $interval, $log);
                 $scope.observeForSwipe(6);
             } else if (sntapp.cordovaLoaded && 'rv_native' === sntapp.browser) {
