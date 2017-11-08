@@ -182,7 +182,7 @@
                               <span class="icons icon-location">{{ ::account.location }}</span>
                            </div>
                             <!-- Show only if on hold -->
-                           <span class="icons icon-hold red" ng-show="filterData.filterTab === 'PAYABLE'"></span>
+                           <span class="icons icon-hold red" ng-show="filterData.filterTab === 'PAYABLE' && account.has_any_on_hold_bills"></span>
                         </div>
                         <ul class="info">
                            <li>
