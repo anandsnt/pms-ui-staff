@@ -41,7 +41,8 @@ function($scope, $state, $rootScope, $stateParams, RVCompanyCardSrv, ngDialog, $
     refreshScroll();
     // Refresh the scroller when the tab is active.
     $scope.$on("commissionsTabActive", function() {
-        refreshScroll();
+        // CICO-46891
+        fetchCommissionDetails(true);
     });
 
     // Fetches the commission details for the given filter options
@@ -467,7 +468,10 @@ function($scope, $state, $rootScope, $stateParams, RVCompanyCardSrv, ngDialog, $
            groupPaidStatus: ""
         };
         $scope.businessDate = $rootScope.businessDate;
-        fetchCommissionDetails(true);
+        // CICO-46891
+        if ($scope.currentSelectedTab == 'cc-commissions') {
+          fetchCommissionDetails(true);
+        }
         $vault.set('travelAgentId', $stateParams.id);
         $vault.set('travelAgentType', $stateParams.type);
         $vault.set('travelAgentQuery', $stateParams.query);
