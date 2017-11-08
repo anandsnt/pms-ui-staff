@@ -215,7 +215,7 @@ sntRover.controller('RVCommissionsSummaryController', ['$scope',
                         var onFetchListSuccess = function(response) {
                             console.log(response);
                             account.isExpanded = true;
-                            account.reservationsData = {"reservations" : response , "total_count":6};
+                            account.reservationsData = response;
                             // if the account is selected, the reservation list 
                             // inside should be selected
                             _.each(account.reservationsData.reservations, function(reservation) {
@@ -229,7 +229,7 @@ sntRover.controller('RVCommissionsSummaryController', ['$scope',
                             });
                             // start with page 1
                             account.reservationsPageNo = 1;
-                            account.showResPagination = account.reservationsData.total_count > 5;
+                            account.showResPagination = account.reservationsData.total_count > $scope.filterData.innerPerPage;
                             $timeout(function() {
                                 $scope.$broadcast('updatePagination', 'RESERVATION_LIST_' + account.id);
                             }, 100);
@@ -238,7 +238,9 @@ sntRover.controller('RVCommissionsSummaryController', ['$scope',
                         };
                         $scope.callAPI(RVCommissionsSrv.fetchReservationOfCommissions, {
                             params: {
-                                id: account.id
+                                id: account.id,
+                                'page': page,
+                                'per_page': $scope.filterData.innerPerPage
                             },
                             successCallBack: onFetchListSuccess
                         });
@@ -246,11 +248,11 @@ sntRover.controller('RVCommissionsSummaryController', ['$scope',
                     account.paginationData = {
                         id: 'RESERVATION_LIST_' + account.id,
                         api: account.fetchReservationData,
-                        perPage: 5
+                        perPage: $scope.filterData.innerPerPage
                     };
                 });
                 $scope.resetSelections();
-                $scope.showPagination = ($scope.commissionsData.total_count <= 50) ? false : true;
+                $scope.showPagination = ($scope.commissionsData.total_count <= $scope.filterData.perPage) ? false : true;
                 $scope.errorMessage = "";
                 $scope.$emit('hideLoader');
                 refreshArOverviewScroll();
