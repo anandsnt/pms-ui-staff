@@ -165,6 +165,7 @@ sntRover.controller('roverController', [
         $rootScope.sendConfirmationLetter = hotelDetails.send_confirmation_letter;
         $rootScope.isItemInventoryOn = hotelDetails.is_item_inventory_on;
         $rootScope.guestTypes = hotelDetails.guest_types;
+        $rootScope.isFromDevice = navigator.userAgent.match(/iPad/i) !== null || navigator.userAgent.match(/iPhone/i) !== null;
 
         // CICO-41410
         $rootScope.isDashboardSwipeEnabled = hotelDetails.enable_dashboard_swipe;

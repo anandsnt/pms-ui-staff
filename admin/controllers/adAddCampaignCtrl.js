@@ -53,7 +53,7 @@ admin.controller('ADAddCampaignCtrl', ['$scope', '$rootScope', 'ADCampaignSrv', 
 		$scope.campaignData.delayAfterCheckin = data.delay_after_checkin < 10 ? "0" + data.delay_after_checkin : "" + data.delay_after_checkin;
 		$scope.campaignData.delivery_details = data.delivery_details;
 		$scope.campaignData.target_type = (data.screen_type_id !==  "" && data.screen_type_id !==  null) ? "SCREEN" : "URL";
-		
+
 		$scope.campaignData.specific_users = data.specific_users;
 
 		$scope.campaignData.subject = data.subject;
@@ -237,7 +237,7 @@ admin.controller('ADAddCampaignCtrl', ['$scope', '$rootScope', 'ADCampaignSrv', 
 	init();
 
 	$scope.isScreenSwitchDisabled = function() {
-          var delivery_types = ['EXTERNAL_CHECKIN', 'EXTERNAL_CHECKOUT', 'PRE_CHECKIN', 'ROOM_READY', 'ON_CHECKIN'];
+          var delivery_types = ['EXTERNAL_CHECKIN', 'EXTERNAL_CHECKOUT', 'PRE_CHECKIN', 'ROOM_READY', 'ON_CHECKIN', 'MONSCIERGE'];
 
           if (delivery_types.indexOf($scope.campaignData.audience_type) > -1
           	&& delivery_types.indexOf($scope.campaignData.delivery_details) > -1 &&

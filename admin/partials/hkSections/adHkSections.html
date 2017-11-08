@@ -1,0 +1,45 @@
+<section class="content current admin-scrollfix" div-touch-move-stop-propogate ng-click='clearErrorMessage()'>
+    <header class="content-title">
+        <h2 translate> HOUSEKEEPING_SECTIONS </h2>
+        <span class="count"> ({{data.length}}) </span>
+        <a class="action add" ng-click="gotoAddSection()"  ng-show="stateVariables.activeTab === 'MANAGE'" translate>ADD_NEW</a>
+        <div class="actions float pull-right">
+            <button type="button" class="button add-data-inline toggle-tab" ng-click="toggleAssignSection()"
+                ng-class="{'orange' : stateVariables.activeTab === 'MANAGE', 'white' : stateVariables.activeTab !== 'MANAGE'}" translate>
+                MANAGE_SECTIONS
+            </button>
+            <button type="button" class="button add-data-inline toggle-tab" ng-click="toggleAssignSection()"
+                ng-class="{'orange' : stateVariables.activeTab === 'ASSIGN', 'white' : stateVariables.activeTab !== 'ASSIGN'}" translate>
+                MANAGE_ROOMS
+            </button>
+        </div>
+    </header>
+    <!-- Manage Sections -->
+    <section class="content-scroll" ng-if="stateVariables.activeTab === 'MANAGE'">
+        <div ng-include="'/assets/partials/common/notification_message.html'"></div>
+        <table class="grid datatable" ng-table="tableParams" template-pagination=""
+        ng-show="showTableDetails">
+
+            <tbody>
+                <tr ng-repeat="section in $data">
+                    <td ng-click="gotoEditSection(section.id)" sortable="'number'" data-title="'Section'">
+                        <a  class="edit-data-inline">
+                            {{section.number}}
+                        </a>
+                    </td>
+
+                    <td ng-click="gotoEditSection(section.id)" sortable="'description'" data-title="'Description'">
+                        <a class="edit-data-inline">{{section.description}} </a>
+                    </td>
+
+                    <td class="delete" header-class="delete" data-title="'DELETE'" >
+                        <span ng-click="deleteHKSection(section.id)" class="icons icon-delete large-icon floor_delete">&nbsp;</span>
+                    </td>
+                </tr>
+            <!--</tbody> -->
+        </table>
+    </section>
+    <!-- Assign Rooms Section -->
+    <section ng-include="'/assets/partials/hkSections/adAssignRoomsToHkSections.html'"></section>
+</section>
+
