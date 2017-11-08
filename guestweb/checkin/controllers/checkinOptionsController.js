@@ -71,6 +71,7 @@
 				$state.go('checkinKeys');
 			} else if ((early_checkin_switch_on && !reservation_has_early_checkin) || !reservation_is_in_early_checkin_window) {
 				// is out of early checkin window
+				deleteEaryCheckinRestrictions();
 				$state.go('checkinArrival');
 			} else if (early_checkin_switch_on && reservation_has_early_checkin) {
 				if (offer_eci_bypass) {
