@@ -46,6 +46,7 @@
 				$rootScope.earlyCheckinRestrictHourForDisplay = response.early_checkin_restrict_hour_for_display;
 				$rootScope.earlyCheckinRestrictMinute = response.early_checkin_restrict_minute;
 				$rootScope.earlyCheckinRestrictPrimetime = response.early_checkin_restrict_primetime;
+				$rootScope.earlyCheckinRestictTime = response.early_checkin_restrict_time;
 				// if user is not arriving today
 				if (!response.guest_arriving_today) {
 					deleteEaryCheckinRestrictions();
@@ -66,9 +67,13 @@
 		};
 
 		var navigateToNextScreen = function() {
-			if (!early_checkin_switch_on || (early_checkin_switch_on && !reservation_has_early_checkin) || !reservation_is_in_early_checkin_window) {
-				// earlycheckin turened off or is out of early checkin window
+			if (!early_checkin_switch_on) {
+				// earlycheckin turened off
 				$state.go('checkinKeys');
+			} else if ((early_checkin_switch_on && !reservation_has_early_checkin) || !reservation_is_in_early_checkin_window) {
+				// is out of early checkin window
+				deleteEaryCheckinRestrictions();
+				$state.go('checkinArrival');
 			} else if (early_checkin_switch_on && reservation_has_early_checkin) {
 				if (offer_eci_bypass) {
 					// Early checkin byepass

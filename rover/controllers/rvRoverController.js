@@ -503,6 +503,7 @@ sntRover.controller('roverController', [
 
             if ($rootScope.paymentGateway === 'CBA' && sntapp.cordovaLoaded) {
                 doCBAPowerFailureCheck();
+                $rootScope.disableObserveForSwipe = true;
             }
 
             // for iPad we need to show the connected device status

@@ -1797,7 +1797,7 @@ angular.module('sntRover').controller('guestCardController', [
                         $scope.reservationData.reservationIds &&
                         $scope.reservationData.reservationIds.length;
 
-					$scope.replaceCardCaller('guest', guest, hasMultipleReservations);
+					$scope.replaceCardCaller('guest', guest, !!hasMultipleReservations);
 				} else {
 					$scope.checkFuture('guest', guest);
 				}
