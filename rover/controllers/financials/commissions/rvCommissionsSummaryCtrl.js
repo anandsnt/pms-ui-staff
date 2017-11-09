@@ -342,28 +342,14 @@ sntRover.controller('RVCommissionsSummaryController', ['$scope',
             successCallBack();
         };
 
-        $scope.putOnHoldCommisions = function() {
-            ngDialog.open({
-                template: '/assets/partials/financials/commissions/rvCommisionsHoldPopup.html',
-                className: '',
-                scope: $scope
-            });
+        $scope.openPopupWithTemplate = function(template) {
+                ngDialog.open({
+                    template: '/assets/partials/financials/commissions/' + template + '.html',
+                    className: '',
+                    scope: $scope
+                });
         };
-        $scope.releaseCommisions = function() {
-            ngDialog.open({
-                template: '/assets/partials/financials/commissions/rvCommisionsReleasePopup.html',
-                className: '',
-                scope: $scope
-            });
-        };
-        $scope.setRecordsToPaid = function() {
-            ngDialog.open({
-                template: '/assets/partials/financials/commissions/rvCommisionsSetAsPaidPopup.html',
-                className: '',
-                scope: $scope
-            });
-        };
-
+        
         $scope.printButtonClick = function() {
             $timeout(function() {
                 $window.print();

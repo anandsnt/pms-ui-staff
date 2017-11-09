@@ -74,9 +74,9 @@
             <span class="amount">{{ ::currencySymbol }} 55</span>
          </li>
          <li class="actions">
-            <button type="button" class="button red with-icon" ng-click="putOnHoldCommisions()"><span class="icons icon-hold"></span>{{ 'HOLD' | translate}}</button>
+            <button type="button" class="button red with-icon" ng-click="openPopupWithTemplate('rvCommisionsHoldPopup')"><span class="icons icon-hold"></span>{{ 'HOLD' | translate}}</button>
             <button type="button" class="button purple with-icon" ng-click="exportCommisions()"><span class="icons icon-save"></span>{{ 'EXPORT' | translate}}</button>
-            <button type="button" class="button green with-icon" ng-click="setRecordsToPaid()"><span class="icons icon-wallet"></span>{{ 'SET_TO_PAID' | translate}}</button>
+            <button type="button" class="button green with-icon" ng-click="openPopupWithTemplate('rvCommisionsSetAsPaidPopup')"><span class="icons icon-wallet"></span>{{ 'SET_TO_PAID' | translate}}</button>
             <!-- Clear checked agents -->
             <button type="button" class="button white" ng-click="resetSelections()">{{ 'CLEAR_SELECTION' | translate}}</button>
          </li>
@@ -92,7 +92,7 @@
             <span class="amount">{{ ::currencySymbol }} 44</span>
          </li>
          <li class="actions">
-            <button type="button" class="button blue with-icon" ng-click="releaseCommisions()"><span class="icons icon-release"></span>Release</button>
+            <button type="button" class="button blue with-icon" ng-click="openPopupWithTemplate('rvCommisionsReleasePopup')"><span class="icons icon-release"></span>Release</button>
             <!-- Clear checked agents -->
             <button type="button" class="button white" ng-click="resetSelections()" translate>CLEAR_SELECTION</button>
          </li>
