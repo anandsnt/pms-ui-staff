@@ -452,7 +452,9 @@ function($scope, $state, $rootScope, $stateParams, RVCompanyCardSrv, ngDialog, $
             toggleCommission: false,
             commssionRecalculationValue: ''
         };
-        $scope.accountId = $stateParams.id;
+        // NOTE: This controller runs under stay card too; In such a case, the $stateParams.id will have the reservation ID
+        $scope.accountId = $state.current.name === 'rover.reservation.staycard.reservationcard.reservationdetails' ?
+            $scope.travelAgentInformation.id : $stateParams.id;
         $scope.isEmpty = util.isEmpty;
         $scope.isEmptyObject = isEmptyObject;
 

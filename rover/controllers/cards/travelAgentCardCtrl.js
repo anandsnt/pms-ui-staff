@@ -4,7 +4,6 @@ angular.module('sntRover').controller('RVTravelAgentCardCtrl', ['$scope', '$root
 		$scope.searchMode = true;
 		$scope.account_type = 'TRAVELAGENT';
 		$scope.currentSelectedTab = 'cc-contact-info';
-		$stateParams.id = $scope.reservationDetails.travelAgent.id;
 
 		$scope.hasPermissionToViewCommissionTab = function() {
 			return rvPermissionSrv.getPermissionValue ('VIEW_COMMISSIONS_TAB');
