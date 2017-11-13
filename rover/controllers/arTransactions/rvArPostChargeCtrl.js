@@ -32,6 +32,7 @@ sntRover.controller('RvArPostChargeController',
 			angular.forEach(data.results, function(item) {
                 item.label = item.name;
                 item.curreny = $rootScope.currencySymbol;
+                item.unit_price = parseFloat(item.unit_price).toFixed(2);
             });
 			chargeCodeResults = data.results;
 			response(chargeCodeResults);
@@ -123,8 +124,14 @@ sntRover.controller('RvArPostChargeController',
     /*
      * Calculating total amount on changing quantity
      */
-    $scope.changedQuantity = function() {
-        $scope.totalAmount = $scope.selectedItem.unit_price * $scope.quantity;
+    $scope.changedQuantity = function() {        
+        $scope.totalAmount = ($scope.selectedItem.unit_price * $scope.quantity).toFixed(2);
+    };
+    /*
+     * amount to decimal
+     */
+    $scope.enteredAmount = function() {
+        $scope.selectedItem.unit_price = parseFloat($scope.selectedItem.unit_price).toFixed(2);
     };
 
 }]);

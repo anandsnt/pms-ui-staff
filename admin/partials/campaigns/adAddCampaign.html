@@ -14,7 +14,7 @@
 		<div ng-include="'/assets/partials/common/notification_success_message.html'"></div>
 
 		<form method="post" action="" id="new-campaign" name="new-campaign" class="form campaign-details">
-		    
+
 		    <fieldset class="holder left">
 
 		        <!-- Campaign details -->
@@ -30,22 +30,22 @@
 		        </div>
 		        <div class="entry full-width" ng-show = "mode == 'EDIT' && campaignData.status !== 'COMPLETED'">
                     <label for="campaign-status" translate>STATUS</label>
-                    
+
                     <div class="switch-button" ng-show="campaignData.is_recurring == 'true' && (campaignData.status == 'ACTIVE' || campaignData.status == 'INACTIVE')" ng-class="{ 'on' :campaignData.status == 'ACTIVE' }" ng-click="statusChanged()"> <!-- Remove class "on" when checkbox is unchecked -->
                         <input id="campaign-status" type="checkbox"/>
                         <span class="switch-icon"></span>
                     </div>
                 </div>
 
-		        
+
 		        <div class="entry full-width">
 		            <label for="campaign-name">{{'CAMPAIGN_NAME'|translate}} <strong>*</strong></label>
 		            <input type="text" id="campaign-name" placeholder="Enter Campaign name" ng-model="campaignData.name" value="" required ng-disabled="campaignData.status == 'COMPLETED'" ng-class="{'disabled_text':campaignData.status == 'COMPLETED'}"/>
-		        </div>  
+		        </div>
 		        <div class="entry short">
 		            <label for="campaign-id" translate>ID</label>
 		            <input type="text" id="campaign-id" value="campaignData.id" ng-model="campaignData.id" readonly/>
-		        </div>      
+		        </div>
 		        <div class="entry full-width">
 		            <label for="campaign-audience">{{'AUDIENCE'|translate}} <strong>*</strong></label>
 		            <div class="boxes">
@@ -68,9 +68,9 @@
 		                    <span class="icon-form icon-radio" ng-class="{'checked': campaignData.audience_type =='SPECIFIC_USERS'}"></span>
 		                    <input name="audience" id="audience-users" type="radio" value="SPECIFIC_USERS" ng-model="campaignData.audience_type" ng-disabled="campaignData.status == 'COMPLETED'"/>
 		                    <span translate>SPECIFIC_USERS</span>
-		                </label>                        
+		                </label>
                         <!-- Remove class "hidden" when "Specific User(s)" option is selected. Add it back if other option is selected -->
-		                <input id="audience-specific-user" class = "campaign-textbox" placeholder="Enter User Name" type="text" ng-show="campaignData.audience_type =='SPECIFIC_USERS'" ng-model="campaignData.specific_users" ng-disabled="campaignData.status == 'COMPLETED'" ng-class="{'disabled_text':campaignData.status == 'COMPLETED'}"/> 
+		                <input id="audience-specific-user" class = "campaign-textbox" placeholder="Enter User Name" type="text" ng-show="campaignData.audience_type =='SPECIFIC_USERS'" ng-model="campaignData.specific_users" ng-disabled="campaignData.status == 'COMPLETED'" ng-class="{'disabled_text':campaignData.status == 'COMPLETED'}"/>
                         <label class="radio">
 		                    <span class="icon-form icon-radio" ng-class="{'checked': campaignData.audience_type =='EXTERNAL_CHECKIN'}"></span>
 		                    <input name="audience" id="audience-users" type="radio" value="EXTERNAL_CHECKIN" ng-model="campaignData.audience_type" ng-disabled="campaignData.status == 'COMPLETED'"/>
@@ -87,21 +87,27 @@
 		                    <span class="icon-form icon-radio" ng-class="{'checked': campaignData.audience_type =='ON_CHECKIN'}"></span>
 		                    <input name="audience" id="audience-users" type="radio" value="ON_CHECKIN" ng-model="campaignData.audience_type" ng-disabled="campaignData.status == 'COMPLETED'"/>
 		                    <span translate>ON_CHECKIN</span>
-		                </label>  
+		                </label>
 
 		                <label class="radio">
 		                    <span class="icon-form icon-radio" ng-class="{'checked': campaignData.audience_type =='ROOM_READY'}"></span>
 		                    <input name="audience" id="audience-users" type="radio" value="ROOM_READY" ng-model="campaignData.audience_type" ng-disabled="campaignData.status == 'COMPLETED'"/>
 		                    <span translate>ROOM_READY</span>
 		                </label>
-                        
+
 
 		                <label class="radio">
 		                    <span class="icon-form icon-radio" ng-class="{'checked': campaignData.audience_type =='EXTERNAL_CHECKOUT'}"></span>
 		                    <input name="audience" id="audience-users" type="radio" value="EXTERNAL_CHECKOUT" ng-model="campaignData.audience_type" ng-disabled="campaignData.status == 'COMPLETED'"/>
 		                    <span translate>EXTERNAL_CHECKOUT</span>
 		                </label>
-                           
+
+
+										<label class="radio">
+												<span class="icon-form icon-radio" ng-class="{'checked': campaignData.audience_type =='MONSCIERGE'}"></span>
+												<input name="audience" id="audience-users" type="radio" value="MONSCIERGE" ng-model="campaignData.audience_type" ng-disabled="campaignData.status == 'COMPLETED'"/>
+												<span>Monscierge</span>
+										</label>
 
 		            </div>
 		        </div>
@@ -117,7 +123,7 @@
 		            <p class="counter"><span ng-class="{'done': campaignData.subject.length == campaignData.messageSubjectMaxLength}">{{campaignData.messageSubjectMaxLength - campaignData.subject.length}}</span> {{'CHARACTERS_REMINING' |translate}}</p>
 		            <!-- When counter hits 0, add class "done" to span element. So: <span class="done">0</span>-->
 		        </div>
-		        
+
 		        <div class="entry full-width">
 		            <label for="message-header">{{'MESSAGE_HEADER_IMAGE'|translate}}<span translate>IMAGE_TYPE</span></label>
 		            <div class="file-upload with-preview">
@@ -126,7 +132,7 @@
 		                <button type="button" class="button brand-colors" translate>ADD_IMAGE</button>
 		            </div>
 		            <span class="file-preview"><img ng-src="{{campaignData.header_image}}" alt="" height="112" width="auto"> <em ng-show="campaignData.header_image == '' || campaignData.header_image == undefined" translate>PREVIEW_NOT_AVAILABLE</em></span>
-		        </div>   
+		        </div>
 		        <div class="entry full-width">
 		            <label for="message-body">{{'MESSAGE_BODY'|translate}}<strong>*</strong></label>
 		            <textarea id="message-body" rows="4" maxlength="{{campaignData.messageBodyMaxLength}}" placeholder="Text" ng-model="campaignData.body" ng-disabled="campaignData.status == 'COMPLETED'" ng-class="{'disabled_text':campaignData.status == 'COMPLETED'}"></textarea>
@@ -147,9 +153,9 @@
 	                    <input name="delivery" id="delivery-onetime" value="URL" type="radio" ng-model="campaignData.target_type" ng-disabled="campaignData.status == 'COMPLETED'"/>
 	                    {{'URL_LABEL'|translate}}
 	                   </label>
-	            
-	            
-	                  <label class="radio large"> 
+
+
+	                  <label class="radio large">
 	                         <span class="icon-form icon-radio" ng-class = "{'checked': campaignData.target_type == 'SCREEN'}"></span>
 	                        <input name="delivery-once" id="delivery-immediately" value="SCREEN" type="radio" ng-model="campaignData.target_type" ng-disabled = "isScreenSwitchDisabled();" />
 	                        {{'SCREEN_LABEL'|translate}}
@@ -160,11 +166,11 @@
                       <ad-dropdown label-in-drop-down="{{'SCREEN_LABEL' | translate}}" ng-if="campaignData.target_type == 'SCREEN'" ng-disabled="campaignData.status == 'COMPLETED'" list="campaignData.screen_types" selected-Id='campaignData.screen_type_id' selbox-class='placeholder'
                       ></ad-dropdown>
 	                </div>
-		            
+
 		        </div>
 		    </fieldset>
 	    <fieldset class="holder right">
-	        
+
 	        <!-- Delivery -->
 	        <div class="form-title">
 	            <h3><span translate>DELIVERY</span> {{'DETAILS'|translate}}</h3>
@@ -176,19 +182,19 @@
 	                <input name="delivery" id="delivery-onetime" value="ONE_TIME" type="radio" ng-model="campaignData.delivery_details" ng-disabled="campaignData.status == 'COMPLETED'"/>
 	                {{'ONE_TIME'|translate}}
 	            </label>
-	            
+
 	            <!-- Lines 97-148 are For future use, not for CICO-11909  -->
 	            <label class="radio small"> <!-- // Add class "hidden" when "Recurring" is selected as option. Remove it if "One time" is selected as option. -->
 	                <span class="icon-form icon-radio" ng-class = "{'checked': campaignData.delivery_details == 'ONE_TIME'}"></span>
 	                <input name="delivery-once" id="delivery-immediately" value="immediately" type="radio" checked />
 	                Immediately
 	            </label>
-	            <!-- 
+	            <!--
 	            <label class="radio small"> // Add class "hidden" when "Recurring" is selected as option. Remove it if "One time" is selected as option.
 	                <span class="icon-form icon-radio"></span>
 	                <input name="delivery-once" id="delivery-scheduled" value="scheduled" type="radio" />
 	                Scheduled
-	            </label> 
+	            </label>
 	            <div id="delivery-scheduled-options" class="inner-block hidden"> // Remove class "hidden" when Scheduled delivery is selected. Add back if Immediate delivery is selected
 	                <div class="entry has-datepicker">
 	                    <label for="delivery-date">Delivery Date</span></label>
@@ -291,7 +297,7 @@
 	                    </div>
 	                </div>
 	            </div>
-	        </div> 
+	        </div>
 
 	        <div class="large-block" ng-class = "{'open': campaignData.delivery_details == 'EXTERNAL_CHECKIN'}">
 	            <label class="radio large">
@@ -342,6 +348,14 @@
 	            </label>
 	        </div>
 
+					<div class="large-block" ng-class = "{'open': campaignData.delivery_details == 'MONSCIERGE'}">
+							<label class="radio large">
+									<span class="icon-form icon-radio" ng-class = "{'checked': campaignData.delivery_details == 'MONSCIERGE'}"></span>
+									<input name="delivery" id="delivery-onetime" value="MONSCIERGE" type="radio" ng-model="campaignData.delivery_details" ng-disabled="campaignData.status == 'COMPLETED'"/>
+									{{'Monscierge'}}
+							</label>
+					</div>
+
 	        <!-- Notifications -->
 	        <div class="form-title">
 	            <h3><span translate>NOTIFICATIONS</span> ({{'OUTSIDE_APP'|translate}})</h3>
@@ -358,12 +372,12 @@
 	            <textarea id="notification-ios7" rows="1" maxlength="{{campaignData.ios7_alert_length}}" placeholder="Text" ng-model="campaignData.alert_ios7" ng-disabled="campaignData.status == 'COMPLETED'" ng-class="{'disabled_text':campaignData.status == 'COMPLETED'}"></textarea>
 	            <p class="counter"><span ng-class= "{'done': campaignData.ios7_alert_length == campaignData.alert_ios7.length}">{{campaignData.ios7_alert_length - campaignData.alert_ios7.length}}</span> {{'CHARACTERS_REMINING' |translate}}</p>
 	            <!-- When counter hits 0, add class "done" to span element. So: <span class="done">0</span>-->
-	        </div>          
+	        </div>
 	    </fieldset>
-	    
+
 	    <div class="actions" ng-show = "mode == 'ADD'">
 	        <button type="button" class="button blank" ng-click="gobackToCampaignListing();" translate>CANCEL</button>
-	        <button type="button" class="button blue" ng-click="saveAsDraft()" translate>SAVE_AS_DRAFT</button> 
+	        <button type="button" class="button blue" ng-click="saveAsDraft()" translate>SAVE_AS_DRAFT</button>
 	        <button type="button" class="button green" ng-click="startCampaignPressed()" translate>START_CAMPAIGN</button>
 	    </div>
 

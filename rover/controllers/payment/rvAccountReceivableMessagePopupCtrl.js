@@ -1,4 +1,11 @@
-sntRover.controller('RVAccountReceivableMessagePopupCtrl', ['$rootScope', '$scope', '$state', 'ngDialog', 'RVCompanyCardSrv', 'rvPermissionSrv', function($rootScope, $scope, $state, ngDialog, RVCompanyCardSrv, rvPermissionSrv) {
+sntRover.controller('RVAccountReceivableMessagePopupCtrl', 
+	['$rootScope', 
+	'$scope', 
+	'$state', 
+	'ngDialog', 
+	'$timeout',
+	'RVCompanyCardSrv', 
+	'rvPermissionSrv', function($rootScope, $scope, $state, ngDialog, $timeout, RVCompanyCardSrv, rvPermissionSrv) {
 	BaseCtrl.call(this, $scope);
 
 	$scope.isCreateNewARAccountMode = false;
@@ -17,14 +24,16 @@ sntRover.controller('RVAccountReceivableMessagePopupCtrl', ['$rootScope', '$scop
 	};
 
 	$scope.successCreate = function(data) {
-		$scope.$emit("hideLoader");
+		
 		if (typeof $scope.reservationBillData !== "undefined") {
 			$scope.reservationBillData.ar_number = data.ar_number;
 			$scope.reservationBillData.bills[$scope.currentActiveBill].ar_number = data.ar_number;
 			$scope.reservationBillData.bills[$scope.currentActiveBill].has_ar_account = true;
 		}
-		$rootScope.$emit('arAccountCreated');
 		ngDialog.close();
+		$timeout(function() {
+			$rootScope.$emit('arAccountCreated');
+		}, 500);	
 	};
 
 	$scope.failureCreate = function(errorMessage) {

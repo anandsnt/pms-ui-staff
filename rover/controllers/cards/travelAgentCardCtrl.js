@@ -5,6 +5,11 @@ angular.module('sntRover').controller('RVTravelAgentCardCtrl', ['$scope', '$root
 		$scope.account_type = 'TRAVELAGENT';
 		$scope.currentSelectedTab = 'cc-contact-info';
 
+		$scope.hasPermissionToViewCommissionTab = function() {
+			return rvPermissionSrv.getPermissionValue ('VIEW_COMMISSIONS_TAB');
+		};
+		$scope.isCommissionTabAvailable = $scope.hasPermissionToViewCommissionTab();
+
 		$scope.switchTabTo = function($event, tabToSwitch) {
 			$event.stopPropagation();
 			$event.stopImmediatePropagation();
@@ -41,6 +46,9 @@ angular.module('sntRover').controller('RVTravelAgentCardCtrl', ['$scope', '$root
 			else if (tabToSwitch === 'cc-notes') {
 				$scope.$broadcast("fetchNotes");
 				$scope.isWithFilters = false;
+			}
+			else if (tabToSwitch === 'cc-commissions') {
+				$scope.$broadcast("commissionsTabActive");
 			}
 			if (tabToSwitch === 'cc-ar-transactions' && !isArNumberAvailable) {
 			  	console.warn("Save AR Account and Navigate to AR Transactions");
