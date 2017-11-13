@@ -51,7 +51,7 @@ sntRover.controller('RVCommissionsSummaryController', ['$scope',
         // based on selections, the top menu changes.
         // check if all agents are selected
         $scope.areAllAgentsSelected = function() {
-            return $scope.commissionsData.total_count>0 && $scope.commissionsData.total_count === $scope.noOfBillsSelected;
+            return $scope.commissionsData.total_count > 0 && $scope.commissionsData.total_count === $scope.noOfBillsSelected;
         };
 
         // check if any one of the agents is selected
@@ -220,7 +220,7 @@ sntRover.controller('RVCommissionsSummaryController', ['$scope',
                             // inside should be selected
                             _.each(account.reservationsData.reservations, function(reservation) {
                                 var indexOfRes = account.selectedReservations.indexOf(reservation.id);
-                                
+
                                 reservation.isSelected = account.isSelected || indexOfRes !== -1;
 
                                 if (reservation.isSelected && indexOfRes === -1) {
@@ -343,13 +343,13 @@ sntRover.controller('RVCommissionsSummaryController', ['$scope',
         };
 
         $scope.openPopupWithTemplate = function(template) {
-                ngDialog.open({
-                    template: '/assets/partials/financials/commissions/' + template + '.html',
-                    className: '',
-                    scope: $scope
-                });
+            ngDialog.open({
+                template: '/assets/partials/financials/commissions/' + template + '.html',
+                className: '',
+                scope: $scope
+            });
         };
-        
+
         $scope.printButtonClick = function() {
             $timeout(function() {
                 $window.print();
