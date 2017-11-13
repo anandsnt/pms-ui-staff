@@ -1274,7 +1274,6 @@ angular.module('sntPay').controller('sntPaymentController',
                 if ($scope.actionType === 'AR_SUBMIT_PAYMENT') {
                     // check if allocate payment after posting selected
                     response.allocatePaymentAfterPosting = $scope.payment.allocatePaymentAfterPosting;
-                    //response.ar_transaction_id = response
                 }
 
                 $scope.$emit('PAYMENT_SUCCESS', response);
