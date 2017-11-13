@@ -79,7 +79,7 @@ sntRover.controller('RVArTransactionsPayCreditsController',
            $scope.allocatedPayment = _.omit($scope.allocatedPayment, 'card_details');
         }
         $scope.arFlags.shouldShowPayAllButton = $scope.arDataObj.balanceList.length > 0;
-        if (data.allocatePaymentAfterPosting) {
+        if (data.allocatePaymentAfterPosting || $scope.arFlags.currentSelectedArTab === 'balance') {
             $scope.arFlags.currentSelectedArTab = 'balance';
             $scope.arFlags.isFromAddPaymentOrAllocateButton = true;
             var totalAllocatedAmount = 0;
