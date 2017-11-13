@@ -16,6 +16,11 @@ sntRover.controller('RvArBalanceController', ['$scope', '$timeout', 'rvAccountsA
 		// Refresh scroll after completing fetch data
 		$scope.$on("FETCH_COMPLETE_BALANCE_LIST", function() {
 			refreshScroll();
+			$scope.arDataObj.totalOfAllInvoicesInBalanceTab = 0;
+			_.each($scope.arDataObj.balanceList, function (eachItem) {			    	    
+				$scope.arDataObj.totalOfAllInvoicesInBalanceTab = parseFloat($scope.arDataObj.totalAllocatedAmount) + parseFloat(eachItem.amount);
+			});
+			
 		});	
 		/*
 		 * Calculate the total amount of selected invoices - Footer
@@ -111,7 +116,7 @@ sntRover.controller('RvArBalanceController', ['$scope', '$timeout', 'rvAccountsA
 				// Checkbox selection logic will be called here..
 				selectInvoice(clikedItem.transaction_id);
 			}
-			else if (!element.parentElement.classList.contains('actions') && !element.classList.contains('icon-edit-40') && !element.classList.contains('icon-double-arrow')) { 
+			else if (!element.parentElement.classList.contains('actions') && !element.classList.contains('icon-edit-40') && !element.classList.contains('icon-double-arrow') && !element.classList.contains("text-box") && !element.classList.contains('button-edit')) { 
 				clickedBalanceListItem(index);				
 			}
 		};
