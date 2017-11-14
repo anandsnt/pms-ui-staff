@@ -21,6 +21,10 @@ sntRover.controller('RVPostChargeControllerV2',
   			$scope.setScroller ('items_summary', scrollerOptions);
   			var isFromAccounts = ( typeof $scope.account_id !== "undefined" && $scope.account_id !== "" ) ? true : false;
 
+  			// CICO-46502 : Handle passing reservation id on post charge API call.
+  			if (!!$scope.reservation_id) {
+  				isFromAccounts = false;
+  			}
   			// make favorite selected by default
 			$scope.chargeGroup = 'FAV';
 			$scope.net_total_price = 0;
