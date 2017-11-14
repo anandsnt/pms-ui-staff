@@ -123,6 +123,10 @@ module.exports = {
 			'rover.reservation.staycard.roomassignment': {
 				filename: roverJsListRoot + 'roomAssignmentJsAssetList.js',
 				babelify: false
+			},
+			'rover.overbooking': {
+				filename: roverJsListRoot + 'overBookingJsAssetList.js',
+				babelify: false
 			}
 		};
 	}

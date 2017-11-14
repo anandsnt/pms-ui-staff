@@ -204,7 +204,12 @@ admin.controller('ADAppCtrl', [
                             }, {
                                 title: 'MENU_DISTRIBUTION_MANAGER',
                                 action: ''
-                            }]
+                            },
+                            {
+                                title: 'MENU_OVER_BOOKING',
+                                action: 'rover.overbooking',
+                                menuIndex: 'overbooking'
+                            },]
                     }, {
                         title: 'MENU_HOUSEKEEPING',
                         action: '',

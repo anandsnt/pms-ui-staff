@@ -30,9 +30,9 @@ angular.module('sntRover').service('rvOverBookingSrv', ['$q', 'rvBaseWebSrvV2', 
 	/**
 	* function to fetch item inventory between from date & to date
 	*/
-	this.fetchItemInventoryDetails = function (params) {
-		var firstDate 	= (params.from_date),
-			secondDate 	= (params.to_date);
+	this.fetchOverBookingGridData = function (params) {
+		var firstDate 	= (params.start_date),
+			secondDate 	= (params.end_date);
 
 		var dataForWebservice = {
 			from_date: firstDate,
@@ -41,7 +41,7 @@ angular.module('sntRover').service('rvOverBookingSrv', ['$q', 'rvBaseWebSrvV2', 
 
 		// Webservice calling section
 		var deferred = $q.defer(),
-			url = '/api/availability/addons';
+			url = '/api/overboking';
 
 		rvBaseWebSrvV2.getJSON(url, dataForWebservice).then(function (resultFromAPI) {
 			that.data.gridDataForOverbooking = {
