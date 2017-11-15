@@ -1178,7 +1178,10 @@
 
             .transactions {
                 .tab-header,
-                .search-results { .hide; }
+                .search-results,
+                .billing-sidebar,
+                .no-content,
+                .billing-footer  { .hide; }
 
                 .ar-statement {
                     display: block;
@@ -1244,11 +1247,12 @@
 
                                 &.charge-description {
                                     padding-right:8pt;
+                                    word-break: break-word;
                                 }
 
-                                &:last-child {
-                                    padding-right: 4pt;
-                                }
+                                &.amount-due {
+                                    vertical-align: bottom;
+                                } 
                             }
                         }
 

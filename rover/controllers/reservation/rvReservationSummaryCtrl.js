@@ -858,7 +858,7 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', 'jsMappings', '$s
                 $scope.setDemographics(true);
                 return;
             }
-            $scope.proceedCreatingReservation();
+            $scope.confirmReservation(true);
         };
 
         var savePayment = function(callback, addToGuestCard) {
@@ -868,7 +868,7 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', 'jsMappings', '$s
 
             var updateSuccess = function(data) {
                 $scope.$emit('hideLoader');
-                callback();
+                callback(true);
             };
 
             var updateFailure = function(data) {

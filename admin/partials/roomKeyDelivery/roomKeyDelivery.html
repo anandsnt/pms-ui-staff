@@ -131,7 +131,14 @@
 
 				</fieldset>
 
-				
+				<!-- This following section should be visible only to service providers...-->
+                <fieldset class="holder right" ng-if="isServiceProvider && data.has_public_key_for_qr_code_encryption">
+                    <div class="form-title">
+                        <h3 translate>{{'QR_CODE_ENCRYPTION' | translate}} </h3>
+                    </div>
+                    <ad-toggle-button is-checked="data.enable_qr_code_encryption"
+                                      label="{{'ACTIVATE_INACTIVATE'| translate}}"></ad-toggle-button>
+                </fieldset>
 				
 				<div class="actions float">
 					<button type="button" ng-click="goBackToPreviousState()" class="button blank add-data-inline" translate>

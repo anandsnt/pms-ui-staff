@@ -1,8 +1,8 @@
 angular.module('sntRover').controller('RVReservationCheckInFlowCtrl',
     ['$scope', '$rootScope', 'RVHotelDetailsSrv', '$log', 'RVCCAuthorizationSrv', 'ngDialog', '$timeout', 'RVBillCardSrv',
-        '$state',
+        '$state', 'sntActivity',
         function ($scope, $rootScope, RVHotelDetailsSrv, $log, RVCCAuthorizationSrv, ngDialog, $timeout, RVBillCardSrv,
-                  $state) {
+                  $state, sntActivity) {
 
             // NOTE rvBillCardCtrl is a parent for this controller! and a few variables and methods from the parent's scope are used in here
 
@@ -111,7 +111,7 @@ angular.module('sntRover').controller('RVReservationCheckInFlowCtrl',
                     params = {
                         is_promotions_and_email_set: $scope.saveData.promotions,
                         reservation_id: $scope.reservationBillData.reservation_id,
-                        no_post: $scope.reservationBillData.roomChargeEnabled === '' ? false : !$scope.reservationBillData.roomChargeEnabled
+                        restrict_post: $scope.reservationBillData.roomChargeEnabled === '' ? false : !$scope.reservationBillData.roomChargeEnabled
                     };
 
                 $log.info('completeCheckIn', params);
@@ -252,7 +252,7 @@ angular.module('sntRover').controller('RVReservationCheckInFlowCtrl',
 
                 // see if the auth info fetch has been completed! else show loader
                 if ($scope.checkInState.isAuthInfoFetchComplete) {
-                    $scope.$emit('hideLoader');
+                    sntActivity.stop('FETCH_PRE_AUTH');
                     // This step is required as the user can edit the payment method from the check-in screen
                     $scope.checkInState.hasCardOnFile = $scope.billHasCreditCard();
 
@@ -275,7 +275,8 @@ angular.module('sntRover').controller('RVReservationCheckInFlowCtrl',
                         completeCheckin();
                     }
                 } else {
-                    $scope.$emit('showLoader');
+                    sntActivity.start('FETCH_PRE_AUTH');
+
                     $timeout($scope.checkIn, 700);
                 }
             };

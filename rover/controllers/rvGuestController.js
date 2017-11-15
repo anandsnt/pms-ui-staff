@@ -1762,7 +1762,7 @@ angular.module('sntRover').controller('guestCardController', [
 				}
 			}
 		};
-		
+
 		$scope.selectGuest = function(guest, $event) {
 			$event.stopPropagation();
 			if ($scope.viewState.identifier === "CREATION") {
@@ -1792,7 +1792,12 @@ angular.module('sntRover').controller('guestCardController', [
                 });
 			} else {
 				if (!$scope.reservationDetails.guestCard.futureReservations || $scope.reservationDetails.guestCard.futureReservations <= 0) {
-					$scope.replaceCardCaller('guest', guest, false);
+                    // CICO-41517
+                    var hasMultipleReservations = $scope.reservationData &&
+                        $scope.reservationData.reservationIds &&
+                        $scope.reservationData.reservationIds.length;
+
+					$scope.replaceCardCaller('guest', guest, !!hasMultipleReservations);
 				} else {
 					$scope.checkFuture('guest', guest);
 				}

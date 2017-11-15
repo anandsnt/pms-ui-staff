@@ -32,7 +32,14 @@ this.webSocketOperations = function(socketOpenedSuccessCallback, socketOpenedFai
         that.ws.send('{"Command" : "cmd_scan_qr_passport_scanner"}');
     };
     this.CapturePassport = function() { // captures QR code data from the ARH/Samsotech Passport scanner
-        that.ws.send('{"Command" : "cmd_scan_passport"}');
+        var v1Scanning = angular.element('#header').scope().$parent.zestStationData.v1GuestIDScanning;// to be removed after 3.0
+        
+        if (v1Scanning === 'true') {
+            that.ws.send('{"Command" : "cmd_scan_passport"}');
+        } else {
+            // default if not configured
+            that.ws.send('{"Command" : "cmd_samsotech_scan_passport"}');// (ENHANCED LIBRARY)
+        }
     };
     this.CaptureQRViaDatalogic = function() { // captures QR code data (reservation id) from the Datalogic scanner
         that.ws.send('{"Command" : "cmd_scan_qr_datalogic"}');

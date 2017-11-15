@@ -4,6 +4,18 @@ module.exports = {
         var themeCSSRoot = 'stylesheets/guestweb/';
 
         return {
+            'guestweb_the_grove_portland': [ themeCSSRoot + 'guestweb_the_grove_portland.css'],
+            'guestweb_room_2_hammersmith': [ themeCSSRoot + 'guestweb_room_2_hammersmith.css'],
+            'guestweb_anvil_hotel': [ themeCSSRoot + 'guestweb_anvil_hotel.css'],
+            'guestweb_lamington_hammersmith': [ themeCSSRoot + 'guestweb_lamington_hammersmith.css'],
+            'guestweb_basecamp_boulder_south_lake_tahoe': [ themeCSSRoot + 'guestweb_basecamp_boulder_south_lake_tahoe.css'],
+            'guestweb_sage_inn': [ themeCSSRoot + 'guestweb_sage_inn.css'],
+            'guestweb_the_gotham_hotel': [ themeCSSRoot + 'guestweb_the_gotham_hotel.css'],
+            'guestweb_basecamp_boulder_tahoe_city': [ themeCSSRoot + 'guestweb_basecamp_boulder_tahoe_city.css'],
+            'guestweb_jupiter_hotel': [ themeCSSRoot + 'guestweb_jupiter_hotel.css'],
+            'guestweb_pacific_inn': [ themeCSSRoot + 'guestweb_pacific_inn.css'],
+            'guestweb_taj_boston': [ themeCSSRoot + 'guestweb_taj_boston.css'],
+            'guestweb_amrath_apart_hotel': [ themeCSSRoot + 'guestweb_amrath_apart_hotel.css'],
             'guestweb_hollywood_roosevelt': [ themeCSSRoot + 'guestweb_hollywood_roosevelt.css'],
             'guestweb_made': [ themeCSSRoot + 'guestweb_made.css'],
             'guestweb_windsor_suites': [ themeCSSRoot + 'guestweb_windsor_suites.css'],
@@ -132,7 +144,8 @@ module.exports = {
             'guestweb_hotel_blackhawk': [ themeCSSRoot + 'guestweb_hotel_blackhawk.css'],
             'guestweb_viceroy_chicago': [ themeCSSRoot + 'guestweb_viceroy_chicago.css'],
             'guestweb_hotel_alessandra': [ themeCSSRoot + 'guestweb_hotel_alessandra.css'],
-            'guestweb_george_texas': [ themeCSSRoot + 'guestweb_george_texas.css']
+            'guestweb_george_texas': [ themeCSSRoot + 'guestweb_george_texas.css'],
+            'guestweb_eden_v2': [ themeCSSRoot + 'guestweb_eden_v2.css']
         };
     }
 };

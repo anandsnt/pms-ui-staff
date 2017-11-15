@@ -333,6 +333,14 @@ angular.module('sntRover').controller('RVCompanyCardCtrl', ['$scope', '$rootScop
 			}
 		};
 
+		/**
+		* function to check whether the user has permission
+		* to create/edit AR Account.
+		* @return {Boolean}
+		*/
+		$scope.hasPermissionToCreateArAccount = function() {
+			return rvPermissionSrv.getPermissionValue ('CREATE_AR_ACCOUNT');
+		};
 	}
 ]);
 

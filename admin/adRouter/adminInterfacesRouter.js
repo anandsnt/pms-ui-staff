@@ -260,12 +260,7 @@ angular.module('adminInterfacesRouter', []).config(function($stateProvider) {
     $stateProvider.state('admin.ifc_room_mappings', {
         templateUrl: '/assets/partials/interfaces/Comtrol/adComtrolRoomMappings.html',
         controller: 'adComtrolRoomMappingCtrl',
-        url: '/ifc_comtrol/setup',
-        resolve: {
-            roomMappings: ['adComtrolRoomMappingSrv', function(adComtrolRoomMappingSrv) {
-                return adComtrolRoomMappingSrv.fetch();
-            }]
-        }
+        url: '/ifc_comtrol/setup'
     });
 
     $stateProvider.state('admin.gustoPosSetup', {
@@ -483,6 +478,20 @@ angular.module('adminInterfacesRouter', []).config(function($stateProvider) {
         }
     });
 
+    $stateProvider.state('admin.pmiSetup', {
+        templateUrl: '/assets/partials/interfaces/PMI/adPMISetup.html',
+        controller: 'adInterfaceCommonCtrl',
+        url: '/interfaces/setup/:id',
+        onEnter: ['$stateParams', function($stateParams) {
+            $stateParams.id = 'pmi';
+        }],
+        resolve: {
+            config: ['adInterfacesCommonConfigSrv', function(adInterfacesCommonConfigSrv) {
+                return adInterfacesCommonConfigSrv.fetchConfiguration('pmi');
+            }]
+        }
+    });
+
     $stateProvider.state('admin.revControlSetup', {
         templateUrl: '/assets/partials/interfaces/Revcontrol/adRevcontrolSetup.html',
         controller: 'adCRSCommonCtrl',
@@ -545,12 +554,6 @@ angular.module('adminInterfacesRouter', []).config(function($stateProvider) {
         url: '/snapshotSetup/general'
     });
 
-    $stateProvider.state('admin.snapshotChargeGroupMapping', {
-        templateUrl: '/assets/partials/snapshotSetup/adSnapshotChargeGroupMapping.html',
-        controller: 'adSnapshotChargeGroupMappingCtrl',
-        url: '/snapshotSetup/chargeGroupMapping'
-    });
-
     $stateProvider.state('admin.snapshotSubGroupMapping', {
         templateUrl: '/assets/partials/snapshotSetup/adSnapshotSubGroupMapping.html',
         controller: 'adsnapshotSubGroupMappingCtrl',
@@ -584,6 +587,12 @@ angular.module('adminInterfacesRouter', []).config(function($stateProvider) {
                 return adInterfacesCommonConfigSrv.fetchConfiguration('openkey');
             }]
         }
+    });
+
+    $stateProvider.state('admin.monsciergeSetup', {
+        templateUrl: '/assets/partials/monsciergeSetup/adMonsciergeSetup.html',
+        controller: 'adMonsciergeSetupCtrl',
+        url: '/monsciergeSetup'
     });
 
 });
