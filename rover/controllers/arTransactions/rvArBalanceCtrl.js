@@ -16,6 +16,11 @@ sntRover.controller('RvArBalanceController', ['$scope', '$timeout', 'rvAccountsA
 		// Refresh scroll after completing fetch data
 		$scope.$on("FETCH_COMPLETE_BALANCE_LIST", function() {
 			refreshScroll();
+			$scope.arDataObj.totalOfAllInvoicesInBalanceTab = 0;
+			_.each($scope.arDataObj.balanceList, function (eachItem) {			    	    
+				$scope.arDataObj.totalOfAllInvoicesInBalanceTab = parseFloat($scope.arDataObj.totalAllocatedAmount) + parseFloat(eachItem.amount);
+			});
+			
 		});	
 		/*
 		 * Calculate the total amount of selected invoices - Footer

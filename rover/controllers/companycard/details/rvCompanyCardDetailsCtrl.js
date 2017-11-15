@@ -577,9 +577,10 @@ angular.module('sntRover').controller('companyCardDetailsController', ['$scope',
 			$scope.isPrintArStatement = isPrintArStatement;
 		});
 
-
-        CardReaderCtrl.call(this, $scope, $rootScope, $timeout, $interval, $log);
-        $scope.observeForSwipe();
+        if (!$rootScope.disableObserveForSwipe) {
+            CardReaderCtrl.call(this, $scope, $rootScope, $timeout, $interval, $log);
+            $scope.observeForSwipe();
+        }
 
     }
 ]);
