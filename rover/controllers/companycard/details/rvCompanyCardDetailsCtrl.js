@@ -287,28 +287,34 @@ angular.module('sntRover').controller('companyCardDetailsController', ['$scope',
 			}
 
 			$timeout(function() {
-				if ($scope.currentSelectedTab === 'cc-contact-info') {
-					$scope.$broadcast("ContactTabActivated");
-					$scope.$broadcast("contactTabActive");
-				}
-	            if ($scope.currentSelectedTab === 'cc-contracts') {
-					$scope.$broadcast("refreshContractsScroll");
-				}
-	            if ($scope.currentSelectedTab === 'cc-ar-accounts') {
-					$scope.$broadcast("arAccountTabActive");
-					$scope.$broadcast("refreshAccountsScroll");
-				}
-		        if ($scope.currentSelectedTab === 'cc-ar-transactions') {
-					$rootScope.$broadcast("arTransactionTabActive");
-					$scope.isWithFilters = false;
-				}
-				if ($scope.currentSelectedTab === 'cc-notes') {
-					$scope.$broadcast("fetchNotes");
-				}
-				if ($scope.currentSelectedTab === 'cc-commissions') {
-					$scope.$broadcast("commissionsTabActive");
-				}
+				$scope.activateSelectedTab();				
 			}, 1000);
+		};
+		/*
+		 * Activate selected tab
+		 */
+		$scope.activateSelectedTab = function() {
+			if ($scope.currentSelectedTab === 'cc-contact-info') {
+				$scope.$broadcast("ContactTabActivated");
+				$scope.$broadcast("contactTabActive");
+			}
+            if ($scope.currentSelectedTab === 'cc-contracts') {
+				$scope.$broadcast("refreshContractsScroll");
+			}
+            if ($scope.currentSelectedTab === 'cc-ar-accounts') {
+				$scope.$broadcast("arAccountTabActive");
+				$scope.$broadcast("refreshAccountsScroll");
+			}
+	        if ($scope.currentSelectedTab === 'cc-ar-transactions') {
+				$rootScope.$broadcast("arTransactionTabActive");
+				$scope.isWithFilters = false;
+			}
+			if ($scope.currentSelectedTab === 'cc-notes') {
+				$scope.$broadcast("fetchNotes");
+			}
+			if ($scope.currentSelectedTab === 'cc-commissions') {
+				$scope.$broadcast("commissionsTabActive");
+			}
 		};
 
 		$scope.shouldShowCommissionsTab = function() {
