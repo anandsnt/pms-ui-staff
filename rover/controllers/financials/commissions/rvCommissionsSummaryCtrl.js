@@ -286,15 +286,8 @@ sntRover.controller('RVCommissionsSummaryController', ['$scope',
 
         /***************** Actions starts here *******************/
 
-        $scope.exportCommisions = function() {
-            console.log($scope.selectedAgentIds);
-        };
-
-        $scope.popupBtnAction = function(action) {
-
-            var params = {};
-
-            params.action = action;
+        var generateParams = function(){
+           var params = {};
             params.no_of_bills_selected = $scope.noOfBillsSelected;
 
             if ($scope.areAllAgentsSelected()) {
@@ -335,6 +328,27 @@ sntRover.controller('RVCommissionsSummaryController', ['$scope',
                 }
             }
             console.log(JSON.stringify(params));
+            return params;
+        };
+
+        $scope.exportCommisions = function() {
+
+            var options = {
+                params: generateParams(),
+                successCallBack: function(response){
+                    console.log(response);
+                },
+                failureCallBack: function(err){
+                    console.log(err);
+                }
+            };
+
+            $scope.callAPI(RVCommissionsSrv.exportCommissions, options);
+        };
+
+        $scope.popupBtnAction = function(action) {
+            params = generateParams();
+            params.action = action;
             var successCallBack = function() {
                 ngDialog.close();
                 fetchAgentsData();
