@@ -52,8 +52,8 @@
             <span class="amount">{{ ::currencySymbol }}{{::commissionsData.amount_totals.unpaid}}</span>
          </li>
          <!-- Show if active filter: Payable -->
-         <li class="actions" ng-show="filterData.filterTab === 'PAYABLE'">
-            <button type="button" class="button purple with-icon" ng-click="exportCommisions()">
+         <li class="actions" ng-show="filterData.filterTab === 'PAYABLE' && !areAgentsPartialySelected()">
+            <button type="button" class="button purple with-icon" ng-click="showExportPopup()">
             <span class="icons icon-save"></span>{{ 'EXPORT' | translate}}
             </button>
          </li>
@@ -75,7 +75,7 @@
          </li>
          <li class="actions">
             <button type="button" class="button red with-icon" ng-click="openPopupWithTemplate('rvCommisionsHoldPopup')"><span class="icons icon-hold"></span>{{ 'HOLD' | translate}}</button>
-            <button type="button" class="button purple with-icon" ng-click="exportCommisions()"><span class="icons icon-save"></span>{{ 'EXPORT' | translate}}</button>
+            <button type="button" class="button purple with-icon" ng-hide="areAgentsPartialySelected()" ng-click="showExportPopup()"><span class="icons icon-save"></span>{{ 'EXPORT' | translate}}</button>
             <button type="button" class="button green with-icon" ng-click="openPopupWithTemplate('rvCommisionsSetAsPaidPopup')"><span class="icons icon-wallet"></span>{{ 'SET_TO_PAID' | translate}}</button>
             <!-- Clear checked agents -->
             <button type="button" class="button white" ng-click="resetSelections()">{{ 'CLEAR_SELECTION' | translate}}</button>

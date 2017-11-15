@@ -331,19 +331,40 @@ sntRover.controller('RVCommissionsSummaryController', ['$scope',
             return params;
         };
 
+        var setExportStatus = function(inProgress, failed, success) {
+            $scope.exportSuccess = success;
+            $scope.exportFailed = failed;
+            $scope.exportInProgess = inProgress;
+        };
+
         $scope.exportCommisions = function() {
 
             var options = {
                 params: generateParams(),
                 successCallBack: function(response){
-                    console.log(response);
+                    // for now we will only show in progress status and then dismiss the
+                    // popup
+                    $timeout(function(){
+                        setExportStatus(false, false, true);
+                        ngDialog.close();
+                    },5000);
                 },
                 failureCallBack: function(err){
-                    console.log(err);
+                    setExportStatus(false, true, false);
                 }
             };
 
+            setExportStatus(true, false, false);
             $scope.callAPI(RVCommissionsSrv.exportCommissions, options);
+        };
+
+        $scope.showExportPopup = function() {
+            setExportStatus(false, false, false);
+            ngDialog.open({
+                template: '/assets/partials/financials/commissions/rvCommissionsExport.html',
+                className: '',
+                scope: $scope
+            });
         };
 
         $scope.popupBtnAction = function(action) {
