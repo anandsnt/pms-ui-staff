@@ -51,7 +51,7 @@ sntRover.controller('RVCommissionsSummaryController', ['$scope',
         // based on selections, the top menu changes.
         // check if all agents are selected
         $scope.areAllAgentsSelected = function() {
-            return $scope.commissionsData.total_count>0 && $scope.commissionsData.total_count === $scope.noOfBillsSelected;
+            return $scope.commissionsData.total_count > 0 && $scope.commissionsData.total_count === $scope.noOfBillsSelected;
         };
 
         // check if any one of the agents is selected
@@ -215,12 +215,12 @@ sntRover.controller('RVCommissionsSummaryController', ['$scope',
                         var onFetchListSuccess = function(response) {
                             console.log(response);
                             account.isExpanded = true;
-                            account.reservationsData = {"reservations" : response , "total_count":6};
+                            account.reservationsData = response;
                             // if the account is selected, the reservation list 
                             // inside should be selected
                             _.each(account.reservationsData.reservations, function(reservation) {
                                 var indexOfRes = account.selectedReservations.indexOf(reservation.id);
-                                
+
                                 reservation.isSelected = account.isSelected || indexOfRes !== -1;
 
                                 if (reservation.isSelected && indexOfRes === -1) {
@@ -229,7 +229,7 @@ sntRover.controller('RVCommissionsSummaryController', ['$scope',
                             });
                             // start with page 1
                             account.reservationsPageNo = 1;
-                            account.showResPagination = account.reservationsData.total_count > 5;
+                            account.showResPagination = account.reservationsData.total_count > $scope.filterData.innerPerPage;
                             $timeout(function() {
                                 $scope.$broadcast('updatePagination', 'RESERVATION_LIST_' + account.id);
                             }, 100);
@@ -238,7 +238,9 @@ sntRover.controller('RVCommissionsSummaryController', ['$scope',
                         };
                         $scope.callAPI(RVCommissionsSrv.fetchReservationOfCommissions, {
                             params: {
-                                id: account.id
+                                id: account.id,
+                                'page': page,
+                                'per_page': $scope.filterData.innerPerPage
                             },
                             successCallBack: onFetchListSuccess
                         });
@@ -246,11 +248,11 @@ sntRover.controller('RVCommissionsSummaryController', ['$scope',
                     account.paginationData = {
                         id: 'RESERVATION_LIST_' + account.id,
                         api: account.fetchReservationData,
-                        perPage: 5
+                        perPage: $scope.filterData.innerPerPage
                     };
                 });
                 $scope.resetSelections();
-                $scope.showPagination = ($scope.commissionsData.total_count <= 50) ? false : true;
+                $scope.showPagination = ($scope.commissionsData.total_count <= $scope.filterData.perPage) ? false : true;
                 $scope.errorMessage = "";
                 $scope.$emit('hideLoader');
                 refreshArOverviewScroll();
@@ -340,23 +342,9 @@ sntRover.controller('RVCommissionsSummaryController', ['$scope',
             successCallBack();
         };
 
-        $scope.putOnHoldCommisions = function() {
+        $scope.openPopupWithTemplate = function(template) {
             ngDialog.open({
-                template: '/assets/partials/financials/commissions/rvCommisionsHoldPopup.html',
-                className: '',
-                scope: $scope
-            });
-        };
-        $scope.releaseCommisions = function() {
-            ngDialog.open({
-                template: '/assets/partials/financials/commissions/rvCommisionsReleasePopup.html',
-                className: '',
-                scope: $scope
-            });
-        };
-        $scope.setRecordsToPaid = function() {
-            ngDialog.open({
-                template: '/assets/partials/financials/commissions/rvCommisionsSetAsPaidPopup.html',
+                template: '/assets/partials/financials/commissions/' + template + '.html',
                 className: '',
                 scope: $scope
             });
