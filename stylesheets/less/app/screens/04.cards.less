@@ -299,14 +299,16 @@
                 .size(50px, 100%);
 
                 li {
+                    position: relative;
                     margin: 5px 0 0 0;
                     padding: 0;
                     line-height: 45px;
                     vertical-align: middle;
                     background: rgba(0,0,0,.2);
                     .box-shadow();
-                    #border-radius > .top();
                     .pull-left;
+                    #flexbox > .parent(row wrap, '', center, '');
+                    #border-radius > .top();
 
                     a {
                         color: @white;
@@ -338,6 +340,19 @@
                         &.warning:after { background: @yellow; }
                     }
 
+                    .button {
+                        margin: 0 10px 0 -10px;
+                        padding: 0;
+                        z-index: 99;
+                        .hide-text();
+                        .square(30px);
+                        .hide();
+
+                        &.icon-expand {
+                            background-position: 7px -11073px;
+                        }
+                    }
+
                     &.ui-tabs-active {
                         font-size: 18px;
                         line-height: 50px;
@@ -352,6 +367,10 @@
                             &.warning {
                                 &:after { top: 18px; }
                             }
+                        }
+
+                        .button {
+                            .show();
                         }
                     }
 
@@ -2458,8 +2477,9 @@
 
                 /* Rooming List ***/
                 &.rooming-list {
+
                     .tab-header {
-                        height: 140px;
+                        position: relative;
 
                         .search-form {
                             padding: 0 20px;
@@ -2675,7 +2695,6 @@
                     }
 
                     .tab-details {
-                        .calc-height(100, 140);
                         
                         .rooming-list-header {
                             margin: 10px 20px;
@@ -3135,6 +3154,20 @@
         &.group-card {
             .cards-wrapper {
                 background: @groupcard @groupcardTexture;
+            }
+
+            .card-content {
+                .card-tab {
+                    &.rooming-list {
+                        .tab-header {
+                            height: 140px;
+                        }
+
+                        .tab-details {
+                            .calc-height(100, 140);
+                        }
+                    }
+                }
             }
         }
 
