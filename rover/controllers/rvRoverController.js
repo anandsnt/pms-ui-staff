@@ -54,166 +54,6 @@ sntRover.controller('roverController', [
             document.getElementsByTagName('html')[0].setAttribute('class', appTheme);
         }
 
-<<<<<<< HEAD
-    /*
-     * To close drawer on click inside pages
-     */
-    $scope.closeDrawer = function(event) {
-      $scope.menuOpen = false;
-    };
-   $scope.isAddToGuestCardEnabledDuringCheckin = false;
-   $scope.$on('UPDATE_ADD_TO_GUEST_ON_CHECKIN_FLAG', function(e, value) {
-    $scope.isAddToGuestCardEnabledDuringCheckin = value;
-   });
-    $scope.roverFlags = {};
-    $scope.hotelDetails = hotelDetails;
-    // set current hotel details
-    $scope.currentHotelData = {
-      "name": "",
-      "id": ""
-    };
-    angular.forEach($scope.hotelDetails.userHotelsData.hotel_list, function(hotel, index) {
-          if ($scope.hotelDetails.userHotelsData.current_hotel_id === hotel.hotel_id) {
-             $scope.currentHotelData.name = hotel.hotel_name;
-             $scope.currentHotelData.id   = hotel.hotel_id;
-             $scope.hotelDetails.userHotelsData.hotel_list.splice(index, 1);
-          }
-    });
-
-    $scope.isSettingSubMenuActive = false;
-    // Used to add precison in amounts
-    $rootScope.precisonZero = 0;
-    $rootScope.precisonTwo = 2;
-    // To get currency symbol - update the value with the value from API see fetchHotelDetailsSuccessCallback
-    $rootScope.currencySymbol = "";
-    $scope.showSubMenu = false;
-    $scope.activeSubMenu = [];
-    $rootScope.isStandAlone = false;
-
-    $rootScope.shortDateFormat = "MM/yy"; // 05/99
-    $rootScope.dayInWeek = "EEE"; // Sun
-    $rootScope.dayInMonth = "dd"; // 01
-    $rootScope.monthInYear = "MMM"; // Jan
-    // Use below standard date formatter in the UI.
-    $rootScope.mmddyyyyFormat = "MM-dd-yyyy"; // 01-22-2014
-    $rootScope.mmddyyyyBackSlashFormat = "dd/MM/yyyy"; // 01-22-2014
-    $rootScope.fullDateFormat = "EEEE, d MMMM yyyy"; // Wednesday, 4 June 2014
-    $rootScope.dayAndDate = "EEEE MM-dd-yyyy"; // Wednesday 06-04-2014
-    $rootScope.fullDateFullMonthYear = "dd MMMM yyyy";
-    $rootScope.dayAndDateCS = "EEEE, MM-dd-yyyy"; // Wednesday, 06-04-2014
-    $rootScope.dateFormatForAPI = "yyyy-MM-dd";
-        // https://momentjs.com/docs/#/displaying/format/
-    $rootScope.momentFormatForAPI = "YYYY-MM-DD";
-    $rootScope.shortMonthAndDate = "MMM dd";
-    $rootScope.monthAndDate = "MMMM dd";
-    $rootScope.fullMonth = "MMMM";
-    $rootScope.fullYear = "yyyy";
-    $rootScope.fulldayInWeek = "EEEE";
-    $rootScope.fullMonthFullDayFullYear = "MMMM dd, yyyy"; // January 06, 2014
-    $rootScope.timeWithAMPM = "hh:mm a"; // 01:00 AM
-
-    // CICO-25098 - Flag to enable/disable the billing info code refactoring.
-    // Need to be removed finally.
-    $rootScope.UPDATED_BI_ENABLED_ON = {
-      'RESERVATION': false,
-      'CARDS': false,
-      'ACCOUNTS': false,
-      'ALLOTMENT': false
-    };
-    enableBillingInfo = $rootScope.UPDATED_BI_ENABLED_ON; // Need to be removed finally.
-
-    $rootScope.isCurrentUserChangingBussinessDate = false;
-    $rootScope.termsAndConditionsText = hotelDetails.terms_and_conditions;
-    /*
-     * hotel Details
-     */
-    $rootScope.hotelDetails = hotelDetails;
-
-    $rootScope.isLateCheckoutTurnedOn = hotelDetails.late_checkout_settings.is_late_checkout_on;
-    $rootScope.businessDate = hotelDetails.business_date;
-    $rootScope.currencySymbol = getCurrencySign(hotelDetails.currency.value);
-    $rootScope.dateFormat = getDateFormat(hotelDetails.date_format.value);
-    $rootScope.jqDateFormat = getJqDateFormat(hotelDetails.date_format.value);
-    $rootScope.MLImerchantId = hotelDetails.mli_merchant_id;
-    $rootScope.isMLIEMVEnabled =  hotelDetails.mli_emv_enabled;
-    $rootScope.isQueuedRoomsTurnedOn = hotelDetails.housekeeping.is_queue_rooms_on;
-    $rootScope.advanced_queue_flow_enabled = hotelDetails.advanced_queue_flow_enabled;
-    $rootScope.isPmsProductionEnv = hotelDetails.is_pms_prod;
-    // $rootScope.isRoomDiaryEnabled = hotelDetails.is_room_diary_enabled;
-    // CICO-40544 - Now we have to enable menu in all standalone hotels
-    // API not removing for now - Because if we need to disable it we can use the same param
-    $rootScope.isRoomDiaryEnabled = true;
-    $rootScope.isManualCCEntryEnabled = hotelDetails.is_allow_manual_cc_entry;
-    $rootScope.isAnMPHotel = hotelDetails.is_multi_property;
-
-      /**
-       * CICO-34068
-       * NOTE: Temporary Fix
-       * As saferpay is not supported in Rover, if saferpay is selected in SNT Admin; default to sixpayments
-       */
-      if (hotelDetails.payment_gateway === "SAFERPAY") {
-          $rootScope.paymentGateway = "sixpayments";
-      } else {
-          $rootScope.paymentGateway = hotelDetails.payment_gateway;
-      }
-    $rootScope.isHourlyRateOn = hotelDetails.is_hourly_rate_on;
-    $rootScope.minimumHourlyReservationPeriod = hotelDetails.hourly_min_reservation_hours;
-    $rootScope.isAddonOn = hotelDetails.is_addon_on;
-    $rootScope.desktopSwipeEnabled = hotelDetails.allow_desktop_swipe;
-	  $rootScope.ccSwipeListeningPort = hotelDetails.cc_swipe_listening_port;
-    $rootScope.ccSwipeListeningUrl = hotelDetails.cc_swipe_listening_url;
-    $rootScope.printCancellationLetter = hotelDetails.print_cancellation_letter;
-    $rootScope.sendCancellationLetter = hotelDetails.send_cancellation_letter;
-    $rootScope.printConfirmationLetter = hotelDetails.print_confirmation_letter;
-    $rootScope.sendConfirmationLetter = hotelDetails.send_confirmation_letter;
-    $rootScope.isItemInventoryOn    = hotelDetails.is_item_inventory_on;
-    $rootScope.guestTypes = hotelDetails.guest_types;
-
-    // CICO-41410
-    $rootScope.isDashboardSwipeEnabled = hotelDetails.enable_dashboard_swipe;
-
-    // need to set some default timeout
-    // discuss with Mubarak
-
-      if (hotelDetails.emv_timeout) {
-          $rootScope.emvTimeout = hotelDetails.emv_timeout;
-      } else {
-          var defaultTimeout = 120;
-
-          $log.warn('configuration missing: [emv] no timeout set. defaulting to ' + defaultTimeout);
-          $rootScope.emvTimeout = defaultTimeout;
-      }
-
-
-      // CICO-25728
-      // TEMPORARY FLAG TO SKIP BAR AREAS
-      $rootScope.hideRateOfDay = hotelDetails.hide_rate_of_day;
-
-
-      // CICO-18040
-      $rootScope.isFFPActive = hotelDetails.is_ffp_active;
-      $rootScope.isHLPActive = hotelDetails.is_hlp_active;
-      $rootScope.isPromoActive = hotelDetails.is_promotion_active;
-
-    // set MLI Merchant Id
-    try {
-      sntapp.MLIOperator.setMerChantID($rootScope.MLImerchantId);
-    } catch (err) {}
-    $rootScope.isSingleDigitSearch = hotelDetails.is_single_digit_search;
-
-
-    // handle six payment iFrame communication
-    var eventMethod = window.addEventListener ? "addEventListener" : "attachEvent";
-    var eventer = window[eventMethod];
-    var messageEvent = eventMethod === "attachEvent" ? "onmessage" : "message";
-
-    eventer(messageEvent, function(e) {
-      var responseData = e.data;
-
-      if (responseData.response_message === "token_created") {
-        $scope.$broadcast('six_token_recived', {
-          'six_payment_data': responseData
-=======
         /*
          * To close drawer on click inside pages
          */
@@ -237,7 +77,6 @@ sntRover.controller('roverController', [
                 $scope.currentHotelData.id = hotel.hotel_id;
                 $scope.hotelDetails.userHotelsData.hotel_list.splice(index, 1);
             }
->>>>>>> develop
         });
 
         $scope.isSettingSubMenuActive = false;
@@ -304,6 +143,7 @@ sntRover.controller('roverController', [
         // API not removing for now - Because if we need to disable it we can use the same param
         $rootScope.isRoomDiaryEnabled = true;
         $rootScope.isManualCCEntryEnabled = hotelDetails.is_allow_manual_cc_entry;
+        $rootScope.isAnMPHotel = hotelDetails.is_multi_property;
         /**
          * CICO-34068
          * NOTE: Temporary Fix
