@@ -5,7 +5,7 @@ module.exports = {
 		overBookingJsAssetList = {
 			minifiedFiles: [],
 			nonMinifiedFiles: [				
-				roverRoot + "overBooking/**/*.js",
+				controllerRoot + "overBooking/**/*.js",
 				servicesRoot + "overBooking/**/*.js"
 			]
 		};

@@ -247,6 +247,10 @@ angular.module('sntRover').service('rvMenuSrv',
 		            title: "MENU_DISTRIBUTION_MANAGER",
 		            action: "",
 		            menuIndex: "distribution_manager"
+		        }, {
+		            title: "MENU_OVER_BOOKING",
+		            action: "rover.overbooking",
+		            menuIndex: "overbooking"
 		        }]
 		    }, {
 		        title: "MENU_HOUSEKEEPING",

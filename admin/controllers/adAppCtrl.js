@@ -201,7 +201,8 @@ admin.controller('ADAppCtrl', [
                                 title: 'MENU_TA_CARDS',
                                 action: 'rover.companycardsearch',
                                 menuIndex: 'cards'
-                            }, {
+                            },
+                            {
                                 title: 'MENU_DISTRIBUTION_MANAGER',
                                 action: ''
                             },
@@ -209,7 +210,8 @@ admin.controller('ADAppCtrl', [
                                 title: 'MENU_OVER_BOOKING',
                                 action: 'rover.overbooking',
                                 menuIndex: 'overbooking'
-                            },]
+                            }
+                        ]
                     }, {
                         title: 'MENU_HOUSEKEEPING',
                         action: '',

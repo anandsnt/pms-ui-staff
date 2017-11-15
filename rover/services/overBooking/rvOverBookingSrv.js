@@ -34,25 +34,48 @@ angular.module('sntRover').service('rvOverBookingSrv', ['$q', 'rvBaseWebSrvV2', 
 		var firstDate 	= (params.start_date),
 			secondDate 	= (params.end_date);
 
-		var dataForWebservice = {
-			from_date: firstDate,
-			to_date: secondDate
-		};
-
 		// Webservice calling section
 		var deferred = $q.defer(),
-			url = '/api/overboking';
+			url = '/api/overbooking';
 
-		rvBaseWebSrvV2.getJSON(url, dataForWebservice).then(function (resultFromAPI) {
+		/*rvBaseWebSrvV2.getJSON(url, params).then(function (resultFromAPI) {
 			that.data.gridDataForOverbooking = {
-                "house_rooms": resultFromAPI.house_rooms,
-                "room_type": resultFromAPI.room_type,
-                "dates": getDateRange(firstDate, secondDate)
+                'house_rooms': resultFromAPI.house_rooms,
+                'room_type': resultFromAPI.room_type,
+                'dates': getDateRange(firstDate, secondDate)
             };
 			deferred.resolve(that.data);
 		}, function(data) {
 			deferred.reject(data);
-		});
+		});*/
+
+		deferred.resolve(that.data);
+		return deferred.promise;
+	};
+
+	/**
+	 * Function to get list of Room types
+	 * @return {Promise} - After resolving it will return the list of Hold Room types
+	 */
+	this.getAllRoomTypes = function() {
+		var deferred = $q.defer(),
+			url = '/api/room_types.json?is_exclude_pseudo=true',
+			result = [];
+
+		rvBaseWebSrvV2.getJSON(url).then(
+			function(data) {
+				if (data.results && data.results.length > 0 ) {
+					_.each( data.results, function(obj) { 
+						result.push(_.pick(obj, 'name', 'id'));
+					});
+				}
+				deferred.resolve(result);
+			},
+			function(errorMessage) {
+				deferred.reject(errorMessage);
+			}
+		);
+
 		return deferred.promise;
 	};
 

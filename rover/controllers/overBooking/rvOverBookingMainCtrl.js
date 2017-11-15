@@ -1,20 +1,23 @@
-angular.module('sntRover').controller('RVOverBookingMainCtrl', [
+angular.module('sntRover').controller('RvOverBookingMainCtrl', [
 	'$scope',
 	'rvOverBookingSrv',
 	'$rootScope',
 	'ngDialog',
 	'$filter',
 	'$timeout',
-	function($scope, rvOverBookingSrv, $rootScope, ngDialog, $filter, $timeout) {
+	'completeRoomTypeListData',
+	'overBookingGridData',
+	function($scope, rvOverBookingSrv, $rootScope, ngDialog, $filter, $timeout, completeRoomTypeListData, overBookingGridData) {
 
 	BaseCtrl.call(this, $scope);
 
-	$scope.data = {};
-
-	// default date value
-	$scope.data.selectedDate = $rootScope.businessDate;
-	$scope.data.formattedSelectedDate = $filter('date')($scope.data.selectedDate, $rootScope.dateFormat);
-
+	$scope.overBookingObj = {
+		roomTypeList: completeRoomTypeListData,
+		overBookingGridData: overBookingGridData,
+		selectedDate: $rootScope.businessDate,
+		formattedSelectedDate: $filter('date')($rootScope.businessDate, $rootScope.dateFormat)
+	};
+console.log($scope.overBookingObj);
 	// To popup contract start date
 	$scope.showDatePicker = function() {
 		ngDialog.open({
