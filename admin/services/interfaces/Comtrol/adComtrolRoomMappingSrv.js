@@ -38,11 +38,11 @@ admin.service('adComtrolRoomMappingSrv', ['$http', '$q', 'ADBaseWebSrvV2',
         };
 
         /**
-         *
-         * @returns {deferred.promise|{then, catch, finally}}
+         * @param {Object} params Filter & Pagination parameters
+         * @returns {deferred.promise|{then, catch, finally}} list of mappings
          */
-        service.fetch = function() {
-            return ADBaseWebSrvV2.getJSON(baseUrl);
+        service.fetch = function(params) {
+            return ADBaseWebSrvV2.getJSON(baseUrl, params);
         };
 
         /**
