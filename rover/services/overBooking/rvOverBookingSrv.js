@@ -36,9 +36,9 @@ angular.module('sntRover').service('rvOverBookingSrv', ['$q', 'rvBaseWebSrvV2', 
 
 		// Webservice calling section
 		var deferred = $q.defer(),
-			url = '/api/overbooking';
+			url = '/api/sell_limits/sell_limits';
 
-		/*rvBaseWebSrvV2.getJSON(url, params).then(function (resultFromAPI) {
+		/*rvBaseWebSrvV2.postJSON(url, params).then(function (resultFromAPI) {
 			that.data.gridDataForOverbooking = {
                 'house_rooms': resultFromAPI.house_rooms,
                 'room_type': resultFromAPI.room_type,

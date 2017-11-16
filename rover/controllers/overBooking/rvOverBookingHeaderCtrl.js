@@ -23,6 +23,8 @@ angular.module('sntRover').controller('RvOverBookingHeaderCtrl', [
 
         $scope.overBookingObj.endDate = moment(tzIndependentDate(currentStartDate)).day(14).format($rootScope.momentFormatForAPI);
         $scope.$emit('REFRESH_OVERBOOKING_GRID');
+        console.log("STRAT DATE =", $scope.overBookingObj.startDate);
+		console.log("END DATE =", $scope.overBookingObj.endDate);
     });
 
 	$scope.clickedShowRoomsLeftTosell = function() {

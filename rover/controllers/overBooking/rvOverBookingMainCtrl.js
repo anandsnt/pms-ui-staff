@@ -11,6 +11,10 @@ angular.module('sntRover').controller('RvOverBookingMainCtrl', [
 
 	BaseCtrl.call(this, $scope);
 
+    $scope.heading = $filter('translate')('MENU_OVER_BOOKING');
+    $scope.setTitle($filter('translate')('MENU_OVER_BOOKING'));
+    $scope.$emit('updateRoverLeftMenu', 'overbooking');
+
 	$scope.overBookingObj = {
 		roomTypeList: completeRoomTypeListData,
 		overBookingGridData: overBookingGridData,

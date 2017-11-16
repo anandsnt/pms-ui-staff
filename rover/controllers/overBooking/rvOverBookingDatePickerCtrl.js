@@ -15,7 +15,7 @@ angular.module('sntRover').controller('rvOverBookingDatePickerCtrl', ['$scope', 
 			maxDate: tzIndependentDate(maxDate),
 			yearRange: "1:+1",
 			onSelect: function() {
-				$scope.overBookingObj.startDate = $scope.date;
+				$scope.overBookingObj.startDate = dateFilter(tzIndependentDate($scope.date), 'yyyy-MM-dd');
 				$scope.$emit('DATE_CHANGED');
 				ngDialog.close();
 			}

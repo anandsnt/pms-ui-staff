@@ -13,10 +13,9 @@
 	        <span class="icons icon-double-arrow black rotate-right"></span>
 	    </button>
 	</div>
-	<!-- Show Rooms Left to Sell -->
 	<div ng-click="clickedShowRoomsLeftTosell()" class="entry">
-	    <label class="checkbox"> <!-- Add class 'checked' if L18 checked -->
-	        <span class="icon-form icon-checkbox"></span> <!-- Add class 'checked' if L18 checked -->
+	    <label class="checkbox" ng-class="{'checked':overBookingObj.isShowRoomsLeftToSell}">
+	        <span class="icon-form icon-checkbox" ng-class="{'checked':overBookingObj.isShowRoomsLeftToSell}"></span>
 	        <input type="checkbox" />
 	        Show rooms left to sell
 	    </label>
