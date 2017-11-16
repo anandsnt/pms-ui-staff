@@ -4449,116 +4449,189 @@
         }
     }
 
-/* Commisions               ==============================*/
-    .commisions-content {
+/* Commisions               =============================*/
+    .commissions-content {
         margin: 0 2cm;
-        .commisions-totals {
-            margin-bottom: .5cm;
-            li {
-                margin:0 10pt;
 
-                span {
-                    &.amount {
-                        &.red {
-                            color:@grey3;
-                        }
+        .commissions-header {
+            margin-bottom: .5cm;
+            .float;
+
+            ul {
+                .pull-left();
+                .float;
+
+                &.totals {
+                    .pull-right();
+                }
+
+                li {
+                    margin-right: 10pt;
+                    .pull-left();
+
+                    &.actions {
+                        display: none;
+                    }
+
+                    span {
+                        text-transform: uppercase;
+                    }
+
+                    .amount {
+                        display: block;
+                        font-weight: bold;
                     }
                 }
             }
+
+            .filters {
+                li {
+                    text-transform: uppercase;
+                    &:not(.active) {
+                        display: none;
+                    }
+
+                    strong {
+                        display: block;
+                    }
+                }
+            }
+        }
+
+        .commissions-list {
+            .expand,
             .check {
-                display: none;
+                .hide();
+            }
+
+            .commissions-list-header {
+                .float;
+
+                li {
+                    text-align: right;
+                    width: 130px;
+                    text-transform: uppercase;
+                    .pull-left();
+
+                    &.agent-info {
+                        text-align: left;
+                        .calc-width(100, 390);
+                    }
+
+                    &:last-child {
+                        padding-right: 5pt;
+                    }
+                }
             }
         }
 
          /* Commision Item***/
         .commision-item {
-                    position: relative;
-                    .float;
-                    .data {
-                         
-                        width: 40%;
-                        .pull-left();
-                        .meta-data {
-                            display: block;
-                            width: 100%;
-                            clear: both;
-                        }
+            position: relative;
+            .float;
 
-                        h2 {
-                            line-height: 1;
-                            white-space: normal;
-                            margin-bottom: 6px;
-                            padding-right: 5px;
-                            display: block;
-                            vertical-align: top;
-                        }
-       
-                        .icons {
-                            display: inline;
-                            line-height: 20px;
-                            height: 20px;
-                            overflow: hidden; 
-                        }
+            a {
+                &.has-arrow {
+                    background: none !important;
+                }
+            }
 
-                        .icon-hold {
-                            position: absolute;
-                            left: -40px;
-                            top: 0;
-                            bottom: 0;
-                            margin: auto;
-                        }
+            .data {
+                .calc-width(100, 390);
+                .pull-left();
 
-                        .icons {
-                            color: @grey3;
-                            padding-left: 20px;
-                        }
+                .meta-data {
+                    display: block;
+                    width: 100%;
+                    clear: both;
+                    margin-top: 5pt;
+                }
 
-                        .icon-location,
-                        .icon-guest-travelagent {
-                            background: none;
-                            padding: 0;
-                            display: block;
-                            .pull-left();
-                        }
+                h2 {
+                    line-height: 1;
+                    white-space: normal; 
+                    padding-right: 5px;
+                    display: block;
+                    vertical-align: top;
+                }
 
-                        .icon-location {
-                                width: 70%;
-                        }
-                         .icon-guest-travelagent { 
-                                width: 30%;
-                         }
-                    }
+                .icons {
+                    display: inline;
+                    line-height: 20px;
+                    height: 20px;
+                    overflow: hidden;
+                }
 
-                    .info-holder {
-                        float: right;
-                        width: 60%;
-                    }
+                .icon-hold {
+                    position: absolute;
+                    left: -40px;
+                    top: 10px; 
+                    margin: auto;
+                }
 
-                    .info {
-                        margin-top: 5px;
-                        text-align: center;
-                        width: 25%;
-                        color: @grey3;
-                        .pull-left;
+                .icons {
+                    color: @grey3;
+                    padding-left: 20px;
+                }
 
-                        strong {
-                            font-size: 20px;
-                            line-height: 1.25em;
-                            font-weight: 600;
-                            text-transform: uppercase;
-                            color: @textColor;
-                            .show;
-                            &.red { color: @grey3; }
-                        }
+                .icon-location,
+                .icon-guest-travelagent {
+                    background: none;
+                    padding: 0;
+                    display: block;
+                    line-height: 1;
+                    height: auto;
+                    .pull-left();
+                }
 
-                        span {
-                            font-size: 14px;
-                            text-transform: uppercase;
-                        }
+                .icon-location {
+                        width: 70%;
+                }
+                 .icon-guest-travelagent {
+                        width: 30%;
+                 }
+            }
+
+            .info {
+                text-align: right;
+                .pull-right;
+                .float;
+
+                li {
+                    border-bottom: none;
+                    width: 130px;
+                    height: 30px;
+                    line-height: 30px;
+                    padding: 0;
+                    .pull-left();
+
+                    &:last-child {
+                        padding-right: 5pt;
                     }
                 }
-    }
+            }
 
+            .commission-details {
+                th,
+                td {
+                    &:first-child {
+                        width: 10pt;
+                    }
+                    &.amount,
+                    &.owing {
+                        text-align: right;
+                        width: 130px;
+                        padding-right: 0;
+                    }
+
+                    &.owing {
+                        padding-right: 5pt;
+                    }
+                }
+            }
+        }
+    }
+    
 /* 6. IE
 ==========================================================*/
 /* 7. RESPONSIVE
