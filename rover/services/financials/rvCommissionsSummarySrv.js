@@ -37,7 +37,7 @@ sntRover.service('RVCommissionsSrv', ['$http', '$q', 'BaseWebSrvV2', function($h
     that.exportCommissions = function(params) {
 
         var deferred = $q.defer();
-        var url = '/admin/export_schedules/835/run_now';
+        var url = '/api/reports/commisson_export';
 
         BaseWebSrvV2.getJSON(url, params).then(function(data) {
             deferred.resolve(data);
