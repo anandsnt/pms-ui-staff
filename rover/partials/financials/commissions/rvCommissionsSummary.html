@@ -60,7 +60,7 @@
          <!-- Show if active filter: On Hold (remove .hidden) -->
          <li ng-show="filterData.filterTab === 'ON_HOLD'">
             <span translate>AMOUNT_ON_HOLD</span>
-            <span class="amount">{{ ::currencySymbol }}{{::commissionsData.amount_totals.unpaid}}</span>
+            <span class="amount">{{ ::currencySymbol }}{{::commissionsData.amount_totals.on_hold}}</span>
          </li>
       </ul>
       <!-- Show if active filer: Payable & 1 or more agents are selected (checked) (remove .hidden) -->
