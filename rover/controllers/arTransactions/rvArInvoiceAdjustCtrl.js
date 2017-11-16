@@ -55,7 +55,7 @@ sntRover.controller('RvArInvoiceAdjustController',
       $scope.clickedAdjust = function() {
         var postData = { 
           new_amount: $scope.adjustData.amount,          
-          reference_text: $scope.adjustData.reference,
+          reference_text: $scope.adjustData.reference_text,
           show_ref_on_invoice: $scope.show_reference_on_guest_invoice,
           is_manual_balance: $scope.selectedInvoice.is_manual_balance,
           is_adjustment: $scope.selectedTransaction.is_adjustment
