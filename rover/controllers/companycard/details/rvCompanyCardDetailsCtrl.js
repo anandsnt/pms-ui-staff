@@ -4,6 +4,11 @@ angular.module('sntRover').controller('companyCardDetailsController', ['$scope',
 		// Flag for add new card or not
 		$scope.isAddNewCard = ($stateParams.id === "add") ? true : false;
 
+        $scope.$on('UPDATE_SCROLL', function(e, data) {
+            console.log("Handle iscroll");
+        });
+
+
 		/* Checking permision to show Commission Tab */
 
 		$scope.hasPermissionToViewCommissionTab = function() {
