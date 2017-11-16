@@ -96,7 +96,14 @@ admin.controller('ADAddnewRate', ['$scope', 'ADRatesRangeSrv', 'ADRatesSrv', '$s
                 addOns.is_inclusive_in_rate = "false";
             });
             $scope.rateData.addOns = rateInitialData.addons;
-
+            angular.forEach($scope.rateData.addOns, function(addOn) {
+                addOn.shouldShow = true;
+                
+                if (_.indexOf(addOn.excluded_rate_ids, parseInt($stateParams.rateId)) !== -1) {
+                    addOn.shouldShow = false;
+                }
+               
+            });
 
             // restriction type
             $scope.restrictionDetails = rateInitialData.restrictionDetails;

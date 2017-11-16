@@ -260,12 +260,7 @@ angular.module('adminInterfacesRouter', []).config(function($stateProvider) {
     $stateProvider.state('admin.ifc_room_mappings', {
         templateUrl: '/assets/partials/interfaces/Comtrol/adComtrolRoomMappings.html',
         controller: 'adComtrolRoomMappingCtrl',
-        url: '/ifc_comtrol/setup',
-        resolve: {
-            roomMappings: ['adComtrolRoomMappingSrv', function(adComtrolRoomMappingSrv) {
-                return adComtrolRoomMappingSrv.fetch();
-            }]
-        }
+        url: '/ifc_comtrol/setup'
     });
 
     $stateProvider.state('admin.gustoPosSetup', {
