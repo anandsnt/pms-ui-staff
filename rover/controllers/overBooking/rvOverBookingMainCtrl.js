@@ -15,18 +15,13 @@ angular.module('sntRover').controller('RvOverBookingMainCtrl', [
 		roomTypeList: completeRoomTypeListData,
 		overBookingGridData: overBookingGridData,
 		selectedDate: $rootScope.businessDate,
-		formattedSelectedDate: $filter('date')($rootScope.businessDate, $rootScope.dateFormat)
+		startDate: moment(tzIndependentDate($rootScope.businessDate)).format($rootScope.momentFormatForAPI),
+		endDate: moment(tzIndependentDate($rootScope.businessDate)).day(14).format($rootScope.momentFormatForAPI),
+		isShowRoomsLeftToSell: false
 	};
-console.log($scope.overBookingObj);
-	// To popup contract start date
-	$scope.showDatePicker = function() {
-		ngDialog.open({
-			template: '/assets/partials/common/rvDatePicker.html',
-			controller: 'rvOverBookingDatePickerCtrl',
-			className: '',
-			scope: $scope,
-			closeByDocument: true
-		});
-	};
+
+	$scope.$on('REFRESH_OVERBOOKING_GRID', function() {
+		console.log('REFRESH_OVERBOOKING_GRID');
+	});
 
 }]);

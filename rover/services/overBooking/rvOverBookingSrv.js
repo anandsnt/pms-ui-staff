@@ -48,6 +48,11 @@ angular.module('sntRover').service('rvOverBookingSrv', ['$q', 'rvBaseWebSrvV2', 
 		}, function(data) {
 			deferred.reject(data);
 		});*/
+		that.data = {
+			'house_rooms': [],
+            'room_type': [],
+            'dates': getDateRange(firstDate, secondDate)
+		};
 
 		deferred.resolve(that.data);
 		return deferred.promise;

@@ -1,26 +1,26 @@
-angular.module('sntRover').controller('rvOverBookingDatePickerCtrl', ['$scope', '$rootScope', 'ngDialog', '$filter', function($scope, $rootScope, ngDialog, $filter) {
+angular.module('sntRover').controller('rvOverBookingDatePickerCtrl', ['$scope', '$rootScope', 'ngDialog', '$filter', 'dateFilter', function($scope, $rootScope, ngDialog, $filter, dateFilter) {
 
-	var selectedDateOnLoading = $scope.data.selectedDate;
+	var minDateSelected = dateFilter(tzIndependentDate($rootScope.businessDate), 'yyyy-MM-dd'),
+		maxDate = moment(tzIndependentDate($rootScope.businessDate)).day(366).format($rootScope.momentFormatForAPI);
 
-	$scope.setUpCalendar = function() {
-	   $scope.dateOptions = {
-	     changeYear: true,
-	     changeMonth: true,
-	     minDate: tzIndependentDate($rootScope.businessDate),
-	     yearRange: "-10:+1",
-	     dateFormat: 'mm-dd-yy',
-	     onSelect: function(dateText, inst) {
+		console.log(maxDate);
 
-	     	if ($scope.data.selectedDate !== selectedDateOnLoading) {
-	     		$scope.data.formattedSelectedDate = $filter('date')($scope.data.selectedDate, $rootScope.dateFormat);
-	     		$scope.changedAvailabilityDataParams();
-	     	}
+	$scope.date = dateFilter(tzIndependentDate($scope.overBookingObj.startDate), 'yyyy-MM-dd');
 
-	        ngDialog.close();
-	      }
-
-	    };
+	$scope.setUpData = function() {
+		$scope.dateOptions = {
+			changeYear: true,
+			changeMonth: true,
+			minDate: tzIndependentDate(minDateSelected),
+			maxDate: tzIndependentDate(maxDate),
+			yearRange: "1:+1",
+			onSelect: function() {
+				$scope.overBookingObj.startDate = $scope.date;
+				$scope.$emit('DATE_CHANGED');
+				ngDialog.close();
+			}
+		};
 	};
-	$scope.setUpCalendar();
 
+	$scope.setUpData();
 }]);

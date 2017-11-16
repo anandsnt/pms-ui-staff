@@ -1,0 +1,45 @@
+<!-- Overbooking Header -->
+<div class="overbooking-header" ng-controller="RvOverBookingHeaderCtrl">
+    <!-- Set Start Date -->
+	<div class="entry date">
+	    <button ng-click="clickedPrevDateButton()" type="button" class="button with-icon only-icon">
+	        <span class="icons icon-double-arrow black"></span>
+	    </button>
+	    <div ng-click="showDatePicker()" class="entry-data">
+	        <input type="text" class="datepicker" value="{Start Date}" readonly />
+	        <span class="date-range">{{overBookingObj.startDate|date:'dd MMM'}} - {{overBookingObj.endDate|date:'dd MMM yyyy'}}</span>
+	    </div>
+	    <button ng-click="clickedNextDateButton()"  type="button" class="button with-icon only-icon">
+	        <span class="icons icon-double-arrow black rotate-right"></span>
+	    </button>
+	</div>
+	<!-- Show Rooms Left to Sell -->
+	<div ng-click="clickedShowRoomsLeftTosell()" class="entry">
+	    <label class="checkbox"> <!-- Add class 'checked' if L18 checked -->
+	        <span class="icon-form icon-checkbox"></span> <!-- Add class 'checked' if L18 checked -->
+	        <input type="checkbox" />
+	        Show rooms left to sell
+	    </label>
+	</div>
+	<!-- Filter Room Types -->
+	<div class="entry room-type">
+	    <div class="multi-select"> <!-- Toggle class 'active' when clicked (show when L28 not hidden, remove when L28 hidden) -->
+	        <label>Room Type(s)</label>
+	        <span class="value">Show All</span>
+	    </div>
+	    <div class="multi-select-options scrollable hidden"> <!-- Toggle class 'hidden' when L24 clicked -->
+	        <div class="wrapper">
+	            <label class="checkbox inline checked"> <!-- All checked by default -->
+	                <span class="icon-form icon-checkbox checked"></span>
+	                <input value="{val}" type="checkbox" checked />
+	                {Room Type}
+	            </label>
+	            ... repeat L30-L34 for every Room Type
+	        </div>
+	    </div>
+	</div>
+	<!-- Add Overbooking -->
+	<div class="actions">
+	    <button type="button" class="button green">Add Overbooking</button> <!-- Open {modals/overbooking-new.html} -->
+	</div>
+</div>
