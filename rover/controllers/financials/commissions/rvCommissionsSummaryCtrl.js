@@ -378,6 +378,8 @@ sntRover.controller('RVCommissionsSummaryController', ['$scope',
         };
 
         $scope.openPopupWithTemplate = function(template) {
+            // TO DO: handle for release from ON_HOLD TAB - minor updates
+            
             if ($scope.filterData.filterTab === 'PAYABLE') {
                 if ($scope.areAllAgentsSelected()) {
                     $scope.eligibleForPayment = $scope.commissionsData.amount_totals.unpaid;
