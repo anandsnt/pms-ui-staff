@@ -295,7 +295,7 @@ sntRover.controller('RVCommissionsSummaryController', ['$scope',
             } else {
                 params.partialy_selected_agents = [];
                 // if only items in the existing page are selected
-                if (params.no_of_bills_selected <= 50) {
+                if (params.no_of_bills_selected <= $scope.filterData.perPage) {
                     params.selected_agents = [];
                     _.each($scope.selectedAgentIds, function(id) {
                         params.selected_agents.push({
@@ -314,7 +314,7 @@ sntRover.controller('RVCommissionsSummaryController', ['$scope',
                     });
                 }
                 _.each($scope.commissionsData.accounts, function(account) {
-                    if (account.isExpanded && account.selectedReservations.length) {
+                    if (account.isExpanded && account.selectedReservations.length && account.selectedReservations.length !== account.reservationsData.total_count) {
                         var data = {
                             'id': account.id,
                             'selected_res_ids': account.selectedReservations
@@ -378,6 +378,39 @@ sntRover.controller('RVCommissionsSummaryController', ['$scope',
         };
 
         $scope.openPopupWithTemplate = function(template) {
+            if ($scope.filterData.filterTab === 'PAYABLE') {
+                if ($scope.areAllAgentsSelected()) {
+                    $scope.eligibleForPayment = $scope.commissionsData.amount_totals.unpaid;
+                } else {
+                    var amountOwing;
+
+                    // if only items in the existing page are selected
+                    if ($scope.noOfBillsSelected <= $scope.filterData.perPage) {
+                        amountOwing = 0;
+                        _.each($scope.commissionsData.accounts, function(account) {
+                            _.each($scope.selectedAgentIds, function(id) {
+                                if (id === account.id) {
+                                    amountOwing = amountOwing + parseInt(account.amount_owing);
+                                }
+                            });
+                        });
+
+                    } else {
+                        // when more than per page items are selected and
+                        // some of the current page items are unchecked
+                        // subtract unselected amount from total
+                        amountOwing = parseInt($scope.commissionsData.amount_totals.unpaid);
+                        _.each($scope.commissionsData.accounts, function(account) {
+                            if (!account.isSelected) {
+                                amountOwing = amountOwing - parseInt(account.amount_owing);
+                            }
+                        });
+                    }
+                    $scope.eligibleForPayment = amountOwing;
+                }
+            }
+
+            
             ngDialog.open({
                 template: '/assets/partials/financials/commissions/' + template + '.html',
                 className: '',

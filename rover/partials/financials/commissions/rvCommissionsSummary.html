@@ -70,8 +70,8 @@
             <span class="amount">{{ noOfBillsSelected }}</span>
          </li>
          <li>
-            <span>ELIGIBLE_FOR_PAYMENT</span>
-            <span class="amount">{{ ::currencySymbol }} 55</span>
+            <span translate>ELIGIBLE_FOR_PAYMENT</span>
+            <span class="amount">{{ ::currencySymbol }} {{::commissionsData.amount_totals.unpaid}}</span>
          </li>
          <li class="actions">
             <button type="button" class="button red with-icon" ng-click="openPopupWithTemplate('rvCommisionsHoldPopup')"><span class="icons icon-hold"></span>{{ 'HOLD' | translate}}</button>
