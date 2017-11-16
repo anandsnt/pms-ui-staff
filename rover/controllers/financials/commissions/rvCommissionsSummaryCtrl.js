@@ -119,7 +119,7 @@ sntRover.controller('RVCommissionsSummaryController', ['$scope',
                 account.isSelected = true;
                 account.isSemiSelected = false;
                 if ($scope.selectedAgentIds.indexOf(account.id) === -1) {
-                    $scope.selectedAgentIds.push($scope.expandedSubmenuId);
+                    $scope.selectedAgentIds.push(account.id);
                 }
                 $scope.noOfBillsSelected++;
             } else {
@@ -406,6 +406,17 @@ sntRover.controller('RVCommissionsSummaryController', ['$scope',
                             }
                         });
                     }
+
+                    // apart from main TA, add partially selected TA
+                    _.each($scope.commissionsData.accounts, function(account) {
+                        if (account.isExpanded && account.selectedReservations.length && account.selectedReservations.length !== account.reservationsData.total_count) {
+                            _.each(account.reservationsData.reservations, function(reservation) {
+                                if (reservation.isSelected) {
+                                    amountOwing = amountOwing + parseInt(reservation.amount_owing);
+                                }
+                            });
+                        }
+                    });
                     $scope.eligibleForPayment = amountOwing;
                 }
             }
