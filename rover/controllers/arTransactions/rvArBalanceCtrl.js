@@ -285,6 +285,7 @@ sntRover.controller('RvArBalanceController', ['$scope', '$timeout', 'rvAccountsA
 		$scope.clickedEditIconToAdjustInvoice = function(invoiceIndex, transactionIndex) {
 			$scope.selectedInvoice = $scope.arDataObj.balanceList[invoiceIndex];
 			$scope.selectedTransaction = $scope.arDataObj.balanceList[invoiceIndex].debits[transactionIndex];
+			// $scope.isManualBalance = $scope.arDataObj.balanceList[invoiceIndex].is_manual_balance;
 			ngDialog.open({
 				template: '/assets/partials/companyCard/arTransactions/rvArInvoiceAdjustPopup.html',
 				scope: $scope,
