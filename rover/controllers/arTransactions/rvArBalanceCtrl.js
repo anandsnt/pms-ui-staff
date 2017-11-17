@@ -20,6 +20,7 @@ sntRover.controller('RvArBalanceController', ['$scope', '$timeout', 'rvAccountsA
 			_.each($scope.arDataObj.balanceList, function (eachItem) {			    	    
 				$scope.arDataObj.totalOfAllInvoicesInBalanceTab = parseFloat($scope.arDataObj.totalAllocatedAmount) + parseFloat(eachItem.amount);
 			});
+			$scope.arDataObj.totalAllocatedAmount = $scope.arDataObj.totalOfAllInvoicesInBalanceTab;
 			
 		});	
 		/*
