@@ -304,6 +304,7 @@ function($scope, $state, $rootScope, $stateParams, RVCompanyCardSrv, ngDialog, $
         $scope.prePaidCommissions = [];
         $scope.filterData.selectAll = false;
     };
+    
     /*
      * Toggle global button
      */
