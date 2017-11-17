@@ -117,8 +117,8 @@ angular.module('sntPay').controller('paySixPayController', ['$scope', 'paymentAp
                         response: {
                             id: response.payment_method_id || response.guest_payment_method_id,
                             payment_name: "CC",
-                            usedEMV: true
-
+                            usedEMV: true,
+                            addToGuestCard: $scope.payment.addToGuestCardSelected
                         },
                         selectedPaymentType: $scope.selectedPaymentType || "CC",
                         cardDetails: {
