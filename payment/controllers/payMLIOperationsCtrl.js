@@ -139,6 +139,7 @@ angular.module('sntPay').controller('payMLIOperationsController',
                         $scope.$emit('SUCCESS_LINK_PAYMENT', {
                             response: {
                                 id: response.payment_method_id || response.guest_payment_method_id,
+                                guest_payment_method_id: response.guest_payment_method_id,
                                 payment_name: 'CC',
                                 usedEMV: true,
                                 addToGuestCard: $scope.payment.addToGuestCardSelected
