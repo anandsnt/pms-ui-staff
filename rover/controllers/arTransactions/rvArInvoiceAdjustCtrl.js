@@ -57,9 +57,12 @@ sntRover.controller('RvArInvoiceAdjustController',
           new_amount: $scope.adjustData.amount,          
           reference_text: $scope.adjustData.reference_text,
           show_ref_on_invoice: $scope.show_reference_on_guest_invoice,
-          is_manual_balance: $scope.selectedInvoice.is_manual_balance,
-          is_adjustment: $scope.selectedTransaction.is_adjustment
+          is_manual_balance: $scope.selectedInvoice.is_manual_balance          
         };
+
+        if ($scope.selectedTransaction.is_adjustment) {
+          postData.change_reference_only = $scope.selectedTransaction.is_adjustment
+        }
 
         if (!$scope.selectedTransaction.is_group_by_ref) {
           if ($scope.selectedInvoice.is_manual_balance) {
