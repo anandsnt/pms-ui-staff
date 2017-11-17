@@ -1,4 +1,4 @@
-sntRover.controller('RVCommisionsHeaderCtrl', ['$scope', 'ngDialog', '$log', function($scope, ngDialog, $log) {
+sntRover.controller('RVCommisionsHeaderCtrl', ['$scope', 'ngDialog', '$log', '$timeout','RVCommissionsSrv', function($scope, ngDialog, $log, $timeout, RVCommissionsSrv) {
 	BaseCtrl.call(this, $scope);
 
 	var setParamsInCurrentPage = function(params) {
@@ -54,7 +54,6 @@ sntRover.controller('RVCommisionsHeaderCtrl', ['$scope', 'ngDialog', '$log', fun
 				delete params.partialy_selected_agents;
 			}
 		}
-		$log.info(JSON.stringify(params));
 		return params;
 	};
 
@@ -76,7 +75,7 @@ sntRover.controller('RVCommisionsHeaderCtrl', ['$scope', 'ngDialog', '$log', fun
 					ngDialog.close();
 				}, 5000);
 			},
-			failureCallBack: function(err) {
+			failureCallBack: function() {
 				setExportStatus(false, true, false);
 			}
 		};
@@ -130,6 +129,14 @@ sntRover.controller('RVCommisionsHeaderCtrl', ['$scope', 'ngDialog', '$log', fun
 		return amountOwing;
 	};
 
+	var openNgDialogWithTemplate = function(template){
+		ngDialog.open({
+			template: '/assets/partials/financials/commissions/' + template + '.html',
+			className: '',
+			scope: $scope
+		});
+	}
+
 	$scope.openPopupWithTemplate = function(template) {
 		// TO DO: handle for release from ON_HOLD TAB - minor updates
 
@@ -162,13 +169,8 @@ sntRover.controller('RVCommisionsHeaderCtrl', ['$scope', 'ngDialog', '$log', fun
 				$scope.eligibleForPayment = amountOwing;
 			}
 		}
-
-
-		ngDialog.open({
-			template: '/assets/partials/financials/commissions/' + template + '.html',
-			className: '',
-			scope: $scope
-		});
+		openNgDialogWithTemplate(template);
 	};
+
 
 }]);
