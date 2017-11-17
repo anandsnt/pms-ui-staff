@@ -126,7 +126,8 @@ angular.module('sntPay').controller('payMLIOperationsController',
                          *  ending_with: "0088",
                          *  expiry_date: "1217"
                          *  payment_method_id: 35102,
-                         *  token: "123465498745316854"
+                         *  token: "123465498745316854",
+                         *  is_swiped: true
                          * }
                          *
                          * NOTE: In case the request params sends add_to_guest_card: true AND guest_id w/o reservation_id
@@ -146,7 +147,8 @@ angular.module('sntPay').controller('payMLIOperationsController',
                                 'card_code': cardType.toLowerCase(),
                                 'ending_with': response.ending_with,
                                 'expiry_date': response.expiry_date,
-                                'card_name': ''
+                                'card_name': '',
+                                'is_swiped': response.is_swiped
                             }
                         });
 
