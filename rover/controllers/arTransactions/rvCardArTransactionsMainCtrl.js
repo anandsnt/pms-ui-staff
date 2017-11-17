@@ -480,8 +480,6 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 		 */
 		var init = function() {
 			$scope.fetchTransactions();
-			// to show the sub heading when full screen mode is on
-			$scope.fullScreenSubHeader = "AR_TRANSACTIONS";
 		};
 
 		// Catch error messges from child controllers.

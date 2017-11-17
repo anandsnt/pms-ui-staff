@@ -69,7 +69,7 @@
 
                         <li ng-class="{'ui-tabs-active': currentSelectedTab == 'cc-ar-transactions','with-filters':isWithFilters }" ng-click="switchTabTo($event, 'cc-ar-transactions')" ng-show="contactInformation.account_details.accounts_receivable_number.length>0 || isArTabAvailable">
                             <a translate>AR_TRANSACTIONS</a>
-                            <button type="button" class="button white icons icon-expand" rv-fullscreen>Fullscreen</button>
+                            <button type="button" class="button white icons icon-expand" rv-fullscreen fs-sub-header="AR_TRANSACTIONS">Fullscreen</button>
                         </li>
 
                         <li class="with-filters" ng-hide="true" class="ui-state-default ui-corner-top" ng-class="{'ui-tabs-active': currentSelectedTab == 'cc-reservations'}" ng-click="switchTabTo($event, 'cc-reservations')">
