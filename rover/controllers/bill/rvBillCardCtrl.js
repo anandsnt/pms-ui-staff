@@ -1945,6 +1945,7 @@ sntRover.controller('RVbillCardController',
 				"signature": signatureBase64Data,
 				"allow_checkout_without_settlement": true
 			};
+			
 			sntActivity.start('COMPLETE_CHECKOUT');
 			$scope.invokeApi(RVBillCardSrv.completeCheckout, data, $scope.completeCheckoutSuccessCallback, $scope.completeCheckoutFailureCallback);
 		}
