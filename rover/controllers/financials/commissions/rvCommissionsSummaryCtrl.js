@@ -11,7 +11,6 @@ sntRover.controller('RVCommissionsSummaryController', ['$scope',
     function($scope, $rootScope, $stateParams, $filter, RVCommissionsSrv, $timeout, $window, $state, ngDialog, $log) {
 
         BaseCtrl.call(this, $scope);
-        var commsionSearchParams;
 
         var updateHeader = function() {
             // Setting up the screen heading and browser title.
@@ -94,10 +93,7 @@ sntRover.controller('RVCommissionsSummaryController', ['$scope',
             account.isSemiSelected = isSemiSelected;
         };
 
-        // based on the change in reservation selection, the corresponding 
-        // agent and all agent selected/ semi selected flag need to be set.
-        $scope.reservationSelectionChanged = function(account, reservation) {
-            // if selected, add to the array
+        var addRemoveFromSelectedReservationsList = function(account, reservation) {
             var selectedIndex = account.selectedReservations.indexOf(reservation.id);
 
             // is checked and was not added before
@@ -116,6 +112,13 @@ sntRover.controller('RVCommissionsSummaryController', ['$scope',
                 }
                 account.isSelected = false;
             }
+        };
+
+        // based on the change in reservation selection, the corresponding 
+        // agent and all agent selected/ semi selected flag need to be set.
+        $scope.reservationSelectionChanged = function(account, reservation) {
+            // if selected, add to the array
+            addRemoveFromSelectedReservationsList(account, reservation);
             // set the checked status of the outer account, based on inner checkbox selections
             if (account.selectedReservations.length === 0) {
                 // if no items are selected
@@ -247,34 +250,38 @@ sntRover.controller('RVCommissionsSummaryController', ['$scope',
             refreshArOverviewScroll();
         };
 
-        var fetchAgentsData = function(pageNo) {
+        var setUpReserationsListForAgents = function() {
+            _.each($scope.commissionsData.accounts, function(account) {
+                account.isExpanded = false;
+                account.fetchReservationData = function(pageNo) {
+                    var page = pageNo ? pageNo : 1;
+
+                    var onFetchListSuccess = function(response) {
+                        reservationsListFetchCompletedActions(account, response);
+                    };
+
+                    $scope.callAPI(RVCommissionsSrv.fetchReservationOfCommissions, {
+                        params: {
+                            id: account.id,
+                            'page': page,
+                            'per_page': $scope.filterData.innerPerPage
+                        },
+                        successCallBack: onFetchListSuccess
+                    });
+                };
+                account.paginationData = {
+                    id: 'RESERVATION_LIST_' + account.id,
+                    api: account.fetchReservationData,
+                    perPage: $scope.filterData.innerPerPage
+                };
+            });
+        };
+
+        $scope.fetchAgentsData = function(pageNo) {
             $scope.filterData.page = pageNo ? pageNo : 1;
             var successCallBack = function(data) {
                 $scope.commissionsData = data;
-                _.each($scope.commissionsData.accounts, function(account) {
-                    account.isExpanded = false;
-                    account.fetchReservationData = function(pageNo) {
-                        var page = pageNo ? pageNo : 1;
-
-                        var onFetchListSuccess = function(response) {
-                           reservationsListFetchCompletedActions(account, response);
-                        };
-
-                        $scope.callAPI(RVCommissionsSrv.fetchReservationOfCommissions, {
-                            params: {
-                                id: account.id,
-                                'page': page,
-                                'per_page': $scope.filterData.innerPerPage
-                            },
-                            successCallBack: onFetchListSuccess
-                        });
-                    };
-                    account.paginationData = {
-                        id: 'RESERVATION_LIST_' + account.id,
-                        api: account.fetchReservationData,
-                        perPage: $scope.filterData.innerPerPage
-                    };
-                });
+                setUpReserationsListForAgents();
                 $scope.resetSelections();
                 $scope.showPagination = ($scope.commissionsData.total_count <= $scope.filterData.perPage) ? false : true;
                 $scope.errorMessage = "";
@@ -286,181 +293,27 @@ sntRover.controller('RVCommissionsSummaryController', ['$scope',
                 $scope.initialLoading = false;
             };
 
-            $scope.invokeApi(RVCommissionsSrv.fetchCommissions, commsionSearchParams, successCallBack);
+            var params = {
+                'query': $scope.filterData.searchQuery,
+                'page': $scope.filterData.page,
+                'per_page': $scope.filterData.perPage,
+                'bill_status': $scope.filterData.billStatus.value,
+                'sort_by': $scope.filterData.sort_by.value,
+                'min_commission_amount': $scope.filterData.minAmount
+            };
+
+            $scope.invokeApi(RVCommissionsSrv.fetchCommissions, params, successCallBack);
         };
 
         $scope.searchAccounts = function() {
-            fetchAgentsData();
+            $scope.fetchAgentsData();
         };
 
         $scope.clearSearchQuery = function() {
             $scope.filterData.searchQuery = '';
-            fetchAgentsData();
+            $scope.fetchAgentsData();
         };
         /**   *************** search ends here *****************************/
-
-        /**   *************** Actions starts here *******************/
-
-        var generateParams = function() {
-            var params = {};
-
-            params.no_of_bills_selected = $scope.noOfTASelected;
-
-            if ($scope.areAllAgentsSelected()) {
-                params.update_all_bill = true;
-            } else {
-                params.partialy_selected_agents = [];
-                // if only items in the existing page are selected
-                if (params.no_of_bills_selected <= $scope.filterData.perPage) {
-                    params.selected_agents = [];
-                    _.each($scope.selectedAgentIds, function(id) {
-                        params.selected_agents.push({
-                            'id': id,
-                            'update_all': true
-                        });
-                    });
-                } else {
-                    // when more than per page items are selected and
-                    // some of the current page items are unchecked
-                    params.un_selected_agents = [];
-                    _.each($scope.commissionsData.accounts, function(account) {
-                        if (!account.isSelected) {
-                            params.un_selected_agents.push(account.id);
-                        }
-                    });
-                }
-                _.each($scope.commissionsData.accounts, function(account) {
-                    if (account.isExpanded && account.selectedReservations.length && account.selectedReservations.length !== account.reservationsData.total_count) {
-                        var data = {
-                            'id': account.id,
-                            'selected_res_ids': account.selectedReservations
-                        };
-
-                        params.partialy_selected_agents.push(data);
-                    }
-                });
-
-                if (!params.partialy_selected_agents.length) {
-                    delete params.partialy_selected_agents;
-                }
-            }
-            $log.info(JSON.stringify(params));
-            return params;
-        };
-
-        var setExportStatus = function(inProgress, failed, success) {
-            $scope.exportSuccess = success;
-            $scope.exportFailed = failed;
-            $scope.exportInProgess = inProgress;
-        };
-
-        $scope.exportCommisions = function() {
-
-            var options = {
-                params: generateParams(),
-                successCallBack: function() {
-                    // for now we will only show in progress status and then dismiss the
-                    // popup
-                    $timeout(function() {
-                        setExportStatus(false, false, true);
-                        ngDialog.close();
-                    }, 5000);
-                },
-                failureCallBack: function(err) {
-                    setExportStatus(false, true, false);
-                }
-            };
-
-            setExportStatus(true, false, false);
-            $scope.callAPI(RVCommissionsSrv.exportCommissions, options);
-        };
-
-        $scope.showExportPopup = function() {
-            setExportStatus(false, false, false);
-            ngDialog.open({
-                template: '/assets/partials/financials/commissions/rvCommissionsExport.html',
-                className: '',
-                scope: $scope
-            });
-        };
-
-        $scope.popupBtnAction = function(action) {
-            var params = generateParams();
-
-            params.action = action;
-            var successCallBack = function() {
-                ngDialog.close();
-                fetchAgentsData();
-            };
-
-            successCallBack();
-        };
-
-        var calculateAmountOwingForCurrentPage = function() {
-            var amountOwing = 0;
-
-            _.each($scope.commissionsData.accounts, function(account) {
-                _.each($scope.selectedAgentIds, function(id) {
-                    if (id === account.id) {
-                        amountOwing = amountOwing + parseInt(account.amount_owing);
-                    }
-                });
-            });
-            return amountOwing;
-        };
-
-        var calculateAmountOwingForCurrentPageAndOtherPages = function() {
-            var amountOwing = parseInt($scope.commissionsData.amount_totals.unpaid);
-
-            _.each($scope.commissionsData.accounts, function(account) {
-                if (!account.isSelected) {
-                    amountOwing = amountOwing - parseInt(account.amount_owing);
-                }
-            });
-            return amountOwing;
-        };
-
-        $scope.openPopupWithTemplate = function(template) {
-            // TO DO: handle for release from ON_HOLD TAB - minor updates
-
-            if ($scope.filterData.filterTab === 'PAYABLE') {
-                if ($scope.areAllAgentsSelected()) {
-                    $scope.eligibleForPayment = $scope.commissionsData.amount_totals.unpaid;
-                } else {
-                    var amountOwing;
-
-                    // if only items in the existing page are selected
-                    if ($scope.noOfTASelected <= $scope.filterData.perPage) {
-                        amountOwing = calculateAmountOwingForCurrentPage();
-                    } else {
-                        // when more than per page items are selected and
-                        // some of the current page items are unchecked
-                        // subtract unselected amount from total
-                        amountOwing = calculateAmountOwingForCurrentPageAndOtherPages();
-                    }
-
-                    // apart from main TA, add partially selected TA
-                    _.each($scope.commissionsData.accounts, function(account) {
-                        if (account.isExpanded && account.selectedReservations.length && account.selectedReservations.length !== account.reservationsData.total_count) {
-                            _.each(account.reservationsData.reservations, function(reservation) {
-                                if (reservation.isSelected) {
-                                    amountOwing = amountOwing + parseInt(reservation.amount_owing);
-                                }
-                            });
-                        }
-                    });
-                    $scope.eligibleForPayment = amountOwing;
-                }
-            }
-
-
-            ngDialog.open({
-                template: '/assets/partials/financials/commissions/' + template + '.html',
-                className: '',
-                scope: $scope
-            });
-        };
-
         $scope.printButtonClick = function() {
             $timeout(function() {
                 $window.print();
@@ -469,9 +322,7 @@ sntRover.controller('RVCommissionsSummaryController', ['$scope',
                 }
             }, 100);
         };
-
-        /**   *************** Actions ends here *******************/
-
+      
         $scope.navigateToTA = function(account) {
             // https://stayntouch.atlassian.net/browse/CICO-40583
             // Can navigate to TA even if commission is off.
@@ -496,21 +347,13 @@ sntRover.controller('RVCommissionsSummaryController', ['$scope',
             $scope.noOfBillsSelected = 0;
             $scope.paginationData = {
                 id: 'TA_LIST',
-                api: fetchAgentsData,
+                api: $scope.fetchAgentsData,
                 perPage: $scope.filterData.perPage
             };
             $scope.setScroller('commissionOverViewScroll', {});
             $scope.initialLoading = true;
-            commsionSearchParams = {
-                'query': $scope.filterData.searchQuery,
-                'page': $scope.filterData.page,
-                'per_page': $scope.filterData.perPage,
-                'bill_status': $scope.filterData.billStatus.value,
-                'sort_by': $scope.filterData.sort_by.value,
-                'min_commission_amount': $scope.filterData.minAmount
-            };
             // fetch initial data
-            fetchAgentsData();
+            $scope.fetchAgentsData();
         })();
 
     }
