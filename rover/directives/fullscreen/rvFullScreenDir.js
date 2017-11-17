@@ -11,7 +11,7 @@ sntRover.directive('rvFullscreen', [
     function($rootScope) {
         return {
             restrict: 'A',
-            link: function(scope, element, attrs) {
+            link: function(scope, element) {
                 element.on('click', function(e) {
                     var myEl = angular.element(document.querySelector('body'))[0];
 
