@@ -209,7 +209,9 @@ angular.module('sntRover').controller('RVTravelAgentCardCtrl', ['$scope', '$root
 			event.preventDefault();
 			saveContactInformation($scope.contactInformation);
 		});
-
+		/*
+		 * Toggle global button
+		 */
         $scope.toggleGlobalButton = function() {
 			if (rvPermissionSrv.getPermissionValue ('GLOBAL_CARD_UPDATE')) {
 				$scope.contactInformation.is_global_enabled = !$scope.contactInformation.is_global_enabled;

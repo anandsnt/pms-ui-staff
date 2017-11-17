@@ -279,7 +279,9 @@ angular.module('sntRover').controller('companyCardDetailsController', ['$scope',
 		$scope.clikedDiscardDeleteAr = function() {
 			ngDialog.close();
 		};
-
+		/*
+		 * Toggle global button
+		 */
 		$scope.toggleGlobalButton = function() {
 			if (rvPermissionSrv.getPermissionValue ('GLOBAL_CARD_UPDATE')) {
 				$scope.contactInformation.is_global_enabled = !$scope.contactInformation.is_global_enabled;

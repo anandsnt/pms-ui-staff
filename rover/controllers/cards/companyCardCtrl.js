@@ -178,13 +178,18 @@ angular.module('sntRover').controller('RVCompanyCardCtrl', ['$scope', '$rootScop
 			$scope.searchMode = false;
 			$scope.$emit('hideLoader');
 		});
-
+		/*
+		 * Toggle global button
+		 */
 		$scope.toggleGlobalButton = function() {
 			if (rvPermissionSrv.getPermissionValue ('GLOBAL_CARD_UPDATE')) {
 				$scope.contactInformation.is_global_enabled = !$scope.contactInformation.is_global_enabled;
 			}
 
 		};
+		/*
+		 * Check - update enabled or not
+		 */
 		$scope.isUpdateEnabled = function() {
 			var isDisabledFields = false;
 			

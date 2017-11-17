@@ -304,7 +304,9 @@ function($scope, $state, $rootScope, $stateParams, RVCompanyCardSrv, ngDialog, $
         $scope.prePaidCommissions = [];
         $scope.filterData.selectAll = false;
     };
-
+    /*
+     * Toggle global button
+     */
     $scope.isTogglePaidStatusEnabled = function() {
         var isToggleEnabled = true;
 
@@ -467,7 +469,9 @@ function($scope, $state, $rootScope, $stateParams, RVCompanyCardSrv, ngDialog, $
 
         $scope.invokeApi(RVCompanyCardSrv.recalculateCommission, postData, recalculateCommissionSuccess, recalculateCommissionFailure);
     };
-
+    /*
+     * Fetch multi properties
+     */
     var fetchMultiProperties = function() {
         var onPropertyFetchSuccess = function(data) {
 
