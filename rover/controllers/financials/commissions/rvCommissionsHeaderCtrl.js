@@ -2,9 +2,9 @@ sntRover.controller('RVCommisionsHeaderCtrl', ['$scope', 'ngDialog', '$log', '$t
 	BaseCtrl.call(this, $scope);
 
 	var setParamsInCurrentPage = function(params) {
-		params.selected_agents = [];
+		params.selected_tas = [];
 		_.each($scope.selectedAgentIds, function(id) {
-			params.selected_agents.push({
+			params.selected_tas.push({
 				'id': id,
 				'update_all': true
 			});
@@ -13,10 +13,10 @@ sntRover.controller('RVCommisionsHeaderCtrl', ['$scope', 'ngDialog', '$log', '$t
 	};
 
 	var setParamsInCurrentPageAndOtherPages = function(params) {
-		params.un_selected_agents = [];
+		params.un_selected_tas = [];
 		_.each($scope.commissionsData.accounts, function(account) {
 			if (!account.isSelected) {
-				params.un_selected_agents.push(account.id);
+				params.un_selected_tas.push(account.id);
 			}
 		});
 		return params;
@@ -25,34 +25,25 @@ sntRover.controller('RVCommisionsHeaderCtrl', ['$scope', 'ngDialog', '$log', '$t
 	var generateParams = function() {
 		var params = {};
 
-		params.no_of_bills_selected = $scope.noOfTASelected;
-
 		if ($scope.areAllAgentsSelected()) {
 			params.update_all_bill = true;
 		} else {
-			params.partialy_selected_agents = [];
 			// if only items in the existing page are selected
-			if (params.no_of_bills_selected <= $scope.filterData.perPage) {
+			if ($scope.noOfTASelected <= $scope.filterData.perPage) {
 				params = setParamsInCurrentPage(params);
 			} else {
 				// when more than per page items are selected and
 				// some of the current page items are unchecked
 				params = setParamsInCurrentPageAndOtherPages(params);
 			}
-			_.each($scope.commissionsData.accounts, function(account) {
-				if (account.isExpanded && account.selectedReservations.length && account.selectedReservations.length !== account.reservationsData.total_count) {
-					var data = {
-						'id': account.id,
-						'selected_res_ids': account.selectedReservations
-					};
-
-					params.partialy_selected_agents.push(data);
-				}
-			});
-
-			if (!params.partialy_selected_agents.length) {
-				delete params.partialy_selected_agents;
-			}
+            params.partially_selected_tas = [];
+            params.selected_reservations_ids = [];
+            _.each($scope.commissionsData.accounts, function(account) {
+                if (account.isExpanded && account.selectedReservations.length && account.selectedReservations.length !== account.reservationsData.total_count) {
+                    params.partially_selected_tas.push(account.id);
+                    params.selected_reservations_ids = params.selected_reservations_ids.concat(account.selectedReservations);
+                }
+            });
 		}
 		return params;
 	};
@@ -101,8 +92,7 @@ sntRover.controller('RVCommisionsHeaderCtrl', ['$scope', 'ngDialog', '$log', '$t
 			ngDialog.close();
 			$scope.fetchAgentsData();
 		};
-
-		successCallBack();
+        $scope.invokeApi(RVCommissionsSrv.updateCommissionPaidStatus, params, successCallBack);
 	};
 
 	var calculateAmountOwingForCurrentPage = function() {
