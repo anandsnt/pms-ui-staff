@@ -27,7 +27,8 @@
     .reservation-tabs-nav,
     .reservation-list,
     .search-form,
-    .release-notes { display: none !important; }
+    .release-notes,
+    .fullscreen-header { display: none !important; }
 
 /* 2. TYPOGRAPHY
 ==========================================================*/
@@ -293,8 +294,7 @@
 
 /* 5. COMPONENTS
 ==========================================================*/
-
-/* Action Manager ========================================*/
+/* Action Manager           ===============================*/
 
     /* Hide Content */
     .actions-content {
@@ -1026,6 +1026,10 @@
                             font-size: 10pt;
                             margin: 0;
                             .hide;
+
+                            .button {
+                                .hide();
+                            }
 
                             a { color: @grey3; }
 

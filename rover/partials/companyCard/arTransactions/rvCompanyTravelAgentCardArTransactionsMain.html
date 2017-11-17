@@ -1,5 +1,7 @@
 <!-- Company Card Tab - AR Transactions -->
 <form method="post" id="cc-ar-transactions" name="cc-ar-transactions" class="form card-tab inner-header transactions" ng-class="{'overlay': !hasPermissionToCreateArAccount()}" >
+    <!--common header for fullscreen mode-->
+    <div ng-include="'/assets/partials/common/rvFullscreenHeader.html'" class="fullscreen-header"></div>
 
     <div class="tab-header">
         <div class="search-form has-dates">
