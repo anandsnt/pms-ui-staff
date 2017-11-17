@@ -18,7 +18,7 @@ sntRover.controller('RvArBalanceController', ['$scope', '$timeout', 'rvAccountsA
 			refreshScroll();
 			$scope.arDataObj.totalOfAllInvoicesInBalanceTab = 0;
 			_.each($scope.arDataObj.balanceList, function (eachItem) {			    	    
-				$scope.arDataObj.totalOfAllInvoicesInBalanceTab = parseFloat($scope.arDataObj.totalAllocatedAmount) + parseFloat(eachItem.amount);
+				$scope.arDataObj.totalOfAllInvoicesInBalanceTab = parseFloat($scope.arDataObj.totalOfAllInvoicesInBalanceTab) + parseFloat(eachItem.amount);
 			});
 			$scope.arDataObj.totalAllocatedAmount = $scope.arDataObj.totalOfAllInvoicesInBalanceTab;
 			
