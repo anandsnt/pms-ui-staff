@@ -3,7 +3,7 @@
 <div ng-include="'/assets/partials/overBooking/rvOverBookingHeader.html'" include-replace></div>
 
 <!-- Overbooking Content -->
-<section class="overbooking-content"> <!-- Add class 'showing-rooms' if L18 in {_content/header.html} is checked -->
+<section class="overbooking-content" ng-class="{'showing-rooms': overBookingObj.isShowRoomsLeftToSell}">
 
 	<div ng-include="'/assets/partials/overBooking/rvOverBookingLeftSection.html'" include-replace></div>
 

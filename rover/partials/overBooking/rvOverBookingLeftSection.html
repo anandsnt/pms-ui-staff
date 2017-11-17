@@ -9,7 +9,7 @@
 	<!-- Rows -->
 	<div class="overbooking-grid scrollable"> <!-- Vertical iScroll here, make it connected to iScroll on L14 in {_content/limits.html} so they both move vertically when any of them is scrolled. -->
 	    <div class="wrapper">
-	        <div ng-repeat="roomType in overBookingObj.roomTypeList" class="row">{{roomType.name}}</div>
+	        <div ng-repeat="roomTypeName in overBookingObj.overBookingGridData.selectedRommTypeNameList" class="row">{{roomTypeName}}</div>
 	    </div>
 	</div>
 </div>

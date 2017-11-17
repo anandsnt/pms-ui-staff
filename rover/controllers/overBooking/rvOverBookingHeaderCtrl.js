@@ -21,10 +21,8 @@ angular.module('sntRover').controller('RvOverBookingHeaderCtrl', [
     $scope.$on('DATE_CHANGED', function () {
         var currentStartDate = $scope.overBookingObj.startDate;
 
-        $scope.overBookingObj.endDate = moment(tzIndependentDate(currentStartDate)).day(14).format($rootScope.momentFormatForAPI);
+        $scope.overBookingObj.endDate = moment(tzIndependentDate(currentStartDate)).add(13, 'd').format($rootScope.momentFormatForAPI);
         $scope.$emit('REFRESH_OVERBOOKING_GRID');
-        console.log("STRAT DATE =", $scope.overBookingObj.startDate);
-		console.log("END DATE =", $scope.overBookingObj.endDate);
     });
 
 	$scope.clickedShowRoomsLeftTosell = function() {
@@ -35,21 +33,17 @@ angular.module('sntRover').controller('RvOverBookingHeaderCtrl', [
 	$scope.clickedPrevDateButton = function() {
 		var currentStartDate = $scope.overBookingObj.startDate;
 
-		$scope.overBookingObj.startDate = moment(tzIndependentDate(currentStartDate)).day(-14).format($rootScope.momentFormatForAPI);
+		$scope.overBookingObj.startDate = moment(tzIndependentDate(currentStartDate)).add(-13, 'd').format($rootScope.momentFormatForAPI);
 		$scope.overBookingObj.endDate = moment(tzIndependentDate(currentStartDate)).format($rootScope.momentFormatForAPI);
 		$scope.$emit('REFRESH_OVERBOOKING_GRID');
-		console.log("STRAT DATE =", $scope.overBookingObj.startDate);
-		console.log("END DATE =", $scope.overBookingObj.endDate);
 	};
 
 	$scope.clickedNextDateButton = function() {
 		var currentEndDate = $scope.overBookingObj.endDate;
 
 		$scope.overBookingObj.startDate = moment(tzIndependentDate(currentEndDate)).format($rootScope.momentFormatForAPI);
-		$scope.overBookingObj.endDate = moment(tzIndependentDate(currentEndDate)).day(14).format($rootScope.momentFormatForAPI);
+		$scope.overBookingObj.endDate = moment(tzIndependentDate(currentEndDate)).add(13, 'd').format($rootScope.momentFormatForAPI);
 		$scope.$emit('REFRESH_OVERBOOKING_GRID');
-		console.log("STRAT DATE =", $scope.overBookingObj.startDate);
-		console.log("END DATE =", $scope.overBookingObj.endDate);
 	};
 
 }]);

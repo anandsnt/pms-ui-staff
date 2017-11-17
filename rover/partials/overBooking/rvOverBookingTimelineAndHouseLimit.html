@@ -2,15 +2,15 @@
 <div class="overbooking-timeline scrollable"> <!-- Horizontal iScroll here, make it connected to iScroll on L22 so they both move horizontally when any of them is scrolled. -->
     <div class="wrapper">
         <div class="row">
-            <div ng-repeat="eachDate in overBookingObj.overBookingGridData.dates" ng-class="{'weekend': eachDate.isWeekend}" class="cell day">
+            <div ng-repeat="eachDate in overBookingObj.overBookingGridData.dateRangeList" ng-class="{'weekend': eachDate.isWeekend, 'today': (eachDate.date == businessDate)}" class="cell day">
                 <span ng-bind="eachDate.date|date:dayInWeek"></span>
                 <strong>{{eachDate.date|date:shortMonthAndDate}}</strong>
             </div>
         </div>
         <div class="row">
-            <div class="cell" ng-repeat="eachDate in overBookingObj.overBookingGridData.dates" ng-class="{'weekend': eachDate.isWeekend}">
-                <span ng-show="overBookingObj.isShowRoomsLeftToSell" class="rooms">10</span>
-                <span class="limit">100</span>
+            <div class="cell" ng-repeat="item in overBookingObj.overBookingGridData.houseSellLimits" ng-class="{'weekend': overBookingObj.overBookingGridData.dateRangeList[$index].isWeekend}">
+                <span ng-show="overBookingObj.isShowRoomsLeftToSell" class="rooms">{{item.left_to_sell}}</span>
+                <span class="limit">{{item.sell_limit}}</span>
             </div>
         </div>
     </div>
