@@ -61,7 +61,7 @@ sntRover.controller('RvArInvoiceAdjustController',
         };
 
         if ($scope.selectedTransaction.is_adjustment) {
-          postData.change_reference_only = $scope.selectedTransaction.is_adjustment
+          postData.change_reference_only = $scope.selectedTransaction.is_adjustment;
         }
 
         if (!$scope.selectedTransaction.is_group_by_ref) {
