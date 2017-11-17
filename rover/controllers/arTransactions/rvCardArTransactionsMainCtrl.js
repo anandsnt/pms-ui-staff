@@ -61,6 +61,7 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 			'paidTotalCount': 0,
 			'allocatedTotalCount': 0,
 			'unallocatedTotalCount': 0,
+			'totalOfAllInvoicesInBalanceTab': 0,
 			// Params - Balance tab
 			'selectedInvoices': [],
 			'totalAllocatedAmount': 0,
