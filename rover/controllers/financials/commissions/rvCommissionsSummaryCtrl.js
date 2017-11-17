@@ -67,6 +67,7 @@ sntRover.controller('RVCommissionsSummaryController', ['$scope',
         $scope.areAnyReservationsPartialySelected = function() {
             if ($scope.commissionsData.accounts) {
                 var isAnyReservationIsSelected = false;
+
                 _.each($scope.commissionsData.accounts, function(account) {
                     if (account.isExpanded && account.selectedReservations.length) {
                         isAnyReservationIsSelected = true;
@@ -103,6 +104,7 @@ sntRover.controller('RVCommissionsSummaryController', ['$scope',
             }
             var deleteFromSelectedAgentList = function() {
                 var indexOfOpenedAccount = $scope.selectedAgentIds.indexOf(account.id);
+
                 if (indexOfOpenedAccount !== -1) {
                     $scope.selectedAgentIds.splice(indexOfOpenedAccount, 1);
                 }
@@ -214,16 +216,16 @@ sntRover.controller('RVCommissionsSummaryController', ['$scope',
             $scope.filterData.filterTab = selectedTab;
         };
 
-        /***************** Search starts here *****************/
+        /**   *************** Search starts here *****************/
 
         var fetchAgentsData = function(pageNo) {
-            $scope.filterData.page = !!pageNo ? pageNo : 1;
+            $scope.filterData.page = pageNo ? pageNo : 1;
             var successCallBack = function(data) {
                 $scope.commissionsData = data;
                 _.each($scope.commissionsData.accounts, function(account) {
                     account.isExpanded = false;
                     account.fetchReservationData = function(pageNo) {
-                        var page = !!pageNo ? pageNo : 1;
+                        var page = pageNo ? pageNo : 1;
 
                         var onFetchListSuccess = function(response) {
                             console.log(response);
@@ -247,8 +249,8 @@ sntRover.controller('RVCommissionsSummaryController', ['$scope',
                                 $scope.$broadcast('updatePagination', 'RESERVATION_LIST_' + account.id);
                             }, 100);
                             refreshArOverviewScroll();
-
                         };
+
                         $scope.callAPI(RVCommissionsSrv.fetchReservationOfCommissions, {
                             params: {
                                 id: account.id,
@@ -295,12 +297,13 @@ sntRover.controller('RVCommissionsSummaryController', ['$scope',
             $scope.filterData.searchQuery = '';
             fetchAgentsData();
         };
-        /***************** search ends here *****************************/
+        /**   *************** search ends here *****************************/
 
-        /***************** Actions starts here *******************/
+        /**   *************** Actions starts here *******************/
 
-        var generateParams = function(){
-           var params = {};
+        var generateParams = function() {
+            var params = {};
+
             params.no_of_bills_selected = $scope.noOfTASelected;
 
             if ($scope.areAllAgentsSelected()) {
@@ -332,6 +335,7 @@ sntRover.controller('RVCommissionsSummaryController', ['$scope',
                             'id': account.id,
                             'selected_res_ids': account.selectedReservations
                         };
+
                         params.partialy_selected_agents.push(data);
                     }
                 });
@@ -354,15 +358,15 @@ sntRover.controller('RVCommissionsSummaryController', ['$scope',
 
             var options = {
                 params: generateParams(),
-                successCallBack: function(response){
+                successCallBack: function(response) {
                     // for now we will only show in progress status and then dismiss the
                     // popup
-                    $timeout(function(){
+                    $timeout(function() {
                         setExportStatus(false, false, true);
                         ngDialog.close();
-                    },5000);
+                    }, 5000);
                 },
-                failureCallBack: function(err){
+                failureCallBack: function(err) {
                     setExportStatus(false, true, false);
                 }
             };
@@ -381,18 +385,19 @@ sntRover.controller('RVCommissionsSummaryController', ['$scope',
         };
 
         $scope.popupBtnAction = function(action) {
-            params = generateParams();
+            var params = generateParams();
             params.action = action;
             var successCallBack = function() {
                 ngDialog.close();
                 fetchAgentsData();
             };
+            
             successCallBack();
         };
 
         $scope.openPopupWithTemplate = function(template) {
             // TO DO: handle for release from ON_HOLD TAB - minor updates
-            
+
             if ($scope.filterData.filterTab === 'PAYABLE') {
                 if ($scope.areAllAgentsSelected()) {
                     $scope.eligibleForPayment = $scope.commissionsData.amount_totals.unpaid;
@@ -436,7 +441,7 @@ sntRover.controller('RVCommissionsSummaryController', ['$scope',
                 }
             }
 
-            
+
             ngDialog.open({
                 template: '/assets/partials/financials/commissions/' + template + '.html',
                 className: '',
@@ -453,7 +458,7 @@ sntRover.controller('RVCommissionsSummaryController', ['$scope',
             }, 100);
         };
 
-        /***************** Actions ends here *******************/
+        /**   *************** Actions ends here *******************/
 
         $scope.navigateToTA = function(account) {
             // https://stayntouch.atlassian.net/browse/CICO-40583
