@@ -1,28 +1,8 @@
 <!-- Company Card Tab - AR Transactions -->
 <form method="post" id="cc-ar-transactions" name="cc-ar-transactions" class="form card-tab inner-header transactions" ng-class="{'overlay': !hasPermissionToCreateArAccount()}" >
 
-    <div class="fullscreen-header">
-        <button type="button" class="button white icons icon-remove-10" rv-fullscreen>Close fullscreen</button>
-        <!-- When L2 is clicked:
-            1. remove classes 'is-fullscreen fullscreen-{card or bill}' from <body> element
-            2. update iScrolls on the page
-        -->
-        <div class="screen-info">
-            <strong class="info-heading">{Name - Group, Allotment, Company, TA or Guest}</strong>
-            <span class="info-subheading">{Tab Title or Confirmation number}</span>
-        </div>
-        <div class="app-info">
-            <strong class="hotel">{Hotel Name}</strong>
-            <div class="user">
-                <span>{{userName}}</span>
-                <em class="date">{Business date}</em>
+    <div include-replace ng-include="'/assets/partials/shared/rvFullscreenHeader.html'"></div>
 
-                <em class="date updating" ng-show="isEodRunning">Business Date Change In Progress</em>
-
-                <em class="date error" ng-show="isEodProcessFailed&&!isEodProcessRunning&&!isEodRunning">Some EOD Processes failed, check log!</em>
-            </div>
-        </div>
-    </div>
 
     <div class="tab-header">
         <div class="search-form has-dates">
