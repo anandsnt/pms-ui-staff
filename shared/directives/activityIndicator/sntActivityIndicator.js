@@ -36,7 +36,12 @@ angular.module('sntActivityIndicator', [])
                 };
 
             service.start = function (activity) {
-                activities.push(activity);
+                // Preventing the addition of same state multiple times
+                if (_.indexOf(activities, activity) === -1) {
+                    activities.push(activity);
+                } else {
+                    $log.error("Duplicate Activity");
+                }
                 updateIndicator();
             };
 
