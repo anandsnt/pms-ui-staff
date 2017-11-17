@@ -6,33 +6,47 @@ sntRover.service('RVCommissionsSrv', ['$http', '$q', 'BaseWebSrvV2', function($h
      * @return {object} payments
      */
 
-    that.fetchCommissions = function (params) {
+    that.fetchCommissions = function(params) {
 
         var deferred = $q.defer();
         var url = "/api/accounts/commission_overview";
         // var url = 'ui/show?json_input=commissions/commissons.json&format=json';
 
-            BaseWebSrvV2.getJSON(url, params).then(function (data) {
-                deferred.resolve(data);
-            }, function (data) {
-                deferred.reject(data);
-            });
+        BaseWebSrvV2.getJSON(url, params).then(function(data) {
+            deferred.resolve(data);
+        }, function(data) {
+            deferred.reject(data);
+        });
         return deferred.promise;
     };
 
-    that.fetchReservationOfCommissions = function (params) {
+    that.fetchReservationOfCommissions = function(params) {
 
         var deferred = $q.defer();
-        var url = '/api/accounts/'+params.id+'/commissionable_reservations_data';
+        var url = '/api/accounts/' + params.id + '/commissionable_reservations_data';
         // var url = 'ui/show?json_input=commissions/commissons.json&format=json';
 
-            BaseWebSrvV2.getJSON(url, params).then(function (data) {
-                deferred.resolve(data);
-            }, function (data) {
-                deferred.reject(data);
-            });
+        BaseWebSrvV2.getJSON(url, params).then(function(data) {
+            deferred.resolve(data);
+        }, function(data) {
+            deferred.reject(data);
+        });
         return deferred.promise;
     };
+
+    that.exportCommissions = function(params) {
+
+        var deferred = $q.defer();
+        var url = '/api/reports/commisson_export';
+
+        BaseWebSrvV2.getJSON(url, params).then(function(data) {
+            deferred.resolve(data);
+        }, function(data) {
+            deferred.reject(data);
+        });
+        return deferred.promise;
+    };
+
 
     this.filterData = {
         'page': 1,
@@ -72,51 +86,6 @@ sntRover.service('RVCommissionsSrv', ['$http', '$q', 'BaseWebSrvV2', function($h
             'value': 'AMOUNT_DSC',
             'name': 'AMOUNT DESC'
         }]
-    };
-
-    this.sampleReservationData = {
-        "reservations": [{
-            'id': 12,
-            'last_name': 'M',
-            'first_name': 'resheil',
-            'conf_no': 2244554,
-            'revenue': 33,
-            'commission': 34,
-            'owing': 55
-
-        }, {
-            'id': 13,
-            'last_name': 'M',
-            'first_name': 'resheil 2',
-            'conf_no': 2244555,
-            'revenue': 12,
-            'commission': 10,
-            'owing': 40
-
-        }],
-        'total_count': 4
-    };
-    this.sampleNextPageReservationData = {
-        "reservations": [{
-            'id': 14,
-            'last_name': 'M',
-            'first_name': 'resheil 3',
-            'conf_no': 2244554,
-            'revenue': 33,
-            'commission': 34,
-            'owing': 55
-
-        }, {
-            'id': 15,
-            'last_name': 'M',
-            'first_name': 'resheil 4',
-            'conf_no': 2244555,
-            'revenue': 12,
-            'commission': 10,
-            'owing': 40
-
-        }],
-        'total_count': 4
     };
 
 }]);
