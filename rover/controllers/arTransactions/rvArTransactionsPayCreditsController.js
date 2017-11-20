@@ -15,7 +15,8 @@ sntRover.controller('RVArTransactionsPayCreditsController',
     $scope.saveData = {'paymentType': ''};
     $scope.billNumber = 1;
     $scope.renderData = {};
-    $scope.renderData.defaultPaymentAmount = $scope.arDataObj.unpaidAmount;
+    $scope.renderData.defaultPaymentAmount = ($scope.passData.isRefundClick) ? (-1) * parseFloat($scope.passData.payment.amount) : $scope.arDataObj.unpaidAmount;
+    // $scope.shouldShowRefundButton1 = false;
     var bill_id = $scope.arDataObj.company_or_ta_bill_id;
 
     $scope.cardsList = [];
@@ -49,6 +50,7 @@ sntRover.controller('RVArTransactionsPayCreditsController',
     };
 
     var init = function() {
+        console.log($scope.passData)
         $scope.referenceTextAvailable = false;
         $scope.showInitalPaymentScreen = true;
         $scope.depositPaidSuccesFully = false;
@@ -303,6 +305,9 @@ sntRover.controller('RVArTransactionsPayCreditsController',
             $scope.shouldShowMakePaymentButton = false;
         } else {
             $scope.shouldShowMakePaymentButton = true;
-        }        
+        }   
+        // if ($scope.passData.isRefundClick) {
+        //     $scope.shouldShowRefundButton1 = true;
+        // }     
     };
 }]);

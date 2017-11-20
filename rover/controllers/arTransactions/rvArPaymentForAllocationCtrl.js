@@ -1,10 +1,23 @@
-sntRover.controller('RVArPaymentForAllocationController', ['$scope', '$rootScope', '$stateParams', '$timeout',  'rvAccountsArTransactionsSrv', 'ngDialog', function($scope, $rootScope, $stateParams, $timeout, rvAccountsArTransactionsSrv, ngDialog ) {
+sntRover.controller('RVArPaymentForAllocationController', 
+    ['$scope', 
+    '$rootScope', 
+    '$stateParams', 
+    '$timeout',  
+    'rvAccountsArTransactionsSrv', 
+    'sntActivity', 
+    'ngDialog', function($scope, $rootScope, $stateParams, $timeout, rvAccountsArTransactionsSrv, sntActivity, ngDialog ) {
 
     BaseCtrl.call(this, $scope);
+
     // Initialization
     var init = function() {
         $scope.setScroller('payment-allocation');
-        fetchPaymentMethods();
+        if($scope.type === 'REFUND') {
+            fetchRefundPaymentMethods();
+        } else {
+            fetchPaymentMethods();
+        }
+        
     };
     // refresh scroller
     var refreshScroll = function() {
@@ -25,10 +38,57 @@ sntRover.controller('RVArPaymentForAllocationController', ['$scope', '$rootScope
 
         $scope.invokeApi(rvAccountsArTransactionsSrv.fetchPaymentMethods, dataToApi, successCallback );
     };
+    // 
+    var successCallbackOfGetAllocatedAPI = function(data) {
+        $scope.payments = data.ar_transactions;
+        refreshScroll();
+        $scope.$emit('hideLoader');
+    };
+
+    // Function to fetch payments done
+    var fetchRefundPaymentMethods = function() {
+        var dataToSend = {
+             account_id: $scope.arDataObj.accountId,
+             getParams: {
+                 per_page: 1000,
+                 page: 1,
+                 //from_date: $scope.filterData.fromDate,
+                 //to_date: $scope.filterData.toDate,
+                 //query: $scope.filterData.query
+                 transaction_type: 'PAYMENTS',
+                 allocated: true
+             }
+         };
+         
+        $scope.invokeApi(rvAccountsArTransactionsSrv.fetchTransactionDetails, dataToSend, successCallbackOfGetAllocatedAPI );
+    };
 
     // Close popup
     $scope.closePopup = function () {
         ngDialog.close();
+    };
+
+    $scope.clickedRefundButton = function(payment) {
+        var passData = {
+            "account_id": $scope.arDataObj.accountId,
+            "isRefundClick": true,
+            "is_swiped": false,
+            "details": {
+                "firstName": "",
+                "lastName": ""
+            },
+            payment: payment
+        };
+        //$scope.arFlags.shouldShowRefundButton = true;
+        $scope.passData = passData;
+        ngDialog.open({
+            template: '/assets/partials/companyCard/arTransactions/rvArTransactionsPayCredits.html',
+            controller: 'RVArTransactionsPayCreditsController',
+            className: '',
+            scope: $scope
+        });
+        $scope.paymentModalOpened = true;
+
     };
 
     init();

@@ -24,6 +24,7 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 			'shouldShowFooter': false,
 			'insufficientAmount': false,
 			'isFromAddPaymentOrAllocateButton': false,
+			'shouldShowRefundButton': false,
 			'hasAllocateUnallocatePermission': rvPermissionSrv.getPermissionValue ('ALLOCATE_UNALLOCATE_PAYMENT')
 		};
 
@@ -316,6 +317,7 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 			});
 			$scope.paymentModalOpened = true;
 		};
+
 		/*
 		 * Success callback of payment
 		 */
@@ -782,6 +784,18 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 		$scope.clearResults = function () {
 			$scope.filterData.query = '';
 			$scope.filterChanged();
+		};
+		/*
+		 * To list all allocated payments on click refund button
+		 * Same popup used for listing payments from 'Please select payment' - in Balance tab
+		 */
+		$scope.getAllocatedPayments = function () {
+			$scope.type = "REFUND";
+			ngDialog.open({
+				template: '/assets/partials/companyCard/arTransactions/rvCompanyTravelAgentCardArPaymentPopup.html',
+				controller: 'RVArPaymentForAllocationController',
+				scope: $scope
+			});
 		};
 
 }]);

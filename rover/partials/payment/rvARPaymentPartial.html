@@ -74,7 +74,7 @@
         MAKE PAYMENT
     </button>
     <button type="button" class="button blue" click-touch="submitPayment()"
-            ng-show="!shouldHidePaymentButton() && isRefund()">
+            ng-show="isRefund()">
         REFUND {{currencySymbol}}{{ -1 * payment.amount | number:2 }}
     </button>
 </div>
