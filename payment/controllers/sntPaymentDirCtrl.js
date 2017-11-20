@@ -449,6 +449,8 @@ angular.module('sntPay').controller('sntPaymentController',
                         if ($scope.allotmentId) {
                             params['allotment_id'] = $scope.allotmentId;
                         }
+
+                        params['add_to_guest_card'] = $scope.payment.addToGuestCardSelected;
                     }
 
                     $scope.$broadcast('INITIATE_CHIP_AND_PIN_TOKENIZATION', params);

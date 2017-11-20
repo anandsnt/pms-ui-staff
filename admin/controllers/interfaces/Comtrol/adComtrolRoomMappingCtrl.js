@@ -1,17 +1,19 @@
-admin.controller('adComtrolRoomMappingCtrl', ['$scope', 'roomMappings', 'adComtrolRoomMappingSrv',
-    function($scope, roomMappings, adComtrolRoomMappingSrv) {
+admin.controller('adComtrolRoomMappingCtrl', ['$scope', 'adComtrolRoomMappingSrv', 'ngTableParams',
+    function($scope, adComtrolRoomMappingSrv, ngTableParams) {
+
+        ADBaseTableCtrl.call(this, $scope, ngTableParams);
 
         // private methods and variables
         var resetNew = function() {
                 $scope.state.new = {
-                    room_no: "",
-                    external_room: "",
-                    external_extension: ""
+                    room_no: '',
+                    external_room: '',
+                    external_extension: ''
                 };
             },
             revertEdit = function() {
                 if ($scope.state.editRef) {
-                    $scope.mappings[$scope.state.selected] = angular.copy($scope.state.editRef);
+                    $scope.data[$scope.state.selected] = angular.copy($scope.state.editRef);
                     $scope.state.editRef = null;
                 }
             },
@@ -31,7 +33,7 @@ admin.controller('adComtrolRoomMappingCtrl', ['$scope', 'roomMappings', 'adComtr
          */
         $scope.onClickAdd = function() {
             if ($scope.state.roomNumbers) {
-                $scope.state.mode = "ADD";
+                $scope.state.mode = 'ADD';
                 $scope.state.selected = null;
                 resetNew();
             } else {
@@ -43,7 +45,7 @@ admin.controller('adComtrolRoomMappingCtrl', ['$scope', 'roomMappings', 'adComtr
          * Method to close the ad form
          */
         $scope.onCancelAdd = function() {
-            $scope.state.mode = "";
+            $scope.state.mode = '';
         };
 
         /**
@@ -61,14 +63,9 @@ admin.controller('adComtrolRoomMappingCtrl', ['$scope', 'roomMappings', 'adComtr
                     external_room: external_room,
                     external_extension: external_extension
                 },
-                successCallBack: function(response) {
-                    $scope.mappings.push({
-                        id: response.id,
-                        room_no: room_no,
-                        external_room: external_room,
-                        external_extension: external_extension
-                    });
-                    $scope.state.mode = "";
+                successCallBack: function() {
+                    $scope.tableParams.reload();
+                    $scope.state.mode = '';
                 }
             });
         };
@@ -93,7 +90,7 @@ admin.controller('adComtrolRoomMappingCtrl', ['$scope', 'roomMappings', 'adComtr
          * Method to close the edit form
          */
         $scope.onCancelEdit = function() {
-            $scope.state.mode = "";
+            $scope.state.mode = '';
             revertEdit();
             $scope.state.selected = null;
         };
@@ -107,26 +104,56 @@ admin.controller('adComtrolRoomMappingCtrl', ['$scope', 'roomMappings', 'adComtr
             $scope.callAPI(adComtrolRoomMappingSrv.update, {
                 params: mapping,
                 successCallBack: function() {
-                    $scope.state.mode = "";
+                    $scope.state.mode = '';
                     $scope.state.selected = null;
                 }
             });
         };
-        // -------------------------------------------------------------------------------------------------------------- DELETE
+
         /**
          * Method to delete a Revenue Center
          * Deleted ones are  hidden in UI with help of isDeleted flag
-         * @param revCenter
+         * @param {Object} mapping Mapping to delete
+         * @returns {undefined}
          */
         $scope.onClickDelete = function(mapping) {
             $scope.callAPI(adComtrolRoomMappingSrv.delete, {
                 params: mapping.id,
                 successCallBack: function() {
-                    mapping.isDeleted = true;
-                    $scope.state.deletedCount++;
+                    $scope.tableParams.reload();
                 }
             });
         };
+
+        $scope.fetchTableData = function($defer, params) {
+            var getParams = $scope.calculateGetParams(params),
+                fetchSuccessOfItemList = function(data) {
+                    $scope.$emit('hideLoader');
+                    $scope.currentClickedElement = -1;
+                    $scope.totalCount = data.total_records;
+                    $scope.totalPage = Math.ceil(data.total_records / $scope.displyCount);
+                    $scope.data = data.room_mappings;
+                    $scope.currentPage = params.page();
+                    params.total(data.total_records);
+                    $defer.resolve($scope.data);
+                };
+
+            $scope.invokeApi(adComtrolRoomMappingSrv.fetch, getParams, fetchSuccessOfItemList);
+        };
+
+        $scope.loadTable = function() {
+            $scope.tableParams = new ngTableParams({
+                page: 1, // show first page
+                count: $scope.displyCount, // count per page
+                sorting: {
+                    room_no: 'asc' // initial sorting
+                }
+            }, {
+                total: 0, // length of data
+                getData: $scope.fetchTableData
+            });
+        };
+
         // --------------------------------------------------------------------------------------------------------------
         /**
          * Initialization method for the controller
@@ -136,16 +163,18 @@ admin.controller('adComtrolRoomMappingCtrl', ['$scope', 'roomMappings', 'adComtr
                 roomNumbers: null,
                 deletedCount: 0,
                 selected: null,
-                mode: "",
+                mode: '',
                 editRef: null,
                 new: {
-                    room_no: "",
-                    external_room: "",
-                    external_extension: ""
+                    room_no: '',
+                    external_room: '',
+                    external_extension: ''
                 }
             };
 
-            $scope.mappings = roomMappings;
+            // $scope.mappings = roomMappings.room_mappings;
+
+            $scope.loadTable();
         })();
     }
 ]);
