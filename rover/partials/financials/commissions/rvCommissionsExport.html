@@ -22,7 +22,7 @@
     
     <div class="notice">
         <strong class="amount"><span class="currency">{{ ::currencySymbol }}</span>{{::commissionsData.amount_totals.unpaid}}</strong>
-        <span class="bills">{{ ::commissionsData.total_count }} Bills</span>
+        <span class="bills">{{ filterData.billStatus.value === 'ON_HOLD' ? commissionsData.bill_count_totals.on_hold : commissionsData.bill_count_totals.open }} Bills</span>
     </div>
 
     <div class="actions">

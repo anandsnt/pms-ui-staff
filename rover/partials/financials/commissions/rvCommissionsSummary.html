@@ -32,7 +32,7 @@
 <!-- Search panel - WITH RESULTS -->
 <section class="content commissions-content" role="main" ng-hide="initialLoading">
    <!-- When searching, add .searching-->
-   <div class="commissions-header searching">
+   <div class="commissions-header searching" ng-controller="RVCommisionsHeaderCtrl">
       <ul class="filters" ng-hide="areAllAgentsSelected() || areAgentsPartialySelected() || areAnyReservationsPartialySelected()">
          <!-- Add .active to current filter -->
          <li ng-class="{ 'active' : filterData.filterTab === 'PAYABLE' }" ng-click="setFilterTab('PAYABLE')">
@@ -60,7 +60,7 @@
          <!-- Show if active filter: On Hold (remove .hidden) -->
          <li ng-show="filterData.filterTab === 'ON_HOLD'">
             <span translate>AMOUNT_ON_HOLD</span>
-            <span class="amount">{{ ::currencySymbol }}{{::commissionsData.amount_totals.unpaid}}</span>
+            <span class="amount">{{ ::currencySymbol }}{{::commissionsData.amount_totals.on_hold}}</span>
          </li>
       </ul>
       <!-- Show if active filer: Payable & 1 or more agents are selected (checked) (remove .hidden) -->
@@ -85,7 +85,7 @@
       <ul class="commissions-selected commissions-info" ng-show="(areAllAgentsSelected() || areAgentsPartialySelected() || areAnyReservationsPartialySelected()) && filterData.filterTab === 'ON_HOLD' ">
          <li>
             <span translate>BILLS_SELECTED</span>
-            <span class="amount">{{ noOfBillsSelected }}</span>
+            <span class="amount">{{ noOfTASelected }}</span>
          </li>
          <li>
             <span translate>AMOUNT_ON_HOLD</span>
