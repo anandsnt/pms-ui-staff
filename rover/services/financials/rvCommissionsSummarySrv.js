@@ -40,7 +40,18 @@ sntRover.service('RVCommissionsSrv', ['$http', '$q', 'BaseWebSrvV2', function($h
         var url = '/api/reports/commisson_export';
 
         BaseWebSrvV2.getJSON(url, params).then(function(data) {
-            deferred.resolve(data);
+            var data = response.data,
+            headers = response.headers;
+
+            var hiddenAnchor = angular.element('<a/>'),
+            blob = new Blob([data]);
+
+            hiddenAnchor.attr({
+                href: window.URL.createObjectURL(blob),
+                target: '_blank',
+                download: headers()['content-disposition'].match(/filename[^;=\n]*=((['"]).*?\2|[^;\n]*)/)[1].replace(/['"]+/g, '')
+            })[0].click();
+            deferred.resolve(true);
         }, function(data) {
             deferred.reject(data);
         });
