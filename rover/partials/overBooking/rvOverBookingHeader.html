@@ -2,7 +2,7 @@
 <div class="overbooking-header" ng-controller="RvOverBookingHeaderCtrl">
     <!-- Set Start Date -->
 	<div class="entry date">
-	    <button ng-click="clickedPrevDateButton()" type="button" class="button with-icon only-icon">
+	    <button ng-click="clickedPrevDateButton()" ng-class="{'overlay': disablePrevDateButton() }" type="button" class="button with-icon only-icon">
 	        <span class="icons icon-double-arrow black"></span>
 	    </button>
 	    <div ng-click="showDatePicker()" class="entry-data">
@@ -22,23 +22,22 @@
 	</div>
 	<!-- Filter Room Types -->
 	<div class="entry room-type">
-	    <div class="multi-select"> <!-- Toggle class 'active' when clicked (show when L28 not hidden, remove when L28 hidden) -->
+	    <div class="multi-select" ng-class="{'active': overBookingObj.isShowRoomTypeFilter }" ng-click="toggleRoomTypeFilter()">
 	        <label>Room Type(s)</label>
 	        <span class="value">Show All</span>
 	    </div>
-	    <div class="multi-select-options scrollable hidden"> <!-- Toggle class 'hidden' when L24 clicked -->
+	    <div class="multi-select-options scrollable" ng-show="overBookingObj.isShowRoomTypeFilter" ng-iscroll="roomTypeFilterList"  ng-iscroll-delay="500">
 	        <div class="wrapper">
-	            <label class="checkbox inline checked"> <!-- All checked by default -->
-	                <span class="icon-form icon-checkbox checked"></span>
-	                <input value="{val}" type="checkbox" checked />
-	                {Room Type}
+	            <label class="checkbox inline" ng-repeat="item in overBookingObj.roomTypeList track by $index" ng-class="{'checked': item.isChecked}" ng-click="clickedRoomTypeCheckbox($index)">
+	                <span class="icon-form icon-checkbox" ng-class="{'checked': item.isChecked}"></span>
+	                <input type="checkbox" ng-checked="item.isChecked"/>
+	                {{item.name}}
 	            </label>
-	            ... repeat L30-L34 for every Room Type
 	        </div>
 	    </div>
 	</div>
-	<!-- Add Overbooking -->
+	
 	<div class="actions">
-	    <button type="button" class="button green">Add Overbooking</button> <!-- Open {modals/overbooking-new.html} -->
+	    <button type="button" class="button green">Add Overbooking</button>
 	</div>
 </div>

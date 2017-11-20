@@ -5,7 +5,7 @@ angular.module('sntRover').service('rvOverBookingSrv', ['$q', 'rvBaseWebSrvV2', 
 
 	this.gridDataForOverbooking = {};
 
-    /**
+    /*
      * This method returns an array of dates including the from and to Date provided to it
       * @param fromDate String in yyyy-MM-dd format
      * @param toDate String in yyyy-MM-dd format
@@ -27,9 +27,9 @@ angular.module('sntRover').service('rvOverBookingSrv', ['$q', 'rvBaseWebSrvV2', 
         return dates;
     };
 
-	/**
-	* function to fetch item inventory between from date & to date
-	*/
+	/*
+	 * Function to fetch item inventory between from date & to date
+	 */
 	this.fetchOverBookingGridData = function (params) {
 		var firstDate 	= (params.start_date),
 			secondDate 	= (params.end_date);
@@ -42,7 +42,7 @@ angular.module('sntRover').service('rvOverBookingSrv', ['$q', 'rvBaseWebSrvV2', 
 			that.gridDataForOverbooking = {
                 'houseSellLimits': resultFromAPI.house_sell_limits,
                 'roomTypeSellLimits': resultFromAPI.room_type_sell_limits,
-                'selectedRommTypeNameList': _.pluck(resultFromAPI.room_type_sell_limits, 'name'),
+                'selectedRoomTypeNameList': _.pluck(resultFromAPI.room_type_sell_limits, 'name'),
                 'dateRangeList': getDateRange(firstDate, secondDate)
             };
 			deferred.resolve(that.gridDataForOverbooking);

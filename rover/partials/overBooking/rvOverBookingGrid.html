@@ -1,12 +1,11 @@
 <!-- Grid -->
-<div class="overbooking-grid scrollable"> <!-- dual iScroll here, make it connected to: 1.) iScroll on L7 in {_content/room-types.html} so they both move vertically when any of them is scrolled, and 2.) iScroll on L2 so they both move horizontally when any of them is scrolled. -->
+<div class="overbooking-grid scrollable" ng-show="overBookingObj.overBookingGridData.roomTypeSellLimits.length > 0"> <!-- dual iScroll here, make it connected to: 1.) iScroll on L7 in {_content/room-types.html} so they both move vertically when any of them is scrolled, and 2.) iScroll on L2 so they both move horizontally when any of them is scrolled. -->
     <div class="wrapper">
-        <div class="row">
-            <div class="cell"> <!-- Add class 'weekend' if day on L5 is Sat or Sun. Clicking this opens {modals/overbooking-item.html} -->
-                <span ng-show="overBookingObj.isShowRoomsLeftToSell" class="rooms">10</span>
-                <span class="limit">101</span>
+        <div class="row" ng-repeat="row in overBookingObj.overBookingGridData.roomTypeSellLimits track by $index">
+            <div class="cell" ng-repeat="cell in row.overbooking_details track by $index" ng-class="{'weekend': overBookingObj.overBookingGridData.dateRangeList[$index].isWeekend}">
+                <span ng-show="overBookingObj.isShowRoomsLeftToSell" class="rooms">{{cell.left_to_sell}}</span>
+                <span class="limit">{{cell.sell_limit}}</span>
             </div>
         </div>
-        ... repeat L24-L30 for every room type
     </div>
 </div>
