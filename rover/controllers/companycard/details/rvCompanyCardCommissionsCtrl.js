@@ -465,7 +465,7 @@ function($scope, $state, $rootScope, $stateParams, RVCompanyCardSrv, ngDialog, $
             toDate: "",
             paidStatus: "Unpaid",
             commissionStatus: "Commissionable",
-            perPage: RVCompanyCardSrv.DEFAULT_PER_PAGE,
+            perPage: 25,//RVCompanyCardSrv.DEFAULT_PER_PAGE,
             page: 1,
             start: 1,
             selectAll: false,
