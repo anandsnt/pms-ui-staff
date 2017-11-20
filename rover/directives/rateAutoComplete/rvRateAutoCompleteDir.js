@@ -32,7 +32,8 @@
 		 */
 		var fetchRates = function(callBackToAutoComplete) {
 			var params = {
-	            query: $scope.rate_name
+	            query: $scope.rate_name,
+	            account_id: $scope.account_id
 	        };
 	        var options = {
 	            params: params,
@@ -156,7 +157,8 @@
 				label: '@label',
 				entryDivClass: '@entryDivClass',
 				delay: '@delay',
-				minLengthToTrigger: '@minLengthToTrigger'
+				minLengthToTrigger: '@minLengthToTrigger',
+				account_id: '=accountId'
 			},
 			link: linkFn,
             controller: autoCompleteCtrlFn,
