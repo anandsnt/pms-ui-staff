@@ -16,6 +16,8 @@ angular.module('sntRover').controller('RvOverBookingMainCtrl', [
 		$scope.heading = $filter('translate')('MENU_OVER_BOOKING');
 		$scope.setTitle($filter('translate')('MENU_OVER_BOOKING'));
 		$scope.$emit('updateRoverLeftMenu', 'overbooking');
+		$scope.setScroller('overBookingVerticalScroll');
+		$scope.setScroller('overBookingHorizontalScroll');
 
 		$scope.overBookingObj = {
 			roomTypeList: completeRoomTypeListData,
@@ -26,7 +28,15 @@ angular.module('sntRover').controller('RvOverBookingMainCtrl', [
 			isShowRoomTypeFilter: false
 		};
 	};
-	
+
+	// Refresh scroller
+	var refreshScroller = function() {
+		$timeout(function() {
+			$scope.refreshScroller('overBookingVerticalScroll');
+			$scope.refreshScroller('overBookingHorizontalScroll');
+		}, 300);
+	};
+
 	/*
 	 *	Generating List of Selected Room Type Ids, used for calling fetchGridData API.
 	 *  @return { Array }
@@ -50,6 +60,7 @@ angular.module('sntRover').controller('RvOverBookingMainCtrl', [
 
 		var onFetchGridDataSuccess = function( data ) {
 			$scope.overBookingObj.overBookingGridData = data;
+			refreshScroller();
 		},
 		onFetchGridDataFailure = function( errorMessage ) {
 			$scope.$errorMessage = errorMessage;
