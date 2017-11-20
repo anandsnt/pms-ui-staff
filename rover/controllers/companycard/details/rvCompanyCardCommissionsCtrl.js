@@ -312,6 +312,25 @@ function($scope, $state, $rootScope, $stateParams, RVCompanyCardSrv, ngDialog, $
         updatePaidStatus(requestData);
     };
 
+    $scope.toggleHoldStatus = function(commission) {
+
+        if(commission.commission_data.paid_status == "Paid" || commission.commission_data.paid_status == "Prepaid")
+        {
+            $scope.errorMessage = ["Only transactions on 'UNPAID' status can be set to On Hold"];
+            return;
+        }
+        var commissionToUpdate = {};
+
+        commissionToUpdate.reservation_id = commission.reservation_id;
+        commissionToUpdate.status = commission.commission_data.paid_status == "On Hold" ? "Unpaid" : "On Hold";
+
+        var requestData = {};
+
+        requestData.accountId = $scope.accountId;
+        requestData.commissionDetails = [commissionToUpdate];
+        updatePaidStatus(requestData);
+    };
+
     // Updates the paid status of all the selected records
     $scope.onGroupPaidStatusChange = function() {
 
