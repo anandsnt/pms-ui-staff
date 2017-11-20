@@ -1056,6 +1056,9 @@ sntRover.controller('rvAccountTransactionsCtrl', [
     		var activebillTab = $scope.transactionsDetails.bills[$scope.currentActiveBill];
 
     		activebillTab.transactions = [];
+    		_.each(data.transactions, function(item) {
+    			item.description = item.description + "-" + item.card_number;
+    		});
  			activebillTab.transactions = data.transactions;
  			activebillTab.total_count  = data.total_count;
 
