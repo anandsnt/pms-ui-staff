@@ -171,6 +171,8 @@ angular.module('sntRover').controller('RVContactInfoController', ['$scope', '$ro
           $scope.invokeApi(RVContactInfoSrv.createGuest, data, createUserInfoSuccessCallback, failureOfCreateGuestCard);
       } else if (!dataUpdated) {
           if (!angular.equals(dataToUpdate, initialGuestCardData)) {
+              // CICO-46709 - Reset the guest card data to reflect the new changes made to contact details
+              initialGuestCardData = dclone(dataToUpdate, ["avatar", "confirmation_num"]);
               $scope.invokeApi(RVContactInfoSrv.updateGuest, data, saveUserInfoSuccessCallback, saveUserInfoFailureCallback);
           }
       }
