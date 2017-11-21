@@ -1,8 +1,10 @@
-angular.module('sntRover').controller('rvOverBookingDatePickerCtrl', ['$scope', '$rootScope', 'ngDialog', '$filter', 'dateFilter', function($scope, $rootScope, ngDialog, $filter, dateFilter) {
+angular.module('sntRover').controller('rvOverBookingDatePickerCtrl', ['$scope', '$rootScope', 'ngDialog', '$filter', function($scope, $rootScope, ngDialog, $filter ) {
 
-	var minDateSelected = moment(tzIndependentDate($rootScope.businessDate)).format($rootScope.momentFormatForAPI);
+	var minDateSelected = moment(tzIndependentDate($rootScope.businessDate))
+				.format($rootScope.momentFormatForAPI);
 
-	$scope.date = moment(tzIndependentDate($scope.overBookingObj.startDate)).format($rootScope.momentFormatForAPI);
+	$scope.date = moment(tzIndependentDate($scope.overBookingObj.startDate))
+				.format($rootScope.momentFormatForAPI);
 
 	$scope.setUpData = function() {
 		$scope.dateOptions = {

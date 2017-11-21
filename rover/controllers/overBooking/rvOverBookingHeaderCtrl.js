@@ -24,7 +24,8 @@ angular.module('sntRover').controller('RvOverBookingHeaderCtrl', [
     var listenerDateChanged = $scope.$on('DATE_CHANGED', function () {
         var currentStartDate = $scope.overBookingObj.startDate;
 
-        $scope.overBookingObj.endDate = moment(tzIndependentDate(currentStartDate)).add(13, 'd').format($rootScope.momentFormatForAPI);
+        $scope.overBookingObj.endDate = moment(tzIndependentDate(currentStartDate)).add(13, 'd')
+        		.format($rootScope.momentFormatForAPI);
         $scope.$emit('REFRESH_OVERBOOKING_GRID');
     });
     
@@ -42,16 +43,20 @@ angular.module('sntRover').controller('RvOverBookingHeaderCtrl', [
 	$scope.clickedPrevDateButton = function() {
 		var currentStartDate = $scope.overBookingObj.startDate;
 
-		$scope.overBookingObj.startDate = moment(tzIndependentDate(currentStartDate)).add(-13, 'd').format($rootScope.momentFormatForAPI);
-		$scope.overBookingObj.endDate = moment(tzIndependentDate(currentStartDate)).format($rootScope.momentFormatForAPI);
+		$scope.overBookingObj.startDate = moment(tzIndependentDate(currentStartDate)).add(-13, 'd')
+				.format($rootScope.momentFormatForAPI);
+		$scope.overBookingObj.endDate = moment(tzIndependentDate(currentStartDate))
+				.format($rootScope.momentFormatForAPI);
 		$scope.$emit('REFRESH_OVERBOOKING_GRID');
 	};
 	// Handle NEXT DATE button click action
 	$scope.clickedNextDateButton = function() {
 		var currentEndDate = $scope.overBookingObj.endDate;
 
-		$scope.overBookingObj.startDate = moment(tzIndependentDate(currentEndDate)).format($rootScope.momentFormatForAPI);
-		$scope.overBookingObj.endDate = moment(tzIndependentDate(currentEndDate)).add(13, 'd').format($rootScope.momentFormatForAPI);
+		$scope.overBookingObj.startDate = moment(tzIndependentDate(currentEndDate))
+				.format($rootScope.momentFormatForAPI);
+		$scope.overBookingObj.endDate = moment(tzIndependentDate(currentEndDate)).add(13, 'd')
+				.format($rootScope.momentFormatForAPI);
 		$scope.$emit('REFRESH_OVERBOOKING_GRID');
 	};
 	// Handle ROOM TYPE FILTER toggle.
