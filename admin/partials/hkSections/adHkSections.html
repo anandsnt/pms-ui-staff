@@ -22,13 +22,13 @@
 
             <tbody>
                 <tr ng-repeat="section in $data">
-                    <td ng-click="gotoEditSection(section.id)" sortable="'number'" data-title="'Section No'">
+                    <td ng-click="gotoEditSection(section.id)" sortable="'number'" data-title="'Section'">
                         <a  class="edit-data-inline">
                             {{section.number}}
                         </a>
                     </td>
 
-                    <td ng-click="gotoEditSection(section.id)" sortable="'description'" data-title="'Section Description'">
+                    <td ng-click="gotoEditSection(section.id)" sortable="'description'" data-title="'Description'">
                         <a class="edit-data-inline">{{section.description}} </a>
                     </td>
 
