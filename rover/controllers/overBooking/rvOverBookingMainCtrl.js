@@ -13,6 +13,7 @@ angular.module('sntRover').controller('RvOverBookingMainCtrl', [
 
     var LEFT_PANE_SCROLL = 'overBookingLeftSectionScroll',
         RIGHT_PANE_SCROLL = 'overBookingGridScroll',
+        DATE_PANE_SCROLL = 'overBookingDateScroll',
         DELAY_1000 = 1000;
 
 	// Set scrollers for left and right pane
@@ -27,9 +28,16 @@ angular.module('sntRover').controller('RvOverBookingMainCtrl', [
 			'probeType': 3,
 			'scrollX': true
 		});
+
+		$scope.setScroller(DATE_PANE_SCROLL, {
+			'preventDefault': false,
+			'probeType': 3,
+			'scrollX': true,
+			'scrollY': false
+		});
 	};
 
-	// Set up scroll listeners for left and right pane
+	// Set up scroll listeners for date, left and right pane
 	var setupScrollListner = function() {
 		$scope.myScroll[ LEFT_PANE_SCROLL ]
 			.on('scroll', function() {
@@ -42,11 +50,23 @@ angular.module('sntRover').controller('RvOverBookingMainCtrl', [
 				$scope.myScroll[ LEFT_PANE_SCROLL ]
 					.scrollTo( 0, this.y );
 			});
+
+		$scope.myScroll[ DATE_PANE_SCROLL ]
+			.on('scroll', function() {
+				$scope.myScroll[ RIGHT_PANE_SCROLL ]
+					.scrollTo( this.x, 0 );
+			});
+
+		$scope.myScroll[ RIGHT_PANE_SCROLL ]
+			.on('scroll', function() {
+				$scope.myScroll[ DATE_PANE_SCROLL ]
+					.scrollTo( this.x, 0 );
+			});
 	};
 
 	// Check whether scroll is ready
 	var isScrollReady = function isScrollReady () {
-		if ( $scope.myScroll.hasOwnProperty(LEFT_PANE_SCROLL) && $scope.myScroll.hasOwnProperty(RIGHT_PANE_SCROLL) ) {
+		if ( $scope.myScroll.hasOwnProperty(LEFT_PANE_SCROLL) && $scope.myScroll.hasOwnProperty(RIGHT_PANE_SCROLL) && $scope.myScroll.hasOwnProperty(DATE_PANE_SCROLL)) {
 			setupScrollListner();
 		} else {
 			$timeout(isScrollReady, DELAY_1000);
@@ -61,6 +81,10 @@ angular.module('sntRover').controller('RvOverBookingMainCtrl', [
 
         if ( $scope.myScroll.hasOwnProperty(RIGHT_PANE_SCROLL) ) {
             $scope.refreshScroller( RIGHT_PANE_SCROLL );
+        }
+
+        if ( $scope.myScroll.hasOwnProperty(DATE_PANE_SCROLL) ) {
+            $scope.refreshScroller( DATE_PANE_SCROLL );
         }
     };
 

@@ -1,5 +1,5 @@
 <!-- Timeline -->
-<div class="overbooking-timeline scrollable">
+<div class="overbooking-timeline scrollable" ng-iscroll="overBookingDateScroll" ng-iscroll-delay="500">
     <div class="wrapper">
         <div class="row">
             <div ng-repeat="eachDate in overBookingObj.overBookingGridData.dateRangeList track by $index" ng-class="{'weekend': eachDate.isWeekend}" class="cell day">
