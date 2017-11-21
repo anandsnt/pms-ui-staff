@@ -260,12 +260,17 @@
 
     /* Timeline with dates and house limit ***/
     .overbooking-timeline {
+        position: relative;
         background-color: @gcard;
         .size(95px, 100%);
         #flexbox > .parent(column wrap, space-between, '', '');
 
         .wrapper {
             padding: 5px;
+        }
+
+        .iScrollHorizontalScrollbar {
+            .hide();
         }
 
         .label {
@@ -349,6 +354,10 @@
             padding: 0 5px;
             .nowrap();
             .show();
+        }
+
+        .iScrollVerticalScrollbar {
+            .hide();
         }
     }
 
