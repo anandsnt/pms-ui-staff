@@ -7579,6 +7579,195 @@
                     height: 700px;
                 }
             }
+
+            /* Overbooking ***/
+            &.overbooking {
+                width: 260px;
+
+                .message {
+                    margin-bottom: 10px;
+                }
+
+                .text {
+                    text-transform: none;
+
+                    &.warning {
+                        color: @orange;
+                    }
+                }
+
+                .entry {
+                    margin-bottom: 10px;
+
+                    label {
+                        margin-bottom: 0;
+                    }
+
+                    &:not(.full-width) {
+                        .calc-width(50, 10);
+                    }
+
+                    &.margin {
+                        margin-right: 20px;
+                    }
+
+                    &.break {
+                        padding-bottom: 20px;
+                        margin-bottom: 20px;
+                        .box-shadow(inset 0 -2px 0 rgba(0,0,0,.1));
+                    }
+                }
+
+                .checkbox {
+                    font-size: 14px;
+                    text-transform: uppercase;
+                }
+
+                .limit-days {
+                    #flexbox > .parent(row wrap, '', '', '');
+
+                    .checkbox {
+                        margin-right: 10px;
+                        .calc-width(25, 7.5);
+
+                        &:nth-child(-n+4) {
+                            margin-bottom: 10px;
+                        }
+
+                        &:nth-child(4n) {
+                            margin-right: 0;
+                        }
+                    }
+                }
+
+                .limit-apply {
+                    #flexbox > .parent(row wrap, '', '', '');
+
+                    .checkbox {
+                        .calc-width(50, 10);
+
+                        &:first-child {
+                            margin-right: 20px;
+                        }
+                    }
+                }
+
+                .limit-input {
+                    position: relative;
+                    height: 50px;
+
+                    input {
+                        position: absolute;
+                        top: 0;
+                        left: 0;
+                        font-size: 30px;
+                        font-weight: 600;
+                        line-height: 50px;
+                        z-index: 10;
+                        -webkit-appearance: none;
+                        .placeholder-text(16px, 50px, 400, @grey3);
+                        .square(100%);
+                    }
+
+                    .switch-button {
+                        position: absolute;
+                        top: 10px;
+                        right: 10px;
+                        z-index: 20;
+                        .size(30px, 90px);
+                    }                
+                }
+                
+                .actions {
+                    margin-top: 20px;
+                    padding-top: 20px;
+                    .box-shadow(inset 0 2px 0 rgba(0,0,0,.1));
+                }
+            }
+
+            &.new-overbooking {
+                padding: 0;
+                width: 380px;
+                .float();
+
+                .overbooking-rooms {
+                    position: absolute;
+                    top: 0;
+                    left: -300px;
+                    padding: 20px 0;
+                    background: rgba(0,0,0,.05);
+                    overflow: hidden;
+                    .pull-left;
+                    .size(100%, 300px);
+                    .hide();
+
+                    h3 {
+                        text-align: center;
+                        font-size: 18px;
+                        line-height: 20px;
+                        font-weight: 600;
+                        text-transform: uppercase;
+                        margin: 10px 0 20px 0;
+                    }       
+
+                    .scrollable {
+                        position: relative;
+                        .calc-height(100, 30);
+                    }
+
+                    .checkbox {
+                        display: inline-block;
+                        padding: 0 20px 0 50px;
+                        margin: 0;
+
+                        .icon-form {
+                            left: 20px;
+                        }
+                    }
+
+                    .row {
+                        &:not(last-child) { 
+                            .box-shadow(0 1px 0 rgba(0,0,0,.1));
+                        }
+                    }
+
+                    .iScrollVerticalScrollbar {
+                        top: 10px;
+                        right: 10px;
+
+                        .iScrollIndicator { background: rgba(0,0,0,.1); }
+                    }
+                }
+
+                .overbooking-limit {
+                    padding: 20px;
+                    .pull-left;
+                    .square(100%);
+                }
+
+                .entry-limit {
+                    padding: 0 60px;
+                }
+
+                .actions {
+                    padding: 20px 60px 0 60px;
+                }
+
+                &.showing-rooms {
+                    padding-left: 300px;
+                    width: 680px;
+
+                    .overbooking-rooms {
+                        left: 0;
+                        .show();
+                    }
+
+                    .overbooking-limit {
+                        width: 380px;
+                        .box-shadow(0 -2px 2px rgba(0,0,0,.3));
+                    }
+                }
+            }
         }
     }
 

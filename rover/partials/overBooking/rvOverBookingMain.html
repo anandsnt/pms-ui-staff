@@ -1,1 +1,25 @@
-// OVER BOOKING SCREEN
+<div ng-include="'/assets/partials/common/header.html'"></div>
+
+<div ng-include="'/assets/partials/overBooking/rvOverBookingHeader.html'" include-replace></div>
+
+<!-- Overbooking Content -->
+<section class="overbooking-content" ng-class="{'showing-rooms': overBookingObj.isShowRoomsLeftToSell}">
+
+	<div ng-include="'/assets/partials/overBooking/rvOverBookingLeftSection.html'" include-replace></div>
+
+    <!-- Limits -->
+    <div class="overbooking-limits">
+
+        <div ng-include="'/assets/partials/overBooking/rvOverBookingTimelineAndHouseLimit.html'" include-replace></div>
+
+		<div ng-include="'/assets/partials/overBooking/rvOverBookingGrid.html'" include-replace></div>
+
+		<div class="overbooking-grid no-content" ng-if="overBookingObj.overBookingGridData.roomTypeSellLimits.length == 0">
+		    <div class="info">
+		        <span class="icon-no-content icon-room"></span>
+		        <strong class="h1">No Room Types</strong>
+		        <span class="h2">You haven't selected any room types to show.</span>
+		    </div>
+		</div>
+    </div>
+</section>

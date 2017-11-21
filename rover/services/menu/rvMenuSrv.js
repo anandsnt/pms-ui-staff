@@ -46,7 +46,7 @@ angular.module('sntRover').service('rvMenuSrv',
     * @return {Boolean}
     */
     var isConnected = function() {
-    	return (RVHotelDetailsSrv.hotelDetails.pms_type === null);
+    	return (RVHotelDetailsSrv.hotelDetails.pms_type !== null);
     };
     /**
      * Decide whether the task management submenu is to be shown in housekeeping menu
@@ -250,7 +250,8 @@ angular.module('sntRover').service('rvMenuSrv',
 		        }, {
 		            title: "MENU_OVER_BOOKING",
 		            action: "rover.overbooking",
-		            menuIndex: "overbooking"
+		            menuIndex: "overbooking",
+		            hidden: isHourlyRateOn
 		        }]
 		    }, {
 		        title: "MENU_HOUSEKEEPING",
@@ -496,7 +497,8 @@ angular.module('sntRover').service('rvMenuSrv',
 			'accounts': ['ACCESS_ACCOUNTS'],
 
 			'changePassword': ['SETTINGS_CHANGE_PASSWORD_MENU'],
-			'adminSettings': ['SETTINGS_ACCESS_TO_HOTEL_ADMIN']
+			'adminSettings': ['SETTINGS_ACCESS_TO_HOTEL_ADMIN'],
+			'overbooking': ['OVERBOOKING_MENU']
 
 
 		};
@@ -581,6 +583,11 @@ angular.module('sntRover').service('rvMenuSrv',
 				returnValue = isNeighboursEnabled();
 				break;
 				// we display social lobby to only
+
+			// dont wanted to show on hourly enabled hotels
+			case 'overbooking':
+				returnValue = !isHourlyRateOn() && !isConnected();
+				break;
 
 			default:
         		break;

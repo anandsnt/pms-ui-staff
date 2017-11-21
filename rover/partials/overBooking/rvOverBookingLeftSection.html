@@ -1,0 +1,15 @@
+<!-- Room Types -->
+<div class="overbooking-rooms">
+    <!-- Label -->
+	<div class="overbooking-timeline">
+	    <strong ng-if="overBookingObj.isShowRoomsLeftToSell" class="label">House Rooms & Limit</strong>
+	    <strong ng-if="!overBookingObj.isShowRoomsLeftToSell" class="label">House Limit</strong>
+	</div>
+
+	<!-- Rows -->
+	<div class="overbooking-grid scrollable"> <!-- Vertical iScroll here, make it connected to iScroll on L14 in {_content/limits.html} so they both move vertically when any of them is scrolled. -->
+	    <div class="wrapper">
+	        <div ng-repeat="roomTypeName in overBookingObj.overBookingGridData.selectedRoomTypeNameList" class="row">{{roomTypeName}}</div>
+	    </div>
+	</div>
+</div>
