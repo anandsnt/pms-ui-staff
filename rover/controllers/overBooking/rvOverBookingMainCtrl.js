@@ -11,46 +11,46 @@ angular.module('sntRover').controller('RvOverBookingMainCtrl', [
 
 	BaseCtrl.call(this, $scope);
 
-	var LEFT_PANE_SCROLL = 'overBookingLeftSectionScroll',
-	    RIGHT_PANE_SCROLL = 'overBookingGridScroll',
-	    DELAY_1000 = 1000;
+    var LEFT_PANE_SCROLL = 'overBookingLeftSectionScroll',
+        RIGHT_PANE_SCROLL = 'overBookingGridScroll',
+        DELAY_1000 = 1000;
 
 	// Set scrollers for left and right pane
 	var setScroller = function() {
-	    $scope.setScroller(LEFT_PANE_SCROLL, {
-	        'preventDefault': false,
-	        'probeType': 3
-	    });
+        $scope.setScroller(LEFT_PANE_SCROLL, {
+            'preventDefault': false,
+            'probeType': 3
+		});
 
-	    $scope.setScroller(RIGHT_PANE_SCROLL, {
-	        'preventDefault': false,
-	        'probeType': 3,
-	        'scrollX': true
-	    });
+		$scope.setScroller(RIGHT_PANE_SCROLL, {
+			'preventDefault': false,
+			'probeType': 3,
+			'scrollX': true
+		});
 	};
 
 	// Set up scroll listeners for left and right pane
 	var setupScrollListner = function() {
-	    $scope.myScroll[ LEFT_PANE_SCROLL ]
-	        .on('scroll', function() {
-	            $scope.myScroll[ RIGHT_PANE_SCROLL ]
-	                .scrollTo( 0, this.y );
-	        });
+		$scope.myScroll[ LEFT_PANE_SCROLL ]
+			.on('scroll', function() {
+				$scope.myScroll[ RIGHT_PANE_SCROLL ]
+					.scrollTo( 0, this.y );
+			});
 
-	    $scope.myScroll[ RIGHT_PANE_SCROLL ]
-	        .on('scroll', function() {
-	            $scope.myScroll[ LEFT_PANE_SCROLL ]
-	                .scrollTo( 0, this.y );
-	        });
+		$scope.myScroll[ RIGHT_PANE_SCROLL ]
+			.on('scroll', function() {
+				$scope.myScroll[ LEFT_PANE_SCROLL ]
+					.scrollTo( 0, this.y );
+			});
 	};
 
 	// Check whether scroll is ready
 	var isScrollReady = function isScrollReady () {
-	    if ( $scope.myScroll.hasOwnProperty(LEFT_PANE_SCROLL) && $scope.myScroll.hasOwnProperty(RIGHT_PANE_SCROLL) ) {
-	        setupScrollListner();
-	    } else {
-	        $timeout(isScrollReady, DELAY_1000);
-	    }
+		if ( $scope.myScroll.hasOwnProperty(LEFT_PANE_SCROLL) && $scope.myScroll.hasOwnProperty(RIGHT_PANE_SCROLL) ) {
+			setupScrollListner();
+		} else {
+			$timeout(isScrollReady, DELAY_1000);
+		}
 	};
 
 	// Refresh scrollers for the left and right pane
@@ -78,7 +78,8 @@ angular.module('sntRover').controller('RvOverBookingMainCtrl', [
 			roomTypeList: completeRoomTypeListData,
 			overBookingGridData: overBookingGridData,
 			startDate: moment(tzIndependentDate($rootScope.businessDate)).format($rootScope.momentFormatForAPI),
-			endDate: moment(tzIndependentDate($rootScope.businessDate)).add(13, 'd').format($rootScope.momentFormatForAPI),
+			endDate: moment(tzIndependentDate($rootScope.businessDate)).add(13, 'd')
+					.format($rootScope.momentFormatForAPI),
 			isShowRoomsLeftToSell: false,
 			isShowRoomTypeFilter: false
 		};

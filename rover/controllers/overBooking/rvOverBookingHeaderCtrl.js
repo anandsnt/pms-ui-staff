@@ -24,7 +24,7 @@ angular.module('sntRover').controller('RvOverBookingHeaderCtrl', [
         var currentStartDate = $scope.overBookingObj.startDate;
 
         $scope.overBookingObj.endDate = moment(tzIndependentDate(currentStartDate)).add(13, 'd')
-        		.format($rootScope.momentFormatForAPI);
+            .format($rootScope.momentFormatForAPI);
         $scope.$emit('REFRESH_OVERBOOKING_GRID');
     });
     
