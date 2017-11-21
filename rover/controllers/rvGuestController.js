@@ -341,7 +341,7 @@ angular.module('sntRover').controller('guestCardController', [
 			contactDetails.address = {
 				state: contactInfo.address.state,
 				city: contactInfo.address.city
-			}
+			};
 
 			return contactDetails;
 		};
