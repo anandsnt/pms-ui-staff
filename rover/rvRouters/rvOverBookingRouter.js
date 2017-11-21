@@ -17,7 +17,7 @@ angular.module('overBookingModule', []).config(function($stateProvider) {
                                 .format($rootScope.momentFormatForAPI),
                     'end_date': moment(tzIndependentDate($rootScope.businessDate)).add(13, 'd')
                                 .format($rootScope.momentFormatForAPI),
-                    'show_rooms_left_to_sell': true,
+                    'show_rooms_left_to_sell': false,
                     'room_type_ids': []
                 };
                 

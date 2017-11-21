@@ -117,7 +117,7 @@ angular.module('sntRover').controller('RvOverBookingMainCtrl', [
 		dataToSend = {
             'start_date': moment(tzIndependentDate($scope.overBookingObj.startDate)).format($rootScope.momentFormatForAPI),
             'end_date': moment(tzIndependentDate($scope.overBookingObj.endDate)).format($rootScope.momentFormatForAPI),
-            'show_rooms_left_to_sell': true,
+            'show_rooms_left_to_sell': $scope.overBookingObj.isShowRoomsLeftToSell,
             'room_type_ids': getSelectedRoomTypeIdList()
         };
 

@@ -3,8 +3,7 @@ angular.module('sntRover').controller('RvOverBookingHeaderCtrl', [
 	'$rootScope',
 	'ngDialog',
 	'$timeout',
-	'sntActivity',
-	function($scope, $rootScope, ngDialog, $timeout, sntActivity) {
+	function($scope, $rootScope, ngDialog, $timeout) {
 
 	BaseCtrl.call(this, $scope);
 	$scope.setScroller('roomTypeFilterList');
@@ -31,13 +30,11 @@ angular.module('sntRover').controller('RvOverBookingHeaderCtrl', [
     
     // Handle SHOW ROOMS LEFT TO SELL button click action
 	$scope.clickedShowRoomsLeftTosell = function() {
-		sntActivity.start('ROOM_LEFT_TO_SELL');
-		$scope.overBookingObj.isShowRoomsLeftToSell = !$scope.overBookingObj.isShowRoomsLeftToSell;
 		$scope.$emit('REFRESH_SCROLLBARS');
 		$timeout(function() {
-            sntActivity.stop('ROOM_LEFT_TO_SELL');
+			$scope.overBookingObj.isShowRoomsLeftToSell = !$scope.overBookingObj.isShowRoomsLeftToSell;
+			$scope.$emit('REFRESH_OVERBOOKING_GRID');
         }, 300);
-		
 	};
 	// Handle PREV DATE button click action
 	$scope.clickedPrevDateButton = function() {
