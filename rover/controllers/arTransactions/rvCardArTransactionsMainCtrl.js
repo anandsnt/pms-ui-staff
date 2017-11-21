@@ -798,4 +798,35 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 			});
 		};
 
+		$scope.$on("CLICKED_REFUND_BUTTON", function(event, payment) {
+			if(payment.payment_type_value === "CC") {
+	            payment.card_details.ending_with = payment.card_details.last_digits;
+	        }
+	        
+	        var passData = {
+	            "account_id": $scope.arDataObj.accountId,
+	            "isRefundClick": true,
+	            "is_swiped": false,
+	            "details": {
+	                "firstName": "",
+	                "lastName": ""
+	            },
+	            payment: payment
+	        };
+	        //$scope.arFlags.shouldShowRefundButton = true;
+	        $scope.passData = passData;
+
+	        $timeout(function() {
+	            
+	            ngDialog.open({
+	                template: '/assets/partials/companyCard/arTransactions/rvArTransactionsPayCredits.html',
+	                controller: 'RVArTransactionsPayCreditsController',
+	                className: '',
+	                scope: $scope
+	            });
+	            $scope.paymentModalOpened = true;
+
+	        }, 500);
+		})
+
 }]);

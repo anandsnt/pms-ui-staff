@@ -68,27 +68,10 @@ sntRover.controller('RVArPaymentForAllocationController',
         ngDialog.close();
     };
 
-    $scope.clickedRefundButton = function(payment) {
-        var passData = {
-            "account_id": $scope.arDataObj.accountId,
-            "isRefundClick": true,
-            "is_swiped": false,
-            "details": {
-                "firstName": "",
-                "lastName": ""
-            },
-            payment: payment
-        };
-        //$scope.arFlags.shouldShowRefundButton = true;
-        $scope.passData = passData;
-        ngDialog.open({
-            template: '/assets/partials/companyCard/arTransactions/rvArTransactionsPayCredits.html',
-            controller: 'RVArTransactionsPayCreditsController',
-            className: '',
-            scope: $scope
-        });
-        $scope.paymentModalOpened = true;
+    $scope.clickedRefundButton = function(payment) {        
 
+        $scope.$emit("CLICKED_REFUND_BUTTON", payment);
+        $scope.closePopup();
     };
 
     init();

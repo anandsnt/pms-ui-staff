@@ -891,7 +891,11 @@ angular.module('sntPay').controller('sntPaymentController',
                 // NOTE: Fees information is to be calculated only for standalone systems
                 // TODO: See how to handle fee in case of C&P
 
-                var selectedPaymentType;
+                if($scope.actionType === 'AR_REFUND_PAYMENT') {
+                    return false;
+                }
+
+                var selectedPaymentType;    
 
                 if (isReset && $scope.payment.isEditable && $scope.selectedPaymentType === 'GIFT_CARD') {
                     $scope.payment.amount = 0;
@@ -1412,10 +1416,14 @@ angular.module('sntPay').controller('sntPaymentController',
                     $scope.$emit('PAYMENT_SCREEN_MODE_CHANGED', $scope.payment.screenMode);
                 });
 
+
+
                 config = $scope.hotelConfig;
 
                 isEMVEnabled = config.paymentGateway === 'sixpayments' ||
                     (config.paymentGateway === 'MLI' && config.isEMVEnabled);
+
+                $scope.showSelectedCard();
 
             })();
 

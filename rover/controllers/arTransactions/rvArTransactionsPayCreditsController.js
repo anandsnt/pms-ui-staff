@@ -11,12 +11,17 @@ sntRover.controller('RVArTransactionsPayCreditsController',
     BaseCtrl.call(this, $scope);
 
     $scope.feeData = {};
+    $scope.selectedCC = {};
 
     $scope.saveData = {'paymentType': ''};
     $scope.billNumber = 1;
     $scope.renderData = {};
     $scope.renderData.defaultPaymentAmount = ($scope.passData.isRefundClick) ? (-1) * parseFloat($scope.passData.payment.amount) : $scope.arDataObj.unpaidAmount;
-    // $scope.shouldShowRefundButton1 = false;
+    $scope.saveData.paymentType = ($scope.passData.isRefundClick) ? $scope.passData.payment.payment_type_value  : '';
+    $scope.actionType = ($scope.passData.isRefundClick) ? "AR_REFUND_PAYMENT" : "AR_SUBMIT_PAYMENT";
+    if ($scope.passData.isRefundClick && $scope.passData.payment.payment_type_value === "CC") {
+        $scope.selectedCC = $scope.passData.payment.card_details;
+    }
     var bill_id = $scope.arDataObj.company_or_ta_bill_id;
 
     $scope.cardsList = [];
@@ -46,6 +51,7 @@ sntRover.controller('RVArTransactionsPayCreditsController',
         $scope.renderData.paymentTypes = _.filter(data, function(paymentType) {
             return paymentType.name !== "GIFT_CARD";
         });
+
         renderDefaultValues();
     };
 
@@ -299,15 +305,16 @@ sntRover.controller('RVArTransactionsPayCreditsController',
      * Invoke this method to show the refund amount on the button in the payment screen
      */
     var renderDefaultValues = function() {
+         // $scope.selectedPaymentType = "CC";
+          // $scope.saveData.paymentType = "CC";
         $scope.defaultRefundAmount = (-1) * parseFloat($scope.renderData.defaultPaymentAmount);
         if ($scope.renderData.defaultPaymentAmount < 0) {
             $scope.defaultRefundAmount = (-1) * parseFloat($scope.renderData.defaultPaymentAmount);
             $scope.shouldShowMakePaymentButton = false;
         } else {
             $scope.shouldShowMakePaymentButton = true;
-        }   
-        // if ($scope.passData.isRefundClick) {
-        //     $scope.shouldShowRefundButton1 = true;
-        // }     
+        }  
+        $scope.$digest(); 
+   
     };
 }]);
