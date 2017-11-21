@@ -37,12 +37,16 @@ sntRover.service('RVCommissionsSrv', ['$http', '$q', 'BaseWebSrvV2', function($h
     that.exportCommissions = function(params) {
 
         var deferred = $q.defer();
-        var url = '/api/reports/commisson_export';
+        var url = '/api/reports/commission_export.csv';
 
-        BaseWebSrvV2.getJSON(url, params).then(function(data) {
+        $http({
+                method: 'GET',
+                url: url,
+                data: params
+            }).then(function(response) {
             var data = response.data,
             headers = response.headers;
-
+          
             var hiddenAnchor = angular.element('<a/>'),
             blob = new Blob([data]);
 
@@ -57,7 +61,6 @@ sntRover.service('RVCommissionsSrv', ['$http', '$q', 'BaseWebSrvV2', function($h
         });
         return deferred.promise;
     };
-
 
     this.filterData = {
         'page': 1,

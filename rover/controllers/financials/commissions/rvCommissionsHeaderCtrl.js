@@ -73,7 +73,7 @@ sntRover.controller('RVCommisionsHeaderCtrl', ['$scope', 'ngDialog', '$log', '$t
 				$timeout(function() {
 					setExportStatus(false, false, true);
 					ngDialog.close();
-				}, 5000);
+				}, 1000);
 			},
 			failureCallBack: function() {
 				setExportStatus(false, true, false);
