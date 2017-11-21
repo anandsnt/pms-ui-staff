@@ -1096,7 +1096,12 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 			if ($scope.stateCheck.stayDatesMode) {
 				$scope.stateCheck.rateSelected.allDays = isRateSelected().allDays;
 				$scope.stateCheck.rateSelected.oneDay = isRateSelected().oneDay;
-			}
+			} else {
+                // CICO-44156 - Reset selected rates when the show stay dates option is set to off
+                $scope.stateCheck.preferredType = "";
+                $scope.stateCheck.dateModeActiveDate = ARRIVAL_DATE;
+                resetRates();
+            }
 
 			$scope.refreshScroll();
 
@@ -1846,7 +1851,7 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 					pageToFetch = (room.ratesArray.length / $scope.stateCheck.pagination.roomType.ratesList.perPage) + 1;
 				}
 				fetchRatesList(room.id, null, pageToFetch, function(response) {
-					
+
 					var datesInitial = RVReservationDataService.getDatesModel(ARRIVAL_DATE, DEPARTURE_DATE);
 
 					room.totalRatesCount = response.total_count;
@@ -2002,7 +2007,7 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 			} else {
 				$scope.filteredRates = [];
 				fetchRatesList(null, null, 1, function(response) {
-					
+
 					generateRatesGrid(response.results);
 					$scope.refreshScroll();
 				});
