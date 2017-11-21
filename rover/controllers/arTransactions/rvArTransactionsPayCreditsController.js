@@ -70,7 +70,8 @@ sntRover.controller('RVArTransactionsPayCreditsController',
         $scope.depositPaidSuccesFully = true;
         $scope.authorizedCode = data.authorization_code;
 
-        $scope.allocatedPayment.payment_type = data.selectedPaymentTypeDescription;
+        $scope.allocatedPayment.payment_type   = data.selectedPaymentTypeDescription;
+        $scope.allocatedPayment.transaction_id = data.ar_transaction_id;
         if (data.selectedPaymentType === "CC") {
             data.cc_details.last_digits = data.cc_details.ending_with;
             data.cc_details.expire_date = data.cc_details.expiry_date;

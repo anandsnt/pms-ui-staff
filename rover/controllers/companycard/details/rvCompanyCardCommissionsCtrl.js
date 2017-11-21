@@ -41,7 +41,8 @@ function($scope, $state, $rootScope, $stateParams, RVCompanyCardSrv, ngDialog, $
     refreshScroll();
     // Refresh the scroller when the tab is active.
     $scope.$on("commissionsTabActive", function() {
-        refreshScroll();
+        // CICO-46891
+        fetchCommissionDetails(true);
     });
 
     // Fetches the commission details for the given filter options
@@ -311,6 +312,25 @@ function($scope, $state, $rootScope, $stateParams, RVCompanyCardSrv, ngDialog, $
         updatePaidStatus(requestData);
     };
 
+    $scope.toggleHoldStatus = function(commission) {
+
+        if(commission.commission_data.paid_status == "Paid" || commission.commission_data.paid_status == "Prepaid")
+        {
+            $scope.errorMessage = ["Only transactions on 'UNPAID' status can be set to On Hold"];
+            return;
+        }
+        var commissionToUpdate = {};
+
+        commissionToUpdate.reservation_id = commission.reservation_id;
+        commissionToUpdate.status = commission.commission_data.paid_status == "On Hold" ? "Unpaid" : "On Hold";
+
+        var requestData = {};
+
+        requestData.accountId = $scope.accountId;
+        requestData.commissionDetails = [commissionToUpdate];
+        updatePaidStatus(requestData);
+    };
+
     // Updates the paid status of all the selected records
     $scope.onGroupPaidStatusChange = function() {
 
@@ -445,14 +465,16 @@ function($scope, $state, $rootScope, $stateParams, RVCompanyCardSrv, ngDialog, $
             toDate: "",
             paidStatus: "Unpaid",
             commissionStatus: "Commissionable",
-            perPage: RVCompanyCardSrv.DEFAULT_PER_PAGE,
+            perPage: 25,//RVCompanyCardSrv.DEFAULT_PER_PAGE,
             page: 1,
             start: 1,
             selectAll: false,
             toggleCommission: false,
             commssionRecalculationValue: ''
         };
-        $scope.accountId = $stateParams.id;
+        // NOTE: This controller runs under stay card too; In such a case, the $stateParams.id will have the reservation ID
+        $scope.accountId = $state.current.name === 'rover.reservation.staycard.reservationcard.reservationdetails' ?
+            $scope.travelAgentInformation.id : $stateParams.id;
         $scope.isEmpty = util.isEmpty;
         $scope.isEmptyObject = isEmptyObject;
 
@@ -467,7 +489,10 @@ function($scope, $state, $rootScope, $stateParams, RVCompanyCardSrv, ngDialog, $
            groupPaidStatus: ""
         };
         $scope.businessDate = $rootScope.businessDate;
-        fetchCommissionDetails(true);
+        // CICO-46891
+        if ($scope.currentSelectedTab === 'cc-commissions') {
+          fetchCommissionDetails(true);
+        }
         $vault.set('travelAgentId', $stateParams.id);
         $vault.set('travelAgentType', $stateParams.type);
         $vault.set('travelAgentQuery', $stateParams.query);
