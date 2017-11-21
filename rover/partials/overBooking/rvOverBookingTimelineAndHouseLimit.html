@@ -8,9 +8,9 @@
             </div>
         </div>
         <div class="row">
-            <div class="cell" ng-repeat="item in overBookingObj.overBookingGridData.houseSellLimits track by $index" ng-class="{'weekend': overBookingObj.overBookingGridData.dateRangeList[$index].isWeekend}">
-                <span ng-if="overBookingObj.isShowRoomsLeftToSell" class="rooms">{{item.left_to_sell}}</span>
-                <span class="limit">{{item.sell_limit}}</span>
+            <div class="cell" ng-repeat="cell in overBookingObj.overBookingGridData.houseSellLimits track by $index" ng-class="{'weekend': overBookingObj.overBookingGridData.dateRangeList[$index].isWeekend}">
+                <span ng-if="overBookingObj.isShowRoomsLeftToSell" class="rooms" ng-class="{'unavailable':cell.left_to_sell < 3 }">{{cell.left_to_sell}}</span>
+                <span class="limit">{{cell.sell_limit}}</span>
             </div>
         </div>
     </div>

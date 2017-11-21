@@ -32,7 +32,7 @@ angular.module('sntRover').controller('RvOverBookingHeaderCtrl', [
 	$scope.clickedShowRoomsLeftTosell = function() {
 		sntActivity.start('ROOM_LEFT_TO_SELL');
 		$scope.overBookingObj.isShowRoomsLeftToSell = !$scope.overBookingObj.isShowRoomsLeftToSell;
-
+		$scope.$emit('REFRESH_SCROLLBARS');
 		$timeout(function() {
             sntActivity.stop('ROOM_LEFT_TO_SELL');
         }, 300);
