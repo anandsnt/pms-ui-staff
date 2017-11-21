@@ -6,10 +6,17 @@
                 <span class="message">OR</span>
             </section>
 
-            <button ng-if="checkInState.hasActiveEMV"
+            <button ng-if="checkInState.hasActiveEMV && authorizationInfo.is_cc_authorize_at_checkin_enabled"
                     class="button orange modal-close c-and-p"
                     style="margin-bottom: 12px;"
                     ng-click="onClickEMV()">
+                USE CARD READER
+            </button>
+
+            <button ng-if="checkInState.hasActiveEMV && !authorizationInfo.is_cc_authorize_at_checkin_enabled"
+                    class="button orange modal-close c-and-p"
+                    style="margin-bottom: 12px;"
+                    ng-click="addCardWithEMV()">
                 USE CARD READER
             </button>
 
