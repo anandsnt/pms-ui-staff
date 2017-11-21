@@ -3,9 +3,9 @@ angular.module('sntRover').service('rvOverBookingSrv', ['$q', 'rvBaseWebSrvV2', 
 
 	var that = this;
 
-	this.data = {};
+	this.gridDataForOverbooking = {};
 
-    /**
+    /*
      * This method returns an array of dates including the from and to Date provided to it
       * @param fromDate String in yyyy-MM-dd format
      * @param toDate String in yyyy-MM-dd format
@@ -27,29 +27,29 @@ angular.module('sntRover').service('rvOverBookingSrv', ['$q', 'rvBaseWebSrvV2', 
         return dates;
     };
 
-	/**
-	* function to fetch item inventory between from date & to date
-	*/
+	/*
+	 * Function to fetch item inventory between from date & to date
+	 */
 	this.fetchOverBookingGridData = function (params) {
 		var firstDate 	= (params.start_date),
 			secondDate 	= (params.end_date);
 
 		// Webservice calling section
 		var deferred = $q.defer(),
-			url = '/api/overbooking';
+			url = '/api/sell_limits/sell_limits';
 
-		/*rvBaseWebSrvV2.getJSON(url, params).then(function (resultFromAPI) {
-			that.data.gridDataForOverbooking = {
-                'house_rooms': resultFromAPI.house_rooms,
-                'room_type': resultFromAPI.room_type,
-                'dates': getDateRange(firstDate, secondDate)
+		rvBaseWebSrvV2.postJSON(url, params).then(function (resultFromAPI) {
+			that.gridDataForOverbooking = {
+                'houseSellLimits': resultFromAPI.house_sell_limits,
+                'roomTypeSellLimits': resultFromAPI.room_type_sell_limits,
+                'selectedRoomTypeNameList': _.pluck(resultFromAPI.room_type_sell_limits, 'name'),
+                'dateRangeList': getDateRange(firstDate, secondDate)
             };
-			deferred.resolve(that.data);
+			deferred.resolve(that.gridDataForOverbooking);
 		}, function(data) {
 			deferred.reject(data);
-		});*/
-
-		deferred.resolve(that.data);
+		});
+	
 		return deferred.promise;
 	};
 
@@ -59,14 +59,14 @@ angular.module('sntRover').service('rvOverBookingSrv', ['$q', 'rvBaseWebSrvV2', 
 	 */
 	this.getAllRoomTypes = function() {
 		var deferred = $q.defer(),
-			url = '/api/room_types.json?is_exclude_pseudo=true',
+			url = '/api/room_types.json?exclude_pseudo=true?exclude_suite=true',
 			result = [];
 
 		rvBaseWebSrvV2.getJSON(url).then(
 			function(data) {
 				if (data.results && data.results.length > 0 ) {
 					_.each( data.results, function(obj) { 
-						result.push(_.pick(obj, 'name', 'id'));
+						result.push(_.extend (_.pick(obj, 'name', 'id'), { 'isChecked': true } ));
 					});
 				}
 				deferred.resolve(result);
