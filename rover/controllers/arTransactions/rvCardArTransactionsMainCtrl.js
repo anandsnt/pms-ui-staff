@@ -528,7 +528,8 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
             _.each($scope.arDataObj.balanceList, function (eachItem) {
                 totalAllocatedAmount = parseFloat(totalAllocatedAmount) + parseFloat(eachItem.amount);
             });
-            $scope.arDataObj.totalAllocatedAmount = totalAllocatedAmount;	
+            $scope.arDataObj.totalOfAllInvoicesInBalanceTab = totalAllocatedAmount;	
+            $scope.arDataObj.totalAllocatedAmount = totalAllocatedAmount;
 		});
 
 		/*
