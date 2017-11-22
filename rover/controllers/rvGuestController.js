@@ -209,18 +209,16 @@ angular.module('sntRover').controller('guestCardController', [
 		 * Every logic to disable the detach company card button.
 		 */
 		$scope.shouldDisableCompanyCardDetachButton = function() {
-			var isCCAttachedToGroup = !!($scope.reservationData.group && $scope.reservationData.group.company);
-
-			return isCCAttachedToGroup;
+			// CICO-37005	
+			return !!$scope.reservationData.groupCompanyCardId;
 		};
 
 		/**
 		 * Every logic to disable the detach TA card button.
 		 */
 		$scope.shouldDisableTACardDetachButton = function() {
-			var isTAAttachedToGroup = !!($scope.reservationData.group && $scope.reservationData.group.travelAgent);
-
-			return isTAAttachedToGroup;
+			// CICO-37005						
+			return !!$scope.reservationData.groupTravelAgentId;;
 		};
 
 		/**
