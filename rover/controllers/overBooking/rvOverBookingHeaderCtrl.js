@@ -82,6 +82,17 @@ angular.module('sntRover').controller('RvOverBookingHeaderCtrl', [
         return disablePrevDateButton;
 	};
 
+	// Handle Add OverBooking button click
+	$scope.clickedAddOverBookingButton = function() {
+		ngDialog.open({
+			template: '/assets/partials/overBooking/rvAddOverBookingPopup.html',
+			controller: 'rvAddOverBookingPopupCtrl',
+			className: '',
+			scope: $scope,
+			closeByDocument: false
+		});
+	};
+
 	// Cleaning listener.
     $scope.$on('$destroy', listenerDateChanged);
 
