@@ -14,7 +14,8 @@ angular.module('sntRover').controller('RvOverBookingMainCtrl', [
     var LEFT_PANE_SCROLL = 'overBookingLeftSectionScroll',
         RIGHT_PANE_SCROLL = 'overBookingGridScroll',
         DATE_PANE_SCROLL = 'overBookingDateScroll',
-        DELAY_1000 = 1000;
+        DELAY_1000 = 1000,
+        DATE_SHIFT_LIMIT = 13;
 
 	// Set scrollers for left and right pane
 	var setScroller = function() {
@@ -66,7 +67,7 @@ angular.module('sntRover').controller('RvOverBookingMainCtrl', [
 
 	// Check whether scroll is ready
 	var isScrollReady = function isScrollReady () {
-		if ( $scope.myScroll.hasOwnProperty(LEFT_PANE_SCROLL) && $scope.myScroll.hasOwnProperty(RIGHT_PANE_SCROLL) && $scope.myScroll.hasOwnProperty(DATE_PANE_SCROLL)) {
+		if ( !!$scope.myScroll && !!$scope.myScroll.hasOwnProperty(LEFT_PANE_SCROLL) && !!$scope.myScroll.hasOwnProperty(RIGHT_PANE_SCROLL) && !!$scope.myScroll.hasOwnProperty(DATE_PANE_SCROLL)) {
 			setupScrollListner();
 		} else {
 			$timeout(isScrollReady, DELAY_1000);
@@ -102,7 +103,7 @@ angular.module('sntRover').controller('RvOverBookingMainCtrl', [
 			roomTypeList: completeRoomTypeListData,
 			overBookingGridData: overBookingGridData,
 			startDate: moment(tzIndependentDate($rootScope.businessDate)).format($rootScope.momentFormatForAPI),
-			endDate: moment(tzIndependentDate($rootScope.businessDate)).add(13, 'd')
+			endDate: moment(tzIndependentDate($rootScope.businessDate)).add(DATE_SHIFT_LIMIT, 'd')
 					.format($rootScope.momentFormatForAPI),
 			isShowRoomsLeftToSell: false,
 			isShowRoomTypeFilter: false
