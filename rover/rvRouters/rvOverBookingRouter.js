@@ -12,7 +12,7 @@ angular.module('overBookingModule', []).config(function($stateProvider) {
                 return rvOverBookingSrv.getAllRoomTypes();
             },
             overBookingGridData: function(overBookingAssets, rvOverBookingSrv, completeRoomTypeListData, $rootScope, $stateParams) {
-                var startDate = '';
+                var startDate = '', DATE_SHIFT_LIMIT = 13;
 
                 if (!!$stateParams.start_date) {
                     startDate = $stateParams.start_date;
@@ -24,7 +24,7 @@ angular.module('overBookingModule', []).config(function($stateProvider) {
                 var params = {
                     'start_date': moment(tzIndependentDate(startDate))
                                 .format('YYYY-MM-DD'),
-                    'end_date': moment(tzIndependentDate(startDate)).add(13, 'd')
+                    'end_date': moment(tzIndependentDate(startDate)).add(DATE_SHIFT_LIMIT, 'd')
                                 .format('YYYY-MM-DD'),
                     'show_rooms_left_to_sell': false,
                     'room_type_ids': _.pluck(completeRoomTypeListData, 'id')

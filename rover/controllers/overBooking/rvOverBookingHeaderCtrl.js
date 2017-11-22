@@ -8,6 +8,7 @@ angular.module('sntRover').controller('RvOverBookingHeaderCtrl', [
 	BaseCtrl.call(this, $scope);
 	$scope.setScroller('roomTypeFilterList');
 	$scope.businessDate = $rootScope.businessDate;
+	var DATE_SHIFT_LIMIT = 13;
 
 	// To popup contract start date
 	$scope.showDatePicker = function() {
@@ -23,7 +24,7 @@ angular.module('sntRover').controller('RvOverBookingHeaderCtrl', [
     var listenerDateChanged = $scope.$on('DATE_CHANGED', function () {
         var currentStartDate = $scope.overBookingObj.startDate;
 
-        $scope.overBookingObj.endDate = moment(tzIndependentDate(currentStartDate)).add(13, 'd')
+        $scope.overBookingObj.endDate = moment(tzIndependentDate(currentStartDate)).add(DATE_SHIFT_LIMIT, 'd')
             .format($rootScope.momentFormatForAPI);
         $scope.$emit('REFRESH_OVERBOOKING_GRID');
     });
@@ -40,7 +41,7 @@ angular.module('sntRover').controller('RvOverBookingHeaderCtrl', [
 	$scope.clickedPrevDateButton = function() {
 		var currentStartDate = $scope.overBookingObj.startDate;
 
-		$scope.overBookingObj.startDate = moment(tzIndependentDate(currentStartDate)).add(-13, 'd')
+		$scope.overBookingObj.startDate = moment(tzIndependentDate(currentStartDate)).add((-1*DATE_SHIFT_LIMIT), 'd')
 				.format($rootScope.momentFormatForAPI);
 		$scope.overBookingObj.endDate = moment(tzIndependentDate(currentStartDate))
 				.format($rootScope.momentFormatForAPI);
@@ -52,7 +53,7 @@ angular.module('sntRover').controller('RvOverBookingHeaderCtrl', [
 
 		$scope.overBookingObj.startDate = moment(tzIndependentDate(currentEndDate))
 				.format($rootScope.momentFormatForAPI);
-		$scope.overBookingObj.endDate = moment(tzIndependentDate(currentEndDate)).add(13, 'd')
+		$scope.overBookingObj.endDate = moment(tzIndependentDate(currentEndDate)).add(DATE_SHIFT_LIMIT, 'd')
 				.format($rootScope.momentFormatForAPI);
 		$scope.$emit('REFRESH_OVERBOOKING_GRID');
 	};
@@ -70,7 +71,7 @@ angular.module('sntRover').controller('RvOverBookingHeaderCtrl', [
 	};
 	// Logic for Disable PREV DATE button.
 	$scope.disablePrevDateButton = function() {
-		var dateLimit =  moment(tzIndependentDate($rootScope.businessDate)).add(13, 'd'),
+		var dateLimit =  moment(tzIndependentDate($rootScope.businessDate)).add(DATE_SHIFT_LIMIT, 'd'),
             currentDate = moment(tzIndependentDate($scope.overBookingObj.startDate)),
             disablePrevDateButton = false;
 
