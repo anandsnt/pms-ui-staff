@@ -87,7 +87,7 @@ sntRover.controller('RVCommisionsHeaderCtrl', ['$scope', 'ngDialog', '$log', '$t
 	$scope.popupBtnAction = function(action) {
 		var params = generateParams();
 
-		params.action = action;
+		params.action_type = action;
 		var successCallBack = function() {
 			ngDialog.close();
 			$scope.fetchAgentsData();
