@@ -1262,6 +1262,7 @@ angular.module('sntPay').controller('sntPaymentController',
                 //  NOTE: The feePaid key and value would be sent IFF a fee was applied along with the payment
                 if ($scope.feeData) {
                     response.feePaid = $scope.feeData.calculatedFee;
+                    response.showFee = $scope.feeData.showFee;
                 }
 
                 if ($scope.selectedPaymentType === 'CC') {
