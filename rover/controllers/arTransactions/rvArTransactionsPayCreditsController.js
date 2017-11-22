@@ -56,7 +56,7 @@ sntRover.controller('RVArTransactionsPayCreditsController',
     };
 
     var init = function() {
-        console.log($scope.passData)
+
         $scope.referenceTextAvailable = false;
         $scope.showInitalPaymentScreen = true;
         $scope.depositPaidSuccesFully = false;
@@ -181,10 +181,6 @@ sntRover.controller('RVArTransactionsPayCreditsController',
                     "card_code": cardCode
                 }
             }
-
-        if($scope.passData.isRefundClick) {
-            paymentPostData.data_to_pass.ar_transaction_id = $scope.passData.payment.transaction_id;
-        }
 
         $scope.callAPI(rvAccountTransactionsSrv.savePaymentDetails, {
             successCallBack: successNewPayment,
@@ -311,8 +307,6 @@ sntRover.controller('RVArTransactionsPayCreditsController',
      * Invoke this method to show the refund amount on the button in the payment screen
      */
     var renderDefaultValues = function() {
-         // $scope.selectedPaymentType = "CC";
-          // $scope.saveData.paymentType = "CC";
         $scope.defaultRefundAmount = (-1) * parseFloat($scope.renderData.defaultPaymentAmount);
         if ($scope.renderData.defaultPaymentAmount < 0) {
             $scope.defaultRefundAmount = (-1) * parseFloat($scope.renderData.defaultPaymentAmount);
@@ -320,7 +314,6 @@ sntRover.controller('RVArTransactionsPayCreditsController',
         } else {
             $scope.shouldShowMakePaymentButton = true;
         }  
-        $scope.$digest(); 
-   
+
     };
 }]);

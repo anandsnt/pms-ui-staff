@@ -52,9 +52,6 @@ sntRover.controller('RVArPaymentForAllocationController',
              getParams: {
                  per_page: 1000,
                  page: 1,
-                 //from_date: $scope.filterData.fromDate,
-                 //to_date: $scope.filterData.toDate,
-                 //query: $scope.filterData.query
                  transaction_type: 'PAYMENTS',
                  allocated: false
              }
