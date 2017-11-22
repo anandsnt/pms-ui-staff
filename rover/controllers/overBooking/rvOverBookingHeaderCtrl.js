@@ -3,8 +3,7 @@ angular.module('sntRover').controller('RvOverBookingHeaderCtrl', [
 	'$rootScope',
 	'ngDialog',
 	'$timeout',
-	'sntActivity',
-	function($scope, $rootScope, ngDialog, $timeout, sntActivity) {
+	function($scope, $rootScope, ngDialog, $timeout) {
 
 	BaseCtrl.call(this, $scope);
 	$scope.setScroller('roomTypeFilterList');
@@ -24,34 +23,37 @@ angular.module('sntRover').controller('RvOverBookingHeaderCtrl', [
     var listenerDateChanged = $scope.$on('DATE_CHANGED', function () {
         var currentStartDate = $scope.overBookingObj.startDate;
 
-        $scope.overBookingObj.endDate = moment(tzIndependentDate(currentStartDate)).add(13, 'd').format($rootScope.momentFormatForAPI);
+        $scope.overBookingObj.endDate = moment(tzIndependentDate(currentStartDate)).add(13, 'd')
+            .format($rootScope.momentFormatForAPI);
         $scope.$emit('REFRESH_OVERBOOKING_GRID');
     });
     
     // Handle SHOW ROOMS LEFT TO SELL button click action
 	$scope.clickedShowRoomsLeftTosell = function() {
-		sntActivity.start('ROOM_LEFT_TO_SELL');
-		$scope.overBookingObj.isShowRoomsLeftToSell = !$scope.overBookingObj.isShowRoomsLeftToSell;
-
+		$scope.$emit('REFRESH_SCROLLBARS');
 		$timeout(function() {
-            sntActivity.stop('ROOM_LEFT_TO_SELL');
+			$scope.overBookingObj.isShowRoomsLeftToSell = !$scope.overBookingObj.isShowRoomsLeftToSell;
+			$scope.$emit('REFRESH_OVERBOOKING_GRID');
         }, 300);
-		
 	};
 	// Handle PREV DATE button click action
 	$scope.clickedPrevDateButton = function() {
 		var currentStartDate = $scope.overBookingObj.startDate;
 
-		$scope.overBookingObj.startDate = moment(tzIndependentDate(currentStartDate)).add(-13, 'd').format($rootScope.momentFormatForAPI);
-		$scope.overBookingObj.endDate = moment(tzIndependentDate(currentStartDate)).format($rootScope.momentFormatForAPI);
+		$scope.overBookingObj.startDate = moment(tzIndependentDate(currentStartDate)).add(-13, 'd')
+				.format($rootScope.momentFormatForAPI);
+		$scope.overBookingObj.endDate = moment(tzIndependentDate(currentStartDate))
+				.format($rootScope.momentFormatForAPI);
 		$scope.$emit('REFRESH_OVERBOOKING_GRID');
 	};
 	// Handle NEXT DATE button click action
 	$scope.clickedNextDateButton = function() {
 		var currentEndDate = $scope.overBookingObj.endDate;
 
-		$scope.overBookingObj.startDate = moment(tzIndependentDate(currentEndDate)).format($rootScope.momentFormatForAPI);
-		$scope.overBookingObj.endDate = moment(tzIndependentDate(currentEndDate)).add(13, 'd').format($rootScope.momentFormatForAPI);
+		$scope.overBookingObj.startDate = moment(tzIndependentDate(currentEndDate))
+				.format($rootScope.momentFormatForAPI);
+		$scope.overBookingObj.endDate = moment(tzIndependentDate(currentEndDate)).add(13, 'd')
+				.format($rootScope.momentFormatForAPI);
 		$scope.$emit('REFRESH_OVERBOOKING_GRID');
 	};
 	// Handle ROOM TYPE FILTER toggle.

@@ -59,7 +59,7 @@ angular.module('sntRover').service('rvOverBookingSrv', ['$q', 'rvBaseWebSrvV2', 
 	 */
 	this.getAllRoomTypes = function() {
 		var deferred = $q.defer(),
-			url = '/api/room_types.json?exclude_pseudo=true?exclude_suite=true',
+			url = '/api/room_types.json?exclude_pseudo=true&exclude_suite=true',
 			result = [];
 
 		rvBaseWebSrvV2.getJSON(url).then(

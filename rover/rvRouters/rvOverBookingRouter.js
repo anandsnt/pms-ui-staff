@@ -1,4 +1,4 @@
-angular.module('overBookingModule', []).config(function($stateProvider, $urlRouterProvider, $translateProvider) {
+angular.module('overBookingModule', []).config(function($stateProvider) {
     // define module-specific routes here
     $stateProvider.state('rover.overbooking', {
         url: '/overbooking',
@@ -13,9 +13,11 @@ angular.module('overBookingModule', []).config(function($stateProvider, $urlRout
             },
             overBookingGridData: function(overBookingAssets, rvOverBookingSrv, completeRoomTypeListData, $rootScope) {
                 var params = {
-                    'start_date': moment(tzIndependentDate($rootScope.businessDate)).format($rootScope.momentFormatForAPI),
-                    'end_date': moment(tzIndependentDate($rootScope.businessDate)).add(13, 'd').format($rootScope.momentFormatForAPI),
-                    'show_rooms_left_to_sell': true,
+                    'start_date': moment(tzIndependentDate($rootScope.businessDate))
+                                .format($rootScope.momentFormatForAPI),
+                    'end_date': moment(tzIndependentDate($rootScope.businessDate)).add(13, 'd')
+                                .format($rootScope.momentFormatForAPI),
+                    'show_rooms_left_to_sell': false,
                     'room_type_ids': []
                 };
                 

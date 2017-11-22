@@ -10,31 +10,103 @@ angular.module('sntRover').controller('RvOverBookingMainCtrl', [
 	function($scope, rvOverBookingSrv, $rootScope, ngDialog, $filter, $timeout, completeRoomTypeListData, overBookingGridData) {
 
 	BaseCtrl.call(this, $scope);
+
+    var LEFT_PANE_SCROLL = 'overBookingLeftSectionScroll',
+        RIGHT_PANE_SCROLL = 'overBookingGridScroll',
+        DATE_PANE_SCROLL = 'overBookingDateScroll',
+        DELAY_1000 = 1000;
+
+	// Set scrollers for left and right pane
+	var setScroller = function() {
+        $scope.setScroller(LEFT_PANE_SCROLL, {
+            'preventDefault': false,
+            'probeType': 3
+		});
+
+		$scope.setScroller(RIGHT_PANE_SCROLL, {
+			'preventDefault': false,
+			'probeType': 3,
+			'scrollX': true
+		});
+
+		$scope.setScroller(DATE_PANE_SCROLL, {
+			'preventDefault': false,
+			'probeType': 3,
+			'scrollX': true,
+			'scrollY': false
+		});
+	};
+
+	// Set up scroll listeners for date, left and right pane
+	var setupScrollListner = function() {
+		$scope.myScroll[ LEFT_PANE_SCROLL ]
+			.on('scroll', function() {
+				$scope.myScroll[ RIGHT_PANE_SCROLL ]
+					.scrollTo( 0, this.y );
+			});
+
+		$scope.myScroll[ RIGHT_PANE_SCROLL ]
+			.on('scroll', function() {
+				$scope.myScroll[ LEFT_PANE_SCROLL ]
+					.scrollTo( 0, this.y );
+			});
+
+		$scope.myScroll[ DATE_PANE_SCROLL ]
+			.on('scroll', function() {
+				$scope.myScroll[ RIGHT_PANE_SCROLL ]
+					.scrollTo( this.x, 0 );
+			});
+
+		$scope.myScroll[ RIGHT_PANE_SCROLL ]
+			.on('scroll', function() {
+				$scope.myScroll[ DATE_PANE_SCROLL ]
+					.scrollTo( this.x, 0 );
+			});
+	};
+
+	// Check whether scroll is ready
+	var isScrollReady = function isScrollReady () {
+		if ( $scope.myScroll.hasOwnProperty(LEFT_PANE_SCROLL) && $scope.myScroll.hasOwnProperty(RIGHT_PANE_SCROLL) && $scope.myScroll.hasOwnProperty(DATE_PANE_SCROLL)) {
+			setupScrollListner();
+		} else {
+			$timeout(isScrollReady, DELAY_1000);
+		}
+	};
+
+	// Refresh scrollers for the left and right pane
+    var refreshScrollers = function() {
+        if ( $scope.myScroll.hasOwnProperty(LEFT_PANE_SCROLL) ) {
+            $scope.refreshScroller( LEFT_PANE_SCROLL );
+        }
+
+        if ( $scope.myScroll.hasOwnProperty(RIGHT_PANE_SCROLL) ) {
+            $scope.refreshScroller( RIGHT_PANE_SCROLL );
+        }
+
+        if ( $scope.myScroll.hasOwnProperty(DATE_PANE_SCROLL) ) {
+            $scope.refreshScroller( DATE_PANE_SCROLL );
+        }
+    };
+
 	// Initialization..
 	var init = function() {
 
 		$scope.heading = $filter('translate')('MENU_OVER_BOOKING');
 		$scope.setTitle($filter('translate')('MENU_OVER_BOOKING'));
 		$scope.$emit('updateRoverLeftMenu', 'overbooking');
-		$scope.setScroller('overBookingVerticalScroll');
-		$scope.setScroller('overBookingHorizontalScroll');
+
+		setScroller();
+        isScrollReady();
 
 		$scope.overBookingObj = {
 			roomTypeList: completeRoomTypeListData,
 			overBookingGridData: overBookingGridData,
 			startDate: moment(tzIndependentDate($rootScope.businessDate)).format($rootScope.momentFormatForAPI),
-			endDate: moment(tzIndependentDate($rootScope.businessDate)).add(13, 'd').format($rootScope.momentFormatForAPI),
+			endDate: moment(tzIndependentDate($rootScope.businessDate)).add(13, 'd')
+					.format($rootScope.momentFormatForAPI),
 			isShowRoomsLeftToSell: false,
 			isShowRoomTypeFilter: false
 		};
-	};
-
-	// Refresh scroller
-	var refreshScroller = function() {
-		$timeout(function() {
-			$scope.refreshScroller('overBookingVerticalScroll');
-			$scope.refreshScroller('overBookingHorizontalScroll');
-		}, 300);
 	};
 
 	/*
@@ -60,7 +132,9 @@ angular.module('sntRover').controller('RvOverBookingMainCtrl', [
 
 		var onFetchGridDataSuccess = function( data ) {
 			$scope.overBookingObj.overBookingGridData = data;
-			refreshScroller();
+			$timeout(function() {
+                refreshScrollers();
+            }, DELAY_1000 );
 		},
 		onFetchGridDataFailure = function( errorMessage ) {
 			$scope.$errorMessage = errorMessage;
@@ -68,7 +142,7 @@ angular.module('sntRover').controller('RvOverBookingMainCtrl', [
 		dataToSend = {
             'start_date': moment(tzIndependentDate($scope.overBookingObj.startDate)).format($rootScope.momentFormatForAPI),
             'end_date': moment(tzIndependentDate($scope.overBookingObj.endDate)).format($rootScope.momentFormatForAPI),
-            'show_rooms_left_to_sell': true,
+            'show_rooms_left_to_sell': $scope.overBookingObj.isShowRoomsLeftToSell,
             'room_type_ids': getSelectedRoomTypeIdList()
         };
 
@@ -84,8 +158,16 @@ angular.module('sntRover').controller('RvOverBookingMainCtrl', [
 		fetchGridData();
 	});
 
+	// Catching the REFRESH_OVERBOOKING_GRID event from child controllers..
+	var listenerRefreshScroll = $scope.$on('REFRESH_SCROLLBARS', function() {
+		$timeout(function() {
+            refreshScrollers();
+        }, DELAY_1000 );
+	});
+
 	// Cleaning listener.
     $scope.$on('$destroy', listenerOverbooking);
+    $scope.$on('$destroy', listenerRefreshScroll);
 
 	init();
 
