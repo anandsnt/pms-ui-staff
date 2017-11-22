@@ -49,7 +49,7 @@ sntRover.service('RVCommissionsSrv', ['$http', '$q', 'BaseWebSrvV2', '$window', 
     that.exportCommissions = function(params) {
 
         var deferred = $q.defer();
-        var url = '/api/reports/commission_export.csv';
+        var url = '/api/reports/unpaid_commission_export.csv';
 
         $http({
             method: 'GET',
