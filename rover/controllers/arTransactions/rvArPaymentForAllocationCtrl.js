@@ -56,7 +56,7 @@ sntRover.controller('RVArPaymentForAllocationController',
                  //to_date: $scope.filterData.toDate,
                  //query: $scope.filterData.query
                  transaction_type: 'PAYMENTS',
-                 allocated: true
+                 allocated: false
              }
          };
          
