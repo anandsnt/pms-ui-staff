@@ -66,7 +66,7 @@ angular.module('sntRover').controller('RvOverBookingMainCtrl', [
 
 	// Check whether scroll is ready
 	var isScrollReady = function isScrollReady () {
-		if ( $scope.myScroll.hasOwnProperty(LEFT_PANE_SCROLL) && $scope.myScroll.hasOwnProperty(RIGHT_PANE_SCROLL) && $scope.myScroll.hasOwnProperty(DATE_PANE_SCROLL)) {
+		if ( !!$scope.myScroll && !!$scope.myScroll.hasOwnProperty(LEFT_PANE_SCROLL) && !!$scope.myScroll.hasOwnProperty(RIGHT_PANE_SCROLL) && !!$scope.myScroll.hasOwnProperty(DATE_PANE_SCROLL)) {
 			setupScrollListner();
 		} else {
 			$timeout(isScrollReady, DELAY_1000);

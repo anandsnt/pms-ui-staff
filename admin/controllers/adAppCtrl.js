@@ -209,7 +209,11 @@ admin.controller('ADAppCtrl', [
                             {
                                 title: 'MENU_OVER_BOOKING',
                                 action: 'rover.overbooking',
-                                menuIndex: 'overbooking'
+                                actionParams: {
+                                    start_date: $rootScope.businessDate
+                                },
+                                standAlone: true,
+                                hidden: $rootScope.isHourlyRatesEnabled
                             }
                         ]
                     }, {
