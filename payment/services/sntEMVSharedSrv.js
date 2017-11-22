@@ -5,6 +5,25 @@ angular.module('sntPay').service('sntEMVSharedSrv', ['$q', '$http', '$location',
 
         var service = this;
 
+        var constructCardDetails = function (response, cardType) {
+            return {
+                response: {
+                    id: response.payment_method_id || response.guest_payment_method_id,
+                    guest_payment_method_id: response.guest_payment_method_id,
+                    payment_name: 'CC',
+                    usedEMV: true
+                },
+                selectedPaymentType: 'CC',
+                cardDetails: {
+                    card_code: cardType.toLowerCase(),
+                    ending_with: response.ending_with,
+                    expiry_date: response.expiry_date,
+                    card_name: '',
+                    is_swiped: response.is_swiped
+                }
+            };
+        };
+
         var tokenize = function (params, deferred) {
             sntActivity.toggleEMVIndicator();
             sntPaymentSrv.getSixPaymentToken(params).then(
@@ -25,23 +44,7 @@ angular.module('sntPay').service('sntEMVSharedSrv', ['$q', '$http', '$location',
 
                     var cardType = response.card_type || '';
 
-                    deferred.resolve({
-                        response: {
-                            id: response.payment_method_id || response.guest_payment_method_id,
-                            guest_payment_method_id: response.guest_payment_method_id,
-                            payment_name: 'CC',
-                            usedEMV: true
-                        },
-                        selectedPaymentType: 'CC',
-                        cardDetails: {
-                            'card_code': cardType.toLowerCase(),
-                            'ending_with': response.ending_with,
-                            'expiry_date': response.expiry_date,
-                            'card_name': '',
-                            'is_swiped': response.is_swiped
-                        }
-                    });
-
+                    deferred.resolve(constructCardDetails(response, cardType));
                     sntActivity.toggleEMVIndicator();
                 },
                 errorMessage => {
