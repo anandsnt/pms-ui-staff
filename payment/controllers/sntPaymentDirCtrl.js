@@ -75,6 +75,10 @@ angular.module('sntPay').controller('sntPaymentController',
                     'bill_id': $scope.billId
                 };
 
+                if($scope.actionType === 'AR_REFUND_PAYMENT') {
+                    params.postData.parent_ar_id = $scope.arTransactionId;
+                }
+
                 if ($scope.payment.showAddToGuestCard) {
                     // check if add to guest card was selected
                     params.postData.add_to_guest_card = $scope.payment.addToGuestCardSelected;

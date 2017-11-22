@@ -9,6 +9,7 @@ angular.module('sntPay').directive('sntPayment', function() {
             reservationId: '@',
             postingAccountId: '=?',
             billId: '=?',
+            arTransactionId: '=?',
             accountId: '@',
             groupId: '@',
             allotmentId: '@',

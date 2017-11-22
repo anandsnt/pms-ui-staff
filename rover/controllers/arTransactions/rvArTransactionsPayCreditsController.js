@@ -171,9 +171,7 @@ sntRover.controller('RVArTransactionsPayCreditsController',
             getSixCreditCardType(tokenDetails.card_type).toLowerCase() :
             cardDetails.cardType;
 
-        $scope.callAPI(rvAccountTransactionsSrv.savePaymentDetails, {
-            successCallBack: successNewPayment,
-            params: {
+        var paymentPostData = {
                 "bill_id": bill_id,
                 "data_to_pass": {
                     "card_expiry": expiryDate,
@@ -183,6 +181,14 @@ sntRover.controller('RVArTransactionsPayCreditsController',
                     "card_code": cardCode
                 }
             }
+
+        if($scope.passData.isRefundClick) {
+            paymentPostData.data_to_pass.ar_transaction_id = $scope.passData.payment.transaction_id;
+        }
+
+        $scope.callAPI(rvAccountTransactionsSrv.savePaymentDetails, {
+            successCallBack: successNewPayment,
+            params: paymentPostData
         });
     };
     /*

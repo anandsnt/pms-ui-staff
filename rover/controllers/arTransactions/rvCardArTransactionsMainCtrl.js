@@ -797,6 +797,10 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 				scope: $scope
 			});
 		};
+		/*
+		 * Clicked refund button action
+		 * Open new dialog to show refund payment screen
+		 */
 
 		$scope.$on("CLICKED_REFUND_BUTTON", function(event, payment) {
 			if(payment.payment_type_value === "CC") {
@@ -813,7 +817,7 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 	            },
 	            payment: payment
 	        };
-	        //$scope.arFlags.shouldShowRefundButton = true;
+
 	        $scope.passData = passData;
 
 	        $timeout(function() {
