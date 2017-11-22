@@ -218,7 +218,7 @@ angular.module('sntRover').controller('guestCardController', [
 		 */
 		$scope.shouldDisableTACardDetachButton = function() {
 			// CICO-37005						
-			return !!$scope.reservationData.groupTravelAgentId;;
+			return !!$scope.reservationData.groupTravelAgentId;
 		};
 
 		/**
