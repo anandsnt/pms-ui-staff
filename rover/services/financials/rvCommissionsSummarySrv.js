@@ -1,4 +1,4 @@
-sntRover.service('RVCommissionsSrv', ['$http', '$q', 'BaseWebSrvV2', function($http, $q, BaseWebSrvV2) {
+sntRover.service('RVCommissionsSrv', ['$http', '$q', 'BaseWebSrvV2', '$window', function($http, $q, BaseWebSrvV2, $window) {
 
     var that = this;
     /*
@@ -9,7 +9,7 @@ sntRover.service('RVCommissionsSrv', ['$http', '$q', 'BaseWebSrvV2', function($h
     that.fetchCommissions = function(params) {
 
         var deferred = $q.defer();
-        var url = "/api/accounts/commission_overview";
+        var url = '/api/accounts/commission_overview';
         // var url = 'ui/show?json_input=commissions/commissons.json&format=json';
 
         BaseWebSrvV2.getJSON(url, params).then(function(data) {
@@ -49,17 +49,21 @@ sntRover.service('RVCommissionsSrv', ['$http', '$q', 'BaseWebSrvV2', function($h
     that.exportCommissions = function(params) {
 
         var deferred = $q.defer();
-        var url = '/api/reports/commisson_export';
+        var url = '/api/reports/unpaid_commission_export.csv';
 
-        BaseWebSrvV2.getJSON(url, params).then(function(data) {
+        $http({
+            method: 'GET',
+            url: url,
+            data: params
+        }).then(function(response) {
             var data = response.data,
-            headers = response.headers;
+                headers = response.headers;
 
             var hiddenAnchor = angular.element('<a/>'),
-            blob = new Blob([data]);
+                blob = new Blob([data]);
 
             hiddenAnchor.attr({
-                href: window.URL.createObjectURL(blob),
+                href: $window.URL.createObjectURL(blob),
                 target: '_blank',
                 download: headers()['content-disposition'].match(/filename[^;=\n]*=((['"]).*?\2|[^;\n]*)/)[1].replace(/['"]+/g, '')
             })[0].click();
@@ -69,7 +73,6 @@ sntRover.service('RVCommissionsSrv', ['$http', '$q', 'BaseWebSrvV2', function($h
         });
         return deferred.promise;
     };
-
 
     this.filterData = {
         'page': 1,

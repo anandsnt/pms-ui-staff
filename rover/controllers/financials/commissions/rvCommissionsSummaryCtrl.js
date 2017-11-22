@@ -6,9 +6,7 @@ sntRover.controller('RVCommissionsSummaryController', ['$scope',
     '$timeout',
     '$window',
     '$state',
-    'ngDialog',
-    '$log',
-    function($scope, $rootScope, $stateParams, $filter, RVCommissionsSrv, $timeout, $window, $state, ngDialog, $log) {
+    function($scope, $rootScope, $stateParams, $filter, RVCommissionsSrv, $timeout, $window, $state) {
 
         BaseCtrl.call(this, $scope);
 
@@ -16,7 +14,7 @@ sntRover.controller('RVCommissionsSummaryController', ['$scope',
             // Setting up the screen heading and browser title.
             $scope.$emit('HeaderChanged', $filter('translate')('MENU_COMMISIONS'));
             $scope.setTitle($filter('translate')('MENU_COMMISSIONS'));
-            $scope.$emit("updateRoverLeftMenu", "commisions");
+            $scope.$emit('updateRoverLeftMenu', 'commisions');
         };
 
         var refreshArOverviewScroll = function() {
@@ -75,9 +73,9 @@ sntRover.controller('RVCommissionsSummaryController', ['$scope',
                     }
                 });
                 return isAnyReservationIsSelected;
-            } else {
-                return false;
-            }
+            } 
+            return false;
+            
         };
 
         var deleteFromSelectedAgentList = function(account) {
@@ -209,7 +207,8 @@ sntRover.controller('RVCommissionsSummaryController', ['$scope',
             if ($scope.allCommisionsSelected) {
                 $scope.noOfTASelected = $scope.commissionsData.total_count;
                 $scope.noOfTAInOtherPagesSelected = $scope.commissionsData.total_count - $scope.commissionsData.accounts.length;
-                $scope.noOfBillsSelected = parseInt($scope.commissionsData.bill_count_totals.open) + parseInt($scope.commissionsData.bill_count_totals.on_hold);
+                $scope.noOfBillsSelected = parseInt($scope.commissionsData.bill_count_totals.open)
+                    + parseInt($scope.commissionsData.bill_count_totals.on_hold);
             } else {
                 $scope.noOfTASelected = 0;
                 $scope.noOfTAInOtherPagesSelected = 0;
@@ -283,8 +282,8 @@ sntRover.controller('RVCommissionsSummaryController', ['$scope',
                 $scope.commissionsData = data;
                 setUpReserationsListForAgents();
                 $scope.resetSelections();
-                $scope.showPagination = ($scope.commissionsData.total_count <= $scope.filterData.perPage) ? false : true;
-                $scope.errorMessage = "";
+                $scope.showPagination = !($scope.commissionsData.total_count <= $scope.filterData.perPage);
+                $scope.errorMessage = '';
                 $scope.$emit('hideLoader');
                 refreshArOverviewScroll();
                 $timeout(function() {
@@ -313,12 +312,12 @@ sntRover.controller('RVCommissionsSummaryController', ['$scope',
             $scope.filterData.searchQuery = '';
             $scope.fetchAgentsData();
         };
-        /**   *************** search ends here *****************************/
+        /* *************** search ends here **************************** */
         $scope.printButtonClick = function() {
             $timeout(function() {
                 $window.print();
                 if (sntapp.cordovaLoaded) {
-                    cordova.exec(function(success) {}, function(error) {}, 'RVCardPlugin', 'printWebView', []);
+                    cordova.exec(function() {}, function() {}, 'RVCardPlugin', 'printWebView', []);
                 }
             }, 100);
         };
