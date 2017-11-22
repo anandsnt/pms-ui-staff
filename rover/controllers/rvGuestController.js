@@ -331,6 +331,19 @@ angular.module('sntRover').controller('guestCardController', [
 			$scope.likesInfoError = value;
 		});
 
+		// Get the contact details object with the required properties only
+		var getContactInfo = function (contactInfo) {
+			var whiteListedKeys = ['first_name', 'last_name', 'mobile', 'phone', 'email', 'vip'],
+			    contactDetails = _.pick(contactInfo, whiteListedKeys);
+
+			contactDetails.address = {
+				state: contactInfo.address.state,
+				city: contactInfo.address.city
+			};
+
+			return contactDetails;
+		};
+
 		$scope.updateContactInfo = function() {
 			var that = this;
 
@@ -344,8 +357,8 @@ angular.module('sntRover').controller('guestCardController', [
 				$scope.$broadcast("RESETCONTACTINFO", that.newUpdatedData);
 			};
 
-			// check if there is any chage in data.if so call API for updating data
-			if (JSON.stringify(currentGuestCardHeaderData) !== JSON.stringify(that.newUpdatedData)) {
+			// check if there is any chage in data.if so call API for updating data, CICO-46709 fix
+			if (JSON.stringify(getContactInfo(currentGuestCardHeaderData)) !== JSON.stringify(getContactInfo(that.newUpdatedData))) {
 				currentGuestCardHeaderData = that.newUpdatedData;
 				var data = {
 					'data': currentGuestCardHeaderData,

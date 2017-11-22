@@ -246,7 +246,7 @@
 						</li>
 					</ul>
 					<span ng-repeat="description in feesData.description" class="charge" ng-class="{ 'icons edited' : feesData.is_description_edited }">
-						{{description.fees_desc}}
+						{{description.fees_desc}} - {{description.card_number}}
 						<br />
 					</span>
 					<span ng-show="feesData.reference_text != ''" class="reference">
