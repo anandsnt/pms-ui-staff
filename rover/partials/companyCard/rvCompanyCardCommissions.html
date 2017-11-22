@@ -67,7 +67,7 @@
                 <div class="entry paid-status" ng-show="filterData.commissionStatus == 'Commissionable' && (filterData.paidStatus == 'Unpaid' || filterData.paidStatus == 'On Hold')">
                     
                     <div class="select with-label">
-                        <label for="commision-paid" translate>COMMISSION_PAID_STATUS</label>
+                        <label for="commision-paid" translate>COMMISSION_HOLD_STATUS</label>
                         <select id="commision-paid" ng-model="status.groupPaidStatus" ng-change="onGroupPaidStatusChange()">
                             <option value="" translate>COMMISSION_SET_STATUS</option>
                             <option value="Unpaid" selected translate>COMMISSION_UNPAID</option>

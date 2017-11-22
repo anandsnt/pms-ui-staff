@@ -15,6 +15,7 @@
     "COMMISSION_COMMISSIONABLE" : "Commissionable",
     "COMMISSION_NON_COMMISSIONABLE" : "Non-Commissionable",
     "COMMISSION_PAID_STATUS" : "Paid Status",
+    "COMMISSION_HOLD_STATUS" : "Hold Status",
     "COMMISSION_SET_STATUS" : "Set Status",
     "COMMISSION_UNPAID" : "Unpaid",
     "COMMISSION_PAID" : "Paid",
