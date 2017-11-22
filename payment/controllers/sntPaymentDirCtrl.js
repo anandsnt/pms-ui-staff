@@ -449,6 +449,8 @@ angular.module('sntPay').controller('sntPaymentController',
                         if ($scope.allotmentId) {
                             params['allotment_id'] = $scope.allotmentId;
                         }
+
+                        params['add_to_guest_card'] = $scope.payment.addToGuestCardSelected;
                     }
 
                     $scope.$broadcast('INITIATE_CHIP_AND_PIN_TOKENIZATION', params);
@@ -1260,6 +1262,7 @@ angular.module('sntPay').controller('sntPaymentController',
                 //  NOTE: The feePaid key and value would be sent IFF a fee was applied along with the payment
                 if ($scope.feeData) {
                     response.feePaid = $scope.feeData.calculatedFee;
+                    response.showFee = $scope.feeData.showFee;
                 }
 
                 if ($scope.selectedPaymentType === 'CC') {

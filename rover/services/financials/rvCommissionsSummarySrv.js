@@ -34,6 +34,18 @@ sntRover.service('RVCommissionsSrv', ['$http', '$q', 'BaseWebSrvV2', function($h
         return deferred.promise;
     };
 
+    that.updateCommissionPaidStatus = function(params) {
+        var deferred = $q.defer();
+        var url = '/api/accounts/update_commission_paid_status';
+
+        BaseWebSrvV2.postJSON(url, params).then(function(data) {
+            deferred.resolve(data);
+        }, function(data) {
+            deferred.reject(data);
+        });
+        return deferred.promise;
+    };
+
     that.exportCommissions = function(params) {
 
         var deferred = $q.defer();
