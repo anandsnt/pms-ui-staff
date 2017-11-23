@@ -10,17 +10,9 @@ admin.controller('ADJobDatePickerBalanceJournalController', [
         $scope.parentScope = $scope.$parent;
         $scope.dateNeeded = $scope.parentScope.dateNeeded;
 
-        var calWeekAfter = function(today) {
-            var _dateVal      = tzIndependentDate(today),
-                _businessDate = $filter('date')(_dateVal, 'yyyy-MM-dd'),
-                _dateParts    = _businessDate.match(/(\d+)/g),
-                _year  = parseInt( _dateParts[0] ),
-                _month = parseInt( _dateParts[1] ) - 1,
-                _date  = parseInt( _dateParts[2] );
-
-            return new Date(_year, _month, _date + 7);
-        };
-
+        /*
+         * Common params
+         */
         var datePickerCommon = {
             numberOfMonths: 1,
             changeYear: true,
@@ -33,8 +25,7 @@ admin.controller('ADJobDatePickerBalanceJournalController', [
             }
         };
 
-        var startDate = $scope.parentScope.payload.begin_date || $rootScope.businessDate,
-            weekAfter = $filter('date')(calWeekAfter(startDate), 'yyyy-MM-dd');
+        var startDate = $scope.parentScope.payload.begin_date || $rootScope.businessDate;
 
         // link everthing
         if ( $scope.parentScope.dateNeeded === 'from' ) {
@@ -46,7 +37,9 @@ admin.controller('ADJobDatePickerBalanceJournalController', [
                 maxDate: tzIndependentDate(weekAfter)
             }, datePickerCommon);
         }
-
+        /*
+         * Cancel click
+         */
         $scope.cancelClicked = function() {
             ngDialog.close();
         };

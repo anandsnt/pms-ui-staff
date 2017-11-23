@@ -97,7 +97,5 @@ admin.controller('ADBalanceJournalCtrl', [
 			
 			$scope.callAPI(ADReservationToolsSrv.checkJobStatus, options);
 		};
-
-
 	}
 ]);
