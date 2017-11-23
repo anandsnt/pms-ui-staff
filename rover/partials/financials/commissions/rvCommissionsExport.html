@@ -21,7 +21,7 @@
     <span class="text" ng-show="exportSuccess">Commission records exported.</span>
     
     <div class="notice">
-        <strong class="amount"><span class="currency">{{ ::currencySymbol }}</span>{{::commissionsData.amount_totals.unpaid}}</strong>
+        <strong class="amount"><span class="currency">{{ ::currencySymbol }}</span>{{::commissionsData.amount_totals.unpaid | number: precisonTwo}}</strong>
         <span class="bills">{{ filterData.billStatus.value === 'ON_HOLD' ? commissionsData.bill_count_totals.on_hold : commissionsData.bill_count_totals.open }} Bills</span>
     </div>
 

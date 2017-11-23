@@ -49,7 +49,7 @@
          <!-- Show if active filter: Payable -->
          <li ng-show="filterData.filterTab === 'PAYABLE'">
             <span translate>ELIGIBLE_FOR_PAYMENT</span>
-            <span class="amount">{{ ::currencySymbol }}{{::commissionsData.amount_totals.unpaid}}</span>
+            <span class="amount">{{ ::currencySymbol }}{{::commissionsData.amount_totals.unpaid| number: precisonTwo}}</span>
          </li>
          <!-- Show if active filter: Payable -->
          <li class="actions" ng-show="filterData.filterTab === 'PAYABLE' && !areAgentsPartialySelected()">
@@ -60,7 +60,7 @@
          <!-- Show if active filter: On Hold (remove .hidden) -->
          <li ng-show="filterData.filterTab === 'ON_HOLD'">
             <span translate>AMOUNT_ON_HOLD</span>
-            <span class="amount">{{ ::currencySymbol }}{{::commissionsData.amount_totals.on_hold}}</span>
+            <span class="amount">{{ ::currencySymbol }}{{::commissionsData.amount_totals.on_hold| number: precisonTwo}}</span>
          </li>
       </ul>
       <!-- Show if active filer: Payable & 1 or more agents are selected (checked) (remove .hidden) -->
@@ -71,7 +71,7 @@
          </li>
          <li>
             <span translate>ELIGIBLE_FOR_PAYMENT</span>
-            <span class="amount">{{ ::currencySymbol }} {{::commissionsData.amount_totals.unpaid}}</span>
+            <span class="amount">{{ ::currencySymbol }} {{::commissionsData.amount_totals.unpaid| number: precisonTwo}}</span>
          </li>
          <li class="actions">
             <button type="button" class="button red with-icon" ng-click="openPopupWithTemplate('rvCommisionsHoldPopup')"><span class="icons icon-hold"></span>{{ 'HOLD' | translate}}</button>
@@ -89,7 +89,7 @@
          </li>
          <li>
             <span translate>AMOUNT_ON_HOLD</span>
-            <span class="amount">{{ ::currencySymbol }} 44</span>
+            <span class="amount">{{ ::currencySymbol }}</span>
          </li>
          <li class="actions">
             <button type="button" class="button blue with-icon" ng-click="openPopupWithTemplate('rvCommisionsReleasePopup')"><span class="icons icon-release"></span>Release</button>
@@ -227,13 +227,13 @@
                                  <!-- Show this only if active filter: Payable -->
                                  <td class="amount">{{  reservation.confirm_no}}</td>
                                  <td class="amount">
-                                    {{ ::currencySymbol }} {{ reservation.revenue}}
+                                    {{ ::currencySymbol }} {{ reservation.revenue| number: precisonTwo}}
                                  </td>
                                  <td class="amount">
                                     {{ reservation.commission_rate}}
                                  </td>
                                  <!-- Add .red if more than 0 -->
-                                 <td class="owing" ng-class="{'red': reservation.amount_owing>0}">{{ ::currencySymbol }} {{ reservation.amount_owing}}</td>
+                                 <td class="owing" ng-class="{'red': reservation.amount_owing>0}">{{ ::currencySymbol }} {{ reservation.amount_owing| number: precisonTwo}}</td>
                               </tr>
                            </tbody>
                         </table>
