@@ -170,7 +170,7 @@ angular.module('sntRover').controller('guestCardController', [
 				$scope.contactInfoError = false;
 				$scope.eventTimestamp = "";
 				var preventClicking = false;
-			}
+			}			
 		};
 
 		$scope.$on("swipeAtGuestCard", function() {
@@ -209,18 +209,16 @@ angular.module('sntRover').controller('guestCardController', [
 		 * Every logic to disable the detach company card button.
 		 */
 		$scope.shouldDisableCompanyCardDetachButton = function() {
-			var isGroupReservation = !!$scope.reservationDetails.group.id;
-
-			return (isGroupReservation);
+			// CICO-37005	
+			return !!$scope.reservationData.groupCompanyCardId;
 		};
 
 		/**
 		 * Every logic to disable the detach TA card button.
 		 */
 		$scope.shouldDisableTACardDetachButton = function() {
-			var isGroupReservation = !!$scope.reservationDetails.group.id;
-
-			return (isGroupReservation);
+			// CICO-37005						
+			return !!$scope.reservationData.groupTravelAgentId;
 		};
 
 		/**
@@ -339,14 +337,14 @@ angular.module('sntRover').controller('guestCardController', [
 			    contactDetails = _.pick(contactInfo, whiteListedKeys);
 
 			contactDetails.address = {
-				state: contactInfo.address.state,
-				city: contactInfo.address.city
+				state: contactInfo.address ? contactInfo.address.state : "",
+				city: contactInfo.address ? contactInfo.address.city : ""
 			};
 
 			return contactDetails;
 		};
 
-		$scope.updateContactInfo = function() {
+		$scope.updateContactInfo = function() {			
 			var that = this;
 
 			that.newUpdatedData = $scope.decloneUnwantedKeysFromContactInfo();
@@ -355,6 +353,9 @@ angular.module('sntRover').controller('guestCardController', [
 				$scope.reservationData.guest.email = that.newUpdatedData.email;
 				// update few of the details to searchSrv
 				updateSearchCache();
+				// This is used in contact info ctrl to prevent the extra API call while clicking outside
+				$scope.isGuestCardSaveInProgress = false;
+				
 				// to reset current data in contcat info for determining any change
 				$scope.$broadcast("RESETCONTACTINFO", that.newUpdatedData);
 			};
@@ -368,6 +369,7 @@ angular.module('sntRover').controller('guestCardController', [
 				};
 
 				if (typeof data.userId !== 'undefined') {
+					$scope.isGuestCardSaveInProgress = true;
 					$scope.invokeApi(RVContactInfoSrv.updateGuest, data, saveUserInfoSuccessCallback);
 				}
 			}
