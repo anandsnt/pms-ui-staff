@@ -19,16 +19,13 @@ admin.controller('ADBalanceJournalCtrl', [
 		$scope.anyJobRunning = false;
 		$scope.lastRunStatus = '';
 
-		$scope.payload = {
-			'id': $scope.balanceJournalJob.id,
-			'begin_date': '',
-			'end_date': ''
-		};
-
 		$scope.previousDayOfBusinessDate = moment(tzIndependentDate($rootScope.businessDate)).subtract(1, 'days').format($rootScope.hotelDateFormat);
 
-		$scope.previousDayOfBusinessDateInDbFormat = moment(tzIndependentDate($rootScope.businessDate)).subtract(1, 'days');
-		
+		$scope.previousDayOfBusinessDateInDbFormat = moment(tzIndependentDate($rootScope.businessDate)).subtract(1, 'days').format("YYYY-MM-DD");
+		$scope.payload = {
+			'id': $scope.balanceJournalJob.id,
+			'end_date': $scope.previousDayOfBusinessDateInDbFormat
+		};
 
 		$scope.startJob = function() {
 			var _callback = function(data) {
@@ -56,18 +53,18 @@ admin.controller('ADBalanceJournalCtrl', [
 		    });
 		};
 
-		// $rootScope.$on('datepicker.update', function(event, chosenDate) {
-		// 	if ( $scope.dateNeeded === 'from' ) {
-		// 		$scope.payload.begin_date = chosenDate;
+		$rootScope.$on('datepicker.update', function(event, chosenDate) {
+			if ( $scope.dateNeeded === 'from' ) {
+				$scope.payload.begin_date = chosenDate;
 
-		// 		// make sure the dates are valid -> end is after begin
-		// 		if ( $scope.payload.end_date ) {
-		// 			$scope.payload.end_date = checkDates($scope.payload.begin_date, $scope.payload.end_date);
-		// 		}
-		// 	} else {
-		// 		$scope.payload.end_date = chosenDate;
-		// 	}
-		// });
+				// make sure the dates are valid -> end is after begin
+				if ( $scope.payload.end_date ) {
+					$scope.payload.end_date = checkDates($scope.payload.begin_date, $scope.payload.end_date);
+				}
+			} else {
+				$scope.payload.end_date = chosenDate;
+			}
+		});
 
 
 	}
