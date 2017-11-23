@@ -27,20 +27,24 @@ admin.controller('ADBalanceJournalCtrl', [
 			'end_date': $scope.previousDayOfBusinessDateInDbFormat
 		};
 
+		/*
+		 * API when clicks start job
+		 */
 		$scope.startJob = function() {
-			var _callback = function(data) {
-				$scope.$emit('hideLoader');
-
+			var successCallback = function(data) {
 				$scope.anyJobRunning = true;
 			};
 
-			var _error = function(error) {
-				$scope.$emit('hideLoader');
+			var options = {
+				params: $scope.payload,
+				successCallBack: successCallback
 			};
 
-			$scope.invokeApi(ADReservationToolsSrv.postScheduleJob, $scope.payload, _callback, _error);
+			$scope.callAPI(ADReservationToolsSrv.postScheduleJob, options);
 		};
-
+		/*
+		 * Click calender icon handled
+		 */
 		$scope.popupCalendar = function(dateNeeded) {
 			$scope.dateNeeded = dateNeeded;
 
@@ -52,7 +56,9 @@ admin.controller('ADBalanceJournalCtrl', [
 		        closeByDocument: true
 		    });
 		};
-
+		/*
+		 * Action when select date from calender
+		 */
 		$rootScope.$on('datepicker.update', function(event, chosenDate) {
 			if ( $scope.dateNeeded === 'from' ) {
 				$scope.payload.begin_date = chosenDate;
@@ -65,6 +71,32 @@ admin.controller('ADBalanceJournalCtrl', [
 				$scope.payload.end_date = chosenDate;
 			}
 		});
+		/*
+		 * Check the job status on refresh
+		 */
+		$scope.refreshStatus = function() {
+			var _param = {
+				'id': $scope.balanceJournalJob.id
+			};
+
+			var successCallback = function(status) {
+
+				if ( status === 'INPROGRESS' ) {
+					$scope.anyJobRunning = true;
+				} else {
+					$scope.anyJobRunning = false;
+				}
+
+				$scope.lastRunStatus = status;
+			};
+
+			var options = {
+				params: $scope.payload,
+				successCallBack: successCallback
+			};
+			
+			$scope.callAPI(ADReservationToolsSrv.checkJobStatus, options);
+		};
 
 
 	}

@@ -50,7 +50,7 @@ admin.controller('ADBalanceInventoryCtrl', [
 
 		$scope.refreshStatus = function() {
 			var _param = {
-				'id': $scope.balanceInventoryJob['id']
+				'id': $scope.balanceInventoryJob.id
 			};
 
 			var _callback = function(status) {
