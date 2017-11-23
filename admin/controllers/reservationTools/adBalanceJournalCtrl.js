@@ -19,7 +19,7 @@ admin.controller('ADBalanceJournalCtrl', [
 		$scope.lastRunStatus = '';
 
 		$scope.previousDayOfBusinessDate = moment(tzIndependentDate($rootScope.businessDate)).subtract(1, 'days')
-										   .format($rootScope.hotelDateFormat);
+											.format($rootScope.hotelDateFormat);
 
 		$scope.previousDayOfBusinessDateInDbFormat = moment(tzIndependentDate($rootScope.businessDate)).subtract(1, 'days')
 													.format("YYYY-MM-DD");

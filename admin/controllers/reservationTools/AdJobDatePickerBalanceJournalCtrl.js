@@ -18,7 +18,7 @@ admin.controller('ADJobDatePickerBalanceJournalController', [
             changeYear: true,
             changeMonth: true,
             maxDate: tzIndependentDate($scope.previousDayOfBusinessDateInDbFormat),
-            onSelect: function(dateText) {
+            onSelect: function() {
                 // emit choosen date back
                 $scope.$emit('datepicker.update', $scope.datePickerDate);
                 ngDialog.close();
@@ -28,11 +28,7 @@ admin.controller('ADJobDatePickerBalanceJournalController', [
         // link everthing
         if ( $scope.parentScope.dateNeeded === 'from' ) {
             $scope.dateOptions = angular.extend({}, datePickerCommon);
-        } else {
-            $scope.dateOptions = angular.extend({
-                maxDate: tzIndependentDate(weekAfter)
-            }, datePickerCommon);
-        }
+        } 
         /*
          * Cancel click
          */
