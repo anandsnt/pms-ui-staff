@@ -46,6 +46,11 @@ function($scope, $state, $rootScope, $stateParams, RVCompanyCardSrv, ngDialog, $
         fetchCommissionDetails(true);
     });
 
+    var fetchCommissionDetailsForPage = function(page_no){
+        $scope.filterData.page = page_no;
+        fetchCommissionDetails(true)
+    }
+
     // Fetches the commission details for the given filter options
     var fetchCommissionDetails = function(isPageChanged) {
         var onCommissionFetchSuccess = function(data) {
@@ -61,16 +66,16 @@ function($scope, $state, $rootScope, $stateParams, RVCompanyCardSrv, ngDialog, $
                 $scope.commissionSummary.taxOnCommissions = data.tax_on_commissions;
                 // set pagination controls values
                 $scope.pagination.totalResultCount = data.total_count;
-                if ($scope.nextAction && isPageChanged) {
-                    $scope.pagination.start = $scope.pagination.start + $scope.filterData.perPage;
-                }
-                if ($scope.prevAction && isPageChanged) {
-                    $scope.pagination.start = $scope.pagination.start - $scope.filterData.perPage ;
-                }
+                // if ($scope.nextAction && isPageChanged) {
+                //     $scope.pagination.start = $scope.pagination.start + $scope.filterData.perPage;
+                // }
+                // if ($scope.prevAction && isPageChanged) {
+                //     $scope.pagination.start = $scope.pagination.start - $scope.filterData.perPage ;
+                // }
 
-                if (isPageChanged) {
-                    $scope.pagination.end = $scope.pagination.start + $scope.commissionDetails.length - 1;
-                }
+                // if (isPageChanged) {
+                //     $scope.pagination.end = $scope.pagination.start + $scope.commissionDetails.length - 1;
+                // }
                 $scope.$emit('hideLoader');
                 refreshScroll();
             },
@@ -555,6 +560,12 @@ function($scope, $state, $rootScope, $stateParams, RVCompanyCardSrv, ngDialog, $
         $vault.set('travelAgentId', $stateParams.id);
         $vault.set('travelAgentType', $stateParams.type);
         $vault.set('travelAgentQuery', $stateParams.query);
+
+        $scope.paginationData = {
+                    id: 'RESERVATION_LIST_' + $scope.accountId,
+                    api: fetchCommissionDetailsForPage,
+                    perPage: $scope.filterData.per_page
+                };
 
     };
 

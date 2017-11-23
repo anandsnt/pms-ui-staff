@@ -253,11 +253,12 @@
         </ul>
     </div>
     <!-- Pagination -->
-    <div class="search-pagination" ng-show="commissionDetails.length > 0 && pagination.totalResultCount > filterData.perPage">
+    <rv-pagination ng-show="commissionDetails.length > 0 && pagination.totalResultCount > filterData.perPage" page-options="paginationData" page-data="pagination.totalResultCount"></rv-pagination>
+    <!-- <div class="search-pagination" ng-show="commissionDetails.length > 0 && pagination.totalResultCount > filterData.perPage">
         <button type="button" class="button dark-grey next" ng-click="loadNextSet()" ng-disabled="isNextButtonDisabled()" translate>COMMISSION_NEXT</button>
         <button type="button" class="button dark-grey prev" ng-click="loadPrevSet()" ng-disabled="isPrevButtonDisabled()" translate>COMMISSION_PREVIOUS</button>
         <p>{{'COMMISSION_SHOWING' | translate}}<strong> {{pagination.start}}-{{pagination.end}}</strong> of <strong id="total-count"> {{pagination.totalResultCount}} </strong>{{'COMMISSION_ITEMS' | translate}}</p>
-    </div>
+    </div> -->
     <!-- When no data to show, replace L89-93 with this -->
     <div class="tab-details no-content" ng-show="commissionDetails.length == 0">
         <div class="info">
