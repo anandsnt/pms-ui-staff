@@ -263,7 +263,8 @@ sntRover.controller('RVCommissionsSummaryController', ['$scope',
                         params: {
                             id: account.id,
                             'page': page,
-                            'per_page': $scope.filterData.innerPerPage
+                            'per_page': $scope.filterData.innerPerPage,
+                            'action_type': $scope.filterData.filterTab
                         },
                         successCallBack: onFetchListSuccess
                     });
