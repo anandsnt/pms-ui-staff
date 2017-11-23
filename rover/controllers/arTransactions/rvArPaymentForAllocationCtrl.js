@@ -38,11 +38,11 @@ sntRover.controller('RVArPaymentForAllocationController',
 
         $scope.invokeApi(rvAccountsArTransactionsSrv.fetchPaymentMethods, dataToApi, successCallback );
     };
-    // 
+    // Successcallbackof listing popup
     var successCallbackOfGetAllocatedAPI = function(data) {
         $scope.payments = data.ar_transactions;
         refreshScroll();
-        $scope.$emit('hideLoader');
+        sntActivity.stop("REFUND_LIST");
     };
 
     // Function to fetch payments done
@@ -56,7 +56,7 @@ sntRover.controller('RVArPaymentForAllocationController',
                  allocated: false
              }
          };
-         
+        sntActivity.start("REFUND_LIST");
         $scope.invokeApi(rvAccountsArTransactionsSrv.fetchTransactionDetails, dataToSend, successCallbackOfGetAllocatedAPI );
     };
 
@@ -64,7 +64,7 @@ sntRover.controller('RVArPaymentForAllocationController',
     $scope.closePopup = function () {
         ngDialog.close();
     };
-
+    // Clicked refund button from list popup
     $scope.clickedRefundButton = function(payment) {        
 
         $scope.$emit("CLICKED_REFUND_BUTTON", payment);

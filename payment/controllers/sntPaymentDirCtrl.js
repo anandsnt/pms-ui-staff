@@ -75,6 +75,7 @@ angular.module('sntPay').controller('sntPaymentController',
                     'bill_id': $scope.billId
                 };
 
+                // We need extra parameter parent ar id during AR refund
                 if ($scope.actionType === 'AR_REFUND_PAYMENT') {
                     params.postData.parent_ar_id = $scope.arTransactionId;
                 }
@@ -894,7 +895,7 @@ angular.module('sntPay').controller('sntPaymentController',
             $scope.onPaymentInfoChange = function (isReset) {
                 // NOTE: Fees information is to be calculated only for standalone systems
                 // TODO: See how to handle fee in case of C&P
-
+                // CICO-44719: No need to show add payment screen
                 if ($scope.actionType === 'AR_REFUND_PAYMENT') {
                     return false;
                 }
