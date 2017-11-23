@@ -1,20 +1,18 @@
 <div id="modal" class="modal-show" ng-class="{'modal-show': !modalClosing}">
     <div class="modal-content form overbooking new-overbooking" ng-class="{'showing-rooms': addOverBookingObj.applyForRoomTypes }"> <!-- Add class 'showing-rooms' if L64 is checked -->
-	    <button type="button" class="modal-close"><span class="icons icon-close invert"></button>
-
+	    <button id="modal-close" ng-click="closeDialog()" type="button" class="modal-close"><span class="icons icon-close invert"></button>
 	    <!-- List of Room Types -->
 	    <fieldset class="overbooking-rooms" ng-show="addOverBookingObj.applyForRoomTypes">
 	        <h3>Apply to Room Types</h3>
-	        <div class="scrollable"> <!-- vertical iScroll here -->
+	        <div class="scrollable" ng-iscroll="roomTypeFilterList" ng-iscroll-delay="500">
 	            <div class="wrapper">
-	                <div class="row" >
-	                    <label class="checkbox inline">
-	                        <span class="icon-form icon-checkbox"></span>
+	                <div class="row" ng-click="clickedRoomTypeCheckbox($index)" ng-repeat="item in addOverBookingObj.roomTypeList track by $index">
+	                    <label class="checkbox inline" ng-class="{'checked': item.isChecked}">
+	                        <span class="icon-form icon-checkbox" ng-class="{'checked': item.isChecked}"></span>
 	                        <input type="checkbox"/>
-	                        {Room Type}
+	                        {{item.name}}
 	                    </label>
 	                </div>
-	                ... repeat L8-L14 for every Room Type
 	            </div>
 	        </div>
 	    </fieldset>
@@ -22,6 +20,7 @@
 	    <!-- Main Content -->
 	    <fieldset class="overbooking-limit">
 	        <strong class="h2 message">Add Overbooking</strong>
+	        <div ng-include="'/assets/partials/common/notification_message.html'"></div>
 	        <em class="text warning">This will override all existing house or room type limits for selected dates.</em>        
 	        
 	        <!-- Start Date -->
@@ -40,9 +39,9 @@
 	        <div class="entry full-width">
 	            <label>Every</label>
 	            <div class="limit-days">
-	                <label class="checkbox" ng-repeat="day in addOverBookingObj.weekDayList" ng-class="{'checked': day.isChecked}">
+	                <label class="checkbox" ng-click="clickedWeekDay($index)" ng-repeat="day in addOverBookingObj.weekDayList" ng-class="{'checked': day.isChecked}">
 	                    <span class="icon-form icon-checkbox" ng-class="{'checked': day.isChecked}"></span>
-	                    <input type="checkbox" checked />
+	                    <input type="checkbox" />
 	                    {{day.name}}
 	                </label>
 	            </div>
@@ -88,8 +87,8 @@
 
 	        <!-- Actions -->
 	        <div class="actions">
-	            <button type="button" class="button green">Add Limit</button>
-	            <button type="button" class="button blank">Cancel</button> 
+	            <button ng-click="addOverBookingApiCall()" type="button" class="button green" ng-class="{'overlay': disableAddLimitButton()}">Add Limit</button>
+	            <button ng-click="closeDialog()" type="button" class="button blank">Cancel</button> 
 	        </div>
 	    </fieldset>
 	</div>
