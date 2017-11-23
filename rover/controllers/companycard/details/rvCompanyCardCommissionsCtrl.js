@@ -46,6 +46,11 @@ function($scope, $state, $rootScope, $stateParams, RVCompanyCardSrv, ngDialog, $
         fetchCommissionDetails(true);
     });
 
+    var fetchCommissionDetailsForPage = function(page_no){
+        $scope.filterData.page = page_no;
+        fetchCommissionDetails(true)
+    }
+
     // Fetches the commission details for the given filter options
     var fetchCommissionDetails = function(isPageChanged) {
         var onCommissionFetchSuccess = function(data) {
@@ -61,16 +66,16 @@ function($scope, $state, $rootScope, $stateParams, RVCompanyCardSrv, ngDialog, $
                 $scope.commissionSummary.taxOnCommissions = data.tax_on_commissions;
                 // set pagination controls values
                 $scope.pagination.totalResultCount = data.total_count;
-                if ($scope.nextAction && isPageChanged) {
-                    $scope.pagination.start = $scope.pagination.start + $scope.filterData.perPage;
-                }
-                if ($scope.prevAction && isPageChanged) {
-                    $scope.pagination.start = $scope.pagination.start - $scope.filterData.perPage ;
-                }
+                // if ($scope.nextAction && isPageChanged) {
+                //     $scope.pagination.start = $scope.pagination.start + $scope.filterData.perPage;
+                // }
+                // if ($scope.prevAction && isPageChanged) {
+                //     $scope.pagination.start = $scope.pagination.start - $scope.filterData.perPage ;
+                // }
 
-                if (isPageChanged) {
-                    $scope.pagination.end = $scope.pagination.start + $scope.commissionDetails.length - 1;
-                }
+                // if (isPageChanged) {
+                //     $scope.pagination.end = $scope.pagination.start + $scope.commissionDetails.length - 1;
+                // }
                 $scope.$emit('hideLoader');
                 refreshScroll();
             },
@@ -346,6 +351,25 @@ function($scope, $state, $rootScope, $stateParams, RVCompanyCardSrv, ngDialog, $
 
     };
 
+    $scope.toggleHoldStatus = function(commission) {
+
+        if(commission.commission_data.paid_status == "Paid" || commission.commission_data.paid_status == "Prepaid")
+        {
+            $scope.errorMessage = ["Only transactions on 'UNPAID' status can be set to On Hold"];
+            return;
+        }
+        var commissionToUpdate = {};
+
+        commissionToUpdate.reservation_id = commission.reservation_id;
+        commissionToUpdate.status = commission.commission_data.paid_status == "On Hold" ? "Unpaid" : "On Hold";
+
+        var requestData = {};
+
+        requestData.accountId = $scope.accountId;
+        requestData.commissionDetails = [commissionToUpdate];
+        updatePaidStatus(requestData);
+    };
+
     // Updates the paid status of all the selected records
     $scope.onGroupPaidStatusChange = function() {
 
@@ -503,7 +527,7 @@ function($scope, $state, $rootScope, $stateParams, RVCompanyCardSrv, ngDialog, $
             toDate: "",
             paidStatus: "Unpaid",
             commissionStatus: "Commissionable",
-            perPage: RVCompanyCardSrv.DEFAULT_PER_PAGE,
+            perPage: 25,//RVCompanyCardSrv.DEFAULT_PER_PAGE,
             page: 1,
             start: 1,
             selectAll: false,
@@ -536,6 +560,12 @@ function($scope, $state, $rootScope, $stateParams, RVCompanyCardSrv, ngDialog, $
         $vault.set('travelAgentId', $stateParams.id);
         $vault.set('travelAgentType', $stateParams.type);
         $vault.set('travelAgentQuery', $stateParams.query);
+
+        $scope.paginationData = {
+                    id: 'RESERVATION_LIST_' + $scope.accountId,
+                    api: fetchCommissionDetailsForPage,
+                    perPage: $scope.filterData.per_page
+                };
 
     };
 
