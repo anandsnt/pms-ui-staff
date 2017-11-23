@@ -56,6 +56,7 @@ sntRover.controller('RVArPaymentForAllocationController',
                  allocated: false
              }
          };
+         
         sntActivity.start("REFUND_LIST");
         $scope.invokeApi(rvAccountsArTransactionsSrv.fetchTransactionDetails, dataToSend, successCallbackOfGetAllocatedAPI );
     };
