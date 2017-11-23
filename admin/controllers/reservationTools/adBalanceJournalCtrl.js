@@ -8,8 +8,7 @@ admin.controller('ADBalanceJournalCtrl', [
 	'allJobs',
 	'ADReservationToolsSrv',
 	'ngDialog',
-	'$filter',
-	function($scope, $rootScope, $state, allJobs, ADReservationToolsSrv, ngDialog, $filter) {
+	function($scope, $rootScope, $state, allJobs, ADReservationToolsSrv, ngDialog) {
 		BaseCtrl.call(this, $scope);
 
 		$scope.errorMessage = "";
@@ -19,9 +18,11 @@ admin.controller('ADBalanceJournalCtrl', [
 		$scope.anyJobRunning = false;
 		$scope.lastRunStatus = '';
 
-		$scope.previousDayOfBusinessDate = moment(tzIndependentDate($rootScope.businessDate)).subtract(1, 'days').format($rootScope.hotelDateFormat);
+		$scope.previousDayOfBusinessDate = moment(tzIndependentDate($rootScope.businessDate)).subtract(1, 'days')
+										   .format($rootScope.hotelDateFormat);
 
-		$scope.previousDayOfBusinessDateInDbFormat = moment(tzIndependentDate($rootScope.businessDate)).subtract(1, 'days').format("YYYY-MM-DD");
+		$scope.previousDayOfBusinessDateInDbFormat = moment(tzIndependentDate($rootScope.businessDate)).subtract(1, 'days')
+													.format("YYYY-MM-DD");
 		$scope.payload = {
 			'id': $scope.balanceJournalJob.id,
 			'end_date': $scope.previousDayOfBusinessDateInDbFormat
@@ -31,7 +32,7 @@ admin.controller('ADBalanceJournalCtrl', [
 		 * API when clicks start job
 		 */
 		$scope.startJob = function() {
-			var successCallback = function(data) {
+			var successCallback = function() {
 				$scope.anyJobRunning = true;
 			};
 
@@ -48,13 +49,13 @@ admin.controller('ADBalanceJournalCtrl', [
 		$scope.popupCalendar = function(dateNeeded) {
 			$scope.dateNeeded = dateNeeded;
 
-		    ngDialog.open({
-		        template: '/assets/partials/reservationTools/jobDatePicker.html',
-		        controller: 'ADJobDatePickerBalanceJournalController',
-		        className: 'ngdialog-theme-default single-calendar-modal',
-		        scope: $scope,
-		        closeByDocument: true
-		    });
+			ngDialog.open({
+				template: '/assets/partials/reservationTools/jobDatePicker.html',
+				controller: 'ADJobDatePickerBalanceJournalController',
+				className: 'ngdialog-theme-default single-calendar-modal',
+				scope: $scope,
+				closeByDocument: true
+			});
 		};
 		/*
 		 * Action when select date from calender
@@ -62,20 +63,13 @@ admin.controller('ADBalanceJournalCtrl', [
 		$rootScope.$on('datepicker.update', function(event, chosenDate) {
 			if ( $scope.dateNeeded === 'from' ) {
 				$scope.payload.begin_date = chosenDate;
-
-				// make sure the dates are valid -> end is after begin
-				if ( $scope.payload.end_date ) {
-					$scope.payload.end_date = checkDates($scope.payload.begin_date, $scope.payload.end_date);
-				}
-			} else {
-				$scope.payload.end_date = chosenDate;
-			}
+			} 
 		});
 		/*
 		 * Check the job status on refresh
 		 */
 		$scope.refreshStatus = function() {
-			var _param = {
+			var params = {
 				'id': $scope.balanceJournalJob.id
 			};
 
@@ -91,7 +85,7 @@ admin.controller('ADBalanceJournalCtrl', [
 			};
 
 			var options = {
-				params: $scope.payload,
+				params: params,
 				successCallBack: successCallback
 			};
 			

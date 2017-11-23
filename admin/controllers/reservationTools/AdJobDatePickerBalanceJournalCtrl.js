@@ -18,21 +18,17 @@ admin.controller('ADJobDatePickerBalanceJournalController', [
             changeYear: true,
             changeMonth: true,
             maxDate: tzIndependentDate($scope.previousDayOfBusinessDateInDbFormat),
-            onSelect: function(dateText, inst) {
+            onSelect: function(dateText) {
                 // emit choosen date back
                 $scope.$emit('datepicker.update', $scope.datePickerDate);
                 ngDialog.close();
             }
         };
 
-        var startDate = $scope.parentScope.payload.begin_date || $rootScope.businessDate;
-
         // link everthing
         if ( $scope.parentScope.dateNeeded === 'from' ) {
-            $scope.datePickerDate = $scope.parentScope.payload.begin_date || $rootScope.businessDate;
             $scope.dateOptions = angular.extend({}, datePickerCommon);
         } else {
-            $scope.datePickerDate = $scope.parentScope.payload.end_date || weekAfter;
             $scope.dateOptions = angular.extend({
                 maxDate: tzIndependentDate(weekAfter)
             }, datePickerCommon);
