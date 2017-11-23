@@ -1,10 +1,23 @@
-sntRover.controller('RVArPaymentForAllocationController', ['$scope', '$rootScope', '$stateParams', '$timeout',  'rvAccountsArTransactionsSrv', 'ngDialog', function($scope, $rootScope, $stateParams, $timeout, rvAccountsArTransactionsSrv, ngDialog ) {
+sntRover.controller('RVArPaymentForAllocationController', 
+    ['$scope', 
+    '$rootScope', 
+    '$stateParams', 
+    '$timeout',  
+    'rvAccountsArTransactionsSrv', 
+    'sntActivity', 
+    'ngDialog', function($scope, $rootScope, $stateParams, $timeout, rvAccountsArTransactionsSrv, sntActivity, ngDialog ) {
 
     BaseCtrl.call(this, $scope);
+
     // Initialization
     var init = function() {
         $scope.setScroller('payment-allocation');
-        fetchPaymentMethods();
+        if ($scope.type === 'REFUND') {
+            fetchRefundPaymentMethods();
+        } else {
+            fetchPaymentMethods();
+        }
+        
     };
     // refresh scroller
     var refreshScroll = function() {
@@ -25,10 +38,42 @@ sntRover.controller('RVArPaymentForAllocationController', ['$scope', '$rootScope
 
         $scope.invokeApi(rvAccountsArTransactionsSrv.fetchPaymentMethods, dataToApi, successCallback );
     };
+    // Successcallbackof listing popup
+    var successCallbackOfGetAllocatedAPI = function(data) {
+        $scope.payments = data.ar_transactions;
+        refreshScroll();
+
+    };
+
+    // Function to fetch payments done
+    var fetchRefundPaymentMethods = function() {
+        var dataToSend = {
+             account_id: $scope.arDataObj.accountId,
+             getParams: {
+                 per_page: 1000,
+                 page: 1,
+                 transaction_type: 'PAYMENTS',
+                 allocated: false
+             }
+         };
+
+        var options = {
+            params: dataToSend,
+            successCallBack: successCallbackOfGetAllocatedAPI
+        };
+       
+        $scope.callAPI(rvAccountsArTransactionsSrv.fetchTransactionDetails, options);
+    };
 
     // Close popup
     $scope.closePopup = function () {
         ngDialog.close();
+    };
+    // Clicked refund button from list popup
+    $scope.clickedRefundButton = function(payment) {        
+
+        $scope.$emit("CLICKED_REFUND_BUTTON", payment);
+        $scope.closePopup();
     };
 
     init();
