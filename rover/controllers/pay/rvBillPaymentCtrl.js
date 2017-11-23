@@ -375,7 +375,6 @@ sntRover.controller('RVBillPayCtrl', ['$scope', 'RVBillPaymentSrv', 'RVPaymentSr
 
 	var processeRestOfPaymentOperations  = function() {
 		$scope.$emit('BILL_PAYMENT_SUCCESS', paymentFinalDetails);
-		$scope.$emit("hideLoader");
 		updateSplitPaymentDetail();
 		updateSuccessMessage();
 		updateDefaultPaymentAmount();
@@ -413,7 +412,8 @@ sntRover.controller('RVBillPayCtrl', ['$scope', 'RVBillPaymentSrv', 'RVPaymentSr
             paymentSuccess: true,
             authorizationCode: data.authorizationCode || data.authorization_code,
             amount: data.amountPaid,
-            feePaid: parseFloat(data.feePaid)
+            feePaid: parseFloat(data.feePaid),
+            showFee: data.showFee
         };
 
         processeRestOfPaymentOperations();

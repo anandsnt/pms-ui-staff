@@ -73,7 +73,8 @@ module.exports = {
 				serviceRoot + 'workstation/workstationSrv.js',
 				serviceRoot + 'housekeeping/rvHkRoomStatusSrv.js',
 				directiveRoot + 'Outside Click handler/outsideClickDirective.js',
-				directiveRoot + 'pagination/*.js'
+				directiveRoot + 'pagination/*.js',
+				directiveRoot + 'fullscreen/*.js'
 			]
 		};
 

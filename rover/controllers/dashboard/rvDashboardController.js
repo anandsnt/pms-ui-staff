@@ -189,22 +189,22 @@ sntRover.controller('RVdashboardController',
 
                 } else {
 
-                    // Check whether UUID is set from the WS response. We will check it 3 times
-                    // in an interval of 500ms. If the UUID is not set by that time, we will use the default
+                    // Check whether UUID is set from the WS response. We will check it 14 times (2800ms)
+                    // in an interval of 200ms. If the UUID is not set by that time, we will use the default
                     // value 'DEFAULT'
                     if (!$scope.getDeviceId()) {
-                        var count = 3;
-                        var deviceIdCheckTimer = setInterval(function() {
+                        var count = 14;
+                        var deviceIdCheckTimer = $interval(function () {
                             if ($scope.getDeviceId()) {
-                                clearInterval(deviceIdCheckTimer);
+                                $interval.cancel(deviceIdCheckTimer);
                                 invokeSetWorkstationApi();
-                            } else if (!$scope.getDeviceId() && count == 0) {
-                                $rootScope.UUID = "DEFAULT";
-                                clearInterval(deviceIdCheckTimer);
+                            } else if (!$scope.getDeviceId() && count === 0) {
+                                $rootScope.UUID = 'DEFAULT';
+                                $interval.cancel(deviceIdCheckTimer);
                                 invokeSetWorkstationApi();
                             }
                             count--;
-                        }, 500);
+                        }, 200);
                     } else {
                         invokeSetWorkstationApi();
                     }
@@ -319,7 +319,7 @@ sntRover.controller('RVdashboardController',
                 $scope.$broadcast("HeaderBackButtonClicked");
             };
 
-            if ($rootScope.isDashboardSwipeEnabled) {
+            if ($rootScope.isDashboardSwipeEnabled && !$rootScope.disableObserveForSwipe) {
                 CardReaderCtrl.call(this, $scope, $rootScope, $timeout, $interval, $log);
                 $scope.observeForSwipe(6);
             } else if (sntapp.cordovaLoaded && 'rv_native' === sntapp.browser) {

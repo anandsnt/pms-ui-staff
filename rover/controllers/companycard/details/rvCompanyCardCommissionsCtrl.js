@@ -27,6 +27,7 @@ function($scope, $state, $rootScope, $stateParams, RVCompanyCardSrv, ngDialog, $
         params.commission_status = $scope.filterData.commissionStatus;
         params.per_page = $scope.filterData.perPage;
         params.page = $scope.filterData.page;
+        params.hotel_id = parseInt($scope.filterData.selectedHotel);
         return params;
 
     };
@@ -41,7 +42,8 @@ function($scope, $state, $rootScope, $stateParams, RVCompanyCardSrv, ngDialog, $
     refreshScroll();
     // Refresh the scroller when the tab is active.
     $scope.$on("commissionsTabActive", function() {
-        refreshScroll();
+        // CICO-46891
+        fetchCommissionDetails(true);
     });
 
     // Fetches the commission details for the given filter options
@@ -51,6 +53,7 @@ function($scope, $state, $rootScope, $stateParams, RVCompanyCardSrv, ngDialog, $
                 _.each(data.commission_details, function(element, index) {
                     _.extend(element, {is_checked: false});
                 });
+                $scope.selectedHotelCurrency = getCurrencySign(data.currency.value);
                 $scope.commissionDetails = data.commission_details;
                 $scope.commissionSummary.totalRevenue = data.total_revenue;
                 $scope.commissionSummary.totalCommission = data.total_commission;
@@ -81,8 +84,10 @@ function($scope, $state, $rootScope, $stateParams, RVCompanyCardSrv, ngDialog, $
 
         requestData.params = getRequestParams();
         requestData.accountId = $scope.accountId;
-        
-        $scope.invokeApi(RVCompanyCardSrv.fetchTACommissionDetails, requestData, onCommissionFetchSuccess, onCommissionFetchFailure);
+        // CICO-44105 : Removing api call on creating new cards.
+        if ( $scope.accountId !== 'add') {
+            $scope.invokeApi(RVCompanyCardSrv.fetchTACommissionDetails, requestData, onCommissionFetchSuccess, onCommissionFetchFailure);
+        }
 
     };
 
@@ -113,7 +118,10 @@ function($scope, $state, $rootScope, $stateParams, RVCompanyCardSrv, ngDialog, $
      * @param confirmation_no confirmation no
      */
     $scope.goToStayCard = function(reservation_id, confirmation_no) {
-        $state.go('rover.reservation.staycard.reservationcard.reservationdetails', {"id": reservation_id, "confirmationId": confirmation_no, "isrefresh": true, "isFromTACommission": true});
+        if ($rootScope.hotelDetails.userHotelsData.current_hotel_id === parseInt($scope.filterData.selectedHotel))
+        {            
+            $state.go('rover.reservation.staycard.reservationcard.reservationdetails', {"id": reservation_id, "confirmationId": confirmation_no, "isrefresh": true, "isFromTACommission": true});
+        }
     };
 
     $scope.isNextButtonDisabled = function() {
@@ -296,19 +304,46 @@ function($scope, $state, $rootScope, $stateParams, RVCompanyCardSrv, ngDialog, $
         $scope.prePaidCommissions = [];
         $scope.filterData.selectAll = false;
     };
+    
+    /*
+     * Toggle global button
+     */
+    $scope.isTogglePaidStatusEnabled = function() {
+        var isToggleEnabled = true;
+
+        if ($scope.contactInformation.is_global_enabled) {
+            isToggleEnabled = false;
+            if (rvPermissionSrv.getPermissionValue ('GLOBAL_CARD_UPDATE')) {
+                isToggleEnabled = true;
+            }
+            
+        }
+        return isToggleEnabled;
+    };
+
+    $scope.shouldShowProperty = function() {
+        var shouldShowPropertyDropDown = false;
+        
+        if ($scope.contactInformation.is_global_enabled && rvPermissionSrv.getPermissionValue ('GLOBAL_CARD_UPDATE') && $rootScope.isAnMPHotel) {
+            shouldShowPropertyDropDown = true;
+        }
+        return shouldShowPropertyDropDown;
+    };
 
     // Action for the paid/unpaid toggle button for individual record
     $scope.togglePaidStatus = function(commission) {
-        var commissionToUpdate = {};
 
-        commissionToUpdate.reservation_id = commission.reservation_id;
-        commissionToUpdate.status = commission.commission_data.paid_status == "Paid" ? "Unpaid" : "Paid";
+            var commissionToUpdate = {};
 
-        var requestData = {};
+            commissionToUpdate.reservation_id = commission.reservation_id;
+            commissionToUpdate.status = commission.commission_data.paid_status == "Paid" ? "Unpaid" : "Paid";
 
-        requestData.accountId = $scope.accountId;
-        requestData.commissionDetails = [commissionToUpdate];
-        updatePaidStatus(requestData);
+            var requestData = {};
+
+            requestData.accountId = $scope.accountId;
+            requestData.commissionDetails = [commissionToUpdate];
+            updatePaidStatus(requestData);
+
     };
 
     // Updates the paid status of all the selected records
@@ -435,6 +470,29 @@ function($scope, $state, $rootScope, $stateParams, RVCompanyCardSrv, ngDialog, $
 
         $scope.invokeApi(RVCompanyCardSrv.recalculateCommission, postData, recalculateCommissionSuccess, recalculateCommissionFailure);
     };
+    /*
+     * Fetch multi properties
+     */
+    var fetchMultiProperties = function() {
+        var onPropertyFetchSuccess = function(data) {
+
+               $scope.multiProperies = data.multi_properties;
+            };
+
+        var requestData = {};
+
+        requestData.accountId = $scope.accountId;
+        
+        $scope.invokeApi(RVCompanyCardSrv.fetchMultiProperties, requestData, onPropertyFetchSuccess);
+
+    };
+
+    $scope.$on("LOAD_SUBSCRIBED_MPS", function() {
+        if ($scope.contactInformation.is_global_enabled && $rootScope.isAnMPHotel && rvPermissionSrv.getPermissionValue ('GLOBAL_CARD_UPDATE')) {
+            fetchMultiProperties();
+        }
+        
+    });
 
     // Initailizes the controller
     var init = function() {
@@ -450,9 +508,13 @@ function($scope, $state, $rootScope, $stateParams, RVCompanyCardSrv, ngDialog, $
             start: 1,
             selectAll: false,
             toggleCommission: false,
-            commssionRecalculationValue: ''
+            commssionRecalculationValue: '',
+             // By default set the value to current hotel
+            selectedHotel: parseInt($rootScope.hotelDetails.userHotelsData.current_hotel_id)
         };
-        $scope.accountId = $stateParams.id;
+        // NOTE: This controller runs under stay card too; In such a case, the $stateParams.id will have the reservation ID
+        $scope.accountId = $state.current.name === 'rover.reservation.staycard.reservationcard.reservationdetails' ?
+            $scope.travelAgentInformation.id : $stateParams.id;
         $scope.isEmpty = util.isEmpty;
         $scope.isEmptyObject = isEmptyObject;
 
@@ -467,10 +529,14 @@ function($scope, $state, $rootScope, $stateParams, RVCompanyCardSrv, ngDialog, $
            groupPaidStatus: ""
         };
         $scope.businessDate = $rootScope.businessDate;
-        fetchCommissionDetails(true);
+        // CICO-46891
+        if ($scope.currentSelectedTab === 'cc-commissions') {
+          fetchCommissionDetails(true);
+        }
         $vault.set('travelAgentId', $stateParams.id);
         $vault.set('travelAgentType', $stateParams.type);
         $vault.set('travelAgentQuery', $stateParams.query);
+
     };
 
     init();
