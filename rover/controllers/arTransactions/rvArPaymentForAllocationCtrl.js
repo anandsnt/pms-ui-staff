@@ -12,7 +12,7 @@ sntRover.controller('RVArPaymentForAllocationController',
     // Initialization
     var init = function() {
         $scope.setScroller('payment-allocation');
-        if($scope.type === 'REFUND') {
+        if ($scope.type === 'REFUND') {
             fetchRefundPaymentMethods();
         } else {
             fetchPaymentMethods();

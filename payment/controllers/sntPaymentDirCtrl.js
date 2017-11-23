@@ -75,7 +75,7 @@ angular.module('sntPay').controller('sntPaymentController',
                     'bill_id': $scope.billId
                 };
 
-                if($scope.actionType === 'AR_REFUND_PAYMENT') {
+                if ($scope.actionType === 'AR_REFUND_PAYMENT') {
                     params.postData.parent_ar_id = $scope.arTransactionId;
                 }
 
@@ -895,7 +895,7 @@ angular.module('sntPay').controller('sntPaymentController',
                 // NOTE: Fees information is to be calculated only for standalone systems
                 // TODO: See how to handle fee in case of C&P
 
-                if($scope.actionType === 'AR_REFUND_PAYMENT') {
+                if ($scope.actionType === 'AR_REFUND_PAYMENT') {
                     return false;
                 }
 
@@ -1420,8 +1420,6 @@ angular.module('sntPay').controller('sntPaymentController',
                 $scope.$watch('payment.screenMode', () => {
                     $scope.$emit('PAYMENT_SCREEN_MODE_CHANGED', $scope.payment.screenMode);
                 });
-
-
 
                 config = $scope.hotelConfig;
 

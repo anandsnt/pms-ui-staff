@@ -180,7 +180,7 @@ sntRover.controller('RVArTransactionsPayCreditsController',
                     "token": cardToken,
                     "card_code": cardCode
                 }
-            }
+            };
 
         $scope.callAPI(rvAccountTransactionsSrv.savePaymentDetails, {
             successCallBack: successNewPayment,
