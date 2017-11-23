@@ -4,10 +4,7 @@ sntRover.controller('RVCommisionsHeaderCtrl', ['$scope', 'ngDialog', '$log', '$t
     var setParamsInCurrentPage = function(params) {
         params.selected_tas = [];
         _.each($scope.selectedAgentIds, function(id) {
-            params.selected_tas.push({
-                'id': id,
-                'update_all': true
-            });
+            params.selected_tas.push(id);
         });
         return params;
     };
@@ -26,7 +23,7 @@ sntRover.controller('RVCommisionsHeaderCtrl', ['$scope', 'ngDialog', '$log', '$t
         var params = {};
 
         if ($scope.areAllAgentsSelected()) {
-            params.update_all_bill = true;
+            params.update_all_tas = true;
         } else {
 			// if only items in the existing page are selected
             if ($scope.noOfTASelected <= $scope.filterData.perPage) {

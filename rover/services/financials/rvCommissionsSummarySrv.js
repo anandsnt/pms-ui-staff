@@ -76,8 +76,8 @@ sntRover.service('RVCommissionsSrv', ['$http', '$q', 'BaseWebSrvV2', '$window', 
 
     this.filterData = {
         'page': 1,
-        'perPage': 3,
-        'innerPerPage': 2,
+        'perPage': 50,
+        'innerPerPage': 25,
         'searchQuery': '',
         'minAmount': '',
         'billStatus': {

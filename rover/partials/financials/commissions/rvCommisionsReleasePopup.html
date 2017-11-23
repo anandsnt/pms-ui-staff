@@ -6,7 +6,7 @@
         <span class="text">Set commission records as eligible for payment</span>
         
         <div class="notice">
-            <strong class="amount"><span class="currency">{{ ::currencySymbol }}</span>{{ ::eligibleForPayment }}</strong>
+            <strong class="amount"><span class="currency">{{ ::currencySymbol }}</span>{{ ::eligibleForPayment | number: precisonTwo}}</strong>
             <span class="bills">{{ ::noOfBillsSelected }} Bills</span>
         </div>
         <div class="actions">
