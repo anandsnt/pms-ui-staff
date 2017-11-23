@@ -42,7 +42,7 @@ sntRover.controller('RVArPaymentForAllocationController',
     var successCallbackOfGetAllocatedAPI = function(data) {
         $scope.payments = data.ar_transactions;
         refreshScroll();
-        sntActivity.stop("REFUND_LIST");
+
     };
 
     // Function to fetch payments done
@@ -56,9 +56,13 @@ sntRover.controller('RVArPaymentForAllocationController',
                  allocated: false
              }
          };
-         
-        sntActivity.start("REFUND_LIST");
-        $scope.invokeApi(rvAccountsArTransactionsSrv.fetchTransactionDetails, dataToSend, successCallbackOfGetAllocatedAPI );
+
+        var options = {
+            params: dataToSend,
+            successCallBack: successCallbackOfGetAllocatedAPI
+        };
+       
+        $scope.callAPI(rvAccountsArTransactionsSrv.fetchTransactionDetails, options);
     };
 
     // Close popup
