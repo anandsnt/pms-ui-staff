@@ -46,10 +46,10 @@ function($scope, $state, $rootScope, $stateParams, RVCompanyCardSrv, ngDialog, $
         fetchCommissionDetails(true);
     });
 
-    var fetchCommissionDetailsForPage = function(page_no){
+    var fetchCommissionDetailsForPage = function(page_no) {
         $scope.filterData.page = page_no;
-        fetchCommissionDetails(true)
-    }
+        fetchCommissionDetails(true);
+    };
 
     // Fetches the commission details for the given filter options
     var fetchCommissionDetails = function(isPageChanged) {
@@ -353,7 +353,7 @@ function($scope, $state, $rootScope, $stateParams, RVCompanyCardSrv, ngDialog, $
 
     $scope.toggleHoldStatus = function(commission) {
 
-        if(commission.commission_data.paid_status == "Paid" || commission.commission_data.paid_status == "Prepaid")
+        if (commission.commission_data.paid_status == "Paid" || commission.commission_data.paid_status == "Prepaid")
         {
             $scope.errorMessage = ["Only transactions on 'UNPAID' status can be set to On Hold"];
             return;
@@ -527,7 +527,7 @@ function($scope, $state, $rootScope, $stateParams, RVCompanyCardSrv, ngDialog, $
             toDate: "",
             paidStatus: "Unpaid",
             commissionStatus: "Commissionable",
-            perPage: 25,//RVCompanyCardSrv.DEFAULT_PER_PAGE,
+            perPage: 25, // RVCompanyCardSrv.DEFAULT_PER_PAGE,
             page: 1,
             start: 1,
             selectAll: false,
