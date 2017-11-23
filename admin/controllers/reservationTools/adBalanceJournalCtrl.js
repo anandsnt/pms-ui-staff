@@ -14,13 +14,13 @@ admin.controller('ADBalanceJournalCtrl', [
 
 		$scope.errorMessage = "";
 
-		$scope.balanceInventoryJob = allJobs[0];
+		$scope.balanceJournalJob = _.findWhere(allJobs, {"job_name": "SYNC DailyBalanceCorrection"});
 
 		$scope.anyJobRunning = false;
 		$scope.lastRunStatus = '';
 
 		$scope.payload = {
-			'id': $scope.balanceInventoryJob['id'],
+			'id': $scope.balanceJournalJob.id,
 			'begin_date': '',
 			'end_date': ''
 		};
