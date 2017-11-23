@@ -9,7 +9,7 @@
         <div class="payments scrollable" id="payment-allocation" ng-iscroll="payment-allocation">
             <div class="wrapper">
                 <ul class="search-results">
-                    <li class="reservation transaction payment  unallocated" ng-repeat="payment in payments">
+                    <li class="reservation transaction payment  unallocated" ng-hide="payment.is_partially_paid" ng-repeat="payment in payments">
                         <div class="faux-anchor ">
                             <div class="data">
                                 <h2>{{::payment.payment_type}}</h2>
