@@ -1,5 +1,6 @@
 angular.module('sntRover').controller('rvAddOverBookingPopupCtrl', ['$scope', '$rootScope', 'ngDialog', 'rvOverBookingSrv', function($scope, $rootScope, ngDialog, rvOverBookingSrv) {
 
+	// Initialization
 	var init = function() {
 		$scope.addOverBookingObj = {
 			fromDate: moment(tzIndependentDate($rootScope.businessDate)).format($rootScope.momentFormatForAPI),
@@ -35,21 +36,26 @@ angular.module('sntRover').controller('rvAddOverBookingPopupCtrl', ['$scope', '$
 		});
 	};
 
-	// Catching event from date picker controller while date is changed.
+	/* 
+	 *	Catching event from date picker controller while date is changed.
+	 *	@param { object } - js event.
+	 *	@param { string } - 'FROM' or 'TO'.
+	 *	@param { string } - Selected date value.
+	 */
     var listenerDateChanged = $scope.$on('DATE_CHANGED', function (event, type, date) {
-    	
-    	var formattedDate = moment(tzIndependentDate(date))
-            	.format($rootScope.momentFormatForAPI);
 
-    	if ( type === 'FROM') {
-        	$scope.addOverBookingObj.fromDate = formattedDate;
-        	$scope.addOverBookingObj.toDate = formattedDate;
+		var formattedDate = moment(tzIndependentDate(date))
+				.format($rootScope.momentFormatForAPI);
+
+		if ( type === 'FROM') {
+			$scope.addOverBookingObj.fromDate = formattedDate;
+			$scope.addOverBookingObj.toDate = formattedDate;
         }
         else if (type === 'TO') {
-        	$scope.addOverBookingObj.toDate = formattedDate;
-        	if( new tzIndependentDate(date) < new tzIndependentDate ($scope.addOverBookingObj.fromDate) ) {
-        		$scope.addOverBookingObj.fromDate = formattedDate;
-        	}
+			$scope.addOverBookingObj.toDate = formattedDate;
+			if ( new tzIndependentDate(date) < new tzIndependentDate ($scope.addOverBookingObj.fromDate) ) {
+				$scope.addOverBookingObj.fromDate = formattedDate;
+			}
         }
         ngDialog.close(datePickerDialogId.id);
     });
@@ -60,29 +66,27 @@ angular.module('sntRover').controller('rvAddOverBookingPopupCtrl', ['$scope', '$
 
 		item.isChecked = !item.isChecked;
 	};
+	// Apply for house checkbox click action.
 	$scope.clickedApplyForHouse = function() {
 		$scope.addOverBookingObj.applyForHouse = !$scope.addOverBookingObj.applyForHouse;
 	};
-
+	// Apply for room types checkbox click action.
 	$scope.clickedApplyForRoomTypes = function() {
 		$scope.addOverBookingObj.applyForRoomTypes = !$scope.addOverBookingObj.applyForRoomTypes;
 		$scope.refreshScroller('roomTypeFilterList');
 	};
-
 	// Handle click action on each checkbox inside filter.
 	$scope.clickedRoomTypeCheckbox = function ( index ) {
 		var item = $scope.addOverBookingObj.roomTypeList[index];
 
 		item.isChecked = !item.isChecked;
 	};
-
 	// Handle click action on each checkbox in week days.
 	$scope.clickedWeekDay = function ( index ) {
 		var item = $scope.addOverBookingObj.weekDayList[index];
 
 		item.isChecked = !item.isChecked;
 	};
-
     /*
 	 *	Generating List of Selected Ids from inputList.
 	 *  @input [Array] conatains 'id' as one key.
@@ -91,7 +95,7 @@ angular.module('sntRover').controller('rvAddOverBookingPopupCtrl', ['$scope', '$
 	var getSelectedIdList = function( inputList ) {
 		var selectedIdList = [];
 
-		_.map( inputList , function(value) {
+		_.map( inputList, function(value) {
 			if (value.isChecked) {
 				selectedIdList.push(value.id);
 			}
@@ -128,16 +132,18 @@ angular.module('sntRover').controller('rvAddOverBookingPopupCtrl', ['$scope', '$
 			params: dataToSend
 		});
 	};
-
+	// Disable add limit button logic.
 	$scope.disableAddLimitButton = function() {
 		var limit = $scope.addOverBookingObj.limitValue;
 
 		return ( limit === '' || limit === null );
 	};
-
+	// close dialog
 	$scope.closeDialog = function() {
         ngDialog.close();
     };
 
 	init();
+	// Cleaning listener.
+    $scope.$on('$destroy', listenerDateChanged);
 }]);

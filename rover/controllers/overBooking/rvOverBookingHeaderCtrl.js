@@ -41,7 +41,7 @@ angular.module('sntRover').controller('RvOverBookingHeaderCtrl', [
 	$scope.clickedPrevDateButton = function() {
 		var currentStartDate = $scope.overBookingObj.startDate;
 
-		$scope.overBookingObj.startDate = moment(tzIndependentDate(currentStartDate)).add((-1*DATE_SHIFT_LIMIT), 'd')
+		$scope.overBookingObj.startDate = moment(tzIndependentDate(currentStartDate)).add((-1 * DATE_SHIFT_LIMIT), 'd')
 				.format($rootScope.momentFormatForAPI);
 		$scope.overBookingObj.endDate = moment(tzIndependentDate(currentStartDate))
 				.format($rootScope.momentFormatForAPI);

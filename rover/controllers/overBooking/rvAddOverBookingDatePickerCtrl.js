@@ -1,16 +1,17 @@
-angular.module('sntRover').controller('rvAddOverBookingDatePickerCtrl', ['$scope', '$rootScope', 'ngDialog', function($scope, $rootScope, ngDialog) {
+angular.module('sntRover').controller('rvAddOverBookingDatePickerCtrl', ['$scope', '$rootScope', function($scope, $rootScope) {
 
 	var minDateSelected = moment(tzIndependentDate($rootScope.businessDate))
 				.format($rootScope.momentFormatForAPI),
 		type = $scope.addOverBookingObj.type;
 
+	// Setup default selected date.
     if ( type === 'FROM') {
-    	$scope.date = $scope.addOverBookingObj.fromDate;
+		$scope.date = $scope.addOverBookingObj.fromDate;
     }
     else if (type === 'TO') {
-    	$scope.date = $scope.addOverBookingObj.toDate;
+		$scope.date = $scope.addOverBookingObj.toDate;
     }
-
+    // Setup options.
 	$scope.setUpData = function() {
 		$scope.dateOptions = {
 			changeYear: true,
