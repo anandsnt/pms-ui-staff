@@ -103,13 +103,13 @@ sntRover.service('RVCommissionsSrv', ['$http', '$q', 'BaseWebSrvV2', '$window', 
             'value': 'NAME_ASC',
             'name': 'NAME ASC'
         }, {
-            'value': 'NAME_DSC',
+            'value': 'NAME_DESC',
             'name': 'NAME DESC'
         }, {
             'value': 'AMOUNT_ASC',
             'name': 'AMOUNT ASC'
         }, {
-            'value': 'AMOUNT_DSC',
+            'value': 'AMOUNT_DESC',
             'name': 'AMOUNT DESC'
         }]
     };
