@@ -3,7 +3,7 @@
 	    <button id="modal-close" ng-click="closeDialog()" type="button" class="modal-close"><span class="icons icon-close invert"></button>
 	    <!-- List of Room Types -->
 	    <fieldset class="overbooking-rooms" ng-show="addOverBookingObj.applyForRoomTypes">
-	        <h3>Apply to Room Types</h3>
+	        <h3 translate>APPLY_TO_ROOM_TYPES</h3>
 	        <div class="scrollable" ng-iscroll="roomTypeFilterList" ng-iscroll-delay="500">
 	            <div class="wrapper">
 	                <div class="row" ng-click="clickedRoomTypeCheckbox($index)" ng-repeat="item in addOverBookingObj.roomTypeList track by $index">
@@ -19,25 +19,25 @@
 
 	    <!-- Main Content -->
 	    <fieldset class="overbooking-limit">
-	        <strong class="h2 message">Add Overbooking</strong>
+	        <strong class="h2 message" translate>ADD_OVERBOOKING</strong>
 	        <div ng-include="'/assets/partials/common/notification_message.html'"></div>
-	        <em class="text warning">This will override all existing house or room type limits for selected dates.</em>        
+	        <em class="text warning" translate>OVERBOOKING_WARN_MSG</em>        
 	        
 	        <!-- Start Date -->
 	        <div ng-click="showDatePicker('FROM')" class="entry margin has-datepicker">
-	            <label for="start-date">From</label>
+	            <label for="start-date" translate>FROM</label>
 	            <input id="start-date" type="text" class="datepicker" value="{{addOverBookingObj.fromDate}}" readonly />
 	        </div>
 
 	        <!-- End Date -->
 	        <div ng-click="showDatePicker('TO')" class="entry has-datepicker">
-	            <label for="end-date">To</label>
+	            <label for="end-date" translate>TO</label>
 	            <input id="end-date" type="text" class="datepicker" value="{{addOverBookingObj.toDate}}" readonly />
 	        </div>
 
 	        <!-- Days of week to include (all checked by default) -->
 	        <div class="entry full-width">
-	            <label>Every</label>
+	            <label translate>EVERY</label>
 	            <div class="limit-days">
 	                <label class="checkbox" ng-click="clickedWeekDay($index)" ng-repeat="day in addOverBookingObj.weekDayList" ng-class="{'checked': day.isChecked}">
 	                    <span class="icon-form icon-checkbox" ng-class="{'checked': day.isChecked}"></span>
@@ -49,35 +49,35 @@
 
 	        <!-- House / Room Type -->
 	        <div class="entry full-width break">
-	            <label>Apply For</label>
+	            <label translate>APPLY_FOR</label>
 	            <div class="limit-apply">
 	                <!-- Appy Limit to House - checked by defalt -->
 	                <label for="apply-house" class="checkbox" ng-class="{'checked': addOverBookingObj.applyForHouse}">
 	                    <span class="icon-form icon-checkbox" ng-class="{'checked': addOverBookingObj.applyForHouse}"></span>
 	                    <input ng-click="clickedApplyForHouse()" id="apply-house" type="checkbox" checked/>
-	                    House
+	                    {{'HOUSE' | translate}}
 	                </label>
 	                <!-- Appy Limit to Room Type -->
 	                <label for="apply-room-type" class="checkbox" ng-class="{'checked': addOverBookingObj.applyForRoomTypes}">
 	                    <span class="icon-form icon-checkbox" ng-class="{'checked': addOverBookingObj.applyForRoomTypes}"></span>
 	                    <input ng-click="clickedApplyForRoomTypes()" id="apply-room-type" type="checkbox"/>
-	                    Room Type(s)
+	                    {{'ROOM_TYPE_S' | translate}}
 	                </label>
 	            </div>
 	        </div>
 
 	        <!-- Limit Value -->
 	        <div class="entry full-width entry-limit">
-	            <label for="limit-value">Limit</label>
+	            <label for="limit-value" translate>LIMIT</label>
 	            <div class="limit-input">
 	                <div class="switch-button overlay"> <!-- Add class 'on' if L68 is checked -->
 	                    <input id="limit-type" type="checkbox"> <!-- Rooms number if not checked, percentage if checked -->
 	                    <label class="data-off">
-	                        <span class="switch-icon">Rms</span>
+	                        <span class="switch-icon" translate>RMS</span>
 	                        <span class="value">%</span>
 	                    </label>
 	                    <label class="data-on">
-	                        <span class="value">Rms</span>
+	                        <span class="value" translate>RMS</span>
 	                        <span class="switch-icon">%</span>
 	                    </label>
 	                </div>
@@ -87,8 +87,8 @@
 
 	        <!-- Actions -->
 	        <div class="actions">
-	            <button ng-click="addOverBookingApiCall()" type="button" class="button green" ng-class="{'overlay': disableAddLimitButton()}">Add Limit</button>
-	            <button ng-click="closeDialog()" type="button" class="button blank">Cancel</button> 
+	            <button ng-click="addOverBookingApiCall()" type="button" class="button green" ng-class="{'overlay': disableAddLimitButton()}" translate>ADD_LIMIT</button>
+	            <button ng-click="closeDialog()" type="button" class="button blank" translate>CANCEL</button> 
 	        </div>
 	    </fieldset>
 	</div>
