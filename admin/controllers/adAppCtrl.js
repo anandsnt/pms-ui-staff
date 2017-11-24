@@ -607,6 +607,7 @@ admin.controller('ADAppCtrl', [
 			$rootScope.currencySymbol = getCurrencySign(data.currency.value);
 			$rootScope.dateFormat = getDateFormat(data.date_format.value);
 			$rootScope.jqDateFormat = getJqDateFormat(data.date_format.value);
+            $rootScope.hotelDateFormat = data.date_format.value;
 			$scope.$emit('hideLoader');
 			$rootScope.isHourlyRatesEnabled = data.is_hourly_rate_on;
 			$rootScope.isSuiteRoomsAvailable = data.suite_enabled;
