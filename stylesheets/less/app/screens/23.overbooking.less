@@ -143,12 +143,11 @@
             white-space: normal;
             height: auto;
             min-height: 40px;
-            line-height: 1.1;
+            line-height: 1;
             padding: 10px 10px 10px 40px;
             width: 100%;
-            .nowrap();
             #border-radius > .rounded(0px);
-            .flex(center);
+            #flexbox > .parent(row wrap, '', center, '');
 
             .icon-form { 
                 left: 10px; 
@@ -348,12 +347,13 @@
         
         .row {
             font-size: 14px;
-            line-height: 40px;
+            line-height: 1;
             text-transform: uppercase;
             text-align: right;
             padding: 0 5px;
-            .nowrap();
-            .show();
+            height: 40px;
+            overflow: hidden;
+            #flexbox > .parent(column wrap, center, flex-end, '');
         }
 
         .iScrollVerticalScrollbar {

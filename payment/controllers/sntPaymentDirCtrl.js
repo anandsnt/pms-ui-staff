@@ -75,6 +75,11 @@ angular.module('sntPay').controller('sntPaymentController',
                     'bill_id': $scope.billId
                 };
 
+                // We need extra parameter parent ar id during AR refund
+                if ($scope.actionType === 'AR_REFUND_PAYMENT') {
+                    params.postData.parent_ar_id = $scope.arTransactionId;
+                }
+
                 if ($scope.payment.showAddToGuestCard) {
                     // check if add to guest card was selected
                     params.postData.add_to_guest_card = $scope.payment.addToGuestCardSelected;
@@ -890,8 +895,12 @@ angular.module('sntPay').controller('sntPaymentController',
             $scope.onPaymentInfoChange = function (isReset) {
                 // NOTE: Fees information is to be calculated only for standalone systems
                 // TODO: See how to handle fee in case of C&P
+                // CICO-44719: No need to show add payment screen
+                if ($scope.actionType === 'AR_REFUND_PAYMENT') {
+                    return false;
+                }
 
-                var selectedPaymentType;
+                var selectedPaymentType;    
 
                 if (isReset && $scope.payment.isEditable && $scope.selectedPaymentType === 'GIFT_CARD') {
                     $scope.payment.amount = 0;
@@ -1417,6 +1426,8 @@ angular.module('sntPay').controller('sntPaymentController',
 
                 isEMVEnabled = config.paymentGateway === 'sixpayments' ||
                     (config.paymentGateway === 'MLI' && config.isEMVEnabled);
+
+                $scope.showSelectedCard();
 
             })();
 
