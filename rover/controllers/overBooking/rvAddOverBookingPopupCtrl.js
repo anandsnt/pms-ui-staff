@@ -20,7 +20,39 @@ angular.module('sntRover').controller('rvAddOverBookingPopupCtrl', ['$scope', '$
 			limitValue: ''
 		};
 		$scope.setScroller('roomTypeFilterList');
+	},
+	datePickerDialogId = '';
+
+	// To popup contract start date
+	$scope.showDatePicker = function( type ) {
+		$scope.addOverBookingObj.type = type;
+		datePickerDialogId = ngDialog.open({
+			template: '/assets/partials/overBooking/rvOverBookingDatePicker.html',
+			controller: 'rvAddOverBookingDatePickerCtrl',
+			className: '',
+			scope: $scope,
+			closeByDocument: true
+		});
 	};
+
+	// Catching event from date picker controller while date is changed.
+    var listenerDateChanged = $scope.$on('DATE_CHANGED', function (event, type, date) {
+    	
+    	var formattedDate = moment(tzIndependentDate(date))
+            	.format($rootScope.momentFormatForAPI);
+
+    	if ( type === 'FROM') {
+        	$scope.addOverBookingObj.fromDate = formattedDate;
+        	$scope.addOverBookingObj.toDate = formattedDate;
+        }
+        else if (type === 'TO') {
+        	$scope.addOverBookingObj.toDate = formattedDate;
+        	if( new tzIndependentDate(date) < new tzIndependentDate ($scope.addOverBookingObj.fromDate) ) {
+        		$scope.addOverBookingObj.fromDate = formattedDate;
+        	}
+        }
+        ngDialog.close(datePickerDialogId.id);
+    });
 
 	// Handle click action on each checkbox inside week days.
 	$scope.clickedRoomTypeCheckbox = function ( index ) {

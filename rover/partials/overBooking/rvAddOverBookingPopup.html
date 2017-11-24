@@ -24,13 +24,13 @@
 	        <em class="text warning">This will override all existing house or room type limits for selected dates.</em>        
 	        
 	        <!-- Start Date -->
-	        <div class="entry margin has-datepicker">
+	        <div ng-click="showDatePicker('FROM')" class="entry margin has-datepicker">
 	            <label for="start-date">From</label>
 	            <input id="start-date" type="text" class="datepicker" value="{{addOverBookingObj.fromDate}}" readonly />
 	        </div>
 
 	        <!-- End Date -->
-	        <div class="entry has-datepicker">
+	        <div ng-click="showDatePicker('TO')" class="entry has-datepicker">
 	            <label for="end-date">To</label>
 	            <input id="end-date" type="text" class="datepicker" value="{{addOverBookingObj.toDate}}" readonly />
 	        </div>
