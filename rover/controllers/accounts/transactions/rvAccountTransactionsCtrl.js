@@ -1058,7 +1058,7 @@ sntRover.controller('rvAccountTransactionsCtrl', [
     		activebillTab.transactions = [];
     		_.each(data.transactions, function(item) {
 
-    			item.description = (item.card_number!==null && item.card_number!=='') ? item.description + "-" + item.card_number : item.description;
+    			item.description = (item.card_number !== null && item.card_number !== '') ? item.description + "-" + item.card_number : item.description;
     		});
  			activebillTab.transactions = data.transactions;
  			activebillTab.total_count  = data.total_count;
