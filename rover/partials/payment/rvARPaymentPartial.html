@@ -65,21 +65,21 @@
 </div>
 
 <!-- Buttons -->
-<div class="actions" ng-hide="paymentAttempted && !isPaymentFailure">
+<div class="actions" ng-hide="actionType === 'AR_REFUND_PAYMENT'">
     <button type="button" class="button blank modal-close" ng-click="closeThePopup()" translate>
         CANCEL
     </button>
     <button type="button" class="button green" click-touch="submitPayment()"
             ng-show="!shouldHidePaymentButton() && !isRefund()">
         MAKE PAYMENT
+    </button>    
+</div>
+<div class="actions" ng-show="actionType === 'AR_REFUND_PAYMENT'">
+    <button type="button" class="button blank modal-close" ng-click="closeThePopup()" translate>
+        CLOSE
     </button>
     <button type="button" class="button blue" click-touch="submitPayment()"
             ng-show="isRefund()">
         REFUND {{currencySymbol}}{{ -1 * payment.amount | number:2 }}
-    </button>
-</div>
-<div class="actions" ng-show="paymentAttempted && !isPaymentFailure">
-    <button type="button" class="button blank modal-close" ng-click="closeThePopup()" translate>
-        CLOSE
     </button>
 </div>
