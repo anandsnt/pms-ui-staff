@@ -27,7 +27,7 @@ angular.module('overBookingModule', []).config(function($stateProvider) {
                     'end_date': moment(tzIndependentDate(startDate)).add(DATE_SHIFT_LIMIT, 'd')
                                 .format('YYYY-MM-DD'),
                     'show_rooms_left_to_sell': false,
-                    'room_type_ids': _.pluck(completeRoomTypeListData, 'id')
+                    'room_type_ids': _.pluck(completeRoomTypeListData.isCheckedTrue, 'id')
                 };
       
                 return rvOverBookingSrv.fetchOverBookingGridData(params);
