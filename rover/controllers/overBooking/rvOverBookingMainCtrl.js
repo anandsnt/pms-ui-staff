@@ -100,7 +100,8 @@ angular.module('sntRover').controller('RvOverBookingMainCtrl', [
         isScrollReady();
 
 		$scope.overBookingObj = {
-			roomTypeList: completeRoomTypeListData,
+			roomTypeList: dclone(completeRoomTypeListData.isCheckedTrue, []),		// Used for ROOM TYPES filter in header.
+			completeRoomTypeListData: dclone(completeRoomTypeListData.isCheckedFalse, []),		// Used for APPLY TO ROOM TYPES filter in Add Over Booking popup.
 			overBookingGridData: overBookingGridData,
 			startDate: moment(tzIndependentDate($rootScope.businessDate)).format($rootScope.momentFormatForAPI),
 			endDate: moment(tzIndependentDate($rootScope.businessDate)).add(DATE_SHIFT_LIMIT, 'd')
@@ -117,10 +118,10 @@ angular.module('sntRover').controller('RvOverBookingMainCtrl', [
 	var getSelectedRoomTypeIdList = function() {
 		var selectedRommTypeIdList = [];
 
-			_.map($scope.overBookingObj.roomTypeList, function(value) {
-				if (value.isChecked) {
-					selectedRommTypeIdList.push(value.id);
-				}
+		_.map($scope.overBookingObj.roomTypeList, function(value) {
+			if (value.isChecked) {
+				selectedRommTypeIdList.push(value.id);
+			}
 		});
 		return selectedRommTypeIdList;
 	};

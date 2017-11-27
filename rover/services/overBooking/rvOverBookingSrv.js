@@ -60,15 +60,21 @@ angular.module('sntRover').service('rvOverBookingSrv', ['$q', 'rvBaseWebSrvV2', 
 	this.getAllRoomTypes = function() {
 		var deferred = $q.defer(),
 			url = '/api/room_types.json?exclude_pseudo=true&exclude_suite=true',
-			result = [];
+			resultWithIsCheckedTrue = [], resultWithIsCheckedFalse = [];
 
 		rvBaseWebSrvV2.getJSON(url).then(
 			function(data) {
 				if (data.results && data.results.length > 0 ) {
 					_.each( data.results, function(obj) { 
-						result.push(_.extend (_.pick(obj, 'name', 'id'), { 'isChecked': true } ));
+						resultWithIsCheckedTrue.push(_.extend (_.pick(obj, 'name', 'id'), { 'isChecked': true } ));
+						resultWithIsCheckedFalse.push(_.extend (_.pick(obj, 'name', 'id'), { 'isChecked': false } ));
 					});
 				}
+				var result = {
+					isCheckedTrue: resultWithIsCheckedTrue,
+					isCheckedFalse: resultWithIsCheckedFalse
+				};
+
 				deferred.resolve(result);
 			},
 			function(errorMessage) {
@@ -76,6 +82,24 @@ angular.module('sntRover').service('rvOverBookingSrv', ['$q', 'rvBaseWebSrvV2', 
 			}
 		);
 
+		return deferred.promise;
+	};
+
+	/*
+	 * Function to add over booking
+	 */
+	this.addOrEditOverBooking = function (params) {
+
+		// Webservice calling section
+		var deferred = $q.defer(),
+			url = '/api/sell_limits';
+
+		rvBaseWebSrvV2.postJSON(url, params).then(function (resultFromAPI) {
+			deferred.resolve(resultFromAPI);
+		}, function(data) {
+			deferred.reject(data);
+		});
+	
 		return deferred.promise;
 	};
 
