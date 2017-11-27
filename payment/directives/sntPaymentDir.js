@@ -17,6 +17,7 @@ angular.module('sntPay').directive('sntPayment', function() {
             billNumber: '=',
             amount: '=', // amount to pay
             selectedCC: '=?', // selected CC details
+            referenceText: '=?', // selected CC details
             actionType: '@',
             depositPolicyName: '@',
             isEditable: '=?', // is the amount editable
