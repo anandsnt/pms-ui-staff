@@ -21,7 +21,7 @@ angular.module('sntPay').controller('sntPaymentController',
 
             // ---------------------------------------------------------------------------------------------------------
             $scope.payment = {
-                referenceText: '',
+                referenceText: ($scope.actionType === 'AR_REFUND_PAYMENT') ? $scope.referenceText : '',
                 amount: 0,
                 isRateSuppressed: false,
                 isEditable: false,
