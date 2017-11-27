@@ -4,6 +4,7 @@
 "ADD_OVERBOOKING": "Add Overbooking",
 "HOUSE_ROOMS_AND_LIMIT": "House Rooms & Limit",
 "HOUSE_LIMIT": "House Limit",
+"ROOM_TYPE_VALUE": "Room Type Value",
 "NO_ROOM_TYPES": "No Room Types",
 "MESSAGE_NOT_SELECTED_ANY_ROOM_TYPES": "You haven't selected any room types to show.",
 
@@ -16,4 +17,5 @@
 "HOUSE": "House",
 "LIMIT": "Limit",
 "RMS": "Rms",
-"ADD_LIMIT": "Add Limit"
+"ADD_LIMIT": "Add Limit",
+"SET_LIMT": "Set Limit"
