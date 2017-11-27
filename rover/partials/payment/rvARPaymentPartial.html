@@ -30,9 +30,9 @@
 
 <!-- Reference field - use only when it exsits; This configuration is available in the Admin/Financials -->
 <div class="entry full-width reference"
-     ng-show="isDisplayRef && (!paymentAttempted || isPaymentFailure)">
+     ng-show="((isDisplayRef && (!paymentAttempted || isPaymentFailure)) || actionType === 'AR_REFUND_PAYMENT')">
     <label>Reference</label>
-    <input ng-model="payment.referenceText" type="text"/>
+    <input ng-disabled="actionType === 'AR_REFUND_PAYMENT'" ng-model="payment.referenceText" value="payment.referenceText" type="text"/>
 </div>
 
 <!-- Success feedback -->

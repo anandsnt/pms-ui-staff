@@ -21,7 +21,7 @@ angular.module('sntPay').controller('sntPaymentController',
 
             // ---------------------------------------------------------------------------------------------------------
             $scope.payment = {
-                referenceText: '',
+                referenceText: $scope.referenceText,
                 amount: 0,
                 isRateSuppressed: false,
                 isEditable: false,
