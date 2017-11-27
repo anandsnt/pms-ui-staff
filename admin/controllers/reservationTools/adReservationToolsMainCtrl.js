@@ -16,7 +16,7 @@ admin.controller('ADReservationTypeToolsMainCtrl', [
 		$scope.toolsMenu = _.findWhere(components, { state: 'admin.reservationTools' });
 
 		$scope.openSubmenu = function(e, state) {
-			$state.go( 'admin.balanceInventory' );
+			$state.go( state );
 		};
 	}
 ]);

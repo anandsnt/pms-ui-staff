@@ -14,13 +14,13 @@ admin.controller('ADBalanceInventoryCtrl', [
 
 		$scope.errorMessage = "";
 
-		$scope.balanceInventoryJob = allJobs[0];
+		$scope.balanceInventoryJob =  _.findWhere(allJobs, {"job_name": "SYNC INventoryDetails"});
 
 		$scope.anyJobRunning = false;
 		$scope.lastRunStatus = '';
 
 		$scope.payload = {
-			'id': $scope.balanceInventoryJob['id'],
+			'id': $scope.balanceInventoryJob.id,
 			'begin_date': '',
 			'end_date': ''
 		};
@@ -50,7 +50,7 @@ admin.controller('ADBalanceInventoryCtrl', [
 
 		$scope.refreshStatus = function() {
 			var _param = {
-				'id': $scope.balanceInventoryJob['id']
+				'id': $scope.balanceInventoryJob.id
 			};
 
 			var _callback = function(status) {
