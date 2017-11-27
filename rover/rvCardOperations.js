@@ -333,4 +333,12 @@ var CardOperation = function() {
         that.callCordovaService(options);
     };
 
+    this.getLastReceipt = function (options) {
+        options['service'] = "RVDevicePlugin";
+        options['action'] = "getLastReceipt";
+        options['timeout'] = 31000;
+
+        that.callCordovaService(options);
+    };
+
 };
