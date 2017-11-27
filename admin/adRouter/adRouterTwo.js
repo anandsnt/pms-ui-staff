@@ -173,6 +173,17 @@ angular.module('adminModuleTwo', []).config(function ($stateProvider) {
         }
     });
 
+    $stateProvider.state('admin.balanceJournal', {
+        templateUrl: '/assets/partials/reservationTools/adBalanceJournal.html',
+        controller: 'ADBalanceJournalCtrl',
+        url: '/balanceJournal',
+        resolve: {
+            allJobs: function (ADReservationToolsSrv) {
+                return ADReservationToolsSrv.fetchAllJobs();
+            }
+        }
+    });
+
     $stateProvider.state('admin.housekeeping', {
         templateUrl: '/assets/partials/housekeeping/adHousekeeping.html',
         controller: 'adHousekeepingCtrl',

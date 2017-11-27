@@ -16,10 +16,12 @@
                     payment-types="renderData.paymentTypes"
                     selected-payment-type="saveData.paymentType"
                     bill-number="billNumber"
-                    amount='arDataObj.unpaidAmount'
-                    action-type="AR_SUBMIT_PAYMENT" 
+                    ar-transaction-id = "passData.payment.transaction_id" 
+                    amount='renderData.defaultPaymentAmount'
+                    action-type="{{actionType}}" 
                     allocate-payment-after-posting = "allocatePaymentAfterPosting"
-                    has-permission='hasPermissionToMakePayment()'
+                    has-permission='hasPermissionToMakePayment()' 
+                    selected-c-c='passData.payment.card_details'
                     form-template-url='/assets/partials/payment/rvARPaymentPartial.html'>
             </snt-payment>
         </div>

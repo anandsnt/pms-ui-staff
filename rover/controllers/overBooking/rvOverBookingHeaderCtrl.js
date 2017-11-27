@@ -81,6 +81,44 @@ angular.module('sntRover').controller('RvOverBookingHeaderCtrl', [
 
         return disablePrevDateButton;
 	};
+	// Method to get selection count, last selected item
+	var getSelectedItemCount = function() {
+		var selectedItemDetails = {
+			count: 0,
+			lastItem: ''
+		};
+
+		_.map($scope.overBookingObj.roomTypeList, function(value) {
+			if (value.isChecked) {
+				selectedItemDetails.count ++;
+				selectedItemDetails.lastItem = value.name;
+			}
+		});
+
+		return selectedItemDetails;
+	};
+	
+	// Showing custom message on selecting room types.
+	$scope.showRoomTypeSelectionStatus = function() {
+		var totalCount = $scope.overBookingObj.roomTypeList.length, 
+			selectedItemObj = getSelectedItemCount(),
+			message = '';
+
+		if ( selectedItemObj.count === 0 ) {
+			message = 'NOT SHOWING';
+		}
+		else if (selectedItemObj.count === totalCount ) {
+			message = 'SHOW ALL';
+		}
+		else if ( selectedItemObj.count === 1 ) {
+			message = selectedItemObj.lastItem;
+		}
+		else if ( selectedItemObj.count > 0 ) {
+			message = selectedItemObj.count + ' OF ' + totalCount + ' SELECTED';
+		}
+
+		return message;
+	};
 
 	// Cleaning listener.
     $scope.$on('$destroy', listenerDateChanged);
