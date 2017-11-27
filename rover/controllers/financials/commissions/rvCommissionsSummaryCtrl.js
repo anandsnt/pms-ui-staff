@@ -23,11 +23,40 @@ sntRover.controller('RVCommissionsSummaryController', ['$scope',
             }, 500);
         };
 
+        var calculateTotalSelectedBillAmount = function() {
+            var total_amount = 0,
+                totalBillAmountOnCurrentPage = 0;
+
+            _.each($scope.commissionsData.accounts, function(account) {
+                totalBillAmountOnCurrentPage += parseFloat(account.amount_owing);
+                if (account.isSelected || account.isSemiSelected) {
+                    if (account.reservationsData && account.reservationsData.reservations) {
+                        _.each(account.reservationsData.reservations, function (reservation) {
+                            if (reservation.isSelected) {
+                                total_amount += parseFloat(reservation.amount_owing);
+                            }
+                        });
+                    } else {
+                        total_amount += parseFloat(account.amount_owing);
+                    }
+                }
+            });
+
+            if (!$scope.allCommisionsSelected) {
+                $scope.commissionsData.selectedBillsAmount = total_amount;
+            } else {
+                $scope.commissionsData.selectedBillsAmount = parseFloat($scope.commissionsData.amount_totals.owing)
+                    - totalBillAmountOnCurrentPage + total_amount;
+            }
+        };
+
         $scope.resetSelections = function() {
             $scope.noOfTASelected = 0;
+            $scope.noOfBillsSelected = 0;
             $scope.noOfTAInOtherPagesSelected = 0;
             $scope.allCommisionsSelected = false;
             $scope.selectedAgentIds = [];
+            $scope.commissionsData.selectedBillsAmount = 0;
             _.each($scope.commissionsData.accounts, function(account) {
                 account.isSelected = false;
                 account.isSemiSelected = false;
@@ -49,6 +78,7 @@ sntRover.controller('RVCommissionsSummaryController', ['$scope',
             } else {
                 account.fetchReservationData();
             }
+            calculateTotalSelectedBillAmount();
         };
 
         // based on selections, the top menu changes.
@@ -138,6 +168,7 @@ sntRover.controller('RVCommissionsSummaryController', ['$scope',
             } else {
                 return;
             }
+            calculateTotalSelectedBillAmount();
         };
 
         var handleExpandedReservationsList = function(account) {
@@ -162,6 +193,7 @@ sntRover.controller('RVCommissionsSummaryController', ['$scope',
 
         // based on the commision selection, set the no of bills.
         $scope.commisionSelectionChanged = function(account) {
+
             account.isSemiSelected = false;
             $scope.selectedAgentIds = [];
             // based on selection, update no of bills
@@ -186,10 +218,12 @@ sntRover.controller('RVCommissionsSummaryController', ['$scope',
             if (account.isExpanded) {
                 handleExpandedReservationsList(account);
             }
+            calculateTotalSelectedBillAmount();
         };
 
         // check / uncheck all commisions dispayed based on the main selection
         $scope.allCommisionsSelectionChanged = function() {
+
             $scope.selectedAgentIds = [];
 
             // check/ uncheck all the commisions appearing
@@ -207,13 +241,14 @@ sntRover.controller('RVCommissionsSummaryController', ['$scope',
             if ($scope.allCommisionsSelected) {
                 $scope.noOfTASelected = $scope.commissionsData.total_count;
                 $scope.noOfTAInOtherPagesSelected = $scope.commissionsData.total_count - $scope.commissionsData.accounts.length;
-                $scope.noOfBillsSelected = parseInt($scope.commissionsData.bill_count_totals.open)
-                    + parseInt($scope.commissionsData.bill_count_totals.on_hold);
+                $scope.noOfBillsSelected = $scope.filterData.filterTab === 'ON_HOLD' ?
+                    $scope.commissionsData.bill_count_totals.on_hold : $scope.commissionsData.bill_count_totals.open;
             } else {
                 $scope.noOfTASelected = 0;
                 $scope.noOfTAInOtherPagesSelected = 0;
                 $scope.noOfBillsSelected = 0;
             }
+            calculateTotalSelectedBillAmount();
         };
 
         // main tab switch - On Hold and To pay
