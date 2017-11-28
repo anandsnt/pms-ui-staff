@@ -15,7 +15,7 @@ sntRover.controller('RvArInvoiceAdjustController',
 
         var successCallBackOfGetInfo = function(data) {
           $scope.adjustData = data.charge_details[0];
-         // $scope.new_amount = data.charge_details[0].amount;
+          $scope.show_reference_on_guest_invoice = data.charge_details[0].is_reference_text_shown;
         };
 
         var paramsToService = {},

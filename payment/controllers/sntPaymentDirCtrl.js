@@ -21,7 +21,7 @@ angular.module('sntPay').controller('sntPaymentController',
 
             // ---------------------------------------------------------------------------------------------------------
             $scope.payment = {
-                referenceText: '',
+                referenceText: $scope.referenceText,
                 amount: 0,
                 isRateSuppressed: false,
                 isEditable: false,
@@ -74,6 +74,11 @@ angular.module('sntPay').controller('sntPaymentController',
                     'reservation_id': $scope.reservationId,
                     'bill_id': $scope.billId
                 };
+
+                // We need extra parameter parent ar id during AR refund
+                if ($scope.actionType === 'AR_REFUND_PAYMENT') {
+                    params.postData.parent_ar_id = $scope.arTransactionId;
+                }
 
                 if ($scope.payment.showAddToGuestCard) {
                     // check if add to guest card was selected
@@ -890,8 +895,12 @@ angular.module('sntPay').controller('sntPaymentController',
             $scope.onPaymentInfoChange = function (isReset) {
                 // NOTE: Fees information is to be calculated only for standalone systems
                 // TODO: See how to handle fee in case of C&P
+                // CICO-44719: No need to show add payment screen
+                if ($scope.actionType === 'AR_REFUND_PAYMENT') {
+                    return false;
+                }
 
-                var selectedPaymentType;
+                var selectedPaymentType;    
 
                 if (isReset && $scope.payment.isEditable && $scope.selectedPaymentType === 'GIFT_CARD') {
                     $scope.payment.amount = 0;
@@ -1298,7 +1307,7 @@ angular.module('sntPay').controller('sntPaymentController',
                 return (isMLIEMV || $scope.hotelConfig.paymentGateway === 'sixpayments') &&
                     $scope.selectedPaymentType === 'CC' &&
                     $scope.payment.screenMode === 'PAYMENT_MODE' &&
-                    isPendingPayment;
+                    isPendingPayment && $scope.actionType !== 'AR_REFUND_PAYMENT';
             };
 
             /** **************** init ***********************************************/
@@ -1417,6 +1426,8 @@ angular.module('sntPay').controller('sntPaymentController',
 
                 isEMVEnabled = config.paymentGateway === 'sixpayments' ||
                     (config.paymentGateway === 'MLI' && config.isEMVEnabled);
+
+                $scope.showSelectedCard();
 
             })();
 
