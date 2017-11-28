@@ -16,7 +16,6 @@ sntRover.controller('RVArTransactionsPayCreditsController',
     $scope.saveData = {'paymentType': ''};
     $scope.billNumber = 1;
     $scope.renderData = {};
-    //console.log("-----" + ((-1) * parseFloat($scope.passData.payment.amount)).toFixed(2))
     $scope.renderData.defaultPaymentAmount = ($scope.passData.isRefundClick) ? ((-1) * parseFloat($scope.passData.payment.amount)).toFixed(2) : parseFloat($scope.arDataObj.unpaidAmount).toFixed(2);
     $scope.saveData.paymentType = ($scope.passData.isRefundClick) ? $scope.passData.payment.payment_type_value  : '';
     $scope.actionType = ($scope.passData.isRefundClick) ? "AR_REFUND_PAYMENT" : "AR_SUBMIT_PAYMENT";

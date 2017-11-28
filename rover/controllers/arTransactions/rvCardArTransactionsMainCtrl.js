@@ -807,7 +807,6 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
                 payment.card_details.ending_with = payment.card_details.last_digits;
                 payment.card_details.expiry_date = payment.card_details.expire_date;
             }
-            //payment.amount = parseFloat(payment.amount).toFixed(2);
             
 			var passData = {
 				"account_id": $scope.arDataObj.accountId,
