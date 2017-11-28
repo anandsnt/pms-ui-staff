@@ -51,9 +51,9 @@
 ==========================================================*/
     
     #huntley {
-
+ 
         .logo-svg{
-            background-image: url("../css/themes/huntley/logo.svg");
+            background-image: url("../../images/zeststation/huntley/logo.svg");
             background-repeat: no-repeat;
             background-size: contain;
             width: 300px;
@@ -89,7 +89,11 @@
         }
 
         .button.transparent {
-            background-color: fade(@white, 40);
+            background-color: fade(@black, 10);
+
+            &:not(.text-red) {
+                color: @black;
+            }
         }
          
         #logo {
