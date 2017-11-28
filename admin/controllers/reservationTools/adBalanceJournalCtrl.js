@@ -36,6 +36,8 @@ admin.controller('ADBalanceJournalCtrl', [
 				$scope.anyJobRunning = true;
 			};
 
+			$scope.payload.start_date = moment(tzIndependentDate($scope.payload.begin_date)).format("YYYY-MM-DD");
+
 			var options = {
 				params: $scope.payload,
 				successCallBack: successCallback
@@ -62,7 +64,7 @@ admin.controller('ADBalanceJournalCtrl', [
 		 */
 		$rootScope.$on('datepicker.update', function(event, chosenDate) {
 			if ( $scope.dateNeeded === 'from' ) {
-				$scope.payload.begin_date = chosenDate;
+				$scope.payload.begin_date = moment(tzIndependentDate(chosenDate)).format($rootScope.hotelDateFormat);
 			} 
 		});
 		/*
