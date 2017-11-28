@@ -1307,7 +1307,7 @@ angular.module('sntPay').controller('sntPaymentController',
                 return (isMLIEMV || $scope.hotelConfig.paymentGateway === 'sixpayments') &&
                     $scope.selectedPaymentType === 'CC' &&
                     $scope.payment.screenMode === 'PAYMENT_MODE' &&
-                    isPendingPayment;
+                    isPendingPayment && $scope.actionType !== 'AR_REFUND_PAYMENT';
             };
 
             /** **************** init ***********************************************/
