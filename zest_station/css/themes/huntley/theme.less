@@ -69,6 +69,10 @@
         #header {
             height: 120px;
             border-top: 10px solid @black;
+
+            .icons {
+                fill: @brandColor;
+            }
         }
 
         #main {
@@ -89,6 +93,22 @@
                     color: @textColor;
                 }
             }
+
+            &.languages {
+                .language {
+                    &.selected {
+                        border: 1px solid @brandColor;
+                    }
+                }
+            }
+        }
+
+        .popup {
+            #languages {
+                .button {
+                    &.active { border: 1px solid @brandColor; }
+                }
+            }
         }
 
         .button.transparent {
@@ -96,6 +116,14 @@
 
             &:not(.text-red) {
                 color: @black;
+            }
+
+            .icons {
+                &.icon-arrow-left,
+                &.icon-arrow-right {
+                    
+                    stroke: @black;
+                }
             }
         }
          
