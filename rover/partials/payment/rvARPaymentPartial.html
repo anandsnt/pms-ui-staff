@@ -1,11 +1,11 @@
 <div class="entry full-width" ng-class="{'amount': feeData.showFee}"
      ng-hide="paymentAttempted && !isPaymentFailure">
 
-    <label>Amount to pay (<span>{{currencySymbol}}</span>)</label>
+    <label>Amount to pay(<span>{{currencySymbol}}</span>)</label>
 
     <input ng-change="onPaymentInfoChange()"
            ng-model="payment.amount"
-           type="number"
+           type="number" value="{{payment.amount}}" 
            class="amount" pattern="^[1-9]\d*(?:\.\d+)?$" ng-disabled="actionType === 'AR_REFUND_PAYMENT'" onpaste="return false"/>
 
     <span ng-show="feeData.showFee" class="delimiter">+</span>
