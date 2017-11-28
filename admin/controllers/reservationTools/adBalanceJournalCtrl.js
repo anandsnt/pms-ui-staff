@@ -36,7 +36,7 @@ admin.controller('ADBalanceJournalCtrl', [
 				$scope.anyJobRunning = true;
 			};
 
-			$scope.payload.start_date = moment(tzIndependentDate($scope.payload.begin_date)).format("YYYY-MM-DD");
+			$scope.payload.begin_date = moment(tzIndependentDate($scope.payload.begin_date)).format("YYYY-MM-DD");
 
 			var options = {
 				params: $scope.payload,
