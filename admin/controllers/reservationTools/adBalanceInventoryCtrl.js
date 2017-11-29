@@ -87,11 +87,8 @@ admin.controller('ADBalanceInventoryCtrl', [
 				$scope.$emit('hideLoader');
 			};
 
-			//$scope.payload.begin_date = $scope.payload.first_date;
-			//$scope.payload.end_date = $scope.payload.last_date;
-			var unwantedKeys = ["first_date", "last_date"];
-			
-			var data = dclone($scope.payload, unwantedKeys);
+			var unwantedKeys = ["first_date", "last_date"],			
+			    data = dclone($scope.payload, unwantedKeys);
 
 			$scope.invokeApi(ADReservationToolsSrv.postScheduleJob, data, _callback, _error);
 		};
