@@ -94,19 +94,6 @@ sntRover.controller('RVCommisionsHeaderCtrl', ['$scope', 'ngDialog', '$log', '$t
         $scope.invokeApi(RVCommissionsSrv.updateCommissionPaidStatus, params, successCallBack);
     };
 
-    var calculateAmountOwingForCurrentPage = function() {
-        var amountOwing = 0;
-
-        _.each($scope.commissionsData.accounts, function(account) {
-            _.each($scope.selectedAgentIds, function(id) {
-                if (id === account.id) {
-                    amountOwing = amountOwing + parseFloat(account.amount_owing);
-                }
-            });
-        });
-        return amountOwing;
-    };
-
     var openNgDialogWithTemplate = function(template) {
         ngDialog.open({
             template: '/assets/partials/financials/commissions/' + template + '.html',
