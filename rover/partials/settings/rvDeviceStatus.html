@@ -109,6 +109,7 @@
                                 </select>
                             </div>
                             <label class="button green" style="display:inline-block; margin-left: 8px;"
+                                   ng-class="{'grey': !device.selectedAction}"
                                    ng-click="onExecuteAction(device)">RUN</label>
                         </li>
                         <!--Actions-->

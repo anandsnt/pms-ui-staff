@@ -26,6 +26,10 @@ angular.module('sntRover').controller('rvDeviceStatusCtrl', ['$scope', 'ngDialog
         $scope.onExecuteAction = function (device) {
             var action = _.find(device.actions, {action_name: device.selectedAction});
 
+            $scope.errorMessage = '';
+            if (!action) {
+                return;
+            }
             sntActivity.start('RUN_DEVICE_ACTION');
             sntapp.cardReader.doDeviceAction({
                 service: action.service_name,
