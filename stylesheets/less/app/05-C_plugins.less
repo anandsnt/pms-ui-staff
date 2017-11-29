@@ -7580,6 +7580,110 @@
                     height: 700px;
                 }
             }
+
+            /* Commissions ***/
+            &.commissions {
+                width: 315px;
+
+                .h2 {
+                    margin-bottom: 10px;
+                }
+
+                .text {
+                    text-transform: none;
+                    font-style: italic;
+                    margin-bottom: 10px;
+                }
+
+                &:not(.exporting) {
+                    .notice {
+                        background-color: @white;
+                        border-color: @white;
+                        color: @black;
+                    }
+                }
+
+                &.exporting {
+                    .text {
+                        color: @orange;
+                    }
+                    .actions {
+                        .hide();
+                    }
+                }
+
+                &.error {
+                    .text {
+                        color: @red;
+                    }
+
+                    .notice {
+                        background-color: #f59a9a;
+                        border-color: #cb2121;
+                    }
+                }
+
+                &.success {
+                    .text {
+                        color: @green;
+                    }
+
+                    .notice {
+                        background-color: #a8db75;
+                        border-color: #75b13a;
+                    }
+                }
+
+                .notice {
+                    padding: 20px 10px;
+
+                    .amount,
+                    .bills {
+                        display: block;
+                    }
+
+                    .amount {
+                        font-size: 30px;
+                    }
+                    
+                    .bills {
+                        font-size: 18px;
+                        line-height: 1;
+                        margin-top: 5px;
+                    }
+                }
+
+                .actions {
+                    padding-top: 20px;
+                    margin-top: 20px;
+                    border-top: 2px solid rgba(0,0,0,0.1);
+
+                    .button {
+                        &:not(:last-child) {
+                            margin-bottom: 10px;
+                        }
+
+                         
+                        &.disabled {
+                            background: rgba(0,0,0,0.05);
+                            text-shadow: none;
+                            font-size: 16px;
+                            font-style: italic;
+                            text-transform: none;
+                            font-weight: 300;
+                            .box-shadow(none);
+
+                            &.green {
+                                color: @green;
+                            }
+
+                            &.blue {
+                                color: @blue;
+                            }
+                        } 
+                    }
+                }
+            }
         }
     }
 

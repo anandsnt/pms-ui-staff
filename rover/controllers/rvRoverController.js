@@ -391,7 +391,8 @@ sntRover.controller('roverController', [
                     ngDialog.open({
                         template: '/assets/partials/settings/rvDeviceStatus.html',
                         scope: $scope,
-                        className: 'calendar-modal'
+                        className: 'calendar-modal',
+                        controller: 'rvDeviceStatusCtrl'
                     });
                     $scope.runDigestCycle();
                 },
