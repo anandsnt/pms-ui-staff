@@ -19,6 +19,7 @@
         <button class="modal-close" id="modal-close" type="button" ng-click="closeDialogImmediately()">
             <span class="icons icon-close invert"></span>
         </button>
+        <div ng-include="'/assets/partials/common/notification_message.html'"></div>
         <section ng-if="serviceDetails">
             <span class="h2 message" translate>Rover Service</span>
             <div class="devices-grid">
@@ -100,9 +101,8 @@
                         <li ng-if="device.actions && device.actions.length">
                             <div class="select" style="width: calc(100% - 60px); display: inline-block;">
                                 <select ng-model="device.selectedAction"
-                                        data-placeholder="Select an Action..."
                                         ng-class="{'placeholder': !device.selectedAction}">
-                                    <option value=""></option>
+                                    <option value="" selected>Select an Action</option>
                                     <option value="{{action.action_name}}" ng-repeat="action in device.actions">
                                         {{action.display_name}}
                                     </option>
