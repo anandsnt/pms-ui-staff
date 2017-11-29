@@ -87,8 +87,8 @@ admin.controller('ADBalanceInventoryCtrl', [
 				$scope.$emit('hideLoader');
 			};
 
-			$scope.payload.begin_date = $scope.payload.first_date;
-			$scope.payload.end_date = $scope.payload.last_date;
+			//$scope.payload.begin_date = $scope.payload.first_date;
+			//$scope.payload.end_date = $scope.payload.last_date;
 			var unwantedKeys = ["first_date", "last_date"];
 			
 			var data = dclone($scope.payload, unwantedKeys);
@@ -110,18 +110,18 @@ admin.controller('ADBalanceInventoryCtrl', [
 
 		$rootScope.$on('datepicker.update', function(event, chosenDate) {
 			if ( $scope.dateNeeded === 'from' ) {
-				$scope.payload.first_date = chosenDate;
-				$scope.payload.begin_date = moment(tzIndependentDate(chosenDate))
+				$scope.payload.begin_date = chosenDate;
+				$scope.payload.first_date = moment(tzIndependentDate(chosenDate))
 											.format($rootScope.hotelDateFormat);
 
 				// make sure the dates are valid -> end is after begin
-				if ( $scope.payload.end_date ) {
-					$scope.payload.end_date = checkDates($scope.payload.first_date, $scope.payload.last_date);
+				if ( $scope.payload.last_date ) {
+					$scope.payload.last_date = checkDates($scope.payload.begin_date, $scope.payload.end_date);
 				}
 			} else {
-				$scope.payload.end_date = moment(tzIndependentDate(chosenDate))
+				$scope.payload.last_date = moment(tzIndependentDate(chosenDate))
 											.format($rootScope.hotelDateFormat);
-				$scope.payload.last_date = chosenDate;
+				$scope.payload.end_date = chosenDate;
 			}
 		});
 

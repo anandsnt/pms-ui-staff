@@ -37,10 +37,8 @@ admin.controller('ADBalanceJournalCtrl', [
 				$scope.anyJobRunning = true;
 			};
 
-			var unwantedKeys = ["first_date"];			
-			
-			$scope.payload.begin_date = $scope.payload.first_date;
-			var data = dclone($scope.payload, unwantedKeys);
+			var unwantedKeys = ["first_date"],			
+			    data = dclone($scope.payload, unwantedKeys);
 
 			var options = {
 				params: data,
@@ -68,8 +66,8 @@ admin.controller('ADBalanceJournalCtrl', [
 		 */
 		$rootScope.$on('datepicker.update', function(event, chosenDate) {
 			if ( $scope.dateNeeded === 'from' ) {
-				$scope.payload.first_date = chosenDate;
-				$scope.payload.begin_date = moment(tzIndependentDate(chosenDate)).format($rootScope.hotelDateFormat);
+				$scope.payload.begin_date = chosenDate;
+				$scope.payload.first_date = moment(tzIndependentDate(chosenDate)).format($rootScope.hotelDateFormat);
 			} 
 		});
 		/*
@@ -98,6 +96,6 @@ admin.controller('ADBalanceJournalCtrl', [
 			
 			$scope.callAPI(ADReservationToolsSrv.checkJobStatus, options);
 		};
-		$scope.refreshStatus();
+		//$scope.refreshStatus();
 	}
 ]);
