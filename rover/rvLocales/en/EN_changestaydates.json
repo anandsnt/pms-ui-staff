@@ -37,7 +37,8 @@
 	"CANCEL": "cancel",
 	"SUPPRESSED_RATES_TEXT": "SR",
 	"ROOM_UNAVAILABLE": "Selected room is currently occupied. Can't extend reservation for the selected date range",
-	"NO_ROOM_MOVE": "Assigned room not available for selected dates. Please re-assign room"
+	"NO_ROOM_MOVE": "Assigned room not available for selected dates. Please re-assign room",
+	"VALIDATION_MSG_MAX_LENGTH_EXCEEDED" : "Length of stay exceeds maximum allowed duration."
 
 
 
