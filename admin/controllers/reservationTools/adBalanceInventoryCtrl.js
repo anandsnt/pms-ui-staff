@@ -14,15 +14,17 @@ admin.controller('ADBalanceInventoryCtrl', [
 
 		$scope.errorMessage = "";
 
-		$scope.balanceInventoryJob = allJobs[0];
+		$scope.balanceInventoryJob =  _.findWhere(allJobs, {"job_name": "SYNC INventoryDetails"});
 
 		$scope.anyJobRunning = false;
 		$scope.lastRunStatus = '';
 
 		$scope.payload = {
-			'id': $scope.balanceInventoryJob['id'],
+			'id': $scope.balanceInventoryJob.id,
 			'begin_date': '',
-			'end_date': ''
+			'end_date': '',
+			'first_date': '', 
+			'last_date': ''
 		};
 
 
@@ -50,7 +52,7 @@ admin.controller('ADBalanceInventoryCtrl', [
 
 		$scope.refreshStatus = function() {
 			var _param = {
-				'id': $scope.balanceInventoryJob['id']
+				'id': $scope.balanceInventoryJob.id
 			};
 
 			var _callback = function(status) {
@@ -85,7 +87,13 @@ admin.controller('ADBalanceInventoryCtrl', [
 				$scope.$emit('hideLoader');
 			};
 
-			$scope.invokeApi(ADReservationToolsSrv.postScheduleJob, $scope.payload, _callback, _error);
+			$scope.payload.begin_date = $scope.payload.first_date;
+			$scope.payload.end_date = $scope.payload.last_date;
+			var unwantedKeys = ["first_date", "last_date"];
+			
+			var data = dclone($scope.payload, unwantedKeys);
+
+			$scope.invokeApi(ADReservationToolsSrv.postScheduleJob, data, _callback, _error);
 		};
 
 		$scope.popupCalendar = function(dateNeeded) {
@@ -102,14 +110,18 @@ admin.controller('ADBalanceInventoryCtrl', [
 
 		$rootScope.$on('datepicker.update', function(event, chosenDate) {
 			if ( $scope.dateNeeded === 'from' ) {
-				$scope.payload.begin_date = chosenDate;
+				$scope.payload.first_date = chosenDate;
+				$scope.payload.begin_date = moment(tzIndependentDate(chosenDate))
+											.format($rootScope.hotelDateFormat);
 
 				// make sure the dates are valid -> end is after begin
 				if ( $scope.payload.end_date ) {
-					$scope.payload.end_date = checkDates($scope.payload.begin_date, $scope.payload.end_date);
+					$scope.payload.end_date = checkDates($scope.payload.first_date, $scope.payload.last_date);
 				}
 			} else {
-				$scope.payload.end_date = chosenDate;
+				$scope.payload.end_date = moment(tzIndependentDate(chosenDate))
+											.format($rootScope.hotelDateFormat);
+				$scope.payload.last_date = chosenDate;
 			}
 		});
 

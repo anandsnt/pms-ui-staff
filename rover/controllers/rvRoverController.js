@@ -143,6 +143,7 @@ sntRover.controller('roverController', [
         // API not removing for now - Because if we need to disable it we can use the same param
         $rootScope.isRoomDiaryEnabled = true;
         $rootScope.isManualCCEntryEnabled = hotelDetails.is_allow_manual_cc_entry;
+        $rootScope.isAnMPHotel = hotelDetails.is_multi_property;
         /**
          * CICO-34068
          * NOTE: Temporary Fix
@@ -503,6 +504,7 @@ sntRover.controller('roverController', [
 
             if ($rootScope.paymentGateway === 'CBA' && sntapp.cordovaLoaded) {
                 doCBAPowerFailureCheck();
+                $rootScope.disableObserveForSwipe = true;
             }
 
             // for iPad we need to show the connected device status
