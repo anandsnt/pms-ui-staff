@@ -107,7 +107,8 @@ angular.module('sntRover').controller('RvOverBookingMainCtrl', [
 			endDate: moment(tzIndependentDate($rootScope.businessDate)).add(DATE_SHIFT_LIMIT, 'd')
 					.format($rootScope.momentFormatForAPI),
 			isShowRoomsLeftToSell: false,
-			isShowRoomTypeFilter: false
+			isShowRoomTypeFilter: false,
+			editData: {}
 		};
 	};
 
@@ -166,6 +167,30 @@ angular.module('sntRover').controller('RvOverBookingMainCtrl', [
             refreshScrollers();
         }, DELAY_1000 );
 	});
+
+	// Handle Edit OverBooking cell click - ROOM_TYPE
+	$scope.clickedEditOverBookingCell = function( type, indexOne, indexTwo ) {
+		$scope.overBookingObj.editData.type = type;
+		var gridData = $scope.overBookingObj.overBookingGridData;
+
+		if ( type === 'HOUSE') {
+			$scope.overBookingObj.editData.date = gridData.houseSellLimits[indexOne].date;
+			$scope.overBookingObj.editData.limitValue = gridData.houseSellLimits[indexOne].sell_limit;
+		}
+		else if ( type === 'ROOM_TYPE' ) {
+			$scope.overBookingObj.editData.date = gridData.roomTypeSellLimits[indexOne].overbooking_details[indexTwo].date;
+			$scope.overBookingObj.editData.roomTypeId = gridData.roomTypeSellLimits[indexOne].id;
+			$scope.overBookingObj.editData.roomTypeName = gridData.roomTypeSellLimits[indexOne].name;
+			$scope.overBookingObj.editData.limitValue = gridData.roomTypeSellLimits[indexOne].overbooking_details[indexTwo].sell_limit;
+		}
+		ngDialog.open({
+			template: '/assets/partials/overBooking/rvEditOverBookingPopup.html',
+			controller: 'rvEditOverBookingPopupCtrl',
+			className: '',
+			scope: $scope,
+			closeByDocument: false
+		});
+	};
 
 	// Cleaning listener.
     $scope.$on('$destroy', listenerOverbooking);
