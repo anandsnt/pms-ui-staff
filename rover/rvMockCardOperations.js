@@ -1,4 +1,5 @@
-/* eslint-disable angular/timeout-service */
+/* eslint-disable angular/timeout-service,no-undef */
+// eslint-disable-next-line no-unused-vars
 var MockCardOperation = function () {
     // class for handling operations with payment device
 
@@ -7,7 +8,7 @@ var MockCardOperation = function () {
     // Note down: Currently it is recursive
 
     var successResponses = {
-        getLastReceipt : {
+        getLastReceipt: {
             'message': ' "\n' +
             'COMMONWEALTH BANK \n' +
             'EFTPOS \n' +
@@ -64,7 +65,7 @@ var MockCardOperation = function () {
                 'RVCardReadIsEncrypted': 0
             };
 
-            if (typeof data !== 'undefined') {
+            if (angular.isDefined(data)) {
                 carddata = data;
             }
             successCallBack(carddata, successCallBackParameters);
@@ -76,31 +77,33 @@ var MockCardOperation = function () {
         options['service'] = 'RVDevicePlugin';
         options['action'] = 'getDevicesStates';
         options['timeout'] = 31000;
-        options['successCallBack']([
-                {
-                    'actions': [
-                        {
-                            'action_name': 'getLastReceipt',
-                            'display_name': 'Last Receipt',
-                            'service_name': 'RVDevicePlugin'
-                        }
-                    ],
-                    'battery_percentage': 0,
-                    'device_connection_sate': 'Connected',
-                    'device_id': '13601060',
-                    'device_identified_name': 'TEST                -311000063601011',
-                    'device_short_name': 'Ingenico CBA',
-                    'firmware_version': 'TL0415',
-                    'library_name': 'PosGate',
-                    'library_version': '2.0.6',
-                    'serial_number': '21058417'
-                }
-            ]
+        options['successCallBack'](
+            [{
+                'actions': [
+                    {
+                        'action_name': 'getLastReceipt',
+                        'display_name': 'Last Receipt',
+                        'service_name': 'RVDevicePlugin'
+                    }
+                ],
+                'battery_percentage': 0,
+                'device_connection_sate': 'Connected',
+                'device_id': '13601060',
+                'device_identified_name': 'TEST                -311000063601011',
+                'device_short_name': 'Ingenico CBA',
+                'firmware_version': 'TL0415',
+                'library_name': 'PosGate',
+                'library_version': '2.0.6',
+                'serial_number': '21058417'
+            }]
         );
     };
 
     this.doDeviceAction = function (options) {
-        // options['successCallBack'](successResponses[options.action]);
-        options['failureCallBack'](failureResponses[0]);
+        if (Math.random() > 0.5) {
+            options['successCallBack'](successResponses[options.action]);
+        } else {
+            options['failureCallBack'](failureResponses[0]);
+        }
     };
 };
