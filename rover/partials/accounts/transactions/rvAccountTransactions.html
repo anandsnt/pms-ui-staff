@@ -1,5 +1,7 @@
 <form ng-controller="rvAccountTransactionsCtrl" id="group-transactions" name="group-transactions" class="form card-tab inner-header bills" ng-click="errorMessage = '';">
-	<div id="account-transactions-header" class="tab-header no-print">
+	<!--common header for fullscreen mode-->
+	<div ng-include="'/assets/partials/common/rvFullscreenHeader.html'" class="fullscreen-header"></div>
+	<div id="account-transaction-header" class="tab-header no-print">
 	<ul class="totals">
 		<li>
 			<div class="data">
