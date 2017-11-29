@@ -45,7 +45,10 @@ sntRover.controller('RVCommissionsSummaryController', ['$scope',
             if (!$scope.allCommisionsSelected) {
                 $scope.commissionsData.selectedBillsAmount = total_amount;
             } else {
-                $scope.commissionsData.selectedBillsAmount = parseFloat($scope.commissionsData.amount_totals.owing)
+                var totalAmountForSelectedTab = $scope.filterData.filterTab === 'ON_HOLD' ?
+                    $scope.commissionsData.amount_totals.on_hold : $scope.commissionsData.amount_totals.unpaid;
+
+                $scope.commissionsData.selectedBillsAmount = parseFloat(totalAmountForSelectedTab)
                     - totalBillAmountOnCurrentPage + total_amount;
             }
         };

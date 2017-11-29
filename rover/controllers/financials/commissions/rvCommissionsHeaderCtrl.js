@@ -100,20 +100,9 @@ sntRover.controller('RVCommisionsHeaderCtrl', ['$scope', 'ngDialog', '$log', '$t
         _.each($scope.commissionsData.accounts, function(account) {
             _.each($scope.selectedAgentIds, function(id) {
                 if (id === account.id) {
-                    amountOwing = amountOwing + parseInt(account.amount_owing);
+                    amountOwing = amountOwing + parseFloat(account.amount_owing);
                 }
             });
-        });
-        return amountOwing;
-    };
-
-    var calculateAmountOwingForCurrentPageAndOtherPages = function() {
-        var amountOwing = parseInt($scope.commissionsData.amount_totals.unpaid);
-
-        _.each($scope.commissionsData.accounts, function(account) {
-            if (!account.isSelected) {
-                amountOwing = amountOwing - parseInt(account.amount_owing);
-            }
         });
         return amountOwing;
     };
@@ -127,38 +116,6 @@ sntRover.controller('RVCommisionsHeaderCtrl', ['$scope', 'ngDialog', '$log', '$t
     };
 
     $scope.openPopupWithTemplate = function(template) {
-		// TO DO: handle for release from ON_HOLD TAB - minor updates
-
-        if ($scope.filterData.filterTab === 'PAYABLE') {
-            if ($scope.areAllAgentsSelected()) {
-                $scope.eligibleForPayment = $scope.commissionsData.amount_totals.unpaid;
-            } else {
-                var amountOwing;
-
-				// if only items in the existing page are selected
-                if ($scope.noOfTASelected <= $scope.filterData.perPage) {
-                    amountOwing = calculateAmountOwingForCurrentPage();
-                } else {
-					// when more than per page items are selected and
-					// some of the current page items are unchecked
-					// subtract unselected amount from total
-                    amountOwing = calculateAmountOwingForCurrentPageAndOtherPages();
-                }
-
-				// apart from main TA, add partially selected TA
-                _.each($scope.commissionsData.accounts, function(account) {
-                    if (account.isExpanded && account.selectedReservations.length
-                        && account.selectedReservations.length !== account.reservationsData.total_count) {
-                        _.each(account.reservationsData.reservations, function(reservation) {
-                            if (reservation.isSelected) {
-                                amountOwing = amountOwing + parseInt(reservation.amount_owing);
-                            }
-                        });
-                    }
-                });
-                $scope.eligibleForPayment = amountOwing;
-            }
-        }
         openNgDialogWithTemplate(template);
     };
 
