@@ -38,7 +38,7 @@ admin.controller('ADBalanceJournalCtrl', [
 			};
 
 			var unwantedKeys = ["first_date"],			
-			    data = dclone($scope.payload, unwantedKeys);
+				data = dclone($scope.payload, unwantedKeys);
 
 			var options = {
 				params: data,
@@ -96,6 +96,6 @@ admin.controller('ADBalanceJournalCtrl', [
 			
 			$scope.callAPI(ADReservationToolsSrv.checkJobStatus, options);
 		};
-		//$scope.refreshStatus();
+		$scope.refreshStatus();
 	}
 ]);
