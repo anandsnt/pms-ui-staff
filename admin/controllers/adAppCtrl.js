@@ -596,6 +596,7 @@ admin.controller('ADAppCtrl', [
 			$rootScope.currencySymbol = getCurrencySign(data.currency.value);
 			$rootScope.dateFormat = getDateFormat(data.date_format.value);
 			$rootScope.jqDateFormat = getJqDateFormat(data.date_format.value);
+            $rootScope.hotelDateFormat = data.date_format.value;
 			$scope.$emit('hideLoader');
 			$rootScope.isHourlyRatesEnabled = data.is_hourly_rate_on;
 			$rootScope.isSuiteRoomsAvailable = data.suite_enabled;
@@ -645,6 +646,7 @@ admin.controller('ADAppCtrl', [
 		$scope.data = adminMenuData;
 		$scope.selectedMenu = $scope.data.menus[$scope.selectedIndex];
 		$scope.bookMarks = $scope.data.bookmarks;
+        $scope.isChainAdminMenuPresent = _.where(adminMenuData.menus, {menu_name: "Chain"});
 
 		$scope.bookmarkIdList = [];
 		for (var i = 0; i < $scope.data.bookmarks.length; i++) {

@@ -40,9 +40,16 @@ module.exports = {
 
 				roverRoot + 'rvRouters/**/*.js',
 				roverRoot + 'rvApp.js',
-				roverRoot + 'rvRouter.js', roverRoot + 'rvCardOperations.js', roverRoot + 'rvMLIOperations.js', roverRoot + 'rvUUIDService.js', roverRoot + 'rvDesktopUUIDService.js',
-				roverRoot + 'rvSwipeOperations.js', roverRoot + 'rvCacheVaultModule.js',
-				roverRoot + 'rvDesktopCardOperations.js', roverRoot + 'rvSntApp.js',
+				roverRoot + 'rvRouter.js',
+                roverRoot + 'rvCardOperations.js',
+                roverRoot + 'rvMockCardOperations.js',
+                roverRoot + 'rvMLIOperations.js',
+                roverRoot + 'rvUUIDService.js',
+                roverRoot + 'rvDesktopUUIDService.js',
+				roverRoot + 'rvSwipeOperations.js',
+                roverRoot + 'rvCacheVaultModule.js',
+				roverRoot + 'rvDesktopCardOperations.js',
+                roverRoot + 'rvSntApp.js',
 
 				roverRoot + 'filters/roundFilter.js',
 				roverRoot + 'filters/highlightWordsFilter.js',
@@ -56,6 +63,7 @@ module.exports = {
 				controllerRoot + 'errorPopup/rvTimeoutErrorCtrl.js',
 				controllerRoot + 'workstation/rvWorkstationCtrl.js',
                 controllerRoot + 'rvOWSErrorCtrl.js',
+                controllerRoot + 'deviceStatus/rvDeviceStatusCtrl.js',
 
 				serviceRoot + 'baseWebSrvV2.js',
 				serviceRoot + 'rvBaseWebSrv.js',
@@ -73,7 +81,8 @@ module.exports = {
 				serviceRoot + 'workstation/workstationSrv.js',
 				serviceRoot + 'housekeeping/rvHkRoomStatusSrv.js',
 				directiveRoot + 'Outside Click handler/outsideClickDirective.js',
-				directiveRoot + 'pagination/*.js'
+				directiveRoot + 'pagination/*.js',
+				directiveRoot + 'fullscreen/*.js'
 			]
 		};
 

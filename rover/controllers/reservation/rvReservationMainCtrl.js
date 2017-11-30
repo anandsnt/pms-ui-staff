@@ -1634,9 +1634,10 @@ sntRover.controller('RVReservationMainCtrl', ['$scope',
             });
 
         };
-
-                CardReaderCtrl.call(this, $scope, $rootScope, $timeout, $interval, $log);
-                $scope.observeForSwipe();
+                if (!$rootScope.disableObserveForSwipe) {
+                    CardReaderCtrl.call(this, $scope, $rootScope, $timeout, $interval, $log);
+                    $scope.observeForSwipe();
+                }
 
     }
 

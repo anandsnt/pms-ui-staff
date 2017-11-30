@@ -41,7 +41,8 @@ sntZestStation.service('zsGeneralSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
             'first': 'First Hotel Breiseth',
             'viceroy-chicago': 'Viceroy Chicago',
             'amrath': 'Amrath apart hotel',
-            'jupiter': 'Jupiter hotel'
+            'jupiter': 'Jupiter hotel',
+            'huntley': 'Huntley'
         };
 
         this.isThemeConfigured = function(theme) {

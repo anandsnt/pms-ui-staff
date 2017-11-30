@@ -143,6 +143,7 @@ sntRover.controller('roverController', [
         // API not removing for now - Because if we need to disable it we can use the same param
         $rootScope.isRoomDiaryEnabled = true;
         $rootScope.isManualCCEntryEnabled = hotelDetails.is_allow_manual_cc_entry;
+        $rootScope.isAnMPHotel = hotelDetails.is_multi_property;
         /**
          * CICO-34068
          * NOTE: Temporary Fix
@@ -390,7 +391,8 @@ sntRover.controller('roverController', [
                     ngDialog.open({
                         template: '/assets/partials/settings/rvDeviceStatus.html',
                         scope: $scope,
-                        className: 'calendar-modal'
+                        className: 'calendar-modal',
+                        controller: 'rvDeviceStatusCtrl'
                     });
                     $scope.runDigestCycle();
                 },
@@ -503,6 +505,7 @@ sntRover.controller('roverController', [
 
             if ($rootScope.paymentGateway === 'CBA' && sntapp.cordovaLoaded) {
                 doCBAPowerFailureCheck();
+                $rootScope.disableObserveForSwipe = true;
             }
 
             // for iPad we need to show the connected device status
@@ -715,7 +718,8 @@ sntRover.controller('roverController', [
         };
 
         $scope.uuidServiceSuccessCallBack = function (response) {
-            $rootScope.UUID = response.Data;
+            // latest versions of RoverService return the device identifier as a string!
+            $rootScope.UUID = response.Data || response;
         };
 
         $scope.uuidServiceFailureCallBack = function (error) {

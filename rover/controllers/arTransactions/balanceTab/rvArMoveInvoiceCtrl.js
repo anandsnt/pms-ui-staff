@@ -33,7 +33,7 @@ sntRover.controller('rvArMoveInvoiceCtrl', ['$scope', 'ngDialog', 'rvAccountsArT
                 accountNumber: accountData.account_number,
                 arNumber: accountData.accounts_receivable_number,
                 type: accountData.account_type,
-                location: addressData.location,
+                location: (typeof addressData === 'undefined') ? '' : addressData.location,
                 ageingDate: accountData.ageing_date
             };
         }
