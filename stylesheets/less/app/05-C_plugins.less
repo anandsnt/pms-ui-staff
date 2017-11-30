@@ -7595,6 +7595,10 @@
                     margin-bottom: 10px;
                 }
 
+                label {
+                    margin-bottom: 0;
+                }
+
                 &:not(.exporting) {
                     .notice {
                         background-color: @white;
@@ -7650,6 +7654,16 @@
                         font-size: 18px;
                         line-height: 1;
                         margin-top: 5px;
+                    }
+                }
+
+                .entry {
+                    padding-top: 20px;
+
+                    .radio {
+                        &:not(:last-child) {
+                            margin-bottom: 10px;
+                        }
                     }
                 }
 
