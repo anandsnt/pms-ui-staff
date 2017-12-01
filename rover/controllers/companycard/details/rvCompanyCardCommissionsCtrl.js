@@ -521,6 +521,14 @@ sntRover.controller('companyCardCommissionsCtrl', [
             }
         
         });
+        // CICO-47385 : Commissions: Status selection is not switching to "Commissionable" while opting a different property
+        $scope.onPropertyFilterChange = function() {
+            if ($rootScope.hotelDetails.userHotelsData.current_hotel_id !== parseInt($scope.filterData.selectedHotel)) {
+                $scope.filterData.commissionStatus = "Commissionable";
+            }
+            $scope.onFilterChange();
+        };
+
 
     // Initailizes the controller
     var init = function() {
