@@ -693,6 +693,9 @@ sntRover.controller('RVReservationBaseSearchCtrl', [
                     travelAgent: ui.item.travelAgent
                 };
                 $scope.codeSearchText = ui.item.code;
+                // Since UI is updating with group/allotment code
+                $scope.reservationData.searchPromoCode = "";
+                $scope.reservationData.promotionId = "";
             } else if (ui.item.type === 'ALLOTMENT') {
                 $scope.reservationData.allotment = {
                     id: ui.item.id,
@@ -702,11 +705,15 @@ sntRover.controller('RVReservationBaseSearchCtrl', [
                     travelAgent: ui.item.travelAgent
                 };
                 $scope.codeSearchText = ui.item.code;
+                // Since UI is updating with group/allotment code
+                $scope.reservationData.searchPromoCode = "";
+                $scope.reservationData.promotionId = "";
             } else {
                 $scope.reservationData.travelAgent.id = ui.item.id;
                 $scope.reservationData.travelAgent.name = ui.item.label;
                 $scope.reservationData.travelAgent.iataNumber = ui.item.iataNumber;
             }
+
 
             // DO NOT return false
         };
@@ -903,11 +910,12 @@ sntRover.controller('RVReservationBaseSearchCtrl', [
         var codeACSelectHandler = function(event, code) {
             if (code.item) {
                 $scope.reservationData.searchPromoCode = code.item.label;
-                $scope.reservationData.promotionId = code.item.id;
                 $scope.searchPromoCode = code.item.label;
             }
             if (code.item.type === "PROMO") {
                 $scope.reservationData.code = code.item;
+                $scope.reservationData.searchPromoCode = code.item.label;
+                $scope.reservationData.promotionId = code.item.id;
             } else if (code.item.type === "GROUP") {
                 $scope.reservationData.group = {
                     id: code.item.id,

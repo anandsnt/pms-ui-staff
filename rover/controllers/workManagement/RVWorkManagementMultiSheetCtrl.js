@@ -599,7 +599,7 @@ angular.module('sntRover').controller('RVWorkManagementMultiSheetCtrl', ['$rootS
 				var i;
 
 				for (i = $scope.multiSheetState.selectedEmployees.length - 1; i >= 0; i--) {
-					$scope.$parent.myScroll[ 'assignedRoomList-' + i ].scrollTo(0, 0);
+					$scope.$parent.myScroll[ 'assignedRoomList-' + $scope.multiSheetState.selectedEmployees[i].id ].scrollTo(0, 0);
 				}
 
 				// add the orientation
@@ -658,29 +658,21 @@ angular.module('sntRover').controller('RVWorkManagementMultiSheetCtrl', ['$rootS
 			$scope.setScroller("multiSelectPrintPopup", commonScrollerOptions);
 			$scope.setScroller("worksheetHorizontal", horizontal);
 
-			var addVerScroller = function(index, length, scrollObj) {
-				var nextIndex = index + 1;
-
-				$scope.setScroller('assignedRoomList-' + index, scrollObj);
-
-				if ( nextIndex < length ) {
-					addVerScroller(nextIndex, length, scrollObj);
-				}
+			var addVerScroller = function(index, employees, scrollObj) {
+                // CICO-46772
+                for (var i = 0; i < employees.length; i++) {
+                    $scope.setScroller('assignedRoomList-' + employees[i].id, scrollObj);
+                }
 			};
-			/**/
 
-			addVerScroller(0, $scope.multiSheetState.selectedEmployees.length, vertical);
-			/**/
-			// for (var i = $scope.multiSheetState.selectedEmployees.length - 1; i >= 0; i--) {
-			// 	$scope.setScroller('assignedRoomList-'+i, vertical);
-			// };
+			addVerScroller(0, $scope.employeeList, vertical);
 		};
 
 		var refreshScrollers = function() {
 			$scope.refreshScroller('unAssignedRoomList');
 			$scope.refreshScroller('worksheetHorizontal');
-			for (var list = 0; list < $scope.multiSheetState.selectedEmployees.length; list++) {
-				$scope.refreshScroller('assignedRoomList-' + list);
+			for (var i = 0; i < $scope.employeeList.length; i++) {
+				$scope.refreshScroller('assignedRoomList-' + $scope.employeeList[i].id);
 			}
 		};
 
@@ -1655,6 +1647,7 @@ angular.module('sntRover').controller('RVWorkManagementMultiSheetCtrl', ['$rootS
 
             var onAutoAssignSuccess = function(data) {
                     processDataAfterAutoAssign(data);
+                    refreshView();
                 },
                 onAutoAssignFailure = function (error) {
                     $scope.errorMessage = error;
