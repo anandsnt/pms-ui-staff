@@ -18,6 +18,7 @@ sntRover.controller('RVbillCardController',
 	'rvPermissionSrv',
 	'jsMappings',
 	'$q',
+	'sntActivity',
 	'RVReservationStateService',
 	function($scope, $rootScope,
 			$state, $stateParams,
@@ -30,7 +31,7 @@ sntRover.controller('RVbillCardController',
 			$sce,
 
 			RVKeyPopupSrv, RVPaymentSrv,
-			RVSearchSrv, rvPermissionSrv, jsMappings, $q, RVReservationStateService) {
+			RVSearchSrv, rvPermissionSrv, jsMappings, $q, sntActivity, RVReservationStateService) {
 
 
 	BaseCtrl.call(this, $scope);
@@ -98,7 +99,13 @@ sntRover.controller('RVbillCardController',
 	// CICO-6089 : Flag for Guest Bill: Check out without Settlement
 	$scope.isCheckoutWithoutSettlement = false;
 
-
+	$rootScope.$on('arAccountCreated', function() {
+		 $timeout(function() {
+		 	$scope.showAdvancedBillDialog();
+		 	$scope.$emit("hideLoader");
+		 }, 1000);
+		 
+	});
 	// set up flags for checkbox actions
 	$scope.hasMoveToOtherBillPermission = function() {
         return ($rootScope.isStandAlone && rvPermissionSrv.getPermissionValue ('MOVE_CHARGES_RESERVATION_ACCOUNT'));
@@ -1843,17 +1850,17 @@ sntRover.controller('RVbillCardController',
     };
 	// To handle success callback of complete checkout
 	$scope.completeCheckoutSuccessCallback = function(response) {
-		$scope.$emit('hideLoader');
+		
 		$scope.showSuccessPopup(response);
 		$timeout(function() {
 			// slight delay on-success so user doesnt re-click review & checkout again and initiate an error
 			// CICO-45029
-			$scope.checkoutInProgress = false;
+			$scope.checkoutInProgress = false;			
 		}, 500);
 	};
 	// To handle failure callback of complete checkout
 	$scope.completeCheckoutFailureCallback = function(data) {
-		$scope.$emit('hideLoader');
+		sntActivity.stop('COMPLETE_CHECKOUT');
 		$scope.errorMessage = data;
 		$scope.checkoutInProgress = false;
 	};
@@ -1938,7 +1945,8 @@ sntRover.controller('RVbillCardController',
 				"signature": signatureBase64Data,
 				"allow_checkout_without_settlement": true
 			};
-
+			
+			sntActivity.start('COMPLETE_CHECKOUT');
 			$scope.invokeApi(RVBillCardSrv.completeCheckout, data, $scope.completeCheckoutSuccessCallback, $scope.completeCheckoutFailureCallback);
 		}
 		else if ($rootScope.isStandAlone && finalBillBalance !== "0.00" && paymentType === "DB"  && !$scope.performCompleteCheckoutAction  && !reservationBillData.bills[$scope.currentActiveBill].is_allow_direct_debit ) {
@@ -1994,6 +2002,7 @@ sntRover.controller('RVbillCardController',
 				"signature": signatureBase64Data
 			};
 
+			sntActivity.start('COMPLETE_CHECKOUT');
 			$scope.invokeApi(RVBillCardSrv.completeCheckout, data, $scope.completeCheckoutSuccessCallback, $scope.completeCheckoutFailureCallback);
 		}
 	};
@@ -2130,6 +2139,7 @@ sntRover.controller('RVbillCardController',
             	$state.go('rover.search', stateParams);
 			}
 		};
+		sntActivity.stop('COMPLETE_CHECKOUT');
 		ngDialog.open({
     		template: '/assets/partials/validateCheckin/rvShowValidation.html',
     		controller: 'RVShowValidationErrorCtrl',
@@ -2522,7 +2532,7 @@ sntRover.controller('RVbillCardController',
 		    	if ( sntapp.cordovaLoaded ) {
 		    		cordova.exec(function(success) {}, function(error) {}, 'RVCardPlugin', 'printWebView', []);
 		    	}
-		    }, 200);
+		    }, 500);
 
 		    /*
 		    *	======[ PRINTING COMPLETE. JS EXECUTION WILL UNPAUSE ]======
@@ -2535,7 +2545,7 @@ sntRover.controller('RVbillCardController',
 				$("header .h2").addClass('text-hide');
 				// remove the orientation after similar delay
 		    	removePrintOrientation();
-		    }, 200);
+		    }, 500);
 
 		};
 

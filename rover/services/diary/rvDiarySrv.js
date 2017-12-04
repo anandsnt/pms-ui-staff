@@ -592,6 +592,8 @@ angular.module('sntRover').service('rvDiarySrv', ['$q', 'RVBaseWebSrv', 'rvBaseW
                         var start_date = time.toStartDate();
                         var end_date = time.x_p;
 
+                        // CICO-43712
+                        start_date.setHours(0, 0, 0);
                         end_date.setHours(0, 0, 0);
                         $q.all([Maintenance.read(),
                                 RoomType.read(),

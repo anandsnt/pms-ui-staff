@@ -20,7 +20,7 @@
             <!-- remove .hidden when a charge has been selected -->
             <div id="charge-total" class="entry full-width charge-total" ng-show="showCalculationArea">
                 <label>{{'CHARGE_AMOUNT' | translate}} (<span class="currency">{{currencySymbol}}</span>)</label>
-                <input name="charge-amount" class="disabled amount" type="text" disabled="disabled" ng-model="selectedItem.unit_price" value="{{selectedItem.unit_price}}" />
+                <input name="charge-amount" class="amount" type="text" ng-model="selectedItem.unit_price" value="{{selectedItem.unit_price}}" ng-change="changedQuantity()" ng-blur="enteredAmount()"/>
                 <span class="delimeter">x</span>
                 <input name="charge-quantity" ng-model="quantity" class="quantity" type="text" value="1" ng-change="changedQuantity()"/>
                 <span class="total">{{'TOTAL' | translate}}: <strong>{{totalAmount}}</strong></span>
@@ -30,10 +30,15 @@
                 <label for="reference">{{'REFERENCE' | translate}}</label>
                 <input name="reference" id="reference" ng-model="reference" placeholder="Enter Reference" value="" type="text" />
             </div>
-
+            <div class="entry full-width">
+                <label class="checkbox inline" for="add-in-guest-card" ng-class="{'checked': show_reference_on_guest_invoice}">
+                    <span class="icon-form icon-checkbox" ng-class="{'checked': show_reference_on_guest_invoice}"></span>
+                    <input ng-model="show_reference_on_guest_invoice" id="add-in-guest-card" value="1" type="checkbox" /> {{'SHOW_REFERENCE_ON_GUEST_INVOICE' | translate}}
+                </label>
+            </div>
              
             <div class="actions">
-                <button type="button" class="button green" ng-click="postCharge()">{{'CHARGE_AMOUNT' | translate}}</button>
+                <button type="button" class="button green" ng-click="postCharge()">{{'POST' | translate}}</button>
                 <button type="button" class="button blank" ng-click="closeDialog()">{{'CANCEL' | translate}}</button> 
             </div>
 

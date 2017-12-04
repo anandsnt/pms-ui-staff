@@ -1570,7 +1570,7 @@ sntRover.controller('reservationDetailsController',
 
  		var guest = getUserPassportInfo(responseData, guest_id);
  		if (guest !== null) {
-	     	$scope.guestIdData = guestData;
+	     	$scope.guestIdData = angular.copy(guestData);
 	     	$scope.guestIdData.isPrimaryGuest = isPrimaryGuest;
 
 	     	// Set data FROM GuestID (ie. passport)

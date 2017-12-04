@@ -650,7 +650,7 @@ sntRover.controller('rvAllotmentRoomBlockCtrl', [
 
 			// $scope.allotmentConfigData.roomblock.selected_room_types_and_bookings = util.deepCopy($scope.copy_selected_room_types_and_bookings);
 			// put back the original data, not using deep copy since its bad :(
-			// this can be improved further if we can know which fields have been changed 
+			// this can be improved further if we can know which fields have been changed
 			_.each($scope.allotmentConfigData.roomblock.selected_room_types_and_bookings, function(eachRoomType) {
 				_.each(eachRoomType.dates, function(dateData) {
 					dateData['double']          = dateData['old_double'];
@@ -1174,7 +1174,7 @@ sntRover.controller('rvAllotmentRoomBlockCtrl', [
 		};
 
 		/*
-		 * Open popup to inform if inhouse reservations exists. 
+		 * Open popup to inform if inhouse reservations exists.
 		 */
 		var openInhouseReservationsExistsPopup = function () {
 			ngDialog.open({
@@ -1256,7 +1256,7 @@ sntRover.controller('rvAllotmentRoomBlockCtrl', [
 					_.each(eachRoomType.dates, function(dateData) {
 						// CICO-43700
 						var formattedDate = new tzIndependentDate(dateData.date);
-						
+
 						dateData.isModifiable = formattedDate >= businessDate;
 						// we need indivual room type total bookings of each date initially,
 						// we are using this for overbooking calculation
@@ -1301,7 +1301,7 @@ sntRover.controller('rvAllotmentRoomBlockCtrl', [
 				// we changed data, so
 				refreshScroller();
 				$scope.$emit("hideLoader");
-					
+
 				var ROOM_BLOCK_SCROLL 	= "room_block_scroller",
 					TIMELINE_SCROLL 	= "room_rates_timeline_scroller",
 					RATE_GRID_SCROLL 	= "room_rates_grid_scroller";
@@ -1817,5 +1817,10 @@ sntRover.controller('rvAllotmentRoomBlockCtrl', [
 			// accoridion
 			setUpAccordion();
 		};
+
+        // Update error message from popup
+        $scope.$on("UPDATE_ERR_MSG", function(event, error) {
+            $scope.errorMessage = error;
+        });
 	}
 ]);

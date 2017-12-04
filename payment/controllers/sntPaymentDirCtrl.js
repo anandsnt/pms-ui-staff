@@ -21,7 +21,7 @@ angular.module('sntPay').controller('sntPaymentController',
 
             // ---------------------------------------------------------------------------------------------------------
             $scope.payment = {
-                referenceText: '',
+                referenceText: $scope.referenceText,
                 amount: 0,
                 isRateSuppressed: false,
                 isEditable: false,
@@ -74,6 +74,11 @@ angular.module('sntPay').controller('sntPaymentController',
                     'reservation_id': $scope.reservationId,
                     'bill_id': $scope.billId
                 };
+
+                // We need extra parameter parent ar id during AR refund
+                if ($scope.actionType === 'AR_REFUND_PAYMENT') {
+                    params.postData.parent_ar_id = $scope.arTransactionId;
+                }
 
                 if ($scope.payment.showAddToGuestCard) {
                     // check if add to guest card was selected
@@ -449,6 +454,8 @@ angular.module('sntPay').controller('sntPaymentController',
                         if ($scope.allotmentId) {
                             params['allotment_id'] = $scope.allotmentId;
                         }
+
+                        params['add_to_guest_card'] = $scope.payment.addToGuestCardSelected;
                     }
 
                     $scope.$broadcast('INITIATE_CHIP_AND_PIN_TOKENIZATION', params);
@@ -888,8 +895,12 @@ angular.module('sntPay').controller('sntPaymentController',
             $scope.onPaymentInfoChange = function (isReset) {
                 // NOTE: Fees information is to be calculated only for standalone systems
                 // TODO: See how to handle fee in case of C&P
+                // CICO-44719: No need to show add payment screen
+                if ($scope.actionType === 'AR_REFUND_PAYMENT') {
+                    return false;
+                }
 
-                var selectedPaymentType;
+                var selectedPaymentType;    
 
                 if (isReset && $scope.payment.isEditable && $scope.selectedPaymentType === 'GIFT_CARD') {
                     $scope.payment.amount = 0;
@@ -907,9 +918,8 @@ angular.module('sntPay').controller('sntPaymentController',
                     $scope.splitBillEnabled = false;
                     $scope.payment.amount = initialPaymentAmount;
                     calculateFee();
-                }
-                else {
-                    $scope.payment.isEditable = true;
+                } else {
+                    $scope.payment.isEditable = $scope.isEditable === undefined || Boolean($scope.isEditable);
                 }
 
                 // If the changed payment type is CC and payment gateway is MLI show CC addition options
@@ -1261,6 +1271,7 @@ angular.module('sntPay').controller('sntPaymentController',
                 //  NOTE: The feePaid key and value would be sent IFF a fee was applied along with the payment
                 if ($scope.feeData) {
                     response.feePaid = $scope.feeData.calculatedFee;
+                    response.showFee = $scope.feeData.showFee;
                 }
 
                 if ($scope.selectedPaymentType === 'CC') {
@@ -1296,7 +1307,7 @@ angular.module('sntPay').controller('sntPaymentController',
                 return (isMLIEMV || $scope.hotelConfig.paymentGateway === 'sixpayments') &&
                     $scope.selectedPaymentType === 'CC' &&
                     $scope.payment.screenMode === 'PAYMENT_MODE' &&
-                    isPendingPayment;
+                    isPendingPayment && $scope.actionType !== 'AR_REFUND_PAYMENT';
             };
 
             /** **************** init ***********************************************/
@@ -1415,6 +1426,8 @@ angular.module('sntPay').controller('sntPaymentController',
 
                 isEMVEnabled = config.paymentGateway === 'sixpayments' ||
                     (config.paymentGateway === 'MLI' && config.isEMVEnabled);
+
+                $scope.showSelectedCard();
 
             })();
 

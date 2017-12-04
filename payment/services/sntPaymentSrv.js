@@ -264,7 +264,7 @@ if (status === 406) { // 406- Network error
                     // TODO: comment the assignment below before commits and pushes.
                     // NOTE:This sample json helps to mock the response
                     // For further info : https://stayntouch.atlassian.net/wiki/display/ROV/SIXPayment+Service+Design+Document
-                    // var async_callback_url = '/sample_json/payment/get_six_pay_token.json';
+                    // async_callback_url = '/sample_json/payment/get_six_pay_token.json';
 
                     $http.get(async_callback_url).then(function(response) {
                         var data = response.data,

@@ -14,7 +14,8 @@ sntRover.controller('RvArInvoiceAdjustController',
       var init = function() {
 
         var successCallBackOfGetInfo = function(data) {
-          $scope.adjustData = data;
+          $scope.adjustData = data.charge_details[0];
+          $scope.show_reference_on_guest_invoice = data.charge_details[0].is_reference_text_shown;
         };
 
         var paramsToService = {},
@@ -22,7 +23,7 @@ sntRover.controller('RvArInvoiceAdjustController',
 
         requestParams.is_group_by_ref = $scope.selectedTransaction.is_group_by_ref;
         requestParams.reference_number = $scope.selectedTransaction.reference_number;
-        requestParams.bill_id = $scope.selectedInvoice.bill_id;
+        requestParams.bill_id = ($scope.selectedInvoice.is_manual_balance) ? $scope.selectedTransaction.bill_id : $scope.selectedInvoice.bill_id;
         if (!$scope.selectedInvoice.is_manual_balance) {
           requestParams.financial_transaction_id = $scope.selectedTransaction.id;
         }            
@@ -40,17 +41,28 @@ sntRover.controller('RvArInvoiceAdjustController',
 
         $scope.callAPI( rvAccountsArTransactionsSrv.getAdjustmentInfo, options );
       };
+      
+      /*
+       * amount to decimal
+       */
+      $scope.enteredAmount = function() {
+          $scope.new_amount = parseFloat($scope.new_amount).toFixed(2);
+      };
 
       /*
        * Adjust AR invoice
        */
       $scope.clickedAdjust = function() {
         var postData = { 
-          new_amount: $scope.new_amount,          
-          reference_text: $scope.reference,
+          new_amount: $scope.adjustData.amount,          
+          reference_text: $scope.adjustData.reference_text,
           show_ref_on_invoice: $scope.show_reference_on_guest_invoice,
-          is_manual_balance: $scope.selectedInvoice.is_manual_balance
+          is_manual_balance: $scope.selectedInvoice.is_manual_balance          
         };
+
+        if ($scope.selectedTransaction.is_adjustment) {
+          postData.change_reference_only = $scope.selectedTransaction.is_adjustment;
+        }
 
         if (!$scope.selectedTransaction.is_group_by_ref) {
           if ($scope.selectedInvoice.is_manual_balance) {

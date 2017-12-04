@@ -9,7 +9,7 @@ admin.controller('ADCheckoutCtrl', ['$scope', '$rootScope', 'adCheckoutSrv', '$s
     * To fetch checkin details
     */
     $rootScope.previousState = 'admin.dashboard';
-    $rootScope.previousStateParam = '1';
+    $rootScope.previousStateParam = ($scope.isChainAdminMenuPresent && $scope.isChainAdminMenuPresent.length === 0) ? '1' : '2';
 
     $scope.init = function() {
     	$scope.checkoutData = {};
@@ -122,7 +122,7 @@ admin.controller('ADCheckoutCtrl', ['$scope', '$rootScope', 'adCheckoutSrv', '$s
             $scope.checkoutData.alternate_weekends_checkout_email_alert_time_minute = $scope.checkoutData.alternate_weekends_checkout_email_alert_time_minute === null ? "MM" : $scope.checkoutData.alternate_weekends_checkout_email_alert_time_minute;
 
             $scope.is_send_checkout_staff_alert_flag = ($scope.checkoutData.is_send_checkout_staff_alert === 'true') ? true : false;
-            $scope.enable_offline_checkout = ($scope.checkoutData.enable_offline_checkout === 'true') ? true : false;    
+            $scope.enable_offline_cico = $scope.checkoutData.enable_offline_cico === 'true';    
             $scope.is_send_zest_checkout_alert_flag = ($scope.checkoutData.is_send_zest_checkout_alert === 'true') ? true : false;
 			$scope.require_cc_for_checkout_email_flag = ($scope.checkoutData.require_cc_for_checkout_email === 'true') ? true : false;
 			$scope.include_cash_reservationsy_flag = ($scope.checkoutData.include_cash_reservations === 'true') ? true : false;
@@ -170,7 +170,7 @@ admin.controller('ADCheckoutCtrl', ['$scope', '$rootScope', 'adCheckoutSrv', '$s
     */
 
     $scope.saveCheckout = function() {
-            $scope.checkoutData.enable_offline_checkout = ($scope.enable_offline_checkout) ? 'true' : 'false';
+            $scope.checkoutData.enable_offline_cico = ($scope.enable_offline_cico) ? 'true' : 'false';
     	    $scope.checkoutData.is_send_checkout_staff_alert = ($scope.is_send_checkout_staff_alert_flag) ? 'true' : 'false';
             $scope.checkoutData.is_send_zest_checkout_alert = ($scope.is_send_zest_checkout_alert_flag) ? 'true' : 'false';
 			$scope.checkoutData.require_cc_for_checkout_email = ($scope.require_cc_for_checkout_email_flag) ? 'true' : 'false';

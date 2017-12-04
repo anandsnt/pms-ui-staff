@@ -418,7 +418,7 @@
 					</div>
 				</div>
 
-				<ad-toggle-button is-checked="data.enable_offline_checkout" label="{{'WEB_CHEKOUT_OFFLINE_LABEL' | translate}}" is-hide="!isAdminSnt || data.hotel_pms_type !=='OWS'"></ad-toggle-button>
+				<ad-toggle-button is-checked="data.enable_offline_cico" label="{{'WEB_CICO_OFFLINE_LABEL' | translate}}" is-hide="!isAdminSnt || data.hotel_pms_type !=='OWS'"></ad-toggle-button>
 
 				<div class="entry is-pms-tokenized" ng-if="isAdminSnt && data.hotel_pms_type ==='OWS'">
 					<label>Privacy Check</label>
@@ -641,9 +641,8 @@
 						<span class="switch-icon"></span>
 					</div>
 				</div>
-
-				<div class="entry full-width"
-					 ng-show="data.payment_gateway === 'MLI' && data.mli_emv_enabled && data.hotel_pms_type == ''">
+				<div class="entry full-width" ng-if="data.payment_gateway === 'MLI'"
+                     ng-show="data.payment_gateway === 'MLI' && data.mli_emv_enabled && data.hotel_pms_type == ''">
 					<label for="mli-transaction-access-url"> MLI Transaction Access URL </label>
 					<input type="text" ng-model="data.mli_txn_access_url" value="{{data.mli_txn_access_url}}"
 						   placeholder="https://[Public IP for PosLynx]/thinclient/mobile/api.php"
@@ -699,6 +698,15 @@
 					</label>
 					<input type="text" ng-model="data.six_server_port" value="{{data.six_server_port}}">
 				</div>
+                <div class="entry" ng-if="data.payment_gateway === 'sixpayments'">
+                    <label>
+                        Use Timestamp In Hotel's Timezone
+                    </label>
+                    <div class="switch-button single" ng-class="{ on : data.six_use_hotel_timezone == true}" ng-click="data.six_use_hotel_timezone = !data.six_use_hotel_timezone">
+                        <input type="checkbox" value="{{data.six_use_hotel_timezone}}">
+                        <span class="switch-icon"></span>
+                    </div>
+                </div>
 				<div class="entry" ng-if="data.payment_gateway === 'sixpayments'">
 					<label for="six-server-port">
 						Six Payments Communication Protocol
