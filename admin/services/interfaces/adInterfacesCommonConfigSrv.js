@@ -86,5 +86,17 @@ admin.service('adInterfacesCommonConfigSrv', ['$http', '$q', 'ADBaseWebSrvV2', '
             return deferred.promise;
         };
 
+        service.fetchCountryList = function() {
+            var deferred = $q.defer();
+            var url = '/ui/country_list.json';
+
+            ADBaseWebSrvV2.getJSON(url).then(function(data) {
+                deferred.resolve(data);
+            }, function(data) {
+                deferred.reject(data);
+            });
+            return deferred.promise;
+        };
+
     }
 ]);

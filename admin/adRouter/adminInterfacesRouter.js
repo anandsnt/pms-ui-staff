@@ -603,23 +603,36 @@ angular.module('adminInterfacesRouter', []).config(function($stateProvider) {
 
     $stateProvider.state('admin.tacsSetup', {
         templateUrl: '/assets/partials/interfaces/commissions/adTacsSetup.html',
-        //controller: 'ADTacsSetupCtrl',
+        controller: 'ADTacsSetupCtrl',
         url: '/tacsSetup',
         resolve: {
-            config: ['adInterfacesCommonConfigSrv', function (adInterfacesCommonConfigSrv) {
+            config: ['adInterfacesCommonConfigSrv', function(adInterfacesCommonConfigSrv) {
                 return adInterfacesCommonConfigSrv.fetchConfiguration('openkey');
-            }]
+            }],
+            countryList: ['adInterfacesCommonConfigSrv', function(adInterfacesCommonConfigSrv) {
+                return adInterfacesCommonConfigSrv.fetchCountryList();
+            }],
+            currencyList: ['adInterfacesCommonConfigSrv', function(adInterfacesCommonConfigSrv) {
+                return adInterfacesCommonConfigSrv.fetchCountryList();
+            }],
+
         }
     });
 
     $stateProvider.state('admin.onyxSetup', {
         templateUrl: '/assets/partials/interfaces/commissions/adOnyxSetup.html',
-       // controller: 'ADOnyxSetupCtrl',
+        controller: 'ADOnyxSetupCtrl',
         url: '/onyxSetup',
         resolve: {
-            config: ['adInterfacesCommonConfigSrv', function (adInterfacesCommonConfigSrv) {
+            config: ['adInterfacesCommonConfigSrv', function(adInterfacesCommonConfigSrv) {
                 return adInterfacesCommonConfigSrv.fetchConfiguration('openkey');
-            }]
+            }],
+            countryList: ['adInterfacesCommonConfigSrv', function(adInterfacesCommonConfigSrv) {
+                return adInterfacesCommonConfigSrv.fetchCountryList();
+            }],
+            currencyList: ['adInterfacesCommonConfigSrv', function(adInterfacesCommonConfigSrv) {
+                return adInterfacesCommonConfigSrv.fetchCountryList();
+            }],
         }
     });
 
