@@ -47,6 +47,7 @@
                     </li>
                     <li class="with-filters" click-touch="switchTabTo('ROOM_BLOCK')" ng-class="{'ui-tabs-active' : allotmentConfigData.activeTab == 'ROOM_BLOCK'}" event-shall-pass="true">
                         <a translate>ALLOTMENT_DETAILS</a>
+                        <button type="button" class="button white icons icon-expand" rv-fullscreen fs-sub-header="ALLOTMENT_DETAILS">Fullscreen</button>
                     </li>
                     <li ng-show="shouldShowRoomingListTab()" class="with-filters" click-touch="switchTabTo('RESERVATIONS')" ng-class="{'ui-tabs-active' : allotmentConfigData.activeTab == 'RESERVATIONS'}" event-shall-pass="true">
                         <a translate>ALLOTMENT_RESERVATIONS</a>
