@@ -595,4 +595,32 @@ angular.module('adminInterfacesRouter', []).config(function($stateProvider) {
         url: '/monsciergeSetup'
     });
 
+    $stateProvider.state('admin.commissionsSetup', {
+        templateUrl: '/assets/partials/interfaces/adInterfacesSubMenuList.html',
+        controller: 'ADInterfaceSubMenuCtrl',
+        url: '/commissionsSetup'
+    });
+
+    $stateProvider.state('admin.tacsSetup', {
+        templateUrl: '/assets/partials/interfaces/commissions/adTacsSetup.html',
+        //controller: 'ADTacsSetupCtrl',
+        url: '/tacsSetup',
+        resolve: {
+            config: ['adInterfacesCommonConfigSrv', function (adInterfacesCommonConfigSrv) {
+                return adInterfacesCommonConfigSrv.fetchConfiguration('openkey');
+            }]
+        }
+    });
+
+    $stateProvider.state('admin.onyxSetup', {
+        templateUrl: '/assets/partials/interfaces/commissions/adOnyxSetup.html',
+       // controller: 'ADOnyxSetupCtrl',
+        url: '/onyxSetup',
+        resolve: {
+            config: ['adInterfacesCommonConfigSrv', function (adInterfacesCommonConfigSrv) {
+                return adInterfacesCommonConfigSrv.fetchConfiguration('openkey');
+            }]
+        }
+    });
+
 });
