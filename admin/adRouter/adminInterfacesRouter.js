@@ -614,8 +614,7 @@ angular.module('adminInterfacesRouter', []).config(function($stateProvider) {
             }],
             currencyList: ['adInterfacesCommonConfigSrv', function(adInterfacesCommonConfigSrv) {
                 return adInterfacesCommonConfigSrv.fetchCountryList();
-            }],
-
+            }]
         }
     });
 
@@ -632,7 +631,7 @@ angular.module('adminInterfacesRouter', []).config(function($stateProvider) {
             }],
             currencyList: ['adInterfacesCommonConfigSrv', function(adInterfacesCommonConfigSrv) {
                 return adInterfacesCommonConfigSrv.fetchCountryList();
-            }],
+            }]
         }
     });
 

@@ -15,6 +15,7 @@ admin.controller('ADOnyxSetupCtrl', ['$scope', 'config', 'countryList', 'currenc
 
         (function() {
             $scope.config = config;
+            // rename keys for the select box directive
             _.each(countryList, function(country) {
                 country.name = country.value;
                 country.value = country.id;
