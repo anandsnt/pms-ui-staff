@@ -54,8 +54,14 @@ sntRover.controller('RVCommisionsHeaderCtrl', ['$scope', 'ngDialog', '$log', '$t
 
     $scope.exportCommisions = function() {
 
+        var params = {
+            min_commission_amount: $scope.filterData.minAmount,
+            query: $scope.filterData.searchQuery,
+            sort_by: $scope.filterData.sort_by.value
+        }
+        
         var options = {
-            params: generateParams(),
+            params: params,
             successCallBack: function() {
 				// for now we will only show in progress status and then dismiss the
 				// popup
