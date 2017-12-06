@@ -215,6 +215,7 @@ angular.module('sntRover').service('rvAvailabilitySrv', ['$q', 'rvBaseWebSrvV2',
 
 		// array to keep all data, we will append these to above dictionary after calculation
 		var dates 				= [],
+		overbooking				= [],
 		occupancies  			= [],
 		availableRooms   		= [],
 		bookedRooms  			= [],
@@ -234,6 +235,9 @@ angular.module('sntRover').service('rvAvailabilitySrv', ['$q', 'rvBaseWebSrvV2',
 			var isWeekend = dateToCheck.getDay() === 0 || dateToCheck.getDay() === 6;
 
 			dates.push({'date': item.date, 'isWeekend': isWeekend, 'dateObj': new Date(item.date)});
+
+			// Extracting overbooking details
+			overbooking.push(item.available_rooms);
 
 			// Extracting Occupancy details
 			occupancies.push(item.occupancy.percentage);
@@ -265,6 +269,7 @@ angular.module('sntRover').service('rvAvailabilitySrv', ['$q', 'rvBaseWebSrvV2',
 
 		gridData = {
 			'dates': dates,
+			'overbooking': overbooking,
 			'occupancies': occupancies,
 			'availableRooms': availableRooms,
 			'nonGroupRooms': nonGroupRooms,
@@ -459,7 +464,8 @@ angular.module('sntRover').service('rvAvailabilitySrv', ['$q', 'rvBaseWebSrvV2',
 
 		var dataForWebservice = {
 			from_date: firstDate,
-			to_date: secondDate
+			to_date: secondDate,
+			is_include_overbooking: params.is_include_overbooking
 		};
 
 		// Webservice calling section

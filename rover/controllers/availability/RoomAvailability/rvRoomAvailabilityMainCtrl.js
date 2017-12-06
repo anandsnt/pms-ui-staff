@@ -37,7 +37,7 @@ angular.module('sntRover').controller('roomAvailabilityMainController', [
 	// default date value
 	$scope.data.selectedDate = $rootScope.businessDate;
 	$scope.data.formattedSelectedDate = $filter('date')($scope.data.selectedDate, $rootScope.dateFormat);
-
+	$scope.data.isIncludeOverbooking = false;
 
 	// To popup contract start date
 	$scope.clickedOnDatePicker = function() {
@@ -85,7 +85,8 @@ angular.module('sntRover').controller('roomAvailabilityMainController', [
 		dateAfter.setDate (dateAfter.getDate() + parseInt($scope.numberOfDaysSelected) - 1);
 		var dataForWebservice = {
 			'from_date': $filter('date')(tzIndependentDate ($scope.data.selectedDate), $rootScope.dateFormatForAPI),
-			'to_date': $filter('date')(tzIndependentDate (dateAfter), $rootScope.dateFormatForAPI)
+			'to_date': $filter('date')(tzIndependentDate (dateAfter), $rootScope.dateFormatForAPI),
+			'is_include_overbooking': $scope.data.isIncludeOverbooking
 		};
 
 		return dataForWebservice;
@@ -156,6 +157,12 @@ angular.module('sntRover').controller('roomAvailabilityMainController', [
 			$scope.invokeApi(rvAvailabilitySrv.fetchAvailabilityDetails, $scope.getDateParams(), successCallbackOfAvailabilityFetch, fetchApiFailed);
 		}, 0);
 
+	};
+	// Handle include overbooking button click
+	$scope.clickedIncludeOverbooking = function() {
+		$scope.data.isIncludeOverbooking = !$scope.data.isIncludeOverbooking;
+		$scope.$broadcast('INCLUDE_OVERBOOKING', $scope.data.isIncludeOverbooking);
+		$scope.changedAvailabilityDataParams();
 	};
 
 	$scope.changedAvailabilityDataParams();
