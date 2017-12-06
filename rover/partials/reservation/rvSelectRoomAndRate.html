@@ -55,6 +55,7 @@
         <!-- When all booked -->
         <!-- <button type="button" class="button green">Done</button>-->
     </div>
+    <div ng-include="'/assets/partials/common/notification_message.html'"></div>
     <div ng-if="stateCheck.activeMode=='ROOM_RATE'" ng-include src="'/assets/partials/reservation/rvRoomRatesList.html'"></div>
     <!-- <div ng-if="stateCheck.activeMode=='CALENDAR'" ng-include src="'assets/partials/reservation/rvStayDatesCalendar.html'"></div> -->
     <div ng-if="stateCheck.activeMode=='CALENDAR'" ng-include src="'/assets/partials/reservation/rvRoomRatesCalendar.html'"></div>
