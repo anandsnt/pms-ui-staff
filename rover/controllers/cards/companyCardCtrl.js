@@ -1,8 +1,9 @@
-angular.module('sntRover').controller('RVCompanyCardCtrl', ['$scope', '$rootScope', 'RVCompanyCardSrv', '$timeout', 'ngDialog', '$filter', '$stateParams',
-	function($scope, $rootScope, RVCompanyCardSrv, $timeout, ngDialog, $filter, $stateParams) {
+angular.module('sntRover').controller('RVCompanyCardCtrl', ['$scope', '$rootScope', 'RVCompanyCardSrv', '$timeout', 'ngDialog', '$filter', '$stateParams', 'rvPermissionSrv',
+	function($scope, $rootScope, RVCompanyCardSrv, $timeout, ngDialog, $filter, $stateParams, rvPermissionSrv) {
 		$scope.searchMode = true;
 		$scope.account_type = 'COMPANY';
 		$scope.currentSelectedTab = 'cc-contact-info';
+		$scope.isGlobalToggleReadOnly = !rvPermissionSrv.getPermissionValue ('GLOBAL_CARD_UPDATE');
 
 		// initialize company search fields
 		$scope.companySearchIntiated = false;
@@ -177,6 +178,32 @@ angular.module('sntRover').controller('RVCompanyCardCtrl', ['$scope', '$rootScop
 			$scope.searchMode = false;
 			$scope.$emit('hideLoader');
 		});
+		/*
+		 * Toggle global button
+		 */
+		$scope.toggleGlobalButton = function() {
+			if (rvPermissionSrv.getPermissionValue ('GLOBAL_CARD_UPDATE')) {
+				$scope.contactInformation.is_global_enabled = !$scope.contactInformation.is_global_enabled;
+			}
+
+		};
+		/*
+		 * Check - update enabled or not
+		 */
+		$scope.isUpdateEnabled = function() {
+			var isDisabledFields = false;
+			
+			if ($scope.contactInformation.is_global_enabled) {
+				if (!rvPermissionSrv.getPermissionValue ('GLOBAL_CARD_UPDATE')) {
+					isDisabledFields = true;
+				}
+			} else {
+				if (!rvPermissionSrv.getPermissionValue ('EDIT_COMPANY_CARD')) {
+					isDisabledFields = true;
+				}
+			}
+			return isDisabledFields;
+		};
 
 		/**
 		 * function to handle click operation on company card, mainly used for saving
@@ -311,6 +338,14 @@ angular.module('sntRover').controller('RVCompanyCardCtrl', ['$scope', '$rootScop
 			}
 		};
 
+		/**
+		* function to check whether the user has permission
+		* to create/edit AR Account.
+		* @return {Boolean}
+		*/
+		$scope.hasPermissionToCreateArAccount = function() {
+			return rvPermissionSrv.getPermissionValue ('CREATE_AR_ACCOUNT');
+		};
 	}
 ]);
 

@@ -14,7 +14,7 @@
 			</header>
 			<section class="content-scroll">
 				<div ng-include="'/assets/partials/common/notification_message.html'"></div>
-				<table class="grid datatable table" template-pagination="nil" ng-table="tableParams">
+				<table class="grid datatable table hotel-list-scroll" template-pagination="nil" ng-table="tableParams" >
 					<tbody>
 						<tr data-hotel-id="{{hotel.id}}" ng-repeat="hotel in $data">
 							<td data-title="'Hotel'" sortable="'hotel_name'" header-class="width-40">
@@ -35,6 +35,8 @@
 									</div>
 								</div>
 							</td>
+							<td data-title="'Hotel Status'" sortable="'status'" header-class="width-20" ng-bind-html="escapeNull(hotel.status)| highlightWords:searchWords" ></td>
+							<td data-title="'Client Success Manager'" sortable="'client_success_manager'" header-class="width-20" ng-bind-html="escapeNull(hotel.client_success_manager)| highlightWords:searchWords" ></td>
 						</tr>
 					</tbody>
 				</table>

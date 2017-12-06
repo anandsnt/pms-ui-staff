@@ -176,7 +176,8 @@ angular.module('sntRover').controller('reservationRoomStatus',
                                      scope: $scope
                             });
                     };
-
+                    
+                    // why is success always assumed, and failure not handled? no possibility of failure?
                     $scope.invokeApi(RVKeyPopupSrv.fetchKeyQRCodeData, { "reservationId": reservationId }, successCallback);
 		}
 
@@ -191,15 +192,22 @@ angular.module('sntRover').controller('reservationRoomStatus',
         };
 
         $scope.duplicateKeyInit = function() {
+            $scope.$emit('showLoader');
             $scope.keyType = 'Duplicate';
-            $scope.keyInitPopup();
-            $rootScope.$broadcast('MAKE_KEY_TYPE', {type: 'Duplicate'});
+            // add minor delay so user can see the interaction was success, pending api response
+            $timeout(function() {
+                $scope.keyInitPopup();
+            }, 150);
         };
 
         $scope.newKeyInit = function() {
+            $scope.$emit('showLoader');
             $scope.keyType = 'New';
-            $scope.keyInitPopup();
-            $rootScope.$broadcast('MAKE_KEY_TYPE', {type: 'New'});
+            // add minor delay so user can see the interaction was success, pending api response
+            $timeout(function() {
+                $scope.keyInitPopup();
+            }, 150);
+            
         };
 
 	var openKeyEncodePopup = function() {
@@ -207,8 +215,17 @@ angular.module('sntRover').controller('reservationRoomStatus',
 		    template: '/assets/partials/keys/rvKeyEncodePopup.html',
 		    controller: 'RVKeyEncodePopupCtrl',
 		    className: '',
-		    scope: $scope
+		    scope: $scope,
+            closeByDocument: false
 		});
+        
+        $timeout(function() {
+            if ($scope.keyType === 'New') {
+                $rootScope.$broadcast('MAKE_KEY_TYPE', {type: 'New'});
+            } else {
+                $rootScope.$broadcast('MAKE_KEY_TYPE', {type: 'Duplicate'});
+            }
+        }, 0);
 	};
 
 	// Fetch encoder types for if remote encoding enabled

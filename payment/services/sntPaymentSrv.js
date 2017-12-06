@@ -1,7 +1,8 @@
 angular.module('sntPay').service('sntPaymentSrv', ['$q', '$http', '$location', 'PAYMENT_CONFIG', '$log', '$timeout', 'sntAuthorizationSrv',
     function($q, $http, $location, PAYMENT_CONFIG, $log, $timeout, sntAuthorizationSrv) {
         var service = this,
-            state = {};
+            state = {},
+            TERMINAL_POLLING_INTERVAL_MS = 3000;
 
         service.set = function(key, status) {
             state[key] = status;
@@ -196,7 +197,7 @@ if (status === 406) { // 406- Network error
                             $timeout(function() {
                                 $log.info("POLLING::-> for emv terminal response");
                                 pollToTerminal(async_callback_url);
-                            }, 5000);
+                            }, TERMINAL_POLLING_INTERVAL_MS);
                         } else {
                             clearInterval(refreshIntervalId);
                             deferred.resolve(data);
@@ -263,7 +264,7 @@ if (status === 406) { // 406- Network error
                     // TODO: comment the assignment below before commits and pushes.
                     // NOTE:This sample json helps to mock the response
                     // For further info : https://stayntouch.atlassian.net/wiki/display/ROV/SIXPayment+Service+Design+Document
-                    // var async_callback_url = '/sample_json/payment/get_six_pay_token.json';
+                    // async_callback_url = '/sample_json/payment/get_six_pay_token.json';
 
                     $http.get(async_callback_url).then(function(response) {
                         var data = response.data,
@@ -274,7 +275,7 @@ if (status === 406) { // 406- Network error
                             $timeout(function() {
                                 $log.info("POLLING::-> for emv terminal response");
                                 pollToTerminal(async_callback_url);
-                            }, 5000);
+                            }, TERMINAL_POLLING_INTERVAL_MS);
                         } else {
                             clearInterval(refreshIntervalId);
                             deferred.resolve(data);

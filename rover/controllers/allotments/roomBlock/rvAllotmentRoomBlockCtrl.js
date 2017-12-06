@@ -262,7 +262,7 @@ sntRover.controller('rvAllotmentRoomBlockCtrl', [
 		 * @return {Boolean}
 		 */
 		$scope.shouldDisableSingleEntryBox = function(dateData, roomType) {
-			return (!roomType.can_edit || !!$scope.allotmentConfigData.summary.is_cancelled);
+			return (!roomType.can_edit || !!$scope.allotmentConfigData.summary.is_cancelled || !dateData.isModifiable);
 		};
 
 		/**
@@ -272,7 +272,7 @@ sntRover.controller('rvAllotmentRoomBlockCtrl', [
 		 * @return {Boolean}
 		 */
 		$scope.shouldDisableDoubleEntryBox = function(dateData, roomType) {
-			return (!roomType.can_edit || !!$scope.allotmentConfigData.summary.is_cancelled);
+			return (!roomType.can_edit || !!$scope.allotmentConfigData.summary.is_cancelled || !dateData.isModifiable);
 		};
 
 		/**
@@ -282,7 +282,7 @@ sntRover.controller('rvAllotmentRoomBlockCtrl', [
 		 * @return {Boolean}
 		 */
 		$scope.shouldDisableTripleEntryBox = function(dateData, roomType) {
-			return (!roomType.can_edit || !!$scope.allotmentConfigData.summary.is_cancelled);
+			return (!roomType.can_edit || !!$scope.allotmentConfigData.summary.is_cancelled || !dateData.isModifiable);
 		};
 
 		/**
@@ -292,7 +292,7 @@ sntRover.controller('rvAllotmentRoomBlockCtrl', [
 		 * @return {Boolean}
 		 */
 		$scope.shouldDisableQuadrupleEntryBox = function(dateData, roomType) {
-			return (!roomType.can_edit || !!$scope.allotmentConfigData.summary.is_cancelled);
+			return (!roomType.can_edit || !!$scope.allotmentConfigData.summary.is_cancelled || !dateData.isModifiable);
 		};
 
 		/**
@@ -650,7 +650,7 @@ sntRover.controller('rvAllotmentRoomBlockCtrl', [
 
 			// $scope.allotmentConfigData.roomblock.selected_room_types_and_bookings = util.deepCopy($scope.copy_selected_room_types_and_bookings);
 			// put back the original data, not using deep copy since its bad :(
-			// this can be improved further if we can know which fields have been changed 
+			// this can be improved further if we can know which fields have been changed
 			_.each($scope.allotmentConfigData.roomblock.selected_room_types_and_bookings, function(eachRoomType) {
 				_.each(eachRoomType.dates, function(dateData) {
 					dateData['double']          = dateData['old_double'];
@@ -1174,7 +1174,7 @@ sntRover.controller('rvAllotmentRoomBlockCtrl', [
 		};
 
 		/*
-		 * Open popup to inform if inhouse reservations exists. 
+		 * Open popup to inform if inhouse reservations exists.
 		 */
 		var openInhouseReservationsExistsPopup = function () {
 			ngDialog.open({
@@ -1244,7 +1244,8 @@ sntRover.controller('rvAllotmentRoomBlockCtrl', [
 		var successCallBackOfFetchRoomBlockGridDetails = function(data) {
 			$scope.$emit("showLoader");
 			$timeout(function() {
-				var roomBlockData = $scope.allotmentConfigData.roomblock;
+				var roomBlockData = $scope.allotmentConfigData.roomblock,
+					businessDate = new tzIndependentDate($rootScope.businessDate);
 
 				// We have resetted the data.
 				$scope.hasBookingDataChanged = false;
@@ -1253,7 +1254,10 @@ sntRover.controller('rvAllotmentRoomBlockCtrl', [
 					eachRoomType.copy_values_to_all = false;
 					eachRoomType.start_date = formatDateForAPI($scope.timeLineStartDate);
 					_.each(eachRoomType.dates, function(dateData) {
+						// CICO-43700
+						var formattedDate = new tzIndependentDate(dateData.date);
 
+						dateData.isModifiable = formattedDate >= businessDate;
 						// we need indivual room type total bookings of each date initially,
 						// we are using this for overbooking calculation
 						dateData.old_total = $scope.getTotalHeldOfIndividualRoomType(dateData);
@@ -1297,6 +1301,20 @@ sntRover.controller('rvAllotmentRoomBlockCtrl', [
 				// we changed data, so
 				refreshScroller();
 				$scope.$emit("hideLoader");
+
+				var ROOM_BLOCK_SCROLL 	= "room_block_scroller",
+					TIMELINE_SCROLL 	= "room_rates_timeline_scroller",
+					RATE_GRID_SCROLL 	= "room_rates_grid_scroller";
+
+				var timeline = getScrollerObject(TIMELINE_SCROLL),
+					rategrid = getScrollerObject(RATE_GRID_SCROLL),
+					roomblock = getScrollerObject(ROOM_BLOCK_SCROLL);
+
+				timeline.scrollTo(9999, 0);
+				rategrid.scrollTo(9999, 0);
+				roomblock.scrollTo(9999, 0);
+
+				runDigestCycle();
 			}, 0);
 		};
 
@@ -1609,7 +1627,8 @@ sntRover.controller('rvAllotmentRoomBlockCtrl', [
 			var commonScrollerOptions = {
 				tap: true,
 				preventDefault: false,
-				probeType: 3
+				probeType: 3,
+				mouseWheel: true				
 			};
 			var scrollerOptionsForRoomRatesTimeline = _.extend({
 				scrollX: true,
@@ -1626,9 +1645,25 @@ sntRover.controller('rvAllotmentRoomBlockCtrl', [
 			$scope.setScroller(TIMELINE_SCROLL, scrollerOptionsForRoomRatesTimeline);
 			$scope.setScroller(RATE_GRID_SCROLL, scrollerOptionsForRoomRatesGrid);
 
+			// CICO-45501 - Disable the scrolling when the focus is on input
+			// This is to solve the issue which happens when we enter values on the input box towards the end of the screen for release grid
+			$("#allotment-room-block-content input").on('focus', function (event) {
+				getScrollerObject (TIMELINE_SCROLL).disable();
+			});
+
+			// CICO-45501
+			$("#allotment-room-block-content").on('scroll', function (event) {
+				var horizontalScroll = event.currentTarget.scrollLeft;
+
+				if (horizontalScroll > 0) {
+					$(this).scrollLeft(0);
+				}				
+			});	
+			
+
 			$timeout(function() {
 				getScrollerObject (TIMELINE_SCROLL)
-					.on('scroll', function() {
+					.on('scroll', function() {						
 						var xPos = this.x;
 						var block = getScrollerObject (RATE_GRID_SCROLL);
 
@@ -1646,9 +1681,9 @@ sntRover.controller('rvAllotmentRoomBlockCtrl', [
 									runDigestCycle();
 							}
 						}
-					});
+					});				
 				getScrollerObject (ROOM_BLOCK_SCROLL)
-					.on('scroll', function() {
+					.on('scroll', function() {						
 						var yPos = this.y;
 						var block = getScrollerObject (RATE_GRID_SCROLL);
 
@@ -1799,5 +1834,10 @@ sntRover.controller('rvAllotmentRoomBlockCtrl', [
 			// accoridion
 			setUpAccordion();
 		};
+
+        // Update error message from popup
+        $scope.$on("UPDATE_ERR_MSG", function(event, error) {
+            $scope.errorMessage = error;
+        });
 	}
 ]);

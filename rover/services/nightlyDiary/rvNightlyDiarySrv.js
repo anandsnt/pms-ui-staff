@@ -40,7 +40,12 @@ angular.module('sntRover').service('RVNightlyDiarySrv',
             var deferred = $q.defer(), dateArray = [];
             var url = '/api/nightly_diary/date_list';
 
-            BaseWebSrvV2.getJSON(url, data).then(function(response) {
+            var paramsToApi = {};
+
+            paramsToApi.start_date = data.start_date;
+            paramsToApi.no_of_days = data.no_of_days;
+
+            BaseWebSrvV2.getJSON(url, paramsToApi).then(function(response) {
                 angular.forEach(response.dates, function(item) {
                     var dateObj = tzIndependentDate(item);
                     var isWeekend = (dateObj.getDay() === 0 || dateObj.getDay() === 6) ? true : false;
@@ -67,7 +72,16 @@ angular.module('sntRover').service('RVNightlyDiarySrv',
             var deferred = $q.defer();
             var url = '/api/nightly_diary/reservation_list';
 
-            BaseWebSrvV2.postJSON(url, data).then(function(response) {
+            var paramsToApi = {};
+
+            paramsToApi.start_date = data.start_date;
+            paramsToApi.no_of_days = data.no_of_days;
+            paramsToApi.page = data.page;
+            paramsToApi.per_page = data.per_page;
+            paramsToApi.selected_room_type_ids = data.selected_room_type_ids;
+            paramsToApi.selected_floor_ids = data.selected_floor_ids;
+
+            BaseWebSrvV2.postJSON(url, paramsToApi).then(function(response) {
                 deferred.resolve(response);
             }, function(error) {
                 deferred.reject(error);

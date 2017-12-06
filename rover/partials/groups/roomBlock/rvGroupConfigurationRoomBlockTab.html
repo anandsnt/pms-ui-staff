@@ -1,4 +1,6 @@
 <form id="group-room-block" name="group-room-block" class="form card-tab inner-header rooms" ng-controller="rvGroupRoomBlockCtrl">
+    <!--common header for fullscreen mode-->
+    <div ng-include="'/assets/partials/common/rvFullscreenHeader.html'" class="fullscreen-header"></div>
 
     <div id="group-room-block-header" class="tab-header with-filters">
         <div class="entry date-range">
@@ -204,7 +206,8 @@
             <ul style="width:{{getWidthForRoomBlockTimeLine()}};" class="wrapper">
                 <li ng-repeat="occupancy in groupConfigData.summary.selected_room_types_and_occupanies">
                     <div class="inner">
-                        {{formatDateForUI(occupancy.date, monthAndDate)}}
+                        <span>{{getDayOfWeek(occupancy.date, fulldayInWeek)}}</span>
+                        <strong>{{formatDateForUI(occupancy.date, monthAndDate)}}</strong>
                         <em>{{occupancy.occupancy}}% Occupancy</em>
                     </div>
                     <div class="column">

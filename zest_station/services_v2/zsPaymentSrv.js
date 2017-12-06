@@ -5,7 +5,8 @@
 sntZestStation.service('zsPaymentSrv', ['$http', '$q', 'zsBaseWebSrv', '$rootScope',
     function($http, $q, zsBaseWebSrv, $rootScope) {
         // service provider for common utilities
-        var that = this;
+        var that = this,
+            TERMINAL_POLLING_INTERVAL_MS = 3000;
 
         this.savePayment = function(params) {
             var deferred = $q.defer(),
@@ -94,7 +95,7 @@ sntZestStation.service('zsPaymentSrv', ['$http', '$q', 'zsBaseWebSrv', '$rootSco
                             setTimeout(function() {
                                 console.info("POLLING::-> for emv terminal response");
                                 pollToTerminal(async_callback_url);
-                            }, 5000);
+                            }, TERMINAL_POLLING_INTERVAL_MS);
                         } else {
                             clearInterval(refreshIntervalId);
                             deferred.resolve(data);
@@ -182,7 +183,7 @@ sntZestStation.service('zsPaymentSrv', ['$http', '$q', 'zsBaseWebSrv', '$rootSco
                             setTimeout(function() {
                                 console.info("POLLING::-> for emv terminal response");
                                 pollToTerminal(async_callback_url);
-                            }, 5000);
+                            }, TERMINAL_POLLING_INTERVAL_MS);
                         } else {
                             clearInterval(refreshIntervalId);
                             deferred.resolve(data);

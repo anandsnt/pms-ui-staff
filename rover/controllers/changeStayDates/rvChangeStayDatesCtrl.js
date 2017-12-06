@@ -3,6 +3,8 @@ sntRover.controller('RVchangeStayDatesController', ['$state', '$stateParams', '$
 		// inheriting some useful things
 		BaseCtrl.call(this, $scope);
 
+		var RESV_LIMIT = 92;
+
 		// set a back button on header
 		$rootScope.setPrevState = {
 			title: $filter('translate')('STAY_CARD'),
@@ -260,7 +262,10 @@ sntRover.controller('RVchangeStayDatesController', ['$state', '$stateParams', '$
 			} else if ($scope.availabilityDetails.availability_status === "room_is_inhouse") {
 				// CICO-40534
 				$scope.rightSideReservationUpdates = "ROOM_IN_HOUSE";
-			}
+			} else if ($scope.availabilityDetails.availability_status === 'no_room_move') {
+                // CICO-40683
+                $scope.rightSideReservationUpdates = 'NO_ROOM_MOVE';
+            }
 			$scope.refreshMyScroller();
 		};
 
@@ -663,7 +668,12 @@ sntRover.controller('RVchangeStayDatesController', ['$state', '$stateParams', '$
 					return false;
 				}
 
-			}
+            } else if (RESV_LIMIT < moment($scope.checkoutDateInCalender).diff(moment($scope.checkinDateInCalender), 'days')) {
+                // CICO-47538 For standalone properties ensure the stay doesn't exceed 92 days
+                $scope.rightSideReservationUpdates = 'MAX_LENGTH_EXCEEDED';
+                $scope.refreshMyScroller();
+                return false;
+            }
 
 			// calling the webservice for to check the availablity of rooms on these days
 			var getParams = {

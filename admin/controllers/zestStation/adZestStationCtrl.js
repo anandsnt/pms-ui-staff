@@ -1,4 +1,4 @@
-admin.controller('ADZestStationCtrl', ['$scope', '$rootScope', '$state', '$stateParams', 'ADZestStationSrv', '$filter', 'ngDialog', '$timeout', '$log', function($scope, $state, $rootScope, $stateParams, ADZestStationSrv, $filter, ngDialog, $timeout, $log) {
+admin.controller('ADZestStationCtrl', ['$scope', '$rootScope', '$state', '$stateParams', 'ADZestStationSrv', '$filter', 'ngDialog', '$timeout', '$log', 'sntAuthorizationSrv', function($scope, $state, $rootScope, $stateParams, ADZestStationSrv, $filter, ngDialog, $timeout, $log, sntAuthorizationSrv) {
     BaseCtrl.call(this, $scope);
     $scope.$emit('changedSelectedMenu', 10);
 
@@ -43,6 +43,28 @@ admin.controller('ADZestStationCtrl', ['$scope', '$rootScope', '$state', '$state
         $scope.enabledLangs = getEnabledLanguages();
         validateDefaultLang();
     };
+
+    $scope.offlineReconnectValueList = [
+        {
+            'name': '10',
+            'value': '10'
+        }, {
+            'name': '20',
+            'value': '20'
+        }, {
+            'name': '30',
+            'value': '30'
+        }, {
+            'name': '40',
+            'value': '40'
+        }, {
+            'name': '50',
+            'value': '50'
+        }, {
+            'name': '60',
+            'value': '60'
+        }
+    ];
 
     var validateDefaultLang = function() {
         var lang = $scope.zestSettings.zest_lang.default_language;
@@ -202,7 +224,7 @@ admin.controller('ADZestStationCtrl', ['$scope', '$rootScope', '$state', '$state
             $scope.downloadPromptFileName = lang + '.json';
             var link = document.getElementById('download-link-popup'); // ie. en-download-link
 
-            link.href = 'staff/locales/download/' + lang + '.json';
+            link.href = 'staff/locales/download/' + lang + '?hotel_uuid=' + sntAuthorizationSrv.getProperty();
         }, 500);
         ngDialog.open({
             template: '/assets/partials/zestStation/adZestStationLanguageFile.html',

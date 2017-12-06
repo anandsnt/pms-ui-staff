@@ -24,7 +24,9 @@ module.exports = {
 				jsLibRoot + 'spectrum.js',
 				jsLibRoot + 'SyntaxHighlighter/shCore.js',
 				jsLibRoot + 'SyntaxHighlighter/shBrushXml.js',
-				jsLibRoot + 'SyntaxHighlighter/shBrushJScript.js'
+				jsLibRoot + 'SyntaxHighlighter/shBrushJScript.js',
+				jsLibRoot + 'treeview/ivh-treeview.min.js',
+				jsLibRoot + 'moment.min.js'
 			],
 			nonMinifiedFiles: [
 				jsLibRoot + 'sortable.js',				

@@ -42,16 +42,19 @@
                 
                 <!-- Allotment tabs navigation -->
                 <ul id="allotment-card-tabs-nav" class="card-tabs-nav no-print">
-                    <li  click-touch="switchTabTo('SUMMARY')" ng-class="{'ui-tabs-active' : allotmentConfigData.activeTab == 'SUMMARY'}">
+                    <li  click-touch="switchTabTo('SUMMARY')" ng-class="{'ui-tabs-active' : allotmentConfigData.activeTab == 'SUMMARY'}" event-shall-pass="true">
                         <a id="summary" translate>ALLOTMENT_SUMMARY</a>
                     </li>
-                    <li class="with-filters" click-touch="switchTabTo('ROOM_BLOCK')" ng-class="{'ui-tabs-active' : allotmentConfigData.activeTab == 'ROOM_BLOCK'}">
+                    <li class="with-filters" click-touch="switchTabTo('ROOM_BLOCK')" ng-class="{'ui-tabs-active' : allotmentConfigData.activeTab == 'ROOM_BLOCK'}" event-shall-pass="true">
                         <a translate>ALLOTMENT_DETAILS</a>
+                        <button type="button" class="button white icons icon-expand" rv-fullscreen fs-sub-header="ALLOTMENT_DETAILS">Fullscreen</button>
                     </li>
-                    <li ng-show="shouldShowRoomingListTab()" class="with-filters" click-touch="switchTabTo('RESERVATIONS')" ng-class="{'ui-tabs-active' : allotmentConfigData.activeTab == 'RESERVATIONS'}">
+                    <li ng-show="shouldShowRoomingListTab()" class="with-filters" click-touch="switchTabTo('RESERVATIONS')" ng-class="{'ui-tabs-active' : allotmentConfigData.activeTab == 'RESERVATIONS'}" event-shall-pass="true">
                         <a translate>ALLOTMENT_RESERVATIONS</a>
+                        <button type="button" class="button white icons icon-expand" rv-fullscreen fs-sub-header="ALLOTMENT_RESERVATIONS">Fullscreen</button>
                     </li>
-                    <li click-touch="switchTabTo('ACTIVITY')" ng-class="{'ui-tabs-active' : allotmentConfigData.activeTab == 'ACTIVITY'}">
+
+                    <li click-touch="switchTabTo('ACTIVITY')" ng-class="{'ui-tabs-active' : allotmentConfigData.activeTab == 'ACTIVITY'}" event-shall-pass="true">
                         <a translate>ALLOTMENT_ACTIVITY</a>
                     </li>
                 </ul>

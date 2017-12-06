@@ -30,7 +30,19 @@ sntZestStation.service('zsGeneralSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
             'sohotel': 'sohotel',
             'epik': 'Hotel epik',
             'conscious': 'Conscious vondelpark',
-            'fontainebleau': 'fontainebleau'
+            'fontainebleau': 'fontainebleau',
+            'freehand': 'freehand',
+            'de-jonker': 'Hotel de jonker',
+            'chalet-view': 'Chalet view',
+            'row-nyc': 'row',
+            'circle-inn-fairfield': 'Circle fairfield',
+            'cachet-boutique': 'Cachet Boutique',
+            'hi-ho': 'Hotel hiho',
+            'first': 'First Hotel Breiseth',
+            'viceroy-chicago': 'Viceroy Chicago',
+            'amrath': 'Amrath apart hotel',
+            'jupiter': 'Jupiter hotel',
+            'huntley': 'Huntley'
         };
 
         this.isThemeConfigured = function(theme) {
@@ -484,6 +496,19 @@ sntZestStation.service('zsGeneralSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
         this.validate = function(params) {
             var deferred = $q.defer(),
                 url = '/api/users/check_if_admin';
+
+            zsBaseWebSrv.postJSON(url, params).then(function(data) {
+                deferred.resolve(data);
+            }, function(data) {
+                deferred.reject(data);
+            });
+            return deferred.promise;
+        };
+
+
+        this.validate_staff = function(params) {
+            var deferred = $q.defer(),
+                url = '/zest_station/validate_staff';
 
             zsBaseWebSrv.postJSON(url, params).then(function(data) {
                 deferred.resolve(data);

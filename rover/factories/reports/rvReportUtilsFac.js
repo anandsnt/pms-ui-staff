@@ -194,6 +194,7 @@ angular.module('reportsModule')
             'INCLUDE_DUE_OUT': true,
             'INCLUDE_INHOUSE': true,
             'RESTRICTED_POST_ONLY': true,
+            'EXCEEDED_ONLY': true,
 
             // for room ooo oos report
             OOO: true,
@@ -327,7 +328,7 @@ angular.module('reportsModule')
             report['hasShow']['data'].push({
                 paramKey: filter.value.toLowerCase(),
                 description: filter.description,
-                selected: true
+                selected: filter.value === 'EXCEEDED_ONLY' ? false : true
             });
         };
 
@@ -461,7 +462,7 @@ angular.module('reportsModule')
             report.hasShow = {
                 data: [],
                 options: {
-                    selectAll: true,
+                    selectAll: false,
                     hasSearch: false,
                     key: 'description',
                     allValue: 'Both',

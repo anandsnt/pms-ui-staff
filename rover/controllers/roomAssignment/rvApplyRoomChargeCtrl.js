@@ -90,6 +90,10 @@ sntRover.controller('rvApplyRoomChargeCtrl', [
 		// ngDialog.close();
 		// since we are expecting some custom http error status in the response
 		// and we are using that to differentiate among errors
+
+        // CICO-44726 Hide Activity Indicator in case of error in room upgrade
+        $scope.$emit('hideLoader');
+
 		if (error.hasOwnProperty ('httpStatus')) {
 			switch (error.httpStatus) {
 				case 470:
@@ -146,8 +150,7 @@ sntRover.controller('rvApplyRoomChargeCtrl', [
 			.updateResrvationForConfirmationNumber(reservationData.confirmation_num, $scope.reservationData);
 
 		// CICO-10152 : Upto here..
-		$scope.closeDialog();
-		$scope.goToNextView();
+		$scope.goToNextView(true);
 
 	};
 
@@ -162,12 +165,16 @@ sntRover.controller('rvApplyRoomChargeCtrl', [
 				"reservation_id": $scope.reservationData.reservation_card.reservation_id,
 				"room_no": $scope.assignedRoom.room_number,
 				"forcefully_assign_room": wanted_to_forcefully_assign,
-				"is_preassigned": $scope.assignedRoom.is_preassigned
+				"is_preassigned": $scope.assignedRoom.is_preassigned,
+                upsell_amount: "0" // CICO-44174 Pass 0 in upsell_amount if they select "No Charge".
+                // This will ensure that we override configured upsell amount to $0 if they select "No Charge"
 			},
             successCallBack: $scope.successCallbackUpgrade,
-            failureCallBack: $scope.failureCallbackUpgrade
+            failureCallBack: $scope.failureCallbackUpgrade,
+            loader: 'NONE'
         };
 
+        $scope.$emit('showLoader');
         $scope.callAPI(RVUpgradesSrv.selectUpgrade, options);
 	};
 

@@ -856,15 +856,17 @@ sntRover.controller('reservationActionsController', [
 			$scope.ngData.languageData = {};
 
 			var successCallBackForLanguagesFetch = function(data) {
-		      	$scope.$emit('hideLoader');
+		      	
 		      	$scope.ngData.languageData = data;
 
 		      	ngDialog.open({
 					template: '/assets/partials/reservationCard/rvReservationConfirmationPrintPopup.html',
 					className: '',
 					scope: $scope,
-					closeByDocument: true
+					closeByDocument: false
 				});
+
+				$scope.$emit('hideLoader');
 		    };
 
 		    /**
@@ -1068,7 +1070,7 @@ sntRover.controller('reservationActionsController', [
 
 			var resData = $scope.reservationData.reservation_card;
 
-			return resData.reservation_status === 'CANCELED' && // ONLY cancelled reservations can be reinstated
+			return (resData.reservation_status === 'CANCELED' || resData.reservation_status === 'NOSHOW') && // ONLY cancelled and noshow reservations  can be reinstated
 				new TZIDate(resData.departure_date) > new TZIDate($rootScope.businessDate) && // can't reinstate if the reservation's dates have passed
 				rvPermissionSrv.getPermissionValue('REINSTATE_RESERVATION'); // also check for permissions
 		};
@@ -1160,5 +1162,14 @@ sntRover.controller('reservationActionsController', [
         $scope.enableConfirmationCustomText = function() {
    			$scope.ngData.enable_confirmation_custom_text = !$scope.ngData.enable_confirmation_custom_text;
    		};
+
+        // Set the navigation for bill and charges screen
+        $scope.navigateToBillAndCharges = function () {
+            $state.go('rover.reservation.staycard.billcard', {
+                reservationId: $scope.reservationData.reservation_card.reservation_id,
+                clickedButton: 'viewBillButton',
+                userId: $scope.guestCardData.userId
+            });
+        };
 	}
 ]);

@@ -198,7 +198,7 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 					if ($scope.stateCheck.rateSelected.oneDay) {
 						payLoad.room_type_id = $scope.stateCheck.preferredType;
 						payLoad.per_page = 1;
-						payLoad.page = 1;
+						payLoad.page = page;
 					}
 				}
 
@@ -333,7 +333,7 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 
 				if ($scope.stateCheck.activeView === 'ROOM_TYPE') {
 					payLoad.per_page = $scope.stateCheck.pagination.roomType.ratesList.perPage;
-				} else if ($scope.stateCheck.activeView === 'RATE') {
+				} else {
 					payLoad.per_page = $scope.stateCheck.pagination.rate.perPage;
 					payLoad.order = "ALPHABETICAL";
 					if (!!$scope.stateCheck.preferredType && !roomTypeId) {
@@ -586,6 +586,13 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 								sc.pagination.roomType.page++;
 								fetchRoomTypesList(true); // The param tells the method to append the response to the existing list
 							} else if (sc.activeView === 'RATE' && sc.baseInfo.maxAvblRates > ratesCount) {
+								sc.pagination.rate.page++;
+								fetchRatesList(null, null, sc.pagination.rate.page, function(response) {
+									$scope.stateCheck.baseInfo.maxAvblRates = response.total_count;
+									generateRatesGrid(response.results, true);
+									$scope.refreshScroll();
+								});
+							} else if (sc.activeView === 'RECOMMENDED' && sc.baseInfo.maxAvblRates > ratesCount) {
 								sc.pagination.rate.page++;
 								fetchRatesList(null, null, sc.pagination.rate.page, function(response) {
 									$scope.stateCheck.baseInfo.maxAvblRates = response.total_count;
@@ -1071,6 +1078,7 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 				// Reset search
 				$scope.stateCheck.rateFilterText = "";
 				fetchRatesList(null, null, $scope.stateCheck.pagination.rate.page, function(response) {
+					$scope.stateCheck.baseInfo.maxAvblRates = response.total_count;
 					generateRatesGrid(response.results);
 					$scope.refreshScroll();
 				});
@@ -1088,7 +1096,12 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 			if ($scope.stateCheck.stayDatesMode) {
 				$scope.stateCheck.rateSelected.allDays = isRateSelected().allDays;
 				$scope.stateCheck.rateSelected.oneDay = isRateSelected().oneDay;
-			}
+			} else {
+                // CICO-44156 - Reset selected rates when the show stay dates option is set to off
+                $scope.stateCheck.preferredType = "";
+                $scope.stateCheck.dateModeActiveDate = ARRIVAL_DATE;
+                resetRates();
+            }
 
 			$scope.refreshScroll();
 
@@ -1766,6 +1779,7 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 				isPromoInvalid: isPromoInvalid
 			};
 		};
+		var previousPage = 0; // CICO-47537
 
 		$scope.showRoomsList = function(rate, append) {
 			if (!rate.isCollapsed && !append) {
@@ -1777,8 +1791,13 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 					rate.rooms = [];
 					pageToFetch = 1;
 				} else {
-					pageToFetch = (rate.rooms.length / $scope.stateCheck.pagination.rate.roomsList.perPage) + 1;
+					if ($scope.stateCheck.stayDatesMode) {
+						pageToFetch = previousPage + 1;						
+					} else {
+						pageToFetch = (rate.rooms.length / $scope.stateCheck.pagination.rate.roomsList.perPage) + 1;
+					}
 				}
+				previousPage = pageToFetch;
 				getRoomsADR(function(response) {
 					rate.totalRoomsCount = response.total_count;
 					rate.hasRoomsList = true;
@@ -1838,6 +1857,7 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 					pageToFetch = (room.ratesArray.length / $scope.stateCheck.pagination.roomType.ratesList.perPage) + 1;
 				}
 				fetchRatesList(room.id, null, pageToFetch, function(response) {
+
 					var datesInitial = RVReservationDataService.getDatesModel(ARRIVAL_DATE, DEPARTURE_DATE);
 
 					room.totalRatesCount = response.total_count;
@@ -1945,7 +1965,6 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 				$scope.stateCheck.pagination.rate.page = 1;
 				// Populate with the selected
 				fetchRatesList(null, ui.item.id, 1, function(response) {
-					$scope.stateCheck.baseInfo.maxAvblRates = response.total_count;
 					generateRatesGrid(response.results);
 					$scope.refreshScroll();
 				});
@@ -1968,7 +1987,6 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 			$scope.stateCheck.pagination.rate.page = 1;
 			// Populate with the selected
 			fetchRatesList(null, selectedRate.id, 1, function(response) {
-				$scope.stateCheck.baseInfo.maxAvblRates = response.total_count;
 				generateRatesGrid(response.results);
 				$scope.refreshScroll();
 			});
@@ -1995,6 +2013,7 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 			} else {
 				$scope.filteredRates = [];
 				fetchRatesList(null, null, 1, function(response) {
+
 					generateRatesGrid(response.results);
 					$scope.refreshScroll();
 				});

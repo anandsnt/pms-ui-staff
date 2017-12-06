@@ -10,7 +10,7 @@
 "CC_GUARENTEED_LABEL":"Only if Reservation is CC guaranteed",
 "CASH_PAYMENT_LABEL":"Only if Reservation is CASH payment",
 "WEB_CHEKOUT_ALERT_LABEL":"Web Check Out staff alert",
-"WEB_CHEKOUT_OFFLINE_LABEL":"Enable Offline Checkout",
+"WEB_CICO_OFFLINE_LABEL":"Enable Offline Check In/Out",
 "CHECKOUT_NOT_SUCESSFULL":"Only when check out is NOT successful",
 "EMAIL_ACCOUNTS_LABEL":"Email Accounts (Seperated by semicolon [;]) ",
 "EMAIL_ACCOUNTS_LABEL2":"EMAIL ACCOUNTS TO RECEIVE LATE CHECK OUT ALERT ONLY (Seperated by semicolon [;]) ",
@@ -152,8 +152,13 @@
 "UPSELL_ADONS": "Upsell Add Ons",
 "ADDONS_INSTRUCTION": "Control the Add Ons offered during check in. Drag and drop to control display order",
 
+"AUTHORIZATION_AMOUNT": "Authorization amount",
+
 "GUEST_ID_SETUP":"Guest ID Scan Setup",
-"VIEW_GUEST_ID":"View Scanned Guest IDs"
+"VIEW_GUEST_ID":"View Scanned Guest IDs",
+"GUEST_ID_TYPES":"ID Types",
+"ID_TYPES_PASSPORT":"Passport"
+
 
 
 

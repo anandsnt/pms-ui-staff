@@ -85,16 +85,21 @@ let  calculateOutOfOrderOutOfServicePositionAndDuration = (diaryInitialDayOfDate
         && (outOfOrderOutOfServiceStartDate.getTime() !== outOfOrderOutOfServiceEndDate.getTime()))
     {
 
-
         if (outOfOrderOutOfServiceStartDate.getTime() < diaryInitialDate.getTime()) {
             numberOfNightsVisibleInGrid = Math.abs((outOfOrderOutOfServiceEndDate.getTime() - diaryInitialDate.getTime()) / (oneDay));
         }
+        numberOfNightsVisibleInGrid = numberOfNightsVisibleInGrid + 1;
         durationOfOutOfOrderOutOfService = numberOfNightsVisibleInGrid * nightDuration;
-        if (outOfOrderOutOfServicePosition === 0) {
-            durationOfOutOfOrderOutOfService = durationOfOutOfOrderOutOfService + 10;
-        } else if (outOfOrderOutOfServicePosition > 0) {
-            durationOfOutOfOrderOutOfService = durationOfOutOfOrderOutOfService - 5;
+        if (outOfOrderOutOfServiceStartDate.getTime() >= diaryInitialDate.getTime()) {
+           // durationOfOutOfOrderOutOfService = durationOfOutOfOrderOutOfService;
+       
+            if (numberOfDays === NIGHTLY_DIARY_CONST.DAYS_7) {
+                durationOfOutOfOrderOutOfService = durationOfOutOfOrderOutOfService - NIGHTLY_DIARY_CONST.DAYS_POSITION_ADD_7;
+            } else if (numberOfDays === NIGHTLY_DIARY_CONST.DAYS_21) {
+                durationOfOutOfOrderOutOfService = durationOfOutOfOrderOutOfService - NIGHTLY_DIARY_CONST.DAYS_POSITION_ADD_21;
+            }
         }
+        
     } else if (outOfOrderOutOfServiceStartDate.getTime() === outOfOrderOutOfServiceEndDate.getTime()) {
         if (numberOfDays === NIGHTLY_DIARY_CONST.DAYS_7) {
             durationOfOutOfOrderOutOfService = nightDuration - NIGHTLY_DIARY_CONST.DAYS_POSITION_ADD_7;

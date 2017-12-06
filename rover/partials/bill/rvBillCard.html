@@ -95,7 +95,7 @@
 								<div class="bill-toggle" ng-class="{'error': billTab.has_crossed_credit_limit}">
 									<div class="price" ng-show="isBalanceShown(billTab.is_rate_suppressed)">
 										<span translate>BILL #{{billTab.bill_number}}</span>
-										{{currencySymbol}}{{billTab.total_amount | number: precisonZero}}
+										<span class="currency">{{currencySymbol}}</span>{{billTab.total_amount | number: precisonZero}}
 									</div>
 									<div class="price" ng-show="!isBalanceShown(billTab.is_rate_suppressed)">
 										<span translate>BILL #{{billTab.bill_number}}</span>
@@ -143,7 +143,7 @@
 											<span class="date"> {{days.date | date:'dd'}} </span>
 											<span class="guest-status check-in small-icon" ng-show="days.date == reservationBillData.checkin_date" translate>CHECK_IN</span>
 											<span class="price" ng-show="!isBalanceShown(days.is_rate_suppressed)">{{'SUPPRESSED_RATES_TEXT' | translate}}</span>
-											<span class="price" ng-show="isBalanceShown(days.is_rate_suppressed)">{{currencySymbol}}{{days.amount | number: precisonZero}}</span>
+											<span class="price" ng-show="isBalanceShown(days.is_rate_suppressed)"><span class="currency">{{currencySymbol}}</span>{{days.amount | number: precisonZero}}</span>
 										</div>
 									</li>
 
@@ -152,7 +152,7 @@
 										<div class="toggle" ng-class="{'active': $index == showAddonIndex}">
 											<span class="expense"> {{addons.title}}</span>
 											<span class="price" ng-show="addons.package_type != 'PACKAGES'">{{addons.package_type}}</span>
-											<span class="price" ng-show="addons.package_type == 'PACKAGES'&&caculateExpenseAmountForPackageAddon(addons.expense_details,addons.amount)=='MULTI'&&caculateExpenseAmountForPackageAddon(addons.expense_details,addons.amount)=='INCL'">{{currencySymbol}}{{caculateExpenseAmountForPackageAddon(addons.expense_details,addons.amount)}}</span>
+											<span class="price" ng-show="addons.package_type == 'PACKAGES'&&caculateExpenseAmountForPackageAddon(addons.expense_details,addons.amount)=='MULTI'&&caculateExpenseAmountForPackageAddon(addons.expense_details,addons.amount)=='INCL'"><span class="currency">{{currencySymbol}}</span>{{caculateExpenseAmountForPackageAddon(addons.expense_details,addons.amount)}}</span>
 											<span class="price" ng-hide="addons.package_type == 'PACKAGES'&&caculateExpenseAmountForPackageAddon(addons.expense_details,addons.amount)=='MULTI'&&caculateExpenseAmountForPackageAddon(addons.expense_details,addons.amount)=='INCL'">{{caculateExpenseAmountForPackageAddon(addons.expense_details,addons.amount)}}</span>
 											<span class="price" ng-hide="addons.package_type == 'PACKAGES'">{{addons.amount | number: precisonZero}}</span>
 										</div>
@@ -173,7 +173,7 @@
 											<span class="expense"> {{groupItems.title}} </span>
 											<!-- CICO-31516 - show if SR -->
 											<span class="price" ng-if="!isBalanceShown(billData.is_rate_suppressed)">{{'SUPPRESSED_RATES_TEXT' | translate}} </span>
-											<span class="price" ng-if="isBalanceShown(billData.is_rate_suppressed)">{{currencySymbol}}{{groupItems.amount | number: precisonZero}}</span>
+											<span class="price" ng-if="isBalanceShown(billData.is_rate_suppressed)"><span class="currency">{{currencySymbol}}</span>{{groupItems.amount | number: precisonZero}}</span>
 										</div>
 									</li>
 								</ul>
@@ -187,7 +187,7 @@
 										<span translate>+ FEES</span>
 									</div>
 									<div class="price" ng-show="isBalanceShown(reservationBillData.is_rate_suppressed_present_in_stay_dates)">
-										{{currencySymbol}}{{billItem.amount | number: precisonTwo}}
+										<span class="currency">{{currencySymbol}}</span>{{billItem.amount | number: precisonTwo}}
 										<span translate>+ <span translate>FEES</span>
 									</div>
 									<div class="rate">
@@ -222,13 +222,13 @@
 									<tbody>
 										<tr ng-repeat="expense in billAddons.expense_details">
 											<td class="price" ng-show="expense.is_inclusive" translate> INCL </td>
-											<td class="price" ng-show="!expense.is_inclusive"> {{currencySymbol}}{{expense.price | number: precisonTwo}} </td>
+											<td class="price" ng-show="!expense.is_inclusive"> <span class="currency">{{currencySymbol}}</span>{{expense.price | number: precisonTwo}} </td>
 											<td> {{expense.package}} </td>
 											<td> {{expense.quantity}} </td>
 											<!--CICO-29775-->
 											<td > {{expense.amount_type}} {{expense.post_type}}</td>
 											<td class="price" ng-show="expense.is_inclusive" translate> INCL </td>
-											<td class="price" ng-show="!expense.is_inclusive"> {{currencySymbol}}{{expense.effective_quantity*expense.price  | number: precisonTwo}} </td>
+											<td class="price" ng-show="!expense.is_inclusive"> <span class="currency">{{currencySymbol}}</span>{{expense.effective_quantity*expense.price  | number: precisonTwo}} </td>
 										</tr>
 									</tbody>
 								</table>
@@ -252,7 +252,7 @@
 													{{'SUPPRESSED_RATES_TEXT' | translate}}
 											</td>
 											<td class="price"
-												ng-if="isBalanceShown(billData.is_rate_suppressed)"> {{currencySymbol}}{{billGroupExpense.expense | number: precisonTwo}}
+												ng-if="isBalanceShown(billData.is_rate_suppressed)"> <span class="currency">{{currencySymbol}}</span>{{billGroupExpense.expense | number: precisonTwo}}
 											</td>
 											<td> {{billGroupExpense.title}} </td>
 											<td> {{billGroupExpense.date | date:'MM-dd-yyyy'}} </td>

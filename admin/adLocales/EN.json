@@ -739,6 +739,7 @@
 "FORCE_SEGMENT": "FORCE SEGMENT",
 
 "BALANCE_INVENTORY": "Balance Inventory",
+"BALANCE_JOURNAL": "Balance Journal",
 "START_JOB": "Start Job",
 "REFRESH_STATUS": "Refresh Status",
 "FORCE_ADJ_REASON" :"FORCE RATE ADJUSTMENT REASON",
@@ -1163,7 +1164,8 @@
 "REG_CARD":"Registration Card",
 "ON_SCREEN_ROOM_NUMBER":"On-Screen Room Number",
 "ENFORCE_DEPOSIT":"Enforce Deposit",
-"REG_CARD_DELIVERY":"Registration card delivery options"
+"REG_CARD_DELIVERY":"Registration card delivery options",
+"PROPERTY_GROUPS":"Property Groups"
 
         
         }

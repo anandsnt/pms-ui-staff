@@ -28,7 +28,7 @@ angular.module('sntRover').controller('rvGroupConfigurationCtrl', [
         };
 
         var roomAndRatesState = 'rover.reservation.staycard.mainCard.room-rates';
-        
+
 
         /**
          * whether current screen is in Add Mode
@@ -499,6 +499,12 @@ angular.module('sntRover').controller('rvGroupConfigurationCtrl', [
                     $scope.errorMessage = error;
                     lastFailureCallback (error);
                 }
+            };
+
+            // Set callbacks while extending the group dates during the room block save
+            $scope.setCallBacks = function(options) {
+                lastSuccessCallback = options['successCallBack'];
+                lastFailureCallback = options['failureCallBack'];
             };
 
             /**
@@ -1059,23 +1065,26 @@ angular.module('sntRover').controller('rvGroupConfigurationCtrl', [
             }, 500);
         };
 
+        var updateGroupSummaryInProgress =  false;
+
         /**
          * Update the group data
          * @return boolean
          */
         $scope.updateGroupSummary = function() {
-
             if (rvPermissionSrv.getPermissionValue('EDIT_GROUP_SUMMARY')) {
-                if (angular.equals($scope.groupSummaryMemento, $scope.groupConfigData.summary)) {
+                if (angular.equals($scope.groupSummaryMemento, $scope.groupConfigData.summary) || updateGroupSummaryInProgress) {
                     return false;
                 }
                 var onGroupUpdateSuccess = function(data) {
+                        updateGroupSummaryInProgress =  false;
                         // client controllers should get an infromation whether updation was success
                         $scope.$broadcast("UPDATED_GROUP_INFO", angular.copy($scope.groupConfigData.summary));
                         $scope.groupSummaryMemento = angular.copy($scope.groupConfigData.summary);
                         return true;
                     },
                     onGroupUpdateFailure = function(error) {
+                        updateGroupSummaryInProgress =  false;
                         /* CICO-20270: Since we are expecting some custom http error status in the response
                          * and we are using that to acknowledge error with card detaching.*/
                         if (error.hasOwnProperty ('httpStatus')) {
@@ -1097,7 +1106,7 @@ angular.module('sntRover').controller('rvGroupConfigurationCtrl', [
                         }
                     };
 
-                var summaryData = _.extend({}, $scope.groupConfigData.summary);
+                var summaryData = JSON.parse(JSON.stringify($scope.groupConfigData.summary));
 
                 summaryData.block_from = $filter('date')(summaryData.block_from, $rootScope.dateFormatForAPI);
                 summaryData.block_to = $filter('date')(summaryData.block_to, $rootScope.dateFormatForAPI);
@@ -1105,6 +1114,7 @@ angular.module('sntRover').controller('rvGroupConfigurationCtrl', [
                 if (!summaryData.rate) {
                     summaryData.rate = -1;
                 }
+                updateGroupSummaryInProgress =  true;
                 $scope.callAPI(rvGroupConfigurationSrv.updateGroupSummary, {
                     successCallBack: onGroupUpdateSuccess,
                     failureCallBack: onGroupUpdateFailure,

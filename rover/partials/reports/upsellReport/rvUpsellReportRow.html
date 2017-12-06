@@ -1,14 +1,14 @@
 <tr ng-repeat="each in results track by $index">
-	<td>{{ each[0] | date : dateFormat }}</td>
-	<td>{{ each[1] }}</td>
-	<td>{{ each[2] }}</td>
-	<td>{{ each[3] }}</td>
-	<td>{{ each[4] }}</td>
-	<td>{{ each[5] }}</td>
-	<td>{{ each[6] }}</td>
-	<td>{{ each[7] }}</td>
-	<td>{{ each[8] | currency:currencySymbol:2 }}</td>
-	<td><strong>{{ each[9] | currency:currencySymbol:2 }}</strong></td>
-	<td>{{ each[10] }}</td>
-	<td>{{ each[11] | currency:currencySymbol:2 }}</td>
+    <td>{{ each[0] | date : dateFormat }}</td>
+    <td>{{ each[1] }}</td>
+    <td>{{ each[2] }}</td>
+    <td>{{ each[3] }}</td>
+    <td>{{ each[4] }}</td>
+    <td>{{ each[5] }}</td>
+    <td>{{ each[6] }}</td>
+    <td>{{ each[7] }}</td>
+    <td><span class="currency">{{ each[8] | currency:currencySymbol:2 }}</span></td>
+    <td><strong><span class="currency">{{ each[9] | currency:currencySymbol:2 }}</span></strong></td>
+    <td>{{ each[10] }}</td>
+    <td><span class="currency">{{ each[11] | currency:currencySymbol:2 }}</span></td>
 </tr>

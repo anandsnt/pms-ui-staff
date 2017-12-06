@@ -1,0 +1,36 @@
+<div id="modal" class="modal-show" ng-class="{'modal-show': !modalClosing}" role="dialog" ng-cloak>
+    <div class="modal-content alert">
+
+        <!-- Step 1: In progress -->
+        <section ng-show="authState === 'IN_PROGRESS'">
+            <span class="icons icon-cc-authorization"></span>
+            <span class="h2 message">CC Authorization in progress, please wait...</span>
+        </section>
+
+
+        <!-- Step 2, A: Success -->
+        <section ng-show="authState === 'SUCCESS'">
+            <span class="icons icon-cc-authorization success"></span>
+            <span class="h2 message green"> CC Authorization for <span class="currency">{{currencySymbol}}</span>{{ngDialogData.amount}} completed.</span>
+            <span class="text">Authorization Code {{authResponse.auth_code}}</span>
+            <button ng-click="onClickContinue()" type="button" class="button green">
+                Continue
+            </button>
+        </section>
+
+        <!-- Step 2, B: Failure -->
+        <section ng-show="authState === 'FAILURE'">
+            <span class="icons icon-cc-authorization failure"></span>
+            <span class="h2 message red"> CC Authorization for <span class="currency">{{currencySymbol}}</span>{{ngDialogData.amount}} declined.</span>
+            <button ng-disabled="!canCheckInWithoutCC"
+                    ng-click="onClickContinueWithoutCC()"
+                    type="button"
+                    class="button blue" ng-class="{'grey':!canCheckInWithoutCC }">
+                Continue without CC
+            </button>
+            <button ng-click="cancelAuthProcess()" type="button" class="button blank">
+                Cancel
+            </button>
+        </section>
+    </div>
+</div>

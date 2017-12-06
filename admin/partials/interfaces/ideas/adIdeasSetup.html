@@ -7,7 +7,7 @@
         <form class="form float">
             <ad-toggle-button div-class="holder full-width"
                               is-checked="ideaSetup.enabled"
-                              label="{{'WINDSURFER_CRS_ACTIVATE_INACTIVATE'| translate}}">
+                              label="{{'ACTIVATE_INACTIVATE'| translate}}">
             </ad-toggle-button>
             <!--         IMPORT SETTINGS     -->
             <fieldset>
@@ -21,7 +21,7 @@
                         is-checked="ideaSetup.import_enabled" label="Ideas Import Enabled">
                 </ad-toggle-button>
                 <fieldset class="holder right">
-                    <ad-textbox inputtype="text" value="ideaSetup.hotel_code" label="Hotel Code"
+                    <ad-textbox inputtype="text" value="ideaSetup.hotel_code" label="IDeaS Account ID"
                                 styleclass="full-width"></ad-textbox>
                 </fieldset>
             </fieldset>
@@ -38,7 +38,7 @@
 
                 <fieldset class="holder left">
                     <!-- GENERAL SETTINGS STARTS HERE -->
-                    <ad-textbox required='yes' nputtype="text" value="ideaSetup.account_id" label="Account Id"
+                    <ad-textbox required='yes' nputtype="text" value="ideaSetup.account_id" label="IDeaS Account ID"
                                 styleclass="full-width"></ad-textbox>
                     <div class="entry has-datepicker full-width">
                         <label>

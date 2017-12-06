@@ -6,8 +6,9 @@ module.exports = function(gulp, $, options){
 	    GUESTWEB_TEMPLATES_FILE = 'guest_web_templates.min.js',
 		GUESTWEB_TEMPLATE_ROOT  = options['GUESTWEB_TEMPLATE_ROOT'],
 	    GUESTWEB_HTML_FILE     	= options['GUESTWEB_HTML_FILE'],
-	    GUESTWEB_THEME_TEMPLATE_MAPPING_FILE = '../../asset_list/theming/guestweb/template/template_theme_mapping',
+	    GUESTWEB_THEME_TEMPLATE_MAPPING_FILE = '../../asset_list/theming/guestweb/template/template_theme_mapping_a',
 	    GUESTWEB_THEME_TEMPLATE_LIST = require(GUESTWEB_THEME_TEMPLATE_MAPPING_FILE).getThemeMappingList(),
+	    GUESTWEB_NEW_THEME_TEMPLATE_LIST = require('../../asset_list/theming/guestweb/template/template_theme_mappings_b').getThemeMappingList(),
 	    GUESTWEB_PARTIALS 		= ['guestweb/**/**/*.html'],
 	    GUESTWEB_TEMPLTE_MANFEST_FILE = "guest_web_template_manifest.json",
 	    GUESTWEB_JS_COMBINED_FILE  = 'guest_web.min.js',
@@ -19,6 +20,48 @@ module.exports = function(gulp, $, options){
 	    runSequence 			= require('run-sequence'),
 	    guestwebGenDir 			= DEST_ROOT_PATH + 'asset_list/' + generated + 'ThemeMappings/' + generated + 'Guestweb/template/',
 		guestwebGenFile 		= guestwebGenDir + generated + 'GuestWebTemplateThemeMappings.json';
+
+	var extractThemeMappingList = function() {
+		var argv = require('yargs').argv;
+		var guestWebThemeList = {};
+
+		/*
+		For developement purspose, we can pass only required themes as array, i.e. as follows
+        
+		gulp <gulp-task> --with_gw ['guestweb_zoku','guestweb_yotel'] etc
+        
+		In such cases, guestWebThemeList  has to be generated like below 
+		*/
+
+		// {
+		// 	guestweb_zoku: ['guestweb/**/common_templates/partials/checkin/**.html',
+		// 		......
+		// 		'guestweb/**/preCheckin/partials/*.html'
+		// 	],
+		// 	guestweb_yotel: ['guestweb/**/landing/Yotel/*.html',
+		// 		..........
+		// 		'guestweb/**/shared/**/*.html'
+		// 	]
+		// }
+
+		if ('with_gw' in argv && typeof argv.with_gw === 'string') {
+			// required zest web themes are passed
+			var themeString = argv.with_gw;
+			// themeString will be string => '[guestweb_zoku,guestweb_yotelguestweb_zoku]'
+			// strip [ and ] from string
+			themeString = themeString.substring(1, themeString.length - 1)
+			var themeArray = themeString.split(",");
+
+			for (var i = 0, len = themeArray.length; i < len; i++) {
+				var themelist = GUESTWEB_THEME_TEMPLATE_LIST[themeArray[i]] || GUESTWEB_THEME_TEMPLATE_LIST['guestweb_common_templates'];
+				
+				guestWebThemeList[themeArray[i]] = themelist;
+			}
+		} else {
+			guestWebThemeList = GUESTWEB_THEME_TEMPLATE_LIST;
+		}
+		return guestWebThemeList;
+	};
 
 	gulp.task('create-guestweb-theme-template-list', function(){
 		var fs = require('fs-extra');
@@ -44,7 +87,7 @@ module.exports = function(gulp, $, options){
 	        }));
 	});
 
-	gulp.task('guestweb-template-theme-generate-mapping-list-prod', function(){
+	var prodGenerateMappingListTasks = function(theme_list){
 		var glob = require('glob-all'),
 			fileList = [],
 			fs = require('fs'),
@@ -53,9 +96,9 @@ module.exports = function(gulp, $, options){
 			stream = require('merge-stream'),
 			edit = require('gulp-json-editor');
 
-		var tasks = Object.keys(GUESTWEB_THEME_TEMPLATE_LIST).map(function(theme, index){
+		var tasks = Object.keys(theme_list).map(function(theme, index){
 			console.log ('Guestweb Theme template - mapping-generation-started: ' + theme);
-			var mappingList  = GUESTWEB_THEME_TEMPLATE_LIST[theme],
+			var mappingList  = theme_list[theme],
 				fileName 	 = theme.replace(/\./g, "-")+"-template.min.js";
 
 			return gulp.src(mappingList)
@@ -83,6 +126,14 @@ module.exports = function(gulp, $, options){
 	        }));
 		});
 		return es.merge(tasks);
+	};
+
+	gulp.task('guestweb-template-theme-generate-mapping-list-prod-v2', function(){
+		return prodGenerateMappingListTasks(GUESTWEB_NEW_THEME_TEMPLATE_LIST);
+	});
+
+	gulp.task('guestweb-template-theme-generate-mapping-list-prod', function(){
+		return prodGenerateMappingListTasks(GUESTWEB_THEME_TEMPLATE_LIST);
 	});
 
 	gulp.task('guestweb-template-cache-dev', function () {
@@ -96,7 +147,7 @@ module.exports = function(gulp, $, options){
 
 		
 		delete require.cache[require.resolve(GUESTWEB_THEME_TEMPLATE_MAPPING_FILE)];
-		GUESTWEB_THEME_TEMPLATE_LIST = require(GUESTWEB_THEME_TEMPLATE_MAPPING_FILE).getThemeMappingList();
+		GUESTWEB_THEME_TEMPLATE_LIST = extractThemeMappingList();
 
 		var tasks = Object.keys(GUESTWEB_THEME_TEMPLATE_LIST).map(function(theme, index){
 			console.log ('Guestweb Theme template - mapping-generation-started: ' + theme);

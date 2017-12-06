@@ -154,23 +154,23 @@ $scope.itemTypeSelected = function() {
 $scope.getSelectedAddonDescription = function() {
 	var description = "";
 
-     angular.forEach($scope.addons, function(item, index) {
-       if (item.value === $scope.data.addon_id) {
-       	description = item.description;
-       }
-  	});
-     return description;
+	angular.forEach($scope.addons, function(item, index) {
+		if (parseInt(item.value) === parseInt($scope.data.addon_id)) {
+			description = item.description;
+		}
+	});
+    return description;
 };
 
 $scope.getSelectedAddonPrice = function() {
 	var price = "";
 
 	angular.forEach($scope.addons, function(item, index) {
-       if (item.value === $scope.data.addon_id) {
-       	price = item.amount;
-       }
-  });
-     return price;
+		if (parseInt(item.value) === parseInt($scope.data.addon_id)) {
+			price = item.amount;
+		}
+	});
+    return price;
 };
 
 	/* Function to fetch the item details
@@ -178,6 +178,9 @@ $scope.getSelectedAddonPrice = function() {
 	$scope.fetchItem = function() {
 		var fetchItemSuccessCallback = function(data) {
 			$scope.data = data;
+			if (data.addon_id) {
+				$scope.data.addon_id = data.addon_id.toString();
+			}
 			$scope.initialIcon =  data.icon;
 			$scope.initialImage = data.image;
 			if (data.page_template === 'ADDON') {

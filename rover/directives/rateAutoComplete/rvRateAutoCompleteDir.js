@@ -32,7 +32,8 @@
 		 */
 		var fetchRates = function(callBackToAutoComplete) {
 			var params = {
-	            query: $scope.rate_name
+	            query: $scope.rate_name,
+	            account_id: $scope.account_id
 	        };
 	        var options = {
 	            params: params,
@@ -83,6 +84,7 @@
 	    var autoCompleteSelectHandler = function(event, ui) {
 	        $scope.rate_id 	= ui.item.id;
 	        $scope.rate_name = ui.item.name;
+	        $scope.$emit('RATE_SELECTED', ui.item);
 	        runDigestCycle();
 	        return false;    
 	    };
@@ -155,7 +157,8 @@
 				label: '@label',
 				entryDivClass: '@entryDivClass',
 				delay: '@delay',
-				minLengthToTrigger: '@minLengthToTrigger'
+				minLengthToTrigger: '@minLengthToTrigger',
+				account_id: '=accountId'
 			},
 			link: linkFn,
             controller: autoCompleteCtrlFn,

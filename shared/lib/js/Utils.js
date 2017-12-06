@@ -66,7 +66,7 @@ var CurrencyInfoMappings = {
     'COP': [0, '$', 'COL$'],
     'CRC': [0, '\u20a1', 'CR\u20a1'],
     'CZK': [2, 'K\u010d', 'K\u010d'],
-    'DKK': [18, 'kr', 'kr'],
+    'DKK': [18, 'kr.', 'kr'],
     'DOP': [2, '$', 'RD$'],
     'EGP': [2, '£', 'LE'],
     'EUR': [18, '€', '€'],
@@ -74,7 +74,7 @@ var CurrencyInfoMappings = {
     'HKD': [2, '$', 'HK$'],
     'ILS': [2, '\u20AA', 'IL\u20AA'],
     'INR': [2, '\u20B9', 'Rs'],
-    'ISK': [0, 'kr', 'kr'],
+    'ISK': [0, 'kr.', 'kr'],
     'JMD': [2, '$', 'JA$'],
     'JPY': [0, '¥', 'JP¥'],
     'KRW': [0, '\u20A9', 'KR₩'],
@@ -82,14 +82,14 @@ var CurrencyInfoMappings = {
     'MNT': [0, '\u20AE', 'MN₮'],
     'MXN': [2, '$', 'Mex$'],
     'MYR': [2, 'RM', 'RM'],
-    'NOK': [18, 'kr', 'NOkr'],
+    'NOK': [18, 'kr.', 'NOkr'],
     'PAB': [2, 'B/.', 'B/.'],
     'PEN': [2, 'S/.', 'S/.'],
     'PHP': [2, '\u20B1', 'Php'],
     'PKR': [0, 'Rs', 'PKRs.'],
     'RUB': [42, 'руб.', 'руб.'],
     'SAR': [2, 'Rial', 'Rial'],
-    'SEK': [2, 'kr', 'kr'],
+    'SEK': [2, 'kr.', 'kr'],
     'SGD': [2, '$', 'S$'],
     'THB': [2, '\u0e3f', 'THB'],
     'TRY': [2, 'TL', 'YTL'],
@@ -472,21 +472,6 @@ function getWeekDayName(dayIndexInWeek, minLetterCount){
     return n.substr(0, minLetterCount);
 }
 
-function addDaysToDay(date, days) {
-    var dateToTime = tzIndependentDate(date).getTime(),
-        oneDay = 24 * 60 * 60 * 1000,
-        dateToTimeWithDays = dateToTime + (oneDay * days),
-        dateToTimeWithDaysObj = new Date(dateToTimeWithDays),
-        dateToTimeDate = dateToTimeWithDaysObj.getDate(),
-        dateToTimeMonth = dateToTimeWithDaysObj.getMonth() + 1, //Months are zero based
-        dateToTimeYear = dateToTimeWithDaysObj.getFullYear(),
-        dateToTimeWithDaysModified = dateToTimeYear + "-" + dateToTimeMonth + "-" + dateToTimeDate;
-
-    return dateToTimeWithDaysModified;
-}
-
-
-
 function getTextWidth(text){
         // create a dummy span, we'll use this to measure text.
         var tester = $('<span>'),
@@ -680,3 +665,27 @@ var checkIfReferencetextAvailableForCC = function(paymentTypes,selectedPaymentTy
 var getObjectLength = function(obj) {
     return Object.keys(obj).length;
 }
+
+// Replace a value with in object with another value
+var replaceValueWithinObject = function (obj, findStr, replaceObj ) {
+
+    Object.keys(obj).forEach(function (key) {
+        if ( obj[key] != null && typeof obj[key] === 'object') {
+            return replaceValueWithinObject(obj[key], findStr, replaceObj);
+        } else if (obj[key] == findStr) {
+            obj[key] = replaceObj;
+        }
+    });
+};
+
+// Check whether the object has got all key values as empty
+var isObjectAllValuesEmpty = function (obj) {
+    var emptyKeys = [];
+
+    _.each ( obj, function (value, key) {
+        if (value == "") {
+            emptyKeys.push(key);
+        }
+    });
+    return ( emptyKeys.length == Object.keys(obj).length );
+};

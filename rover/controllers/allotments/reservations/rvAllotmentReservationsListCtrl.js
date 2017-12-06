@@ -252,7 +252,7 @@ sntRover.controller('rvAllotmentReservationsListCtrl', [
 
       if (possibleStartDefaultDate < new tzIndependentDate($rootScope.businessDate)) {
         possibleStartDefaultDate = new tzIndependentDate($rootScope.businessDate);
-      }      
+      }
 
       // if we are in edit mode, we have to set the min/max date
       if (!$scope.isInAddMode()) {
@@ -916,23 +916,11 @@ sntRover.controller('rvAllotmentReservationsListCtrl', [
  * @return {[type]}      [description]
  */
     var successCallBackOfAddReservations = function(data) {
-      $scope.newReservations = [];
-      _.each(data.results, function(reservation) {
-        $scope.newReservations.push(reservation);
-        $scope.reservations.unshift(reservation);
-      });
-
-      // total result count
-      $scope.totalResultCount += (data.results.length);
-
-      // pickup
-      $scope.totalPickUpCount = data.total_picked_count;
-
-      // we changed data, so
-      refreshScrollers();
-
-      // rooming data will change after adding some reservation
-      $scope.fetchConfiguredRoomTypeDetails();
+      $scope.reservations = [];
+      $scope.page = 1;
+      $scope.start    = 1;
+      $scope.end      = undefined;
+      callInitialAPIs();
     };
 
     /**
@@ -1073,7 +1061,7 @@ sntRover.controller('rvAllotmentReservationsListCtrl', [
       $scope.reservations = data.results;
 
       // total result count
-      $scope.totalResultCount = data.total_count;
+      $scope.totalResultCount = data.total_result;
 
       // pickup
       $scope.totalPickUpCount = data.total_picked_count;

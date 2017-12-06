@@ -116,7 +116,8 @@
                                     <strong>{{ details.old_value }}</strong>
                                 </span>
                                 {{details.key}}
-                                <strong>{{details.new_value}}</strong>
+                                <span class="currency" ng-if="details.key === 'amount'"><strong>{{details.new_value}}</strong></span>
+                                <strong ng-if="details.key !== 'amount'">{{details.new_value}}</strong>
                             </span>
                         </td>
                     </tr>

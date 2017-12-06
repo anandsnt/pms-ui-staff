@@ -47,13 +47,13 @@
             <div class="room-data-label">
                 <text editable-text="INVOICE_ARRIVAL"> {{'INVOICE_ARRIVAL' |translate}}</text>:
             </div>
-            <div class="room-data">{{ returnDateObj(printData.arrival_date) | date:'dd-MMM, yyyy'}}</div>
+            <div class="room-data">{{ returnDateObjBasedOnDateFormat(printData.arrival_date) | date:'dd-MMM, yyyy'}}</div>
         </div>
         <div>
             <div class="room-data-label">
                 <text editable-text="INVOICE_DEPARTURE"> {{'INVOICE_DEPARTURE' |translate}}</text>:
             </div>
-            <div class="room-data">{{returnDateObj(printData.departure_date) | date:'dd-MMM, yyyy'}}</div>
+            <div class="room-data">{{returnDateObjBasedOnDateFormat(printData.departure_date) | date:'dd-MMM, yyyy'}}</div>
         </div>
         <div>
             <div class="room-data-label">
@@ -91,7 +91,7 @@
             </div>
             <!-- Charges -->
             <div class="row" ng-repeat="item in printData.charge_details_list">
-                <div class="cell">{{ returnDateObj(item.date) | date:'dd-MMM'}}</div>
+                <div class="cell">{{ returnDateObjBasedOnDateFormat(item.date) | date:'dd-MMM'}}</div>
                 <div class="cell description">
                     <span>{{item.description}}</span>
                     <span class="reference" ng-show="item.reference_text != ''">{{item.reference_text}}</span>
@@ -100,7 +100,7 @@
                 <div class="cell align-right">{{zestStationData.currency}}{{item.amount | number: precisonTwo}}</div>
             </div>
             <div class="row" ng-repeat="item in printData.credit_details_list">
-                <div class="cell">{{returnDateObj(item.date) | date:'dd-MMM'}}</div>
+                <div class="cell">{{returnDateObjBasedOnDateFormat(item.date) | date:'dd-MMM'}}</div>
                 <div class="cell description">
                     <span>{{item.description}}</span>
                     <span class="reference" ng-show="item.reference_text != ''">{{item.reference_text}}</span>

@@ -12,7 +12,8 @@ var GlobalApp = function() {
         this.MLIOperator = new MLIOperation();
         this.desktopUUIDService = new DesktopUUIDService();
     }
-        catch (er) {
+    catch (er) {
+        console.log(er);
     }
 
 
@@ -37,13 +38,24 @@ var GlobalApp = function() {
 
     };
 
+    this.notifyDeviceStateChange = function(device_name, type, value) {
+        var displayString;
+
+        if (type === 'device_battery_below_threshold') {
+            displayString = device_name + ': Battery low (' + value + '%)';
+        } else {
+            displayString = device_name + ': ' + value;
+        }
+
+        document.dispatchEvent(new CustomEvent('OBSERVE_DEVICE_STATUS_CHANGE', {'detail': displayString}));
+    };
+
     // success function of coddova plugin's appending
     this.fetchCompletedOfCordovaPlugins = function() {
         that.cordovaLoaded = true;
         try {
             that.cardReader = new CardOperation();
             that.iBeaconLinker = new iBeaconOperation();
-            that.uuidService = new UUIDService();
         }
         catch (er) {
             console.log(er);
@@ -52,7 +64,7 @@ var GlobalApp = function() {
 
     this.enableCardSwipeDebug = function() {
         that.cardSwipeDebug = true; // Mark it as true to debug cardSwype opertations
-        that.cardReader = new CardOperation();
+        that.cardReader = new MockCardOperation();
     };
 
     this.reInitCardOperations = function() {

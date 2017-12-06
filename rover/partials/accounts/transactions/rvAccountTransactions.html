@@ -1,16 +1,18 @@
 <form ng-controller="rvAccountTransactionsCtrl" id="group-transactions" name="group-transactions" class="form card-tab inner-header bills" ng-click="errorMessage = '';">
-	<div id="account-transactions-header" class="tab-header no-print">
+	<!--common header for fullscreen mode-->
+	<div ng-include="'/assets/partials/common/rvFullscreenHeader.html'" class="fullscreen-header"></div>
+	<div id="account-transaction-header" class="tab-header no-print">
 	<ul class="totals">
 		<li>
 			<div class="data">
 				<span class="label" translate>TOTAL_FEES</span>
-				<span class="value">{{currencySymbol}}{{transactionsDetails.total_fees | number: precisonTwo}}</span>
+				<span class="value"><span class="currency">{{currencySymbol}}</span>{{transactionsDetails.total_fees | number: precisonTwo}}</span>
 			</div>
 		</li>
 		<li>
 			<div class="data">
 				<span class="label" translate>TOTAL_BALANCE</span>
-				<span class="value" ng-class="{'green': transactionsDetails.total_balance == 0, 'red': transactionsDetails.total_balance != 0}">{{currencySymbol}}{{transactionsDetails.total_balance | number: precisonTwo}}</span> <!-- Green if 0, otherwise red -->
+				<span class="value" ng-class="{'green': transactionsDetails.total_balance == 0, 'red': transactionsDetails.total_balance != 0}"><span class="currency">{{currencySymbol}}</span>{{transactionsDetails.total_balance | number: precisonTwo}}</span> <!-- Green if 0, otherwise red -->
 			</div>
 		</li>
 		<li>
@@ -47,7 +49,7 @@
 						<li ng-class="showActiveBill($index)" click-touch="setActiveBill($index)" ng-repeat="billTab in transactionsDetails.bills">
 							<a class="bill-toggle">
 								<div class="price"><span>{{'BILL' |translate}} #{{billTab.bill_number}}</span>
-									{{currencySymbol}}{{billTab.balance_amount | number: precisonZero}}
+									<span class="currency">{{currencySymbol}}</span>{{billTab.balance_amount | number: precisonZero}}
 								</div>
 							</a>
 						</li>
@@ -83,7 +85,7 @@
 											<li class="active" ng-class="{'today' : (businessDate === days.date)}" ng-repeat="days in billData.days"  ng-show="days.isShown" click-touch="clickedSummaryDate(days.date)">
 												<a class="toggle" type ="button" ng-class="{'active' : (billData.activeDate === days.date)}">
 													<span class="day">{{days.date | date:'MMM'}} {{days.date | date:'dd'}}</span>
-													<span class="price">{{currencySymbol}}{{days.total_amount | number: precisonZero}}</span>
+													<span class="price"><span class="currency">{{currencySymbol}}</span>{{days.total_amount | number: precisonZero}}</span>
 												</a>
 											</li>
 										</ul>
@@ -108,7 +110,7 @@
 						<ul class="group-overview">
 							<li>
 								<span class="title" translate>FEES</span>
-								<span class="value">{{currencySymbol}}{{billData.total_amount | number: precisonTwo}}</span>
+								<span class="value"><span class="currency">{{currencySymbol}}</span>{{billData.total_amount | number: precisonTwo}}</span>
 							</li>
 							<li class="break">
 								<button type="button" class="button with-icon only-icon blue" click-touch="showFormatBillPopup(billData.bill_number)">
@@ -119,7 +121,7 @@
 							</li>
 							<li>
 								<span class="title" translate>BALANCE</span>
-								<span class="value" ng-class="{'green': billData.total_fees.balance_amount == 0, 'red': billData.total_fees.balance_amount != 0}">{{currencySymbol}}{{billData.balance_amount | number: precisonTwo}}</span> <!-- Green when 0, otherwise red -->
+								<span class="value" ng-class="{'green': billData.total_fees.balance_amount == 0, 'red': billData.total_fees.balance_amount != 0}"><span class="currency">{{currencySymbol}}</span>{{billData.balance_amount | number: precisonTwo}}</span> <!-- Green when 0, otherwise red -->
 							</li>
 							<li>
 								<button class="button green with-icon only-icon" click-touch="showPayemntModal()" >
@@ -180,7 +182,7 @@
 											{{'STAY_FEES' |translate}} ({{'AS_OF' |translate}}  {{ businessDate | date:dateFormat }}):
 										</td>
 										<td colspan="3" class="total-value">
-											 <strong>{{currencySymbol}}{{billData.total_amount | number: precisonTwo}}</strong>
+											 <strong><span class="currency">{{currencySymbol}}</span>{{billData.total_amount | number: precisonTwo}}</strong>
 										</td>
 										<td>
 											<!-- <button click-touch="openActionsPopup()" class="button purple with-icon only-icon">
@@ -195,7 +197,7 @@
 											{{'BALANCE' |translate}} ({{'AS_OF' |translate}} {{ businessDate | date:dateFormat }}):
 										</td>
 										<td colspan="3" class="total-value" ng-class="{'green': billData.total_fees.balance_amount == 0, 'red': billData.total_fees.balance_amount != 0}"> <!-- Green when 0, otherwise red -->
-											 <strong>{{currencySymbol}}{{billData.balance_amount | number: precisonTwo}}</strong>
+											 <strong><span class="currency">{{currencySymbol}}</span>{{billData.balance_amount | number: precisonTwo}}</strong>
 										</td>
 										<td>
 											<button class="button green with-icon only-icon" click-touch="showPayemntModal()">
@@ -242,13 +244,13 @@
 										</td>
 										<td>
 											<strong>
-												<span ng-show= "feesData.fees">{{currencySymbol}}{{feesData.fees | number: precisonTwo}}
+												<span ng-show= "feesData.fees"><span class="currency">{{currencySymbol}}</span>{{feesData.fees | number: precisonTwo}}
 												</span>
 											</strong>
 										</td>
 										<td>
 											<strong ng-show="feesData.credits">
-												{{currencySymbol}}{{feesData.credits| number: precisonTwo}}
+												<span class="currency">{{currencySymbol}}</span>{{feesData.credits| number: precisonTwo}}
 											</strong>
 										</td>
 										<td ng-show="showMoveCharges">

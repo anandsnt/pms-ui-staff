@@ -44,6 +44,22 @@ angular.module('sntRover').service('RVCompanyCardSrv', ['$q', 'rvBaseWebSrvV2',
             return deferred.promise;
         };
 
+        /**
+         * Fetch multiproperties under this chain
+         * @return {promise|{then, catch, finally}|*|e} Promise
+         */
+        this.fetchMultiProperties = function(data) {
+            var deferred = $q.defer();
+            var url = '/api/accounts/' + data.accountId + '/subscribed_properties';
+
+            rvBaseWebSrvV2.getJSON(url).then(function(data) {
+
+                deferred.resolve(data);
+            }, function(data) {
+                deferred.reject(data);
+            });
+            return deferred.promise;
+        };
 
         /**
          * service function used for retreive country list
@@ -182,8 +198,8 @@ angular.module('sntRover').service('RVCompanyCardSrv', ['$q', 'rvBaseWebSrvV2',
          * @return {promise|{then, catch, finally}|*|e} Promise
          */
         this.fetchRates = function(params) {
-            var deferred = $q.defer();
-            var url = '/api/rates/contract_rates';
+            var deferred = $q.defer(),
+                url = '/api/rates/contract_rates';
 
             rvBaseWebSrvV2.getJSON(url, params).then(function(data) {
                 deferred.resolve(data);

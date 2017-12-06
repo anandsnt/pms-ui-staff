@@ -117,7 +117,12 @@ sntZestStation.controller('zscheckInReservationSearchCtrl', [
                 failureCallBack: checkinVerificationCallBack
             };
 
-            $scope.callAPI(zsCheckinSrv.fetchReservations, options);
+            if ($scope.usingFakeReservation()) {
+                checkinVerificationSuccess(zsCheckinSrv.fetchResDemoData);
+            } else {
+                $scope.callAPI(zsCheckinSrv.fetchReservations, options);
+            }
+            
         };
 
 

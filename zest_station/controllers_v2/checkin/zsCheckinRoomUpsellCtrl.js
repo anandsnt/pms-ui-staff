@@ -61,6 +61,7 @@ sntZestStation.controller('zsCheckinRoomUpsellCtrl', [
 				$scope.selectedReservation.isRoomUpraded = true;
 				// skipECI used to track going back to reservation details from upsell, avoid re-routing to ECI if purchased or upsold a room
 				$scope.selectedReservation.skipECI = true;
+				$scope.selectedReservation.reservation_details.room_number = $scope.selectedRoom.upgrade_room_number;
 				zsCheckinSrv.setSelectedCheckInReservation([$scope.selectedReservation]);
 				if ($scope.zestStationData.station_addon_upsell_active) {
 					$state.go('zest_station.addOnUpsell', {

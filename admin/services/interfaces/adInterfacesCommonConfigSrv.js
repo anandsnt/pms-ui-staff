@@ -51,7 +51,7 @@ admin.service('adInterfacesCommonConfigSrv', ['$http', '$q', 'ADBaseWebSrvV2', '
                 promises = [],
                 meta = {};
 
-            var metaLists = list || ['PAYMENT_METHODS', 'BOOKING_ORIGINS', 'RATES'];
+            var metaLists = list || ['PAYMENT_METHODS', 'BOOKING_ORIGINS', 'RATES', 'ROOM_TYPES'];
 
             if (metaLists.indexOf('PAYMENT_METHODS') > -1) {
                 promises.push(adExternalInterfaceCommonSrv.fetchPaymethods().then(function(response) {
@@ -68,6 +68,12 @@ admin.service('adInterfacesCommonConfigSrv', ['$http', '$q', 'ADBaseWebSrvV2', '
             if (metaLists.indexOf('RATES') > -1) {
                 promises.push(service.fetchRatesMinimal().then(function(response) {
                     meta.rates = response.results;
+                }));
+            }
+
+            if (metaLists.indexOf('ROOM_TYPES') > -1) {
+                promises.push(adExternalInterfaceCommonSrv.fetchRoomTypes().then(function(response) {
+                    meta.roomTypes = response.room_types;
                 }));
             }
 

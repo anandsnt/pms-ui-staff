@@ -49,7 +49,8 @@ angular.module('sntRover')
                     srvParams = RVNightlyDiarySrv.getCache();
                 }
                 else {
-                    srvParams.start_date = addDaysToDay($rootScope.businessDate, -1);
+                    srvParams.start_date = moment(tzIndependentDate($rootScope.businessDate)).subtract(1, 'days')
+                        .format($rootScope.momentFormatForAPI);
                     srvParams.no_of_days = 7;
                     srvParams.page = 1;
                     srvParams.per_page = 50;
@@ -94,10 +95,10 @@ angular.module('sntRover')
              * method to get Pagination parametrs
              * @return {Object} with pagination params
              */
-            var getPaginationParams = function() {
+            var getPaginationParams = function(offset) {
                 return {
                     per_page: $scope.diaryData.paginationData.perPage,
-                    page: $scope.diaryData.paginationData.page,
+                    page: offset ? $scope.diaryData.paginationData.page + offset : $scope.diaryData.paginationData.page,
                     total_count: $scope.diaryData.paginationData.totalCount
                 };
             };
@@ -111,7 +112,7 @@ angular.module('sntRover')
             };
 
             // Method to update room list data.
-            var fetchRoomListDataAndReservationListData = function(roomId) {
+            var fetchRoomListDataAndReservationListData = function(roomId, offset) {
                 var successCallBackFetchRoomList = function(data) {
                         $scope.$emit('hideLoader');
                         $scope.errorMessage = '';
@@ -126,7 +127,7 @@ angular.module('sntRover')
                         }
                     },
                     postData = {
-                        ...getPaginationParams(),
+                        ...getPaginationParams(offset),
                         'start_date': $scope.diaryData.fromDate,
                         'no_of_days': $scope.diaryData.numberOfDays,
                         'selected_room_type_ids': $scope.diaryData.selectedRoomTypes,
@@ -136,8 +137,6 @@ angular.module('sntRover')
                 if (roomId) {
                     postData.room_id = roomId;
                     $scope.diaryData.selectedRoomId = roomId;
-                } else {
-                    $scope.diaryData.selectedRoomId = null;
                 }
                 $scope.invokeApi(RVNightlyDiarySrv.fetchRoomsListAndReservationList, postData, successCallBackFetchRoomList);
             };
@@ -148,8 +147,7 @@ angular.module('sntRover')
              */
             var goToPrevPage = () => {
                 cancelReservationEditing();
-                $scope.diaryData.paginationData.page--;
-                fetchRoomListDataAndReservationListData();
+                fetchRoomListDataAndReservationListData(null, -1);
             };
 
             /*
@@ -158,8 +156,7 @@ angular.module('sntRover')
              */
             var goToNextPage = () => {
                 cancelReservationEditing();
-                $scope.diaryData.paginationData.page++;
-                fetchRoomListDataAndReservationListData();
+                fetchRoomListDataAndReservationListData(null, 1);
             };
             /*
              * Show selected reservation highlighted and enable edit bar

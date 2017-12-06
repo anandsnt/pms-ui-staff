@@ -1,5 +1,5 @@
-sntRover.controller('rvReservationCardActionsController', ['$scope', '$filter', '$rootScope', 'ngDialog', 'rvActionTasksSrv', 'RVReservationCardSrv', 'rvUtilSrv', 'dateFilter',
-    function($scope, $filter, $rootScope, ngDialog, rvActionTasksSrv, RVReservationCardSrv, rvUtilSrv, dateFilter) {
+sntRover.controller('rvReservationCardActionsController', ['$scope', '$filter', '$rootScope', 'ngDialog', 'rvActionTasksSrv', 'RVReservationCardSrv', 'rvUtilSrv', 'dateFilter', '$timeout',
+    function($scope, $filter, $rootScope, ngDialog, rvActionTasksSrv, RVReservationCardSrv, rvUtilSrv, dateFilter, $timeout) {
         $scope.reservationNotes = "";
         /*
          *To save the reservation note and update the ui accordingly
@@ -26,7 +26,7 @@ sntRover.controller('rvReservationCardActionsController', ['$scope', '$filter', 
         $scope.openingPopup = false;
         $scope.refreshing = false;
         $scope.refreshToEmpty = false;
-        
+
         $scope.newAction.department = {'value': ''};
 
         $scope.hotel_time = "4:00 A.M";
@@ -38,19 +38,19 @@ sntRover.controller('rvReservationCardActionsController', ['$scope', '$filter', 
         $scope.selectedActionMessage = '';
         $scope.selectedDepartment = '';
         $scope.actionsSyncing = false;
-        
+
         $scope.reservationId = '';
         $scope.isStandAlone = true;
-        
+
         $scope.editingDescriptionInline = false;
-        
+
         var init = function() {
             if ($rootScope.isStandAlone) {
                 $scope.isStandAlone = true;
             } else {
                 $scope.isStandAlone = false;
             }
-            
+
             if ($scope.$parent.reservationData.reservation_card.reservation_id) {
                 $scope.reservationId = $scope.$parent.reservationData.reservation_card.reservation_id;
             }
@@ -69,7 +69,7 @@ sntRover.controller('rvReservationCardActionsController', ['$scope', '$filter', 
 
             $scope.$watch('RVReservationCardSrv.data',  setActionsCount);
             $scope.setUpData();
-            
+
             if (!$scope.isStandAlone) {
                 $scope.syncActions($scope.reservationId);
             }
@@ -83,9 +83,9 @@ sntRover.controller('rvReservationCardActionsController', ['$scope', '$filter', 
                     'id': $scope.selectedAction.id
                 }
             };
-            
+
             params.action_task.description = description_new;
-            
+
             var onSuccess = function(response) {
                         $scope.lastSavedDescription = response.data.description;
                         $scope.savingDescription = false;
@@ -101,15 +101,15 @@ sntRover.controller('rvReservationCardActionsController', ['$scope', '$filter', 
                     if (description_new && description_new !== '') {
                         $scope.invokeApi(rvActionTasksSrv.updateNewAction, params, onSuccess, onFailure);
                     } else {
-                      $scope.selectedAction.description = $scope.lastSavedDescription;  
-                      $scope.editingDescriptionValue = $scope.lastSavedDescription;  
+                      $scope.selectedAction.description = $scope.lastSavedDescription;
+                      $scope.editingDescriptionValue = $scope.lastSavedDescription;
                     }
-                } 
+                }
             }
         };
         $scope.savingDescription = false;
-        
-        
+
+
         $scope.stopEditClick = function(ent) {
             if (!$scope.starting || ent) {// ent = enter on keyboard hit, user was in txt input and hits enter, forcing a save request
                 setTimeout(function() {
@@ -126,11 +126,11 @@ sntRover.controller('rvReservationCardActionsController', ['$scope', '$filter', 
                     }
                 }, 250);
             } else {
-                 $scope.startEditDescription();   
-            }   
+                 $scope.startEditDescription();
+            }
 
         };
-        
+
         $scope.starting = false;
         $scope.startEditDescription = function() {
             $scope.starting = true;
@@ -145,12 +145,12 @@ sntRover.controller('rvReservationCardActionsController', ['$scope', '$filter', 
                 $scope.editingDescriptionInline = false;
             }
         };
-        
+
         $scope.actionsSyncd = false;
         $scope.syncActions = function(id) {
             /*
              * method to sync action count for the staycard
-             * this reaches out to 
+             * this reaches out to
              */
             var onSuccess = function(data) {
                 $scope.actions.totalCount = data.total_count;
@@ -203,8 +203,8 @@ sntRover.controller('rvReservationCardActionsController', ['$scope', '$filter', 
         var refreshScroller = function() {
             $scope.refreshScroller('rvActionListScroller');
         };
-        
-        
+
+
         $scope.hasArrivalDate = false;
         $scope.hasDepartureDate = false;
 
@@ -267,7 +267,7 @@ sntRover.controller('rvReservationCardActionsController', ['$scope', '$filter', 
             $scope.actions.departureDateString = departureDayString;
         };
 
-        
+
         $scope.getActionsCountStatus = function(data) {
                 $scope.actions.pendingCount = data.data.pending_action_count;
                 var pending = $scope.actions.pendingCount, total = $scope.actions.totalCount;
@@ -288,13 +288,11 @@ sntRover.controller('rvReservationCardActionsController', ['$scope', '$filter', 
                 if (!$scope.isRefreshing) {
                     $scope.refreshing = false;
                 } else {
-                    setTimeout(function() {
-                        $scope.refreshing = false;
-                        $scope.$parent.$emit('hideLoader');
-                        $scope.$apply();
-                    }, 500);
+                    // CICO-45902 - Removed the timeout as it causes delay while adding new action
+                    $scope.refreshing = false;
+                    $scope.$parent.$emit('hideLoader');
                 }
-                
+
                 $scope.$parent.$emit('hideLoader');
                 if (!data.data || data.data.action_count === 0) {
                     $scope.setRightPane('none');
@@ -303,7 +301,7 @@ sntRover.controller('rvReservationCardActionsController', ['$scope', '$filter', 
                 if (!data.data) {
                     $scope.actions.totalCount = 0;
                 }
-                
+
                 $scope.actionsCount = $scope.getActionsCountStatus(data);
                 if ($scope.recountAfterDelete) {
                     if ($scope.actions.totalCount === 1 && $scope.actions[0].is_deleted) {
@@ -321,11 +319,11 @@ sntRover.controller('rvReservationCardActionsController', ['$scope', '$filter', 
                 $scope.$parent.$emit('hideLoader');
                 $scope.refreshing = false;
             };
-            
+
             if ($scope.isRefreshing) {
                 $scope.refreshing = true;
             }
-            
+
             var data = {id: $scope.$parent.reservationData.reservation_card.reservation_id};
 
             $scope.invokeApi(rvActionTasksSrv.getTasksCount, data, onSuccess, onFailure);
@@ -355,7 +353,7 @@ sntRover.controller('rvReservationCardActionsController', ['$scope', '$filter', 
                     $scope.lastSavedDescription = action.description;
                 }
             }
-            
+
             $scope.setRightPane('selected');
             $scope.clearAssignSection();
         };
@@ -455,7 +453,7 @@ sntRover.controller('rvReservationCardActionsController', ['$scope', '$filter', 
             // In the stay card, the date due for a new action should default to the greater of the arrival date / business date
             var businessDate = new tzIndependentDate($rootScope.businessDate),
                 arrivalDate = new tzIndependentDate($scope.reservationParentData.arrivalDate);
-            
+
             $scope.newAction.dueDateObj = businessDate > arrivalDate ? businessDate : arrivalDate;
             $scope.newAction.date_due = $filter('date')( $scope.newAction.dueDateObj, $rootScope.dateFormat);
             if (!$scope.newAction.time_due) {
@@ -615,7 +613,7 @@ sntRover.controller('rvReservationCardActionsController', ['$scope', '$filter', 
             } else {
                 $scope.setRightPane('none');// goes back to All is Good if no actions
             }
-            
+
             $scope.clearNewAction();
         };
         $scope.cancelAssign = function() {
@@ -640,13 +638,13 @@ sntRover.controller('rvReservationCardActionsController', ['$scope', '$filter', 
         $scope.refreshingList = function() {
             if ($scope.refreshing || $scope.refreshToEmpty) {
                 $scope.$parent.$emit('showLoader');
-                return true; 
-            } else { 
+                return true;
+            } else {
                 setTimeout(function() {
                     $scope.$parent.$emit('hideLoader');
                 }, 1200);
                 return false;
-            
+
             }
         };
         $scope.refreshingToNonEmpty = function() {
@@ -655,7 +653,7 @@ sntRover.controller('rvReservationCardActionsController', ['$scope', '$filter', 
           } else {
               return false;
           }
-            
+
         };
         $scope.showActionsList = function() {
             if (($scope.actions.totalCount > 0 || $scope.refreshing) && !$scope.refreshToEmpty) {
@@ -673,8 +671,8 @@ sntRover.controller('rvReservationCardActionsController', ['$scope', '$filter', 
             } else return false;
         };
         $scope.isStandAloneAction = function(action) {
-            if (!$scope.isTrace(action.action_task_type) && 
-                !$scope.isRequest(action.action_task_type) && 
+            if (!$scope.isTrace(action.action_task_type) &&
+                !$scope.isRequest(action.action_task_type) &&
                 !$scope.isAlert(action.action_task_type)) {
                 return true;
             } else return false;
@@ -748,7 +746,7 @@ sntRover.controller('rvReservationCardActionsController', ['$scope', '$filter', 
                         list[x].date_completed = getFormattedDate(list[x].completed_at);
                         list[x].time_completed = getCompletedTimeFromDateMilli(list[x].completed_at);
                     }
-                    
+
                 }
 
 
@@ -769,7 +767,7 @@ sntRover.controller('rvReservationCardActionsController', ['$scope', '$filter', 
                                 } else if (!$scope.isStandAlone) {
                                     if (del === 'delete' && selected) {// flag to delete an item (overlay)
                                         if (selected.id === listItem.id) {
-                                            inActions = true;// skips 
+                                            inActions = true;// skips
                                         }
                                     } else {
                                         $scope.actions[i] = listItem;
@@ -783,7 +781,7 @@ sntRover.controller('rvReservationCardActionsController', ['$scope', '$filter', 
                         }
                     }
                 }
-                
+
                 // hide the element that was deleted; and refresh the scroller,
                 // this also sets focus to the first item in the list
                 for (var xi in $scope.actions) {
@@ -792,8 +790,8 @@ sntRover.controller('rvReservationCardActionsController', ['$scope', '$filter', 
                         refreshScroller();
                     }
                 }
-                
-                
+
+
                 $scope.fetchActionsCount();
                 $scope.setActionsHeaderInfo();
                 var isStandAlone = $scope.isStandAlone;
@@ -833,7 +831,7 @@ sntRover.controller('rvReservationCardActionsController', ['$scope', '$filter', 
                 }
                 if ($scope.refreshToEmpty) {
                     $scope.refreshToEmpty = false;
-                } 
+                }
                 if ($scope.refreshing) {
                     $scope.refreshing = false;
                 }
@@ -850,7 +848,7 @@ sntRover.controller('rvReservationCardActionsController', ['$scope', '$filter', 
             $scope.invokeApi(rvActionTasksSrv.getActionsTasksList, data, onSuccess, onFailure);
 
         };
-        
+
         $scope.hasActionStatus = function() {
             if (!$scope.actions) {
                 return false;
@@ -870,7 +868,7 @@ sntRover.controller('rvReservationCardActionsController', ['$scope', '$filter', 
             }
             return false;
         };
-        
+
         $scope.capped = function(str) {
             if (str) {
                 var s = str.toLowerCase();
@@ -879,7 +877,7 @@ sntRover.controller('rvReservationCardActionsController', ['$scope', '$filter', 
             }
             return s;
         };
-        
+
         $scope.eitherString = function(str, val) {
             if (val) {
                 if (str === val) {
@@ -893,7 +891,7 @@ sntRover.controller('rvReservationCardActionsController', ['$scope', '$filter', 
                 } else return false;
             } else return false;
         };
-        
+
         $scope.isAlert = function(v) {
            var str = 'ALERT';
 
@@ -965,21 +963,20 @@ sntRover.controller('rvReservationCardActionsController', ['$scope', '$filter', 
                         list[x].created_at_time = $filter('date')(list[x].created_at, "hh:mm a");
                         list[x].created_at_date = $filter('date')(list[x].created_at, $rootScope.dateFormat);
                     }
-                    
+
                 }
                 $scope.actions = list;
                 $scope.fetchActionsCount();
                 $scope.setActionsHeaderInfo();
 
-                setTimeout(refreshScroller, 300);
-                setTimeout(function() {
-                    if ($scope.actions[0]) {
-                       $scope.selectAction($scope.actions[0]);
-                    }
-                   $scope.$apply();
-                }, 100);
+                // CICO-45902 Removed the timeout here as it is causing delay while adding a new action
+                if ($scope.actions[0]) {
+                    $scope.selectAction($scope.actions[0]);
+                }
+                refreshScroller();
+
                 if ($scope.openingPopup) {
-                    setTimeout(function() {
+                    $timeout(function() {
                         $scope.initPopup();
                     }, 900);
                 }
@@ -1259,16 +1256,16 @@ sntRover.controller('rvReservationCardActionsController', ['$scope', '$filter', 
                 $scope.invokeApi(rvActionTasksSrv.updateNewAction, params, onSuccess, onFailure);
             }
         };
-        
+
         $scope.initRefresh = function(del) {
             $scope.isRefreshing = true;
-            
+
             var deleting = false;
 
             if (del === 'delete') {
                 deleting = true;
             }
-            
+
             var removingLastAction = ($scope.actions.totalCount - 1 <= 0);
 
             if (deleting && removingLastAction) {
@@ -1282,7 +1279,7 @@ sntRover.controller('rvReservationCardActionsController', ['$scope', '$filter', 
                 $scope.actionSelected = 'selected';
             }
         };
-        
+
         $scope.endRefresh = function() {
             $scope.isRefreshing = false;
         };
@@ -1293,15 +1290,15 @@ sntRover.controller('rvReservationCardActionsController', ['$scope', '$filter', 
 
                 params.action_task.id  = $scope.selectedAction.id;
                 params.is_complete = true;
-                
+
                 $scope.initRefresh(del);
-                
+
                 var onSuccess = function() {
                     $scope.actions.totalCount--;
                     $scope.lastSelectedItemId = params.action_task.id;
                     $scope.refreshActionList(del, selected);
-                    
-                    
+
+
                     if (($scope.actions.totalCount - 1 <= 1) && del !== 'delete') {
                         $scope.actionSelected = 'selected';
                     }
