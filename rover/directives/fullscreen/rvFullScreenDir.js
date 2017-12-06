@@ -16,9 +16,13 @@ sntRover.directive('rvFullscreen', [
                         fullscreenData = {};
 
                     fullscreenData.subHeader = attr.fsSubHeader;
+                    fullscreenData.toggleClass = attr.fsToggleClass ? attr.fsToggleClass
+                        : $rootScope.fullscreenData.toggleClass;
                     $rootScope.fullscreenData = fullscreenData;
+
                     bodyEl.classList.toggle('is-fullscreen');
-                    bodyEl.classList.toggle('fullscreen-card');
+                    bodyEl.classList.toggle($rootScope.fullscreenData.toggleClass);
+
                     Object.keys($rootScope.myScrollOptions).forEach(function (key) {
                         scope.refreshScroller(key);
                     });
