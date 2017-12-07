@@ -2179,6 +2179,16 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 			initialize();
 		}
 
+		// CICO-47056
+		$scope.$on("FAILURE_UPDATE_RESERVATION", function(e, data) {			
+			$scope.errorMessage = data;
+		});
+
+		// CICO-47056
+		$scope.clearErrorMessage = function () {
+           $scope.errorMessage = [];
+ 		};
+
 
 	}
 ]);
