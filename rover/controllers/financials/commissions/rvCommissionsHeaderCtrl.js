@@ -58,7 +58,7 @@ sntRover.controller('RVCommisionsHeaderCtrl', ['$scope', 'ngDialog', '$log', '$t
             min_commission_amount: $scope.filterData.minAmount,
             query: $scope.filterData.searchQuery,
             sort_by: $scope.filterData.sort_by.value
-        }
+        };
         
         var options = {
             params: params,
