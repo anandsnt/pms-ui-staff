@@ -42,7 +42,10 @@
 						<div class="float_left">
 							<label class="radio" ng-class="{checked:addon.is_inclusive_in_rate == 'true'}">
 								<span class="icon-form icon-radio " ng-class="{checked:addon.is_inclusive_in_rate == 'true'}"></span>
-								<input type="radio" ng-model="addon.is_inclusive_in_rate" value="true" class="change-data">
+								<input type="radio"
+									ng-disabled="addon.is_tourist_tax"
+									ng-model="addon.is_inclusive_in_rate"
+									value="true" class="change-data">
 								Include in price
 								
 							</label>
