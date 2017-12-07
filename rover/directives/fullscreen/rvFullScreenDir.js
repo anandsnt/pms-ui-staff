@@ -17,11 +17,12 @@ sntRover.directive('rvFullscreen', [
 
                     fullscreenData.subHeader = attr.fsSubHeader;
                     $rootScope.fullscreenData = fullscreenData;
-                    bodyEl.classList.toggle("is-fullscreen");
-                    bodyEl.classList.toggle("fullscreen-card");
+                    bodyEl.classList.toggle('is-fullscreen');
+                    bodyEl.classList.toggle('fullscreen-card');
                     Object.keys($rootScope.myScrollOptions).forEach(function (key) {
                         scope.refreshScroller(key);
                     });
+                    $rootScope.$digest();
                     e.stopPropagation();
                 });
             }

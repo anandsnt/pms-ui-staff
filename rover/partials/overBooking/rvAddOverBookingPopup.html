@@ -26,13 +26,13 @@
 	        <!-- Start Date -->
 	        <div ng-click="showDatePicker('FROM')" class="entry margin has-datepicker">
 	            <label for="start-date" translate>FROM</label>
-	            <input id="start-date" type="text" class="datepicker" value="{{addOverBookingObj.fromDate}}" readonly />
+	            <input id="start-date" type="text" class="datepicker" value="{{addOverBookingObj.fromDate | date:dateFormat}}" readonly />
 	        </div>
 
 	        <!-- End Date -->
 	        <div ng-click="showDatePicker('TO')" class="entry has-datepicker">
 	            <label for="end-date" translate>TO</label>
-	            <input id="end-date" type="text" class="datepicker" value="{{addOverBookingObj.toDate}}" readonly />
+	            <input id="end-date" type="text" class="datepicker" value="{{addOverBookingObj.toDate | date:dateFormat}}" readonly />
 	        </div>
 
 	        <!-- Days of week to include (all checked by default) -->

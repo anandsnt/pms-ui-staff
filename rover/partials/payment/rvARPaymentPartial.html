@@ -1,11 +1,11 @@
 <div class="entry full-width" ng-class="{'amount': feeData.showFee}"
      ng-hide="paymentAttempted && !isPaymentFailure">
 
-    <label>Amount to pay (<span>{{currencySymbol}}</span>)</label>
+    <label>Amount to pay(<span>{{currencySymbol}}</span>)</label>
 
     <input ng-change="onPaymentInfoChange()"
            ng-model="payment.amount"
-           type="number"
+           type="number" value="{{payment.amount}}" 
            class="amount" pattern="^[1-9]\d*(?:\.\d+)?$" ng-disabled="actionType === 'AR_REFUND_PAYMENT'" onpaste="return false"/>
 
     <span ng-show="feeData.showFee" class="delimiter">+</span>
@@ -65,18 +65,25 @@
 </div>
 
 <!-- Buttons -->
-<div class="actions" ng-hide="paymentAttempted && !isPaymentFailure">
-    <button type="button" class="button blank modal-close" ng-click="closeThePopup()" translate>
-        CANCEL
-    </button>
-    <button type="button" class="button green" click-touch="submitPayment()"
-            ng-show="!shouldHidePaymentButton() && !isRefund()">
-        MAKE PAYMENT
-    </button>
-    <button type="button" class="button blue" click-touch="submitPayment()"
-            ng-show="isRefund()">
-        REFUND {{currencySymbol}}{{ -1 * payment.amount | number:2 }}
-    </button>
+<div ng-hide="paymentAttempted && !isPaymentFailure">
+  <div class="actions" ng-hide="actionType === 'AR_REFUND_PAYMENT'">
+      <button type="button" class="button blank modal-close" ng-click="closeThePopup()" translate>
+          CANCEL
+      </button>
+      <button type="button" class="button green" click-touch="submitPayment()"
+              ng-show="!isRefund()">
+          MAKE PAYMENT
+      </button>    
+  </div>
+  <div class="actions" ng-show="actionType === 'AR_REFUND_PAYMENT'">
+      <button type="button" class="button blank modal-close" ng-click="closeThePopup()" translate>
+          CLOSE
+      </button>
+      <button type="button" class="button blue" click-touch="submitPayment()"
+              ng-show="isRefund()">
+          REFUND {{currencySymbol}}{{ -1 * payment.amount | number:2 }}
+      </button>
+  </div>
 </div>
 <div class="actions" ng-show="paymentAttempted && !isPaymentFailure">
     <button type="button" class="button blank modal-close" ng-click="closeThePopup()" translate>

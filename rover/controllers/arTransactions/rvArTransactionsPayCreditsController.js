@@ -16,7 +16,7 @@ sntRover.controller('RVArTransactionsPayCreditsController',
     $scope.saveData = {'paymentType': ''};
     $scope.billNumber = 1;
     $scope.renderData = {};
-    $scope.renderData.defaultPaymentAmount = ($scope.passData.isRefundClick) ? (-1) * parseFloat($scope.passData.payment.amount) : $scope.arDataObj.unpaidAmount;
+    $scope.renderData.defaultPaymentAmount = ($scope.passData.isRefundClick) ? ((-1) * parseFloat($scope.passData.payment.amount)).toFixed(2) : parseFloat($scope.arDataObj.unpaidAmount).toFixed(2);
     $scope.saveData.paymentType = ($scope.passData.isRefundClick) ? $scope.passData.payment.payment_type_value  : '';
     $scope.actionType = ($scope.passData.isRefundClick) ? "AR_REFUND_PAYMENT" : "AR_SUBMIT_PAYMENT";
     if ($scope.passData.isRefundClick && $scope.passData.payment.payment_type_value === "CC") {
@@ -307,9 +307,9 @@ sntRover.controller('RVArTransactionsPayCreditsController',
      * Invoke this method to show the refund amount on the button in the payment screen
      */
     var renderDefaultValues = function() {
-        $scope.defaultRefundAmount = (-1) * parseFloat($scope.renderData.defaultPaymentAmount);
+        $scope.defaultRefundAmount = ((-1) * parseFloat($scope.renderData.defaultPaymentAmount)).toFixed(2);
         if ($scope.renderData.defaultPaymentAmount < 0) {
-            $scope.defaultRefundAmount = (-1) * parseFloat($scope.renderData.defaultPaymentAmount);
+            $scope.defaultRefundAmount = ((-1) * parseFloat($scope.renderData.defaultPaymentAmount)).toFixed(2);
             $scope.shouldShowMakePaymentButton = false;
         } else {
             $scope.shouldShowMakePaymentButton = true;
