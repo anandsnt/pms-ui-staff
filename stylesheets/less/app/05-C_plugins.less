@@ -7761,16 +7761,27 @@
                     position: relative;
                     height: 50px;
 
+                    .switch-label {
+                        position: absolute;
+                        top: 10px;
+                        left: 10px;
+                        font-size: 12px;
+                        line-height: 1;
+                        text-transform: uppercase;
+                        color: @grey3;
+                        z-index: 20;
+                    }
+
                     input {
                         position: absolute;
                         top: 0;
                         left: 0;
-                        font-size: 30px;
+                        font-size: 24px;
+                        line-height: 1;
                         font-weight: 600;
-                        line-height: 50px;
+                        padding-top: 14px;
                         z-index: 10;
                         -webkit-appearance: none;
-                        .placeholder-text(16px, 50px, 400, @grey3);
                         .square(100%);
                     }
 
