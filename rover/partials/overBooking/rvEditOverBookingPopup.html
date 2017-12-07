@@ -9,11 +9,9 @@
 	    
 	    <!-- Limit Value -->
 	    <div class="entry full-width entry-limit">
-
-	        <label for="limit-value" ng-if="overBookingObj.editData.type == 'HOUSE'" translate>HOUSE_LIMIT</label>
-	        <label for="limit-value" ng-if="overBookingObj.editData.type == 'ROOM_TYPE'" translate>ROOM_TYPE_VALUE</label>
-	        
 	        <div class="limit-input">
+	        	<label class="switch-label" for="limit-value" ng-if="overBookingObj.editData.type == 'HOUSE'" translate>HOUSE_LIMIT</label>
+	        	<label class="switch-label" for="limit-value" ng-if="overBookingObj.editData.type == 'ROOM_TYPE'" translate>ROOM_TYPE_VALUE</label>
 	            <div class="switch-button overlay"> <!-- Add class 'on' if L12 is checked -->
 	                <input id="limit-type" type="checkbox"> <!-- Rooms number if not checked, percentage if checked -->
 	                <label class="data-off">
@@ -25,7 +23,7 @@
 	                    <span class="switch-icon">%</span>
 	                </label>
 	            </div>
-	            <input type="number" ng-model="overBookingObj.editData.limitValue" id="limit-value" placeholder="Enter Number" value="{Value}" />
+	            <input type="number" ng-model="overBookingObj.editData.limitValue" id="limit-value" />
 	        </div>
 	    </div>
 
