@@ -51,7 +51,7 @@
 ==========================================================*/
     
     #huntley {
-
+ 
         .logo-svg{
             background-image: url("../css/themes/huntley/logo.svg");
             background-repeat: no-repeat;
@@ -69,11 +69,18 @@
         #header {
             height: 120px;
             border-top: 10px solid @black;
+
+            .icons {
+                fill: @brandColor;
+            }
         }
 
         #main {
             #calc > #height > .remove(100%, 120px);
             top: 120px;
+            &.centered {
+                padding-top: 0;
+            }
         }
 
         #actions {
@@ -86,10 +93,38 @@
                     color: @textColor;
                 }
             }
+
+            &.languages {
+                .language {
+                    &.selected {
+                        border: 1px solid @brandColor;
+                    }
+                }
+            }
+        }
+
+        .popup {
+            #languages {
+                .button {
+                    &.active { border: 1px solid @brandColor; }
+                }
+            }
         }
 
         .button.transparent {
-            background-color: fade(@white, 40);
+            background-color: fade(@black, 10);
+
+            &:not(.text-red) {
+                color: @black;
+            }
+
+            .icons {
+                &.icon-arrow-left,
+                &.icon-arrow-right {
+                    
+                    stroke: @black;
+                }
+            }
         }
          
         #logo {
@@ -104,6 +139,7 @@
             li {
                 .details {
                     background: @black;
+                    color: @white;
                 }
             }
         }

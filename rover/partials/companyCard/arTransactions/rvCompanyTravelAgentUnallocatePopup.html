@@ -6,7 +6,7 @@
 		<span class="text">This will unallocate the payment from this invoice.</span>
 
 		<div class="amount">
-		 	<strong>{{currencySymbol}}{{selectedUnAllocatedItem.amount}}</strong>
+		 	<strong><span class="currency">{{currencySymbol}}</span>{{selectedUnAllocatedItem.amount}}</strong>
 		 	Allocated {{selectedUnAllocatedItem.allocation_date | date : dateFormat}} {{selectedUnAllocatedItem.allocation_time}}
 		</div>
 		 
@@ -81,7 +81,7 @@
 
 					<div class="balance balance-after">
 						Credit After
-						<strong class="green">{{currencySymbol}}{{selectedUnAllocatedItem.to_payment.credit_after}}</strong>
+						<strong class="green"><span class="currency">{{currencySymbol}}</span>{{selectedUnAllocatedItem.to_payment.credit_after}}</strong>
 					</div>
 
 

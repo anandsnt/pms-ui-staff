@@ -107,9 +107,9 @@
             <li ng-if="data.isShowSummaryTab" ng-class="{'active':data.activeTab === 'SUMMARY'}" ng-click="activatedTab('SUMMARY')">
                 <span class="icons icon-navbar icon-summary" translate>SUMMARY</span></li>
             <li id="show-revenue" ng-class="{'active':data.activeTab === 'REVENUE'}" ng-click="activatedTab('REVENUE')">
-                <span class="icons icon-navbar icon-revenue" translate>REVENUE</span><span class="currency">{{currencySymbol}}</span>{{data.revenueData.total_revenue | number: precisonTwo}}</li>
+                <span class="icons icon-navbar icon-revenue" translate>REVENUE</span><span class="currency">{{currencySymbol}}</span> {{data.revenueData.total_revenue | number: precisonTwo}}</li>
             <li id="show-payments" ng-class="{'active':data.activeTab === 'PAYMENTS'}" ng-click="activatedTab('PAYMENTS')">
-                <span class="icons icon-navbar icon-payments" translate>PAYMENTS</span><span class="currency">{{currencySymbol}}</span>{{data.paymentData.total_payment | number: precisonTwo}}</li>
+                <span class="icons icon-navbar icon-payments" translate>PAYMENTS</span><span class="currency">{{currencySymbol}} </span>{{data.paymentData.total_payment | number: precisonTwo}}</li>
             <li id="show-cashier" ng-class="{'active':data.activeTab === 'CASHIER'}" ng-click="activatedTab('CASHIER')">
                 <span class="icons icon-navbar icon-cashier" translate>CASHIER</span>{{data.filterData.cashierStatus}}</li>
         </ul>

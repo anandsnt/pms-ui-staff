@@ -259,6 +259,7 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 		};
 		// Show payment allocate popup.
 		$scope.popupPaymentForAllocation = function () {
+			$scope.type = 'ALLOCATE';
 			ngDialog.open({
 				template: '/assets/partials/companyCard/arTransactions/rvCompanyTravelAgentCardArPaymentPopup.html',
 				controller: 'RVArPaymentForAllocationController',
@@ -805,6 +806,7 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 		$scope.$on("CLICKED_REFUND_BUTTON", function(event, payment) {
 			if (payment.payment_type_value === "CC") {
                 payment.card_details.ending_with = payment.card_details.last_digits;
+                payment.card_details.expiry_date = payment.card_details.expire_date;
             }
             
 			var passData = {
