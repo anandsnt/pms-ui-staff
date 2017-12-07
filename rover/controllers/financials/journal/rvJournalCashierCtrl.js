@@ -134,13 +134,23 @@ sntRover.controller('RVJournalCashierController', ['$scope', 'RVJournalSrv', '$r
       * Calculate total when cash amount change
       */
     $scope.changedCash = function() {
-        $scope.totalClosingBalanceInCash = (parseFloat($scope.details.opening_balance_cash) + parseFloat($scope.details.total_cash_received)) - (parseFloat($scope.details.cash_submitted));
+        if ($scope.details.cash_submitted) {
+            $scope.totalClosingBalanceInCash = (parseFloat($scope.details.opening_balance_cash) + parseFloat($scope.details.total_cash_received)) - (parseFloat($scope.details.cash_submitted));
+        } else {
+            $scope.totalClosingBalanceInCash = (parseFloat($scope.details.opening_balance_cash) + parseFloat($scope.details.total_cash_received));
+        }
+        
     };
      /*
       * Calculate total when check amount change
       */
     $scope.changedCheck = function() {
-        $scope.totalClosingBalanceInCheck = (parseFloat($scope.details.opening_balance_check) + parseFloat($scope.details.total_check_received)) - (parseFloat($scope.details.check_submitted));
+        if ($scope.details.check_submitted) {
+            $scope.totalClosingBalanceInCheck = (parseFloat($scope.details.opening_balance_check) + parseFloat($scope.details.total_check_received)) - (parseFloat($scope.details.check_submitted));
+        } else {
+            $scope.totalClosingBalanceInCheck = (parseFloat($scope.details.opening_balance_check) + parseFloat($scope.details.total_check_received));
+        }
+        
     };
 
 }]);
