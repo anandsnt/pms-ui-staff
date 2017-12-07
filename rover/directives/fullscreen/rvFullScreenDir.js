@@ -11,19 +11,25 @@ sntRover.directive('rvFullscreen', [
         return {
             restrict: 'A',
             link: function(scope, element, attr) {
-                element.on('click', function(e) {
-                    var bodyEl = angular.element(document.querySelector('body'))[0],
-                        fullscreenData = {};
+                ['click', 'touchstart'].map(function(type) {
+                    element.on(type, function(e) {
+                        var bodyEl = angular.element(document.querySelector('body'))[0],
+                            fullscreenData = {};
 
-                    fullscreenData.subHeader = attr.fsSubHeader;
-                    $rootScope.fullscreenData = fullscreenData;
-                    bodyEl.classList.toggle('is-fullscreen');
-                    bodyEl.classList.toggle('fullscreen-card');
-                    Object.keys($rootScope.myScrollOptions).forEach(function (key) {
-                        scope.refreshScroller(key);
+                        fullscreenData.subHeader = attr.fsSubHeader;
+                        fullscreenData.toggleClass = attr.fsToggleClass ? attr.fsToggleClass
+                            : $rootScope.fullscreenData.toggleClass;
+                        $rootScope.fullscreenData = fullscreenData;
+
+                        bodyEl.classList.toggle('is-fullscreen');
+                        bodyEl.classList.toggle($rootScope.fullscreenData.toggleClass);
+
+                        Object.keys($rootScope.myScrollOptions).forEach(function (key) {
+                            scope.refreshScroller(key);
+                        });
+                        $rootScope.$digest();
+                        e.stopPropagation();
                     });
-                    $rootScope.$digest();
-                    e.stopPropagation();
                 });
             }
         };
