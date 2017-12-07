@@ -7803,7 +7803,7 @@
 
             &.new-overbooking {
                 padding: 0;
-                width: 380px;
+                width: 420px;
                 .float();
 
                 .overbooking-rooms {
@@ -7866,12 +7866,25 @@
                 }
 
                 .actions {
-                    padding: 20px 60px 0 60px;
+                    padding-top: 20px;
+                    #flexbox > .parent(row wrap, center, '', '');
+
+                    .button {
+                        width: auto;
+
+                        &.blank {
+                            order: 1;
+                        }
+
+                        &.green {
+                            order: 2;
+                        }
+                    }
                 }
 
                 &.showing-rooms {
                     padding-left: 300px;
-                    width: 680px;
+                    width: 720px;
 
                     .overbooking-rooms {
                         left: 0;
