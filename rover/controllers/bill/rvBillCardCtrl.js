@@ -1855,7 +1855,7 @@ sntRover.controller('RVbillCardController',
 		$timeout(function() {
 			// slight delay on-success so user doesnt re-click review & checkout again and initiate an error
 			// CICO-45029
-			$scope.checkoutInProgress = false;
+			$scope.checkoutInProgress = false;			
 		}, 500);
 	};
 	// To handle failure callback of complete checkout
@@ -2002,6 +2002,7 @@ sntRover.controller('RVbillCardController',
 				"signature": signatureBase64Data
 			};
 
+			sntActivity.start('COMPLETE_CHECKOUT');
 			$scope.invokeApi(RVBillCardSrv.completeCheckout, data, $scope.completeCheckoutSuccessCallback, $scope.completeCheckoutFailureCallback);
 		}
 	};

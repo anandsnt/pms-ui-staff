@@ -167,6 +167,15 @@
 		</div>
 	</div>
 
+	<!-- For standalone properties ensure max reservation length is 92 or less  -->
+	<div class="updates-content no-content" ng-show="rightSideReservationUpdates=='MAX_LENGTH_EXCEEDED'" ng-class="{'hidden': rightSideReservationUpdates!='MAX_LENGTH_EXCEEDED'}">
+		<div class="info">
+			<strong class="h1" translate>VALIDATION_MSG_MAX_LENGTH_EXCEEDED</strong>
+			<span class="h2" translate>PLEASE_SEE_FRONT_DESK</span>
+			<button type="button" class="button blank" ng-click="resetDates()" translate>RESET_DATES</button>
+		</div>
+	</div>
+
 	<!--no house or room type availabile. User will be provided with an option to go to the find room and rates screen -->
 	<div id="unable-to-extend" class="updates-content no-content" ng-show="rightSideReservationUpdates=='NO_HOUSE_AVAILABLE'" ng-class="{'hidden': rightSideReservationUpdates!='NO_HOUSE_AVAILABLE'}">
 		<div class="info">

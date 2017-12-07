@@ -1,0 +1,49 @@
+<div role="dialog" id="modal" class="modal-show">
+<!-- Add .exporting when exporting -->
+<!-- Add .success when success -->
+<!-- Add .error on error -->
+<div class="modal-content form commissions" ng-class="{'exporting': exportInProgess, 'success': exportSuccess, 'error': exportFailed}">
+    <button class="modal-close" id="modal-close" type="button" ng-click="closeThisDialog()"><span class="icons icon-close invert"></span></button>
+    
+    <span class="h2 message">Export</span> 
+
+    <!-- On default: -->
+    <span class="text" ng-hide="exportInProgess || exportFailed || exportSuccess">Export and pay commission records</span>
+
+    <!-- On exporting -->
+    <span class="text" ng-show="exportInProgess">Exporting commission records...</span>
+ 
+
+    <!-- On error -->
+    <span class="text" ng-show="exportFailed">Export of commission records failed.</span>
+
+    <!-- On success -->
+    <span class="text" ng-show="exportSuccess">Commission records exported.</span>
+    
+    <div class="notice">
+        <strong class="amount"><span class="currency">{{ ::currencySymbol }}</span>{{::commissionsData.amount_totals.unpaid | number: precisonTwo}}</strong>
+        <span class="bills">{{ filterData.billStatus.value === 'ON_HOLD' ? commissionsData.bill_count_totals.on_hold : commissionsData.bill_count_totals.open }} Bills</span>
+    </div>
+
+    <div class="actions">
+        <!-- On Default: -->
+        <button type="button" class="button green" ng-click="exportCommisions()">Export</button>
+        <button type="button" id="cancel" class="button blank" ng-click="closeThisDialog()">Cancel</button>
+
+        <!-- On Error --
+            <button type="button" class="button blue">Try Again</button>
+            <button type="button" id="cancel" class="button blank">Cancel</button>
+        -->
+
+        <!-- On Success --
+            <!-- If we have set records to paid add .disabled & disabled=disabled, change text to "Records set to Paid!" --
+            <button type="button" class="button green">Set Records to Paid</button>
+            
+            <!-- If generated add .disabled & disabled=disabled, change text to "Payment report generated" --
+            <button type="button" class="button blue">Generate Payment Record</button>
+            
+            <button type="button" id="cancel" class="button blank">Close Window</button>
+        -->
+    </div>
+</div>
+</div>

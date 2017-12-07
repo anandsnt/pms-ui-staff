@@ -64,7 +64,7 @@ var GlobalApp = function() {
 
     this.enableCardSwipeDebug = function() {
         that.cardSwipeDebug = true; // Mark it as true to debug cardSwype opertations
-        that.cardReader = new CardOperation();
+        that.cardReader = new MockCardOperation();
     };
 
     this.reInitCardOperations = function() {
