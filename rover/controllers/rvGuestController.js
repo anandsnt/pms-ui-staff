@@ -337,8 +337,8 @@ angular.module('sntRover').controller('guestCardController', [
 			    contactDetails = _.pick(contactInfo, whiteListedKeys);
 
 			contactDetails.address = {
-				state: contactInfo.address ? contactInfo.address.state : "",
-				city: contactInfo.address ? contactInfo.address.city : ""
+				state: contactInfo.address && contactInfo.address.state ? contactInfo.address.state : "",
+				city: contactInfo.address && contactInfo.address.city ? contactInfo.address.city : ""
 			};
 
 			return contactDetails;
