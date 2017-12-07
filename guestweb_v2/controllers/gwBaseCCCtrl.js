@@ -102,7 +102,7 @@ sntGuestWeb.controller('gwBaseCCCollectionController', ['$scope', '$rootScope', 
 			};
 
 			if (GwWebSrv.zestwebData.isInZestwebDemoMode) {
-				$scope.emit('NAVIGATE_TO_NEXT_PAGE');
+				$scope.$emit('NAVIGATE_TO_NEXT_PAGE');
 			} else {
 				fetchMLISessionId();
 			}
