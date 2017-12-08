@@ -4,7 +4,7 @@ admin.controller('ADChargeCodesCtrl', ['$scope', 'ADChargeCodesSrv', 'ngTablePar
         var CHARGE_CODE_TYPE_TAX = 1;
         var CHARGE_CODE_TYPE_PAYMENT = 2;
         var CHARGE_CODE_TYPE_FEES = 6;
-        var CHARGE_CODE_TYPE_TOURIST = 7;
+        var CHARGE_CODE_TYPE_TOURIST = 8;
 
 		ADBaseTableCtrl.call(this, $scope, ngTableParams);
 		$scope.$emit("changedSelectedMenu", 5);
