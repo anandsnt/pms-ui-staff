@@ -237,7 +237,7 @@ angular.module('sntRover').service('rvAvailabilitySrv', ['$q', 'rvBaseWebSrvV2',
 			dates.push({'date': item.date, 'isWeekend': isWeekend, 'dateObj': new Date(item.date)});
 
 			// Extracting overbooking details
-			overbooking.push(item.available_rooms);
+			overbooking.push(item.house_sell_limit);
 
 			// Extracting Occupancy details
 			occupancies.push(item.occupancy.percentage);
@@ -848,6 +848,45 @@ angular.module('sntRover').service('rvAvailabilitySrv', ['$q', 'rvBaseWebSrvV2',
                 _.extend(that.data.gridData.additionalData, {
                     'roomTypeWiseDetails': _.zip.apply(null, _.pluck(response.results, 'room_types')),
                     'roomTypeNames': roomTypeNames
+                });
+                deferred.resolve(true);
+            }, function(data) {
+                deferred.reject(data);
+            });
+            return deferred.promise;
+        };
+
+        this.fetchOverbooking = function(dateRange) {
+            var deferred = $q.defer(),
+                url = '/api/availability/room_type_sell_limits';
+
+            rvBaseWebSrvV2.getJSON(url, dateRange).then(function(response) {
+                var roomTypeNames = [];
+
+                if (!that.data.gridData.additionalData) {
+                    that.data.gridData.additionalData = {};
+                }
+
+                if (response.results.length > 0) {
+                    // Inorder to get the room type names in the order of display fetch the first result set
+                    var firstDayRoomDetails = response.results[0].room_types,
+                        idsInOrder = _.pluck(firstDayRoomDetails, 'id');
+
+                    _.each(idsInOrder, function(roomTypeId) {
+                    	var roomTypeData = {};
+
+                    	roomTypeData.name = _.find(that.data.gridData.roomTypes, {
+                            id: roomTypeId
+                        }).name;
+                        roomTypeData.is_suite = _.find(that.data.gridData.roomTypes, {
+                            id: roomTypeId
+                        }).is_suite;
+                        roomTypeNames.push(roomTypeData);
+                    });
+                }
+                _.extend(that.data.gridData.additionalData, {
+                    'roomTypeWiseOverbookingDetails': _.zip.apply(null, _.pluck(response.results, 'room_types')),
+                    'roomTypeNamesOverbooking': roomTypeNames
                 });
                 deferred.resolve(true);
             }, function(data) {

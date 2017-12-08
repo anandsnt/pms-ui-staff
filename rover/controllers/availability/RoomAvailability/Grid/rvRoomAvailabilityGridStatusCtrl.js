@@ -174,7 +174,7 @@ angular.module('sntRover')
             
             $scope.toggleOverbooking= toggleSectionGenerator(
                 'overbooking',
-                rvAvailabilitySrv.getRoomsAvailability,
+                rvAvailabilitySrv.fetchOverbooking,
                 function() {
                     return isSectionOpen('overbooking');
                 }
