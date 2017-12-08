@@ -50,8 +50,8 @@ var applyIconStyles = function(color) {
 		styleString = styleString + ".late-checkout-icon { background-image: url('/assets/guestweb_v2/images/" + color + "/checkout_later.png')}";
 		styleString = styleString + ".accept-charge-icon {background-image: url('/assets/guestweb_v2/images/" + color + "/creditcard_icon.png')}";
 		styleString = styleString + ".upgrade-icon {background-image: url('/assets/guestweb_v2/images/" + color + "/upgrade_icon.png')}";
-		styleString = styleString + ".down-arrow-button { background-image: url('/assets/guestweb_v2/images/" + reverseColor + "/down_arrow.png')}"
-		styleString = styleString + ".right-arrow-button { background-image: url('/assets/guestweb_v2/images/" + reverseColor + "/right_arrow.png')}"
+		styleString = styleString + ".down-arrow-button { background-image: url('/assets/guestweb_v2/images/" + reverseColor + "/down_arrow.png')}";
+		styleString = styleString + ".right-arrow-button { background-image: url('/assets/guestweb_v2/images/" + reverseColor + "/right_arrow.png')}";
 		addStyleString(styleString);
 	} else {
 		return;

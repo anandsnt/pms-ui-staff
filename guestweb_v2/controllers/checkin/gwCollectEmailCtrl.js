@@ -1,5 +1,5 @@
-sntGuestWeb.controller('gwCollectEmailController', ['$scope', '$state', '$controller', 'GwWebSrv', 'GwCheckinSrv', '$rootScope', '$modal', '$stateParams',
-	function($scope, $state, $controller, GwWebSrv, GwCheckinSrv, $rootScope, $modal, $stateParams) {
+sntGuestWeb.controller('gwCollectEmailController', ['$scope', '$state', '$controller', 'GwWebSrv', 'GwCheckinSrv', '$rootScope', '$modal',
+	function($scope, $state, $controller, GwWebSrv, GwCheckinSrv, $rootScope, $modal) {
 
 		$controller('gwETABaseController', {
 			$scope: $scope
@@ -40,11 +40,10 @@ sntGuestWeb.controller('gwCollectEmailController', ['$scope', '$state', '$contro
 					'failureCallBack': function() {
 						openErrorPopup('EMAIL_ERROR');
 					}
-				}
+				};
+
 				$scope.callAPI(GwCheckinSrv.postGuestDetails, options);
-			};
-
-
+			}
 		};
 
 		$scope.continueToPrecheckin = function() {

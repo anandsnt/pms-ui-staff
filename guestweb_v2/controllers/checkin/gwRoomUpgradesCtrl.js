@@ -21,7 +21,7 @@ sntGuestWeb.controller('gwRoomUpgradeController', ['$scope', '$state', '$control
 			$scope.upgradeOptions = response;
 			$scope.isUpgradesFetching = false;
 			// if no upgrades are available
-			if(!response.upsell_room_types.length){
+			if (!response.upsell_room_types.length) {
 				$scope.noThanksClicked();
 			}
 		};

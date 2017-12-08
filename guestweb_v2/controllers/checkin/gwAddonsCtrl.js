@@ -29,6 +29,7 @@ sntGuestWeb.controller('GWAddonsController', ['$scope', '$state', '$stateParams'
 		};
 		$scope.isAddonFlatOrRoomType = function(addonToBe) {
 			var addon = angular.copy(addonToBe);
+
 			// To delete once the addon import API is fixed
 			addon.amount_type = (addon.amount_type === 'Room') ? 'Per Room' : addon.amount_type;
 			addon.amount_type = (addon.amount_type === 'Flat') ? 'Flat Rate' : addon.amount_type;
@@ -92,7 +93,7 @@ sntGuestWeb.controller('GWAddonsController', ['$scope', '$state', '$stateParams'
 			var options = {
 				params: params,
 				successCallBack: addonAdditionSuccess,
-				failureCallBack: function(){
+				failureCallBack: function() {
 					$scope.showPurchaseStatus = true;
 					$scope.purchaseStatusText = angular.copy($scope.addonFailureMessage);
 				}
@@ -127,7 +128,7 @@ sntGuestWeb.controller('GWAddonsController', ['$scope', '$state', '$stateParams'
 				GwCheckinSrv.setcheckinData(reservationDetails);
 				$scope.doneClicked();
 				$(document.body).scrollTop(0);
-			}
+			};
 
 
 			var params = {
@@ -184,7 +185,7 @@ sntGuestWeb.controller('GWAddonsController', ['$scope', '$state', '$stateParams'
 			} else if ($scope.isAddonFlatOrRoomType($scope.selectedAddon)) {
 				return $scope.selectedAddon.is_selected && parseInt($scope.selectedAddonQuantity) === 0;
 			} else {
-				return $scope.selectedAddon.is_selected
+				return $scope.selectedAddon.is_selected;
 			}
 		};
 
@@ -195,6 +196,7 @@ sntGuestWeb.controller('GWAddonsController', ['$scope', '$state', '$stateParams'
 			var isAnyOneLcoSelected = _.some(lcoAddon.lco_addons, function(addon) {
 				return addon.is_selected;
 			});
+
 			return isAnyOneLcoSelected;
 		};
 
@@ -282,6 +284,7 @@ sntGuestWeb.controller('GWAddonsController', ['$scope', '$state', '$stateParams'
 
 					$scope.lcoAddonMainDesciprtion = "Extend your Stay. Available Offers from @amount@ onwards.";
 					var minimumLcoAmount = GwWebSrv.currencySymbol + _.first(lateCheckoutAddons).amount.toString();
+					
 					$scope.lcoAddonMainDesciprtion = $scope.lcoAddonMainDesciprtion.replace("@amount@", minimumLcoAmount);
 
 					var bundledLCOAddon = {
@@ -294,7 +297,7 @@ sntGuestWeb.controller('GWAddonsController', ['$scope', '$state', '$stateParams'
 					if (!_.isUndefined(response.late_checkout_addon_image) && response.late_checkout_addon_image.length > 0) {
 						$scope.lateCheckoutBundleImage = response.late_checkout_addon_image;
 					} else {
-						$scope.lateCheckoutBundleImage = lateCheckoutAddons[0].image
+						$scope.lateCheckoutBundleImage = lateCheckoutAddons[0].image;
 					}
 
 					$scope.addonList.splice(firstLcoIndex, 0, bundledLCOAddon);
@@ -347,6 +350,7 @@ sntGuestWeb.controller('GWAddonsController', ['$scope', '$state', '$stateParams'
 					handleLabelMappings();
 				}
 			};
+
 			$scope.callAPI(GwCheckinSrv.getAddonAdminSettings, options);
 		};
 
@@ -380,6 +384,7 @@ sntGuestWeb.controller('GWAddonsController', ['$scope', '$state', '$stateParams'
 			} else if (addons.length === 1) {
 				// single addon
 				var isSingleAddonAvailable = true;
+
 				selectedAddon = addons[0];
 				setSelectedAddon(selectedAddon, isSingleAddonAvailable);
 			} else {
@@ -410,6 +415,7 @@ sntGuestWeb.controller('GWAddonsController', ['$scope', '$state', '$stateParams'
 					fetchExistingAddonsSucess(response.addons);
 				}
 			};
+			
 			$scope.callAPI(GwCheckinSrv.getAddonList, options);
 
 		})();

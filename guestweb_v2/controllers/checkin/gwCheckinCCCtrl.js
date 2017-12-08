@@ -1,8 +1,8 @@
 /**
  *	CC addition
  */
-sntGuestWeb.controller('GwCheckinCCAdditionController', ['$scope', '$state', '$controller', '$stateParams',
-	function($scope, $state, $controller, $stateParams) {
+sntGuestWeb.controller('GwCheckinCCAdditionController', ['$scope', '$state', '$controller',
+	function($scope, $state, $controller) {
 		$controller('gwBaseCCCollectionController', {
 			$scope: $scope
 		});
