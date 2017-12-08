@@ -68,8 +68,8 @@
 
 	        <!-- Limit Value -->
 	        <div class="entry full-width entry-limit">
-	            <label for="limit-value" translate>LIMIT</label>
 	            <div class="limit-input">
+	            	<label class="switch-label" for="limit-value" translate>LIMIT</label>
 	                <div class="switch-button overlay"> <!-- Add class 'on' if L68 is checked -->
 	                    <input id="limit-type" type="checkbox"> <!-- Rooms number if not checked, percentage if checked -->
 	                    <label class="data-off">
@@ -81,7 +81,7 @@
 	                        <span class="switch-icon">%</span>
 	                    </label>
 	                </div>
-	                <input ng-model="addOverBookingObj.limitValue" type="number" id="limit-value" placeholder="Enter Number" value="{Value}" />
+	                <input ng-model="addOverBookingObj.limitValue" type="number" id="limit-value"/>
 	            </div>
 	        </div>
 
