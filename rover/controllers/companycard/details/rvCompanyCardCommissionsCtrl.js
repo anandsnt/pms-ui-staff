@@ -542,7 +542,7 @@ sntRover.controller('companyCardCommissionsCtrl', [
             toDate: "",
             paidStatus: "Unpaid",
             commissionStatus: "Commissionable",
-            perPage: 25, //RVCompanyCardSrv.DEFAULT_PER_PAGE,
+            perPage: 25, // RVCompanyCardSrv.DEFAULT_PER_PAGE,
             page: 1,
             start: 1,
             selectAll: false,
