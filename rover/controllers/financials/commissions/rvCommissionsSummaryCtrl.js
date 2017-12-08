@@ -329,7 +329,7 @@ sntRover.controller('RVCommissionsSummaryController', ['$scope',
 
         $scope.fetchAgentsData = function(pageNo) {
             $scope.filterData.page = pageNo ? pageNo : 1;
-            var successCallBack = function(data) {
+            var onFetchSuccess = function(data) {
                 $scope.commissionsData = data;
                 setUpReserationsListForAgents();
                 $scope.resetSelections();
@@ -343,16 +343,17 @@ sntRover.controller('RVCommissionsSummaryController', ['$scope',
                 $scope.initialLoading = false;
             };
 
-            var params = {
-                'query': $scope.filterData.searchQuery,
-                'page': $scope.filterData.page,
-                'per_page': $scope.filterData.perPage,
-                'bill_status': $scope.filterData.billStatus.value,
-                'sort_by': $scope.filterData.sort_by.value,
-                'min_commission_amount': $scope.filterData.minAmount
-            };
-
-            $scope.invokeApi(RVCommissionsSrv.fetchCommissions, params, successCallBack);
+            $scope.callAPI(RVCommissionsSrv.fetchCommissions, {
+                        params: {
+                            'query': $scope.filterData.searchQuery,
+                            'page': $scope.filterData.page,
+                            'per_page': $scope.filterData.perPage,
+                            'bill_status': $scope.filterData.billStatus.value,
+                            'sort_by': $scope.filterData.sort_by.value,
+                            'min_commission_amount': $scope.filterData.minAmount
+                        },
+                        successCallBack: onFetchSuccess
+                    });
         };
 
         $scope.searchAccounts = function() {
