@@ -54,7 +54,7 @@ sntRover.service('RVCommissionsSrv', ['$http', '$q', 'BaseWebSrvV2', '$window', 
         $http({
             method: 'GET',
             url: url,
-            data: params
+            params: params
         }).then(function(response) {
             var data = response.data,
                 headers = response.headers;
