@@ -172,7 +172,7 @@ angular.module('sntRover')
              * The data required to show these sections are catered through different APIs.
              */
             
-            $scope.toggleOverbooking= toggleSectionGenerator(
+            $scope.toggleOverbooking = toggleSectionGenerator(
                 'overbooking',
                 rvAvailabilitySrv.fetchOverbooking,
                 function() {
