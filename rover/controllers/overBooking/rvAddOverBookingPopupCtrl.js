@@ -70,11 +70,21 @@ angular.module('sntRover').controller('rvAddOverBookingPopupCtrl', ['$scope', '$
 	$scope.clickedApplyForHouse = function() {
 		$scope.addOverBookingObj.applyForHouse = !$scope.addOverBookingObj.applyForHouse;
 	};
+	// Reset room type list
+	var resetRoomTypesList = function() {
+		var roomTypeList = $scope.addOverBookingObj.roomTypeList;
+		_.each( roomTypeList, function(obj) {
+			obj.isChecked = false;
+		});
+	};
+
 	// Apply for room types checkbox click action.
 	$scope.clickedApplyForRoomTypes = function() {
 		$scope.addOverBookingObj.applyForRoomTypes = !$scope.addOverBookingObj.applyForRoomTypes;
+		resetRoomTypesList();
 		$scope.refreshScroller('roomTypeFilterList');
 	};
+
 	// Handle click action on each checkbox inside filter.
 	$scope.clickedRoomTypeCheckbox = function ( index ) {
 		var item = $scope.addOverBookingObj.roomTypeList[index];
@@ -110,12 +120,12 @@ angular.module('sntRover').controller('rvAddOverBookingPopupCtrl', ['$scope', '$
 	$scope.addOverBookingApiCall = function() {
 
 		var onAddOverBookingApiSuccess = function() {
-			$scope.$errorMessage = '';
+			$scope.errorMessage = '';
 			$scope.$emit('REFRESH_OVERBOOKING_GRID');
 			$scope.closeDialog();
 		},
 		onAddOverBookingApiFailure = function( errorMessage ) {
-			$scope.$errorMessage = errorMessage;
+			$scope.errorMessage = errorMessage;
 		},
 		dataToSend = {
             'start_date': moment(tzIndependentDate($scope.addOverBookingObj.fromDate)).format($rootScope.momentFormatForAPI),

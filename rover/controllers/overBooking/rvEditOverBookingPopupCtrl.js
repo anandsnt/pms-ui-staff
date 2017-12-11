@@ -7,12 +7,12 @@ angular.module('sntRover').controller('rvEditOverBookingPopupCtrl', ['$scope', '
 		var editData = $scope.overBookingObj.editData;
 
 		var onEditOverBookingApiSuccess = function() {
-			$scope.$errorMessage = '';
+			$scope.errorMessage = '';
 			$scope.$emit('REFRESH_OVERBOOKING_GRID');
 			$scope.closeDialog();
 		},
 		onEditOverBookingApiFailure = function( errorMessage ) {
-			$scope.$errorMessage = errorMessage;
+			$scope.errorMessage = errorMessage;
 		},
 		dataToSend = {
             'start_date': moment(tzIndependentDate(editData.date)).format($rootScope.momentFormatForAPI),
