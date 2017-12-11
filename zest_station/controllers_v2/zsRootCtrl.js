@@ -442,6 +442,11 @@ sntZestStation.controller('zsRootCtrl', [
                 $scope.icons.url.createkey_icmp = $scope.iconsPath + '/encode_image.svg';
                 $scope.icons.url.creditcard_icmp = $scope.iconsPath + '/icmp_swipe.svg';
                 $scope.icmp = true;
+            }
+            else if ($scope.zestStationData.theme === 'huntley') {
+                $scope.icons.url.createkey_icmp = $scope.iconsPath + '/encode_image.svg';
+                $scope.icons.url.creditcard_icmp = $scope.iconsPath + '/demo_swiper.svg';
+                $scope.icmp = true;
             } else {
                 $scope.icmp = false;
             }
