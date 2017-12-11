@@ -278,6 +278,23 @@
 						</select>
 					</div>
 				</div>
+				<div class="entry is-pms-tokenized" ng-if="!isAdminSnt && data.hotel_pms_type !=='OWS'">
+					<label >Enable Invoice Number Sequence</label>
+					<div class="switch-button single" ng-class="{ on : data.is_mod_enabled == true }" ng-click="toggleInvoiceSequence()">
+						<input type="checkbox" value="{{data.is_mod_enabled}}" name="is-mod-enabled" id="is-mod-enabled">
+						<span class="switch-icon"></span>
+					</div>
+				</div>
+				<div class="entry is-pms-tokenized" ng-if="data.is_mod_enabled">
+					<label>Invoice Number Sequence</label>
+					<div class="select">
+						<select convert-to-number ng-model="data.selected_mode" name="selected-mode" id="selected-mode" class="placeholder">
+							<option value=""> Select Mod </option>
+							<option value="mod10">mod10</option>
+							<option value="mod11">mod11</option>
+						</select>
+					</div>
+				</div>
 				<div class="entry is-pms-tokenized" ng-if="isAdminSnt && data.hotel_pms_type ==='OWS'">
 					<label for="is-pms-tokenized">PMS Tokenized</label>
 					<div class="switch-button single" ng-class="{ on : data.is_pms_tokenized == 'true' }" ng-click="toggleClicked()">

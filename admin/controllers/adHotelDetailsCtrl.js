@@ -47,6 +47,7 @@ admin.controller('ADHotelDetailsCtrl', [
 			isMPFlagResetConfirmPopupNeeded = false;
 			var fetchSuccess = function(data) {
 				$scope.data = data.data;
+
 				$scope.data.brands = [];
 				$scope.data.is_external_references_import_on = false;
 				$scope.data.external_references_import_freq = undefined;
@@ -68,6 +69,7 @@ admin.controller('ADHotelDetailsCtrl', [
 			$scope.title = "Edit Hotel";
 			var fetchSuccess = function(data) {
 				$scope.data = data.data;
+				$scope.data.is_mod_enabled = true;
 				$scope.languages = data.languages;
 				$scope.$emit('hideLoader');
 				if ($scope.data.mli_pem_certificate_loaded) {
@@ -292,6 +294,12 @@ admin.controller('ADHotelDetailsCtrl', [
     */
 	$scope.toggleClicked = function() {
 		$scope.data.is_pms_tokenized = ($scope.data.is_pms_tokenized === 'true') ? 'false' : 'true';
+	};
+	/**
+    *   Method to toggle data for 'is_pms_tokenized' as true/false.
+    */
+	$scope.toggleInvoiceSequence = function() {
+		$scope.data.is_mod_enabled = ($scope.data.is_mod_enabled === true) ? false : true;
 	};
 	/**
     *   Method to toggle data for 'is_pms_tokenized' as true/false.
