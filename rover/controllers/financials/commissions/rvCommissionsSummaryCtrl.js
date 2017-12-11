@@ -29,15 +29,17 @@ sntRover.controller('RVCommissionsSummaryController', ['$scope',
 
             _.each($scope.commissionsData.accounts, function(account) {
                 totalBillAmountOnCurrentPage += parseFloat(account.amount_owing);
-                if (account.isSelected || account.isSemiSelected) {
+                if (account.isSelected) {
+                    // if account is fully selected, the amount owing will be the total amount
+                    total_amount += parseFloat(account.amount_owing);
+                } else {
+                    // sum the amounts owing for the selected reservations for the account
                     if (account.reservationsData && account.reservationsData.reservations) {
                         _.each(account.reservationsData.reservations, function (reservation) {
                             if (reservation.isSelected) {
                                 total_amount += parseFloat(reservation.amount_owing);
                             }
                         });
-                    } else {
-                        total_amount += parseFloat(account.amount_owing);
                     }
                 }
             });
@@ -126,6 +128,12 @@ sntRover.controller('RVCommissionsSummaryController', ['$scope',
 
         var addRemoveFromSelectedReservationsList = function(account, reservation) {
             var selectedIndex = account.selectedReservations.indexOf(reservation.id);
+            
+            if (account.isSelected) {
+                // if the account was fully selected and then item is deselected, remove all unpaid bills
+                // from no of bills selected and consider only the no of selected bills on the current page
+                $scope.noOfBillsSelected = $scope.noOfBillsSelected - account.number_of_unpaid_bills + account.selectedReservations.length;
+            }
 
             // is checked and was not added before
             if (reservation.isSelected && selectedIndex === -1) {
@@ -272,7 +280,8 @@ sntRover.controller('RVCommissionsSummaryController', ['$scope',
             _.each(account.reservationsData.reservations, function(reservation) {
                 var indexOfRes = account.selectedReservations.indexOf(reservation.id);
 
-                reservation.isSelected = account.isSelected || indexOfRes !== -1;
+                // if the account is selected, the expanded reservation list should also be selected
+                reservation.isSelected = account.isSelected;
 
                 if (reservation.isSelected && indexOfRes === -1) {
                     account.selectedReservations.push(reservation.id);
@@ -294,6 +303,9 @@ sntRover.controller('RVCommissionsSummaryController', ['$scope',
                     var page = pageNo ? pageNo : 1;
 
                     var onFetchListSuccess = function(response) {
+                        // reset selections to avoid issues with selection + pagination
+                        account.selectedReservations = [];
+                        account.isSemiSelected = false;
                         reservationsListFetchCompletedActions(account, response);
                     };
 
@@ -317,7 +329,7 @@ sntRover.controller('RVCommissionsSummaryController', ['$scope',
 
         $scope.fetchAgentsData = function(pageNo) {
             $scope.filterData.page = pageNo ? pageNo : 1;
-            var successCallBack = function(data) {
+            var onFetchSuccess = function(data) {
                 $scope.commissionsData = data;
                 setUpReserationsListForAgents();
                 $scope.resetSelections();
@@ -331,16 +343,17 @@ sntRover.controller('RVCommissionsSummaryController', ['$scope',
                 $scope.initialLoading = false;
             };
 
-            var params = {
-                'query': $scope.filterData.searchQuery,
-                'page': $scope.filterData.page,
-                'per_page': $scope.filterData.perPage,
-                'bill_status': $scope.filterData.billStatus.value,
-                'sort_by': $scope.filterData.sort_by.value,
-                'min_commission_amount': $scope.filterData.minAmount
-            };
-
-            $scope.invokeApi(RVCommissionsSrv.fetchCommissions, params, successCallBack);
+            $scope.callAPI(RVCommissionsSrv.fetchCommissions, {
+                        params: {
+                            'query': $scope.filterData.searchQuery,
+                            'page': $scope.filterData.page,
+                            'per_page': $scope.filterData.perPage,
+                            'bill_status': $scope.filterData.billStatus.value,
+                            'sort_by': $scope.filterData.sort_by.value,
+                            'min_commission_amount': $scope.filterData.minAmount
+                        },
+                        successCallBack: onFetchSuccess
+                    });
         };
 
         $scope.searchAccounts = function() {

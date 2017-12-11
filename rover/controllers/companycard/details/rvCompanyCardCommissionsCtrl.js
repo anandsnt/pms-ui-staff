@@ -76,6 +76,9 @@ sntRover.controller('companyCardCommissionsCtrl', [
                 // if (isPageChanged) {
                 //     $scope.pagination.end = $scope.pagination.start + $scope.commissionDetails.length - 1;
                 // }
+                    $timeout(function () {
+                        $scope.$broadcast('updatePagination', $scope.paginationData.id );
+                    }, 1000);
                     $scope.$emit('hideLoader');
                     refreshScroll();
                 },
@@ -521,6 +524,14 @@ sntRover.controller('companyCardCommissionsCtrl', [
             }
         
         });
+        // CICO-47385 : Commissions: Status selection is not switching to "Commissionable" while opting a different property
+        $scope.onPropertyFilterChange = function() {
+            if ($rootScope.hotelDetails.userHotelsData.current_hotel_id !== parseInt($scope.filterData.selectedHotel)) {
+                $scope.filterData.commissionStatus = "Commissionable";
+            }
+            $scope.onFilterChange();
+        };
+
 
     // Initailizes the controller
     var init = function() {
@@ -568,7 +579,7 @@ sntRover.controller('companyCardCommissionsCtrl', [
             $scope.paginationData = {
                 id: 'RESERVATION_LIST_' + $scope.accountId,
                 api: fetchCommissionDetailsForPage,
-                perPage: $scope.filterData.per_page
+                perPage: $scope.filterData.perPage
             };
 
         };

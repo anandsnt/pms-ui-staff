@@ -259,7 +259,7 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 		};
 		// Show payment allocate popup.
 		$scope.popupPaymentForAllocation = function () {
-			$scope.type = 'ALLOCATION';
+			$scope.type = 'ALLOCATE';
 			ngDialog.open({
 				template: '/assets/partials/companyCard/arTransactions/rvCompanyTravelAgentCardArPaymentPopup.html',
 				controller: 'RVArPaymentForAllocationController',

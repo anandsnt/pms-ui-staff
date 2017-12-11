@@ -4,16 +4,7 @@
         <div class="search-form has-options has-dates">
             <div class="filters" ng-class="{'hidden' : filterData.selectAll || selectedCommissions.length > 0 || prePaidCommissions.length > 0}">
                 <!-- Add class "hidden" when selecting all/individual commisions -->
-
-                <!-- Show this only if Multi Property is available/active --
-                <div class="entry commision-propert select with-label">
-                    <label for="commision-property">Property</label>
-                    <select id="commision-property">
-                        <option value="{value}">{Property}</option>
-                        ... Repeat for each property
-
-                    </select>
-                </div>-->
+                
                 <div class="entry dates date-range">
                     <div class="entry-data has-datepicker">
                         <label for="commision-date-from" translate>COMMISSION_START_DATE</label>
@@ -36,16 +27,13 @@
                 </div>
                 <div class="entry select with-label">
                     <label for="commision-status" translate>COMMISSION_STATUS</label>
-                    <!-- <div class="select"> -->
                         <select id="commision-status" ng-model="filterData.commissionStatus" ng-change="onFilterChange()">
                             <option value="Commissionable" selected translate>COMMISSION_COMMISSIONABLE</option>
                             <option value="Non-commissionable" translate>COMMISSION_NON_COMMISSIONABLE</option>
                         </select>
-                    <!-- </div> -->
                 </div>
                 <div class="entry paid-status select with-label" >
                     <label for="commision-paid" translate>COMMISSION_PAID_STATUS</label>
-                    <!-- <div class="select"> -->
                         <select id="commision-paid" ng-model="filterData.paidStatus" ng-change="onFilterChange()">
                             <option value="" translate>COMMISSION_SET_STATUS</option>
                             <option value="All" translate>COMMISSION_ALL</option>
@@ -54,15 +42,12 @@
                             <option value="Prepaid" translate>COMMISSION_PREPAID</option>
                             <option value="On Hold" translate>COMMISSION_HOLD</option>
                         </select>
-                    <!-- </div> -->
                 </div>
 
-                <div class="entry property" ng-show="shouldShowProperty()">
-                    <label for="commision-property">Property</label>
-                    <div class="select">
-                        <select ng-model="filterData.selectedHotel" ng-change="onFilterChange()" ng-options="mps.id as mps.name for mps in multiProperies">          
-                        </select>
-                    </div>
+                <div class="entry property select with-label" ng-show="shouldShowProperty()">
+                    <label for="commision-property">Property</label>                 
+                        <select ng-model="filterData.selectedHotel" ng-change="onPropertyFilterChange()" ng-options="mps.id as mps.name for mps in multiProperies">          
+                        </select>               
                 </div>
 
 
