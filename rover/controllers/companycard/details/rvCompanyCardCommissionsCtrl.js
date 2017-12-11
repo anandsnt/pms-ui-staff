@@ -76,6 +76,9 @@ sntRover.controller('companyCardCommissionsCtrl', [
                 // if (isPageChanged) {
                 //     $scope.pagination.end = $scope.pagination.start + $scope.commissionDetails.length - 1;
                 // }
+                    $timeout(function () {
+                        $scope.$broadcast('updatePagination', $scope.paginationData.id );
+                    }, 1000);
                     $scope.$emit('hideLoader');
                     refreshScroll();
                 },
@@ -576,7 +579,7 @@ sntRover.controller('companyCardCommissionsCtrl', [
             $scope.paginationData = {
                 id: 'RESERVATION_LIST_' + $scope.accountId,
                 api: fetchCommissionDetailsForPage,
-                perPage: $scope.filterData.per_page
+                perPage: $scope.filterData.perPage
             };
 
         };

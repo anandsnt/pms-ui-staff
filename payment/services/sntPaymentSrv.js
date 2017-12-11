@@ -148,7 +148,9 @@ if (status === 406) { // 406- Network error
                 "VS": 'VA',
                 "VX": 'VA',
                 "MX": 'DS', // Six iframe returns MX for discover. not good,
-                "MV": 'MC'
+                "MV": 'MC',
+                "CU": 'CU',
+                "DK": 'DK'
             };
 
             return sixCreditCardTypes[cardCode.toUpperCase()] || 'credit-card';

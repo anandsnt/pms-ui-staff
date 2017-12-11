@@ -1,5 +1,10 @@
 admin.controller('ADChargeCodesCtrl', ['$scope', 'ADChargeCodesSrv', 'ngTableParams', '$filter', '$timeout', '$state', '$rootScope', '$location', '$anchorScroll',
-	function($scope, ADChargeCodesSrv, ngTableParams, $filter, $timeout, $state, $rootScope, $location, $anchorScroll) {
+    function($scope, ADChargeCodesSrv, ngTableParams, $filter, $timeout, $state, $rootScope, $location, $anchorScroll) {
+
+        var CHARGE_CODE_TYPE_TAX = 1;
+        var CHARGE_CODE_TYPE_PAYMENT = 2;
+        var CHARGE_CODE_TYPE_FEES = 6;
+        var CHARGE_CODE_TYPE_TOURIST = 8;
 
 		ADBaseTableCtrl.call(this, $scope, ngTableParams);
 		$scope.$emit("changedSelectedMenu", 5);
@@ -492,5 +497,61 @@ admin.controller('ADChargeCodesCtrl', ['$scope', 'ADChargeCodesSrv', 'ngTablePar
 
 		};
 
+        /**
+         * CICO-40001 hide add tax for Tax, Tourist tax and Payment
+         * @return {Boolean} hide or not
+         */
+        $scope.shouldHideAddTaxOption = function () {
+            var selectedType = parseInt($scope.prefetchData.selected_charge_code_type, 10);
+            var isTaxSelected = selectedType === CHARGE_CODE_TYPE_TAX;
+            var isPaymentSelected = selectedType === CHARGE_CODE_TYPE_PAYMENT;
+            var isTouristSelected = selectedType === CHARGE_CODE_TYPE_TOURIST;
+
+            return $scope.isPmsConfigured || isTaxSelected || isPaymentSelected || isTouristSelected;
+        };
+
+        $scope.isTaxSelected = function () {
+            var selectedType = parseInt($scope.prefetchData.selected_charge_code_type, 10);
+
+            return selectedType === CHARGE_CODE_TYPE_TAX;
+        };
+
+        $scope.isPaymentSelected = function () {
+            var selectedType = parseInt($scope.prefetchData.selected_charge_code_type, 10);
+            
+            return selectedType === CHARGE_CODE_TYPE_PAYMENT;
+        };
+
+        $scope.isTouristTaxSelected = function () {
+            var selectedType = parseInt($scope.prefetchData.selected_charge_code_type, 10);
+            
+            return selectedType === CHARGE_CODE_TYPE_TOURIST;
+        };
+
+        $scope.isFeesSelected = function () {
+            var selectedType = parseInt($scope.prefetchData.selected_charge_code_type, 10);
+            
+            return selectedType === CHARGE_CODE_TYPE_FEES;
+        };
+
+        /**
+         * CICO-40001
+         * Filter charge codes in add tax form based on exclusive_only flag
+         * @param  {Object} editData data when in edit mode
+         * @return {Boolean} show or not
+         */
+        $scope.filterTaxCodes = function (editData) {
+            return function (item) {
+                if ($scope.isEditTax && editData.is_inclusive) {
+                    return !item.exclusive_only;
+                }
+
+                if ($scope.isAddTax && $scope.addData.is_inclusive) {
+                    return !item.exclusive_only;
+                }
+
+                return true;
+            };
+        };
 	}
 ]);
