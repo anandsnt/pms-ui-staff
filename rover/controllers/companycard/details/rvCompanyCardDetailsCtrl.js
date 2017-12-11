@@ -24,6 +24,8 @@ angular.module('sntRover').controller('companyCardDetailsController', ['$scope',
 		$scope.isPromptOpened = false;
 		$scope.isLogoPrint = true;
 		$scope.isPrintArStatement = false;
+		$scope.contactInformation = {};
+		$scope.isGlobalToggleReadOnly = !rvPermissionSrv.getPermissionValue ('GLOBAL_CARD_UPDATE');
 		// setting the heading of the screen
 		if ($stateParams.type === "COMPANY") {
 			if ($scope.isAddNewCard) {
@@ -137,6 +139,7 @@ angular.module('sntRover').controller('companyCardDetailsController', ['$scope',
 				$event.stopPropagation();
 				$event.stopImmediatePropagation();
 			}
+
 			// CICO-28058 - checking whether AR Number is present or not.
 			var isArNumberAvailable = !!$scope.contactInformation && !!$scope.contactInformation.account_details && !!$scope.contactInformation.account_details.accounts_receivable_number;
 
@@ -196,13 +199,47 @@ angular.module('sntRover').controller('companyCardDetailsController', ['$scope',
 			$scope.showArAccountButtonClick($event);
 		};
 
+		/*
+		*	CICO-45240
+		*	Fixes loop caused when navigating in the following flows:
+		*	- Search AR Trans/Company & TA Cards -> Balance/Paid Tabs of CC -> Reservation Stay Card -> 
+		*		Back to Balance/Paid tabs -> Back to AR Trans/Company & TA Cards search
+		*/
+		if (!$stateParams.isBackFromStaycard) {
+
+			$rootScope.prevStateBookmarkDataFromAR = {
+				title: $scope.searchBackButtonCaption,
+				name: $rootScope.previousState.name
+			};
+
+		}
 		// CICO-11664
 		// To default the AR transactions tab while navigating back from staycard
 		if ($stateParams.isBackFromStaycard) {
 			$scope.isArTabAvailable = true;
-			$scope.currentSelectedTab = 'cc-ar-transactions';
-			$scope.$broadcast('setgenerateNewAutoAr', true);
-			$scope.switchTabTo('', 'cc-ar-transactions');
+			/*
+			*	CICO-45240 - Replace prevState data to that which we stored before going to Staycard.
+			*/
+			if ($rootScope.prevStateBookmarkDataFromAR.title === $filter('translate')('FIND_CARDS') || $rootScope.prevStateBookmarkDataFromAR.title === $filter('translate')('MENU_ACCOUNTS_RECEIVABLES')) {
+				$rootScope.setPrevState = {
+					title: $rootScope.prevStateBookmarkDataFromAR.title,
+					name: $rootScope.prevStateBookmarkDataFromAR.name
+				};
+			}
+
+			// CICO-44250 - The deep copy of contactInformation made is applied here
+			//		in case it becomes undefined while coming back from StayCard
+			if (typeof($scope.contactInformation) === 'undefined') {
+				$scope.contactInformation = angular.copy($rootScope.prevStateBookmarkDataFromAR.contactInformation);
+			}
+			/*
+			*	CICO-45268 - Added $timeout to fix issue with data not being displayed on returning from Staycard.
+			*/
+			$timeout(function() {
+				$scope.currentSelectedTab = 'cc-ar-transactions';
+				$scope.$broadcast('setgenerateNewAutoAr', true);
+				$scope.switchTabTo('', 'cc-ar-transactions');
+			}, 500);
 		}
 		// CICO-36080 - Back from staycard - Commissions tab as selected
 		if ($stateParams.isBackToTACommission) {
@@ -241,6 +278,90 @@ angular.module('sntRover').controller('companyCardDetailsController', ['$scope',
 
 		$scope.clikedDiscardDeleteAr = function() {
 			ngDialog.close();
+		};
+		/*
+		 * Toggle global button
+		 */
+		$scope.toggleGlobalButton = function() {
+			if (rvPermissionSrv.getPermissionValue ('GLOBAL_CARD_UPDATE')) {
+				$scope.contactInformation.is_global_enabled = !$scope.contactInformation.is_global_enabled;
+				$scope.contactInformation.account_type = $scope.account_type;
+			}
+
+			$timeout(function() {
+				$scope.activateSelectedTab();				
+			}, 1000);
+		};
+		/*
+		 * Activate selected tab
+		 */
+		$scope.activateSelectedTab = function() {
+			if ($scope.currentSelectedTab === 'cc-contact-info') {
+				$scope.$broadcast("ContactTabActivated");
+				$scope.$broadcast("contactTabActive");
+			}
+            if ($scope.currentSelectedTab === 'cc-contracts') {
+				$scope.$broadcast("refreshContractsScroll");
+			}
+            if ($scope.currentSelectedTab === 'cc-ar-accounts') {
+				$scope.$broadcast("arAccountTabActive");
+				$scope.$broadcast("refreshAccountsScroll");
+			}
+	        if ($scope.currentSelectedTab === 'cc-ar-transactions') {
+				$rootScope.$broadcast("arTransactionTabActive");
+				$scope.isWithFilters = false;
+			}
+			if ($scope.currentSelectedTab === 'cc-notes') {
+				$scope.$broadcast("fetchNotes");
+			}
+			if ($scope.currentSelectedTab === 'cc-commissions') {
+				$scope.$broadcast("commissionsTabActive");
+			}
+		};
+
+		$scope.shouldShowCommissionsTab = function() {
+			return ($scope.account_type === 'TRAVELAGENT');
+		};
+		$scope.isUpdateEnabled = function() {
+			if ($scope.contactInformation.is_global_enabled === undefined) {
+				return;
+			}
+			var isDisabledFields = false;
+			
+			if ($scope.contactInformation.is_global_enabled) {
+				if (!rvPermissionSrv.getPermissionValue ('GLOBAL_CARD_UPDATE')) {
+					isDisabledFields = true;
+				}
+			} else {
+				if (!rvPermissionSrv.getPermissionValue ('EDIT_COMPANY_CARD')) {
+					isDisabledFields = true;
+				}
+			}
+
+			return isDisabledFields;
+		};
+		/*
+		 * Added the same method in travel agent ctrl
+		 * We are using the partials for TA and CC, when navigating thru staycard or thru revenue management
+		 * When we go to travel agent from staycard, controller is travelagentctrl
+		 * When we go to travel agent from revenue management, controller is this
+		 */
+		$scope.isUpdateEnabledForTravelAgent = function() {
+			if ($scope.contactInformation.is_global_enabled === undefined) {
+				return;
+			}
+			var isDisabledFields = false;
+
+			if ($scope.contactInformation.is_global_enabled) {
+				if (!rvPermissionSrv.getPermissionValue ('GLOBAL_CARD_UPDATE')) {
+					isDisabledFields = true;
+				}
+			} else {
+				if (!rvPermissionSrv.getPermissionValue ('EDIT_TRAVEL_AGENT_CARD')) {
+					isDisabledFields = true;
+				}
+			}
+			return isDisabledFields;
 		};
 
 		var callCompanyCardServices = function() {
@@ -286,6 +407,7 @@ angular.module('sntRover').controller('companyCardDetailsController', ['$scope',
 		var successCallbackOfInitialFetch = function(data) {
 			$scope.$emit("hideLoader");
 			$scope.contactInformation = data;
+			$scope.$broadcast("LOAD_SUBSCRIBED_MPS");
 			if ($scope.contactInformation.alert_message !== "") {
 				$scope.errorMessage = [$scope.contactInformation.alert_message];
 			}
@@ -296,6 +418,8 @@ angular.module('sntRover').controller('companyCardDetailsController', ['$scope',
 			// taking a deep copy of copy of contact info. for handling save operation
 			// we are not associating with scope in order to avoid watch
 			presentContactInfo = JSON.parse(JSON.stringify($scope.contactInformation));
+			// CICO-44250 - Keeps a deep copy of contact information to use when coming back from Staycard if needed.
+			$rootScope.prevStateBookmarkDataFromAR.contactInformation = angular.copy($scope.contactInformation);
 
 			// CICO-20567-Select default to AR Transactions Tab
 			if ($stateParams.origin === 'AR_OVERVIEW') {
@@ -540,9 +664,10 @@ angular.module('sntRover').controller('companyCardDetailsController', ['$scope',
 			$scope.isPrintArStatement = isPrintArStatement;
 		});
 
-
-        CardReaderCtrl.call(this, $scope, $rootScope, $timeout, $interval, $log);
-        $scope.observeForSwipe();
+        if (!$rootScope.disableObserveForSwipe) {
+            CardReaderCtrl.call(this, $scope, $rootScope, $timeout, $interval, $log);
+            $scope.observeForSwipe();
+        }
 
     }
 ]);

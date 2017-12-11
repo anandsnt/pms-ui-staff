@@ -25,7 +25,7 @@
 		Registration Card
 	</button>
 
-	<label ng-show="isStandAlone" class="checkbox inline" for="no-rate-print" ng-class="{ 'checked':reservationBillData.hide_rates }">
+	<label ng-show="isStandAlone && reservationBillData.is_show_registration_card_button" class="checkbox inline" for="no-rate-print" ng-class="{ 'checked':reservationBillData.hide_rates }">
         <span class="icon-form icon-checkbox" ng-class="{ 'checked':reservationBillData.hide_rates }"></span>
         <input ng-click="clickedShowRate()" id="no-rate-print" value="" type="checkbox">
         {{ 'DONT_PRINT_RATE' | translate }}
@@ -246,7 +246,8 @@
 						</li>
 					</ul>
 					<span ng-repeat="description in feesData.description" class="charge" ng-class="{ 'icons edited' : feesData.is_description_edited }">
-						{{description.fees_desc}}
+						<span ng-if="description.card_number">{{description.fees_desc}} - {{description.card_number}}</span>
+						<span ng-if="!description.card_number">{{description.fees_desc}}</span>
 						<br />
 					</span>
 					<span ng-show="feesData.reference_text != ''" class="reference">
@@ -262,7 +263,7 @@
 							<span ng-show="!isBalanceShown(feesData.is_rate_suppressed) && description.fees_amount != '' && description.fees_amount != NIL">
 								{{'SUPPRESSED_RATES_TEXT' | translate}}
 							</span>
-							<span ng-show="description.fees_amount != NIL && isBalanceShown(feesData.is_rate_suppressed)">
+                            <span ng-show="description.fees_amount != '' && description.fees_amount != NIL && isBalanceShown(feesData.is_rate_suppressed)">
 								<span class="currency">{{currencySymbol}}</span>{{description.fees_amount | number: precisonTwo}}
 							</span>
 							<br />

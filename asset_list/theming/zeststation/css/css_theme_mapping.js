@@ -23,7 +23,9 @@ module.exports = {
 			'hi-ho': [themeCSSRoot + 'hi-ho.less'],
 			'first': [themeCSSRoot + 'first.less'],
 			'viceroy-chicago': [themeCSSRoot + 'viceroy-chicago.less'],
-			'amrath': [themeCSSRoot + 'amrath.less']
+			'amrath': [themeCSSRoot + 'amrath.less'],
+            'jupiter': [themeCSSRoot + 'jupiter.less'],
+            'huntley': [themeCSSRoot + 'huntley.less']
 		};
 	}
 };

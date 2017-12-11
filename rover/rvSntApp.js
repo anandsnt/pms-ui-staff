@@ -12,7 +12,8 @@ var GlobalApp = function() {
         this.MLIOperator = new MLIOperation();
         this.desktopUUIDService = new DesktopUUIDService();
     }
-        catch (er) {
+    catch (er) {
+        console.log(er);
     }
 
 
@@ -63,7 +64,7 @@ var GlobalApp = function() {
 
     this.enableCardSwipeDebug = function() {
         that.cardSwipeDebug = true; // Mark it as true to debug cardSwype opertations
-        that.cardReader = new CardOperation();
+        that.cardReader = new MockCardOperation();
     };
 
     this.reInitCardOperations = function() {

@@ -14,10 +14,10 @@
             <h3 ng-if="(data.summaryData.deposit_debits !== 0 || data.summaryData.deposit_credits !== 0)" class="has-arrow toggle" ng-class="{'active': data.summaryData.deposit_balance.active }" ng-click="toggleJournalSummaryItem('DEPOSIT_BALANCE')" translate>DEPOSIT_BAL</h3>
             <h3 ng-if="(data.summaryData.deposit_debits === 0 && data.summaryData.deposit_credits === 0)" translate>DEPOSIT_BAL</h3>
             <ul>
-                <li>{{'OPENING' | translate}}<span><span class="currency">{{currencySymbol}}</span>{{data.summaryData.deposit_opening_balance | number: precisonTwo }}</span></li>
-                <li>{{'DEBIT' | translate}}<span><span class="currency">{{currencySymbol}}</span>{{data.summaryData.deposit_debits | number: precisonTwo }}</span></li>
-                <li>{{'CREDIT' | translate}}<span><span class="currency">{{currencySymbol}}</span>{{data.summaryData.deposit_credits | number: precisonTwo }}</span></li>
-                <li>{{'CLOSING' | translate}}<span><span class="currency">{{currencySymbol}}</span>{{data.summaryData.deposit_closing_balance | number: precisonTwo }}</span></li>
+                <li>{{'OPENING' | translate}}<span><span class="currency">{{currencySymbol}}</span> {{data.summaryData.deposit_opening_balance | number: precisonTwo }}</span></li>
+                <li>{{'DEBIT' | translate}}<span><span class="currency">{{currencySymbol}}</span> {{data.summaryData.deposit_debits | number: precisonTwo }}</span></li>
+                <li>{{'CREDIT' | translate}}<span><span class="currency">{{currencySymbol}}</span> {{data.summaryData.deposit_credits | number: precisonTwo }}</span></li>
+                <li>{{'CLOSING' | translate}}<span><span class="currency">{{currencySymbol}}</span> {{data.summaryData.deposit_closing_balance | number: precisonTwo }}</span></li>
             </ul>
         </div>
 
@@ -63,10 +63,10 @@
             <h3 ng-if="(data.summaryData.guest_debits !== 0 || data.summaryData.guest_credits !== 0)" class="has-arrow toggle" ng-class="{'active': data.summaryData.guest_balance.active }" ng-click="toggleJournalSummaryItem('GUEST_BALANCE')" translate>GUEST_BAL</h3>
             <h3 ng-if="(data.summaryData.guest_debits === 0 && data.summaryData.guest_credits === 0)" translate>GUEST_BAL</h3>
             <ul>
-                <li><span><span class="currency">{{currencySymbol}}</span>{{data.summaryData.guest_opening_balance | number: precisonTwo }}</span></li>
-                <li><span><span class="currency">{{currencySymbol}}</span>{{data.summaryData.guest_debits | number: precisonTwo }}</span></li>
-                <li><span><span class="currency">{{currencySymbol}}</span>{{data.summaryData.guest_credits | number: precisonTwo }}</span></li>
-                <li><span><span class="currency">{{currencySymbol}}</span>{{data.summaryData.guest_closing_balance | number: precisonTwo }}</span></li>
+                <li><span><span class="currency">{{currencySymbol}}</span> {{data.summaryData.guest_opening_balance | number: precisonTwo }}</span></li>
+                <li><span><span class="currency">{{currencySymbol}}</span> {{data.summaryData.guest_debits | number: precisonTwo }}</span></li>
+                <li><span><span class="currency">{{currencySymbol}}</span> {{data.summaryData.guest_credits | number: precisonTwo }}</span></li>
+                <li><span><span class="currency">{{currencySymbol}}</span> {{data.summaryData.guest_closing_balance | number: precisonTwo }}</span></li>
             </ul>
         </div>
 
@@ -112,10 +112,10 @@
             <h3 ng-if="(data.summaryData.ar_debits !== 0 || data.summaryData.ar_credits !== 0)" class="has-arrow toggle" ng-class="{'active': data.summaryData.ar_balance.active }" ng-click="toggleJournalSummaryItem('AR_BALANCE')" translate>AR_BALANCE</h3>
             <h3 ng-if="(data.summaryData.ar_debits === 0 && data.summaryData.ar_credits === 0)" translate>AR_BALANCE</h3>
             <ul>
-                <li><span><span class="currency">{{currencySymbol}}</span>{{data.summaryData.ar_opening_balance | number: precisonTwo }}</span></li>
-                <li><span><span class="currency">{{currencySymbol}}</span>{{data.summaryData.ar_debits | number: precisonTwo }}</span></li>
-                <li><span><span class="currency">{{currencySymbol}}</span>{{data.summaryData.ar_credits | number: precisonTwo }}</span></li>
-                <li><span><span class="currency">{{currencySymbol}}</span>{{data.summaryData.ar_closing_balance | number: precisonTwo }}</span></li>
+                <li><span><span class="currency">{{currencySymbol}}</span> {{data.summaryData.ar_opening_balance | number: precisonTwo }}</span></li>
+                <li><span><span class="currency">{{currencySymbol}}</span> {{data.summaryData.ar_debits | number: precisonTwo }}</span></li>
+                <li><span><span class="currency">{{currencySymbol}}</span> {{data.summaryData.ar_credits | number: precisonTwo }}</span></li>
+                <li><span><span class="currency">{{currencySymbol}}</span> {{data.summaryData.ar_closing_balance | number: precisonTwo }}</span></li>
             </ul>
         </div>
 
@@ -162,25 +162,25 @@
             <ul>
                 <li>
                     <span>
-                        <span class="currency">{{currencySymbol}}</span>
+                        <span class="currency">{{currencySymbol}}</span> 
                         {{data.summaryData.deposit_opening_balance+data.summaryData.guest_opening_balance+data.summaryData.ar_opening_balance | number: precisonTwo }}
                     </span>
                 </li>
                 <li>
                     <span>
-                        <span class="currency">{{currencySymbol}}</span>
+                        <span class="currency">{{currencySymbol}}</span> 
                         {{data.summaryData.deposit_debits+data.summaryData.guest_debits+data.summaryData.ar_debits | number: precisonTwo }}
                     </span>
                 </li>
                 <li>
                     <span>
-                        <span class="currency">{{currencySymbol}}</span>
+                        <span class="currency">{{currencySymbol}}</span> 
                         {{data.summaryData.deposit_credits+data.summaryData.guest_credits+data.summaryData.ar_credits | number: precisonTwo }}
                     </span>
                 </li>
                 <li>
                     <span>
-                        <span class="currency">{{currencySymbol}}</span>
+                        <span class="currency">{{currencySymbol}}</span> 
                         {{data.summaryData.deposit_closing_balance+data.summaryData.guest_closing_balance+data.summaryData.ar_closing_balance | number: precisonTwo }}
                     </span>
                 </li>

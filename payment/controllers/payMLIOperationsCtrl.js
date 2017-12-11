@@ -1,6 +1,8 @@
 angular.module('sntPay').controller('payMLIOperationsController',
-    ['$scope', 'sntPaymentSrv', 'paymentAppEventConstants', 'paymentUtilSrv', 'paymentConstants', '$timeout', '$log',
-        function ($scope, sntPaymentSrv, payEvntConst, util, paymentConstants, $timeout, $log) {
+    ['$scope', 'sntPaymentSrv', 'paymentAppEventConstants', 'paymentUtilSrv',
+        'paymentConstants', '$timeout', '$log', 'sntActivity',
+        function ($scope, sntPaymentSrv, payEvntConst, util,
+                  paymentConstants, $timeout, $log, sntActivity) {
 
             /**
              * variable to keep track swiped & data coming from swipe
@@ -83,8 +85,8 @@ angular.module('sntPay').controller('payMLIOperationsController',
              * @return {[type]}          [description]
              */
             var successCallBackOfGetMLIToken = (response) => {
-                $scope.$emit('hideLoader');
                 notifyParent(response);
+                sntActivity.stop('FETCH_MLI_TOKEN');
             };
 
             /**
@@ -93,8 +95,8 @@ angular.module('sntPay').controller('payMLIOperationsController',
              * @return {[type]}       [description]
              */
             var failureCallBackOfGetMLIToken = (error) => {
-                $scope.$emit('hideLoader');
                 notifyParentError(error);
+                sntActivity.stop('FETCH_MLI_TOKEN');
             };
 
             var renderDataFromSwipe = function (event, swipedCardData) {
@@ -124,7 +126,8 @@ angular.module('sntPay').controller('payMLIOperationsController',
                          *  ending_with: "0088",
                          *  expiry_date: "1217"
                          *  payment_method_id: 35102,
-                         *  token: "123465498745316854"
+                         *  token: "123465498745316854",
+                         *  is_swiped: true
                          * }
                          *
                          * NOTE: In case the request params sends add_to_guest_card: true AND guest_id w/o reservation_id
@@ -136,15 +139,18 @@ angular.module('sntPay').controller('payMLIOperationsController',
                         $scope.$emit('SUCCESS_LINK_PAYMENT', {
                             response: {
                                 id: response.payment_method_id || response.guest_payment_method_id,
+                                guest_payment_method_id: response.guest_payment_method_id,
                                 payment_name: 'CC',
-                                usedEMV: true
+                                usedEMV: true,
+                                addToGuestCard: $scope.payment.addToGuestCardSelected
                             },
                             selectedPaymentType: $scope.selectedPaymentType || 'CC',
                             cardDetails: {
                                 'card_code': cardType.toLowerCase(),
                                 'ending_with': response.ending_with,
                                 'expiry_date': response.expiry_date,
-                                'card_name': ''
+                                'card_name': '',
+                                'is_swiped': response.is_swiped
                             }
                         });
 
@@ -221,7 +227,7 @@ angular.module('sntPay').controller('payMLIOperationsController',
 
                 var params = util.formParamsForFetchingTheToken($scope.cardData);
 
-                $scope.$emit('showLoader');
+                sntActivity.start('FETCH_MLI_TOKEN');
                 sntPaymentSrv.fetchMLIToken(params, successCallBackOfGetMLIToken, failureCallBackOfGetMLIToken);
             };
 

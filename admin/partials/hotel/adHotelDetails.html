@@ -420,6 +420,8 @@
 
 				<ad-toggle-button is-checked="data.enable_offline_checkout" label="{{'WEB_CHEKOUT_OFFLINE_LABEL' | translate}}" is-hide="!isAdminSnt || data.hotel_pms_type !=='OWS'"></ad-toggle-button>
 
+				<ad-toggle-button is-checked="data.enable_offline_check_in" label="{{'WEB_CHECKIN_OFFLINE_LABEL' | translate}}" is-hide="!isAdminSnt || data.hotel_pms_type !=='OWS'"></ad-toggle-button>
+
 				<div class="entry is-pms-tokenized" ng-if="isAdminSnt && data.hotel_pms_type ==='OWS'">
 					<label>Privacy Check</label>
 					<div class="switch-button single" ng-class="{ on : data.is_email_privacy_check == true }" ng-click="data.is_email_privacy_check = !data.is_email_privacy_check">
@@ -641,9 +643,19 @@
 						<span class="switch-icon"></span>
 					</div>
 				</div>
-				<div class="entry" ng-show="data.payment_gateway === 'MLI' && data.mli_emv_enabled && data.hotel_pms_type == ''">
+				<div class="entry full-width" ng-if="data.payment_gateway === 'MLI'"
+                     ng-show="data.payment_gateway === 'MLI' && data.mli_emv_enabled && data.hotel_pms_type == ''">
 					<label for="mli-transaction-access-url"> MLI Transaction Access URL </label>
-					<input type="text" ng-model="data.mli_txn_access_url" value="{{data.mli_txn_access_url}}" placeholder="Enter MLI transaction access url" name="merchantlink_txn_access_url" id="mli-transaction-access-url">
+					<input type="text" ng-model="data.mli_txn_access_url" value="{{data.mli_txn_access_url}}"
+						   placeholder="https://[Public IP for PosLynx]/thinclient/mobile/api.php"
+						   name="merchantlink_txn_access_url"
+						   id="mli-transaction-access-url">
+					<!-- CICO-45001 --->
+					<span class="help-block">
+
+						Note: Access URL format is https://[Public IP for PosLynx]/thinclient/mobile/api.php.
+				  	[Public IP for PosLynx] should be replaced with the domain name or the public IP of the PosLynx machine.
+					</span>
 				</div>
 
 				<div class="entry full-width" ng-if="data.payment_gateway === 'MLI'">
@@ -688,6 +700,15 @@
 					</label>
 					<input type="text" ng-model="data.six_server_port" value="{{data.six_server_port}}">
 				</div>
+                <div class="entry" ng-if="data.payment_gateway === 'sixpayments'">
+                    <label>
+                        Use Timestamp In Hotel's Timezone
+                    </label>
+                    <div class="switch-button single" ng-class="{ on : data.six_use_hotel_timezone == true}" ng-click="data.six_use_hotel_timezone = !data.six_use_hotel_timezone">
+                        <input type="checkbox" value="{{data.six_use_hotel_timezone}}">
+                        <span class="switch-icon"></span>
+                    </div>
+                </div>
 				<div class="entry" ng-if="data.payment_gateway === 'sixpayments'">
 					<label for="six-server-port">
 						Six Payments Communication Protocol

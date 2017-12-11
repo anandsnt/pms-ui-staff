@@ -1,6 +1,6 @@
 angular.module('sntPay').controller('payShijiCtrl',
-    ['$scope', 'sntShijiGatewaySrv', 'ngDialog', '$timeout',
-        function($scope, sntShijiGatewaySrv, ngDialog, $timeout) {
+    ['$scope', 'sntShijiGatewaySrv', 'ngDialog', '$timeout', 'sntActivity',
+        function($scope, sntShijiGatewaySrv, ngDialog, $timeout, sntActivity) {
 
             /**
              * @return {undefined}
@@ -86,7 +86,7 @@ angular.module('sntPay').controller('payShijiCtrl',
              * @return {undefined}
              */
             function initiatePaymentProcess() {
-                $scope.$emit('showLoader');
+                sntActivity.start('INIT_SHIJI_PAYMENT');
                 sntShijiGatewaySrv.initiatePayment($scope.reservationId, {
                     payment_type: $scope.selectedPaymentType,
                     bill_number: $scope.billNumber,
@@ -98,10 +98,10 @@ angular.module('sntPay').controller('payShijiCtrl',
                     } else {
                         $scope.$emit('SHIJI_PAYMENT_SUCCESS', response);
                     }
-                    $scope.$emit('hideLoader');
+                    sntActivity.stop('INIT_SHIJI_PAYMENT');
                 }, errorMessage => {
                     $scope.$emit('SHIJI_PAYMENT_FAILED', errorMessage.data);
-                    $scope.$emit('hideLoader');
+                    sntActivity.stop('INIT_SHIJI_PAYMENT');
                 });
             }
 

@@ -617,6 +617,9 @@
    "ROOM_UPSELL_FOOTER_3": "rooms",
 
    "LATE_CHECKOUT_HEADING": "Late Checkout",
-   "LATE_CHECKOUT_INSTRUCTIONS": "Please select a Late Checkout offer from the list to extend your stay"
+   "LATE_CHECKOUT_INSTRUCTIONS": "Please select a Late Checkout offer from the list to extend your stay",
+
+   "SIGNATURE": "SIGNATURE",
+   "GID_VERIFY_CLEAR_SIGNATURE": "Clear signature"
 
 }

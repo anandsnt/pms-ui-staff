@@ -1,3 +1,4 @@
+/* eslint-disable angular/document-service */
 sntRover.controller('roverController', [
     '$rootScope',
     '$scope',
@@ -142,6 +143,7 @@ sntRover.controller('roverController', [
         // API not removing for now - Because if we need to disable it we can use the same param
         $rootScope.isRoomDiaryEnabled = true;
         $rootScope.isManualCCEntryEnabled = hotelDetails.is_allow_manual_cc_entry;
+        $rootScope.isAnMPHotel = hotelDetails.is_multi_property;
         /**
          * CICO-34068
          * NOTE: Temporary Fix
@@ -164,6 +166,7 @@ sntRover.controller('roverController', [
         $rootScope.sendConfirmationLetter = hotelDetails.send_confirmation_letter;
         $rootScope.isItemInventoryOn = hotelDetails.is_item_inventory_on;
         $rootScope.guestTypes = hotelDetails.guest_types;
+        $rootScope.isFromDevice = navigator.userAgent.match(/iPad/i) !== null || navigator.userAgent.match(/iPhone/i) !== null;
 
         // CICO-41410
         $rootScope.isDashboardSwipeEnabled = hotelDetails.enable_dashboard_swipe;
@@ -378,21 +381,34 @@ sntRover.controller('roverController', [
         * Show the connected devices status
          */
         $scope.fetchDeviceStatus = function () {
+            var callBacks = {
+                'successCallBack': function (response, versionDetails) {
+                    $scope.connectedDeviceDetails = response;
+                    $scope.serviceDetails = versionDetails;
+                    $scope.widthStyle = (response.length === 1) ? {
+                        'width': '320px'
+                    } : '';
+                    ngDialog.open({
+                        template: '/assets/partials/settings/rvDeviceStatus.html',
+                        scope: $scope,
+                        className: 'calendar-modal',
+                        controller: 'rvDeviceStatusCtrl'
+                    });
+                    $scope.runDigestCycle();
+                },
+                'failureCallBack': function (errorMessage) {
+                    $scope.errorMessage = errorMessage;
+                }
+            };
+
             $scope.showDeviceConnectivityStatus = false;
             $scope.connectedDeviceDetails = [];
-            cordova.exec(function (response) {
-                $scope.connectedDeviceDetails = response;
-                $scope.widthStyle = (response.length === 1) ? {
-                    'width': '320px'
-                } : '';
-                ngDialog.open({
-                    template: '/assets/partials/settings/rvDeviceStatus.html',
-                    scope: $scope,
-                    className: 'calendar-modal'
-                });
-                $scope.runDigestCycle();
-            }, function () {
-            }, 'RVDevicePlugin', 'getDevicesStates', []);
+
+            if (sntapp.desktopCardReader.isActive) {
+                sntapp.desktopCardReader.getConnectedDeviceDetails(callBacks);
+            } else {
+                sntapp.cardReader.getConnectedDeviceDetails(callBacks);
+            }
         };
 
         $scope.refreshDeviceStatus = function () {
@@ -489,6 +505,7 @@ sntRover.controller('roverController', [
 
             if ($rootScope.paymentGateway === 'CBA' && sntapp.cordovaLoaded) {
                 doCBAPowerFailureCheck();
+                $rootScope.disableObserveForSwipe = true;
             }
 
             // for iPad we need to show the connected device status
@@ -701,7 +718,8 @@ sntRover.controller('roverController', [
         };
 
         $scope.uuidServiceSuccessCallBack = function (response) {
-            $rootScope.UUID = response.Data;
+            // latest versions of RoverService return the device identifier as a string!
+            $rootScope.UUID = response.Data || response;
         };
 
         $scope.uuidServiceFailureCallBack = function (error) {
@@ -1082,6 +1100,15 @@ sntRover.controller('roverController', [
         $scope.stopActivity = function (activity) {
             sntActivity.stop(activity);
         };
+
+        // CICO-45043 Add Device Status Menu
+        document.addEventListener('WS_CONNECTION_ESTABLISHED', function () {
+            $scope.formMenu();
+        });
+
+        document.addEventListener('WS_CONNECTION_LOST', function () {
+            $scope.formMenu();
+        });
 
     }
 ]);
