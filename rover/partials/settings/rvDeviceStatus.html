@@ -65,10 +65,11 @@
                         <!-- <li ng-if="device.device_connection_sate !== 'Connected' && device.device_short_name ==='Ingenico'"><button type="button" class="button blue">Connect</button></li> -->
                         <li ng-if="device.device_connection_sate !== 'Connected'"><em class="text-orange">Not
                             Connected</em></li>
-                        <li ng-if="device.battery_percentage === null" class="text-grey">
+                        <!-- CICO-47864 Battery percentage to be shown as NA if value is 0 or null -->
+                        <li ng-if="device.device_connection_sate !== 'Connected' || !device.battery_percentage" class="text-grey">
                             NA
                         </li>
-                        <li ng-if="device.battery_percentage !== null">
+                        <li ng-if="device.device_connection_sate === 'Connected' && device.battery_percentage">
                             <div class="battery">
                                 <!--  <em class="battery-status text-{'green' if charged/charging or 'red' if discharging}" ng-class="{'green': device.battery_state === 'Charged' || device.battery_state === 'Charging',' red': device.battery_state === 'Discharging'}">{{device.battery_state}}</em> -->
                                 <strong class="battery-value text"
