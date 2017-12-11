@@ -110,12 +110,12 @@ angular.module('sntRover').controller('rvAddOverBookingPopupCtrl', ['$scope', '$
 	$scope.addOverBookingApiCall = function() {
 
 		var onAddOverBookingApiSuccess = function() {
-			$scope.$errorMessage = '';
+			$scope.errorMessage = '';
 			$scope.$emit('REFRESH_OVERBOOKING_GRID');
 			$scope.closeDialog();
 		},
 		onAddOverBookingApiFailure = function( errorMessage ) {
-			$scope.$errorMessage = errorMessage;
+			$scope.errorMessage = errorMessage;
 		},
 		dataToSend = {
             'start_date': moment(tzIndependentDate($scope.addOverBookingObj.fromDate)).format($rootScope.momentFormatForAPI),
