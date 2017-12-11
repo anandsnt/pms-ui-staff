@@ -36,7 +36,10 @@ sntRover.controller('reservationDetailsController',
 				'NORMAL_SEARCH': 'SEARCH_NORMAL'
 			};
 
-		var roomAndRatesState = 'rover.reservation.staycard.mainCard.room-rates';
+		var roomAndRatesState = 'rover.reservation.staycard.mainCard.room-rates',
+		    ALLOWED_RESV_LIMIT = 92;
+
+
 
 		// Putting this hash in parent as we have to maintain the back button in stay card even after navigating to states from stay card and coming back to the stay card.
 		var setNavigationBookMark = function() {
@@ -290,6 +293,19 @@ sntRover.controller('reservationDetailsController',
 
 		$scope.reservationData = reservationDetails;
 
+		/**
+	     * Get the max value of the departure date for the given arrival date
+	     * @param - fromDate Arrival Date
+	     * @return - departure Date
+	     */
+	    $scope.getReservationMaxDepartureDate = function (arrivalDate) {
+	        var dateObj = tzIndependentDate(arrivalDate),
+	            dateString = $filter('date')(dateObj, 'yyyy-MM-dd'),
+	            dateParts = dateString.match(/(\d+)/g);
+
+	            return new Date(dateParts[0], parseInt(dateParts[1]) - 1, parseInt(dateParts[2], 10) + ALLOWED_RESV_LIMIT);
+	    };
+
 		// CICO-13564
 		$scope.editStore = {
 			arrival: $scope.reservationData.reservation_card.arrival_date,
@@ -308,7 +324,15 @@ sntRover.controller('reservationDetailsController',
 		}
 
 		$scope.arrivalDateOptions = angular.copy(datePickerCommon);
-		$scope.departureDateOptions = angular.copy(datePickerCommon);
+		$scope.departureDateOptions = angular.copy(datePickerCommon);	
+
+	    // CICO-46933
+		$scope.departureDateOptions.maxDate = !!$scope.reservationData.reservation_card.group_id ? $filter('date')($scope.reservationData.reservation_card.group_block_to, $rootScope.dateFormat) : $scope.getReservationMaxDepartureDate($scope.editStore.arrival);
+		
+		// CICO-46933
+		$scope.arrivalDateChanged = function () {			
+            $scope.departureDateOptions.maxDate = !!$scope.reservationData.reservation_card.group_id ? $filter('date')($scope.reservationData.reservation_card.group_block_to, $rootScope.dateFormat) : $scope.getReservationMaxDepartureDate($scope.editStore.arrival);
+		};
 
 		$scope.reservationData.paymentTypes = paymentTypes;
 		$scope.reservationData.reseravationDepositData = reseravationDepositData;
@@ -1600,5 +1624,7 @@ sntRover.controller('reservationDetailsController',
  		}
 
      };
+
+     
 
 }]);
