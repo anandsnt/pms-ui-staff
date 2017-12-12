@@ -672,9 +672,9 @@ admin.controller('ADAppCtrl', [
                                 menu.components.splice(componentIndex, 1);
                             }
                             if (component) {
-                                _.each(component.sub_components, function(sub_component, subComponentIndex) {
+                                _.each(component.sub_components, function(subComponent, subComponentIndex) {
                                     // check if partially completed menu is one of the sub sub menu item
-                                    if (sub_component && partiallyCompeletedMenuName === sub_component.name) {
+                                    if (subComponent && partiallyCompeletedMenuName === subComponent.name) {
                                         component.sub_components.splice(subComponentIndex, 1);
                                     }
                                 });
