@@ -350,8 +350,36 @@
         &.review-bill {
             text-transform: uppercase;
 
+            .wrapper {
+                #flexbox > .flex();
+                #flexbox > .parent(row wrap, '', '', '');
+            }
+
+            #bill {
+                width: 100%;
+            }
+
+            #payment {
+                width: 70%;
+
+                strong {
+                    font-size: 16px;
+                    color: @black;
+                }
+
+                span { color: lighten(@black, 50); }
+
+                .button {
+                    display: inline-block;
+                    font-size: 14px;
+                    line-height: 54px;
+                    height: 54px;
+                }
+            }
+
             #rate { 
-                margin: 0 0 0 50%;
+                margin-left: auto;
+                width: 30%;
 
                 li {
                     &.total { color: @actionBackground; }
