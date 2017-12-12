@@ -29,7 +29,7 @@
 	      <option value="" >
 	        {{'CHARGE_CODE_PLACEHOLDER'| translate}}
 	      </option>
-	      <option ng-repeat='code in prefetchData.tax_codes' value='{{code.value}}'  ng-selected="code.value==addData.charge_code_id" >
+	      <option ng-repeat='code in prefetchData.tax_codes | filter:filterTaxCodes(0)' value='{{code.value}}'  ng-selected="code.value==addData.charge_code_id" >
 	        {{code.name}}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{code.description}}
 	      </option>
 	    </select>
