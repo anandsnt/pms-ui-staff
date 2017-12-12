@@ -69,7 +69,6 @@ admin.controller('ADHotelDetailsCtrl', [
 			$scope.title = "Edit Hotel";
 			var fetchSuccess = function(data) {
 				$scope.data = data.data;
-				$scope.data.is_mod_enabled = true;
 				$scope.languages = data.languages;
 				$scope.$emit('hideLoader');
 				if ($scope.data.mli_pem_certificate_loaded) {
@@ -299,7 +298,7 @@ admin.controller('ADHotelDetailsCtrl', [
     *   Method to toggle data for 'is_pms_tokenized' as true/false.
     */
 	$scope.toggleInvoiceSequence = function() {
-		$scope.data.is_mod_enabled = ($scope.data.is_mod_enabled === true) ? false : true;
+		$scope.data.enable_mod_type = ($scope.data.enable_mod_type === true) ? false : true;
 	};
 	/**
     *   Method to toggle data for 'is_pms_tokenized' as true/false.
