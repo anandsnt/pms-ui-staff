@@ -114,6 +114,7 @@ admin.service('adInterfacesCommonConfigSrv', ['$http', '$q', 'ADBaseWebSrvV2', '
         service.fetchCurrencyList = function() {
             var deferred = $q.defer();
             var url = '/ui/currency_list';
+            
             if (service.countryList.length) {
                 deferred.resolve(service.currencyList);
             } else {
