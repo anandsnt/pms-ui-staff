@@ -31,12 +31,6 @@ angular.module('sntRover').controller('rvEditOverBookingPopupCtrl', ['$scope', '
 			params: dataToSend
 		});
 	};
-	// Disable set limit button logic.
-	$scope.disableEditLimitButton = function() {
-		var limit = $scope.overBookingObj.editData.limitValue;
-
-		return ( limit === '' || limit === null );
-	};
 	// close dialog
 	$scope.closeDialog = function() {
         ngDialog.close();
