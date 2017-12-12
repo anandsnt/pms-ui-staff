@@ -67,7 +67,7 @@
                             Connected</em></li>
                         <!-- CICO-47864 Battery percentage to be shown as NA if value is 0 or null -->
                         <li ng-if="device.device_connection_sate !== 'Connected' || !device.battery_percentage" class="text-grey">
-                            NA
+                            N/A
                         </li>
                         <li ng-if="device.device_connection_sate === 'Connected' && device.battery_percentage">
                             <div class="battery">
