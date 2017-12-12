@@ -40,6 +40,16 @@
                                 </div>
                             </div>
                         </div>
+                        <br/>
+                        <br/>
+                    </div>
+                    <div id="payment" ng-show="zestStationData.kiosk_checkout_show_cc_on_file && ccDetails && ccDetails.card_number && ccDetails.card_number.length">
+                        <p>
+                            <strong>{{ccDetails.card_name}}</strong><br>
+                            <span translate="">ENDING_WITH</span> {{ccDetails.card_number}}<br>
+                            <span translate="">EXPIRES</span> {{ccDetails.card_expiry}}
+                        </p>
+                        <a href="{swipe.html, change title of that screen if arrived from here}" class="button">Change Card</a>
                     </div>
                     <ul id="rate">
                         <li class="sub">

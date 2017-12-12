@@ -60,6 +60,13 @@ sntZestStation.controller('zsReservationBillDetailsCtrl', [
             $scope.deposit = response.bill_details.credits;
             $scope.balance = response.bill_details.balance;
 
+            $scope.ccDetails = {
+                "card_name": "Resheil",
+                "card_number": "1111",
+                "card_expiry":"11/20",
+                "card_type_image": "images/va.png"
+            };
+
             angular.forEach(billsData, function(billData, key) {
                 angular.forEach(billData.charge_details, function(chargeDetail, key) {
                     var bill_details = {
