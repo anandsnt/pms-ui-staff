@@ -643,8 +643,8 @@ admin.controller('ADAppCtrl', [
 			$scope.data.current_hotel = data.new_name;
 		});
 
-        /***************************** Hide partially completed admin menus **********/
-        /************ hide the admin menus in release and production *****************/
+        /** ************************** Hide partially completed admin menus ******** **/
+        /** ********* hide the admin menus in release and production *************** **/
 
         var url = document.location,
             inDevEnvironment = false;
@@ -668,13 +668,13 @@ admin.controller('ADAppCtrl', [
                     if (menu) {
                         _.each(menu.components, function(component, componentIndex) {
                             // check if partially completed menu is one of the sub menu item
-                            if (component && partiallyCompeletedMenuName == component.name) {
+                            if (component && partiallyCompeletedMenuName === component.name) {
                                 menu.components.splice(componentIndex, 1);
                             }
                             if (component) {
                                 _.each(component.sub_components, function(sub_component, subComponentIndex) {
                                     // check if partially completed menu is one of the sub sub menu item
-                                    if (sub_component && partiallyCompeletedMenuName == sub_component.name) {
+                                    if (sub_component && partiallyCompeletedMenuName === sub_component.name) {
                                         component.sub_components.splice(subComponentIndex, 1);
                                     }
                                 });
@@ -685,7 +685,7 @@ admin.controller('ADAppCtrl', [
             });
         }
 
-        /********************************************************************************/
+        /** *************************************************************************** **/
 
 		$scope.data = adminMenuData;
 		$scope.selectedMenu = $scope.data.menus[$scope.selectedIndex];
