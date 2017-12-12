@@ -47,6 +47,7 @@ admin.controller('ADHotelDetailsCtrl', [
 			isMPFlagResetConfirmPopupNeeded = false;
 			var fetchSuccess = function(data) {
 				$scope.data = data.data;
+
 				$scope.data.brands = [];
 				$scope.data.is_external_references_import_on = false;
 				$scope.data.external_references_import_freq = undefined;
@@ -292,6 +293,12 @@ admin.controller('ADHotelDetailsCtrl', [
     */
 	$scope.toggleClicked = function() {
 		$scope.data.is_pms_tokenized = ($scope.data.is_pms_tokenized === 'true') ? 'false' : 'true';
+	};
+	/**
+    *   Method to toggle data for 'is_pms_tokenized' as true/false.
+    */
+	$scope.toggleInvoiceSequence = function() {
+		$scope.data.enable_mod_type = ($scope.data.enable_mod_type === true) ? false : true;
 	};
 	/**
     *   Method to toggle data for 'is_pms_tokenized' as true/false.
