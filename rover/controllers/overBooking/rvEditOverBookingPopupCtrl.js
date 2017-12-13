@@ -22,7 +22,7 @@ angular.module('sntRover').controller('rvEditOverBookingPopupCtrl', ['$scope', '
         };
 
         if (editData.type === 'ROOM_TYPE') {
-        	dataToSend.room_type_ids = [ editData.roomTypeId ];
+			dataToSend.room_type_ids = [ editData.roomTypeId ];
         }
 
 		$scope.callAPI(rvOverBookingSrv.addOrEditOverBooking, {

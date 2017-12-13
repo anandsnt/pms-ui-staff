@@ -14,6 +14,7 @@ angular.module('sntRover')
                 $scope.toggleStatusOf = {};
                 $scope.toggleStatusOf['availableRooms'] = false;
                 $scope.toggleStatusOf['roomsSold'] = false;
+                $scope.toggleStatusOf['overbooking'] = false;
                 $scope.toggleStatusOf['occupancy'] = false;
                 $scope.toggleStatusOf['roomInventory'] = false;
             };
@@ -28,6 +29,7 @@ angular.module('sntRover')
                 $scope.setScroller('room_availability_scroller', scrollerOptions);
 
                 $scope.hideMeBeforeFetching = false;
+                $scope.isIncludeOverbooking = false;
                 initToggleStatus();
                 $scope.data = rvAvailabilitySrv.getGridData();
 
@@ -170,6 +172,13 @@ angular.module('sntRover')
              * The data required to show these sections are catered through different APIs.
              */
             
+            $scope.toggleOverbooking = toggleSectionGenerator(
+                'overbooking',
+                rvAvailabilitySrv.fetchOverbooking,
+                function() {
+                    return isSectionOpen('overbooking');
+                }
+            );
 
             $scope.toggleOccupancy = toggleSectionGenerator(
                 'occupancy',
@@ -338,6 +347,10 @@ angular.module('sntRover')
 
                 return retCls;
             };
+            // Catching INCLUDE_OVERBOOKING message from parent.
+            $scope.$on('INCLUDE_OVERBOOKING', function( event, flag ) {
+                $scope.isIncludeOverbooking = flag;
+            });
 
             init();
         }
