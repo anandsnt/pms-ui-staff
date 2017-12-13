@@ -1,12 +1,11 @@
-admin.controller('ADTacsSetupCtrl', ['$scope', 'config', 'countryList', 'currencyList', 'adInterfacesCommonConfigSrv',
-    function($scope, config, countryList, currencyList, adInterfacesCommonConfigSrv) {
+admin.controller('ADTacsSetupCtrl', ['$scope', 'config', 'countryList', 'currencyList', 'adCommissionsConfigSrv',
+    function($scope, config, countryList, currencyList, adCommissionsConfigSrv) {
 
         $scope.saveInterfaceConfig = function() {
-            $scope.callAPI(adInterfacesCommonConfigSrv.saveConfiguration, {
-                params: {
-                    config: $scope.config,
-                    interfaceIdentifier: 'TACS'
-                },
+            var params = $scope.config;
+            params.commission_interface_type = 'TACS';
+            $scope.callAPI(adCommissionsConfigSrv.saveConfiguration, {
+                params: params,
                 onSuccess: function() {
                     $scope.goBackToPreviousState();
                 }

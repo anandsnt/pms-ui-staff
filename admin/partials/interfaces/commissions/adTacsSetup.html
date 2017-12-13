@@ -1,7 +1,7 @@
 <ad-common-parts-in-form-dir on-save-button-click="saveInterfaceConfig"
     header-caption="TACS">
     <fieldset class="holder left">
-        <ad-toggle-button is-checked="config.commission_processing_enabled"
+        <ad-toggle-button is-checked="config.is_active"
         label="{{'TACS_COMMISSIONS_PROCESSING'| translate}}"></ad-toggle-button>
         <ad-textbox inputtype="text"
             value="config.group_id"
@@ -16,25 +16,25 @@
             styleclass="full-width">
         </ad-textbox>
         <ad-textbox inputtype="text"
-            value="config.ftp_site"
+            value="config.sftp_url"
             label="{{'FTP_SITE'| translate}}"
             styleclass="full-width">
         </ad-textbox>
     </fieldset>
     <fieldset class="holder right">
         <ad-textbox inputtype="text"
-            value="config.username"
+            value="config.sftp_username"
             label="{{'USERNAME'| translate}}"
             styleclass="full-width">
         </ad-textbox>
         <ad-textbox inputtype="text"
-            value="config.password"
+            value="config.sftp_password"
             label="{{'PASSWORD'| translate}}"
             styleclass="full-width">
         </ad-textbox>
-        <ad-dropdown label-in-drop-down="Select" list="countryList" selected-id='config.country_code' selbox-class="placeholder" div-class="full-width" label="{{'COUNTRY_OF_TAXING_AUTHORITY'| translate}}">
+        <ad-dropdown label-in-drop-down="Select" list="countryList" selected-id='config.taxation_country_id' selbox-class="placeholder" div-class="full-width" label="{{'COUNTRY_OF_TAXING_AUTHORITY'| translate}}">
         </ad-dropdown>
-        <ad-dropdown label-in-drop-down="Select" list="currencyList" selected-id='config.currency_code' selbox-class="placeholder" div-class="full-width" label="{{'COMMISSION_CURRENCY'| translate}}">
+        <ad-dropdown label-in-drop-down="Select" list="currencyList" selected-id='config.currency_id' selbox-class="placeholder" div-class="full-width" label="{{'COMMISSION_CURRENCY'| translate}}">
         </ad-dropdown>
     </fieldset>
 </ad-common-parts-in-form-dir>

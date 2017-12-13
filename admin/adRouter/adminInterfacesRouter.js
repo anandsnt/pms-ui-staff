@@ -620,8 +620,8 @@ angular.module('adminInterfacesRouter', []).config(function($stateProvider) {
         controller: 'ADTacsSetupCtrl',
         url: '/tacsSetup',
         resolve: {
-            config: ['adInterfacesCommonConfigSrv', function(adInterfacesCommonConfigSrv) {
-                return adInterfacesCommonConfigSrv.fetchConfiguration('openkey');
+            config: ['adCommissionsConfigSrv', function(adCommissionsConfigSrv) {
+                return adCommissionsConfigSrv.fetchTacsConfiguration();
             }],
             countryList: ['adInterfacesCommonConfigSrv', function(adInterfacesCommonConfigSrv) {
                 return adInterfacesCommonConfigSrv.fetchCountryList();
@@ -637,8 +637,8 @@ angular.module('adminInterfacesRouter', []).config(function($stateProvider) {
         controller: 'ADOnyxSetupCtrl',
         url: '/onyxSetup',
         resolve: {
-            config: ['adInterfacesCommonConfigSrv', function(adInterfacesCommonConfigSrv) {
-                return adInterfacesCommonConfigSrv.fetchConfiguration('openkey');
+            config: ['adCommissionsConfigSrv', function(adCommissionsConfigSrv) {
+                return adCommissionsConfigSrv.fetchOnyxConfiguration();
             }],
             countryList: ['adInterfacesCommonConfigSrv', function(adInterfacesCommonConfigSrv) {
                 return adInterfacesCommonConfigSrv.fetchCountryList();
