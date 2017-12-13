@@ -23,6 +23,7 @@ admin.controller('ADHotelDetailsCtrl', [
 	$scope.isHotelChainReadonly =  false;
 	$scope.isFieldsReadOnly = (($rootScope.isSntAdmin && $rootScope.isServiceProvider) || $rootScope.adminRole === "hotel-admin") ? "yes" : "no";
 	$scope.isFieldsReadOnlyForServiceProvider = ($rootScope.isSntAdmin && $rootScope.isServiceProvider) ? "yes" : "no";
+	$scope.isSequenceModChangeDisabled = false;
 	// CICO-41322 - Flag needed to show MP De-selection confirm popup.
 	var isMPFlagResetConfirmPopupNeeded = false;
 
@@ -47,6 +48,9 @@ admin.controller('ADHotelDetailsCtrl', [
 			isMPFlagResetConfirmPopupNeeded = false;
 			var fetchSuccess = function(data) {
 				$scope.data = data.data;
+				if ($scope.data.selected_mod_type_id) {
+					$scope.isSequenceModChangeDisabled = true;
+				}
 
 				$scope.data.brands = [];
 				$scope.data.is_external_references_import_on = false;
@@ -69,6 +73,9 @@ admin.controller('ADHotelDetailsCtrl', [
 			$scope.title = "Edit Hotel";
 			var fetchSuccess = function(data) {
 				$scope.data = data.data;
+				if ($scope.data.selected_mod_type_id) {
+					$scope.isSequenceModChangeDisabled = true;
+				}
 				$scope.languages = data.languages;
 				$scope.$emit('hideLoader');
 				if ($scope.data.mli_pem_certificate_loaded) {
@@ -104,6 +111,9 @@ admin.controller('ADHotelDetailsCtrl', [
 		$scope.readOnly = "yes";
 		var fetchSuccess = function(data) {
 			$scope.data = data;
+			if ($scope.data.selected_mod_type_id) {
+				$scope.isSequenceModChangeDisabled = true;
+			}
 			$scope.$emit('hideLoader');
 			$scope.hotelLogoPrefetched = data.hotel_logo;
 			$scope.hotelTemplateLogoPrefetched = data.hotel_template_logo;
@@ -298,7 +308,9 @@ admin.controller('ADHotelDetailsCtrl', [
     *   Method to toggle data for 'is_pms_tokenized' as true/false.
     */
 	$scope.toggleInvoiceSequence = function() {
-		$scope.data.enable_mod_type = ($scope.data.enable_mod_type === true) ? false : true;
+		if (!$scope.data.enable_mod_type) {
+			$scope.data.enable_mod_type = !$scope.data.enable_mod_type;
+		}		
 	};
 	/**
     *   Method to toggle data for 'is_pms_tokenized' as true/false.
