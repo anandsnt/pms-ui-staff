@@ -80,6 +80,8 @@ sntRover.service('RVCommissionsSrv', ['$http', '$q', 'BaseWebSrvV2', '$window', 
         'innerPerPage': 25,
         'searchQuery': '',
         'minAmount': '',
+        'selectedExportType': 'standard',
+        'receipientEmail': '',
         'billStatus': {
             'value': 'UN_PAID',
             'name': 'UN_PAID'
@@ -112,6 +114,34 @@ sntRover.service('RVCommissionsSrv', ['$http', '$q', 'BaseWebSrvV2', '$window', 
             'value': 'AMOUNT_DESC',
             'name': 'AMOUNT DESC'
         }]
+    };
+
+    that.onyxExportCommissions = function(params) {
+
+        var deferred = $q.defer();
+        var url = '/api/reports/onyx_commission_export.csv';
+
+        $http({
+            method: 'GET',
+            url: url,
+            params: params
+        }).then(function(response) {
+            var data = response.data,
+                headers = response.headers;
+
+            var hiddenAnchor = angular.element('<a/>'),
+                blob = new Blob([data]);
+
+            hiddenAnchor.attr({
+                href: $window.URL.createObjectURL(blob),
+                target: '_blank',
+                download: headers()['content-disposition'].match(/filename[^;=\n]*=((['"]).*?\2|[^;\n]*)/)[1].replace(/['"]+/g, '')
+            })[0].click();
+            deferred.resolve(true);
+        }, function(data) {
+            deferred.reject(data);
+        });
+        return deferred.promise;
     };
 
 }]);

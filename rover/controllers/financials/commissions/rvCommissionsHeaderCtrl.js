@@ -52,12 +52,20 @@ sntRover.controller('RVCommisionsHeaderCtrl', ['$scope', 'ngDialog', '$log', '$t
         $scope.exportInProgess = inProgress;
     };
 
+
+    $scope.onyxExportEnabled = true; // hardcord for now
+
+    $scope.isValidEmail = function() {
+        return (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test($scope.filterData.receipientEmail));
+    };
+
     $scope.exportCommisions = function() {
 
         var params = {
             min_commission_amount: $scope.filterData.minAmount,
             query: $scope.filterData.searchQuery,
-            sort_by: $scope.filterData.sort_by.value
+            sort_by: $scope.filterData.sort_by.value,
+            receipient_email: $scope.filterData.receipientEmail
         };
         
         var options = {
@@ -76,7 +84,13 @@ sntRover.controller('RVCommisionsHeaderCtrl', ['$scope', 'ngDialog', '$log', '$t
         };
 
         setExportStatus(true, false, false);
-        $scope.callAPI(RVCommissionsSrv.exportCommissions, options);
+
+        if ($scope.filterData.selectedExportType === 'standard') {
+            $scope.callAPI(RVCommissionsSrv.exportCommissions, options);
+        } else if ($scope.filterData.selectedExportType === 'onyx') {
+            $scope.callAPI(RVCommissionsSrv.onyxExportCommissions, options);
+        }
+        
     };
 
     $scope.showExportPopup = function() {
