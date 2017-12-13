@@ -142,12 +142,6 @@ angular.module('sntRover').controller('rvAddOverBookingPopupCtrl', ['$scope', '$
 			params: dataToSend
 		});
 	};
-	// Disable add limit button logic.
-	$scope.disableAddLimitButton = function() {
-		var limit = $scope.addOverBookingObj.limitValue;
-
-		return ( limit === '' || limit === null );
-	};
 	// close dialog
 	$scope.closeDialog = function() {
         ngDialog.close();
