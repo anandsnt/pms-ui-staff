@@ -25,7 +25,8 @@ module.exports = {
 			'viceroy-chicago': [themeCSSRoot + 'viceroy-chicago.less'],
 			'amrath': [themeCSSRoot + 'amrath.less'],
             'jupiter': [themeCSSRoot + 'jupiter.less'],
-            'huntley': [themeCSSRoot + 'huntley.less']
+            'huntley': [themeCSSRoot + 'huntley.less'],
+            'queen': [themeCSSRoot + 'queen.less']
 		};
 	}
 };

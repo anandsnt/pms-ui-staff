@@ -254,9 +254,13 @@ angular.module('sntRover').controller('rvGroupAddRoomsAndRatesPopupCtrl', [
 			// we are removing other selected
 			// list of selecetd room types' ids
 			var selectedIdList = _.pluck($scope.selectedRoomTypeAndRates, "room_type_id");
-
-			// yes final Boolean is on the way
-			return (_.indexOf(selectedIdList, roomType.room_type_id) >= 0);
+			
+			// CICO-46352
+			var isRoomTypeAlreadyAdded = _.find(selectedIdList, function (selectedId) {
+											return selectedId == roomType.room_type_id;
+										});
+			
+			return !!isRoomTypeAlreadyAdded;
 		};
 	}
 ]);
