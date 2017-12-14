@@ -268,7 +268,7 @@
 												{{'EDIT' |translate}}
 											</button>
 										</td>
-										<td class="action" ng-if="hasMoveToOtherBillPermission()">
+										<td class="action" ng-if="hasMoveToOtherBillPermission() && feesData.charge_code_type !== 'TAX'">
 											<label class="checkbox inline">
 												<span class="icon-form icon-checkbox" ng-class="{'checked':feesData.isSelected}"></span>
 												<input ng-model="feesData.isSelected" type="checkbox"/>
