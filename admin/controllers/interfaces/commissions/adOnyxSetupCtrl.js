@@ -3,6 +3,7 @@ admin.controller('ADOnyxSetupCtrl', ['$scope', 'config', 'countryList', 'currenc
 
         $scope.saveInterfaceConfig = function() {
             var params = $scope.config;
+            
             params.commission_interface_type = 'ONYX';
             $scope.callAPI(adCommissionsConfigSrv.saveConfiguration, {
                 params: params,

@@ -3,6 +3,7 @@ admin.controller('ADTacsSetupCtrl', ['$scope', 'config', 'countryList', 'currenc
 
         $scope.saveInterfaceConfig = function() {
             var params = $scope.config;
+            
             params.commission_interface_type = 'TACS';
             $scope.callAPI(adCommissionsConfigSrv.saveConfiguration, {
                 params: params,
