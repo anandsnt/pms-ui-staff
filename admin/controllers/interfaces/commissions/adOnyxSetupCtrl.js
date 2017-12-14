@@ -6,13 +6,20 @@ admin.controller('ADOnyxSetupCtrl', ['$scope', 'config', 'countryList', 'currenc
             params.commission_interface_type = 'ONYX';
             $scope.callAPI(adCommissionsConfigSrv.saveConfiguration, {
                 params: params,
-                onSuccess: function() {
+                successCallBack: function() {
                     $scope.goBackToPreviousState();
+                },
+                failureCallBack: function(error) {
+                    $scope.errorMessage = error;
+                    if (angular.element(document.querySelector('.content-scroll')).find(".error_message").length) {
+                        angular.element(document.querySelector('.content-scroll')).scrollTop(0);
+                    }
                 }
             });
         };
 
         (function() {
+            $scope.errorMessage = '';
             $scope.config = config;
             $scope.config.taxation_country_id = config.taxation_country_id ? config.taxation_country_id.toString() : '';
             $scope.config.currency_id = config.currency_id ? config.currency_id.toString() : '';

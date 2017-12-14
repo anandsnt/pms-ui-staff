@@ -6,8 +6,14 @@ admin.controller('ADTacsSetupCtrl', ['$scope', 'config', 'countryList', 'currenc
             params.commission_interface_type = 'TACS';
             $scope.callAPI(adCommissionsConfigSrv.saveConfiguration, {
                 params: params,
-                onSuccess: function() {
+                successCallBack: function() {
                     $scope.goBackToPreviousState();
+                },
+                failureCallBack: function(error) {
+                    $scope.errorMessage = error;
+                    if (angular.element(document.querySelector('.content-scroll')).find(".error_message").length) {
+                        angular.element(document.querySelector('.content-scroll')).scrollTop(0);
+                    }
                 }
             });
         };
