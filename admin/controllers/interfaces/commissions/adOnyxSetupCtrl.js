@@ -14,6 +14,8 @@ admin.controller('ADOnyxSetupCtrl', ['$scope', 'config', 'countryList', 'currenc
 
         (function() {
             $scope.config = config;
+            $scope.config.taxation_country_id = config.taxation_country_id ? config.taxation_country_id.toString() : '';
+            $scope.config.currency_id = config.currency_id ? config.currency_id.toString() : '';
             $scope.countryList = countryList;
             $scope.currencyList = currencyList;
         })();
