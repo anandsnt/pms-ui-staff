@@ -41,6 +41,17 @@ angular.module('sntRover').controller('rvDeviceStatusCtrl', ['$scope', 'ngDialog
 
         (function () {
             $scope.clearErrorMessage();
+            $scope.setScroller('deviceMessage', {
+                snap: false,
+                scrollbars: 'custom',
+                hideScrollbar: false,
+                click: false,
+                scrollX: false,
+                scrollY: true,
+                preventDefault: true,
+                interactiveScrollbars: true,
+                preventDefaultException: {tagName: /^(INPUT|TEXTAREA|BUTTON|SELECT|A)$/}
+            });
         })();
     }
 ]);

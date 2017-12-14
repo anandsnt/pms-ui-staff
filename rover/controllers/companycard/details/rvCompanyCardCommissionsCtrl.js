@@ -76,6 +76,9 @@ sntRover.controller('companyCardCommissionsCtrl', [
                 // if (isPageChanged) {
                 //     $scope.pagination.end = $scope.pagination.start + $scope.commissionDetails.length - 1;
                 // }
+                    $timeout(function () {
+                        $scope.$broadcast('updatePagination', $scope.paginationData.id );
+                    }, 1000);
                     $scope.$emit('hideLoader');
                     refreshScroll();
                 },
@@ -262,7 +265,7 @@ sntRover.controller('companyCardCommissionsCtrl', [
             if ($scope.selectedCommissions.length === 0) {
                 $scope.filterData.selectAll = false;
                 $scope.toggleSelection();
-            }
+            }            
         };
 
     // Updates the checked status of the current  page records while making the whole selection
@@ -373,12 +376,15 @@ sntRover.controller('companyCardCommissionsCtrl', [
         };
 
     // Updates the paid status of all the selected records
-        $scope.onGroupPaidStatusChange = function() {
+        $scope.onGroupPaidStatusChange = function(isFromHoldStatus) {
 
-            var commissionListToUpdate = [];
+            var commissionListToUpdate = [], isSelectionError = false;
 
             if ($scope.filterData.selectAll) {
                 $scope.commissionDetails.forEach(function(commission) {
+                    if (isFromHoldStatus && commission.commission_data.paid_status != 'Unpaid' && commission.commission_data.paid_status != 'On Hold') {
+                        isSelectionError = true;
+                    }
                     if (commission.commission_data.paid_status != 'Prepaid') {
                         commissionListToUpdate.push({reservation_id: commission.reservation_id,
                             status: $scope.status.groupPaidStatus});
@@ -386,6 +392,9 @@ sntRover.controller('companyCardCommissionsCtrl', [
                 });
             } else {
                 $scope.selectedCommissions.forEach(function(commission) {
+                    if (isFromHoldStatus && commission.commission_data.paid_status != 'Unpaid' && commission.commission_data.paid_status != 'On Hold') {
+                        isSelectionError = true;
+                    }
                     if (commission.commission_data.paid_status != 'Prepaid') {
                         commissionListToUpdate.push({reservation_id: commission.reservation_id,
                             status: $scope.status.groupPaidStatus});
@@ -397,7 +406,12 @@ sntRover.controller('companyCardCommissionsCtrl', [
 
             requestData.accountId = $scope.accountId;
             requestData.commissionDetails = commissionListToUpdate;
-            updatePaidStatus(requestData);
+            if (isSelectionError) {
+                $scope.errorMessage = ["The hold status can be updated only for unpaid or on hold commissions"];
+            } else {
+                updatePaidStatus(requestData);
+            }
+            
         };
 
         $scope.showToggleButton = function(commissionDetail) {
@@ -576,7 +590,7 @@ sntRover.controller('companyCardCommissionsCtrl', [
             $scope.paginationData = {
                 id: 'RESERVATION_LIST_' + $scope.accountId,
                 api: fetchCommissionDetailsForPage,
-                perPage: $scope.filterData.per_page
+                perPage: $scope.filterData.perPage
             };
 
         };
