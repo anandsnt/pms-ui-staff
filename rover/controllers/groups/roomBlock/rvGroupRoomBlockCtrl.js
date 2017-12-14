@@ -2232,6 +2232,15 @@ angular.module('sntRover').controller('rvGroupRoomBlockCtrl', [
 
         }());
 
+        
+        $scope.shouldShowAddTrippleButton = function (roomTypeRate) {
+            return (roomTypeRate.can_edit && !$scope.shouldShowTripleEntryRow(roomTypeRate) && $scope.groupConfigData.summary.rate == -1);
+        };
+
+        $scope.shouldShowAddQuadrupleButton = function (roomTypeRate) {
+            return (roomTypeRate.can_edit && !$scope.shouldShowQuadrupleEntryRow(roomTypeRate) && $scope.shouldShowTripleEntryRow(roomTypeRate) && $scope.groupConfigData.summary.rate == -1);
+        };
+
 
     }
 ]);
