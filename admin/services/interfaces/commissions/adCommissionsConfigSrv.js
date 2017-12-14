@@ -4,7 +4,7 @@ admin.service('adCommissionsConfigSrv', ['$http', '$q', 'ADBaseWebSrvV2',
 
 	this.fetchTacsConfiguration = function() {
 		var deferred = $q.defer();
-		var url = 'api/commission_interfaces?interface_type=TACS';
+		var url = 'api/commission_interfaces?commission_interface_type=TACS';
 
 		ADBaseWebSrvV2.getJSON(url).then(function(data) {
 			deferred.resolve(data);
@@ -16,7 +16,7 @@ admin.service('adCommissionsConfigSrv', ['$http', '$q', 'ADBaseWebSrvV2',
 
 	this.fetchOnyxConfiguration = function() {
 		var deferred = $q.defer();
-		var url = 'api/commission_interfaces?interface_type=ONYX';
+		var url = 'api/commission_interfaces?commission_interface_type=ONYX';
 
 		ADBaseWebSrvV2.getJSON(url).then(function(data) {
 			deferred.resolve(data);
