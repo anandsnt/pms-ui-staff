@@ -195,7 +195,7 @@ admin.controller('ADHotelDetailsCtrl', [
     */
 	$scope.clickedSave = function() {
 		var unwantedKeys;
-		
+
 		// SNT Admin - To save Add/Edit data
 		if ($scope.isAdminSnt) {
 			unwantedKeys = ["time_zones", "brands", "chains", "check_in_time", "check_out_time", "countries", "currency_list", "pms_types", "signature_display", "hotel_logo", "languages", "hotel_template_logo", "theme_list"];
@@ -208,7 +208,7 @@ admin.controller('ADHotelDetailsCtrl', [
 			var themeData = {
 				'value': (!!$scope.selectedTheme) ? $scope.selectedTheme.value : 'ORANGE'
 			};
-			
+
 			data.selected_theme = themeData;
 			var postSuccess = function() {
 				$scope.$emit('hideLoader');
@@ -264,7 +264,7 @@ admin.controller('ADHotelDetailsCtrl', [
 				// CICO-39623 : Setting up app theme.
 	            if ( !!$scope.selectedTheme && $scope.selectedTheme.value !== 'ORANGE' ) {
 	              var appTheme = 'theme-' + ($scope.selectedTheme.value).toLowerCase();
-	              
+
 	              document.getElementsByTagName("html")[0].setAttribute( 'class', appTheme );
 	            }
 	            else {
@@ -308,9 +308,9 @@ admin.controller('ADHotelDetailsCtrl', [
     *   Method to toggle data for 'is_pms_tokenized' as true/false.
     */
 	$scope.toggleInvoiceSequence = function() {
-		if (!$scope.data.enable_mod_type) {
+		//if (!$scope.data.enable_mod_type) {
 			$scope.data.enable_mod_type = !$scope.data.enable_mod_type;
-		}		
+		//}
 	};
 	/**
     *   Method to toggle data for 'is_pms_tokenized' as true/false.
@@ -505,7 +505,7 @@ admin.controller('ADHotelDetailsCtrl', [
 		$scope.errorMessage = errorMessage;
     };
 
-    // Handle Continue button click..	
+    // Handle Continue button click..
     $scope.clickedContinue = function() {
     	var params = {
     		'hotel_id': $scope.data.id
