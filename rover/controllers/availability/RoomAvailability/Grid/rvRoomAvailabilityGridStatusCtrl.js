@@ -128,6 +128,7 @@ angular.module('sntRover')
                     show = true,
                     multiple = true,
                     promises = [
+                        $scope.toggleOverbooking(show),
                         $scope.toggleOccupancy(show, multiple),
                         $scope.toggleAvailableRooms(show, multiple),
                         $scope.toggleSoldRooms(show, multiple),
@@ -148,6 +149,7 @@ angular.module('sntRover')
                 
                 $scope.toggleRoomInventory();
                 /**/
+                $scope.toggleOverbooking(show);
                 $scope.toggleOccupancy(show);
                 $scope.toggleAvailableRooms(show);
                 $scope.toggleSoldRooms(show);
