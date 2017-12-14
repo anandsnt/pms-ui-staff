@@ -49,7 +49,7 @@ sntRover.service('RVCommissionsSrv', ['$http', '$q', 'BaseWebSrvV2', function($h
     that.exportCommissions = function(params) {
 
         var deferred = $q.defer();
-        var url = '/api/reports/unpaid_commission_export.csv';
+        var url = '/api/reports/unpaid_commission_export';
 
          BaseWebSrvV2.postJSON(url, params).then(function(data) {
             deferred.resolve(data);
@@ -104,7 +104,7 @@ sntRover.service('RVCommissionsSrv', ['$http', '$q', 'BaseWebSrvV2', function($h
     that.onyxExportCommissions = function(params) {
 
         var deferred = $q.defer();
-        var url = '/api/reports/onyx_commission_export.csv';
+        var url = '/api/reports/onyx_commission_export';
 
          BaseWebSrvV2.postJSON(url, params).then(function(data) {
             deferred.resolve(data);
