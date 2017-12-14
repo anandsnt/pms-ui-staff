@@ -94,6 +94,7 @@ sntRover.controller('RVCommisionsHeaderCtrl', ['$scope', 'ngDialog', '$log', '$t
     };
 
     $scope.showExportPopup = function() {
+        $scope.filterData.receipientEmail = '';
         setExportStatus(false, false, false);
         ngDialog.open({
             template: '/assets/partials/financials/commissions/rvCommissionsExport.html',
