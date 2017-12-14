@@ -73,6 +73,7 @@ angular.module('sntRover').controller('rvAddOverBookingPopupCtrl', ['$scope', '$
 	// Reset room type list
 	var resetRoomTypesList = function() {
 		var roomTypeList = $scope.addOverBookingObj.roomTypeList;
+		
 		_.each( roomTypeList, function(obj) {
 			obj.isChecked = false;
 		});
