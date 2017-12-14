@@ -45,7 +45,7 @@
                     </div>
                     <div id="payment" ng-show="zestStationData.kiosk_checkout_show_cc_on_file && paymentDetails &&  paymentDetails.card_number.length">
                         <p>
-                            <strong>{{paymentDetails.card_name}}</strong><br>
+                            <strong>{{paymentDetails.card_type_name}}</strong><br>
                             <span data-ng-bind-html="getTagValue('ENDING_WITH')" editable-text="ENDING_WITH"></span> {{paymentDetails.card_number}}<br>
                             <span data-ng-bind-html="getTagValue('EXPIRES')" editable-text="EXPIRES"></span> {{paymentDetails.card_expiry}}
                         </p>
