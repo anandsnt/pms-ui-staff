@@ -52,9 +52,6 @@ sntRover.controller('RVCommisionsHeaderCtrl', ['$scope', 'ngDialog', '$log', '$t
         $scope.exportInProgess = inProgress;
     };
 
-
-    $scope.onyxExportEnabled = true; // hardcord for now
-
     $scope.isValidEmail = function() {
         return (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test($scope.filterData.receipientEmail));
     };
@@ -87,17 +84,16 @@ sntRover.controller('RVCommisionsHeaderCtrl', ['$scope', 'ngDialog', '$log', '$t
 
         setExportStatus(true, false, false);
 
-        // if success can't be returned quickly. Uncomment the below code
-
-        // $timeout(function() {
-        //     setExportStatus(false, false, true);
-        //     ngDialog.close();
-        // }, 4000);
-
         if ($scope.filterData.selectedExportType === 'standard') {
             $scope.callAPI(RVCommissionsSrv.exportCommissions, options);
         } else if ($scope.filterData.selectedExportType === 'onyx') {
             $scope.callAPI(RVCommissionsSrv.onyxExportCommissions, options);
+        } else{
+            // TACS will be implemented later
+            $timeout(function() {
+                setExportStatus(false, false, true);
+                ngDialog.close();
+            }, 4000);
         }
         
     };
