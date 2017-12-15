@@ -15,6 +15,38 @@ admin.controller('ADStationaryCtrl',
 		location_image: ""
 	};
 
+	$scope.is_general_active = false;
+	$scope.is_confirmations_active = false;
+	$scope.is_registration_active = false;
+	$scope.is_invoices_active = false;
+	$scope.is_account_receivables_active = false;
+
+	$scope.is_ar_invoice_active = false;
+	$scope.is_ar_statment_active = false;
+
+	$scope.is_guest_confirmation_active = false;
+	$scope.is_confirmation_email_active = false;
+	$scope.is_confirmation_letter_active = false;
+	$scope.is_hotel_direction_active = false;
+	$scope.is_location_active = false;
+	$scope.is_app_active = false;
+	$scope.is_social_network_active = false;
+	$scope.is_guest_cancellation_active = false;
+	$scope.is_group_confirmation_active = false;
+
+	$scope.is_salutations_active = false;
+	$scope.is_hotel_picture_active = false;
+
+	$scope.is_guest_invoice_active = false;
+	$scope.is_guest_confirmation_active = false;
+	$scope.is_company_ta_active = false;
+	$scope.is_account_invoice_active = false;
+	$scope.is_pro_forma_invoice_active = false;
+	$scope.is_guest_confirmation_active = false;
+	$scope.is_guest_confirmation_active = false;
+
+	$scope.stationery_data = {};
+
 	/*
 	* Fetches the stationary items
 	*/
