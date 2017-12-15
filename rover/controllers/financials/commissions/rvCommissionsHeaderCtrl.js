@@ -70,13 +70,15 @@ sntRover.controller('RVCommisionsHeaderCtrl', ['$scope', 'ngDialog', '$log', '$t
         
         var options = {
             params: params,
+            loader: 'NONE',
             successCallBack: function() {
-				// for now we will only show in progress status and then dismiss the
-				// popup
+                // if success can be returned quickly
+                // for now we will only show in progress status and then dismiss the
+                // popup
                 $timeout(function() {
                     setExportStatus(false, false, true);
                     ngDialog.close();
-                }, 1000);
+                }, 4000);
             },
             failureCallBack: function() {
                 setExportStatus(false, true, false);
@@ -84,6 +86,13 @@ sntRover.controller('RVCommisionsHeaderCtrl', ['$scope', 'ngDialog', '$log', '$t
         };
 
         setExportStatus(true, false, false);
+
+        // if success can't be returned quickly. Uncomment the below code
+
+        // $timeout(function() {
+        //     setExportStatus(false, false, true);
+        //     ngDialog.close();
+        // }, 4000);
 
         if ($scope.filterData.selectedExportType === 'standard') {
             $scope.callAPI(RVCommissionsSrv.exportCommissions, options);
