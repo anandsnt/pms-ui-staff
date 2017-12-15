@@ -388,10 +388,10 @@ sntRover.controller('RVCommissionsSummaryController', ['$scope',
             var options = {
                 params: {},
                 successCallBack: function(exportTypeData) {
-                    $scope.filterData.onyxExportEnabled = exportTypeData.export_type === 'tacs' ? false : true;
+                    $scope.filterData.exportType = exportTypeData.export_type;
                 },
                 failureCallBack: function() {
-                    $scope.filterData.onyxExportEnabled = true;
+                    $scope.filterData.exportType = '';
                 }
             };
             $scope.callAPI(RVCommissionsSrv.fetchExportTypeData, options);

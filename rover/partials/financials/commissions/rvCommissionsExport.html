@@ -33,11 +33,11 @@
                 <span class="icon-form icon-radio " ng-class="{checked:filterData.selectedExportType ==='standard'}"></span>
                 <input type="radio" value="standard" ng-model="filterData.selectedExportType"> {{ 'STD_CSV_EXPORT' | translate}}
             </label>
-            <label class="radio" ng-class="{'checked':filterData.selectedExportType === 'onyx'}" ng-if="filterData.onyxExportEnabled">
+            <label class="radio" ng-class="{'checked':filterData.selectedExportType === 'onyx'}" ng-if="filterData.exportType === 'onyx'">
                 <span class="icon-form icon-radio " ng-class="{checked:filterData.selectedExportType ==='onyx'}"></span>
                 <input type="radio" value="onyx" ng-model="filterData.selectedExportType"> {{ 'ONYX_EXPORT' | translate}}
             </label>
-            <label class="radio" ng-class="{'checked':filterData.selectedExportType === 'tacs'}" ng-if="!filterData.onyxExportEnabled">
+            <label class="radio" ng-class="{'checked':filterData.selectedExportType === 'tacs'}" ng-if="filterData.exportType === 'tacs'">
                 <span class="icon-form icon-radio " ng-class="{checked:filterData.selectedExportType ==='tacs'}"></span>
                 <input type="radio" value="tacs" ng-model="filterData.selectedExportType"> {{ 'TACS_EXPORT' | translate}}
             </label>
