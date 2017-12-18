@@ -1,6 +1,10 @@
 admin.controller('ADOnyxSetupCtrl', ['$scope', 'config', 'countryList', 'currencyList', 'adCommissionsConfigSrv',
     function($scope, config, countryList, currencyList, adCommissionsConfigSrv) {
 
+        $scope.clearErrorMessage = function() {
+            $scope.errorMessage = '';
+        };
+        
         $scope.saveInterfaceConfig = function() {
             var params = $scope.config;
             
