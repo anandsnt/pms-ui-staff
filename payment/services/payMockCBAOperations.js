@@ -98,7 +98,7 @@ var CBAMockOperation = function() {
         switch (options.action) {
             case 'doPayment':
                 //  Success
-                options.successCallBack(paymentActionSuccessResponse)
+                options.successCallBack(paymentActionSuccessResponse);
                 //  Failure
                 // options.failureCallBack(paymentActionFailureResponse[2]);
                 //  Random

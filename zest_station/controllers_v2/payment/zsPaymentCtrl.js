@@ -4,9 +4,13 @@ angular.module('sntZestStation').controller('zsPaymentCtrl',
 
             $scope.makePayment = function () {
                 $scope.$broadcast('INITIATE_CBA_PAYMENT', zsPaymentSrv.getSubmitPaymentParams());
-                $log.info('makePayment!');
             };
 
+
+            /**
+             * Method to initate listeners that handle CBA payment scenarios
+             * @returns {undefined} undefined
+             */
             function initiateCBAlisteners() {
                 var listenerCBAPaymentFailure = $scope.$on('CBA_PAYMENT_FAILED', (event, errorMessage) => {
                     $log.warn(errorMessage);

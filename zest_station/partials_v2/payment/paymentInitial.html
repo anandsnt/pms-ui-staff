@@ -6,27 +6,13 @@
                 <ul role="menu">
                     <li>
                         <button type="button" class="button option" touch-press='makePayment()'>
-                            <div ng-include="icons.url.checkout"></div>
+                            <div ng-include="icons.url.creditcard_icmp"></div>
                         </button>
                         <text>PAY</text>
                         <span>
                             <text>
                                 BALANCE DUE {{$scope.balanceDue}}
                             </text>
-                        </span>
-                    </li>
-                    <li>
-                        <button type="button" class="button option" touch-press='clickedOnCancel()'>
-                            <div ng-include="icons.url.checkmark"></div>
-                        </button>
-                        <text data-ng-bind-html="getTagValue('CANCEL')" editable-text="CANCEL">
-                        </text>
-                        <span ng-class='{"lighter-text":zestStationData.themeUsesLighterSubHeader}'>
-
-                            <text data-ng-bind-html="getTagValue('SPEAK_TO_STAFF_SUB')"
-                                  editable-text="SPEAK_TO_STAFF_SUB">
-                            </text>
-
                         </span>
                     </li>
                 </ul>
