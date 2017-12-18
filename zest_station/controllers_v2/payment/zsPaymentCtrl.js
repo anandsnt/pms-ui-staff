@@ -1,6 +1,6 @@
 angular.module('sntZestStation').controller('zsPaymentCtrl',
-    ['$scope', '$log', 'sntActivity', 'sntPaymentSrv', 'zsPaymentSrv', '$stateParams', 'zsStateHelperSrv', '$state',
-        function ($scope, $log, sntActivity, sntPaymentSrv, zsPaymentSrv, $stateParams, zsStateHelperSrv, $state) {
+    ['$scope', '$log', 'sntActivity', 'sntPaymentSrv', 'zsPaymentSrv', '$stateParams', 'zsStateHelperSrv', '$state', '$timeout',
+        function ($scope, $log, sntActivity, sntPaymentSrv, zsPaymentSrv, $stateParams, zsStateHelperSrv, $state, $timeout) {
 
             $scope.makePayment = function () {
                 $scope.$broadcast('INITIATE_CBA_PAYMENT', zsPaymentSrv.getSubmitPaymentParams());
@@ -65,6 +65,9 @@ angular.module('sntZestStation').controller('zsPaymentCtrl',
 
                 if ($scope.zestStationData.paymentGateway === 'CBA') {
                     initiateCBAlisteners();
+                    $timeout(function() {
+                        makePayment();
+                    }, 3000);
                 }
             })();
         }
