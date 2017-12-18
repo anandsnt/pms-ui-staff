@@ -40,14 +40,6 @@ module.exports = {
 
 				],
 				nonMinifiedFiles: [
-                    paymentRoot + "constants/payConfig.js",
-                    paymentRoot + 'payApp.js',
-                    paymentRoot + "constants/paymentConstants.js",
-                    paymentRoot + "constants/paymentEventConstants.js",
-                    paymentRoot + "controllers/**/*.js",
-                    paymentRoot + "directives/**/*.js",
-                    paymentRoot + "services/**/*.js",
-                    paymentRoot + "payAppInit.js",
 					jsLibRoot + 'iscroll.js',
 					jsLibRoot + 'ng-iscroll.js',
 					jsLibRoot + 'Utils.js',
@@ -78,7 +70,17 @@ module.exports = {
 					zestRoot + 'zsCardOperations.js',
 					zestRoot + 'zsSwipeOperations.js',
 					zestRoot + 'zsMLIOperations.js'
-				]
+				],
+                preCompiledFiles : [
+                    paymentRoot + "constants/payConfig.js",
+                    paymentRoot + 'payApp.js',
+                    paymentRoot + "constants/paymentConstants.js",
+                    paymentRoot + "constants/paymentEventConstants.js",
+                    paymentRoot + "controllers/**/*.js",
+                    paymentRoot + "directives/**/*.js",
+                    paymentRoot + "services/**/*.js",
+                    paymentRoot + "payAppInit.js"
+                ]
 			};
 
 		return adminJsAssets;

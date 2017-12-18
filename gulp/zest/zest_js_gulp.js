@@ -59,13 +59,25 @@ module.exports = function(gulp, $, options){
 
 	gulp.task('zest-generate-mapping-list-dev', ['zest-copy-js-files'], function(){
 		var glob 		= require('glob-all');
-		extendedMappings = zestJSMappingList.minifiedFiles.concat(zestJSMappingList.nonMinifiedFiles);
+		extendedMappings = zestJSMappingList.minifiedFiles.concat(zestJSMappingList.nonMinifiedFiles).concat(zestJSMappingList.preCompiledFiles);
 		extendedMappings = glob.sync(extendedMappings).map(function(e){
 			return "/assets/" + e;
 		});
 	});
 
-	gulp.task('build-zeststation-js-dev', ['zest-generate-mapping-list-dev'], function(){
+    gulp.task('zest-babelify-dev', ['rover-generate-mapping-list-dev', 'copy-cordova-assets'], function(){
+        var fileList = [];
+
+        fileList = fileList.concat(zestJSMappingList.preCompiledFiles);
+
+        return gulp.src(fileList, {base: '.'})
+            .pipe($.babel())
+            .on('error', options.silentErrorShowing)
+            .pipe(gulp.dest(DEST_ROOT_PATH, { overwrite: true }));
+
+    });
+
+	gulp.task('build-zeststation-js-dev', ['zest-babelify-dev', 'zest-generate-mapping-list-dev'], function(){
 		//since extendedMappings contains /assets/ and that is not a valid before gulp.src
 		var adminFiles = extendedMappings.map(function(e){  
 			e = e.replace("/assets/", "");
