@@ -1,0 +1,44 @@
+<div touch-press="resetHomeScreenTimer()">
+    <section id="main" class="centered kiosk" role="main" pay-ctrl-loader-dir="zestStationData.paymentGateway">
+
+        <div id="content">
+            <nav id="options" class="large-icons" role="nav">
+                <ul role="menu">
+                    <li>
+                        <button type="button" class="button option" touch-press='makePayment()'>
+                            <div ng-include="icons.url.checkout"></div>
+                        </button>
+                        <text>PAY</text>
+                        <span>
+                            <text>
+                                BALANCE DUE {{$scope.balanceDue}}
+                            </text>
+                        </span>
+                    </li>
+                    <li>
+                        <button type="button" class="button option" touch-press='clickedOnCancel()'>
+                            <div ng-include="icons.url.checkmark"></div>
+                        </button>
+                        <text data-ng-bind-html="getTagValue('CANCEL')" editable-text="CANCEL">
+                        </text>
+                        <span ng-class='{"lighter-text":zestStationData.themeUsesLighterSubHeader}'>
+
+                            <text data-ng-bind-html="getTagValue('SPEAK_TO_STAFF_SUB')"
+                                  editable-text="SPEAK_TO_STAFF_SUB">
+                            </text>
+
+                        </span>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+        <div id="actions" class="align-center languages">
+            <button type="button" class="button language" ng-hide="!zestStationData.zest_lang.enabled"
+                    touch-press="selectLanguage(language)"
+                    ng-class="{'selected': language.name === selectedLanguage.name }" ng-repeat="language in languages">
+                {{language.language_name_in_local}}
+            </button>
+        </div>
+        <span ng-include="'/assets/partials_v2/zsTabletFooter.html'"></span>
+    </section>
+</div>

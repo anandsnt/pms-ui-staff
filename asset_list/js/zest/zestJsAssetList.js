@@ -3,6 +3,7 @@ module.exports = {
 		var sharedRoot = 'shared/',
 			jsLibRoot = sharedRoot + 'lib-legacy/js/',
 			zestRoot = 'zest_station/',
+            paymentRoot = 'payment/',
 
 			adminJsAssets = {
 				minifiedFiles: [
@@ -34,10 +35,19 @@ module.exports = {
 					jsLibRoot + 'stationKeyboard/jquery.keyboard.extension-typing.min.js',
 					jsLibRoot + 'stationKeyboard/jquery.keyboard.min.js',
 					jsLibRoot + 'stationKeyboard/jquery.mousewheel.min.js',
-					jsLibRoot + 'stationKeyboard/jquery.keyboard.extension-autocomplete.min.js'
+					jsLibRoot + 'stationKeyboard/jquery.keyboard.extension-autocomplete.min.js',
+                    jsLibRoot + 'oclazyload/ocLazyLoad.min.js'
 
 				],
 				nonMinifiedFiles: [
+                    paymentRoot + "constants/payConfig.js",
+                    paymentRoot + 'payApp.js',
+                    paymentRoot + "constants/paymentConstants.js",
+                    paymentRoot + "constants/paymentEventConstants.js",
+                    paymentRoot + "controllers/**/*.js",
+                    paymentRoot + "directives/**/*.js",
+                    paymentRoot + "services/**/*.js",
+                    paymentRoot + "payAppInit.js",
 					jsLibRoot + 'iscroll.js',
 					jsLibRoot + 'ng-iscroll.js',
 					jsLibRoot + 'Utils.js',
@@ -50,6 +60,7 @@ module.exports = {
 					sharedRoot + 'directives/touchPress/touchPress.js',
 					sharedRoot + 'directives/enterPress/enterPress.js',
 					sharedRoot + 'directives/clickTouch/clickTouch.js',
+                    sharedRoot + 'directives/activityIndicator/**/*.js',
 					jsLibRoot + 'date.js',
                 	sharedRoot + 'cordova.js',
 					zestRoot + 'zsApp.js',
