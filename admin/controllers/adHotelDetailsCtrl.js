@@ -308,9 +308,9 @@ admin.controller('ADHotelDetailsCtrl', [
     *   Method to toggle data for 'is_pms_tokenized' as true/false.
     */
 	$scope.toggleInvoiceSequence = function() {
-		//if (!$scope.data.enable_mod_type) {
+		// if (!$scope.data.enable_mod_type) {
 			$scope.data.enable_mod_type = !$scope.data.enable_mod_type;
-		//}
+		// }
 	};
 	/**
     *   Method to toggle data for 'is_pms_tokenized' as true/false.
