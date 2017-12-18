@@ -66,7 +66,7 @@ angular.module('sntZestStation').controller('zsPaymentCtrl',
                 if ($scope.zestStationData.paymentGateway === 'CBA') {
                     initiateCBAlisteners();
                     $timeout(function() {
-                        makePayment();
+                        $scope.makePayment();
                     }, 3000);
                 }
             })();
