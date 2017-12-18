@@ -88,7 +88,7 @@ sntRover.controller('RVCommisionsHeaderCtrl', ['$scope', 'ngDialog', '$log', '$t
             $scope.callAPI(RVCommissionsSrv.exportCommissions, options);
         } else if ($scope.filterData.selectedExportType === 'onyx') {
             $scope.callAPI(RVCommissionsSrv.onyxExportCommissions, options);
-        } else{
+        } else {
             // TACS will be implemented later
             $timeout(function() {
                 setExportStatus(false, false, true);

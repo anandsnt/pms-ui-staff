@@ -394,6 +394,7 @@ sntRover.controller('RVCommissionsSummaryController', ['$scope',
                     $scope.filterData.exportType = '';
                 }
             };
+
             $scope.callAPI(RVCommissionsSrv.fetchExportTypeData, options);
         };
 
