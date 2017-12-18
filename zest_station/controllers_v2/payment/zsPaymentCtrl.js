@@ -3,6 +3,7 @@ angular.module('sntZestStation').controller('zsPaymentCtrl',
         function ($scope, $log, sntActivity, sntPaymentSrv, zsPaymentSrv, $stateParams, zsStateHelperSrv, $state, $timeout) {
 
             $scope.makePayment = function () {
+                $scope.$emit('showLoader');
                 $scope.$broadcast('INITIATE_CBA_PAYMENT', zsPaymentSrv.getSubmitPaymentParams());
             };
 
@@ -26,7 +27,8 @@ angular.module('sntZestStation').controller('zsPaymentCtrl',
 
                     // we need to notify the parent controllers to show loader
                     // as this is an external directive
-                    sntActivity.start('SUBMIT_PAYMENT');
+                    //sntActivity.start('SUBMIT_PAYMENT');
+                    $scope.$emit('showLoader');
                     params.postData.payment_type_id = response.payment_method_id;
                     params.postData.credit_card_transaction_id = response.id;
                     sntPaymentSrv.submitPayment(params).then(
@@ -35,10 +37,12 @@ angular.module('sntZestStation').controller('zsPaymentCtrl',
                             $state.go('zest_station.checkoutReservationBill', angular.extend(zsStateHelperSrv.getPreviousStateParams(), {
                                 dueBalancePaid: true
                             }));
-                            sntActivity.stop('SUBMIT_PAYMENT');
+                            $scope.$emit('hideLoader');
+                            //sntActivity.stop('SUBMIT_PAYMENT');
                         },
                         function (errorMessage) {
                             $log.warn(errorMessage);
+                            $scope.$emit('hideLoader');
                             $state.go('zest_station.checkoutReservationBill', angular.extend(zsStateHelperSrv.getPreviousStateParams(), {
                                 dueBalancePaid: false
                             }));
@@ -64,7 +68,7 @@ angular.module('sntZestStation').controller('zsPaymentCtrl',
                 $log.info('init...');
 
                var params = zsPaymentSrv.getPaymentData();
-               
+
                $scope.balanceDue = params.amount;
 
                 if ($scope.zestStationData.paymentGateway === 'CBA') {
