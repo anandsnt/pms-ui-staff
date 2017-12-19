@@ -50,12 +50,12 @@ angular.module('admin').controller('adLightSpeedProductMapppingCtrl', ['$scope',
         $scope.filterMappedAndNonMappedProducts = function() {
             $scope.$emit('showLoader');
             $scope.nonMappedProducts = $scope.products.filter(
-                product => !$scope.chargeCodeMapings.some(chargeCodeMapping => chargeCodeMapping.external_value === product.sku)
+                product => !$scope.chargeCodeMapings.some(chargeCodeMapping => chargeCodeMapping.external_value == product.id)
             );
             $scope.mappedProducts = $scope.products.filter(
                 product => $scope.chargeCodeMapings.some(
-                    chargeCodeMapping => chargeCodeMapping.external_value === product.sku &&
-                        $scope.data.selectedChargeCode.charge_code === chargeCodeMapping.value
+                    chargeCodeMapping => chargeCodeMapping.external_value == product.id &&
+                        $scope.data.selectedChargeCode.charge_code == chargeCodeMapping.value
                 )
             );
             if($scope.data.filteredProduct.length > 0) {
@@ -67,7 +67,7 @@ angular.module('admin').controller('adLightSpeedProductMapppingCtrl', ['$scope',
         $scope.saveExternalMappings = function() {
             var charge_code_id = $scope.data.selectedChargeCode.value;
             var selectedProducts = $scope.mappedProducts.map( function(product) {
-                return { name: product.name, sku: product.sku };
+                return { name: product.name, sku: product.sku, id: product.id };
             });
 
             $scope.callAPI(adLightSpeedPOSSetupSrv.saveChargeCodeMapings, {
