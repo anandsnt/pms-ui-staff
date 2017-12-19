@@ -620,6 +620,9 @@
    "LATE_CHECKOUT_INSTRUCTIONS": "Please select a Late Checkout offer from the list to extend your stay",
 
    "SIGNATURE": "SIGNATURE",
-   "GID_VERIFY_CLEAR_SIGNATURE": "Clear signature"
+   "GID_VERIFY_CLEAR_SIGNATURE": "Clear signature",
+
+   "ENDING_WITH": "Ending with",
+   "EXPIRES": "Expires"
 
 }
