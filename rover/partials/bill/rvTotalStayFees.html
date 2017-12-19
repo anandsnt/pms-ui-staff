@@ -300,7 +300,7 @@
 						<span translate>EDIT</span>
 					</button>
 				</td>
-				<td class="action" ng-if="(hasMoveToOtherBillPermission() && isStandAlone) || (description.charge_code_type !== 'TAX')">
+				<td class="action" ng-if="hasMoveToOtherBillPermission() && isStandAlone">
 	                <label class="checkbox inline">
 	                    <span class="icon-form icon-checkbox" ng-class="{'checked':feesData.isSelected}"></span>
 	                    <input ng-model="feesData.isSelected" type="checkbox" ng-disabled="!billData.is_active" ng-class="{ 'overlay' : !billData.is_active }"/>
