@@ -1404,9 +1404,7 @@ sntRover.controller('RVReservationMainCtrl', ['$scope',
 
                     } else {
                         $scope.invokeApi(RVReservationSummarySrv.updateReservation, postData, updateSuccess, updateFailure);
-                    }
-
-                    
+                    }                    
 
                 } else {
                     $scope.invokeApi(RVReservationSummarySrv.saveReservation, postData, saveSuccess, saveFailure);
