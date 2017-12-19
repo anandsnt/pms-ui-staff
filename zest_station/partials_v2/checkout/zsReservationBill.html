@@ -43,6 +43,7 @@
                         <br/>
                         <br/>
                     </div>
+                    <h4 style="width: 100%;margin-bottom: 10px;" ng-show="zestStationData.kiosk_checkout_show_cc_on_file && paymentDetails &&  paymentDetails.card_number.length" data-ng-bind-html="getTagValue('PAYMENT_METHOD')" editable-text="PAYMENT_METHOD"></h4>
                     <div id="payment" ng-show="zestStationData.kiosk_checkout_show_cc_on_file && paymentDetails &&  paymentDetails.card_number.length">
                         <p>
                             <strong>{{paymentDetails.card_type_name}}</strong><br>
