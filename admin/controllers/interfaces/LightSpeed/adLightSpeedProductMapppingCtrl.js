@@ -11,7 +11,7 @@ angular.module('admin').controller('adLightSpeedProductMapppingCtrl', ['$scope',
                     is_no_pagination: true
                 },
                 successCallBack: function(response) {
-                    $scope.data ={};
+                    $scope.data = {};
                     $scope.data.selectedChargeCode = response.charge_codes[0];
                     $scope.data.filteredProduct = '';
                     $scope.chargeCodes = response.charge_codes;
@@ -50,15 +50,15 @@ angular.module('admin').controller('adLightSpeedProductMapppingCtrl', ['$scope',
         $scope.filterMappedAndNonMappedProducts = function() {
             $scope.$emit('showLoader');
             $scope.nonMappedProducts = $scope.products.filter(
-                product => !$scope.chargeCodeMapings.some(chargeCodeMapping => chargeCodeMapping.external_value == product.id)
+                product => !$scope.chargeCodeMapings.some(chargeCodeMapping => parseInt(chargeCodeMapping.external_value) === product.id)
             );
             $scope.mappedProducts = $scope.products.filter(
                 product => $scope.chargeCodeMapings.some(
-                    chargeCodeMapping => chargeCodeMapping.external_value == product.id &&
-                        $scope.data.selectedChargeCode.charge_code == chargeCodeMapping.value
+                    chargeCodeMapping => parseInt(chargeCodeMapping.external_value) === product.id &&
+                        $scope.data.selectedChargeCode.charge_code === chargeCodeMapping.value
                 )
             );
-            if($scope.data.filteredProduct.length > 0) {
+            if ($scope.data.filteredProduct.length > 0) {
                 $scope.nonMappedProducts = $scope.nonMappedProducts.filter(product => product.name.includes($scope.data.filteredProduct));
             }
             $scope.$emit('hideLoader');
@@ -75,7 +75,7 @@ angular.module('admin').controller('adLightSpeedProductMapppingCtrl', ['$scope',
                     charge_code_id: charge_code_id,
                     selected_products: selectedProducts
                 },
-                successCallBack: function(response) {
+                successCallBack: function() {
                     fetchChargeCodeMapings();
                 },
                 failureCallBack: function() {
