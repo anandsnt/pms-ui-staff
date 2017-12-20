@@ -33,15 +33,15 @@ admin.controller('ADJobDatePicker', [
             }
         };
 
-        var startDate = $scope.parentScope.payload.first_date || $rootScope.businessDate,
+        var startDate = $scope.parentScope.payload.begin_date || $rootScope.businessDate,
             weekAfter = $filter('date')(calWeekAfter(startDate), 'yyyy-MM-dd');
 
         // link everthing
         if ( $scope.parentScope.dateNeeded === 'from' ) {
-            $scope.datePickerDate = $scope.parentScope.payload.first_date || $rootScope.businessDate;
+            $scope.datePickerDate = $scope.parentScope.payload.begin_date || $rootScope.businessDate;
             $scope.dateOptions = angular.extend({}, datePickerCommon);
         } else {
-            $scope.datePickerDate = $scope.parentScope.payload.last_date || weekAfter;
+            $scope.datePickerDate = $scope.parentScope.payload.end_date || weekAfter;
             $scope.dateOptions = angular.extend({
                 maxDate: tzIndependentDate(weekAfter)
             }, datePickerCommon);

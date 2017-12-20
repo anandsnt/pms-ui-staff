@@ -139,7 +139,7 @@
                     </div>
                 </div>
                 <div class="entry">
-                    <ad-textbox styleclass="full-width" value="singleAddon.amount" name="amount" id="amount" label="{{'AMOUNT' | translate}} [{{currencySymbol}}]" placeholder="Enter the amount" required="yes"></ad-textbox>
+                    <ad-textbox styleclass="full-width" value="singleAddon.amount" name="amount" id="amount" label="{{'AMOUNT' | translate}}" placeholder="Enter the amount" required="yes" label-suffix="[{{currencySymbol}}]"></ad-textbox>
                 </div>
 
                 <ad-toggle-button div-class="full-width" label="{{'ALTERNATE_DESCRIPTION_SWITCH_LABEL' | translate}}" is-hide="!isConnectedToPMS" is-checked="singleAddon.is_alternate_description_active"></ad-toggle-button>

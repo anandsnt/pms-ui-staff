@@ -122,7 +122,7 @@ admin.controller('ADCheckoutCtrl', ['$scope', '$rootScope', 'adCheckoutSrv', '$s
             $scope.checkoutData.alternate_weekends_checkout_email_alert_time_minute = $scope.checkoutData.alternate_weekends_checkout_email_alert_time_minute === null ? "MM" : $scope.checkoutData.alternate_weekends_checkout_email_alert_time_minute;
 
             $scope.is_send_checkout_staff_alert_flag = ($scope.checkoutData.is_send_checkout_staff_alert === 'true') ? true : false;
-            $scope.enable_offline_checkout = ($scope.checkoutData.enable_offline_checkout === 'true') ? true : false;    
+            $scope.enable_offline_checkout = $scope.checkoutData.enable_offline_checkout === 'true';    
             $scope.is_send_zest_checkout_alert_flag = ($scope.checkoutData.is_send_zest_checkout_alert === 'true') ? true : false;
 			$scope.require_cc_for_checkout_email_flag = ($scope.checkoutData.require_cc_for_checkout_email === 'true') ? true : false;
 			$scope.include_cash_reservationsy_flag = ($scope.checkoutData.include_cash_reservations === 'true') ? true : false;

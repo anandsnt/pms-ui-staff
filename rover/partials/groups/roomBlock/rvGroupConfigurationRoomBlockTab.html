@@ -1,4 +1,6 @@
 <form id="group-room-block" name="group-room-block" class="form card-tab inner-header rooms" ng-controller="rvGroupRoomBlockCtrl">
+    <!--common header for fullscreen mode-->
+    <div ng-include="'/assets/partials/common/rvFullscreenHeader.html'" class="fullscreen-header"></div>
 
     <div id="group-room-block-header" class="tab-header with-filters">
         <div class="entry date-range">
@@ -164,12 +166,12 @@
                         <li class="line" translate ng-hide="shouldHideSingleEntryRow()">SINGLE</li>
                         <li class="line" translate ng-hide="shouldHideDoubleEntryRow()">DOUBLE</li>
                         <li class="line small add"
-                            ng-if="roomtype_rate.can_edit && !shouldShowTripleEntryRow(roomtype_rate) && groupConfigData.summary.rate == -1"
+                            ng-if="shouldShowAddTrippleButton(roomtype_rate)"
                             ng-click="addTripleEntryRow(roomtype_rate)"
                             ng-class="{'add': !shouldDisableAddTripleButton(roomtype_rate)}"
                             translate>
                             ADD_TRIPLE
-                        </li>
+                        </li>                        
                         <li class="line"
                             ng-if="shouldShowTripleEntryRow(roomtype_rate)"
                             translate>
@@ -181,17 +183,13 @@
                             QUADRUPLE
                         </li>
                         <li class="line small"
-                            ng-if="roomtype_rate.can_edit && !shouldShowQuadrupleEntryRow(roomtype_rate) && shouldShowTripleEntryRow(roomtype_rate) && groupConfigData.summary.rate == -1"
-
+                            ng-if="shouldShowAddQuadrupleButton(roomtype_rate)"
                             ng-click="addQuadrupleEntryRow(roomtype_rate)"
                             ng-class="{'add': !shouldDisableAddQuadrupleButton(roomtype_rate)}"
                             translate>
                             ADD_QUADRUPLE
                         </li>
-                        <!-- When clicked, add L110-113 -->
-                        <!-- When + Add Triple is clicked, show option to add quadruple:
-	                    <li  translate></li> // When clicked, add L115-118 -->
-                        <li class="line small add" ng-if="shouldShowQuadrupleEntryRow(roomtype_rate) && shouldShowTripleEntryRow(roomtype_rate)"></li>
+                        <li class="line small add" ng-if="!shouldShowAddTrippleButton(roomtype_rate) && !shouldShowAddQuadrupleButton(roomtype_rate) "></li>                        
                     </ul>
                 </div>
             </div>
