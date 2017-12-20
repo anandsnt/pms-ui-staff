@@ -384,10 +384,27 @@ sntRover.controller('RVCommissionsSummaryController', ['$scope',
             });
         };
 
+        var fetchExportTypeData = function() {
+            var options = {
+                params: {},
+                successCallBack: function(exportTypeData) {
+                    $scope.filterData.exportType = exportTypeData.export_type;
+                },
+                failureCallBack: function() {
+                    $scope.filterData.exportType = '';
+                }
+            };
+
+            $scope.callAPI(RVCommissionsSrv.fetchExportTypeData, options);
+        };
+
         (function() {
             updateHeader();
             $scope.commissionsData = {};
             $scope.filterData = RVCommissionsSrv.filterData;
+            $scope.filterData.filterTab = 'PAYABLE';
+            $scope.filterData.billStatus.value = 'UN_PAID';
+            fetchExportTypeData();
             // set intial values
             $scope.noOfTASelected = 0;
             // if select ALL is applied, it will update all items in other pages also.
