@@ -29,12 +29,13 @@ sntGuestWeb.controller('gwETABaseController', ['$scope', '$state', '$controller'
 					"arrival_time": getFormattedTime($scope.arrivalTime),
 					"reservation_id": GwWebSrv.zestwebData.reservationID
 				};
-				var updateReservationDetailsSuccess = function(response) {
-
+				var updateServiceVariables = function(response) {
 					GwWebSrv.zestwebData.earlyCheckinHour = response.last_early_checkin_hour;
 					GwWebSrv.zestwebData.earlyCheckinRestrictHour = response.early_checkin_restrict_hour;
 					GwWebSrv.zestwebData.earlyCheckinRestrictTime = response.early_checkin_restrict_time;
-
+				};
+				var updateReservationDetailsSuccess = function(response) {
+					updateServiceVariables(response);
 					if (response.early_checkin_available && typeof response.early_checkin_offer_id !== "undefined" && !response.bypass_early_checkin) {
 						var stateParams = {
 							'time': response.checkin_time,
@@ -66,6 +67,7 @@ sntGuestWeb.controller('gwETABaseController', ['$scope', '$state', '$controller'
 					params: params,
 					successCallBack: updateReservationDetailsSuccess
 				};
+
 				if (GwWebSrv.zestwebData.isInZestwebDemoMode) {
 					updateReservationDetailsSuccess(GwCheckinSrv.sampleETAupdationResponse);
 				} else {

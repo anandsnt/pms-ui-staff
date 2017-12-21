@@ -39,7 +39,7 @@ sntGuestWeb.controller('gwETAUpdationController', ['$scope', '$state', '$control
 			successCallBack: fetchHotelTimeSuccess
 		};
 
-		if(!GwWebSrv.zestwebData.isInZestwebDemoMode) {
+		if (!GwWebSrv.zestwebData.isInZestwebDemoMode) {
 			$scope.callAPI(GwCheckinSrv.fetchHotelTime, options);	
 		}
 

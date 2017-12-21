@@ -9,7 +9,7 @@ sntGuestWeb.controller('GWAddonsController', ['$scope', '$state', '$stateParams'
 			postTypeLabels = [],
 			selectedAddon = {},
 			existingAddons = [],
-			setSelectedAddon = function(addon, isSingleAddonAvailable) {
+			setSelectedAddon = function(addon) {
 				$scope.selectedAddon = addon;
 				$scope.showPurchaseStatus = false;
 				$scope.purchaseStatusText = '';
@@ -37,14 +37,8 @@ sntGuestWeb.controller('GWAddonsController', ['$scope', '$state', '$stateParams'
 			return addon.amount_type === 'Per Room' || addon.amount_type === 'Flat Rate';
 		};
 
-		$scope.purchaseAddon = function(addon) {
-			// disable to purchase more than one LC addon
-			if (addon.isLateCheckoutAddon && $scope.isOneLcoAdded()) {
-				return;
-			}
-
-			var addonAdditionSuccess = function() {
-				if ($scope.isAddonFlatOrRoomType(addon)) {
+		var addonAddSuccess = function (addon) {
+			if ($scope.isAddonFlatOrRoomType(addon)) {
 					addon.quantity = angular.copy($scope.selectedAddonQuantity);
 					if (addon.quantity > 0) {
 						addon.is_selected = true;
@@ -67,6 +61,16 @@ sntGuestWeb.controller('GWAddonsController', ['$scope', '$state', '$stateParams'
 						$scope.doneClicked();
 					}
 				}
+		};
+
+		$scope.purchaseAddon = function(addon) {
+			// disable to purchase more than one LC addon
+			if (addon.isLateCheckoutAddon && $scope.isOneLcoAdded()) {
+				return;
+			}
+
+			var addonAdditionSuccess = function() {
+				addonAddSuccess(addon);
 				// update the data in srv with newly added addon
 				var reservationDetails = GwCheckinSrv.getcheckinData();
 				var newAddon = {
@@ -134,13 +138,14 @@ sntGuestWeb.controller('GWAddonsController', ['$scope', '$state', '$stateParams'
 			var params = {
 				'addon_id': addon.addon_id
 			};
+
 			if ($scope.isAddonFlatOrRoomType(addon)) {
 				params.quantity = parseInt(addon);
 			}
 			var options = {
 				params: params,
 				successCallBack: addonRemovalSuccess,
-				failureCallBack: function(){
+				failureCallBack: function() {
 					$scope.showPurchaseStatus = true;
 					$scope.purchaseStatusText = angular.copy($scope.addonRemovalFailureMessage);
 				}
@@ -184,9 +189,8 @@ sntGuestWeb.controller('GWAddonsController', ['$scope', '$state', '$stateParams'
 				return false;
 			} else if ($scope.isAddonFlatOrRoomType($scope.selectedAddon)) {
 				return $scope.selectedAddon.is_selected && parseInt($scope.selectedAddonQuantity) === 0;
-			} else {
-				return $scope.selectedAddon.is_selected;
-			}
+			} 
+			return $scope.selectedAddon.is_selected;
 		};
 
 		$scope.isOneLcoAdded = function() {
@@ -361,7 +365,7 @@ sntGuestWeb.controller('GWAddonsController', ['$scope', '$state', '$stateParams'
 			// no need to show already added addons
 			if (selectedAddonIds.length > 0) {
 				_.each(selectedAddonIds, function(selectedId) {
-					allAvailableAddons = _.filter(allAvailableAddons, function(addon, index) {
+					allAvailableAddons = _.filter(allAvailableAddons, function(addon) {
 						return addon.addon_id !== selectedId;
 					});
 				});
@@ -383,10 +387,8 @@ sntGuestWeb.controller('GWAddonsController', ['$scope', '$state', '$stateParams'
 				goToNextScreen();
 			} else if (addons.length === 1) {
 				// single addon
-				var isSingleAddonAvailable = true;
-
 				selectedAddon = addons[0];
-				setSelectedAddon(selectedAddon, isSingleAddonAvailable);
+				setSelectedAddon(selectedAddon);
 			} else {
 				// Multi addons
 				$scope.mode = 'LIST_VIEW';
