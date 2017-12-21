@@ -17,6 +17,7 @@ module.exports = function(gulp, $, options){
 	gulp.task('compile-zest-js-production', function(){
 		var nonMinifiedFiles 	= zestJSMappingList.nonMinifiedFiles,
 			minifiedFiles 		= zestJSMappingList.minifiedFiles,
+			paymentFiles        = zestJSMappingList.preCompiledFiles,
 			stream 				= require('merge-stream');
 
 		var nonMinifiedStream = gulp.src(nonMinifiedFiles)
@@ -31,9 +32,19 @@ module.exports = function(gulp, $, options){
 		    minifiedStream = gulp.src(minifiedFiles)
 		    	.pipe($.jsvalidate())
 				.on('error', onError)
-		    	.pipe($.uglify({compress:false, mangle:false, preserveComments: false}));
+		    	.pipe($.uglify({compress:false, mangle:false, preserveComments: false})),
 
-	    return stream(minifiedStream, nonMinifiedStream)
+        	 paymentStream = gulp.src(paymentFiles, {base: '.'})
+							.pipe($.babel())
+							.pipe($.jsvalidate())
+							.on('error', onError)
+					        .pipe($.concat(ZEST_JS_COMBINED_FILE))
+					        .pipe($.ngAnnotate({single_quotes: true}))
+					        .pipe($.uglify({compress:true, output: {
+					        	space_colon: false
+					        }}));
+
+	    return stream(minifiedStream, nonMinifiedStream, paymentStream)
 	        .pipe($.concat(ZEST_JS_COMBINED_FILE))
 	        .pipe($.rev())
 	        .pipe(gulp.dest(DEST_ROOT_PATH))
