@@ -1234,10 +1234,7 @@ angular.module('sntRover').controller('stayCardMainCtrl', ['$rootScope', '$scope
 		}.bind($scope.reservationData);
 
 		// CICO-11991 : Handle ARRIVALS button click.
-		$scope.loadPrevState = function() {
-			if ($rootScope.setPrevState && $rootScope.setPrevState.param) {
-				$rootScope.setPrevState.param.isBackFromStaycard = true;
-			}			
+		$scope.loadPrevState = function() {			
 			$rootScope.loadPrevState();
 			$rootScope.$broadcast("OUTSIDECLICKED");
 		};
