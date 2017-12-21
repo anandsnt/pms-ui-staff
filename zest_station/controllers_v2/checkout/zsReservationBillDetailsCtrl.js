@@ -74,7 +74,7 @@ sntZestStation.controller('zsReservationBillDetailsCtrl', [
                     $scope.billData.push(bill_details);
                 });
             });
-
+            $scope.isReservationDetailsFetched = true;
             // scroller setup
             setDisplayContentHeight(); // utils function
             refreshScroller();
@@ -303,6 +303,7 @@ sntZestStation.controller('zsReservationBillDetailsCtrl', [
                     noBalaceNextActions();
                 }
             }
+            $scope.isReservationDetailsFetched = false;
         };
 
         /**

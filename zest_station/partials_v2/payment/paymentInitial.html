@@ -4,10 +4,10 @@
         <div id="content">
             <nav id="options" class="large-icons" role="nav">
                 <ul role="menu">
-                    <li>
-                       <div>
+                    <li ng-show="mode === 'PROCESS_IN_PROGRESS'">
+                        <div>
                             <div ng-include="icons.url.creditcard_icmp"></div>
-                       </div>
+                        </div>
                         <text>PAY</text>
                         <span>
                             <text>
@@ -15,13 +15,38 @@
                             </text>
                         </span>
                     </li>
+
+                    <li ng-show="mode === 'PROCESS_FAILED'">
+                        <button type="button" class="button option" touch-press='reTryCardSwipe()'>
+                            <div ng-include="icons.url.creditcard"></div>
+                        </button>
+                        <h1>
+                            <text data-ng-bind-html="getTagValue('TRY_AGAIN')" editable-text="TRY_AGAIN"></text>
+                        </h1>
+                    </li>
+                
+                    <li class="break" ng-show="mode === 'PROCESS_FAILED'">
+                        <span>
+                            <text data-ng-bind-html="getTagValue('OR_TEXT')" editable-text="OR_TEXT"></text>
+                        </span>
+                    </li>
+                    
+                    <li ng-show="mode === 'PROCESS_FAILED'">
+                        <button type="button" class="button option" touch-press='talkToStaff()'>
+                            <div ng-include="icons.url.staff"></div>
+                        </button>
+                        <h1>
+                            <text data-ng-bind-html="getTagValue('SPEAK')" editable-text="SPEAK"></text>
+                        </h1>
+                        <h4>
+                            <text data-ng-bind-html="getTagValue('SPEAK_SUB')" editable-text="SPEAK_SUB"></text>
+                        </h4>
+                    </li>
                 </ul>
             </nav>
         </div>
         <div id="actions" class="align-center languages">
-            <button type="button" class="button language" ng-hide="!zestStationData.zest_lang.enabled"
-                    touch-press="selectLanguage(language)"
-                    ng-class="{'selected': language.name === selectedLanguage.name }" ng-repeat="language in languages">
+            <button type="button" class="button language" ng-hide="!zestStationData.zest_lang.enabled" touch-press="selectLanguage(language)" ng-class="{'selected': language.name === selectedLanguage.name }" ng-repeat="language in languages">
                 {{language.language_name_in_local}}
             </button>
         </div>

@@ -2,7 +2,7 @@ angular.module('sntZestStation').controller('zsPaymentCtrl',
     ['$scope', '$log', 'sntActivity', 'sntPaymentSrv', 'zsPaymentSrv', '$stateParams', 'zsStateHelperSrv', '$state', '$timeout',
         function ($scope, $log, sntActivity, sntPaymentSrv, zsPaymentSrv, $stateParams, zsStateHelperSrv, $state, $timeout) {
 
-            $scope.makePayment = function () {
+            var makeCBAPayment = function () {
                 $scope.$emit('showLoader');
                 $scope.$broadcast('INITIATE_CBA_PAYMENT', zsPaymentSrv.getSubmitPaymentParams());
             };
@@ -15,9 +15,8 @@ angular.module('sntZestStation').controller('zsPaymentCtrl',
             function initiateCBAlisteners() {
                 var listenerCBAPaymentFailure = $scope.$on('CBA_PAYMENT_FAILED', (event, errorMessage) => {
                     $log.warn(errorMessage);
-                    $state.go('zest_station.checkoutReservationBill', angular.extend(zsStateHelperSrv.getPreviousStateParams(), {
-                        dueBalancePaid: false
-                    }));
+                    $scope.$emit('hideLoader');
+                    $scope.mode = 'PROCESS_FAILED';
                     // TODO : Handle Error here!
                 });
 
@@ -27,7 +26,6 @@ angular.module('sntZestStation').controller('zsPaymentCtrl',
 
                     // we need to notify the parent controllers to show loader
                     // as this is an external directive
-                    //sntActivity.start('SUBMIT_PAYMENT');
                     $scope.$emit('showLoader');
                     params.postData.payment_type_id = response.payment_method_id;
                     params.postData.credit_card_transaction_id = response.id;
@@ -38,24 +36,19 @@ angular.module('sntZestStation').controller('zsPaymentCtrl',
                                 dueBalancePaid: true
                             }));
                             $scope.$emit('hideLoader');
-                            //sntActivity.stop('SUBMIT_PAYMENT');
                         },
                         function (errorMessage) {
                             $log.warn(errorMessage);
                             $scope.$emit('hideLoader');
-                            $state.go('zest_station.checkoutReservationBill', angular.extend(zsStateHelperSrv.getPreviousStateParams(), {
-                                dueBalancePaid: false
-                            }));
-                            // TODO : Handle Error here!
+                            $scope.mode = 'PROCESS_FAILED';
                         }
                     );
                 });
 
                 var listenerUpdateErrorMessage = $scope.$on('UPDATE_NOTIFICATION', (event, response) => {
                     $log.warn(response);
-                    $state.go('zest_station.checkoutReservationBill', angular.extend(zsStateHelperSrv.getPreviousStateParams(), {
-                        dueBalancePaid: false
-                    }));
+                    $scope.$emit('hideLoader');
+                    $scope.mode = 'PROCESS_FAILED';
                     // TODO : Handle Error here!
                 });
 
@@ -64,18 +57,30 @@ angular.module('sntZestStation').controller('zsPaymentCtrl',
                 $scope.$on('$destroy', listenerUpdateErrorMessage);
             }
 
-            (function () {
+            $scope.reTryCardSwipe = function() {
+                $scope.mode = 'PROCESS_IN_PROGRESS';
+                if ($scope.zestStationData.paymentGateway === 'CBA' && $scope.isIpad) {
+                    makeCBAPayment();
+                } else {
+                    $scope.mode = 'PROCESS_FAILED';
+                }
+            };
+
+            (function() {
                 $log.info('init...');
 
-               var params = zsPaymentSrv.getPaymentData();
+                var params = zsPaymentSrv.getPaymentData();
 
-               $scope.balanceDue = params.amount;
+                $scope.balanceDue = params.amount;
 
-                if ($scope.zestStationData.paymentGateway === 'CBA') {
+                if ($scope.zestStationData.paymentGateway === 'CBA' && $scope.isIpad) {
                     initiateCBAlisteners();
+                    $scope.mode = 'PROCESS_IN_PROGRESS';
                     $timeout(function() {
-                        $scope.makePayment();
-                    }, 3000);
+                        makeCBAPayment();
+                    }, 1000);
+                } else {
+                    $scope.mode = 'PROCESS_FAILED';
                 }
             })();
         }

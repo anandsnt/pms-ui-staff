@@ -4,7 +4,7 @@
         <h1>
             <text data-ng-bind-html="getTagValue('BILL_REVIEW')" editable-text="BILL_REVIEW"></text>
         </h1>
-        <div id="flex-holder">
+        <div id="flex-holder" ng-show="isReservationDetailsFetched">
             <div id="textual" class="review-bill pull-left scrollable" ng-iscroll="bill-list">
                 <div class="wrapper">
                     <div id="bill">
