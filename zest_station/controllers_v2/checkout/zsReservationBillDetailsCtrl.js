@@ -226,10 +226,10 @@ sntZestStation.controller('zsReservationBillDetailsCtrl', [
          */
 
         var checkIfDueBalancePresent = function () {
-            if ($scope.balance === 0 || $scope.inDemoMode()) {
+            if (parseInt($scope.balance) === 0 || $scope.inDemoMode()) {
                 // if balance is 0, allow checkout
                 return false;
-            } else if ($scope.balance < 0) {
+            } else if (parseInt($scope.balance) < 0) {
                 // if refund if present, don't allow checkout
                 return true;
             }
@@ -239,6 +239,8 @@ sntZestStation.controller('zsReservationBillDetailsCtrl', [
         };
 
         var noBalaceNextActions = function () {
+            $scope.$emit('hideLoader');
+            $scope.runDigestCycle();
             if (!$scope.zestStationData.is_standalone) {
                 $state.go('zest_station.emailBill', $scope.stateParamsForNextState);
             } else {
@@ -249,7 +251,6 @@ sntZestStation.controller('zsReservationBillDetailsCtrl', [
         $scope.nextClicked = function () {
             if ($scope.zestStationData.paymentGateway === 'CBA' &&
                 checkIfDueBalancePresent()) {
-
                 zsStateHelperSrv.setPreviousStateParams($stateParams);
 
                 zsPaymentSrv.setPaymentData({
