@@ -1,7 +1,7 @@
 <!-- The bill display section -->
 <section id="main" role="main" class="centered" ng-hide="printOpted" click-touch='resetTime()'>
     <div id="content">
-        <h1>
+        <h1 ng-show="isReservationDetailsFetched">
             <text data-ng-bind-html="getTagValue('BILL_REVIEW')" editable-text="BILL_REVIEW"></text>
         </h1>
         <div id="flex-holder" ng-show="isReservationDetailsFetched">

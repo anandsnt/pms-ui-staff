@@ -4,7 +4,7 @@
         <div id="content">
             <nav id="options" class="large-icons" role="nav">
                 <ul role="menu">
-                    <li ng-show="mode === 'PROCESS_IN_PROGRESS'">
+                    <li ng-show="screeMode.value === 'PROCESS_IN_PROGRESS'">
                         <div>
                             <div ng-include="icons.url.creditcard_icmp"></div>
                         </div>
@@ -16,7 +16,7 @@
                         </span>
                     </li>
 
-                    <li ng-show="mode === 'PROCESS_FAILED'">
+                    <li ng-show="screeMode.value === 'PROCESS_FAILED'">
                         <button type="button" class="button option" touch-press='reTryCardSwipe()'>
                             <div ng-include="icons.url.creditcard"></div>
                         </button>
@@ -25,13 +25,13 @@
                         </h1>
                     </li>
                 
-                    <li class="break" ng-show="mode === 'PROCESS_FAILED'">
+                    <li class="break" ng-show="screeMode.value === 'PROCESS_FAILED'">
                         <span>
                             <text data-ng-bind-html="getTagValue('OR_TEXT')" editable-text="OR_TEXT"></text>
                         </span>
                     </li>
                     
-                    <li ng-show="mode === 'PROCESS_FAILED'">
+                    <li ng-show="screeMode.value === 'PROCESS_FAILED'">
                         <button type="button" class="button option" touch-press='talkToStaff()'>
                             <div ng-include="icons.url.staff"></div>
                         </button>

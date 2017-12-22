@@ -87,7 +87,7 @@ sntZestStation.config(['$stateProvider',
         $stateProvider.state('zest_station.payment', {
             url: '/payment',
             templateUrl: '/assets/partials_v2/payment/paymentInitial.html',
-            controller: 'zsPaymentCtrl',
+            controller: 'zsCheckoutBalancePaymentCtrl',
             jumper: true,
             section: 'General',
             label: '',

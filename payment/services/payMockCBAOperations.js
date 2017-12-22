@@ -7,7 +7,7 @@ var CBAMockOperation = function() {
             binary_format: 'A',
             card_name: 'VISA ISMP',
             card_sequence: '01',
-            card_type: '',
+            card_type: 'VA',
             currency_code: '',
             custom_data: '',
             cvv: '',

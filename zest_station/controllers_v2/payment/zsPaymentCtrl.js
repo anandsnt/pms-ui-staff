@@ -1,21 +1,21 @@
 angular.module('sntZestStation').controller('zsPaymentCtrl', ['$scope', '$log', 'sntActivity', 'sntPaymentSrv', 'zsPaymentSrv', '$stateParams', 'zsStateHelperSrv', '$state', '$timeout',
     function($scope, $log, sntActivity, sntPaymentSrv, zsPaymentSrv, $stateParams, zsStateHelperSrv, $state, $timeout) {
 
-        var makeCBAPayment = function() {
+        $scope.screeMode = {'value' : 'PROCESS_INITIAL'};
+
+        $scope.makeCBAPayment = function() {
             $scope.$emit('showLoader');
             $scope.$broadcast('INITIATE_CBA_PAYMENT', zsPaymentSrv.getSubmitPaymentParams());
         };
-
-
         /**
          * Method to initate listeners that handle CBA payment scenarios
          * @returns {undefined} undefined
          */
-        function initiateCBAlisteners() {
+        $scope.initiateCBAlisteners = function () {
             var listenerCBAPaymentFailure = $scope.$on('CBA_PAYMENT_FAILED', function(event, errorMessage) {
                 $log.warn(errorMessage);
                 $scope.$emit('hideLoader');
-                $scope.mode = 'PROCESS_FAILED';
+                $scope.screeMode.value = 'PROCESS_FAILED';
                 // TODO : Handle Error here!
             });
 
@@ -30,16 +30,13 @@ angular.module('sntZestStation').controller('zsPaymentCtrl', ['$scope', '$log', 
                 params.postData.credit_card_transaction_id = response.id;
                 sntPaymentSrv.submitPayment(params).then(
                     function(response) {
-                        $log.info('success payment', response);
-                        $state.go('zest_station.checkoutReservationBill', angular.extend(zsStateHelperSrv.getPreviousStateParams(), {
-                            dueBalancePaid: true
-                        }));
+                        $scope.$broadcast('PAYMENT_SUCCESS');
                         $scope.$emit('hideLoader');
                     },
                     function(errorMessage) {
                         $log.warn(errorMessage);
                         $scope.$emit('hideLoader');
-                        $scope.mode = 'PROCESS_FAILED';
+                        $scope.screeMode.value = 'PROCESS_FAILED';
                     }
                 );
             });
@@ -47,7 +44,7 @@ angular.module('sntZestStation').controller('zsPaymentCtrl', ['$scope', '$log', 
             var listenerUpdateErrorMessage = $scope.$on('UPDATE_NOTIFICATION', function(event, response) {
                 $log.warn(response);
                 $scope.$emit('hideLoader');
-                $scope.mode = 'PROCESS_FAILED';
+                $scope.screeMode.value = 'PROCESS_FAILED';
                 // TODO : Handle Error here!
             });
 
@@ -57,30 +54,12 @@ angular.module('sntZestStation').controller('zsPaymentCtrl', ['$scope', '$log', 
         }
 
         $scope.reTryCardSwipe = function() {
-            $scope.mode = 'PROCESS_IN_PROGRESS';
+            $scope.screeMode.value = 'PROCESS_IN_PROGRESS';
             if ($scope.zestStationData.paymentGateway === 'CBA' && $scope.isIpad) {
-                makeCBAPayment();
+                $scope.makeCBAPayment();
             } else {
-                $scope.mode = 'PROCESS_FAILED';
+                $scope.screeMode.value = 'PROCESS_FAILED';
             }
         };
-
-        (function() {
-            $log.info('init...');
-
-            var params = zsPaymentSrv.getPaymentData();
-
-            $scope.balanceDue = params.amount;
-
-            if ($scope.zestStationData.paymentGateway === 'CBA' && $scope.isIpad) {
-                initiateCBAlisteners();
-                $scope.mode = 'PROCESS_IN_PROGRESS';
-                $timeout(function() {
-                    makeCBAPayment();
-                }, 1000);
-            } else {
-                $scope.mode = 'PROCESS_FAILED';
-            }
-        })();
     }
 ]);

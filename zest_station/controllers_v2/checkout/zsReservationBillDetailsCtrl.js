@@ -53,7 +53,6 @@ sntZestStation.controller('zsReservationBillDetailsCtrl', [
 
             // process bill data
             var billsData = response.bill_details.fee_details;
-
             $scope.billData = [];
             $scope.zestStationData.currency = response.bill_details.currency;
             $scope.net_amount = response.bill_details.total_fees;
@@ -239,9 +238,9 @@ sntZestStation.controller('zsReservationBillDetailsCtrl', [
         };
 
         var noBalaceNextActions = function () {
-            $scope.$emit('hideLoader');
             $scope.runDigestCycle();
             if (!$scope.zestStationData.is_standalone) {
+                $scope.$emit('hideLoader');
                 $state.go('zest_station.emailBill', $scope.stateParamsForNextState);
             } else {
                 $scope.checkOutGuest();
@@ -284,7 +283,7 @@ sntZestStation.controller('zsReservationBillDetailsCtrl', [
                 $scope.days_of_stay = $stateParams.days_of_stay;
                 $scope.hours_of_stay = $stateParams.hours_of_stay;
                 $stateParams.email = !_.isNull($stateParams.email) ? $stateParams.email : '';
-                $scope.setupBillData();
+                
                 // storing state varibales to be used in print view also
                 $scope.stateParamsForNextState = {
                     'from': $stateParams.from,
@@ -301,6 +300,8 @@ sntZestStation.controller('zsReservationBillDetailsCtrl', [
 
                 if ($stateParams.dueBalancePaid === 'true' || $stateParams.dueBalancePaid === true) {
                     noBalaceNextActions();
+                } else {
+                    $scope.setupBillData();
                 }
             }
             $scope.isReservationDetailsFetched = false;
