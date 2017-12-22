@@ -57,7 +57,9 @@ sntRover.controller('RVJournalPaymentController', ['$scope', '$rootScope', 'RVJo
     });
 
     // Load the transaction details
-    var loadTransactionDeatils = function(chargeCodeItem, isFromPagination) {
+    var loadTransactionDeatils = function(chargeCodeItem, isFromPagination, pageNo) {
+
+        chargeCodeItem.page_no = pageNo || 1;
 
         var successCallBackFetchPaymentDataTransactions = function(data) {
 
@@ -107,6 +109,14 @@ sntRover.controller('RVJournalPaymentController', ['$scope', '$rootScope', 'RVJo
         var toggleItem = $scope.data.paymentData.payment_types[index1];
 
         if (toggleItem.payment_type !== "Credit Card") {
+
+            // pagination data object on level-3 for credit cards.
+            toggleItem.paymentTypesPagination = {
+                id: toggleItem.id,
+                api: [loadTransactionDeatils, toggleItem, true],
+                perPage: $scope.data.filterData.perPage
+            };
+
             loadTransactionDeatils(toggleItem, false);
         }
         else {
