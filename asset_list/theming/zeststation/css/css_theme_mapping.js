@@ -26,7 +26,8 @@ module.exports = {
 			'amrath': [themeCSSRoot + 'amrath.less'],
             'jupiter': [themeCSSRoot + 'jupiter.less'],
             'huntley': [themeCSSRoot + 'huntley.less'],
-            'queen': [themeCSSRoot + 'queen.less']
+            'queen': [themeCSSRoot + 'queen.less'],
+            'belle': [themeCSSRoot + 'belle.less']
 		};
 	}
 };
