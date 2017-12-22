@@ -506,12 +506,13 @@ sntRover.controller('rvReservationSearchWidgetController', ['$scope', '$rootScop
 		 */
 		$scope.checkSearchResults = function() {
 			var resultsVisibleCount = (_.map($scope.results, function(item) {
-				return item.is_row_visible
+				return item.is_row_visible;
 			})).length;
+			
 			if (resultsVisibleCount === 0) {
 				$scope.$emit("showSearchResultsArea", false);
 			}			
-		}
+		};
 
 
 		/**
