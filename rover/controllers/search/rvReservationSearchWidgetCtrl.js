@@ -502,6 +502,15 @@ sntRover.controller('rvReservationSearchWidgetController', ['$scope', '$rootScop
 			refreshScroller();
 		};
 
+		$scope.check = function() {
+			var resultsVisibleCount = (_.map($scope.results, function(item) {
+				return item.is_row_visible
+			})).length;
+			if (resultsVisibleCount === 0) {
+				$scope.$emit("showSearchResultsArea", false);
+			}			
+		}
+
 
 		/**
 		 * function used for refreshing the scroller
