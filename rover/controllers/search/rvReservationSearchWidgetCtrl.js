@@ -501,8 +501,10 @@ sntRover.controller('rvReservationSearchWidgetController', ['$scope', '$rootScop
 			$vault.set('searchType', 'SEARCH_NORMAL');
 			refreshScroller();
 		};
-
-		$scope.check = function() {
+		/*
+		 * On blur check search results count and show dasboard screen if needed.
+		 */
+		$scope.checkSearchResults = function() {
 			var resultsVisibleCount = (_.map($scope.results, function(item) {
 				return item.is_row_visible
 			})).length;
