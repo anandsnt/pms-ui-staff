@@ -95,7 +95,7 @@
                                 'MULTIPLE_PER_DAY_LABEL' | translate}}
                             </label>
                         </div>
-
+                        <!--once incremental export time-->
                         <section ng-show="snapshotData.incremental_export_option=='once'">
                             <div class="entry full-width">
                                 <label>
@@ -123,7 +123,7 @@
                                 </div>
                             </div>
                         </section>
-
+                        <!--multiple times incremental export start time-->
                         <section ng-if="snapshotData.incremental_export_option=='multiple'">
                             <div class="entry full-width">
                                 <label>
@@ -151,7 +151,7 @@
                                 </div>
                             </div>
                         </section>
-
+                        <!-- retry settings-->
                         <section>
                             <div class="entry">
                                 <label>
