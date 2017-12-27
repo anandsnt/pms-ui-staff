@@ -1,8 +1,9 @@
 angular.module('sntZestStation').controller('zsPaymentCtrl', ['$scope', '$log', 'sntActivity', 'sntPaymentSrv', 'zsPaymentSrv', '$stateParams', 'zsStateHelperSrv', '$state',
     function($scope, $log, sntActivity, sntPaymentSrv, zsPaymentSrv, $stateParams, zsStateHelperSrv, $state) {
 
-        $scope.screeMode = {
-            'value': 'PROCESS_INITIAL'
+        $scope.screenMode = {
+            'value': 'PROCESS_INITIAL',
+            'errorMessage': ''
         };
 
         $scope.makeCBAPayment = function() {
@@ -17,7 +18,7 @@ angular.module('sntZestStation').controller('zsPaymentCtrl', ['$scope', '$log', 
             var listenerCBAPaymentFailure = $scope.$on('CBA_PAYMENT_FAILED', function(event, errorMessage) {
                 $log.warn(errorMessage);
                 $scope.$emit('hideLoader');
-                $scope.screeMode.value = 'PROCESS_FAILED';
+                $scope.screenMode.value = 'PROCESS_FAILED';
                 // TODO : Handle Error here!
             });
 
@@ -38,7 +39,7 @@ angular.module('sntZestStation').controller('zsPaymentCtrl', ['$scope', '$log', 
                     function(errorMessage) {
                         $log.warn(errorMessage);
                         $scope.$emit('hideLoader');
-                        $scope.screeMode.value = 'PROCESS_FAILED';
+                        $scope.screenMode.value = 'PROCESS_FAILED';
                     }
                 );
             });
@@ -46,7 +47,7 @@ angular.module('sntZestStation').controller('zsPaymentCtrl', ['$scope', '$log', 
             var listenerUpdateErrorMessage = $scope.$on('UPDATE_NOTIFICATION', function(event, response) {
                 $log.warn(response);
                 $scope.$emit('hideLoader');
-                $scope.screeMode.value = 'PROCESS_FAILED';
+                $scope.screenMode.value = 'PROCESS_FAILED';
                 // TODO : Handle Error here!
             });
 
@@ -56,11 +57,11 @@ angular.module('sntZestStation').controller('zsPaymentCtrl', ['$scope', '$log', 
         };
 
         $scope.reTryCardSwipe = function() {
-            $scope.screeMode.value = 'PROCESS_IN_PROGRESS';
+            $scope.screenMode.value = 'PROCESS_IN_PROGRESS';
             if ($scope.zestStationData.paymentGateway === 'CBA' && $scope.isIpad) {
                 $scope.makeCBAPayment();
             } else {
-                $scope.screeMode.value = 'PROCESS_FAILED';
+                $scope.screenMode.value = 'PROCESS_FAILED';
             }
         };
     }
