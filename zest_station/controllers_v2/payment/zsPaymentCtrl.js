@@ -1,7 +1,9 @@
-angular.module('sntZestStation').controller('zsPaymentCtrl', ['$scope', '$log', 'sntActivity', 'sntPaymentSrv', 'zsPaymentSrv', '$stateParams', 'zsStateHelperSrv', '$state', '$timeout',
-    function($scope, $log, sntActivity, sntPaymentSrv, zsPaymentSrv, $stateParams, zsStateHelperSrv, $state, $timeout) {
+angular.module('sntZestStation').controller('zsPaymentCtrl', ['$scope', '$log', 'sntActivity', 'sntPaymentSrv', 'zsPaymentSrv', '$stateParams', 'zsStateHelperSrv', '$state',
+    function($scope, $log, sntActivity, sntPaymentSrv, zsPaymentSrv, $stateParams, zsStateHelperSrv, $state) {
 
-        $scope.screeMode = {'value' : 'PROCESS_INITIAL'};
+        $scope.screeMode = {
+            'value': 'PROCESS_INITIAL'
+        };
 
         $scope.makeCBAPayment = function() {
             $scope.$emit('showLoader');
@@ -29,7 +31,7 @@ angular.module('sntZestStation').controller('zsPaymentCtrl', ['$scope', '$log', 
                 params.postData.payment_type_id = response.payment_method_id;
                 params.postData.credit_card_transaction_id = response.id;
                 sntPaymentSrv.submitPayment(params).then(
-                    function(response) {
+                    function() {
                         $scope.$broadcast('PAYMENT_SUCCESS');
                         $scope.$emit('hideLoader');
                     },
@@ -51,7 +53,7 @@ angular.module('sntZestStation').controller('zsPaymentCtrl', ['$scope', '$log', 
             $scope.$on('$destroy', listenerCBAPaymentFailure);
             $scope.$on('$destroy', listenerCBAPaymentSuccess);
             $scope.$on('$destroy', listenerUpdateErrorMessage);
-        }
+        };
 
         $scope.reTryCardSwipe = function() {
             $scope.screeMode.value = 'PROCESS_IN_PROGRESS';

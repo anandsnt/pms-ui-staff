@@ -53,6 +53,7 @@ sntZestStation.controller('zsReservationBillDetailsCtrl', [
 
             // process bill data
             var billsData = response.bill_details.fee_details;
+            
             $scope.billData = [];
             $scope.zestStationData.currency = response.bill_details.currency;
             $scope.net_amount = response.bill_details.total_fees;

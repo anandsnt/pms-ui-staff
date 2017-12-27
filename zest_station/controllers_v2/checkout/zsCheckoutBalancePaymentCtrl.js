@@ -10,7 +10,7 @@ angular.module('sntZestStation').controller('zsCheckoutBalancePaymentCtrl', ['$s
         $scope.isIpad = true;
 
 
-        $scope.$on('PAYMENT_SUCCESS', function(){
+        $scope.$on('PAYMENT_SUCCESS', function() {
             $state.go('zest_station.checkoutReservationBill', angular.extend(zsStateHelperSrv.getPreviousStateParams(), {
                 dueBalancePaid: true
             }));
