@@ -8,8 +8,34 @@ angular.module('sntZestStation').controller('zsPaymentCtrl', ['$scope', '$log', 
 
         $scope.makeCBAPayment = function() {
             $scope.$emit('showLoader');
+            $scope.screenMode.errorMessage = '';
             $scope.$broadcast('INITIATE_CBA_PAYMENT', zsPaymentSrv.getSubmitPaymentParams());
         };
+
+        var setErrorMessageBasedOnResponse = function(errorMessage) {
+            var message = ''
+            if (errorMessage.includes('OPERATOR TIMEOUT')) {
+                // 143 TRANSACTION FAILED.:OPERATOR TIMEOUT
+                message = 'OPERATION TIMED OUT';
+            } else if (errorMessage.includes('104 Connection with an external device not established')) {
+                //104 CONNECTION WITH AN EXTERNAL DEVICE NOT ESTABLISHED.
+                message = 'PLEASE RECHECK THE CONNECTION WITH THE EXTERNAL DEVICE';
+            } else {
+                // 143 TRANSACTION FAILED.:OPERATOR CANCELLED
+                // 143 TRANSACTION FAILED.:SYSTEM ERROR XI
+                message = 'TRANSACTION FAILED';
+            }
+            return message;
+        };
+
+        var showErrorMessage = function(errorMessage) {
+            if (Array.isArray(errorMessage) && errorMessage.length > 0) {
+                $scope.screenMode.errorMessage = setErrorMessageBasedOnResponse(errorMessage[0]);
+            } else {
+                $scope.screenMode.errorMessage = setErrorMessageBasedOnResponse(errorMessage);
+            }
+        };
+
         /**
          * Method to initate listeners that handle CBA payment scenarios
          * @returns {undefined} undefined
@@ -17,6 +43,7 @@ angular.module('sntZestStation').controller('zsPaymentCtrl', ['$scope', '$log', 
         $scope.initiateCBAlisteners = function () {
             var listenerCBAPaymentFailure = $scope.$on('CBA_PAYMENT_FAILED', function(event, errorMessage) {
                 $log.warn(errorMessage);
+                showErrorMessage(errorMessage);
                 $scope.$emit('hideLoader');
                 $scope.screenMode.value = 'PROCESS_FAILED';
                 // TODO : Handle Error here!
@@ -38,6 +65,7 @@ angular.module('sntZestStation').controller('zsPaymentCtrl', ['$scope', '$log', 
                     },
                     function(errorMessage) {
                         $log.warn(errorMessage);
+                        showErrorMessage(errorMessage);
                         $scope.$emit('hideLoader');
                         $scope.screenMode.value = 'PROCESS_FAILED';
                     }
@@ -46,6 +74,7 @@ angular.module('sntZestStation').controller('zsPaymentCtrl', ['$scope', '$log', 
 
             var listenerUpdateErrorMessage = $scope.$on('UPDATE_NOTIFICATION', function(event, response) {
                 $log.warn(response);
+                showErrorMessage(response);
                 $scope.$emit('hideLoader');
                 $scope.screenMode.value = 'PROCESS_FAILED';
                 // TODO : Handle Error here!
@@ -62,6 +91,7 @@ angular.module('sntZestStation').controller('zsPaymentCtrl', ['$scope', '$log', 
                 $scope.makeCBAPayment();
             } else {
                 $scope.screenMode.value = 'PROCESS_FAILED';
+                $scope.screenMode.errorMessage = 'Use Zest station from an iPad';
             }
         };
     }

@@ -2,6 +2,13 @@
     <section id="main" class="centered kiosk" role="main" pay-ctrl-loader-dir="zestStationData.paymentGateway">
 
         <div id="content">
+            <h1 ng-show="screenMode.value === 'PROCESS_FAILED'">
+                 <text editable-text="SWIPE_ERR_HEADER"> {{'SWIPE_ERR_HEADER' |translate}}</text>
+            </h1>
+            <h2 ng-show="screenMode.value === 'PROCESS_FAILED' && screenMode.errorMessage.length > 0">
+                ({{screenMode.errorMessage}})
+            </h2>
+
             <nav id="options" class="large-icons" role="nav">
                 <ul role="menu">
                     <li ng-show="screenMode.value === 'PROCESS_IN_PROGRESS'">
