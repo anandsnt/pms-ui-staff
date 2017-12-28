@@ -25,12 +25,12 @@ angular.module('sntZestStation').controller('zsCheckoutBalancePaymentCtrl', ['$s
 
             if ($scope.zestStationData.paymentGateway === 'CBA' && $scope.isIpad) {
                 $scope.initiateCBAlisteners();
-                $scope.screenMode.value = 'PROCESS_IN_PROGRESS';
+                $scope.screenMode.value = 'PAYMENT_IN_PROGRESS';
                 $timeout(function() {
                     $scope.makeCBAPayment();
                 }, 1000);
             } else {
-                $scope.screenMode.value = 'PROCESS_FAILED';
+                $scope.screenMode.value = 'PAYMENT_FAILED';
             }
         })();
     }

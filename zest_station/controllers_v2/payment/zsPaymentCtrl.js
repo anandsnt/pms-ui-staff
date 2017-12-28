@@ -45,7 +45,7 @@ angular.module('sntZestStation').controller('zsPaymentCtrl', ['$scope', '$log', 
                 $log.warn(errorMessage);
                 showErrorMessage(errorMessage);
                 $scope.$emit('hideLoader');
-                $scope.screenMode.value = 'PROCESS_FAILED';
+                $scope.screenMode.value = 'PAYMENT_FAILED';
                 // TODO : Handle Error here!
             });
 
@@ -67,7 +67,7 @@ angular.module('sntZestStation').controller('zsPaymentCtrl', ['$scope', '$log', 
                         $log.warn(errorMessage);
                         showErrorMessage(errorMessage);
                         $scope.$emit('hideLoader');
-                        $scope.screenMode.value = 'PROCESS_FAILED';
+                        $scope.screenMode.value = 'PAYMENT_FAILED';
                     }
                 );
             });
@@ -76,7 +76,7 @@ angular.module('sntZestStation').controller('zsPaymentCtrl', ['$scope', '$log', 
                 $log.warn(response);
                 showErrorMessage(response);
                 $scope.$emit('hideLoader');
-                $scope.screenMode.value = 'PROCESS_FAILED';
+                $scope.screenMode.value = 'PAYMENT_FAILED';
                 // TODO : Handle Error here!
             });
 
@@ -86,11 +86,11 @@ angular.module('sntZestStation').controller('zsPaymentCtrl', ['$scope', '$log', 
         };
 
         $scope.reTryCardSwipe = function() {
-            $scope.screenMode.value = 'PROCESS_IN_PROGRESS';
+            $scope.screenMode.value = 'PAYMENT_IN_PROGRESS';
             if ($scope.zestStationData.paymentGateway === 'CBA' && $scope.isIpad) {
                 $scope.makeCBAPayment();
             } else {
-                $scope.screenMode.value = 'PROCESS_FAILED';
+                $scope.screenMode.value = 'PAYMENT_FAILED';
                 $scope.screenMode.errorMessage = 'Use Zest station from an iPad';
             }
         };
