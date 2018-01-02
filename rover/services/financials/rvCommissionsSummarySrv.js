@@ -114,4 +114,18 @@ sntRover.service('RVCommissionsSrv', ['$http', '$q', 'BaseWebSrvV2', function($h
         return deferred.promise;
     };
 
+
+    that.fetchExportTypeData = function() {
+
+        var deferred = $q.defer();
+        var url = '/api/accounts/fetch_enabled_commission_interface';
+
+        BaseWebSrvV2.getJSON(url).then(function(data) {
+            deferred.resolve(data);
+        }, function(data) {
+            deferred.reject(data);
+        });
+        return deferred.promise;
+    };
+
 }]);
