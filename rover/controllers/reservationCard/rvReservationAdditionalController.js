@@ -102,5 +102,12 @@ sntRover.controller('rvReservationAdditionalController', ['$rootScope', '$scope'
 			}
         });
 
+        $scope.$on('travelAgentSearchStopped', function() {
+            $scope.reservationData.reservation_card.commission_details.is_on = false;
+        });
+        $scope.$on('travelagentcardremoved', function() {
+            $scope.reservationData.reservation_card.commission_details = {};
+        });
+
 	}
 ]);

@@ -877,6 +877,7 @@ angular.module('sntRover').controller('stayCardMainCtrl', ['$rootScope', '$scope
 				$scope.reservationData.travelAgent.id = "";
 				$scope.reservationDetails.travelAgent.id = "";
 				$scope.reservationDetails.travelAgent.futureReservations = 0;
+				$scope.$broadcast('travelagentcardremoved');
 			}
 
 
