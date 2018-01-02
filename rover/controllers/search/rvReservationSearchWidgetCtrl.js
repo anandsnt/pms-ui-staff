@@ -34,6 +34,7 @@ sntRover.controller('rvReservationSearchWidgetController', ['$scope', '$rootScop
 		$scope.reservationSearch = ($state.current.name === "rover.search");
 		$scope.search_area_id = !$scope.reservationSearch ? "dashboard-search" : "search";
 
+		
 		if ($stateParams.type === "OPEN_BILL_CHECKOUT" ) {
 			// CICO-24079 - OPEN_BILL_CHECKOUT - Date picker from date should default to Null.
 			$scope.fromDate = "";
@@ -153,6 +154,7 @@ sntRover.controller('rvReservationSearchWidgetController', ['$scope', '$rootScop
 			$scope.end = $scope.start + $scope.results.length - 1;
 			setTimeout(function() {
 				$scope.$apply();
+				$scope.$broadcast('updatePagination', 'DASHBOARD_SEARCH');
 				$scope.$parent.myScroll['result_showing_area'].scrollTo(0, 0, 0);
 				refreshScroller();
 			}, 100);
@@ -440,7 +442,6 @@ sntRover.controller('rvReservationSearchWidgetController', ['$scope', '$rootScop
 					applyFilters();
 
 				} else {*/
-					initPaginationParams();
 					$scope.fetchSearchResults();
 				// }
 				// we have changed data, so we are refreshing the scrollerbar
@@ -448,7 +449,8 @@ sntRover.controller('rvReservationSearchWidgetController', ['$scope', '$rootScop
 			}
 		}; // end of displayFilteredResults
 
-		$scope.fetchSearchResults = function() {
+		$scope.fetchSearchResults = function(page) { 
+			RVSearchSrv.page = page;
 			var query = $scope.textInQueryBox.trim();
 			var hasRoomTypeFilter = $scope.room_type_id === '' || !!$scope.room_type_id;
 
@@ -489,6 +491,12 @@ sntRover.controller('rvReservationSearchWidgetController', ['$scope', '$rootScop
 			$scope.invokeApi(RVSearchSrv.fetch, dataDict, successCallBackofDataFetch, failureCallBackofDataFetch);
 
 		};
+		// Defined pagination for dashboard search
+		$scope.dashboardSearchPagination = {
+			id: 'DASHBOARD_SEARCH',
+			api: $scope.fetchSearchResults
+		};
+
 
 		/**
 		 * function to execute on focusing on search box
@@ -873,38 +881,6 @@ sntRover.controller('rvReservationSearchWidgetController', ['$scope', '$rootScop
 		};
 
 
-		$scope.loadNextSet = function() {
-			RVSearchSrv.page++;
-			$scope.nextAction = true;
-			$scope.prevAction = false;
-			$scope.fetchSearchResults();
-		};
-
-		$scope.loadPrevSet = function() {
-			RVSearchSrv.page--;
-			$scope.nextAction = false;
-			$scope.prevAction = true;
-			$scope.fetchSearchResults();
-		};
-
-		$scope.isNextButtonDisabled = function() {
-			var isDisabled = false;
-
-			if ($scope.end >= RVSearchSrv.totalSearchResults) {
-				isDisabled = true;
-			}
-			return isDisabled;
-		};
-
-		$scope.isPrevButtonDisabled = function() {
-			var isDisabled = false;
-
-			if (RVSearchSrv.page === 1) {
-				isDisabled = true;
-			}
-			return isDisabled;
-		};
-
 		$scope.showCalendar = function(controller) {
 			$scope.focusSearchField = false;
 			$scope.$emit("showSearchResultsArea", true);
@@ -918,17 +894,9 @@ sntRover.controller('rvReservationSearchWidgetController', ['$scope', '$rootScop
             }, 1000);
 		};
 
-		var initPaginationParams = function() {
-			RVSearchSrv.page = 1;
-			$scope.start = 1;
-			$scope.end = $scope.start + $scope.results.length - 1;
-			$scope.nextAction = false;
-			$scope.prevAction = false;
-		};
 
 		$scope.onFromDateChanged = function(date) {
 			$scope.fromDate = date;
-			initPaginationParams();
 			$scope.fetchSearchResults();
 			$timeout(function() {
 				$scope.focusSearchField = true;
@@ -937,7 +905,6 @@ sntRover.controller('rvReservationSearchWidgetController', ['$scope', '$rootScop
 
 		$scope.onToDateChanged = function(date) {
 			$scope.toDate = date;
-			initPaginationParams();
 			$scope.fetchSearchResults();
             $timeout(function() {
                 $scope.focusSearchField = true;
@@ -1000,7 +967,6 @@ sntRover.controller('rvReservationSearchWidgetController', ['$scope', '$rootScop
 		*/
 		$scope.onRoomTypeChange = function() {
 			$scope.$emit("showSearchResultsArea", true);
-			initPaginationParams();
 			$scope.fetchSearchResults();
             $timeout(function() {
                 $scope.focusSearchField = true;
