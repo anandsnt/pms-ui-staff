@@ -13,7 +13,7 @@
    <div class="entry dates">
     <div class="entry-data has-datepicker">
         <label for="commisions-date-from">From</label>
-        <button type="button" class="clear-query" ng-class="{'visible': !isEmpty(fromDate) }" ng-click="clearFromDate()"><span class="icons icon-clear-search">Clear query</span></button>
+        <button type="button" class="clear-query" ng-class="{'visible': fromDate.length > 0}" ng-click="clearFromDate()"><span class="icons icon-clear-search">Clear query</span></button>
         <!-- add class .visible when date selected -->
        <input name="commisions-date-to"  id="commisions-date-from" class="datepicker" readonly type="text" rv-clear-text-box listen-this="fromDate" ui-date="fromDateOptions" value="{{fromDate}}" />        
       <!--  <input id="commisions-date-drom" class="datepicker" ui-date="fromDateOptions"
@@ -22,7 +22,7 @@
     </div>
     <div class="entry-data has-datepicker">
         <label for="commisions-date-to">To</label>
-        <button type="button" class="clear-query"  ng-class="{'visible': !isEmpty(toDate) }" ng-click="clearToDate()"><span class="icons icon-clear-search">Clear query</span></button>
+        <button type="button" class="clear-query"  ng-class="{'visible': toDate.length > 0}" ng-click="clearToDate()"><span class="icons icon-clear-search">Clear query</span></button>
         <!-- add class .visible when date selected -->
        <input name="commisions-date-to"  id="commisions-date-to" class="datepicker" readonly type="text" ui-date="toDateOptions" value="{{toDate}}" rv-clear-text-box listen-this="toDate" />
 
