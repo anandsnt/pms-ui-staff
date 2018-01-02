@@ -92,7 +92,8 @@ sntRover.controller('RVJournalPaymentController', ['$scope', '$rootScope', 'RVJo
                 "employee_ids": $scope.data.selectedEmployeeList,
                 "department_ids": $scope.data.selectedDepartmentList,
                 "page_no": chargeCodeItem.page_no,
-                "per_page": $scope.data.filterData.perPage,
+                // "per_page": $scope.data.filterData.perPage,
+                "per_page": 5,
                 "type": ($scope.data.activePaymentTab === "" ? "" : ($scope.data.activePaymentTab).toLowerCase())
             };
 
@@ -114,7 +115,8 @@ sntRover.controller('RVJournalPaymentController', ['$scope', '$rootScope', 'RVJo
             toggleItem.paymentTypesPagination = {
                 id: toggleItem.id,
                 api: [loadTransactionDeatils, toggleItem, true],
-                perPage: $scope.data.filterData.perPage
+                // perPage: $scope.data.filterData.perPage
+                perPage: 5
             };
 
             loadTransactionDeatils(toggleItem, false);
@@ -122,6 +124,7 @@ sntRover.controller('RVJournalPaymentController', ['$scope', '$rootScope', 'RVJo
         else {
             // For Credit cards , level-2 data already exist , so just do expand/collapse only ..
             toggleItem.active = !toggleItem.active;
+            refreshPaymentScroll();
         }
     };
 
@@ -134,7 +137,8 @@ sntRover.controller('RVJournalPaymentController', ['$scope', '$rootScope', 'RVJo
         toggleItem.creditCardPagination = {
             id: toggleItem.id,
             api: [loadTransactionDeatils, toggleItem, true],
-            perPage: $scope.data.filterData.perPage
+            // perPage: $scope.data.filterData.perPage
+            perPage: 5
         };
 
         loadTransactionDeatils(toggleItem, false);
@@ -173,67 +177,6 @@ sntRover.controller('RVJournalPaymentController', ['$scope', '$rootScope', 'RVJo
         }
         $scope.errorMessage = "";
     };
-
-    // Logic for pagination starts here ..
-    $scope.loadNextSet = function(index1, index2) {
-
-        if (typeof index2 === 'undefined' || index2 === false ) {
-            var item = $scope.data.paymentData.payment_types[index1];
-        }
-        else {
-            var item = $scope.data.paymentData.payment_types[index1].credit_cards[index2];
-        }
-        item.page_no ++;
-        item.nextAction = true;
-        item.prevAction = false;
-        loadTransactionDeatils(item, true);
-    };
-
-    $scope.loadPrevSet = function(index1, index2) {
-        if (typeof index2 === 'undefined' || index2 === false ) {
-            var item = $scope.data.paymentData.payment_types[index1];
-        }
-        else {
-            var item = $scope.data.paymentData.payment_types[index1].credit_cards[index2];
-        }
-        item.page_no --;
-        item.nextAction = false;
-        item.prevAction = true;
-        loadTransactionDeatils(item, true);
-    };
-
-    $scope.isNextButtonDisabled = function(index1, index2) {
-
-        if (typeof index2 === 'undefined' || index2 === false ) {
-            var item = $scope.data.paymentData.payment_types[index1];
-        }
-        else {
-            var item = $scope.data.paymentData.payment_types[index1].credit_cards[index2];
-        }
-        var isDisabled = false;
-
-        if (item.end >= item.total_count) {
-            isDisabled = true;
-        }
-        return isDisabled;
-    };
-
-    $scope.isPrevButtonDisabled = function(index1, index2) {
-
-        if (typeof index2 === 'undefined' || index2 === false ) {
-            var item = $scope.data.paymentData.payment_types[index1];
-        }
-        else {
-            var item = $scope.data.paymentData.payment_types[index1].credit_cards[index2];
-        }
-        var isDisabled = false;
-
-        if (item.page_no === 1) {
-            isDisabled = true;
-        }
-        return isDisabled;
-    };
-    // Pagination logic ends ...
 
     // Hanlde payment group active toggle
     $scope.clickedPaymentGroup = function( activePaymentTab ) {
