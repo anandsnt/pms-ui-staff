@@ -20,7 +20,10 @@ sntRover.controller('RVAccountsReceivablesController', ['$scope', '$rootScope', 
     /*
      *   Method to initialize the AR Overview Data set.
      */  
-    var fetchArOverviewData = function() {
+    var fetchArOverviewData = function( pageNo ) {
+
+        $scope.filterData.page = pageNo || 1;
+        
         var successCallBackFetchAccountsReceivables = function(data) {
 
             $scope.arOverviewData = {};
@@ -28,16 +31,7 @@ sntRover.controller('RVAccountsReceivablesController', ['$scope', '$rootScope', 
 
             $scope.errorMessage = "";
             $scope.$emit('hideLoader');
-
-            // Compute the start, end and total count parameters
-            if ($scope.nextAction) {
-                $scope.start = $scope.start + $scope.filterData.perPage;
-            }
-            if ($scope.prevAction) {
-                $scope.start = $scope.start - $scope.filterData.perPage;
-            }
-            $scope.end = $scope.start + $scope.arOverviewData.accounts.length - 1;
-
+            $scope.$broadcast('updatePagination', 'AR_PAGINATION');
             refreshArOverviewScroll();
 
             // Condition to show/hide header bar - with OPEN GUEST BILL & UNPAID BALANCE.
@@ -89,6 +83,13 @@ sntRover.controller('RVAccountsReceivablesController', ['$scope', '$rootScope', 
         ]
     };
 
+    // Setting pagination object
+    $scope.arPaginationObj = {
+        id: 'AR_PAGINATION',
+        api: fetchArOverviewData,
+        perPage: $scope.filterData.perPage
+    };
+
     // Filter block starts here ..
     $scope.changedSearchQuery = function() {
 
@@ -116,51 +117,6 @@ sntRover.controller('RVAccountsReceivablesController', ['$scope', '$rootScope', 
         fetchArOverviewData();
     };
     // Filter block ends here ..
-
-    // Pagination block starts here ..
-    $scope.loadNextSet = function() {
-        $scope.filterData.page++;
-        $scope.nextAction = true;
-        $scope.prevAction = false;
-        fetchArOverviewData();
-    };
-
-    $scope.loadPrevSet = function() {
-        $scope.filterData.page--;
-        $scope.nextAction = false;
-        $scope.prevAction = true;
-        fetchArOverviewData();
-    };
-
-    $scope.isNextButtonDisabled = function() {
-        var isDisabled = false;
-
-        if (!!$scope.arOverviewData && ($scope.end >= $scope.arOverviewData.total_result)) {
-            isDisabled = true;
-        }
-        return isDisabled;
-    };
-
-    $scope.isPrevButtonDisabled = function() {
-        var isDisabled = false;
-
-        if ($scope.filterData.page === 1) {
-            isDisabled = true;
-        }
-        return isDisabled;
-    };
-
-    var initPaginationParams = function() {
-        $scope.filterData.page = 1;
-        $scope.start = 1;
-        $scope.end = $scope.filterData.perPage;
-        $scope.nextAction = false;
-        $scope.prevAction = false;
-    };
-
-    initPaginationParams();
-
-    // Pagination block ends here ..
     
     fetchArOverviewData();
 
