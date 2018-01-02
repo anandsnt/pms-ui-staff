@@ -92,8 +92,7 @@ sntRover.controller('RVJournalPaymentController', ['$scope', '$rootScope', 'RVJo
                 "employee_ids": $scope.data.selectedEmployeeList,
                 "department_ids": $scope.data.selectedDepartmentList,
                 "page_no": chargeCodeItem.page_no,
-                // "per_page": $scope.data.filterData.perPage,
-                "per_page": 5,
+                "per_page": $scope.data.filterData.perPage,
                 "type": ($scope.data.activePaymentTab === "" ? "" : ($scope.data.activePaymentTab).toLowerCase())
             };
 
@@ -115,8 +114,7 @@ sntRover.controller('RVJournalPaymentController', ['$scope', '$rootScope', 'RVJo
             toggleItem.paymentTypesPagination = {
                 id: toggleItem.id,
                 api: [loadTransactionDeatils, toggleItem, true],
-                // perPage: $scope.data.filterData.perPage
-                perPage: 5
+                perPage: $scope.data.filterData.perPage
             };
 
             loadTransactionDeatils(toggleItem, false);
@@ -137,8 +135,7 @@ sntRover.controller('RVJournalPaymentController', ['$scope', '$rootScope', 'RVJo
         toggleItem.creditCardPagination = {
             id: toggleItem.id,
             api: [loadTransactionDeatils, toggleItem, true],
-            // perPage: $scope.data.filterData.perPage
-            perPage: 5
+            perPage: $scope.data.filterData.perPage
         };
 
         loadTransactionDeatils(toggleItem, false);
