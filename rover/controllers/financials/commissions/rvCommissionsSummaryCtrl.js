@@ -6,10 +6,9 @@ sntRover.controller('RVCommissionsSummaryController', ['$scope',
     '$timeout',
     '$window',
     '$state',
-    'businessDate',
-    '$filter', 
+    'businessDate', 
     'rvUtilSrv',
-    function($scope, $rootScope, $stateParams, $filter, RVCommissionsSrv, $timeout, $window, $state, businessDate, $filter, util) {
+    function($scope, $rootScope, $stateParams, $filter, RVCommissionsSrv, $timeout, $window, $state, businessDate, util) {
 
         BaseCtrl.call(this, $scope);
 
@@ -415,6 +414,7 @@ sntRover.controller('RVCommissionsSummaryController', ['$scope',
 
         // set default from date as last week
         var lastWeekDay = new Date(tzIndependentDate(businessDate.business_date));
+
         lastWeekDay.setDate(lastWeekDay.getDate() - 7);
         // default from date, as per CICO-13899 it will be business date
         $scope.fromDate = $filter('date')(lastWeekDay,
@@ -424,6 +424,7 @@ sntRover.controller('RVCommissionsSummaryController', ['$scope',
 
         // set end date as previous day
         var lastDay = new Date(tzIndependentDate(businessDate.business_date));
+
         lastDay.setDate(lastDay.getDate() - 1);
         $scope.toDate = $filter('date')(lastDay,
             $rootScope.dateFormat);

@@ -1,5 +1,5 @@
-sntRover.controller('RVCommisionsHeaderCtrl', ['$scope', 'ngDialog', '$log', '$timeout', 'RVCommissionsSrv', '$filter', function($scope, ngDialog, $log, $timeout, RVCommissionsSrv ,$filter) {
-    BaseCtrl.call(this, $scope);
+sntRover.controller('RVCommisionsHeaderCtrl', ['$scope', 'ngDialog', '$log', '$timeout', 'RVCommissionsSrv', '$filter', function($scope, ngDialog, $log, $timeout, RVCommissionsSrv, $filter) {
+                BaseCtrl.call(this, $scope);
 
     var setParamsInCurrentPage = function(params) {
         params.selected_tas = [];
