@@ -19,7 +19,7 @@ sntRover.controller('RVJournalPaymentController', ['$scope', '$rootScope', 'RVJo
             $scope.data.selectedPaymentType = '';
 			$scope.data.paymentData = data;
 			$scope.data.activePaymentTypes = data.payment_types;
-            $scope.data.filterData.perPage = 5;
+
             $scope.errorMessage = "";
 			refreshPaymentScroll();
             if (origin !== "SUMMARY_DATE_CHANGED") {
