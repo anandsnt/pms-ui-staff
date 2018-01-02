@@ -57,32 +57,30 @@ sntRover.controller('RVJournalPaymentController', ['$scope', '$rootScope', 'RVJo
     });
 
     // Load the transaction details
-    var loadTransactionDeatils = function(chargeCodeItem, isFromPagination) {
+    var loadTransactionDeatils = function(chargeCodeItem, isFromPagination, pageNo) {
+
+        chargeCodeItem.page_no = pageNo || 1;
 
         var successCallBackFetchPaymentDataTransactions = function(data) {
 
             chargeCodeItem.transactions = [];
             chargeCodeItem.transactions = data.transactions;
             chargeCodeItem.total_count = data.total_count;
-            chargeCodeItem.end = chargeCodeItem.start + data.transactions.length - 1;
 
-            if (isFromPagination) {
-                // Compute the start, end and total count parameters
-                if (chargeCodeItem.nextAction) {
-                    chargeCodeItem.start = chargeCodeItem.start + $scope.data.filterData.perPage;
-                }
-                if (chargeCodeItem.prevAction) {
-                    chargeCodeItem.start = chargeCodeItem.start - $scope.data.filterData.perPage;
-                }
-                chargeCodeItem.end = chargeCodeItem.start + chargeCodeItem.transactions.length - 1;
-            }
-            else if (data.transactions.length > 0) {
+            if (!isFromPagination && data.transactions.length > 0) {
                 chargeCodeItem.active = !chargeCodeItem.active;
-            }
+            }      
 
-            refreshPaymentScroll();
-            $scope.errorMessage = "";
-            $scope.$emit('hideLoader');
+            $timeout(function () {
+                var paginationID = chargeCodeItem.id;
+
+                $scope.$broadcast('updatePagination', paginationID );
+
+                refreshPaymentScroll();
+                $scope.errorMessage = "";
+                $scope.$emit('hideLoader');
+
+            }, 500 );
         };
 
         // Call api only while expanding the tab or on pagination Next/Prev button actions ..
@@ -111,6 +109,14 @@ sntRover.controller('RVJournalPaymentController', ['$scope', '$rootScope', 'RVJo
         var toggleItem = $scope.data.paymentData.payment_types[index1];
 
         if (toggleItem.payment_type !== "Credit Card") {
+
+            // pagination data object on level-3 for credit cards.
+            toggleItem.paymentTypesPagination = {
+                id: toggleItem.id,
+                api: [loadTransactionDeatils, toggleItem, true],
+                perPage: $scope.data.filterData.perPage
+            };
+
             loadTransactionDeatils(toggleItem, false);
         }
         else {
@@ -123,6 +129,13 @@ sntRover.controller('RVJournalPaymentController', ['$scope', '$rootScope', 'RVJo
     $scope.clickedSecondLevel = function(index1, index2) {
 
         var toggleItem = $scope.data.paymentData.payment_types[index1].credit_cards[index2];
+
+        // pagination data object on level-3 for credit cards.
+        toggleItem.creditCardPagination = {
+            id: toggleItem.id,
+            api: [loadTransactionDeatils, toggleItem, true],
+            perPage: $scope.data.filterData.perPage
+        };
 
         loadTransactionDeatils(toggleItem, false);
     };
