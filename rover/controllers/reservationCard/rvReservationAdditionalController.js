@@ -5,6 +5,7 @@ sntRover.controller('rvReservationAdditionalController', ['$rootScope', '$scope'
 			segmentAvailable: !!$scope.reservationParentData.demographics.segment,
 			hideDetails: true
 		};
+		$scope.isEmptyObject = isEmptyObject;
 		$scope.hasPermissionForCommissionUpdate = function() {
 			return rvPermissionSrv.getPermissionValue('UPDATE_COMMISSION');
 		};
