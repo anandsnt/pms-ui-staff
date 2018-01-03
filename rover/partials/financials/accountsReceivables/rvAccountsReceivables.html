@@ -32,8 +32,8 @@
     </form>
 
     <!-- Search pagination -->
-    <div ng-if="arOverviewData" ng-show="isShowPagination()">
-        <rv-pagination page-options="arPaginationObj" page-data="arOverviewData.total_result"></rv-pagination>
+    <div ng-show="isShowPagination()">
+        <rv-pagination page-options="arPaginationObj" page-data="filterData.totalCount"></rv-pagination>
     </div>
 
     <!-- Search panel - WITH RESULTS -->

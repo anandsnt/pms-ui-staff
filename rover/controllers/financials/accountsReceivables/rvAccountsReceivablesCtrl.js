@@ -1,4 +1,4 @@
-sntRover.controller('RVAccountsReceivablesController', ['$scope', '$rootScope', '$stateParams', '$filter', 'rvAccountsArTransactionsSrv', function($scope, $rootScope, $stateParams, $filter, rvAccountsArTransactionsSrv ) {
+sntRover.controller('RVAccountsReceivablesController', ['$scope', '$rootScope', '$stateParams', '$filter', 'rvAccountsArTransactionsSrv', '$timeout', function($scope, $rootScope, $stateParams, $filter, rvAccountsArTransactionsSrv, $timeout ) {
 
 	BaseCtrl.call(this, $scope);
 	// Setting up the screen heading and browser title.
@@ -23,17 +23,20 @@ sntRover.controller('RVAccountsReceivablesController', ['$scope', '$rootScope', 
     var fetchArOverviewData = function( pageNo ) {
 
         $scope.filterData.page = pageNo || 1;
-        
+
         var successCallBackFetchAccountsReceivables = function(data) {
 
             $scope.arOverviewData = {};
             $scope.arOverviewData = data;
-
-            $scope.errorMessage = "";
-            $scope.$emit('hideLoader');
-            $scope.$broadcast('updatePagination', 'AR_PAGINATION');
-            refreshArOverviewScroll();
-
+            $scope.filterData.totalCount = data.total_result;
+            
+            $timeout(function () {
+                $scope.$broadcast('updatePagination', 'AR_PAGINATION');
+                $scope.errorMessage = "";
+                $scope.$emit('hideLoader');
+                refreshArOverviewScroll();
+            }, 500 );
+            
             // Condition to show/hide header bar - with OPEN GUEST BILL & UNPAID BALANCE.
             if ($scope.filterData.searchQuery !== "" || $scope.filterData.minAmount !== "" || $scope.filterData.ageingDays !== "") {
             	$scope.filterData.hideArHeader = true;
@@ -60,6 +63,7 @@ sntRover.controller('RVAccountsReceivablesController', ['$scope', '$rootScope', 
 
         'page': 1,
         'perPage': 50,
+        'totalCount': 0,
         'searchQuery': '',
         'minAmount': '',
         'sortBy': 'NAME_ASC',
