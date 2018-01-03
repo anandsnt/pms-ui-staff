@@ -752,8 +752,8 @@ angular.module('sntRover').controller('stayCardMainCtrl', ['$rootScope', '$scope
 					if (!!$scope.viewState.lastCardSlot && !!$scope.viewState.lastCardSlot.cardType && card !== $scope.viewState.lastCardSlot.cardType) {
 						$scope.removeCard($scope.viewState.lastCardSlot.cardType, $scope.viewState.lastCardSlot.cardId, true);
 					}
-					if(data != null) {
-						$scope.$broadcast('travelagentcardreplaced', data);
+					if(card === 'travel_agent') {
+						$scope.$broadcast('travelagentcardreplaced', data.data);
 					}
 					$scope.viewState.lastCardSlot = "";
 					$scope.$emit('hideLoader');

@@ -102,8 +102,8 @@ sntRover.controller('rvReservationAdditionalController', ['$rootScope', '$scope'
 			}
         });
 
-        $scope.$on('travelagentcardreplaced', function(commission_data) {
-            $scope.reservationData.reservation_card.commission_details = commission_data;
+        $scope.$on('travelagentcardreplaced', function(event, data) {
+            $scope.reservationData.reservation_card.commission_details = data.commission_details;
         });
         $scope.$on('travelagentcardremoved', function() {
             $scope.reservationData.reservation_card.commission_details = {};
