@@ -11,6 +11,7 @@ sntRover.controller('RVCommissionsSummaryController', ['$scope',
     function($scope, $rootScope, $stateParams, $filter, RVCommissionsSrv, $timeout, $window, $state, businessDate, util) {
 
         BaseCtrl.call(this, $scope);
+        $scope.filterData = RVCommissionsSrv.filterData;
 
         var runDigestCycle = function() {
             if (!$scope.$$phase) {
@@ -274,7 +275,7 @@ sntRover.controller('RVCommissionsSummaryController', ['$scope',
         $scope.setFilterTab = function(selectedTab) {
             $scope.commissionsData = {};
             $scope.filterData.billStatus.value = selectedTab === 'ON_HOLD' ? 'ON_HOLD' : 'UN_PAID';
-            $scope.searchAccounts();
+            $scope.fetchAgentsData();
             $scope.filterData.filterTab = selectedTab;
         };
 
@@ -324,9 +325,13 @@ sntRover.controller('RVCommissionsSummaryController', ['$scope',
                             'per_page': $scope.filterData.innerPerPage,
                             'action_type': $scope.filterData.filterTab,
                             'begin_date': $scope.dateData.fromDateForAPI !== '' ? $filter('date')($scope.dateData.fromDateForAPI, 'yyyy-MM-dd') : '',
-                            'end_date': $scope.dateData.toDateForAPI !== '' ? $filter('date')($scope.dateData.toDateForAPI, 'yyyy-MM-dd') : ''
+                            'end_date': $scope.dateData.toDateForAPI !== '' ? $filter('date')($scope.dateData.toDateForAPI, 'yyyy-MM-dd') : '',
+                            'non_commissionable': $scope.filterData.non_commissionable
                         },
-                        successCallBack: onFetchListSuccess
+                        successCallBack: onFetchListSuccess,
+                        failureCallBack: function(response) {
+                            $scope.errorMessage = response;
+                        }
                     });
                 };
                 account.paginationData = {
@@ -351,6 +356,7 @@ sntRover.controller('RVCommissionsSummaryController', ['$scope',
                     $scope.$broadcast('updatePagination', 'TA_LIST');
                 }, 100);
                 $scope.initialLoading = false;
+                $scope.sideFilterData.openSideFilter = false; // close the side filter
             };
 
             $scope.callAPI(RVCommissionsSrv.fetchCommissions, {
@@ -362,20 +368,52 @@ sntRover.controller('RVCommissionsSummaryController', ['$scope',
                             'sort_by': $scope.filterData.sort_by.value,
                             'min_commission_amount': $scope.filterData.minAmount,
                             'begin_date': $scope.dateData.fromDateForAPI !== '' ? $filter('date')($scope.dateData.fromDateForAPI, 'yyyy-MM-dd') : '',
-                            'end_date': $scope.dateData.toDateForAPI !== '' ? $filter('date')($scope.dateData.toDateForAPI, 'yyyy-MM-dd') : ''
+                            'end_date': $scope.dateData.toDateForAPI !== '' ? $filter('date')($scope.dateData.toDateForAPI, 'yyyy-MM-dd') : '',
+                            'non_commissionable': $scope.filterData.non_commissionable
                         },
-                        successCallBack: onFetchSuccess
+                        successCallBack: onFetchSuccess,
+                        failureCallBack: function(response) {
+                            $scope.errorMessage = response;
+                        }
                     });
-        };
-
-        $scope.searchAccounts = function() {
-            $scope.fetchAgentsData();
         };
 
         $scope.clearSearchQuery = function() {
             $scope.filterData.searchQuery = '';
             $scope.fetchAgentsData();
         };
+
+        $scope.openSideFilters = function(){
+            // set the filter data wrt applied filter data. Discard previous non applied filters
+            $scope.sideFilterData.minAmount = angular.copy($scope.filterData.minAmount);
+            $scope.sideFilterData.sort_by.value = angular.copy($scope.filterData.sort_by.value);
+            $scope.sideFilterData.non_commissionable = angular.copy($scope.filterData.non_commissionable);
+
+            $scope.sideFilterData.openSideFilter = !$scope.sideFilterData.openSideFilter;
+        };
+
+        $scope.returnNumberOfFilterApplied = function () {
+            var filtersSelected = 0;
+
+            if($scope.filterData.minAmount.length){
+                filtersSelected++;
+            };
+            if($scope.filterData.sort_by.value.length){
+                filtersSelected++;
+            };
+            if($scope.filterData.non_commissionable){
+                filtersSelected++;
+            };
+            return filtersSelected;
+        };
+
+        $scope.applyFilter = function(){
+            $scope.filterData.minAmount = angular.copy($scope.sideFilterData.minAmount);
+            $scope.filterData.sort_by.value = angular.copy($scope.sideFilterData.sort_by.value);
+            $scope.filterData.non_commissionable = angular.copy($scope.sideFilterData.non_commissionable);
+            $scope.fetchAgentsData();
+        };
+
         /* *************** search ends here **************************** */
         $scope.printButtonClick = function() {
             $timeout(function() {
@@ -484,10 +522,20 @@ sntRover.controller('RVCommissionsSummaryController', ['$scope',
 
         (function() {
             updateHeader();
+            $scope.errorMessage = '';
             $scope.commissionsData = {};
-            $scope.filterData = RVCommissionsSrv.filterData;
             $scope.filterData.filterTab = 'PAYABLE';
             $scope.filterData.billStatus.value = 'UN_PAID';
+            // side filetr date is to be applied only after the apply filter button is clicked 
+            $scope.sideFilterData = {
+                'openSideFilter': false,
+                'minAmount': '',
+                'sort_by': {
+                    'value': 'NAME_ASC',
+                    'name': 'NAME_ASC'
+                },
+                'non_commissionable': false
+            };
             fetchExportTypeData();
             // set intial values
             $scope.noOfTASelected = 0;
