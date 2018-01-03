@@ -158,6 +158,7 @@ sntRover.controller('rvReservationSearchWidgetController', ['$scope', '$rootScop
 				$scope.$parent.myScroll['result_showing_area'].scrollTo(0, 0, 0);
 				refreshScroller();
 			}, 100);
+
 		};
 
 
@@ -431,7 +432,7 @@ sntRover.controller('rvReservationSearchWidgetController', ['$scope', '$rootScop
 			} else {
 
 				if ($rootScope.isSingleDigitSearch && !isNaN($scope.textInQueryBox) && $scope.textInQueryBox.length === 3) {
-					$scope.fetchSearchResults();
+					$scope.fetchSearchResults(1);
 					return false;
 				}
 
@@ -442,7 +443,7 @@ sntRover.controller('rvReservationSearchWidgetController', ['$scope', '$rootScop
 					applyFilters();
 
 				} else {*/
-					$scope.fetchSearchResults();
+					$scope.fetchSearchResults(1);
 				// }
 				// we have changed data, so we are refreshing the scrollerbar
 				refreshScroller();
@@ -909,7 +910,7 @@ sntRover.controller('rvReservationSearchWidgetController', ['$scope', '$rootScop
 		 * Handle date change
 		 */ 
 		$scope.handleDateChange = function() {
-			$scope.fetchSearchResults();
+			$scope.fetchSearchResults(1);
 			$timeout(function() {
 				$scope.focusSearchField = true;
 			}, 2000);
