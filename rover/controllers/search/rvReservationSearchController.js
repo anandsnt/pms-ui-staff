@@ -1,5 +1,5 @@
-sntRover.controller('rvReservationSearchController', ['$scope', '$rootScope', '$state', '$stateParams', '$filter', 'searchResultdata', '$vault',
-  function($scope, $rootScope, $state, $stateParams, $filter, searchResultdata, $vault) {
+sntRover.controller('rvReservationSearchController', ['$scope', '$rootScope', '$state', '$stateParams', '$filter', '$timeout', 'searchResultdata', '$vault',
+  function($scope, $rootScope, $state, $stateParams, $filter, $timeout, searchResultdata, $vault) {
 
     /*
      * Controller class for search,
@@ -89,6 +89,12 @@ sntRover.controller('rvReservationSearchController', ['$scope', '$rootScope', '$
       }
     };
 
+    // Defined pagination for dashboard search
+    $scope.dashboardSearchPagination = {
+      id: 'DASHBOARD_SEARCH',
+      api: $scope.fetchSearchResults
+    };
+
     // we are returning to this screen
     if ($rootScope.isReturning()) {
       scrollerOptions.scrollToPrevLoc = !!$vault.get('result_showing_area') ? $vault.get('result_showing_area') : 0;
@@ -96,6 +102,7 @@ sntRover.controller('rvReservationSearchController', ['$scope', '$rootScope', '$
 
     // finally
     $scope.setScroller('result_showing_area', scrollerOptions);
+    $timeout(function() {$scope.$broadcast('updatePagination', 'DASHBOARD_SEARCH');}, 1000);
     var totalNgIncludeRequested = 0;
     // click function on search area, mainly for closing the drawer
 
