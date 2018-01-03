@@ -743,7 +743,7 @@ angular.module('sntRover').controller('stayCardMainCtrl', ['$rootScope', '$scope
 				$scope.reservationData.travelAgent.name = cardData.account_name;
 			}
 
-			var onReplaceSuccess = function() {
+			var onReplaceSuccess = function(data) {
 					$scope.cardRemoved(card);
 					$scope.cardReplaced(card, cardData);
 
@@ -752,7 +752,9 @@ angular.module('sntRover').controller('stayCardMainCtrl', ['$rootScope', '$scope
 					if (!!$scope.viewState.lastCardSlot && !!$scope.viewState.lastCardSlot.cardType && card !== $scope.viewState.lastCardSlot.cardType) {
 						$scope.removeCard($scope.viewState.lastCardSlot.cardType, $scope.viewState.lastCardSlot.cardId, true);
 					}
-
+					if (card === 'travel_agent') {
+						$scope.$broadcast('travelagentcardreplaced', data.data);
+					}
 					$scope.viewState.lastCardSlot = "";
 					$scope.$emit('hideLoader');
 					$scope.newCardData = cardData;
@@ -877,6 +879,7 @@ angular.module('sntRover').controller('stayCardMainCtrl', ['$rootScope', '$scope
 				$scope.reservationData.travelAgent.id = "";
 				$scope.reservationDetails.travelAgent.id = "";
 				$scope.reservationDetails.travelAgent.futureReservations = 0;
+				$scope.$broadcast('travelagentcardremoved');
 			}
 
 
@@ -1234,7 +1237,7 @@ angular.module('sntRover').controller('stayCardMainCtrl', ['$rootScope', '$scope
 		}.bind($scope.reservationData);
 
 		// CICO-11991 : Handle ARRIVALS button click.
-		$scope.loadPrevState = function() {			
+		$scope.loadPrevState = function() {
 			$rootScope.loadPrevState();
 			$rootScope.$broadcast("OUTSIDECLICKED");
 		};
