@@ -6,7 +6,7 @@ sntRover.controller('RVJournalDatePickerController', ['$scope', '$rootScope', 'n
 
     if ($scope.clickedOn === 'FROM') {
         $scope.date = $scope.data.fromDate;
-        minDateSelected = moment(tzIndependentDate($scope.data.toDate)).add(-1*YEAR_LIMIT, 'y')
+        minDateSelected = moment(tzIndependentDate($scope.data.toDate)).add((-1 * YEAR_LIMIT), 'y')
               .format($rootScope.momentFormatForAPI);
     }
     else if ($scope.clickedOn === 'TO') {
