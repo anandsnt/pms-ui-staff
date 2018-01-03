@@ -128,4 +128,20 @@ sntRover.service('RVCommissionsSrv', ['$http', '$q', 'BaseWebSrvV2', function($h
         return deferred.promise;
     };
 
+    this.fetchHotelBusinessDate = function() {
+        var deferred = $q.defer(),
+            url = '/api/business_dates/active';
+
+        BaseWebSrvV2.getJSON(url).then(
+            function(data) {
+                deferred.resolve(data);
+            },
+            function(errorMessage) {
+                deferred.reject(errorMessage);
+            }
+        );
+
+        return deferred.promise;
+    };
+
 }]);

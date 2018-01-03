@@ -42,6 +42,11 @@ angular.module('FinancialsModule', [])
     $stateProvider.state('rover.financials.commisions', {
         url: '/commissionSummary',
         templateUrl: '/assets/partials/financials/commissions/rvCommissionsSummary.html',
-        controller: 'RVCommissionsSummaryController'
+        controller: 'RVCommissionsSummaryController',
+        resolve: {
+            businessDate: function(RVCommissionsSrv, jsAssets) {
+                    return RVCommissionsSrv.fetchHotelBusinessDate();
+            }
+        }
     });
     });
