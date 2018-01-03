@@ -1,5 +1,5 @@
-sntRover.controller('rvReservationSearchController', ['$scope', '$rootScope', '$state', '$stateParams', '$filter', '$timeout', 'searchResultdata', '$vault',
-  function($scope, $rootScope, $state, $stateParams, $filter, $timeout, searchResultdata, $vault) {
+sntRover.controller('rvReservationSearchController', ['$scope', '$rootScope', '$state', '$stateParams', '$filter', '$timeout', 'searchResultdata', '$vault', 'RVSearchSrv',
+  function($scope, $rootScope, $state, $stateParams, $filter, $timeout, searchResultdata, $vault, RVSearchSrv) {
 
     /*
      * Controller class for search,
@@ -92,7 +92,8 @@ sntRover.controller('rvReservationSearchController', ['$scope', '$rootScope', '$
     // Defined pagination for dashboard search
     $scope.dashboardSearchPagination = {
       id: 'DASHBOARD_SEARCH',
-      api: $scope.fetchSearchResults
+      api: $scope.fetchSearchResults,
+      perPage: RVSearchSrv.searchPerPage
     };
 
     // we are returning to this screen

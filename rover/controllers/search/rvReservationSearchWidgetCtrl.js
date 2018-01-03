@@ -495,7 +495,8 @@ sntRover.controller('rvReservationSearchWidgetController', ['$scope', '$rootScop
 		// Defined pagination for dashboard search
 		$scope.dashboardSearchPagination = {
 			id: 'DASHBOARD_SEARCH',
-			api: $scope.fetchSearchResults
+			api: $scope.fetchSearchResults,
+			perPage: RVSearchSrv.searchPerPage
 		};
 
 
