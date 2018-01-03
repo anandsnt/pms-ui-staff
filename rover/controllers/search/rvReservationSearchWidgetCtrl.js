@@ -905,22 +905,28 @@ sntRover.controller('rvReservationSearchWidgetController', ['$scope', '$rootScop
                 });
             }, 1000);
 		};
-
-
-		$scope.onFromDateChanged = function(date) {
-			$scope.fromDate = date;
+		/*
+		 * Handle date change
+		 */ 
+		$scope.handleDateChange = function() {
 			$scope.fetchSearchResults();
 			$timeout(function() {
 				$scope.focusSearchField = true;
 			}, 2000);
+		}
+		/*
+		 * Handle from date change
+		 */ 
+		$scope.onFromDateChanged = function(date) {
+			$scope.fromDate = date;	
+			$scope.handleDateChange();
 		};
-
+		/*
+		 * Handle to date change
+		 */ 
 		$scope.onToDateChanged = function(date) {
 			$scope.toDate = date;
-			$scope.fetchSearchResults();
-            $timeout(function() {
-                $scope.focusSearchField = true;
-            }, 2000);
+			$scope.handleDateChange();		
 		};
 
 		$scope.clearToDateClicked = function() {
