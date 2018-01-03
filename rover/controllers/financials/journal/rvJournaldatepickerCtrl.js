@@ -1,11 +1,12 @@
 sntRover.controller('RVJournalDatePickerController', ['$scope', '$rootScope', 'ngDialog', 'dateFilter', function($scope, $rootScope, ngDialog, dateFilter) {
 
     var minDateSelected = '',
-        maxDateSelected = tzIndependentDate($rootScope.businessDate);
+        maxDateSelected = tzIndependentDate($rootScope.businessDate),
+        YEAR_LIMIT = 5;
 
     if ($scope.clickedOn === 'FROM') {
         $scope.date = $scope.data.fromDate;
-        minDateSelected = moment(tzIndependentDate($scope.data.toDate)).add(-5, 'y')
+        minDateSelected = moment(tzIndependentDate($scope.data.toDate)).add(-1*YEAR_LIMIT, 'y')
               .format($rootScope.momentFormatForAPI);
     }
     else if ($scope.clickedOn === 'TO') {
@@ -13,13 +14,13 @@ sntRover.controller('RVJournalDatePickerController', ['$scope', '$rootScope', 'n
         minDateSelected = tzIndependentDate($scope.data.fromDate);
         // Max date selection logic..
         var businessDateObj = tzIndependentDate($rootScope.businessDate),
-            fromDatePlusFiveYears = moment(tzIndependentDate($scope.data.fromDate)).add(5, 'y');
+            fromDatePlusFiveYears = moment(tzIndependentDate($scope.data.fromDate)).add(YEAR_LIMIT, 'y');
 
-        if( businessDateObj < fromDatePlusFiveYears ) {
+        if ( businessDateObj < fromDatePlusFiveYears ) {
             maxDateSelected = businessDateObj;
         }
         else {
-            maxDateSelected = moment(tzIndependentDate($scope.data.fromDate)).add(5, 'y')
+            maxDateSelected = moment(tzIndependentDate($scope.data.fromDate)).add(YEAR_LIMIT, 'y')
               .format($rootScope.momentFormatForAPI);
         }
     }
