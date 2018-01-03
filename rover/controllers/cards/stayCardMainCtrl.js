@@ -752,7 +752,7 @@ angular.module('sntRover').controller('stayCardMainCtrl', ['$rootScope', '$scope
 					if (!!$scope.viewState.lastCardSlot && !!$scope.viewState.lastCardSlot.cardType && card !== $scope.viewState.lastCardSlot.cardType) {
 						$scope.removeCard($scope.viewState.lastCardSlot.cardType, $scope.viewState.lastCardSlot.cardId, true);
 					}
-					if(card === 'travel_agent') {
+					if (card === 'travel_agent') {
 						$scope.$broadcast('travelagentcardreplaced', data.data);
 					}
 					$scope.viewState.lastCardSlot = "";
@@ -1237,7 +1237,7 @@ angular.module('sntRover').controller('stayCardMainCtrl', ['$rootScope', '$scope
 		}.bind($scope.reservationData);
 
 		// CICO-11991 : Handle ARRIVALS button click.
-		$scope.loadPrevState = function() {			
+		$scope.loadPrevState = function() {
 			$rootScope.loadPrevState();
 			$rootScope.$broadcast("OUTSIDECLICKED");
 		};
