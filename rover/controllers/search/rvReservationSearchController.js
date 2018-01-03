@@ -102,7 +102,9 @@ sntRover.controller('rvReservationSearchController', ['$scope', '$rootScope', '$
 
     // finally
     $scope.setScroller('result_showing_area', scrollerOptions);
-    $timeout(function() {$scope.$broadcast('updatePagination', 'DASHBOARD_SEARCH');}, 1000);
+    $timeout(function() { 
+      $scope.$broadcast('updatePagination', 'DASHBOARD_SEARCH');
+    }, 1000);
     var totalNgIncludeRequested = 0;
     // click function on search area, mainly for closing the drawer
 
