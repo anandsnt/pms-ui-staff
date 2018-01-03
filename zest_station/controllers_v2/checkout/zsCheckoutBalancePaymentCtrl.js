@@ -7,7 +7,7 @@ angular.module('sntZestStation').controller('zsCheckoutBalancePaymentCtrl', ['$s
         });
 
         // uncomment for debugging
-        $scope.isIpad = true;
+        // $scope.isIpad = true;
 
         $scope.goToNextScreen = function(){
             $state.go('zest_station.checkoutReservationBill', angular.extend(zsStateHelperSrv.getPreviousStateParams(), {
@@ -52,19 +52,13 @@ angular.module('sntZestStation').controller('zsCheckoutBalancePaymentCtrl', ['$s
             var paymentParams = zsPaymentSrv.getPaymentData();
 
             $scope.balanceDue = paymentParams.amount;
-
-            if ($scope.zestStationData.paymentGateway === 'CBA') {
+            $scope.cardDetails = paymentParams.payment_details;
+            // check if  card is present, if so show two options
+            if ($scope.zestStationData.paymentGateway !== 'CBA' && paymentParams.payment_details.card_number && paymentParams.payment_details.card_number.length) {
+                $scope.screenMode.value = 'SELECT_PAYMENT_METHOD';
+            } else if ($scope.zestStationData.paymentGateway === 'CBA' && $scope.isIpad) {
                 $scope.initiateCBAlisteners();
-
-                var isCCPresent = true;
-                $scope.cardDetails = paymentParams.payment_details;
-
-                if(isCCPresent){
-                    $scope.screenMode.value = 'SELECT_PAYMENT_METHOD';
-                } else{
-                    startCBAPayment();
-                }
-              
+                startCBAPayment();
             } else {
                 $scope.screenMode.value = 'PAYMENT_FAILED';
             }
