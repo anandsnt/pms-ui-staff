@@ -47,7 +47,7 @@ sntRover.controller('companyCardCommissionsCtrl', [
         });
 
     var fetchCommissionDetailsForPage = function(page_no) {
-        $scope.filterData.page = page_no;
+        $scope.filterData.page = page_no || 1;
         fetchCommissionDetails(true);
     };
 
@@ -64,18 +64,8 @@ sntRover.controller('companyCardCommissionsCtrl', [
                     $scope.commissionSummary.totalCommission = data.total_commission;
                     $scope.commissionSummary.totalUnpaidCommission = data.total_commission_unpaid;
                     $scope.commissionSummary.taxOnCommissions = data.tax_on_commissions;
-                // set pagination controls values
+                    // set pagination controls values
                     $scope.pagination.totalResultCount = data.total_count;
-                // if ($scope.nextAction && isPageChanged) {
-                //     $scope.pagination.start = $scope.pagination.start + $scope.filterData.perPage;
-                // }
-                // if ($scope.prevAction && isPageChanged) {
-                //     $scope.pagination.start = $scope.pagination.start - $scope.filterData.perPage ;
-                // }
-
-                // if (isPageChanged) {
-                //     $scope.pagination.end = $scope.pagination.start + $scope.commissionDetails.length - 1;
-                // }
                     $timeout(function () {
                         $scope.$broadcast('updatePagination', $scope.paginationData.id );
                     }, 1000);
@@ -105,21 +95,6 @@ sntRover.controller('companyCardCommissionsCtrl', [
             return rvPermissionSrv.getPermissionValue ('EDIT_COMMISSIONS_TAB');
         };
 
-        $scope.loadNextSet = function() {
-            $scope.filterData.page++;
-            $scope.nextAction = true;
-            $scope.prevAction = false;
-            clearCurrentSelection();
-            fetchCommissionDetails(true);
-        };
-
-        $scope.loadPrevSet = function() {
-            $scope.filterData.page--;
-            $scope.nextAction = false;
-            $scope.prevAction = true;
-            clearCurrentSelection();
-            fetchCommissionDetails(true);
-        };
     /*
      * Navigate to staycard from commissions tab reservations
      * @param reservation_id reservation id
@@ -135,28 +110,6 @@ sntRover.controller('companyCardCommissionsCtrl', [
             }
         };
 
-        $scope.isNextButtonDisabled = function() {
-            var isDisabled = false;
-
-            if ($scope.commissionDetails.length == 0) {
-                return true;
-            }
-            if ($scope.pagination.end >= $scope.pagination.totalResultCount) {
-                isDisabled = true;
-            }
-            return isDisabled;
-        };
-
-        $scope.isPrevButtonDisabled = function() {
-            var isDisabled = false;
-
-            if ($scope.filterData.page === 1) {
-                isDisabled = true;
-            }
-            return isDisabled;
-
-        };
-
         $scope.clearToDateField = function() {
             $scope.filterData.toDate = '';
             $scope.onFilterChange();
@@ -168,13 +121,6 @@ sntRover.controller('companyCardCommissionsCtrl', [
 
         $scope.shouldShowPagination = function() {
             return $scope.commissionDetails.length > 0 && $scope.pagination.totalResultCount > $scope.filterData.perPage;
-        };
-
-        var initPaginationParams = function() {
-            $scope.filterData.page = 1;
-            $scope.pagination.start = 1;
-            $scope.nextAction = false;
-            $scope.prevAction = false;
         };
 
     // To handle from date change
@@ -189,12 +135,10 @@ sntRover.controller('companyCardCommissionsCtrl', [
 
     // Generic function to call on the change of filter parameters
         $scope.onFilterChange = function() {
-            initPaginationParams();
             $scope.selectedCommissions = [];
             $scope.prePaidCommissions = [];
             fetchCommissionDetails(true);
         };
-
 
     /* Handling different date picker clicks */
         $scope.clickedFromDate = function() {
