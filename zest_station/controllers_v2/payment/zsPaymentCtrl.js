@@ -1,5 +1,5 @@
-angular.module('sntZestStation').controller('zsPaymentCtrl', ['$scope', '$log', 'sntActivity', 'sntPaymentSrv', 'zsPaymentSrv', '$stateParams', 'zsStateHelperSrv', '$state',
-    function($scope, $log, sntActivity, sntPaymentSrv, zsPaymentSrv, $stateParams, zsStateHelperSrv, $state) {
+angular.module('sntZestStation').controller('zsPaymentCtrl', ['$scope', '$log', 'sntActivity', 'sntPaymentSrv', 'zsPaymentSrv', '$stateParams', 'zsStateHelperSrv', '$state', '$timeout',
+    function($scope, $log, sntActivity, sntPaymentSrv, zsPaymentSrv, $stateParams, zsStateHelperSrv, $state, $timeout) {
 
         $scope.screenMode = {
             'value': 'PROCESS_INITIAL',
@@ -90,8 +90,12 @@ angular.module('sntZestStation').controller('zsPaymentCtrl', ['$scope', '$log', 
             if ($scope.zestStationData.paymentGateway === 'CBA' && $scope.isIpad) {
                 $scope.makeCBAPayment();
             } else {
-                $scope.screenMode.value = 'PAYMENT_FAILED';
-                $scope.screenMode.errorMessage = 'Use Zest station from an iPad';
+                $scope.$emit('showLoader');
+                $timeout(function() {
+                   $scope.$emit('hideLoader');
+                   $scope.screenMode.value = 'PAYMENT_FAILED';
+                   $scope.screenMode.errorMessage = ($scope.zestStationData.paymentGateway === 'CBA') ? 'Use Zest station from an iPad': '';
+                }, 2000);
             }
         };
     }

@@ -257,7 +257,8 @@ sntZestStation.controller('zsReservationBillDetailsCtrl', [
                     amount: $scope.balance,
                     reservation_id: $scope.reservation_id,
                     workstation_id: $scope.workstation_id,
-                    bill_id: $scope.bill_id
+                    bill_id: $scope.bill_id,
+                    payment_details: $scope.paymentDetails
                 });
 
                 $state.go('zest_station.payment');
