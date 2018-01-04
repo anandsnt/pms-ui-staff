@@ -6,9 +6,17 @@ sntRover.controller('RVCommissionsSummaryController', ['$scope',
     '$timeout',
     '$window',
     '$state',
-    function($scope, $rootScope, $stateParams, $filter, RVCommissionsSrv, $timeout, $window, $state) {
+    'businessDate', 
+    'rvUtilSrv',
+    function($scope, $rootScope, $stateParams, $filter, RVCommissionsSrv, $timeout, $window, $state, businessDate, util) {
 
         BaseCtrl.call(this, $scope);
+
+        var runDigestCycle = function() {
+            if (!$scope.$$phase) {
+                $scope.$digest();
+            }
+        };
 
         var updateHeader = function() {
             // Setting up the screen heading and browser title.
@@ -314,7 +322,9 @@ sntRover.controller('RVCommissionsSummaryController', ['$scope',
                             id: account.id,
                             'page': page,
                             'per_page': $scope.filterData.innerPerPage,
-                            'action_type': $scope.filterData.filterTab
+                            'action_type': $scope.filterData.filterTab,
+                            'begin_date': $scope.dateData.fromDateForAPI !== '' ? $filter('date')($scope.dateData.fromDateForAPI, 'yyyy-MM-dd') : '',
+                            'end_date': $scope.dateData.toDateForAPI !== '' ? $filter('date')($scope.dateData.toDateForAPI, 'yyyy-MM-dd') : ''
                         },
                         successCallBack: onFetchListSuccess
                     });
@@ -350,7 +360,9 @@ sntRover.controller('RVCommissionsSummaryController', ['$scope',
                             'per_page': $scope.filterData.perPage,
                             'bill_status': $scope.filterData.billStatus.value,
                             'sort_by': $scope.filterData.sort_by.value,
-                            'min_commission_amount': $scope.filterData.minAmount
+                            'min_commission_amount': $scope.filterData.minAmount,
+                            'begin_date': $scope.dateData.fromDateForAPI !== '' ? $filter('date')($scope.dateData.fromDateForAPI, 'yyyy-MM-dd') : '',
+                            'end_date': $scope.dateData.toDateForAPI !== '' ? $filter('date')($scope.dateData.toDateForAPI, 'yyyy-MM-dd') : ''
                         },
                         successCallBack: onFetchSuccess
                     });
@@ -397,6 +409,78 @@ sntRover.controller('RVCommissionsSummaryController', ['$scope',
 
             $scope.callAPI(RVCommissionsSrv.fetchExportTypeData, options);
         };
+
+        $scope.dateData = {};
+
+        // set default from date as last week
+        var lastWeekDay = new Date(tzIndependentDate(businessDate.business_date));
+
+        lastWeekDay.setDate(lastWeekDay.getDate() - 7);
+        // default from date, as per CICO-13899 it will be business date
+        $scope.fromDate = $filter('date')(lastWeekDay,
+            $rootScope.dateFormat);
+        $scope.dateData.fromDateForAPI = $filter('date')(lastWeekDay,
+            'yyyy-MM-dd');
+
+        // set end date as previous day
+        var lastDay = new Date(tzIndependentDate(businessDate.business_date));
+
+        lastDay.setDate(lastDay.getDate() - 1);
+        $scope.toDate = $filter('date')(lastDay,
+            $rootScope.dateFormat);
+        $scope.dateData.toDateForAPI = $filter('date')(lastDay,
+            'yyyy-MM-dd');
+
+        var fromDateChoosed = function(date, datePickerObj) {
+            $scope.fromDate = date;
+            $scope.dateData.fromDateForAPI = tzIndependentDate(util.get_date_from_date_picker(datePickerObj));
+            runDigestCycle();
+            $scope.fetchAgentsData();
+        };
+
+        var toDateChoosed = function(date, datePickerObj) {
+            $scope.toDate = date;
+            $scope.dateData.toDateForAPI = tzIndependentDate(util.get_date_from_date_picker(datePickerObj));
+            runDigestCycle();
+            $scope.fetchAgentsData();
+        };
+
+        $scope.clearFromDate = function() {
+            $scope.fromDate = '';
+            $scope.dateData.fromDateForAPI = '';
+            // TODO: find why the input value is not clearing on setting model empty.
+            $('#commisions-date-from').val('');
+            runDigestCycle();
+            $scope.fetchAgentsData();
+        };
+
+        $scope.clearToDate = function() {
+            $scope.toDate = '';
+            $scope.dateData.toDateForAPI = '';
+            // TODO: find why the input value is not clearing on setting model empty.
+            $('#commisions-date-to').val('');
+            runDigestCycle();
+            $scope.fetchAgentsData();
+        };
+
+        // date picker options - Common
+        var commonDateOptions = {
+            showOn: 'button',
+            dateFormat: $rootScope.jqDateFormat,
+            numberOfMonths: 1,
+            maxDate: tzIndependentDate(businessDate.business_date)
+        };
+
+        // date picker options - From
+        $scope.fromDateOptions = _.extend({
+            onSelect: fromDateChoosed
+        }, commonDateOptions);
+
+        // date picker options - Departute
+        $scope.toDateOptions = _.extend({
+            onSelect: toDateChoosed
+        }, commonDateOptions);
+       
 
         (function() {
             updateHeader();
