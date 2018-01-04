@@ -257,9 +257,7 @@ sntRover.controller('rvAccountsSearchCtrl',	[
 		*/
 		$scope.shouldShowAddNewButton = function() {
 			return ($scope.hasPermissionToAddNewAccount());
-		};
-
-		
+		};		
 
 		/**
 		 * Navigate to the account configuration state for editing the account
