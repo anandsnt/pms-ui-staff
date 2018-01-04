@@ -16,7 +16,8 @@ sntRover.controller('RVReservationMainCtrl', ['$scope',
             'RVReservationDataService',
             '$interval',
             '$log',
-            function($scope, $rootScope, ngDialog, $filter, RVCompanyCardSrv, $state, dateFilter, baseSearchData, RVReservationSummarySrv, RVReservationCardSrv, RVPaymentSrv, $timeout, $stateParams, RVReservationGuestSrv, RVReservationStateService, RVReservationDataService, $interval, $log) {
+            '$q',
+            function($scope, $rootScope, ngDialog, $filter, RVCompanyCardSrv, $state, dateFilter, baseSearchData, RVReservationSummarySrv, RVReservationCardSrv, RVPaymentSrv, $timeout, $stateParams, RVReservationGuestSrv, RVReservationStateService, RVReservationDataService, $interval, $log, $q) {
 
         BaseCtrl.call(this, $scope);
 
@@ -715,11 +716,100 @@ sntRover.controller('RVReservationMainCtrl', ['$scope',
             fetchLastRateAdjustReason(room, index);
         };
 
+        var getPaymentData = function (skipPaymentData, data) {
+                if (!skipPaymentData) {
+                    data.payment_type = {};
+                    if ($scope.reservationData.paymentType.type.value !== null) {
+                        angular.forEach($scope.reservationData.paymentMethods, function(item, index) {
+                            if ($scope.reservationData.paymentType.type.value === item.value) {
+                                if ($scope.reservationData.paymentType.type.value === "CC") {
+                                    data.payment_type.payment_method_id = $scope.reservationData.selectedPaymentId;
+                                } else {
+                                    data.payment_type.type_id = item.id;
+                                }
+                            }
+                        });
+                        data.payment_type.expiry_date = ($scope.reservationData.paymentType.ccDetails.expYear === "" || $scope.reservationData.paymentType.ccDetails.expYear === "") ? "" : "20" + $scope.reservationData.paymentType.ccDetails.expYear + "-" +
+                            $scope.reservationData.paymentType.ccDetails.expMonth + "-01";
+                        data.payment_type.card_name = $scope.reservationData.paymentType.ccDetails.nameOnCard;
+                    }
+                }
+            },
+            getConfirmationEmailData = function (skipConfirmationEmails, data) {
+                if (!skipConfirmationEmails) {
+                    data.confirmation_emails = [];
+                    if ($scope.otherData.isGuestPrimaryEmailChecked && $scope.reservationData.guest.email !== "") {
+                        data.confirmation_emails.push($scope.reservationData.guest.email);
+                    }
+                    if ($scope.otherData.isGuestAdditionalEmailChecked && $scope.otherData.additionalEmail !== "") {
+                        data.confirmation_emails.push($scope.otherData.additionalEmail);
+                    }
+                }
+            },
+            getCcTaAllotmentGroupDetails = function (data) {
+                data.company_id = $scope.reservationData.company.id || $scope.reservationData.group.company;
+                data.travel_agent_id = $scope.reservationData.travelAgent.id || $scope.reservationData.group.travelAgent;
+                data.group_id = $scope.reservationData.group.id;
+                data.allotment_id = $scope.reservationData.allotment.id;
+            },
+            getDemoGraphicsInfo = function (data, demographicsData) {                 
+                data.reservation_type_id = parseInt(demographicsData.reservationType);
+                data.source_id = parseInt(demographicsData.source);
+                data.market_segment_id = parseInt(demographicsData.market);
+                data.booking_origin_id = parseInt(demographicsData.origin);
+                data.segment_id = parseInt(demographicsData.segment);                
+            },
+            getRoomTypes = function (data, shouldWeIncludeRoomTypeArray) {
+               angular.forEach($scope.reservationData.tabs, function(tab, tabIndex) {
+                    // addons
+                    var firstIndex = _.indexOf($scope.reservationData.rooms, _.findWhere($scope.reservationData.rooms, {
+                            roomTypeId: parseInt(tab.roomTypeId, 10)
+                        })),
+                        addonsForRoomType = [];
+
+                    if (!!RVReservationStateService.getReservationFlag('RATE_CHANGED') ||
+                        !$scope.reservationData.rooms[firstIndex].is_package_exist || // is_package_exist flag is set only while editing a reservation! -- Changes for CICO-17173
+                        ($scope.reservationData.rooms[firstIndex].is_package_exist && $scope.reservationData.rooms[firstIndex].addons.length === parseInt($scope.reservationData.rooms[firstIndex].package_count))) { // -- Changes for CICO-17173
+                        if (tabIndex === $scope.reservationData.tabs.length - 1) {
+                            RVReservationStateService.setReservationFlag('RATE_CHANGED', false);
+                        }
+                        _.each($scope.reservationData.rooms[firstIndex].addons, function(addon) {
+                            // skip rate associated addons on create/update calls --> they will be taken care off by API
+                            if (!addon.is_rate_addon) {
+                                addonsForRoomType.push({
+                                    id: addon.id,
+                                    quantity: addon.quantity || 1
+                                });
+                            }
+                        });
+                    }
+                    if (shouldWeIncludeRoomTypeArray) {
+                        data.room_types.push({
+                            id: parseInt(tab.roomTypeId, 10),
+                            num_rooms: parseInt(tab.roomCount, 10),
+                            addons: addonsForRoomType
+                        });
+                    }
+                }); 
+            },
+            getRoomInfo = function (data, roomIndex) {
+                data.room_id = [];
+
+                angular.forEach($scope.reservationData.rooms, function(room, currentRoomIndex) {
+                    if (typeof roomIndex === 'undefined' || currentRoomIndex === roomIndex) {
+                        // CICO-32021 - API expects null if room id not there.
+                        room.room_id  = (room.room_id !== "") ? room.room_id : null;
+                        data.room_id.push(room.room_id);
+
+                    }
+                });
+            }
+
         // Populate the reservation update request with required fields
         $scope.getReservationDataforUpdate = function(skipPaymentData, skipConfirmationEmails, roomIndex) {
             var data = {},
-                isInStayCard = ($state.current.name === "rover.reservation.staycard.reservationcard.reservationdetails"),
-                shouldWeIncludeRoomTypeArray = !isInStayCard && !$scope.reservationData.isHourly && typeof roomIndex === 'undefined';
+                isCurrentlyInStayCard = ($state.current.name === "rover.reservation.staycard.reservationcard.reservationdetails"),
+                shouldWeIncludeRoomTypeArray = !isCurrentlyInStayCard && !$scope.reservationData.isHourly && typeof roomIndex === 'undefined';
 
             data.is_hourly = $scope.reservationData.isHourly;
             data.arrival_date = $scope.reservationData.arrivalDate;
@@ -740,9 +830,12 @@ sntRover.controller('RVReservationMainCtrl', ['$scope',
                     $scope.reservationData.checkoutTime.ampm);
             }
 
+            
+
             data.adults_count = parseInt($scope.reservationData.rooms[roomIndex].numAdults);
             data.children_count = parseInt($scope.reservationData.rooms[roomIndex].numChildren);
             data.infants_count = parseInt($scope.reservationData.rooms[roomIndex].numInfants);
+
             // CICO - 8320 Rate to be handled in room level
             data.room_type_id = parseInt($scope.reservationData.rooms[roomIndex].roomTypeId);
             // Guest details
@@ -755,27 +848,9 @@ sntRover.controller('RVReservationMainCtrl', ['$scope',
             data.guest_detail.last_name = $scope.reservationData.guest.lastName;
             data.guest_detail.email = $scope.reservationData.guest.email;
 
-            if (!skipPaymentData) {
-                data.payment_type = {};
-                if ($scope.reservationData.paymentType.type.value !== null) {
-                    angular.forEach($scope.reservationData.paymentMethods, function(item, index) {
-                        if ($scope.reservationData.paymentType.type.value === item.value) {
-                            if ($scope.reservationData.paymentType.type.value === "CC") {
-                                data.payment_type.payment_method_id = $scope.reservationData.selectedPaymentId;
-                            } else {
-                                data.payment_type.type_id = item.id;
-                            }
-                        }
-                    });
-                    data.payment_type.expiry_date = ($scope.reservationData.paymentType.ccDetails.expYear === "" || $scope.reservationData.paymentType.ccDetails.expYear === "") ? "" : "20" + $scope.reservationData.paymentType.ccDetails.expYear + "-" +
-                        $scope.reservationData.paymentType.ccDetails.expMonth + "-01";
-                    data.payment_type.card_name = $scope.reservationData.paymentType.ccDetails.nameOnCard;
-                }
-            }
-
+            getPaymentData(skipPaymentData, data);  
 
             // CICO-7077 Confirmation Mail to have tax details
-
 
             data.tax_details = [];
             _.each($scope.reservationData.taxDetails, function(taxDetail) {
@@ -786,15 +861,7 @@ sntRover.controller('RVReservationMainCtrl', ['$scope',
 
             // guest emails to which confirmation emails should send
 
-            if (!skipConfirmationEmails) {
-                data.confirmation_emails = [];
-                if ($scope.otherData.isGuestPrimaryEmailChecked && $scope.reservationData.guest.email !== "") {
-                    data.confirmation_emails.push($scope.reservationData.guest.email);
-                }
-                if ($scope.otherData.isGuestAdditionalEmailChecked && $scope.otherData.additionalEmail !== "") {
-                    data.confirmation_emails.push($scope.otherData.additionalEmail);
-                }
-            }
+            getConfirmationEmailData(skipConfirmationEmails, data);            
 
             //  CICO-8320
             //  The API request payload changes
@@ -819,39 +886,34 @@ sntRover.controller('RVReservationMainCtrl', ['$scope',
                 }
                 RVReservationStateService.bookMark.lastPostedRate = currentRoom.stayDates[$scope.reservationData.arrivalDate].rate.id;
                 var reservationStayDetails = [];
-
-                //if (typeof roomIndex === 'undefined' || currentRoomIndex === roomIndex) {
-                    _.each(currentRoom.stayDates, function(staydata, date) {
+                
+                    _.each(currentRoom.stayDates, function(staydetailInfo, date) {
                         reservationStayDetails.push({
                             date: date,
                             // In case of the last day, send the first day's occupancy
                             rate_id: (function() {
-                                var rate = (date === $scope.reservationData.departureDate) ? currentRoom.stayDates[$scope.reservationData.arrivalDate].rate.id : staydata.rate.id;
+                                var rate = (date === $scope.reservationData.departureDate) ? currentRoom.stayDates[$scope.reservationData.arrivalDate].rate.id : staydetailInfo.rate.id;
                                 // in case of custom rates (rates without IDs send them as null.... the named ids used within the UI controllers are just for tracking and arent saved)
 
                                 return rate && rate.toString().match(/_CUSTOM_/) ? null : rate;
                             })(),
                             room_type_id: currentRoom.roomTypeId,
                             room_id: currentRoom.room_id,
-                            adults_count: (date === $scope.reservationData.departureDate) ? currentRoom.stayDates[$scope.reservationData.arrivalDate].guests.adults : parseInt(staydata.guests.adults),
-                            children_count: (date === $scope.reservationData.departureDate) ? currentRoom.stayDates[$scope.reservationData.arrivalDate].guests.children : parseInt(staydata.guests.children),
-                            infants_count: (date === $scope.reservationData.departureDate) ? currentRoom.stayDates[$scope.reservationData.arrivalDate].guests.infants : parseInt(staydata.guests.infants),
-                            rate_amount: parseFloat((date === $scope.reservationData.departureDate) ? ((currentRoom.stayDates[$scope.reservationData.arrivalDate] && currentRoom.stayDates[$scope.reservationData.arrivalDate].rateDetails && currentRoom.stayDates[$scope.reservationData.arrivalDate].rateDetails.modified_amount) || 0) : ((staydata.rateDetails && staydata.rateDetails.modified_amount) || 0))
+                            adults_count: (date === $scope.reservationData.departureDate) ? currentRoom.stayDates[$scope.reservationData.arrivalDate].guests.adults : parseInt(staydetailInfo.guests.adults),
+                            children_count: (date === $scope.reservationData.departureDate) ? currentRoom.stayDates[$scope.reservationData.arrivalDate].guests.children : parseInt(staydetailInfo.guests.children),
+                            infants_count: (date === $scope.reservationData.departureDate) ? currentRoom.stayDates[$scope.reservationData.arrivalDate].guests.infants : parseInt(staydetailInfo.guests.infants),
+                            rate_amount: parseFloat((date === $scope.reservationData.departureDate) ? ((currentRoom.stayDates[$scope.reservationData.arrivalDate] && currentRoom.stayDates[$scope.reservationData.arrivalDate].rateDetails && currentRoom.stayDates[$scope.reservationData.arrivalDate].rateDetails.modified_amount) || 0) : ((staydetailInfo.rateDetails && staydetailInfo.rateDetails.modified_amount) || 0))
 
                         });
                     });
-                    stay.push(reservationStayDetails);
-                //}
+                    stay.push(reservationStayDetails);               
 
-            //});
+            
 
             //  end of payload changes
             data.stay_dates = stay;
 
-            data.company_id = $scope.reservationData.company.id || $scope.reservationData.group.company;
-            data.travel_agent_id = $scope.reservationData.travelAgent.id || $scope.reservationData.group.travelAgent;
-            data.group_id = $scope.reservationData.group.id;
-            data.allotment_id = $scope.reservationData.allotment.id;
+            getCcTaAllotmentGroupDetails(data);            
 
             // DEMOGRAPHICS
             var demographicsData = $scope.reservationData.demographics;
@@ -862,11 +924,7 @@ sntRover.controller('RVReservationMainCtrl', ['$scope',
 
             // CICO-11755
             if (typeof demographicsData !== undefined) {
-                data.reservation_type_id = parseInt(demographicsData.reservationType);
-                data.source_id = parseInt(demographicsData.source);
-                data.market_segment_id = parseInt(demographicsData.market);
-                data.booking_origin_id = parseInt(demographicsData.origin);
-                data.segment_id = parseInt(demographicsData.segment);
+                getDemoGraphicsInfo(data, demographicsData);                
             }
 
             data.confirmation_email = $scope.reservationData.guest.sendConfirmMailTo;
@@ -874,45 +932,9 @@ sntRover.controller('RVReservationMainCtrl', ['$scope',
             if (shouldWeIncludeRoomTypeArray) {
                 data.room_types = [];
             }
-            angular.forEach($scope.reservationData.tabs, function(tab, tabIndex) {
-                // addons
-                var firstIndex = _.indexOf($scope.reservationData.rooms, _.findWhere($scope.reservationData.rooms, {
-                        roomTypeId: parseInt(tab.roomTypeId, 10)
-                    })),
-                    addonsForRoomType = [];
+            getRoomTypes(data, shouldWeIncludeRoomTypeArray);            
 
-                if (!!RVReservationStateService.getReservationFlag('RATE_CHANGED') ||
-                    !$scope.reservationData.rooms[firstIndex].is_package_exist || // is_package_exist flag is set only while editing a reservation! -- Changes for CICO-17173
-                    ($scope.reservationData.rooms[firstIndex].is_package_exist && $scope.reservationData.rooms[firstIndex].addons.length === parseInt($scope.reservationData.rooms[firstIndex].package_count))) { // -- Changes for CICO-17173
-                    if (tabIndex === $scope.reservationData.tabs.length - 1) {
-                        RVReservationStateService.setReservationFlag('RATE_CHANGED', false);
-                    }
-                    _.each($scope.reservationData.rooms[firstIndex].addons, function(addon) {
-                        // skip rate associated addons on create/update calls --> they will be taken care off by API
-                        if (!addon.is_rate_addon) {
-                            addonsForRoomType.push({
-                                id: addon.id,
-                                quantity: addon.quantity || 1
-                            });
-                        }
-                    });
-                }
-                if (shouldWeIncludeRoomTypeArray) {
-                    data.room_types.push({
-                        id: parseInt(tab.roomTypeId, 10),
-                        num_rooms: parseInt(tab.roomCount, 10),
-                        addons: addonsForRoomType
-                    });
-                }
-            });
-            angular.forEach($scope.reservationData.rooms, function(room, currentRoomIndex) {
-                if (typeof roomIndex === 'undefined' || currentRoomIndex === roomIndex) {
-                    // CICO-32021 - API expects null if room id not there.
-                    room.room_id  = (room.room_id !== "") ? room.room_id : null;
-                    data.room_id.push(room.room_id);
-
-                }
-            });
+            getRoomInfo(data, roomIndex);            
 
             // This senario is currently discharged for now, may be in future
             // 'is_outside_group_stay_dates' will always be sent as 'false' from server
@@ -963,23 +985,8 @@ sntRover.controller('RVReservationMainCtrl', ['$scope',
             data.guest_detail.last_name = $scope.reservationData.guest.lastName;
             data.guest_detail.email = $scope.reservationData.guest.email;
 
-            if (!skipPaymentData) {
-                data.payment_type = {};
-                if ($scope.reservationData.paymentType.type.value !== null) {
-                    angular.forEach($scope.reservationData.paymentMethods, function(item, index) {
-                        if ($scope.reservationData.paymentType.type.value === item.value) {
-                            if ($scope.reservationData.paymentType.type.value === "CC") {
-                                data.payment_type.payment_method_id = $scope.reservationData.selectedPaymentId;
-                            } else {
-                                data.payment_type.type_id = item.id;
-                            }
-                        }
-                    });
-                    data.payment_type.expiry_date = ($scope.reservationData.paymentType.ccDetails.expYear === "" || $scope.reservationData.paymentType.ccDetails.expYear === "") ? "" : "20" + $scope.reservationData.paymentType.ccDetails.expYear + "-" +
-                        $scope.reservationData.paymentType.ccDetails.expMonth + "-01";
-                    data.payment_type.card_name = $scope.reservationData.paymentType.ccDetails.nameOnCard;
-                }
-            }
+            getPaymentData(skipPaymentData, data); 
+            
 
 
             // CICO-7077 Confirmation Mail to have tax details
@@ -994,15 +1001,7 @@ sntRover.controller('RVReservationMainCtrl', ['$scope',
 
             // guest emails to which confirmation emails should send
 
-            if (!skipConfirmationEmails) {
-                data.confirmation_emails = [];
-                if ($scope.otherData.isGuestPrimaryEmailChecked && $scope.reservationData.guest.email !== "") {
-                    data.confirmation_emails.push($scope.reservationData.guest.email);
-                }
-                if ($scope.otherData.isGuestAdditionalEmailChecked && $scope.otherData.additionalEmail !== "") {
-                    data.confirmation_emails.push($scope.otherData.additionalEmail);
-                }
-            }
+            getConfirmationEmailData(skipConfirmationEmails, data);  
 
             //  CICO-8320
             //  The API request payload changes
@@ -1068,11 +1067,7 @@ sntRover.controller('RVReservationMainCtrl', ['$scope',
 
             // CICO-11755
             if (typeof demographicsData !== undefined) {
-                data.reservation_type_id = parseInt(demographicsData.reservationType);
-                data.source_id = parseInt(demographicsData.source);
-                data.market_segment_id = parseInt(demographicsData.market);
-                data.booking_origin_id = parseInt(demographicsData.origin);
-                data.segment_id = parseInt(demographicsData.segment);
+                getDemoGraphicsInfo(data, demographicsData);                
             }
 
             data.confirmation_email = $scope.reservationData.guest.sendConfirmMailTo;
@@ -1080,45 +1075,11 @@ sntRover.controller('RVReservationMainCtrl', ['$scope',
             if (shouldWeIncludeRoomTypeArray) {
                 data.room_types = [];
             }
-            angular.forEach($scope.reservationData.tabs, function(tab, tabIndex) {
-                // addons
-                var firstIndex = _.indexOf($scope.reservationData.rooms, _.findWhere($scope.reservationData.rooms, {
-                        roomTypeId: parseInt(tab.roomTypeId, 10)
-                    })),
-                    addonsForRoomType = [];
 
-                if (!!RVReservationStateService.getReservationFlag('RATE_CHANGED') ||
-                    !$scope.reservationData.rooms[firstIndex].is_package_exist || // is_package_exist flag is set only while editing a reservation! -- Changes for CICO-17173
-                    ($scope.reservationData.rooms[firstIndex].is_package_exist && $scope.reservationData.rooms[firstIndex].addons.length === parseInt($scope.reservationData.rooms[firstIndex].package_count))) { // -- Changes for CICO-17173
-                    if (tabIndex === $scope.reservationData.tabs.length - 1) {
-                        RVReservationStateService.setReservationFlag('RATE_CHANGED', false);
-                    }
-                    _.each($scope.reservationData.rooms[firstIndex].addons, function(addon) {
-                        // skip rate associated addons on create/update calls --> they will be taken care off by API
-                        if (!addon.is_rate_addon) {
-                            addonsForRoomType.push({
-                                id: addon.id,
-                                quantity: addon.quantity || 1
-                            });
-                        }
-                    });
-                }
-                if (shouldWeIncludeRoomTypeArray) {
-                    data.room_types.push({
-                        id: parseInt(tab.roomTypeId, 10),
-                        num_rooms: parseInt(tab.roomCount, 10),
-                        addons: addonsForRoomType
-                    });
-                }
-            });
-            angular.forEach($scope.reservationData.rooms, function(room, currentRoomIndex) {
-                if (typeof roomIndex === 'undefined' || currentRoomIndex === roomIndex) {
-                    // CICO-32021 - API expects null if room id not there.
-                    room.room_id  = (room.room_id !== "") ? room.room_id : null;
-                    data.room_id.push(room.room_id);
-
-                }
-            });
+            getRoomTypes(data, shouldWeIncludeRoomTypeArray); 
+            getRoomInfo(data, roomIndex); 
+            
+            
 
             // This senario is currently discharged for now, may be in future
             // 'is_outside_group_stay_dates' will always be sent as 'false' from server
