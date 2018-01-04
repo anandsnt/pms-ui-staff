@@ -72,7 +72,7 @@ sntRover.controller('RVJournalPaymentController', ['$scope', '$rootScope', 'RVJo
             }      
 
             $timeout(function () {
-                var paginationID = chargeCodeItem.id;
+                var paginationID = chargeCodeItem.charge_code_id;
 
                 $scope.$broadcast('updatePagination', paginationID );
 
@@ -112,7 +112,7 @@ sntRover.controller('RVJournalPaymentController', ['$scope', '$rootScope', 'RVJo
 
             // pagination data object on level-3 for credit cards.
             toggleItem.paymentTypesPagination = {
-                id: toggleItem.id,
+                id: toggleItem.charge_code_id,
                 api: [loadTransactionDeatils, toggleItem, true],
                 perPage: $scope.data.filterData.perPage
             };
@@ -133,7 +133,7 @@ sntRover.controller('RVJournalPaymentController', ['$scope', '$rootScope', 'RVJo
 
         // pagination data object on level-3 for credit cards.
         toggleItem.creditCardPagination = {
-            id: toggleItem.id,
+            id: toggleItem.charge_code_id,
             api: [loadTransactionDeatils, toggleItem, true],
             perPage: $scope.data.filterData.perPage
         };
