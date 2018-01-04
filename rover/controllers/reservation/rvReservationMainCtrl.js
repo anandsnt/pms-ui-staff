@@ -803,7 +803,45 @@ sntRover.controller('RVReservationMainCtrl', ['$scope',
 
                     }
                 });
-            }
+            },
+            getReservationStayDateDetails = function (data, currentRoom) {
+                var reservationStayDetails = [];
+                
+                _.each(currentRoom.stayDates, function(staydetailInfo, date) {
+                    reservationStayDetails.push({
+                        date: date,
+                        // In case of the last day, send the first day's occupancy
+                        rate_id: (function() {
+                            var rate = (date === $scope.reservationData.departureDate) ? currentRoom.stayDates[$scope.reservationData.arrivalDate].rate.id : staydetailInfo.rate.id;
+                            // in case of custom rates (rates without IDs send them as null.... the named ids used within the UI controllers are just for tracking and arent saved)
+
+                            return rate && rate.toString().match(/_CUSTOM_/) ? null : rate;
+                        })(),
+                        room_type_id: currentRoom.roomTypeId,
+                        room_id: currentRoom.room_id,
+                        adults_count: (date === $scope.reservationData.departureDate) ? currentRoom.stayDates[$scope.reservationData.arrivalDate].guests.adults : parseInt(staydetailInfo.guests.adults),
+                        children_count: (date === $scope.reservationData.departureDate) ? currentRoom.stayDates[$scope.reservationData.arrivalDate].guests.children : parseInt(staydetailInfo.guests.children),
+                        infants_count: (date === $scope.reservationData.departureDate) ? currentRoom.stayDates[$scope.reservationData.arrivalDate].guests.infants : parseInt(staydetailInfo.guests.infants),
+                        rate_amount: parseFloat((date === $scope.reservationData.departureDate) ? ((currentRoom.stayDates[$scope.reservationData.arrivalDate] && currentRoom.stayDates[$scope.reservationData.arrivalDate].rateDetails && currentRoom.stayDates[$scope.reservationData.arrivalDate].rateDetails.modified_amount) || 0) : ((staydetailInfo.rateDetails && staydetailInfo.rateDetails.modified_amount) || 0))
+
+                    });
+                });
+
+                return reservationStayDetails;
+            },
+            setPromotionDetails = function (data, roomIndex, applicableRate) {
+                if ($scope.reservationData.rateDetails &&
+                    $scope.reservationData.rateDetails[roomIndex] &&
+                    $scope.reservationData.rateDetails[roomIndex][$scope.reservationData.arrivalDate][applicableRate] &&
+                    $scope.reservationData.rateDetails[roomIndex][$scope.reservationData.arrivalDate][applicableRate].applyPromotion) {
+                    data.promotion_id = $scope.reservationData.rateDetails[roomIndex][$scope.reservationData.arrivalDate][applicableRate].appliedPromotion.id;
+                    data.promotion_status = !!_.findWhere($scope.reservationData.rateDetails[roomIndex][$scope.reservationData.arrivalDate][applicableRate].restrictions, {
+                        key: 'INVALID_PROMO'
+                    }) ? 'OVERRIDE' : 'VALID';
+                } else {
+                    data.promotion_id = null;
+                }
+            };
 
         // Populate the reservation update request with required fields
         $scope.getReservationDataforUpdate = function(skipPaymentData, skipConfirmationEmails, roomIndex) {
@@ -828,9 +866,7 @@ sntRover.controller('RVReservationMainCtrl', ['$scope',
                 data.departure_time = getTimeFormated($scope.reservationData.checkoutTime.hh,
                     $scope.reservationData.checkoutTime.mm,
                     $scope.reservationData.checkoutTime.ampm);
-            }
-
-            
+            }            
 
             data.adults_count = parseInt($scope.reservationData.rooms[roomIndex].numAdults);
             data.children_count = parseInt($scope.reservationData.rooms[roomIndex].numChildren);
@@ -871,44 +907,13 @@ sntRover.controller('RVReservationMainCtrl', ['$scope',
 
             var currentRoom = $scope.reservationData.rooms[roomIndex];
             
-                var applicableRate = currentRoom.stayDates[$scope.reservationData.arrivalDate].rate.id;
+            var applicableRate = currentRoom.stayDates[$scope.reservationData.arrivalDate].rate.id;
 
-                if ($scope.reservationData.rateDetails &&
-                    $scope.reservationData.rateDetails[roomIndex] &&
-                    $scope.reservationData.rateDetails[roomIndex][$scope.reservationData.arrivalDate][applicableRate] &&
-                    $scope.reservationData.rateDetails[roomIndex][$scope.reservationData.arrivalDate][applicableRate].applyPromotion) {
-                    data.promotion_id = $scope.reservationData.rateDetails[roomIndex][$scope.reservationData.arrivalDate][applicableRate].appliedPromotion.id;
-                    data.promotion_status = !!_.findWhere($scope.reservationData.rateDetails[roomIndex][$scope.reservationData.arrivalDate][applicableRate].restrictions, {
-                        key: 'INVALID_PROMO'
-                    }) ? 'OVERRIDE' : 'VALID';
-                } else {
-                    data.promotion_id = null;
-                }
-                RVReservationStateService.bookMark.lastPostedRate = currentRoom.stayDates[$scope.reservationData.arrivalDate].rate.id;
-                var reservationStayDetails = [];
-                
-                    _.each(currentRoom.stayDates, function(staydetailInfo, date) {
-                        reservationStayDetails.push({
-                            date: date,
-                            // In case of the last day, send the first day's occupancy
-                            rate_id: (function() {
-                                var rate = (date === $scope.reservationData.departureDate) ? currentRoom.stayDates[$scope.reservationData.arrivalDate].rate.id : staydetailInfo.rate.id;
-                                // in case of custom rates (rates without IDs send them as null.... the named ids used within the UI controllers are just for tracking and arent saved)
-
-                                return rate && rate.toString().match(/_CUSTOM_/) ? null : rate;
-                            })(),
-                            room_type_id: currentRoom.roomTypeId,
-                            room_id: currentRoom.room_id,
-                            adults_count: (date === $scope.reservationData.departureDate) ? currentRoom.stayDates[$scope.reservationData.arrivalDate].guests.adults : parseInt(staydetailInfo.guests.adults),
-                            children_count: (date === $scope.reservationData.departureDate) ? currentRoom.stayDates[$scope.reservationData.arrivalDate].guests.children : parseInt(staydetailInfo.guests.children),
-                            infants_count: (date === $scope.reservationData.departureDate) ? currentRoom.stayDates[$scope.reservationData.arrivalDate].guests.infants : parseInt(staydetailInfo.guests.infants),
-                            rate_amount: parseFloat((date === $scope.reservationData.departureDate) ? ((currentRoom.stayDates[$scope.reservationData.arrivalDate] && currentRoom.stayDates[$scope.reservationData.arrivalDate].rateDetails && currentRoom.stayDates[$scope.reservationData.arrivalDate].rateDetails.modified_amount) || 0) : ((staydetailInfo.rateDetails && staydetailInfo.rateDetails.modified_amount) || 0))
-
-                        });
-                    });
-                    stay.push(reservationStayDetails);               
-
+            setPromotionDetails(data, roomIndex, applicableRate);
             
+            RVReservationStateService.bookMark.lastPostedRate = currentRoom.stayDates[$scope.reservationData.arrivalDate].rate.id;
+            
+            stay.push(getReservationStayDateDetails(data, currentRoom)); 
 
             //  end of payload changes
             data.stay_dates = stay;
@@ -932,8 +937,7 @@ sntRover.controller('RVReservationMainCtrl', ['$scope',
             if (shouldWeIncludeRoomTypeArray) {
                 data.room_types = [];
             }
-            getRoomTypes(data, shouldWeIncludeRoomTypeArray);            
-
+            getRoomTypes(data, shouldWeIncludeRoomTypeArray);
             getRoomInfo(data, roomIndex);            
 
             // This senario is currently discharged for now, may be in future
@@ -986,12 +990,8 @@ sntRover.controller('RVReservationMainCtrl', ['$scope',
             data.guest_detail.email = $scope.reservationData.guest.email;
 
             getPaymentData(skipPaymentData, data); 
-            
-
 
             // CICO-7077 Confirmation Mail to have tax details
-
-
             data.tax_details = [];
             _.each($scope.reservationData.taxDetails, function(taxDetail) {
                 data.tax_details.push(taxDetail);
@@ -1000,7 +1000,6 @@ sntRover.controller('RVReservationMainCtrl', ['$scope',
             data.tax_total = $scope.reservationData.totalTaxAmount;
 
             // guest emails to which confirmation emails should send
-
             getConfirmationEmailData(skipConfirmationEmails, data);  
 
             //  CICO-8320
@@ -1011,45 +1010,16 @@ sntRover.controller('RVReservationMainCtrl', ['$scope',
             _.each($scope.reservationData.rooms, function(room, currentRoomIndex) {
                 var applicableRate = room.stayDates[$scope.reservationData.arrivalDate].rate.id;
 
-                if ($scope.reservationData.rateDetails &&
-                    $scope.reservationData.rateDetails[currentRoomIndex] &&
-                    $scope.reservationData.rateDetails[currentRoomIndex][$scope.reservationData.arrivalDate][applicableRate] &&
-                    $scope.reservationData.rateDetails[currentRoomIndex][$scope.reservationData.arrivalDate][applicableRate].applyPromotion) {
-                    data.promotion_id = $scope.reservationData.rateDetails[currentRoomIndex][$scope.reservationData.arrivalDate][applicableRate].appliedPromotion.id;
-                    data.promotion_status = !!_.findWhere($scope.reservationData.rateDetails[currentRoomIndex][$scope.reservationData.arrivalDate][applicableRate].restrictions, {
-                        key: 'INVALID_PROMO'
-                    }) ? 'OVERRIDE' : 'VALID';
-                } else {
-                    data.promotion_id = null;
-                }
+                setPromotionDetails(data, currentRoomIndex, applicableRate);
+                
                 RVReservationStateService.bookMark.lastPostedRate = room.stayDates[$scope.reservationData.arrivalDate].rate.id;
                 var reservationStayDetails = [];
 
-                if (typeof roomIndex === 'undefined' || currentRoomIndex === roomIndex) {
-                    _.each(room.stayDates, function(staydata, date) {
-                        reservationStayDetails.push({
-                            date: date,
-                            // In case of the last day, send the first day's occupancy
-                            rate_id: (function() {
-                                var rate = (date === $scope.reservationData.departureDate) ? room.stayDates[$scope.reservationData.arrivalDate].rate.id : staydata.rate.id;
-                                // in case of custom rates (rates without IDs send them as null.... the named ids used within the UI controllers are just for tracking and arent saved)
-
-                                return rate && rate.toString().match(/_CUSTOM_/) ? null : rate;
-                            })(),
-                            room_type_id: room.roomTypeId,
-                            room_id: room.room_id,
-                            adults_count: (date === $scope.reservationData.departureDate) ? room.stayDates[$scope.reservationData.arrivalDate].guests.adults : parseInt(staydata.guests.adults),
-                            children_count: (date === $scope.reservationData.departureDate) ? room.stayDates[$scope.reservationData.arrivalDate].guests.children : parseInt(staydata.guests.children),
-                            infants_count: (date === $scope.reservationData.departureDate) ? room.stayDates[$scope.reservationData.arrivalDate].guests.infants : parseInt(staydata.guests.infants),
-                            rate_amount: parseFloat((date === $scope.reservationData.departureDate) ? ((room.stayDates[$scope.reservationData.arrivalDate] && room.stayDates[$scope.reservationData.arrivalDate].rateDetails && room.stayDates[$scope.reservationData.arrivalDate].rateDetails.modified_amount) || 0) : ((staydata.rateDetails && staydata.rateDetails.modified_amount) || 0))
-
-                        });
-                    });
-                    stay.push(reservationStayDetails);
+                if (typeof roomIndex === 'undefined' || currentRoomIndex === roomIndex) {                   
+                    stay.push(getReservationStayDateDetails(data, room));
                 }
 
             });
-
             //  end of payload changes
             data.stay_dates = stay;
 
@@ -1077,9 +1047,7 @@ sntRover.controller('RVReservationMainCtrl', ['$scope',
             }
 
             getRoomTypes(data, shouldWeIncludeRoomTypeArray); 
-            getRoomInfo(data, roomIndex); 
-            
-            
+            getRoomInfo(data, roomIndex);  
 
             // This senario is currently discharged for now, may be in future
             // 'is_outside_group_stay_dates' will always be sent as 'false' from server
