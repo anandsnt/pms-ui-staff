@@ -326,7 +326,7 @@ sntRover.controller('RVCommissionsSummaryController', ['$scope',
                             'action_type': $scope.filterData.filterTab,
                             'begin_date': $scope.dateData.fromDateForAPI !== '' ? $filter('date')($scope.dateData.fromDateForAPI, 'yyyy-MM-dd') : '',
                             'end_date': $scope.dateData.toDateForAPI !== '' ? $filter('date')($scope.dateData.toDateForAPI, 'yyyy-MM-dd') : '',
-                            'non_commissionable': $scope.filterData.non_commissionable
+                            'include_non_commissionable': $scope.filterData.non_commissionable
                         },
                         successCallBack: onFetchListSuccess,
                         failureCallBack: function(response) {
@@ -369,7 +369,7 @@ sntRover.controller('RVCommissionsSummaryController', ['$scope',
                             'min_commission_amount': $scope.filterData.minAmount,
                             'begin_date': $scope.dateData.fromDateForAPI !== '' ? $filter('date')($scope.dateData.fromDateForAPI, 'yyyy-MM-dd') : '',
                             'end_date': $scope.dateData.toDateForAPI !== '' ? $filter('date')($scope.dateData.toDateForAPI, 'yyyy-MM-dd') : '',
-                            'non_commissionable': $scope.filterData.non_commissionable
+                            'include_non_commissionable': $scope.filterData.non_commissionable
                         },
                         successCallBack: onFetchSuccess,
                         failureCallBack: function(response) {
@@ -534,7 +534,7 @@ sntRover.controller('RVCommissionsSummaryController', ['$scope',
                     'value': 'NAME_ASC',
                     'name': 'NAME_ASC'
                 },
-                'non_commissionable': false
+                'include_non_commissionable': false
             };
             fetchExportTypeData();
             // set intial values
