@@ -6,7 +6,7 @@ angular.module('sntRover').controller('rvActivityCtrl', [
 	'$timeout',
 	function($scope, $rootScope, $filter, $stateParams, $timeout) {
 		BaseCtrl.call(this, $scope);
-		var ACCOUNT_ACTIVITY_LOG_PER_PAGE = 50;
+		var ACCOUNT_ACTIVITY_LOG_PER_PAGE = 10;
 
 		/**
 		 * initialisation and basic configuration

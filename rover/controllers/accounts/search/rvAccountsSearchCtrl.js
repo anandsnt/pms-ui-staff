@@ -219,21 +219,6 @@ sntRover.controller('rvAccountsSearchCtrl',	[
 		};
 
 		/**
-		* Pagination things
-		*/
-		//var setInitialPaginationAndAPIThings = function() {
-			// pagination
-			// $scope.perPage 	= rvAccountsSrv.DEFAULT_PER_PAGE;
-			// $scope.start 	= 1;
-			// $scope.end 		= initialAccountsListing.posting_accounts.length;
-
-			// // what is page that we are requesting in the API
-			// $scope.page = 1;
-			// Defined pagination for account search
-			
-		//};
-
-		/**
 		* should we show pagination area
 		* @return {Boolean}
 		*/
