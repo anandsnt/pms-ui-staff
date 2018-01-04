@@ -16,8 +16,7 @@ sntRover.controller('RVReservationMainCtrl', ['$scope',
             'RVReservationDataService',
             '$interval',
             '$log',
-            '$q',
-            function($scope, $rootScope, ngDialog, $filter, RVCompanyCardSrv, $state, dateFilter, baseSearchData, RVReservationSummarySrv, RVReservationCardSrv, RVPaymentSrv, $timeout, $stateParams, RVReservationGuestSrv, RVReservationStateService, RVReservationDataService, $interval, $log, $q) {
+            function($scope, $rootScope, ngDialog, $filter, RVCompanyCardSrv, $state, dateFilter, baseSearchData, RVReservationSummarySrv, RVReservationCardSrv, RVPaymentSrv, $timeout, $stateParams, RVReservationGuestSrv, RVReservationStateService, RVReservationDataService, $interval, $log) {
 
         BaseCtrl.call(this, $scope);
 
@@ -1427,8 +1426,6 @@ sntRover.controller('RVReservationMainCtrl', ['$scope',
 
                 var postData = $scope.computeReservationDataforUpdate(true, true);
 
-                var promises = [];
-
                 var saveSuccess = function(data) {
 
                     // Update reservation type
@@ -1535,8 +1532,11 @@ sntRover.controller('RVReservationMainCtrl', ['$scope',
                 var updateSuccess = function(data) {
                     // CICO-47877 - When there are multiple reservations, we have an array of responses
                     var responseData = data;
+
                     data = _.isArray(data) ? data[0] : data;
+
                     var totalDepositOnRateUpdate = 0;
+
                     /**
                      * CICO-10195 : While extending a hourly reservation from
                      * diary the reservationListArray would be undefined
@@ -1625,7 +1625,7 @@ sntRover.controller('RVReservationMainCtrl', ['$scope',
 
                     } else {
                         $scope.invokeApi(RVReservationSummarySrv.updateReservation, postData, updateSuccess, updateFailure);
-                    }                    
+                    }
 
                 } else {
                     $scope.invokeApi(RVReservationSummarySrv.saveReservation, postData, saveSuccess, saveFailure);

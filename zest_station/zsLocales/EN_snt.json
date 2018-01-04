@@ -623,6 +623,7 @@
    "GID_VERIFY_CLEAR_SIGNATURE": "Clear signature",
 
    "ENDING_WITH": "Ending with",
-   "EXPIRES": "Expires"
+   "EXPIRES": "Expires",
+   "PAYMENT": "PAYMENT"
 
 }
