@@ -1612,6 +1612,8 @@ sntRover.controller('RVReservationMainCtrl', ['$scope',
                         postData.reservationId = $scope.reservationData.reservationId;
                     }
 
+                    var promises = [];
+
                     // CICO-47877 
                     if ($scope.reservationData.reservationIds && $scope.reservationData.reservationIds.length > 1) {
                         _.each ($scope.reservationData.reservationIds, function (resId, index) {
