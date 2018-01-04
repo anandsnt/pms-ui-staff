@@ -383,7 +383,7 @@ sntRover.controller('RVCommissionsSummaryController', ['$scope',
             $scope.fetchAgentsData();
         };
 
-        $scope.openSideFilters = function(){
+        $scope.openSideFilters = function() {
             // set the filter data wrt applied filter data. Discard previous non applied filters
             $scope.sideFilterData.minAmount = angular.copy($scope.filterData.minAmount);
             $scope.sideFilterData.sort_by.value = angular.copy($scope.filterData.sort_by.value);
@@ -395,19 +395,19 @@ sntRover.controller('RVCommissionsSummaryController', ['$scope',
         $scope.returnNumberOfFilterApplied = function () {
             var filtersSelected = 0;
 
-            if($scope.filterData.minAmount.length){
+            if ($scope.filterData.minAmount.length) {
                 filtersSelected++;
-            };
-            if($scope.filterData.sort_by.value.length){
+            }
+            if ($scope.filterData.sort_by.value.length) {
                 filtersSelected++;
-            };
-            if($scope.filterData.non_commissionable){
+            }
+            if ($scope.filterData.non_commissionable) {
                 filtersSelected++;
-            };
+            }
             return filtersSelected;
         };
 
-        $scope.applyFilter = function(){
+        $scope.applyFilter = function() {
             $scope.filterData.minAmount = angular.copy($scope.sideFilterData.minAmount);
             $scope.filterData.sort_by.value = angular.copy($scope.sideFilterData.sort_by.value);
             $scope.filterData.non_commissionable = angular.copy($scope.sideFilterData.non_commissionable);
