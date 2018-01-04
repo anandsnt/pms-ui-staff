@@ -9,17 +9,17 @@
             <td data-item="2" data-title="'URL'" ng-click="onEditSocialLink(socialNW, $index)" header-class="width-60" ng-hide="currentSocialLink === $index">
                 <a class="edit-data-inline">{{socialNW.link}}</a>
             </td>
-            <td header-class="width-10" data-title="'Delete'" class="delete" ng-hide="currentSocialLink === $index">
-                <a class="icons icon-delete large-icon" ng-click="onRemoveLink(socialNW)">Remove</a>
+            <td header-class="width-15" data-title="'Delete'" class="delete" ng-hide="currentSocialLink === $index" style="text-align: center; ">
+                <a class="icons icon-delete large-icon" ng-click="onRemoveLink(socialNW)"></a>
             </td>
             <td colspan="3" ng-show="currentSocialLink === $index">
                 <div style="display: block;" class="edit-data">
                     <div class="data-holder">
                         <!-- Edit Department -->
                         <form class="form inline-form float">
-                            <div class="form-title">
+                            <!-- <div >
                                 <h3 translate><span></span> EDIT</h3>
-                            </div>
+                            </div> -->
                             <fieldset class="holder left">
                                 <ad-dropdown div-class='full-width' label-in-drop-down="{{ 'SELECT_SOCIAL_NETWORK' | translate }}" label="{{ 'SOCIAL_NETWORK' | translate }}" sel-class='placeholder' list='socialNetworks' required='yes' selected-Id='socialNW.type'></ad-dropdown>
                             </fieldset>
