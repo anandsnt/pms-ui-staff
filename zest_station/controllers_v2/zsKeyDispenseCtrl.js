@@ -186,6 +186,7 @@ sntZestStation.controller('zsKeyDispenseCtrl', [
 		$scope.numberOfCordovaCalls = 0;
 
 		var emitCordovaKeyError = function(response) {
+			$scope.$emit('hideLoader');
 			$scope.$emit('printLocalKeyCordovaFailed', response);
 
 			$scope.trackSessionActivity('KEY_ENCODE_FAILURE, IPAD', response.toString(), 'R' + $scope.selectedReservation.reservationId, $scope.mode, true);
@@ -383,6 +384,10 @@ sntZestStation.controller('zsKeyDispenseCtrl', [
 		$scope.onReadyToPrintKey = function(keyNo) {
 			if ($scope.readyForUserToPressMakeKey) {
 				$scope.readyForUserToPressMakeKey = false;
+				// show loader incase of iPad
+				if ($scope.writeLocally()) {
+					$scope.$emit('showLoader');
+				}
 				startMakingKey(keyNo);
 
             	$scope.trackEvent('MakeKey', 'user_selected');
@@ -391,6 +396,7 @@ sntZestStation.controller('zsKeyDispenseCtrl', [
 
 
 		$scope.onGeneralFailureCase = function() {
+			$scope.$emit('hideLoader');
 			$scope.zestStationData.makingKeyInProgress = false;
 			$scope.mode = 'DISPENSE_KEY_FAILURE_MODE';
 			$scope.zestStationData.consecutiveKeyFailure++;
@@ -538,6 +544,7 @@ sntZestStation.controller('zsKeyDispenseCtrl', [
 		});
 
 		$scope.$on('continueFromCordovaKeyWrite', function() {
+			$scope.$emit('hideLoader');
 			remoteEncodingSuccsess();
 		});
 
