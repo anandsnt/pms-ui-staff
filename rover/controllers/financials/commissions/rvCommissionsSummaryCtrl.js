@@ -439,6 +439,8 @@ sntRover.controller('RVCommissionsSummaryController', ['$scope',
                 params: {},
                 successCallBack: function(exportTypeData) {
                     $scope.filterData.exportType = exportTypeData.export_type;
+                    $scope.filterData.non_commissionable = angular.copy(exportTypeData.export_type === 'onyx');
+                    $scope.sideFilterData.non_commissionable = angular.copy(exportTypeData.export_type === 'onyx');
                 },
                 failureCallBack: function() {
                     $scope.filterData.exportType = '';
@@ -534,8 +536,16 @@ sntRover.controller('RVCommissionsSummaryController', ['$scope',
                     'value': 'NAME_ASC',
                     'name': 'NAME_ASC'
                 },
-                'include_non_commissionable': false
+                'non_commissionable': false
             };
+
+            // reset all filter values which are set from service
+            $scope.filterData.non_commissionable = $scope.sideFilterData.non_commissionable;
+            $scope.filterData.minAmount = '';
+            $scope.filterData.searchQuery = '';
+            $scope.filterData.selectedExportType = 'standard';
+            $scope.filterData.receipientEmail = '';
+
             fetchExportTypeData();
             // set intial values
             $scope.noOfTASelected = 0;
