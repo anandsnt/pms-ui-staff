@@ -37,7 +37,7 @@ angular.module('sntRover').service('RVHkRoomStatusSrv', [
 				"singleRoomType": false,
 				"query": "",
 				"page": 1,
-				"perPage": $window.innerWidth < 599 ? 25 : 50
+				"perPage": $window.innerWidth < 599 ? 25 : 10
 			};
 		};
 
