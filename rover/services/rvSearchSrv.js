@@ -2,7 +2,7 @@ angular.module('sntRover').service('RVSearchSrv', ['$q', 'RVBaseWebSrv', 'rvBase
 
 	var self = this;
 
-	self.searchPerPage = 10;
+	self.searchPerPage = 50;
 	self.page = 1;
 	self.to_date = "";
 	self.from_date = "";
