@@ -1981,6 +1981,8 @@ sntZestStation.controller('zsRootCtrl', [
             $scope.zestStationData.makingAdditionalKey = false;
             $scope.zestStationData.autoIpadKeyboardEnabled = false;
             $scope.zestStationData.appVersion = null;
+            $scope.zestStationData.connectedDeviceDetails = {};
+            
             if ($scope.isIpad) {
                 try {
                     // check for the method getAppInfo via rvcardplugin, if it does not exist,
