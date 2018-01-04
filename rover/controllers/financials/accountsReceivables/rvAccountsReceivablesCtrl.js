@@ -86,8 +86,7 @@ sntRover.controller('RVAccountsReceivablesController', ['$scope', '$rootScope', 
             {   'value': 'AMOUNT_DESC',   'name': 'AMOUNT DESC'}
         ]
     };
-    // for testing purpose - to be removed
-    $scope.filterData.perPage = 10;
+
     // Setting pagination object
     $scope.arPaginationObj = {
         id: 'AR_PAGINATION',
