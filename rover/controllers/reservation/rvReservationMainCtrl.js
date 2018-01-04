@@ -1013,8 +1013,7 @@ sntRover.controller('RVReservationMainCtrl', ['$scope',
                 setPromotionDetails(data, currentRoomIndex, applicableRate);
                 
                 RVReservationStateService.bookMark.lastPostedRate = room.stayDates[$scope.reservationData.arrivalDate].rate.id;
-                var reservationStayDetails = [];
-
+                
                 if (typeof roomIndex === 'undefined' || currentRoomIndex === roomIndex) {                   
                     stay.push(getReservationStayDateDetails(data, room));
                 }
