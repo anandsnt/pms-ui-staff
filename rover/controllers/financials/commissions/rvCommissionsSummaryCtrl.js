@@ -507,8 +507,9 @@ sntRover.controller('RVCommissionsSummaryController', ['$scope',
         var commonDateOptions = {
             showOn: 'button',
             dateFormat: $rootScope.jqDateFormat,
-            numberOfMonths: 1,
-            maxDate: tzIndependentDate(businessDate.business_date)
+            changeYear: true,
+            changeMonth: true,
+            yearRange: "-5:+5"
         };
 
         // date picker options - From
