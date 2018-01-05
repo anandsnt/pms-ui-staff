@@ -25,7 +25,7 @@ angular.module('sntZestStation').controller('zsCheckoutBalancePaymentCtrl', ['$s
                 $scope.screenMode.value = 'PAYMENT_IN_PROGRESS';
                 $timeout(function() {
                     $scope.makeCBAPayment();
-                }, 1000);
+                }, 3000);
             } else {
                 $scope.$emit('showLoader');
                 $scope.screenMode.value = 'PAYMENT_IN_PROGRESS';

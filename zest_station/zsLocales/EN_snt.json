@@ -623,6 +623,12 @@
    "GID_VERIFY_CLEAR_SIGNATURE": "Clear signature",
 
    "ENDING_WITH": "Ending with",
-   "EXPIRES": "Expires"
+   "EXPIRES": "Expires",
+
+   "HOW_WOULD_YOU_LIKE_TO_PAY": "How Would You Like To Pay",
+   "USE_NEW_CARD": "Use a New Card",
+   "PAYMENT": "PAYMENT",
+   "PAYMENT_SUCCESSFULL": "Payment Successful",
+   "BALANCE_WAS_PAID": "Your balance was paid successfully!!"
 
 }

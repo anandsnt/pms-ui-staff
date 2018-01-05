@@ -2,9 +2,9 @@
     <!-- Select payment type -->
     <section id="main" role="main" ng-show="screenMode.value === 'SELECT_PAYMENT_METHOD'">
         <div id="content">
-            <h1>How Would You Like To Pay</h1>
+            <h1><text data-ng-bind-html="getTagValue('HOW_WOULD_YOU_LIKE_TO_PAY')" editable-text="HOW_WOULD_YOU_LIKE_TO_PAY"></text></h1>
             <div id="balance">
-                <span class="value">Balance Due  {{zestStationData.currencySymbol}}{{balanceDue}}</span>
+                <span class="value"><text data-ng-bind-html="getTagValue('BILL_BAL')" editable-text="BILL_BAL"></text>{{zestStationData.currencySymbol}}{{balanceDue}}</span>
             </div>
             <nav id="options" role="nav">
                 <ul role="menu">
@@ -15,8 +15,8 @@
                         Pay
                         <p class="cc-details">
                             <strong>{{cardDetails.}}</strong><br>
-                            <span>Ending with</span> {{cardDetails.card_number}}<br> 
-                            <span>Expires</span> {{cardDetails.card_expiry}}
+                            <span><text data-ng-bind-html="getTagValue('ENDING_WITH')" editable-text="ENDING_WITH"></text></span> {{cardDetails.card_number}}<br> 
+                            <span><text data-ng-bind-html="getTagValue('EXPIRES')" editable-text="EXPIRES"></text></span> {{cardDetails.card_expiry}}
                         </p>
                     </li>
                     <li class="break">
@@ -26,7 +26,7 @@
                         <button type="button" class="button option" touch-press='payUsingNewCard()'>
                             <div ng-include="icons.url.creditcard"></div>
                         </button>
-                        Use a New Card
+                        <text data-ng-bind-html="getTagValue('USE_NEW_CARD')" editable-text="USE_NEW_CARD"></text>
                     </li>
                 </ul>
             </nav>
@@ -35,10 +35,11 @@
 
     <!-- payment in progress -->
     <section id="main" role="main" ng-show="screenMode.value === 'PAYMENT_IN_PROGRESS'">
-        <div id="content">
-            <h1>Payment</h1>
+        <!-- hide below content when payment is in progress -->
+        <div id="content" ng-hide="screenMode.paymentInProgress">
+            <h1><text data-ng-bind-html="getTagValue('PAYMENT')" editable-text="PAYMENT"></h1>
             <div id="balance">
-                <span class="value">Balance Due {{zestStationData.currencySymbol}}{{balanceDue}}</span>
+                <span class="value"><text data-ng-bind-html="getTagValue('BILL_BAL')" editable-text="BILL_BAL"></text>{{zestStationData.currencySymbol}}{{balanceDue}}</span>
             </div>
             <nav id="options" role="nav">
                 <ul role="menu">
@@ -46,7 +47,7 @@
                         <button type="button" class="button option">
                             <div ng-include="icons.url.creditcard"></div>
                         </button>
-                        Swipe Credit Card
+                        <text data-ng-bind-html="getTagValue('SWIPE_CARD_PLEASE')" editable-text="SWIPE_CARD_PLEASE">
                     </li>
                 </ul>
             </nav>
@@ -101,9 +102,9 @@
     <section id="main" class="centered" role="main" ng-show="screenMode.value === 'PAYMENT_SUCCESS'">
         <div id="content">
             <div ng-include="icons.url.success"></div>
-            <h1>Payment Successful</h1>
-            <h2>Your balance was paid successfully!!</h2>
-            <button type="button" class="button" click-touch="goToNextScreen()">Next</button>
+            <h1><text data-ng-bind-html="getTagValue('PAYMENT_SUCCESSFULL')" editable-text="PAYMENT_SUCCESSFULL"></text></h1>
+            <h2><text data-ng-bind-html="getTagValue('BALANCE_WAS_PAID')" editable-text="BALANCE_WAS_PAID"></text></h2>
+            <button type="button" class="button" click-touch="goToNextScreen()"><text data-ng-bind-html="getTagValue('NEXT')" editable-text="NEXT"></text></button>
         </div>
     </section>
 

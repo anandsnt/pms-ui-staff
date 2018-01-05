@@ -3,12 +3,14 @@ angular.module('sntZestStation').controller('zsPaymentCtrl', ['$scope', '$log', 
 
         $scope.screenMode = {
             'value': 'PROCESS_INITIAL',
-            'errorMessage': ''
+            'errorMessage': '',
+            'paymentInProgress': false
         };
 
         $scope.makeCBAPayment = function() {
             $scope.$emit('showLoader');
             $scope.screenMode.errorMessage = '';
+            $scope.screenMode.paymentInProgress = true;
             $scope.$broadcast('INITIATE_CBA_PAYMENT', zsPaymentSrv.getSubmitPaymentParams());
         };
 
@@ -45,6 +47,7 @@ angular.module('sntZestStation').controller('zsPaymentCtrl', ['$scope', '$log', 
                 $log.warn(errorMessage);
                 showErrorMessage(errorMessage);
                 $scope.$emit('hideLoader');
+                $scope.screenMode.paymentInProgress = false;
                 $scope.screenMode.value = 'PAYMENT_FAILED';
                 // TODO : Handle Error here!
             });
@@ -67,6 +70,7 @@ angular.module('sntZestStation').controller('zsPaymentCtrl', ['$scope', '$log', 
                         $log.warn(errorMessage);
                         showErrorMessage(errorMessage);
                         $scope.$emit('hideLoader');
+                        $scope.screenMode.paymentInProgress = false;
                         $scope.screenMode.value = 'PAYMENT_FAILED';
                     }
                 );
@@ -76,6 +80,7 @@ angular.module('sntZestStation').controller('zsPaymentCtrl', ['$scope', '$log', 
                 $log.warn(response);
                 showErrorMessage(response);
                 $scope.$emit('hideLoader');
+                $scope.screenMode.paymentInProgress = false;
                 $scope.screenMode.value = 'PAYMENT_FAILED';
                 // TODO : Handle Error here!
             });
