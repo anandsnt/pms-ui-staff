@@ -98,7 +98,8 @@ sntRover.service('RVCommissionsSrv', ['$http', '$q', 'BaseWebSrvV2', function($h
         }, {
             'value': 'AMOUNT_DESC',
             'name': 'AMOUNT DESC'
-        }]
+        }],
+        'non_commissionable': false
     };
 
     that.onyxExportCommissions = function(params) {
