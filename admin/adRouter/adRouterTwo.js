@@ -821,8 +821,6 @@ angular.module('adminModuleTwo', []).config(function ($stateProvider) {
         }
     });
 
-
-    
     // =================================================================================================
     
     $stateProvider.state('admin.propertyGroups', {
