@@ -1402,10 +1402,7 @@ angular.module('sntRover').controller('rvGroupConfigurationCtrl', [
             $scope.$emit("updateRoverLeftMenu", activeMenu);
         };
 
-        // Close the active dialog
-        $scope.closeDialog = function() {
-            ngDialog.close();
-        };
+        
 
 
         /**
