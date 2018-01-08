@@ -1402,6 +1402,12 @@ angular.module('sntRover').controller('rvGroupConfigurationCtrl', [
             $scope.$emit("updateRoverLeftMenu", activeMenu);
         };
 
+        // Close the active dialog
+        $scope.closeDialog = function() {
+            ngDialog.close();
+        };
+
+
         /**
          * function to initialize things for group config.
          * @return - None

@@ -312,7 +312,8 @@ sntRover.controller('rvAccountsSearchCtrl',	[
 			$scope.perPage 	= rvAccountsSrv.DEFAULT_PER_PAGE;
 			$scope.accountSearchPagination = {
 				id: 'ACCOUNT_SEARCH',
-				api: $scope.search
+				api: $scope.search,
+				perPage: rvAccountsSrv.DEFAULT_PER_PAGE
 			};
 			$scope.search();
 
