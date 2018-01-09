@@ -42,7 +42,9 @@ sntZestStation.service('zsGeneralSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
             'viceroy-chicago': 'Viceroy Chicago',
             'amrath': 'Amrath apart hotel',
             'jupiter': 'Jupiter hotel',
-            'huntley': 'Huntley'
+            'huntley': 'Huntley',
+            'queen': 'Queen Anne',
+            'belle': 'Van belle'
         };
 
         this.isThemeConfigured = function(theme) {
@@ -564,7 +566,7 @@ sntZestStation.service('zsGeneralSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
                 deferred.reject(data);
             });
             return deferred.promise;
-       };
+        };
             
         this.getKeyEncoderInfo = function() {
             var deferred = $q.defer();

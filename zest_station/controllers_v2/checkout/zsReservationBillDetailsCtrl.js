@@ -60,6 +60,8 @@ sntZestStation.controller('zsReservationBillDetailsCtrl', [
             $scope.deposit = response.bill_details.credits;
             $scope.balance = response.bill_details.balance;
 
+            $scope.paymentDetails = response.payment_details;
+
             angular.forEach(billsData, function(billData, key) {
                 angular.forEach(billData.charge_details, function(chargeDetail, key) {
                     var bill_details = {

@@ -55,7 +55,21 @@
     "TO_PAY": "To pay",
     "ON_HOLD": "On Hold",
     "ELIGIBLE_FOR_PAYMENT": "Eligible for payment",
-    "SET_TO_PAID": "Set to paid"
+    "SET_TO_PAID": "Set to paid",
+    "EXPORT_AND_PAY_COMMISSIONS": "Export and pay commission records",
+    "EXPORT_IN_PROGRESS_MSG": "Exporting commission records...Please wait. You will receive an email with a link to download.",
+    "EXPORT_IN_PROGRESS_CUSTOM_MSG": "Exporting commission records...Please wait. You will receive an email with a link to download and the file will be uploaded.",
+    "EXPORT_FAILED": "Export of commission records failed.",
+    "EXPORT_SUCCESS": "Commission records exported.",
+    "EXPORT_TYPE": "Export Type",
+    "STD_CSV_EXPORT": "Standard CSV Export",
+    "ONYX_EXPORT": "Onyx Commission Export",
+    "TACS_EXPORT": "Tacs Commission Export",
+    "ADD_RECIPIENT": "ADD RECIPIENT",
+    "NON_COMMISSIONABLE_BILLS": "Non-Commissionable Bills",
+    "SELECT_FILTERS_AND_APPLY": "Select filters and press 'Apply'"
+
+
 
 
 

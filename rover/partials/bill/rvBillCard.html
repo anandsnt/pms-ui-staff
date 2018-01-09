@@ -6,7 +6,7 @@
 	<section role="complementary" id="registration-details" class="content stay-card-inner check-in">
 
 		<!-- Reservation Header -->
-		<div class="reservation-header">
+		<div class="reservation-header view-bill">
 			<div class="actions">
 				<!-- Fullscreen button -->
 				<button type="button" data-fullscreen="bill" class="button white icons icon-expand" rv-fullscreen fs-sub-header="{{'Res. #'+lastResBillData.confirm_no}}" fs-toggle-class="fullscreen-bill">Fullscreen</button>
@@ -31,10 +31,10 @@
 					<span class="guest-status nights"></span> {{reservationBillData.number_of_nights}}
 					{{setNightsString()}}
 				</span>
-				<span class="date"> <span class="guest-status small-icon check-in" translate>CHECK_IN</span>
+				<span class="date"> <span class="guest-status small-icon check-in" translate></span>
 				 {{reservationBillData.checkin_date | date:dayInWeek}}
 				 {{reservationBillData.checkin_date | date:dateFormat}} </span>
-				<span class="date"> <span class="guest-status small-icon check-out" translate>CHECK_OUT</span>
+				<span class="date"> <span class="guest-status small-icon check-out" translate></span>
 				{{reservationBillData.checkout_date | date:dayInWeek}}
 				{{reservationBillData.checkout_date | date:dateFormat}} </span>
 			</div>

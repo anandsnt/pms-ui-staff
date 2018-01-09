@@ -47,7 +47,7 @@ sntRover.controller('companyCardCommissionsCtrl', [
         });
 
     var fetchCommissionDetailsForPage = function(page_no) {
-        $scope.filterData.page = page_no;
+        $scope.filterData.page = page_no || 1;
         fetchCommissionDetails(true);
     };
 
@@ -64,18 +64,8 @@ sntRover.controller('companyCardCommissionsCtrl', [
                     $scope.commissionSummary.totalCommission = data.total_commission;
                     $scope.commissionSummary.totalUnpaidCommission = data.total_commission_unpaid;
                     $scope.commissionSummary.taxOnCommissions = data.tax_on_commissions;
-                // set pagination controls values
+                    // set pagination controls values
                     $scope.pagination.totalResultCount = data.total_count;
-                // if ($scope.nextAction && isPageChanged) {
-                //     $scope.pagination.start = $scope.pagination.start + $scope.filterData.perPage;
-                // }
-                // if ($scope.prevAction && isPageChanged) {
-                //     $scope.pagination.start = $scope.pagination.start - $scope.filterData.perPage ;
-                // }
-
-                // if (isPageChanged) {
-                //     $scope.pagination.end = $scope.pagination.start + $scope.commissionDetails.length - 1;
-                // }
                     $timeout(function () {
                         $scope.$broadcast('updatePagination', $scope.paginationData.id );
                     }, 1000);
@@ -105,21 +95,6 @@ sntRover.controller('companyCardCommissionsCtrl', [
             return rvPermissionSrv.getPermissionValue ('EDIT_COMMISSIONS_TAB');
         };
 
-        $scope.loadNextSet = function() {
-            $scope.filterData.page++;
-            $scope.nextAction = true;
-            $scope.prevAction = false;
-            clearCurrentSelection();
-            fetchCommissionDetails(true);
-        };
-
-        $scope.loadPrevSet = function() {
-            $scope.filterData.page--;
-            $scope.nextAction = false;
-            $scope.prevAction = true;
-            clearCurrentSelection();
-            fetchCommissionDetails(true);
-        };
     /*
      * Navigate to staycard from commissions tab reservations
      * @param reservation_id reservation id
@@ -135,28 +110,6 @@ sntRover.controller('companyCardCommissionsCtrl', [
             }
         };
 
-        $scope.isNextButtonDisabled = function() {
-            var isDisabled = false;
-
-            if ($scope.commissionDetails.length == 0) {
-                return true;
-            }
-            if ($scope.pagination.end >= $scope.pagination.totalResultCount) {
-                isDisabled = true;
-            }
-            return isDisabled;
-        };
-
-        $scope.isPrevButtonDisabled = function() {
-            var isDisabled = false;
-
-            if ($scope.filterData.page === 1) {
-                isDisabled = true;
-            }
-            return isDisabled;
-
-        };
-
         $scope.clearToDateField = function() {
             $scope.filterData.toDate = '';
             $scope.onFilterChange();
@@ -168,13 +121,6 @@ sntRover.controller('companyCardCommissionsCtrl', [
 
         $scope.shouldShowPagination = function() {
             return $scope.commissionDetails.length > 0 && $scope.pagination.totalResultCount > $scope.filterData.perPage;
-        };
-
-        var initPaginationParams = function() {
-            $scope.filterData.page = 1;
-            $scope.pagination.start = 1;
-            $scope.nextAction = false;
-            $scope.prevAction = false;
         };
 
     // To handle from date change
@@ -189,12 +135,10 @@ sntRover.controller('companyCardCommissionsCtrl', [
 
     // Generic function to call on the change of filter parameters
         $scope.onFilterChange = function() {
-            initPaginationParams();
             $scope.selectedCommissions = [];
             $scope.prePaidCommissions = [];
             fetchCommissionDetails(true);
         };
-
 
     /* Handling different date picker clicks */
         $scope.clickedFromDate = function() {
@@ -265,7 +209,7 @@ sntRover.controller('companyCardCommissionsCtrl', [
             if ($scope.selectedCommissions.length === 0) {
                 $scope.filterData.selectAll = false;
                 $scope.toggleSelection();
-            }
+            }            
         };
 
     // Updates the checked status of the current  page records while making the whole selection
@@ -376,12 +320,15 @@ sntRover.controller('companyCardCommissionsCtrl', [
         };
 
     // Updates the paid status of all the selected records
-        $scope.onGroupPaidStatusChange = function() {
+        $scope.onGroupPaidStatusChange = function(isFromHoldStatus) {
 
-            var commissionListToUpdate = [];
+            var commissionListToUpdate = [], isSelectionError = false;
 
             if ($scope.filterData.selectAll) {
                 $scope.commissionDetails.forEach(function(commission) {
+                    if (isFromHoldStatus && commission.commission_data.paid_status != 'Unpaid' && commission.commission_data.paid_status != 'On Hold') {
+                        isSelectionError = true;
+                    }
                     if (commission.commission_data.paid_status != 'Prepaid') {
                         commissionListToUpdate.push({reservation_id: commission.reservation_id,
                             status: $scope.status.groupPaidStatus});
@@ -389,6 +336,9 @@ sntRover.controller('companyCardCommissionsCtrl', [
                 });
             } else {
                 $scope.selectedCommissions.forEach(function(commission) {
+                    if (isFromHoldStatus && commission.commission_data.paid_status != 'Unpaid' && commission.commission_data.paid_status != 'On Hold') {
+                        isSelectionError = true;
+                    }
                     if (commission.commission_data.paid_status != 'Prepaid') {
                         commissionListToUpdate.push({reservation_id: commission.reservation_id,
                             status: $scope.status.groupPaidStatus});
@@ -400,7 +350,12 @@ sntRover.controller('companyCardCommissionsCtrl', [
 
             requestData.accountId = $scope.accountId;
             requestData.commissionDetails = commissionListToUpdate;
-            updatePaidStatus(requestData);
+            if (isSelectionError) {
+                $scope.errorMessage = ["The hold status can be updated only for unpaid or on hold commissions"];
+            } else {
+                updatePaidStatus(requestData);
+            }
+            
         };
 
         $scope.showToggleButton = function(commissionDetail) {

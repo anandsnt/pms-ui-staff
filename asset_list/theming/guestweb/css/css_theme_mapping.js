@@ -4,6 +4,10 @@ module.exports = {
         var themeCSSRoot = 'stylesheets/guestweb/';
 
         return {
+            'guestweb_van_belle': [ themeCSSRoot + 'guestweb_van_belle.css'],
+            'guestweb_eben_house': [ themeCSSRoot + 'guestweb_eben_house.css'],
+            'guestweb_queen_anne': [ themeCSSRoot + 'guestweb_queen_anne.css'],
+            'guestweb_autocamp': [ themeCSSRoot + 'guestweb_autocamp.css'],
             'guestweb_the_grove_portland': [ themeCSSRoot + 'guestweb_the_grove_portland.css'],
             'guestweb_room_2_hammersmith': [ themeCSSRoot + 'guestweb_room_2_hammersmith.css'],
             'guestweb_anvil_hotel': [ themeCSSRoot + 'guestweb_anvil_hotel.css'],

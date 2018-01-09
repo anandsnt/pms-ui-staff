@@ -152,7 +152,8 @@ sntRover.controller('reservationDetailsController',
 					id: $vault.get('travelAgentId'),
 					type: $vault.get('travelAgentType'),
 					query: $vault.get('travelAgentQuery'),
-					isBackToTACommission: $stateParams.isFromTACommission
+					isBackToTACommission: $stateParams.isFromTACommission,
+					isBackFromStaycard: true
 				}
             };
         } else {

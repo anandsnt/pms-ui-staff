@@ -65,10 +65,11 @@
                         <!-- <li ng-if="device.device_connection_sate !== 'Connected' && device.device_short_name ==='Ingenico'"><button type="button" class="button blue">Connect</button></li> -->
                         <li ng-if="device.device_connection_sate !== 'Connected'"><em class="text-orange">Not
                             Connected</em></li>
-                        <li ng-if="device.battery_percentage === null" class="text-grey">
-                            NA
+                        <!-- CICO-47864 Battery percentage to be shown as NA if value is 0 or null -->
+                        <li ng-if="device.device_connection_sate !== 'Connected' || !device.battery_percentage" class="text-grey">
+                            N/A
                         </li>
-                        <li ng-if="device.battery_percentage !== null">
+                        <li ng-if="device.device_connection_sate === 'Connected' && device.battery_percentage">
                             <div class="battery">
                                 <!--  <em class="battery-status text-{'green' if charged/charging or 'red' if discharging}" ng-class="{'green': device.battery_state === 'Charged' || device.battery_state === 'Charging',' red': device.battery_state === 'Discharging'}">{{device.battery_state}}</em> -->
                                 <strong class="battery-value text"
@@ -83,20 +84,20 @@
                             </div>
                         </li>
                         <li ng-class="{'text-grey': !device.library_name || device.library_name == 'NA'}">
-                            {{device.library_name || 'NA'}}
+                            {{device.library_name || 'N/A'}}
                         </li>
                         <li ng-class="{'text-grey': !device.library_version ||device.library_version == 'NA'}">
-                            {{device.library_version || 'NA'}}
+                            {{device.library_version || 'N/A'}}
                         </li>
                         <li ng-class="{'text-grey': !device.firmware_version || device.firmware_version == 'NA'}">
-                            {{device.firmware_version || 'NA'}}
+                            {{device.firmware_version || 'N/A'}}
                         </li>
                         <li ng-class="{'text-grey': !device.serial_number || device.serial_number == 'NA'}">
-                            {{device.serial_number || 'NA'}}
+                            {{device.serial_number || 'N/A'}}
                         </li>
                         <!--Actions-->
                         <li ng-class="{'text-grey': !device.actions}" ng-if="!device.actions">
-                            {{'NA'}}
+                            {{'N/A'}}
                         </li>
                         <li ng-if="device.actions && device.actions.length">
                             <div class="select" style="width: calc(100% - 60px); display: inline-block;">
