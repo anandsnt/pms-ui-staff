@@ -5,7 +5,7 @@
         <div class="select">
             <select convert-to-number ng-model="data.selected_guest_registration_template">
                 <option value="" translate> SELECT_REGISTRATION_TEMPLATE </option>
-                            <option ng-repeat="item in data.guest_registration_template" value="{{item.value}}" ng-selected="item.value == data.selected_guest_registration_template">{{item.name}}</option>
+                <option ng-repeat="item in data.guest_registration_template" value="{{item.value}}" ng-selected="item.value == data.selected_guest_registration_template">{{item.name}}</option>
             </select>
         </div>
     </div>

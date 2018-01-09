@@ -1052,10 +1052,28 @@
                     }
                 }
 
+                .button.action.add {
+                    margin: 10px auto 0;
+                    padding: 0 20px 0 35px;
+                    background-position: 10px -337px;
+                    color: @green;
+                    background-color: @grey1;
+                    text-shadow: none;
+                }
+
                 .entry {
                     float: none;
                     margin-right: 0;
                     .float();
+                }
+
+                .data-holder {
+                    margin: 20px 0 0 0;
+                    padding: 20px;
+                    border-radius: 3px;
+                    width: 100%;
+                    .transition();
+                    .box-shadow(0 0 2px 1px rgba(0,0,0,.1));
                 }
 
                 .grid {
@@ -1118,11 +1136,23 @@
                     }
 
                     .data-holder {
-                        margin: 0;
-                        padding: 20px;
-                        border-radius: 3px;
-                        .transition();
-                        .box-shadow(0 0 2px 1px rgba(0,0,0,.1));
+                        margin: 10px 0;
+                    }
+                }
+
+                .boxes {
+                    .entry {                       
+                        &:not(:last-child) {
+                            margin-bottom: 10px;
+                        }
+                    }
+                    .checkbox,
+                    .radio {
+                        margin-bottom: 10px;
+                        
+                        span {
+                            color: @textColor;
+                        }
                     }
                 }
             }
