@@ -158,6 +158,7 @@ sntRover.controller('rvReservationSearchWidgetController', ['$scope', '$rootScop
 				$scope.$parent.myScroll['result_showing_area'].scrollTo(0, 0, 0);
 				refreshScroller();
 			}, 100);
+
 		};
 
 
@@ -450,7 +451,7 @@ sntRover.controller('rvReservationSearchWidgetController', ['$scope', '$rootScop
 		}; // end of displayFilteredResults
 
 		$scope.fetchSearchResults = function(page) { 
-			RVSearchSrv.page = page;
+			RVSearchSrv.page = page || 1;
 			var query = $scope.textInQueryBox.trim();
 			var hasRoomTypeFilter = $scope.room_type_id === '' || !!$scope.room_type_id;
 
@@ -494,7 +495,8 @@ sntRover.controller('rvReservationSearchWidgetController', ['$scope', '$rootScop
 		// Defined pagination for dashboard search
 		$scope.dashboardSearchPagination = {
 			id: 'DASHBOARD_SEARCH',
-			api: $scope.fetchSearchResults
+			api: $scope.fetchSearchResults,
+			perPage: RVSearchSrv.searchPerPage
 		};
 
 

@@ -589,7 +589,7 @@ sntRover.controller('rvGroupActionsCtrl', ['$scope', '$filter', '$rootScope', 'n
                 $scope.setRightPane('none');// goes back to All is Good if no actions
             }
 
-            $scope.clearNewAction();
+            $scope.clearNewAction();            
         };
         $scope.cancelAssign = function() {
             // switch back to selected view of lastSelected
@@ -893,7 +893,7 @@ sntRover.controller('rvGroupActionsCtrl', ['$scope', '$filter', '$rootScope', 'n
 
             return false;
         };
-        $scope.isTrace = function(v) {
+        $scope.isTrace = function(v) {            
             var str = 'TRACE';
 
             if ($scope.eitherString(str, v)) {// checks all cases upper/lower/first letter cap
@@ -951,15 +951,12 @@ sntRover.controller('rvGroupActionsCtrl', ['$scope', '$filter', '$rootScope', 'n
                 $scope.actionSelected = 'none';
             }
             $scope.setActionsHeaderInfo();
-
-            setTimeout(refreshScroller, 300);
-            setTimeout(function() {
-                if ($scope.actions[0]) {
-                    $scope.selectAction($scope.actions[0]);
-                }
-                $scope.$apply();
-            }, 100);
-
+            
+            // CICO-48361 
+            if ($scope.actions[0]) {
+                $scope.selectAction($scope.actions[0]);
+            } 
+            refreshScroller();
         };
 
         var fetchActionListFailureCallBack = function (data) {
@@ -1320,7 +1317,12 @@ sntRover.controller('rvGroupActionsCtrl', ['$scope', '$filter', '$rootScope', 'n
             }
 
 
-        };
+        };  
+
+        // Close the active dialog
+        $scope.closeDialog = function() {
+            ngDialog.close();
+        };     
 
 
         init();

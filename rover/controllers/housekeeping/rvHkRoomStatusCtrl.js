@@ -57,6 +57,8 @@ angular.module('sntRover').controller('RVHkRoomStatusCtrl', [
 		$scope.setScroller('room-status-filter');
 		$scope.setScroller('room-service-status-update');
 		$scope.setScroller('rooms-list-to-forcefully-update');
+		
+
 		setTimeout(function() {
 			$scope.refreshScroller('room-status-filter');
 			$scope.refreshScroller('rooms-list-to-forcefully-update');
@@ -170,8 +172,13 @@ angular.module('sntRover').controller('RVHkRoomStatusCtrl', [
 
 
 		/* ***** ***** ***** ***** ***** */
-
-
+		// Defined pagination for dashboard search
+		$scope.hkSearchPagination = {
+			id: 'HK_SEARCH',
+			api: $_callRoomsApi,
+			perPage: $scope.currentFilters.perPage
+		};
+		
 		// true represent that this is a fetchPayload call
 		// and the worktypes and assignments has already be fetched
 		$_fetchRoomListCallback(fetchPayload.roomList, true);
@@ -1029,6 +1036,9 @@ angular.module('sntRover').controller('RVHkRoomStatusCtrl', [
 			}
 
 			$_updateFilters('page', $_page);
+			$timeout(function() {
+				$scope.$broadcast('updatePagination', 'HK_SEARCH');
+			}, 700);
 		}
 
 
@@ -1118,7 +1128,11 @@ angular.module('sntRover').controller('RVHkRoomStatusCtrl', [
 		/* ***** ***** ***** ***** ***** */
 
 
-		function $_callRoomsApi() {
+		function $_callRoomsApi(page) {
+			var clickedPage = page || 1;
+
+			$_updateFilters('page', clickedPage);
+
 			$scope.hasActiveWorkSheet = false;
 			$scope.rooms              = [];
 
