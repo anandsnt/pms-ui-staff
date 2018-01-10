@@ -6,63 +6,55 @@
     <section class="content-scroll">
         <div ng-include="'/assets/partials/common/notification_message.html'"></div>
         <div ng-include="'/assets/partials/common/notification_success_message.html'"></div>
+        
         <form class="form float stationery-form">
-            <!-- Customize Common Confirmation Communication Section -->
+
             <!-- General Settings -->
-        <fieldset class="stationery-block" ng-class = "{'active': is_general_active}">
-            <div class="form-title has-toggle" ng-click = "is_general_active = !is_general_active;"> <!-- Clicking this toggles class 'active' on L10 -->
-                <h3>General Settings</h3>
-            </div>
-            <div class="stationery-group" ng-include="'/assets/partials/stationary/adStationeryGeneral.html'">
-                
-            </div>
-        </fieldset>
+            <fieldset class="stationery-block" ng-class = "{'active': is_general_active}">
+                <div class="form-title has-toggle" ng-click = "is_general_active = !is_general_active;"> <!-- Clicking this toggles class 'active' on L10 -->
+                    <h3>General Settings</h3>
+                </div>
+                <div class="stationery-group" ng-include="'/assets/partials/stationary/adStationeryGeneral.html'"></div>
+            </fieldset>
 
-        <!-- Confirmations -->
-        <fieldset class="stationery-block" ng-class = "{'active': is_confirmations_active}">
-            <div class="form-title has-toggle" ng-click = "is_confirmations_active = !is_confirmations_active;"> <!-- Clicking this toggles class 'active' on L20 -->
-                <h3>Confirmations / Cancellations</h3>
-            </div>
-            <div class="stationery-group" ng-include="'/assets/partials/stationary/adStationeryConfirmations.html'">
-                
-            </div>
-        </fieldset>
+            <!-- Confirmations -->
+            <fieldset class="stationery-block" ng-class = "{'active': is_confirmations_active}">
+                <div class="form-title has-toggle" ng-click = "is_confirmations_active = !is_confirmations_active;"> <!-- Clicking this toggles class 'active' on L20 -->
+                    <h3>Confirmations / Cancellations</h3>
+                </div>
+                <div class="stationery-group" ng-include="'/assets/partials/stationary/adStationeryConfirmations.html'"></div>
+            </fieldset>
 
-        <!-- Registration -->
-        <fieldset class="stationery-block" ng-class = "{'active': is_registration_active}">
-            <div class="form-title has-toggle" ng-click = "is_registration_active = !is_registration_active"> <!-- Clicking this toggles class 'active' on L30 -->
-                <h3>Registration Card</h3>
-            </div>
-            <div class="stationery-group" ng-include="'/assets/partials/stationary/adStationeryRegistration.html'">
-                
-            </div>
-        </fieldset>
+            <!-- Registration -->
+            <fieldset class="stationery-block" ng-class = "{'active': is_registration_active}">
+                <div class="form-title has-toggle" ng-click = "is_registration_active = !is_registration_active"> <!-- Clicking this toggles class 'active' on L30 -->
+                    <h3>Registration Card</h3>
+                </div>
+                <div class="stationery-group" ng-include="'/assets/partials/stationary/adStationeryRegistration.html'"></div>
+            </fieldset>
 
-        <!-- Invoices -->
-        <fieldset class="stationery-block" ng-class = "{'active': is_invoices_active}">
-            <div class="form-title has-toggle" ng-click = "is_invoices_active = !is_invoices_active"> <!-- Clicking this toggles class 'active' on L40 -->
-                <h3>Invoices</h3>
-            </div>
-            <div class="stationery-group" ng-include="'/assets/partials/stationary/adStationeryInvoices.html'">
-                
-            </div>
-        </fieldset> 
+            <!-- Invoices -->
+            <fieldset class="stationery-block" ng-class = "{'active': is_invoices_active}">
+                <div class="form-title has-toggle" ng-click = "is_invoices_active = !is_invoices_active"> <!-- Clicking this toggles class 'active' on L40 -->
+                    <h3>Invoices</h3>
+                </div>
+                <div class="stationery-group" ng-include="'/assets/partials/stationary/adStationeryInvoices.html'"></div>
+            </fieldset> 
 
-        <!-- Accounts Receivables -->
-        <fieldset class="stationery-block" ng-class = "{'active': is_account_receivables_active}">
-             <div class="form-title has-toggle" ng-click = "is_account_receivables_active = !is_account_receivables_active"> <!-- Clicking this toggles class 'active' on L50 -->
-                <h3>Accounts Receivables</h3>
-            </div>
-            <div class="stationery-group" ng-include="'/assets/partials/stationary/adStationeryAccountReceivables.html'">
-                
-            </div>
-        </fieldset>   
-
-            <div class="actions float">
-                <button type="button" ng-click="goBackToPreviousState()" class="button blank" translate>CANCEL
-                </button>
-                <button type="button" ng-click="clickedSave()" class="button green" translate>SAVE_CHANGES
-                </button>
+            <!-- Accounts Receivables -->
+            <fieldset class="stationery-block" ng-class = "{'active': is_account_receivables_active}">
+                 <div class="form-title has-toggle" ng-click = "is_account_receivables_active = !is_account_receivables_active"> <!-- Clicking this toggles class 'active' on L50 -->
+                    <h3>Accounts Receivables</h3>
+                </div>
+                <div class="stationery-group" ng-include="'/assets/partials/stationary/adStationeryAccountReceivables.html'"></div>
+            </fieldset>   
+            
+            <!-- Actions -->
+            <div class="actions fixed">
+                <div class="actions-inner">
+                    <button type="button" ng-click="goBackToPreviousState()" class="button blank" translate>CANCEL</button>
+                    <button type="button" ng-click="clickedSave()" class="button green" translate>SAVE_CHANGES</button>
+                </div>
             </div>
         </form>
     </section>

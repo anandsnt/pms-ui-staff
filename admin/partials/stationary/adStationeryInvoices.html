@@ -5,28 +5,20 @@
     </div>
     <div class="stationery-group">
         <div class="stationery-items">
-            <div class="entry translation full-width">
-                        <label for="email-hotel-logo" translate> SELECT LANGUAGE </label>
-                        <div class="select">
-                            <select ng-model="stationery_data.guest_invoice_language" name="locale" class="placeholder" >
-                                <option ng-repeat="locale in languages.locales" value="{{locale.value}}" ng-selected="locale.value==locale"> {{locale.description}} </option>
-                            </select>
-                        </div>
+            <div class="entry translation">
+                <label for="email-hotel-logo" translate> SELECT LANGUAGE </label>
+                <div class="select">
+                    <select ng-model="stationery_data.guest_invoice_language" name="locale">
+                        <option ng-repeat="locale in languages.locales" value="{{locale.value}}" ng-selected="locale.value==locale"> {{locale.description}} </option>
+                    </select>
+                </div>
             </div>            
             <div class="stationery-email">
                 <h4>Invoice Email</h4>
-                <div class="entry">
-                    <ad-textbox styleclass="full-width" value="data.guest_bill_email_subject" label="{{'GUEST_BILL_EMAIL_SUBJECT'| translate}}" placeholder="{{'ENTER_SUBJECT'| translate}}"></ad-textbox>
-                </div>
-                <div class="entry full-width">
-                    <ad-textarea rows="4" div-class="full-width" text-area-class="full-width" value="data.guest_bill_email_body" label="{{'GUEST_BILL_EMAIL_BODY'| translate}} " placeholder="{{'EMAIL_BODY_TEXT_PLACEHOLDER' | translate }}"></ad-textarea>
-                </div>
-                <div class="entry full-width">
-                    <ad-textarea rows="4" div-class="full-width" text-area-class="full-width" value="data.custom_text_header" label="{{'HEADER'| translate}} " placeholder="{{'CUSTOM_TEXT_PLACEHOLDER' | translate }}"></ad-textarea>
-                </div>
-                <div class="entry full-width">
-                    <ad-textarea rows="4" div-class="full-width" text-area-class="full-width" value="data.custom_text_footer" label="{{'FOOTER'| translate}} " placeholder="{{'CUSTOM_TEXT_PLACEHOLDER' | translate }}"></ad-textarea>
-                </div>
+                <ad-textbox styleclass="full-width" value="data.guest_bill_email_subject" label="{{'GUEST_BILL_EMAIL_SUBJECT'| translate}}" placeholder="{{'ENTER_SUBJECT'| translate}}"></ad-textbox>
+                <ad-textarea rows="4" div-class="full-width" text-area-class="full-width" value="data.guest_bill_email_body" label="{{'GUEST_BILL_EMAIL_BODY'| translate}} " placeholder="{{'EMAIL_BODY_TEXT_PLACEHOLDER' | translate }}"></ad-textarea>
+                <ad-textarea rows="4" div-class="full-width" text-area-class="full-width" value="data.custom_text_header" label="{{'HEADER'| translate}} " placeholder="{{'CUSTOM_TEXT_PLACEHOLDER' | translate }}"></ad-textarea>
+                <ad-textarea rows="4" div-class="full-width" text-area-class="full-width" value="data.custom_text_footer" label="{{'FOOTER'| translate}} " placeholder="{{'CUSTOM_TEXT_PLACEHOLDER' | translate }}"></ad-textarea>
             </div>
         </div>
         <div class="stationery-settings">
@@ -48,7 +40,7 @@
             <div class="entry">
                 <label for="guest-hotel-logo">Hotel Logo</label>
                 <div class="select">
-                    <select ng-model="data.logo_type" name="email-hotel-logo" class="placeholder">
+                    <select ng-model="data.logo_type" name="email-hotel-logo">
                         <option value="" translate> SELECT_LOGO_TYPE </option>
                         <option ng-repeat="item in data.hotel_logo" value="{{item.value}}" ng-selected="item.value == data.email_logo_type">{{item.name}}</option>
                     </select>
@@ -57,7 +49,7 @@
             <div class="entry">
                 <label for="guest-default-bill">Default Bill</label>
                 <div class="select">
-                    <select ng-model="data.selected_guest_bill" name="guest-bill-template" class="placeholder">
+                    <select ng-model="data.selected_guest_bill" name="guest-bill-template">
                             <option ng-repeat="item in data.guest_bill_settings" value="{{item.value}}" ng-selected="item.value == data.selected_guest_bill">{{item.name}}</option>
                         </select>
                 </div>
@@ -73,27 +65,21 @@
     </div>
     <div class="stationery-group">
         <div class="stationery-items">
-            <div class="entry translation full-width">
-                        <label for="email-hotel-logo" translate> SELECT LANGUAGE </label>
-                        <div class="select">
-                            <select ng-model="stationery_data.cards_invoice_language" name="locale" class="placeholder" >
-                                <option ng-repeat="locale in languages.locales" value="{{locale.value}}" ng-selected="locale.value==locale"> {{locale.description}} </option>
-                            </select>
-                        </div>
+            <div class="entry translation">
+                <label for="email-hotel-logo" translate> SELECT LANGUAGE </label>
+                <div class="select">
+                    <select ng-model="stationery_data.cards_invoice_language" name="locale">
+                        <option ng-repeat="locale in languages.locales" value="{{locale.value}}" ng-selected="locale.value==locale"> {{locale.description}} </option>
+                    </select>
+                </div>
             </div>             
             <div class="stationery-email">
                 <h4>Company/TA Invoice Email</h4>
-                <div class="entry">
-                    <ad-textbox styleclass="full-width" value="data.company_ta_bill_subject" label="{{'CARDS_BILL_EMAIL_SUBJECT'| translate}}" placeholder="{{'ENTER_SUBJECT'| translate}}"></ad-textbox>
-                </div>
-                <div class="entry full-width">
-                    <ad-textarea rows="4" div-class="full-width" text-area-class="full-width" value="data.company_ta_bill_body" label="{{'CARDS_BILL_EMAIL_BODY'| translate}} " placeholder="{{'EMAIL_BODY_TEXT_PLACEHOLDER' | translate }}"></ad-textarea>
-                </div>
+                <ad-textbox styleclass="full-width" value="data.company_ta_bill_subject" label="{{'CARDS_BILL_EMAIL_SUBJECT'| translate}}" placeholder="{{'ENTER_SUBJECT'| translate}}"></ad-textbox>
+                <ad-textarea rows="4" div-class="full-width" text-area-class="full-width" value="data.company_ta_bill_body" label="{{'CARDS_BILL_EMAIL_BODY'| translate}} " placeholder="{{'EMAIL_BODY_TEXT_PLACEHOLDER' | translate }}"></ad-textarea>
             </div>
             <h4>A/R Invoice</h4>
-            <div class="entry full-width">
-                <ad-textarea rows="4" div-class="full-width" text-area-class="full-width" value="data.ar_invoice_billing_text" label="{{'AR_INVOICE_BILLING_TEXT'| translate}}" placeholder="{{'CUSTOM_TEXT_PLACEHOLDER' | translate }}"></ad-textarea>
-            </div>
+            <ad-textarea rows="4" div-class="full-width" text-area-class="full-width" value="data.ar_invoice_billing_text" label="{{'AR_INVOICE_BILLING_TEXT'| translate}}" placeholder="{{'CUSTOM_TEXT_PLACEHOLDER' | translate }}"></ad-textarea>
         </div>
         <div class="stationery-settings">
             <h4>Settings</h4>
@@ -107,7 +93,7 @@
             <div class="entry">
                 <label for="guest-hotel-logo">Hotel Logo</label>
                 <div class="select">
-                    <select ng-model="stationery_data.cards_invoice_logo_type" name="email-hotel-logo" class="placeholder">
+                    <select ng-model="stationery_data.cards_invoice_logo_type" name="email-hotel-logo">
                         <option value="" translate> SELECT_LOGO_TYPE </option>
                         <option ng-repeat="item in data.hotel_logo" value="{{item.value}}" ng-selected="item.value == data.email_logo_type">{{item.name}}</option>
                     </select>
@@ -116,9 +102,9 @@
             <div class="entry">
                 <label for="guest-default-bill">Default Bill</label>
                 <div class="select">
-                    <select ng-model="data.selected_guest_bill" name="guest-bill-template" class="placeholder">
-                            <option ng-repeat="item in data.guest_bill_settings" value="{{item.value}}" ng-selected="item.value == data.selected_guest_bill">{{item.name}}</option>
-                        </select>
+                    <select ng-model="data.selected_guest_bill" name="guest-bill-template">
+                        <option ng-repeat="item in data.guest_bill_settings" value="{{item.value}}" ng-selected="item.value == data.selected_guest_bill">{{item.name}}</option>
+                    </select>
                 </div>
             </div>
         </div>
@@ -132,17 +118,17 @@
     </div>
     <div class="stationery-group">
         <div class="stationery-items">
-            <div class="entry translation full-width">
-                        <label for="email-hotel-logo" translate> SELECT LANGUAGE </label>
-                        <div class="select">
-                            <select ng-model="stationery_data.account_invoice_language" name="locale" class="placeholder" ng-change="onLocaleChange()">
-                                <option ng-repeat="locale in languages.locales" value="{{locale.value}}" ng-selected="locale.value==locale"> {{locale.description}} </option>
-                            </select>
-                        </div>
+            <div class="entry translation">
+                <label for="email-hotel-logo" translate> SELECT LANGUAGE </label>
+                <div class="select">
+                    <select ng-model="stationery_data.account_invoice_language" name="locale" ng-change="onLocaleChange()">
+                        <option ng-repeat="locale in languages.locales" value="{{locale.value}}" ng-selected="locale.value==locale"> {{locale.description}} </option>
+                    </select>
+                </div>
             </div>         
             <div class="stationery-email">
                 <h4>Account Invoice Email</h4>
-                <div class="entry">
+                <div class="entry full-width">
                     <label>Subject</label>
                     <input type="text" placeholder="Enter Subject">
                 </div>
@@ -164,7 +150,7 @@
             <div class="entry">
                 <label for="guest-hotel-logo">Hotel Logo</label>
                 <div class="select">
-                    <select ng-model="stationery_data.account_invoice_logo_type" name="email-hotel-logo" class="placeholder">
+                    <select ng-model="stationery_data.account_invoice_logo_type" name="email-hotel-logo">
                         <option value="" translate> SELECT_LOGO_TYPE </option>
                         <option ng-repeat="item in data.hotel_logo" value="{{item.value}}" ng-selected="item.value == data.email_logo_type">{{item.name}}</option>
                     </select>
@@ -173,9 +159,9 @@
             <div class="entry">
                 <label for="account-default-bill">Default Bill</label>
                 <div class="select">
-                    <select ng-model="data.selected_account_bill" name="account-bill-template" class="placeholder">
-                            <option ng-repeat="item in data.account_bill_settings" value="{{item.value}}" ng-selected="item.value == data.selected_account_bill">{{item.name}}</option>
-                        </select>
+                    <select ng-model="data.selected_account_bill" name="account-bill-template">
+                        <option ng-repeat="item in data.account_bill_settings" value="{{item.value}}" ng-selected="item.value == data.selected_account_bill">{{item.name}}</option>
+                    </select>
                 </div>
             </div>
         </div>
@@ -189,28 +175,20 @@
     </div>
     <div class="stationery-group">
         <div class="stationery-items">
-            <div class="entry translation full-width">
-                        <label for="email-hotel-logo" translate> SELECT LANGUAGE </label>
-                        <div class="select">
-                            <select ng-model="stationery_data.proforma_invoice_language" name="locale" class="placeholder" ng-change="onLocaleChange()">
-                                <option ng-repeat="locale in languages.locales" value="{{locale.value}}" ng-selected="locale.value==locale"> {{locale.description}} </option>
-                            </select>
-                        </div>
+            <div class="entry translation">
+                <label for="email-hotel-logo" translate> SELECT LANGUAGE </label>
+                <div class="select">
+                    <select ng-model="stationery_data.proforma_invoice_language" name="locale" ng-change="onLocaleChange()">
+                        <option ng-repeat="locale in languages.locales" value="{{locale.value}}" ng-selected="locale.value==locale"> {{locale.description}} </option>
+                    </select>
+                </div>
             </div> 
             <div class="stationery-email">
                 <h4>Pro Forma Invoice Email</h4>
-                <div class="entry">
-                    <ad-textbox styleclass="full-width" value="data.pro_forma_invoice_subject" label="{{'PRO_FORMA_INVOICE_SUBJECT'| translate}}" placeholder="{{'ENTER_SUBJECT'| translate}}" ng-show="data.is_pro_forma_enabled"></ad-textbox>
-                </div>
-                <div class="entry full-width">
-                    <ad-textarea rows="4" div-class="full-width" text-area-class="full-width" value="data.pro_forma_invoice_body" label="{{'PRO_FORMA_INVOICE_BODY'| translate}} " placeholder="{{'PRO_FORMA_BODY_TEXT_PLACEHOLDER' | translate }}"></ad-textarea>
-                </div>
-                <div class="entry full-width">
-                    <ad-textarea  rows="4" div-class="full-width" text-area-class="full-width" value="data.pro_forma_invoice_custom_header" label="{{'PRO_FORMA_INVOICE_HEADER'| translate}} " placeholder="{{'CUSTOM_TEXT_HEADER_PLACE_HOLDER' | translate }}"></ad-textarea>
-                </div>
-                <div class="entry full-width">
-                    <ad-textarea rows="4" div-class="full-width" text-area-class="full-width" value="data.pro_forma_invoice_custom_footer" label="{{'PRO_FORMA_INVOICE_FOOTER'| translate}} " placeholder="{{'CUSTOM_TEXT_FOOTER_PLACE_HOLDER' | translate }}"></ad-textarea>
-                </div>
+                <ad-textbox styleclass="full-width" value="data.pro_forma_invoice_subject" label="{{'PRO_FORMA_INVOICE_SUBJECT'| translate}}" placeholder="{{'ENTER_SUBJECT'| translate}}" ng-show="data.is_pro_forma_enabled"></ad-textbox>
+                <ad-textarea rows="4" div-class="full-width" text-area-class="full-width" value="data.pro_forma_invoice_body" label="{{'PRO_FORMA_INVOICE_BODY'| translate}} " placeholder="{{'PRO_FORMA_BODY_TEXT_PLACEHOLDER' | translate }}"></ad-textarea>
+                <ad-textarea  rows="2" div-class="full-width" text-area-class="full-width" value="data.pro_forma_invoice_custom_header" label="{{'PRO_FORMA_INVOICE_HEADER'| translate}} " placeholder="{{'CUSTOM_TEXT_HEADER_PLACE_HOLDER' | translate }}"></ad-textarea>
+                <ad-textarea rows="2" div-class="full-width" text-area-class="full-width" value="data.pro_forma_invoice_custom_footer" label="{{'PRO_FORMA_INVOICE_FOOTER'| translate}} " placeholder="{{'CUSTOM_TEXT_FOOTER_PLACE_HOLDER' | translate }}"></ad-textarea>
             </div>
         </div>
         <div class="stationery-settings">
@@ -232,7 +210,7 @@
             <div class="entry">
                 <label for="guest-hotel-logo">Hotel Logo</label>
                 <div class="select">
-                    <select ng-model="stationery_data.proforma_invoice_logo_type" name="email-hotel-logo" class="placeholder">
+                    <select ng-model="stationery_data.proforma_invoice_logo_type" name="email-hotel-logo">
                         <option value="" translate> SELECT_LOGO_TYPE </option>
                         <option ng-repeat="item in data.hotel_logo" value="{{item.value}}" ng-selected="item.value == data.email_logo_type">{{item.name}}</option>
                     </select>
