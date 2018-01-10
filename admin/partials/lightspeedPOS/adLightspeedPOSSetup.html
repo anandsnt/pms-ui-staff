@@ -11,6 +11,10 @@
                     ng-class="{'orange' : state.activeTab === 'RESTAURANT', 'white' : state.activeTab !== 'RESTAURANT'}">
                 RESTAURANTS
             </button>
+            <button type="button" class="button add-data-inline toggle-tab" ng-click="toggleForm('PRODUCT_MAPPINGS')"
+                    ng-class="{'orange' : state.activeTab === 'PRODUCT_MAPPINGS', 'white' : state.activeTab !== 'PRODUCT_MAPPINGS'}">
+                PRODUCT MAPPINGS
+            </button>
         </div>
     </header>
     <section class="content-scroll">
@@ -92,6 +96,13 @@
                 <div ng-include="'/assets/partials/common/notification_message.html'"></div>
                 <div ng-include="'/assets/partials/common/notification_success_message.html'"></div>
                 <ng-include src="'/assets/partials/interfaces/LightSpeed/adLightSpedRestaurants.html'"></ng-include>
+            </section>
+        </div>
+        <div class="form float" ng-if="state.activeTab === 'PRODUCT_MAPPINGS'">
+            <section ng-controller="adLightSpeedProductMapppingCtrl">
+                <div ng-include="'/assets/partials/common/notification_message.html'"></div>
+                <div ng-include="'/assets/partials/common/notification_success_message.html'"></div>
+                <ng-include src="'/assets/partials/interfaces/LightSpeed/adLightSpeedProductMappping.html'"></ng-include>
             </section>
         </div>
     </section>
