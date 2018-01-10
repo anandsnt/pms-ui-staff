@@ -1317,7 +1317,12 @@ sntRover.controller('rvGroupActionsCtrl', ['$scope', '$filter', '$rootScope', 'n
             }
 
 
-        };       
+        };  
+
+        // Close the active dialog
+        $scope.closeDialog = function() {
+            ngDialog.close();
+        };     
 
 
         init();

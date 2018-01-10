@@ -1400,13 +1400,7 @@ angular.module('sntRover').controller('rvGroupConfigurationCtrl', [
             var activeMenu = ($scope.isInAddMode()) ? "menuCreateGroup" : "menuManageGroup";
 
             $scope.$emit("updateRoverLeftMenu", activeMenu);
-        };
-
-        // Close the active dialog
-        $scope.closeDialog = function() {
-            ngDialog.close();
-        };
-
+        };  
 
         /**
          * function to initialize things for group config.

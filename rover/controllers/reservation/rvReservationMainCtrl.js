@@ -716,7 +716,7 @@ sntRover.controller('RVReservationMainCtrl', ['$scope',
             fetchLastRateAdjustReason(room, index);
         };
 
-        var getPaymentData = function (skipPaymentData, data) {
+        var setPaymentData = function (skipPaymentData, data) {
                 if (!skipPaymentData) {
                     data.payment_type = {};
                     if ($scope.reservationData.paymentType.type.value !== null) {
@@ -735,7 +735,7 @@ sntRover.controller('RVReservationMainCtrl', ['$scope',
                     }
                 }
             },
-            getConfirmationEmailData = function (skipConfirmationEmails, data) {
+            setConfirmationEmailData = function (skipConfirmationEmails, data) {
                 if (!skipConfirmationEmails) {
                     data.confirmation_emails = [];
                     if ($scope.otherData.isGuestPrimaryEmailChecked && $scope.reservationData.guest.email !== "") {
@@ -746,20 +746,20 @@ sntRover.controller('RVReservationMainCtrl', ['$scope',
                     }
                 }
             },
-            getCcTaAllotmentGroupDetails = function (data) {
+            setCcTaAllotmentGroupDetails = function (data) {
                 data.company_id = $scope.reservationData.company.id || $scope.reservationData.group.company;
                 data.travel_agent_id = $scope.reservationData.travelAgent.id || $scope.reservationData.group.travelAgent;
                 data.group_id = $scope.reservationData.group.id;
                 data.allotment_id = $scope.reservationData.allotment.id;
             },
-            getDemoGraphicsInfo = function (data, demographicsData) {                 
+            setDemoGraphicsInfo = function (data, demographicsData) {                 
                 data.reservation_type_id = parseInt(demographicsData.reservationType);
                 data.source_id = parseInt(demographicsData.source);
                 data.market_segment_id = parseInt(demographicsData.market);
                 data.booking_origin_id = parseInt(demographicsData.origin);
                 data.segment_id = parseInt(demographicsData.segment);                
             },
-            getRoomTypes = function (data, shouldWeIncludeRoomTypeArray) {
+            setRoomTypes = function (data, shouldWeIncludeRoomTypeArray) {
                angular.forEach($scope.reservationData.tabs, function(tab, tabIndex) {
                     // addons
                     var firstIndex = _.indexOf($scope.reservationData.rooms, _.findWhere($scope.reservationData.rooms, {
@@ -792,7 +792,7 @@ sntRover.controller('RVReservationMainCtrl', ['$scope',
                     }
                 }); 
             },
-            getRoomInfo = function (data, roomIndex) {
+            setRoomInfo = function (data, roomIndex) {
                 data.room_id = [];
 
                 angular.forEach($scope.reservationData.rooms, function(room, currentRoomIndex) {
@@ -804,7 +804,7 @@ sntRover.controller('RVReservationMainCtrl', ['$scope',
                     }
                 });
             },
-            getReservationStayDateDetails = function (data, currentRoom) {
+            setReservationStayDateDetails = function (data, currentRoom) {
                 var reservationStayDetails = [];
                 
                 _.each(currentRoom.stayDates, function(staydetailInfo, date) {
@@ -839,7 +839,7 @@ sntRover.controller('RVReservationMainCtrl', ['$scope',
                         key: 'INVALID_PROMO'
                     }) ? 'OVERRIDE' : 'VALID';
                 } else {
-                    data.promotion_id = null;
+                    data.promotion_id = $scope.reservationData.promotionId;
                 }
             };
 
@@ -847,7 +847,7 @@ sntRover.controller('RVReservationMainCtrl', ['$scope',
         $scope.getReservationDataforUpdate = function(skipPaymentData, skipConfirmationEmails, roomIndex) {
             var data = {},
                 isCurrentlyInStayCard = ($state.current.name === "rover.reservation.staycard.reservationcard.reservationdetails"),
-                shouldWeIncludeRoomTypeArray = !isCurrentlyInStayCard && !$scope.reservationData.isHourly && typeof roomIndex === 'undefined';
+                shouldWeIncludeRoomTypeArray = !isCurrentlyInStayCard && !$scope.reservationData.isHourly;
 
             data.is_hourly = $scope.reservationData.isHourly;
             data.arrival_date = $scope.reservationData.arrivalDate;
@@ -884,7 +884,7 @@ sntRover.controller('RVReservationMainCtrl', ['$scope',
             data.guest_detail.last_name = $scope.reservationData.guest.lastName;
             data.guest_detail.email = $scope.reservationData.guest.email;
 
-            getPaymentData(skipPaymentData, data);  
+            setPaymentData(skipPaymentData, data);  
 
             // CICO-7077 Confirmation Mail to have tax details
 
@@ -897,7 +897,7 @@ sntRover.controller('RVReservationMainCtrl', ['$scope',
 
             // guest emails to which confirmation emails should send
 
-            getConfirmationEmailData(skipConfirmationEmails, data);            
+            setConfirmationEmailData(skipConfirmationEmails, data);            
 
             //  CICO-8320
             //  The API request payload changes
@@ -913,12 +913,12 @@ sntRover.controller('RVReservationMainCtrl', ['$scope',
             
             RVReservationStateService.bookMark.lastPostedRate = currentRoom.stayDates[$scope.reservationData.arrivalDate].rate.id;
             
-            stay.push(getReservationStayDateDetails(data, currentRoom)); 
+            stay.push(setReservationStayDateDetails(data, currentRoom)); 
 
             //  end of payload changes
             data.stay_dates = stay;
 
-            getCcTaAllotmentGroupDetails(data);            
+            setCcTaAllotmentGroupDetails(data);            
 
             // DEMOGRAPHICS
             var demographicsData = $scope.reservationData.demographics;
@@ -929,7 +929,7 @@ sntRover.controller('RVReservationMainCtrl', ['$scope',
 
             // CICO-11755
             if (typeof demographicsData !== undefined) {
-                getDemoGraphicsInfo(data, demographicsData);                
+                setDemoGraphicsInfo(data, demographicsData);                
             }
 
             data.confirmation_email = $scope.reservationData.guest.sendConfirmMailTo;
@@ -937,8 +937,8 @@ sntRover.controller('RVReservationMainCtrl', ['$scope',
             if (shouldWeIncludeRoomTypeArray) {
                 data.room_types = [];
             }
-            getRoomTypes(data, shouldWeIncludeRoomTypeArray);
-            getRoomInfo(data, roomIndex);            
+            setRoomTypes(data, shouldWeIncludeRoomTypeArray);
+            setRoomInfo(data, roomIndex);            
 
             // This senario is currently discharged for now, may be in future
             // 'is_outside_group_stay_dates' will always be sent as 'false' from server
@@ -989,7 +989,7 @@ sntRover.controller('RVReservationMainCtrl', ['$scope',
             data.guest_detail.last_name = $scope.reservationData.guest.lastName;
             data.guest_detail.email = $scope.reservationData.guest.email;
 
-            getPaymentData(skipPaymentData, data); 
+            setPaymentData(skipPaymentData, data); 
 
             // CICO-7077 Confirmation Mail to have tax details
             data.tax_details = [];
@@ -1000,7 +1000,7 @@ sntRover.controller('RVReservationMainCtrl', ['$scope',
             data.tax_total = $scope.reservationData.totalTaxAmount;
 
             // guest emails to which confirmation emails should send
-            getConfirmationEmailData(skipConfirmationEmails, data);  
+            setConfirmationEmailData(skipConfirmationEmails, data);  
 
             //  CICO-8320
             //  The API request payload changes
@@ -1015,7 +1015,7 @@ sntRover.controller('RVReservationMainCtrl', ['$scope',
                 RVReservationStateService.bookMark.lastPostedRate = room.stayDates[$scope.reservationData.arrivalDate].rate.id;
                 
                 if (typeof roomIndex === 'undefined' || currentRoomIndex === roomIndex) {                   
-                    stay.push(getReservationStayDateDetails(data, room));
+                    stay.push(setReservationStayDateDetails(data, room));
                 }
 
             });
@@ -1036,7 +1036,7 @@ sntRover.controller('RVReservationMainCtrl', ['$scope',
 
             // CICO-11755
             if (typeof demographicsData !== undefined) {
-                getDemoGraphicsInfo(data, demographicsData);                
+                setDemoGraphicsInfo(data, demographicsData);                
             }
 
             data.confirmation_email = $scope.reservationData.guest.sendConfirmMailTo;
@@ -1045,8 +1045,8 @@ sntRover.controller('RVReservationMainCtrl', ['$scope',
                 data.room_types = [];
             }
 
-            getRoomTypes(data, shouldWeIncludeRoomTypeArray); 
-            getRoomInfo(data, roomIndex);  
+            setRoomTypes(data, shouldWeIncludeRoomTypeArray); 
+            setRoomInfo(data, roomIndex);  
 
             // This senario is currently discharged for now, may be in future
             // 'is_outside_group_stay_dates' will always be sent as 'false' from server
