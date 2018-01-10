@@ -98,7 +98,8 @@ sntRover.service('RVCommissionsSrv', ['$http', '$q', 'BaseWebSrvV2', function($h
         }, {
             'value': 'AMOUNT_DESC',
             'name': 'AMOUNT DESC'
-        }]
+        }],
+        'non_commissionable': false
     };
 
     that.onyxExportCommissions = function(params) {
@@ -111,6 +112,36 @@ sntRover.service('RVCommissionsSrv', ['$http', '$q', 'BaseWebSrvV2', function($h
         }, function(data) {
             deferred.reject(data);
         });
+        return deferred.promise;
+    };
+
+
+    that.fetchExportTypeData = function() {
+
+        var deferred = $q.defer();
+        var url = '/api/accounts/fetch_enabled_commission_interface';
+
+        BaseWebSrvV2.getJSON(url).then(function(data) {
+            deferred.resolve(data);
+        }, function(data) {
+            deferred.reject(data);
+        });
+        return deferred.promise;
+    };
+
+    this.fetchHotelBusinessDate = function() {
+        var deferred = $q.defer(),
+            url = '/api/business_dates/active';
+
+        BaseWebSrvV2.getJSON(url).then(
+            function(data) {
+                deferred.resolve(data);
+            },
+            function(errorMessage) {
+                deferred.reject(errorMessage);
+            }
+        );
+
         return deferred.promise;
     };
 

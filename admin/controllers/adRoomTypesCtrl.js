@@ -138,8 +138,11 @@ admin.controller('ADRoomTypesCtrl', ['$scope', '$rootScope', '$state', 'ADRoomTy
         if ($scope.roomTypeData.is_suite) {
             $scope.roomTypeData.component_room_types = _.reject($scope.availableRoomTypes, {"blocked_rooms_count": 0});
         }
+        // CICO-47917 : Removing component_room_types while Overlay Hotels
+        if ( !$rootScope.isStandAlone ) {
+        	unwantedKeys.push('component_room_types');
+        }
 		var data = dclone($scope.roomTypeData, unwantedKeys);
-
 
     	var editSuccessCallbackSave = function(data) {
     		$scope.$emit('hideLoader');

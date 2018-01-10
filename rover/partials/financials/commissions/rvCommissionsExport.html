@@ -11,7 +11,8 @@
     <span class="text" ng-hide="exportInProgess || exportFailed || exportSuccess" translate>EXPORT_AND_PAY_COMMISSIONS</span>
 
     <!-- On exporting -->
-    <span class="text" ng-show="exportInProgess" translate>EXPORT_IN_PROGRESS_MSG</span>
+    <span class="text" ng-show="exportInProgess && filterData.selectedExportType ==='standard'" translate>EXPORT_IN_PROGRESS_MSG</span>
+    <span class="text" ng-show="exportInProgess && filterData.selectedExportType !=='standard'" translate>EXPORT_IN_PROGRESS_CUSTOM_MSG</span>
  
 
     <!-- On error -->
@@ -32,11 +33,11 @@
                 <span class="icon-form icon-radio " ng-class="{checked:filterData.selectedExportType ==='standard'}"></span>
                 <input type="radio" value="standard" ng-model="filterData.selectedExportType"> {{ 'STD_CSV_EXPORT' | translate}}
             </label>
-            <label class="radio" ng-class="{'checked':filterData.selectedExportType === 'onyx'}" ng-if="onyxExportEnabled">
+            <label class="radio" ng-class="{'checked':filterData.selectedExportType === 'onyx'}" ng-if="filterData.exportType === 'onyx'">
                 <span class="icon-form icon-radio " ng-class="{checked:filterData.selectedExportType ==='onyx'}"></span>
                 <input type="radio" value="onyx" ng-model="filterData.selectedExportType"> {{ 'ONYX_EXPORT' | translate}}
             </label>
-            <label class="radio" ng-class="{'checked':filterData.selectedExportType === 'tacs'}" ng-if="!onyxExportEnabled">
+            <label class="radio" ng-class="{'checked':filterData.selectedExportType === 'tacs'}" ng-if="filterData.exportType === 'tacs'">
                 <span class="icon-form icon-radio " ng-class="{checked:filterData.selectedExportType ==='tacs'}"></span>
                 <input type="radio" value="tacs" ng-model="filterData.selectedExportType"> {{ 'TACS_EXPORT' | translate}}
             </label>

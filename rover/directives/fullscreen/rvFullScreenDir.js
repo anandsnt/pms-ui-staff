@@ -13,6 +13,7 @@ sntRover.directive('rvFullscreen', [
             link: function(scope, element, attr) {
                 ['click', 'touchstart'].map(function(type) {
                     element.on(type, function(e) {
+                        e.stopPropagation();
                         var bodyEl = angular.element(document.querySelector('body'))[0],
                             fullscreenData = {};
 
@@ -28,7 +29,7 @@ sntRover.directive('rvFullscreen', [
                             scope.refreshScroller(key);
                         });
                         $rootScope.$digest();
-                        e.stopPropagation();
+                        return false;
                     });
                 });
             }
