@@ -20,6 +20,7 @@ sntRover.controller('companyCardCommissionsCtrl', [
             if ($scope.filterData.fromDate) {
                 params.from_date = $scope.filterData.fromDate;
             }
+
             if ($scope.filterData.toDate) {
                 params.to_date = $scope.filterData.toDate;
             }
