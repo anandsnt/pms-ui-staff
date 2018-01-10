@@ -839,7 +839,7 @@ sntRover.controller('RVReservationMainCtrl', ['$scope',
                         key: 'INVALID_PROMO'
                     }) ? 'OVERRIDE' : 'VALID';
                 } else {
-                    data.promotion_id = null;
+                    data.promotion_id = $scope.reservationData.promotionId;
                 }
             };
 
