@@ -429,6 +429,8 @@ sntRover.controller('RVCommissionsSummaryController', ['$scope',
             // Can navigate to TA even if commission is off.
             $state.go('rover.companycarddetails', {
                 id: account.id,
+                fromDate: $scope.dateData.fromDateForAPI !== '' ? $filter('date')($scope.dateData.fromDateForAPI, 'yyyy-MM-dd') : '',
+                toDate: $scope.dateData.toDateForAPI !== '' ? $filter('date')($scope.dateData.toDateForAPI, 'yyyy-MM-dd') : '',
                 type: 'TRAVELAGENT',
                 origin: 'COMMISION_SUMMARY'
             });
