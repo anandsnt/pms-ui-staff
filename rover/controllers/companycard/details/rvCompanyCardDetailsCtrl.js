@@ -216,7 +216,7 @@ angular.module('sntRover').controller('companyCardDetailsController', ['$scope',
 		// CICO-11664
 		// To default the AR transactions tab while navigating back from staycard
 		if ($stateParams.isBackFromStaycard) {
-			$scope.isArTabAvailable = true;
+			$scope.isArTabAvailable = !$stateParams.isBackToTACommission;
 			/*
 			*	CICO-45240 - Replace prevState data to that which we stored before going to Staycard.
 			*/
@@ -235,11 +235,16 @@ angular.module('sntRover').controller('companyCardDetailsController', ['$scope',
 			/*
 			*	CICO-45268 - Added $timeout to fix issue with data not being displayed on returning from Staycard.
 			*/
+			if ($scope.isArTabAvailable) {
+				$timeout(function() {
+					$scope.currentSelectedTab = 'cc-ar-transactions';
+					$scope.$broadcast('setgenerateNewAutoAr', true);
+					$scope.switchTabTo('', 'cc-ar-transactions');
+				}, 500);
+			}
 			$timeout(function() {
-				$scope.currentSelectedTab = 'cc-ar-transactions';
-				$scope.$broadcast('setgenerateNewAutoAr', true);
-				$scope.switchTabTo('', 'cc-ar-transactions');
-			}, 500);
+				$scope.$broadcast('BACK_FROM_STAY_CARD');
+			}, 1000);
 		}
 		// CICO-36080 - Back from staycard - Commissions tab as selected
 		if ($stateParams.isBackToTACommission) {

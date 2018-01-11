@@ -1,5 +1,5 @@
-sntRover.controller('RVCommisionsHeaderCtrl', ['$scope', 'ngDialog', '$log', '$timeout', 'RVCommissionsSrv', function($scope, ngDialog, $log, $timeout, RVCommissionsSrv) {
-    BaseCtrl.call(this, $scope);
+sntRover.controller('RVCommisionsHeaderCtrl', ['$scope', 'ngDialog', '$log', '$timeout', 'RVCommissionsSrv', '$filter', function($scope, ngDialog, $log, $timeout, RVCommissionsSrv, $filter) {
+                BaseCtrl.call(this, $scope);
 
     var setParamsInCurrentPage = function(params) {
         params.selected_tas = [];
@@ -62,7 +62,10 @@ sntRover.controller('RVCommisionsHeaderCtrl', ['$scope', 'ngDialog', '$log', '$t
             min_commission_amount: $scope.filterData.minAmount,
             query: $scope.filterData.searchQuery,
             sort_by: $scope.filterData.sort_by.value,
-            receipient_email: $scope.filterData.receipientEmail
+            receipient_email: $scope.filterData.receipientEmail,
+            begin_date: $scope.dateData.fromDateForAPI !== '' ? $filter('date')($scope.dateData.fromDateForAPI, 'yyyy-MM-dd') : '',
+            end_date: $scope.dateData.toDateForAPI !== '' ? $filter('date')($scope.dateData.toDateForAPI, 'yyyy-MM-dd') : '',
+            include_non_commissionable: $scope.filterData.non_commissionable
         };
         
         var options = {

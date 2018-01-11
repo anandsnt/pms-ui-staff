@@ -65,33 +65,58 @@ sntRover.controller('RVReservationSettingsCtrl', ['$scope', 'RVReservationBaseSe
                 $('#ui-datepicker-overlay').remove();
             }
         };
+       
 
         var initStayDates = function(roomNumber) {
-            if (roomNumber === 0) {
+            if (!roomNumber) {
                 $scope.reservationData.stayDays = [];
+
+                // Empty the stayDates array before populating it again CICO-25848            
+                _.each($scope.reservationData.rooms, function (room, idx) {
+                    room.stayDates = {};
+                    room.rateId = "";
+                });
+            } else {
+                // Empty the stayDates array before populating it again CICO-25848
+                $scope.reservationData.rooms[roomNumber].stayDates = {};
             }
-            // Empty the stayDates array before populating it again CICO-25848
-            $scope.reservationData.rooms[roomNumber].stayDates = {};
+            
 
             for (var d = [], ms = new tzIndependentDate($scope.reservationData.arrivalDate) * 1, last = new tzIndependentDate($scope.reservationData.departureDate) * 1; ms <= last; ms += (24 * 3600 * 1000)) {
-                if (roomNumber === 0) {
+                if (!roomNumber) {
                     $scope.reservationData.stayDays.push({
                         date: dateFilter(new tzIndependentDate(ms), 'yyyy-MM-dd'),
                         dayOfWeek: dateFilter(new tzIndependentDate(ms), 'EEE'),
                         day: dateFilter(new tzIndependentDate(ms), 'dd')
                     });
+
+                    _.each ($scope.reservationData.rooms, function (room) {
+                        room.stayDates[dateFilter(new tzIndependentDate(ms), 'yyyy-MM-dd')] = {
+                            guests: {
+                                adults: parseInt(room.numAdults),
+                                children: parseInt(room.numChildren),
+                                infants: parseInt(room.numInfants)
+                            },
+                            rate: {
+                                id: "",
+                                name: ""
+                            }
+                        };                    
+                    });  
+                } else {
+                    $scope.reservationData.rooms[roomNumber].stayDates[dateFilter(new tzIndependentDate(ms), 'yyyy-MM-dd')] = {
+                        guests: {
+                            adults: parseInt($scope.reservationData.rooms[roomNumber].numAdults),
+                            children: parseInt($scope.reservationData.rooms[roomNumber].numChildren),
+                            infants: parseInt($scope.reservationData.rooms[roomNumber].numInfants)
+                        },
+                        rate: {
+                            id: "",
+                            name: ""
+                        }
+                    };
                 }
-                $scope.reservationData.rooms[roomNumber].stayDates[dateFilter(new tzIndependentDate(ms), 'yyyy-MM-dd')] = {
-                    guests: {
-                        adults: parseInt($scope.reservationData.rooms[roomNumber].numAdults),
-                        children: parseInt($scope.reservationData.rooms[roomNumber].numChildren),
-                        infants: parseInt($scope.reservationData.rooms[roomNumber].numInfants)
-                    },
-                    rate: {
-                        id: "",
-                        name: ""
-                    }
-                };
+                              
             }
         };
 
@@ -99,7 +124,7 @@ sntRover.controller('RVReservationSettingsCtrl', ['$scope', 'RVReservationBaseSe
             $scope.reservationData.arrivalDate = dateFilter($scope.reservationData.arrivalDate, 'yyyy-MM-dd');
             $scope.setDepartureDate();
             $scope.setNumberOfNights();
-            initStayDates(0);
+            initStayDates();
             $scope.stayDatesClicked();
 
             if (typeof $scope.groupConfigData !== 'undefined') {
@@ -114,7 +139,7 @@ sntRover.controller('RVReservationSettingsCtrl', ['$scope', 'RVReservationBaseSe
         $scope.departureDateChanged = function() {
             $scope.reservationData.departureDate = dateFilter($scope.reservationData.departureDate, 'yyyy-MM-dd');
             $scope.setNumberOfNights();
-            initStayDates(0);
+            initStayDates();
             $scope.stayDatesClicked();
 
             if (typeof $scope.groupConfigData !== 'undefined') {

@@ -95,10 +95,8 @@ sntRover.controller('RVJournalPrintController', ['$scope', '$rootScope', '$timeo
 			$scope.data.revenueData = {};
 			$scope.data.revenueData = data;
 
-			var chargeCodeList = data.charge_groups[0].charge_codes;
-
-			$scope.data.activeChargeCodes = ( chargeCodeList.length > 0 ) ? chargeCodeList : [];
-			$scope.data.revenueData.charge_groups[0].active = true;
+			// Populate corresponding charge codes on list
+			$scope.chargeCodeChanged();
 
             $scope.errorMessage = "";
             $rootScope.$broadcast('REFRESHREVENUECONTENT');
@@ -130,6 +128,9 @@ sntRover.controller('RVJournalPrintController', ['$scope', '$rootScope', '$timeo
 			$scope.data.revenueData.charge_groups[0].charge_codes = data.charge_codes;
 			$scope.data.revenueData.charge_groups[0].active = true;
 
+			var chargeCodeList = data.charge_codes;
+
+			$scope.data.activeChargeCodes = ( chargeCodeList.length > 0 ) ? chargeCodeList : [];
 
 			$rootScope.$broadcast('REFRESHREVENUECONTENT');
             $scope.errorMessage = "";

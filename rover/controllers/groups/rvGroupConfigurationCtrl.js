@@ -1400,7 +1400,7 @@ angular.module('sntRover').controller('rvGroupConfigurationCtrl', [
             var activeMenu = ($scope.isInAddMode()) ? "menuCreateGroup" : "menuManageGroup";
 
             $scope.$emit("updateRoverLeftMenu", activeMenu);
-        };
+        };  
 
         /**
          * function to initialize things for group config.
