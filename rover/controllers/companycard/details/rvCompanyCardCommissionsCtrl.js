@@ -21,6 +21,7 @@ sntRover.controller('companyCardCommissionsCtrl', [
             if ($scope.filterData.fromDate) {
                 params.from_date = $scope.filterData.fromDate;
             }
+
             if ($scope.filterData.toDate) {
                 params.to_date = $scope.filterData.toDate;
             }
@@ -504,8 +505,8 @@ sntRover.controller('companyCardCommissionsCtrl', [
         $scope.commissionDetails = [];
         $scope.commissionSummary = {};
         $scope.filterData = {
-            fromDate: "",
-            toDate: "",
+            fromDate: $stateParams.fromDate,
+            toDate: $stateParams.toDate,
             paidStatus: "Unpaid",
             commissionStatus: "Commissionable",
             perPage: 25, // RVCompanyCardSrv.DEFAULT_PER_PAGE,
