@@ -331,6 +331,9 @@ sntRover.controller('reservationDetailsController',
 		// CICO-46933
 		$scope.arrivalDateChanged = function () {			
             $scope.departureDateOptions.maxDate = !!$scope.reservationData.reservation_card.group_id ? $filter('date')($scope.reservationData.reservation_card.group_block_to, $rootScope.dateFormat) : $scope.getReservationMaxDepartureDate($scope.editStore.arrival);
+            $scope.editStore.departure = tzIndependentDate($scope.editStore.departure) <= $scope.getReservationMaxDepartureDate($scope.editStore.arrival) ? 
+            							$scope.editStore.departure : $scope.getReservationMaxDepartureDate($scope.editStore.arrival)
+
 		};
 
 		$scope.reservationData.paymentTypes = paymentTypes;
