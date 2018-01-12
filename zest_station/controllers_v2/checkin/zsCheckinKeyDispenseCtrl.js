@@ -57,7 +57,7 @@ sntZestStation.controller('zsCheckinKeyDispenseCtrl', [
                     'reservation_id': $stateParams.reservation_id,
                     'room_no': $stateParams.room_no,
                     'first_name': $stateParams.first_name
-                })
+                });
             }
         }());
 
