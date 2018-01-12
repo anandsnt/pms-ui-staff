@@ -150,6 +150,10 @@ sntZestStation.controller('zsKeyDispenseCtrl', [
 		};
 
 		var fetchKeyDataSuccess = function(response) {
+			// show loader incase of iPad
+			if ($scope.writeLocally()) {
+				$scope.$emit('showLoader');
+			}
 			$scope.keyData = response;
 			writeKey($scope.keyData, $scope.makingKey);
 		};
