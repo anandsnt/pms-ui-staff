@@ -311,6 +311,7 @@ sntRover.controller('RVReservationMainCtrl', ['$scope',
                             var firstTaxRecord = currentTaxes[taxType][Object.keys(currentTaxes[taxType])[0]];
                             var rateIdExisting = firstTaxRecord.rate;
                             var roomIndexExisting = firstTaxRecord.roomIndex;
+                            
                             // Expression below was modified to fix CICO-32466.
                             // CICO-47925
                             if (rateIdExisting === description.rate || roomIndexExisting !== description.roomIndex) {
