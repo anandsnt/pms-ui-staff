@@ -91,7 +91,7 @@
             </div>
 
             <!-- App -->
-            <div class="group-holder" ng-class = "{'active': is_app_active}">
+            <div class="group-holder" ng-class = "{'active': is_app_active}" ng-show="data.show_links_to_download_app">
                 <div class="form-title has-toggle" ng-click = "is_app_active = !is_app_active"> <!-- Clicking this toggles class 'active' on L120 -->
                     <h3>App</h3>
                 </div>
@@ -106,7 +106,7 @@
             </div>  
 
             <!-- Social Networks -->
-            <div class="group-holder" ng-class = "{'active': is_social_network_active}">
+            <div class="group-holder" ng-class = "{'active': is_social_network_active}" ng-show="data.show_social_network_links">
                 <div class="form-title has-toggle" ng-click = "is_social_network_active = !is_social_network_active"> <!-- Clicking this toggles class 'active' on L141 -->
                     <h3>Social Networks</h3>
                 </div>
@@ -166,8 +166,8 @@
             </div>
             <div class="entry">
                 <label for="networks-guest-confirmation" class="switch-label">Show Social Networks</label>
-                <div class="switch-button">
-                    <input id="networks-guest-confirmation" type="checkbox"> 
+                <div class="switch-button" ng-class = "{'on': data.show_social_network_links}">
+                    <input id="networks-guest-confirmation" type="checkbox" ng-model="data.show_social_network_links"> 
                     <span class="switch-icon"></span>
                 </div>
             </div>

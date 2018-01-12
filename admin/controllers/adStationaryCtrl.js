@@ -66,8 +66,8 @@ admin.controller('ADStationaryCtrl',
 					name: social
 				});
 			});
-
-			$scope.data = data;
+			
+			$scope.data = data;			
 			$scope.data.groupholdstatus = data.group_hold_status_data[0].hold_status_id;
 			$scope.showConfirmationHeaderFooterBasedOnHoldStatus();
 			$scope.itemList = new ngTableParams({
@@ -191,7 +191,7 @@ admin.controller('ADStationaryCtrl',
 			type: '',
 			link: ''
 		};
-		$scope.currentSocialLink = 'NEW';
+		$scope.currentSocialLink = 'NEW';		
 	};
 
 	$scope.onPushNewLink = function() {
@@ -206,6 +206,13 @@ admin.controller('ADStationaryCtrl',
 	$scope.onUpdateSocialLink = function() {
 		$scope.currentSocialLink = false;
 	};
+
+	$scope.isLinkAvailable = function(index) {
+		if( $scope.currentSocialLink == 'NEW')
+			return _.pluck($scope.data.social_network_links, "type").indexOf($scope.socialNetworks[index].name) == -1 
+		else 
+			return _.pluck($scope.data.social_network_links, "type").indexOf($scope.socialNetworks[index].name) == -1 || $scope.data.social_network_links[$scope.currentSocialLink].type == $scope.socialNetworks[index].name;
+	}
 
 	/*
 	* Get invoked when the locale is changed

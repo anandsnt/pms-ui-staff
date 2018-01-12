@@ -15,8 +15,8 @@
                     <!-- Edit Department -->
                     <form class="form inline-form float">
                         <h4 translate><span>Edit</span> Social Network</h4>
-                        <ad-dropdown div-class='full-width' label-in-drop-down="{{ 'SELECT_SOCIAL_NETWORK' | translate }}" label="{{ 'SOCIAL_NETWORK' | translate }}" sel-class='placeholder' list='socialNetworks' required='yes' selected-Id='socialNW.type'></ad-dropdown>
-                        <ad-textbox styleclass="full-width" value="socialNW.link" label="{{'SOCIAL_NETWORK_URL' | translate}}" placeholder="{{'ENTER_SOCIAL_NEWORK_URL' | translate}}" required="yes"></ad-textbox>
+                        <ad-dropdown div-class='full-width' label-in-drop-down="{{ 'SELECT_SOCIAL_NETWORK' | translate }}" label="{{ 'SOCIAL_NETWORK' | translate }}" sel-class='placeholder' list="socialNetworks" required='yes' selected-Id='socialNW.type' options = "{'showOptionsIf': isLinkAvailable}"></ad-dropdown>
+                        <ad-textbox inputtype="text" styleclass="full-width" value="socialNW.link" label="{{'SOCIAL_NETWORK_URL' | translate}}" placeholder="{{'ENTER_SOCIAL_NEWORK_URL' | translate}}" required="yes"></ad-textbox>
                         <div class="actions float">
                             <button type="button" id="cancel" class="button blank" ng-click="onCancelEditLink($index)" translate>
                                 CANCEL
