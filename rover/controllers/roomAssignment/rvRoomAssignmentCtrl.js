@@ -60,8 +60,8 @@ sntRover.controller('RVroomAssignmentController', [
 
 	// CICO-47546 Overbooking selection flag
 	$scope.overbooking = {
-		isOpted : false
-	}
+		isOpted: false
+	};
 	/**
 	* function to to get the rooms based on the selected room type
 	*/
