@@ -624,6 +624,8 @@
 
    "ENDING_WITH": "Ending with",
    "EXPIRES": "Expires",
-   "PAYMENT": "PAYMENT"
+   "PAYMENT": "PAYMENT",
+   "MANUAL_KEY_PICKUP_HEADER": "Manual Key Pickup",
+   "MANUAL_KEY_PICKUP_MSG": "Please pick your key from the front desk"
 
 }
