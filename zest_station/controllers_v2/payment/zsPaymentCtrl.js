@@ -15,12 +15,13 @@ angular.module('sntZestStation').controller('zsPaymentCtrl', ['$scope', '$log', 
         };
 
         var setErrorMessageBasedOnResponse = function(errorMessage) {
-            var message = ''
+            var message = '';
+
             if (errorMessage.includes('OPERATOR TIMEOUT')) {
                 // 143 TRANSACTION FAILED.:OPERATOR TIMEOUT
                 message = 'OPERATION TIMED OUT';
             } else if (errorMessage.includes('104 Connection with an external device not established')) {
-                //104 CONNECTION WITH AN EXTERNAL DEVICE NOT ESTABLISHED.
+                // 104 CONNECTION WITH AN EXTERNAL DEVICE NOT ESTABLISHED.
                 message = 'PLEASE RECHECK THE CONNECTION WITH THE EXTERNAL DEVICE';
             } else {
                 // 143 TRANSACTION FAILED.:OPERATOR CANCELLED
@@ -97,9 +98,9 @@ angular.module('sntZestStation').controller('zsPaymentCtrl', ['$scope', '$log', 
             } else {
                 $scope.$emit('showLoader');
                 $timeout(function() {
-                   $scope.$emit('hideLoader');
-                   $scope.screenMode.value = 'PAYMENT_FAILED';
-                   $scope.screenMode.errorMessage = ($scope.zestStationData.paymentGateway === 'CBA') ? 'Use Zest station from an iPad': '';
+                    $scope.$emit('hideLoader');
+                    $scope.screenMode.value = 'PAYMENT_FAILED';
+                    $scope.screenMode.errorMessage = ($scope.zestStationData.paymentGateway === 'CBA') ? 'Use Zest station from an iPad' : '';
                 }, 2000);
             }
         };

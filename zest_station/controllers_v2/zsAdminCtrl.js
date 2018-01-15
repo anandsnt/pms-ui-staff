@@ -475,7 +475,7 @@ sntZestStation.controller('zsAdminCtrl', [
 
         $scope.fetchDeviceStatus = function() {
             var callBacks = {
-                'successCallBack': function(response, versionDetails) {
+                'successCallBack': function(response) {
                     if (response.length > 0) {
                         $scope.zestStationData.connectedDeviceDetails = response[0];
                         if (!response[0].device_connection_state) {
@@ -491,6 +491,7 @@ sntZestStation.controller('zsAdminCtrl', [
                     $scope.errorMessage = errorMessage;
                 }
             };
+
             $scope.zestStationData.connectedDeviceDetails.device_connection_state = 'refreshing...';
             $scope.cardReader.getConnectedDeviceDetails(callBacks);
         };

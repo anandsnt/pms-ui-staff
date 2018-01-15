@@ -9,7 +9,7 @@ angular.module('sntZestStation').controller('zsCheckoutBalancePaymentCtrl', ['$s
         // uncomment for debugging
         // $scope.isIpad = true;
 
-        $scope.goToNextScreen = function(){
+        $scope.goToNextScreen = function() {
             $state.go('zest_station.checkoutReservationBill', angular.extend(zsStateHelperSrv.getPreviousStateParams(), {
                 dueBalancePaid: true
             }));
@@ -20,7 +20,7 @@ angular.module('sntZestStation').controller('zsCheckoutBalancePaymentCtrl', ['$s
             $scope.screenMode.value = 'PAYMENT_SUCCESS';
         });
 
-        var startCBAPayment = function(){
+        var startCBAPayment = function() {
             if ($scope.isIpad) {
                 $scope.screenMode.value = 'PAYMENT_IN_PROGRESS';
                 $timeout(function() {
@@ -30,20 +30,20 @@ angular.module('sntZestStation').controller('zsCheckoutBalancePaymentCtrl', ['$s
                 $scope.$emit('showLoader');
                 $scope.screenMode.value = 'PAYMENT_IN_PROGRESS';
                 $timeout(function() {
-                   $scope.$emit('hideLoader');
-                   $scope.screenMode.value = 'PAYMENT_FAILED';
-                   $scope.screenMode.errorMessage = 'Use Zest station from an iPad';
+                    $scope.$emit('hideLoader');
+                    $scope.screenMode.value = 'PAYMENT_FAILED';
+                    $scope.screenMode.errorMessage = 'Use Zest station from an iPad';
                 }, 2000);
             }
         };
 
 
-        $scope.payUsingNewCard = function(){
-           startCBAPayment();
+        $scope.payUsingNewCard = function() {
+            startCBAPayment();
         };
 
-        $scope.payUsingExistingCard = function(){
-            console.log('will be done later');
+        $scope.payUsingExistingCard = function() {
+            // console.log('will be done later');
         };
 
         (function() {
