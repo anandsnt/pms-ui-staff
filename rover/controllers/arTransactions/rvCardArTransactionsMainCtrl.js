@@ -342,6 +342,9 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 				$scope.errorMessage = [];
 				$scope.arFlags.insufficientAmount = true;
 			}
+			else {
+				$scope.errorMessage = errorMessage;
+			}
 		};
 
 		/*
@@ -833,6 +836,15 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 				$scope.paymentModalOpened = true;
 
 			}, 500);
+		});
+
+		// CICO-47819: Handling action after navigation back from Staycard
+		$scope.$on('BACK_FROM_STAY_CARD', function() {
+			if (typeof $scope.arDataObj.accountId === 'undefined') {
+				$timeout(function() {
+					init();
+				}, 2000);
+			}
 		});
 
 }]);

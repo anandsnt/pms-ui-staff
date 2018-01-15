@@ -629,6 +629,7 @@
    "USE_NEW_CARD": "Use a New Card",
    "PAYMENT": "PAYMENT",
    "PAYMENT_SUCCESSFULL": "Payment Successful",
-   "BALANCE_WAS_PAID": "Your balance was paid successfully!!"
+   "BALANCE_WAS_PAID": "Your balance was paid successfully!!",
+   "PAYMENT": "PAYMENT"
 
 }
