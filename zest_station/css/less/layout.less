@@ -215,18 +215,19 @@
                 }
             }
             .cc-details {
-                 margin: 0;
+                margin: 0;
  
-                 strong {
+                strong {
                      font-size: 16px;
                      color: @textColor;
-                 }
-                 
-                 span { 
+                }
+ 
+                span { 
                      display: inline-block;
                      color: fade(@textColor, 70); 
-                 }
+                }
             }
+
 
             span { 
                 font-size: 14px;
@@ -285,6 +286,7 @@
         }
     }
 
+
     #balance {
          #flexbox > .flex();
          #flexbox > .parent(row wrap, center, '', '');
@@ -314,48 +316,40 @@
 
         #bill {
              width: 100%;
-         }
+        }
+
+        #payment {
+            width: 70%;
+            #flexbox > .flex();
+            #flexbox > .parent(row wrap, '', '', '');
  
-         #payment {
-             width: 70%;
-             #flexbox > .flex();
-             #flexbox > .parent(row wrap, '', '', '');
+            h4 {
+                text-align: left;
+                line-height: 1.2;
+                margin-bottom: 0;
+                font-weight: 600;
+                width: 100%;
+            }
  
-             h4 {
-                 text-align: left;
-                 line-height: 1.2;
-                 margin-bottom: 0;
-                 font-weight: 600;
-                 width: 100%;
-             }
- 
-             p {
+            p {
                  margin: 0 20px 0 0;
-             }
+            }
  
-             strong {
-                 font-size: 16px;
-                 color: @black;
-             }
+            strong {
+                font-size: 16px;
+                color: @black;
+            }
  
-             span { color: lighten(@black, 50); }
+            span { color: lighten(@black, 50); }
  
-             .button {
+            .button {
                  display: inline-block;
                  font-size: 14px;
                  line-height: 54px;
                  height: 54px;
-             }
-         }
- 
-         #rate {
-             margin: 0 0 0 auto;
-             width: 30%;
- 
-             li {
-                 &.total { color: @actionBackground; }
-             }
+            }
         }
+ 
 
         .wrapper { 
             padding: 20px 30px; 
@@ -2266,9 +2260,9 @@
 .black-text{
     color:#000000;
     &.visible{
-        opacity:1;
+     opacity:1;
     }
-}
+}   
 .key-in-progress{
     color: yellow;
 }
