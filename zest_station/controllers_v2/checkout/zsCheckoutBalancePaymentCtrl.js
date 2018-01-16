@@ -22,13 +22,11 @@ angular.module('sntZestStation').controller('zsCheckoutBalancePaymentCtrl', ['$s
 
         var startCBAPayment = function() {
             if ($scope.isIpad) {
-                $scope.screenMode.value = 'PAYMENT_IN_PROGRESS';
                 $timeout(function() {
                     $scope.makeCBAPayment();
                 }, 3000);
             } else {
                 $scope.$emit('showLoader');
-                $scope.screenMode.value = 'PAYMENT_IN_PROGRESS';
                 $timeout(function() {
                     $scope.$emit('hideLoader');
                     $scope.screenMode.value = 'PAYMENT_FAILED';
@@ -37,13 +35,24 @@ angular.module('sntZestStation').controller('zsCheckoutBalancePaymentCtrl', ['$s
             }
         };
 
-
         $scope.payUsingNewCard = function() {
-            startCBAPayment();
+            $scope.screenMode.value = 'PAYMENT_IN_PROGRESS';
+            if ($scope.zestStationData.paymentGateway === 'CBA' && $scope.isIpad) {
+                startCBAPayment();
+            } else if ($scope.zestStationData.paymentGateway === 'MLI' && $scope.zestStationData.mliEmvEnabled) {
+                $scope.proceedWithEMVPayment();
+            } else {
+                $scope.$emit('showLoader');
+                $timeout(function() {
+                    $scope.$emit('hideLoader');
+                    $scope.screenMode.value = 'PAYMENT_FAILED';
+                    $scope.screenMode.errorMessage = ($scope.zestStationData.paymentGateway === 'CBA') ? 'Use Zest station from an iPad' : '';
+                }, 2000);
+            }
         };
 
-        $scope.payUsingExistingCard = function() {
-            // console.log('will be done later');
+        $scope.reTryCardSwipe = function() {
+             $scope.payUsingNewCard();
         };
 
         (function() {
@@ -53,6 +62,7 @@ angular.module('sntZestStation').controller('zsCheckoutBalancePaymentCtrl', ['$s
 
             $scope.balanceDue = paymentParams.amount;
             $scope.cardDetails = paymentParams.payment_details;
+            $scope.reservation_id = paymentParams.reservation_id;
             // check if  card is present, if so show two options
             if ($scope.zestStationData.paymentGateway !== 'CBA' && paymentParams.payment_details.card_number && paymentParams.payment_details.card_number.length) {
                 $scope.screenMode.value = 'SELECT_PAYMENT_METHOD';
