@@ -15,7 +15,12 @@ sntZestStation.controller('zsHomeCtrl', [
         $scope.clickedOnPickUpKey = function() {
             $scope.trackEvent('PUK', 'user_selected');
             clearInterval($scope.activityTimer);
-            if ($scope.zestStationData.pickup_qr_scan) {
+            if ($scope.zestStationData.kiosk_key_creation_method === 'manual') {
+                $state.go('zest_station.manualKeyPickup', {
+                    'mode': 'PICKUP_KEY'
+                });
+            }
+            else if ($scope.zestStationData.pickup_qr_scan) {
                 $scope.setScreenIcon('key');
                 $state.go('zest_station.qrPickupKey');
             } else {
