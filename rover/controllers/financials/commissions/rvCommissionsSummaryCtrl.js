@@ -8,7 +8,8 @@ sntRover.controller('RVCommissionsSummaryController', ['$scope',
     '$state',
     'businessDate', 
     'rvUtilSrv',
-    function($scope, $rootScope, $stateParams, $filter, RVCommissionsSrv, $timeout, $window, $state, businessDate, util) {
+    'sntActivity',
+    function($scope, $rootScope, $stateParams, $filter, RVCommissionsSrv, $timeout, $window, $state, businessDate, util, sntActivity) {
 
         BaseCtrl.call(this, $scope);
         $scope.filterData = RVCommissionsSrv.filterData;
@@ -425,10 +426,13 @@ sntRover.controller('RVCommissionsSummaryController', ['$scope',
         };
       
         $scope.navigateToTA = function(account) {
+            sntActivity.start('NAVIGATING_TO_TA_COMMISSIONS');
             // https://stayntouch.atlassian.net/browse/CICO-40583
             // Can navigate to TA even if commission is off.
             $state.go('rover.companycarddetails', {
                 id: account.id,
+                fromDate: $scope.dateData.fromDateForAPI !== '' ? $filter('date')($scope.dateData.fromDateForAPI, 'yyyy-MM-dd') : '',
+                toDate: $scope.dateData.toDateForAPI !== '' ? $filter('date')($scope.dateData.toDateForAPI, 'yyyy-MM-dd') : '',
                 type: 'TRAVELAGENT',
                 origin: 'COMMISION_SUMMARY'
             });

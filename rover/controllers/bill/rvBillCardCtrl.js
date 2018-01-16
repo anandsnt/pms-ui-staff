@@ -379,7 +379,7 @@ sntRover.controller('RVbillCardController',
 	* @return {Boolean}
 	*/
 	$scope.shouldShowEnableDisableChargeButton = function() {
-		return ($scope.clickedButton === 'checkinButton' &&
+		return (!$rootScope.isStandAlone && $scope.clickedButton === 'checkinButton' &&
 			!$scope.reservationBillData.is_res_posting_control_disabled);
 	};
 
@@ -1762,7 +1762,7 @@ sntRover.controller('RVbillCardController',
 
 		var errorMsg = "", signatureData = $scope.getSignature();
 
-		if ($scope.signatureNeeded(signatureData)) {
+		if ($scope.signatureNeeded(signatureData) && !$scope.reservation.reservation_card.is_pre_checkin) {
 			errorMsg = "Signature is missing";
 			$scope.showErrorPopup(errorMsg);
 

@@ -816,7 +816,8 @@ sntZestStation.controller('zsRootCtrl', [
                     left_arrow_icon: commonIconsPath + '/arrow-left.svg',
                     right_arrow_icon: commonIconsPath + '/arrow-right.svg',
                     late_checkout_icon: iconBasePath + '/late-checkout.svg',
-                    scanpassport: iconBasePath + ($scope.zestStationData.scan_passport_file_uploaded.length > 0) ? $scope.zestStationData.scan_passport_file_uploaded : ''
+                    scanpassport: iconBasePath + ($scope.zestStationData.scan_passport_file_uploaded.length > 0) ? $scope.zestStationData.scan_passport_file_uploaded : '',
+                    success: iconBasePath + '/success.svg'
                 }
             };
 
@@ -1981,6 +1982,8 @@ sntZestStation.controller('zsRootCtrl', [
             $scope.zestStationData.makingAdditionalKey = false;
             $scope.zestStationData.autoIpadKeyboardEnabled = false;
             $scope.zestStationData.appVersion = null;
+            $scope.zestStationData.connectedDeviceDetails = {};
+            
             if ($scope.isIpad) {
                 try {
                     // check for the method getAppInfo via rvcardplugin, if it does not exist,
