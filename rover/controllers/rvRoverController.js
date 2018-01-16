@@ -784,18 +784,8 @@ sntRover.controller('roverController', [
         */
         if (!rvUtilSrv.checkDevice.any()) {
             sntapp.desktopCardReader.isDesktopSwipeEnabled = $rootScope.desktopSwipeEnabled;
-
-            if ($rootScope.desktopSwipeEnabled) {
-                // Start Card reader now!
-                $rootScope.isDesktopUUIDServiceInvoked = true;
-                initiateDesktopCardReader();
-            } else {
-                sntapp.desktopCardReader.setDesktopUUIDServiceStatus(true);
-                sntapp.desktopCardReader.startDesktopReader(
-                    $rootScope.ccSwipeListeningPort,
-                    options,
-                    $rootScope.ccSwipeListeningUrl);
-            }
+            $rootScope.isDesktopUUIDServiceInvoked = true;
+            initiateDesktopCardReader();
         }
 
         /*
