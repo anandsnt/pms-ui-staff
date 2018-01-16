@@ -41,6 +41,9 @@ angular.module('sntZestStation').controller('zsCheckoutBalancePaymentCtrl', ['$s
                 startCBAPayment();
             } else if ($scope.zestStationData.paymentGateway === 'MLI' && $scope.zestStationData.mliEmvEnabled) {
                 $scope.proceedWithEMVPayment();
+                $timeout(function() {
+                    $scope.$emit('showLoader');
+                }, 4000);
             } else {
                 $scope.$emit('showLoader');
                 $timeout(function() {
@@ -64,9 +67,14 @@ angular.module('sntZestStation').controller('zsCheckoutBalancePaymentCtrl', ['$s
             $scope.cardDetails = paymentParams.payment_details;
             $scope.reservation_id = paymentParams.reservation_id;
             // check if  card is present, if so show two options
-            if ($scope.zestStationData.paymentGateway !== 'CBA' && paymentParams.payment_details.card_number && paymentParams.payment_details.card_number.length) {
-                $scope.screenMode.value = 'SELECT_PAYMENT_METHOD';
-            } else if ($scope.zestStationData.paymentGateway === 'CBA' && $scope.isIpad) {
+            if ($scope.zestStationData.paymentGateway !== 'CBA') {
+                if (paymentParams.payment_details && paymentParams.payment_details.card_number && paymentParams.payment_details.card_number.length) {
+                    $scope.screenMode.value = 'SELECT_PAYMENT_METHOD';
+                } else {
+                    $scope.payUsingNewCard()
+                }
+            }
+            else if ($scope.zestStationData.paymentGateway === 'CBA' && $scope.isIpad) {
                 $scope.initiateCBAlisteners();
                 startCBAPayment();
             } else {

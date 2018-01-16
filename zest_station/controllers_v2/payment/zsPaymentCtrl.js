@@ -94,10 +94,13 @@ angular.module('sntZestStation').controller('zsPaymentCtrl', ['$scope', '$log', 
         var callSubmitPaymentApi = function(params) {
             $scope.callAPI(zsPaymentSrv.submitDeposit, {
                 params: params,
+                'loader': 'none',
                 'successCallBack': function() {
+                    $scope.$emit('hideLoader');
                     $scope.screenMode.value = 'PAYMENT_SUCCESS';
                 },
                 'failureCallBack': function() {
+                    $scope.$emit('hideLoader');
                     $scope.screenMode.value = 'PAYMENT_FAILED';
                 }
             });
