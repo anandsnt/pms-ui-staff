@@ -33,10 +33,10 @@ sntRover.controller('RVPostChargeControllerV2',
 			// need to keep track of the last pressed
 			// button or number on the numberpad
 			var lastInput = null,
-
 			// need to keep track of the price
 			// entered by the user
 			userEnteredPrice = '';
+			
 			// Setting up fetched data obj
 			$scope.fetchedData.charge_groups = [];
 			$scope.fetchedData.pageNo = 1;
