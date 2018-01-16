@@ -22,6 +22,7 @@ angular.module('sntZestStation').controller('zsCheckoutBalancePaymentCtrl', ['$s
 
         var startCBAPayment = function() {
             if ($scope.isIpad) {
+                $scope.screenMode.value = 'PAYMENT_IN_PROGRESS';
                 $timeout(function() {
                     $scope.makeCBAPayment();
                 }, 3000);
@@ -40,6 +41,8 @@ angular.module('sntZestStation').controller('zsCheckoutBalancePaymentCtrl', ['$s
             if ($scope.zestStationData.paymentGateway === 'CBA' && $scope.isIpad) {
                 startCBAPayment();
             } else if ($scope.zestStationData.paymentGateway === 'MLI' && $scope.zestStationData.mliEmvEnabled) {
+                // for EMV start sending request to terminal
+                // add 4 seconds delay for the screen to show the activity indicator
                 $scope.proceedWithEMVPayment();
                 $timeout(function() {
                     $scope.$emit('showLoader');
@@ -66,15 +69,18 @@ angular.module('sntZestStation').controller('zsCheckoutBalancePaymentCtrl', ['$s
             $scope.balanceDue = paymentParams.amount;
             $scope.cardDetails = paymentParams.payment_details;
             $scope.reservation_id = paymentParams.reservation_id;
-            // check if  card is present, if so show two options
+            
             if ($scope.zestStationData.paymentGateway !== 'CBA') {
+                // check if  card is present, if so show two options
                 if (paymentParams.payment_details && paymentParams.payment_details.card_number && paymentParams.payment_details.card_number.length) {
                     $scope.screenMode.value = 'SELECT_PAYMENT_METHOD';
                 } else {
+                    // no CC on File
                     $scope.payUsingNewCard()
                 }
             }
             else if ($scope.zestStationData.paymentGateway === 'CBA' && $scope.isIpad) {
+                // for CBA always use new payment method
                 $scope.initiateCBAlisteners();
                 startCBAPayment();
             } else {
