@@ -442,6 +442,12 @@ sntZestStation.controller('zsRootCtrl', [
                 $scope.icons.url.createkey_icmp = $scope.iconsPath + '/encode_image.svg';
                 $scope.icons.url.creditcard_icmp = $scope.iconsPath + '/icmp_swipe.svg';
                 $scope.icmp = true;
+            }
+            else if ($scope.zestStationData.theme === 'huntley' ||
+                $scope.zestStationData.theme === 'row-nyc') {
+                $scope.icons.url.createkey_icmp = $scope.iconsPath + '/encode_image.svg';
+                $scope.icons.url.creditcard_icmp = $scope.iconsPath + '/demo_swiper.svg';
+                $scope.icmp = true;
             } else {
                 $scope.icmp = false;
             }
@@ -810,7 +816,8 @@ sntZestStation.controller('zsRootCtrl', [
                     left_arrow_icon: commonIconsPath + '/arrow-left.svg',
                     right_arrow_icon: commonIconsPath + '/arrow-right.svg',
                     late_checkout_icon: iconBasePath + '/late-checkout.svg',
-                    scanpassport: iconBasePath + ($scope.zestStationData.scan_passport_file_uploaded.length > 0) ? $scope.zestStationData.scan_passport_file_uploaded : ''
+                    scanpassport: iconBasePath + ($scope.zestStationData.scan_passport_file_uploaded.length > 0) ? $scope.zestStationData.scan_passport_file_uploaded : '',
+                    success: iconBasePath + '/success.svg'
                 }
             };
 
@@ -867,7 +874,7 @@ sntZestStation.controller('zsRootCtrl', [
             var commonIconsPath = '/assets/zest_station/css/icons/default';
 
             // var basicHomeIcons = ['zoku'],
-            var niceHomeIcons = ['avenue', 'sohotel', 'epik', 'public', 'public_v2', 'duke', 'de-jonker', 'chalet-view', 'freehand', 'row-nyc', 'circle-inn-fairfield', 'cachet-boutique', 'hi-ho', 'first', 'viceroy-chicago', 'amrath', 'jupiter', 'huntley'],
+            var niceHomeIcons = ['avenue', 'sohotel', 'epik', 'public', 'public_v2', 'duke', 'de-jonker', 'chalet-view', 'freehand', 'row-nyc', 'circle-inn-fairfield', 'cachet-boutique', 'hi-ho', 'first', 'viceroy-chicago', 'amrath', 'jupiter', 'huntley', 'queen', 'belle'],
                 nonCircleNavIcons = ['public_v2'];// minor adjustment to the back/close icons for some themes (only show the inner x or <)
 
 
@@ -1975,6 +1982,8 @@ sntZestStation.controller('zsRootCtrl', [
             $scope.zestStationData.makingAdditionalKey = false;
             $scope.zestStationData.autoIpadKeyboardEnabled = false;
             $scope.zestStationData.appVersion = null;
+            $scope.zestStationData.connectedDeviceDetails = {};
+            
             if ($scope.isIpad) {
                 try {
                     // check for the method getAppInfo via rvcardplugin, if it does not exist,

@@ -36,6 +36,10 @@
                             styleclass="full-width"
                             ng-if="m3Accounting.enabled"></ad-textbox>
 
+                <ad-toggle-button is-checked="m3Accounting.roomRevenueOnly"
+                                  label="{{'M3_ROOM_REVENUE_ONLY'| translate}}"
+                                  ng-if="m3Accounting.enabled"></ad-toggle-button>
+
             </fieldset>
 
             <fieldset class="holder right" ng-if="m3Accounting.enabled">

@@ -4,6 +4,94 @@
         .calc-height( 100, 120 );
     }
 
+    .commissions-filters {
+        position: absolute;
+        top: 0;
+        right: -280px;
+        text-transform: uppercase;
+        z-index: 2030;
+        .size(100%, 280px);
+        .background(@white);
+        .transition();
+        
+        /* Title ***/
+        .filters-header {
+            text-align: center;
+            line-height: 1;
+            padding: 20px 10px 0 10px;
+            height: 60px;
+
+            h2 {
+                font-size: 18px;
+                font-weight: 600;
+            }
+
+            p {
+                color: @grey3;
+                font-size: 14px;
+                margin: 0;
+            }
+        } 
+
+        /* Content ***/
+        .scrollable {
+            position: relative;
+            .calc-height(100, 140);
+
+            .wrapper {
+                padding: 10px;
+            }
+
+            .iScrollVerticalScrollbar {
+                top: 0;
+                bottom: 0;
+                right: 2px;
+            }
+        }
+
+        .entry {
+            font-size: 14px;
+            padding-top: 10px;            
+
+            label:not(.checkbox):not(.radio) {
+                display: table;
+                
+                margin: 0;
+            }
+
+            input,
+            .select {
+                width: 100%;
+            }
+
+            &:not(:last-child) {
+                padding-bottom: 10px;
+                .box-shadow(0 1px 0 rgba(0,0,0,.15));
+            }
+        }
+
+        .actions {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            padding: 20px;
+            background: #bfbfbf @darkTexture;
+            z-index: 9;
+            text-align: center;
+            .box-shadow(0 -1px 1px rgba(0,0,0,.15));
+            .size(80px, 100%);
+
+            .button {
+                width: 120px;
+            }
+        }
+
+        &.visible {
+            .translate3d(-280px, 0, 0);
+            .box-shadow(-1px 0 2px 1px rgba(0, 0, 0, .2));
+        }
+    }
+
     .commissions-header {
         height:60px;
         width:100%;
@@ -180,6 +268,11 @@
             }
         } 
 
+        .iScrollVerticalScrollbar {
+            top: 0;
+            bottom: 0;
+        }
+
         &.no-pagination {
             .calc-height( 100, 80 );
         }
@@ -263,4 +356,10 @@
 
 
     }
+}
+
+@media print {
+  .commissions-filters, .commissions-header  {
+    display: none;
+  }
 }

@@ -259,7 +259,7 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 		};
 		// Show payment allocate popup.
 		$scope.popupPaymentForAllocation = function () {
-			$scope.type = 'ALLOCATION';
+			$scope.type = 'ALLOCATE';
 			ngDialog.open({
 				template: '/assets/partials/companyCard/arTransactions/rvCompanyTravelAgentCardArPaymentPopup.html',
 				controller: 'RVArPaymentForAllocationController',
@@ -341,6 +341,9 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 			if (errorMessage[0] === "Insufficient Funds.Please 'Add payment' first") {
 				$scope.errorMessage = [];
 				$scope.arFlags.insufficientAmount = true;
+			}
+			else {
+				$scope.errorMessage = errorMessage;
 			}
 		};
 
@@ -833,6 +836,15 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 				$scope.paymentModalOpened = true;
 
 			}, 500);
+		});
+
+		// CICO-47819: Handling action after navigation back from Staycard
+		$scope.$on('BACK_FROM_STAY_CARD', function() {
+			if (typeof $scope.arDataObj.accountId === 'undefined') {
+				$timeout(function() {
+					init();
+				}, 2000);
+			}
 		});
 
 }]);

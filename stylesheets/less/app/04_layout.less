@@ -1515,6 +1515,64 @@ body { overflow: hidden; }
 					&.rooms-checked { right: 120px; }
 				}
 			}	
+
+			/* Commissions ***/
+	        &.commissions {
+	            .entry {
+
+	                &.search {
+	                    .calc-width(100, 420);
+	                }
+
+	                &.dates {
+	                    width: 300px;
+
+	                    .entry-data {
+	                        width: 140px;
+	                    }
+	                }
+
+	                &.actions {
+	                    width: 100px;
+
+	                    .button {
+	                        position: relative;
+	                        overflow: visible;
+
+	                        .count {
+	                            position: absolute;
+	                            background-color: @logoPrimary;
+	                            color: @white;
+	                            font-size: 11px;
+	                            line-height: 20px;
+	                            text-align: center;
+	                            border-radius: 50%;
+	                            left: -5px;
+	                            top: -5px;
+	                            text-indent: initial;
+	                            z-index: 10;
+	                            .square(20px);
+	                        }
+
+	                        &:focus,
+	                        &:active {
+	                            overflow: visible;
+	                        }
+
+	                        &.active {
+	                            .count {
+	                                background-color: @white;
+	                                color: @logoPrimary;
+	                            }
+	                        }
+
+	                        &:not(:last-child) {
+	                            margin-right: 10px;
+	                        }
+	                    }
+	                }
+	            }
+	        }
 		}
 	}
 

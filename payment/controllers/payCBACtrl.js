@@ -88,6 +88,10 @@ angular.module('sntPay').controller('payCBACtrl',
                 },
                 initiatePaymentProcess = function(event, params) {
                     sntActivity.start('INIT_CBA_PAYMENT');
+                    if (!$scope.payment || !$scope.payment.amount) {
+                        $scope.payment = $scope.payment || {};
+                        $scope.payment.amount = params.postData.amount;
+                    }
                     sntCBAGatewaySrv.initiateTransaction(
                         params.postData.amount,
                         params.bill_id

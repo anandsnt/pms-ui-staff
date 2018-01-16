@@ -7595,7 +7595,7 @@
 
             /* Commissions ***/
             &.commissions {
-                width: 315px;
+                width: 380px;
 
                 .h2 {
                     margin-bottom: 10px;
@@ -7605,6 +7605,10 @@
                     text-transform: none;
                     font-style: italic;
                     margin-bottom: 10px;
+                }
+
+                label {
+                    margin-bottom: 0;
                 }
 
                 &:not(.exporting) {
@@ -7662,6 +7666,20 @@
                         font-size: 18px;
                         line-height: 1;
                         margin-top: 5px;
+                    }
+                }
+
+                .entry {
+                    padding-top: 20px;
+
+                    .radio {
+                        &:not(:last-child) {
+                            margin-bottom: 10px;
+                        }
+                    }
+
+                    + .entry {
+                        padding-top: 0;
                     }
                 }
 

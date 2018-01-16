@@ -8,6 +8,31 @@ sntZestStation.service('zsPaymentSrv', ['$http', '$q', 'zsBaseWebSrv', '$rootSco
         var that = this,
             TERMINAL_POLLING_INTERVAL_MS = 3000;
 
+
+        var paymentData = null;
+
+        this.setPaymentData = function (data) {
+            paymentData = angular.copy(data);
+        };
+
+        this.getPaymentData = function () {
+            return paymentData;
+        };
+
+        this.getSubmitPaymentParams = function () {
+            return {
+                bill_id: paymentData.bill_id,
+                postData: {
+                    amount: paymentData.amount,
+                    bill_number: 1,
+                    is_split_payment: false,
+                    payment_type: 'CC',
+                    workstation_id: paymentData.workstation_id
+                },
+                reservation_id: paymentData.reservation
+            };
+        };
+
         this.savePayment = function(params) {
             var deferred = $q.defer(),
                 url = '/staff/reservation/save_payment';

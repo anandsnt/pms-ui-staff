@@ -15,7 +15,9 @@ var sntZestStation = angular.module('sntZestStation', [
     'iscrollStopPropagation',
     'touchPress',
     'enterPress',
-    'clickTouch'
+    'clickTouch',
+    'sntPay',
+    'sntPayConfig'
 ]);
 
 

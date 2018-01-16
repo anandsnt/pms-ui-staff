@@ -15,12 +15,24 @@ sntRover.controller('RVJournalCashierController', ['$scope', 'RVJournalSrv', '$r
             $scope.details = ($scope.detailsList.length > 0) ?  $scope.detailsList[0] : {};// set first one as selected
             $scope.selectedHistoryId = ($scope.detailsList.length > 0) ? $scope.detailsList[0].id : "";
             $scope.isLoading = false;
-             setTimeout(function() {
-                 $scope.refreshScroller('cashier_history');
-             }, 200);
-             setTimeout(function() {
-                 $scope.refreshScroller('cashier_shift');
-             }, 200);
+
+            $scope.details.opening_balance_cash = $scope.details.opening_balance_cash || 0;
+            $scope.details.total_cash_received = $scope.details.total_cash_received ||  0;
+            $scope.details.cash_submitted = $scope.details.cash_submitted || 0;
+
+            $scope.details.opening_balance_check = $scope.details.opening_balance_check || 0;
+            $scope.details.total_check_received = $scope.details.total_check_received ||  0;
+            $scope.details.check_submitted = $scope.details.check_submitted || 0;
+
+            $scope.totalClosingBalanceInCash = parseFloat($scope.details.opening_balance_cash) +
+                parseFloat($scope.details.total_cash_received) - parseFloat($scope.details.cash_submitted);
+            $scope.totalClosingBalanceInCheck = parseFloat($scope.details.opening_balance_check) +
+                parseFloat($scope.details.total_check_received) - parseFloat($scope.details.check_submitted);
+
+            setTimeout(function() {
+                $scope.refreshScroller('cashier_history');
+                $scope.refreshScroller('cashier_shift');
+            }, 200);
         };
 
         var data =  {"user_id": $scope.data.filterData.selectedCashier, "date": $scope.data.cashierDate, "report_type_id": $scope.data.reportType};
@@ -37,6 +49,7 @@ sntRover.controller('RVJournalCashierController', ['$scope', 'RVJournalSrv', '$r
         $scope.setScroller('cashier_history', {});
         $scope.setScroller('cashier_shift', {});
         $scope.isLoading = true;
+
         fetchHistoryDetails();
     };
 
@@ -127,5 +140,17 @@ sntRover.controller('RVJournalCashierController', ['$scope', 'RVJournalSrv', '$r
      $scope.$on('refreshDetails', function() {
         fetchHistoryDetails();
     });
+     /*
+      * Calculate total when cash amount change
+      */
+    $scope.changedCash = function() {
+        $scope.totalClosingBalanceInCash = (parseFloat($scope.details.opening_balance_cash) + parseFloat($scope.details.total_cash_received)) - (parseFloat($scope.details.cash_submitted));
+    };
+     /*
+      * Calculate total when check amount change
+      */
+    $scope.changedCheck = function() {
+        $scope.totalClosingBalanceInCheck = (parseFloat($scope.details.opening_balance_check) + parseFloat($scope.details.total_check_received)) - (parseFloat($scope.details.check_submitted));
+    };
 
 }]);

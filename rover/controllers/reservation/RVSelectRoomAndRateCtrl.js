@@ -198,7 +198,7 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 					if ($scope.stateCheck.rateSelected.oneDay) {
 						payLoad.room_type_id = $scope.stateCheck.preferredType;
 						payLoad.per_page = 1;
-						payLoad.page = 1;
+						payLoad.page = page;
 					}
 				}
 
@@ -350,7 +350,7 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 					payLoad.is_member = !!$scope.reservationData.member.isSelected;
 					payLoad.promotion_id = $scope.reservationData.promotionId;
 				}
-
+				payLoad.is_promotion_selected = ($scope.reservationData.promotionId) ? true : false;
 				$scope.callAPI(RVRoomRatesSrv.fetchRateADRs, {
 					params: payLoad,
 					successCallBack: cb
@@ -1779,6 +1779,7 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 				isPromoInvalid: isPromoInvalid
 			};
 		};
+		var previousPage = 0; // CICO-47537
 
 		$scope.showRoomsList = function(rate, append) {
 			if (!rate.isCollapsed && !append) {
@@ -1790,8 +1791,13 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 					rate.rooms = [];
 					pageToFetch = 1;
 				} else {
-					pageToFetch = (rate.rooms.length / $scope.stateCheck.pagination.rate.roomsList.perPage) + 1;
+					if ($scope.stateCheck.stayDatesMode) {
+						pageToFetch = previousPage + 1;						
+					} else {
+						pageToFetch = (rate.rooms.length / $scope.stateCheck.pagination.rate.roomsList.perPage) + 1;
+					}
 				}
+				previousPage = pageToFetch;
 				getRoomsADR(function(response) {
 					rate.totalRoomsCount = response.total_count;
 					rate.hasRoomsList = true;
@@ -2172,6 +2178,16 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 		} else {
 			initialize();
 		}
+
+		// CICO-47056
+		$scope.$on("FAILURE_UPDATE_RESERVATION", function(e, data) {			
+			$scope.errorMessage = data;
+		});
+
+		// CICO-47056
+		$scope.clearErrorMessage = function () {
+           $scope.errorMessage = [];
+ 		};
 
 
 	}

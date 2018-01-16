@@ -1,5 +1,5 @@
-sntRover.controller('RVCommisionsHeaderCtrl', ['$scope', 'ngDialog', '$log', '$timeout', 'RVCommissionsSrv', function($scope, ngDialog, $log, $timeout, RVCommissionsSrv) {
-    BaseCtrl.call(this, $scope);
+sntRover.controller('RVCommisionsHeaderCtrl', ['$scope', 'ngDialog', '$log', '$timeout', 'RVCommissionsSrv', '$filter', function($scope, ngDialog, $log, $timeout, RVCommissionsSrv, $filter) {
+                BaseCtrl.call(this, $scope);
 
     var setParamsInCurrentPage = function(params) {
         params.selected_tas = [];
@@ -52,17 +52,33 @@ sntRover.controller('RVCommisionsHeaderCtrl', ['$scope', 'ngDialog', '$log', '$t
         $scope.exportInProgess = inProgress;
     };
 
+    $scope.isValidEmail = function() {
+        return (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test($scope.filterData.receipientEmail));
+    };
+
     $scope.exportCommisions = function() {
 
+        var params = {
+            min_commission_amount: $scope.filterData.minAmount,
+            query: $scope.filterData.searchQuery,
+            sort_by: $scope.filterData.sort_by.value,
+            receipient_email: $scope.filterData.receipientEmail,
+            begin_date: $scope.dateData.fromDateForAPI !== '' ? $filter('date')($scope.dateData.fromDateForAPI, 'yyyy-MM-dd') : '',
+            end_date: $scope.dateData.toDateForAPI !== '' ? $filter('date')($scope.dateData.toDateForAPI, 'yyyy-MM-dd') : '',
+            include_non_commissionable: $scope.filterData.non_commissionable
+        };
+        
         var options = {
-            params: generateParams(),
+            params: params,
+            loader: 'NONE',
             successCallBack: function() {
-				// for now we will only show in progress status and then dismiss the
-				// popup
+                // if success can be returned quickly
+                // for now we will only show in progress status and then dismiss the
+                // popup
                 $timeout(function() {
                     setExportStatus(false, false, true);
                     ngDialog.close();
-                }, 1000);
+                }, 4000);
             },
             failureCallBack: function() {
                 setExportStatus(false, true, false);
@@ -70,10 +86,24 @@ sntRover.controller('RVCommisionsHeaderCtrl', ['$scope', 'ngDialog', '$log', '$t
         };
 
         setExportStatus(true, false, false);
-        $scope.callAPI(RVCommissionsSrv.exportCommissions, options);
+
+        if ($scope.filterData.selectedExportType === 'standard') {
+            $scope.callAPI(RVCommissionsSrv.exportCommissions, options);
+        } else if ($scope.filterData.selectedExportType === 'onyx') {
+            $scope.callAPI(RVCommissionsSrv.onyxExportCommissions, options);
+        } else {
+            // TACS will be implemented later
+            $timeout(function() {
+                setExportStatus(false, false, true);
+                ngDialog.close();
+            }, 4000);
+        }
+        
     };
 
     $scope.showExportPopup = function() {
+        $scope.filterData.receipientEmail = '';
+        $scope.filterData.selectedExportType = 'standard';
         setExportStatus(false, false, false);
         ngDialog.open({
             template: '/assets/partials/financials/commissions/rvCommissionsExport.html',
