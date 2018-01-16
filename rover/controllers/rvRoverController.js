@@ -777,8 +777,6 @@ sntRover.controller('roverController', [
             });
         }
 
-
-
         /* Enabling desktop Swipe if we access the app from desktop ( not from devices) and
          * desktopSwipeEnabled flag is true
         */
