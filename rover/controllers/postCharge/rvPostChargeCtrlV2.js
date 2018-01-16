@@ -36,7 +36,7 @@ sntRover.controller('RVPostChargeControllerV2',
 			// need to keep track of the price
 			// entered by the user
 			userEnteredPrice = '';
-			
+
 			// Setting up fetched data obj
 			$scope.fetchedData.charge_groups = [];
 			$scope.fetchedData.pageNo = 1;
@@ -634,14 +634,13 @@ sntRover.controller('RVPostChargeControllerV2',
 				};
 
 			$scope.showItemSummaryList = function() {
-				var size = _.size($scope.selectedChargeItemHash);
+				var size = _.size($scope.selectedChargeItemHash),
+					IsShowItemSummaryList = false;
 
 				if ( size > 0 ) {
-					return true;
+					IsShowItemSummaryList = true;
 				}
-				else {
-					return false;
-				}
+				return IsShowItemSummaryList;
 			};
 
 		}
