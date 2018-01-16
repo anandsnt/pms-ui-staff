@@ -74,7 +74,11 @@ var DesktopCardOperations = function () {
     };
 
     this.startReader = function () {
-        ws.send(commands['observeForSwipe']);
+        if (that.isDesktopSwipeEnabled) {
+            ws.send(commands['observeForSwipe']);
+        } else {
+            console.warn('Desktop swipe not enabled in hotel config!');
+        }
     };
 
     this.getConnectedDeviceDetails = function (callBacks) {
