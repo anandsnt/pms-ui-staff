@@ -21,8 +21,12 @@ angular.module('sntZestStation').controller('zsCheckoutBalancePaymentCtrl', ['$s
         });
 
         $scope.reTryCardSwipe = function() {
-             $scope.payUsingNewCard();
-             $scope.resetTime();
+            if ($scope.screenMode.isUsingExistingCardPayment) {
+                $scope.screenMode.value = 'SELECT_PAYMENT_METHOD';
+            } else {
+                $scope.payUsingNewCard();
+                $scope.resetTime();
+            }
         };
 
         (function() {

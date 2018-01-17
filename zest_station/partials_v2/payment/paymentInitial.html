@@ -9,7 +9,7 @@
             <nav id="options" role="nav">
                 <ul role="menu">
                     <li>
-                        <button type="button" class="button option" touch-press='payUsingExistingCard()' ng-class="{'overlay disabled':screenMode.paymentInProgress}">
+                        <button type="button" class="button option" touch-press='payUsingExistingCard()'>
                             <div ng-include="icons.url.creditcard"></div>
                         </button>
                         Pay
@@ -36,7 +36,7 @@
     <!-- payment in progress -->
     <section id="main" role="main" ng-show="screenMode.value === 'PAYMENT_IN_PROGRESS'">
         <!-- hide below content when payment is in progress -->
-        <div id="content" ng-hide="screenMode.paymentInProgress">
+        <div id="content" ng-hide="screenMode.paymentInProgress && zestStationData.paymentGateway === 'CBA'">
             <h1><text data-ng-bind-html="getTagValue('PAYMENT')" editable-text="PAYMENT"></h1>
             <div id="balance">
                 <span class="value"><text data-ng-bind-html="getTagValue('BILL_BAL')" editable-text="BILL_BAL"></text>{{zestStationData.currencySymbol}}&nbsp;{{balanceDue}}</span>

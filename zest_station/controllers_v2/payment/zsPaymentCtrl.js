@@ -4,7 +4,8 @@ angular.module('sntZestStation').controller('zsPaymentCtrl', ['$scope', '$log', 
         $scope.screenMode = {
             'value': 'PROCESS_INITIAL',
             'errorMessage': '',
-            'paymentInProgress': false
+            'paymentInProgress': false,
+            'isUsingExistingCardPayment': false
         };
 
         var runDigestCycle = function() {
@@ -100,10 +101,12 @@ angular.module('sntZestStation').controller('zsPaymentCtrl', ['$scope', '$log', 
         };
 
 
-        var callSubmitPaymentApi = function(params, isUsingExistingCardPayment) {
+        var callSubmitPaymentApi = function(params, loader) {
             $scope.screenMode.paymentInProgress = true;
+            loader = loader ? loader : 'BLOCKER';
             $scope.callAPI(zsPaymentSrv.submitDeposit, {
                 params: params,
+                loader: loader,
                 'successCallBack': function() {
                     $scope.$emit('hideLoader');
                     $scope.screenMode.value = 'PAYMENT_SUCCESS';
@@ -112,11 +115,7 @@ angular.module('sntZestStation').controller('zsPaymentCtrl', ['$scope', '$log', 
                 'failureCallBack': function() {
                     $scope.$emit('hideLoader');
                     $scope.screenMode.paymentInProgress = false;
-                    if (isUsingExistingCardPayment) {
-                        $scope.screenMode.value = 'SELECT_PAYMENT_METHOD';
-                    } else {
-                        $scope.screenMode.value = 'PAYMENT_FAILED';
-                    }
+                    $scope.screenMode.value = 'PAYMENT_FAILED';
                 }
             });
         };
@@ -139,6 +138,7 @@ angular.module('sntZestStation').controller('zsPaymentCtrl', ['$scope', '$log', 
 
         $scope.payUsingNewCard = function() {
             $scope.screenMode.value = 'PAYMENT_IN_PROGRESS';
+            $scope.screenMode.isUsingExistingCardPayment = false;
             if ($scope.zestStationData.paymentGateway === 'CBA' && $scope.isIpad) {
                 $scope.startCBAPayment();
             } else if ($scope.zestStationData.paymentGateway === 'MLI' && $scope.zestStationData.mliEmvEnabled) {
@@ -158,7 +158,7 @@ angular.module('sntZestStation').controller('zsPaymentCtrl', ['$scope', '$log', 
                     $scope.$emit('CONNECT_WEBSOCKET');
                 }
             } else if ($scope.zestStationData.paymentGateway === 'MLI' && $scope.zestStationData.ccReader === 'local') {
-
+                // to do
             } else {
                 $scope.$emit('showLoader');
                 $timeout(function() {
@@ -172,15 +172,16 @@ angular.module('sntZestStation').controller('zsPaymentCtrl', ['$scope', '$log', 
 
         var proceedWithEMVPayment = function() {
             var params = {
-                'is_emv_request': true,
-                'reservation_id': $scope.reservation_id,
-                'add_to_guest_card': false,
-                'amount': $scope.balanceDue,
-                'bill_number': 1,
-                'payment_type': 'CC'
-            };
+                    'is_emv_request': true,
+                    'reservation_id': $scope.reservation_id,
+                    'add_to_guest_card': false,
+                    'amount': $scope.balanceDue,
+                    'bill_number': 1,
+                    'payment_type': 'CC'
+                },
+                loader = 'none';
 
-            callSubmitPaymentApi(params);
+            callSubmitPaymentApi(params,loader);
         };
 
         $scope.payUsingExistingCard = function() {
@@ -192,10 +193,10 @@ angular.module('sntZestStation').controller('zsPaymentCtrl', ['$scope', '$log', 
                     'bill_number': 1,
                     'payment_type': 'CC',
                     'payment_type_id': $scope.cardDetails.id
-                },
-                isUsingExistingCardPayment = true;
+                };
+           $scope.screenMode.isUsingExistingCardPayment = true;
 
-            callSubmitPaymentApi(params, isUsingExistingCardPayment);
+            callSubmitPaymentApi(params);
         };
 
         /**  *********************** DESKTOP SWIPE ********************************/
@@ -203,6 +204,7 @@ angular.module('sntZestStation').controller('zsPaymentCtrl', ['$scope', '$log', 
         var observeForDesktopSwipe = function () {
             $scope.socketOperator.observe();
         };
+
         $scope.listenUserActivity = function () {
             $scope.$on('USER_ACTIVITY_TIMEOUT', function() {
                 $scope.$emit('hideLoader');
