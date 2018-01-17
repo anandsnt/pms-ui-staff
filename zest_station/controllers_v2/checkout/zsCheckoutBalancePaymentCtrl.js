@@ -76,7 +76,7 @@ angular.module('sntZestStation').controller('zsCheckoutBalancePaymentCtrl', ['$s
                     $scope.screenMode.value = 'SELECT_PAYMENT_METHOD';
                 } else {
                     // no CC on File
-                    $scope.payUsingNewCard()
+                    $scope.payUsingNewCard();
                 }
             }
             else if ($scope.zestStationData.paymentGateway === 'CBA' && $scope.isIpad) {
