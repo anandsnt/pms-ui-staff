@@ -181,7 +181,7 @@ angular.module('sntZestStation').controller('zsPaymentCtrl', ['$scope', '$log', 
                 },
                 loader = 'none';
 
-            callSubmitPaymentApi(params,loader);
+            callSubmitPaymentApi(params, loader);
         };
 
         $scope.payUsingExistingCard = function() {
@@ -194,6 +194,7 @@ angular.module('sntZestStation').controller('zsPaymentCtrl', ['$scope', '$log', 
                     'payment_type': 'CC',
                     'payment_type_id': $scope.cardDetails.id
                 };
+                
            $scope.screenMode.isUsingExistingCardPayment = true;
 
             callSubmitPaymentApi(params);
