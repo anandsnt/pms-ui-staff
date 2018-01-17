@@ -9,7 +9,7 @@
             <nav id="options" role="nav">
                 <ul role="menu">
                     <li>
-                        <button type="button" class="button option" touch-press='payUsingExistingCard()'>
+                        <button type="button" class="button option" touch-press='payUsingExistingCard()' ng-class="{'overlay disabled':screenMode.paymentInProgress}">
                             <div ng-include="icons.url.creditcard"></div>
                         </button>
                         Pay

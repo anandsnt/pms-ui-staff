@@ -95,14 +95,17 @@ angular.module('sntZestStation').controller('zsPaymentCtrl', ['$scope', '$log', 
 
 
         var callSubmitPaymentApi = function(params, isUsingExistingCardPayment) {
+            $scope.screenMode.paymentInProgress = true;
             $scope.callAPI(zsPaymentSrv.submitDeposit, {
                 params: params,
                 'successCallBack': function() {
                     $scope.$emit('hideLoader');
                     $scope.screenMode.value = 'PAYMENT_SUCCESS';
+                    $scope.screenMode.paymentInProgress = false;
                 },
                 'failureCallBack': function() {
                     $scope.$emit('hideLoader');
+                    $scope.screenMode.paymentInProgress = false;
                     if (isUsingExistingCardPayment){
                         $scope.screenMode.value = 'SELECT_PAYMENT_METHOD';
                     } else {
@@ -155,7 +158,6 @@ angular.module('sntZestStation').controller('zsPaymentCtrl', ['$scope', '$log', 
         };
 
         var processSwipeCardData = function(swipedCardData) {
-            
             var swipeOperationObj = new SwipeOperation();
             var params = swipeOperationObj.createDataToTokenize(swipedCardData);
             $log.info('fetching token...from tokenize...');
