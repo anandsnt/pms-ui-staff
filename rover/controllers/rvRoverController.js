@@ -605,7 +605,8 @@ sntRover.controller('roverController', [
                         {
                             template: '/assets/partials/postCharge/rvPostChargeV2.html',
                             controller: 'RVOutsidePostChargeController',
-                            scope: $scope
+                            scope: $scope,
+                            className: ''
                         });
                 });
         };
@@ -777,24 +778,13 @@ sntRover.controller('roverController', [
             });
         }
 
-
-        /*
-         * Start Card reader now!.
-         */
-        if ($rootScope.paymentGateway !== 'sixpayments') {
-            /* Enabling desktop Swipe if we access the app from desktop ( not from devices) and
+        /* Enabling desktop Swipe if we access the app from desktop ( not from devices) and
          * desktopSwipeEnabled flag is true
         */
-            if ($rootScope.desktopSwipeEnabled && !rvUtilSrv.checkDevice.any()) {
-                $rootScope.isDesktopUUIDServiceInvoked = true;
-                initiateDesktopCardReader();
-            }
-
-        }
-
-        // If desktopSwipe is not enabled, we have to invoke the desktopUUID service like below
-        if (!$rootScope.isDesktopUUIDServiceInvoked && !rvUtilSrv.checkDevice.any()) {
-            sntapp.desktopUUIDService.startDesktopUUIDService($rootScope.ccSwipeListeningPort, options);
+        if (!rvUtilSrv.checkDevice.any()) {
+            sntapp.desktopCardReader.isDesktopSwipeEnabled = $rootScope.desktopSwipeEnabled;
+            $rootScope.isDesktopUUIDServiceInvoked = true;
+            initiateDesktopCardReader();
         }
 
         /*
