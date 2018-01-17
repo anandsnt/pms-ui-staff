@@ -632,6 +632,8 @@
    "PAYMENT": "PAYMENT",
    "PAYMENT_SUCCESSFULL": "Payment Successful",
    "BALANCE_WAS_PAID": "Your balance was paid successfully!!",
-   "PAYMENT": "PAYMENT"
+   "PAYMENT": "PAYMENT",
+
+   "CHECK_HANDLER_IS_RUNNING_MSG": "Please ensure that the Zest station Hanlder is running"
 
 }

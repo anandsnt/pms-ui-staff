@@ -47,7 +47,19 @@ angular.module('sntZestStation').controller('zsCheckoutBalancePaymentCtrl', ['$s
                 $timeout(function() {
                     $scope.$emit('showLoader');
                 }, 4000);
-            } else {
+            } else if ($scope.zestStationData.paymentGateway === 'MLI' && $scope.zestStationData.ccReader === 'websocket') {
+                // Check if socket is ready
+                if ($scope.socketOperator.returnWebSocketObject().readyState === 1) {
+                    $scope.$emit('showLoader');
+                    $scope.observeForDesktopSwipe();
+                } else {
+                    $timeout(function() {
+                        $scope.$emit('showLoader');
+                    }, 2000);
+                    $scope.$emit('CONNECT_WEBSOCKET');
+                }
+            } 
+            else {
                 $scope.$emit('showLoader');
                 $timeout(function() {
                     $scope.$emit('hideLoader');
@@ -59,6 +71,7 @@ angular.module('sntZestStation').controller('zsCheckoutBalancePaymentCtrl', ['$s
 
         $scope.reTryCardSwipe = function() {
              $scope.payUsingNewCard();
+             $scope.resetTime();
         };
 
         (function() {
@@ -85,6 +98,10 @@ angular.module('sntZestStation').controller('zsCheckoutBalancePaymentCtrl', ['$s
                 startCBAPayment();
             } else {
                 $scope.screenMode.value = 'PAYMENT_FAILED';
+            }
+
+            if ($scope.zestStationData.paymentGateway === 'MLI' && $scope.zestStationData.ccReader === 'websocket') {
+                $scope.listenUserActivity();
             }
         })();
     }

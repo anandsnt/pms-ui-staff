@@ -1,11 +1,13 @@
-angular.module('sntZestStation').controller('zsPaymentCtrl', ['$scope', '$log', 'sntActivity', 'sntPaymentSrv', 'zsPaymentSrv', '$stateParams', 'zsStateHelperSrv', '$state',
-    function($scope, $log, sntActivity, sntPaymentSrv, zsPaymentSrv, $stateParams, zsStateHelperSrv, $state) {
+angular.module('sntZestStation').controller('zsPaymentCtrl', ['$scope', '$log', 'sntActivity', 'sntPaymentSrv', 'zsPaymentSrv', '$stateParams', 'zsStateHelperSrv', '$state', '$filter', 'zsGeneralSrv',
+    function($scope, $log, sntActivity, sntPaymentSrv, zsPaymentSrv, $stateParams, zsStateHelperSrv, $state, $filter, zsGeneralSrv) {
 
         $scope.screenMode = {
             'value': 'PROCESS_INITIAL',
             'errorMessage': '',
             'paymentInProgress': false
         };
+
+        /**  ***************************** CBA **************************************/
 
         $scope.makeCBAPayment = function() {
             $scope.$emit('showLoader');
@@ -91,20 +93,25 @@ angular.module('sntZestStation').controller('zsPaymentCtrl', ['$scope', '$log', 
             $scope.$on('$destroy', listenerUpdateErrorMessage);
         };
 
-        var callSubmitPaymentApi = function(params) {
+
+        var callSubmitPaymentApi = function(params, isUsingExistingCardPayment) {
             $scope.callAPI(zsPaymentSrv.submitDeposit, {
                 params: params,
-                'loader': 'none',
                 'successCallBack': function() {
                     $scope.$emit('hideLoader');
                     $scope.screenMode.value = 'PAYMENT_SUCCESS';
                 },
                 'failureCallBack': function() {
                     $scope.$emit('hideLoader');
-                    $scope.screenMode.value = 'PAYMENT_FAILED';
+                    if (isUsingExistingCardPayment){
+                        $scope.screenMode.value = 'SELECT_PAYMENT_METHOD';
+                    } else {
+                        $scope.screenMode.value = 'PAYMENT_FAILED';
+                    }
                 }
             });
         };
+        /**  *************************** EMV **********************************/
 
         $scope.proceedWithEMVPayment = function() {
             var params = {
@@ -121,16 +128,78 @@ angular.module('sntZestStation').controller('zsPaymentCtrl', ['$scope', '$log', 
 
         $scope.payUsingExistingCard = function() {
             var params = {
-                'is_emv_request': false,
-                'reservation_id': $scope.reservation_id,
-                'add_to_guest_card': false,
-                'amount': $scope.balanceDue,
-                'bill_number': 1,
-                'payment_type': 'CC',
-                'payment_type_id': $scope.cardDetails.id
-            };
+                    'is_emv_request': false,
+                    'reservation_id': $scope.reservation_id,
+                    'add_to_guest_card': false,
+                    'amount': $scope.balanceDue,
+                    'bill_number': 1,
+                    'payment_type': 'CC',
+                    'payment_type_id': $scope.cardDetails.id
+                },
+                isUsingExistingCardPayment = true;
 
-            callSubmitPaymentApi(params);
+            callSubmitPaymentApi(params,isUsingExistingCardPayment);
         };
+
+        /**  *********************** DESKTOP SWIPE ********************************/
+
+        $scope.observeForDesktopSwipe = function () {
+            $scope.socketOperator.observe();
+        };
+        $scope.listenUserActivity = function () {
+            $scope.$on('USER_ACTIVITY_TIMEOUT', function() {
+                $scope.$emit('hideLoader');
+                $scope.screenMode.errorMessage = $filter('translate')('CC_SWIPE_TIMEOUT_SUB');;
+                $scope.screenMode.value = 'PAYMENT_FAILED';
+            });
+        };
+
+        var processSwipeCardData = function(swipedCardData) {
+            
+            var swipeOperationObj = new SwipeOperation();
+            var params = swipeOperationObj.createDataToTokenize(swipedCardData);
+            $log.info('fetching token...from tokenize...');
+            $scope.callAPI(zsGeneralSrv.tokenize, {
+                params: params,
+                'successCallBack': function(response) {
+                    console.log(response);
+                    var cardExpiry = "20" + swipedCardData.RVCardReadExpDate.substring(0, 2) + "-" + swipedCardData.RVCardReadExpDate.slice(-2) + "-01";
+                    var data = {
+                        "reservation_id": $scope.reservation_id,
+                        "payment_type": "CC",
+                        "mli_token": response,
+                        "et2": swipedCardData.RVCardReadTrack2,
+                        "etb": swipedCardData.RVCardReadETB,
+                        "ksn": swipedCardData.RVCardReadTrack2KSN,
+                        "pan": swipedCardData.RVCardReadMaskedPAN,
+                        "card_name": swipedCardData.RVCardReadCardName,
+                        "name_on_card": swipedCardData.RVCardReadCardName,
+                        "card_expiry": cardExpiry,
+                        "credit_card": swipedCardData.RVCardReadCardType,
+                        "is_emv_request": false,
+                        "amount": $scope.balanceDue,
+                        "bill_number": 1
+                    };
+                    callSubmitPaymentApi(data);
+                },
+                'failureCallBack': function() {
+                    $scope.screenMode.value = 'PAYMENT_FAILED';
+                }
+            });
+        };
+
+        $scope.$on('SWIPE_ACTION', function (evt, response) {
+            console.log(response);
+            processSwipeCardData(response);
+            $scope.$emit('hideLoader');
+        });
+        $scope.$on('SOCKET_CONNECTED', function() {
+            $scope.observeForDesktopSwipe();
+        });
+        $scope.$on('SOCKET_FAILED', function() {
+            $scope.$emit('hideLoader');
+            $scope.screenMode.errorMessage = $filter('translate')('CHECK_HANDLER_IS_RUNNING_MSG');
+            $scope.screenMode.value = 'PAYMENT_FAILED';
+        });
     }
 ]);
