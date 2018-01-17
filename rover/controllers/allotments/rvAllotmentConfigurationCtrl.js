@@ -292,6 +292,7 @@ sntRover.controller('rvAllotmentConfigurationCtrl', [
          * @return undefined
          */
         $scope.saveNewAllotment = function() {
+            $scope.closeDialog ();
             $scope.errorMessage = "";
             if (rvPermissionSrv.getPermissionValue('CREATE_ALLOTMENT_SUMMARY') && !$scope.allotmentConfigData.summary.allotment_id) {
                 if (ifMandatoryValuesEntered()) {
@@ -585,6 +586,16 @@ sntRover.controller('rvAllotmentConfigurationCtrl', [
                 return "";
             }
         };
+
+        // Method invoked while clicking the Save Allotment btn in header
+        $scope.createNewAllotment = function () {
+            $scope.$broadcast('CREATE_ALLOTMENT');
+        };
+
+        // Event published from summary ctrl while saving the demographics
+        $scope.$on('SAVE_ALLOTMENT', function () {
+            $scope.saveNewAllotment();
+        });
 
         /**
          * function to initialize things for allotment config.

@@ -1552,7 +1552,7 @@ angular.module('sntRover').controller('rvGroupConfigurationSummaryTab', ['$scope
          * Checks whether demographics popup should be presented while saving the group
          */
 
-        var shouldShowDemographics = function () {
+        $scope.shouldShowDemographics = function () {
             var isDemographicsRequired = false;
 
             if ( ($scope.groupSummaryData.demographics.is_use_markets && $scope.hotelSettings.force_market_code && $scope.groupSummaryData.demographics.markets.length > 0) || 
@@ -1591,7 +1591,7 @@ angular.module('sntRover').controller('rvGroupConfigurationSummaryTab', ['$scope
          * Invoked from the groupconfig ctrl while saving a new group
          */
         $scope.$on('CREATE_GROUP', function () {
-           if (shouldShowDemographics()) {
+           if ($scope.shouldShowDemographics()) {
                 $scope.forceDemographics = true;
                 $scope.groupSummaryData.promptMandatoryDemographics = true;                
                 $scope.openDemographicsPopup(true);
