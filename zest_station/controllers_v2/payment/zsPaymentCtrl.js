@@ -106,7 +106,7 @@ angular.module('sntZestStation').controller('zsPaymentCtrl', ['$scope', '$log', 
                 'failureCallBack': function() {
                     $scope.$emit('hideLoader');
                     $scope.screenMode.paymentInProgress = false;
-                    if (isUsingExistingCardPayment){
+                    if (isUsingExistingCardPayment) {
                         $scope.screenMode.value = 'SELECT_PAYMENT_METHOD';
                     } else {
                         $scope.screenMode.value = 'PAYMENT_FAILED';
@@ -141,7 +141,7 @@ angular.module('sntZestStation').controller('zsPaymentCtrl', ['$scope', '$log', 
                 },
                 isUsingExistingCardPayment = true;
 
-            callSubmitPaymentApi(params,isUsingExistingCardPayment);
+            callSubmitPaymentApi(params, isUsingExistingCardPayment);
         };
 
         /**  *********************** DESKTOP SWIPE ********************************/
@@ -152,7 +152,7 @@ angular.module('sntZestStation').controller('zsPaymentCtrl', ['$scope', '$log', 
         $scope.listenUserActivity = function () {
             $scope.$on('USER_ACTIVITY_TIMEOUT', function() {
                 $scope.$emit('hideLoader');
-                $scope.screenMode.errorMessage = $filter('translate')('CC_SWIPE_TIMEOUT_SUB');;
+                $scope.screenMode.errorMessage = $filter('translate')('CC_SWIPE_TIMEOUT_SUB');
                 $scope.screenMode.value = 'PAYMENT_FAILED';
             });
         };
@@ -160,11 +160,11 @@ angular.module('sntZestStation').controller('zsPaymentCtrl', ['$scope', '$log', 
         var processSwipeCardData = function(swipedCardData) {
             var swipeOperationObj = new SwipeOperation();
             var params = swipeOperationObj.createDataToTokenize(swipedCardData);
+
             $log.info('fetching token...from tokenize...');
             $scope.callAPI(zsGeneralSrv.tokenize, {
                 params: params,
                 'successCallBack': function(response) {
-                    console.log(response);
                     var cardExpiry = "20" + swipedCardData.RVCardReadExpDate.substring(0, 2) + "-" + swipedCardData.RVCardReadExpDate.slice(-2) + "-01";
                     var data = {
                         "reservation_id": $scope.reservation_id,
@@ -182,6 +182,7 @@ angular.module('sntZestStation').controller('zsPaymentCtrl', ['$scope', '$log', 
                         "amount": $scope.balanceDue,
                         "bill_number": 1
                     };
+
                     callSubmitPaymentApi(data);
                 },
                 'failureCallBack': function() {
@@ -191,7 +192,6 @@ angular.module('sntZestStation').controller('zsPaymentCtrl', ['$scope', '$log', 
         };
 
         $scope.$on('SWIPE_ACTION', function (evt, response) {
-            console.log(response);
             processSwipeCardData(response);
             $scope.$emit('hideLoader');
         });
