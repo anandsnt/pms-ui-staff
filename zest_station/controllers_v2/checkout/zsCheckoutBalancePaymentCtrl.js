@@ -20,55 +20,6 @@ angular.module('sntZestStation').controller('zsCheckoutBalancePaymentCtrl', ['$s
             $scope.screenMode.value = 'PAYMENT_SUCCESS';
         });
 
-        var startCBAPayment = function() {
-            if ($scope.isIpad) {
-                $scope.screenMode.value = 'PAYMENT_IN_PROGRESS';
-                $timeout(function() {
-                    $scope.makeCBAPayment();
-                }, 3000);
-            } else {
-                $scope.$emit('showLoader');
-                $timeout(function() {
-                    $scope.$emit('hideLoader');
-                    $scope.screenMode.value = 'PAYMENT_FAILED';
-                    $scope.screenMode.errorMessage = 'Use Zest station from an iPad';
-                }, 2000);
-            }
-        };
-
-        $scope.payUsingNewCard = function() {
-            $scope.screenMode.value = 'PAYMENT_IN_PROGRESS';
-            if ($scope.zestStationData.paymentGateway === 'CBA' && $scope.isIpad) {
-                startCBAPayment();
-            } else if ($scope.zestStationData.paymentGateway === 'MLI' && $scope.zestStationData.mliEmvEnabled) {
-                // for EMV start sending request to terminal
-                // add 4 seconds delay for the screen to show the activity indicator
-                $scope.proceedWithEMVPayment();
-                $timeout(function() {
-                    $scope.$emit('showLoader');
-                }, 4000);
-            } else if ($scope.zestStationData.paymentGateway === 'MLI' && $scope.zestStationData.ccReader === 'websocket') {
-                // Check if socket is ready
-                if ($scope.socketOperator.returnWebSocketObject().readyState === 1) {
-                    $scope.$emit('showLoader');
-                    $scope.observeForDesktopSwipe();
-                } else {
-                    $timeout(function() {
-                        $scope.$emit('showLoader');
-                    }, 2000);
-                    $scope.$emit('CONNECT_WEBSOCKET');
-                }
-            } 
-            else {
-                $scope.$emit('showLoader');
-                $timeout(function() {
-                    $scope.$emit('hideLoader');
-                    $scope.screenMode.value = 'PAYMENT_FAILED';
-                    $scope.screenMode.errorMessage = ($scope.zestStationData.paymentGateway === 'CBA') ? 'Use Zest station from an iPad' : '';
-                }, 2000);
-            }
-        };
-
         $scope.reTryCardSwipe = function() {
              $scope.payUsingNewCard();
              $scope.resetTime();
@@ -95,7 +46,7 @@ angular.module('sntZestStation').controller('zsCheckoutBalancePaymentCtrl', ['$s
             else if ($scope.zestStationData.paymentGateway === 'CBA' && $scope.isIpad) {
                 // for CBA always use new payment method
                 $scope.initiateCBAlisteners();
-                startCBAPayment();
+                $scope.startCBAPayment();
             } else {
                 $scope.screenMode.value = 'PAYMENT_FAILED';
             }
