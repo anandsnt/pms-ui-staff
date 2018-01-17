@@ -251,7 +251,7 @@ sntZestStation.controller('zsReservationBillDetailsCtrl', [
 
         $scope.nextClicked = function () {
             if (($scope.zestStationData.paymentGateway === 'CBA' || $scope.zestStationData.paymentGateway === 'MLI') &&
-                parseInt($scope.balance) !== 0) {
+            parseInt($scope.balance) !== 0 && $scope.zestStationData.kiosk_collect_balance) {
                 zsStateHelperSrv.setPreviousStateParams($stateParams);
 
                 zsPaymentSrv.setPaymentData({
