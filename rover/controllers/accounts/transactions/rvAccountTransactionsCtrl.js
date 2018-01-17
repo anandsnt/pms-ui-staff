@@ -37,10 +37,10 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 		$scope.businessDate = $rootScope.businessDate;
 
 		$scope.hasMoveToOtherBillPermission = function() {
-        	return ($rootScope.isStandAlone && rvPermissionSrv.getPermissionValue ('MOVE_CHARGES_RESERVATION_ACCOUNT'));
-  		};
+			return ($rootScope.isStandAlone && rvPermissionSrv.getPermissionValue ('MOVE_CHARGES_RESERVATION_ACCOUNT'));
+		};
 
-  		// only for standalone
+		// only for standalone
 		var setChargeCodesSelectedStatus = function(bool) {
 				var billTabsData = $scope.transactionsDetails.bills;
 				var chargeCodes = billTabsData[$scope.currentActiveBill].transactions;
@@ -54,8 +54,8 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 		};
 
 		/*
-	    * Check if all the items are selected
-	    */
+		* Check if all the items are selected
+		*/
 		$scope.isAllChargeCodesSelected = function() {
 			var isAllChargeCodesSelected = true;
 			var billTabsData = $scope.transactionsDetails.bills;
@@ -66,26 +66,26 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 			else {
 				var chargeCodes = billTabsData[$scope.currentActiveBill].transactions;
 
-		        if (chargeCodes) {
-		            if (chargeCodes.length > 0) {
-		                _.each(chargeCodes, function(chargeCode) {
-		                  if (!chargeCode.isSelected) {
-		                    isAllChargeCodesSelected = false;
-		                  }
-		                });
-		            } else {
-		                isAllChargeCodesSelected = false;
-		            }
-		        } else {
-		            isAllChargeCodesSelected = false;
-		        }
+				if (chargeCodes) {
+					if (chargeCodes.length > 0) {
+						_.each(chargeCodes, function(chargeCode) {
+							if (!chargeCode.isSelected) {
+								isAllChargeCodesSelected = false;
+							}
+						});
+					} else {
+						isAllChargeCodesSelected = false;
+					}
+				} else {
+					isAllChargeCodesSelected = false;
+				}
 			}
-	        return isAllChargeCodesSelected;
+			return isAllChargeCodesSelected;
 		};
 
 		/*
-	    * Check if selection is partial
-	    */
+		* Check if selection is partial
+		*/
 		$scope.isAnyOneChargeCodeIsExcluded = function() {
 			var isAnyOneChargeCodeIsExcluded = false;
 			var isAnyOneChargeCodeIsIncluded = false;
@@ -114,10 +114,10 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 		};
 
 		$scope.moveChargesClicked = function() {
-            $scope.$emit('showLoader');
-            jsMappings.fetchAssets(['addBillingInfo', 'directives'])
-            .then(function() {
-                $scope.$emit('hideLoader');
+			$scope.$emit('showLoader');
+			jsMappings.fetchAssets(['addBillingInfo', 'directives'])
+				.then(function() {
+				$scope.$emit('hideLoader');
 
 				var billTabsData = $scope.transactionsDetails.bills;
 				var chargeCodes = billTabsData[$scope.currentActiveBill].transactions;
@@ -148,13 +148,13 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 								$scope.moveChargeData.selectedTransactionIds.push(chargeCode.id);
 							}
 						}
-				    });
-				    ngDialog.open({
-			    		template: '/assets/partials/bill/rvMoveTransactionPopup.html',
-			    		controller: 'RVMoveChargeCtrl',
-			    		className: '',
-			    		scope: $scope
-		    		});
+					});
+					ngDialog.open({
+						template: '/assets/partials/bill/rvMoveTransactionPopup.html',
+						controller: 'RVMoveChargeCtrl',
+						className: '',
+						scope: $scope
+					});
 				}
 				else {
 					return;
@@ -759,9 +759,9 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 		});
 		// setUp data from the payament modal for future usage
 		$scope.$on('arAccountWillBeCreated', function(e, arg) {
-			    $scope.account_id = arg.account_id;
-			    $scope.is_auto_assign_ar_numbers = arg.is_auto_assign_ar_numbers;
-			    $scope.diretBillpaymentData = arg.paymentDetails;
+				$scope.account_id = arg.account_id;
+				$scope.is_auto_assign_ar_numbers = arg.is_auto_assign_ar_numbers;
+				$scope.diretBillpaymentData = arg.paymentDetails;
 				ngDialog.open({
 					template: '/assets/partials/payment/rvAccountReceivableMessagePopup.html',
 					controller: 'RVAccountReceivableMessagePopupCtrl',
@@ -1034,21 +1034,21 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 
 				item.description = (item.card_number !== null && item.card_number !== '') ? item.description + "-" + item.card_number : item.description;
 			});
-				activebillTab.transactions = data.transactions;
-				activebillTab.total_count  = data.total_count;
+			activebillTab.transactions = data.transactions;
+			activebillTab.total_count  = data.total_count;
 
-				// Compute the start, end and total count parameters
-		    if (activebillTab.nextAction) {
-		        activebillTab.start = activebillTab.start + $scope.perPage;
-		    }
-		    if (activebillTab.prevAction) {
-		        activebillTab.start = activebillTab.start - $scope.perPage;
-		    }
-		    activebillTab.end = activebillTab.start + activebillTab.transactions.length - 1;
+			// Compute the start, end and total count parameters
+			if (activebillTab.nextAction) {
+				activebillTab.start = activebillTab.start + $scope.perPage;
+			}
+			if (activebillTab.prevAction) {
+				activebillTab.start = activebillTab.start - $scope.perPage;
+			}
+			activebillTab.end = activebillTab.start + activebillTab.transactions.length - 1;
 
-				refreshRegContentScroller();
+			refreshRegContentScroller();
 
-				angular.forEach(activebillTab.transactions, function(feesValue, feesKey) {
+			angular.forEach(activebillTab.transactions, function(feesValue, feesKey) {
 				feesValue.billValue 	= activebillTab.bill_number; // Bill value append with bill details
 				feesValue.oldBillValue 	= activebillTab.bill_number; // oldBillValue used to identify the old billnumber
 			});
@@ -1083,7 +1083,7 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 
 			$scope.callAPI(rvAccountTransactionsSrv.fetchBillTransactionDetails, options);
 		};
-		
+
 		// Reset the pagination params.
 		var resetPagination = function(activebillTab) {
 			activebillTab.page_no 	 = 1;
