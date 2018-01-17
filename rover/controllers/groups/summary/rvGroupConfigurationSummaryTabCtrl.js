@@ -3,6 +3,7 @@ angular.module('sntRover').controller('rvGroupConfigurationSummaryTab', ['$scope
 
 
         var summaryMemento, demographicsMemento;
+        
 
         /**
          * Whether our summary data has changed
@@ -735,8 +736,8 @@ angular.module('sntRover').controller('rvGroupConfigurationSummaryTab', ['$scope
          * Demographics Popup Handler
          * @return undefined
          */
-        $scope.openDemographicsPopup = function() {
-            if ($scope.isInAddMode()) {
+        $scope.openDemographicsPopup = function(showRequiredFields) {
+            if ($scope.isInAddMode() && !$scope.forceDemographics) {
                 // If the group has not been saved yet, prompt user for the same
                 $scope.errorMessage = ['Please save the group first'];
                 return;
@@ -762,6 +763,7 @@ angular.module('sntRover').controller('rvGroupConfigurationSummaryTab', ['$scope
                 },
                 onFetchDemographicsSuccess = function(demographicsData) {
                     $scope.groupSummaryData.demographics = demographicsData.demographics;
+                    $scope.setDemographicFields(showRequiredFields);
                     showDemographicsPopup();
                 },
                 onFetchDemographicsFailure = function(errorMessage) {
@@ -776,6 +778,7 @@ angular.module('sntRover').controller('rvGroupConfigurationSummaryTab', ['$scope
                 });
 
             } else {
+                $scope.setDemographicFields(showRequiredFields);
                 showDemographicsPopup();
             }
 
@@ -1546,11 +1549,67 @@ angular.module('sntRover').controller('rvGroupConfigurationSummaryTab', ['$scope
         });
 
         /**
+         * Checks whether demographics popup should be presented while saving the group
+         */
+
+        var shouldShowDemographics = function () {
+            var isDemographicsRequired = false;
+
+            if ( ($scope.groupSummaryData.demographics.is_use_markets && $scope.hotelSettings.force_market_code && $scope.groupSummaryData.demographics.markets.length > 0) || 
+                 ($scope.groupSummaryData.demographics.is_use_sources && $scope.hotelSettings.force_source_code && $scope.groupSummaryData.demographics.sources.length > 0) ||
+                 ($scope.groupSummaryData.demographics.is_use_origins && $scope.hotelSettings.force_origin_of_booking && $scope.groupSummaryData.demographics.origins.length > 0) ||
+                 ($scope.hotelSettings.force_reservation_type && $scope.groupSummaryData.demographics.reservationTypes.length > 0) ||
+                 ($scope.groupSummaryData.demographics.is_use_segments && $scope.hotelSettings.force_segments && $scope.groupSummaryData.demographics.segments.length > 0)) {
+
+                isDemographicsRequired = true;
+            }
+            return isDemographicsRequired;
+        };
+
+        /**
+         * Set the visibility of demographics fields based on the reservation settings and whether
+         * source/segments/origin/market is enabled
+         */
+        $scope.setDemographicFields = function (showRequiredFields) {
+            $scope.shouldShowReservationType = $scope.groupSummaryData.demographics.reservationTypes.length > 0;
+            $scope.shouldShowMarket = $scope.groupSummaryData.demographics.is_use_markets && $scope.groupSummaryData.demographics.markets.length > 0;
+            $scope.shouldShowSource = $scope.groupSummaryData.demographics.is_use_sources && $scope.groupSummaryData.demographics.sources.length > 0;
+            $scope.shouldShowOriginOfBooking = $scope.groupSummaryData.demographics.is_use_origins && $scope.groupSummaryData.demographics.origins.length > 0;
+            $scope.shouldShowSegments = $scope.groupSummaryData.demographics.is_use_segments && $scope.groupSummaryData.demographics.segments.length > 0;
+
+            if (showRequiredFields) {
+                $scope.shouldShowReservationType = $scope.hotelSettings.force_reservation_type && $scope.groupSummaryData.demographics.reservationTypes.length > 0;
+                $scope.shouldShowMarket = $scope.groupSummaryData.demographics.is_use_markets && $scope.hotelSettings.force_market_code && $scope.groupSummaryData.demographics.markets.length > 0;
+                $scope.shouldShowSource = $scope.groupSummaryData.demographics.is_use_sources && $scope.hotelSettings.force_source_code && $scope.groupSummaryData.demographics.sources.length > 0;
+                $scope.shouldShowOriginOfBooking = $scope.groupSummaryData.demographics.is_use_origins && $scope.hotelSettings.force_origin_of_booking && $scope.groupSummaryData.demographics.origins.length > 0;
+                $scope.shouldShowSegments = $scope.groupSummaryData.demographics.is_use_segments && $scope.hotelSettings.force_segments && $scope.groupSummaryData.demographics.segments.length > 0;
+            }
+
+        };
+
+        /**
+         * Invoked from the groupconfig ctrl while saving a new group
+         */
+        $scope.$on('CREATE_GROUP', function () {
+           if (shouldShowDemographics()) {
+                $scope.forceDemographics = true;
+                $scope.groupSummaryData.promptMandatoryDemographics = true;                
+                $scope.openDemographicsPopup(true);
+
+            } else {
+               $scope.$emit('SAVE_GROUP'); 
+            }
+        });
+
+        /**
          * Function used to initialize summary view
          * @return undefined
          */
         var initializeMe = (function() {
-            var vm = this;
+            var vm = this;            
+
+            // CICO-42249 - Flag to allow adding demographics for a newly created group
+            $scope.forceDemographics = false;
 
             BaseCtrl.call(vm, $scope);
 
