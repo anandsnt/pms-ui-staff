@@ -103,19 +103,19 @@ angular.module('sntZestStation').controller('zsPaymentCtrl', ['$scope', '$log', 
 
         var callSubmitPaymentApi = function(params, loader) {
             $scope.screenMode.paymentInProgress = true;
-            loader = loader ? loader : 'BLOCKER';
             $scope.callAPI(zsPaymentSrv.submitDeposit, {
                 params: params,
-                loader: loader,
                 'successCallBack': function() {
                     $scope.$emit('hideLoader');
                     $scope.screenMode.value = 'PAYMENT_SUCCESS';
                     $scope.screenMode.paymentInProgress = false;
+                    runDigestCycle();
                 },
                 'failureCallBack': function() {
                     $scope.$emit('hideLoader');
                     $scope.screenMode.paymentInProgress = false;
                     $scope.screenMode.value = 'PAYMENT_FAILED';
+                    runDigestCycle();
                 }
             });
         };
@@ -145,9 +145,6 @@ angular.module('sntZestStation').controller('zsPaymentCtrl', ['$scope', '$log', 
                 // for EMV start sending request to terminal
                 // add 4 seconds delay for the screen to show the activity indicator
                 proceedWithEMVPayment();
-                $timeout(function() {
-                    $scope.$emit('showLoader');
-                }, 4000);
             } else if ($scope.zestStationData.paymentGateway === 'MLI' && $scope.zestStationData.ccReader === 'websocket') {
                 // Check if socket is ready
                 if ($scope.socketOperator.returnWebSocketObject().readyState === 1) {
@@ -178,10 +175,9 @@ angular.module('sntZestStation').controller('zsPaymentCtrl', ['$scope', '$log', 
                     'amount': $scope.balanceDue,
                     'bill_number': 1,
                     'payment_type': 'CC'
-                },
-                loader = 'none';
+                };
 
-            callSubmitPaymentApi(params, loader);
+            callSubmitPaymentApi(params);
         };
 
         $scope.payUsingExistingCard = function() {
