@@ -1,10 +1,10 @@
-<div touch-press="resetHomeScreenTimer()" pay-ctrl-loader-dir="zestStationData.paymentGateway">
+<div touch-press="resetTime()" pay-ctrl-loader-dir="zestStationData.paymentGateway">
     <!-- Select payment type -->
     <section id="main" role="main" ng-show="screenMode.value === 'SELECT_PAYMENT_METHOD'">
         <div id="content">
             <h1><text data-ng-bind-html="getTagValue('HOW_WOULD_YOU_LIKE_TO_PAY')" editable-text="HOW_WOULD_YOU_LIKE_TO_PAY"></text></h1>
             <div id="balance">
-                <span class="value"><text data-ng-bind-html="getTagValue('BILL_BAL')" editable-text="BILL_BAL"></text>{{zestStationData.currencySymbol}}{{balanceDue}}</span>
+                <span class="value"><text data-ng-bind-html="getTagValue('BILL_BAL')" editable-text="BILL_BAL"></text>{{zestStationData.currencySymbol}}&nbsp;{{balanceDue}}</span>
             </div>
             <nav id="options" role="nav">
                 <ul role="menu">
@@ -36,10 +36,10 @@
     <!-- payment in progress -->
     <section id="main" role="main" ng-show="screenMode.value === 'PAYMENT_IN_PROGRESS'">
         <!-- hide below content when payment is in progress -->
-        <div id="content" ng-hide="screenMode.paymentInProgress">
+        <div id="content" ng-hide="screenMode.paymentInProgress && zestStationData.paymentGateway === 'CBA'">
             <h1><text data-ng-bind-html="getTagValue('PAYMENT')" editable-text="PAYMENT"></h1>
             <div id="balance">
-                <span class="value"><text data-ng-bind-html="getTagValue('BILL_BAL')" editable-text="BILL_BAL"></text>{{zestStationData.currencySymbol}}{{balanceDue}}</span>
+                <span class="value"><text data-ng-bind-html="getTagValue('BILL_BAL')" editable-text="BILL_BAL"></text>{{zestStationData.currencySymbol}}&nbsp;{{balanceDue}}</span>
             </div>
             <nav id="options" role="nav">
                 <ul role="menu">

@@ -20,30 +20,13 @@ angular.module('sntZestStation').controller('zsCheckoutBalancePaymentCtrl', ['$s
             $scope.screenMode.value = 'PAYMENT_SUCCESS';
         });
 
-        var startCBAPayment = function() {
-            if ($scope.isIpad) {
-                $scope.screenMode.value = 'PAYMENT_IN_PROGRESS';
-                $timeout(function() {
-                    $scope.makeCBAPayment();
-                }, 3000);
+        $scope.reTryCardSwipe = function() {
+            if ($scope.screenMode.isUsingExistingCardPayment) {
+                $scope.screenMode.value = 'SELECT_PAYMENT_METHOD';
             } else {
-                $scope.$emit('showLoader');
-                $scope.screenMode.value = 'PAYMENT_IN_PROGRESS';
-                $timeout(function() {
-                    $scope.$emit('hideLoader');
-                    $scope.screenMode.value = 'PAYMENT_FAILED';
-                    $scope.screenMode.errorMessage = 'Use Zest station from an iPad';
-                }, 2000);
+                $scope.payUsingNewCard();
+                $scope.resetTime();
             }
-        };
-
-
-        $scope.payUsingNewCard = function() {
-            startCBAPayment();
-        };
-
-        $scope.payUsingExistingCard = function() {
-            // console.log('will be done later');
         };
 
         (function() {
@@ -53,14 +36,27 @@ angular.module('sntZestStation').controller('zsCheckoutBalancePaymentCtrl', ['$s
 
             $scope.balanceDue = paymentParams.amount;
             $scope.cardDetails = paymentParams.payment_details;
-            // check if  card is present, if so show two options
-            if ($scope.zestStationData.paymentGateway !== 'CBA' && paymentParams.payment_details.card_number && paymentParams.payment_details.card_number.length) {
-                $scope.screenMode.value = 'SELECT_PAYMENT_METHOD';
-            } else if ($scope.zestStationData.paymentGateway === 'CBA' && $scope.isIpad) {
+            $scope.reservation_id = paymentParams.reservation_id;
+            
+            if ($scope.zestStationData.paymentGateway !== 'CBA') {
+                // check if  card is present, if so show two options
+                if (paymentParams.payment_details && paymentParams.payment_details.card_number && paymentParams.payment_details.card_number.length) {
+                    $scope.screenMode.value = 'SELECT_PAYMENT_METHOD';
+                } else {
+                    // no CC on File
+                    $scope.payUsingNewCard();
+                }
+            }
+            else if ($scope.zestStationData.paymentGateway === 'CBA' && $scope.isIpad) {
+                // for CBA always use new payment method
                 $scope.initiateCBAlisteners();
-                startCBAPayment();
+                $scope.startCBAPayment();
             } else {
                 $scope.screenMode.value = 'PAYMENT_FAILED';
+            }
+
+            if ($scope.zestStationData.paymentGateway === 'MLI' && $scope.zestStationData.ccReader === 'websocket') {
+                $scope.listenUserActivity();
             }
         })();
     }
