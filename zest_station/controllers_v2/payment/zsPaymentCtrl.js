@@ -243,7 +243,8 @@ angular.module('sntZestStation').controller('zsPaymentCtrl', ['$scope', '$log', 
                         "amount": $scope.balanceDue,
                         "bill_number": 1
                     };
-                    if ($scope.screenMode.paymentAction = 'PAY_AMOUNT') {
+
+                    if ($scope.screenMode.paymentAction === 'PAY_AMOUNT') {
                         callSubmitPaymentApi(data);
                     } else {
                         // add card - TODO for checkin
@@ -285,7 +286,7 @@ angular.module('sntZestStation').controller('zsPaymentCtrl', ['$scope', '$log', 
                         processSwipeCardData(response);
                         runDigestCycle();
                     },
-                    'failureCallBack': function(err) {
+                    'failureCallBack': function() {
                         // hide loader a 1s delay
                         $timeout(function() {
                             $scope.screenMode.value = 'PAYMENT_FAILED';
