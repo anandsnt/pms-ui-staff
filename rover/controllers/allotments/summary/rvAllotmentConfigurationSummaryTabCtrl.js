@@ -250,7 +250,7 @@ sntRover.controller('rvAllotmentConfigurationSummaryTabCtrl', [
             var isValid = true;            
 
             if ($scope.hotelSettings.force_reservation_type && demographicsData.reservationTypes.length > 0) {
-                isValid = !!$scope.allotmentConfigData.sulmmary.demographics.reservation_type_id;
+                isValid = !!$scope.allotmentConfigData.summary.demographics.reservation_type_id;
             }
             if (demographicsData.is_use_markets && $scope.hotelSettings.force_market_code && demographicsData.markets.length > 0 && isValid) {
                 isValid = !!$scope.allotmentConfigData.summary.demographics.market_segment_id;
@@ -272,6 +272,7 @@ sntRover.controller('rvAllotmentConfigurationSummaryTabCtrl', [
 		 */
 		$scope.isDemographicsFormValid = function(assertValidation) {
 			var isDemographicsValid = true;
+
             if (assertValidation) {
                 isDemographicsValid =  validateDemographicsData($scope.allotmentSummaryData.demographics);
             }
@@ -994,13 +995,21 @@ sntRover.controller('rvAllotmentConfigurationSummaryTabCtrl', [
         $scope.shouldShowDemographics = function () {
             var isDemographicsRequired = false;
 
-            if ( $scope.allotmentSummaryData.demographics && (($scope.allotmentSummaryData.demographics.is_use_markets && $scope.hotelSettings.force_market_code && $scope.allotmentSummaryData.demographics.markets.length > 0) || 
-                 ($scope.allotmentSummaryData.demographics.is_use_sources && $scope.hotelSettings.force_source_code && $scope.allotmentSummaryData.demographics.sources.length > 0) ||
-                 ($scope.allotmentSummaryData.demographics.is_use_origins && $scope.hotelSettings.force_origin_of_booking && $scope.allotmentSummaryData.demographics.origins.length > 0) ||
-                 ($scope.hotelSettings.force_reservation_type && $scope.allotmentSummaryData.demographics.reservationTypes.length > 0) ||
-                 ($scope.allotmentSummaryData.demographics.is_use_segments && $scope.hotelSettings.force_segments && $scope.allotmentSummaryData.demographics.segments.length > 0) )) {
+            if ($scope.allotmentSummaryData.demographics) {
+                var showMarkets = $scope.allotmentSummaryData.demographics.is_use_markets && $scope.hotelSettings.force_market_code &&
+                                  $scope.allotmentSummaryData.demographics.markets.length > 0,
+                    showSources = $scope.allotmentSummaryData.demographics.is_use_sources && $scope.hotelSettings.force_source_code && 
+                                  $scope.allotmentSummaryData.demographics.sources.length > 0,
+                    showOrigins = $scope.allotmentSummaryData.demographics.is_use_origins && $scope.hotelSettings.force_origin_of_booking && 
+                                  $scope.allotmentSummaryData.demographics.origins.length > 0,
+                    showReservationType = $scope.hotelSettings.force_reservation_type && 
+                                          $scope.allotmentSummaryData.demographics.reservationTypes.length > 0,
+                    showSegments = $scope.allotmentSummaryData.demographics.is_use_segments && $scope.hotelSettings.force_segments && 
+                                   $scope.allotmentSummaryData.demographics.segments.length > 0;
 
-                isDemographicsRequired = true;
+
+                isDemographicsRequired =  showMarkets || showSources || showOrigins || showReservationType || showSegments;
+
             }
             return isDemographicsRequired;
         };
@@ -1011,17 +1020,21 @@ sntRover.controller('rvAllotmentConfigurationSummaryTabCtrl', [
          */
         $scope.setDemographicFields = function (showRequiredFields) {
             $scope.shouldShowReservationType = $scope.allotmentSummaryData.demographics.reservationTypes.length > 0;
-            $scope.shouldShowMarket = $scope.allotmentSummaryData.demographics.is_use_markets && $scope.allotmentSummaryData.demographics.markets.length > 0;
-            $scope.shouldShowSource = $scope.allotmentSummaryData.demographics.is_use_sources && $scope.allotmentSummaryData.demographics.sources.length > 0;
-            $scope.shouldShowOriginOfBooking = $scope.allotmentSummaryData.demographics.is_use_origins && $scope.allotmentSummaryData.demographics.origins.length > 0;
-            $scope.shouldShowSegments = $scope.allotmentSummaryData.demographics.is_use_segments && $scope.allotmentSummaryData.demographics.segments.length > 0;
+            $scope.shouldShowMarket = $scope.allotmentSummaryData.demographics.is_use_markets && 
+                                      $scope.allotmentSummaryData.demographics.markets.length > 0;
+            $scope.shouldShowSource = $scope.allotmentSummaryData.demographics.is_use_sources && 
+                                      $scope.allotmentSummaryData.demographics.sources.length > 0;
+            $scope.shouldShowOriginOfBooking = $scope.allotmentSummaryData.demographics.is_use_origins && 
+                                               $scope.allotmentSummaryData.demographics.origins.length > 0;
+            $scope.shouldShowSegments = $scope.allotmentSummaryData.demographics.is_use_segments && 
+                                        $scope.allotmentSummaryData.demographics.segments.length > 0;
 
             if (showRequiredFields) {
-                $scope.shouldShowReservationType = $scope.hotelSettings.force_reservation_type && $scope.allotmentSummaryData.demographics.reservationTypes.length > 0;
-                $scope.shouldShowMarket = $scope.allotmentSummaryData.demographics.is_use_markets && $scope.hotelSettings.force_market_code && $scope.allotmentSummaryData.demographics.markets.length > 0;
-                $scope.shouldShowSource = $scope.allotmentSummaryData.demographics.is_use_sources && $scope.hotelSettings.force_source_code && $scope.allotmentSummaryData.demographics.sources.length > 0;
-                $scope.shouldShowOriginOfBooking = $scope.allotmentSummaryData.demographics.is_use_origins && $scope.hotelSettings.force_origin_of_booking && $scope.allotmentSummaryData.demographics.origins.length > 0;
-                $scope.shouldShowSegments = $scope.allotmentSummaryData.demographics.is_use_segments && $scope.hotelSettings.force_segments && $scope.allotmentSummaryData.demographics.segments.length > 0;
+                $scope.shouldShowReservationType = $scope.hotelSettings.force_reservation_type && $scope.shouldShowReservationType;
+                $scope.shouldShowMarket = $scope.shouldShowMarket && $scope.hotelSettings.force_market_code;
+                $scope.shouldShowSource = $scope.shouldShowSource && $scope.hotelSettings.force_source_code;
+                $scope.shouldShowOriginOfBooking = $scope.shouldShowOriginOfBooking && $scope.hotelSettings.force_origin_of_booking;
+                $scope.shouldShowSegments = $scope.shouldShowSegments && $scope.hotelSettings.force_segments;
             }
 
         };
