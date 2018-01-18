@@ -152,7 +152,9 @@ angular.module('sntZestStation').controller('zsPaymentCtrl', ['$scope', '$log', 
                         proceedWithEMVPayment();
             } else if ($scope.zestStationData.paymentGateway === 'MLI' && $scope.zestStationData.ccReader === 'websocket') {
                 // Check if socket is ready
-                if ($scope.socketOperator.returnWebSocketObject().readyState === 1) {
+                if ($scope.inDemoMode()) {
+                    processSwipeCardData(zsPaymentSrv.sampleMLISwipedCardResponse);
+                } else if ($scope.socketOperator.returnWebSocketObject().readyState === 1) {
                     $scope.$emit('showLoader');
                     observeForDesktopSwipe();
                 } else {
@@ -268,8 +270,11 @@ angular.module('sntZestStation').controller('zsPaymentCtrl', ['$scope', '$log', 
         /**  *********************** Ipad device actions ********************************/
 
         var proceedWithiPadPayments = function() {
+            if ($scope.inDemoMode()) {
+                processSwipeCardData(zsPaymentSrv.sampleMLISwipedCardResponse);
+            }
             // show error if the device is not iPad
-            if ($scope.isIpad) {
+            else if ($scope.isIpad) {
                 $scope.$emit('showLoader');
                 $scope.cardReader.startReader({
                     'successCallBack': function(response) {
