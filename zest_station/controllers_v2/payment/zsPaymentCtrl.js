@@ -5,7 +5,8 @@ angular.module('sntZestStation').controller('zsPaymentCtrl', ['$scope', '$log', 
             'value': 'PROCESS_INITIAL',
             'errorMessage': '',
             'paymentInProgress': false,
-            'isUsingExistingCardPayment': false
+            'isUsingExistingCardPayment': false,
+            'paymentAction': '' // can be add card (ADD_CARD) or pay (PAY_AMOUNT)
         };
 
         var runDigestCycle = function() {
@@ -242,8 +243,11 @@ angular.module('sntZestStation').controller('zsPaymentCtrl', ['$scope', '$log', 
                         "amount": $scope.balanceDue,
                         "bill_number": 1
                     };
-
-                    callSubmitPaymentApi(data);
+                    if ($scope.screenMode.paymentAction = 'PAY_AMOUNT') {
+                        callSubmitPaymentApi(data);
+                    } else {
+                        // add card - TODO for checkin
+                    }
                 },
                 'failureCallBack': function() {
                     $scope.screenMode.value = 'PAYMENT_FAILED';
@@ -285,7 +289,6 @@ angular.module('sntZestStation').controller('zsPaymentCtrl', ['$scope', '$log', 
                         // hide loader a 1s delay
                         $timeout(function() {
                             $scope.screenMode.value = 'PAYMENT_FAILED';
-                            $scope.screenMode.errorMessage = 'Oh no';
                             $scope.$emit('hideLoader');
                             runDigestCycle();
                         }, 1000);
