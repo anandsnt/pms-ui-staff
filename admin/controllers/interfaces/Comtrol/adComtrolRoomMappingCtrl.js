@@ -9,7 +9,7 @@ admin.controller('adComtrolRoomMappingCtrl', ['$scope', 'adComtrolRoomMappingSrv
                     room_no: '',
                     external_room: '',
                     external_extension: '',
-                    external_access_level: '',
+                    external_access_level: ''
                 };
             },
             revertEdit = function() {
