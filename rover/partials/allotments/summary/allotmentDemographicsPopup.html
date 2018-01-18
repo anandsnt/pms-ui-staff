@@ -132,8 +132,8 @@
             <button ng-show="allotmentSummaryData.promptMandatoryDemographics" 
                 type="button" 
                 class="button" 
-                ng-disabled="!isDemographicsFormValid(false)" 
-                ng-class="isDemographicsFormValid(false) ? 'green' : 'grey'"
+                ng-disabled="!isDemographicsFormValid(true)" 
+                ng-class="isDemographicsFormValid(true) ? 'green' : 'grey'"
                 ng-click="saveNewAllotment()">
                 Save & Continue
             </button>

@@ -727,6 +727,19 @@ angular.module('sntRover').controller('rvGroupConfigurationSummaryTab', ['$scope
                 .then(successCallBackForFetchGroupActions, failuresCallBackForFetchGroupActions);
         };
 
+        var showMarkets = function (demographicsData) {
+                return demographicsData.is_use_markets && demographicsData.markets.length > 0;
+            },
+            showSources = function (demographicsData) {
+                return demographicsData.is_use_sources && demographicsData.sources.length > 0;
+            },
+            showOrigins = function (demographicsData) {
+                return demographicsData.is_use_origins && demographicsData.origins.length > 0;
+            },
+            showSegments = function (demographicsData) {
+                return demographicsData.is_use_segments && demographicsData.segments.length > 0;
+            };
+
         /**
          * Validates demographics data for mandatory fields for disabling the 
          * Save & Continue btn in demographics popup
@@ -734,20 +747,17 @@ angular.module('sntRover').controller('rvGroupConfigurationSummaryTab', ['$scope
         var validateDemographicsData = function(demographicsData) {
             var isValid = true;
             // Override force demographic flag if there are no options to select from (CICO-21166) all are disabled from admin
-
-            if ($scope.hotelSettings.force_reservation_type && demographicsData.reservationTypes.length > 0) {
-                isValid = !!$scope.groupConfigData.summary.demographics.reservation_type_id;
-            }
-            if (demographicsData.is_use_markets && $scope.hotelSettings.force_market_code && demographicsData.markets.length > 0 && isValid) {
+            
+            if ( showMarkets(demographicsData) && $scope.hotelSettings.force_market_code) {
                 isValid = !!$scope.groupConfigData.summary.demographics.market_segment_id;
             }
-            if (demographicsData.is_use_sources && $scope.hotelSettings.force_source_code && demographicsData.sources.length > 0 && isValid) {
+            if (showSources(demographicsData) && $scope.hotelSettings.force_source_code && isValid) {
                 isValid = !!$scope.groupConfigData.summary.demographics.source_id;
             }
-            if (demographicsData.is_use_origins && $scope.hotelSettings.force_origin_of_booking && demographicsData.origins.length > 0 && isValid) {
+            if (showOrigins(demographicsData) && $scope.hotelSettings.force_origin_of_booking && isValid) {
                 isValid = !!$scope.groupConfigData.summary.demographics.booking_origin_id;
             }
-            if (demographicsData.is_use_segments && $scope.hotelSettings.force_segments && demographicsData.segments.length > 0 && isValid) {
+            if (showSegments(demographicsData) && $scope.hotelSettings.force_segments && isValid) {
                 isValid = !!$scope.groupConfigData.summary.demographics.segment_id;
             }
             return isValid;
@@ -1590,18 +1600,16 @@ angular.module('sntRover').controller('rvGroupConfigurationSummaryTab', ['$scope
             var isDemographicsRequired = false;
 
             if ($scope.groupSummaryData.demographics) {
-                var showMarkets = $scope.groupSummaryData.demographics.is_use_markets && $scope.hotelSettings.force_market_code &&
-                                  $scope.groupSummaryData.demographics.markets.length > 0,
-                    showSources = $scope.groupSummaryData.demographics.is_use_sources && $scope.hotelSettings.force_source_code && 
-                                  $scope.groupSummaryData.demographics.sources.length > 0,
-                    showOrigins = $scope.groupSummaryData.demographics.is_use_origins && $scope.hotelSettings.force_origin_of_booking && 
-                                  $scope.groupSummaryData.demographics.origins.length > 0,
-                    showReservationType = $scope.hotelSettings.force_reservation_type && 
-                                          $scope.groupSummaryData.demographics.reservationTypes.length > 0,
-                    showSegments = $scope.groupSummaryData.demographics.is_use_segments && $scope.hotelSettings.force_segments && 
-                                   $scope.groupSummaryData.demographics.segments.length > 0;
+                var shouldShowMarkets = showMarkets($scope.groupSummaryData.demographics) && 
+                                        $scope.hotelSettings.force_market_code,
+                    shouldShowSources = showSources($scope.groupSummaryData.demographics) && 
+                                        $scope.hotelSettings.force_source_code,                                  
+                    shouldShowOrigins = showOrigins($scope.groupSummaryData.demographics) && 
+                                        $scope.hotelSettings.force_origin_of_booking,                                                     
+                    shouldShowSegments = showSegments($scope.groupSummaryData.demographics) && $scope.hotelSettings.force_segments;
+                                   
 
-                isDemographicsRequired = showMarkets || showSources || showOrigins || showReservationType || showSegments;
+                isDemographicsRequired = shouldShowMarkets || shouldShowSources || shouldShowOrigins || shouldShowSegments;
             }
 
             return isDemographicsRequired;
@@ -1613,15 +1621,13 @@ angular.module('sntRover').controller('rvGroupConfigurationSummaryTab', ['$scope
          */
         $scope.setDemographicFields = function (showRequiredFields) {
             $scope.shouldShowReservationType = $scope.groupSummaryData.demographics.reservationTypes.length > 0;
-            $scope.shouldShowMarket = $scope.groupSummaryData.demographics.is_use_markets && $scope.groupSummaryData.demographics.markets.length > 0;
-            $scope.shouldShowSource = $scope.groupSummaryData.demographics.is_use_sources && $scope.groupSummaryData.demographics.sources.length > 0;
-            $scope.shouldShowOriginOfBooking = $scope.groupSummaryData.demographics.is_use_origins && 
-                                               $scope.groupSummaryData.demographics.origins.length > 0;
-            $scope.shouldShowSegments = $scope.groupSummaryData.demographics.is_use_segments && 
-                                        $scope.groupSummaryData.demographics.segments.length > 0;
+            $scope.shouldShowMarket = showMarkets($scope.groupSummaryData.demographics);
+            $scope.shouldShowSource = showSources($scope.groupSummaryData.demographics);
+            $scope.shouldShowOriginOfBooking = showOrigins($scope.groupSummaryData.demographics);
+            $scope.shouldShowSegments = showSegments($scope.groupSummaryData.demographics);
 
             if (showRequiredFields) {
-                $scope.shouldShowReservationType = $scope.shouldShowReservationType && $scope.hotelSettings.force_reservation_type;
+                $scope.shouldShowReservationType = false;
                 $scope.shouldShowMarket = $scope.shouldShowMarket && $scope.hotelSettings.force_market_code;
                 $scope.shouldShowSource = $scope.shouldShowSource && $scope.hotelSettings.force_source_code;
                 $scope.shouldShowOriginOfBooking = $scope.shouldShowOriginOfBooking && $scope.hotelSettings.force_origin_of_booking;
