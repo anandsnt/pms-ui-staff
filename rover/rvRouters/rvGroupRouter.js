@@ -83,6 +83,9 @@ angular.module('groupModule', [])
                     };
 
                     return rvGroupConfigurationSrv.getHoldStatusList (params);
+                },
+                hotelSettings: function (RVReservationBaseSearchSrv, groupAssets) {
+                    return RVReservationBaseSearchSrv.fetchHotelReservationSettings();
                 }
             }
 
