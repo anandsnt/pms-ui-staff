@@ -1,5 +1,5 @@
-angular.module('sntZestStation').controller('zsPaymentCtrl', ['$scope', '$log', 'sntActivity', 'sntPaymentSrv', 'zsPaymentSrv', '$stateParams', 'zsStateHelperSrv', '$state', '$timeout',
-    function($scope, $log, sntActivity, sntPaymentSrv, zsPaymentSrv, $stateParams, zsStateHelperSrv, $state, $timeout) {
+angular.module('sntZestStation').controller('zsPaymentCtrl', ['$scope', '$log', 'sntActivity', 'sntPaymentSrv', 'zsPaymentSrv', '$stateParams', 'zsStateHelperSrv', '$state',
+    function($scope, $log, sntActivity, sntPaymentSrv, zsPaymentSrv, $stateParams, zsStateHelperSrv, $state) {
 
         $scope.screenMode = {
             'value': 'PROCESS_INITIAL',
@@ -91,18 +91,46 @@ angular.module('sntZestStation').controller('zsPaymentCtrl', ['$scope', '$log', 
             $scope.$on('$destroy', listenerUpdateErrorMessage);
         };
 
-        $scope.reTryCardSwipe = function() {
-            $scope.screenMode.value = 'PAYMENT_IN_PROGRESS';
-            if ($scope.zestStationData.paymentGateway === 'CBA' && $scope.isIpad) {
-                $scope.makeCBAPayment();
-            } else {
-                $scope.$emit('showLoader');
-                $timeout(function() {
+        var callSubmitPaymentApi = function(params) {
+            $scope.callAPI(zsPaymentSrv.submitDeposit, {
+                params: params,
+                'loader': 'none',
+                'successCallBack': function() {
+                    $scope.$emit('hideLoader');
+                    $scope.screenMode.value = 'PAYMENT_SUCCESS';
+                },
+                'failureCallBack': function() {
                     $scope.$emit('hideLoader');
                     $scope.screenMode.value = 'PAYMENT_FAILED';
-                    $scope.screenMode.errorMessage = ($scope.zestStationData.paymentGateway === 'CBA') ? 'Use Zest station from an iPad' : '';
-                }, 2000);
-            }
+                }
+            });
+        };
+
+        $scope.proceedWithEMVPayment = function() {
+            var params = {
+                'is_emv_request': true,
+                'reservation_id': $scope.reservation_id,
+                'add_to_guest_card': false,
+                'amount': $scope.balanceDue,
+                'bill_number': 1,
+                'payment_type': 'CC'
+            };
+
+            callSubmitPaymentApi(params);
+        };
+
+        $scope.payUsingExistingCard = function() {
+            var params = {
+                'is_emv_request': false,
+                'reservation_id': $scope.reservation_id,
+                'add_to_guest_card': false,
+                'amount': $scope.balanceDue,
+                'bill_number': 1,
+                'payment_type': 'CC',
+                'payment_type_id': $scope.cardDetails.id
+            };
+
+            callSubmitPaymentApi(params);
         };
     }
 ]);
