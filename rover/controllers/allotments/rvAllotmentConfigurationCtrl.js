@@ -11,7 +11,8 @@ sntRover.controller('rvAllotmentConfigurationCtrl', [
     'rvPermissionSrv',
     '$timeout',
     'rvAccountTransactionsSrv',
-    function($scope, $rootScope, rvAllotmentSrv, $filter, $stateParams, rvAllotmentConfigurationSrv, summaryData, holdStatusList, $state, rvPermissionSrv, $timeout, rvAccountTransactionsSrv) {
+    'hotelSettings',
+    function($scope, $rootScope, rvAllotmentSrv, $filter, $stateParams, rvAllotmentConfigurationSrv, summaryData, holdStatusList, $state, rvPermissionSrv, $timeout, rvAccountTransactionsSrv, hotelSettings) {
 
         BaseCtrl.call(this, $scope);
         $scope.isDisabledDatePicker = ($stateParams.id !== "NEW_ALLOTMENT") ? true :  false;
@@ -602,6 +603,9 @@ sntRover.controller('rvAllotmentConfigurationCtrl', [
          * @return - None
          */
         var initAllotmentConfig = function() {
+
+            // CICO-42249 - Hotel settings
+            $scope.hotelSettings = hotelSettings;
 
             // forming the data model if it is in add mode or populating the data if it is in edit mode
             $scope.initializeDataModelForSummaryScreen();

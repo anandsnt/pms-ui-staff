@@ -474,6 +474,9 @@ angular.module('sntRover').controller('rvGroupConfigurationSummaryTab', ['$scope
                 updateSegment = function() {
                     var aptSegment = ''; // Variable to store the suitable segment ID
 
+                    // CICO-42249 - Flag to allow adding demographics for a newly created group
+                    $scope.forceDemographics = $scope.shouldShowDemographics();
+
                     if (!!$scope.groupConfigData.summary.block_to && !!$scope.groupConfigData.summary.block_from) {
                         var dayDiff = Math.floor((new tzIndependentDate($scope.groupConfigData.summary.block_to) - new tzIndependentDate($scope.groupConfigData.summary.block_from)) / 86400000);
 
@@ -489,6 +492,10 @@ angular.module('sntRover').controller('rvGroupConfigurationSummaryTab', ['$scope
                     } else {
                         return false;
                     }
+
+                    
+
+
                 };
 
             if ($scope.groupSummaryData.demographics === null) {
@@ -725,11 +732,41 @@ angular.module('sntRover').controller('rvGroupConfigurationSummaryTab', ['$scope
         };
 
         /**
-         * Place holder method for future implementation of mandatory demographic data
-         * @return {Boolean} Currently hardcoded to true
+         * Validates demographics data for mandatory fields for disabling the 
+         * Save & Continue btn in demographics popup
          */
-        $scope.isDemographicsFormValid = function() {
-            return true;
+        var validateDemographicsData = function(demographicsData) {
+            var isValid = true;
+            // Override force demographic flag if there are no options to select from (CICO-21166) all are disabled from admin
+
+            if ($scope.hotelSettings.force_reservation_type && demographicsData.reservationTypes.length > 0) {
+                isValid = !!$scope.groupConfigData.summary.demographics.reservation_type_id;
+            }
+            if (demographicsData.is_use_markets && $scope.hotelSettings.force_market_code && demographicsData.markets.length > 0 && isValid) {
+                isValid = !!$scope.groupConfigData.summary.demographics.market_segment_id;
+            }
+            if (demographicsData.is_use_sources && $scope.hotelSettings.force_source_code && demographicsData.sources.length > 0 && isValid) {
+                isValid = !!$scope.groupConfigData.summary.demographics.source_id;
+            }
+            if (demographicsData.is_use_origins && $scope.hotelSettings.force_origin_of_booking && demographicsData.origins.length > 0 && isValid) {
+                isValid = !!$scope.groupConfigData.summary.demographics.booking_origin_id;
+            }
+            if (demographicsData.is_use_segments && $scope.hotelSettings.force_segments && demographicsData.segments.length > 0 && isValid) {
+                isValid = !!$scope.groupConfigData.summary.demographics.segment_id;
+            }
+            return isValid;
+        };
+
+        /**
+         * Checks whether all the mandatory demographics fields are entered or not         
+         */
+        $scope.isDemographicsFormValid = function(assertValidation) {
+            var isDemographicsValid = true;
+            if (assertValidation) {
+                isDemographicsValid =  validateDemographicsData($scope.groupSummaryData.demographics);
+            }
+
+            return isDemographicsValid;            
         };
 
         /**
@@ -1555,11 +1592,11 @@ angular.module('sntRover').controller('rvGroupConfigurationSummaryTab', ['$scope
         $scope.shouldShowDemographics = function () {
             var isDemographicsRequired = false;
 
-            if ( ($scope.groupSummaryData.demographics.is_use_markets && $scope.hotelSettings.force_market_code && $scope.groupSummaryData.demographics.markets.length > 0) || 
+            if ( $scope.groupSummaryData.demographics && ( ($scope.groupSummaryData.demographics.is_use_markets && $scope.hotelSettings.force_market_code && $scope.groupSummaryData.demographics.markets.length > 0) || 
                  ($scope.groupSummaryData.demographics.is_use_sources && $scope.hotelSettings.force_source_code && $scope.groupSummaryData.demographics.sources.length > 0) ||
                  ($scope.groupSummaryData.demographics.is_use_origins && $scope.hotelSettings.force_origin_of_booking && $scope.groupSummaryData.demographics.origins.length > 0) ||
                  ($scope.hotelSettings.force_reservation_type && $scope.groupSummaryData.demographics.reservationTypes.length > 0) ||
-                 ($scope.groupSummaryData.demographics.is_use_segments && $scope.hotelSettings.force_segments && $scope.groupSummaryData.demographics.segments.length > 0)) {
+                 ($scope.groupSummaryData.demographics.is_use_segments && $scope.hotelSettings.force_segments && $scope.groupSummaryData.demographics.segments.length > 0) ) ) {
 
                 isDemographicsRequired = true;
             }
@@ -1608,8 +1645,7 @@ angular.module('sntRover').controller('rvGroupConfigurationSummaryTab', ['$scope
         var initializeMe = (function() {
             var vm = this;            
 
-            // CICO-42249 - Flag to allow adding demographics for a newly created group
-            $scope.forceDemographics = false;
+            
 
             BaseCtrl.call(vm, $scope);
 

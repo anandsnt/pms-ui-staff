@@ -135,6 +135,10 @@ sntRover.controller('rvAllotmentConfigurationSummaryTabCtrl', [
 				blockToDate		= configSummaryData.block_to,
 				aptSegment		= ""; // Variable to store the suitable segment ID;
 
+				// CICO-42249 - Flag to allow adding demographics for a newly created group
+                $scope.forceDemographics = $scope.shouldShowDemographics();
+
+
 			// CICO-15107 --
 			if (!!blockToDate && !!blockFromDate) {
 				var dayDiff = Math.floor((new tzIndependentDate(blockToDate) - new tzIndependentDate(blockFromDate)) / 86400000);
@@ -239,11 +243,40 @@ sntRover.controller('rvAllotmentConfigurationSummaryTabCtrl', [
 		};
 
 		/**
-		 * Place holder method for future implementation of mandatory demographic data
-		 * @return {Boolean} Currently hardcoded to true
+         * Validates demographics data for mandatory fields for disabling the 
+         * Save & Continue btn in demographics popup
+         */
+        var validateDemographicsData = function(demographicsData) {
+            var isValid = true;            
+
+            if ($scope.hotelSettings.force_reservation_type && demographicsData.reservationTypes.length > 0) {
+                isValid = !!$scope.allotmentConfigData.sulmmary.demographics.reservation_type_id;
+            }
+            if (demographicsData.is_use_markets && $scope.hotelSettings.force_market_code && demographicsData.markets.length > 0 && isValid) {
+                isValid = !!$scope.allotmentConfigData.summary.demographics.market_segment_id;
+            }
+            if (demographicsData.is_use_sources && $scope.hotelSettings.force_source_code && demographicsData.sources.length > 0 && isValid) {
+                isValid = !!$scope.allotmentConfigData.summary.demographics.source_id;
+            }
+            if (demographicsData.is_use_origins && $scope.hotelSettings.force_origin_of_booking && demographicsData.origins.length > 0 && isValid) {
+                isValid = !!$scope.allotmentConfigData.summary.demographics.booking_origin_id;
+            }
+            if (demographicsData.is_use_segments && $scope.hotelSettings.force_segments && demographicsData.segments.length > 0 && isValid) {
+                isValid = !!$scope.allotmentConfigData.summary.demographics.segment_id;
+            }
+            return isValid;
+        };
+
+		/**
+		 * Checks whether all mandatory demographics fields are entered or not		 
 		 */
-		$scope.isDemographicsFormValid = function() {
-			return true;
+		$scope.isDemographicsFormValid = function(assertValidation) {
+			var isDemographicsValid = true;
+            if (assertValidation) {
+                isDemographicsValid =  validateDemographicsData($scope.allotmentSummaryData.demographics);
+            }
+
+            return isDemographicsValid;
 		};
 
 		/**
@@ -270,7 +303,7 @@ sntRover.controller('rvAllotmentConfigurationSummaryTabCtrl', [
 		 * @return undefined
 		 */
 		$scope.openDemographicsPopup = function(showRequiredFields) {
-			if ($scope.isInAddMode()) {
+			if ($scope.isInAddMode() && !$scope.forceDemographics) {
 				// If the group has not been saved yet, prompt user for the same
 				$scope.errorMessage = ["Please save the allotment first"];
 				return;
@@ -961,11 +994,11 @@ sntRover.controller('rvAllotmentConfigurationSummaryTabCtrl', [
         $scope.shouldShowDemographics = function () {
             var isDemographicsRequired = false;
 
-            if ( ($scope.allotmentSummaryData.demographics.is_use_markets && $scope.hotelSettings.force_market_code && $scope.allotmentSummaryData.demographics.markets.length > 0) || 
+            if ( $scope.allotmentSummaryData.demographics && (($scope.allotmentSummaryData.demographics.is_use_markets && $scope.hotelSettings.force_market_code && $scope.allotmentSummaryData.demographics.markets.length > 0) || 
                  ($scope.allotmentSummaryData.demographics.is_use_sources && $scope.hotelSettings.force_source_code && $scope.allotmentSummaryData.demographics.sources.length > 0) ||
                  ($scope.allotmentSummaryData.demographics.is_use_origins && $scope.hotelSettings.force_origin_of_booking && $scope.allotmentSummaryData.demographics.origins.length > 0) ||
                  ($scope.hotelSettings.force_reservation_type && $scope.allotmentSummaryData.demographics.reservationTypes.length > 0) ||
-                 ($scope.allotmentSummaryData.demographics.is_use_segments && $scope.hotelSettings.force_segments && $scope.allotmentSummaryData.demographics.segments.length > 0)) {
+                 ($scope.allotmentSummaryData.demographics.is_use_segments && $scope.hotelSettings.force_segments && $scope.allotmentSummaryData.demographics.segments.length > 0) )) {
 
                 isDemographicsRequired = true;
             }
@@ -1013,10 +1046,7 @@ sntRover.controller('rvAllotmentConfigurationSummaryTabCtrl', [
 		 */
 		var initializeMe = (function() {
 			BaseCtrl.call(this, $scope);
-
-			// CICO-42249 - Flag to allow adding demographics for a newly created group
-            $scope.forceDemographics = false;
-
+			
 			// summary scroller
 			$scope.setScroller("allotmentSummaryScroller");
 
