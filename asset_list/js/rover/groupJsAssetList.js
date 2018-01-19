@@ -19,7 +19,8 @@ module.exports = {
 				servicesRoot + "bill/rvBillCardSrv.js",
 				servicesRoot + "rvReservationSrv.js",
 				servicesRoot + "payment/rvPaymentSrv.js",
-				servicesRoot + "accounts/**/*.js"
+				servicesRoot + "accounts/**/*.js",
+				roverRoot + "services/reservation/rvReservationBaseSearchSrv.js"
 			]
 		};
 		return groupJsAssets;
