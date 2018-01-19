@@ -67,7 +67,8 @@ admin.controller('ADStationaryCtrl',
 				});
 			});
 			
-			$scope.data = data;			
+			$scope.data = data;	
+			$scope.data.locale = $scope.locale;		
 			$scope.data.groupholdstatus = data.group_hold_status_data[0].hold_status_id;
 			$scope.showConfirmationHeaderFooterBasedOnHoldStatus();
 			$scope.itemList = new ngTableParams({
@@ -136,7 +137,7 @@ admin.controller('ADStationaryCtrl',
 		if ($scope.hotelTemplateLogoPrefetched === postingData.location_image) {
 			postingData.location_image = "";
 		}
-		postingData.locale = $scope.locale;
+		// postingData.locale = $scope.locale;
 
 
 		$scope.invokeApi(ADStationarySrv.saveStationary, postingData, successCallbackOfSaveDetails);
@@ -220,7 +221,8 @@ admin.controller('ADStationaryCtrl',
 	$scope.onLocaleChange = function() {
 		var params = {};
 
-		params.locale = $scope.locale;
+		params.locale = $scope.data.locale;
+		$scope.locale = $scope.data.locale
 		fetchStationary(params);
 	};
 
