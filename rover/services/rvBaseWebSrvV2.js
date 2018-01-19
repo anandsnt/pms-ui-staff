@@ -12,7 +12,8 @@ sntRover.config(function($httpProvider) {
 });
 
 
-angular.module('sntRover').service('rvBaseWebSrvV2', ['$http', '$q', '$window', '$rootScope', function($http, $q, $window, $rootScope) {
+angular.module('sntRover').service('rvBaseWebSrvV2', ['$http', '$q', '$window', '$rootScope', '$log',
+    function($http, $q, $window, $rootScope, $log) {
 
     var webserviceErrorActions = function(url, deferred, errors, status) {
         var urlStart = url.split('?')[0];
@@ -29,7 +30,11 @@ angular.module('sntRover').service('rvBaseWebSrvV2', ['$http', '$q', '$window', 
         } else if (status === 501 || status === 502 || status === 503) { // 500- Internal Server Error
             $window.location.href = '/500';
         } else if (status === 504) {
-            $rootScope.showTimeoutError && $rootScope.showTimeoutError();
+            if ($rootScope.showTimeoutError) {
+                $rootScope.showTimeoutError();
+            } else {
+                $log.error('504 - Not handled!');
+            }
             return;
         } else if (status === 401) { // 401- Unauthorized
             // so lets redirect to login page
