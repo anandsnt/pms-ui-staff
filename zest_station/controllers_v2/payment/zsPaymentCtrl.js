@@ -115,7 +115,7 @@ angular.module('sntZestStation').controller('zsPaymentCtrl', ['$scope', '$log', 
             $scope.$on('$destroy', listenerCBAPaymentSuccess);
             $scope.$on('$destroy', listenerUpdateErrorMessage);
         };
-
+        /**  ***************************** CBA code ends here **************************************/
 
         var callSubmitPaymentApi = function(params, loader) {
             $scope.screenMode.paymentInProgress = true;
