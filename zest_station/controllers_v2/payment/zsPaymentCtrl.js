@@ -1,11 +1,12 @@
-angular.module('sntZestStation').controller('zsPaymentCtrl', ['$scope', '$log', 'sntActivity', 'sntPaymentSrv', 'zsPaymentSrv', '$stateParams', 'zsStateHelperSrv', '$state', '$filter', 'zsGeneralSrv', '$timeout',
-    function($scope, $log, sntActivity, sntPaymentSrv, zsPaymentSrv, $stateParams, zsStateHelperSrv, $state, $filter, zsGeneralSrv, $timeout) {
+angular.module('sntZestStation').controller('zsPaymentCtrl', ['$scope', '$log', 'sntActivity', 'sntPaymentSrv', 'zsPaymentSrv', '$stateParams', 'zsStateHelperSrv', '$state', '$filter', 'zsGeneralSrv', '$timeout', '$controller',
+    function($scope, $log, sntActivity, sntPaymentSrv, zsPaymentSrv, $stateParams, zsStateHelperSrv, $state, $filter, zsGeneralSrv, $timeout, $controller) {
 
         $scope.screenMode = {
             'value': 'PROCESS_INITIAL',
             'errorMessage': '',
             'paymentInProgress': false,
-            'isUsingExistingCardPayment': false
+            'isUsingExistingCardPayment': false,
+            'paymentAction': '' // can be add card (ADD_CARD) or pay (PAY_AMOUNT)
         };
 
         var runDigestCycle = function() {
@@ -16,6 +17,11 @@ angular.module('sntZestStation').controller('zsPaymentCtrl', ['$scope', '$log', 
 
         /**  ***************************** CBA **************************************/
 
+        if ($scope.zestStationData.paymentGateway === 'CBA') {
+            $controller('payCBACtrl', {
+                $scope: $scope
+            });
+        }
         var makeCBAPayment = function() {
             $scope.$emit('showLoader');
             $scope.screenMode.errorMessage = '';
@@ -103,19 +109,19 @@ angular.module('sntZestStation').controller('zsPaymentCtrl', ['$scope', '$log', 
 
         var callSubmitPaymentApi = function(params, loader) {
             $scope.screenMode.paymentInProgress = true;
-            loader = loader ? loader : 'BLOCKER';
             $scope.callAPI(zsPaymentSrv.submitDeposit, {
                 params: params,
-                loader: loader,
                 'successCallBack': function() {
                     $scope.$emit('hideLoader');
                     $scope.screenMode.value = 'PAYMENT_SUCCESS';
                     $scope.screenMode.paymentInProgress = false;
+                    runDigestCycle();
                 },
                 'failureCallBack': function() {
                     $scope.$emit('hideLoader');
                     $scope.screenMode.paymentInProgress = false;
                     $scope.screenMode.value = 'PAYMENT_FAILED';
+                    runDigestCycle();
                 }
             });
         };
@@ -141,16 +147,15 @@ angular.module('sntZestStation').controller('zsPaymentCtrl', ['$scope', '$log', 
             $scope.screenMode.isUsingExistingCardPayment = false;
             if ($scope.zestStationData.paymentGateway === 'CBA' && $scope.isIpad) {
                 $scope.startCBAPayment();
-            } else if ($scope.zestStationData.paymentGateway === 'MLI' && $scope.zestStationData.mliEmvEnabled) {
-                // for EMV start sending request to terminal
-                // add 4 seconds delay for the screen to show the activity indicator
-                proceedWithEMVPayment();
-                $timeout(function() {
-                    $scope.$emit('showLoader');
-                }, 4000);
+            } else if (($scope.zestStationData.paymentGateway === 'MLI' && $scope.zestStationData.mliEmvEnabled) || 
+            $scope.zestStationData.paymentGateway === 'sixpayments') {            // for EMV start sending request to terminal
+                        // add 4 seconds delay for the screen to show the activity indicator
+                        proceedWithEMVPayment();
             } else if ($scope.zestStationData.paymentGateway === 'MLI' && $scope.zestStationData.ccReader === 'websocket') {
                 // Check if socket is ready
-                if ($scope.socketOperator.returnWebSocketObject().readyState === 1) {
+                if ($scope.inDemoMode()) {
+                    processSwipeCardData(zsPaymentSrv.sampleMLISwipedCardResponse);
+                } else if ($scope.socketOperator.returnWebSocketObject().readyState === 1) {
                     $scope.$emit('showLoader');
                     observeForDesktopSwipe();
                 } else {
@@ -158,7 +163,7 @@ angular.module('sntZestStation').controller('zsPaymentCtrl', ['$scope', '$log', 
                     $scope.$emit('CONNECT_WEBSOCKET');
                 }
             } else if ($scope.zestStationData.paymentGateway === 'MLI' && $scope.zestStationData.ccReader === 'local') {
-                // to do
+                proceedWithiPadPayments();
             } else {
                 $scope.$emit('showLoader');
                 $timeout(function() {
@@ -178,10 +183,9 @@ angular.module('sntZestStation').controller('zsPaymentCtrl', ['$scope', '$log', 
                     'amount': $scope.balanceDue,
                     'bill_number': 1,
                     'payment_type': 'CC'
-                },
-                loader = 'none';
+                };
 
-            callSubmitPaymentApi(params, loader);
+            callSubmitPaymentApi(params);
         };
 
         $scope.payUsingExistingCard = function() {
@@ -240,7 +244,11 @@ angular.module('sntZestStation').controller('zsPaymentCtrl', ['$scope', '$log', 
                         "bill_number": 1
                     };
 
-                    callSubmitPaymentApi(data);
+                    if ($scope.screenMode.paymentAction === 'PAY_AMOUNT') {
+                        callSubmitPaymentApi(data);
+                    } else {
+                        // add card - TODO for checkin
+                    }
                 },
                 'failureCallBack': function() {
                     $scope.screenMode.value = 'PAYMENT_FAILED';
@@ -266,5 +274,36 @@ angular.module('sntZestStation').controller('zsPaymentCtrl', ['$scope', '$log', 
 
         /**  *********************** Ipad device actions ********************************/
 
+        var proceedWithiPadPayments = function() {
+            if ($scope.inDemoMode()) {
+                processSwipeCardData(zsPaymentSrv.sampleMLISwipedCardResponse);
+            }
+            // show error if the device is not iPad
+            else if ($scope.isIpad) {
+                $scope.$emit('showLoader');
+                $scope.cardReader.startReader({
+                    'successCallBack': function(response) {
+                        processSwipeCardData(response);
+                        runDigestCycle();
+                    },
+                    'failureCallBack': function() {
+                        // hide loader a 1s delay
+                        $timeout(function() {
+                            $scope.screenMode.value = 'PAYMENT_FAILED';
+                            $scope.$emit('hideLoader');
+                            runDigestCycle();
+                        }, 1000);
+                    }
+                });
+            } else {
+                $scope.$emit('showLoader');
+                $timeout(function() {
+                    $scope.$emit('hideLoader');
+                    $scope.screenMode.value = 'PAYMENT_FAILED';
+                    $scope.screenMode.errorMessage = 'Use Zest station from an iPad';
+                }, 2000);
+            }
+
+        };
     }
 ]);
