@@ -2284,7 +2284,7 @@ sntRover.controller('RVbillCardController',
    /*
 	 * open popup for edit/split/remove transaction
 	 */
-	$scope.openActionsPopup = function(id, desc, amount, type, credits, reference_text) {
+	$scope.openActionsPopup = function(id, desc, amount, type, credits, reference_text, show_ref_on_invoice) {
 
 		$scope.errorMessage = "";
 		// hide edit and remove options in case type is  payment
@@ -2293,6 +2293,7 @@ sntRover.controller('RVbillCardController',
 		$scope.selectedTransaction.id = id;
 		$scope.selectedTransaction.desc = desc;
 		$scope.reference_text = reference_text;
+		$scope.show_ref_on_invoice = true//show_ref_on_invoice;
 
 		if (amount) {
 			$scope.selectedTransaction.amount = amount;
