@@ -26,12 +26,14 @@
     </div>
 
     <!-- Show this part when languages are available  -->
-    <div class="entry full-width" ng-hide="true">
-        <label for="language">Language</label>
-        <div class="select">
-            <select name="language" id="language">
-                 <option value="{lang}">{Language}</option>
-                 ... repeat for every language
+    <div class="entry full-width" >
+        <label for="languages">Language</label>
+        <div  class="select">
+            <select convert-to-number iscroll-stop-propagation ng-model="data.language_id">
+                <option style="display:none" value=""></option>
+                <option value="{{item.id}}" ng-repeat="item in languageData.languages"
+                    ng-selected="item.id === data.language_id"
+                    >{{item.language}}</option>
             </select>
         </div>
     </div>
