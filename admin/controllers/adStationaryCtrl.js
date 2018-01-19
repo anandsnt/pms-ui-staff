@@ -55,6 +55,18 @@ admin.controller('ADStationaryCtrl',
 	};
 
 	$scope.init = function() {
+		// Rename keys to avoid more changes in multiple places
+		// and to make our select box data set consisntent to use
+		// value and description
+		angular.forEach(availableGuestLanguages.languages, function(availableLanguage) {
+			availableLanguage.value = availableLanguage.code;
+			delete availableLanguage.code;
+			availableLanguage.description = availableLanguage.language;
+			delete availableLanguage.language;
+		});
+		availableGuestLanguages.locales = availableGuestLanguages.languages;
+		delete availableGuestLanguages.languages;
+
 		$scope.languages = availableGuestLanguages;
 		$scope.holdStatusList = availableHoldStatus.data.hold_status;
 		$scope.locale = $scope.languages.default_locale;
