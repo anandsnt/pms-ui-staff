@@ -231,7 +231,8 @@ angular.module('sntZestStation').controller('zsPaymentCtrl', ['$scope', '$log', 
                 ($scope.zestStationData.paymentGateway === 'MLI' && !$scope.zestStationData.mliEmvEnabled))
                 && $scope.screenMode.paymentAction === 'PAY_AMOUNT' 
                 && !$scope.screenMode.paymentSuccess
-                && $scope.screenMode.value !== 'SELECT_PAYMENT_METHOD') {
+                && $scope.screenMode.value !== 'SELECT_PAYMENT_METHOD'
+                && $scope.zestStationData.paymentGateway !== 'CBA') {
 
                 $scope.$emit('hideLoader');
                 $scope.screenMode.errorMessage = $filter('translate')('CC_SWIPE_TIMEOUT_SUB');
