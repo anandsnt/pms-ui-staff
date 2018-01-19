@@ -8,6 +8,31 @@ sntZestStation.service('zsPaymentSrv', ['$http', '$q', 'zsBaseWebSrv', '$rootSco
         var that = this,
             TERMINAL_POLLING_INTERVAL_MS = 3000;
 
+
+        var paymentData = null;
+
+        this.setPaymentData = function (data) {
+            paymentData = angular.copy(data);
+        };
+
+        this.getPaymentData = function () {
+            return paymentData;
+        };
+
+        this.getSubmitPaymentParams = function () {
+            return {
+                bill_id: paymentData.bill_id,
+                postData: {
+                    amount: paymentData.amount,
+                    bill_number: 1,
+                    is_split_payment: false,
+                    payment_type: 'CC',
+                    workstation_id: paymentData.workstation_id
+                },
+                reservation_id: paymentData.reservation
+            };
+        };
+
         this.savePayment = function(params) {
             var deferred = $q.defer(),
                 url = '/staff/reservation/save_payment';
@@ -220,6 +245,24 @@ sntZestStation.service('zsPaymentSrv', ['$http', '$q', 'zsBaseWebSrv', '$rootSco
                 deferred.reject(data);
             });
             return deferred.promise;
+        };
+
+        this.sampleMLISwipedCardResponse = {
+            "RVCardReadCardIIN": "374200",
+            "RVCardReadCardName": "TEST CARD 12 UAT USA",
+            "RVCardReadCardType": "AX",
+            "RVCardReadETB": "",
+            "RVCardReadETBKSN": "",
+            "RVCardReadExpDate": "2001",
+            "RVCardReadIsEncrypted": "1",
+            "RVCardReadMaskedPAN": "374200030001006",
+            "RVCardReadPAN": "374200030001006",
+            "RVCardReadTrack1": "30D979FBE08486736DB43D12C57B4EBE3BD471584B6AD3D6F3BCFE38D9167FD35E7D9AF57FC2FF32D9B6BFFEE6661366E43BF709837A38EB5335AFD8D357BE553D0D923D0C00283A",
+            "RVCardReadTrack1KSN": "9012080B2ACA76000878",
+            "RVCardReadTrack2": "D791C3A38FF3FAC1B241D97DBB717B826E4D356163B374BA2CC5CF156510DCD50FF6997EFF06B6B4",
+            "RVCardReadTrack2KSN": "9012080B2ACA76000878",
+            "RVCardReadTrack3": "",
+            "RVCardReadTrack3KSN": "9012080B2ACA76000878"
         };
 
 

@@ -57,6 +57,11 @@ sntRover.controller('RVroomAssignmentController', [
 	$scope.roomAssgnment.inProgress = false;
 	$scope.roomTransfer = {};
 	$scope.isRoomLockedForThisReservation = $stateParams.cannot_move_room;
+
+	// CICO-47546 Overbooking selection flag
+	$scope.overbooking = {
+		isOpted: false
+	};
 	/**
 	* function to to get the rooms based on the selected room type
 	*/
@@ -204,7 +209,7 @@ sntRover.controller('RVroomAssignmentController', [
 						className: 'ngdialog-theme-default',
 						scope: $scope
 					});
-				} else {
+				} else {					
 					ngDialog.open({
 						template: '/assets/partials/roomAssignment/rvOverBookRoom.html',
 						controller: 'RVOverBookRoomDialogController',
