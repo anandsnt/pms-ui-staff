@@ -217,17 +217,16 @@ angular.module('sntZestStation').controller('zsPaymentCtrl', ['$scope', '$log', 
         };
 
   
-        $scope.$on('USER_ACTIVITY_TIMEOUT', function() {
-            $scope.$emit('hideLoader');
+        $scope.$on('USER_ACTIVITY_TIMEOUT', function() {            
             
             // check if payment is in progress or payment was success. 
             // For Desktop swupe we will not use paymentInProgress to consider 
             
-            if ((!$scope.screenMode.paymentInProgress || 
-                ($scope.zestStationData.paymentGateway === 'MLI' && !$scope.zestStationData.mliEmvEnabled && $scope.zestStationData.ccReader === 'websocket'))
+            if (!$scope.screenMode.paymentInProgress || 
+                ($scope.zestStationData.paymentGateway === 'MLI' && !$scope.zestStationData.mliEmvEnabled)
                 && $scope.screenMode.paymentAction === 'PAY_AMOUNT' 
                 && !$scope.screenMode.paymentSuccess) {
-
+                $scope.$emit('hideLoader');
                 $scope.screenMode.errorMessage = $filter('translate')('CC_SWIPE_TIMEOUT_SUB');
                 $scope.screenMode.value = 'PAYMENT_FAILED';
                 $scope.$broadcast('RESET_TIMER');
@@ -278,7 +277,8 @@ angular.module('sntZestStation').controller('zsPaymentCtrl', ['$scope', '$log', 
         };
 
         $scope.$on('SWIPE_ACTION', function (evt, response) {
-            if ($scope.screenMode.errorMessage === $filter('translate')('CC_SWIPE_TIMEOUT_SUB')) {
+            if ($scope.screenMode.errorMessage === $filter('translate')('CC_SWIPE_TIMEOUT_SUB') ||
+                $scope.screenMode.paymentSuccess) {
                 // discard swipe
             } else {
                 processSwipeCardData(response);
@@ -310,7 +310,12 @@ angular.module('sntZestStation').controller('zsPaymentCtrl', ['$scope', '$log', 
                 $scope.screenMode.paymentInProgress = true;
                 $scope.cardReader.startReader({
                     'successCallBack': function(response) {
-                        processSwipeCardData(response);
+                        if ($scope.screenMode.errorMessage === $filter('translate')('CC_SWIPE_TIMEOUT_SUB') ||
+                            $scope.screenMode.paymentSuccess) {
+                            // discard swipe
+                        } else {
+                            processSwipeCardData(response);
+                        }
                         $scope.$broadcast('RESET_TIMER');
                         runDigestCycle();
                     },
