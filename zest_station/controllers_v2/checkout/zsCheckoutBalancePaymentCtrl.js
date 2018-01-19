@@ -1,5 +1,5 @@
-angular.module('sntZestStation').controller('zsCheckoutBalancePaymentCtrl', ['$scope', '$log', 'zsPaymentSrv', '$stateParams', 'zsStateHelperSrv', '$state', '$timeout', '$controller',
-    function($scope, $log, zsPaymentSrv, $stateParams, zsStateHelperSrv, $state, $timeout, $controller) {
+angular.module('sntZestStation').controller('zsCheckoutBalancePaymentCtrl', ['$scope', '$log', 'zsPaymentSrv', '$stateParams', 'zsStateHelperSrv', '$state', '$timeout', '$controller', 'zsEventConstants',
+    function($scope, $log, zsPaymentSrv, $stateParams, zsStateHelperSrv, $state, $timeout, $controller, zsEventConstants) {
 
 
         $controller('zsPaymentCtrl', {
@@ -16,8 +16,8 @@ angular.module('sntZestStation').controller('zsCheckoutBalancePaymentCtrl', ['$s
         };
 
 
-        $scope.$on('PAYMENT_SUCCESS', function() {
-            $scope.screenMode.value = 'PAYMENT_SUCCESS';
+        $scope.$on('RESET_TIMER', function() {
+            $scope.resetTime();
         });
 
         $scope.reTryCardSwipe = function() {
@@ -31,6 +31,7 @@ angular.module('sntZestStation').controller('zsCheckoutBalancePaymentCtrl', ['$s
 
         (function() {
             $log.info('init...');
+            $scope.$emit(zsEventConstants.HIDE_BACK_BUTTON);
             $scope.screenMode.paymentAction = 'PAY_AMOUNT';
             var paymentParams = zsPaymentSrv.getPaymentData();
 
@@ -55,9 +56,6 @@ angular.module('sntZestStation').controller('zsCheckoutBalancePaymentCtrl', ['$s
                 $scope.screenMode.value = 'PAYMENT_FAILED';
             }
 
-            if ($scope.zestStationData.paymentGateway === 'MLI' && $scope.zestStationData.ccReader === 'websocket') {
-                $scope.listenUserActivity();
-            }
         })();
     }
 ]);
