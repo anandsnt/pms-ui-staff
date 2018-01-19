@@ -7,7 +7,8 @@ angular.module('sntZestStation').controller('zsPaymentCtrl', ['$scope', '$log', 
             'paymentInProgress': false,
             'isUsingExistingCardPayment': false,
             'paymentAction': '', // can be add card (ADD_CARD) or pay (PAY_AMOUNT),
-            'paymentSuccess': false
+            'paymentSuccess': false,
+            'paymentFailure': false
         };
 
         var runDigestCycle = function() {
@@ -20,6 +21,7 @@ angular.module('sntZestStation').controller('zsPaymentCtrl', ['$scope', '$log', 
             $scope.$emit('hideLoader');
             $scope.$broadcast('RESET_TIMER');
             $scope.screenMode.paymentInProgress = false;
+            $scope.screenMode.paymentFailure = true;
             $scope.screenMode.value = 'PAYMENT_FAILED';
             runDigestCycle();
         };
@@ -104,6 +106,7 @@ angular.module('sntZestStation').controller('zsPaymentCtrl', ['$scope', '$log', 
                 showErrorMessage(response);
                 $scope.$emit('hideLoader');
                 $scope.screenMode.paymentInProgress = false;
+                $scope.screenMode.paymentFailure = true;
                 $scope.screenMode.value = 'PAYMENT_FAILED';
                 // TODO : Handle Error here!
             });
@@ -149,6 +152,7 @@ angular.module('sntZestStation').controller('zsPaymentCtrl', ['$scope', '$log', 
         $scope.payUsingNewCard = function() {
             $scope.screenMode.value = 'PAYMENT_IN_PROGRESS';
             $scope.screenMode.isUsingExistingCardPayment = false;
+            $scope.screenMode.paymentFailure = false;
             $scope.screenMode.errorMessage = '';
             if ($scope.zestStationData.paymentGateway === 'CBA' && $scope.isIpad) {
                 $scope.startCBAPayment();
@@ -174,6 +178,7 @@ angular.module('sntZestStation').controller('zsPaymentCtrl', ['$scope', '$log', 
                 $timeout(function() {
                     $scope.$emit('hideLoader');
                     $scope.screenMode.value = 'PAYMENT_FAILED';
+                    $scope.screenMode.paymentFailure = true;
                     $scope.screenMode.errorMessage = 'Please check your settings and device connections';
                 }, 2000);
             }
@@ -222,13 +227,16 @@ angular.module('sntZestStation').controller('zsPaymentCtrl', ['$scope', '$log', 
             // check if payment is in progress or payment was success. 
             // For Desktop swupe we will not use paymentInProgress to consider 
             
-            if (!$scope.screenMode.paymentInProgress || 
-                ($scope.zestStationData.paymentGateway === 'MLI' && !$scope.zestStationData.mliEmvEnabled)
+            if ((!$scope.screenMode.paymentInProgress || 
+                ($scope.zestStationData.paymentGateway === 'MLI' && !$scope.zestStationData.mliEmvEnabled))
                 && $scope.screenMode.paymentAction === 'PAY_AMOUNT' 
-                && !$scope.screenMode.paymentSuccess) {
+                && !$scope.screenMode.paymentSuccess
+                && $scope.screenMode.value !== 'SELECT_PAYMENT_METHOD') {
+
                 $scope.$emit('hideLoader');
                 $scope.screenMode.errorMessage = $filter('translate')('CC_SWIPE_TIMEOUT_SUB');
                 $scope.screenMode.value = 'PAYMENT_FAILED';
+                $scope.screenMode.paymentFailure = true;
                 $scope.$broadcast('RESET_TIMER');
 
             } else {
@@ -277,8 +285,7 @@ angular.module('sntZestStation').controller('zsPaymentCtrl', ['$scope', '$log', 
         };
 
         $scope.$on('SWIPE_ACTION', function (evt, response) {
-            if ($scope.screenMode.errorMessage === $filter('translate')('CC_SWIPE_TIMEOUT_SUB') ||
-                $scope.screenMode.paymentSuccess) {
+            if ($scope.screenMode.paymentFailure || $scope.screenMode.paymentSuccess) {
                 // discard swipe
             } else {
                 processSwipeCardData(response);
@@ -295,6 +302,7 @@ angular.module('sntZestStation').controller('zsPaymentCtrl', ['$scope', '$log', 
             $scope.$emit('hideLoader');
             $scope.screenMode.errorMessage = $filter('translate')('CHECK_HANDLER_IS_RUNNING_MSG');
             $scope.screenMode.value = 'PAYMENT_FAILED';
+            $scope.screenMode.paymentFailure = true;
             runDigestCycle();
         });
 
@@ -310,8 +318,7 @@ angular.module('sntZestStation').controller('zsPaymentCtrl', ['$scope', '$log', 
                 $scope.screenMode.paymentInProgress = true;
                 $scope.cardReader.startReader({
                     'successCallBack': function(response) {
-                        if ($scope.screenMode.errorMessage === $filter('translate')('CC_SWIPE_TIMEOUT_SUB') ||
-                            $scope.screenMode.paymentSuccess) {
+                        if ($scope.screenMode.paymentFailure || $scope.screenMode.paymentSuccess) {
                             // discard swipe
                         } else {
                             processSwipeCardData(response);
