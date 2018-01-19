@@ -98,9 +98,11 @@ sntRover.controller('RVAccountTransactionsPopupCtrl',
 		{
 			"updatedDate":
 						{
-				  			"new_amount": newAmount,
-				  			"charge_code_id": chargeCode.id,
-				  			"adjustment_reason": adjustmentReason
+				  			"new_amount": $scope.newAmount,
+				  			"charge_code_id": $scope.selectedChargeCode.id,
+				  			"adjustment_reason": $scope.adjustmentReason,
+							"reference_text": $scope.reference_text,
+							"show_ref_on_invoice": $scope.show_ref_on_invoice
 						},
 					"id": $scope.selectedTransaction.id
 		};

@@ -231,7 +231,8 @@
 						<br />
 					</span>
 				</td>
-				<td class="description">
+				<td class="description" ng-class="{'with-reference': feesData.reference_text != ''}">
+					<span class="icons icon-invoice-blue" ng-show="feesData.reference_text != ''"></span>
 					<strong ng-repeat="description in feesData.description" ng-if = "!isStandAlone && !feesData.is_group_by_ref">
 						{{description.item_description}}
 					</strong>
