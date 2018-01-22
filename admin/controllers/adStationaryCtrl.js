@@ -59,6 +59,7 @@ admin.controller('ADStationaryCtrl',
 		// and to make our select box data set consisntent to use
 		// value and description
 		var locales = [];
+        
 		angular.forEach(availableGuestLanguages.languages, function(availableLanguage) {
 			availableLanguage.value = availableLanguage.code;
 			delete availableLanguage.code;
