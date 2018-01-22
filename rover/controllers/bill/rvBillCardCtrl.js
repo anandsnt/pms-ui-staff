@@ -603,9 +603,17 @@ sntRover.controller('RVbillCardController',
 	 */
 	$scope.showActiveBill = function(index) {
 
-		var activeBillClass = "";
+		var activeBillClass = "",
+			activeBill = $scope.reservationBillData.bills[index],
+			billCount = $scope.reservationBillData.bills.length,
+			isTransactionsExist = activeBill.is_transactions_exist;
 
-		if (index === $scope.currentActiveBill) {
+		// CICO-37047 : We need to show Remove Bill icon ('X') for -
+		// a last bill window having no transactions exist.
+		if (index === $scope.currentActiveBill && (billCount === index + 1) && !isTransactionsExist ) {
+			activeBillClass = "ui-tabs-active ui-state-active with-button";
+		}
+		else if (index === $scope.currentActiveBill) {
 			activeBillClass = "ui-tabs-active ui-state-active";
 		}
 		return activeBillClass;
@@ -2808,5 +2816,20 @@ sntRover.controller('RVbillCardController',
     $scope.billHasCreditCard = function () {
         return $scope.reservationBillData.bills[$scope.currentActiveBill].credit_card_details.payment_type === "CC";
     };
+
+    /*
+	 * Handle click action on Remove Bill button
+	 * @param {int} index of bill
+	 */
+	$scope.clickedRemoveBill = function(billIndex) {
+		var params = {
+			'bill_id': $scope.reservationBillData.bills[billIndex].bill_id,
+		};
+		console.log($scope.reservationBillData.bills[billIndex].bill_number);
+		
+		$scope.currentActiveBill = billIndex - 1;
+		$scope.reviewStatusArray[billIndex].reviewStatus = true;
+		// $scope.invokeApi(RVBillCardSrv.fetch, $scope.reservationBillData.reservation_id, $scope.fetchSuccessCallback);
+	};
 
 }]);
