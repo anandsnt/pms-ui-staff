@@ -757,4 +757,24 @@ admin.controller('ADAppCtrl', [
                 $window.location.href = redirUrl;
             }, 300);
         };
+
+        $scope.disableFeatureInNonDevEnv = function() {
+            // Some features may not be completed by the end of a sprint
+            // and reverting will be painful. So in this case, we can temperorily disable 
+            // such features (like a toggle button) in production and release
+            var url = window.location;
+            var inNonDevEnvironment = true;
+
+            if (url.hostname) {
+                if (typeof url.hostname === typeof 'str') {
+                    if (url.hostname.indexOf('pms-dev') !== -1 ||
+                        url.hostname.indexOf('pms-prod-test') !== -1 ||
+                        url.hostname.indexOf('192.168.1') !== -1 ||
+                        url.hostname.indexOf('localhost') !== -1) {
+                        inNonDevEnvironment = false;
+                    }
+                }
+            }
+            return inNonDevEnvironment;
+        };
 }]);
