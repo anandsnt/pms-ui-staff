@@ -260,8 +260,7 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 
 		$scope.createNewBill = function() {
 			var billData = {
-				"account_id": $scope.accountConfigData.summary.posting_account_id,
-				"bill_number": $scope.transactionsDetails.bills.length + 1
+				"account_id": $scope.accountConfigData.summary.posting_account_id
 			};
 			var createBillSuccessCallback = function(data) {
 				$scope.$emit('hideLoader');
