@@ -726,18 +726,28 @@ sntRover.controller('RVbillCardController',
 		 	}
 		}
 	 };
-	 /*
-	  * Success callback of fetch - After moving fees item from one bill to another
-	  */
-	 $scope.fetchSuccessCallback = function(data) {
-	 	$scope.$emit('hideLoader');
-	 	reservationBillData = data;
-	 	$scope.init(data);
-	 	$scope.calculateBillDaysWidth();
-	 };
-	 $scope.moveToBillActionfetchSuccessCallback = function(data) {
-	 	$scope.fetchSuccessCallback(data);
-	 };
+	/*
+	* Success callback of fetch - After moving fees item from one bill to another
+	*/
+	$scope.fetchSuccessCallback = function(data) {
+		$scope.$emit('hideLoader');
+		reservationBillData = data;
+		$scope.init(data);
+		$scope.calculateBillDaysWidth();
+	};
+	// Utility method to reload bill screen after other operations.
+	var reloadBillScreen = function() {
+		var dataToSend = {
+			params: $scope.reservationBillData.reservation_id,
+			successCallBack: $scope.fetchSuccessCallback,
+		};
+
+		$scope.callAPI(RVBillCardSrv.fetch, dataToSend);
+    };
+
+	$scope.moveToBillActionfetchSuccessCallback = function(data) {
+		$scope.fetchSuccessCallback(data);
+	};
 	 /*
 	  * MOve fees item from one bill to another
 	  * @param {int} old Bill Value
@@ -2600,8 +2610,7 @@ sntRover.controller('RVbillCardController',
 	$scope.createNewBill = function(type) {
 		$scope.movedIndex = $scope.reservationBillData.bills.length;
 		var billData = {
-			"reservation_id": $scope.reservationBillData.reservation_id,
-			"bill_number": $scope.reservationBillData.bills.length + 1
+			"reservation_id": $scope.reservationBillData.reservation_id
 		};
 		/*
 		 * Success Callback of move action
@@ -2618,13 +2627,10 @@ sntRover.controller('RVbillCardController',
 			data.billIndex = $scope.reservationBillData.bills.length;
 			$scope.isAllBillsReviewed = false;
 			$scope.reviewStatusArray.push(data);
-
-
 		};
 
 		$scope.invokeApi(RVBillCardSrv.createAnotherBill, billData, createBillSuccessCallback);
 	};
-
 
 	/*
 	*Open the terms and conditions dialog after fetching
@@ -2690,7 +2696,6 @@ sntRover.controller('RVbillCardController',
 	$scope.setupReviewStatusArray();
 
 	$scope.calculateBillDaysWidth();
-
 
 	$scope.clickedReverseCheckoutButton = function() {
 
@@ -2822,17 +2827,26 @@ sntRover.controller('RVbillCardController',
 	 * @param {int} index of bill
 	 */
 	$scope.clickedRemoveBill = function(billIndex) {
-		var params = {
-			'bill_id': $scope.reservationBillData.bills[billIndex].bill_id,
-		},
-		hideBillSuccessCallback = function() {
-			$scope.currentActiveBill = billIndex - 1;
+
+		var hideBillSuccessCallback = function() {
 			$scope.reviewStatusArray[billIndex].reviewStatus = true;
-			// Reload Bill screen..
-			$scope.invokeApi(RVBillCardSrv.fetch, $scope.reservationBillData.reservation_id, $scope.fetchSuccessCallback);
+			// Reload Bill screen and reset active bill tab ..
+			reloadBillScreen();
+			$scope.currentActiveBill = billIndex - 1;
+		},
+		hideBillFailureCallback = function(errorMessage) {
+			$scope.errorMessage = errorMessage;
 		};
 
-		$scope.invokeApi(RVBillCardSrv.hideBill, params, hideBillSuccessCallback);
+		var dataToSend = {
+			params: {
+				'bill_id': $scope.reservationBillData.bills[billIndex].bill_id,
+			},
+			successCallBack: hideBillSuccessCallback,
+			failureCallBack: hideBillFailureCallback
+		};
+
+		$scope.callAPI(RVBillCardSrv.hideBill, dataToSend);
 	};
 
 }]);

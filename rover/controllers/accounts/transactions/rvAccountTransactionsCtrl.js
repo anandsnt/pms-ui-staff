@@ -1193,11 +1193,24 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 		 * @param {int} index of bill
 		 */
 		$scope.clickedRemoveBill = function(billIndex) {
-			var params = {
-				'bill_id': $scope.transactionsDetails.bills[billIndex].bill_id,
+			var hideBillSuccessCallback = function() {
+				// Reload Bill screen and reset active bill tab ..
+				getTransactionDetails();
+				$scope.currentActiveBill = billIndex - 1;
+			},
+			hideBillFailureCallback = function(errorMessage) {
+				$scope.errorMessage = errorMessage;
 			};
-			$scope.currentActiveBill = billIndex - 1;
-			// getTransactionDetails();
+
+			var dataToSend = {
+				params: {
+					'bill_id': $scope.transactionsDetails.bills[billIndex].bill_id,
+				},
+				successCallBack: hideBillSuccessCallback,
+				failureCallBack: hideBillFailureCallback
+			};
+
+			$scope.callAPI(RVBillCardSrv.hideBill, dataToSend);
 		};
 	}
 ]);
