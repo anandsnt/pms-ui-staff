@@ -759,4 +759,5 @@ admin.controller('ADAppCtrl', [
         };
 
         $scope.disableFeatureInNonDevEnv = sntapp.environment === 'PROD';
+
 }]);
