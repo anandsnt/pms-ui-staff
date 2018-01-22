@@ -304,4 +304,17 @@ angular.module('sntRover').service('RVBillCardSrv', ['$http', '$q', 'BaseWebSrvV
         });
         return deferred.promise;
     };
+
+    // Service that used to Remove/Hide a bill.
+    this.hideBill = function(params) {
+        var deferred = $q.defer(),
+            url = '/api/bills/'+params.bill_id+'/hide_bill';
+
+        BaseWebSrvV2.postJSON(url).then(function(response) {
+            deferred.resolve(response.data);
+        }, function (data) {
+            deferred.reject(data);
+        });
+        return deferred.promise;
+    };
 }]);

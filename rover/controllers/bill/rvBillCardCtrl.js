@@ -2824,12 +2824,15 @@ sntRover.controller('RVbillCardController',
 	$scope.clickedRemoveBill = function(billIndex) {
 		var params = {
 			'bill_id': $scope.reservationBillData.bills[billIndex].bill_id,
+		},
+		hideBillSuccessCallback = function() {
+			$scope.currentActiveBill = billIndex - 1;
+			$scope.reviewStatusArray[billIndex].reviewStatus = true;
+			// Reload Bill screen..
+			$scope.invokeApi(RVBillCardSrv.fetch, $scope.reservationBillData.reservation_id, $scope.fetchSuccessCallback);
 		};
-		console.log($scope.reservationBillData.bills[billIndex].bill_number);
-		
-		$scope.currentActiveBill = billIndex - 1;
-		$scope.reviewStatusArray[billIndex].reviewStatus = true;
-		// $scope.invokeApi(RVBillCardSrv.fetch, $scope.reservationBillData.reservation_id, $scope.fetchSuccessCallback);
+
+		$scope.invokeApi(RVBillCardSrv.hideBill, params, hideBillSuccessCallback);
 	};
 
 }]);
