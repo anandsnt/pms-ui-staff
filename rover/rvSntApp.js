@@ -93,7 +93,7 @@ var GlobalApp = function() {
         if (typeof url.hostname === typeof 'str') {
             if (url.hostname.indexOf('pms-dev') !== -1 ||
                 url.hostname.indexOf('pms-prod-test') !== -1 ||
-                url.hostname.indexOf('192.168.1') !== -1
+                url.hostname.indexOf('192.168.1') !== -1 ||
                 url.hostname.indexOf('localhost') !== -1) {
                 isInDevEnv = true;
             }
