@@ -288,9 +288,7 @@ angular.module('sntZestStation').controller('zsPaymentCtrl', ['$scope', '$log', 
         };
 
         $scope.$on('SWIPE_ACTION', function (evt, response) {
-            if ($scope.screenMode.paymentFailure || $scope.screenMode.paymentSuccess) {
-                // discard swipe
-            } else {
+            if (!$scope.screenMode.paymentFailure && !$scope.screenMode.paymentSuccess) {
                 processSwipeCardData(response);
             }
             
@@ -321,9 +319,7 @@ angular.module('sntZestStation').controller('zsPaymentCtrl', ['$scope', '$log', 
                 $scope.screenMode.paymentInProgress = true;
                 $scope.cardReader.startReader({
                     'successCallBack': function(response) {
-                        if ($scope.screenMode.paymentFailure || $scope.screenMode.paymentSuccess) {
-                            // discard swipe
-                        } else {
+                        if (!$scope.screenMode.paymentFailure && !$scope.screenMode.paymentSuccess) {
                             processSwipeCardData(response);
                         }
                         $scope.$broadcast('RESET_TIMER');
