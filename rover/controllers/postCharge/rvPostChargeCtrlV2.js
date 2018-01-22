@@ -13,6 +13,7 @@ sntRover.controller('RVPostChargeControllerV2',
 			$scope.selectedChargeItem = null;
 			$scope.selectedChargeItemHash = {};
 			$scope.disablePostChargeButton = false;
+			$scope.show_ref_on_invoice = false;
 
 			var scrollerOptions = { preventDefault: false };
 
@@ -468,7 +469,8 @@ sntRover.controller('RVPostChargeControllerV2',
 					each['is_item']  = $scope.selectedChargeItemHash[i].type === "ITEM" ? true : false;
 					each['amount']   = $scope.selectedChargeItemHash[i]['total_price'];
 					each['quantity'] = $scope.selectedChargeItemHash[i]['count'];
-
+					each['reference_text'] = $scope.reference_text;
+					each['show_ref_on_invoice'] = $scope.show_ref_on_invoice;
 					items.push( each );
 				}
 
