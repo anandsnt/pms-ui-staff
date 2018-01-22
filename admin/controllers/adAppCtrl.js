@@ -760,7 +760,7 @@ admin.controller('ADAppCtrl', [
 
         $scope.disableFeatureInNonDevEnv = function() {
             // Some features may not be completed by the end of a sprint
-            // and reverting will be painful. So in this case, we can temperorily disable 
+            // and reverting will be painful. So in this case, we can temporarily disable 
             // such features (like a toggle button) in production and release
             var url = window.location;
             var inNonDevEnvironment = true;
