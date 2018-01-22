@@ -74,7 +74,7 @@ admin.controller('ADStationaryCtrl',
 
 		$scope.languages = availableGuestLanguages;
 		$scope.holdStatusList = availableHoldStatus.data.hold_status;
-		$scope.locale = $scope.languages.default_locale;
+		$scope.locale = $scope.languages.selected_language_code;
 		var params = {};
 
 		fetchStationary(params);
