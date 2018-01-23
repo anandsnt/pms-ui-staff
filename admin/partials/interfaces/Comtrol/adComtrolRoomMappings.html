@@ -103,7 +103,7 @@
 
                     <td data-item="4" data-title="'Station Access Level'" ng-click="onSelect($index, mapping)"
                         header-class="width-30" ng-hide="state.selected === $index">
-                        <a class="edit-data-inline">{{getAccessLevelName(mapping.external_access_level) || mapping.external_access_level}}</a>
+                        <a class="edit-data-inline">{{mapping.external_access_level}} - {{getAccessLevelName(mapping.external_access_level)}}</a>
                     </td>
 
                     <td header-class="width-10" data-title="'Delete'" class="delete"
@@ -166,8 +166,8 @@
                                         </button>
                                         <button type="button" ng-click="onUpdate(mapping)"
                                                 class="button green edit-data-inline"
-                                                ng-class="{'grey' : mapping.room_no == '' || mapping.external_room == '' || mapping.external_extension == '' || mapping.external_access_level}"
-                                                ng-disabled="mapping.room_no == '' || mapping.external_room == '' || mapping.external_extension == '' || mapping.external_access_level"
+                                                ng-class="{'grey' : mapping.room_no == '' || mapping.external_room == '' || mapping.external_extension == '' || mapping.external_access_level == ''}"
+                                                ng-disabled="mapping.room_no == '' || mapping.external_room == '' || mapping.external_extension == '' || mapping.external_access_level == ''"
                                                 translate>
                                             SAVE_CHANGES
                                         </button>
