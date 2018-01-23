@@ -1005,7 +1005,7 @@ sntRover.controller('rvAllotmentConfigurationSummaryTabCtrl', [
         $scope.shouldShowDemographics = function () {
             var isDemographicsRequired = false;
 
-            if ($scope.allotmentSummaryData.demographics) {
+            if ($scope.allotmentSummaryData.demographics && $scope.hotelSettings) {
                 var shouldShowMarkets = showMarkets($scope.allotmentSummaryData.demographics) && 
                                         $scope.hotelSettings.force_market_code,                                  
                     shouldShowSources = showSources($scope.allotmentSummaryData.demographics) &&
