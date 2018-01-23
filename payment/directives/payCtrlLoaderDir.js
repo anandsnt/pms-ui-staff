@@ -19,7 +19,12 @@ angular.module('sntPay').directive('payCtrlLoaderDir',
                             // Load the appropriate controller
                             // TODO: Ensure the correct controller is loaded and not hardcoded like this for CBA
                             // TODO: Add the controller name in sntPayConfig under each PG and use that value here!
-                            clone.attr('ng-controller', 'payCBACtrl');
+                            if (scope.payCtrlLoaderDir === 'CBA') {
+                                clone.attr('ng-controller', 'payCBACtrl');
+
+                            } else if (scope.payCtrlLoaderDir === 'MLI') {
+                                clone.attr('ng-controller', 'payMLIOperationsController');
+                            }
                             // Remove attribute so doesn't cause infinite
                             // recursion of compiling this directive
 
