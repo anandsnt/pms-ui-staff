@@ -3,7 +3,7 @@
     <h1>{{printData.hotel_name}}</h1>
     <span ng-bind-html="printData.hotel_address" ng-if="printData.show_hotel_address"></span>
     <span class="type" ng-if="!printData.is_proforma_invoice">{{printData.translation.invoice}}</span>
-    <span class="type" ng-if="printData.is_proforma_invoice" translate>PRO FORMA INVOICE</span>
+    <span class="type" ng-if="printData.is_proforma_invoice" >{{printData.translation.proforma_invoice}}</span>
 </div>
 
 <!-- Case 1: Guest Bill -->
@@ -44,12 +44,12 @@
         <div class="info-left">
             <strong >{{printData.translation.invoice_date}}:</strong>{{printData.invoice_date | date:dateFormat}}<br/>
             <strong >{{printData.translation.invoice_number}}:</strong>{{printData.invoice_number}}<br/>
-            <strong ng-if="printData.reference_number" translate>REF_NO:</strong>{{printData.reference_number}}<br ng-if="printData.reference_number" />
-            <strong ng-if="printData.payment_due_in_days" translate>PAYMENT_DUE_DAYS:</strong>{{printData.payment_due_in_days}}<br/>
+            <strong ng-if="printData.reference_number">{{printData.translation.reference_number}}:</strong>{{printData.reference_number}}<br ng-if="printData.reference_number" />
+            <strong ng-if="printData.payment_due_in_days">{{printData.translation.payment_due_in_days}}:</strong>{{printData.payment_due_in_days}}<br/>
         </div>
         <div class="info-right">
             <strong ng-if="printData.card_details.type ==='COMPANY'" >{{printData.translation.corporate_id}}:</strong>{{printData.card_details.corporate_id}}<br ng-if="printData.card_details.type ==='COMPANY'"/>
-            <strong ng-if="printData.card_details.type ==='TRAVELAGENT'" translate>IATA_#:</strong>{{printData.card_details.iata_no}}<br ng-if="printData.card_details.type ==='TRAVELAGENT'"/>
+            <strong ng-if="printData.card_details.type ==='TRAVELAGENT'" >{{printData.translation.iata_no}}:</strong>{{printData.card_details.iata_no}}<br ng-if="printData.card_details.type ==='TRAVELAGENT'"/>
             <strong ng-if="printData.card_details.tax_number" >{{printData.translation.tax_number}}:</strong>{{printData.card_details.tax_number}}<br ng-if="printData.card_details.tax_number"/>
             <strong ng-if="printData.card_details.ar_number" >{{printData.translation.ar_number}}:</strong>{{printData.card_details.ar_number}}
         </div>
