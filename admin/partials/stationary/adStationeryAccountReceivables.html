@@ -4,14 +4,7 @@
     </div>
     <div class="stationery-group">
         <div class="stationery-items">
-            <div class="entry translation">
-                <label for="email-hotel-logo" translate> SELECT LANGUAGE </label>
-                <div class="select">
-                    <select name="stationery_data.ar_invoice_language">
-                        <option ng-repeat="locale in languages.locales" value="{{locale.value}}" ng-selected="locale.value==locale"> {{locale.description}} </option>
-                    </select>
-                </div>
-            </div>       
+                   
         </div>
         <!-- <div class="stationery-settings">
             TODO: CONTENT NEEDS TO BE DEFINED  
@@ -26,14 +19,7 @@
     </div>
     <div class="stationery-group">
         <div class="stationery-items">
-            <div class="entry translation">
-                <label for="email-hotel-logo" translate> SELECT LANGUAGE </label>
-                <div class="select">
-                    <select name="stationery_data.ar_statement_language">
-                        <option ng-repeat="locale in languages.locales" value="{{locale.value}}" ng-selected="locale.value==locale"> {{locale.description}} </option>
-                    </select>
-                </div>
-            </div> 
+            
             <div class="stationery-email">
                 <h4>AR Statement Email</h4>
                 <ad-textbox styleclass="full-width" value="data.ar_statement_email_subject" label="{{'AR_STATEMNT_EMAIL_SUBJECT'| translate}}" placeholder="{{'ENTER_SUBJECT'| translate}}"></ad-textbox>

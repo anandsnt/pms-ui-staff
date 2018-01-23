@@ -5,14 +5,7 @@
     </div>
     <div class="stationery-group">
         <div class="stationery-items">
-            <div class="entry translation">
-                <label for="email-hotel-logo" translate> SELECT LANGUAGE </label>
-                <div class="select">
-                    <select ng-model="data.locale" name="locale" ng-change="onLocaleChange()">
-                        <option ng-repeat="locale in languages.locales" value="{{locale.value}}" ng-selected="locale.value==data.locale"> {{locale.description}} </option>
-                    </select>
-                </div>
-            </div> 
+             
 
             <!-- Email -->
             <div class="group-holder" ng-class = "{'active': is_confirmation_email_active}">
@@ -182,14 +175,7 @@
     </div>
     <div class="stationery-group">
         <div class="stationery-items">
-            <div class="entry translation">
-                <label for="email-hotel-logo" translate> SELECT LANGUAGE </label>
-                <div class="select">
-                    <select ng-model="stationery_data.guest_cancellation_language" name="locale">
-                        <option ng-repeat="locale in languages.locales" value="{{locale.value}}" ng-selected="locale.value==locale"> {{locale.description}} </option>
-                    </select>
-                </div>
-            </div>
+            
             <h4>Cancellation Email</h4>
             <div class="stationery-email">
                 <ad-textbox styleclass="full-width" value="data.cancellation_email_subject" label="{{'CANCELLATION_EMAIL_SUBJECT'| translate}}" placeholder="{{'ENTER_SUBJECT'| translate}}"></ad-textbox>
@@ -234,14 +220,7 @@
     </div>
     <div class="stationery-group">
         <div class="stationery-items">
-            <div class="entry translation">
-                <label for="email-hotel-logo" translate> SELECT LANGUAGE </label>
-                <div class="select">
-                    <select ng-model="stationery_data.group_confirmation_language" name="locale">
-                        <option ng-repeat="locale in languages.locales" value="{{locale.value}}" ng-selected="locale.value==locale"> {{locale.description}} </option>
-                    </select>
-                </div>
-            </div>
+            
             <h4>Confirmation Email</h4>
             <div class="stationery-email">
                 <ad-textbox styleclass="full-width" value="data.group_confirmation_email_subject" label="{{'GROUP_CONFIRMATION_EMAIL_SUBJECT'| translate}}" placeholder="{{'ENTER_SUBJECT'| translate}}"></ad-textbox>

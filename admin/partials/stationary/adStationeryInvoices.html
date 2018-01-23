@@ -5,14 +5,7 @@
     </div>
     <div class="stationery-group">
         <div class="stationery-items">
-            <div class="entry translation">
-                <label for="email-hotel-logo" translate> SELECT LANGUAGE </label>
-                <div class="select">
-                    <select ng-model="stationery_data.guest_invoice_language" name="locale">
-                        <option ng-repeat="locale in languages.locales" value="{{locale.value}}" ng-selected="locale.value==locale"> {{locale.description}} </option>
-                    </select>
-                </div>
-            </div>            
+                       
             <div class="stationery-email">
                 <h4>Invoice Email</h4>
                 <ad-textbox styleclass="full-width" value="data.guest_bill_email_subject" label="{{'GUEST_BILL_EMAIL_SUBJECT'| translate}}" placeholder="{{'ENTER_SUBJECT'| translate}}"></ad-textbox>
@@ -65,14 +58,7 @@
     </div>
     <div class="stationery-group">
         <div class="stationery-items">
-            <div class="entry translation">
-                <label for="email-hotel-logo" translate> SELECT LANGUAGE </label>
-                <div class="select">
-                    <select ng-model="stationery_data.cards_invoice_language" name="locale">
-                        <option ng-repeat="locale in languages.locales" value="{{locale.value}}" ng-selected="locale.value==locale"> {{locale.description}} </option>
-                    </select>
-                </div>
-            </div>             
+                        
             <div class="stationery-email">
                 <h4>Company/TA Invoice Email</h4>
                 <ad-textbox styleclass="full-width" value="data.company_ta_bill_subject" label="{{'CARDS_BILL_EMAIL_SUBJECT'| translate}}" placeholder="{{'ENTER_SUBJECT'| translate}}"></ad-textbox>
@@ -118,14 +104,7 @@
     </div>
     <div class="stationery-group">
         <div class="stationery-items">
-            <div class="entry translation">
-                <label for="email-hotel-logo" translate> SELECT LANGUAGE </label>
-                <div class="select">
-                    <select ng-model="stationery_data.account_invoice_language" name="locale" ng-change="onLocaleChange()">
-                        <option ng-repeat="locale in languages.locales" value="{{locale.value}}" ng-selected="locale.value==locale"> {{locale.description}} </option>
-                    </select>
-                </div>
-            </div>         
+                    
             <div class="stationery-email">
                 <h4>Account Invoice Email</h4>
                 <div class="entry full-width">
@@ -175,14 +154,7 @@
     </div>
     <div class="stationery-group">
         <div class="stationery-items">
-            <div class="entry translation">
-                <label for="email-hotel-logo" translate> SELECT LANGUAGE </label>
-                <div class="select">
-                    <select ng-model="stationery_data.proforma_invoice_language" name="locale" ng-change="onLocaleChange()">
-                        <option ng-repeat="locale in languages.locales" value="{{locale.value}}" ng-selected="locale.value==locale"> {{locale.description}} </option>
-                    </select>
-                </div>
-            </div> 
+             
             <div class="stationery-email">
                 <h4>Pro Forma Invoice Email</h4>
                 <ad-textbox styleclass="full-width" value="data.pro_forma_invoice_subject" label="{{'PRO_FORMA_INVOICE_SUBJECT'| translate}}" placeholder="{{'ENTER_SUBJECT'| translate}}" ng-show="data.is_pro_forma_enabled"></ad-textbox>
