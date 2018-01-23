@@ -137,7 +137,7 @@ admin.controller('ADTranslationCtrl', ['$scope', '$rootScope', '$state', 'ADTran
                                         $filter('orderBy')($scope.data, params.orderBy()) :
                                         $scope.data;
 
-                    $defer.resolve(orderedData.slice((params.page() - 1) * params.count(), params.page() * params.count()));
+                    $defer.resolve(orderedData);
                 }
         });
     };
