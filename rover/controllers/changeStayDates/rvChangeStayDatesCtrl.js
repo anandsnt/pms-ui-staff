@@ -751,8 +751,7 @@ sntRover.controller('RVchangeStayDatesController', ['$state', '$stateParams', '$
 				extendThrough = true;
 				var preventOverbookHouse = !this.is_house_available && !canOverbookHouse && $rootScope.isStandAlone,
 					preventOverbookRoomType = !this.is_room_type_available && !canOverbookRoomType,
-					preventBookingRestrictedRate = this.is_restricted && !canBookRestrictedRate,
-					preventSuiteRoomOverBook = $scope.reservation.reservation_card.is_suite && !this.is_room_type_available;
+					preventBookingRestrictedRate = this.is_restricted && !canBookRestrictedRate;					
 
 				calEvt = {};
 
@@ -812,7 +811,7 @@ sntRover.controller('RVchangeStayDatesController', ['$state', '$stateParams', '$
 					calEvt.className = "type-available";
 				}
 
-				if (preventSuiteRoomOverBook || preventOverbookHouse || preventBookingRestrictedRate || preventOverbookRoomType) {
+				if (preventOverbookHouse || preventBookingRestrictedRate || preventOverbookRoomType) {
 					extendThrough = false;
 				}
 
