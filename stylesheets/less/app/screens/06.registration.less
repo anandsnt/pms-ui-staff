@@ -1,7 +1,7 @@
 /* Registration content ***/
 .registration-content {
     position: relative;
-    .calc-height(100, 50);
+    .calc-height(100, 140);
 
     > .wrapper { 
         padding: 20px 20px 10px 20px; 
@@ -1202,18 +1202,43 @@
         }
     }
 
-    /* Complete registration */
-    .complete-registration {
+    .signature-header {
         margin-top: 20px;
-        padding-top: 20px;
+        padding: 10px 0;
+        .float;
         .box-shadow(inset 0 1px 0 rgba(0,0,0,.1));
 
-        h2 { margin-bottom: 10px; }
-
-        .entry {
-            width: 50%;
-            .float;
+        h2 { 
+            margin: 0;
+            line-height: 40px;
             .pull-left;
+        }
+
+        .button {
+            line-height: 40px;
+            .pull-right;
+        }
+    }
+}
+
+/* Complete registration */
+.complete-registration {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 90px;
+    padding: 20px;
+    background: @background;
+    #flexbox > .parent( row, center, center, '');
+    .float;
+    .box-shadow(inset 0 1px 0 rgba(0,0,0,.1));
+    
+    &.form {
+        .entry {
+            width: 60%;
+            margin: 0;
+            .float;
 
             .checkbox,
             a {
@@ -1227,29 +1252,30 @@
             a { margin-left: 5px; }
 
             .checkbox {
+                margin-bottom: 10px;
+
                 .icon-checkbox { 
                     top: 0;
                     left: 0; 
                 }
 
                 &.single { margin: 15px 0 0 0; }
-                
-                &:last-child { clear: both; }
+
+                &:last-child { 
+                    clear: both; 
+                    margin-bottom: 0;
+                }
             }
         }
+    }
 
-        .actions {
-            width: 50%;
-            .pull-right;
+    .actions {
+        width: 40%;
 
-            .button {
-                font-size: 18px;
-                line-height: 50px;
-                width: 100%;
-                .show;
-
-                &.blank { line-height: 40px; }            
-            }
+        .button {
+            font-size: 18px;
+            line-height: 50px;
+            width: 100%;
         }
     }
 }
