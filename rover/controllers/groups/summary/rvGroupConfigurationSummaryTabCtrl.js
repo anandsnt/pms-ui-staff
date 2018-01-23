@@ -1599,7 +1599,7 @@ angular.module('sntRover').controller('rvGroupConfigurationSummaryTab', ['$scope
         $scope.shouldShowDemographics = function () {
             var isDemographicsRequired = false;
 
-            if ($scope.groupSummaryData.demographics) {
+            if ($scope.groupSummaryData.demographics && $scope.hotelSettings) {
                 var shouldShowMarkets = showMarkets($scope.groupSummaryData.demographics) && 
                                         $scope.hotelSettings.force_market_code,
                     shouldShowSources = showSources($scope.groupSummaryData.demographics) && 
