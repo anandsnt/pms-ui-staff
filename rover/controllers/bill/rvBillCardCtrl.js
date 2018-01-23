@@ -2829,7 +2829,8 @@ sntRover.controller('RVbillCardController',
 	$scope.clickedRemoveBill = function(billIndex) {
 
 		var hideBillSuccessCallback = function() {
-			$scope.reviewStatusArray[billIndex].reviewStatus = true;
+			// Removing the last bill details from review list.
+			$scope.reviewStatusArray = $scope.reviewStatusArray.slice(0, -1);
 			// Reload Bill screen and reset active bill tab ..
 			reloadBillScreen();
 			$scope.currentActiveBill = billIndex - 1;
