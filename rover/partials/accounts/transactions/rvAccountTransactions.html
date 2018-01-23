@@ -217,7 +217,8 @@
 												<br />
 											</span>
 										</td>
-										<td class="description">
+										<td class="description" ng-class="{'with-reference': feesData.reference_text != ''}">
+											<span class="icons icon-invoice-blue" ng-show="feesData.reference_text != ''"></span>
 											<strong ng-if="isStandAlone && !feesData.is_group_by_ref">
 												{{feesData.item_description}}
 											</strong>
@@ -263,7 +264,7 @@
 											</div>
 										</td>
 										<td>
-											<button ng-class="{'overlay': !billData.is_active }" type="button" class="button purple with-icon only-icon" click-touch="openActionsPopup(feesData.id,feesData.description,feesData.fees,feesData.type.value,feesData.credits)" ng-show="showEditChargeButton(feesData.type.value)" ng-if = "!feesData.is_group_by_ref">
+											<button type="button" ng-class="{'overlay': !billData.is_active }"  class="button purple with-icon only-icon" click-touch="openActionsPopup(feesData.id,feesData.description,feesData.fees,feesData.type.value,feesData.credits, feesData.reference_text, feesData.show_ref_on_invoice)" ng-show="showEditChargeButton(feesData.type.value)" ng-if = "!feesData.is_group_by_ref">
 												<span class="icons icon-pencil"></span>
 												{{'EDIT' |translate}}
 											</button>
