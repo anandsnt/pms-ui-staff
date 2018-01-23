@@ -314,7 +314,7 @@ sntRover.controller('rvAllotmentConfigurationSummaryTabCtrl', [
 		 * @return undefined
 		 */
 		$scope.openDemographicsPopup = function(showRequiredFields, isBtnClick) {
-			if ($scope.isInAddMode() && (!$scope.forceDemographics || isBtnClick)) {
+			if ( $scope.isInAddMode() && ( !$scope.forceDemographics || isBtnClick )) {
 				// If the group has not been saved yet, prompt user for the same
 				$scope.errorMessage = ["Please save the allotment first"];
 				return;
