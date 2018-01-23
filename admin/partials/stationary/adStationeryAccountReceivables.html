@@ -1,0 +1,32 @@
+<div class="group-holder" ng-class = "{'active': is_ar_invoice_active}" ng-show="false">
+    <div class="form-title has-toggle" ng-click = "is_ar_invoice_active = !is_ar_invoice_active"> <!-- Clicking this toggles class 'active' on L2 -->
+        <h3>AR Invoice</h3>
+    </div>
+    <div class="stationery-group">
+        <div class="stationery-items">
+                   
+        </div>
+        <!-- <div class="stationery-settings">
+            TODO: CONTENT NEEDS TO BE DEFINED  
+        </div> -->
+    </div>
+</div>
+
+<!-- AR Statement -->
+<div class="group-holder" ng-class = "{'active': is_ar_statment_active}">
+    <div class="form-title has-toggle" ng-click = "is_ar_statment_active = !is_ar_statment_active"> <!-- Clicking this toggles class 'active' on L26 -->
+        <h3>AR Statement</h3>
+    </div>
+    <div class="stationery-group">
+        <div class="stationery-items">
+            
+            <div class="stationery-email">
+                <h4>AR Statement Email</h4>
+                <ad-textbox styleclass="full-width" value="data.ar_statement_email_subject" label="{{'AR_STATEMNT_EMAIL_SUBJECT'| translate}}" placeholder="{{'ENTER_SUBJECT'| translate}}"></ad-textbox>
+                <ad-textarea rows="4" div-class="full-width" text-area-class="full-width" value="data.ar_statement_email_body" label="{{'AR_STATEMNT_EMAIL_BODY'| translate}} " placeholder="{{'EMAIL_BODY_TEXT_PLACEHOLDER' | translate }}"></ad-textarea>
+                <ad-textarea rows="2" div-class="full-width" text-area-class="full-width" value="data.ar_statement_custom_text_header" label="{{'CUSTOM_TEXT_HEADER'| translate}} " placeholder="{{'CUSTOM_TEXT_HEADER_PLACE_HOLDER' | translate }}"></ad-textarea>
+                <ad-textarea rows="2" div-class="full-width" text-area-class="full-width" value="data.ar_statement_custom_text_footer" label="{{'CUSTOM_TEXT_FOOTER'| translate}} " placeholder="{{'CUSTOM_TEXT_FOOTER_PLACE_HOLDER' | translate }}"></ad-textarea>
+            </div>        
+        </div>
+    </div>
+</div>

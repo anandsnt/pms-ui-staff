@@ -1066,7 +1066,8 @@ sntZestStation.controller('zsRootCtrl', [
 					// when user activity is not recorded for more than idle_timer.prompt
 					// time set in admin, display inactivity popup
                     if (userInActivityTimeInSeconds >= idlePopupTime) {
-                        if (currentState === 'zest_station.checkInSignature' || currentState === 'zest_station.checkInCardSwipe') {
+                        if (currentState === 'zest_station.checkInSignature' || currentState === 'zest_station.checkInCardSwipe' ||
+                            currentState === 'zest_station.payment') {
                             $scope.$broadcast('USER_ACTIVITY_TIMEOUT');
                         } else {
                             // opens timeout popup w/ ng-class/css
@@ -1323,8 +1324,9 @@ sntZestStation.controller('zsRootCtrl', [
         var socketOpenedFailed = function() {
             $log.info('Websocket:-> socket connection failed');
             $scope.zestStationData.stationHandlerConnectedStatus = 'Not-Connected';
-            $scope.runDigestCycle();
             $scope.$broadcast('SOCKET_FAILED');
+            $scope.runDigestCycle();
+            
         };
 
         var socketOpenedSuccess = function() {
