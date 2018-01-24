@@ -278,16 +278,20 @@ angular.module('sntRover').service('RVHkRoomStatusSrv', [
 				_fetchRoomListPost.call(this);
 			}
 
-			function _fetchWorkAssignments (workTypes) {
-				fetchedWorkTypes = workTypes;
+            function _fetchWorkAssignments(workTypes) {
+                fetchedWorkTypes = workTypes;
 
-				var params = {
-					'date': $rootScope.businessDate,
-					'employee_ids': [$rootScope.userId]
-				};
+                var params = {
+                    'date': $rootScope.businessDate,
+                    'employee_ids': [$rootScope.userId]
+                };
 
-				this.fetchWorkAssignments( params ).then( _checkHasActiveWorkSheet.bind(this) );
-			}
+                if ($rootScope.isMaintenanceStaff) {
+                    this.fetchWorkAssignments(params).then(_checkHasActiveWorkSheet.bind(this));
+                } else {
+                    _fetchRoomListPost.call(this);
+                }
+            }
 
 			function _checkHasActiveWorkSheet (assignments) {
 				var employee = assignments.employees.length && assignments.employees[0] || null,
