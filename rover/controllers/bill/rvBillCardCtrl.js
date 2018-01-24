@@ -610,7 +610,7 @@ sntRover.controller('RVbillCardController',
 
 		// CICO-37047 : We need to show Remove Bill icon ('X') for -
 		// a last bill window having no transactions exist.
-		if (index === $scope.currentActiveBill && (billCount === index + 1) && !isTransactionsExist ) {
+		if (index !== 0 && index === $scope.currentActiveBill && (billCount === index + 1) && !isTransactionsExist ) {
 			activeBillClass = "ui-tabs-active ui-state-active with-button";
 		}
 		else if (index === $scope.currentActiveBill) {
