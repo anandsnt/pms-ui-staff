@@ -46,12 +46,13 @@
 				<!-- Bills Nav-->
 				<div class="bill-tabs scrollable" ng-iscroll="bill-tab-scroller">
 					<ul class="wrapper" style="width:{{getWidthForBillTabsScroll();}}px;">
-						<li ng-class="showActiveBill($index)" click-touch="setActiveBill($index)" ng-repeat="billTab in transactionsDetails.bills">
-							<a class="bill-toggle">
+						<li ng-class="showActiveBill($index)" ng-repeat="billTab in transactionsDetails.bills">
+							<a class="bill-toggle" click-touch="setActiveBill($index)">
 								<div class="price"><span>{{'BILL' |translate}} #{{billTab.bill_number}}</span>
 									<span class="currency">{{currencySymbol}}</span>{{billTab.balance_amount | number: precisonZero}}
 								</div>
 							</a>
+							<button click-touch="clickedRemoveBill($index)" type="button" class="button icons icon-remove-10"></button>
 						</li>
 						<!-- Add new bill-->
 						<li class="new-bill" ng-show="transactionsDetails.bills.length<10 && isStandAlone">
