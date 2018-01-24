@@ -13,7 +13,8 @@ module.exports = {
 				roverRoot + "services/group/rvGroupRoomingListSrv.js",
 				roverRoot + "services/reservation/RVReservationAddonsSrv.js",
 				roverRoot + "services/allotments/**/*.js",
-				roverRoot + "services/rvReservationSrv.js"
+				roverRoot + "services/rvReservationSrv.js",
+				roverRoot + "services/reservation/rvReservationBaseSearchSrv.js"
 			]
 		};
 		return allotmentJsAssets;

@@ -62,7 +62,7 @@ if (status === 406) { // 406- Network error
 			} else if (status === 422) { // 406- Network error
 				deferred.reject(response.errors);
 			}
- 			else if (status === 501 || status === 502 || status === 503) { // 500- Internal Server Error
+ 			else if (status === 501 || status === 502 || status === 503 || status === 504) { // 500- Internal Server Error
                                $window.location.href = '/500' ;
                       }
 			else if (status === 500) { // 500- Internal Server Error
