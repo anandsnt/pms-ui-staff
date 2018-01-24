@@ -286,6 +286,11 @@ angular.module('sntRover').service('RVHkRoomStatusSrv', [
                     'employee_ids': [$rootScope.userId]
                 };
 
+                /**
+                 * In case of maintenance staff (HK), the rooms assigned to him/ her are shown
+                 * Hence, an additional API call is made to verify if the user has any assigned rooms for tasks
+                 */
+
                 if ($rootScope.isMaintenanceStaff) {
                     this.fetchWorkAssignments(params).then(_checkHasActiveWorkSheet.bind(this));
                 } else {
