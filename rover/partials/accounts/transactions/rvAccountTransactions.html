@@ -52,7 +52,7 @@
 									<span class="currency">{{currencySymbol}}</span>{{billTab.balance_amount | number: precisonZero}}
 								</div>
 							</a>
-							<button click-touch="clickedRemoveBill($index)" type="button" class="button icons icon-remove-10"></button>
+							<button ng-if="($index === transactionsDetails.bills.length - 1) && !billTab.is_transactions_exist" click-touch="clickedRemoveBill($index)" type="button" class="button icons icon-remove-10"></button>
 						</li>
 						<!-- Add new bill-->
 						<li class="new-bill" ng-show="transactionsDetails.bills.length<10 && isStandAlone">
