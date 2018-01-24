@@ -739,7 +739,7 @@ sntRover.controller('RVbillCardController',
 	var reloadBillScreen = function() {
 		var dataToSend = {
 			params: $scope.reservationBillData.reservation_id,
-			successCallBack: $scope.fetchSuccessCallback,
+			successCallBack: $scope.fetchSuccessCallback
 		};
 
 		$scope.callAPI(RVBillCardSrv.fetch, dataToSend);
@@ -2841,7 +2841,7 @@ sntRover.controller('RVbillCardController',
 
 		var dataToSend = {
 			params: {
-				'bill_id': $scope.reservationBillData.bills[billIndex].bill_id,
+				'bill_id': $scope.reservationBillData.bills[billIndex].bill_id
 			},
 			successCallBack: hideBillSuccessCallback,
 			failureCallBack: hideBillFailureCallback

@@ -333,11 +333,11 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 			var activeBill = $scope.transactionsDetails.bills[index],
 				activeBillClass = "",
 				billCount = $scope.transactionsDetails.bills.length,
-				hasTransactions = activeBill.is_transactions_exist;
+				isTransactionsExist = activeBill.is_transactions_exist;
 			
 			// CICO-37047 : We need to show Remove Bill icon ('X') for -
 			// a last bill window having no transactions exist.
-			if (index === $scope.currentActiveBill && (billCount - 1 === index) ) {
+			if (index !== 0 && index === $scope.currentActiveBill && (billCount - 1 === index) && !isTransactionsExist) {
 				activeBillClass = "ui-tabs-active ui-state-active with-button";
 			}
 			else if (index === $scope.currentActiveBill) {
@@ -1203,7 +1203,7 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 
 			var dataToSend = {
 				params: {
-					'bill_id': $scope.transactionsDetails.bills[billIndex].bill_id,
+					'bill_id': $scope.transactionsDetails.bills[billIndex].bill_id
 				},
 				successCallBack: hideBillSuccessCallback,
 				failureCallBack: hideBillFailureCallback
