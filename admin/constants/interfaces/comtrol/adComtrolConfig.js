@@ -65,10 +65,10 @@ angular.module('admin').constant("COMTROL_REF", Object.freeze(Object.seal({
         {id: 39, value: 'Discount Category 10', code: 'discount_category_10'}
     ],
     ACCESS_LEVELS: [
-        {id: '0', value: 'All Allowed'},
-        {id: '1', value: 'All Restricted'},
-        {id: '2', value: 'Toll Restricted (ECC 1)'},
-        {id: '3', value: 'Local Only (ECC 2)'},
-        {id: '4', value: 'Internal Only'}
+        {id: 0, value: 'All Allowed'},
+        {id: 1, value: 'All Restricted'},
+        {id: 2, value: 'Toll Restricted (ECC 1)'},
+        {id: 3, value: 'Local Only (ECC 2)'},
+        {id: 4, value: 'Internal Only'}
     ]
 })));
