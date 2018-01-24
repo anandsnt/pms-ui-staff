@@ -107,7 +107,7 @@ admin.controller('ADStationaryCtrl',
 
 		$scope.languages = availableGuestLanguages;
 		$scope.holdStatusList = availableHoldStatus.data.hold_status;
-		$scope.locale = $scope.languages.default_locale;
+		$scope.locale = $scope.languages.selected_language_code;
 		var params = {};
 
 		fetchStationary(params);
@@ -226,11 +226,12 @@ admin.controller('ADStationaryCtrl',
 	};
 
 	$scope.isLinkAvailable = function(index) {
-		if( $scope.currentSocialLink == 'NEW')
-			return _.pluck($scope.data.social_network_links, "type").indexOf($scope.socialNetworks[index].name) == -1 
-		else 
+		if ( $scope.currentSocialLink == 'NEW') {
+			return _.pluck($scope.data.social_network_links, "type").indexOf($scope.socialNetworks[index].name) == -1; 
+		} else {
 			return _.pluck($scope.data.social_network_links, "type").indexOf($scope.socialNetworks[index].name) == -1 || $scope.data.social_network_links[$scope.currentSocialLink].type == $scope.socialNetworks[index].name;
-	}
+		}
+	};
 
 	/*
 	* Get invoked when the locale is changed
@@ -239,7 +240,7 @@ admin.controller('ADStationaryCtrl',
 		var params = {};
 
 		params.locale = $scope.data.locale;
-		$scope.locale = $scope.data.locale
+		$scope.locale = $scope.data.locale;
 		fetchStationary(params);
 	};
 

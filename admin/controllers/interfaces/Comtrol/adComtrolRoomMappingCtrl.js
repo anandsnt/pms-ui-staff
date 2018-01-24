@@ -154,7 +154,7 @@ admin.controller('adComtrolRoomMappingCtrl', ['$scope', 'adComtrolRoomMappingSrv
 
         $scope.getAccessLevelName = function(id) {
             var accessLevel = _.find(COMTROL_REF.ACCESS_LEVELS, {
-                id: id
+                id: parseInt(id, 10)
             });
 
             return accessLevel && accessLevel.value;

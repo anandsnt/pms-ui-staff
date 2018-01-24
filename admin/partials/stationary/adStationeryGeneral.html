@@ -5,14 +5,7 @@
     </div>
     <div class="stationery-group">
         <div class="stationery-items">
-            <div class="entry translation">
-                <label for="email-hotel-logo" translate> SELECT LANGUAGE </label>
-                <div class="select">
-                    <select ng-model="stationery_data.salutation_language" name="locale">
-                        <option ng-repeat="locale in languages.locales" value="{{locale.value}}" ng-selected="locale.value==stationery_data.salutation_language"> {{locale.description}} </option>
-                    </select>
-                </div>
-            </div>
+            
             <h4>Salutation</h4>
             <div class="entry full-width">
                 <label for="item-type"><span translate>GUEST_SALUTATION_TYPES</span></label>

@@ -2,6 +2,14 @@
     <header class="content-title float">
         <h2 translate>STATIONERY</h2>
         <a ng-click="goBackToPreviousState()" class="action back" translate> BACK</a>
+        <div class="filters language">
+            <label for="email-hotel-logo" translate> SELECT LANGUAGE </label>
+            <div class="select">
+                <select ng-model="data.locale" name="locale" ng-change="onLocaleChange()">
+                    <option ng-repeat="locale in languages.locales" value="{{locale.value}}" ng-selected="locale.value==data.locale"> {{locale.description}} </option>
+                </select>
+            </div>
+        </div>
     </header>
     <section class="content-scroll">
         <div ng-include="'/assets/partials/common/notification_message.html'"></div>

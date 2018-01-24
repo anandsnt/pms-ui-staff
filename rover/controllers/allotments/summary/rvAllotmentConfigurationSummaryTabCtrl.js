@@ -313,8 +313,8 @@ sntRover.controller('rvAllotmentConfigurationSummaryTabCtrl', [
 		 * Demographics Popup Handler
 		 * @return undefined
 		 */
-		$scope.openDemographicsPopup = function(showRequiredFields) {
-			if ($scope.isInAddMode() && !$scope.forceDemographics) {
+		$scope.openDemographicsPopup = function(showRequiredFields, isBtnClick) {
+			if ( $scope.isInAddMode() && ( !$scope.forceDemographics || isBtnClick )) {
 				// If the group has not been saved yet, prompt user for the same
 				$scope.errorMessage = ["Please save the allotment first"];
 				return;
@@ -1005,7 +1005,7 @@ sntRover.controller('rvAllotmentConfigurationSummaryTabCtrl', [
         $scope.shouldShowDemographics = function () {
             var isDemographicsRequired = false;
 
-            if ($scope.allotmentSummaryData.demographics) {
+            if ($scope.allotmentSummaryData.demographics && $scope.hotelSettings) {
                 var shouldShowMarkets = showMarkets($scope.allotmentSummaryData.demographics) && 
                                         $scope.hotelSettings.force_market_code,                                  
                     shouldShowSources = showSources($scope.allotmentSummaryData.demographics) &&
@@ -1048,7 +1048,7 @@ sntRover.controller('rvAllotmentConfigurationSummaryTabCtrl', [
            if ($scope.shouldShowDemographics()) {
                 $scope.forceDemographics = true;
                 $scope.allotmentSummaryData.promptMandatoryDemographics = true;                
-                $scope.openDemographicsPopup(true);
+                $scope.openDemographicsPopup(true, false);
 
             } else {
                $scope.$emit('SAVE_ALLOTMENT'); 

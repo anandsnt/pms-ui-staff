@@ -34,8 +34,7 @@
         <!-- [<[< MARKETS >]>] -->
         <div class="entry margin" ng-show="shouldShowMarket">
             <label for="market">
-                Market
-                <!-- <strong ng-show="">*</strong> -->
+                Market<strong ng-show="hotelSettings.force_market_code && allotmentSummaryData.promptMandatoryDemographics">*</strong>                
             </label>
             <div class="select">
                 <select convert-to-number iscroll-stop-propagation name="market" id="market"
@@ -54,8 +53,7 @@
         <!-- [<[< SOURCES >]>] -->
         <div class="entry margin" ng-show="shouldShowSource">
             <label for="source">
-                Source
-                <!-- <strong ng-show="">*</strong> -->
+                Source<strong ng-show="hotelSettings.force_source_code && allotmentSummaryData.promptMandatoryDemographics">*</strong>                 
             </label>
             <div class="select">
                 <select convert-to-number iscroll-stop-propagation name="source" id="source"
@@ -74,8 +72,7 @@
         <!-- [<[< ORIGINS >]>] -->
         <div class="entry margin" ng-show="shouldShowOriginOfBooking">
             <label for="origin">
-                Origin of Booking
-                <!-- <strong ng-show="">*</strong> -->
+                Origin of Booking<strong ng-show="hotelSettings.force_origin_of_booking && allotmentSummaryData.promptMandatoryDemographics">*</strong>
             </label>
             <div class="select">
                 <select convert-to-number iscroll-stop-propagation name="origin" id="origin"
@@ -94,8 +91,7 @@
         <!-- [<[< SEGMENTS >]>] -->
         <div class="entry margin" ng-show="shouldShowSegments">
             <label for="origin">
-                Segment
-                <!-- <strong ng-show="">*</strong> -->
+                Segment<strong ng-show="hotelSettings.force_segments && allotmentSummaryData.promptMandatoryDemographics">*</strong>                
             </label>
             <div class="select">
                 <select convert-to-number iscroll-stop-propagation name="segment" id="segment"
