@@ -1,4 +1,4 @@
-sntRover.controller('rvBillFormatPopupCtrl', ['$scope', '$rootScope', '$filter', 'RVBillCardSrv', 'ngDialog', function($scope, $rootScope, $filter, RVBillCardSrv, ngDialog) {
+sntRover.controller('rvBillFormatPopupCtrl', ['$scope', '$rootScope', '$filter', 'RVBillCardSrv', 'RVContactInfoSrv', 'ngDialog', function($scope, $rootScope, $filter, RVBillCardSrv, RVContactInfoSrv, ngDialog) {
 
     BaseCtrl.call(this, $scope);
     $scope.isCompanyCardInvoice = true;
@@ -72,14 +72,29 @@ sntRover.controller('rvBillFormatPopupCtrl', ['$scope', '$rootScope', '$filter',
 
     };
 
+    var successCallBackForLanguagesFetch = function(data) {
+      $scope.$emit('hideLoader');
+      $scope.languageData = data;
+    };
+
+    /**
+     * Fetch the guest languages list and settings
+     * @return {undefined}
+     */
+    var fetchGuestLanguages = function() {
+      // call api
+      $scope.invokeApi(RVContactInfoSrv.fetchGuestLanguages, {},
+        successCallBackForLanguagesFetch);
+    };
+
     /*
     *  Fetches the bill settings info for the guest/account bills
     */
     var fetchBillSettingsInfo = function() {
         var params = getBillSettingsInfoRequestParams();
         var onBillSettingsInfoFetchSuccess = function(response) {
-            $scope.$emit('hideLoader');
-
+            
+            fetchGuestLanguages();
             /** CICO-38736
              *
              * The default_bill_settings in the response defaults to numeric 1, the value of which is a string otherwise
@@ -116,6 +131,7 @@ sntRover.controller('rvBillFormatPopupCtrl', ['$scope', '$rootScope', '$filter',
 
         }
         params.bill_number = $scope.billNo;
+        params.language_id = $scope.data.language_id;
         $scope.$emit('hideLoader');
         return params;
     };
