@@ -445,6 +445,8 @@ sntRover.controller('RVCommissionsSummaryController', ['$scope',
                     $scope.filterData.exportType = exportTypeData.export_type;
                     $scope.filterData.non_commissionable = angular.copy(exportTypeData.export_type === 'onyx');
                     $scope.sideFilterData.non_commissionable = angular.copy(exportTypeData.export_type === 'onyx');
+                    // fetch initial data
+                    $scope.fetchAgentsData();
                 },
                 failureCallBack: function() {
                     $scope.filterData.exportType = '';
@@ -567,8 +569,6 @@ sntRover.controller('RVCommissionsSummaryController', ['$scope',
             };
             $scope.setScroller('commissionOverViewScroll', {});
             $scope.initialLoading = true;
-            // fetch initial data
-            $scope.fetchAgentsData();
         })();
 
     }
