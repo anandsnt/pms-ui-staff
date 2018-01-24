@@ -161,8 +161,7 @@ admin.controller('ADTranslationCtrl', ['$scope', '$rootScope', '$state', 'ADTran
         $scope.data = [];
         getLabelTranslations();
     };
-    init();
-
     
+    init();    
 
 }]);
