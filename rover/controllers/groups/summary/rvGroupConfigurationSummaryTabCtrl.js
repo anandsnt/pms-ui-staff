@@ -780,8 +780,8 @@ angular.module('sntRover').controller('rvGroupConfigurationSummaryTab', ['$scope
          * Demographics Popup Handler
          * @return undefined
          */
-        $scope.openDemographicsPopup = function(showRequiredFields) {
-            if ($scope.isInAddMode() && !$scope.forceDemographics) {
+        $scope.openDemographicsPopup = function(showRequiredFields, isBtnClick) {
+            if ( $scope.isInAddMode() && ( !$scope.forceDemographics || isBtnClick ) ) {
                 // If the group has not been saved yet, prompt user for the same
                 $scope.errorMessage = ['Please save the group first'];
                 return;
@@ -1642,7 +1642,7 @@ angular.module('sntRover').controller('rvGroupConfigurationSummaryTab', ['$scope
            if ($scope.shouldShowDemographics()) {
                 $scope.forceDemographics = true;
                 $scope.groupSummaryData.promptMandatoryDemographics = true;                
-                $scope.openDemographicsPopup(true);
+                $scope.openDemographicsPopup(true, false);
 
             } else {
                $scope.$emit('SAVE_GROUP'); 
