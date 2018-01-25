@@ -566,7 +566,7 @@ sntRover.controller('reservationActionsController', [
 
 		$scope.goToCheckin = function() {
 			// CICO-35186
-			if (!validateDemographicsData ($scope.reservationParentData.demographics)) {
+			if ($rootScope.isStandAlone && !validateDemographicsData ($scope.reservationParentData.demographics)) {
 				setDemographics();
 				showDemographicsPopup();
 				
