@@ -75,6 +75,7 @@ sntRover.controller('rvBillFormatPopupCtrl', ['$scope', '$rootScope', '$filter',
     var successCallBackForLanguagesFetch = function(data) {
       $scope.$emit('hideLoader');
       $scope.languageData = data;
+      $scope.data.locale = data.selected_language_code;
     };
 
     /**
@@ -131,7 +132,7 @@ sntRover.controller('rvBillFormatPopupCtrl', ['$scope', '$rootScope', '$filter',
 
         }
         params.bill_number = $scope.billNo;
-        params.language_id = $scope.data.language_id;
+        params.locale = $scope.data.locale;
         $scope.$emit('hideLoader');
         return params;
     };

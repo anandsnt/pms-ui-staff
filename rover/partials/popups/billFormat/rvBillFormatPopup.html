@@ -29,10 +29,10 @@
     <div class="entry full-width" >
         <label for="languages">Language</label>
         <div  class="select">
-            <select convert-to-number iscroll-stop-propagation ng-model="data.language_id">
+            <select convert-to-number iscroll-stop-propagation ng-model="data.locale">
                 <option style="display:none" value=""></option>
-                <option value="{{item.id}}" ng-repeat="item in languageData.languages"
-                    ng-selected="item.id === data.language_id"
+                <option value="{{item.code}}" ng-repeat="item in languageData.languages"
+                    ng-selected="item.code === data.locale"
                     >{{item.language}}</option>
             </select>
         </div>
