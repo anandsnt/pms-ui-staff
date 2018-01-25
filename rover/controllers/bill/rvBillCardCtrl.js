@@ -2293,7 +2293,7 @@ sntRover.controller('RVbillCardController',
 		$scope.selectedTransaction.id = id;
 		$scope.selectedTransaction.desc = desc;
 		$scope.reference_text = reference_text;
-		$scope.show_ref_on_invoice = true//show_ref_on_invoice;
+		$scope.show_ref_on_invoice = show_ref_on_invoice;
 
 		if (amount) {
 			$scope.selectedTransaction.amount = amount;
