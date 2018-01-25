@@ -463,13 +463,116 @@ sntRover.controller('reservationActionsController', [
 			startCheckin();
 		});
 
+		// Methods which check whether source/origin/market/segment dropdown should be shown or not
+		var showMarkets = function () {
+				return $scope.otherData.marketsEnabled && $scope.otherData.markets.length > 0;
+			},
+			showSegments = function () {
+				return $scope.otherData.segmentsEnabled && $scope.otherData.segments.length > 0;
+			},
+			showOrigins = function () {
+				return $scope.otherData.originsEnabled && $scope.otherData.origins.length > 0;
+			},
+			showSources = function () {
+				return $scope.otherData.sourcesEnabled && $scope.otherData.sources.length > 0;
+			};
+
+		/**
+		 * Checks whether all the madatory demographics fields is entered
+		 * @param {Object} demographicsData - holding demographics data
+		 * @param {Boolean} isValid - flag indicating whether form is valid or not
+		 */
+		var validateDemographicsData = function(demographicsData) {
+            var isValid = true;
+            
+            if (showMarkets() && $scope.otherData.marketIsForced) {
+                isValid = !!demographicsData.market;
+            }
+            if (showSources() && $scope.otherData.sourceIsForced && isValid) {
+                isValid = !!demographicsData.source;
+            }
+            if (showOrigins() && $scope.otherData.originIsForced && isValid) {
+                isValid = !!demographicsData.origin;
+            }
+            if (showSegments() && $scope.otherData.segmentsIsForced && isValid) {
+                isValid = !!demographicsData.segment;
+            }
+            return isValid;
+        };
+
+        // Show the demographics popup during check-in process with the mandatory fields which is not set
+        var showDemographicsPopup = function () {
+        	ngDialog.open({
+                template: '/assets/partials/reservationCard/rvReservationDemographicsMissingPopup.html',
+                className: '',
+                scope: $scope,
+                closeByDocument: false,
+                closeByEscape: false                
+            });
+        };
+
+        /**
+         * Set the visibility of the demographics fields in the popup
+         */
+        var setDemographics = function() {
+        	$scope.shouldShowReservationType = false;            
+            $scope.shouldShowMarket = showMarkets() && $scope.otherData.marketIsForced;
+            $scope.shouldShowSource = showSources() && $scope.otherData.sourceIsForced;
+            $scope.shouldShowOriginOfBooking = showOrigins() && $scope.otherData.originIsForced;
+            $scope.shouldShowSegments = showSegments() && $scope.otherData.segmentsIsForced; 
+            
+        };
+
+        /**
+         * Checks whether the demographics field is valid or not
+         */
+        $scope.isDemographicsFormValid = function() { 
+            return validateDemographicsData($scope.reservationParentData.demographics);            
+        };
+
+        /**
+         * Invoke the update reservation api to update the demographics details during check-in process
+         */
+        $scope.updateDemograhics = function () {
+        	var requestParams = {
+				'reservationId': $scope.reservationParentData.reservationId,				
+				'source_id': parseInt($scope.reservationParentData.demographics.source),
+				'market_segment_id': parseInt($scope.reservationParentData.demographics.market),
+				'booking_origin_id': parseInt($scope.reservationParentData.demographics.origin),
+				'segment_id': parseInt($scope.reservationParentData.demographics.segment)
+			};
+
+			var onUpdateDemograhicsSuccess = function (data) {
+					ngDialog.close();
+					startCheckin();
+			    },
+			    onUpdateDemographicsFailure = function (error) {
+			    	$scope.errorMessage = error;
+			    	ngDialog.close();
+			    };
+
+			$scope.callAPI(RVReservationSummarySrv.updateReservation, {
+				successCallBack: onUpdateDemograhicsSuccess,
+				failureCallBack: onUpdateDemographicsFailure,
+				params: requestParams
+			});
+
+        };
+
 		/** ************************************************************************
 		 * Before checking in we check if any deposit is left else noraml checkin
 		 *
 		 **************************************************************************/
 
 		$scope.goToCheckin = function() {
-                    startCheckin();
+			// CICO-35186
+			if ($rootScope.isStandAlone && !validateDemographicsData ($scope.reservationParentData.demographics)) {
+				setDemographics();
+				showDemographicsPopup();
+				
+			} else {
+				startCheckin();
+			}                    
 		};
 		$scope.unAvailablePopup = function() {
 			ngDialog.open({
