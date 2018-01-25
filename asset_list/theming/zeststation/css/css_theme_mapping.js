@@ -27,7 +27,8 @@ module.exports = {
             'jupiter': [themeCSSRoot + 'jupiter.less'],
             'huntley': [themeCSSRoot + 'huntley.less'],
             'queen': [themeCSSRoot + 'queen.less'],
-            'belle': [themeCSSRoot + 'belle.less']
+            'belle': [themeCSSRoot + 'belle.less'],
+            'freehand-ny': [themeCSSRoot + 'freehand-ny.less']
 		};
 	}
 };
