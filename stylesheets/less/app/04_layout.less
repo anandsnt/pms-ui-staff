@@ -764,7 +764,11 @@ body { overflow: hidden; }
 
 	        .registration-content {
 	            margin-top: 60px;
-	            .calc-height(100, 150);
+	            .calc-height(100, 60);
+    
+	            &.with-complete-registration {
+	                .calc-height(100, 140);
+	            }
 
 	            > .wrapper {
 	                padding-bottom: 20px;
