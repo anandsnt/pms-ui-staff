@@ -542,18 +542,18 @@ sntRover.controller('reservationActionsController', [
 				'segment_id': parseInt($scope.reservationParentData.demographics.segment)
 			};
 
-			var onUpdateDemograhicsSuccess = function (data) {
+			var onDemograhicsUpdateSuccess = function () {
 					ngDialog.close();
 					startCheckin();
 			    },
-			    onUpdateDemographicsFailure = function (error) {
+			    onDemographicsUpdateFailure = function (error) {
 			    	$scope.errorMessage = error;
 			    	ngDialog.close();
 			    };
 
 			$scope.callAPI(RVReservationSummarySrv.updateReservation, {
-				successCallBack: onUpdateDemograhicsSuccess,
-				failureCallBack: onUpdateDemographicsFailure,
+				successCallBack: onDemograhicsUpdateSuccess,
+				failureCallBack: onDemographicsUpdateFailure,
 				params: requestParams
 			});
 
