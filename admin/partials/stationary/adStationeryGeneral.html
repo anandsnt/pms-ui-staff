@@ -62,12 +62,13 @@
                 <label>Hotel Picture</label>
                 <div class="file-upload with-preview small-preview">
                     <button type="button" class="icons icon-delete large-icon"></button>
-                    <span class="input">Choose file...</span>
-                    <input type="file" accept="image/*"> 
+                    <span class="input">{{hotel_logo_file}}</span>
+                    <a id="deleteLogo" class="icons icon-delete large-icon delete_item" ng-if="isLogoAvailable(data.hotel_picture)" ng-click = "data.hotel_picture = 'false'"></a>
+                    <input type="file" accept="image/*" ng-model="data.hotel_picture" app-filereader> 
                     <button type="button" class="button brand-colors">Choose file</button>
                 </div>
                 <span class="file-preview small-preview"> 
-                    <img src="{image src}" alt="" />
+                    <img src="{{data.hotel_picture}}" alt="" />
                     <!-- If no image attached, use this instead: <em>No image attached.</em> -->
                 </span>
             </div>
