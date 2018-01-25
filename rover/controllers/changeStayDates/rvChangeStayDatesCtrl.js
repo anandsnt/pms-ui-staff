@@ -747,11 +747,15 @@ sntRover.controller('RVchangeStayDatesController', ['$state', '$stateParams', '$
 			// Reset validDays array
 			$scope.stayDetails.validDays = [];
 
-			$($scope.stayDetails.calendarDetails.available_dates).each(function(index) {
-				extendThrough = true;
+			$($scope.stayDetails.calendarDetails.available_dates).each(function(index) {				
 				var preventOverbookHouse = !this.is_house_available && !canOverbookHouse && $rootScope.isStandAlone,
 					preventOverbookRoomType = !this.is_room_type_available && !canOverbookRoomType,
-					preventBookingRestrictedRate = this.is_restricted && !canBookRestrictedRate;					
+					preventBookingRestrictedRate = this.is_restricted && !canBookRestrictedRate,
+					preventSuiteRoomOverBook = $scope.reservation.reservation_card.is_suite 
+                                               !$scope.reservation.reservation_card.group_id && !this.is_room_type_available,
+					preventGroupSuiteRoomOverBook = $scope.reservation.reservation_card.is_suite &&
+                                                    !!$scope.reservation.reservation_card.group_id && 
+                                                    !this.is_room_type_available && !this.is_house_available; // CICO-47200
 
 				calEvt = {};
 
@@ -761,7 +765,7 @@ sntRover.controller('RVchangeStayDatesController', ['$state', '$stateParams', '$
 					calEvt.title = $filter('translate')('SUPPRESSED_RATES_TEXT');
 				} else {
 					calEvt.title = $rootScope.currencySymbol + Math.round(this.rate);
-				}
+				}oo
 				calEvt.start = thisDate;
 				calEvt.end = thisDate;
 				calEvt.day = thisDate.getDate().toString();
@@ -810,8 +814,9 @@ sntRover.controller('RVchangeStayDatesController', ['$state', '$stateParams', '$
 					calEvt.id = "availability" + index; // Id should be unique
 					calEvt.className = "type-available";
 				}
-
-				if (preventOverbookHouse || preventBookingRestrictedRate || preventOverbookRoomType) {
+				// CICO-47200 - preventGroupSuiteRoomOverBook
+				if (preventGroupSuiteRoomOverBook || preventSuiteRoomOverBook || preventOverbookHouse || 
+					preventBookingRestrictedRate || preventOverbookRoomType) {
 					extendThrough = false;
 				}
 
