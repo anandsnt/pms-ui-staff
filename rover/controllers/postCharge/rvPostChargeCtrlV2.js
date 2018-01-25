@@ -556,9 +556,8 @@ sntRover.controller('RVPostChargeControllerV2',
 				}
 				else {
 
-					var billData = {
-						"bill_number": $scope.billNumber
-					};
+					var billData = {};
+					
 					// accounts or reservation bill screen check
 
 					isFromAccounts ? (billData.account_id = $scope.account_id) : (billData.reservation_id = $scope.reservation_id);
