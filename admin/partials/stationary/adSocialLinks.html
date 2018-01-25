@@ -1,43 +1,35 @@
-<div id="add-new" ng-show="currentSocialLink == 'NEW'" ng-include="'/assets/partials/stationary/adAddNewSocialLink.html'"></div>
-<div id="new-form-holder"></div>
-<table id="brands" class="grid datatable dataTable" ng-table="itemList" template-pagination="nil" ng-hide="data.social_network_links.length<1">
+<table class="grid datatable" ng-table="itemList" template-pagination="nil" ng-hide="data.social_network_links.length<1">
     <tbody>
         <tr ng-repeat="socialNW in data.social_network_links track by $index">
-            <td data-item="1" data-title="'Type'" ng-click="onEditSocialLink(socialNW, $index)" header-class="width-30" ng-hide="currentSocialLink === $index">
-                <a class="edit-data-inline">{{socialNW.type}}</a>
+            <td data-item="1" data-title="'Type'" ng-click="onEditSocialLink(socialNW, $index)" header-class="" ng-hide="currentSocialLink === $index">
+                <strong class="edit-data">{{socialNW.type}}</strong>
             </td>
-            <td data-item="2" data-title="'URL'" ng-click="onEditSocialLink(socialNW, $index)" header-class="width-60" ng-hide="currentSocialLink === $index">
+            <td data-item="2" data-title="'URL'" ng-click="onEditSocialLink(socialNW, $index)" header-class="" ng-hide="currentSocialLink === $index">
                 <a class="edit-data-inline">{{socialNW.link}}</a>
             </td>
-            <td header-class="width-10" data-title="'Delete'" class="delete" ng-hide="currentSocialLink === $index">
-                <a class="icons icon-delete large-icon" ng-click="onRemoveLink(socialNW)">Remove</a>
+            <td header-class="width-120" data-title="'Delete'" class="delete" ng-hide="currentSocialLink === $index">
+                <button type="button" class="icons icon-delete large-icon" ng-click="onRemoveLink(socialNW)">Remove</button>
             </td>
             <td colspan="3" ng-show="currentSocialLink === $index">
-                <div style="display: block;" class="edit-data">
-                    <div class="data-holder">
-                        <!-- Edit Department -->
-                        <form class="form inline-form float">
-                            <div class="form-title">
-                                <h3 translate><span></span> EDIT</h3>
-                            </div>
-                            <fieldset class="holder left">
-                                <ad-dropdown div-class='full-width' label-in-drop-down="{{ 'SELECT_SOCIAL_NETWORK' | translate }}" label="{{ 'SOCIAL_NETWORK' | translate }}" sel-class='placeholder' list='socialNetworks' required='yes' selected-Id='socialNW.type'></ad-dropdown>
-                            </fieldset>
-                            <fieldset class="holder right">
-                                <ad-textbox styleclass="full-width" value="socialNW.link" label="{{'SOCIAL_NETWORK_URL' | translate}}" placeholder="{{'ENTER_SOCIAL_NEWORK_URL' | translate}}" required="yes"></ad-textbox>
-                            </fieldset>
-                            <div class="actions float">
-                                <button type="button" id="cancel" class="button blank edit-data-inline" ng-click="onCancelEditLink($index)" translate>
-                                    CANCEL
-                                </button>
-                                <button type="button" id="save" class="button green edit-data-inline" ng-click="onUpdateSocialLink()" translate>
-                                    OK
-                                </button>
-                            </div>
-                        </form>
-                    </div>
+                <div class="data-holder">
+                    <!-- Edit Department -->
+                    <form class="form inline-form float">
+                        <h4 translate><span>Edit</span> Social Network</h4>
+                        <ad-dropdown div-class='full-width' label-in-drop-down="{{ 'SELECT_SOCIAL_NETWORK' | translate }}" label="{{ 'SOCIAL_NETWORK' | translate }}" sel-class='placeholder' list="socialNetworks" required='yes' selected-Id='socialNW.type' options = "{'showOptionsIf': isLinkAvailable}"></ad-dropdown>
+                        <ad-textbox inputtype="text" styleclass="full-width" value="socialNW.link" label="{{'SOCIAL_NETWORK_URL' | translate}}" placeholder="{{'ENTER_SOCIAL_NEWORK_URL' | translate}}" required="yes"></ad-textbox>
+                        <div class="actions float">
+                            <button type="button" id="cancel" class="button blank" ng-click="onCancelEditLink($index)" translate>
+                                CANCEL
+                            </button>
+                            <button type="button" id="save" class="button green" ng-click="onUpdateSocialLink()" translate>
+                                Save Changes
+                            </button>
+                        </div>
+                    </form>
                 </div>
             </td>
         </tr>
     </tbody>
 </table>
+<div id="add-new" class="data-holder" ng-show="currentSocialLink == 'NEW'" ng-include="'/assets/partials/stationary/adAddNewSocialLink.html'"></div>
+<div id="new-form-holder"></div>

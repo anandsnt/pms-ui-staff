@@ -605,7 +605,8 @@ sntRover.controller('roverController', [
                         {
                             template: '/assets/partials/postCharge/rvPostChargeV2.html',
                             controller: 'RVOutsidePostChargeController',
-                            scope: $scope
+                            scope: $scope,
+                            className: ''
                         });
                 });
         };

@@ -10,7 +10,8 @@ sntRover.controller('companyCardCommissionsCtrl', [
     'rvUtilSrv',
     '$window',
     '$vault',
-    function($scope, $state, $rootScope, $stateParams, RVCompanyCardSrv, ngDialog, $timeout, rvPermissionSrv, util, $window, $vault ) {
+    'sntActivity',
+    function($scope, $state, $rootScope, $stateParams, RVCompanyCardSrv, ngDialog, $timeout, rvPermissionSrv, util, $window, $vault, sntActivity) {
         BaseCtrl.call(this, $scope);
 
     // Get the request parameters for the commission filtering
@@ -20,6 +21,7 @@ sntRover.controller('companyCardCommissionsCtrl', [
             if ($scope.filterData.fromDate) {
                 params.from_date = $scope.filterData.fromDate;
             }
+
             if ($scope.filterData.toDate) {
                 params.to_date = $scope.filterData.toDate;
             }
@@ -53,6 +55,13 @@ sntRover.controller('companyCardCommissionsCtrl', [
 
     // Fetches the commission details for the given filter options
         var fetchCommissionDetails = function(isPageChanged) {
+            var hideLoaderIfWasStarted = function() {
+                // check if this is the first time API call and was navigated from Commission summary
+                if (!$scope.filterData.commissionsLoaded && $stateParams.origin === 'COMMISION_SUMMARY') {
+                    sntActivity.stop('NAVIGATING_TO_TA_COMMISSIONS');
+                }
+                return;
+            };
             var onCommissionFetchSuccess = function(data) {
 
                     _.each(data.commission_details, function(element, index) {
@@ -71,11 +80,14 @@ sntRover.controller('companyCardCommissionsCtrl', [
                     }, 1000);
                     $scope.$emit('hideLoader');
                     refreshScroll();
+                    hideLoaderIfWasStarted();
+                    $scope.filterData.commissionsLoaded = true;
                 },
                 onCommissionFetchFailure = function(error) {
                     $scope.$emit('hideLoader');
                     $scope.commissionDetails = [];
                     $scope.commissionSummary = {};
+                    hideLoaderIfWasStarted();
                 };
 
             var requestData = {};
@@ -493,8 +505,8 @@ sntRover.controller('companyCardCommissionsCtrl', [
         $scope.commissionDetails = [];
         $scope.commissionSummary = {};
         $scope.filterData = {
-            fromDate: "",
-            toDate: "",
+            fromDate: $stateParams.fromDate,
+            toDate: $stateParams.toDate,
             paidStatus: "Unpaid",
             commissionStatus: "Commissionable",
             perPage: 25, // RVCompanyCardSrv.DEFAULT_PER_PAGE,
@@ -504,7 +516,8 @@ sntRover.controller('companyCardCommissionsCtrl', [
             toggleCommission: false,
             commssionRecalculationValue: '',
              // By default set the value to current hotel
-                selectedHotel: parseInt($rootScope.hotelDetails.userHotelsData.current_hotel_id)
+                selectedHotel: parseInt($rootScope.hotelDetails.userHotelsData.current_hotel_id),
+            commissionsLoaded: false
             };
         // NOTE: This controller runs under stay card too; In such a case, the $stateParams.id will have the reservation ID
             $scope.accountId = $state.current.name === 'rover.reservation.staycard.reservationcard.reservationdetails' ?

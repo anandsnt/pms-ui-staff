@@ -757,4 +757,7 @@ admin.controller('ADAppCtrl', [
                 $window.location.href = redirUrl;
             }, 300);
         };
+
+        $scope.disableFeatureInNonDevEnv = sntapp.environment === 'PROD';
+
 }]);

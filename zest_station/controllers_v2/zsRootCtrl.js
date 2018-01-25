@@ -816,7 +816,8 @@ sntZestStation.controller('zsRootCtrl', [
                     left_arrow_icon: commonIconsPath + '/arrow-left.svg',
                     right_arrow_icon: commonIconsPath + '/arrow-right.svg',
                     late_checkout_icon: iconBasePath + '/late-checkout.svg',
-                    scanpassport: iconBasePath + ($scope.zestStationData.scan_passport_file_uploaded.length > 0) ? $scope.zestStationData.scan_passport_file_uploaded : ''
+                    scanpassport: iconBasePath + ($scope.zestStationData.scan_passport_file_uploaded.length > 0) ? $scope.zestStationData.scan_passport_file_uploaded : '',
+                    success: iconBasePath + '/success.svg'
                 }
             };
 
@@ -1065,7 +1066,8 @@ sntZestStation.controller('zsRootCtrl', [
 					// when user activity is not recorded for more than idle_timer.prompt
 					// time set in admin, display inactivity popup
                     if (userInActivityTimeInSeconds >= idlePopupTime) {
-                        if (currentState === 'zest_station.checkInSignature' || currentState === 'zest_station.checkInCardSwipe') {
+                        if (currentState === 'zest_station.checkInSignature' || currentState === 'zest_station.checkInCardSwipe' ||
+                            currentState === 'zest_station.payment') {
                             $scope.$broadcast('USER_ACTIVITY_TIMEOUT');
                         } else {
                             // opens timeout popup w/ ng-class/css
@@ -1322,8 +1324,9 @@ sntZestStation.controller('zsRootCtrl', [
         var socketOpenedFailed = function() {
             $log.info('Websocket:-> socket connection failed');
             $scope.zestStationData.stationHandlerConnectedStatus = 'Not-Connected';
-            $scope.runDigestCycle();
             $scope.$broadcast('SOCKET_FAILED');
+            $scope.runDigestCycle();
+            
         };
 
         var socketOpenedSuccess = function() {
@@ -1981,6 +1984,8 @@ sntZestStation.controller('zsRootCtrl', [
             $scope.zestStationData.makingAdditionalKey = false;
             $scope.zestStationData.autoIpadKeyboardEnabled = false;
             $scope.zestStationData.appVersion = null;
+            $scope.zestStationData.connectedDeviceDetails = {};
+            
             if ($scope.isIpad) {
                 try {
                     // check for the method getAppInfo via rvcardplugin, if it does not exist,

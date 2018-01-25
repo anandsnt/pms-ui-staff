@@ -4,6 +4,17 @@ angular.module('sntPay').controller('payCBACtrl',
         function($scope, sntPaymentSrv, payEvntConst, util,
                  sntCBAGatewaySrv, $log, sntActivity) {
 
+            /**   IMPORTANT: Plese Read the below note before you change the code in this controller 
+            
+             This Controller is used in Zest station also by instantiating this controller ($controller)
+             
+             The payment module is designed to avoid unsafe method calls from child -> parent by 
+             using emitting events. So if you are using this Ctrl for communicating with your controller (parent controller),
+             always use $emit events. If you have any further queries, please contact Resheil or Dilip
+             
+             **/
+             
+            
             var transaction = {
                     id: null,
                     status: null
@@ -88,6 +99,10 @@ angular.module('sntPay').controller('payCBACtrl',
                 },
                 initiatePaymentProcess = function(event, params) {
                     sntActivity.start('INIT_CBA_PAYMENT');
+                    if (!$scope.payment || !$scope.payment.amount) {
+                        $scope.payment = $scope.payment || {};
+                        $scope.payment.amount = params.postData.amount;
+                    }
                     sntCBAGatewaySrv.initiateTransaction(
                         params.postData.amount,
                         params.bill_id

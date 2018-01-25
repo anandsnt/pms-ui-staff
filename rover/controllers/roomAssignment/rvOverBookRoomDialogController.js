@@ -7,6 +7,7 @@ sntRover.controller('RVOverBookRoomDialogController', ['$scope', '$rootScope', '
 	};
 
 	$scope.clickedYesInOverBook = function() {
+		$scope.overbooking.isOpted = true;
 		$scope.closeDialog();
 		$scope.showMaximumOccupancyDialog($scope.currentRoomObject);
 	};
