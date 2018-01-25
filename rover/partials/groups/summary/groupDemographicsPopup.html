@@ -6,13 +6,13 @@
         <strong class="h2 message" ng-hide="groupSummaryData.promptMandatoryDemographics">Demographics</strong>
         <!-- <span class="text" ng-hide="groupSummaryData.promptMandatoryDemographics">Fields marked with <strong>*</strong> are mandatory</span> -->
         
-        <!-- <strong class="h2 message" ng-show="groupSummaryData.promptMandatoryDemographics">Demographics Missing!</strong> -->
-        <!-- <span class="text" ng-show="groupSummaryData.promptMandatoryDemographics">Set mandatory demographics to continue</span> -->
+        <strong class="h2 message" ng-show="groupSummaryData.promptMandatoryDemographics">Demographics Missing!</strong>
+        <span class="text" ng-show="groupSummaryData.promptMandatoryDemographics">Set mandatory demographics to continue</span>
 
         <div ng-include="'/assets/partials/common/notification_message.html'"></div>
 
         <!-- [<[< RESERVATION TYPES >]>] -->
-        <div class="entry margin">
+        <div class="entry margin" ng-show="shouldShowReservationType">
             <label for="reservation-type">
                 Reservation type
                 <!-- <strong ng-show="">*</strong> -->
@@ -32,10 +32,9 @@
         </div>
 
         <!-- [<[< MARKETS >]>] -->
-        <div class="entry margin" ng-show="groupSummaryData.demographics.is_use_markets">
+        <div class="entry margin" ng-show="shouldShowMarket">
             <label for="market">
-                Market
-                <!-- <strong ng-show="">*</strong> -->
+                Market<strong ng-show="hotelSettings.force_market_code && groupSummaryData.promptMandatoryDemographics">*</strong>                
             </label>
             <div class="select">
                 <select convert-to-number iscroll-stop-propagation name="market" id="market"
@@ -52,10 +51,9 @@
         </div>
 
         <!-- [<[< SOURCES >]>] -->
-        <div class="entry margin" ng-show="groupSummaryData.demographics.is_use_sources">
+        <div class="entry margin" ng-show="shouldShowSource">
             <label for="source">
-                Source
-                <!-- <strong ng-show="">*</strong> -->
+                Source<strong ng-show="hotelSettings.force_source_code && groupSummaryData.promptMandatoryDemographics">*</strong>                
             </label>
             <div class="select">
                 <select convert-to-number iscroll-stop-propagation name="source" id="source"
@@ -72,10 +70,9 @@
         </div>
 
         <!-- [<[< ORIGINS >]>] -->
-        <div class="entry margin" ng-show="groupSummaryData.demographics.is_use_origins">
+        <div class="entry margin" ng-show="shouldShowOriginOfBooking">
             <label for="origin">
-                Origin of Booking
-                <!-- <strong ng-show="">*</strong> -->
+                Origin of Booking<strong ng-show="hotelSettings.force_origin_of_booking && groupSummaryData.promptMandatoryDemographics">*</strong>
             </label>
             <div class="select">
                 <select convert-to-number iscroll-stop-propagation name="origin" id="origin"
@@ -92,10 +89,9 @@
         </div>
 
         <!-- [<[< SEGMENTS >]>] -->
-        <div class="entry margin" ng-show="groupSummaryData.demographics.is_use_segments">
+        <div class="entry margin" ng-show="shouldShowSegments">
             <label for="origin">
-                Segment
-                <!-- <strong ng-show="">*</strong> -->
+                Segment<strong ng-show="hotelSettings.force_segments && groupSummaryData.promptMandatoryDemographics">*</strong>
             </label>
             <div class="select">
                 <select convert-to-number iscroll-stop-propagation name="segment" id="segment"
@@ -132,8 +128,9 @@
             <button ng-show="groupSummaryData.promptMandatoryDemographics" 
                 type="button" 
                 class="button" 
-                ng-disabled="!isDemographicsFormValid(false)" 
-                ng-class="isDemographicsFormValid(false) ? 'green' : 'grey'">
+                ng-disabled="!isDemographicsFormValid(true)" 
+                ng-class="isDemographicsFormValid(true) ? 'green' : 'grey'"
+                ng-click="saveNewGroup()">
                 Save & Continue
             </button>
             

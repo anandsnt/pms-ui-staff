@@ -233,8 +233,9 @@ sntZestStation.controller('zsReservationBillDetailsCtrl', [
                 // if refund if present, don't allow checkout
                 return true;
             }
+            $scope.has_cc = $scope.has_cc === 'true' || $scope.has_cc;
             // if balance >0, allow checkout if CC is present
-            return $scope.zestStationData.paymentGateway === 'CBA' || !$scope.has_cc;
+            return !$scope.has_cc;
 
         };
 
@@ -249,8 +250,7 @@ sntZestStation.controller('zsReservationBillDetailsCtrl', [
         };
 
         $scope.nextClicked = function () {
-            if ($scope.zestStationData.paymentGateway === 'CBA' &&
-                checkIfDueBalancePresent()) {
+            if (parseInt($scope.balance) !== 0 && $scope.zestStationData.kiosk_collect_balance) {
                 zsStateHelperSrv.setPreviousStateParams($stateParams);
 
                 zsPaymentSrv.setPaymentData({
