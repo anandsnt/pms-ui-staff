@@ -173,8 +173,8 @@ admin.controller('ADStationaryCtrl',
 	 */
 	$scope.$watch(function() {
 		return $scope.data.location_image;
-	}, function(logo) {
-		if (logo === 'false') {
+	}, function(location_image) {
+		if (location_image === 'false') {
 			$scope.fileName = "Choose File....";
 		}
 		$scope.location_image_file = $scope.fileName;
