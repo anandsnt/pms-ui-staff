@@ -116,7 +116,9 @@ admin.controller('ADHotelDetailsCtrl', [
 				$scope.isSequenceModChangeDisabled = true;
 			} 
 			else { 
-				$scope.data.selected_mod_type_id = (_.find($scope.data.mod_types, function(item){return item.value === 'MOD10'}).id).toString();
+				$scope.data.selected_mod_type_id = (_.find($scope.data.mod_types, function (item) { 
+																						return item.value === 'MOD10'; 
+																					}).id).toString();
 			}
 			$scope.$emit('hideLoader');
 			$scope.hotelLogoPrefetched = data.hotel_logo;
