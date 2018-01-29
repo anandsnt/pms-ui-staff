@@ -93,8 +93,8 @@
             <tr>
                 <td></td>
                 <td></td>
-                <td >{{printData.translation.net_amount}}</td>
-                <td>{{currencySymbol}}{{printData.net_amount}}</td>
+                <td ><strong>{{printData.translation.net_amount}}</strong></td>
+                <td><strong>{{currencySymbol}}{{printData.net_amount}}</strong></td>
             </tr>
 
             <tr ng-if="!printData.has_enabled_extended_tax_breakdown" ng-repeat="item in printData.tax_details">
