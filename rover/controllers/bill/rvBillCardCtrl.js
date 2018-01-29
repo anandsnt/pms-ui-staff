@@ -422,7 +422,7 @@ sntRover.controller('RVbillCardController',
 		if ($scope.reservationBillData.bills.length < 10) {
 			width = width + 50;
 		}
-		width =  133 * $scope.reservationBillData.bills.length + 10 + width + 50;
+		width =  133 * $scope.reservationBillData.bills.length + width + 60;
 		return width;
 	};
 
