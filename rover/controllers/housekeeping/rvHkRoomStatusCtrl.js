@@ -194,7 +194,7 @@ angular.module('sntRover').controller('RVHkRoomStatusCtrl', [
 			$_page++;
 			$_updateFilters('page', $_page);
 
-			$_callRoomsApi();
+			$_callRoomsApi($_page);
 		};
 
 		$scope.loadPrevPage = function(e) {
@@ -205,7 +205,7 @@ angular.module('sntRover').controller('RVHkRoomStatusCtrl', [
 			$_page--;
 			$_updateFilters('page', $_page);
 
-			$_callRoomsApi();
+			$_callRoomsApi($_page);
 		};
 
 		// store the current room list scroll position

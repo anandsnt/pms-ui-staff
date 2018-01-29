@@ -529,8 +529,7 @@ angular.module('sntRover').service('RVReservationBaseSearchSrv', ['$q', 'rvBaseW
             var deferred = $q.defer(),
                 url = "/api/hotel_settings/show_hotel_reservation_settings";
 
-            RVBaseWebSrvV2.getJSON(url).then(function(data) {
-                    that.reservation.settings = data;
+            RVBaseWebSrvV2.getJSON(url).then(function(data) {                    
                     deferred.resolve(data);
             }, function(errorMessage) {
                     deferred.reject(errorMessage);

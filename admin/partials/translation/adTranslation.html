@@ -22,16 +22,16 @@
             <div class="entry filter">
                 <label translate>MENU_OPTION</label>
                 <div class="select translation-filter-select">
-                    <select ng-model="filter.menuOption" name="menu-option" id="menu-option" class="placeholder-translation" ng-change="onMenuOptionChange()">
-                        <option ng-model="menuOption.id" ng-repeat="menuOption in menuDetails.menu_options" value="{{menuOption.id}}" ng-selected="menuOption.id==filter.menuOption"> {{menuOption.name}} </option>
+                    <select ng-model="filter.menuOption" name="menu-option" id="menu-option"  ng-change="onMenuOptionChange()">
+                        <option  ng-repeat="menuOption in menuDetails.menu_options" value="{{menuOption.id}}" ng-selected="menuOption.id==filter.menuOption"> {{menuOption.name}} </option>
                     </select>
                 </div>
             </div>
             <div class="entry filter">
                 <label translate>ITEM</label>
                 <div class="select translation-filter-select">
-                    <select ng-model="filter.item" name="item" id="item" class="placeholder-translation" ng-change="onItemChange()">
-                        <option ng-model="item.id" ng-repeat="item in items" value="{{item.id}}" ng-selected="item.id==filter.item"> {{item.name}} </option>
+                    <select ng-model="filter.item" name="item" id="item"  ng-change="onItemChange()">
+                        <option ng-repeat="item in items" value="{{item.id}}" ng-selected="item.id==filter.item"> {{item.name}} </option>
                     </select>
                 </div>
             </div>

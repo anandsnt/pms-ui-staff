@@ -90,13 +90,15 @@ sntRover.controller('rvBillCardPopupCtrl',
 	 * @param {number} chargeCode updated charge code id
 	 * @returns {undefined}
 	 */
-	$scope.editCharge = function(newAmount, chargeCode, adjustmentReason) {
+	$scope.editCharge = function() {
 		var params = {
 			id: $scope.selectedTransaction.id,
 			updatedData: {
-				new_amount: newAmount || undefined,
-				charge_code_id: chargeCode.id,
-				adjustment_reason: adjustmentReason
+				new_amount: $scope.newAmount || undefined,
+				charge_code_id: $scope.selectedChargeCode.id,
+				adjustment_reason: $scope.adjustmentReason,
+				reference_text: $scope.reference_text,
+				show_ref_on_invoice: $scope.show_ref_on_invoice
 			}
 		};
 
