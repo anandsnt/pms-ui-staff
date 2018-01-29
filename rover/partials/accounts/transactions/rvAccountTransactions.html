@@ -46,12 +46,13 @@
 				<!-- Bills Nav-->
 				<div class="bill-tabs scrollable" ng-iscroll="bill-tab-scroller">
 					<ul class="wrapper" style="width:{{getWidthForBillTabsScroll();}}px;">
-						<li ng-class="showActiveBill($index)" click-touch="setActiveBill($index)" ng-repeat="billTab in transactionsDetails.bills">
-							<a class="bill-toggle">
+						<li ng-class="showActiveBill($index)" ng-repeat="billTab in transactionsDetails.bills">
+							<a class="bill-toggle" click-touch="setActiveBill($index)">
 								<div class="price"><span>{{'BILL' |translate}} #{{billTab.bill_number}}</span>
 									<span class="currency">{{currencySymbol}}</span>{{billTab.balance_amount | number: precisonZero}}
 								</div>
 							</a>
+							<button ng-if="($index === transactionsDetails.bills.length - 1) && !billTab.is_transactions_exist && !billTab.is_routing_exist" click-touch="clickedRemoveBill($index)" type="button" class="button icons icon-remove-10"></button>
 						</li>
 						<!-- Add new bill-->
 						<li class="new-bill" ng-show="transactionsDetails.bills.length<10 && isStandAlone">
@@ -217,7 +218,8 @@
 												<br />
 											</span>
 										</td>
-										<td class="description">
+										<td class="description" ng-class="{'with-reference': feesData.reference_text != ''}">
+											<span class="icons icon-invoice-blue" ng-show="feesData.reference_text != ''"></span>
 											<strong ng-if="isStandAlone && !feesData.is_group_by_ref">
 												{{feesData.item_description}}
 											</strong>
@@ -263,7 +265,7 @@
 											</div>
 										</td>
 										<td>
-											<button ng-class="{'overlay': !billData.is_active }" type="button" class="button purple with-icon only-icon" click-touch="openActionsPopup(feesData.id,feesData.description,feesData.fees,feesData.type.value,feesData.credits)" ng-show="showEditChargeButton(feesData.type.value)" ng-if = "!feesData.is_group_by_ref">
+											<button type="button" ng-class="{'overlay': !billData.is_active }"  class="button purple with-icon only-icon" click-touch="openActionsPopup(feesData.id,feesData.description,feesData.fees,feesData.type.value,feesData.credits, feesData.reference_text_on_edit, feesData.show_ref_on_invoice)" ng-show="showEditChargeButton(feesData.type.value)" ng-if = "!feesData.is_group_by_ref">
 												<span class="icons icon-pencil"></span>
 												{{'EDIT' |translate}}
 											</button>
