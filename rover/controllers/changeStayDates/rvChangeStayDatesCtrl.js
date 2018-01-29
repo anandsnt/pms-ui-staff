@@ -765,7 +765,7 @@ sntRover.controller('RVchangeStayDatesController', ['$state', '$stateParams', '$
 					calEvt.title = $filter('translate')('SUPPRESSED_RATES_TEXT');
 				} else {
 					calEvt.title = $rootScope.currencySymbol + Math.round(this.rate);
-				}oo
+				}
 				calEvt.start = thisDate;
 				calEvt.end = thisDate;
 				calEvt.day = thisDate.getDate().toString();
