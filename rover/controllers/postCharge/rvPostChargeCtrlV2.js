@@ -482,8 +482,6 @@ sntRover.controller('RVPostChargeControllerV2',
 					total: $scope.net_total_price,
 					items: items
 				};
-				console.log(data)
-				return false;
 				// accounts or reservation bill screen check
 				isFromAccounts ? (data.account_id = $scope.account_id) :  (data.reservation_id = $scope.reservation_id);
 
