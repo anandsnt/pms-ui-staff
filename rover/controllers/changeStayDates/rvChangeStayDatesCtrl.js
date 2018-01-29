@@ -751,7 +751,7 @@ sntRover.controller('RVchangeStayDatesController', ['$state', '$stateParams', '$
 				var preventOverbookHouse = !this.is_house_available && !canOverbookHouse && $rootScope.isStandAlone,
 					preventOverbookRoomType = !this.is_room_type_available && !canOverbookRoomType,
 					preventBookingRestrictedRate = this.is_restricted && !canBookRestrictedRate,
-					preventSuiteRoomOverBook = $scope.reservation.reservation_card.is_suite 
+					preventSuiteRoomOverBook = $scope.reservation.reservation_card.is_suite &&
                                                !$scope.reservation.reservation_card.group_id && !this.is_room_type_available,
 					preventGroupSuiteRoomOverBook = $scope.reservation.reservation_card.is_suite &&
                                                     !!$scope.reservation.reservation_card.group_id && 
