@@ -13,7 +13,7 @@ sntRover.controller('RVPostChargeControllerV2',
 			$scope.selectedChargeItem = null;
 			$scope.selectedChargeItemHash = {};
 			$scope.disablePostChargeButton = false;
-			$scope.show_ref_on_invoice = false;
+			
 
 			var scrollerOptions = { preventDefault: false };
 
@@ -188,6 +188,8 @@ sntRover.controller('RVPostChargeControllerV2',
 					$scope.selectedChargeItemHash[ clickedItem.id ].unit_price = parseFloat($scope.selectedChargeItemHash[ clickedItem.id ].unit_price);
 					$scope.selectedChargeItemHash[ clickedItem.id ].modifiedPrice = $scope.selectedChargeItemHash[ clickedItem.id ].unit_price;
 					$scope.selectedChargeItemHash[ clickedItem.id ].userEnteredPrice = '';
+					$scope.selectedChargeItemHash[ clickedItem.id ].show_ref_on_invoice = false;
+					$scope.selectedChargeItemHash[ clickedItem.id ].reference_text = '';
 				}
 				else {
 					$scope.selectedChargeItemHash[ clickedItem.id ].count ++ ;
@@ -469,8 +471,8 @@ sntRover.controller('RVPostChargeControllerV2',
 					each['is_item']  = $scope.selectedChargeItemHash[i].type === "ITEM" ? true : false;
 					each['amount']   = $scope.selectedChargeItemHash[i]['total_price'];
 					each['quantity'] = $scope.selectedChargeItemHash[i]['count'];
-					each['reference_text'] = $scope.reference_text;
-					each['show_ref_on_invoice'] = $scope.show_ref_on_invoice;
+					each['reference_text'] = $scope.selectedChargeItemHash[i].reference_text;
+					each['show_ref_on_invoice'] = $scope.selectedChargeItemHash[i].show_ref_on_invoice;
 					items.push( each );
 				}
 
@@ -480,7 +482,8 @@ sntRover.controller('RVPostChargeControllerV2',
 					total: $scope.net_total_price,
 					items: items
 				};
-				
+				console.log(data)
+				return false;
 				// accounts or reservation bill screen check
 				isFromAccounts ? (data.account_id = $scope.account_id) :  (data.reservation_id = $scope.reservation_id);
 
