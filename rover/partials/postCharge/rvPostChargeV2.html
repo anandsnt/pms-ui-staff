@@ -334,12 +334,12 @@
 					</div>
 					
 					<div id="actions" class="form">
-						<div class="entry full-width">
+						<div class="entry full-width" ng-repeat="each in selectedChargeItemHash" ng-show="each.name === selectedChargeItem.name">
 							<label for="reference">Reference & Description</label>
-							<input id="reference" ng-model="reference_text" placeholder="Enter charge reference" value="" type="text" />
-							<label class="checkbox inline" for="show-on-guest-bill" ng-class="{'checked': show_ref_on_invoice}"> <!-- Add class 'checked' when L68 is checked --> 
-								<span class="icon-form icon-checkbox" ng-class="{'checked': show_ref_on_invoice}"></span> <!-- Add class 'checked' when L68 is checked -->
-								<input id="show-on-guest-bill" type="checkbox" ng-model="show_ref_on_invoice">
+							<input id="reference" ng-model="each.reference_text" placeholder="Enter charge reference" value="" type="text" />
+							<label class="checkbox inline" for="show-on-guest-bill" ng-class="{'checked': each.show_ref_on_invoice}"> <!-- Add class 'checked' when L68 is checked --> 
+								<span class="icon-form icon-checkbox" ng-class="{'checked': each.show_ref_on_invoice}"></span> <!-- Add class 'checked' when L68 is checked -->
+								<input id="show-on-guest-bill" type="checkbox" ng-model="each.show_ref_on_invoice">
 								Show Reference on Guest Invoice
 							</label>
 							<input id="reference" placeholder="Enter charge description" value="" type="text" ng-hide="true"/>

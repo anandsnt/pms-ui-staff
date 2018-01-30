@@ -422,7 +422,7 @@ sntRover.controller('RVbillCardController',
 		if ($scope.reservationBillData.bills.length < 10) {
 			width = width + 50;
 		}
-		width =  133 * $scope.reservationBillData.bills.length + 10 + width;
+		width =  133 * $scope.reservationBillData.bills.length + width + 60;
 		return width;
 	};
 
@@ -2835,7 +2835,7 @@ sntRover.controller('RVbillCardController',
 			$scope.reviewStatusArray = $scope.reviewStatusArray.slice(0, -1);
 			// Reload Bill screen and reset active bill tab ..
 			reloadBillScreen();
-			$scope.currentActiveBill = billIndex - 1;
+			$scope.setActiveBill(billIndex - 1);
 		},
 		hideBillFailureCallback = function(errorMessage) {
 			$scope.errorMessage = errorMessage;
