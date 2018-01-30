@@ -18,6 +18,7 @@ module.exports = {
 					servicesRoot + "rvReservationSrv.js",
 					servicesRoot + "depositBalance/rvDepositBalanceSrv.js",
 					servicesRoot + "bill/rvBillCardSrv.js",
+					servicesRoot + "rvContactInfoSrv.js"
 
 				]
 			};
