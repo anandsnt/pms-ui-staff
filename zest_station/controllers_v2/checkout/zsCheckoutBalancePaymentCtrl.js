@@ -35,7 +35,7 @@ angular.module('sntZestStation').controller('zsCheckoutBalancePaymentCtrl', ['$s
             $scope.screenMode.paymentAction = 'PAY_AMOUNT';
             var paymentParams = zsPaymentSrv.getPaymentData();
 
-            $scope.balanceDue = parseInt(paymentParams.amount);
+            $scope.balanceDue = parseFloat(paymentParams.amount);
             $scope.cardDetails = paymentParams.payment_details;
             $scope.reservation_id = paymentParams.reservation_id;
             
