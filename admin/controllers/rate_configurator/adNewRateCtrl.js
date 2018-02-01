@@ -62,7 +62,9 @@ admin.controller('ADAddnewRate', ['$scope', 'ADRatesRangeSrv', 'ADRatesSrv', '$s
             // webservice call to fetch rate details for edit
             // New arrays used for CICO-49136. We need to compare existing addons and 
             // selected addons on update. If both are same no need to pass that param to API
+            $scope.existingAddonsIds = [];
             $scope.existingAddons = [];
+            $scope.selectedAddonsIds = [];
             $scope.selectedAddons = [];
             if ($stateParams.rateId) {
                 setRateDetails(rateDetails);
@@ -71,10 +73,15 @@ admin.controller('ADAddnewRate', ['$scope', 'ADRatesRangeSrv', 'ADRatesSrv', '$s
                     $scope.otherData.notIsBasedOn = (rateDetails.based_on.is_copied) ? false :  true;
                 }
                 $scope.otherData.isEdit = true;
+                var existingAddonsIds = [],
+                    existingAddons = [];
+
                 angular.forEach(rateDetails.addons, function(addOn) {
                     existingAddonsIds.push(addOn.id);
+                    existingAddons.push(addOn);
                 });
-                $scope.existingAddons = existingAddonsIds;
+                $scope.existingAddonsIds = existingAddonsIds;
+                $scope.existingAddons = existingAddons;
             }
 
             // CICO-36412
