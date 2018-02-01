@@ -521,5 +521,21 @@ angular.module('sntRover').service('RVReservationBaseSearchSrv', ['$q', 'rvBaseW
 
             return deferred.promise;
         };
+
+        /**
+         * Fetches hotel settings configured in admin
+         */
+        this.fetchHotelReservationSettings = function () {
+            var deferred = $q.defer(),
+                url = "/api/hotel_settings/show_hotel_reservation_settings";
+
+            RVBaseWebSrvV2.getJSON(url).then(function(data) {                    
+                    deferred.resolve(data);
+            }, function(errorMessage) {
+                    deferred.reject(errorMessage);
+            });
+            
+            return deferred.promise;
+        };
     }
 ]);

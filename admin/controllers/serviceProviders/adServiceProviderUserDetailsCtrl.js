@@ -17,7 +17,8 @@ admin.controller('ADServiceProviderUserDetailsCtrl', ['$scope', '$rootScope', '$
     */
 	var fetchUserDetails =  function() {
 		var param = {
-			id: $scope.userDetails.user_id
+			id: $scope.userDetails.user_id,
+			service_provider_id: $scope.userDetails.service_provider_id
 		};
 		var successCallbackFetch = function(data) {
 			if (data.status === "failure") {

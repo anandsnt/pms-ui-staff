@@ -226,15 +226,8 @@
 					</ul>
 				</div>
 
-				<div class="search-pagination" ng-show="fetchedData.total_count > fetchedData.perPage && fetchedItems.length > 0">
+				<rv-pagination page-options="postChargePaginationObj" page-data="fetchedData.totalCount"></rv-pagination>
 
-					<button type="button" class="button dark-grey next" ng-click="loadNextSet($event)" ng-disabled="isNextButtonDisabled()" translate>NEXT</button>
-
-                    <button type="button" class="button dark-grey prev" ng-click="loadPrevSet($event)" ng-disabled="isPrevButtonDisabled()" translate>PREVIOUS</button>
-
-                    <p><strong>{{ fetchedData.start }}-{{ fetchedData.end }}</strong> {{ 'OF' | translate }} <strong>{{ fetchedData.total_count }}</strong> {{ 'ITEMS' | translate }}</p>
-
-				</div>
 			</fieldset>
 			<!-- Right side -->
 			<fieldset class="content-right">
@@ -264,7 +257,7 @@
 						<strong class="h1" translate>0_ITEM_SELECTED</strong>
 					</div>
 				</div>
-				<div id="items-added" ng-show="showItemSummaryList()" >
+				<div id="items-added" ng-show="showItemSummaryList()" ng-class="{'charge-details': showItemSummaryList(), 'grid-only': !showItemSummaryList()}">
 					<div id="items-summary" class="scrollable" ng-iscroll="items_summary">
 
 						<ul class="wrapper">
@@ -339,13 +332,28 @@
 							</button>
 						</div>
 					</div>
-					<div class="actions float">
-
-						<button ng-if="!isOutsidePostCharge" type="button" id="post" class="button modal-close" ng-disabled="disablePostChargeButton || shouldDisablePostCharge()" ng-click="postCharges()" ng-class="{'green': !shouldDisablePostCharge(), 'grey': disablePostChargeButton || shouldDisablePostCharge()}" translate>POST_CHARGE</button>
-
-						<button ng-disabled="disableOutsidePostChargeButton" ng-if="isOutsidePostCharge" type="button" id="post" class="button green modal-close" ng-click="clickedPostCharges($event)" ng-class="{'grey': !isCardAttched}" translate>POST_CHARGE</button>
-
-						<button type="button" id="cancel" class="button blank modal-close" ng-click="closeDialog()" translate>CANCEL</button>
+					
+					<div id="actions" class="form">
+						<div class="entry full-width" ng-repeat="each in selectedChargeItemHash" ng-show="each.name === selectedChargeItem.name && isStandAlone">
+							<label for="reference">Reference & Description</label>
+							<input id="reference" ng-model="each.reference_text" placeholder="Enter charge reference" value="" type="text" />
+							<label class="checkbox inline" for="show-on-guest-bill" ng-class="{'checked': each.show_ref_on_invoice}"> <!-- Add class 'checked' when L68 is checked --> 
+								<span class="icon-form icon-checkbox" ng-class="{'checked': each.show_ref_on_invoice}"></span> <!-- Add class 'checked' when L68 is checked -->
+								<input id="show-on-guest-bill" type="checkbox" ng-model="each.show_ref_on_invoice">
+								Show Reference on Guest Invoice
+							</label>
+							<input id="reference" placeholder="Enter charge description" value="" type="text" ng-hide="true"/>
+							<label class="checkbox inline" for="override-description" ng-hide="true"> <!-- Add class 'checked' when L74 is checked -->
+								<span class="icon-form icon-checkbox" ></span> <!-- Add class 'checked' when L74 is checked -->
+								<input id="override-description" type="checkbox" >
+								Override Original Description
+							</label>
+						</div>
+						<div class="actions float">
+							<button type="button" id="cancel" class="button blank modal-close" ng-click="closeDialog()" translate>CANCEL</button>
+							<button ng-if="!isOutsidePostCharge" type="button" id="post" class="button modal-close" ng-disabled="disablePostChargeButton || shouldDisablePostCharge()" ng-click="postCharges()" ng-class="{'green': !shouldDisablePostCharge(), 'grey': disablePostChargeButton || shouldDisablePostCharge()}" translate>POST_CHARGE</button><!-- can have class grey instead of green when generic post charge -->
+							<button ng-disabled="disableOutsidePostChargeButton" ng-if="isOutsidePostCharge" type="button" id="post" class="button green modal-close" ng-click="clickedPostCharges($event)" ng-class="{'grey': !isCardAttched}" translate>POST_CHARGE</button>
+						</div>					
 					</div>
 				</div>
 			</fieldset>

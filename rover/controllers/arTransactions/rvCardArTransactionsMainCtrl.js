@@ -342,6 +342,9 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 				$scope.errorMessage = [];
 				$scope.arFlags.insufficientAmount = true;
 			}
+			else {
+				$scope.errorMessage = errorMessage;
+			}
 		};
 
 		/*

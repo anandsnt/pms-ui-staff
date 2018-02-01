@@ -519,7 +519,7 @@ sntRover.controller('rvReservationSearchWidgetController', ['$scope', '$rootScop
 				return item.is_row_visible;
 			})).length;
 			
-			if (resultsVisibleCount === 0) {
+			if (resultsVisibleCount === 0 && $scope.textInQueryBox === '') {
 				$scope.$emit("showSearchResultsArea", false);
 			}			
 		};
