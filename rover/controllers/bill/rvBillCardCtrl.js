@@ -422,7 +422,7 @@ sntRover.controller('RVbillCardController',
 		if ($scope.reservationBillData.bills.length < 10) {
 			width = width + 50;
 		}
-		width =  133 * $scope.reservationBillData.bills.length + 10 + width;
+		width =  133 * $scope.reservationBillData.bills.length + width + 60;
 		return width;
 	};
 
@@ -603,9 +603,17 @@ sntRover.controller('RVbillCardController',
 	 */
 	$scope.showActiveBill = function(index) {
 
-		var activeBillClass = "";
+		var activeBillClass = "",
+			activeBill = $scope.reservationBillData.bills[index],
+			billCount = $scope.reservationBillData.bills.length,
+			isTransactionsExist = activeBill.is_transactions_exist;
 
-		if (index === $scope.currentActiveBill) {
+		// CICO-37047 : We need to show Remove Bill icon ('X') for -
+		// a last bill window having no transactions exist.
+		if (index !== 0 && index === $scope.currentActiveBill && (billCount === index + 1) && !isTransactionsExist ) {
+			activeBillClass = "ui-tabs-active ui-state-active with-button";
+		}
+		else if (index === $scope.currentActiveBill) {
 			activeBillClass = "ui-tabs-active ui-state-active";
 		}
 		return activeBillClass;
@@ -718,18 +726,28 @@ sntRover.controller('RVbillCardController',
 		 	}
 		}
 	 };
-	 /*
-	  * Success callback of fetch - After moving fees item from one bill to another
-	  */
-	 $scope.fetchSuccessCallback = function(data) {
-	 	$scope.$emit('hideLoader');
-	 	reservationBillData = data;
-	 	$scope.init(data);
-	 	$scope.calculateBillDaysWidth();
-	 };
-	 $scope.moveToBillActionfetchSuccessCallback = function(data) {
-	 	$scope.fetchSuccessCallback(data);
-	 };
+	/*
+	* Success callback of fetch - After moving fees item from one bill to another
+	*/
+	$scope.fetchSuccessCallback = function(data) {
+		$scope.$emit('hideLoader');
+		reservationBillData = data;
+		$scope.init(data);
+		$scope.calculateBillDaysWidth();
+	};
+	// Utility method to reload bill screen after other operations.
+	var reloadBillScreen = function() {
+		var dataToSend = {
+			params: $scope.reservationBillData.reservation_id,
+			successCallBack: $scope.fetchSuccessCallback
+		};
+
+		$scope.callAPI(RVBillCardSrv.fetch, dataToSend);
+    };
+
+	$scope.moveToBillActionfetchSuccessCallback = function(data) {
+		$scope.fetchSuccessCallback(data);
+	};
 	 /*
 	  * MOve fees item from one bill to another
 	  * @param {int} old Bill Value
@@ -2284,7 +2302,7 @@ sntRover.controller('RVbillCardController',
    /*
 	 * open popup for edit/split/remove transaction
 	 */
-	$scope.openActionsPopup = function(id, desc, amount, type, credits) {
+	$scope.openActionsPopup = function(id, desc, amount, type, credits, reference_text, show_ref_on_invoice) {
 
 		$scope.errorMessage = "";
 		// hide edit and remove options in case type is  payment
@@ -2292,6 +2310,8 @@ sntRover.controller('RVbillCardController',
 		$scope.selectedTransaction = {};
 		$scope.selectedTransaction.id = id;
 		$scope.selectedTransaction.desc = desc;
+		$scope.reference_text = reference_text;
+		$scope.show_ref_on_invoice = show_ref_on_invoice;
 
 		if (amount) {
 			$scope.selectedTransaction.amount = amount;
@@ -2592,8 +2612,7 @@ sntRover.controller('RVbillCardController',
 	$scope.createNewBill = function(type) {
 		$scope.movedIndex = $scope.reservationBillData.bills.length;
 		var billData = {
-			"reservation_id": $scope.reservationBillData.reservation_id,
-			"bill_number": $scope.reservationBillData.bills.length + 1
+			"reservation_id": $scope.reservationBillData.reservation_id
 		};
 		/*
 		 * Success Callback of move action
@@ -2610,13 +2629,10 @@ sntRover.controller('RVbillCardController',
 			data.billIndex = $scope.reservationBillData.bills.length;
 			$scope.isAllBillsReviewed = false;
 			$scope.reviewStatusArray.push(data);
-
-
 		};
 
 		$scope.invokeApi(RVBillCardSrv.createAnotherBill, billData, createBillSuccessCallback);
 	};
-
 
 	/*
 	*Open the terms and conditions dialog after fetching
@@ -2682,7 +2698,6 @@ sntRover.controller('RVbillCardController',
 	$scope.setupReviewStatusArray();
 
 	$scope.calculateBillDaysWidth();
-
 
 	$scope.clickedReverseCheckoutButton = function() {
 
@@ -2808,5 +2823,33 @@ sntRover.controller('RVbillCardController',
     $scope.billHasCreditCard = function () {
         return $scope.reservationBillData.bills[$scope.currentActiveBill].credit_card_details.payment_type === "CC";
     };
+
+    /*
+	 * Handle click action on Remove Bill button
+	 * @param {int} index of bill
+	 */
+	$scope.clickedRemoveBill = function(billIndex) {
+
+		var hideBillSuccessCallback = function() {
+			// Removing the last bill details from review list.
+			$scope.reviewStatusArray = $scope.reviewStatusArray.slice(0, -1);
+			// Reload Bill screen and reset active bill tab ..
+			reloadBillScreen();
+			$scope.setActiveBill(billIndex - 1);
+		},
+		hideBillFailureCallback = function(errorMessage) {
+			$scope.errorMessage = errorMessage;
+		};
+
+		var dataToSend = {
+			params: {
+				'bill_id': $scope.reservationBillData.bills[billIndex].bill_id
+			},
+			successCallBack: hideBillSuccessCallback,
+			failureCallBack: hideBillFailureCallback
+		};
+
+		$scope.callAPI(RVBillCardSrv.hideBill, dataToSend);
+	};
 
 }]);
