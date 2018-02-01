@@ -78,7 +78,7 @@ sntRover.controller('rvBillFormatPopupCtrl', ['$scope', '$rootScope', '$filter',
         data.languages = _.filter(data.languages, {
             is_show_on_guest_card: true
         });
-      };
+      }
       $scope.languageData = data;
       $scope.data.locale = data.selected_language_code;
     };
