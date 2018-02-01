@@ -189,7 +189,8 @@ admin.controller('ADaddRatesDetailCtrl', ['$scope', '$rootScope', 'ADRatesAddDet
          * Set add on data
          */
         var setUpAddOnData = function() {
-            var addOnsArray = [];
+            var addOnsArray = [],
+                selectedAddons = [];
 
             angular.forEach($scope.rateData.addOns, function(addOns) {
                 if (addOns.isSelected) {
@@ -198,8 +199,12 @@ admin.controller('ADaddRatesDetailCtrl', ['$scope', '$rootScope', 'ADRatesAddDet
                     data.is_inclusive_in_rate = addOns.is_inclusive_in_rate;
                     data.addon_id = addOns.id;
                     addOnsArray.push(data);
+                    selectedAddons.push(addOns.id);
                 }
             });
+            // CICO-49136. We need to compare existing addons and 
+            // selected addons on update. If both are same no need to pass that param to API
+            $scope.selectedAddons = selectedAddons;
             return addOnsArray;
         };
 
@@ -224,7 +229,6 @@ admin.controller('ADaddRatesDetailCtrl', ['$scope', '$rootScope', 'ADRatesAddDet
                 'based_on_type': $scope.rateData.based_on.type,
                 'based_on_value': amount,
                 'promotion_code': $scope.rateData.promotion_code,
-                'addons': addOns,
                 'charge_code_id': $scope.rateData.charge_code_id,
                 'currency_code_id': $scope.rateData.currency_code_id,
                 'min_advanced_booking': $scope.rateData.min_advanced_booking,
@@ -250,6 +254,13 @@ admin.controller('ADaddRatesDetailCtrl', ['$scope', '$rootScope', 'ADRatesAddDet
                 'booking_origin_id': $scope.rateData.booking_origin_id,
                 'tasks': $scope.rateData.tasks
             };
+            // CICO-49136. We need to compare existing addons and 
+            // selected addons on update. If both are same no need to pass that param to API
+            var addonsDifferenceCount = (_.difference($scope.selectedAddons, $scope.existingAddons)).length;
+            
+            if (addonsDifferenceCount > 0) {
+                data.addons = addOns;
+            }
 
             // Save Rate Success Callback
             var saveSuccessCallback = function(data) {
