@@ -282,8 +282,14 @@ admin.controller('ADaddRatesDetailCtrl', ['$scope', '$rootScope', 'ADRatesAddDet
             } else {
                 // CICO-49136. We need to compare existing addons and 
                 // selected addons on update. If both are same no need to pass that param to API
+                var addonsDifferenceCount = 0;
                 
-                var addonsDifferenceCount = (_.difference($scope.existingAddonsIds, $scope.selectedAddonsIds)).length;
+                if ( $scope.existingAddonsIds.length > 0 ) {
+                    addonsDifferenceCount = (_.difference($scope.existingAddonsIds, $scope.selectedAddonsIds)).length;
+                } else {
+                    addonsDifferenceCount = $scope.selectedAddonsIds.length;
+                }
+                
                 
                 if (addonsDifferenceCount > 0) {
                     data.addons = addOns;
