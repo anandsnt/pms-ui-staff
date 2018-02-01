@@ -293,13 +293,13 @@ admin.controller('ADaddRatesDetailCtrl', ['$scope', '$rootScope', 'ADRatesAddDet
                     angular.forEach($scope.existingAddons, function(addOn) {
                         var currentItem = _.find($scope.selectedAddons, function(item) {
                             return item.addon_id === addOn.id;
-                        })
+                        });
 
-                        if (currentItem.is_inclusive_in_rate != addOn.is_inclusive_in_rate.toString()) {
+                        if (currentItem.is_inclusive_in_rate !== addOn.is_inclusive_in_rate.toString()) {
                             changedDataCount++;
                         }
                     });
-                    if (changedDataCount >0) {
+                    if (changedDataCount > 0) {
                         data.addons = addOns;
                     }
                 }
