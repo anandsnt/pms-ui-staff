@@ -48,8 +48,7 @@ sntRover.config([
 	function($httpProvider, ngDialogProvider, $provide, $locationProvider, $touchProvider) {
 
         $locationProvider.html5Mode(true);
-        $touchProvider.ngClickOverrideEnabled(true);
-
+        
         // $provide.decorator('$browser', ['$delegate', function ($delegate) {
         //     $delegate.onUrlChange = function () {};
         //     $delegate.url = function () { return ""};
