@@ -28,7 +28,8 @@ module.exports = {
             'huntley': [themeCSSRoot + 'huntley.less'],
             'queen': [themeCSSRoot + 'queen.less'],
             'belle': [themeCSSRoot + 'belle.less'],
-            'freehand-ny': [themeCSSRoot + 'freehand-ny.less']
+            'freehand-ny': [themeCSSRoot + 'freehand-ny.less'],
+            'freehand-miami': [themeCSSRoot + 'freehand-miami.less']
 		};
 	}
 };
