@@ -283,9 +283,13 @@ admin.controller('ADaddRatesDetailCtrl', ['$scope', '$rootScope', 'ADRatesAddDet
                 // CICO-49136. We need to compare existing addons and 
                 // selected addons on update. If both are same no need to pass that param to API
                 var addonsDifferenceCount = 0;
-                
+
                 if ( $scope.existingAddonsIds.length > 0 ) {
-                    addonsDifferenceCount = (_.difference($scope.existingAddonsIds, $scope.selectedAddonsIds)).length;
+                    if ($scope.existingAddonsIds.length >= $scope.selectedAddonsIds.length) {
+                        addonsDifferenceCount = (_.difference($scope.existingAddonsIds, $scope.selectedAddonsIds)).length;
+                    } else {
+                        addonsDifferenceCount = (_.difference($scope.selectedAddonsIds, $scope.existingAddonsIds)).length;
+                    }                    
                 } else {
                     addonsDifferenceCount = $scope.selectedAddonsIds.length;
                 }
@@ -301,14 +305,20 @@ admin.controller('ADaddRatesDetailCtrl', ['$scope', '$rootScope', 'ADRatesAddDet
                             return item.addon_id === addOn.id;
                         });
 
-                        if (currentItem.is_inclusive_in_rate !== addOn.is_inclusive_in_rate.toString()) {
-                            changedDataCount++;
+                        if (typeof currentItem !== 'undefined') {
+                            if (currentItem.is_inclusive_in_rate !== addOn.is_inclusive_in_rate.toString()) {
+                                changedDataCount++;
+                            }
                         }
+                            
                     });
+
                     if (changedDataCount > 0) {
                         data.addons = addOns;
                     }
                 }
+                $scope.existingAddonsIds = $scope.selectedAddonsIds;
+
                 var updatedData = {
                     'updatedData': data,
                     'rateId': $scope.rateData.id
