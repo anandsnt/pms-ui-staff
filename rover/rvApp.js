@@ -428,7 +428,5 @@ sntRover.run([
                 sntapp.desktopCardReader.startReader();
             }
         };
-
-        FastClick.attach(document.body);
 	}
 ]);
