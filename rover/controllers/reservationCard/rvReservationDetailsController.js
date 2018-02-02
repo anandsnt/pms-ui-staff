@@ -314,7 +314,7 @@ sntRover.controller('reservationDetailsController',
 		// CICO-49191 - Get the min date for showing in the arrival/departure calendar for group reservation
 		var getMinDateForGroupReservation = function () {
 			var minDate = $rootScope.businessDate > $scope.reservationData.reservation_card.group_block_from ? 
-			              $rootScope.businessDate : $scope.reservationData.reservation_card.group_block_from;
+                          $rootScope.businessDate : $scope.reservationData.reservation_card.group_block_from;
 
 			return $filter('date')(minDate, $rootScope.dateFormat);
 		};
