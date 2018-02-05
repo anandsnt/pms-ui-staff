@@ -271,7 +271,7 @@
 											</button>
 										</td>
 										<td ng-class="{'overlay': !billData.is_active }" class="action" >
-											<label class="checkbox inline" ng-hide="(hasMoveToOtherBillPermission())">
+											<label class="checkbox inline" ng-if="(hasMoveToOtherBillPermission())">
 												<span class="icon-form icon-checkbox" ng-class="{'checked':feesData.isSelected}"></span>
 												<input ng-model="feesData.isSelected" type="checkbox"/>
 											</label>
