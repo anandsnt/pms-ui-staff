@@ -9,7 +9,7 @@ sntZestStation.controller('zsRootCtrl', [
     '$scope',
     'zsEventConstants',
     '$state', 'zsGeneralSrv', '$rootScope', 'ngDialog', '$sce',
-    'zsUtilitySrv', '$translate', 'zsHotelDetailsSrv', 'cssMappings', 
+    'zsUtilitySrv', '$translate', 'zsHotelDetailsSrv', 'cssMappings', 'hotelTranslations',
     'zestStationSettings', '$timeout', 'zsModeConstants', 'hotelTimeData', 'hotelLanguages', '$filter', '$log', '$window',
     function($scope,
 		zsEventConstants,
@@ -22,6 +22,7 @@ sntZestStation.controller('zsRootCtrl', [
 		$translate,
 		zsHotelDetailsSrv,
 		cssMappings,
+        hotelTranslations,
 		zestStationSettings,
 		$timeout,
 		zsModeConstants,
@@ -1889,6 +1890,19 @@ sntZestStation.controller('zsRootCtrl', [
             $scope.trackSessionActivity('EXIT_APP', 'APP_CLOSE_EVT', 'GOING_OFFLINE', 'GOING_OFFLINE', true);
         };
 
+        $scope.retrieveTranslations = function() {
+            var hotelTranslations = {};
+            var usedLanguageCode = $translate.use();
+            var languageId = _.find($scope.zestStationData.hotelLanguages, function(language) {
+                return language.code === usedLanguageCode;
+            }).id;
+            var hotelTranslations = _.find($scope.zestStationData.hotelTranslations, function(translation) {
+                return translation.language_id === languageId;
+            });
+
+            return hotelTranslations.translations;
+        };
+
 		/** *
 		 * [initializeMe description]
 		 * @return {[type]} [description]
@@ -1899,6 +1913,7 @@ sntZestStation.controller('zsRootCtrl', [
 			// call Zest station settings API
             $scope.zestStationData = zestStationSettings;
             $scope.zestStationData.hotelLanguages = hotelLanguages.languages;
+            $scope.zestStationData.hotelTranslations = hotelTranslations;
             if (hotelLanguages) {
                 setupLanguageTranslations();
             }
