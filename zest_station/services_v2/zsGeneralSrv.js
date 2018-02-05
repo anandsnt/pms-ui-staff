@@ -45,7 +45,8 @@ sntZestStation.service('zsGeneralSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
             'huntley': 'Huntley',
             'queen': 'Queen Anne',
             'belle': 'Van belle',
-            'freehand-ny': 'Freehand nyc'
+            'freehand-ny': 'Freehand nyc',
+            'freehand-miami': 'Freehand miami'
         };
 
         this.isThemeConfigured = function(theme) {

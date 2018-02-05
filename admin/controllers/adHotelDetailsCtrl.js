@@ -50,7 +50,7 @@ admin.controller('ADHotelDetailsCtrl', [
 				$scope.data = data.data;
 				if ($scope.data.selected_mod_type_id) {
 					$scope.isSequenceModChangeDisabled = true;
-				}
+				}				
 
 				$scope.data.brands = [];
 				$scope.data.is_external_references_import_on = false;
@@ -75,7 +75,7 @@ admin.controller('ADHotelDetailsCtrl', [
 				$scope.data = data.data;
 				if ($scope.data.selected_mod_type_id) {
 					$scope.isSequenceModChangeDisabled = true;
-				}
+				} 
 				$scope.languages = data.languages;
 				$scope.$emit('hideLoader');
 				if ($scope.data.mli_pem_certificate_loaded) {
@@ -111,8 +111,14 @@ admin.controller('ADHotelDetailsCtrl', [
 		$scope.readOnly = "yes";
 		var fetchSuccess = function(data) {
 			$scope.data = data;
+
 			if ($scope.data.selected_mod_type_id) {
 				$scope.isSequenceModChangeDisabled = true;
+			} 
+			else { 
+				$scope.data.selected_mod_type_id = (_.find($scope.data.mod_types, function (item) { 
+																						return item.value === 'MOD10'; 
+																					}).id).toString();
 			}
 			$scope.$emit('hideLoader');
 			$scope.hotelLogoPrefetched = data.hotel_logo;
