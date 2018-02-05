@@ -77,8 +77,6 @@ admin.controller('ADHotelDetailsCtrl', [
 					$scope.isSequenceModChangeDisabled = true;
 				} 
 
-				console.log("----+++-----")
-			console.log($scope.data.selected_mod_type_id)
 				$scope.languages = data.languages;
 				$scope.$emit('hideLoader');
 				if ($scope.data.mli_pem_certificate_loaded) {
