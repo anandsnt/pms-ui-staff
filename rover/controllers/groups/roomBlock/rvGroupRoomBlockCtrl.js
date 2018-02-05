@@ -2236,14 +2236,21 @@ angular.module('sntRover').controller('rvGroupRoomBlockCtrl', [
          * Checks whether the tripple button should be shown or not
          */
         $scope.shouldShowAddTrippleButton = function (roomTypeRate) {
-            return (roomTypeRate.can_edit && !$scope.shouldShowTripleEntryRow(roomTypeRate) && $scope.groupConfigData.summary.rate == -1);
+            var showTrippleBtn = $scope.groupConfigData.summary.rate == -1 && roomTypeRate.can_edit && roomTypeRate.rate_config.is_extra_adult_rate_configured &&
+                                 !$scope.shouldShowTripleEntryRow(roomTypeRate);
+
+            return showTrippleBtn;
         };
 
         /**
          * Checks whether the quadruple button should be shown or not
          */
         $scope.shouldShowAddQuadrupleButton = function (roomTypeRate) {
-            return (roomTypeRate.can_edit && !$scope.shouldShowQuadrupleEntryRow(roomTypeRate) && $scope.shouldShowTripleEntryRow(roomTypeRate) && $scope.groupConfigData.summary.rate == -1);
+            var showQuadrupleBtn = $scope.groupConfigData.summary.rate == -1 && roomTypeRate.can_edit && 
+                                   roomTypeRate.rate_config.is_extra_adult_rate_configured &&
+                                   !$scope.shouldShowQuadrupleEntryRow(roomTypeRate) && $scope.shouldShowTripleEntryRow(roomTypeRate);                                  
+
+            return showQuadrupleBtn;
         };
 
 
