@@ -567,6 +567,7 @@ sntZestStation.controller('zsCheckInReservationDetailsCtrl', [
 
         var setTermsAndConditionsBasedOnSelectedLanguage = function() {
             var hotelTranslations = $scope.retrieveTranslations();
+            
             $scope.hotelTermsAndConditions = !_.isUndefined(hotelTranslations) ? hotelTranslations.terms_and_conditions : '';
         };
         

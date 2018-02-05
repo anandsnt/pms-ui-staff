@@ -1891,16 +1891,16 @@ sntZestStation.controller('zsRootCtrl', [
         };
 
         $scope.retrieveTranslations = function() {
-            var hotelTranslations = {};
+            var propertyTranslations = {};
             var usedLanguageCode = $translate.use();
             var languageId = _.find($scope.zestStationData.hotelLanguages, function(language) {
                 return language.code === usedLanguageCode;
             }).id;
-            var hotelTranslations = _.find($scope.zestStationData.hotelTranslations, function(translation) {
+            var propertyTranslations = _.find($scope.zestStationData.hotelTranslations, function(translation) {
                 return translation.language_id === languageId;
             });
 
-            return hotelTranslations.translations;
+            return propertyTranslations.translations;
         };
 
 		/** *

@@ -20,7 +20,7 @@
     </button>
 
 	<!-- Button to print registration card, show only for check ins  -->
-	<button ng-show="reservationBillData.is_show_registration_card_button" type="button" ng-click="printRegistrationCard()" class="button with-icon brand-colors">
+	<button ng-show="reservationBillData.is_show_registration_card_button" type="button" ng-click="openRegCardPopup()" class="button with-icon brand-colors">
 		<span class="icons icon-print"></span>
 		Registration Card
 	</button>
@@ -45,7 +45,7 @@
 			<span class="icons icon-wallet"></span>
 			{{ 'PAY' | translate }}
 		</button>
-		<button ng-show="reservationBillData.is_show_registration_card_button" type="button" ng-click="printRegistrationCard()" class="button with-icon brand-colors">
+		<button ng-show="reservationBillData.is_show_registration_card_button" type="button" ng-click="openRegCardPopup()" class="button with-icon brand-colors">
 			<span class="icons icon-print"></span>
 			Registration Card
 		</button>

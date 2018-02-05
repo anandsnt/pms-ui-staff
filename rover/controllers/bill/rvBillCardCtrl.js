@@ -2510,6 +2510,7 @@ sntRover.controller('RVbillCardController',
 	};
 
 	$scope.printRegistrationCard = function() {
+		ngDialog.close();
 		scrollToTop();
 
 		var sucessCallback = function(data) {
@@ -2574,8 +2575,38 @@ sntRover.controller('RVbillCardController',
 			$scope.$emit('hideLoader');
 			$scope.errorMessage = errorData;
 		};
+		var params = {
+			'reservation_id': $scope.reservationBillData.reservation_id,
+			'laguage_code': $scope.regCardData.selectedLocale
+		};
+		
+		$scope.invokeApi(RVBillCardSrv.fetchRegistrationCardPrintData, params, sucessCallback, failureCallback);
+	};
 
-		$scope.invokeApi(RVBillCardSrv.fetchRegistrationCardPrintData, { 'reservation_id': $scope.reservationBillData.reservation_id }, sucessCallback, failureCallback);
+	$scope.openRegCardPopup = function() {
+		$scope.regCardData = {};
+		var failureCallback = function(errorData) {
+			$scope.isPrintRegistrationCard = false;
+			$scope.$emit('hideLoader');
+			$scope.errorMessage = errorData;
+		};
+		var onLanguageFetchSuccess = function(data) {
+			$scope.$emit('hideLoader');
+			$scope.languageData = data;
+			$scope.regCardData.selectedLocale = data.selected_language_code;
+			ngDialog.open({
+				template: '/assets/partials/popups/billFormat/rvRegCardPopup.html',
+				className: '',
+				scope: $scope
+			});
+		};
+		var options = {
+			params: {},
+			successCallBack: onLanguageFetchSuccess,
+			failureCallBack: failureCallback
+		};
+
+		$scope.callAPI(RVBillCardSrv.fetchGuestLanguages, options);
 	};
 
 
