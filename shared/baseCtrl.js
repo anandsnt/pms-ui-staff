@@ -229,7 +229,7 @@ function BaseCtrl($scope) {
         if (isEmptyParentScrollerOptions) {
             $scope.$parent.myScrollOptions = {};
         }
-        //scrollerOptions = {}
+        
         if (sntapp.browser === 'rv_native' && sntapp.cordovaLoaded) {
             scrollerOptions.click = false;
             scrollerOptions.tap = true;
