@@ -2577,7 +2577,7 @@ sntRover.controller('RVbillCardController',
 		};
 		var params = {
 			'reservation_id': $scope.reservationBillData.reservation_id,
-			'laguage_code': $scope.regCardData.selectedLocale
+			'locale': $scope.regCardData.selectedLocale
 		};
 		
 		$scope.invokeApi(RVBillCardSrv.fetchRegistrationCardPrintData, params, sucessCallback, failureCallback);
