@@ -92,6 +92,7 @@
 					 class="payment-form"
 					 style="height: auto"
 					 ng-if = "isAddPayment && showCreditCardDropDown && showPayment && paymentDetails == null">
+
 					<snt-payment
 							hotel-config="hotelPaymentConfig"
 							workstation-id="{{workstation_id}}"
@@ -100,7 +101,7 @@
 							group-id="{{groupConfigData.summary.group_id}}"
 							allotment-id="{{allotmentConfigData.summary.allotment_id}}"
 							fetch-linked-cards="false"
-							bill-number="billNumber"
+							bill-number="billNumberOnAddCC"
 							payment-types="availablePaymentTypes"
 							selected-payment-type="selectedPayment"
 							selected-c-c="renderAddedPayment"

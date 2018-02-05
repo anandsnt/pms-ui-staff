@@ -103,7 +103,10 @@ sntRover.controller('RVCommisionsHeaderCtrl', ['$scope', 'ngDialog', '$log', '$t
 
     $scope.showExportPopup = function() {
         $scope.filterData.receipientEmail = '';
-        $scope.filterData.selectedExportType = 'standard';
+        // if the admin setting is turned ON for ONYX, make it as default export type
+        if ($scope.filterData.exportType === 'onyx') {
+            $scope.filterData.selectedExportType = 'onyx';
+        }
         setExportStatus(false, false, false);
         ngDialog.open({
             template: '/assets/partials/financials/commissions/rvCommissionsExport.html',
