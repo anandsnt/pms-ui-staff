@@ -161,7 +161,7 @@ sntRover.controller('reservationDetailsController',
 			if ($stateParams.justCreatedRes || $scope.otherData.reservationCreated) {
 				backTitle = titleDict['NORMAL_SEARCH'];
 				backParam = {
-					type: 'SEARCH_NORMAL'
+					type: 'RESET'
 				}; // CICO-9726 --- If a newly created reservation / go back to plain search page
 			} else {
 				backTitle = !!titleDict[$vault.get('searchType')] ? titleDict[$vault.get('searchType')] : titleDict['NORMAL_SEARCH'];
@@ -311,12 +311,20 @@ sntRover.controller('reservationDetailsController',
 			departure: $scope.reservationData.reservation_card.departure_date
 		};
 
+		// CICO-49191 - Get the min date for showing in the arrival/departure calendar for group reservation
+		var getMinDateForGroupReservation = function () {
+			var minDate = $rootScope.businessDate > $scope.reservationData.reservation_card.group_block_from ? 
+                          $rootScope.businessDate : $scope.reservationData.reservation_card.group_block_from;
+
+			return $filter('date')(minDate, $rootScope.dateFormat);
+		};
+
 		// for groups this date picker must not allow user to pick
 		// a date that is after the group end date.
 		// and before the group start date
 		if ( !! $scope.reservationData.reservation_card.group_id ) {
 			datePickerCommon = angular.extend(datePickerCommon, {
-				minDate: $filter('date')($scope.reservationData.reservation_card.group_block_from, $rootScope.dateFormat),
+				minDate: getMinDateForGroupReservation(),
 				maxDate: $filter('date')($scope.reservationData.reservation_card.group_block_to, $rootScope.dateFormat)
 			});
 

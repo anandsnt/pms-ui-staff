@@ -35,16 +35,16 @@ var sntRover = angular.module('sntRover', [
 		'iscrollStopPropagation',
 		'emitWhen',
 		'ng-augment-native-scroll',
-        'sntActivityIndicator'
+        'sntActivityIndicator',
+        'ngTouch'
 	]);
 
 sntRover.config([
 	'$httpProvider',
 	'ngDialogProvider',
 	'$provide',
-	'$provide',
 	'$locationProvider',
-	function($httpProvider, ngDialogProvider, $provide, $provide, $locationProvider) {
+	function($httpProvider, ngDialogProvider, $provide, $locationProvider) {
 
         $locationProvider.html5Mode(true);
 

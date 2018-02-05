@@ -288,7 +288,7 @@
 					</div>
 					<!-- we have to replicate code as option is not being hidden in devices -->
 					<div class="select" ng-if="isStandAlone">
-						<select iscroll-stop-propagation ng-show="showMoveChargeDropDown()" ng-model="feesData.billValue" ng-change="moveToBillAction(feesData.oldBillValue, $index)" ng-disabled="!billData.is_active || (feesData.description[0].charge_code_type === 'TAX' && feesData.description[0].parent_transaction_exist)">
+						<select iscroll-stop-propagation ng-show="showMoveChargeDropDown()" ng-model="feesData.billValue" ng-change="moveToBillAction(feesData.oldBillValue, $index)" ng-disabled="!billData.is_active">
 							<option value="" disabled="disabled" class="placeholder" translate>MOVE_TO_BILL</option>
 							<option value="{{billNumbers.bill_number}}" ng-selected="billNumbers.bill_number==(currentActiveBill+1)" ng-repeat="billNumbers in reservationBillData.bills"> {{billNumbers.bill_number}} </option>
 							<option value="{{reservationBillData.bills.length+1}}" ng-show="reservationBillData.bills.length<10">{{reservationBillData.bills.length+1}} &nbsp;&nbsp;({{'NEW_BILL'|translate}})</option>
@@ -303,7 +303,7 @@
 					</button>
 				</td>
 				<td class="action" ng-if="(hasMoveToOtherBillPermission() && isStandAlone)">
-	                <label class="checkbox inline" ng-hide="(feesData.description[0].charge_code_type === 'TAX' && feesData.description[0].parent_transaction_exist)">
+	                <label class="checkbox inline">
 	                    <span class="icon-form icon-checkbox" ng-class="{'checked':feesData.isSelected}"></span>
 	                    <input ng-model="feesData.isSelected" type="checkbox" ng-disabled="!billData.is_active" ng-class="{ 'overlay' : !billData.is_active }"/>
 	                </label>

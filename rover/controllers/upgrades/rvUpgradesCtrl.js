@@ -233,7 +233,8 @@ angular.module('sntRover').controller('RVUpgradesController',
 			}
 
 			else {
-				$scope.backToStayCard();
+				// CICO-49087
+				$scope.backToStayCard(true);
 			}
 
 		};
@@ -325,12 +326,18 @@ angular.module('sntRover').controller('RVUpgradesController',
 		/**
 		 * function to go back to reservation details
 		 */
-		$scope.backToStayCard = function() {
-
-			$state.go("rover.reservation.staycard.reservationcard.reservationdetails", {
+		$scope.backToStayCard = function(isRefresh) {
+			// CICO-49087
+			var params = {
 				id: $scope.reservationData.reservation_card.reservation_id,
 				confirmationId: $scope.reservationData.reservation_card.confirmation_num
-			});
+			};
+
+			if (!!isRefresh) {
+				params.isrefresh = isRefresh;
+			}
+
+			$state.go("rover.reservation.staycard.reservationcard.reservationdetails", params);
 
 		};
 		/**
