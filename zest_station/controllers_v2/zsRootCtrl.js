@@ -1891,7 +1891,6 @@ sntZestStation.controller('zsRootCtrl', [
         };
 
         $scope.retrieveTranslations = function() {
-            var propertyTranslations = {};
             var usedLanguageCode = $translate.use();
             var languageId = _.find($scope.zestStationData.hotelLanguages, function(language) {
                 return language.code === usedLanguageCode;
