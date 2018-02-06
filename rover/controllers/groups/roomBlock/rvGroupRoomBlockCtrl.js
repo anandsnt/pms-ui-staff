@@ -272,7 +272,7 @@ angular.module('sntRover').controller('rvGroupRoomBlockCtrl', [
             return hasScopeItems &&
                 !! $scope.roomtype_rate.can_edit &&
                 ! $scope.groupConfigData.summary.rate !== -1 &&
-                $scope.roomtype_rate.rate_config.single_rate === null;
+                !$scope.roomtype_rate.rate_config.is_single_rate_configured;
         };
 
         /**
@@ -284,7 +284,7 @@ angular.module('sntRover').controller('rvGroupRoomBlockCtrl', [
             return hasScopeItems &&
                 !! $scope.roomtype_rate.can_edit &&
                 ! $scope.groupConfigData.summary.rate !== -1 &&
-                $scope.roomtype_rate.rate_config.double_rate === null;
+                !$scope.roomtype_rate.rate_config.is_double_rate_configured;
         };
 
 		/**
