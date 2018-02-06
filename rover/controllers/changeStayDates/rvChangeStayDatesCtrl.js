@@ -722,6 +722,16 @@ sntRover.controller('RVchangeStayDatesController', ['$state', '$stateParams', '$
 			}
 		};
 
+		/**
+		 * Checks whether the given date string is equal to the checkout date
+		 */
+		var isCheckOutDate = function (dateStr, checkoutDate) {
+			var currentDate = tzIndependentDate(dateStr);
+
+			return checkoutDate.getTime() === currentDate.getTime();		
+		};
+
+
 
 		$scope.getEventSourceObject = function(checkinDate, checkoutDate) {
 			/**
@@ -755,9 +765,11 @@ sntRover.controller('RVchangeStayDatesController', ['$state', '$stateParams', '$
                                                !$scope.reservation.reservation_card.group_id && !this.is_room_type_available,
 					preventGroupSuiteRoomOverBook = $scope.reservation.reservation_card.is_suite &&
                                                     !!$scope.reservation.reservation_card.group_id && 
-                                                    !this.is_room_type_available && !this.is_house_available; // CICO-47200
+                                                    !this.is_room_type_available && !this.is_house_available &&
+                                                    !isCheckOutDate(this.date, checkoutDate); // CICO-47200
 
 				calEvt = {};
+				
 
 				// Fixing the timezone issue related with fullcalendar
 				thisDate = tzIndependentDate(this.date);
