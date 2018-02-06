@@ -22,4 +22,23 @@ admin.service('adDebuggingSetupSrv', ['$http', '$q', 'ADBaseWebSrv', 'ADBaseWebS
 		});
 		return deferred.promise;
 	};
+
+	this.appTypes = [{
+		"id": 1,
+		"name": "iPad App",
+		"type": "iPad"
+	}, {
+		"id": 2,
+		"name": "Rover Service",
+		"type": "Win32NT"
+	}, {
+		"id": 3,
+		"name": "MAC Service"
+	}, {
+		"id": 4,
+		"name": "Zest station hanlder"
+	}, {
+		"id": 5,
+		"name": "RIC"
+	}];
 }]);

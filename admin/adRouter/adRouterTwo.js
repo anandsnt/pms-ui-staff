@@ -759,4 +759,25 @@ angular.module('adminModuleTwo', []).config(function ($stateProvider) {
         }
     });
 
+    $stateProvider.state('admin.appServices', {
+        templateUrl: '/assets/partials/menuList/adMenuList.html',
+        controller: 'ADMenuListCtrl',
+        url: '/Services',
+        data: {
+            'title': 'Services'
+        }
+    });
+
+    $stateProvider.state('admin.appVersions', {
+        templateUrl: 'assets/partials/hkSections/adSectionDetails.html',
+        controller: 'ADMenuListCtrl',
+        url: '/Services'
+    });
+
+    $stateProvider.state('admin.installedDevices', {
+        templateUrl: '/assets/partials/installedDevices/adDevicesList.html',
+        controller: 'ADDevicesListCtrl',
+        url: '/Services'
+    });
+
 });
