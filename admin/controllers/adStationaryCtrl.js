@@ -37,6 +37,7 @@ admin.controller('ADStationaryCtrl',
 
 	$scope.is_salutations_active = false;
 	$scope.is_hotel_picture_active = false;
+	$scope.is_terms_and_conditions_active = false;
 
 	$scope.is_guest_invoice_active = false;
 	$scope.is_guest_confirmation_active = false;
