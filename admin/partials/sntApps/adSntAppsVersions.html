@@ -1,0 +1,103 @@
+<section class="content current admin-scrollfix" div-touch-move-stop-propogate ng-click='clearErrorMessage()' ng-show="screenMode === 'BUILD_LIST'">
+    <div>
+        <header class="content-title float">
+            <h2> App versions </h2>
+            <a ng-click="goBackToPreviousState()" class="action back ng-scope" translate="">Services</a>
+            <a class="action add" ng-click="changeToUploadBuildMode()">Upload new build</a>
+            <div class="filters">
+                <div class="filter select">
+                    <div class="entry">
+                        <div class="select">
+                            <select class="placeholder" ng-model="filterType" ng-options="opt.name for opt in filterList" ng-change="appTypeChanged()">
+                                <option value="">Filter by App Type</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+        <section class="content-scroll">
+            <div ng-include="'/assets/partials/common/notification_message.html'"></div>
+            <div ng-include="'/assets/partials/common/notification_success_message.html'"></div>
+            <!--ng-table component -->
+            <div class="wrapper">
+                <table id="brands" class="grid " ng-table="tableParams" template-pagination="">
+                    <thead>
+                        <tr>
+                            <th width="30%" class="sortable" ng-class="{
+                                'sort-asc': tableParams.isSortBy('version', 'asc'),
+                                'sort-desc': tableParams.isSortBy('version', 'desc')
+                              }" ng-click="sortByVersion()" rowspan="2">
+                                <div><i class="glyphicon glyphicon-user"></i> <span>App version</span></div>
+                            </th>
+                            <th width="30%" rowspan="2">
+                                <div><span>Updated on</span></div>
+                            </th>
+                            <th width="30%" rowspan="2">
+                                <div><span>Delete</span></div>
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="app in $data | filter:filterDevices">
+                            <td ng-click="editApp(app)">
+                                {{app.version}}
+                            </td>
+                            <td ng-click="editApp(app)">
+                                {{app.updated_on}}
+                            </td>
+                            <td>
+                                <span class="icons delete_small cursor_pointer" ng-click="deleteApp(app)" ng-hide="false">&nbsp;</span>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+        <!--end -->
+    </div>
+</section>
+<section class="content current" ng-show="screenMode === 'ADD_BUILD' || screenMode === 'EDIT_BUILD'">
+    <header class="content-title float">
+        <h2 ng-show="screenMode === 'ADD_BUILD'">Upload Build</h2>
+        <h2 ng-hide="screenMode === 'ADD_BUILD'">Edit Build</h2>
+        <a ng-click="changeToListView()" class="action back ng-scope" translate="">Versions</a>
+        <div class="filters" ng-show="screenMode === 'ADD_BUILD'">
+            <div class="filter select">
+                <div class="entry">
+                    <div class="select">
+                        <select class="placeholder" ng-model="filterType" ng-options="opt.name for opt in filterList" ng-change="appTypeChanged()">
+                            <option value="">Filter by App Type</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+    <section class="content-scroll">
+        <div class="form">
+            <fieldset class="holder left">
+                <div class="entry full-width">
+                    <label for="certificate">Upload Buid </label>
+                    <div class="file-upload">
+                        <span class="input">{{fileName}}</span>
+                        <input type="file" ng-model="selectedApp.build" accept="*" app-filereader />
+                        <button type="button" class="button brand-colors">
+                            Attach
+                        </button>
+                    </div>
+                </div>
+                <ad-textbox value="selectedApp.version" label="{{ 'APP_VERSION' | translate}}" styleclass="full-width"></ad-textbox>
+                <ad-textarea rows="4" div-class="full-width" text-area-class="full-width" value="selectedApp.description" label="{{ 'DESCRIPTION' | translate}}" placeholder=""></ad-textarea>
+            </fieldset>
+            <div class="actions float">
+                <button type="button" id="cancel" class="button blank add-data-inline" ng-click="resetDeviceSelection()" translate>
+                    CANCEL
+                </button>
+                <button type="button" like-type="common" id="update" class="button  ng-binding green" ng-click="uploadBuild()" translate>
+                    SAVE_CHANGES
+                </button>
+            </div>
+        </div>
+    </section>
+</section>

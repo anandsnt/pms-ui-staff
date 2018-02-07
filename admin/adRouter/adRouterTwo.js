@@ -769,8 +769,8 @@ angular.module('adminModuleTwo', []).config(function ($stateProvider) {
     });
 
     $stateProvider.state('admin.appVersions', {
-        templateUrl: 'assets/partials/hkSections/adSectionDetails.html',
-        controller: 'ADMenuListCtrl',
+        templateUrl: '/assets/partials/sntApps/adSntAppsVersions.html',
+        controller: 'ADSntAppsListCtrl',
         url: '/Services'
     });
 

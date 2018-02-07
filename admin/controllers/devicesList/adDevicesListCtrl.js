@@ -59,13 +59,13 @@ admin.controller('ADDevicesListCtrl', ['$scope', '$state', 'ngTableParams', 'adD
       $scope.selectedDevice.logging_start_time = new Date().toLocaleString();
       $scope.selectedDevice.logging_end_time = new Date(new Date().getTime() + (hours * 1000 * 60 * 60)).toLocaleString();
     };
-
+    
     $scope.resetDeviceSelection = function() {
       $scope.selectedDevice = {};
       $scope.selectedDeviceId = -1;
     };
 
-    $scope.saveDebugSettings = function() {
+    $scope.saveDebugSettings = function () {
       var saveDebugSetupSuccessCallback = function(data) {
         $scope.isLoading = false;
         $scope.$emit('hideLoader');
@@ -81,7 +81,7 @@ admin.controller('ADDevicesListCtrl', ['$scope', '$state', 'ngTableParams', 'adD
         is_logging_enabled: $scope.selectedDevice.is_logging_enabled,
         last_logged_in_user: $scope.selectedDevice.last_logged_in_user
       };
-
+     
       $scope.invokeApi(adDebuggingSetupSrv.saveSetup, params, saveDebugSetupSuccessCallback);
 
     };
