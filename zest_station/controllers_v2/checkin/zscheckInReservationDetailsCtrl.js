@@ -564,11 +564,18 @@ sntZestStation.controller('zsCheckInReservationDetailsCtrl', [
             }
 
         };
+
+        var setTermsAndConditionsBasedOnSelectedLanguage = function() {
+            var hotelTranslations = $scope.retrieveTranslations();
+            
+            $scope.hotelTermsAndConditions = !_.isUndefined(hotelTranslations) ? hotelTranslations.terms_and_conditions : '';
+        };
         
 
         (function() {
             if ($stateParams.isQuickJump === 'true') {
                 if ($stateParams.quickJumpMode === 'TERMS_CONDITIONS') {
+                    setTermsAndConditionsBasedOnSelectedLanguage();
                     showTermsAndCondition();
                 } else {
                     // set some dummy data when quick jumping here
@@ -578,6 +585,7 @@ sntZestStation.controller('zsCheckInReservationDetailsCtrl', [
                 // init
                 // the data is service will be reset after the process from zscheckInReservationSearchCtrl
                 $scope.selectedReservation = zsCheckinSrv.getSelectedCheckInReservation();
+                setTermsAndConditionsBasedOnSelectedLanguage();
                 initComplete();
             }
         }());
