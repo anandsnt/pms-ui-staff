@@ -1,146 +1,100 @@
-admin.controller('ADDevicesListCtrl', ['$scope', 'adDebuggingSetupSrv', '$state', '$filter', '$stateParams', 'ngTableParams', function($scope, adDebuggingSetupSrv, $state, $filter, $stateParams, ngTableParams) {
+admin.controller('ADDevicesListCtrl', ['$scope', '$state', 'ngTableParams', 'adDebuggingSetupSrv', '$timeout',
+  function($scope, $state, ngTableParams, adDebuggingSetupSrv, $timeout) {
 
-  /*
-   * To retrieve previous state
-   */
+    ADBaseTableCtrl.call(this, $scope, ngTableParams);
 
-  $scope.errorMessage = '';
-  $scope.successMessage = '';
-  $scope.isLoading = true;
-  $scope.selectedDevice = "";
-  $scope.selectedIndex = "";
-  $scope.searchText = "";
-  BaseCtrl.call(this, $scope);
+    $scope.fetchTableData = function($defer, params) {
+      var getParams = $scope.calculateGetParams(params);
 
+      getParams.app_type_id = angular.copy(getParams.rate_type_id);
+      delete getParams.rate_type_id;
+      var fetchSuccessOfItemList = function(data) {
+        $timeout(function() {
+          $scope.$emit('hideLoader');
+          // No expanded rate view
+          $scope.currentClickedElement = -1;
+          $scope.totalCount = data.total_count;
+          $scope.totalPage = Math.ceil(data.total_count / $scope.displyCount);
+          _.each(data.results, function(device) {
+            if (device.logging_end_time != "" && device.logging_start_time != "") {
+              device.hours_log_enabled = (new Date(device.logging_end_time).getTime() - new Date(device.logging_start_time).getTime()) / (1000 * 60 * 60);
+            }
+          });
+          $scope.data = data.results;
+          $scope.currentPage = params.page();
+          params.total(data.total_count);
+          // params.total(data.results.length);
+          $defer.resolve($scope.data);
+        }, 500);
+      };
 
-  $scope.sortByName = function() {
-    if ($scope.selectedDevice === "") {
-      $scope.tableParams.sorting({
-        'device_name': $scope.tableParams.isSortBy('device_name', 'asc') ? 'desc' : 'asc'
-      });
-    }
-  };
+      $scope.invokeApi(adDebuggingSetupSrv.fetchInstalledDevices, getParams, fetchSuccessOfItemList);
+    };
 
-  $scope.sortByVersion = function() {
-    if ($scope.selectedDevice === "") {
-      $scope.tableParams.sorting({
-        'app_version': $scope.tableParams.isSortBy('app_version', 'asc') ? 'desc' : 'asc'
-      });
-    }
-  };
-
-  $scope.filterDevices = function(value, index, array) {
-    if ($scope.searchText == '')
-      return true;
-    var searchRegExp = new RegExp($scope.searchText.toLowerCase());
-
-    for (var key in value) {
-      if (value[key] != null && value[key] != "" && typeof value[key] == 'string' && searchRegExp.test((value[key]).toLowerCase())) {
-        return true;
-      }
-    }
-    return false;
-  };
-
-  $scope.fetchDeviceDebugSetup = function() {
-
-    var fetchDeviceDebugSetupSuccessCallback = function(data) {
-      $scope.isLoading = false;
-      $scope.$emit('hideLoader');
-      $scope.deviceList = data;
-
-      setDurations();
-      // REMEMBER - ADDED A hidden class in ng-table angular module js. Search for hidde or pull-right
+    var loadTable = function() {
       $scope.tableParams = new ngTableParams({
-        // show first page
-        page: 1,
-        // count per page - Need to change when on pagination implemntation
-        count: $scope.deviceList.length,
+        page: 1, // show first page
+        count: $scope.displyCount, // count per page
         sorting: {
-          // initial sorting
-          device_name: 'asc'
+          rate: 'asc' // initial sorting
         }
       }, {
-        // length of data
-        total: $scope.deviceList.length,
-        getData: function($defer, params) {
-          if (params.settings().$scope == null) {
-            params.settings().$scope = $scope;
-          }
-          // use build-in angular filter
-          var orderedData = params.sorting() ?
-            $filter('orderBy')($scope.deviceList, params.orderBy()) :
-            $scope.deviceList;
-
-          $defer.resolve(orderedData.slice((params.page() - 1) * params.count(), params.page() * params.count()));
-        }
+        total: $scope.data.length, // length of data
+        getData: $scope.fetchTableData
       });
-      $scope.tableParams.reload();
     };
 
-    $scope.invokeApi(adDebuggingSetupSrv.fetchDevices, {}, fetchDeviceDebugSetupSuccessCallback);
-
-  };
-  $scope.fetchDeviceDebugSetup();
-
-  $scope.saveDebugSettings = function() {
-
-    var saveDebugSetupSuccessCallback = function(data) {
-      $scope.isLoading = false;
-      $scope.$emit('hideLoader');
-      $scope.deviceList[$scope.selectedIndex] = $scope.selectedDevice;
-      $scope.selectedDevice = "";
-      $scope.selectedIndex = "";
-    };
-    var unwantedKeys = ["app_version", "device_type", "logging_start_time", "logging_end_time"];
-    var saveData = dclone($scope.selectedDevice, unwantedKeys);
-
-    $scope.invokeApi(adDebuggingSetupSrv.saveSetup, saveData, saveDebugSetupSuccessCallback);
-
-  };
-
-  var setDurations = function() {
-    _.each($scope.deviceList, function(device) {
-      if (device.logging_end_time != "" && device.logging_start_time != "") {
-        device.hours_log_enabled = (new Date(device.logging_end_time).getTime() - new Date(device.logging_start_time).getTime()) / (1000 * 60 * 60);
-      }
-    });
-  };
-
-  $scope.getDisplayTime = function(date) {
-    var dateObj = new Date(date);
-
-    return dateObj.toLocaleString();
-  };
-
-  $scope.changeDuration = function(hours) {
-    $scope.selectedDevice.logging_start_time = new Date().toLocaleString();
-    $scope.selectedDevice.logging_end_time = new Date(new Date().getTime() + (hours * 1000 * 60 * 60)).toLocaleString();
-  };
-
-  $scope.selectDevice = function(event, device, index) {
-    if ($scope.selectedDevice !== "" && $scope.selectedDevice.device_uid == device.device_uid) {
-      $scope.selectedDevice = "";
-      $scope.selectedIndex = "";
-    } else {
-      $scope.selectedIndex = index;
+    $scope.deviceSelected = function(device) {
       $scope.selectedDevice = device;
-      $scope.selectedDevice.hours_log_enabled = $scope.selectedDevice.hours_log_enabled == "" ? 4 : $scope.selectedDevice.hours_log_enabled;
-    }
-  };
+      $scope.selectedDeviceId = device.id;
+    };
 
+    $scope.getDisplayTime = function(date) {
+      var dateObj = new Date(date);
 
-  var range = _.range(1, 25);
-  $scope.hours = [];
-  _.each(range, function(item) {
-    $scope.hours.push({
-      name: item,
-      value: item
-    });
-  });
+      return dateObj.toLocaleString();
+    };
 
-  $scope.appTypes = adDebuggingSetupSrv.appTypes;
-  $scope.selectedAppType = "Win32NT";
+    $scope.changeDuration = function(hours) {
+      $scope.selectedDevice.logging_start_time = new Date().toLocaleString();
+      $scope.selectedDevice.logging_end_time = new Date(new Date().getTime() + (hours * 1000 * 60 * 60)).toLocaleString();
+    };
 
+    $scope.resetDeviceSelection = function() {
+      $scope.selectedDevice = {};
+      $scope.selectedDeviceId = -1;
+    };
 
-}]);
+    $scope.saveDebugSettings = function() {
+      var saveDebugSetupSuccessCallback = function(data) {
+        $scope.isLoading = false;
+        $scope.$emit('hideLoader');
+        $scope.reloadTable();
+        $scope.resetDeviceSelection();
+      };
+      var params = {
+        application: $scope.selectedDevice.application,
+        device_name: $scope.selectedDevice.device_name,
+        device_uid: $scope.selectedDevice.device_uid,
+        device_version: $scope.selectedDevice.device_version,
+        hours_log_enabled: $scope.selectedDevice.hours_log_enabled,
+        is_logging_enabled: $scope.selectedDevice.is_logging_enabled,
+        last_logged_in_user: $scope.selectedDevice.last_logged_in_user
+      };
+
+      $scope.invokeApi(adDebuggingSetupSrv.saveSetup, params, saveDebugSetupSuccessCallback);
+
+    };
+
+    (function() {
+      $scope.selectedDevice = {};
+      $scope.selectedDeviceId = -1;
+      $scope.resetDeviceSelection();
+      $scope.filterFetchSuccess(adDebuggingSetupSrv.appTypes);
+      $scope.filterType = adDebuggingSetupSrv.appTypes[0];
+      $scope.hours = adDebuggingSetupSrv.gethoursList();
+      loadTable();
+    })();
+
+  }
+]);
