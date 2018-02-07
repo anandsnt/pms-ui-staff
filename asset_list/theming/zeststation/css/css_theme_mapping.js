@@ -30,7 +30,8 @@ module.exports = {
             'belle': [themeCSSRoot + 'belle.less'],
             'freehand-ny': [themeCSSRoot + 'freehand-ny.less'],
             'freehand-miami': [themeCSSRoot + 'freehand-miami.less'],
-            'georgetown': [themeCSSRoot + 'georgetown.less']
+            'georgetown': [themeCSSRoot + 'georgetown.less'],
+            'nomo': [themeCSSRoot + 'nomo.less']
 		};
 	}
 };
