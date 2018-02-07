@@ -723,12 +723,10 @@ sntRover.controller('RVchangeStayDatesController', ['$state', '$stateParams', '$
 		};
 
 		/**
-		 * Checks whether the given date string is equal to the checkout date
+		 * Checks whether the given date string is equal to the group end date
 		 */
-		var isCheckOutDate = function (dateStr, checkoutDate) {
-			var currentDate = tzIndependentDate(dateStr);
-
-			return checkoutDate.getTime() === currentDate.getTime();		
+		var isGroupEndDate = function (dateStr, checkoutDate) {	
+			return dateStr === checkoutDate;		
 		};
 
 
@@ -766,7 +764,7 @@ sntRover.controller('RVchangeStayDatesController', ['$state', '$stateParams', '$
 					preventGroupSuiteRoomOverBook = $scope.reservation.reservation_card.is_suite &&
                                                     !!$scope.reservation.reservation_card.group_id && 
                                                     !this.is_room_type_available && !this.is_house_available &&
-                                                    !isCheckOutDate(this.date, checkoutDate); // CICO-47200
+                                                    !isGroupEndDate(this.date, $scope.reservation.reservation_card.group_block_to); // CICO-47200
 
 				calEvt = {};
 				
