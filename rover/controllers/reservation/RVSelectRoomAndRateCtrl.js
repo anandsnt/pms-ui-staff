@@ -1540,7 +1540,7 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 					if (!!$scope.reservationData.group.id) {
 						lastFetchedGroup = angular.copy(rvGroupConfigurationSrv.lastFetchedGroup);
 					} else if (!!$scope.reservationData.allotment.id) {
-						lastFetchedAllotment = angular.copy(rvAllotmentConfigurationSrv.lastFetchedAllotment)
+						lastFetchedAllotment = angular.copy(rvAllotmentConfigurationSrv.lastFetchedAllotment);
 					}
 
 					if (!TABS[$scope.activeRoom].roomTypeId || parseInt(TABS[$scope.activeRoom].roomTypeId) !== parseInt(roomId)) {
