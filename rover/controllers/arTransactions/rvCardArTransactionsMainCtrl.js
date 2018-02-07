@@ -9,8 +9,9 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 	'RVReservationCardSrv',
 	'$window',
     '$filter',
+    'RVContactInfoSrv',
     'rvPermissionSrv',
-	function($scope, $rootScope, $stateParams, ngDialog, $timeout, rvAccountsArTransactionsSrv, RVReservationCardSrv, $window, $filter, rvPermissionSrv) {
+	function($scope, $rootScope, $stateParams, ngDialog, $timeout, rvAccountsArTransactionsSrv, RVReservationCardSrv, $window, $filter, RVContactInfoSrv, rvPermissionSrv) {
 		BaseCtrl.call(this, $scope);
 		$scope.errorMessage = '';
 
@@ -601,30 +602,52 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 		// -------/ PAGINATION LOGIC /----------- //
 
 		// Handler for statement button click
+		var successCallBackForLanguagesFetch = function(data) {
+	      $scope.$emit('hideLoader');
+	      if (data.languages) {
+	        data.languages = _.filter(data.languages, {
+	            is_show_on_guest_card: true
+	        });
+	      }
+	      $scope.languageData = data;
+	      $scope.filterData.locale = data.selected_language_code;
+	      ngDialog.open({
+					template: '/assets/partials/companyCard/arTransactions/rvArStatementPopup.html',
+					className: '',
+					closeByDocument: false,
+					scope: $scope
+				});
+	    };
+
+	    /**
+	     * Fetch the guest languages list and settings
+	     * @return {undefined}
+	     */
+	    var fetchGuestLanguages = function() {
+	      // call api
+	      $scope.invokeApi(RVContactInfoSrv.fetchGuestLanguages, {},
+	        successCallBackForLanguagesFetch);
+	    };
+
 		$scope.clickedArStatementButton = function() {
 
-		var dataFetchSuccess = function(data) {
-			$scope.statementEmailAddress = !!data.to_address ? data.to_address : '';
-				ngDialog.open({
-				template: '/assets/partials/companyCard/arTransactions/rvArStatementPopup.html',
-				className: '',
-				closeByDocument: false,
-				scope: $scope
-			});
-		},
-		dataFailureCallback = function(errorData) {
-			$scope.errorMessage = errorData;
-		};
+			var dataFetchSuccess = function(data) {
+				$scope.statementEmailAddress = !!data.to_address ? data.to_address : '';
+				fetchGuestLanguages();
+			},
+			dataFailureCallback = function(errorData) {
+				$scope.errorMessage = errorData;
+			};
 
-		var params = { 'id': $scope.arDataObj.accountId };
+			var params = { 'id': $scope.arDataObj.accountId };
 
-		var options = {
-			params: params,
-			successCallBack: dataFetchSuccess,
-			failureCallBack: dataFailureCallback
-		};
+			var options = {
+				params: params,
+				successCallBack: dataFetchSuccess,
+				failureCallBack: dataFailureCallback
+			};
 
-		$scope.callAPI(rvAccountsArTransactionsSrv.fetchArStatementData, options);
+			$scope.callAPI(rvAccountsArTransactionsSrv.fetchArStatementData, options);
 		};
 
         // Checks whether include payment checkbox should be shown or not
@@ -665,6 +688,7 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 
                 paramsToSend.room_search = true;
             }
+            paramsToSend.locale = $scope.filterData.locale;
             return paramsToSend;
         };
 
