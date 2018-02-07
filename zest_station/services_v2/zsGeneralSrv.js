@@ -46,7 +46,8 @@ sntZestStation.service('zsGeneralSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
             'queen': 'Queen Anne',
             'belle': 'Van belle',
             'freehand-ny': 'Freehand nyc',
-            'freehand-miami': 'Freehand miami'
+            'freehand-miami': 'Freehand miami',
+            'georgetown': 'Georgetown inn'
         };
 
         this.isThemeConfigured = function(theme) {
@@ -582,5 +583,16 @@ sntZestStation.service('zsGeneralSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
             return deferred.promise;
         };
 
+        this.fetchHotelTranslations = function() {
+            var deferred = $q.defer(),
+                url = 'zest_station/translations';
+
+            zsBaseWebSrv2.getJSON(url).then(function(data) {
+                deferred.resolve(data.hotel_translations);
+            }, function(data) {
+                deferred.reject(data);
+            });
+            return deferred.promise;
+        };
     }
 ]);

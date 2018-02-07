@@ -45,7 +45,7 @@ angular.module('sntRover').service('RVBillCardSrv', ['$http', '$q', 'BaseWebSrvV
 		var deferred = $q.defer();
 		var url = '/api/reservations/' + params.reservation_id + '/print_registration_card';
 
-			rvBaseWebSrvV2.getJSON(url).then(function(data) {
+			rvBaseWebSrvV2.getJSON(url, params).then(function(data) {
 		   	 	deferred.resolve(data);
 			}, function(data) {
 			    deferred.reject(data);
@@ -317,4 +317,21 @@ angular.module('sntRover').service('RVBillCardSrv', ['$http', '$q', 'BaseWebSrvV
         });
         return deferred.promise;
     };
+
+	this.fetchGuestLanguages = function() {
+		var deferred = $q.defer();
+		var url = '/api/guest_languages';
+
+		rvBaseWebSrvV2.getJSON(url).then(function(data) {
+			if (data.languages) {
+				data.languages = _.filter(data.languages, {
+					is_show_on_guest_card: true
+				});
+			}
+			deferred.resolve(data);
+		}, function(data) {
+			deferred.reject(data);
+		});
+		return deferred.promise;
+	};
 }]);

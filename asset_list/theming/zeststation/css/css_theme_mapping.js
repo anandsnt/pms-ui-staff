@@ -29,7 +29,8 @@ module.exports = {
             'queen': [themeCSSRoot + 'queen.less'],
             'belle': [themeCSSRoot + 'belle.less'],
             'freehand-ny': [themeCSSRoot + 'freehand-ny.less'],
-            'freehand-miami': [themeCSSRoot + 'freehand-miami.less']
+            'freehand-miami': [themeCSSRoot + 'freehand-miami.less'],
+            'georgetown': [themeCSSRoot + 'georgetown.less']
 		};
 	}
 };
