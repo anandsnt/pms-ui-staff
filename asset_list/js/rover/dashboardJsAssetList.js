@@ -24,7 +24,6 @@ module.exports = {
 				jsLibRoot + 'underscore.min.js',
 				jsLibRoot + 'ngDialog.min.js',
 				jsLibRoot + 'fastclick.min.js',
-				jsLibRoot + 'angular-touch.js',
 				jsLibRoot + 'moment.min.js'
 			],
 			nonMinifiedFiles: [
