@@ -192,14 +192,14 @@ admin.controller('ADRoomTypesCtrl', ['$scope', '$rootScope', '$state', 'ADRoomTy
     */
 	$scope.importFromPms = function(event) {
 		event.stopPropagation();
-		var successCallbackImport = function() {
-	 		$scope.$emit('hideLoader');
+        var successCallbackImport = function() {
+		    $scope.$emit('hideLoader');
 	 		$scope.successMessage = $filter('translate')('ROOM_IMPORT_IN_PROGESS');
 	 		$timeout(function() {
 		        $scope.successMessage = '';
 		    }, 10000);
-
 	 	};
+
 		$scope.invokeApi(ADRoomTypesSrv.importFromPms, '', successCallbackImport);
 	};
 
