@@ -603,31 +603,30 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 
 		// Handler for statement button click
 		var successCallBackForLanguagesFetch = function(data) {
-	      $scope.$emit('hideLoader');
-	      if (data.languages) {
-	        data.languages = _.filter(data.languages, {
-	            is_show_on_guest_card: true
-	        });
-	      }
-	      $scope.languageData = data;
-	      $scope.filterData.locale = data.selected_language_code;
-	      ngDialog.open({
-					template: '/assets/partials/companyCard/arTransactions/rvArStatementPopup.html',
-					className: '',
-					closeByDocument: false,
-					scope: $scope
-				});
+			$scope.$emit('hideLoader');
+				if (data.languages) {
+		        data.languages = _.filter(data.languages, {
+		            is_show_on_guest_card: true
+		        });
+	    	}
+	    	$scope.languageData = data;
+	    	$scope.filterData.locale = data.selected_language_code;
+	    	ngDialog.open({
+	    		template: '/assets/partials/companyCard/arTransactions/rvArStatementPopup.html',
+	    		className: '',
+	    		closeByDocument: false,
+	    		scope: $scope
+	    	});
 	    };
-
 	    /**
 	     * Fetch the guest languages list and settings
 	     * @return {undefined}
 	     */
-	    var fetchGuestLanguages = function() {
-	      // call api
-	      $scope.invokeApi(RVContactInfoSrv.fetchGuestLanguages, {},
-	        successCallBackForLanguagesFetch);
-	    };
+	     var fetchGuestLanguages = function() {
+		     // call api
+		     $scope.invokeApi(RVContactInfoSrv.fetchGuestLanguages, {},
+		     	successCallBackForLanguagesFetch);
+	 	};
 
 		$scope.clickedArStatementButton = function() {
 
