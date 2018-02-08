@@ -192,25 +192,14 @@ admin.controller('ADRoomTypesCtrl', ['$scope', '$rootScope', '$state', 'ADRoomTy
     */
 	$scope.importFromPms = function(event) {
 		event.stopPropagation();
-
-		$scope.successMessage = "Collecting rooms data from PMS and adding to Rover...";
-
-		var successCallbackImport = function(data) {
+		var successCallbackImport = function() {
 	 		$scope.$emit('hideLoader');
-	 		$scope.listRoomTypes();
-	 		$scope.successMessage = "Completed!";
+	 		$scope.successMessage = "Room import is in progress, please check the status later";
 	 		$timeout(function() {
 		        $scope.successMessage = "";
-		    }, 1000);
+		    }, 10000);
 
 	 	};
-	 	var errorCallbackImport = function(data) {
-	 		$scope.$emit('hideLoader');
-	 		$scope.successMessage = "";
-	 		$scope.errorMessage = data;
-	 	};
-
-
 		$scope.invokeApi(ADRoomTypesSrv.importFromPms, '', successCallbackImport);
 	};
 
