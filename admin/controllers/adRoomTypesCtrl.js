@@ -194,9 +194,9 @@ admin.controller('ADRoomTypesCtrl', ['$scope', '$rootScope', '$state', 'ADRoomTy
 		event.stopPropagation();
 		var successCallbackImport = function() {
 	 		$scope.$emit('hideLoader');
-	 		$scope.successMessage = "Room import is in progress, please check the status later";
+	 		$scope.successMessage = $filter('translate')('ROOM_IMPORT_IN_PROGESS');
 	 		$timeout(function() {
-		        $scope.successMessage = "";
+		        $scope.successMessage = '';
 		    }, 10000);
 
 	 	};
