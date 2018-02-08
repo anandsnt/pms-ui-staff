@@ -113,9 +113,29 @@ admin.controller('ADDeviceMappingsCtrl', ['ngTableParams', '$scope', '$state', '
 
             $scope.callAPI(ADEmvTerminalsSrv.fetchItemList, options);
         };
+        /*
+         * Function to get the hotel infrasec (blackbox) details
+         */
+        $scope.getInfrasecDetails = function() {
+            $scope.infrasecDetails = {
+                "country_name": "sweden",
+                "is_infrasec_activated": true,
+                "max_control_unit": 5
+             }; 
+            // var onSuccess = function(data) {
+            //     $scope.infrasecDetails = data;           
+            // };
+            // var options = {
+            //     params: {},
+            //     successCallBack: onSuccessGetInfrasecDetails
+            // };
+
+            // $scope.callAPI(ADEmvTerminalsSrv.getHotelInfrasecDetails, options);
+        }
 
         $scope.fetchKeyEncoderList();
         $scope.fetchEmvList();
+        $scope.getInfrasecDetails();
 
         // To list device mappings
         /*
@@ -294,6 +314,12 @@ admin.controller('ADDeviceMappingsCtrl', ['ngTableParams', '$scope', '$state', '
             // CICO-10506 //zest station
             if (!$scope.mapping.is_out_of_order) {
                 $scope.mapping.is_out_of_order = false;
+            }
+            if ($scope.infrasecDetails.country_name === 'sweden' 
+                && $scope.infrasecDetails.is_infrasec_activated 
+                && $scope.infrasecDetails.max_control_unit > 0) {
+                data.is_control_unit_enabled = $scope.mapping.is_control_unit_enabled;
+                data.register_identity = $scope.mapping.register_identity;
             }
             data.is_out_of_order = $scope.mapping.is_out_of_order;
 
