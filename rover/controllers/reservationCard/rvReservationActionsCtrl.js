@@ -696,22 +696,30 @@ sntRover.controller('reservationActionsController', [
 			};
 
 			$scope.passData = passData;
-			ngDialog.open({
-				template: '/assets/partials/reservationCard/rvCancelReservation.html',
-				controller: 'RVCancelReservation',
-				scope: $scope,
-				data: JSON.stringify({
-					state: 'CONFIRM',
-					cards: false,
-					penalty: penalty,
-					penaltyText: (function() {
-						if (nights) {
-							return penalty + (penalty > 1 ? " nights" : " night");
-						}
-						return $rootScope.currencySymbol + $filter('number')(penalty, 2);
-					}())
-				})
-			});
+			var openCancellationPopup = function(data) {
+		      	
+		      	$scope.languageData = data;
+		      	ngDialog.open({
+					template: '/assets/partials/reservationCard/rvCancelReservation.html',
+					controller: 'RVCancelReservation',
+					scope: $scope,
+					data: JSON.stringify({
+						state: 'CONFIRM',
+						cards: false,
+						penalty: penalty,
+						penaltyText: (function() {
+							if (nights) {
+								return penalty + (penalty > 1 ? " nights" : " night");
+							}
+							return $rootScope.currencySymbol + $filter('number')(penalty, 2);
+						}())
+					})
+				});
+
+				$scope.$emit('hideLoader');
+		    };
+		    fetchGuestLanguages(openCancellationPopup);
+			
 		};
 
 
@@ -719,23 +727,31 @@ sntRover.controller('reservationActionsController', [
 			$scope.DailogeState = {};
 			$scope.DailogeState.successMessage = '';
 			$scope.DailogeState.failureMessage = '';
-			ngDialog.open({
-				template: '/assets/partials/reservationCard/rvCancelReservationDeposits.html',
-				controller: 'RVCancelReservationDepositController',
-				scope: $scope,
-				data: JSON.stringify({
-					state: 'CONFIRM',
-					cards: false,
-					penalty: penalty,
-					deposit: deposit,
-					depositText: (function() {
-						if (!isOutOfCancellationPeriod) {
-							return "Within Cancellation Period. Deposit of " + $rootScope.currencySymbol + $filter('number')(deposit, 2) + " is refundable.";
-						}
-						return "Reservation outside of cancellation period. A cancellation fee of " + $rootScope.currencySymbol + $filter('number')(penalty, 2) + " will be charged, deposit not refundable";
-					}())
-				})
-			});
+			var openCancellationPopup = function(data) {
+		      	
+		      	$scope.languageData = data;
+		      	ngDialog.open({
+					template: '/assets/partials/reservationCard/rvCancelReservationDeposits.html',
+					controller: 'RVCancelReservationDepositController',
+					scope: $scope,
+					data: JSON.stringify({
+						state: 'CONFIRM',
+						cards: false,
+						penalty: penalty,
+						deposit: deposit,
+						depositText: (function() {
+							if (!isOutOfCancellationPeriod) {
+								return "Within Cancellation Period. Deposit of " + $rootScope.currencySymbol + $filter('number')(deposit, 2) + " is refundable.";
+							}
+							return "Reservation outside of cancellation period. A cancellation fee of " + $rootScope.currencySymbol + $filter('number')(penalty, 2) + " will be charged, deposit not refundable";
+						}())
+					})
+				});
+
+				$scope.$emit('hideLoader');
+		    };
+		    fetchGuestLanguages(openCancellationPopup);
+			
 		};
 
 
@@ -949,6 +965,16 @@ sntRover.controller('reservationActionsController', [
 		$scope.ngData.failureMessage = "";
 		$scope.ngData.successMessage = "";
 
+		/**
+		 * Fetch the guest languages list and settings
+		 * @return {undefined}
+		 */
+		var fetchGuestLanguages = function(callback) {
+		   	var params = { 'reservation_id': $scope.reservationData.reservation_card.reservation_id };
+		   	// call api
+		   	$scope.invokeApi(RVContactInfoSrv.fetchGuestLanguages, params, callback);
+		};
+
 		// Pop up for confirmation print as well as email send
 		$scope.popupForConfirmation = function() {
 
@@ -958,7 +984,7 @@ sntRover.controller('reservationActionsController', [
 			$scope.ngData.confirmation_custom_title = "";
 			$scope.ngData.languageData = {};
 
-			var successCallBackForLanguagesFetch = function(data) {
+			var openConfirmationPopup = function(data) {
 		      	
 		      	$scope.ngData.languageData = data;
 
@@ -972,18 +998,7 @@ sntRover.controller('reservationActionsController', [
 				$scope.$emit('hideLoader');
 		    };
 
-		    /**
-		     * Fetch the guest languages list and settings
-		     * @return {undefined}
-		     */
-		    var fetchGuestLanguages = function() {
-		    	var params = { 'reservation_id': $scope.reservationData.reservation_card.reservation_id };
-		      	// call api
-
-		      	$scope.invokeApi(RVContactInfoSrv.fetchGuestLanguages, params, successCallBackForLanguagesFetch);
-		    };
-
-		    fetchGuestLanguages();
+		    fetchGuestLanguages(openConfirmationPopup);
 		};
 
 		$scope.showConfirmation = function(reservationStatus) {
@@ -1220,14 +1235,21 @@ sntRover.controller('reservationActionsController', [
 				"isCancelled": true
 			};
 
-			$scope.passData = passData;
+			$scope.passData = passData;			
 
-			ngDialog.open({
-				template: '/assets/partials/reservationCard/rvCancelReservation.html',
-				controller: 'RVCancelReservation',
-				scope: $scope,
-				data: JSON.stringify({ state: 'CANCELED' })
-			});
+			var openCancellationPopup = function(data) {
+		      	
+		      	$scope.languageData = data;
+		      	ngDialog.open({
+					template: '/assets/partials/reservationCard/rvCancelReservation.html',
+					controller: 'RVCancelReservation',
+					scope: $scope,
+					data: JSON.stringify({ state: 'CANCELED' })
+				});
+
+				$scope.$emit('hideLoader');
+		    };
+		    fetchGuestLanguages(openCancellationPopup);
 		};
 
 		// Action against print button in staycard.
