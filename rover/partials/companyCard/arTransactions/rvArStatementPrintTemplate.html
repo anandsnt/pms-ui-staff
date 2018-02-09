@@ -13,9 +13,9 @@
         </div>
         <div class="statement-info">
             <p class="statement-meta"><strong >{{printData.translation.statement_date}}</strong>{{printData.statement_date}}</p>
-            <p class="statement-meta" ng-if="printData.account_type === 'COMPANY'"><strong >{{printData.translation.corporate_id}}</strong>{{printData.corporate_id}}</p>
-            <p class="statement-meta" ng-if="printData.account_type === 'TRAVELAGENT'"><strong >{{printData.translation.iata_no}}</strong>{{printData.iata_no}}</p>
-            <p class="statement-meta"><strong >{{printData.translation.invoice_no}}</strong>{{printData.invoice_no}}</p>
+            <p class="statement-meta" ng-if="printData.account_type === 'COMPANY'"><strong >{{printData.translation.corp_id}}</strong>{{printData.corporate_id}}</p>
+            <p class="statement-meta" ng-if="printData.account_type === 'TRAVELAGENT'"><strong >{{printData.translation.iata_number}}</strong>{{printData.iata_no}}</p>
+            <p class="statement-meta"><strong >{{printData.translation.invoice_number}}</strong>{{printData.invoice_no}}</p>
             <p class="statement-meta"><strong >{{printData.translation.payment_due_dates}}</strong>{{printData.payment_due_days}}</p>
         </div>
     </div>

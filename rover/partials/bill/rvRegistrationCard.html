@@ -46,7 +46,7 @@
                             <strong>{{ printRegCardData.dep_date | date : dateFormat }}</strong>
                         </td>
                         <td>
-                            <span>{{ printRegCardData.translation.confirmation_no }}:</span>
+                            <span>{{ printRegCardData.translation.confirmation_number }}:</span>
                             <strong>{{ printRegCardData.confirm_no }}</strong>
                         </td>
                     </tr>
@@ -62,7 +62,7 @@
                             <span>&nbsp;</span>
                         </td>
                         <td>
-                        	<span>{{ printRegCardData.translation.room_no }}:</span>
+                        	<span>{{ printRegCardData.translation.room_number }}:</span>
                         	<strong>{{ printRegCardData.room_number}}</strong>
                         	<span>&nbsp;</span>
                         </td>
@@ -136,7 +136,7 @@
                 <tr>
                     <td>{i{ prntRegCardData.translation.vehicle_make }}</td>
                     <td>{i{ prntRegCardData.translation.lic._plate_# }}</td>
-                    <td>{i{ prntRegCardData.translation.lic._plate_state/prov.# }}</td>
+                    <td>{i{ prntRegCardData.translation.lic._plate_state_/_prov. }}</td>
                 </tr>
             </table>
         </td>
