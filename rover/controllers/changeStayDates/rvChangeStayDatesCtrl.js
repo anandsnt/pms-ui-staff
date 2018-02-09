@@ -729,8 +729,6 @@ sntRover.controller('RVchangeStayDatesController', ['$state', '$stateParams', '$
 			return dateStr === checkoutDate;		
 		};
 
-
-
 		$scope.getEventSourceObject = function(checkinDate, checkoutDate) {
 			/**
 			 * CICO-19733
