@@ -718,6 +718,7 @@ sntRover.controller('reservationActionsController', [
 
 				$scope.$emit('hideLoader');
 		    };
+
 		    fetchGuestLanguages(openCancellationPopup);
 			
 		};
@@ -750,6 +751,7 @@ sntRover.controller('reservationActionsController', [
 
 				$scope.$emit('hideLoader');
 		    };
+
 		    fetchGuestLanguages(openCancellationPopup);
 			
 		};
@@ -971,6 +973,7 @@ sntRover.controller('reservationActionsController', [
 		 */
 		var fetchGuestLanguages = function(callback) {
 		   	var params = { 'reservation_id': $scope.reservationData.reservation_card.reservation_id };
+
 		   	// call api
 		   	$scope.invokeApi(RVContactInfoSrv.fetchGuestLanguages, params, callback);
 		};
@@ -1249,6 +1252,7 @@ sntRover.controller('reservationActionsController', [
 
 				$scope.$emit('hideLoader');
 		    };
+		    
 		    fetchGuestLanguages(openCancellationPopup);
 		};
 
