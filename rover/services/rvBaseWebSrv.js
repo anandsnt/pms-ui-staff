@@ -35,6 +35,9 @@ angular.module('sntRover').service('RVBaseWebSrv', ['$http', '$q', '$window', '$
         httpDict.method = httpMethod;
         if (httpMethod === 'GET' || httpMethod === 'DELETE') {
             httpDict.params = params;
+            if (typeof $rootScope.workstation_id !== 'undefined') {
+                httpDict.params.workstation_id = $rootScope.workstation_id;
+            }
         }
         else if (httpMethod === 'POST' || httpMethod === 'PUT') {
             httpDict.data = params;
