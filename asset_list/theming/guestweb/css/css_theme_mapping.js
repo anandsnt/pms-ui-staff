@@ -4,6 +4,10 @@ module.exports = {
         var themeCSSRoot = 'stylesheets/guestweb/';
 
         return {
+            'guestweb_the_asbury': [ themeCSSRoot + 'guestweb_the_asbury.css'],
+            'guestweb_ambassador_hotel_wichita': [ themeCSSRoot + 'guestweb_ambassador_hotel_wichita.css'],
+            'guestweb_blackburn_inn': [ themeCSSRoot + 'guestweb_blackburn_inn.css'],
+            'guestweb_freehand_miami': [ themeCSSRoot + 'guestweb_freehand_miami.css'],
             'guestweb_nomo_soho': [ themeCSSRoot + 'guestweb_nomo_soho.css'],
             'guestweb_freehand_nyc': [ themeCSSRoot + 'guestweb_freehand_nyc.css'],
             'guestweb_the_chequit': [ themeCSSRoot + 'guestweb_the_chequit.css'],

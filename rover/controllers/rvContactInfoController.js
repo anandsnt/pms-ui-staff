@@ -163,7 +163,8 @@ angular.module('sntRover').controller('RVContactInfoController', ['$scope', '$ro
         'userId': $scope.guestCardData.contactInfo.user_id
       };
 
-      if (newGuest) {
+      // CICO-49153 - Added the additional check for user_id in the request params to prevent duplicate guest creation
+      if (newGuest && !dataToUpdate.user_id) {
         dataToUpdate.avatar = "";
           if (typeof data.data.is_opted_promotion_email === 'undefined') {
             data.data.is_opted_promotion_email = false;

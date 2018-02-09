@@ -250,7 +250,7 @@ sntZestStation.controller('zsReservationBillDetailsCtrl', [
         };
 
         $scope.nextClicked = function () {
-            if (parseInt($scope.balance) !== 0 && $scope.zestStationData.kiosk_collect_balance) {
+            if (parseFloat($scope.balance) !== 0 && $scope.zestStationData.kiosk_collect_balance) {
                 zsStateHelperSrv.setPreviousStateParams($stateParams);
 
                 zsPaymentSrv.setPaymentData({
