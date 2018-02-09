@@ -309,7 +309,7 @@ admin.controller('ADRatesListCtrl', ['$scope', '$rootScope', '$state', 'ADRatesS
 				ngDialog.close();
 				$scope.errorMessage = err;
 			}
-		}
+		};
 
 		$scope.callAPI(ADRatesSrv.uploadCSVFile, options);
 	};

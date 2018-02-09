@@ -581,7 +581,7 @@ admin.controller('ADChargeCodesCtrl', ['$scope', 'ADChargeCodesSrv', 'ngTablePar
 				ngDialog.close();
 				$scope.errorMessage = err;
 			}
-		}
+		};
 
 		$scope.callAPI(ADChargeCodesSrv.uploadCSVFile, options);
 	};
