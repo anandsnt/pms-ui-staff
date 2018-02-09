@@ -156,8 +156,8 @@ admin.service('ADEmvTerminalsSrv', ['$q', 'ADBaseWebSrv', 'ADBaseWebSrvV2', '$ro
          *
          */
 
-        this.getHotelInfrasecDetails = function (data) {
-            var url = "/api/hotel_infrasec_details";
+        this.getHotelInfrasecDetails = function (data) { 
+            var url = "/admin/hotels/" + data.hotel_id + "/hotel_infrasec_details";
             var deferred = $q.defer();
 
             ADBaseWebSrvV2.getJSON(url).then(function (data) {

@@ -1,5 +1,5 @@
-admin.controller('ADDeviceMappingsCtrl', ['ngTableParams', '$scope', '$state', 'ADDeviceSrv', 'ADKeyEncoderSrv', 'ADEmvTerminalsSrv', '$timeout', '$location', '$anchorScroll',
-    function(ngTableParams, $scope, $state, ADDeviceSrv, ADKeyEncoderSrv, ADEmvTerminalsSrv, $timeout, $location, $anchorScroll) {
+admin.controller('ADDeviceMappingsCtrl', ['ngTableParams', '$rootScope', '$scope', '$state', 'ADDeviceSrv', 'ADKeyEncoderSrv', 'ADEmvTerminalsSrv', '$timeout', '$location', '$anchorScroll',
+    function(ngTableParams, $rootScope, $scope, $state, ADDeviceSrv, ADKeyEncoderSrv, ADEmvTerminalsSrv, $timeout, $location, $anchorScroll) {
 
         $scope.errorMessage = '';
         ADBaseTableCtrl.call(this, $scope, ngTableParams);
@@ -117,20 +117,22 @@ admin.controller('ADDeviceMappingsCtrl', ['ngTableParams', '$scope', '$state', '
          * Function to get the hotel infrasec (blackbox) details
          */
         $scope.getInfrasecDetails = function() {
-            $scope.infrasecDetails = {
-                "country_name": "sweden",
-                "is_infrasec_activated": true,
-                "max_control_unit": 5
-             }; 
-            // var onSuccess = function(data) {
-            //     $scope.infrasecDetails = data;           
-            // };
-            // var options = {
-            //     params: {},
-            //     successCallBack: onSuccessGetInfrasecDetails
-            // };
+            // $scope.infrasecDetails = {
+            //     "country_name": "sweden",
+            //     "is_infrasec_activated": true,
+            //     "max_control_unit": 5
+            //  }; 
+            var onSuccessGetInfrasecDetails = function(data) {
+                $scope.infrasecDetails = data.data;           
+            };
+            var options = {
+                params: {
+                    hotel_id: $rootScope.hotelId
+                },
+                successCallBack: onSuccessGetInfrasecDetails
+            };
 
-            // $scope.callAPI(ADEmvTerminalsSrv.getHotelInfrasecDetails, options);
+            $scope.callAPI(ADEmvTerminalsSrv.getHotelInfrasecDetails, options);
         }
 
         $scope.fetchKeyEncoderList();
