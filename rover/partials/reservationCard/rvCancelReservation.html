@@ -56,6 +56,19 @@
             <label for="guest-email" translate>EMAIL</label>
             <input name="guest-email" id="guest-email" value="" type="text" autocomplete="off" ng-model="DailogeState.sendConfirmatonMailTo"/>
         </div>
+
+        <div class="entry full-width" >
+            <label for="languages">Language</label>
+            <div  class="select">
+                <select convert-to-number iscroll-stop-propagation ng-model="cancellationData.locale">
+                    <option style="display:none" value=""></option>
+                    <option value="{{item.code}}" ng-repeat="item in languageData.languages"
+                        ng-selected="item.code === cancellationData.locale"
+                        >{{item.language}}</option>
+                </select>
+            </div>
+        </div>
+        
         <div class="actions">
             <button type="button" class="button with-icon Grey" ng-show ="sendCancellationLetter && (!DailogeState.sendConfirmatonMailTo&&!isEmailAttached())">
                 <span class="icons icon-email"></span> 
