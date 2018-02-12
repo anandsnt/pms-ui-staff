@@ -1,6 +1,6 @@
 admin.controller('ADSntAppsListCtrl', ['$scope',
-	'adDebuggingSetupSrv', 'adAppVersionsSrv', 'ngTableParams', '$filter',
-	function($scope, adDebuggingSetupSrv, adAppVersionsSrv, ngTableParams, $filter) {
+	'adDebuggingSetupSrv', 'adAppVersionsSrv', 'ngTableParams', '$filter', 'appTypes',
+	function($scope, adDebuggingSetupSrv, adAppVersionsSrv, ngTableParams, $filter, appTypes) {
 		BaseCtrl.call(this, $scope);
 
 		$scope.sortByVersion = function() {
@@ -99,8 +99,8 @@ admin.controller('ADSntAppsListCtrl', ['$scope',
 			fetchDeviceDebugSetup();
 			$scope.timings = adAppVersionsSrv.returnTimeArray();
 			$scope.screenMode = 'BUILD_LIST';
-			$scope.filterList = adDebuggingSetupSrv.appTypes;
-			$scope.filterType = adDebuggingSetupSrv.appTypes[0];
+			$scope.filterList = appTypes;
+			$scope.filterType = appTypes[0];
 		})();
 	}
 ]);

@@ -9,7 +9,7 @@
                 <div class="filter select">
                     <div class="entry">
                         <div class="select">
-                            <select class="placeholder" ng-model="filterType" ng-options="opt.name for opt in filterList" ng-change="appTypeChanged()">
+                            <select class="placeholder" ng-model="filterType" ng-options="opt.value for opt in filterList" ng-change="appTypeChanged()">
                                 <option value="">Filter by App Type</option>
                             </select>
                         </div>
@@ -114,18 +114,21 @@
                 <div class="form-title">
                     <h3>App upgrade times</h3>
                 </div>
-                <table style="width:75%;border: 1px solid;">
+                <div class="form-subtitle-title">
+                    <h6>Please note that the following times are the local times for the applications to start auto upgrading.</h6>
+                </div>
+                <table style="width:50%;border: 1px solid;">
                     <tr style="border: 1px solid;font-weight:700;">
                         <th style="padding: 10px;border: 1px solid;">App type</th>
                         <th style="padding: 10px;border: 1px solid;">Time</th>
                     </tr>
                     <tr ng-repeat="app in filterList" style="border: 1px solid;">
-                        <td style="padding: 10px;border: 1px solid;">{{app.name}}</td>
+                        <td style="padding: 10px;border: 1px solid;">{{app.value}}</td>
                         <td style="padding: 10px;border: 1px solid;">
                             <div class="entry" style="float:none;margin:0 auto;">
                             <div class="select">
-                                <select ng-model="app.appUpdateTime">
-                                    <option value="">select time</option>
+                                <select ng-model="app.app_upgrade_time">
+                                    <option value="">select</option>
                                     <option value="{{time}}" ng-repeat="time in timings">{{time}}</option>
                                 </select>
                             </div>

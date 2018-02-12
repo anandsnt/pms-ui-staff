@@ -771,13 +771,23 @@ angular.module('adminModuleTwo', []).config(function ($stateProvider) {
     $stateProvider.state('admin.appVersions', {
         templateUrl: '/assets/partials/sntApps/adSntAppsVersions.html',
         controller: 'ADSntAppsListCtrl',
-        url: '/Services'
+        url: '/appVersions',
+        resolve: {
+            appTypes: function(adDebuggingSetupSrv) {
+                return adDebuggingSetupSrv.retrieveAppTypes();
+            }
+        }
     });
 
     $stateProvider.state('admin.installedDevices', {
         templateUrl: '/assets/partials/installedDevices/adDevicesList.html',
         controller: 'ADDevicesListCtrl',
-        url: '/Services'
+        url: '/installedDevices',
+        resolve: {
+            appTypes: function(adDebuggingSetupSrv) {
+                return adDebuggingSetupSrv.retrieveAppTypes();
+            }
+        }
     });
 
 });

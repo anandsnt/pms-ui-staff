@@ -1,5 +1,5 @@
-admin.controller('ADDevicesListCtrl', ['$scope', '$state', 'ngTableParams', 'adDebuggingSetupSrv', '$timeout',
-  function($scope, $state, ngTableParams, adDebuggingSetupSrv, $timeout) {
+admin.controller('ADDevicesListCtrl', ['$scope', '$state', 'ngTableParams', 'adDebuggingSetupSrv', '$timeout', 'appTypes',
+  function($scope, $state, ngTableParams, adDebuggingSetupSrv, $timeout, appTypes) {
 
     ADBaseTableCtrl.call(this, $scope, ngTableParams);
 
@@ -90,8 +90,8 @@ admin.controller('ADDevicesListCtrl', ['$scope', '$state', 'ngTableParams', 'adD
       $scope.selectedDevice = {};
       $scope.selectedDeviceId = -1;
       $scope.resetDeviceSelection();
-      $scope.filterFetchSuccess(adDebuggingSetupSrv.appTypes);
-      $scope.filterType = adDebuggingSetupSrv.appTypes[0];
+      $scope.filterFetchSuccess(appTypes);
+      $scope.filterType = appTypes[0];
       $scope.hours = adDebuggingSetupSrv.gethoursList();
       loadTable();
     })();
