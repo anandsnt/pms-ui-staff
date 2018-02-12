@@ -20,7 +20,8 @@
 				cardNumber: "",
 				expiry_date: "",
 				card_type: "",
-				addToGuestCard: false
+				addToGuestCard: false,
+				locale: $scope.languageData.selected_language_code
 			};
 			$scope.cancellationData.paymentType = "";
 			$scope.DailogeState = typeof $scope.$parent.DailogeState !== 'undefined' ? $scope.$parent.DailogeState : {};
@@ -316,7 +317,8 @@
 							payment_method_id: parseInt($scope.cancellationData.selectedCard) === -1 ? null : parseInt($scope.cancellationData.selectedCard),
 							id: reservationId,
 							application: "ROVER",
-							is_with_penalty: isWithoutPenalty
+							is_with_penalty: isWithoutPenalty,
+							locale: $scope.cancellationData.locale
 						};
 
 						if ($scope.ngDialogData.isDisplayReference) {
@@ -331,7 +333,8 @@
 						payment_method_id: parseInt($scope.cancellationData.selectedCard) === -1 ? null : parseInt($scope.cancellationData.selectedCard),
 						id: $scope.reservationData.reservationId || $scope.reservationParentData.reservationId || $scope.passData.reservationId,
 						application: "ROVER",
-						is_with_penalty: isWithoutPenalty
+						is_with_penalty: isWithoutPenalty,
+						locale: $scope.cancellationData.locale
 					};
 
 					if ($scope.ngDialogData.isDisplayReference) {
