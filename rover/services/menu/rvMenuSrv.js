@@ -177,6 +177,10 @@ angular.module('sntRover').service('rvMenuSrv',
 		            action: "rover.financials.journal({ id: 'CASHIER' })",
 		            menuIndex: "cashier"
 		        }, {
+		            title: "MENU_GUESTS",
+		            action: "rover.guestcardsearch",
+		            menuIndex: "guests"
+		        }, {
 		            title: "MENU_ACCOUNTS",
 		            action: "rover.accounts.search",
 		            menuIndex: "accounts"

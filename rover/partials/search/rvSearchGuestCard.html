@@ -1,0 +1,77 @@
+<div id="page-main-second"  ng-click="clickedOnSearchArea()" class="" style="">
+    <!-- Search form -->
+    <div ng-include="'/assets/partials/common/header.html'"></div>
+    <!-- <form name="search-cards" id="search-cards" class="search-form" role="search" ng-class="{'enable-adding' : textInQueryBox!=''}">
+        <div class="entry search">
+            <button type="button" id="clear-query" class="clear-query" ng-click="clearResults()" ng-class="{'visible': textInQueryBox!=''}">
+                <span class="icons icon-clear-search">Clear query</span>
+            </button>
+            <button type="submit" name="submit" class="icons icon-search">Search</button>
+            <input type="text" class="query" placeholder="Search by Name, City or Email address" name="query" id="query" autocomplete="off" ng-model="textInQueryBox" ng-keyup="queryEntered()">
+        </div>
+        <button type="button" class="add-new-button" data-lock="true" name="add-new-card" ng-click="addNewCard()">+ Add new</button>
+    </form> -->
+
+    <form method="get" action="" class="search-form enable-adding" role="search">
+        <div class="entry search">
+            <button class="clear-query" ng-class="{'visible': textInQueryBox != ''}" ng-click="clearResults()"> <!-- Add class 'visible' when searching -->
+                <span class="icons icon-clear-search">Clear query</span>
+            </button>
+            <button type="submit" name="submit" class="icons icon-search">Search</button>
+            <input id="find-guests-query" class="query" placeholder="Search by Name, City or Email address" type="search" autocomplete="off" ng-model="textInQueryBox" ng-keyup="queryEntered()"/>
+        </div>
+        <!-- Add reservation -->
+        <a class="add-new-button" ng-click="addNewCard()">+ Add new</a>
+    </form>
+
+    <rv-pagination page-options="guestCardPagination" page-data="totalResultCount"></rv-pagination>
+
+    <section id="find-guests" class="content scrollable" role="main" ng-iscroll="guest_card_scroll">
+        <div class="wrapper">
+            <ul id="guest-search-results" class="search-results">
+                <li class="reservation identify-guest" ng-repeat="guest in results">
+                    <a href="">
+                        <figure class="guest-image"><!-- add class "accompany" if it's a accompanying guest -->
+                            <img src="{{guest.image_url}}" alt="" />
+                            <!-- if it's accompanying guest, show this as well:
+                            <img src="{accompanying-guest-image-or-avatar}" alt="" />-->
+                            <!-- If VIP, show:  <span class="vip">VIP</span> -->
+                        </figure>
+                        <div class="data"> <!-- Add class "no-stay" if stays = 0 -->
+                            <h2>{{guest.first_name}}, {{guest.last_name}}</h2>
+                            <!-- When guest has previous stays, show count.-->
+                            <span class="stay-count" ng-if="guest.stay_count > 1">{{guest.stay_count}} stays</span>
+                            <span class="stay-count" ng-if="guest.stay_count === 1">{{guest.stay_count}} stay</span>
+                            <span class="confirmation">{{guest.address.postal_code}}</span>
+                            <span class="icons icon-location">{{guest.address.city}}, {{guest.address.state}}</span>
+                            <span class="icons icon-phone">{{guest.home_phone}}</span>
+                            <span class="icons icon-email-grey">{{guest.email}}</span>
+                        </div>
+                        <!-- If guest has prevous stays, show last stay details: -->
+                        <div class="last-stay" ng-if="guest.stay_count > 0">
+                            <span class="label">
+                                Last <span class="date">{{ guest.lastStay.date | date: 'MMMM d, yyyy'}}</span>
+                            </span>
+                            <strong class="room">{{ guest.lastStay.room }}</strong>
+                            <em class="type">{{ guest.lastStay.roomType }}</em>
+                        </div>
+                    </a>
+                </li>                
+            </ul>
+        </div>
+    </section>
+    <!-- Search panel - EMPTY -->
+    <section id="find-guests" class="content scrollable no-results" role="main" ng-if="results.length === 0">
+        <div class="wrapper">
+            <ul id="guest-search-results" class="search-results">
+                <li class="no-content">
+                    <div class="info">
+                        <span class="icon-no-content icon-cards"></span>
+                        <strong class="h1">Find Guests</strong>
+                        <span class="h2">Search by <strong>Guest Name</strong>, <strong>City</strong> or <strong>Email address</strong></span>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </section>
+</div>
