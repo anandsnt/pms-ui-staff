@@ -4,7 +4,8 @@ sntRover.controller('rvBillFormatPopupCtrl', ['$scope', '$rootScope', '$filter',
     $scope.isCompanyCardInvoice = true;
     $scope.disableCompanyCardInvoice = false;
     $scope.hideCompanyCardInvoiceToggle = true;
-
+    $scope.isInformationalInvoice = ($rootScope.isInfrasecActivated && $rootScope.isInfrasecActivatedForWorkstation) ? true : false; 
+    $scope.shouldShowPrintScreen = true;
     /*
     *  Get the request params for bill settings info
     */
@@ -150,6 +151,36 @@ sntRover.controller('rvBillFormatPopupCtrl', ['$scope', '$rootScope', '$filter',
 
         printRequest.bill_layout = $scope.data.default_bill_settings;
         $scope.clickedPrint(printRequest);
+    };
+    /*
+     * click action Print button
+     * show proceed popup - if infrasec enabled
+     */
+    $scope.clickedPrintBill = function() {
+        if ($rootScope.isInfrasecActivated && $rootScope.isInfrasecActivatedForWorkstation && !$scope.isInformationalInvoice) {
+            $scope.shouldShowPrintScreen = false;
+        } else {
+            $scope.printBill();
+        }
+    };
+    /*
+     * Clicked continue button to call infrasec (Black box) API 
+     * or to move to payment popup if bill not settled
+     */
+    $scope.clickedContinueButton = function() {
+        if ($scope.currentBillAmount === 0) {
+            var params = {
+                bill_id: $scope.billId
+            };
+
+            var options = {
+                params: params,
+                onSuccess: successCallBackOfInfrasecAPI                
+            };
+
+            $scope.callAPI(rvRateManagerCoreSrv.fetchSingleRateRestrictionsAndAmountsDetails, options);
+       
+        }
     };
 
     /*
