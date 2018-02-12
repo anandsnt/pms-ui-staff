@@ -144,6 +144,9 @@ sntRover.controller('roverController', [
         $rootScope.isRoomDiaryEnabled = true;
         $rootScope.isManualCCEntryEnabled = hotelDetails.is_allow_manual_cc_entry;
         $rootScope.isAnMPHotel = hotelDetails.is_multi_property;
+
+        $rootScope.isInfrasecActivated = true;
+        $rootScope.isInfrasecActivatedForWorkstation = true;
         /**
          * CICO-34068
          * NOTE: Temporary Fix
