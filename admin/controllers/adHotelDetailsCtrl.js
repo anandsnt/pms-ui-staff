@@ -49,7 +49,7 @@ admin.controller('ADHotelDetailsCtrl', [
 			isMPFlagResetConfirmPopupNeeded = false;
 			var fetchSuccess = function(data) {
 				$scope.data = data.data;
-				$scope.swedenCountryId = (_.find($scope.data.countries, function(obj){ return obj.name === 'Sweden'; })).id;
+				$scope.swedenCountryId = (_.find($scope.data.countries, function(obj){ return obj.name === $rootScope.infrasecSpecificCountry; })).id;
 				if ($scope.data.selected_mod_type_id) {
 					$scope.isSequenceModChangeDisabled = true;
 				}				

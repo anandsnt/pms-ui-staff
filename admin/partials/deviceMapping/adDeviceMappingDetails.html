@@ -51,14 +51,14 @@
                label = "{{'OOS_REASON' | translate}}" placeholder = "{{'OOS_REASON'| translate}}"  
                styleclass="full-width" required="yes"></ad-textbox>
             <!-- <div class="entry full-width "> -->
-               <ad-checkbox ng-if="infrasecDetails.country_name === 'Sweden' && infrasecDetails.is_infrasec_activated && infrasecDetails.max_control_unit > 0"
+               <ad-checkbox ng-if="infrasecDetails.country_name === infrasecSpecificCountry && infrasecDetails.is_infrasec_activated && infrasecDetails.max_control_unit > 0"
                         is-checked="mapping.is_control_unit_enabled"
                         label="{{ 'CONTROL_UNIT_SE' | translate}}"
                         div-class="full-width control-unit-class">
                </ad-checkbox>
             <!-- </div> -->
             
-            <ad-textbox ng-if="infrasecDetails.country_name === 'Sweden' && infrasecDetails.is_infrasec_activated && infrasecDetails.max_control_unit > 0 && mapping.is_control_unit_enabled" inputtype="text" value="mapping.register_identity" 
+            <ad-textbox ng-if="infrasecDetails.country_name === infrasecSpecificCountry && infrasecDetails.is_infrasec_activated && infrasecDetails.max_control_unit > 0 && mapping.is_control_unit_enabled" inputtype="text" value="mapping.register_identity" 
                label = "{{'WORKSTATION_MODEL' | translate}}" placeholder = "{{'WORKSTATION_MODEL'| translate}}"  
                styleclass="full-width" ></ad-textbox>
 

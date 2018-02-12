@@ -7,6 +7,7 @@ admin.controller('ADDeviceMappingsCtrl', ['ngTableParams', '$rootScope', '$scope
         $scope.isAddMode = false;
         $scope.addEditTitle = "";
         $scope.isEditMode = false;
+        
         /*
          * To fetch list of device mappings
          */
@@ -117,11 +118,6 @@ admin.controller('ADDeviceMappingsCtrl', ['ngTableParams', '$rootScope', '$scope
          * Function to get the hotel infrasec (blackbox) details
          */
         $scope.getInfrasecDetails = function() {
-            // $scope.infrasecDetails = {
-            //     "country_name": "sweden",
-            //     "is_infrasec_activated": true,
-            //     "max_control_unit": 5
-            //  }; 
             var onSuccessGetInfrasecDetails = function(data) {
                 $scope.infrasecDetails = data.data;           
             };
@@ -317,7 +313,7 @@ admin.controller('ADDeviceMappingsCtrl', ['ngTableParams', '$rootScope', '$scope
             if (!$scope.mapping.is_out_of_order) {
                 $scope.mapping.is_out_of_order = false;
             }
-            if ($scope.infrasecDetails.country_name === 'sweden' 
+            if ($scope.infrasecDetails.country_name === $rootScope.infrasecSpecificCountry 
                 && $scope.infrasecDetails.is_infrasec_activated 
                 && $scope.infrasecDetails.max_control_unit > 0) {
                 data.is_control_unit_enabled = $scope.mapping.is_control_unit_enabled;

@@ -27,8 +27,7 @@ admin.controller('ADAppCtrl', [
 		$scope.setTitle(title);
 		$scope.menuOpen = false;
 		$scope.hotelListOpen = '';
-		$scope.isStandAlone = false;
-
+		$scope.isStandAlone = false;        
 		$scope.dragStart = false;
 		$scope.selectedIndex = 0;
 		$scope.dropedElementsModel = []; // model used for drag & drop feature, used for droping menu items displaying area
@@ -62,6 +61,7 @@ admin.controller('ADAppCtrl', [
 		$rootScope.longDateFormat = "MMM dd, yyyy";// Wednesday, 06-04-2014
 		$rootScope.dateFormatForAPI = "yyyy-MM-dd";
 		$rootScope.currencySymbol = "";
+        $rootScope.infrasecSpecificCountry = 'Sweden';
 		// Initialise $rootScope.isHourlyRatesEnabled to false; the value is set on call to api/hotel_settings
 		$rootScope.isHourlyRatesEnabled = false;
 		$rootScope.isSuiteRoomsAvailable = false;
