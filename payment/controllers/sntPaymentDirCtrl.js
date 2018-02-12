@@ -132,6 +132,15 @@ angular.module('sntPay').controller('sntPaymentController',
                 if (isEmptyParentScrollerOptions) {
                     $scope.myScrollOptions = {};
                 }
+
+                // CICO-48381
+                if (sntapp.browser === 'rv_native' && sntapp.cordovaLoaded) {
+                    scrollerOptions.click = false;
+                    scrollerOptions.tap = true;
+                    scrollerOptions.preventDefault = false;
+                    scrollerOptions.deceleration =  0.0001;
+                }
+
                 $scope.myScrollOptions[key] = scrollerOptions;
             }
 

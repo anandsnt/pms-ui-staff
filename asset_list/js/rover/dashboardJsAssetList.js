@@ -23,8 +23,7 @@ module.exports = {
 				jsLibRoot + 'ui-utils.min.js',
 				jsLibRoot + 'underscore.min.js',
 				jsLibRoot + 'ngDialog.min.js',
-				jsLibRoot + 'fastclick.min.js',
-				jsLibRoot + 'angular-touch.js',
+                jsLibRoot + 'fastclick/fastclick.min.js',
 				jsLibRoot + 'moment.min.js'
 			],
 			nonMinifiedFiles: [
@@ -32,6 +31,7 @@ module.exports = {
 				jsLibRoot + 'ng-iscroll.js',
 				jsLibRoot + 'Utils.js',
 				jsLibRoot + 'date.js',
+                jsLibRoot + 'fastclick/snt-fastclick-override.js',
 
 				sharedRoot + 'interceptors/**/*.js',
 				sharedRoot + 'directives/**/*.js',

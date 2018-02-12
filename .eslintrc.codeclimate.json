@@ -22,7 +22,6 @@
         "ADBaseTableCtrl": true,
         "tzIndependentDate": true,
         "getJqDateFormat": false,
-        "moment": false,
         "getTimeFormated": true,
         "CardReaderCtrl": false,
         "sntCordovaInit": false,
@@ -31,7 +30,8 @@
         "SyntaxHighlighter": false,
         "webSocketOperations": false,
         "moment": false,
-        "SwipeOperation": false
+        "SwipeOperation": false,
+        "FastClick": false
     },
     "installedESLint": true,
     "parserOptions": {
