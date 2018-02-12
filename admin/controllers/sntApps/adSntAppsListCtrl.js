@@ -29,7 +29,7 @@ admin.controller('ADSntAppsListCtrl', ['$scope',
 					// length of data
 					total: $scope.appList.length,
 					getData: function($defer, params) {
-						if (params.settings().$scope == null) {
+						if (params.settings().$scope === null) {
 							params.settings().$scope = $scope;
 						}
 						// use build-in angular filter
@@ -56,7 +56,7 @@ admin.controller('ADSntAppsListCtrl', ['$scope',
 				"version": "",
 				"description": "",
 				"updated_on": ""
-			}
+			};
 		};
 
 		$scope.changeToUploadBuildMode = function() {
@@ -65,7 +65,7 @@ admin.controller('ADSntAppsListCtrl', ['$scope',
 		};
 
 		$scope.changeToListView = function() {
-			$scope.screenMode = 'BUILD_LIST'
+			$scope.screenMode = 'BUILD_LIST';
 			resetSelectedApp();
 		};
 
@@ -74,7 +74,7 @@ admin.controller('ADSntAppsListCtrl', ['$scope',
 		};
 
 		$scope.deleteApp = function(app) {
-
+			console.log(app);
 		};
 
 		$scope.editApp = function(app) {

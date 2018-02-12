@@ -5,7 +5,7 @@ admin.service('adAppVersionsSrv', ['$http', '$q', 'ADBaseWebSrv', 'ADBaseWebSrvV
 		var url = '/api/notifications/notification_device_list?application=ROVER';
 
 		ADBaseWebSrvV2.getJSON(url).then(function(data) {
-			var data = [{
+			data = [{
 				"id": 1,
 				"version": "1.2.1",
 				"updated_on": "12/11/2017",
@@ -21,6 +21,7 @@ admin.service('adAppVersionsSrv', ['$http', '$q', 'ADBaseWebSrv', 'ADBaseWebSrvV
 				"updated_on": "10/11/2018",
 				"description": "description 3"
 			}];
+
 			deferred.resolve(data);
 		}, function(data) {
 			deferred.reject(data);
