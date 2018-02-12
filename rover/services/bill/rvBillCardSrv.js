@@ -334,4 +334,19 @@ angular.module('sntRover').service('RVBillCardSrv', ['$http', '$q', 'BaseWebSrvV
 		});
 		return deferred.promise;
 	};
+	/*
+	 * API to infrasec (Black Box)
+	 * 
+	 */ 
+	this.callInfrasecApi = function (params) {
+		var deferred = $q.defer(),
+            url = 'api/hotel_settings/infrasec_controller/generate_control_code';
+
+        BaseWebSrvV2.postJSON(url).then(function(response) {
+            deferred.resolve(response.data);
+        }, function (data) {
+            deferred.reject(data);
+        });
+        return deferred.promise;
+	};
 }]);
