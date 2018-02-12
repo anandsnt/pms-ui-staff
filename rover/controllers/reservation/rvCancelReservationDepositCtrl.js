@@ -5,7 +5,8 @@ sntRover.controller('RVCancelReservationDepositController', ['$rootScope', '$sco
 		$scope.errorMessage = "";
 
 		$scope.cancellationData = {
-			reason: ""
+			reason: "",
+			locale: $scope.languageData.selected_language_code
 		};
 
 		$scope.DailogeState.isCancelled = false ;
@@ -47,7 +48,8 @@ sntRover.controller('RVCancelReservationDepositController', ['$rootScope', '$sco
 			var cancellationParameters = {
 				reason: $scope.cancellationData.reason,
 				id: $scope.reservationData.reservation_card.reservation_id || $scope.reservationData.reservationId,
-				application: "ROVER"
+				application: "ROVER",
+				locale: $scope.cancellationData.locale
 			};
 
 			cancellationParameters.with_deposit_refund = with_deposit_refund;
