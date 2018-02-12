@@ -44,25 +44,38 @@ admin.service('adDebuggingSetupSrv', ['$http', '$q', 'ADBaseWebSrv', 'ADBaseWebS
 		return deferred.promise;
 	};
 
-	this.appTypes = [{
+	var appTypes = [{
 		"id": 1,
 		"name": "iPad App",
-		"type": "iPad"
+		"type": "iPad",
+		"appUpdateTime": "00:30:00"
+
 	}, {
 		"id": 2,
 		"name": "Rover Service",
-		"type": "Win32NT"
+		"type": "Win32NT",
+		"appUpdateTime": "01:30:00"
+
 	}, {
 		"id": 3,
-		"name": "MAC Service"
+		"name": "MAC Service",
+		"appUpdateTime": "01:30:00"
+
 	}, {
 		"id": 4,
-		"name": "Zest station hanlder"
+		"name": "Zest station hanlder",
+		"appUpdateTime": "03:30:00"
+
 	}, {
 		"id": 5,
-		"name": "RIC"
+		"name": "RIC",
+		"appUpdateTime": "05:45:00"
 	}];
 
+	this.appTypes = _.each(appTypes, function(app) {
+		app.appUpdateTime = app.appUpdateTime.slice(0, -3);
+	});
+	
 	this.gethoursList = function () {
 		var range = _.range(1, 25);
 		var hoursList = [];

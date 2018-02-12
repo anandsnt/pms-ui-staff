@@ -87,8 +87,17 @@ admin.controller('ADSntAppsListCtrl', ['$scope',
 			$scope.screenMode = 'EDIT_BUILD';
 		};
 
+		$scope.showGeneralSettings = function () {
+			$scope.screenMode = 'SETTINGS';
+		};
+
+		$scope.saveSettings = function () {
+			$scope.screenMode = 'BUILD_LIST';
+		};
+
 		(function() {
 			fetchDeviceDebugSetup();
+			$scope.timings = adAppVersionsSrv.returnTimeArray();
 			$scope.screenMode = 'BUILD_LIST';
 			$scope.filterList = adDebuggingSetupSrv.appTypes;
 			$scope.filterType = adDebuggingSetupSrv.appTypes[0];

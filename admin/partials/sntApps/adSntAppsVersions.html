@@ -4,6 +4,7 @@
             <h2> App versions </h2>
             <a ng-click="goBackToPreviousState()" class="action back ng-scope" translate="">Services</a>
             <a class="action add" ng-click="changeToUploadBuildMode()">Upload new build</a>
+            <a class="action" ng-click="showGeneralSettings()" style="background-image:none;">Settings</a>
             <div class="filters">
                 <div class="filter select">
                     <div class="entry">
@@ -66,7 +67,7 @@
             <div class="filter select">
                 <div class="entry">
                     <div class="select">
-                        <select class="placeholder" ng-model="filterType" ng-options="opt.name for opt in filterList" ng-change="appTypeChanged()">
+                        <select class="placeholder" ng-model="filterType" ng-options="opt.name for opt in filterList">
                             <option value="">Filter by App Type</option>
                         </select>
                     </div>
@@ -91,10 +92,52 @@
                 <ad-textarea rows="4" div-class="full-width" text-area-class="full-width" value="selectedApp.description" label="{{ 'DESCRIPTION' | translate}}" placeholder=""></ad-textarea>
             </fieldset>
             <div class="actions float">
-                <button type="button" id="cancel" class="button blank add-data-inline" ng-click="resetDeviceSelection()" translate>
+                <button type="button" id="cancel" class="button blank add-data-inline" ng-click="changeToListView()" translate>
                     CANCEL
                 </button>
                 <button type="button" like-type="common" id="update" class="button  ng-binding green" ng-click="uploadBuild()" translate>
+                    SAVE_CHANGES
+                </button>
+            </div>
+        </div>
+    </section>
+</section>
+
+<section class="content current" ng-show="screenMode === 'SETTINGS'">
+    <header class="content-title float">
+        <h2>Settings</h2>
+        <a ng-click="changeToListView()" class="action back ng-scope" translate="">App Versions</a>
+    </header>
+    <section class="content-scroll">
+        <div class="form">
+            <fieldset class="holder full-width">
+                <div class="form-title">
+                    <h3>App upgrade times</h3>
+                </div>
+                <table style="width:75%;border: 1px solid;">
+                    <tr style="border: 1px solid;font-weight:700;">
+                        <th style="padding: 10px;border: 1px solid;">App type</th>
+                        <th style="padding: 10px;border: 1px solid;">Time</th>
+                    </tr>
+                    <tr ng-repeat="app in filterList" style="border: 1px solid;">
+                        <td style="padding: 10px;border: 1px solid;">{{app.name}}</td>
+                        <td style="padding: 10px;border: 1px solid;">
+                            <div class="entry" style="float:none;margin:0 auto;">
+                            <div class="select">
+                                <select ng-model="app.appUpdateTime">
+                                    <option value="">select time</option>
+                                    <option value="{{time}}" ng-repeat="time in timings">{{time}}</option>
+                                </select>
+                            </div>
+                             </div>
+                        </td </tr>
+                </table>
+            </fieldset>
+            <div class="actions float">
+                <button type="button" id="cancel" class="button blank add-data-inline" ng-click="changeToListView()" translate>
+                    CANCEL
+                </button>
+                <button type="button" like-type="common" id="update" class="button  ng-binding green" ng-click="saveSettings()" translate>
                     SAVE_CHANGES
                 </button>
             </div>
