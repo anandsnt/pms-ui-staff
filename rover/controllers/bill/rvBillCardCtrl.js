@@ -2065,14 +2065,16 @@ sntRover.controller('RVbillCardController',
 	var callBlackBoxAPI = function(billIndex) {
 
 		var successCallBackOfApiCall = function(data) {
+			console.log(data);
 			$scope.reviewStatusArray[billIndex].reviewStatus = true;
 			$scope.findNextBillToReview();
 		},
-		failureCallBackOfApiCall = function(data) {
-			
+		failureCallBackOfApiCall = function(errorMessage) {
+			console.log(errorMessage);
+			$scope.errorMessage = errorMessage;
 		},
 		paramsToService = {
-			'bill_id': $scope.reservationBillData.bills[billIndex].bill_id;
+			'bill_id': $scope.reservationBillData.bills[billIndex].bill_id
 		};
 
 		var options = {
@@ -2081,7 +2083,7 @@ sntRover.controller('RVbillCardController',
 			failureCallBack: failureCallBackOfApiCall
 		};
 
-		//$scope.callAPI( RVBillCardSrv.callBlackBoxApi, options );
+		$scope.callAPI( RVBillCardSrv.callBlackBoxApi, options );
 	};
 
 	// To handle review button click
