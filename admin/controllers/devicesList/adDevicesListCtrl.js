@@ -6,7 +6,7 @@ admin.controller('ADDevicesListCtrl', ['$scope', '$state', 'ngTableParams', 'adD
     $scope.fetchTableData = function($defer, params) {
       var getParams = $scope.calculateGetParams(params);
 
-      getParams.app_type_id = angular.copy(getParams.rate_type_id);
+      getParams.service_application = angular.copy(getParams.rate_type_id);
       delete getParams.rate_type_id;
       var fetchSuccessOfItemList = function(data) {
         $timeout(function() {
