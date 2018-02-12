@@ -338,7 +338,7 @@ angular.module('sntRover').service('RVBillCardSrv', ['$http', '$q', 'BaseWebSrvV
 	 * API to infrasec (Black Box)
 	 * 
 	 */ 
-	this.callInfrasecApi = function (params) {
+	this.postDataToInfrasec = function (params) {
 		var deferred = $q.defer(),
             url = 'api/hotel_settings/infrasec_controller/generate_control_code';
 
