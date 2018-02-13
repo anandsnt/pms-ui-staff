@@ -20,7 +20,8 @@ module.exports = {
 				servicesRoot + "rvReservationSrv.js",
 				servicesRoot + "payment/rvPaymentSrv.js",
 				servicesRoot + "accounts/**/*.js",
-				roverRoot + "services/reservation/rvReservationBaseSearchSrv.js"
+				roverRoot + "services/reservation/rvReservationBaseSearchSrv.js",
+				servicesRoot + "rvContactInfoSrv.js"
 			]
 		};
 		return groupJsAssets;

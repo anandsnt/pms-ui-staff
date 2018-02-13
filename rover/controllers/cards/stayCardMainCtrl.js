@@ -270,29 +270,35 @@ angular.module('sntRover').controller('stayCardMainCtrl', ['$rootScope', '$scope
 				activeScreen: 'STAY_CARD'
 			};
 
-			// group details fetch
-			var paramsForGroupDetails = {
-				groupId: groupId
-			};
+			// CICO-49183
+			if (!!groupId) {
+				// group details fetch
+				var paramsForGroupDetails = {
+					groupId: groupId
+				};
 
-			promises.push(rvGroupConfigurationSrv
-				.getGroupSummary(paramsForGroupDetails)
-				.then(successCallbackOfGroupDetailsFetch)
-			);
+				promises.push(rvGroupConfigurationSrv
+					.getGroupSummary(paramsForGroupDetails)
+					.then(successCallbackOfGroupDetailsFetch)
+				);
 
-			// reservation list fetch
-			var paramsForHoldListFetch = {
-				is_group: true
-			};
+				// reservation list fetch
+				var paramsForHoldListFetch = {
+					is_group: true
+				};
 
-			promises.push(rvGroupConfigurationSrv
-				.getHoldStatusList(paramsForHoldListFetch)
-				.then(successCallBackOfGroupHoldListFetch)
-			);
+				promises.push(rvGroupConfigurationSrv
+					.getHoldStatusList(paramsForHoldListFetch)
+					.then(successCallBackOfGroupHoldListFetch)
+				);
 
-			// Lets start the processing
-			$q.all(promises)
-				.then(successFetchOfAllReqdForGroupDetailsShowing, failedToFetchOfAllReqdForGroupDetailsShowing);
+				// Lets start the processing
+				$q.all(promises)
+					.then(successFetchOfAllReqdForGroupDetailsShowing, failedToFetchOfAllReqdForGroupDetailsShowing);
+
+			}
+
+			
 		};
 
 		/**

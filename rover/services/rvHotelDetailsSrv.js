@@ -102,6 +102,21 @@ angular.module('sntRover').service('RVHotelDetailsSrv', ['$q', 'rvBaseWebSrvV2',
                 service.hotelDetails['mli_emv_enabled'] &&
                 workstationInfo.emv_terminal_id) || service.hotelDetails['payment_gateway'] === 'sixpayments';
         };
+        /*
+         *
+         */
+        service.fetchInfrasecDetails = function () {
+            var deferred = $q.defer();
+            var url = '/api/hotels/workstation_infrasec_details ';
+
+            RVBaseWebSrvV2.getJSON(url).then(function (data) {
+                    deferred.resolve(data);
+            }, function (errorMessage) {
+                deferred.reject(errorMessage);
+            });
+
+            return deferred.promise;
+        };
 
     }]
 );

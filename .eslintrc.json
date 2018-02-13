@@ -28,7 +28,8 @@
         "CardOperation": false,
         "jsHue": false,
         "webSocketOperations": false,
-        "moment": false
+        "moment": false,
+        "FastClick": false
     },
     "installedESLint":true,
     "parserOptions":{
