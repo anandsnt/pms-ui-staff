@@ -2789,6 +2789,8 @@ sntRover.controller('RVbillCardController',
 
     $scope.showFormatBillPopup = function(billNo) {
     	$scope.billNo = billNo;
+    	$scope.billId = $scope.reservationBillData.bills[$scope.currentActiveBill].bill_id;
+    	$scope.currentBillAmount = $scope.reservationBillData.bills[$scope.currentActiveBill].total_amount;
     	ngDialog.open({
     		template: '/assets/partials/popups/billFormat/rvBillFormatPopup.html',
     		controller: 'rvBillFormatPopupCtrl',

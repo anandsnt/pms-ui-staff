@@ -168,9 +168,13 @@ sntRover.controller('rvBillFormatPopupCtrl', ['$scope', '$rootScope', '$filter',
      * or to move to payment popup if bill not settled
      */
     $scope.clickedContinueButton = function() {
-        if ($scope.currentBillAmount === 0) {
+        if ($scope.currentBillAmount === "0.00") { console.log("reached here")
             var params = {
                 bill_id: $scope.billId
+            };
+
+            var successCallBackOfInfrasecAPI = function() {
+                $scope.printBill();
             };
 
             var options = {
@@ -178,8 +182,10 @@ sntRover.controller('rvBillFormatPopupCtrl', ['$scope', '$rootScope', '$filter',
                 onSuccess: successCallBackOfInfrasecAPI                
             };
 
-            $scope.callAPI(rvRateManagerCoreSrv.fetchSingleRateRestrictionsAndAmountsDetails, options);
+            $scope.callAPI(RVBillCardSrv.postDataToInfrasec, options);
        
+        } else {
+console.log("reached here else")
         }
     };
 
