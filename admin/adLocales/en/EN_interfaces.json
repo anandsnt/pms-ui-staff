@@ -89,4 +89,5 @@
     "INFANTS_INCLUDED": "Include Infants Count With Guest Nights",
 	"INBOUND_URL": "Inbound URL",
   "DEFAULT_ROOM_TYPE": "Default Room Type",
-	"AVIDA_HEADER": "Avida"
+	"AVIDA_HEADER": "Avida",
+	"BASWARE_HEADER": "Basware"
