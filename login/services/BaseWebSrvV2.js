@@ -58,7 +58,7 @@ angular.module('login').service('BaseWebSrvV2', ['$http', '$q', '$window', '$roo
         var deferred = $q.defer();
 
         if (typeof params === "undefined") {
-            params = "";
+            params = {};
         }
 
         // Sample params {params:{fname: "fname", lname: "lname"}}
