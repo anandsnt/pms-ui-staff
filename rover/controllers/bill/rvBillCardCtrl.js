@@ -2067,6 +2067,7 @@ sntRover.controller('RVbillCardController',
 		var successCallBackOfApiCall = function(data) {
 			console.log(data);
 			$scope.reviewStatusArray[billIndex].reviewStatus = true;
+			$scope.reservationBillData.bills[$scope.currentActiveBill].is_active = false;
 			$scope.findNextBillToReview();
 		},
 		failureCallBackOfApiCall = function(errorMessage) {
