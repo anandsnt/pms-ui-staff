@@ -107,7 +107,7 @@ angular.module('sntRover').service('RVHotelDetailsSrv', ['$q', 'rvBaseWebSrvV2',
          */
         service.fetchInfrasecDetails = function () {
             var deferred = $q.defer();
-            var url = '/api/hotels/workstation_infrasec_details ';
+            var url = '/api/hotels/workstation_infrasec_details';
 
             RVBaseWebSrvV2.getJSON(url).then(function (data) {
                     deferred.resolve(data);
