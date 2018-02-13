@@ -30,7 +30,7 @@
         <div class="wrapper">
             <ul id="guest-search-results" class="search-results">
                 <li class="reservation identify-guest" ng-repeat="guest in results">
-                    <a href="">
+                    <a ui-sref="rover.guestcarddetails({guestId: guest.id})">
                         <figure class="guest-image"><!-- add class "accompany" if it's a accompanying guest -->
                             <img src="{{guest.image_url}}" alt="" />
                             <!-- if it's accompanying guest, show this as well:
