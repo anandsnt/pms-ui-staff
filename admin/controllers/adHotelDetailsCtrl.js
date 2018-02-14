@@ -24,6 +24,7 @@ admin.controller('ADHotelDetailsCtrl', [
 	$scope.isFieldsReadOnly = (($rootScope.isSntAdmin && $rootScope.isServiceProvider) || $rootScope.adminRole === "hotel-admin") ? "yes" : "no";
 	$scope.isFieldsReadOnlyForServiceProvider = ($rootScope.isSntAdmin && $rootScope.isServiceProvider) ? "yes" : "no";
 	$scope.isSequenceModChangeDisabled = false;
+	$scope.swedenCountryId = ';'
 	// CICO-41322 - Flag needed to show MP De-selection confirm popup.
 	var isMPFlagResetConfirmPopupNeeded = false;
 
@@ -48,6 +49,7 @@ admin.controller('ADHotelDetailsCtrl', [
 			isMPFlagResetConfirmPopupNeeded = false;
 			var fetchSuccess = function(data) {
 				$scope.data = data.data;
+				$scope.swedenCountryId = (_.find($scope.data.countries, function(obj){ return obj.name === $rootScope.infrasecSpecificCountry; })).id;
 				if ($scope.data.selected_mod_type_id) {
 					$scope.isSequenceModChangeDisabled = true;
 				}				
@@ -73,6 +75,7 @@ admin.controller('ADHotelDetailsCtrl', [
 			$scope.title = "Edit Hotel";
 			var fetchSuccess = function(data) {
 				$scope.data = data.data;
+				$scope.swedenCountryId = (_.find($scope.data.countries, function(obj){ return obj.name === 'Sweden'; })).id;
 				if ($scope.data.selected_mod_type_id) {
 					$scope.isSequenceModChangeDisabled = true;
 				} 
@@ -211,6 +214,7 @@ admin.controller('ADHotelDetailsCtrl', [
 				data.mli_certificate = $scope.mli.certificate;
 			}
 			data.interface_type_ids = getSelectedInterfaceTypes(data);
+			data.max_control_unit = parseInt(data.max_control_unit);
 			var themeData = {
 				'value': (!!$scope.selectedTheme) ? $scope.selectedTheme.value : 'ORANGE'
 			};
