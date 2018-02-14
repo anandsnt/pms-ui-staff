@@ -1919,17 +1919,14 @@ sntRover.controller('RVbillCardController',
 			billCount = $scope.reservationBillData.bills.length;
 
 		var successCallBackOfApiCall = function(data) {
-			console.log(data);
 			// If the user is on last Bill - proceed CHECKOUT PROCESS.
 			// Else proceed REVIEW PROCESS.
 			if (billCount === $scope.currentActiveBill + 1) {
-				console.log("BB API SUCCESS - PROCEED CHECKOUT");
 				// Set isLastBillSucceededWithBlackBoxAPI flag to true in order to proceed further checkout process.
 				$scope.isLastBillSucceededWithBlackBoxAPI = true;
 				$scope.clickedCompleteCheckout();
 			}
 			else {
-				console.log("BB API SUCCESS - PROCEED REVIEW");
 				// Updating review status of the bill.
 				$scope.reviewStatusArray[$scope.currentActiveBill].reviewStatus = true;
 				// Locking the bill.
@@ -1939,8 +1936,6 @@ sntRover.controller('RVbillCardController',
 			}
 		},
 		failureCallBackOfApiCall = function(errorMessage) {
-			console.log("BB API FAILED");
-			console.log(errorMessage);
 			$scope.errorMessage = errorMessage;
 		},
 		paramsToService = {
@@ -1969,15 +1964,16 @@ sntRover.controller('RVbillCardController',
 			return;
 		}
 
-		var isPaymentExist = $scope.reservationBillData.bills[$scope.currentActiveBill].is_payment_exist;
+		var isPaymentExist = $scope.reservationBillData.bills[$scope.currentActiveBill].is_payment_exist,
+			isControlCodeExist = $scope.reservationBillData.bills[$scope.currentActiveBill].is_control_code_exist;
 
 		// CICO-49105 : Calling blackbox API prior to checkout API if :
 		// 1. Blackbox enabled.
 		// 2. There should be payment exist in the bill.
 		// 3. Not opted checkoutWithoutSettlement.
+		// 4. Not having existing control code.
 		// NB : blackbox API Needed to be success inorder to proceed on further complete checkout API call.
-		if (isBlackBoxEnabled && isPaymentExist && !$scope.isLastBillSucceededWithBlackBoxAPI && !$scope.isCheckoutWithoutSettlement) {
-			console.log("CHECKOUT PROCESS - BLACKBOX_ENABLED::CALL BLACKBOX API");
+		if (isBlackBoxEnabled && isPaymentExist && !$scope.isLastBillSucceededWithBlackBoxAPI && !$scope.isCheckoutWithoutSettlement && !isControlCodeExist) {
 			callBlackBoxAPI();
 		}
 
@@ -2128,7 +2124,8 @@ sntRover.controller('RVbillCardController',
 		// CICO-9721 : Payment should be prompted on Bill 1 first before moving to review Bill 2 when balance is not 0.00.
 		var ActiveBillBalance = $scope.reservationBillData.bills[$scope.currentActiveBill].total_fees[0].balance_amount,
 			paymentType = reservationBillData.bills[$scope.currentActiveBill].credit_card_details.payment_type,
-			isPaymentExist = $scope.reservationBillData.bills[$scope.currentActiveBill].is_payment_exist;
+			isPaymentExist = $scope.reservationBillData.bills[$scope.currentActiveBill].is_payment_exist,
+			isControlCodeExist = $scope.reservationBillData.bills[$scope.currentActiveBill].is_control_code_exist;
 
 		if ($rootScope.isStandAlone && ( ActiveBillBalance === "0.00" || $scope.isCheckoutWithoutSettlement )) {
 
@@ -2136,8 +2133,8 @@ sntRover.controller('RVbillCardController',
 			// 1. Blackbox enabled.
 			// 2. There should be payment exist in the bill.
 			// 3. Not opted checkoutWithoutSettlement.
-			if (isBlackBoxEnabled && isPaymentExist && !$scope.isCheckoutWithoutSettlement) {
-				console.log("REVIEW PROCESS - BLACKBOX_ENABLED::CALL BLACKBOX API");
+			// 4. Not having existing control code.
+			if (isBlackBoxEnabled && isPaymentExist && !$scope.isCheckoutWithoutSettlement && !isControlCodeExist) {
 				callBlackBoxAPI();
 			}
 			else {
@@ -2681,7 +2678,6 @@ sntRover.controller('RVbillCardController',
 
 
 	 $scope.$on('BILL_PAYMENT_SUCCESS', function(event, data) {
-	 	console.log(data);
 	 	$scope.signatureData = JSON.stringify($("#signature").jSignature("getData", "native"));
 	 	var billCount = $scope.reservationBillData.bills.length;
 
