@@ -91,7 +91,7 @@ admin.controller('ADDevicesListCtrl', ['$scope', '$state', 'ngTableParams', 'adD
       $scope.selectedDeviceId = -1;
       $scope.resetDeviceSelection();
       appTypes.push({
-        'id': 'all',
+        'id': 'All',
         'value': 'All'
       });
       $scope.filterFetchSuccess(appTypes);
