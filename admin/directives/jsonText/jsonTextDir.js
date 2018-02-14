@@ -20,7 +20,7 @@ angular.module('admin').directive('jsonText', function() {
             scope.$watch(attrs.ngModel, function(newValue, oldValue) {
                 lastValid = lastValid || newValue;
 
-                if (newValue != oldValue) {
+                if (newValue !== oldValue) {
                     ngModelCtrl.$setViewValue(toUser(newValue));
 
                     // TODO avoid this causing the focus of the input to be lost..
@@ -28,21 +28,31 @@ angular.module('admin').directive('jsonText', function() {
                 }
             }, true); // MUST use objectEquality (true) here, for some reason..
 
+            /**
+             * Method to revert to last valid JSON
+             * @param {String} text takes in current text value
+             * @return {*} last valid JSON
+             */
             function fromUser(text) {
                 // Beware: trim() is not available in old browsers
                 if (!text || text.trim() === '') {
                     return {};
-                } else {
-                    try {
-                        lastValid = angular.fromJson(text);
-                        ngModelCtrl.$setValidity('invalidJson', true);
-                    } catch (e) {
-                        ngModelCtrl.$setValidity('invalidJson', false);
-                    }
-                    return lastValid;
                 }
+                
+                try {
+                    lastValid = angular.fromJson(text);
+                    ngModelCtrl.$setValidity('invalidJson', true);
+                } catch (e) {
+                    ngModelCtrl.$setValidity('invalidJson', false);
+                }
+                return lastValid;
             }
 
+            /**
+             * Returns a stringified JSON for binding
+             * @param {Object} object options configuration JSON object
+             * @return {string} stringified configuration for binding
+             */
             function toUser(object) {
                 // better than JSON.stringify(), because it formats + filters $$hashKey etc.
                 return angular.toJson(object, true);
