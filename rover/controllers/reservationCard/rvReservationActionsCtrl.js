@@ -1208,9 +1208,10 @@ sntRover.controller('reservationActionsController', [
 		};
 
 		// Action against email button in staycard.
-		$scope.sendReservationCancellation = function() {
+		$scope.sendReservationCancellation = function(locale) {
 			var postData = {
 				"type": "cancellation",
+				"locale": locale,
 				"emails": $scope.isEmailAttached() ? [$scope.guestCardData.contactInfo.email] : [$scope.DailogeState.sendConfirmatonMailTo]
 			};
 			var data = {
@@ -1252,12 +1253,12 @@ sntRover.controller('reservationActionsController', [
 
 				$scope.$emit('hideLoader');
 		    };
-		    
+
 		    fetchGuestLanguages(openCancellationPopup);
 		};
 
 		// Action against print button in staycard.
-		$scope.printReservationCancellation = function() {
+		$scope.printReservationCancellation = function(locale) {
 			var succesfullCallback = function(data) {
 				$scope.printData = data.data;
 				printPage();
@@ -1270,7 +1271,8 @@ sntRover.controller('reservationActionsController', [
 				successCallBack: succesfullCallback,
 				failureCallBack: failureCallbackPrint,
 				params: {
-					'reservation_id': $scope.reservationData.reservation_card.reservation_id
+					'reservation_id': $scope.reservationData.reservation_card.reservation_id,
+					'locale': locale
 				}
 			});
 		};
