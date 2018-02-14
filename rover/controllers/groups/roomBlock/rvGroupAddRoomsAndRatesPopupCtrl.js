@@ -88,8 +88,8 @@ angular.module('sntRover').controller('rvGroupAddRoomsAndRatesPopupCtrl', [
 		 * @return {[type]}              [description]
 		 */
 		$scope.changeBestAvailableRate = function(row) {
-			var roomType = _.findWhere($scope.roomTypes, {
-				"room_type_id": row.room_type_id
+			var roomType = _.find($scope.roomTypes, function (roomType) {
+				return roomType.room_type_id == row.room_type_id;
 			});
 
 			if (roomType) {
