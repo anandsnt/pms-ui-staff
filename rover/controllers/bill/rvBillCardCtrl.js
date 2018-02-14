@@ -2067,7 +2067,7 @@ sntRover.controller('RVbillCardController',
 
 		var successCallBackOfApiCall = function(data) {
 			console.log(data);
-			$scope.reviewStatusArray[billIndex].reviewStatus = true;
+			$scope.reviewStatusArray[$scope.currentActiveBill].reviewStatus = true;
 			$scope.findNextBillToReview();
 		},
 		failureCallBackOfApiCall = function(errorMessage) {
@@ -2075,7 +2075,7 @@ sntRover.controller('RVbillCardController',
 			$scope.errorMessage = errorMessage;
 		},
 		paramsToService = {
-			'bill_id': $scope.reservationBillData.bills[billIndex].bill_id
+			'bill_id': $scope.reservationBillData.bills[$scope.currentActiveBill].bill_id
 		};
 
 		var options = {
@@ -2096,11 +2096,12 @@ sntRover.controller('RVbillCardController',
 		// CICO-9721 : Payment should be prompted on Bill 1 first before moving to review Bill 2 when balance is not 0.00.
 		var ActiveBillBalance = $scope.reservationBillData.bills[$scope.currentActiveBill].total_fees[0].balance_amount,
 			paymentType = reservationBillData.bills[$scope.currentActiveBill].credit_card_details.payment_type,
-			isBlackBoxEnabled = $rootScope.isInfrasecActivated && $rootScope.isInfrasecActivatedForWorkstation;
+			isBlackBoxEnabled = $rootScope.isInfrasecActivated && $rootScope.isInfrasecActivatedForWorkstation,
+			isPaymentExist = $scope.reservationBillData.bills[$scope.currentActiveBill].is_payment_exist;
 
 		if ($rootScope.isStandAlone && ( ActiveBillBalance === "0.00" || $scope.isCheckoutWithoutSettlement )) {
 
-			if (isBlackBoxEnabled) {
+			if (isBlackBoxEnabled && isPaymentExist) {
 				console.log("BLACKBOX_ENABLED::CALL BLACKBOX API");
 				callBlackBoxAPI(index);
 			}
