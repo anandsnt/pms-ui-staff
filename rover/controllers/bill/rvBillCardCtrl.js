@@ -67,6 +67,7 @@ sntRover.controller('RVbillCardController',
 	$scope.saveData.termsAndConditions = $scope.reservation.reservation_card.is_pre_checkin ? $scope.reservation.reservation_card.is_pre_checkin : false;
 	$scope.reviewStatusArray = [];
 	$scope.isAllBillsReviewed = false;
+	$scope.isLastBillSucceededWithBlackBoxAPI = false;
 	$scope.saveData.isEarlyDepartureFlag = false;
 	$scope.saveData.isEmailPopupFlag = false;
 	$scope.isRefreshOnBackToStaycard = false;
@@ -1911,6 +1912,50 @@ sntRover.controller('RVbillCardController',
 		}
 	};
 
+	// CICO-49105 Blackbox API on each bill having payments exist..
+	var callBlackBoxAPI = function() {
+
+		var currentActiveBill = $scope.reservationBillData.bills[$scope.currentActiveBill],
+			billCount = $scope.reservationBillData.bills.length;
+
+		var successCallBackOfApiCall = function(data) {
+			console.log(data);
+			// If the user is on last Bill - proceed CHECKOUT PROCESS.
+			// Else proceed REVIEW PROCESS.
+			if (billCount === $scope.currentActiveBill + 1) {
+				console.log("BB API SUCCESS - PROCEED CHECKOUT");
+				// Set isLastBillSucceededWithBlackBoxAPI flag to true in order to proceed further checkout process.
+				$scope.isLastBillSucceededWithBlackBoxAPI = true;
+				$scope.clickedCompleteCheckout();
+			}
+			else {
+				console.log("BB API SUCCESS - PROCEED REVIEW");
+				// Updating review status of the bill.
+				$scope.reviewStatusArray[$scope.currentActiveBill].reviewStatus = true;
+				// Locking the bill.
+				currentActiveBill.is_active = false;
+				// Moving to next bill to review
+				$scope.findNextBillToReview();
+			}
+		},
+		failureCallBackOfApiCall = function(errorMessage) {
+			console.log("BB API FAILED");
+			console.log(errorMessage);
+			$scope.errorMessage = errorMessage;
+		},
+		paramsToService = {
+			'bill_id': currentActiveBill.bill_id
+		};
+
+		var options = {
+			params: paramsToService,
+			successCallBack: successCallBackOfApiCall,
+			failureCallBack: failureCallBackOfApiCall
+		};
+
+		$scope.callAPI( RVBillCardSrv.callBlackBoxApi, options );
+	};
+
 	// CICO-45029 - handle check-out in progress tracking so user doesnt initiate errors
 	// due to having already clicked the review bill & complete check-out button
 	$scope.checkoutInProgress = false;
@@ -1922,6 +1967,15 @@ sntRover.controller('RVbillCardController',
 		if (!$scope.isAllBillsReviewed) {
 			$scope.checkoutInProgress = false;
 			return;
+		}
+
+		var isPaymentExist = $scope.reservationBillData.bills[$scope.currentActiveBill].is_payment_exist;
+
+		// CICO-49105 : Calling blackbox API prior to checkout API if balckbox enabled and there is payment exist.
+		// blackbox API Needed to be success inorder to proceed further checkout.
+		if (isBlackBoxEnabled && isPaymentExist && !$scope.isLastBillSucceededWithBlackBoxAPI) {
+			console.log("CHECKOUT PROCESS - BLACKBOX_ENABLED::CALL BLACKBOX API");
+			callBlackBoxAPI();
 		}
 
 		// To check for ar account details in case of direct bills
@@ -2062,37 +2116,6 @@ sntRover.controller('RVbillCardController',
 		}
 	};
 
-	// CICO-49105 Blackbox API on each bill..
-	var callBlackBoxAPI = function() {
-
-		var currentActiveBill = $scope.reservationBillData.bills[$scope.currentActiveBill];
-
-		var successCallBackOfApiCall = function(data) {
-			console.log(data);
-			// Updating review status of the bill.
-			$scope.reviewStatusArray[$scope.currentActiveBill].reviewStatus = true;
-			// Locking the bill.
-			currentActiveBill.is_active = false;
-			// Moving to next bill to review
-			$scope.findNextBillToReview();
-		},
-		failureCallBackOfApiCall = function(errorMessage) {
-			console.log(errorMessage);
-			$scope.errorMessage = errorMessage;
-		},
-		paramsToService = {
-			'bill_id': currentActiveBill.bill_id
-		};
-
-		var options = {
-			params: paramsToService,
-			successCallBack: successCallBackOfApiCall,
-			failureCallBack: failureCallBackOfApiCall
-		};
-
-		$scope.callAPI( RVBillCardSrv.callBlackBoxApi, options );
-	};
-
 	// To handle review button click
 	$scope.clickedReviewButton = function(index) {
 		// To check for ar account details in case of direct bills
@@ -2107,7 +2130,7 @@ sntRover.controller('RVbillCardController',
 		if ($rootScope.isStandAlone && ( ActiveBillBalance === "0.00" || $scope.isCheckoutWithoutSettlement )) {
 
 			if (isBlackBoxEnabled && isPaymentExist) {
-				console.log("BLACKBOX_ENABLED::CALL BLACKBOX API");
+				console.log("REVIEW PROCESS - BLACKBOX_ENABLED::CALL BLACKBOX API");
 				callBlackBoxAPI();
 			}
 			else {
