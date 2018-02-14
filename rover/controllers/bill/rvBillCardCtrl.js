@@ -54,12 +54,11 @@ sntRover.controller('RVbillCardController',
 	var scrollerOptionsForGraph = {scrollX: true, click: true, preventDefault: true, mouseWheel: false},
 		scrollerOptionForSummary = {scrollX: true },
 		scrollOptions =  {preventDefaultException: { tagName: /^(INPUT|TEXTAREA|BUTTON|SELECT|A|DIV)$/ }, preventDefault: false},
-		// CICO-49105 Whether our system is configured with blackbox..
+		// CICO-49105 - Blackbox enabled or not.
 		isBlackBoxEnabled = $rootScope.isInfrasecActivated && $rootScope.isInfrasecActivatedForWorkstation;
 
 	$scope.setScroller('registration-content', scrollOptions);
   	$scope.setScroller ('bill-tab-scroller', scrollerOptionsForGraph);
-
 
 	$scope.clickedButton = $stateParams.clickedButton;
 	$scope.saveData = {};
@@ -68,7 +67,6 @@ sntRover.controller('RVbillCardController',
 	$scope.saveData.termsAndConditions = $scope.reservation.reservation_card.is_pre_checkin ? $scope.reservation.reservation_card.is_pre_checkin : false;
 	$scope.reviewStatusArray = [];
 	$scope.isAllBillsReviewed = false;
-	$scope.successOnBlackBoxApi = false;
 	$scope.saveData.isEarlyDepartureFlag = false;
 	$scope.saveData.isEmailPopupFlag = false;
 	$scope.isRefreshOnBackToStaycard = false;
@@ -2064,6 +2062,31 @@ sntRover.controller('RVbillCardController',
 		}
 	};
 
+	// CICO-49105 Blackbox API on each bill..
+	var callBlackBoxAPI = function(billIndex) {
+
+		var successCallBackOfApiCall = function(data) {
+			console.log(data);
+			$scope.reviewStatusArray[billIndex].reviewStatus = true;
+			$scope.findNextBillToReview();
+		},
+		failureCallBackOfApiCall = function(errorMessage) {
+			console.log(errorMessage);
+			$scope.errorMessage = errorMessage;
+		},
+		paramsToService = {
+			'bill_id': $scope.reservationBillData.bills[billIndex].bill_id
+		};
+
+		var options = {
+			params: paramsToService,
+			successCallBack: successCallBackOfApiCall,
+			failureCallBack: failureCallBackOfApiCall
+		};
+
+		$scope.callAPI( RVBillCardSrv.callBlackBoxApi, options );
+	};
+
 	// To handle review button click
 	$scope.clickedReviewButton = function(index) {
 		// To check for ar account details in case of direct bills
@@ -2072,12 +2095,20 @@ sntRover.controller('RVbillCardController',
 		}
 		// CICO-9721 : Payment should be prompted on Bill 1 first before moving to review Bill 2 when balance is not 0.00.
 		var ActiveBillBalance = $scope.reservationBillData.bills[$scope.currentActiveBill].total_fees[0].balance_amount,
-			paymentType = reservationBillData.bills[$scope.currentActiveBill].credit_card_details.payment_type;
+			paymentType = reservationBillData.bills[$scope.currentActiveBill].credit_card_details.payment_type,
+			isBlackBoxEnabled = $rootScope.isInfrasecActivated && $rootScope.isInfrasecActivatedForWorkstation;
 
 		if ($rootScope.isStandAlone && ( ActiveBillBalance === "0.00" || $scope.isCheckoutWithoutSettlement )) {
-			// Checking bill balance for stand-alone only.
-			$scope.reviewStatusArray[index].reviewStatus = true;
-			$scope.findNextBillToReview();
+
+			if (isBlackBoxEnabled) {
+				console.log("BLACKBOX_ENABLED::CALL BLACKBOX API");
+				callBlackBoxAPI(index);
+			}
+			else {
+				// Checking bill balance for stand-alone only.
+				$scope.reviewStatusArray[index].reviewStatus = true;
+				$scope.findNextBillToReview();
+			}
 		}
 		else if ( $rootScope.isStandAlone && ActiveBillBalance !== "0.00" && paymentType === "DB"  && !reservationBillData.bills[$scope.currentActiveBill].is_allow_direct_debit ) {
 			showDirectDebitDisabledPopup();
@@ -2612,50 +2643,8 @@ sntRover.controller('RVbillCardController',
 		$scope.callAPI(RVBillCardSrv.fetchGuestLanguages, options);
 	};
 
-	var reloadBillAfterPayment = function(data) {
-
-		var fetchBillDataSuccessCallback = function(billData) {
-		 	$scope.$emit('hideLoader');
-		 	reservationBillData = billData;
-		 	$scope.init(billData);
-		 	$scope.calculateBillDaysWidth();
-		 	// CICO-10906 review process continues after payment.
-			if ( (data.bill_balance === 0.0 || data.bill_balance === "0.0") && $scope.isViaReviewProcess ) {
-				(billCount === data.billNumber) ? $scope.clickedCompleteCheckout() :
-						$scope.clickedReviewButton(data.billNumber - 1);
-			}
-		};
-
-		$scope.invokeApi(RVBillCardSrv.fetch, $scope.reservationBillData.reservation_id, fetchBillDataSuccessCallback);
-
-	};
-
-	// CICO-49105 Blackbox API on payment..
-	var callBlackBoxAPI = function() {
-
-		var successCallBackOfApiCall = function(sucessData) {
-			console.log(sucessData);
-			reloadBillScreen();
-		},
-		failureCallBackOfApiCall = function(errorMessage) {
-			console.log(errorMessage);
-			$scope.errorMessage = errorMessage;
-		},
-		paramsToService = {
-			'bill_id': $scope.reservationBillData.bills[$scope.currentActiveBill].bill_id
-		};
-
-		var options = {
-			params: paramsToService,
-			successCallBack: successCallBackOfApiCall,
-			failureCallBack: failureCallBackOfApiCall
-		};
-
-		$scope.callAPI( RVBillCardSrv.callBlackBoxApi, options );
-	};
 
 	 $scope.$on('BILL_PAYMENT_SUCCESS', function(event, data) {
-	 	console.log(data);
 	 	$scope.signatureData = JSON.stringify($("#signature").jSignature("getData", "native"));
 	 	var billCount = $scope.reservationBillData.bills.length;
 
@@ -2672,14 +2661,8 @@ sntRover.controller('RVbillCardController',
 			}
 		};
 
-		// If Blackbox enabled - BlackboxAPI call ..
-		if (isBlackBoxEnabled) {
-			callBlackBoxAPI();
-		}
-		else {
-			// update the bill screen and handle futher payments
-			$scope.invokeApi(RVBillCardSrv.fetch, $scope.reservationBillData.reservation_id, fetchBillDataSuccessCallback);
-		}
+		// update the bill screen and handle futher payments
+		$scope.invokeApi(RVBillCardSrv.fetch, $scope.reservationBillData.reservation_id, fetchBillDataSuccessCallback);
 
 
 	});
