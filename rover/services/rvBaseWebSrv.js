@@ -26,7 +26,7 @@ angular.module('sntRover').service('RVBaseWebSrv', ['$http', '$q', '$window', '$
         var deferred = $q.defer();
 
         if (typeof params === "undefined") {
-            params = "";
+            params = {};
         }
 
         var httpDict = {};
