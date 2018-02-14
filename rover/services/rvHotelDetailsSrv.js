@@ -103,7 +103,7 @@ angular.module('sntRover').service('RVHotelDetailsSrv', ['$q', 'rvBaseWebSrvV2',
                 workstationInfo.emv_terminal_id) || service.hotelDetails['payment_gateway'] === 'sixpayments';
         };
         /*
-         *
+         * fetch infrasec details of the logged in hotel
          */
         service.fetchInfrasecDetails = function () {
             var deferred = $q.defer();
