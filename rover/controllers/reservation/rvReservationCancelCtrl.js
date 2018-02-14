@@ -317,8 +317,7 @@
 							payment_method_id: parseInt($scope.cancellationData.selectedCard) === -1 ? null : parseInt($scope.cancellationData.selectedCard),
 							id: reservationId,
 							application: "ROVER",
-							is_with_penalty: isWithoutPenalty,
-							locale: $scope.cancellationData.locale
+							is_with_penalty: isWithoutPenalty
 						};
 
 						if ($scope.ngDialogData.isDisplayReference) {
@@ -333,8 +332,7 @@
 						payment_method_id: parseInt($scope.cancellationData.selectedCard) === -1 ? null : parseInt($scope.cancellationData.selectedCard),
 						id: $scope.reservationData.reservationId || $scope.reservationParentData.reservationId || $scope.passData.reservationId,
 						application: "ROVER",
-						is_with_penalty: isWithoutPenalty,
-						locale: $scope.cancellationData.locale
+						is_with_penalty: isWithoutPenalty
 					};
 
 					if ($scope.ngDialogData.isDisplayReference) {
@@ -537,9 +535,10 @@
 			};
 
 			// Action against email button in staycard.
-			$scope.sendReservationCancellation = function() {
+			$scope.sendReservationCancellation = function(locale) {
 				var postData = {
 					"type": "cancellation",
+					"locale": locale,
 					"emails": $scope.isEmailAttached() ? [$scope.guestCardData.contactInfo.email] : [$scope.DailogeState.sendConfirmatonMailTo]
 				};
 				var data = {
@@ -582,7 +581,7 @@
 			};
 
 			// Action against print button in staycard.
-			$scope.printReservationCancellation = function() {
+			$scope.printReservationCancellation = function(locale) {
 				var succesfullCallback = function(data) {
 					$scope.printData = data.data;
 					printPage();
@@ -595,7 +594,8 @@
 					successCallBack: succesfullCallback,
 					failureCallBack: failureCallbackPrint,
 					params: {
-						'reservation_id': $scope.passData.reservationId
+						'reservation_id': $scope.passData.reservationId,
+						'locale': locale
 					}
 				});
 			};
