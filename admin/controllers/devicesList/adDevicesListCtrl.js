@@ -90,6 +90,10 @@ admin.controller('ADDevicesListCtrl', ['$scope', '$state', 'ngTableParams', 'adD
       $scope.selectedDevice = {};
       $scope.selectedDeviceId = -1;
       $scope.resetDeviceSelection();
+      appTypes.push({
+        'id': 'all',
+        'value': 'All'
+      });
       $scope.filterFetchSuccess(appTypes);
       $scope.filterType = appTypes[0];
       $scope.hours = adDebuggingSetupSrv.gethoursList();

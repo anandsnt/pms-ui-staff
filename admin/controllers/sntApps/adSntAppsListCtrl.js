@@ -46,6 +46,15 @@ admin.controller('ADSntAppsListCtrl', ['$scope',
 			$scope.invokeApi(adAppVersionsSrv.fetchAppVersions, {}, fetchAppListSuccessCallback);
 		};
 
+		var setAppTypes = function (appTypes) {
+			// exclude iPad Apps
+			appTypes = _.filter(appTypes, function(app) {
+				return app.id !== 1;
+			});
+			$scope.filterList = appTypes;
+			$scope.filterType = appTypes[0];
+		};
+
 		$scope.appTypeChanged = function() {
 			fetchDeviceDebugSetup();
 		};
@@ -99,8 +108,7 @@ admin.controller('ADSntAppsListCtrl', ['$scope',
 			fetchDeviceDebugSetup();
 			$scope.timings = adAppVersionsSrv.returnTimeArray();
 			$scope.screenMode = 'BUILD_LIST';
-			$scope.filterList = appTypes;
-			$scope.filterType = appTypes[0];
+			setAppTypes(appTypes);
 		})();
 	}
 ]);
