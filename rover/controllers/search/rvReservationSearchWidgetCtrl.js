@@ -703,9 +703,6 @@ sntRover.controller('rvReservationSearchWidgetController', ['$scope', '$rootScop
 		 * function to execute on clicking on each result
 		 */
 		$scope.goToReservationDetails = function($event, reservationID, confirmationID) {
-			console.log("----------------")
-			console.log($rootScope.isInfrasecActivated);
-			console.log($rootScope.isInfrasecActivatedForWorkstation)
 			$event.preventDefault();
 			$event.stopImmediatePropagation();
   			$event.stopPropagation();
