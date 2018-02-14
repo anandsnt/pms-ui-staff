@@ -67,7 +67,7 @@ angular.module('sntRover').service('rvBaseWebSrvV2', ['$http', '$q', '$window', 
             httpDict = {};
 
         if (angular.isUndefined(params)) {
-            params = "";
+            params = {};
         }
         httpDict.url = url;
         httpDict.method = httpMethod;
