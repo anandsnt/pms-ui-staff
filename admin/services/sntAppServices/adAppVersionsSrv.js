@@ -42,9 +42,9 @@ admin.service('adAppVersionsSrv', ['$http', '$q', 'ADBaseWebSrv', 'ADBaseWebSrvV
 
 	this.updateAppUpgradeTimes = function(params) {
 		var deferred = $q.defer();
-		var url = '/admin/service_application_types';
+		var url = '/admin/service_application_types/update_app_types';
 
-		ADBaseWebSrvV2.putJSON(url, params).then(function(response) {
+		ADBaseWebSrvV2.postJSON(url, params).then(function(response) {
 			deferred.resolve(response);
 		}, function(data) {
 			deferred.reject(data);

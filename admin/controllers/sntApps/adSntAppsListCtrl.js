@@ -104,7 +104,9 @@ admin.controller('ADSntAppsListCtrl', ['$scope',
 
 		$scope.updateUpgradeTime = function () {
 			
-			var params = $scope.appTypesList;
+			var params = {
+				'service_application_types': $scope.appTypesList
+			};
 			var updateUpgradeTimeSuccess = function () {
 				// On sucess, update filter list with updated time
 				$scope.filterList = angular.copy($scope.appTypesList);
