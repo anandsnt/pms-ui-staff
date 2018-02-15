@@ -3,11 +3,11 @@ admin.controller('ADSntAppsListCtrl', ['$scope',
 	function($scope, adDebuggingSetupSrv, adAppVersionsSrv, ngTableParams, $filter, appTypes) {
 		BaseCtrl.call(this, $scope);
 
-		$scope.sortByVersion = function() {
-			$scope.tableParams.sorting({
-				'version': $scope.tableParams.isSortBy('version', 'asc') ? 'desc' : 'asc'
-			});
-		};
+		// $scope.sortByVersion = function() {
+		// 	$scope.tableParams.sorting({
+		// 		'version': $scope.tableParams.isSortBy('version', 'asc') ? 'desc' : 'asc'
+		// 	});
+		// };
 
 		var fetchAppVersions = function() {
 
@@ -87,14 +87,22 @@ admin.controller('ADSntAppsListCtrl', ['$scope',
 			console.log(app);
 		};
 
-		$scope.editApp = function(app) {
-			$scope.selectedApp = {
-				"build": app.build,
-				"version": app.version,
-				"description": app.description,
-				"updated_on": app.updated_on
-			};
-			$scope.screenMode = 'EDIT_BUILD';
+		$scope.editApp = function(app, index) {
+			// edit only avalaible for latest build
+			if (index === 0) {
+				$scope.selectedApp = {
+					"build": app.build,
+					"version": app.version,
+					"description": app.description,
+					"updated_on": app.updated_on
+				};
+				$scope.screenMode = 'EDIT_BUILD';
+			}
+			return;
+		};
+
+		$scope.deleteBuild  = function () {
+
 		};
 
 		$scope.showGeneralSettings = function () {

@@ -25,10 +25,7 @@
                 <table id="brands" class="grid " ng-table="tableParams" template-pagination="">
                     <thead>
                         <tr>
-                            <th width="30%" class="sortable" ng-class="{
-                                'sort-asc': tableParams.isSortBy('version', 'asc'),
-                                'sort-desc': tableParams.isSortBy('version', 'desc')
-                              }" ng-click="sortByVersion()" rowspan="2">
+                            <th width="30%" rowspan="2">
                                 <div><i class="glyphicon glyphicon-user"></i> <span>App version</span></div>
                             </th>
                             <th width="30%" rowspan="2">
@@ -40,14 +37,14 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr ng-repeat="app in $data | filter:filterDevices">
-                            <td ng-click="editApp(app)">
+                        <tr ng-repeat="app in $data | filter:filterDevices" ng-click="editApp(app,  $index)" style="cursor: pointer;">
+                            <td ng-class="{'grey-bg': $index !== 0}">
                                 {{app.version}}
                             </td>
-                            <td ng-click="editApp(app)">
+                            <td ng-class="{'grey-bg': $index !== 0}">
                                 {{app.updated_on}}
                             </td>
-                            <td>
+                            <td ng-class="{'grey-bg': $index !== 0}">
                                 {{app.description}}
                             </td>
                         </tr>
@@ -95,7 +92,10 @@
                 <button type="button" id="cancel" class="button blank add-data-inline" ng-click="changeToListView()" translate>
                     CANCEL
                 </button>
-                <button type="button" like-type="common" id="update" class="button  ng-binding green" ng-click="uploadBuild()" translate>
+                <button type="button" like-type="common" id="update" class="button red white-text" ng-click="deleteBuild(selectedApp)" ng-show="screenMode === 'EDIT_BUILD'" translate>
+                    DELETE
+                </button>
+                <button type="button" like-type="common" id="update" class="button green" ng-click="uploadBuild()" translate>
                     SAVE_CHANGES
                 </button>
             </div>
