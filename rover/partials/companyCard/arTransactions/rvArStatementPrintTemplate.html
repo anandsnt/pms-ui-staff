@@ -29,12 +29,12 @@
             <thead>
                 <tr>
                     <th></th>
-                    <th class="charge-date" >{{printData.translation.date_of_charge}}</th>
-                    <th class="charge-code" >{{printData.translation.charge_code}}</th>
-                    <th class="charge-description" >{{printData.translation.charge_description}}</th>
-                    <th class="align-right" >{{printData.translation.debits}}</th>
-                    <th class="align-right" >{{printData.translation.credits}}</th>
-                    <th class="align-right" >{{printData.translation.amount_due}}</th>
+                    <th class="charge-date" ><strong>{{printData.translation.date_of_charge}}</strong></th>
+                    <th class="charge-code" ><strong>{{printData.translation.charge_code}}</strong></th>
+                    <th class="charge-description" ><strong>{{printData.translation.charge_description}}</strong></th>
+                    <th class="align-right" ><strong>{{printData.translation.debits}}</strong></th>
+                    <th class="align-right" ><strong>{{printData.translation.credits}}</strong></th>
+                    <th class="align-right" ><strong>{{printData.translation.amount_due}}</strong></th>
                 </tr>
             </thead>
             <tbody>
@@ -209,10 +209,10 @@
         <table class="invoice-details tax-breakdown" ng-if="printData.has_enabled_extended_tax_breakdown">
             <thead>
                 <tr>
-                    <th class="tax-description" >{{printData.translation.tax_description}}</th>
-                    <th >{{printData.translation.gross}}</th>
-                    <th >{{printData.translation.net}}</th>
-                    <th >{{printData.translation.tax}}</th>
+                    <th class="tax-description" ><strong>{{printData.translation.tax_description}}</strong></th>
+                    <th ><strong>{{printData.translation.gross}}</strong></th>
+                    <th ><strong>{{printData.translation.net}}</strong></th>
+                    <th ><strong>{{printData.translation.tax}}</strong></th>
                 </tr>
             </thead>
             <tbody>
