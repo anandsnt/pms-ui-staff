@@ -7,6 +7,7 @@ admin.controller('ADDevicesListCtrl', ['$scope', '$state', 'ngTableParams', 'adD
       var getParams = $scope.calculateGetParams(params);
 
       getParams.service_application = angular.copy(getParams.rate_type_id);
+      getParams.sort_dir = getParams.sort_dir ? "asc" : "desc";
       delete getParams.rate_type_id;
       var fetchSuccessOfItemList = function(data) {
         $timeout(function() {
@@ -38,7 +39,7 @@ admin.controller('ADDevicesListCtrl', ['$scope', '$state', 'ngTableParams', 'adD
         page: 1, // show first page
         count: $scope.displyCount, // count per page
         sorting: {
-          rate: 'asc' // initial sorting
+          device_name: 'asc' // initial sorting
         }
       }, {
         total: $scope.data.length, // length of data
