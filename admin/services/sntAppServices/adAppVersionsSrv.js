@@ -9,7 +9,7 @@ admin.service('adAppVersionsSrv', ['$http', '$q', 'ADBaseWebSrv', 'ADBaseWebSrvV
 				"id": 1,
 				"version": "1.2.1",
 				"updated_on": "12/11/2017",
-				"description": "description 1"
+				"description": "description 1.description 1description 1.description 1description 1description 1description 1description 1description 1description 1description 1description 1description 1description 1"
 			}, {
 				"id": 2,
 				"version": "1.2.2",

@@ -3,8 +3,8 @@
         <header class="content-title float">
             <h2> App versions </h2>
             <a ng-click="goBackToPreviousState()" class="action back ng-scope" translate="">Services</a>
+            <a class="action" ng-click="showGeneralSettings()" style="background-image:none;color:black;">Settings</a>
             <a class="action add" ng-click="changeToUploadBuildMode()">Upload new build</a>
-            <a class="action" ng-click="showGeneralSettings()" style="background-image:none;">Settings</a>
             <div class="filters">
                 <div class="filter select" style="width:200px;">
                     <div class="entry">
@@ -34,8 +34,8 @@
                             <th width="30%" rowspan="2">
                                 <div><span>Updated on</span></div>
                             </th>
-                            <th width="30%" rowspan="2">
-                                <div><span>Delete</span></div>
+                            <th width="40%" rowspan="2">
+                                <div><span>Description</span></div>
                             </th>
                         </tr>
                     </thead>
@@ -48,7 +48,7 @@
                                 {{app.updated_on}}
                             </td>
                             <td>
-                                <span class="icons delete_small cursor_pointer" ng-click="deleteApp(app)" ng-hide="false">&nbsp;</span>
+                                {{app.description}}
                             </td>
                         </tr>
                     </tbody>
