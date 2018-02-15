@@ -25,11 +25,11 @@
         <strong >{{printData.translation.confirmation_number}}:</strong>{{printData.confirmation_number}}<br/>
         <strong >{{printData.translation.tax_number}}:</strong>{{printData.tax_number}}
         <br/>
-        <span ng-show="printData.control_code !== ''">
+        <span ng-show="printData.control_code !== '' && !isInformationalInvoice">
             <strong >{{printData.translation.control_code}}:</strong>{{printData.control_code}}
             <br/>
         </span>
-        <span ng-show="printData.control_unit !== ''">
+        <span ng-show="printData.control_unit !== '' && !isInformationalInvoice">
             <strong >{{printData.translation.control_unit}}:</strong>{{printData.control_unit}}
             <br/>
         </span>

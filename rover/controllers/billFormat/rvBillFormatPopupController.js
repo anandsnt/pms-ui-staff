@@ -172,6 +172,7 @@ sntRover.controller('rvBillFormatPopupCtrl', ['$scope', '$rootScope', '$filter',
 
         emailRequest.bill_layout = $scope.data.default_bill_settings;
         emailRequest.to_address = $scope.data.to_address;
+        emailRequest.is_informational_invoice = $scope.data.isInformationalInvoice;
         $scope.clickedEmail(emailRequest);
     };
 
