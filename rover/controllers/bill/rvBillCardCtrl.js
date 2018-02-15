@@ -2786,9 +2786,17 @@ sntRover.controller('RVbillCardController',
 	$scope.$on('PAYMENT_MAP_ERROR', function(event, data) {
         $scope.errorMessage = data;
     });
+	/*
+	 * Update informational invoice flag
+	 * Based on checkbox in popup
+	 */
+    $scope.$on("UPDATE_INFORMATIONAL_INVOICE", function(event, isInformationalInvoice) {
+    	$scope.isInformationalInvoice = isInformationalInvoice;
+    });
 
     $scope.showFormatBillPopup = function(billNo) {
     	$scope.billNo = billNo;
+    	$scope.isInformationalInvoice = false;
     	$scope.isSettledBill = $scope.reservationBillData.bills[$scope.currentActiveBill].is_active;
     	ngDialog.open({
     		template: '/assets/partials/popups/billFormat/rvBillFormatPopup.html',

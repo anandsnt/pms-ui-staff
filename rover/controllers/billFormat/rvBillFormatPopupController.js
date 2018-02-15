@@ -146,11 +146,11 @@ sntRover.controller('rvBillFormatPopupCtrl', ['$scope', '$rootScope', '$filter',
     };
 
     /*
-    *  Function which get invoked when the print btn from bill format popup is clicked
-    */
+     *  Function which get invoked when the print btn from bill format popup is clicked
+     */
     $scope.printBill = function() {
         var printRequest = getPrintEmailRequestParams();
-
+        $scope.$emit("UPDATE_INFORMATIONAL_INVOICE", $scope.isInformationalInvoice);
         printRequest.bill_layout = $scope.data.default_bill_settings;
         $scope.clickedPrint(printRequest);
     };

@@ -12,7 +12,10 @@
         <span ng-bind-html="printData.guest_details.address"></span>
         <div class="info-bottom">
             <strong >{{printData.translation.invoice_date}}:</strong>{{printData.invoice_date | date:dateFormat}}<br/>
-            <strong >{{printData.translation.invoice_number}}:</strong>{{printData.invoice_number}}<br/>
+            <span ng-show="!isInformationalInvoice">
+                <strong >{{printData.translation.invoice_number}}:</strong>{{printData.invoice_number}}<br/>
+            </span>
+            
         </div>
     </div>
     <div class="info-right">
