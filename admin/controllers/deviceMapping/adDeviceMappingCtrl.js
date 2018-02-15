@@ -129,7 +129,7 @@ admin.controller('ADDeviceMappingsCtrl', ['ngTableParams', '$rootScope', '$scope
             };
 
             $scope.callAPI(ADEmvTerminalsSrv.getHotelInfrasecDetails, options);
-        }
+        };
 
         $scope.fetchKeyEncoderList();
         $scope.fetchEmvList();
