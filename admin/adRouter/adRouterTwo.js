@@ -779,10 +779,10 @@ angular.module('adminModuleTwo', []).config(function ($stateProvider) {
         }
     });
 
-    $stateProvider.state('admin.installedDevices', {
+    $stateProvider.state('admin.registeredDevices', {
         templateUrl: '/assets/partials/installedDevices/adDevicesList.html',
         controller: 'ADDevicesListCtrl',
-        url: '/installedDevices',
+        url: '/registeredDevices',
         resolve: {
             appTypes: function(adDebuggingSetupSrv) {
                 return adDebuggingSetupSrv.retrieveAppTypes();

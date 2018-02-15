@@ -1,7 +1,7 @@
 <section class="content current admin-scrollfix" div-touch-move-stop-propogate ng-click='clearErrorMessage()' ng-show="selectedDeviceId == -1">
     <div>
         <header class="content-title float">
-            <h2> Installed Devices </h2>
+            <h2> Registered Devices </h2>
             <span class="count"> ({{totalCount}}) </span>
             <a ng-click="goBackToPreviousState()" class="action back ng-scope" translate="">Services</a>
             <div class="filters">
@@ -67,7 +67,7 @@
 <section class="content current" ng-show="selectedDeviceId !== -1">
     <header class="content-title float">
         <h2>Edit</h2>
-        <a ng-click="resetDeviceSelection()" class="action back ng-scope" translate="">Installed Devices</a>
+        <a ng-click="resetDeviceSelection()" class="action back ng-scope" translate="">Registered Devices</a>
     </header>
     <section class="content-scroll">
         <div class="form">

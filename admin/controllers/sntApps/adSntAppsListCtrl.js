@@ -110,8 +110,8 @@ admin.controller('ADSntAppsListCtrl', ['$scope',
 				$scope.filterList = angular.copy($scope.appTypesList);
 				$scope.screenMode = 'BUILD_LIST';
 			};
-			var updateUpgradeTimeFailure = function () {
-				$scope.errorMessage = ['Something went wrong while saving!'];
+			var updateUpgradeTimeFailure = function (response) {
+				$scope.errorMessage = response;
 			};
 
 			$scope.callAPI(adAppVersionsSrv.updateAppUpgradeTimes, {
