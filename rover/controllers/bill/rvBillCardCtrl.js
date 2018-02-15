@@ -261,8 +261,8 @@ sntRover.controller('RVbillCardController',
 	var screenWidth = angular.element($window).width(); // Calculating screen width.
 
 	$scope.signaturePluginOptions = {
-			height: 130,
-			width: screenWidth - 60,
+			// height: 130,
+			width: screenWidth,
 			lineWidth: 1
 	};
 

@@ -42,7 +42,7 @@
 		<!-- Fullscreen Header -->
 		<div ng-include="'/assets/partials/common/rvFullscreenHeader.html'" class="fullscreen-header"></div>
 		<!-- Registration Content -->
-		<div ng-iscroll="registration-content" ng-iscroll-delay="1000" class="registration-content scrollable" ng-class="{ 'print-registration-card': isPrintRegistrationCard }">
+		<div ng-iscroll="registration-content" ng-iscroll-delay="1000" class="registration-content scrollable" ng-class="{ 'print-registration-card': isPrintRegistrationCard, 'with-complete-registration':clickedButton == 'checkinButton' }">
 			<div class="wrapper">
 				<div ng-include="'/assets/partials/common/notification_message.html'"></div>
 
