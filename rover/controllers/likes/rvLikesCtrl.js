@@ -10,6 +10,7 @@ sntRover.controller('RVLikesController', ['$scope', 'RVLikesSrv', 'dateFilter', 
 		$scope.calculatedHeight = 274; // height of Preferences + News paper + Room type + error message div
 		var presentLikeInfo  = {};
 		var updateData = {};
+		var isInitMethodInvoked = false;
 
 		$scope.$on('clearNotifications', function() {
 			$scope.errorMessage = "";
@@ -131,6 +132,26 @@ sntRover.controller('RVLikesController', ['$scope', 'RVLikesSrv', 'dateFilter', 
 			$scope.refreshScroller('likes_info');
 		});
 
+		/**
+		 * This function is used to get the guest id while taking the guest card from the menu
+		 * as well as during the create reservation flow
+		 */
+		var getGuestId = function () {
+			var guestId;
+
+			// Guest id during the create reservation flow
+			if ($scope.reservationData && $scope.reservationData.guest && $scope.reservationData.guest.id) {
+				guestId = $scope.reservationData.guest.id;
+			// Guest id while navigating to the guest card from the menu
+			} else if ($scope.guestCardData && $scope.guestCardData.contactInfo && 
+				$scope.guestCardData.contactInfo.user_id) {
+				guestId = $scope.guestCardData.contactInfo.user_id;
+			}
+
+			return guestId;
+
+		};
+
 		$scope.saveLikes = function() {
 
 			var saveUserInfoSuccessCallback = function(data) {
@@ -208,8 +229,10 @@ sntRover.controller('RVLikesController', ['$scope', 'RVLikesSrv', 'dateFilter', 
 				data: updateData
 			};
 
-            if ($scope.reservationData.guest.id &&
-                RVContactInfoSrv.isGuestFetchComplete($scope.reservationData.guest.id) && !dataUpdated) {
+			var guestId = getGuestId();
+
+            if (guestId &&
+                RVContactInfoSrv.isGuestFetchComplete(guestId) && !dataUpdated) {
                 $scope.invokeApi(RVLikesSrv.saveLikes, saveData, saveUserInfoSuccessCallback, saveUserInfoFailureCallback);
             }
 		};
@@ -277,6 +300,18 @@ sntRover.controller('RVLikesController', ['$scope', 'RVLikesSrv', 'dateFilter', 
 			});
 			return showRoomFeature;
 		};
+
+		$scope.$on('GUESTLIKETABACTIVE', function () {			
+
+			/**
+			 * Restrict the api call to trigger only once within a guest card
+			 * No need to invoke the api every time while switching the tabs
+			 */
+			if (!isInitMethodInvoked) {
+				isInitMethodInvoked = true;
+				$scope.init();
+			}			
+		});
 
 
 	}

@@ -27,6 +27,9 @@ function(
                     RVContactInfoSrv.setGuest($stateParams.guestId);
                     return RVContactInfoSrv.getGuestDetails();
                     
+                },
+                countries: function (RVCompanyCardSrv, guestcardDetailsAssets) {
+                    return RVCompanyCardSrv.fetchCountryList();
                 }
             }
         });        

@@ -41,13 +41,17 @@ angular.module('sntRover').controller('RVContactInfoController', ['$scope', '$ro
          *  Guest email id is not checked when user adds Guest details in the Payment page of Create reservation
          *  -- To have the primary email id in app/assets/rover/partials/reservation/rvSummaryAndConfirm.html checked if the user attached has one!
          */
-        $scope.reservationData.guest.email = $scope.guestCardData.contactInfo.email;
-        if ($scope.reservationData.guest.email && $scope.reservationData.guest.email.length > 0) {
-          $scope.otherData.isGuestPrimaryEmailChecked = true;
-        } else {
-          // Handles cases where Guest with email is replaced with a Guest w/o an email address!
-          $scope.otherData.isGuestPrimaryEmailChecked = false;
-        }
+        if ($scope.reservationData) {
+          $scope.reservationData.guest.email = $scope.guestCardData.contactInfo.email;
+
+          if ($scope.reservationData.guest.email && $scope.reservationData.guest.email.length > 0) {
+            $scope.otherData.isGuestPrimaryEmailChecked = true;
+          } else {
+            // Handles cases where Guest with email is replaced with a Guest w/o an email address!
+            $scope.otherData.isGuestPrimaryEmailChecked = false;
+          }
+        }        
+        
         // CICO-9169
 
         var avatarImage = getAvatharUrl(dataToUpdate.title);
@@ -190,7 +194,7 @@ angular.module('sntRover').controller('RVContactInfoController', ['$scope', '$ro
      */
     $scope.$on('saveContactInfo', function() {
       $scope.errorMessage = "";      
-      if ((!$scope.reservationData.guest.id && !$scope.guestCardData.contactInfo.user_id) || $scope.viewState.isAddNewCard) {
+      if (($scope.reservationData && !$scope.reservationData.guest.id && !$scope.guestCardData.contactInfo.user_id) || $scope.viewState.isAddNewCard) {
         // dirty fix until we refactor the whole staycard/card
         // isGuestCardSaveInProgress - variable in guestcontroller to prevent the api call while clicking outside
         if (!$scope.saveGuestCardInfoInProgress && !$scope.isGuestCardSaveInProgress) {

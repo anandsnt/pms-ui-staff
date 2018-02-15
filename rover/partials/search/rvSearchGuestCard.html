@@ -35,25 +35,31 @@
                             <img src="{{guest.image_url}}" alt="" />
                             <!-- if it's accompanying guest, show this as well:
                             <img src="{accompanying-guest-image-or-avatar}" alt="" />-->
-                            <!-- If VIP, show:  <span class="vip">VIP</span> -->
+                            <!-- If VIP, show:  -->
+                            <span class="vip" ng-if="guest.vip">VIP</span>
                         </figure>
-                        <div class="data"> <!-- Add class "no-stay" if stays = 0 -->
-                            <h2>{{guest.first_name}}, {{guest.last_name}}</h2>
+                        <div class="data" ng-class="{'no-stay': guest.stay_count === 0}"> <!-- Add class "no-stay" if stays = 0 -->
+                            <h2 ng-show="escapeNull(guest.first_name) != '' || escapeNull(guest.last_name) != ''" ng-bind-html="getGuestName(guest.first_name, guest.last_name) | highlightWords :searchWords">
+                            </h2>
                             <!-- When guest has previous stays, show count.-->
                             <span class="stay-count" ng-if="guest.stay_count > 1">{{guest.stay_count}} stays</span>
                             <span class="stay-count" ng-if="guest.stay_count === 1">{{guest.stay_count}} stay</span>
-                            <span class="confirmation">{{guest.address.postal_code}}</span>
-                            <span class="icons icon-location">{{guest.address.city}}, {{guest.address.state}}</span>
-                            <span class="icons icon-phone">{{guest.home_phone}}</span>
-                            <span class="icons icon-email-grey">{{guest.email}}</span>
+                            <span class="confirmation" ng-if="!!guest.address.postal_code">{{guest.address.postal_code}}</span>
+                            <span class="icons icon-location" ng-hide = "(guest.address.city == null || guest.address.city == '') && (guest.address.state =='' || guest.address.state == null)">
+                                <span ng-bind-html="guest.address.city | highlight:textInQueryBox:false" ng-if="escapeNull(guest.address.city) != ''"></span>
+                                <span ng-hide="guest.address.city == null || guest.address.city == '' || guest.address.state =='' || guest.address.state == null">, </span>
+                                <span>{{ guest.address.state }}</span>
+                            </span>
+                            <span class="icons icon-phone" ng-if="!!guest.home_phone">{{guest.home_phone}}</span>
+                            <span class="icons icon-email-grey" ng-if="!!guest.email" ng-bind-html="guest.email | highlight:textInQueryBox:false"></span>
                         </div>
                         <!-- If guest has prevous stays, show last stay details: -->
                         <div class="last-stay" ng-if="guest.stay_count > 0">
                             <span class="label">
-                                Last <span class="date">{{ guest.lastStay.date | date: 'MMMM d, yyyy'}}</span>
+                                Last <span class="date">{{ guest.last_stay.date | date: 'MMMM d, yyyy'}}</span>
                             </span>
-                            <strong class="room">{{ guest.lastStay.room }}</strong>
-                            <em class="type">{{ guest.lastStay.roomType }}</em>
+                            <strong class="room">{{ guest.last_stay.room }}</strong>
+                            <em class="type">{{ guest.last_stay.room_type }}</em>
                         </div>
                     </a>
                 </li>                
