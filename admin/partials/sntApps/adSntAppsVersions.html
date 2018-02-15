@@ -63,9 +63,9 @@
             <div class="filter select">
                 <div class="entry">
                     <div class="select">
-                        <select class="placeholder" ng-model="filterType" ng-options="opt.name for opt in filterList">
-                            <option value="">Filter by App Type</option>
-                        </select>
+                         <select class="placeholder" ng-model="filterType" ng-options="opt.value for opt in filterList" ng-change="appTypeChanged()" style="width:200px;">
+                                <option value="">Filter by Service Type</option>
+                        z</select>
                     </div>
                 </div>
             </div>

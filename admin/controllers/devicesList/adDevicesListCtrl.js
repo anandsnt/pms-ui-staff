@@ -15,9 +15,18 @@ admin.controller('ADDevicesListCtrl', ['$scope', '$state', 'ngTableParams', 'adD
           $scope.currentClickedElement = -1;
           $scope.totalCount = data.total_count;
           $scope.totalPage = Math.ceil(data.total_count / $scope.displyCount);
-          _.each(data.results, function(device) {
+          _.each(data.results, function(device, index) {
             if (device.logging_end_time !== "" && device.logging_start_time !== "") {
               device.hours_log_enabled = (new Date(device.logging_end_time).getTime() - new Date(device.logging_start_time).getTime()) / (1000 * 60 * 60);
+            }
+            // to do delete
+            if (index  == 0 ){
+               device.upgarde_status = 'SUCCESS'
+            } else if (index %2 ===0) {
+               device.upgarde_status = 'FAILED'
+            }
+            else { 
+              device.upgarde_status = 'PENDING'
             }
           });
           $scope.data = data.results;

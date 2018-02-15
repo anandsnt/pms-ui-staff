@@ -40,6 +40,9 @@
                         <td data-title="'Version'" sortable="'app_version'" header-class="width-15" ng-hide="currentClickedElement == $index">
                             <strong>{{device.app_version}}</strong>
                         </td>
+                        <td data-title="'Upgrade Status'" sortable="'app_version'" header-class="width-15" ng-hide="currentClickedElement == $index">
+                            <strong ng-class="{'red-text': device.upgarde_status == 'FAILED', 'green-text': device.upgarde_status == 'SUCCESS'}">{{device.upgarde_status}}</strong>
+                        </td>
                 </tbody>
             </table>
         </section>
