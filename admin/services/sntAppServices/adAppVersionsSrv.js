@@ -40,6 +40,18 @@ admin.service('adAppVersionsSrv', ['$http', '$q', 'ADBaseWebSrv', 'ADBaseWebSrvV
 		return deferred.promise;
 	};
 
+	this.updateAppUpgradeTimes = function(params) {
+		var deferred = $q.defer();
+		var url = '/admin/service_application_types';
+
+		ADBaseWebSrvV2.putJSON(url, params).then(function(response) {
+			deferred.resolve(response);
+		}, function(data) {
+			deferred.reject(data);
+		});
+		return deferred.promise;
+	};
+
 	this.returnTimeArray = function() {
 		var timeoptions = ["00:00", "00:15",
 			"00:30", "00:45",

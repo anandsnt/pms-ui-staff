@@ -6,10 +6,10 @@
             <a class="action add" ng-click="changeToUploadBuildMode()">Upload new build</a>
             <a class="action" ng-click="showGeneralSettings()" style="background-image:none;">Settings</a>
             <div class="filters">
-                <div class="filter select">
+                <div class="filter select" style="width:200px;">
                     <div class="entry">
-                        <div class="select">
-                            <select class="placeholder" ng-model="filterType" ng-options="opt.value for opt in filterList" ng-change="appTypeChanged()">
+                        <div class="select" style="width:200px;">
+                            <select class="placeholder" ng-model="filterType" ng-options="opt.value for opt in filterList" ng-change="appTypeChanged()" style="width:200px;">
                                 <option value="">Filter by App Type</option>
                             </select>
                         </div>
@@ -103,12 +103,14 @@
     </section>
 </section>
 
-<section class="content current" ng-show="screenMode === 'SETTINGS'">
+<section class="content current" ng-show="screenMode === 'SETTINGS'" ng-click='clearErrorMessage()'>
     <header class="content-title float">
         <h2>Settings</h2>
         <a ng-click="changeToListView()" class="action back ng-scope" translate="">App Versions</a>
     </header>
     <section class="content-scroll">
+        <div ng-include="'/assets/partials/common/notification_message.html'"></div>
+        <div ng-include="'/assets/partials/common/notification_success_message.html'"></div>
         <div class="form">
             <fieldset class="holder full-width">
                 <div class="form-title">
@@ -122,13 +124,13 @@
                         <th style="padding: 10px;border: 1px solid rgba(0,0,0,.1);">App type</th>
                         <th style="padding: 10px;border: 1px solid rgba(0,0,0,.1);">Time</th>
                     </tr>
-                    <tr ng-repeat="app in filterList" style="border: 1px solid rgba(0,0,0,.1);">
+                    <tr ng-repeat="app in appTypesList" style="border: 1px solid rgba(0,0,0,.1);">
                         <td style="padding: 10px;border: 1px solid rgba(0,0,0,.1);">{{app.value}}</td>
                         <td style="padding: 10px;border: 1px solid rgba(0,0,0,.1);">
                             <div class="entry" style="float:none;margin:0 auto;">
                             <div class="select">
                                 <select ng-model="app.app_upgrade_time">
-                                    <option value="">select</option>
+                                    <option value="">SELECT</option>
                                     <option value="{{time}}" ng-repeat="time in timings">{{time}}</option>
                                 </select>
                             </div>
@@ -140,7 +142,7 @@
                 <button type="button" id="cancel" class="button blank add-data-inline" ng-click="changeToListView()" translate>
                     CANCEL
                 </button>
-                <button type="button" like-type="common" id="update" class="button  ng-binding green" ng-click="saveSettings()" translate>
+                <button type="button" like-type="common" id="update" class="button  ng-binding green" ng-click="updateUpgradeTime()" translate>
                     SAVE_CHANGES
                 </button>
             </div>

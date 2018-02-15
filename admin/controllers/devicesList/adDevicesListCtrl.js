@@ -10,7 +10,6 @@ admin.controller('ADDevicesListCtrl', ['$scope', '$state', 'ngTableParams', 'adD
       delete getParams.rate_type_id;
       var fetchSuccessOfItemList = function(data) {
         $timeout(function() {
-          $scope.$emit('hideLoader');
           // No expanded rate view
           $scope.currentClickedElement = -1;
           $scope.totalCount = data.total_count;
@@ -28,7 +27,10 @@ admin.controller('ADDevicesListCtrl', ['$scope', '$state', 'ngTableParams', 'adD
         }, 500);
       };
 
-      $scope.invokeApi(adDebuggingSetupSrv.fetchInstalledDevices, getParams, fetchSuccessOfItemList);
+      $scope.callAPI(adDebuggingSetupSrv.fetchInstalledDevices, {
+        params: getParams,
+        successCallBack: fetchSuccessOfItemList
+      });
     };
 
     var loadTable = function() {

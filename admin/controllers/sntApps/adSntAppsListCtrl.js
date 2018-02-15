@@ -9,11 +9,9 @@ admin.controller('ADSntAppsListCtrl', ['$scope',
 			});
 		};
 
-		var fetchDeviceDebugSetup = function() {
+		var fetchAppVersions = function() {
 
 			var fetchAppListSuccessCallback = function(data) {
-
-				$scope.$emit('hideLoader');
 				$scope.appList = data;
 				// REMEMBER - ADDED A hidden class in ng-table angular module js. Search for hidde or pull-right
 				$scope.tableParams = new ngTableParams({
@@ -43,7 +41,10 @@ admin.controller('ADSntAppsListCtrl', ['$scope',
 				$scope.tableParams.reload();
 			};
 
-			$scope.invokeApi(adAppVersionsSrv.fetchAppVersions, {}, fetchAppListSuccessCallback);
+			$scope.callAPI(adAppVersionsSrv.fetchAppVersions, {
+                params: {},
+                successCallBack: fetchAppListSuccessCallback
+            });
 		};
 
 		var setAppTypes = function (appTypes) {
@@ -56,7 +57,7 @@ admin.controller('ADSntAppsListCtrl', ['$scope',
 		};
 
 		$scope.appTypeChanged = function() {
-			fetchDeviceDebugSetup();
+			fetchAppVersions();
 		};
 
 		var resetSelectedApp = function() {
@@ -97,15 +98,32 @@ admin.controller('ADSntAppsListCtrl', ['$scope',
 		};
 
 		$scope.showGeneralSettings = function () {
+			$scope.appTypesList = angular.copy($scope.filterList);
 			$scope.screenMode = 'SETTINGS';
 		};
 
-		$scope.saveSettings = function () {
-			$scope.screenMode = 'BUILD_LIST';
+		$scope.updateUpgradeTime = function () {
+			
+			var params = $scope.appTypesList;
+			var updateUpgradeTimeSuccess = function () {
+				// On sucess, update filter list with updated time
+				$scope.filterList = angular.copy($scope.appTypesList);
+				$scope.screenMode = 'BUILD_LIST';
+			};
+			var updateUpgradeTimeFailure = function () {
+				$scope.errorMessage = ['Something went wrong while saving!'];
+			};
+
+			$scope.callAPI(adAppVersionsSrv.updateAppUpgradeTimes, {
+                params: params,
+                successCallBack: updateUpgradeTimeSuccess,
+                failureCallBack: updateUpgradeTimeFailure
+            });
 		};
 
 		(function() {
-			fetchDeviceDebugSetup();
+			fetchAppVersions();
+			$scope.errorMessage = '';
 			$scope.timings = adAppVersionsSrv.returnTimeArray();
 			$scope.screenMode = 'BUILD_LIST';
 			setAppTypes(appTypes);

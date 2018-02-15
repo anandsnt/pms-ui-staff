@@ -28,7 +28,7 @@ admin.service('adDebuggingSetupSrv', ['$http', '$q', 'ADBaseWebSrv', 'ADBaseWebS
 		var url = '/api/notifications/installed_device_list';
 
 		ADBaseWebSrvV2.getJSON(url, data).then(function(response) {
-			deferred.resolve({'results':  response , 'total_count': response.length});
+			deferred.resolve(response);
 		}, function(data) {
 			deferred.reject(data);
 		});
@@ -41,9 +41,6 @@ admin.service('adDebuggingSetupSrv', ['$http', '$q', 'ADBaseWebSrv', 'ADBaseWebS
 		var url = '/admin/service_application_types';
 
 		ADBaseWebSrvV2.getJSON(url).then(function(response) {
-			_.each(response, function(app) {
-				app.app_upgrade_time = app.app_upgrade_time.slice(0, -3);
-			});
 			deferred.resolve(response);
 		}, function(data) {
 			deferred.reject(data);
