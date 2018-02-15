@@ -163,32 +163,7 @@ sntRover.controller('rvBillFormatPopupCtrl', ['$scope', '$rootScope', '$filter',
         $scope.printBill();
 
     };
-    /*
-     * Clicked continue button to call infrasec (Black box) API 
-     * or to move to payment popup if bill not settled
-     */
-    $scope.clickedContinueButton = function() {
-        if ($scope.currentBillAmount === "0.00") { console.log("reached here")
-            var params = {
-                bill_id: $scope.billId
-            };
-
-            var successCallBackOfInfrasecAPI = function() {
-                $scope.printBill();
-            };
-
-            var options = {
-                params: params,
-                onSuccess: successCallBackOfInfrasecAPI                
-            };
-
-            $scope.callAPI(RVBillCardSrv.postDataToInfrasec, options);
-       
-        } else {
-console.log("reached here else")
-        }
-    };
-
+    
     /*
     *  Function which get invoked when the email btn from bill format popup is clicked
     */
