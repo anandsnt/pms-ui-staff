@@ -52,56 +52,297 @@ admin.service('adAppVersionsSrv', ['$http', '$q', 'ADBaseWebSrv', 'ADBaseWebSrvV
 		return deferred.promise;
 	};
 
+
 	this.returnTimeArray = function() {
-		var timeoptions = ["00:00", "00:15",
-			"00:30", "00:45",
-			"01:00", "01:15",
-			"01:30", "01:45",
-			"02:00", "02:15",
-			"02:30", "02:45",
-			"03:00", "03:15",
-			"03:30", "03:45",
-			"04:00", "04:15",
-			"04:30", "04:45",
-			"05:00", "05:15",
-			"05:30", "05:45",
-			"06:00", "06:15",
-			"06:30", "06:45",
-			"07:00", "07:15",
-			"07:30", "07:45",
-			"08:00", "08:15",
-			"08:30", "08:45",
-			"09:00", "09:15",
-			"09:30", "09:45",
-			"10:00", "10:15",
-			"10:30", "10:45",
-			"11:00", "11:15",
-			"11:30", "11:45",
-			"12:00", "12:15",
-			"12:30", "12:45",
-			"13:00", "13:15",
-			"13:30", "13:45",
-			"14:00", "14:15",
-			"14:30", "14:45",
-			"15:00", "15:15",
-			"15:30", "15:45",
-			"16:00", "16:15",
-			"16:30", "16:45",
-			"17:00", "17:15",
-			"17:30", "17:45",
-			"18:00", "18:15",
-			"18:30", "18:45",
-			"19:00", "19:15",
-			"19:30", "19:45",
-			"20:00", "20:15",
-			"20:30", "20:45",
-			"21:00", "21:15",
-			"21:30", "21:45",
-			"22:00", "22:15",
-			"22:30", "22:45",
-			"23:00", "23:15",
-			"23:30", "23:45"
-		];
+		var timeoptions = [{
+			"value": "00:00",
+			"description": "12:00 am"
+		}, {
+			"value": "00:15",
+			"description": "12:15 am"
+		}, {
+			"value": "00:30",
+			"description": "12:30 am"
+		}, {
+			"value": "00:45",
+			"description": "12:45 am"
+		}, {
+			"value": "01:00",
+			"description": "1:00 am"
+		}, {
+			"value": "01:15",
+			"description": "1:15 am"
+		}, {
+			"value": "01:30",
+			"description": "1:30 am"
+		}, {
+			"value": "01:45",
+			"description": "1:45 am"
+		}, {
+			"value": "02:00",
+			"description": "2:00 am"
+		}, {
+			"value": "02:15",
+			"description": "2:15 am"
+		}, {
+			"value": "02:30",
+			"description": "2:30 am"
+		}, {
+			"value": "02:45",
+			"description": "2:45 am"
+		}, {
+			"value": "03:00",
+			"description": "3:00 am"
+		}, {
+			"value": "03:15",
+			"description": "3:15 am"
+		}, {
+			"value": "03:30",
+			"description": "3:30 am"
+		}, {
+			"value": "03:45",
+			"description": "3:45 am"
+		}, {
+			"value": "04:00",
+			"description": "4:00 am"
+		}, {
+			"value": "04:15",
+			"description": "4:15 am"
+		}, {
+			"value": "04:30",
+			"description": "4:30 am"
+		}, {
+			"value": "04:45",
+			"description": "4:45 am"
+		}, {
+			"value": "05:00",
+			"description": "5:00 am"
+		}, {
+			"value": "05:15",
+			"description": "5:15 am"
+		}, {
+			"value": "05:30",
+			"description": "5:30 am"
+		}, {
+			"value": "05:45",
+			"description": "5:45 am"
+		}, {
+			"value": "06:00",
+			"description": "6:00 am"
+		}, {
+			"value": "06:15",
+			"description": "6:15 am"
+		}, {
+			"value": "06:30",
+			"description": "6:30 am"
+		}, {
+			"value": "06:45",
+			"description": "6:45 am"
+		}, {
+			"value": "07:00",
+			"description": "7:00 am"
+		}, {
+			"value": "07:15",
+			"description": "7:15 am"
+		}, {
+			"value": "07:30",
+			"description": "7:30 am"
+		}, {
+			"value": "07:45",
+			"description": "7:45 am"
+		}, {
+			"value": "08:00",
+			"description": "8:00 am"
+		}, {
+			"value": "08:15",
+			"description": "8:15 am"
+		}, {
+			"value": "08:30",
+			"description": "8:30 am"
+		}, {
+			"value": "08:45",
+			"description": "8:45 am"
+		}, {
+			"value": "09:00",
+			"description": "9:00 am"
+		}, {
+			"value": "09:15",
+			"description": "9:15 am"
+		}, {
+			"value": "09:30",
+			"description": "9:30 am"
+		}, {
+			"value": "09:45",
+			"description": "9:45 am"
+		}, {
+			"value": "10:00",
+			"description": "10:00 am"
+		}, {
+			"value": "10:15",
+			"description": "10:15 am"
+		}, {
+			"value": "10:30",
+			"description": "10:30 am"
+		}, {
+			"value": "10:45",
+			"description": "10:45 am"
+		}, {
+			"value": "11:00",
+			"description": "11:00 am"
+		}, {
+			"value": "11:15",
+			"description": "11:15 am"
+		}, {
+			"value": "11:30",
+			"description": "11:30 am"
+		}, {
+			"value": "11:45",
+			"description": "11:45 am"
+		}, {
+			"value": "12:00",
+			"description": "12:00 pm"
+		}, {
+			"value": "12:15",
+			"description": "12:15 pm"
+		}, {
+			"value": "12:30",
+			"description": "12:30 pm"
+		}, {
+			"value": "12:45",
+			"description": "12:45 pm"
+		}, {
+			"value": "13:00",
+			"description": "01:00 pm"
+		}, {
+			"value": "13:15",
+			"description": "01:15 pm"
+		}, {
+			"value": "13:30",
+			"description": "1:30 pm"
+		}, {
+			"value": "13:45",
+			"description": "1:45 pm"
+		}, {
+			"value": "14:00",
+			"description": "2:00 pm"
+		}, {
+			"value": "14:15",
+			"description": "2:15 pm"
+		}, {
+			"value": "14:30",
+			"description": "2:30 pm"
+		}, {
+			"value": "14:45",
+			"description": "2:45 pm"
+		}, {
+			"value": "15:00",
+			"description": "3:00 pm"
+		}, {
+			"value": "15:15",
+			"description": "3:15 pm"
+		}, {
+			"value": "15:30",
+			"description": "3:30 pm"
+		}, {
+			"value": "15:45",
+			"description": "3:45 pm"
+		}, {
+			"value": "16:00",
+			"description": "4:00 pm"
+		}, {
+			"value": "16:15",
+			"description": "4:15 pm"
+		}, {
+			"value": "16:30",
+			"description": "4:30 pm"
+		}, {
+			"value": "16:45",
+			"description": "4:45 pm"
+		}, {
+			"value": "17:00",
+			"description": "5:00 pm"
+		}, {
+			"value": "17:15",
+			"description": "5:15 pm"
+		}, {
+			"value": "17:30",
+			"description": "5:30 pm"
+		}, {
+			"value": "17:45",
+			"description": "5:45 pm"
+		}, {
+			"value": "18:00",
+			"description": "6:00 pm"
+		}, {
+			"value": "18:15",
+			"description": "6:15 pm"
+		}, {
+			"value": "18:30",
+			"description": "6:30 pm"
+		}, {
+			"value": "18:45",
+			"description": "6:45 pm"
+		}, {
+			"value": "19:00",
+			"description": "7:00 pm"
+		}, {
+			"value": "19:15",
+			"description": "7:15 pm"
+		}, {
+			"value": "19:30",
+			"description": "7:30 pm"
+		}, {
+			"value": "19:45",
+			"description": "7:45 pm"
+		}, {
+			"value": "20:00",
+			"description": "8:00 pm"
+		}, {
+			"value": "20:15",
+			"description": "8:15 pm"
+		}, {
+			"value": "20:30",
+			"description": "8:30 pm"
+		}, {
+			"value": "20:45",
+			"description": "8:45 pm"
+		}, {
+			"value": "21:00",
+			"description": "9:00 pm"
+		}, {
+			"value": "21:15",
+			"description": "9:15 pm"
+		}, {
+			"value": "21:30",
+			"description": "9:30 pm"
+		}, {
+			"value": "21:45",
+			"description": "9:45 pm"
+		}, {
+			"value": "22:00",
+			"description": "10:00 pm"
+		}, {
+			"value": "22:15",
+			"description": "10:15 pm"
+		}, {
+			"value": "22:30",
+			"description": "10:30 pm"
+		}, {
+			"value": "22:45",
+			"description": "10:45 pm"
+		}, {
+			"value": "23:00",
+			"description": "11:00 pm"
+		}, {
+			"value": "23:15",
+			"description": "11:15 pm"
+		}, {
+			"value": "23:30",
+			"description": "11:30 pm"
+		}, {
+			"value": "23:45",
+			"description": "11:45 pm"
+		}];
 		return timeoptions;
 	};
 

@@ -117,7 +117,16 @@
                     <h3>App upgrade times</h3>
                 </div>
                 <div class="form-subtitle-title">
-                    <h6>Please note that the Apps in the different timezones will be upgrading when the local time will be the time set below (times are in 24 hour format).</h6>
+                    <h6>Please note that app upgrades are based on local time standards. For example, if the time below is set for 3AM, then the app will ONLY run when the property's timezone is also 3AM. To verify the hotel's time zone, check the setting under HOTEL & STAFF > HOTEL DETAILS > HOTEL TIME ZONE.
+                    <br/>
+                    <br/>
+                    <br/>
+                    <span style="font-weight:600;">
+                        IMPORTANT: Do not edit the information on this page unless otherwise requested by a Product Manager / Client Services Manager.
+                    </span>
+                    <br/>
+                    <br/>
+                    </h6>
                 </div>
                 <table style="width:50%;border: 1px solid rgba(0,0,0,.1);">
                     <tr style="border: 1px solid rgba(0,0,0,.1);font-weight:700;">
@@ -131,7 +140,7 @@
                             <div class="select">
                                 <select ng-model="app.app_upgrade_time">
                                     <option value="">SELECT</option>
-                                    <option value="{{time}}" ng-repeat="time in timings">{{time}}</option>
+                                    <option value="{{time.value}}" ng-repeat="time in timings">{{time.description}}</option>
                                 </select>
                             </div>
                              </div>
