@@ -28,6 +28,9 @@ admin.controller('ADHotelDetailsCtrl', [
 	// CICO-41322 - Flag needed to show MP De-selection confirm popup.
 	var isMPFlagResetConfirmPopupNeeded = false;
 
+	/*
+	 * Method to get country id 
+	 */
 	var getCountryId = function(countryName) {
 		return ( _.find( $scope.data.countries, function(obj) { return obj.name === countryName; } ) ).id;
 	};
