@@ -334,5 +334,17 @@ angular.module('sntRover').service('RVBillCardSrv', ['$http', '$q', 'BaseWebSrvV
 		});
 		return deferred.promise;
 	};
-	
+
+	// Service that used to get blackbox details(returns with control numbers)
+    this.callBlackBoxApi = function(params) {
+        var deferred = $q.defer(),
+            url = '/api/hotel_settings/infrasec/generate_control_code';
+
+        BaseWebSrvV2.postJSON(url, params).then(function(response) {
+            deferred.resolve(response.data);
+        }, function (data) {
+            deferred.reject(data);
+        });
+        return deferred.promise;
+    };
 }]);
