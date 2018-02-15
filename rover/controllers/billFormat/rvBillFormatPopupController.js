@@ -4,8 +4,10 @@ sntRover.controller('rvBillFormatPopupCtrl', ['$scope', '$rootScope', '$filter',
     $scope.isCompanyCardInvoice = true;
     $scope.disableCompanyCardInvoice = false;
     $scope.hideCompanyCardInvoiceToggle = true;
+    console.log("==================")
+    console.log($scope.reservationBillData)
     $scope.isInformationalInvoice = ($rootScope.isInfrasecActivated && $rootScope.isInfrasecActivatedForWorkstation) ? true : false; 
-    $scope.shouldShowPrintScreen = true;
+    $scope.isInformationalInvoiceDisabled = ($rootScope.isInfrasecActivated && $rootScope.isInfrasecActivatedForWorkstation && !$scope.isSettledBill) ? true : false; 
     /*
     *  Get the request params for bill settings info
     */
@@ -157,11 +159,9 @@ sntRover.controller('rvBillFormatPopupCtrl', ['$scope', '$rootScope', '$filter',
      * show proceed popup - if infrasec enabled
      */
     $scope.clickedPrintBill = function() {
-        if ($rootScope.isInfrasecActivated && $rootScope.isInfrasecActivatedForWorkstation && !$scope.isInformationalInvoice) {
-            $scope.shouldShowPrintScreen = false;
-        } else {
-            $scope.printBill();
-        }
+
+        $scope.printBill();
+
     };
     /*
      * Clicked continue button to call infrasec (Black box) API 
