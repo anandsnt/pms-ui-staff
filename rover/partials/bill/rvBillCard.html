@@ -111,7 +111,7 @@
 										<img ng-src="/assets/images/{{billTab.credit_card_details.card_code}}.png" alt="" class="credit-card-image">
 										<span class="number"> {{billTab.credit_card_details.card_number}}</span>
 									</figure>
-									<div class="payment" ng-show="!billTab.is_active">Moved to A/R</div>
+									<div class="payment" ng-show="billTab.is_moved_to_ar">Moved to A/R</div>
 								</a>
 								<button ng-if="($index === reservationBillData.bills.length - 1) && !billTab.is_transactions_exist && !billTab.is_routing_exist" click-touch="clickedRemoveBill($index)" type="button" class="button icons icon-remove-10"></button>
 							</li>
