@@ -4,7 +4,10 @@ sntRover.controller('rvBillFormatPopupCtrl', ['$scope', '$rootScope', '$filter',
     $scope.isCompanyCardInvoice = true;
     $scope.disableCompanyCardInvoice = false;
     $scope.hideCompanyCardInvoiceToggle = true;
-
+    console.log("==================")
+    console.log($scope.reservationBillData)
+    $scope.isInformationalInvoice = ($rootScope.isInfrasecActivated && $rootScope.isInfrasecActivatedForWorkstation) ? true : false; 
+    $scope.isInformationalInvoiceDisabled = ($rootScope.isInfrasecActivated && $rootScope.isInfrasecActivatedForWorkstation && !$scope.isSettledBill) ? true : false; 
     /*
     *  Get the request params for bill settings info
     */
@@ -143,15 +146,24 @@ sntRover.controller('rvBillFormatPopupCtrl', ['$scope', '$rootScope', '$filter',
     };
 
     /*
-    *  Function which get invoked when the print btn from bill format popup is clicked
-    */
+     *  Function which get invoked when the print btn from bill format popup is clicked
+     */
     $scope.printBill = function() {
         var printRequest = getPrintEmailRequestParams();
-
+        $scope.$emit("UPDATE_INFORMATIONAL_INVOICE", $scope.isInformationalInvoice);
         printRequest.bill_layout = $scope.data.default_bill_settings;
         $scope.clickedPrint(printRequest);
     };
+    /*
+     * click action Print button
+     * show proceed popup - if infrasec enabled
+     */
+    $scope.clickedPrintBill = function() {
 
+        $scope.printBill();
+
+    };
+    
     /*
     *  Function which get invoked when the email btn from bill format popup is clicked
     */
@@ -160,6 +172,7 @@ sntRover.controller('rvBillFormatPopupCtrl', ['$scope', '$rootScope', '$filter',
 
         emailRequest.bill_layout = $scope.data.default_bill_settings;
         emailRequest.to_address = $scope.data.to_address;
+        emailRequest.is_informational_invoice = $scope.data.isInformationalInvoice;
         $scope.clickedEmail(emailRequest);
     };
 
