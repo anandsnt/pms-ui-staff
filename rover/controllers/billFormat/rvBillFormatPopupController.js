@@ -4,8 +4,6 @@ sntRover.controller('rvBillFormatPopupCtrl', ['$scope', '$rootScope', '$filter',
     $scope.isCompanyCardInvoice = true;
     $scope.disableCompanyCardInvoice = false;
     $scope.hideCompanyCardInvoiceToggle = true;
-    console.log("==================")
-    console.log($scope.reservationBillData)
     $scope.isInformationalInvoice = ($rootScope.isInfrasecActivated && $rootScope.isInfrasecActivatedForWorkstation) ? true : false; 
     $scope.isInformationalInvoiceDisabled = ($rootScope.isInfrasecActivated && $rootScope.isInfrasecActivatedForWorkstation && !$scope.isSettledBill) ? true : false; 
     /*
@@ -172,7 +170,7 @@ sntRover.controller('rvBillFormatPopupCtrl', ['$scope', '$rootScope', '$filter',
 
         emailRequest.bill_layout = $scope.data.default_bill_settings;
         emailRequest.to_address = $scope.data.to_address;
-        emailRequest.is_informational_invoice = $scope.data.isInformationalInvoice;
+        emailRequest.is_informational_invoice = $scope.isInformationalInvoice;
         $scope.clickedEmail(emailRequest);
     };
 
