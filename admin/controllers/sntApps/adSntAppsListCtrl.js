@@ -105,36 +105,10 @@ admin.controller('ADSntAppsListCtrl', ['$scope',
 
 		};
 
-		$scope.showGeneralSettings = function () {
-			$scope.appTypesList = angular.copy($scope.filterList);
-			$scope.screenMode = 'SETTINGS';
-		};
-
-		$scope.updateUpgradeTime = function () {
-			
-			var params = {
-				'service_application_types': $scope.appTypesList
-			};
-			var updateUpgradeTimeSuccess = function () {
-				// On sucess, update filter list with updated time
-				$scope.filterList = angular.copy($scope.appTypesList);
-				$scope.screenMode = 'BUILD_LIST';
-			};
-			var updateUpgradeTimeFailure = function (response) {
-				$scope.errorMessage = response;
-			};
-
-			$scope.callAPI(adAppVersionsSrv.updateAppUpgradeTimes, {
-                params: params,
-                successCallBack: updateUpgradeTimeSuccess,
-                failureCallBack: updateUpgradeTimeFailure
-            });
-		};
 
 		(function() {
 			fetchAppVersions();
 			$scope.errorMessage = '';
-			$scope.timings = adAppVersionsSrv.returnTimeArray();
 			$scope.screenMode = 'BUILD_LIST';
 			setAppTypes(appTypes);
 		})();
