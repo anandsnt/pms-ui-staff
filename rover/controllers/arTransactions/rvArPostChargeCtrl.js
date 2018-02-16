@@ -13,6 +13,7 @@ sntRover.controller('RvArPostChargeController',
 	$scope.totalAmount = 0;
 	$scope.showCalculationArea = false;
 	$scope.quantity = 1;
+    $scope.show_reference_on_guest_invoice = true;
 
 	// Close popup
 	$scope.closeDialog = function() {

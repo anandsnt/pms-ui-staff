@@ -144,7 +144,8 @@ sntRover.controller('roverController', [
         $rootScope.isRoomDiaryEnabled = true;
         $rootScope.isManualCCEntryEnabled = hotelDetails.is_allow_manual_cc_entry;
         $rootScope.isAnMPHotel = hotelDetails.is_multi_property;
-        /**
+
+         /**
          * CICO-34068
          * NOTE: Temporary Fix
          * As saferpay is not supported in Rover, if saferpay is selected in SNT Admin; default to sixpayments

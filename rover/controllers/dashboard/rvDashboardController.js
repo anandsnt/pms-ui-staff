@@ -1,8 +1,9 @@
 sntRover.controller('RVdashboardController',
     ['$scope', 'ngDialog', 'RVDashboardSrv', 'RVSearchSrv', 'dashBoarddata',
-        '$rootScope', '$filter', '$state', 'RVWorkstationSrv', 'roomTypes', '$timeout', '$interval', '$log',
+        '$rootScope', '$filter', '$state', 'RVWorkstationSrv', 'roomTypes', '$timeout', '$interval', '$log', 
+        'RVHotelDetailsSrv',
         function($scope, ngDialog, RVDashboardSrv, RVSearchSrv, dashBoarddata,
-                 $rootScope, $filter, $state, RVWorkstationSrv, roomTypes, $timeout, $interval, $log) {
+                 $rootScope, $filter, $state, RVWorkstationSrv, roomTypes, $timeout, $interval, $log, RVHotelDetailsSrv) {
 
             // setting the heading of the screen
             $scope.heading = 'DASHBOARD_HEADING';
@@ -169,7 +170,9 @@ sntRover.controller('RVdashboardController',
                             createWorkstationForNonAdminUsers();
                         }
                     } else {
+                        
                         $rootScope.workstation_id = data.id;
+                        setInfrasecDetails();
                         $scope.$emit('hideLoader');
                     }
                 },
@@ -332,5 +335,28 @@ sntRover.controller('RVdashboardController',
                     }
                 });
             }
+            /*
+             * success callback of fetch infrasec details 
+             */ 
+            var successCallBackOfSetInfrasecDetails = function(data) {
+                $rootScope.isInfrasecActivated = data.data.is_infrasec_activated_for_hotel;
+                $rootScope.isInfrasecActivatedForWorkstation = data.data.is_infrasec_activated_for_workstation;      
+            };
+
+            /*
+             * function to set infrasec details
+             */
+            var setInfrasecDetails = function() {
+                var params  = {
+                    workstation_id: $rootScope.workstation_id
+                };
+
+                var options = {
+                    params: params,
+                    successCallBack: successCallBackOfSetInfrasecDetails
+                };
+
+                $scope.callAPI(RVHotelDetailsSrv.fetchInfrasecDetails, options);
+            };
 
         }]);
