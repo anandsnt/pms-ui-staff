@@ -40,4 +40,16 @@ admin.service('adAppVersionsSrv', ['$http', '$q', 'ADBaseWebSrv', 'ADBaseWebSrvV
 		return deferred.promise;
 	};
 
+	this.saveFTPsettings = function(data) {
+		var deferred = $q.defer();
+		var url = '/api/save_sftp_settings';
+
+		ADBaseWebSrvV2.postJSON(url, data).then(function(data) {
+			deferred.resolve(data);
+		}, function(data) {
+			deferred.reject(data);
+		});
+		return deferred.promise;
+	};
+
 }]);
