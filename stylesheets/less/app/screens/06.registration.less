@@ -1,11 +1,7 @@
 /* Registration content ***/
 .registration-content {
     position: relative;
-    .calc-height(100, 60);
-    
-    &.with-complete-registration {
-        .calc-height(100, 140);
-    }
+    .calc-height(100, 50);
 
     > .wrapper { 
         padding: 20px 20px 10px 20px; 
@@ -1181,43 +1177,18 @@
         }
     }
 
-    .signature-header {
+    /* Complete registration */
+    .complete-registration {
         margin-top: 20px;
-        padding: 10px 0;
-        .float;
+        padding-top: 20px;
         .box-shadow(inset 0 1px 0 rgba(0,0,0,.1));
 
-        h2 { 
-            margin: 0;
-            line-height: 40px;
-            .pull-left;
-        }
+        h2 { margin-bottom: 10px; }
 
-        .button {
-            line-height: 40px;
-            .pull-right;
-        }
-    }
-}
-
-/* Complete registration */
-.complete-registration {
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    height: 90px;
-    padding: 20px;
-    background: @background;
-    #flexbox > .parent( row, center, center, '');
-    .float;
-    .box-shadow(inset 0 1px 0 rgba(0,0,0,.1));
-    
-    &.form {
         .entry {
-            width: 60%;
-            margin: 0;
+            width: 50%;
             .float;
+            .pull-left;
 
             .checkbox,
             a {
@@ -1231,30 +1202,29 @@
             a { margin-left: 5px; }
 
             .checkbox {
-                margin-bottom: 10px;
-
                 .icon-checkbox { 
                     top: 0;
                     left: 0; 
                 }
 
                 &.single { margin: 15px 0 0 0; }
-
-                &:last-child { 
-                    clear: both; 
-                    margin-bottom: 0;
-                }
+                
+                &:last-child { clear: both; }
             }
         }
-    }
 
-    .actions {
-        width: 40%;
+        .actions {
+            width: 50%;
+            .pull-right;
 
-        .button {
-            font-size: 18px;
-            line-height: 50px;
-            width: 100%;
+            .button {
+                font-size: 18px;
+                line-height: 50px;
+                width: 100%;
+                .show;
+
+                &.blank { line-height: 40px; }            
+            }
         }
     }
 }
