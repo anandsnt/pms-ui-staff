@@ -340,7 +340,7 @@ sntRover.controller('RVdashboardController',
              */ 
             var successCallBackOfSetInfrasecDetails = function(data) {
                 $rootScope.isInfrasecActivated = data.data.is_infrasec_activated_for_hotel;
-                $rootScope.isInfrasecActivatedForWorkstation = data.data.is_infrasec_activated_for_workstation;       
+                $rootScope.isInfrasecActivatedForWorkstation = data.data.is_infrasec_activated_for_workstation;      
             };
 
             /*
