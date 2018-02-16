@@ -20,6 +20,7 @@ sntRover.controller('RVbillCardController',
 	'$q',
 	'sntActivity',
 	'RVReservationStateService',
+	'$log',
 	function($scope, $rootScope,
 			$state, $stateParams,
 			RVBillCardSrv, reservationBillData,
@@ -31,7 +32,7 @@ sntRover.controller('RVbillCardController',
 			$sce,
 
 			RVKeyPopupSrv, RVPaymentSrv,
-			RVSearchSrv, rvPermissionSrv, jsMappings, $q, sntActivity, RVReservationStateService) {
+			RVSearchSrv, rvPermissionSrv, jsMappings, $q, sntActivity, RVReservationStateService, $log) {
 
 
 	BaseCtrl.call(this, $scope);
@@ -2052,6 +2053,7 @@ sntRover.controller('RVbillCardController',
 		else if ($scope.reservationBillData.reservation_status === "CHECKEDIN" && !$scope.saveData.isEarlyDepartureFlag && !$scope.reservationBillData.is_early_departure_penalty_disabled) {
 			// If reservation status in INHOUSE - show early checkout popup
 			$scope.callBackMethodCheckout = function() {
+				$log.log('Calling checkout api after EarlyCheckout popup');
 				$scope.clickedCompleteCheckout();
 			};
 			ngDialog.open({
@@ -2685,8 +2687,6 @@ sntRover.controller('RVbillCardController',
 
 	 $scope.$on('BILL_PAYMENT_SUCCESS', function(event, data) {
 	 	$scope.signatureData = JSON.stringify($("#signature").jSignature("getData", "native"));
-	 	var billCount = $scope.reservationBillData.bills.length,
-	 		reservationStatus = $scope.reservationBillData.reservation_status;
 
 		$scope.isRefreshOnBackToStaycard = true;
 		var fetchBillDataSuccessCallback = function(billData) {
@@ -2694,10 +2694,19 @@ sntRover.controller('RVbillCardController',
 		 	reservationBillData = billData;
 		 	$scope.init(billData);
 		 	$scope.calculateBillDaysWidth();
+		 	var billCount = $scope.reservationBillData.bills.length,
+	 			reservationStatus = $scope.reservationBillData.reservation_status;
+
 		 	// CICO-10906 review process continues after payment.
 			if ( (data.bill_balance === 0.0 || data.bill_balance === "0.0") && $scope.isViaReviewProcess ) {
-				(billCount === data.billNumber) ? $scope.clickedCompleteCheckout() :
-						$scope.clickedReviewButton(data.billNumber - 1);
+				// If last bill - continue checkout..Else proceed Review process.
+				if (billCount === $scope.currentActiveBill + 1) {
+					$log.log('After Bill Payment Success in last bill - proceed checkout.');
+					$scope.clickedCompleteCheckout();
+				}
+				else {
+					$scope.clickedReviewButton(data.billNumber - 1);
+				}
 			}
 			else if (reservationStatus === 'CHECKEDOUT' && (data.bill_balance === 0.0 || data.bill_balance === "0.0") && isBlackBoxEnabled) {
 				// CICO-49105 : For CHECKED OUT (WITH BALANCE)
@@ -2709,8 +2718,6 @@ sntRover.controller('RVbillCardController',
 
 		// update the bill screen and handle futher payments
 		$scope.invokeApi(RVBillCardSrv.fetch, $scope.reservationBillData.reservation_id, fetchBillDataSuccessCallback);
-
-
 	});
 
 	// To update paymentModalOpened scope - To work normal swipe in case if payment screen opened and closed - CICO-8617
