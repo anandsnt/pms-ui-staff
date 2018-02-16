@@ -5,7 +5,8 @@ angular.module('sntRover').controller('guestCardSearchController',
   '$stateParams',
   'ngDialog',
   '$timeout',
-   function($scope, RVGuestCardsSrv, $stateParams, ngDialog, $timeout) {
+  '$state',
+   function($scope, RVGuestCardsSrv, $stateParams, ngDialog, $timeout, $state) {
 
 		BaseCtrl.call(this, $scope);
 
@@ -122,13 +123,7 @@ angular.module('sntRover').controller('guestCardSearchController',
 
 		// To impelement popup to select add new - COMPANY / TRAVEL AGENT CARD
 		$scope.addNewCard = function() {
-			ngDialog.open({
-				template: '/assets/partials/companyCard/rvSelectCardType.html',
-				controller: 'selectCardTypeCtrl',
-				className: 'ngdialog-theme-default1 calendar-single1',
-				closeByDocument: false,
-				scope: $scope
-			});
+			$state.go('rover.guestcarddetails');
 		};
 
 		// While coming back to search screen from DISCARD button

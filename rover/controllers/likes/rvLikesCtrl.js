@@ -152,7 +152,7 @@ sntRover.controller('RVLikesController', ['$scope', 'RVLikesSrv', 'dateFilter', 
 
 		};
 
-		$scope.saveLikes = function() {
+		$scope.saveLikes = function (data) {
 
 			var saveUserInfoSuccessCallback = function(data) {
 				$scope.$emit('hideLoader');
@@ -229,10 +229,11 @@ sntRover.controller('RVLikesController', ['$scope', 'RVLikesSrv', 'dateFilter', 
 				data: updateData
 			};
 
-			var guestId = getGuestId();
+			var guestId = getGuestId(),
+			    isGuestFetchComplete = data && data.isFromGuestCardSection ? true : RVContactInfoSrv.isGuestFetchComplete(guestId);
 
             if (guestId &&
-                RVContactInfoSrv.isGuestFetchComplete(guestId) && !dataUpdated) {
+                isGuestFetchComplete && !dataUpdated) {
                 $scope.invokeApi(RVLikesSrv.saveLikes, saveData, saveUserInfoSuccessCallback, saveUserInfoFailureCallback);
             }
 		};
@@ -241,8 +242,8 @@ sntRover.controller('RVLikesController', ['$scope', 'RVLikesSrv', 'dateFilter', 
 		/**
 		 * to handle click actins outside this tab
 		 */
-		$scope.$on('SAVELIKES', function() {
-			$scope.saveLikes();
+		$scope.$on('SAVELIKES', function(event, data) {
+			$scope.saveLikes(data);
 		});
 
 		$scope.changedCheckboxPreference = function(parentIndex, index) {
