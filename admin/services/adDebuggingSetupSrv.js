@@ -51,6 +51,7 @@ admin.service('adDebuggingSetupSrv', ['$http', '$q', 'ADBaseWebSrv', 'ADBaseWebS
 	this.gethoursList = function () {
 		var range = _.range(1, 25);
 		var hoursList = [];
+		
 		_.each(range, function(item) {
 			hoursList.push({
 				name: item,
