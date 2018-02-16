@@ -103,7 +103,7 @@
         <tr>
             <th>{{ printRegCardData.translation.date }}</th>
             <th ng-hide="printRegCardData.hide_rates">{{ printRegCardData.translation.rate }}</th>
-            <th ng-hide="printRegCardData.hide_rates">{{ printRegCardData.translation.taxes_/_fees }}</th>
+            <th ng-hide="printRegCardData.hide_rates">{{ printRegCardData.translation["taxes_/_fees"] }}</th>
             <th>{{ printRegCardData.translation.add_on }}</th>
             <th ng-hide="printRegCardData.hide_rates" class="addon-price">{{ printRegCardData.translation.add_on_price }}</th>
         </tr>
@@ -129,14 +129,15 @@
 <table class="guest-data-enter" ng-if="printRegCardData.is_show_vehiche_info">
     <tr>
         <td>
-            {{ printRegCardData.translation.guest_dl_/_id_# }} #
+            {{ printRegCardData.translation["guest_dl_/_id_#"] }} 
         </td>
         <td class="details">
             <table>
                 <tr>
-                    <td>{i{ prntRegCardData.translation.vehicle_make }}</td>
-                    <td>{i{ prntRegCardData.translation.lic._plate_# }}</td>
-                    <td>{i{ prntRegCardData.translation.lic._plate_state_/_prov. }}</td>
+                    <td>{{ prntRegCardData.translation.vehicle_make }}</td>
+                    <td>{{ prntRegCardData.translation["lic._plate_#"] }}</td>
+                    <td>{{ prntRegCardData.translation["lic_plate_state_/_prov.
+"] }}</td>
                 </tr>
             </table>
         </td>

@@ -88,4 +88,7 @@
     "MONSCIERGE_CLIENT_SECRET": "Client Secret",
     "INFANTS_INCLUDED": "Include Infants Count With Guest Nights",
 	"INBOUND_URL": "Inbound URL",
-    "DEFAULT_ROOM_TYPE": "Default Room Type"
+    "DEFAULT_ROOM_TYPE": "Default Room Type",
+    "CONTROL_UNIT_SE": "Control Unit (SE)",
+    "WORKSTATION_MODEL": "Workstation model"
+	"AVIDA_HEADER": "Avida"

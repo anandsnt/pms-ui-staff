@@ -703,7 +703,6 @@ sntRover.controller('rvReservationSearchWidgetController', ['$scope', '$rootScop
 		 * function to execute on clicking on each result
 		 */
 		$scope.goToReservationDetails = function($event, reservationID, confirmationID) {
-
 			$event.preventDefault();
 			$event.stopImmediatePropagation();
   			$event.stopPropagation();
