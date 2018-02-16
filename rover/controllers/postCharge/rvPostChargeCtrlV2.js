@@ -188,7 +188,7 @@ sntRover.controller('RVPostChargeControllerV2',
 					$scope.selectedChargeItemHash[ clickedItem.id ].unit_price = parseFloat($scope.selectedChargeItemHash[ clickedItem.id ].unit_price);
 					$scope.selectedChargeItemHash[ clickedItem.id ].modifiedPrice = $scope.selectedChargeItemHash[ clickedItem.id ].unit_price;
 					$scope.selectedChargeItemHash[ clickedItem.id ].userEnteredPrice = '';
-					$scope.selectedChargeItemHash[ clickedItem.id ].show_ref_on_invoice = false;
+					$scope.selectedChargeItemHash[ clickedItem.id ].show_ref_on_invoice = true;
 					$scope.selectedChargeItemHash[ clickedItem.id ].reference_text = '';
 				}
 				else {
