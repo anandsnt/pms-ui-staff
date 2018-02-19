@@ -20,7 +20,6 @@ sntRover.controller('RVbillCardController',
 	'$q',
 	'sntActivity',
 	'RVReservationStateService',
-	'$log',
 	function($scope, $rootScope,
 			$state, $stateParams,
 			RVBillCardSrv, reservationBillData,
@@ -32,7 +31,7 @@ sntRover.controller('RVbillCardController',
 			$sce,
 
 			RVKeyPopupSrv, RVPaymentSrv,
-			RVSearchSrv, rvPermissionSrv, jsMappings, $q, sntActivity, RVReservationStateService, $log) {
+			RVSearchSrv, rvPermissionSrv, jsMappings, $q, sntActivity, RVReservationStateService) {
 
 
 	BaseCtrl.call(this, $scope);
@@ -1871,7 +1870,6 @@ sntRover.controller('RVbillCardController',
     };
 	// To handle success callback of complete checkout
 	$scope.completeCheckoutSuccessCallback = function(response) {
-		$scope.triggerCompleteCheckoutAPI = true;
 		$scope.showSuccessPopup(response);
 		$timeout(function() {
 			// slight delay on-success so user doesnt re-click review & checkout again and initiate an error
@@ -1923,13 +1921,11 @@ sntRover.controller('RVbillCardController',
 			// If the user is on last Bill - proceed CHECKOUT PROCESS.
 			// Else proceed REVIEW PROCESS.
 			if ($scope.isViaReviewProcess && (billCount === $scope.currentActiveBill + 1)) {
-				$log.log('Inside BB successCallBackOfApiCall - proceed checkout');
 				// Set isLastBillSucceededWithBlackBoxAPI flag to true in order to proceed further checkout process.
 				$scope.isLastBillSucceededWithBlackBoxAPI = true;
 				$scope.clickedCompleteCheckout();
 			}
 			else if ($scope.isViaReviewProcess) {
-				$log.log('Inside BB successCallBackOfApiCall - proceed review');
 				// Updating review status of the bill.
 				$scope.reviewStatusArray[$scope.currentActiveBill].reviewStatus = true;
 				// Locking the bill.
@@ -1961,7 +1957,6 @@ sntRover.controller('RVbillCardController',
 	// CICO-45029 - handle check-out in progress tracking so user doesnt initiate errors
 	// due to having already clicked the review bill & complete check-out button
 	$scope.checkoutInProgress = false;
-	$scope.triggerCompleteCheckoutAPI = false;
 	// To handle complete checkout button click
 	$scope.clickedCompleteCheckout = function() {
 		$scope.checkoutInProgress = true;
@@ -1984,11 +1979,12 @@ sntRover.controller('RVbillCardController',
 		if (isBlackBoxEnabled && isPaymentExist && !$scope.isLastBillSucceededWithBlackBoxAPI && !$scope.isCheckoutWithoutSettlement && !isControlCodeExist) {
 			$scope.isViaReviewProcess = true;
 			callBlackBoxAPI();
+			return;
 		}
 
 		// To check for ar account details in case of direct bills
-		var index = $scope.reservationBillData.bills.length - 1;
-		var signatureBase64Data = $scope.getSignatureBase64Data();
+		var index = $scope.reservationBillData.bills.length - 1,
+			signatureBase64Data = $scope.getSignatureBase64Data();
 
 		if ($scope.isArAccountNeeded(index)) {
 			$scope.checkoutInProgress = false;
@@ -2042,7 +2038,6 @@ sntRover.controller('RVbillCardController',
 		else if (!$scope.guestCardData.contactInfo.email && !$scope.saveData.isEmailPopupFlag) {
 			// Popup to accept and save email address.
 			$scope.callBackMethodCheckout = function() {
-				$log.log('Calling checkout api after ValidateEmail popup');
 				$scope.saveData.isEmailPopupFlag = true ;
 				$scope.clickedCompleteCheckout();
 			};
@@ -2057,7 +2052,6 @@ sntRover.controller('RVbillCardController',
 		else if ($scope.reservationBillData.reservation_status === "CHECKEDIN" && !$scope.saveData.isEarlyDepartureFlag && !$scope.reservationBillData.is_early_departure_penalty_disabled) {
 			// If reservation status in INHOUSE - show early checkout popup
 			$scope.callBackMethodCheckout = function() {
-				$log.log('Calling checkout api after EarlyCheckout popup');
 				$scope.clickedCompleteCheckout();
 			};
 			ngDialog.open({
@@ -2078,7 +2072,7 @@ sntRover.controller('RVbillCardController',
 			$scope.showErrorPopup(errorMsg);
 			$scope.checkoutInProgress = false;
 		}
-		else if (!$scope.triggerCompleteCheckoutAPI) {
+		else {
 			var data = {
 				"reservation_id": $scope.reservationBillData.reservation_id,
 				"email": $scope.guestCardData.contactInfo.email,
@@ -2116,7 +2110,6 @@ sntRover.controller('RVbillCardController',
 		 *	In all other bills => proceed the review process.
 		 */
 		if ($scope.isAllBillsReviewed) {
-			$log.log("proceedWithCheckout");
 			$scope.performCompleteCheckoutAction = true;
 			$scope.clickedCompleteCheckout();
 		}
@@ -2706,16 +2699,13 @@ sntRover.controller('RVbillCardController',
 			if ( (data.bill_balance === 0.0 || data.bill_balance === "0.0") && $scope.isViaReviewProcess ) {
 				// If last bill - continue checkout..Else proceed Review process.
 				if (billCount === $scope.currentActiveBill + 1) {
-					$log.log('After Bill Payment Success in last bill - proceed checkout.');
 					$scope.clickedCompleteCheckout();
 				}
 				else {
-					$log.log('After Bill Payment Success - proceed review.');
 					$scope.clickedReviewButton(data.billNumber - 1);
 				}
 			}
 			else if (reservationStatus === 'CHECKEDOUT' && (data.bill_balance === 0.0 || data.bill_balance === "0.0") && isBlackBoxEnabled) {
-				$log.log('For CHECKED OUT WITH BALANCE');
 				// CICO-49105 : For CHECKED OUT (WITH BALANCE)
 				// ie., After checkout and trying to settle the bill, we need to trigger Blackbox API
 				$scope.isViaReviewProcess = false;
