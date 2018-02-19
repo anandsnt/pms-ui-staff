@@ -1241,13 +1241,21 @@
                     thead th {
                         text-transform: uppercase;
                         background-color: @grey2;
-                        padding:4pt 0;
+                        padding:4pt 4pt;
                         font-size: 5pt;
+                        word-break: break-word;
+                        text-align: center;
+                        vertical-align: top;
 
                         &:last-child {
                             padding-right: 4pt;
                         }
 
+                        &.charge-date,
+                        &.charge-code {
+                            text-align: left;
+                            padding-left: 0pt;
+                        }
 
                         &.charge-date,
                         &.charge-code,
