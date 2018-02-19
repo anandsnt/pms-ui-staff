@@ -42,9 +42,8 @@ sntRover.config([
 	'$httpProvider',
 	'ngDialogProvider',
 	'$provide',
-	'$provide',
 	'$locationProvider',
-	function($httpProvider, ngDialogProvider, $provide, $provide, $locationProvider) {
+	function($httpProvider, ngDialogProvider, $provide, $locationProvider) {
 
         $locationProvider.html5Mode(true);
 
@@ -428,5 +427,7 @@ sntRover.run([
                 sntapp.desktopCardReader.startReader();
             }
         };
+
+        FastClick.attach(document.body);
 	}
 ]);

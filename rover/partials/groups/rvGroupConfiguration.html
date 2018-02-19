@@ -24,7 +24,7 @@
                     <button type="button" class="button blue hidden" ng-click="duplicateGroup()">Duplicate</button>
                 </div>
                 <div class="card-actions" ng-show="isInAddMode()">
-                    <button type="button" class="button green" ng-click="saveNewGroup()">Save Group</button>
+                    <button type="button" class="button green" ng-click="createGroup()">Save Group</button>
                     <button type="button" class="button blank" ng-click="discardNewGroup()">Discard</button>
                 </div>
             </div>
@@ -39,15 +39,18 @@
                     </li>
                     <li class="with-filters" click-touch="switchTabTo('ROOM_BLOCK')" event-shall-pass="true" ng-class="{'ui-tabs-active' : groupConfigData.activeTab == 'ROOM_BLOCK'}">
                         <a>Room Block Details</a>
+                        <button type="button" class="button white icons icon-expand" rv-fullscreen fs-sub-header="Room Block Details" fs-toggle-class="fullscreen-card">Fullscreen</button>
                     </li>
                     <li click-touch="switchTabTo('ACCOUNT')" event-shall-pass="true" ng-class="{'ui-tabs-active' : groupConfigData.activeTab == 'ACCOUNT'}">
                         <a id="AccountTab">Account</a>
                     </li>
                     <li ng-show="shouldShowRoomingListTab()" class="with-filters" click-touch="switchTabTo('ROOMING')" event-shall-pass="true" ng-class="{'ui-tabs-active' : groupConfigData.activeTab == 'ROOMING'}">
                         <a>Rooming List</a>
+                        <button type="button" class="button white icons icon-expand" rv-fullscreen fs-sub-header="Rooming List" fs-toggle-class="fullscreen-card">Fullscreen</button>
                     </li>
                     <li click-touch="switchTabTo('TRANSACTIONS')" event-shall-pass="true" ng-class="{'ui-tabs-active' : groupConfigData.activeTab == 'TRANSACTIONS'}">
                         <a>Transactions</a>
+                        <button type="button" class="button white icons icon-expand" rv-fullscreen fs-sub-header="Transactions" fs-toggle-class="fullscreen-card">Fullscreen</button>
                     </li>
                     <li click-touch="switchTabTo('ACTIVITY')" event-shall-pass="true" ng-class="{'ui-tabs-active' : groupConfigData.activeTab == 'ACTIVITY'}">
                         <a>Activity Log</a>

@@ -599,7 +599,7 @@ angular.module('sntRover').controller('RVWorkManagementMultiSheetCtrl', ['$rootS
 				var i;
 
 				for (i = $scope.multiSheetState.selectedEmployees.length - 1; i >= 0; i--) {
-					$scope.$parent.myScroll[ 'assignedRoomList-' + i ].scrollTo(0, 0);
+					$scope.$parent.myScroll[ 'assignedRoomList-' + $scope.multiSheetState.selectedEmployees[i].id ].scrollTo(0, 0);
 				}
 
 				// add the orientation
@@ -658,29 +658,21 @@ angular.module('sntRover').controller('RVWorkManagementMultiSheetCtrl', ['$rootS
 			$scope.setScroller("multiSelectPrintPopup", commonScrollerOptions);
 			$scope.setScroller("worksheetHorizontal", horizontal);
 
-			var addVerScroller = function(index, length, scrollObj) {
-				var nextIndex = index + 1;
-
-				$scope.setScroller('assignedRoomList-' + index, scrollObj);
-
-				if ( nextIndex < length ) {
-					addVerScroller(nextIndex, length, scrollObj);
-				}
+			var addVerScroller = function(index, employees, scrollObj) {
+                // CICO-46772
+                for (var i = 0; i < employees.length; i++) {
+                    $scope.setScroller('assignedRoomList-' + employees[i].id, scrollObj);
+                }
 			};
-			/**/
 
-			addVerScroller(0, $scope.multiSheetState.selectedEmployees.length, vertical);
-			/**/
-			// for (var i = $scope.multiSheetState.selectedEmployees.length - 1; i >= 0; i--) {
-			// 	$scope.setScroller('assignedRoomList-'+i, vertical);
-			// };
+			addVerScroller(0, $scope.employeeList, vertical);
 		};
 
 		var refreshScrollers = function() {
 			$scope.refreshScroller('unAssignedRoomList');
 			$scope.refreshScroller('worksheetHorizontal');
-			for (var list = 0; list < $scope.multiSheetState.selectedEmployees.length; list++) {
-				$scope.refreshScroller('assignedRoomList-' + list);
+			for (var i = 0; i < $scope.employeeList.length; i++) {
+				$scope.refreshScroller('assignedRoomList-' + $scope.employeeList[i].id);
 			}
 		};
 
@@ -709,6 +701,8 @@ angular.module('sntRover').controller('RVWorkManagementMultiSheetCtrl', ['$rootS
 			});
 
 			if ( foundIndex > -1 ) {
+                // CICO-44442
+                $scope.multiSheetState.assigned[foundIndex].shiftId = emp.shift_id;
 				// push employee from assigned to selected
 				$scope.multiSheetState.selectedEmployees.push( $scope.multiSheetState.assigned[foundIndex] );
 
@@ -840,8 +834,8 @@ angular.module('sntRover').controller('RVWorkManagementMultiSheetCtrl', ['$rootS
 				/* Shift length to be calculated from api/shifts. need shift_id for that.
 				   Displaying full shift length for now.*/
 				// shift = _.findWhere($scope.shifts, { id: employee.shift_id });
-				shift = _.findWhere($scope.shifts, { name: "Full Shift" });
-				summaryModel.shiftLength    = (shift && shift.time) || "08:00";
+				shift = _.findWhere($scope.shifts, { id: employee.shiftId });
+				summaryModel.shiftLength    = (shift && shift.time) || "00:00";
 				// Shift length must be corrected in future
 
 			var i;
@@ -1518,15 +1512,23 @@ angular.module('sntRover').controller('RVWorkManagementMultiSheetCtrl', ['$rootS
 
         // CICO-45485 - Get all the rooms which are having tasks for the given work type
         var getUnAssignedRoomTasksByWorkType = function (workTypeId, unAssignedRoomTasks) {
-            if (workTypeId) {
                 var rooms = [];
 
                 _.each (unAssignedRoomTasks, function (roomInfo) {
-                    var roomCloned = angular.copy(roomInfo);
+                    var roomCloned = angular.copy(roomInfo),
+                        roomDetails = _.find ($scope.multiSheetState.allRooms, function (room) {
+                                            return room.id == roomCloned.room_id;
+                                      });
 
-                    roomCloned.room_tasks = _.filter(roomCloned.room_tasks, function (task) {
-                        return task.work_type_id == $scope.multiSheetState.header.work_type_id;
-                    });
+                    if (roomDetails) {
+                        roomCloned.hk_section_id = roomDetails.hk_section_id;
+                    }
+
+                    if (workTypeId) {
+                       roomCloned.room_tasks = _.filter(roomCloned.room_tasks, function (task) {
+                            return task.work_type_id == $scope.multiSheetState.header.work_type_id;
+                        });
+                    }
 
                     if (roomCloned.room_tasks.length) {
                         rooms.push(roomCloned);
@@ -1534,8 +1536,6 @@ angular.module('sntRover').controller('RVWorkManagementMultiSheetCtrl', ['$rootS
 
                 });
                 return rooms;
-            }
-            return unAssignedRoomTasks;
         };
 
         // Get the room info from the unassigned list
@@ -1647,6 +1647,7 @@ angular.module('sntRover').controller('RVWorkManagementMultiSheetCtrl', ['$rootS
 
             var onAutoAssignSuccess = function(data) {
                     processDataAfterAutoAssign(data);
+                    refreshView();
                 },
                 onAutoAssignFailure = function (error) {
                     $scope.errorMessage = error;

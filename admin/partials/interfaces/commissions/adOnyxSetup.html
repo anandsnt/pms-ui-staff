@@ -1,0 +1,54 @@
+<ad-common-parts-in-form-dir on-save-button-click="saveInterfaceConfig"
+    header-caption="ONYX">
+    <fieldset class="holder left">
+        <ad-toggle-button is-checked="config.is_active"
+        label="{{'ONYX_COMMISSIONS_PROCESSING'| translate}}"></ad-toggle-button>
+        <ad-textbox inputtype="text"
+            value="config.brand_code"
+            label="{{'BRAND_ID'| translate}}"
+            maxlength="2"
+            styleclass="half-width">
+        </ad-textbox>
+        <ad-textbox inputtype="text"
+            value="config.property_id"
+            label="{{'HOTEL_ID'| translate}}"
+            maxlength="10"
+            styleclass="full-width">
+        </ad-textbox>
+        <ad-textbox inputtype="text"
+            value="config.sftp_url"
+            label="{{'FTP_SITE'| translate}}"
+            required="yes"
+            styleclass="full-width">
+        </ad-textbox>
+        <ad-textbox inputtype="text"
+            value="config.sftp_location"
+            label="SFTP Location"
+            required="yes"
+            styleclass="full-width">
+        </ad-textbox>
+    </fieldset>
+    <fieldset class="holder right">
+        <ad-textbox inputtype="text"
+            value="config.sftp_username"
+            required="yes"
+            label="{{'USERNAME'| translate}}"
+            styleclass="full-width">
+        </ad-textbox>
+        <ad-textbox inputtype="text"
+            value="config.sftp_password"
+            required="yes"
+            label="{{'PASSWORD'| translate}}"
+            styleclass="full-width">
+        </ad-textbox>
+        <ad-textbox inputtype="text"
+            value="config.version_number"
+            label="{{'VERSION_NO'| translate}}"
+            styleclass="full-width">
+        </ad-textbox>
+        <ad-dropdown label-in-drop-down="Select" list="countryList" selected-id='config.taxation_country_id' selbox-class="placeholder" div-class="full-width" label="{{'COUNTRY_OF_TAXING_AUTHORITY'| translate}}">
+        </ad-dropdown>
+        <ad-dropdown label-in-drop-down="Select" list="currencyList" selected-id='config.currency_id' selbox-class="placeholder" div-class="full-width" label="{{'COMMISSION_CURRENCY'| translate}}" required="yes">
+        </ad-dropdown>
+    </fieldset>
+</ad-common-parts-in-form-dir>

@@ -140,7 +140,7 @@ admin.service('ADRatesSrv', ['$http', '$q', 'ADBaseWebSrvV2', 'ADBaseWebSrv',
         // get rate details
         this.fetchDetails = function (params) {
             var deferred = $q.defer();
-
+            
             // fetch hotel business date
             that.fetchHotelInfo = function () {
                 var url = "/api/rover_header_info";

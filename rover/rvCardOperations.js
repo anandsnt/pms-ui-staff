@@ -6,31 +6,6 @@ var CardOperation = function() {
     // function for start reading from device
     // Note down: Currently it is recursive
 
-    this.startReaderDebug = function(options) {
-    // Simulating the card reader function for easy testing. May be removed in production.
-
-        coinstance = this; // Global instance to test from console.
-        that.callSuccess = function(data)
-        {
-            var successCallBack = options["successCallBack"] ? options["successCallBack"] : null;
-            var successCallBackParameters = options["successCallBackParameters"] ? options["successCallBackParameters"] : null;
-            var carddata = { 'RVCardReadCardType': 'AX',
-                            'RVCardReadTrack2': '4788250000028291=17121015432112345601',
-                              'RVCardReadTrack2KSN': '950067000000062002AF',
-                              'RVCardReadMaskedPAN': '5405220008002226',
-                              'RVCardReadCardName': 'Sample Name',
-                              'RVCardReadExpDate': "17012",
-                              'RVCardReadCardIIN': "002226",
-                              'RVCardReadIsEncrypted': 0
-                          };
-
-            if (typeof data !== 'undefined') {
-                carddata = data;
-            }
-            successCallBack(carddata, successCallBackParameters);
-        };
-
-    };
     this.writeKeyDataDebug = function(options) {
         // Simulating the write function for easy testing. May be removed in production.
         var successCallBack = options["successCallBack"] ? options["successCallBack"] : null;
@@ -330,6 +305,11 @@ var CardOperation = function() {
         options['action'] = "getDevicesStates";
         options['timeout'] = 31000;
 
+        that.callCordovaService(options);
+    };
+
+    this.doDeviceAction = function (options) {
+        options['timeout'] = 31000;
         that.callCordovaService(options);
     };
 

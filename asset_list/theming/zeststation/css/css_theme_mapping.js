@@ -24,7 +24,14 @@ module.exports = {
 			'first': [themeCSSRoot + 'first.less'],
 			'viceroy-chicago': [themeCSSRoot + 'viceroy-chicago.less'],
 			'amrath': [themeCSSRoot + 'amrath.less'],
-            'jupiter': [themeCSSRoot + 'jupiter.less']
+            'jupiter': [themeCSSRoot + 'jupiter.less'],
+            'huntley': [themeCSSRoot + 'huntley.less'],
+            'queen': [themeCSSRoot + 'queen.less'],
+            'belle': [themeCSSRoot + 'belle.less'],
+            'freehand-ny': [themeCSSRoot + 'freehand-ny.less'],
+            'freehand-miami': [themeCSSRoot + 'freehand-miami.less'],
+            'georgetown': [themeCSSRoot + 'georgetown.less'],
+            'nomo': [themeCSSRoot + 'nomo.less']
 		};
 	}
 };

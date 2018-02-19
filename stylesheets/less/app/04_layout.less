@@ -561,6 +561,217 @@ body { overflow: hidden; }
 	    overflow-y: auto !important;
 	}
 
+/* Fullscreen mode          ==============================*/
+	@media not print {
+	    .fullscreen-header {
+	        padding: 10px 0;
+	        z-index: 5990;
+	        .size(60px, 100%);
+	        .hide();
+
+	        .button.icon-remove-10 {
+	            padding: 0;
+	            background-color: @white;
+	            background-position: 10px -3931px;
+	            .hide-text();
+	            .square(30px);
+	            #border-radius > .rounded();
+	        }
+
+	        .screen-info {
+	            padding-left: 10px;
+	            line-height: 1;
+	            .calc-width(60, 15);
+	            #flexbox > .parent(column wrap, '', '', '');
+
+	            .info-heading {
+	                font-size: 22px;
+	                font-weight: 700;
+	                .show();
+	                .nowrap();
+	            }
+
+	            .info-subheading {
+	                font-size: 14px;
+	                .show();
+	                .nowrap();
+	            }
+	        }
+
+	        .app-info {
+	            font-size: 14px;
+	            line-height: 1;
+	            text-align: right;
+	            .calc-width(40, 15);
+	            .nowrap();
+	            #flexbox > .parent(column wrap, '', '', '');
+
+	            .hotel {
+	                font-size: 16px;
+	                font-weight: 600;
+	            }
+
+	            .date {
+	                &.updating {
+	                    color: @logoPrimary;
+	                    #blink > .infinite();
+	                }
+
+	                &.error {
+	                    color: @red;
+	                }
+	            }
+	        }
+	    }
+
+	    .is-fullscreen {
+
+	        .nav-bar,
+	        #availability,
+	        #main-menu {
+	            .hide();
+	        }
+
+	        .fullscreen-header {
+	            #flexbox > .parent(row wrap, '', center, '');
+	        }
+	    }
+
+		/* Company, Travel Agent, Group, Allotment or Account ***/
+	    .fullscreen-card {
+
+	        .fullscreen-header {
+
+	            .info-heading {
+	                color: @white;
+	            } 
+	            
+	            .info-subheading {
+	                color: rgba(0,0,0,.5);
+	            }                       
+	        }
+
+	        .cards {
+	            top: 0 !important;
+	            height: 100% !important;
+
+	            .cards-header,
+	            .card-tabs-nav,
+	            .ui-resizable-handle {
+	                .hide();
+	            }
+
+	            .cards-content {
+	                height: 100%;
+	            }
+
+	            .card-content {
+	                height: 100%;
+
+	                .card-tab {
+	                    height: 100%;
+
+	                    &.inner-header {
+	                        .tab-details {
+	                            .calc-height(100,140);
+	                        }
+	                    }
+
+	                    &.transactions {
+	                        .tab-details {
+	                            .calc-height(100,120);
+	                        }
+	                    }
+	                }
+
+	                &.card-tabs { padding-top: 0; }
+	            }
+
+	            &.fullscreen {
+	                .transition(height, .2s, cubic-bezier(.10, .10, .25, .90));
+	            }
+
+	            &.guest-card {
+	                .fullscreen-header {
+	                    background: @gcard @gcardTexture;
+	                }
+	            }
+
+	            &.company-card {
+	                .fullscreen-header {
+	                    background: @ccard @ccardTexture;
+	                }
+	            }
+
+	            &.travel-agent-card {
+	                .fullscreen-header {
+	                    background: @tacard @tacardTexture;
+	                }
+	            }
+
+	            &.group-card {
+	                .fullscreen-header {
+	                    background: @groupcard @groupcardTexture;
+	                }
+
+	                .card-content {
+	                    .card-tab {
+	                        &.rooming-list {
+	                            .tab-details {
+	                                .calc-height(100, 200);
+	                            }
+	                        }
+	                    }
+	                }
+	            }
+
+	            &.allotment-card {
+	                .fullscreen-header {
+	                    background: @allotmentcard @allotmentcardTexture;
+	                }
+	            }
+	        }
+	    }
+
+		/* Guest Bill **/
+	    .fullscreen-bill {
+	        .cards,
+	        .reservation-header {
+	            .hide();
+	        }
+
+	        .fullscreen-header {
+	            position: fixed;
+	            top: 0;
+	            left: 0;
+	            padding: 10px 20px;
+	            .box-shadow(0 1px 2px 1px rgba(0,0,0,.1));
+	            .background(@white);
+
+	            .info-subheading {
+	                color: @grey3;
+	            }
+	        }
+
+	        .content {
+	            &.reservations-inner, 
+	            &.stay-card-inner {
+	                top: 0;
+	                height: 100%;
+	            }
+	        }
+
+	        .registration-content {
+	            margin-top: 60px;
+	            .calc-height(100, 60);
+
+	            > .wrapper {
+	                padding-bottom: 20px;
+	            }
+	        }
+	    }
+	}
+
 /* Search bar				==============================*/
 	@media not print {
 		.search-form { 
@@ -1141,6 +1352,22 @@ body { overflow: hidden; }
 						}
 					}
 				}
+
+				&.two-options {
+	                .entry {
+	                    &.search {
+	                        .calc-width(100, 350);
+	                    }
+
+	                    &.options {
+	                        width: 280px;
+	                    }
+	                }
+
+	                .actions {
+	                    width: 50px;
+	                }
+	            }
 			}
 
 			/* Dates ***/
@@ -1288,6 +1515,64 @@ body { overflow: hidden; }
 					&.rooms-checked { right: 120px; }
 				}
 			}	
+
+			/* Commissions ***/
+	        &.commissions {
+	            .entry {
+
+	                &.search {
+	                    .calc-width(100, 420);
+	                }
+
+	                &.dates {
+	                    width: 300px;
+
+	                    .entry-data {
+	                        width: 140px;
+	                    }
+	                }
+
+	                &.actions {
+	                    width: 100px;
+
+	                    .button {
+	                        position: relative;
+	                        overflow: visible;
+
+	                        .count {
+	                            position: absolute;
+	                            background-color: @logoPrimary;
+	                            color: @white;
+	                            font-size: 11px;
+	                            line-height: 20px;
+	                            text-align: center;
+	                            border-radius: 50%;
+	                            left: -5px;
+	                            top: -5px;
+	                            text-indent: initial;
+	                            z-index: 10;
+	                            .square(20px);
+	                        }
+
+	                        &:focus,
+	                        &:active {
+	                            overflow: visible;
+	                        }
+
+	                        &.active {
+	                            .count {
+	                                background-color: @white;
+	                                color: @logoPrimary;
+	                            }
+	                        }
+
+	                        &:not(:last-child) {
+	                            margin-right: 10px;
+	                        }
+	                    }
+	                }
+	            }
+	        }
 		}
 	}
 
@@ -2170,6 +2455,15 @@ body { overflow: hidden; }
 				height: 30px;
 				padding: 0 10px; 
 			}
+
+			.button.icon-expand {
+	            padding-left: 35px;
+	            width: auto;
+	            color: @textColor;
+	            text-shadow: none;
+	            background-position: 10px -11073px;
+	            background-color: @grey1;
+	        }
 
 			.toggle {
 				font-size: 14px;

@@ -87,7 +87,13 @@
 "AUTH_PASSWORD_PLACEHOLDER": "Enter Legic Preauth Password",
 
 "SAFLOK_ENCODER": "Select Encoder",
-"QR_CODE_ENCRYPTION": "Enable QR Code Encryption"
+"QR_CODE_ENCRYPTION": "Enable QR Code Encryption",
+"HOUSEKEEPING_SECTIONS": "Housekeeping Sections",
+"MANAGE_SECTIONS": "Manage Sections",
+"MANAGE_ROOMS": "Manage Rooms",
+"AUTO_ASSIGN": "Auto Assign",
+"ROOM_IMPORT_IN_PROGESS": "Room import is in progress, please check the status later"
+
 
 
 

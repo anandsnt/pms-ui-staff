@@ -2,9 +2,12 @@ admin.controller('ADMappingCtrl', ['$scope', '$rootScope', '$state', '$statePara
     function($scope, $rootScope, $state, $stateParams, ADInterfaceMappingSrv) {
         BaseCtrl.call(this, $scope);
 
-        $scope.navigateBack = function() {
-            $state.go('admin.dashboard', {menu: 8});
-        };
+        /*
+         * To set the preveous state as admin.dashboard/Zest in all cases
+         */
+        $rootScope.previousState = 'admin.dashboard';
+        $rootScope.previousStateParam = ($scope.isChainAdminMenuPresent && $scope.isChainAdminMenuPresent.length === 0) ? '8' : '9';
+
 
         $scope.clickedMenuItem = function($event, stateToGo, state) {
             if (!state) {

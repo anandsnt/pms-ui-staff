@@ -1,8 +1,8 @@
 angular.module('sntRover').controller('RVReservationCheckInFlowCtrl',
     ['$scope', '$rootScope', 'RVHotelDetailsSrv', '$log', 'RVCCAuthorizationSrv', 'ngDialog', '$timeout', 'RVBillCardSrv',
-        '$state', 'sntActivity',
+        '$state', 'sntActivity', 'sntEMVSharedSrv',
         function ($scope, $rootScope, RVHotelDetailsSrv, $log, RVCCAuthorizationSrv, ngDialog, $timeout, RVBillCardSrv,
-                  $state, sntActivity) {
+                  $state, sntActivity, sntEMVSharedSrv) {
 
             // NOTE rvBillCardCtrl is a parent for this controller! and a few variables and methods from the parent's scope are used in here
 
@@ -163,6 +163,53 @@ angular.module('sntRover').controller('RVReservationCheckInFlowCtrl',
                 authorize({
                     is_emv_request: true,
                     amount: amountToAuth
+                });
+            };
+
+            var onSuccessAddCardWithEMV = function (data) {
+                var cardDetails = data.cardDetails,
+                    response = data.response,
+                    paymentData = $scope.reservationBillData;
+
+                _.extend(paymentData.bills[0].credit_card_details, {
+                    card_code: cardDetails.card_code,
+                    card_number: cardDetails.ending_with,
+                    card_expiry: cardDetails.expiry_date,
+                    payment_id: response.id,
+                    is_swiped: cardDetails.is_swiped,
+                    auth_color_code: cardDetails.auth_color_code
+                });
+
+                paymentData.bills[0].credit_card_details.payment_type = 'CC';
+
+                // CICO-9739 : To update on reservation card payment section while updating from bill#1 credit card type.
+                if ($scope.billNumber === 1) {
+                    $rootScope.$emit('UPDATEDPAYMENTLIST', paymentData.bills[0].credit_card_details);
+                }
+
+                $rootScope.$broadcast('BALANCECHANGED', {
+                    balance: response.reservation_balance,
+                    confirm_no: paymentData.confirm_no
+                });
+
+                // CICO-34754: room charge enabled needs to be true if cc added.
+                $rootScope.$broadcast('paymentChangedToCC');
+
+                $timeout(completeCheckin, 300);
+
+                $scope.$emit('UPDATECCATTACHEDBILLSTATUS', response.has_any_credit_card_attached_bill);
+            };
+
+            $scope.addCardWithEMV = function () {
+                ngDialog.close();
+                sntEMVSharedSrv.addCardInTerminal({
+                    workstation_id: $scope.workstation_id,
+                    bill_number: $scope.billData.bill_number,
+                    reservation_id: $scope.reservationData.reservationId,
+                    emvTimeout: $scope.emvTimeout
+                }).then(onSuccessAddCardWithEMV, function (error) {
+                    $log.warn(error);
+                    $scope.errorMessage = error;
                 });
             };
 

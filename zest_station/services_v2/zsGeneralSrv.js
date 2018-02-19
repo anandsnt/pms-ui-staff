@@ -41,7 +41,14 @@ sntZestStation.service('zsGeneralSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
             'first': 'First Hotel Breiseth',
             'viceroy-chicago': 'Viceroy Chicago',
             'amrath': 'Amrath apart hotel',
-            'jupiter': 'Jupiter hotel'
+            'jupiter': 'Jupiter hotel',
+            'huntley': 'Huntley',
+            'queen': 'Queen Anne',
+            'belle': 'Van belle',
+            'freehand-ny': 'Freehand nyc',
+            'freehand-miami': 'Freehand miami',
+            'georgetown': 'Georgetown inn',
+            'nomo': 'Nomo soho'
         };
 
         this.isThemeConfigured = function(theme) {
@@ -563,7 +570,7 @@ sntZestStation.service('zsGeneralSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
                 deferred.reject(data);
             });
             return deferred.promise;
-       };
+        };
             
         this.getKeyEncoderInfo = function() {
             var deferred = $q.defer();
@@ -577,5 +584,16 @@ sntZestStation.service('zsGeneralSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
             return deferred.promise;
         };
 
+        this.fetchHotelTranslations = function() {
+            var deferred = $q.defer(),
+                url = 'zest_station/translations';
+
+            zsBaseWebSrv2.getJSON(url).then(function(data) {
+                deferred.resolve(data.hotel_translations);
+            }, function(data) {
+                deferred.reject(data);
+            });
+            return deferred.promise;
+        };
     }
 ]);

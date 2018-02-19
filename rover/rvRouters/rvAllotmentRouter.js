@@ -82,7 +82,11 @@ angular.module('allotmentModule', [])
                     };
 
                     return rvAllotmentConfigurationSrv.getHoldStatusList (params);
+                },
+                hotelSettings: function (RVReservationBaseSearchSrv, allotmentAssets) {
+                    return RVReservationBaseSearchSrv.fetchHotelReservationSettings();
                 }
+
             }
 
         });

@@ -24,7 +24,7 @@ if (status === 406) { // 406- Network error
                 deferred.reject(errors);
             } else if (status === 500) { // 500- Internal Server Error
                 deferred.reject(['Internal server error occured']);
-            } else if (status === 501 || status === 502 || status === 503) { // 500- Internal Server Error
+            } else if (status === 501 || status === 502 || status === 503 || status === 504) { // 500- Internal Server Error
                 $window.location.href = '/500';
             } else if (status === 401) { // 401- Unauthorized
                 // so lets redirect to login page
@@ -148,7 +148,9 @@ if (status === 406) { // 406- Network error
                 "VS": 'VA',
                 "VX": 'VA',
                 "MX": 'DS', // Six iframe returns MX for discover. not good,
-                "MV": 'MC'
+                "MV": 'MC',
+                "CU": 'CU',
+                "DK": 'DK'
             };
 
             return sixCreditCardTypes[cardCode.toUpperCase()] || 'credit-card';
@@ -264,7 +266,7 @@ if (status === 406) { // 406- Network error
                     // TODO: comment the assignment below before commits and pushes.
                     // NOTE:This sample json helps to mock the response
                     // For further info : https://stayntouch.atlassian.net/wiki/display/ROV/SIXPayment+Service+Design+Document
-                    // var async_callback_url = '/sample_json/payment/get_six_pay_token.json';
+                    // async_callback_url = '/sample_json/payment/get_six_pay_token.json';
 
                     $http.get(async_callback_url).then(function(response) {
                         var data = response.data,

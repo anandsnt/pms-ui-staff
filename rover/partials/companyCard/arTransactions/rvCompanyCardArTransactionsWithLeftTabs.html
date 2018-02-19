@@ -20,7 +20,7 @@
         </li>
     </ul>
     <button type="button" class="button green" ng-click="addPayment()">Add Payment</button>
-    <button type="button" class="button blue hidden">Refund</button>
+    <button type="button" class="button blue" ng-click="getAllocatedPayments()">Refund</button>
 </div>
 
 <!-- Open Bills Billing Content -->
@@ -91,7 +91,7 @@
 
                 <!-- if we can Pay All -->
                     <li class="break" ng-show="arFlags.shouldShowPayAllButton">
-                        <button type="button" class="button blue" ng-disabled="arDataObj.availableAmount < arDataObj.totalAllocatedAmount" ng-class="{'blue':  arDataObj.availableAmount >= arDataObj.totalAllocatedAmount, 'grey':  arDataObj.availableAmount < arDataObj.totalAllocatedAmount}" ng-click="clickedPayAllButton()">Pay All</button>
+                        <button type="button" class="button blue" ng-disabled="arDataObj.availableAmount < arDataObj.totalOfAllInvoicesInBalanceTab" ng-class="{'blue':  arDataObj.availableAmount >= arDataObj.totalOfAllInvoicesInBalanceTab, 'grey':  arDataObj.availableAmount < arDataObj.totalOfAllInvoicesInBalanceTab}" ng-click="clickedPayAllButton()">Pay All</button>
                     </li>
                 
 

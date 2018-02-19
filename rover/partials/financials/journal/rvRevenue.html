@@ -2,7 +2,7 @@
 <ul class="journal-header-print">
     <li>
         Revenue
-        <span>{{currencySymbol}}{{ data.revenueData.total_revenue | number: precisonTwo}}</span>
+        <span><span class="currency">{{currencySymbol}}</span> {{ data.revenueData.total_revenue | number: precisonTwo}}</span>
     </li>
 </ul>
 
@@ -25,7 +25,7 @@
                     <a ng-click="clickedFirstLevel(index1)" ng-class="{'active':level1.active, 'has-arrow':checkHasArrowFirstLevel(index1)}" class="revenue-title toggle">
                         <strong class="name">{{level1.name}}</strong>
                         <span class="number" >{{escapeNullData(level1.number)}}</span>
-                        <span class="value">{{currencySymbol}}{{ level1.total | number: precisonTwo}}</span>
+                        <span class="value"><span class="currency">{{currencySymbol}}</span> {{ level1.total | number: precisonTwo}}</span>
                     </a>
                     <!-- Second level - charge codes -->
                     <div ng-show="level1.active" ng-repeat="(index2 ,level2) in level1.charge_codes" class="grid-charge">
@@ -33,7 +33,7 @@
                         <a ng-click="clickedSecondLevel(index1 ,index2)" ng-class="{'active':level2.active , 'has-arrow':checkHasArrowSecondLevel(index1, index2)}" class="revenue-title toggle">
                             <span class="code short-text">{{level2.code}}</span>
                             <strong class="name">{{level2.name}}</strong>
-                            <span class="value">{{currencySymbol}}{{ level2.total | number: precisonTwo}}</span>
+                            <span class="value"><span class="currency">{{currencySymbol}}</span> {{ level2.total | number: precisonTwo}}</span>
                         </a>
 
                         <!-- Third level - transactions  -->
@@ -57,17 +57,13 @@
                                     <td>{{level3.type}}</td>
                                     <td ng-bind-html="level3.details"></td>
                                     <td>{{level3.time}}</td>
-                                    <td>{{currencySymbol}}{{level3.debit | number: precisonTwo}}</td>
+                                    <td><span class="currency">{{currencySymbol}}</span> {{level3.debit | number: precisonTwo}}</td>
                                 </tr>
 
                                 <!-- Pagination row -->
                                 <tr class="pagination" ng-show="level2.total_count > data.filterData.perPage && level2.transactions.length > 0">
-                                    <td colspan="7">
-                                        <div class="search-pagination">
-                                            <button type="button" class="button dark-grey next" ng-click="loadNextSet(index1, index2)" ng-disabled="isNextButtonDisabled(index1, index2)" translate>NEXT</button>
-                                            <button type="button" class="button dark-grey prev" ng-click="loadPrevSet(index1, index2)" ng-disabled="isPrevButtonDisabled(index1, index2)" translate>PREVIOUS</button>
-                                            <p>{{ 'SHOWING' | translate }} <strong>{{ level2.start }}-{{ level2.end }}</strong> {{ 'OF' | translate }} <strong>{{ level2.total_count }}</strong> {{ 'ITEMS' | translate }}</p>
-                                        </div>
+                                    <td colspan="7" ng-if="level2.chargeCodePagination">
+                                        <rv-pagination page-options="level2.chargeCodePagination" page-data="level2.total_count"></rv-pagination>
                                     </td>
                                 </tr>
                             </tbody>
@@ -77,7 +73,7 @@
                 </div>
 
                 <div class="grid-footer">
-                    <p class="payment"><span translate>TOTAL</span> {{currencySymbol}}{{ data.revenueData.total_revenue | number: precisonTwo}}</p>
+                    <p class="payment"><span translate>TOTAL</span> <span class="currency">{{currencySymbol}}</span> {{ data.revenueData.total_revenue | number: precisonTwo}}</p>
                 </div>
             </div>
 

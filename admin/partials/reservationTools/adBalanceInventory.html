@@ -20,13 +20,13 @@
                            <fieldset class="holder left float">
                               <div class="entry has-datepicker margin">
                                  <label>{{ 'FROM_DATE' | translate }}</label>
-                                 <input type="text" ng-model="payload.begin_date" readonly="" placeholder="Select Start Date" class="date-picker-input-small">
+                                 <input type="text" ng-model="payload.first_date" readonly="" placeholder="Select Start Date" class="date-picker-input-small">
                                  <button ng-click="popupCalendar('from')" class="ui-datepicker-trigger date-picker-small ui-datepicker-trigger-btn" type="button">...</button>
                               </div>
 
                               <div ng-hide="isConnectedToPMS" class="entry has-datepicker margin">
                                  <label>{{ 'TO_DATE' | translate }}</label>
-                                 <input type="text" ng-model="payload.end_date" readonly="" placeholder="Select End Date" class="date-picker-input-small">
+                                 <input type="text" ng-model="payload.last_date" readonly="" placeholder="Select End Date" class="date-picker-input-small">
                                  <button ng-click="popupCalendar('to')" class="ui-datepicker-trigger date-picker-small ui-datepicker-trigger-btn" type="button">...</button>
                               </div>
                            </fieldset>

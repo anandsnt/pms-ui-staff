@@ -16,6 +16,12 @@ sntRover.controller('RvArBalanceController', ['$scope', '$timeout', 'rvAccountsA
 		// Refresh scroll after completing fetch data
 		$scope.$on("FETCH_COMPLETE_BALANCE_LIST", function() {
 			refreshScroll();
+			$scope.arDataObj.totalOfAllInvoicesInBalanceTab = 0;
+			_.each($scope.arDataObj.balanceList, function (eachItem) {			    	    
+				$scope.arDataObj.totalOfAllInvoicesInBalanceTab = parseFloat($scope.arDataObj.totalOfAllInvoicesInBalanceTab) + parseFloat(eachItem.amount);
+			});
+			$scope.arDataObj.totalAllocatedAmount = $scope.arDataObj.totalOfAllInvoicesInBalanceTab;
+			
 		});	
 		/*
 		 * Calculate the total amount of selected invoices - Footer
@@ -280,6 +286,7 @@ sntRover.controller('RvArBalanceController', ['$scope', '$timeout', 'rvAccountsA
 		$scope.clickedEditIconToAdjustInvoice = function(invoiceIndex, transactionIndex) {
 			$scope.selectedInvoice = $scope.arDataObj.balanceList[invoiceIndex];
 			$scope.selectedTransaction = $scope.arDataObj.balanceList[invoiceIndex].debits[transactionIndex];
+			// $scope.isManualBalance = $scope.arDataObj.balanceList[invoiceIndex].is_manual_balance;
 			ngDialog.open({
 				template: '/assets/partials/companyCard/arTransactions/rvArInvoiceAdjustPopup.html',
 				scope: $scope,

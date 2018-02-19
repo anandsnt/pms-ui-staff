@@ -107,6 +107,7 @@
 	                            <input type="radio" name="hotel_pms_type" ng-model="data.hotel_pms_type" id="pms_overlay_service" value="OWS" />
 	                            PMS Overlay
 	                        </label>
+	                        <ad-textbox ng-if="isAdminSnt && data.country === swedenCountryId" label="Max. Control Unit (SE) workstations" value="data.max_control_unit"  placeholder="Enter Max. Control Unit (SE) workstations" name="max control unit" id="max control unit"></ad-textbox>	                        
 	                        <ad-checkbox on-click="clickedMultiPropertyCheckbox()" is-checked="data.is_multi_property" is-hide="data.hotel_pms_type=='OWS'" label="Multi Property" div-class="full-width"></ad-checkbox>
                         </fieldset>
                         <fieldset class="holder right">
@@ -154,12 +155,7 @@
 					</div>
 				</div>
 
-				<div class="entry">
-					<label for="terms_and_conditions" translate>
-					TERMS_AND_CONDITIONS_LABEL
-					</label>
-					<textarea class="full-width terms_height" id="terms_and_conditions" type="" ng-model="data.terms_and_conditions"></textarea>
-				</div>
+				
 
 				<div class="entry full-width">
 	                             <div class="entry inline-flex" >
@@ -278,6 +274,19 @@
 						</select>
 					</div>
 				</div>
+				<div class="entry is-pms-tokenized" ng-if="!isAdminSnt && data.hotel_pms_type !=='OWS'">
+					<label >Enable Invoice Number Sequence</label>
+					<div class="switch-button single" ng-class="{ on : data.enable_mod_type == true }" ng-click="toggleInvoiceSequence()">
+						<input type="checkbox" value="{{data.enable_mod_type}}" name="is-mod-enabled" id="is-mod-enabled">
+						<span class="switch-icon"></span>
+					</div>
+				</div>
+				<div class="entry is-pms-tokenized" ng-if="data.enable_mod_type">
+					<label>Invoice Number Sequence</label>
+					<div class="select">
+					<select ng-disabled="{{isSequenceModChangeDisabled}}" ng-model="data.selected_mod_type_id" ng-options="mod_type.id as mod_type.value for mod_type in data.mod_types"></select>					
+					</div>
+				</div>
 				<div class="entry is-pms-tokenized" ng-if="isAdminSnt && data.hotel_pms_type ==='OWS'">
 					<label for="is-pms-tokenized">PMS Tokenized</label>
 					<div class="switch-button single" ng-class="{ on : data.is_pms_tokenized == 'true' }" ng-click="toggleClicked()">
@@ -299,7 +308,7 @@
 					<input type="text" ng-model="data.website_address" value="{{data.website_address}}" required="no" placeholder="Enter website address" name="website_address">
 				</div>
 				<div class="entry">
-					<label for="hotel_email_address"> Hotel Email Address </label>
+					<label for="hotel_email_address"> Hotel Email Address <strong>*</strong></label>
 					<input type="text" ng-model="data.hotel_email_address" value="{{data.hotel_email_address}}" required="no">
 				</div>
 				<div class="entry date has-datepicker" ng-if="isAdminSnt">
@@ -310,7 +319,7 @@
 	                </button>
 				</div>
 				<div class="entry" ng-if="isAdminSnt">
-					<label for="hotel-pms-type"> Language </label>
+					<label for="hotel-pms-type"> Language <strong>*</strong></label>
 					<div class="select">
 						<select convert-to-number ng-model="data.selected_language" name="hotel-pms-type" id="hotel-pms-type" class="placeholder">
 							<option value=""> Language </option>
@@ -419,6 +428,8 @@
 				</div>
 
 				<ad-toggle-button is-checked="data.enable_offline_checkout" label="{{'WEB_CHEKOUT_OFFLINE_LABEL' | translate}}" is-hide="!isAdminSnt || data.hotel_pms_type !=='OWS'"></ad-toggle-button>
+
+				<ad-toggle-button is-checked="data.enable_offline_check_in" label="{{'WEB_CHECKIN_OFFLINE_LABEL' | translate}}" is-hide="!isAdminSnt || data.hotel_pms_type !=='OWS'"></ad-toggle-button>
 
 				<div class="entry is-pms-tokenized" ng-if="isAdminSnt && data.hotel_pms_type ==='OWS'">
 					<label>Privacy Check</label>

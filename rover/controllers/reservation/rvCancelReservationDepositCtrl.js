@@ -5,7 +5,8 @@ sntRover.controller('RVCancelReservationDepositController', ['$rootScope', '$sco
 		$scope.errorMessage = "";
 
 		$scope.cancellationData = {
-			reason: ""
+			reason: "",
+			locale: $scope.languageData.selected_language_code
 		};
 
 		$scope.DailogeState.isCancelled = false ;

@@ -38,20 +38,21 @@
 				</ad-select-number>
 
 
+				<ad-dropdown div-class='full-width' label-in-drop-down="{{ 'SELECT_ROOM_TYPE' | translate }}" label='Select room type' sel-class='placeholder' id='room-type' name='room-type' list='data.room_types' required='yes' selected-Id='data.room_type_id' on-change="roomTypeChanged"></ad-dropdown>
 
-				<ad-dropdown div-class='full-width' label-in-drop-down="{{ 'SELECT_ROOM_TYPE' | translate }}"label='Select room type' sel-class='placeholder' id='room-type' name='room-type' list='data.room_types' required='yes' selected-Id='data.room_type_id' on-change="roomTypeChanged"></ad-dropdown>
-				
+				<ad-dropdown id="section" selbox-class="placeholder" label="Housekeeping Section" div-class="full-width" label-in-drop-down="Housekeeping Section" list="data.hk_sections" selected-Id='data.hk_section_id'></ad-dropdown>
+
 				<div class="entry full-width" ng-show="shouldShowAddSuiteRooms()">
 					<ul class="entry-list">
 						<li ng-repeat="componentRooms in availableComponentRooms">
 							<label class="entry-list-label">{{componentRooms.room_type_name}} [Total configurable count: {{componentRooms.total_configurable_rooms}}]</label>
-							<div class="select entry-list-input">								
+							<div class="select entry-list-input">
 								<select ng-change="selectedConfiguredRoom(componentRooms.selected_room_number, componentRooms.id, componentRooms.room_type_name )" ng-model="componentRooms.selected_room_number">
 									<option value="">Room No</option>
-									<option value="{{rooms.room_no}}" ng-repeat="rooms in componentRooms.rooms">{{rooms.room_no}}</option>		
+									<option value="{{rooms.room_no}}" ng-repeat="rooms in componentRooms.rooms">{{rooms.room_no}}</option>
 								</select>
 							</div>
-						</li>						
+						</li>
 					</ul>
 
 					<label for="select-option1">
@@ -68,6 +69,12 @@
 						</div>
 					</div>
 				</div>
+
+				<ad-checkbox
+                     is-checked="data.is_component_suite_door"
+                     label="{{ 'SUITE_DOOR' | translate}}"
+                     div-class="full-width">
+    			</ad-checkbox>
 
 				<div class="entry full-width">
 					<label for="room-picture">

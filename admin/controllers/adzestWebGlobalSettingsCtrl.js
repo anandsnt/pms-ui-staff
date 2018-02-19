@@ -4,7 +4,7 @@ admin.controller('ADzestWebGlobalSettingsCtrl', ['$scope', 'ADzestWebGlobalSetti
 		BaseCtrl.call(this, $scope);
 		$scope.successMessage = '';
 		$scope.languages = ["EN", "ES"];
-		$scope.supportedFonts = ['Source Sans Pro', 'VAGRounded-Light'];
+		$scope.supportedFonts = ADzestWebGlobalSettingsSrv.webSafeFonts;
 		$scope.iconColors = ["White", "Black"];
 		$scope.selectedMenu = "";
 		$scope.globalSettings = zestWebGlobalSettings.zest_web; // resolved on route change

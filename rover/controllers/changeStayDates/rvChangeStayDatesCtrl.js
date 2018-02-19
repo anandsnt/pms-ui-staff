@@ -3,6 +3,8 @@ sntRover.controller('RVchangeStayDatesController', ['$state', '$stateParams', '$
 		// inheriting some useful things
 		BaseCtrl.call(this, $scope);
 
+		var RESV_LIMIT = 92;
+
 		// set a back button on header
 		$rootScope.setPrevState = {
 			title: $filter('translate')('STAY_CARD'),
@@ -666,7 +668,12 @@ sntRover.controller('RVchangeStayDatesController', ['$state', '$stateParams', '$
 					return false;
 				}
 
-			}
+            } else if (RESV_LIMIT < moment($scope.checkoutDateInCalender).diff(moment($scope.checkinDateInCalender), 'days')) {
+                // CICO-47538 For standalone properties ensure the stay doesn't exceed 92 days
+                $scope.rightSideReservationUpdates = 'MAX_LENGTH_EXCEEDED';
+                $scope.refreshMyScroller();
+                return false;
+            }
 
 			// calling the webservice for to check the availablity of rooms on these days
 			var getParams = {
@@ -715,6 +722,12 @@ sntRover.controller('RVchangeStayDatesController', ['$state', '$stateParams', '$
 			}
 		};
 
+		/**
+		 * Checks whether the given date string is equal to the group end date
+		 */
+		var isGroupEndDate = function (dateStr, checkoutDate) {	
+			return dateStr === checkoutDate;		
+		};
 
 		$scope.getEventSourceObject = function(checkinDate, checkoutDate) {
 			/**
@@ -740,14 +753,19 @@ sntRover.controller('RVchangeStayDatesController', ['$state', '$stateParams', '$
 			// Reset validDays array
 			$scope.stayDetails.validDays = [];
 
-			$($scope.stayDetails.calendarDetails.available_dates).each(function(index) {
-
+			$($scope.stayDetails.calendarDetails.available_dates).each(function(index) {				
 				var preventOverbookHouse = !this.is_house_available && !canOverbookHouse && $rootScope.isStandAlone,
 					preventOverbookRoomType = !this.is_room_type_available && !canOverbookRoomType,
 					preventBookingRestrictedRate = this.is_restricted && !canBookRestrictedRate,
-					preventSuiteRoomOverBook = $scope.reservation.reservation_card.is_suite && !this.is_room_type_available;
+					preventSuiteRoomOverBook = $scope.reservation.reservation_card.is_suite &&
+                                               !$scope.reservation.reservation_card.group_id && !this.is_room_type_available,
+					preventGroupSuiteRoomOverBook = $scope.reservation.reservation_card.is_suite &&
+                                                    !!$scope.reservation.reservation_card.group_id && 
+                                                    !this.is_room_type_available && !this.is_house_available &&
+                                                    !isGroupEndDate(this.date, $scope.reservation.reservation_card.group_block_to); // CICO-47200
 
 				calEvt = {};
+				
 
 				// Fixing the timezone issue related with fullcalendar
 				thisDate = tzIndependentDate(this.date);
@@ -804,8 +822,9 @@ sntRover.controller('RVchangeStayDatesController', ['$state', '$stateParams', '$
 					calEvt.id = "availability" + index; // Id should be unique
 					calEvt.className = "type-available";
 				}
-
-				if (preventSuiteRoomOverBook || preventOverbookHouse || preventBookingRestrictedRate || preventOverbookRoomType) {
+				// CICO-47200 - preventGroupSuiteRoomOverBook
+				if (preventGroupSuiteRoomOverBook || preventSuiteRoomOverBook || preventOverbookHouse || 
+					preventBookingRestrictedRate || preventOverbookRoomType) {
 					extendThrough = false;
 				}
 

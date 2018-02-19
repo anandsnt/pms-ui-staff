@@ -220,7 +220,7 @@ sntRover.controller('RVBillPayCtrl', ['$scope', 'RVBillPaymentSrv', 'RVPaymentSr
 		/*
 		 *	CICO-6089 => Enable Direct Bill payment option for OPEN BILLS.
 		*/
-		if ($scope.billsArray[$scope.currentActiveBill].is_account_attached && $scope.hasPermissionToDirectBillPayment()) {
+		if ($scope.billsArray[$scope.currentActiveBill].is_account_attached && $scope.billsArray[$scope.currentActiveBill].allow_db_refund && $scope.hasPermissionToDirectBillPayment()) {
 			paymentParams.direct_bill = true;
 		}
 		else {
@@ -374,12 +374,11 @@ sntRover.controller('RVBillPayCtrl', ['$scope', 'RVBillPaymentSrv', 'RVPaymentSr
 	var paymentFinalDetails = {};
 
 	var processeRestOfPaymentOperations  = function() {
+		paymentFinalDetails.billNumber = $scope.renderData.billNumberSelected;
 		$scope.$emit('BILL_PAYMENT_SUCCESS', paymentFinalDetails);
-		$scope.$emit("hideLoader");
 		updateSplitPaymentDetail();
 		updateSuccessMessage();
 		updateDefaultPaymentAmount();
-		paymentFinalDetails.billNumber = $scope.renderData.billNumberSelected;
 		if ($scope.newPaymentInfo.addToGuestCard) {
 			var cardCode = $scope.defaultPaymentTypeCard;
 			var cardNumber = $scope.defaultPaymentTypeCardNumberEndingWith;
@@ -413,7 +412,8 @@ sntRover.controller('RVBillPayCtrl', ['$scope', 'RVBillPaymentSrv', 'RVPaymentSr
             paymentSuccess: true,
             authorizationCode: data.authorizationCode || data.authorization_code,
             amount: data.amountPaid,
-            feePaid: parseFloat(data.feePaid)
+            feePaid: parseFloat(data.feePaid),
+            showFee: data.showFee
         };
 
         processeRestOfPaymentOperations();

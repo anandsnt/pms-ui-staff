@@ -9,8 +9,9 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 	'RVReservationCardSrv',
 	'$window',
     '$filter',
+    'RVContactInfoSrv',
     'rvPermissionSrv',
-	function($scope, $rootScope, $stateParams, ngDialog, $timeout, rvAccountsArTransactionsSrv, RVReservationCardSrv, $window, $filter, rvPermissionSrv) {
+	function($scope, $rootScope, $stateParams, ngDialog, $timeout, rvAccountsArTransactionsSrv, RVReservationCardSrv, $window, $filter, RVContactInfoSrv, rvPermissionSrv) {
 		BaseCtrl.call(this, $scope);
 		$scope.errorMessage = '';
 
@@ -24,6 +25,7 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 			'shouldShowFooter': false,
 			'insufficientAmount': false,
 			'isFromAddPaymentOrAllocateButton': false,
+			'shouldShowRefundButton': false,
 			'hasAllocateUnallocatePermission': rvPermissionSrv.getPermissionValue ('ALLOCATE_UNALLOCATE_PAYMENT')
 		};
 
@@ -61,6 +63,7 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 			'paidTotalCount': 0,
 			'allocatedTotalCount': 0,
 			'unallocatedTotalCount': 0,
+			'totalOfAllInvoicesInBalanceTab': 0,
 			// Params - Balance tab
 			'selectedInvoices': [],
 			'totalAllocatedAmount': 0,
@@ -257,6 +260,7 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 		};
 		// Show payment allocate popup.
 		$scope.popupPaymentForAllocation = function () {
+			$scope.type = 'ALLOCATE';
 			ngDialog.open({
 				template: '/assets/partials/companyCard/arTransactions/rvCompanyTravelAgentCardArPaymentPopup.html',
 				controller: 'RVArPaymentForAllocationController',
@@ -315,6 +319,7 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 			});
 			$scope.paymentModalOpened = true;
 		};
+
 		/*
 		 * Success callback of payment
 		 */
@@ -337,6 +342,9 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 			if (errorMessage[0] === "Insufficient Funds.Please 'Add payment' first") {
 				$scope.errorMessage = [];
 				$scope.arFlags.insufficientAmount = true;
+			}
+			else {
+				$scope.errorMessage = errorMessage;
 			}
 		};
 
@@ -527,7 +535,8 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
             _.each($scope.arDataObj.balanceList, function (eachItem) {
                 totalAllocatedAmount = parseFloat(totalAllocatedAmount) + parseFloat(eachItem.amount);
             });
-            $scope.arDataObj.totalAllocatedAmount = totalAllocatedAmount;	
+            $scope.arDataObj.totalOfAllInvoicesInBalanceTab = totalAllocatedAmount;	
+            $scope.arDataObj.totalAllocatedAmount = totalAllocatedAmount;
 		});
 
 		/*
@@ -593,30 +602,51 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 		// -------/ PAGINATION LOGIC /----------- //
 
 		// Handler for statement button click
-		$scope.clickedArStatementButton = function() {
-
-		var dataFetchSuccess = function(data) {
-			$scope.statementEmailAddress = !!data.to_address ? data.to_address : '';
-				ngDialog.open({
+		var successCallBackForLanguagesFetch = function(data) {
+			$scope.$emit('hideLoader');
+			if (data.languages) {
+				data.languages = _.filter(data.languages, {
+					is_show_on_guest_card: true
+				});
+			}
+			$scope.languageData = data;
+			$scope.filterData.locale = data.selected_language_code;
+			ngDialog.open({
 				template: '/assets/partials/companyCard/arTransactions/rvArStatementPopup.html',
 				className: '',
 				closeByDocument: false,
 				scope: $scope
 			});
-		},
-		dataFailureCallback = function(errorData) {
-			$scope.errorMessage = errorData;
+		};
+		/**
+		* Fetch the guest languages list and settings
+		* @return {undefined}
+		*/
+		var fetchGuestLanguages = function() {
+			// call api
+			$scope.invokeApi(RVContactInfoSrv.fetchGuestLanguages, {},
+			successCallBackForLanguagesFetch);
 		};
 
-		var params = { 'id': $scope.arDataObj.accountId };
+		$scope.clickedArStatementButton = function() {
 
-		var options = {
-			params: params,
-			successCallBack: dataFetchSuccess,
-			failureCallBack: dataFailureCallback
-		};
+			var dataFetchSuccess = function(data) {
+				$scope.statementEmailAddress = !!data.to_address ? data.to_address : '';
+				fetchGuestLanguages();
+			},
+			dataFailureCallback = function(errorData) {
+				$scope.errorMessage = errorData;
+			};
 
-		$scope.callAPI(rvAccountsArTransactionsSrv.fetchArStatementData, options);
+			var params = { 'id': $scope.arDataObj.accountId };
+
+			var options = {
+				params: params,
+				successCallBack: dataFetchSuccess,
+				failureCallBack: dataFailureCallback
+			};
+
+			$scope.callAPI(rvAccountsArTransactionsSrv.fetchArStatementData, options);
 		};
 
         // Checks whether include payment checkbox should be shown or not
@@ -657,6 +687,7 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 
                 paramsToSend.room_search = true;
             }
+            paramsToSend.locale = $scope.filterData.locale;
             return paramsToSend;
         };
 
@@ -781,5 +812,62 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 			$scope.filterData.query = '';
 			$scope.filterChanged();
 		};
+		/*
+		 * To list all allocated payments on click refund button
+		 * Same popup used for listing payments from 'Please select payment' - in Balance tab
+		 */
+		$scope.getAllocatedPayments = function () {
+			$scope.type = "REFUND";
+			ngDialog.open({
+				template: '/assets/partials/companyCard/arTransactions/rvCompanyTravelAgentCardArPaymentPopup.html',
+				controller: 'RVArPaymentForAllocationController',
+				scope: $scope
+			});
+		};
+		/*
+		 * Clicked refund button action
+		 * Open new dialog to show refund payment screen
+		 */
+
+		$scope.$on("CLICKED_REFUND_BUTTON", function(event, payment) {
+			if (payment.payment_type_value === "CC") {
+                payment.card_details.ending_with = payment.card_details.last_digits;
+                payment.card_details.expiry_date = payment.card_details.expire_date;
+            }
+            
+			var passData = {
+				"account_id": $scope.arDataObj.accountId,
+				"isRefundClick": true,
+				"is_swiped": false,
+				"details": {
+					"firstName": "",
+					"lastName": ""
+				},
+				payment: payment
+			};
+
+            $scope.passData = passData;
+
+			$timeout(function() {
+
+				ngDialog.open({
+					template: '/assets/partials/companyCard/arTransactions/rvArTransactionsPayCredits.html',
+					controller: 'RVArTransactionsPayCreditsController',
+					className: '',
+					scope: $scope
+				});
+				$scope.paymentModalOpened = true;
+
+			}, 500);
+		});
+
+		// CICO-47819: Handling action after navigation back from Staycard
+		$scope.$on('BACK_FROM_STAY_CARD', function() {
+			if (typeof $scope.arDataObj.accountId === 'undefined') {
+				$timeout(function() {
+					init();
+				}, 2000);
+			}
+		});
 
 }]);

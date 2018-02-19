@@ -103,32 +103,30 @@ sntRover.controller('RVJournalRevenueController', ['$scope', '$rootScope', 'RVJo
     };
 
     // Load the transaction details
-    var loadTransactionDeatils = function(chargeCodeItem, isFromPagination) {
+    var loadTransactionDeatils = function(chargeCodeItem, isFromPagination, pageNo) {
+
+        chargeCodeItem.page_no = pageNo || 1;
 
         var successCallBackFetchRevenueDataTransactions = function(data) {
 
             chargeCodeItem.transactions = [];
             chargeCodeItem.transactions = data.transactions;
             chargeCodeItem.total_count = data.total_count;
-            chargeCodeItem.end = chargeCodeItem.start + data.transactions.length - 1;
 
-            if (isFromPagination) {
-                // Compute the start, end and total count parameters
-                if (chargeCodeItem.nextAction) {
-                    chargeCodeItem.start = chargeCodeItem.start + $scope.data.filterData.perPage;
-                }
-                if (chargeCodeItem.prevAction) {
-                    chargeCodeItem.start = chargeCodeItem.start - $scope.data.filterData.perPage;
-                }
-                chargeCodeItem.end = chargeCodeItem.start + chargeCodeItem.transactions.length - 1;
-            }
-            else if (data.transactions.length > 0) {
+            if (!isFromPagination && data.transactions.length > 0) {
                 chargeCodeItem.active = !chargeCodeItem.active;
-            }
+            }      
 
-            refreshRevenueScroller();
-            $scope.errorMessage = "";
-            $scope.$emit('hideLoader');
+            $timeout(function () {
+                var paginationID = chargeCodeItem.id;
+
+                $scope.$broadcast('updatePagination', paginationID );
+
+                refreshRevenueScroller();
+                $scope.errorMessage = "";
+                $scope.$emit('hideLoader');
+
+            }, 500 );
         };
 
         // Call api only while expanding the tab or on pagination Next/Prev button actions ..
@@ -154,6 +152,13 @@ sntRover.controller('RVJournalRevenueController', ['$scope', '$rootScope', 'RVJo
     $scope.clickedSecondLevel = function(index1, index2) {
 
         var toggleItem = $scope.data.revenueData.charge_groups[index1].charge_codes[index2];
+
+        // pagination data object on level-3 for charge codes.
+        toggleItem.chargeCodePagination = {
+            id: toggleItem.id,
+            api: [loadTransactionDeatils, toggleItem, true],
+            perPage: $scope.data.filterData.perPage
+        };
 
         loadTransactionDeatils(toggleItem, false);
     };
@@ -188,48 +193,5 @@ sntRover.controller('RVJournalRevenueController', ['$scope', '$rootScope', 'RVJo
         }
         $scope.errorMessage = "";
     };
-
-    // Logic for pagination starts here ..
-    $scope.loadNextSet = function(index1, index2) {
-        var item = $scope.data.revenueData.charge_groups[index1].charge_codes[index2];
-
-        item.page_no ++;
-        item.nextAction = true;
-        item.prevAction = false;
-        loadTransactionDeatils(item, true);
-    };
-
-    $scope.loadPrevSet = function(index1, index2) {
-
-        var item = $scope.data.revenueData.charge_groups[index1].charge_codes[index2];
-
-        item.page_no --;
-        item.nextAction = false;
-        item.prevAction = true;
-        loadTransactionDeatils(item, true);
-    };
-
-    $scope.isNextButtonDisabled = function(index1, index2) {
-
-        var item = $scope.data.revenueData.charge_groups[index1].charge_codes[index2],
-            isDisabled = false;
-
-        if (item.end >= item.total_count) {
-            isDisabled = true;
-        }
-        return isDisabled;
-    };
-
-    $scope.isPrevButtonDisabled = function(index1, index2) {
-
-        var item = $scope.data.revenueData.charge_groups[index1].charge_codes[index2],
-            isDisabled = false;
-
-        if (item.page_no === 1) {
-            isDisabled = true;
-        }
-        return isDisabled;
-    };
-    // Pagination logic ends ...
 
 }]);

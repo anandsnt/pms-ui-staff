@@ -1,24 +1,25 @@
-
 <div role="dialog" id="modal" class="modal-show" ng-cloak>
-	<!-- CASE 1: 0 Devices -->
-	<div class="modal-content alert" ng-if="connectedDeviceDetails.length === 0" ng-cloak>
-	    <button class="modal-close" id="modal-close" type="button" ng-click="closeDialogImmediately()">
-	        <span class="icons icon-close invert"></span>
-	    </button>
+    <!-- CASE 1: 0 Devices -->
+    <div class="modal-content alert" ng-if="connectedDeviceDetails.length === 0" ng-cloak>
+        <button class="modal-close" id="modal-close" type="button" ng-click="closeDialogImmediately()">
+            <span class="icons icon-close invert"></span>
+        </button>
 
-	    <span class="icons icon-popup-alert"></span>
-	    <span class="h2 message" translate>NO_DEVICES_FOUND</span>
+        <span class="icons icon-popup-alert"></span>
+        <span class="h2 message" translate>NO_DEVICES_FOUND</span>
 
-	    <div class="actions">
-	        <button type="button" class="button blank" ng-click="closeDialogImmediately()" translate>CLOSE_WINDOW</button>
-	    </div>
-	</div>
+        <div class="actions">
+            <button type="button" class="button blank" ng-click="closeDialogImmediately()" translate>CLOSE_WINDOW
+            </button>
+        </div>
+    </div>
 
-	<!-- CASE 2: Devices found -->
-	<div class="modal-content device-status" ng-if="connectedDeviceDetails.length > 0" ng-cloak>
-	    <button class="modal-close" id="modal-close" type="button" ng-click="closeDialogImmediately()">
-	        <span class="icons icon-close invert"></span>
-	    </button>
+    <!-- CASE 2: Devices found -->
+    <div class="modal-content device-status" ng-if="connectedDeviceDetails.length > 0" ng-cloak>
+        <button class="modal-close" id="modal-close" type="button" ng-click="closeDialogImmediately()">
+            <span class="icons icon-close invert"></span>
+        </button>
+        <div ng-include="'/assets/partials/common/notification_message.html'"></div>
         <section ng-if="serviceDetails">
             <span class="h2 message" translate>Rover Service</span>
             <div class="devices-grid">
@@ -36,72 +37,102 @@
                 </div>
             </div>
         </section>
-	    <span class="h2 message" translate>DEVICES</span>
-	    <div class="devices-grid">
-	        <ul class="device-labels">
-	            <li translate>DEVICE_TYPE</li>
-	            <li translate>DEVICE_NAME</li>
-	            <li translate>DEVICE_ID</li>
-	            <li translate>STATUS</li>
-	            <li translate>DEVICE_BATTERY</li>
-	            <li translate>DEVICE_LIBRARY_NAME</li>
-	            <li translate>DEVICE_LIBRARY_VERSION</li>
-	            <li translate>DEVICE_FIRMWARE_VERSION</li>
-	            <li translate>DEVICE_SERIAL_NO</li>
-	        </ul>
-	        <div class="device-list scrollable">
-	            <div class="wrapper" style="width:{{(connectedDeviceDetails.length === 1) ? '320': connectedDeviceDetails.length * 160}}px">
-	                <!-- CASE 1: Device is connected -->
-	                <ul class="device" ng-repeat="device in connectedDeviceDetails" ng-style="widthStyle">
-	                    <li class="title">{{device.device_short_name}}</li>
-	                    <li ng-class="{'text-grey': !device.device_identified_name}">{{device.device_identified_name}}</li> <!-- Use <li class="text-grey">N/A</li> if value unknown -->
-	                    <li ng-class="{'text-grey': !device.device_id}">{{device.device_id}}</li>
-	                    <li ng-if="device.device_connection_sate === 'Connected'"><em class="text-green">Connected</em></li>
-	                    <!-- <li ng-if="device.device_connection_sate !== 'Connected' && device.device_short_name ==='Ingenico'"><button type="button" class="button blue">Connect</button></li> -->
-	                    <li ng-if="device.device_connection_sate !== 'Connected'"><em class="text-orange">Not Connected</em></li>
-                        <li ng-if="device.battery_percentage === null" class="text-grey">
-                            NA
+        <span class="h2 message" translate>DEVICES</span>
+        <div class="devices-grid">
+            <ul class="device-labels">
+                <li translate>DEVICE_TYPE</li>
+                <li translate>DEVICE_NAME</li>
+                <li translate>DEVICE_ID</li>
+                <li translate>STATUS</li>
+                <li translate>DEVICE_BATTERY</li>
+                <li translate>DEVICE_LIBRARY_NAME</li>
+                <li translate>DEVICE_LIBRARY_VERSION</li>
+                <li translate>DEVICE_FIRMWARE_VERSION</li>
+                <li translate>DEVICE_SERIAL_NO</li>
+                <li translate>ACTIONS</li>
+            </ul>
+            <div class="device-list scrollable">
+                <div class="wrapper"
+                     style="width:{{(connectedDeviceDetails.length === 1) ? '320': connectedDeviceDetails.length * 160}}px">
+                    <!-- CASE 1: Device is connected -->
+                    <ul class="device" ng-repeat="device in connectedDeviceDetails" ng-style="widthStyle">
+                        <li class="title">{{device.device_short_name}}</li>
+                        <li ng-class="{'text-grey': !device.device_identified_name}">{{device.device_identified_name}}
+                        </li> <!-- Use <li class="text-grey">N/A</li> if value unknown -->
+                        <li ng-class="{'text-grey': !device.device_id}">{{device.device_id}}</li>
+                        <li ng-if="device.device_connection_sate === 'Connected'"><em class="text-green">Connected</em>
                         </li>
-	                    <li ng-if="device.battery_percentage !== null">
-	                        <div class="battery">
-	                           <!--  <em class="battery-status text-{'green' if charged/charging or 'red' if discharging}" ng-class="{'green': device.battery_state === 'Charged' || device.battery_state === 'Charging',' red': device.battery_state === 'Discharging'}">{{device.battery_state}}</em> -->
-	                            <strong class="battery-value text" ng-class="{'red': device.battery_percentage < 25 , 'orange': device.battery_percentage >= 25 && device.battery_percentage < 50, 'green': device.battery_percentage >=50}" ng-if="device.device_connection_sate === 'Connected'">{{device.battery_percentage}}%</strong>
-	                            <div class="battery-bar" ng-class="{'background-red': device.battery_percentage < 25 , 'background-orange': device.battery_percentage < 50, 'background-green': device.battery_percentage >=50}" ng-if="device.device_connection_sate === 'Connected'">
-	                                <span class="battery-graph" style="width: {{device.battery_percentage}}%;"></span>
-	                            </div>
-	                            <span ng-if="device.device_connection_sate !== 'Connected'">NA</span>
-	                        </div>
-	                    </li>
-	                    <li ng-class="{'text-grey': !device.library_name || device.library_name == 'NA'}">
-                            {{device.library_name || 'NA'}}
+                        <!-- <li ng-if="device.device_connection_sate !== 'Connected' && device.device_short_name ==='Ingenico'"><button type="button" class="button blue">Connect</button></li> -->
+                        <li ng-if="device.device_connection_sate !== 'Connected'"><em class="text-orange">Not
+                            Connected</em></li>
+                        <!-- CICO-47864 Battery percentage to be shown as NA if value is 0 or null -->
+                        <li ng-if="device.device_connection_sate !== 'Connected' || !device.battery_percentage" class="text-grey">
+                            N/A
                         </li>
-	                    <li ng-class="{'text-grey': !device.library_version ||device.library_version == 'NA'}">
-                            {{device.library_version || 'NA'}}
+                        <li ng-if="device.device_connection_sate === 'Connected' && device.battery_percentage">
+                            <div class="battery">
+                                <!--  <em class="battery-status text-{'green' if charged/charging or 'red' if discharging}" ng-class="{'green': device.battery_state === 'Charged' || device.battery_state === 'Charging',' red': device.battery_state === 'Discharging'}">{{device.battery_state}}</em> -->
+                                <strong class="battery-value text"
+                                        ng-class="{'red': device.battery_percentage < 25 , 'orange': device.battery_percentage >= 25 && device.battery_percentage < 50, 'green': device.battery_percentage >=50}"
+                                        ng-if="device.device_connection_sate === 'Connected'">{{device.battery_percentage}}%</strong>
+                                <div class="battery-bar"
+                                     ng-class="{'background-red': device.battery_percentage < 25 , 'background-orange': device.battery_percentage < 50, 'background-green': device.battery_percentage >=50}"
+                                     ng-if="device.device_connection_sate === 'Connected'">
+                                    <span class="battery-graph" style="width: {{device.battery_percentage}}%;"></span>
+                                </div>
+                                <span ng-if="device.device_connection_sate !== 'Connected'">NA</span>
+                            </div>
                         </li>
-	                    <li ng-class="{'text-grey': !device.firmware_version || device.firmware_version == 'NA'}">
-                            {{device.firmware_version || 'NA'}}
+                        <li ng-class="{'text-grey': !device.library_name || device.library_name == 'NA'}">
+                            {{device.library_name || 'N/A'}}
                         </li>
-	                    <li ng-class="{'text-grey': !device.serial_number || device.serial_number == 'NA'}">
-                            {{device.serial_number || 'NA'}}
+                        <li ng-class="{'text-grey': !device.library_version ||device.library_version == 'NA'}">
+                            {{device.library_version || 'N/A'}}
                         </li>
-	                </ul>
-	            </div>
-	        </div>
-	    </div>
+                        <li ng-class="{'text-grey': !device.firmware_version || device.firmware_version == 'NA'}">
+                            {{device.firmware_version || 'N/A'}}
+                        </li>
+                        <li ng-class="{'text-grey': !device.serial_number || device.serial_number == 'NA'}">
+                            {{device.serial_number || 'N/A'}}
+                        </li>
+                        <!--Actions-->
+                        <li ng-class="{'text-grey': !device.actions}" ng-if="!device.actions">
+                            {{'N/A'}}
+                        </li>
+                        <li ng-if="device.actions && device.actions.length">
+                            <div class="select" style="width: calc(100% - 60px); display: inline-block;">
+                                <select ng-model="device.selectedAction"
+                                        ng-class="{'placeholder': !device.selectedAction}">
+                                    <option value="" selected>Select an Action</option>
+                                    <option value="{{action.action_name}}" ng-repeat="action in device.actions">
+                                        {{action.display_name}}
+                                    </option>
+                                </select>
+                            </div>
+                            <label class="button green" style="display:inline-block; margin-left: 8px;"
+                                   ng-class="{'grey': !device.selectedAction}"
+                                   ng-click="onExecuteAction(device)">RUN</label>
+                        </li>
+                        <!--Actions-->
+                    </ul>
+                </div>
+            </div>
+        </div>
 
-	    <div class="form ng-hide">
-	        <div class="entry">
-	            <label for="email" translate="">EMAIL_STATUS_TO</label>
-	            <input id="email" type="email" />
-	        </div>
-	        <div class="entry action">
-	            <button type="button" class="button green">SEND</button>
-	        </div>
-	    </div>
+        <div class="form ng-hide">
+            <div class="entry">
+                <label for="email" translate="">EMAIL_STATUS_TO</label>
+                <input id="email" type="email"/>
+            </div>
+            <div class="entry action">
+                <button type="button" class="button green">SEND</button>
+            </div>
+        </div>
 
-	    <div class="entry button-grp">
-	        <button type="button" class="button blank" ng-click="closeDialogImmediately()" translate>CLOSE_WINDOW</button>
-	        <button type="button" class="button green" ng-click="refreshDeviceStatus()" translate>REFRESH</button>
-	    </div>
-	</div>
+        <div class="entry button-grp">
+            <button type="button" class="button blank" ng-click="closeDialogImmediately()" translate>CLOSE_WINDOW
+            </button>
+            <button type="button" class="button green" ng-click="refreshDeviceStatus()" translate>REFRESH</button>
+        </div>
+    </div>
 </div>

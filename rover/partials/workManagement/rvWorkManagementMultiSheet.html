@@ -32,7 +32,7 @@
                     <option ng-repeat="workType in workTypes" value="{{workType.id}}" ng-if="workType.is_active">{{workType.name}}</option>
                 </select>
             </div>
-        </div>        
+        </div>
         <div class="entry actions">
             <div class="action" ng-hide="workSheetChanged">
                 <label translate>PRINT</label>
@@ -172,7 +172,7 @@
                     data-drop="true"
                     jqyoui-droppable="{multiple:true, onDrop:'dropToAssign(event, dropped)'}"
                     data-jqyoui-options="{accept: '#assigned-rooms .worksheet-task, #unassigned-rooms .worksheet-task'}"
-                    ng-iscroll="assignedRoomList-{{$index}}"
+                    ng-iscroll="assignedRoomList-{{employee.id}}"
                 >
                     <div class="wrapper">
                         <ul class="worksheet-room"

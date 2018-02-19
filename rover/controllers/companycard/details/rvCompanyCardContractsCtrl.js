@@ -134,6 +134,7 @@ sntRover.controller('companyCardContractsCtrl', ['$rootScope', '$scope', 'RVComp
 			contractInfo = {};
 			$scope.contractData.contract_name = "";
 			$scope.isDeleteAllowed = data.is_delete_allowed;
+			$scope.contractData.rate_value = parseInt($scope.contractData.rate_value).toFixed(2);
 
 			var selectedRate = _.findWhere(ratesList, {id: data.contracted_rate_selected});
 
@@ -270,8 +271,11 @@ sntRover.controller('companyCardContractsCtrl', ['$rootScope', '$scope', 'RVComp
 			$scope.addData.rates = ratesList;
 			$scope.errorMessage = "";
 		};
-
-		$scope.invokeApi(RVCompanyCardSrv.fetchRates, {}, fetchRatesSuccessCallback, fetchFailureCallback);
+		
+		// CICO-44105 : Removing api call on creating new cards.
+		if ($stateParams.id !== 'add') {
+			$scope.invokeApi(RVCompanyCardSrv.fetchRates, {}, fetchRatesSuccessCallback, fetchFailureCallback);
+		}
 
 		$scope.fetchContractsList = function () {
 			if ($stateParams.id !== "add") {
@@ -454,7 +458,7 @@ sntRover.controller('companyCardContractsCtrl', ['$rootScope', '$scope', 'RVComp
 			$scope.addData.selected_symbol = "+";
 			$scope.addData.selected_type = "amount";
 
-			$scope.addData.rate_value = 0;
+			$scope.addData.rate_value = 0.00;
 			$scope.addData.is_fixed_rate = false;
 			$scope.addData.is_rate_shown_on_guest_bill = false;
 			if (typeof $stateParams.type !== 'undefined' && $stateParams.type !== "") {
@@ -529,7 +533,7 @@ sntRover.controller('companyCardContractsCtrl', ['$rootScope', '$scope', 'RVComp
 			} else {
 				contractInfo = dataToUpdate;
 			}
-			if (!dataUpdated) {
+			if (!dataUpdated && !$scope.contractList.isAddMode) {
 				var data = dclone($scope.contractData, ['occupancy', 'statistics', 'rates', 'total_contracted_nights']);
 
 				if ($stateParams.id === "add") {
@@ -671,9 +675,9 @@ sntRover.controller('companyCardContractsCtrl', ['$rootScope', '$scope', 'RVComp
 		 */
 		$scope.$watch('contractData.selected_type', function() {
 			if ($scope.contractData.selected_type === "percent") {
-				$scope.contractData.rate_value = parseFloat($scope.contractData.rate_value).toFixed(2);
+				$scope.contractData.rate_value = parseInt($scope.contractData.rate_value).toFixed(2);
 			} else {
-				$scope.contractData.rate_value = parseFloat($scope.contractData.rate_value).toFixed(2);
+				$scope.contractData.rate_value = parseInt($scope.contractData.rate_value).toFixed(2);
 			}
 		});
 		/*

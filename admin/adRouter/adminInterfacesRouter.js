@@ -260,12 +260,7 @@ angular.module('adminInterfacesRouter', []).config(function($stateProvider) {
     $stateProvider.state('admin.ifc_room_mappings', {
         templateUrl: '/assets/partials/interfaces/Comtrol/adComtrolRoomMappings.html',
         controller: 'adComtrolRoomMappingCtrl',
-        url: '/ifc_comtrol/setup',
-        resolve: {
-            roomMappings: ['adComtrolRoomMappingSrv', function(adComtrolRoomMappingSrv) {
-                return adComtrolRoomMappingSrv.fetch();
-            }]
-        }
+        url: '/ifc_comtrol/setup'
     });
 
     $stateProvider.state('admin.gustoPosSetup', {
@@ -469,6 +464,20 @@ angular.module('adminInterfacesRouter', []).config(function($stateProvider) {
         }
     });
 
+    $stateProvider.state('admin.juyoSetup', {
+        templateUrl: '/assets/partials/interfaces/Juyo/adJuyoSetup.html',
+        controller: 'adCRSCommonCtrl',
+        url: '/interfaces/setup/:id',
+        onEnter: ['$stateParams', function($stateParams) {
+            $stateParams.id = 'juyo';
+        }],
+        resolve: {
+            config: ['adInterfacesCommonConfigSrv', function(adInterfacesCommonConfigSrv) {
+                return adInterfacesCommonConfigSrv.fetchConfiguration('juyo');
+            }]
+        }
+    });
+
     $stateProvider.state('admin.vismaSetup', {
         templateUrl: '/assets/partials/interfaces/Visma/adVismaSetup.html',
         controller: 'adCRSCommonCtrl',
@@ -483,6 +492,20 @@ angular.module('adminInterfacesRouter', []).config(function($stateProvider) {
         }
     });
 
+    $stateProvider.state('admin.infrasecSetup', {
+        templateUrl: '/assets/partials/interfaces/Infrasec/adInfrasecSetup.html',
+        controller: 'adCRSCommonCtrl',
+        url: '/interfaces/setup/:id',
+        onEnter: ['$stateParams', function($stateParams) {
+            $stateParams.id = 'infrasec';
+        }],
+        resolve: {
+            config: ['adInterfacesCommonConfigSrv', function(adInterfacesCommonConfigSrv) {
+                return adInterfacesCommonConfigSrv.fetchConfiguration('infrasec');
+            }]
+        }
+    });
+
     $stateProvider.state('admin.pmiSetup', {
         templateUrl: '/assets/partials/interfaces/PMI/adPMISetup.html',
         controller: 'adInterfaceCommonCtrl',
@@ -493,6 +516,20 @@ angular.module('adminInterfacesRouter', []).config(function($stateProvider) {
         resolve: {
             config: ['adInterfacesCommonConfigSrv', function(adInterfacesCommonConfigSrv) {
                 return adInterfacesCommonConfigSrv.fetchConfiguration('pmi');
+            }]
+        }
+    });
+
+    $stateProvider.state('admin.avidaSetup', {
+        templateUrl: '/assets/partials/interfaces/Avida/adAvidaSetup.html',
+        controller: 'adInterfaceCommonCtrl',
+        url: '/interfaces/setup/:id',
+        onEnter: ['$stateParams', function($stateParams) {
+            $stateParams.id = 'avida';
+        }],
+        resolve: {
+            config: ['adInterfacesCommonConfigSrv', function(adInterfacesCommonConfigSrv) {
+                return adInterfacesCommonConfigSrv.fetchConfiguration('avida');
             }]
         }
     });
@@ -598,6 +635,46 @@ angular.module('adminInterfacesRouter', []).config(function($stateProvider) {
         templateUrl: '/assets/partials/monsciergeSetup/adMonsciergeSetup.html',
         controller: 'adMonsciergeSetupCtrl',
         url: '/monsciergeSetup'
+    });
+
+    $stateProvider.state('admin.commissionsSetup', {
+        templateUrl: '/assets/partials/interfaces/adInterfacesSubMenuList.html',
+        controller: 'ADInterfaceSubMenuCtrl',
+        url: '/commissionsSetup'
+    });
+
+    $stateProvider.state('admin.tacsSetup', {
+        templateUrl: '/assets/partials/interfaces/commissions/adTacsSetup.html',
+        controller: 'ADTacsSetupCtrl',
+        url: '/tacsSetup',
+        resolve: {
+            config: ['adCommissionsConfigSrv', function(adCommissionsConfigSrv) {
+                return adCommissionsConfigSrv.fetchTacsConfiguration();
+            }],
+            countryList: ['adInterfacesCommonConfigSrv', function(adInterfacesCommonConfigSrv) {
+                return adInterfacesCommonConfigSrv.fetchCountryList();
+            }],
+            currencyList: ['adInterfacesCommonConfigSrv', function(adInterfacesCommonConfigSrv) {
+                return adInterfacesCommonConfigSrv.fetchCurrencyList();
+            }]
+        }
+    });
+
+    $stateProvider.state('admin.onyxSetup', {
+        templateUrl: '/assets/partials/interfaces/commissions/adOnyxSetup.html',
+        controller: 'ADOnyxSetupCtrl',
+        url: '/onyxSetup',
+        resolve: {
+            config: ['adCommissionsConfigSrv', function(adCommissionsConfigSrv) {
+                return adCommissionsConfigSrv.fetchOnyxConfiguration();
+            }],
+            countryList: ['adInterfacesCommonConfigSrv', function(adInterfacesCommonConfigSrv) {
+                return adInterfacesCommonConfigSrv.fetchCountryList();
+            }],
+            currencyList: ['adInterfacesCommonConfigSrv', function(adInterfacesCommonConfigSrv) {
+                return adInterfacesCommonConfigSrv.fetchCurrencyList();
+            }]
+        }
     });
 
 });

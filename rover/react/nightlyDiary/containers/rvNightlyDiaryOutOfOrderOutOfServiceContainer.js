@@ -88,6 +88,7 @@ let  calculateOutOfOrderOutOfServicePositionAndDuration = (diaryInitialDayOfDate
         if (outOfOrderOutOfServiceStartDate.getTime() < diaryInitialDate.getTime()) {
             numberOfNightsVisibleInGrid = Math.abs((outOfOrderOutOfServiceEndDate.getTime() - diaryInitialDate.getTime()) / (oneDay));
         }
+        numberOfNightsVisibleInGrid = numberOfNightsVisibleInGrid + 1;
         durationOfOutOfOrderOutOfService = numberOfNightsVisibleInGrid * nightDuration;
         if (outOfOrderOutOfServiceStartDate.getTime() >= diaryInitialDate.getTime()) {
            // durationOfOutOfOrderOutOfService = durationOfOutOfOrderOutOfService;

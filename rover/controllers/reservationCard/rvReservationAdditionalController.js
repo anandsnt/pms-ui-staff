@@ -5,6 +5,7 @@ sntRover.controller('rvReservationAdditionalController', ['$rootScope', '$scope'
 			segmentAvailable: !!$scope.reservationParentData.demographics.segment,
 			hideDetails: true
 		};
+		$scope.isEmptyObject = isEmptyObject;
 		$scope.hasPermissionForCommissionUpdate = function() {
 			return rvPermissionSrv.getPermissionValue('UPDATE_COMMISSION');
 		};
@@ -99,6 +100,13 @@ sntRover.controller('rvReservationAdditionalController', ['$rootScope', '$scope'
 			} else {
 				$scope.reservationData.reservation_card.guarentee_type = "";
 			}
+        });
+
+        $scope.$on('travelagentcardreplaced', function(event, data) {
+            $scope.reservationData.reservation_card.commission_details = data.commission_details;
+        });
+        $scope.$on('travelagentcardremoved', function() {
+            $scope.reservationData.reservation_card.commission_details = {};
         });
 
 	}

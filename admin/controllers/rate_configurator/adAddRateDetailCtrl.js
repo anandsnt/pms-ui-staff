@@ -189,7 +189,8 @@ admin.controller('ADaddRatesDetailCtrl', ['$scope', '$rootScope', 'ADRatesAddDet
          * Set add on data
          */
         var setUpAddOnData = function() {
-            var addOnsArray = [];
+            var addOnsArray = [],
+                selectedAddons = [];
 
             angular.forEach($scope.rateData.addOns, function(addOns) {
                 if (addOns.isSelected) {
@@ -198,13 +199,18 @@ admin.controller('ADaddRatesDetailCtrl', ['$scope', '$rootScope', 'ADRatesAddDet
                     data.is_inclusive_in_rate = addOns.is_inclusive_in_rate;
                     data.addon_id = addOns.id;
                     addOnsArray.push(data);
+                    selectedAddons.push(addOns.id);
                 }
             });
+            // CICO-49136. We need to compare existing addons and 
+            // selected addons on update. If both are same no need to pass that param to API
+            $scope.selectedAddonsIds = selectedAddons;
+            $scope.selectedAddons = addOnsArray;
             return addOnsArray;
         };
 
         $scope.startSave = function() {
-            var amount = parseInt($scope.rateData.based_on.value_sign + $scope.rateData.based_on.value_abs);
+            var amount = parseFloat($scope.rateData.based_on.value_sign + $scope.rateData.based_on.value_abs);
             var addOns = setUpAddOnData();
             var commissions = setupCommissionData();
 
@@ -224,7 +230,6 @@ admin.controller('ADaddRatesDetailCtrl', ['$scope', '$rootScope', 'ADRatesAddDet
                 'based_on_type': $scope.rateData.based_on.type,
                 'based_on_value': amount,
                 'promotion_code': $scope.rateData.promotion_code,
-                'addons': addOns,
                 'charge_code_id': $scope.rateData.charge_code_id,
                 'currency_code_id': $scope.rateData.currency_code_id,
                 'min_advanced_booking': $scope.rateData.min_advanced_booking,
@@ -251,6 +256,7 @@ admin.controller('ADaddRatesDetailCtrl', ['$scope', '$rootScope', 'ADRatesAddDet
                 'tasks': $scope.rateData.tasks
             };
 
+
             // Save Rate Success Callback
             var saveSuccessCallback = function(data) {
                 $scope.manipulateData(data);
@@ -271,8 +277,48 @@ admin.controller('ADaddRatesDetailCtrl', ['$scope', '$rootScope', 'ADRatesAddDet
             };
 
             if (!$scope.rateData.id) {
+                data.addons = addOns;
                 $scope.invokeApi(ADRatesAddDetailsSrv.createNewRate, data, saveSuccessCallback, saveFailureCallback);
             } else {
+                // CICO-49136. We need to compare existing addons and 
+                // selected addons on update. If both are same no need to pass that param to API
+                var addonsDifferenceCount = 0;
+
+                if ( $scope.existingAddonsIds.length > 0 ) {
+                    if ($scope.existingAddonsIds.length >= $scope.selectedAddonsIds.length) {
+                        addonsDifferenceCount = (_.difference($scope.existingAddonsIds, $scope.selectedAddonsIds)).length;
+                    } else {
+                        addonsDifferenceCount = (_.difference($scope.selectedAddonsIds, $scope.existingAddonsIds)).length;
+                    }                    
+                } else {
+                    addonsDifferenceCount = $scope.selectedAddonsIds.length;
+                }
+                
+                
+                if (addonsDifferenceCount > 0) {
+                    data.addons = addOns;
+                } else {
+                    var changedDataCount = 0;
+
+                    angular.forEach($scope.existingAddons, function(addOn) {
+                        var currentItem = _.find($scope.selectedAddons, function(item) {
+                            return item.addon_id === addOn.id;
+                        });
+
+                        if (typeof currentItem !== 'undefined') {
+                            if (currentItem.is_inclusive_in_rate !== addOn.is_inclusive_in_rate.toString()) {
+                                changedDataCount++;
+                            }
+                        }
+                            
+                    });
+
+                    if (changedDataCount > 0) {
+                        data.addons = addOns;
+                    }
+                }
+                $scope.existingAddonsIds = $scope.selectedAddonsIds;
+
                 var updatedData = {
                     'updatedData': data,
                     'rateId': $scope.rateData.id

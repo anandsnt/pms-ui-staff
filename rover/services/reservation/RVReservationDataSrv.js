@@ -601,6 +601,10 @@ angular.module('sntRover').service('RVReservationDataService', ['$rootScope', 'd
             numInfants: roomDetails.numInfants
         });
 
+        // CICO-37005
+        reservationData.groupCompanyCardId = stayCard.group_cc_id;
+        reservationData.groupTravelAgentId = stayCard.group_ta_id;
+
         return {
             reservationData: reservationData,
             reservationEditMode: reservationEditMode,

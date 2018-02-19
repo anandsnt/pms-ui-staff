@@ -22,7 +22,7 @@
 				</a>
 				<a class="icons icon-delete large-icon delete_item pull-right" ng-click="deleteTaxFromCaluculationPolicy($index)"></a>
 			</td>
-			<td data-colspan="1" ng-include="'/assets/partials/chargeCodes/adTaxFormEdit.html'" ng-show="isEditTax && currentClickedTaxElement === $index"></td>
+			<td data-colspan="1" ng-include="'/assets/partials/chargeCodes/adTaxFormEdit.html'" ng-if="isEditTax && currentClickedTaxElement === $index"></td>
 		</tr>
 		</tbody>
 </table>

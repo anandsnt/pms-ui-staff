@@ -9,6 +9,7 @@ angular.module('sntPay').directive('sntPayment', function() {
             reservationId: '@',
             postingAccountId: '=?',
             billId: '=?',
+            arTransactionId: '=?', // param used for ar payment refund
             accountId: '@',
             groupId: '@',
             allotmentId: '@',
@@ -16,6 +17,7 @@ angular.module('sntPay').directive('sntPayment', function() {
             billNumber: '=',
             amount: '=', // amount to pay
             selectedCC: '=?', // selected CC details
+            referenceText: '=?', // selected CC details
             actionType: '@',
             depositPolicyName: '@',
             isEditable: '=?', // is the amount editable

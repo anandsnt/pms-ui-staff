@@ -170,7 +170,7 @@ angular.module('sntRover').controller('guestCardController', [
 				$scope.contactInfoError = false;
 				$scope.eventTimestamp = "";
 				var preventClicking = false;
-			}
+			}			
 		};
 
 		$scope.$on("swipeAtGuestCard", function() {
@@ -209,18 +209,16 @@ angular.module('sntRover').controller('guestCardController', [
 		 * Every logic to disable the detach company card button.
 		 */
 		$scope.shouldDisableCompanyCardDetachButton = function() {
-			var isGroupReservation = !!$scope.reservationDetails.group.id;
-
-			return (isGroupReservation);
+			// CICO-37005	
+			return !!$scope.reservationData.groupCompanyCardId;
 		};
 
 		/**
 		 * Every logic to disable the detach TA card button.
 		 */
 		$scope.shouldDisableTACardDetachButton = function() {
-			var isGroupReservation = !!$scope.reservationDetails.group.id;
-
-			return (isGroupReservation);
+			// CICO-37005						
+			return !!$scope.reservationData.groupTravelAgentId;
 		};
 
 		/**
@@ -333,7 +331,20 @@ angular.module('sntRover').controller('guestCardController', [
 			$scope.likesInfoError = value;
 		});
 
-		$scope.updateContactInfo = function() {
+		// Get the contact details object with the required properties only
+		var getContactInfo = function (contactInfo) {
+			var whiteListedKeys = ['first_name', 'last_name', 'mobile', 'phone', 'email', 'vip'],
+			    contactDetails = _.pick(contactInfo, whiteListedKeys);
+
+			contactDetails.address = {
+				state: contactInfo.address && contactInfo.address.state ? contactInfo.address.state : "",
+				city: contactInfo.address && contactInfo.address.city ? contactInfo.address.city : ""
+			};
+
+			return contactDetails;
+		};
+
+		$scope.updateContactInfo = function() {			
 			var that = this;
 
 			that.newUpdatedData = $scope.decloneUnwantedKeysFromContactInfo();
@@ -342,12 +353,15 @@ angular.module('sntRover').controller('guestCardController', [
 				$scope.reservationData.guest.email = that.newUpdatedData.email;
 				// update few of the details to searchSrv
 				updateSearchCache();
+				// This is used in contact info ctrl to prevent the extra API call while clicking outside
+				$scope.isGuestCardSaveInProgress = false;
+				
 				// to reset current data in contcat info for determining any change
 				$scope.$broadcast("RESETCONTACTINFO", that.newUpdatedData);
 			};
 
-			// check if there is any chage in data.if so call API for updating data
-			if (JSON.stringify(currentGuestCardHeaderData) !== JSON.stringify(that.newUpdatedData)) {
+			// check if there is any chage in data.if so call API for updating data, CICO-46709 fix
+			if (JSON.stringify(getContactInfo(currentGuestCardHeaderData)) !== JSON.stringify(getContactInfo(that.newUpdatedData))) {
 				currentGuestCardHeaderData = that.newUpdatedData;
 				var data = {
 					'data': currentGuestCardHeaderData,
@@ -355,6 +369,7 @@ angular.module('sntRover').controller('guestCardController', [
 				};
 
 				if (typeof data.userId !== 'undefined') {
+					$scope.isGuestCardSaveInProgress = true;
 					$scope.invokeApi(RVContactInfoSrv.updateGuest, data, saveUserInfoSuccessCallback);
 				}
 			}
@@ -1793,9 +1808,11 @@ angular.module('sntRover').controller('guestCardController', [
 			} else {
 				if (!$scope.reservationDetails.guestCard.futureReservations || $scope.reservationDetails.guestCard.futureReservations <= 0) {
                     // CICO-41517
-                    var hasMultipleReservations = $scope.reservationData && $scope.reservationData.reservationIds.length > 0;
+                    var hasMultipleReservations = $scope.reservationData &&
+                        $scope.reservationData.reservationIds &&
+                        $scope.reservationData.reservationIds.length;
 
-					$scope.replaceCardCaller('guest', guest, hasMultipleReservations);
+					$scope.replaceCardCaller('guest', guest, !!hasMultipleReservations);
 				} else {
 					$scope.checkFuture('guest', guest);
 				}

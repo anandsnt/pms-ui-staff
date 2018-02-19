@@ -133,7 +133,7 @@
                             <!-- Show this if possible to edit charge
                                  opens /modals/ar-edit-charge.html
                              -->
-                            <button class="button blank with-icon only-icon open-modal button-edit" ng-show="!balance.is_partially_paid && !debit.is_adjustment && debit.credits === null" ng-click="clickedEditIconToAdjustInvoice($parent.$index, $index)">
+                            <button class="button blank with-icon only-icon open-modal button-edit" ng-show="!balance.is_partially_paid && !balance.is_manual_balance && debit.credits === null" ng-click="clickedEditIconToAdjustInvoice($parent.$index, $index)">
                                 <span class="icons icon-edit-40"></span>
                             </button>
                         </td>

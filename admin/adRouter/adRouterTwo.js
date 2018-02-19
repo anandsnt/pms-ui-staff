@@ -173,6 +173,17 @@ angular.module('adminModuleTwo', []).config(function ($stateProvider) {
         }
     });
 
+    $stateProvider.state('admin.balanceJournal', {
+        templateUrl: '/assets/partials/reservationTools/adBalanceJournal.html',
+        controller: 'ADBalanceJournalCtrl',
+        url: '/balanceJournal',
+        resolve: {
+            allJobs: function (ADReservationToolsSrv) {
+                return ADReservationToolsSrv.fetchAllJobs();
+            }
+        }
+    });
+
     $stateProvider.state('admin.housekeeping', {
         templateUrl: '/assets/partials/housekeeping/adHousekeeping.html',
         controller: 'adHousekeepingCtrl',
@@ -569,7 +580,7 @@ angular.module('adminModuleTwo', []).config(function ($stateProvider) {
         url: '/stationary',
         resolve: {
             availableGuestLanguages: function (ADTranslationSrv) {
-                return ADTranslationSrv.getGuestLanguages();
+                return ADTranslationSrv.getActiveGuestLanguages();
             },
             availableHoldStatus: function (ADHoldStatusSrv) {
                 return ADHoldStatusSrv.fetch();
@@ -718,6 +729,33 @@ angular.module('adminModuleTwo', []).config(function ($stateProvider) {
             webHooks: ['ADWebhookSrv', function (ADWebhookSrv) {
                 return ADWebhookSrv.fetchWebHooks();
             }]
+        }
+    });
+
+    $stateProvider.state('admin.houseKeepingSections', {
+        templateUrl: '/assets/partials/hkSections/adHkSections.html',
+        controller: 'ADHKSectionListCtrl',
+        url: '/hkSections'
+    });
+
+    $stateProvider.state('admin.addHKSection', {
+        templateUrl: '/assets/partials/hkSections/adSectionDetails.html',
+        controller: 'ADHKSectionDetailsCtrl',
+        url: '/hkSectionDetails',
+        resolve: {
+            sectionDetails: function () {
+                return {};
+            }
+        }
+    });
+    $stateProvider.state('admin.editHKSection', {
+        templateUrl: '/assets/partials/hkSections/adSectionDetails.html',
+        controller: 'ADHKSectionDetailsCtrl',
+        url: '/hkSectionDetails/:sectionId',
+        resolve: {
+            sectionDetails: function (ADHKSectionSrv, $stateParams) {
+                return ADHKSectionSrv.getHkSectionDetails($stateParams.sectionId);
+            }
         }
     });
 

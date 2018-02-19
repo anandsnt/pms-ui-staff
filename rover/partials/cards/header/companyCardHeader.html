@@ -9,7 +9,18 @@
                 <div class="entry">
                     <input name="cc-name-first" id="cc-name-first" placeholder="" value="{{contactInformation.account_details.account_name}}" ng-model="contactInformation.account_details.account_name" type="text" class="masked-input h1" auto-grow-field />
                 </div>
-                <span class="icons icon-notes" ng-show="contactInformation.account_notes_count"></span>
+                <div class="switch-button global-flag" ng-click="toggleGlobalButton()"  ng-class="{'on': contactInformation.is_global_enabled, 'readonly': isGlobalToggleReadOnly}"> <!-- Add class 'on' when checked -->
+                    <input id="global-company-card" type="checkbox">
+                    <label class="data-off">
+                        <span class="switch-icon">Global</span>
+                        <span class="value">Off</span>
+                    </label>
+                    <label class="data-on">
+                        <span class="value">On</span>
+                        <span class="switch-icon">Global</span>
+                    </label>
+                </div>
+                <span class="icons icon-notes" ng-show="contactInformation.account_notes_count > 0"></span>
             </div>
             <div class="holder data">
                 <input  name="cc-city" id="cc-city" value="{{contactInformation.address_details.city}}" ng-model="contactInformation.address_details.city" type="text" class="masked-input icons icon-gc-location"  data-size="{{contactInformation.address_details.city.length}}" auto-grow-field/>
@@ -44,4 +55,4 @@
             </div>
         </form>
     </section>
-</div> 
+</div>

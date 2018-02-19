@@ -37,6 +37,7 @@ admin.controller('adIFCComtrolSetupCtrl', ['$scope', 'ifcComtrolSetupValues', 'a
 				'site_name',
 				'operator_id',
 				'password',
+				'keys_password',
 				'access_level',
 				'enabled');
 

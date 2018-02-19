@@ -18,7 +18,7 @@ admin.controller('ADiBeaconSettingsCtrl', ['$scope', '$state', 'ngTableParams', 
     * To set the preveous state as admin.dashboard/Zest in all cases
     */
     $rootScope.previousState = 'admin.dashboard';
-    $rootScope.previousStateParam = '1';
+    $rootScope.previousStateParam = ($scope.isChainAdminMenuPresent && $scope.isChainAdminMenuPresent.length === 0) ? '1' : '2';
 
 	$scope.fetchTableData = function($defer, params) {
 		var getParams = $scope.calculateGetParams(params);

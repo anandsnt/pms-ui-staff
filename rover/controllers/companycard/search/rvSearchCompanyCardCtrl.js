@@ -55,7 +55,7 @@ angular.module('sntRover').controller('searchCompanyCardController', ['$scope', 
 		 * function to perform filtering/request data from service in change event of query box
 		 */
 		$scope.queryEntered = _.debounce(function() {
-			if ($scope.textInQueryBox === "" || $scope.textInQueryBox.length < 3) {
+			if ($scope.textInQueryBox === "") {
 				$scope.results = [];
 			} else {
 				displayFilteredResults();
@@ -75,8 +75,7 @@ angular.module('sntRover').controller('searchCompanyCardController', ['$scope', 
 		 * if not fouund in the data, it will request for webservice
 		 */
 		var displayFilteredResults = function() {
-			// if the entered text's length < 3, we will show everything, means no filtering
-			if ($scope.textInQueryBox.length < 3) {
+			if (!$scope.textInQueryBox.length) {
 				// based on 'is_row_visible' parameter we are showing the data in the template
 				for (var i = 0; i < $scope.results.length; i++) {
 					$scope.results[i].is_row_visible = true;

@@ -99,5 +99,44 @@ admin.service('adLightSpeedPOSSetupSrv', ['$http', '$q', 'ADBaseWebSrvV2',
             return deferred.promise;
         };
 
+        service.fetchProducts = function() {
+            var deferred = $q.defer(),
+                url = '/api/hotel_settings/lightspeed/products.json';
+
+            ADBaseWebSrvV2.getJSON(url, {}).then(function(data) {
+                deferred.resolve(data);
+            }, function(data) {
+                deferred.reject(data);
+            });
+
+            return deferred.promise;
+        };
+
+        service.fetchChargeCodeMapings = function () {
+            var deferred = $q.defer(),
+                url = '/api/hotel_settings/lightspeed/charge_code_mappings.json';
+
+            ADBaseWebSrvV2.getJSON(url, {}).then(function(data) {
+                deferred.resolve(data);
+            }, function(data) {
+                deferred.reject(data);
+            });
+
+            return deferred.promise;
+        };
+
+        service.saveChargeCodeMapings = function(params) {
+            var deferred = $q.defer(),
+                url = '/api/hotel_settings/lightspeed/save_charge_code_mappings';
+
+            ADBaseWebSrvV2.postJSON(url, params).then(function(data) {
+                deferred.resolve(data);
+            }, function(data) {
+                deferred.reject(data);
+            });
+
+            return deferred.promise;
+        };
+
     }
 ]);

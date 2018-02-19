@@ -14,4 +14,16 @@
     "TAX_TRANSACTION_CODE" : "Tax Transaction Code",
     "SELECT_PREPAID_COMMISSION_CHARGE_CODE": "Select Prepaid Commission Charge Code",
     "SELECT_TAX_TRANSACTION_CODE" : "Select Tax Transaction Code",
-    "SET_FOR_A_NEW_CARD" : "Set for new card"
+    "SET_FOR_A_NEW_CARD" : "Set for new card",
+    "TACS_COMMISSIONS_PROCESSING": "TACS Commission Processing",
+    "GROUP_ID": "Group ID",
+    "GROUP_NAME": "Group Name",
+    "FTP_SITE": "FTP site (sFTP)",
+    "USERNAME": "Username",
+    "PASSWORD": "Password",
+    "COUNTRY_OF_TAXING_AUTHORITY": "Country of Taxing Authority",
+    "COMMISSION_CURRENCY": "Commission currency",
+    "ONYX_COMMISSIONS_PROCESSING": "ONYX Commission Processing",
+    "BRAND_ID": "Brand ID",
+    "HOTEL_ID": "Hotel ID",
+    "VERSION_NO": "Version No"

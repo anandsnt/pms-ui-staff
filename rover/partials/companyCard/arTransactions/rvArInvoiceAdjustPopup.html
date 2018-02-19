@@ -8,9 +8,9 @@
         <span class="h2 message">Adjust charge code</span>
 
         <span class="text" ng-show="!selectedTransaction.is_group_by_ref">
-            {{adjustData.charge_details[0].charge_desc}}
+            {{adjustData.charge_desc}}
             <!-- if not a grouped charge show this: -->
-            <strong><span class="currency">{{currencySymbol}}</span> {{adjustData.charge_details[0].amount}}</strong>
+            <strong><span class="currency">{{currencySymbol}}</span> {{adjustData.amount}}</strong>
         </span>
         
         <!-- if a grouped charge
@@ -29,12 +29,12 @@
 
         <div id="edit-amount" class="entry full-width">
             <label for="new-amount">New Amount (<span class="currency">{{currencySymbol}}</span>)</label>
-            <input name="new-amount" id="new-amount" placeholder="Enter value" value="" type="text" ng-model="new_amount" ng-blur="enteredAmount()" />
+            <input name="new-amount" id="new-amount" placeholder="Enter value" value="adjustData.amount" type="text" ng-disabled="selectedTransaction.is_adjustment" ng-model="adjustData.amount" ng-blur="enteredAmount()" />
         </div>
         
         <div class="entry full-width reference" ng-hide="selectedInvoice.is_manual_balance">
             <label for="reference">Reference</label>
-             <input name="reference" id="reference" placeholder="Enter Reference" value="" type="text" ng-model="reference" />
+             <input name="reference" id="reference" placeholder="Enter Reference" value="adjustData.reference_text" type="text" ng-model="adjustData.reference_text" />
         </div>
 
         <div class="entry full-width" ng-hide="selectedInvoice.is_manual_balance">

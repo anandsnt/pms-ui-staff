@@ -38,11 +38,11 @@ admin.service('adComtrolRoomMappingSrv', ['$http', '$q', 'ADBaseWebSrvV2',
         };
 
         /**
-         *
-         * @returns {deferred.promise|{then, catch, finally}}
+         * @param {Object} params Filter & Pagination parameters
+         * @returns {deferred.promise|{then, catch, finally}} list of mappings
          */
-        service.fetch = function() {
-            return ADBaseWebSrvV2.getJSON(baseUrl);
+        service.fetch = function(params) {
+            return ADBaseWebSrvV2.getJSON(baseUrl, params);
         };
 
         /**
@@ -72,7 +72,8 @@ admin.service('adComtrolRoomMappingSrv', ['$http', '$q', 'ADBaseWebSrvV2',
             return ADBaseWebSrvV2.putJSON(baseUrl + "/" + mapping.id, {
                 room_no: mapping.room_no,
                 external_room: mapping.external_room,
-                external_extension: mapping.external_extension
+                external_extension: mapping.external_extension,
+                external_access_level: mapping.external_access_level
             });
         };
 

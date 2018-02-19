@@ -24,6 +24,8 @@ angular.module('sntRover').controller('companyCardDetailsController', ['$scope',
 		$scope.isPromptOpened = false;
 		$scope.isLogoPrint = true;
 		$scope.isPrintArStatement = false;
+		$scope.contactInformation = {};
+		$scope.isGlobalToggleReadOnly = !rvPermissionSrv.getPermissionValue ('GLOBAL_CARD_UPDATE');
 		// setting the heading of the screen
 		if ($stateParams.type === "COMPANY") {
 			if ($scope.isAddNewCard) {
@@ -214,7 +216,7 @@ angular.module('sntRover').controller('companyCardDetailsController', ['$scope',
 		// CICO-11664
 		// To default the AR transactions tab while navigating back from staycard
 		if ($stateParams.isBackFromStaycard) {
-			$scope.isArTabAvailable = true;
+			$scope.isArTabAvailable = !$stateParams.isBackToTACommission;
 			/*
 			*	CICO-45240 - Replace prevState data to that which we stored before going to Staycard.
 			*/
@@ -233,11 +235,16 @@ angular.module('sntRover').controller('companyCardDetailsController', ['$scope',
 			/*
 			*	CICO-45268 - Added $timeout to fix issue with data not being displayed on returning from Staycard.
 			*/
+			if ($scope.isArTabAvailable) {
+				$timeout(function() {
+					$scope.currentSelectedTab = 'cc-ar-transactions';
+					$scope.$broadcast('setgenerateNewAutoAr', true);
+					$scope.switchTabTo('', 'cc-ar-transactions');
+				}, 500);
+			}
 			$timeout(function() {
-				$scope.currentSelectedTab = 'cc-ar-transactions';
-				$scope.$broadcast('setgenerateNewAutoAr', true);
-				$scope.switchTabTo('', 'cc-ar-transactions');
-			}, 500);
+				$scope.$broadcast('BACK_FROM_STAY_CARD');
+			}, 1000);
 		}
 		// CICO-36080 - Back from staycard - Commissions tab as selected
 		if ($stateParams.isBackToTACommission) {
@@ -276,6 +283,90 @@ angular.module('sntRover').controller('companyCardDetailsController', ['$scope',
 
 		$scope.clikedDiscardDeleteAr = function() {
 			ngDialog.close();
+		};
+		/*
+		 * Toggle global button
+		 */
+		$scope.toggleGlobalButton = function() {
+			if (rvPermissionSrv.getPermissionValue ('GLOBAL_CARD_UPDATE')) {
+				$scope.contactInformation.is_global_enabled = !$scope.contactInformation.is_global_enabled;
+				$scope.contactInformation.account_type = $scope.account_type;
+			}
+
+			$timeout(function() {
+				$scope.activateSelectedTab();				
+			}, 1000);
+		};
+		/*
+		 * Activate selected tab
+		 */
+		$scope.activateSelectedTab = function() {
+			if ($scope.currentSelectedTab === 'cc-contact-info') {
+				$scope.$broadcast("ContactTabActivated");
+				$scope.$broadcast("contactTabActive");
+			}
+            if ($scope.currentSelectedTab === 'cc-contracts') {
+				$scope.$broadcast("refreshContractsScroll");
+			}
+            if ($scope.currentSelectedTab === 'cc-ar-accounts') {
+				$scope.$broadcast("arAccountTabActive");
+				$scope.$broadcast("refreshAccountsScroll");
+			}
+	        if ($scope.currentSelectedTab === 'cc-ar-transactions') {
+				$rootScope.$broadcast("arTransactionTabActive");
+				$scope.isWithFilters = false;
+			}
+			if ($scope.currentSelectedTab === 'cc-notes') {
+				$scope.$broadcast("fetchNotes");
+			}
+			if ($scope.currentSelectedTab === 'cc-commissions') {
+				$scope.$broadcast("commissionsTabActive");
+			}
+		};
+
+		$scope.shouldShowCommissionsTab = function() {
+			return ($scope.account_type === 'TRAVELAGENT');
+		};
+		$scope.isUpdateEnabled = function() {
+			if ($scope.contactInformation.is_global_enabled === undefined) {
+				return;
+			}
+			var isDisabledFields = false;
+			
+			if ($scope.contactInformation.is_global_enabled) {
+				if (!rvPermissionSrv.getPermissionValue ('GLOBAL_CARD_UPDATE')) {
+					isDisabledFields = true;
+				}
+			} else {
+				if (!rvPermissionSrv.getPermissionValue ('EDIT_COMPANY_CARD')) {
+					isDisabledFields = true;
+				}
+			}
+
+			return isDisabledFields;
+		};
+		/*
+		 * Added the same method in travel agent ctrl
+		 * We are using the partials for TA and CC, when navigating thru staycard or thru revenue management
+		 * When we go to travel agent from staycard, controller is travelagentctrl
+		 * When we go to travel agent from revenue management, controller is this
+		 */
+		$scope.isUpdateEnabledForTravelAgent = function() {
+			if ($scope.contactInformation.is_global_enabled === undefined) {
+				return;
+			}
+			var isDisabledFields = false;
+
+			if ($scope.contactInformation.is_global_enabled) {
+				if (!rvPermissionSrv.getPermissionValue ('GLOBAL_CARD_UPDATE')) {
+					isDisabledFields = true;
+				}
+			} else {
+				if (!rvPermissionSrv.getPermissionValue ('EDIT_TRAVEL_AGENT_CARD')) {
+					isDisabledFields = true;
+				}
+			}
+			return isDisabledFields;
 		};
 
 		var callCompanyCardServices = function() {
@@ -321,6 +412,7 @@ angular.module('sntRover').controller('companyCardDetailsController', ['$scope',
 		var successCallbackOfInitialFetch = function(data) {
 			$scope.$emit("hideLoader");
 			$scope.contactInformation = data;
+			$scope.$broadcast("LOAD_SUBSCRIBED_MPS");
 			if ($scope.contactInformation.alert_message !== "") {
 				$scope.errorMessage = [$scope.contactInformation.alert_message];
 			}
@@ -468,6 +560,10 @@ angular.module('sntRover').controller('companyCardDetailsController', ['$scope',
 				if (typeof dataToSend.countries !== 'undefined') {
 					delete dataToSend['countries'];
 				}
+				// CICO-49040 : Hadling passing blank string.
+				if (dataToSend.account_details.account_number === "") {
+					dataToSend.account_details.account_number = null;
+				}
 				dataToSend.account_type = $stateParams.type;
 				$scope.invokeApi(RVCompanyCardSrv.saveContactInformation, dataToSend, successCallbackOfContactSaveData, failureCallbackOfContactSaveData);
 			}
@@ -577,9 +673,10 @@ angular.module('sntRover').controller('companyCardDetailsController', ['$scope',
 			$scope.isPrintArStatement = isPrintArStatement;
 		});
 
-
-        CardReaderCtrl.call(this, $scope, $rootScope, $timeout, $interval, $log);
-        $scope.observeForSwipe();
+        if (!$rootScope.disableObserveForSwipe) {
+            CardReaderCtrl.call(this, $scope, $rootScope, $timeout, $interval, $log);
+            $scope.observeForSwipe();
+        }
 
     }
 ]);

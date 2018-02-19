@@ -61,5 +61,6 @@ angular.module('reportsModule')
         'ACCOUNT_SEARCH': 'account_ids',
         "SHOW_ACTIONABLES": "actions_by",
         "TRAVEL_AGENTS": "travel_agent_ids",
-        "TRAVEL_AGENTS_PER_PAGE_COUNT": 25
+        "TRAVEL_AGENTS_PER_PAGE_COUNT": 25,
+        "RESERVATION_STATUS_ARRAY": "status_ids[]"
     });

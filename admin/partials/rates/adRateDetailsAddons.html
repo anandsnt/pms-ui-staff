@@ -19,7 +19,7 @@
             </div>
 		</div>
 	</div>
-	<table class="grid rate_addons">
+	<table class="grid rate_addons" ng-class="{'overlay' : rateData.is_global_contract}">
 		<col width="20%">
 		<col width="20%">
 		<col width="30%">
@@ -31,7 +31,7 @@
 			<th class="header center_align">USE</th>
 		</thead>
 		<tbody>
-			<tr ng-repeat="addon in rateData.addOns">
+			<tr ng-repeat="addon in rateData.addOns" ng-show="addon.shouldShow">
 				<td>{{addon.name}}</td>
 				<td>
 					<span ng-show="addon.amount.length>0">{{currencySymbol}} {{addon.amount |number:2}} &nbsp;&nbsp;<span class="rate_perstay">{{addon.post_type.description}}</span>
@@ -42,7 +42,10 @@
 						<div class="float_left">
 							<label class="radio" ng-class="{checked:addon.is_inclusive_in_rate == 'true'}">
 								<span class="icon-form icon-radio " ng-class="{checked:addon.is_inclusive_in_rate == 'true'}"></span>
-								<input type="radio" ng-model="addon.is_inclusive_in_rate" value="true" class="change-data">
+								<input type="radio"
+									ng-disabled="addon.is_tourist_tax"
+									ng-model="addon.is_inclusive_in_rate"
+									value="true" class="change-data">
 								Include in price
 								
 							</label>

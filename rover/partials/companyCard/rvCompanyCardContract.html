@@ -42,7 +42,7 @@
 			<div ng-include="'/assets/partials/common/notification_message.html'"></div>
 			<div class="holder left" ng-hide="contractList.isAddMode">
 				<strong class="h3" translate>DETAILS</strong>
-				<span selected-rate-id="contractData.contracted_rate_selected" ng-model="contractData.contractedRate" rate-auto-complete></span>
+				<span selected-rate-id="contractData.contracted_rate_selected" ng-model="contractData.contractedRate" rate-auto-complete account-id="contactInformation.id"></span>
 				<div class="entry price-adjust no-label">
 					 <div class="select">
 						<select iscroll-stop-propagation name="company-rate-adjust-3" ng-model="contractData.selected_symbol">
@@ -105,7 +105,7 @@
 			
 			<div class="holder left" ng-show="contractList.isAddMode">
 				<strong class="h3" translate>DETAILS</strong>
-				<span selected-rate-id="addData.contracted_rate_selected" ng-model="addData.contractedRate" rate-auto-complete></span> 
+				<span selected-rate-id="addData.contracted_rate_selected" ng-model="addData.contractedRate" rate-auto-complete account-id="contactInformation.id"></span> 
 				<div class="entry price-adjust no-label">
 					
 					<div class="select">

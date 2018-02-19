@@ -34,7 +34,8 @@ admin.controller('ADM3BackOfficeCtrl', ['$scope', 'm3AccountingSetupValues', 'AD
                 enabled: $scope.m3Accounting.enabled,
                 emails: $scope.m3Accounting.emails,
                 facility_id: $scope.m3Accounting.hotelCode,
-                selected_reports: $scope.m3Accounting.selected_reports
+                selected_reports: $scope.m3Accounting.selected_reports,
+                room_revenue_only: $scope.m3Accounting.roomRevenueOnly
             },
             successCallBack: successCallBackOfSaveAfasSetup
         };
@@ -159,7 +160,8 @@ admin.controller('ADM3BackOfficeCtrl', ['$scope', 'm3AccountingSetupValues', 'AD
             emails: m3AccountingSetupValues.emails,
             hotelCode: m3AccountingSetupValues.facility_id,
             available_reports: m3AccountingSetupValues.available_reports,
-            selected_reports: m3AccountingSetupValues.selected_reports || []
+            selected_reports: m3AccountingSetupValues.selected_reports || [],
+            roomRevenueOnly: m3AccountingSetupValues.room_revenue_only
         };
     }());
 }]);

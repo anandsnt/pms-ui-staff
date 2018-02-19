@@ -1,0 +1,16 @@
+<button type="button" class="button white icons icon-remove-10" rv-fullscreen>Close fullscreen</button>
+<div class="screen-info">
+    <strong class="info-heading">{{heading | translate}}</strong>
+    <span class="info-subheading">{{fullscreenData.subHeader | translate}}</span>
+</div>
+<div class="app-info">
+    <strong class="hotel">{{currentHotelData.name}}</strong>
+    <div class="user">
+        <span>{{userInfo.first_name}} {{userInfo.last_name}}</span>
+        <em class="date" ng-show="!isEodRunning">{{userInfo.business_date | date:'EEEE, d MMMM y'}}</em>
+
+        <em class="date updating" ng-show="isEodRunning">Business Date Change In Progress</em>
+
+        <em class="date error" ng-show="isEodProcessFailed&&!(isEodProcessRunning||isEodRunning)">Some EOD Processes failed, check log!</em>
+    </div>
+</div>

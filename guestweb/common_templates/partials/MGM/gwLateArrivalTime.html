@@ -40,6 +40,14 @@
             <div class="section-container">
                 <p class="sub-text left-align">ESTIMATED ARRIVAL TIME</span>
                 <div class="row">
+                    <div class="select-style eta-single">
+                        <select name="timepicker" id="timePicker" ng-model="arrivalTime">
+                            <option value="">select time</option>
+                            <option value="{{time}}" ng-repeat="time in timings">{{time}}</option>
+                        </select>
+                    </div>
+                </div>
+                <!-- <div class="row">
                     <div class="eta-container">
                         <div class="select-style">
                             <select ng-model="stayDetails.hour"
@@ -64,7 +72,7 @@
                             </select>
                         </div>
                     </div>
-                </div>
+                </div> -->
             </div>
              <!--  submit button-->
             <a class="btn btn-template margin-top-10" ng-click="postStayDetails()">Continue</a>

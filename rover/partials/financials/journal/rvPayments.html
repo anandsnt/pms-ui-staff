@@ -14,19 +14,19 @@
     <ul class="journal-header-print">
         <li ng-if="data.activePaymentTab === 'PRE_STAY'">
             Pre-Stay Payments
-            <span>{{currencySymbol}}{{ data.paymentData.total_payment | number: precisonTwo}}</span>
+            <span><span class="currency">{{currencySymbol}}</span> {{ data.paymentData.total_payment | number: precisonTwo}}</span>
         </li>
         <li ng-if="data.activePaymentTab === 'IN_HOUSE'">
             In-house Payments
-            <span>{{currencySymbol}}{{ data.paymentData.total_payment | number: precisonTwo}}</span>
+            <span><span class="currency">{{currencySymbol}}</span> {{ data.paymentData.total_payment | number: precisonTwo}}</span>
         </li>
         <li ng-if="data.activePaymentTab === 'POST_STAY'">
             Post-Stay Payments
-            <span>{{currencySymbol}}{{ data.paymentData.total_payment | number: precisonTwo}}</span>
+            <span><span class="currency">{{currencySymbol}}</span> {{ data.paymentData.total_payment | number: precisonTwo}}</span>
         </li>
         <li ng-if="data.activePaymentTab === ''">
             Total Payments
-            <span>{{currencySymbol}}{{ data.paymentData.total_payment | number: precisonTwo}}</span>
+            <span><span class="currency">{{currencySymbol}}</span> {{ data.paymentData.total_payment | number: precisonTwo}}</span>
         </li>
     </ul>
 
@@ -51,7 +51,7 @@
                         <strong class="name">{{escapeNullData(level1.payment_type)}}</strong>
                         <span class="code">{{escapeNullData(level1.charge_code)}}</span>  
                         <span class="number">{{escapeNullData(level1.number)}}</span>
-                        <span class="value">{{currencySymbol}}{{ level1.amount | number: precisonTwo}}</span>
+                        <span class="value"><span class="currency">{{currencySymbol}}</span> {{ level1.amount | number: precisonTwo}}</span>
                     </a>
 
                     <!-- Second level - credit cards - if Payment type is Credit Card -->
@@ -60,7 +60,7 @@
                         <a ng-click="clickedSecondLevel(index1 ,index2)" ng-class="{'active':level2.active, 'has-arrow':checkHasArrowSecondLevel(index1,index2)}" class="payment-title  toggle">
                             <span class="code">{{escapeNullData(level2.charge_code)}}</span>
                             <strong class="name">{{escapeNullData(level2.credit_card)}}</strong>  
-                            <span class="value">{{currencySymbol}}{{level2.amount | number: precisonTwo}}</span>
+                            <span class="value"><span class="currency">{{currencySymbol}}</span> {{level2.amount | number: precisonTwo}}</span>
                         </a>
 
                         <!-- Third level - transactions -->
@@ -82,17 +82,12 @@
                                     <td>{{level3.reservation_number}}</td>
                                     <td ng-bind-html="level3.details"></td>
                                     <td>{{level3.time}}</td>                              
-                                    <td>{{currencySymbol}}{{level3.credit | number: precisonTwo}}</td>
+                                    <td><span class="currency">{{currencySymbol}}</span> {{level3.credit | number: precisonTwo}}</td>
                                 </tr>
-
                                 <!-- Pagination row -->
                                 <tr class="pagination" ng-show="level2.total_count > data.filterData.perPage && level2.transactions.length > 0">
-                                    <td colspan="6">
-                                        <div class="search-pagination">
-                                            <button type="button" class="button dark-grey next" ng-click="loadNextSet(index1, index2)" ng-disabled="isNextButtonDisabled(index1, index2)" translate>NEXT</button>
-                                            <button type="button" class="button dark-grey prev" ng-click="loadPrevSet(index1, index2)" ng-disabled="isPrevButtonDisabled(index1, index2)" translate>PREVIOUS</button>
-                                            <p>{{ 'SHOWING' | translate }} <strong>{{ level2.start }}-{{ level2.end }}</strong> {{ 'OF' | translate }} <strong>{{ level2.total_count }}</strong> {{ 'ITEMS' | translate }}</p>
-                                        </div>
+                                    <td colspan="6" ng-if="level2.creditCardPagination">
+                                        <rv-pagination page-options="level2.creditCardPagination" page-data="level2.total_count"></rv-pagination>
                                     </td>
                                 </tr>
 
@@ -121,17 +116,13 @@
                                     <td>{{level2.reservation_number}}</td>
                                     <td ng-bind-html="level2.details"></td>
                                     <td>{{level2.time}}</td>
-                                    <td>{{currencySymbol}}{{level2.credit | number: precisonTwo}}</td>
+                                    <td><span class="currency">{{currencySymbol}}</span> {{level2.credit | number: precisonTwo}}</td>
                                 </tr>
 
                                 <!-- Pagination row -->
                                 <tr class="pagination" ng-show="level1.total_count > data.filterData.perPage && level1.transactions.length > 0">
-                                    <td colspan="6">
-                                        <div class="search-pagination">
-                                            <button type="button" class="button dark-grey next" ng-click="loadNextSet(index1,false)" ng-disabled="isNextButtonDisabled(index1,false)" translate>NEXT</button>
-                                            <button type="button" class="button dark-grey prev" ng-click="loadPrevSet(index1,false)" ng-disabled="isPrevButtonDisabled(index1,false)" translate>PREVIOUS</button>
-                                            <p>{{ 'SHOWING' | translate }} <strong>{{ level1.start }}-{{ level1.end }}</strong> {{ 'OF' | translate }} <strong>{{ level1.total_count }}</strong> {{ 'ITEMS' | translate }}</p>
-                                        </div>
+                                    <td colspan="6" ng-if="level1.paymentTypesPagination">
+                                        <rv-pagination page-options="level1.paymentTypesPagination" page-data="level1.total_count"></rv-pagination>
                                     </td>
                                 </tr>
 
@@ -141,7 +132,7 @@
 
                 </div>
                 <div class="grid-footer">
-                    <p class="payment"><span translate>TOTAL</span> {{currencySymbol}}{{ data.paymentData.total_payment | number: precisonTwo}}</p>
+                    <p class="payment"><span translate>TOTAL</span> <span class="currency">{{currencySymbol}}</span> {{ data.paymentData.total_payment | number: precisonTwo}}</p>
                 </div>
             </div>
 

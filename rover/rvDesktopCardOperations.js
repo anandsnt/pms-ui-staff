@@ -4,11 +4,14 @@ var DesktopCardOperations = function () {
     var that = this;
     var ws = {};
 
+    this.isDesktopSwipeEnabled = false;
+
     that.callBacks = {};
 
     // Set to true if the desktop swipe is enabled and a WebSocket connection is established.
     that.isActive = false;
     that.isDesktopUUIDServiceInvoked = false;
+    that.deviceID = null;
 
     // This is a map for the legacy Windows Service
     var commands = {
@@ -29,6 +32,7 @@ var DesktopCardOperations = function () {
                 that.swipeCallbacks.successCallBack(response.Card);
                 break;
             case 'cmd_device_uid':
+                that.deviceID = response.Message;
                 that.swipeCallbacks.uuidServiceSuccessCallBack(response.Message);
                 break;
             case 'cmd_get_device_states':
@@ -70,7 +74,11 @@ var DesktopCardOperations = function () {
     };
 
     this.startReader = function () {
-        ws.send(commands['observeForSwipe']);
+        if (that.isDesktopSwipeEnabled) {
+            ws.send(commands['observeForSwipe']);
+        } else {
+            console.warn('Desktop swipe not enabled in hotel config!');
+        }
     };
 
     this.getConnectedDeviceDetails = function (callBacks) {
@@ -79,7 +87,9 @@ var DesktopCardOperations = function () {
     };
 
     var init = function () {
-        ws.send(commands['observeForSwipe']);
+        if (that.isDesktopSwipeEnabled) {
+            ws.send(commands['observeForSwipe']);
+        }
 
         if (that.isDesktopUUIDServiceInvoked) {
             ws.send(commands['UUIDforDevice']);
@@ -110,7 +120,10 @@ var DesktopCardOperations = function () {
             // Make a call to identify version of the web service being used!
             ws.send(JSON.stringify({Command: 'cmd_get_device_states'}));
 
-            setTimeout(init, 2000);
+            // Timeout required to ensure that the correct syntax is used in the requests to the WS methods
+            // Providing a 1400ms delay for the WS to respond to the command in the previous statement
+            // While testing various machines the reply message to the above method took between 100ms - 700ms
+            setTimeout(init, 1400);
         };
 
         // Triggers when there is a message from websocket server.
@@ -122,6 +135,7 @@ var DesktopCardOperations = function () {
             if (response['Command']) {
                 handleServiceMessages(response);
             } else if (response['ResponseType'] === 'UUIDforDeviceResponse') {
+                that.deviceID = response.Message;
                 that.swipeCallbacks.uuidServiceSuccessCallBack(response);
             } else if (response['RVCardReadPAN']) {
                 that.swipeCallbacks.successCallBack(response);
@@ -129,6 +143,10 @@ var DesktopCardOperations = function () {
                 // Any other scenario other than above is NOT handled in Rover
                 console.error(response);
             }
+        };
+
+        ws.onerror = function () {
+            console.warn('Could NOT connect to WS. Will be identified as DEFAULT');
         };
 
         ws.onclose = function () {

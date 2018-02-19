@@ -25,16 +25,13 @@ sntRover.controller('RVKeyEncodePopupCtrl', [
 
 		// If SAFLOK_MSR is the chosen encoder type, we would show a dropdown with active encoders listed.
 		/** *************************CICO-11444 *****************************************/
-		$scope.encoderSelected = "";
 		if ($scope.fromView === "checkin") {
 			$scope.isRemoteEncodingEnabled = $scope.reservationBillData.is_remote_encoder_enabled;
 		} else {
 			$scope.isRemoteEncodingEnabled = $scope.reservationData.reservation_card.is_remote_encoder_enabled;
 		}
 
-		if (sessionStorage.encoderSelected && sessionStorage.encoderSelected !== '') {
-			$scope.encoderSelected = parseInt(sessionStorage.encoderSelected);
-		}
+        $scope.encoderSelected = sessionStorage.encoderSelected || '';
 
 		/** ***************************************************************************/
 
@@ -608,7 +605,7 @@ sntRover.controller('RVKeyEncodePopupCtrl', [
             }
             $scope.encoderSelected = '-1';
         } else {
-            $scope.encoderSelected = '';
+            $scope.encoderSelected = sessionStorage.encoderSelected || '';
 		}
 
 		$scope.$emit('hideLoader');

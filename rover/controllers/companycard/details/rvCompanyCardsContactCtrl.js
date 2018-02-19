@@ -8,7 +8,6 @@ angular.module('sntRover').controller('companyCardDetailsContactCtrl', ['$scope'
 			refreshScroller();
 		});
 
-
 		$scope.isEmpty = function (obj) {
 			return _.isEmpty(obj);
 		};
@@ -19,7 +18,6 @@ angular.module('sntRover').controller('companyCardDetailsContactCtrl', ['$scope'
 		$scope.toggleCommission = function() {
 			$scope.contactInformation.commission_details.is_on = !$scope.contactInformation.commission_details.is_on;
 		};
-
 
 		// trigger the billing information popup
 	    $scope.openBillingInformation = function(accountType) {
@@ -93,7 +91,6 @@ angular.module('sntRover').controller('companyCardDetailsContactCtrl', ['$scope'
 		$scope.$on("BILLINGINFOADDED", function() {
 			$scope.contactInformation.account_details.routes_count = 1;
 		});
-
 
 	}
 ]);

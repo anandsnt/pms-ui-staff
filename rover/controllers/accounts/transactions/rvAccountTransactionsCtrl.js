@@ -260,8 +260,7 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 
 		$scope.createNewBill = function() {
 			var billData = {
-				"account_id": $scope.accountConfigData.summary.posting_account_id,
-				"bill_number": $scope.transactionsDetails.bills.length + 1
+				"account_id": $scope.accountConfigData.summary.posting_account_id
 			};
 			var createBillSuccessCallback = function(data) {
 				$scope.$emit('hideLoader');
@@ -331,15 +330,21 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 		};
 
 		$scope.showActiveBill = function(index) {
-
-			var activeBillClass = "";
-
-			if (index === $scope.currentActiveBill) {
+			var activeBill = $scope.transactionsDetails.bills[index],
+				activeBillClass = "",
+				billCount = $scope.transactionsDetails.bills.length,
+				isTransactionsExist = activeBill.is_transactions_exist;
+			
+			// CICO-37047 : We need to show Remove Bill icon ('X') for -
+			// a last bill window having no transactions exist.
+			if (index !== 0 && index === $scope.currentActiveBill && (billCount - 1 === index) && !isTransactionsExist) {
+				activeBillClass = "ui-tabs-active ui-state-active with-button";
+			}
+			else if (index === $scope.currentActiveBill) {
 				activeBillClass = "ui-tabs-active ui-state-active";
 			}
 			return activeBillClass;
 		};
-
 
 		/*
 		 * Set clicked bill active and show corresponding days/packages/addons calender
@@ -454,7 +459,6 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 			ngDialog.close();
 		};
 
-
 		$scope.$on('HANDLE_MODAL_OPENED', function(event) {
 			$scope.paymentModalOpened = false;
 		});
@@ -493,7 +497,6 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 				return;
 			}
 		});
-
 
 		/* ------------- edit/remove/split starts here --------------*/
 
@@ -583,7 +586,7 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 		/*
 		 * open popup for selecting edit/split/remove transaction
 		 */
-		$scope.openActionsPopup = function(id, desc, amount, type, credits) {
+		$scope.openActionsPopup = function(id, desc, amount, type, credits, reference_text, show_ref_on_invoice) {
 
 			$scope.errorMessage = "";
 			// hide edit and remove options in case type is  payment
@@ -591,6 +594,8 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 			$scope.selectedTransaction = {};
 			$scope.selectedTransaction.id = id;
 			$scope.selectedTransaction.desc = desc;
+			$scope.reference_text = reference_text;
+			$scope.show_ref_on_invoice = show_ref_on_invoice;
 
 			if (amount) {
 				$scope.selectedTransaction.amount = amount;
@@ -604,11 +609,9 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 				scope: $scope
 			});
 		};
-
 		/*
 		 * popup individual popups based on selection
 		 */
-
 		$scope.callActionsPopupAction = function(action) {
 
 			ngDialog.close();
@@ -621,15 +624,12 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 			} else if (action === "edit") {
 			    $scope.openEditChargePopup();
 			}
-
 		};
-
 		/*
 		 * open popup for remove transaction
 		 * We are using same controller for split/edit and remove as those needs just one function each
 		 *
 		 */
-
 		$scope.openRemoveChargePopup = function() {
 			ngDialog.open({
 				template: '/assets/partials/bill/rvRemoveChargePopup.html',
@@ -638,7 +638,6 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 				scope: $scope
 			});
 		};
-
 		/*
 		 * open popup for edit charge code
 		 */
@@ -650,11 +649,9 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 	    		scope: $scope
 	    	});
 		};
-
 		/*
 		 * open popup for split transaction
 		 */
-
 		$scope.openSplitChargePopup = function() {
 			ngDialog.open({
 				template: '/assets/partials/bill/rvSplitChargePopup.html',
@@ -663,11 +660,9 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 				scope: $scope
 			});
 		};
-
 		/*
 		 * open popup for edit transaction
 		 */
-
 		$scope.openEditChargePopup = function() {
 			$scope.selectedChargeCode = {
 				"id": "",
@@ -684,10 +679,8 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 			$scope.setScroller('chargeCodesList');
 		};
 
-
 		/* ----------- edit/remove/split ends here ---------------*/
 		// CICO-13903
-
 		$scope.sendEmail = function(params) {
 			var mailSent = function(data) {
 					// Handle mail Sent Success
@@ -701,13 +694,11 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 					$scope.showEmailSentStatusPopup();
 				};
 
-
 			$scope.callAPI(rvAccountsConfigurationSrv.emailInvoice, {
 				successCallBack: mailSent,
 				failureCallBack: mailFailed,
 				params: params
 			});
-
 		};
 
 		$scope.clickedEmail = function(requestParams) {
@@ -747,8 +738,6 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 					$('.card-tabs-nav').removeClass('no-print');
 
 				}, 100);
-
-
 			};
 
 			var printBillFailure = function(errorData) {
@@ -863,8 +852,6 @@ sntRover.controller('rvAccountTransactionsCtrl', [
                 .fetchChargeCodes()
                 .then(fetchChargeCodesSuccess)
             );
-
-
             // Lets start the processing
             $q.all(promises)
                 .then(successFetchOfAllReqdForTransactionDetails, failedToFetchOfAllReqdForTransactionDetails);
@@ -873,8 +860,6 @@ sntRover.controller('rvAccountTransactionsCtrl', [
         $scope.changeBillingReferenceNumber = function() {
         	$scope.isBillingReferenceNumberChanged = true;
         };
-
-
 		/**
 		 * When there is a TAB switch, we will get this. We will initialize things from here
 		 * @param  {[type]} event             [description]
@@ -906,7 +891,6 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 						$scope.$emit('showErrorMessage', errorMessage);
 						$scope.$emit('hideloader');
 					};
-
 
 				$scope.callAPI(rvAccountsConfigurationSrv.updateBillingRefNumber, {
 					successCallBack: onAccountUpdateSuccess,
@@ -952,7 +936,6 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 		    		scope: $scope
 	    	});
     	};
-
     	/*
 		*  Shows the popup to show the email send status
 		*/
@@ -963,7 +946,6 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 	    		scope: $scope
 	    	});
     	};
-
     	// CICO-25088 starts here ..//
     	/*
     	 *	Load bill data on active bill with default date selected.
@@ -976,7 +958,6 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 				getBillTransactionDetails();
 			}
 			else {
-				console.log("here");
 				$scope.$emit('hideLoader');
 				refreshRegContentScroller();
 			}
@@ -1056,6 +1037,10 @@ sntRover.controller('rvAccountTransactionsCtrl', [
     		var activebillTab = $scope.transactionsDetails.bills[$scope.currentActiveBill];
 
     		activebillTab.transactions = [];
+    		_.each(data.transactions, function(item) {
+
+    			item.description = (item.card_number !== null && item.card_number !== '') ? item.description + "-" + item.card_number : item.description;
+    		});
  			activebillTab.transactions = data.transactions;
  			activebillTab.total_count  = data.total_count;
 
@@ -1091,12 +1076,14 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 		 */
 		var getBillTransactionDetails = function() {
 			var activebillTab = $scope.transactionsDetails.bills[$scope.currentActiveBill];
+			
 			var params = {
 				'bill_id': activebillTab.bill_id,
 				'date': activebillTab.activeDate,
 				'page': activebillTab.page_no,
 				'per_page': $scope.perPage
 			};
+
 			var options = {
 				successCallBack: onBillTransactionFetchSuccess,
 				failureCallBack: onBillTransactionFetchFailure,
@@ -1200,6 +1187,31 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 				feesData.isExpanded = false;
 				refreshRegContentScroller();
 			}
+		};
+
+		/*
+		 * Handle click action on Remove Bill button
+		 * @param {int} index of bill
+		 */
+		$scope.clickedRemoveBill = function(billIndex) {
+			var hideBillSuccessCallback = function() {
+				// Reload Bill screen and reset active bill tab ..
+				getTransactionDetails();
+				$scope.currentActiveBill = billIndex - 1;
+			},
+			hideBillFailureCallback = function(errorMessage) {
+				$scope.errorMessage = errorMessage;
+			};
+
+			var dataToSend = {
+				params: {
+					'bill_id': $scope.transactionsDetails.bills[billIndex].bill_id
+				},
+				successCallBack: hideBillSuccessCallback,
+				failureCallBack: hideBillFailureCallback
+			};
+
+			$scope.callAPI(RVBillCardSrv.hideBill, dataToSend);
 		};
 	}
 ]);

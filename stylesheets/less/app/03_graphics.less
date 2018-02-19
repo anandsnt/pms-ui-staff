@@ -369,6 +369,11 @@
 
 			&.icon-hold {
                 background-position: 0px -9220px;
+
+                &.black {
+                    background-position: 0px -9280px; 
+                }
+                
                 &.red {
                     background-position: 0px -9340px;
                 }
@@ -577,10 +582,15 @@
 			&.icon-double-arrow {
 				background: @icons 10px -1587px no-repeat;
 				.square(40px);
+
 				@media @highdpi {
 					background-image: @icons2x;
 					background-size: 120px;
 				}
+
+				&.black {
+                   background-position: 2px -1537px;
+                }
 			}
 
 		/* Actions ***/
@@ -607,16 +617,33 @@
                 &.icon-completed { background-position: 0 -10180px; }
             }
 
+        /* Rooms ***/
+
+            &.icon-blocked {
+                background-position: 0 -10660px;
+            }
+
+            &.icon-available {
+                background-position: 0 -10720px;
+            }
+
+            &.icon-picked-up {
+                background-position: 0 -10780px;
+            }
+
 		/* Rotations */
-		&.rotate-down {
-			transform:rotate(-90deg);
-		}
-		&.rotate-up {
-			transform:rotate(90deg);
-		}
-		&.rotate-right {
-			transform:rotate(180deg);
-		}
+			&.rotate-down {
+				transform:rotate(-90deg);
+			}
+			&.rotate-up {
+				transform:rotate(90deg);
+			}
+			&.rotate-right {
+				transform:rotate(180deg);
+			}
+
+		/* Commissions */
+            &.icon-release { background-position: 0px -11314px;}
 
 		/* @2x Icons ***/
 		@media @highdpi {

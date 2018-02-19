@@ -1,4 +1,6 @@
 <form id="group-rooming-list" name="group-rooming-list" class="form card-tab inner-header rooming-list" ng-controller="rvGroupRoomingListCtrl">
+    <!--common header for fullscreen mode-->
+    <div ng-include="'/assets/partials/common/rvFullscreenHeader.html'" class="fullscreen-header"></div>
     <div id="group-room-list-header" class="tab-header" ng-class="{'no-print' : isPrintRegistrationCard}">
         <div class="search-form has-dates" ng-class="{'open': isAddingMode && !groupConfigData.summary.is_cancelled}">
             <!-- Toggle class "open" when button on L4 is clicked (that will open the form). For new groups / when no reservations in rooming list, have class "open" there by default (e.g. make the form opened by default) -->

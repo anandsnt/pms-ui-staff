@@ -22,6 +22,9 @@ admin.controller('ADInterfaceSubMenuCtrl', ['$scope', '$state',
             case "admin.chain.certificates":
                 $scope.sectionTitle = "Certificates Setup";
                 break;
+            case "admin.commissionsSetup":
+                $scope.sectionTitle = "Commissions Setup";
+                break;
             default:
                 $scope.sectionTitle = "Interfaces Setup";
         }

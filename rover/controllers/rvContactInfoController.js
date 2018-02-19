@@ -163,14 +163,17 @@ angular.module('sntRover').controller('RVContactInfoController', ['$scope', '$ro
         'userId': $scope.guestCardData.contactInfo.user_id
       };
 
-      if (newGuest) {
+      // CICO-49153 - Added the additional check for user_id in the request params to prevent duplicate guest creation
+      if (newGuest && !dataToUpdate.user_id) {
         dataToUpdate.avatar = "";
           if (typeof data.data.is_opted_promotion_email === 'undefined') {
             data.data.is_opted_promotion_email = false;
           }
           $scope.invokeApi(RVContactInfoSrv.createGuest, data, createUserInfoSuccessCallback, failureOfCreateGuestCard);
       } else if (!dataUpdated) {
-          if (!angular.equals(dataToUpdate, initialGuestCardData)) {
+          if (!angular.equals(dataToUpdate, initialGuestCardData)) {     
+              // CICO-46709 - Reset the guest card data to reflect the new changes made to contact details
+              initialGuestCardData = dclone(dataToUpdate, ["avatar", "confirmation_num"]);
               $scope.invokeApi(RVContactInfoSrv.updateGuest, data, saveUserInfoSuccessCallback, saveUserInfoFailureCallback);
           }
       }
@@ -186,16 +189,20 @@ angular.module('sntRover').controller('RVContactInfoController', ['$scope', '$ro
      * to handle click actins outside this tab
      */
     $scope.$on('saveContactInfo', function() {
-      $scope.errorMessage = "";
+      $scope.errorMessage = "";      
       if ((!$scope.reservationData.guest.id && !$scope.guestCardData.contactInfo.user_id) || $scope.viewState.isAddNewCard) {
         // dirty fix until we refactor the whole staycard/card
-        if (!$scope.saveGuestCardInfoInProgress) {
-            $scope.saveGuestCardInfoInProgress = true;
+        // isGuestCardSaveInProgress - variable in guestcontroller to prevent the api call while clicking outside
+        if (!$scope.saveGuestCardInfoInProgress && !$scope.isGuestCardSaveInProgress) {
+            $scope.saveGuestCardInfoInProgress = true;             
             $scope.saveContactInfo(true);
         }
         
-      } else {
-        $scope.saveContactInfo();
+      } else {        
+        if (!$scope.isGuestCardSaveInProgress) {
+          $scope.saveContactInfo();
+        }
+        
       }
     });
 

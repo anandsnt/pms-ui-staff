@@ -1,4 +1,6 @@
 <form id="allotment-reservations" name="allotment-reservations" ng-click="clearErrorMessage()" class="form card-tab scrollable rooming-list inner-header" ng-controller="rvAllotmentReservationsListCtrl">
+	<!--common header for fullscreen mode-->
+	<div ng-include="'/assets/partials/common/rvFullscreenHeader.html'" class="fullscreen-header"></div>
 	<div class="tab-header" ng-class="{'no-print' : isPrintRegistrationCard}">
 		<div class="search-form has-dates" ng-class="{'open': shouldShowAddReservationFields()}">
 			<!-- Toggle class "open" when button on L4 is clicked (that will open the form). For new groups / when no reservations in rooming list, have class "open" there by default (e.g. make the form opened by default) -->

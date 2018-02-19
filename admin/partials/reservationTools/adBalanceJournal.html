@@ -1,0 +1,59 @@
+<section class="content current admin-scrollfix" div-touch-move-stop-propogate ng-click="clearErrorMessage()">
+   <div class="inline-edit">
+      <header class="content-title float">
+         <h2 translate>BALANCE_JOURNAL</h2>
+      </header>
+      <section class="content-scroll">
+         <div ng-include="'/assets/partials/common/notification_message.html'"></div>
+         
+         <table class="grid">
+            <tbody>
+               <tr>
+                  <td>
+
+                     <div ng-hide="anyJobRunning" class="data-holder">
+                        <form class="form inline-form float">
+                           <div class="form-title">
+                              <h3>Choose dates</h3>
+                              <em class="status">{{ 'MANDATORY_FIELDS_MESSAGE1' | translate}} <strong>*</strong> {{ 'MANDATORY_FIELDS_MESSAGE2' | translate }}</em>
+                           </div>
+                           <fieldset class="holder left float">
+                              <div class="entry has-datepicker margin">
+                                 <label>{{ 'FROM_DATE' | translate }}</label>
+                                 <input type="text" ng-model="payload.first_date" readonly="" placeholder="Select Start Date" class="date-picker-input-small">
+                                 <button ng-click="popupCalendar('from')" class="ui-datepicker-trigger date-picker-small ui-datepicker-trigger-btn" type="button">...</button>
+                              </div>
+
+                              <div ng-hide="isConnectedToPMS" class="entry has-datepicker margin">
+                                 <label>{{ 'TO_DATE' | translate }}</label>
+                                  {{previousDayOfBusinessDate}}
+                              </div>
+                           </fieldset>
+                           <div class="actions float">
+                              <button type="button" ng-click="startJob()" class="button green edit-data-inline" translate>START_JOB</button>
+                           </div>
+                        </form>
+                     </div>
+
+                     <div ng-show="anyJobRunning" class="data-holder">
+                        <form class="form inline-form float">
+                           <div class="form-title">
+                              <h3>Balance Journal job running.</h3>
+                           </div>
+                           <div class="actions float">
+                              <button type="button" ng-click="refreshStatus()" class="button green edit-data-inline" translate>REFRESH_STATUS</button>
+                           </div>
+                        </form>
+                     </div>
+
+                  </td>
+               </tr>
+               
+            </tbody>
+         </table>
+      </section>
+   </div>
+</section>
+
+<!-- ng-hide="isConnectedToPMS" -->
+      

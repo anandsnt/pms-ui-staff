@@ -45,41 +45,41 @@
                     </tr>
                     <tr>
                         <th scope="row" translate>OPENING_BALANCE_CHECK_MSG</th>
-                        <td class="value">{{currencySymbol}}{{details.opening_balance_check |number:2}}</td>
+                        <td class="value">{{currencySymbol}} {{details.opening_balance_check |number:2}}</td>
                     </tr>
                     <tr>
                         <th scope="row" translate>TOTAL_CASH_RECEIVED_MSG</th>
-                        <td class="value">{{currencySymbol}}{{details.total_cash_received |number:2}}</td>
+                        <td class="value">{{currencySymbol}} {{details.total_cash_received |number:2}}</td>
                     </tr>
                     <tr>
                         <th scope="row" translate>TOTAL_IN_CHECKS_RECEIVED_MSG</th>
-                        <td class="value">{{currencySymbol}}{{details.total_check_received |number:2}}</td>
+                        <td class="value">{{currencySymbol}} {{details.total_check_received |number:2}}</td>
                     </tr>
                     <tr>
                         <td class="entry" colspan="2" ng-show="details.status ==='OPEN'">
                             <span translate>CASH_SUBMITTED</span>
-                            <input name="cash-submited" id="cash-submited" type="text" ng-model="details.cash_submitted"/>
+                            <input name="cash-submited" id="cash-submited" type="text" ng-model="details.cash_submitted" ng-change="changedCash()"/>
                         </td>
 
                         <th scope="row" translate  ng-hide="details.status ==='OPEN'">CASH_SUBMITTED</th>
-                        <td class="value"  ng-hide="details.status ==='OPEN'">{{currencySymbol}}{{details.cash_submitted |number:2}}</td>
+                        <td class="value"  ng-hide="details.status ==='OPEN'">{{currencySymbol}} {{details.cash_submitted |number:2}}</td>
                     </tr>
                     <tr>
                         <td class="entry" colspan="2" ng-show="details.status ==='OPEN'">  
                             <span translate>CHECKS_SUBMITTED</span>
-                            <input name="checks-submited" id="checks-submited" type="text" ng-model="details.check_submitted" />
+                            <input name="checks-submited" id="checks-submited" type="text" ng-model="details.check_submitted" ng-change="changedCheck()" />
                         </td>
 
                         <th scope="row" translate ng-hide="details.status ==='OPEN'">CHECKS_SUBMITTED</th>
-                        <td class="value" ng-hide="details.status ==='OPEN'">{{currencySymbol}}{{details.check_submitted |number:2}}</td>
+                        <td class="value" ng-hide="details.status ==='OPEN'">{{currencySymbol}} {{details.check_submitted |number:2}}</td>
                     </tr>
                     <tr>
                         <th scope="row" translate>TOTAL_CLOSING_BALANCE_CASH_MSG</th>
-                        <td class="value">{{currencySymbol}}{{(details.opening_balance_cash + details.total_cash_received) - details.cash_submitted |number:2}}</td>
+                        <td class="value">{{currencySymbol}} {{totalClosingBalanceInCash | number:2}}</td>
                     </tr>
                     <tr>
                         <th scope="row" translate>TOTAL_CLOSING_BALANCE_CHECK_MSG</th>
-                        <td class="value">{{currencySymbol}}{{(details.opening_balance_check + details.total_check_received) - details.check_submitted |number:2}}</td>
+                        <td class="value">{{currencySymbol}} {{totalClosingBalanceInCheck | number:2}}</td>
                     </tr>
                 </tbody>
             </table>

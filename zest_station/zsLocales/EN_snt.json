@@ -117,7 +117,7 @@
    "CLEAR_BTN": "Clear",
 
 
-   "CC_SIGN_TIMEOUT":"Hello? 你好? Здравствуйте? Are you still there?",
+   "CC_SIGN_TIMEOUT":"Are you still there?",
    "CC_SIGN_TIMEOUT_SUB":"We haven't detected your signature. Please select one of the following:",
    "CC_SIGN_TIMEOUT_SIGN":"Re-Sign",
 
@@ -620,6 +620,21 @@
    "LATE_CHECKOUT_INSTRUCTIONS": "Please select a Late Checkout offer from the list to extend your stay",
 
    "SIGNATURE": "SIGNATURE",
-   "GID_VERIFY_CLEAR_SIGNATURE": "Clear signature"
+   "GID_VERIFY_CLEAR_SIGNATURE": "Clear signature",
+
+   "ENDING_WITH": "Ending with",
+   "EXPIRES": "Expires",
+   "MANUAL_KEY_PICKUP_HEADER": "Manual Key Pickup",
+   "MANUAL_KEY_PICKUP_MSG": "Please pick your key from the front desk",
+
+   "HOW_WOULD_YOU_LIKE_TO_PAY": "How Would You Like To Pay ?",
+   "USE_NEW_CARD": "Use a New Card",
+   "PAYMENT": "PAYMENT",
+   "PAYMENT_SUCCESSFULL": "Payment Successful",
+   "BALANCE_WAS_PAID": "Your balance was paid successfully!!",
+   "PAYMENT": "PAYMENT",
+
+   "CHECK_HANDLER_IS_RUNNING_MSG": "Please ensure that the Zest station Hanlder is running",
+   "HOW_WOULD_YOU_LIKE_TO_REFUND": "How Would You Like your Refund ?"
 
 }
