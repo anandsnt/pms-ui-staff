@@ -2699,12 +2699,8 @@ sntRover.controller('RVbillCardController',
 
 		 	// CICO-10906 review process continues after payment.
 			if ( (data.bill_balance === 0.0 || data.bill_balance === "0.0") && $scope.isViaReviewProcess ) {
-				// If last bill - continue checkout..Else proceed Review process.
-				if (billCount === $scope.currentActiveBill + 1) {
-					$log.log('After Bill Payment Success in last bill - proceed checkout.');
-					$scope.clickedCompleteCheckout();
-				}
-				else {
+				// If not last bill - continue Review process.
+				if (billCount !== $scope.currentActiveBill + 1) {
 					$scope.clickedReviewButton(data.billNumber - 1);
 				}
 			}
