@@ -24,6 +24,15 @@
                             label="{{'URL'| translate}}"
                             styleclass="full-width"></ad-textbox>
             </fieldset>
+
+            <fieldset class="holder right">
+                <div class="entry full-width">
+                    <label> {{ 'CONFIGURATION' | translate }} </label>
+                    <textarea json-text ng-model='webHook.options' rows="6"
+                              placeholder="Enter Configuration in JSON format"></textarea>
+                </div>
+            </fieldset>
+
         </fieldset>
 
         <fieldset class="holder full-width" ng-show="webHook.canEditEvents">
