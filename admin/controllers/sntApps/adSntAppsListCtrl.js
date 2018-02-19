@@ -105,6 +105,32 @@ admin.controller('ADSntAppsListCtrl', ['$scope',
 
 		};
 
+		$scope.showGeneralSettings = function() {
+			$scope.settingsData = {
+				"sftp_location": "dev-tools.stayntouch.com",
+				"sftp_port": "22",
+				"sftp_user": "pmsftp",
+				"sftp_password": "47hbFQwX75",
+				"sftp_respath": "reservations"
+			};
+			$scope.screenMode = 'SETTINGS';
+		};
+
+		$scope.saveFTPsettings = function() {
+
+			var updateUpgradeTimeSuccess = function() {
+				$scope.screenMode = 'BUILD_LIST';
+			};
+			var updateUpgradeTimeFailure = function(response) {
+				$scope.errorMessage = response;
+			};
+
+			$scope.callAPI(adAppVersionsSrv.saveFTPsettings, {
+				params: $scope.settingsData,
+				successCallBack: updateUpgradeTimeSuccess,
+				failureCallBack: updateUpgradeTimeFailure
+			});
+		};
 
 		(function() {
 			fetchAppVersions();
