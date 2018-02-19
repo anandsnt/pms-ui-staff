@@ -15,6 +15,7 @@ angular.module('sntRover').controller('guestCardSearchController',
 		    GUEST_CARD_SEARCH_PAGINATION_ID = "guest_card_search";
 		
 		
+		// Refresh the guest card search scroller
 		var refreshScroller = function() {
 			$timeout(function() {
 				$scope.refreshScroller(GUEST_CARD_SCROLL);
@@ -35,18 +36,10 @@ angular.module('sntRover').controller('guestCardSearchController',
 			$scope.textInQueryBox = queryText.charAt(0).toUpperCase() + queryText.slice(1);
 		}, debounceSearchDelay);
 
+		// Clear search results
 		$scope.clearResults = function() {
 			$scope.textInQueryBox = "";
 			$scope.results = [];
-		};
-				
-
-		var successCallBackofInitialFetch = function(data) {
-			$scope.$emit("hideLoader");
-			$scope.results = data.accounts;
-			setTimeout(function() {
-				refreshScroller();
-			}, 750);
 		};
 			
 		
@@ -86,6 +79,7 @@ angular.module('sntRover').controller('guestCardSearchController',
 				return params;
 			};
 
+		// Perform guest card search for the given params
 		$scope.search = function (pageNo) {  
             var options = {
 				params: getRequestParams(pageNo),
@@ -94,7 +88,6 @@ angular.module('sntRover').controller('guestCardSearchController',
 			};
 
 			$scope.callAPI(RVGuestCardsSrv.fetchGuests, options);
-
 		};
 
 		
@@ -109,28 +102,15 @@ angular.module('sntRover').controller('guestCardSearchController',
 				// we have changed data, so we are refreshing the scrollerbar
 				refreshScroller();
 			} else {
-				$scope.search();
-				/*var dataDict = {
-					'query': $scope.textInQueryBox.trim()
-				};
-
-				$scope.invokeApi(RVCompanyCardSearchSrv.fetch, dataDict, successCallBackofInitialFetch);
-				
-				// we have changed data, so we are refreshing the scrollerbar
-				refreshScroller();*/
+				$scope.search();				
 			}
 		};
 
-		// To impelement popup to select add new - COMPANY / TRAVEL AGENT CARD
+		// Click on add new btn navigates to an empty guest card page
 		$scope.addNewCard = function() {
 			$state.go('rover.guestcarddetails');
 		};
-
-		// While coming back to search screen from DISCARD button
-		if ($stateParams.textInQueryBox) {
-			$scope.textInQueryBox = $stateParams.textInQueryBox;
-			$scope.queryEntered();
-		}
+		
 
 		$scope.getGuestName = function(firstName, lastName) {			
 			return lastName + ", " + firstName;
@@ -174,6 +154,12 @@ angular.module('sntRover').controller('guestCardSearchController',
 	    		perPage: 50,
 	    		api: $scope.search
 	    	};
+
+	    	// While coming back to search screen from DISCARD button
+			if ($stateParams.textInQueryBox) {
+				$scope.textInQueryBox = $stateParams.textInQueryBox;
+				$scope.queryEntered();
+			}
 
 		};
 

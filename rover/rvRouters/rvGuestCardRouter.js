@@ -16,7 +16,7 @@ function(
         });
 
         $stateProvider.state('rover.guestcarddetails', {
-            url: '/guestcarddetails/:guestId',
+            url: '/guestcarddetails/:guestId/:query',
             templateUrl: '/assets/partials/guestCard/rvGuestCardDetails.html',
             controller: 'rvGuestDetailsController',
             resolve: {

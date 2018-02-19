@@ -15,46 +15,25 @@ angular.module('sntRover').controller('rvGuestDetailsController',
 
 		BaseCtrl.call(this, $scope);
 
+		/**
+		 * Decides whether loyalty tab should be shown or not
+		 * This event is emitted from the RVGuestCardLoyaltyController
+		 */
 		$scope.$on('detect-hlps-ffp-active-status', function(evt, data) {
             if (data.userMemberships.use_hlp || data.userMemberships.use_ffp) {
-            $scope.loyaltyTabEnabled = true;
-           } else {
-            $scope.loyaltyTabEnabled = false;
+              $scope.loyaltyTabEnabled = true;
+            } else {
+              $scope.loyaltyTabEnabled = false;
            }
         });
 
+		// Sets the loyalty level
         $scope.$on("loyaltyLevelAvailable", function($event, level) {
 			$scope.guestCardData.selectedLoyaltyLevel = level;
-		});
+		});        
 
-        $scope.$setLoyaltyStatus = function(data, type) {
-            $scope.loyaltiesStatus[type] = data.active;
-            if ($scope.loyaltiesStatus.ffp || $scope.loyaltiesStatus.hlps) {
-                $scope.loyaltyTabEnabled = true;
-            } else {
-                $scope.loyaltyTabEnabled = false;
-            }
-            if ($scope.loyaltiesStatus.hlps) {
-                $scope.guestCardData.loyaltyInGuestCardEnabled = true;
-            } else {
-                $scope.guestCardData.loyaltyInGuestCardEnabled = false;
-            }
-         };
-
-         $scope.fetchLoyaltyStatus = function() {
-            var loyaltyFetchsuccessCallbackhlps = function(data) {
-                $scope.$setLoyaltyStatus(data, 'hlps');
-                    $scope.$emit('hideLoader');
-            };
-            var loyaltyFetchsuccessCallbackffp = function(data) {
-                $scope.$setLoyaltyStatus(data, 'ffp');
-                    $scope.$emit('hideLoader');
-            };
-
-            $scope.invokeApi(RVCompanyCardSrv.fetchHotelLoyaltiesHlps, {}, loyaltyFetchsuccessCallbackhlps);
-            $scope.invokeApi(RVCompanyCardSrv.fetchHotelLoyaltiesFfp, {}, loyaltyFetchsuccessCallbackffp);
-         };
-
+         
+        // Populate guest card details 
 		var getGuestCardData = function (data, countries, guestId) {
 			var guestCardData = {};			    
 
@@ -71,7 +50,7 @@ angular.module('sntRover').controller('rvGuestDetailsController',
 		};
 
 		/**
-		 * Tab actions
+		 * Handles switching of tabs with the guest card details page
 		 */
 		$scope.guestCardTabSwitch = function(tab) {
 			if ($scope.current === 'guest-contact' && tab !== 'guest-contact') {
@@ -81,17 +60,20 @@ angular.module('sntRover').controller('rvGuestDetailsController',
 					$scope.$broadcast('saveContactInfo');
 				}
 			}
+
 			if ($scope.current === 'guest-like' && tab !== 'guest-like') {
 				$scope.$broadcast('SAVELIKES', {isFromGuestCardSection : true });
 
 			}
+
 			if (tab === 'guest-credit') {
 				$scope.$broadcast('PAYMENTSCROLL');
+
 			} else if (tab === 'guest-like') {
 				$scope.$broadcast('GUESTLIKETABACTIVE');
+				$scope.$broadcast('REFRESHLIKESSCROLL');
 			}
-
-			$scope.$broadcast('REFRESHLIKESSCROLL');
+			
 			if (!$scope.viewState.isAddNewCard) {
 				$scope.current = tab;
 			}
@@ -115,19 +97,23 @@ angular.module('sntRover').controller('rvGuestDetailsController',
 	                title = $filter('translate')('NEW_GUEST');
 	            }
 
-	            // yes, we are setting the headting and title
+	            // Setting the heading and title
 	            $scope.heading = title;
 	            $scope.setTitle (title);
         	};
 
         // Back navigation handler
         $scope.navigateBack = function () {
-		  $state.go('rover.guestcardsearch');
+		  $state.go('rover.guestcardsearch', {
+			textInQueryBox: $stateParams.query
+		  });
 		};
 
+		// Show payment list
 		$scope.showGuestPaymentList = function(guestInfo) {
 			var userId = guestInfo.user_id,
 				guestId = guestInfo.guest_id;
+
 			var paymentSuccess = function(paymentData) {
 				$scope.$emit('hideLoader');
 
@@ -143,6 +129,7 @@ angular.module('sntRover').controller('rvGuestDetailsController',
 			$scope.invokeApi(RVGuestCardSrv.fetchGuestPaymentData, userId, paymentSuccess, '', 'NONE');
 		};
 
+		// Invoke when a new guest is added
 		$scope.newGuestAdded = function(id) {
 			$scope.viewState.isAddNewCard = false;			
 			$scope.initGuestCard({
@@ -150,6 +137,7 @@ angular.module('sntRover').controller('rvGuestDetailsController',
 			});			
 		};
 
+		// Initialize a new guest card
 		$scope.initGuestCard = function(guestData) {
 			if (!!guestData.id) {
                 $scope.guestCardData.userId = guestData.id;
@@ -158,12 +146,15 @@ angular.module('sntRover').controller('rvGuestDetailsController',
             }
 		};
 
+		// Click handler for save btn in guest card header
 		$scope.clickedSaveGuestCard = function() {			
 			$scope.$broadcast("saveContactInfo");			
 		};
 
+		// Click handler for discard btn in guest card header
 		$scope.clickedDiscardGuestCard = function() {
 			$scope.viewState.isAddNewCard = false;
+			$scope.navigateBack();			
 		};
 
 		// Get the contact details object with the required properties only
@@ -198,12 +189,14 @@ angular.module('sntRover').controller('rvGuestDetailsController',
 			RVSearchSrv.updateGuestDetails($scope.guestCardData.contactInfo.user_id, data);
 		};
 
+		// Update contact info on blur of fields in guest card header
 		$scope.updateContactInfo = function() {			
 			var that = this;
 
 			that.newUpdatedData = $scope.decloneUnwantedKeysFromContactInfo();
+
 			var saveUserInfoSuccessCallback = function(data) {
-				$scope.$emit('hideLoader');
+				
 				// update few of the details to searchSrv
 				updateSearchCache();
 				// This is used in contact info ctrl to prevent the extra API call while clicking outside
@@ -222,32 +215,37 @@ angular.module('sntRover').controller('rvGuestDetailsController',
 				};
 
 				if (typeof data.userId !== 'undefined') {
+					var options = {
+						successCallBack : saveUserInfoSuccessCallback,
+						params: data
+					};
+
 					$scope.isGuestCardSaveInProgress = true;
-					$scope.invokeApi(RVContactInfoSrv.updateGuest, data, saveUserInfoSuccessCallback);
+					$scope.callAPI(RVContactInfoSrv.updateGuest, options);					
 				}
 			}
 		};
 
 		/**
-		 *  API call needs only rest of keys in the data
+		 *  Removes the unwanted keys in the API request
 		 */
 		$scope.decloneUnwantedKeysFromContactInfo = function() {
 
 			var unwantedKeys = ["birthday", "country",
-				"is_opted_promotion_email", "job_title",
-				"passport_expiry",
-				"passport_number", "postal_code",
-				"reservation_id", "title", "user_id",
-				"works_at", "birthday", "avatar"
-			];
-			var declonedData = dclone($scope.guestCardData.contactInfo, unwantedKeys);
+					"is_opted_promotion_email", "job_title",
+					"passport_expiry",
+					"passport_number", "postal_code",
+					"reservation_id", "title", "user_id",
+					"works_at", "birthday", "avatar"
+				],
+			    declonedData = dclone($scope.guestCardData.contactInfo, unwantedKeys);
 
 			return declonedData;
 		};	
 
 		/**
 		 *
-		 *to reset current data in header info for determining any change
+		 * Reset current data in header info for determining any change
 		 **/
 		$scope.$on('RESETHEADERDATA', function(event, data) {
 			$scope.currentGuestCardHeaderData.address = data.address;
@@ -263,6 +261,7 @@ angular.module('sntRover').controller('rvGuestDetailsController',
 			$scope.viewState = {
 				isAddNewCard : !$stateParams.guestId
 			};
+
 			$scope.guestCardData = getGuestCardData(contactInfo, countries, $stateParams.guestId);
 			$scope.countries = countries;
 			$scope.idTypeList = $scope.guestCardData.contactInfo.id_type_list;
@@ -284,12 +283,9 @@ angular.module('sntRover').controller('rvGuestDetailsController',
             $scope.loyaltiesStatus = {'ffp': false, 'hlps': false};
 
 			// Set contact tab as active by default
-			$scope.current = 'guest-contact';			
-
-			
+			$scope.current = 'guest-contact';
 
 			$scope.paymentData = {};
-
 			setTitleAndHeading();
 			setBackNavigation();
             
