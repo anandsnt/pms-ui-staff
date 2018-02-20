@@ -105,6 +105,25 @@ sntZestStation.controller('zsCollectNationalityCtrl', [
             $('input').val('');
             $scope.showingAutoComplete();
         };
+
+        $scope.countryChanged = function () {
+            if (!$scope.zestStationData.kiosk_enforce_country_sort) {
+                var selectedCountry = _.find($scope.countryList, function(county) {
+                    return parseInt(county.id) === parseInt($scope.selectedCountry.id);
+                });
+                selectedCountry.name = selectedCountry.value;
+            } else {
+                var selectedCountry = _.find($scope.sortedCountries, function(county) {
+                    return parseInt(county.id) === parseInt($scope.selectedCountry.id);
+                });
+                if (!selectedCountry) {
+                    selectedCountry = _.find($scope.unSortedCountries, function(county) {
+                        return parseInt(county.id) === parseInt($scope.selectedCountry.id);
+                    });
+                }
+            }
+            $('input').val(selectedCountry.name);
+        };
         /**
          * when the back button clicked
          * @param  {[type]} event
