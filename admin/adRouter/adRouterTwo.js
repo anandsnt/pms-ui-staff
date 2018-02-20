@@ -775,6 +775,9 @@ angular.module('adminModuleTwo', []).config(function ($stateProvider) {
         resolve: {
             appTypes: function(adDebuggingSetupSrv) {
                 return adDebuggingSetupSrv.retrieveAppTypes();
+            },
+            ftpSettings: function (adAppVersionsSrv) {
+                return adAppVersionsSrv.fetchFTPSettings();
             }
         }
     });

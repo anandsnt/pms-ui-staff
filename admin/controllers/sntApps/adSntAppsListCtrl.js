@@ -1,6 +1,6 @@
 admin.controller('ADSntAppsListCtrl', ['$scope',
-	'adDebuggingSetupSrv', 'adAppVersionsSrv', 'ngTableParams', '$filter', 'appTypes',
-	function($scope, adDebuggingSetupSrv, adAppVersionsSrv, ngTableParams, $filter, appTypes) {
+	'adDebuggingSetupSrv', 'adAppVersionsSrv', 'ngTableParams', '$filter', 'appTypes', 'ftpSettings',
+	function($scope, adDebuggingSetupSrv, adAppVersionsSrv, ngTableParams, $filter, appTypes, ftpSettings) {
 		BaseCtrl.call(this, $scope);
 
 		// $scope.sortByVersion = function() {
@@ -106,26 +106,8 @@ admin.controller('ADSntAppsListCtrl', ['$scope',
 		};
 
 		$scope.showGeneralSettings = function() {
-			$scope.settingsData = {
-				"url": "dev-tools.stayntouch.com",
-				"port": "22",
-				"username": "pmsftp",
-				"password": "47hbFQwX75",
-				"filepath": "reservations"
-			};
+			
 			$scope.screenMode = 'SETTINGS';
-			// var fethFTPSuccess = function() {
-			// 	$scope.screenMode = 'BUILD_LIST';
-			// };
-			// var fethFTPFailure = function(response) {
-			// 	$scope.errorMessage = response;
-			// };
-
-			// $scope.callAPI(adAppVersionsSrv.fetchFTPsettings, {
-			// 	params: $scope.settingsData,
-			// 	successCallBack: fethFTPSuccess,
-			// 	failureCallBack: fethFTPFailure
-			// });
 		};
 
 		$scope.saveFTPsettings = function() {
@@ -148,6 +130,7 @@ admin.controller('ADSntAppsListCtrl', ['$scope',
 			fetchAppVersions();
 			$scope.errorMessage = '';
 			$scope.screenMode = 'BUILD_LIST';
+			$scope.settingsData = ftpSettings;
 			setAppTypes(appTypes);
 		})();
 	}
