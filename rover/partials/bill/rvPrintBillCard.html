@@ -16,15 +16,15 @@
                 <strong >{{printData.translation.invoice_number}}:</strong>{{printData.invoice_number}}<br/>
             </span>
             <span ng-show="printData.control_code !== '' && !isInformationalInvoice">
-                <strong >{{printData.translation.control_code}}:</strong>{{printData.control_code}}
+                <strong >{{printData.translation.control_code}}: </strong> {{printData.control_code | limitTo : 30}}
                 <br/>
             </span>
             <span ng-show="printData.control_unit !== '' && !isInformationalInvoice">
-                <strong >{{printData.translation.control_unit}}:</strong>{{printData.control_unit}}
+                <strong >{{printData.translation.control_unit}}: </strong> {{printData.control_unit}}
                 <br/>
             </span>
-            <span ng-show="printData.register_id !== ''">
-                <strong >{{printData.translation.register_id}}:</strong>{{printData.register_id}}
+            <span ng-show="printData.register_id !== '' && isInfrasecActivated && isInfrasecActivatedForWorkstation">
+                <strong >{{printData.translation.register_id}}: </strong> {{printData.register_id}}
             </span>
             
         </div>
