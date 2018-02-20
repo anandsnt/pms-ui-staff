@@ -86,6 +86,7 @@ admin.controller('ADHotelDetailsCtrl', [
 				if ($scope.data.selected_mod_type_id) {
 					$scope.isSequenceModChangeDisabled = true;
 				} 
+
 				$scope.languages = data.languages;
 				$scope.$emit('hideLoader');
 				if ($scope.data.mli_pem_certificate_loaded) {
@@ -128,7 +129,7 @@ admin.controller('ADHotelDetailsCtrl', [
 			else { 
 				$scope.data.selected_mod_type_id = (_.find($scope.data.mod_types, function (item) { 
 																						return item.value === 'MOD10'; 
-																					}).id).toString();
+																					}).id);
 			}
 			$scope.$emit('hideLoader');
 			$scope.hotelLogoPrefetched = data.hotel_logo;
