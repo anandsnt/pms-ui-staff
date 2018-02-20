@@ -1,8 +1,7 @@
 angular.module('guestCardModule', []).config(
 function(
-    $stateProvider,
-    $urlRouterProvider,
-    $translateProvider) {  
+    $stateProvider   
+    ) {  
      
         $stateProvider.state('rover.guestcardsearch', {
             url: '/cardsearch/:textInQueryBox',

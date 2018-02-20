@@ -11,15 +11,15 @@ angular.module('sntRover').controller('rvGuestDetailsController',
   'RVContactInfoSrv',
   'RVSearchSrv',
   function($scope, contactInfo, countries, $stateParams, $state, $filter, $rootScope, RVGuestCardSrv,
-  	RVContactInfoSrv, RVSearchSrv) {		
+    RVContactInfoSrv, RVSearchSrv) {        
 
-		BaseCtrl.call(this, $scope);
+        BaseCtrl.call(this, $scope);
 
-		/**
-		 * Decides whether loyalty tab should be shown or not
-		 * This event is emitted from the RVGuestCardLoyaltyController
-		 */
-		$scope.$on('detect-hlps-ffp-active-status', function(evt, data) {
+        /**
+         * Decides whether loyalty tab should be shown or not
+         * This event is emitted from the RVGuestCardLoyaltyController
+         */
+        $scope.$on('detect-hlps-ffp-active-status', function(evt, data) {
             if (data.userMemberships.use_hlp || data.userMemberships.use_ffp) {
               $scope.loyaltyTabEnabled = true;
             } else {
@@ -27,270 +27,268 @@ angular.module('sntRover').controller('rvGuestDetailsController',
            }
         });
 
-		// Sets the loyalty level
+        // Sets the loyalty level
         $scope.$on("loyaltyLevelAvailable", function($event, level) {
-			$scope.guestCardData.selectedLoyaltyLevel = level;
-		});        
+            $scope.guestCardData.selectedLoyaltyLevel = level;
+        });        
 
          
         // Populate guest card details 
-		var getGuestCardData = function (data, countries, guestId) {
-			var guestCardData = {};			    
+        var getGuestCardData = function (data, countries, guestId) {
+            var guestCardData = {};             
 
-			guestCardData.contactInfo = data;
-            guestCardData.contactInfo.avatar = !!guestId ? "/assets/images/avatar-trans.png" : "";
-            guestCardData.contactInfo.vip = !!guestId ? data.vip : "";            
+            guestCardData.contactInfo = data;
+            guestCardData.contactInfo.avatar = guestId ? "/assets/images/avatar-trans.png" : "";
+            guestCardData.contactInfo.vip = guestId ? data.vip : "";            
             guestCardData.userId = guestId;
             guestCardData.guestId = guestId;
-            guestCardData.contactInfo.birthday = !!guestId ? data.birthday : null;
-            guestCardData.contactInfo.user_id = !!guestId ? guestId : "";
-            guestCardData.contactInfo.guest_id = !!guestId ? guestId : "";
+            guestCardData.contactInfo.birthday = guestId ? data.birthday : null;
+            guestCardData.contactInfo.user_id = guestId ? guestId : "";
+            guestCardData.contactInfo.guest_id = guestId ? guestId : "";
 
             return guestCardData;
-		};
+        };
 
-		/**
-		 * Handles switching of tabs with the guest card details page
-		 */
-		$scope.guestCardTabSwitch = function(tab) {
-			if ($scope.current === 'guest-contact' && tab !== 'guest-contact') {
-				if ($scope.viewState.isAddNewCard) {
-					$scope.$broadcast("showSaveMessage");
-				} else {
-					$scope.$broadcast('saveContactInfo');
-				}
-			}
+        /**
+         * Handles switching of tabs with the guest card details page
+         */
+        $scope.guestCardTabSwitch = function(tab) {
+            if ($scope.current === 'guest-contact' && tab !== 'guest-contact') {
+                if ($scope.viewState.isAddNewCard) {
+                    $scope.$broadcast("showSaveMessage");
+                } else {
+                    $scope.$broadcast('saveContactInfo');
+                }
+            }
 
-			if ($scope.current === 'guest-like' && tab !== 'guest-like') {
-				$scope.$broadcast('SAVELIKES', {isFromGuestCardSection : true });
+            if ($scope.current === 'guest-like' && tab !== 'guest-like') {
+                $scope.$broadcast('SAVELIKES', {isFromGuestCardSection: true });
 
-			}
+            }
 
-			if (tab === 'guest-credit') {
-				$scope.$broadcast('PAYMENTSCROLL');
+            if (tab === 'guest-credit') {
+                $scope.$broadcast('PAYMENTSCROLL');
 
-			} else if (tab === 'guest-like') {
-				$scope.$broadcast('GUESTLIKETABACTIVE');
-				$scope.$broadcast('REFRESHLIKESSCROLL');
-			}
-			
-			if (!$scope.viewState.isAddNewCard) {
-				$scope.current = tab;
-			}
-		};
-
-
-
-		var setBackNavigation = function() {
-	            $rootScope.setPrevState = {
-	                title: $filter('translate')('FIND GUESTS'),
-	                callback: 'navigateBack',
-	                scope: $scope
-	            };           
+            } else if (tab === 'guest-like') {
+                $scope.$broadcast('GUESTLIKETABACTIVE');
+                $scope.$broadcast('REFRESHLIKESSCROLL');
+            }
             
-        	},
-        	setTitleAndHeading = function () {
-        		var title = $filter('translate')('GUEST_CARD');
+            if (!$scope.viewState.isAddNewCard) {
+                $scope.current = tab;
+            }
+        };
 
-	            // we are changing the title if we are in Add Mode
-	            if ($scope.viewState.isAddNewCard) {
-	                title = $filter('translate')('NEW_GUEST');
-	            }
+        var setBackNavigation = function() {
+                $rootScope.setPrevState = {
+                    title: $filter('translate')('FIND GUESTS'),
+                    callback: 'navigateBack',
+                    scope: $scope
+                };           
+            
+            },
+            setTitleAndHeading = function () {
+                var title = $filter('translate')('GUEST_CARD');
 
-	            // Setting the heading and title
-	            $scope.heading = title;
-	            $scope.setTitle (title);
-        	};
+                // we are changing the title if we are in Add Mode
+                if ($scope.viewState.isAddNewCard) {
+                    title = $filter('translate')('NEW_GUEST');
+                }
+
+                // Setting the heading and title
+                $scope.heading = title;
+                $scope.setTitle (title);
+            };
 
         // Back navigation handler
         $scope.navigateBack = function () {
-		  $state.go('rover.guestcardsearch', {
-			textInQueryBox: $stateParams.query
-		  });
-		};
+          $state.go('rover.guestcardsearch', {
+            textInQueryBox: $stateParams.query
+          });
+        };
 
-		// Show payment list
-		$scope.showGuestPaymentList = function(guestInfo) {
-			var userId = guestInfo.user_id,
-				guestId = guestInfo.guest_id;
+        // Show payment list
+        $scope.showGuestPaymentList = function(guestInfo) {
+            var userId = guestInfo.user_id,
+                guestId = guestInfo.guest_id;
 
-			var paymentSuccess = function(paymentData) {
-				$scope.$emit('hideLoader');
+            var paymentSuccess = function(paymentInfo) {
+                $scope.$emit('hideLoader');
 
-				var paymentData = {
-					"data": paymentData,
-					"user_id": userId,
-					"guest_id": guestId
-				};
+                var paymentData = {
+                    "data": paymentInfo,
+                    "user_id": userId,
+                    "guest_id": guestId
+                };
 
-				$scope.paymentData = paymentData;				
-			};
+                $scope.paymentData = paymentData;               
+            };
 
-			$scope.invokeApi(RVGuestCardSrv.fetchGuestPaymentData, userId, paymentSuccess, '', 'NONE');
-		};
+            $scope.invokeApi(RVGuestCardSrv.fetchGuestPaymentData, userId, paymentSuccess, '', 'NONE');
+        };
 
-		// Invoke when a new guest is added
-		$scope.newGuestAdded = function(id) {
-			$scope.viewState.isAddNewCard = false;			
-			$scope.initGuestCard({
-				id: id
-			});			
-		};
+        // Invoke when a new guest is added
+        $scope.newGuestAdded = function(id) {
+            $scope.viewState.isAddNewCard = false;          
+            $scope.initGuestCard({
+                id: id
+            });         
+        };
 
-		// Initialize a new guest card
-		$scope.initGuestCard = function(guestData) {
-			if (!!guestData.id) {
+        // Initialize a new guest card
+        $scope.initGuestCard = function(guestData) {
+            if (guestData.id) {
                 $scope.guestCardData.userId = guestData.id;
                 $scope.guestCardData.guestId = guestData.id;
                 RVContactInfoSrv.setGuest(guestData.id);                
             }
-		};
+        };
 
-		// Click handler for save btn in guest card header
-		$scope.clickedSaveGuestCard = function() {			
-			$scope.$broadcast("saveContactInfo");			
-		};
+        // Click handler for save btn in guest card header
+        $scope.clickedSaveGuestCard = function() {          
+            $scope.$broadcast("saveContactInfo");           
+        };
 
-		// Click handler for discard btn in guest card header
-		$scope.clickedDiscardGuestCard = function() {
-			$scope.viewState.isAddNewCard = false;
-			$scope.navigateBack();			
-		};
+        // Click handler for discard btn in guest card header
+        $scope.clickedDiscardGuestCard = function() {
+            $scope.viewState.isAddNewCard = false;
+            $scope.navigateBack();          
+        };
 
-		// Get the contact details object with the required properties only
-		var getContactInfo = function (contactInfo) {
-			var whiteListedKeys = ['first_name', 'last_name', 'mobile', 'phone', 'email', 'vip'],
-			    contactDetails = _.pick(contactInfo, whiteListedKeys);
+        // Get the contact details object with the required properties only
+        var getContactInfo = function (contactInfo) {
+            var whiteListedKeys = ['first_name', 'last_name', 'mobile', 'phone', 'email', 'vip'],
+                contactDetails = _.pick(contactInfo, whiteListedKeys);
 
-			contactDetails.address = {
-				state: contactInfo.address && contactInfo.address.state ? contactInfo.address.state : "",
-				city: contactInfo.address && contactInfo.address.city ? contactInfo.address.city : ""
-			};
+            contactDetails.address = {
+                state: contactInfo.address && contactInfo.address.state ? contactInfo.address.state : "",
+                city: contactInfo.address && contactInfo.address.city ? contactInfo.address.city : ""
+            };
 
-			return contactDetails;
-		};
+            return contactDetails;
+        };
 
-		// update guest details to RVSearchSrv via RVSearchSrv.updateGuestDetails - params: guestid, data
-		var updateSearchCache = function() {
-			var dataSource = $scope.guestCardData.contactInfo;
-			var data = {
-				'firstname': dataSource.first_name,
-				'lastname': dataSource.last_name,
-				'vip': dataSource.vip
-			};
+        // update guest details to RVSearchSrv via RVSearchSrv.updateGuestDetails - params: guestid, data
+        var updateSearchCache = function() {
+            var dataSource = $scope.guestCardData.contactInfo;
+            var data = {
+                'firstname': dataSource.first_name,
+                'lastname': dataSource.last_name,
+                'vip': dataSource.vip
+            };
 
-			if (dataSource.address) {
-				if ($scope.escapeNull(dataSource.address.city).toString().trim() !== '' || $scope.escapeNull(dataSource.address.state).toString().trim() !== '') {
-					data.location = (dataSource.address.city + ', ' + dataSource.address.state);
-				} else {
-					data.location = false;
-				}
-			}
-			RVSearchSrv.updateGuestDetails($scope.guestCardData.contactInfo.user_id, data);
-		};
+            if (dataSource.address) {
+                if ($scope.escapeNull(dataSource.address.city).toString()
+                    .trim() !== '' || $scope.escapeNull(dataSource.address.state).toString()
+                    .trim() !== '') {                    
+                    data.location = (dataSource.address.city + ', ' + dataSource.address.state);
+                } else {
+                    data.location = false;
+                }
+            }
+            RVSearchSrv.updateGuestDetails($scope.guestCardData.contactInfo.user_id, data);
+        };
 
-		// Update contact info on blur of fields in guest card header
-		$scope.updateContactInfo = function() {			
-			var that = this;
+        // Update contact info on blur of fields in guest card header
+        $scope.updateContactInfo = function() {         
+            var that = this;
 
-			that.newUpdatedData = $scope.decloneUnwantedKeysFromContactInfo();
+            that.newUpdatedData = $scope.decloneUnwantedKeysFromContactInfo();
 
-			var saveUserInfoSuccessCallback = function(data) {
-				
-				// update few of the details to searchSrv
-				updateSearchCache();
-				// This is used in contact info ctrl to prevent the extra API call while clicking outside
-				$scope.isGuestCardSaveInProgress = false;
-				
-				// to reset current data in contcat info for determining any change
-				$scope.$broadcast("RESETCONTACTINFO", that.newUpdatedData);
-			};
+            var saveUserInfoSuccessCallback = function() {
+                
+                // update few of the details to searchSrv
+                updateSearchCache();
+                // This is used in contact info ctrl to prevent the extra API call while clicking outside
+                $scope.isGuestCardSaveInProgress = false;
+                
+                // to reset current data in contcat info for determining any change
+                $scope.$broadcast("RESETCONTACTINFO", that.newUpdatedData);
+            };
 
-			// check if there is any chage in data.if so call API for updating data, CICO-46709 fix
-			if (JSON.stringify(getContactInfo($scope.currentGuestCardHeaderData)) !== JSON.stringify(getContactInfo(that.newUpdatedData))) {
-				$scope.currentGuestCardHeaderData = that.newUpdatedData;
-				var data = {
-					'data': $scope.currentGuestCardHeaderData,
-					'userId': $scope.guestCardData.contactInfo.user_id
-				};
+            // check if there is any chage in data.if so call API for updating data, CICO-46709 fix
+            if (JSON.stringify(getContactInfo($scope.currentGuestCardHeaderData)) !== JSON.stringify(getContactInfo(that.newUpdatedData))) {
+                $scope.currentGuestCardHeaderData = that.newUpdatedData;
+                var data = {
+                    'data': $scope.currentGuestCardHeaderData,
+                    'userId': $scope.guestCardData.contactInfo.user_id
+                };
 
-				if (typeof data.userId !== 'undefined') {
-					var options = {
-						successCallBack : saveUserInfoSuccessCallback,
-						params: data
-					};
+                if (typeof data.userId !== 'undefined') {
+                    var options = {
+                        successCallBack: saveUserInfoSuccessCallback,
+                        params: data
+                    };
 
-					$scope.isGuestCardSaveInProgress = true;
-					$scope.callAPI(RVContactInfoSrv.updateGuest, options);					
-				}
-			}
-		};
+                    $scope.isGuestCardSaveInProgress = true;
+                    $scope.callAPI(RVContactInfoSrv.updateGuest, options);                  
+                }
+            }
+        };
 
-		/**
-		 *  Removes the unwanted keys in the API request
-		 */
-		$scope.decloneUnwantedKeysFromContactInfo = function() {
+        /**
+         *  Removes the unwanted keys in the API request
+         */
+        $scope.decloneUnwantedKeysFromContactInfo = function() {
 
-			var unwantedKeys = ["birthday", "country",
-					"is_opted_promotion_email", "job_title",
-					"passport_expiry",
-					"passport_number", "postal_code",
-					"reservation_id", "title", "user_id",
-					"works_at", "birthday", "avatar"
-				],
-			    declonedData = dclone($scope.guestCardData.contactInfo, unwantedKeys);
+            var unwantedKeys = ["birthday", "country",
+                    "is_opted_promotion_email", "job_title",
+                    "passport_expiry",
+                    "passport_number", "postal_code",
+                    "reservation_id", "title", "user_id",
+                    "works_at", "birthday", "avatar"
+                ],
+                declonedData = dclone($scope.guestCardData.contactInfo, unwantedKeys);
 
-			return declonedData;
-		};	
+            return declonedData;
+        };  
 
-		/**
-		 *
-		 * Reset current data in header info for determining any change
-		 **/
-		$scope.$on('RESETHEADERDATA', function(event, data) {
-			$scope.currentGuestCardHeaderData.address = data.address;
-			$scope.currentGuestCardHeaderData.phone = data.phone;
-			$scope.currentGuestCardHeaderData.email = data.email;
-			$scope.currentGuestCardHeaderData.first_name = data.first_name;
-			$scope.currentGuestCardHeaderData.last_name = data.last_name;
-		});	
-		
+        /**
+         *
+         * Reset current data in header info for determining any change
+         **/
+        $scope.$on('RESETHEADERDATA', function(event, data) {
+            $scope.currentGuestCardHeaderData.address = data.address;
+            $scope.currentGuestCardHeaderData.phone = data.phone;
+            $scope.currentGuestCardHeaderData.email = data.email;
+            $scope.currentGuestCardHeaderData.first_name = data.first_name;
+            $scope.currentGuestCardHeaderData.last_name = data.last_name;
+        }); 
+        
+        var init = function () {
+            $scope.viewState = {
+                isAddNewCard: !$stateParams.guestId
+            };
 
+            $scope.guestCardData = getGuestCardData(contactInfo, countries, $stateParams.guestId);
+            $scope.countries = countries;
+            $scope.idTypeList = $scope.guestCardData.contactInfo.id_type_list;
 
-		var init = function () {
-			$scope.viewState = {
-				isAddNewCard : !$stateParams.guestId
-			};
-
-			$scope.guestCardData = getGuestCardData(contactInfo, countries, $stateParams.guestId);
-			$scope.countries = countries;
-			$scope.idTypeList = $scope.guestCardData.contactInfo.id_type_list;
-
-			var guestInfo = {
+            var guestInfo = {
                 'user_id': $scope.guestCardData.contactInfo.user_id,
                 'guest_id': null
             };
 
             $scope.declonedData = $scope.decloneUnwantedKeysFromContactInfo();
-			$scope.currentGuestCardHeaderData = $scope.declonedData;
+            $scope.currentGuestCardHeaderData = $scope.declonedData;
 
-            if (!!guestInfo.user_id) {
-            	$scope.showGuestPaymentList(guestInfo);
+            if (guestInfo.user_id) {
+                $scope.showGuestPaymentList(guestInfo);
             }          
 
-			$scope.guestCardData.selectedLoyaltyLevel = "";
+            $scope.guestCardData.selectedLoyaltyLevel = "";
             $scope.loyaltyTabEnabled = false;
             $scope.loyaltiesStatus = {'ffp': false, 'hlps': false};
 
-			// Set contact tab as active by default
-			$scope.current = 'guest-contact';
+            // Set contact tab as active by default
+            $scope.current = 'guest-contact';
 
-			$scope.paymentData = {};
-			setTitleAndHeading();
-			setBackNavigation();
+            $scope.paymentData = {};
+            setTitleAndHeading();
+            setBackNavigation();
             
-		};
+        };
 
-		init();
-		
+        init();
+        
 }]);
