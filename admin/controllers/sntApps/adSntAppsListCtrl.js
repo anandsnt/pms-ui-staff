@@ -107,28 +107,40 @@ admin.controller('ADSntAppsListCtrl', ['$scope',
 
 		$scope.showGeneralSettings = function() {
 			$scope.settingsData = {
-				"sftp_location": "dev-tools.stayntouch.com",
-				"sftp_port": "22",
-				"sftp_user": "pmsftp",
-				"sftp_password": "47hbFQwX75",
-				"sftp_respath": "reservations"
+				"url": "dev-tools.stayntouch.com",
+				"port": "22",
+				"username": "pmsftp",
+				"password": "47hbFQwX75",
+				"filepath": "reservations"
 			};
 			$scope.screenMode = 'SETTINGS';
+			// var fethFTPSuccess = function() {
+			// 	$scope.screenMode = 'BUILD_LIST';
+			// };
+			// var fethFTPFailure = function(response) {
+			// 	$scope.errorMessage = response;
+			// };
+
+			// $scope.callAPI(adAppVersionsSrv.fetchFTPsettings, {
+			// 	params: $scope.settingsData,
+			// 	successCallBack: fethFTPSuccess,
+			// 	failureCallBack: fethFTPFailure
+			// });
 		};
 
 		$scope.saveFTPsettings = function() {
 
-			var updateUpgradeTimeSuccess = function() {
+			var saveFTPSuccess = function() {
 				$scope.screenMode = 'BUILD_LIST';
 			};
-			var updateUpgradeTimeFailure = function(response) {
+			var saveFTPFailure = function(response) {
 				$scope.errorMessage = response;
 			};
 
 			$scope.callAPI(adAppVersionsSrv.saveFTPsettings, {
 				params: $scope.settingsData,
-				successCallBack: updateUpgradeTimeSuccess,
-				failureCallBack: updateUpgradeTimeFailure
+				successCallBack: saveFTPSuccess,
+				failureCallBack: saveFTPFailure
 			});
 		};
 
