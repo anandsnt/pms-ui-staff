@@ -30,7 +30,7 @@ admin.service('adAppVersionsSrv', ['$http', '$q', 'ADBaseWebSrv', 'ADBaseWebSrvV
 	};
 	this.saveSetup = function(data) {
 		var deferred = $q.defer();
-		var url = '/admin/service_application_types/save_upload_credentials';
+		var url = '/api/notifications/set_loggging_status';
 
 		ADBaseWebSrvV2.postJSON(url, data).then(function(data) {
 			deferred.resolve(data);
@@ -42,7 +42,7 @@ admin.service('adAppVersionsSrv', ['$http', '$q', 'ADBaseWebSrv', 'ADBaseWebSrvV
 
 	this.saveFTPsettings = function(data) {
 		var deferred = $q.defer();
-		var url = '/api/save_sftp_settings';
+		var url = '/admin/service_application_types/save_upload_credentials';
 
 		ADBaseWebSrvV2.postJSON(url, data).then(function(data) {
 			deferred.resolve(data);
