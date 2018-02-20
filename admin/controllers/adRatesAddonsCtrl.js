@@ -9,7 +9,8 @@ admin.controller('ADRatesAddonsCtrl', [
     '$timeout',
     'activeRates',
     'availableLanguages',
-    function($scope, $rootScope, ADRatesAddonsSrv, ADHotelSettingsSrv, $filter, ngTableParams, ngDialog, $timeout, activeRates, availableLanguages) {
+    'addonUpsellSettings',
+    function($scope, $rootScope, ADRatesAddonsSrv, ADHotelSettingsSrv, $filter, ngTableParams, ngDialog, $timeout, activeRates, availableLanguages, addonUpsellSettings) {
 
 
         // extend base controller
@@ -37,6 +38,8 @@ admin.controller('ADRatesAddonsCtrl', [
             };
 
             $scope.isConnectedToPMS = !$rootScope.isStandAlone;
+            $scope.showZestWebSettings = addonUpsellSettings.zest_web_addon_upsell_availability;
+            $scope.showZestStationSettings = addonUpsellSettings.zest_station_addon_upsell_availability;
         };
 
         $scope.init();

@@ -155,7 +155,11 @@
 "OFFER_LCO_AS_ADDON_AT_CHECKIN": "Offer Late Checkout as an add on at check-in",
 "SELL_ADDITIONAL_LCO": "Sell additional check-out offer",
 
-"WEB_CHECKIN_OFFLINE_LABEL": "Enable Offline Check In"
+"WEB_CHECKIN_OFFLINE_LABEL": "Enable Offline Check In",
+"ZEST_WEB_SETTINGS": "Zestweb Settings",
+"ZEST_STATION_SETTINGS": "Zest Station Settings",
+"ADDON_SETTINGS": "Add-ons Settings",
+"UPSELL_ADDONS": "Upsell Add-ons"
 
 
 
