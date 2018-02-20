@@ -18,7 +18,7 @@
                 name="Country" 
                 autocorrect="off" 
                 autocomplete="off"
-                ng-options="country.id as country.value for country in countryList" 
+                ng-options="country.id as country.name for country in countryList" 
                 ng-model="selectedCountry.id" 
                 ng-keydown='showingAutoComplete()'
                 ng-change="countryChanged()">
