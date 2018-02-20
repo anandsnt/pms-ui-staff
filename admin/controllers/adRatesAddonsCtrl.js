@@ -654,6 +654,22 @@ admin.controller('ADRatesAddonsCtrl', [
             $scope.languageFilter = {
                 'locale': availableLanguages.selected_language_code
             };
-        }
+        };
+
+        $scope.returnAddonUpseellClass = function(addon) {
+            var styleClass;
+
+            if (addon.zest_station_upsell && !addon.zest_web_upsell) {
+                styleClass = 'kiosk-upsell';
+            } else if (!addon.zest_station_upsell && addon.zest_web_upsell) {
+                styleClass = 'web-upsell';
+            } else if (addon.zest_station_upsell && addon.zest_web_upsell) {
+                styleClass = 'zs-n-web-upsell'
+            } else {
+                styleClass = 'no-upsell';
+            }
+            return styleClass;
+
+        };
     }
 ]);
