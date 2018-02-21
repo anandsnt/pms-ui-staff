@@ -4,8 +4,8 @@ sntRover.controller('rvBillFormatPopupCtrl', ['$scope', '$rootScope', '$filter',
     $scope.isCompanyCardInvoice = true;
     $scope.disableCompanyCardInvoice = false;
     $scope.hideCompanyCardInvoiceToggle = true;
-    $scope.isInformationalInvoice = ($rootScope.isInfrasecActivated && $rootScope.isInfrasecActivatedForWorkstation) ? true : false; 
-    $scope.isInformationalInvoiceDisabled = ($rootScope.isInfrasecActivated && $rootScope.isInfrasecActivatedForWorkstation && $scope.isSettledBill) ? true : false; 
+    $scope.isInformationalInvoice = ($rootScope.isInfrasecActivated && $rootScope.isInfrasecActivatedForWorkstation); 
+    $scope.isInformationalInvoiceDisabled = ($rootScope.isInfrasecActivated && $rootScope.isInfrasecActivatedForWorkstation && $scope.isSettledBill); 
     /*
     *  Get the request params for bill settings info
     */
@@ -148,6 +148,7 @@ sntRover.controller('rvBillFormatPopupCtrl', ['$scope', '$rootScope', '$filter',
      */
     $scope.printBill = function() {
         var printRequest = getPrintEmailRequestParams();
+        
         $scope.$emit("UPDATE_INFORMATIONAL_INVOICE", $scope.isInformationalInvoice);
         printRequest.bill_layout = $scope.data.default_bill_settings;
         $scope.clickedPrint(printRequest);
