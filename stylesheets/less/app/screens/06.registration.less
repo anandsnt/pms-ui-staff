@@ -102,10 +102,13 @@
                             img { .size(auto, 40px); }
                         }
 
-                        &.error {
+                        &.error,
+                        &.has-icon {
                             position: relative;
                             padding-left: 20px;
+                        }
 
+                        &.error {
                             &:after {
                                 content: "!";
                                 position: absolute;
@@ -118,6 +121,27 @@
                                 background: @red;
                                 .square(14px);
                                 #border-radius > .rounded(14px);
+                            }
+                        }
+
+                        &.has-icon {
+                            .icons {
+                                background-size: 80px;
+                                .square(14px);
+                                top: 5px;
+                                left: 5px;
+                                position: absolute;
+                                .opacity(50);
+
+                                &.icon-room-lock {
+                                    background-position: 1px -6026px;
+                                }
+                            }
+
+                            &.error {
+                                &:after {
+                                    top: 25px;
+                                }
                             }
                         }
                     }
@@ -173,7 +197,8 @@
                             color: @textColor;
 
                             .card-logo,
-                            .payment { .opacity(100); }
+                            .payment,
+                            &.has-icon .icons { .opacity(100); }
                         }
                     }
                 }
