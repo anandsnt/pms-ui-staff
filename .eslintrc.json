@@ -3,7 +3,8 @@
         "browser": true,
         "es6": true,
         "jquery": true,
-        "node": true
+        "node": true,
+        "jasmine": true
     },
     "globals": {
         "angular": false,
