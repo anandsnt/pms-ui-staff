@@ -18,15 +18,7 @@ module.exports = function(config) {
         '../shared/lib/js/angular.min.js',
         '../shared/lib/js/angular-ui-router.min.js',
         '../shared/lib/js/angular-mocks.js',
-        '../shared/directives/documentTouchMovePrevent/*.js',
-        '../shared/directives/clickTouch/*.js',
-        '../shared/lib/js/angular-sanitize.min.js',
-        '../shared/lib/js/iscroll.js',
-        '../shared/lib/js/ng-iscroll.js',
-        '../shared/lib/js/ngDialog.min.js',
-        './loginApp.js',
-        './services/loginSrv.js',
-        './specs/loginSrv.spec.js'
+        './specs/rover.spec.js'
     ],
 
 
