@@ -38,6 +38,7 @@ admin.controller('ADSntAppsListCtrl', ['$scope',
 						$defer.resolve(orderedData.slice((params.page() - 1) * params.count(), params.page() * params.count()));
 					}
 				});
+				$scope.changeToListView();
 				$scope.tableParams.reload();
 			};
 
@@ -64,8 +65,7 @@ admin.controller('ADSntAppsListCtrl', ['$scope',
 			$scope.selectedApp = {
 				"build": "",
 				"version": "",
-				"description": "",
-				"updated_on": ""
+				"description": ""
 			};
 		};
 
@@ -80,7 +80,11 @@ admin.controller('ADSntAppsListCtrl', ['$scope',
 		};
 
 		$scope.uploadBuild = function() {
-
+			console.log(JSON.stringify($scope.selectedApp));
+			$scope.callAPI(adAppVersionsSrv.uploadBuild, {
+                params: $scope.selectedApp,
+                successCallBack: fetchAppVersions
+            });
 		};
 
 		$scope.deleteApp = function(app) {
