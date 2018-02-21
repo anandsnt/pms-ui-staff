@@ -80,9 +80,13 @@ admin.controller('ADSntAppsListCtrl', ['$scope',
 		};
 
 		$scope.uploadBuild = function() {
+			var params =angular.copy($scope.selectedApp);
+			if ($scope.screenMode === 'ADD_BUILD') {
+				params.file_name = $scope.fileName;
+			}
 			console.log(JSON.stringify($scope.selectedApp));
 			$scope.callAPI(adAppVersionsSrv.uploadBuild, {
-                params: $scope.selectedApp,
+                params: params,
                 successCallBack: fetchAppVersions
             });
 		};
@@ -131,6 +135,7 @@ admin.controller('ADSntAppsListCtrl', ['$scope',
 		};
 
 		(function() {
+			$scope.fileName = "";
 			fetchAppVersions();
 			$scope.errorMessage = '';
 			$scope.screenMode = 'BUILD_LIST';
