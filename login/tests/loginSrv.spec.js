@@ -6,8 +6,12 @@ describe('Login Services', function () {
     beforeEach(inject(function (_loginSrv_) {
         loginSrv = _loginSrv_;
     }));
-    
+
     it('service should exist', function () {
         expect(loginSrv).toBeDefined();
+    });
+
+    it('this should fail', function () {
+        expect(true).toBe(false);
     });
 });
