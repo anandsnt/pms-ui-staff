@@ -73,6 +73,7 @@
     "lint": "eslint -c .eslintrc.json .",
     "lintRover": "eslint -c .eslintrc.json rover",
     "lintAdmin": "eslint -c .eslintrc.json admin",
-    "testLogin": "cd login && karma start --single-run"
+    "testLogin": "cd login && karma start --single-run",
+    "testRover": "cd rover && karma start --single-run"
   }
 }
