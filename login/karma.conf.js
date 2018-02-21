@@ -15,9 +15,9 @@ module.exports = function(config) {
 
     // list of files / patterns to load in the browser
     files: [
-        '../node_modules/angular/angular.js',
-        '../node_modules/angular-ui-router/release/angular-ui-router.js',
-        '../node_modules/angular-mocks/angular-mocks.js',
+        '../shared/lib/js/angular.min.js',
+        '../shared/lib/js/angular-ui-router.min.js',
+        '../shared/lib/js/angular-mocks.js',
         '../shared/directives/documentTouchMovePrevent/*.js',
         '../shared/directives/clickTouch/*.js',
         '../shared/lib/js/angular-sanitize.min.js',
