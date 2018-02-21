@@ -651,7 +651,13 @@ sntRover.controller('rvReservationSearchWidgetController', ['$scope', '$rootScop
 		/**
 		 * function to execute on clicking clear icon button
 		 */
-		$scope.clearResults = function() {
+		$scope.clearResults = function(event) {
+			
+			// CICO-48379 - Prevent the form submission while clicking the clear btn
+			if (event) {
+				event.preventDefault();
+			}			
+
 			$scope.results = [];
 			$scope.textInQueryBox = "";
 			$scope.fetchTerm = "";
