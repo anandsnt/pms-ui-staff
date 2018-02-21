@@ -787,6 +787,21 @@
                             &.description {
                                 color: @grey3;
                                 .calc-width(100, 400);
+
+                                &.with-reference {
+                                    position: relative;
+
+                                    .icon-invoice-blue { 
+                                        .size(18px, 15px);
+                                        position: absolute;
+                                        top: 0;
+                                        bottom: 0;
+                                        margin: auto;
+                                        left: -10px;
+                                        background-size: 80px;
+                                        background-position: 2px -7503px;
+                                    }
+                                }
                             }
 
                             &.toggle {

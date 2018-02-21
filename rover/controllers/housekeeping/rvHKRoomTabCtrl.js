@@ -159,6 +159,9 @@ angular.module('sntRover').controller('RVHKRoomTabCtrl', [
 
 		// when user changes the room status from top dropdown
 		$scope.statusChange = function() {
+			// CICO-48261
+			$scope.updateService.selected_date = $filter('date')(tzIndependentDate($scope.updateService.selected_date), 'yyyy-MM-dd');
+
 			var item = _.find($scope.allServiceStatus, function(item) {
 				return item.id === $scope.updateService.room_service_status_id;
 			});
@@ -300,8 +303,8 @@ angular.module('sntRover').controller('RVHKRoomTabCtrl', [
 				$scope.onViewDateChanged($scope.serviceStatus);
 				if ($scope.serviceStatus[$filter('date')(new Date(dateText), "yyyy-MM-dd")]) {
 					$scope.updateService.room_service_status_id = $scope.serviceStatus[$filter('date')(new Date(dateText), "yyyy-MM-dd")].id;
-				}
-				$(".room-actions").click();
+				}	
+				$(".room-actions").click();			
 			},
 			beforeShowDay: $scope.setClass,
 			onChangeMonthYear: function(year, month, instance) {
@@ -572,7 +575,7 @@ angular.module('sntRover').controller('RVHKRoomTabCtrl', [
 		});
 
 
-		$scope.onViewDateChanged = function(dateHash) {
+		$scope.onViewDateChanged = function(dateHash) {			
 			$scope.updateService.selected_date = $filter('date')(tzIndependentDate($scope.updateService.selected_date), 'yyyy-MM-dd');
 			$scope.updateService.room_service_status_id = dateHash[$scope.updateService.selected_date].id;
 			// The $_originalStatusId flag is used to make sure that the same change is not sent back to the server -- to many flags whew...

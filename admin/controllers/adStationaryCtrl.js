@@ -10,10 +10,44 @@ admin.controller('ADStationaryCtrl',
 	$scope.errorMessage = '';
 	$scope.fileName = "Choose File....";
 	$scope.location_image_file = $scope.fileName;
+	$scope.hotel_logo_file = $scope.fileName;
 	$scope.memento = {
 		hotel_picture: "",
 		location_image: ""
 	};
+
+	$scope.is_general_active = false;
+	$scope.is_confirmations_active = false;
+	$scope.is_registration_active = false;
+	$scope.is_invoices_active = false;
+	$scope.is_account_receivables_active = false;
+
+	$scope.is_ar_invoice_active = false;
+	$scope.is_ar_statment_active = false;
+
+	$scope.is_guest_confirmation_active = false;
+	$scope.is_confirmation_email_active = false;
+	$scope.is_confirmation_letter_active = false;
+	$scope.is_hotel_direction_active = false;
+	$scope.is_location_active = false;
+	$scope.is_app_active = false;
+	$scope.is_social_network_active = false;
+	$scope.is_guest_cancellation_active = false;
+	$scope.is_group_confirmation_active = false;
+
+	$scope.is_salutations_active = false;
+	$scope.is_hotel_picture_active = false;
+	$scope.is_terms_and_conditions_active = false;
+
+	$scope.is_guest_invoice_active = false;
+	$scope.is_guest_confirmation_active = false;
+	$scope.is_company_ta_active = false;
+	$scope.is_account_invoice_active = false;
+	$scope.is_pro_forma_invoice_active = false;
+	$scope.is_guest_confirmation_active = false;
+	$scope.is_guest_confirmation_active = false;
+
+	$scope.stationery_data = {};
 
 	/*
 	* Fetches the stationary items
@@ -34,8 +68,9 @@ admin.controller('ADStationaryCtrl',
 					name: social
 				});
 			});
-
-			$scope.data = data;
+			
+			$scope.data = data;	
+			$scope.data.locale = $scope.locale;		
 			$scope.data.groupholdstatus = data.group_hold_status_data[0].hold_status_id;
 			$scope.showConfirmationHeaderFooterBasedOnHoldStatus();
 			$scope.itemList = new ngTableParams({
@@ -55,9 +90,26 @@ admin.controller('ADStationaryCtrl',
 	};
 
 	$scope.init = function() {
+		// Rename keys to avoid more changes in multiple places
+		// and to make our select box data set consisntent to use
+		// value and description
+		var locales = [];
+        
+		angular.forEach(availableGuestLanguages.languages, function(availableLanguage) {
+			availableLanguage.value = availableLanguage.code;
+			delete availableLanguage.code;
+			availableLanguage.description = availableLanguage.language;
+			delete availableLanguage.language;
+			if (availableLanguage.is_show_on_guest_card) {
+				locales.push(availableLanguage);
+			}
+		});
+		availableGuestLanguages.locales = locales;
+		delete availableGuestLanguages.languages;
+
 		$scope.languages = availableGuestLanguages;
 		$scope.holdStatusList = availableHoldStatus.data.hold_status;
-		$scope.locale = $scope.languages.default_locale;
+		$scope.locale = $scope.languages.selected_language_code;
 		var params = {};
 
 		fetchStationary(params);
@@ -104,7 +156,7 @@ admin.controller('ADStationaryCtrl',
 		if ($scope.hotelTemplateLogoPrefetched === postingData.location_image) {
 			postingData.location_image = "";
 		}
-		postingData.locale = $scope.locale;
+		// postingData.locale = $scope.locale;
 
 
 		$scope.invokeApi(ADStationarySrv.saveStationary, postingData, successCallbackOfSaveDetails);
@@ -122,18 +174,30 @@ admin.controller('ADStationaryCtrl',
 	 */
 	$scope.$watch(function() {
 		return $scope.data.location_image;
-	}, function(logo) {
-		if (logo === 'false') {
+	}, function(location_image) {
+		if (location_image === 'false') {
 			$scope.fileName = "Choose File....";
 		}
 		$scope.location_image_file = $scope.fileName;
 	});
 
 	/**
+	 *   To watch hotel logo
+	 */
+	$scope.$watch(function() {
+		return $scope.data.hotel_picture;
+	}, function(logo) {
+		if (logo === 'false') {
+			$scope.fileName = "Choose File....";
+		}
+		$scope.hotel_logo_file = $scope.fileName;
+	});
+
+	/**
 	 *   To handle show hide status for the logo delete button
 	 */
 	$scope.isLogoAvailable = function(logo) {
-		if (logo !== '/assets/images/logo.png' && logo !== 'false') {
+		if (logo !== '' && logo !== 'false') {
 			return true;
 		}
 		else {
@@ -159,7 +223,7 @@ admin.controller('ADStationaryCtrl',
 			type: '',
 			link: ''
 		};
-		$scope.currentSocialLink = 'NEW';
+		$scope.currentSocialLink = 'NEW';		
 	};
 
 	$scope.onPushNewLink = function() {
@@ -175,13 +239,22 @@ admin.controller('ADStationaryCtrl',
 		$scope.currentSocialLink = false;
 	};
 
+	$scope.isLinkAvailable = function(index) {
+		if ( $scope.currentSocialLink == 'NEW') {
+			return _.pluck($scope.data.social_network_links, "type").indexOf($scope.socialNetworks[index].name) == -1; 
+		} else {
+			return _.pluck($scope.data.social_network_links, "type").indexOf($scope.socialNetworks[index].name) == -1 || $scope.data.social_network_links[$scope.currentSocialLink].type == $scope.socialNetworks[index].name;
+		}
+	};
+
 	/*
 	* Get invoked when the locale is changed
 	*/
 	$scope.onLocaleChange = function() {
 		var params = {};
 
-		params.locale = $scope.locale;
+		params.locale = $scope.data.locale;
+		$scope.locale = $scope.data.locale;
 		fetchStationary(params);
 	};
 

@@ -4,6 +4,18 @@ module.exports = {
         var themeCSSRoot = 'stylesheets/guestweb/';
 
         return {
+            'guestweb_eden_roc_v2': [ themeCSSRoot + 'guestweb_eden_roc_v2.css'],
+            'guestweb_inn_at_cherry_creek': [ themeCSSRoot + 'guestweb_inn_at_cherry_creek.css'],
+            'guestweb_aria_sky_suites': [ themeCSSRoot + 'guestweb_aria_sky_suites.css'],
+            'guestweb_assemblage_world_trade_center': [ themeCSSRoot + 'guestweb_assemblage_world_trade_center.css'],
+            'guestweb_the_asbury': [ themeCSSRoot + 'guestweb_the_asbury.css'],
+            'guestweb_ambassador_hotel_wichita': [ themeCSSRoot + 'guestweb_ambassador_hotel_wichita.css'],
+            'guestweb_blackburn_inn': [ themeCSSRoot + 'guestweb_blackburn_inn.css'],
+            'guestweb_freehand_miami': [ themeCSSRoot + 'guestweb_freehand_miami.css'],
+            'guestweb_nomo_soho': [ themeCSSRoot + 'guestweb_nomo_soho.css'],
+            'guestweb_freehand_nyc': [ themeCSSRoot + 'guestweb_freehand_nyc.css'],
+            'guestweb_the_chequit': [ themeCSSRoot + 'guestweb_the_chequit.css'],
+            'guestweb_salt_house_inn': [ themeCSSRoot + 'guestweb_salt_house_inn.css'],
             'guestweb_van_belle': [ themeCSSRoot + 'guestweb_van_belle.css'],
             'guestweb_eben_house': [ themeCSSRoot + 'guestweb_eben_house.css'],
             'guestweb_queen_anne': [ themeCSSRoot + 'guestweb_queen_anne.css'],

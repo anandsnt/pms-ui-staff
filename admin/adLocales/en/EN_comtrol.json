@@ -13,6 +13,8 @@
 "EXTERNAL_ROOM_PLACEHOLDER": "Enter External Room",
 "EXTERNAL_EXTENSION": "External Extension",
 "EXTERNAL_EXTENSION_PLACEHOLDER" : "Enter External Extension",
+"ACCESS_LEVEL": "Station Access Level",
+"SELECT_ACCESS_LEVEL_PLACEHOLDER" : "Select Station Access Level",
 "EXTERNAL_TYPE_PLACEHOLDER": "Select External Type",
 "EXTERNAL_TYPE": "External Type",
 "ADD_GENERIC_MAPPING": "Add Generic Mapping",

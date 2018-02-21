@@ -173,4 +173,12 @@ var CardOperation = function() {
 		that.callCordovaService(options);
 	};
 
+	this.getConnectedDeviceDetails = function (options) {
+        options['service'] = "RVDevicePlugin";
+        options['action'] = "getDevicesStates";
+        options['timeout'] = 31000;
+
+        that.callCordovaService(options);
+    };
+
 };

@@ -24,8 +24,16 @@ admin.controller('ADHotelDetailsCtrl', [
 	$scope.isFieldsReadOnly = (($rootScope.isSntAdmin && $rootScope.isServiceProvider) || $rootScope.adminRole === "hotel-admin") ? "yes" : "no";
 	$scope.isFieldsReadOnlyForServiceProvider = ($rootScope.isSntAdmin && $rootScope.isServiceProvider) ? "yes" : "no";
 	$scope.isSequenceModChangeDisabled = false;
+	$scope.swedenCountryId = '';
 	// CICO-41322 - Flag needed to show MP De-selection confirm popup.
 	var isMPFlagResetConfirmPopupNeeded = false;
+
+	/*
+	 * Method to get country id 
+	 */
+	var getCountryId = function(countryName) {
+		return ( _.find( $scope.data.countries, function(obj) { return obj.name === countryName; } ) ).id;
+	};
 
 	// pms start date setting calendar options
 	$scope.pmsStartDateOptions = {
@@ -48,9 +56,10 @@ admin.controller('ADHotelDetailsCtrl', [
 			isMPFlagResetConfirmPopupNeeded = false;
 			var fetchSuccess = function(data) {
 				$scope.data = data.data;
+				$scope.swedenCountryId = getCountryId($rootScope.infrasecSpecificCountry);
 				if ($scope.data.selected_mod_type_id) {
 					$scope.isSequenceModChangeDisabled = true;
-				}
+				}				
 
 				$scope.data.brands = [];
 				$scope.data.is_external_references_import_on = false;
@@ -73,9 +82,11 @@ admin.controller('ADHotelDetailsCtrl', [
 			$scope.title = "Edit Hotel";
 			var fetchSuccess = function(data) {
 				$scope.data = data.data;
+				$scope.swedenCountryId = getCountryId($rootScope.infrasecSpecificCountry);
 				if ($scope.data.selected_mod_type_id) {
 					$scope.isSequenceModChangeDisabled = true;
-				}
+				} 
+
 				$scope.languages = data.languages;
 				$scope.$emit('hideLoader');
 				if ($scope.data.mli_pem_certificate_loaded) {
@@ -111,8 +122,14 @@ admin.controller('ADHotelDetailsCtrl', [
 		$scope.readOnly = "yes";
 		var fetchSuccess = function(data) {
 			$scope.data = data;
+
 			if ($scope.data.selected_mod_type_id) {
 				$scope.isSequenceModChangeDisabled = true;
+			} 
+			else { 
+				$scope.data.selected_mod_type_id = (_.find($scope.data.mod_types, function (item) { 
+																						return item.value === 'MOD10'; 
+																					}).id);
 			}
 			$scope.$emit('hideLoader');
 			$scope.hotelLogoPrefetched = data.hotel_logo;
@@ -199,12 +216,17 @@ admin.controller('ADHotelDetailsCtrl', [
 		// SNT Admin - To save Add/Edit data
 		if ($scope.isAdminSnt) {
 			unwantedKeys = ["time_zones", "brands", "chains", "check_in_time", "check_out_time", "countries", "currency_list", "pms_types", "signature_display", "hotel_logo", "languages", "hotel_template_logo", "theme_list"];
+
+			if ($scope.data.country !== $scope.swedenCountryId) {
+				unwantedKeys.push("max_control_unit");
+			}
 			var data = dclone($scope.data, unwantedKeys);
 
 			if ($scope.mli.certificate != "") {
 				data.mli_certificate = $scope.mli.certificate;
 			}
 			data.interface_type_ids = getSelectedInterfaceTypes(data);
+			data.max_control_unit = parseInt(data.max_control_unit);
 			var themeData = {
 				'value': (!!$scope.selectedTheme) ? $scope.selectedTheme.value : 'ORANGE'
 			};

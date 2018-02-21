@@ -291,6 +291,9 @@ sntRover.controller('RVReservationMainCtrl', ['$scope',
                 var taxType = description.isInclusive ? "incl" : "excl";
 
                 description.rate = $scope.reservationData.rooms[roomIndex].stayDates[date].rate.id;
+                // CICO-32466 && CICO-47925
+                description.roomIndex = roomIndex;
+
                 if (description.postType === "NIGHT") {
                     if (typeof currentTaxes[taxType][taxId] === "undefined") {
                         currentTaxes[taxType][taxId] = description;
@@ -304,10 +307,14 @@ sntRover.controller('RVReservationMainCtrl', ['$scope',
                             currentTaxes[taxType][taxId] = description;
                         } else {
                             // get the rateId of the first value in the $scope.reservationData.taxDetail
-                            var rateIdExisting = currentTaxes[taxType][Object.keys(currentTaxes[taxType])[0]].rate;
-
+                            // CICO-32466 && CICO-47925
+                            var firstTaxRecord = currentTaxes[taxType][Object.keys(currentTaxes[taxType])[0]];
+                            var rateIdExisting = firstTaxRecord.rate;
+                            var roomIndexExisting = firstTaxRecord.roomIndex;
+                            
                             // Expression below was modified to fix CICO-32466.
-                            if (rateIdExisting !== description.rate) {
+                            // CICO-47925
+                            if (rateIdExisting === description.rate || roomIndexExisting !== description.roomIndex) {
                                 currentTaxes[taxType][taxId] = description;
                             }
                         }
@@ -839,7 +846,7 @@ sntRover.controller('RVReservationMainCtrl', ['$scope',
                         key: 'INVALID_PROMO'
                     }) ? 'OVERRIDE' : 'VALID';
                 } else {
-                    data.promotion_id = null;
+                    data.promotion_id = $scope.reservationData.promotionId;
                 }
             };
 
