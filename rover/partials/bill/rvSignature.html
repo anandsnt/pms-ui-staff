@@ -90,7 +90,7 @@
 						#terms-and-conditions field is making hidden and
 		    			acceptCharges always chekcked or saveData.acceptCharges = true.
 		-->
-		<div class="entry" ng-show="($index+1) === reservationBillData.bills.length" ng-class="{ 'hidden': reservationBillData.required_signature_at !== 'CHECKOUT' }">
+		<div class="entry width-100" ng-show="($index+1) === reservationBillData.bills.length" ng-class="{ 'hidden': reservationBillData.required_signature_at !== 'CHECKOUT' }">
 			<label id="terms-and-conditions" for="terms" class="checkbox inline">
 				<span ng-if="reservationBillData.required_signature_at !== 'CHECKOUT'" class="icon-form icon-checkbox" ng-class="{'checked': true}">{{saveData.acceptCharges = true}}</span>
 				<span ng-if="reservationBillData.required_signature_at === 'CHECKOUT'" class="icon-form icon-checkbox" ng-class="{'checked': saveData.acceptCharges }"></span>
