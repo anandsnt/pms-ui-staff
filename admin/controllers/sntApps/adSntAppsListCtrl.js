@@ -116,10 +116,6 @@ admin.controller('ADSntAppsListCtrl', ['$scope',
 			return;
 		};
 
-		$scope.deleteBuild = function() {
-
-		};
-
 		$scope.showGeneralSettings = function() {
 
 			$scope.screenMode = 'SETTINGS';
