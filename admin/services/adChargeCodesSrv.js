@@ -102,7 +102,7 @@ admin.service('ADChargeCodesSrv', ['$http', '$q', 'ADBaseWebSrv', 'ADBaseWebSrvV
 
 	this.uploadCSVFile = function(params) {
 		var deferred = $q.defer();
-		var url = "/api/rates/import";
+		var url = "/api/charge_codes/upload";
 
 		ADBaseWebSrvV2.postJSON(url, params).then(function(data) {
 			deferred.resolve(data.results);

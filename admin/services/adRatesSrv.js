@@ -187,7 +187,7 @@ admin.service('ADRatesSrv', ['$http', '$q', 'ADBaseWebSrvV2', 'ADBaseWebSrv',
 
         this.uploadCSVFile = function(params) {
             var deferred = $q.defer();
-            var url = "/api/rates/import";
+            var url = "/api/rates/upload";
 
             ADBaseWebSrvV2.postJSON(url, params).then(function(data) {
                 deferred.resolve(data.results);
