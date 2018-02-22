@@ -3,12 +3,6 @@ admin.controller('ADSntAppsListCtrl', ['$scope',
 	function($scope, adDebuggingSetupSrv, adAppVersionsSrv, ngTableParams, $filter, appTypes, ftpSettings) {
 		BaseCtrl.call(this, $scope);
 
-		// $scope.sortByVersion = function() {
-		// 	$scope.tableParams.sorting({
-		// 		'version': $scope.tableParams.isSortBy('version', 'asc') ? 'desc' : 'asc'
-		// 	});
-		// };
-
 		var fetchAppVersions = function() {
 
 			var fetchAppListSuccessCallback = function(data) {
@@ -43,18 +37,21 @@ admin.controller('ADSntAppsListCtrl', ['$scope',
 			};
 
 			$scope.callAPI(adAppVersionsSrv.fetchAppVersions, {
-                params: {},
-                successCallBack: fetchAppListSuccessCallback
-            });
+				params: {
+					service_application: $scope.filterType.id
+				},
+				successCallBack: fetchAppListSuccessCallback
+			});
 		};
 
-		var setAppTypes = function (appTypes) {
+		var setAppTypes = function(appTypes) {
 			// exclude iPad Apps
 			appTypes = _.filter(appTypes, function(app) {
 				return app.id !== 1;
 			});
 			$scope.filterList = appTypes;
 			$scope.filterType = appTypes[0];
+			fetchAppVersions();
 		};
 
 		$scope.appTypeChanged = function() {
@@ -67,6 +64,7 @@ admin.controller('ADSntAppsListCtrl', ['$scope',
 				"version": "",
 				"description": ""
 			};
+			$scope.fileName = "";
 		};
 
 		$scope.changeToUploadBuildMode = function() {
@@ -80,20 +78,26 @@ admin.controller('ADSntAppsListCtrl', ['$scope',
 		};
 
 		$scope.uploadBuild = function() {
-			var params =angular.copy($scope.selectedApp);
+			var params = angular.copy($scope.selectedApp);
 			params.service_application = $scope.filterType.id;
 			if ($scope.screenMode === 'ADD_BUILD') {
 				params.file_name = $scope.fileName;
 			}
 			console.log(JSON.stringify($scope.selectedApp));
 			$scope.callAPI(adAppVersionsSrv.uploadBuild, {
-                params: params,
-                successCallBack: fetchAppVersions
-            });
+				params: params,
+				successCallBack: fetchAppVersions
+			});
 		};
 
-		$scope.deleteApp = function(app) {
-			console.log(app);
+		$scope.deleteVersion = function(app) {
+			$scope.callAPI(adAppVersionsSrv.deleteBuild, {
+				params: {
+					service_application: $scope.filterType.id,
+					id: app.id
+				},
+				successCallBack: fetchAppVersions
+			});
 		};
 
 		$scope.editApp = function(app, index) {
@@ -103,19 +107,21 @@ admin.controller('ADSntAppsListCtrl', ['$scope',
 					"build": app.build,
 					"version": app.version,
 					"description": app.description,
-					"updated_on": app.updated_on
+					"updated_on": app.updated_on,
+					"id": app.id
 				};
+				$scope.fileName = 'File Attached';
 				$scope.screenMode = 'EDIT_BUILD';
 			}
 			return;
 		};
 
-		$scope.deleteBuild  = function () {
+		$scope.deleteBuild = function() {
 
 		};
 
 		$scope.showGeneralSettings = function() {
-			
+
 			$scope.screenMode = 'SETTINGS';
 		};
 
@@ -137,7 +143,6 @@ admin.controller('ADSntAppsListCtrl', ['$scope',
 
 		(function() {
 			$scope.fileName = "";
-			fetchAppVersions();
 			$scope.errorMessage = '';
 			$scope.screenMode = 'BUILD_LIST';
 			$scope.settingsData = ftpSettings;

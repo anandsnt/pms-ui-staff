@@ -84,9 +84,9 @@ admin.controller('ADDevicesListCtrl', ['$scope', '$state', 'ngTableParams', 'adD
         $scope.resetDeviceSelection();
       };
       var params = {
-        application: $scope.selectedDevice.application,
+        application: $scope.selectedDevice.application || 'ROVER',
         device_name: $scope.selectedDevice.device_name,
-        device_uid: $scope.selectedDevice.device_uid,
+        device_uid: $scope.selectedDevice.unique_id,
         device_version: $scope.selectedDevice.device_version,
         hours_log_enabled: $scope.selectedDevice.hours_log_enabled,
         is_logging_enabled: $scope.selectedDevice.is_logging_enabled,

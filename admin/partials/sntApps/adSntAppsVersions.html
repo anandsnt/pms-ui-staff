@@ -73,6 +73,8 @@
         </div>
     </header>
     <section class="content-scroll">
+        <div ng-include="'/assets/partials/common/notification_message.html'"></div>
+        <div ng-include="'/assets/partials/common/notification_success_message.html'"></div>
         <div class="form">
             <fieldset class="holder left">
                 <div class="entry full-width">
@@ -92,7 +94,7 @@
                 <button type="button" id="cancel" class="button blank add-data-inline" ng-click="changeToListView()" translate>
                     CANCEL
                 </button>
-                <button type="button" like-type="common" id="update" class="button red white-text" ng-click="deleteBuild(selectedApp)" ng-show="screenMode === 'EDIT_BUILD'" translate>
+                <button type="button" like-type="common" id="update" class="button red white-text" ng-click="deleteVersion(selectedApp)" ng-show="screenMode === 'EDIT_BUILD'" translate>
                     DELETE
                 </button>
                 <button type="button" like-type="common" id="update" class="button green" ng-click="uploadBuild()" translate>
