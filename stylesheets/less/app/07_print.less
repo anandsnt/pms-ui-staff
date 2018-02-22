@@ -1241,20 +1241,23 @@
                     thead th {
                         text-transform: uppercase;
                         background-color: @grey2;
-                        padding:4pt 4pt;
+                        padding-top: 4pt;
+                        padding-bottom: 4pt;
                         font-size: 5pt;
                         word-break: break-word;
-                        text-align: center;
+                        text-align: right;
                         vertical-align: top;
 
-                        &:last-child {
+                        /*&:last-child {
                             padding-right: 4pt;
-                        }
+                        }*/
 
                         &.charge-date,
-                        &.charge-code {
+                        &.charge-code,
+                        &.charge-description {
                             text-align: left;
                             padding-left: 0pt;
+                            padding-right: 4pt;
                         }
 
                         &.charge-date,
@@ -1264,9 +1267,11 @@
                         }
 
                         /*Add space to Charge Amount and Amount Due*/
+                        &:nth-child(4),
                         &:nth-child(5),
                         &:nth-child(6){
-                            padding-right: 4pt;
+                            padding-right: 0pt;
+                            padding-left: 4pt;
                         }
                     }
 
