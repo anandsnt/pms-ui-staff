@@ -886,6 +886,7 @@ sntRover.controller('reservationDetailsController',
 				}
 			};
 			var updateFailure = function(data) {
+				$scope.errorMessage = data;
 				$scope.$emit('hideLoader');
 			};
 
