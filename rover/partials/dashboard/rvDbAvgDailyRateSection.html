@@ -4,6 +4,7 @@
         <li>Today
         	<span class="value" ng-show="escapeNull(statistics.adr.today)!==''">
         		{{currencySymbol}}{{statistics.adr.today | round}}
+                {{statistics.adr.current_year | sntCurrency:this }}
         	</span>
         </li>
         <li>{{tomorrow|date:monthAndDate}}

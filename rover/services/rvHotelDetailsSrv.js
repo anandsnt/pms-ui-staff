@@ -43,6 +43,8 @@ angular.module('sntRover').service('RVHotelDetailsSrv', ['$q', 'rvBaseWebSrvV2',
             var url = '/api/hotel_settings.json';
 
             RVBaseWebSrvV2.getJSON(url).then(function (data) {
+                // CICO-35453 : Dummy data - To be removed.
+                data.currency.format = 'FORMAT-2';
                 data.is_auto_change_bussiness_date = data.business_date.is_auto_change_bussiness_date;
                 _.extend(service.hotelDetails, data);
                 deferred.resolve(data);
