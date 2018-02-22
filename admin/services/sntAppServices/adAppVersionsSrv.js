@@ -36,7 +36,7 @@ admin.service('adAppVersionsSrv', ['$http', '$q', 'ADBaseWebSrv', 'ADBaseWebSrvV
 		return deferred.promise;
 	};
 
-	this.fetchFTPSettings = function (data) {
+	this.fetchFTPSettings = function () {
 		
 		var deferred = $q.defer();
 		var url = '/admin/service_application_types/retrieve_upload_credentials';
