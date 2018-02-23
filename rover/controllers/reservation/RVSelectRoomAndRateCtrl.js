@@ -1424,9 +1424,7 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 					id: rateId
 				});
 				roomInfo = roomType;
-				rateInfo = secondary;				
-
-
+				rateInfo = secondary;							
 			} else if ($scope.stateCheck.activeView === 'RATE' || $scope.stateCheck.activeView === 'RECOMMENDED') {
 				var rate = _.find($scope.display.rateFirstGrid, {
 					id: rateId
