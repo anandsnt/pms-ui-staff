@@ -553,6 +553,9 @@ sntRover.controller('RVReservationMainCtrl', ['$scope',
             var parsedStayCardData = RVReservationDataService.parseReservationData(reservationDetails.reservation_card, $scope.reservationListData);
 
             _.extend($scope.reservationData, parsedStayCardData.reservationData);
+            // CICO-50125 - Added because the update reservation request params is 
+            // making use of the paymentMethods object
+            $scope.reservationData.paymentMethods = reservationDetails.paymentMethods;
             // Not sure why the below four are being dumped to the scope
             // Ref original commit at https://github.com/StayNTouch/pms/commit/d1021861
             $scope.isManual = parsedStayCardData.isManual;
@@ -728,7 +731,7 @@ sntRover.controller('RVReservationMainCtrl', ['$scope',
                     data.payment_type = {};
                     if ($scope.reservationData.paymentType.type.value !== null) {
                         angular.forEach($scope.reservationData.paymentMethods, function(item, index) {
-                            if ($scope.reservationData.paymentType.type.value === item.value) {
+                            if ($scope.reservationData.paymentType.type.value === item.name) {
                                 if ($scope.reservationData.paymentType.type.value === "CC") {
                                     data.payment_type.payment_method_id = $scope.reservationData.selectedPaymentId;
                                 } else {
