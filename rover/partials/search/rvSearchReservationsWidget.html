@@ -1,7 +1,7 @@
 <div ng-controller = "rvReservationSearchWidgetController" >
 	<form method="get" action="" name="reservations-search-form" id="reservations-search-form" class="search-form has-dates has-room-types enable-adding" role="search"  outside-click-handler><!--TODO: verify enable-adding -->
 	    <div class="entry search">
-	    	<button id="dashboard-clear-query" class="clear-query" ng-click="clearResults()" ng-class="{'visible': textInQueryBox!=''}">
+	    	<button id="dashboard-clear-query" class="clear-query" ng-click="clearResults($event)" ng-class="{'visible': textInQueryBox!=''}">
 	    	    <span class="icons icon-clear-search">Clear query</span>
 	    	</button>
 	    	<button type="submit" name="submit" class="icons icon-search">Search</button>
