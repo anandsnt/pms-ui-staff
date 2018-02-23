@@ -2,7 +2,7 @@ admin.service('adAppVersionsSrv', ['$http', '$q', 'ADBaseWebSrv', 'ADBaseWebSrvV
 
 	this.fetchAppVersions = function(params) {
 		var deferred = $q.defer();
-		var url = '/sample_json/zest_station/app_versions.json';
+		var url = '/admin/service_application_types/list_builds.json';
 
 		ADBaseWebSrvV2.getJSON(url,params).then(function(data) {
 			deferred.resolve(data.apps);
