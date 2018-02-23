@@ -1248,9 +1248,9 @@
                         text-align: right;
                         vertical-align: top;
 
-                        /*&:last-child {
+                        &:last-child {
                             padding-right: 4pt;
-                        }*/
+                        }
 
                         &.charge-date,
                         &.charge-code,
@@ -1261,15 +1261,13 @@
                         }
 
                         &.charge-date,
-                        &.charge-code,
-                        &.charge-amount {
+                        &.charge-code, {
                             width: 45pt !important;
                         }
 
                         /*Add space to Charge Amount and Amount Due*/
-                        &:nth-child(4),
-                        &:nth-child(5),
-                        &:nth-child(6){
+                        &.charge-amount-title{
+                            width: 45pt !important;
                             padding-right: 0pt;
                             padding-left: 4pt;
                         }
