@@ -110,6 +110,7 @@ sntRover.controller('RVDepositBalanceCtrl', [
             }, 500);
 
         };
+        
         /*
          * Refresh scroll on changing the payment type
          */
