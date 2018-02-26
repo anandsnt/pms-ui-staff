@@ -337,7 +337,7 @@ angular.module('sntRover').service('RVReservationSummarySrv', ['$q', 'rvBaseWebS
             var deferred = $q.defer(),
                 url = '/api/reservations/' + params.reservation_id + '/cancellation_email_data';
 
-            rvBaseWebSrvV2.getJSON(url).then(function(data) {
+            rvBaseWebSrvV2.getJSON(url, params).then(function(data) {
                 deferred.resolve(data);
             }, function(data) {
                 deferred.reject(data);

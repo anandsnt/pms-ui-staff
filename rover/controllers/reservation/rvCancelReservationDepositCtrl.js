@@ -48,8 +48,7 @@ sntRover.controller('RVCancelReservationDepositController', ['$rootScope', '$sco
 			var cancellationParameters = {
 				reason: $scope.cancellationData.reason,
 				id: $scope.reservationData.reservation_card.reservation_id || $scope.reservationData.reservationId,
-				application: "ROVER",
-				locale: $scope.cancellationData.locale
+				application: "ROVER"
 			};
 
 			cancellationParameters.with_deposit_refund = with_deposit_refund;

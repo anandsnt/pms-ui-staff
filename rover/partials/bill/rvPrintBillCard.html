@@ -12,7 +12,21 @@
         <span ng-bind-html="printData.guest_details.address"></span>
         <div class="info-bottom">
             <strong >{{printData.translation.invoice_date}}:</strong>{{printData.invoice_date | date:dateFormat}}<br/>
-            <strong >{{printData.translation.invoice_number}}:</strong>{{printData.invoice_number}}<br/>
+            <span ng-show="!isInformationalInvoice">
+                <strong >{{printData.translation.invoice_number}}:</strong>{{printData.invoice_number}}<br/>
+            </span>
+            <span ng-show="printData.control_code !== '' && !isInformationalInvoice">
+                <strong >{{printData.translation.control_code}}: </strong> {{printData.control_code | limitTo : 30}}
+                <br/>
+            </span>
+            <span ng-show="printData.control_unit !== '' && !isInformationalInvoice">
+                <strong >{{printData.translation.control_unit}}: </strong> {{printData.control_unit}}
+                <br/>
+            </span>
+            <span ng-show="printData.register_id !== '' && isInfrasecActivated && isInfrasecActivatedForWorkstation">
+                <strong >{{printData.translation.register_id}}: </strong> {{printData.register_id}}
+            </span>
+            
         </div>
     </div>
     <div class="info-right">
@@ -21,6 +35,8 @@
         <strong >{{printData.translation.room_number}}:</strong>{{printData.room_number}}<br/> 
         <strong >{{printData.translation.confirmation_number}}:</strong>{{printData.confirmation_number}}<br/>
         <strong >{{printData.translation.tax_number}}:</strong>{{printData.tax_number}}
+        <br/>
+
     </div>
 </div>
 
