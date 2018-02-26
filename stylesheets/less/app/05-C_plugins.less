@@ -1980,7 +1980,7 @@
 
             /* Format bill ***/
             &.format-bill {
-                width: 360px;
+                width: 400px;
 
                 label { 
                     margin-bottom: 0;
@@ -1989,17 +1989,15 @@
                     } 
                 }
 
+                .entry.margin {
+                    clear: both;
+                }
+
                 .actions {
                     margin-top: 20px;
                     padding-top: 19px;
                     border-top: 1px solid rgba(0,0,0,.1);
                     .float;
-                }
-
-                &.rooming-list {
-                    .actions {
-                        margin-top: 10px;
-                    }
                 }
 
                 .button { 
@@ -2022,7 +2020,7 @@
                     }
                 }
 
-             .switch-button {
+                .switch-button {
                     background: @grey2;
                     #border-radius > .rounded();
                     .size(40px, 260px);
@@ -2068,6 +2066,12 @@
                     &.on {
                         .data-off { left: auto; right: -100%; }
                         .data-on { left: auto; right: 0; }
+                    }
+                }
+
+                &.rooming-list {
+                    .actions {
+                        margin-top: 10px;
                     }
                 }
             }
