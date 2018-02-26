@@ -1424,8 +1424,7 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 					id: rateId
 				});
 				roomInfo = roomType;
-				rateInfo = secondary;
-
+				rateInfo = secondary;							
 			} else if ($scope.stateCheck.activeView === 'RATE' || $scope.stateCheck.activeView === 'RECOMMENDED') {
 				var rate = _.find($scope.display.rateFirstGrid, {
 					id: rateId
@@ -1437,6 +1436,9 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 				roomInfo = secondary;
 				rateInfo = rate;
 			}
+
+			// CICO-44842 - Plugging in the max occupancy check while booking from room & rates screen
+			$scope.checkOccupancyLimit();
 
 			// Load Meta Data on the first call to this method if it hasn't been loaded yet
 			if (!afterFetch) {

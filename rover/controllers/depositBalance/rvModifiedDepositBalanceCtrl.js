@@ -110,6 +110,13 @@ sntRover.controller('RVDepositBalanceCtrl', [
             }, 500);
 
         };
+        
+        /*
+         * Refresh scroll on changing the payment type
+         */
+        $scope.$on("PAYMENT_TYPE_CHANGED", function() {
+           refreshPaymentScroll();
+        });
 
         $scope.reservationData.reservation_card.payment_method_used = ($scope.reservationData.reservation_card.payment_method_used) ? $scope.reservationData.reservation_card.payment_method_used : "";
         $scope.validPayment = true;
