@@ -506,6 +506,20 @@ angular.module('adminInterfacesRouter', []).config(function($stateProvider) {
         }
     });
 
+    $stateProvider.state('admin.easiSetup', {
+        templateUrl: '/assets/partials/interfaces/Easi/adEasiSetup.html',
+        controller: 'adCRSCommonCtrl',
+        url: '/interfaces/setup/:id',
+        onEnter: ['$stateParams', function($stateParams) {
+            $stateParams.id = 'easi';
+        }],
+        resolve: {
+            config: ['adInterfacesCommonConfigSrv', function(adInterfacesCommonConfigSrv) {
+                return adInterfacesCommonConfigSrv.fetchConfiguration('easi');
+            }]
+        }
+    });
+
     $stateProvider.state('admin.pmiSetup', {
         templateUrl: '/assets/partials/interfaces/PMI/adPMISetup.html',
         controller: 'adInterfaceCommonCtrl',

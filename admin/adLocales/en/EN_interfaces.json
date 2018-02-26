@@ -91,4 +91,5 @@
     "DEFAULT_ROOM_TYPE": "Default Room Type",
     "CONTROL_UNIT_SE": "Control Unit (SE)",
     "WORKSTATION_MODEL": "Workstation model",
-	"AVIDA_HEADER": "Avida"
+	"AVIDA_HEADER": "Avida",
+    "EASI_HEADER": "EASi"
