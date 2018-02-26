@@ -1,8 +1,8 @@
 admin.controller('ADAppCtrl', [
     '$state', '$scope', '$rootScope', 'ADAppSrv', '$stateParams', '$window', '$translate', 'adminMenuData', 'businessDate',
-    '$timeout', 'ngDialog', 'sntAuthorizationSrv', '$filter',
+    '$timeout', 'ngDialog', 'sntAuthorizationSrv', '$filter', '$sce',
     function($state, $scope, $rootScope, ADAppSrv, $stateParams, $window, $translate, adminMenuData, businessDate,
-             $timeout, ngDialog, sntAuthorizationSrv, $filter) {
+             $timeout, ngDialog, sntAuthorizationSrv, $filter, $sce) {
 
 		// hide the loading text that is been shown when entering Admin
 		$( ".loading-container" ).hide();
@@ -653,9 +653,7 @@ admin.controller('ADAppCtrl', [
                 url.hostname.indexOf('localhost') !== -1)) {
             inDevEnvironment = true;
         }
-
         // add the menu or sub menu names you need to hide in production
-        
         var partiallyCompeletedMenuNames = ['Email Templates Settings'];
 
         if (partiallyCompeletedMenuNames.length && !inDevEnvironment) {
@@ -728,6 +726,16 @@ admin.controller('ADAppCtrl', [
 		$scope.$on("hideLoader", function() {
 			$scope.hasLoader = false;
 		});
+
+        /*
+        *  Handle inline styles inside ng-bind-html directive.
+        *  Let   =>  $scope.htmlData = "<p style='font-size:8pt;''>Sample Text</p>";
+        *  Usage =>  <td data-ng-bind-html="trustAsHtml(htmlData)"></td>
+        *  REF   =>  https://docs.angularjs.org/api/ng/service/$sce
+        */
+        $scope.trustHtml = function(str) {
+            return $sce.trustAsHtml(str);
+        };
 
 
 		/**

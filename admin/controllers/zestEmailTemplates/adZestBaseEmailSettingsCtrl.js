@@ -2,18 +2,17 @@ admin.controller('ADZestBaseEmailSettingsCtrl', ['$scope', '$state', 'ngDialog',
     function($scope, $state, ngDialog, $sce, adZestEmailTemplateSrv) {
         $scope.currentYear = new Date().getFullYear();
         var emailType;
-
-        $scope.trustHtml = function(str) {
-            return $sce.trustAsHtml(str);
-        };
-
         $scope.setData = function(data, processData, type) {
             emailType = type;
             $scope.data = processData;
             $scope.generalSettings = data.general_email_template_settings;
             $scope.hotelDetails = data.hotel_details;
         };
-
+        /*
+        * @params
+        * type - String variable
+        * isKeyEmail - Bool
+        */
         $scope.saveAdminSettings = function(type, isKeyEmail) {
             var params = {};
 
