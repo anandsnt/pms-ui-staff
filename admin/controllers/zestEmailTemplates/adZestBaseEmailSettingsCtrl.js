@@ -33,7 +33,10 @@ admin.controller('ADZestBaseEmailSettingsCtrl', ['$scope', '$state', 'ngDialog',
 
             $scope.callAPI(adZestEmailTemplateSrv.saveSettings, options);
         };
-
+        /**
+         * Methode for showing preview for zest/key-delivery mail
+         * @param none
+         */
         $scope.previewClicked = function() {
             if ($scope.generalSettings.use_main_bg_image && $scope.generalSettings.main_bg_image.length > 0) {
                 $scope.data.main_bg_style = "background-image:url(" + $scope.generalSettings.main_bg_image + ");";
