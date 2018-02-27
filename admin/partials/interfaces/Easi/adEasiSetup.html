@@ -1,0 +1,27 @@
+<ad-common-parts-in-form-dir on-save-button-click="saveInterfaceConfig"
+                             header-caption="{{interface + '_HEADER' | translate}}">
+    <div class="entry full-width">
+        <fieldset class="holder left">
+            <ad-toggle-button is-checked="config.enabled"
+                              label="{{'ACTIVATE_INACTIVATE'| translate}}"></ad-toggle-button>
+        </fieldset>
+    </div>
+
+    <!--<ad-sync-block ng-if="config.enabled"-->
+    <!--interface="{{interface}}"-->
+    <!--config="config">-->
+    <!--</ad-sync-block>-->
+
+    <fieldset class="holder full-width">
+        <div class="form-title">
+            <h3>Export Configuration</h3>
+        </div>
+
+        <fieldset class="holder right">
+            <ad-textarea value="config.emails"
+                         required="true"
+                         label="{{'EMAIL_RECIPIENT_FOR_EOD_EXPORTS'| translate}}"
+                         styleclass="full-width"></ad-textarea>
+        </fieldset>
+    </fieldset>
+</ad-common-parts-in-form-dir>
