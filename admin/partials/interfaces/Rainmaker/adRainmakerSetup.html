@@ -5,6 +5,16 @@
             <ad-toggle-button is-checked="config.enabled"
                               label="{{'ACTIVATE_INACTIVATE'| translate}}"></ad-toggle-button>
         </fieldset>
+        <fieldset class="holder right">
+            <ad-checkbox is-checked="config.guestrev_enabled"
+                         label="{{ 'ENABLE_GUESTREV' | translate}}"
+                         div-class="full-width">
+            </ad-checkbox>
+            <ad-checkbox is-checked="config.revintel_enabled"
+                         label="{{ 'ENABLE_REVINTEL' | translate}}"
+                         div-class="full-width">
+            </ad-checkbox>
+        </fieldset>
     </div>
 
     <ad-sync-block ng-if="config.enabled"
