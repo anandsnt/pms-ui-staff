@@ -8,10 +8,7 @@
         <div ng-include="'/assets/partials/common/notification_success_message.html'"></div>
         <div>
             <form class="form zest-web-settins-form float">
-                <fieldset class="holder left"><!-- 
-                    <div class="form-title full-width">
-                        <h3><span>{{mainHeading}}</span></h3>
-                    </div> -->
+                <fieldset class="holder left">
                     <ad-textbox value="data.subject_text" label="{{'EMAIL_SUBJECT_TEXT' | translate}}" styleclass="full-width"></ad-textbox>
                     <ad-textarea rows="4" div-class="full-width" text-area-class="full-width" value="data.email_text_1" label="{{ 'EMAIL_TOP_PORTION_TEXT' | translate}}" placeholder=""></ad-textarea>
                     <ad-textbox hide="hideButtonField" value="data.button_text" label="{{'EMAIL_BUTTON_TEXT' | translate}}" styleclass="full-width"></ad-textbox>

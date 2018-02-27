@@ -34,16 +34,17 @@ admin.controller('ADZestEmailGeneralSettingsCtrl', ['$scope', '$sce', 'data', 'n
                 $scope.data.main_bg_style = 'background:' + $scope.generalSettings.main_bg + ';';
             }
             ngDialog.open({
-                // controller: $controller('adZestWebPreviewCtrl', {
-                //     $scope: $scope
-                // }),
                 closeByDocument: true,
                 template: '/assets/partials/zestEmailTemplates/adzestMailPreview.html',
                 className: 'ngdialog-theme-default email-template-preview',
                 scope: $scope
             });
         };
-
+        /*
+         * Methode to save settings
+         * @constructor
+         * @param none
+         */
         $scope.saveSettings = function() {
             var params = {
                 general_email_template_settings: angular.copy($scope.generalSettings)
