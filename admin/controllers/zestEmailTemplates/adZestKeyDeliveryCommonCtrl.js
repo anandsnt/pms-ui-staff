@@ -9,7 +9,7 @@ admin.controller('ADZestKeyDeliveryCommonCtrl', ['$scope', 'data', '$filter', '$
 		// for preview set sample data
 		$scope.data.email_text_1 = "This is a sample text for testing. You can enter the required texts in the individual settings for each process.";
         $scope.data.email_text_2 = "This is a sample text for testing. You can enter the required texts in the individual settings for each process.";
-        $scope.room_number = '101';
+        $scope.roomNumber = '101';
 
 		$scope.previewClicked = function() {
             if ($scope.generalSettings.use_main_bg_image && $scope.generalSettings.main_bg_image.length > 0) {
