@@ -733,7 +733,7 @@ admin.controller('ADAppCtrl', [
         *  Usage =>  <td data-ng-bind-html="trustAsHtml(htmlData)"></td>
         *  REF   =>  https://docs.angularjs.org/api/ng/service/$sce
         */
-        $scope.trustHtml = function(str) {
+        $rootScope.trustHtml = function(str) {
             return $sce.trustAsHtml(str);
         };
 

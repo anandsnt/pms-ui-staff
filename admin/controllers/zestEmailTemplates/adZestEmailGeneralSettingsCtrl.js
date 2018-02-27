@@ -3,11 +3,7 @@ admin.controller('ADZestEmailGeneralSettingsCtrl', ['$scope', '$sce', 'data', 'n
         
         $scope.generalSettings = data.general_email_template_settings;
         $scope.hotelDetails = data.hotel_details;
-        var main_bg_image = angular.copy($scope.generalSettings.main_bg_image);
-
-        $scope.trustHtml = function(str) {
-            return $sce.trustAsHtml(str);
-        };
+        var mainBgImage = angular.copy($scope.generalSettings.main_bg_image);
 
         $scope.successMessage = '';
         $scope.data = {};
@@ -53,7 +49,7 @@ admin.controller('ADZestEmailGeneralSettingsCtrl', ['$scope', '$sce', 'data', 'n
                 general_email_template_settings: angular.copy($scope.generalSettings)
             };
 
-            if (main_bg_image === $scope.generalSettings.main_bg_image) {
+            if (mainBgImage === $scope.generalSettings.main_bg_image) {
                 var unwantedKeys = ["main_bg_image"];
                 
                 params.general_email_template_settings = dclone(params.general_email_template_settings, unwantedKeys);
