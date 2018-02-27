@@ -241,6 +241,7 @@ sntRover.controller('RVReservationMainCtrl', ['$scope',
                             name: name
                         };
                     };
+                    
                     // CICO-44842
                     if (!activeRoom && roomTypeId) {
                         activeRoom = roomTypeId;
