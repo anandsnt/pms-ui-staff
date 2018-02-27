@@ -1438,7 +1438,7 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 			}
 
 			// CICO-44842 - Plugging in the max occupancy check while booking from room & rates screen
-			$scope.checkOccupancyLimit();
+			$scope.checkOccupancyLimit(null, null, null, roomId);
 
 			// Load Meta Data on the first call to this method if it hasn't been loaded yet
 			if (!afterFetch) {
