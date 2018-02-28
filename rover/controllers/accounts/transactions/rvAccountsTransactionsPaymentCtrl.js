@@ -121,18 +121,6 @@ sntRover.controller('RVAccountsTransactionsPaymentCtrl', [
             renderDefaultValues();
         };
 
-        // CICO-47395 : Check to allow DB payment.
-        var checkPaymentTypeIsDirectBill =  function() {
-            var isPaymentTypeDirectBill = false,
-            currentActiveBill = $scope.billsArray[$scope.currentActiveBill];
-
-            if ( currentActiveBill.allow_db_refund ) {
-                isPaymentTypeDirectBill = true;
-            }
-
-            return isPaymentTypeDirectBill;
-        };
-
         /*
          * Retrive data to be displayed in the payment screen - payment types and credit card types
          *
@@ -151,7 +139,7 @@ sntRover.controller('RVAccountsTransactionsPaymentCtrl', [
                 successCallBack: onPaymnentFetchSuccess,
                 failureCallBack: onPaymnentFetchFailure,
                 params: {
-                    direct_bill: checkPaymentTypeIsDirectBill()
+                    direct_bill: true
                 }
             });
         };
