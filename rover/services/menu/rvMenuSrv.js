@@ -179,6 +179,7 @@ angular.module('sntRover').service('rvMenuSrv',
 		        }, {
 		            title: "MENU_GUESTS",
 		            action: "rover.guestcardsearch",
+		            hidden: $rootScope.isPmsProductionEnv,
 		            menuIndex: "guests"
 		        }, {
 		            title: "MENU_ACCOUNTS",

@@ -10,8 +10,9 @@ angular.module('sntRover').controller('rvGuestDetailsController',
   'RVGuestCardSrv',
   'RVContactInfoSrv',
   'RVSearchSrv',
+  'idTypesList',
   function($scope, contactInfo, countries, $stateParams, $state, $filter, $rootScope, RVGuestCardSrv,
-    RVContactInfoSrv, RVSearchSrv) {        
+    RVContactInfoSrv, RVSearchSrv, idTypesList) {        
 
         BaseCtrl.call(this, $scope);
 
@@ -72,6 +73,8 @@ angular.module('sntRover').controller('rvGuestDetailsController',
             } else if (tab === 'guest-like') {
                 $scope.$broadcast('GUESTLIKETABACTIVE');
                 $scope.$broadcast('REFRESHLIKESSCROLL');
+            } else if (tab === 'guest-contact') {
+                $scope.$broadcast('CONTACTINFOLOADED');
             }
             
             if (!$scope.viewState.isAddNewCard) {
@@ -262,7 +265,7 @@ angular.module('sntRover').controller('rvGuestDetailsController',
 
             $scope.guestCardData = getGuestCardData(contactInfo, countries, $stateParams.guestId);
             $scope.countries = countries;
-            $scope.idTypeList = $scope.guestCardData.contactInfo.id_type_list;
+            $scope.idTypeList = idTypesList;
 
             var guestInfo = {
                 'user_id': $scope.guestCardData.contactInfo.user_id,
