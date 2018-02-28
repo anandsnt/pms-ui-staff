@@ -925,10 +925,20 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 		});
 
 		/*
+		 * Update informational invoice flag
+		 * Based on checkbox in popup
+		 */
+	    $scope.$on("UPDATE_INFORMATIONAL_INVOICE", function(event, isInformationalInvoice) {
+	    	$scope.isInformationalInvoice = isInformationalInvoice;
+	    });
+
+		/*
 		* Opens the popup which have the option to choose the bill layout while print/email
 		*/
-		$scope.showFormatBillPopup = function(billNo) {
+		$scope.showFormatBillPopup = function(billNo, isActiveBill) {
 			$scope.billNo = billNo;
+			$scope.isSettledBill = isActiveBill;
+			$scope.isInformationalInvoice = false;
 	    	ngDialog.open({
 		    		template: '/assets/partials/popups/billFormat/rvBillFormatPopup.html',
 		    		controller: 'rvBillFormatPopupCtrl',

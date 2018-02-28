@@ -4,8 +4,8 @@ sntRover.controller('rvBillFormatPopupCtrl', ['$scope', '$rootScope', '$filter',
     $scope.isCompanyCardInvoice = true;
     $scope.disableCompanyCardInvoice = false;
     $scope.hideCompanyCardInvoiceToggle = true;
-    $scope.isInformationalInvoice = ($rootScope.isInfrasecActivated && $rootScope.isInfrasecActivatedForWorkstation); 
-    $scope.isInformationalInvoiceDisabled = ($rootScope.isInfrasecActivated && $rootScope.isInfrasecActivatedForWorkstation && $scope.isSettledBill); 
+    $scope.isInformationalInvoice = true;($rootScope.isInfrasecActivated && $rootScope.isInfrasecActivatedForWorkstation); 
+    $scope.isInformationalInvoiceDisabled = true;($rootScope.isInfrasecActivated && $rootScope.isInfrasecActivatedForWorkstation && $scope.isSettledBill); 
     /*
     *  Get the request params for bill settings info
     */
