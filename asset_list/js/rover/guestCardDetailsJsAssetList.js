@@ -17,6 +17,7 @@ module.exports = {
                     controllerRoot + "pay/**/**.js",
                     controllerRoot + "payment/**/**.js",                    
                     controllerRoot + "roverPayment/**/**.js", 
+                    controllerRoot + "guestCardBaseCtrl.js",
                     
                     servicesRoot + "payment/**/**.js",
                     servicesRoot + "likes/rvLikesSrv.js",                    

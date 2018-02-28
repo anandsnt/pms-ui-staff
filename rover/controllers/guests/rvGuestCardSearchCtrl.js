@@ -41,22 +41,7 @@ angular.module('sntRover').controller('guestCardSearchController',
             $scope.textInQueryBox = "";
             $scope.results = [];
         };
-            
         
-        // function that converts a null value to a desired string.
-        // if no replace value is passed, it returns an empty string
-
-        $scope.escapeNull = function(value, replaceWith) {
-            var newValue = "";
-
-            if ((typeof replaceWith !== "undefined") && (replaceWith !== null)) {
-                newValue = replaceWith;
-            }
-            var valueToReturn = ((value === null || typeof value === 'undefined') ? newValue : value);
-
-            return valueToReturn;
-        };
-
         var onSearchSuccess = function (data) {
                 $scope.results = data.results;
                 $scope.totalResultCount = data.total_count;             

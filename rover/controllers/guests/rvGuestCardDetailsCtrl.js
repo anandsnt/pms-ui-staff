@@ -15,6 +15,7 @@ angular.module('sntRover').controller('rvGuestDetailsController',
     RVContactInfoSrv, RVSearchSrv, idTypesList) {        
 
         BaseCtrl.call(this, $scope);
+        GuestCardBaseCtrl.call (this, $scope, RVSearchSrv);
 
         /**
          * Decides whether loyalty tab should be shown or not
@@ -201,7 +202,7 @@ angular.module('sntRover').controller('rvGuestDetailsController',
             var saveUserInfoSuccessCallback = function() {
                 
                 // update few of the details to searchSrv
-                updateSearchCache();
+                $scope.updateSearchCache();
                 // This is used in contact info ctrl to prevent the extra API call while clicking outside
                 $scope.isGuestCardSaveInProgress = false;
                 
@@ -210,7 +211,7 @@ angular.module('sntRover').controller('rvGuestDetailsController',
             };
 
             // check if there is any chage in data.if so call API for updating data, CICO-46709 fix
-            if (JSON.stringify(getContactInfo($scope.currentGuestCardHeaderData)) !== JSON.stringify(getContactInfo(that.newUpdatedData))) {
+            if (JSON.stringify($scope.getContactInfo($scope.currentGuestCardHeaderData)) !== JSON.stringify($scope.getContactInfo(that.newUpdatedData))) {
                 $scope.currentGuestCardHeaderData = that.newUpdatedData;
                 var data = {
                     'data': $scope.currentGuestCardHeaderData,
