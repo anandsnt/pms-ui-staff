@@ -81,7 +81,7 @@
                     <label for="certificate">Upload Buid </label>
                     <div class="file-upload">
                         <span class="input">{{fileName}}</span>
-                        <input type="file" ng-model="selectedApp.build" accept="*" app-filereader />
+                        <input type="file" ng-model="selectedApp.build" accept="*" app-filereader onclick="this.value=null;"/>
                         <button type="button" class="button brand-colors">
                             Attach
                         </button>
