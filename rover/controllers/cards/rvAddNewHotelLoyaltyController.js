@@ -60,7 +60,7 @@ sntRover.controller('RVAddNewHotelLoyaltyController', ['$scope', '$rootScope', '
 				params: data,
 				successCallBack: loyaltyPostsuccessCallback,
 				failureCallBack: loyaltyPostErrorCallback
-			}
+			};
 
 			$scope.callAPI(RVGuestCardLoyaltySrv.createLoyalties, options);			
 	};

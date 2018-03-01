@@ -5,9 +5,8 @@ angular.module('sntRover').controller('guestCardSearchController',
   '$stateParams',
   'ngDialog',
   '$timeout',
-  '$state',
-  '$rootScope',
-   function($scope, RVGuestCardsSrv, $stateParams, ngDialog, $timeout, $state, $rootScope) {
+  '$state',  
+   function($scope, RVGuestCardsSrv, $stateParams, ngDialog, $timeout, $state) {
 
         BaseCtrl.call(this, $scope);
 
