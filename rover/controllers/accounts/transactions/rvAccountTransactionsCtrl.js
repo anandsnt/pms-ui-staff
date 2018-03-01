@@ -943,13 +943,13 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 			$scope.billNo = billNo;
 			$scope.isSettledBill = isActiveBill;
 			$scope.isInformationalInvoice = false;
-	    	ngDialog.open({
-		    		template: '/assets/partials/popups/billFormat/rvBillFormatPopup.html',
-		    		controller: 'rvBillFormatPopupCtrl',
-		    		className: '',
-		    		scope: $scope
-	    	});
-    	};
+			ngDialog.open({
+					template: '/assets/partials/popups/billFormat/rvBillFormatPopup.html',
+					controller: 'rvBillFormatPopupCtrl',
+					className: '',
+					scope: $scope
+			});
+		};
     	/*
 		*  Shows the popup to show the email send status
 		*/
