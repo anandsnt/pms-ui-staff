@@ -1,9 +1,9 @@
 /**
  * Base controller for guest card contact tab, can be used to share functionalities shared
  * in guest card related sections
- * @param {object} Scope object
- * @param {object} Search Service
- * @return {undefined}
+ * @param {object} $scope Scope object
+ * @param {object} RVSearchSrv Search Service
+ * @return {void} 
  */
 
 function GuestCardBaseCtrl ($scope, RVSearchSrv) {
