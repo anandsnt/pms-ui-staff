@@ -198,6 +198,30 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 
 		}());
 
+		/*
+		 * Call black box api to get control digits
+		 */
+		var requestControlDigitsFromBlackBox = function() {
+
+            var successCallBackOfBlackBoxApi = function(data) {
+                    $scope.transactionsDetails.bills[$scope.currentActiveBill].is_active = false;
+            },
+            failureCallBackOfBlackBoxApi = function(errorMessage) {
+                $scope.errorMessage = errorMessage;
+            },
+            paramsToService = {
+                'bill_id': $scope.transactionsDetails.bills[$scope.currentActiveBill].bill_id
+            };
+
+            var options = {
+                params: paramsToService,
+                successCallBack: successCallBackOfBlackBoxApi,
+                failureCallBack: failureCallBackOfBlackBoxApi
+            };
+
+            $scope.callAPI( RVBillCardSrv.callBlackBoxApi, options );
+        };
+
 
 		/**
 		 * Successcallback of transaction list fetch
@@ -207,6 +231,11 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 		var onTransactionFetchSuccess = function(data) {
 
 			$scope.transactionsDetails = data;
+			// Balance amount must be zero and only after payment success - call black box api
+			if ($scope.transactionsDetails.bills[$scope.currentActiveBill].balance_amount === "0.0" && $scope.isFromPaymentScreen) {
+				$scope.isFromPaymentScreen = false;
+				requestControlDigitsFromBlackBox();
+			}
 
 			configSummaryDateFlags();
 			loadDefaultBillDateData();
@@ -255,6 +284,7 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 		 *
 		 */
 		$scope.$on('UPDATE_TRANSACTION_DATA', function(event, data) {
+			$scope.isFromPaymentScreen = data.isFromPaymentSuccess;
 			getTransactionDetails();
 		});
 
