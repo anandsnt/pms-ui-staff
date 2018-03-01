@@ -2,6 +2,7 @@ angular.module('sntRover').controller('RVContactInfoController', ['$scope', '$ro
   function($scope, $rootScope, RVContactInfoSrv, ngDialog, dateFilter, $timeout, RVSearchSrv, $stateParams) {
 
     BaseCtrl.call(this, $scope);
+    GuestCardBaseCtrl.call (this, $scope, RVSearchSrv);
 
     /**
      * storing to check if data will be updated
@@ -59,31 +60,10 @@ angular.module('sntRover').controller('RVContactInfoController', ['$scope', '$ro
         $scope.$emit("CHANGEAVATAR", avatarImage);
         // to reset current data in header info for determining any change
         $scope.$emit("RESETHEADERDATA", $scope.guestCardData.contactInfo);
-        updateSearchCache(avatarImage);
+        $scope.updateSearchCache(avatarImage);
         $scope.$emit('hideLoader');
 
-      };
-
-      // update guest details to RVSearchSrv via RVSearchSrv.updateGuestDetails - params: guestid, data
-      var updateSearchCache = function(avatarImage) {
-        var dataSource = $scope.guestCardData.contactInfo;
-        var data = {
-          'firstname': dataSource.first_name,
-          'lastname': dataSource.last_name,
-          'vip': dataSource.vip,
-          'avatar': avatarImage
-        };
-
-        if (dataSource.address) {
-          if ($scope.escapeNull(dataSource.address.city).toString().trim() !== '' || $scope.escapeNull(dataSource.address.state).toString().trim() !== '') {
-            data.location = (dataSource.address.city + ', ' + dataSource.address.state);
-          }
-          else {
-            data.location = false;
-          }
-        }
-        RVSearchSrv.updateGuestDetails($scope.guestCardData.contactInfo.user_id, data);
-      };
+      };      
 
       var saveUserInfoFailureCallback = function(data) {
         $scope.$emit('hideLoader');
@@ -107,7 +87,6 @@ angular.module('sntRover').controller('RVContactInfoController', ['$scope', '$ro
                 });
             }
 
-
           }
         }
         // TODO : Reduce all these places where guestId is kept and used to just ONE
@@ -116,12 +95,10 @@ angular.module('sntRover').controller('RVContactInfoController', ['$scope', '$ro
         if ($scope.reservationDetails) {
           $scope.reservationDetails.guestCard.id = data.id;
           $scope.reservationDetails.guestCard.futureReservations = 0;
-        }
-        
+        }       
         
         // dirty fix for handling multiple api call being made
         $scope.saveGuestCardInfoInProgress = false;
-
         
         if ($scope.reservationData && $scope.reservationData.guest) {
           $scope.reservationData.guest.id = data.id;
@@ -205,13 +182,11 @@ angular.module('sntRover').controller('RVContactInfoController', ['$scope', '$ro
         if (!$scope.saveGuestCardInfoInProgress && !$scope.isGuestCardSaveInProgress) {
             $scope.saveGuestCardInfoInProgress = true;             
             $scope.saveContactInfo(true);
-        }
-        
+        }        
       } else {        
         if (!$scope.isGuestCardSaveInProgress) {
           $scope.saveContactInfo();
-        }
-        
+        }        
       }
     });
 

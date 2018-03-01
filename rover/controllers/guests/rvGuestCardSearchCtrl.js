@@ -6,20 +6,38 @@ angular.module('sntRover').controller('guestCardSearchController',
   'ngDialog',
   '$timeout',
   '$state',
-   function($scope, RVGuestCardsSrv, $stateParams, ngDialog, $timeout, $state) {
+  '$rootScope',
+   function($scope, RVGuestCardsSrv, $stateParams, ngDialog, $timeout, $state, $rootScope) {
 
         BaseCtrl.call(this, $scope);
 
         var GUEST_CARD_SCROLL = "guest_card_scroll",
-            debounceSearchDelay = 600, // // Delay the function execution by this much ms
-            GUEST_CARD_SEARCH_PAGINATION_ID = "guest_card_search";
-        
+            DEBOUNCE_SEARCH_DELAY = 600, // // Delay the function execution by this much ms
+            GUEST_CARD_SEARCH_PAGINATION_ID = "guest_card_search";        
         
         // Refresh the guest card search scroller
         var refreshScroller = function() {
             $timeout(function() {
                 $scope.refreshScroller(GUEST_CARD_SCROLL);
             }, 300);
+        };
+
+        /**
+         * Make the search string highlighted
+         * @param {string} query string
+         * @return {undefined}
+         */
+        var setHighlightedQueryText = function (newVal) {
+            $scope.searchWords = [];
+            if (newVal.length >= 2) {
+                if (newVal.indexOf(',') !== -1) {
+                    $scope.searchWords = newVal.split(',');
+                } else if (newVal.indexOf(' ') !== -1) {
+                    $scope.searchWords = newVal.split(' ');
+                } else {
+                    $scope.searchWords.push(newVal);
+                }
+            }
         };
 
         /**
@@ -34,7 +52,8 @@ angular.module('sntRover').controller('guestCardSearchController',
             var queryText = $scope.textInQueryBox;
             
             $scope.textInQueryBox = queryText.charAt(0).toUpperCase() + queryText.slice(1);
-        }, debounceSearchDelay);
+            setHighlightedQueryText($scope.textInQueryBox);
+        }, DEBOUNCE_SEARCH_DELAY);
 
         // Clear search results
         $scope.clearResults = function() {
@@ -42,6 +61,11 @@ angular.module('sntRover').controller('guestCardSearchController',
             $scope.results = [];
         };
         
+        /**
+         * Function which get invoked on success
+         * @param {Object} data response data
+         * @return {undefined}
+         */
         var onSearchSuccess = function (data) {
                 $scope.results = data.results;
                 $scope.totalResultCount = data.total_count;             
@@ -92,29 +116,19 @@ angular.module('sntRover').controller('guestCardSearchController',
         // Click on add new btn navigates to an empty guest card page
         $scope.addNewCard = function() {
             $state.go('rover.guestcarddetails');
-        };
-        
+        }; 
 
+        /**
+         * Get guest name
+         * @param {string} firstName
+         * @param {string} lastName
+         * @return {string} full name
+         *
+         */
         $scope.getGuestName = function(firstName, lastName) {           
             return lastName + ", " + firstName;
         };
-
-        /**
-         * Watches the query text box to get the list of text for highlight
-        */
-        $scope.$watch('textInQueryBox', function(newVal) {
-            $scope.searchWords = [];
-            if (newVal.length >= 2) {
-                if (newVal.indexOf(',') !== -1) {
-                    $scope.searchWords = newVal.split(',');
-                } else if (newVal.indexOf(' ') !== -1) {
-                    $scope.searchWords = newVal.split(' ');
-                } else {
-                    $scope.searchWords.push(newVal);
-                }
-            }
-        });
-
+        
         // Initialize the controller variables
         var init = function () {
             $scope.heading = "Find Guests";
@@ -143,9 +157,7 @@ angular.module('sntRover').controller('guestCardSearchController',
                 $scope.textInQueryBox = $stateParams.textInQueryBox;
                 $scope.queryEntered();
             }
-
-        };
-        
+        };       
 
         init();
     }

@@ -8,9 +8,9 @@ sntRover.controller('RVLikesController', ['$scope', 'RVLikesSrv', 'dateFilter', 
 		$scope.guestLikesData = {};
 		$scope.setScroller('likes_info');
 		$scope.calculatedHeight = 274; // height of Preferences + News paper + Room type + error message div
-		var presentLikeInfo  = {};
-		var updateData = {};
-		var isInitMethodInvoked = false;
+		var presentLikeInfo  = {},
+		    updateData = {},
+		    isInitMethodInvoked = false;
 
 		$scope.$on('clearNotifications', function() {
 			$scope.errorMessage = "";
@@ -152,6 +152,11 @@ sntRover.controller('RVLikesController', ['$scope', 'RVLikesSrv', 'dateFilter', 
 
 		};
 
+        /**
+         * Save likes
+         * @param {object} data response object
+         * @return {undefined}
+         */
 		$scope.saveLikes = function (data) {
 
 			var saveUserInfoSuccessCallback = function(data) {
@@ -242,9 +247,11 @@ sntRover.controller('RVLikesController', ['$scope', 'RVLikesSrv', 'dateFilter', 
 		/**
 		 * to handle click actins outside this tab
 		 */
-		$scope.$on('SAVELIKES', function(event, data) {
+		var saveLikeListener = $scope.$on('SAVELIKES', function(event, data) {
 			$scope.saveLikes(data);
 		});
+
+		$scope.$on('$destroy', saveLikeListener);
 
 		$scope.changedCheckboxPreference = function(parentIndex, index) {
 			angular.forEach($scope.guestLikesData.preferences[parentIndex].values, function(value, key) {
@@ -302,7 +309,7 @@ sntRover.controller('RVLikesController', ['$scope', 'RVLikesSrv', 'dateFilter', 
 			return showRoomFeature;
 		};
 
-		$scope.$on('GUESTLIKETABACTIVE', function () {			
+		var guestLikeTabActivateListener = $scope.$on('GUESTLIKETABACTIVE', function () {			
 
 			/**
 			 * Restrict the api call to trigger only once within a guest card
@@ -314,6 +321,6 @@ sntRover.controller('RVLikesController', ['$scope', 'RVLikesSrv', 'dateFilter', 
 			}			
 		});
 
-
+		$scope.$on('$destroy', guestLikeTabActivateListener);
 	}
 ]);

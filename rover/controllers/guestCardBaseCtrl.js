@@ -1,6 +1,9 @@
 /**
  * Base controller for guest card contact tab, can be used to share functionalities shared
  * in guest card related sections
+ * @param {object} Scope object
+ * @param {object} Search Service
+ * @return {undefined}
  */
 
 function GuestCardBaseCtrl ($scope, RVSearchSrv) {
@@ -19,13 +22,18 @@ function GuestCardBaseCtrl ($scope, RVSearchSrv) {
     };
 
     // update guest details to RVSearchSrv via RVSearchSrv.updateGuestDetails - params: guestid, data
-    $scope.updateSearchCache = function() {
+    $scope.updateSearchCache = function(avatarImage) {
         var dataSource = $scope.guestCardData.contactInfo;
+
         var data = {
             'firstname': dataSource.first_name,
             'lastname': dataSource.last_name,
             'vip': dataSource.vip
         };
+
+        if (avatarImage) {
+            data.avatar = avatarImage;
+        }
 
         if (dataSource.address) {
             if ($scope.escapeNull(dataSource.address.city).toString()
