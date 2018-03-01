@@ -1,7 +1,7 @@
 sntRover.controller('RVAccountsTransactionsPaymentCtrl', [
     '$scope',
-    '$rootScope', 'RVPaymentSrv', 'ngDialog', '$filter', '$timeout', 'rvAccountTransactionsSrv', 'rvPermissionSrv', 'RVReservationCardSrv', 'RVBillCardSrv',
-    function($scope, $rootScope, RVPaymentSrv, ngDialog, $filter, $timeout, rvAccountTransactionsSrv, rvPermissionSrv, RVReservationCardSrv, RVBillCardSrv) {
+    '$rootScope', 'RVPaymentSrv', 'ngDialog', '$filter', '$timeout', 'rvAccountTransactionsSrv', 'rvPermissionSrv', 'RVReservationCardSrv',
+    function($scope, $rootScope, RVPaymentSrv, ngDialog, $filter, $timeout, rvAccountTransactionsSrv, rvPermissionSrv, RVReservationCardSrv) {
 
         BasePaymentCtrl.call(this, $scope);
         $scope.renderData = {};
@@ -11,7 +11,6 @@ sntRover.controller('RVAccountsTransactionsPaymentCtrl', [
         var tokenDetails = {};
         var cardDetails = {};
         var zeroAmount = parseFloat("0.00");
-        var amountToPay = 0;
 
         $scope.feeData = {};
 
@@ -111,8 +110,6 @@ sntRover.controller('RVAccountsTransactionsPaymentCtrl', [
 
                 $scope.shouldShowMakePaymentButton = true;
             }
-
-            amountToPay = $scope.renderData.defaultPaymentAmount;
             
         };
         /*
@@ -306,12 +303,11 @@ sntRover.controller('RVAccountsTransactionsPaymentCtrl', [
                 }
             });
 
-        });       
+        });
 
 
         /*
-         * Success call back of payment
-         * @data data
+         * Success call back of success payment
          */
         var successPayment = function(data) {
             $scope.$emit("hideLoader");
@@ -321,14 +317,10 @@ sntRover.controller('RVAccountsTransactionsPaymentCtrl', [
             $scope.$emit('UPDATE_TRANSACTION_DATA', data);
             $scope.showArSelection = false;
         };
-        /*
-         * failure call back of payment
-         * @error error
-         */
-        var failurePayment = function(error) { 
+        var failurePayment = function(error) {
             $scope.$emit("hideLoader");
             $scope.errorMessage = error;
-            $scope.showArSelection = false;              
+            $scope.showArSelection = false;
         };
 
         /*
