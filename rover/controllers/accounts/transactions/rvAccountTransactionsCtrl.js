@@ -955,17 +955,31 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 		});
 
 		/*
-		* Opens the popup which have the option to choose the bill layout while print/email
-		*/
-		$scope.showFormatBillPopup = function(billNo) {
+		 * Update informational invoice flag
+		 * Based on checkbox in popup
+		 */
+		var updateCheckBoxValue = $scope.$on("UPDATE_INFORMATIONAL_INVOICE", function(event, isInformationalInvoice) {
+			$scope.isInformationalInvoice = isInformationalInvoice;
+		});
+
+		// To destroy listener
+		$scope.$on('$destroy', updateCheckBoxValue);
+		/*
+		 * Opens the popup which have the option to choose the bill layout while print/email
+		 * @param billNo boolean bill no
+		 * @param isActiveBill boolean is bill active or not
+		 */
+		$scope.showFormatBillPopup = function(billNo, isActiveBill) {
 			$scope.billNo = billNo;
-	    	ngDialog.open({
-		    		template: '/assets/partials/popups/billFormat/rvBillFormatPopup.html',
-		    		controller: 'rvBillFormatPopupCtrl',
-		    		className: '',
-		    		scope: $scope
-	    	});
-    	};
+			$scope.isSettledBill = isActiveBill;
+			$scope.isInformationalInvoice = false;
+			ngDialog.open({
+					template: '/assets/partials/popups/billFormat/rvBillFormatPopup.html',
+					controller: 'rvBillFormatPopupCtrl',
+					className: '',
+					scope: $scope
+			});
+		};
     	/*
 		*  Shows the popup to show the email send status
 		*/

@@ -2882,7 +2882,6 @@ sntRover.controller('RVbillCardController',
     	$scope.billNo = billNo;
     	$scope.isInformationalInvoice = false;
     	$scope.isSettledBill = $scope.reservationBillData.bills[$scope.currentActiveBill].is_active;
-    	$scope.isFromBillScreen = true;
     	ngDialog.open({
     		template: '/assets/partials/popups/billFormat/rvBillFormatPopup.html',
     		controller: 'rvBillFormatPopupCtrl',

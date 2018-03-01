@@ -20,7 +20,18 @@
     <div class="info-bottom">
         <div class="info-left" ng-if="printData.card_type === 'COMPANY'">
             <strong >{{printData.translation.invoice_date}}:</strong>{{printData.invoice_date | date:dateFormat}}<br/>
-            <strong >{{printData.translation.invoice_number}}:</strong>{{printData.invoice_number}}<br>
+            <span ng-show="!isInformationalInvoice"><strong>{{printData.translation.invoice_number}}:</strong>{{printData.invoice_number}}<br></span>
+            <span ng-show="printData.control_code !== '' && !isInformationalInvoice">
+                <strong >{{printData.translation.control_code}}: </strong> {{printData.control_code | limitTo : 30}}
+                <br/>
+            </span>
+            <span ng-show="printData.control_unit !== '' && !isInformationalInvoice">
+                <strong >{{printData.translation.control_unit}}: </strong> {{printData.control_unit}}
+                <br/>
+            </span>
+            <span ng-show="printData.register_id !== '' && isInfrasecActivated && isInfrasecActivatedForWorkstation">
+                <strong >{{printData.translation.register_id}}: </strong> {{printData.register_id}}
+            </span>
             <div ng-if="printData.custom_reference_number != null">
             <strong  >{{printData.translation.reference_number}}:</strong>{{printData.custom_reference_number}}</div><br/>
             <strong ng-if="printData.company_card_details.payment_due_in_days" >{{printData.translation.payment_due_days}}:</strong>{{printData.company_card_details.payment_due_in_days}}<br ng-if="printData.company_card_details.payment_due_in_days" />
