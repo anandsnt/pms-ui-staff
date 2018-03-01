@@ -306,8 +306,24 @@ sntRover.controller('RvArBalanceController', ['$scope', '$timeout', 'rvAccountsA
 			});
 		};
 
-		// CICO-50150 : Handle Move To Credit actions.
-		$scope.moveToCreditButtonClicked = function( data ) {
-			console.log(data.transaction_id);
+		/* 
+		 *	CICO-50150 : Handle Move To Credit actions.
+		 *	@param {object} [balance data object]
+		 *	@return {undefined}
+		 */
+		$scope.moveToCreditButtonClicked = function( item ) {
+			
+			$scope.callAPI(rvAccountsArTransactionsSrv.moveToCreditInvoice, {
+				params: {
+					'invoice_id': item.transaction_id,
+					'account_id': $scope.arDataObj.accountId
+				},
+				successCallBack: function() {
+					refreshScroll();
+				},
+				failureCallBack: function(errorMessage) {
+					$scope.errorMessage = errorMessage;
+				}
+			});
 		};
 }]);

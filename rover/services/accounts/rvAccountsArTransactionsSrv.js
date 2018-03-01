@@ -279,4 +279,22 @@ angular.module('sntRover').service('rvAccountsArTransactionsSrv', ['$q', 'rvBase
       return deferred.promise;
     };
 
+    /*
+     * Service function to Move To credits
+     * @param {object} [balance data object]
+     * @return {object}
+     */
+    this.moveToCreditInvoice = function (params) {
+
+        var deferred = $q.defer(),
+            url = '/api/accounts/' + params.account_id + '/ar_transactions/create_manual_balances';
+
+        rvBaseWebSrvV2.postJSON(url, params).then(function (data) {
+            deferred.resolve(data);
+        }, function (data) {
+            deferred.reject(data);
+        });
+        return deferred.promise;
+    };
+
 }]);
