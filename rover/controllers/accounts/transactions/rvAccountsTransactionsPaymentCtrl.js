@@ -313,6 +313,7 @@ sntRover.controller('RVAccountsTransactionsPaymentCtrl', [
             $scope.$emit("hideLoader");
             $scope.depositPaidSuccesFully = true;
             $scope.authorizedCode = data.authorization_code;
+            data.isFromPaymentSuccess = true;
             $scope.$emit('UPDATE_TRANSACTION_DATA', data);
             $scope.showArSelection = false;
         };
