@@ -100,5 +100,22 @@ angular.module('sntRover').service('RVContactInfoSrv', [
             return deferred.promise;
         };
 
+        /**
+         * Remove guest details except first name and last name
+         * @param {Number} guestId id of the guest
+         * @return {Promise} Promise
+         */
+        service.removeGuestDetails = function (guestId) {
+            var deffered = $q.defer(),
+                url = '/api/destroy_guest_detail/' + guestId;
+
+            rvBaseWebSrvV2.putJSON(url).then(function(data) {
+                deferred.resolve(data);
+            }, function(data) {
+                deferred.reject(data);
+            });
+            return deferred.promise;
+        };
+
     }
 ]);

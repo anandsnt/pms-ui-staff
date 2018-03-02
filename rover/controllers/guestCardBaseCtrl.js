@@ -6,7 +6,7 @@
  * @return {void} 
  */
 
-function GuestCardBaseCtrl ($scope, RVSearchSrv) {
+function GuestCardBaseCtrl ($scope, RVSearchSrv, RVContactInfoSrv) {
 
     // Get the contact details object with the required properties only
     $scope.getContactInfo = function (contactInfo) {
@@ -45,6 +45,22 @@ function GuestCardBaseCtrl ($scope, RVSearchSrv) {
             }
         }
         RVSearchSrv.updateGuestDetails($scope.guestCardData.contactInfo.user_id, data);
+    };
+
+    $scope.removeGuestDetails = function (guestId) {
+        var onSuccess = function (data) {
+
+           },
+           onFailure = function (error) {
+             $scope.errorMessage = error;
+           },
+           options = {
+             params: guestId,
+             successCallBack: onSuccess,
+             failureCallBack: onFailure
+           };
+
+        $scope.callAPI(RVContactInfoSrv.removeGuestDetails, options);
     };
 
 }

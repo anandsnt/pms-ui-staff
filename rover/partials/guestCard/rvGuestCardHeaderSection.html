@@ -1,4 +1,4 @@
-<div id="guest-card-header" class="card-header first">
+<div id="guest-card-header" class="card-header first" >
     <section>
         <figure class="guest-image" ng-click="switchCard('guest-card')">
             <img ng-src="{{guestCardData.contactInfo.avatar}}" />
@@ -36,6 +36,10 @@
         <div class="card-actions" ng-show="viewState.isAddNewCard">
             <button class="button green ng-scope" type="button" ng-click="clickedSaveGuestCard()" translate="">Save new card</button>
             <button class="button blank ng-scope" type="button" ng-click="clickedDiscardGuestCard()" translate="">Discard</button>
+        </div>
+        <div class="card-actions" ng-show="!viewState.isAddNewCard">
+            <button class="button green ng-scope" type="button" ng-click="removeGuestDetails(guestCardData.contactInfo.user_id)" translate="">Remove Guest</button>
+            
         </div>        
     </section>    
 </div>
