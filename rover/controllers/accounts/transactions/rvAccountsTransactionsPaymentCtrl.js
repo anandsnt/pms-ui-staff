@@ -305,7 +305,6 @@ sntRover.controller('RVAccountsTransactionsPaymentCtrl', [
 
         });
 
-
         /*
          * Success call back of success payment
          */
@@ -317,6 +316,7 @@ sntRover.controller('RVAccountsTransactionsPaymentCtrl', [
             $scope.$emit('UPDATE_TRANSACTION_DATA', data);
             $scope.showArSelection = false;
         };
+        
         var failurePayment = function(error) {
             $scope.$emit("hideLoader");
             $scope.errorMessage = error;
