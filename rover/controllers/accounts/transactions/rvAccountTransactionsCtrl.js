@@ -246,7 +246,7 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 
 		$scope.$on('moveChargeSuccsess', function() {
 
-			 var paramsForTransactionDetails = {
+			var paramsForTransactionDetails = {
 				account_id: $scope.accountConfigData.summary.posting_account_id
 			};
 			var chargesMoved = function(data) {
