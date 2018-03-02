@@ -9,6 +9,7 @@
 			</span>
 			<a ng-click="addNewClicked()" class="action add" translate>ADD_NEW</a>
 			<a ng-show="is_connected_to_pms =='true'"  ng-click="importFromPmsClicked($event)" class="action import" translate>IMPORT_FROM_PMS</a>
+			<a class="action import" ng-click="openCsvUploadPopup()" ng-show="is_connected_to_pms =='true'" translate>UPLOAD_CSV</a>
 		</header>
 		<section class="content-scroll">
 			<div ng-include="'/assets/partials/common/notification_message.html'"></div>

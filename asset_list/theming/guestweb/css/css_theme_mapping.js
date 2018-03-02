@@ -4,6 +4,8 @@ module.exports = {
         var themeCSSRoot = 'stylesheets/guestweb/';
 
         return {
+            'guestweb_eden_roc_v2': [ themeCSSRoot + 'guestweb_eden_roc_v2.css'],
+            'guestweb_inn_at_cherry_creek': [ themeCSSRoot + 'guestweb_inn_at_cherry_creek.css'],
             'guestweb_aria_sky_suites': [ themeCSSRoot + 'guestweb_aria_sky_suites.css'],
             'guestweb_assemblage_world_trade_center': [ themeCSSRoot + 'guestweb_assemblage_world_trade_center.css'],
             'guestweb_the_asbury': [ themeCSSRoot + 'guestweb_the_asbury.css'],
