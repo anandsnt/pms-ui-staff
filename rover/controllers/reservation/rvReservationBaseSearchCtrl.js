@@ -14,7 +14,8 @@ sntRover.controller('RVReservationBaseSearchCtrl', [
     'loyaltyPrograms',
     '$filter',
     'RVReservationTabService',
-    function($rootScope, $scope, RVReservationBaseSearchSrv, dateFilter, ngDialog, $state, $timeout, $stateParams, $vault, baseData, activeCodes, flyerPrograms, loyaltyPrograms, $filter, RVReservationTabService) {
+    'guestDetails',
+    function($rootScope, $scope, RVReservationBaseSearchSrv, dateFilter, ngDialog, $state, $timeout, $stateParams, $vault, baseData, activeCodes, flyerPrograms, loyaltyPrograms, $filter, RVReservationTabService, guestDetails) {
         BaseCtrl.call(this, $scope);
         $scope.$parent.hideSidebar = false;
 
@@ -207,7 +208,7 @@ sntRover.controller('RVReservationBaseSearchCtrl', [
             $scope.reservationData.rateDetails = [];
 
             $scope.heading = 'Reservations';
-            $scope.setHeadingTitle($scope.heading);
+            $scope.setHeadingTitle($scope.heading);            
 
             // Reset to firstTab in case in case of returning to the base screen by clicking "Create a new reservation for the same guest"
             // in the confirmation screen
@@ -263,6 +264,11 @@ sntRover.controller('RVReservationBaseSearchCtrl', [
                     return "";
                 })();
 
+            }
+            // CICO-49175
+            if (!_.isEmpty(guestDetails)) {
+                $scope.searchData.guestCard.guestFirstName = guestDetails.first_name;
+                $scope.searchData.guestCard.guestLastName = guestDetails.last_name;                
             }
 
             if ($scope.reservationData.arrivalDate === '') {
@@ -413,7 +419,7 @@ sntRover.controller('RVReservationBaseSearchCtrl', [
                     'guestLastName': $scope.searchData.guestCard.guestLastName,
                     'companyID': $scope.reservationData.company.id,
                     'travelAgentID': $scope.reservationData.travelAgent.id,
-                    'promotionCode': $scope.reservationData.searchPromoCode
+                    'promotionCode': $scope.reservationData.searchPromoCode                    
                 });
 
                 $vault.set('searchReservationData', JSON.stringify(reservationDataToKeepinVault));
@@ -455,7 +461,7 @@ sntRover.controller('RVReservationBaseSearchCtrl', [
                         'adults': $scope.reservationData.tabs[0]['numAdults'],
                         'children': $scope.reservationData.tabs[0]['numChildren'],
                         'room_type_id': $scope.reservationData.tabs[0].roomTypeId,
-                        'is_member': !!$scope.reservationData.member.isSelected
+                        'is_member': !!$scope.reservationData.member.isSelected                        
                     });
                 }
             }

@@ -100,5 +100,56 @@ angular.module('sntRover').service('RVContactInfoSrv', [
             return deferred.promise;
         };
 
+        /**
+         * Get guest details by id
+         * @param {Number} guestId id of guest
+         * @return {Promise} Promise
+         */
+        service.getGuestDetailsById = function (guestId) {
+            var deffered = $q.defer(),
+                url = '/api/guest_details/' + guestId;
+
+            rvBaseWebSrvV2.getJSON(url).then (function (data) {
+                deffered.resolve (data);
+            }, function (error) {
+                deffered.resolve(error);
+            });
+
+            return deffered.promise;
+        };
+
+        /**
+         * Parse the api response data and convert it into the format required for view
+         * @param {object} apiResponseData data from API
+         * @return {object} guestData formatted data
+         */
+        service.parseGuestData = function (apiResponseData) {
+            var guestData = {};
+
+            guestData.id = apiResponseData.id;
+            guestData.firstName = apiResponseData.first_name;
+            guestData.lastName = apiResponseData.last_name;
+            guestData.image = apiResponseData.image_url;
+            guestData.vip = apiResponseData.vip;
+            if (apiResponseData.address) {
+                guestData.address = {};
+                guestData.address.city = apiResponseData.address.city;
+                guestData.address.state = apiResponseData.address.state;
+                guestData.address.postalCode = apiResponseData.address.postal_code;
+            }
+            guestData.stayCount = apiResponseData.stay_count;
+            guestData.lastStay = {};
+            guestData.phone = apiResponseData.home_phone;
+            guestData.email = apiResponseData.email;
+
+            if (apiResponseData.last_stay) {
+                guestData.lastStay.date = apiResponseData.last_stay.date;
+                guestData.lastStay.room = apiResponseData.last_stay.room;
+               guestData.lastStay.roomType = apiResponseData.last_stay.room_type;
+            }            
+
+            return guestData;
+        };
+
     }
 ]);

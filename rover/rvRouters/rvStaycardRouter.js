@@ -48,7 +48,7 @@ angular.module('stayCardModule', [])
 
 
         $stateProvider.state('rover.reservation.search', {
-            url: '/search',
+            url: '/search/:guestId',
             templateUrl: '/assets/partials/reservation/rvBaseSearch.html',
             controller: 'RVReservationBaseSearchCtrl',
             resolve: {
@@ -63,7 +63,15 @@ angular.module('stayCardModule', [])
                 },
                 loyaltyPrograms: function(RVCompanyCardSrv, staycardJsAssets) {
                     return RVCompanyCardSrv.fetchHotelLoyaltiesHlps();
-                }
+                },
+                guestDetails: function (RVContactInfoSrv, staycardJsAssets, $stateParams) {
+                    var guestId = $stateParams.guestId;
+
+                    if (guestId) {
+                      return RVContactInfoSrv.getGuestDetailsById(guestId);  
+                    }
+                    return {};                    
+                }                
             }
         });
 
@@ -164,7 +172,7 @@ angular.module('stayCardModule', [])
                         from_date: $stateParams.from_date,
                         to_date: $stateParams.to_date
                     });
-                }
+                }                
             }
         });
 
