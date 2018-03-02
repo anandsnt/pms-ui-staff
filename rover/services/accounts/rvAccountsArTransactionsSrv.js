@@ -287,7 +287,7 @@ angular.module('sntRover').service('rvAccountsArTransactionsSrv', ['$q', 'rvBase
     this.moveToCreditInvoice = function (params) {
 
         var deferred = $q.defer(),
-            url = '/api/accounts/' + params.account_id + '/ar_transactions/create_manual_balances';
+            url = '/api/accounts/' + params.account_id + '/ar_transactions/post_manual_credit';
 
         rvBaseWebSrvV2.postJSON(url, params).then(function (data) {
             deferred.resolve(data);
