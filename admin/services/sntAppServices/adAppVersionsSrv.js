@@ -63,7 +63,7 @@ admin.service('adAppVersionsSrv', ['$http', '$q', 'ADBaseWebSrv', 'ADBaseWebSrvV
 
 	this.deleteBuild = function (data) {
 		var deferred = $q.defer();
-		var url = '/sample_json/zest_station/app_versions.json';
+		var url = '/admin/service_application_types/delete_build';
 
 		ADBaseWebSrvV2.deleteJSON(url, data).then(function(data) {
 			deferred.resolve(data);
