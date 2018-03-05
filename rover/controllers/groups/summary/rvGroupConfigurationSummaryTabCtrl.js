@@ -915,12 +915,12 @@ angular.module('sntRover').controller('rvGroupConfigurationSummaryTab', ['$scope
                     return;
                 }
                 $scope.ngData = {};
+                $scope.languageData = data;
                 $scope.groupConfirmationData = {
                     contact_email: $scope.groupConfigData.summary.contact_email,
                     is_salutation_enabled: false,
                     is_include_rooming_list: false,
                     personal_salutation: '',
-                    languageData : data,
                     locale : data.selected_language_code
                 };
                 ngDialog.open({

@@ -12,7 +12,7 @@
 		<fieldset class="content-left">
 			<div class="entry full-width">
 				<label>Contact Email</label>
-		    	<input type="text" value="{{groupConfirmationData.contact_email}}"/>
+		    	<input type="text" ng-model="groupConfirmationData.contact_email"/>
 			</div>
 
 			<div class="entry full-width" >
@@ -20,7 +20,7 @@
 	            <div  class="select">
 	                <select convert-to-number iscroll-stop-propagation ng-model="groupConfirmationData.locale">
 	                    <option style="display:none" value=""></option>
-	                    <option value="{{item.code}}" ng-repeat="item in groupConfirmationData.languageData.languages"
+	                    <option value="{{item.code}}" ng-if="item.is_show_on_guest_card" ng-repeat="item in languageData.languages"
 	                        ng-selected="item.code === groupConfirmationData.locale"
 	                        >{{item.language}}</option>
 	                </select>
