@@ -106,14 +106,32 @@ angular.module('sntRover').service('RVContactInfoSrv', [
          * @return {Promise} Promise
          */
         service.removeGuestDetails = function (guestId) {
-            var deffered = $q.defer(),
-                url = '/api/destroy_guest_detail/' + guestId;
+            var deferred = $q.defer(),
+                url = '/api/guest_details/' + guestId + '/destroy_guest_detail';
 
             rvBaseWebSrvV2.putJSON(url).then(function(data) {
                 deferred.resolve(data);
             }, function(data) {
                 deferred.reject(data);
             });
+            return deferred.promise;
+        };
+
+        /**
+         * Get guest details info by id
+         * @param {Number} guestId id of the guest
+         * @return {Promise} Promise
+         */
+        service.getGuestDetailsById = function(guestId) {
+            var deferred = $q.defer(),
+                url = '/api/guest_details/' + guestId; 
+            
+            rvBaseWebSrvV2.getJSON(url).then(function(data) {                    
+               deferred.resolve(data);
+            }, function(data) {
+               deferred.reject(data);
+            });
+           
             return deferred.promise;
         };
 

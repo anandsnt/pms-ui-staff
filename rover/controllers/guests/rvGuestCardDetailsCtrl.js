@@ -11,11 +11,12 @@ angular.module('sntRover').controller('rvGuestDetailsController',
   'RVContactInfoSrv',
   'RVSearchSrv',
   'idTypesList',
+  'rvPermissionSrv',
   function($scope, contactInfo, countries, $stateParams, $state, $filter, $rootScope, RVGuestCardSrv,
-    RVContactInfoSrv, RVSearchSrv, idTypesList) {        
+    RVContactInfoSrv, RVSearchSrv, idTypesList, rvPermissionSrv) {        
 
         BaseCtrl.call(this, $scope);
-        GuestCardBaseCtrl.call (this, $scope, RVSearchSrv);
+        GuestCardBaseCtrl.call (this, $scope, RVSearchSrv, RVContactInfoSrv, rvPermissionSrv);
 
         /**
          * Decides whether loyalty tab should be shown or not
@@ -247,8 +248,8 @@ angular.module('sntRover').controller('rvGuestDetailsController',
             $scope.currentGuestCardHeaderData.last_name = data.last_name;
         }); 
 
-        $scope.$on('$destroy', resetHeaderDataListener);
-        
+        $scope.$on('$destroy', resetHeaderDataListener);        
+
         var init = function () {
             $scope.viewState = {
                 isAddNewCard: !$stateParams.guestId
@@ -282,6 +283,13 @@ angular.module('sntRover').controller('rvGuestDetailsController',
             setBackNavigation();
             
         };
+
+        // Listener for setting the guestData information
+        var guestCardSetListener = $scope.$on('SET_GUEST_CARD_DATA', function (event, data) {
+            $scope.guestCardData = getGuestCardData(data, $stateParams.guestId);
+        });
+
+        $scope.$on('$destroy', guestCardSetListener);
 
         init();
         

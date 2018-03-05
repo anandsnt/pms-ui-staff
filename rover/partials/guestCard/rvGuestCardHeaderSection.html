@@ -38,7 +38,7 @@
             <button class="button blank ng-scope" type="button" ng-click="clickedDiscardGuestCard()" translate="">Discard</button>
         </div>
         <div class="card-actions" ng-show="!viewState.isAddNewCard">
-            <button class="button green ng-scope" type="button" ng-click="removeGuestDetails(guestCardData.contactInfo.user_id)" translate="">Remove Guest</button>
+            <button class="button ng-scope" type="button" ng-click="removeGuestDetails(guestCardData.contactInfo.user_id)" ng-class="{'grey':guestCardData.contactInfo.is_active_reservations_present || !hasRemoveGuestDetailsPermission(),'green': !guestCardData.contactInfo.is_active_reservations_present}">Remove Guest</button>
             
         </div>        
     </section>    
