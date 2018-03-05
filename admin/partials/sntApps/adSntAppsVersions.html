@@ -78,7 +78,7 @@
         <div class="form">
             <fieldset class="holder left">
                 <div class="entry full-width">
-                    <label for="certificate">Upload Buid </label>
+                    <label for="certificate">Upload Buid&nbsp;<strong>*</strong></label>
                     <div class="file-upload">
                         <span class="input">{{fileName}}</span>
                         <input type="file" ng-model="selectedApp.build" accept="*" app-filereader onclick="this.value=null;"/>
@@ -87,7 +87,7 @@
                         </button>
                     </div>
                 </div>
-                <ad-textbox value="selectedApp.version" label="{{ 'APP_VERSION' | translate}}" styleclass="full-width"></ad-textbox>
+                <ad-textbox value="selectedApp.version" label="{{ 'APP_VERSION' | translate}}" styleclass="full-width" required="yes"></ad-textbox>
                 <ad-textarea rows="4" div-class="full-width" text-area-class="full-width" value="selectedApp.description" label="{{ 'DESCRIPTION' | translate}}" placeholder=""></ad-textarea>
             </fieldset>
             <div class="actions float">

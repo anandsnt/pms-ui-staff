@@ -81,7 +81,7 @@ admin.controller('ADSntAppsListCtrl', ['$scope',
 			var params = angular.copy($scope.selectedApp);
 
 			params.service_application = $scope.filterType.id;
-			if ($scope.screenMode === 'ADD_BUILD') {
+			if ($scope.screenMode === 'ADD_BUILD' || $scope.fileName !== 'File Attached') {
 				params.file_name = $scope.fileName;
 			}
 			$scope.callAPI(adAppVersionsSrv.uploadBuild, {
