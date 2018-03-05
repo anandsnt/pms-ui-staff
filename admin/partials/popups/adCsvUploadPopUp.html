@@ -1,0 +1,29 @@
+<!-- Please note that the styles are added inline, as these styles will be only for this popup -->
+<div id="modal" class="modal-show" ng-class="{'modal-show': !modalClosing}" role="dialog" ng-cloak>
+    <div class="modal-content">
+        <form method="post" class="modal-content group-rooms">
+        	<h3 translate>PLEASE_UPLOAD_CSV_FILE<h3>
+        	<br/>
+            <div class="entry" style="width:400px;">
+                <div class="entry full-width">
+                    <label translate></label>
+                    <div class="file-upload">
+                        <span class="input">{{fileName}}</span>
+                        <input type="file" ng-model="csvData.csv_file" accept="*" app-filereader />
+                        <button type="button" class="button brand-colors" style="width:20%;line-height:20px;" translate>
+                            ATTACH
+                        </button>
+                    </div>
+                </div>
+                <div class="entry top-padding-20">
+                    <div class="entry top-padding-20">
+                        <label>&nbsp;&nbsp;</label>
+                        <button translate="" ng-click="uploadCSVFile()" class="button green" ng-disabled="csvData.csv_file === ''" ng-class="{'grey': csvData.csv_file === ''}"translate>UPLOAD</button>
+                        <label>&nbsp;&nbsp;</label>
+                        <button translate="" ng-click="closeThisDialog()" class="button grey" translate>CANCEL</button>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

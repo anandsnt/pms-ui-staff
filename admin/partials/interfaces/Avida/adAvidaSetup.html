@@ -8,7 +8,6 @@
     </div>
 
     <ad-sync-block ng-if="config.enabled"
-                   historical-date-range-days="30"
                    interface="{{interface}}"
                    config="config">
     </ad-sync-block>
@@ -29,6 +28,8 @@
                 <ad-textbox inputtype="text" value="config.ftp_host" label="FTP host"
                             styleclass="full-width"></ad-textbox>
                 <ad-textbox inputtype="text" value="config.ftp_location" label="FTP location"
+                            styleclass="full-width"></ad-textbox>
+                <ad-textbox inputtype="text" value="config.ftp_receipts_location" label="FTP receipt location"
                             styleclass="full-width"></ad-textbox>
                 <ad-textbox inputtype="text" value="config.ftp_username" label="FTP user name"
                             styleclass="full-width"></ad-textbox>
