@@ -549,11 +549,11 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 		var hasPermissionToChangeCharges = function(type) {
 			// hide edit and remove options in case type is  payment
 			var hasRemoveAndEditPermission  = (type !== "PAYMENT") ? true : false;
-			var split_permission = rvPermissionSrv.getPermissionValue('SPLIT_CHARGES'),
-				edit_permission = rvPermissionSrv.getPermissionValue('EDIT_CHARGES'),
-				delete_permission = rvPermissionSrv.getPermissionValue('DELETE_CHARGES');
+			var splitPermission = rvPermissionSrv.getPermissionValue('SPLIT_CHARGES'),
+				editPermission = rvPermissionSrv.getPermissionValue('EDIT_CHARGES'),
+				deletePermission = rvPermissionSrv.getPermissionValue('DELETE_CHARGES');
 
-			return ((hasRemoveAndEditPermission && (edit_permission || delete_permission)) || split_permission);
+			return ((hasRemoveAndEditPermission && (editPermission || deletePermission)) || splitPermission);
 		};
 
 		/**
