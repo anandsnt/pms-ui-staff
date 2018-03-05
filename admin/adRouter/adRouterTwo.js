@@ -382,6 +382,9 @@ angular.module('adminModuleTwo', []).config(function ($stateProvider) {
             },
             availableLanguages: function (ADTranslationSrv) {
                 return ADTranslationSrv.getActiveGuestLanguages();
+            },
+            addonUpsellSettings: function (ADUpsellAddonSrv) {
+                return ADUpsellAddonSrv.getSettings();
             }
         }
     });
@@ -695,13 +698,23 @@ angular.module('adminModuleTwo', []).config(function ($stateProvider) {
     $stateProvider.state('admin.zestWebAddons', {
         templateUrl: '/assets/partials/checkin/adZestWebAddons.html',
         controller: 'ADZestWebAddonCtrl',
-        url: '/zestWebAddons'
+        url: '/zestWebAddons',
+        resolve: {
+             addonUpsellSettings: function (ADUpsellAddonSrv) {
+                return ADUpsellAddonSrv.getSettings();
+            }
+        }
     });
 
     $stateProvider.state('admin.zestStationAddons', {
         templateUrl: '/assets/partials/zestStation/adZestStationAddons.html',
         controller: 'ADZestStationAddonCtrl',
-        url: '/zestStationAddons'
+        url: '/zestStationAddons',
+        resolve: {
+            addonUpsellSettings: function(ADUpsellAddonSrv) {
+                return ADUpsellAddonSrv.getSettings();
+            }
+        }
     });
 
     $stateProvider.state('admin.stationHueSettings', {
