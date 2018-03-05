@@ -283,8 +283,9 @@ angular.module('sntRover').service('rvAccountTransactionsSrv', ['$q', 'rvBaseWeb
 
 
 		this.checkForArAccount = function(params) {
+
 			var deferred = $q.defer(),
-			    url = '/api/posting_accounts/' + params.account_id + '/is_ar_account_attached';
+			    url = '/api/posting_accounts/' + params.account_id + '/check_ar_account_attached';
 
 			rvBaseWebSrvV2.getJSON(url)
 				.then(function(data) {
