@@ -26,7 +26,7 @@ admin.service('adAppVersionsSrv', ['$http', '$q', 'ADBaseWebSrv', 'ADBaseWebSrvV
 
 	this.saveFTPsettings = function(data) {
 		var deferred = $q.defer();
-		var url = '/admin/service_application_types/save_upload_credentials';
+		var url = '/admin/service_application_types/save_server_credentials';
 
 		ADBaseWebSrvV2.postJSON(url, data).then(function(data) {
 			deferred.resolve(data);
@@ -39,7 +39,7 @@ admin.service('adAppVersionsSrv', ['$http', '$q', 'ADBaseWebSrv', 'ADBaseWebSrvV
 	this.fetchFTPSettings = function () {
 		
 		var deferred = $q.defer();
-		var url = '/admin/service_application_types/retrieve_upload_credentials';
+		var url = '/admin/service_application_types/retrieve_server_credentials';
 
 		ADBaseWebSrvV2.getJSON(url).then(function(data) {
 			deferred.resolve(data);
