@@ -1,10 +1,12 @@
-admin.controller('ADZestWebAddonCtrl', ['$scope', 'ADZestWebAddonSrv', 'ngTableParams', '$controller',
-	function($scope, ADZestWebAddonSrv, ngTableParams, $controller) {
+admin.controller('ADZestWebAddonCtrl', ['$scope', 'ADZestWebAddonSrv', 'ngTableParams', '$controller', 'addonUpsellSettings',
+	function($scope, ADZestWebAddonSrv, ngTableParams, $controller, addonUpsellSettings) {
 
 		// inheriting from base table controller
 		$controller('ADSortableAddonListBaseCtrl', {
 			$scope: $scope
 		});
+        $scope.showZestStationSettings = addonUpsellSettings.zest_station_addon_upsell_availability;
+
 		// fetch addon list
 		var fetAddonsData = function($defer) {
 			var options = {
