@@ -272,14 +272,87 @@
 						<div class="total-stay-fees" ng-include="'/assets/partials/bill/rvTotalStayFees.html'" ></div>
 
 						<!-- Signature -->
-						<div ng-include="'/assets/partials/bill/rvSignature.html'"></div>
+						<!--<div ng-include="'/assets/partials/bill/rvSignature.html'"></div>-->
 
 						<!-- Registration card -->
 						<div id="regDiv" class="registration-card" ng-include="'/assets/partials/bill/rvRegistrationCard.html'"></div>
 					</div>
+
+
+					<!-- If Check In -->
+					<div class="signature-header">
+						<h2>Please sign below</h2>
+						<button id="clear-signature" type="button" class="button blank red-text">Clear signature</button>
+					</div>
+					<div id="signature-pad">
+						<div class="sig sigWrapper">
+							<div id="signature"
+								 ui-jq="jSignature"
+								 ui-options="signaturePluginOptions"
+								 ng-mouseover="disableScroll()"
+								 ng-mouseleave="enableScroll()"
+								 div-touch-move-stop-propogate>
+							</div>
+						</div>
+					</div>
+
+
+
 				</div>
 			</div>
 		</div>
+
+
+		<div id="bill{No.}-complete" class="complete-registration form" ng-controller="RVReservationCheckInFlowCtrl" ng-show="clickedButton == 'checkinButton'">
+			<div class="entry">
+				<label class="checkbox inline"
+					   ng-show="reservationBillData.is_disabled_terms_conditions_checkin === 'false'">
+					<span class="icon-form icon-checkbox" ng-class="{'checked': saveData.termsAndConditions}"></span>
+					<input type="checkbox" class="termsandconditions-checkbox" ng-model="saveData.termsAndConditions">
+					<div class="agree-terms-and-conditions" click-touch="termsAndConditionsClicked()">{{ 'T_AND_C_TEXT' |
+						translate }} checkin
+					</div>
+				</label>
+				<label id="subscribe-via-email" class="checkbox inline checked">
+					<span class="icon-form icon-checkbox" ng-class="{'checked': saveData.promotions}"></span>
+					<input type="checkbox" value="1" name="checkin" checked="" ng-model="saveData.promotions">
+					{{ 'PROMO_NEWS_BY_EMAIL_TEXT' | translate }} </label>
+			</div>
+			<div class="actions">
+				<!-- Complete checkin button disabled out until ready / vacant room is assigned -->
+
+				<!-- Advance put in Queue flow now exists, from admin -> rooms -> housekeeping -> ENABLE ADVANCED QUEUE PRE-CHECKIN -->
+				<!--  if using the advanced queue flow, only via 'Put in Queue' will the button text change, all other functionality is the same: CICO-19673-->
+				<button ng-show="!putInQueue"
+						click-touch="checkIn()"
+						data-room-status="READY"
+						data-reseravation-status="CHECKING_IN"
+						data-required-signature="CHECKIN"
+						data-key-settings="encode"
+						data-fo-status="VACANT"
+						class="button green" translate>
+					COMPLETE_CHECKIN
+				</button>
+				<button ng-show="putInQueue"
+						id="checkin-button" click-touch="clickedCompleteAddToQueue()"
+						data-room-status="READY"
+						data-reseravation-status="CHECKING_IN"
+						data-required-signature="CHECKIN"
+						data-key-settings="encode"
+						data-fo-status="VACANT"
+						class="button green" translate>
+					COMPLETE_ADD_TO_QUEUE
+				</button>
+
+
+				<div class="clearButton" ng-show="reservationBillData.required_signature_at === 'CHECKIN'">
+					<a id="clear-signature" class="button blank" click-touch='clickedClearSignature()'
+					   ng-hide="isSigned() || reservation.reservation_card.is_pre_checkin" translate>CLEAR_SIGNATURE</a>
+				</div>
+			</div>
+		</div>
+
+
 	</section>
 
 </div>
