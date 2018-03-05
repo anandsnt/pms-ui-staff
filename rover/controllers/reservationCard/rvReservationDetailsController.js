@@ -1034,7 +1034,9 @@ sntRover.controller('reservationDetailsController',
                         // CICO-36733
                         $scope.showOverBookingAlert = !response.data.is_room_type_available && response.data.is_house_available && rvPermissionSrv.getPermissionValue('OVERBOOK_ROOM_TYPE');
                         $scope.showChangeDatesPopup = !rvPermissionSrv.getPermissionValue('OVERBOOK_ROOM_TYPE') || response.data.is_room_type_available || !response.data.is_house_available;
-
+                        // CICO-44842 Show message when trying to overbook a suite reservation
+                        $scope.restrictSuiteOverbooking = !response.data.is_room_type_available && response.data.is_suite_reservation;
+                        $scope.isSuiteReservation = response.data.is_suite_reservation;
 
 						ngDialog.open({
 							template: '/assets/partials/reservation/alerts/editDatesInStayCard.html',
