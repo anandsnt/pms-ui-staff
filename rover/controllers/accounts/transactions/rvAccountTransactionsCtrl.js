@@ -15,6 +15,7 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 	'$window',
 	'$q',
 	'jsMappings',
+	'sntActivity',
 	function($scope,
 		$rootScope,
 		$filter,
@@ -30,7 +31,8 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 		$timeout,
 		$window,
 		$q,
-		jsMappings) {
+		jsMappings,
+		sntActivity) {
 
 		BaseCtrl.call(this, $scope);
 		$scope.perPage = 50;
@@ -114,10 +116,10 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 		};
 
 		$scope.moveChargesClicked = function() {
-			$scope.$emit('showLoader');
+			sntActivity.start('MOVE_CHARGES_CLICKED');
 			jsMappings.fetchAssets(['addBillingInfo', 'directives'])
 			.then(function() {
-				$scope.$emit('hideLoader');
+				sntActivity.stop('MOVE_CHARGES_CLICKED');
 
 				var billTabsData = $scope.transactionsDetails.bills;
 				var chargeCodes = billTabsData[$scope.currentActiveBill].transactions;
@@ -222,7 +224,6 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 			$scope.callAPI( RVBillCardSrv.callBlackBoxApi, options );
 		};
 
-
 		/**
 		 * Successcallback of transaction list fetch
 		 * @param  {[type]} data [description]
@@ -244,19 +245,26 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 			$scope.refreshScroller('billDays');
 		};
 
-		$scope.$on('moveChargeSuccsess', function() {
+		/*
+		 * success method move charge
+		 */
+		var moveChargeSuccess = $scope.$on('moveChargeSuccsess', function() {
 
-			var paramsForTransactionDetails = {
-				account_id: $scope.accountConfigData.summary.posting_account_id
-			};
 			var chargesMoved = function(data) {
-				$scope.$emit('hideLoader');
-				onTransactionFetchSuccess(data);
-			};
+					onTransactionFetchSuccess(data);
+				},
+				params = {
+					"account_id": $scope.accountConfigData.summary.posting_account_id
+				},
+			    options = {
+					params: params,
+					successCallBack: chargesMoved
+				};
 
-			$scope.invokeApi(rvAccountTransactionsSrv.fetchTransactionDetails, paramsForTransactionDetails, chargesMoved);
+			$scope.callAPI(rvAccountTransactionsSrv.fetchTransactionDetails, options);
 		});
 
+		$scope.$on('$destroy', moveChargeSuccess);
 
 		/**
 		 * API calling method to get the transaction details
@@ -290,7 +298,6 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 
 		// To destroy listener
 		$scope.$on('$destroy', updateTransactionData);
-
 
 		$scope.createNewBill = function() {
 			var billData = {
@@ -391,11 +398,11 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 
 		$scope.openPostCharge = function( activeBillNo ) {
 		// Show a loading message until promises are not resolved
-		$scope.$emit('showLoader');
+		sntActivity.start("OPEN_POST_CHARGE");
 
 		jsMappings.fetchAssets(['postcharge', 'directives'])
 		.then(function() {
-			$scope.$emit('hideLoader');
+			sntActivity.stop("OPEN_POST_CHARGE");
 
 			// pass on the reservation id
 			$scope.account_id = $scope.accountConfigData.summary.posting_account_id;
@@ -458,10 +465,10 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 		};
 
 		$scope.showPayemntModal = function() {
-			$scope.$emit('showLoader');
+			sntActivity.start("SHOW_PAYMENT_MODEL");
 			jsMappings.fetchAssets(['addBillingInfo', 'directives'])
 			.then(function() {
-				$scope.$emit('hideLoader');
+				sntActivity.stop("SHOW_PAYMENT_MODEL");
 				$scope.passData = getPassData();
 				ngDialog.open({
 					template: '/assets/partials/accounts/transactions/rvAccountPaymentModal.html',
@@ -803,7 +810,7 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 			 proceedPayment();
 		});
 		// setUp data from the payament modal for future usage
-		$scope.$on('arAccountWillBeCreated', function(e, arg) {
+		var arAccountWillBeCreated = $scope.$on('arAccountWillBeCreated', function(e, arg) {
 				$scope.account_id = arg.account_id;
 				$scope.is_auto_assign_ar_numbers = arg.is_auto_assign_ar_numbers;
 				$scope.diretBillpaymentData = arg.paymentDetails;
@@ -814,6 +821,8 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 					scope: $scope
 				});
 		});
+
+		$scope.$on('$destroy', arAccountWillBeCreated);
 
 		/**
 		 * success call back of charge code fetch,
@@ -946,7 +955,7 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 		 * @param  {[type]} currentTab){		} [description]
 		 * @return {[type]}				   [description]
 		 */
-		$scope.$on ('GROUP_TAB_SWITCHED', function(event, currentTab) {
+		var groupTabSwitched = $scope.$on ('GROUP_TAB_SWITCHED', function(event, currentTab) {
 			if (currentTab === "TRANSACTIONS") {
 				callInitialAPIs();
 			}
@@ -957,6 +966,8 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 				}
 			}
 		});
+
+		$scope.$on('$destroy', groupTabSwitched);
 
 		/*
 		 * Update informational invoice flag
