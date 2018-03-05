@@ -1,5 +1,5 @@
-angular.module('sntRover').controller('rvGroupConfigurationSummaryTab', ['$scope', '$q', 'jsMappings', '$rootScope', 'rvGroupSrv', '$filter', '$stateParams', 'rvGroupConfigurationSrv', 'dateFilter', 'RVReservationSummarySrv', 'ngDialog', 'RVReservationAddonsSrv', 'RVReservationCardSrv', 'rvUtilSrv', '$state', 'rvPermissionSrv', '$timeout', 'rvGroupActionsSrv',
-    function($scope, $q, jsMappings, $rootScope, rvGroupSrv, $filter, $stateParams, rvGroupConfigurationSrv, dateFilter, RVReservationSummarySrv, ngDialog, RVReservationAddonsSrv, RVReservationCardSrv, util, $state, rvPermissionSrv, $timeout, rvGroupActionsSrv) {
+angular.module('sntRover').controller('rvGroupConfigurationSummaryTab', ['$scope', '$q', 'jsMappings', '$rootScope', 'rvGroupSrv', '$filter', '$stateParams', 'rvGroupConfigurationSrv', 'dateFilter', 'RVReservationSummarySrv', 'ngDialog', 'RVReservationAddonsSrv', 'RVReservationCardSrv', 'rvUtilSrv', '$state', 'rvPermissionSrv', '$timeout', 'rvGroupActionsSrv', 'RVContactInfoSrv',
+    function($scope, $q, jsMappings, $rootScope, rvGroupSrv, $filter, $stateParams, rvGroupConfigurationSrv, dateFilter, RVReservationSummarySrv, ngDialog, RVReservationAddonsSrv, RVReservationCardSrv, util, $state, rvPermissionSrv, $timeout, rvGroupActionsSrv, RVContactInfoSrv) {
 
 
         var summaryMemento, demographicsMemento;
@@ -907,23 +907,30 @@ angular.module('sntRover').controller('rvGroupConfigurationSummaryTab', ['$scope
          */
         $scope.openSendConfirmationPopup = function () {
 
-            if ($scope.isInAddMode()) {
-                // If the group has not been saved yet, prompt user for the same
-                $scope.errorMessage = ['Please save the group first'];
-                return;
+            var fetchGuestLanguageSuccess = function(data) {
+                $scope.$emit('hideLoader');
+                if ($scope.isInAddMode()) {
+                    // If the group has not been saved yet, prompt user for the same
+                    $scope.errorMessage = ['Please save the group first'];
+                    return;
+                }
+                $scope.ngData = {};
+                $scope.groupConfirmationData = {
+                    contact_email: $scope.groupConfigData.summary.contact_email,
+                    is_salutation_enabled: false,
+                    is_include_rooming_list: false,
+                    personal_salutation: '',
+                    languageData : data,
+                    locale : data.selected_language_code
+                };
+                ngDialog.open({
+                    template: '/assets/partials/groups/summary/groupSendConfirmationPopup.html',
+                    className: '',
+                    scope: $scope
+                });
             }
-            $scope.ngData = {};
-            $scope.groupConfirmationData = {
-                contact_email: $scope.groupConfigData.summary.contact_email,
-                is_salutation_enabled: false,
-                is_include_rooming_list: false,
-                personal_salutation: ''
-            };
-            ngDialog.open({
-                template: '/assets/partials/groups/summary/groupSendConfirmationPopup.html',
-                className: '',
-                scope: $scope
-            });
+            $scope.invokeApi(RVContactInfoSrv.fetchGuestLanguages, {},
+            fetchGuestLanguageSuccess);
         };
 
         /*
