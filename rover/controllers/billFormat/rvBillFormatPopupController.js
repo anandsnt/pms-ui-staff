@@ -1,10 +1,11 @@
-sntRover.controller('rvBillFormatPopupCtrl', ['$scope', '$rootScope', '$filter', 'RVBillCardSrv', 'ngDialog', function($scope, $rootScope, $filter, RVBillCardSrv, ngDialog) {
+sntRover.controller('rvBillFormatPopupCtrl', ['$scope', '$rootScope', '$filter', 'RVBillCardSrv', 'RVContactInfoSrv', 'ngDialog', function($scope, $rootScope, $filter, RVBillCardSrv, RVContactInfoSrv, ngDialog) {
 
     BaseCtrl.call(this, $scope);
     $scope.isCompanyCardInvoice = true;
     $scope.disableCompanyCardInvoice = false;
     $scope.hideCompanyCardInvoiceToggle = true;
-
+    $scope.isInformationalInvoice = ($rootScope.isInfrasecActivated && $rootScope.isInfrasecActivatedForWorkstation); 
+    $scope.isInformationalInvoiceDisabled = ($rootScope.isInfrasecActivated && $rootScope.isInfrasecActivatedForWorkstation && $scope.isSettledBill); 
     /*
     *  Get the request params for bill settings info
     */
@@ -72,14 +73,35 @@ sntRover.controller('rvBillFormatPopupCtrl', ['$scope', '$rootScope', '$filter',
 
     };
 
+    var successCallBackForLanguagesFetch = function(data) {
+      $scope.$emit('hideLoader');
+      if (data.languages) {
+        data.languages = _.filter(data.languages, {
+            is_show_on_guest_card: true
+        });
+      }
+      $scope.languageData = data;
+      $scope.data.locale = data.selected_language_code;
+    };
+
+    /**
+     * Fetch the guest languages list and settings
+     * @return {undefined}
+     */
+    var fetchGuestLanguages = function() {
+      // call api
+      $scope.invokeApi(RVContactInfoSrv.fetchGuestLanguages, {},
+        successCallBackForLanguagesFetch);
+    };
+
     /*
     *  Fetches the bill settings info for the guest/account bills
     */
     var fetchBillSettingsInfo = function() {
         var params = getBillSettingsInfoRequestParams();
         var onBillSettingsInfoFetchSuccess = function(response) {
-            $scope.$emit('hideLoader');
-
+            
+            fetchGuestLanguages();
             /** CICO-38736
              *
              * The default_bill_settings in the response defaults to numeric 1, the value of which is a string otherwise
@@ -116,20 +138,31 @@ sntRover.controller('rvBillFormatPopupCtrl', ['$scope', '$rootScope', '$filter',
 
         }
         params.bill_number = $scope.billNo;
+        params.locale = $scope.data.locale;
         $scope.$emit('hideLoader');
         return params;
     };
 
     /*
-    *  Function which get invoked when the print btn from bill format popup is clicked
-    */
+     *  Function which get invoked when the print btn from bill format popup is clicked
+     */
     $scope.printBill = function() {
         var printRequest = getPrintEmailRequestParams();
-
+        
+        $scope.$emit("UPDATE_INFORMATIONAL_INVOICE", $scope.isInformationalInvoice);
         printRequest.bill_layout = $scope.data.default_bill_settings;
         $scope.clickedPrint(printRequest);
     };
+    /*
+     * click action Print button
+     * show proceed popup - if infrasec enabled
+     */
+    $scope.clickedPrintBill = function() {
 
+        $scope.printBill();
+
+    };
+    
     /*
     *  Function which get invoked when the email btn from bill format popup is clicked
     */
@@ -138,6 +171,7 @@ sntRover.controller('rvBillFormatPopupCtrl', ['$scope', '$rootScope', '$filter',
 
         emailRequest.bill_layout = $scope.data.default_bill_settings;
         emailRequest.to_address = $scope.data.to_address;
+        emailRequest.is_informational_invoice = $scope.isInformationalInvoice;
         $scope.clickedEmail(emailRequest);
     };
 

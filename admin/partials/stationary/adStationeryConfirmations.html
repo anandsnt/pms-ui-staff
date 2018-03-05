@@ -113,8 +113,8 @@
             <h4>Settings - Email</h4>
             <div class="entry">
                 <label for="confirmation-hotel-picture" class="switch-label">Show Hotel Picture</label>
-                <div class="switch-button" ng-class = "{'on': stationery_data.show_hotel_logo}"> <!-- Add class 'on' when L175 is checked -->
-                    <input id="confirmation-hotel-picture" type="checkbox" ng-model="stationery_data.show_hotel_logo"> 
+                <div class="switch-button" ng-class = "{'on': data.show_hotel_picture}"> <!-- Add class 'on' when L175 is checked -->
+                    <input id="confirmation-hotel-picture" type="checkbox" ng-model="data.show_hotel_picture"> 
                     <span class="switch-icon"></span>
                 </div>
             </div>
@@ -128,7 +128,7 @@
                 </div>
             </div>
             <h4>Settings - Letter</h4>
-            <div class="entry">
+            <div class="entry" ng-if="data.print_confirmation_letter">
                 <label for="print-guest-confirmation" class="switch-label">Print Confirmation Letter</label>
                 <div class="switch-button" ng-class = "{'on': data.print_confirmation_letter}"> <!-- Add class 'on' when L193 is checked -->
                     <input id="print-guest-confirmation" type="checkbox" ng-model="data.print_confirmation_letter"> 

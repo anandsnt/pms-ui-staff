@@ -62,14 +62,31 @@
                 <label>Hotel Picture</label>
                 <div class="file-upload with-preview small-preview">
                     <button type="button" class="icons icon-delete large-icon"></button>
-                    <span class="input">Choose file...</span>
-                    <input type="file" accept="image/*"> 
+                    <span class="input">{{hotel_logo_file}}</span>
+                    <a id="deleteLogo" class="icons icon-delete large-icon delete_item" ng-if="isLogoAvailable(data.hotel_picture)" ng-click = "data.hotel_picture = 'false'"></a>
+                    <input type="file" accept="image/*" ng-model="data.hotel_picture" app-filereader> 
                     <button type="button" class="button brand-colors">Choose file</button>
                 </div>
                 <span class="file-preview small-preview"> 
-                    <img src="{image src}" alt="" />
+                    <img src="{{data.hotel_picture}}" alt="" />
                     <!-- If no image attached, use this instead: <em>No image attached.</em> -->
                 </span>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="group-holder" ng-class = "{'active': is_terms_and_conditions_active}">
+    <div class="form-title has-toggle" ng-click = "is_terms_and_conditions_active = !is_terms_and_conditions_active"> <!-- Clicking this toggles class 'active' on L49 -->
+        <h3>Terms And Conditions</h3>
+    </div>
+
+    <div class="stationery-group">
+        <div class="stationery-items">
+            <h4>Hotel</h4>
+            <div class="entry full-width">
+                <label>TERMS AND CONDITIONS</label>
+                <textarea class="full-width terms_height" id="terms_and_conditions" type="" ng-model="data.terms_and_conditions"></textarea>
             </div>
         </div>
     </div>

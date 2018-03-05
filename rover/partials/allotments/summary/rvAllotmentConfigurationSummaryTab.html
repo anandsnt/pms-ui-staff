@@ -32,7 +32,7 @@
             </div>
             <div class="entry break full-width">
 
-                <a ng-click="openDemographicsPopup(false);" ng-disabled class="button" ng-class="{'grey': isInAddMode(), 'white brand-text': !isInAddMode()}" translate>DEMOGRAPHICS</a>
+                <a ng-click="openDemographicsPopup(false, true);" ng-disabled class="button" ng-class="{'grey': isInAddMode(), 'white brand-text': !isInAddMode()}" translate>DEMOGRAPHICS</a>
 
                 <a ng-click="openBillingInformation();" class="button white blue-text" ng-if="allotmentConfigData.summary.default_billing_info_present" translate>BILLING_INFORMATION</a>
 

@@ -76,7 +76,7 @@
                     <span class="switch-icon"></span>
                 </div>
             </div>
-            <div class="entry">
+            <div class="entry" ng-show="false">
                 <label for="guest-hotel-logo">Hotel Logo</label>
                 <div class="select">
                     <select ng-model="stationery_data.cards_invoice_logo_type" name="email-hotel-logo">
@@ -167,8 +167,8 @@
             <h4>Settings</h4>
             <div class="entry">
                 <label for="pro-forma-invoice" class="switch-label">Pro Forma Invoice</label>
-                <div class="switch-button" ng-class = "{'on': stationery_data.is_pro_forma_enabled}"> <!-- Add class 'on' when L42 is checked -->
-                    <input id="pro-forma-invoice" type="checkbox" ng-model="stationery_data.is_pro_forma_enabled"> 
+                <div class="switch-button" ng-class = "{'on': data.is_pro_forma_enabled}"> <!-- Add class 'on' when L42 is checked -->
+                    <input id="pro-forma-invoice" type="checkbox" ng-model="data.is_pro_forma_enabled"> 
                     <span class="switch-icon"></span>
                 </div>
             </div>
@@ -179,7 +179,7 @@
                     <span class="switch-icon"></span>
                 </div>
             </div>
-            <div class="entry">
+            <div class="entry" ng-show="false">
                 <label for="guest-hotel-logo">Hotel Logo</label>
                 <div class="select">
                     <select ng-model="stationery_data.proforma_invoice_logo_type" name="email-hotel-logo">

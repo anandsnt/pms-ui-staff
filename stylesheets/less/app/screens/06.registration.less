@@ -1,11 +1,7 @@
 /* Registration content ***/
 .registration-content {
     position: relative;
-    .calc-height(100, 60);
-    
-    &.with-complete-registration {
-        .calc-height(100, 140);
-    }
+    .calc-height(100, 50);
 
     > .wrapper { 
         padding: 20px 20px 10px 20px; 
@@ -106,10 +102,13 @@
                             img { .size(auto, 40px); }
                         }
 
-                        &.error {
+                        &.error,
+                        &.has-icon {
                             position: relative;
                             padding-left: 20px;
+                        }
 
+                        &.error {
                             &:after {
                                 content: "!";
                                 position: absolute;
@@ -122,6 +121,27 @@
                                 background: @red;
                                 .square(14px);
                                 #border-radius > .rounded(14px);
+                            }
+                        }
+
+                        &.has-icon {
+                            .icons {
+                                background-size: 80px;
+                                .square(14px);
+                                top: 5px;
+                                left: 5px;
+                                position: absolute;
+                                .opacity(50);
+
+                                &.icon-room-lock {
+                                    background-position: 1px -6026px;
+                                }
+                            }
+
+                            &.error {
+                                &:after {
+                                    top: 25px;
+                                }
                             }
                         }
                     }
@@ -146,6 +166,19 @@
                         }
                     }
 
+                    &.with-button {
+                        #flexbox > .parent(row wrap, '', center, '');
+
+                        .button {
+                            margin-right: 8px;
+                            padding: 0;
+                            background-position: 12px -3929px;
+                            background-color: @white;
+                            .hide();
+                            .square(35px);
+                        }
+                    }
+
                     &.ui-tabs-active,
                     &.active {
                         line-height: 1em;
@@ -154,11 +187,18 @@
                         background: rgba(0,0,0,.1);
                         .box-shadow(none);
 
+                        &.with-button {
+                            .button {
+                                .show();
+                            }
+                        }
+
                         a {
                             color: @textColor;
 
                             .card-logo,
-                            .payment { .opacity(100); }
+                            .payment,
+                            &.has-icon .icons { .opacity(100); }
                         }
                     }
                 }
@@ -933,7 +973,7 @@
                         color: @grey4;
                         background: rgba(0,0,0,.05);
                         padding: 10px;
-
+                        overflow: visible;
                         .select { width: 60px; }
 
                         &.description {
@@ -1162,43 +1202,18 @@
         }
     }
 
-    .signature-header {
+    /* Complete registration */
+    .complete-registration {
         margin-top: 20px;
-        padding: 10px 0;
-        .float;
+        padding-top: 20px;
         .box-shadow(inset 0 1px 0 rgba(0,0,0,.1));
 
-        h2 { 
-            margin: 0;
-            line-height: 40px;
-            .pull-left;
-        }
+        h2 { margin-bottom: 10px; }
 
-        .button {
-            line-height: 40px;
-            .pull-right;
-        }
-    }
-}
-
-/* Complete registration */
-.complete-registration {
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    height: 90px;
-    padding: 20px;
-    background: @background;
-    #flexbox > .parent( row, center, center, '');
-    .float;
-    .box-shadow(inset 0 1px 0 rgba(0,0,0,.1));
-    
-    &.form {
         .entry {
-            width: 60%;
-            margin: 0;
+            width: 50%;
             .float;
+            .pull-left;
 
             .checkbox,
             a {
@@ -1212,30 +1227,29 @@
             a { margin-left: 5px; }
 
             .checkbox {
-                margin-bottom: 10px;
-
                 .icon-checkbox { 
                     top: 0;
                     left: 0; 
                 }
 
                 &.single { margin: 15px 0 0 0; }
-
-                &:last-child { 
-                    clear: both; 
-                    margin-bottom: 0;
-                }
+                
+                &:last-child { clear: both; }
             }
         }
-    }
 
-    .actions {
-        width: 40%;
+        .actions {
+            width: 50%;
+            .pull-right;
 
-        .button {
-            font-size: 18px;
-            line-height: 50px;
-            width: 100%;
+            .button {
+                font-size: 18px;
+                line-height: 50px;
+                width: 100%;
+                .show;
+
+                &.blank { line-height: 40px; }            
+            }
         }
     }
 }

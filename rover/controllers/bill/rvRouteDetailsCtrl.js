@@ -15,6 +15,7 @@ sntRover.controller('rvRouteDetailsCtrl', ['$scope', '$rootScope', '$filter', 'R
     $scope.swipedCardDataToSave = {};
     $scope.showCreditCardDropDown = false;
     $scope.isShownExistingCCPayment = false;
+    $scope.billNumberOnAddCC = '';
 
     if ($scope.selectedEntity.credit_card_details !== null && $scope.selectedEntity.credit_card_details !== undefined && $scope.selectedEntity.credit_card_details.hasOwnProperty('payment_type_description')) {
 
@@ -169,6 +170,9 @@ sntRover.controller('rvRouteDetailsCtrl', ['$scope', '$rootScope', '$filter', 'R
 
             return;
         }
+
+        $scope.billNumberOnAddCC = $scope.selectedEntity.is_new ? $scope.newBillNumber : 
+                                            $scope.selectedEntity.to_bill;
 
         $scope.isAddPayment = true;
         $scope.showCreditCardDropDown = true;
@@ -431,6 +435,7 @@ sntRover.controller('rvRouteDetailsCtrl', ['$scope', '$rootScope', '$filter', 'R
                     var newBill = {};
 
                     newBill.id = 'new';
+                    newBill.is_active = true;
                     newBill.bill_number = '' + $scope.newBillNumber + '(new)';
                     $scope.bills.push(newBill);
                 }

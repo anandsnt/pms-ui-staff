@@ -117,7 +117,7 @@
    "CLEAR_BTN": "Clear",
 
 
-   "CC_SIGN_TIMEOUT":"Hello? 你好? Здравствуйте? Are you still there?",
+   "CC_SIGN_TIMEOUT":"Are you still there?",
    "CC_SIGN_TIMEOUT_SUB":"We haven't detected your signature. Please select one of the following:",
    "CC_SIGN_TIMEOUT_SIGN":"Re-Sign",
 

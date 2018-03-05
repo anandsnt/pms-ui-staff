@@ -67,12 +67,15 @@ angular.module('sntRover').service('rvBaseWebSrvV2', ['$http', '$q', '$window', 
             httpDict = {};
 
         if (angular.isUndefined(params)) {
-            params = "";
+            params = {};
         }
         httpDict.url = url;
         httpDict.method = httpMethod;
         if (httpMethod === 'GET' || httpMethod === 'DELETE') {
-            httpDict.params = params;
+            httpDict.params = params || {};
+            if (angular.isDefined($rootScope.workstation_id)) {
+                httpDict.params.workstation_id = $rootScope.workstation_id;
+            }
         }
         else if (httpMethod === 'POST' || httpMethod === 'PUT') {
             httpDict.data = params;
@@ -129,6 +132,9 @@ angular.module('sntRover').service('rvBaseWebSrvV2', ['$http', '$q', '$window', 
         httpDict.method = httpMethod;
         if (httpMethod === 'GET' || httpMethod === 'DELETE') {
             httpDict.params = params;
+            if (typeof $rootScope.workstation_id !== 'undefined') {
+                httpDict.params.workstation_id = $rootScope.workstation_id;
+            }
         } else if (httpMethod === 'POST' || httpMethod === 'PUT') {
             httpDict.data = params;
             if (typeof $rootScope.workstation_id !== 'undefined') {

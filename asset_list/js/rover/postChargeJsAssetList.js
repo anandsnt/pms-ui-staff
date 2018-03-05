@@ -6,8 +6,8 @@ module.exports = {
 			minifiedFiles: [
 			],
 			nonMinifiedFiles: [						
-				controllerRoot + 'postCharge/**/*.js',
-				servicesRoot + "postCharge/**/*.js",
+				controllerRoot + 'postCharge/*.js',
+				servicesRoot + "postCharge/*.js",
 				servicesRoot + "bill/rvBillCardSrv.js",
 				servicesRoot + "accounts/rvAccountsTransactionSrv.js"
 			]

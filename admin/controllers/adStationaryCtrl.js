@@ -10,6 +10,7 @@ admin.controller('ADStationaryCtrl',
 	$scope.errorMessage = '';
 	$scope.fileName = "Choose File....";
 	$scope.location_image_file = $scope.fileName;
+	$scope.hotel_logo_file = $scope.fileName;
 	$scope.memento = {
 		hotel_picture: "",
 		location_image: ""
@@ -36,6 +37,7 @@ admin.controller('ADStationaryCtrl',
 
 	$scope.is_salutations_active = false;
 	$scope.is_hotel_picture_active = false;
+	$scope.is_terms_and_conditions_active = false;
 
 	$scope.is_guest_invoice_active = false;
 	$scope.is_guest_confirmation_active = false;
@@ -172,18 +174,30 @@ admin.controller('ADStationaryCtrl',
 	 */
 	$scope.$watch(function() {
 		return $scope.data.location_image;
-	}, function(logo) {
-		if (logo === 'false') {
+	}, function(location_image) {
+		if (location_image === 'false') {
 			$scope.fileName = "Choose File....";
 		}
 		$scope.location_image_file = $scope.fileName;
 	});
 
 	/**
+	 *   To watch hotel logo
+	 */
+	$scope.$watch(function() {
+		return $scope.data.hotel_picture;
+	}, function(logo) {
+		if (logo === 'false') {
+			$scope.fileName = "Choose File....";
+		}
+		$scope.hotel_logo_file = $scope.fileName;
+	});
+
+	/**
 	 *   To handle show hide status for the logo delete button
 	 */
 	$scope.isLogoAvailable = function(logo) {
-		if (logo !== '/assets/images/logo.png' && logo !== 'false') {
+		if (logo !== '' && logo !== 'false') {
 			return true;
 		}
 		else {

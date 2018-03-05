@@ -463,13 +463,116 @@ sntRover.controller('reservationActionsController', [
 			startCheckin();
 		});
 
+		// Methods which check whether source/origin/market/segment dropdown should be shown or not
+		var showMarkets = function () {
+				return $scope.otherData.marketsEnabled && $scope.otherData.markets.length > 0;
+			},
+			showSegments = function () {
+				return $scope.otherData.segmentsEnabled && $scope.otherData.segments.length > 0;
+			},
+			showOrigins = function () {
+				return $scope.otherData.originsEnabled && $scope.otherData.origins.length > 0;
+			},
+			showSources = function () {
+				return $scope.otherData.sourcesEnabled && $scope.otherData.sources.length > 0;
+			};
+
+		/**
+		 * Checks whether all the madatory demographics fields is entered
+		 * @param {Object} demographicsData - holding demographics data
+		 * @param {Boolean} isValid - flag indicating whether form is valid or not
+		 */
+		var validateDemographicsData = function(demographicsData) {
+            var isValid = true;
+            
+            if (showMarkets() && $scope.otherData.marketIsForced) {
+                isValid = !!demographicsData.market;
+            }
+            if (showSources() && $scope.otherData.sourceIsForced && isValid) {
+                isValid = !!demographicsData.source;
+            }
+            if (showOrigins() && $scope.otherData.originIsForced && isValid) {
+                isValid = !!demographicsData.origin;
+            }
+            if (showSegments() && $scope.otherData.segmentsIsForced && isValid) {
+                isValid = !!demographicsData.segment;
+            }
+            return isValid;
+        };
+
+        // Show the demographics popup during check-in process with the mandatory fields which is not set
+        var showDemographicsPopup = function () {
+        	ngDialog.open({
+                template: '/assets/partials/reservationCard/rvReservationDemographicsMissingPopup.html',
+                className: '',
+                scope: $scope,
+                closeByDocument: false,
+                closeByEscape: false                
+            });
+        };
+
+        /**
+         * Set the visibility of the demographics fields in the popup
+         */
+        var setDemographics = function() {
+        	$scope.shouldShowReservationType = false;            
+            $scope.shouldShowMarket = showMarkets() && $scope.otherData.marketIsForced;
+            $scope.shouldShowSource = showSources() && $scope.otherData.sourceIsForced;
+            $scope.shouldShowOriginOfBooking = showOrigins() && $scope.otherData.originIsForced;
+            $scope.shouldShowSegments = showSegments() && $scope.otherData.segmentsIsForced; 
+            
+        };
+
+        /**
+         * Checks whether the demographics field is valid or not
+         */
+        $scope.isDemographicsFormValid = function() { 
+            return validateDemographicsData($scope.reservationParentData.demographics);            
+        };
+
+        /**
+         * Invoke the update reservation api to update the demographics details during check-in process
+         */
+        $scope.updateDemograhics = function () {
+        	var requestParams = {
+				'reservationId': $scope.reservationParentData.reservationId,				
+				'source_id': parseInt($scope.reservationParentData.demographics.source),
+				'market_segment_id': parseInt($scope.reservationParentData.demographics.market),
+				'booking_origin_id': parseInt($scope.reservationParentData.demographics.origin),
+				'segment_id': parseInt($scope.reservationParentData.demographics.segment)
+			};
+
+			var onDemograhicsUpdateSuccess = function () {
+					ngDialog.close();
+					startCheckin();
+			    },
+			    onDemographicsUpdateFailure = function (error) {
+			    	$scope.errorMessage = error;
+			    	ngDialog.close();
+			    };
+
+			$scope.callAPI(RVReservationSummarySrv.updateReservation, {
+				successCallBack: onDemograhicsUpdateSuccess,
+				failureCallBack: onDemographicsUpdateFailure,
+				params: requestParams
+			});
+
+        };
+
 		/** ************************************************************************
 		 * Before checking in we check if any deposit is left else noraml checkin
 		 *
 		 **************************************************************************/
 
 		$scope.goToCheckin = function() {
-                    startCheckin();
+			// CICO-35186
+			if ($rootScope.isStandAlone && !validateDemographicsData ($scope.reservationParentData.demographics)) {
+				setDemographics();
+				showDemographicsPopup();
+				
+			} else {
+				startCheckin();
+			}                    
 		};
 		$scope.unAvailablePopup = function() {
 			ngDialog.open({
@@ -593,22 +696,31 @@ sntRover.controller('reservationActionsController', [
 			};
 
 			$scope.passData = passData;
-			ngDialog.open({
-				template: '/assets/partials/reservationCard/rvCancelReservation.html',
-				controller: 'RVCancelReservation',
-				scope: $scope,
-				data: JSON.stringify({
-					state: 'CONFIRM',
-					cards: false,
-					penalty: penalty,
-					penaltyText: (function() {
-						if (nights) {
-							return penalty + (penalty > 1 ? " nights" : " night");
-						}
-						return $rootScope.currencySymbol + $filter('number')(penalty, 2);
-					}())
-				})
-			});
+			var openCancellationPopup = function(data) {
+		      	
+		      	$scope.languageData = data;
+		      	ngDialog.open({
+					template: '/assets/partials/reservationCard/rvCancelReservation.html',
+					controller: 'RVCancelReservation',
+					scope: $scope,
+					data: JSON.stringify({
+						state: 'CONFIRM',
+						cards: false,
+						penalty: penalty,
+						penaltyText: (function() {
+							if (nights) {
+								return penalty + (penalty > 1 ? " nights" : " night");
+							}
+							return $rootScope.currencySymbol + $filter('number')(penalty, 2);
+						}())
+					})
+				});
+
+				$scope.$emit('hideLoader');
+		    };
+
+		    fetchGuestLanguages(openCancellationPopup);
+			
 		};
 
 
@@ -616,23 +728,32 @@ sntRover.controller('reservationActionsController', [
 			$scope.DailogeState = {};
 			$scope.DailogeState.successMessage = '';
 			$scope.DailogeState.failureMessage = '';
-			ngDialog.open({
-				template: '/assets/partials/reservationCard/rvCancelReservationDeposits.html',
-				controller: 'RVCancelReservationDepositController',
-				scope: $scope,
-				data: JSON.stringify({
-					state: 'CONFIRM',
-					cards: false,
-					penalty: penalty,
-					deposit: deposit,
-					depositText: (function() {
-						if (!isOutOfCancellationPeriod) {
-							return "Within Cancellation Period. Deposit of " + $rootScope.currencySymbol + $filter('number')(deposit, 2) + " is refundable.";
-						}
-						return "Reservation outside of cancellation period. A cancellation fee of " + $rootScope.currencySymbol + $filter('number')(penalty, 2) + " will be charged, deposit not refundable";
-					}())
-				})
-			});
+			var openCancellationPopup = function(data) {
+		      	
+		      	$scope.languageData = data;
+		      	ngDialog.open({
+					template: '/assets/partials/reservationCard/rvCancelReservationDeposits.html',
+					controller: 'RVCancelReservationDepositController',
+					scope: $scope,
+					data: JSON.stringify({
+						state: 'CONFIRM',
+						cards: false,
+						penalty: penalty,
+						deposit: deposit,
+						depositText: (function() {
+							if (!isOutOfCancellationPeriod) {
+								return "Within Cancellation Period. Deposit of " + $rootScope.currencySymbol + $filter('number')(deposit, 2) + " is refundable.";
+							}
+							return "Reservation outside of cancellation period. A cancellation fee of " + $rootScope.currencySymbol + $filter('number')(penalty, 2) + " will be charged, deposit not refundable";
+						}())
+					})
+				});
+
+				$scope.$emit('hideLoader');
+		    };
+
+		    fetchGuestLanguages(openCancellationPopup);
+			
 		};
 
 
@@ -846,6 +967,17 @@ sntRover.controller('reservationActionsController', [
 		$scope.ngData.failureMessage = "";
 		$scope.ngData.successMessage = "";
 
+		/**
+		 * Fetch the guest languages list and settings
+		 * @return {undefined}
+		 */
+		var fetchGuestLanguages = function(callback) {
+		   	var params = { 'reservation_id': $scope.reservationData.reservation_card.reservation_id };
+
+		   	// call api
+		   	$scope.invokeApi(RVContactInfoSrv.fetchGuestLanguages, params, callback);
+		};
+
 		// Pop up for confirmation print as well as email send
 		$scope.popupForConfirmation = function() {
 
@@ -855,7 +987,7 @@ sntRover.controller('reservationActionsController', [
 			$scope.ngData.confirmation_custom_title = "";
 			$scope.ngData.languageData = {};
 
-			var successCallBackForLanguagesFetch = function(data) {
+			var openConfirmationPopup = function(data) {
 		      	
 		      	$scope.ngData.languageData = data;
 
@@ -869,18 +1001,7 @@ sntRover.controller('reservationActionsController', [
 				$scope.$emit('hideLoader');
 		    };
 
-		    /**
-		     * Fetch the guest languages list and settings
-		     * @return {undefined}
-		     */
-		    var fetchGuestLanguages = function() {
-		    	var params = { 'reservation_id': $scope.reservationData.reservation_card.reservation_id };
-		      	// call api
-
-		      	$scope.invokeApi(RVContactInfoSrv.fetchGuestLanguages, params, successCallBackForLanguagesFetch);
-		    };
-
-		    fetchGuestLanguages();
+		    fetchGuestLanguages(openConfirmationPopup);
 		};
 
 		$scope.showConfirmation = function(reservationStatus) {
@@ -1087,9 +1208,10 @@ sntRover.controller('reservationActionsController', [
 		};
 
 		// Action against email button in staycard.
-		$scope.sendReservationCancellation = function() {
+		$scope.sendReservationCancellation = function(locale) {
 			var postData = {
 				"type": "cancellation",
+				"locale": locale,
 				"emails": $scope.isEmailAttached() ? [$scope.guestCardData.contactInfo.email] : [$scope.DailogeState.sendConfirmatonMailTo]
 			};
 			var data = {
@@ -1117,18 +1239,26 @@ sntRover.controller('reservationActionsController', [
 				"isCancelled": true
 			};
 
-			$scope.passData = passData;
+			$scope.passData = passData;			
 
-			ngDialog.open({
-				template: '/assets/partials/reservationCard/rvCancelReservation.html',
-				controller: 'RVCancelReservation',
-				scope: $scope,
-				data: JSON.stringify({ state: 'CANCELED' })
-			});
+			var openCancellationPopup = function(data) {
+		      	
+		      	$scope.languageData = data;
+		      	ngDialog.open({
+					template: '/assets/partials/reservationCard/rvCancelReservation.html',
+					controller: 'RVCancelReservation',
+					scope: $scope,
+					data: JSON.stringify({ state: 'CANCELED' })
+				});
+
+				$scope.$emit('hideLoader');
+		    };
+
+		    fetchGuestLanguages(openCancellationPopup);
 		};
 
 		// Action against print button in staycard.
-		$scope.printReservationCancellation = function() {
+		$scope.printReservationCancellation = function(locale) {
 			var succesfullCallback = function(data) {
 				$scope.printData = data.data;
 				printPage();
@@ -1141,7 +1271,8 @@ sntRover.controller('reservationActionsController', [
 				successCallBack: succesfullCallback,
 				failureCallBack: failureCallbackPrint,
 				params: {
-					'reservation_id': $scope.reservationData.reservation_card.reservation_id
+					'reservation_id': $scope.reservationData.reservation_card.reservation_id,
+					'locale': locale
 				}
 			});
 		};

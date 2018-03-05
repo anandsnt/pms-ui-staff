@@ -46,12 +46,14 @@
 				<!-- Bills Nav-->
 				<div class="bill-tabs scrollable" ng-iscroll="bill-tab-scroller">
 					<ul class="wrapper" style="width:{{getWidthForBillTabsScroll();}}px;">
-						<li ng-class="showActiveBill($index)" click-touch="setActiveBill($index)" ng-repeat="billTab in transactionsDetails.bills">
-							<a class="bill-toggle">
+						<li ng-class="showActiveBill($index)" ng-repeat="billTab in transactionsDetails.bills">
+							<a class="bill-toggle" ng-class="{'has-icon': !billTab.is_active && billTab.is_control_code_exist}" click-touch="setActiveBill($index)">
 								<div class="price"><span>{{'BILL' |translate}} #{{billTab.bill_number}}</span>
 									<span class="currency">{{currencySymbol}}</span>{{billTab.balance_amount | number: precisonZero}}
 								</div>
+								<span class="icons icon-room-lock" ng-show="!billTab.is_active && billTab.is_control_code_exist"></span> 
 							</a>
+							<button ng-if="($index === transactionsDetails.bills.length - 1) && !billTab.is_transactions_exist && !billTab.is_routing_exist" click-touch="clickedRemoveBill($index)" type="button" class="button icons icon-remove-10"></button>
 						</li>
 						<!-- Add new bill-->
 						<li class="new-bill" ng-show="transactionsDetails.bills.length<10 && isStandAlone">
@@ -113,7 +115,7 @@
 								<span class="value"><span class="currency">{{currencySymbol}}</span>{{billData.total_amount | number: precisonTwo}}</span>
 							</li>
 							<li class="break">
-								<button type="button" class="button with-icon only-icon blue" click-touch="showFormatBillPopup(billData.bill_number)">
+								<button type="button" class="button with-icon only-icon blue" click-touch="showFormatBillPopup(billData.bill_number, billData.is_active)">
 									<span class="icons icon-invoice"></span>
 									{{'INVOICE' |translate}}
 								</button>
@@ -217,7 +219,8 @@
 												<br />
 											</span>
 										</td>
-										<td class="description">
+										<td class="description" ng-class="{'with-reference': feesData.reference_text != ''}">
+											<span class="icons icon-invoice-blue" ng-show="feesData.reference_text != ''"></span>
 											<strong ng-if="isStandAlone && !feesData.is_group_by_ref">
 												{{feesData.item_description}}
 											</strong>
@@ -255,7 +258,7 @@
 										</td>
 										<td ng-show="showMoveCharges">
 											<div class="select" ng-class="{'overlay': !billData.is_active }">
-												<select ng-change="moveToBillAction(feesData.oldBillValue, $index)" ng-model="feesData.billValue" ng-disabled="feesData.charge_code_type === 'TAX' && feesData.parent_transaction_exist" iscroll-stop-propagation>
+												<select ng-change="moveToBillAction(feesData.oldBillValue, $index)" ng-model="feesData.billValue" iscroll-stop-propagation>
 													<option value="" disabled>Move to bill</option>
 													<option value="{{billNumbers.bill_number}}" ng-selected="billNumbers.bill_number==(currentActiveBill+1)" ng-repeat="billNumbers in transactionsDetails.bills"> {{billNumbers.bill_number}} </option>
 													<option value="{{transactionsDetails.bills.length+1}}" ng-show="transactionsDetails.bills.length<10">{{transactionsDetails.bills.length+1}} &nbsp;&nbsp;({{'NEW_BILL'|translate}})</option>
@@ -263,13 +266,13 @@
 											</div>
 										</td>
 										<td>
-											<button ng-class="{'overlay': !billData.is_active }" type="button" class="button purple with-icon only-icon" click-touch="openActionsPopup(feesData.id,feesData.description,feesData.fees,feesData.type.value,feesData.credits)" ng-show="showEditChargeButton(feesData.type.value)" ng-if = "!feesData.is_group_by_ref">
+											<button type="button" ng-class="{'overlay': !billData.is_active }"  class="button purple with-icon only-icon" click-touch="openActionsPopup(feesData.id,feesData.description,feesData.fees,feesData.type.value,feesData.credits, feesData.reference_text_on_edit, feesData.show_ref_on_invoice)" ng-show="showEditChargeButton(feesData.type.value)" ng-if = "!feesData.is_group_by_ref">
 												<span class="icons icon-pencil"></span>
 												{{'EDIT' |translate}}
 											</button>
 										</td>
 										<td ng-class="{'overlay': !billData.is_active }" class="action" >
-											<label class="checkbox inline" ng-hide="(hasMoveToOtherBillPermission()) && (feesData.charge_code_type === 'TAX'  && feesData.parent_transaction_exist)">
+											<label class="checkbox inline" ng-if="(hasMoveToOtherBillPermission())">
 												<span class="icon-form icon-checkbox" ng-class="{'checked':feesData.isSelected}"></span>
 												<input ng-model="feesData.isSelected" type="checkbox"/>
 											</label>

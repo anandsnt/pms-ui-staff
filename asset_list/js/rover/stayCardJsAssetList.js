@@ -33,6 +33,7 @@ module.exports = {
                     controllerRoot + "smartbands/**/**.js",
                     controllerRoot + "validateCheckout/**/**.js",
                     controllerRoot + "validateCheckin/**/**.js",
+                    controllerRoot + "guestCardBaseCtrl.js",
 
                     servicesRoot + "validateCheckin/**/**.js",
                     servicesRoot + "housekeeping/rvHkRoomDetailsSrv.js",

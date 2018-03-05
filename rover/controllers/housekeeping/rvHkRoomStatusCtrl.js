@@ -194,7 +194,7 @@ angular.module('sntRover').controller('RVHkRoomStatusCtrl', [
 			$_page++;
 			$_updateFilters('page', $_page);
 
-			$_callRoomsApi();
+			$_callRoomsApi($_page);
 		};
 
 		$scope.loadPrevPage = function(e) {
@@ -205,7 +205,7 @@ angular.module('sntRover').controller('RVHkRoomStatusCtrl', [
 			$_page--;
 			$_updateFilters('page', $_page);
 
-			$_callRoomsApi();
+			$_callRoomsApi($_page);
 		};
 
 		// store the current room list scroll position
@@ -431,13 +431,7 @@ angular.module('sntRover').controller('RVHkRoomStatusCtrl', [
 					$scope.multiRoomAction.anyChosen = false;
 				}
 			}
-
-			// check if all rooms have been selected to make the 'All Selected' enabled in filters
-			if ( $scope.uiTotalCount === $scope.multiRoomAction.rooms.length ) {
-				$scope.multiRoomAction.allChosen = true;
-			} else {
-				$scope.multiRoomAction.allChosen = false;
-			}
+			
 		};
 
 		$scope.toggleRoomSelection = function() {

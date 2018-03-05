@@ -31,7 +31,7 @@
                 <input id="group-email" ng-model="groupConfigData.summary.contact_email" type="text" ng-disabled="isInStaycardScreen()"/>
             </div>
             <div class="entry break full-width card-buttons" ng-hide="isInStaycardScreen()">
-                <a ng-click="openDemographicsPopup(false);" class="button" ng-class="{'grey': isInAddMode(), 'white brand-text': !isInAddMode()}" translate>DEMOGRAPHICS</a>
+                <a ng-click="openDemographicsPopup(false, true);" class="button" ng-class="{'grey': isInAddMode(), 'white brand-text': !isInAddMode()}" translate>DEMOGRAPHICS</a>
                 
                 <a ng-click="openBillingInformation();" class="button blue" ng-if="groupConfigData.summary.posting_account_billing_info" translate>BILLING_INFORMATION</a>
 

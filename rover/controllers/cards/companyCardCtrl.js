@@ -333,6 +333,10 @@ angular.module('sntRover').controller('RVCompanyCardCtrl', ['$scope', '$rootScop
 				if (typeof dataToSend.countries !== 'undefined') {
 					delete dataToSend['countries'];
 				}
+				// CICO-49040 : Hadling passing blank string.
+				if (dataToSend.account_details.account_number === "") {
+					dataToSend.account_details.account_number = null;
+				}
 				dataToSend.account_type = $scope.account_type;
 				$scope.invokeApi(RVCompanyCardSrv.saveContactInformation, dataToSend, successCallbackOfContactSaveData, failureCallbackOfContactSaveData);
 			}

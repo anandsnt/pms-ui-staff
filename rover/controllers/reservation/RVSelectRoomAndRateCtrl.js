@@ -1,6 +1,6 @@
 sntRover.controller('RVSelectRoomAndRateCtrl', [
-	'$rootScope', '$scope', 'areReservationAddonsAvailable', '$stateParams', 'rates', 'ratesMeta', '$timeout', '$state', 'RVReservationBaseSearchSrv', 'RVReservationStateService', 'RVReservationDataService', 'house', 'RVSelectRoomRateSrv', 'rvPermissionSrv', 'ngDialog', '$filter', 'RVRoomRatesSrv', 'rvGroupConfigurationSrv',
-	function($rootScope, $scope, areReservationAddonsAvailable, $stateParams, rates, ratesMeta, $timeout, $state, RVReservationBaseSearchSrv, RVReservationStateService, RVReservationDataService, house, RVSelectRoomRateSrv, rvPermissionSrv, ngDialog, $filter, RVRoomRatesSrv, rvGroupConfigurationSrv) {
+	'$rootScope', '$scope', 'areReservationAddonsAvailable', '$stateParams', 'rates', 'ratesMeta', '$timeout', '$state', 'RVReservationBaseSearchSrv', 'RVReservationStateService', 'RVReservationDataService', 'house', 'RVSelectRoomRateSrv', 'rvPermissionSrv', 'ngDialog', '$filter', 'RVRoomRatesSrv', 'rvGroupConfigurationSrv', 'rvAllotmentConfigurationSrv', 
+	function($rootScope, $scope, areReservationAddonsAvailable, $stateParams, rates, ratesMeta, $timeout, $state, RVReservationBaseSearchSrv, RVReservationStateService, RVReservationDataService, house, RVSelectRoomRateSrv, rvPermissionSrv, ngDialog, $filter, RVRoomRatesSrv, rvGroupConfigurationSrv, rvAllotmentConfigurationSrv) {
 
 		$scope.borrowForGroups = $stateParams.borrow_for_groups === 'true' ? true : false;
 
@@ -1424,8 +1424,7 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 					id: rateId
 				});
 				roomInfo = roomType;
-				rateInfo = secondary;
-
+				rateInfo = secondary;							
 			} else if ($scope.stateCheck.activeView === 'RATE' || $scope.stateCheck.activeView === 'RECOMMENDED') {
 				var rate = _.find($scope.display.rateFirstGrid, {
 					id: rateId
@@ -1437,6 +1436,9 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 				roomInfo = secondary;
 				rateInfo = rate;
 			}
+
+			// CICO-44842 - Plugging in the max occupancy check while booking from room & rates screen
+			$scope.checkOccupancyLimit(null, null, null, roomId);
 
 			// Load Meta Data on the first call to this method if it hasn't been loaded yet
 			if (!afterFetch) {
@@ -1535,10 +1537,12 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 
 				} else {
 					var isGroupReservation = !!$scope.reservationData.group.id || !!$scope.reservationData.allotment.id,
-						i, lastFetchedGroup;
+						i, lastFetchedGroup, lastFetchedAllotment;
 
-					if (isGroupReservation) {
+					if (!!$scope.reservationData.group.id) {
 						lastFetchedGroup = angular.copy(rvGroupConfigurationSrv.lastFetchedGroup);
+					} else if (!!$scope.reservationData.allotment.id) {
+						lastFetchedAllotment = angular.copy(rvAllotmentConfigurationSrv.lastFetchedAllotment);
 					}
 
 					if (!TABS[$scope.activeRoom].roomTypeId || parseInt(TABS[$scope.activeRoom].roomTypeId) !== parseInt(roomId)) {
@@ -1562,22 +1566,27 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 						$scope.reservationData.rateDetails[i] = angular.copy(ROOMS[$scope.stateCheck.roomDetails.firstIndex].stayDates);
 
 						if (isGroupReservation) {
-							if (lastFetchedGroup.id === $scope.reservationData.group.id && $scope.viewState.identifier === "CREATION") {
+							var demographics;
+
+							if (!!$scope.reservationData.group.id && lastFetchedGroup.id === $scope.reservationData.group.id && $scope.viewState.identifier === "CREATION") {
 								// In case of a group reservation; copy the group's demographics to the reservation
-								var groupDemographics = lastFetchedGroup.demographics;
+								demographics = lastFetchedGroup.demographics;														
+							} else if (!!$scope.reservationData.allotment.id && lastFetchedAllotment.id === $scope.reservationData.allotment.id && $scope.viewState.identifier === "CREATION") {
+								demographics = lastFetchedAllotment.demographics;
+							}
 
-								console.log(groupDemographics);
-
-								ROOMS[i].demographics.market = groupDemographics.market_segment_id === null ? '' : groupDemographics.market_segment_id;
-								ROOMS[i].demographics.source = groupDemographics.source_id === null ? '' : groupDemographics.source_id;
-								ROOMS[i].demographics.origin = groupDemographics.booking_origin_id === null ? '' : groupDemographics.booking_origin_id;
-								ROOMS[i].demographics.reservationType = groupDemographics.reservation_type_id === null ? '' : groupDemographics.reservation_type_id;
-								ROOMS[i].demographics.segment = groupDemographics.segment_id === null ? '' : groupDemographics.segment_id;
+							if (!!demographics) {
+								ROOMS[i].demographics.market = demographics.market_segment_id === null ? '' : demographics.market_segment_id;
+								ROOMS[i].demographics.source = demographics.source_id === null ? '' : demographics.source_id;
+								ROOMS[i].demographics.origin = demographics.booking_origin_id === null ? '' : demographics.booking_origin_id;
+								ROOMS[i].demographics.reservationType = demographics.reservation_type_id === null ? '' : demographics.reservation_type_id;
+								ROOMS[i].demographics.segment = demographics.segment_id === null ? '' : demographics.segment_id;
 
 								if (i === 0) {
 									$scope.reservationData.demographics = angular.copy(ROOMS[i].demographics);
 								}
-							}
+							}						    
+
 						} else {
 							ROOMS[i].demographics.market = $scope.reservationData.ratesMeta[rateId].market_segment_id === null ? '' : $scope
 								.reservationData.ratesMeta[rateId].market_segment_id;

@@ -311,12 +311,20 @@ sntRover.controller('reservationDetailsController',
 			departure: $scope.reservationData.reservation_card.departure_date
 		};
 
+		// CICO-49191 - Get the min date for showing in the arrival/departure calendar for group reservation
+		var getMinDateForGroupReservation = function () {
+			var minDate = $rootScope.businessDate > $scope.reservationData.reservation_card.group_block_from ? 
+                          $rootScope.businessDate : $scope.reservationData.reservation_card.group_block_from;
+
+			return $filter('date')(minDate, $rootScope.dateFormat);
+		};
+
 		// for groups this date picker must not allow user to pick
 		// a date that is after the group end date.
 		// and before the group start date
 		if ( !! $scope.reservationData.reservation_card.group_id ) {
 			datePickerCommon = angular.extend(datePickerCommon, {
-				minDate: $filter('date')($scope.reservationData.reservation_card.group_block_from, $rootScope.dateFormat),
+				minDate: getMinDateForGroupReservation(),
 				maxDate: $filter('date')($scope.reservationData.reservation_card.group_block_to, $rootScope.dateFormat)
 			});
 
@@ -337,6 +345,7 @@ sntRover.controller('reservationDetailsController',
 		};
 
 		$scope.reservationData.paymentTypes = paymentTypes;
+		$scope.reservationData.paymentMethods = paymentTypes;
 		$scope.reservationData.reseravationDepositData = reseravationDepositData;
 
 		$scope.reservationData.justCreatedRes = (typeof $stateParams.justCreatedRes !== "undefined" && $stateParams.justCreatedRes !== "" && $stateParams.justCreatedRes !== null && $stateParams.justCreatedRes === "true") ? true : false;
@@ -877,6 +886,7 @@ sntRover.controller('reservationDetailsController',
 				}
 			};
 			var updateFailure = function(data) {
+				$scope.errorMessage = data;
 				$scope.$emit('hideLoader');
 			};
 
@@ -1024,7 +1034,9 @@ sntRover.controller('reservationDetailsController',
                         // CICO-36733
                         $scope.showOverBookingAlert = !response.data.is_room_type_available && response.data.is_house_available && rvPermissionSrv.getPermissionValue('OVERBOOK_ROOM_TYPE');
                         $scope.showChangeDatesPopup = !rvPermissionSrv.getPermissionValue('OVERBOOK_ROOM_TYPE') || response.data.is_room_type_available || !response.data.is_house_available;
-
+                        // CICO-44842 Show message when trying to overbook a suite reservation
+                        $scope.restrictSuiteOverbooking = !response.data.is_room_type_available && response.data.is_suite_reservation;
+                        $scope.isSuiteReservation = response.data.is_suite_reservation;
 
 						ngDialog.open({
 							template: '/assets/partials/reservation/alerts/editDatesInStayCard.html',

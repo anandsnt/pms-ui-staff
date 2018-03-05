@@ -132,6 +132,15 @@ angular.module('sntPay').controller('sntPaymentController',
                 if (isEmptyParentScrollerOptions) {
                     $scope.myScrollOptions = {};
                 }
+
+                // CICO-48381
+                if (sntapp.browser === 'rv_native' && sntapp.cordovaLoaded) {
+                    scrollerOptions.click = false;
+                    scrollerOptions.tap = true;
+                    scrollerOptions.preventDefault = false;
+                    scrollerOptions.deceleration =  0.0001;
+                }
+
                 $scope.myScrollOptions[key] = scrollerOptions;
             }
 
@@ -415,7 +424,7 @@ angular.module('sntPay').controller('sntPaymentController',
              *    Request Params: {reservation_id: 1348897, payment_type: 'CK', workstation_id: 159, user_payment_type_id: '1171'}
              *    @returns {undefined} undefined
              */
-            $scope.saveReservationPaymentMethod = function () { 
+            $scope.saveReservationPaymentMethod = function () {
                 var params;
 
                 //  in case of CBA and the card is not tokenized yet
@@ -428,7 +437,6 @@ angular.module('sntPay').controller('sntPaymentController',
                 // check if chip and pin is selected in case of six payments
                 // the rest of actions will in paySixPayController
                 if ($scope.selectedPaymentType === 'CC' && isEMVEnabled && !$scope.payment.isManualEntryInsideIFrame) {
-                    
                     params = {
                         workstation_id: $scope.hotelConfig.workstationId,
                         bill_number: $scope.billNumber
@@ -465,7 +473,6 @@ angular.module('sntPay').controller('sntPaymentController',
 
                 //  In case of guest card; we would be only adding credit cards
                 if ($scope.actionType === 'ADD_PAYMENT_GUEST_CARD') {
-                    
                     var cardDetails;
 
                     sntActivity.start('ADD_PAYMENT_GUEST_CARD');
@@ -496,6 +503,7 @@ angular.module('sntPay').controller('sntPaymentController',
                     && /^ADD_PAYMENT_/.test($scope.actionType)
                     && $scope.payment.tokenizedCardData
                     && $scope.payment.tokenizedCardData.apiParams) {
+
                     sntActivity.start('ADD_PAYMENT');
                     sntPaymentSrv.savePaymentDetails({
                         ...$scope.payment.tokenizedCardData.apiParams,
@@ -542,6 +550,11 @@ angular.module('sntPay').controller('sntPaymentController',
                         $scope.$emit('ERROR_OCCURED', errorMessage);
                         sntActivity.stop('ADD_PAYMENT_CC');
                     });
+                } else if (!!$scope.accountId || !!$scope.groupId || !!$scope.allotmentId) {
+                    $scope.$emit('SUCCESS_LINK_PAYMENT', {
+                        selectedPaymentType: $scope.selectedPaymentType,
+                        cardDetails: $scope.selectedCC
+                    });
                 } else if (!!$scope.payment.tokenizedCardData && !!$scope.payment.tokenizedCardData.apiParams.mli_token) {
                     //  NOTE: credit card is selected and coming through swipe
                     sntActivity.start('ADD_PAYMENT_SWIPE');
@@ -562,8 +575,7 @@ angular.module('sntPay').controller('sntPaymentController',
                         $scope.$emit('ERROR_OCCURED', errorMessage);
                         sntActivity.stop('ADD_PAYMENT_SWIPE');
                     });
-                } else if ($scope.reservationId) {
-                 //  NOTE: This is the scenario where the user has selected an existing credit card from the list
+                } else if ($scope.reservationId) { //  NOTE: This is the scenario where the user has selected an existing credit card from the list
                     sntActivity.start('ADD_EXISTING_PAYMENT_TYPE');
                     sntPaymentSrv.mapPaymentToReservation({
                         bill_number: $scope.billNumber,
@@ -582,11 +594,6 @@ angular.module('sntPay').controller('sntPaymentController',
                     }, errorMessage => {
                         $scope.$emit('ERROR_OCCURED', errorMessage);
                         sntActivity.stop('ADD_EXISTING_PAYMENT_TYPE');
-                    });
-                } else if (!!$scope.accountId || !!$scope.groupId || !!$scope.allotmentId) {
-                    $scope.$emit('SUCCESS_LINK_PAYMENT', {
-                        selectedPaymentType: $scope.selectedPaymentType,
-                        cardDetails: $scope.selectedCC
                     });
                 }
             };

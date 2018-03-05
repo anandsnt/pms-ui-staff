@@ -80,10 +80,10 @@
                 <div class="entry commission" >
                     
                     <div class="entry input with-label">
-                        <label for="commision-paid" >Recalculate Commission</label>
+                        <label for="commision-paid" >Recalculate Comm.</label>
                         <input type="text" placeholder="Enter Number" ng-model="filterData.commssionRecalculationValue">
-                        <div class="switch-button" ng-class="{'on': filterData.toggleCommission}">
-                            <input id="recalculate-commission" value="" type="checkbox" ng-click="toggleCommission()">
+                        <div class="switch-button" ng-class="{'on': filterData.toggleCommission}" ng-click="toggleCommission()">
+                            <input id="recalculate-commission" value="" type="checkbox">
                             <label class="data-off">
                                 <span class="switch-icon">%</span>
                                 <span class="value">{{ currencySymbol }}</span>
