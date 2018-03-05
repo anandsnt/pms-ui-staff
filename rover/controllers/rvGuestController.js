@@ -16,6 +16,7 @@ angular.module('sntRover').controller('guestCardController', [
 		var roomAndRatesState = 'rover.reservation.staycard.mainCard.room-rates';
 
 		BaseCtrl.call(this, $scope);
+		GuestCardBaseCtrl.call (this, $scope, RVSearchSrv);
 
 		var initReservation = function() {
 			var fromVault = $vault.get('searchReservationData');
@@ -142,26 +143,7 @@ angular.module('sntRover').controller('guestCardController', [
 			if ($scope.otherData.fromSearch) {
 				$scope.otherData.fromSearch = false;
 			}
-		};
-
-		// update guest details to RVSearchSrv via RVSearchSrv.updateGuestDetails - params: guestid, data
-		var updateSearchCache = function() {
-			var dataSource = $scope.guestCardData.contactInfo;
-			var data = {
-				'firstname': dataSource.first_name,
-				'lastname': dataSource.last_name,
-				'vip': dataSource.vip
-			};
-
-			if (dataSource.address) {
-				if ($scope.escapeNull(dataSource.address.city).toString().trim() !== '' || $scope.escapeNull(dataSource.address.state).toString().trim() !== '') {
-					data.location = (dataSource.address.city + ', ' + dataSource.address.state);
-				} else {
-					data.location = false;
-				}
-			}
-			RVSearchSrv.updateGuestDetails($scope.guestCardData.contactInfo.user_id, data);
-		};
+		};		
 
 		$scope.init = function() {
 			if ($scope.viewState.identifier === "CREATION") {
@@ -327,22 +309,10 @@ angular.module('sntRover').controller('guestCardController', [
 		$scope.$on('contactInfoError', function(event, value) {
 			$scope.contactInfoError = value;
 		});
+
 		$scope.$on('likesInfoError', function(event, value) {
 			$scope.likesInfoError = value;
-		});
-
-		// Get the contact details object with the required properties only
-		var getContactInfo = function (contactInfo) {
-			var whiteListedKeys = ['first_name', 'last_name', 'mobile', 'phone', 'email', 'vip'],
-			    contactDetails = _.pick(contactInfo, whiteListedKeys);
-
-			contactDetails.address = {
-				state: contactInfo.address && contactInfo.address.state ? contactInfo.address.state : "",
-				city: contactInfo.address && contactInfo.address.city ? contactInfo.address.city : ""
-			};
-
-			return contactDetails;
-		};
+		});		
 
 		$scope.updateContactInfo = function() {			
 			var that = this;
@@ -352,7 +322,7 @@ angular.module('sntRover').controller('guestCardController', [
 				$scope.$emit('hideLoader');
 				$scope.reservationData.guest.email = that.newUpdatedData.email;
 				// update few of the details to searchSrv
-				updateSearchCache();
+				$scope.updateSearchCache();
 				// This is used in contact info ctrl to prevent the extra API call while clicking outside
 				$scope.isGuestCardSaveInProgress = false;
 				
@@ -361,7 +331,7 @@ angular.module('sntRover').controller('guestCardController', [
 			};
 
 			// check if there is any chage in data.if so call API for updating data, CICO-46709 fix
-			if (JSON.stringify(getContactInfo(currentGuestCardHeaderData)) !== JSON.stringify(getContactInfo(that.newUpdatedData))) {
+			if (JSON.stringify($scope.getContactInfo(currentGuestCardHeaderData)) !== JSON.stringify($scope.getContactInfo(that.newUpdatedData))) {
 				currentGuestCardHeaderData = that.newUpdatedData;
 				var data = {
 					'data': currentGuestCardHeaderData,
