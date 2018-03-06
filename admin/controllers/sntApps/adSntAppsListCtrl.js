@@ -35,6 +35,7 @@ admin.controller('ADSntAppsListCtrl', ['$scope',
 				$scope.changeToListView();
 				$scope.tableParams.reload();
 			};
+
 			$scope.clearErrorMessage();
 			$scope.callAPI(adAppVersionsSrv.fetchAppVersions, {
 				params: {
@@ -100,7 +101,7 @@ admin.controller('ADSntAppsListCtrl', ['$scope',
 			});
 		};
 
-		$scope.editApp = function(app, index) {
+		$scope.editApp = function() {
 			// edit only avalaible for latest build
 			// if (index === 0) {
 			// 	$scope.selectedApp = {
