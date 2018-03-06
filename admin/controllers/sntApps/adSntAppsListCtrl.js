@@ -97,7 +97,7 @@ admin.controller('ADSntAppsListCtrl', ['$scope',
 
 		var deletingAppId = '';
 
-		$scope.deleteApp = function(app) {
+		$scope.deleteApp = function() {
 			ngDialog.close();
 			$scope.callAPI(adAppVersionsSrv.deleteBuild, {
 				params: {
@@ -116,7 +116,7 @@ admin.controller('ADSntAppsListCtrl', ['$scope',
 				scope: $scope,
 				closeByDocument: true
 			});
-		}
+		};
 
 		$scope.editApp = function() {
 			// edit only avalaible for latest build
