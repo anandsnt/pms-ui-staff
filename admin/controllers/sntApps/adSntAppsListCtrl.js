@@ -1,6 +1,6 @@
 admin.controller('ADSntAppsListCtrl', ['$scope',
-	'adDebuggingSetupSrv', 'adAppVersionsSrv', 'ngTableParams', '$filter', 'appTypes', 'ftpSettings',
-	function($scope, adDebuggingSetupSrv, adAppVersionsSrv, ngTableParams, $filter, appTypes, ftpSettings) {
+	'adDebuggingSetupSrv', 'adAppVersionsSrv', 'ngTableParams', '$filter', 'appTypes', 'ftpSettings', '$state',
+	function($scope, adDebuggingSetupSrv, adAppVersionsSrv, ngTableParams, $filter, appTypes, ftpSettings, $state) {
 		BaseCtrl.call(this, $scope);
 
 		var fetchAppVersions = function() {
@@ -87,7 +87,11 @@ admin.controller('ADSntAppsListCtrl', ['$scope',
 			}
 			$scope.callAPI(adAppVersionsSrv.uploadBuild, {
 				params: params,
-				successCallBack: fetchAppVersions
+				successCallBack: function () {
+					// TODO: call just build list API.
+					// The update list is not being reflected in UI even after tableParams reload, $digest, $apply etc
+					$state.reload();
+				}
 			});
 		};
 
