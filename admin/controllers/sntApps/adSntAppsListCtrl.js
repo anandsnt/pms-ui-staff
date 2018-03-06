@@ -1,6 +1,6 @@
 admin.controller('ADSntAppsListCtrl', ['$scope',
-	'adDebuggingSetupSrv', 'adAppVersionsSrv', 'ngTableParams', '$filter', 'appTypes', 'ftpSettings', '$state',
-	function($scope, adDebuggingSetupSrv, adAppVersionsSrv, ngTableParams, $filter, appTypes, ftpSettings, $state) {
+	'adDebuggingSetupSrv', 'adAppVersionsSrv', 'ngTableParams', '$filter', 'appTypes', '$state', 'ngDialog',
+	function($scope, adDebuggingSetupSrv, adAppVersionsSrv, ngTableParams, $filter, appTypes, $state, ngDialog) {
 		BaseCtrl.call(this, $scope);
 
 		var fetchAppVersions = function() {
@@ -95,15 +95,28 @@ admin.controller('ADSntAppsListCtrl', ['$scope',
 			});
 		};
 
-		$scope.deleteVersion = function(app) {
+		var deletingAppId = '';
+
+		$scope.deleteApp = function(app) {
+			ngDialog.close();
 			$scope.callAPI(adAppVersionsSrv.deleteBuild, {
 				params: {
 					service_application: $scope.filterType.id,
-					id: app.id
+					id: deletingAppId
 				},
 				successCallBack: fetchAppVersions
 			});
 		};
+
+		$scope.deleteVersion = function (app) {
+			deletingAppId = app.id;
+			ngDialog.open({
+				template: '/assets/partials/sntApps/adSntVersionDeleteWarning.html',
+				className: 'ngdialog-theme-default',
+				scope: $scope,
+				closeByDocument: true
+			});
+		}
 
 		$scope.editApp = function() {
 			// edit only avalaible for latest build
@@ -124,8 +137,13 @@ admin.controller('ADSntAppsListCtrl', ['$scope',
 		};
 
 		$scope.showGeneralSettings = function() {
-
-			$scope.screenMode = 'SETTINGS';
+			$scope.callAPI(adAppVersionsSrv.fetchFTPSettings, {
+				params: {},
+				successCallBack: function(data) {
+					$scope.settingsData = data;
+					$scope.screenMode = 'SETTINGS';
+				}
+			});
 		};
 
 		$scope.saveFTPsettings = function() {
@@ -148,7 +166,6 @@ admin.controller('ADSntAppsListCtrl', ['$scope',
 			$scope.fileName = "";
 			$scope.errorMessage = '';
 			$scope.screenMode = 'BUILD_LIST';
-			$scope.settingsData = ftpSettings;
 			setAppTypes(appTypes);
 		})();
 	}
