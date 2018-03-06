@@ -25,27 +25,33 @@
                 <table id="brands" class="grid " ng-table="tableParams" template-pagination="">
                     <thead>
                         <tr>
-                            <th width="30%" rowspan="2">
+                            <th width="20%" rowspan="2">
                                 <div><i class="glyphicon glyphicon-user"></i> <span>Version</span></div>
                             </th>
                             <th width="30%" rowspan="2">
                                 <div><span>Updated on</span></div>
                             </th>
-                            <th width="40%" rowspan="2">
+                            <th width="30%" rowspan="2">
                                 <div><span>Description</span></div>
+                            </th>
+                            <th width="20%" rowspan="2">
+                                <div><span>Delete</span></div>
                             </th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr ng-repeat="app in $data | filter:filterDevices" ng-click="editApp(app,  $index)" style="cursor: pointer;">
-                            <td ng-class="{'grey-bg': $index !== 0}">
+                            <td>
                                 {{app.version}}
                             </td>
-                            <td ng-class="{'grey-bg': $index !== 0}">
+                            <td>
                                 {{app.updated_on}}
                             </td>
-                            <td ng-class="{'grey-bg': $index !== 0}">
+                            <td>
                                 {{app.description}}
+                            </td>
+                            <td>
+                                <span class="icons delete_small cursor_pointer" ng-click="deleteVersion(app)" ng-hide="false">&nbsp;</span>
                             </td>
                         </tr>
                     </tbody>
@@ -78,7 +84,7 @@
         <div class="form">
             <fieldset class="holder left">
                 <div class="entry full-width">
-                    <label for="certificate">Upload Buid&nbsp;<strong>*</strong></label>
+                    <label for="certificate">Upload Build&nbsp;<strong>*</strong></label>
                     <div class="file-upload">
                         <span class="input">{{fileName}}</span>
                         <input type="file" ng-model="selectedApp.build" accept="*" app-filereader onclick="this.value=null;"/>

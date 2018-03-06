@@ -36,6 +36,7 @@ admin.controller('ADSntAppsListCtrl', ['$scope',
 				$scope.tableParams.reload();
 			};
 
+			$scope.clearErrorMessage();
 			$scope.callAPI(adAppVersionsSrv.fetchAppVersions, {
 				params: {
 					service_application: $scope.filterType.id
@@ -100,19 +101,21 @@ admin.controller('ADSntAppsListCtrl', ['$scope',
 			});
 		};
 
-		$scope.editApp = function(app, index) {
+		$scope.editApp = function() {
 			// edit only avalaible for latest build
-			if (index === 0) {
-				$scope.selectedApp = {
-					"build": app.build,
-					"version": app.version,
-					"description": app.description,
-					"updated_on": app.updated_on,
-					"id": app.id
-				};
-				$scope.fileName = 'File Attached';
-				$scope.screenMode = 'EDIT_BUILD';
-			}
+			// if (index === 0) {
+			// 	$scope.selectedApp = {
+			// 		"build": app.build,
+			// 		"version": app.version,
+			// 		"description": app.description,
+			// 		"updated_on": app.updated_on,
+			// 		"id": app.id
+			// 	};
+			// 	$scope.fileName = 'File Attached';
+			// 	$scope.screenMode = 'EDIT_BUILD';
+			// }
+			
+			// Disable edit for now
 			return;
 		};
 
