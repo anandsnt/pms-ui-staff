@@ -3,8 +3,8 @@ sntZestStation.controller('zsCollectNationalityCtrl', [
     '$state',
     'zsEventConstants',
     '$stateParams',
-    '$sce', 'countryList', 'sortedCountryList', 'zsCheckinSrv', '$timeout',
-    function($scope, $state, zsEventConstants, $stateParams, $sce, countryList, sortedCountryList, zsCheckinSrv, $timeout) {
+    '$sce', 'countryList', 'sortedCountryList', 'zsCheckinSrv',
+    function($scope, $state, zsEventConstants, $stateParams, $sce, countryList, sortedCountryList, zsCheckinSrv) {
 
         /** ********************************************************************************************
          **     Please note that, not all the stateparams passed to this state will not be used in this state, 
@@ -50,22 +50,6 @@ sntZestStation.controller('zsCollectNationalityCtrl', [
             $scope.selectedCountry.id = '';
         };
 
-        $scope.countryChanged = function () {
-            if (!$scope.zestStationData.kiosk_enforce_country_sort) {
-                var selectedCountry = _.find($scope.countryList, function(county) {
-                    return parseInt(county.id) === parseInt($scope.selectedCountry.id);
-                });
-            } else {
-                var selectedCountry = _.find($scope.sortedCountries, function(county) {
-                    return parseInt(county.id) === parseInt($scope.selectedCountry.id);
-                });
-                if (!selectedCountry) {
-                    selectedCountry = _.find($scope.unSortedCountries, function(county) {
-                        return parseInt(county.id) === parseInt($scope.selectedCountry.id);
-                    });
-                }
-            }
-        };
         /**
          * when the back button clicked
          * @param  {[type]} event
