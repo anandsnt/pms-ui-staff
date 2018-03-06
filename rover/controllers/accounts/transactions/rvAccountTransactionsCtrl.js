@@ -309,12 +309,15 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 					"account_id": $scope.accountConfigData.summary.posting_account_id
 				},
 				createBillSuccessCallback = function(data) {
-					$scope.$emit('hideLoader');
 					// Fetch data again to refresh the screen with new data
 					getTransactionDetails();
+				},
+			    options = {
+					params: billData,
+					successCallBack: createBillSuccessCallback
 				};
 
-			$scope.invokeApi(rvAccountTransactionsSrv.createAnotherBill, billData, createBillSuccessCallback);
+			$scope.callAPI(rvAccountTransactionsSrv.createAnotherBill, options);
 		};
 
 		$scope.moveToBillActionfetchSuccessCallback = function(data) {
@@ -433,7 +436,7 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 
 		var fetchPaymentMethods = function(directBillNeeded) {
 
-			var directBillNeeded = directBillNeeded === "directBillNeeded" ? true : false,
+			var directBillNeeded = (directBillNeeded === "directBillNeeded"),
 			    onPaymnentFetchSuccess = function(data) {
 					$scope.renderData = data;
 					$scope.creditCardTypes = [];
@@ -554,7 +557,7 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 		 */
 		var hasPermissionToChangeCharges = function(type) {
 			// hide edit and remove options in case type is  payment
-			var hasRemoveAndEditPermission  = (type !== "PAYMENT") ? true : false,
+			var hasRemoveAndEditPermission  = (type !== "PAYMENT"),
 			    splitPermission = rvPermissionSrv.getPermissionValue('SPLIT_CHARGES'),
 				editPermission = rvPermissionSrv.getPermissionValue('EDIT_CHARGES'),
 				deletePermission = rvPermissionSrv.getPermissionValue('DELETE_CHARGES');
