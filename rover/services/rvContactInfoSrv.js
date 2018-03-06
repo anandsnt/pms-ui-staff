@@ -123,10 +123,10 @@ angular.module('sntRover').service('RVContactInfoSrv', [
          * @param {object} apiResponseData data from API
          * @return {object} guestData formatted data
          */
-        service.parseGuestData = function (apiResponseData) {
+        service.parseGuestData = function (apiResponseData, guestId) {
             var guestData = {};
 
-            guestData.id = apiResponseData.id;
+            guestData.id = guestId;
             guestData.firstName = apiResponseData.first_name;
             guestData.lastName = apiResponseData.last_name;
             guestData.image = apiResponseData.image_url;

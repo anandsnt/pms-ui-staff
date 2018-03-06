@@ -269,7 +269,9 @@ sntRover.controller('RVReservationBaseSearchCtrl', [
             if (!_.isEmpty(guestDetails)) {
                 $scope.searchData.guestCard.guestFirstName = guestDetails.first_name;
                 $scope.searchData.guestCard.guestLastName = guestDetails.last_name;                
-            }
+            }            
+
+            $vault.set('guestDetails', JSON.stringify(guestDetails));
 
             if ($scope.reservationData.arrivalDate === '') {
                 $scope.reservationData.arrivalDate = dateFilter($scope.otherData.businessDate, 'yyyy-MM-dd');
@@ -419,7 +421,8 @@ sntRover.controller('RVReservationBaseSearchCtrl', [
                     'guestLastName': $scope.searchData.guestCard.guestLastName,
                     'companyID': $scope.reservationData.company.id,
                     'travelAgentID': $scope.reservationData.travelAgent.id,
-                    'promotionCode': $scope.reservationData.searchPromoCode                    
+                    'promotionCode': $scope.reservationData.searchPromoCode,
+                    'guestId': $stateParams.guestId ? $stateParams.guestId : ''
                 });
 
                 $vault.set('searchReservationData', JSON.stringify(reservationDataToKeepinVault));
@@ -461,7 +464,8 @@ sntRover.controller('RVReservationBaseSearchCtrl', [
                         'adults': $scope.reservationData.tabs[0]['numAdults'],
                         'children': $scope.reservationData.tabs[0]['numChildren'],
                         'room_type_id': $scope.reservationData.tabs[0].roomTypeId,
-                        'is_member': !!$scope.reservationData.member.isSelected                        
+                        'is_member': !!$scope.reservationData.member.isSelected,
+                        'guestId': $stateParams.guestId ? $stateParams.guestId : ''                        
                     });
                 }
             }
