@@ -921,14 +921,15 @@ angular.module('sntRover').controller('rvGroupConfigurationSummaryTab', ['$scope
                     is_salutation_enabled: false,
                     is_include_rooming_list: false,
                     personal_salutation: '',
-                    locale : data.selected_language_code
+                    locale: data.selected_language_code
                 };
                 ngDialog.open({
                     template: '/assets/partials/groups/summary/groupSendConfirmationPopup.html',
                     className: '',
                     scope: $scope
                 });
-            }
+            };
+
             $scope.invokeApi(RVContactInfoSrv.fetchGuestLanguages, {},
             fetchGuestLanguageSuccess);
         };
