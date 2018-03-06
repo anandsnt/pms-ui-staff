@@ -1190,26 +1190,34 @@
     height: 90px;
     padding: 20px;
     background: @background;
-    #flexbox > .parent( row, center, center, '');
-    .float;
     .box-shadow(inset 0 1px 0 rgba(0,0,0,.1));
+    #flexbox > .parent(row wrap, flex-end, center, space-between);
     
     &.form {
         .entry {
-            width: 60%;
+            flex: 1 1 auto;
             margin: 0;
+            padding-right: 20px;
+            .calc-width(100, 400);
             .float;
 
-            .checkbox,
-            a {
+            .checkbox {
                 font-size: 14px;
                 line-height: 20px;
                 text-transform: uppercase;
-                .pull-left;
                 .show;
             }
 
-            a { margin-left: 5px; }
+            .termsandconditions-checkbox {
+                padding: 0;
+                .square(20px);
+            }
+
+            .agree-terms-and-conditions { 
+                display: inline;
+                cursor: pointer;
+                text-decoration: underline;
+            }
 
             .checkbox {
                 margin-bottom: 10px;
@@ -1230,7 +1238,8 @@
     }
 
     .actions {
-        width: 40%;
+        flex: 0 1 auto;
+        width: 400px;
 
         .button {
             font-size: 18px;
