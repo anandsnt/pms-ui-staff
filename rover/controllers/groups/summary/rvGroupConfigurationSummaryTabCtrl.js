@@ -1,5 +1,4 @@
-angular.module('sntRover').controller('rvGroupConfigurationSummaryTab', ['$scope', '$q', 'jsMappings', '$rootScope', 'rvGroupSrv', '$filter', '$stateParams', 'rvGroupConfigurationSrv', 'dateFilter', 'RVReservationSummarySrv', 'ngDialog', 'RVReservationAddonsSrv', 'RVReservationCardSrv', 'rvUtilSrv', '$state', 'rvPermissionSrv', '$timeout', 'rvGroupActionsSrv', 'RVContactInfoSrv',
-    function($scope, $q, jsMappings, $rootScope, rvGroupSrv, $filter, $stateParams, rvGroupConfigurationSrv, dateFilter, RVReservationSummarySrv, ngDialog, RVReservationAddonsSrv, RVReservationCardSrv, util, $state, rvPermissionSrv, $timeout, rvGroupActionsSrv, RVContactInfoSrv) {
+angular.module('sntRover').controller('rvGroupConfigurationSummaryTab', ['$scope', '$q', 'jsMappings', '$rootScope', 'rvGroupSrv', '$filter', '$stateParams', 'rvGroupConfigurationSrv', 'dateFilter', 'RVReservationSummarySrv', 'ngDialog', 'RVReservationAddonsSrv', 'RVReservationCardSrv', 'rvUtilSrv', '$state', 'rvPermissionSrv', '$timeout', 'rvGroupActionsSrv', 'RVContactInfoSrv', function($scope, $q, jsMappings, $rootScope, rvGroupSrv, $filter, $stateParams, rvGroupConfigurationSrv, dateFilter, RVReservationSummarySrv, ngDialog, RVReservationAddonsSrv, RVReservationCardSrv, util, $state, rvPermissionSrv, $timeout, rvGroupActionsSrv, RVContactInfoSrv) {
 
 
         var summaryMemento, demographicsMemento;
@@ -908,7 +907,6 @@ angular.module('sntRover').controller('rvGroupConfigurationSummaryTab', ['$scope
         $scope.openSendConfirmationPopup = function () {
 
             var fetchGuestLanguageSuccess = function(data) {
-                $scope.$emit('hideLoader');
                 if ($scope.isInAddMode()) {
                     // If the group has not been saved yet, prompt user for the same
                     $scope.errorMessage = ['Please save the group first'];
@@ -930,8 +928,11 @@ angular.module('sntRover').controller('rvGroupConfigurationSummaryTab', ['$scope
                 });
             };
 
-            $scope.invokeApi(RVContactInfoSrv.fetchGuestLanguages, {},
-            fetchGuestLanguageSuccess);
+            var options = {
+                onSuccess: fetchGuestLanguageSuccess
+            };
+
+            $scope.callAPI(RVContactInfoSrv.fetchGuestLanguages, options);
         };
 
         /*
