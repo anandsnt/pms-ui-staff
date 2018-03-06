@@ -1,6 +1,6 @@
 admin.controller('ADSntAppsListCtrl', ['$scope',
-	'adDebuggingSetupSrv', 'adAppVersionsSrv', 'ngTableParams', '$filter', 'appTypes', 'ftpSettings',
-	function($scope, adDebuggingSetupSrv, adAppVersionsSrv, ngTableParams, $filter, appTypes, ftpSettings) {
+	'adDebuggingSetupSrv', 'adAppVersionsSrv', 'ngTableParams', '$filter', 'appTypes', 'ftpSettings', '$state',
+	function($scope, adDebuggingSetupSrv, adAppVersionsSrv, ngTableParams, $filter, appTypes, ftpSettings, $state) {
 		BaseCtrl.call(this, $scope);
 
 		var fetchAppVersions = function() {
@@ -87,7 +87,9 @@ admin.controller('ADSntAppsListCtrl', ['$scope',
 			}
 			$scope.callAPI(adAppVersionsSrv.uploadBuild, {
 				params: params,
-				successCallBack: fetchAppVersions
+				successCallBack: function () {
+					$state.reload();
+				}
 			});
 		};
 
