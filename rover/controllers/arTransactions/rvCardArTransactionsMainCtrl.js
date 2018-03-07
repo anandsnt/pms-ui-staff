@@ -468,13 +468,13 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 		 */
 		listeners['SWIPE_ACTION'] = $scope.$on('SWIPE_ACTION', function(event, swipedCardData) {
 			if ($scope.paymentModalOpened) {
-				var swipeOperationObj = new SwipeOperation();
-				var getTokenFrom = swipeOperationObj.createDataToTokenize(swipedCardData);
-				var tokenizeSuccessCallback = function(tokenValue) {
-					$scope.$emit('hideLoader');
-					swipedCardData.token = tokenValue;
-					processSwipedData(swipedCardData);
-				};
+				var swipeOperationObj = new SwipeOperation(),
+					getTokenFrom = swipeOperationObj.createDataToTokenize(swipedCardData),
+					tokenizeSuccessCallback = function(tokenValue) {
+						$scope.$emit('hideLoader');
+						swipedCardData.token = tokenValue;
+						processSwipedData(swipedCardData);
+					};
 
 				$scope.invokeApi(RVReservationCardSrv.tokenize, getTokenFrom, tokenizeSuccessCallback);
 			} else {
