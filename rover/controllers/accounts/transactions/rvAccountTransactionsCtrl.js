@@ -44,8 +44,8 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 
   		// only for standalone
 		var setChargeCodesSelectedStatus = function(bool) {
-				var billTabsData = $scope.transactionsDetails.bills;
-				var chargeCodes = billTabsData[$scope.currentActiveBill].transactions;
+				var billTabsData = $scope.transactionsDetails.bills,
+				    chargeCodes = billTabsData[$scope.currentActiveBill].transactions;
 
 				chargeCodesId = [];
 				_.each(chargeCodes, function(chargeCode) {
@@ -54,13 +54,13 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 				});
 				$scope.transactionsDetails.isAllChargeCodeSelected = bool;
 		};
-		/*
-		* Check if all the items are selected
-		*/
 
+		/*
+		 * Check if all the items are selected
+		 */
 		$scope.isAllChargeCodesSelected = function() {
-			var isAllChargeCodesSelected = true;
-			var billTabsData = $scope.transactionsDetails.bills;
+			var isAllChargeCodesSelected = true,
+			    billTabsData = $scope.transactionsDetails.bills;
 
 			if (!$rootScope.isStandAlone) {
 				isAllChargeCodesSelected = false;
@@ -89,10 +89,10 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 		* Check if selection is partial
 		*/
 		$scope.isAnyOneChargeCodeIsExcluded = function() {
-			var isAnyOneChargeCodeIsExcluded = false;
-			var isAnyOneChargeCodeIsIncluded = false;
-			var billTabsData = $scope.transactionsDetails.bills;
-			var chargeCodes = billTabsData[$scope.currentActiveBill].transactions;
+			var isAnyOneChargeCodeIsExcluded = false,
+			    isAnyOneChargeCodeIsIncluded = false,
+			    billTabsData = $scope.transactionsDetails.bills,
+			    chargeCodes = billTabsData[$scope.currentActiveBill].transactions;
 
 			if (!!chargeCodes && chargeCodes.length > 0) {
 				_.each(chargeCodes, function(chargeCode, index) {
@@ -235,7 +235,10 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 			// Balance amount must be zero and only after payment success - call black box api
 			if ($scope.transactionsDetails.bills[$scope.currentActiveBill].balance_amount === "0.0" && $scope.isFromPaymentScreen) {
 				$scope.isFromPaymentScreen = false;
-				requestControlDigitsFromBlackBox();
+				if ($rootScope.isInfrasecActivated && $rootScope.isInfrasecActivatedForWorkstation) {
+					requestControlDigitsFromBlackBox();
+				}
+				
 			}
 
 			configSummaryDateFlags();
@@ -273,11 +276,11 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 		var getTransactionDetails = function() {
 			var params = {
 				"account_id": $scope.accountConfigData.summary.posting_account_id
-			};
-			var options = {
-				successCallBack: onTransactionFetchSuccess,
-				params: params
-			};
+				},
+				options = {
+					successCallBack: onTransactionFetchSuccess,
+					params: params
+				};
 
 			$scope.callAPI(rvAccountTransactionsSrv.fetchTransactionDetails, options);
 		};
@@ -298,24 +301,28 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 
 		// To destroy listener
 		$scope.$on('$destroy', updateTransactionData);
-
+		/*
+		 * To create new bill
+		 */
 		$scope.createNewBill = function() {
 			var billData = {
-				"account_id": $scope.accountConfigData.summary.posting_account_id
-			};
-			var createBillSuccessCallback = function(data) {
-				$scope.$emit('hideLoader');
-				// Fetch data again to refresh the screen with new data
-				getTransactionDetails();
-			};
+					"account_id": $scope.accountConfigData.summary.posting_account_id
+				},
+				createBillSuccessCallback = function(data) {
+					// Fetch data again to refresh the screen with new data
+					getTransactionDetails();
+				},
+			    options = {
+					params: billData,
+					successCallBack: createBillSuccessCallback
+				};
 
-			$scope.invokeApi(rvAccountTransactionsSrv.createAnotherBill, billData, createBillSuccessCallback);
+			$scope.callAPI(rvAccountTransactionsSrv.createAnotherBill, options);
 		};
 
 		$scope.moveToBillActionfetchSuccessCallback = function(data) {
 			$scope.fetchSuccessCallback(data);
 		};
-
 
 		/*
 		 * MOve fees item from one bill to another
@@ -324,9 +331,9 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 		 */
 		$scope.moveToBillAction = function(oldBillValue, feesIndex) {
 
-			var parseOldBillValue = parseInt(oldBillValue) - 1;
-			var transactionData = $scope.transactionsDetails.bills[parseOldBillValue].transactions[feesIndex];
-			var newBillValue = transactionData.billValue,
+			var parseOldBillValue = parseInt(oldBillValue) - 1,
+			    transactionData = $scope.transactionsDetails.bills[parseOldBillValue].transactions[feesIndex],
+			    newBillValue = transactionData.billValue,
 				transactionId = transactionData.id ? transactionData.id : null,
 				itemIdList = transactionData.item_ids ? transactionData.item_ids : [];
 
@@ -366,6 +373,7 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 
 			if ($scope.transactionsDetails !== undefined) {
 				var width = $('#registration-summary ul li').width() * ($scope.transactionsDetails.bills.length + 1);
+
 			}
 			return width;
 		};
@@ -397,39 +405,39 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 		};
 
 		$scope.openPostCharge = function( activeBillNo ) {
-		// Show a loading message until promises are not resolved
-		sntActivity.start("OPEN_POST_CHARGE");
+			// Show a loading message until promises are not resolved
+			sntActivity.start("OPEN_POST_CHARGE");
 
-		jsMappings.fetchAssets(['postcharge', 'directives'])
-		.then(function() {
-			sntActivity.stop("OPEN_POST_CHARGE");
+			jsMappings.fetchAssets(['postcharge', 'directives'])
+			.then(function() {
+				sntActivity.stop("OPEN_POST_CHARGE");
 
-			// pass on the reservation id
-			$scope.account_id = $scope.accountConfigData.summary.posting_account_id;
-			$scope.billNumber = activeBillNo;
+				// pass on the reservation id
+				$scope.account_id = $scope.accountConfigData.summary.posting_account_id;
+				$scope.billNumber = activeBillNo;
 
-			var bills = [];
+				var bills = [];
 
-			for (var i = 0; i < $scope.transactionsDetails.bills.length; i++ ) {
-				bills.push(i + 1);
-			}
+				for (var i = 0; i < $scope.transactionsDetails.bills.length; i++ ) {
+					bills.push(i + 1);
+				}
 
-			$scope.fetchedData = {};
-			$scope.fetchedData.bill_numbers = bills;
-			$scope.isOutsidePostCharge = false;
+				$scope.fetchedData = {};
+				$scope.fetchedData.bill_numbers = bills;
+				$scope.isOutsidePostCharge = false;
 
-			ngDialog.open({
-				template: '/assets/partials/postCharge/rvPostChargeV2.html',
-				className: '',
-				scope: $scope
+				ngDialog.open({
+					template: '/assets/partials/postCharge/rvPostChargeV2.html',
+					className: '',
+					scope: $scope
+				});
 			});
-		});
 		};
 
 		var fetchPaymentMethods = function(directBillNeeded) {
 
-			var directBillNeeded = directBillNeeded === "directBillNeeded" ? true : false;
-			var onPaymnentFetchSuccess = function(data) {
+			var directBillNeeded = (directBillNeeded === "directBillNeeded"),
+			    onPaymnentFetchSuccess = function(data) {
 					$scope.renderData = data;
 					$scope.creditCardTypes = [];
 					angular.forEach($scope.renderData, function(item, key) {
@@ -500,18 +508,20 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 			ngDialog.close();
 		};
 
-		$scope.$on('HANDLE_MODAL_OPENED', function(event) {
+		var modalOpened = $scope.$on('HANDLE_MODAL_OPENED', function(event) {
 			$scope.paymentModalOpened = false;
 		});
+
+		$scope.$on('$destroy', modalOpened);
 
 		/*
 		 *	MLI SWIPE actions
 		 */
 		var processSwipedData = function(swipedCardData) {
 
-			var passData = getPassData();
-			var swipeOperationObj = new SwipeOperation();
-			var swipedCardDataToRender = swipeOperationObj.createSWipedDataToRender(swipedCardData);
+			var passData = getPassData(),
+			    swipeOperationObj = new SwipeOperation(),
+			    swipedCardDataToRender = swipeOperationObj.createSWipedDataToRender(swipedCardData);
 
 			passData.details.swipedDataToRenderInScreen = swipedCardDataToRender;
 			$scope.$broadcast('SHOW_SWIPED_DATA_ON_PAY_SCREEN', swipedCardDataToRender);
@@ -521,17 +531,16 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 		/*
 		 * Handle swipe action in bill card
 		 */
-
 		$scope.$on('SWIPE_ACTION', function(event, swipedCardData) {
 
 			if ($scope.paymentModalOpened) {
-				var swipeOperationObj = new SwipeOperation();
-				var getTokenFrom = swipeOperationObj.createDataToTokenize(swipedCardData);
-				var tokenizeSuccessCallback = function(tokenValue) {
-					$scope.$emit('hideLoader');
-					swipedCardData.token = tokenValue;
-					processSwipedData(swipedCardData);
-				};
+				var swipeOperationObj = new SwipeOperation(),
+				    getTokenFrom = swipeOperationObj.createDataToTokenize(swipedCardData),
+				    tokenizeSuccessCallback = function(tokenValue) {
+						$scope.$emit('hideLoader');
+						swipedCardData.token = tokenValue;
+						processSwipedData(swipedCardData);
+					};
 
 				$scope.invokeApi(RVReservationCardSrv.tokenize, getTokenFrom, tokenizeSuccessCallback);
 			} else {
@@ -548,8 +557,8 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 		 */
 		var hasPermissionToChangeCharges = function(type) {
 			// hide edit and remove options in case type is  payment
-			var hasRemoveAndEditPermission  = (type !== "PAYMENT") ? true : false;
-			var splitPermission = rvPermissionSrv.getPermissionValue('SPLIT_CHARGES'),
+			var hasRemoveAndEditPermission  = (type !== "PAYMENT"),
+			    splitPermission = rvPermissionSrv.getPermissionValue('SPLIT_CHARGES'),
 				editPermission = rvPermissionSrv.getPermissionValue('EDIT_CHARGES'),
 				deletePermission = rvPermissionSrv.getPermissionValue('DELETE_CHARGES');
 
