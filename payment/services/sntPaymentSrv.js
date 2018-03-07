@@ -496,7 +496,7 @@ if (status === 406) { // 406- Network error
 
         service.checkARStatus = function(postingAccountId) {
             var deferred = $q.defer();
-            var url = 'api/posting_accounts/' + postingAccountId + '/is_ar_account_attached';
+            var url = 'api/posting_accounts/' + postingAccountId + '/check_ar_account_attached';
 
             $http.get(url).then(response => {
                 deferred.resolve(response.data);

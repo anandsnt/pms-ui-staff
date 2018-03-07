@@ -12,8 +12,19 @@
 		<fieldset class="content-left">
 			<div class="entry full-width">
 				<label>Contact Email</label>
-		    	<input type="text" value="{{groupConfirmationData.contact_email}}" readonly/>
+		    	<input type="text" ng-model="groupConfirmationData.contact_email"/>
 			</div>
+
+			<div class="entry full-width" >
+	            <label for="languages">Language</label>
+	            <div  class="select">
+	                <select convert-to-number iscroll-stop-propagation ng-model="groupConfirmationData.locale">
+	                    <option value="{{item.code}}" ng-if="item.is_show_on_guest_card" ng-repeat="item in languageData.languages"
+	                        ng-selected="item.code === groupConfirmationData.locale"
+	                        >{{item.language}}</option>
+	                </select>
+	            </div>
+	        </div>
 
 			<div class="entry full-width">
 				<!-- add class .checked if checked-->
