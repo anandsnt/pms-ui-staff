@@ -5,6 +5,7 @@
             <span class="count"> ({{totalCount}}) </span>
             <a ng-click="goBackToPreviousState()" class="action back ng-scope" translate="">Services</a>
             <div class="filters">
+                <p class="filter-label">Service Type</p>
                 <div class="filter select" style="width:200px;">
                     <div class="entry" style="width:200px;">
                         <div class="select">
@@ -34,10 +35,13 @@
             <table class="grid" ng-table="tableParams" template-pagination="custom/pager" ng-class="{'edit-data': currentClickedElement == $index}">
                 <tbody>
                     <tr ng-repeat="device in $data" ng-click="deviceSelected(device)">
-                        <td data-title="'Name'" sortable="'device_name'" header-class="width-25" ng-hide="currentClickedElement == $index">
+                        <td data-title="'Name'" sortable="'device_name'" header-class="width-30" ng-hide="currentClickedElement == $index">
                             <strong> {{device.device_name}}</strong>
                         </td>
-                        <td data-title="'Version'" sortable="'app_version'" header-class="width-15" ng-hide="currentClickedElement == $index">
+                        <td data-title="'UDID'" sortable="'unique_id'" header-class="width-40" ng-hide="currentClickedElement == $index">
+                            <strong> {{device.unique_id}}</strong>
+                        </td>
+                        <td data-title="'Version'" sortable="'app_version'" header-class="width-20" ng-hide="currentClickedElement == $index">
                             <strong>{{device.app_version}}</strong>
                         </td>
                        <!--  <td data-title="'Upgrade Status'" sortable="'app_version'" header-class="width-15" ng-hide="currentClickedElement == $index">

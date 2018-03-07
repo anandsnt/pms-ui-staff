@@ -322,7 +322,7 @@ angular.module('sntRover').service('RVReservationSummarySrv', ['$q', 'rvBaseWebS
             var deferred = $q.defer(),
                 url = '/api/reservations/' + params.reservation_id + '/confirmation_email_data';
 
-            rvBaseWebSrvV2.getJSON(url).then(function(data) {
+            rvBaseWebSrvV2.getJSON(url, params).then(function(data) {
                 // Converting array into String here, for display purpose.
                 data.data.addons_list = (data.data.addons) ? data.data.addons.toString() : "";
                 deferred.resolve(data);
