@@ -69,8 +69,8 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 			'availableAmount': 0,
 			'accountId': ( typeof $scope.contactInformation === 'undefined' ) ? $stateParams.id : $scope.contactInformation.id
 		};
-		// List of listner values.
-		var listeners = [];
+		// List of listner values as object hash.
+		var listeners = {};
 		
 		/*
 		 * To create the parameters which is to be passed to API
