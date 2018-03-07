@@ -62,7 +62,7 @@
                label = "{{'WORKSTATION_MODEL' | translate}}" placeholder = "{{'WORKSTATION_MODEL'| translate}}"  
                styleclass="full-width" ></ad-textbox>
 
-            <ad-checkbox 
+            <ad-checkbox ng-if="infrasecDetails.country_name === infrasecSpecificCountry && infrasecDetails.is_infrasec_activated && infrasecDetails.max_control_unit > 0 && mapping.is_control_unit_enabled"
                         is-checked="mapping.mobile"
                         label="{{ 'MOBILE' | translate}}"
                         div-class="full-width control-unit-class">
