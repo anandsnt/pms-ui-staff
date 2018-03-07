@@ -772,4 +772,35 @@ angular.module('adminModuleTwo', []).config(function ($stateProvider) {
         }
     });
 
+    $stateProvider.state('admin.appServices', {
+        templateUrl: '/assets/partials/menuList/adMenuList.html',
+        controller: 'ADMenuListCtrl',
+        url: '/Services',
+        data: {
+            'title': 'Services'
+        }
+    });
+
+    $stateProvider.state('admin.appVersions', {
+        templateUrl: '/assets/partials/sntApps/adSntAppsVersions.html',
+        controller: 'ADSntAppsListCtrl',
+        url: '/appVersions',
+        resolve: {
+            appTypes: function(adDebuggingSetupSrv) {
+                return adDebuggingSetupSrv.retrieveAppTypes();
+            }
+        }
+    });
+
+    $stateProvider.state('admin.registeredDevices', {
+        templateUrl: '/assets/partials/installedDevices/adDevicesList.html',
+        controller: 'ADDevicesListCtrl',
+        url: '/registeredDevices',
+        resolve: {
+            appTypes: function(adDebuggingSetupSrv) {
+                return adDebuggingSetupSrv.retrieveAppTypes();
+            }
+        }
+    });
+
 });
