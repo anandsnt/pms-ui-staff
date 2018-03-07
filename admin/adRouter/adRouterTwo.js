@@ -382,6 +382,9 @@ angular.module('adminModuleTwo', []).config(function ($stateProvider) {
             },
             availableLanguages: function (ADTranslationSrv) {
                 return ADTranslationSrv.getActiveGuestLanguages();
+            },
+            addonUpsellSettings: function (ADUpsellAddonSrv) {
+                return ADUpsellAddonSrv.getSettings();
             }
         }
     });
@@ -695,13 +698,23 @@ angular.module('adminModuleTwo', []).config(function ($stateProvider) {
     $stateProvider.state('admin.zestWebAddons', {
         templateUrl: '/assets/partials/checkin/adZestWebAddons.html',
         controller: 'ADZestWebAddonCtrl',
-        url: '/zestWebAddons'
+        url: '/zestWebAddons',
+        resolve: {
+             addonUpsellSettings: function (ADUpsellAddonSrv) {
+                return ADUpsellAddonSrv.getSettings();
+            }
+        }
     });
 
     $stateProvider.state('admin.zestStationAddons', {
         templateUrl: '/assets/partials/zestStation/adZestStationAddons.html',
         controller: 'ADZestStationAddonCtrl',
-        url: '/zestStationAddons'
+        url: '/zestStationAddons',
+        resolve: {
+            addonUpsellSettings: function(ADUpsellAddonSrv) {
+                return ADUpsellAddonSrv.getSettings();
+            }
+        }
     });
 
     $stateProvider.state('admin.stationHueSettings', {
@@ -755,6 +768,37 @@ angular.module('adminModuleTwo', []).config(function ($stateProvider) {
         resolve: {
             sectionDetails: function (ADHKSectionSrv, $stateParams) {
                 return ADHKSectionSrv.getHkSectionDetails($stateParams.sectionId);
+            }
+        }
+    });
+
+    $stateProvider.state('admin.appServices', {
+        templateUrl: '/assets/partials/menuList/adMenuList.html',
+        controller: 'ADMenuListCtrl',
+        url: '/Services',
+        data: {
+            'title': 'Services'
+        }
+    });
+
+    $stateProvider.state('admin.appVersions', {
+        templateUrl: '/assets/partials/sntApps/adSntAppsVersions.html',
+        controller: 'ADSntAppsListCtrl',
+        url: '/appVersions',
+        resolve: {
+            appTypes: function(adDebuggingSetupSrv) {
+                return adDebuggingSetupSrv.retrieveAppTypes();
+            }
+        }
+    });
+
+    $stateProvider.state('admin.registeredDevices', {
+        templateUrl: '/assets/partials/installedDevices/adDevicesList.html',
+        controller: 'ADDevicesListCtrl',
+        url: '/registeredDevices',
+        resolve: {
+            appTypes: function(adDebuggingSetupSrv) {
+                return adDebuggingSetupSrv.retrieveAppTypes();
             }
         }
     });

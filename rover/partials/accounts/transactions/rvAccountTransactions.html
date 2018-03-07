@@ -47,10 +47,11 @@
 				<div class="bill-tabs scrollable" ng-iscroll="bill-tab-scroller">
 					<ul class="wrapper" style="width:{{getWidthForBillTabsScroll();}}px;">
 						<li ng-class="showActiveBill($index)" ng-repeat="billTab in transactionsDetails.bills">
-							<a class="bill-toggle" click-touch="setActiveBill($index)">
+							<a class="bill-toggle" ng-class="{'has-icon': !billTab.is_active && billTab.is_control_code_exist}" click-touch="setActiveBill($index)">
 								<div class="price"><span>{{'BILL' |translate}} #{{billTab.bill_number}}</span>
 									<span class="currency">{{currencySymbol}}</span>{{billTab.balance_amount | number: precisonZero}}
 								</div>
+								<span class="icons icon-room-lock" ng-show="!billTab.is_active && billTab.is_control_code_exist"></span> 
 							</a>
 							<button ng-if="($index === transactionsDetails.bills.length - 1) && !billTab.is_transactions_exist && !billTab.is_routing_exist" click-touch="clickedRemoveBill($index)" type="button" class="button icons icon-remove-10"></button>
 						</li>
@@ -114,7 +115,7 @@
 								<span class="value"><span class="currency">{{currencySymbol}}</span>{{billData.total_amount | number: precisonTwo}}</span>
 							</li>
 							<li class="break">
-								<button type="button" class="button with-icon only-icon blue" click-touch="showFormatBillPopup(billData.bill_number)">
+								<button type="button" class="button with-icon only-icon blue" click-touch="showFormatBillPopup(billData.bill_number, billData.is_active)">
 									<span class="icons icon-invoice"></span>
 									{{'INVOICE' |translate}}
 								</button>
