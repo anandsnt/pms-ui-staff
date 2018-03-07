@@ -319,7 +319,7 @@ sntRover.controller('RvArBalanceController', ['$scope', '$timeout', 'rvAccountsA
 					'account_id': $scope.arDataObj.accountId
 				},
 				successCallBack: function() {
-					refreshScroll();
+					$scope.$emit('REFRESH_BALANCE_LIST');
 				},
 				failureCallBack: function(errorMessage) {
 					$scope.errorMessage = errorMessage;
