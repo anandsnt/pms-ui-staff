@@ -4,7 +4,7 @@
             <img ng-src="{{guestCardData.contactInfo.avatar}}" />
             <span class="vip" ng-show="guestCardData.contactInfo.vip">VIP</span>
         </figure>
-        <form name="change-name" id="change-name">
+        <form name="change-name" id="change-name" class="dual-actions">
             <div class="holder">
                 <div class="entry" ng-click="openGuestCard()">
                     <input type="text" class="masked-input h1" data-size="{{guestCardData.contactInfo.first_name.length}}"  ng-model="guestCardData.contactInfo.first_name" placeholder="First Name" ng-blur="updateContactInfo()" auto-grow-field />
@@ -37,9 +37,14 @@
             <button class="button green ng-scope" type="button" ng-click="clickedSaveGuestCard()" translate="">Save new card</button>
             <button class="button blank ng-scope" type="button" ng-click="clickedDiscardGuestCard()" translate="">Discard</button>
         </div>
-        <div class="card-actions" ng-show="!viewState.isAddNewCard">
-            <button class="button ng-scope" type="button" ng-click="removeGuestDetails(guestCardData.contactInfo.user_id)" ng-class="{'grey':guestCardData.contactInfo.is_active_reservations_present || !hasRemoveGuestDetailsPermission(),'green': !guestCardData.contactInfo.is_active_reservations_present}">Remove Guest</button>
-            
+        <div class="card-actions dual-actions" ng-show="!viewState.isAddNewCard"> 
+            <button type="button" class="button add-new-button">+ New Reservation</button> 
+            <button type="button" class="button toggle has-arrow" ng-click="toggleCardActions()" ng-class="{'active' : !isCardOptionsOpen, '' : isCardOptionsOpen}">Manage Card</button>            
+            <div class="manage-cards" ng-class="{'hidden': !isCardOptionsOpen, '' : isCardOptionsOpen}">
+                <button type="button" class="button" ng-click="removeGuestDetails(guestCardData.contactInfo.user_id)" ng-class="{'grey':shouldDisableRemoveGuestBtn(),'white red-text': !shouldDisableRemoveGuestBtn()}" ng-disabled="shouldDisableRemoveGuestBtn()">Remove Details</button>
+                <button type="button" class="button purple">Archive Card</button>
+                <button type="button" class="button red">Delete Card</button>
+            </div>            
         </div>        
     </section>    
 </div>
