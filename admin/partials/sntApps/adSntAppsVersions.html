@@ -1,0 +1,150 @@
+<section class="content current admin-scrollfix" div-touch-move-stop-propogate ng-click='clearErrorMessage()' ng-show="screenMode === 'BUILD_LIST'">
+    <div>
+        <header class="content-title float">
+            <h2>Versions </h2>
+            <a ng-click="goBackToPreviousState()" class="action back ng-scope" translate="">Services</a>
+            <a class="action" ng-click="showGeneralSettings()" style="background-image:none;color:black;">Settings</a>
+            <a class="action add" ng-click="changeToUploadBuildMode()">Upload new build</a>
+            <div class="filters">
+                <p class="filter-label">Service Type</p>
+                <div class="filter select" style="width:200px;">
+                    <div class="entry">
+                        <div class="select" style="width:200px;">
+                            <select class="placeholder" ng-model="filterType" ng-options="opt.value for opt in filterList" ng-change="appTypeChanged()" style="width:200px;">
+                                <option value="">Filter by Service Type</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+        <section class="content-scroll">
+            <div ng-include="'/assets/partials/common/notification_message.html'"></div>
+            <div ng-include="'/assets/partials/common/notification_success_message.html'"></div>
+            <!--ng-table component -->
+            <div class="wrapper">
+                <table id="brands" class="grid " ng-table="tableParams" template-pagination="">
+                    <thead>
+                        <tr>
+                            <th width="20%" rowspan="2">
+                                <div><i class="glyphicon glyphicon-user"></i> <span>Version</span></div>
+                            </th>
+                            <th width="30%" rowspan="2">
+                                <div><span>Updated on</span></div>
+                            </th>
+                            <th width="30%" rowspan="2">
+                                <div><span>Description</span></div>
+                            </th>
+                            <th width="20%" rowspan="2">
+                                <div><span>Delete</span></div>
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="app in $data | filter:filterDevices" ng-click="editApp(app,  $index)" style="cursor: pointer;">
+                            <td>
+                                {{app.version}}
+                            </td>
+                            <td>
+                                {{app.updated_on}}
+                            </td>
+                            <td>
+                                {{app.description}}
+                            </td>
+                            <td>
+                                <span class="icons delete_small cursor_pointer" ng-click="deleteVersion(app)" ng-hide="false">&nbsp;</span>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+        <!--end -->
+    </div>
+</section>
+<section class="content current" ng-show="screenMode === 'ADD_BUILD' || screenMode === 'EDIT_BUILD'">
+    <header class="content-title float">
+        <h2 ng-show="screenMode === 'ADD_BUILD'">Upload Build</h2>
+        <h2 ng-hide="screenMode === 'ADD_BUILD'">Edit Build</h2>
+        <a ng-click="changeToListView()" class="action back ng-scope" translate="">Versions</a>
+        <div class="filters" ng-show="screenMode === 'ADD_BUILD'">
+            <div class="filter select">
+                <div class="entry">
+                    <div class="select">
+                         <select class="placeholder" ng-model="filterType" ng-options="opt.value for opt in filterList" ng-change="appTypeChanged()" style="width:200px;">
+                                <option value="">Filter by Service Type</option>
+                        z</select>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+    <section class="content-scroll">
+        <div ng-include="'/assets/partials/common/notification_message.html'"></div>
+        <div ng-include="'/assets/partials/common/notification_success_message.html'"></div>
+        <div class="form">
+            <fieldset class="holder left">
+                <div class="entry full-width">
+                    <label for="certificate">Upload Build&nbsp;<strong>*</strong></label>
+                    <div class="file-upload">
+                        <span class="input">{{fileName}}</span>
+                        <input type="file" ng-model="selectedApp.build" accept="*" app-filereader onclick="this.value=null;"/>
+                        <button type="button" class="button brand-colors">
+                            Attach
+                        </button>
+                    </div>
+                </div>
+                <ad-textbox value="selectedApp.version" label="{{ 'APP_VERSION' | translate}}" styleclass="full-width" required="yes"></ad-textbox>
+                <ad-textarea rows="4" div-class="full-width" text-area-class="full-width" value="selectedApp.description" label="{{ 'DESCRIPTION' | translate}}" placeholder=""></ad-textarea>
+            </fieldset>
+            <div class="actions float">
+                <button type="button" id="cancel" class="button blank add-data-inline" ng-click="changeToListView()" translate>
+                    CANCEL
+                </button>
+                <button type="button" like-type="common" id="update" class="button red white-text" ng-click="deleteVersion(selectedApp)" ng-show="screenMode === 'EDIT_BUILD'" translate>
+                    DELETE
+                </button>
+                <button type="button" like-type="common" id="update" class="button green" ng-click="uploadBuild()" translate>
+                    SAVE_CHANGES
+                </button>
+            </div>
+        </div>
+    </section>
+</section>
+<section class="content current" ng-show="screenMode === 'SETTINGS'">
+    <header class="content-title float">
+        <h2>Settings</h2>
+        <a ng-click="changeToListView()" class="action back ng-scope" translate="">Versions</a>
+    </header>
+    <section class="content-scroll">
+        <div ng-include="'/assets/partials/common/notification_message.html'"></div>
+        <div ng-include="'/assets/partials/common/notification_success_message.html'"></div>
+        <div class="form">
+            <div class="form-title" style="margin-bottom:20px;">
+                <h3>SFTP Settings</h3>
+            </div>
+            <fieldset class="holder left float">
+                <!-- sftp location -->
+                <ad-textbox value="settingsData.url" label="SFTP Location" placeholder="Enter SFTP Location" styleclass="full-width"></ad-textbox>
+                <!-- sftp port -->
+                <ad-textbox value="settingsData.port" label="SFTP Port" placeholder="Enter SFTP Port" styleclass="full-width"></ad-textbox>
+                <!-- sftp user -->
+                <ad-textbox value="settingsData.username" label="SFTP user" placeholder="Enter SFTP User" styleclass="full-width"></ad-textbox>
+            </fieldset>
+            <fieldset class="holder right float">
+                <!--  sftp password-->
+                <ad-textbox inputtype="password" value="settingsData.password" label="SFTP Password" placeholder="Enter SFTP Password" styleclass="full-width"></ad-textbox>
+                <!--  sftp respath-->
+                <ad-textbox value="settingsData.filepath" label="SFTP Respath" placeholder="Enter SFTP Respath" styleclass="full-width"></ad-textbox>
+            </fieldset>
+            <div class="actions float">
+                <button type="button" id="cancel" class="button blank add-data-inline" ng-click="changeToListView()" translate>
+                    CANCEL
+                </button>
+                <button type="button" like-type="common" id="update" class="button green" ng-click="saveFTPsettings()" translate>
+                    SAVE CHANGES
+                </button>
+            </div>
+        </div>
+    </section>
+</section>
