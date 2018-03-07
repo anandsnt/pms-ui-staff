@@ -771,6 +771,6 @@ admin.controller('ADAppCtrl', [
             }));
             // if index is not defined, set it as current selected index
             index = _.isUndefined(index) ? $scope.selectedIndex : index;
-            return index
+            return index;
         };
 }]);
