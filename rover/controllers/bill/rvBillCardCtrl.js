@@ -375,7 +375,7 @@ sntRover.controller('RVbillCardController',
             ($scope.reservationBillData.reservation_status === 'CHECKING_OUT'
                 || $scope.reservationBillData.reservation_status === 'CHECKEDIN')) {
             if ($scope.reservationBillData.required_signature_at === 'CHECKOUT'
-                && (($scope.currentActiveBill + 1) === $scope.reservationBillData.bills.length)){
+                && (($scope.currentActiveBill + 1) === $scope.reservationBillData.bills.length)) {
                     return true;
             }
         }
