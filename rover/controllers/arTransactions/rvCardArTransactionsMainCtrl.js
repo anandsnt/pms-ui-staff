@@ -872,8 +872,8 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 		});
 
 		// Destory listeners
-		angular.forEach(listeners, function(value, key) {
-			$scope.$on('$destroy', value);
+		angular.forEach(listeners, function(listener) {
+			$scope.$on('$destroy', listener);
 		});
 
 }]);
