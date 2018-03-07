@@ -760,4 +760,17 @@ admin.controller('ADAppCtrl', [
 
         $scope.disableFeatureInNonDevEnv = sntapp.environment === 'PROD';
 
+        /**
+         * [findMainMenuIndex find the main menu index for highlighting]
+         * @param  {[string]} mainMenuName [description]
+         * @return {[integer]}              [description]
+         */
+        $scope.findMainMenuIndex = function(mainMenuName) {
+            var index = _.indexOf($scope.data.menus, _.find($scope.data.menus, function(menu) {
+                return menu.menu_name === mainMenuName;
+            }));
+            // if index is not defined, set it as current selected index
+            index = _.isUndefined(index) ? $scope.selectedIndex : index;
+            return index
+        };
 }]);
