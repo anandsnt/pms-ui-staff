@@ -280,12 +280,12 @@
 
 					<!-- Signature for Check In and Check Out -->
 					<!--Reverse checkout doesn't need signature-->
-					<div class="signature-header" ng-hide="clickedButton == 'reverseCheckoutButton'">
+					<div class="signature-header" ng-show="showSignaturePad()">
 						<h2>Please sign below</h2>
 						<button id="clear-signature" type="button" ng-click='clickedClearSignature()' class="button blank red-text">Clear signature</button>
 					</div>
 					<!--Reverse checkout doesn't need signature-->
-					<div id="signature-pad" ng-hide="clickedButton == 'reverseCheckoutButton'">
+					<div id="signature-pad" ng-show="showSignaturePad()">
 						<div class="sig sigWrapper">
 							<div id="signature"
 								 ui-jq="jSignature"
