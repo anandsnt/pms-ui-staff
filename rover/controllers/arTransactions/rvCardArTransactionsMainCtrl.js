@@ -468,8 +468,8 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 		$scope.$on('SWIPE_ACTION', function(event, swipedCardData) {
 			if ($scope.paymentModalOpened) {
 				var swipeOperationObj = new SwipeOperation(),
-				    getTokenFrom = swipeOperationObj.createDataToTokenize(swipedCardData),
-				    tokenizeSuccessCallback = function(tokenValue) {
+					getTokenFrom = swipeOperationObj.createDataToTokenize(swipedCardData),
+					tokenizeSuccessCallback = function(tokenValue) {
 						$scope.$emit('hideLoader');
 						swipedCardData.token = tokenValue;
 						processSwipedData(swipedCardData);
