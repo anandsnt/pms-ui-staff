@@ -54,9 +54,9 @@ function GuestCardBaseCtrl ($scope, RVSearchSrv, RVContactInfoSrv, rvPermissionS
      *
      */
     $scope.removeGuestDetails = function (guestId) {
-        var onSuccess = function (data) {
-             $scope.$broadcast('REFRESH_CONTACT_INFO', { guestId : guestId});
-             $scope.$broadcast('UPDATE_GUEST_CARD_ACTIONS_BUTTON_STATUS', {status : true});
+        var onSuccess = function () {
+             $scope.$broadcast('REFRESH_CONTACT_INFO', { guestId: guestId});
+             $scope.$broadcast('UPDATE_GUEST_CARD_ACTIONS_BUTTON_STATUS', {status: true});
            },
            onFailure = function (error) {
              $scope.errorMessage = error;
@@ -103,6 +103,6 @@ function GuestCardBaseCtrl ($scope, RVSearchSrv, RVContactInfoSrv, rvPermissionS
     // Checks whether the user has got the permission to remove guest details
     $scope.hasRemoveGuestDetailsPermission = function () {
         return rvPermissionSrv.getPermissionValue ('REMOVE_GUEST_DETAILS');
-    }
+    };
 
 }
