@@ -26,6 +26,7 @@
 "ACCOUNTS_RECEIVABLES_STATUS_LABEL":"Automatically assign A/R Numbers",
 "ACCOUNTS_RECEIVABLES_TITLE":"Account Receivables",
 "MANUAL_BLNC_CHARGE_CODE": "Manual Balance Charge code",
+"MANUAL_CREDIT_CHARGE_CODE": "Manual Credit Charge code",
 "SELECT_CALCULATION_RULE":"Select Calculation Rule",
 "FEES_CODE":"Fees code",
 "FEES":"Fees",
