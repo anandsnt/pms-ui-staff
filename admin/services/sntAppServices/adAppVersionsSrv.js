@@ -49,11 +49,23 @@ admin.service('adAppVersionsSrv', ['$http', '$q', 'ADBaseWebSrv', 'ADBaseWebSrvV
 		return deferred.promise;
 	};
 
-	this.uploadBuild = function (data) {
+	this.checkIfVersionIsValid = function (params) {
+		var deferred = $q.defer();
+		var url = '/admin/service_application_types/check_version';
+   
+		ADBaseWebSrv.postJSON(url, params).then(function(data) {
+			deferred.resolve(data);
+		}, function(data) {
+			deferred.reject(data);
+		});
+		return deferred.promise;
+	};
+
+	this.uploadBuild = function (params) {
 		var deferred = $q.defer();
 		var url = '/admin/service_application_types/upload_build';
 
-		ADBaseWebSrv.postJSON(url, data).then(function(data) {
+		ADBaseWebSrv.postJSON(url, params).then(function(data) {
 			deferred.resolve(data);
 		}, function(data) {
 			deferred.reject(data);
