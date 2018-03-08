@@ -310,6 +310,13 @@ angular.module('sntRover').controller('rvGuestDetailsController',
 
         $scope.$on('$destroy', guestCardActionButtonStatusUpdateListener);
 
+        // Create new reservation from the guest card
+        $scope.createReservationFromGuestCard = function () {
+            $state.go('rover.reservation.search', {
+                guestId: $stateParams.guestId
+            });
+        };
+
         init();
         
 }]);
