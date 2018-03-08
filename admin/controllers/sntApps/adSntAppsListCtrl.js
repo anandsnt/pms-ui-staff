@@ -78,20 +78,37 @@ admin.controller('ADSntAppsListCtrl', ['$scope',
 			resetSelectedApp();
 		};
 
-		$scope.uploadBuild = function() {
-			var params = angular.copy($scope.selectedApp);
+		var uploadBuild = function() {
+			// processing the huge build param will take time in backend
+			// so inorder to avoid that, check if build is presnet in UI
+			if (_.isEmpty($scope.selectedApp.build)) {
+				$scope.errorMessage = ['Upload Build is mandatory']
+			} else {
+				var params = angular.copy($scope.selectedApp);
 
-			params.service_application = $scope.filterType.id;
-			if ($scope.screenMode === 'ADD_BUILD' || $scope.fileName !== 'File Attached') {
-				params.file_name = $scope.fileName;
-			}
-			$scope.callAPI(adAppVersionsSrv.uploadBuild, {
-				params: params,
-				successCallBack: function () {
-					// TODO: call just build list API.
-					// The update list is not being reflected in UI even after tableParams reload, $digest, $apply etc
-					$state.reload();
+				params.service_application = $scope.filterType.id;
+				if ($scope.screenMode === 'ADD_BUILD' || $scope.fileName !== 'File Attached') {
+					params.file_name = $scope.fileName;
 				}
+				$scope.callAPI(adAppVersionsSrv.uploadBuild, {
+					params: params,
+					successCallBack: function() {
+						// TODO: call just build list API.
+						// The update list is not being reflected in UI even after tableParams reload, $digest, $apply etc
+						$state.reload();
+					}
+				});
+			}
+		};
+
+		$scope.checkIfVersionIsValid = function() {
+			$scope.clearErrorMessage();
+			$scope.callAPI(adAppVersionsSrv.checkIfVersionIsValid, {
+				params: {
+					version: $scope.selectedApp.version,
+					service_application: $scope.filterType.id
+				},
+				successCallBack: uploadBuild
 			});
 		};
 
