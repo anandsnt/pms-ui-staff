@@ -6,7 +6,7 @@
  * @return {void} 
  */
 
-function GuestCardBaseCtrl ($scope, RVSearchSrv) {
+function GuestCardBaseCtrl ($scope, RVSearchSrv, RVContactInfoSrv, rvPermissionSrv) {
 
     // Get the contact details object with the required properties only
     $scope.getContactInfo = function (contactInfo) {
@@ -45,6 +45,64 @@ function GuestCardBaseCtrl ($scope, RVSearchSrv) {
             }
         }
         RVSearchSrv.updateGuestDetails($scope.guestCardData.contactInfo.user_id, data);
+    };
+
+    /**
+     * Handler for removing guest details from the guest card
+     * @param {Number} guestId Id of the guest
+     * @return {void}
+     *
+     */
+    $scope.removeGuestDetails = function (guestId) {
+        var onSuccess = function () {
+             $scope.$broadcast('REFRESH_CONTACT_INFO', { guestId: guestId});
+             $scope.$broadcast('UPDATE_GUEST_CARD_ACTIONS_BUTTON_STATUS', {status: true});
+           },
+           onFailure = function (error) {
+             $scope.errorMessage = error;
+           },
+           options = {
+             params: guestId,
+             successCallBack: onSuccess,
+             failureCallBack: onFailure
+           };
+
+        $scope.callAPI(RVContactInfoSrv.removeGuestDetails, options);
+    };
+
+    /**
+     * Fetch guest details by id
+     * @param {Number} guestId id of the guest
+     * @return {void}
+     */
+    var fetchGuestDetails = function (guestId) {
+      var onSuccess = function (data) {
+             $scope.$broadcast('SET_GUEST_CARD_DATA', data);
+             $scope.$broadcast('CONTACTINFOLOADED');
+             $scope.$broadcast('RESETCONTACTINFO', data);                                       
+           },
+           onFailure = function (error) {
+             $scope.errorMessage = error;
+           },
+           options = {
+             params: guestId,
+             successCallBack: onSuccess,
+             failureCallBack: onFailure
+           };
+
+        $scope.callAPI(RVContactInfoSrv.getGuestDetailsById, options);
+    };
+
+    // Listener for refreshing the contact tab details
+    var contactInfoRefreshListener = $scope.$on ('REFRESH_CONTACT_INFO', function (event, data) {
+      fetchGuestDetails(data.guestId);
+    });
+
+    $scope.$on('$destroy', contactInfoRefreshListener);
+
+    // Checks whether the user has got the permission to remove guest details
+    $scope.hasRemoveGuestDetailsPermission = function () {
+        return rvPermissionSrv.getPermissionValue ('REMOVE_GUEST_DETAILS');
     };
 
 }

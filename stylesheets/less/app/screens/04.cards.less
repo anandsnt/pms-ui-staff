@@ -3337,7 +3337,77 @@
                         .switch-button { .show; }
                     }
                 }
-                
+
+                &#guest-card-header {
+                    form {
+                        &.dual-actions {
+                            .calc-width(100, 380);
+                        }
+                    }
+
+                    .card-actions {
+                        &.dual-actions {
+                            width: 300px;
+                            position: relative;
+
+                            .manage-cards {
+                                position: absolute;
+                                top: 100%;
+                                right: 0;
+                                width: 220px;
+                                padding: 10px;
+                                background: @grey1;
+                                z-index: 100;
+                                .box-shadow();
+                                #border-radius > .bottom();
+                                #border-radius > .left-top();
+
+                                .button {
+                                    width: 100%;
+                                    display: block;
+
+                                    &:not(:last-child) {
+                                        margin-bottom: 10px;
+                                    }
+                                }
+                            }
+                            
+                            .button {
+                                display: inline-block;
+                                font-size: 14px;
+                                width: auto;
+                                height: 40px;
+                                line-height: 40px;
+                                margin: 0;
+                                padding: 0 10px; 
+
+                                &.add-new-button {
+                                    box-shadow: none;
+
+                                    &:not(:hover) {
+                                        border: 1px dashed rgba(0, 0, 0, 0.5);
+                                    }
+                                }
+
+                                &.has-arrow {
+                                    background-color: @grey1;
+                                    background-size: 10px;
+                                    background-position: 92% 14px;
+                                    padding: 0 30px 0 15px;
+                                    color: @black;
+                                    text-shadow: none;
+                                    margin-left: 10px;
+
+                                    &.active {
+                                        #border-radius > .bottom(0px);
+                                        box-shadow: none;
+                                    }
+                                }
+                            }
+                            
+                        }
+                    }
+                }
             }
 
             .card-content { .show; }
@@ -3347,6 +3417,17 @@
         &.guest-card {
             .cards-wrapper {
                 background: @gcard @gcardTexture;
+            }
+
+            /* For Manage Cards Dropdown */
+            &.fullscreen {
+                 .cards-header {
+                    overflow: visible;
+
+                    .card-header {
+                        .box-shadow(none);
+                    }
+                 }
             }
         }
 
