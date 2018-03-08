@@ -65,12 +65,13 @@ angular.module('stayCardModule', [])
                     return RVCompanyCardSrv.fetchHotelLoyaltiesHlps();
                 },
                 guestDetails: function (RVContactInfoSrv, staycardJsAssets, $stateParams) {
-                    var guestId = $stateParams.guestId;
+                    var guestId = $stateParams.guestId,
+                        guestDetails = {};
 
                     if (guestId) {
-                      return RVContactInfoSrv.getGuestDetailsById(guestId);  
+                      guestDetails = RVContactInfoSrv.getGuestDetailsById(guestId);  
                     }
-                    return {};                    
+                    return guestDetails;                    
                 }                
             }
         });

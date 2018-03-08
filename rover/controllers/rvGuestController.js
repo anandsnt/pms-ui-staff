@@ -1,8 +1,8 @@
 angular.module('sntRover').controller('guestCardController', [
     '$scope', '$window', 'RVCompanyCardSrv', 'RVReservationAllCardsSrv', 'RVContactInfoSrv', '$stateParams', '$timeout', 'ngDialog', '$rootScope', 'RVSearchSrv', 'RVReservationDataService', 'rvGroupSrv', '$state', 'rvAllotmentSrv', '$vault',
     function($scope, $window, RVCompanyCardSrv, RVReservationAllCardsSrv, RVContactInfoSrv, $stateParams, $timeout, ngDialog, $rootScope, RVSearchSrv, RVReservationDataService, rvGroupSrv, $state, rvAllotmentSrv, $vault) {
-        var resizableMinHeight = 90;
-        var resizableMaxHeight = $(window).height() - resizableMinHeight;
+        var resizableMinHeight = 90,
+            resizableMaxHeight = $(window).height() - resizableMinHeight;
 
         $scope.dimensionsLookup = {
             resizableMaxHeight: resizableMaxHeight,
@@ -18,9 +18,10 @@ angular.module('sntRover').controller('guestCardController', [
         BaseCtrl.call(this, $scope);
         GuestCardBaseCtrl.call (this, $scope, RVSearchSrv);
 
+        // Initialize reservation
         var initReservation = function() {
-            var fromVault = $vault.get('searchReservationData');
-            var vaultParsed = !!fromVault ? JSON.parse( fromVault ) : {};
+            var fromVault = $vault.get('searchReservationData'),
+                vaultParsed = !!fromVault ? JSON.parse( fromVault ) : {};
 
             if ( !! fromVault ) {
                 $scope.searchData.guestCard.guestFirstName = vaultParsed.guestFirstName;
@@ -253,7 +254,6 @@ angular.module('sntRover').controller('guestCardController', [
                     $scope.$broadcast('refreshAccountsScroll');
                 }
 
-
             },
             stop: function(event, ui) {
                 preventClicking = true;
@@ -268,13 +268,13 @@ angular.module('sntRover').controller('guestCardController', [
         $scope.decloneUnwantedKeysFromContactInfo = function() {
 
             var unwantedKeys = ["birthday", "country",
-                "is_opted_promotion_email", "job_title",
-                "mobile", "passport_expiry",
-                "passport_number", "postal_code",
-                "reservation_id", "title", "user_id",
-                "works_at", "birthday", "avatar"
-            ];
-            var declonedData = dclone($scope.guestCardData.contactInfo, unwantedKeys);
+                    "is_opted_promotion_email", "job_title",
+                    "mobile", "passport_expiry",
+                    "passport_number", "postal_code",
+                    "reservation_id", "title", "user_id",
+                    "works_at", "birthday", "avatar"
+                ],
+                declonedData = dclone($scope.guestCardData.contactInfo, unwantedKeys);
 
             return declonedData;
         };
@@ -282,8 +282,8 @@ angular.module('sntRover').controller('guestCardController', [
         /**
          *  init guestcard header data
          */
-        var declonedData = $scope.decloneUnwantedKeysFromContactInfo();
-        var currentGuestCardHeaderData = declonedData;
+        var declonedData = $scope.decloneUnwantedKeysFromContactInfo(),
+            currentGuestCardHeaderData = declonedData;
 
         $scope.current = 'guest-contact';
 
