@@ -101,7 +101,9 @@ admin.controller('ADDevicesListCtrl', ['$scope', '$state', 'ngTableParams', 'adD
       $scope.selectedDevice = {};
       $scope.selectedDeviceId = -1;
       $scope.resetDeviceSelection();
-      appTypes.push({
+      // Add All filter to list all the contents
+      // rest values are in DB (Service types)
+      appTypes.unshift({
         'id': 'All',
         'value': 'All'
       });

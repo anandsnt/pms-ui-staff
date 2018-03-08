@@ -16,6 +16,8 @@ admin.controller('ADRatesAddonsCtrl', [
         // extend base controller
         $scope.init = function() {
             ADBaseTableCtrl.call(this, $scope, ngTableParams);
+            // higlight the selected Main menu (can come to this screen using the addon shortcuts)
+            $scope.$emit("changedSelectedMenu", $scope.findMainMenuIndex('Rates'));
 
             // various addon data holders
             $scope.data = [];

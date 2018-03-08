@@ -6,7 +6,8 @@ admin.controller('ADZestStationAddonCtrl', ['$scope', 'ADZestStationAddonSrv', '
 			$scope: $scope
 		});
 		$scope.showZestWebSettings = addonUpsellSettings.zest_web_addon_upsell_availability;
-		
+		// higlight the selected Main menu (can come to this screen using the addon shortcuts)
+		$scope.$emit("changedSelectedMenu", $scope.findMainMenuIndex('Station'));
 		// fetch addon list
 		var fetAddonsData = function($defer) {
 			var options = {
