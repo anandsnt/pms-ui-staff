@@ -93,9 +93,7 @@ admin.controller('ADSntAppsListCtrl', ['$scope',
 				$scope.callAPI(adAppVersionsSrv.uploadBuild, {
 					params: params,
 					successCallBack: function() {
-						// TODO: call just build list API.
-						// The update list is not being reflected in UI even after tableParams reload, $digest, $apply etc
-						$state.reload();
+						fetchAppVersions();
 					}
 				});
 			}

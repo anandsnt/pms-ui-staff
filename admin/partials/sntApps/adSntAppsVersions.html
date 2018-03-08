@@ -41,7 +41,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr ng-repeat="app in $data | filter:filterDevices" ng-click="editApp(app,  $index)" style="cursor: pointer;">
+                        <tr ng-repeat="app in appList | filter:filterDevices" ng-click="editApp(app,  $index)" style="cursor: pointer;">
                             <td>
                                 {{app.version}}
                             </td>
@@ -67,17 +67,6 @@
         <h2 ng-show="screenMode === 'ADD_BUILD'">Upload Build</h2>
         <h2 ng-hide="screenMode === 'ADD_BUILD'">Edit Build</h2>
         <a ng-click="changeToListView()" class="action back ng-scope" translate="">Versions</a>
-        <div class="filters" ng-show="screenMode === 'ADD_BUILD'">
-            <div class="filter select">
-                <div class="entry">
-                    <div class="select">
-                         <select class="placeholder" ng-model="filterType" ng-options="opt.value for opt in filterList" ng-change="appTypeChanged()" style="width:200px;">
-                                <option value="">Filter by Service Type</option>
-                        z</select>
-                    </div>
-                </div>
-            </div>
-        </div>
     </header>
     <section class="content-scroll">
         <div ng-include="'/assets/partials/common/notification_message.html'"></div>
