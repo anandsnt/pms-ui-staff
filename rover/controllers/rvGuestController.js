@@ -1773,13 +1773,13 @@ angular.module('sntRover').controller('guestCardController', [
                 $scope.reservationData.guest.id = guest.id;
                 $scope.reservationData.guest.firstName = guest.firstName;
                 $scope.reservationData.guest.lastName = guest.lastName;
-                $scope.reservationData.guest.city = guest.address.city;
+                $scope.reservationData.guest.city = guest.address ? guest.address.city : '';
                 $scope.reservationData.guest.loyaltyNumber = $scope.guestLoyaltyNumber;
 
                 // update current controller scope
                 $scope.guestFirstName = guest.firstName;
                 $scope.guestLastName = guest.lastName;
-                $scope.guestCity = guest.address.city;
+                $scope.guestCity = guest.address ? guest.address.city : '';
                 $scope.guestCardData.cardHeaderImage = guest.image;
                 $scope.viewState.isAddNewCard = false;
                 $scope.reservationDetails.guestCard.id = guest.id;
