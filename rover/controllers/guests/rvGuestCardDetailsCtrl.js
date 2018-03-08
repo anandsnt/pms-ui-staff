@@ -287,7 +287,7 @@ angular.module('sntRover').controller('rvGuestDetailsController',
         $scope.createReservationFromGuestCard = function () {
             $state.go('rover.reservation.search', {
                 guestId: $stateParams.guestId
-            })
+            });
         };
 
         init();
