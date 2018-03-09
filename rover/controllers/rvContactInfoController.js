@@ -116,7 +116,9 @@ angular.module('sntRover').controller('RVContactInfoController', ['$scope', '$ro
           $scope.reservationData.guest.loyaltyNumber = $scope.guestLoyaltyNumber;
         }
         $scope.guestCardData.userId = data.id;
-        $scope.showGuestPaymentList($scope.guestCardData.contactInfo);
+        if (!$scope.isGuestCardFromMenu) {
+          $scope.showGuestPaymentList($scope.guestCardData.contactInfo);
+        }        
         $scope.newGuestAdded(data.id);
       };
 

@@ -130,10 +130,13 @@ admin.controller('ADAppCtrl', [
                                     id: 'CASHIER'
                                 }
                             }, {
+                                title: "MENU_GUESTS",
+                                action: "rover.guestcardsearch",                    
+                                menuIndex: "guests"
+                            }, {
                                 title: 'MENU_ACCOUNTS',
                                 action: 'rover.accounts.search',
-                                menuIndex: 'accounts'
-                                // hidden: $rootScope.isHourlyRatesEnabled
+                                menuIndex: 'accounts'                                
                             }, {
                                 title: 'MENU_END_OF_DAY',
                                 action: 'rover.endOfDay.starteod'
