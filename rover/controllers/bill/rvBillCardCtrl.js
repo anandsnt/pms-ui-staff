@@ -3006,6 +3006,7 @@ sntRover.controller('RVbillCardController',
             $scope.isCompleteRegistration = true;
         }
     };
+
     init();
 
 }]);
