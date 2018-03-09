@@ -224,7 +224,7 @@ angular.module('sntRover').controller('rvGuestDetailsController',
                     'userId': $scope.guestCardData.contactInfo.user_id
                 };
 
-                if (typeof data.userId !== 'undefined') {
+                if (typeof data.userId !== 'undefined' && data.userId != '') {
                     var options = {
                         successCallBack: saveUserInfoSuccessCallback,
                         params: data
@@ -254,6 +254,8 @@ angular.module('sntRover').controller('rvGuestDetailsController',
             $scope.viewState = {
                 isAddNewCard: !$stateParams.guestId
             };
+
+            $scope.isGuestCardFromMenu = true;
 
             $scope.guestCardData = getGuestCardData(contactInfo, $stateParams.guestId);
             $scope.countries = countries;
