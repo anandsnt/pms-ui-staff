@@ -224,7 +224,7 @@ angular.module('sntRover').controller('rvGuestDetailsController',
                     'userId': $scope.guestCardData.contactInfo.user_id
                 };
 
-                if (typeof data.userId !== 'undefined' && data.userId != '') {
+                if (typeof data.userId !== 'undefined' && data.userId !== '') {
                     var options = {
                         successCallBack: saveUserInfoSuccessCallback,
                         params: data
