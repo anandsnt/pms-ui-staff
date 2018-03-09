@@ -11,11 +11,12 @@ angular.module('sntRover').controller('rvGuestDetailsController',
   'RVContactInfoSrv',
   'RVSearchSrv',
   'idTypesList',
+  'rvPermissionSrv',
   function($scope, contactInfo, countries, $stateParams, $state, $filter, $rootScope, RVGuestCardSrv,
-    RVContactInfoSrv, RVSearchSrv, idTypesList) {        
+    RVContactInfoSrv, RVSearchSrv, idTypesList, rvPermissionSrv) {        
 
         BaseCtrl.call(this, $scope);
-        GuestCardBaseCtrl.call (this, $scope, RVSearchSrv);
+        GuestCardBaseCtrl.call (this, $scope, RVSearchSrv, RVContactInfoSrv, rvPermissionSrv);
 
         /**
          * Decides whether loyalty tab should be shown or not
@@ -223,7 +224,7 @@ angular.module('sntRover').controller('rvGuestDetailsController',
                     'userId': $scope.guestCardData.contactInfo.user_id
                 };
 
-                if (typeof data.userId !== 'undefined') {
+                if (typeof data.userId !== 'undefined' && data.userId !== '') {
                     var options = {
                         successCallBack: saveUserInfoSuccessCallback,
                         params: data
@@ -247,12 +248,14 @@ angular.module('sntRover').controller('rvGuestDetailsController',
             $scope.currentGuestCardHeaderData.last_name = data.last_name;
         }); 
 
-        $scope.$on('$destroy', resetHeaderDataListener);
-        
+        $scope.$on('$destroy', resetHeaderDataListener);        
+
         var init = function () {
             $scope.viewState = {
                 isAddNewCard: !$stateParams.guestId
             };
+
+            $scope.isGuestCardFromMenu = true;
 
             $scope.guestCardData = getGuestCardData(contactInfo, $stateParams.guestId);
             $scope.countries = countries;
@@ -280,7 +283,40 @@ angular.module('sntRover').controller('rvGuestDetailsController',
             $scope.paymentData = {};
             setTitleAndHeading();
             setBackNavigation();
+
+            $scope.isCardOptionsOpen = false;
             
+        };
+
+        // Listener for setting the guestData information
+        var guestCardSetListener = $scope.$on('SET_GUEST_CARD_DATA', function (event, data) {
+            $scope.guestCardData = getGuestCardData(data, $stateParams.guestId);
+        });
+
+        $scope.$on('$destroy', guestCardSetListener);
+
+        // Toggle the btn which manages the guest card actions
+        $scope.toggleCardActions = function () {
+            $scope.isCardOptionsOpen = !$scope.isCardOptionsOpen;
+        };
+
+        // Checks whether the remove guest details button should be shown or not
+        $scope.shouldDisableRemoveGuestBtn = function () {
+            return $scope.guestCardData.contactInfo.is_active_reservations_present || !$scope.hasRemoveGuestDetailsPermission();
+        };
+        
+        // Listener to update the guest card action manage btn status
+        var guestCardActionButtonStatusUpdateListener = $scope.$on('UPDATE_GUEST_CARD_ACTIONS_BUTTON_STATUS', function (data) {
+            $scope.isCardOptionsOpen = data.status;
+        });
+
+        $scope.$on('$destroy', guestCardActionButtonStatusUpdateListener);
+
+        // Create new reservation from the guest card
+        $scope.createReservationFromGuestCard = function () {
+            $state.go('rover.reservation.search', {
+                guestId: $stateParams.guestId
+            });
         };
 
         init();

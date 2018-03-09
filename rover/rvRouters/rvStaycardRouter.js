@@ -48,7 +48,7 @@ angular.module('stayCardModule', [])
 
 
         $stateProvider.state('rover.reservation.search', {
-            url: '/search',
+            url: '/search/:guestId',
             templateUrl: '/assets/partials/reservation/rvBaseSearch.html',
             controller: 'RVReservationBaseSearchCtrl',
             resolve: {
@@ -63,7 +63,16 @@ angular.module('stayCardModule', [])
                 },
                 loyaltyPrograms: function(RVCompanyCardSrv, staycardJsAssets) {
                     return RVCompanyCardSrv.fetchHotelLoyaltiesHlps();
-                }
+                },
+                guestDetails: function (RVContactInfoSrv, staycardJsAssets, $stateParams) {
+                    var guestId = $stateParams.guestId,
+                        guestDetails = {};
+
+                    if (guestId) {
+                      guestDetails = RVContactInfoSrv.getGuestDetailsById(guestId);  
+                    }
+                    return guestDetails;                    
+                }                
             }
         });
 
@@ -88,7 +97,7 @@ angular.module('stayCardModule', [])
         });
 
         $stateProvider.state('rover.reservation.staycard.mainCard.room-rates', {
-            url: '/room-rates/:from_date/:to_date/:fromState/:view/:company_id/:travel_agent_id/:group_id/:borrow_for_groups/:allotment_id/:promotion_code/:disable_back_staycard/:adults/:children/:promotion_id/:room_type_id/:is_member',
+            url: '/room-rates/:from_date/:to_date/:fromState/:view/:company_id/:travel_agent_id/:group_id/:borrow_for_groups/:allotment_id/:promotion_code/:disable_back_staycard/:adults/:children/:promotion_id/:room_type_id/:is_member/:guestId',
             templateUrl: '/assets/partials/reservation/rvSelectRoomAndRate.html',
             controller: 'RVSelectRoomAndRateCtrl',
             onEnter: function($stateParams) {

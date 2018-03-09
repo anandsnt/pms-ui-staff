@@ -263,9 +263,8 @@ sntRover.controller('RVbillCardController',
 	var screenWidth = angular.element($window).width(); // Calculating screen width.
 
 	$scope.signaturePluginOptions = {
-			height: 130,
-			width: screenWidth - 60,
-			lineWidth: 1
+        'width': screenWidth - 60,
+        'decor-color': 'transparent'
 	};
 
 	if ($scope.clickedButton === "checkoutButton") {
@@ -358,7 +357,30 @@ sntRover.controller('RVbillCardController',
 	$scope.hasPermissionToMoveCharges = function() {
 		return rvPermissionSrv.getPermissionValue ('MOVE_CHARGES');
 	};
+	/**
+    * Method to decide whether the signature box should show or not
+    * @param {none}
+    * @return {Boolean}
+    */
+	$scope.showSignaturePad = function() {
+         if ($scope.clickedButton === 'checkinButton' && $scope.currentActiveBill === 0) {
+             if ($scope.reservationBillData.required_signature_at === 'CHECKIN'
+                 && $scope.reservationBillData.signature_details.is_signed === 'false'
+                 && !$scope.reservation.reservation_card.is_pre_checkin) {
+                    return true;
+             }
+         }
 
+        if (($scope.clickedButton === 'checkoutButton') &&
+            ($scope.reservationBillData.reservation_status === 'CHECKING_OUT'
+                || $scope.reservationBillData.reservation_status === 'CHECKEDIN')) {
+            if ($scope.reservationBillData.required_signature_at === 'CHECKOUT'
+                && (($scope.currentActiveBill + 1) === $scope.reservationBillData.bills.length)) {
+                    return true;
+            }
+        }
+        return false;
+    };
 	/**
 	* function to check whether the user has permission
 	* to Post Room Charge
@@ -875,7 +897,7 @@ sntRover.controller('RVbillCardController',
 		var isPaymentTypeDirectBill = false,
 			currentActiveBill = $scope.reservationBillData.bills[$scope.currentActiveBill];
 
-		if (currentActiveBill.is_account_attached && currentActiveBill.allow_db_refund && (currentActiveBill.credit_card_details.payment_type === 'DB') && $scope.hasPermissionToDirectBillPayment()) {
+		if (currentActiveBill.is_account_attached && (currentActiveBill.credit_card_details.payment_type === 'DB') && $scope.hasPermissionToDirectBillPayment()) {
 			isPaymentTypeDirectBill = true;
 		}
 
@@ -2975,5 +2997,16 @@ sntRover.controller('RVbillCardController',
 
 		$scope.callAPI(RVBillCardSrv.hideBill, dataToSend);
 	};
+
+    var init = function() {
+        $scope.isCompleteRegistration = false;
+        if ($scope.clickedButton === 'checkinButton'
+            || $scope.clickedButton === 'checkoutButton'
+            || $scope.clickedButton === 'reverseCheckoutButton') {
+            $scope.isCompleteRegistration = true;
+        }
+    };
+
+    init();
 
 }]);
