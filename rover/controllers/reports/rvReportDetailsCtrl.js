@@ -1367,7 +1367,7 @@ sntRover.controller('RVReportDetailsCtrl', [
 				returnValue = "-";
 			}
 			return returnValue;
-        }
+        };
 
         /**
          * Toggle Revenue columns for market segment statistics report
