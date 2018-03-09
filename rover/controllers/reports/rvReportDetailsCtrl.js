@@ -563,6 +563,32 @@ sntRover.controller('RVReportDetailsCtrl', [
 				}), 1);
 			}
 
+			if ($scope.chosenReport.title === reportNames['A/R_AGING']) {
+				_.each(results, function(result) {
+					if ("0.00" === result.age_0to30.replace($rootScope.currencySymbol+" ", '')) {
+						result.age_0to30 = "-";
+					}
+					if ("0.00" === result.age_31to60.replace($rootScope.currencySymbol+" ", '')) {
+						result.age_31to60 = "-";
+					}
+					if ("0.00" === result.age_61to90.replace($rootScope.currencySymbol+" ", '')) {
+						result.age_61to90 = "-";
+					}
+					if ("0.00" === result.age_91to120.replace($rootScope.currencySymbol+" ", '')) {
+						result.age_91to120 = "-";
+					}
+					if ("0.00" === result.age_120plus.replace($rootScope.currencySymbol+" ", '')) {
+						result.age_120plus = "-";
+					}
+					if ("0.00" === result.balance.replace($rootScope.currencySymbol+" ", '')) {
+						result.balance = "-";
+					}
+					if ("0.00" === result.payment.replace($rootScope.currencySymbol+" ", '')) {
+						result.payment = "-";
+					}
+				});
+			}
+
 
 			// new more detailed reports
 			$scope.parsedApiFor = $scope.chosenReport.title;
