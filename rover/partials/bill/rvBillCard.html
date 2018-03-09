@@ -42,7 +42,7 @@
 		<!-- Fullscreen Header -->
 		<div ng-include="'/assets/partials/common/rvFullscreenHeader.html'" class="fullscreen-header"></div>
 		<!-- Registration Content -->
-		<div ng-iscroll="registration-content" ng-iscroll-delay="1000" class="registration-content with-complete-registration scrollable" ng-class="{ 'print-registration-card': isPrintRegistrationCard }">
+		<div ng-iscroll="registration-content" ng-iscroll-delay="1000" class="registration-content scrollable" ng-class="{ 'print-registration-card': isPrintRegistrationCard , 'with-complete-registration': isCompleteRegistration}">
 			<div class="wrapper">
 				<div ng-include="'/assets/partials/common/notification_message.html'"></div>
 
@@ -280,7 +280,7 @@
 
 					<!-- Signature for Check In and Check Out -->
 					<!--Reverse checkout doesn't need signature-->
-					<div class="signature-header" ng-show="showSignaturePad()">
+					<div class="signature-header no-print" ng-show="showSignaturePad()">
 						<h2>Please sign below</h2>
 						<button id="clear-signature" type="button" ng-click='clickedClearSignature()' class="button blank red-text">Clear signature</button>
 					</div>
@@ -290,7 +290,7 @@
 						ui-options="signaturePluginOptions"
 						ng-mouseover="disableScroll()"
 						ng-mouseleave="enableScroll()"
-						div-touch-move-stop-propogate ng-show="showSignaturePad()">
+						div-touch-move-stop-propogate ng-show="showSignaturePad()" class="no-print">
 					</div>
 				</div>
 			</div>
