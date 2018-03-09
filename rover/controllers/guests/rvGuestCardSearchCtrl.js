@@ -29,15 +29,14 @@ angular.module('sntRover').controller('guestCardSearchController',
          */
         var setHighlightedQueryText = function (newVal) {
             $scope.searchWords = [];
-            //if (newVal.length >= 2) {
-                if (newVal.indexOf(',') !== -1) {
-                    $scope.searchWords = newVal.split(',');
-                } else if (newVal.indexOf(' ') !== -1) {
-                    $scope.searchWords = newVal.split(' ');
-                } else {
-                    $scope.searchWords.push(newVal);
-                }
-            //}
+            
+            if (newVal.indexOf(',') !== -1) {
+                $scope.searchWords = newVal.split(',');
+            } else if (newVal.indexOf(' ') !== -1) {
+                $scope.searchWords = newVal.split(' ');
+            } else {
+                $scope.searchWords.push(newVal);
+            }            
         };
 
         /**
