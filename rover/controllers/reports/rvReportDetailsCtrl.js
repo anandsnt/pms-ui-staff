@@ -565,27 +565,13 @@ sntRover.controller('RVReportDetailsCtrl', [
 
 			if ($scope.chosenReport.title === reportNames['A/R_AGING']) {
 				_.each(results, function(result) {
-					if ("0.00" === result.age_0to30.replace($rootScope.currencySymbol + " ", '')) {
-						result.age_0to30 = "-";
-					}
-					if ("0.00" === result.age_31to60.replace($rootScope.currencySymbol + " ", '')) {
-						result.age_31to60 = "-";
-					}
-					if ("0.00" === result.age_61to90.replace($rootScope.currencySymbol + " ", '')) {
-						result.age_61to90 = "-";
-					}
-					if ("0.00" === result.age_91to120.replace($rootScope.currencySymbol + " ", '')) {
-						result.age_91to120 = "-";
-					}
-					if ("0.00" === result.age_120plus.replace($rootScope.currencySymbol + " ", '')) {
-						result.age_120plus = "-";
-					}
-					if ("0.00" === result.balance.replace($rootScope.currencySymbol + " ", '')) {
-						result.balance = "-";
-					}
-					if ("0.00" === result.payment.replace($rootScope.currencySymbol + " ", '')) {
-						result.payment = "-";
-					}
+					result.age_0to30 = buildResult(result.age_0to30);
+					result.age_31to60 = buildResult(result.age_31to60);
+					result.age_61to90 = buildResult(result.age_61to90);
+					result.age_91to120 = buildResult(result.age_91to120);
+					result.age_120plus = buildResult(result.age_120plus);
+					result.balance = buildResult(result.balance);
+					result.payment = buildResult(result.payment);					
 				});
 			}
 
@@ -1369,6 +1355,19 @@ sntRover.controller('RVReportDetailsCtrl', [
         // Added for CICO-33172
         $scope.isRoomRevenueSelected = true;
         $scope.isBookingsSelected = true;
+        /*
+         * Function to build data
+         * @param item is item
+         * @return string
+         */
+        var buildResult = function(item) {
+        	var returnValue = item;
+
+        	if ("0.00" === item.replace($rootScope.currencySymbol + " ", '')) {
+				returnValue = "-";
+			}
+			return returnValue;
+        }
 
         /**
          * Toggle Revenue columns for market segment statistics report
