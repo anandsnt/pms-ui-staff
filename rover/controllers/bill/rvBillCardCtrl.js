@@ -263,8 +263,8 @@ sntRover.controller('RVbillCardController',
 	var screenWidth = angular.element($window).width(); // Calculating screen width.
 
 	$scope.signaturePluginOptions = {
-			width: screenWidth - 60,
-			lineWidth: 1
+        'width': screenWidth - 60,
+        'decor-color': 'transparent'
 	};
 
 	if ($scope.clickedButton === "checkoutButton") {
@@ -2997,5 +2997,15 @@ sntRover.controller('RVbillCardController',
 
 		$scope.callAPI(RVBillCardSrv.hideBill, dataToSend);
 	};
+
+    var init = function() {
+        $scope.isCompleteRegistration = false;
+        if ($scope.clickedButton === 'checkinButton'
+            || $scope.clickedButton === 'checkoutButton'
+            || $scope.clickedButton === 'reverseCheckoutButton') {
+            $scope.isCompleteRegistration = true;
+        }
+    };
+    init();
 
 }]);
