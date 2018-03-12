@@ -42,8 +42,8 @@
             <button type="button" class="button toggle has-arrow" ng-click="toggleCardActions()" ng-class="{'active' : !isCardOptionsOpen, '' : isCardOptionsOpen}">Manage Card</button>            
             <div class="manage-cards" ng-class="{'hidden': !isCardOptionsOpen, '' : isCardOptionsOpen}">
                 <button type="button" class="button" ng-click="removeGuestDetails(guestCardData.contactInfo.user_id)" ng-class="{'grey':shouldDisableRemoveGuestBtn(),'white red-text': !shouldDisableRemoveGuestBtn()}" ng-disabled="shouldDisableRemoveGuestBtn()">Remove Details</button>
-                <button type="button" class="button purple">Archive Card</button>
-                <button type="button" class="button red">Delete Card</button>
+                <button type="button" class="button purple" ng-hide="true">Archive Card</button>
+                <button type="button" class="button red" ng-hide="true">Delete Card</button>
             </div> 
         </div>               
     </section>    
