@@ -417,6 +417,7 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 			_.each($scope.arDataObj.balanceList, function (eachItem) {
 				eachItem.isSelected = false;
 			});
+			$scope.fetchTransactions();
 		};
 		/*
 		 * Should show footer instead of pagination
