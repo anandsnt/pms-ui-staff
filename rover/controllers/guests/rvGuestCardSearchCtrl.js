@@ -17,6 +17,10 @@ angular.module('sntRover').controller('guestCardSearchController',
         
         // Refresh the guest card search scroller
         var refreshScroller = function() {
+            if( $scope.myScroll && $scope.myScroll.hasOwnProperty(GUEST_CARD_SCROLL) ) {
+                $scope.myScroll[GUEST_CARD_SCROLL].scrollTo(0, 0, 100);
+            }
+            
             $timeout(function() {
                 $scope.refreshScroller(GUEST_CARD_SCROLL);
             }, 300);
@@ -44,7 +48,8 @@ angular.module('sntRover').controller('guestCardSearchController',
          */
         $scope.queryEntered = _.debounce(function() {
             if ($scope.textInQueryBox === "") {
-                $scope.results = [];
+                $scope.guestSearch.results = []; 
+                $scope.$apply();                               
             } else {
                 displayFilteredResults();
             }
@@ -57,7 +62,7 @@ angular.module('sntRover').controller('guestCardSearchController',
         // Clear search results
         $scope.clearResults = function() {
             $scope.textInQueryBox = "";
-            $scope.results = [];
+            $scope.guestSearch.results = [];
         };
         
         /**
@@ -66,7 +71,7 @@ angular.module('sntRover').controller('guestCardSearchController',
          * @return {undefined}
          */
         var onSearchSuccess = function (data) {
-                $scope.results = data.results;
+                $scope.guestSearch.results = data.results;
                 $scope.totalResultCount = data.total_count;             
 
                 setTimeout(function() {
@@ -75,7 +80,7 @@ angular.module('sntRover').controller('guestCardSearchController',
                 }, 500);
             },
             onSearchFailure = function () {
-                $scope.results = [];
+                $scope.guestSearch.results = [];
             },
             getRequestParams = function (pageNo) {
                 var params = {
@@ -104,7 +109,7 @@ angular.module('sntRover').controller('guestCardSearchController',
          */
         var displayFilteredResults = function() {
             if (!$scope.textInQueryBox.length) {
-                 $scope.results = [];
+                 $scope.guestSearch.results = [];
                 // we have changed data, so we are refreshing the scrollerbar
                 refreshScroller();
             } else {
@@ -142,7 +147,9 @@ angular.module('sntRover').controller('guestCardSearchController',
             // model used in query textbox, we will be using this across
             $scope.textInQueryBox = "";
             $scope.$emit("updateRoverLeftMenu", "guests");
-            $scope.results = [];
+            $scope.guestSearch = {
+                results : []
+            };
 
             var scrollerOptions = {
                 tap: true,
@@ -168,7 +175,7 @@ angular.module('sntRover').controller('guestCardSearchController',
 
         // Checks whether search results should be shown or not
         $scope.shouldHideSearchResults = function () {
-            return $scope.results.length === 0 || $scope.textInQueryBox === "";
+            return $scope.guestSearch.results.length === 0 || $scope.textInQueryBox === "";
         };       
 
         init();
