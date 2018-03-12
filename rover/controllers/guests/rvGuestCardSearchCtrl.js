@@ -17,10 +17,10 @@ angular.module('sntRover').controller('guestCardSearchController',
         
         // Refresh the guest card search scroller
         var refreshScroller = function() {
-            if( $scope.myScroll && $scope.myScroll.hasOwnProperty(GUEST_CARD_SCROLL) ) {
+            if ( $scope.myScroll && $scope.myScroll.hasOwnProperty(GUEST_CARD_SCROLL) ) {
                 $scope.myScroll[GUEST_CARD_SCROLL].scrollTo(0, 0, 100);
             }
-            
+
             $timeout(function() {
                 $scope.refreshScroller(GUEST_CARD_SCROLL);
             }, 300);
@@ -148,7 +148,7 @@ angular.module('sntRover').controller('guestCardSearchController',
             $scope.textInQueryBox = "";
             $scope.$emit("updateRoverLeftMenu", "guests");
             $scope.guestSearch = {
-                results : []
+                results: []
             };
 
             var scrollerOptions = {
