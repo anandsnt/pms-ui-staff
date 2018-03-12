@@ -5,8 +5,9 @@ angular.module('sntRover').controller('guestCardSearchController',
   '$stateParams',
   'ngDialog',
   '$timeout',
-  '$state',  
-   function($scope, RVGuestCardsSrv, $stateParams, ngDialog, $timeout, $state) {
+  '$state',
+  '$filter',  
+   function($scope, RVGuestCardsSrv, $stateParams, ngDialog, $timeout, $state, $filter) {
 
         BaseCtrl.call(this, $scope);
 
@@ -28,15 +29,14 @@ angular.module('sntRover').controller('guestCardSearchController',
          */
         var setHighlightedQueryText = function (newVal) {
             $scope.searchWords = [];
-            if (newVal.length >= 2) {
-                if (newVal.indexOf(',') !== -1) {
-                    $scope.searchWords = newVal.split(',');
-                } else if (newVal.indexOf(' ') !== -1) {
-                    $scope.searchWords = newVal.split(' ');
-                } else {
-                    $scope.searchWords.push(newVal);
-                }
-            }
+            
+            if (newVal.indexOf(',') !== -1) {
+                $scope.searchWords = newVal.split(',');
+            } else if (newVal.indexOf(' ') !== -1) {
+                $scope.searchWords = newVal.split(' ');
+            } else {
+                $scope.searchWords.push(newVal);
+            }            
         };
 
         /**
@@ -127,10 +127,18 @@ angular.module('sntRover').controller('guestCardSearchController',
         $scope.getGuestName = function(firstName, lastName) {           
             return lastName + ", " + firstName;
         };
+
+        // Set title and heading
+        var setTitleAndHeading = function () {
+            var title = $filter('translate')('FIND_GUESTS'); 
+            
+            $scope.heading = title;
+            $scope.setTitle (title);            
+        };
         
         // Initialize the controller variables
         var init = function () {
-            $scope.heading = "Find Guests";
+            setTitleAndHeading();
             // model used in query textbox, we will be using this across
             $scope.textInQueryBox = "";
             $scope.$emit("updateRoverLeftMenu", "guests");
@@ -156,6 +164,11 @@ angular.module('sntRover').controller('guestCardSearchController',
                 $scope.textInQueryBox = $stateParams.textInQueryBox;
                 $scope.queryEntered();
             }
+        };
+
+        // Checks whether search results should be shown or not
+        $scope.shouldHideSearchResults = function () {
+            return $scope.results.length === 0 || $scope.textInQueryBox === "";
         };       
 
         init();
