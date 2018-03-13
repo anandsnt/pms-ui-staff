@@ -240,7 +240,7 @@ sntRover.controller('RvArBalanceController', ['$scope', '$timeout', 'rvAccountsA
 						refreshScroll();
 					},
 					failureCallBack: function(errorMessage) {
-						$scope.errorMessage = errorMessage;
+						$scope.$emit('SHOW_ERROR_MSG', errorMessage);
 					}
 				});
 			} else {
@@ -322,7 +322,7 @@ sntRover.controller('RvArBalanceController', ['$scope', '$timeout', 'rvAccountsA
 					$scope.$emit('REFRESH_BALANCE_LIST');
 				},
 				failureCallBack: function(errorMessage) {
-					$scope.errorMessage = errorMessage;
+					$scope.$emit('SHOW_ERROR_MSG', errorMessage);
 				}
 			});
 		};
