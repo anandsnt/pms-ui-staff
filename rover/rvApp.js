@@ -35,7 +35,8 @@ var sntRover = angular.module('sntRover', [
 		'iscrollStopPropagation',
 		'emitWhen',
 		'ng-augment-native-scroll',
-        'sntActivityIndicator'
+        'sntActivityIndicator',
+        'guestCardModule'
 	]);
 
 sntRover.config([

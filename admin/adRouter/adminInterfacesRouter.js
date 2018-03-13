@@ -450,16 +450,16 @@ angular.module('adminInterfacesRouter', []).config(function($stateProvider) {
         }
     });
 
-	$stateProvider.state('admin.guestrevSetup', {
-        templateUrl: '/assets/partials/interfaces/Guestrev/adGuestrevSetup.html',
+	$stateProvider.state('admin.rainmakerSetup', {
+        templateUrl: '/assets/partials/interfaces/Rainmaker/adRainmakerSetup.html',
         controller: 'adCRSCommonCtrl',
         url: '/interfaces/setup/:id',
         onEnter: ['$stateParams', function($stateParams) {
-            $stateParams.id = 'guestrev';
+            $stateParams.id = 'rainmaker';
         }],
         resolve: {
             config: ['adInterfacesCommonConfigSrv', function(adInterfacesCommonConfigSrv) {
-                return adInterfacesCommonConfigSrv.fetchConfiguration('guestrev');
+                return adInterfacesCommonConfigSrv.fetchConfiguration('rainmaker');
             }]
         }
     });
@@ -506,6 +506,20 @@ angular.module('adminInterfacesRouter', []).config(function($stateProvider) {
         }
     });
 
+    $stateProvider.state('admin.easiSetup', {
+        templateUrl: '/assets/partials/interfaces/Easi/adEasiSetup.html',
+        controller: 'adCRSCommonCtrl',
+        url: '/interfaces/setup/:id',
+        onEnter: ['$stateParams', function($stateParams) {
+            $stateParams.id = 'easi';
+        }],
+        resolve: {
+            config: ['adInterfacesCommonConfigSrv', function(adInterfacesCommonConfigSrv) {
+                return adInterfacesCommonConfigSrv.fetchConfiguration('easi');
+            }]
+        }
+    });
+
     $stateProvider.state('admin.pmiSetup', {
         templateUrl: '/assets/partials/interfaces/PMI/adPMISetup.html',
         controller: 'adInterfaceCommonCtrl',
@@ -530,6 +544,20 @@ angular.module('adminInterfacesRouter', []).config(function($stateProvider) {
         resolve: {
             config: ['adInterfacesCommonConfigSrv', function(adInterfacesCommonConfigSrv) {
                 return adInterfacesCommonConfigSrv.fetchConfiguration('avida');
+            }]
+        }
+    });
+
+    $stateProvider.state('admin.baswareSetup', {
+        templateUrl: '/assets/partials/interfaces/Basware/adBaswareSetup.html',
+        controller: 'adInterfaceCommonCtrl',
+        url: '/interfaces/setup/:id',
+        onEnter: ['$stateParams', function($stateParams) {
+            $stateParams.id = 'basware';
+        }],
+        resolve: {
+            config: ['adInterfacesCommonConfigSrv', function(adInterfacesCommonConfigSrv) {
+                return adInterfacesCommonConfigSrv.fetchConfiguration('basware');
             }]
         }
     });

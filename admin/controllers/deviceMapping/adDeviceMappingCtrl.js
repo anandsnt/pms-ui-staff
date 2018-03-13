@@ -175,6 +175,7 @@ admin.controller('ADDeviceMappingsCtrl', ['ngTableParams', '$rootScope', '$scope
             $scope.addEditTitle = "ADD";
             $scope.mapping = {};
             $scope.mapping.register_identity = '';
+            $scope.mapping.is_mobile = false;
             $timeout(function() {
                 $location.hash('new-form-holder');
                 $anchorScroll();
@@ -319,6 +320,7 @@ admin.controller('ADDeviceMappingsCtrl', ['ngTableParams', '$rootScope', '$scope
                 && $scope.infrasecDetails.max_control_unit > 0) {
                 data.is_control_unit_enabled = $scope.mapping.is_control_unit_enabled;
                 data.register_identity = $scope.mapping.register_identity !== '' ? $scope.mapping.register_identity : null;
+                data.is_mobile = $scope.mapping.is_mobile;
             }
             data.is_out_of_order = $scope.mapping.is_out_of_order;
 
