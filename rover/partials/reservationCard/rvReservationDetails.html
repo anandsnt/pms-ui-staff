@@ -2,7 +2,6 @@
 
     <!-- Reservation header -->
     <div class="reservation-header" ng-init="showEditDates = false">
-        <div ng-include="'/assets/partials/common/notification_message.html'"></div>
         <div class="actions">
             <a ng-show="isStayDatesChangeAllowed()" class="button dates has-arrow toggle" ng-class="{'active': showEditDates}" ng-click="showEditDates = !showEditDates">
                 <span class="date">
