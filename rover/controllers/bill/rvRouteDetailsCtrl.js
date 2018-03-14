@@ -435,6 +435,7 @@ sntRover.controller('rvRouteDetailsCtrl', ['$scope', '$rootScope', '$filter', 'R
                     var newBill = {};
 
                     newBill.id = 'new';
+                    newBill.is_active = true;
                     newBill.bill_number = '' + $scope.newBillNumber + '(new)';
                     $scope.bills.push(newBill);
                 }

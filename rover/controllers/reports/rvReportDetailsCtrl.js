@@ -563,6 +563,18 @@ sntRover.controller('RVReportDetailsCtrl', [
 				}), 1);
 			}
 
+			if ($scope.chosenReport.title === reportNames['A/R_AGING']) {
+				_.each(results, function(result) {
+					result.age_0to30 = buildResult(result.age_0to30);
+					result.age_31to60 = buildResult(result.age_31to60);
+					result.age_61to90 = buildResult(result.age_61to90);
+					result.age_91to120 = buildResult(result.age_91to120);
+					result.age_120plus = buildResult(result.age_120plus);
+					result.balance = buildResult(result.balance);
+					result.payment = buildResult(result.payment);					
+				});
+			}
+
 
 			// new more detailed reports
 			$scope.parsedApiFor = $scope.chosenReport.title;
@@ -1343,6 +1355,19 @@ sntRover.controller('RVReportDetailsCtrl', [
         // Added for CICO-33172
         $scope.isRoomRevenueSelected = true;
         $scope.isBookingsSelected = true;
+        /*
+         * Function to build data
+         * @param item is item
+         * @return string
+         */
+        var buildResult = function(item) {
+        	var returnValue = item;
+
+        	if ("0.00" === item.replace($rootScope.currencySymbol + " ", '')) {
+				returnValue = "-";
+			}
+			return returnValue;
+        };
 
         /**
          * Toggle Revenue columns for market segment statistics report
