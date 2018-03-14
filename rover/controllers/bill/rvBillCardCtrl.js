@@ -1945,8 +1945,7 @@ sntRover.controller('RVbillCardController',
 			if ($scope.isViaReviewProcess && (billCount === $scope.currentActiveBill + 1)) {
 				// Set isLastBillSucceededWithBlackBoxAPI flag to true in order to proceed further checkout process.
 				$scope.isLastBillSucceededWithBlackBoxAPI = true;
-				console.log("--reached here----");
-				//$scope.clickedCompleteCheckout();
+				$scope.clickedCompleteCheckout();
 			}
 			else if ($scope.isViaReviewProcess) {
 				// Updating review status of the bill.
@@ -1973,9 +1972,8 @@ sntRover.controller('RVbillCardController',
 			successCallBack: successCallBackOfApiCall,
 			failureCallBack: failureCallBackOfApiCall
 		};
-		console.log("========call black box API===========");
-		successCallBackOfApiCall();
-		//$scope.callAPI( RVBillCardSrv.callBlackBoxApi, options );
+
+		$scope.callAPI( RVBillCardSrv.callBlackBoxApi, options );
 	};
 
 	// CICO-45029 - handle check-out in progress tracking so user doesnt initiate errors
@@ -1985,7 +1983,6 @@ sntRover.controller('RVbillCardController',
 	$scope.clickedCompleteCheckout = function() {
 		$scope.checkoutInProgress = true;
 		$scope.findNextBillToReview();	// Verifying wheather any bill is remaing for reviewing.
-console.log("===reached =="+$scope.isAllBillsReviewed);
 
 		if (!$scope.isAllBillsReviewed) {
 			$scope.checkoutInProgress = false;
