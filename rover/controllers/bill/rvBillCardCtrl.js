@@ -2188,9 +2188,7 @@ sntRover.controller('RVbillCardController',
 			} else {
 				$scope.reviewStatusArray[index].reviewStatus = true;
 				$scope.findNextBillToReview();
-			}
-			
-			
+			}			
 		}
 	};
 
@@ -2204,10 +2202,17 @@ sntRover.controller('RVbillCardController',
 			if ($rootScope.isStandAlone && typeof $scope.reservationBillData.bills[i].total_fees[0] !== 'undefined') {
 				var billBalance = $scope.reservationBillData.bills[i].total_fees[0].balance_amount;
 				var paymentType = $scope.reservationBillData.bills[i].credit_card_details.payment_type;
+				if (isBlackBoxEnabled) {
+					if (billBalance !== "0.00" && !$scope.isCheckoutWithoutSettlement ) {
+						$scope.reviewStatusArray[i].reviewStatus = false;
+					}
 
-				if (billBalance !== "0.00" && !$scope.isCheckoutWithoutSettlement ) {
-					$scope.reviewStatusArray[i].reviewStatus = false;
+				} else {
+					if (billBalance !== "0.00" && paymentType !== "DB" && !$scope.isCheckoutWithoutSettlement ) {
+						$scope.reviewStatusArray[i].reviewStatus = false;
+					}
 				}
+				
 			}
 			if (!$scope.reviewStatusArray[i].reviewStatus) {
 				// when all bills reviewed and reached final bill
