@@ -1,5 +1,5 @@
 // Karma configuration
-// Generated on Tue Feb 13 2018 18:35:56 GMT+0530 (IST)
+// Generated on Tue Mar 13 2018 14:23:52 GMT-0400 (EDT)
 
 module.exports = function(config) {
   config.set({
@@ -15,9 +15,10 @@ module.exports = function(config) {
 
     // list of files / patterns to load in the browser
     files: [
-        '../shared/lib/js/angular.min.js',
-        '../shared/lib/js/angular-ui-router.min.js',
-        '../shared/lib/js/angular-mocks.js'
+        './lib/js/angular.min.js',
+        './lib/js/angular-ui-router.min.js',
+        './lib/js/angular-mocks.js',
+        './directives/activityIndicator/**/*.js'
     ],
 
 
@@ -62,7 +63,7 @@ module.exports = function(config) {
 
     // Continuous Integration mode
     // if true, Karma captures browsers, runs the tests and exits
-    singleRun: false,
+    singleRun: true,
 
     // Concurrency level
     // how many browser should be started simultaneous
