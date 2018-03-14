@@ -11,11 +11,12 @@ sntRover.directive('rvFullscreen', [
         return {
             restrict: 'A',
             link: function(scope, element, attr) {
+                var bodyEl = angular.element(document.querySelector('body'))[0],
+                    fullscreenData = {};
+
                 ['click', 'touchstart'].map(function(type) {
                     element.on(type, function(e) {
                         e.stopPropagation();
-                        var bodyEl = angular.element(document.querySelector('body'))[0],
-                            fullscreenData = {};
 
                         fullscreenData.subHeader = attr.fsSubHeader;
                         fullscreenData.toggleClass = attr.fsToggleClass ? attr.fsToggleClass
@@ -31,6 +32,17 @@ sntRover.directive('rvFullscreen', [
                         $rootScope.$digest();
                         return false;
                     });
+                });
+                /**
+                 * Fix for CICO-50759, Removing all fullscreen related styles body element
+                 * when state changes
+                 */
+                var stateChangeListener = $rootScope.$on('$stateChangeStart', function() {
+                    bodyEl.classList.remove('is-fullscreen', $rootScope.fullscreenData.toggleClass);
+                });
+
+                $rootScope.$on('$destroy', function() {
+                    stateChangeListener();
                 });
             }
         };
