@@ -1,9 +1,10 @@
 <ad-common-parts-in-form-dir on-save-button-click="saveInterfaceConfig"
                              header-caption="{{interface + '_HEADER' | translate}}">
     <div class="entry full-width">
-        <fieldset class="holder left">
+        <fieldset class="holder full-width">
             <ad-toggle-button is-checked="config.enabled"
                               label="{{'ACTIVATE_INACTIVATE'| translate}}"></ad-toggle-button>
+            <ad-textbox value="config.org_id" label="{{'ORG_ID' | translate}}" placeholder="{{'ORG_ID_PLACEHOLDER' | translate}}" styleclass="half-width" ng-if="isStandAlone && !isHourlyRatesEnabled"></ad-textbox>
         </fieldset>
     </div>
 
