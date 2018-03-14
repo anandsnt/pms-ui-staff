@@ -1945,7 +1945,8 @@ sntRover.controller('RVbillCardController',
 			if ($scope.isViaReviewProcess && (billCount === $scope.currentActiveBill + 1)) {
 				// Set isLastBillSucceededWithBlackBoxAPI flag to true in order to proceed further checkout process.
 				$scope.isLastBillSucceededWithBlackBoxAPI = true;
-				$scope.clickedCompleteCheckout();
+				console.log("--reached here----");
+				//$scope.clickedCompleteCheckout();
 			}
 			else if ($scope.isViaReviewProcess) {
 				// Updating review status of the bill.
@@ -1972,8 +1973,9 @@ sntRover.controller('RVbillCardController',
 			successCallBack: successCallBackOfApiCall,
 			failureCallBack: failureCallBackOfApiCall
 		};
-
-		$scope.callAPI( RVBillCardSrv.callBlackBoxApi, options );
+		console.log("========call black box API===========");
+		successCallBackOfApiCall();
+		//$scope.callAPI( RVBillCardSrv.callBlackBoxApi, options );
 	};
 
 	// CICO-45029 - handle check-out in progress tracking so user doesnt initiate errors
@@ -1983,6 +1985,7 @@ sntRover.controller('RVbillCardController',
 	$scope.clickedCompleteCheckout = function() {
 		$scope.checkoutInProgress = true;
 		$scope.findNextBillToReview();	// Verifying wheather any bill is remaing for reviewing.
+console.log("===reached =="+$scope.isAllBillsReviewed);
 
 		if (!$scope.isAllBillsReviewed) {
 			$scope.checkoutInProgress = false;
@@ -2046,11 +2049,14 @@ sntRover.controller('RVbillCardController',
 			};
 			
 			sntActivity.start('COMPLETE_CHECKOUT');
-			$scope.invokeApi(RVBillCardSrv.completeCheckout, data, $scope.completeCheckoutSuccessCallback, $scope.completeCheckoutFailureCallback);
+			//$scope.invokeApi(RVBillCardSrv.completeCheckout, data, $scope.completeCheckoutSuccessCallback, $scope.completeCheckoutFailureCallback);
+		} 
+		else if (isBlackBoxEnabled && $rootScope.isStandAlone && finalBillBalance !== "0.00" && paymentType === "DB"  && !$scope.performCompleteCheckoutAction) {
+			$scope.clickedPayButton(true);
 		}
 		else if ($rootScope.isStandAlone && finalBillBalance !== "0.00" && paymentType === "DB"  && !$scope.performCompleteCheckoutAction  && !reservationBillData.bills[$scope.currentActiveBill].is_allow_direct_debit ) {
-			showDirectDebitDisabledPopup();
-			$scope.checkoutInProgress = false;
+				showDirectDebitDisabledPopup();
+				$scope.checkoutInProgress = false;
 		}
 		else if ($rootScope.isStandAlone && finalBillBalance !== "0.00" && paymentType !== "DB") {
 			$scope.reservationBillData.isCheckout = true;
@@ -2180,8 +2186,14 @@ sntRover.controller('RVbillCardController',
 			$scope.clickedPayButton(true);
 		}
 		else {
-			$scope.reviewStatusArray[index].reviewStatus = true;
-			$scope.findNextBillToReview();
+			if (isBlackBoxEnabled) {
+				$scope.clickedPayButton(true);
+			} else {
+				$scope.reviewStatusArray[index].reviewStatus = true;
+				$scope.findNextBillToReview();
+			}
+			
+			
 		}
 	};
 
@@ -2196,7 +2208,7 @@ sntRover.controller('RVbillCardController',
 				var billBalance = $scope.reservationBillData.bills[i].total_fees[0].balance_amount;
 				var paymentType = $scope.reservationBillData.bills[i].credit_card_details.payment_type;
 
-				if (billBalance !== "0.00" && paymentType !== "DB" && !$scope.isCheckoutWithoutSettlement ) {
+				if (billBalance !== "0.00" && !$scope.isCheckoutWithoutSettlement ) {
 					$scope.reviewStatusArray[i].reviewStatus = false;
 				}
 			}
