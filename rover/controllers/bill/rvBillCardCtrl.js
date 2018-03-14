@@ -2046,7 +2046,7 @@ sntRover.controller('RVbillCardController',
 			};
 			
 			sntActivity.start('COMPLETE_CHECKOUT');
-			//$scope.invokeApi(RVBillCardSrv.completeCheckout, data, $scope.completeCheckoutSuccessCallback, $scope.completeCheckoutFailureCallback);
+			$scope.invokeApi(RVBillCardSrv.completeCheckout, data, $scope.completeCheckoutSuccessCallback, $scope.completeCheckoutFailureCallback);
 		} 
 		else if (isBlackBoxEnabled && $rootScope.isStandAlone && finalBillBalance !== "0.00" && paymentType === "DB"  && !$scope.performCompleteCheckoutAction) {
 			$scope.clickedPayButton(true);
