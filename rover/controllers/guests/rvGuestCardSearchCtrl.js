@@ -150,6 +150,7 @@ angular.module('sntRover').controller('guestCardSearchController',
             $scope.guestSearch = {
                 results: []
             };
+            $scope.totalResultCount = 0;
 
             var scrollerOptions = {
                 tap: true,
@@ -176,7 +177,12 @@ angular.module('sntRover').controller('guestCardSearchController',
         // Checks whether search results should be shown or not
         $scope.shouldHideSearchResults = function () {
             return $scope.guestSearch.results.length === 0 || $scope.textInQueryBox === "";
-        };       
+        }; 
+
+        // Checks whether the pagination directive should be shown or not
+        $scope.shouldHidePagination = function () {
+            return ( ($scope.totalResultCount < $scope.guestCardPagination.perPage) && $scope.guestSearch.results.length > 0);
+        };      
 
         init();
     }
