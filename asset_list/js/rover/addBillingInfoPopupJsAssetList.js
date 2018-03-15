@@ -15,7 +15,10 @@ module.exports = {
                     servicesRoot + 'rvCompanyCardSearchSrv.js',
                     servicesRoot + 'payment/rvPaymentSrv.js',
                     servicesRoot + 'payment/rvGuestPaymentSrv.js',
-                    servicesRoot + 'billingInformation/rvBillingInfoUtilSrv.js'
+                    servicesRoot + 'billingInformation/rvBillingInfoUtilSrv.js',
+
+                    // Eliminate all spec files
+                    '!**/*.spec.js'
                 ]
 		};
 		return comapnycardDetailsJsAssets;

@@ -1,6 +1,4 @@
 describe('LoginSrv', function () {
-
-
     describe('.login(data, onSuccess, onFailure)', function () {
         var
             successLoginResponse = {
@@ -16,25 +14,20 @@ describe('LoginSrv', function () {
                 this.loginSrv = _loginSrv_;
                 this.$httpBackend = _$httpBackend_;
             });
-
-
         });
 
         afterEach(function () {
-            this.$httpBackend.verifyNoOutstandingExpectation();
             this.$httpBackend.verifyNoOutstandingRequest();
         });
-
-
 
         it('invokes onSuccess', inject(function () {
             var response;
 
-            $httpBackend.when('POST', '/login/submit')
+            this.$httpBackend.when('POST', '/login/submit')
                 .respond(200, successLoginResponse);
 
 
-            loginSrv.login({
+            this.loginSrv.login({
                 email: 'wrong_email',
                 password: 'password'
             }, function () {
@@ -45,7 +38,7 @@ describe('LoginSrv', function () {
                 response = data;
             });
 
-            $httpBackend.flush(1);
+            this.$httpBackend.flush(1);
 
             expect(response).toEqual('success');
         }));
@@ -56,10 +49,10 @@ describe('LoginSrv', function () {
         it('handle internal server error', inject(function () {
             var response;
 
-            $httpBackend.when('POST', '/login/submit')
+            this.$httpBackend.when('POST', '/login/submit')
                 .respond(500);
 
-            loginSrv.login({
+            this.loginSrv.login({
                 email: 'email',
                 password: 'password'
             }, function () {
@@ -72,7 +65,7 @@ describe('LoginSrv', function () {
                 response = data;
             });
 
-            $httpBackend.flush(1);
+            this.$httpBackend.flush(1);
             expect(response).toEqual(['Internal server error occured']);
         }));
     })
