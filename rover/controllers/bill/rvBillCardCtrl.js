@@ -2026,7 +2026,8 @@ sntRover.controller('RVbillCardController',
 			totalBal += reservationBillData.bills[i].total_amount * 1;
 		}
 		var finalBillBalance = "0.00",
-			paymentType = reservationBillData.bills[$scope.currentActiveBill].credit_card_details.payment_type;
+			paymentType = reservationBillData.bills[$scope.currentActiveBill].credit_card_details.payment_type,
+			isAllowDirectDebit = reservationBillData.bills[$scope.currentActiveBill].is_allow_direct_debit;
 
 		if (typeof $scope.reservationBillData.bills[$scope.currentActiveBill].total_fees[0] !== 'undefined') {
 			finalBillBalance = $scope.reservationBillData.bills[$scope.currentActiveBill].total_fees[0].balance_amount;
@@ -2043,12 +2044,14 @@ sntRover.controller('RVbillCardController',
 			sntActivity.start('COMPLETE_CHECKOUT');
 			$scope.invokeApi(RVBillCardSrv.completeCheckout, data, $scope.completeCheckoutSuccessCallback, $scope.completeCheckoutFailureCallback);
 		} 
-		else if (isBlackBoxEnabled && $rootScope.isStandAlone && finalBillBalance !== "0.00" && paymentType === "DB"  && !$scope.performCompleteCheckoutAction) {
-			$scope.clickedPayButton(true);
-		}
-		else if ($rootScope.isStandAlone && finalBillBalance !== "0.00" && paymentType === "DB"  && !$scope.performCompleteCheckoutAction  && !reservationBillData.bills[$scope.currentActiveBill].is_allow_direct_debit ) {
-				showDirectDebitDisabledPopup();
-				$scope.checkoutInProgress = false;
+		else if ($rootScope.isStandAlone && finalBillBalance !== "0.00" && paymentType === "DB"  && !$scope.performCompleteCheckoutAction) {
+			$scope.checkoutInProgress = false;
+			if (!isAllowDirectDebit) {
+				showDirectDebitDisabledPopup();				
+			} else if (isBlackBoxEnabled && isAllowDirectDebit) {
+				$scope.reservationBillData.isCheckout = true;
+				$scope.clickedPayButton(true);
+			}
 		}
 		else if ($rootScope.isStandAlone && finalBillBalance !== "0.00" && paymentType !== "DB") {
 			$scope.reservationBillData.isCheckout = true;
@@ -2150,7 +2153,8 @@ sntRover.controller('RVbillCardController',
 		var ActiveBillBalance = $scope.reservationBillData.bills[$scope.currentActiveBill].total_fees[0].balance_amount,
 			paymentType = reservationBillData.bills[$scope.currentActiveBill].credit_card_details.payment_type,
 			isPaymentExist = $scope.reservationBillData.bills[$scope.currentActiveBill].is_payment_exist,
-			isControlCodeExist = $scope.reservationBillData.bills[$scope.currentActiveBill].is_control_code_exist;
+			isControlCodeExist = $scope.reservationBillData.bills[$scope.currentActiveBill].is_control_code_exist,
+			isAllowDirectDebit = reservationBillData.bills[$scope.currentActiveBill].is_allow_direct_debit;
 
 		if ($rootScope.isStandAlone && ( ActiveBillBalance === "0.00" || $scope.isCheckoutWithoutSettlement )) {
 
@@ -2169,8 +2173,15 @@ sntRover.controller('RVbillCardController',
 				$scope.findNextBillToReview();
 			}
 		}
-		else if ( $rootScope.isStandAlone && ActiveBillBalance !== "0.00" && paymentType === "DB"  && !reservationBillData.bills[$scope.currentActiveBill].is_allow_direct_debit ) {
-			showDirectDebitDisabledPopup();
+		else if ( $rootScope.isStandAlone && ActiveBillBalance !== "0.00" && paymentType === "DB") {
+
+			if (!isAllowDirectDebit) {
+				showDirectDebitDisabledPopup();
+			} else if (isBlackBoxEnabled && isAllowDirectDebit) {
+				// Show payment popup for stand-alone only.
+				$scope.reservationBillData.isCheckout = true;
+				$scope.clickedPayButton(true);
+			}			
 		}
 		else if ($rootScope.isStandAlone && ActiveBillBalance !== "0.00" && paymentType !== "DB") {
 			// Show payment popup for stand-alone only.
@@ -2178,12 +2189,8 @@ sntRover.controller('RVbillCardController',
 			$scope.clickedPayButton(true);
 		}
 		else {
-			if (isBlackBoxEnabled) {
-				$scope.clickedPayButton(true);
-			} else {
-				$scope.reviewStatusArray[index].reviewStatus = true;
-				$scope.findNextBillToReview();
-			}			
+			$scope.reviewStatusArray[index].reviewStatus = true;
+			$scope.findNextBillToReview();		
 		}
 	};
 
@@ -2198,15 +2205,8 @@ sntRover.controller('RVbillCardController',
 				var billBalance = $scope.reservationBillData.bills[i].total_fees[0].balance_amount,
 				    paymentType = $scope.reservationBillData.bills[i].credit_card_details.payment_type;
 
-				if (isBlackBoxEnabled) {
-					if (billBalance !== "0.00" && !$scope.isCheckoutWithoutSettlement ) {
-						$scope.reviewStatusArray[i].reviewStatus = false;
-					}
-
-				} else {
-					if (billBalance !== "0.00" && paymentType !== "DB" && !$scope.isCheckoutWithoutSettlement ) {
-						$scope.reviewStatusArray[i].reviewStatus = false;
-					}
+				if (billBalance !== "0.00" && paymentType !== "DB" && !$scope.isCheckoutWithoutSettlement ) {
+					$scope.reviewStatusArray[i].reviewStatus = false;
 				}
 				
 			}
