@@ -653,12 +653,33 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 					});
 				}
 			},
+            updateDetailOfrateInRateMeta = function () {
+                var rateList = [],
+                params = {};
+
+                // params.isForceRefresh = true;
+                _.each(rates.results, function(rate) {
+                    rateList.push(rate.rate_id ? rate.rate_id : rate.id);
+                });
+                params.rate_ids = rateList;
+                RVReservationBaseSearchSrv.fetchSelctedRatesDetailed(params).then(function(rates) {
+                    $scope.reservationData.ratesMeta = [];
+                    updateReservationDataRateMeta(rates);
+                    initialize();
+                });
+            },
+            updateReservationDataRateMeta = function(rates){
+                _.each(rates, function(rate) {
+                    $scope.reservationData.ratesMeta[rate.id] = rate;
+                });
+            },
 			initialize = function() {
 				$scope.heading = 'Rooms & Rates';
 				$scope.setHeadingTitle($scope.heading);
 
 				$scope.activeRoom = $scope.viewState.currentTab;
 				$scope.stateCheck.preferredType = TABS[$scope.activeRoom].roomTypeId;
+
 
 				$scope.stateCheck.roomDetails = getCurrentRoomDetails();
 
@@ -999,8 +1020,7 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 					} else if (($scope.stateCheck.activeView === "RECOMMENDED") && shouldRecommend()) {
 						isReccommendedTabApiRequired = true;
 					}
-					if (
-						isReccommendedTabApiRequired) {
+					if (isReccommendedTabApiRequired) {
 						fetchRatesList(null, null, $scope.stateCheck.pagination.rate.page, function(response) {
 							$scope.stateCheck.baseInfo.maxAvblRates = response.total_count;
 							generateRatesGrid(response.results);
@@ -1866,6 +1886,7 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 					pageToFetch = (room.ratesArray.length / $scope.stateCheck.pagination.roomType.ratesList.perPage) + 1;
 				}
 				fetchRatesList(room.id, null, pageToFetch, function(response) {
+				    console.log(RVReservationBaseSearchSrv.rateDetailsList);
 
 					var datesInitial = RVReservationDataService.getDatesModel(ARRIVAL_DATE, DEPARTURE_DATE);
 
@@ -1899,7 +1920,7 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 
 						var rateInfo = {
 							id: rate.id,
-							name: $scope.reservationData.ratesMeta[rate.id].name,
+							name: RVReservationBaseSearchSrv.rateDetailsList[rate.id].name,
 							adr: rate.adr,
 							dates: angular.copy(datesInitial),
 							totalAmount: 0.0,
@@ -1911,7 +1932,7 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 							isGroupRate: isGroupRate,
 							isAllotmentRate: isAllotmentRate,
 							isCorporate: isCorporate,
-							isSuppressed: $scope.reservationData.ratesMeta[rate.id].is_suppress_rate_on,
+							isSuppressed: RVReservationBaseSearchSrv.rateDetailsList[rate.id].is_suppress_rate_on,
 							isMember: isMember,
 							isPromotion: isPromotion,
 							isSuiteUnavailable: room.isSuiteUnavailable
@@ -2161,32 +2182,8 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 		});
 		$scope.legendRestrictionsArray = restrictionsArray;
 
-		// Check whether the rates are available in ratemeta which is cached
-		var checkForRatesInCache = function() {
-			var isRateInCache = _.every(rates.results, function(rate) {
-									// For room type adr request, rate object contains rate_id and for rates its id
-									var rateId = rate.rate_id ? rate.rate_id : rate.id;
 
-									return ratesMeta.rates[rateId];
-								});
-
-			return isRateInCache;
-		};
-
-		$scope.reservationData.ratesMeta = ratesMeta['rates'];
-		var isRateInCache = checkForRatesInCache();
-
-		if (!isRateInCache) {
-				var params = {};
-
-				params.isForceRefresh = true;
-				RVReservationBaseSearchSrv.fetchRatesMeta(params).then(function(response) {
-					$scope.reservationData.ratesMeta = response.rates;
-					initialize();
-				});
-		} else {
-			initialize();
-		}
+        updateDetailOfrateInRateMeta();
 
 		// CICO-47056
 		$scope.$on("FAILURE_UPDATE_RESERVATION", function(e, data) {			
