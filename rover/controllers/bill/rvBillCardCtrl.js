@@ -2023,9 +2023,7 @@ sntRover.controller('RVbillCardController',
 
 		// calculate total
 		for (var i = 0; i < reservationBillData.bills.length; i++) {
-			var bill = reservationBillData.bills[i];
-
-			totalBal += bill.total_amount * 1;
+			totalBal += reservationBillData.bills[i].total_amount * 1;
 		}
 		var finalBillBalance = "0.00",
 			paymentType = reservationBillData.bills[$scope.currentActiveBill].credit_card_details.payment_type;
