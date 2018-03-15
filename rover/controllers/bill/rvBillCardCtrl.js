@@ -2028,12 +2028,12 @@ sntRover.controller('RVbillCardController',
 			totalBal += bill.total_amount * 1;
 		}
 
-		var finalBillBalance = "0.00";
+		var finalBillBalance = "0.00",
+			paymentType = reservationBillData.bills[$scope.currentActiveBill].credit_card_details.payment_type;
 
 		if (typeof $scope.reservationBillData.bills[$scope.currentActiveBill].total_fees[0] !== 'undefined') {
 			finalBillBalance = $scope.reservationBillData.bills[$scope.currentActiveBill].total_fees[0].balance_amount;
 		}
-		var paymentType = reservationBillData.bills[$scope.currentActiveBill].credit_card_details.payment_type;
 
 		if ($scope.isCheckoutWithoutSettlement) {
 			var data = {
