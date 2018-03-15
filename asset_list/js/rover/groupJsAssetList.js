@@ -21,7 +21,10 @@ module.exports = {
 				servicesRoot + "payment/rvPaymentSrv.js",
 				servicesRoot + "accounts/**/*.js",
 				roverRoot + "services/reservation/rvReservationBaseSearchSrv.js",
-				servicesRoot + "rvContactInfoSrv.js"
+				servicesRoot + "rvContactInfoSrv.js",
+
+                // Eliminate all spec files
+                '!**/*.spec.js'
 			]
 		};
 		return groupJsAssets;
