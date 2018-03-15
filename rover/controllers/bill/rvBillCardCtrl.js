@@ -1983,7 +1983,6 @@ sntRover.controller('RVbillCardController',
 	$scope.clickedCompleteCheckout = function() {
 		$scope.checkoutInProgress = true;
 		$scope.findNextBillToReview();	// Verifying wheather any bill is remaing for reviewing.
-
 		if (!$scope.isAllBillsReviewed) {
 			$scope.checkoutInProgress = false;
 			return;
@@ -2020,8 +2019,7 @@ sntRover.controller('RVbillCardController',
 		else {
 			var signatureData = $scope.signatureData;
 		}
-		var errorMsg = "";
-		var totalBal = 0;
+		var errorMsg = "", totalBal = 0;
 
 		// calculate total
 		for (var i = 0; i < reservationBillData.bills.length; i++) {
@@ -2200,8 +2198,9 @@ sntRover.controller('RVbillCardController',
 
 			// Checking last bill balance for stand-alone only.
 			if ($rootScope.isStandAlone && typeof $scope.reservationBillData.bills[i].total_fees[0] !== 'undefined') {
-				var billBalance = $scope.reservationBillData.bills[i].total_fees[0].balance_amount;
-				var paymentType = $scope.reservationBillData.bills[i].credit_card_details.payment_type;
+				var billBalance = $scope.reservationBillData.bills[i].total_fees[0].balance_amount,
+				    paymentType = $scope.reservationBillData.bills[i].credit_card_details.payment_type;
+
 				if (isBlackBoxEnabled) {
 					if (billBalance !== "0.00" && !$scope.isCheckoutWithoutSettlement ) {
 						$scope.reviewStatusArray[i].reviewStatus = false;
