@@ -22,7 +22,6 @@ describe('Activity Indicator', function () {
             '</div></activity-indicator>')($scope);
         $rootScope.$digest();
 
-        console.log(element);
         // Both normal loader and EMV loader need to be hidden
         expect(element[0].querySelectorAll('.ng-hide').length).toBe(2);
     });
@@ -35,8 +34,6 @@ describe('Activity Indicator', function () {
         element = $compile('<activity-indicator></activity-indicator>')($rootScope);
         $rootScope.$digest();
 
-        console.log(ngEl(ngEl(element).children()[0]).hasClass('ng-hide'));
-
-
+        expect(ngEl(ngEl(element).children()[0]).hasClass('ng-hide')).toBe(true);
     });
 });
