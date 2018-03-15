@@ -1069,7 +1069,8 @@ sntRover.controller('reservationActionsController', [
 				successCallBack: succesfullCallback,
 				failureCallBack: failureCallbackPrint,
 				params: {
-					'reservation_id': $scope.reservationData.reservation_card.reservation_id
+					'reservation_id': $scope.reservationData.reservation_card.reservation_id,
+					'locale': $scope.ngData.languageData.selected_language_code
 				}
 
 			});

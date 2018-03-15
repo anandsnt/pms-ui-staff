@@ -99,7 +99,7 @@ sntRover.controller('rvPaginationCtrl', ['$scope', '$attrs', function($scope, $a
                 // Internal page transition
                 $scope.pageChange = false;
             }
-            else {
+            else if (!$scope.pageOptions.currentPage) {
                 // External page transition, set page to 1
                 $scope.pageOptions.currentPage = 1;
             }

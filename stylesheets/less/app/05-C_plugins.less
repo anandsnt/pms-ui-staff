@@ -1980,7 +1980,7 @@
 
             /* Format bill ***/
             &.format-bill {
-                width: 360px;
+                width: 400px;
 
                 label { 
                     margin-bottom: 0;
@@ -1989,17 +1989,15 @@
                     } 
                 }
 
+                .entry.margin {
+                    clear: both;
+                }
+
                 .actions {
                     margin-top: 20px;
                     padding-top: 19px;
                     border-top: 1px solid rgba(0,0,0,.1);
                     .float;
-                }
-
-                &.rooming-list {
-                    .actions {
-                        margin-top: 10px;
-                    }
                 }
 
                 .button { 
@@ -2022,7 +2020,7 @@
                     }
                 }
 
-             .switch-button {
+                .switch-button {
                     background: @grey2;
                     #border-radius > .rounded();
                     .size(40px, 260px);
@@ -2068,6 +2066,12 @@
                     &.on {
                         .data-off { left: auto; right: -100%; }
                         .data-on { left: auto; right: 0; }
+                    }
+                }
+
+                &.rooming-list {
+                    .actions {
+                        margin-top: 10px;
                     }
                 }
             }
@@ -8029,31 +8033,33 @@
     }
 
 /* SignaturePad             ==============================*/
-    #signature-pad {
-        height: auto;
+    #signature {
+        position: relative;
+        padding-top: 1px; 
+        height: 320px;
         width: 100%;
+        background: @white;
+        .box-shadow(inset 1px 1px 1px rgba(0,0,0,.5));
+        #border-radius > .rounded(5px);
 
-        .sigWrapper {
-            clear: both;
-            height: 140px;
-            padding: 10px;
-            margin-bottom: 20px;
-            background: @white;
-            .box-shadow(inset 1px 1px 1px rgba(0,0,0,.5));
-            #border-radius > .rounded(5px);
-            .show;
+        .jSignature {
+            position: relative;
+            background: transparent !important;
+            cursor: @signaturePen, crosshair;
+            cursor: @signaturePen 16 16, crosshair;
+            z-index: 99;
+            .square(100%);           
+        }
 
-            .pad {
-                position: relative;
-                cursor: @signaturePen, crosshair;
-                cursor: @signaturePen 16 16, crosshair;
-                -ms-touch-action: none;
-                -webkit-user-select: none;
-                -moz-user-select: none;
-                -ms-user-select: none;
-                -o-user-select: none;
-                user-select: none;
-            }
+        &:after {
+            content: '';
+            position: absolute;
+            bottom: 20px;
+            left: 20%;
+            background-color: @grey2;
+            z-index: 2;
+            .show();
+            .size(2px, 60%);
         }
     }
 

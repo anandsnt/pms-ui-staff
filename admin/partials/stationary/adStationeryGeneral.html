@@ -34,6 +34,11 @@
                         <label for="screen-id"><span translate>CUSTOM_SALUTATION</span></label>
                         <input type="text" name="custom_text" ng-model="data.salutation_custom_text" id="item-name" placeholder="Enter salutation" value="{Item Name}" required />
                     </div>
+                    <label class="radio" ng-class = "{'checked': data.salutation_by=='NONE'}">
+                        <span class="icon-form icon-radio" ng-class = "{'checked': data.salutation_by=='NONE'}"></span>
+                        <input type="radio" name="item-type" ng-model="data.salutation_by" id="salutaion_none" value="NONE" />
+                       <span translate>NO_SALUTATION</span>
+                    </label>
                 </div>
             </div>
         </div>

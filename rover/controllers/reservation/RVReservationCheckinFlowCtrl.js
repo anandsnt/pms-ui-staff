@@ -10,7 +10,9 @@ angular.module('sntRover').controller('RVReservationCheckInFlowCtrl',
             var listeners = {};
 
             var getPaymentMethodId = function () {
-                return ($scope.billData.credit_card_details && $scope.billData.credit_card_details['payment_id']) || '';
+                var billData = $scope.reservationBillData.bills[$scope.currentActiveBill];
+
+                return (billData.credit_card_details && billData.credit_card_details['payment_id']) || '';
             };
 
             var fetchAuthInfo = function () {
@@ -204,7 +206,7 @@ angular.module('sntRover').controller('RVReservationCheckInFlowCtrl',
                 ngDialog.close();
                 sntEMVSharedSrv.addCardInTerminal({
                     workstation_id: $scope.workstation_id,
-                    bill_number: $scope.billData.bill_number,
+                    bill_number: $scope.reservationData.bills[$scope.currentActiveBill].bill_number,
                     reservation_id: $scope.reservationData.reservationId,
                     emvTimeout: $scope.emvTimeout
                 }).then(onSuccessAddCardWithEMV, function (error) {

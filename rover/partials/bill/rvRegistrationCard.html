@@ -5,7 +5,7 @@
                 <img ng-src="{{ printRegCardData.hotel_logo }}" alt="" />
                 <p>
                     {{ printRegCardData.hotel_name }} <br>
-                    {{ printRegCardData.street }}<br>                    
+                    {{ printRegCardData.street }}<br>
                     {{ printRegCardData.city }}, {{ printRegCardData.state }} {{printRegCardData.zipcode}}<br><br>
                     Ph: {{ printRegCardData.phone }}
                 </p>
@@ -18,7 +18,7 @@
                             <strong>{{ printRegCardData.guest_details.first_name }} {{ printRegCardData.guest_details.last_name }}</strong>
                             <strong>
                                 <label ng-if="printRegCardData.guest_details.street || printRegCardData.guest_details.city">
-                                    {{ printRegCardData.guest_details.street }} {{ printRegCardData.guest_details.city }}, 
+                                    {{ printRegCardData.guest_details.street }} {{ printRegCardData.guest_details.city }},
                                 </label>
                                 <label>{{ printRegCardData.guest_details.state }} {{ printRegCardData.guest_details.postal_code }}</label>
                             </strong>
@@ -103,7 +103,7 @@
         <tr>
             <th>{{ printRegCardData.translation.date }}</th>
             <th ng-hide="printRegCardData.hide_rates">{{ printRegCardData.translation.rate }}</th>
-            <th ng-hide="printRegCardData.hide_rates">{{ printRegCardData.translation["taxes_/_fees"] }}</th>
+            <th ng-hide="printRegCardData.hide_rates">{{ printRegCardData.translation["taxes_fees"] }}</th>
             <th>{{ printRegCardData.translation.add_on }}</th>
             <th ng-hide="printRegCardData.hide_rates" class="addon-price">{{ printRegCardData.translation.add_on_price }}</th>
         </tr>
@@ -129,15 +129,14 @@
 <table class="guest-data-enter" ng-if="printRegCardData.is_show_vehiche_info">
     <tr>
         <td>
-            {{ printRegCardData.translation["guest_dl_/_id_#"] }} 
+            {{ printRegCardData.translation["guest_dl_id_no"] }}
         </td>
         <td class="details">
             <table>
                 <tr>
-                    <td>{{ prntRegCardData.translation.vehicle_make }}</td>
-                    <td>{{ prntRegCardData.translation["lic._plate_#"] }}</td>
-                    <td>{{ prntRegCardData.translation["lic_plate_state_/_prov.
-"] }}</td>
+                    <td>{{ printRegCardData.translation['vehicle_make'] }}</td>
+                    <td>{{ printRegCardData.translation['lic_plate_no'] }}</td>
+                    <td>{{ printRegCardData.translation['lic_plate_state_prov'] }}</td>
                 </tr>
             </table>
         </td>

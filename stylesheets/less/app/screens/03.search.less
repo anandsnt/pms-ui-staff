@@ -4,7 +4,8 @@
     #find-group,
     #find-account,
     #find-allotment,
-    #rooms {
+    #rooms,
+    #find-guests {
        &.no-results {
             .wrapper,
             .search-results { height: 100%; }            
@@ -1100,6 +1101,11 @@
                         .commission,
                         .amount {
                             text-align: right;
+                        }
+
+                        .recalculated {
+                            color: @purpleEnd;
+                            font-weight: 600;
                         }
                     }
 

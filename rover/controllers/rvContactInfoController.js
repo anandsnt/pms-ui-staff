@@ -1,7 +1,8 @@
-angular.module('sntRover').controller('RVContactInfoController', ['$scope', '$rootScope', 'RVContactInfoSrv', 'ngDialog', 'dateFilter', '$timeout', 'RVSearchSrv', '$stateParams',
-  function($scope, $rootScope, RVContactInfoSrv, ngDialog, dateFilter, $timeout, RVSearchSrv, $stateParams) {
+angular.module('sntRover').controller('RVContactInfoController', ['$scope', '$rootScope', 'RVContactInfoSrv', 'ngDialog', 'dateFilter', '$timeout', 'RVSearchSrv', '$stateParams', 'rvPermissionSrv',
+  function($scope, $rootScope, RVContactInfoSrv, ngDialog, dateFilter, $timeout, RVSearchSrv, $stateParams, rvPermissionSrv) {
 
     BaseCtrl.call(this, $scope);
+    GuestCardBaseCtrl.call (this, $scope, RVSearchSrv, RVContactInfoSrv, rvPermissionSrv);
 
     /**
      * storing to check if data will be updated
@@ -41,13 +42,17 @@ angular.module('sntRover').controller('RVContactInfoController', ['$scope', '$ro
          *  Guest email id is not checked when user adds Guest details in the Payment page of Create reservation
          *  -- To have the primary email id in app/assets/rover/partials/reservation/rvSummaryAndConfirm.html checked if the user attached has one!
          */
-        $scope.reservationData.guest.email = $scope.guestCardData.contactInfo.email;
-        if ($scope.reservationData.guest.email && $scope.reservationData.guest.email.length > 0) {
-          $scope.otherData.isGuestPrimaryEmailChecked = true;
-        } else {
-          // Handles cases where Guest with email is replaced with a Guest w/o an email address!
-          $scope.otherData.isGuestPrimaryEmailChecked = false;
-        }
+        if ($scope.reservationData) {
+          $scope.reservationData.guest.email = $scope.guestCardData.contactInfo.email;
+
+          if ($scope.reservationData.guest.email && $scope.reservationData.guest.email.length > 0) {
+            $scope.otherData.isGuestPrimaryEmailChecked = true;
+          } else {
+            // Handles cases where Guest with email is replaced with a Guest w/o an email address!
+            $scope.otherData.isGuestPrimaryEmailChecked = false;
+          }
+        }        
+        
         // CICO-9169
 
         var avatarImage = getAvatharUrl(dataToUpdate.title);
@@ -55,31 +60,10 @@ angular.module('sntRover').controller('RVContactInfoController', ['$scope', '$ro
         $scope.$emit("CHANGEAVATAR", avatarImage);
         // to reset current data in header info for determining any change
         $scope.$emit("RESETHEADERDATA", $scope.guestCardData.contactInfo);
-        updateSearchCache(avatarImage);
+        $scope.updateSearchCache(avatarImage);
         $scope.$emit('hideLoader');
 
-      };
-
-      // update guest details to RVSearchSrv via RVSearchSrv.updateGuestDetails - params: guestid, data
-      var updateSearchCache = function(avatarImage) {
-        var dataSource = $scope.guestCardData.contactInfo;
-        var data = {
-          'firstname': dataSource.first_name,
-          'lastname': dataSource.last_name,
-          'vip': dataSource.vip,
-          'avatar': avatarImage
-        };
-
-        if (dataSource.address) {
-          if ($scope.escapeNull(dataSource.address.city).toString().trim() !== '' || $scope.escapeNull(dataSource.address.state).toString().trim() !== '') {
-            data.location = (dataSource.address.city + ', ' + dataSource.address.state);
-          }
-          else {
-            data.location = false;
-          }
-        }
-        RVSearchSrv.updateGuestDetails($scope.guestCardData.contactInfo.user_id, data);
-      };
+      };      
 
       var saveUserInfoFailureCallback = function(data) {
         $scope.$emit('hideLoader');
@@ -103,17 +87,19 @@ angular.module('sntRover').controller('RVContactInfoController', ['$scope', '$ro
                 });
             }
 
-
           }
         }
         // TODO : Reduce all these places where guestId is kept and used to just ONE
         $scope.guestCardData.contactInfo.user_id = data.id;
-        $scope.reservationDetails.guestCard.id = data.id;
+
+        if ($scope.reservationDetails) {
+          $scope.reservationDetails.guestCard.id = data.id;
+          $scope.reservationDetails.guestCard.futureReservations = 0;
+        }       
         
         // dirty fix for handling multiple api call being made
         $scope.saveGuestCardInfoInProgress = false;
-
-        $scope.reservationDetails.guestCard.futureReservations = 0;
+        
         if ($scope.reservationData && $scope.reservationData.guest) {
           $scope.reservationData.guest.id = data.id;
           $scope.reservationData.guest.firstName = $scope.guestCardData.contactInfo.first_name;
@@ -130,7 +116,9 @@ angular.module('sntRover').controller('RVContactInfoController', ['$scope', '$ro
           $scope.reservationData.guest.loyaltyNumber = $scope.guestLoyaltyNumber;
         }
         $scope.guestCardData.userId = data.id;
-        $scope.showGuestPaymentList($scope.guestCardData.contactInfo);
+        if (!$scope.isGuestCardFromMenu) {
+          $scope.showGuestPaymentList($scope.guestCardData.contactInfo);
+        }        
         $scope.newGuestAdded(data.id);
       };
 
@@ -190,19 +178,17 @@ angular.module('sntRover').controller('RVContactInfoController', ['$scope', '$ro
      */
     $scope.$on('saveContactInfo', function() {
       $scope.errorMessage = "";      
-      if ((!$scope.reservationData.guest.id && !$scope.guestCardData.contactInfo.user_id) || $scope.viewState.isAddNewCard) {
+      if (($scope.reservationData && !$scope.reservationData.guest.id && !$scope.guestCardData.contactInfo.user_id) || $scope.viewState.isAddNewCard) {
         // dirty fix until we refactor the whole staycard/card
         // isGuestCardSaveInProgress - variable in guestcontroller to prevent the api call while clicking outside
         if (!$scope.saveGuestCardInfoInProgress && !$scope.isGuestCardSaveInProgress) {
             $scope.saveGuestCardInfoInProgress = true;             
             $scope.saveContactInfo(true);
-        }
-        
+        }        
       } else {        
         if (!$scope.isGuestCardSaveInProgress) {
           $scope.saveContactInfo();
-        }
-        
+        }        
       }
     });
 

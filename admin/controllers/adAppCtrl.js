@@ -130,10 +130,13 @@ admin.controller('ADAppCtrl', [
                                     id: 'CASHIER'
                                 }
                             }, {
+                                title: "MENU_GUESTS",
+                                action: "rover.guestcardsearch",                    
+                                menuIndex: "guests"
+                            }, {
                                 title: 'MENU_ACCOUNTS',
                                 action: 'rover.accounts.search',
-                                menuIndex: 'accounts'
-                                // hidden: $rootScope.isHourlyRatesEnabled
+                                menuIndex: 'accounts'                                
                             }, {
                                 title: 'MENU_END_OF_DAY',
                                 action: 'rover.endOfDay.starteod'
@@ -812,4 +815,18 @@ admin.controller('ADAppCtrl', [
 
         $scope.disableFeatureInNonDevEnv = sntapp.environment === 'PROD';
 
+        /**
+         * [findMainMenuIndex find the main menu index for highlighting]
+         * @param  {[string]} mainMenuName [description]
+         * @return {[integer]}              [description]
+         */
+        $scope.findMainMenuIndex = function(mainMenuName) {
+            var index = _.indexOf($scope.data.menus, _.find($scope.data.menus, function(menu) {
+                return menu.menu_name === mainMenuName;
+            }));
+            
+            // if index is not defined, set it as current selected index
+            index = _.isUndefined(index) ? $scope.selectedIndex : index;
+            return index;
+        };
 }]);
