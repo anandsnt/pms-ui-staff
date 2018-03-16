@@ -64,23 +64,20 @@ sntRover.controller('RvArBalanceController', ['$scope', '$timeout', 'rvAccountsA
 			$scope.arFlags.insufficientAmount = false;
 			$timeout(function() { 
 				_.each($scope.arDataObj.balanceList, function (eachItem) {
-					if (eachItem.transaction_id === transactionId) {
-						
+					if (eachItem.transaction_id === transactionId) {						
 							eachItem.isSelected = !eachItem.isSelected;
 							var selectedInvoiceObj = {};
 
 							selectedInvoiceObj.invoice_id = transactionId;
 							selectedInvoiceObj.amount = eachItem.amount;
-							if (eachItem.isSelected) {
-								
+							if (eachItem.isSelected) {								
 								$scope.arDataObj.selectedInvoices.push(selectedInvoiceObj);		    			
 							} else { 						
 								selectedInvoiceObj.amount = eachItem.initialAmount;
 								$scope.arDataObj.selectedInvoices = _.filter($scope.arDataObj.selectedInvoices, function (item) {
 									return item.invoice_id !== transactionId;
 								});
-							}
-						
+							}						
 					}
 				});
 				$scope.arDataObj.balanceList[index].amount = $scope.arDataObj.balanceList[index].initialAmount;
