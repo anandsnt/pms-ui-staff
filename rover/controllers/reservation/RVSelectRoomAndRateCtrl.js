@@ -233,7 +233,6 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
                 _.each(RVReservationBaseSearchSrv.rateDetailsList, function(rate) {
                     $scope.reservationData.ratesMeta[rate.details.id] = rate.details;
                 });
-                console.log($scope.reservationData.ratesMeta);
             },
 			fetchRoomTypesList = function(append) {
 				if (!append) {
@@ -1974,12 +1973,6 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 				collision: 'fit'
 			},
 			source: function(request, response) {
-				// var re = new RegExp(request.term, 'gi'),
-				// 	filteredRates = $($scope.reservationData.ratesMeta).filter(function() {
-				// 		return this.name.match(re);
-				// 	}),
-				// 	results = [];
-                //
                 var payLoad = {
                     query: request.term
                 };
@@ -1999,7 +1992,6 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
                         response(results);
                     }
                 });
-
 			},
 			select: function(event, ui) {
 

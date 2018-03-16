@@ -384,20 +384,27 @@ angular.module('sntRover').service('RVReservationBaseSearchSrv', ['$q', 'rvBaseW
             return deferred.promise;
         };
 
+        var formFilteredRateIds = function(params){
+            var fetchList = _.reject(params.rate_ids,
+                function(rate_id){
+                if(!!that.rateDetailsList[rate_id] && Date.now() < that.rateDetailsList[rate_id]['expiryDate']) {
+                    return true
+                }
+                return false;
+            });
+
+            return fetchList;
+        };
+
         this.fetchSelctedRatesDetailed = function(params) {
+            var fetchRateListIds = formFilteredRateIds(params);
             var deferred = $q.defer(),
                 url = '/api/rates/detailed',
                 payload = {};
+                payload['rate_ids[]'] = fetchRateListIds;
 
-                payload['rate_ids[]'] = params.rate_ids;
-
-            // if (that.cache.responses['rateDetails'] === null || Date.now() > that.cache.responses['rateDetails']['expiryDate']) {
-                console.log("Calling API rate details");
                 RVBaseWebSrvV2.getJSON(url, payload).then(function(response) {
-                    var rates = [];
-
                     _.each(response.results, function(rate) {
-                        rates[rate.id] = rate;
                         that.rateDetailsList[rate.id] = {
                             expiryDate: Date.now() + (that.cache['config'].lifeSpan * 1000),
                             details: rate };
@@ -406,14 +413,8 @@ angular.module('sntRover').service('RVReservationBaseSearchSrv', ['$q', 'rvBaseW
                 }, function(data) {
                     deferred.reject(data);
                 });
-            // } else {
-            //     deferred.resolve(that.cache.responses['rateDetails']['data']);
-            // }
             return deferred.promise;
         };
-
-
-
 
         this.fetchCustomRateConfig = function() {
             var deferred = $q.defer(),
@@ -443,11 +444,6 @@ angular.module('sntRover').service('RVReservationBaseSearchSrv', ['$q', 'rvBaseW
 
             that['rates-restrictions'] = {};
             that['rates-restrictions']['rates'] = {};
-
-            // promises.push(that.fetchRatesDetailed(params).then(function(response) {
-            //     that['rates-restrictions']['rates'] = response;
-            // }));
-
             promises.push(that.fetchRestricitonTypes(params).then(function(response) {
                 that['rates-restrictions']['restrictions'] = response;
             }));
