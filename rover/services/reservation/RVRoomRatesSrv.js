@@ -93,8 +93,6 @@ angular.module('sntRover').service('RVRoomRatesSrv', ['$q', 'rvBaseWebSrvV2', 'R
                 payload.rate_ids = _.pluck(response.results, 'id');
 
                 RVReservationBaseSearchSrv.fetchSelctedRatesDetailed(payload).then(function(rates) {
-
-                    console.log(rates);
                     if (!!params.group_id) {
                         _.each(response.results, function(roomType) {
                             if (roomType.rate_id === null) {
@@ -124,8 +122,7 @@ angular.module('sntRover').service('RVRoomRatesSrv', ['$q', 'rvBaseWebSrvV2', 'R
             RVBaseWebSrvV2.getJSON(url, params).then(function(response) {
                 var payload = {};
                 payload.rate_ids = _.pluck(response.results, 'id');
-
-                RVReservationBaseSearchSrv.fetchSelctedRatesDetailed(payload).then(function(rates) {
+                RVReservationBaseSearchSrv.fetchSelctedRatesDetailed(payload).then(function() {
                     if (!!params.group_id) {
                         _.each(response.results, function(roomType) {
                             if (roomType.rate_id === null) {

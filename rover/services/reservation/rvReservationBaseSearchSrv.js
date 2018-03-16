@@ -384,41 +384,12 @@ angular.module('sntRover').service('RVReservationBaseSearchSrv', ['$q', 'rvBaseW
             return deferred.promise;
         };
 
-
-        this.fetchRatesDetailed = function(params) {
-            var deferred = $q.defer(),
-                url = '/api/rates/detailed';
-
-            if ((params && params.isForceRefresh) || that.cache.responses['rateDetails'] === null || Date.now() > that.cache.responses['rateDetails']['expiryDate']) {
-                RVBaseWebSrvV2.getJSON(url).then(function(response) {
-                    var rates = [];
-
-                    _.each(response.results, function(rate) {
-                        rates[rate.id] = rate;
-                    });
-
-                    that.cache.responses['rateDetails'] = {
-                        data: rates,
-                        expiryDate: Date.now() + (that.cache['config'].lifeSpan * 1000)
-                    };
-
-                    deferred.resolve(rates);
-                }, function(data) {
-                    deferred.reject(data);
-                });
-            } else {
-                deferred.resolve(that.cache.responses['rateDetails']['data']);
-            }
-            return deferred.promise;
-        };
-
         this.fetchSelctedRatesDetailed = function(params) {
             var deferred = $q.defer(),
                 url = '/api/rates/detailed',
                 payload = {};
+
                 payload['rate_ids[]'] = params.rate_ids;
-
-
 
             // if (that.cache.responses['rateDetails'] === null || Date.now() > that.cache.responses['rateDetails']['expiryDate']) {
                 console.log("Calling API rate details");
@@ -431,7 +402,6 @@ angular.module('sntRover').service('RVReservationBaseSearchSrv', ['$q', 'rvBaseW
                             expiryDate: Date.now() + (that.cache['config'].lifeSpan * 1000),
                             details: rate };
                     });
-                    console.log(_.keys(that.rateDetailsList));
                     deferred.resolve(response.results);
                 }, function(data) {
                     deferred.reject(data);
@@ -570,6 +540,25 @@ angular.module('sntRover').service('RVReservationBaseSearchSrv', ['$q', 'rvBaseW
                     deferred.reject(errorMessage);
             });
             
+            return deferred.promise;
+        };
+        /**
+         * Fetches hotel settings configured in admin
+         */
+        this.searchForRates = function (params) {
+            var deferred = $q.defer(),
+                payload = {},
+                url = "/api/rates.json?&sort_dir=true&sort_field=rate";
+                payload['query'] = params.query;
+                payload['per_page'] = 10;
+                payload['page'] = 1;
+
+            RVBaseWebSrvV2.getJSON(url, payload).then(function(data) {
+                deferred.resolve(data);
+            }, function(errorMessage) {
+                deferred.reject(errorMessage);
+            });
+
             return deferred.promise;
         };
     }
