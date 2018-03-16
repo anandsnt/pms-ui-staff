@@ -386,9 +386,9 @@ angular.module('sntRover').service('RVReservationBaseSearchSrv', ['$q', 'rvBaseW
 
         var formFilteredRateIds = function(params){
             var fetchList = _.reject(params.rate_ids,
-                function(rate_id){
-                if(!!that.rateDetailsList[rate_id] && Date.now() < that.rateDetailsList[rate_id]['expiryDate']) {
-                    return true
+                function(rate_id) {
+                if (!!that.rateDetailsList[rate_id] && Date.now() < that.rateDetailsList[rate_id]['expiryDate']) {
+                    return true;
                 }
                 return false;
             });
@@ -396,23 +396,28 @@ angular.module('sntRover').service('RVReservationBaseSearchSrv', ['$q', 'rvBaseW
             return fetchList;
         };
 
-        this.fetchSelctedRatesDetailed = function(params) {
+        this.fetchRatesDetails = function(params) {
             var fetchRateListIds = formFilteredRateIds(params);
             var deferred = $q.defer(),
                 url = '/api/rates/detailed',
                 payload = {};
-                payload['rate_ids[]'] = fetchRateListIds;
 
-                RVBaseWebSrvV2.getJSON(url, payload).then(function(response) {
-                    _.each(response.results, function(rate) {
-                        that.rateDetailsList[rate.id] = {
-                            expiryDate: Date.now() + (that.cache['config'].lifeSpan * 1000),
-                            details: rate };
+                payload['rate_ids[]'] = fetchRateListIds;
+                if (fetchRateListIds.length == 0) {
+                    deferred.resolve({});
+                } else {
+                    RVBaseWebSrvV2.getJSON(url, payload).then(function(response) {
+                        _.each(response.results, function(rate) {
+                            that.rateDetailsList[rate.id] = {
+                                expiryDate: Date.now() + (that.cache['config'].lifeSpan * 1000),
+                                details: rate };
+                        });
+                        deferred.resolve(response.results);
+                    }, function(data) {
+                        deferred.reject(data);
                     });
-                    deferred.resolve(response.results);
-                }, function(data) {
-                    deferred.reject(data);
-                });
+                }
+
             return deferred.promise;
         };
 
@@ -443,7 +448,6 @@ angular.module('sntRover').service('RVReservationBaseSearchSrv', ['$q', 'rvBaseW
                 promises = [];
 
             that['rates-restrictions'] = {};
-            that['rates-restrictions']['rates'] = {};
             promises.push(that.fetchRestricitonTypes(params).then(function(response) {
                 that['rates-restrictions']['restrictions'] = response;
             }));
@@ -546,7 +550,7 @@ angular.module('sntRover').service('RVReservationBaseSearchSrv', ['$q', 'rvBaseW
                 payload = {},
                 url = "/api/rates.json?&sort_dir=true&sort_field=rate";
                 payload['query'] = params.query;
-                payload['per_page'] = 10;
+                payload['per_page'] = 25;
                 payload['page'] = 1;
 
             RVBaseWebSrvV2.getJSON(url, payload).then(function(data) {
