@@ -31,7 +31,7 @@ admin.controller('ADDevicesListCtrl', ['$scope', '$state', 'ngTableParams', 'adD
               // if the app version is upto date
               device.build_status = 'SUCCESS';
             } else {
-              device.build_status = '';
+              device.build_status = (device.build_status === 'FAILED') ? 'FAILED' : '';
             }
           });
           $scope.data = data.results;
