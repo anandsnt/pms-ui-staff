@@ -113,16 +113,18 @@ sntRover.controller('RvArBalanceController', ['$scope', '$timeout', 'rvAccountsA
 		// Handle click events on balance list
 		$scope.clickedOnParentList = function( event, index ) { 
 			var clikedItem = $scope.arDataObj.balanceList[index],
-				element = event.target;	
+				element = event.target,
+				amount = clikedItem.amount;
 
 				event.stopImmediatePropagation();
 				event.stopPropagation();
 
-			if (element.parentElement.classList.contains('checkbox') || element.classList.contains('checkbox')) {
+			if (amount >= 0 && (element.parentElement.classList.contains('checkbox') || element.classList.contains('checkbox'))) {
 				// Checkbox selection logic will be called here..
 				selectInvoice(clikedItem.transaction_id, index);
 			}
 			else if (!element.parentElement.classList.contains('actions') && !element.classList.contains('icon-edit-40') && !element.classList.contains('icon-double-arrow') && !element.classList.contains("text-box") && !element.classList.contains('button-edit')) { 
+				// Expand-collapse logic..
 				clickedBalanceListItem(index);				
 			}
 		};
