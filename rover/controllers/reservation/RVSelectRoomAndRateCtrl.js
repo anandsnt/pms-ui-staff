@@ -660,7 +660,7 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 					});
 				}
 			},
-            updateDetailOfrateInRateMeta = function () {
+            updateRateMetaOnLoad = function () {
                 var rateList = [],
                 params = {};
 
@@ -669,7 +669,7 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
                     rateList.push(rate.rate_id ? rate.rate_id : rate.id);
                 });
                 params.rate_ids = rateList;
-                RVReservationBaseSearchSrv.fetchSelctedRatesDetailed(params).then(function(rates) {
+                RVReservationBaseSearchSrv.fetchRatesDetails(params).then(function() {
                     $scope.reservationData.ratesMeta = {};
                     initialize();
                 });
@@ -1888,6 +1888,7 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 				}
 				fetchRatesList(room.id, null, pageToFetch, function(response) {
 					var datesInitial = RVReservationDataService.getDatesModel(ARRIVAL_DATE, DEPARTURE_DATE);
+
                     updateReservationDataRateMeta();
 					room.totalRatesCount = response.total_count;
 
@@ -2187,7 +2188,7 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 		$scope.legendRestrictionsArray = restrictionsArray;
 
 
-        updateDetailOfrateInRateMeta();
+        updateRateMetaOnLoad();
 
 		// CICO-47056
 		$scope.$on("FAILURE_UPDATE_RESERVATION", function(e, data) {			
