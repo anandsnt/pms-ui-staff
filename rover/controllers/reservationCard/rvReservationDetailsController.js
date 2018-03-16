@@ -1641,19 +1641,12 @@ sntRover.controller('reservationDetailsController',
 		var firstName = _.isEmpty($scope.guestIdData.first_name) ? '' : $scope.guestIdData.first_name;
 		var lastName = _.isEmpty($scope.guestIdData.last_name) ? '' : $scope.guestIdData.last_name;
 		var docExpiry = _.isEmpty($scope.guestIdData.docExpiry) ? '' : $scope.guestIdData.docExpiry;
-		// TO DO: translations - below code is not orking
-		// var guestInfo = $filter('translate')('GUEST_FIRST_NAME') + ": " + firstName + "\n" +
-		// 	$filter('translate')('GUEST_LAST_NAME') + ": " + lastName + "\n" +
-		// 	$filter('translate')('DOB') + ": " + $scope.guestIdData.dob + "\n" +
-		// 	$filter('translate')('NATIONALITY') + ": " + $scope.guestIdData.nationality + "\n" +
-		// 	$filter('translate')('ID_NUMBER') + ": " + $scope.guestIdData.docID + "\n" +
-		// 	$filter('translate')('ID_EXPIRY') + ": " + docExpiry;
-		var guestInfo = "Name: " + firstName + "\n" +
-			"Last Name: " + lastName + "\n" +
-			"Date of Birth: " + $scope.guestIdData.dob + "\n" +
-			"Nationality: " + $scope.guestIdData.nationality + "\n" +
-			"ID Number (Ending with): " + $scope.guestIdData.docID + "\n" +
-			"ID Expiry (MM/YY): " + docExpiry;
+		var guestInfo = $filter('translate')('GUEST_FIRST_NAME') + ": " + firstName + "\n" +
+			$filter('translate')('GUEST_LAST_NAME') + ": " + lastName + "\n" +
+			$filter('translate')('DOB') + ": " + $scope.guestIdData.dob + "\n" +
+			$filter('translate')('NATIONALITY') + ": " + $scope.guestIdData.nationality + "\n" +
+			$filter('translate')('ID_NUMBER') + ": " + $scope.guestIdData.docID + "\n" +
+			$filter('translate')('ID_EXPIRY') + ": " + docExpiry;
 
 		return guestInfo;
 	};
