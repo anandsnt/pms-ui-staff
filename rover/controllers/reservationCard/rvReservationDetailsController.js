@@ -1641,11 +1641,11 @@ sntRover.controller('reservationDetailsController',
 		var firstName = _.isEmpty($scope.guestIdData.first_name) ? '' : $scope.guestIdData.first_name;
 		var lastName = _.isEmpty($scope.guestIdData.last_name) ? '' : $scope.guestIdData.last_name;
 		var docExpiry = _.isEmpty($scope.guestIdData.docExpiry) ? '' : $scope.guestIdData.docExpiry;
-		var guestInfo = $filter('translate')('GUEST_FIRST_NAME') + ": " + firstName + "\n" +
-			$filter('translate')('GUEST_LAST_NAME') + ": " + lastName + "\n" +
-			$filter('translate')('DOB') + ": " + $scope.guestIdData.dob + "\n" +
-			$filter('translate')('NATIONALITY') + ": " + $scope.guestIdData.nationality + "\n" +
-			$filter('translate')('ID_NUMBER') + ": " + $scope.guestIdData.docID + "\n" +
+		var guestInfo = $filter('translate')('GUEST_FIRST_NAME') + ": " + firstName + "\r\n" +
+			$filter('translate')('GUEST_LAST_NAME') + ": " + lastName + "\r\n" +
+			$filter('translate')('DOB') + ": " + $scope.guestIdData.dob + "\r\n" +
+			$filter('translate')('NATIONALITY') + ": " + $scope.guestIdData.nationality + "\r\n" +
+			$filter('translate')('ID_NUMBER') + ": " + $scope.guestIdData.docID + "\r\n" +
 			$filter('translate')('ID_EXPIRY') + ": " + docExpiry;
 
 		return guestInfo;
@@ -1665,7 +1665,7 @@ sntRover.controller('reservationDetailsController',
 		} else {
 			fileNamePrefix = $scope.guestIdData.first_name + '-' + $scope.guestIdData.last_name
 		}
-
+		// Add the guest details to a txt file
 		zip.file(fileNamePrefix + "-info.txt", buildGuestInfo());
 		// Add a file to the directory, in this case an image with data URI as contents
 		zip.file(fileNamePrefix + "-ID.png", $scope.guestIdData.imgFrontSrc.split(',')[1], {
