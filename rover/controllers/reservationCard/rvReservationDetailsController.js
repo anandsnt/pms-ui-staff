@@ -1653,7 +1653,6 @@ sntRover.controller('reservationDetailsController',
 
 	$scope.dowloadDocumnetDetails = function() {
 		var zip = new JSZip();
-		var passportDetails = $scope.guestIdData.imgFrontSrc;
 		var fileNamePrefix;
 		
 		if (_.isEmpty($scope.guestIdData.last_name)) {
