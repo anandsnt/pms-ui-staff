@@ -81,5 +81,5 @@
     "GUEST_LAST_NAME" : "Last Name",
     "DOB": "Date of Birth",
     "NATIONALITY": "Nationality",
-    "ID_NUMBER": "ID Number (Ending with)",
-    "ID_EXPIRY": "ID Expiry (MM/YY)"
+    "ID_NUMBER": "ID Number",
+    "ID_EXPIRY": "ID Expiry"

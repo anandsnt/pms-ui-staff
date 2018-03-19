@@ -1655,7 +1655,7 @@ sntRover.controller('reservationDetailsController',
 		var zip = new JSZip();
 		var passportDetails = $scope.guestIdData.imgFrontSrc;
 		var fileNamePrefix;
-		console.log($filter('translate')('GUEST_FIRST_NAME'));
+		
 		if (_.isEmpty($scope.guestIdData.last_name)) {
 			fileNamePrefix = $scope.guestIdData.first_name;
 		} else if (_.isEmpty($scope.guestIdData.first_name)) {
