@@ -763,8 +763,8 @@ sntRover.controller('RVReservationMainCtrl', ['$scope',
                 }
             },
             setCcTaAllotmentGroupDetails = function (data) {
-                data.company_id = $scope.reservationData.company.id || $scope.reservationData.group.company;
-                data.travel_agent_id = $scope.reservationData.travelAgent.id || $scope.reservationData.group.travelAgent;
+                data.company_id = $scope.reservationData.company.id || $scope.reservationData.group.company || $scope.reservationData.allotment.company ;
+                data.travel_agent_id = $scope.reservationData.travelAgent.id || $scope.reservationData.group.travelAgent || $scope.reservationData.allotment.travelAgent;
                 data.group_id = $scope.reservationData.group.id;
                 data.allotment_id = $scope.reservationData.allotment.id;
             },
@@ -1037,11 +1037,8 @@ sntRover.controller('RVReservationMainCtrl', ['$scope',
             });
             //  end of payload changes
             data.stay_dates = stay;
-
-            data.company_id = $scope.reservationData.company.id || $scope.reservationData.group.company;
-            data.travel_agent_id = $scope.reservationData.travelAgent.id || $scope.reservationData.group.travelAgent;
-            data.group_id = $scope.reservationData.group.id;
-            data.allotment_id = $scope.reservationData.allotment.id;
+            
+            setCcTaAllotmentGroupDetails(data);
 
             // DEMOGRAPHICS
             var demographicsData = $scope.reservationData.demographics;

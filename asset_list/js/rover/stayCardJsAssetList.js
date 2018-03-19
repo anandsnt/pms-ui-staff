@@ -6,7 +6,9 @@ module.exports = {
             
             return {
                 minifiedFiles: [
-                    sharedJs + 'jquery.qtip.min.js' // FOR ROOM & RATES CALENDAR  
+                    sharedJs + 'jquery.qtip.min.js', // FOR ROOM & RATES CALENDAR  
+                    sharedJs + 'jsZip/jszip.min.js',
+                    sharedJs + 'fileSaver/filesaver.min.js'
                 ],
                 nonMinifiedFiles: [
                     'rover/filters/rangeFilter.js',
