@@ -2027,7 +2027,7 @@ sntRover.controller('RVbillCardController',
 		}
 		var finalBillBalance = "0.00",
 			paymentType = reservationBillData.bills[$scope.currentActiveBill].credit_card_details.payment_type,
-			isAllowDirectDebit = reservationBillData.bills[$scope.currentActiveBill].is_allow_direct_debit;
+			isAllowDirectDebit = reservationBillData.bills[$scope.currentActiveBill].is_allow_direct_debit,
 			directBillWithBalanceFlag = $rootScope.isStandAlone && finalBillBalance !== "0.00" && paymentType === "DB"  && !$scope.performCompleteCheckoutAction;
 
 		if (typeof $scope.reservationBillData.bills[$scope.currentActiveBill].total_fees[0] !== 'undefined') {
