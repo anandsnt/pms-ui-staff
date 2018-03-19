@@ -30,7 +30,9 @@
         "jsHue": false,
         "webSocketOperations": false,
         "moment": false,
-        "FastClick": false
+        "FastClick": false,
+        "module": false,
+        "inject": false
     },
     "installedESLint":true,
     "parserOptions":{

@@ -32,7 +32,9 @@
         "webSocketOperations": false,
         "moment": false,
         "SwipeOperation": false,
-        "FastClick": false
+        "FastClick": false,
+        "module": false,
+        "inject": false
     },
     "installedESLint": true,
     "parserOptions": {

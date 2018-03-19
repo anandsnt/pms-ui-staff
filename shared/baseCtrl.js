@@ -308,4 +308,4 @@ BaseCtrl = function($scope) {
 
     };
 
-}
+};
