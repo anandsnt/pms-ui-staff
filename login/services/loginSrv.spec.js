@@ -68,7 +68,7 @@ describe('LoginSrv', function () {
             this.$httpBackend.flush(1);
             expect(response).toEqual(['Internal server error occured']);
         }));
-    })
+    });
 
 
 });
