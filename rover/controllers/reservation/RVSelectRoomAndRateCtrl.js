@@ -229,6 +229,9 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 					successCallBack: cb
 				});
 			},
+            /**
+             * Updates rate details from service.
+             */
             updateReservationDataRateMeta = function() {
                 _.each(RVReservationBaseSearchSrv.rateDetailsList, function(rate) {
                     $scope.reservationData.ratesMeta[rate.details.id] = rate.details;

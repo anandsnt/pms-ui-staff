@@ -383,8 +383,13 @@ angular.module('sntRover').service('RVReservationBaseSearchSrv', ['$q', 'rvBaseW
             }
             return deferred.promise;
         };
-
-        var formFilteredRateIds = function(params){
+        /**
+         * Method for remove rate id's with cache.
+         * @constructor
+         * @param {Object} params - Object with rate id's
+         * @return {Array} list of rate id's which are not available in cache
+         */
+        var formFilteredRateIds = function(params) {
             var fetchList = _.reject(params.rate_ids,
                 function(rate_id) {
                 if (!!that.rateDetailsList[rate_id] && Date.now() < that.rateDetailsList[rate_id]['expiryDate']) {
@@ -395,15 +400,20 @@ angular.module('sntRover').service('RVReservationBaseSearchSrv', ['$q', 'rvBaseW
 
             return fetchList;
         };
-
+        /**
+         * Method for fetch rate details.
+         * @constructor
+         * @param {Object} params - Object with rate id's
+         * @return {Object} promise
+         */
         this.fetchRatesDetails = function(params) {
-            var fetchRateListIds = formFilteredRateIds(params);
-            var deferred = $q.defer(),
+            var fetchRateListIds = formFilteredRateIds(params),
+                deferred = $q.defer(),
                 url = '/api/rates/detailed',
                 payload = {};
 
                 payload['rate_ids[]'] = fetchRateListIds;
-                if (fetchRateListIds.length == 0) {
+                if (fetchRateListIds.length === 0) {
                     deferred.resolve({});
                 } else {
                     RVBaseWebSrvV2.getJSON(url, payload).then(function(response) {
@@ -543,16 +553,18 @@ angular.module('sntRover').service('RVReservationBaseSearchSrv', ['$q', 'rvBaseW
             return deferred.promise;
         };
         /**
-         * Fetches hotel settings configured in admin
+         * Method for searching rate.
+         * @constructor
+         * @param {Object} params - Object with query .
          */
         this.searchForRates = function (params) {
             var deferred = $q.defer(),
                 payload = {},
                 url = "/api/rates.json?&sort_dir=true&sort_field=rate";
-                payload['query'] = params.query;
-                payload['per_page'] = 25;
-                payload['page'] = 1;
 
+            payload['query'] = params.query;
+            payload['per_page'] = 25;
+            payload['page'] = 1;
             RVBaseWebSrvV2.getJSON(url, payload).then(function(data) {
                 deferred.resolve(data);
             }, function(errorMessage) {
