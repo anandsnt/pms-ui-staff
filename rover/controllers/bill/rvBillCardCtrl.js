@@ -2044,16 +2044,13 @@ sntRover.controller('RVbillCardController',
 			
 			sntActivity.start('COMPLETE_CHECKOUT');
 			$scope.invokeApi(RVBillCardSrv.completeCheckout, data, $scope.completeCheckoutSuccessCallback, $scope.completeCheckoutFailureCallback);
-		} 
-		else if ((directBillWithBalanceFlag && !isAllowDirectDebit) 
-			|| (directBillWithBalanceFlag && isAllowDirectDebit && isBlackBoxEnabled)) {
+		} else if (directBillWithBalanceFlag && !isAllowDirectDebit) {
 			$scope.checkoutInProgress = false;
-			if (isBlackBoxEnabled && isAllowDirectDebit) {
-				$scope.reservationBillData.isCheckout = true;
-				$scope.clickedPayButton(true);
-			} else if (!isAllowDirectDebit) {
-				showDirectDebitDisabledPopup();				
-			} 
+			showDirectDebitDisabledPopup();	
+		} else if (directBillWithBalanceFlag && isAllowDirectDebit && isBlackBoxEnabled) {
+			$scope.checkoutInProgress = false;
+			$scope.reservationBillData.isCheckout = true;
+			$scope.clickedPayButton(true);			
 		}
 		else if ($rootScope.isStandAlone && finalBillBalance !== "0.00" && paymentType !== "DB") {
 			$scope.reservationBillData.isCheckout = true;
