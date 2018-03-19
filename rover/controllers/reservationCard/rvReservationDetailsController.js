@@ -1660,9 +1660,9 @@ sntRover.controller('reservationDetailsController',
 		} else if (_.isEmpty($scope.guestIdData.first_name)) {
 			fileNamePrefix = $scope.guestIdData.last_name;
 		} else if (_.isEmpty($scope.guestIdData.first_name) && _.isEmpty($scope.guestIdData.last_name)) {
-			fileNamePrefix = 'document'
+			fileNamePrefix = 'document';
 		} else {
-			fileNamePrefix = $scope.guestIdData.first_name + '-' + $scope.guestIdData.last_name
+			fileNamePrefix = $scope.guestIdData.first_name + '-' + $scope.guestIdData.last_name;
 		}
 		// Add the guest details to a txt file
 		zip.file(fileNamePrefix + "-info.txt", buildGuestInfo());
