@@ -400,6 +400,7 @@ angular.module('sntRover').service('RVReservationBaseSearchSrv', ['$q', 'rvBaseW
 
             return fetchList;
         };
+
         /**
          * Method for fetch rate details.
          * @constructor
@@ -412,11 +413,11 @@ angular.module('sntRover').service('RVReservationBaseSearchSrv', ['$q', 'rvBaseW
                 url = '/api/rates/detailed',
                 payload = {};
 
-                payload['rate_ids[]'] = fetchRateListIds;
+                payload['rate_ids'] = fetchRateListIds;
                 if (fetchRateListIds.length === 0) {
                     deferred.resolve({});
                 } else {
-                    RVBaseWebSrvV2.getJSON(url, payload).then(function(response) {
+                    RVBaseWebSrvV2.postJSON(url, payload).then(function(response) {
                         _.each(response.results, function(rate) {
                             that.rateDetailsList[rate.id] = {
                                 expiryDate: Date.now() + (that.cache['config'].lifeSpan * 1000),
