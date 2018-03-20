@@ -13,6 +13,19 @@ angular.module('sntRover').service('RVLoyaltyProgramSrv', ['$q', 'RVBaseWebSrv',
 
 	};
 
+    this.getGMSSettings = function(param) {
+        var deferred = $q.defer(),
+            url =  '/api/integrations/zdirect/settings';
+
+        RVBaseWebSrv.postJSON(url, param).then(function(data) {
+            deferred.resolve(data);
+        }, function(data) {
+            deferred.reject(data);
+        });
+        return deferred.promise;
+
+    };
+
 	this.getLoyaltyDetails = function(param) {
 		var deferred = $q.defer();
 		var url =  '/staff/user_memberships/new_loyalty';
