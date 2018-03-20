@@ -3,6 +3,11 @@ admin.controller('adZDirectSetupCtrl', ['$scope', 'config', 'adInterfacesCommonC
 
         var interfaceIdentifier = 'zdirect';
 
+        $scope.sync = {
+            start_date: null,
+            end_date: null
+        };
+
         $scope.toggleEnabled = function() {
             config.enabled = !config.enabled;
         };
