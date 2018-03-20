@@ -91,7 +91,7 @@ angular.module('sntRover').service('RVRoomRatesSrv', ['$q', 'rvBaseWebSrvV2', 'R
             RVBaseWebSrvV2.getJSON(url, params).then(function(response) {
                 var payload = {};
 
-                payload.rate_ids = _.pluck(response.results, 'rate_id');
+                payload.rate_ids = _.uniq(_.pluck(response.results, 'rate_id'));
                 RVReservationBaseSearchSrv.fetchRatesDetails(payload).then(function() {
                     if (!!params.group_id) {
                         _.each(response.results, function(roomType) {
