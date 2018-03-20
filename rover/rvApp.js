@@ -89,7 +89,8 @@ sntRover.run([
     '$$animateJs',
     '$log',
     '$window',
-    function ($rootScope, $state, $stateParams, RVHkRoomStatusSrv, $$animateJs, $log, $window) {
+    '$trace',
+    function ($rootScope, $state, $stateParams, RVHkRoomStatusSrv, $$animateJs, $log, $window, $trace) {
         var hidden, visibilityChange;
 
         $rootScope.$state = $state;
@@ -430,5 +431,6 @@ sntRover.run([
         };
 
         FastClick.attach(document.body);
+        $trace.enable('TRANSITION');
 	}
 ]);
