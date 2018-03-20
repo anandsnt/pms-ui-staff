@@ -25,10 +25,10 @@ angular.module('sntRover').service('RVContactInfoSrv', [
         };
 
         service.saveContactInfo = function(param) {
-            var deferred = $q.defer();
-            var dataToSend = param.data;
-            var userId = param.userId;
-            var url = '/staff/guest_cards/' + userId;
+            var deferred = $q.defer(),
+                dataToSend = param.data,
+                userId = param.userId,
+                url = '/staff/guest_cards/' + userId;
 
             RVBaseWebSrv.putJSON(url, dataToSend).then(function(data) {
                 deferred.resolve(data);
@@ -53,12 +53,10 @@ angular.module('sntRover').service('RVContactInfoSrv', [
 
 
         service.updateGuest = function(param) {
-            var deferred = $q.defer();
-            var dataToSend = param.data;
-            var userId = param.userId;
-            var url = '/api/guest_details/' + userId;
+            var deferred = $q.defer(),            
+                url = '/api/guest_details/' + param.userId;
 
-            rvBaseWebSrvV2.putJSON(url, dataToSend).then(function(data) {
+            rvBaseWebSrvV2.putJSON(url, param.data).then(function(data) {
                 deferred.resolve(data);
             }, function(data) {
                 deferred.reject(data);

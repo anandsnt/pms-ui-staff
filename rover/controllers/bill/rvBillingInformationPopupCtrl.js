@@ -419,7 +419,7 @@ sntRover.controller('rvBillingInformationPopupCtrl', ['$scope', '$rootScope', '$
     * function to save the new route
     */
     $scope.saveRoute = function() {
-        $rootScope.$broadcast('routeSaveClicked');
+        $rootScope.$broadcast('CALL_SAVE_ROUTE');
     };
     /**
     * Listener to show error messages for child views
