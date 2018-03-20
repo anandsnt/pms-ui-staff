@@ -410,7 +410,7 @@ angular.module('sntRover').service('RVReservationBaseSearchSrv', ['$q', 'rvBaseW
         this.fetchRatesDetails = function(params) {
             var fetchRateListIds = formFilteredRateIds(params),
                 deferred = $q.defer(),
-                url = '/api/rates/detailed',
+                url = '/api/rates/search.json',
                 payload = {};
 
                 payload['rate_ids'] = fetchRateListIds;
