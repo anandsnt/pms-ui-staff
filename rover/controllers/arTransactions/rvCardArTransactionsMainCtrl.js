@@ -871,6 +871,29 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 				}, 2000);
 			}
 		});
+		/* 
+		 * CICO-50427 : AR: Move zero invoices to the Paid tab even if no allocations exist.
+		 * Handle the Move Zero Invoice As Paid button click.
+		 */
+		$scope.clickedMoveZeroInvoiceAsPaid = function() {
+			var params = {
+				account_id: $scope.arDataObj.accountId
+			},
+            moveZeroInvoiceSuccessCallback = function() {
+                $scope.errorMessage = '';
+                $scope.fetchTransactions();
+            },
+            moveZeroInvoiceFailureCallback = function(errorData) {
+                $scope.errorMessage = errorData;
+            },
+            options = {
+                params: params,
+                successCallBack: moveZeroInvoiceSuccessCallback,
+                failureCallBack: moveZeroInvoiceFailureCallback
+            };
+
+            $scope.callAPI(rvAccountsArTransactionsSrv.moveZeroInvoiceAsPaid, options);
+		};
 
 		// Destory listeners
 		angular.forEach(listeners, function(listener) {
