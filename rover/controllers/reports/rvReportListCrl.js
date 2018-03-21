@@ -10,7 +10,9 @@ sntRover.controller('RVReportListCrl', [
     'RVReportApplyIconClass',
     'RVReportApplyFlags',
     'RVReportSetupDates',
-    function($scope, $rootScope, $filter, reportsSrv, reportsSubSrv, reportUtils, reportMsgs, $timeout, applyIconClass, applyFlags, setupDates) {
+    '$state',
+    function($scope, $rootScope, $filter, reportsSrv, reportsSubSrv, reportUtils, reportMsgs,
+             $timeout, applyIconClass, applyFlags, setupDates, $state) {
 
         BaseCtrl.call(this, $scope);
 
@@ -177,6 +179,11 @@ sntRover.controller('RVReportListCrl', [
 
         // removing event listners when scope is destroyed
         $scope.$on( '$destroy', serveRefresh );
+
+        (function () {
+            // TODO: show the chosen report as selected!
+            console.log($state);
+        })();
 
 
     }

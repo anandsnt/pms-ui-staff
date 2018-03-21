@@ -11,7 +11,9 @@ sntRover.controller('RVReportDetailsCtrl', [
     'ngDialog',
     '$state',
     'RVReportPaginationIdsConst',
-    function ($scope, $rootScope, $filter, $timeout, $window, reportsSrv, reportParser, reportMsgs, reportNames, ngDialog, $state, reportPaginationIds) {
+    '$log',
+    function ($scope, $rootScope, $filter, $timeout, $window, reportsSrv, reportParser,
+              reportMsgs, reportNames, ngDialog, $state, reportPaginationIds, $log) {
 
         BaseCtrl.call(this, $scope);
 
@@ -1294,19 +1296,16 @@ sntRover.controller('RVReportDetailsCtrl', [
          * @return {undefined}
          */
         $scope.gotoStayCard = function (reservation) {
-            $timeout(function () {
-                $state.go('rover.reservation.staycard.reservationcard.reservationdetails', {
-                    'id': reservation.reservation_id,
-                    'confirmationId': reservation.confirm_no,
-                    'isrefresh': false
-                });
-            }, 750);
+            $state.go('rover.reservation.staycard.reservationcard.reservationdetails', {
+                'id': reservation.reservation_id,
+                'confirmationId': reservation.confirm_no,
+                'isrefresh': false
+            });
         };
 
         var onReportSubmit = function () {
             $_pageNo = 1;
             $scope.errorMessage = [];
-            /**/
             setScroller();
             afterFetch();
             findBackNames();
@@ -1314,7 +1313,15 @@ sntRover.controller('RVReportDetailsCtrl', [
             $scope.refreshScroll();
         };
 
-        var reportSubmited = $scope.$on(reportMsgs['REPORT_SUBMITED'], onReportSubmit);
+        var onReportPageChange = function () {
+            $scope.errorMessage = [];
+            afterFetch();
+            calPagination();
+            $scope.refreshScroll();
+        };
+
+        var reportSubmitted = $scope.$on(reportMsgs['REPORT_SUBMITED'], onReportSubmit);
+        var reportPageChanged = $scope.$on(reportMsgs['REPORT_PAGE_CHANGED'], onReportPageChange);
 
         var reportUpdated = $scope.$on(reportMsgs['REPORT_UPDATED'], function () {
             $scope.errorMessage = [];
@@ -1326,13 +1333,6 @@ sntRover.controller('RVReportDetailsCtrl', [
             $scope.refreshScroll();
         });
 
-        var reportPageChanged = $scope.$on(reportMsgs['REPORT_PAGE_CHANGED'], function () {
-            $scope.errorMessage = [];
-            /**/
-            afterFetch();
-            calPagination();
-            $scope.refreshScroll();
-        });
 
         var reportPrinting = $scope.$on(reportMsgs['REPORT_PRINTING'], function () {
             $scope.errorMessage = [];
@@ -1351,7 +1351,7 @@ sntRover.controller('RVReportDetailsCtrl', [
         });
 
         // removing event listners when scope is destroyed
-        $scope.$on('$destroy', reportSubmited);
+        $scope.$on('$destroy', reportSubmitted);
         $scope.$on('$destroy', reportUpdated);
         $scope.$on('$destroy', reportPageChanged);
         $scope.$on('$destroy', reportPrinting);
@@ -1403,8 +1403,16 @@ sntRover.controller('RVReportDetailsCtrl', [
 
         (function () {
             switch ($state.params.action) {
-                default:
+                case reportMsgs['REPORT_SUBMITED']:
                     onReportSubmit();
+                    break;
+                case reportMsgs['REPORT_PAGE_CHANGED']:
+                    onReportPageChange();
+                    break;
+                case reportMsgs['REPORT_LOAD_LAST_REPORT']:
+                default:
+                    // do nothing .. wait for event from rvReportsMainCtrl.js
+
             }
         })();
     }

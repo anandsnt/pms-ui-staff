@@ -29,8 +29,14 @@ angular.module('reportsModule', [])
             controller: 'RVReportDetailsCtrl',
             params: {
                 report: null,
-                action: '',
-                page: 1
+                action: {
+                    value: '',
+                    dynamic: true
+                },
+                page: {
+                    value: 1,
+                    dynamic: true
+                }
             }
         });
 

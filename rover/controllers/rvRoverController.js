@@ -667,7 +667,9 @@ sntRover.controller('roverController', [
 
         // when state change start happens, we need to show the activity activator to prevent further clicking
         // this will happen when prefetch the data
-        $transitions.onStart({}, function (transition) {
+
+        // https://ui-router.github.io/guide/transitions#transition-lifecycle
+        $transitions.onBefore({}, function (transition) {
             sntActivity.start('STATE_CHANGE' + transition.to().name.toUpperCase());
 
             // if menu is open, close it
@@ -679,12 +681,13 @@ sntRover.controller('roverController', [
             return true;
         });
 
-        $transitions.onSuccess({}, function (transition) {
-            sntActivity.stop('STATE_CHANGE' + transition.to().name.toUpperCase());
+        $transitions.onStart({}, function (transition) {
             $rootScope.previousState = transition.from();
             $rootScope.previousStateParams = transition.from().params;
+        });
 
-
+        $transitions.onSuccess({}, function (transition) {
+            sntActivity.stop('STATE_CHANGE' + transition.to().name.toUpperCase());
         });
 
         $transitions.onError({}, function (transition) {

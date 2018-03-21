@@ -14,7 +14,9 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
     'rvPermissionSrv',
     'RVReportPaginationIdsConst',
     '$state',
-    function ($rootScope, $scope, payload, reportsSrv, reportsSubSrv, reportUtils, reportParams, reportMsgs, reportNames, $filter, $timeout, util, rvPermissionSrv, reportPaginationIds, $state) {
+    '$log',
+    function ($rootScope, $scope, payload, reportsSrv, reportsSubSrv, reportUtils, reportParams, reportMsgs,
+              reportNames, $filter, $timeout, util, rvPermissionSrv, reportPaginationIds, $state, $log) {
         var isNotTimeOut = false;
         var timeOut;
         var listTitle = $filter('translate')('STATS_&_REPORTS_TITLE');
@@ -28,11 +30,8 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
             hide: true,
             title: $filter('translate')('REPORTS'),
             callback: 'goBackReportList',
-            scope: $scope,
-
-            // since there is no state change we must declare this explicitly
-            // else there can be errors in future animations
-            noStateChange: true
+            name: 'rover.reports.dashboard',
+            scope: $scope
         };
 
         $scope.setTitle(listTitle);
@@ -297,8 +296,9 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
             $scope.resetFilterItemsToggle();
 
             // tell report list controller to refresh scroll
-            console.info(reportMsgs['REPORT_LIST_SCROLL_REFRESH']);
             $scope.$broadcast(reportMsgs['REPORT_LIST_SCROLL_REFRESH']);
+
+            $state.go('rover.reports.dashboard');
         };
 
 
@@ -2356,18 +2356,29 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
                     msg = reportMsgs['REPORT_SUBMITED'];
                 }
 
-                $scope.$broadcast('FILTER_SELECTION_UPDATED', $scope.filter_selected_value);
+                if ($state.current.name !== 'rover.reports.show') {
 
+                    $state.go('rover.reports.show', {
+                        action: msg || '',
+                        report: angular.copy($scope.selectedReport) || {}
+                    });
+                } else {
+                    $state.go('.', {
+                        page: loadPage,
+                        action: msg || ''
+                    }, {
+                        location: true,
+                        inherit: true,
+                        relative: $state.$current,
+                        notify: false
+                    });
+                }
+
+                $scope.$broadcast('FILTER_SELECTION_UPDATED', $scope.filter_selected_value);
 
                 if (msg) {
                     $scope.$broadcast(msg);
                 }
-
-                $state.go('rover.reports.show', {
-                    action: msg || '',
-                    report: angular.copy($scope.selectedReport) || {}
-                });
-
             };
 
             var errorCallback = function (response) {
@@ -2428,7 +2439,8 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
                 $scope.paginationConfig = {
                     id: reportPaginationIds[chosenReport.title],
                     api: loadAPIData,
-                    perPage: 25
+                    perPage: 25,
+                    currentPage: loadPage
                 };
             }
 
@@ -2815,5 +2827,17 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
                 collision: 'flip'
             }
         }, autoCompleteForGrp);
+
+
+        (function () {
+            var transitionParams = $state.transition.params();
+
+            if (transitionParams.report) {
+                $scope.selectedReport = transitionParams.report;
+                $scope.genReport(true, transitionParams.page);
+            }
+
+        })();
+
     }
 ]);

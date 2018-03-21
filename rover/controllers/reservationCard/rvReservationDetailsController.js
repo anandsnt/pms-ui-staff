@@ -128,19 +128,23 @@ sntRover.controller('reservationDetailsController',
 				title: 'Room Diary'
 
 			};
-		} else if ($scope.previousState.name === "rover.reports" || $rootScope.stayCardStateBookMark.previousState === 'rover.reports') {
-			if ($scope.previousState.name === "rover.reports") {
-				setNavigationBookMark();
-			}
-			$rootScope.setPrevState = {
-				title: 'REPORTS',
-				name: 'rover.reports',
-				param: {
-					id: $rootScope.stayCardStateBookMark.previousStateParams.id,
-					activeTab: "REPORTS"
-				}
-			};
-		} else if ($scope.previousState.name === "rover.companycarddetails") {
+		} else if ($scope.previousState.name.match(/rover\.reports/) ||
+            $rootScope.stayCardStateBookMark.previousState.match(/'rover\.reports'/)) {
+
+            if ($scope.previousState.name.match(/rover\.reports/)) {
+                setNavigationBookMark();
+            }
+
+            $rootScope.setPrevState = {
+                title: 'REPORTS',
+                name: $state.transition.from()['name'],
+                param: angular.extend(
+                    angular.copy($state.transition.params('from')), {
+                        action: 'report.show.last'
+                    })
+            };
+            
+        } else if ($scope.previousState.name === "rover.companycarddetails") {
 
             setNavigationBookMark();
             $rootScope.setPrevState = {
