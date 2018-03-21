@@ -38,6 +38,16 @@ angular.module('sntRover').controller('RVHKLogTabCtrl', [
 			// Get total log count
 			getTotalResultCount = function (roomLogs) {
 				return roomLogs.total_count;
+			},
+			// Process room data
+			processRoomData = function () {
+				angular.forEach($scope.roomLogData, function(item, keyValue) {
+					item.front_office_status = _.findWhere(item.details, {key: "fo_status"});
+					item.room_status = _.findWhere(item.details, {key: "room_status"});
+					item.service_status = _.findWhere(item.details, {key: "service_status"});
+					item.service_status.old_value = getServiceStatusValue(item.service_status.old_value);
+					item.service_status.new_value = getServiceStatusValue(item.service_status.new_value);
+				});
 			};
 
 		var init = function() {
@@ -45,15 +55,7 @@ angular.module('sntRover').controller('RVHKLogTabCtrl', [
 			$scope.roomDetails = $scope.$parent.roomDetails;			
 			configurePagination();
 			$scope.roomLogData = roomDetailsLogData.results;
-
-			angular.forEach($scope.roomLogData, function(item, keyValue) {
-				item.front_office_status = _.findWhere(item.details, {key: "fo_status"});
-				item.room_status = _.findWhere(item.details, {key: "room_status"});
-				item.service_status = _.findWhere(item.details, {key: "service_status"});
-				item.service_status.old_value = getServiceStatusValue(item.service_status.old_value);
-				item.service_status.new_value = getServiceStatusValue(item.service_status.new_value);
-			});
-			
+			processRoomData();			
 	        $scope.totalResultCount = getTotalResultCount(roomDetailsLogData);	        
 	        refreshScroll(false);
 	        refreshPagination();
@@ -69,13 +71,7 @@ angular.module('sntRover').controller('RVHKLogTabCtrl', [
 
 	        var onLogFetchSuccess = function(data) {
 	                $scope.roomLogData = data.results;
-	                angular.forEach($scope.roomLogData, function(item, keyValue) {
-						item.front_office_status = _.findWhere(item.details, {key: "fo_status"});
-						item.room_status = _.findWhere(item.details, {key: "room_status"});
-						item.service_status = _.findWhere(item.details, {key: "service_status"});
-						item.service_status.old_value = getServiceStatusValue(item.service_status.old_value);
-						item.service_status.new_value = getServiceStatusValue(item.service_status.new_value);
-					});
+	                processRoomData();
 	                $scope.totalResultCount = getTotalResultCount(roomDetailsLogData); 
 
 	                refreshScroll(true);
