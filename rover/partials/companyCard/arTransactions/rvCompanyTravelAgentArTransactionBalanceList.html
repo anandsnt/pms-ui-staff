@@ -1,8 +1,8 @@
 <ul class="search-results">
     <!-- if checked, add class .selected -->
     <li class="reservation transaction with-checkbox" ng-class="{'selected': balance.isSelected }" ng-repeat="balance in arDataObj.balanceList" ng-click="clickedOnParentList( $event, $index )">
-        <label class="checkbox inline" ng-class="{'checked': balance.isSelected }" ng-click = "selectInvoice(balance.transaction_id)">
-            <span class="icon-form icon-checkbox" ng-class="{'checked': balance.isSelected }"></span>
+        <label class="checkbox inline" ng-class="{'checked': balance.isSelected }">
+            <span ng-hide="balance.amount < 0" class="icon-form icon-checkbox" ng-class="{'checked': balance.isSelected }"></span>
             <input value="4" type="checkbox" ng-class="{'checked': balance.isSelected }">
         </label>
 

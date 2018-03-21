@@ -38,15 +38,15 @@
                         <td data-title="'Name'" sortable="'device_name'" header-class="width-30" ng-hide="currentClickedElement == $index">
                             <strong> {{device.device_name}}</strong>
                         </td>
-                        <td data-title="'Device ID'" sortable="'unique_id'" header-class="width-40" ng-hide="currentClickedElement == $index">
+                        <td data-title="'Device ID'" sortable="'unique_id'" header-class="width-30" ng-hide="currentClickedElement == $index">
                             <strong> {{device.unique_id}}</strong>
                         </td>
                         <td data-title="'Version'" sortable="'app_version'" header-class="width-20" ng-hide="currentClickedElement == $index">
                             <strong>{{device.app_version}}</strong>
                         </td>
-                       <!--  <td data-title="'Upgrade Status'" sortable="'app_version'" header-class="width-15" ng-hide="currentClickedElement == $index">
-                            <strong ng-class="{'red-text': device.upgarde_status == 'FAILED', 'green-text': device.upgarde_status == 'SUCCESS'}">{{device.upgarde_status}}</strong>
-                        </td> -->
+                        <td data-title="'Upgrade Status'" sortable="'build_status'" header-class="width-20" ng-hide="currentClickedElement == $index">
+                            <strong ng-class="{'red-text': device.build_status == 'FAILED', 'green-text': device.build_status == 'SUCCESS'}">{{device.build_status}}</strong>
+                        </td>
                 </tbody>
             </table>
         </section>
@@ -98,6 +98,8 @@
                 <ad-textbox value="selectedDevice.device_type" label="{{'DEBUG_DEVICE_TYPE_LABEL' | translate}}" disabled="true" styleclass="full-width"></ad-textbox>
                 <ad-textbox value="selectedDevice.device_version" label="{{'DEBUG_DEVICE_VERSION_LABEL' | translate}}" disabled="true" styleclass="full-width"></ad-textbox>
                 <ad-textbox value="selectedDevice.app_version" label="{{'DEBUG_APP_VERSION_LABEL' | translate}}" disabled="true" styleclass="full-width"></ad-textbox>
+                <ad-textbox value="selectedDevice.build_status" label="{{'BUILD_STATUS' | translate}}" disabled="true" styleclass="full-width" readonly="yes"></ad-textbox>
+                <ad-textarea value="selectedDevice.build_status_info" label="{{'BUILD_STATUS_INFO' | translate}}" div-class="full-width" text-area-class="full-width"  disabled="true"></ad-textbox>
             </fieldset>
             <div class="actions float">
                 <button type="button" id="cancel" class="button blank add-data-inline" ng-click="resetDeviceSelection()" translate>

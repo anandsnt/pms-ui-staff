@@ -12,6 +12,11 @@
         </div>
     </div>
 
+    <ad-sync-block ng-if="config.enabled"
+                   interface="{{interface}}"
+                   config="config">
+    </ad-sync-block>
+
     <div class="form-title full-width">
         <h3><span translate>ZDIRECT_SUB_TITLE</span></h3>
     </div>
@@ -63,4 +68,3 @@
     </fieldset>
 
 </ad-common-parts-in-form-dir>
-

@@ -17,4 +17,6 @@
 "START_LABEL" : "Started at :",
 "DEBUG_DEVICE_NAME_LABEL" : "Device name :",
 "END_LABEL" : "Ends at :",
-"APP_VERSION": "App version"
+"APP_VERSION": "App version",
+"BUILD_STATUS": "Build status",
+"BUILD_STATUS_INFO": "Build status info"
