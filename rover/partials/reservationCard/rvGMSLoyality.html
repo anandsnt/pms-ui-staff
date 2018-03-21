@@ -1,8 +1,10 @@
 <div id="modal" class="modal-show" ng-class="{'modal-show': !modalClosing}" role="dialog">
-    <form id="new-loyalty-program"  ng-click="setPosition()" class="modal-content form new-content" name="new-loyalty-program" method="post">
-        <button id="modal-close" ng-click = "closeDialog()" class="modal-close" type="button">
+    <div class="modal-content loyalty-gms">
+        <button id="modal-close" type="button" class="modal-close" ng-click = "closeDialog()">
             <span class="icons icon-close invert"></span>
         </button>
-        <iframe id="gms-iframe" ng-src="{{trustSrc(GMSiFrameSrc)}}" seamless sandbox="allow-same-origin allow-scripts allow-forms allow-pointer-lock allow-top-navigation"></iframe>
-    </form>
+        <div id="gms-frame-container">
+            <iframe id="gms-iframe" ng-src="{{trustSrc(GMSiFrameSrc)}}" seamless sandbox="allow-same-origin allow-scripts allow-forms allow-pointer-lock allow-top-navigation"></iframe>
+        </div>
+    </div>
 </div>
