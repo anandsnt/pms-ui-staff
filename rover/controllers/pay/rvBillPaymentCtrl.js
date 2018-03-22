@@ -23,6 +23,7 @@ sntRover.controller('RVBillPayCtrl', ['$scope', 'RVBillPaymentSrv', 'RVPaymentSr
 		$scope.passData.details.firstName = $scope.guestCardData.contactInfo.first_name;
 		$scope.passData.details.lastName = $scope.guestCardData.contactInfo.last_name;
 		$scope.setScroller('cardsList', {'click': true, 'tap': true});
+		$scope.setScroller('bill-payment');
 		$scope.showCancelCardSelection = true;
 		$scope.renderData.referanceText = "";
 		$scope.swipedCardDataToSave  = {};
@@ -44,6 +45,12 @@ sntRover.controller('RVBillPayCtrl', ['$scope', 'RVBillPaymentSrv', 'RVPaymentSr
 	var refreshCardsList = function() {
 		$timeout(function() {
 			$scope.refreshScroller('cardsList');
+		}, 2000);
+	};
+
+	var refreshBillPaymentPopup = function() {
+		$timeout(function() {
+			$scope.refreshScroller('bill-payment');
 		}, 2000);
 	};
 
@@ -397,6 +404,7 @@ sntRover.controller('RVBillPayCtrl', ['$scope', 'RVBillPaymentSrv', 'RVPaymentSr
 			$scope.cardsList.push(dataToGuestList);
 			$rootScope.$broadcast('ADDEDNEWPAYMENTTOGUEST', dataToGuestList);
 		}
+		refreshBillPaymentPopup();
 	};
 
     /*
@@ -432,6 +440,7 @@ sntRover.controller('RVBillPayCtrl', ['$scope', 'RVBillPaymentSrv', 'RVPaymentSr
 		else {
 			$scope.errorMessage = data;
 		}
+		refreshBillPaymentPopup();
 
 	};
 	/*
