@@ -541,22 +541,6 @@ angular.module('sntRover').controller('companyCardDetailsController', ['$scope',
 			if (dataUpdated) {
 				var dataToSend = JSON.parse(JSON.stringify(data));
 
-				for (key in dataToSend) {
-					if (typeof dataToSend[key] !== "undefined" && data[key] !== null && data[key] !== "") {
-						// in add case's first api call, presentContactInfo will be empty object
-						if (JSON.stringify(presentContactInfo) !== '{}') {
-							for (subDictKey in dataToSend[key]) {
-								if (typeof presentContactInfo[key] !== 'undefined') {
-									if (typeof dataToSend[key][subDictKey] === 'undefined' || dataToSend[key][subDictKey] === presentContactInfo[key][subDictKey]) {
-										delete dataToSend[key][subDictKey];
-									}
-								}
-							}
-						}
-					} else {
-						delete dataToSend[key];
-					}
-				}
 				if (typeof dataToSend.countries !== 'undefined') {
 					delete dataToSend['countries'];
 				}
