@@ -7,7 +7,8 @@
  */
 sntRover.directive('rvFullscreen', [
     '$rootScope',
-    function($rootScope) {
+    '$transitions',
+    function($rootScope, $transitions) {
         return {
             restrict: 'A',
             link: function(scope, element, attr) {
@@ -37,7 +38,7 @@ sntRover.directive('rvFullscreen', [
                  * Fix for CICO-50759, Removing all fullscreen related styles body element
                  * when state changes
                  */
-                var stateChangeListener = $rootScope.$on('$stateChangeStart', function() {
+                var stateChangeListener = $transitions.onStart({}, function() {
                     bodyEl.classList.remove('is-fullscreen', $rootScope.fullscreenData.toggleClass);
                 });
 

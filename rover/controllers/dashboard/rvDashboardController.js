@@ -1,9 +1,10 @@
 sntRover.controller('RVdashboardController',
     ['$scope', 'ngDialog', 'RVDashboardSrv', 'RVSearchSrv', 'dashBoarddata',
-        '$rootScope', '$filter', '$state', 'RVWorkstationSrv', 'roomTypes', '$timeout', '$interval', '$log', 
-        'RVHotelDetailsSrv',
+        '$rootScope', '$filter', '$state', 'RVWorkstationSrv', 'roomTypes', '$timeout', '$interval', '$log',
+        'RVHotelDetailsSrv', '$transitions',
         function($scope, ngDialog, RVDashboardSrv, RVSearchSrv, dashBoarddata,
-                 $rootScope, $filter, $state, RVWorkstationSrv, roomTypes, $timeout, $interval, $log, RVHotelDetailsSrv) {
+                 $rootScope, $filter, $state, RVWorkstationSrv, roomTypes, $timeout, $interval, $log,
+                 RVHotelDetailsSrv, $transitions) {
 
             // setting the heading of the screen
             $scope.heading = 'DASHBOARD_HEADING';
@@ -135,7 +136,7 @@ sntRover.controller('RVdashboardController',
                 fetchReleaseNotes();
             };
 
-            $scope.$on("$stateChangeError", function(event, toState, toParams, fromState, fromParams, error) {
+            $transitions.onError({}, function () {
                 $scope.errorMessage = 'Sorry the feature you are looking for is not implemented yet, or some  errors are occured!!!';
             });
 

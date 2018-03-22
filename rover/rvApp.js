@@ -90,7 +90,8 @@ sntRover.run([
     '$log',
     '$window',
     '$trace',
-    function ($rootScope, $state, $stateParams, RVHkRoomStatusSrv, $$animateJs, $log, $window, $trace) {
+    '$transitions',
+    function ($rootScope, $state, $stateParams, RVHkRoomStatusSrv, $$animateJs, $log, $window, $trace, $transitions) {
         var hidden, visibilityChange;
 
         $rootScope.$state = $state;
@@ -313,7 +314,12 @@ sntRover.run([
 		*	check this template to see how this class is applied:
 		*	app/assets/rover/partials/staycard/rvStaycard.html
 		*/
-		$rootScope.$on('$stateChangeSuccess', function(event, toState, toParams, fromState, fromParams) {
+        $transitions.onSuccess({}, function(transition) {
+            var fromState = transition.from(),
+                toState = transition.to(),
+                fromParams = transition.params('from');
+
+
 	        if (fromState.name === 'rover.reservation.staycard.roomassignment' && toState.name === 'rover.diary') {
 	            // cico-13697, fix until proper workflow routes are developed
 	            return;
@@ -386,7 +392,12 @@ sntRover.run([
 		*	on such request the service will look for certain values in $vault,
 		*	if they are avaliable the cached data will be updated before returning the data
 		*/
-		$rootScope.$on('$stateChangeStart', function(event, toState, toParams, fromState, fromParams) {
+		$transitions.onStart({}, function(transition) {
+            var fromState = transition.from(),
+                toState = transition.to(),
+                fromParams = transition.params('from'),
+                toParams = transition.params('to');
+
 			if ( $_userReqBack ) {
 				toParams.useCache = true;
 				$_userReqBack = false;

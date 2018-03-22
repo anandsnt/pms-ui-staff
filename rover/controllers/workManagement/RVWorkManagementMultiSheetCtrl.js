@@ -1,5 +1,9 @@
-angular.module('sntRover').controller('RVWorkManagementMultiSheetCtrl', ['$rootScope', '$scope', 'ngDialog', 'RVWorkManagementSrv', '$state', '$stateParams', '$timeout', 'allUnassigned', 'fetchHKStaffs', 'allRoomTypes', 'payload', '$window', '$filter', 'sntActivity',
-	function($rootScope, $scope, ngDialog, RVWorkManagementSrv, $state, $stateParams, $timeout, allUnassigned, fetchHKStaffs, allRoomTypes, payload, $window, $filter, sntActivity) {
+angular.module('sntRover').controller('RVWorkManagementMultiSheetCtrl', ['$rootScope', '$scope', 'ngDialog',
+    'RVWorkManagementSrv', '$state', '$stateParams', '$timeout', 'allUnassigned', 'fetchHKStaffs', 'allRoomTypes',
+    'payload', '$window', '$filter', 'sntActivity', '$transitions',
+	function($rootScope, $scope, ngDialog,
+             RVWorkManagementSrv, $state, $stateParams, $timeout, allUnassigned, fetchHKStaffs, allRoomTypes,
+             payload, $window, $filter, sntActivity, $transitions) {
 		BaseCtrl.call(this, $scope);
 
 		// saving in local variable, since it will be updated when user changes the date
@@ -16,9 +20,11 @@ angular.module('sntRover').controller('RVWorkManagementMultiSheetCtrl', ['$rootS
 		var quickMatchCache;
 
 		// auto save the sheet when moving away
-		$rootScope.$on('$stateChangeStart', function(e, toState, toParams, fromState, fromParams) {
+        $transitions.onStart({}, function (transition) {
+            var fromState = transition.from(),
+                toState = transition.to();
+
 			if ('rover.workManagement.multiSheet' === fromState.name && $scope.workSheetChanged) {
-				e.preventDefault();
                 sntActivity.stop('STATE_CHANGE' + toState.name.toUpperCase());
 				$scope.$emit("hideLoader");
 				$_stateChangeInterrupted = true;
@@ -27,11 +33,17 @@ angular.module('sntRover').controller('RVWorkManagementMultiSheetCtrl', ['$rootS
 					$scope.closeDialog();
 					$scope.workSheetChanged = false;
 					$_stateChangeInterrupted = false;
-					$state.go(toState, toParams);
+					$state.go(toState, transition.params());
 				};
 
 				openSaveConfirmationPopup();
+
+				// INFO: https://ui-router.github.io/ng1/docs/latest/modules/transition.html#hookresult
+                // returning false would cancel this transition
+                return false;
 			}
+
+
 		});
 
 		$scope.closeSaveConfirmationDialog = function(options) {
