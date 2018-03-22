@@ -875,7 +875,7 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 		 * CICO-50427 : AR: Move zero invoices to the Paid tab even if no allocations exist.
 		 * Handle the Move Zero Invoice As Paid button click.
 		 */
-		$scope.clickedMoveZeroInvoiceAsPaid = function() {
+		$scope.clickedMoveZeroInvoicesAsPaid = function() {
 			var params = {
 				account_id: $scope.arDataObj.accountId
 			},
