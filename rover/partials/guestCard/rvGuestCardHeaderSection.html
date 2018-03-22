@@ -33,9 +33,9 @@
                 <input type="text" data-size="{{guestCardData.contactInfo.email.length}}" class="masked-input icons icon-gc-email" ng-model="guestCardData.contactInfo.email" ng-blur="updateContactInfo()" auto-grow-field />
             </div>
         </form>
-        <div class="card-actions" ng-if="viewState.isAddNewCard">
+        <div class="card-actions dual-actions" ng-if="viewState.isAddNewCard">
             <button class="button green ng-scope" type="button" ng-click="clickedSaveGuestCard()" translate="">Save new card</button>
-            <button class="button blank ng-scope" type="button" ng-click="clickedDiscardGuestCard()" translate="">Discard</button>
+            <button class="button red ng-scope" type="button" ng-click="clickedDiscardGuestCard()" translate="">Discard</button>
         </div>
         <div class="card-actions dual-actions" ng-show="!viewState.isAddNewCard"> 
             <button type="button" class="add-new-button" ng-click="createReservationFromGuestCard()">+ {{ 'CREATE_RESERVATION' | translate}}</button>
