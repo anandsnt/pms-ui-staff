@@ -23,7 +23,12 @@ sntRover.controller('reservationDetailsController',
 	'RVReservationStateService',
 	'RVReservationBaseSearchSrv',
 	'RVReservationPackageSrv',
-	function($scope, $rootScope, rvPermissionSrv, RVReservationCardSrv, RVCCAuthorizationSrv, $stateParams, reservationListData, reservationDetails, ngDialog, RVSaveWakeupTimeSrv, $filter, RVNewsPaperPreferenceSrv, RVLoyaltyProgramSrv, $state, RVSearchSrv, $vault, RVReservationSummarySrv, baseData, $timeout, paymentTypes, reseravationDepositData, dateFilter, RVReservationStateService, RVReservationBaseSearchSrv, RVReservationPackageSrv) {
+	'transitions',
+	function($scope, $rootScope, rvPermissionSrv, RVReservationCardSrv, RVCCAuthorizationSrv, $stateParams,
+             reservationListData, reservationDetails, ngDialog, RVSaveWakeupTimeSrv, $filter,
+             RVNewsPaperPreferenceSrv, RVLoyaltyProgramSrv, $state, RVSearchSrv, $vault,
+             RVReservationSummarySrv, baseData, $timeout, paymentTypes, reseravationDepositData, dateFilter,
+             RVReservationStateService, RVReservationBaseSearchSrv, RVReservationPackageSrv, transitions) {
 		// pre setups for back button
 		var backTitle,
 			backParam,
@@ -129,7 +134,7 @@ sntRover.controller('reservationDetailsController',
 
 			};
 		} else if ($scope.previousState.name.match(/rover\.reports/) ||
-            $rootScope.stayCardStateBookMark.previousState.match(/'rover\.reports'/)) {
+            $rootScope.stayCardStateBookMark.previousState.match(/rover\.reports/)) {
 
             if ($scope.previousState.name.match(/rover\.reports/)) {
                 setNavigationBookMark();
@@ -137,12 +142,13 @@ sntRover.controller('reservationDetailsController',
 
             $rootScope.setPrevState = {
                 title: 'REPORTS',
-                name: $state.transition.from()['name'],
+                name: transitions.get().from()['name'],
                 param: angular.extend(
-                    angular.copy($state.transition.params('from')), {
+                    angular.copy(transitions.get().params('from')), {
                         action: 'report.show.last'
                     })
             };
+
             
         } else if ($scope.previousState.name === "rover.companycarddetails") {
 

@@ -17,6 +17,7 @@ sntRover.controller('RVReportDetailsCtrl', [
 
         BaseCtrl.call(this, $scope);
 
+
         var REPORT_DETAILS_SCROLL = 'report-details-scroll';
         var REPORT_FILTER_SIDEBAR_SCROLL = 'report-filter-sidebar-scroll';
 
@@ -1402,6 +1403,13 @@ sntRover.controller('RVReportDetailsCtrl', [
 
 
         (function () {
+            $rootScope.setPrevState = {
+                title: $filter('translate')('REPORTS'),
+                callback: 'goBackReportList',
+                name: 'rover.reports.dashboard',
+                scope: $scope
+            };
+
             switch ($state.params.action) {
                 case reportMsgs['REPORT_SUBMITED']:
                     onReportSubmit();

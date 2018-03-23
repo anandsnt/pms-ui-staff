@@ -31,7 +31,7 @@ angular.module('reportsModule', [])
                 report: null,
                 action: {
                     value: '',
-                    dynamic: true
+                    dynamic: true // INFO https://ui-router.github.io/guide/ng1/migrate-to-1_0#dynamic-parameters
                 },
                 page: {
                     value: 1,

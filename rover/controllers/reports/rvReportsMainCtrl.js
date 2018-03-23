@@ -25,14 +25,6 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 
         $scope.isVisible = false;
 
-        // set a back button, by default keep hidden
-        $rootScope.setPrevState = {
-            hide: true,
-            title: $filter('translate')('REPORTS'),
-            callback: 'goBackReportList',
-            name: 'rover.reports.dashboard',
-            scope: $scope
-        };
 
         $scope.setTitle(listTitle);
         $scope.heading = listTitle;
@@ -288,7 +280,6 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
         $scope.resultsPerPage = 25;
 
         $scope.goBackReportList = function () {
-            $rootScope.setPrevState.hide = true;
             $scope.showReportDetails = false;
             $scope.heading = listTitle;
             $scope.showSidebar = false;
@@ -2337,7 +2328,6 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
                 var msg = '';
 
                 if (changeView) {
-                    $rootScope.setPrevState.hide = false;
                     $scope.showReportDetails = true;
                 }
 
@@ -2383,7 +2373,6 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 
             var errorCallback = function (response) {
                 if (changeView) {
-                    $rootScope.setPrevState.hide = false;
                     $scope.showReportDetails = true;
                 }
 
@@ -2443,7 +2432,7 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
                     currentPage: loadPage
                 };
             }
-
+            params['action'] = $state.params.action;
             $scope.invokeApi(reportsSubSrv.fetchReportDetails, params, sucssCallback, errorCallback);
         };
 

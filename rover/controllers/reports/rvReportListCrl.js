@@ -42,9 +42,12 @@ sntRover.controller('RVReportListCrl', [
 
             $scope.setScroller(REPORT_LIST_SCROLL, scrollerOptions);
             $scope.setScroller(REPORT_FILTERS_SCROLL, scrollerOptions);
-        };
 
-        setScroller();
+            // NOTE Intentional timeout to give a moment for the scroll bar to be initialized!
+            $timeout(function () {
+                $scope.getScroller(REPORT_LIST_SCROLL).scrollToElement('.report-item.active', 500, 0, 0);
+            }, 300);
+        };
 
         /**
          *   Post processing fetched data to modify and add additional data
@@ -103,7 +106,6 @@ sntRover.controller('RVReportListCrl', [
                 // to process the group by for this report
                 reportUtils.processGroupBy( report[i] );
 
-
                 // CICO-8010: for Yotel make "date" default sort by filter
                 if ($rootScope.currentHotelData === 'Yotel London Heathrow') {
                     var sortDate = _.find(report[i].sortByOptions, function(item) {
@@ -118,7 +120,11 @@ sntRover.controller('RVReportListCrl', [
 
             // SUPER forcing scroll refresh!
             // 2000 is the delay for slide anim, so firing again after 2010
-            $timeout( $scope.refreshAllScroll, 2010 );
+            $timeout(function () {
+                if (!$scope.$parent.uiChosenReport) {
+                    $scope.refreshAllScroll();
+                }
+            }, 2010);
         };
 
         postProcess( $scope.$parent.reportList );
@@ -132,9 +138,12 @@ sntRover.controller('RVReportListCrl', [
             }
 
             var callback = function() {
-                if ( !! $scope.$parent.uiChosenReport ) {
-                    $scope.$parent.uiChosenReport.uiChosen = false;
-                }
+                // deselect all reports
+                _.map($scope.$parent.reportList,
+                    function (report) {
+                        report.uiChosen = false;
+                    }
+                );
 
                 report.uiChosen = true;
                 $scope.$parent.uiChosenReport = report;
@@ -180,9 +189,19 @@ sntRover.controller('RVReportListCrl', [
         // removing event listners when scope is destroyed
         $scope.$on( '$destroy', serveRefresh );
 
+
+        /**
+         * init method
+         */
         (function () {
-            // TODO: show the chosen report as selected!
-            console.log($state);
+            var chosenReport = _.find($scope.$parent.reportList, {uiChosen: true});
+
+            if (chosenReport) {
+                $scope.toggleFilter(null, chosenReport);
+            }
+
+            setScroller();
+
         })();
 
 

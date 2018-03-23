@@ -686,13 +686,14 @@ sntRover.controller('roverController', [
             $rootScope.previousStateParams = transition.from().params;
         });
 
+
         $transitions.onSuccess({}, function (transition) {
             sntActivity.stop('STATE_CHANGE' + transition.to().name.toUpperCase());
         });
 
         $transitions.onError({}, function (transition) {
             sntActivity.stop('STATE_CHANGE' + transition.to().name.toUpperCase());
-            $scope.$broadcast('showErrorMessage', transition.error());
+            $log.error('showErrorMessage', transition.error());
         });
 
         // This variable is used to identify whether guest card is visible

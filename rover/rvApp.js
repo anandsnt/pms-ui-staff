@@ -36,7 +36,8 @@ var sntRover = angular.module('sntRover', [
 		'emitWhen',
 		'ng-augment-native-scroll',
         'sntActivityIndicator',
-        'guestCardModule'
+        'guestCardModule',
+        'snt.transitionManager'
 	]);
 
 sntRover.config([
@@ -305,6 +306,13 @@ sntRover.run([
 		};
 
 
+		$transitions.onExit({}, function () {
+            // this must be reset with every state change
+            // invidual controllers can then set it
+            // with its own desired values
+            $rootScope.setPrevState = {};
+        });
+
 		/**
 		*	For certain state transitions
 		*	the transition animation must be reversed
@@ -360,12 +368,6 @@ sntRover.run([
 			 * I will not look for you, I will not pursue you, but if you don't...
 			 * I will look for you, I will find you and I will kill you.
 			 */
-
-
-			// this must be reset with every state change
-			// invidual controllers can then set it
-			// with its own desired values
-			$rootScope.setPrevState = {};
 
 			// choose slide animation direction
 			if ( $_mustRevAnim || $_shouldRevDir(fromState.name, toState.name) ) {
@@ -442,6 +444,8 @@ sntRover.run([
         };
 
         FastClick.attach(document.body);
-        $trace.enable('TRANSITION');
+
+        // TODO: 49259 Disbale the transition traces!
+        // $trace.enable('TRANSITION');
 	}
 ]);
