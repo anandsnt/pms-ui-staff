@@ -111,7 +111,7 @@ sntRover.controller('RVReportListCrl', [
                         return item.value === 'DATE';
                     });
 
-                    if (!!sortDate) {
+                    if (sortDate) {
                         report[i].chosenSortBy = sortDate.value;
                     }
                 }
@@ -157,11 +157,11 @@ sntRover.controller('RVReportListCrl', [
             };
 
             $scope.$emit( 'showLoader' );
-            if ( !! report.allFiltersProcessed ) {
+            if (report.allFiltersProcessed) {
                 callback();
             } else {
-                reportUtils.findFillFilters( report, $scope.$parent.reportList )
-                    .then( callback );
+                reportUtils.findFillFilters(report, $scope.$parent.reportList)
+                    .then(callback);
             }
         };
 
@@ -188,7 +188,6 @@ sntRover.controller('RVReportListCrl', [
         // removing event listners when scope is destroyed
         $scope.$on( '$destroy', serveRefresh );
 
-
         /**
          * init method
          */
@@ -202,7 +201,6 @@ sntRover.controller('RVReportListCrl', [
             setScroller();
 
         })();
-
 
     }
 

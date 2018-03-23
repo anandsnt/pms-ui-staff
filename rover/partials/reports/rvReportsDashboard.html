@@ -1,3 +1,14 @@
+<!-- Search -->
+<form class="search-form">
+    <div class="entry search">
+        <button type="button" class="clear-query" ng-class="{'visible': query.length}" ng-click="clearQuery()"> <!-- Add class "visible" to show -->
+            <span class="icons icon-clear-search">Clear query</span>
+        </button>
+        <button type="button" name="submit" class="icons icon-search">Search</button>
+        <input id="reports-query" class="query" placeholder="Search by Report Name" type="search" autocomplete="off" ng-model="query" ng-keyup="filterByQuery()">
+    </div>
+</form>
+
 <section id="reports" class="content reports-wrapper" role="main">
 
     <!-- Menu -->
