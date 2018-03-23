@@ -1,38 +1,11 @@
 sntRover.controller('rvGMSLoyalityController', ['$scope', '$rootScope', '$filter', 'RVLoyaltyProgramSrv', 'ngDialog', '$sce', '$timeout',
     function($scope, $rootScope, $filter, RVLoyaltyProgramSrv, ngDialog, $sce, $timeout) {
         BaseCtrl.call(this, $scope);
-        var credentials = {
-                'username': 'zdirect_real.pmsTest',
-                'password': 'Secret123!',
-                'buildingCode': 'STAYTEST',
-                'identifier': 'SNT_AGENT_USERNAME'
-            },
-            content = {
-                'profileId': 'SNT_PROFILE_ID',
-                'email': 'test@example.com',
-                'salutation': 'Mr.',
-                'firstName': 'Testy',
-                'lastName': 'McTesterton',
-                'middleInitial': 'T',
-                'suffix': 'Esq.',
-                'address': '123 Fake St.',
-                'address2': 'Suite 404',
-                'city': 'TownsVille',
-                'state': 'ON',
-                'zip': 'H0H 0H0',
-                'country': 'CA',
-                'home': '555-456-7890',
-                'office': '',
-                'cell': '555-567-1234',
-                'fax': '',
-                'company': 'Example Company Inc.',
-                'title': 'Account Tester',
-                'birthday': '2000-01-01',
-                'langcode': 'en'
-            },
+        var credentials = {},
+            content = {},
+            guestInfo = {},
             sendInitialMessage = function(event) {
                 if (event.target.id === 'gms-iframe') {
-                    clearLoadEvents();
                     $scope.iframe.contentWindow.postMessage({
                         'messageType': 'membership-lookup',
                         'credentials': credentials,
@@ -47,6 +20,7 @@ sntRover.controller('rvGMSLoyalityController', ['$scope', '$rootScope', '$filter
                     var message = event.data,
                         messageContent;
 
+                    console.log(message);
                     switch (message.messageType) {
                         case 'error':
                             messageContent = message.content;
@@ -61,14 +35,12 @@ sntRover.controller('rvGMSLoyalityController', ['$scope', '$rootScope', '$filter
                             messageContent = message.content;
                             if (messageContent) {
                                 var str = JSON.stringify(message, undefined, 4);
-
                             }
-                            clearLoadEvents();
-                            closeGMSiFrame();
-                            $scope.closeDialog();
+                            addGMSLoyalty(messageContent);
+                            $scope.closeGMSDialog();
                             break;
                         case 'cancel':
-                            closeGMSiFrame();
+                            $scope.closeGMSDialog();
                             break;
                         default:
                             break;
@@ -80,16 +52,13 @@ sntRover.controller('rvGMSLoyalityController', ['$scope', '$rootScope', '$filter
                 $scope.iframe.removeEventListener('error', loadingError);
             },
             logGMSError = function(time, code, msg, details) {
-                console.log('error message');
                 var errorMsg = 'Error code:' + code + '\nMessage:' + msg + '\nDetails:' + JSON.stringify(details);
-
-                console.log(errorMsg);
             },
             closeGMSiFrame = function () {
                 clearLoadEvents();
                 // remove message listener
                 window.removeEventListener('message', handleGMSmessage);
-                $scope.iframe.src = null;
+                // $scope.iframe.src = '';
             },
             loadingError = function (event) {
                 if (event.target.id === 'gms-iframe') {
@@ -102,11 +71,63 @@ sntRover.controller('rvGMSLoyalityController', ['$scope', '$rootScope', '$filter
                     closeGMSiFrame();
                 }
             },
+            generateCredentailAndContent = function () {
+                credentials = {
+                    'username': $scope.ngDialogData.user_name,
+                    'password': $scope.ngDialogData.password,
+                    'buildingCode': 'STAYTEST',
+                    'identifier': 'SNT_AGENT_USERNAME'
+                };
+                content = {
+                    // 'profileId': 'SNT_PROFILE_ID',
+                    'email': guestInfo.email,
+                    // 'salutation': 'Mr.',
+                    'firstName': guestInfo.firstName,
+                    'lastName': guestInfo.lastName
+                    // 'middleInitial': 'T',
+                    // 'suffix': 'Esq.',
+                    // 'address': '123 Fake St.',
+                    // 'address2': 'Suite 404',
+                    // 'city': 'TownsVille',
+                    // 'state': 'ON',
+                    // 'zip': 'H0H 0H0',
+                    // 'country': 'CA',
+                    // 'home': '555-456-7890',
+                    // 'office': '',
+                    // 'cell': '555-567-1234',
+                    // 'fax': '',
+                    // 'company': 'Example Company Inc.',
+                    // 'title': 'Account Tester',
+                    // 'birthday': '2000-01-01',
+                    // 'langcode': 'en'
+                };
+            },
+            addGMSLoyalty = function (message) {
+                var params = {},
+                    successCallbackaddLoyaltyProgram = function(data) {
+                        $scope.newLoyalty.id = data.id;
+                        $rootScope.$broadcast('loyaltyProgramAdded', $scope.newLoyalty, 'fromReservationCard');
+                    },
+                    errorCallbackaddLoyaltyProgram = function(errorMessage) {
+                        $scope.$emit('hideLoader');
+                        $scope.errorMessage = errorMessage;
+                    };
+
+                params.reservation_id = $scope.$parent.reservationData.reservation_card.reservation_id;
+                params.user_id = $scope.$parent.$parent.guestCardData.userId;
+                params.user_membership = {};
+                params.user_membership.membership_type = message.details.progamCode;
+                params.user_membership.membership_card_number = message.memberNumber;
+                //params.user_membership.membership_class = $scope.selectedLoyaltyProgram;
+                //params.user_membership.membership_level = $scope.selectedLevel;
+                $scope.invokeApi(RVLoyaltyProgramSrv.addLoyaltyProgram, params, successCallbackaddLoyaltyProgram, errorCallbackaddLoyaltyProgram);
+            },
             init = function () {
-                console.log($scope);
                 $scope.$emit('showLoader');
                 $scope.trustSrc = $sce.trustAsResourceUrl;
-                $scope.GMSiFrameSrc = 'https://gm-d1.travelclick.com/gms/app/external/snt';
+                $scope.GMSiFrameSrc = $scope.ngDialogData.end_point;
+                guestInfo = $scope.$parent.reservationParentData.guest;
+                generateCredentailAndContent();
                 $scope.iframe = null;
                 var iframetimer = $timeout(function() {
                     $scope.iframe = document.getElementById('gms-iframe');
@@ -117,6 +138,11 @@ sntRover.controller('rvGMSLoyalityController', ['$scope', '$rootScope', '$filter
                     }
                 }, 3000);
             };
+        
+        $scope.closeGMSDialog = function () {
+            closeGMSiFrame();
+            $scope.closeDialog();
+        };
 
         init();
     }]);
