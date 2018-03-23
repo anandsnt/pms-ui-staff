@@ -5,16 +5,19 @@ sntRover.controller('rvGMSLoyalityController', ['$scope', '$rootScope', '$filter
             content = {},
             guestInfo = {},
             MEMBERSHIP_CLASS,
-            sendInitialMessage = function(event) {
-                if (event.target.id === 'gms-iframe') {
-                    $scope.iframe.contentWindow.postMessage({
-                        'messageType': 'membership-lookup',
-                        'credentials': credentials,
-                        'content': content || {}
-                    }, $scope.GMSiFrameSrc);
-                }
-                $scope.$emit('hideLoader');
-            },
+            MEMBERSHIP_LEVEL;
+
+        sendInitialMessage = function(event) {
+            if (event.target.id === 'gms-iframe') {
+                console.log(credentials);
+                $scope.iframe.contentWindow.postMessage({
+                    'messageType': 'membership-lookup',
+                    'credentials': credentials,
+                    'content': content || {}
+                }, $scope.GMSiFrameSrc);
+            }
+            $scope.$emit('hideLoader');
+        },
             handleGMSmessage = function(event) {
                 // ensure the message sent is from GMS
                 if ($scope.GMSiFrameSrc.includes(event.origin)) {
@@ -24,8 +27,7 @@ sntRover.controller('rvGMSLoyalityController', ['$scope', '$rootScope', '$filter
                     switch (message.messageType) {
                         case 'error':
                             messageContent = message.content;
-                            logGMSError(message.timestamp || Date.now(), messageContent.code,
-                                messageContent.message, messageContent.details);
+                            logGMSError(message.timestamp || Date.now(), messageContent.code);
                             // iframe remains open so front desk agent knows there's an issue.
                             // will need to manually press close button that sends cancel message.
                             break;
@@ -46,8 +48,10 @@ sntRover.controller('rvGMSLoyalityController', ['$scope', '$rootScope', '$filter
                 $scope.iframe.removeEventListener('load', sendInitialMessage);
                 $scope.iframe.removeEventListener('error', loadingError);
             },
-            logGMSError = function(time, code, msg, details) {
-                var errorMsg = 'Error code:' + code + '\nMessage:' + msg + '\nDetails:' + JSON.stringify(details);
+            logGMSError = function(time, code) {
+                var errorMsg = 'GMS Error code:' + code ;
+
+                $scope.errorMessage = errorMsg;
             },
             closeGMSiFrame = function () {
                 clearLoadEvents();
@@ -70,8 +74,8 @@ sntRover.controller('rvGMSLoyalityController', ['$scope', '$rootScope', '$filter
                 credentials = {
                     'username': $scope.ngDialogData.user_name,
                     'password': $scope.ngDialogData.password,
-                    'buildingCode': 'STAYTEST',
-                    'identifier': 'SNT_AGENT_USERNAME'
+                    'buildingCode': $scope.ngDialogData.hotel_code,
+                    'identifier': $scope.ngDialogData.identifier ? $scope.ngDialogData.identifier : 'SNT_AGENT_USERNAME'
                 };
                 content = {
                     'email': guestInfo.email,
@@ -96,7 +100,7 @@ sntRover.controller('rvGMSLoyalityController', ['$scope', '$rootScope', '$filter
                 params.user_membership.membership_type = message.progamCode;
                 params.user_membership.membership_card_number = message.memberNumber;
                 params.user_membership.membership_class = MEMBERSHIP_CLASS;
-                params.user_membership.membership_level = 'BASIC';
+                params.user_membership.membership_level = MEMBERSHIP_LEVEL;
                 $scope.invokeApi(RVLoyaltyProgramSrv.addLoyaltyProgram, params, successCallbackaddLoyaltyProgram, errorCallbackaddLoyaltyProgram);
             },
             init = function () {
@@ -106,9 +110,10 @@ sntRover.controller('rvGMSLoyalityController', ['$scope', '$rootScope', '$filter
                 guestInfo = $scope.$parent.reservationParentData.guest;
                 // Membership class for HLP is 2, Value hardcoded
                 MEMBERSHIP_CLASS = 'HLP';
+                MEMBERSHIP_LEVEL = 'BASIC';
                 generateCredentailAndContent();
                 $scope.iframe = null;
-                var iframetimer = $timeout(function() {
+                $timeout(function() {
                     $scope.iframe = document.getElementById('gms-iframe');
                     if ($scope.iframe) {
                         $scope.iframe.addEventListener('load', sendInitialMessage, false);

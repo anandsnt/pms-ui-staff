@@ -15,13 +15,27 @@ angular.module('sntRover').service('RVLoyaltyProgramSrv', ['$q', 'RVBaseWebSrv',
 
     this.getGMSSettings = function() {
         var deferred = $q.defer(),
-            url = '/api/integrations/zdirect/settings';
+            url = '/api/integrations/zdirect/settings',
+            data = {
+                'enabled': true,
+                'user_name': 'zdirect_real.pmsTest',
+                'password': 'Secret123!',
+                'end_point': 'https://gm-d1.travelclick.com/gms/app/external/snt',
+                'membership_feature': true,
+                'hotel_code': 'GHLD',
+                'customer_name': 'na',
+                'property_name': 'GHLD',
+                'send_detailed_revenue': null
+            };
 
-        RVBaseWebSrv.getJSON(url).then(function(data) {
-            deferred.resolve(data);
-        }, function(data) {
-            deferred.reject(data);
-        });
+        deferred.resolve(data);
+
+
+        // RVBaseWebSrv.getJSON(url).then(function(data) {
+        //     deferred.resolve(data);
+        // }, function(data) {
+        //     deferred.reject(data);
+        // });
         return deferred.promise;
 
     };
