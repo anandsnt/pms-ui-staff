@@ -1,4 +1,4 @@
-<div class="entry" ng-class="styleclass">
+<div class="entry" ng-class="styleclass" ng-hide="hide">
     <label ng-hide="label.length ==0 || !label">
         {{label}} <span class="no-text-transform" ng-hide="labelSuffix.length === 0 || !labelSuffix">{{labelSuffix}}</span>
         <strong ng-show="required=='yes'">*</strong>

@@ -75,4 +75,11 @@
     "DEVICE_LIBRARY_VERSION": "Library Ver.",
     "DEVICE_FIRMWARE_VERSION": "Firmware Ver.",
     "DEVICE_SERIAL_NO": "Serial No.",
-    "EMAIL_STATUS_TO": "Email status to:"
+    "EMAIL_STATUS_TO": "Email status to:",
+    "DOWNLOAD": "Download",
+    "GUEST_FIRST_NAME" : "Name",
+    "GUEST_LAST_NAME" : "Last Name",
+    "DOB": "Date of Birth",
+    "NATIONALITY": "Nationality",
+    "ID_NUMBER": "ID Number",
+    "ID_EXPIRY": "ID Expiry"
