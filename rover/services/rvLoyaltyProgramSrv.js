@@ -13,7 +13,7 @@ angular.module('sntRover').service('RVLoyaltyProgramSrv', ['$q', 'RVBaseWebSrv',
 
     };
 
-    this.getGMSSettings = function(param) {
+    this.getGMSSettings = function() {
         var deferred = $q.defer(),
             url = '/api/integrations/zdirect/settings';
 

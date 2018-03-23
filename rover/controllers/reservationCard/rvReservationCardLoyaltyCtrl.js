@@ -175,7 +175,7 @@ sntRover.controller('rvReservationCardLoyaltyController', ['$rootScope', '$scope
                         $scope.GMSSettings = data;
                     },
                     errorCallback = function ( err ) {
-                    // To Do - handle error's
+                        $scope.errorMessage = err;
                     };
 
                 $scope.invokeApi(RVLoyaltyProgramSrv.getGMSSettings, params, successCallback, errorCallback);

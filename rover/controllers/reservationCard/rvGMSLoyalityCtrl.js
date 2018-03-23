@@ -21,22 +21,16 @@ sntRover.controller('rvGMSLoyalityController', ['$scope', '$rootScope', '$filter
                     var message = event.data,
                         messageContent;
 
-                    console.log(message);
                     switch (message.messageType) {
                         case 'error':
                             messageContent = message.content;
-                            var str = JSON.stringify(message, undefined, 4);
-
                             logGMSError(message.timestamp || Date.now(), messageContent.code,
-                        messageContent.message, messageContent.details);
-                        // iframe remains open so front desk agent knows there's an issue.
-                        // will need to manually press close button that sends cancel message.
+                                messageContent.message, messageContent.details);
+                            // iframe remains open so front desk agent knows there's an issue.
+                            // will need to manually press close button that sends cancel message.
                             break;
                         case 'details':
                             messageContent = message.content;
-                            if (messageContent) {
-                                var str = JSON.stringify(message, undefined, 4);
-                            }
                             addGMSLoyalty(messageContent);
                             $scope.closeGMSDialog();
                             break;
@@ -110,7 +104,7 @@ sntRover.controller('rvGMSLoyalityController', ['$scope', '$rootScope', '$filter
                 $scope.trustSrc = $sce.trustAsResourceUrl;
                 $scope.GMSiFrameSrc = $scope.ngDialogData.end_point;
                 guestInfo = $scope.$parent.reservationParentData.guest;
-                //Membership class for HLP is 2, Value hardcoded
+                // Membership class for HLP is 2, Value hardcoded
                 MEMBERSHIP_CLASS = 'HLP';
                 generateCredentailAndContent();
                 $scope.iframe = null;
