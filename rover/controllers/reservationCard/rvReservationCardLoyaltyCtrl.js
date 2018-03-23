@@ -183,6 +183,7 @@ sntRover.controller('rvReservationCardLoyaltyController', ['$rootScope', '$scope
             init = function() {
                 $scope.selectedLoyaltyID = '';
                 $scope.selectedLoyalty = {};
+                $scope.GMSSettings = {};
                 $scope.hotelLoyaltyProgramEnabled = true;
                 $scope.setSelectedLoyaltyForID($scope.$parent.reservationData.reservation_card.loyalty_level.selected_loyalty);
                 getGMSSettings();

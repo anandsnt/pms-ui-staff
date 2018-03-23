@@ -4,6 +4,7 @@ sntRover.controller('rvGMSLoyalityController', ['$scope', '$rootScope', '$filter
         var credentials = {},
             content = {},
             guestInfo = {},
+            MEMBERSHIP_CLASS,
             sendInitialMessage = function(event) {
                 if (event.target.id === 'gms-iframe') {
                     $scope.iframe.contentWindow.postMessage({
@@ -79,27 +80,9 @@ sntRover.controller('rvGMSLoyalityController', ['$scope', '$rootScope', '$filter
                     'identifier': 'SNT_AGENT_USERNAME'
                 };
                 content = {
-                    // 'profileId': 'SNT_PROFILE_ID',
                     'email': guestInfo.email,
-                    // 'salutation': 'Mr.',
                     'firstName': guestInfo.firstName,
                     'lastName': guestInfo.lastName
-                    // 'middleInitial': 'T',
-                    // 'suffix': 'Esq.',
-                    // 'address': '123 Fake St.',
-                    // 'address2': 'Suite 404',
-                    // 'city': 'TownsVille',
-                    // 'state': 'ON',
-                    // 'zip': 'H0H 0H0',
-                    // 'country': 'CA',
-                    // 'home': '555-456-7890',
-                    // 'office': '',
-                    // 'cell': '555-567-1234',
-                    // 'fax': '',
-                    // 'company': 'Example Company Inc.',
-                    // 'title': 'Account Tester',
-                    // 'birthday': '2000-01-01',
-                    // 'langcode': 'en'
                 };
             },
             addGMSLoyalty = function (message) {
@@ -116,10 +99,10 @@ sntRover.controller('rvGMSLoyalityController', ['$scope', '$rootScope', '$filter
                 params.reservation_id = $scope.$parent.reservationData.reservation_card.reservation_id;
                 params.user_id = $scope.$parent.$parent.guestCardData.userId;
                 params.user_membership = {};
-                params.user_membership.membership_type = message.details.progamCode;
+                params.user_membership.membership_type = message.progamCode;
                 params.user_membership.membership_card_number = message.memberNumber;
-                //params.user_membership.membership_class = $scope.selectedLoyaltyProgram;
-                //params.user_membership.membership_level = $scope.selectedLevel;
+                params.user_membership.membership_class = MEMBERSHIP_CLASS;
+                params.user_membership.membership_level = 'BASIC';
                 $scope.invokeApi(RVLoyaltyProgramSrv.addLoyaltyProgram, params, successCallbackaddLoyaltyProgram, errorCallbackaddLoyaltyProgram);
             },
             init = function () {
@@ -127,6 +110,8 @@ sntRover.controller('rvGMSLoyalityController', ['$scope', '$rootScope', '$filter
                 $scope.trustSrc = $sce.trustAsResourceUrl;
                 $scope.GMSiFrameSrc = $scope.ngDialogData.end_point;
                 guestInfo = $scope.$parent.reservationParentData.guest;
+                //Membership class for HLP is 2, Value hardcoded
+                MEMBERSHIP_CLASS = 'HLP';
                 generateCredentailAndContent();
                 $scope.iframe = null;
                 var iframetimer = $timeout(function() {
