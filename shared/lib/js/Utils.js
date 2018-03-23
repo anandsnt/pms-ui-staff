@@ -592,6 +592,31 @@ var tConvertToAPIFormat = function(hh, mm, ampm){
 	return time;
 
 }
+/*
+ * Function to list years 
+ * From current year to previous {numberofYears} if {isAdd} set as false
+ * From current year to next {numberofYears} if {isAdd} set as true
+ * @param {numberOfYears} number of years we need
+ * @isAdd - from current year to previous {numberofYears} or next {numberofYears}
+ */
+function listYears(numberOfYears, isAdd) {
+    var currentDay = new Date().getFullYear(),
+        min = (isAdd) ? currentDay : (currentDay - numberOfYears),
+        max = (isAdd) ? (currentDay + numberOfYears) : currentDay,
+        years = [];
+        
+    for (var i = min; i<=max; i++){
+        var yearObject = {
+            "value": i
+        }
+
+        years.push(yearObject);
+    }
+
+
+    console.log(years)
+    return (isAdd) ? years : years.reverse();
+}
 //retrieve month name from index
 function getMonthName(monthIndex){
     var monthName = new Array(12);

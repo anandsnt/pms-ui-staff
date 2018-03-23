@@ -363,7 +363,9 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
             item_47: false,
             item_48: false,
             item_49: false,
-            item_50: false
+            item_50: false,
+            item_51: false,
+            item_52: false
         };
         $scope.toggleFilterItems = function(item) {
             if ( ! $scope.filterItemsToggle.hasOwnProperty(item) ) {
@@ -1422,6 +1424,37 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
                 }
             }
 
+             // include VAT year
+            if ( report.hasVatYear ) {
+                key         = reportParams['VAT_YEAR'];
+                params[key] = report.year;
+
+                if ( changeAppliedFilter ) {
+                    $scope.appliedFilter['year'] = report.year;
+                }
+
+            }
+
+            if ( report.hasCompanyTravelAgentWithOrWithoutVat ) {
+                key         = reportParams['ACCOUNT_WITH_OR_WITHOUT_VAT'];
+                params[key] = [];
+                var filterWithVatData = {
+                    "with_vat_number" : report.with_vat_number,
+                    "without_vat_number" : report.without_vat_number
+                };
+
+                params[key].push(filterWithVatData);
+
+
+                if ( changeAppliedFilter ) {
+                    $scope.appliedFilter['with_vat_number'] = report.with_vat_number;
+                    $scope.appliedFilter['without_vat_number'] = report.without_vat_number;
+                }
+
+            }
+
+            
+
             // include CICO filter
             if (!!report.hasCicoFilter) {
                 checkInKey  = reportParams['CHECKED_IN'];
@@ -1950,6 +1983,7 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
                     }
                 }
             }
+           
 
             // Include accounts
             if ( report.hasOwnProperty('hasAccountSearch') ) {

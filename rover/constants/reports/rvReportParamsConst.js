@@ -62,5 +62,7 @@ angular.module('reportsModule')
         "SHOW_ACTIONABLES": "actions_by",
         "TRAVEL_AGENTS": "travel_agent_ids",
         "TRAVEL_AGENTS_PER_PAGE_COUNT": 25,
-        "RESERVATION_STATUS_ARRAY": "status_ids[]"
+        "RESERVATION_STATUS_ARRAY": "status_ids[]",
+        "VAT_YEAR": "year",
+        "ACCOUNT_WITH_OR_WITHOUT_VAT": "account"
     });

@@ -385,6 +385,17 @@ angular.module('reportsModule')
                     });
                     break;
 
+                case reportNames['Yearly_VAT']:
+                    report['filters'].push({
+                        'value': "VAT_YEAR",
+                        'description': "Year"
+                    },
+                    {
+                        'value': "CO_TA_WITH_OR_WITHOUT_VAT",
+                        'description': "company_travelagent_with_without_vat"
+                    });
+                    break;
+
                 default:
                     // no op
                     break;
@@ -576,6 +587,15 @@ angular.module('reportsModule')
                     report['hasIncludeAccountName'] = filter;
                 }
 
+                if (filter.value === 'CO_TA_WITH_OR_WITHOUT_VAT') {
+                    report['hasCompanyTravelAgentWithOrWithoutVat'] = filter;
+                }
+
+                if (filter.value === 'VAT_YEAR') {
+                    report['hasVatYear'] = filter;
+                    report['yearFilter'] = listYears(10, false);
+                    report['year'] = new Date().getFullYear();
+                }
 
                 if ( filter.value === 'MIN_NUMBER_OF_DAYS_NOT_OCCUPIED' ) {
                     report['hasMinNoOfDaysNotOccupied'] = filter;
