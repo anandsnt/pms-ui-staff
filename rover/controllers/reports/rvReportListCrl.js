@@ -10,9 +10,8 @@ sntRover.controller('RVReportListCrl', [
     'RVReportApplyIconClass',
     'RVReportApplyFlags',
     'RVReportSetupDates',
-    '$state',
     function($scope, $rootScope, $filter, reportsSrv, reportsSubSrv, reportUtils, reportMsgs,
-             $timeout, applyIconClass, applyFlags, setupDates, $state) {
+             $timeout, applyIconClass, applyFlags, setupDates) {
 
         BaseCtrl.call(this, $scope);
 

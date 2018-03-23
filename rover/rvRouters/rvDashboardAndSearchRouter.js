@@ -10,8 +10,6 @@ angular.module('dashboardModule', []).config(function($stateProvider, $urlRouter
                 type: null,
                 from_page: null,
                 useCache: null,
-                isMobileCheckin: null,
-                useCache: null,
                 isMobileCheckin: null
             },
             resolve: {

@@ -6,6 +6,7 @@ module.exports = {
 		controllerRoot 	= roverRoot + 'controllers/',
 		serviceRoot 	= roverRoot + 'services/',
 		directiveRoot	= roverRoot + 'directives/',
+		constantsRoot	= roverRoot + 'constants/',
 		roverJsAssets 	= {
 			minifiedFiles: [
 				jsLibRoot + 'jquery.min.js',
@@ -85,11 +86,14 @@ module.exports = {
                 serviceRoot + 'reservation/rvReservationBaseSearchSrv.js',
                 serviceRoot + 'reports/rvReportsSrv.js',
                 serviceRoot + 'reports/rvReportsSubSrv.js',
+                serviceRoot + 'reports/rvReportsCacheSrv.js',
 
 
 				directiveRoot + 'Outside Click handler/outsideClickDirective.js',
 				directiveRoot + 'pagination/*.js',
-				directiveRoot + 'fullscreen/*.js'
+				directiveRoot + 'fullscreen/*.js',
+
+                constantsRoot + 'reports/rvReportMsgsConst.js'
 			]
 		};
 

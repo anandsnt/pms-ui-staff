@@ -2248,7 +2248,8 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
         $scope.genReport = function (changeView, loadPage, resultPerPageOverride) {
             var chosenReport = reportsSrv.getChoosenReport(),
                 changeView = 'boolean' === typeof changeView ? changeView : true,
-                page = !!loadPage ? loadPage : 1;
+                page = !!loadPage ? loadPage : 1,
+                msg = '';
 
             var params = genParams(chosenReport, page, resultPerPageOverride || $scope.resultsPerPage);
 
@@ -2325,8 +2326,6 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
             };
 
             var sucssCallback = function (response) {
-                var msg = '';
-
                 if (changeView) {
                     $scope.showReportDetails = true;
                 }
@@ -2336,15 +2335,6 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
                 $scope.errorMessage = [];
                 $scope.$emit('hideLoader');
 
-                if (!changeView && !loadPage) {
-                    msg = reportMsgs['REPORT_UPDATED'];
-                } else if (!!loadPage && !resultPerPageOverride) {
-                    msg = reportMsgs['REPORT_PAGE_CHANGED'];
-                } else if (!!resultPerPageOverride) {
-                    msg = reportMsgs['REPORT_PRINTING'];
-                } else {
-                    msg = reportMsgs['REPORT_SUBMITED'];
-                }
 
                 if ($state.current.name !== 'rover.reports.show') {
 
@@ -2423,6 +2413,16 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 
             }
 
+            if (!changeView && !loadPage) {
+                msg = reportMsgs['REPORT_UPDATED'];
+            } else if (loadPage && !resultPerPageOverride) {
+                msg = reportMsgs['REPORT_PAGE_CHANGED'];
+            } else if (resultPerPageOverride) {
+                msg = reportMsgs['REPORT_PRINTING'];
+            } else {
+                msg = reportMsgs['REPORT_SUBMITED'];
+            }
+
             // CICO-35669 - Add new pagination controls for selected reports
             if (reportPaginationIds[chosenReport.title]) {
                 $scope.paginationConfig = {
@@ -2432,7 +2432,8 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
                     currentPage: loadPage
                 };
             }
-            params['action'] = $state.params.action;
+
+            params['action'] = $state.params.action || msg;
             $scope.invokeApi(reportsSubSrv.fetchReportDetails, params, sucssCallback, errorCallback);
         };
 

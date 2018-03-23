@@ -1209,11 +1209,11 @@ sntRover.controller('RVReportDetailsCtrl', [
         };
 
         $scope.emailReport = function () {
-            console.warn('Email Report API yet to be completed/implemented/integrated');
+            $log.warn('Email Report API yet to be completed/implemented/integrated');
         };
 
         $scope.saveFullReport = function () {
-            console.warn('Download Full Report API yet to be completed/implemented/integrated');
+            $log.warn('Download Full Report API yet to be completed/implemented/integrated');
         };
 
         $scope.hasSubString = function (subString, string) {
