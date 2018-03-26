@@ -72,13 +72,37 @@ admin.service('ADStationarySrv', ['$http', '$q', 'ADBaseWebSrvV2', function($htt
 		return deferred.promise;
 	};
 
-
-	this.assignTermsAndConditions = function () {
-		
+	this.updateTermsAndConditions = function (params) {
 		var deferred = $q.defer();
 		var url = '/api/terms_and_conditions/update_screen_t_and_c';
 
-		ADBaseWebSrvV2.postJSON(url, data).then(function(data) {
+		ADBaseWebSrvV2.putJSON(url, params).then(function(data) {
+		    deferred.resolve(data);
+		}, function(data) {
+		    deferred.reject(data);
+		});
+		return deferred.promise;
+	};
+
+	this.deleteTermsAndConditions = function (params) {
+		
+		var deferred = $q.defer();
+		var url = '/api/terms_and_conditions/'+ params.id;
+
+		ADBaseWebSrvV2.deleteJSON(url, params).then(function(data) {
+		    deferred.resolve(data);
+		}, function(data) {
+		    deferred.reject(data);
+		});
+		return deferred.promise;
+	};
+
+	this.assignTermsAndConditions = function (params) {
+		
+		var deferred = $q.defer();
+		var url = '/api/terms_and_conditions/'+ params.id;
+
+		ADBaseWebSrvV2.putJSON(url, params).then(function(data) {
 		    deferred.resolve(data);
 		}, function(data) {
 		    deferred.reject(data);

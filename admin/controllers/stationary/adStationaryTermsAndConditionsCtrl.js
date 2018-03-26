@@ -23,26 +23,49 @@ admin.controller('ADStationaryTermsAndConditionsCtrl', ['$scope',
 		};
 
 		// EDIT TERMS & CONDITIONS
-		$scope.deleteCustomTnC = function(index) {
-			console.log(index);
+		$scope.deleteCustomTnC = function(entity) {
+
+			var options = {
+				params: {
+					'locale': $scope.data.locale,
+					'id': entity.id
+				},
+				onSuccess: function(response) {
+					// delete the item from the list
+					$scope.customTnCs = _.without($scope.customTnCs, entity);
+				}
+			};
+
+			$scope.callAPI(ADStationarySrv.deleteTermsAndConditions, options);
 		};
-		$scope.saveCustomTnC = function(index) {
-			console.log(index);
+
+		// UPDATE TERMS & CONDITIONS
+		$scope.saveCustomTnC = function(entity) {
+			var options = {
+				params: {
+					'locale': $scope.data.locale,
+					'id': entity.id,
+					'title': entity.title,
+					'description': entity.description
+				}
+			};
+
+			$scope.callAPI(ADStationarySrv.assignTermsAndConditions, options);
 		};
 
 		// NEW TERMS & CONDITIONS
 		$scope.cancelNewTnC = function() {
 			$scope.displayNewTermsAndConditionsForm = false;
 		};
+
 		$scope.saveNewTnC = function() {
-			console.log($scope.newTermsAndConditions);
-				var options = {
+			var options = {
 				params: {
 					'title': $scope.newTermsAndConditions.title,
-					'description':$scope.newTermsAndConditions.description
+					'description': $scope.newTermsAndConditions.description
 				},
 				onSuccess: function(response) {
-					console.log(response);
+					$scope.customTnCs.push(response);
 				}
 			};
 
@@ -51,17 +74,12 @@ admin.controller('ADStationaryTermsAndConditionsCtrl', ['$scope',
 		};
 
 		// TERMS & CONDITIONS changed
-		$scope.termsAndConditionsChanged = function (id, assigned_tc_id) {
-			console.log(id);
-			console.log(assigned_tc_id);
-				var options = {
+		$scope.termsAndConditionsChanged = function(id, assigned_tc_id) {
+			var options = {
 				params: {
 					'locale': $scope.data.locale,
 					'id': id,
-					'assigned_tc_id':assigned_tc_id
-				},
-				onSuccess: function(response) {
-					console.log(response);
+					'assigned_tc_id': assigned_tc_id
 				}
 			};
 
