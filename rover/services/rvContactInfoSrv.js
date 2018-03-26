@@ -105,7 +105,7 @@ angular.module('sntRover').service('RVContactInfoSrv', [
          */
         service.removeGuestDetails = function (guestId) {
             var deferred = $q.defer(),
-                url = '/api/guest_details/' + guestId + '/remove_guest_detail';
+                url = '/api/guest_details/' + guestId + '/anonymize';
 
             rvBaseWebSrvV2.putJSON(url).then(function(data) {
                 deferred.resolve(data);
