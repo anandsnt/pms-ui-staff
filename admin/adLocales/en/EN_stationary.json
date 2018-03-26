@@ -123,4 +123,7 @@
 	"REG_CARD_EMAIL": "Registration Card Email",
 	"ZEST_STATION": "Zest Station",
 	"ZEST_WEB": "Zest Web",
-	"ASSIGN_TO_SECTION": "Assign To Section"
+	"ASSIGN_TO_SECTION": "Assign To Section",
+	"TERMS_AND_CONDITIONS_TITLE_PLACEHOLDER": "Title for Terms & Conditions",
+	"TERMS_AND_CONDITIONS_PLACEHOLDER": "Enter Terms & Conditions"
+
