@@ -6,6 +6,7 @@ module.exports = {
 		controllerRoot 	= roverRoot + 'controllers/',
 		serviceRoot 	= roverRoot + 'services/',
 		directiveRoot	= roverRoot + 'directives/',
+		constantsRoot	= roverRoot + 'constants/',
 		roverJsAssets 	= {
 			minifiedFiles: [
 				jsLibRoot + 'jquery.min.js',
@@ -38,6 +39,7 @@ module.exports = {
 				sharedRoot + 'baseCtrl.js',
                 sharedRoot + 'cardReaderCtrl.js',
                 sharedRoot + 'cordova.js',
+                sharedRoot + 'sntTransitionManager/**/*.js',
 
 				roverRoot + 'rvRouters/**/*.js',
 				roverRoot + 'rvApp.js',
@@ -81,9 +83,23 @@ module.exports = {
 				serviceRoot + 'availability/rvAvailabilitySrv.js',
 				serviceRoot + 'workstation/workstationSrv.js',
 				serviceRoot + 'housekeeping/rvHkRoomStatusSrv.js',
+                serviceRoot + 'reservation/rvReservationBaseSearchSrv.js',
+                serviceRoot + 'reports/rvReportsSrv.js',
+                serviceRoot + 'reports/rvReportsSubSrv.js',
+                serviceRoot + 'reports/rvReportsCacheSrv.js',
+                serviceRoot + 'actionTasks/rvActionTasksSrv.js',
+                serviceRoot + 'rateManager_/rvRateManagerCoreSrv.js',
+                serviceRoot + 'workManagement/rvWorkManagementSrv.js',
+                serviceRoot + 'nightlyDiary/rvNightlyDiarySrv.js',
+                serviceRoot + 'diary/rvDiarySrv.js',
+                serviceRoot + 'diary/rvDiaryUtil.js',
+                serviceRoot + 'diary/rvDiaryMeta.js',
+
 				directiveRoot + 'Outside Click handler/outsideClickDirective.js',
 				directiveRoot + 'pagination/*.js',
-				directiveRoot + 'fullscreen/*.js'
+				directiveRoot + 'fullscreen/*.js',
+
+                constantsRoot + 'reports/rvReportMsgsConst.js'
 			]
 		};
 

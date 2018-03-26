@@ -131,7 +131,7 @@ admin.controller('ADAppCtrl', [
                                 }
                             }, {
                                 title: "MENU_GUESTS",
-                                action: "rover.guestcardsearch",                    
+                                action: "rover.guest.search",
                                 menuIndex: "guests"
                             }, {
                                 title: 'MENU_ACCOUNTS',

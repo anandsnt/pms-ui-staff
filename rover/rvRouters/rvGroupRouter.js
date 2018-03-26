@@ -49,17 +49,14 @@ angular.module('groupModule', [])
 
         // group summary : CICO-12790
         $stateProvider.state('rover.groups.config', {
-            url: '/config/:id/:activeTab/:newGroupName',
+            url: '/config',
             templateUrl: '/assets/partials/groups/rvGroupConfiguration.html',
+            params: {
+                id: 'NEW_GROUP',
+                activeTab: 'SUMMARY',
+                newGroupName: ''
+            },
             controller: 'rvGroupConfigurationCtrl',
-            onEnter: ['$stateParams', function($stateParams) {
-                if (!$stateParams.id) {
-                    $stateParams.id = "NEW_GROUP";
-                }
-                if (!$stateParams.activeTab) {
-                    $stateParams.activeTab = "SUMMARY";
-                }
-            }],
             resolve: {
                 loadPaymentMapping: function (jsMappings) {
                     return jsMappings.loadPaymentMapping();
