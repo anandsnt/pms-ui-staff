@@ -40,6 +40,7 @@ admin.service('ADStationarySrv', ['$http', '$q', 'ADBaseWebSrvV2', function($htt
 		var deferred = $q.defer();
 		var fetchScreenTypes = function() {
 			var url = '/api/terms_and_conditions/screens_info';
+            
 			ADBaseWebSrvV2.getJSON(url, params).then(function(data) {
 				termsAndConditionsResponse.screens = data;
 				deferred.resolve(termsAndConditionsResponse);
@@ -50,6 +51,7 @@ admin.service('ADStationarySrv', ['$http', '$q', 'ADBaseWebSrvV2', function($htt
 		};
 
 		var url = '/api/terms_and_conditions';
+        
 		ADBaseWebSrvV2.getJSON(url, params).then(function(data) {
 			termsAndConditionsResponse.terms_and_conditions = data;
 			fetchScreenTypes();
@@ -87,7 +89,7 @@ admin.service('ADStationarySrv', ['$http', '$q', 'ADBaseWebSrvV2', function($htt
 	this.deleteTermsAndConditions = function (params) {
 		
 		var deferred = $q.defer();
-		var url = '/api/terms_and_conditions/'+ params.id;
+		var url = '/api/terms_and_conditions/' + params.id;
 
 		ADBaseWebSrvV2.deleteJSON(url, params).then(function(data) {
 		    deferred.resolve(data);
@@ -100,7 +102,7 @@ admin.service('ADStationarySrv', ['$http', '$q', 'ADBaseWebSrvV2', function($htt
 	this.assignTermsAndConditions = function (params) {
 		
 		var deferred = $q.defer();
-		var url = '/api/terms_and_conditions/'+ params.id;
+		var url = '/api/terms_and_conditions/' + params.id;
 
 		ADBaseWebSrvV2.putJSON(url, params).then(function(data) {
 		    deferred.resolve(data);
