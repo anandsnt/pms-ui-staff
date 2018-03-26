@@ -485,7 +485,6 @@ angular.module('sntRover').controller('companyCardDetailsController', ['$scope',
 		 */
 		var successCallbackOfContactSaveData = function(data) {
 
-			$scope.$emit("hideLoader");
 			if (typeof data.id !== 'undefined' && data.id !== "") {
 				// to check if id is defined or not before save
 				var contactInfoAvailable = $scope.contactInformation.id ? true : false;
@@ -521,7 +520,6 @@ angular.module('sntRover').controller('companyCardDetailsController', ['$scope',
 		 * failure callback of save contact data
 		 */
 		var failureCallbackOfContactSaveData = function(errorMessage) {
-			$scope.$emit("hideLoader");
 			$scope.$broadcast("setCardContactErrorMessage", errorMessage);
 			// $scope.errorMessage = errorMessage;
 			$scope.currentSelectedTab = 'cc-contact-info';
@@ -553,7 +551,13 @@ angular.module('sntRover').controller('companyCardDetailsController', ['$scope',
 					dataToSend.primary_contact_details.contact_email = null;
 				}
 				dataToSend.account_type = $stateParams.type;
-				$scope.invokeApi(RVCompanyCardSrv.saveContactInformation, dataToSend, successCallbackOfContactSaveData, failureCallbackOfContactSaveData);
+				var options = {
+					params: dataToSend,
+					successCallBack: successCallbackOfContactSaveData,
+					failureCallBack: failureCallbackOfContactSaveData
+				};
+
+				$scope.callAPI(RVCompanyCardSrv.saveContactInformation, options);
 			}
 		};
 
