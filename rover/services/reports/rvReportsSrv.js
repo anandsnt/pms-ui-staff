@@ -418,6 +418,20 @@ angular.module('sntRover').service('RVreportsSrv', [
         	return SCHEDULE_REPORT_TIMEPERIODS[title];
         };
 
+        service.getRevenueAndTax = function(data) {
+        	var deferred = $q.defer();
+			var url = '/api/accounts/revenue_and_tax';
+
+				rvBaseWebSrvV2.getJSON(url, data).then(function(data) {
+
+				   	 deferred.resolve(data);
+				}, function(data) {
+				    deferred.reject(data);
+				});
+
+			return deferred.promise;
+        }
+
 
 		return service;
 	}

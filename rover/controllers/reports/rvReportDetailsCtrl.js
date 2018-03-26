@@ -1434,7 +1434,31 @@ sntRover.controller('RVReportDetailsCtrl', [
 		};
 
 		$scope.getRevenueAndTax = function(vatType, accountType) {
+			var successCallBackOfGetRevenueAndTax = function (data) {
+				if (vatType === 'WITH_VAT_ID') {
+					var itemToAppendRevenueAndTax = _.find($scope.results.with_vat_id.accounts, function(item) {
+						item.account_type === accountType;
+					})
 
+					itemToAppendRevenueAndTax.revenueData = data;
+				}
+				console.log("---")
+				console.log($scope.results)
+			};
+
+			var postParamsToPay = {
+				"year": $scope.chosenReport.year,
+				"with_vat_id": (vatType === 'WITH_VAT_ID') ? true : false,
+				"account_type_id": (accountType === 'COMPANY') ? 1 : 2
+			};
+
+			var options = {
+				params: postParamsToPay,
+				successCallBack: successCallBackOfGetRevenueAndTax
+			};
+
+			$scope.callAPI(reportsSrv.getRevenueAndTax, options);
+			
 		};
 
     }
