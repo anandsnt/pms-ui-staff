@@ -272,16 +272,24 @@ admin.controller('ADStationaryCtrl',
 	};
 
 	$scope.fetchTermsAndConditions = function() {
-		var options = {
-			onSuccess: function(response) {
-				console.log(response);
-				$scope.customTnCs = response.terms_and_conditions;
-				$scope.screenList = response.screens;
-				$scope.is_terms_and_conditions_active = true;
-			}
-		};
+		// if the menu is opened, close the menu
+		if ($scope.is_terms_and_conditions_active) {
+			$scope.is_terms_and_conditions_active = false;
+		} else {
+			var options = {
+				params: {
+					'locale': $scope.data.locale
+				},
+				onSuccess: function(response) {
+					$scope.customTnCs = response.terms_and_conditions;
+					$scope.screenList = response.screens;
+					$scope.is_terms_and_conditions_active = true;
+				}
+			};
 
-		$scope.callAPI(ADStationarySrv.fetchTermsAndConditions, options);
+			$scope.callAPI(ADStationarySrv.fetchTermsAndConditions, options);
+		}
+
 	};
 
 }]);

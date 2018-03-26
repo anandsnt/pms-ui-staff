@@ -40,9 +40,9 @@ admin.controller('ADStationaryTermsAndConditionsCtrl', ['$scope',
 		};
 
 		// TERMS & CONDITIONS changed
-		$scope.termsAndConditionsChanged = function (id, tc) {
+		$scope.termsAndConditionsChanged = function (id, assigned_tc_id) {
 			console.log(id);
-			console.log(tc);
+			console.log(assigned_tc_id);
 		};
 
 	}
