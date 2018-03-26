@@ -13,7 +13,7 @@ angular.module('dashboardModule', []).config(function($stateProvider, $urlRouter
                 isMobileCheckin: null
             },
             resolve: {
-                searchResultdata: function(RVSearchSrv, $stateParams, mappingList) {
+                searchResultdata: function(RVSearchSrv, $stateParams) {
                     var oldType = "";
                     var dataDict = {};
 
@@ -57,7 +57,7 @@ angular.module('dashboardModule', []).config(function($stateProvider, $urlRouter
             templateUrl: '/assets/partials/dashboard/rvDashboardRoot.html',
             controller: 'RVdashboardController',
             resolve: {
-                dashBoarddata: function(RVDashboardSrv, mappingList) {
+                dashBoarddata: function(RVDashboardSrv) {
                     return RVDashboardSrv.fetchDashboardDetails();
                 },
                 roomTypes: function(RVHkRoomStatusSrv) {
@@ -100,14 +100,14 @@ angular.module('dashboardModule', []).config(function($stateProvider, $urlRouter
             templateUrl: '/assets/partials/dashboard/rvDashboardRoot.html',
             controller: 'RVdashboardController',
             resolve: {
-                dashBoarddata: function(RVDashboardSrv, mappingList) {
+                dashBoarddata: function(RVDashboardSrv) {
                     return RVDashboardSrv.fetchDashboardDetails();
                 },
-                roomTypes: function(RVHkRoomStatusSrv, mappingList) {
+                roomTypes: function(RVHkRoomStatusSrv) {
                     return RVHkRoomStatusSrv.fetchRoomTypes();
                 }
             },
-             onEnter: function (ngDialog, $stateParams, mappingList, dashBoarddata, jsMappings) {
+             onEnter: function (ngDialog, $stateParams, dashBoarddata, jsMappings) {
 
                if ($stateParams.type === 'changeBussinessDate') {
                     jsMappings.fetchAssets(['endofday']).then(function() {

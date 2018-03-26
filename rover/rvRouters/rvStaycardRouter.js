@@ -26,22 +26,14 @@ angular.module('stayCardModule', [])
                 loadPaymentModule: function (jsMappings, loadPaymentMapping) {
                     return jsMappings.loadPaymentModule();
                 },
-                staycardJsAssets: function (jsMappings, mappingList) {
-                    return jsMappings.fetchAssets(['rover.reservation', 'rover.groups', 'rover.allotments',
-                        'rover.accounts', 'rover.companycarddetails', 'directives', 'highcharts'], ['highcharts-ng']);
-                },
-                /**
-                 *   We have moved the fetching of 'baseData' form 'rover.reservation' state
-                 *   to the states where it actually requires it.
-                 *
-                 *   Now we do want to bind the baseData so we have created a 'callFromChildCtrl' method on 'RVReservationMainCtrl'.
-                 *
-                 *   Once that state controller fetch 'baseData', it will find 'RVReservationMainCtrl' controller
-                 *   by climbing the $socpe.$parent ladder and will call 'callFromChildCtrl' method.
-                 */
-                baseSearchData: function (RVReservationBaseSearchSrv, staycardJsAssets) {
+                baseSearchData: function (RVReservationBaseSearchSrv) {
                     return RVReservationBaseSearchSrv.fetchBaseSearchData();
                 }
+            },
+            lazyLoad: function ($transition$) {
+                return $transition$.injector().get('jsMappings')
+                    .fetchAssets(['rover.reservation', 'rover.groups', 'rover.allotments',
+                        'rover.accounts', 'rover.companycarddetails', 'directives', 'highcharts'], ['highcharts-ng']);
             }
         });
 
@@ -54,19 +46,19 @@ angular.module('stayCardModule', [])
             templateUrl: '/assets/partials/reservation/rvBaseSearch.html',
             controller: 'RVReservationBaseSearchCtrl',
             resolve: {
-                baseData: function (RVReservationSummarySrv, staycardJsAssets) {
+                baseData: function (RVReservationSummarySrv) {
                     return RVReservationSummarySrv.fetchInitialData();
                 },
-                activeCodes: function (RVReservationBaseSearchSrv, staycardJsAssets) {
+                activeCodes: function (RVReservationBaseSearchSrv) {
                     return RVReservationBaseSearchSrv.getActivePromotions();
                 },
-                flyerPrograms: function (RVCompanyCardSrv, staycardJsAssets) {
+                flyerPrograms: function (RVCompanyCardSrv) {
                     return RVCompanyCardSrv.fetchHotelLoyaltiesFfp();
                 },
-                loyaltyPrograms: function (RVCompanyCardSrv, staycardJsAssets) {
+                loyaltyPrograms: function (RVCompanyCardSrv) {
                     return RVCompanyCardSrv.fetchHotelLoyaltiesHlps();
                 },
-                guestDetails: function (RVContactInfoSrv, staycardJsAssets, $stateParams) {
+                guestDetails: function (RVContactInfoSrv, $stateParams) {
                     var guestId = $stateParams.guestId,
                         guestDetails = {};
 
@@ -122,14 +114,14 @@ angular.module('stayCardModule', [])
             templateUrl: '/assets/partials/reservation/rvSelectRoomAndRate.html',
             controller: 'RVSelectRoomAndRateCtrl',
             resolve: {
-                areReservationAddonsAvailable: function (RVReservationBaseSearchSrv, $stateParams, staycardJsAssets) { // CICO-16874
+                areReservationAddonsAvailable: function (RVReservationBaseSearchSrv, $stateParams) { // CICO-16874
                     return RVReservationBaseSearchSrv.hasAnyConfiguredAddons({
                         from_date: $stateParams.from_date,
                         to_date: $stateParams.to_date,
                         is_active: true
                     });
                 },
-                rates: function (RVRoomRatesSrv, $stateParams, staycardJsAssets, RVReservationBaseSearchSrv) {
+                rates: function (RVRoomRatesSrv, $stateParams, RVReservationBaseSearchSrv) {
                     var params = {};
 
                     params.from_date = $stateParams.from_date;
@@ -160,10 +152,10 @@ angular.module('stayCardModule', [])
                     RVRoomRatesSrv.setRoomAndRateActiveTab(activeTab);
                     return RVRoomRatesSrv.fetchRatesInitial(params);
                 },
-                ratesMeta: function (RVReservationBaseSearchSrv, staycardJsAssets) {
+                ratesMeta: function (RVReservationBaseSearchSrv) {
                     return RVReservationBaseSearchSrv.fetchRatesMeta();
                 },
-                house: function (RVReservationBaseSearchSrv, $stateParams, staycardJsAssets) {
+                house: function (RVReservationBaseSearchSrv, $stateParams) {
                     return RVReservationBaseSearchSrv.fetchHouseAvailability({
                         from_date: $stateParams.from_date,
                         to_date: $stateParams.to_date
@@ -183,7 +175,7 @@ angular.module('stayCardModule', [])
                 from_screen: ''
             },
             resolve: {
-                addonData: function (RVReservationAddonsSrv, $stateParams, staycardJsAssets) {
+                addonData: function (RVReservationAddonsSrv, $stateParams) {
                     var params = {};
 
                     params.from_date = $stateParams.from_date;
@@ -238,7 +230,7 @@ angular.module('stayCardModule', [])
                 isFromTACommission: null
             },
             resolve: {
-                reservationListData: function (RVReservationCardSrv, $stateParams, staycardJsAssets) {
+                reservationListData: function (RVReservationCardSrv, $stateParams) {
                     var data = {
                         'reservationId': $stateParams.id,
                         'isRefresh': $stateParams.isrefresh
@@ -246,7 +238,7 @@ angular.module('stayCardModule', [])
 
                     return RVReservationCardSrv.fetch(data);
                 },
-                reservationDetails: function (RVReservationCardSrv, $stateParams, staycardJsAssets) {
+                reservationDetails: function (RVReservationCardSrv, $stateParams) {
                     var data = {
                         'confirmationNumber': $stateParams.confirmationId,
                         'isRefresh': $stateParams.isrefresh
@@ -254,13 +246,13 @@ angular.module('stayCardModule', [])
 
                     return RVReservationCardSrv.fetchReservationDetails(data);
                 },
-                baseData: function (RVReservationSummarySrv, staycardJsAssets) {
+                baseData: function (RVReservationSummarySrv) {
                     return RVReservationSummarySrv.fetchInitialData();
                 },
-                paymentTypes: function (RVPaymentSrv, staycardJsAssets) {
+                paymentTypes: function (RVPaymentSrv) {
                     return RVPaymentSrv.renderPaymentScreen();
                 },
-                reseravationDepositData: function (RVReservationCardSrv, $stateParams, $rootScope, staycardJsAssets) {
+                reseravationDepositData: function (RVReservationCardSrv, $stateParams, $rootScope) {
                     return $rootScope.isStandAlone ? RVReservationCardSrv.fetchDepositDetails($stateParams.id) : {};
                 }
             }
@@ -275,14 +267,16 @@ angular.module('stayCardModule', [])
                 userId: ''
             },
             resolve: {
-                billstaycardJsAssets: function (staycardJsAssets, jsMappings) {
-                    return jsMappings.fetchAssets(['rover.reservation.staycard.billcard']);
-                },
-                reservationBillData: function (RVBillCardSrv, $stateParams, billstaycardJsAssets) {
+                reservationBillData: function (RVBillCardSrv, $stateParams) {
                     return RVBillCardSrv.fetch($stateParams.reservationId);
                 }
+            },
+            lazyLoad: function ($transition$) {
+                return $transition$.injector().get('jsMappings')
+                    .fetchAssets(['rover.reservation.staycard.billcard']);
             }
         });
+
         $stateProvider.state('rover.reservation.staycard.roomassignment', {
             url: '/roomassignment',
             params: {
@@ -295,10 +289,7 @@ angular.module('stayCardModule', [])
             templateUrl: '/assets/partials/roomAssignment/rvRoomAssignment.html',
             controller: 'RVroomAssignmentController',
             resolve: {
-                roomAssignmentJsAssets: function (jsMappings) {
-                    return jsMappings.fetchAssets(['rover.reservation.staycard.roomassignment', 'directives']);
-                },
-                roomsList: function (RVRoomAssignmentSrv, $stateParams, roomAssignmentJsAssets) {
+                roomsList: function (RVRoomAssignmentSrv, $stateParams) {
 
                     var params = {};
 
@@ -306,13 +297,13 @@ angular.module('stayCardModule', [])
                     // params.room_type = $stateParams.room_type;
                     return RVRoomAssignmentSrv.getRooms(params);
                 },
-                roomPreferences: function (RVRoomAssignmentSrv, $stateParams, roomAssignmentJsAssets) {
+                roomPreferences: function (RVRoomAssignmentSrv, $stateParams) {
                     var params = {};
 
                     params.reservation_id = $stateParams.reservation_id;
                     return RVRoomAssignmentSrv.getPreferences(params);
                 },
-                roomUpgrades: function (RVUpgradesSrv, $stateParams, roomAssignmentJsAssets) {
+                roomUpgrades: function (RVUpgradesSrv, $stateParams) {
                     // check if roomupgrade is available
                     if ($stateParams.upgrade_available === 'true') {
                         var params = {};
@@ -325,8 +316,14 @@ angular.module('stayCardModule', [])
                     }
 
                 }
+            },
+            lazyLoad: function($transition$){
+                $transition$.injector().get('jsMappings')
+                    .fetchAssets(['rover.reservation.staycard.roomassignment', 'directives']);
             }
         });
+
+
         $stateProvider.state('rover.reservation.staycard.upgrades', {
             url: '/upgrades',
             params: {
@@ -337,16 +334,16 @@ angular.module('stayCardModule', [])
             templateUrl: '/assets/partials/upgrades/rvUpgrades.html',
             controller: 'RVUpgradesController',
             resolve: {
-                roomAssignmentJsAssets: function (jsMappings, mappingList) {
-                    return jsMappings.fetchAssets(['rover.reservation.staycard.roomassignment', 'directives']);
-                },
-                roomsList: function (RVRoomAssignmentSrv, $stateParams, roomAssignmentJsAssets) {
+                roomsList: function (RVRoomAssignmentSrv, $stateParams) {
                     var params = {};
 
                     params.reservation_id = $stateParams.reservation_id;
                     return RVRoomAssignmentSrv.getRooms(params);
                 }
-
+            },
+            lazyLoad: function($transition$){
+                $transition$.injector().get('jsMappings')
+                    .fetchAssets(['rover.reservation.staycard.roomassignment', 'directives']);
             }
         });
 
@@ -360,12 +357,14 @@ angular.module('stayCardModule', [])
             templateUrl: '/assets/partials/changeStayDates/rvChangeStayDates.html',
             controller: 'RVchangeStayDatesController',
             resolve: {
-                changeStayDatesJsAssets: function (jsMappings, mappingList) {
-                    return jsMappings.fetchAssets(['changestaydates', 'directives'], ['ui.calendar']);
-                },
-                stayDateDetails: function (RVChangeStayDatesSrv, $stateParams, changeStayDatesJsAssets) {
-                    return RVChangeStayDatesSrv.fetchInitialData($stateParams.reservationId);
-                }
+                stayDateDetails: ['RVChangeStayDatesSrv', '$stateParams',
+                    function (RVChangeStayDatesSrv, $stateParams) {
+                        return RVChangeStayDatesSrv.fetchInitialData($stateParams.reservationId);
+                    }]
+            },
+            lazyLoad: function($transition$){
+                return $transition$.injector().get('jsMappings')
+                    .fetchAssets(['changestaydates', 'directives'], ['ui.calendar']);
             }
         });
 
@@ -383,19 +382,20 @@ angular.module('stayCardModule', [])
             templateUrl: '/assets/partials/activityLog/rvActivityLog.html',
             controller: 'RVActivityLogCtrl',
             resolve: {
-                activityLogAssets: function (jsMappings, staycardJsAssets, mappingList) {
-                    return jsMappings.fetchAssets(['rover.reservation.staycard.activitylog', 'directives']);
-                },
-                activityLogResponse: function (RVActivityLogSrv, $stateParams, activityLogAssets) {
-                    if (!!RVActivityLogSrv) {
+                activityLogResponse: function (RVActivityLogSrv, $stateParams) {
+                    if (RVActivityLogSrv) {
                         return RVActivityLogSrv.fetchActivityLog($stateParams.id);
                     } else {
                         return {};
                     }
                 },
-                activeUserList: function (RVActivityLogSrv, activityLogAssets) {
+                activeUserList: function (RVActivityLogSrv) {
                     return RVActivityLogSrv.fetchActiveUsers();
                 }
+            },
+            lazyLoad: function ($transition$) {
+                return $transition$.injector().get('jsMappings')
+                    .fetchAssets(['rover.reservation.staycard.activitylog', 'directives']);
             }
         });
 
@@ -407,12 +407,13 @@ angular.module('stayCardModule', [])
             templateUrl: '/assets/partials/actionsManager/rvActionsManager.html',
             controller: 'RVActionsManagerController',
             resolve: {
-                actionsJsAssets: function (jsMappings, mappingList) {
-                    return jsMappings.fetchAssets(['rover.actionsManager', 'directives']);
-                },
-                departments: function (rvActionTasksSrv, actionsJsAssets) {
+                departments: function (rvActionTasksSrv) {
                     return rvActionTasksSrv.fetchDepartments();
                 }
+            },
+            lazyLoad: function ($transition$) {
+                return $transition$.injector().get('jsMappings')
+                    .fetchAssets(['rover.actionsManager', 'directives']);
             }
         });
     });

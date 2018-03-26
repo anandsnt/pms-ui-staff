@@ -3,13 +3,15 @@ angular.module('snt.transitionManager',
     .run(['$rootScope', '$transitions', 'transitions', '$log',
         function ($rootScope, $transitions, transitionsSrv, $log) {
             $transitions.onSuccess({}, function (transition) {
+                var deepIndex;
+
                 if (transition.from().name === transition.to().name) {
                     $log.info('State refresh observed');
                 } else if (!transitionsSrv.isInitial() &&
                     transitionsSrv.isBackNavigation(transition)) {
                     transitionsSrv.pop();
-                } else if (transitionsSrv.isDeep(transition)) {
-                    // TODO: Handle DSR looping back to a deep previous state here!
+                } else if ((deepIndex = transitionsSrv.isDeep(transition)) >= 0) {
+                    transitionsSrv.clearLoop(deepIndex + 1);
                 } else {
                     transitionsSrv.push(transition);
                 }
@@ -41,8 +43,16 @@ angular.module('snt.transitionManager',
                 return transitions[idx];
             };
 
+            service.clearLoop = function (transitionIndex) {
+                transitions.splice(transitionIndex);
+            };
+
             service.isDeep = function (transition) {
-              return false;
+                return transitions.map(
+                    function (transition) {
+                        return transition.to().name;
+                    }
+                ).indexOf(transition.to().name);
             };
 
             service.isBackNavigation = function (next) {

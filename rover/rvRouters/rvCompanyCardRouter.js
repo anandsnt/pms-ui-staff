@@ -9,7 +9,7 @@ angular.module('companyCardModule', []).config(function($stateProvider, $urlRout
                 textInQueryBox: ''
             },
             resolve: {
-                comapanycardSearchAssets: function(jsMappings, mappingList) {
+                comapanycardSearchAssets: function(jsMappings) {
                     return jsMappings.fetchAssets(['rover.companycardsearch', 'directives']);
                 }
             }

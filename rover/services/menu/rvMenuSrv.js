@@ -305,7 +305,7 @@ angular.module('sntRover').service('rvMenuSrv',
                 submenu: []
             }, {
 		        title: "MENU_REPORTS",
-		        action: "rover.reports",
+		        action: "rover.reports.dashboard",
 		        menuIndex: "reports",
 		        iconClass: "icon-reports",
 		        submenu: []
@@ -344,7 +344,7 @@ angular.module('sntRover').service('rvMenuSrv',
 			},
 			{
 				title: "MENU_REPORTS",
-				action: "rover.reports",
+				action: "rover.reports.dashboard",
 				menuIndex: "reports",
 				iconClass: "icon-reports",
 				submenu: []

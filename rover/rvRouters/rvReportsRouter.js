@@ -3,25 +3,24 @@ angular.module('reportsModule', [])
 
         $stateProvider.state('rover.reports', {
             url: '/reports',
+            abstract: true,
             templateUrl: '/assets/partials/reports/rvReports.html',
             controller: 'RVReportsMainCtrl',
             resolve: {
-                reportsAssets: function (jsMappings, mappingList) {
-                    return jsMappings.fetchAssets(['react.files', 'rover.reports', 'directives'], ['react']);
-                },
-                payload: function (RVreportsSrv, reportsAssets) {
+                payload: function (RVreportsSrv) {
                     return RVreportsSrv.reportApiPayload();
                 }
             },
-            redirectTo: function () {
-                return 'rover.reports.dashboard';
+            lazyLoad: function ($transition$) {
+                return $transition$.injector().get('jsMappings').
+                    fetchAssets(['react.files', 'rover.reports', 'directives'], ['react']);
             }
         });
 
         $stateProvider.state('rover.reports.dashboard', {
             url: '/list',
             templateUrl: '/assets/partials/reports/rvReportsDashboard.html',
-            controller: 'RVReportsDashboardCtrl',
+            controller: 'RVReportsDashboardCtrl'
         });
 
         $stateProvider.state('rover.reports.show', {
@@ -39,13 +38,5 @@ angular.module('reportsModule', [])
                     dynamic: true
                 }
             }
-        });
-
-        $stateProvider.state('rover.scheduleReports', {
-            url: '/scheduleReports'
-        });
-
-        $stateProvider.state('rover.reportCategory', {
-            url: '/reportCategory'
         });
     });
