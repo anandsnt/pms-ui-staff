@@ -385,7 +385,7 @@ angular.module('reportsModule')
                     });
                     break;
 
-                case reportNames['Yearly_VAT']:
+                case reportNames['YEARLY_VAT']:
                     report['filters'].push({
                         'value': "VAT_YEAR",
                         'description': "Year"

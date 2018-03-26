@@ -51,6 +51,6 @@ angular.module('reportsModule')
     'COMPLIMENTARY_ROOM_REPORT': 'Complimentary Room Report',
     'GROUP_ROOMS_REPORT': 'Group Rooms Report',
     'ADDON_UPSELLS': 'Add On Upsell',
-    'Yearly_VAT': 'Yearly VAT'
+    'YEARLY_VAT': 'Yearly VAT'
 });
 

@@ -1436,15 +1436,11 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
             }
 
             if ( report.hasCompanyTravelAgentWithOrWithoutVat ) {
-                key         = reportParams['ACCOUNT_WITH_OR_WITHOUT_VAT'];
-                params[key] = [];
-                var filterWithVatData = {
-                    "with_vat_number" : report.with_vat_number,
-                    "without_vat_number" : report.without_vat_number
-                };
+                key         = reportParams['WITH_VAT_NUMBER'];
+                params[key] = report.with_vat_number;
 
-                params[key].push(filterWithVatData);
-
+                key         = reportParams['WITHOUT_VAT_NUMBER'];
+                params[key] = report.without_vat_number;
 
                 if ( changeAppliedFilter ) {
                     $scope.appliedFilter['with_vat_number'] = report.with_vat_number;

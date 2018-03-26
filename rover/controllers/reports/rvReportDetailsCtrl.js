@@ -574,7 +574,28 @@ sntRover.controller('RVReportDetailsCtrl', [
 					result.payment = buildResult(result.payment);					
 				});
 			}
+			/*
+			 * @param arrayData - data
+			 * isAccountCollapsed - param used to check data in collapsed state or not
+			 */
+			var setVatReportCollapseData = function (arrayData) {
+				_.each(arrayData, function(item) {
+					item.isAccountCollapsed = false;
+				});
+				return arrayData;
+			}
 
+			if ($scope.chosenReport.title === reportNames['YEARLY_VAT']) {
+				if (results.with_vat_id) {
+					results.with_vat_id.isCollapsed = false;
+					results.with_vat_id.accounts = setVatReportCollapseData(results.with_vat_id.accounts);
+				}
+
+				if (results.without_vat_id) {
+					results.without_vat_id.isCollapsed = false;
+					results.without_vat_id.accounts = setVatReportCollapseData(results.with_vat_id.accounts);
+				}
+			}
 
 			// new more detailed reports
 			$scope.parsedApiFor = $scope.chosenReport.title;
@@ -774,6 +795,12 @@ sntRover.controller('RVReportDetailsCtrl', [
 
                 break;
 
+                case reportNames['YEARLY_VAT']:
+                    $scope.showReportHeader   = true;
+                    $scope.detailsTemplateUrl = '/assets/partials/reports/yearlyVat/yearlyVatReportDetails.html';
+
+                break;
+
 				default:
 					$scope.hasReportTotals    = true;
 					$scope.showReportHeader   = _.isEmpty($scope.$parent.results) ? false : true;
@@ -864,7 +891,7 @@ sntRover.controller('RVReportDetailsCtrl', [
 					template = '/assets/partials/reports/actionManager/reportRow.html';
 					break;
 
-			    case reportNames['A/R_AGING']:
+				case reportNames['A/R_AGING']:
 					template = '/assets/partials/reports/aging/reportRow.html';
 					break;
 
@@ -876,6 +903,9 @@ sntRover.controller('RVReportDetailsCtrl', [
 					template = '/assets/partials/reports/complimentaryRoomReport/rvComplimentaryRoomReport.html';
 					break;
 
+				// case reportNames['YEARLY_VAT']:
+				// 	template = '/assets/partials/reports/yearlyVat/yearlyVatReportRow.html';
+				// 	break;
 
 				// Default report row
 				default:
@@ -1394,6 +1424,19 @@ sntRover.controller('RVReportDetailsCtrl', [
         $scope.shouldShowNewPagination = function() {
             return !!reportPaginationIds[$scope.chosenReport.title];
         };
+
+		$scope.setResultWithVatCollapsedOrNot = function () {
+			$scope.results.with_vat_id.isCollapsed = !$scope.results.with_vat_id.isCollapsed;
+		};
+
+		$scope.setResultWithOutVatCollapsedOrNot = function () {
+			$scope.results.without_vat_id.isCollapsed = !$scope.results.without_vat_id.isCollapsed;
+		};
+
+		$scope.getRevenueAndTax = function(vatType, accountType) {
+
+		};
+
     }
 
 ]);
