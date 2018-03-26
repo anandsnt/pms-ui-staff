@@ -1,0 +1,93 @@
+<div class="stationery-items">
+    <!-- Default T&C -->
+    <div class="group-holder" ng-class = "{'active': is_general_terms_and_conditions_active}">
+        <div class="form-title has-toggle" ng-click = "is_general_terms_and_conditions_active = !is_general_terms_and_conditions_active"> <!-- Clicking this toggles class 'active' on L3 -->
+            <h3 translate>GENERAL_TERMS_AND_CONDITIONS</h3>
+        </div>
+        <div class="stationery-group">
+            <div class="entry full-width">
+                <textarea rows="8" placeholder="Enter General Terms & Conditions" ng-model="data.terms_and_conditions"></textarea>
+            </div>
+        </div>
+    </div>
+
+    <!-- Custom T&C -->    
+    <div class="group-holder" ng-repeat="entity in customTnCs" ng-class = "{'active': selectedTnCIndex === $index}">
+        <div class="form-title has-toggle" ng-click="customTnCClicked($index)"> <!-- Clicking this toggles class 'active' on L15 -->
+            <h3>{{entity.title}}</h3>
+        </div>
+        <div class="stationery-group">
+            <div class="entry full-width">
+                <label translate>TITLE<span></span></label>
+                <input type="text" placeholder="{{ 'TERMS_AND_CONDITIONS_TITLE_PLACEHOLDER' | translate }}" ng-model="entity.title">
+            </div>
+            <div class="entry full-width">
+                <label translate>TERMS_AND_CONDITIONS</label>
+                <textarea rows="8" placeholder="{{ 'TERMS_AND_CONDITIONS_PLACEHOLDER' | translate }}" ng-model="entity.terms_and_conditions"></textarea>
+            </div>
+            <div class="actions float">
+                <button type="button" class="button blank" ng-click="cancelTnCSelection()" translate>CANCEL</button>
+                <button type="button" class="button red" ng-click="deleteCustomTnC(entity)" translate>DELETE</button>
+                <button type="button" class="button green" ng-click="saveCustomTnC(entity)" translate>SAVE</button>   
+            </div>
+        </div>
+    </div>
+
+    <button type="button" class="button action add" ng-hide="displayNewTermsAndConditionsForm" ng-click="addNewTermsAndConditions()">Add New</button> <!-- Hide this button when clicked, and show L40-L54 -->
+    
+    <!-- Add New T&C, show only when L37 is clicked -->
+    <div class="data-holder" ng-show="displayNewTermsAndConditionsForm">
+        <h4><span>New</span> Terms &amp; Contidions</h4>
+        <div class="entry full-width">
+            <label translate>TITLE <span></span></label>
+            <input type="text" placeholder="{{ 'TERMS_AND_CONDITIONS_TITLE_PLACEHOLDER' | translate }}" ng-model="new_tnc.title">
+        </div>
+        <div class="entry full-width">
+            <label translate>TERMS_AND_CONDITIONS</label>
+            <textarea rows="8" placeholder="{{ 'TERMS_AND_CONDITIONS_PLACEHOLDER' | translate }}" ng-model="new_tnc.description"></textarea>
+        </div>
+        <div class="actions float">
+            <button type="button" class="button blank" ng-click="cancelNewTnC()" translate>CANCEL</button>
+            <button type="button" class="button green" ng-click="saveNewTnC()" translate>SAVE</button>  
+        </div>
+    </div>
+</div>
+<div class="stationery-settings">
+    <h4 translate>ASSIGN_TO_SECTION</h4>
+    <div class="entry">
+        <label for="rover-tc" translate>ROVER_CHECKIN</label>
+        <div class="select">
+            <select id="rover-tc" ng-model="data.rover_checkin_terms_and_conditions">
+                <option value="general" translate>GENERAL_TERMS_AND_CONDITIONS</option>
+                <option value="entity.id" ng-repeat="entity in customTnCs">{{entity.title}}</option>
+            </select>
+        </div>
+    </div>
+    <div class="entry">
+        <label for="rover-tc" translate>REG_CARD_EMAIL</label>
+        <div class="select">
+            <select id="rover-tc" ng-model="data.reg_card_terms_and_conditions">
+                <option value="general" translate>GENERAL_TERMS_AND_CONDITIONS</option>
+                <option value="entity.id" ng-repeat="entity in customTnCs">{{entity.title}}</option>
+            </select>
+        </div>
+    </div>
+    <div class="entry">
+        <label for="rover-tc" translate>ZEST_STATION</label>
+        <div class="select">
+            <select id="rover-tc" ng-model="data.station_terms_and_conditions">
+                <option value="general" translate>GENERAL_TERMS_AND_CONDITIONS</option>
+                <option value="entity.id" ng-repeat="entity in customTnCs">{{entity.title}}</option>
+            </select>
+        </div>
+    </div>
+    <div class="entry">
+        <label for="rover-tc" translate>ZEST_WEB</label>
+        <div class="select">
+            <select id="rover-tc" ng-model="data.zest_web_terms_and_conditions">
+                <option value="general"translate>GENERAL_TERMS_AND_CONDITIONS</option>
+                <option value="entity.id" ng-repeat="entity in customTnCs">{{entity.title}}</option>
+            </select>
+        </div>
+    </div>
+</div>
