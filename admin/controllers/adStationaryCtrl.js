@@ -271,4 +271,17 @@ admin.controller('ADStationaryCtrl',
 	    });
 	};
 
+	$scope.fetchTermsAndConditions = function() {
+		var options = {
+			onSuccess: function(response) {
+				console.log(response);
+				$scope.customTnCs = response.terms_and_conditions;
+				$scope.screenList = response.screens;
+				$scope.is_terms_and_conditions_active = true;
+			}
+		};
+
+		$scope.callAPI(ADStationarySrv.fetchTermsAndConditions, options);
+	};
+
 }]);

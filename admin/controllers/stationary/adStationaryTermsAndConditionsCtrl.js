@@ -4,16 +4,6 @@ admin.controller('ADStationaryTermsAndConditionsCtrl', ['$scope',
 
 		BaseCtrl.call(this, $scope);
 
-		$scope.customTnCs = [{
-			id: 1,
-			title: 'special T&C',
-			terms_and_conditions: ''
-		}, {
-			id: 2,
-			title: 'new special T&C',
-			terms_and_conditions: ''
-		}];
-
 		$scope.addNewTermsAndConditions = function() {
 			$scope.new_tnc = {
 				title: '',
@@ -50,7 +40,10 @@ admin.controller('ADStationaryTermsAndConditionsCtrl', ['$scope',
 		};
 
 		// TERMS & CONDITIONS changed
-
+		$scope.termsAndConditionsChanged = function (id, tc) {
+			console.log(id);
+			console.log(tc);
+		};
 
 	}
 ]);
