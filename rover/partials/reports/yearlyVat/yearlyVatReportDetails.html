@@ -1,5 +1,5 @@
 <!-- Report content -->
-<div id="report-content" class="report-content grid scrollable">
+<div id="report-content" class="report-content grid scrollable" ng-iscroll="report-details-scroll">
     <div class="wrapper">
         <ul class="grid-header vat-report">
             <li>Revenue</li>
@@ -15,13 +15,13 @@
             <span ng-repeat="accountsWithVatId in results.with_vat_id.accounts">           
             
                 <!-- Level 2 - Companies -->
-                <a href="#with-vat-company" class="title-2 has-arrow toggle vat-report" ng-click="getRevenueAndTax('WITH_VAT_ID', accountsWithVatId.account_type)"> <!-- Toggle class 'active' when clicked -->
+                <a href="#with-vat-company" class="title-2 has-arrow toggle vat-report" ng-click="getRevenueAndTax('WITH_VAT_ID', accountsWithVatId.account_type_id)" ng-class="{'active': !accountsWithVatId.isCollapsed}"> <!-- Toggle class 'active' when clicked -->
                     <strong ng-show="accountsWithVatId.account_type === 'COMPANY'">Companies <em>from {Country} with total net revenue over <span class="currency">{{currencySymbol}} </span> 250</em></strong>
                     <strong ng-show="accountsWithVatId.account_type === 'TRAVELAGENT'">Travel Agents <em>from {Country} with total net revenue over <span class="currency">{{currencySymbol}} </span> 250</em></strong>
                     <span><span class="currency">{{currencySymbol}}</span>{{accountsWithVatId.total_revenue}}</span>
                     <span><span class="currency">{{currencySymbol}}</span>{{accountsWithVatId.total_vat}}</span>
                 </a>
-                <table id="with-vat-company" class="grid-content hidden"> <!-- Toggle class hidden when L97-L101 is clicked -->
+                <table id="with-vat-company" class="grid-content" ng-class="{'hidden': !accountsWithVatId.isCollapsed}"> <!-- Toggle class hidden when L97-L101 is clicked -->
                     <thead>
                         <tr>
                             <th><span>VAT ID</span></th>
@@ -32,12 +32,12 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td>{VAT ID}</td>
-                            <td>{AR No.}</td>
-                            <td>{Name}</td>
-                            <td class="vat-revenue"><span class="currency">{currency}</span>{revenue}</td>
-                            <td class="vat-revenue"><span class="currency">{currency}</span>{vat}</td>
+                        <tr ng-repeat = "revenueData in accountsWithVatId.revenueData">
+                            <td>{{revenueData.vat_id}}</td>
+                            <td>{{revenueData.ar_number}}</td>
+                            <td>{{revenueData.name}}</td>
+                            <td class="vat-revenue"><span class="currency">{{currencySymbol}}</span>{{revenueData.revenue}}</td>
+                            <td class="vat-revenue"><span class="currency">{{currencySymbol}}</span>{{revenueData.vat}}</td>
                         </tr>
                        <!-- ... repeat L112-L118 for every company-->
                     </tbody>
@@ -54,18 +54,18 @@
             <span><span class="currency">{{currencySymbol}}</span>{{results.without_vat_id.total_revenue}}</span>
             <span><span class="currency">{{currencySymbol}}</span>{{results.without_vat_id.total_vat}}</span>
         </a>
-        <div id="without-vat-id" class="grid-content" ng-class="{'hidden': !results.without_vat_id.isCollapsed}"> <!-- Toggle class hidden when L136-L140 is clicked -->
+        <div id="without-vat-id" class="grid-content" ng-class="{'hidden': !results.without_vat_id.isCollapsed}" > <!-- Toggle class hidden when L136-L140 is clicked -->
             
-            <span ng-repeat="accountsWithVatId in results.without_vat_id.accounts">           
+            <span ng-repeat="accountsWithOutVatId in results.without_vat_id.accounts">           
             
                 <!-- Level 2 - Companies -->
-                <a href="#with-vat-company" class="title-2 has-arrow toggle vat-report"> <!-- Toggle class 'active' when clicked -->
-                    <strong ng-show="accountsWithVatId.account_type === 'COMPANY'">Companies <em>from {Country} with total net revenue over <span class="currency">{{currencySymbol}} </span> 250</em></strong>
-                    <strong ng-show="accountsWithVatId.account_type === 'TRAVELAGENT'">Travel Agents <em>from {Country} with total net revenue over <span class="currency">{{currencySymbol}} </span> 250</em></strong>
-                    <span><span class="currency">{{currencySymbol}}</span>{{accountsWithVatId.total_revenue}}</span>
-                    <span><span class="currency">{{currencySymbol}}</span>{{accountsWithVatId.total_vat}}</span>
+                <a class="title-2 has-arrow toggle vat-report" ng-click="getRevenueAndTax('WITHOUT_VAT_ID', accountsWithOutVatId.account_type_id, accountsWithOutVatId.isCollapsed)" ng-class="{'active': !accountsWithOutVatId.isCollapsed}"> <!-- Toggle class 'active' when clicked -->
+                    <strong ng-show="accountsWithOutVatId.account_type === 'COMPANY'">Companies <em>from {Country} with total net revenue over <span class="currency">{{currencySymbol}} </span> 250</em></strong>
+                    <strong ng-show="accountsWithOutVatId.account_type === 'TRAVELAGENT'">Travel Agents <em>from {Country} with total net revenue over <span class="currency">{{currencySymbol}} </span> 250</em></strong>
+                    <span><span class="currency">{{currencySymbol}}</span>{{accountsWithOutVatId.total_revenue}}</span>
+                    <span><span class="currency">{{currencySymbol}}</span>{{accountsWithOutVatId.total_vat}}</span>
                 </a>
-                <table id="with-vat-company" class="grid-content hidden"> <!-- Toggle class hidden when L97-L101 is clicked -->
+                <table id="with-vat-company" class="grid-content" ng-class="{'hidden': !accountsWithOutVatId.isCollapsed}"> <!-- Toggle class hidden when L97-L101 is clicked -->
                     <thead>
                         <tr>
                             <th><span>VAT ID</span></th>
@@ -76,12 +76,12 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td>{VAT ID}</td>
-                            <td>{AR No.}</td>
-                            <td>{Name}</td>
-                            <td class="vat-revenue"><span class="currency">{currency}</span>{revenue}</td>
-                            <td class="vat-revenue"><span class="currency">{currency}</span>{vat}</td>
+                         <tr ng-repeat = "revenueData in accountsWithOutVatId.revenueData">
+                            <td>{{revenueData.vat_id}}</td>
+                            <td>{{revenueData.ar_number}}</td>
+                            <td>{{revenueData.name}}</td>
+                            <td class="vat-revenue"><span class="currency">{{currencySymbol}}</span>{{revenueData.revenue}}</td>
+                            <td class="vat-revenue"><span class="currency">{{currencySymbol}}</span>{{revenueData.vat}}</td>
                         </tr>
                        <!-- ... repeat L112-L118 for every company-->
                     </tbody>
@@ -92,7 +92,7 @@
 
         <ul class="grid-footer">
             <li>
-                Yearly VAT for <span>{year}</span><br>
+                Yearly VAT for <span>{{chosenReport.year}}</span><br>
                 Company / Travel Agent {<span>with VAT numbers</span>} {, <span>without VAT numbers</span>}
             </li>
             <li>

@@ -1447,9 +1447,7 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
                     $scope.appliedFilter['without_vat_number'] = report.without_vat_number;
                 }
 
-            }
-
-            
+            }            
 
             // include CICO filter
             if (!!report.hasCicoFilter) {
