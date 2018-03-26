@@ -18,7 +18,7 @@
         <div class="wrapper">
             <ul id="guest-search-results" class="search-results">
                 <li class="reservation identify-guest" ng-repeat="guest in guestSearch.results" ng-hide="shouldHideSearchResults()">
-                    <a ui-sref="rover.guestcarddetails({guestId: guest.id, query: textInQueryBox})">
+                    <a ui-sref="rover.guest.details({guestId: guest.id, query: textInQueryBox})">
                         <figure class="guest-image">
                             <img src="{{guest.image_url}}" alt="" />                            
                             <span class="vip" ng-if="guest.vip">VIP</span>

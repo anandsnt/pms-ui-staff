@@ -178,7 +178,7 @@ angular.module('sntRover').service('rvMenuSrv',
 		            menuIndex: "cashier"
 		        }, {
 		            title: "MENU_GUESTS",
-		            action: "rover.guestcardsearch",		            
+		            action: "rover.guest.search",
 		            menuIndex: "guests"
 		        }, {
 		            title: "MENU_ACCOUNTS",

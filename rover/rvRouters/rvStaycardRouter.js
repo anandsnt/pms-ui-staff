@@ -47,7 +47,10 @@ angular.module('stayCardModule', [])
 
 
         $stateProvider.state('rover.reservation.search', {
-            url: '/search/:guestId',
+            url: '/search',
+            params: {
+                guestId: null
+            },
             templateUrl: '/assets/partials/reservation/rvBaseSearch.html',
             controller: 'RVReservationBaseSearchCtrl',
             resolve: {
@@ -96,35 +99,28 @@ angular.module('stayCardModule', [])
         });
 
         $stateProvider.state('rover.reservation.staycard.mainCard.room-rates', {
-            url: '/room-rates/:from_date/:to_date/:fromState/:view/:company_id/:travel_agent_id/:group_id/:borrow_for_groups/:allotment_id/:promotion_code/:disable_back_staycard/:adults/:children/:promotion_id/:room_type_id/:is_member/:guestId',
+            url: '/room-rates',
+            params: {
+                from_date: '',
+                to_date: '',
+                fromState: '',
+                view: 'DEFAULT',
+                company_id: null,
+                travel_agent_id: null,
+                group_id: null,
+                borrow_for_groups: '',
+                allotment_id: null,
+                promotion_code: null,
+                disable_back_staycard: '',
+                adults: '',
+                children: '',
+                promotion_id: '',
+                room_type_id: null,
+                is_member: '',
+                guestId: ''
+            },
             templateUrl: '/assets/partials/reservation/rvSelectRoomAndRate.html',
             controller: 'RVSelectRoomAndRateCtrl',
-            onEnter: function ($stateParams) {
-                if (!$stateParams.view) {
-                    $stateParams.view = 'DEFAULT';
-                }
-                if (!$stateParams.company_id) {
-                    $stateParams.company_id = null;
-                }
-                if (!$stateParams.travel_agent_id) {
-                    $stateParams.travel_agent_id = null;
-                }
-                if (!$stateParams.group_id) {
-                    $stateParams.group_id = null;
-                }
-                if (!$stateParams.borrow_for_groups) {
-                    $stateParams.borrow_for_groups = false;
-                }
-                if (!$stateParams.allotment_id) {
-                    $stateParams.allotment_id = null;
-                }
-                if (!$stateParams.promotion_code) {
-                    $stateParams.promotion_code = null;
-                }
-                if (!$stateParams.room_type_id) {
-                    $stateParams.room_type_id = null;
-                }
-            },
             resolve: {
                 areReservationAddonsAvailable: function (RVReservationBaseSearchSrv, $stateParams, staycardJsAssets) { // CICO-16874
                     return RVReservationBaseSearchSrv.hasAnyConfiguredAddons({
@@ -177,16 +173,16 @@ angular.module('stayCardModule', [])
         });
 
         $stateProvider.state('rover.reservation.staycard.mainCard.addons', {
-            url: '/addons/:from_date/:to_date/:reservation/:from_screen',
+            url: '/addons',
             templateUrl: '/assets/partials/reservation/rvAddonsList.html',
             controller: 'RVReservationAddonsCtrl',
-            onEnter: function ($stateParams) {
-                if (!$stateParams.reservation) {
-                    $stateParams.reservation = 'DAILY';
-                }
+            params: {
+                from_date: '',
+                to_date: '',
+                reservation: 'DAILY',
+                from_screen: ''
             },
             resolve: {
-
                 addonData: function (RVReservationAddonsSrv, $stateParams, staycardJsAssets) {
                     var params = {};
 
@@ -200,17 +196,13 @@ angular.module('stayCardModule', [])
         });
 
         $stateProvider.state('rover.reservation.staycard.mainCard.summaryAndConfirm', {
-            url: '/summaryAndConfirm/:reservation/:mode',
+            url: '/summaryAndConfirm',
+            params: {
+                reservation: 'DAILY',
+                mode: 'OTHER'
+            },
             templateUrl: '/assets/partials/reservation/rvSummaryAndConfirm.html',
             controller: 'RVReservationSummaryCtrl',
-            onEnter: function ($stateParams) {
-                if (!$stateParams.reservation) {
-                    $stateParams.reservation = 'DAILY';
-                }
-                if (!$stateParams.mode) {
-                    $stateParams.mode = 'OTHER';
-                }
-            },
             resolve: {
                 paymentMethods: function (RVReservationSummarySrv) {
                     return RVReservationSummarySrv.fetchPaymentMethods();
@@ -275,9 +267,13 @@ angular.module('stayCardModule', [])
         });
 
         $stateProvider.state('rover.reservation.staycard.billcard', {
-            url: '/billcard/:reservationId/:clickedButton/:userId',
+            url: '/billcard/:reservationId',
             templateUrl: '/assets/partials/bill/rvBillCard.html',
             controller: 'RVbillCardController',
+            params: {
+                clickedButton: '',
+                userId: ''
+            },
             resolve: {
                 billstaycardJsAssets: function (staycardJsAssets, jsMappings) {
                     return jsMappings.fetchAssets(['rover.reservation.staycard.billcard']);
@@ -288,7 +284,14 @@ angular.module('stayCardModule', [])
             }
         });
         $stateProvider.state('rover.reservation.staycard.roomassignment', {
-            url: '/roomassignment/:reservation_id/:room_type/:clickedButton/:upgrade_available/:cannot_move_room',
+            url: '/roomassignment',
+            params: {
+                reservation_id: '',
+                room_type: '',
+                clickedButton: '',
+                upgrade_available: '', 
+                cannot_move_room: ''
+            },
             templateUrl: '/assets/partials/roomAssignment/rvRoomAssignment.html',
             controller: 'RVroomAssignmentController',
             resolve: {
@@ -325,7 +328,12 @@ angular.module('stayCardModule', [])
             }
         });
         $stateProvider.state('rover.reservation.staycard.upgrades', {
-            url: '/upgrades/:reservation_id/:clickedButton/:cannot_move_room',
+            url: '/upgrades',
+            params: {
+                reservation_id: '',
+                clickedButton: '',
+                cannot_move_room: ''
+            },
             templateUrl: '/assets/partials/upgrades/rvUpgrades.html',
             controller: 'RVUpgradesController',
             resolve: {
@@ -344,7 +352,11 @@ angular.module('stayCardModule', [])
 
         // Change stay dates
         $stateProvider.state('rover.reservation.staycard.changestaydates', {
-            url: '/changestaydates/:reservationId/:confirmNumber',
+            url: '/changestaydates',
+            params: {
+                reservationId: '',
+                confirmNumber: ''
+            },
             templateUrl: '/assets/partials/changeStayDates/rvChangeStayDates.html',
             controller: 'RVchangeStayDatesController',
             resolve: {
@@ -358,7 +370,10 @@ angular.module('stayCardModule', [])
         });
 
         $stateProvider.state('rover.reservation.staycard.billcard.details', {
-            url: '/:billNo',
+            url: '/',
+            params: {
+                billNo: 1
+            },
             templateUrl: '/assets/partials/bill_details.html',
             controller: 'billDetailsController'
         });
@@ -385,7 +400,10 @@ angular.module('stayCardModule', [])
         });
 
         $stateProvider.state('rover.actionsManager', {
-            url: '/actions/:restore',
+            url: '/actions',
+            params: {
+                restore: ''
+            },
             templateUrl: '/assets/partials/actionsManager/rvActionsManager.html',
             controller: 'RVActionsManagerController',
             resolve: {
