@@ -35,13 +35,11 @@ admin.service('ADStationarySrv', ['$http', '$q', 'ADBaseWebSrvV2', function($htt
 
 	var termsAndConditionsResponse = {};
 	
-
 	this.fetchTermsAndConditions = function(params) {
 
 		var deferred = $q.defer();
 		var fetchScreenTypes = function() {
-			var url = 'api/terms_and_conditions';
-			var url = '/sample_json/stationary/terms_and_conditions_screens.json';
+			var url = '/api/terms_and_conditions/screens_info';
 			ADBaseWebSrvV2.getJSON(url, params).then(function(data) {
 				termsAndConditionsResponse.screens = data;
 				deferred.resolve(termsAndConditionsResponse);
@@ -51,13 +49,39 @@ admin.service('ADStationarySrv', ['$http', '$q', 'ADBaseWebSrvV2', function($htt
 			return deferred.promise;
 		};
 
-		var url = 'api/terms_and_conditions';
-		var url = '/sample_json/stationary/terms_and_conditions.json';
+		var url = '/api/terms_and_conditions';
 		ADBaseWebSrvV2.getJSON(url, params).then(function(data) {
 			termsAndConditionsResponse.terms_and_conditions = data;
 			fetchScreenTypes();
 		}, function(data) {
 			deferred.reject(data);
+		});
+		return deferred.promise;
+	};
+
+	this.createNewTermsAndConditions = function (params) {
+		
+		var deferred = $q.defer();
+		var url = '/api/terms_and_conditions';
+
+		ADBaseWebSrvV2.postJSON(url, params).then(function(data) {
+		    deferred.resolve(data);
+		}, function(data) {
+		    deferred.reject(data);
+		});
+		return deferred.promise;
+	};
+
+
+	this.assignTermsAndConditions = function () {
+		
+		var deferred = $q.defer();
+		var url = '/api/terms_and_conditions/update_screen_t_and_c';
+
+		ADBaseWebSrvV2.postJSON(url, data).then(function(data) {
+		    deferred.resolve(data);
+		}, function(data) {
+		    deferred.reject(data);
 		});
 		return deferred.promise;
 	};

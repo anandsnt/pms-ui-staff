@@ -5,7 +5,7 @@ admin.controller('ADStationaryTermsAndConditionsCtrl', ['$scope',
 		BaseCtrl.call(this, $scope);
 
 		$scope.addNewTermsAndConditions = function() {
-			$scope.new_tnc = {
+			$scope.newTermsAndConditions = {
 				title: '',
 				description: ''
 			};
@@ -35,7 +35,18 @@ admin.controller('ADStationaryTermsAndConditionsCtrl', ['$scope',
 			$scope.displayNewTermsAndConditionsForm = false;
 		};
 		$scope.saveNewTnC = function() {
-			console.log($scope.new_tnc);
+			console.log($scope.newTermsAndConditions);
+				var options = {
+				params: {
+					'title': $scope.newTermsAndConditions.title,
+					'description':$scope.newTermsAndConditions.description
+				},
+				onSuccess: function(response) {
+					console.log(response);
+				}
+			};
+
+			$scope.callAPI(ADStationarySrv.createNewTermsAndConditions, options);
 			$scope.cancelNewTnC();
 		};
 
@@ -43,6 +54,18 @@ admin.controller('ADStationaryTermsAndConditionsCtrl', ['$scope',
 		$scope.termsAndConditionsChanged = function (id, assigned_tc_id) {
 			console.log(id);
 			console.log(assigned_tc_id);
+				var options = {
+				params: {
+					'locale': $scope.data.locale,
+					'id': id,
+					'assigned_tc_id':assigned_tc_id
+				},
+				onSuccess: function(response) {
+					console.log(response);
+				}
+			};
+
+			$scope.callAPI(ADStationarySrv.assignTermsAndConditions, options);
 		};
 
 	}

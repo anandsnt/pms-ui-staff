@@ -28,11 +28,11 @@
         <h4><span>New</span> Terms &amp; Contidions</h4>
         <div class="entry full-width">
             <label translate>TITLE <span></span></label>
-            <input type="text" placeholder="{{ 'TERMS_AND_CONDITIONS_TITLE_PLACEHOLDER' | translate }}" ng-model="new_tnc.title">
+            <input type="text" placeholder="{{ 'TERMS_AND_CONDITIONS_TITLE_PLACEHOLDER' | translate }}" ng-model="newTermsAndConditions.title">
         </div>
         <div class="entry full-width">
             <label translate>TERMS_AND_CONDITIONS</label>
-            <textarea rows="8" placeholder="{{ 'TERMS_AND_CONDITIONS_PLACEHOLDER' | translate }}" ng-model="new_tnc.description"></textarea>
+            <textarea rows="8" placeholder="{{ 'TERMS_AND_CONDITIONS_PLACEHOLDER' | translate }}" ng-model="newTermsAndConditions.description"></textarea>
         </div>
         <div class="actions float">
             <button type="button" class="button blank" ng-click="cancelNewTnC()" translate>CANCEL</button>
