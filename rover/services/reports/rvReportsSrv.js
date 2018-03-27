@@ -433,7 +433,6 @@ angular.module('sntRover').service('RVreportsSrv', [
 			return deferred.promise;
         }
 
-
 		return service;
 	}
 ]);
