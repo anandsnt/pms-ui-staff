@@ -583,7 +583,7 @@ sntRover.controller('RVReportDetailsCtrl', [
 					item.isAccountCollapsed = false;
 				});
 				return arrayData;
-			}
+			};
 
 			if ($scope.chosenReport.title === reportNames['YEARLY_VAT']) {
 				if (results.with_vat_id) {
@@ -1444,15 +1444,16 @@ sntRover.controller('RVReportDetailsCtrl', [
 				
 			_.each(resultArrayToBeModified, function(item) {
 				if (item.account_type_id === accountTypeId) {
-					if (data){
+					if (data) {
 						item.revenueData = data.data;
 					}					
 					item.isCollapsed = !item.isCollapsed;
 				}
-			})
+			});
 				
 			$scope.refreshScroll();
-		}
+		};
+
 		/*
 		 * Function to get revenue data
 		 * @vatType - vat type (with or without vat)
