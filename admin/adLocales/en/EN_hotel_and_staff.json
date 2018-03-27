@@ -8,5 +8,5 @@
 "TAX_ID_PLACEHOLDER": "Enter tax ID",
 "ORG_ID": "Organisation ID",
 "ORG_ID_PLACEHOLDER": "Enter Organisation ID",
-"SWIFT": "SWIFT",
+"SWIFT_CODE": "SWIFT CODE",
 "SWIFT_PLACEHOLDER": "Enter Swift code"
