@@ -33,6 +33,7 @@ admin.controller('ADStationaryTermsAndConditionsCtrl', ['$scope',
 				onSuccess: function(response) {
 					// delete the item from the list
 					$scope.customTnCs = _.without($scope.customTnCs, entity);
+					$scope.selectedTnCIndex = -1;
 				}
 			};
 
@@ -47,6 +48,9 @@ admin.controller('ADStationaryTermsAndConditionsCtrl', ['$scope',
 					'id': entity.id,
 					'title': entity.title,
 					'description': entity.description
+				},
+				onSuccess: function(response) {
+					$scope.selectedTnCIndex = -1;
 				}
 			};
 
@@ -65,7 +69,13 @@ admin.controller('ADStationaryTermsAndConditionsCtrl', ['$scope',
 					'description': $scope.newTermsAndConditions.description
 				},
 				onSuccess: function(response) {
-					$scope.customTnCs.push(response);
+					var newTnC = {
+						id: response.id,
+						title: angular.copy($scope.newTermsAndConditions.title),
+						description: angular.copy($scope.newTermsAndConditions.description)
+					};
+
+					$scope.customTnCs.push(newTnC);
 				}
 			};
 
@@ -75,14 +85,18 @@ admin.controller('ADStationaryTermsAndConditionsCtrl', ['$scope',
 
 		// TERMS & CONDITIONS changed
 		$scope.termsAndConditionsChanged = function(id, assigned_tc_id) {
-			var options = {
-				params: {
-					'screen_id': id,
-					't_and_c_id': assigned_tc_id
-				}
-			};
+			if (assigned_tc_id && id) {
+				var options = {
+					params: {
+						'screen_id': id,
+						't_and_c_id': assigned_tc_id
+					}
+				};
 
-			$scope.callAPI(ADStationarySrv.assignTermsAndConditions, options);
+				$scope.callAPI(ADStationarySrv.assignTermsAndConditions, options);
+			} else {
+				return;
+			}
 		};
 
 	}
