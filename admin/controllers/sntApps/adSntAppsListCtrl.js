@@ -151,16 +151,6 @@ admin.controller('ADSntAppsListCtrl', ['$scope',
 			return;
 		};
 
-		$scope.showGeneralSettings = function() {
-			$scope.callAPI(adAppVersionsSrv.fetchFTPSettings, {
-				params: {},
-				successCallBack: function(data) {
-					$scope.settingsData = data;
-					$scope.screenMode = 'SETTINGS';
-				}
-			});
-		};
-
 		$scope.saveFTPsettings = function() {
 
 			var saveFTPSuccess = function() {
