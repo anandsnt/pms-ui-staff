@@ -93,11 +93,12 @@
         <ul class="grid-footer">
             <li>
                 Yearly VAT for <span>{{chosenReport.year}}</span><br>
-                Company / Travel Agent {<span>with VAT numbers</span>} {, <span>without VAT numbers</span>}
+                Company / Travel Agent <span ng-show="results.with_vat_id">with VAT numbers</span> 
+                <span ng-show="results.with_vat_id && results.without_vat_id">, </span> <span ng-show="results.without_vat_id">without VAT numbers</span>
             </li>
             <li>
-                Business date <span>{Business Date}</span><br />
-                User <span>{User}</span>
+                Business date <span>{{ userInfo.business_date | date:dateFormat }}</span><br/>
+                User <span>{{ userInfo.first_name }} {{ userInfo.last_name }}</span>
             </li>
         </ul>
     </div>

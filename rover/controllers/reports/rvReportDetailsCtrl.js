@@ -796,6 +796,7 @@ sntRover.controller('RVReportDetailsCtrl', [
                 break;
 
                 case reportNames['YEARLY_VAT']:
+                	$scope.hasReportTotals = true;
                     $scope.showReportHeader   = true;
                     $scope.detailsTemplateUrl = '/assets/partials/reports/yearlyVat/yearlyVatReportDetails.html';
 
