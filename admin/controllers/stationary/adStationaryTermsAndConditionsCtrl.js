@@ -50,7 +50,7 @@ admin.controller('ADStationaryTermsAndConditionsCtrl', ['$scope',
 				}
 			};
 
-			$scope.callAPI(ADStationarySrv.assignTermsAndConditions, options);
+			$scope.callAPI(ADStationarySrv.updateTermsAndConditions, options);
 		};
 
 		// NEW TERMS & CONDITIONS
@@ -77,9 +77,8 @@ admin.controller('ADStationaryTermsAndConditionsCtrl', ['$scope',
 		$scope.termsAndConditionsChanged = function(id, assigned_tc_id) {
 			var options = {
 				params: {
-					'locale': $scope.data.locale,
-					'id': id,
-					'assigned_tc_id': assigned_tc_id
+					'screen_id': id,
+					't_and_c_id': assigned_tc_id
 				}
 			};
 
