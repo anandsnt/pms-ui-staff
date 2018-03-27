@@ -4,6 +4,7 @@
         <fieldset class="holder left">
             <ad-toggle-button is-checked="config.enabled"
                               label="{{'ACTIVATE_INACTIVATE'| translate}}"></ad-toggle-button>
+            <ad-textbox value="config.organization_id" label="{{'ORG_ID' | translate}}" placeholder="{{'ORG_ID_PLACEHOLDER' | translate}}" styleclass="half-width" ng-if="isStandAlone && !isHourlyRatesEnabled"></ad-textbox>
         </fieldset>
     </div>
 
