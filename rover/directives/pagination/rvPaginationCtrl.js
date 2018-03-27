@@ -5,8 +5,8 @@ sntRover.controller('rvPaginationCtrl', ['$scope', '$attrs', function($scope, $a
 
     // Initializing variables
     $scope.showCount    = 5;
-    $scope.pageChange   = false;    // Variable for detecting external changes
-    $scope.currentFocus = 1;        // For handling page no. list scroll
+    $scope.internalPageChange = false;      // Variable for detecting internal page change or not.
+    $scope.currentFocus = 1;                // For handling page no. list scroll
     /*
      *   Handle page scroll( Next/Prev actions )
      *   @param  {number} [Destination page number]
@@ -17,14 +17,15 @@ sntRover.controller('rvPaginationCtrl', ['$scope', '$attrs', function($scope, $a
     };
 
     /*
-     *   Handle page navigation
+     *   Handle page navigation on clicking page no button ( Internal page change )
      *   @param  {number} [Destination page number]
+     *   @return {undefined}
      */
     $scope.gotoPage = function(page) {
 
         if (page !== $scope.pageOptions.currentPage) {
 
-            $scope.pageChange = true;
+            $scope.internalPageChange = true;
             $scope.pageOptions.currentPage = page;
 
             // When the API doesn't need any additional params.
@@ -89,18 +90,20 @@ sntRover.controller('rvPaginationCtrl', ['$scope', '$attrs', function($scope, $a
     /*
      *   Event to handle API callback
      *   @param  {string} [paginationId(optional)]
+     *   @return {undefined}
      */
     var updatePaginationationHandler = $scope.$on('updatePagination', function( event, paginationId ) {
 
+        // Only either no pagination Id or both are in match
         if (!($scope.pageOptions.id) || ($scope.pageOptions.id === paginationId)) {
-
-            // Only either no pagination Id or both in match
-            if ($scope.pageChange === true) {
-                // Internal page transition
-                $scope.pageChange = false;
+            
+            // Internal page transition by clicking any page number buttons in the directive.
+            if ($scope.internalPageChange) {
+                $scope.internalPageChange = false;
             }
-            else if (!$scope.pageOptions.currentPage) {
-                // External page transition, set page to 1
+            else if ( !$scope.internalPageChange || !$scope.pageOptions.currentPage ) {
+                // If External page transition like search, filters etc..
+                // Or when currentPage is undefined then set current page to 1.
                 $scope.pageOptions.currentPage = 1;
             }
 
@@ -125,6 +128,5 @@ sntRover.controller('rvPaginationCtrl', ['$scope', '$attrs', function($scope, $a
 
     $scope.$on( '$destroy', updatePaginationationHandler );
     $scope.$on( '$destroy', updatePageNoHandler );
-
 
 }]);
