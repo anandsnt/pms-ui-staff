@@ -49,12 +49,28 @@ admin.controller('ADStationaryCtrl',
 
 	$scope.stationery_data = {};
 
+
+	var fetchTermsAndConditions = function(openMenu) {
+		var options = {
+			params: {
+				'locale': $scope.data.locale
+			},
+			onSuccess: function(response) {
+				$scope.customTnCs = response.terms_and_conditions;
+				$scope.screenList = response.screens;
+				$scope.is_terms_and_conditions_active = openMenu ? true : $scope.is_terms_and_conditions_active;
+			}
+		};
+
+		$scope.callAPI(ADStationarySrv.fetchTermsAndConditions, options);
+	};
 	/*
 	* Fetches the stationary items
 	*/
 	var fetchStationary = function(params) {
 		var successCallbackOfFetch = function(data) {
 			$scope.$emit('hideLoader');
+			fetchTermsAndConditions();
 			data.email_logo_type = data.email_logo_type || '';
 			$scope.data = {};
 
@@ -276,18 +292,9 @@ admin.controller('ADStationaryCtrl',
 		if ($scope.is_terms_and_conditions_active) {
 			$scope.is_terms_and_conditions_active = false;
 		} else {
-			var options = {
-				params: {
-					'locale': $scope.data.locale
-				},
-				onSuccess: function(response) {
-					$scope.customTnCs = response.terms_and_conditions;
-					$scope.screenList = response.screens;
-					$scope.is_terms_and_conditions_active = true;
-				}
-			};
+			var openMenu = true;
 
-			$scope.callAPI(ADStationarySrv.fetchTermsAndConditions, options);
+			fetchTermsAndConditions(openMenu);
 		}
 
 	};
