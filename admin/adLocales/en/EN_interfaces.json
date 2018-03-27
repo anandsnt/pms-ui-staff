@@ -25,6 +25,7 @@
 	"TRAVELCLICK_HEADER": "iHotelier",
 	"SNAPSHOT_SETUP": "Snapshot",
 	"SNAPSHOT_PUBLISH_INSTRUCTIONS": "Publish a full export containing Reservations, Financials and Groups. Full export should occur only once and must be coordinated with Snapshot.",
+	"ZDIRECT_MEMBERSHIP_FEATURE": "Enable Membership Program",
 	"INCREMENTAL_EXPORT_LABEL": "Incremental Export Schedule",
 	"FULL_EXPORT_RESULTS_LABEL" : "Full Export Results",
 	"INCREMENTAL_EXPORT_RESULTS_LABEL" : "Incremental Export Results",
