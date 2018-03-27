@@ -101,9 +101,8 @@ sntRover.controller('rvPaginationCtrl', ['$scope', '$attrs', function($scope, $a
             if ($scope.internalPageChange) {
                 $scope.internalPageChange = false;
             }
-            else if ( !$scope.internalPageChange || !$scope.pageOptions.currentPage ) {
-                // If External page transition like search, filters etc..
-                // Or when currentPage is undefined then set current page to 1.
+            else {
+                // If External page transition by search, filters etc. then reset current page to 1.
                 $scope.pageOptions.currentPage = 1;
             }
             
