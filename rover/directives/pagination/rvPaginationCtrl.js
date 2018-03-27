@@ -106,7 +106,13 @@ sntRover.controller('rvPaginationCtrl', ['$scope', '$attrs', function($scope, $a
                 // Or when currentPage is undefined then set current page to 1.
                 $scope.pageOptions.currentPage = 1;
             }
-
+            
+            /*  
+             *  ------------------------  Setting totalCount value ------------------------------------
+             *  If we pass pageData as type {object} - expecting [total_count] as a @param inside that.
+             *  If we are not passing pageData as type {object}, and it exist, directly sets the value.
+             *  ---------------------------------------------------------------------------------------
+             */
             if (typeof($scope.pageData) === "object") {
                 $scope.totalCount = $scope.pageData.total_count;
             }
