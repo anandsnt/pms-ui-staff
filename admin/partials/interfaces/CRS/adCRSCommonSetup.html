@@ -71,6 +71,11 @@
                               label="{{'FEATURE_UPLOAD_RESTRICTION'| translate}}"></ad-toggle-button>
         </fieldset>
         <fieldset class="holder right"
+                  ng-if="availableSettings.indexOf('enhance_deposit_notes') > -1">
+            <ad-toggle-button is-checked="config.enhance_deposit_notes"
+                              label="{{'ENHANCE_DEPOSIT_NOTES'| translate}}"></ad-toggle-button>
+        </fieldset>
+        <fieldset class="holder right"
                   ng-if="availableSettings.indexOf('calculate_rate_after_tax') > -1">
             <div class="entry full-width">
                 <label>RATE CALCULATION</label>
