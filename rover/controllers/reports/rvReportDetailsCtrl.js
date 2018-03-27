@@ -904,10 +904,6 @@ sntRover.controller('RVReportDetailsCtrl', [
 					template = '/assets/partials/reports/complimentaryRoomReport/rvComplimentaryRoomReport.html';
 					break;
 
-				// case reportNames['YEARLY_VAT']:
-				// 	template = '/assets/partials/reports/yearlyVat/yearlyVatReportRow.html';
-				// 	break;
-
 				// Default report row
 				default:
 					template = '/assets/partials/reports/shared/rvCommonReportRow.html';
@@ -1425,11 +1421,15 @@ sntRover.controller('RVReportDetailsCtrl', [
         $scope.shouldShowNewPagination = function() {
             return !!reportPaginationIds[$scope.chosenReport.title];
         };
-
+       /*
+        * Result with vat id collapsed or not
+        */	
 		$scope.setResultWithVatCollapsedOrNot = function () {
 			$scope.results.with_vat_id.isCollapsed = !$scope.results.with_vat_id.isCollapsed;
 		};
-
+		/*
+         * Result without vat id collapsed or not
+         */
 		$scope.setResultWithOutVatCollapsedOrNot = function () {
 			$scope.results.without_vat_id.isCollapsed = !$scope.results.without_vat_id.isCollapsed;
 		};

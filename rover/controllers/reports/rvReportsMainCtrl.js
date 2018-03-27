@@ -1432,7 +1432,6 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
                 if ( changeAppliedFilter ) {
                     $scope.appliedFilter['year'] = report.year;
                 }
-
             }
 
             if ( report.hasCompanyTravelAgentWithOrWithoutVat ) {
@@ -1446,7 +1445,6 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
                     $scope.appliedFilter['with_vat_number'] = report.with_vat_number;
                     $scope.appliedFilter['without_vat_number'] = report.without_vat_number;
                 }
-
             }            
 
             // include CICO filter
@@ -1976,8 +1974,7 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
                         $scope.appliedFilter.age_buckets = ['All Aging Balance'];
                     }
                 }
-            }
-           
+            }           
 
             // Include accounts
             if ( report.hasOwnProperty('hasAccountSearch') ) {
@@ -2813,7 +2810,6 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
                 return false;
             }
         };
-
 
         $scope.grpAutoCompleteOnList = angular.extend({
             position: {
