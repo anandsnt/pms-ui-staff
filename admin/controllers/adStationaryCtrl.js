@@ -49,7 +49,9 @@ admin.controller('ADStationaryCtrl',
 
 	$scope.stationery_data = {};
 
-
+	$scope.$on('SHOW_ERROR_MSG', function (evt, data) {
+		$scope.errorMessage = data.error;
+	});
 	var fetchTermsAndConditions = function(openMenu) {
 		var options = {
 			params: {

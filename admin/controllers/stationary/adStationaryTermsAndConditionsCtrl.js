@@ -30,10 +30,15 @@ admin.controller('ADStationaryTermsAndConditionsCtrl', ['$scope',
 					'locale': $scope.data.locale,
 					'id': entity.id
 				},
-				onSuccess: function(response) {
+				successCallBack: function(response) {
 					// delete the item from the list
 					$scope.customTnCs = _.without($scope.customTnCs, entity);
 					$scope.selectedTnCIndex = -1;
+				},
+				failureCallBack: function(response) {
+					$scope.$emit('SHOW_ERROR_MSG', {
+						'error': response.errors
+					});
 				}
 			};
 
@@ -49,8 +54,13 @@ admin.controller('ADStationaryTermsAndConditionsCtrl', ['$scope',
 					'title': entity.title,
 					'description': entity.description
 				},
-				onSuccess: function(response) {
+				successCallBack: function(response) {
 					$scope.selectedTnCIndex = -1;
+				},
+				failureCallBack: function(response) {
+					$scope.$emit('SHOW_ERROR_MSG', {
+						'error': response.errors
+					});
 				}
 			};
 
@@ -68,7 +78,7 @@ admin.controller('ADStationaryTermsAndConditionsCtrl', ['$scope',
 					'title': $scope.newTermsAndConditions.title,
 					'description': $scope.newTermsAndConditions.description
 				},
-				onSuccess: function(response) {
+				successCallBack: function(response) {
 					var newTnC = {
 						id: response.id,
 						title: angular.copy($scope.newTermsAndConditions.title),
@@ -76,6 +86,11 @@ admin.controller('ADStationaryTermsAndConditionsCtrl', ['$scope',
 					};
 
 					$scope.customTnCs.push(newTnC);
+				},
+				failureCallBack: function(response) {
+					$scope.$emit('SHOW_ERROR_MSG', {
+						'error': response.errors
+					});
 				}
 			};
 
@@ -90,6 +105,11 @@ admin.controller('ADStationaryTermsAndConditionsCtrl', ['$scope',
 					params: {
 						'screen_id': id,
 						't_and_c_id': assigned_tc_id
+					},
+					failureCallBack: function(response) {
+						$scope.$emit('SHOW_ERROR_MSG', {
+							'error': response.errors
+						});
 					}
 				};
 
