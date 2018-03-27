@@ -485,7 +485,6 @@ angular.module('sntRover').controller('companyCardDetailsController', ['$scope',
 		 */
 		var successCallbackOfContactSaveData = function(data) {
 
-			$scope.$emit("hideLoader");
 			if (typeof data.id !== 'undefined' && data.id !== "") {
 				// to check if id is defined or not before save
 				var contactInfoAvailable = $scope.contactInformation.id ? true : false;
@@ -521,7 +520,6 @@ angular.module('sntRover').controller('companyCardDetailsController', ['$scope',
 		 * failure callback of save contact data
 		 */
 		var failureCallbackOfContactSaveData = function(errorMessage) {
-			$scope.$emit("hideLoader");
 			$scope.$broadcast("setCardContactErrorMessage", errorMessage);
 			// $scope.errorMessage = errorMessage;
 			$scope.currentSelectedTab = 'cc-contact-info';
@@ -541,22 +539,6 @@ angular.module('sntRover').controller('companyCardDetailsController', ['$scope',
 			if (dataUpdated) {
 				var dataToSend = JSON.parse(JSON.stringify(data));
 
-				for (key in dataToSend) {
-					if (typeof dataToSend[key] !== "undefined" && data[key] !== null && data[key] !== "") {
-						// in add case's first api call, presentContactInfo will be empty object
-						if (JSON.stringify(presentContactInfo) !== '{}') {
-							for (subDictKey in dataToSend[key]) {
-								if (typeof presentContactInfo[key] !== 'undefined') {
-									if (typeof dataToSend[key][subDictKey] === 'undefined' || dataToSend[key][subDictKey] === presentContactInfo[key][subDictKey]) {
-										delete dataToSend[key][subDictKey];
-									}
-								}
-							}
-						}
-					} else {
-						delete dataToSend[key];
-					}
-				}
 				if (typeof dataToSend.countries !== 'undefined') {
 					delete dataToSend['countries'];
 				}
@@ -564,8 +546,18 @@ angular.module('sntRover').controller('companyCardDetailsController', ['$scope',
 				if (dataToSend.account_details.account_number === "") {
 					dataToSend.account_details.account_number = null;
 				}
+				// CICO-50810 : Hadling passing blank string.
+				if (dataToSend.primary_contact_details.contact_email === "") {
+					dataToSend.primary_contact_details.contact_email = null;
+				}
 				dataToSend.account_type = $stateParams.type;
-				$scope.invokeApi(RVCompanyCardSrv.saveContactInformation, dataToSend, successCallbackOfContactSaveData, failureCallbackOfContactSaveData);
+				var options = {
+					params: dataToSend,
+					successCallBack: successCallbackOfContactSaveData,
+					failureCallBack: failureCallbackOfContactSaveData
+				};
+
+				$scope.callAPI(RVCompanyCardSrv.saveContactInformation, options);
 			}
 		};
 
