@@ -12,7 +12,7 @@ angular.module('accountsModule', [])
             templateUrl: '/assets/partials/accounts/rvAccountsRoot.html',
             controller: 'rvAccountsRootCtrl',
             resolve: {               
-                accountsAssets: function(jsMappings, mappingList) {
+                accountsAssets: function(jsMappings) {
                     return jsMappings.fetchAssets(['rover.accounts', 'directives']);
                 }
             }

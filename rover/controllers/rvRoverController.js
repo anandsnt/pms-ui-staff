@@ -673,7 +673,7 @@ sntRover.controller('roverController', [
         // this will happen when prefetch the data
 
         // https://ui-router.github.io/guide/transitions#transition-lifecycle
-        $transitions.onBefore({}, function (transition) {
+        $transitions.onCreate({}, function (transition) {
             sntActivity.start('STATE_CHANGE' + transition.to().name.toUpperCase());
 
             // if menu is open, close it

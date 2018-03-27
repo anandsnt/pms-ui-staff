@@ -6,10 +6,10 @@ function(
         $stateProvider.state('rover.guest', {
             url: '/guest',
             resolve: {
-                guestcardSearchAssets: function(jsMappings, mappingList) {
+                guestcardSearchAssets: function(jsMappings) {
                     return jsMappings.fetchAssets(['rover.guestcardsearch', 'directives']);
                 },
-                guestcardDetailsAssets: function(jsMappings, mappingList) {
+                guestcardDetailsAssets: function(jsMappings) {
                     return jsMappings.fetchAssets(['rover.guestcarddetails', 'directives']);
                 },
             }
