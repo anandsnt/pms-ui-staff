@@ -16,8 +16,8 @@
             
                 <!-- Level 2 - Companies -->
                 <a href="#with-vat-company" class="title-2 has-arrow toggle vat-report" ng-click="getRevenueAndTax('WITH_VAT_ID', accountsWithVatId.account_type_id)" ng-class="{'active': !accountsWithVatId.isCollapsed}"> <!-- Toggle class 'active' when clicked -->
-                    <strong ng-show="accountsWithVatId.account_type === 'COMPANY'">Companies <em>from {Country} with total net revenue over <span class="currency">{{currencySymbol}} </span> 250</em></strong>
-                    <strong ng-show="accountsWithVatId.account_type === 'TRAVELAGENT'">Travel Agents <em>from {Country} with total net revenue over <span class="currency">{{currencySymbol}} </span> 250</em></strong>
+                    <strong ng-show="accountsWithVatId.account_type === 'COMPANY'">Companies <em> with total net revenue over <span class="currency">{{currencySymbol}} </span> 250</em></strong>
+                    <strong ng-show="accountsWithVatId.account_type === 'TRAVELAGENT'">Travel Agents <em>with total net revenue over <span class="currency">{{currencySymbol}} </span> 250</em></strong>
                     <span><span class="currency">{{currencySymbol}}</span>{{accountsWithVatId.total_revenue}}</span>
                     <span><span class="currency">{{currencySymbol}}</span>{{accountsWithVatId.total_vat}}</span>
                 </a>
@@ -60,8 +60,8 @@
             
                 <!-- Level 2 - Companies -->
                 <a class="title-2 has-arrow toggle vat-report" ng-click="getRevenueAndTax('WITHOUT_VAT_ID', accountsWithOutVatId.account_type_id, accountsWithOutVatId.isCollapsed)" ng-class="{'active': !accountsWithOutVatId.isCollapsed}"> <!-- Toggle class 'active' when clicked -->
-                    <strong ng-show="accountsWithOutVatId.account_type === 'COMPANY'">Companies <em>from {Country} with total net revenue over <span class="currency">{{currencySymbol}} </span> 250</em></strong>
-                    <strong ng-show="accountsWithOutVatId.account_type === 'TRAVELAGENT'">Travel Agents <em>from {Country} with total net revenue over <span class="currency">{{currencySymbol}} </span> 250</em></strong>
+                    <strong ng-show="accountsWithOutVatId.account_type === 'COMPANY'">Companies <em> with total net revenue over <span class="currency">{{currencySymbol}} </span> 250</em></strong>
+                    <strong ng-show="accountsWithOutVatId.account_type === 'TRAVELAGENT'">Travel Agents <em> with total net revenue over <span class="currency">{{currencySymbol}} </span> 250</em></strong>
                     <span><span class="currency">{{currencySymbol}}</span>{{accountsWithOutVatId.total_revenue}}</span>
                     <span><span class="currency">{{currencySymbol}}</span>{{accountsWithOutVatId.total_vat}}</span>
                 </a>
