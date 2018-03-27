@@ -7,7 +7,7 @@ angular.module('housekeepingModule', [])
             templateUrl: '/assets/partials/housekeeping/rvHousekeeping.html',
             controller: 'RVHkAppCtrl',
             resolve: {
-                housekeepingAssets: function(jsMappings, mappingList) {
+                housekeepingAssets: function(jsMappings) {
                     return jsMappings.fetchAssets(['rover.housekeeping', 'directives']);
                 }
             }
