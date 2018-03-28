@@ -1,6 +1,6 @@
 <div class="stationery-items">
     <!-- Custom T&C -->    
-    <div class="group-holder" ng-repeat="entity in customTnCs" ng-class = "{'active': selectedTnCIndex === $index}">
+    <div class="group-holder" ng-repeat="entity in customTnCs" ng-class = "{'active': selectedTnCIndex === $index}" ng-if="entity.title !== 'none'">
         <div class="form-title has-toggle" ng-click="customTnCClicked($index)"> <!-- Clicking this toggles class 'active' on L15 -->
             <h3>{{entity.title}}</h3>
         </div>
@@ -21,9 +21,8 @@
         </div>
     </div>
 
-    <button type="button" class="button action add" ng-hide="displayNewTermsAndConditionsForm" ng-click="addNewTermsAndConditions()">Add New</button> <!-- Hide this button when clicked, and show L40-L54 -->
-    
-    <!-- Add New T&C, show only when L37 is clicked -->
+    <button type="button" class="button action add" ng-hide="displayNewTermsAndConditionsForm || (customTnCs && customTnCs.length > 5)" ng-click="addNewTermsAndConditions()" ng-hide="" translate>ADD_NEW</button> 
+
     <div class="data-holder" ng-show="displayNewTermsAndConditionsForm">
         <h4><span>New</span> Terms &amp; Contidions</h4>
         <div class="entry full-width">
@@ -45,7 +44,9 @@
     <div class="entry" ng-repeat="screen in screenList">
         <label for="rover-tc">{{screen.description}}</label>
         <div class="select">
-            <select ng-model="screen.assigned_t_and_c_id" ng-options="entity.id as entity.title for entity in customTnCs" ng-change="termsAndConditionsChanged(screen.id, screen.assigned_t_and_c_id)"></select>
+            <select ng-model="screen.assigned_t_and_c_id" ng-options="entity.id as entity.title for entity in customTnCs" ng-change="termsAndConditionsChanged(screen.id, screen.assigned_t_and_c_id)">
+                <option ng-value="''" style="display:none;" translate>NONE</option>
+            </select>
         </div>
     </div>
 </div>

@@ -101,6 +101,7 @@ admin.controller('ADStationaryTermsAndConditionsCtrl', ['$scope',
 		// TERMS & CONDITIONS changed
 		$scope.termsAndConditionsChanged = function(id, assigned_tc_id) {
 			if (assigned_tc_id && id) {
+				var assigned_tc_id = assigned_tc_id === 'none' ? '' : assigned_tc_id;
 				var options = {
 					params: {
 						'screen_id': id,
