@@ -25,7 +25,6 @@ angular.module('sntRover').controller('companyCardDetailsController', ['$scope',
 		$scope.isLogoPrint = true;
 		$scope.isPrintArStatement = false;
 		$scope.contactInformation = {};
-
 		$scope.isGlobalToggleReadOnly = !rvPermissionSrv.getPermissionValue ('GLOBAL_CARD_UPDATE');
 		// setting the heading of the screen
 		if ($stateParams.type === "COMPANY") {
