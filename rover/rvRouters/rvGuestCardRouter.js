@@ -11,7 +11,7 @@ function(
                 },
                 guestcardDetailsAssets: function(jsMappings) {
                     return jsMappings.fetchAssets(['rover.guestcarddetails', 'directives']);
-                },
+                }
             }
         });
      

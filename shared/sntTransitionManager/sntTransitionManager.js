@@ -2,6 +2,7 @@ angular.module('snt.transitionManager',
     ['ui.router'])
     .run(['$rootScope', '$transitions', 'transitions', '$log',
         function ($rootScope, $transitions, transitionsSrv, $log) {
+
             $transitions.onSuccess({}, function (transition) {
                 var deepIndex;
 
@@ -18,6 +19,14 @@ angular.module('snt.transitionManager',
 
                 transitionsSrv.debug();
             });
+
+            $transitions.onStart({}, function (transition) {
+                if (!transitionsSrv.isInitial() &&
+                    transitionsSrv.isBackNavigation(transition)) {
+                    transition.options().custom['isBack'] = true;
+                }
+            });
+
         }
     ])
     .service('transitions', ['$log',
