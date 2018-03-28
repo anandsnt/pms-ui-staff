@@ -67,7 +67,7 @@ admin.controller('ADStationaryCtrl',
 				});
 				$scope.screenList = response.screens;
 				angular.forEach($scope.screenList, function(value) {
-					value.assigned_t_and_c_id = value.assigned_t_and_c_id === '' ? 'none' : value.assigned_t_and_c_id;
+					value.assigned_t_and_c_id = _.isNull(value.assigned_t_and_c_id) ? 'none' : value.assigned_t_and_c_id;
 				});
 				$scope.is_terms_and_conditions_active = openMenu ? true : $scope.is_terms_and_conditions_active;
 			}
