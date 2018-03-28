@@ -124,7 +124,6 @@ sntRover.controller('rvGMSLoyalityController', ['$scope', '$rootScope', '$filter
             };
         
         $scope.closeGMSDialog = function () {
-            console.log($scope.userInfo);
             closeGMSiFrame();
             $scope.closeDialog();
         };
