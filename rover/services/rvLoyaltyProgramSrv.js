@@ -72,8 +72,5 @@ angular.module('sntRover').service('RVLoyaltyProgramSrv', ['$q', 'RVBaseWebSrv',
             deferred.reject(data);
         });
         return deferred.promise;
-
     };
-
-
 }]);
