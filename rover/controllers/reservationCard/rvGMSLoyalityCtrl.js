@@ -1,5 +1,5 @@
-sntRover.controller('rvGMSLoyalityController', ['$scope', '$rootScope', '$filter', 'RVLoyaltyProgramSrv', 'ngDialog', '$sce', '$timeout',
-    function($scope, $rootScope, $filter, RVLoyaltyProgramSrv, ngDialog, $sce, $timeout) {
+sntRover.controller('rvGMSLoyalityController', ['$scope', '$rootScope', '$filter', 'RVLoyaltyProgramSrv', 'ngDialog', '$sce', '$timeout', 'sntActivity',
+    function($scope, $rootScope, $filter, RVLoyaltyProgramSrv, ngDialog, $sce, $timeout, sntActivity) {
         BaseCtrl.call(this, $scope);
         var credentials = {},
             content = {},
@@ -13,7 +13,7 @@ sntRover.controller('rvGMSLoyalityController', ['$scope', '$rootScope', '$filter
                         'content': content || {}
                     }, $scope.GMSiFrameSrc);
                 }
-                $scope.$emit('hideLoader');
+                sntActivity.stop('GMS_IFRAME_LOAD');
             },
             handleGMSmessage = function(event) {
                 // ensure the message sent is from GMS
@@ -46,9 +46,7 @@ sntRover.controller('rvGMSLoyalityController', ['$scope', '$rootScope', '$filter
                 $scope.iframe.removeEventListener('error', loadingError);
             },
             logGMSError = function(time, code) {
-                var errorMsg = 'GMS Error code:' + code ;
-
-                $scope.errorMessage = errorMsg;
+                $scope.errorMessage = 'GMS Error code:' + code ;
             },
             closeGMSiFrame = function () {
                 clearLoadEvents();
@@ -89,10 +87,6 @@ sntRover.controller('rvGMSLoyalityController', ['$scope', '$rootScope', '$filter
                         user_membership.id = data.id;
                         $rootScope.$broadcast('loyaltyProgramAdded', user_membership, 'fromReservationCard');
                         $rootScope.$broadcast('updateEmailFromGMS', message.details.email);
-                    },
-                    errorCallbackaddLoyaltyProgram = function(errorMessage) {
-                        $scope.$emit('hideLoader');
-                        $scope.errorMessage = errorMessage;
                     };
 
                 params.reservation_id = $scope.$parent.reservationData.reservation_card.reservation_id;
@@ -102,10 +96,15 @@ sntRover.controller('rvGMSLoyalityController', ['$scope', '$rootScope', '$filter
                 user_membership.membership_class = MEMBERSHIP_CLASS;
                 params.user_membership = user_membership;
 
-                $scope.invokeApi(RVLoyaltyProgramSrv.addLoyaltyProgram, params, successCallbackaddLoyaltyProgram, errorCallbackaddLoyaltyProgram);
+                var options = {
+                    params: params,
+                    successCallBack: successCallbackaddLoyaltyProgram
+                };
+
+                $scope.callAPI(RVLoyaltyProgramSrv.addLoyaltyProgram, options);
             },
             init = function () {
-                $scope.$emit('showLoader');
+                sntActivity.start('GMS_IFRAME_LOAD');
                 $scope.trustSrc = $sce.trustAsResourceUrl;
                 guestInfo = $scope.$parent.reservationParentData.guest;
                 // Membership class for HLP is 2, Value hardcoded
