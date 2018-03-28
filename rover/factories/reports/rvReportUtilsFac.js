@@ -594,10 +594,11 @@ angular.module('reportsModule')
                 if (filter.value === 'VAT_YEAR') {
                     report['hasVatYear'] = filter;
                     report['yearFilter'] = Array.from( {length : 10} , 
-                        function (v,i) {
+                        function (v, i) {
                            return {
-                                "value": moment().add(-1 * i, 'y').format('YYYY')
-                                }
+                                "value": moment().add(-1 * i, 'y')
+                                        .format('YYYY')
+                                };
                         });
                     report['year'] =  moment().format('YYYY');
                 }
