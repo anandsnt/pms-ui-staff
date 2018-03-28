@@ -75,6 +75,7 @@ admin.controller('ADStationaryTermsAndConditionsCtrl', ['$scope',
 		$scope.saveNewTnC = function() {
 			var options = {
 				params: {
+					'locale': $scope.data.locale,
 					'title': $scope.newTermsAndConditions.title,
 					'description': $scope.newTermsAndConditions.description
 				},
