@@ -69,8 +69,8 @@
                     </tr>
                     <tr ng-hide="!isStandAlone">
                         <td>
-                            <span>{{ printRegCardData.translation.amount_paid }}:</span>
-                            <strong>{{ printRegCardData.amount_paid | currency:currencySymbol:2 }}</strong>
+                            <span ng-hide="printRegCardData.hide_rates">{{ printRegCardData.translation.amount_paid }}:</span>
+                            <strong ng-hide="printRegCardData.hide_rates">{{ printRegCardData.amount_paid | currency:currencySymbol:2 }}</strong>
                         </td>
                         <td>
                             <span>{{ printRegCardData.translation.payment }}:</span>
