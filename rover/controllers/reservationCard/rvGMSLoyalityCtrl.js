@@ -4,18 +4,17 @@ sntRover.controller('rvGMSLoyalityController', ['$scope', '$rootScope', '$filter
         var credentials = {},
             content = {},
             guestInfo = {},
-            MEMBERSHIP_CLASS;
-
-        sendInitialMessage = function(event) {
-            if (event.target.id === 'gms-iframe') {
-                $scope.iframe.contentWindow.postMessage({
-                    'messageType': 'membership-lookup',
-                    'credentials': credentials,
-                    'content': content || {}
-                }, $scope.GMSiFrameSrc);
-            }
-            $scope.$emit('hideLoader');
-        },
+            MEMBERSHIP_CLASS,
+            sendInitialMessage = function(event) {
+                if (event.target.id === 'gms-iframe') {
+                    $scope.iframe.contentWindow.postMessage({
+                        'messageType': 'membership-lookup',
+                        'credentials': credentials,
+                        'content': content || {}
+                    }, $scope.GMSiFrameSrc);
+                }
+                $scope.$emit('hideLoader');
+            },
             handleGMSmessage = function(event) {
                 // ensure the message sent is from GMS
                 if ($scope.GMSiFrameSrc.includes(event.origin)) {
