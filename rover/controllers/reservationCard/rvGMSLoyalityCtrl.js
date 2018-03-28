@@ -87,6 +87,7 @@ sntRover.controller('rvGMSLoyalityController', ['$scope', '$rootScope', '$filter
                     successCallbackaddLoyaltyProgram = function(data) {
                         user_membership.id = data.id;
                         $rootScope.$broadcast('loyaltyProgramAdded', user_membership, 'fromReservationCard');
+                        $rootScope.$broadcast('updateEmailFromGMS', message.details.email);
                     },
                     errorCallbackaddLoyaltyProgram = function(errorMessage) {
                         $scope.$emit('hideLoader');
