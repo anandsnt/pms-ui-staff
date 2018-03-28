@@ -302,7 +302,7 @@ angular.module('sntRover').controller('rvGuestDetailsController',
 
         // Checks whether the remove guest details button should be shown or not
         $scope.shouldDisableRemoveGuestBtn = function () {
-            return $scope.guestCardData.contactInfo.can_guest_details_anonymized || !$scope.hasRemoveGuestDetailsPermission();
+            return !$scope.guestCardData.contactInfo.can_guest_details_anonymized || !$scope.hasRemoveGuestDetailsPermission();
         };
         
         // Listener to update the guest card action manage btn status
