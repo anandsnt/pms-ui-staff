@@ -30,7 +30,7 @@ admin.controller('ADStationaryTermsAndConditionsCtrl', ['$scope',
 					'locale': $scope.data.locale,
 					'id': entity.id
 				},
-				successCallBack: function(response) {
+				successCallBack: function() {
 					// delete the item from the list
 					$scope.customTnCs = _.without($scope.customTnCs, entity);
 					$scope.selectedTnCIndex = -1;
@@ -54,7 +54,7 @@ admin.controller('ADStationaryTermsAndConditionsCtrl', ['$scope',
 					'title': entity.title,
 					'description': entity.description
 				},
-				successCallBack: function(response) {
+				successCallBack: function() {
 					$scope.selectedTnCIndex = -1;
 				},
 				failureCallBack: function(response) {

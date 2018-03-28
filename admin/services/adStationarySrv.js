@@ -76,7 +76,7 @@ admin.service('ADStationarySrv', ['$http', '$q', 'ADBaseWebSrvV2', function($htt
 
 	this.updateTermsAndConditions = function (params) {
 		var deferred = $q.defer();
-		var url = '/api/terms_and_conditions/' + params.id;;
+		var url = '/api/terms_and_conditions/' + params.id;
 
 		ADBaseWebSrvV2.putJSON(url, params).then(function(data) {
 		    deferred.resolve(data);
