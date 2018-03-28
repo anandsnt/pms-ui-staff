@@ -43,9 +43,9 @@ angular.module('sntRover')
             var refreshScroll = function (noReset) {
                 $scope.refreshScroller('FULL_REPORT_SCROLL');
 
-                if (!!noReset) {
-                    return;
-                } else if ($scope.$parent.myScroll && $scope.$parent.myScroll.hasOwnProperty('FULL_REPORT_SCROLL')) {
+                if (!noReset &&
+                    $scope.$parent.myScroll &&
+                    $scope.$parent.myScroll.hasOwnProperty('FULL_REPORT_SCROLL')) {
                     $scope.$parent.myScroll['FULL_REPORT_SCROLL'].scrollTo(0, 0, 100);
                 }
             };
@@ -59,11 +59,12 @@ angular.module('sntRover')
                 $timeout(function () {
                     $scope.refreshScroller('report-list-scroll');
                     $scope.myScroll['report-list-scroll'].refresh();
-                    $scope.myScroll && $scope.myScroll['report-filter-sidebar-scroll'] &&
-                    $scope.myScroll['report-filter-sidebar-scroll'].refresh();
+
+                    if ($scope.myScroll && $scope.myScroll['report-filter-sidebar-scroll']) {
+                        $scope.myScroll['report-filter-sidebar-scroll'].refresh();
+                    }
                 }, 200);
             };
-
 
             /**
              *

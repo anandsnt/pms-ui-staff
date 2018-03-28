@@ -341,7 +341,7 @@ angular.module('stayCardModule', [])
                     return RVRoomAssignmentSrv.getRooms(params);
                 }
             },
-            lazyLoad: function($transition$){
+            lazyLoad: function ($transition$) {
                 $transition$.injector().get('jsMappings')
                     .fetchAssets(['rover.reservation.staycard.roomassignment', 'directives']);
             }
@@ -362,7 +362,7 @@ angular.module('stayCardModule', [])
                         return RVChangeStayDatesSrv.fetchInitialData($stateParams.reservationId);
                     }]
             },
-            lazyLoad: function($transition$){
+            lazyLoad: function ($transition$) {
                 return $transition$.injector().get('jsMappings')
                     .fetchAssets(['changestaydates', 'directives'], ['ui.calendar']);
             }

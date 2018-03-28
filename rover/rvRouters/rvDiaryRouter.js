@@ -21,7 +21,7 @@ angular
                 return rvDiarySrv.load(rvDiarySrv.properDateTimeCreation(start_date), rvDiarySrv.ArrivalFromCreateReservation());
             }
         },
-        lazyLoad: function($transition$){
+        lazyLoad: function ($transition$) {
             return $transition$.injector().get('jsMappings')
                 .fetchAssets(['react.files', 'rover.diary', 'directives'], ['react']);
         }

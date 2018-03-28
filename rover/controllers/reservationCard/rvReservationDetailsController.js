@@ -133,13 +133,7 @@ sntRover.controller('reservationDetailsController',
 				title: 'Room Diary'
 
 			};
-		} else if ($scope.previousState.name.match(/rover\.reports/) ||
-            $rootScope.stayCardStateBookMark.previousState.match(/rover\.reports/)) {
-
-            if ($scope.previousState.name.match(/rover\.reports/)) {
-                setNavigationBookMark();
-            }
-
+        } else if ((transitions.get().from()['name'].match(/rover\.reports/))) {
             $rootScope.setPrevState = {
                 title: 'REPORTS',
                 name: transitions.get().from()['name'],
