@@ -1,6 +1,6 @@
 <div class="stationery-items">
     <!-- Custom T&C -->    
-    <div class="group-holder" ng-repeat="entity in customTnCs" ng-class = "{'active': selectedTnCIndex === $index}" ng-if="entity.title !== 'none'">
+    <div class="group-holder" ng-repeat="entity in customTnCs" ng-class = "{'active': selectedTnCIndex === $index}" ng-if="entity.id !== 'none'">
         <div class="form-title has-toggle" ng-click="customTnCClicked($index)"> <!-- Clicking this toggles class 'active' on L15 -->
             <h3>{{entity.title}}</h3>
         </div>
