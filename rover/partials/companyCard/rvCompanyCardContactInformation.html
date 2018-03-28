@@ -34,7 +34,7 @@
             <div class="entry" ng-if="roverObj.isAnyInterfaceEnabled">
                 <label for="company-invoice-preference">E-Inovice preference</label>
                 <div class="select">
-                    <select ng-model="contactInformation.invoice_preference_id" name="company-invoice-preference" id="company-invoice-preference" ng-options="invoice_preference.id as invoice_preference.value for invoice_preference in contactInformation.invoice_preferences">                       
+                    <select ng-model="contactInformation.invoice_preference_id" name="company-invoice-preference" id="company-invoice-preference" ng-options="invoice_preference.id as invoice_preference.description for invoice_preference in contactInformation.invoice_preferences">                       
                     </select>
                 </div>
             </div>
