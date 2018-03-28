@@ -420,8 +420,8 @@ angular.module('sntRover').service('RVreportsSrv', [
         // Method to get the revenue and tax of accounts
         // @data - params to API
         service.getRevenueAndTax = function(data) {
-        	var deferred = $q.defer();
-			var url = '/api/accounts/revenue_and_tax';
+        	var deferred = $q.defer(),
+			    url = '/api/accounts/revenue_and_tax';
 
 				rvBaseWebSrvV2.getJSON(url, data).then(function(data) {
 
