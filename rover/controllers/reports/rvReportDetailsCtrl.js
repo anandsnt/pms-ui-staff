@@ -1464,7 +1464,8 @@ sntRover.controller('RVReportDetailsCtrl', [
 
 			var successCallBackOfGetRevenueAndTax = function (data) {
 					buildData(vatType, accountTypeId, data);
-				},postParamsToPay = {
+				},
+				postParamsToPay = {
 					"year": $scope.chosenReport.year,
 					"with_vat_id": (vatType === 'WITH_VAT_ID'),
 					"account_type_id": accountTypeId
