@@ -593,8 +593,13 @@ angular.module('reportsModule')
 
                 if (filter.value === 'VAT_YEAR') {
                     report['hasVatYear'] = filter;
-                    report['yearFilter'] = listYears(10, false);
-                    report['year'] = new Date().getFullYear();
+                    report['yearFilter'] = Array.from( {length : 10} , 
+                        function (v,i) {
+                           return {
+                                "value": moment().add(-1 * i, 'y').format('YYYY')
+                                }
+                        });
+                    report['year'] =  moment().format('YYYY');
                 }
 
                 if ( filter.value === 'MIN_NUMBER_OF_DAYS_NOT_OCCUPIED' ) {
