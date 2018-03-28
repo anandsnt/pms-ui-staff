@@ -72,7 +72,9 @@ sntRover.controller('rvGMSLoyalityController', ['$scope', '$rootScope', '$filter
                     'username': $scope.ngDialogData.user_name,
                     'password': $scope.ngDialogData.password,
                     'buildingCode': $scope.ngDialogData.hotel_code,
-                    'identifier': $rootScope.hotelDetails.current_user.name
+                    'identifier': $rootScope.hotelDetails.current_user.email,
+                    'lname': $scope.userInfo.last_name,
+                    'fname': $scope.userInfo.first_name
                 };
                 content = {
                     'email': guestInfo.email,
@@ -122,6 +124,7 @@ sntRover.controller('rvGMSLoyalityController', ['$scope', '$rootScope', '$filter
             };
         
         $scope.closeGMSDialog = function () {
+            console.log($scope.userInfo);
             closeGMSiFrame();
             $scope.closeDialog();
         };
