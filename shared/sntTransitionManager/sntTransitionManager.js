@@ -26,6 +26,7 @@ angular.module('snt.transitionManager',
                     transition.options().custom['isBack'] = true;
                 }
             });
+
         }
     ])
     .service('transitions', ['$log',

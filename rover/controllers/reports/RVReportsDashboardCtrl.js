@@ -43,6 +43,7 @@ angular.module('sntRover')
             var refreshScroll = function (noReset) {
                 $scope.refreshScroller('FULL_REPORT_SCROLL');
 
+
                 if (!noReset &&
                     $scope.$parent.myScroll &&
                     $scope.$parent.myScroll.hasOwnProperty('FULL_REPORT_SCROLL')) {
