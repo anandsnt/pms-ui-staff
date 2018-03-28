@@ -49,7 +49,7 @@ admin.controller('ADStationaryCtrl',
 
 	$scope.stationery_data = {};
 
-	$scope.$on('SHOW_ERROR_MSG', function (evt, data) {
+	var showErrorMessage = $scope.$on('SHOW_ERROR_MSG', function (evt, data) {
 		$scope.errorMessage = data.error;
 	});
 	var fetchTermsAndConditions = function(openMenu) {
@@ -300,5 +300,7 @@ admin.controller('ADStationaryCtrl',
 		}
 
 	};
+
+	$scope.$on('$destroy', showErrorMessage);
 
 }]);

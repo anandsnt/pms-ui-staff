@@ -114,9 +114,7 @@ admin.controller('ADStationaryTermsAndConditionsCtrl', ['$scope',
 				};
 
 				$scope.callAPI(ADStationarySrv.assignTermsAndConditions, options);
-			} else {
-				return;
-			}
+			}			
 		};
 
 	}
