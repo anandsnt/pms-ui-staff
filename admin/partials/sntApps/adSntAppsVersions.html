@@ -10,7 +10,6 @@
                     <div class="entry">
                         <div class="select" style="width:200px;">
                             <select class="placeholder" ng-model="filterType" ng-options="opt.value for opt in filterList" ng-change="appTypeChanged()" style="width:200px;">
-                                <option value="">Filter by Service Type</option>
                             </select>
                         </div>
                     </div>
@@ -94,43 +93,6 @@
                 </button>
                 <button type="button" like-type="common" id="update" class="button green" ng-click="checkIfVersionIsValid()" translate>
                     SAVE_CHANGES
-                </button>
-            </div>
-        </div>
-    </section>
-</section>
-<section class="content current" ng-show="screenMode === 'SETTINGS'">
-    <header class="content-title float">
-        <h2>Settings</h2>
-        <a ng-click="changeToListView()" class="action back ng-scope" translate="">Versions</a>
-    </header>
-    <section class="content-scroll">
-        <div ng-include="'/assets/partials/common/notification_message.html'"></div>
-        <div ng-include="'/assets/partials/common/notification_success_message.html'"></div>
-        <div class="form">
-            <div class="form-title" style="margin-bottom:20px;">
-                <h3>SFTP Settings</h3>
-            </div>
-            <fieldset class="holder left float">
-                <!-- sftp location -->
-                <ad-textbox value="settingsData.url" label="SFTP Location" placeholder="Enter SFTP Location" styleclass="full-width"></ad-textbox>
-                <!-- sftp port -->
-                <ad-textbox value="settingsData.port" label="SFTP Port" placeholder="Enter SFTP Port" styleclass="full-width"></ad-textbox>
-                <!-- sftp user -->
-                <ad-textbox value="settingsData.username" label="SFTP user" placeholder="Enter SFTP User" styleclass="full-width"></ad-textbox>
-            </fieldset>
-            <fieldset class="holder right float">
-                <!--  sftp password-->
-                <ad-textbox inputtype="password" value="settingsData.password" label="SFTP Password" placeholder="Enter SFTP Password" styleclass="full-width"></ad-textbox>
-                <!--  sftp respath-->
-                <ad-textbox value="settingsData.filepath" label="SFTP Respath" placeholder="Enter SFTP Respath" styleclass="full-width"></ad-textbox>
-            </fieldset>
-            <div class="actions float">
-                <button type="button" id="cancel" class="button blank add-data-inline" ng-click="changeToListView()" translate>
-                    CANCEL
-                </button>
-                <button type="button" like-type="common" id="update" class="button green" ng-click="saveFTPsettings()" translate>
-                    SAVE CHANGES
                 </button>
             </div>
         </div>
