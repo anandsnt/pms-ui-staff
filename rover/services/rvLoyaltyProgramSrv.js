@@ -1,10 +1,10 @@
-angular.module('sntRover').service('RVLoyaltyProgramSrv', ['$q', 'RVBaseWebSrv', function($q, RVBaseWebSrv) {
+angular.module('sntRover').service('RVLoyaltyProgramSrv', ['$q', 'RVBaseWebSrv', 'BaseWebSrvV2', function($q, RVBaseWebSrv, BaseWebSrvV2) {
 
     this.addLoyaltyProgram = function(param) {
         var deferred = $q.defer(),
             url = '/staff/user_memberships';
 
-        RVBaseWebSrv.postJSON(url, param).then(function(data) {
+        BaseWebSrvV2.postJSON(url, param).then(function(data) {
             deferred.resolve(data);
         }, function(data) {
             deferred.reject(data);
@@ -17,7 +17,7 @@ angular.module('sntRover').service('RVLoyaltyProgramSrv', ['$q', 'RVBaseWebSrv',
         var deferred = $q.defer(),
             url = '/api/integrations/zdirect/settings';
 
-        RVBaseWebSrv.getJSON(url).then(function(data) {
+        BaseWebSrvV2.getJSON(url).then(function(data) {
             deferred.resolve(data);
         }, function(data) {
             deferred.reject(data);
