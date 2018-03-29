@@ -166,5 +166,23 @@ angular.module('sntRover').service('RVContactInfoSrv', [
             return guestData;
         };
 
+        /**
+         * Delete guest by id
+         * @param {Number} guestId id of the guest
+         * @return {Promise} Promise
+         */        
+        service.deleteGuest = function (guestId) {
+            var deffered = $q.defer(),
+                url = '/api/guest_details/' + guestId;
+
+            rvBaseWebSrvV2.deleteJSON(url).then (function (data) {
+                deffered.resolve (data);
+            }, function (error) {
+                deffered.reject(error);
+            });
+
+            return deffered.promise;
+        };
+
     }
 ]);
