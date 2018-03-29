@@ -363,7 +363,9 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
             item_47: false,
             item_48: false,
             item_49: false,
-            item_50: false
+            item_50: false,
+            item_51: false,
+            item_52: false
         };
         $scope.toggleFilterItems = function(item) {
             if ( ! $scope.filterItemsToggle.hasOwnProperty(item) ) {
@@ -1422,6 +1424,29 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
                 }
             }
 
+             // include VAT year
+            if ( report.hasVatYear ) {
+                key         = reportParams['VAT_YEAR'];
+                params[key] = report.year;
+
+                if ( changeAppliedFilter ) {
+                    $scope.appliedFilter['year'] = report.year;
+                }
+            }
+
+            if ( report.hasCompanyTravelAgentWithOrWithoutVat ) {
+                key         = reportParams['WITH_VAT_NUMBER'];
+                params[key] = report.with_vat_number;
+
+                key         = reportParams['WITHOUT_VAT_NUMBER'];
+                params[key] = report.without_vat_number;
+
+                if ( changeAppliedFilter ) {
+                    $scope.appliedFilter['with_vat_number'] = report.with_vat_number;
+                    $scope.appliedFilter['without_vat_number'] = report.without_vat_number;
+                }
+            }            
+
             // include CICO filter
             if (!!report.hasCicoFilter) {
                 checkInKey  = reportParams['CHECKED_IN'];
@@ -1949,7 +1974,7 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
                         $scope.appliedFilter.age_buckets = ['All Aging Balance'];
                     }
                 }
-            }
+            }           
 
             // Include accounts
             if ( report.hasOwnProperty('hasAccountSearch') ) {
@@ -2785,7 +2810,6 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
                 return false;
             }
         };
-
 
         $scope.grpAutoCompleteOnList = angular.extend({
             position: {
