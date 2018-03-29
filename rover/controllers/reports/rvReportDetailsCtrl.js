@@ -579,6 +579,19 @@ sntRover.controller('RVReportDetailsCtrl', [
             }
 
 
+            if ($scope.chosenReport.title === reportNames['YEARLY_VAT']) {
+                if (results.with_vat_id) {
+                    results.with_vat_id.isCollapsed = false;
+                    results.with_vat_id.accounts = setVatReportCollapseData(results.with_vat_id.accounts);
+                }
+
+                if (results.without_vat_id) {
+                    results.without_vat_id.isCollapsed = false;
+                    results.without_vat_id.accounts = setVatReportCollapseData(results.without_vat_id.accounts);
+                }
+            }
+
+
             // new more detailed reports
             $scope.parsedApiFor = $scope.chosenReport.title;
 
@@ -751,6 +764,7 @@ sntRover.controller('RVReportDetailsCtrl', [
                     $scope.showReportHeader = true;
                     $scope.detailsTemplateUrl = '/assets/partials/reports/roomOooOosReport/rvRoomOooOosReport.html';
                     break;
+
                 case reportNames['BUSINESS_ON_BOOKS']:
                     $scope.showReportHeader = true;
                     $scope.detailsTemplateUrl = '/assets/partials/reports/businessOnBooks/rvBusinessOnBooksReport.html';
@@ -774,7 +788,12 @@ sntRover.controller('RVReportDetailsCtrl', [
                 case reportNames['GROUP_ROOMS_REPORT']:
                     $scope.showReportHeader = true;
                     $scope.detailsTemplateUrl = '/assets/partials/reports/groupRoomsReport/rvGroupRoomsReport.html';
+                    break;
 
+                case reportNames['YEARLY_VAT']:
+                    $scope.hasReportTotals = true;
+                    $scope.showReportHeader = true;
+                    $scope.detailsTemplateUrl = '/assets/partials/reports/yearlyVat/yearlyVatReportDetails.html';
                     break;
 
                 default:
@@ -784,6 +803,39 @@ sntRover.controller('RVReportDetailsCtrl', [
                     break;
             }
         };
+
+        /*
+         * @param arrayData - data
+         * isAccountCollapsed - param used to check data in collapsed state or not
+         */
+        var setVatReportCollapseData = function (arrayData) {
+            _.each(arrayData, function (item) {
+                item.isAccountCollapsed = false;
+            });
+            return arrayData;
+        };
+
+        /*
+       * Function to build data
+       * @vatType - vat type (with or without vat)
+       * @accountTypeId - account type (company / travel agent)
+       * @data - revenue data
+       */
+        var buildData = function (vatType, accountTypeId, data) {
+            var resultArrayToBeModified = (vatType === 'WITH_VAT_ID') ? $scope.results.with_vat_id.accounts : $scope.results.without_vat_id.accounts;
+
+            _.each(resultArrayToBeModified, function (item) {
+                if (item.account_type_id === accountTypeId) {
+                    if (data) {
+                        item.revenueData = data.data;
+                    }
+                    item.isCollapsed = !item.isCollapsed;
+                }
+            });
+
+            $scope.refreshScroll();
+        };
+
 
         $scope.parsedApiTemplate = function () {
             var template = '';
@@ -1401,6 +1453,46 @@ sntRover.controller('RVReportDetailsCtrl', [
             return !!reportPaginationIds[$scope.chosenReport.title];
         };
 
+        /*
+        * Result with vat id collapsed or not
+        */
+        $scope.setResultWithVatCollapsedOrNot = function () {
+            $scope.results.with_vat_id.isCollapsed = !$scope.results.with_vat_id.isCollapsed;
+        };
+        /*
+         * Result without vat id collapsed or not
+         */
+        $scope.setResultWithOutVatCollapsedOrNot = function () {
+            $scope.results.without_vat_id.isCollapsed = !$scope.results.without_vat_id.isCollapsed;
+        };
+
+        /*
+		 * Function to get revenue data
+		 * @vatType - vat type (with or without vat)
+		 * @accountTypeId - account type (company / travel agent)
+		 * @data - revenue data
+		 */
+        $scope.getRevenueAndTax = function (vatType, accountTypeId, isCollapsed) {
+
+            var successCallBackOfGetRevenueAndTax = function (data) {
+                    buildData(vatType, accountTypeId, data);
+                },
+                postParamsToPay = {
+                    'year': $scope.chosenReport.year,
+                    'with_vat_id': (vatType === 'WITH_VAT_ID'),
+                    'account_type_id': accountTypeId
+                },
+                options = {
+                    params: postParamsToPay,
+                    successCallBack: successCallBackOfGetRevenueAndTax
+                };
+
+            if (!isCollapsed) {
+                $scope.callAPI(reportsSrv.getRevenueAndTax, options);
+            } else {
+                buildData(vatType, accountTypeId);
+            }
+        };
 
         (function () {
             $rootScope.setPrevState = {
@@ -1419,7 +1511,7 @@ sntRover.controller('RVReportDetailsCtrl', [
                     break;
                 case reportMsgs['REPORT_LOAD_LAST_REPORT']:
                 default:
-                    // do nothing .. wait for event from rvReportsMainCtrl.js
+                // do nothing .. wait for event from rvReportsMainCtrl.js
 
             }
         })();
