@@ -12,7 +12,7 @@
 
                 <h3>{{feature.title}}</h3>
                 <p>{{feature.description}}</p>
-                <ad-toggle-button is-checked="feature.enabled" change="featureChanged()"></ad-toggle-button>
+                <ad-toggle-button is-checked="feature.enabled" on-update="onFeatureUpdate()"></ad-toggle-button>
             </li>
         </ul>
     </section>

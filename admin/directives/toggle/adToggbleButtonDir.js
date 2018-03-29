@@ -9,11 +9,11 @@ admin.directive('adToggleButton', function() {
             isChecked: '=isChecked',
             divClass: '@divClass',
             buttonClass: '@buttonClass',
-            change: '=change',
             label: '@label',
             isDisabled: '=isDisabled',
             isHide: '=isHide',
-            description: '@description'
+            description: '@description',
+            onUpdate: '&'
 	    },
 
     	templateUrl: '/assets/directives/toggle/adToggleButton.html'

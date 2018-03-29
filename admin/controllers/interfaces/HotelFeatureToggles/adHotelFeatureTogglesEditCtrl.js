@@ -24,11 +24,8 @@ admin.controller('adHotelFeatureTogglesEditCtrl', [
             }
         };
 
-        $scope.featureChanged = function() {
-            console.log($scope.data)
-
-// TODO: Provide server call with updated feature
-//            $scope.callAPI(adFeaturesSrv.updateFeature, {params: {'feature': feature}});
+        $scope.onFeatureUpdate = function () {
+            console.log($scope.data);
         };
 
         (function () {
