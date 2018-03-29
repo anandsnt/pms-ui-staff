@@ -2312,7 +2312,7 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
                 }, 100);
                 return false;
             },
-            close: function (event, ui) {
+            close: function () {
                 var uiValues = split(this.value);
                 var modelVal = [];
 
@@ -2383,9 +2383,7 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
                 $scope.$emit('showLoader');
                 reportsSubSrv.fetchComTaGrp(term, true)
                     .then(function (data) {
-                        var entry = {},
-                            found,
-                            hasIn;
+                        var found;
 
                         _.each(data, function (item) {
                             var hasIn = _.find(activeCompTaCompleteAry, function (added) {
