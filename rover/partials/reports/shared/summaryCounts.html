@@ -246,3 +246,9 @@
 <ul ng-if="isThisReport( 'DEPARTURE' )" class="totals">
     <li>Total Departure Rooms<span>{{ summaryCounts.total_rooms_count }}</span></li>
 </ul>
+<!-- Yearly vat report -->
+<ul ng-if="isThisReport( 'YEARLY_VAT')" class="totals">
+    <li>Total Revenue<span><span class="currency">{{currencySymbol}}</span>{{ summaryCounts.total_revenue  }}</span></li>
+    <li>Total Vat<span>{{ summaryCounts.total_vat }}</span>
+    </li>  
+</ul>

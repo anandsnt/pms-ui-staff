@@ -412,6 +412,7 @@ angular.module('sntRover').controller('companyCardDetailsController', ['$scope',
 		var successCallbackOfInitialFetch = function(data) {
 			$scope.$emit("hideLoader");
 			$scope.contactInformation = data;
+			$scope.contactInformation.emailStyleClass = $rootScope.roverObj.isAnyInterfaceEnabled ? 'margin' : 'full-width';
 			$scope.$broadcast("LOAD_SUBSCRIBED_MPS");
 			if ($scope.contactInformation.alert_message !== "") {
 				$scope.errorMessage = [$scope.contactInformation.alert_message];
@@ -462,6 +463,7 @@ angular.module('sntRover').controller('companyCardDetailsController', ['$scope',
 				$scope.contactInformation.account_details = {};
 				$scope.contactInformation.account_details.account_name = $stateParams.query;
 			}
+			$scope.contactInformation.emailStyleClass = $rootScope.roverObj.isAnyInterfaceEnabled ? 'margin' : 'full-width';
 
 			// setting as null dictionary, will help us in saving..
 
