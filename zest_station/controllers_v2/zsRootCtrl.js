@@ -130,7 +130,7 @@ sntZestStation.controller('zsRootCtrl', [
         $scope.getTagValue = function(tag) {
             var currentLanguageCode = $scope.currentLanguageCode;
 
-            return $scope.tagInEdit.language[currentLanguageCode][tag];
+            return $scope.tagInEdit.language[currentLanguageCode] ? $scope.tagInEdit.language[currentLanguageCode][tag] : '';
         };
 
 		/**
@@ -1892,14 +1892,14 @@ sntZestStation.controller('zsRootCtrl', [
 
         $scope.retrieveTranslations = function() {
             var usedLanguageCode = $translate.use();
-            var languageId = _.find($scope.zestStationData.hotelLanguages, function(language) {
+            var selecteLanguage = _.find($scope.zestStationData.hotelLanguages, function(language) {
                 return language.code === usedLanguageCode;
-            }).id;
+            });
+            var languageId = selecteLanguage ? selecteLanguage.id : '';
             var propertyTranslations = _.find($scope.zestStationData.hotelTranslations, function(translation) {
                 return translation.language_id === languageId;
             });
-
-            return propertyTranslations.translations;
+            return propertyTranslations ? propertyTranslations.translations : [];
         };
 
 		/** *
