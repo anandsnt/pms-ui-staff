@@ -16,9 +16,10 @@ admin.service('adFeaturesSrv', ['$http', '$q', 'ADBaseWebSrv', function($http, $
 
 	this.updateFeature = function(data) {
 		var deferred = $q.defer(),
-			url = '/admin/hotels/' + id + '/features/' + data.feature.name + '.json';
+			url = '/admin/hotels/' + data.id + '/features/' + data.name + '.json',
+			params = { value: data.enabled };
 
-		ADBaseWebSrvV2.putJSON(url, { value: data.feature.value }).then(function(data) {
+		ADBaseWebSrv.putJSON(url, params).then(function(data) {
 			deferred.resolve(data);
 		}, function(data) {
 			deferred.reject(data);

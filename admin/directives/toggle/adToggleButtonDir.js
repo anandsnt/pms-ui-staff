@@ -13,10 +13,16 @@ admin.directive('adToggleButton', function() {
             isDisabled: '=isDisabled',
             isHide: '=isHide',
             description: '@description',
-            onUpdate: '&'
+            onUpdate: '=',
+            params: '='
 	    },
 
-    	templateUrl: '/assets/directives/toggle/adToggleButton.html'
+    	templateUrl: '/assets/directives/toggle/adToggleButton.html',
+        controller: function($scope) {
+            $scope.handler = function () {
+             $scope.onUpdate($scope.params, $scope.isChecked);
+            };
+        }
     };
 
 });

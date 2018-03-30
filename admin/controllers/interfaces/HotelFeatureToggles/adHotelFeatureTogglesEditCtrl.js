@@ -24,8 +24,8 @@ admin.controller('adHotelFeatureTogglesEditCtrl', [
             }
         };
 
-        $scope.onFeatureUpdate = function () {
-            console.log($scope.data);
+        $scope.onFeatureUpdate = function (index, enabled) {
+            $scope.callAPI(adFeaturesSrv.updateFeature, { params: { enabled: enabled, id: $stateParams.id, name: $scope.data[index].name } });
         };
 
         (function () {
