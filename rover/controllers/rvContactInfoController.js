@@ -53,7 +53,7 @@ angular.module('sntRover').controller('RVContactInfoController', ['$scope', '$ro
 
           // CICO-9169
 
-            var avatarImage = getAvatharUrl(dataToUpdate.title);
+            var avatarImage = getAvatharUrl($scope.guestCardData.contactInfo.title);
 
             $scope.$emit('CHANGEAVATAR', avatarImage);
           // to reset current data in header info for determining any change
@@ -119,6 +119,10 @@ angular.module('sntRover').controller('RVContactInfoController', ['$scope', '$ro
                     $scope.showGuestPaymentList($scope.guestCardData.contactInfo);
                 }        
                 $scope.newGuestAdded(data.id);
+
+                // CICO-51598 - Should allow the guest card to delete immediately after creation
+                $scope.guestCardData.contactInfo.can_guest_details_anonymized = true;
+                $scope.guestCardData.contactInfo.can_guest_card_delete = true;
             };
 
       /**

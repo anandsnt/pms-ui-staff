@@ -38,4 +38,7 @@
 "MOBILE_APPS_SETTINGS": "Mobile App settings",
 "QR_EMAIL_TEXT_SETTINGS": "QR - Key Delivery Email Settings",
 "TEXT_KEY_DELIVERY_SETTINGS": "Text- Key Delivery Email Settings",
-"STATION_MOBILE_KEY_DELIVERY_SETTINGS": "Mobile Key Email Settings"
+"STATION_MOBILE_KEY_DELIVERY_SETTINGS": "Mobile Key Email Settings",
+"CONTACT_SNT_FOR_DETAILS": "This feature is not activated. For activation and more information, please contact - ",
+"SNT_HELP_DESK": "StayNTouch Help desk",
+"SNT_HELP_DESK_LINK": "https://stayntouch.freshdesk.com/support/home"
