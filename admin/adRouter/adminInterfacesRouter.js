@@ -714,8 +714,8 @@ angular.module('adminInterfacesRouter', []).config(function($stateProvider) {
         controller: 'adHotelFeatureTogglesEditCtrl',
         url: '/admin/hotel_feature_toggles/:id',
         resolve: {
-            settings: ['adFeaturesSrv', '$stateParams',function(adFeaturesSrv, $stateParams) {
-                return adFeaturesSrv.fetch($stateParams.id)
+            settings: ['adFeaturesSrv', '$stateParams', function(adFeaturesSrv, $stateParams) {
+                return adFeaturesSrv.fetch($stateParams.id);
             }]
         }
     });
