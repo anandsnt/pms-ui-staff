@@ -119,6 +119,10 @@ angular.module('sntRover').controller('RVContactInfoController', ['$scope', '$ro
                     $scope.showGuestPaymentList($scope.guestCardData.contactInfo);
                 }        
                 $scope.newGuestAdded(data.id);
+
+                // CICO-51598 - Should allow the guest card to delete immediately after creation
+                $scope.guestCardData.contactInfo.can_guest_details_anonymized = true;
+                $scope.guestCardData.contactInfo.can_guest_card_delete = true;
             };
 
       /**
