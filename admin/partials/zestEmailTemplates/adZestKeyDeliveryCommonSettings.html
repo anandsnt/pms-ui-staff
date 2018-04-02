@@ -2,8 +2,10 @@
     <header class="content-title float">
         <h2 translate>KEY_DELIVERY_COMMON_SETTINGS</h2>
         <a ng-click="goBackToPreviousState()" class="action back" translate>BACK</a>
+        <h4 ng-hide="hotelDetails.is_dynamic_template_on">{{ 'CONTACT_SNT_FOR_DETAILS' | translate }} <a href="{{ 'SNT_HELP_DESK_LINK' | translate}}" target="_blank">{{ 'SNT_HELP_DESK'| translate }}</a></h4>
+        <br/>
     </header>
-    <section class="content-scroll">
+    <section class="content-scroll" ng-style="{ 'margin-top' : hotelDetails.is_dynamic_template_on ? '10px' : '40px' }">
         <div ng-include="'/assets/partials/common/notification_message.html'"></div>
         <div ng-include="'/assets/partials/common/notification_success_message.html'"></div>
         <div>
