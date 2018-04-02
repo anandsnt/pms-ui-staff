@@ -293,7 +293,7 @@ admin.controller('ADHotelDetailsCtrl', [
 	            	document.getElementsByTagName("html")[0].removeAttribute( 'class');
 	            }
 
-				$state.go('admin.dashboard', {menu: 0});
+				$state.go('admin.dashboard', {menu: $scope.findMainMenuIndex('Hotel & Staff')});
 				$scope.$emit('hotelNameChanged', {"new_name": $scope.data.hotel_name});
 				angular.forEach($scope.data.currency_list, function(item, index) {
 		       		if (item.id === $scope.data.default_currency) {

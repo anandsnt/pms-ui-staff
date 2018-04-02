@@ -728,6 +728,114 @@ angular.module('adminModuleTwo', []).config(function ($stateProvider) {
         }
     });
 
+    // =================================================================================================
+
+    $stateProvider.state('admin.emailTemplatesSettingsGroup', {
+        templateUrl: '/assets/partials/zestEmailTemplates/adZestEmailTemplateList.html',
+        controller: 'ADZestEmailMenuCtrl',
+        url: '/emailTemplates'
+    });
+
+    $stateProvider.state('admin.zestEmailGeneralSettings', {
+        templateUrl: '/assets/partials/zestEmailTemplates/adZestEmailGeneralSettings.html',
+        controller: 'ADZestEmailGeneralSettingsCtrl',
+        url: '/generalSettings',
+        resolve: {
+            data: function(adZestEmailTemplateSrv) {
+                return adZestEmailTemplateSrv.getSettings();
+            }
+        }
+    });
+
+    $stateProvider.state('admin.zestPreCheckinEmailSettings', {
+        templateUrl: '/assets/partials/zestEmailTemplates/adZestCommonEmailSettings.html',
+        controller: 'ADZestEmailPrecheckinSettingsCtrl',
+        url: '/precheckinSettings',
+        resolve: {
+            data: function(adZestEmailTemplateSrv) {
+                return adZestEmailTemplateSrv.getSettings();
+            }
+        }
+    });
+
+    $stateProvider.state('admin.zestCheckinEmailSettings', {
+        templateUrl: '/assets/partials/zestEmailTemplates/adZestCommonEmailSettings.html',
+        controller: 'ADZestCheckinEmailSettingsCtrl',
+        url: '/checkinSettings',
+        resolve: {
+            data: function(adZestEmailTemplateSrv) {
+                return adZestEmailTemplateSrv.getSettings();
+            }
+        }
+    });
+
+    $stateProvider.state('admin.zestCheckoutEmailSettings', {
+        templateUrl: '/assets/partials/zestEmailTemplates/adZestCommonEmailSettings.html',
+        controller: 'ADZestCheckoutEmailSettingsCtrl',
+        url: '/checkoutSettings',
+        resolve: {
+            data: function(adZestEmailTemplateSrv) {
+                return adZestEmailTemplateSrv.getSettings();
+            }
+        }
+    });
+
+    $stateProvider.state('admin.zestLateCheckoutEmailSettings', {
+        templateUrl: '/assets/partials/zestEmailTemplates/adZestCommonEmailSettings.html',
+        controller: 'ADZestLateCheckoutEmailSettingsCtrl',
+        url: '/lateCheckoutSettings',
+        resolve: {
+            data: function(adZestEmailTemplateSrv) {
+                return adZestEmailTemplateSrv.getSettings();
+            }
+        }
+    });
+    $stateProvider.state('admin.zestKeyDeliveryCommonSettings', {
+        templateUrl: '/assets/partials/zestEmailTemplates/adZestKeyDeliveryCommonSettings.html',
+        controller: 'ADZestKeyDeliveryCommonCtrl',
+        url: '/keyCommonSettings',
+        resolve: {
+            data: function(adZestEmailTemplateSrv) {
+                return adZestEmailTemplateSrv.getSettings();
+            }
+        }
+    });
+
+    $stateProvider.state('admin.zestTextKeyDeliveryEmailSettings', {
+        templateUrl: '/assets/partials/zestEmailTemplates/adZestCommonEmailSettings.html',
+        controller: 'ADZestTextKeyDeliverySettingsCtrl',
+        url: '/keyTextEmailSettings',
+        resolve: {
+            data: function(adZestEmailTemplateSrv) {
+                return adZestEmailTemplateSrv.getSettings();
+            }
+        }
+    });
+
+    $stateProvider.state('admin.zestQRKeyDeliveryEmailSettings', {
+        templateUrl: '/assets/partials/zestEmailTemplates/adZestCommonEmailSettings.html',
+        controller: 'ADZestQRKeyDeliverySettingsCtrl',
+        url: '/keyQREmailSettings',
+        resolve: {
+            data: function(adZestEmailTemplateSrv) {
+                return adZestEmailTemplateSrv.getSettings();
+            }
+        }
+    });
+
+    $stateProvider.state('admin.zestMobileKeyEmailSettings', {
+        templateUrl: '/assets/partials/zestEmailTemplates/adZestCommonEmailSettings.html',
+        controller: 'ADZestMobileKeyEmailSettingsCtrl',
+        url: '/mobileKeyEmailSettings',
+        resolve: {
+            data: function(adZestEmailTemplateSrv) {
+                return adZestEmailTemplateSrv.getSettings();
+            }
+        }
+    });
+
+    // =================================================================================================
+    
     $stateProvider.state('admin.propertyGroups', {
         templateUrl: '/assets/partials/chainAdmins/adPropertyGroups.html',
         controller: 'ADPropertyGroupsCtrl',

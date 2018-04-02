@@ -75,7 +75,8 @@ BaseCtrl = function($scope) {
             showLoader = loader.toUpperCase() === 'BLOCKER',
             successCallBack = options['successCallBack'] ? options['successCallBack'] :
                 (options['onSuccess'] ? options['onSuccess'] : $scope.fetchedCompleted),
-            failureCallBack = options['failureCallBack'] ? options['failureCallBack'] : $scope.fetchedFailed,
+            failureCallBack = options['failureCallBack'] ? options['failureCallBack'] :
+                (options['onFailure'] ? options['onFailure'] : $scope.fetchedFailed),
             successCallBackParameters = options['successCallBackParameters'] ? options['successCallBackParameters'] : null,
             failureCallBackParameters = options['failureCallBackParameters'] ? options['failureCallBackParameters'] : null;
 
