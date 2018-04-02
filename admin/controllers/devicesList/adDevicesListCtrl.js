@@ -18,6 +18,7 @@ admin.controller('ADDevicesListCtrl', ['$scope', '$state', 'ngTableParams', 'adD
 
         return latestServiceVersion;
       };
+      
       var fetchSuccessOfItemList = function(data) {
         $timeout(function() {
           // No expanded rate view
