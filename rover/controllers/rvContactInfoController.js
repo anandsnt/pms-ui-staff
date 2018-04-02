@@ -53,7 +53,7 @@ angular.module('sntRover').controller('RVContactInfoController', ['$scope', '$ro
 
           // CICO-9169
 
-            var avatarImage = getAvatharUrl(dataToUpdate.title);
+            var avatarImage = getAvatharUrl($scope.guestCardData.contactInfo.title);
 
             $scope.$emit('CHANGEAVATAR', avatarImage);
           // to reset current data in header info for determining any change
