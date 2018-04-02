@@ -16,7 +16,7 @@ admin.controller('ADDevicesListCtrl', ['$scope', '$state', 'ngTableParams', 'adD
         });
         var latestServiceVersion = serviceType ? serviceType.latest_build : '';
 
-        return latestServiceVersion
+        return latestServiceVersion;
       };
       var fetchSuccessOfItemList = function(data) {
         $timeout(function() {
