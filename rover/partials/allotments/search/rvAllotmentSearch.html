@@ -76,12 +76,8 @@
         </div>
     </div>
 </form>
-<!-- Pagination -->
-<div class="search-pagination" ng-show="shouldShowPagination()">
-    <button type="button" class="button dark-grey next" ng-click="loadNextSet()" ng-disabled="isNextButtonDisabled()">Next</button>
-    <button type="button" class="button dark-grey prev" ng-click="loadPrevSet()" ng-disabled="isPrevButtonDisabled()">Previous</button>
-    <p>Showing <strong>{{start}}-{{end}}</strong> of <strong id="total-count">{{totalResultCount}}</strong> items</p>
-</div>
+
+<rv-pagination page-options="pageOptions" page-data="totalResultCount"></rv-pagination>
 
 <!-- Search panel - WITH RESULTS -->
 <section id="find-allotment" class="content scrollable" role="main"

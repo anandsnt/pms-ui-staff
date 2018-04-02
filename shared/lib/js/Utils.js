@@ -592,6 +592,7 @@ var tConvertToAPIFormat = function(hh, mm, ampm){
 	return time;
 
 }
+
 //retrieve month name from index
 function getMonthName(monthIndex){
     var monthName = new Array(12);

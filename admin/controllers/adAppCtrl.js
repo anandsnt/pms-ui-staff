@@ -1,8 +1,8 @@
 admin.controller('ADAppCtrl', [
     '$state', '$scope', '$rootScope', 'ADAppSrv', '$stateParams', '$window', '$translate', 'adminMenuData', 'businessDate',
-    '$timeout', 'ngDialog', 'sntAuthorizationSrv', '$filter',
+    '$timeout', 'ngDialog', 'sntAuthorizationSrv', '$filter', '$sce',
     function($state, $scope, $rootScope, ADAppSrv, $stateParams, $window, $translate, adminMenuData, businessDate,
-             $timeout, ngDialog, sntAuthorizationSrv, $filter) {
+             $timeout, ngDialog, sntAuthorizationSrv, $filter, $sce) {
 
 		// hide the loading text that is been shown when entering Admin
 		$( ".loading-container" ).hide();
@@ -646,6 +646,48 @@ admin.controller('ADAppCtrl', [
 			$scope.data.current_hotel = data.new_name;
 		});
 
+        /** ************************** Hide partially completed admin menus ******** **/
+        /** ********* hide the admin menus in release and production *************** **/
+
+        var url = document.location,
+            inDevEnvironment = false;
+
+        if ((url.hostname && typeof url.hostname === typeof 'str') && (url.hostname.indexOf('pms-dev') !== -1 ||
+                url.hostname.indexOf('localhost') !== -1)) {
+            inDevEnvironment = true;
+        }
+        // add the menu or sub menu names you need to hide in production
+        var partiallyCompeletedMenuNames = ['Email Templates Settings'];
+
+        if (partiallyCompeletedMenuNames.length && !inDevEnvironment) {
+            _.each(partiallyCompeletedMenuNames, function(partiallyCompeletedMenuName) {
+                _.each(adminMenuData.menus, function(menu, menuIndex) {
+                    // check if partially completed menu is one of the main menu item
+                    if (menu && partiallyCompeletedMenuName === menu.menu_name) {
+                        adminMenuData.menus.splice(menuIndex, 1);
+                    }
+                    if (menu) {
+                        _.each(menu.components, function(component, componentIndex) {
+                            // check if partially completed menu is one of the sub menu item
+                            if (component && partiallyCompeletedMenuName === component.name) {
+                                menu.components.splice(componentIndex, 1);
+                            }
+                            if (component) {
+                                _.each(component.sub_components, function(subComponent, subComponentIndex) {
+                                    // check if partially completed menu is one of the sub sub menu item
+                                    if (subComponent && partiallyCompeletedMenuName === subComponent.name) {
+                                        component.sub_components.splice(subComponentIndex, 1);
+                                    }
+                                });
+                            }
+                        });
+                    }
+                });
+            });
+        }
+
+        /** *************************************************************************** **/
+
 		$scope.data = adminMenuData;
 		$scope.selectedMenu = $scope.data.menus[$scope.selectedIndex];
 		$scope.bookMarks = $scope.data.bookmarks;
@@ -687,6 +729,16 @@ admin.controller('ADAppCtrl', [
 		$scope.$on("hideLoader", function() {
 			$scope.hasLoader = false;
 		});
+
+        /*
+        *  Handle inline styles inside ng-bind-html directive.
+        *  Let   =>  $scope.htmlData = "<p style='font-size:8pt;''>Sample Text</p>";
+        *  Usage =>  <td data-ng-bind-html="trustAsHtml(htmlData)"></td>
+        *  REF   =>  https://docs.angularjs.org/api/ng/service/$sce
+        */
+        $rootScope.trustHtml = function(str) {
+            return $sce.trustAsHtml(str);
+        };
 
 
 		/**

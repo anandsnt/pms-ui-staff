@@ -4,7 +4,8 @@ admin.controller('ADStationaryCtrl',
 	'ngTableParams',
 	'availableGuestLanguages',
 	'availableHoldStatus',
-	function($scope, ADStationarySrv, ngTableParams, availableGuestLanguages, availableHoldStatus) {
+	'$filter',
+	function($scope, ADStationarySrv, ngTableParams, availableGuestLanguages, availableHoldStatus, $filter) {
 
 	BaseCtrl.call(this, $scope);
 	$scope.errorMessage = '';
@@ -49,12 +50,38 @@ admin.controller('ADStationaryCtrl',
 
 	$scope.stationery_data = {};
 
+	var showErrorMessage = $scope.$on('SHOW_ERROR_MSG', function (evt, data) {
+		$scope.errorMessage = data.error;
+	});
+	var fetchTermsAndConditions = function(openMenu) {
+		var options = {
+			params: {
+				'locale': $scope.data.locale
+			},
+			onSuccess: function(response) {
+				$scope.customTnCs = response.terms_and_conditions;
+				// option with empty value will not trigger ng-change, so adding dummy option
+				$scope.customTnCs.unshift({
+					'id': 'none',
+					'title': $filter('translate')('NONE')
+				});
+				$scope.screenList = response.screens;
+				angular.forEach($scope.screenList, function(value) {
+					value.assigned_t_and_c_id = _.isNull(value.assigned_t_and_c_id) ? 'none' : value.assigned_t_and_c_id;
+				});
+				$scope.is_terms_and_conditions_active = openMenu ? true : $scope.is_terms_and_conditions_active;
+			}
+		};
+
+		$scope.callAPI(ADStationarySrv.fetchTermsAndConditions, options);
+	};
 	/*
 	* Fetches the stationary items
 	*/
 	var fetchStationary = function(params) {
 		var successCallbackOfFetch = function(data) {
 			$scope.$emit('hideLoader');
+			fetchTermsAndConditions();
 			data.email_logo_type = data.email_logo_type || '';
 			$scope.data = {};
 
@@ -270,5 +297,19 @@ admin.controller('ADStationaryCtrl',
 	     	}
 	    });
 	};
+
+	$scope.fetchTermsAndConditions = function() {
+		// if the menu is opened, close the menu
+		if ($scope.is_terms_and_conditions_active) {
+			$scope.is_terms_and_conditions_active = false;
+		} else {
+			var openMenu = true;
+
+			fetchTermsAndConditions(openMenu);
+		}
+
+	};
+
+	$scope.$on('$destroy', showErrorMessage);
 
 }]);

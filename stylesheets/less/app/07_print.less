@@ -2973,6 +2973,15 @@
                     color: @grey3;
                     margin-top: 4pt;
                 }
+
+                &.vat-report {
+                    font-weight: 600;
+
+                    li {
+                        text-align: right;
+                        width: 120px;
+                    }
+                }
             }
 
             .grid-footer {
@@ -3023,6 +3032,24 @@
                 }
 
                 &.title-3 { border-bottom: 1px solid @grey2; }
+
+                /* VAT Report ***/
+                &.vat-report {
+                    strong {
+                        .calc-width(100, 240);
+
+                        em {
+                            color: @grey3;
+                            font-weight: 400;
+                            padding-left: 8px;
+                        }
+                    }
+
+                    span:not(.currency) { 
+                        text-align: right;
+                        width: 120px; 
+                    }
+                }
             }
 
             .grid-content {
@@ -3057,6 +3084,11 @@
                             &.accompany {
                                 white-space: normal;
                             }
+                        }
+
+                        &.vat-revenue {
+                            text-align: right;
+                            width: 120px;
                         }
                     }
 

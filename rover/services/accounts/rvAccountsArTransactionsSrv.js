@@ -296,4 +296,21 @@ angular.module('sntRover').service('rvAccountsArTransactionsSrv', ['$q', 'rvBase
         return deferred.promise;
     };
 
+    /*
+     * Service function to Move Zero Invoice to Paid Tab.
+     * @param {object} [object contains account_id]
+     * @return {object}
+     */
+    this.moveZeroInvoiceAsPaid = function (params) {
+        var deferred = $q.defer(),
+            url = '/api/accounts/' + params.account_id + '/ar_transactions/move_zero_invoices_as_paid';
+
+        rvBaseWebSrvV2.postJSON(url, params).then(function (data) {
+            deferred.resolve(data);
+        }, function (data) {
+            deferred.reject(data);
+        });
+        return deferred.promise;
+    };
+
 }]);
