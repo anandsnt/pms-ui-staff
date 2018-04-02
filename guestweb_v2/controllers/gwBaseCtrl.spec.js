@@ -3,34 +3,39 @@ describe('BaseController', function() {
     var $controller,
         selectPropertySrv,
         $q,
-        $rootScope,
-        results = [{
-            'code': '001',
-            'id': 272,
-            'name': '(MGM PRE-PROD) - MGM Grand',
-            'uuid': '718480df-cd60-481d-9008-63473d983d60'
-        }];
+        $rootScope;
     var $scope = {};
 
     beforeEach(function() {
         module('sntGuestWeb');
 
-        inject(function(_$controller_, _$rootScope_) {
+        inject(function(_$controller_, _$rootScope_, _$state_) {
             $controller = _$controller_;
             $rootScope = _$rootScope_;
+            $state = _$state_;
             $scope = _$rootScope_.$new();
         });
-
         $controller('BaseController', {
             $scope: $scope
         });
-
+        spyOn($state, 'go');
     });
 
-    it('invokes onSuccess', function() {
-        var response = 'success'
+    it('on API failure, go to the see front desk state', function() {
+        $scope.fetchedFailed();
+        expect($state.go).toHaveBeenCalledWith('seeFrontDesk');
+    });
 
-        expect(response).toEqual('success');
+    it('should display the loading indicator', function() {
+        $scope.loading = false;
+        $scope.$emit('showLoader');
+        expect($scope.loading).toBe(true);
+    });
+
+    it('should hide the loading indicator', function() {
+        $scope.loading = true;
+        $scope.$emit('hideLoader');
+        expect($scope.loading).toBe(false);
     });
 
 });
