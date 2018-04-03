@@ -38,29 +38,6 @@ sntRover.controller('rvReservationCardLoyaltyController', ['$rootScope', '$scope
             }
         };
 
-        $scope.updateMembershipDetails = function(user_membership, newMembershipId) {
-            // created new GMS Membership
-            if (newMembershipId) {
-                user_membership.id = newMembershipId;
-                $scope.$parent.reservationData.reservation_card.loyalty_level.hotelLoyaltyProgram.push(user_membership);
-
-            } else {
-                //already taken GMS Membership type
-                var existing_user_membership = _.find($scope.$parent.reservationData.reservation_card.loyalty_level.hotelLoyaltyProgram,
-                    function(hlp) {
-                        return hlp.membership_card_number == user_membership.email;
-                    });
-
-                user_membership = existing_user_membership;
-            }
-            if (user_membership) {
-                $scope.$parent.reservationData.reservation_card.loyalty_level.selected_loyalty = user_membership.id;
-                $scope.selectedLoyaltyID = user_membership.id;
-                $scope.selectedLoyalty = user_membership;
-                $scope.isLoyaltySelected();
-                $rootScope.$broadcast('updateEmailFromGMS', user_membership.email);
-            }
-        };
         $scope.$on('loyaltyProgramAdded', function(e, data, source) {
 
             if (data.membership_class === 'HLP') {
