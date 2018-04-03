@@ -13,10 +13,7 @@ module.exports = {
 				roverRoot + "constants/reports/**/*.js",
 				roverRoot + "controllers/reports/**/*.js",
 				reportReactViewRoot + "**/*.js",
-				'shared/directives/numbersOnly/numbersOnly.js',
-
-                // Eliminate all spec files
-                '!**/*.spec.js'
+				'shared/directives/numbersOnly/numbersOnly.js'
 			]
 		};
 		return reportJsAssets;

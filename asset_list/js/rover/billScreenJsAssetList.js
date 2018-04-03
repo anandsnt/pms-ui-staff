@@ -5,10 +5,7 @@ module.exports = {
 			sharedJs 		= 'shared/lib/js/',
 		viewBillJsAssets = {
 			minifiedFiles: [
-				sharedJs + 'signature/**/*.js',
-
-                // Eliminate all spec files
-                '!**/*.spec.js'
+				sharedJs + 'signature/**/*.js'
 			],
 			nonMinifiedFiles: [
 				controllerRoot + "bill/**/*.js",
@@ -16,10 +13,7 @@ module.exports = {
 				controllerRoot + 'postCharge/*.js',
 				servicesRoot + "postCharge/*.js",
 				controllerRoot + "billFormat/rvBillFormatPopupController.js",
-				servicesRoot + "bill/**/*.js",
-
-                // Eliminate all spec files
-                '!**/*.spec.js'
+				servicesRoot + "bill/**/*.js"
 			]
 		};
 		return viewBillJsAssets;

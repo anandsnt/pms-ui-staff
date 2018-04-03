@@ -24,10 +24,7 @@ module.exports = {
 				jsLibRoot + 'underscore.min.js',
 				jsLibRoot + 'ngDialog.min.js',
                 jsLibRoot + 'fastclick/fastclick.min.js',
-				jsLibRoot + 'moment.min.js',
-
-                // Eliminate all spec files
-                '!**/*.spec.js'
+				jsLibRoot + 'moment.min.js'
 			],
 			nonMinifiedFiles: [
 				jsLibRoot + 'iscroll.js',
@@ -86,10 +83,7 @@ module.exports = {
 				serviceRoot + 'housekeeping/rvHkRoomStatusSrv.js',
 				directiveRoot + 'Outside Click handler/outsideClickDirective.js',
 				directiveRoot + 'pagination/*.js',
-				directiveRoot + 'fullscreen/*.js',
-
-                // Eliminate all spec files
-                '!**/*.spec.js'
+				directiveRoot + 'fullscreen/*.js'
 			]
 		};
 

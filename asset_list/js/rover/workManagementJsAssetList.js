@@ -10,10 +10,7 @@ module.exports = {
 				nonMinifiedFiles: [
 					controllerRoot + 'workManagement/**/*.js',
 					servicesRoot + 'workManagement/**/*.js',
-					'rover/filters/rangeFilter.js',
-
-                    // Eliminate all spec files
-                    '!**/*.spec.js'
+					'rover/filters/rangeFilter.js'
 				]
 			};
 		return assetsForScreen;

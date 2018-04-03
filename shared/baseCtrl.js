@@ -1,4 +1,4 @@
-BaseCtrl = function($scope) {
+function BaseCtrl($scope) {
 
     $scope.businessDate = '';
 
@@ -308,4 +308,4 @@ BaseCtrl = function($scope) {
 
     };
 
-};
+}

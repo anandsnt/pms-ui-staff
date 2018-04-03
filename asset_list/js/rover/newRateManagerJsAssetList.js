@@ -15,10 +15,7 @@ module.exports = {
                   roverRoot + 'services/rateManager/**/*.js',
                   roverRoot + 'services/rateManager_/**/*.js',
                   roverRoot + 'controllers/rateManager_/**/*.js',
-                  roverRoot + "react/diary/util.js",
-
-                  // Eliminate all spec files
-                  '!**/*.spec.js'
+                  roverRoot + "react/diary/util.js"
               ]
             };
     return assets;

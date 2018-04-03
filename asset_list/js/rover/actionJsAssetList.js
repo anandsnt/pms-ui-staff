@@ -11,9 +11,7 @@ module.exports = {
 					servicesRoot + 'actionTasks/**/*.js',
                     servicesRoot + "reports/**/*.js",
                     roverRoot + "factories/reports/**/*.js",
-                    roverRoot + "constants/reports/**/*.js",
-                    // Eliminate all spec files
-                    '!**/*.spec.js'
+                    roverRoot + "constants/reports/**/*.js"
 				]
 			};
 		return assetsForScreen;
