@@ -290,7 +290,7 @@ angular.module('sntRover').controller('rvGuestDetailsController',
 
         // Listener for setting the guestData information
         var guestCardSetListener = $scope.$on('SET_GUEST_CARD_DATA', function (event, data) {
-            $scope.guestCardData = getGuestCardData(data, $stateParams.guestId);
+            $scope.guestCardData = getGuestCardData(data.contactInfo, data.guestId);
         });
 
         $scope.$on('$destroy', guestCardSetListener);
@@ -318,8 +318,7 @@ angular.module('sntRover').controller('rvGuestDetailsController',
             $state.go('rover.reservation.search', {
                 guestId: $stateParams.guestId
             });
-        };
+        };        
 
-        init();
-        
+        init();        
 }]);
