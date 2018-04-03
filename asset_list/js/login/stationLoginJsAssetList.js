@@ -26,7 +26,9 @@ module.exports = {
                 // (need to prompt for virtual keyboard if launched from within a chrome-app)
 				zestRoot + 'zsVirtualKeyboard.js',
                 // Eliminate all spec files
-                '!**/*.spec.js'
+                '!**/*.spec.js',
+                '!**/*.conf.js'
+
 			]	
 		};
 		return loginJsAssets;

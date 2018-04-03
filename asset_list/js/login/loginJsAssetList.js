@@ -23,7 +23,8 @@ module.exports = {
 				loginRoot + '**/*.js',
 				'!'+loginRoot+'loginJsAssetList.js',
                 // Eliminate all spec files
-                '!**/*.spec.js'
+                '!**/*.spec.js',
+                '!**/*.conf.js'
 			]	
 		};
 		return loginJsAssets;
