@@ -53,7 +53,6 @@ angular.module('adminInterfacesRouter', []).config(function($stateProvider) {
         }
     });
 
-
     $stateProvider.state('admin.checkmate', {
         templateUrl: '/assets/partials/interfaces/TextMessagingSystems/adTextMessagingSystemsSetup.html',
         controller: 'adCheckmateSetupCtrl',
@@ -64,7 +63,6 @@ angular.module('adminInterfacesRouter', []).config(function($stateProvider) {
             }]
         }
     });
-
 
     $stateProvider.state('admin.lightspeedPosSetup', {
         templateUrl: '/assets/partials/lightspeedPOS/adLightspeedPOSSetup.html',
@@ -132,7 +130,6 @@ angular.module('adminInterfacesRouter', []).config(function($stateProvider) {
             }]
         }
     });
-
 
     $stateProvider.state('admin.ideasSetup', {
         templateUrl: '/assets/partials/interfaces/ideas/adIdeasSetup.html',
@@ -256,7 +253,6 @@ angular.module('adminInterfacesRouter', []).config(function($stateProvider) {
         }
     });
 
-
     $stateProvider.state('admin.ifc_room_mappings', {
         templateUrl: '/assets/partials/interfaces/Comtrol/adComtrolRoomMappings.html',
         controller: 'adComtrolRoomMappingCtrl',
@@ -357,7 +353,6 @@ angular.module('adminInterfacesRouter', []).config(function($stateProvider) {
             ]
         }
     });
-
 
     $stateProvider.state('admin.ffp', {
         templateUrl: '/assets/partials/frequentFlyerProgram/adFFPList.html',
@@ -610,13 +605,11 @@ angular.module('adminInterfacesRouter', []).config(function($stateProvider) {
         url: '/travelTripperSetup'
     });
 
-
     $stateProvider.state('admin.snapshotSetup', {
         templateUrl: '/assets/partials/interfaces/adInterfacesSubMenuList.html',
         controller: 'ADInterfaceSubMenuCtrl',
         url: '/snapshotSetup'
     });
-
 
     $stateProvider.state('admin.snapshotGeneralSetup', {
         templateUrl: '/assets/partials/snapshotSetup/adSnapshotSetup.html',
@@ -629,7 +622,6 @@ angular.module('adminInterfacesRouter', []).config(function($stateProvider) {
         controller: 'adsnapshotSubGroupMappingCtrl',
         url: '/snapshotSetup/subGroupMapping'
     });
-
 
     $stateProvider.state('admin.guestIdSetup', {
         templateUrl: '/assets/partials/guestIdSetup/adGuestIDSetup.html',
@@ -705,4 +697,26 @@ angular.module('adminInterfacesRouter', []).config(function($stateProvider) {
         }
     });
 
+    $stateProvider.state('admin.global_feature_toggles', {
+        templateUrl: '/assets/partials/interfaces/GlobalFeatureToggles/adGlobalFeatureToggles.html',
+        controller: 'adGlobalFeatureTogglesCtrl',
+        url: '/admin/global_feature_toggles'
+    });
+
+    $stateProvider.state('admin.hotel_feature_toggles', {
+        templateUrl: '/assets/partials/interfaces/HotelFeatureToggles/adHotelFeatureToggles.html',
+        controller: 'adHotelFeatureTogglesCtrl',
+        url: '/admin/hotel_feature_toggles'
+    });
+
+    $stateProvider.state('admin.hotel_feature_toggles_edit', {
+        templateUrl: '/assets/partials/interfaces/HotelFeatureToggles/adEdit.html',
+        controller: 'adHotelFeatureTogglesEditCtrl',
+        url: '/admin/hotel_feature_toggles/:id',
+        resolve: {
+            settings: ['adFeaturesSrv', '$stateParams', function(adFeaturesSrv, $stateParams) {
+                return adFeaturesSrv.fetch($stateParams.id);
+            }]
+        }
+    });
 });
