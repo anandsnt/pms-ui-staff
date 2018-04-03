@@ -556,6 +556,9 @@ angular.module('sntRover').controller('companyCardDetailsController', ['$scope',
 				else if (dataToSend.primary_contact_details.contact_email === "") {
 					dataToSend.primary_contact_details.contact_email = null;
 				}
+				if ( typeof dataToSend.address_details === 'undefined' ) {
+					dataToSend.address_details = {};
+				}
 				dataToSend.account_type = $stateParams.type;
 				var options = {
 					params: dataToSend,

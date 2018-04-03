@@ -329,6 +329,9 @@ angular.module('sntRover').controller('RVCompanyCardCtrl', ['$scope', '$rootScop
 				else if (dataToSend.primary_contact_details.contact_email === "") {
 					dataToSend.primary_contact_details.contact_email = null;
 				}
+				if ( typeof dataToSend.address_details === 'undefined' ) {
+					dataToSend.address_details = {};
+				}
 				dataToSend.account_type = $scope.account_type;
 				var options = {
 					params: dataToSend,
