@@ -1,17 +1,14 @@
 describe('BaseController', function() {
 
     var $controller,
-        selectPropertySrv,
-        $q,
-        $rootScope;
-    var $scope = {};
+        $state,
+        $scope = {};
 
     beforeEach(function() {
         module('sntGuestWeb');
 
         inject(function(_$controller_, _$rootScope_, _$state_) {
             $controller = _$controller_;
-            $rootScope = _$rootScope_;
             $state = _$state_;
             $scope = _$rootScope_.$new();
         });
