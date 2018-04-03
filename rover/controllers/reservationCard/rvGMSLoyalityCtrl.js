@@ -31,7 +31,6 @@ sntRover.controller('rvGMSLoyalityController', ['$scope', '$rootScope', '$filter
                         case 'details':
                             messageContent = message.content;
                             addGMSLoyalty(messageContent);
-                            $scope.closeGMSDialog();
                             break;
                         case 'cancel':
                             $scope.closeGMSDialog();
@@ -84,9 +83,16 @@ sntRover.controller('rvGMSLoyalityController', ['$scope', '$rootScope', '$filter
                 var params = {},
                     user_membership = {},
                     successCallbackaddLoyaltyProgram = function(response) {
-                        user_membership.id = response.data.id;
-                        $rootScope.$broadcast('loyaltyProgramAdded', user_membership, 'fromReservationCard');
-                        $rootScope.$broadcast('updateEmailFromGMS', message.details.email);
+                        // Created new user membership
+                        if (response.data.id) {
+                            user_membership.id = response.data.id;
+                            $rootScope.$broadcast('loyaltyProgramAdded', user_membership, 'fromReservationCard');
+                            $rootScope.$broadcast('updateEmailFromGMS', message.details.email);
+                            $scope.closeGMSDialog();
+                        }
+                        if (response.status === 'failure') {
+                            $scope.errorMessage = response.errors;
+                        }
                     };
 
                 params.reservation_id = $scope.$parent.reservationData.reservation_card.reservation_id;

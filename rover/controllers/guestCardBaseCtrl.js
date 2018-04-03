@@ -90,7 +90,7 @@ function GuestCardBaseCtrl ($scope, RVSearchSrv, RVContactInfoSrv, rvPermissionS
      */
     var fetchGuestDetails = function (guestId) {
       var onSuccess = function (data) {
-             $scope.$broadcast('SET_GUEST_CARD_DATA', data);
+             $scope.$broadcast('SET_GUEST_CARD_DATA', {contactInfo: data, guestId: guestId} );
              $scope.$broadcast('CONTACTINFOLOADED');
              $scope.$broadcast('RESETCONTACTINFO', data);                                       
            },
