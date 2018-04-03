@@ -759,19 +759,19 @@
             </select>
         </div>
 
-        <a href="" class="settings-title toggle has-arrow" ng-show="chosenReport.hasCompanyTravelAgentWithOrWithoutVat" ng-class="{'active': filterItemsToggle.item_51}" ng-click="toggleFilterItems('item_52')">
+        <a href="" class="settings-title toggle has-arrow" ng-show="chosenReport.hasCompanyTravelAgentWithOrWithoutVat" ng-class="{'active': filterItemsToggle.item_52}" ng-click="toggleFilterItems('item_52')">
             <span class="title">Company / Travel Agent</span>
         </a>
         <div class="report-col settings-content" ng-show="chosenReport.hasCompanyTravelAgentWithOrWithoutVat" ng-class="{ 'hidden': !filterItemsToggle.item_52 }">            
              <label class="checkbox inline" ng-class="{'checked':chosenReport.with_vat_number}">
                 <span class="icon-form icon-checkbox" ng-class="{'checked':chosenReport.with_vat_number}"></span>
                 <input type="checkbox" checked="checked" ng-model="chosenReport.with_vat_number">
-                With VAT numbers
+                Cards With Tax ID
             </label>
             <label class="checkbox inline" ng-class="{'checked':chosenReport.without_vat_number}">
                 <span class="icon-form icon-checkbox" ng-class="{'checked':chosenReport.without_vat_number}"></span>
                 <input type="checkbox" checked="checked" ng-model="chosenReport.without_vat_number">
-                Without VAT numbers
+                Cards Without Tax ID
             </label>
         </div>        
         <!-- YEARLY VAT END-->

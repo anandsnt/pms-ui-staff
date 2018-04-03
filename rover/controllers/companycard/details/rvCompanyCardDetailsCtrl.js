@@ -549,8 +549,15 @@ angular.module('sntRover').controller('companyCardDetailsController', ['$scope',
 					dataToSend.account_details.account_number = null;
 				}
 				// CICO-50810 : Hadling passing blank string.
-				if (dataToSend.primary_contact_details.contact_email === "") {
+				if ( typeof dataToSend.primary_contact_details === 'undefined' ) {
+					dataToSend.primary_contact_details = {};
 					dataToSend.primary_contact_details.contact_email = null;
+				}
+				else if (dataToSend.primary_contact_details.contact_email === "") {
+					dataToSend.primary_contact_details.contact_email = null;
+				}
+				if ( typeof dataToSend.address_details === 'undefined' ) {
+					dataToSend.address_details = {};
 				}
 				dataToSend.account_type = $stateParams.type;
 				var options = {
