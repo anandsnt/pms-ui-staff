@@ -5,10 +5,7 @@ module.exports = {
 			minifiedFiles: [],
 			nonMinifiedFiles: [				
 				roverRoot + "controllers/guests/**/*.js",				
-				roverRoot + "services/guestcard/rvGuestCardSrv.js",
-
-                // Eliminate all spec files
-                '!**/*.spec.js'
+				roverRoot + "services/guestcard/rvGuestCardSrv.js"
 			]
 		};
 		return guestcardsearchJsAssets;

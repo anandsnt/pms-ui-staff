@@ -14,8 +14,6 @@ module.exports = {
                 roverRoot + 'redux/nightlyDiary/**/*.js',
                 roverRoot + 'react/nightlyDiary/**/**/*.js',
 
-                // Eliminate all spec files
-                '!**/*.spec.js'
             ]
         };
 

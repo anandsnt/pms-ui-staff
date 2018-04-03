@@ -8,10 +8,7 @@ module.exports = {
 				roverRoot + "services/availability/**/*.js",
 				roverRoot + "services/group/rvGroupConfigurationSrv.js",
 				roverRoot + "services/accounts/rvAccountsConfigurationSrv.js",
-				roverRoot + "services/allotments/rvAllotmentConfigurationSrv.js",
-
-                // Eliminate all spec files
-                '!**/*.spec.js'
+				roverRoot + "services/allotments/rvAllotmentConfigurationSrv.js"
 			]
 		};
 		return availabilityJsAssets;

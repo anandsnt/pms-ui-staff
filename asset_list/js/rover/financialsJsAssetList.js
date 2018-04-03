@@ -10,9 +10,6 @@ module.exports = {
 				roverRoot + "services/accounts/*.js",
 				roverRoot + "controllers/companycard/details/*.js",
 				roverRoot + "services/rvContactInfoSrv.js",
-
-                // Eliminate all spec files
-                '!**/*.spec.js'
 			]
 		};
 		return allotmentJsAssets;

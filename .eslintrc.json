@@ -3,8 +3,7 @@
         "browser": true,
         "es6": true,
         "jquery": true,
-        "node": true,
-        "jasmine": true
+        "node": true
     },
     "globals": {
         "angular": false,
@@ -30,9 +29,7 @@
         "jsHue": false,
         "webSocketOperations": false,
         "moment": false,
-        "FastClick": false,
-        "module": false,
-        "inject": false
+        "FastClick": false
     },
     "installedESLint":true,
     "parserOptions":{

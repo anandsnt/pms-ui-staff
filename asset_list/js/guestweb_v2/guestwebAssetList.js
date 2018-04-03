@@ -25,9 +25,7 @@ module.exports = {
 				guestwebroot + 'scripts/angular-pickdate.js',
 				guestwebroot + 'services/*.js',
 				guestwebroot + 'controllers/**/*.js',
-				guestwebroot + 'directives/**/*.js',
-                // Eliminate all spec files
-                '!**/*.spec.js'
+				guestwebroot + 'directives/**/*.js'
 			]	
 		};
 		return guestwebJSassets;

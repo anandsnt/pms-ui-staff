@@ -9,10 +9,7 @@ module.exports = {
 				controllerRoot + 'postCharge/*.js',
 				servicesRoot + "postCharge/*.js",
 				servicesRoot + "bill/rvBillCardSrv.js",
-				servicesRoot + "accounts/rvAccountsTransactionSrv.js",
-
-                // Eliminate all spec files
-                '!**/*.spec.js'
+				servicesRoot + "accounts/rvAccountsTransactionSrv.js"
 			]
 		};
 		return groupJsAssets;
