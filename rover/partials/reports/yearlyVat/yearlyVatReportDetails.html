@@ -14,7 +14,8 @@
         </ul>
         <!-- Level 1 - With VAT ID -->
         <a ng-click="setResultWithVatCollapsedOrNot()" class="title-1 has-arrow toggle vat-report" ng-class="{'active': results.with_vat_id.isCollapsed}" ng-show="results.with_vat_id"> <!-- Toggle class 'active' when clicked -->
-            <strong>With Tax ID</strong>
+
+            <strong>Cards With Tax ID</strong>
             <span><span class="currency">{{currencySymbol}}</span>{{results.with_vat_id.total_revenue | number: precisonTwo }}</span>
             <span><span class="currency">{{currencySymbol}}</span>{{results.with_vat_id.total_vat | number: precisonTwo }}</span>
         </a>
@@ -57,7 +58,7 @@
         <a href="#without-vat-id " ng-click="setResultWithOutVatCollapsedOrNot()" class="title-1 has-arrow toggle vat-report" ng-class="{'active': results.without_vat_id.isCollapsed}" ng-show="results.without_vat_id"> <!-- Toggle class 'active' when clicked -->
 
             
-            <strong>Without Tax ID</strong>
+            <strong> Cards Without Tax ID</strong>
             <span><span class="currency">{{currencySymbol}}</span>{{results.without_vat_id.total_revenue | number: precisonTwo }}</span>
             <span><span class="currency">{{currencySymbol}}</span>{{results.without_vat_id.total_vat | number: precisonTwo }}</span>
         </a>
