@@ -33,7 +33,7 @@ module.exports = function(gulp, $, options) {
                     'admin-inject-assets-to-templates',
                     'login-inject-assets-to-templates',
                     'station-login-inject-assets-to-templates',
-                    'zest-inject-assets-to-templates'
+                    'zest-inject-assets-to-templates',
                     'inject_gtm_script_rover'
                 ],
 
