@@ -25,10 +25,10 @@ angular.module('sntRover').service('RVContactInfoSrv', [
         };
 
         service.saveContactInfo = function(param) {
-            var deferred = $q.defer();
-            var dataToSend = param.data;
-            var userId = param.userId;
-            var url = '/staff/guest_cards/' + userId;
+            var deferred = $q.defer(),
+                dataToSend = param.data,
+                userId = param.userId,
+                url = '/staff/guest_cards/' + userId;
 
             RVBaseWebSrv.putJSON(url, dataToSend).then(function(data) {
                 deferred.resolve(data);
@@ -53,12 +53,10 @@ angular.module('sntRover').service('RVContactInfoSrv', [
 
 
         service.updateGuest = function(param) {
-            var deferred = $q.defer();
-            var dataToSend = param.data;
-            var userId = param.userId;
-            var url = '/api/guest_details/' + userId;
+            var deferred = $q.defer(),            
+                url = '/api/guest_details/' + param.userId;
 
-            rvBaseWebSrvV2.putJSON(url, dataToSend).then(function(data) {
+            rvBaseWebSrvV2.putJSON(url, param.data).then(function(data) {
                 deferred.resolve(data);
             }, function(data) {
                 deferred.reject(data);
@@ -107,7 +105,7 @@ angular.module('sntRover').service('RVContactInfoSrv', [
          */
         service.removeGuestDetails = function (guestId) {
             var deferred = $q.defer(),
-                url = '/api/guest_details/' + guestId + '/remove_guest_detail';
+                url = '/api/guest_details/' + guestId + '/anonymize';
 
             rvBaseWebSrvV2.putJSON(url).then(function(data) {
                 deferred.resolve(data);
@@ -166,6 +164,24 @@ angular.module('sntRover').service('RVContactInfoSrv', [
             }            
 
             return guestData;
+        };
+
+        /**
+         * Delete guest by id
+         * @param {Number} guestId id of the guest
+         * @return {Promise} Promise
+         */        
+        service.deleteGuest = function (guestId) {
+            var deffered = $q.defer(),
+                url = '/api/guest_details/' + guestId;
+
+            rvBaseWebSrvV2.deleteJSON(url).then (function (data) {
+                deffered.resolve (data);
+            }, function (error) {
+                deffered.reject(error);
+            });
+
+            return deffered.promise;
         };
 
     }

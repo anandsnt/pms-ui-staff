@@ -686,10 +686,19 @@ sntRover.controller('rvRouteDetailsCtrl', ['$scope', '$rootScope', '$filter', 'R
 
     /**
      * Listener for the save button click
+     * @param {object} [JS event object]
+     * @return {undefined}
      */
-    $scope.$on('routeSaveClicked', function(event) {
+    var listener = $scope.$on('CALL_SAVE_ROUTE', function(event) {
+        event.preventDefault();
+        if (event.stopPropagation) {
+            event.stopPropagation();
+        }
         $scope.saveRoute();
     });
+    
+    // Destroying listener
+    $scope.$on('$destroy', listener);
     /**
      * function to update the company and travel agent in stay card header
      */

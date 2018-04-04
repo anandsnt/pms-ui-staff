@@ -252,7 +252,6 @@ angular.module('sntRover').controller('RVCompanyCardCtrl', ['$scope', '$rootScop
 		 * success callback of save contact data
 		 */
 		var successCallbackOfContactSaveData = function(data) {
-			$scope.$emit("hideLoader");
 			$scope.reservationDetails.companyCard.id = data.id;
 			$scope.contactInformation.id = data.id;
 			$rootScope.$broadcast("IDGENERATED", { 'id': data.id });
@@ -297,7 +296,6 @@ angular.module('sntRover').controller('RVCompanyCardCtrl', ['$scope', '$rootScop
 		 * failure callback of save contact data
 		 */
 		var failureCallbackOfContactSaveData = function(errorMessage) {
-			$scope.$emit("hideLoader");
 			$scope.errorMessage = errorMessage;
 			$scope.currentSelectedTab = 'cc-contact-info';
 		};
@@ -316,20 +314,6 @@ angular.module('sntRover').controller('RVCompanyCardCtrl', ['$scope', '$rootScop
 			if (typeof data !== 'undefined' && (dataUpdated || $scope.viewState.isAddNewCard)) {
 				var dataToSend = JSON.parse(JSON.stringify(data));
 
-				for (key in dataToSend) {
-					if (typeof dataToSend[key] !== "undefined" && data[key] !== null && data[key] !== "") {
-						// in add case's first api call, presentContactInfo will be empty object
-						if (JSON.stringify(presentContactInfo) !== '{}') {
-							for (subDictKey in dataToSend[key]) {
-								if (typeof dataToSend[key][subDictKey] === 'undefined' || dataToSend[key][subDictKey] === presentContactInfo[key][subDictKey]) {
-									delete dataToSend[key][subDictKey];
-								}
-							}
-						}
-					} else {
-						delete dataToSend[key];
-					}
-				}
 				if (typeof dataToSend.countries !== 'undefined') {
 					delete dataToSend['countries'];
 				}
@@ -337,8 +321,25 @@ angular.module('sntRover').controller('RVCompanyCardCtrl', ['$scope', '$rootScop
 				if (dataToSend.account_details.account_number === "") {
 					dataToSend.account_details.account_number = null;
 				}
+				// CICO-50810 : Hadling passing blank string.
+				if ( typeof dataToSend.primary_contact_details === 'undefined' ) {
+					dataToSend.primary_contact_details = {};
+					dataToSend.primary_contact_details.contact_email = null;
+				}
+				else if (dataToSend.primary_contact_details.contact_email === "") {
+					dataToSend.primary_contact_details.contact_email = null;
+				}
+				if ( typeof dataToSend.address_details === 'undefined' ) {
+					dataToSend.address_details = {};
+				}
 				dataToSend.account_type = $scope.account_type;
-				$scope.invokeApi(RVCompanyCardSrv.saveContactInformation, dataToSend, successCallbackOfContactSaveData, failureCallbackOfContactSaveData);
+				var options = {
+					params: dataToSend,
+					successCallBack: successCallbackOfContactSaveData,
+					failureCallBack: failureCallbackOfContactSaveData
+				};
+
+				$scope.callAPI(RVCompanyCardSrv.saveContactInformation, options);
 			}
 		};
 

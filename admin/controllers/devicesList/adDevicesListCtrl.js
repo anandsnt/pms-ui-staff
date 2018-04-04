@@ -9,6 +9,16 @@ admin.controller('ADDevicesListCtrl', ['$scope', '$state', 'ngTableParams', 'adD
       getParams.service_application = angular.copy(getParams.rate_type_id);
       getParams.sort_dir = getParams.sort_dir ? "asc" : "desc";
       delete getParams.rate_type_id;
+      
+      var findLatestAppversion = function(device) {
+        var serviceType = _.find($scope.filterList, function(filter) {
+          return device.service_application_type_id === filter.id;
+        });
+        var latestServiceVersion = serviceType ? serviceType.latest_build : '';
+
+        return latestServiceVersion;
+      };
+      
       var fetchSuccessOfItemList = function(data) {
         $timeout(function() {
           // No expanded rate view
@@ -19,13 +29,19 @@ admin.controller('ADDevicesListCtrl', ['$scope', '$state', 'ngTableParams', 'adD
             if (device.logging_end_time !== "" && device.logging_start_time !== "") {
               device.hours_log_enabled = (new Date(device.logging_end_time).getTime() - new Date(device.logging_start_time).getTime()) / (1000 * 60 * 60);
             }
-            // to do delete
-            if (index === 0) {
-              device.upgarde_status = 'SUCCESS';
-            } else if (index % 2 === 0) {
-              device.upgarde_status = 'FAILED';
+
+            // set build status
+            if (_.indexOf(_.pluck(appTypes, 'id'), device.service_application_type_id) === -1) {
+              // if the service type not registered
+              device.build_status = 'N/A';
+            } else if (device.build_status !== 'FAILED' && device.app_version !== findLatestAppversion(device)) {
+              // if the service upgrade version is not latest and upgrade didn't failed
+              device.build_status = 'PENDING';
+            } else if (device.app_version === findLatestAppversion(device)) {
+              // if the app version is upto date
+              device.build_status = 'SUCCESS';
             } else {
-              device.upgarde_status = 'PENDING';
+              device.build_status = (device.build_status === 'FAILED') ? 'FAILED' : '';
             }
           });
           $scope.data = data.results;

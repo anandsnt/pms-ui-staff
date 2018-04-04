@@ -77,7 +77,7 @@
     </div>
 
     <!-- Report content -->
-    <div id="report-content" class="report-content scrollable" ng-class="{'with-pagination' : !isPrevButtonDisabled()||!isNextButtonDisabled()}" ng-iscroll="report_content" ng-iscroll-delay="1000">
+    <div id="report-content" class="report-content scrollable" ng-class="{'with-pagination': shouldShowPagination()}" ng-iscroll="report_content" ng-iscroll-delay="1000">
         <div class="wrapper">
             <table class="log-reports">
                 <thead>
@@ -124,12 +124,8 @@
             </table>         
         </div>
     </div>
-
-    <div class="search-pagination" ng-show="!isPrevButtonDisabled()||!isNextButtonDisabled()">
-        <button type="button" class="button dark-grey next" ng-click="loadNextSet()" ng-disabled="isNextButtonDisabled()">Next</button>
-        <button type="button" class="button dark-grey prev" ng-click="loadPrevSet()" ng-disabled="isPrevButtonDisabled()">Previous</button>
-        <p>Showing <strong>{{start}}-{{end}}</strong> of <strong id="total-count">{{totalResults}}</strong> items</p>
-    </div>
+   
+    <rv-pagination page-options="pageOptions" page-data="totalResults"></rv-pagination>
     
 </section>
 

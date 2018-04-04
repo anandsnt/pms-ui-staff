@@ -7819,6 +7819,21 @@
                     }
                 }
             }
+
+            /* Loyalty ***/
+            &.loyalty-gms {
+                padding: 0;
+                .square(640px);
+                
+                #gms-frame-container {
+                    .square(100%);
+                }
+
+                #gms-iframe {
+                    border: 0;
+                    .square(100%);
+                }
+            }
         }
     }
 
@@ -7872,7 +7887,8 @@
                     background-color:@gcard;
                     color: white;
                     height: 85px;
-                    padding: 20px;
+                    padding: 20px 220px 20px 20px;
+                    position: relative;
                   
                     h2 {
                         font-size:30px;
@@ -7885,7 +7901,27 @@
 
                     em {
                         font-size:16px;
-                    } 
+                    }
+
+                    .button {
+                        position: absolute;
+                        top: 20px;
+                        right: 20px;
+                        line-height: 45px;
+                        height: 45px;
+                        width: auto;
+                        max-width: 200px;
+                        .nowrap();
+
+                        &.with-icon {
+                            padding: 0 20px 0 50px;
+                            .icons {
+                                left: 20px;
+                                top: 12px;
+                                margin-left: 0;
+                            }
+                        }
+                    }
                 }
 
                 .modal-body {
