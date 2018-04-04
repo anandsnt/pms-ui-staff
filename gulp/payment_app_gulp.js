@@ -38,7 +38,7 @@ module.exports = function (gulp, $, options) {
         var deferred = $q.defer();
 
         var jsJsonFileContent = {};
-        var jsJsonFile = gulp.src(_options.paymentGeneratedFile)
+        var jsJsonFile = gulp.src(options.paymentGeneratedFile)
                         .pipe(edit(function(manifest){
                             jsJsonFileContent = manifest;
                             return manifest;
@@ -49,7 +49,7 @@ module.exports = function (gulp, $, options) {
             
             var fileContent = {
                 js: jsJsonFileContent,
-                template: [_options.URL_APPENDER + "/" + _options.PAYMENT_TEMPLATES_FILE]
+                template: [options.URL_APPENDER + "/" + options.PAYMENT_TEMPLATES_FILE]
             }
 
             fs.writeFile(newJsonFileName, JSON.stringify(fileContent), function(err) {
@@ -81,14 +81,14 @@ module.exports = function (gulp, $, options) {
             $q = require('q');
 
         var jsJsonFileContent = {};
-        var jsJsonFile = gulp.src(_options.paymentGeneratedFile)
+        var jsJsonFile = gulp.src(options.paymentGeneratedFile)
                         .pipe(edit(function(manifest){
                             jsJsonFileContent = manifest;
                             return manifest;
                         }));
         
         var templateJsonFileContent = {};
-        var templateJsonFile = gulp.src(MANIFEST_DIR + _options.PAYMENT_TEMPLTE_MANFEST_FILE)
+        var templateJsonFile = gulp.src(MANIFEST_DIR + options.PAYMENT_TEMPLTE_MANFEST_FILE)
                         .pipe(edit(function(manifest){
                             templateJsonFileContent = manifest;
                             return manifest;
@@ -100,7 +100,7 @@ module.exports = function (gulp, $, options) {
             
             var fileContent = {
                 js: jsJsonFileContent,
-                template: [_options.URL_APPENDER + "/" +templateJsonFileContent[_options.PAYMENT_TEMPLATES_FILE]]
+                template: [options.URL_APPENDER + "/" +templateJsonFileContent[options.PAYMENT_TEMPLATES_FILE]]
             }
 
             fs.writeFile(newJsonFileName, JSON.stringify(fileContent), function(err) {
