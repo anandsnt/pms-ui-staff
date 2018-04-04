@@ -79,7 +79,7 @@ angular.module('snt.transitionManager',
              */
             service.clearLoop = function (transitionIndex) {
                 transitions.splice(transitionIndex);
-                return transitions[idx];
+                return transitions[transitionIndex];
             };
 
             /**
