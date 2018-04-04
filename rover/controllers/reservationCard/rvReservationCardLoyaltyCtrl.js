@@ -2,14 +2,13 @@ sntRover.controller('rvReservationCardLoyaltyController', ['$rootScope', '$scope
     function($rootScope, $scope, ngDialog, RVLoyaltyProgramSrv) {
         BaseCtrl.call(this, $scope);
 
-        $scope.showSelectedLoyalty = function() {
-            var display = true;
+        $scope.isLoyaltySelected = function() {
+            $scope.showSelectedLoyalty = true;
             var selectedLoyalty = $scope.$parent.reservationData.reservation_card.loyalty_level.selected_loyalty;
 
             if (selectedLoyalty === null || typeof selectedLoyalty === 'undefined' || selectedLoyalty === '' || selectedLoyalty === {}) {
-                display = false;
+                $scope.showSelectedLoyalty = false;
             }
-            return display;
         };
         $scope.showLoyaltyProgramDialog = function() {
             var GMSDialog = {
@@ -53,6 +52,7 @@ sntRover.controller('rvReservationCardLoyaltyController', ['$rootScope', '$scope
             }
 
             $scope.$parent.reservationCardSrv.updateResrvationForConfirmationNumber($scope.$parent.reservationData.reservation_card.confirmation_num, $scope.$parent.reservationData);
+            $scope.isLoyaltySelected();
         });
         $scope.$on('loyaltyProgramDeleted', function(e, id, index, loyaltyProgram) {
 
@@ -64,7 +64,7 @@ sntRover.controller('rvReservationCardLoyaltyController', ['$rootScope', '$scope
                 }
                 $scope.$parent.reservationCardSrv.updateResrvationForConfirmationNumber($scope.$parent.reservationData.reservation_card.confirmation_num, $scope.$parent.reservationData);
             }
-
+            $scope.isLoyaltySelected();
         });
         $scope.setSelectedLoyaltyForID = function(id) {
             var hotelLoyaltyProgram = $scope.$parent.reservationData.reservation_card.loyalty_level.hotelLoyaltyProgram;
@@ -113,6 +113,7 @@ sntRover.controller('rvReservationCardLoyaltyController', ['$rootScope', '$scope
                 $scope.selectedLoyaltyID = '';
                 $scope.$parent.reservationData.reservation_card.loyalty_level.selected_loyalty = '';
             }
+            $scope.isLoyaltySelected();
         };
         $scope.loadLoyaltyPrograms = function() {
             if ($scope.$parent.$parent.refreshingReservation || $scope.reservationData.justCreatedRes) {
@@ -125,10 +126,12 @@ sntRover.controller('rvReservationCardLoyaltyController', ['$rootScope', '$scope
             var successCallback = function() {
                 $scope.setSelectedLoyalty($scope.selectedLoyaltyID);
                 $scope.$parent.reservationCardSrv.updateResrvationForConfirmationNumber($scope.$parent.reservationData.reservation_card.confirmation_num, $scope.$parent.reservationData);
+                $scope.isLoyaltySelected();
                 $scope.$parent.$emit('hideLoader');
             };
             var errorCallback = function(errorMessage) {
                 $scope.setSelectedLoyalty($scope.$parent.reservationData.reservation_card.loyalty_level.selected_loyalty);
+                $scope.isLoyaltySelected();
                 $scope.$parent.$emit('hideLoader');
                 $scope.$parent.errorMessage = errorMessage;
             };
@@ -187,6 +190,7 @@ sntRover.controller('rvReservationCardLoyaltyController', ['$rootScope', '$scope
                 $scope.GMSSettings = {};
                 $scope.hotelLoyaltyProgramEnabled = true;
                 $scope.setSelectedLoyaltyForID($scope.$parent.reservationData.reservation_card.loyalty_level.selected_loyalty);
+                $scope.isLoyaltySelected();
                 getGMSSettings();
             };
 

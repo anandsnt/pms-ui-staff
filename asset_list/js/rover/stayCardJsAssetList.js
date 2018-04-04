@@ -58,7 +58,10 @@ module.exports = {
                     servicesRoot + "rvCCAuthorizationSrv.js",
                     servicesRoot + "nightlyDiary/**/*.js",
                     servicesRoot + "roomAssignment/rvRoomAssignmentSrv.js",
-                    servicesRoot + "roomAssignment/rvUpgradesSrv.js"
+                    servicesRoot + "roomAssignment/rvUpgradesSrv.js",
+
+                    // Eliminate all spec files
+                    '!**/*.spec.js'
                 ]
             };
 	}

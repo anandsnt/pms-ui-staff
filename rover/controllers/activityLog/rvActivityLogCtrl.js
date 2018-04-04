@@ -323,6 +323,11 @@ sntRover.controller('RVActivityLogCtrl', [
             }, 100);
         };
 
+    // Checks whether pagination should be shown or not
+    $scope.shouldShowPagination = function () {
+        return $scope.totalResults > $scope.perPage;
+    };
+
 	$scope.init = function() {
         var reservationDetails = $scope.$parent.reservation.reservation_card;
         // setting the header caption
