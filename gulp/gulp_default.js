@@ -33,8 +33,7 @@ module.exports = function(gulp, $, options) {
                     'admin-inject-assets-to-templates',
                     'login-inject-assets-to-templates',
                     'station-login-inject-assets-to-templates',
-                    'zest-inject-assets-to-templates',
-                    'inject_gtm_script_rover'
+                    'zest-inject-assets-to-templates'
                 ],
 
         copyBaseHtmlToPublicAssets = [
@@ -73,6 +72,11 @@ module.exports = function(gulp, $, options) {
 
         if (argv['prod'] || argv['production']) {
             process.env.BUILD_ENV = 'prod';
+        }
+
+        // Inject gtm tags only if option is provided
+        if (argv['gtm']) {
+            tasksAfterCompilation.push('inject_gtm_script_rover');
         }
 
         // if you dont want to work with guest web (zest web),
