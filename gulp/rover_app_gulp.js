@@ -3,11 +3,12 @@ module.exports = function(gulp, $, options) {
     var runSequence = require('run-sequence'),
         ROVER_TEMPLATE_ROOT     = '../views/staff/dashboard/',
         ROVER_HTML_FILE         = ROVER_TEMPLATE_ROOT + 'rover.html',
-        extend                     = require('util')._extend,
-        options                 = extend({
-            'ROVER_TEMPLATE_ROOT'    : ROVER_TEMPLATE_ROOT,
-            'ROVER_HTML_FILE'         : ROVER_HTML_FILE
-        }, options);
+        _ = require('lodash');
+
+    _.extend(options, {
+        'ROVER_TEMPLATE_ROOT': ROVER_TEMPLATE_ROOT,
+        'ROVER_HTML_FILE': ROVER_HTML_FILE
+    });
 
     
     require('./rover/rover_js_gulp')(gulp, $, options);
@@ -20,7 +21,7 @@ module.exports = function(gulp, $, options) {
 
     gulp.task('copy-rover-files', ['rover-copy-js-files', 'rover-copy-less-files'])
     
-    //TASKS
+    // TASKS
     gulp.task('build-rover-dev', function(callback){
         return runSequence(['build-rover-less-js-dev', 'build-rover-template-cache-dev', 
         'concat-translation-en-rover-files-dev', 'rover-generate-mapping-list-dev'], 'copy-rover-base-html', callback);
