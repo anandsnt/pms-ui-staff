@@ -23,7 +23,10 @@ module.exports = {
 				'rover/controllers/cardsOutside/rvArTransactionsPayCreditsController.js',
 				'rover/controllers/cardsOutside/rvArTransactionsDatePickerController.js',
 				'rover/controllers/contractedNightsCtrl.js',
-				'rover/controllers/rvCommissionsDatePickerController.js'
+				'rover/controllers/rvCommissionsDatePickerController.js',
+
+                // Eliminate all spec files
+                '!**/*.spec.js'
 			]
 		};
 		return companycardDetailsJsAssets;
