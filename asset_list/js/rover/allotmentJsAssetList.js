@@ -14,7 +14,10 @@ module.exports = {
 				roverRoot + "services/reservation/RVReservationAddonsSrv.js",
 				roverRoot + "services/allotments/**/*.js",
 				roverRoot + "services/rvReservationSrv.js",
-				roverRoot + "services/reservation/rvReservationBaseSearchSrv.js"
+				roverRoot + "services/reservation/rvReservationBaseSearchSrv.js",
+
+                // Eliminate all spec files
+                '!**/*.spec.js'
 			]
 		};
 		return allotmentJsAssets;

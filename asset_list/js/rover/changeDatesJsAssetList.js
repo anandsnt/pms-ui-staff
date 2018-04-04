@@ -9,7 +9,10 @@ module.exports = {
 				nonMinifiedFiles: [
 					controllerRoot + "changeStayDates/**/*.js",
 					servicesRoot + "changeStayDates/**/*.js",
-					servicesRoot + "nightlyDiary/**/*.js"
+					servicesRoot + "nightlyDiary/**/*.js",
+
+                    // Eliminate all spec files
+                    '!**/*.spec.js'
 				]
 		};
 		return assetsForView;

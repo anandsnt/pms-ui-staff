@@ -69,7 +69,9 @@ module.exports = {
 					zestRoot + 'constants/**/*.js',
 					zestRoot + 'zsCardOperations.js',
 					zestRoot + 'zsSwipeOperations.js',
-					zestRoot + 'zsMLIOperations.js'
+					zestRoot + 'zsMLIOperations.js',
+                    '!**/*.spec.js',
+                    '!**/*.conf.js'
 				],
                 preCompiledFiles : [
                     paymentRoot + "constants/payConfig.js",
