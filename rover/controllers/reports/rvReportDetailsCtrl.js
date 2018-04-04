@@ -59,7 +59,7 @@ sntRover.controller('RVReportDetailsCtrl', [
         /**
          * inorder to refresh after list rendering
          */
-        $scope.$on('NG_REPEAT_COMPLETED_RENDERING', function (event) {
+        $scope.$on('NG_REPEAT_COMPLETED_RENDERING', function () {
             $timeout($scope.refreshScroll, 1000);
         });
 
@@ -931,7 +931,6 @@ sntRover.controller('RVReportDetailsCtrl', [
                     template = '/assets/partials/reports/complimentaryRoomReport/rvComplimentaryRoomReport.html';
                     break;
 
-
                 // Default report row
                 default:
                     template = '/assets/partials/reports/shared/rvCommonReportRow.html';
@@ -958,7 +957,7 @@ sntRover.controller('RVReportDetailsCtrl', [
         // we are gonna need to drop some pagination
         // this is done only once when the report details is loaded
         // and when user updated the filters
-        var calPagination = function (response, pageNum) {
+        var calPagination = function () {
             if (!$scope.hasPagination) {
                 return;
             }
@@ -1225,8 +1224,8 @@ sntRover.controller('RVReportDetailsCtrl', [
 
                     $window.print();
                     if (sntapp.cordovaLoaded) {
-                        cordova.exec(function (success) {
-                        }, function (error) {
+                        cordova.exec(function () {
+                        }, function () {
                         }, 'RVCardPlugin', 'printWebView', []);
                     }
                 }, 1000);

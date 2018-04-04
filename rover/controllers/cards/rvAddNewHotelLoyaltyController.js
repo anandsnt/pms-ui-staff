@@ -35,6 +35,7 @@ sntRover.controller('RVAddNewHotelLoyaltyController', ['$scope', '$rootScope', '
 			$scope.$emit('hideLoader');
 			$scope.cancel();
 			$rootScope.$broadcast('loyaltyProgramAdded', $scope.newLoyalty);
+			$scope.$emit('REFRESH_CONTACT_INFO', {guestId: $scope.$parent.guestCardData.guestId});
 		};
 
 		var loyaltyPostErrorCallback = function(errorMessage) {

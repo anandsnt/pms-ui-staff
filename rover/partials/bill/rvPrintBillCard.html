@@ -11,7 +11,7 @@
     <div class="info-left">
         <span ng-bind-html="printData.guest_details.address"></span>
         <div class="info-bottom">
-            <strong >{{printData.translation.invoice_date}}: </strong>{{printData.invoice_date | date:dateFormat}}<br/>
+            <strong >{{printData.translation.invoice_date}}:</strong>{{printData.invoice_date | date:dateFormat}}<br/>
             <span ng-show="!isInformationalInvoice">
                 <strong >{{printData.translation.invoice_number}}:</strong>{{printData.invoice_number}}<br/>
             </span>
@@ -63,20 +63,6 @@
         <div class="info-left">
             <strong >{{printData.translation.invoice_date}}:</strong>{{printData.invoice_date | date:dateFormat}}<br/>
             <strong >{{printData.translation.invoice_number}}:</strong>{{printData.invoice_number}}<br/>
-            <span ng-show="printData.has_enabled_invoice_number_sequence && printData.mod_invoice_number && !isInformationalInvoice">
-                <strong >{{printData.mod_label}}:</strong>{{printData.mod_invoice_number}}<br/>
-            </span>
-            <span ng-show="printData.control_code !== '' && !isInformationalInvoice">
-                <strong >{{printData.translation.control_code}}: </strong> {{printData.control_code | limitTo : 30}}
-                <br/>
-            </span>
-            <span ng-show="printData.control_unit !== '' && !isInformationalInvoice">
-                <strong >{{printData.translation.control_unit}}: </strong> {{printData.control_unit}}
-                <br/>
-            </span>
-            <span ng-show="printData.register_id !== '' && isInfrasecActivated && isInfrasecActivatedForWorkstation">
-                <strong >{{printData.translation.register_id}}: </strong> {{printData.register_id}}
-            </span>
             <strong ng-if="printData.reference_number">{{printData.translation.reference_number}}:</strong>{{printData.reference_number}}<br ng-if="printData.reference_number" />
             <strong ng-if="printData.payment_due_in_days">{{printData.translation.payment_due_days}}:</strong>{{printData.payment_due_in_days}}<br/>
         </div>
