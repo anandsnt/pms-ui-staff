@@ -264,18 +264,16 @@ angular.module('sntRover').controller('rvGroupSearchCtrl', [
          * @return {None}
          */
         var successCallBackOfSearch = function(data) {
-            // groupList
-            $scope.groupList = data.groups;
+                // groupList
+                $scope.groupList = data.groups;
 
-            // total result count
-            $scope.totalResultCount = data.total_count;
+                // total result count
+                $scope.totalResultCount = data.total_count;
 
-            refreshScrollers();
+                refreshScrollers();
 
-            $timeout(function () {
-                $scope.$broadcast('updatePagination', PAGINATION_ID);
-            }, 100);
-        };
+                $scope.refreshPagination(PAGINATION_ID);                
+            };            
 
         /**
          * on success of search API
@@ -469,6 +467,8 @@ angular.module('sntRover').controller('rvGroupSearchCtrl', [
             setInitialPaginationAndAPIThings();
 
             configurePagination();
+
+            $scope.refreshPagination(PAGINATION_ID);
 
         }());
 

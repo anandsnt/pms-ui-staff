@@ -265,18 +265,16 @@ sntRover.controller('rvAllotmentSearchCtrl', [
          * @return {None}
          */
         var successCallBackOfSearch = function(data) {
-            // allotmentlist
-            $scope.allotmentList = data.allotments;
+                // allotmentlist
+                $scope.allotmentList = data.allotments;
 
-            // total result count
-            $scope.totalResultCount = data.total_count;
+                // total result count
+                $scope.totalResultCount = data.total_count;
 
-            refreshScrollers();
-
-            $timeout(function () {
-                $scope.$broadcast('updatePagination', PAGINATION_ID);
-            }, 100);
-        };
+                refreshScrollers();
+                $scope.refreshPagination(PAGINATION_ID);
+                
+            };
 
         /**
          * on success of search API
@@ -469,6 +467,8 @@ sntRover.controller('rvAllotmentSearchCtrl', [
             setInitialPaginationAndAPIThings();
 
             configurePagination();
+
+            $scope.refreshPagination(PAGINATION_ID);
         }());
 
 
