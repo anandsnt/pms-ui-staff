@@ -16,7 +16,7 @@
                 <strong >{{printData.translation.invoice_number}}:</strong>{{printData.invoice_number}}<br/>
             </span>
             <span ng-show="printData.has_enabled_invoice_number_sequence && printData.mod_invoice_number && !isInformationalInvoice">
-                <strong >{{printData.mod_label}}:</strong>{{printData.mod_invoice_number}}<br/>
+                <strong >{{printData.mod_label}}: </strong>{{printData.mod_invoice_number}}<br/>
             </span>
             <span ng-show="printData.control_code !== '' && !isInformationalInvoice">
                 <strong >{{printData.translation.control_code}}: </strong> {{printData.control_code | limitTo : 30}}
