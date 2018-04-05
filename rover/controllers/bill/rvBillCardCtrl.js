@@ -101,13 +101,19 @@ sntRover.controller('RVbillCardController',
 	// CICO-6089 : Flag for Guest Bill: Check out without Settlement
 	$scope.isCheckoutWithoutSettlement = false;
 
-	$rootScope.$on('arAccountCreated', function() {
-		 $timeout(function() {
-		 	$scope.showAdvancedBillDialog();
-		 	$scope.$emit("hideLoader");
-		 }, 1000);
-		 
+	// Catching event boradcasted : arAccountCreated
+	var listnerArAccount = $rootScope.$on('arAccountCreated', function() {
+		var isViaReviewProcess = true;
+
+		$timeout(function() {
+			$scope.showAdvancedBillDialog( isViaReviewProcess );
+			$scope.$emit("hideLoader");
+		}, 100);
 	});
+
+	// the listner must be destroyed when no needed anymore
+	$scope.$on( '$destroy', listnerArAccount );
+
 	// set up flags for checkbox actions
 	$scope.hasMoveToOtherBillPermission = function() {
         return ($rootScope.isStandAlone && rvPermissionSrv.getPermissionValue ('MOVE_CHARGES_RESERVATION_ACCOUNT'));
@@ -1009,11 +1015,7 @@ sntRover.controller('RVbillCardController',
 			};
 
 			$scope.invokeApi(RVReservationCardSrv.tokenize, getTokenFrom, tokenizeSuccessCallback);
-
-
 	 	 }
-
-
 	});
 
 	 /*
@@ -1908,17 +1910,19 @@ sntRover.controller('RVbillCardController',
 
 	// To handle ar account details in case of direct bills
 	$scope.isArAccountNeeded = function(index) {
+		var isArAccountNeeded = false;
 
 		// CICO-15493: A reservation being linked to a Group Account should be sufficient to be able to check out to Direct Bill; no need to check for AR account
 		if ($scope.reservationBillData.is_linked_to_group_account) {
-			return false;
+			return isArAccountNeeded;
 		}
 		// Prompt for AR account
 		if ($scope.reservationBillData.bills[index].credit_card_details.payment_type === "DB" && $scope.reservationBillData.bills[index].ar_number === null && $rootScope.isStandAlone) {
 
 			if ($scope.reservationBillData.account_id === null || typeof $scope.reservationBillData.account_id === 'undefined') {
 				$scope.showErrorPopup($filter('translate')('ACCOUNT_ID_NIL_MESSAGE'));
-			} else {
+			} 
+			else {
 				$scope.account_id = $scope.reservationBillData.account_id;
 				ngDialog.open({
 					template: '/assets/partials/payment/rvAccountReceivableMessagePopup.html',
@@ -1927,10 +1931,10 @@ sntRover.controller('RVbillCardController',
 					scope: $scope
 				});
 			}
-			return true;
-		} else {
-			return false;
+			isArAccountNeeded = true;
 		}
+
+		return isArAccountNeeded;
 	};
 
 	// CICO-49105 Blackbox API on each bill having payments exist..
@@ -2327,21 +2331,21 @@ sntRover.controller('RVbillCardController',
     };
 
 	/*
-	 * to show the advance bill confirmation dialog
-	 *
+	 * To show the advance bill confirmation dialog
+	 * @param  {Boolean} [is Via ReviewProcess or not ]
+	 * @return {undefined}
 	 */
-	$scope.showAdvancedBillDialog = function() {
+	$scope.showAdvancedBillDialog = function( isViaReviewProcess ) {
 		if ($rootScope.isStandAlone && $scope.reservationBillData.reservation_status === 'CHECKEDIN' && !$scope.reservationBillData.is_advance_bill && !$scope.reservationBillData.is_hourly) {
 		 		ngDialog.open({
 	    		template: '/assets/partials/bill/rvAdvanceBillConfirmPopup.html',
 	    		className: '',
 	    		scope: $scope
 	    	});
-	 	} else {
-	 		$scope.clickedPayButton();
+	 	} 
+	 	else {
+	 		$scope.clickedPayButton( isViaReviewProcess );
 	 	}
-
-
 	};
 
 	/*
