@@ -448,10 +448,10 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 				}
 				_.each(ratesSet, function(rate) {
 					// CICO-28657 - SHOW these rates only in Recommended tab
-					var isGroupRate = ($scope.stateCheck.activeView == 'RECOMMENDED' && $scope.reservationData.group.id) ? !!$scope.reservationData.group.id : false,
-					    isAllotmentRate = ($scope.stateCheck.activeView == 'RECOMMENDED' && $scope.reservationData.allotment.id) ? !!$scope.reservationData.allotment.id : false,
+					var isGroupRate = ($scope.stateCheck.activeView == 'RECOMMENDED' && $scope.reservationData.group.id),
+					    isAllotmentRate = ($scope.stateCheck.activeView == 'RECOMMENDED' && $scope.reservationData.allotment.id),
 					    isCorporate = false,
-					    isSuppressed = (rate.id && $scope.reservationData.ratesMeta[rate.id].is_suppress_rate_on) ? !!$scope.reservationData.ratesMeta[rate.id].is_suppress_rate_on : false,
+					    isSuppressed = (rate.id && $scope.reservationData.ratesMeta[rate.id].is_suppress_rate_on),
 					    isMember =  false,
 					    isPromotion = false;
 
