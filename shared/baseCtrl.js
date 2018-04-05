@@ -308,4 +308,11 @@ BaseCtrl = function($scope) {
 
     };
 
+    // Refresh pagination every time the data changes
+    $scope.refreshPagination = function (paginationId) {
+        setTimeout(function() {
+            $scope.$broadcast('updatePagination', paginationId);
+        }, 100);        
+    };
+
 };
