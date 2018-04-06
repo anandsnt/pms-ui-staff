@@ -66,17 +66,17 @@ sntRover.controller('rvGMSLoyalityController', ['$scope', '$rootScope', '$filter
             },
             generateCredentailAndContent = function () {
                 credentials = {
-                    'username': $scope.ngDialogData.user_name,
-                    'password': $scope.ngDialogData.password,
-                    'buildingCode': $scope.ngDialogData.hotel_code,
+                    'username': $scope.ngDialogData.GMSSettings.user_name,
+                    'password': $scope.ngDialogData.GMSSettings.password,
+                    'buildingCode': $scope.ngDialogData.GMSSettings.hotel_code,
                     'identifier': $rootScope.hotelDetails.current_user.email,
                     'lname': $scope.userInfo.last_name,
                     'fname': $scope.userInfo.first_name
                 };
                 content = {
-                    'email': guestInfo.email,
-                    'firstName': guestInfo.firstName,
-                    'lastName': guestInfo.lastName
+                    'email': $scope.ngDialogData.guestInfo.email,
+                    'firstName': $scope.ngDialogData.guestInfo.firstName,
+                    'lastName': $scope.ngDialogData.guestInfo.lastName
                 };
             },
             addGMSLoyalty = function (message) {
@@ -112,14 +112,15 @@ sntRover.controller('rvGMSLoyalityController', ['$scope', '$rootScope', '$filter
             init = function () {
                 sntActivity.start('GMS_IFRAME_LOAD');
                 $scope.trustSrc = $sce.trustAsResourceUrl;
-                guestInfo = $scope.$parent.reservationParentData.guest;
+                guestInfo = $scope.ngDialogData.guestInfo;
+                // guestInfo = $scope.$parent.reservationParentData.guest;
                 // Membership class for HLP is 2, Value hardcoded
                 MEMBERSHIP_CLASS = 'HLP';
                 generateCredentailAndContent();
                 $scope.iframe = null;
                 $timeout(function() {
                     $scope.iframe = document.getElementById('gms-iframe');
-                    $scope.GMSiFrameSrc = $scope.ngDialogData.end_point;
+                    $scope.GMSiFrameSrc = $scope.ngDialogData.GMSSettings.end_point;
                     if ($scope.iframe) {
                         $scope.iframe.addEventListener('load', sendInitialMessage, false);
                         $scope.iframe.addEventListener('error', loadingError, false);
