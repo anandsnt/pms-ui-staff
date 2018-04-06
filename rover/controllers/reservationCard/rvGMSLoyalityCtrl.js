@@ -113,7 +113,6 @@ sntRover.controller('rvGMSLoyalityController', ['$scope', '$rootScope', '$filter
                 sntActivity.start('GMS_IFRAME_LOAD');
                 $scope.trustSrc = $sce.trustAsResourceUrl;
                 guestInfo = $scope.ngDialogData.guestInfo;
-                // guestInfo = $scope.$parent.reservationParentData.guest;
                 // Membership class for HLP is 2, Value hardcoded
                 MEMBERSHIP_CLASS = 'HLP';
                 generateCredentailAndContent();

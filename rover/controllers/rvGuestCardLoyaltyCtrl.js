@@ -32,17 +32,13 @@ angular.module('sntRover').controller('RVGuestCardLoyaltyController', ['$scope',
         });
         $scope.reloadOnSet = true;
     }
-
     $scope.$watch(
 		function() { return $scope.$parent.$parent.guestCardData.userId !== ''; },
 		function(gustDataReady) {
     if (gustDataReady) {
         $scope.init();
     }
-}
-		);
-
-
+});
 /*
 * To check for the loyalty levels in hotel loyalty section for the guest
 * and notify the guestcard header to display the same
@@ -57,7 +53,6 @@ angular.module('sntRover').controller('RVGuestCardLoyaltyController', ['$scope',
             }
         }
     });
-
     $scope.checkForHotelLoyaltyLevel = function() {
         if ($scope.$parent.$parent.guestCardData.use_hlp) {
             for (var i = 0; i < $scope.loyaltyData.userMemberships.hotelLoyaltyProgram.length; i++) {
@@ -68,8 +63,6 @@ angular.module('sntRover').controller('RVGuestCardLoyaltyController', ['$scope',
             }
         }
     };
-
-
     $scope.$on('clearNotifications', function() {
         $scope.errorMessage = '';
         $scope.successMessage = '';
@@ -80,7 +73,6 @@ angular.module('sntRover').controller('RVGuestCardLoyaltyController', ['$scope',
     $scope.$on('REFRESHLIKESSCROLL', function() {
         $scope.refreshScroller('loyaltyList');
     });
-
     $scope.addNewFreaquentLoyality = function() {
         ngDialog.open({
             template: '/assets/partials/guestCard/rvGuestCardaddFreaquentLoyaltyPopup.html',
@@ -89,7 +81,6 @@ angular.module('sntRover').controller('RVGuestCardLoyaltyController', ['$scope',
             scope: $scope
         });
     };
-
     $scope.addNewHotelLoyality = function() {
         var GMSDialog = {
                 template: '/assets/partials/reservationCard/rvGMSLoyality.html',
@@ -105,15 +96,14 @@ angular.module('sntRover').controller('RVGuestCardLoyaltyController', ['$scope',
                 className: '',
                 scope: $scope
             };
-
         // If GMS setting is on, show GMS iframe, else default - CICO-50633
+
         if (GMSData.GMSSettings.membership_feature) {
             ngDialog.open(GMSDialog);
         } else {
             ngDialog.open(AddLoyaltyProgramDiaolg);
         }
     };
-
     $scope.showDeleteModal = function(id, index, loyaltyProgram) {
         $scope.loaytyID = id;
         $scope.loyaltyIndexToDelete = index;
@@ -125,8 +115,6 @@ angular.module('sntRover').controller('RVGuestCardLoyaltyController', ['$scope',
             scope: $scope
         });
     };
-
-
     $scope.$on('loyaltyProgramAdded', function(e, data, source) {
         if (typeof $scope.loyaltyData === 'undefined') {
             return;
@@ -138,7 +126,6 @@ angular.module('sntRover').controller('RVGuestCardLoyaltyController', ['$scope',
             $scope.loyaltyData.userMemberships.frequentFlyerProgram.push(data);
         }
     });
-
     $scope.loyaltyProgramDeleted = function(id, index, loyaltyProgram) {
         if (typeof $scope.loyaltyData === 'undefined') {
             return;
@@ -149,12 +136,10 @@ angular.module('sntRover').controller('RVGuestCardLoyaltyController', ['$scope',
             $scope.loyaltyData.userMemberships.hotelLoyaltyProgram.splice(index, 1);
         }
     };
-
     $scope.$on('loyaltyDeletionError', function(e, error) {
         $scope.$parent.myScroll['loyaltyList'].scrollTo(0, 0);
         $scope.errorMessage = error;
     });
-
     $scope.$on('detect-hlps-ffp-active-status', function(evt, data) {
         if (data.userMemberships.use_hlp) {
             $scope.loyaltyProgramsActive(true);
@@ -163,8 +148,6 @@ angular.module('sntRover').controller('RVGuestCardLoyaltyController', ['$scope',
             $scope.loyaltyProgramsActive(false);
             $scope.$parent.guestCardData.use_hlp = false;
         }
-
-
         if (data.userMemberships.use_ffp) {
             $scope.ffpProgramsActive(true);
             $scope.$parent.guestCardData.use_ffp = true;
@@ -172,10 +155,7 @@ angular.module('sntRover').controller('RVGuestCardLoyaltyController', ['$scope',
             $scope.ffpProgramsActive(false);
             $scope.$parent.guestCardData.use_ffp = false;
         }
-
-
     });
-
     $scope.loyaltyProgramsActive = function(b) {
         $scope.hotelLoyaltyProgramEnabled = b;
         $scope.$parent.guestCardData.use_ffp = b;
@@ -196,6 +176,4 @@ angular.module('sntRover').controller('RVGuestCardLoyaltyController', ['$scope',
 
         $scope.callAPI(RVLoyaltyProgramSrv.getGMSSettings, options);
     };
-
-
 }]);
