@@ -56,7 +56,7 @@ module.exports = function(config) {
             sharedRoot + 'directives/touchPress/touchPress.js',
             sharedRoot + 'directives/enterPress/enterPress.js',
             sharedRoot + 'directives/clickTouch/clickTouch.js',
-            sharedRoot + 'directives/activityIndicator/**/*.js',
+            sharedRoot + 'directives/activityIndicator/sntActivityIndicator.js',
             jsLibRoot + 'date.js',
             sharedRoot + 'cordova.js',
             zestRoot + 'zsApp.js',

@@ -2,43 +2,46 @@ describe('zsHomeCtrl', function() {
 
     var $controller,
         $state,
-        $scope = {};
-
+        $scope = {},
+        languages,
+        zestStationSettings;
     beforeEach(function() {
         module('sntZestStation');
+        module(function($provide) {
+            $provide.value('languages', []);
+            $provide.value('zestStationSettings', {});
+        });
 
-        inject(function(_$controller_, _$rootScope_, _$state_) {
+        inject(function(_$controller_, _$rootScope_, _$state_, _languages_, _zestStationSettings_) {
             $controller = _$controller_;
+            $rootScope = _$rootScope_.$new();
             $state = _$state_;
-            $scope = _$rootScope_.$new();
+            $scope.zestStationSettings = _zestStationSettings_;
+            languages = _languages_;
+
         });
+        $scope = $rootScope.$new();
         $controller('zsHomeCtrl', {
-            $scope: $scope
+            $scope: $scope,
+            zestStationSettings: {}
         });
+        $scope.zestStationData = {};
+
         spyOn($state, 'go');
     });
 
     it('Based on key pickup setting, go to the corresponding state', function() {
 
-
-        // inject(function (_zsCheckinSrv_, _languages_) {
-        //     zsCheckinSrv = _zsCheckinSrv_;
-        //     languages = _languages_;
-        // });
-
-    	$scope.zestStationData.kiosk_key_creation_method = 'manual';
-         console.log("===========================");
-         console.log(zsCheckinSrv);
-         console.log(languages);
-        console.log($scope);
-        // $scope.clickedOnPickUpKey();
-        // expect($state.go).toHaveBeenCalledWith('zest_station.manualKeyPickup');
-        // $scope.zestStationData.pickup_qr_scan = true;
-        // $scope.clickedOnPickUpKey();
-        // expect($state.go).toHaveBeenCalledWith('zest_station.qrPickupKey');
-        // $scope.zestStationData.kiosk_key_creation_method = '';
-        // $scope.zestStationData.pickup_qr_scan = false;
-        // expect($state.go).toHaveBeenCalledWith('zest_station.checkOutReservationSearch');
+        $scope.zestStationData = {};
+        $scope.zestStationData.kiosk_key_creation_method = 'manual';
+        $scope.clickedOnPickUpKey();
+        expect($state.go).toHaveBeenCalledWith('zest_station.manualKeyPickup');
+        $scope.zestStationData.pickup_qr_scan = true;
+        $scope.clickedOnPickUpKey();
+        expect($state.go).toHaveBeenCalledWith('zest_station.qrPickupKey');
+        $scope.zestStationData.kiosk_key_creation_method = '';
+        $scope.zestStationData.pickup_qr_scan = false;
+        expect($state.go).toHaveBeenCalledWith('zest_station.checkOutReservationSearch');
     });
 
 
