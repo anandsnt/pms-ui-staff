@@ -32,7 +32,8 @@ module.exports = {
             'freehand-miami': [themeCSSRoot + 'freehand-miami.less'],
             'georgetown': [themeCSSRoot + 'georgetown.less'],
             'nomo': [themeCSSRoot + 'nomo.less'],
-            'merrill': [themeCSSRoot + 'merrill.less']
+            'merrill': [themeCSSRoot + 'merrill.less'],
+            'martins': [themeCSSRoot + 'martins.less']
 		};
 	}
 };

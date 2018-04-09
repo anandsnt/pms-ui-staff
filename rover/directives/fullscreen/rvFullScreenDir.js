@@ -7,8 +7,7 @@
  */
 sntRover.directive('rvFullscreen', [
     '$rootScope',
-    '$transitions',
-    function($rootScope, $transitions) {
+    function($rootScope) {
         return {
             restrict: 'A',
             link: function(scope, element, attr) {
@@ -34,15 +33,20 @@ sntRover.directive('rvFullscreen', [
                         return false;
                     });
                 });
-
                 /**
-                 * Fix for CICO-50759, Removing all full-screen related styles body element
+                 * Fix for CICO-50759, Removing all fullscreen related styles body element
                  * when state changes
                  */
-                $transitions.onStart({}, function() {
-                    if ($rootScope.fullscreenData && $rootScope.fullscreenData.toggleClass) {
+                var stateChangeListener = $rootScope.$on('$stateChangeStart', function() {
+                    try {
                         bodyEl.classList.remove('is-fullscreen', $rootScope.fullscreenData.toggleClass);
+                    } catch (e) {
+                        bodyEl.classList.remove('is-fullscreen');
                     }
+                });
+
+                $rootScope.$on('$destroy', function() {
+                    stateChangeListener();
                 });
             }
         };
