@@ -5,6 +5,7 @@ module.exports = function(config) {
     jsLibRoot = sharedRoot + 'lib-legacy/js/',
     zestRoot = './',
     paymentRoot = '../payment/';
+    
     config.set({
 
         // base path that will be used to resolve all patterns (eg. files, exclude)

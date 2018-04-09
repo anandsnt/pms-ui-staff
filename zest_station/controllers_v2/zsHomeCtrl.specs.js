@@ -3,14 +3,16 @@ describe('zsHomeCtrl', function() {
     var $controller,
         $state,
         $scope = {},
-        languages,
-        $rootScope,
-        zestStationSettings;
+        $rootScope;
 
     beforeEach(function() {
         module('sntZestStation', function($provide) {
-            $provide.value('languages', function() {return [];});
-            $provide.value('zestStationSettings', function() {return {};});
+            $provide.value('languages', function() {
+                return [];
+            });
+            $provide.value('zestStationSettings', function() {
+                return {};
+            });
         });
         inject(function(_$controller_, _$rootScope_, _$state_) {
             $controller = _$controller_;
