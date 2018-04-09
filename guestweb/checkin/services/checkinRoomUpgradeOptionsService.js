@@ -25,7 +25,7 @@
 	};
 
 	var sendGoogleAnalyticsEvents = function (params) {
-		if ($rootScope.trackinID && $rootScope.trackinID.length > 0) {
+		if ($rootScope.trackingID && $rootScope.trackingID.length > 0) {
 			$window.ga('send', {
 				hitType: 'event',
 				eventCategory: params.eventCategory,
