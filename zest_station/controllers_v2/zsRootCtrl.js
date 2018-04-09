@@ -10,7 +10,7 @@ sntZestStation.controller('zsRootCtrl', [
     'zsEventConstants',
     '$state', 'zsGeneralSrv', '$rootScope', 'ngDialog', '$sce',
     'zsUtilitySrv', '$translate', 'zsHotelDetailsSrv', 'cssMappings', 'hotelTranslations',
-    'zestStationSettings', '$timeout', 'zsModeConstants', 'hotelTimeData', 'hotelLanguages', '$filter', '$log', '$window',
+    'zestStationSettings', '$timeout', 'zsModeConstants', 'hotelTimeData', 'hotelLanguages', '$filter', '$log', '$window', 'languages',
     function($scope,
 		zsEventConstants,
 		$state,
@@ -30,7 +30,8 @@ sntZestStation.controller('zsRootCtrl', [
         hotelLanguages,
 		$filter,
         $log,
-        $window
+        $window,
+        languages
         ) {
 
 
@@ -110,6 +111,23 @@ sntZestStation.controller('zsRootCtrl', [
         };
 
         var setupLanguageTranslations = function() {
+            // workaround to fix for castellona
+            // castellona is not present in the hotel languages list, it is present only with station languages
+            // TODO: remove this code when castellano is added to hotel languages
+            var castellanoIndexInZestLanguages = _.findIndex(languages.languages, function(language) {
+                return language.name === 'castellano';
+            });
+            var castellanoIndexInHotelLanguages = _.findIndex(hotelLanguages.languages, function(language) {
+                return language.code === 'cl';
+            });
+           
+            if (castellanoIndexInHotelLanguages === -1 && castellanoIndexInZestLanguages !== -1) {
+                hotelLanguages.languages.push({
+                    'name': 'castellano',
+                    'code': 'cl'
+                });
+            }
+
             if (hotelLanguages.languages.length > 0) {
                 var codeForLang, locales = zsGeneralSrv.refToLatestPulledTranslations;
 
@@ -130,7 +148,7 @@ sntZestStation.controller('zsRootCtrl', [
         $scope.getTagValue = function(tag) {
             var currentLanguageCode = $scope.currentLanguageCode;
 
-            return $scope.tagInEdit.language[currentLanguageCode][tag];
+            return $scope.tagInEdit.language[currentLanguageCode] ? $scope.tagInEdit.language[currentLanguageCode][tag] : '';
         };
 
 		/**
@@ -1891,15 +1909,14 @@ sntZestStation.controller('zsRootCtrl', [
         };
 
         $scope.retrieveTranslations = function() {
-            var usedLanguageCode = $translate.use();
-            var languageId = _.find($scope.zestStationData.hotelLanguages, function(language) {
-                return language.code === usedLanguageCode;
-            }).id;
+            var selecteLanguage = _.find($scope.zestStationData.hotelLanguages, function(language) {
+                return language.code === $translate.use();
+            });
+            var languageId = selecteLanguage ? selecteLanguage.id : '';
             var propertyTranslations = _.find($scope.zestStationData.hotelTranslations, function(translation) {
                 return translation.language_id === languageId;
             });
-
-            return propertyTranslations.translations;
+            return propertyTranslations ? propertyTranslations.translations : [];
         };
 
 		/** *
