@@ -58,7 +58,7 @@ describe('zsHomeCtrl', function() {
             $scope.zestStationData.kiosk_key_creation_method = '';
             $scope.zestStationData.pickup_qr_scan = false;
             $scope.clickedOnPickUpKey();
-            expect($state.go).toHaveBeenCalledWith('zest_station.checkOutReservationSearch1', {'mode': 'PICKUP_KEY'});
+            expect($state.go).toHaveBeenCalledWith('zest_station.checkOutReservationSearch', {'mode': 'PICKUP_KEY'});
         });
     });
 });
