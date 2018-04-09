@@ -44,9 +44,13 @@ sntGuestWeb.controller('homeController', ['$rootScope', '$scope', '$location', '
 		loadAssets('/assets/apple-touch-startup-image-1536x2008.png', 'apple-touch-startup-image', '', '(device-width: 768px) and (orientation: portrait) and (-webkit-device-pixel-ratio: 2)');
 		loadAssets('/assets/apple-touch-startup-image-2048x1496.png', 'apple-touch-startup-image', '', '(device-width: 768px) and (orientation: landscape) and (-webkit-device-pixel-ratio: 2)');
 
-		var trackinID = reservationAndhotelData.google_analytics_tracking_id;
+		$rootScope.trackinID = reservationAndhotelData.google_analytics_tracking_id;
 		// initialise google analytics
-		$window.ga('create', trackinID, 'auto');
+		if ($rootScope.trackinID && $rootScope.trackinID.length > 0) {
+			$window.ga('create', $rootScope.trackinID, 'auto');
+			$window.ga('set', 'anonymizeIp', true);
+		}
+		
 		// store basic details as rootscope variables
 		if (typeof reservationAndhotelData.access_token !== "undefined") {
 			$rootScope.accessToken = reservationAndhotelData.access_token;
