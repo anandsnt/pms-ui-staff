@@ -4,12 +4,13 @@ describe('zsHomeCtrl', function() {
         $state,
         $scope = {},
         languages,
+        $rootScope,
         zestStationSettings;
+
     beforeEach(function() {
-        module('sntZestStation');
-        module(function($provide) {
-            $provide.value('languages', []);
-            $provide.value('zestStationSettings', {});
+        module('sntZestStation', function($provide) {
+            $provide.value('languages', function() {return [];});
+            $provide.value('zestStationSettings', function() {return {};});
         });
 
         inject(function(_$controller_, _$rootScope_, _$state_, _languages_, _zestStationSettings_) {
@@ -20,12 +21,23 @@ describe('zsHomeCtrl', function() {
             languages = _languages_;
 
         });
+
         $scope = $rootScope.$new();
-        $controller('zsHomeCtrl', {
-            $scope: $scope,
-            zestStationSettings: {}
+
+        angular.extend($scope, {
+            'zestStationData': {},
+            'setScreenIcon': function() {
+                return false;
+            },
+            'trackEvent': function() {
+                return false;
+            }
         });
-        $scope.zestStationData = {};
+
+
+        $controller('zsHomeCtrl', {
+            $scope: $scope
+        });
 
         spyOn($state, 'go');
     });
