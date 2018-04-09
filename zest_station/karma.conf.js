@@ -130,10 +130,5 @@ module.exports = function(config) {
         // Concurrency level
         // how many browser should be started simultaneous
         concurrency: Infinity
-        // plugins: [
-        //     'karma-jasmine',
-        //     'karma-phantomjs-launcher',
-        //     'karma-babel-preprocessor'
-        // ]
     });
 };
