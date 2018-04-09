@@ -3,7 +3,7 @@
   This displays the available rooms for upgrading.
 */
 (function() {
-  var checkinUpgradeRoomController = function($scope, $location, $rootScope, checkinRoomUpgradeOptionsService, checkinRoomUpgradeService, checkinDetailsService, $state, $window) {
+  var checkinUpgradeRoomController = function($scope, $location, $rootScope, checkinRoomUpgradeOptionsService, checkinRoomUpgradeService, checkinDetailsService, $state) {
 
     $scope.pageValid = false;
 
@@ -35,6 +35,7 @@
           eventAction: 'fetch failed',
           eventLabel: 'Room Upgrade Fetch Failed'
         };
+
         checkinRoomUpgradeOptionsService.sendGoogleAnalyticsEvents(params);
       };
 
@@ -71,6 +72,7 @@
             eventAction: 'fetch success',
             eventLabel: 'Room Upgrade Fetch success'
           };
+
           checkinRoomUpgradeOptionsService.sendGoogleAnalyticsEvents(params);
           setUpUpsellRoomTypeData(response);
         }
@@ -110,6 +112,7 @@
             eventAction: 'Room upgrade Failed',
             eventLabel: 'Room upgrade Failed'
           };
+
           checkinRoomUpgradeOptionsService.sendGoogleAnalyticsEvents(params);
         };
         
@@ -125,6 +128,7 @@
               eventAction: 'Room upgrade success',
               eventLabel: 'Room upgrade success'
             };
+            
             checkinRoomUpgradeOptionsService.sendGoogleAnalyticsEvents(params);
             $rootScope.upgradesAvailable = false;
             $rootScope.isUpgradeAvailableNow = false;
@@ -155,7 +159,7 @@
   };
 
   var dependencies = [
-    '$scope', '$location', '$rootScope', 'checkinRoomUpgradeOptionsService', 'checkinRoomUpgradeService', 'checkinDetailsService', '$state', '$window',
+    '$scope', '$location', '$rootScope', 'checkinRoomUpgradeOptionsService', 'checkinRoomUpgradeService', 'checkinDetailsService', '$state',
     checkinUpgradeRoomController
   ];
 

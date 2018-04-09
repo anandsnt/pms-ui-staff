@@ -1,5 +1,5 @@
 (function() {
-	var checkinRoomUpgradeOptionsService = function($q, $http, $rootScope) {
+	var checkinRoomUpgradeOptionsService = function($q, $http, $rootScope, $window) {
 
 	var responseData = {};
 
@@ -44,7 +44,7 @@
 };
 
 var dependencies = [
-'$q', '$http', '$rootScope',
+'$q', '$http', '$rootScope', '$window',
 checkinRoomUpgradeOptionsService
 ];
 
