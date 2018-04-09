@@ -12,12 +12,10 @@ describe('zsHomeCtrl', function() {
             $provide.value('languages', function() {return [];});
             $provide.value('zestStationSettings', function() {return {};});
         });
-        inject(function(_$controller_, _$rootScope_, _$state_, _languages_, _zestStationSettings_) {
+        inject(function(_$controller_, _$rootScope_, _$state_) {
             $controller = _$controller_;
             $rootScope = _$rootScope_.$new();
             $state = _$state_;
-            zestStationSettings = _zestStationSettings_;
-            languages = _languages_;
             $scope = $rootScope.$new();
         });
 
