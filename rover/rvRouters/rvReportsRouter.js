@@ -38,5 +38,17 @@ angular.module('reportsModule', [])
                     dynamic: true
                 }
             }
+        });        
+
+        $stateProvider.state('rover.reports.inbox', {
+            url: '/inbox',
+            templateUrl: '/assets/partials/reports/backgroundReports/rvReportsInbox.html',
+            controller: 'RVReportsInboxCtrl',
+            resolve: {
+                generatedReportsList: function (RVReportsInboxSrv) {
+                    var params = {};
+                    return RVReportsInboxSrv.fetchReportInbox(params);
+                }
+            }            
         });
     });

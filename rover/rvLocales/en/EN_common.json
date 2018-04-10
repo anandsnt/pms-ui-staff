@@ -47,6 +47,9 @@
     "MENU_MANAGE_ALLOTMENT": "Manage Allotment",
     "MENU_ACCOUNTS": "Accounts",
     "MENU_GUESTS": "Guests",
+    "MENU_NEW_REPORT": "New Report",
+    "MENU_REPORTS_INBOX": "Reports Inbox",
+    "MENU_SCHEDULE_REPORT_OR_EXPORT": "Schedule a Report/Export",
 
     "DUEIN_TITLE": "Checking In",
     "IN_HOUSE_TITLE": "In House",
