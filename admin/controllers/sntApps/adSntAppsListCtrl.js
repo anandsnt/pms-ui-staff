@@ -2,7 +2,7 @@ admin.controller('ADSntAppsListCtrl', ['$scope',
 	'adDebuggingSetupSrv', 'adAppVersionsSrv', 'ngTableParams', '$filter', 'appTypes', '$state', 'ngDialog',
 	function($scope, adDebuggingSetupSrv, adAppVersionsSrv, ngTableParams, $filter, appTypes, $state, ngDialog) {
 		BaseCtrl.call(this, $scope);
-
+		
 		var fetchAppVersions = function() {
 
 			var fetchAppListSuccessCallback = function(data) {
@@ -78,10 +78,18 @@ admin.controller('ADSntAppsListCtrl', ['$scope',
 			resetSelectedApp();
 		};
 
+		var checkIfFileTypeisInValid = function () {
+			return ($scope.filterType.value === 'Rover Service Mac' && !$scope.fileName.endsWith(".pkg"))
+			 || ($scope.filterType.value !== 'Rover Service Mac' && !$scope.fileName.endsWith(".exe"));
+		};
+
 		var uploadBuild = function() {
+			if(checkIfFileTypeisInValid()) {
+				$scope.errorMessage = ['Wrong file extension !'];
+			}
 			// processing the huge build param will take time in backend
 			// so inorder to avoid that, check if build is presnet in UI
-			if (_.isEmpty($scope.selectedApp.build)) {
+			else if (_.isEmpty($scope.selectedApp.build)) {
 				$scope.errorMessage = ['Upload Build is mandatory']
 			} else {
 				var params = angular.copy($scope.selectedApp);
@@ -165,6 +173,20 @@ admin.controller('ADSntAppsListCtrl', ['$scope',
 				successCallBack: saveFTPSuccess,
 				failureCallBack: saveFTPFailure
 			});
+		};
+		$scope.fileChanged = function(data) {
+			$scope.errorMessage = '';
+			$scope.selectedApp.version = '';
+			// extract the file name from the filename (eg:- rover-v1.0.5-installer.exe)
+			var tmpStr = data.file.name.match("-v(.*)-");
+
+			if (checkIfFileTypeisInValid()) {
+				$scope.errorMessage = ['Wrong file extension !'];
+			} else if (!tmpStr || tmpStr.length < 1) {
+				$scope.errorMessage = ["Wrong file name format ! The file name should include the build version in the format '-vx.x.x-'"];
+			} else if (tmpStr && tmpStr.length > 1) {
+				$scope.selectedApp.version = tmpStr[1];
+			}
 		};
 
 		(function() {
