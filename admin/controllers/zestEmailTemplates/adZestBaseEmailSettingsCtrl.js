@@ -27,7 +27,7 @@ admin.controller('ADZestBaseEmailSettingsCtrl', ['$scope', '$state', 'ngDialog',
             var options = {
                 params: params,
                 successCallBack: function() {
-                    $scope.successMessage = 'Sucess!';
+                    $scope.successMessage = 'Success!';
                 }
             };
 

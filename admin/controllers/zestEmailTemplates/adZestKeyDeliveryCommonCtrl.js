@@ -34,7 +34,7 @@ admin.controller('ADZestKeyDeliveryCommonCtrl', ['$scope', 'data', '$filter', '$
 			var options = {
 				params: params,
 				successCallBack: function() {
-					$scope.successMessage = 'Sucess!';
+					$scope.successMessage = 'Success!';
 				}
 			};
 

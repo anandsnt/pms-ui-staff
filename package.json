@@ -43,6 +43,7 @@
     "imagemin-pngquant": "5.0.0",
     "jasmine-core": "^2.99.1",
     "karma": "^2.0.0",
+    "karma-babel-preprocessor": "^7.0.0",
     "karma-chrome-launcher": "^2.2.0",
     "karma-jasmine": "^1.1.1",
     "karma-phantomjs-launcher": "^1.0.4",
