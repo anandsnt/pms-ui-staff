@@ -77,5 +77,23 @@ admin.service('ADReservationToolsSrv', [
 
             return deferred.promise;
         };
+
+        /**
+         * To resync rate task
+         * @return {Object}
+         */
+        this.reSyncRates = function(params) {
+            var deferred = $q.defer(),
+                url      = '';
+
+            ADBaseWebSrvV2.getJSON(url)
+                .then(function(data) {
+                    deferred.resolve(data);
+                }, function(errorMessage) {
+                    deferred.reject(errorMessage);
+                });
+
+            return deferred.promise;
+        };
     }
 ]);

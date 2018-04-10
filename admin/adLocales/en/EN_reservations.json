@@ -29,6 +29,7 @@
 
 "BALANCE_INVENTORY": "Balance Inventory",
 "BALANCE_JOURNAL": "Balance Journal",
+"RESYNC_RATES": "Resync Rates",
 "START_JOB": "Start Job",
 "REFRESH_STATUS": "Refresh Status",
 "FORCE_ADJ_REASON" :"FORCE RATE ADJUSTMENT REASON",

@@ -1,0 +1,48 @@
+<section class="content current admin-scrollfix" div-touch-move-stop-propogate ng-click="clearErrorMessage()">
+	<div class="inline-edit">
+		<header class="content-title float">
+			<h2 translate>RESYNC_RATES</h2>
+		</header>
+		<section class="content-scroll">
+			<div ng-include="'/assets/partials/common/notification_message.html'"></div>
+			<form class="form inline-form">
+				<div class="entry rel">
+					<label for="select-rate">Select a Rate</label>
+					<!-- Add .active when showing options -->
+					<div class="faux-select">
+						<span class="value">Select a Rate</span>
+					</div>
+					<!-- Toggle .hidden when clicked on .faux-select -->
+					<div id="select-rate" class="faux-select-options hidden">
+						<div class="search">
+							<button id="faux-select-clear-query" class="clear-query"><span class="icons icon-clear-search">Clear query</span></button>
+							<button type="submit" name="submit" class="icons icon-search">Search</button>
+							<input name="faux-select-query" id="faux-select-query" class="query" placeholder="Search by Rate Name" autocomplete="off" type="search">
+						</div>
+						<!-- add .checked if checked -->
+						<label class="radio inline">
+							<!-- add .checked if checked -->
+							<span class="icon-form icon-radio"></span>
+							<!-- add checked="checked" if checked -->
+							<input name="resync_rate"  value="{Rate}" type="radio">
+							<span class="text">{Rate}</span>
+						</label>
+						... repeat for each rate
+					</div> 
+				</div>
+				<div class="entry only-button">
+					<!-- Remove .grey and disabled when a rate is select -->
+					<!-- Add .blue when a rate is selected -->
+					<button type="button" class="button grey" ng-click="clickedSyncButton()">Sync</button>
+						<!-- 'status-class': 
+							- orange when processing
+							- red    when error
+							- green  when completed
+						-->
+					<span class="{status-class}">{status-text}</span>
+				</div>
+			</form>
+		</section>
+	</div>
+</section>
+      
