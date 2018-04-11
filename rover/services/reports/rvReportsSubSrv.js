@@ -525,6 +525,22 @@ angular.module('sntRover').service('RVreportsSubSrv', [
             });
         };
 
+        // Method to get the revenue and tax of accounts
+        // @data - params to API
+        service.getRevenueAndTax = function(data) {
+            var deferred = $q.defer(),
+                url = '/api/accounts/revenue_and_tax';
+
+                rvBaseWebSrvV2.getJSON(url, data).then(function(data) {
+
+                     deferred.resolve(data);
+                }, function(data) {
+                    deferred.reject(data);
+                });
+
+            return deferred.promise;
+        }
+
         return service;
     }
 ]);
