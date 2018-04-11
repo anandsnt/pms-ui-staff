@@ -3,8 +3,21 @@ angular.module('sntRover').service('RVReportsInboxSrv', [
     'rvBaseWebSrvV2',
     'RVReportApplyIconClass',
     'RVReportApplyFlags',
-    'RVReportSetupDates',        
-    function($q, rvBaseWebSrvV2, applyIconClass, applyFlags, setupDates) {
+    'RVReportSetupDates',
+    'RVReportParamsConst',
+    'RVReportInboxFilterLabelConst',
+    'RVReservationBaseSearchSrv',        
+    function($q, 
+        rvBaseWebSrvV2,
+        applyIconClass, 
+        applyFlags, 
+        setupDates,
+        reportParamsConst,
+        reportInboxFilterLabelConst,
+        RVReservationBaseSearchSrv ) {
+
+        var self = this;
+
         this.PER_PAGE = 10;
 
         var reportInboxSampleData = [
@@ -47,16 +60,15 @@ angular.module('sntRover').service('RVReportsInboxSrv', [
         ]
 
         this.fetchReportInbox = function(params) {
-            var deferred = $q.defer();
-            deferred.resolve(reportInboxSampleData);
-            /*var url = '/api/generated_reports';
+            var deferred = $q.defer(),            
+               url = '/api/generated_reports';
 
             rvBaseWebSrvV2.getJSON(url, params)
             .then(function(data) {                
-                deferred.resolve(reportInboxSampleData);
+                deferred.resolve(data);
             }, function(error) {
                 deferred.reject(error);
-            });*/
+            });
 
             return deferred.promise;
         };
@@ -68,6 +80,44 @@ angular.module('sntRover').service('RVReportsInboxSrv', [
                 applyIconClass.init( report[i] );
                 
             }
+        };
+
+        this.processRateIds = function( value, key, promises, formatedFilter) {
+            var params = {
+                //reportParamsConst['RATE_IDS']: value
+                rate_ids: value
+            };
+
+            promises.push(RVReservationBaseSearchSrv.fetchRateDetailsForIds(params).then(function(rates) {
+                formatedFilter[reportInboxFilterLabelConst[key]] = _.pluck(rates, 'name').join(',');
+            }));
+        };
+
+        this.processFilters = function(filters) {
+            let processedFilter = {},
+                promises = [],
+                deferred = $q.defer();
+
+
+
+            _.each(filters, function(value, key) {
+                switch(key) {
+                   case reportParamsConst['FROM_DATE']:
+                        reportParamsConst['TO_DATE']
+                        processedFilter[reportInboxFilterLabelConst[key]] = value;
+                        break;
+                   case reportParamsConst['RATE_IDS']:
+                        self.processRateIds(value, key, promises, processedFilter);
+                }
+
+            });
+
+            $q.all(promises).then(function() {
+                deferred.resolve(processedFilter);
+            });
+
+            return deferred.promise;
+
         };
         
     }

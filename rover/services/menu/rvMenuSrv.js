@@ -311,7 +311,7 @@ angular.module('sntRover').service('rvMenuSrv',
 		        menuIndex: "reports",
 		        submenu: [{
 		            title: "MENU_NEW_REPORT",
-		            action: "",
+		            action: "rover.reports.dashboard({fromReportInbox: true})",
 		            menuIndex: "new_report"
 		        }, {
 		            title: "MENU_REPORTS_INBOX",

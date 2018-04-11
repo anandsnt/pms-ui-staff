@@ -22,7 +22,7 @@
         </div>
     </div>
     <div class="entry new">
-        <a href="{url}" class="add-new-button">+ New Report</a>
+        <a class="add-new-button" ng-click="createNewReport()">+ New Report</a>
     </div>
 </form>
 <section id="reports" class="content reports-wrapper" role="main">
@@ -54,23 +54,19 @@
                         <div class="actions">CSV/PRINT</div>
                     </div>
                     <!-- Add a scroll here-->
-                    <div class="scrollable report-inbox">
+                    <div class="scrollable report-inbox" ng-iscroll="report-inbox-scroller">
                         <ul class="wrapper">
                             <!-- Add .disabled if in progress or has an error-->
                             <!-- add .expanded if expanded -->
-                            <li class="report-item inbox-item" ng-repeat="report  in generatedReportsList track by $index">
+                            <li class="report-item inbox-item" ng-repeat="report  in generatedReportsList track by $index" ng-class="{'disabled': shouldDisableInboxItem(report), 'expanded': report.isExpanded}" ng-click="showReportDetails(report)">
                                 <!-- On click, expand the report -->
                                 <div class="expand">
                                     <!-- add .active if expanded -->
-                                    <span class="icons icon-double-arrow black expand-arrow"></span>
-                                </div>
-                                <!-- If we have a status (when .disabled)
-                    'color':
-                        - red - when error
-                        - blue - when in progress
-                --
-                <span class="status {color}">{Status}</span>
-                -->
+                                    <span class="icons icon-double-arrow black expand-arrow" ng-class="{'active': report.isExpanded}"></span>
+                                </div>                                
+            
+                <span class="status {{getColorCodeForReportStatus(report)}}" ng-show="shouldDisableInboxItem(report)">{{getRequestedReportStatus(report)}}</span>
+                
                                 <!-- On click, when not expanded, will go to the generated report screen-->
                                 <div class="report-item-wrapper">
                                     <!-- 'icon-class' -> Icon class from all-reports.html -->
@@ -91,31 +87,31 @@
                                     </div>
                                     <table class="filters-grid">
                                         <tbody>
-                                            <tr>
-                                                <th>Date Range <span>(From)</span></th>
-                                                <td>01-20-2018</td>
+                                            <tr ng-repeat="(key, value) in filters">
+                                                <th>{{key}}</th>
+                                                <td>{{value}}</td>
                                             </tr>
-                                            <tr>
+                                            <!-- <tr>
                                                 <th>Date Range <span>(To)</span></th>
                                                 <td>02-19-2018</td>
                                             </tr>
                                             <tr>
                                                 <th>Departments Assigned</th>
                                                 <td>Front Desk, Housekeeping, Maintenance, Sales</td>
-                                            </tr>
+                                            </tr> -->
                                         </tbody>
                                     </table>
                                 </div>
                                 <!-- If disabled, there are no actions -->
-                                <div class="report-actions">
+                                <div class="report-actions" ng-if="!shouldDisableInboxItem(report)">
                                     <button type="button" class="button green">Show</button>
                                     <!-- If export exists -->
-                                    <button type="button" class="button with-icon purple">
+                                    <button type="button" class="button with-icon purple" ng-if="report.shouldShowExport">
                                         <span class="icons icon-save"></span>
                                         <span class="text">Export</span>
                                     </button>
                                     <!-- if export does not exist -->
-                                    <span class="button with-icon" ng-hide="true">
+                                    <span class="button with-icon" ng-if="!report.shouldShowExport">
                         <span class="icons icon-export-unavailable"></span>
                                     </span>
                                     <!-- if print exists -->

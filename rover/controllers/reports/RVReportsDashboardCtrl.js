@@ -1,6 +1,13 @@
 angular.module('sntRover')
-    .controller('RVReportsDashboardCtrl', ['$scope', '$timeout',
-        function ($scope, $timeout) {
+    .controller('RVReportsDashboardCtrl', [  
+            '$scope',
+            '$timeout',
+            '$state',
+            '$filter',
+            function ($scope,
+                      $timeout,
+                      $state,
+                      $filter) {
 
             var intialReportViewStore = {
                 showingAllReport: false,
@@ -188,10 +195,31 @@ angular.module('sntRover')
 
             $scope.$on('REPORT_LIST_FILTER_SCROLL_REFRESH', refreshScroller);
 
+            /**
+             * Set title and heading
+             * @param {Boolean} isFromReportsInbox - indication whether navigating from inbox
+             * @return {void}
+             */
+            var setTitleAndHeading = function(isFromReportsInbox) {
+                let listTitle = $filter('translate')('STATS_&_REPORTS_TITLE');
+
+                if (isFromReportsInbox) {
+                    listTitle = $filter('translate')('MENU_NEW_REPORT');
+                }
+                $scope.setTitle(listTitle);
+                $scope.$parent.heading = listTitle;
+            };
+
             (function () {
                 $scope.updateViewCol($scope.viewColsActions.ONE);
                 $scope.updateView($scope.reportViewActions.SHOW_ALL_REPORT);
                 setupScroll();
+
+                if ($state.params.fromReportInbox) {
+                    $scope.fromReportInbox = $state.params.fromReportInbox;
+                }
+                setTitleAndHeading($scope.fromReportInbox);
+
             })();
 
 
