@@ -177,7 +177,7 @@ admin.controller('ADSntAppsListCtrl', ['$scope',
 		$scope.fileChanged = function(data) {
 			$scope.errorMessage = '';
 			$scope.selectedApp.version = '';
-			// extract the file name from the filename (eg:- rover-v1.0.5-installer.exe)
+			// extract the build version from the filename (eg:- rover-v1.0.5-installer.exe)
 			var tmpStr = data.file.name.match("-v(.*)-");
 
 			if (checkIfFileTypeisInValid()) {
