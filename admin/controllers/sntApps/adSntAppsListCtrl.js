@@ -112,7 +112,8 @@ admin.controller('ADSntAppsListCtrl', ['$scope',
 			$scope.callAPI(adAppVersionsSrv.checkIfVersionIsValid, {
 				params: {
 					version: $scope.selectedApp.version,
-					service_application: $scope.filterType.id
+					service_application: $scope.filterType.id,
+					file_name: $scope.fileName
 				},
 				successCallBack: uploadBuild
 			});
