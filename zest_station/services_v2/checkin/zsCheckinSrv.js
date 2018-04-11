@@ -237,7 +237,9 @@ sntZestStation.service('zsCheckinSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
         this.checkInGuest = function(params) {
             var deferred = $q.defer(),
                 url = '/staff/checkin';
-
+            var selectedReservation = that.getSelectedCheckInReservation();
+            
+            params.accepted_terms_and_conditions = selectedReservation.reservation_details.accepted_terms_and_conditions;
             zsBaseWebSrv.postJSON(url, params).then(function(data) {
                 deferred.resolve(data);
             }, function(data) {
