@@ -79,7 +79,7 @@ admin.service('ADReservationToolsSrv', [
         };
 
         /**
-         * To resync rate task
+         * To Search Rates
          * @return {Object}
          */
         this.searchRates = function(params) {
