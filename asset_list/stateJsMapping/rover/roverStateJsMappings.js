@@ -7,10 +7,6 @@ module.exports = {
 				filename: roverJsListRoot + 'diaryJsAssetList.js',
 				babelify: false
 			},
-			'rover.todo': {
-				filename: roverJsListRoot + 'todoJsAssetList.js',
-				babelify: true
-			},
 			'rover.dashboard': {
 				filename: roverJsListRoot + 'dashboardJsAssetList.js',
 				babelify: false
