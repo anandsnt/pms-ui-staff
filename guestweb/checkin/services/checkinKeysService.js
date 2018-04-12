@@ -9,7 +9,7 @@
 
 			data.application = (typeof $rootScope.application !== "undefined") ? $rootScope.application : "WEB";
 			data.url_suffix = (typeof $rootScope.urlSuffix !== "undefined") ? $rootScope.urlSuffix : "WEB";
-			if (!$rootScope.accepted_terms_and_conditions) {
+			if ($rootScope.accepted_terms_and_conditions) {
 				data.accepted_terms_and_conditions = $rootScope.accepted_terms_and_conditions;
 			}
 			$http.post(url, data).success(function(response) {

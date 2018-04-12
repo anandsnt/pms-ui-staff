@@ -321,7 +321,7 @@ sntZestStation.service('zsCheckinSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
                 url = '/staff/checkin';
             var selectedReservation = that.getSelectedCheckInReservation();
             
-            if (!params.accepted_terms_and_conditions) {
+            if (selectedReservation.reservation_details.accepted_terms_and_conditions) {
                 params.accepted_terms_and_conditions = selectedReservation.reservation_details.accepted_terms_and_conditions;
             }
             
