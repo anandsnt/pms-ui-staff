@@ -311,6 +311,7 @@ select[disabled],{
 
             &.large-preview { .calc-width(100, 340); }
             &.small-preview { .calc-width(100, 80); }
+            &.logo-preview { .calc-width(100, 198); }
         }
     }
 
@@ -364,6 +365,17 @@ select[disabled],{
 
         &.small-preview {
             .square(60px);
+        }
+
+        &.logo-preview {
+            padding: 10px;
+            .size(55px, 178px);
+
+            img {
+                flex: 0 0 auto;
+                width: auto;
+                height: 100%;
+            }
         }
     }
 

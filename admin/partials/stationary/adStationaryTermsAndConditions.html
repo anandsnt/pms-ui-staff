@@ -1,0 +1,52 @@
+<div class="stationery-items">
+    <!-- Custom T&C -->    
+    <div class="group-holder" ng-repeat="entity in customTnCs" ng-class = "{'active': selectedTnCIndex === $index}" ng-if="entity.id !== 'none'">
+        <div class="form-title has-toggle" ng-click="customTnCClicked($index)"> <!-- Clicking this toggles class 'active' on L15 -->
+            <h3>{{entity.title}}</h3>
+        </div>
+        <div class="stationery-group">
+            <div class="entry full-width">
+                <label translate>TITLE<span></span></label>
+                <input type="text" placeholder="{{ 'TERMS_AND_CONDITIONS_TITLE_PLACEHOLDER' | translate }}" ng-model="entity.title">
+            </div>
+            <div class="entry full-width">
+                <label translate>TERMS_AND_CONDITIONS</label>
+                <textarea rows="8" placeholder="{{ 'TERMS_AND_CONDITIONS_PLACEHOLDER' | translate }}" ng-model="entity.description"></textarea>
+            </div>
+            <div class="actions float">
+                <button type="button" class="button blank" ng-click="cancelTnCSelection()" translate>CANCEL</button>
+                <button type="button" class="button red" ng-click="deleteCustomTnC(entity)" translate>DELETE</button>
+                <button type="button" class="button green" ng-click="saveCustomTnC(entity)" translate>SAVE</button>   
+            </div>
+        </div>
+    </div>
+
+    <button type="button" class="button action add" ng-hide="displayNewTermsAndConditionsForm || (customTnCs && customTnCs.length > 5)" ng-click="addNewTermsAndConditions()" ng-hide="" translate>ADD_NEW</button> 
+
+    <div class="data-holder" ng-show="displayNewTermsAndConditionsForm">
+        <h4><span>New</span> Terms &amp; Contidions</h4>
+        <div class="entry full-width">
+            <label translate>TITLE <span></span></label>
+            <input type="text" placeholder="{{ 'TERMS_AND_CONDITIONS_TITLE_PLACEHOLDER' | translate }}" ng-model="newTermsAndConditions.title">
+        </div>
+        <div class="entry full-width">
+            <label translate>TERMS_AND_CONDITIONS</label>
+            <textarea rows="8" placeholder="{{ 'TERMS_AND_CONDITIONS_PLACEHOLDER' | translate }}" ng-model="newTermsAndConditions.description"></textarea>
+        </div>
+        <div class="actions float">
+            <button type="button" class="button blank" ng-click="cancelNewTnC()" translate>CANCEL</button>
+            <button type="button" class="button green" ng-click="saveNewTnC()" translate>SAVE</button>  
+        </div>
+    </div>
+</div>
+<div class="stationery-settings">
+    <h4 translate>ASSIGN_TO_SECTION</h4>
+    <div class="entry" ng-repeat="screen in screenList">
+        <label for="rover-tc">{{screen.description}}</label>
+        <div class="select">
+            <select ng-model="screen.assigned_t_and_c_id" ng-options="entity.id as entity.title for entity in customTnCs" ng-change="termsAndConditionsChanged(screen.id, screen.assigned_t_and_c_id)">
+                <option ng-value="''" style="display:none;" translate>NONE</option>
+            </select>
+        </div>
+    </div>
+</div>

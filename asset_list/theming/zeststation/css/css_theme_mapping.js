@@ -31,7 +31,9 @@ module.exports = {
             'freehand-ny': [themeCSSRoot + 'freehand-ny.less'],
             'freehand-miami': [themeCSSRoot + 'freehand-miami.less'],
             'georgetown': [themeCSSRoot + 'georgetown.less'],
-            'nomo': [themeCSSRoot + 'nomo.less']
+            'nomo': [themeCSSRoot + 'nomo.less'],
+            'merrill': [themeCSSRoot + 'merrill.less'],
+            'martins': [themeCSSRoot + 'martins.less']
 		};
 	}
 };

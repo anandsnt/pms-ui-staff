@@ -4,6 +4,14 @@ module.exports = {
         var themeCSSRoot = 'stylesheets/guestweb/';
 
         return {
+            'guestweb_madison_hotel': [ themeCSSRoot + 'guestweb_madison_hotel.css'],
+            'guestweb_pioneer_pocket_hotel': [ themeCSSRoot + 'guestweb_pioneer_pocket_hotel.css'],
+            'guestweb_martins_hotel': [ themeCSSRoot + 'guestweb_martins_hotel.css'],
+            'guestweb_the_merrill_hotel_and_conference_center': [ themeCSSRoot + 'guestweb_the_merrill_hotel_and_conference_center.css'],
+            'guestweb_skyview_los_alamos': [ themeCSSRoot + 'guestweb_skyview_los_alamos.css'],
+            'guestweb_seacrest_hotel': [ themeCSSRoot + 'guestweb_seacrest_hotel.css'],
+            'guestweb_eden_roc_v2': [ themeCSSRoot + 'guestweb_eden_roc_v2.css'],
+            'guestweb_inn_at_cherry_creek': [ themeCSSRoot + 'guestweb_inn_at_cherry_creek.css'],
             'guestweb_aria_sky_suites': [ themeCSSRoot + 'guestweb_aria_sky_suites.css'],
             'guestweb_assemblage_world_trade_center': [ themeCSSRoot + 'guestweb_assemblage_world_trade_center.css'],
             'guestweb_the_asbury': [ themeCSSRoot + 'guestweb_the_asbury.css'],

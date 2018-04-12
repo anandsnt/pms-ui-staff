@@ -6,7 +6,9 @@ module.exports = {
             
             return {
                 minifiedFiles: [
-                    sharedJs + 'jquery.qtip.min.js' // FOR ROOM & RATES CALENDAR  
+                    sharedJs + 'jquery.qtip.min.js', // FOR ROOM & RATES CALENDAR  
+                    sharedJs + 'jsZip/jszip.min.js',
+                    sharedJs + 'fileSaver/filesaver.min.js'
                 ],
                 nonMinifiedFiles: [
                     'rover/filters/rangeFilter.js',
@@ -33,6 +35,7 @@ module.exports = {
                     controllerRoot + "smartbands/**/**.js",
                     controllerRoot + "validateCheckout/**/**.js",
                     controllerRoot + "validateCheckin/**/**.js",
+                    controllerRoot + "guestCardBaseCtrl.js",
 
                     servicesRoot + "validateCheckin/**/**.js",
                     servicesRoot + "housekeeping/rvHkRoomDetailsSrv.js",
@@ -53,7 +56,10 @@ module.exports = {
                     servicesRoot + "bill/rvBillCardSrv.js",
                     servicesRoot + "guestcard/notes/rvGuestCardNotesSrv.js",
                     servicesRoot + "rvCCAuthorizationSrv.js",
-                    servicesRoot + "nightlyDiary/**/*.js"
+                    servicesRoot + "nightlyDiary/**/*.js",
+
+                    // Eliminate all spec files
+                    '!**/*.spec.js'
                 ]
             };
 	}

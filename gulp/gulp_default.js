@@ -128,6 +128,6 @@ module.exports = function(gulp, $, options) {
 
     // start server with only zeststation assets
     gulp.task('only-zs', function(callback) {
-        return runSequence(['start-server', 'build-zest-dev', 'copy-zest-base-html', 'watch-zest-files'], callback);
+        return runSequence(['build-zest-dev', 'copy-zest-base-html', 'watch-zest-files'], callback);
     });
 }

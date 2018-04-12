@@ -48,7 +48,9 @@ sntZestStation.service('zsGeneralSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
             'freehand-ny': 'Freehand nyc',
             'freehand-miami': 'Freehand miami',
             'georgetown': 'Georgetown inn',
-            'nomo': 'Nomo soho'
+            'nomo': 'Nomo soho',
+            'merrill': 'The Merrill Hotel And Conference Center',
+            'martins': 'Martins Hotel'
         };
 
         this.isThemeConfigured = function(theme) {

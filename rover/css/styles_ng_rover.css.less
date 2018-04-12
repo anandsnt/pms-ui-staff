@@ -1074,14 +1074,7 @@ Padding for the ows error popup
   width: 100%;
   height: 480px;
 }
-.agree-terms-and-conditions {
-  cursor: pointer;
-  text-decoration: underline;
-}
 
-.termsandconditions-checkbox{
-  width: 30px !important;
-}
 #modal .modal-content.terms .actions .button.green {
   padding: 0 35px;
 }
@@ -1313,6 +1306,10 @@ span.keys-msg-bold{
 @media only print{
   #confirmation-print-template{
     .show
+  }
+  #cancellation-print-template,
+  #cancellation-print-template table {
+    text-transform: none;
   }
   .ngdialog{
     position: absolute !important;

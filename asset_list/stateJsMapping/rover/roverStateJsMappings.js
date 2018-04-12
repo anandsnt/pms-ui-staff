@@ -7,10 +7,6 @@ module.exports = {
 				filename: roverJsListRoot + 'diaryJsAssetList.js',
 				babelify: false
 			},
-			'rover.todo': {
-				filename: roverJsListRoot + 'todoJsAssetList.js',
-				babelify: true
-			},
 			'rover.dashboard': {
 				filename: roverJsListRoot + 'dashboardJsAssetList.js',
 				babelify: false
@@ -123,7 +119,16 @@ module.exports = {
 			'rover.reservation.staycard.roomassignment': {
 				filename: roverJsListRoot + 'roomAssignmentJsAssetList.js',
 				babelify: false
-			}
+			},
+			'rover.guestcardsearch': {
+				filename: roverJsListRoot + 'guestCardSearchJsAssetList.js',
+				babelify: false
+			},
+			'rover.guestcarddetails': {
+				filename: roverJsListRoot + 'guestCardDetailsJsAssetList.js',
+				babelify: false
+			}			
+
 		};
 	}
 };

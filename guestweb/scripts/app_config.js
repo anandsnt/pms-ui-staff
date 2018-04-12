@@ -58,8 +58,11 @@ sntGuestWeb.run(function($rootScope, $location, $http, $window) {
       console.log(error);
       // TODO: Log the error in proper way
     });
-        // track pageview on state change
-        $rootScope.$on('$stateChangeSuccess', function (event) {
-            $window.ga('send', 'pageview', $location.path());
-        });
+
+	if ($rootScope.trackingID && $rootScope.trackingID.length > 0) {
+		// track pageview on state change
+		$rootScope.$on('$stateChangeSuccess', function() {
+			$window.ga('send', 'pageview', $location.path());
+		});
+	}
 });

@@ -1980,7 +1980,7 @@
 
             /* Format bill ***/
             &.format-bill {
-                width: 360px;
+                width: 400px;
 
                 label { 
                     margin-bottom: 0;
@@ -1989,17 +1989,15 @@
                     } 
                 }
 
+                .entry.margin {
+                    clear: both;
+                }
+
                 .actions {
                     margin-top: 20px;
                     padding-top: 19px;
                     border-top: 1px solid rgba(0,0,0,.1);
                     .float;
-                }
-
-                &.rooming-list {
-                    .actions {
-                        margin-top: 10px;
-                    }
                 }
 
                 .button { 
@@ -2022,7 +2020,7 @@
                     }
                 }
 
-             .switch-button {
+                .switch-button {
                     background: @grey2;
                     #border-radius > .rounded();
                     .size(40px, 260px);
@@ -2068,6 +2066,12 @@
                     &.on {
                         .data-off { left: auto; right: -100%; }
                         .data-on { left: auto; right: 0; }
+                    }
+                }
+
+                &.rooming-list {
+                    .actions {
+                        margin-top: 10px;
                     }
                 }
             }
@@ -7815,6 +7819,21 @@
                     }
                 }
             }
+
+            /* Loyalty ***/
+            &.loyalty-gms {
+                padding: 0;
+                .square(640px);
+                
+                #gms-frame-container {
+                    .square(100%);
+                }
+
+                #gms-iframe {
+                    border: 0;
+                    .square(100%);
+                }
+            }
         }
     }
 
@@ -7868,7 +7887,8 @@
                     background-color:@gcard;
                     color: white;
                     height: 85px;
-                    padding: 20px;
+                    padding: 20px 220px 20px 20px;
+                    position: relative;
                   
                     h2 {
                         font-size:30px;
@@ -7881,7 +7901,27 @@
 
                     em {
                         font-size:16px;
-                    } 
+                    }
+
+                    .button {
+                        position: absolute;
+                        top: 20px;
+                        right: 20px;
+                        line-height: 45px;
+                        height: 45px;
+                        width: auto;
+                        max-width: 200px;
+                        .nowrap();
+
+                        &.with-icon {
+                            padding: 0 20px 0 50px;
+                            .icons {
+                                left: 20px;
+                                top: 12px;
+                                margin-left: 0;
+                            }
+                        }
+                    }
                 }
 
                 .modal-body {
@@ -8029,31 +8069,33 @@
     }
 
 /* SignaturePad             ==============================*/
-    #signature-pad {
-        height: auto;
+    #signature {
+        position: relative;
+        padding-top: 1px; 
+        height: 320px;
         width: 100%;
+        background: @white;
+        .box-shadow(inset 1px 1px 1px rgba(0,0,0,.5));
+        #border-radius > .rounded(5px);
 
-        .sigWrapper {
-            clear: both;
-            height: 140px;
-            padding: 10px;
-            margin-bottom: 20px;
-            background: @white;
-            .box-shadow(inset 1px 1px 1px rgba(0,0,0,.5));
-            #border-radius > .rounded(5px);
-            .show;
+        .jSignature {
+            position: relative;
+            background: transparent !important;
+            cursor: @signaturePen, crosshair;
+            cursor: @signaturePen 16 16, crosshair;
+            z-index: 99;
+            .square(100%);           
+        }
 
-            .pad {
-                position: relative;
-                cursor: @signaturePen, crosshair;
-                cursor: @signaturePen 16 16, crosshair;
-                -ms-touch-action: none;
-                -webkit-user-select: none;
-                -moz-user-select: none;
-                -ms-user-select: none;
-                -o-user-select: none;
-                user-select: none;
-            }
+        &:after {
+            content: '';
+            position: absolute;
+            bottom: 20px;
+            left: 20%;
+            background-color: @grey2;
+            z-index: 2;
+            .show();
+            .size(2px, 60%);
         }
     }
 

@@ -234,7 +234,8 @@ body { overflow: hidden; }
 			&#search,
 			&#find-group,
 			&#find-account,
-			&#find-allotment {
+			&#find-allotment,
+			&#find-guests {
 				top: 120px;
 				.calc-height(100, 180);
 
@@ -764,6 +765,10 @@ body { overflow: hidden; }
 	        .registration-content {
 	            margin-top: 60px;
 	            .calc-height(100, 60);
+    
+	            &.with-complete-registration {
+	                .calc-height(100, 140);
+	            }
 
 	            > .wrapper {
 	                padding-bottom: 20px;

@@ -3327,6 +3327,16 @@
                 }
 
                 &.addons { color: @grey3; }
+
+                &.vat-report {
+                    font-weight: 600;
+                    padding-right: 40px; 
+
+                    li {
+                        text-align: right;
+                        width: 120px;
+                    }
+                }
             }
 
             .grid-footer {
@@ -3390,6 +3400,32 @@
                 &.title-3 {
                     background-color: rgba(0,0,0,.1);
                 }
+
+                /* VAT Report ***/
+                &.vat-report {
+                    strong {
+                        .calc-width(100, 240);
+
+                        em {
+                            color: @grey3;
+                            font-weight: 400;
+                            padding-left: 8px;
+                        }
+                    }
+
+                    span:not(.currency) { 
+                        text-align: right;
+                        width: 120px; 
+                    }
+
+                    &.title-1 {
+                        padding-right: 40px;
+                    }
+
+                    &.title-2 {
+                        padding-right: 30px;
+                    }
+                }
             }
 
             .grid-content {
@@ -3423,6 +3459,10 @@
 
                         &:last-child {
                             span { width: 100%; }
+                        }
+
+                        &.vat-revenue {
+                            width: 120px;
                         }
                     }
 
@@ -3460,6 +3500,11 @@
                             &.accompany {
                                 white-space: normal;
                             }
+                        }
+
+                        &.vat-revenue {
+                            text-align: right;
+                            width: 120px;
                         }
                     }
 

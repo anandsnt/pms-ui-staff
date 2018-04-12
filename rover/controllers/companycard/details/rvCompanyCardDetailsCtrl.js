@@ -412,6 +412,7 @@ angular.module('sntRover').controller('companyCardDetailsController', ['$scope',
 		var successCallbackOfInitialFetch = function(data) {
 			$scope.$emit("hideLoader");
 			$scope.contactInformation = data;
+			$scope.contactInformation.emailStyleClass = $rootScope.roverObj.isAnyInterfaceEnabled ? 'margin' : 'full-width';
 			$scope.$broadcast("LOAD_SUBSCRIBED_MPS");
 			if ($scope.contactInformation.alert_message !== "") {
 				$scope.errorMessage = [$scope.contactInformation.alert_message];
@@ -462,6 +463,7 @@ angular.module('sntRover').controller('companyCardDetailsController', ['$scope',
 				$scope.contactInformation.account_details = {};
 				$scope.contactInformation.account_details.account_name = $stateParams.query;
 			}
+			$scope.contactInformation.emailStyleClass = $rootScope.roverObj.isAnyInterfaceEnabled ? 'margin' : 'full-width';
 
 			// setting as null dictionary, will help us in saving..
 
@@ -485,7 +487,6 @@ angular.module('sntRover').controller('companyCardDetailsController', ['$scope',
 		 */
 		var successCallbackOfContactSaveData = function(data) {
 
-			$scope.$emit("hideLoader");
 			if (typeof data.id !== 'undefined' && data.id !== "") {
 				// to check if id is defined or not before save
 				var contactInfoAvailable = $scope.contactInformation.id ? true : false;
@@ -521,7 +522,6 @@ angular.module('sntRover').controller('companyCardDetailsController', ['$scope',
 		 * failure callback of save contact data
 		 */
 		var failureCallbackOfContactSaveData = function(errorMessage) {
-			$scope.$emit("hideLoader");
 			$scope.$broadcast("setCardContactErrorMessage", errorMessage);
 			// $scope.errorMessage = errorMessage;
 			$scope.currentSelectedTab = 'cc-contact-info';
@@ -541,22 +541,6 @@ angular.module('sntRover').controller('companyCardDetailsController', ['$scope',
 			if (dataUpdated) {
 				var dataToSend = JSON.parse(JSON.stringify(data));
 
-				for (key in dataToSend) {
-					if (typeof dataToSend[key] !== "undefined" && data[key] !== null && data[key] !== "") {
-						// in add case's first api call, presentContactInfo will be empty object
-						if (JSON.stringify(presentContactInfo) !== '{}') {
-							for (subDictKey in dataToSend[key]) {
-								if (typeof presentContactInfo[key] !== 'undefined') {
-									if (typeof dataToSend[key][subDictKey] === 'undefined' || dataToSend[key][subDictKey] === presentContactInfo[key][subDictKey]) {
-										delete dataToSend[key][subDictKey];
-									}
-								}
-							}
-						}
-					} else {
-						delete dataToSend[key];
-					}
-				}
 				if (typeof dataToSend.countries !== 'undefined') {
 					delete dataToSend['countries'];
 				}
@@ -564,8 +548,25 @@ angular.module('sntRover').controller('companyCardDetailsController', ['$scope',
 				if (dataToSend.account_details.account_number === "") {
 					dataToSend.account_details.account_number = null;
 				}
+				// CICO-50810 : Hadling passing blank string.
+				if ( typeof dataToSend.primary_contact_details === 'undefined' ) {
+					dataToSend.primary_contact_details = {};
+					dataToSend.primary_contact_details.contact_email = null;
+				}
+				else if (dataToSend.primary_contact_details.contact_email === "") {
+					dataToSend.primary_contact_details.contact_email = null;
+				}
+				if ( typeof dataToSend.address_details === 'undefined' ) {
+					dataToSend.address_details = {};
+				}
 				dataToSend.account_type = $stateParams.type;
-				$scope.invokeApi(RVCompanyCardSrv.saveContactInformation, dataToSend, successCallbackOfContactSaveData, failureCallbackOfContactSaveData);
+				var options = {
+					params: dataToSend,
+					successCallBack: successCallbackOfContactSaveData,
+					failureCallBack: failureCallbackOfContactSaveData
+				};
+
+				$scope.callAPI(RVCompanyCardSrv.saveContactInformation, options);
 			}
 		};
 
