@@ -74,7 +74,8 @@
 			}
 			else {
 					$state.go('guestDetails');	
-			}				
+			}
+			$rootScope.accepted_terms_and_conditions = true;				
 		}
 		else {
 			$modal.open($scope.opts); // error modal popup
