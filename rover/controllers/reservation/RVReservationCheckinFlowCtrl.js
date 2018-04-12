@@ -129,6 +129,7 @@ angular.module('sntRover').controller('RVReservationCheckInFlowCtrl',
                 }
 
                 // check if the T&C was shown, if shown pass if was accepted
+                // check if the T&C was shown, if shown pass true if was accepted
                 if ($scope.reservationBillData.is_disabled_terms_conditions_checkin === 'false') {
                     params.accepted_terms_and_conditions = $scope.saveData.termsAndConditions;
                 }
