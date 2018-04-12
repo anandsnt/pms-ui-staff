@@ -57,7 +57,6 @@ module.exports = function(config) {
         './filters/*.js'        
     ],
 
-
     // list of files / patterns to exclude
     exclude: [
     ],
@@ -70,8 +69,7 @@ module.exports = function(config) {
         './controllers/**/*.js': ['babel'],
         './services/rateManager_/rvRateManagerCoreSrv.js': ['babel']
     },
-
-
+    
 
     // test results reporter to use
     // possible values: 'dots', 'progress'
