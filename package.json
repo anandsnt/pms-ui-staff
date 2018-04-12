@@ -76,6 +76,7 @@
     "lintAdmin": "eslint -c .eslintrc.json admin",
     "testLogin": "cd login && karma start --single-run",
     "testRover": "cd rover && karma start --single-run",
+    "testAdmin": "cd admin && karma start --single-run",
     "testShared": "cd shared && karma start --single-run"
   }
 }
