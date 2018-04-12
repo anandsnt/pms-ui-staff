@@ -4,11 +4,13 @@ admin.controller('ADResyncRatesCtrl', [
 	function($scope, ADReservationToolsSrv) {
 		BaseCtrl.call(this, $scope);
 
-		$scope.errorMessage = "";
-		$scope.isActiveRateDropDown = false;
-		$scope.selectedRateObj = { id: null, name: ''};
-		$scope.textInQueryBox = null;
-		$scope.rateListResult = [];
+		let init = () => {
+			$scope.errorMessage = '';
+			$scope.isActiveRateDropDown = false;
+			$scope.selectedRateObj = { id: null, name: '' };
+			$scope.textInQueryBox = null;
+			$scope.rateListResult = [];
+		};
 
 		/*	
 		 *	Handle Sync button click.
@@ -16,6 +18,8 @@ admin.controller('ADResyncRatesCtrl', [
 		$scope.clickedSyncButton = () => {
 			let successCallback = (data) => {
 				console.log(data);
+				$scope.selectedRateObj.last_sync_status = data.last_sync_status;
+				$scope.selectedRateObj.last_sync_at = data.last_sync_at;
 			},
 			failureCallback = (errorMessage) => {
 				$scope.errorMessage = errorMessage;
@@ -33,7 +37,7 @@ admin.controller('ADResyncRatesCtrl', [
 		};
 
 		/*
-		 *	Handle Toggling of Rate Dropdown
+		 *	Handle Toggling of Rate Dropdown.
 		 */
 		$scope.toggleRateDropDown = () => {
 			$scope.isActiveRateDropDown = !$scope.isActiveRateDropDown;
@@ -75,12 +79,13 @@ admin.controller('ADResyncRatesCtrl', [
 		};
 
 		/*
-		 *	Handle Clear Search.
+		 *	Handle click on each rate.
+		 *	@param {Number} [index value of the rate selected]
 		 */
 		$scope.clickedEachRate = (index) => {
 			$scope.selectedRateObj = $scope.rateListResult[index];
-			$scope.rateListResult[index].active = true;
 		};
 
+		init();
 	}
 ]);

@@ -102,9 +102,9 @@ admin.service('ADReservationToolsSrv', [
          */
         this.reSyncRates = function(params) {
             var deferred = $q.defer(),
-                url      = '';
+                url      = 'api/rates/' + params.id + '/sync_rate';
 
-            ADBaseWebSrvV2.getJSON(url)
+            ADBaseWebSrvV2.postJSON(url)
                 .then(function(data) {
                     deferred.resolve(data);
                 }, function(errorMessage) {

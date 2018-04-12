@@ -7,41 +7,30 @@
 			<div ng-include="'/assets/partials/common/notification_message.html'"></div>
 			<form class="form inline-form">
 				<div class="entry rel">
-					<label for="select-rate">Select a Rate</label>
-					<!-- Add .active when showing options -->
+					<label for="select-rate" translate>SELECT_A_RATE</label>
 					<div class="faux-select" ng-class="{'active': isActiveRateDropDown}" ng-click="toggleRateDropDown()">
-						<span class="value">Select a Rate</span>
+						<span class="value" ng-if="selectedRateObj.name === ''" translate>SELECT_A_RATE</span>
+						<span class="value" ng-if="selectedRateObj.name !== ''">{{selectedRateObj.name}}</span>
 					</div>
-					<!-- Toggle .hidden when clicked on .faux-select -->
 					<div id="select-rate" class="faux-select-options" ng-show="isActiveRateDropDown">
 						<div class="search">
-							<button ng-click="clearSearch()" id="faux-select-clear-query" class="clear-query" ng-class="{'visible': textInQueryBox.length > 0 }"><span class="icons icon-clear-search">Clear query</span></button>
-							<button type="submit" name="submit" class="icons icon-search">Search</button>
-							<input ng-change="searchQuery()" ng-model="textInQueryBox"name="faux-select-query" id="faux-select-query" class="query" placeholder="Search by Rate Name" autocomplete="off" type="search">
+							<button ng-click="clearSearch()" id="faux-select-clear-query" class="clear-query" ng-class="{'visible': textInQueryBox.length > 0 }"><span class="icons icon-clear-search" translate>CLEAR_QUERY</span></button>
+							<button type="submit" name="submit" class="icons icon-search" translate>SEARCH</button>
+							<input ng-change="searchQuery()" ng-model="textInQueryBox" name="faux-select-query" id="faux-select-query" class="query" placeholder="Search by Rate Name" autocomplete="off" type="search">
 						</div>
-						<!-- add .checked if checked -->
-						<label ng-repeat="item in rateListResult track by $index" class="radio inline">
-							<!-- add .checked if checked -->
-							<span class="icon-form icon-radio" ng-class="{'checked': item.active}"></span>
-							<!-- add checked="checked" if checked -->
-							<input ng-click="clickedEachRate($index)" name="resync_rate"  value="{Rate}" type="radio" ng-checked="item.active">
+						<label ng-repeat="item in rateListResult track by $index" class="radio inline" ng-class="{'checked': item.id === selectedRateObj.id }">
+							<span class="icon-form icon-radio" ng-class="{'checked': item.id === selectedRateObj.id }"></span>
+							<input ng-click="clickedEachRate($index)" name="resync_rate" ng-checked="item.id === selectedRateObj.id" value="{{item.id}}" type="radio">
 							<span class="text">{{item.name}}</span>
 						</label>
 						
 					</div> 
 				</div>
 				<div class="entry only-button">
-					<!-- Remove .grey and disabled when a rate is select -->
-					<!-- Add .blue when a rate is selected -->
+					<button type="button" class="button" ng-class="{'blue':selectedRateObj.id !== null, 'grey': selectedRateObj.id === null }" ng-disabled="selectedRateObj.id === null" ng-click="clickedSyncButton()" translate>SYNC</button>
 
-					<button type="button" class="button" ng-class="{'blue':$scope.selectedRateObj.id !== null, 'grey': $scope.selectedRateObj.id === null }" ng-disabled="$scope.selectedRateObj.id === null" ng-click="clickedSyncButton()">Sync</button>
-						<!-- 'status-class': 
-							- orange when processing
-							- red    when error
-							- green  when completed
-						-->
-					<span ng-if="$scope.selectedRateObj && $scope.selectedRateObj.last_sync_status" class="green"> Synced: Last sync successful {{$scope.selectedRateObj.last_sync_at}}</span>
-					<span ng-if="$scope.selectedRateObj && !$scope.selectedRateObj.last_sync_status" class="red"> Error: Last sync failed {{$scope.selectedRateObj.last_sync_at}}</span>
+					<span ng-if="selectedRateObj.id && selectedRateObj.last_sync_status && selectedRateObj.last_sync_at !== null" class="green">{{ 'SYNC_SUCCESS_MSG' | translate }} {{selectedRateObj.last_sync_at}}</span>
+					<span ng-if="selectedRateObj.id && !selectedRateObj.last_sync_status && selectedRateObj.last_sync_at !== null" class="red">{{ 'SYNC_ERROR_MSG' | translate }} {{selectedRateObj.last_sync_at}}</span>
 				</div>
 			</form>
 		</section>
