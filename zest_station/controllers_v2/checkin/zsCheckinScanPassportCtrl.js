@@ -1001,10 +1001,10 @@ sntZestStation.controller('zsCheckinScanPassportCtrl', [
                     if (data.data) {
                         // Store the reservation_details which had temperory datas like accepted_terms_and_conditions in a variable and
                         // set it back after the reservation_details is replaced from the API response
-                        var previousReservationDetails = angular.copy($scope.selectedReservation.reservation_details);
+                        var acceptedTermsAndConditions = $scope.selectedReservation.reservation_details.accepted_terms_and_conditions;
 
                         $scope.selectedReservation.reservation_details = data.data.reservation_card;
-                        $scope.selectedReservation.reservation_details.accepted_terms_and_conditions = previousReservationDetails.accepted_terms_and_conditions;
+                        $scope.selectedReservation.reservation_details.accepted_terms_and_conditions = acceptedTermsAndConditions;
                         $scope.zestStationData.selectedReservation = $scope.selectedReservation;
                         if ($scope.isRateSuppressed()) {
                             $scope.selectedReservation.reservation_details.balance = 0;
