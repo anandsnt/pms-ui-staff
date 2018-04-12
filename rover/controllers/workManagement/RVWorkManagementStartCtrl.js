@@ -1,5 +1,5 @@
-angular.module('sntRover').controller('RVWorkManagementStartCtrl', ['$rootScope', '$scope', 'ngDialog', '$state', 'RVWorkManagementSrv', 'RVWorkManagementSrv', '$timeout',
-    function($rootScope, $scope, ngDialog, $state, RVWorkManagementSrv, RVWorkManagementSrv, $timeout) {
+angular.module('sntRover').controller('RVWorkManagementStartCtrl', ['$rootScope', '$scope', 'ngDialog', '$state', 'RVWorkManagementSrv', '$timeout',
+    function($rootScope, $scope, ngDialog, $state, RVWorkManagementSrv, $timeout) {
         $scope.setHeading("Work Management");
         BaseCtrl.call(this, $scope);
 

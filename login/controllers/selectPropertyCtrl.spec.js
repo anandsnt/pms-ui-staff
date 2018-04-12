@@ -71,7 +71,7 @@ describe('selectPropertyCtrl', function () {
 
         $scope.propertyResults = angular.copy(results);
 
-        $scope.searchData = 'Gra';
+        $scope.searchData = 'Gr';
 
         $scope.filterByQuery();
 
