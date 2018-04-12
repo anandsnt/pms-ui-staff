@@ -1,23 +1,19 @@
 angular.module('sntRover')
 .controller('RVYearlyTaxReportDetailsController', [
-    '$rootScope',
+
     '$scope',
-    '$filter',
-    'RVReportUtilsFac',
-    'RVReportMsgsConst',
+
     '$timeout',
     'RVreportsSubSrv',
-    '$q',
+
     // eslint-disable-next-line max-params
     function (
-        $rootScope,
+
         $scope,
-        $filter,
-        RVReportUtilsFac,
-        RVReportMsgsConst,
+
         $timeout,
-        RVreportsSubSrv,
-        $q
+        RVreportsSubSrv
+
     ) {
 
         $scope.$on("FETCH_FULL_YEARLY_TAX_REPORT", function() {
