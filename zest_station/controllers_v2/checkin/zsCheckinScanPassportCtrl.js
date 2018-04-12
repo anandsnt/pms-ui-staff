@@ -999,7 +999,9 @@ sntZestStation.controller('zsCheckinScanPassportCtrl', [
             var fetchReservationDetails = function() {
                 var onSuccessFetchReservationDetails = function(data) {
                     if (data.data) {
+                        var previousReservationDetails = angular.copy($scope.selectedReservation.reservation_details);
                         $scope.selectedReservation.reservation_details = data.data.reservation_card;
+                        $scope.selectedReservation.reservation_details.accepted_terms_and_conditions = previousReservationDetails.accepted_terms_and_conditions;
                         $scope.zestStationData.selectedReservation = $scope.selectedReservation;
                         if ($scope.isRateSuppressed()) {
                             $scope.selectedReservation.reservation_details.balance = 0;
