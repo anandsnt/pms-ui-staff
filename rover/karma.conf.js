@@ -23,7 +23,7 @@ module.exports = function(config) {
         '../shared/lib/js/angular-ui-router.min.js',
         '../shared/lib/js/angular-animate.min.js',
         '../shared/lib/js/angular-dragdrop.min.js',
-        '../shared/lib/js/angular-mocks.js',        
+        '../shared/lib/js/angular-mocks.js',
         '../shared/lib/js/angular-sanitize.min.js',
         '../shared/lib/js/angular-translate.min.js',
         '../shared/lib/js/angular-translate-loader-static-files.min.js',
@@ -38,7 +38,7 @@ module.exports = function(config) {
         '../shared/lib/js/date.js',
         '../shared/directives/documentTouchMovePrevent/*.js',
         '../shared/directives/clickTouch/*.js',
-        '../shared/directives/divTouchMoveStopPropogate/*.js',   
+        '../shared/directives/divTouchMoveStopPropogate/*.js',
         '../shared/interceptors/**/*.js',
         '../shared/directives/**/*.js',
         './rvApp.js',
@@ -48,13 +48,13 @@ module.exports = function(config) {
         './rvDesktopCardOperations.js',
         './rvMLIOperations.js',
         './rvRouter.js',
-        './rvSwipeOperations.js',               
+        './rvSwipeOperations.js',
         './rvRouters/*.js',
         './controllers/**/*.js',
         './services/**/*.js',
         // './directives/**/*.js',
         './factories/**/*.js',
-        './filters/*.js'        
+        './filters/*.js'
     ],
 
     // list of files / patterns to exclude
@@ -69,7 +69,7 @@ module.exports = function(config) {
         './controllers/**/*.js': ['babel'],
         './services/rateManager_/rvRateManagerCoreSrv.js': ['babel']
     },
-    
+
 
     // test results reporter to use
     // possible values: 'dots', 'progress'
@@ -96,7 +96,7 @@ module.exports = function(config) {
 
     // start these browsers
     // available browser launchers: https://npmjs.org/browse/keyword/karma-launcher
-    browsers: ['PhantomJS'],
+      browsers: ['ChromeHeadless'],
 
 
     // Continuous Integration mode
