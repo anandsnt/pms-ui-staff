@@ -4,7 +4,7 @@ admin.controller('ADResyncRatesCtrl', [
 	function($scope, ADReservationToolsSrv) {
 		BaseCtrl.call(this, $scope);
 
-		let init = () => {
+		var init = function() {
 			$scope.errorMessage = '';
 			$scope.isActiveRateDropDown = false;
 			$scope.selectedRateObj = { id: null, name: '' };
@@ -15,12 +15,12 @@ admin.controller('ADResyncRatesCtrl', [
 		/*	
 		 *	Handle Sync button click.
 		 */
-		$scope.clickedSyncButton = () => {
-			let successCallback = (data) => {
+		$scope.clickedSyncButton = function() {
+			var successCallback = function(data) {
 				$scope.selectedRateObj.last_sync_status = data.last_sync_status;
 				$scope.selectedRateObj.last_sync_at = data.last_sync_at;
 			},
-			failureCallback = (errorMessage) => {
+			failureCallback = function(errorMessage) {
 				$scope.errorMessage = errorMessage;
 			},
 			data = {
@@ -38,19 +38,19 @@ admin.controller('ADResyncRatesCtrl', [
 		/*
 		 *	Handle Toggling of Rate Dropdown.
 		 */
-		$scope.toggleRateDropDown = () => {
+		$scope.toggleRateDropDown = function() {
 			$scope.isActiveRateDropDown = !$scope.isActiveRateDropDown;
 		};
 
 		/*
 		 *	Handle search query.
 		 */
-		$scope.searchQuery = () => {
-			let successCallback = (data) => {
+		$scope.searchQuery = function() {
+			var successCallback = function(data) {
 				$scope.rateListResult = [];
 				$scope.rateListResult = data.results;
 			},
-			failureCallback = (errorMessage) => {
+			failureCallback = function(errorMessage) {
 				$scope.errorMessage = errorMessage;
 			},
 			data = {
@@ -71,7 +71,7 @@ admin.controller('ADResyncRatesCtrl', [
 		/*
 		 *	Handle Clear Search.
 		 */
-		$scope.clearSearch = () => {
+		$scope.clearSearch = function() {
 			$scope.textInQueryBox = null;
 			$scope.rateListResult = [];
 		};
@@ -80,7 +80,7 @@ admin.controller('ADResyncRatesCtrl', [
 		 *	Handle click on each rate.
 		 *	@param {Number} [index value of the rate selected]
 		 */
-		$scope.clickedEachRate = (index) => {
+		$scope.clickedEachRate = function(index) {
 			$scope.selectedRateObj = $scope.rateListResult[index];
 		};
 
