@@ -1,5 +1,5 @@
-	sntGuestWeb.service('GwWebSrv', ['$q', '$http', 'GwScreenMappingSrv', '$rootScope',
-		function($q, $http, GwScreenMappingSrv, $rootScope) {
+	sntGuestWeb.service('GwWebSrv', ['$q', '$http', 'GwScreenMappingSrv', '$rootScope', 'GWBaseWebSrv2',
+		function($q, $http, GwScreenMappingSrv, $rootScope, GWBaseWebSrv2) {
 
 
 			this.zestwebData = {};
@@ -59,27 +59,22 @@
 
 			this.fetchHotelDetailsFromUrl = function(url) {
 				var deferred = $q.defer();
+				
+				GWBaseWebSrv2.getJSON(url).then(function(response) {
+					var data = response.data;
 
-				/*
-				 * To fetch reservation and hotel data
-				 * @return {object} CMS details
-				 */
-				$http.get(url).then(function(res) {
-					var data = res.data;
-
-						if (data.status === "success") {
-							that.zestwebData = data.data;
+						if (response.status === "success") {
+							that.zestwebData = data;
 							deferred.resolve(that.zestwebData);
 						} else {
 							// when some thing is broken , need to redirect to error page with default theme
-							data.data.hotel_theme = "guestweb";
-							data.data.error_occured = true;
-							deferred.resolve(data.data);
+							data.hotel_theme = "guestweb";
+							data.error_occured = true;
+							deferred.resolve(data);
 						}
-
-					}, function() {
-						deferred.reject();
-					});
+				}, function(data) {
+					deferred.reject(data);
+				});
 				return deferred.promise;
 			};
 
