@@ -46,7 +46,6 @@
     "karma-babel-preprocessor": "^7.0.0",
     "karma-chrome-launcher": "^2.2.0",
     "karma-jasmine": "^1.1.1",
-    "karma-phantomjs-launcher": "^1.0.4",
     "less-plugin-clean-css": "1.5.1",
     "lodash": "4.16.6",
     "merge-stream": "1.0.0",
@@ -76,6 +75,7 @@
     "lintAdmin": "eslint -c .eslintrc.json admin",
     "testLogin": "cd login && karma start --single-run",
     "testRover": "cd rover && karma start --single-run",
+    "testAdmin": "cd admin && karma start --single-run",
     "testShared": "cd shared && karma start --single-run"
   }
 }
