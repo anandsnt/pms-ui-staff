@@ -32,10 +32,9 @@ sntGuestWeb.controller('RootController', ['$scope', '$rootScope', '$state', '$co
     };
 
     $rootScope.$on('$locationChangeStart', routeChange);
-    
+
     // function to handle exception when state is not found
     $scope.$on('$stateNotFound', function(event, unfoundState, fromState, fromParams) {
-        console.log(unfoundState);
         event.preventDefault();
         $state.go('noOptionAvailable');
     });
