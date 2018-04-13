@@ -17,7 +17,6 @@ admin.controller('ADResyncRatesCtrl', [
 		 */
 		$scope.clickedSyncButton = () => {
 			let successCallback = (data) => {
-				console.log(data);
 				$scope.selectedRateObj.last_sync_status = data.last_sync_status;
 				$scope.selectedRateObj.last_sync_at = data.last_sync_at;
 			},
@@ -50,7 +49,6 @@ admin.controller('ADResyncRatesCtrl', [
 			let successCallback = (data) => {
 				$scope.rateListResult = [];
 				$scope.rateListResult = data.results;
-				console.log(data);
 			},
 			failureCallback = (errorMessage) => {
 				$scope.errorMessage = errorMessage;
