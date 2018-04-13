@@ -172,21 +172,34 @@ sntGuestWeb.service('GwCheckinSrv', [
 
 	this.postGuestDetails = function(params) {
 		var deferred = $q.defer();
-		var url = '/guest_web/guest_details/' + GwWebSrv.zestwebData.reservationID + '.json';
+		
+		if (GwWebSrv.zestwebData.isInZestwebDemoMode) {
+			deferred.resolve({});
+		} else {
+			var url = '/guest_web/guest_details/' + GwWebSrv.zestwebData.reservationID + '.json';
 
-		params.application = (typeof GwWebSrv.zestwebData.application !== "undefined") ? GwWebSrv.zestwebData.application : "";
-		GWBaseWebSrv2.putJSON(url, params.data).then(function(data) {
-			deferred.resolve(data);
-		}, function(data) {
-			deferred.reject(data);
-		});
+			params.application = (typeof GwWebSrv.zestwebData.application !== "undefined") ? GwWebSrv.zestwebData.application : "";
+			GWBaseWebSrv2.putJSON(url, params.data).then(function(data) {
+				deferred.resolve(data);
+			}, function(data) {
+				deferred.reject(data);
+			});
+		}
+		
 		return deferred.promise;
 	};
 
 	this.getGuestDetails = function(params) {
 
 		var deferred = $q.defer();
-		var url = '/guest_web/guest_details/' + params.reservation_id + '.json';
+		var url;
+
+		if (GwWebSrv.zestwebData.isInZestwebDemoMode) {
+			url = '/sample_json/zestweb_v2/guest_details.json';
+		}
+		else {
+			url = '/guest_web/guest_details/' + params.reservation_id + '.json';
+		}
 
 		GWBaseWebSrv2.getJSON(url, params).then(function(data) {
 			deferred.resolve(data);

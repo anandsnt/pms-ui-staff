@@ -93,6 +93,16 @@ sntGuestWeb.controller('HomeController', ['$scope', '$rootScope', '$state', '$co
             $state.go('checkinLanding');
         }
 
+        var handleDemoMode =  function () {
+            if (GwWebSrv.zestwebData.isInZestwebDemoMode) {
+                // reload the App... cant used dummy data for actual process
+                alert("Leaving demo mode!. We can't continue using dummy data to proceed. The App will be refreshed.");
+                location.reload();
+            } else {
+                GwWebSrv.zestwebData.isInZestwebDemoMode = true;
+            }
+        };
+
         document.addEventListener("keydown", function(event) {
             if (event.altKey) {
                 switch (event.keyCode) {
@@ -101,7 +111,7 @@ sntGuestWeb.controller('HomeController', ['$scope', '$rootScope', '$state', '$co
                         break;
                     // ALT + d --> Toggle demo mode
                     case 68:
-                        GwWebSrv.zestwebData.isInZestwebDemoMode = !GwWebSrv.zestwebData.isInZestwebDemoMode;
+                        handleDemoMode();
                         break;
                     default:
                         return;
