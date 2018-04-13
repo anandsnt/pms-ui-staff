@@ -1,21 +1,20 @@
 angular.module('sntRover')
 .controller('RVYearlyTaxReportDetailsController', [
-
     '$scope',
-
     '$timeout',
     'RVreportsSubSrv',
 
     // eslint-disable-next-line max-params
     function (
-
         $scope,
-
         $timeout,
         RVreportsSubSrv
 
     ) {
-
+        /*
+         * Handle the required API calls and update the DOM before doing print
+         * After updating the DOM print screen
+         */
         $scope.$on("FETCH_FULL_YEARLY_TAX_REPORT", function() {
 
             $scope.yearlyTaxReportDataObject = {};
@@ -61,7 +60,9 @@ angular.module('sntRover')
                 $scope.getRevenueAndTax("WITHOUT_VAT_ID", $scope.results.without_vat_id.accounts[1].account_type_id, false, true);
             }
         });
-
+        /*
+         * After print reset to initial state - when click on Cancel button
+         */
         $scope.$on("YEARLY_TAX_PRINT_COMPLETED", function() {
             if ($scope.yearlyTaxReportDataObject.withVatId) {
                 $scope.results.with_vat_id.isCollapsed = $scope.yearlyTaxReportDataObject.withVatId.isCollapsed;
