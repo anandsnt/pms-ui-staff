@@ -78,13 +78,13 @@ admin.controller('ADSntAppsListCtrl', ['$scope',
 			resetSelectedApp();
 		};
 
-		var checkIfFileTypeisInValid = function () {
-			return ($scope.filterType.value === 'Rover Service Mac' && !$scope.fileName.endsWith(".pkg"))
-			 || ($scope.filterType.value !== 'Rover Service Mac' && !$scope.fileName.endsWith(".exe"));
+		var checkIfFileTypeisInValid = function() {
+			return ($scope.filterType.value === 'Rover Service Mac' && !$scope.fileName.endsWith(".pkg")) ||
+				($scope.filterType.value !== 'Rover Service Mac' && !$scope.fileName.endsWith(".exe"));
 		};
 
 		var uploadBuild = function() {
-			if(checkIfFileTypeisInValid()) {
+			if (checkIfFileTypeisInValid()) {
 				$scope.errorMessage = ['Wrong file extension !'];
 			}
 			// processing the huge build param will take time in backend
@@ -94,7 +94,7 @@ admin.controller('ADSntAppsListCtrl', ['$scope',
 			} else {
 				var params = angular.copy($scope.selectedApp);
 
-				params.service_application = $scope.filterType.id;
+				params.service_application_id = $scope.filterType.id;
 				if ($scope.screenMode === 'ADD_BUILD' || $scope.fileName !== 'File Attached') {
 					params.file_name = $scope.fileName;
 				}
@@ -112,7 +112,7 @@ admin.controller('ADSntAppsListCtrl', ['$scope',
 			$scope.callAPI(adAppVersionsSrv.checkIfVersionIsValid, {
 				params: {
 					version: $scope.selectedApp.version,
-					service_application: $scope.filterType.id,
+					service_application_id: $scope.filterType.id,
 					file_name: $scope.fileName
 				},
 				successCallBack: uploadBuild
@@ -125,7 +125,7 @@ admin.controller('ADSntAppsListCtrl', ['$scope',
 			ngDialog.close();
 			$scope.callAPI(adAppVersionsSrv.deleteBuild, {
 				params: {
-					service_application: $scope.filterType.id,
+					service_application_id: $scope.filterType.id,
 					id: deletingAppId
 				},
 				successCallBack: fetchAppVersions
