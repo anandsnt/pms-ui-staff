@@ -20,6 +20,7 @@
         .cards-header {
             position: relative;
             overflow: hidden;
+            z-index: 100;
             .size(90px, 100%);
         }
 
@@ -27,7 +28,7 @@
             position: absolute;
             top: 0;
             padding: 20px;
-            transition: all .3s cubic-bezier(.10, .10, .25, .90) !important;
+            transition: all .3s ccaubic-bezier(.10, .10, .25, .90) !important;
             .box-shadow(-1px 0 3px rgba(0,0,0,.5));
             .size(90px, 100%);
             .show;
@@ -281,7 +282,8 @@
 
             .card-actions {
                 text-align: right;
-                width: 140px;
+                width: 160px;
+                position: relative;
                 .hide;
                 .pull-right;
 
@@ -290,9 +292,59 @@
                     padding: 0;
                     .size(40px, 140px);
 
-                    &.blank { 
+                    &.blank {
                         color: rgba(0,0,0,.4);
-                        line-height: 40px; 
+                        line-height: 40px;
+                    }
+
+                    /* Manage Cards Button */
+                    &.has-arrow {
+                        display: inline-block;
+                        font-size: 14px;
+                        width: auto;
+                        height: 40px;
+                        line-height: 40px;
+                        margin: 0;
+                        background-color: @grey1;
+                        background-size: 10px;
+                        background-position: 92% 14px;
+                        padding: 0 30px 0 15px;
+                        color: @black;
+                        text-shadow: none;
+                        margin-left: 10px;
+
+                        &.active {
+                            #border-radius > .bottom(0px);
+                            box-shadow: none;
+                        }
+                    }
+                }
+
+                .add-new-button {
+                    font-size: 15px;
+                    line-height: 40px;
+                    width: 140px;
+                }
+
+                .manage-cards {
+                    position: absolute;
+                    top: 100%;
+                    right: 0;
+                    width: 220px;
+                    padding: 10px;
+                    background: @grey1;
+                    z-index: 100;
+                    .box-shadow();
+                    #border-radius > .bottom();
+                    #border-radius > .left-top();
+
+                    .button {
+                        width: 100%;
+                        display: block;
+
+                        &:not(:last-child) {
+                            margin-bottom: 10px;
+                        }
                     }
                 }
 
@@ -3346,34 +3398,18 @@
                     }
 
                     .card-actions {
+                        .button {
+                            &.has-arrow { 
+                                width: auto;
+                                margin: 0;
+                            }
+                        }
+
                         &.dual-actions {
                             width: 300px;
-                            position: relative;
-
-                            .manage-cards {
-                                position: absolute;
-                                top: 100%;
-                                right: 0;
-                                width: 220px;
-                                padding: 10px;
-                                background: @grey1;
-                                z-index: 100;
-                                .box-shadow();
-                                #border-radius > .bottom();
-                                #border-radius > .left-top();
-
-                                .button {
-                                    width: 100%;
-                                    display: block;
-
-                                    &:not(:last-child) {
-                                        margin-bottom: 10px;
-                                    }
-                                }
-                            }
+                            position: relative; 
                             
-                            .button {
-                                &.has-arrow,
+                            .button { 
                                 &.add-new-button {
                                     display: inline-block;
                                     font-size: 14px;
@@ -3391,23 +3427,11 @@
                                         border: 1px dashed rgba(0, 0, 0, 0.5);
                                     }
                                 }
-
-                                &.has-arrow {
-                                    background-color: @grey1;
-                                    background-size: 10px;
-                                    background-position: 92% 14px;
-                                    padding: 0 30px 0 15px;
-                                    color: @black;
-                                    text-shadow: none;
-                                    margin-left: 10px;
-
-                                    &.active {
-                                        #border-radius > .bottom(0px);
-                                        box-shadow: none;
-                                    }
-                                }
                             }
-                            
+
+                            .manage-cards {
+                                .button { width: 100%; }
+                            }
                         }
                     }
                 }
@@ -3423,7 +3447,8 @@
             }
 
             /* For Manage Cards Dropdown */
-            &.fullscreen {
+            &.fullscreen,
+            &.open {
                  .cards-header {
                     overflow: visible;
 
