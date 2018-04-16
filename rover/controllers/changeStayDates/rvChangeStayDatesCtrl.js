@@ -691,15 +691,15 @@ sntRover.controller('RVchangeStayDatesController', ['$state', '$stateParams', '$
 		 * We iterate through each day and see if any restriction is applied
 		 */
 		this.isStayRangeRestricted = function(checkinDate, checkoutDate) {
-			var checkinTime = checkinDate.clone().setHours(00, 00, 00);
-			var checkoutTime = checkoutDate.clone().setHours(00, 00, 00);
+			var checkinTime = checkinDate.clone().setHours(0, 0, 0);
+			var checkoutTime = checkoutDate.clone().setHours(0, 0, 0);
 			var thisTime = "";
 			var totalNights = 0;
 			var minNumOfStay = "";
 
 			$($scope.stayDetails.calendarDetails.available_dates).each(function(index) {
 				// Put time correction
-				thisTime = tzIndependentDate(this.date).setHours(00, 00, 00);
+				thisTime = tzIndependentDate(this.date).setHours(0, 0, 0);
 				// We calculate the minimum length of stay restriction
 				// by reffering to the checkin day
 				if (this.date === getDateString(checkinDate)) {
