@@ -1564,7 +1564,7 @@ sntRover.controller('RVbillCardController',
            
 		// check if the T&C was shown, if shown pass true if was accepted
 		if ($scope.reservationBillData.is_disabled_terms_conditions_checkin === 'false') {
-			params.accepted_terms_and_conditions = $scope.saveData.termsAndConditions;
+			data.accepted_terms_and_conditions = $scope.saveData.termsAndConditions;
 		}
 		if (isCheckinWithoutAuth || ($scope.putInQueue && !$scope.checkGuestInFromQueue) || queueRoom === true) {
                         // $scope.putInQueue is set to true when going through the overlay -> put in queue advanced flow process (basically the same as check-in, without CC auth-CICO-19673)
