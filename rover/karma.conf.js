@@ -36,6 +36,7 @@ module.exports = function(config) {
         '../shared/lib/js/fastclick/fastclick.min.js',
         '../shared/lib/js/moment.min.js',
         '../shared/lib/js/date.js',
+        '../shared/baseCtrl.js',
         '../shared/directives/documentTouchMovePrevent/*.js',
         '../shared/directives/clickTouch/*.js',
         '../shared/directives/divTouchMoveStopPropogate/*.js',
@@ -96,7 +97,7 @@ module.exports = function(config) {
 
     // start these browsers
     // available browser launchers: https://npmjs.org/browse/keyword/karma-launcher
-      browsers: ['ChromeHeadless'],
+    browsers: ['ChromeHeadless'],
 
 
     // Continuous Integration mode

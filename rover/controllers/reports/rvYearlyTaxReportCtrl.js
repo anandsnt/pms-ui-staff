@@ -11,6 +11,8 @@ angular.module('sntRover')
         RVreportsSubSrv
 
     ) {
+
+        BaseCtrl.call(this, $scope);
         /*
          * Handle the required API calls and update the DOM before doing print
          * After updating the DOM print screen
@@ -98,7 +100,8 @@ angular.module('sntRover')
          * @accountTypeId - account type (company / travel agent)
          * @data - revenue data
          */
-        var buildData = function(vatType, accountTypeId, data, isPrint) {
+        $scope.buildData = function(vatType, accountTypeId, data, isPrint) {
+
             var resultArrayToBeModified = (vatType === 'WITH_VAT_ID') ? $scope.results.with_vat_id.accounts : $scope.results.without_vat_id.accounts;
                 
             _.each(resultArrayToBeModified, function(item) {
@@ -114,7 +117,7 @@ angular.module('sntRover')
                     
                 }
             });
-                
+            //$scope.results = resultArrayToBeModified;
             $scope.refreshScroll();
         };
 
@@ -127,13 +130,16 @@ angular.module('sntRover')
         $scope.getRevenueAndTax = function(vatType, accountTypeId, isCollapsed, isPrint) {           
 
             var successCallBackOfGetRevenueAndTax = function (data) {
-                    buildData(vatType, accountTypeId, data, isPrint);
-                    $scope.yearlyTaxReportDataObject.numberOfApiSuccessCount++;
-                    if ($scope.yearlyTaxReportDataObject.numberOfApiSuccessCount === $scope.yearlyTaxReportDataObject.numberOfApiCallsNeeded) {
-                        $timeout(function() {
-                            $scope.$emit("YEARLY_TAX_REPORT_PRINT");
-                        }, 700)
-                        
+                    $scope.buildData(vatType, accountTypeId, data, isPrint);
+                    if (isPrint){
+                        $scope.yearlyTaxReportDataObject.numberOfApiSuccessCount++;
+                                       
+                        if ($scope.yearlyTaxReportDataObject.numberOfApiSuccessCount === $scope.yearlyTaxReportDataObject.numberOfApiCallsNeeded) {
+                            $timeout(function() {
+                                $scope.$emit("YEARLY_TAX_REPORT_PRINT");
+                            }, 700)
+                            
+                        }
                     }
                 },
                 postParamsToPay = {
@@ -149,7 +155,7 @@ angular.module('sntRover')
             if (!isCollapsed) {
                 $scope.callAPI(RVreportsSubSrv.getRevenueAndTax, options);
             } else {
-                buildData(vatType, accountTypeId);
+                $scope.buildData(vatType, accountTypeId);
             }           
         };
 
