@@ -1,0 +1,59 @@
+<!-- main section starts here -->
+<div class="container">
+    <!-- cc entry -->
+    <div class="row">
+        <div class="col-md-1"></div>
+        <div class="col-md-4 top-spacing">
+            <p class="main-text">Payment Info</p>
+            <p class="sub-main-text">Please enter your credit card or debit card information.</p>
+        </div>
+        <div class="col-md-2"></div>
+        <div class="col-md-4 top-spacing">
+            <div class="section-container">
+                <div class="row">
+                    <!-- card number -->
+                    <div class="cc-input-field pull-left">
+                        <span class="sub-text upper-case pull-left">card number</span>
+                        <br>
+                        <input class="input-field" ng-model="cardNumber"></input>
+                    </div>
+                    <!-- cvv -->
+                    <div class="cvv-input-field pull-right">
+                        <span class="sub-text pull-left">#CVV</span>
+                        <br>
+                        <input class="input-field" ng-model="ccv"></input>
+                        <a class="query-text pull-left" ng-click="showCcvPopup()">What is this?</a>
+                    </div>
+                </div>
+                <div class="row">
+                    <!-- month -->
+                    <div class="drop-down-container pull-left">
+                        <span class="sub-text upper-case pull-left">Expiration date</span>
+                        <br>
+                        <br>
+                        <div class="select-style">
+                            <select class="margin-top-10" ng-model="monthSelected" ng-options="month.value as month.name for month in months">
+                                <option value="">Month</option>
+                            </select>
+                        </div>
+                    </div>
+                    <!-- year -->
+                    <div class="drop-down-container pull-right">
+                        <span class="sub-text upper-case  pull-left">&nbsp;&nbsp;</span>
+                        <br>
+                        <br>
+                        <div class="select-style left-margin-5">
+                            <select class="margin-top-10" ng-model="yearSelected" ng-options="year as year  for year in years">
+                                <option value="">Year</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <!-- save payment button  -->
+                <a class="btn btn-template margin-top-20" ng-click="savePaymentDetails()"> Continue</a>
+            </div>
+        </div>
+        <div class="col-md-1">
+        </div>
+    </div>
+</div>

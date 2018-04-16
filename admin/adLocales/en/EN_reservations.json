@@ -29,6 +29,7 @@
 
 "BALANCE_INVENTORY": "Balance Inventory",
 "BALANCE_JOURNAL": "Balance Journal",
+"RESYNC_RATES": "Resync Rates",
 "START_JOB": "Start Job",
 "REFRESH_STATUS": "Refresh Status",
 "FORCE_ADJ_REASON" :"FORCE RATE ADJUSTMENT REASON",
@@ -37,4 +38,11 @@
 "MAX_NUMBER_OF_NIGHTS" : "Max Number of Nights",
 "PLACEHOLDER_MAX_NUMBER_OF_NIGHTS" : "Enter Max Number of Nights",
 
-"CC_AUTHORIZATION_FOR_INCIDENTALS_ONLY" : "CC Authorization for Incidentals Only"
+"CC_AUTHORIZATION_FOR_INCIDENTALS_ONLY" : "CC Authorization for Incidentals Only",
+
+"SEARCH": "Search",
+"SELECT_A_RATE": "Select a Rate",
+"CLEAR_QUERY": "Clear query",
+"SYNC": "Sync",
+"SYNC_SUCCESS_MSG": "Synced: Last sync successful",
+"SYNC_ERROR_MSG": "Error: Last sync failed"
