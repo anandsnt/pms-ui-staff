@@ -109,4 +109,7 @@
     "SHOW_ALL" : "All",
 
     "COMPANY_CARD_DETACH_BILLING_INFO_AND_COMMISSIONS_WARNING": "Removing card may affect the Billing, Rate and Commisions.",
-    "REMOVE_AGENT": "Remove Agent"
+    "REMOVE_AGENT": "Remove Agent",
+    "RESERVATION_COMMISSIONS_WARNING": "Reservation is commissionable, please review commission calculation.",
+    "CONTRACTED_RATE_EXISTS_WARNING": "Contracted rate exists on selected card. Update rate on reservation?",
+    "CONTRACTED_RATE_EXISTS_AND_COMMISSION_WARNING": "Contracted rate exists on selected card. Please review commission calculation."

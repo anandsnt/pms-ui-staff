@@ -727,8 +727,8 @@ angular.module('sntRover').controller('guestCardController', [
             }
         };
 
-        $scope.detachTravelAgent = checkIfCommisionWasRecalculated = function(isCommissionsOn) {
-            if (!isCommissionsOn) {
+        $scope.detachTravelAgent = checkIfCommisionWasRecalculated = function(commissionsDetails) {
+            if (isEmpty(commissionsDetails)) {
                 $scope.detachTACard()
             } else {
                 var showWarningPopup = function(response) {
@@ -1700,6 +1700,10 @@ angular.module('sntRover').controller('guestCardController', [
             // CICO-20161
         };
 
+        $scope.setSelectedTACard = function(cardData) {
+            $scope.selectTravelAgent(cardData);
+        };
+
         // To handle card selection from COMPANY / TA.
         $scope.selectCardType = function(cardData, $event) {
             $event.stopPropagation();
@@ -1712,10 +1716,25 @@ angular.module('sntRover').controller('guestCardController', [
                     $scope.selectCompany(cardData);
                 }
             } else if (cardData.account_type === 'TRAVELAGENT') {
+                cardData.is_commissionable = cardData.is_commissionable || false;
+
                 if (!!cardData.rate && $state.current.name !== roomAndRatesState && !$scope.reservationData.group.id) {
                     showContractRatePopup(cardData);
                 } else {
-                    $scope.selectTravelAgent(cardData);
+                    if (cardData.is_commissionable) {
+                        ngDialog.open({
+                            template: '/assets/partials/cards/popups/rvCommissionsWarningPopup.html',
+                            className: '',
+                            closeByDocument: false,
+                            closeByEscape: false,
+                            scope: $scope,
+                            data: JSON.stringify({
+                                cardData: cardData
+                            })
+                        });
+                    } else {
+                        $scope.selectTravelAgent(cardData);
+                    }
                 }
             }
         };
