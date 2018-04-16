@@ -37,7 +37,7 @@
             <button class="button green ng-scope" type="button" ng-click="clickedSaveCard('guest')" translate="">Save new card</button>
             <button class="button red ng-scope" type="button" ng-click="clickedDiscardCard('guest')" translate="">Discard</button>
         </div>
-        <div class="card-actions dual-actions" ng-hide="viewState.isAddNewCard">
+        <div class="card-actions" ng-hide="viewState.isAddNewCard">
             <button id="company-new-contract" type="button" class="button red pull-right" ng-click="detachGuestCard()" translate="" ng-hide="viewState.isAddNewCard || !isStandAlone">Detach Card</button>
             <button type="button" class="button toggle has-arrow" ng-click="toggleCardActions()" ng-class="{'active' : isCardOptionsOpen, '' : !isCardOptionsOpen}" ng-show="!isStandAlone">Manage Card</button>            
             <div class="manage-cards" ng-class="{'hidden': !isCardOptionsOpen, '' : isCardOptionsOpen}" ng-show="!isStandAlone">
