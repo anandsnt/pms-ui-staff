@@ -106,4 +106,7 @@
     "TAX_ID" : "Tax ID",
     "SHOW_PAYMENTS" : "Payments",
     "SHOW_CHARGES" : "Charges",
-    "SHOW_ALL" : "All"
+    "SHOW_ALL" : "All",
+
+    "COMPANY_CARD_DETACH_BILLING_INFO_AND_COMMISSIONS_WARNING": "Removing card may affect the Billing, Rate and Commisions.",
+    "REMOVE_AGENT": "Remove Agent"

@@ -727,7 +727,25 @@ angular.module('sntRover').controller('guestCardController', [
             }
         };
 
-        $scope.detachTACard = function() {
+        $scope.detachTravelAgent = checkIfCommisionWasRecalculated = function(isCommissionsOn) {
+            if (!isCommissionsOn) {
+                $scope.detachTACard()
+            } else {
+                var showWarningPopup = function(response) {
+                    response.is_commission_calcluated = true;
+                    $scope.detachTACard(response.is_commission_calcluated);
+                };
+
+                $scope.callAPI(RVContactInfoSrv.checkIfCommisionWasRecalculated, {
+                    params: {
+                        reservation_id: $scope.reservationData.reservationId
+                    },
+                    successCallBack: showWarningPopup
+                });
+            }
+        };
+
+        $scope.detachTACard = function(isCommisionRecalculated) {
             // in Create mode no API call is needed
             if ($scope.viewState.identifier === "CREATION") {
                 var resDetails = $scope.reservationDetails;
@@ -743,7 +761,8 @@ angular.module('sntRover').controller('guestCardController', [
                 var dataForPopup = {
                     cardTypeText: "Travel Agent Card",
                     cardType: "travel_agent",
-                    cardId: $scope.reservationDetails.travelAgent.id
+                    cardId: $scope.reservationDetails.travelAgent.id,
+                    isCommisionRecalculated: isCommisionRecalculated || false
                 };
 
                 showDetachCardsAPIWarningPopup(dataForPopup);
