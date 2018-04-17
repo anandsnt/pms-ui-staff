@@ -1,7 +1,5 @@
 describe('GuestCardBaseCtrl', function() {
-	var $controller,
-		$rootScope,
-		$q ,
+	var $controller,		
 		rvPermissionSrv,
 		$scope,
 		guestCtrl;
@@ -9,11 +7,9 @@ describe('GuestCardBaseCtrl', function() {
 	describe("Checks toggling of manage cards button", function() {
 		beforeEach(function() {
 			module('sntRover');	
-			inject(function(_$controller_, _$rootScope_, _rvPermissionSrv_, _$q_) {
-				$controller = _$controller_;			
-				$rootScope = _$rootScope_;
-				rvPermissionSrv = _rvPermissionSrv_;
-				$q = _$q_;
+			inject(function(_$controller_, _$rootScope_, _rvPermissionSrv_) {
+				$controller = _$controller_;							
+				rvPermissionSrv = _rvPermissionSrv_;				
 				$scope = _$rootScope_.$new();
 			});	
 			guestCtrl = $controller(function inline($scope, rvPermissionSrv) {
@@ -36,11 +32,9 @@ describe('GuestCardBaseCtrl', function() {
 	describe("Disabling of the remove button", function() {
 		beforeEach(function() {
 			module('sntRover');	
-			inject(function(_$controller_, _$rootScope_, _rvPermissionSrv_, _$q_) {
-				$controller = _$controller_;			
-				$rootScope = _$rootScope_;
-				rvPermissionSrv = _rvPermissionSrv_;
-				$q = _$q_;
+			inject(function(_$controller_, _$rootScope_, _rvPermissionSrv_) {
+				$controller = _$controller_;							
+				rvPermissionSrv = _rvPermissionSrv_;				
 				$scope = _$rootScope_.$new();
 			});	
 			guestCtrl = $controller(function inline($scope, rvPermissionSrv) {
@@ -55,7 +49,7 @@ describe('GuestCardBaseCtrl', function() {
 				$scope.guestCardData.contactInfo = {
 					can_guest_details_anonymized: false,
 					can_guest_card_delete: false
-				}
+				};
 
 				spyOn(rvPermissionSrv, "getPermissionValue").and.callFake(function() {
 					return true;
@@ -71,7 +65,7 @@ describe('GuestCardBaseCtrl', function() {
 				$scope.guestCardData.contactInfo = {
 					can_guest_details_anonymized: false,
 					can_guest_card_delete: false
-				}
+				};
 
 				spyOn(rvPermissionSrv, "getPermissionValue").and.callFake(function() {
 					return false;
@@ -87,7 +81,7 @@ describe('GuestCardBaseCtrl', function() {
 				$scope.guestCardData.contactInfo = {
 					can_guest_details_anonymized: true,
 					can_guest_card_delete: true
-				}
+				};
 
 				spyOn(rvPermissionSrv, "getPermissionValue").and.callFake(function() {
 					return true;
