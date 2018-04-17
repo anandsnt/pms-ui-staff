@@ -40,8 +40,10 @@ sntRover.directive('rvFullscreen', [
                  * when state changes
                  */
                 $transitions.onStart({}, function() {
-                    if ($rootScope.fullscreenData && $rootScope.fullscreenData.toggleClass) {
+                    try {
                         bodyEl.classList.remove('is-fullscreen', $rootScope.fullscreenData.toggleClass);
+                    } catch (e) {
+                        bodyEl.classList.remove('is-fullscreen');
                     }
                 });
             }

@@ -39,15 +39,19 @@ var applyStyle = function(target, style, type) {
 var applyIconStyles = function(color) {
 	if (color !== null) {
 		var styleString = "";
+		var whiteColorVariants = ["white", "#fff", "#ffffff", "#FFF", "#FFFFFF"];
+		var reverseColor = whiteColorVariants.indexOf(color.toLowerCase()) !== -1 ?  "black" : "white";
 
 		styleString = styleString + ".calendar-back {background-image: url('/assets/guestweb_v2/images/" + color + "/back_icon.png')}";
-		styleString = styleString + ".calendar-done{background-image: url('/assets/guestweb_v2/images/" + color + "/done_icon.png')}";
+		styleString = styleString + ".calendar-done {background-image: url('/assets/guestweb_v2/images/" + color + "/done_icon.png')}";
 		styleString = styleString + ".circle-bg { background: url('/assets/guestweb_v2/images/" + color + "/circle_bg.png')  no-repeat scroll center top transparent;}";
-		styleString = styleString + ".back-to-checkout{background: url('/assets/guestweb_v2/images/" + color + "/left_arrow.png')no-repeat scroll center top transparent}";
-		styleString = styleString + ".checkout-icon{background-image: url('/assets/guestweb_v2/images/" + color + "/checkout_icon.png')}";
-		styleString = styleString + ".late-checkout-icon{ background-image: url('/assets/guestweb_v2/images/" + color + "/checkout_later.png')}";
-		styleString = styleString + ".accept-charge-icon{background-image: url('/assets/guestweb_v2/images/" + color + "/creditcard_icon.png')}";
-		styleString = styleString + ".upgrade-icon{background-image: url('/assets/guestweb_v2/images/" + color + "/upgrade_icon.png')}";
+		styleString = styleString + ".back-to-checkout {background: url('/assets/guestweb_v2/images/" + color + "/left_arrow.png')no-repeat scroll center top transparent}";
+		styleString = styleString + ".checkout-icon {background-image: url('/assets/guestweb_v2/images/" + color + "/checkout_icon.png')}";
+		styleString = styleString + ".late-checkout-icon { background-image: url('/assets/guestweb_v2/images/" + color + "/checkout_later.png')}";
+		styleString = styleString + ".accept-charge-icon {background-image: url('/assets/guestweb_v2/images/" + color + "/creditcard_icon.png')}";
+		styleString = styleString + ".upgrade-icon {background-image: url('/assets/guestweb_v2/images/" + color + "/upgrade_icon.png')}";
+		styleString = styleString + ".down-arrow-button { background-image: url('/assets/guestweb_v2/images/" + reverseColor + "/down_arrow.png')}";
+		styleString = styleString + ".right-arrow-button { background-image: url('/assets/guestweb_v2/images/" + reverseColor + "/right_arrow.png')}";
 		addStyleString(styleString);
 	} else {
 		return;
@@ -114,9 +118,8 @@ var overrideStylesWithCMSdata = function(styles) {
 	// set label font size for small devices
 	applyStyle('.sub-text{ font-size:', styles.label_text.sd_font_size, "media-query");
 	// apply icon styles
-	if (styles.icon_color !== "White") {
-		applyIconStyles(styles.icon_color);
-	}
+	applyIconStyles(styles.icon_color);
+	
 	if (styleString.length > 0) {
 		addStyleString(styleString);
 	} else {
