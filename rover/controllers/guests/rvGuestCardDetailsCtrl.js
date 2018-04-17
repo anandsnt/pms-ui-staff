@@ -282,10 +282,7 @@ angular.module('sntRover').controller('rvGuestDetailsController',
 
             $scope.paymentData = {};
             setTitleAndHeading();
-            setBackNavigation();
-
-            $scope.isCardOptionsOpen = false;
-            
+            setBackNavigation();            
         };
 
         // Listener for setting the guestData information
@@ -293,18 +290,7 @@ angular.module('sntRover').controller('rvGuestDetailsController',
             $scope.guestCardData = getGuestCardData(data.contactInfo, data.guestId);
         });
 
-        $scope.$on('$destroy', guestCardSetListener);
-
-        // Toggle the btn which manages the guest card actions
-        $scope.toggleCardActions = function () {
-            $scope.isCardOptionsOpen = !$scope.isCardOptionsOpen;
-        };
-
-        // Checks whether the remove guest details button should be shown or not
-        $scope.shouldDisableRemoveGuestBtn = function () {
-            return (!$scope.guestCardData.contactInfo.can_guest_details_anonymized && !$scope.guestCardData.contactInfo.can_guest_card_delete) || 
-                !$scope.hasRemoveGuestDetailsPermission();
-        };
+        $scope.$on('$destroy', guestCardSetListener);               
         
         // Listener to update the guest card action manage btn status
         var guestCardActionButtonStatusUpdateListener = $scope.$on('UPDATE_GUEST_CARD_ACTIONS_BUTTON_STATUS', function (data) {
