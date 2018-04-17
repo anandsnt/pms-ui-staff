@@ -6,7 +6,7 @@ admin.controller('ADDevicesListCtrl', ['$scope', '$state', 'ngTableParams', 'adD
     $scope.fetchTableData = function($defer, params) {
       var getParams = $scope.calculateGetParams(params);
 
-      getParams.service_application = angular.copy(getParams.rate_type_id);
+      getParams.service_application_type_id = angular.copy(getParams.rate_type_id);
       getParams.sort_dir = getParams.sort_dir ? "asc" : "desc";
       delete getParams.rate_type_id;
       

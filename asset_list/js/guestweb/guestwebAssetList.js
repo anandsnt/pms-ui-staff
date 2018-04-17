@@ -25,7 +25,9 @@ module.exports = {
 				guestwebroot + 'checkin/**/*.js',
 				guestwebroot + 'ccAndRoom/**/*.js',
 				guestwebroot + 'preCheckin/**/*.js',
-				guestwebroot + 'preCheckin/services/**/*.js'
+				guestwebroot + 'preCheckin/services/**/*.js',
+                // Eliminate all spec files
+                '!**/*.spec.js'
 			]	
 		};
 		return loginJsAssets;

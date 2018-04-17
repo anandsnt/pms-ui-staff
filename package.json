@@ -41,6 +41,11 @@
     "gulp-uglify": "2.0.0",
     "gulp-util": "3.0.7",
     "imagemin-pngquant": "5.0.0",
+    "jasmine-core": "^2.99.1",
+    "karma": "^2.0.0",
+    "karma-babel-preprocessor": "^7.0.0",
+    "karma-chrome-launcher": "^2.2.0",
+    "karma-jasmine": "^1.1.1",
     "less-plugin-clean-css": "1.5.1",
     "lodash": "4.16.6",
     "merge-stream": "1.0.0",
@@ -67,6 +72,10 @@
     "glite": "gulp --no-gw --no-zs",
     "lint": "eslint -c .eslintrc.json .",
     "lintRover": "eslint -c .eslintrc.json rover",
-    "lintAdmin": "eslint -c .eslintrc.json admin"
+    "lintAdmin": "eslint -c .eslintrc.json admin",
+    "testLogin": "cd login && karma start --single-run",
+    "testRover": "cd rover && karma start --single-run",
+    "testAdmin": "cd admin && karma start --single-run",
+    "testShared": "cd shared && karma start --single-run"
   }
 }

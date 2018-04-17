@@ -1,5 +1,6 @@
-angular.module('sntRover').controller('RVGuestCardCtrl', ['$scope', 'RVCompanyCardSrv', '$timeout', 'RVContactInfoSrv', 'RVGuestCardLoyaltySrv',
-	function($scope, RVCompanyCardSrv, $timeout, RVContactInfoSrv) {
+angular.module('sntRover').controller('RVGuestCardCtrl', ['$scope', 'RVCompanyCardSrv', '$timeout', 'RVContactInfoSrv', 'RVGuestCardLoyaltySrv', 'RVSearchSrv', 'rvPermissionSrv',
+	function($scope, RVCompanyCardSrv, $timeout, RVContactInfoSrv, RVSearchSrv, rvPermissionSrv) {
+        GuestCardBaseCtrl.call (this, $scope, RVSearchSrv, RVContactInfoSrv, rvPermissionSrv);
 		$scope.searchMode = true;
 		$scope.guestCardData.selectedLoyaltyLevel = "";
                 $scope.loyaltyTabEnabled = false;

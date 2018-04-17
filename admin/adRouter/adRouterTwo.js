@@ -184,6 +184,12 @@ angular.module('adminModuleTwo', []).config(function ($stateProvider) {
         }
     });
 
+    $stateProvider.state('admin.resyncRates', {
+        templateUrl: '/assets/partials/reservationTools/adResyncRates.html',
+        controller: 'ADResyncRatesCtrl',
+        url: '/resyncRates'
+    });
+
     $stateProvider.state('admin.housekeeping', {
         templateUrl: '/assets/partials/housekeeping/adHousekeeping.html',
         controller: 'adHousekeepingCtrl',

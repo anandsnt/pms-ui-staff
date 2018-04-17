@@ -31,13 +31,13 @@ angular.module('adminInterfacesRouter', []).config(function($stateProvider) {
         url: '/propertyinterface/setup'
     });
 
-    $stateProvider.state('admin.letshareSetup', {
-        templateUrl: '/assets/partials/letshare/letShareSetup.html',
-        controller: 'adLetShareSetupCtrl',
-        url: '/letshare/setup',
+    $stateProvider.state('admin.booker25Setup', {
+        templateUrl: '/assets/partials/booker25/booker25Setup.html',
+        controller: 'adBooker25SetupCtrl',
+        url: '/booker25/setup',
         resolve: {
-            letsShareSetupValues: ['adLetShareSetupSrv', function(adLetShareSetupSrv) {
-                return adLetShareSetupSrv.fetchLetShareConfiguration();
+            booker25SetupValues: ['adBooker25SetupSrv', function(adBooker25Srv) {
+                return adBooker25Srv.fetchBooker25Configuration();
             }]
         }
     });
