@@ -106,7 +106,7 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
             var hasTimePeriod = function() {
                 var has = false;
 
-                if ( $scope.isGuestBalanceReport || angular.isDefined($scope.scheduleParams.time_period_id) ) {
+                if ( $scope.isYearlyTaxReport || $scope.isGuestBalanceReport || angular.isDefined($scope.scheduleParams.time_period_id) ) {
                     has = true;
                 }
 
@@ -127,7 +127,7 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
         var fillValidationErrors = function() {
             $scope.createErrors = [];
 
-            if ( ! $scope.isGuestBalanceReport && ! $scope.scheduleParams.time_period_id ) {
+            if ( !$scope.isYearlyTaxReport && ! $scope.isGuestBalanceReport && ! $scope.scheduleParams.time_period_id ) {
                 $scope.createErrors.push('Time period in parameters');
             }
             if ( ! $scope.scheduleParams.frequency_id ) {
@@ -206,6 +206,12 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
             // fill sort_field and filters
             if ( $scope.scheduleParams.sort_field ) {
                 filter_values.sort_field = $scope.scheduleParams.sort_field;
+            }
+            if ($scope.isYearlyTaxReport) {
+                filter_values.year = $scope.scheduleParams.year;
+                //if ($scope.scheduleParams)
+                filter_values.with_vat_number = $scope.scheduleParams.with_vat_number;
+                filter_values.without_vat_number = $scope.scheduleParams.without_vat_number;
             }
             _.each($scope.filters, function(filter) {
                 _.each(filter.data, function(each) {
@@ -476,9 +482,12 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
                 return filter.value === 'ACCOUNT' || filter.value === 'GUEST';
             });
             $scope.isYearlyTaxReport = ($scope.selectedEntityDetails.report.title === reportNames['YEARLY_TAX']);
+           
             if ( angular.isDefined(hasAccOrGuest) ) {
                 $scope.scheduleParams.time_period_id = _.find($scope.originalScheduleTimePeriods, { value: "ALL" }).id;
                 $scope.isGuestBalanceReport = true;
+            } else if ($scope.isYearlyTaxReport) {
+                $scope.scheduleParams.time_period_id = _.find($scope.originalScheduleTimePeriods, { value: "ALL" }).id;
             } else if ( angular.isDefined($scope.selectedEntityDetails.time_period_id) ) {
                 $scope.scheduleParams.time_period_id = $scope.selectedEntityDetails.time_period_id;
             } else {
