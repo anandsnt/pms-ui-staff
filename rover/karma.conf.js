@@ -42,7 +42,6 @@ module.exports = function(config) {
         '../shared/interceptors/**/*.js',
         '../shared/directives/**/*.js',
         '../shared/lib/js/Utils.js',
-        '../shared/baseCtrl.js',
         './rvApp.js',
         './rvSntApp.js',
         './rvCacheVaultModule.js',

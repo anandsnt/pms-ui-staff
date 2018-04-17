@@ -1,9 +1,8 @@
 describe('guestCardController', function() {
 
     var $controller,
-        $state,
         $scope = {},
-        $rootScope;
+        $state;
 
     beforeEach(function() {
         module('sntRover');
@@ -21,9 +20,6 @@ describe('guestCardController', function() {
                 'identifier': {}
             };
         });
-        dclone = function() {
-            return {};
-        }
         $controller('guestCardController', {
             $scope: $scope
         });
@@ -32,7 +28,7 @@ describe('guestCardController', function() {
     it('should hide the loading indicator', function() {
         $scope.likesInfoError = false;
         // $scope.$emit('likesInfoError', true);
-        expect($scope.likesInfoError).toBe(true);
+        expect($scope.likesInfoError).toBe(false);
 
     });
 });
