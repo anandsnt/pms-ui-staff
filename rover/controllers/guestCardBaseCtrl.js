@@ -8,6 +8,9 @@
 
 function GuestCardBaseCtrl ($scope, RVSearchSrv, RVContactInfoSrv, rvPermissionSrv) {
 
+    // Set the manage card button state initially as open
+    $scope.isCardOptionsOpen = false;
+
     // Get the contact details object with the required properties only
     $scope.getContactInfo = function (contactInfo) {
         var whiteListedKeys = ['first_name', 'last_name', 'mobile', 'phone', 'email', 'vip'],
@@ -116,6 +119,17 @@ function GuestCardBaseCtrl ($scope, RVSearchSrv, RVContactInfoSrv, rvPermissionS
     // Checks whether the user has got the permission to remove guest details
     $scope.hasRemoveGuestDetailsPermission = function () {
         return rvPermissionSrv.getPermissionValue ('REMOVE_GUEST_DETAILS');
+    };
+
+    // Toggle the state of the manage card button
+    $scope.toggleCardActions = () => {
+        $scope.isCardOptionsOpen = !$scope.isCardOptionsOpen;
+    };
+
+    // Checks whether the remove guest details button should be disabled or not
+    $scope.shouldDisableRemoveGuestBtn = () => {
+        return (!$scope.guestCardData.contactInfo.can_guest_details_anonymized && !$scope.guestCardData.contactInfo.can_guest_card_delete) || 
+            !$scope.hasRemoveGuestDetailsPermission();
     };
 
 }

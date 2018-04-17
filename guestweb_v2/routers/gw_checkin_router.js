@@ -101,6 +101,30 @@ sntGuestWeb.config(['$stateProvider', function($stateProvider) {
 	 });
 
 
+	$stateProvider.state('offerAddons', {
+		url: '/addons',
+		templateUrl: '/assets/partials/checkin/gwAddons.html',
+		controller: 'GWAddonsController',
+		data: {
+			pageTitle: 'Add-ons'
+		}
+	}).state('collectEmail', {
+	 	url: '/collectEmail',
+	 	templateUrl: '/assets/partials/checkin/gwCollectEmail.html',
+	 	controller: 'gwCollectEmailController',
+	 	data: {
+	 		title: 'E-mail collection'
+	 	}
+	 }).state('checkinCCAddition', {
+	 	url: '/ccAddition',
+	 	templateUrl: '/assets/partials/checkin/gwCcEntry.html',
+	 	controller: 'GwCheckinCCAdditionController',
+	 	data: {
+			pageTitle: 'CC Addition'
+		}
+	 });
+
+
 	// // checkin states
 
 	// $stateProvider.state('checkinConfirmation', {

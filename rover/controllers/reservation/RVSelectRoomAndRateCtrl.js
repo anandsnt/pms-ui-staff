@@ -967,13 +967,16 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
     					calculatedAmount = Number(parseFloat(calculatedAmount).toFixed(2));
     					details.rateDetails = {
     						actual_amount: calculatedAmount,
-    						modified_amount: calculatedAmount,
-    						is_discount_allowed: $scope.reservationData.ratesMeta[rateId].is_discount_allowed_on === null ? 'false' : $scope
-    							.reservationData.ratesMeta[rateId].is_discount_allowed_on.toString(), // API returns true / false as a string ... Hence true in a string to maintain consistency
-    						is_suppressed: $scope.reservationData.ratesMeta[rateId].is_suppress_rate_on === null ? 'false' : $scope.reservationData
-    							.ratesMeta[rateId].is_suppress_rate_on.toString()
+    						modified_amount: calculatedAmount
     					};
-                    }
+
+						if (rateId) {
+							details.rateDetails.is_discount_allowed = $scope.reservationData.ratesMeta[rateId].is_discount_allowed_on === null ? 'false' : $scope
+								.reservationData.ratesMeta[rateId].is_discount_allowed_on.toString();// API returns true / false as a string ... Hence true in a string to maintain consistency
+							details.rateDetails.is_suppressed = $scope.reservationData.ratesMeta[rateId].is_suppress_rate_on === null ? 'false' : $scope.reservationData
+								.ratesMeta[rateId].is_suppress_rate_on.toString();						
+						}
+                }
 				});
 			},
 			saveAndGotoStayCard = function() {
@@ -1278,7 +1281,8 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 
 				_.each(datesArray, function(dayInfo, date) {
 					dayInfo.amount = rateDetails.amounts[date];
-					var taxAddonInfo = RVReservationStateService.getAddonAndTaxDetails(
+					var taxesArray = (payLoad.rate_id) ? $scope.reservationData.ratesMeta[payLoad.rate_id].taxes : [],
+					    taxAddonInfo = RVReservationStateService.getAddonAndTaxDetails(
 							date,
 							payLoad.rate_id,
 							ROOMS[$scope.stateCheck.roomDetails.firstIndex].stayDates[date].guests.adults,
@@ -1286,7 +1290,7 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 							ARRIVAL_DATE,
 							DEPARTURE_DATE,
 							$scope.activeRoom,
-							$scope.reservationData.ratesMeta[payLoad.rate_id].taxes,
+							taxesArray,
 							dayInfo.amount),
 						// CICO-27226 Round day-wise totals
 						dayTotal = Number(parseFloat(dayInfo.amount).toFixed(2)) +
@@ -1423,12 +1427,15 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 
 							details.rateDetails = {
 								actual_amount: rateAmount,
-								modified_amount: rateAmount,
-								is_discount_allowed: $scope.reservationData.ratesMeta[rateId].is_discount_allowed_on === null ? 'false' : $scope
-									.reservationData.ratesMeta[rateId].is_discount_allowed_on.toString(), // API returns true / false as a string ... Hence true in a string to maintain consistency
-								is_suppressed: $scope.reservationData.ratesMeta[rateId].is_suppress_rate_on === null ? 'false' : $scope.reservationData
-									.ratesMeta[rateId].is_suppress_rate_on.toString()
+								modified_amount: rateAmount
 							};
+
+							if (rateId) {
+								details.rateDetails.is_discount_allowed = $scope.reservationData.ratesMeta[rateId].is_discount_allowed_on === null ? 'false' : $scope
+									.reservationData.ratesMeta[rateId].is_discount_allowed_on.toString();// API returns true / false as a string ... Hence true in a string to maintain consistency
+								details.rateDetails.is_suppressed = $scope.reservationData.ratesMeta[rateId].is_suppress_rate_on === null ? 'false' : $scope.reservationData
+									.ratesMeta[rateId].is_suppress_rate_on.toString();						
+							}
 						});
 					}
 				}
@@ -1438,6 +1445,7 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 
 		/* This method is shared between the RATE and ROOM TYPE views */
 		$scope.handleBooking = function(roomId, rateId, event, flags, afterFetch) {
+
 			if (!!event) {
 				event.stopPropagation();
 			}
@@ -1738,7 +1746,6 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 		};
 
 		// ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// --- ROOMTYPE TAB
-
 		$scope.showAllRooms = function() {
 			$scope.stateCheck.showLessRooms = false;
 			$scope.refreshScroll();

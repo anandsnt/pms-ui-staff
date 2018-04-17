@@ -25,15 +25,17 @@ module.exports = function(gulp, $, options) {
                     'zest-asset-prod-precompile',
                     'login-asset-prod-precompile',
                     'station-login-asset-prod-precompile',
-                    'payment-asset-prod-precompile'
+                    'payment-asset-prod-precompile',
+                    'guestweb-v2-asset-prod-precompile'
                 ],
 
         tasksAfterCompilation = [
                     'rover-inject-assets-to-templates',
                     'admin-inject-assets-to-templates',
-                    'login-inject-assets-to-templates',
-                    'station-login-inject-assets-to-templates',
-                    'zest-inject-assets-to-templates'
+                    'login-inject-assets-to-templates', 
+                    'station-login-inject-assets-to-templates', 
+                    'zest-inject-assets-to-templates',
+                    'guestweb-v2-inject-assets-to-templates'
                 ],
 
         copyBaseHtmlToPublicAssets = [
@@ -42,6 +44,7 @@ module.exports = function(gulp, $, options) {
                     'copy-admin-base-html',
                     'copy-zest-base-html',
                     'copy-rover-base-html',
+                    'copy-guestweb-v2-base-html',
                     'compress-images-loselessly'
                 ],
 

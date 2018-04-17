@@ -74,7 +74,10 @@
 			}
 			else {
 					$state.go('guestDetails');	
-			}				
+			}
+			// we are storig this in $rootScope as we dont store resevation details in service layer now
+			// will be doing like that in guestweb_v2.
+			$rootScope.accepted_terms_and_conditions = true;				
 		}
 		else {
 			$modal.open($scope.opts); // error modal popup
