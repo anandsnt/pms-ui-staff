@@ -720,22 +720,19 @@ angular.module('sntRover').controller('guestCardController', [
             }
         };
 
-        $scope.detachTravelAgent  = function(commissionsDetails) {
-            if (isEmpty(commissionsDetails)) {
-                $scope.detachTACard()
-            } else {
-                var showWarningPopup = function(response) {
-                    response.is_commission_calcluated = true;
-                    $scope.detachTACard(response.is_commission_calcluated);
-                };
+        $scope.detachTravelAgent = function() {
 
-                $scope.callAPI(RVContactInfoSrv.checkIfCommisionWasRecalculated, {
-                    params: {
-                        reservation_id: $scope.reservationData.reservationId
-                    },
-                    successCallBack: showWarningPopup
-                });
-            }
+            var showWarningPopup = function(response) {
+                response.is_commission_calcluated = true;
+                $scope.detachTACard(response.is_commission_calcluated);
+            };
+
+            $scope.callAPI(RVContactInfoSrv.checkIfCommisionWasRecalculated, {
+                params: {
+                    reservation_id: $scope.reservationData.reservationId
+                },
+                successCallBack: showWarningPopup
+            });
         };
 
         $scope.detachTACard = function(isCommisionRecalculated) {
