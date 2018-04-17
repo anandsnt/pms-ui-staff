@@ -580,45 +580,38 @@ angular.module('sntRover').controller('guestCardController', [
             }
         };
 
-        var resetReservationData = (function() {
-            this.resetGuest = function() {
+        var resetReservationData = {
+
+            resetGuest: function() {
                 $scope.reservationData.guest.id = "";
                 $scope.reservationData.guest.firstName = "";
                 $scope.reservationData.guest.lastName = "";
                 $scope.reservationData.guest.city = "";
                 $scope.reservationData.guest.loyaltyNumber = "";
                 $scope.reservationData.guest.email = "";
-
-
                 // update current controller scope
                 $scope.guestFirstName = "";
                 $scope.guestLastName = "";
                 $scope.guestCity = "";
                 $scope.guestCardData.cardHeaderImage = "";
-            };
-            this.resetCompanyCard = function() {
+            },
+            resetCompanyCard: function() {
                 $scope.reservationData.company.id = "";
                 $scope.reservationData.company.name = "";
                 $scope.reservationData.company.corporateid = "";
                 $scope.companyName = "";
                 $scope.companyCity = "";
                 $scope.reservationDetails.companyCard.id = "";
-            };
-            this.resetTravelAgent = function() {
+            },
+            resetTravelAgent: function() {
                 $scope.reservationData.travelAgent.id = "";
                 $scope.reservationData.travelAgent.name = "";
                 $scope.reservationData.travelAgent.iataNumber = "";
                 $scope.travelAgentName = "";
                 $scope.travelAgentCity = "";
                 $scope.reservationDetails.travelAgent.id = "";
-            };
-
-            return {
-                resetGuest: this.resetGuest,
-                resetCompanyCard: this.resetCompanyCard,
-                resetTravelAgent: this.resetTravelAgent
-            };
-        })();
+            }
+        };
 
         var resetCompanyTACards = function() {
                 resetReservationData.resetCompanyCard();
@@ -727,7 +720,7 @@ angular.module('sntRover').controller('guestCardController', [
             }
         };
 
-        $scope.detachTravelAgent = checkIfCommisionWasRecalculated = function(commissionsDetails) {
+        $scope.detachTravelAgent  = function(commissionsDetails) {
             if (isEmpty(commissionsDetails)) {
                 $scope.detachTACard()
             } else {
