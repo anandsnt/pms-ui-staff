@@ -475,7 +475,7 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
             hasAccOrGuest = _.find(report.filters, function(filter) {
                 return filter.value === 'ACCOUNT' || filter.value === 'GUEST';
             });
-
+            $scope.isYearlyTaxReport = ($scope.selectedEntityDetails.report.title === reportNames['YEARLY_TAX']);
             if ( angular.isDefined(hasAccOrGuest) ) {
                 $scope.scheduleParams.time_period_id = _.find($scope.originalScheduleTimePeriods, { value: "ALL" }).id;
                 $scope.isGuestBalanceReport = true;
@@ -694,6 +694,7 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
             var success = function(data) {
                 $scope.selectedEntityDetails = data;
                 $scope.isGuestBalanceReport = false;
+                $scope.isYearlyTaxReport = false;
 
                 if ( !! $scope.selectedSchedule && $scope.selectedSchedule.active ) {
                     $scope.selectedSchedule.active = false;
@@ -737,6 +738,9 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
         $scope.pickReport = function(item, index) {
             $scope.selectedEntityDetails = $scope.$parent.$parent.schedulableReports[index];
             $scope.isGuestBalanceReport = false;
+
+            $scope.isYearlyTaxReport = false;
+
 
             if ( !! $scope.selectedReport && $scope.selectedReport.active ) {
                 $scope.selectedReport.active = false;
@@ -929,6 +933,13 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
             $scope.scheduleTimePeriods = [];
             $scope.scheduleFrequency = [];
             $scope.scheduleFormat = [];
+            $scope.scheduleYearList = Array.from( {length: 10}, 
+                        function (v, i) {
+                           return {
+                                "value": moment().add(-1 * i, 'y')
+                                        .format('YYYY')
+                                };
+                        });
             $scope.scheduleFreqType = [];
             $scope.emailList = [];
 
