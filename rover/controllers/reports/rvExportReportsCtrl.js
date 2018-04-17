@@ -484,7 +484,8 @@ angular.module('sntRover').controller('RVExportReportsCtrl', [
                 'Stash Rewards Membership Export': true,
                 'Reservations': true,
                 'Rooms': true,
-                'Future Reservations': true
+                'Future Reservations': true,
+                'Journal Export': true
             };
 
             var forRunOnceOnly = {
