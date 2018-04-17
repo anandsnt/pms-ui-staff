@@ -112,6 +112,7 @@ angular.module('sntRover').controller('RVTravelAgentCardCtrl', ['$scope', '$root
 				$scope.$emit("hideLoader");
 				$scope.arAccountNotes = data;
 				$scope.$broadcast('ARDetailsRecieved');
+				// $scope.$emit('SHOW_COMMISSION_WARNING_POPUP');
 			};
 			var fetchARNotes = function() {
 				$scope.invokeApi(RVCompanyCardSrv.fetchArAccountNotes, param, successCallbackFetchArNotes);
