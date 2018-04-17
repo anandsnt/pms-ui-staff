@@ -723,8 +723,7 @@ angular.module('sntRover').controller('guestCardController', [
         $scope.detachTravelAgent = function() {
 
             var showWarningPopup = function(response) {
-                response.is_commission_calcluated = true;
-                $scope.detachTACard(response.is_commission_calcluated);
+                $scope.detachTACard(response.posted);
             };
 
             $scope.callAPI(RVContactInfoSrv.checkIfCommisionWasRecalculated, {

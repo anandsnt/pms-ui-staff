@@ -187,7 +187,7 @@ angular.module('sntRover').service('RVContactInfoSrv', [
 
         service.checkIfCommisionWasRecalculated = function(param) {
             var deferred = $q.defer();
-            var url = '/api/reservation/' + params.reservation_id + '/can_remove_ta';
+            var url = '/api/reservation/' + param.reservation_id + '/commission_transaction_info'
 
             rvBaseWebSrvV2.getJSON(url).then(function(data) {
                 deferred.resolve(data);
