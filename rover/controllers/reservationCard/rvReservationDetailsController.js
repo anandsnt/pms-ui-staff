@@ -720,7 +720,8 @@ sntRover.controller('reservationDetailsController',
 		$scope.isStayDatesChangeAllowed = function() {
 			var is_hourly_reservation = $scope.reservationData.reservation_card.is_hourly_reservation,
 				reservation_status    = $scope.reservationData.reservation_card.reservation_status,
-				group_id              = $scope.reservationData.reservation_card.group_id;
+				group_id              = $scope.reservationData.reservation_card.group_id,
+                isStayDatesChangeAllowed;
 
 			var not_hourly_reservation = ! is_hourly_reservation,
 				checking_in_reserved   = {'CHECKING_IN': true, 'RESERVED': true}[reservation_status],
