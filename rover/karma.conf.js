@@ -55,7 +55,8 @@ module.exports = function(config) {
         './services/**/*.js',
         // './directives/**/*.js',
         './factories/**/*.js',
-        './filters/*.js'
+        './filters/*.js',
+        '../shared/baseCtrl.js'
     ],
 
     // list of files / patterns to exclude
