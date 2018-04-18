@@ -318,7 +318,8 @@ angular.module('sntRover').controller('RVTravelAgentCardCtrl', ['$scope', '$root
 			}
 		};
 
-		$scope.saveNewTACard = function () {
+		$scope.saveNewTACard = function ($event) {
+			$event.stopPropagation();
 			ngDialog.close();
 			saveContactInformation($scope.contactInformation);
 		};
