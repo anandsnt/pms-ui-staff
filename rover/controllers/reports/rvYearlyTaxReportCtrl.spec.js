@@ -129,6 +129,67 @@ describe('RVYearlyTaxReportDetailsController', function () {
                 expect($scope.results.with_vat_id.accounts[1].revenueData[0].ar_number).toBe(revenueData.data[0].ar_number);
                
             }); 
+            // =============================================
 
+            it('toggle the isCollapsed flag', function () {
+                $scope.results = {};
+                $scope.results.without_vat_id = {};
+                $scope.results.without_vat_id.isCollapsed = true;
+
+                $scope.setResultWithOutVatCollapsedOrNot();
+
+                expect($scope.results.without_vat_id.isCollapsed).toBe(false);
+
+            });
+            // ==========================
+            it('toggle the isCollapsed flag', function () {
+                $scope.results = {};
+                $scope.results.with_vat_id = {};
+                $scope.results.with_vat_id.isCollapsed = true;
+
+                $scope.setResultWithVatCollapsedOrNot();
+
+                expect($scope.results.with_vat_id.isCollapsed).toBe(false);
+
+            });
+            // ============================
+            it('print method invoke with the required Data', function(){                
+
+                var arrayToPromiseSample = [{
+                    "accountVatType": "WITH_VAT_ID",
+                    "accountTypeId": 1,
+                    "isCollapsed": false,
+                    "isPrint": true
+                }, {
+                    "accountVatType": "WITH_VAT_ID",
+                    "accountTypeId": 2,
+                    "isCollapsed": false,
+                    "isPrint": true
+                }, {
+                    "accountVatType": "WITHOUT_VAT_ID",
+                    "accountTypeId": 1,
+                    "isCollapsed": false,
+                    "isPrint": true
+                }, {
+                    "accountVatType": "WITHOUT_VAT_ID",
+                    "accountTypeId": 2,
+                    "isCollapsed": false,
+                    "isPrint": true
+                }];
+
+                $scope.chosenReport = {
+                    "with_vat_number": true,
+                    "without_vat_number": true
+                };
+
+                spyOn($scope, 'getRevenueAndTax');
+
+                $scope.results = results;
+
+                $scope.handlePrint();
+
+                expect($scope.getRevenueAndTax).toHaveBeenCalledWith(arrayToPromiseSample);
+
+            });
         });    
 });
