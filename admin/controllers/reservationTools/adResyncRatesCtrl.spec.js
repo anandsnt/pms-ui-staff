@@ -21,9 +21,7 @@ describe('ADResyncRatesCtrl', function() {
         });
     });
 
-    // Having following error :
-    // https://code.angularjs.org/1.6.1/docs/error/$rootScope/infdig?p0=10&p1=%5B%5D
-    /*it('Clicked on Re-Sync Rates button', function() {
+    it('Clicked on Re-Sync Rates button', function() {
         
         spyOn(ADReservationToolsSrv, 'reSyncRates').and.callFake(function () {
             var deferred = $q.defer(),
@@ -38,11 +36,11 @@ describe('ADResyncRatesCtrl', function() {
 
         $scope.clickedSyncButton();
 
-        $rootScope.$apply();
+        $scope.$digest();
 
         expect($scope.selectedRateObj.last_sync_at).toEqual("2018-04-18T08:51:33-04:00");
         expect($scope.selectedRateObj.last_sync_status).toEqual(true);
-    });*/
+    });
 
     describe('Toggling of Rate Dropdown', function() {
         it('if the serach box is closed, then open it', function() {
@@ -58,41 +56,39 @@ describe('ADResyncRatesCtrl', function() {
     });
 
     describe('Search box query actions', function() {
-        // Having following error :
-        // https://code.angularjs.org/1.6.1/docs/error/$rootScope/infdig?p0=10&p1=%5B%5D
 
-        /*it('Search query with query length > 2', function() {
+        it('Search query with query length > 2', function() {
             $scope.textInQueryBox = 'rate';
+            var response = {
+                results : [ 
+                    {
+                        'name': 'rate1',
+                        'id': 123,
+                        'last_sync_date': '',
+                        'last_sync_time': ''
+                    },
+                    {
+                        'name': 'rate2',
+                        'id': 125,
+                        'last_sync_date': '',
+                        'last_sync_time': ''
+                    }
+                ]
+            };
 
             spyOn(ADReservationToolsSrv, 'searchRates').and.callFake(function () {
-                var deferred = $q.defer(),
-                    response = {
-                        results : [ 
-                            {
-                                'name': 'rate1',
-                                'id': 123,
-                                'last_sync_date': '',
-                                'last_sync_time': ''
-                            },
-                            {
-                                'name': 'rate2',
-                                'id': 125,
-                                'last_sync_date': '',
-                                'last_sync_time': ''
-                            }
-                        ]
-                    };
+                var deferred = $q.defer();
 
                 deferred.resolve(response);
                 return deferred.promise;
             });
             
-            $rootScope.$apply();
-
             $scope.searchQuery();
 
+            $scope.$digest();
+
             expect($scope.rateListResult).toEqual(response.results);
-        });*/
+        });
 
         it('Search query with query length < 3', function(){
             $scope.textInQueryBox = 'ra';
