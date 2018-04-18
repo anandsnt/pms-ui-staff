@@ -46,7 +46,7 @@ describe('guestCardController', function() {
         });
     });
 
-    var spyONAPiAndCallDetachTravelAgent = function() {
+    var spyOnApiAndCallDetachTravelAgent = function() {
         spyOn(RVContactInfoSrv, 'checkIfCommisionWasRecalculated').and.callFake(function() {
             var deferred = $q.defer();
 
@@ -70,7 +70,7 @@ describe('guestCardController', function() {
         $scope.reservationData.departureDate = '2017-01-29';
         $scope.reservationData.status = "CHECKEDOUT";
 
-        spyONAPiAndCallDetachTravelAgent();
+        spyOnApiAndCallDetachTravelAgent();
 
         // Popup which says TA can't be removed
         expect(ngDialog.open).toHaveBeenCalled();
@@ -83,7 +83,7 @@ describe('guestCardController', function() {
         $scope.reservationData.departureDate = '2017-01-30';
         $scope.reservationData.status = "CHECKEDIN";
 
-        spyONAPiAndCallDetachTravelAgent();
+        spyOnApiAndCallDetachTravelAgent();
         // ensure detachTACard is  called
         expect($scope.detachTACard).toHaveBeenCalled();
         // Popup to confirm TA removal
