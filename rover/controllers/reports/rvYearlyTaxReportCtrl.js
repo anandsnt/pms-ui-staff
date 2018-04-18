@@ -41,7 +41,7 @@ angular.module('sntRover')
          * Handle the required API calls and update the DOM before doing print
          * After updating the DOM print screen
          */
-        listeners['clickedPrint'] = $scope.$on("FETCH_FULL_YEARLY_TAX_REPORT", function() {
+        $scope.handlePrint = function() {
             arrayToPromise = [];
             $scope.isPrintClicked = true;
             $scope.yearlyTaxReportDataObject = {};
@@ -85,11 +85,18 @@ angular.module('sntRover')
                 buildPromiseArray("WITHOUT_VAT_ID", $scope.results.without_vat_id.accounts[1].account_type_id, false, true);
             }
             $scope.getRevenueAndTax(arrayToPromise);
+        };
+        /*
+         * Handle the required API calls and update the DOM before doing print
+         * After updating the DOM print screen
+         */
+        listeners['clickedPrint'] = $scope.$on("FETCH_FULL_YEARLY_TAX_REPORT", function() {
+            $scope.handlePrint();
         });
         /*
          * After print reset to initial state - when click on Cancel button
          */
-        listeners['clickedCancelPrint'] = $scope.$on("YEARLY_TAX_PRINT_COMPLETED", function() {
+        $scope.handlePrintCancel = function() {
             if ($scope.yearlyTaxReportDataObject.withVatId) {
                 $scope.results.with_vat_id.isCollapsed = $scope.yearlyTaxReportDataObject.withVatId.isCollapsed;
                 $scope.results.with_vat_id.accounts[0].isCollapsed = $scope.yearlyTaxReportDataObject.withVatId.Accounts[0].isCollapsed;
@@ -103,6 +110,12 @@ angular.module('sntRover')
             }
 
             $scope.refreshScroll();
+        };
+        /*
+         * After print reset to initial state - when click on Cancel button
+         */
+        listeners['clickedCancelPrint'] = $scope.$on("YEARLY_TAX_PRINT_COMPLETED", function() {
+            $scope.handlePrintCancel();
         });
 
         /*
