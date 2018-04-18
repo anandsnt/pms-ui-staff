@@ -157,8 +157,8 @@ angular.module('sntRover').controller('RVReportsInboxCtrl', [
         let generateRequestParams = (pageNo) => {
             let params = {
                 user_id: $rootScope.userId,
-                from_date: '2018-04-09',
-                to_date: '2018-04-19',
+                from_date: '2018-04-09', //$scope.reportInboxData.filter.selectedDate, 
+                to_date: '2018-04-19', //$scope.reportInboxData.filter.selectedDate,
                 per_page: RVReportsInboxSrv.PER_PAGE,
                 page: pageNo
             };
@@ -221,11 +221,22 @@ angular.module('sntRover').controller('RVReportsInboxCtrl', [
             return $scope.totalResultCount > 0;
         };
 
+        $scope.refreshReportInbox = () => {
+            fetchGeneratedReports(1);
+        };
+
+        $scope.shouldShowPagination = () => {
+            return $scope.totalResultCount > RVReportsInboxSrv.PER_PAGE;
+        };
+
         // Initialize
         var init = () => {
             $scope.reportInboxData = {
                 selectedReportAppliedFilters: {},
-                generatedReports: []
+                generatedReports: [],
+                filter: {
+                    selectedDate: $filter('date')($rootScope.businessDate, 'yyyy/MM/dd')
+                }
             };
 
             $scope.dateDropDown = createDateDropdownData();

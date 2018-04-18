@@ -1,6 +1,6 @@
 <!-- Search -->
 <form class="search-form reports enable-adding inbox">
-    <button type="button" class="button white with-icon only-icon refresh">
+    <button type="button" class="button white with-icon only-icon refresh" ng-click="refreshReportInbox()">
         <span class="icons icon-reset"></span> Refresh
     </button>
     <div class="entry search">
@@ -14,8 +14,8 @@
     <div class="entry report-requested">
         <div class="select with-label">
             <label for="report-requested">Report Requested</label>
-            <select id="report-requested">
-                <option ng-repeat="ddData in dateDropDown track by $index" value="{{ddData.value}}">{{ddData.name}}</option>                
+            <select id="report-requested" ng-change="refreshReportInbox()" ng-model="reportInboxData.filter.selectedDate">
+                <option ng-repeat="ddData in dateDropDown track by $index" value="{{ddData.value}}" >{{ddData.name}}</option>                
             </select>
         </div>
     </div>
@@ -27,7 +27,7 @@
     <!-- Menu -->
     <div ng-hide="true" id="reports-menu" ng-include="'/assets/partials/reports/shared/rvReportMainMenu.html'"></div>
     <!-- Content -->
-    <div id="reports-dashboard" class="" ng-class="viewColClassName" ng-iscroll="FULL_REPORT_SCROLL" ng-show="shouldShowReportList()">
+    <div id="reports-dashboard" class="" ng-class="viewColClassName" ng-iscroll="FULL_REPORT_SCROLL" ng-show="shouldShowReportList()" >
         <!-- Classes cols-2,cols-3 and cols-4 are added when showing 2,3 or 4 columns. Add horizontal scroller here -->
         <div class="wrapper">
             <div class="cols-wrapper">
