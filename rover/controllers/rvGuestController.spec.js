@@ -21,39 +21,73 @@ describe('guestCardController', function() {
             $q = _$q_;
             ngDialog = _ngDialog_;
 
-            $scope.reservationDetails = {
-                'travelAgent': {}
-            };
-            $scope.guestCardData = {
-                'contactInfo': {}
-            };
-            $scope.viewState = {
-                'identifier': {}
-            };
+            angular.extend($scope, {
+                'reservationDetails': {
+                    'travelAgent': {}
+                },
+                'guestCardData': {
+                    'contactInfo': {}
+                },
+                'viewState': {
+                    'identifier': {}
+                },
+                'userInfo': {
+                    'business_date': '2017-01-30'
+                },
+                'reservationData': {
+                    'reservation_id': 123
+                }
+            });
         });
+
         $controller('guestCardController', {
             $scope: $scope,
             _ngDialog_: ngDialog
         });
     });
 
-    it('show warning popup on TA card removal', function() {
+    var spyONAPiAndCallDetachTravelAgent = function() {
         spyOn(RVContactInfoSrv, 'checkIfCommisionWasRecalculated').and.callFake(function() {
             var deferred = $q.defer();
 
             deferred.resolve({
                 'commission_info': {
-                    'posted': true
+                    'posted': true,
+                    'is_paid_or_held': true
                 }
             });
             return deferred.promise;
         });
         spyOn(ngDialog, 'open').and.callThrough();
-        $scope.reservationData = {
-            'reservation_id': 123
-        };
+        spyOn($scope, 'detachTACard').and.callThrough();
+
         $scope.detachTravelAgent();
-        $scope.$apply();
+        $scope.$digest();
+    };
+
+    it('When detaching a TA card, Do not allow TA card removal if the reservation is checked out and EOD has passed', function() {
+
+        $scope.reservationData.departureDate = '2017-01-29';
+        $scope.reservationData.status = "CHECKEDOUT";
+
+        spyONAPiAndCallDetachTravelAgent();
+
+        // Popup which says TA can't be removed
+        expect(ngDialog.open).toHaveBeenCalled();
+        // ensure detachTACard is not called
+        expect($scope.detachTACard).not.toHaveBeenCalled();
+    });
+
+    it('When detaching a TA card, Allow TA card removal if the reservation is not checked out or EOD is not over', function() {
+
+        $scope.reservationData.departureDate = '2017-01-30';
+        $scope.reservationData.status = "CHECKEDIN";
+
+        spyONAPiAndCallDetachTravelAgent();
+        // ensure detachTACard is  called
+        expect($scope.detachTACard).toHaveBeenCalled();
+        // Popup to confirm TA removal
         expect(ngDialog.open).toHaveBeenCalled();
     });
+
 });
