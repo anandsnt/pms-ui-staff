@@ -177,7 +177,7 @@ angular.module('sntRover')
          * @arrayToPromise
          */
         $scope.getRevenueAndTax = function(arrayToPromise) {  
-            console.log(arrayToPromise)
+
             var successCallBackOfGetRevenueAndTax = function (data) {
 
                     $scope.buildData(data.accountVatType, data.accountTypeId, data, data.isPrint);
@@ -215,7 +215,7 @@ angular.module('sntRover')
                     }, 700);
                 }
             };
-            
+
             $q.all(promises)
                 .then(successCallBackOfAllPromises);
           
