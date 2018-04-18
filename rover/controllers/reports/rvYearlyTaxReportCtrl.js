@@ -57,14 +57,14 @@ angular.module('sntRover')
                     },
                     dataIsCollapsedTA = {
                         "isCollapsed": $scope.results.with_vat_id.accounts[1].isCollapsed
-                    }
+                    };
 
                 $scope.yearlyTaxReportDataObject.withVatId.Accounts.push(dataIsCollapsedCompany);
                 $scope.yearlyTaxReportDataObject.withVatId.Accounts.push(dataIsCollapsedTA);
                 $scope.results.with_vat_id.isCollapsed = true;
 
                 $scope.buildPromiseArray("WITH_VAT_ID", $scope.results.with_vat_id.accounts[0].account_type_id, false, true);
-                $scope.buildPromiseArray("WITH_VAT_ID", $scope.results.with_vat_id.accounts[1].account_type_id, false, true)
+                $scope.buildPromiseArray("WITH_VAT_ID", $scope.results.with_vat_id.accounts[1].account_type_id, false, true);
                
             }
             if ($scope.chosenReport.without_vat_number) {
@@ -75,7 +75,7 @@ angular.module('sntRover')
                     },
                     dataIsCollapsedTA = {
                         "isCollapsed": $scope.results.without_vat_id.accounts[1].isCollapsed
-                    }
+                    };
 
                 $scope.yearlyTaxReportDataObject.withoutVatId.Accounts.push(dataIsCollapsedCompany);
                 $scope.yearlyTaxReportDataObject.withoutVatId.Accounts.push(dataIsCollapsedTA);
@@ -177,7 +177,7 @@ angular.module('sntRover')
          * @arrayToPromise
          */
         $scope.getRevenueAndTax = function(arrayToPromise) {  
-
+            console.log(arrayToPromise)
             var successCallBackOfGetRevenueAndTax = function (data) {
 
                     $scope.buildData(data.accountVatType, data.accountTypeId, data, data.isPrint);
@@ -185,7 +185,7 @@ angular.module('sntRover')
 
                 promises = [];
 
-                angular.forEach(arrayToPromise, function(item, index) {
+                angular.forEach(arrayToPromise, function(item) {
                     var postParamsToApi = {
                             "year": $scope.chosenReport.year,
                             "with_vat_id": (item.accountVatType === 'WITH_VAT_ID'),
@@ -197,6 +197,7 @@ angular.module('sntRover')
                             "isPrint": item.isPrint,
                             "accountTypeId": item.accountTypeId
                         };
+
                     if (!item.isCollapsed) {
                         promises.push(RVreportsSubSrv.getRevenueAndTax(paramsToService).then(successCallBackOfGetRevenueAndTax));
                     } else {
@@ -211,9 +212,10 @@ angular.module('sntRover')
                 if ($scope.isPrintClicked) {
                      $timeout(function() {
                         $scope.$emit("YEARLY_TAX_REPORT_PRINT");
-                    }, 700)
+                    }, 700);
                 }
-            } 
+            };
+            
             $q.all(promises)
                 .then(successCallBackOfAllPromises);
           

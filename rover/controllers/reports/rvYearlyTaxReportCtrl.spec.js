@@ -51,7 +51,6 @@ describe('RVYearlyTaxReportDetailsController', function () {
         };
 
         describe('variable initalizations', function () {
-            var taxReportObj = {};
 
             beforeEach(function () {
                 module('sntRover');
@@ -76,24 +75,24 @@ describe('RVYearlyTaxReportDetailsController', function () {
                     }
                 });
 
-
             }); 
              // ============================================
             it('call buildData method if isCollapsed is true', function () {       
 
                 var isCollapsed = true,
                     vatType = 'WITH_VAT_ID',
-                    accountTypeId = 2;
+                    accountTypeId = 2,
+                    isPrint = false;
 
-                spyOn($scope, 'buildData');
+                spyOn($scope, 'buildPromiseArray');
 
                 $scope.chosenReport = {};
 
                 $scope.chosenReport.year = 2017;
 
-                $scope.clickedGetRevenueAndTax(vatType, accountTypeId, isCollapsed);
+                $scope.clickedGetRevenueAndTax(vatType, accountTypeId, isCollapsed, isPrint);
 
-                expect($scope.buildData).toHaveBeenCalledWith(vatType, accountTypeId);
+                expect($scope.buildPromiseArray).toHaveBeenCalledWith(vatType, accountTypeId, isCollapsed, isPrint);
                
             }); 
             // ============================================
@@ -125,9 +124,5 @@ describe('RVYearlyTaxReportDetailsController', function () {
                
             }); 
 
-        });
- 
-       
-
-    
+        });    
 });
