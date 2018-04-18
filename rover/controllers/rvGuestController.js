@@ -720,9 +720,13 @@ angular.module('sntRover').controller('guestCardController', [
             }
         };
 
+        var isCheckedOutAndDepDateisOver = function () {
+            return ($scope.reservationData.status === "CHECKEDOUT" && (new Date($scope.userInfo.business_date) > new Date($scope.reservationData.departureDate)))
+        };
+
         $scope.detachTravelAgent = function() {
             // if the resercation is checked out and EOD has ran
-            if ($scope.reservationData.status === "CHECKEDOUT" && (new Date($scope.userInfo.business_date) > new Date($scope.reservationData.departureDate))) {
+            if (isCheckedOutAndDepDateisOver()) {
                 var showWarningPopup = function(response) {
                     // if commission is PAID or HOLD, don't allow staff to detach TA
                     if (response.commission_info && response.commission_info.is_paid_or_held) {
@@ -1718,7 +1722,8 @@ angular.module('sntRover').controller('guestCardController', [
                 closeByDocument: false,
                 closeByEscape: false,
                 scope: $scope
-            }
+            };
+            
             if (cardData) {
                 dialogOptions.data = JSON.stringify({
                     cardData: cardData
@@ -1743,12 +1748,13 @@ angular.module('sntRover').controller('guestCardController', [
                     $scope.selectCompany(cardData);
                 }
             } else if (cardData.account_type === 'TRAVELAGENT') {
-                cardData.is_commission_on = cardData.is_commission_on || false;
+               
+                cardData.showCommisionWarning = isCheckedOutAndDepDateisOver();
 
                 if (!!cardData.rate && $state.current.name !== roomAndRatesState && !$scope.reservationData.group.id) {
                     showContractRatePopup(cardData);
                 } else {
-                    if (cardData.is_commission_on) {
+                    if (cardData.showCommisionWarning) {
                         showCommissionWarningPopup(cardData);
                     } else {
                         $scope.selectTravelAgent(cardData);
