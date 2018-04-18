@@ -21,7 +21,7 @@ angular.module('snt.transitionManager',
                     $window['dataLayer'].push({
                         event: 'sntPageView',
                         attributes: {
-                            route: transition.to().url,
+                            route: transition.to().name.replace(/\./g, '/'),
                             stateParams: transition.params()
                         }
                     });
