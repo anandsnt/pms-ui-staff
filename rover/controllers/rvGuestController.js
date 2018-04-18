@@ -721,22 +721,37 @@ angular.module('sntRover').controller('guestCardController', [
         };
 
         $scope.detachTravelAgent = function() {
+            // if the resercation is checked out and EOD has ran
+            if ($scope.reservationData.status === "CHECKEDOUT" && (new Date($scope.userInfo.business_date) > new Date($scope.reservationData.departureDate))) {
+                var showWarningPopup = function(response) {
+                    // if commission is PAID or HOLD, don't allow staff to detach TA
+                    if (response.commission_info && response.commission_info.is_paid_or_held) {
+                        ngDialog.open({
+                            template: '/assets/partials/cards/popups/rvCommisonHoldOrPaidWarning.html',
+                            className: 'ngdialog-theme-default stay-card-alerts',
+                            scope: $scope,
+                            closeByDocument: false,
+                            closeByEscape: false
+                        });
+                    } else {
+                        var showCommisionWarning = true;
 
-            var showWarningPopup = function(response) {
-                var isCommisssionPosted = response.commission_info && response.commission_info.posted;
-                
-                $scope.detachTACard(isCommisssionPosted);
-            };
+                        $scope.detachTACard(showCommisionWarning);
+                    }
+                };
 
-            $scope.callAPI(RVContactInfoSrv.checkIfCommisionWasRecalculated, {
-                params: {
-                    reservation_id: $scope.reservationData.reservationId
-                },
-                successCallBack: showWarningPopup
-            });
+                $scope.callAPI(RVContactInfoSrv.checkIfCommisionWasRecalculated, {
+                    params: {
+                        reservation_id: $scope.reservationData.reservationId
+                    },
+                    successCallBack: showWarningPopup
+                });
+            } else {
+                $scope.detachTACard();
+            }
         };
 
-        $scope.detachTACard = function(isCommisionRecalculated) {
+        $scope.detachTACard = function(showCommisionWarning) {
             // in Create mode no API call is needed
             if ($scope.viewState.identifier === "CREATION") {
                 var resDetails = $scope.reservationDetails;
@@ -753,7 +768,7 @@ angular.module('sntRover').controller('guestCardController', [
                     cardTypeText: "Travel Agent Card",
                     cardType: "travel_agent",
                     cardId: $scope.reservationDetails.travelAgent.id,
-                    isCommisionRecalculated: isCommisionRecalculated || false
+                    showCommisionWarning: showCommisionWarning || false
                 };
 
                 showDetachCardsAPIWarningPopup(dataForPopup);
