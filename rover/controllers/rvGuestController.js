@@ -1716,25 +1716,17 @@ angular.module('sntRover').controller('guestCardController', [
         };
 
         var showCommissionWarningPopup = function(cardData) {
-            var dialogOptions = {
+            ngDialog.open({
                 template: '/assets/partials/cards/popups/rvCommissionsWarningPopup.html',
                 className: '',
                 closeByDocument: false,
                 closeByEscape: false,
-                scope: $scope
-            };
-            
-            if (cardData) {
-                dialogOptions.data = JSON.stringify({
+                scope: $scope,
+                data: JSON.stringify({
                     cardData: cardData
-                });
-            }
-            ngDialog.open(dialogOptions);
+                })
+            });
         };
-
-        $scope.$on('SHOW_COMMISSION_WARNING_POPUP', function () {
-            showCommissionWarningPopup();
-        });
 
         // To handle card selection from COMPANY / TA.
         $scope.selectCardType = function(cardData, $event) {
