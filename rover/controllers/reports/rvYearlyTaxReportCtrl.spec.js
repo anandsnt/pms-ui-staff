@@ -2,16 +2,16 @@ describe('RVYearlyTaxReportDetailsController', function () {
 
     var $controller,
         $scope,
-        $timeout,
         $q,
         $rootScope,
         RVreportsSubSrv,
 
         revenueData = {
-                "data": [{"vat_id":null,
-                     "ar_number":"67676767",
-                    "name":"Stayntouch DO NOT UPDATE",
-                    "revenue":271.0,"vat":21.0}]
+                "data": [{"vat_id": null,
+                     "ar_number": "67676767",
+                    "name": "Stayntouch DO NOT UPDATE",
+                    "revenue": 271.0, 
+                    "vat": 21.0}]
                 },
         results = {
             "with_vat_id": {
@@ -91,7 +91,7 @@ describe('RVYearlyTaxReportDetailsController', function () {
 
                 $scope.chosenReport.year = 2017;
 
-                $scope.getRevenueAndTax(vatType, accountTypeId, isCollapsed);
+                $scope.clickedGetRevenueAndTax(vatType, accountTypeId, isCollapsed);
 
                 expect($scope.buildData).toHaveBeenCalledWith(vatType, accountTypeId);
                
@@ -116,7 +116,7 @@ describe('RVYearlyTaxReportDetailsController', function () {
 
                 $scope.results = results;
 
-                $scope.getRevenueAndTax(vatType, accountTypeId, isCollapsed);
+                $scope.clickedGetRevenueAndTax(vatType, accountTypeId, isCollapsed);
 
                  // Promise won't be resolved till $apply runs....
                 $rootScope.$apply();

@@ -1098,7 +1098,7 @@ sntRover.controller('RVReportDetailsCtrl', [
 
 		$scope.fetchFullYearlyTaxReport = function() {
 			$scope.$broadcast("FETCH_FULL_YEARLY_TAX_REPORT");
-		}
+		};
 
 		// when user press submit from pre-print modal, continue our calls to '$_fetchFullReport'
 		// READ MORE: rvReportsMainCtrl:L#:61-75

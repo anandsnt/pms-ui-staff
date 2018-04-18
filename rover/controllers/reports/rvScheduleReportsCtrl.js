@@ -209,7 +209,6 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
             }
             if ($scope.isYearlyTaxReport) {
                 filter_values.year = $scope.scheduleParams.year;
-                //if ($scope.scheduleParams)
                 filter_values.with_vat_number = $scope.scheduleParams.with_vat_number;
                 filter_values.without_vat_number = $scope.scheduleParams.without_vat_number;
             }

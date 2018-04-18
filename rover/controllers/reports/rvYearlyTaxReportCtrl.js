@@ -36,7 +36,8 @@ angular.module('sntRover')
                 "isCollapsed": isCollapsed,
                 "isPrint": isPrint
             });
-        }
+        };
+
         /*
          * Handle the required API calls and update the DOM before doing print
          * After updating the DOM print screen
@@ -52,10 +53,10 @@ angular.module('sntRover')
                 $scope.yearlyTaxReportDataObject.withVatId.Accounts = [];
                 $scope.yearlyTaxReportDataObject.withVatId.isCollapsed = $scope.results.with_vat_id.isCollapsed;
                 var dataIsCollapsedCompany = {
-                        "isCollapsed" : $scope.results.with_vat_id.accounts[0].isCollapsed
+                        "isCollapsed": $scope.results.with_vat_id.accounts[0].isCollapsed
                     },
                     dataIsCollapsedTA = {
-                        "isCollapsed" : $scope.results.with_vat_id.accounts[1].isCollapsed
+                        "isCollapsed": $scope.results.with_vat_id.accounts[1].isCollapsed
                     }
 
                 $scope.yearlyTaxReportDataObject.withVatId.Accounts.push(dataIsCollapsedCompany);
@@ -70,10 +71,10 @@ angular.module('sntRover')
                 $scope.yearlyTaxReportDataObject.withoutVatId = {};
                 $scope.yearlyTaxReportDataObject.withoutVatId.Accounts = [];
                 var dataIsCollapsedCompany = {
-                        "isCollapsed" : $scope.results.without_vat_id.accounts[0].isCollapsed
+                        "isCollapsed": $scope.results.without_vat_id.accounts[0].isCollapsed
                     },
                     dataIsCollapsedTA = {
-                        "isCollapsed" : $scope.results.without_vat_id.accounts[1].isCollapsed
+                        "isCollapsed": $scope.results.without_vat_id.accounts[1].isCollapsed
                     }
 
                 $scope.yearlyTaxReportDataObject.withoutVatId.Accounts.push(dataIsCollapsedCompany);
@@ -169,7 +170,7 @@ angular.module('sntRover')
             arrayToPromise = [];
             buildPromiseArray(vatType, accountTypeId, isCollapsed, isPrint);
             $scope.getRevenueAndTax(arrayToPromise);
-        }
+        };
 
         /*
          * Function to get revenue data
