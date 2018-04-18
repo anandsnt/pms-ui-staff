@@ -531,9 +531,11 @@ angular.module('sntRover').service('RVreportsSubSrv', [
             var deferred = $q.defer(),
                 url = '/api/accounts/revenue_and_tax';
 
-                rvBaseWebSrvV2.getJSON(url, data).then(function(data) {
-
-                     deferred.resolve(data);
+                rvBaseWebSrvV2.getJSON(url, data.postParamsToApi).then(function(revenueData) {
+                    revenueData.accountVatType = data.accountVatType;
+                    revenueData.isPrint = data.isPrint;
+                    revenueData.accountTypeId = data.accountTypeId;
+                    deferred.resolve(revenueData);
                 }, function(data) {
                     deferred.reject(data);
                 });

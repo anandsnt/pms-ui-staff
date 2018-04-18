@@ -23,7 +23,7 @@
             <span ng-repeat="accountsWithVatId in results.with_vat_id.accounts">           
             
                 <!-- Level 2 - Companies -->
-                <a href="#with-vat-company" class="title-2 has-arrow toggle vat-report" ng-click="getRevenueAndTax('WITH_VAT_ID', accountsWithVatId.account_type_id)" ng-class="{'active': accountsWithVatId.isCollapsed}"> <!-- Toggle class 'active' when clicked -->
+                <a href="#with-vat-company" class="title-2 has-arrow toggle vat-report" ng-click="clickedGetRevenueAndTax('WITH_VAT_ID', accountsWithVatId.account_type_id)" ng-class="{'active': accountsWithVatId.isCollapsed}"> <!-- Toggle class 'active' when clicked -->
                     <strong ng-show="accountsWithVatId.account_type === 'COMPANY'">Companies </strong>
                     <strong ng-show="accountsWithVatId.account_type === 'TRAVELAGENT'">Travel Agents </strong>
                     <span><span class="currency">{{currencySymbol}}</span>{{accountsWithVatId.total_revenue | number: precisonTwo }}</span>
@@ -67,7 +67,7 @@
             <span ng-repeat="accountsWithOutVatId in results.without_vat_id.accounts">           
             
                 <!-- Level 2 - Companies -->
-                <a class="title-2 has-arrow toggle vat-report" ng-click="getRevenueAndTax('WITHOUT_VAT_ID', accountsWithOutVatId.account_type_id, accountsWithOutVatId.isCollapsed)" ng-class="{'active': accountsWithOutVatId.isCollapsed}"> <!-- Toggle class 'active' when clicked -->
+                <a class="title-2 has-arrow toggle vat-report" ng-click="clickedGetRevenueAndTax('WITHOUT_VAT_ID', accountsWithOutVatId.account_type_id, accountsWithOutVatId.isCollapsed)" ng-class="{'active': accountsWithOutVatId.isCollapsed}"> <!-- Toggle class 'active' when clicked -->
                     <strong ng-show="accountsWithOutVatId.account_type === 'COMPANY'">Companies</strong>
                     <strong ng-show="accountsWithOutVatId.account_type === 'TRAVELAGENT'">Travel Agents </strong>
 
