@@ -1026,6 +1026,7 @@ angular.module('sntRover').controller('guestCardController', [
                             if (item.current_contracts.length > 1) travelAgentData.isMultipleContracts = true;
 
                             travelAgentData.logo = item.company_logo;
+                            travelAgentData.is_commission_on = item.is_commission_on;
                             if (item.address !== null) {
                                 travelAgentData.address = {};
                                 travelAgentData.address.postalCode = item.address.postal_code;
@@ -1727,13 +1728,12 @@ angular.module('sntRover').controller('guestCardController', [
                     $scope.selectCompany(cardData);
                 }
             } else if (cardData.account_type === 'TRAVELAGENT') {
-                // TODO: change default to false
-                cardData.is_commissionable = cardData.is_commissionable || true;
+                cardData.is_commission_on = cardData.is_commission_on || false;
 
                 if (!!cardData.rate && $state.current.name !== roomAndRatesState && !$scope.reservationData.group.id) {
                     showContractRatePopup(cardData);
                 } else {
-                    if (cardData.is_commissionable) {
+                    if (cardData.is_commission_on) {
                         showCommissionWarningPopup(cardData);
                     } else {
                         $scope.selectTravelAgent(cardData);
