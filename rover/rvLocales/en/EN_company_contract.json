@@ -108,7 +108,7 @@
     "SHOW_CHARGES" : "Charges",
     "SHOW_ALL" : "All",
 
-    "COMPANY_CARD_DETACH_BILLING_INFO_AND_COMMISSIONS_WARNING": "Removing card may affect the Billing, Rate and Commisions.",
+    "COMPANY_CARD_DETACH_BILLING_INFO_AND_COMMISSIONS_WARNING": "Removing card may affect the Billing, Rate and Commissions.",
     "REMOVE_AGENT": "Remove Agent",
     "RESERVATION_COMMISSIONS_WARNING": "Commission may exist for the TA card. Please review the commission calculation.",
     "CONTRACTED_RATE_EXISTS_WARNING": "Contracted rate exists on selected card. Update rate on reservation?",
