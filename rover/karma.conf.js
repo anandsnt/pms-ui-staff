@@ -56,7 +56,8 @@ module.exports = function(config) {
         // './directives/**/*.js',
         './factories/**/*.js',
         './filters/*.js',
-        '../shared/baseCtrl.js'
+        '../shared/baseCtrl.js',
+        './partials/**/*.html'
     ],
 
     // list of files / patterns to exclude
@@ -69,7 +70,12 @@ module.exports = function(config) {
     preprocessors: {
         '../payment/**/*.js': ['babel'],
         './controllers/**/*.js': ['babel'],
-        './services/rateManager_/rvRateManagerCoreSrv.js': ['babel']
+        './services/rateManager_/rvRateManagerCoreSrv.js': ['babel'],
+        './partials/**/*.html': ['ng-html2js']
+    },
+    ngHtml2JsPreprocessor: {
+        stripPrefix: './',
+        prependPrefix: '/assets/'
     },
 
 
