@@ -29,7 +29,7 @@ angular.module('sntRover')
          * isCollapsed - flag
          * isPrint - flag
          */
-        var buildPromiseArray = function(vatType, accountTypeId, isCollapsed, isPrint) {
+        $scope.buildPromiseArray = function(vatType, accountTypeId, isCollapsed, isPrint) {
              arrayToPromise.push({
                 "accountVatType": vatType,
                 "accountTypeId": accountTypeId,
@@ -63,8 +63,8 @@ angular.module('sntRover')
                 $scope.yearlyTaxReportDataObject.withVatId.Accounts.push(dataIsCollapsedTA);
                 $scope.results.with_vat_id.isCollapsed = true;
 
-                buildPromiseArray("WITH_VAT_ID", $scope.results.with_vat_id.accounts[0].account_type_id, false, true);
-                buildPromiseArray("WITH_VAT_ID", $scope.results.with_vat_id.accounts[1].account_type_id, false, true)
+                $scope.buildPromiseArray("WITH_VAT_ID", $scope.results.with_vat_id.accounts[0].account_type_id, false, true);
+                $scope.buildPromiseArray("WITH_VAT_ID", $scope.results.with_vat_id.accounts[1].account_type_id, false, true)
                
             }
             if ($scope.chosenReport.without_vat_number) {
@@ -82,8 +82,8 @@ angular.module('sntRover')
                 $scope.yearlyTaxReportDataObject.withoutVatId.isCollapsed = $scope.results.without_vat_id.isCollapsed;
                 $scope.results.without_vat_id.isCollapsed = true;
                 
-                buildPromiseArray("WITHOUT_VAT_ID", $scope.results.without_vat_id.accounts[0].account_type_id, false, true);
-                buildPromiseArray("WITHOUT_VAT_ID", $scope.results.without_vat_id.accounts[1].account_type_id, false, true);
+                $scope.buildPromiseArray("WITHOUT_VAT_ID", $scope.results.without_vat_id.accounts[0].account_type_id, false, true);
+                $scope.buildPromiseArray("WITHOUT_VAT_ID", $scope.results.without_vat_id.accounts[1].account_type_id, false, true);
             }
             $scope.getRevenueAndTax(arrayToPromise);
         };
@@ -168,7 +168,7 @@ angular.module('sntRover')
             sntActivity.start("PROMISE_INITIATED");
             $scope.isPrintClicked = false;
             arrayToPromise = [];
-            buildPromiseArray(vatType, accountTypeId, isCollapsed, isPrint);
+            $scope.buildPromiseArray(vatType, accountTypeId, isCollapsed, isPrint);
             $scope.getRevenueAndTax(arrayToPromise);
         };
 
