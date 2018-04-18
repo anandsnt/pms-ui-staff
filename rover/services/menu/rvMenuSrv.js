@@ -322,14 +322,14 @@ angular.module('sntRover').service('rvMenuSrv',
 		            action: "",
 		            menuIndex: "schedule_report_export"
 		        }]
-            } 
-            /*{
-		        title: "MENU_REPORTS",
-		        action: "rover.reports.dashboard",
-		        menuIndex: "reports",
-		        iconClass: "icon-reports",
-		        submenu: []
-		    }*/
+            }
+      //       {
+		    //     title: "MENU_REPORTS",
+		    //     action: "rover.reports.dashboard",
+		    //     menuIndex: "reports",
+		    //     iconClass: "icon-reports",
+		    //     submenu: []
+		    // }
 		];
 
 		return processMenuList (menuList);

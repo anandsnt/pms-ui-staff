@@ -51,7 +51,9 @@ angular.module('reportsModule', [])
                 generatedReportsList: function (RVReportsInboxSrv) {
                     var params = {
                         from_date: '2018-04-09',
-                        to_date: '2018-04-10'
+                        to_date: '2018-04-19',
+                        page: 1,
+                        per_page: RVReportsInboxSrv.PER_PAGE
                     };
                     
                     return RVReportsInboxSrv.fetchReportInbox(params);
