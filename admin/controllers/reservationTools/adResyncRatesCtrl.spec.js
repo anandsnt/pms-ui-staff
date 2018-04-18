@@ -21,6 +21,29 @@ describe('ADResyncRatesCtrl', function() {
         });
     });
 
+    // Having following error :
+    // https://code.angularjs.org/1.6.1/docs/error/$rootScope/infdig?p0=10&p1=%5B%5D
+    /*it('Clicked on Re-Sync Rates button', function() {
+        
+        spyOn(ADReservationToolsSrv, 'reSyncRates').and.callFake(function () {
+            var deferred = $q.defer(),
+                response = {
+                    last_sync_at: "2018-04-18T08:51:33-04:00",
+                    last_sync_status: true
+                };
+
+            deferred.resolve(response);
+            return deferred.promise;
+        });
+
+        $scope.clickedSyncButton();
+
+        $rootScope.$apply();
+
+        expect($scope.selectedRateObj.last_sync_at).toEqual("2018-04-18T08:51:33-04:00");
+        expect($scope.selectedRateObj.last_sync_status).toEqual(true);
+    });*/
+
     describe('Toggling of Rate Dropdown', function() {
         it('if the serach box is closed, then open it', function() {
             $scope.isActiveRateDropDown = false;
