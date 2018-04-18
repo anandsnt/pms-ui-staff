@@ -6,11 +6,7 @@ describe('guestCardController', function() {
         $state,
         RVContactInfoSrv,
         $q,
-        ngDialog,
-        ngDialogInstance = {
-            open: jasmine.createSpy('ngDialogInstance.open'),
-            dismiss: jasmine.createSpy('modalInstance.dismiss')
-        };
+        ngDialog;
 
     beforeEach(function() {
         module('sntRover');
@@ -37,11 +33,11 @@ describe('guestCardController', function() {
         });
         $controller('guestCardController', {
             $scope: $scope,
-            _ngDialog_: ngDialogInstance
+            _ngDialog_: ngDialog
         });
     });
 
-    it('if the setting is manual, go to manual key pickup state', function() {
+    it('show warning popup on TA card removal', function() {
         spyOn(RVContactInfoSrv, 'checkIfCommisionWasRecalculated').and.callFake(function() {
             var deferred = $q.defer();
 
@@ -52,14 +48,12 @@ describe('guestCardController', function() {
             });
             return deferred.promise;
         });
-
         spyOn(ngDialog, 'open').and.callThrough();
         $scope.reservationData = {
             'reservation_id': 123
         };
         $scope.detachTravelAgent();
         $scope.$apply();
-        expect(ngDialogInstance.open).toHaveBeenCalled();
-        //$rootScope.$apply();
+        expect(ngDialog.open).toHaveBeenCalled();
     });
 });
