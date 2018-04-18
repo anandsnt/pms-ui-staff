@@ -7,6 +7,9 @@ describe('RVYearlyTaxReportDetailsController', function () {
         RVreportsSubSrv,
 
         revenueData = {
+                "accountVatType": "WITH_VAT_ID",
+                "accountTypeId": 2,
+                "isPrint": false,
                 "data": [{"vat_id": null,
                      "ar_number": "67676767",
                     "name": "Stayntouch DO NOT UPDATE",
@@ -98,9 +101,12 @@ describe('RVYearlyTaxReportDetailsController', function () {
             // ============================================
             it('fetch account revenue Data if isCollapsed is false', function () {       
                 
-                var isCollapsed = false,
-                    vatType = 'WITH_VAT_ID',
-                    accountTypeId = 2;
+                var promiseData = [{
+                    "accountTypeId": 2,
+                    "accountVatType": "WITH_VAT_ID",
+                    "isCollapsed": false,
+                    "isPrint": false
+                }];
 
                 spyOn(RVreportsSubSrv, 'getRevenueAndTax').and.callFake(function () {
                     var deferred = $q.defer();
@@ -115,7 +121,7 @@ describe('RVYearlyTaxReportDetailsController', function () {
 
                 $scope.results = results;
 
-                $scope.clickedGetRevenueAndTax(vatType, accountTypeId, isCollapsed);
+                $scope.getRevenueAndTax(promiseData);
 
                  // Promise won't be resolved till $apply runs....
                 $rootScope.$apply();

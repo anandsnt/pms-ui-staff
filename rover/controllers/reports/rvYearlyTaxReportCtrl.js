@@ -143,8 +143,9 @@ angular.module('sntRover')
             var resultArrayToBeModified = (vatType === 'WITH_VAT_ID') ? $scope.results.with_vat_id.accounts : $scope.results.without_vat_id.accounts;
                 
             _.each(resultArrayToBeModified, function(item) {
+
                 if (item.account_type_id === accountTypeId) {
-                    if (data) {
+                    if (data) {                         
                         item.revenueData = data.data;
                     }     
                     if (isPrint) {
@@ -198,7 +199,7 @@ angular.module('sntRover')
                             "accountTypeId": item.accountTypeId
                         };
 
-                    if (!item.isCollapsed) {
+                    if (!item.isCollapsed) {  
                         promises.push(RVreportsSubSrv.getRevenueAndTax(paramsToService).then(successCallBackOfGetRevenueAndTax));
                     } else {
                         $scope.buildData(item.accountVatType, item.accountTypeId);
