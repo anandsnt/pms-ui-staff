@@ -721,7 +721,7 @@ angular.module('sntRover').controller('guestCardController', [
         };
 
         var isCheckedOutAndDepDateisOver = function () {
-            return ($scope.reservationData.status === "CHECKEDOUT" && (new Date($scope.userInfo.business_date) > new Date($scope.reservationData.departureDate)))
+            return ($scope.reservationData.status === "CHECKEDOUT" && (new Date($scope.userInfo.business_date) > new Date($scope.reservationData.departureDate)));
         };
 
         $scope.detachTravelAgent = function() {
