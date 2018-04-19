@@ -18,10 +18,11 @@ angular.module('sntRover')
 
         BaseCtrl.call(this, $scope);
 
-        var arrayToPromise = [],
-            promises = [],
-            listeners = [];
-
+        var promises = [],
+            listeners = [],
+            that = this;
+        
+        that.arrayToPromise = [];
         /*
          * Building data to queue promises
          * @vatType = vat type
@@ -30,7 +31,7 @@ angular.module('sntRover')
          * isPrint - flag
          */
         $scope.buildPromiseArray = function(vatType, accountTypeId, isCollapsed, isPrint) {
-             arrayToPromise.push({
+            that.arrayToPromise.push({
                 "accountVatType": vatType,
                 "accountTypeId": accountTypeId,
                 "isCollapsed": isCollapsed,
@@ -43,7 +44,7 @@ angular.module('sntRover')
          * After updating the DOM print screen
          */
         $scope.handlePrint = function() {
-            arrayToPromise = [];
+            that.arrayToPromise = [];
             $scope.isPrintClicked = true;
             $scope.yearlyTaxReportDataObject = {};
             sntActivity.start("PROMISE_INITIATED");
@@ -85,7 +86,7 @@ angular.module('sntRover')
                 $scope.buildPromiseArray("WITHOUT_VAT_ID", $scope.results.without_vat_id.accounts[0].account_type_id, false, true);
                 $scope.buildPromiseArray("WITHOUT_VAT_ID", $scope.results.without_vat_id.accounts[1].account_type_id, false, true);
             }
-            $scope.getRevenueAndTax(arrayToPromise);
+            $scope.getRevenueAndTax(that.arrayToPromise);
         };
         /*
          * Handle the required API calls and update the DOM before doing print
@@ -140,9 +141,9 @@ angular.module('sntRover')
          */
         $scope.buildData = function(vatType, accountTypeId, data, isPrint) {
 
-            var resultArrayToBeModified = (vatType === 'WITH_VAT_ID') ? $scope.results.with_vat_id.accounts : $scope.results.without_vat_id.accounts;
+            that.resultArrayToBeModified = (vatType === 'WITH_VAT_ID') ? $scope.results.with_vat_id.accounts : $scope.results.without_vat_id.accounts;
                 
-            _.each(resultArrayToBeModified, function(item) {
+            _.each(that.resultArrayToBeModified, function(item) {
 
                 if (item.account_type_id === accountTypeId) {
                     if (data) {                         
@@ -168,9 +169,9 @@ angular.module('sntRover')
         $scope.clickedGetRevenueAndTax = function(vatType, accountTypeId, isCollapsed, isPrint) {
             sntActivity.start("PROMISE_INITIATED");
             $scope.isPrintClicked = false;
-            arrayToPromise = [];
+            that.arrayToPromise = [];
             $scope.buildPromiseArray(vatType, accountTypeId, isCollapsed, isPrint);
-            $scope.getRevenueAndTax(arrayToPromise);
+            $scope.getRevenueAndTax(that.arrayToPromise);
         };
 
         /*
