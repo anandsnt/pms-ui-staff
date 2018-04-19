@@ -118,7 +118,7 @@ module.exports = {
             // 'guestweb_distrikt_nyc': [ themeJsRoot + 'app_router_common.js'],
             // 'guestweb_stella_hotel': [ themeJsRoot + 'app_router_common.js'],
             'guestweb_beau_rivage': [ themeJsRoot + 'app_router_beau_rivage.js'], // --------------------------------------------------------- MGM CHAIN #- 10
-            'guestweb_park_mgm': [ themeJsRoot + 'app_router_mgm_chain.js', themeJsRoot + 'app_router_park_mgm.js'],
+            'guestweb_park_mgm': [ themeJsRoot + 'app_router_park_mgm.js'],
 	        'guestweb_gold_strike': [ themeJsRoot + 'app_router_gold_strike.js'], // --------------------------------------------------------- MGM CHAIN #- 11
             'guestweb_historic_taos_inn': [ themeJsRoot + 'app_router_historic_taos_inn.js'],
             'guestweb_public_ny_v2': [ themeJsRoot + 'app_router_public_ny_v2.js'],
