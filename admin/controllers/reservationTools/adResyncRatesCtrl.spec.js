@@ -2,7 +2,6 @@ describe('ADResyncRatesCtrl', function() {
 
     var $controller,
         $scope = {},
-        $rootScope = {},
         ADReservationToolsSrv,
         $q;
 
@@ -13,7 +12,6 @@ describe('ADResyncRatesCtrl', function() {
             ADReservationToolsSrv = _ADReservationToolsSrv_;
             $q = _$q_;
             $scope = _$rootScope_.$new();
-            $rootScope = _$rootScope_.$new();
         });
 
         $controller('ADResyncRatesCtrl', {
@@ -60,7 +58,7 @@ describe('ADResyncRatesCtrl', function() {
         it('Search query with query length > 2', function() {
             $scope.textInQueryBox = 'rate';
             var response = {
-                results : [ 
+                results: [ 
                     {
                         'name': 'rate1',
                         'id': 123,
@@ -90,7 +88,7 @@ describe('ADResyncRatesCtrl', function() {
             expect($scope.rateListResult).toEqual(response.results);
         });
 
-        it('Search query with query length < 3', function(){
+        it('Search query with query length < 3', function() {
             $scope.textInQueryBox = 'ra';
             expect($scope.rateListResult).toEqual([]);
         });
