@@ -6,10 +6,12 @@
  * @return {void} 
  */
 
-function GuestCardBaseCtrl ($scope, RVSearchSrv, RVContactInfoSrv, rvPermissionSrv) {
+function GuestCardBaseCtrl ($scope, RVSearchSrv, RVContactInfoSrv, rvPermissionSrv, $rootScope) {
 
     // Set the manage card button state initially as open
-    $scope.isCardOptionsOpen = false;
+    $scope.manageCardState = {
+        isOpen: false
+    }
 
     // Get the contact details object with the required properties only
     $scope.getContactInfo = function (contactInfo) {
@@ -65,7 +67,7 @@ function GuestCardBaseCtrl ($scope, RVSearchSrv, RVContactInfoSrv, rvPermissionS
                 $scope.navigateBack();
             } else if (canGuestDetailsAnonymized) {
                 $scope.$broadcast('REFRESH_CONTACT_INFO', { guestId: guestId});
-                $scope.$broadcast('UPDATE_GUEST_CARD_ACTIONS_BUTTON_STATUS', {status: true});
+                $rootScope.$broadcast('UPDATE_GUEST_CARD_ACTIONS_BUTTON_STATUS', {status: false});
             }
              
            },
@@ -93,9 +95,9 @@ function GuestCardBaseCtrl ($scope, RVSearchSrv, RVContactInfoSrv, rvPermissionS
      */
     var fetchGuestDetails = function (guestId) {
       var onSuccess = function (data) {
-             $scope.$broadcast('SET_GUEST_CARD_DATA', {contactInfo: data, guestId: guestId} );
-             $scope.$broadcast('CONTACTINFOLOADED');
-             $scope.$broadcast('RESETCONTACTINFO', data);                                       
+             $rootScope.$broadcast('SET_GUEST_CARD_DATA', {contactInfo: data, guestId: guestId} );
+             $rootScope.$broadcast('CONTACTINFOLOADED');
+             $rootScope.$broadcast('RESETCONTACTINFO', data);                                       
            },
            onFailure = function (error) {
              $scope.errorMessage = error;
@@ -123,7 +125,7 @@ function GuestCardBaseCtrl ($scope, RVSearchSrv, RVContactInfoSrv, rvPermissionS
 
     // Toggle the state of the manage card button
     $scope.toggleCardActions = () => {
-        $scope.isCardOptionsOpen = !$scope.isCardOptionsOpen;
+        $scope.manageCardState.isOpen = !$scope.manageCardState.isOpen;
     };
 
     // Checks whether the remove guest details button should be disabled or not

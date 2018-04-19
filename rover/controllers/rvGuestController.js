@@ -1,6 +1,6 @@
 angular.module('sntRover').controller('guestCardController', [
-    '$scope', '$window', 'RVCompanyCardSrv', 'RVReservationAllCardsSrv', 'RVContactInfoSrv', '$stateParams', '$timeout', 'ngDialog', '$rootScope', 'RVSearchSrv', 'RVReservationDataService', 'rvGroupSrv', '$state', 'rvAllotmentSrv', '$vault',
-    function($scope, $window, RVCompanyCardSrv, RVReservationAllCardsSrv, RVContactInfoSrv, $stateParams, $timeout, ngDialog, $rootScope, RVSearchSrv, RVReservationDataService, rvGroupSrv, $state, rvAllotmentSrv, $vault) {
+    '$scope', '$window', 'RVCompanyCardSrv', 'RVReservationAllCardsSrv', 'RVContactInfoSrv', '$stateParams', '$timeout', 'ngDialog', '$rootScope', 'RVSearchSrv', 'RVReservationDataService', 'rvGroupSrv', '$state', 'rvAllotmentSrv', '$vault', 'rvPermissionSrv',
+    function($scope, $window, RVCompanyCardSrv, RVReservationAllCardsSrv, RVContactInfoSrv, $stateParams, $timeout, ngDialog, $rootScope, RVSearchSrv, RVReservationDataService, rvGroupSrv, $state, rvAllotmentSrv, $vault, rvPermissionSrv) {
         var resizableMinHeight = 90,
             resizableMaxHeight = $(window).height() - resizableMinHeight;
 
@@ -16,7 +16,7 @@ angular.module('sntRover').controller('guestCardController', [
         var roomAndRatesState = 'rover.reservation.staycard.mainCard.room-rates';
 
         BaseCtrl.call(this, $scope);
-        GuestCardBaseCtrl.call (this, $scope, RVSearchSrv);
+        GuestCardBaseCtrl.call (this, $scope, RVSearchSrv, RVContactInfoSrv, rvPermissionSrv, $rootScope);
 
         // Initialize reservation
         var initReservation = function() {
@@ -1944,5 +1944,35 @@ angular.module('sntRover').controller('guestCardController', [
         $scope.$on("PRINT_AR_STATEMENT", function(event, isPrintArStatement ) {
             $scope.isPrintArStatement = isPrintArStatement;
         });
+
+        /**
+         * Populate guest card details 
+         * @param {object} data
+         * @param {integer} guestId
+         * @return {object} guestCardData
+         */
+        var getGuestCardData = function (data, guestId) {
+            var guestCardData = {};             
+
+            guestCardData.contactInfo = data;
+            guestCardData.contactInfo.avatar = guestId ? "/assets/images/avatar-trans.png" : "";
+            guestCardData.contactInfo.vip = guestId ? data.vip : "";            
+            guestCardData.userId = guestId;
+            guestCardData.guestId = guestId;
+            guestCardData.contactInfo.birthday = guestId ? data.birthday : null;
+            guestCardData.contactInfo.user_id = guestId ? guestId : "";
+            guestCardData.contactInfo.guest_id = guestId ? guestId : "";
+
+            return guestCardData;
+        };
+
+        // Listener for setting the guestData information
+        var guestCardSetListener = $scope.$on('SET_GUEST_CARD_DATA', function (event, data) {
+            $scope.guestCardData = getGuestCardData(data.contactInfo, data.guestId);
+        });
+
+        $scope.$on('$destroy', guestCardSetListener);               
+        
+        
     }
 ]);
