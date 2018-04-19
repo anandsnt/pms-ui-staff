@@ -23,12 +23,6 @@ angular.module('sntRover')
             that = this;
         
         that.arrayToPromise = [];
-        that.valueToModifyParam = "Initial Value";
-
-        that.checkPrivateMethod = function(newValue) {
-           that.valueToModifyParam = newValue;
-        };
-
         /*
          * Building data to queue promises
          * @vatType = vat type
