@@ -154,7 +154,7 @@ describe('RVYearlyTaxReportDetailsController', function () {
 
             });
             // ============================
-            it('print method invoke with the required Data', function(){                
+            it('print method invoke with the required Data', function() {                
 
                 var arrayToPromiseSample = [{
                     "accountVatType": "WITH_VAT_ID",
@@ -193,7 +193,7 @@ describe('RVYearlyTaxReportDetailsController', function () {
 
             });
             // ============================
-            it("buildPromiseArray method should build correct data", function(){
+            it("buildPromiseArray method should build correct data", function() {
 
                 $scope.buildPromiseArray("WITH_VAT_ID", 2, false, true);
 
@@ -210,7 +210,7 @@ describe('RVYearlyTaxReportDetailsController', function () {
             });
 
             // ============================
-            it("buildData method should build correct data", function(){
+            it("buildData method should build correct data", function() {
                 
                 $scope.results = results;
                 $scope.buildData("WITH_VAT_ID", 2, revenueData, true);
