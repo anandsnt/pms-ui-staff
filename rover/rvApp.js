@@ -48,6 +48,7 @@ sntRover.config([
 	function($httpProvider, ngDialogProvider, $provide, $locationProvider, $qProvider) {
 
         $locationProvider.html5Mode(true);
+        $qProvider.errorOnUnhandledRejections(false);
 
         // $provide.decorator('$browser', ['$delegate', function ($delegate) {
         //     $delegate.onUrlChange = function () {};
