@@ -52,11 +52,11 @@ module.exports = function(gulp, $, options){
 			// strip [ and ] from string
 			themeString = themeString.substring(1, themeString.length - 1)
 			var themeArray = themeString.split(",");
-
 			for (var i = 0, len = themeArray.length; i < len; i++) {
-				var themelist = theme_list[themeArray[i]] || theme_list['guestweb_common_templates'];
-				
-				guestWebThemeList[themeArray[i]] = themelist;
+				if (theme_list[themeArray[i]]) {
+					var themelist = theme_list[themeArray[i]] || theme_list['guestweb_common_templates'];
+					guestWebThemeList[themeArray[i]] = themelist;
+				}
 			}
 		} else {
 			guestWebThemeList = theme_list;
@@ -149,7 +149,7 @@ module.exports = function(gulp, $, options){
 		
 		delete require.cache[require.resolve(GUESTWEB_THEME_TEMPLATE_MAPPING_FILE)];
 		delete require.cache[require.resolve(GUESTWEB_THEME_TEMPLATE_MAPPING_NEW_FILE)];
-		
+
 		theme_list = extractThemeMappingList(theme_list);
 
 		var tasks = Object.keys(theme_list).map(function(theme, index){
