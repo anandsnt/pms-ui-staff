@@ -1045,7 +1045,6 @@ angular.module('sntRover').controller('guestCardController', [
                             if (item.current_contracts.length > 1) travelAgentData.isMultipleContracts = true;
 
                             travelAgentData.logo = item.company_logo;
-                            travelAgentData.is_commission_on = item.is_commission_on;
                             if (item.address !== null) {
                                 travelAgentData.address = {};
                                 travelAgentData.address.postalCode = item.address.postal_code;
