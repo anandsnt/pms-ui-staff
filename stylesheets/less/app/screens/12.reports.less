@@ -1037,7 +1037,22 @@
 
         .report-inbox {
             .calc-height(100, 40);
-        } 
+
+            .iScrollVerticalScrollbar { 
+                top: 20px;
+                bottom: 20px;
+            }
+        }
+
+        &.with-pagination {
+            .report-inbox {
+                .calc-height(100, 100);
+            }
+
+            .numbers-pagination {
+                .calc-width(100, 20);
+            }
+        }
     }
 
     &.edit-col {
