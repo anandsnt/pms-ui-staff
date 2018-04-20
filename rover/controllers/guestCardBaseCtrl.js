@@ -11,7 +11,7 @@ function GuestCardBaseCtrl ($scope, RVSearchSrv, RVContactInfoSrv, rvPermissionS
     // Set the manage card button state initially as open
     $scope.manageCardState = {
         isOpen: false
-    }
+    };
 
     // Get the contact details object with the required properties only
     $scope.getContactInfo = function (contactInfo) {
