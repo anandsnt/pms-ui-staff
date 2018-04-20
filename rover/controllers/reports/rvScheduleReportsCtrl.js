@@ -106,7 +106,7 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
             var hasTimePeriod = function() {
                 var has = false;
 
-                if ( $scope.isGuestBalanceReport || angular.isDefined($scope.scheduleParams.time_period_id) ) {
+                if ( $scope.isYearlyTaxReport || $scope.isGuestBalanceReport || angular.isDefined($scope.scheduleParams.time_period_id) ) {
                     has = true;
                 }
 
@@ -127,7 +127,7 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
         var fillValidationErrors = function() {
             $scope.createErrors = [];
 
-            if ( ! $scope.isGuestBalanceReport && ! $scope.scheduleParams.time_period_id ) {
+            if ( !$scope.isYearlyTaxReport && ! $scope.isGuestBalanceReport && ! $scope.scheduleParams.time_period_id ) {
                 $scope.createErrors.push('Time period in parameters');
             }
             if ( ! $scope.scheduleParams.frequency_id ) {
@@ -206,6 +206,11 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
             // fill sort_field and filters
             if ( $scope.scheduleParams.sort_field ) {
                 filter_values.sort_field = $scope.scheduleParams.sort_field;
+            }
+            if ($scope.isYearlyTaxReport) {
+                filter_values.year = $scope.scheduleParams.year;
+                filter_values.with_vat_number = $scope.scheduleParams.with_vat_number;
+                filter_values.without_vat_number = $scope.scheduleParams.without_vat_number;
             }
             _.each($scope.filters, function(filter) {
                 _.each(filter.data, function(each) {
@@ -344,7 +349,8 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
             'Departing Guests': 'guest-status check-out',
             'All In-House Guests': 'guest-status inhouse',
             'Balance for all Outstanding Accounts': 'icon-report icon-balance',
-            'Statistics Report by Comparison': 'icon-report icon-comparison'
+            'Statistics Report by Comparison': 'icon-report icon-comparison',
+            'Company or Travel Agent Accounts from Belgium with total net revenue over EUR 250.00.': 'icon-report icon-forecast'
         };
 
         // this is a temporary setup
@@ -463,22 +469,28 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
 
             $scope.scheduleParams = {};
 
+            $scope.isYearlyTaxReport = ($scope.selectedEntityDetails.report.title === reportNames['YEARLY_TAX']);
+
             if (angular.isDefined($scope.selectedEntityDetails.schedule_formats)) {
                 $scope.schedule_formats = $scope.selectedEntityDetails.schedule_formats;
                 $scope.scheduleParams.format_id = $scope.selectedEntityDetails.format.id;
             } else {
-                if ($scope.selectedEntityDetails.report.title !== reportNames['COMPARISION_BY_DATE'] ) {
+                if ($scope.isYearlyTaxReport) {
+                    $scope.scheduleParams.format_id = _.find($scope.scheduleFormat, {value: 'CSV'}).id;
+                } else if ($scope.selectedEntityDetails.report.title !== reportNames['COMPARISION_BY_DATE'] ) {
                    $scope.scheduleParams.format_id = _.find($scope.scheduleFormat, {value: 'PDF'}).id;
                 }
             }
 
             hasAccOrGuest = _.find(report.filters, function(filter) {
                 return filter.value === 'ACCOUNT' || filter.value === 'GUEST';
-            });
-
+            });            
+           
             if ( angular.isDefined(hasAccOrGuest) ) {
                 $scope.scheduleParams.time_period_id = _.find($scope.originalScheduleTimePeriods, { value: "ALL" }).id;
                 $scope.isGuestBalanceReport = true;
+            } else if ($scope.isYearlyTaxReport) {
+                $scope.scheduleParams.time_period_id = _.find($scope.originalScheduleTimePeriods, { value: "ALL" }).id;
             } else if ( angular.isDefined($scope.selectedEntityDetails.time_period_id) ) {
                 $scope.scheduleParams.time_period_id = $scope.selectedEntityDetails.time_period_id;
             } else {
@@ -532,6 +544,12 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
                 $scope.emailList = $scope.selectedEntityDetails.emails.split(', ');
             } else {
                 $scope.emailList = [];
+            }
+
+            if ($scope.selectedEntityDetails.filter_values && $scope.isYearlyTaxReport) {
+                $scope.scheduleParams.year = $scope.selectedEntityDetails.filter_values.year;
+                $scope.scheduleParams.with_vat_number = $scope.selectedEntityDetails.filter_values.with_vat_number;
+                $scope.scheduleParams.without_vat_number = $scope.selectedEntityDetails.filter_values.without_vat_number;
             }
 
             $scope.timeSlots = reportUtils.createTimeSlots(TIME_SLOT);
@@ -694,6 +712,7 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
             var success = function(data) {
                 $scope.selectedEntityDetails = data;
                 $scope.isGuestBalanceReport = false;
+                $scope.isYearlyTaxReport = false;
 
                 if ( !! $scope.selectedSchedule && $scope.selectedSchedule.active ) {
                     $scope.selectedSchedule.active = false;
@@ -737,6 +756,9 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
         $scope.pickReport = function(item, index) {
             $scope.selectedEntityDetails = $scope.$parent.$parent.schedulableReports[index];
             $scope.isGuestBalanceReport = false;
+
+            $scope.isYearlyTaxReport = false;
+
 
             if ( !! $scope.selectedReport && $scope.selectedReport.active ) {
                 $scope.selectedReport.active = false;
@@ -929,6 +951,13 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
             $scope.scheduleTimePeriods = [];
             $scope.scheduleFrequency = [];
             $scope.scheduleFormat = [];
+            $scope.scheduleYearList = Array.from( {length: 10}, 
+                        function (v, i) {
+                           return {
+                                "value": moment().add(-1 * i, 'y')
+                                        .format('YYYY')
+                                };
+                        });
             $scope.scheduleFreqType = [];
             $scope.emailList = [];
 

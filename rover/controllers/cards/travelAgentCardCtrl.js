@@ -302,6 +302,24 @@ angular.module('sntRover').controller('RVTravelAgentCardCtrl', ['$scope', '$root
 		};
 
 		$scope.clickedSaveCard = function(cardType) {
+			// show commission warning popup if departure date has passed
+			if (cardType === 'travel_agent' && $scope.reservationData.status === "CHECKEDOUT" && (new Date($scope.userInfo.business_date) > new Date($scope.reservationData.departureDate))) {
+				// show warning popup
+				ngDialog.open({
+					template: '/assets/partials/cards/popups/rvNewTACommissionsWarningPopup.html',
+					className: '',
+					closeByDocument: false,
+					closeByEscape: false,
+					scope: $scope
+				});
+			} else {
+				saveContactInformation($scope.contactInformation);
+			}
+		};
+
+		$scope.saveNewTACard = function ($event) {
+			$event.stopPropagation();
+			ngDialog.close();
 			saveContactInformation($scope.contactInformation);
 		};
 

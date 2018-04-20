@@ -38,7 +38,11 @@ sntRover.directive('rvFullscreen', [
                  * when state changes
                  */
                 var stateChangeListener = $rootScope.$on('$stateChangeStart', function() {
-                    bodyEl.classList.remove('is-fullscreen', $rootScope.fullscreenData.toggleClass);
+                    try {
+                        bodyEl.classList.remove('is-fullscreen', $rootScope.fullscreenData.toggleClass);
+                    } catch (e) {
+                        bodyEl.classList.remove('is-fullscreen');
+                    }
                 });
 
                 $rootScope.$on('$destroy', function() {

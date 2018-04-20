@@ -260,7 +260,7 @@ admin.controller('ADZestStationCtrl', ['$scope', '$rootScope', '$state', '$state
         } else if (lang === 'it') {
             lang = 'italian';
 
-        } else if (lang === 'cs') {
+        } else if (lang === 'cl') {
             lang = 'castellano';
 
         } else {

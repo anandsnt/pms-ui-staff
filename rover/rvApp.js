@@ -44,9 +44,11 @@ sntRover.config([
 	'ngDialogProvider',
 	'$provide',
 	'$locationProvider',
-	function($httpProvider, ngDialogProvider, $provide, $locationProvider) {
+	'$qProvider',
+	function($httpProvider, ngDialogProvider, $provide, $locationProvider, $qProvider) {
 
         $locationProvider.html5Mode(true);
+        $qProvider.errorOnUnhandledRejections(false);
 
         // $provide.decorator('$browser', ['$delegate', function ($delegate) {
         //     $delegate.onUrlChange = function () {};
@@ -57,6 +59,8 @@ sntRover.config([
 
         // adding shared http interceptor, which is handling our webservice errors & in future our authentication if needed
 		$httpProvider.interceptors.push('sharedHttpInterceptor');
+
+		$qProvider.errorOnUnhandledRejections(false);
 
 	    ngDialogProvider.setDefaults({
 	        appendTo: '.root-view'

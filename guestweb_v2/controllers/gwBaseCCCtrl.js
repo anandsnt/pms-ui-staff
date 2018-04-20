@@ -1,17 +1,15 @@
-/**
- *	CC addition
- */
-sntGuestWeb.controller('GwCCAdditionController', ['$scope', '$rootScope', '$state', '$controller', '$modal', 'GwWebSrv', 'GwCheckoutSrv', '$stateParams',
+sntGuestWeb.controller('gwBaseCCCollectionController', ['$scope', '$rootScope', '$state', '$controller', '$modal', 'GwWebSrv', 'GwCheckoutSrv', '$stateParams',
 	function($scope, $rootScope, $state, $controller, $modal, GwWebSrv, GwCheckoutSrv, $stateParams) {
+
 		$controller('BaseController', {
 			$scope: $scope
 		});
-		var init = (function() {
+		(function() {
 			var screenIdentifier = "CC_ADDITION";
 
 			$scope.screenCMSDetails = GwWebSrv.extractScreenDetails(screenIdentifier);
 			$scope.checkoutmessage = $stateParams.message;
-			$scope.isFromCheckoutNow = ($stateParams.isFromCheckoutNow === "true") ? true : false;
+			$scope.isFromCheckoutNow = ($stateParams.isFromCheckoutNow === "true");
 			$scope.fee = $stateParams.fee;
 			$scope.months = returnMonthsArray();
 			$scope.years = returnYears();
@@ -50,30 +48,19 @@ sntGuestWeb.controller('GwCCAdditionController', ['$scope', '$rootScope', '$stat
 		$scope.showCcvPopup = function() {
 			$modal.open(ccvOpts); // error modal popup
 		};
-		var navigateToNextPage = function() {
-			if ($stateParams.isFromCheckoutNow === "true") {
-				$state.go('checkOutFinal');
-			} else {
-				$state.go('checkOutLaterFinal', {
-						time: $stateParams.time,
-						ap: $stateParams.ap,
-						amount: $stateParams.amount
-				});
-			}
-		};
 
 		// save payment method and proceed
 		var goToNextStep = function() {
 			var cardExpiryDate = $scope.yearSelected + "-" + $scope.monthSelected + "-" + "01";
 			var onSuccess = function() {
-				navigateToNextPage();
+				$scope.$emit('NAVIGATE_TO_NEXT_PAGE');
 			};
 			var onFailure = function() {
 				$state.go('seeFrontDesk');
 			};
 			var options = {
 				params: {
-					'reservation_id': $rootScope.reservationID,
+					'reservation_id': GwWebSrv.zestwebData.reservationID,
 					'token': MLISessionId,
 					'card_expiry': cardExpiryDate,
 					'payment_type': "CC"
@@ -85,41 +72,43 @@ sntGuestWeb.controller('GwCCAdditionController', ['$scope', '$rootScope', '$stat
 			$scope.callAPI(GwCheckoutSrv.savePayment, options);
 		};
 
-		// MLI token creation
-		$scope.savePaymentDetails = function() {
-			var fetchMLISessionId = function() {
-				var sessionDetails = {};
-				var callback = function(response) {
-					$scope.$apply();
-					if (response.status === "ok") {
-						MLISessionId = response.session;
-						goToNextStep();
-					} else {
-						$modal.open(cardErrorPopupOpts);
-					}
-				};
-
-				if (($scope.cardNumber.length === 0) || ($scope.ccv.length === 0) || (!$scope.monthSelected) || (!$scope.yearSelected)) {
-					$modal.open(emptyFeildsErrorPopup); // details modal popup
+		var fetchMLISessionId = function() {
+			var sessionDetails = {};
+			var callback = function(response) {
+				$scope.$apply();
+				if (response.status === "ok") {
+					MLISessionId = response.session;
+					goToNextStep();
 				} else {
-					sessionDetails.cardNumber = $scope.cardNumber;
-					sessionDetails.cardSecurityCode = $scope.ccv;
-					sessionDetails.cardExpiryMonth = $scope.monthSelected;
-					sessionDetails.cardExpiryYear = $scope.yearSelected.toString();
-					try {
-						HostedForm.updateSession(sessionDetails, callback);
-					} catch (err) {
-						$state.go('seeFrontDesk');
-					}
+					$modal.open(cardErrorPopupOpts);
 				}
 			};
 
+			if (($scope.cardNumber.length === 0) || ($scope.ccv.length === 0) || (!$scope.monthSelected) || (!$scope.yearSelected)) {
+				$modal.open(emptyFeildsErrorPopup); // details modal popup
+			} else {
+				sessionDetails.cardNumber = $scope.cardNumber;
+				sessionDetails.cardSecurityCode = $scope.ccv;
+				sessionDetails.cardExpiryMonth = $scope.monthSelected;
+				sessionDetails.cardExpiryYear = $scope.yearSelected.toString();
+				try {
+					HostedForm.updateSession(sessionDetails, callback);
+				} catch (err) {
+					$state.go('seeFrontDesk');
+				}
+			}
+		};
+
+		// MLI token creation
+		$scope.savePaymentDetails = function() {
+
 			if (GwWebSrv.zestwebData.isInZestwebDemoMode) {
-				navigateToNextPage();
+				$scope.$emit('NAVIGATE_TO_NEXT_PAGE');
 			} else {
 				fetchMLISessionId();
 			}
 
 		};
+
 	}
 ]);

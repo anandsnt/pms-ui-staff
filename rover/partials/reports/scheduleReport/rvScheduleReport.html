@@ -63,7 +63,7 @@
         <div class="wrapper">
             <h3>Schedule Parameters<span>{{ selectedEntityDetails.report.title }}</span></h3>
             <div ng-include="'/assets/partials/common/notification_message.html'"></div>
-            <div class="entry" ng-show="!isGuestBalanceReport">
+            <div class="entry" ng-hide="isGuestBalanceReport || isYearlyTaxReport">
                 <label for="time-period">Time Period</label>
                 <div class="select">
                     <select ng-model="scheduleParams.time_period_id"
@@ -86,6 +86,25 @@
                 data="filters.hasGeneralOptions.data"
                 on-update="refreshSecondColumnScroll"
                 options="filters.hasGeneralOptions.options"></multi-option-selection>
+
+            <div class="entry" ng-show="isYearlyTaxReport">
+                <label>Year</label>
+                <select name="time-from" ng-model="scheduleParams.year" ng-options="year.value as year.value for year in scheduleYearList" iscroll-stop-propagation>        
+                </select>
+            </div>
+            <div class="entry" ng-show="isYearlyTaxReport">
+                <label>Company / Travel Agent</label>
+                <label class="checkbox inline" ng-class="{'checked':scheduleParams.with_vat_number}">
+                    <span class="icon-form icon-checkbox" ng-class="{'checked':scheduleParams.with_vat_number}"></span>
+                    <input type="checkbox" checked="checked" ng-model="scheduleParams.with_vat_number">
+                    Cards With Tax ID
+                </label>
+                 <label class="checkbox inline" ng-class="{'checked':scheduleParams.without_vat_number}">
+                    <span class="icon-form icon-checkbox" ng-class="{'checked':scheduleParams.without_vat_number}"></span>
+                    <input type="checkbox" checked="checked" ng-model="scheduleParams.without_vat_number">
+                    Cards Without Tax ID
+                </label>
+            </div>
 
             <div class="entry" ng-show="selectedEntityDetails.sort_fields.length">
                 <label>Sort By</label>

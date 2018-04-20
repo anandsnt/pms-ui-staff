@@ -1,4 +1,4 @@
-function BaseCtrl($scope) {
+BaseCtrl = function($scope) {
 
     $scope.businessDate = '';
 
@@ -308,4 +308,11 @@ function BaseCtrl($scope) {
 
     };
 
-}
+    // Refresh pagination every time the data changes
+    $scope.refreshPagination = function (paginationId) {
+        setTimeout(function() {
+            $scope.$broadcast('updatePagination', paginationId);
+        }, 100);        
+    };
+
+};

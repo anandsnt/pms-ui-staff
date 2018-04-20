@@ -6,7 +6,12 @@
  * @return {void} 
  */
 
-function GuestCardBaseCtrl ($scope, RVSearchSrv, RVContactInfoSrv, rvPermissionSrv) {
+function GuestCardBaseCtrl ($scope, RVSearchSrv, RVContactInfoSrv, rvPermissionSrv, $rootScope) {
+
+    // Set the manage card button state initially as open
+    $scope.manageCardState = {
+        isOpen: false
+    };
 
     // Get the contact details object with the required properties only
     $scope.getContactInfo = function (contactInfo) {
@@ -62,7 +67,7 @@ function GuestCardBaseCtrl ($scope, RVSearchSrv, RVContactInfoSrv, rvPermissionS
                 $scope.navigateBack();
             } else if (canGuestDetailsAnonymized) {
                 $scope.$broadcast('REFRESH_CONTACT_INFO', { guestId: guestId});
-                $scope.$broadcast('UPDATE_GUEST_CARD_ACTIONS_BUTTON_STATUS', {status: true});
+                $rootScope.$broadcast('UPDATE_GUEST_CARD_ACTIONS_BUTTON_STATUS', {status: false});
             }
              
            },
@@ -90,9 +95,9 @@ function GuestCardBaseCtrl ($scope, RVSearchSrv, RVContactInfoSrv, rvPermissionS
      */
     var fetchGuestDetails = function (guestId) {
       var onSuccess = function (data) {
-             $scope.$broadcast('SET_GUEST_CARD_DATA', {contactInfo: data, guestId: guestId} );
-             $scope.$broadcast('CONTACTINFOLOADED');
-             $scope.$broadcast('RESETCONTACTINFO', data);                                       
+             $rootScope.$broadcast('SET_GUEST_CARD_DATA', {contactInfo: data, guestId: guestId} );
+             $rootScope.$broadcast('CONTACTINFOLOADED');
+             $rootScope.$broadcast('RESETCONTACTINFO', data);                                       
            },
            onFailure = function (error) {
              $scope.errorMessage = error;
@@ -116,6 +121,35 @@ function GuestCardBaseCtrl ($scope, RVSearchSrv, RVContactInfoSrv, rvPermissionS
     // Checks whether the user has got the permission to remove guest details
     $scope.hasRemoveGuestDetailsPermission = function () {
         return rvPermissionSrv.getPermissionValue ('REMOVE_GUEST_DETAILS');
+    };
+
+    // Toggle the state of the manage card button
+    $scope.toggleCardActions = () => {
+        $scope.manageCardState.isOpen = !$scope.manageCardState.isOpen;
+    };
+
+    // Checks whether the remove guest details button should be disabled or not
+    $scope.shouldDisableRemoveGuestBtn = () => {
+        return (!$scope.guestCardData.contactInfo.can_guest_details_anonymized && !$scope.guestCardData.contactInfo.can_guest_card_delete) || 
+            !$scope.hasRemoveGuestDetailsPermission();
+    };
+
+    /**
+     * Get updated contact information
+     * @param {Object} data contact info
+     * @param {Number} guestId guest id
+     * @return {Object} contactInfo updated contactinfo
+     */
+    $scope.getUpdatedContactInfo = function(data, guestId) {
+        var contactInfo = data;
+        
+        contactInfo.avatar = guestId ? "/assets/images/avatar-trans.png" : "";
+        contactInfo.vip = guestId ? data.vip : "";
+        contactInfo.birthday = guestId ? data.birthday : null;
+        contactInfo.user_id = guestId ? guestId : "";
+        contactInfo.guest_id = guestId ? guestId : "";
+
+        return contactInfo;
     };
 
 }

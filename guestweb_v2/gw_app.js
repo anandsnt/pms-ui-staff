@@ -62,7 +62,7 @@ sntGuestWeb.controller('HomeController', ['$scope', '$rootScope', '$state', '$co
         GwWebSrv.zestwebData.isInZestwebDemoMode = !!reservationAndhotelDetails.zest_web ? reservationAndhotelDetails.zest_web.is_zestweb_demo_mode_on : false;
         
         // /to delete afterwards
-        GwWebSrv.zestwebData.isInZestwebDemoMode = true;
+        // GwWebSrv.zestwebData.isInZestwebDemoMode = true;
 
         // set static items
         $rootScope.hotelLogo = reservationAndhotelDetails.hotel_logo;
@@ -71,9 +71,6 @@ sntGuestWeb.controller('HomeController', ['$scope', '$rootScope', '$state', '$co
         // to start displaying contents in the page
         $rootScope.uiViewDOMloaded = true;
         $scope.$emit('hideLoader');
-        // TO DELETE
-        $rootScope.accessToken = "c840a5ce26df8e2a4db2bd575c11efc1";
-        GwWebSrv.zestwebData.reservationID = "1479808";
         // conditional page navigations
         if (reservationAndhotelDetails.is_external_verification === "true") {
             $state.go('externalCheckoutVerification'); // external checkout URL
@@ -95,5 +92,33 @@ sntGuestWeb.controller('HomeController', ['$scope', '$rootScope', '$state', '$co
         } else if (reservationAndhotelDetails.is_checkin === "true" && reservationAndhotelDetails.access_token.length > 0) {
             $state.go('checkinLanding');
         }
+
+        var handleDemoMode =  function () {
+            if (GwWebSrv.zestwebData.isInZestwebDemoMode) {
+                // reload the App... cant used dummy data for actual process
+                alert("Leaving demo mode!. We can't continue using dummy data to proceed. The App will be refreshed.");
+                location.reload();
+            } else {
+                GwWebSrv.zestwebData.isInZestwebDemoMode = true;
+            }
+        };
+
+        document.addEventListener("keydown", function(event) {
+            if (event.altKey) {
+                switch (event.keyCode) {
+                    // ALT + e --> Turn on edit mode
+                    case 69:
+                        break;
+                    // ALT + d --> Toggle demo mode
+                    case 68:
+                        handleDemoMode();
+                        break;
+                    default:
+                        return;
+                }
+            } else {
+                return;
+            }
+        });
     }
 ]);
