@@ -141,7 +141,8 @@ function GuestCardBaseCtrl ($scope, RVSearchSrv, RVContactInfoSrv, rvPermissionS
      * @return {Object} contactInfo updated contactinfo
      */
     $scope.getUpdatedContactInfo = function(data, guestId) {
-         var contactInfo = data;
+        var contactInfo = data;
+        
         contactInfo.avatar = guestId ? "/assets/images/avatar-trans.png" : "";
         contactInfo.vip = guestId ? data.vip : "";
         contactInfo.birthday = guestId ? data.birthday : null;

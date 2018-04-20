@@ -3,6 +3,7 @@ angular.module('sntRover').controller('RVContactInfoController', ['$scope', '$ro
 
         BaseCtrl.call(this, $scope);
         var initialGuestCardData;
+        
         GuestCardBaseCtrl.call (this, $scope, RVSearchSrv, RVContactInfoSrv, rvPermissionSrv, $rootScope);
 
     /**
