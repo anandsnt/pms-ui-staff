@@ -2,29 +2,31 @@ describe('GuestCardBaseCtrl', function() {
 	var $controller,		
 		rvPermissionSrv,
 		$scope,
-		guestCtrl;
+		guestCtrl,
+		$rootScope;
 
 	describe("Checks toggling of manage cards button", function() {
 		beforeEach(function() {
 			module('sntRover');	
 			inject(function(_$controller_, _$rootScope_, _rvPermissionSrv_) {
 				$controller = _$controller_;							
-				rvPermissionSrv = _rvPermissionSrv_;				
+				rvPermissionSrv = _rvPermissionSrv_;
+				$rootScope = _$rootScope_;				
 				$scope = _$rootScope_.$new();
 			});	
-			guestCtrl = $controller(function inline($scope, rvPermissionSrv) {
-				GuestCardBaseCtrl.call(this, $scope, null, null, rvPermissionSrv);
+			guestCtrl = $controller(function inline($scope, rvPermissionSrv, $rootScope) {
+				GuestCardBaseCtrl.call(this, $scope, null, null, rvPermissionSrv, $rootScope);
 			}, {$scope: $scope});
 
 		});
 
 		it('isCardOptionsOpen should be initialized to false', function() {		
-			expect($scope.isCardOptionsOpen).toEqual(false);
+			expect($scope.manageCardState.isOpen).toEqual(false);
 		});
 
 		it('isCardOptionsOpen should be true after toggling', function() {
 			$scope.toggleCardActions();		
-			expect($scope.isCardOptionsOpen).toEqual(true);
+			expect($scope.manageCardState.isOpen).toEqual(true);
 		});
 
 	});
@@ -34,11 +36,12 @@ describe('GuestCardBaseCtrl', function() {
 			module('sntRover');	
 			inject(function(_$controller_, _$rootScope_, _rvPermissionSrv_) {
 				$controller = _$controller_;							
-				rvPermissionSrv = _rvPermissionSrv_;				
+				rvPermissionSrv = _rvPermissionSrv_;
+				$rootScope = _$rootScope_;					
 				$scope = _$rootScope_.$new();
 			});	
-			guestCtrl = $controller(function inline($scope, rvPermissionSrv) {
-				GuestCardBaseCtrl.call(this, $scope, null, null, rvPermissionSrv);
+			guestCtrl = $controller(function inline($scope, rvPermissionSrv, $rootScope) {
+				GuestCardBaseCtrl.call(this, $scope, null, null, rvPermissionSrv, $rootScope);
 			}, {$scope: $scope});
 
 		});
