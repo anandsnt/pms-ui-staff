@@ -210,6 +210,16 @@ angular.module('sntRover')
                 $scope.$parent.heading = listTitle;
             };
 
+            $scope.createNewReportSchedule = () => {
+                $scope.fromReportInbox = true;
+                $scope.fromScheduleReportExport = false;
+                $scope.$broadcast("CREATE_NEW_SCHEDULE");
+            };
+
+            /*$scope.pickReport = (item, $index) => {
+                $scope.$broadcast("PICK_REPORT", {item: item, index:$index});
+            };*/
+
             (function () {
                 $scope.updateViewCol($scope.viewColsActions.ONE);
                 $scope.updateView($scope.reportViewActions.SHOW_ALL_REPORT);
@@ -217,7 +227,10 @@ angular.module('sntRover')
 
                 if ($state.params.fromReportInbox) {
                     $scope.fromReportInbox = $state.params.fromReportInbox;
-                }
+                } else if ($state.params.fromScheduleReportExport) {
+                   $scope.fromScheduleReportExport = $state.params.fromScheduleReportExport;
+                   $scope.updateView($scope.reportViewActions.SHOW_SCHEDULED_REPORTS);
+                 }
                 setTitleAndHeading($scope.fromReportInbox);
 
             })();

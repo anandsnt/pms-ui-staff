@@ -20,7 +20,7 @@ angular.module('sntRover').service('RVReportsInboxSrv', [
 
         var self = this;
 
-        this.PER_PAGE = 5;
+        this.PER_PAGE = 10;
 
         var reportInboxSampleData = [
             {
@@ -125,6 +125,17 @@ angular.module('sntRover').service('RVReportsInboxSrv', [
             }));
         };
 
+        this.processOptions = (value, key, formatedFilter) => {
+            if(!formatedFilter[reportInboxFilterLabelConst['OPTIONS']]) {
+                formatedFilter[reportInboxFilterLabelConst['OPTIONS']] = [];
+            }
+
+            if (value) {
+             formatedFilter[reportInboxFilterLabelConst['OPTIONS']].push(reportInboxFilterLabelConst[key]);
+            }               
+            
+        };
+
         this.processFilters = function(filters) {
             let processedFilter = {},
                 promises = [],
@@ -160,15 +171,30 @@ angular.module('sntRover').service('RVReportsInboxSrv', [
                         break;
                    case reportParamsConst['ASSIGNED_DEPARTMENTS']:
                         self.processDepartments(value, key, promises, processedFilter);
+                        break;
                    case reportParamsConst['INCLUDE_GUARANTEE_TYPE']:
                         self.processDepartments(value, key, promises, processedFilter);
+                        break;
                    case reportParamsConst['CHOOSE_MARKET']:
                         self.processMarkets(value, key, promises, processedFilter);
+                        break;
+                   case reportParamsConst['DEPOSIT_DUE']:
+                   case reportParamsConst['DEPOSIT_PAID']:
+                   case reportParamsConst['DEPOSIT_PAST']:
+                   case reportParamsConst['INCLUDE_CANCELLED']:
+                   case reportParamsConst['INCLUDE_MARKET']:
+                   case reportParamsConst['INCLUDE_NO_SHOW']:
+                   case reportParamsConst['INCLUDE_TAX']:
+                        self.processOptions(value, key, processedFilter);
+                        break;
 
-
-                }
+                }                
 
             });
+
+            if(processedFilter[reportInboxFilterLabelConst['OPTIONS']]) {
+              processedFilter[reportInboxFilterLabelConst['OPTIONS']] = processedFilter[reportInboxFilterLabelConst['OPTIONS']].join(',');  
+            }            
 
             $q.all(promises).then(function() {
                 deferred.resolve(processedFilter);

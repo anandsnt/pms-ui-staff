@@ -22,7 +22,8 @@ angular.module('reportsModule', [])
             templateUrl: '/assets/partials/reports/rvReportsDashboard.html',
             controller: 'RVReportsDashboardCtrl',
             params: {
-                fromReportInbox: false
+                fromReportInbox: false,
+                fromScheduleReportExport: false
             }
         });
 

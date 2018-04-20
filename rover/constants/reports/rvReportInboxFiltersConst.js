@@ -37,7 +37,16 @@ angular.module('reportsModule')
         'floor': 'Floors',
 
         'sort_field': 'Sort By',
-        'sort_dir': 'Sort Order'
+        'sort_dir': 'Sort Order',
+
+        'OPTIONS': 'Option(s)',
+        "deposit_due": "Deposit Due",
+        "deposit_paid": "Deposit Paid",
+        "deposit_past": "Deposit Past",
+        "include_cancelled": "Include Cancelled",
+        "include_market": "Include Market",
+        "include_no_show": "Include No Show",
+        "include_tax": "Include Tax"
         
 
 

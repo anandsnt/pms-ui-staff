@@ -309,6 +309,7 @@ angular.module('sntRover').service('rvMenuSrv',
 		        action: "",
 		        iconClass: "icon-reports",
 		        menuIndex: "reports",
+		        hidden: !$rootScope.isBackgroundReportsEnabled,
 		        submenu: [{
 		            title: "MENU_NEW_REPORT",
 		            action: "rover.reports.dashboard({fromReportInbox: true})",
@@ -319,17 +320,18 @@ angular.module('sntRover').service('rvMenuSrv',
 		            menuIndex: "reports-inbox"
 		        }, {
 		            title: "MENU_SCHEDULE_REPORT_OR_EXPORT",
-		            action: "",
+		            action: "rover.reports.dashboard({fromScheduleReportExport: true})",
 		            menuIndex: "schedule_report_export"
 		        }]
-            }
-      //       {
-		    //     title: "MENU_REPORTS",
-		    //     action: "rover.reports.dashboard",
-		    //     menuIndex: "reports",
-		    //     iconClass: "icon-reports",
-		    //     submenu: []
-		    // }
+            },
+            {
+		        title: "MENU_REPORTS",
+		        action: "rover.reports.dashboard",
+		        menuIndex: "reports",
+		        iconClass: "icon-reports",
+		        hidden: $rootScope.isBackgroundReportsEnabled,
+		        submenu: []
+		    }
 		];
 
 		return processMenuList (menuList);

@@ -177,6 +177,9 @@ sntRover.controller('roverController', [
         // CICO-41410
         $rootScope.isDashboardSwipeEnabled = hotelDetails.enable_dashboard_swipe;
 
+        // CICO-51146
+        $rootScope.isBackgroundReportsEnabled = hotelDetails.background_report;
+
         // need to set some default timeout
         // discuss with Mubarak
 

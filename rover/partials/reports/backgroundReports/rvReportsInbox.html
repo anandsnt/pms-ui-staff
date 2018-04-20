@@ -9,7 +9,7 @@
             <span class="icons icon-clear-search">Clear query</span>
         </button>
         <button type="button" name="submit" class="icons icon-search">Search</button>
-        <input id="reports-query" class="query" placeholder="Search by Report Name" type="search" autocomplete="off" ng-model="query" ng-keyup="filterByQuery()">
+        <input id="reports-query" class="query" placeholder="Search by Report Name" type="search" autocomplete="off" ng-model="reportInboxData.filter.searchTerm" ng-keyup="filterByQuery()">
     </div>
     <div class="entry report-requested">
         <div class="select with-label">
@@ -31,12 +31,12 @@
         <!-- Classes cols-2,cols-3 and cols-4 are added when showing 2,3 or 4 columns. Add horizontal scroller here -->
         <div class="wrapper">
             <div class="cols-wrapper">
-                <div class="report-col main-col no-print">
+                <div class="report-col main-col no-print" ng-class="{'with-pagination': shouldShowPagination()}">
                     <div class="report-item-header">
                         <!-- on click, expand all reports -->
-                        <div class="expand">
+                        <div class="expand" ng-click="toggleReportInboxView()">
                             <!-- add .active when expanded -->
-                            <span class="icons icon-double-arrow black expand-arrow"></span>
+                            <span class="icons icon-double-arrow black expand-arrow" ng-class="{'active': reportInboxData.isReportInboxOpen}"></span>
                         </div>
                         <div class="data">
                             Report Requested
@@ -85,18 +85,10 @@
                                     </div>
                                     <table class="filters-grid">
                                         <tbody>
-                                            <tr ng-repeat="(key, value) in filters">
+                                            <tr ng-repeat="(key, value) in report.filterDetails">
                                                 <th>{{key}}</th>
                                                 <td>{{value}}</td>
-                                            </tr>
-                                            <!-- <tr>
-                                                <th>Date Range <span>(To)</span></th>
-                                                <td>02-19-2018</td>
-                                            </tr>
-                                            <tr>
-                                                <th>Departments Assigned</th>
-                                                <td>Front Desk, Housekeeping, Maintenance, Sales</td>
-                                            </tr> -->
+                                            </tr>                                            
                                         </tbody>
                                     </table>
                                 </div>
@@ -128,6 +120,7 @@
                             </li>
                         </ul>
                     </div>
+                    <rv-pagination page-options="pageOptions" page-data="totalResultCount"></rv-pagination>
                 </div>
             </div>
         </div>
@@ -141,4 +134,4 @@
         </div>
     </div>
 </section>
-<rv-pagination page-options="pageOptions" page-data="totalResultCount"></rv-pagination>
+

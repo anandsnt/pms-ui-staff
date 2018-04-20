@@ -912,6 +912,16 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
             return selectedEntity.report && selectedEntity.report.title === reportNames['COMPARISION_BY_DATE'];
         };
 
+        $scope.$on("CREATE_NEW_SCHEDULE", () => {
+            $scope.scheduleReport();
+        });
+
+        $scope.$on("PICK_REPORT", (event, data) => {
+            $scope.pickReport(data.item, data.index);
+        });
+
+        
+
         /**
          * Startup
          * @return {Object} undefined

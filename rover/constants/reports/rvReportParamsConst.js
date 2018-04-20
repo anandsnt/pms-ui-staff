@@ -65,5 +65,13 @@ angular.module('reportsModule')
         "RESERVATION_STATUS_ARRAY": "status_ids[]",
         "VAT_YEAR": "year",
         "WITH_VAT_NUMBER": "with_vat_number",
-        "WITHOUT_VAT_NUMBER": "without_vat_number"
+        "WITHOUT_VAT_NUMBER": "without_vat_number",
+        "DEPOSIT_DUE": "deposit_due",
+        "DEPOSIT_PAID": "deposit_paid",
+        "DEPOSIT_PAST": "deposit_past",
+        "INCLUDE_CANCELLED": "include_cancelled",
+        "INCLUDE_MARKET": "include_market",
+        "INCLUDE_NO_SHOW": "include_no_show",
+        "INCLUDE_TAX": "include_tax",
+
     });

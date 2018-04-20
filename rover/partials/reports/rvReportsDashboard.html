@@ -1,5 +1,5 @@
 <!-- Search -->
-<form class="search-form">
+<form class="search-form reports" ng-class="{'enable-adding': fromScheduleReportExport}">
     <div class="entry search">
         <button type="button" class="clear-query" ng-class="{'visible': query.length}" ng-click="clearQuery()"> <!-- Add class "visible" to show -->
             <span class="icons icon-clear-search">Clear query</span>
@@ -7,9 +7,15 @@
         <button type="button" name="submit" class="icons icon-search">Search</button>
         <input id="reports-query" class="query" placeholder="Search by Report Name" type="search" autocomplete="off" ng-model="query" ng-keyup="filterByQuery()">
     </div>
+    <div class="entry new">        
+        <!-- Scheduled screen : -->
+        <a  class="add-new-button" ng-show="reportViewStore.showingScheduledReports" ng-click="createNewReportSchedule()">+ New Report Schedule</a>
+        <!-- Exported screen : -->
+        <a  class="add-new-button" ng-show="reportViewStore.showingExportReports">+ New Export Report</a>
+    </div>
 </form>
 
-<section id="reports" class="content reports-wrapper" role="main">
+<section id="reports" class="content" role="main" ng-class="{'with-menu': fromScheduleReportExport}">
 
     <!-- Menu -->
     <div id="reports-menu" ng-include="'/assets/partials/reports/shared/rvReportMainMenu.html'" ng-if="!fromReportInbox"></div>
