@@ -134,4 +134,21 @@ function GuestCardBaseCtrl ($scope, RVSearchSrv, RVContactInfoSrv, rvPermissionS
             !$scope.hasRemoveGuestDetailsPermission();
     };
 
+    /**
+     * Get updated contact information
+     * @param {Object} data contact info
+     * @param {Number} guestId guest id
+     * @return {Object} contactInfo updated contactinfo
+     */
+    $scope.getUpdatedContactInfo = function(data, guestId) {
+         var contactInfo = data;
+        contactInfo.avatar = guestId ? "/assets/images/avatar-trans.png" : "";
+        contactInfo.vip = guestId ? data.vip : "";
+        contactInfo.birthday = guestId ? data.birthday : null;
+        contactInfo.user_id = guestId ? guestId : "";
+        contactInfo.guest_id = guestId ? guestId : "";
+
+        return contactInfo;
+    };
+
 }
