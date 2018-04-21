@@ -1,5 +1,5 @@
 <!-- First column - Scheduled reports -->
-<div class="report-col main-col scrfailedollable buttons-1" ng-iscroll="REPORT_SCHEDULES_SCROLL"> <!-- Add vertical scroller here -->
+<div class="report-col main-col scrollable" ng-iscroll="REPORT_SCHEDULES_SCROLL"> <!-- Add vertical scroller here -->
     <div class="wrapper">
         <ul ng-hide="isAddingNew">
             <li ng-repeat="item in schedulesList"
@@ -41,7 +41,7 @@
         </div>
     </div>
 
-    <div class="main-column-actions" ng-hide="fromScheduleReportExport">
+    <div class="main-column-actions" ng-hide="reportViewStore.showingScheduledReports || reportViewStore.showingExportReports || reportViewStore.showingScheduleAReport || reportViewStore.showingExportAReport">
         <button ng-show="!isAddingNew"
             ng-click="scheduleReport()"
             class="button blue with-icon"

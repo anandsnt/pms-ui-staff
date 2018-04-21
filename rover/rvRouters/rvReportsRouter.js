@@ -62,5 +62,15 @@ angular.module('reportsModule', [])
             }            
         });
 
+        $stateProvider.state('rover.reports.scheduleReportsAndExports', {
+            url: '/scheduleReportsAndExports',
+            templateUrl: '/assets/partials/reports/backgroundReports/rvScheduleReportsAndExports.html',
+            controller: 'RVScheduleReportsAndExportsCtrl',
+            params: {
+                showScheduledReports: false,
+                showScheduledExports: false
+            }
+        });
+
         
     });
