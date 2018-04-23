@@ -2,7 +2,8 @@
     "env": {
         "browser": true,
         "es6": true,
-        "jquery": true
+        "jquery": true,
+        "jasmine": true
     },
     "globals": {
         "angular": false,
@@ -31,7 +32,9 @@
         "webSocketOperations": false,
         "moment": false,
         "SwipeOperation": false,
-        "FastClick": false
+        "FastClick": false,
+        "module": false,
+        "inject": false
     },
     "installedESLint": true,
     "parserOptions": {

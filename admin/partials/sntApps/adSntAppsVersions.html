@@ -60,9 +60,9 @@
         <!--end -->
     </div>
 </section>
-<section class="content current" ng-show="screenMode === 'ADD_BUILD' || screenMode === 'EDIT_BUILD'">
+<section class="content current" ng-show="screenMode === 'ADD_BUILD' || screenMode === 'EDIT_BUILD'" ng-click='clearErrorMessage()'>
     <header class="content-title float">
-        <h2 ng-show="screenMode === 'ADD_BUILD'">Upload Build</h2>
+        <h2 ng-show="screenMode === 'ADD_BUILD'">Upload Build ({{filterType.value}})</h2>
         <h2 ng-hide="screenMode === 'ADD_BUILD'">Edit Build</h2>
         <a ng-click="changeToListView()" class="action back ng-scope" translate="">Versions</a>
     </header>
@@ -70,18 +70,26 @@
         <div ng-include="'/assets/partials/common/notification_message.html'"></div>
         <div ng-include="'/assets/partials/common/notification_success_message.html'"></div>
         <div class="form">
+            <fieldset class="holder full-width">
+                 <div class="form-subtitle-title">
+                        <h6>
+
+                            <span>The file extension should be <span ng-show="filterType.value === 'Rover Service Mac'">".pkg"</span> <span ng-hide="filterType.value === 'Rover Service Mac'">".exe"</span>. The name should include the build version in the format "-vx.x.x-".</span> 
+                        </h6>
+                    </div>
+            </fieldset>
             <fieldset class="holder left">
                 <div class="entry full-width">
                     <label for="certificate">Upload Build&nbsp;<strong>*</strong></label>
                     <div class="file-upload">
                         <span class="input">{{fileName}}</span>
-                        <input type="file" ng-model="selectedApp.build" accept="*" app-filereader onclick="this.value=null;"/>
+                        <input type="file" file-changed="fileChanged()" ng-model="selectedApp.build" accept="*" app-filereader onclick="this.value=null;"/>
                         <button type="button" class="button brand-colors">
                             Attach
                         </button>
                     </div>
                 </div>
-                <ad-textbox value="selectedApp.version" label="{{ 'APP_VERSION' | translate}}" styleclass="full-width" required="yes"></ad-textbox>
+                <ad-textbox value="selectedApp.version" label="{{ 'APP_VERSION' | translate}}" styleclass="full-width" readonly="yes" required="yes"></ad-textbox>
                 <ad-textarea rows="4" div-class="full-width" text-area-class="full-width" value="selectedApp.description" label="{{ 'DESCRIPTION' | translate}}" placeholder=""></ad-textarea>
             </fieldset>
             <div class="actions float">

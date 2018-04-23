@@ -11,8 +11,8 @@ admin.service('ADInterfaceMappingSrv', ['$http', '$q', 'ADBaseWebSrv', 'ADBaseWe
             var url = "/admin/external_mappings/" + hotel_id + "/interface_types.json";
 
             ADBaseWebSrv.getJSON(url).then(function (data) {
-                var sortedInterfaceList = _.sortBy(data.interfaces, function(interface) {
-                    return interface.description.toLowerCase();
+                var sortedInterfaceList = _.sortBy(data.interfaces, function(item) {
+                    return item.description.toLowerCase();
                 });
 
                 // CICO-36466 Admin Interfaces Menu to be sorted by alphabetical

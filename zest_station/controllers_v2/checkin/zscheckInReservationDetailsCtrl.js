@@ -510,6 +510,8 @@ sntZestStation.controller('zsCheckInReservationDetailsCtrl', [
         };
 
         $scope.agreeTerms = function() {
+            $scope.selectedReservation.reservation_details.accepted_terms_and_conditions = true;
+            zsCheckinSrv.setSelectedCheckInReservation([$scope.selectedReservation]);
             routeToNext();
         };
             
@@ -585,6 +587,10 @@ sntZestStation.controller('zsCheckInReservationDetailsCtrl', [
                 // init
                 // the data is service will be reset after the process from zscheckInReservationSearchCtrl
                 $scope.selectedReservation = zsCheckinSrv.getSelectedCheckInReservation();
+                // set accepted_terms_and_conditions as false initially
+                if ($scope.selectedReservation.reservation_details) {
+                    $scope.selectedReservation.reservation_details.accepted_terms_and_conditions = false;
+                }
                 setTermsAndConditionsBasedOnSelectedLanguage();
                 initComplete();
             }

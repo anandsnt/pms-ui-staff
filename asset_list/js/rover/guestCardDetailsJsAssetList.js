@@ -26,7 +26,10 @@ module.exports = {
                     servicesRoot + "rvLoyaltyProgramSrv.js",                    
                     servicesRoot + "guestcard/notes/rvGuestCardNotesSrv.js",
                     servicesRoot + "rvCCAuthorizationSrv.js",                    
-                    servicesRoot + "rvCompanyCardSrv.js"
+                    servicesRoot + "rvCompanyCardSrv.js",
+
+                    // Eliminate all spec files
+                    '!**/*.spec.js'
                 ]
             };
 	}

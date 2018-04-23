@@ -345,6 +345,7 @@ sntRover.controller('reservationDetailsController',
 		};
 
 		$scope.reservationData.paymentTypes = paymentTypes;
+		$scope.reservationData.paymentMethods = paymentTypes;
 		$scope.reservationData.reseravationDepositData = reseravationDepositData;
 
 		$scope.reservationData.justCreatedRes = (typeof $stateParams.justCreatedRes !== "undefined" && $stateParams.justCreatedRes !== "" && $stateParams.justCreatedRes !== null && $stateParams.justCreatedRes === "true") ? true : false;
@@ -885,6 +886,7 @@ sntRover.controller('reservationDetailsController',
 				}
 			};
 			var updateFailure = function(data) {
+				$scope.errorMessage = data;
 				$scope.$emit('hideLoader');
 			};
 

@@ -2,7 +2,9 @@ angular.module('sntRover').controller('RVContactInfoController', ['$scope', '$ro
     function($scope, $rootScope, RVContactInfoSrv, ngDialog, dateFilter, $timeout, RVSearchSrv, $stateParams, rvPermissionSrv) {
 
         BaseCtrl.call(this, $scope);
-        GuestCardBaseCtrl.call (this, $scope, RVSearchSrv, RVContactInfoSrv, rvPermissionSrv);
+        var initialGuestCardData;
+        
+        GuestCardBaseCtrl.call (this, $scope, RVSearchSrv, RVContactInfoSrv, rvPermissionSrv, $rootScope);
 
     /**
      * storing to check if data will be updated

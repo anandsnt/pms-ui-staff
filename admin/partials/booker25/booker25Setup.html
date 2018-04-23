@@ -1,6 +1,6 @@
 <div id="wrapper" class="content current admin-scrollfix" div-touch-move-stop-propogate ng-click="clearErrorMessage()">
     <header class="content-title float">
-        <h2 translate>LETSHARE_SETUP_HEADER</h2>
+        <h2 translate>BOOKER25_SETUP_HEADER</h2>
         <a ng-click ="goBackToPreviousState()" class="action back" translate>BACK</a>
 
     </header>
@@ -10,19 +10,19 @@
         <form class="form float" >
             <fieldset class="holder left">
                 <div class="form-title full-width">
-                    <h3><span translate>LETSHARE_SUB_TITLE</span> </h3>
+                    <h3><span translate>BOOKER25_SUB_TITLE</span> </h3>
                 </div>
                 <table>
                     <tbody>
                         <tr>
                             <th>
-                                <label><span translate>LETSHARE_ACTIVATE_INACTIVATE</span></label>
+                                <label><span translate>BOOKER25_ACTIVATE_INACTIVATE</span></label>
                             </th>
                         </tr>
                         <tr>
                             <td>
-                                <div name="active-inactive-toggle" class="switch-button single" ng-class="{ on: letshare.enabled }" ng-click="toggleLetShareEnabled()">
-                                    <input type="checkbox" name="letshare-setup-active" id="letshare-setup-active">
+                                <div name="active-inactive-toggle" class="switch-button single" ng-class="{ on: booker25.enabled }" ng-click="toggleBooker25Enabled()">
+                                    <input type="checkbox" name="booker25-setup-active" id="booker25-setup-active">
                                     <span class="switch-icon"></span>
                                 </div>
                             </td>
@@ -35,7 +35,7 @@
                 <button type="button" id="cancel" class="button blank add-data-inline" ng-click="goBackToPreviousState()" translate>
                     CANCEL
                 </button>
-                <button type="button" like-type="common" id="update" class="button ng-binding green" ng-click="saveLetShareSetup()" translate>
+                <button type="button" like-type="common" id="update" class="button ng-binding green" ng-click="saveBooker25Setup()" translate>
                     SAVE_CHANGES
                 </button>
             </div>

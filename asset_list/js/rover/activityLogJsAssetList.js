@@ -7,7 +7,9 @@ module.exports = {
 				],
 				nonMinifiedFiles: [
 					servicesRoot + 'activityLog/**/*.js',					
-					controllerRoot + 'activityLog/**/*.js'
+					controllerRoot + 'activityLog/**/*.js',
+                    // Eliminate all spec files
+                    '!**/*.spec.js'
 				]
 			};
 		return assetsForScreen;

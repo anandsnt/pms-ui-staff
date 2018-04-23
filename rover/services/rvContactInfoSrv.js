@@ -184,5 +184,18 @@ angular.module('sntRover').service('RVContactInfoSrv', [
             return deffered.promise;
         };
 
+
+        service.checkIfCommisionWasRecalculated = function(param) {
+            var deferred = $q.defer();
+            var url = '/api/reservations/' + param.reservation_id + '/commission_transaction_info';
+
+            rvBaseWebSrvV2.getJSON(url).then(function(data) {
+                deferred.resolve(data);
+            }, function(data) {
+                deferred.reject(data);
+            });
+            return deferred.promise;
+        };
+
     }
 ]);
