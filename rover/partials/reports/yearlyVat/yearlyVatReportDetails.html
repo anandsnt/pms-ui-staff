@@ -19,7 +19,7 @@
             <span><span class="currency">{{currencySymbol}}</span>{{results.with_vat_id.total_revenue | number: precisonTwo }}</span>
             <span><span class="currency">{{currencySymbol}}</span>{{results.with_vat_id.total_vat | number: precisonTwo }}</span>
         </a>
-        <div id="with-vat-id" class="grid-content" ng-class="{'hidden': !results.with_vat_id.isCollapsed}"> <!-- Toggle class hidden when L89-L93 is clicked -->
+        <div id="with-vat-id" class="grid-content vat-report" ng-class="{'hidden': !results.with_vat_id.isCollapsed}"> <!-- Toggle class hidden when L89-L93 is clicked -->
                 
             
                 <!-- Level 2 - Companies -->
@@ -32,11 +32,11 @@
                 <table id="with-vat-company" class="grid-content" ng-class="{'hidden': !accountsWithVatId.isCollapsed}" ng-repeat-end> <!-- Toggle class hidden when L97-L101 is clicked -->
                     <thead>
                         <tr>
-                            <th><span>Tax ID</span></th>
-                            <th><span>AR Number</span></th>
+                            <th class="number"><span>Tax ID</span></th>
+                            <th class="number"><span>AR Number</span></th>
                             <th><span>Name</span></th>
-                            <th class="vat-revenue"><span>Revenue</span></th>
-                            <th class="vat-revenue"><span>TAX</span></th>
+                            <th class="revenue"><span>Revenue</span></th>
+                            <th class="revenue"><span>TAX</span></th>
                         </tr>
                     </thead>
                     <tbody>
@@ -44,8 +44,8 @@
                             <td>{{revenueData.vat_id}}</td>
                             <td>{{revenueData.ar_number}}</td>
                             <td>{{revenueData.name}}</td>
-                            <td class="vat-revenue"><span class="currency">{{currencySymbol}}</span>{{revenueData.revenue | number: precisonTwo }}</td>
-                            <td class="vat-revenue"><span class="currency">{{currencySymbol}}</span>{{revenueData.vat | number: precisonTwo }}</td>
+                            <td class="revenue"><span class="currency">{{currencySymbol}}</span>{{revenueData.revenue | number: precisonTwo }}</td>
+                            <td class="revenue"><span class="currency">{{currencySymbol}}</span>{{revenueData.vat | number: precisonTwo }}</td>
                         </tr>
                        <!-- ... repeat L112-L118 for every company-->
                     </tbody>
@@ -74,14 +74,14 @@
                     <span><span class="currency">{{currencySymbol}}</span>{{accountsWithOutVatId.total_revenue | number: precisonTwo }}</span>
                     <span><span class="currency">{{currencySymbol}}</span>{{accountsWithOutVatId.total_vat | number: precisonTwo }}</span>
                 </a>
-                <table id="with-vat-company" class="grid-content" ng-class="{'hidden': !accountsWithOutVatId.isCollapsed}" ng-repeat-end> <!-- Toggle class hidden when L97-L101 is clicked -->
+                <table id="with-vat-company" class="grid-content vat-report" ng-class="{'hidden': !accountsWithOutVatId.isCollapsed}" ng-repeat-end> <!-- Toggle class hidden when L97-L101 is clicked -->
                     <thead>
                         <tr>
-                            <th><span>Tax ID</span></th>
-                            <th><span>AR Number</span></th>
+                            <th class="number"><span>Tax ID</span></th>
+                            <th class="number"> <span>AR Number</span></th>
                             <th><span>Name</span></th>
-                            <th class="vat-revenue"><span>Revenue</span></th>
-                            <th class="vat-revenue"><span>TAX</span></th>
+                            <th class="revenue"><span>Revenue</span></th>
+                            <th class="revenue"><span>TAX</span></th>
                         </tr>
                     </thead>
                     <tbody>
@@ -89,8 +89,8 @@
                             <td>{{revenueData.vat_id}}</td>
                             <td>{{revenueData.ar_number}}</td>
                             <td>{{revenueData.name}}</td>
-                            <td class="vat-revenue"><span class="currency">{{currencySymbol}}</span>{{revenueData.revenue | number: precisonTwo }}</td>
-                            <td class="vat-revenue"><span class="currency">{{currencySymbol}}</span>{{revenueData.vat | number: precisonTwo }}</td>
+                            <td class="revenue"><span class="currency">{{currencySymbol}}</span>{{revenueData.revenue | number: precisonTwo }}</td>
+                            <td class="revenue"><span class="currency">{{currencySymbol}}</span>{{revenueData.vat | number: precisonTwo }}</td>
                         </tr>
                        <!-- ... repeat L112-L118 for every company-->
                     </tbody>
