@@ -41,8 +41,8 @@
                     </thead>
                     <tbody>
                         <tr ng-repeat = "revenueData in accountsWithVatId.revenueData">
-                            <td>{{revenueData.vat_id}}</td>
-                            <td>{{revenueData.ar_number}}</td>
+                            <td class="number">{{revenueData.vat_id}}</td>
+                            <td class="number">{{revenueData.ar_number}}</td>
                             <td>{{revenueData.name}}</td>
                             <td class="revenue"><span class="currency">{{currencySymbol}}</span>{{revenueData.revenue | number: precisonTwo }}</td>
                             <td class="revenue"><span class="currency">{{currencySymbol}}</span>{{revenueData.vat | number: precisonTwo }}</td>
@@ -63,7 +63,7 @@
                 <span><span class="currency">{{currencySymbol}}</span>{{results.without_vat_id.total_vat | number: precisonTwo }}</span>
             </a>
       
-        <div id="without-vat-id" class="grid-content" ng-class="{'hidden': !results.without_vat_id.isCollapsed}" > <!-- Toggle class hidden when L136-L140 is clicked -->
+        <div id="without-vat-id" class="grid-content vat-report" ng-class="{'hidden': !results.without_vat_id.isCollapsed}" > <!-- Toggle class hidden when L136-L140 is clicked -->
            
             
                 <!-- Level 2 - Companies -->
@@ -86,8 +86,8 @@
                     </thead>
                     <tbody>
                          <tr ng-repeat = "revenueData in accountsWithOutVatId.revenueData">
-                            <td>{{revenueData.vat_id}}</td>
-                            <td>{{revenueData.ar_number}}</td>
+                            <td >{{revenueData.vat_id}}</td>
+                            <td >{{revenueData.ar_number}}</td>
                             <td>{{revenueData.name}}</td>
                             <td class="revenue"><span class="currency">{{currencySymbol}}</span>{{revenueData.revenue | number: precisonTwo }}</td>
                             <td class="revenue"><span class="currency">{{currencySymbol}}</span>{{revenueData.vat | number: precisonTwo }}</td>
