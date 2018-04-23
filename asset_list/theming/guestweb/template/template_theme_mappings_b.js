@@ -86,7 +86,7 @@ module.exports = {
                 checkoutNowPartials + '*.html',
                 checkinPartials + '*.html',
                 precheckinPartials + '*.html'],
-            'guestweb_gold_strike': [ 'guestweb/**/common_templates/partials/MGM/**/*.html',
+			'guestweb_gold_strike': [ 'guestweb/**/common_templates/partials/MGM/**/*.html',
                 'guestweb/**/common_templates/partials/gwNoOption.html',
                 checkoutNowPartials + '*.html',
                 checkinPartials + '*.html',
