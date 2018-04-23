@@ -88,6 +88,7 @@
                 options="filters.hasGeneralOptions.options"></multi-option-selection>
 
             <div class="entry" ng-show="isYearlyTaxReport">
+
                 <label>Year</label>
                 <select name="time-from" ng-model="scheduleParams.year" ng-options="year.value as year.value for year in scheduleYearList" iscroll-stop-propagation>        
                 </select>

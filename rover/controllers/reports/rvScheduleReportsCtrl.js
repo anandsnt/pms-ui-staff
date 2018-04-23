@@ -232,7 +232,7 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
                 /**/
                 format_id: $scope.scheduleParams.format_id,
                 delivery_method_id: $scope.selectedEntityDetails.delivery_type.id
-            };
+            };            
 
             var filter_values = {
                 page: 1,
@@ -306,6 +306,11 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
             if ( $scope.scheduleParams.sort_field ) {
                 filter_values.sort_field = $scope.scheduleParams.sort_field;
             }
+            if ($scope.isYearlyTaxReport) {
+                filter_values.year = $scope.scheduleParams.year;
+                filter_values.with_vat_number = $scope.scheduleParams.with_vat_number;
+                filter_values.without_vat_number = $scope.scheduleParams.without_vat_number;
+            }
             _.each($scope.filters, function(filter) {
                 _.each(filter.data, function(each) {
                     if ( each.selected ) {
@@ -313,7 +318,7 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
                     }
                 });
             });
-            params.filter_values = filter_values;
+            params.filter_values = filter_values;           
 
             $scope.invokeApi( reportsSrv.updateSchedule, params, success, failed );
         };
@@ -350,7 +355,7 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
             'All In-House Guests': 'guest-status inhouse',
             'Balance for all Outstanding Accounts': 'icon-report icon-balance',
             'Statistics Report by Comparison': 'icon-report icon-comparison',
-            'Company or Travel Agent Accounts from Belgium with total net revenue over EUR 250.00.': 'icon-report icon-forecast'
+            'Company or Travel Agent Accounts with total net revenue over EUR 250.00.': 'icon-report icon-forecast'
         };
 
         // this is a temporary setup
@@ -481,6 +486,10 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
                    $scope.scheduleParams.format_id = _.find($scope.scheduleFormat, {value: 'PDF'}).id;
                 }
             }
+            if ($scope.isYearlyTaxReport){
+                $scope.scheduleParams.year = moment().format('YYYY');
+            }
+            
 
             hasAccOrGuest = _.find(report.filters, function(filter) {
                 return filter.value === 'ACCOUNT' || filter.value === 'GUEST';
@@ -638,6 +647,7 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
                 });
 
                 $scope.refreshReportSchedulesScroll(reset);
+
                 $scope.$emit( 'hideLoader' );
             };
 
@@ -958,10 +968,11 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
                                         .format('YYYY')
                                 };
                         });
+
             $scope.scheduleFreqType = [];
             $scope.emailList = [];
 
-            $scope.scheduleParams = {};
+            $scope.scheduleParams = {};            
 
             setupScrolls();
 
