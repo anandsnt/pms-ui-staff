@@ -486,11 +486,9 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
                    $scope.scheduleParams.format_id = _.find($scope.scheduleFormat, {value: 'PDF'}).id;
                 }
             }
-            if ($scope.isYearlyTaxReport){
+            if ($scope.isYearlyTaxReport) {
                 $scope.scheduleParams.year = moment().format('YYYY');
             }
-            
-
             hasAccOrGuest = _.find(report.filters, function(filter) {
                 return filter.value === 'ACCOUNT' || filter.value === 'GUEST';
             });            
