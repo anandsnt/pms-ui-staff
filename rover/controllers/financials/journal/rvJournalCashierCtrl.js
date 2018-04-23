@@ -7,8 +7,7 @@ sntRover.controller('RVJournalCashierController', ['$scope', 'RVJournalSrv', '$r
     */
     var fetchHistoryDetails = function(data) {
 
-         var fetchDetailsSuccessCallback = function(data) {
-            
+         var fetchDetailsSuccessCallback = function(data) {            
             $scope.$emit('hideLoader');
             $scope.lastCashierId = data.last_cashier_period_id;
             $scope.detailsList = data.history;
