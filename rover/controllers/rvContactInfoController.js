@@ -254,8 +254,7 @@ angular.module('sntRover').controller('RVContactInfoController', ['$scope', '$ro
             var unwantedKeys = ['avatar', 'confirmation_num']; // remove unwanted keys for API
 
             initialGuestCardData = dclone($scope.guestCardData.contactInfo, unwantedKeys);
-
-            this.timeoutForSaveInfo = null;
+            
         };
 
         init();
