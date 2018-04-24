@@ -869,6 +869,8 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
             $scope.updateViewCol($scope.viewColsActions.ONE);
 
             $scope.refreshReportSchedulesScroll(reset);
+
+            $scope.$emit('UPDATE_TITLE_AND_HEADING');
         };
 
         $scope.checkCanCancel = function() {
@@ -933,6 +935,18 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
         $scope.shouldShowFileFormat = function (selectedEntity) {
             return selectedEntity.report && selectedEntity.report.title === reportNames['COMPARISION_BY_DATE'];
         };
+
+        let createNewReportScheduleListener = $scope.$on("CREATE_NEW_REPORT_SCHEDULE", () => {
+            $scope.scheduleReport();
+        });
+
+        $scope.$on('$destroy', createNewReportScheduleListener);
+
+        $scope.$on("PICK_REPORT", (event, data) => {
+            $scope.pickReport(data.item, data.index);
+        });
+
+        
 
         /**
          * Startup

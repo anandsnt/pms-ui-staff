@@ -178,7 +178,7 @@ angular.module('sntRover').service('rvMenuSrv',
 		            menuIndex: "cashier"
 		        }, {
 		            title: "MENU_GUESTS",
-		            action: "rover.guestcardsearch",		            
+		            action: "rover.guest.search",
 		            menuIndex: "guests"
 		        }, {
 		            title: "MENU_ACCOUNTS",
@@ -303,11 +303,33 @@ angular.module('sntRover').service('rvMenuSrv',
                 menuIndex: "actionManager",
                 iconClass: "icon-actions",
                 submenu: []
-            }, {
+            },
+            {
+		        title: "MENU_REPORTS",		        
+		        action: "",
+		        iconClass: "icon-reports",
+		        menuIndex: "reports",
+		        //hidden: !$rootScope.isBackgroundReportsEnabled,
+		        submenu: [{
+		            title: "MENU_NEW_REPORT",
+		            action: "rover.reports.dashboard({fromReportInbox: true})",
+		            menuIndex: "new_report"
+		        }, {
+		            title: "MENU_REPORTS_INBOX",
+		            action: "rover.reports.inbox",
+		            menuIndex: "reports-inbox"
+		        }, {
+		            title: "MENU_SCHEDULE_REPORT_OR_EXPORT",
+		            action: "rover.reports.scheduleReportsAndExports",
+		            menuIndex: "schedule_report_export"
+		        }]
+            },
+            {
 		        title: "MENU_REPORTS",
-		        action: "rover.reports",
+		        action: "rover.reports.dashboard",
 		        menuIndex: "reports",
 		        iconClass: "icon-reports",
+		        hidden: true, //$rootScope.isBackgroundReportsEnabled,
 		        submenu: []
 		    }
 		];
@@ -344,7 +366,7 @@ angular.module('sntRover').service('rvMenuSrv',
 			},
 			{
 				title: "MENU_REPORTS",
-				action: "rover.reports",
+				action: "rover.reports.dashboard",
 				menuIndex: "reports",
 				iconClass: "icon-reports",
 				submenu: []

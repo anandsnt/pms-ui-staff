@@ -1254,6 +1254,60 @@ body { overflow: hidden; }
 	                .calc-width(100, 50); 
 	            }
 	        }
+	        /* Reports Screen ***/
+	        &.reports {
+	            &.enable-adding {
+	                .search {
+	                    .calc-width( 100, 200 );
+	                }
+	            }
+
+	            &.inbox {
+	                .search {
+	                    .calc-width( 100, 360 );
+	                }
+	            }
+
+	            .entry {
+	                &.new {
+	                    padding: 0;
+	                    width: auto;
+	                    max-width: 190px;
+
+	                    .add-new-button {
+	                        width: auto;
+	                    }
+	                }
+
+	                &.report-requested {
+	                    width: 160px;
+	                }
+
+	                .select,
+	                .input {
+	                    &.with-label {
+
+	                        select {
+	                            padding: 15px 30px 0 10px;
+	                            font-size: 14px;
+	                        }
+
+	                        input {
+	                            padding: 10px 10px 0 10px;
+	                        }
+
+	                        label {
+	                            position: absolute;
+	                            top: 0;
+	                            left: 10px;
+	                            font-size: 12px;
+	                            text-transform: uppercase;
+	                            color: @grey3;
+	                        }
+	                    }
+	                }
+	            }
+	        }
 		}
 	}
 

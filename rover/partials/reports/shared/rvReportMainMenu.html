@@ -1,6 +1,6 @@
 <ul id="report-main-menu">
     <li ng-class="{ 'active': reportViewStore.showingAllReport }"
-      ng-click="reportMainMenuChange(reportViewActions.SHOW_ALL_REPORT)">
+      ng-click="reportMainMenuChange(reportViewActions.SHOW_ALL_REPORT)" ng-hide="fromScheduleReportExport">
         <i class="icon-report icon-all-reports"></i>
         <span class="title has-arrow next-view">View All Reports</span>
     </li>
