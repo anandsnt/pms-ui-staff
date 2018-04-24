@@ -1,6 +1,6 @@
 angular.module('sntRover').controller('guestCardController', [
-    '$scope', '$window', 'RVCompanyCardSrv', 'RVReservationAllCardsSrv', 'RVContactInfoSrv', '$stateParams', '$timeout', 'ngDialog', '$rootScope', 'RVSearchSrv', 'RVReservationDataService', 'rvGroupSrv', '$state', 'rvAllotmentSrv', '$vault',
-    function($scope, $window, RVCompanyCardSrv, RVReservationAllCardsSrv, RVContactInfoSrv, $stateParams, $timeout, ngDialog, $rootScope, RVSearchSrv, RVReservationDataService, rvGroupSrv, $state, rvAllotmentSrv, $vault) {
+    '$scope', '$window', 'RVCompanyCardSrv', 'RVReservationAllCardsSrv', 'RVContactInfoSrv', '$stateParams', '$timeout', 'ngDialog', '$rootScope', 'RVSearchSrv', 'RVReservationDataService', 'rvGroupSrv', '$state', 'rvAllotmentSrv', '$vault', 'rvPermissionSrv',
+    function($scope, $window, RVCompanyCardSrv, RVReservationAllCardsSrv, RVContactInfoSrv, $stateParams, $timeout, ngDialog, $rootScope, RVSearchSrv, RVReservationDataService, rvGroupSrv, $state, rvAllotmentSrv, $vault, rvPermissionSrv) {
         var resizableMinHeight = 90,
             resizableMaxHeight = $(window).height() - resizableMinHeight;
 
@@ -16,7 +16,7 @@ angular.module('sntRover').controller('guestCardController', [
         var roomAndRatesState = 'rover.reservation.staycard.mainCard.room-rates';
 
         BaseCtrl.call(this, $scope);
-        GuestCardBaseCtrl.call (this, $scope, RVSearchSrv);
+        GuestCardBaseCtrl.call (this, $scope, RVSearchSrv, RVContactInfoSrv, rvPermissionSrv, $rootScope);
 
         // Initialize reservation
         var initReservation = function() {
@@ -316,7 +316,13 @@ angular.module('sntRover').controller('guestCardController', [
             }
             if (tab === 'guest-credit') {
                 $scope.$broadcast('PAYMENTSCROLL');
+            } else if (tab === 'guest-like') {
+                $scope.$broadcast('GUESTLIKETABACTIVE');
+                $scope.$broadcast('REFRESHLIKESSCROLL');
+            } else if (tab === 'guest-contact') {
+                $scope.$broadcast('CONTACTINFOLOADED');
             }
+
             $scope.$broadcast('REFRESHLIKESSCROLL');
             if (!$scope.viewState.isAddNewCard) {
                 $scope.current = tab;
@@ -580,45 +586,38 @@ angular.module('sntRover').controller('guestCardController', [
             }
         };
 
-        var resetReservationData = (function() {
-            this.resetGuest = function() {
+        var resetReservationData = {
+
+            resetGuest: function() {
                 $scope.reservationData.guest.id = "";
                 $scope.reservationData.guest.firstName = "";
                 $scope.reservationData.guest.lastName = "";
                 $scope.reservationData.guest.city = "";
                 $scope.reservationData.guest.loyaltyNumber = "";
                 $scope.reservationData.guest.email = "";
-
-
                 // update current controller scope
                 $scope.guestFirstName = "";
                 $scope.guestLastName = "";
                 $scope.guestCity = "";
                 $scope.guestCardData.cardHeaderImage = "";
-            };
-            this.resetCompanyCard = function() {
+            },
+            resetCompanyCard: function() {
                 $scope.reservationData.company.id = "";
                 $scope.reservationData.company.name = "";
                 $scope.reservationData.company.corporateid = "";
                 $scope.companyName = "";
                 $scope.companyCity = "";
                 $scope.reservationDetails.companyCard.id = "";
-            };
-            this.resetTravelAgent = function() {
+            },
+            resetTravelAgent: function() {
                 $scope.reservationData.travelAgent.id = "";
                 $scope.reservationData.travelAgent.name = "";
                 $scope.reservationData.travelAgent.iataNumber = "";
                 $scope.travelAgentName = "";
                 $scope.travelAgentCity = "";
                 $scope.reservationDetails.travelAgent.id = "";
-            };
-
-            return {
-                resetGuest: this.resetGuest,
-                resetCompanyCard: this.resetCompanyCard,
-                resetTravelAgent: this.resetTravelAgent
-            };
-        })();
+            }
+        };
 
         var resetCompanyTACards = function() {
                 resetReservationData.resetCompanyCard();
@@ -727,7 +726,42 @@ angular.module('sntRover').controller('guestCardController', [
             }
         };
 
-        $scope.detachTACard = function() {
+        var isCheckedOutAndDepDateisOver = function () {
+            return ($scope.reservationData.status === "CHECKEDOUT" && (new Date($scope.userInfo.business_date) > new Date($scope.reservationData.departureDate)));
+        };
+
+        $scope.detachTravelAgent = function() {
+            // if the resercation is checked out and EOD has ran
+            if (isCheckedOutAndDepDateisOver()) {
+                var showWarningPopup = function(response) {
+                    // if commission is PAID or HOLD, don't allow staff to detach TA
+                    if (response.commission_info && response.commission_info.is_paid_or_held) {
+                        ngDialog.open({
+                            template: '/assets/partials/cards/popups/rvCommisonHoldOrPaidWarning.html',
+                            className: 'ngdialog-theme-default stay-card-alerts',
+                            scope: $scope,
+                            closeByDocument: false,
+                            closeByEscape: false
+                        });
+                    } else {
+                        var showCommisionWarning = true;
+
+                        $scope.detachTACard(showCommisionWarning);
+                    }
+                };
+
+                $scope.callAPI(RVContactInfoSrv.checkIfCommisionWasRecalculated, {
+                    params: {
+                        reservation_id: $scope.reservationData.reservationId
+                    },
+                    successCallBack: showWarningPopup
+                });
+            } else {
+                $scope.detachTACard();
+            }
+        };
+
+        $scope.detachTACard = function(showCommisionWarning) {
             // in Create mode no API call is needed
             if ($scope.viewState.identifier === "CREATION") {
                 var resDetails = $scope.reservationDetails;
@@ -743,7 +777,8 @@ angular.module('sntRover').controller('guestCardController', [
                 var dataForPopup = {
                     cardTypeText: "Travel Agent Card",
                     cardType: "travel_agent",
-                    cardId: $scope.reservationDetails.travelAgent.id
+                    cardId: $scope.reservationDetails.travelAgent.id,
+                    showCommisionWarning: showCommisionWarning || false
                 };
 
                 showDetachCardsAPIWarningPopup(dataForPopup);
@@ -1681,6 +1716,23 @@ angular.module('sntRover').controller('guestCardController', [
             // CICO-20161
         };
 
+        $scope.setSelectedTACard = function(cardData) {
+            $scope.selectTravelAgent(cardData);
+        };
+
+        var showCommissionWarningPopup = function(cardData) {
+            ngDialog.open({
+                template: '/assets/partials/cards/popups/rvCommissionsWarningPopup.html',
+                className: '',
+                closeByDocument: false,
+                closeByEscape: false,
+                scope: $scope,
+                data: JSON.stringify({
+                    cardData: cardData
+                })
+            });
+        };
+
         // To handle card selection from COMPANY / TA.
         $scope.selectCardType = function(cardData, $event) {
             $event.stopPropagation();
@@ -1693,10 +1745,17 @@ angular.module('sntRover').controller('guestCardController', [
                     $scope.selectCompany(cardData);
                 }
             } else if (cardData.account_type === 'TRAVELAGENT') {
+               
+                cardData.showCommisionWarning = isCheckedOutAndDepDateisOver();
+
                 if (!!cardData.rate && $state.current.name !== roomAndRatesState && !$scope.reservationData.group.id) {
                     showContractRatePopup(cardData);
                 } else {
-                    $scope.selectTravelAgent(cardData);
+                    if (cardData.showCommisionWarning) {
+                        showCommissionWarningPopup(cardData);
+                    } else {
+                        $scope.selectTravelAgent(cardData);
+                    }
                 }
             }
         };
@@ -1944,5 +2003,35 @@ angular.module('sntRover').controller('guestCardController', [
         $scope.$on("PRINT_AR_STATEMENT", function(event, isPrintArStatement ) {
             $scope.isPrintArStatement = isPrintArStatement;
         });
+
+        /**
+         * Populate guest card details 
+         * @param {object} data
+         * @param {integer} guestId
+         * @return {object} guestCardData
+         */
+        var getGuestCardData = function (data, guestId) {
+            var guestCardData = {};             
+
+            guestCardData.contactInfo = data;
+            guestCardData.contactInfo.avatar = guestId ? "/assets/images/avatar-trans.png" : "";
+            guestCardData.contactInfo.vip = guestId ? data.vip : "";            
+            guestCardData.userId = guestId;
+            guestCardData.guestId = guestId;
+            guestCardData.contactInfo.birthday = guestId ? data.birthday : null;
+            guestCardData.contactInfo.user_id = guestId ? guestId : "";
+            guestCardData.contactInfo.guest_id = guestId ? guestId : "";
+
+            return guestCardData;
+        };
+
+        // Listener for setting the guestData information
+        var guestCardSetListener = $scope.$on('SET_GUEST_CARD_DATA', function (event, data) {
+            $scope.guestCardData.contactInfo = $scope.getUpdatedContactInfo(data.contactInfo, data.guestId);
+        });
+
+        $scope.$on('$destroy', guestCardSetListener);               
+        
+        
     }
 ]);

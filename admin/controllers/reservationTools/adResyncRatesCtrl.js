@@ -66,6 +66,9 @@ admin.controller('ADResyncRatesCtrl', [
 			if ($scope.textInQueryBox.length > 2) {
 				$scope.callAPI(ADReservationToolsSrv.searchRates, options);
 			}
+			else {
+				$scope.rateListResult = [];
+			}
 		};
 
 		/*

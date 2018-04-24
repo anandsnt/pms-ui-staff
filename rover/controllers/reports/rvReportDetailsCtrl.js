@@ -579,7 +579,7 @@ sntRover.controller('RVReportDetailsCtrl', [
             }
 
 
-            if ($scope.chosenReport.title === reportNames['YEARLY_VAT']) {
+            if ($scope.chosenReport.title === reportNames['YEARLY_TAX']) {
                 if (results.with_vat_id) {
                     results.with_vat_id.isCollapsed = false;
                     results.with_vat_id.accounts = setVatReportCollapseData(results.with_vat_id.accounts);
@@ -648,7 +648,7 @@ sntRover.controller('RVReportDetailsCtrl', [
             // if there are any results
             $scope.hasNoResults = _.isEmpty($scope.$parent.results);
             $scope.showPrintOption = true;
-
+            $scope.showPrintOptionForYearlyTax = false; // CICO-51364 - Used only for yearly vat report
 
             // a very different parent template / row template / content template for certain reports
             // otherwise they all will share the same template
@@ -790,9 +790,11 @@ sntRover.controller('RVReportDetailsCtrl', [
                     $scope.detailsTemplateUrl = '/assets/partials/reports/groupRoomsReport/rvGroupRoomsReport.html';
                     break;
 
-                case reportNames['YEARLY_VAT']:
+                case reportNames['YEARLY_TAX']:
                     $scope.hasReportTotals = true;
                     $scope.showReportHeader = true;
+                    $scope.showPrintOption = false;
+                    $scope.showPrintOptionForYearlyTax = true;
                     $scope.detailsTemplateUrl = '/assets/partials/reports/yearlyVat/yearlyVatReportDetails.html';
                     break;
 
@@ -814,28 +816,6 @@ sntRover.controller('RVReportDetailsCtrl', [
             });
             return arrayData;
         };
-
-        /*
-       * Function to build data
-       * @vatType - vat type (with or without vat)
-       * @accountTypeId - account type (company / travel agent)
-       * @data - revenue data
-       */
-        var buildData = function (vatType, accountTypeId, data) {
-            var resultArrayToBeModified = (vatType === 'WITH_VAT_ID') ? $scope.results.with_vat_id.accounts : $scope.results.without_vat_id.accounts;
-
-            _.each(resultArrayToBeModified, function (item) {
-                if (item.account_type_id === accountTypeId) {
-                    if (data) {
-                        item.revenueData = data.data;
-                    }
-                    item.isCollapsed = !item.isCollapsed;
-                }
-            });
-
-            $scope.refreshScroll();
-        };
-
 
         $scope.parsedApiTemplate = function () {
             var template = '';
@@ -1242,8 +1222,14 @@ sntRover.controller('RVReportDetailsCtrl', [
                     removePrintOrientation();
 
                     // CICO-39558
-                    if ($scope.chosenReport.title === reportNames['TRAVEL_AGENT_COMMISSIONS']) {
+                    if ($scope.chosenReport.title ===
+                        reportNames['TRAVEL_AGENT_COMMISSIONS']) {
                         $scope.printTACommissionFlag.summary = false;
+                    }
+
+                    if ($scope.chosenReport.title ===
+                        reportNames['YEARLY_TAX']) {
+                        $scope.$broadcast('YEARLY_TAX_PRINT_COMPLETED');
                     }
 
                     // If a specific report ctrl has created a pre-print 'afterPrint' method
@@ -1402,12 +1388,17 @@ sntRover.controller('RVReportDetailsCtrl', [
             $scope.refreshScroll();
         });
 
+        var onPrintYearlyTax =  $scope.$on("YEARLY_TAX_REPORT_PRINT", function() {
+            printReport();
+        });
+
         // removing event listners when scope is destroyed
         $scope.$on('$destroy', reportSubmitted);
         $scope.$on('$destroy', reportUpdated);
         $scope.$on('$destroy', reportPageChanged);
         $scope.$on('$destroy', reportPrinting);
         $scope.$on('$destroy', reportAPIfailed);
+        $scope.$on('$destroy', onPrintYearlyTax);
 
         // Added for CICO-33172
         $scope.isRoomRevenueSelected = true;
@@ -1452,45 +1443,8 @@ sntRover.controller('RVReportDetailsCtrl', [
             return !!reportPaginationIds[$scope.chosenReport.title];
         };
 
-        /*
-        * Result with vat id collapsed or not
-        */
-        $scope.setResultWithVatCollapsedOrNot = function () {
-            $scope.results.with_vat_id.isCollapsed = !$scope.results.with_vat_id.isCollapsed;
-        };
-        /*
-         * Result without vat id collapsed or not
-         */
-        $scope.setResultWithOutVatCollapsedOrNot = function () {
-            $scope.results.without_vat_id.isCollapsed = !$scope.results.without_vat_id.isCollapsed;
-        };
-
-        /*
-		 * Function to get revenue data
-		 * @vatType - vat type (with or without vat)
-		 * @accountTypeId - account type (company / travel agent)
-		 * @data - revenue data
-		 */
-        $scope.getRevenueAndTax = function (vatType, accountTypeId, isCollapsed) {
-
-            var successCallBackOfGetRevenueAndTax = function (data) {
-                    buildData(vatType, accountTypeId, data);
-                },
-                postParamsToPay = {
-                    'year': $scope.chosenReport.year,
-                    'with_vat_id': (vatType === 'WITH_VAT_ID'),
-                    'account_type_id': accountTypeId
-                },
-                options = {
-                    params: postParamsToPay,
-                    successCallBack: successCallBackOfGetRevenueAndTax
-                };
-
-            if (!isCollapsed) {
-                $scope.callAPI(reportsSrv.getRevenueAndTax, options);
-            } else {
-                buildData(vatType, accountTypeId);
-            }
+        $scope.fetchFullYearlyTaxReport = function() {
+            $scope.$broadcast("FETCH_FULL_YEARLY_TAX_REPORT");
         };
 
         (function () {

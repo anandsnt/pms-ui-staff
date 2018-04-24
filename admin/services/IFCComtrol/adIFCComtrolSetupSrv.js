@@ -6,7 +6,7 @@ admin.service('adIFCComtrolSetupSrv', ['$http', '$q', 'ADBaseWebSrvV2', function
 	 */
 	this.fetchIFCComtrolConfiguration = function() {
 		var deferred = $q.defer();
-		var url = '/api/hotel_settings/comtrol';
+		var url = '/api/integrations/comtrol/settings';
 
 		ADBaseWebSrvV2.getJSON(url).then(function(data) {
 			deferred.resolve(data);
@@ -22,7 +22,7 @@ admin.service('adIFCComtrolSetupSrv', ['$http', '$q', 'ADBaseWebSrvV2', function
 	 */
 	this.saveIFCComtrolConfiguration = function(params) {
 		var deferred = $q.defer();
-		var url = '/api/hotel_settings/comtrol';
+		var url = '/api/integrations/comtrol/settings';
 
 		ADBaseWebSrvV2.postJSON(url, params).then(function(data) {
 			deferred.resolve(data);
