@@ -1196,28 +1196,17 @@ sntRover.controller('RVReportDetailsCtrl', [
                 $(this).remove();
 
                 // this will show the popup with full report
-                $timeout(function () {
-
-                    /*
-                     *	======[ PRINTING!! JS EXECUTION IS PAUSED ]======
-                     */
-
+                $timeout(function() {
                     $window.print();
                     if (sntapp.cordovaLoaded) {
-                        cordova.exec(function () {
-                        }, function () {
+                        cordova.exec(function() {
+                        }, function() {
                         }, 'RVCardPlugin', 'printWebView', []);
                     }
                 }, 1000);
 
-                /*
-                 *	======[ PRINTING COMPLETE/CANCELLED. JS EXECUTION WILL UNPAUSE ]======
-                 */
-
-
                 // in background we need to keep the report with its original state
                 $timeout(function () {
-
                     // remove the orientation
                     removePrintOrientation();
 
