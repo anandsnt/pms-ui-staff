@@ -16,7 +16,7 @@ angular.module('sntRover').controller('rvGuestDetailsController',
     RVContactInfoSrv, RVSearchSrv, idTypesList, rvPermissionSrv) {        
 
         BaseCtrl.call(this, $scope);
-        GuestCardBaseCtrl.call (this, $scope, RVSearchSrv, RVContactInfoSrv, rvPermissionSrv);
+        GuestCardBaseCtrl.call (this, $scope, RVSearchSrv, RVContactInfoSrv, rvPermissionSrv, $rootScope);
 
         /**
          * Decides whether loyalty tab should be shown or not
@@ -293,8 +293,8 @@ angular.module('sntRover').controller('rvGuestDetailsController',
         $scope.$on('$destroy', guestCardSetListener);               
         
         // Listener to update the guest card action manage btn status
-        var guestCardActionButtonStatusUpdateListener = $scope.$on('UPDATE_GUEST_CARD_ACTIONS_BUTTON_STATUS', function (data) {
-            $scope.isCardOptionsOpen = data.status;
+        var guestCardActionButtonStatusUpdateListener = $scope.$on('UPDATE_GUEST_CARD_ACTIONS_BUTTON_STATUS', function (event, data) {
+            $scope.manageCardState.isOpen = data.status;
         });
 
         $scope.$on('$destroy', guestCardActionButtonStatusUpdateListener);

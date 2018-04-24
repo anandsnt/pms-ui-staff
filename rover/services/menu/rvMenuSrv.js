@@ -309,7 +309,7 @@ angular.module('sntRover').service('rvMenuSrv',
 		        action: "",
 		        iconClass: "icon-reports",
 		        menuIndex: "reports",
-		        //hidden: !$rootScope.isBackgroundReportsEnabled,
+		        hidden: true, //!$rootScope.isBackgroundReportsEnabled,
 		        submenu: [{
 		            title: "MENU_NEW_REPORT",
 		            action: "rover.reports.dashboard({fromReportInbox: true})",
@@ -329,7 +329,7 @@ angular.module('sntRover').service('rvMenuSrv',
 		        action: "rover.reports.dashboard",
 		        menuIndex: "reports",
 		        iconClass: "icon-reports",
-		        hidden: true, //$rootScope.isBackgroundReportsEnabled,
+		        hidden: false, //$rootScope.isBackgroundReportsEnabled,
 		        submenu: []
 		    }
 		];

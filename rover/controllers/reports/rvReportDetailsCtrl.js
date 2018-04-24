@@ -765,6 +765,361 @@ sntRover.controller('RVReportDetailsCtrl', [
                     $scope.detailsTemplateUrl = '/assets/partials/reports/roomOooOosReport/rvRoomOooOosReport.html';
                     break;
 
+				default:
+					$scope.leftColSpan = 2;
+					$scope.rightColSpan = 2;
+					break;
+			}
+
+			// modify the summary count for certain reports as per the report totals
+			// these are done for old reports as for old reports 'totals' is what we
+			// today know as 'summaryCounts'. So we are gonna map 'totals' into 'summaryCounts'
+			// for the following reports
+			switch ( $scope.chosenReport.title ) {
+				case reportNames['CHECK_IN_CHECK_OUT']:
+					if ( 'Total Check Ins' == totals[0]['label'] ) {
+						if ( totals.length == 10 ) {
+							$scope.$parent.summaryCounts = {
+								'has_both': true,
+								'check_ins': totals[0]['value'],
+								'ins_via_rover': totals[1]['value'],
+								'ins_via_web': totals[2]['value'],
+								'ins_via_zest': totals[3]['value'],
+								'ins_via_kiosk': totals[4]['value'],
+								'check_outs': totals[5]['value'],
+								'outs_via_rover': totals[6]['value'],
+								'outs_via_web': totals[7]['value'],
+								'outs_via_zest': totals[8]['value'],
+								'outs_via_kiosk': totals[9]['value']
+							};
+						} else {
+							$scope.$parent.summaryCounts = {
+								'has_in': true,
+								'check_ins': totals[0]['value'],
+								'ins_via_rover': totals[1]['value'],
+								'ins_via_web': totals[2]['value'],
+								'ins_via_zest': totals[3]['value'],
+								'ins_via_kiosk': totals[4]['value']
+							};
+						}
+					} else if ( 'Total Check Outs' == totals[0]['label'] ) {
+						$scope.$parent.summaryCounts = {
+							'has_out': true,
+							'check_outs': totals[0]['value'],
+							'outs_via_rover': totals[1]['value'],
+							'outs_via_web': totals[2]['value'],
+							'outs_via_zest': totals[3]['value'],
+							'outs_via_kiosk': totals[4]['value']
+						};
+					}
+					break;
+
+				case reportNames['EMAIL_CHECKIN_SUMMARY']:
+					$scope.$parent.summaryCounts = totals;
+					break;
+
+				case reportNames['UPSELL']:
+					$scope.$parent.summaryCounts = {
+						'rooms_upsold': totals[0]['value'],
+						'upsell_revenue': totals[1]['value'],
+						'rover_revenue': totals[2]['value'],
+						'zest_app_revenue': totals[3]['value'],
+						'zest_station_revenue': totals[4]['value'],
+						'zest_web_revenue': totals[5]['value']
+					};
+					break;
+
+				case reportNames['WEB_CHECK_IN_CONVERSION']:
+					$scope.$parent.summaryCounts = {
+						'emails_sent': totals[0]['value'],
+						'up_sell_conv': totals[1]['value'],
+						'revenue': totals[2]['value'],
+						'conversion': totals[4]['value'],
+						'total_checkin': totals[3]['value']
+					};
+					break;
+
+				case reportNames['WEB_CHECK_OUT_CONVERSION']:
+					$scope.$parent.summaryCounts = {
+						'emails_sent': totals[0]['value'],
+						'late_checkout_conv': totals[1]['value'],
+						'revenue': totals[2]['value'],
+						'conversion': totals[4]['value'],
+						'total_checkout': totals[3]['value']
+					};
+					break;
+
+				case reportNames['WEB_CHECK_IN_CONV_BY_DAY']:
+					$scope.$parent.summaryCounts = {
+						'emails_sent': totals[0]['value'],
+						'up_sell_conv': totals[1]['value'],
+						'revenue': totals[2]['value'],
+						'conversion': totals[4]['value'],
+						'total_checkin': totals[3]['value']
+					};
+					break;
+
+				case reportNames['LATE_CHECK_OUT']:
+					$scope.$parent.summaryCounts = {
+						'rooms': totals[0]['value'],
+						'revenue': totals[1]['value']
+					};
+					break;
+				default:
+					// no op
+			}
+
+			// change date format for all
+			for (var i = 0, j = results.length; i < j; i++) {
+			    results[i][0] = $filter('date')(results[i][0], $rootScope.dateFormat);
+
+			    if ( $scope.chosenReport.title === reportNames['LATE_CHECK_OUT'] ) {
+
+			        // hack to add curency ($) symbol in front of values
+			        results[i][ results[i].length - 1 ] = $rootScope.currencySymbol + results[i][ results[i].length - 1 ];
+
+			        // hack to append ':00 PM' to time
+			        // thus makin the value in template 'X:00 PM'
+			        results[i][ results[i].length - 2 ] += ':00 PM';
+			    }
+			}
+
+			// hack to edit the title 'LATE CHECK OUT TIME' to 'SELECTED LATE CHECK OUT TIME'
+			// notice the text case, they are as per api response and ui
+			if ( $scope.chosenReport.title === reportNames['LATE_CHECK_OUT'] ) {
+			    for (var i = 0, j = headers.length; i < j; i++) {
+			        if ( headers[i] === 'Late Check Out Time' ) {
+			            headers[i] = 'Selected Late Check Out Time';
+			            break;
+			        }
+			    }
+			}
+
+			// For addon Upsell, we don't have to show Revenue, But as we are using common methods to retrieve data
+			// revenue details are also returned from API. We have to filter out revenue details for this report
+			if ($scope.chosenReport.title === reportNames['ADDON_UPSELLS']) {
+				// remove Revenue from header
+				headers.splice(_.indexOf(headers, function() {
+					return value === 'Revenue';
+				}), 1);
+				// remove values corresponding to revenue in each row (will be the last element in each row)
+				_.each(results, function(result) {
+					result.pop();
+				});
+				// remove Revenue from the totals row
+				$scope.$parent.resultsTotalRow.splice(_.indexOf($scope.$parent.resultsTotalRow, function() {
+					return label === 'Revenue';
+				}), 1);
+			}
+
+			if ($scope.chosenReport.title === reportNames['A/R_AGING']) {
+				_.each(results, function(result) {
+					result.age_0to30 = buildResult(result.age_0to30);
+					result.age_31to60 = buildResult(result.age_31to60);
+					result.age_61to90 = buildResult(result.age_61to90);
+					result.age_91to120 = buildResult(result.age_91to120);
+					result.age_120plus = buildResult(result.age_120plus);
+					result.balance = buildResult(result.balance);
+					result.payment = buildResult(result.payment);					
+				});
+			}
+			/*
+			 * @param arrayData - data
+			 * isAccountCollapsed - param used to check data in collapsed state or not
+			 */
+			var setVatReportCollapseData = function (arrayData) {
+				_.each(arrayData, function(item) {
+					item.isAccountCollapsed = false;
+				});
+				return arrayData;
+			};
+
+			if ($scope.chosenReport.title === reportNames['YEARLY_TAX']) {
+				if (results.with_vat_id) {
+					results.with_vat_id.isCollapsed = false;
+					results.with_vat_id.accounts = setVatReportCollapseData(results.with_vat_id.accounts);
+				}
+
+				if (results.without_vat_id) {
+					results.without_vat_id.isCollapsed = false;
+					results.without_vat_id.accounts = setVatReportCollapseData(results.without_vat_id.accounts);
+				}
+			}
+
+			// new more detailed reports
+			$scope.parsedApiFor = $scope.chosenReport.title;
+
+			// send the recived data to the API parser module
+			// with additional user selected options
+			// the API parser will look throught the report name
+			// to make sure API that doesnt requires any parsing will be returned with any parse
+			var checkGeneralOptions = (function() {
+				var retObj = {
+					include_actions: false,
+					include_guest_notes: false,
+					include_reservation_notes: false,
+					show_guests: false,
+					include_cancelled: false,
+					show_rate_adjustments_only: false
+				};
+
+				_.each($scope.chosenReport.hasGeneralOptions.data, function(each) {
+					if ( each.paramKey === 'include_actions' && each.selected ) {
+						retObj.include_actions = true;
+					}
+					if ( each.paramKey === 'include_guest_notes' && each.selected ) {
+						retObj.include_guest_notes = true;
+					}
+					if ( each.paramKey === 'include_reservation_notes' && each.selected ) {
+						retObj.include_reservation_notes = true;
+					}
+					if ( each.paramKey === 'show_guests' && each.selected ) {
+						retObj.show_guests = true;
+					}
+					if ( each.paramKey === 'include_cancelled' && each.selected ) {
+						retObj.include_cancelled = true;
+					}
+					if ( each.paramKey === 'show_rate_adjustments_only' && each.selected ) {
+						retObj.show_rate_adjustments_only = true;
+					}
+				});
+
+				return retObj;
+			})();
+			var parseAPIoptions = {
+				'groupedByKey': $scope.$parent.reportGroupedBy,
+				'checkAction': checkGeneralOptions.include_actions,
+				'checkGuestNote': checkGeneralOptions.include_guest_notes,
+				'checkReservationNote': checkGeneralOptions.include_reservation_notes,
+				'checkNote': checkGeneralOptions.include_notes,
+				'checkGuest': checkGeneralOptions.show_guests,
+				'checkCancel': checkGeneralOptions.include_cancelled,
+				'checkRateAdjust': checkGeneralOptions.show_rate_adjustments_only,
+				'chosenSortBy': $scope.chosenReport.chosenSortBy
+			};
+
+			$scope.$parent.results = angular.copy( reportParser.parseAPI($scope.parsedApiFor, $scope.$parent.results, parseAPIoptions, $scope.$parent.resultsTotalRow) );
+			// if there are any results
+			$scope.hasNoResults = _.isEmpty( $scope.$parent.results );
+			$scope.showPrintOption = true;
+			$scope.showPrintOptionForYearlyTax = false; // CICO-51364 - Used only for yearly vat report
+
+
+			// a very different parent template / row template / content template for certain reports
+			// otherwise they all will share the same template
+			switch ( $scope.parsedApiFor ) {
+				case reportNames['UPSELL']:
+					$scope.hasReportTotals    = true;
+					$scope.showReportHeader   = _.isEmpty($scope.$parent.results) ? false : true;
+					$scope.detailsTemplateUrl = '/assets/partials/reports/upsellReport/rvUpsellReport.html';
+					break;
+
+				case reportNames['BOOKING_SOURCE_MARKET_REPORT']:
+					$scope.hasReportTotals    = false;
+					$scope.showReportHeader   = !_.isEmpty($scope.$parent.results.market) || !_.isEmpty($scope.$parent.results.source) ? true : false;
+					$scope.detailsTemplateUrl = '/assets/partials/reports/bookingSourceMarketReport/rvBookingSourceMarketReport.html';
+					break;
+
+				case reportNames['OCCUPANCY_REVENUE_SUMMARY']:
+					$scope.hasReportTotals    = false;
+					$scope.showReportHeader   = _.isEmpty($scope.$parent.results) ? false : true;
+					$scope.detailsTemplateUrl = '/assets/partials/reports/occupancyRevenueReport/rvOccupancyRevenueReport.html';
+					break;
+
+				case reportNames['RESERVATIONS_BY_USER']:
+					if ( !!$scope.$parent.reportGroupedBy ) {
+						$scope.hasReportTotals    = true;
+						$scope.showReportHeader   = _.isEmpty($scope.$parent.results) ? false : true;
+						$scope.detailsTemplateUrl = '/assets/partials/reports/reservationByUserReport/rvReservationByUserReport.html';
+					} else {
+						$scope.hasReportTotals    = true;
+						$scope.showReportHeader   = _.isEmpty($scope.$parent.results) ? false : true;
+						$scope.detailsTemplateUrl = '/assets/partials/reports/shared/rvCommonReportDetails.html';
+					}
+					break;
+				case reportNames['DEPOSIT_SUMMARY']:
+						$scope.hasReportTotals    = true;
+						$scope.showReportHeader   = _.isEmpty($scope.$parent.results) ? false : true;
+						$scope.detailsTemplateUrl = '/assets/partials/reports/depositBalanceSummary/rvGuestAndGroupDepositBalanceDetails.html';
+
+					break;
+
+				case reportNames['FORECAST_BY_DATE']:
+					$scope.hasReportTotals    = false;
+					$scope.showReportHeader   = true;
+					$scope.detailsTemplateUrl = '/assets/partials/reports/forecastByDateReport/rvForecastByDateReport.html';
+					break;
+
+				case reportNames['FORECAST_GUEST_GROUPS']:
+					$scope.hasReportTotals    = false;
+					$scope.showReportHeader   = true;
+					$scope.detailsTemplateUrl = '/assets/partials/reports/forecastGuestGroupReport/rvForecastGuestGroupReport.html';
+					break;
+
+				case reportNames['MARKET_SEGMENT_STAT_REPORT']:
+					$scope.hasReportTotals    = true;
+					$scope.showReportHeader   = _.isEmpty($scope.$parent.results) ? false : true;
+					$scope.detailsTemplateUrl = '/assets/partials/reports/marketSegmentStatReport/rvMarketSegmentStatReport.html';
+					break;
+
+				case reportNames['COMPARISION_BY_DATE']:
+					$scope.hasReportTotals    = false;
+					$scope.showReportHeader   = true;
+					$scope.detailsTemplateUrl = '/assets/partials/reports/comparisonStatReport/rvComparisonStatReport.html';
+					break;
+
+				case reportNames['ADDON_FORECAST']:
+					$scope.hasReportTotals  = false;
+					$scope.showReportHeader = true;
+					if ( 'ADDON' == $scope.chosenReport.chosenGroupBy ) {
+						$scope.detailsTemplateUrl = '/assets/partials/reports/addonForecastReport/rvAddonForecastReportByAddon.html';
+					} else {
+						$scope.detailsTemplateUrl = '/assets/partials/reports/addonForecastReport/rvAddonForecastReportByDate.html';
+					}
+					break;
+
+				case reportNames['DAILY_PRODUCTION_ROOM_TYPE']:
+					$scope.hasReportTotals    = true;
+					$scope.showReportHeader   = true;
+					$scope.detailsTemplateUrl = '/assets/partials/reports/dailyProduction/rvDailyProductionRoomTypeReport.html';
+					break;
+
+				case reportNames['DAILY_PRODUCTION_DEMO']:
+					$scope.hasReportTotals    = true;
+					$scope.showReportHeader   = true;
+					$scope.detailsTemplateUrl = '/assets/partials/reports/dailyProduction/rvDailyProductionDemographics.html';
+					break;
+
+				case reportNames['DAILY_PRODUCTION_RATE']:
+					$scope.hasReportTotals    = true;
+					$scope.showReportHeader   = true;
+					$scope.detailsTemplateUrl = '/assets/partials/reports/dailyProduction/rvDailyProductionRateReport.html';
+					break;
+
+				case reportNames['COMPANY_TA_TOP_PRODUCERS']:
+					$scope.hasReportTotals    = true;
+					$scope.showReportHeader   = true;
+					$scope.detailsTemplateUrl = '/assets/partials/reports/compayTaTopProducers/rvCompayTaTopProducers.html';
+					break;
+
+				case reportNames['FINANCIAL_TRANSACTIONS_ADJUSTMENT_REPORT']:
+					$scope.hasReportTotals    = true;
+					$scope.showReportHeader   = true;
+					$scope.detailsTemplateUrl = '/assets/partials/reports/financialTransactionsAdjustmentReport/reportMain.html';
+					break;
+
+				case reportNames['CREDIT_CHECK_REPORT']:
+					$scope.hasReportTotals    = true;
+					$scope.showReportHeader   = true;
+					$scope.detailsTemplateUrl = '/assets/partials/reports/creditCheckReport/rvCreditCheckReport.html';
+					break;
+
+				case reportNames['ROOMS_OOO_OOS']:
+					$scope.hasReportTotals    = true;
+					$scope.showReportHeader   = true;
+					$scope.detailsTemplateUrl = '/assets/partials/reports/roomOooOosReport/rvRoomOooOosReport.html';
+					break;
+
                 case reportNames['BUSINESS_ON_BOOKS']:
                     $scope.showReportHeader = true;
                     $scope.detailsTemplateUrl = '/assets/partials/reports/businessOnBooks/rvBusinessOnBooksReport.html';
@@ -790,9 +1145,11 @@ sntRover.controller('RVReportDetailsCtrl', [
                     $scope.detailsTemplateUrl = '/assets/partials/reports/groupRoomsReport/rvGroupRoomsReport.html';
                     break;
 
-                case reportNames['YEARLY_VAT']:
-                    $scope.hasReportTotals = true;
-                    $scope.showReportHeader = true;
+                case reportNames['YEARLY_TAX']:
+                	$scope.hasReportTotals = true;
+                    $scope.showReportHeader   = true;
+                    $scope.showPrintOption = false;
+                    $scope.showPrintOptionForYearlyTax = true;
                     $scope.detailsTemplateUrl = '/assets/partials/reports/yearlyVat/yearlyVatReportDetails.html';
                     break;
 
@@ -1090,83 +1447,86 @@ sntRover.controller('RVReportDetailsCtrl', [
                 pageNo = $scope.currentPage;
             }
 
-            // should-we-change-view, specify-page, per-page-value
-            $scope.genReport(false, pageNo);
-        };
+			// should-we-change-view, specify-page, per-page-value
+			$scope.genReport( false, pageNo );
+		};
 
-        // refetch the reports with new filter values
-        // Note: not resetting page to page #1
-        $scope.fetchUpdatedReport = function () {
-            // hide sidebar
-            $scope.$parent.showSidebar = false;
+		// refetch the reports with new filter values
+		// Note: not resetting page to page #1
+		$scope.fetchUpdatedReport = function() {
+			// hide sidebar
+			$scope.$parent.showSidebar = false;
 
-            // reset the page
-            $_pageNo = 1;
+			// reset the page
+			$_pageNo = 1;
 
-            // should-we-change-view, specify-page, per-page-value
-            $scope.genReport(false);
-        };
+			// should-we-change-view, specify-page, per-page-value
+		    $scope.genReport( false );
+		};
 
-        // basically refetching reports but for 1000 results
-        // Also if a specific report ctrl has created a pre-print
-        // 'showModal' method to get some inputs from user before print
-        // call the method here.
-        // READ MORE: rvReportsMainCtrl:L#:61-75
-        $scope.fetchFullReport = function () {
-            if ('function' == typeof $scope.printOptions.showModal) {
-                $scope.printOptions.showModal();
-            } else {
-                $_fetchFullReport();
-            }
-        };
+		// basically refetching reports but for 1000 results
+		// Also if a specific report ctrl has created a pre-print
+		// 'showModal' method to get some inputs from user before print
+		// call the method here.
+		// READ MORE: rvReportsMainCtrl:L#:61-75
+		$scope.fetchFullReport = function() {
+			if ( 'function' == typeof $scope.printOptions.showModal ) {
+				$scope.printOptions.showModal();
+			} else {
+				$_fetchFullReport();
+			}
+		};
 
-        // when user press submit from pre-print modal, continue our calls to '$_fetchFullReport'
-        // READ MORE: rvReportsMainCtrl:L#:61-75
-        var prePrintDone = $rootScope.$on(reportMsgs['REPORT_PRE_PRINT_DONE'], $_fetchFullReport);
+		$scope.fetchFullYearlyTaxReport = function() {
+			$scope.$broadcast("FETCH_FULL_YEARLY_TAX_REPORT");
+		};
 
-        $scope.$on('$destroy', prePrintDone);
+		// when user press submit from pre-print modal, continue our calls to '$_fetchFullReport'
+		// READ MORE: rvReportsMainCtrl:L#:61-75
+		var prePrintDone = $rootScope.$on( reportMsgs['REPORT_PRE_PRINT_DONE'], $_fetchFullReport );
 
-        function $_fetchFullReport() {
+		$scope.$on( '$destroy', prePrintDone );
 
-            // since we are loading the entire report and show its print preview
-            // we need to keep a back up of the original report with its pageNo
-            $scope.returnToPage = $_pageNo;
+		function $_fetchFullReport () {
 
-            // should-we-change-view, specify-page, per-page-value
-            $scope.genReport(false, 1, 1000);
-        }
+			// since we are loading the entire report and show its print preview
+			// we need to keep a back up of the original report with its pageNo
+			$scope.returnToPage = $_pageNo;
 
-        // add the print orientation before printing
-        // TODO: 49259 Move Print Orientation to a constant ---
-        var addPrintOrientation = function () {
-            var orientation = 'portrait';
+			// should-we-change-view, specify-page, per-page-value
+			$scope.genReport( false, 1, 1000 );
+		}
 
-            switch ($scope.chosenReport.title) {
-                case reportNames['AR_SUMMARY_REPORT']:
-                case reportNames['ARRIVAL']:
-                case reportNames['IN_HOUSE_GUEST']:
-                case reportNames['DEPARTURE']:
-                case reportNames['DEPOSIT_REPORT']:
-                case reportNames['GROUP_DEPOSIT_REPORT']:
-                case reportNames['CANCELLATION_NO_SHOW']:
-                case reportNames['WEB_CHECK_OUT_CONVERSION']:
-                case reportNames['WEB_CHECK_IN_CONVERSION']:
-                case reportNames['WEB_CHECK_IN_CONV_BY_DAY']:
-                case reportNames['OCCUPANCY_REVENUE_SUMMARY']:
-                case reportNames['DAILY_TRANSACTIONS']:
-                case reportNames['DAILY_PAYMENTS']:
-                case reportNames['FORECAST_BY_DATE']:
-                case reportNames['FORECAST_GUEST_GROUPS']:
-                case reportNames['GROUP_PICKUP_REPORT']:
-                case reportNames['MARKET_SEGMENT_STAT_REPORT']:
-                case reportNames['RATE_ADJUSTMENTS_REPORT']:
-                case reportNames['DAILY_PRODUCTION_ROOM_TYPE']:
-                case reportNames['GUEST_BALANCE_REPORT']:
-                case reportNames['ADDON_FORECAST']:
-                case reportNames['CREDIT_CHECK_REPORT']:
-                case reportNames['DEPOSIT_SUMMARY']:
-                case reportNames['FINANCIAL_TRANSACTIONS_ADJUSTMENT_REPORT']:
-                case reportNames['A/R_AGING']:
+		// add the print orientation before printing
+		var addPrintOrientation = function() {
+			var orientation = 'portrait';
+
+			switch ( $scope.chosenReport.title ) {
+				case reportNames['AR_SUMMARY_REPORT']:
+				case reportNames['ARRIVAL']:
+				case reportNames['IN_HOUSE_GUEST']:
+				case reportNames['DEPARTURE']:
+				case reportNames['DEPOSIT_REPORT']:
+				case reportNames['GROUP_DEPOSIT_REPORT']:
+				case reportNames['CANCELLATION_NO_SHOW']:
+				case reportNames['WEB_CHECK_OUT_CONVERSION']:
+				case reportNames['WEB_CHECK_IN_CONVERSION']:
+				case reportNames['WEB_CHECK_IN_CONV_BY_DAY']:
+				case reportNames['OCCUPANCY_REVENUE_SUMMARY']:
+				case reportNames['DAILY_TRANSACTIONS']:
+				case reportNames['DAILY_PAYMENTS']:
+				case reportNames['FORECAST_BY_DATE']:
+				case reportNames['FORECAST_GUEST_GROUPS']:
+				case reportNames['GROUP_PICKUP_REPORT']:
+				case reportNames['MARKET_SEGMENT_STAT_REPORT']:
+				case reportNames['RATE_ADJUSTMENTS_REPORT']:
+				case reportNames['DAILY_PRODUCTION_ROOM_TYPE']:
+				case reportNames['GUEST_BALANCE_REPORT']:
+				case reportNames['ADDON_FORECAST']:
+				case reportNames['CREDIT_CHECK_REPORT']:
+				case reportNames['DEPOSIT_SUMMARY']:
+				case reportNames['FINANCIAL_TRANSACTIONS_ADJUSTMENT_REPORT']:
+				case reportNames['A/R_AGING']:
                 case reportNames['BUSINESS_ON_BOOKS']:
                 case reportNames['COMPLIMENTARY_ROOM_REPORT']:
                 case reportNames['GROUP_ROOMS_REPORT']:
@@ -1190,8 +1550,13 @@ sntRover.controller('RVReportDetailsCtrl', [
             $('#print-orientation').remove();
         };
 
-        // print the page
-        var printReport = function () {
+
+		$scope.$on("YEARLY_TAX_REPORT_PRINT", function() {
+			printReport();
+		});
+
+		// print the page
+		var printReport = function() {
 
             // add the orientation
             addPrintOrientation();
@@ -1201,61 +1566,63 @@ sntRover.controller('RVReportDetailsCtrl', [
                 $scope.printTACommissionFlag.summary = true;
             }
 
-            /**
-             * CICO-32471: icons are background image they are loaded async after render
-             * solving this issue by adding an img tag and waiting for it to load (< 100kb)
-             * this is taken from  Groups->rooming list print.
-             */
-            var bg = $('#print-orientation').css('background-image'),
-                src = bg.replace(/(^url\()|(\)$|[\"\'])/g, ''),
-                img = $('<img>').attr('src', src);
+			/**
+			 * CICO-32471: icons are background image they are loaded async after render
+			 * solving this issue by adding an img tag and waiting for it to load (< 100kb)
+			 * this is taken from  Groups->rooming list print.
+			 */
+			var bg  = $('#print-orientation').css('background-image'),
+				src = bg.replace(/(^url\()|(\)$|[\"\'])/g, ''),
+				img = $('<img>').attr('src', src);
 
-            img.on('load', function () {
-                // unbinding the events & removing the elements inorder to prevent memory leaks
-                $(this).off('load');
-                $(this).remove();
+			img.on('load', function () {
+				// unbinding the events & removing the elements inorder to prevent memory leaks
+				$(this).off('load');
+				$(this).remove();
 
-                // this will show the popup with full report
-                $timeout(function () {
+				// this will show the popup with full report
+				$timeout(function() {
 
-                    /*
-                     *	======[ PRINTING!! JS EXECUTION IS PAUSED ]======
-                     */
+					/*
+					 *	======[ PRINTING!! JS EXECUTION IS PAUSED ]======
+					 */
 
-                    $window.print();
-                    if (sntapp.cordovaLoaded) {
-                        cordova.exec(function () {
-                        }, function () {
-                        }, 'RVCardPlugin', 'printWebView', []);
-                    }
-                }, 1000);
+				    $window.print();
+				    if ( sntapp.cordovaLoaded ) {
+				        cordova.exec(function(success) {}, function(error) {}, 'RVCardPlugin', 'printWebView', []);
+				    }
+				}, 1000);
 
-                /*
-                 *	======[ PRINTING COMPLETE/CANCELLED. JS EXECUTION WILL UNPAUSE ]======
-                 */
+				/*
+				 *	======[ PRINTING COMPLETE/CANCELLED. JS EXECUTION WILL UNPAUSE ]======
+				 */
 
 
-                // in background we need to keep the report with its original state
-                $timeout(function () {
+				// in background we need to keep the report with its original state
+				$timeout(function() {
 
-                    // remove the orientation
-                    removePrintOrientation();
+					// remove the orientation
+					removePrintOrientation();
 
-                    // CICO-39558
-                    if ($scope.chosenReport.title === reportNames['TRAVEL_AGENT_COMMISSIONS']) {
-                        $scope.printTACommissionFlag.summary = false;
-                    }
+					// CICO-39558
+					if ($scope.chosenReport.title === reportNames['TRAVEL_AGENT_COMMISSIONS']) {
+						$scope.printTACommissionFlag.summary = false;
+		            }
 
-                    // If a specific report ctrl has created a pre-print 'afterPrint' method
-                    // to get clear/remove anything after print
-                    // READ MORE: rvReportsMainCtrl:L#:61-75
-                    if ('function' == typeof $scope.printOptions.afterPrint) {
-                        $scope.printOptions.afterPrint();
-                    }
+		            if ($scope.chosenReport.title === reportNames['YEARLY_TAX']) {
+		            	$scope.$broadcast("YEARLY_TAX_PRINT_COMPLETED");
+					}
 
-                    // load the report with the original page
-                    $scope.fetchNextPage($scope.returnToPage);
-                }, 2000);
+					// If a specific report ctrl has created a pre-print 'afterPrint' method
+					// to get clear/remove anything after print
+					// READ MORE: rvReportsMainCtrl:L#:61-75
+					if ( 'function' == typeof $scope.printOptions.afterPrint ) {
+						$scope.printOptions.afterPrint();
+					}
+
+				    // load the report with the original page
+				    $scope.fetchNextPage( $scope.returnToPage );
+				}, 2000);
             });
         };
 
@@ -1450,48 +1817,7 @@ sntRover.controller('RVReportDetailsCtrl', [
         // Checks whether new pagination should be used for the report
         $scope.shouldShowNewPagination = function () {
             return !!reportPaginationIds[$scope.chosenReport.title];
-        };
-
-        /*
-        * Result with vat id collapsed or not
-        */
-        $scope.setResultWithVatCollapsedOrNot = function () {
-            $scope.results.with_vat_id.isCollapsed = !$scope.results.with_vat_id.isCollapsed;
-        };
-        /*
-         * Result without vat id collapsed or not
-         */
-        $scope.setResultWithOutVatCollapsedOrNot = function () {
-            $scope.results.without_vat_id.isCollapsed = !$scope.results.without_vat_id.isCollapsed;
-        };
-
-        /*
-		 * Function to get revenue data
-		 * @vatType - vat type (with or without vat)
-		 * @accountTypeId - account type (company / travel agent)
-		 * @data - revenue data
-		 */
-        $scope.getRevenueAndTax = function (vatType, accountTypeId, isCollapsed) {
-
-            var successCallBackOfGetRevenueAndTax = function (data) {
-                    buildData(vatType, accountTypeId, data);
-                },
-                postParamsToPay = {
-                    'year': $scope.chosenReport.year,
-                    'with_vat_id': (vatType === 'WITH_VAT_ID'),
-                    'account_type_id': accountTypeId
-                },
-                options = {
-                    params: postParamsToPay,
-                    successCallBack: successCallBackOfGetRevenueAndTax
-                };
-
-            if (!isCollapsed) {
-                $scope.callAPI(reportsSrv.getRevenueAndTax, options);
-            } else {
-                buildData(vatType, accountTypeId);
-            }
-        };
+        };      
 
         (function () {
             $rootScope.setPrevState = {
@@ -1511,6 +1837,7 @@ sntRover.controller('RVReportDetailsCtrl', [
                 case reportMsgs['REPORT_LOAD_LAST_REPORT']:
                 default:
                 // do nothing .. wait for event from rvReportsMainCtrl.js
+
 
             }
         })();
