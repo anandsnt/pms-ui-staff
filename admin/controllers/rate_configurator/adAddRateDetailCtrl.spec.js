@@ -2,11 +2,15 @@ describe('ADaddRatesDetailCtrl', function() {
 
     var $controller,
         $scope = {},
+        $parentScope = {},
         ADReservationToolsSrv,
         $q;
 
     beforeEach(function() {
-        module('admin');
+        module('admin', function($provide) {
+            $provide.value('rateInitialData', function() {return [];});
+            //$provide.value('languageSettings', function() {return {};});
+        });
         inject(function (_$controller_, _$rootScope_, _ADReservationToolsSrv_, _$q_ ) {
             $controller = _$controller_;
             ADReservationToolsSrv = _ADReservationToolsSrv_;
@@ -14,12 +18,18 @@ describe('ADaddRatesDetailCtrl', function() {
             $scope = _$rootScope_.$new();
         });
 
-        $controller('ADaddRatesDetailCtrl', {
-            $scope: $scope
+        $controller('ADAddnewRate', {
+            $scope: $parentScope
         });
+
+        $controller('ADaddRatesDetailCtrl', {
+            $scope: angular.extend($scope, $parentScope)
+        });
+
+        $scope.rateData = { 'id': 123 };
     });
 
-    /*it('Clicked on Re-Sync Rates button', function() {
+    it('Clicked on Re-Sync Rates button', function() {
         
         spyOn(ADReservationToolsSrv, 'reSyncRates').and.callFake(function () {
             var deferred = $q.defer(),
@@ -38,6 +48,6 @@ describe('ADaddRatesDetailCtrl', function() {
 
         expect($scope.selectedRateObj.last_sync_at).toEqual("22/04/2018 23:47:03");
         expect($scope.selectedRateObj.last_sync_status).toEqual(true);
-    });*/
+    });
 
 });
