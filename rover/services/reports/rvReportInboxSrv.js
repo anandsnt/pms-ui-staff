@@ -105,15 +105,15 @@ angular.module('sntRover').service('RVReportsInboxSrv', [
             }));
         };
 
-        this.processGuaranteeTypes = (value, key, promises, formatedFilter) => {
-            let params = {
-                ids: value
-            };
+        // this.processGuaranteeTypes = (value, key, promises, formatedFilter) => {
+        //     let params = {
+        //         ids: value
+        //     };
 
-            promises.push(RVreportsSubSrv.fetchGuaranteeTypes().then((guaranteeTypes) => {
-                formatedFilter[reportInboxFilterLabelConst[key]] = _.pluck(guaranteeTypes, 'name').join(',');
-            }));
-        };
+        //     promises.push(RVreportsSubSrv.fetchGuaranteeTypes().then((guaranteeTypes) => {
+        //         formatedFilter[reportInboxFilterLabelConst[key]] = _.pluck(guaranteeTypes, 'name').join(',');
+        //     }));
+        // };
 
         this.processMarkets = (value, key, promises, formatedFilter) => {
             let params = {
@@ -135,6 +135,123 @@ angular.module('sntRover').service('RVReportsInboxSrv', [
             }               
             
         };
+
+        this.processDisplayFilter = (value, key, formatedFilter) => {
+            if(!formatedFilter[reportInboxFilterLabelConst['DISPLAY']]) {
+                formatedFilter[reportInboxFilterLabelConst['DISPLAY']] = [];
+            }
+
+            if (value) {
+             formatedFilter[reportInboxFilterLabelConst['DISPLAY']].push(reportInboxFilterLabelConst[key]);
+            }               
+            
+        };
+
+        this.processAccounts = (value, key, formatedFilter) => {                          
+            
+        };
+
+        this.processAgingBalance = (value, key, formatedFilter) => {
+          let ageBuckets = [];
+
+          _.each(value, (bucket) => {
+            ageBuckets.push(reportInboxFilterLabelConst[bucket]);
+          });
+
+          formatedFilter[reportInboxFilterLabelConst[key]] =  ageBuckets.join(',');
+            
+        };        
+
+        this.processArrayValuesWithNoFormating = (value, key, formatedFilter) => { 
+          formatedFilter[reportInboxFilterLabelConst[key]] =  value.join(',');            
+        };
+
+        this.processOrigins = (value, key, promises, formatedFilter) => {
+            let params = {
+                ids: value
+            };
+
+            promises.push(RVreportsSubSrv.fetchOrigins().then((origins) => {
+                formatedFilter[reportInboxFilterLabelConst[key]] = _.pluck(origins, 'value').join(',');
+            }));
+        };
+
+        this.processOriginUrls = (value, key, promises, formatedFilter) => {
+            let params = {
+                ids: value
+            };
+
+            promises.push(RVreportsSubSrv.fetchURLs().then((urls) => {
+                formatedFilter[reportInboxFilterLabelConst[key]] = _.pluck(origins, 'name').join(',');
+            }));
+        };
+
+        this.fillAddonGroups = (value, key, promises, formatedFilter) => {
+            let params = {
+                ids: value
+            };
+
+            promises.push(RVreportsSubSrv.fetchChargeNAddonGroups().then((addonGroups) => {
+                formatedFilter[reportInboxFilterLabelConst[key]] = _.pluck(addonGroups, 'name').join(',');
+            }));
+        };
+
+        this.fillAddons = (value, key, promises, formatedFilter) => {
+            let params = {
+                ids: value
+            };
+
+            promises.push(RVreportsSubSrv.fetchChargeCodes().then((chargeCodes) => {
+                formatedFilter[reportInboxFilterLabelConst[key]] = _.pluck(chargeCodes, 'description').join(',');
+            }));
+        };
+
+        this.fillReservationStatus = (value, key, promises, formatedFilter) => {
+            let params = {
+                ids: value
+            };
+
+            promises.push(RVreportsSubSrv.fetchReservationStatus().then((statuses) => {
+                formatedFilter[reportInboxFilterLabelConst[key]] = _.pluck(statuses, 'status').join(',');
+            }));
+        };
+
+        this.fillOptionsWithoutFormating = (value, key, formatedFilter) => {
+            formatedFilter[reportInboxFilterLabelConst[key]] = value;
+        };
+
+        this.fillCompanyTaGroupDetails = (value, key, promises, formatedFilter) => {            
+
+            // promises.push(RVreportsSubSrv.fetchComTaGrp(value).then((entity) => {
+            //     formatedFilter[reportInboxFilterLabelConst[key]] = _.pluck(entity, 'status').join(',');
+            // }));
+        };
+
+        this.fillCheckedInCheckedOut = (value, key, formatedFilter) => {
+            if (!formatedFilter[reportInboxFilterLabelConst['CHECK IN/ CHECK OUT']]) {
+               formatedFilter[reportInboxFilterLabelConst['CHECK IN/ CHECK OUT']] = []; 
+            }            
+            if (value) {               
+                formatedFilter[reportInboxFilterLabelConst['CHECK IN/ CHECK OUT']].push(reportInboxFilterLabelConst[key]);
+            }
+        };
+
+        this.fillShowFields = (value, key, formatedFilter) => {
+            if(!formatedFilter[reportInboxFilterLabelConst['SHOW']]) {
+                formatedFilter[reportInboxFilterLabelConst['SHOW']] = [];
+            }
+
+            if (value) {
+             formatedFilter[reportInboxFilterLabelConst['SHOW']].push(reportInboxFilterLabelConst[key]);
+            }               
+            
+        };
+
+        this.fillValueWithoutFormating = (value, key, formatedFilter) => {
+            formatedFilter[reportInboxFilterLabelConst[key]] = value;
+        };
+
+
 
         this.processFilters = function(filters) {
             let processedFilter = {},
@@ -171,22 +288,78 @@ angular.module('sntRover').service('RVReportsInboxSrv', [
                         break;
                    case reportParamsConst['ASSIGNED_DEPARTMENTS']:
                         self.processDepartments(value, key, promises, processedFilter);
-                        break;
-                   case reportParamsConst['INCLUDE_GUARANTEE_TYPE']:
-                        self.processDepartments(value, key, promises, processedFilter);
-                        break;
+                        break;                   
                    case reportParamsConst['CHOOSE_MARKET']:
                         self.processMarkets(value, key, promises, processedFilter);
                         break;
                    case reportParamsConst['DEPOSIT_DUE']:
                    case reportParamsConst['DEPOSIT_PAID']:
                    case reportParamsConst['DEPOSIT_PAST']:
-                   case reportParamsConst['INCLUDE_CANCELLED']:
-                   case reportParamsConst['INCLUDE_MARKET']:
+                   case reportParamsConst['INCLUDE_CANCELLED']:                   
                    case reportParamsConst['INCLUDE_NO_SHOW']:
                    case reportParamsConst['INCLUDE_TAX']:
+                   case reportParamsConst['DUE_IN_ARRIVALS']:  
+                   case reportParamsConst['INCLUDE_ACTIONS']:  
+                   case reportParamsConst['INCLUDE_LEDGER_DATA']:                
                         self.processOptions(value, key, processedFilter);
                         break;
+                   case reportParamsConst['SHOW_DELETED_CHARGES']:
+                   case reportParamsConst['SHOW_ADJUSTMENTS']:
+                   case reportParamsConst['INCLUDE_MARKET']:
+                   case reportParamsConst['INCLUDE_ORIGIN']:
+                   case reportParamsConst['INCLUDE_SEGMENT']:
+                   case reportParamsConst['INCLUDE_SOURCE']:
+                   case reportParamsConst['SHOW_ROOM_REVENUE']:
+                        self.processDisplayFilter(value, key, processedFilter);
+                        break;
+                   case reportParamsConst['ACCOUNT_SEARCH']:
+                        self.processAccounts(value, key, processedFilter);
+                        break;
+                   case reportParamsConst['AGING_BALANCE']:
+                        self.processAgingBalance(value, key, processedFilter);
+                        break;
+                   case reportParamsConst['COMPLETION_STATUS']:
+                   case reportParamsConst['SHOW_ACTIONABLES']:
+                   case reportParamsConst['INCLUDE_GUARANTEE_TYPE']:
+                        self.processArrayValuesWithNoFormating(value, key, processedFilter);
+                        break;
+                   case reportParamsConst['ORIGIN_VALUES']:
+                        self.processOrigin(value, key, promises, processedFilter);
+                        break;
+                   case reportParamsConst['ORIGIN_URLS']:
+                        self.processOriginUrls(value, key, promises, processedFilter);
+                        break;
+                   case reportParamsConst['ADDONS_GROUPS_IDS']:
+                        self.fillAddonGroups(value, key, promises, processedFilter);
+                        break;
+                   case reportParamsConst['ADDONS_IDS']:
+                        self.fillAddons(value, key, promises, processedFilter);
+                        break;
+                   case reportParamsConst['RESERVATION_STATUS']:
+                        self.fillReservationStatus(value, key, promises, processedFilter);
+                        break;
+                   case reportParamsConst['ADDON_GROUP_BY']:
+                        self.fillOptionsWithoutFormating(value, key, processedFilter);
+                        break; 
+                   case reportParamsConst['INCLUDE_COMPANYCARD_TA_GROUP']:
+                        self.fillCompanyTaGroupDetails(value, key, processedFilter);
+                        break;
+                   case reportParamsConst['CHECKED_IN']:
+                   case reportParamsConst['CHECKED_OUT']:
+                        self.fillCheckedInCheckedOut(value, key, processedFilter);
+                        break;
+                   case reportParamsConst['SHOW_TRAVEL_AGENT']:
+                   case reportParamsConst['SHOW_COMPANY']:
+                   case reportParamsConst['INCLUDE_DUE_OUT']:
+                   case reportParamsConst['INCLUDE_INHOUSE']:
+                        self.fillShowFields(value, key, processedFilter);
+                        break; 
+                   case reportParamsConst['MIN_REVENUE']:
+                   case reportParamsConst['MIN_NIGHTS']:
+                        self.fillValueWithoutFormating(value, key, processedFilter);
+                        break;   
+
+
 
                 }                
 

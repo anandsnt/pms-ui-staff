@@ -41,7 +41,7 @@
         </div>
     </div>
 
-    <div class="main-column-actions" ng-hide="reportViewStore.showingScheduledReports || reportViewStore.showingExportReports || reportViewStore.showingScheduleAReport || reportViewStore.showingExportAReport">
+    <div class="main-column-actions" ng-hide="isBackgroundReportsEnabled">
         <button ng-show="!isAddingNew"
             ng-click="scheduleReport()"
             class="button blue with-icon"
