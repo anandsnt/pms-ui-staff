@@ -31,7 +31,7 @@
         <!-- Classes cols-2,cols-3 and cols-4 are added when showing 2,3 or 4 columns. Add horizontal scroller here -->
         <div class="wrapper">
             <div class="cols-wrapper">
-                <div class="report-col main-col no-print" ng-class="{'with-pagination': shouldShowPagination()}">
+                <div class="report-col main-col no-print new" ng-class="{'with-pagination': shouldShowPagination()}">
                     <div class="report-item-header">
                         <!-- on click, expand all reports -->
                         <div class="expand" ng-click="toggleReportInboxView()">
@@ -56,7 +56,7 @@
                         <ul class="wrapper">
                             <!-- Add .disabled if in progress or has an error-->
                             <!-- add .expanded if expanded -->
-                            <li class="report-item inbox-item" ng-repeat="report in reportInboxData.generatedReports track by $index" ng-class="{'disabled': shouldDisableInboxItem(report), 'expanded': report.isExpanded}" ng-click="showReportDetails(report)">
+                            <li class="report-item inbox-item new" ng-repeat="report in reportInboxData.generatedReports track by $index" ng-class="{'disabled': shouldDisableInboxItem(report), 'expanded': report.isExpanded}" ng-click="showReportDetails(report)">
                                 <!-- On click, expand the report -->
                                 <div class="expand">
                                     <!-- add .active if expanded -->
