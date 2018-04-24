@@ -95,6 +95,24 @@ angular.module('reportsModule')
         "INCLUDE_LEDGER_DATA": "include_ledger_data",
         "EXCEEDED_ONLY": "exceeded_only",
         "INCLUDE_DUE_OUT": "include_due_out",
-        "INCLUDE_INHOUSE": "include_inhouse"
+        "INCLUDE_INHOUSE": "include_inhouse",
+        "SHOW_GUESTS": "show_guests",
+        "VIP_ONLY": "vip_only",
+        "ACCOUNT": "account",
+        "GUEST": "guest",
+        "EXCLUDE_NON_GTD": "exclude_non_gtd",
+        "INCLUDE_GROUP": "include_group",
+        "RESTRICTED_POST_ONLY": "restricted_post_only",
+        "ROVER": "rover",
+        "ZEST": "zest",
+        "ZEST_WEB": "zest_web",
+        "INCLUDE_LAST_YEAR": "include_last_year",
+        "INCLUDE_VARIANCE": "include_variance",
+        "INCLUDE_BOTH": "include_both",
+        "INCLUDE_NEW": "include_new",
+        "SHOW_RATE_ADJUSTMENTS_ONLY": "show_rate_adjustments_only",
+        "OOO": "ooo",
+        "OOS": "oos",
+        "MIN_NO_OF_DAYS_NOT_OCCUPIED": "min_number_of_days_not_occupied"
 
     });

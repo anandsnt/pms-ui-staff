@@ -251,6 +251,141 @@ angular.module('sntRover').service('RVReportsInboxSrv', [
             formatedFilter[reportInboxFilterLabelConst[key]] = value;
         };
 
+        // TODO use the correct APIs
+        this.fillRateTypes = (value, key, promises, processedFilter) => {
+            var params = {               
+                rate_type_ids: value
+            };
+
+            promises.push(RVreportsSubSrv.fetchRateDetailsForIds(params).then(function(rates) {
+                formatedFilter[reportInboxFilterLabelConst[key]] = _.pluck(rates, 'name').join(',');
+            }));
+        };
+
+        this.fillChargeCodes = (value, key, promises, processedFilter) => {
+            var params = {               
+                charge_code_ids: value
+            };
+
+            promises.push(RVreportsSubSrv.fetchChargeCodes().then(function(chargeCodes) {
+                formatedFilter[reportInboxFilterLabelConst[key]] = _.pluck(chargeCodes, 'description').join(',');
+            }));
+        };
+
+        this.fillChargeGroups = (value, key, promises, processedFilter) => {            
+
+            promises.push(RVreportsSubSrv.fetchChargeNAddonGroups().then(function(chargeGroups) {
+                formatedFilter[reportInboxFilterLabelConst[key]] = _.pluck(chargeGroups, 'description').join(',');
+            }));
+        };
+
+        this.fillGuestAccount = (value, key, formatedFilter) => {
+            if(!formatedFilter[reportInboxFilterLabelConst['GUEST/ACCOUNT']]) {
+                formatedFilter[reportInboxFilterLabelConst['GUEST/ACCOUNT']] = [];
+            }
+
+            if (value) {
+             formatedFilter[reportInboxFilterLabelConst['GUEST/ACCOUNT']].push(reportInboxFilterLabelConst[key]);
+            }               
+            
+        };
+
+        this.fillUserInfo = (value, key, promises, processedFilter) => {            
+
+            promises.push(RVreportsSubSrv.fetchActiveUsers().then(function(users) {
+                formatedFilter[reportInboxFilterLabelConst[key]] = _.pluck(users, 'full_name').join(',');
+            }));
+        };
+
+        this.fillBookingOrigins = (value, key, promises, processedFilter) => {            
+
+            promises.push(RVreportsSubSrv.fetchBookingOrigins().then(function(origins) {
+                formatedFilter[reportInboxFilterLabelConst[key]] = _.pluck(users, 'name').join(',');
+            }));
+        };
+
+        this.fillMarkets = (value, key, promises, processedFilter) => {            
+
+            promises.push(RVreportsSubSrv.fetchMarkets().then(function(markets) {
+                formatedFilter[reportInboxFilterLabelConst[key]] = _.pluck(users, 'name').join(',');
+            }));
+        };
+
+        this.fillSources = (value, key, promises, processedFilter) => {           
+
+            promises.push(RVreportsSubSrv.fetchSources().then(function(sources) {
+                formatedFilter[reportInboxFilterLabelConst[key]] = _.pluck(sources, 'name').join(',');
+            }));
+        };
+
+        this.fillHoldStatuses = (value, key, promises, processedFilter) => {           
+
+            promises.push(RVreportsSubSrv.fetchHoldStatus().then(function(statuses) {
+                formatedFilter[reportInboxFilterLabelConst[key]] = _.pluck(statuses, 'name').join(',');
+            }));
+        };
+
+        // TODO
+        this.fillGroupInfo = (value, key, promises, processedFilter) => {           
+
+            
+        };
+
+        this.fillRoomTypes = (value, key, promises, processedFilter) => { 
+            let params = {
+                ids: value
+            };          
+
+            promises.push(RVreportsSubSrv.fetchRoomTypeList(params).then(function(roomTypes) {
+                formatedFilter[reportInboxFilterLabelConst[key]] = _.pluck(roomTypes, 'name').join(',');
+            }));
+        };
+
+        this.fillFloors = (value, key, promises, processedFilter) => {                     
+
+            promises.push(RVreportsSubSrv.fetchFloors().then(function(floors) {
+                formatedFilter[reportInboxFilterLabelConst[key]] = _.pluck(floors, 'floor_number').join(',');
+            }));
+        };
+
+        this.fillTravelAgentInfo = (value, key, promises, processedFilter) => {                     
+            let params = {
+                ids: value
+            };
+
+            promises.push(RVreportsSubSrv.fetchTravelAgents().then(function(travelAgents) {
+                formatedFilter[reportInboxFilterLabelConst[key]] = _.pluck(travelAgents, 'account_name').join(',');
+            }));
+        };
+
+        this.fillVatInfo = (value, key, formatedFilter) => {
+            if(!formatedFilter[reportInboxFilterLabelConst['COMPANY/TRAVEL AGENT']]) {
+                formatedFilter[reportInboxFilterLabelConst['COMPANY/TRAVEL AGENT']] = [];
+            }
+
+            if (value) {
+             formatedFilter[reportInboxFilterLabelConst['COMPANY/TRAVEL AGENT']].push(reportInboxFilterLabelConst[key]);
+            }               
+            
+        };
+
+        this.fillCampaignTypesInfo = (value, key, promises, processedFilter) => {  
+
+            promises.push(RVreportsSubSrv.fetchCampaignTypes().then(function(campaignTypes) {
+                formatedFilter[reportInboxFilterLabelConst[key]] = _.pluck(campaignTypes, 'name').join(',');
+            }));
+        };
+
+        this.fillSortDir = (value, key, formatedFilter) => {            
+            let sortDir = "ASC";
+
+            if (!value) {
+              sortDir = "DESC";              
+            }
+
+            formatedFilter[reportInboxFilterLabelConst[key]] = sortDir;   
+        };
+
 
 
         this.processFilters = function(filters) {
@@ -300,7 +435,21 @@ angular.module('sntRover').service('RVReportsInboxSrv', [
                    case reportParamsConst['INCLUDE_TAX']:
                    case reportParamsConst['DUE_IN_ARRIVALS']:  
                    case reportParamsConst['INCLUDE_ACTIONS']:  
-                   case reportParamsConst['INCLUDE_LEDGER_DATA']:                
+                   case reportParamsConst['INCLUDE_LEDGER_DATA']:  
+                   case reportParamsConst['INCLUDE_GUEST_NOTES']: 
+                   case reportParamsConst['INCLUDE_RESERVATION_NOTES']:
+                   case reportParamsConst['SHOW_GUESTS']: 
+                   case reportParamsConst['VIP_ONLY']: 
+                   case reportParamsConst['EXCLUDE_NON_GTD']: 
+                   case reportParamsConst['RESTRICTED_POST_ONLY']:  
+                   case reportParamsConst['ROVER']:  
+                   case reportParamsConst['ZEST']:  
+                   case reportParamsConst['ZEST_WEB']: 
+                   case reportParamsConst['INCLUDE_LAST_YEAR']:  
+                   case reportParamsConst['INCLUDE_VARIANCE']: 
+                   case reportParamsConst['INCLUDE_BOTH']: 
+                   case reportParamsConst['INCLUDE_NEW']:  
+                   case reportParamsConst['SHOW_RATE_ADJUSTMENTS_ONLY']:                
                         self.processOptions(value, key, processedFilter);
                         break;
                    case reportParamsConst['SHOW_DELETED_CHARGES']:
@@ -352,14 +501,67 @@ angular.module('sntRover').service('RVReportsInboxSrv', [
                    case reportParamsConst['SHOW_COMPANY']:
                    case reportParamsConst['INCLUDE_DUE_OUT']:
                    case reportParamsConst['INCLUDE_INHOUSE']:
+                   case reportParamsConst['OOO']:
+                   case reportParamsConst['OOS']:
                         self.fillShowFields(value, key, processedFilter);
                         break; 
                    case reportParamsConst['MIN_REVENUE']:
                    case reportParamsConst['MIN_NIGHTS']:
+                   case reportParamsConst['MIN_NO_OF_DAYS_NOT_OCCUPIED']:
+                   case reportParamsConst['VAT_YEAR']:
+                   case reportParamsConst['SORT_FIELD']:
                         self.fillValueWithoutFormating(value, key, processedFilter);
-                        break;   
-
-
+                        break;
+                   case reportParamsConst['RATE_TYPE_IDS']:
+                        self.processRateTypeIds(value, key, promises, processedFilter);
+                        break; 
+                   case reportParamsConst['CHARGE_CODE_IDS']:
+                        self.fillChargeCodes(value, key, promises, processedFilter);
+                        break;  
+                   case reportParamsConst['CHARGE_GROUP_IDS']:
+                        self.fillChargeGroups(value, key, promises, processedFilter);
+                        break; 
+                   case reportParamsConst['ACCOUNT']:
+                   case reportParamsConst['GUEST']:
+                        self.fillGuestAccount(value, key, processedFilter);
+                        break; 
+                   case reportParamsConst['USER_IDS']:
+                        self.fillUserInfo(value, key, promises, processedFilter);
+                        break;  
+                   case reportParamsConst['BOOKING_ORIGIN_IDS']:
+                        self.fillBookingOrigins(value, key, promises, processedFilter);
+                        break; 
+                   case reportParamsConst['MARKET_IDS']:
+                        self.fillMarkets(value, key, promises, processedFilter);
+                        break; 
+                   case reportParamsConst['SOURCE_IDS']:
+                        self.fillSources(value, key, promises, processedFilter);
+                        break; 
+                   case reportParamsConst['HOLD_STATUS_IDS']:
+                        self.fillHoldStatuses(value, key, promises, processedFilter);
+                        break; 
+                   case reportParamsConst['INCLUDE_GROUP']:
+                        self.fillGroupInfo(value, key, promises, processedFilter);
+                        break;
+                   case reportParamsConst['ROOM_TYPE_IDS']:
+                        self.fillRoomTypes(value, key, promises, processedFilter);
+                        break; 
+                   case reportParamsConst['FLOOR']:
+                        self.fillFloors(value, key, promises, processedFilter);
+                        break; 
+                   case reportParamsConst['TRAVEL_AGENTS']:
+                        self.fillTravelAgentInfo(value, key, promises, processedFilter);
+                        break;
+                   case reportParamsConst['WITH_VAT_NUMBER']:
+                   case reportParamsConst['WITHOUT_VAT_NUMBER']:
+                        self.fillVatInfo(value, key, promises, processedFilter);
+                        break;
+                   case reportParamsConst['CAMPAIGN_TYPES']:
+                        self.fillCampaignTypesInfo(value, key, promises, processedFilter);
+                        break;
+                   case reportParamsConst['SORT_DIR']:
+                        self.fillSortDir(value, key, promises, processedFilter);
+                        break;
 
                 }                
 
@@ -367,7 +569,28 @@ angular.module('sntRover').service('RVReportsInboxSrv', [
 
             if(processedFilter[reportInboxFilterLabelConst['OPTIONS']]) {
               processedFilter[reportInboxFilterLabelConst['OPTIONS']] = processedFilter[reportInboxFilterLabelConst['OPTIONS']].join(',');  
-            }            
+            }
+
+            if(processedFilter[reportInboxFilterLabelConst['SHOW']]) {
+              processedFilter[reportInboxFilterLabelConst['SHOW']] = processedFilter[reportInboxFilterLabelConst['SHOW']].join(',');  
+            } 
+
+            if(processedFilter[reportInboxFilterLabelConst['COMPANY/TRAVEL AGENT']]) {
+              processedFilter[reportInboxFilterLabelConst['COMPANY/TRAVEL AGENT']] = processedFilter[reportInboxFilterLabelConst['SHOW']].join(',');  
+            } 
+
+            if(processedFilter[reportInboxFilterLabelConst['GUEST/ACCOUNT']]) {
+              processedFilter[reportInboxFilterLabelConst['GUEST/ACCOUNT']] = processedFilter[reportInboxFilterLabelConst['SHOW']].join(',');  
+            } 
+
+            if(processedFilter[reportInboxFilterLabelConst['CHECK IN/ CHECK OUT']]) {
+              processedFilter[reportInboxFilterLabelConst['CHECK IN/ CHECK OUT']] = processedFilter[reportInboxFilterLabelConst['SHOW']].join(',');  
+            } 
+
+            if(processedFilter[reportInboxFilterLabelConst['DISPLAY']]) {
+              processedFilter[reportInboxFilterLabelConst['DISPLAY']] = processedFilter[reportInboxFilterLabelConst['SHOW']].join(',');  
+            }             
+           
 
             $q.all(promises).then(function() {
                 deferred.resolve(processedFilter);
