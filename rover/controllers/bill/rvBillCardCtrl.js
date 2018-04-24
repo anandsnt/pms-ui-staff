@@ -2182,6 +2182,11 @@ sntRover.controller('RVbillCardController',
 		}
 		else if ( $rootScope.isStandAlone && ActiveBillBalance !== "0.00" && paymentType === "DB"  && !reservationBillData.bills[$scope.currentActiveBill].is_allow_direct_debit ) {
 			showDirectDebitDisabledPopup();
+		} 
+		else if ( $rootScope.isStandAlone && ActiveBillBalance !== "0.00" && paymentType === "DB"  && reservationBillData.bills[$scope.currentActiveBill].is_allow_direct_debit ) {
+			// Show payment popup for stand-alone only.
+			$scope.reservationBillData.isCheckout = true;
+			$scope.clickedPayButton(true);
 		}
 		else if ($rootScope.isStandAlone && ActiveBillBalance !== "0.00" && paymentType !== "DB") {
 			// Show payment popup for stand-alone only.
