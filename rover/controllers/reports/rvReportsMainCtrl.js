@@ -2142,6 +2142,11 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
             };
 
             var sucssCallback = function (response) {
+                if ($rootScope.isBackgroundReportsEnabled) {
+                    $state.go('rover.reports.inbox');
+                    return;
+                }
+                
                 updateDS(response);
 
                 $scope.errorMessage = [];

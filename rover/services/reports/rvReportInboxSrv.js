@@ -7,7 +7,9 @@ angular.module('sntRover').service('RVReportsInboxSrv', [
     'RVReportParamsConst',
     'RVReportInboxFilterLabelConst',
     'RVReservationBaseSearchSrv', 
-    'RVreportsSubSrv',       
+    'RVreportsSubSrv', 
+    '$filter',
+    '$rootScope',      
     function($q, 
         rvBaseWebSrvV2,
         applyIconClass, 
@@ -16,50 +18,13 @@ angular.module('sntRover').service('RVReportsInboxSrv', [
         reportParamsConst,
         reportInboxFilterLabelConst,
         RVReservationBaseSearchSrv,
-        RVreportsSubSrv ) {
+        RVreportsSubSrv,
+        $filter,
+        $rootScope ) {
 
         var self = this;
 
-        this.PER_PAGE = 10;
-
-        var reportInboxSampleData = [
-            {
-                id: 1,
-                report_id: 8,
-                user_id: 102,
-                status_id: 2,
-                from_date: "11-12-2018",
-                to_date: "13-12-2018",
-                name: "Arrival"
-            },
-            {
-                id: 1,
-                report_id: 7,
-                user_id: 102,
-                status_id: 2,
-                from_date: "11-12-2018",
-                to_date: "13-12-2018",
-                name: "Departure"
-            },
-            {
-                id: 1,
-                report_id: 8,
-                user_id: 102,
-                status_id: 2,
-                from_date: "11-12-2018",
-                to_date: "13-12-2018",
-                name: "Departure"
-            },
-            {
-                id: 1,
-                report_id: 7,
-                user_id: 102,
-                status_id: 2,
-                from_date: "11-12-2018",
-                to_date: "13-12-2018",
-                name: "Arrival"
-            }
-        ]
+        this.PER_PAGE = 10;        
 
         this.fetchReportInbox = function(params) {
             var deferred = $q.defer(),            
@@ -79,10 +44,84 @@ angular.module('sntRover').service('RVReportsInboxSrv', [
             for (var i = 0, j = report.length; i < j; i++) {               
 
                 // apply icon class based on the report name
-                applyIconClass.init( report[i] );
+                applyIconClass.init( report[i] );                
                 
             }
         };
+
+        /**
+         * Add the from date and to date that needs to shown in report inbox summary
+         * @param {Object} report generated report object
+         * @return {void}
+         */
+        this.fillReportDates = (generatedReport) => {
+            let fromDate = 'N/A',
+                toDate = 'N/A',
+                filters = generatedReport.filters;
+            
+            if (filters[reportParamsConst['FROM_DATE']]) {
+                fromDate = filters[reportParamsConst['FROM_DATE']];
+            } else if (filters[reportParamsConst['CANCEL_FROM_DATE']]) {
+                fromDate = filters[reportParamsConst['CANCEL_FROM_DATE']];
+            } else if (filters[reportParamsConst['ARRIVAL_FROM_DATE']]) {
+                fromDate = filters[reportParamsConst['ARRIVAL_FROM_DATE']];
+            } else if (filters[reportParamsConst['GROUP_START_DATE']]) {
+                fromDate = filters[reportParamsConst['GROUP_START_DATE']];
+            } else if (filters[reportParamsConst['DEPOSIT_FROM_DATE']]) {
+                fromDate = filters[reportParamsConst['DEPOSIT_FROM_DATE']];
+            } else if (filters[reportParamsConst['PAID_FROM_DATE']]) {
+                fromDate = filters[reportParamsConst['PAID_FROM_DATE']];
+            } else if (filters[reportParamsConst['CREATE_FROM_DATE']]) {
+                fromDate = filters[reportParamsConst['CREATE_FROM_DATE']];
+            } else if (filters[reportParamsConst['ADJUSTMENT_FROM_DATE']]) {
+                fromDate = filters[reportParamsConst['ADJUSTMENT_FROM_DATE']];
+            } else if (filters[reportParamsConst['SINGLE_DATE']]) {
+                fromDate = filters[reportParamsConst['SINGLE_DATE']];
+            }
+
+
+            if (filters[reportParamsConst['TO_DATE']]) {
+                toDate = filters[reportParamsConst['TO_DATE']];
+            } else if (filters[reportParamsConst['CANCEL_TO_DATE']]) {
+                toDate = filters[reportParamsConst['CANCEL_TO_DATE']];
+            } else if (filters[reportParamsConst['ARRIVAL_TO_DATE']]) {
+                toDate = filters[reportParamsConst['ARRIVAL_TO_DATE']];
+            } else if (filters[reportParamsConst['GROUP_END_DATE']]) {
+                toDate = filters[reportParamsConst['GROUP_END_DATE']];
+            } else if (filters[reportParamsConst['DEPOSIT_TO_DATE']]) {
+                toDate = filters[reportParamsConst['DEPOSIT_TO_DATE']];
+            } else if (filters[reportParamsConst['PAID_TO_DATE']]) {
+                toDate = filters[reportParamsConst['PAID_TO_DATE']];
+            } else if (filters[reportParamsConst['CREATE_TO_DATE']]) {
+                toDate = filters[reportParamsConst['CREATE_TO_DATE']];
+            } else if (filters[reportParamsConst['ADJUSTMENT_TO_DATE']]) {
+                toDate = filters[reportParamsConst['ADJUSTMENT_TO_DATE']];
+            } else if (filters[reportParamsConst['SINGLE_DATE']]) {
+                toDate = filters[reportParamsConst['SINGLE_DATE']];
+            }
+
+            generatedReport.fromDate = fromDate !== 'N/A' ? $filter('date')(tzIndependentDate(fromDate), $rootScope.dateFormat) : fromDate;
+            generatedReport.toDate = toDate !== 'N/A' ? $filter('date')(tzIndependentDate(toDate), $rootScope.dateFormat) : toDate;
+
+        };
+
+        this.formatRequestedTimeForGeneratedReport = (generatedReport) => {
+            let requestedDate = generatedReport.created_at;
+        };
+
+        /**
+         * Filter values from a base array based on another array of values and the key to compare
+         * @param {Array} dataArr Array of objects which should be filtered
+         * @param {Array} filterArr array of values
+         * @param {String} filterKey the key in the object whose values needs to be compared
+         */
+        this.filterArrayValues = (dataArr, filterArr, filterKey) => {
+            let filteredList = _.filter(dataArr, (data) => {
+                                    return filterArr.indexOf(data[filterKey]) !== -1;
+                               });
+
+            return filteredList;
+        }
 
         this.processRateIds = function( value, key, promises, formatedFilter) {
             var params = {
@@ -95,13 +134,19 @@ angular.module('sntRover').service('RVReportsInboxSrv', [
             }));
         };
 
-        this.processDepartments = (value, key, promises, formatedFilter) => {
-            let params = {
-                ids: value
-            };
+        /**
+         * Fill department names form array of ids
+         * @param {Array} value array of department ids
+         * @param {String} key the key to be used in the formatted filter
+         * @param {Promises} promises array of promises
+         * @param {Object} formatedFilter the formatted filter object
+         * @return {void} 
+         */
+
+        this.fillDepartmentNames = (value, key, promises, formatedFilter) => {            
 
             promises.push(RVreportsSubSrv.fetchDepartments().then((departments) => {
-                formatedFilter[reportInboxFilterLabelConst[key]] = _.pluck(departments, 'name').join(',');
+                formatedFilter[reportInboxFilterLabelConst[key]] = _.pluck(self.filterArrayValues(departments, value, 'id'), 'name').join(',');
             }));
         };
 
@@ -146,7 +191,7 @@ angular.module('sntRover').service('RVReportsInboxSrv', [
             }               
             
         };
-
+        //TODO
         this.processAccounts = (value, key, formatedFilter) => {                          
             
         };
@@ -252,7 +297,7 @@ angular.module('sntRover').service('RVReportsInboxSrv', [
         };
 
         // TODO use the correct APIs
-        this.fillRateTypes = (value, key, promises, processedFilter) => {
+        this.fillRateTypes = (value, key, promises, formatedFilter) => {
             var params = {               
                 rate_type_ids: value
             };
@@ -262,17 +307,14 @@ angular.module('sntRover').service('RVReportsInboxSrv', [
             }));
         };
 
-        this.fillChargeCodes = (value, key, promises, processedFilter) => {
-            var params = {               
-                charge_code_ids: value
-            };
+        this.fillChargeCodes = (value, key, promises, formatedFilter) => {            
 
             promises.push(RVreportsSubSrv.fetchChargeCodes().then(function(chargeCodes) {
-                formatedFilter[reportInboxFilterLabelConst[key]] = _.pluck(chargeCodes, 'description').join(',');
+                formatedFilter[reportInboxFilterLabelConst[key]] = _.pluck(self.filterArrayValues(chargeCodes, value, 'id'), 'description').join(',');
             }));
         };
 
-        this.fillChargeGroups = (value, key, promises, processedFilter) => {            
+        this.fillChargeGroups = (value, key, promises, formatedFilter) => {            
 
             promises.push(RVreportsSubSrv.fetchChargeNAddonGroups().then(function(chargeGroups) {
                 formatedFilter[reportInboxFilterLabelConst[key]] = _.pluck(chargeGroups, 'description').join(',');
@@ -290,35 +332,35 @@ angular.module('sntRover').service('RVReportsInboxSrv', [
             
         };
 
-        this.fillUserInfo = (value, key, promises, processedFilter) => {            
+        this.fillUserInfo = (value, key, promises, formatedFilter) => {            
 
             promises.push(RVreportsSubSrv.fetchActiveUsers().then(function(users) {
-                formatedFilter[reportInboxFilterLabelConst[key]] = _.pluck(users, 'full_name').join(',');
+                formatedFilter[reportInboxFilterLabelConst[key]] = _.pluck(self.filterArrayValues(users, value, 'id'), 'full_name').join(',');
             }));
         };
 
-        this.fillBookingOrigins = (value, key, promises, processedFilter) => {            
+        this.fillBookingOrigins = (value, key, promises, formatedFilter) => {            
 
             promises.push(RVreportsSubSrv.fetchBookingOrigins().then(function(origins) {
-                formatedFilter[reportInboxFilterLabelConst[key]] = _.pluck(users, 'name').join(',');
+                formatedFilter[reportInboxFilterLabelConst[key]] = _.pluck(origins, 'name').join(',');
             }));
         };
 
-        this.fillMarkets = (value, key, promises, processedFilter) => {            
+        this.fillMarkets = (value, key, promises, formatedFilter) => {            
 
             promises.push(RVreportsSubSrv.fetchMarkets().then(function(markets) {
                 formatedFilter[reportInboxFilterLabelConst[key]] = _.pluck(users, 'name').join(',');
             }));
         };
 
-        this.fillSources = (value, key, promises, processedFilter) => {           
+        this.fillSources = (value, key, promises, formatedFilter) => {           
 
             promises.push(RVreportsSubSrv.fetchSources().then(function(sources) {
                 formatedFilter[reportInboxFilterLabelConst[key]] = _.pluck(sources, 'name').join(',');
             }));
         };
 
-        this.fillHoldStatuses = (value, key, promises, processedFilter) => {           
+        this.fillHoldStatuses = (value, key, promises, formatedFilter) => {           
 
             promises.push(RVreportsSubSrv.fetchHoldStatus().then(function(statuses) {
                 formatedFilter[reportInboxFilterLabelConst[key]] = _.pluck(statuses, 'name').join(',');
@@ -326,12 +368,12 @@ angular.module('sntRover').service('RVReportsInboxSrv', [
         };
 
         // TODO
-        this.fillGroupInfo = (value, key, promises, processedFilter) => {           
+        this.fillGroupInfo = (value, key, promises, formatedFilter) => {           
 
             
         };
 
-        this.fillRoomTypes = (value, key, promises, processedFilter) => { 
+        this.fillRoomTypes = (value, key, promises, formatedFilter) => { 
             let params = {
                 ids: value
             };          
@@ -341,14 +383,14 @@ angular.module('sntRover').service('RVReportsInboxSrv', [
             }));
         };
 
-        this.fillFloors = (value, key, promises, processedFilter) => {                     
+        this.fillFloors = (value, key, promises, formatedFilter) => {                     
 
             promises.push(RVreportsSubSrv.fetchFloors().then(function(floors) {
                 formatedFilter[reportInboxFilterLabelConst[key]] = _.pluck(floors, 'floor_number').join(',');
             }));
         };
 
-        this.fillTravelAgentInfo = (value, key, promises, processedFilter) => {                     
+        this.fillTravelAgentInfo = (value, key, promises, formatedFilter) => {                     
             let params = {
                 ids: value
             };
@@ -369,7 +411,7 @@ angular.module('sntRover').service('RVReportsInboxSrv', [
             
         };
 
-        this.fillCampaignTypesInfo = (value, key, promises, processedFilter) => {  
+        this.fillCampaignTypesInfo = (value, key, promises, formatedFilter) => {  
 
             promises.push(RVreportsSubSrv.fetchCampaignTypes().then(function(campaignTypes) {
                 formatedFilter[reportInboxFilterLabelConst[key]] = _.pluck(campaignTypes, 'name').join(',');
@@ -386,6 +428,14 @@ angular.module('sntRover').service('RVReportsInboxSrv', [
             formatedFilter[reportInboxFilterLabelConst[key]] = sortDir;   
         };
 
+        this.fillSortField = (value, key, formatedFilter) => {            
+            if (value) {
+              value = value.replace("_", " ");
+            }
+
+            formatedFilter[reportInboxFilterLabelConst[key]] = value;   
+        };
+        
 
 
         this.processFilters = function(filters) {
@@ -413,16 +463,17 @@ angular.module('sntRover').service('RVReportsInboxSrv', [
                    case reportParamsConst['CREATE_TO_DATE']:
                    case reportParamsConst['ADJUSTMENT_FROM_DATE']:
                    case reportParamsConst['ADJUSTMENT_TO_DATE']:
-                   case reportParamsConst['SINGLE_DATE']:
+                   case reportParamsConst['SINGLE_DATE']:                   
+                        processedFilter[reportInboxFilterLabelConst[key]] = value ? $filter('date')(tzIndependentDate(value), $rootScope.dateFormat) : value;
+                        break;
                    case reportParamsConst['FROM_TIME']:
                    case reportParamsConst['TO_TIME']:
                         processedFilter[reportInboxFilterLabelConst[key]] = value;
-                        break;
                    case reportParamsConst['RATE_IDS']:
                         self.processRateIds(value, key, promises, processedFilter);
                         break;
                    case reportParamsConst['ASSIGNED_DEPARTMENTS']:
-                        self.processDepartments(value, key, promises, processedFilter);
+                        self.fillDepartmentNames(value, key, promises, processedFilter);
                         break;                   
                    case reportParamsConst['CHOOSE_MARKET']:
                         self.processMarkets(value, key, promises, processedFilter);
@@ -449,7 +500,8 @@ angular.module('sntRover').service('RVReportsInboxSrv', [
                    case reportParamsConst['INCLUDE_VARIANCE']: 
                    case reportParamsConst['INCLUDE_BOTH']: 
                    case reportParamsConst['INCLUDE_NEW']:  
-                   case reportParamsConst['SHOW_RATE_ADJUSTMENTS_ONLY']:                
+                   case reportParamsConst['SHOW_RATE_ADJUSTMENTS_ONLY']:     
+                   case reportParamsConst['EXCLUDE_TAX']:          
                         self.processOptions(value, key, processedFilter);
                         break;
                    case reportParamsConst['SHOW_DELETED_CHARGES']:
@@ -508,8 +560,7 @@ angular.module('sntRover').service('RVReportsInboxSrv', [
                    case reportParamsConst['MIN_REVENUE']:
                    case reportParamsConst['MIN_NIGHTS']:
                    case reportParamsConst['MIN_NO_OF_DAYS_NOT_OCCUPIED']:
-                   case reportParamsConst['VAT_YEAR']:
-                   case reportParamsConst['SORT_FIELD']:
+                   case reportParamsConst['VAT_YEAR']:                   
                         self.fillValueWithoutFormating(value, key, processedFilter);
                         break;
                    case reportParamsConst['RATE_TYPE_IDS']:
@@ -560,7 +611,10 @@ angular.module('sntRover').service('RVReportsInboxSrv', [
                         self.fillCampaignTypesInfo(value, key, promises, processedFilter);
                         break;
                    case reportParamsConst['SORT_DIR']:
-                        self.fillSortDir(value, key, promises, processedFilter);
+                        self.fillSortDir(value, key, processedFilter);
+                        break;
+                   case reportParamsConst['SORT_FIELD']:
+                        self.fillSortField(value, key, processedFilter);
                         break;
 
                 }                
@@ -576,24 +630,26 @@ angular.module('sntRover').service('RVReportsInboxSrv', [
             } 
 
             if(processedFilter[reportInboxFilterLabelConst['COMPANY/TRAVEL AGENT']]) {
-              processedFilter[reportInboxFilterLabelConst['COMPANY/TRAVEL AGENT']] = processedFilter[reportInboxFilterLabelConst['SHOW']].join(',');  
+              processedFilter[reportInboxFilterLabelConst['COMPANY/TRAVEL AGENT']] = processedFilter[reportInboxFilterLabelConst['COMPANY/TRAVEL AGENT']].join(',');  
             } 
 
             if(processedFilter[reportInboxFilterLabelConst['GUEST/ACCOUNT']]) {
-              processedFilter[reportInboxFilterLabelConst['GUEST/ACCOUNT']] = processedFilter[reportInboxFilterLabelConst['SHOW']].join(',');  
+              processedFilter[reportInboxFilterLabelConst['GUEST/ACCOUNT']] = processedFilter[reportInboxFilterLabelConst['GUEST/ACCOUNT']].join(',');  
             } 
 
             if(processedFilter[reportInboxFilterLabelConst['CHECK IN/ CHECK OUT']]) {
-              processedFilter[reportInboxFilterLabelConst['CHECK IN/ CHECK OUT']] = processedFilter[reportInboxFilterLabelConst['SHOW']].join(',');  
+              processedFilter[reportInboxFilterLabelConst['CHECK IN/ CHECK OUT']] = processedFilter[reportInboxFilterLabelConst['CHECK IN/ CHECK OUT']].join(',');  
             } 
 
             if(processedFilter[reportInboxFilterLabelConst['DISPLAY']]) {
-              processedFilter[reportInboxFilterLabelConst['DISPLAY']] = processedFilter[reportInboxFilterLabelConst['SHOW']].join(',');  
+              processedFilter[reportInboxFilterLabelConst['DISPLAY']] = processedFilter[reportInboxFilterLabelConst['DISPLAY']].join(',');  
             }             
            
 
             $q.all(promises).then(function() {
                 deferred.resolve(processedFilter);
+            }, function(errorMessage) {
+                deferred.reject(processedFilter);
             });
 
             return deferred.promise;
@@ -615,6 +671,7 @@ angular.module('sntRover').service('RVReportsInboxSrv', [
                 report.reportIconCls = selectedReport.reportIconCls;
                 report.shouldShowExport = selectedReport.display_export_button;
                 report.isExpanded = false;
+                self.fillReportDates(report);
             });
             
             return generatedReports;

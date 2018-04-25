@@ -1168,11 +1168,7 @@ sntRover.controller('RVReportDetailsCtrl', [
         // add the print orientation after printing
         var removePrintOrientation = function () {
             $('#print-orientation').remove();
-        };
-
-		$scope.$on("YEARLY_TAX_REPORT_PRINT", function() {
-			printReport();
-		});
+        };		
 
 		// print the page
 		var printReport = function() {

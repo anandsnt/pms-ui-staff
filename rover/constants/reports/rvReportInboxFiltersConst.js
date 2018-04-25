@@ -43,7 +43,7 @@ angular.module('reportsModule')
         "deposit_due": "Deposit Due",
         "deposit_paid": "Deposit Paid",
         "deposit_past": "Deposit Past",
-        "include_cancelled": "Include Cancelled",
+        "include_canceled": "Include Canceled",
         "include_market": "Include Market",
         "include_no_show": "Include No Show",
         "include_tax": "Include Tax",
@@ -106,6 +106,8 @@ angular.module('reportsModule')
         "oos": "OOS",
         "min_number_of_days_not_occupied": "Min No of Days Not Occupied",
         "year": "Year",
-        "COMPANY/TRAVEL AGENT": "Company/Travel Agent"
+        "COMPANY/TRAVEL AGENT": "Company/Travel Agent",
+        "exclude_tax": "Exclude Tax",
+        "show_deleted_charges": "Show Deleted Charges"
         
     });
