@@ -225,7 +225,7 @@ sntGuestWeb.controller('homeController', ['$rootScope', '$scope', '$location', '
 
 		var navigatePageBasedOnUrlAndType = function() {
 			var absUrl = window.location.href;
-			if (absUrl.indexOf("/guest_web/") != -1 && absUrl.indexOf("/checkin?guest_web_token=") !== -1 &&
+			if (absUrl.indexOf("/guest_web/") !== -1 && absUrl.indexOf("/checkin?guest_web_token=") !== -1 &&
 				reservationAndhotelData.skip_checkin_verification && reservationAndhotelData.reservation_details) {
 				checkinDetailsService.setResponseData(reservationAndhotelData.reservation_details);
 				$rootScope.upgradesAvailable = (reservationAndhotelData.reservation_details.is_upgrades_available === "true") ? true : false;

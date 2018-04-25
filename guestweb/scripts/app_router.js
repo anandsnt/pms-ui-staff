@@ -43,7 +43,7 @@ sntGuestWeb.config(['$stateProvider', '$urlRouterProvider', function($stateProvi
                         remainingURl = (remainingURl.indexOf("#") !== -1) ? remainingURl.substring(0, remainingURl.indexOf("#")) : remainingURl;
                     apiUrl = "/guest_web/home/activate_user.json" + remainingURl;
                 }
-                else if ( absUrl.indexOf("/guest_web/") != -1 && absUrl.indexOf("/checkin?guest_web_token=") !== -1) {
+                else if ( absUrl.indexOf("/guest_web/") !== -1 && absUrl.indexOf("/checkin?guest_web_token=") !== -1) {
                     setAPiURLfromWindowUrl();
                 }
                 // direct URL checkin - accessing URLS set in hotel admin for checkin
