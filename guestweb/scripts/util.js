@@ -267,3 +267,17 @@ var returnFooterStyleClass = function(footerCount) {
   }
   return footerClass;
 };
+
+var customizeStylesBasedOnUrlTyppe = function() {
+  // customize style
+  // logo is not in a common HTML
+  var node = document.createElement('style');
+  node.innerHTML = ".logo-image {display: none;} .row.header-bar {margin-bottom: 30px !important;}";
+  document.head.appendChild(node);
+
+  // $("#zest-footer").show() is called to show footer after loading, 
+  // so as to oveeride that use the following
+  $('#zest-footer').css({
+    'display': 'none'
+  });
+};
