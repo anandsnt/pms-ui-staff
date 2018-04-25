@@ -72,7 +72,7 @@ sntRover.controller('RVJournalCashierController', ['$scope', 'RVJournalSrv', '$r
 	$scope.historyClicked = function(index) {
 		$scope.selectedHistory = index;
         $scope.details = $scope.detailsList[index];
-        $scope.details.cash_submitted = ($scope.details.cash_submitted === null || $scope.details.cash_submitted ==="") ? 0 : $scope.details.cash_submitted;
+        $scope.details.cash_submitted = ($scope.details.cash_submitted === null || $scope.details.cash_submitted === "") ? 0 : $scope.details.cash_submitted;
         $scope.details.check_submitted = ($scope.details.check_submitted === null || $scope.details.check_submitted === "") ? 0 : $scope.details.check_submitted;
         $scope.selectedHistoryId = $scope.detailsList[index].id;
         $scope.totalClosingBalanceInCash = parseFloat($scope.details.opening_balance_cash) +
@@ -100,6 +100,7 @@ sntRover.controller('RVJournalCashierController', ['$scope', 'RVJournalSrv', '$r
         updateData.id = $scope.selectedHistoryId;
         var closing_balance_cash  = parseFloat($scope.details.opening_balance_cash) + parseFloat($scope.details.total_cash_received) - parseFloat($scope.details.cash_submitted);
         var closing_balance_check = parseFloat($scope.details.opening_balance_check) + parseFloat($scope.details.total_check_received) - parseFloat($scope.details.check_submitted);
+
         updateData.data = {"cash_submitted": $scope.details.cash_submitted, "check_submitted": $scope.details.check_submitted, "closing_balance_cash": closing_balance_cash, "closing_balance_check": closing_balance_check};
         $scope.invokeApi(RVJournalSrv.closeCashier, updateData, closeShiftSuccesCallback);
 
