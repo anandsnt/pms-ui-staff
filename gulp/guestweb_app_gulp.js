@@ -22,7 +22,7 @@ module.exports = function(gulp, $, options) {
             .pipe(gulp.dest(options['DEST_ROOT_PATH']+'guestweb'));
     });
     // //TASKS
-    gulp.task('build-guestweb-dev', ['build-guestweb-js-dev', 'guestweb-template-cache-dev', 'build-guestweb-css-dev'
+    gulp.task('build-guestweb-dev', ['build-guestweb-js-dev', 'guestweb-template-cache-dev-v2', 'guestweb-template-cache-dev' , 'build-guestweb-css-dev'
         ]);
     
     gulp.task('guestweb-inject-assets-to-templates', function(callback){

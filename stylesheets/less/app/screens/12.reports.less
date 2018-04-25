@@ -4357,10 +4357,6 @@
                         &:last-child {
                             span { width: 100%; }
                         }
-
-                        &.vat-revenue {
-                            width: 120px;
-                        }
                     }
 
                     td {
@@ -4398,11 +4394,6 @@
                                 white-space: normal;
                             }
                         }
-
-                        &.vat-revenue {
-                            text-align: right;
-                            width: 120px;
-                        }
                     }
 
                     &.pagination {
@@ -4426,6 +4417,18 @@
                                 &:after { .hide; }
                             }
                         }
+                    }
+                }
+
+                &.vat-report {
+                    
+                    .number {
+                        width: 140px;
+                    }
+                    
+                    .revenue {
+                        text-align: right;
+                        width: 120px;
                     }
                 }
             }

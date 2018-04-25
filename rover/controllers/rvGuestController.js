@@ -316,7 +316,13 @@ angular.module('sntRover').controller('guestCardController', [
             }
             if (tab === 'guest-credit') {
                 $scope.$broadcast('PAYMENTSCROLL');
+            } else if (tab === 'guest-like') {
+                $scope.$broadcast('GUESTLIKETABACTIVE');
+                $scope.$broadcast('REFRESHLIKESSCROLL');
+            } else if (tab === 'guest-contact') {
+                $scope.$broadcast('CONTACTINFOLOADED');
             }
+
             $scope.$broadcast('REFRESHLIKESSCROLL');
             if (!$scope.viewState.isAddNewCard) {
                 $scope.current = tab;
@@ -2021,7 +2027,7 @@ angular.module('sntRover').controller('guestCardController', [
 
         // Listener for setting the guestData information
         var guestCardSetListener = $scope.$on('SET_GUEST_CARD_DATA', function (event, data) {
-            $scope.guestCardData = getGuestCardData(data.contactInfo, data.guestId);
+            $scope.guestCardData.contactInfo = $scope.getUpdatedContactInfo(data.contactInfo, data.guestId);
         });
 
         $scope.$on('$destroy', guestCardSetListener);               
