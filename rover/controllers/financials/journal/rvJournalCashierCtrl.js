@@ -73,6 +73,10 @@ sntRover.controller('RVJournalCashierController', ['$scope', 'RVJournalSrv', '$r
 		$scope.selectedHistory = index;
         $scope.details = $scope.detailsList[index];
         $scope.selectedHistoryId = $scope.detailsList[index].id;
+        $scope.totalClosingBalanceInCash = parseFloat($scope.details.opening_balance_cash) +
+            parseFloat($scope.details.total_cash_received) - parseFloat($scope.details.cash_submitted);
+        $scope.totalClosingBalanceInCheck = parseFloat($scope.details.opening_balance_check) +
+            parseFloat($scope.details.total_check_received) - parseFloat($scope.details.check_submitted);
 	};
 
     /**
