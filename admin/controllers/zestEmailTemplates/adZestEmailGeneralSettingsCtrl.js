@@ -45,7 +45,7 @@ admin.controller('ADZestEmailGeneralSettingsCtrl', ['$scope', '$sce', 'data', 'n
             var options = {
                 params: params,
                 successCallBack: function() {
-                    $scope.successMessage = 'Sucess!';
+                    $scope.successMessage = 'Success!';
                 }
             };
 

@@ -5,8 +5,8 @@
 		</button>
 		<div ng-include="'/assets/partials/common/notification_message.html'"></div>
 	    <span class="icons icon-popup-alert"></span>
-	    <span class="h2 message">Contracted rate exists on selected card. Update rate on reservation?</span>
-
+	    <span class="h2 message" ng-hide="cardData.showCommisionWarning" translate>CONTRACTED_RATE_EXISTS_WARNING</span>
+		<span class="h2 message" ng-show="cardData.showCommisionWarning" translate>CONTRACTED_RATE_EXISTS_AND_COMMISSION_WARNING</span>
 	    <div class="actions">
 	    	<button ng-click="changeToContractedRate(cardData)" type="button" class="button green">Change to contracted rate</button>
 			<button ng-click="selectCard(cardData)" type="button" class="button blue">Keep existing rate</button>

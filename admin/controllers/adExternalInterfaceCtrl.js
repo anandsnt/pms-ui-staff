@@ -73,11 +73,11 @@ admin.controller('adExternalInterfaceCtrl',
       'admin.givexSetup': {'controller': adGivexSetupSrv, 'name': $scope.simpleName, 'service_name': 'adGivexSetupSrv'}
     };
     $scope.init = function () {
-      var interface = $scope.interfaceConfig[$scope.currentState];
+      var currentInterface = $scope.interfaceConfig[$scope.currentState];
 
-      if (interface) {
-        $scope.serviceController = interface.controller;
-        $scope.interfaceName = interface.name;
+      if (currentInterface) {
+        $scope.serviceController = currentInterface.controller;
+        $scope.interfaceName = currentInterface.name;
         // fetch payment methods, source origins, then values
 
         $scope.fetchSetup();

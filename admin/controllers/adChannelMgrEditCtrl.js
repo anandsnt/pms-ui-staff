@@ -14,8 +14,8 @@ admin.controller('ADChannelMgrEditCtrl', ['$scope', '$rootScope', '$state', 'ava
         
 	var lastDropedTime = '';
         
-        $scope.selectInterface = function(interface) {
-            $scope.selectedInterface = interface;
+        $scope.selectInterface = function(selectedInterface) {
+            $scope.selectedInterface = selectedInterface;
         };
         $scope.setRateDropdown = function(rate_id, old) {
             for (var x in $scope.rateData) {
@@ -142,10 +142,10 @@ admin.controller('ADChannelMgrEditCtrl', ['$scope', '$rootScope', '$state', 'ava
                         exItem = $scope.excludedRoomTypes[ex];
                         for (var x in item.room_types) {
                             
-                            if (typeof item.room_types[x].id !== typeof 0123 && typeof item.room_types[x].id === typeof 'str') {
+                            if (typeof item.room_types[x].id !== typeof 123 && typeof item.room_types[x].id === typeof 'str') {
                                 item.room_types[x].id = parseInt(item.room_types[x].id);
                             }
-                            if (typeof exItem.id !== typeof 0123 && typeof exItem.id === typeof 'str') {
+                            if (typeof exItem.id !== typeof 123 && typeof exItem.id === typeof 'str') {
                                 exItem.id = parseInt(exItem.id);
                             }
                             
@@ -540,7 +540,7 @@ admin.controller('ADChannelMgrEditCtrl', ['$scope', '$rootScope', '$state', 'ava
                 $scope.updateRate($scope.selectedRate);
             } else {
                 var included = $scope.includedRoomTypes, excluded = $scope.excludedRoomTypes;
-                var rate = $scope.selectedRate, interface = $scope.selectedInterface;
+                var rate = $scope.selectedRate, selectedInterface = $scope.selectedInterface;
 
                 if (rate.placeholder) {
                     return;
@@ -550,7 +550,7 @@ admin.controller('ADChannelMgrEditCtrl', ['$scope', '$rootScope', '$state', 'ava
                 var excludedRoomIds = $scope.getIds(excluded);
 
                 var params = {
-                    channel_id: interface.id,
+                    channel_id: selectedInterface.id,
                     rate_id: rate.id,
                     room_type_ids: includedRoomIds
                 };
