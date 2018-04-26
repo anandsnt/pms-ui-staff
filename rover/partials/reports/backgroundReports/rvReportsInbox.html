@@ -4,9 +4,9 @@
         <span class="icons icon-reset"></span> Refresh
     </button>
     <div class="entry search">
-        <button type="button" class="clear-query" ng-class="{'visible': query.length}" ng-click="clearQuery()">
+        <button type="button" class="clear-query" ng-class="{'visible': reportInboxData.filter.searchTerm.length}" ng-click="clearQuery()">
             <!-- Add class "visible" to show -->
-            <span class="icons icon-clear-search">Clear query</span>
+            <span class="icons icon-clear-search" ng-click="clearQuery()">Clear query</span>
         </button>
         <button type="button" name="submit" class="icons icon-search">Search</button>
         <input id="reports-query" class="query" placeholder="Search by Report Name" type="search" autocomplete="off" ng-model="reportInboxData.filter.searchTerm" ng-keyup="filterByQuery()">

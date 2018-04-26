@@ -116,21 +116,34 @@ angular.module('sntRover').service('RVReportsInboxSrv', [
          * @param {String} filterKey the key in the object whose values needs to be compared
          */
         this.filterArrayValues = (dataArr, filterArr, filterKey) => {
+            let index = -1;
             let filteredList = _.filter(dataArr, (data) => {
-                                    return filterArr.indexOf(data[filterKey]) !== -1;
+                                    //return filterArr.indexOf(parseInt(data[filterKey])) !== -1; 
+                                    index = _.findIndex(filterArr, (val) => {
+                                                return val == data[filterKey];
+                                            });
+                                    return  index !== -1;                                  
                                });
 
             return filteredList;
         }
 
-        this.processRateIds = function( value, key, promises, formatedFilter) {
-            var params = {
-                //reportParamsConst['RATE_IDS']: value
-                rate_ids: value
+        /**
+         * Fill rate names form array of ids
+         * @param {Array} value array of rate ids
+         * @param {String} key the key to be used in the formatted filter
+         * @param {Promises} promises array of promises
+         * @param {Object} formatedFilter the formatted filter object
+         * @return {void} 
+         */
+
+        this.processRateIds = ( value, key, promises, formatedFilter) => {
+            let params = {                
+                "ids[]": value
             };
 
-            promises.push(RVReservationBaseSearchSrv.fetchRateDetailsForIds(params).then(function(rates) {
-                formatedFilter[reportInboxFilterLabelConst[key]] = _.pluck(rates, 'name').join(',');
+            promises.push(RVreportsSubSrv.fetchRateDetailsByIds(params).then(function(rates) {
+                formatedFilter[reportInboxFilterLabelConst[key]] = _.pluck(rates, 'rate_name').join(',');
             }));
         };
 
@@ -142,11 +155,10 @@ angular.module('sntRover').service('RVReportsInboxSrv', [
          * @param {Object} formatedFilter the formatted filter object
          * @return {void} 
          */
-
         this.fillDepartmentNames = (value, key, promises, formatedFilter) => {            
 
             promises.push(RVreportsSubSrv.fetchDepartments().then((departments) => {
-                formatedFilter[reportInboxFilterLabelConst[key]] = _.pluck(self.filterArrayValues(departments, value, 'id'), 'name').join(',');
+                formatedFilter[reportInboxFilterLabelConst[key]] = _.pluck(self.filterArrayValues(departments, value, 'value'), 'name').join(',');
             }));
         };
 
@@ -211,7 +223,7 @@ angular.module('sntRover').service('RVReportsInboxSrv', [
           formatedFilter[reportInboxFilterLabelConst[key]] =  value.join(',');            
         };
 
-        this.processOrigins = (value, key, promises, formatedFilter) => {
+        this.fillOriginInfo = (value, key, promises, formatedFilter) => {
             let params = {
                 ids: value
             };
@@ -231,33 +243,54 @@ angular.module('sntRover').service('RVReportsInboxSrv', [
             }));
         };
 
+         /**
+         * Fill addon group names form array of ids
+         * @param {Array} value array of addon group ids
+         * @param {String} key the key to be used in the formatted filter
+         * @param {Promises} promises array of promises
+         * @param {Object} formatedFilter the formatted filter object
+         * @return {void} 
+         */
         this.fillAddonGroups = (value, key, promises, formatedFilter) => {
             let params = {
                 ids: value
             };
 
             promises.push(RVreportsSubSrv.fetchChargeNAddonGroups().then((addonGroups) => {
-                formatedFilter[reportInboxFilterLabelConst[key]] = _.pluck(addonGroups, 'name').join(',');
+                formatedFilter[reportInboxFilterLabelConst[key]] = _.pluck(self.filterArrayValues(addonGroups, value, 'id'), 'name').join(',');
             }));
         };
 
-        this.fillAddons = (value, key, promises, formatedFilter) => {
+        /**
+         * Fill addon names form array of ids
+         * @param {Array} value array of addon ids
+         * @param {String} key the key to be used in the formatted filter
+         * @param {Promises} promises array of promises
+         * @param {Object} formatedFilter the formatted filter object
+         * @return {void} 
+         */
+        this.fillAddons = (value, key, promises, formatedFilter) => {            
             let params = {
-                ids: value
+                addon_ids: value
             };
 
-            promises.push(RVreportsSubSrv.fetchChargeCodes().then((chargeCodes) => {
-                formatedFilter[reportInboxFilterLabelConst[key]] = _.pluck(chargeCodes, 'description').join(',');
+            promises.push(RVreportsSubSrv.fetchAddonById(params).then((addonNames) => {
+                formatedFilter[reportInboxFilterLabelConst[key]] = addonNames.join(',');
             }));
         };
 
-        this.fillReservationStatus = (value, key, promises, formatedFilter) => {
-            let params = {
-                ids: value
-            };
+        /**
+         * Fill reservation status names from array of ids
+         * @param {Array} value array of reservation status ids
+         * @param {String} key the key to be used in the formatted filter
+         * @param {Promises} promises array of promises
+         * @param {Object} formatedFilter the formatted filter object
+         * @return {void} 
+         */
+        this.fillReservationStatus = (value, key, promises, formatedFilter) => {           
 
             promises.push(RVreportsSubSrv.fetchReservationStatus().then((statuses) => {
-                formatedFilter[reportInboxFilterLabelConst[key]] = _.pluck(statuses, 'status').join(',');
+                formatedFilter[reportInboxFilterLabelConst[key]] = _.pluck(self.filterArrayValues(statuses, value, 'id'), 'status').join(',');
             }));
         };
 
@@ -298,15 +331,23 @@ angular.module('sntRover').service('RVReportsInboxSrv', [
 
         // TODO use the correct APIs
         this.fillRateTypes = (value, key, promises, formatedFilter) => {
-            var params = {               
-                rate_type_ids: value
-            };
+            // var params = {               
+            //     rate_type_ids: value
+            // };
 
-            promises.push(RVreportsSubSrv.fetchRateDetailsForIds(params).then(function(rates) {
-                formatedFilter[reportInboxFilterLabelConst[key]] = _.pluck(rates, 'name').join(',');
-            }));
+            // promises.push(RVreportsSubSrv.fetchRateDetailsForIds(params).then(function(rates) {
+            //     formatedFilter[reportInboxFilterLabelConst[key]] = _.pluck(rates, 'name').join(',');
+            // }));
         };
 
+        /**
+         * Fill charge code names from the array of ids
+         * @param {Array} value array of charge code ids
+         * @param {String} key the key to be used in the formatted filter
+         * @param {Promises} promises array of promises
+         * @param {Object} formatedFilter the formatted filter object
+         * @return {void} 
+         */
         this.fillChargeCodes = (value, key, promises, formatedFilter) => {            
 
             promises.push(RVreportsSubSrv.fetchChargeCodes().then(function(chargeCodes) {
@@ -314,10 +355,18 @@ angular.module('sntRover').service('RVReportsInboxSrv', [
             }));
         };
 
+        /**
+         * Fill charge group names from the array of ids
+         * @param {Array} value array of charge group ids
+         * @param {String} key the key to be used in the formatted filter
+         * @param {Promises} promises array of promises
+         * @param {Object} formatedFilter the formatted filter object
+         * @return {void} 
+         */
         this.fillChargeGroups = (value, key, promises, formatedFilter) => {            
 
             promises.push(RVreportsSubSrv.fetchChargeNAddonGroups().then(function(chargeGroups) {
-                formatedFilter[reportInboxFilterLabelConst[key]] = _.pluck(chargeGroups, 'description').join(',');
+                formatedFilter[reportInboxFilterLabelConst[key]] = _.pluck(self.filterArrayValues(chargeGroups, value, 'id'), 'description').join(',');
             }));
         };
 
@@ -430,7 +479,7 @@ angular.module('sntRover').service('RVReportsInboxSrv', [
 
         this.fillSortField = (value, key, formatedFilter) => {            
             if (value) {
-              value = value.replace("_", " ");
+              value = value.replace(/_/g, " ");
             }
 
             formatedFilter[reportInboxFilterLabelConst[key]] = value;   
@@ -469,6 +518,7 @@ angular.module('sntRover').service('RVReportsInboxSrv', [
                    case reportParamsConst['FROM_TIME']:
                    case reportParamsConst['TO_TIME']:
                         processedFilter[reportInboxFilterLabelConst[key]] = value;
+                        break;
                    case reportParamsConst['RATE_IDS']:
                         self.processRateIds(value, key, promises, processedFilter);
                         break;
@@ -501,7 +551,8 @@ angular.module('sntRover').service('RVReportsInboxSrv', [
                    case reportParamsConst['INCLUDE_BOTH']: 
                    case reportParamsConst['INCLUDE_NEW']:  
                    case reportParamsConst['SHOW_RATE_ADJUSTMENTS_ONLY']:     
-                   case reportParamsConst['EXCLUDE_TAX']:          
+                   case reportParamsConst['EXCLUDE_TAX']:   
+                   case reportParamsConst['DUE_OUT_DEPARTURES']:       
                         self.processOptions(value, key, processedFilter);
                         break;
                    case reportParamsConst['SHOW_DELETED_CHARGES']:
@@ -522,11 +573,9 @@ angular.module('sntRover').service('RVReportsInboxSrv', [
                    case reportParamsConst['COMPLETION_STATUS']:
                    case reportParamsConst['SHOW_ACTIONABLES']:
                    case reportParamsConst['INCLUDE_GUARANTEE_TYPE']:
-                        self.processArrayValuesWithNoFormating(value, key, processedFilter);
-                        break;
                    case reportParamsConst['ORIGIN_VALUES']:
-                        self.processOrigin(value, key, promises, processedFilter);
-                        break;
+                        self.processArrayValuesWithNoFormating(value, key, processedFilter);
+                        break;                   
                    case reportParamsConst['ORIGIN_URLS']:
                         self.processOriginUrls(value, key, promises, processedFilter);
                         break;
@@ -564,7 +613,7 @@ angular.module('sntRover').service('RVReportsInboxSrv', [
                         self.fillValueWithoutFormating(value, key, processedFilter);
                         break;
                    case reportParamsConst['RATE_TYPE_IDS']:
-                        self.processRateTypeIds(value, key, promises, processedFilter);
+                        self.fillRateTypes(value, key, promises, processedFilter);
                         break; 
                    case reportParamsConst['CHARGE_CODE_IDS']:
                         self.fillChargeCodes(value, key, promises, processedFilter);

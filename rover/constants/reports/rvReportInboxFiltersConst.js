@@ -77,7 +77,7 @@ angular.module('reportsModule')
         "show_travel_agent": "SHOW TRAVEL AGENTS",
         "min_revenue": "MIN REVENUE",
         "min_room_nights": "MIN NIGHTS",
-        "include_ledger_data": "Include Ledger_Data",
+        "include_ledger_data": "Include Ledger Data",
         "exceeded_only": "Exceeded Only",
         "include_due_out": "Include Due Out",
         "include_inhouse": "Include Inhouse",
@@ -108,6 +108,8 @@ angular.module('reportsModule')
         "year": "Year",
         "COMPANY/TRAVEL AGENT": "Company/Travel Agent",
         "exclude_tax": "Exclude Tax",
-        "show_deleted_charges": "Show Deleted Charges"
+        "show_deleted_charges": "Show Deleted Charges",
+        "account": "Account",
+        "guest": "Guest"
         
     });

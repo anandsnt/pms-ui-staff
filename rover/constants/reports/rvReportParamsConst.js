@@ -114,6 +114,7 @@ angular.module('reportsModule')
         "OOO": "ooo",
         "OOS": "oos",
         "MIN_NO_OF_DAYS_NOT_OCCUPIED": "min_number_of_days_not_occupied",
-        "EXCLUDE_TAX": "exclude_tax"
+        "EXCLUDE_TAX": "exclude_tax",
+        "DUE_OUT_DEPARTURES": "due_out_departures"
 
     });

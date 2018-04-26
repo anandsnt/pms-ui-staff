@@ -26,9 +26,7 @@ angular.module('sntRover').controller('RVReportsInboxCtrl', [
 
         // Navigate to new report request section
         $scope.createNewReport = () => {
-            $state.go('rover.reports.dashboard', {
-                fromReportInbox: true
-            });
+            $state.go('rover.reports.dashboard');
         };
 
         /**
@@ -71,13 +69,7 @@ angular.module('sntRover').controller('RVReportsInboxCtrl', [
 
             return status;            
         };
-
-        var processFilters = (filters) => {
-            _.each(filters, function(filter) {
-
-            });
-
-        };
+        
 
         /**
          * Show the report details like the filter which was used to run the report
@@ -241,8 +233,23 @@ angular.module('sntRover').controller('RVReportsInboxCtrl', [
                 fetchGeneratedReports(1);
         }, 100);
 
+        $scope.clearQuery = function () {
+                $scope.reportInboxData.filter.searchTerm = '';
+                fetchGeneratedReports(1);               
+        };
+
         $scope.toggleReportInboxView = () => {
             $scope.reportInboxData.isReportInboxOpen = !$scope.reportInboxData.isReportInboxOpen;
+        };
+
+        /**
+         * Set title and heading        * 
+         */
+        var setTitleAndHeading = function() {
+            let listTitle = $filter('translate')('MENU_REPORTS_INBOX');
+            
+            $scope.setTitle(listTitle);
+            $scope.$parent.heading = listTitle;
         };
 
         // Initialize
@@ -261,6 +268,7 @@ angular.module('sntRover').controller('RVReportsInboxCtrl', [
             setPageOptions();
 
             setScroller();
+            setTitleAndHeading();
 
             RVReportsInboxSrv.processReports($scope.reportList);
             $scope.reportInboxData.generatedReports = getFormatedGeneratedReports(generatedReportsList.results, $scope.reportList);
