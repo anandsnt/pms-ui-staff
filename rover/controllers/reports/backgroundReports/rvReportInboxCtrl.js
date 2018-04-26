@@ -7,6 +7,7 @@ angular.module('sntRover').controller('RVReportsInboxCtrl', [
     '$filter',
     'sntActivity',
     '$timeout',
+    'RVreportsSrv',
     function (
         $rootScope, 
         $scope,
@@ -15,7 +16,8 @@ angular.module('sntRover').controller('RVReportsInboxCtrl', [
         $state,
         $filter,
         sntActivity,
-        $timeout ) {
+        $timeout,
+        reportsSrv) {
 
         BaseCtrl.call(this, $scope);
 
@@ -240,6 +242,27 @@ angular.module('sntRover').controller('RVReportsInboxCtrl', [
 
         $scope.toggleReportInboxView = () => {
             $scope.reportInboxData.isReportInboxOpen = !$scope.reportInboxData.isReportInboxOpen;
+        };
+
+        $scope.showGeneratedReport = function( selectedreport ) {
+           var lastReportID  = reportsSrv.getChoosenReport().id,
+               mainCtrlScope = $scope.$parent,
+               choosenReport = _.find($scope.reportList,
+               function(report) {
+                   return selectedreport.report_id === report.id;
+                });
+
+           // generatedReportId is required make API call
+           choosenReport.generatedReportId  = selectedreport.id;
+            // if the two reports are not the same, just call
+            // 'resetSelf' on printOption to clear out any method
+            // that may have been created a specific report ctrl
+            // READ MORE: rvReportsMainCtrl:L#:61-75
+            if ( lastReportID !== selectedreport.id ) {
+                mainCtrlScope.printOptions.resetSelf();
+            }
+            reportsSrv.setChoosenReport( choosenReport );
+            mainCtrlScope.genReport();
         };
 
         // Initialize

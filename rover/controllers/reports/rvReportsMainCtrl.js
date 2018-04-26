@@ -943,19 +943,23 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 
         function genParams(report, page, perPage, changeAppliedFilter) {
             var params = {
-                'id': report.id,
                 'page': page,
                 'per_page': perPage
             };
 
+            // For Report Inbox, set id as generated id and skip all other params
+            if (report.generatedReportId) {
+                params.id = report.generatedReportId;
+                return params;
+            }
+            params.id = report.id;
             var key = '',
                 fromKey = '',
                 untilKey = '',
                 checkInKey = '',
                 checkOutKey = '',
-                selected = [];
-
-            var chosenReport = reportsSrv.getChoosenReport();
+                selected = [],
+                chosenReport = reportsSrv.getChoosenReport();
 
             changeAppliedFilter = 'boolean' === typeof changeAppliedFilter ? changeAppliedFilter : true;
             perPage = (chosenReport.title === reportNames['TRAVEL_AGENT_COMMISSIONS']) ? reportParams['TRAVEL_AGENTS_PER_PAGE_COUNT'] : perPage;
@@ -2064,7 +2068,6 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
                 msg = '';
 
             changeView = 'boolean' === typeof changeView ? changeView : true;
-
             var params = genParams(chosenReport, page, resultPerPageOverride || $scope.resultsPerPage);
 
             var fetchTravelAgents = function (travel_agent_id, pageNo) {
@@ -2150,7 +2153,7 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 
                     $state.go('rover.reports.show', {
                         action: msg || '',
-                        report: angular.copy($scope.selectedReport) || {}
+                        report: angular.copy($scope.selectedReport) || chosenReport
                     });
                 } else {
                     $state.go('.', {
@@ -2240,7 +2243,12 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
             }
 
             params['action'] = $state.params.action || msg;
-            $scope.invokeApi(reportsSubSrv.fetchReportDetails, params, sucssCallback, errorCallback);
+            // fetch generated inbox report
+            if (chosenReport.generatedReportId) {
+                $scope.invokeApi(reportsSubSrv.fetchGeneratedReportDetails, params, sucssCallback, errorCallback);
+            } else {
+                $scope.invokeApi(reportsSubSrv.fetchReportDetails, params, sucssCallback, errorCallback);
+            }
         };
 
         $scope.clearErrorMessage = function () {

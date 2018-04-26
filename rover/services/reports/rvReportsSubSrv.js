@@ -155,6 +155,15 @@ angular.module('sntRover').service('RVreportsSubSrv', [
             });
         };
 
+        service.fetchGeneratedReportDetails = function(params) {
+            return callApi({
+                // no name here since we dont want to cache it in the store ever
+                method: 'getJSON',
+                url: '/api/generated_reports/' + params.id + '/view',
+                action: params.action
+            });
+        };
+
         service.getReservationsOfTravelAgents = function(params) {
             return callApi({
                 // no name here since we dont want to cache it in the store ever
