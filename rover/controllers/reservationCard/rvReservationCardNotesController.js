@@ -44,7 +44,7 @@ sntRover.controller('rvReservationCardNotesController', ['$scope', '$filter', '$
                         className: 'ngdialog-theme-default',
                         scope: $scope,
                         closeByDocument: false,
-                        closeByEscape: false,
+                        closeByEscape: false
                     });
                     sntActivity.stop('FETCH_NOTES');
                 },
