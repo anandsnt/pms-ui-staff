@@ -322,7 +322,7 @@
 
                     .data {
                         margin-right: 10px;
-                        .calc-width(100, 385);
+                        .calc-width(100, 440);
 
                         h2 {
                             margin-bottom: 0px;
@@ -352,7 +352,6 @@
                             color: @grey3; 
                             display:inline-block;
                             vertical-align: middle;
-                            
                             .nowrap();
 
                             .value {
@@ -398,7 +397,7 @@
 
                     &.selected { 
                         .data {
-                            .calc-width(100, 435);
+                            .calc-width(100, 420);
 
                             h2 {
                                 color: @orange;
@@ -420,11 +419,10 @@
                     &.payment {
 
                         .data {
-                            .calc-width(100, 255);
+                            .calc-width(100, 285);
                         }
 
                         .payment-data {
-                            
                             #flexbox > .parent(row wrap, '', center, '');
                             
                             .reference {
@@ -443,12 +441,12 @@
                         }
 
                         .payment-date {
-                            width: 90px;
+                            width: 100px;
 
                             .icon-time {
                                 .square(20px);
                                 background-color: @grey2;
-                                background-position: 5px -11016px;
+                                background-position: 5px -11015px;
                                 margin-right: 5px;
                             }
 
@@ -469,12 +467,6 @@
                             }
                         }
                         
-                        
-                        .amount {
-                            width: 150px;
-                        }
-                        
-
                         .search-results {
                             background: @white;
                             border-top: 1px solid rgba(0,0,0,0.15);
@@ -547,22 +539,17 @@
                             .amount {
                                 width: 220px;
                                 padding-right: 20px;
-                                padding-left: 60px;
                                 color: @green;
                                 
                                 &.partially-paid {
-                                    padding-left: 60px;
-                                    padding-right: 45px;
+                                    padding-right: 50px;
                                     
                                     .icons {
-                                        left: 40px;
+                                        left: 20px;
                                     }
                                 }
-                                
                             }
-                            
                         }
-                        
                     }
                     
                     /* Arrival, Departure */
@@ -610,12 +597,9 @@
                             &.green {color: @green}
                         }
 
-                        &.balance-now {
-                            width: 120px;
-                        }
-
+                        &.balance-now,
                         &.balance-after {
-                            width: 125px;
+                            width: 130px;
                         }
                     }
 
@@ -627,7 +611,6 @@
                             display: inline-block;
                             vertical-align: middle;
                             .size(17px, 35px);
-                           
 
                             img { .size(auto, 100%); }
                         } 
@@ -668,7 +651,7 @@
                         font-weight: 300;
                         color: @textColor;
                         text-align: right;
-                        width: 105px; 
+                        width: 170px;
 
                         &.unallocated { color: @green; }
                         &.unpaid { color: @red; }
@@ -690,13 +673,11 @@
 
                         &.input {
                             position: relative;
-                            width: 165px;
-                            height: 30px;
+                            .size(30px, 150px);
                             .hide();
-                            
 
                             input { 
-                                width: 110px; 
+                                width: 105px; 
                                 background: @grey1; 
                                 font-weight: 600; 
                                 font-size: 18px; 
@@ -709,11 +690,11 @@
                                 position: absolute;
                                 top: 0;
                                 line-height: 30px;
-                                right: 120px;
+                                right: 115px;
                                 font-size: 18px;
                                 font-weight: 600;
                                 text-align: right;
-                                width: 55px;
+                                width: 45px;
                             }
                         }
                     } 
@@ -727,8 +708,8 @@
                         #border-radius > .bottom();
 
                         .actions {
-                            padding-left: 30px;
-                            width: 150px;
+                            padding-left: 15px;
+                            width: 145px;
                             .pull-left;
 
                             .button {
@@ -751,7 +732,7 @@
                             table-layout: auto;
                             margin: 0;
                             .pull-left;
-                            .calc-width(100, 150);
+                            .calc-width(100, 145);
                         }
 
                         th,
@@ -770,7 +751,6 @@
 
                             &.fees,
                             &.credits {
-                                
                                 text-align: right;
                             } 
                         }
@@ -787,7 +767,7 @@
 
                             &.description {
                                 color: @grey3;
-                                .calc-width(100, 400);
+                                width: auto;
 
                                 &.with-reference {
                                     position: relative;
@@ -812,31 +792,26 @@
                                 font-style: normal;
                             }
 
-                            &.fees {
-                                width: 80px;
-                            }
-
                             &.fees,
                             &.credits {
                                 font-weight: 600;
                                 color: @textColor;
                                 text-align: right;
-                            }
-
-                            &.credits {
-                                width: 118px; 
+                                width: 100px;
                             }
 
                             &.action {
                                 width: 40px;
                                 padding: 0 5px;
 
-                                button {
+                                .button {
                                     .box-shadow(1px 1px 1px rgba(0,0,0,0.15));
                                     .square(30px);
+                                    #border-radius > .rounded();
 
-                                    &:hover                    
-                                    {
+                                    &:hover,
+                                    &:focus,
+                                    &:active {
                                         .box-shadow(~"inset 1px 1px 1px rgba(0,0,0,0.15)");
                                     }
 
@@ -888,14 +863,27 @@
 
                                 li {
                                     margin-bottom: 5px;
-                                    border-bottom: 1px solid rgba(0,0,0,0.1)
+                                    border-bottom: 1px solid rgba(0,0,0,0.1);
+
+                                    &.with-reference {
+                                        position: relative;
+
+                                        .icon-invoice-blue { 
+                                            .size(18px, 15px);
+                                            position: absolute;
+                                            top: 0;
+                                            left: -20px;
+                                            background-size: 80px;
+                                            background-position: 2px -7503px;
+                                        }
+                                    }
                                 }
 
-                                &.description {
+                                &.description {
                                     padding-left: 9px;
                                 }
 
-                                &.description + td {
+                                &.description + td {
                                     padding-right: 12px;
                                     text-align: right;
                                     li {
@@ -911,7 +899,6 @@
                         cursor: pointer;
 
                         .icon-double-arrow {
-                             
                             display: inline-block;
                             background-position: 1px -797px;
                             background-size: 60px;
@@ -924,6 +911,10 @@
                             .icon-double-arrow {
                                 background-position: 3px -798px;
                                 .icons > .rotate-up;
+                            }
+
+                            &:hover {
+                                .box-shadow();
                             }
                         }
                     }
