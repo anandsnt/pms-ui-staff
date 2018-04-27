@@ -222,7 +222,7 @@ angular.module('stayCardModule', [])
             params: {
                 id: null,
                 confirmationId: null,
-                isrefresh: null,
+                isrefresh: true, // default to true; unless specified to read from cached response in service
                 justCreatedRes: null,
                 isFromCards: null,
                 isOnlineRoomMove: null,
