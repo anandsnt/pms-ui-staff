@@ -24,7 +24,7 @@ describe('ADResyncRatesCtrl', function() {
         spyOn(ADReservationToolsSrv, 'reSyncRates').and.callFake(function () {
             var deferred = $q.defer(),
                 response = {
-                    last_sync_at: "2018-04-18T08:51:33-04:00",
+                    last_sync_at: "22/04/2018 23:47:03",
                     last_sync_status: true
                 };
 
@@ -36,7 +36,7 @@ describe('ADResyncRatesCtrl', function() {
 
         $scope.$digest();
 
-        expect($scope.selectedRateObj.last_sync_at).toEqual("2018-04-18T08:51:33-04:00");
+        expect($scope.selectedRateObj.last_sync_at).toEqual("22/04/2018 23:47:03");
         expect($scope.selectedRateObj.last_sync_status).toEqual(true);
     });
 

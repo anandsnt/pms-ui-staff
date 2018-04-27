@@ -26,14 +26,12 @@ sntGuestWeb.controller('RootController', ['$scope', '$rootScope', '$state', '$co
     $state.go('guestwebRoot');
 
     // in order to prevent url change or fresh url entering with states
-    var routeChange = function(event, newURL) {
+    var routeChange = function(event) {
         event.preventDefault();
         return;
     };
 
     $rootScope.$on('$locationChangeStart', routeChange);
-    // we are forcefully setting top url, please refer routerFile
-    window.history.pushState("initial", "Showing Landing Page", "#/guestwebRoot");
 
     // function to handle exception when state is not found
     $scope.$on('$stateNotFound', function(event, unfoundState, fromState, fromParams) {
