@@ -1037,12 +1037,25 @@
             bottom: 0;
         }
 
+        &.scrollable {
+            .iScrollVerticalScrollbar {
+                
+                .iScrollIndicator {
+                    background: @orange;
+                }
+            }
+        }
+
         .report-inbox {
             .calc-height(100, 40);
 
             .iScrollVerticalScrollbar { 
                 top: 20px;
                 bottom: 20px;
+
+                .iScrollIndicator {
+                    background: @orange;
+                }
             }
         }
 
