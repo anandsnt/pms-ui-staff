@@ -1143,7 +1143,8 @@ angular.module('reportsModule')
                                 {id: "UNASSIGNED", status: "UNASSIGNED", selected: true},
                                 {id: "ASSIGNED", status: "ASSIGNED", selected: true},
                                 {id: "COMPLETED",  status: "COMPLETED", selected: true}
-                            ];
+                            ],
+                        foundFilter;
                 _.each(reportList, function(report) {
                     foundFilter = _.find(report['filters'], { value: 'INCLUDE_COMPLETION_STATUS' });
                     if ( !! foundFilter ) {
@@ -1169,7 +1170,9 @@ angular.module('reportsModule')
                                 {id: "61to90",  status: "61-90 DAYS", selected: true},
                                 {id: "91to120",  status: "91-120 DAYS", selected: true},
                                 {id: "120plus",  status: "120+ DAYS", selected: true}
-                            ];
+                            ],
+                    foundFilter;
+
 
 
                 _.each(reportList, function(report) {
@@ -1220,6 +1223,7 @@ angular.module('reportsModule')
             }
 
             function fillRateCodeList (data) {
+                var foundFilter;
                 data[0].selected = true;
                 _.each(reportList, function(report) {
                     foundFilter = _.find(report['filters'], { value: 'RATE_CODE' });
@@ -1261,6 +1265,7 @@ angular.module('reportsModule')
             }
 
             function fillRoomTypeList (data) {
+                var foundFilter;
                 _.each(reportList, function(report) {
                     foundFilter = _.find(report['filters'], { value: 'ROOM_TYPE' });
                     if ( !! foundFilter ) {
@@ -1292,6 +1297,7 @@ angular.module('reportsModule')
             }
 
             function fillRestrictionList (data) {
+                var foundFilter;
                 _.each(reportList, function(report) {
                     foundFilter = _.find(report['filters'], { value: 'RESTRICTION' });
                     if ( !! foundFilter ) {
@@ -1313,6 +1319,7 @@ angular.module('reportsModule')
                 checkAllCompleted();
             }
             function fillOrigins (data) {
+                var foundFilter;
                 _.each(reportList, function(report) {
                     foundFilter = _.find(report['filters'], { value: 'ORIGIN' });
                     if ( !! foundFilter ) {
@@ -1342,6 +1349,7 @@ angular.module('reportsModule')
             }
 
             function fillURLs (data) {
+                var foundFilter;
                 _.each(reportList, function(report) {
                     foundFilter = _.find(report['filters'], { value: 'URLS'});
                     if ( !! foundFilter ) {
@@ -1367,6 +1375,7 @@ angular.module('reportsModule')
             }
 
             function fillCampaignTypes (data) {
+                var foundFilter;
                 _.each(reportList, function(report) {
                     foundFilter = _.find(report['filters'], { value: 'CAMPAIGN_TYPES'});
                     if ( !! foundFilter ) {
@@ -1392,6 +1401,7 @@ angular.module('reportsModule')
             }
 
             function fillFloors (data) {
+                var foundFilter;
                 _.each(reportList, function(report) {
                     foundFilter = _.find(report['filters'], { value: 'FLOOR'});
                     if ( !! foundFilter ) {
