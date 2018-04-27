@@ -193,6 +193,11 @@ sntRover.controller('reservationDetailsController',
 			$scope.goBackSearch = function() {
 				$scope.$emit('showLoader');
 				$scope.updateSearchCache();
+				// With the previous version of ui-router, this useCache state param was
+                // set to true in case of a back navigation in the $rootScope.loadPrevState method of rvApp.js file
+                // With the upgraded ui-router the stateparams cannot be changed in the middle of a transition
+                backParam = backParam || {};
+                backParam.useCache = true;
 				$state.go('rover.search', backParam);
 			};
 		}

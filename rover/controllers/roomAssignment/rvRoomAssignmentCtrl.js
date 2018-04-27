@@ -639,12 +639,21 @@ sntRover.controller('RVroomAssignmentController', [
 		}
 	};
 
-	/**
-	* function to go back to reservation details
-	*/
-	$scope.backToStayCard = function() {
-		$state.go("rover.reservation.staycard.reservationcard.reservationdetails", {id: $scope.reservationData.reservation_card.reservation_id, confirmationId: $scope.reservationData.reservation_card.confirmation_num, isrefresh: false, isOnlineRoomMove: isOnlineRoomMove, isKeySystemAvailable: isKeySystemAvailable});
-	};
+        /**
+         * function to go back to reservation details
+         */
+        $scope.backToStayCard = function() {
+            $state.go(
+                'rover.reservation.staycard.reservationcard.reservationdetails',
+                {
+                    id: $scope.reservationData.reservation_card.reservation_id,
+                    confirmationId: $scope.reservationData.reservation_card.confirmation_num,
+                    isrefresh: true,
+                    isOnlineRoomMove: isOnlineRoomMove,
+                    isKeySystemAvailable: isKeySystemAvailable
+                });
+        };
+
 	/**
 	* function to show and hide the filters view
 	*/

@@ -17,8 +17,12 @@ sntRover.controller('RVCancelReservationDepositController', ['$rootScope', '$sco
 				$state.go('rover.reservation.staycard.reservationcard.reservationdetails', {
 					"id": $stateParams.id || $scope.reservationData.reservationId,
 					"confirmationId": $stateParams.confirmationId || $scope.reservationData.confirmNum,
-					"isrefresh": false
-				});
+					"isrefresh": true
+                }, {
+                    reload: true,
+                    notify: true,
+                    inherit: false
+                });
 			}
 			$scope.closeDialog();
 		};
