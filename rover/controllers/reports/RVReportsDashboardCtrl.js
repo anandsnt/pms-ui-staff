@@ -4,10 +4,12 @@ angular.module('sntRover')
             '$timeout',
             '$state',
             '$filter',
+            '$rootScope',
             function ($scope,
                       $timeout,
                       $state,
-                      $filter) {
+                      $filter,
+                      $rootScope) {
 
             var intialReportViewStore = {
                 showingAllReport: false,
@@ -213,15 +215,25 @@ angular.module('sntRover')
                 $scope.$broadcast("CREATE_NEW_SCHEDULE");
             };
 
-            /*$scope.pickReport = (item, $index) => {
-                $scope.$broadcast("PICK_REPORT", {item: item, index:$index});
-            };*/
+            /**
+             * Set the navigation to previous screen
+             * 
+             */
+            let setPrevState = () => {
+                if ($rootScope.isBackgroundReportsEnabled) {
+                    $rootScope.setPrevState = {
+                        title: $filter('translate')('MENU_REPORTS_INBOX'),
+                        name: 'rover.reports.inbox'                                            
+                    };
+                }                
+            };
 
             (function () {
                 $scope.updateViewCol($scope.viewColsActions.ONE);
                 $scope.updateView($scope.reportViewActions.SHOW_ALL_REPORT);
                 setupScroll();                
                 setTitleAndHeading();
+                setPrevState();
 
             })();
 
