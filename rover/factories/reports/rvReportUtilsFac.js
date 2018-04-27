@@ -1139,7 +1139,7 @@ angular.module('reportsModule')
             }
 
             function fillCompletionStatus() {
-                customData = [
+              var  customData = [
                                 {id: "UNASSIGNED", status: "UNASSIGNED", selected: true},
                                 {id: "ASSIGNED", status: "ASSIGNED", selected: true},
                                 {id: "COMPLETED",  status: "COMPLETED", selected: true}
@@ -1163,7 +1163,7 @@ angular.module('reportsModule')
             }
 
             function fillAgingBalance() {
-                customData = [
+              var  customData = [
                                 {id: "0to30", status: "0-30 DAYS", selected: true},
                                 {id: "31to60", status: "31-60 DAYS", selected: true},
                                 {id: "61to90",  status: "61-90 DAYS", selected: true},

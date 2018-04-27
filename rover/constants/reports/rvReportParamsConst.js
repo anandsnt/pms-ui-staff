@@ -69,7 +69,7 @@ angular.module('reportsModule')
         "DEPOSIT_DUE": "deposit_due",
         "DEPOSIT_PAID": "deposit_paid",
         "DEPOSIT_PAST": "deposit_past",
-        "INCLUDE_CANCELLED": "include_canceled",        
+        "INCLUDE_CANCELED": "include_canceled",        
         "INCLUDE_NO_SHOW": "include_no_show",
         "INCLUDE_TAX": "include_tax",
         'SHOW_DELETED_CHARGES': 'show_deleted_charges',
@@ -115,6 +115,7 @@ angular.module('reportsModule')
         "OOS": "oos",
         "MIN_NO_OF_DAYS_NOT_OCCUPIED": "min_number_of_days_not_occupied",
         "EXCLUDE_TAX": "exclude_tax",
-        "DUE_OUT_DEPARTURES": "due_out_departures"
+        "DUE_OUT_DEPARTURES": "due_out_departures",
+        "INCLUDE_CANCELLED": "include_cancelled"
 
     });

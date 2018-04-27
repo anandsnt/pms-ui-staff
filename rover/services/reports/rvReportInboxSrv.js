@@ -370,6 +370,13 @@ angular.module('sntRover').service('RVReportsInboxSrv', [
             }));
         };
 
+        /**
+         * Fill guest/account selection
+         * @param {Array} value either guest or account
+         * @param {String} key the key to be used in the formatted filter        
+         * @param {Object} formatedFilter the formatted filter object
+         * @return {void} 
+         */
         this.fillGuestAccount = (value, key, formatedFilter) => {
             if(!formatedFilter[reportInboxFilterLabelConst['GUEST/ACCOUNT']]) {
                 formatedFilter[reportInboxFilterLabelConst['GUEST/ACCOUNT']] = [];
@@ -381,6 +388,14 @@ angular.module('sntRover').service('RVReportsInboxSrv', [
             
         };
 
+        /**
+         * Fill user names from the array of ids
+         * @param {Array} value array of user ids
+         * @param {String} key the key to be used in the formatted filter
+         * @param {Promises} promises array of promises
+         * @param {Object} formatedFilter the formatted filter object
+         * @return {void} 
+         */
         this.fillUserInfo = (value, key, promises, formatedFilter) => {            
 
             promises.push(RVreportsSubSrv.fetchActiveUsers().then(function(users) {
@@ -388,31 +403,63 @@ angular.module('sntRover').service('RVReportsInboxSrv', [
             }));
         };
 
+        /**
+         * Fill origin names from the array of ids
+         * @param {Array} value array of origin ids
+         * @param {String} key the key to be used in the formatted filter
+         * @param {Promises} promises array of promises
+         * @param {Object} formatedFilter the formatted filter object
+         * @return {void} 
+         */
         this.fillBookingOrigins = (value, key, promises, formatedFilter) => {            
 
             promises.push(RVreportsSubSrv.fetchBookingOrigins().then(function(origins) {
-                formatedFilter[reportInboxFilterLabelConst[key]] = _.pluck(origins, 'name').join(',');
+                formatedFilter[reportInboxFilterLabelConst[key]] = _.pluck(self.filterArrayValues(origins, value, 'value'), 'name').join(',');
             }));
         };
 
+        /**
+         * Fill market names from the array of ids
+         * @param {Array} value array of market ids
+         * @param {String} key the key to be used in the formatted filter
+         * @param {Promises} promises array of promises
+         * @param {Object} formatedFilter the formatted filter object
+         * @return {void} 
+         */
         this.fillMarkets = (value, key, promises, formatedFilter) => {            
 
             promises.push(RVreportsSubSrv.fetchMarkets().then(function(markets) {
-                formatedFilter[reportInboxFilterLabelConst[key]] = _.pluck(users, 'name').join(',');
+                formatedFilter[reportInboxFilterLabelConst[key]] = _.pluck(self.filterArrayValues(markets, value, 'value'), 'name').join(',');
             }));
         };
 
+        /**
+         * Fill source names from the array of ids
+         * @param {Array} value array of source ids
+         * @param {String} key the key to be used in the formatted filter
+         * @param {Promises} promises array of promises
+         * @param {Object} formatedFilter the formatted filter object
+         * @return {void} 
+         */
         this.fillSources = (value, key, promises, formatedFilter) => {           
 
             promises.push(RVreportsSubSrv.fetchSources().then(function(sources) {
-                formatedFilter[reportInboxFilterLabelConst[key]] = _.pluck(sources, 'name').join(',');
+                formatedFilter[reportInboxFilterLabelConst[key]] = _.pluck(self.filterArrayValues(sources, value, 'value'), 'name').join(',');
             }));
         };
 
+        /**
+         * Fill hold status names from the array of ids
+         * @param {Array} value array of hold status ids
+         * @param {String} key the key to be used in the formatted filter
+         * @param {Promises} promises array of promises
+         * @param {Object} formatedFilter the formatted filter object
+         * @return {void} 
+         */
         this.fillHoldStatuses = (value, key, promises, formatedFilter) => {           
 
             promises.push(RVreportsSubSrv.fetchHoldStatus().then(function(statuses) {
-                formatedFilter[reportInboxFilterLabelConst[key]] = _.pluck(statuses, 'name').join(',');
+                formatedFilter[reportInboxFilterLabelConst[key]] = _.pluck(self.filterArrayValues(statuses, value, 'id'), 'name').join(',');
             }));
         };
 
@@ -531,7 +578,8 @@ angular.module('sntRover').service('RVReportsInboxSrv', [
                    case reportParamsConst['DEPOSIT_DUE']:
                    case reportParamsConst['DEPOSIT_PAID']:
                    case reportParamsConst['DEPOSIT_PAST']:
-                   case reportParamsConst['INCLUDE_CANCELLED']:                   
+                   case reportParamsConst['INCLUDE_CANCELLED']:
+                   case reportParamsConst['INCLUDE_CANCELED']:                   
                    case reportParamsConst['INCLUDE_NO_SHOW']:
                    case reportParamsConst['INCLUDE_TAX']:
                    case reportParamsConst['DUE_IN_ARRIVALS']:  

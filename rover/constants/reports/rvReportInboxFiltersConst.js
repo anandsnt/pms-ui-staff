@@ -110,6 +110,8 @@ angular.module('reportsModule')
         "exclude_tax": "Exclude Tax",
         "show_deleted_charges": "Show Deleted Charges",
         "account": "Account",
-        "guest": "Guest"
+        "guest": "Guest",
+        "include_cancelled": "Include Cancelled",
+        "show_room_revenue": "Show Room Revenue"
         
     });
