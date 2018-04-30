@@ -24,9 +24,11 @@ admin.directive('adDropdownName', function($timeout) {
             labelProperties: '=',
             isDisabled: '=',
             changeHandler: '=',
-            changeHandlerParam: '='
+            changeHandlerParam: '=',
+            skipNumberConversion: '@'
         },
         link: function($scope) {
+            $scope.skipModelNumberConversion =  (typeof $scope.skipNumberConversion !== 'undefined') && $scope.skipNumberConversion === 'true';
             if (typeof $scope.options !== 'undefined') {
                 if ($scope.options.hasOwnProperty('showOptionsIf')) {
                     $scope.showOptionsIf = $scope.options.showOptionsIf;
