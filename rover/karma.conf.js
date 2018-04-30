@@ -20,7 +20,7 @@ module.exports = function(config) {
         '../shared/lib/js/jquery.ui.touch-punch.min.js',
         '../shared/lib/js/angular.min.js',
         '../shared/lib/js/angular-route.min.js',
-        '../shared/lib/js/angular-ui-router.min.js',
+        '../shared/lib/js/angular-ui-router.1.0.15.min.js',
         '../shared/lib/js/angular-animate.min.js',
         '../shared/lib/js/angular-dragdrop.min.js',
         '../shared/lib/js/angular-mocks.js',
@@ -42,6 +42,7 @@ module.exports = function(config) {
         '../shared/directives/divTouchMoveStopPropogate/*.js',
         '../shared/interceptors/**/*.js',
         '../shared/directives/**/*.js',
+        '../shared/sntTransitionManager/**/*.js',
         '../shared/lib/js/Utils.js',
         './rvApp.js',
         './rvSntApp.js',
@@ -54,6 +55,7 @@ module.exports = function(config) {
         './rvRouters/*.js',
         './controllers/**/*.js',
         './services/**/*.js',
+        './constants/**/*.js',
         // './directives/**/*.js',
         './factories/**/*.js',
         './filters/*.js',
@@ -72,7 +74,7 @@ module.exports = function(config) {
         '../payment/**/*.js': ['babel'],
         './controllers/**/*.js': ['babel'],
         './services/rateManager_/rvRateManagerCoreSrv.js': ['babel'],
-        './partials/**/*.html': ['ng-html2js']
+         './partials/**/*.html': ['ng-html2js']
     },
     ngHtml2JsPreprocessor: {
         stripPrefix: './',
