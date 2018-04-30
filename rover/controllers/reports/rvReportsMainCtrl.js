@@ -2245,7 +2245,13 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
             params['action'] = $state.params.action || msg;
             // fetch generated inbox report
             if (chosenReport.generatedReportId) {
-                $scope.invokeApi(reportsSubSrv.fetchGeneratedReportDetails, params, sucssCallback, errorCallback);
+                var options = {
+                    params: params,
+                    successCallBack: sucssCallback,
+                    failureCallBack: errorCallback
+                };
+
+                $scope.callAPI(reportsSubSrv.fetchGeneratedReportDetails, options);
             } else {
                 $scope.invokeApi(reportsSubSrv.fetchReportDetails, params, sucssCallback, errorCallback);
             }

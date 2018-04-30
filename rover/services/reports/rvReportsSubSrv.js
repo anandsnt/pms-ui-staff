@@ -19,6 +19,23 @@ angular.module('sntRover').service('RVreportsSubSrv', [
         service.setIntoStore = function(key, value) {
             store[key] = value;
         };
+        // Holds data for Generated Inbox report for pagination
+        service.cachedInboxReport = {};
+        /**
+         * Handle pagination for generated Inbox report
+         * in the below service methods
+         * @param  {Object} params {page: per_page}
+         * @return {Object} processed response with paginated result
+         */
+        service.getcachedInboxReportByPage = function(params) {
+            var response = angular.copy(service.cachedInboxReport),
+                start = (params.page - 1) * params.per_page,
+                end = start + params.per_page,
+                paginatedResult = response.results.slice(start, end);
+
+            response.results = paginatedResult;
+            return response;
+        };
 
         /**
         * centralised method for making api request and managing promises
@@ -156,12 +173,21 @@ angular.module('sntRover').service('RVreportsSubSrv', [
         };
 
         service.fetchGeneratedReportDetails = function(params) {
-            return callApi({
-                // no name here since we dont want to cache it in the store ever
-                method: 'getJSON',
-                url: '/api/generated_reports/' + params.id + '/view',
-                action: params.action
-            });
+            var deferred = $q.defer();
+            var url = '/api/generated_reports/' + params.id + '/view';
+
+            if (params.page === 1) {
+                rvBaseWebSrvV2.getJSON(url).then(function(data) {
+                    service.cachedInboxReport = data;
+                    deferred.resolve(service.getcachedInboxReportByPage(params));
+                }, function(data) {
+                    deferred.reject(data);
+                });
+            } else {
+                deferred.resolve(service.getcachedInboxReportByPage(params));
+            }
+
+            return deferred.promise;
         };
 
         service.getReservationsOfTravelAgents = function(params) {
