@@ -270,10 +270,14 @@
 					$state.go('rover.reservation.staycard.reservationcard.reservationdetails', {
 						"id": $scope.reservationData.reservationId || $scope.reservationParentData.reservationId,
 						"confirmationId": $scope.reservationData.confirmNum || $scope.reservationParentData.confirmNum,
-						"isrefresh": ($state.params && $state.params.isrefresh === 'false') // CICO-47743 - State not getting refreshed
-						
-					});					
+						"isrefresh": true
+                    }, {
+                        reload: true,
+                        notify: true,
+                        inherit: false
+                    });
 				}
+
 				$scope.closeReservationCancelModal();
 			};
 

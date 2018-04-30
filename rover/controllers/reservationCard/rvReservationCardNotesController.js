@@ -1,5 +1,5 @@
-sntRover.controller('rvReservationCardNotesController', ['$scope', '$filter', '$rootScope', 'ngDialog', '$state', 'RVReservationNotesService',
-    function($scope, $filter, $rootScope, ngDialog, $state, RVReservationNotesService) {
+sntRover.controller('rvReservationCardNotesController', ['$scope', '$filter', '$rootScope', 'ngDialog', '$state', 'RVReservationNotesService', 'sntActivity',
+    function($scope, $filter, $rootScope, ngDialog, $state, RVReservationNotesService, sntActivity) {
 
         BaseCtrl.call(this, $scope);
 
@@ -32,6 +32,7 @@ sntRover.controller('rvReservationCardNotesController', ['$scope', '$filter', '$
         };
 
         $scope.openNotesPopup = function() {
+            sntActivity.start('FETCH_NOTES');
             $scope.callAPI(RVReservationNotesService.fetch, {
                 params: $scope.reservationData.reservation_card.reservation_id,
                 successCallBack: function(notes) {
@@ -45,9 +46,11 @@ sntRover.controller('rvReservationCardNotesController', ['$scope', '$filter', '$
                         closeByDocument: false,
                         closeByEscape: false
                     });
+                    sntActivity.stop('FETCH_NOTES');
                 },
                 failureCallBack: function(err) {
                     $scope.errorMessage = err;
+                    sntActivity.stop('FETCH_NOTES');
                 }
             });
         };

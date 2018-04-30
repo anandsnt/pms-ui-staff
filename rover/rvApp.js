@@ -122,7 +122,6 @@ sntRover.run([
 		*	@private
 		*/
 		var $_mustRevAnim = false,
-			$_userReqBack = false,
 			$_prevStateName = '',
 			$_prevStateParam = {},
 			$_prevStateTitle = '';
@@ -270,9 +269,6 @@ sntRover.run([
 		*/
 		$rootScope.loadPrevState = function() {
 
-			// flag $_userReqBack as true
-			$_userReqBack = true;
-
 			// since these folks will be created anyway
 			// so what the hell, put them here
 			var options = $rootScope.setPrevState,
@@ -300,6 +296,13 @@ sntRover.run([
 			// check necessary as we can have a case where both can be null
 			if ( !!name ) {
 				$_mustRevAnim = reverse ? options.reverse : true;
+
+                // With the previous version of ui-router, this useCache state param was
+                // set to true in case of a back navigation in the $rootScope.loadPrevState method of rvApp.js file
+                // With the upgraded ui-router the stateparams cannot be changed in the middle of a transition
+                param = param || {};
+                param.useCache = true;
+
 				$state.go( name, param );
 			}
 		};
@@ -403,11 +406,6 @@ sntRover.run([
                 toState = transition.to(),
                 fromParams = transition.params('from'),
                 toParams = transition.params('to');
-
-			if ( $_userReqBack ) {
-				toParams.useCache = true;
-				$_userReqBack = false;
-			}
 
 			// reset this flag
 			$rootScope.returnBack = false;
