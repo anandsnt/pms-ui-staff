@@ -1,15 +1,17 @@
 module.exports = {	
 	getList : function() {
-		var controllerRoot 	= 'rover/controllers/',
-			servicesRoot 	= 'rover/services/',
+		var roverRoot 		= 'rover/',
 		overBookingJsAssetList = {
-			minifiedFiles: [],
-			nonMinifiedFiles: [				
-				controllerRoot + "overBooking/**/*.js",
-				servicesRoot + "overBooking/**/*.js"
+			minifiedFiles: [
+			],
+			nonMinifiedFiles: [						
+				roverRoot + "controllers/overBooking/*.js",
+				roverRoot + "services/overBooking/*.js",
+
+                // Eliminate all spec files
+                '!**/*.spec.js'
 			]
 		};
-
 		return overBookingJsAssetList;
 	}
 };

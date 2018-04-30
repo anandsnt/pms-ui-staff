@@ -1,11 +1,15 @@
-angular.module('overBookingModule', []).config(function($stateProvider) {
+angular.module('overBookingModule', [])
+    .config(function($stateProvider, $urlRouterProvider, $translateProvider) {
     // define module-specific routes here
     $stateProvider.state('rover.overbooking', {
-        url: '/overbooking/?start_date',
+        url: '/overbooking',
         templateUrl: '/assets/partials/overBooking/rvOverBookingMain.html',
         controller: 'RvOverBookingMainCtrl',
+        params: {
+            start_date: null
+        }
         resolve: {
-            overBookingAssets: function(jsMappings, mappingList) {
+            overBookingAssets: function(jsMappings) {
                 return jsMappings.fetchAssets(['rover.overbooking', 'directives']);
             },
             completeRoomTypeListData: function(overBookingAssets, rvOverBookingSrv) {
@@ -29,8 +33,13 @@ angular.module('overBookingModule', []).config(function($stateProvider) {
                     'show_rooms_left_to_sell': false,
                     'room_type_ids': _.pluck(completeRoomTypeListData.isCheckedTrue, 'id')
                 };
-      
-                return rvOverBookingSrv.fetchOverBookingGridData(params);
+                
+                if ( !!rvOverBookingSrv) {
+                    return rvOverBookingSrv.fetchOverBookingGridData(params);
+                }
+                else {
+                    return {};
+                }
             }
         }
     });

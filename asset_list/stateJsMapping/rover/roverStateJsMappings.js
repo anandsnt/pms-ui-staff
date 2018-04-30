@@ -122,7 +122,7 @@ module.exports = {
 			},
 			'rover.overbooking': {
 				filename: roverJsListRoot + 'overBookingJsAssetList.js',
-				babelify: false
+				babelify: true
 			},
 			'rover.guestcardsearch': {
 				filename: roverJsListRoot + 'guestCardSearchJsAssetList.js',
