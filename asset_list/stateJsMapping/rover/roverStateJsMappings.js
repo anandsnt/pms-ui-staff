@@ -21,7 +21,7 @@ module.exports = {
 			},
 			'rover.reports': {
 				filename: roverJsListRoot + 'reportsJsAssetList.js',
-				babelify: false
+				babelify: true
 			},
 			'rover.rateManager': {
 				filename: roverJsListRoot + 'newRateManagerJsAssetList.js',
@@ -98,7 +98,7 @@ module.exports = {
 			},
 			'rover.actionsManager': {
 				filename: roverJsListRoot + 'actionJsAssetList.js',
-				babelify: false
+				babelify: true
 			},
 			'rover.companycardsearch': {
 				filename: roverJsListRoot + 'companyCardSearchJsAssetList.js',

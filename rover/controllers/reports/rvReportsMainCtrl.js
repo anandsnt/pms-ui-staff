@@ -2135,15 +2135,21 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
                     }, 50);
                 }
 
-                // CICO-39128 - Added to preserve the page no while sorting and update the page no in directive
-                if (chosenReport.title == reportNames['COMPLIMENTARY_ROOM_REPORT'] && page != 1) {
-                    $timeout(function () {
+                // CICO-39128 - Added to preserve the page no while sorting and update the page no in
+                // CICO-49259
+                if (page !== 1) {
+                    $timeout(function() {
                         $scope.$broadcast('updatePageNo', page);
                     }, 50);
                 }
             };
 
             var sucssCallback = function (response) {
+                if ($rootScope.isBackgroundReportsEnabled) {
+                    $state.go('rover.reports.inbox');
+                    return;
+                }
+                
                 updateDS(response);
 
                 $scope.errorMessage = [];

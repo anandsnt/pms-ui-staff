@@ -690,7 +690,7 @@ sntRover.controller('roverController', [
 
         $transitions.onStart({}, function (transition) {
             $rootScope.previousState = transition.from();
-            $rootScope.previousStateParams = transition.from().params;
+            $rootScope.previousStateParams = transition.params('from');
         });
 
 

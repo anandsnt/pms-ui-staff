@@ -4,9 +4,9 @@
         <span class="icons icon-reset"></span> Refresh
     </button>
     <div class="entry search">
-        <button type="button" class="clear-query" ng-class="{'visible': query.length}" ng-click="clearQuery()">
+        <button type="button" class="clear-query" ng-class="{'visible': reportInboxData.filter.searchTerm.length}" ng-click="clearQuery()">
             <!-- Add class "visible" to show -->
-            <span class="icons icon-clear-search">Clear query</span>
+            <span class="icons icon-clear-search" ng-click="clearQuery()">Clear query</span>
         </button>
         <button type="button" name="submit" class="icons icon-search">Search</button>
         <input id="reports-query" class="query" placeholder="Search by Report Name" type="search" autocomplete="off" ng-model="reportInboxData.filter.searchTerm" ng-keyup="filterByQuery()">
@@ -32,12 +32,7 @@
         <div class="wrapper">
             <div class="cols-wrapper">
                 <div class="report-col main-col no-print" ng-class="{'with-pagination': shouldShowPagination()}">
-                    <div class="report-item-header">
-                        <!-- on click, expand all reports -->
-                        <div class="expand" ng-click="toggleReportInboxView()">
-                            <!-- add .active when expanded -->
-                            <span class="icons icon-double-arrow black expand-arrow" ng-class="{'active': reportInboxData.isReportInboxOpen}"></span>
-                        </div>
+                    <div class="report-item-header">                        
                         <div class="data">
                             Report Requested
                             <div class="dates">
@@ -56,9 +51,9 @@
                         <ul class="wrapper">
                             <!-- Add .disabled if in progress or has an error-->
                             <!-- add .expanded if expanded -->
-                            <li class="report-item inbox-item" ng-repeat="report in reportInboxData.generatedReports track by $index" ng-class="{'disabled': shouldDisableInboxItem(report), 'expanded': report.isExpanded}" ng-click="showReportDetails(report)">
+                            <li class="report-item inbox-item" ng-repeat="report in reportInboxData.generatedReports track by $index" ng-class="{'disabled': shouldDisableInboxItem(report), 'expanded': report.isExpanded}">
                                 <!-- On click, expand the report -->
-                                <div class="expand">
+                                <div class="expand" ng-click="showReportDetails(report)">
                                     <!-- add .active if expanded -->
                                     <span class="icons icon-double-arrow black expand-arrow" ng-class="{'active': report.isExpanded}"></span>
                                 </div>                                
@@ -76,10 +71,10 @@
                                         </div>
                                         <div class="dates">
                                             <div class="date">
-                                                <span>N/A</span>
+                                                <span>{{report.fromDate}}</span>
                                             </div>
                                             <div class="date">
-                                                <span>N/A</span>
+                                                <span>{{report.toDate}}</span>
                                             </div>
                                         </div>
                                     </div>

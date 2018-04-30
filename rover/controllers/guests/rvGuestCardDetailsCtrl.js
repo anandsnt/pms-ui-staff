@@ -77,6 +77,7 @@ angular.module('sntRover').controller('rvGuestDetailsController',
             return guestCardData;
         };
 
+
         /**
          * Handles switching of tabs with the guest card details page
          */
@@ -287,7 +288,7 @@ angular.module('sntRover').controller('rvGuestDetailsController',
 
         // Listener for setting the guestData information
         var guestCardSetListener = $scope.$on('SET_GUEST_CARD_DATA', function (event, data) {
-            $scope.guestCardData = getGuestCardData(data.contactInfo, data.guestId);
+            $scope.guestCardData.contactInfo = $scope.getUpdatedContactInfo(data.contactInfo, data.guestId);
         });
 
         $scope.$on('$destroy', guestCardSetListener);               

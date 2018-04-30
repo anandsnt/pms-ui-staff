@@ -20,11 +20,7 @@ angular.module('reportsModule', [])
         $stateProvider.state('rover.reports.dashboard', {
             url: '/list',
             templateUrl: '/assets/partials/reports/rvReportsDashboard.html',
-            controller: 'RVReportsDashboardCtrl',
-            params: {
-                fromReportInbox: false,
-                fromScheduleReportExport: false
-            }
+            controller: 'RVReportsDashboardCtrl'            
         });
 
         $stateProvider.state('rover.reports.show', {
@@ -49,12 +45,11 @@ angular.module('reportsModule', [])
             templateUrl: '/assets/partials/reports/backgroundReports/rvReportsInbox.html',
             controller: 'RVReportsInboxCtrl',
             resolve: {
-                generatedReportsList: function (RVReportsInboxSrv) {
+                generatedReportsList: function (RVReportsInboxSrv, $filter, $rootScope) {
                     var params = {
-                        from_date: '2018-04-09',
-                        to_date: '2018-04-19',
-                        page: 1,
-                        per_page: RVReportsInboxSrv.PER_PAGE
+                        from_date: $filter('date')($rootScope.businessDate, 'yyyy-MM-dd'),
+                        per_page: RVReportsInboxSrv.PER_PAGE,
+                        user_id: $rootScope.userId
                     };
                     
                     return RVReportsInboxSrv.fetchReportInbox(params);

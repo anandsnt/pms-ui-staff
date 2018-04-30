@@ -4,10 +4,12 @@ angular.module('sntRover')
             '$timeout',
             '$state',
             '$filter',
+            '$rootScope',
             function ($scope,
                       $timeout,
                       $state,
-                      $filter) {
+                      $filter,
+                      $rootScope) {
 
             var intialReportViewStore = {
                 showingAllReport: false,
@@ -200,12 +202,9 @@ angular.module('sntRover')
              * @param {Boolean} isFromReportsInbox - indication whether navigating from inbox
              * @return {void}
              */
-            var setTitleAndHeading = function(isFromReportsInbox) {
-                let listTitle = $filter('translate')('STATS_&_REPORTS_TITLE');
-
-                if (isFromReportsInbox) {
-                    listTitle = $filter('translate')('MENU_NEW_REPORT');
-                }
+            var setTitleAndHeading = function() {
+                let listTitle = $filter('translate')('MENU_NEW_REPORT');
+                
                 $scope.setTitle(listTitle);
                 $scope.$parent.heading = listTitle;
             };
@@ -216,22 +215,25 @@ angular.module('sntRover')
                 $scope.$broadcast("CREATE_NEW_SCHEDULE");
             };
 
-            /*$scope.pickReport = (item, $index) => {
-                $scope.$broadcast("PICK_REPORT", {item: item, index:$index});
-            };*/
+            /**
+             * Set the navigation to previous screen
+             * 
+             */
+            let setPrevState = () => {
+                if ($rootScope.isBackgroundReportsEnabled) {
+                    $rootScope.setPrevState = {
+                        title: $filter('translate')('MENU_REPORTS_INBOX'),
+                        name: 'rover.reports.inbox'                                            
+                    };
+                }                
+            };
 
             (function () {
                 $scope.updateViewCol($scope.viewColsActions.ONE);
                 $scope.updateView($scope.reportViewActions.SHOW_ALL_REPORT);
-                setupScroll();
-
-                if ($state.params.fromReportInbox) {
-                    $scope.fromReportInbox = $state.params.fromReportInbox;
-                } else if ($state.params.fromScheduleReportExport) {
-                   $scope.fromScheduleReportExport = $state.params.fromScheduleReportExport;
-                   $scope.updateView($scope.reportViewActions.SHOW_SCHEDULED_REPORTS);
-                 }
-                setTitleAndHeading($scope.fromReportInbox);
+                setupScroll();                
+                setTitleAndHeading();
+                setPrevState();
 
             })();
 

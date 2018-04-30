@@ -245,6 +245,17 @@ angular.module('sntRover').service('RVreportsSubSrv', [
             });
         };
 
+        service.fetchAddonById = function (params) {
+            return callApi({
+                name: 'addons',
+                method: 'postJSON',
+                url: 'api/addons/names_list',
+                params: params,
+                resKey: 'results'
+            });
+        };
+
+
         service.fetchMarkets = function(params) {
             return callApi({
                 name: 'markets',
@@ -592,6 +603,24 @@ angular.module('sntRover').service('RVreportsSubSrv', [
 
             return deferred.promise;
         }
+
+        /**
+         * Fetch rate info for an array of rate ids
+         * @param {Object} params hold array of rate ids
+         * return {Promise}
+         */
+        service.fetchRateDetailsByIds = (params) => {
+            var deferred = $q.defer(),
+                url = '/api/rates/list';
+
+                rvBaseWebSrvV2.getJSON(url, params).then(function(response) {                    
+                    deferred.resolve(response.rates);
+                }, function(error) {
+                    deferred.reject(error);
+                });
+
+            return deferred.promise;
+        };
 
         return service;
     }
