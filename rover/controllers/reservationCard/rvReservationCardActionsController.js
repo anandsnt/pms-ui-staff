@@ -1,5 +1,5 @@
-sntRover.controller('rvReservationCardActionsController', ['$scope', '$filter', '$rootScope', 'ngDialog', 'rvActionTasksSrv', 'RVReservationCardSrv', 'rvUtilSrv', 'dateFilter', '$timeout',
-    function($scope, $filter, $rootScope, ngDialog, rvActionTasksSrv, RVReservationCardSrv, rvUtilSrv, dateFilter, $timeout) {
+sntRover.controller('rvReservationCardActionsController', ['$scope', '$filter', '$rootScope', 'ngDialog', 'rvActionTasksSrv', 'RVReservationCardSrv', 'rvUtilSrv', 'dateFilter', '$timeout', 'sntActivity',
+    function($scope, $filter, $rootScope, ngDialog, rvActionTasksSrv, RVReservationCardSrv, rvUtilSrv, dateFilter, $timeout, sntActivity) {
         $scope.reservationNotes = "";
         /*
          *To save the reservation note and update the ui accordingly
@@ -978,17 +978,21 @@ sntRover.controller('rvReservationCardActionsController', ['$scope', '$filter', 
                 if ($scope.openingPopup) {
                     $timeout(function() {
                         $scope.initPopup();
+                        // The Existing logic of opening the popup before API calls and 
+                        // based on timeout is not right way and is to be changed
+                        // For now, Adding fix for CICO-51610, ie to show the loading indicator till the popup is opened
+                        sntActivity.stop('FETCH_ACTIONS_LIST');
                     }, 900);
                 }
                 $scope.openingPopup = false;
             };
             var onFailure = function(data) {
-                $scope.$parent.$emit('hideLoader');
                 $scope.setActionsHeaderInfo();
+                sntActivity.stop('FETCH_ACTIONS_LIST');
             };
 
             var data = {id: $scope.$parent.reservationData.reservation_card.reservation_id};
-
+            sntActivity.start('FETCH_ACTIONS_LIST');
             $scope.invokeApi(rvActionTasksSrv.getActionsTasksList, data, onSuccess, onFailure);
         };
 
