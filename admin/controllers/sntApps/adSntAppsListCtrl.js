@@ -1,12 +1,66 @@
 admin.controller('ADSntAppsListCtrl', ['$scope',
-	'adDebuggingSetupSrv', 'adAppVersionsSrv', 'ngTableParams', '$filter', 'appTypes', '$state', 'ngDialog',
-	function($scope, adDebuggingSetupSrv, adAppVersionsSrv, ngTableParams, $filter, appTypes, $state, ngDialog) {
+	'adDebuggingSetupSrv', 'adAppVersionsSrv', 'ngTableParams', '$filter', 'appTypes', '$state', 'ngDialog', '$timeout',
+	function($scope, adDebuggingSetupSrv, adAppVersionsSrv, ngTableParams, $filter, appTypes, $state, ngDialog, $timeout) {
 		BaseCtrl.call(this, $scope);
+
+
+		var pendingUploadIds = [];
+		var checkStatusOfpendingUploadIds = function() {
+			var fetchVersionsStatusSuccess = function(response) {
+				var allStatusUpdated = true;
+				_.each(response, function(build, index) {
+					if (build.upload_status === 'PENDING') {
+						allStatusUpdated = false;
+					}
+					if (build.upload_status === 'SUCCESS' || build.upload_status === 'FAILED') {
+
+						pendingUploadIds = _.without(pendingUploadIds, build.id);
+						_.each($scope.appList, function(app, index) {
+							if (app.id === build.id) {
+								app.upload_status = build.upload_status;
+								if (build.upload_status === 'FAILED') {
+									app.upload_failure_reason = build.upload_failure_reason;
+								}
+							}
+						});
+					}
+				});
+				if (!allStatusUpdated) {
+					$timeout(checkStatusOfpendingUploadIds, 3000);
+				}
+			};
+			$scope.callAPI(adAppVersionsSrv.checkVersionStatus, {
+				params: {
+					pending_upload_ids: pendingUploadIds
+				},
+				blocker: 'NONE',
+				successCallBack: fetchVersionsStatusSuccess,
+				failureCallBack: function() {
+					// do nothing
+				}
+			});
+		};
 		
 		var fetchAppVersions = function() {
 
 			var fetchAppListSuccessCallback = function(data) {
+				// TO DO: delete below code
+				 _.each(data, function(app, index) {
+            		if(index == 0 || index == 1){
+            			app.upload_status = 'PENDING';
+            		} else{
+            			app.upload_status = 'SUCCESS';
+            		}
+          		});
 				$scope.appList = data;
+				// check if any of the version upload is in pending status
+				pendingUploadIds = [];
+				_.each($scope.appList, function(app, index) {
+					if (app.upload_status === 'PENDING') {
+						pendingUploadIds.push(app.id);
+					}
+				});
+				
 				// REMEMBER - ADDED A hidden class in ng-table angular module js. Search for hidde or pull-right
 				$scope.tableParams = new ngTableParams({
 					// show first page
@@ -34,6 +88,10 @@ admin.controller('ADSntAppsListCtrl', ['$scope',
 				});
 				$scope.changeToListView();
 				$scope.tableParams.reload();
+				// if any of the versions is in PENDING status call API to retrive the status continuosly
+				if(pendingUploadIds.length > 0) {
+					checkStatusOfpendingUploadIds();
+				}
 			};
 
 			$scope.clearErrorMessage();
