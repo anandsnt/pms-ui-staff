@@ -1,9 +1,9 @@
 <section class="content current admin-scrollfix" div-touch-move-stop-propogate ng-click='clearErrorMessage()' ng-show="screenMode === 'BUILD_LIST'">
     <div>
         <header class="content-title float">
-            <h2>Versions </h2>
+            <h2 style="font-size: 20px;font-weight: 600;">{{filterType.value}} Versions </h2>
             <a ng-click="goBackToPreviousState()" class="action back ng-scope" translate="">Services</a>
-            <a class="action add" ng-click="changeToUploadBuildMode()">Upload new build</a>
+            <a class="action add" ng-click="changeToUploadBuildMode()">Upload build</a>
             <div class="filters">
                 <p class="filter-label">Service Type</p>
                 <div class="filter select" style="width:200px;">
