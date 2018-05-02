@@ -52,7 +52,7 @@ sntZestStation.controller('zsCheckInReservationDetailsCtrl', [
             newGuestList.push(primaryGuest);
             newGuestList = newGuestList.concat(accompayingGuests);
             $scope.selectedReservation.guest_details = newGuestList;
-            // rest details in service
+            // reset details in service
             zsCheckinSrv.setSelectedCheckInReservation([$scope.selectedReservation]);
         };
 
