@@ -44,10 +44,12 @@ sntZestStation.controller('zsCheckInReservationDetailsCtrl', [
         var setSelectedReservation = function() {
             zsCheckinSrv.setSelectedCheckInReservation([$scope.selectedReservation]);
         };
-        var updateGuestList = function(accompayingGuests){
+        var updateGuestList = function(accompayingGuests) {
             var newGuestList = [];
             var guestList = angular.copy($scope.selectedReservation.guest_details);
-            var primaryGuest = _.find(guestList, {is_primary: true});
+            var primaryGuest = _.find(guestList, {
+                is_primary: true
+            });
 
             newGuestList.push(primaryGuest);
             newGuestList = newGuestList.concat(accompayingGuests);
