@@ -245,6 +245,11 @@ angular.module('sntRover').service('RVreportsSubSrv', [
             });
         };
 
+        /**
+         * Fetch addons name for given array of addon ids
+         * @params {Object} contains an array of ids
+         * @return {Promise} promise
+         */
         service.fetchAddonById = function (params) {
             return callApi({
                 name: 'addons',

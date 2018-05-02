@@ -223,26 +223,27 @@ angular.module('sntRover').controller('RVReportsInboxCtrl', [
             return $scope.totalResultCount > 0;
         };
 
+        // Refresh report inbox
         $scope.refreshReportInbox = () => {
             fetchGeneratedReports(1);
         };
 
+        // Checks whether pagination should be shown or not
         $scope.shouldShowPagination = () => {
             return $scope.totalResultCount > RVReportsInboxSrv.PER_PAGE;
         };
 
+        // Filter the report inbox by name
         $scope.filterByQuery =  _.debounce(() => {
                 fetchGeneratedReports(1);
         }, 100);
 
+        // Clear the report search box
         $scope.clearQuery = function () {
                 $scope.reportInboxData.filter.searchTerm = '';
                 fetchGeneratedReports(1);               
         };
-
-        $scope.toggleReportInboxView = () => {
-            $scope.reportInboxData.isReportInboxOpen = !$scope.reportInboxData.isReportInboxOpen;
-        };
+        
 
         $scope.showGeneratedReport = function( selectedreport ) {
            var lastReportID  = reportsSrv.getChoosenReport().id,

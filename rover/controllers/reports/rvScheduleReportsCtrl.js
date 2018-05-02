@@ -944,17 +944,12 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
             return selectedEntity.report && selectedEntity.report.title === reportNames['COMPARISION_BY_DATE'];
         };
 
+        // Listener for creating new report schedule
         let createNewReportScheduleListener = $scope.$on("CREATE_NEW_REPORT_SCHEDULE", () => {
             $scope.scheduleReport();
         });
 
-        $scope.$on('$destroy', createNewReportScheduleListener);
-
-        $scope.$on("PICK_REPORT", (event, data) => {
-            $scope.pickReport(data.item, data.index);
-        });
-
-        
+        $scope.$on('$destroy', createNewReportScheduleListener);        
 
         /**
          * Startup
