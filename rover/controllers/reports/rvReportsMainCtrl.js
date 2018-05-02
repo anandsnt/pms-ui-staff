@@ -122,8 +122,11 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 
             // tell report list controller to refresh scroll
             $scope.$broadcast(reportMsgs['REPORT_LIST_SCROLL_REFRESH']);
-
-            $state.go('rover.reports.dashboard');
+            if (reportsSrv.getChoosenReport().generatedReportId) {
+                $state.go('rover.reports.inbox');
+            } else {
+                $state.go('rover.reports.dashboard');
+            }
         };
 
         // keep track of any errors
@@ -2145,7 +2148,7 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
             };
 
             var sucssCallback = function (response) {
-                if ($rootScope.isBackgroundReportsEnabled) {
+                if ($rootScope.isBackgroundReportsEnabled && $state.current.name !== 'rover.reports.inbox') {
                     $state.go('rover.reports.inbox');
                     return;
                 }
