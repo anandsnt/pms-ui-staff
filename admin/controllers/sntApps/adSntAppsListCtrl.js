@@ -156,13 +156,23 @@ admin.controller('ADSntAppsListCtrl', ['$scope',
 				if ($scope.screenMode === 'ADD_BUILD' || $scope.fileName !== 'File Attached') {
 					params.file_name = $scope.fileName;
 				}
+
 				$scope.callAPI(adAppVersionsSrv.uploadBuild, {
 					params: params,
-					successCallBack: function() {
-						fetchAppVersions();
-					}
+					loader: 'NONE'
+				});
+				ngDialog.open({
+					template: '/assets/partials/sntApps/adUPloadInProgressPopup.html',
+					className: 'ngdialog-theme-default',
+					scope: $scope,
+					closeByDocument: false
 				});
 			}
+		};
+
+		$scope.continueToVersionList = function () {
+			ngDialog.close();
+			fetchAppVersions();
 		};
 
 		$scope.checkIfVersionIsValid = function() {
