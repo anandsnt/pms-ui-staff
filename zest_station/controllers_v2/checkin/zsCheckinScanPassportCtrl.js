@@ -676,6 +676,8 @@ sntZestStation.controller('zsCheckinScanPassportCtrl', [
             for (var x in $scope.selectedReservation.guest_details) {
                 if (guest.id === $scope.selectedReservation.guest_details[x].id) {
                     $scope.selectedReservation.guest_details[x].guest_type = guest.guest_type;
+                    // The guest IDs need to checked again, as the accompanying guest may be changed from OPERA
+                    $scope.selectedReservation.guest_details[x].id = guest.id;
                 }
             }
         };
