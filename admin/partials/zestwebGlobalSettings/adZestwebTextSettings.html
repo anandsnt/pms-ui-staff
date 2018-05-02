@@ -14,6 +14,24 @@
                 <h6><span translate="">ZESTWEB_SETTINGS_INSTRUCTION</span></h6>
             </div>
             <div class="entry full-width">
+                <label  translate="">
+                    LANGUAGE_SUPPORT
+                </label>
+                <div class="entry">
+                    <div class="file-upload">
+                        <span class="input" ng-show="globalSettings.english_translation_file.length > 0">{{'FILE_ATTACHED' | translate}}</span>
+                        <span class="input" ng-hide="globalSettings.english_translation_file.length > 0">{{'CHOOSE_FILE' | translate}}</span>
+                        <input type="file" ng-model="globalSettings.english_translation_file" accept="*" app-filereader />
+                        <button type="button" class="button brand-colors">{{'ATTACH_FILE' | translate}}</button>
+                        <button type="button" class="button download-arrow icons " style="width:30px;" ng-click="downloadLang('cl')" ng-show="globalSettings.english_translation_file.length > 0"></button>
+                        <button type="button" ng-show="globalSettings.english_translation_file.length > 0 " class="button download-arrow icons right " ng-click="editLang('en')" style="width:30px;">
+                            <text ng-include="'/assets/cssimg/admin/adEditorIconSvg.svg'"></text>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="entry full-width">
                 <label translate="">
                     TEMPLATE_FONT
                 </label>
