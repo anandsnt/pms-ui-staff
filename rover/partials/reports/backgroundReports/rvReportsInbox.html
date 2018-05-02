@@ -89,7 +89,7 @@
                                 </div>
                                 <!-- If disabled, there are no actions -->
                                 <div class="report-actions" ng-if="!shouldDisableInboxItem(report)">
-                                    <button type="button" class="button green">Show</button>
+                                    <button type="button" class="button green" ng-click="showGeneratedReport(report)">Show</button>
                                     <!-- If export exists -->
                                     <button type="button" class="button with-icon purple" ng-if="report.shouldShowExport">
                                         <span class="icons icon-save"></span>

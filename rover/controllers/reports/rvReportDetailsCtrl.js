@@ -609,26 +609,28 @@ sntRover.controller('RVReportDetailsCtrl', [
                     show_rate_adjustments_only: false
                 };
 
-                _.each($scope.chosenReport.hasGeneralOptions.data, function (each) {
-                    if (each.paramKey === 'include_actions' && each.selected) {
-                        retObj.include_actions = true;
-                    }
-                    if (each.paramKey === 'include_guest_notes' && each.selected) {
-                        retObj.include_guest_notes = true;
-                    }
-                    if (each.paramKey === 'include_reservation_notes' && each.selected) {
-                        retObj.include_reservation_notes = true;
-                    }
-                    if (each.paramKey === 'show_guests' && each.selected) {
-                        retObj.show_guests = true;
-                    }
-                    if (each.paramKey === 'include_cancelled' && each.selected) {
-                        retObj.include_cancelled = true;
-                    }
-                    if (each.paramKey === 'show_rate_adjustments_only' && each.selected) {
-                        retObj.show_rate_adjustments_only = true;
-                    }
-                });
+                if ($scope.chosenReport.hasGeneralOptions) {
+                    _.each($scope.chosenReport.hasGeneralOptions.data, function (each) {
+                        if (each.paramKey === 'include_actions' && each.selected) {
+                            retObj.include_actions = true;
+                        }
+                        if (each.paramKey === 'include_guest_notes' && each.selected) {
+                            retObj.include_guest_notes = true;
+                        }
+                        if (each.paramKey === 'include_reservation_notes' && each.selected) {
+                            retObj.include_reservation_notes = true;
+                        }
+                        if (each.paramKey === 'show_guests' && each.selected) {
+                            retObj.show_guests = true;
+                        }
+                        if (each.paramKey === 'include_cancelled' && each.selected) {
+                            retObj.include_cancelled = true;
+                        }
+                        if (each.paramKey === 'show_rate_adjustments_only' && each.selected) {
+                            retObj.show_rate_adjustments_only = true;
+                        }
+                    });
+                }
 
                 return retObj;
             })();
@@ -1168,7 +1170,12 @@ sntRover.controller('RVReportDetailsCtrl', [
         // add the print orientation after printing
         var removePrintOrientation = function () {
             $('#print-orientation').remove();
-        };		
+        };
+
+
+        // print the page
+        var printReport = function () {
+        };
 
 		// print the page
 		var printReport = function() {
@@ -1430,6 +1437,13 @@ sntRover.controller('RVReportDetailsCtrl', [
         // Checks whether new pagination should be used for the report
         $scope.shouldShowNewPagination = function () {
             return !!reportPaginationIds[$scope.chosenReport.title];
+        };
+
+        /*
+        * Result with vat id collapsed or not
+        */
+        $scope.setResultWithVatCollapsedOrNot = function () {
+            $scope.results.with_vat_id.isCollapsed = !$scope.results.with_vat_id.isCollapsed;
         };
 
         $scope.fetchFullYearlyTaxReport = function() {
