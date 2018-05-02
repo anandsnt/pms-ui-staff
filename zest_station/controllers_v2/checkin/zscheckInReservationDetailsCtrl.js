@@ -44,6 +44,17 @@ sntZestStation.controller('zsCheckInReservationDetailsCtrl', [
         var setSelectedReservation = function() {
             zsCheckinSrv.setSelectedCheckInReservation([$scope.selectedReservation]);
         };
+        var updateGuestList = function(accompayingGuests){
+            var newGuestList = [];
+            var guestList = angular.copy($scope.selectedReservation.guest_details);
+            var primaryGuest = _.find(guestList, {is_primary: true});
+
+            newGuestList.push(primaryGuest);
+            newGuestList = newGuestList.concat(accompayingGuests);
+            $scope.selectedReservation.guest_details = newGuestList;
+            // rest details in service
+            zsCheckinSrv.setSelectedCheckInReservation([$scope.selectedReservation]);
+        };
 
         var fetchReservationDetails = function() {
             var onSuccessFetchReservationDetails = function(data) {
@@ -53,6 +64,11 @@ sntZestStation.controller('zsCheckInReservationDetailsCtrl', [
                     $scope.zestStationData.selectedReservation = $scope.selectedReservation;
                     if ($scope.isRateSuppressed()) {
                         $scope.selectedReservation.reservation_details.balance = 0;
+                    }
+                    if (!$scope.zestStationData.is_standalone) {
+                        // In overlay , the accomanying guest can be changed after import process
+                        // so we have to update the guest list with latest data after OPERA sync in reservation details API
+                        updateGuestList(data.data.reservation_card.accompaying_guests);
                     }
                     fetchAddons();
                     setDisplayContentHeight(); // utils function
