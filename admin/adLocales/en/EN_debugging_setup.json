@@ -18,6 +18,6 @@
 "DEBUG_DEVICE_NAME_LABEL" : "Device name :",
 "END_LABEL" : "Ends at :",
 "APP_VERSION": "App version",
-"BUILD_STATUS": "Service Build status",
-"BUILD_STATUS_INFO": "Service Build status info",
+"BUILD_STATUS": "Service Update status",
+"BUILD_STATUS_INFO": "Service Update status info",
 "SERVICE_TYPE": "Service Type"
