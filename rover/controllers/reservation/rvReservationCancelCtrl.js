@@ -267,15 +267,7 @@
 
 			$scope.completeCancellationProcess = function() {
 				if ($scope.DailogeState.isCancelled) {
-					$state.go('rover.reservation.staycard.reservationcard.reservationdetails', {
-						"id": $scope.reservationData.reservationId || $scope.reservationParentData.reservationId,
-						"confirmationId": $scope.reservationData.confirmNum || $scope.reservationParentData.confirmNum,
-						"isrefresh": true
-                    }, {
-                        reload: true,
-                        notify: true,
-                        inherit: false
-                    });
+					$state.reload($state.current.name);
 				}
 
 				$scope.closeReservationCancelModal();

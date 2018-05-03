@@ -12,17 +12,8 @@ sntRover.controller('RVCancelReservationDepositController', ['$rootScope', '$sco
 		$scope.DailogeState.isCancelled = false ;
 
 		$scope.completeCancellationProcess = function() {
-
 			if ($scope.DailogeState.isCancelled) {
-				$state.go('rover.reservation.staycard.reservationcard.reservationdetails', {
-					"id": $stateParams.id || $scope.reservationData.reservationId,
-					"confirmationId": $stateParams.confirmationId || $scope.reservationData.confirmNum,
-					"isrefresh": true
-                }, {
-                    reload: true,
-                    notify: true,
-                    inherit: false
-                });
+                $state.reload($state.current.name);
 			}
 			$scope.closeDialog();
 		};
