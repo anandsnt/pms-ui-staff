@@ -20,7 +20,7 @@ module.exports = function(config) {
         '../shared/lib/js/jquery.ui.touch-punch.min.js',
         '../shared/lib/js/angular.min.js',
         '../shared/lib/js/angular-route.min.js',
-        '../shared/lib/js/angular-ui-router.min.js',
+        '../shared/lib/js/angular-ui-router.1.0.15.min.js',
         '../shared/lib/js/angular-animate.min.js',
         '../shared/lib/js/angular-dragdrop.min.js',
         '../shared/lib/js/angular-mocks.js',
@@ -36,11 +36,14 @@ module.exports = function(config) {
         '../shared/lib/js/fastclick/fastclick.min.js',
         '../shared/lib/js/moment.min.js',
         '../shared/lib/js/date.js',
+        '../shared/baseCtrl.js',
         '../shared/directives/documentTouchMovePrevent/*.js',
         '../shared/directives/clickTouch/*.js',
         '../shared/directives/divTouchMoveStopPropogate/*.js',
         '../shared/interceptors/**/*.js',
         '../shared/directives/**/*.js',
+        '../shared/sntTransitionManager/**/*.js',
+        '../shared/lib/js/Utils.js',
         './rvApp.js',
         './rvSntApp.js',
         './rvCacheVaultModule.js',
@@ -52,10 +55,12 @@ module.exports = function(config) {
         './rvRouters/*.js',
         './controllers/**/*.js',
         './services/**/*.js',
+        './constants/**/*.js',
         // './directives/**/*.js',
         './factories/**/*.js',
         './filters/*.js',
-        '../shared/baseCtrl.js'
+        '../shared/baseCtrl.js',
+        './partials/**/*.html'
     ],
 
     // list of files / patterns to exclude
@@ -68,7 +73,12 @@ module.exports = function(config) {
     preprocessors: {
         '../payment/**/*.js': ['babel'],
         './controllers/**/*.js': ['babel'],
-        './services/rateManager_/rvRateManagerCoreSrv.js': ['babel']
+        './services/rateManager_/rvRateManagerCoreSrv.js': ['babel'],
+         './partials/**/*.html': ['ng-html2js']
+    },
+    ngHtml2JsPreprocessor: {
+        stripPrefix: './',
+        prependPrefix: '/assets/'
     },
 
 
@@ -97,7 +107,7 @@ module.exports = function(config) {
 
     // start these browsers
     // available browser launchers: https://npmjs.org/browse/keyword/karma-launcher
-      browsers: ['ChromeHeadless'],
+    browsers: ['ChromeHeadless'],
 
 
     // Continuous Integration mode

@@ -2132,9 +2132,10 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
                     }, 50);
                 }
 
-                // CICO-39128 - Added to preserve the page no while sorting and update the page no in directive
-                if (chosenReport.title == reportNames['COMPLIMENTARY_ROOM_REPORT'] && page != 1) {
-                    $timeout(function () {
+                // CICO-39128 - Added to preserve the page no while sorting and update the page no in
+                // CICO-49259
+                if (page !== 1) {
+                    $timeout(function() {
                         $scope.$broadcast('updatePageNo', page);
                     }, 50);
                 }
@@ -2312,7 +2313,7 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
                 }, 100);
                 return false;
             },
-            close: function (event, ui) {
+            close: function () {
                 var uiValues = split(this.value);
                 var modelVal = [];
 
@@ -2383,9 +2384,7 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
                 $scope.$emit('showLoader');
                 reportsSubSrv.fetchComTaGrp(term, true)
                     .then(function (data) {
-                        var entry = {},
-                            found,
-                            hasIn;
+                        var found;
 
                         _.each(data, function (item) {
                             var hasIn = _.find(activeCompTaCompleteAry, function (added) {

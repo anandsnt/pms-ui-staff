@@ -44,28 +44,59 @@ angular.module('snt.transitionManager',
             var service = this,
                 transitions = [];
 
+            /**
+             * This method helps to skip loop checks for the initial transition
+             * @returns {boolean} true if there aren't any transitions in the stack
+             */
             service.isInitial = function () {
                 return !transitions.length;
             };
 
+            /**
+             * Adds the passed transition to the stack
+             * @param {Transition} transition - the most recent transition to be added to the stack
+             * @returns {number} depth of the navigation
+             */
             service.push = function (transition) {
                 transitions.push(angular.copy(transition));
+                return transitions.length;
             };
 
+            /**
+             * Removes the last transaction from the stack
+             * @returns {number} depth of the navigation
+             */
             service.pop = function () {
                 transitions.pop();
+                return transitions.length;
             };
 
+            /**
+             * Get's the transition requested or last transition by default
+             * @param {number} idx - index of required transition
+             * @returns {Transition} Requested transition or the Last
+             */
             service.get = function (idx) {
                 idx = idx || transitions.length - 1;
 
                 return transitions[idx];
             };
 
+            /**
+             * Splices the transition array - used to clear loops
+             * @param {number} transitionIndex - start index of the transition sequence that would cause a loop (got from isDeep method)
+             * @returns {number} depth of the navigation
+             */
             service.clearLoop = function (transitionIndex) {
                 transitions.splice(transitionIndex);
+                return transitions[transitionIndex];
             };
 
+            /**
+             * Checks if the new transition would create a loop and if yes, returns the index
+             * @param {Transition} transition  - upcoming transition
+             * @returns {number} index of the deep state / -1
+             */
             service.isDeep = function (transition) {
                 return transitions.map(
                     function (transition) {
@@ -74,6 +105,11 @@ angular.module('snt.transitionManager',
                 ).indexOf(transition.to().name);
             };
 
+            /**
+             * Checks if a transition is a reverse of the last transition in the stack
+             * @param {Transition} next - the upcoming transition
+             * @returns {boolean} true if it's a reverse of the last transition in the stack
+             */
             service.isBackNavigation = function (next) {
                 var prev = service.get();
 
@@ -81,6 +117,10 @@ angular.module('snt.transitionManager',
                     prev.from().name === next.to().name;
             };
 
+            /**
+             * This method is used to log the navigation crumbs
+             * @returns {undefined}
+             */
             service.debug = function () {
                 var style = 'background: green; color: white; display: block;';
 

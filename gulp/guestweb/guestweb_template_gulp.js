@@ -7,8 +7,9 @@ module.exports = function(gulp, $, options){
 		GUESTWEB_TEMPLATE_ROOT  = options['GUESTWEB_TEMPLATE_ROOT'],
 	    GUESTWEB_HTML_FILE     	= options['GUESTWEB_HTML_FILE'],
 	    GUESTWEB_THEME_TEMPLATE_MAPPING_FILE = '../../asset_list/theming/guestweb/template/template_theme_mapping_a',
+	    GUESTWEB_THEME_TEMPLATE_MAPPING_NEW_FILE = '../../asset_list/theming/guestweb/template/template_theme_mappings_b'
 	    GUESTWEB_THEME_TEMPLATE_LIST = require(GUESTWEB_THEME_TEMPLATE_MAPPING_FILE).getThemeMappingList(),
-	    GUESTWEB_NEW_THEME_TEMPLATE_LIST = require('../../asset_list/theming/guestweb/template/template_theme_mappings_b').getThemeMappingList(),
+	    GUESTWEB_NEW_THEME_TEMPLATE_LIST = require(GUESTWEB_THEME_TEMPLATE_MAPPING_NEW_FILE).getThemeMappingList(),
 	    GUESTWEB_PARTIALS 		= ['guestweb/**/**/*.html'],
 	    GUESTWEB_TEMPLTE_MANFEST_FILE = "guest_web_template_manifest.json",
 	    GUESTWEB_JS_COMBINED_FILE  = 'guest_web.min.js',
@@ -21,7 +22,7 @@ module.exports = function(gulp, $, options){
 	    guestwebGenDir 			= DEST_ROOT_PATH + 'asset_list/' + generated + 'ThemeMappings/' + generated + 'Guestweb/template/',
 		guestwebGenFile 		= guestwebGenDir + generated + 'GuestWebTemplateThemeMappings.json';
 
-	var extractThemeMappingList = function() {
+	var extractThemeMappingList = function(theme_list) {
 		var argv = require('yargs').argv;
 		var guestWebThemeList = {};
 
@@ -51,14 +52,14 @@ module.exports = function(gulp, $, options){
 			// strip [ and ] from string
 			themeString = themeString.substring(1, themeString.length - 1)
 			var themeArray = themeString.split(",");
-
 			for (var i = 0, len = themeArray.length; i < len; i++) {
-				var themelist = GUESTWEB_THEME_TEMPLATE_LIST[themeArray[i]] || GUESTWEB_THEME_TEMPLATE_LIST['guestweb_common_templates'];
-				
-				guestWebThemeList[themeArray[i]] = themelist;
+				if (theme_list[themeArray[i]]) {
+					var themelist = theme_list[themeArray[i]] || theme_list['guestweb_common_templates'];
+					guestWebThemeList[themeArray[i]] = themelist;
+				}
 			}
 		} else {
-			guestWebThemeList = GUESTWEB_THEME_TEMPLATE_LIST;
+			guestWebThemeList = theme_list;
 		}
 		return guestWebThemeList;
 	};
@@ -136,7 +137,7 @@ module.exports = function(gulp, $, options){
 		return prodGenerateMappingListTasks(GUESTWEB_THEME_TEMPLATE_LIST);
 	});
 
-	gulp.task('guestweb-template-cache-dev', function () {
+	var devGenerateMappingListTasks = function(theme_list){
 		var glob = require('glob-all'),
 			fileList = [],
 			fs = require('fs'),
@@ -147,11 +148,13 @@ module.exports = function(gulp, $, options){
 
 		
 		delete require.cache[require.resolve(GUESTWEB_THEME_TEMPLATE_MAPPING_FILE)];
-		GUESTWEB_THEME_TEMPLATE_LIST = extractThemeMappingList();
+		delete require.cache[require.resolve(GUESTWEB_THEME_TEMPLATE_MAPPING_NEW_FILE)];
 
-		var tasks = Object.keys(GUESTWEB_THEME_TEMPLATE_LIST).map(function(theme, index){
+		theme_list = extractThemeMappingList(theme_list);
+
+		var tasks = Object.keys(theme_list).map(function(theme, index){
 			console.log ('Guestweb Theme template - mapping-generation-started: ' + theme);
-			var mappingList  = GUESTWEB_THEME_TEMPLATE_LIST[theme],
+			var mappingList  = theme_list[theme],
 				fileName 	 = theme.replace(/\./g, "-")+"-template.js";
 
 			return gulp.src(mappingList)
@@ -180,6 +183,14 @@ module.exports = function(gulp, $, options){
 			}); 
 		});
 		});
+	};
+
+	gulp.task('guestweb-template-cache-dev-v2', function(){
+		return devGenerateMappingListTasks(GUESTWEB_NEW_THEME_TEMPLATE_LIST);
+	});
+
+	gulp.task('guestweb-template-cache-dev', function(){
+		return devGenerateMappingListTasks(GUESTWEB_THEME_TEMPLATE_LIST);
 	});
 
 	//Template - END

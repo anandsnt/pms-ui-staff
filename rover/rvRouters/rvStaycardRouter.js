@@ -222,7 +222,7 @@ angular.module('stayCardModule', [])
             params: {
                 id: null,
                 confirmationId: null,
-                isrefresh: null,
+                isrefresh: true, // default to true; unless specified to read from cached response in service
                 justCreatedRes: null,
                 isFromCards: null,
                 isOnlineRoomMove: null,
@@ -317,7 +317,7 @@ angular.module('stayCardModule', [])
 
                 }
             },
-            lazyLoad: function($transition$){
+            lazyLoad: function ($transition$) {
                 $transition$.injector().get('jsMappings')
                     .fetchAssets(['rover.reservation.staycard.roomassignment', 'directives']);
             }
