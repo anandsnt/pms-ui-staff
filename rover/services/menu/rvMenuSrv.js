@@ -178,7 +178,7 @@ angular.module('sntRover').service('rvMenuSrv',
 		            menuIndex: "cashier"
 		        }, {
 		            title: "MENU_GUESTS",
-		            action: "rover.guestcardsearch",		            
+		            action: "rover.guest.search",
 		            menuIndex: "guests"
 		        }, {
 		            title: "MENU_ACCOUNTS",
@@ -305,7 +305,7 @@ angular.module('sntRover').service('rvMenuSrv',
                 submenu: []
             }, {
 		        title: "MENU_REPORTS",
-		        action: "rover.reports",
+		        action: "rover.reports.dashboard",
 		        menuIndex: "reports",
 		        iconClass: "icon-reports",
 		        submenu: []
@@ -344,7 +344,7 @@ angular.module('sntRover').service('rvMenuSrv',
 			},
 			{
 				title: "MENU_REPORTS",
-				action: "rover.reports",
+				action: "rover.reports.dashboard",
 				menuIndex: "reports",
 				iconClass: "icon-reports",
 				submenu: []

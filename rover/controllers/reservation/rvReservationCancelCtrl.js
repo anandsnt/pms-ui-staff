@@ -267,13 +267,9 @@
 
 			$scope.completeCancellationProcess = function() {
 				if ($scope.DailogeState.isCancelled) {
-					$state.go('rover.reservation.staycard.reservationcard.reservationdetails', {
-						"id": $scope.reservationData.reservationId || $scope.reservationParentData.reservationId,
-						"confirmationId": $scope.reservationData.confirmNum || $scope.reservationParentData.confirmNum,
-						"isrefresh": ($state.params && $state.params.isrefresh === 'false') // CICO-47743 - State not getting refreshed
-						
-					});					
+					$state.reload($state.current.name);
 				}
+
 				$scope.closeReservationCancelModal();
 			};
 
