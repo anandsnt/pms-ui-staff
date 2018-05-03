@@ -49,4 +49,9 @@ angular.module('FinancialsModule', [])
             }
         }
     });
+    $stateProvider.state('rover.financials.invoiceSearch', {
+        url: '/invoiceSearch',
+        templateUrl: '/assets/partials/financials/invoiceSearch/rvInvoiceSearch.html',
+        controller: 'RVInvoiceSearchController'
     });
+});
