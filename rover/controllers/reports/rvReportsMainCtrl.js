@@ -1453,6 +1453,7 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
             if (report.hasOwnProperty('hasIncludeCompanyTaGroup') && !!report.chosenIncludeCompanyTaGroup) {
                 key = report.hasIncludeCompanyTaGroup.value.toLowerCase();
                 params[key] = report.chosenIncludeCompanyTaGroup;
+                params[reportParams['ENTITY_TYPE']] = report.chosenIncludeCompanyTaGroupType;
                 /* Note: Using the ui value here */
                 if (changeAppliedFilter) {
                     $scope.appliedFilter['companyTaGroup'] = report.uiChosenIncludeCompanyTaGroup;
@@ -2546,6 +2547,7 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
                     $scope.$apply(function () {
                         touchedReport.uiChosenIncludeCompanyTaGroup = ui.item.label;
                         touchedReport.chosenIncludeCompanyTaGroup = ui.item.value;
+                        touchedReport.chosenIncludeCompanyTaGroupType = ui.item.type;
                     });
                 }, 100);
                 return false;

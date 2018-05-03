@@ -116,5 +116,6 @@ angular.module('reportsModule')
         "MIN_NO_OF_DAYS_NOT_OCCUPIED": "min_number_of_days_not_occupied",
         "EXCLUDE_TAX": "exclude_tax",
         "DUE_OUT_DEPARTURES": "due_out_departures",
-        "INCLUDE_CANCELLED": "include_cancelled"
+        "INCLUDE_CANCELLED": "include_cancelled",
+        "ENTITY_TYPE": 'entity_type'
     });

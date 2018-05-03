@@ -226,9 +226,19 @@ angular.module('sntRover').service('RVReportsInboxSrv', [
             }               
             
         };
-        //TODO
-        this.processAccounts = (value, key, formatedFilter) => {                          
-            
+        
+        /**
+         * Fill account(TA/CC) names
+         * @param {String} value of the option
+         * @param {String} key the key to be used in the formatted filter 
+         * @param {Promises} promises array of promises
+         * @param {Object} formatedFilter the formatted filter object        
+         * @return {void} 
+         */
+        this.fillTaCCDetails = (value, key, promises, formatedFilter) => {                          
+            promises.push(RVreportsSubSrv.fetchAccountsById(value).then((accountInfo) => {
+                formatedFilter[reportInboxFilterLabelConst[key]] = accountInfo.account_details.account_name;
+            }));
         };
 
         /**
@@ -358,11 +368,27 @@ angular.module('sntRover').service('RVReportsInboxSrv', [
             formatedFilter[reportInboxFilterLabelConst[key]] = value;
         };
 
-        this.fillCompanyTaGroupDetails = (value, key, promises, formatedFilter) => {            
+        /**
+         * Fill company/ta/group details
+         * @param {String} value of the option
+         * @param {String} key the key to be used in the formatted filter
+         * @param {Promises} promises array of promises
+         * @param {Object} formatedFilter the formatted filter object
+         * @param {String} entityType values are GROUP/TRAVELAGENT/COMPANY
+         * @return {void} 
+         */
+        this.fillCompanyTaGroupDetails = (value, key, promises, formatedFilter, entityType) => {
+            var entityId = value.split("_")[1];           
+            switch (entityType) {
+                case "GROUP":
+                      self.fillGroupInfo(entityId, key, promises, formatedFilter);
+                      break;
+                case "TRAVELAGENT":
+                case "COMPANY":
+                      self.fillTaCCDetails(entityId, key, promises, formatedFilter)
+                      break;
 
-            // promises.push(RVreportsSubSrv.fetchComTaGrp(value).then((entity) => {
-            //     formatedFilter[reportInboxFilterLabelConst[key]] = _.pluck(entity, 'status').join(',');
-            // }));
+            }            
         };
 
         /**
@@ -544,10 +570,19 @@ angular.module('sntRover').service('RVReportsInboxSrv', [
             }));
         };
 
-        // TODO
+        /**
+         * Fill the group name from id
+         * @param {String} value id of the group
+         * @param {String} key the key to be used in the formatted filter
+         * @param {Promises} promises array of promises
+         * @param {Object} formatedFilter the formatted filter object
+         * @return {void} 
+         */
         this.fillGroupInfo = (value, key, promises, formatedFilter) => {           
 
-            
+            promises.push(RVreportsSubSrv.fetchGroupById(value).then(function(groupInfo) {
+                formatedFilter[reportInboxFilterLabelConst[key]] = groupInfo.group_name;
+            })); 
         };
 
         /**
@@ -560,7 +595,7 @@ angular.module('sntRover').service('RVReportsInboxSrv', [
          */
         this.fillRoomTypes = (value, key, promises, formatedFilter) => { 
             let params = {
-                ids: value
+                "ids[]": value
             };          
 
             promises.push(RVreportsSubSrv.fetchRoomTypeList(params).then(function(roomTypes) {
@@ -579,7 +614,7 @@ angular.module('sntRover').service('RVReportsInboxSrv', [
         this.fillFloors = (value, key, promises, formatedFilter) => {                     
 
             promises.push(RVreportsSubSrv.fetchFloors().then(function(floors) {
-                formatedFilter[reportInboxFilterLabelConst[key]] = _.pluck(floors, 'floor_number').join(',');
+                formatedFilter[reportInboxFilterLabelConst[key]] = _.pluck(self.filterArrayValues(floors, value, 'floor_number'), 'floor_number').join(',');
             }));
         };
 
@@ -777,7 +812,7 @@ angular.module('sntRover').service('RVReportsInboxSrv', [
                         self.fillOptionsWithoutFormating(value, key, processedFilter);
                         break; 
                    case reportParamsConst['INCLUDE_COMPANYCARD_TA_GROUP']:
-                        self.fillCompanyTaGroupDetails(value, key, processedFilter);
+                        self.fillCompanyTaGroupDetails(value, key, promises, processedFilter, filters.entity_type);
                         break;
                    case reportParamsConst['CHECKED_IN']:
                    case reportParamsConst['CHECKED_OUT']:

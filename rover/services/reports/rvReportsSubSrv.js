@@ -370,12 +370,14 @@ angular.module('sntRover').service('RVreportsSubSrv', [
             });
         };
 
-        service.fetchRoomTypeList = function() {
+        service.fetchRoomTypeList = function(params) {
+            params = params || {}
             return callApi({
                 name: 'roomTypeList',
                 method: 'getJSON',
                 url: 'api/room_types',
-                resKey: 'results'
+                resKey: 'results',
+                params: params
             });
         };
 
@@ -588,6 +590,30 @@ angular.module('sntRover').service('RVreportsSubSrv', [
                 url: '/api/groups/search',
                 resKey: 'groups',
                 params: params
+            });
+        };
+
+        /**
+         * Fetch group by id
+         * @param {Number} id identifier for the group
+         * @return {Promise} promise
+         */
+        service.fetchGroupById = function(id) {
+            return callApi({               
+                method: 'getJSON',
+                url: 'groups/' + id  + '/group_name'                           
+            });
+        };
+
+        /**
+         * Fetch accounts (CC/TA) by id
+         * @param {Number} id identifier for the account
+         * @return {Promise} promise
+         */
+        service.fetchAccountsById = function(id) {
+            return callApi({                
+                method: 'getJSON',
+                url: '/api/accounts/' + id                             
             });
         };
 
