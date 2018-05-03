@@ -45,7 +45,7 @@ describe('RVInvoiceSearchController', function () {
 
                 $scope.invoiceSearchFlags = {};
 
-                $scope.invoiceSearchData = {}
+                $scope.invoiceSearchData = {};
 
                 $scope.clearQuery();
 

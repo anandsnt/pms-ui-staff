@@ -17,6 +17,7 @@ sntRover.controller('RVInvoiceSearchController',
 				$scope.refreshScroller('invoice-list');
 			}, 1000);
 		};
+
 		/*
 		 * To clear the results and search term when clicks close button in search field
 		 */ 
@@ -27,7 +28,7 @@ sntRover.controller('RVInvoiceSearchController',
 			$scope.totalResultCount = 0;
 			$scope.invoiceSearchData.reservationsList = [];
 			refreshScroll();
-		}
+		};
 		/*
 		 * Method to search invoice
 		 * @param page is page number of pagination
@@ -44,7 +45,7 @@ sntRover.controller('RVInvoiceSearchController',
 						}, 800);	
 						refreshScroll();
 					},
-				    params = {
+					params = {
                         'query': $scope.invoiceSearchData.query,
                         'no_control_number': true,
                         // 'per_page': rvAccountsSrv.DEFAULT_PER_PAGE,
@@ -60,7 +61,7 @@ sntRover.controller('RVInvoiceSearchController',
 			} else {
 				$scope.invoiceSearchFlags.isQueryEntered = false;
 			}
-		}
+		};
 		/*
 		 * Initialization
 		 */
