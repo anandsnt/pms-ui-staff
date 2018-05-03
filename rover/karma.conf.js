@@ -36,6 +36,7 @@ module.exports = function(config) {
         '../shared/lib/js/fastclick/fastclick.min.js',
         '../shared/lib/js/moment.min.js',
         '../shared/lib/js/date.js',
+        '../node_modules/karma-read-json/karma-read-json.js',
         '../shared/baseCtrl.js',
         '../shared/directives/documentTouchMovePrevent/*.js',
         '../shared/directives/clickTouch/*.js',
@@ -60,7 +61,8 @@ module.exports = function(config) {
         './factories/**/*.js',
         './filters/*.js',
         '../shared/baseCtrl.js',
-        './partials/**/*.html'
+        './partials/**/*.html',
+        {pattern: 'unitTestSampleData/**/*.json', included: false}        
     ],
 
     // list of files / patterns to exclude
