@@ -89,6 +89,7 @@ sntGuestWeb.controller('HomeController', ['$scope', '$rootScope', '$state', '$co
             $state.go('checkoutRoomVerification');
         } else if (reservationAndhotelDetails.is_checkin === "true" && reservationAndhotelDetails.access_token.length > 0) {
             var absUrl = window.location.href;
+
             if (absUrl.indexOf("/guest_web/") !== -1 && absUrl.indexOf("/checkin?guest_web_token=") !== -1 &&
                 reservationAndhotelDetails.skip_checkin_verification && reservationAndhotelDetails.reservation_details) {
                 GwCheckinSrv.setcheckinData(reservationAndhotelDetails.reservation_details);
@@ -96,10 +97,11 @@ sntGuestWeb.controller('HomeController', ['$scope', '$rootScope', '$state', '$co
                 GwWebSrv.zestwebData.roomUpgraded = false;
                 $state.go('checkinReservationDetails');
                 var node = document.createElement('style');
+
                 node.innerHTML = ".container {margin-top: 30px !important;} .row.header-bar {display: none;} #zest-footer{ display: none !important;}";
                 document.head.appendChild(node);
             } else {
-                $state.go('checkinLanding'); //checkin starting -> page precheckin + auto checkin
+                $state.go('checkinLanding'); // checkin starting -> page precheckin + auto checkin
             }
 
         }
