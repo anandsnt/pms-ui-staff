@@ -1,3 +1,7 @@
+/**
+ * Angular constant containing the mapping between the filter param in api req/res
+ * and the corresponding display value in report inbox details section
+ */
 angular.module('reportsModule')
     .constant('RVReportInboxFilterLabelConst', {
     	'from_date': 'Date Range (From)',

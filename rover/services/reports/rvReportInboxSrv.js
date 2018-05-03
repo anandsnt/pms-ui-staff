@@ -24,8 +24,14 @@ angular.module('sntRover').service('RVReportsInboxSrv', [
 
         var self = this;
 
-        this.PER_PAGE = 10;        
+        this.PER_PAGE = 10; 
 
+
+        /**
+         * Fetches the list of generated reports
+         * @param {Object} contain the params used in api
+         * @return {Promise} promise
+         */
         this.fetchReportInbox = function(params) {
             var deferred = $q.defer(),            
                url = '/api/generated_reports';
@@ -40,6 +46,11 @@ angular.module('sntRover').service('RVReportsInboxSrv', [
             return deferred.promise;
         };
 
+        /**
+         * Apply additional flags on the report which we got from the reports api
+         * @param {Object} report the instance of a report
+         * @return {void}
+         */
         this.processReports = function(report) {
             for (var i = 0, j = report.length; i < j; i++) {               
 
@@ -148,7 +159,7 @@ angular.module('sntRover').service('RVReportsInboxSrv', [
         };
 
         /**
-         * Fill department names form array of ids
+         * Fill department names from array of ids
          * @param {Array} value array of department ids
          * @param {String} key the key to be used in the formatted filter
          * @param {Promises} promises array of promises
@@ -160,18 +171,16 @@ angular.module('sntRover').service('RVReportsInboxSrv', [
             promises.push(RVreportsSubSrv.fetchDepartments().then((departments) => {
                 formatedFilter[reportInboxFilterLabelConst[key]] = _.pluck(self.filterArrayValues(departments, value, 'value'), 'name').join(',');
             }));
-        };
+        };        
 
-        // this.processGuaranteeTypes = (value, key, promises, formatedFilter) => {
-        //     let params = {
-        //         ids: value
-        //     };
-
-        //     promises.push(RVreportsSubSrv.fetchGuaranteeTypes().then((guaranteeTypes) => {
-        //         formatedFilter[reportInboxFilterLabelConst[key]] = _.pluck(guaranteeTypes, 'name').join(',');
-        //     }));
-        // };
-
+        /**
+         * Fill market names from array of ids
+         * @param {Array} value array of market ids
+         * @param {String} key the key to be used in the formatted filter
+         * @param {Promises} promises array of promises
+         * @param {Object} formatedFilter the formatted filter object
+         * @return {void} 
+         */
         this.processMarkets = (value, key, promises, formatedFilter) => {
             let params = {
                 ids: value
@@ -182,6 +191,13 @@ angular.module('sntRover').service('RVReportsInboxSrv', [
             }));
         };
 
+        /**
+         * Fill options item
+         * @param {String} value of the option
+         * @param {String} key the key to be used in the formatted filter 
+         * @param {Object} formatedFilter the formatted filter object        
+         * @return {void} 
+         */
         this.processOptions = (value, key, formatedFilter) => {
             if(!formatedFilter[reportInboxFilterLabelConst['OPTIONS']]) {
                 formatedFilter[reportInboxFilterLabelConst['OPTIONS']] = [];
@@ -193,6 +209,13 @@ angular.module('sntRover').service('RVReportsInboxSrv', [
             
         };
 
+        /**
+         * Fill display items
+         * @param {String} value of the option
+         * @param {String} key the key to be used in the formatted filter 
+         * @param {Object} formatedFilter the formatted filter object        
+         * @return {void} 
+         */
         this.processDisplayFilter = (value, key, formatedFilter) => {
             if(!formatedFilter[reportInboxFilterLabelConst['DISPLAY']]) {
                 formatedFilter[reportInboxFilterLabelConst['DISPLAY']] = [];
@@ -208,6 +231,13 @@ angular.module('sntRover').service('RVReportsInboxSrv', [
             
         };
 
+        /**
+         * Fill aeging balance details
+         * @param {Array} value array of values
+         * @param {String} key the key to be used in the formatted filter 
+         * @param {Object} formatedFilter the formatted filter object        
+         * @return {void} 
+         */
         this.processAgingBalance = (value, key, formatedFilter) => {
           let ageBuckets = [];
 
@@ -219,10 +249,25 @@ angular.module('sntRover').service('RVReportsInboxSrv', [
             
         };        
 
+        /**
+         * Generic function to process array of values with no formatting required
+         * @param {Array} value array of values
+         * @param {String} key the key to be used in the formatted filter 
+         * @param {Object} formatedFilter the formatted filter object        
+         * @return {void} 
+         */
         this.processArrayValuesWithNoFormating = (value, key, formatedFilter) => { 
           formatedFilter[reportInboxFilterLabelConst[key]] =  value.join(',');            
         };
 
+         /**
+         * Fill origin info details
+         * @param {Array} value array of values
+         * @param {String} key the key to be used in the formatted filter 
+         * @param {Promises} promises array of promises
+         * @param {Object} formatedFilter the formatted filter object        
+         * @return {void} 
+         */
         this.fillOriginInfo = (value, key, promises, formatedFilter) => {
             let params = {
                 ids: value
@@ -233,6 +278,14 @@ angular.module('sntRover').service('RVReportsInboxSrv', [
             }));
         };
 
+        /**
+         * Fill origin urls info details
+         * @param {Array} value array of values
+         * @param {String} key the key to be used in the formatted filter 
+         * @param {Promises} promises array of promises
+         * @param {Object} formatedFilter the formatted filter object        
+         * @return {void} 
+         */
         this.processOriginUrls = (value, key, promises, formatedFilter) => {
             let params = {
                 ids: value
@@ -294,6 +347,13 @@ angular.module('sntRover').service('RVReportsInboxSrv', [
             }));
         };
 
+        /**
+         * Fill options with no formatting required
+         * @param {String} value of the option
+         * @param {String} key the key to be used in the formatted filter
+         * @param {Object} formatedFilter the formatted filter object
+         * @return {void} 
+         */
         this.fillOptionsWithoutFormating = (value, key, formatedFilter) => {
             formatedFilter[reportInboxFilterLabelConst[key]] = value;
         };
@@ -305,6 +365,13 @@ angular.module('sntRover').service('RVReportsInboxSrv', [
             // }));
         };
 
+        /**
+         * Fill checkin checkout details
+         * @param {String} value of the option
+         * @param {String} key the key to be used in the formatted filter
+         * @param {Object} formatedFilter the formatted filter object
+         * @return {void} 
+         */
         this.fillCheckedInCheckedOut = (value, key, formatedFilter) => {
             if (!formatedFilter[reportInboxFilterLabelConst['CHECK IN/ CHECK OUT']]) {
                formatedFilter[reportInboxFilterLabelConst['CHECK IN/ CHECK OUT']] = []; 
@@ -314,6 +381,13 @@ angular.module('sntRover').service('RVReportsInboxSrv', [
             }
         };
 
+        /**
+         * Fill show fields
+         * @param {String} value of the option
+         * @param {String} key the key to be used in the formatted filter
+         * @param {Object} formatedFilter the formatted filter object
+         * @return {void} 
+         */
         this.fillShowFields = (value, key, formatedFilter) => {
             if(!formatedFilter[reportInboxFilterLabelConst['SHOW']]) {
                 formatedFilter[reportInboxFilterLabelConst['SHOW']] = [];
@@ -325,6 +399,13 @@ angular.module('sntRover').service('RVReportsInboxSrv', [
             
         };
 
+        /**
+         * Fill values with no formatting required
+         * @param {String} value of the option
+         * @param {String} key the key to be used in the formatted filter
+         * @param {Object} formatedFilter the formatted filter object
+         * @return {void} 
+         */
         this.fillValueWithoutFormating = (value, key, formatedFilter) => {
             formatedFilter[reportInboxFilterLabelConst[key]] = value;
         };
@@ -469,6 +550,14 @@ angular.module('sntRover').service('RVReportsInboxSrv', [
             
         };
 
+        /**
+         * Fill room type names from the array of ids
+         * @param {Array} value array of room type ids
+         * @param {String} key the key to be used in the formatted filter
+         * @param {Promises} promises array of promises
+         * @param {Object} formatedFilter the formatted filter object
+         * @return {void} 
+         */
         this.fillRoomTypes = (value, key, promises, formatedFilter) => { 
             let params = {
                 ids: value
@@ -479,6 +568,14 @@ angular.module('sntRover').service('RVReportsInboxSrv', [
             }));
         };
 
+         /**
+         * Fill floor names from the array of ids
+         * @param {Array} value array of floor ids
+         * @param {String} key the key to be used in the formatted filter
+         * @param {Promises} promises array of promises
+         * @param {Object} formatedFilter the formatted filter object
+         * @return {void} 
+         */
         this.fillFloors = (value, key, promises, formatedFilter) => {                     
 
             promises.push(RVreportsSubSrv.fetchFloors().then(function(floors) {
@@ -486,6 +583,14 @@ angular.module('sntRover').service('RVReportsInboxSrv', [
             }));
         };
 
+        /**
+         * Fill travel agent names from an array of ids
+         * @param {Array} value array of ta ids
+         * @param {String} key the key to be used in the formatted filter
+         * @param {Promises} promises array of promises
+         * @param {Object} formatedFilter the formatted filter object
+         * @return {void} 
+         */
         this.fillTravelAgentInfo = (value, key, promises, formatedFilter) => {                     
             let params = {
                 ids: value
@@ -496,6 +601,13 @@ angular.module('sntRover').service('RVReportsInboxSrv', [
             }));
         };
 
+        /**
+         * Fill vat info
+         * @param {String} value 
+         * @param {String} key the key to be used in the formatted filter
+         * @param {Object} formatedFilter the formatted filter object
+         * @return {void} 
+         */
         this.fillVatInfo = (value, key, formatedFilter) => {
             if(!formatedFilter[reportInboxFilterLabelConst['COMPANY/TRAVEL AGENT']]) {
                 formatedFilter[reportInboxFilterLabelConst['COMPANY/TRAVEL AGENT']] = [];
@@ -507,6 +619,14 @@ angular.module('sntRover').service('RVReportsInboxSrv', [
             
         };
 
+        /**
+         * Fill campaign type names from an array of ids
+         * @param {Array} value array of campaign ids
+         * @param {String} key the key to be used in the formatted filter
+         * @param {Promises} promises array of promises
+         * @param {Object} formatedFilter the formatted filter object
+         * @return {void} 
+         */
         this.fillCampaignTypesInfo = (value, key, promises, formatedFilter) => {  
 
             promises.push(RVreportsSubSrv.fetchCampaignTypes().then(function(campaignTypes) {
@@ -514,6 +634,13 @@ angular.module('sntRover').service('RVReportsInboxSrv', [
             }));
         };
 
+        /**
+         * Fill sort direction
+         * @param {String} value sort direction
+         * @param {String} key the key to be used in the formatted filter
+         * @param {Object} formatedFilter the formatted filter object
+         * @return {void} 
+         */
         this.fillSortDir = (value, key, formatedFilter) => {            
             let sortDir = "ASC";
 
@@ -524,6 +651,13 @@ angular.module('sntRover').service('RVReportsInboxSrv', [
             formatedFilter[reportInboxFilterLabelConst[key]] = sortDir;   
         };
 
+        /**
+         * Fill sort field
+         * @param {String} value sort field
+         * @param {String} key the key to be used in the formatted filter
+         * @param {Object} formatedFilter the formatted filter object
+         * @return {void} 
+         */
         this.fillSortField = (value, key, formatedFilter) => {            
             if (value) {
               value = value.replace(/_/g, " ");
@@ -532,8 +666,11 @@ angular.module('sntRover').service('RVReportsInboxSrv', [
             formatedFilter[reportInboxFilterLabelConst[key]] = value;   
         };
         
-
-
+        /**
+         * Process filters for the given generated report
+         * @param {Object} filters filter which was chosen to run the report
+         * @return {void}
+         */
         this.processFilters = function(filters) {
             let processedFilter = {},
                 promises = [],

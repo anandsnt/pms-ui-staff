@@ -198,9 +198,7 @@ angular.module('sntRover')
             $scope.$on('REPORT_LIST_FILTER_SCROLL_REFRESH', refreshScroller);
 
             /**
-             * Set title and heading
-             * @param {Boolean} isFromReportsInbox - indication whether navigating from inbox
-             * @return {void}
+             * Set title and heading 
              */
             var setTitleAndHeading = function() {
                 let listTitle = $filter('translate')('MENU_NEW_REPORT');
@@ -208,10 +206,10 @@ angular.module('sntRover')
                 $scope.setTitle(listTitle);
                 $scope.$parent.heading = listTitle;
             };
-
+            
+            // Create new report schedule
             $scope.createNewReportSchedule = () => {
-                $scope.fromReportInbox = true;
-                $scope.fromScheduleReportExport = false;
+                $scope.fromReportInbox = true;                
                 $scope.$broadcast("CREATE_NEW_SCHEDULE");
             };
 
