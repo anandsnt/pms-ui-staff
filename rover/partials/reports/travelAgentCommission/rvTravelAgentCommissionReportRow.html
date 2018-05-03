@@ -20,27 +20,6 @@
                     </tr>
 
                 </thead>
-                <tfoot>
-                    <!-- Travel Agent pagination -->
-                     <tr class="pagination">
-                        <td colspan="7">
-                        <rv-pagination  page-options="travel_agents.insidePaginationData" page-data="travel_agents.reservation_details.total_reservations" ></rv-pagination>
-                        </td>
-                    </tr>
-                    <tr class="totals">
-                        <td colspan="3"></td>
-                        <td>
-                            Subtotals
-                        </td>
-                        <td>
-                           <span class="currency"><span class="currency">{{currencySymbol}}</span>{{travel_agents.sub_total.revenue}}
-                        </td>
-                        <td></td>
-                        <td>
-                            <span class="currency">{{currencySymbol}}</span>{{travel_agents.sub_total.net_amount}}
-                        </td>
-                    </tr>
-                </tfoot>
                 <tbody >
 
                     <tr ng-repeat-start="reservation in travel_agents.reservation_details.reservations" ng-if="travel_agents.reservation_details.reservations.length > 0">
@@ -101,6 +80,27 @@
                     </tr>
                    
                 </tbody>
+                <tfoot>
+                    <!-- Travel Agent pagination -->
+                     <tr class="pagination">
+                        <td colspan="7">
+                        <rv-pagination  page-options="travel_agents.insidePaginationData" page-data="travel_agents.reservation_details.total_reservations" ></rv-pagination>
+                        </td>
+                    </tr>
+                    <tr class="totals">
+                        <td colspan="3"></td>
+                        <td>
+                            Subtotals
+                        </td>
+                        <td>
+                           <span class="currency"><span class="currency">{{currencySymbol}}</span>{{travel_agents.sub_total.revenue}}
+                        </td>
+                        <td></td>
+                        <td>
+                            <span class="currency">{{currencySymbol}}</span>{{travel_agents.sub_total.net_amount}}
+                        </td>
+                    </tr>
+                </tfoot>
             </table>
         </div>
 
