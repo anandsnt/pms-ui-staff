@@ -2021,7 +2021,7 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
                 changeAppliedFilter = false;
 
             $scope.invokeApi(reportsSrv.exportCSV, {
-                url: $scope.getExportPOSTUrl(report),
+                url: $scope.getExportPOSTUrl(chosenReport),
                 payload: genParams(chosenReport, loadPage, resultPerPageOverride, changeAppliedFilter)
             }, function (response) {
                 $scope.$emit('hideLoader');
@@ -2030,37 +2030,25 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
                 $scope.errorMessage = errorMessage;
             });
         };
-
+        /*
+        * methode generates url string for csv - for report inbox and Normal report
+        * @params Object Selected report object
+        * @return String generated url
+        * */
         $scope.getExportPOSTUrl = function (report) {
-            var chosenReport = report || reportsSrv.getChoosenReport();
-            var exportUrl = '';
-
-            if (_.isEmpty(chosenReport)) { // I dont know why chosenReport becoming undefined in one loop, need to check with Vijay
-                return exportUrl;
-            }
-            return '/api/reports/' + chosenReport.id + '/submit.csv?';
-        };
-
-
-        /**
-         * function to get the export url for a report
-         * @return {String}
-         */
-        $scope.getExportUrl = function (report) {
-            var chosenReport = report || reportsSrv.getChoosenReport();
-
-            var exportUrl = '',
-                loadPage = 1,
-                resultPerPageOverride = true,
-                changeAppliedFilter = false;
+            var chosenReport = report || reportsSrv.getChoosenReport(),
+                exportUrl = '';
 
             if (_.isEmpty(chosenReport)) { // I dont know why chosenReport becoming undefined in one loop, need to check with Vijay
                 return exportUrl;
             }
 
-            param = jQuery.param(genParams(chosenReport, loadPage, resultPerPageOverride, changeAppliedFilter));
+            if (chosenReport.generatedReportId) {
+                exportUrl = 'api/generated_reports/' + chosenReport.generatedReportId + '/export';
+            } else {
+                exportUrl = '/api/reports/' + chosenReport.id + '/submit.csv?';
+            }
 
-            exportUrl = '/api/reports/' + chosenReport.id + '/submit.csv?' + param;
             return exportUrl;
         };
 

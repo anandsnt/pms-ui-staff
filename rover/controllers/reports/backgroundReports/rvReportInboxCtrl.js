@@ -243,17 +243,23 @@ angular.module('sntRover').controller('RVReportsInboxCtrl', [
         $scope.toggleReportInboxView = () => {
             $scope.reportInboxData.isReportInboxOpen = !$scope.reportInboxData.isReportInboxOpen;
         };
+        /*
+        * store selected report to service,
+        *  Case 1: For Inbox Report, append generatedReportId for choosenReport
+        *  Case 2: For normal Report, use default id
+        * @params Object Selected report object
+        * @return none
+        * */
+        var setChoosenReport = function (selectedreport) {
+            var lastReportID  = reportsSrv.getChoosenReport().id,
+                mainCtrlScope = $scope.$parent,
+                choosenReport = _.find($scope.reportList,
+                    function(report) {
+                        return selectedreport.report_id === report.id;
+                    });
 
-        $scope.showGeneratedReport = function( selectedreport ) {
-           var lastReportID  = reportsSrv.getChoosenReport().id,
-               mainCtrlScope = $scope.$parent,
-               choosenReport = _.find($scope.reportList,
-               function(report) {
-                   return selectedreport.report_id === report.id;
-                });
-
-           // generatedReportId is required make API call
-           choosenReport.generatedReportId  = selectedreport.id;
+            // generatedReportId is required make API call
+            choosenReport.generatedReportId  = selectedreport.id;
             // if the two reports are not the same, just call
             // 'resetSelf' on printOption to clear out any method
             // that may have been created a specific report ctrl
@@ -262,7 +268,29 @@ angular.module('sntRover').controller('RVReportsInboxCtrl', [
                 mainCtrlScope.printOptions.resetSelf();
             }
             reportsSrv.setChoosenReport( choosenReport );
+        };
+
+        /*
+        * handle Show Button action's in report inbox screen
+        * @params Object Selected report object
+        * @return none
+        * */
+        $scope.showGeneratedReport = function( selectedreport ) {
+            var mainCtrlScope = $scope.$parent;
+
+            setChoosenReport(selectedreport);
             mainCtrlScope.genReport();
+        };
+        /*
+        * handle Export Button action's in report inbox screen
+        * @params Object Selected report object
+        * @return none
+        * */
+        $scope.exportCSV = function( selectedreport ) {
+            var mainCtrlScope = $scope.$parent;
+
+            setChoosenReport(selectedreport);
+            mainCtrlScope.exportCSV();
         };
         /**
          * Set title and heading
