@@ -7,7 +7,8 @@ sntRover.controller('RVInvoiceSearchController',
 		BaseCtrl.call(this, $scope);
 
 		const scrollOptions =  {preventDefaultException: { tagName: /^(INPUT|LI)$/ }, preventDefault: false},
-			that = this;	
+			that = this,
+			PER_PAGE = 10;	
 
 		$scope.setScroller('invoice-list', scrollOptions);
 		// To refresh the scroll
@@ -48,7 +49,7 @@ sntRover.controller('RVInvoiceSearchController',
                         'no_control_number': true,
                         // 'per_page': rvAccountsSrv.DEFAULT_PER_PAGE,
                         'page_no': page || 1,
-                        'per_page': 10
+                        'per_page': PER_PAGE
                     },
                     options = {
 						params: params,
@@ -73,7 +74,7 @@ sntRover.controller('RVInvoiceSearchController',
 			$scope.invoiceSearchPagination = {
 				id: 'INVOICE_SEARCH',
 				api: $scope.searchInvoice,
-				perPage: 10
+				perPage: PER_PAGE
 			};
 		};
 		
