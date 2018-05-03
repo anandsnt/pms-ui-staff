@@ -1,7 +1,7 @@
 angular.module('snt.transitionManager',
     ['ui.router'])
-    .run(['$rootScope', '$transitions', 'transitions', '$log',
-        function ($rootScope, $transitions, transitionsSrv, $log) {
+    .run(['$rootScope', '$transitions', 'transitions', '$log', '$window',
+        function ($rootScope, $transitions, transitionsSrv, $log, $window) {
 
             $transitions.onSuccess({}, function (transition) {
                 var deepIndex;
@@ -15,6 +15,16 @@ angular.module('snt.transitionManager',
                     transitionsSrv.clearLoop(deepIndex + 1);
                 } else {
                     transitionsSrv.push(transition);
+                }
+
+                if ($window['dataLayer']) {
+                    $window['dataLayer'].push({
+                        event: 'sntPageView',
+                        attributes: {
+                            route: transition.to().name.replace(/\./g, '/'),
+                            stateParams: transition.params()
+                        }
+                    });
                 }
 
                 transitionsSrv.debug();

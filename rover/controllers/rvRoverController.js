@@ -1106,5 +1106,16 @@ sntRover.controller('roverController', [
             $scope.formMenu();
         });
 
+        (function() {
+            if ($window.dataLayer) {
+                $window.dataLayer.push({
+                    hotelCode: hotelDetails.hotel_code,
+                    userRole: (_.values(hotelDetails.current_user.roles)).
+                        map(function(r) {return r.name;}).
+                        join(', ')
+                });
+            }
+        })();
+
     }
 ]);

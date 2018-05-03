@@ -72,6 +72,7 @@
   },
   "scripts": {
     "glite": "gulp --no-gw --no-zs",
+    "devWithAnalytics": "gulp --gtm --no-gw --no-zs",
     "lint": "eslint -c .eslintrc.json .",
     "lintRover": "eslint -c .eslintrc.json rover",
     "lintAdmin": "eslint -c .eslintrc.json admin",

@@ -3,11 +3,12 @@ module.exports = function(gulp, $, options) {
     var runSequence         = require('run-sequence'),
         STATION_LOGIN_TEMPLATE_ROOT    = '../views/login/',
         STATION_LOGIN_HTML_FILE     = STATION_LOGIN_TEMPLATE_ROOT + 'station_new.html',
-        extend                 = require('util')._extend,
-        options             = extend({
-            'STATION_LOGIN_TEMPLATE_ROOT'    : STATION_LOGIN_TEMPLATE_ROOT,
-            'STATION_LOGIN_HTML_FILE'         : STATION_LOGIN_HTML_FILE
-        }, options);
+        _ = require('lodash');
+
+    _.extend(options, {
+        'STATION_LOGIN_TEMPLATE_ROOT': STATION_LOGIN_TEMPLATE_ROOT,
+        'STATION_LOGIN_HTML_FILE': STATION_LOGIN_HTML_FILE
+    });
 
     require('./station_login/station_login_js_gulp')(gulp, $, options);
     require('./station_login/station_login_css_gulp')(gulp, $, options);
