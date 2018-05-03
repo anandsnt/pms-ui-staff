@@ -40,6 +40,9 @@ sntRover.controller('RVInvoiceSearchController',
 						$scope.invoiceSearchFlags.showFindInvoice = false;
 						$scope.invoiceSearchData.reservationsList = data.data;
 						$scope.totalResultCount = data.data.total_count;
+						if ($scope.totalResultCount === 0) {
+							$scope.invoiceSearchFlags.showFindInvoice = true;
+						}
 						$timeout (function() {
 							$scope.$broadcast('updatePagination', 'INVOICE_SEARCH');
 						}, 800);	
