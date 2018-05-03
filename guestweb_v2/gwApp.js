@@ -41,8 +41,8 @@ sntGuestWeb.controller('RootController', ['$scope', '$rootScope', '$state', '$co
 
 }]);
 
-sntGuestWeb.controller('HomeController', ['$scope', '$rootScope', '$state', '$controller', 'zestwebData', 'screenMappings', 'GwWebSrv',
-    function($scope, $rootScope, $state, $controller, zestwebData, screenMappings, GwWebSrv) {
+sntGuestWeb.controller('HomeController', ['$scope', '$rootScope', '$state', '$controller', 'zestwebData', 'screenMappings', 'GwWebSrv', 'GwCheckinSrv',
+    function($scope, $rootScope, $state, $controller, zestwebData, screenMappings, GwWebSrv, GwCheckinSrv) {
 
         $controller('BaseController', {
             $scope: $scope
@@ -88,7 +88,20 @@ sntGuestWeb.controller('HomeController', ['$scope', '$rootScope', '$state', '$co
         else if (reservationAndhotelDetails.is_checkin === "false" && reservationAndhotelDetails.access_token.length > 0) {
             $state.go('checkoutRoomVerification');
         } else if (reservationAndhotelDetails.is_checkin === "true" && reservationAndhotelDetails.access_token.length > 0) {
-            $state.go('checkinLanding');
+            var absUrl = window.location.href;
+            if (absUrl.indexOf("/guest_web/") !== -1 && absUrl.indexOf("/checkin?guest_web_token=") !== -1 &&
+                reservationAndhotelDetails.skip_checkin_verification && reservationAndhotelDetails.reservation_details) {
+                GwCheckinSrv.setcheckinData(reservationAndhotelDetails.reservation_details);
+                GwWebSrv.zestwebData.termsAndConditions = reservationAndhotelDetails.reservation_details.terms_and_conditions;
+                GwWebSrv.zestwebData.roomUpgraded = false;
+                $state.go('checkinReservationDetails');
+                var node = document.createElement('style');
+                node.innerHTML = ".container {margin-top: 30px !important;} .row.header-bar {display: none;} #zest-footer{ display: none !important;}";
+                document.head.appendChild(node);
+            } else {
+                $state.go('checkinLanding'); //checkin starting -> page precheckin + auto checkin
+            }
+
         }
 
         var handleDemoMode =  function () {
