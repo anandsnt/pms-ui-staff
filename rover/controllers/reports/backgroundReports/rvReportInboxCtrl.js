@@ -162,7 +162,7 @@ angular.module('sntRover').controller('RVReportsInboxCtrl', [
         self.generateRequestParams = (pageNo) => {
             let params = {
                 user_id: $rootScope.userId,
-                from_date: $scope.reportInboxData.filter.selectedDate,
+                generated_date: $scope.reportInboxData.filter.selectedDate,
                 per_page: RVReportsInboxSrv.PER_PAGE,
                 page: pageNo,
                 query: $scope.reportInboxData.filter.searchTerm

@@ -436,15 +436,19 @@ angular.module('sntRover').service('RVReportsInboxSrv', [
             formatedFilter[reportInboxFilterLabelConst[key]] = value;
         };
 
-        // TODO use the correct APIs
-        this.fillRateTypes = (value, key, promises, formatedFilter) => {
-            // var params = {               
-            //     rate_type_ids: value
-            // };
+        /**
+         * Fill rates types name
+         * @param {Array} value array of rate type ids
+         * @param {String} key the key to be used in the formatted filter
+         * @param {Promises} promises array of promises
+         * @param {Object} formatedFilter the formatted filter object
+         * @return {void} 
+         */
+        this.fillRateTypes = (value, key, promises, formatedFilter) => {            
 
-            // promises.push(RVreportsSubSrv.fetchRateDetailsForIds(params).then(function(rates) {
-            //     formatedFilter[reportInboxFilterLabelConst[key]] = _.pluck(rates, 'name').join(',');
-            // }));
+            promises.push(RVreportsSubSrv.fetchRateTypes().then(function(rates) {
+                formatedFilter[reportInboxFilterLabelConst[key]] = _.pluck(self.filterArrayValues(rates.results, value, "id"), 'name').join(',');
+            }));
         };
 
         /**

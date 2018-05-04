@@ -47,7 +47,7 @@ angular.module('reportsModule', [])
             resolve: {
                 generatedReportsList: function (RVReportsInboxSrv, $filter, $rootScope) {
                     var params = {
-                        from_date: $filter('date')($rootScope.businessDate, 'yyyy-MM-dd'),
+                        generated_date: $filter('date')($rootScope.businessDate, 'yyyy-MM-dd'),
                         per_page: RVReportsInboxSrv.PER_PAGE,
                         user_id: $rootScope.userId
                     };

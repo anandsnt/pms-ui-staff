@@ -620,6 +620,17 @@ angular.module('sntRover').service('RVreportsSubSrv', [
             });
         };
 
+        /**
+         * Fetch rate types 
+         * @return {Promise} promise
+         */
+        service.fetchRateTypes = function() {
+            return callApi({                
+                method: 'getJSON',
+                url: '/api/rate_types.json?sort_field=is_active&sort_dir=false&per_page=1000&page=1'                            
+            });
+        };
+
         // Method to get the revenue and tax of accounts
         // @data - params to API
         service.getRevenueAndTax = function(data) {
