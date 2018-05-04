@@ -322,11 +322,7 @@ sntRover.controller('RVReservationBaseSearchCtrl', [
         $scope.setNumberOfNights = function() {
             var arrivalDate = tzIndependentDate($scope.reservationData.arrivalDate);
 
-            var arrivalDay = arrivalDate.getDate();
-            
             var departureDate = tzIndependentDate($scope.reservationData.departureDate);
-
-            var departureDay = departureDate.getDate();
 
             var dayDiff = Math.floor((Date.parse(departureDate) - Date.parse(arrivalDate)) / 86400000);
 
