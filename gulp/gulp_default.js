@@ -80,7 +80,7 @@ module.exports = function(gulp, $, options) {
         // Inject gtm tags only if option is provided
         if (argv['gtm']) {
             // in case of asset-precompile
-            tasksAfterCompilation.push('inject_gtm_script_rover');
+            compilationTasks.push('inject_gtm_script_rover');
             // in case of building in dev environment w/o concatenation
             developmentTasks.push('inject_gtm_script_rover');
         }
