@@ -3,7 +3,8 @@ sntRover.controller('RVInvoiceSearchController',
 	'$rootScope',
 	'$timeout',
 	'RVInvoiceSearchSrv',
-	function($scope, $rootScope, $timeout, RVInvoiceSearchSrv) {
+	'$filter',
+	function($scope, $rootScope, $timeout, RVInvoiceSearchSrv, $filter) {
 		BaseCtrl.call(this, $scope);
 
 		const scrollOptions =  {preventDefaultException: { tagName: /^(INPUT|LI)$/ }, preventDefault: false},
@@ -11,6 +12,27 @@ sntRover.controller('RVInvoiceSearchController',
 			PER_PAGE = 10;	
 
 		$scope.setScroller('invoice-list', scrollOptions);
+		/**
+		* function to set Headinng
+		* @return - {None}
+		*/
+		$scope.setTitleAndHeading = function(title) {
+           // let listTitle = $filter('translate')('MENU_REPORTS_INBOX');
+            
+            $scope.setTitle(title);
+            $scope.$parent.heading = title;
+        };
+
+		/**
+		 * function to set title and things
+		 * @return - None
+		 */
+		// var setTitle = function() {
+			// var title = $filter('translate')('FIND_INVOICE');
+
+			// // yes, we are setting the headting and title
+			// $scope.setHeadingTitle(title);
+		// };
 		// To refresh the scroll
 		const refreshScroll = function() {
 			$timeout(function() { 
@@ -80,6 +102,9 @@ sntRover.controller('RVInvoiceSearchController',
 				api: $scope.searchInvoice,
 				perPage: PER_PAGE
 			};
+			var title = $filter('translate')('FIND_INVOICE');
+
+			$scope.setTitleAndHeading(title);
 		};
 		
 		that.init();
