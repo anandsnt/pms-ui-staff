@@ -522,3 +522,19 @@
 .device-list {
     cursor: pointer;
 }
+
+
+.blink-text {
+  animation: blinker 2s linear infinite;
+}
+
+@keyframes blinker {
+  50% {
+    opacity: 0;
+  }
+}
+
+.status-sub-text{
+  font-size: 12px; 
+  text-transform: uppercase;
+}
