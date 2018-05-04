@@ -67,7 +67,7 @@
                             <div class="balance"> <!-- Add class 'text-red' if amount is 0 -->
                                 <span class="currency">{{::currencySymbol}}</span>{{::invoiceReservationData.bills[0].balance}}
                             </div>
-                            <button type="button" class="button with-icon only-icon blue"> <!-- Clicking this opens {../modals/format-bill.html} -->
+                            <button type="button" class="button with-icon only-icon blue" ng-click="showFormatBillPopup()"> <!-- Clicking this opens {../modals/format-bill.html} -->
                                 <span class="icons icon-invoice"></span>
                             }
                             </button>
@@ -111,9 +111,8 @@
                             <div class="balance"> <!-- Add class 'text-red' if amount is 0 -->
                                 <span class="currency">{{::currencySymbol}}</span>{{::bill.balance}}
                             </div>
-                            <button type="button" class="button with-icon only-icon blue"> <!-- Clicking this opens {../modals/format-bill.html} -->
-                                <span class="icons icon-invoice"></span>
-                            }
+                            <button type="button" class="button with-icon only-icon blue" ng-click="showFormatBillPopup()" > <!-- Clicking this opensss {../modals/format-bill.html} -->
+                                <span class="icons icon-invoice"></span>                            
                             </button>
                         </div>
                     </div>
@@ -135,5 +134,5 @@
 
 <!-- When search results exist and print button is tapped, add invoice details here -->
 <div class="invoice">
-    {see invoice.html}
+    <div ng-include="'/assets/partials/financials/rvPrintReservationCard.html'" ></div>
 </div>

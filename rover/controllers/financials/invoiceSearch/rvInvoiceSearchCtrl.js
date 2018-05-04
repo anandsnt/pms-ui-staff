@@ -3,7 +3,8 @@ sntRover.controller('RVInvoiceSearchController',
 	'$rootScope',
 	'$timeout',
 	'RVInvoiceSearchSrv',
-	function($scope, $rootScope, $timeout, RVInvoiceSearchSrv) {
+	'ngDialog',
+	function($scope, $rootScope, $timeout, RVInvoiceSearchSrv, ngDialog) {
 		BaseCtrl.call(this, $scope);
 
 		const scrollOptions =  {preventDefaultException: { tagName: /^(INPUT|LI)$/ }, preventDefault: false},
@@ -64,6 +65,23 @@ sntRover.controller('RVInvoiceSearchController',
 			} else {
 				$scope.invoiceSearchFlags.isQueryEntered = false;
 			}
+		};
+
+		/*
+		 * Opens the popup which have the option to choose the bill layout while print/email
+		 * @param billNo boolean bill no
+		 * @param isActiveBill boolean is bill active or not
+		 */
+		$scope.showFormatBillPopup = function(billNo, isActiveBill) {
+			$scope.billNo = 1;
+			$scope.isSettledBill = true;
+			$scope.isInformationalInvoice = false;
+			ngDialog.open({
+					template: '/assets/partials/popups/billFormat/rvBillFormatPopup.html',
+					controller: 'rvBillFormatPopupCtrl',
+					className: '',
+					scope: $scope
+			});
 		};
 		/*
 		 * Initialization
