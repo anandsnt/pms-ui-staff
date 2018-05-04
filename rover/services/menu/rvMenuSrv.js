@@ -296,6 +296,10 @@ angular.module('sntRover').service('rvMenuSrv',
 		            title: "MENU_COMMISIONS",
 		            action: "rover.financials.commisions",
 		            menuIndex: "commisions"
+		        }, {
+		            title: "MENU_INVOICE_SEARCH",
+		            action: "rover.financials.invoiceSearch",
+		            menuIndex: "invoiceSearch"
 		        }]
             }, {
                 title: "MENU_ACTIONS_MANAGER",

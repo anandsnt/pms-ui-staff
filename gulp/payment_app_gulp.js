@@ -2,19 +2,24 @@ module.exports = function (gulp, $, options) {
 
     'use strict';
     var MANIFEST_DIR = __dirname + "/payment/manifests/",
-        _options = require('util')._extend(options),
         generated = "____generated",
-        newJsonFileName = '../../public/assets/asset_list/____generatedgatewayJsMappings/____generatedpayment/____generatedpaymentTemplateJsMappings.json';
+        newJsonFileName = '../../public/assets/asset_list/____generatedgatewayJsMappings/____generatedpayment/____generatedpaymentTemplateJsMappings.json',
+        _ = require('lodash');
 
-    _options.PAYMENT_JS_MANIFEST_FILE = "payment_js_manifest.json";
-    _options.PAYMENT_TEMPLTE_MANFEST_FILE = "payment_template_manifest.json";
-    _options.PAYMENT_TEMPLATES_FILE = 'payment_templates.js';
-    _options.MANIFEST_DIR = MANIFEST_DIR;
-    _options.paymentGeneratedDir = options.DEST_ROOT_PATH + 'asset_list/' + generated + 'gatewayJsMappings/' + generated + 'payment/';
-    _options.paymentGeneratedFile = _options.paymentGeneratedDir + generated + 'paymentJsMappings.json';
+    _.extend(options, {
+        'PAYMENT_JS_MANIFEST_FILE': 'payment_js_manifest.json',
+        'PAYMENT_TEMPLTE_MANFEST_FILE': 'payment_template_manifest.json',
+        'PAYMENT_TEMPLATES_FILE': 'payment_templates.js',
+        'MANIFEST_DIR': MANIFEST_DIR,
+        'paymentGeneratedDir': options.DEST_ROOT_PATH + 'asset_list/' +
+        generated + 'gatewayJsMappings/' + generated + 'payment/'
+    });
 
-    require('./payment/payment_js_gulp')(gulp, $, _options);
-    require('./payment/payment_template_gulp')(gulp, $, _options);
+    options.paymentGeneratedFile = options.paymentGeneratedDir + generated +
+        'paymentJsMappings.json';
+
+    require('./payment/payment_js_gulp')(gulp, $, options);
+    require('./payment/payment_template_gulp')(gulp, $, options);
 
     //TASKS
     // -- for LOCAL DEV ENV
@@ -33,7 +38,7 @@ module.exports = function (gulp, $, options) {
         var deferred = $q.defer();
 
         var jsJsonFileContent = {};
-        var jsJsonFile = gulp.src(_options.paymentGeneratedFile)
+        var jsJsonFile = gulp.src(options.paymentGeneratedFile)
                         .pipe(edit(function(manifest){
                             jsJsonFileContent = manifest;
                             return manifest;
@@ -44,7 +49,7 @@ module.exports = function (gulp, $, options) {
             
             var fileContent = {
                 js: jsJsonFileContent,
-                template: [_options.URL_APPENDER + "/" + _options.PAYMENT_TEMPLATES_FILE]
+                template: [options.URL_APPENDER + "/" + options.PAYMENT_TEMPLATES_FILE]
             }
 
             fs.writeFile(newJsonFileName, JSON.stringify(fileContent), function(err) {
@@ -76,14 +81,14 @@ module.exports = function (gulp, $, options) {
             $q = require('q');
 
         var jsJsonFileContent = {};
-        var jsJsonFile = gulp.src(_options.paymentGeneratedFile)
+        var jsJsonFile = gulp.src(options.paymentGeneratedFile)
                         .pipe(edit(function(manifest){
                             jsJsonFileContent = manifest;
                             return manifest;
                         }));
         
         var templateJsonFileContent = {};
-        var templateJsonFile = gulp.src(MANIFEST_DIR + _options.PAYMENT_TEMPLTE_MANFEST_FILE)
+        var templateJsonFile = gulp.src(MANIFEST_DIR + options.PAYMENT_TEMPLTE_MANFEST_FILE)
                         .pipe(edit(function(manifest){
                             templateJsonFileContent = manifest;
                             return manifest;
@@ -95,7 +100,7 @@ module.exports = function (gulp, $, options) {
             
             var fileContent = {
                 js: jsJsonFileContent,
-                template: [_options.URL_APPENDER + "/" +templateJsonFileContent[_options.PAYMENT_TEMPLATES_FILE]]
+                template: [options.URL_APPENDER + "/" +templateJsonFileContent[options.PAYMENT_TEMPLATES_FILE]]
             }
 
             fs.writeFile(newJsonFileName, JSON.stringify(fileContent), function(err) {
