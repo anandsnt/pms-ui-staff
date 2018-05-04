@@ -17,22 +17,11 @@ sntRover.controller('RVInvoiceSearchController',
 		* @return - {None}
 		*/
 		$scope.setTitleAndHeading = function(title) {
-           // let listTitle = $filter('translate')('MENU_REPORTS_INBOX');
-            
+ 
             $scope.setTitle(title);
             $scope.$parent.heading = title;
         };
 
-		/**
-		 * function to set title and things
-		 * @return - None
-		 */
-		// var setTitle = function() {
-			// var title = $filter('translate')('FIND_INVOICE');
-
-			// // yes, we are setting the headting and title
-			// $scope.setHeadingTitle(title);
-		// };
 		// To refresh the scroll
 		const refreshScroll = function() {
 			$timeout(function() { 
