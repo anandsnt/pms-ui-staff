@@ -25,8 +25,8 @@ module.exports = function (config) {
             '../shared/lib/js/angular-mocks.js',
             './utility/gw_util.js',
             './utility/gw_theming_utility.js',
-            './gw_app.js',
-            './gw_app_config.js',
+            './gwApp.js',
+            './gwAppConfig.js',
             './routers/**/*.js',
             './scripts/angular-pickdate.js',
             './services/**/*.js',
@@ -39,13 +39,22 @@ module.exports = function (config) {
 
         // preprocess matching files before serving them to the browser
         // available preprocessors: https://npmjs.org/browse/keyword/karma-preprocessor
-        preprocessors: {},
+        preprocessors: {
+            '../guestweb/**/!(*spec).js': ['coverage'],
+            './**/!(*spec).js': ['coverage']
+        },
 
 
         // test results reporter to use
         // possible values: 'dots', 'progress'
         // available reporters: https://npmjs.org/browse/keyword/karma-reporter
-        reporters: ['progress'],
+        reporters: ['progress', 'coverage'],
+
+        coverageReporter: {
+            dir: '../../../reports/gw/coverage/',
+            type: 'lcov',
+            subdir: '.'
+        },
 
 
         // web server port
