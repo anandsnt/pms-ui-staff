@@ -58,7 +58,13 @@ module.exports = function(config) {
             './factories/**/*.js',
             './filters/*.js',
             '../shared/baseCtrl.js',
-            './partials/**/*.html'
+            './partials/**/*.html',
+            {
+                pattern: 'unitTestSampleData/**/*.json',
+                watched: true,
+                served: true,
+                included: false
+            }
         ],
 
         // list of files / patterns to exclude
