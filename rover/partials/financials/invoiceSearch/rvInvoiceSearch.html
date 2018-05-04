@@ -3,7 +3,7 @@
     <div class="entry search">
         <button class="clear-query" ng-class="{'visible': invoiceSearchFlags.isQueryEntered}" ng-click="clearQuery()"><span class="icons icon-clear-search">Clear query</span></button><!-- add class .visible when keywords are entered -->
         <button class="icons icon-search">Search</button>
-        <input name="commisions-query" ng-model="invoiceSearchData.query" class="query" placeholder="Search by Invoice No., Account/Guest Name or Balance Amount" type="search" autocomplete="off" ng-change="searchInvoice()">
+        <input name="commisions-query" ng-model="invoiceSearchData.query" class="query" placeholder="Search by Invoice No., Account/Guest Name" type="search" autocomplete="off" ng-change="searchInvoice()">
     </div>
     <div class="entry options">
         <label class="checkbox inline">

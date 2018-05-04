@@ -10,7 +10,7 @@ module.exports = function(config) {
 
     // frameworks to use
     // available frameworks: https://npmjs.org/browse/keyword/karma-adapter
-    frameworks: ['jasmine'],
+    frameworks: ['jasmine-jquery', 'jasmine'],
 
 
     // list of files / patterns to load in the browser
@@ -36,7 +36,6 @@ module.exports = function(config) {
         '../shared/lib/js/fastclick/fastclick.min.js',
         '../shared/lib/js/moment.min.js',
         '../shared/lib/js/date.js',
-        '../node_modules/karma-read-json/karma-read-json.js',
         '../shared/baseCtrl.js',
         '../shared/directives/documentTouchMovePrevent/*.js',
         '../shared/directives/clickTouch/*.js',
@@ -62,7 +61,8 @@ module.exports = function(config) {
         './filters/*.js',
         '../shared/baseCtrl.js',
         './partials/**/*.html',
-        {pattern: 'unitTestSampleData/**/*.json', included: false}        
+        { pattern: 'unitTestSampleData/**/*.json', watched: true, served: true, included: false }
+        
     ],
 
     // list of files / patterns to exclude
@@ -76,7 +76,7 @@ module.exports = function(config) {
         '../payment/**/*.js': ['babel'],
         './controllers/**/*.js': ['babel'],
         './services/rateManager_/rvRateManagerCoreSrv.js': ['babel'],
-         './partials/**/*.html': ['ng-html2js']
+        './partials/**/*.html': ['ng-html2js']
     },
     ngHtml2JsPreprocessor: {
         stripPrefix: './',
