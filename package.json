@@ -57,7 +57,8 @@
   },
   "dependencies": {
     "fs-extra": "1.0.0",
-    "imagemin-optipng": "5.2.1"
+    "imagemin-optipng": "5.2.1",
+    "karma-jasmine-jquery": "^0.1.1"
   },
   "optionalDependencies": {},
   "engines": {
@@ -71,6 +72,7 @@
   },
   "scripts": {
     "glite": "gulp --no-gw --no-zs",
+    "devWithAnalytics": "gulp --gtm --no-gw --no-zs",
     "lint": "eslint -c .eslintrc.json .",
     "lintRover": "eslint -c .eslintrc.json rover",
     "lintAdmin": "eslint -c .eslintrc.json admin",

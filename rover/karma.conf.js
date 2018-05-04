@@ -10,7 +10,7 @@ module.exports = function(config) {
 
     // frameworks to use
     // available frameworks: https://npmjs.org/browse/keyword/karma-adapter
-    frameworks: ['jasmine'],
+    frameworks: ['jasmine-jquery', 'jasmine'],
 
 
     // list of files / patterns to load in the browser
@@ -60,7 +60,9 @@ module.exports = function(config) {
         './factories/**/*.js',
         './filters/*.js',
         '../shared/baseCtrl.js',
-        './partials/**/*.html'
+        './partials/**/*.html',
+        { pattern: 'unitTestSampleData/**/*.json', watched: true, served: true, included: false }
+        
     ],
 
     // list of files / patterns to exclude
@@ -74,7 +76,7 @@ module.exports = function(config) {
         '../payment/**/*.js': ['babel'],
         './controllers/**/*.js': ['babel'],
         './services/rateManager_/rvRateManagerCoreSrv.js': ['babel'],
-         './partials/**/*.html': ['ng-html2js']
+        './partials/**/*.html': ['ng-html2js']
     },
     ngHtml2JsPreprocessor: {
         stripPrefix: './',
