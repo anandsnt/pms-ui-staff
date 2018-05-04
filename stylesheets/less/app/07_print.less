@@ -2529,6 +2529,7 @@
                 border-spacing: 0;
 
                 thead {
+                    display: table-row-group;
                     tr {
                         th {
 
@@ -2583,7 +2584,7 @@
                 tbody {
                     tr {
                         td {
-                            border-bottom: 1px solid rgba(0,0,0,0.1);
+                            page-break-inside: avoid;
 
                             &.name {
 
@@ -2600,14 +2601,21 @@
                                 .guest-date {
                                     clear: both;
 
+                                    .guest-status { .hide(); }
+
                                     .date {
-                                        margin-top: 5pt;
+                                        margin-top: 0;
                                         display: block;
-                                        line-height: 20px;
+                                        line-height: 15px;
+
+                                        &:first-child { margin-top: 5pt; }
                                     }
 
                                     span {
                                         margin:0 2pt;
+
+                                        &:first-child { margin-left: 0pt; }
+                                        &:last-child { margin-right: 0pt; }
                                     }
                                 }
                             }
@@ -2623,18 +2631,19 @@
                             td {
                                  padding-left:0;
                             }
-                        }
+                        } 
                     }
                 }
 
                 tfoot {
-
-                    tr {
+                    display: table-row-group;
+                    tr { 
                         &.totals {
                             td {
                                 font-size: 14px;
                             }
                         }
+
                         &.pagination {
                             display: none;
                         }
@@ -3255,101 +3264,39 @@
             }
         }
 
-         &.print-commission-agent {
+        &.print-commission-agent {
+
+            .travel-agent-single-print {
+                .show();
+            }
 
             &.scrollable {
                 overflow: hidden;
             }
 
-            .travel-agent {
-                &:not(.printing) {
-                    .hide();
-                }
-
-                .button {
-                    .hide();
-                }
-            }
-
-            .travel-agent-print {
+            .travel-agent-print,
+            .wrapper {
                 .hide();
-            }
+            } 
         }
 
         &.print-commission-summary {
-            .commission-reports,
-            h2,
-            .iScrollVerticalScrollbar,
+
+            .travel-agent-single-print,
+            .travel-agent-print,
             .button {
                 .hide();
             }
 
-            // Fix bug with the scroll
             &.scrollable {
                 overflow: hidden;
             }
 
             .travel-agent {
+                margin-bottom: 20pt;
                 border-bottom: 1px solid @grey2;
-                &.last {
-                    border-bottom: 0
-                }
-            }
-            .grid-footer {
-                .show();
-            }
-            .travel-agent-print {
-                .float;
-                padding: 4pt 0;
 
-                .data {
-                    width: 40%;
-                    margin-top: 10px;
-                    .pull-left;
-
-                    h2 {
-                        .show();
-                        width:100%;
-                        line-height: 1;
-                        white-space: normal;
-                        margin-bottom: 6px;
-                        padding-right: 5px;
-                        display: block;
-                        font-size: 10pt
-
-                    }
-                }
-
-                .info-holder {
-                    .pull-right;
-                    width: 60%;
-                    margin:0;
-                    padding:0;
-
-                    li {
-
-                        margin-top: 5px;
-                        text-align: center;
-                        width: 50%;
-                        color: @grey3;
-                        .pull-left();
-
-                        strong {
-                            font-size: 15pt;
-                            line-height: 1.25em;
-                            font-weight: 600;
-                            text-transform: uppercase;
-                            color: @black;
-                            display: block;
-                        }
-
-                        span {
-                            font-size: 10pt;
-                            text-transform: uppercase;
-                        }
-
-                    }
-                }
+                &:last-child { margin-bottom: 10pt; }
             }
         }
     }
