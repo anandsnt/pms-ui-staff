@@ -278,6 +278,21 @@ angular.module('sntRover').controller('RVReportsInboxCtrl', [
             $scope.$parent.heading = listTitle;
         };
 
+        // Reset the report selection and filters
+        self.resetPreviousReportSelection = () => {
+            _.map($scope.$parent.reportList,
+                function (report) {
+                    report.uiChosen = false;
+                    _.map(report.filters, (filter) => {
+                        if (filter.filled) {
+                           filter.filled = false; 
+                       }                        
+                    })
+                }
+            );
+
+        };
+
         // Initialize
         self.init = () => {            
             $scope.reportInboxData = {
@@ -302,7 +317,9 @@ angular.module('sntRover').controller('RVReportsInboxCtrl', [
 
             self.refreshPagination();
 
-            self.refreshScroll();          
+            self.refreshScroll();  
+
+            self.resetPreviousReportSelection();        
         };
 
         self.init();
