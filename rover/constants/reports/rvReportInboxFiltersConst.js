@@ -110,12 +110,14 @@ angular.module('reportsModule')
         "oos": "OOS",
         "min_number_of_days_not_occupied": "Min No of Days Not Occupied",
         "year": "Year",
-        "COMPANY/TRAVEL AGENT": "Company/Travel Agent",
+        "COMPANY/TRAVEL_AGENT": "Company/Travel Agent",
         "exclude_tax": "Exclude Tax",
         "show_deleted_charges": "Show Deleted Charges",
         "account": "Account",
         "guest": "Guest",
         "include_cancelled": "Include Cancelled",
-        "show_room_revenue": "Show Room Revenue"
+        "show_room_revenue": "Show Room Revenue",
+        "with_vat_number": "With Vat Number",
+        "without_vat_number": "Without Vat Number"
         
     });

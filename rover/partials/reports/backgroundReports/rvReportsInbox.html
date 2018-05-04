@@ -66,23 +66,23 @@
                                     <span class="{{report.reportIconCls}} icon-20w"></span>
                                     <div class="data">
                                         <div class="info">
-                                            <h2>{{report.name}}</h2>
+                                            <h2>{{::report.name}}</h2>
                                             <em>Today at 04:00 PM</em>
                                         </div>
                                         <div class="dates">
                                             <div class="date">
-                                                <span>{{report.fromDate}}</span>
+                                                <span>{{::report.fromDate}}</span>
                                             </div>
                                             <div class="date">
-                                                <span>{{report.toDate}}</span>
+                                                <span>{{::report.toDate}}</span>
                                             </div>
                                         </div>
                                     </div>
                                     <table class="filters-grid">
                                         <tbody>
                                             <tr ng-repeat="(key, value) in report.filterDetails">
-                                                <th>{{key}}</th>
-                                                <td>{{value}}</td>
+                                                <th>{{::key}}</th>
+                                                <td>{{::value}}</td>
                                             </tr>                                            
                                         </tbody>
                                     </table>

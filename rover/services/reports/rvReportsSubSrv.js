@@ -572,12 +572,15 @@ angular.module('sntRover').service('RVreportsSubSrv', [
             });
         };
 
-        service.fetchTravelAgents = function() {
+        service.fetchTravelAgents = function(params) {
+            params = params || {};
+
             return callApi({
                 name: 'accounts',
                 method: 'getJSON',
                 url: ' /api/reports/list_travel_agents',
-                resKey: 'travel_agents'
+                resKey: 'travel_agents',
+                params: params
             });
         };
 

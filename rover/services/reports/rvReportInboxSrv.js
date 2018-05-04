@@ -628,10 +628,10 @@ angular.module('sntRover').service('RVReportsInboxSrv', [
          */
         this.fillTravelAgentInfo = (value, key, promises, formatedFilter) => {                     
             let params = {
-                ids: value
+                "ids[]": value
             };
 
-            promises.push(RVreportsSubSrv.fetchTravelAgents().then(function(travelAgents) {
+            promises.push(RVreportsSubSrv.fetchTravelAgents(params).then(function(travelAgents) {
                 formatedFilter[reportInboxFilterLabelConst[key]] = _.pluck(travelAgents, 'account_name').join(',');
             }));
         };
@@ -644,12 +644,12 @@ angular.module('sntRover').service('RVReportsInboxSrv', [
          * @return {void} 
          */
         this.fillVatInfo = (value, key, formatedFilter) => {
-            if(!formatedFilter[reportInboxFilterLabelConst['COMPANY/TRAVEL AGENT']]) {
-                formatedFilter[reportInboxFilterLabelConst['COMPANY/TRAVEL AGENT']] = [];
+            if(!formatedFilter[reportInboxFilterLabelConst['COMPANY/TRAVEL_AGENT']]) {
+                formatedFilter[reportInboxFilterLabelConst['COMPANY/TRAVEL_AGENT']] = [];
             }
 
             if (value) {
-             formatedFilter[reportInboxFilterLabelConst['COMPANY/TRAVEL AGENT']].push(reportInboxFilterLabelConst[key]);
+             formatedFilter[reportInboxFilterLabelConst['COMPANY/TRAVEL_AGENT']].push(reportInboxFilterLabelConst[key]);
             }               
             
         };
@@ -665,7 +665,7 @@ angular.module('sntRover').service('RVReportsInboxSrv', [
         this.fillCampaignTypesInfo = (value, key, promises, formatedFilter) => {  
 
             promises.push(RVreportsSubSrv.fetchCampaignTypes().then(function(campaignTypes) {
-                formatedFilter[reportInboxFilterLabelConst[key]] = _.pluck(campaignTypes, 'name').join(',');
+                formatedFilter[reportInboxFilterLabelConst[key]] = _.pluck(self.filterArrayValues(campaignTypes, value, 'value'), 'name').join(',');
             }));
         };
 
@@ -874,8 +874,8 @@ angular.module('sntRover').service('RVReportsInboxSrv', [
                         break;
                    case reportParamsConst['WITH_VAT_NUMBER']:
                    case reportParamsConst['WITHOUT_VAT_NUMBER']:
-                        self.fillVatInfo(value, key, promises, processedFilter);
-                        break;
+                        self.fillVatInfo(value, key, processedFilter);
+                        break
                    case reportParamsConst['CAMPAIGN_TYPES']:
                         self.fillCampaignTypesInfo(value, key, promises, processedFilter);
                         break;
@@ -898,8 +898,8 @@ angular.module('sntRover').service('RVReportsInboxSrv', [
               processedFilter[reportInboxFilterLabelConst['SHOW']] = processedFilter[reportInboxFilterLabelConst['SHOW']].join(',');  
             } 
 
-            if(processedFilter[reportInboxFilterLabelConst['COMPANY/TRAVEL AGENT']]) {
-              processedFilter[reportInboxFilterLabelConst['COMPANY/TRAVEL AGENT']] = processedFilter[reportInboxFilterLabelConst['COMPANY/TRAVEL AGENT']].join(',');  
+            if(processedFilter[reportInboxFilterLabelConst['COMPANY/TRAVEL_AGENT']]) {
+              processedFilter[reportInboxFilterLabelConst['COMPANY/TRAVEL_AGENT']] = processedFilter[reportInboxFilterLabelConst['COMPANY/TRAVEL_AGENT']].join(',');  
             } 
 
             if(processedFilter[reportInboxFilterLabelConst['GUEST/ACCOUNT']]) {
