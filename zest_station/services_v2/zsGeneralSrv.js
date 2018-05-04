@@ -50,7 +50,8 @@ sntZestStation.service('zsGeneralSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
             'georgetown': 'Georgetown inn',
             'nomo': 'Nomo soho',
             'merrill': 'The Merrill Hotel And Conference Center',
-            'martins': 'Martins Hotel'
+            'martins': 'Martins Hotel',
+            'arc': 'Arc The Hotel'
         };
 
         this.isThemeConfigured = function(theme) {
