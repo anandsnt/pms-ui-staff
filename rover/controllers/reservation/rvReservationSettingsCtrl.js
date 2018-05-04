@@ -166,7 +166,7 @@ sntRover.controller('RVReservationSettingsCtrl', ['$scope', 'RVReservationBaseSe
             }
             var newDate = tzIndependentDate($scope.reservationData.arrivalDate);
 
-            newDay = newDate.getDate() + parseInt(dateOffset);
+            var newDay = newDate.getDate() + parseInt(dateOffset);
             newDate.setDate(newDay);
             $scope.reservationData.departureDate = dateFilter(newDate, 'yyyy-MM-dd');
         };
