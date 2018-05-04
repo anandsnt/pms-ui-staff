@@ -2,7 +2,7 @@
 
 describe('RVInvoiceSearchController', function () {
 
-    jasmine.getJSONFixtures().fixturesPath='base/unitTestSampleData/';
+    jasmine.getJSONFixtures().fixturesPath = 'base/unitTestSampleData/';
     var fixtures = loadJSONFixtures('invoiceSearchSampleData.json'),
         jsonResult = fixtures['invoiceSearchSampleData.json']; 
 
