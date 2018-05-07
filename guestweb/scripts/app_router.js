@@ -10,9 +10,9 @@ sntGuestWeb.config(['$stateProvider', '$urlRouterProvider', function($stateProvi
         url: '/guestwebRoot/:mode/:reservationId',
         controller: 'homeController',
         resolve: {
-            reservationAndhotelData: ['sntGuestWebSrv', '$stateParams', function(sntGuestWebSrv, $stateParams) {
+            reservationAndhotelData: ['sntGuestWebSrv', '$stateParams', '$location', function(sntGuestWebSrv, $stateParams, $location) {
 
-                var absUrl = window.location.href;
+                var absUrl = $location.$$absUrl;
                 var apiUrl = "";
 
                 var setAPiURLfromWindowUrl = function() {
