@@ -3,7 +3,7 @@
     <div class="entry search">
         <button class="clear-query" ng-class="{'visible': invoiceSearchFlags.isQueryEntered}" ng-click="clearQuery()"><span class="icons icon-clear-search">Clear query</span></button><!-- add class .visible when keywords are entered -->
         <button class="icons icon-search">Search</button>
-        <input name="commisions-query" ng-model="invoiceSearchData.query" class="query" placeholder="Search by Invoice No., Account/Guest Name" type="search" autocomplete="off" ng-change="searchInvoice()">
+        <input name="commisions-query" ng-model="invoiceSearchData.query" class="query" placeholder="Search by Invoice No., Account/Guest Name" type="search" autocomplete="off" rv-delay-textbox="" delay="1000" function-to-fire="searchInvoice">
     </div>
     <div class="entry options">
         <label class="checkbox inline">
@@ -51,8 +51,8 @@
 
                         <!-- Guest / Account Info - Leave blank if it's an additional bill on the same reservation that's not been routed to accompanying guest or company or travel agent -->
                         <div class="data">
-                            <h2>{{::invoiceReservationData.associated_item.name}}</h2> <!-- Wrap search match with <span class="highlight"></span> -->
-                            <span class="confirmation"><span class="confirmation-text">CONF. NO.{{::invoiceReservationData.associated_item.number}}</span>
+                            <h2 ng-bind-html="escapeNull(invoiceReservationData.associated_item.name)|highlight:invoiceSearchData.query:false">{{::invoiceReservationData.associated_item.name}}</h2> <!-- Wrap search match with <span class="highlight"></span> -->
+                            <span class="confirmation"><span class="confirmation-text" ng-bind-html="escapeNull(invoiceReservationData.associated_item.number)|highlight:invoiceSearchData.query:false">CONF. NO.{{::invoiceReservationData.associated_item.number}}</span>
 
                             <!-- If company is attached to reservation (doesn't have to have routed bill), show:
                             <span class="icons icon-guest-company">{Company Name}</span> -->
@@ -63,7 +63,7 @@
 
                         <!-- Invoice Info -->
                         <div class="invoice-info" >
-                            <div class="number">{{::invoiceReservationData.bills[0].invoice_no}}</div>
+                            <div class="number" ng-bind-html="escapeNull(invoiceReservationData.bills[0].invoice_no)|highlight:invoiceSearchData.query:false">{{::invoiceReservationData.bills[0].invoice_no}}</div>
                             <div class="balance"> <!-- Add class 'text-red' if amount is 0 -->
                                 <span class="currency">{{::currencySymbol}}</span>{{::invoiceReservationData.bills[0].balance | number: precisonTwo }}
                             </div>
@@ -93,9 +93,9 @@
   
                         <!-- Guest / Account Info - Leave blank if it's an additional bill on the same reservation that's not been routed to accompanying guest or company or travel agent -->
                         <div class="data">
-                            <h2>{{::bill.routing_details.name}}</h2> <!-- Wrap search match with <span class="highlight"></span> -->
-                            <span class="icons icon-guest-company" ng-show="bill.routing_details.type === 'COMPANY'">{{::bill.routing_details.address}}</span>
-                            <span class="icons icon-guest-travelagent" ng-show="bill.routing_details.type === 'TRAVELAGENT'">{{::bill.routing_details.address}}</span>
+                            <h2 ng-bind-html="escapeNull(bill.routing_details.name)|highlight:invoiceSearchData.query:false">{{::bill.routing_details.name}}</h2> <!-- Wrap search match with <span class="highlight"></span> -->
+                            <span class="icons icon-guest-company" ng-show="bill.routing_details.type === 'COMPANY'" ng-bind-html="escapeNull(bill.routing_details.address)|highlight:invoiceSearchData.query:false">{{::bill.routing_details.address}}</span>
+                            <span class="icons icon-guest-travelagent" ng-show="bill.routing_details.type === 'TRAVELAGENT'" ng-bind-html="escapeNull(bill.routing_details.address)|highlight:invoiceSearchData.query:false">{{::bill.routing_details.address}}</span>
                         <!--     <span class="confirmation"><span class="confirmation-text">{{bill.routing_details.number}}</span> -->
 
                             <!-- If company is attached to reservation (doesn't have to have routed bill), show:
@@ -107,7 +107,7 @@
 
                         <!-- Invoice Info -->
                         <div class="invoice-info" >
-                            <div class="number">{{::bill.invoice_no}}</div>
+                            <div class="number" ng-bind-html="escapeNull(bill.invoice_no)|highlight:invoiceSearchData.query:false">{{::bill.invoice_no}}</div>
                             <div class="balance"> <!-- Add class 'text-red' if amount is 0 -->
                                 <span class="currency">{{::currencySymbol}}</span>{{::bill.balance | number: precisonTwo}}
                             </div>
