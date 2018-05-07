@@ -42,9 +42,10 @@
     "gulp-util": "3.0.7",
     "imagemin-pngquant": "5.0.0",
     "jasmine-core": "^2.99.1",
-    "karma": "^2.0.0",
+    "karma": "^2.0.2",
     "karma-babel-preprocessor": "^7.0.0",
     "karma-chrome-launcher": "^2.2.0",
+    "karma-coverage": "^1.1.1",
     "karma-jasmine": "^1.1.1",
     "karma-ng-html2js-preprocessor": "^1.0.0",
     "less-plugin-clean-css": "1.5.1",
@@ -53,12 +54,12 @@
     "mkdirp": "0.5.1",
     "q": "1.4.1",
     "run-sequence": "1.2.2",
-    "yargs": "6.3.0"
+    "yargs": "6.3.0",
+    "karma-jasmine-jquery": "^0.1.1"
   },
   "dependencies": {
     "fs-extra": "1.0.0",
-    "imagemin-optipng": "5.2.1",
-    "karma-jasmine-jquery": "^0.1.1"
+    "imagemin-optipng": "5.2.1"
   },
   "optionalDependencies": {},
   "engines": {
@@ -72,13 +73,15 @@
   },
   "scripts": {
     "glite": "gulp --no-gw --no-zs",
-    "devWithAnalytics": "gulp --gtm --no-gw --no-zs",
     "lint": "eslint -c .eslintrc.json .",
     "lintRover": "eslint -c .eslintrc.json rover",
     "lintAdmin": "eslint -c .eslintrc.json admin",
     "testLogin": "cd login && karma start --single-run",
     "testRover": "cd rover && karma start --single-run",
     "testAdmin": "cd admin && karma start --single-run",
-    "testShared": "cd shared && karma start --single-run"
+    "testShared": "cd shared && karma start --single-run",
+    "testGW": "cd guestweb_v2 && karma start --single-run",
+    "testZS": "cd zest_station && karma start --single-run",
+    "testPayment": "cd payment && karma start --single-run"
   }
 }
