@@ -2,7 +2,9 @@
 
 describe('RVInvoiceSearchController', function () {
 
-    var jsonResult = readJSON('unitTestSampleData/invoiceSearchSampleData.json');
+    jasmine.getJSONFixtures().fixturesPath = 'base/unitTestSampleData/';
+    var fixtures = loadJSONFixtures('invoiceSearchSampleData.json'),
+        jsonResult = fixtures['invoiceSearchSampleData.json']; 
 
     var $controller,
         $scope,

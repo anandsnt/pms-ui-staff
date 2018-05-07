@@ -33,7 +33,9 @@ module.exports = {
             'georgetown': [themeCSSRoot + 'georgetown.less'],
             'nomo': [themeCSSRoot + 'nomo.less'],
             'merrill': [themeCSSRoot + 'merrill.less'],
-            'martins': [themeCSSRoot + 'martins.less']
+            'martins': [themeCSSRoot + 'martins.less'],
+            'arc': [themeCSSRoot + 'arc.less'],
+            'alessandra': [themeCSSRoot + 'alessandra.less']
 		};
 	}
 };
