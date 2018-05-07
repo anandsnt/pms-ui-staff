@@ -3,7 +3,7 @@
     <div class="entry search">
         <button class="clear-query" ng-class="{'visible': invoiceSearchFlags.isQueryEntered}" ng-click="clearQuery()"><span class="icons icon-clear-search">Clear query</span></button><!-- add class .visible when keywords are entered -->
         <button class="icons icon-search">Search</button>
-        <input name="commisions-query" ng-model="invoiceSearchData.query" class="query" placeholder="Search by Invoice No., Account/Guest Name" type="search" autocomplete="off" ng-change="searchInvoice()">
+        <input name="commisions-query" ng-model="invoiceSearchData.query" class="query" placeholder="Search by Invoice No., Account/Guest Name" type="search" autocomplete="off" rv-delay-textbox="" delay="1000" function-to-fire="searchInvoice">
     </div>
     <div class="entry options">
         <label class="checkbox inline">
@@ -51,7 +51,7 @@
 
                         <!-- Guest / Account Info - Leave blank if it's an additional bill on the same reservation that's not been routed to accompanying guest or company or travel agent -->
                         <div class="data">
-                            <h2>{{::invoiceReservationData.associated_item.name}}</h2> <!-- Wrap search match with <span class="highlight"></span> -->
+                            <h2 ng-bind-html="escapeNull(invoiceReservationData.associated_item.name)|highlight:invoiceSearchData.query:false">{{::invoiceReservationData.associated_item.name}}</h2> <!-- Wrap search match with <span class="highlight"></span> -->
                             <span class="confirmation"><span class="confirmation-text">CONF. NO.{{::invoiceReservationData.associated_item.number}}</span>
 
                             <!-- If company is attached to reservation (doesn't have to have routed bill), show:
