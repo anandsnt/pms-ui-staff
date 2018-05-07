@@ -1,9 +1,12 @@
 module.exports = function(gulp, $, options) {
-    
+
             var del = require('del'),
+                _ = require('lodash'),
                     DEST_ROOT_PATH = '../../public/assets/',
                     runSequence = require('run-sequence'); //will be running from app/assets, so..
-    
+
+    options.environment = require('./../environments/environment');
+
             gulp.task('clean', function () {
                 return del([DEST_ROOT_PATH], {force: true });
             });
@@ -27,7 +30,7 @@ module.exports = function(gulp, $, options) {
                 ],
 
         tasksAfterCompilation = [
-                    'rover-inject-assets-to-templates', 
+                    'rover-inject-assets-to-templates',
                     'admin-inject-assets-to-templates',
                     'login-inject-assets-to-templates', 
                     'station-login-inject-assets-to-templates', 
@@ -36,9 +39,9 @@ module.exports = function(gulp, $, options) {
                 ],
 
         copyBaseHtmlToPublicAssets = [
-                    'copy-login-base-html', 
-                    'copy-station-login-base-html', 
-                    'copy-admin-base-html', 
+                    'copy-login-base-html',
+                    'copy-station-login-base-html',
+                    'copy-admin-base-html',
                     'copy-zest-base-html',
                     'copy-rover-base-html',
                     'copy-guestweb-v2-base-html',
@@ -68,34 +71,71 @@ module.exports = function(gulp, $, options) {
                 ];
 
     var processArgs = function() {
-        var argv  = require('yargs').argv,
-            index = -1;
+        var argv = require('yargs').argv;
 
-        //if you dont want to work with guest web (zest web),  you can pass --no-gw arg with gulp s. eg:- gulp s --no-gw
-        if( 'gw' in argv &&  !argv.gw ) {
+        if (argv['prod'] || argv['production']) {
+            process.env.BUILD_ENV = 'prod';
+        }
 
-            developmentTasks.splice(developmentTasks.indexOf('build-guestweb-dev'), 1);
-            developmentTasks.splice(developmentTasks.indexOf('build-guestweb-v2-dev'), 1);
+        // Inject gtm tags only if option is provided
+        if (argv['gtm']) {
+            // in case of asset-precompile
+            compilationTasks.push('inject_gtm_script_rover');
+            // in case of building in dev environment w/o concatenation
+            developmentTasks.push('inject_gtm_script_rover');
+        }
 
-            copyBaseHtmlToPublicAssets.splice(copyBaseHtmlToPublicAssets.indexOf('copy-guestweb-base-html'), 1);
-            copyBaseHtmlToPublicAssets.splice(copyBaseHtmlToPublicAssets.indexOf('copy-guestweb-v2-base-html'), 1);
+        // if you dont want to work with guest web (zest web),
+        // you can pass --no-gw arg with gulp s. eg:- gulp s --no-gw
+        if ('gw' in argv && !argv.gw) {
+
+            developmentTasks.splice(
+                developmentTasks.indexOf('build-guestweb-dev'), 1);
+            developmentTasks.splice(
+                developmentTasks.indexOf('build-guestweb-v2-dev'), 1);
+
+            copyBaseHtmlToPublicAssets.splice(
+                copyBaseHtmlToPublicAssets.indexOf('copy-guestweb-base-html'),
+                1);
+            copyBaseHtmlToPublicAssets.splice(
+                copyBaseHtmlToPublicAssets.indexOf(
+                    'copy-guestweb-v2-base-html'), 1);
 
             watchTasks.splice(watchTasks.indexOf('watch-guestweb-files'), 1);
             watchTasks.splice(watchTasks.indexOf('watch-guestweb-v2-files'), 1);
         }
 
-        //if you dont want to work with zest station,  you can pass --no-zs arg with gulp s. eg:- gulp s --no-zs
-        if( 'zs' in argv &&  !argv.zs ) {
+        // if you dont want to work with zest station,
+        // you can pass --no-zs arg with gulp s. eg:- gulp s --no-zs
+        if ('zs' in argv && !argv.zs) {
 
-            developmentTasks.splice(developmentTasks.indexOf('build-zest-dev'), 1);
+            developmentTasks.splice(developmentTasks.indexOf('build-zest-dev'),
+                1);
 
-            copyBaseHtmlToPublicAssets.splice(copyBaseHtmlToPublicAssets.indexOf('copy-zest-base-html'), 1);
+            copyBaseHtmlToPublicAssets.splice(
+                copyBaseHtmlToPublicAssets.indexOf('copy-zest-base-html'), 1);
 
             watchTasks.splice(watchTasks.indexOf('watch-zest-files'), 1);
         }
     };
 
-    //development
+    /**
+     * overrides default variables with specific values for the environment
+     * @returns {undefined}
+     */
+    function setEnvironment() {
+        if (process.env.BUILD_ENV) {
+            try {
+                _.merge(options.environment,
+                    require('./../environments/environment.' +
+                        process.env.BUILD_ENV.toLowerCase()));
+            } catch (e) {
+                throw new Error(e);
+            }
+        }
+    }
+
+    // development
     gulp.task('build', developmentTasks, function(callback){
         return runSequence(copyBaseHtmlToPublicAssets, callback)
     });
@@ -104,7 +144,9 @@ module.exports = function(gulp, $, options) {
         return runSequence('guestweb-asset-prod-precompile', 'guestweb-inject-assets-to-templates', 'copy-guestweb-base-html', callback);
     });
 
-    gulp.task('asset-precompile', ['gw-asset-precompile'], function (callback) {
+    gulp.task('asset-precompile', function (callback) {
+        processArgs();
+        setEnvironment();
         return runSequence(compilationTasks, tasksAfterCompilation, copyBaseHtmlToPublicAssets, callback);
     });
 
@@ -115,7 +157,7 @@ module.exports = function(gulp, $, options) {
         return runSequence(['build', 'watch'], callback);
     });
 
-    //starting sever & perform the default tasks
+    // starting sever & perform the default tasks
     gulp.task('s', function(callback){
         processArgs();
         return runSequence(['start-server', 'build', 'watch'], callback);

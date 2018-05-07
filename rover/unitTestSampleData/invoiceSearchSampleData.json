@@ -1,0 +1,38 @@
+{
+    "data": {
+        "results": [{
+            "associated_item": {
+                "type": "RESERVATION",
+                "name": "Akshai Raj",
+                "number": "103668",
+                "company_card": "stay",
+                "travel_agent_card": null,
+                "image_url": "http://localhost:3000/assets/images/avatar-male.png",
+                "accompanying_guests": ["Nicki Dehler"]
+            },
+            "bills": [{
+                "invoice_no": "GHL2740",
+                "balance": 0.0
+            }, {
+                "invoice_no": "GHL3165",
+                "balance": 0.0
+            }, {
+                "invoice_no": "GHL3166",
+                "balance": 0.0,
+                "routing_details": {
+                    "type": null,
+                    "name": "stay",
+                    "is_primary": true,
+                    "address": "Washington, 20002",
+                    "image_url": ""
+                }
+            }, {
+                "invoice_no": "GHL2791",
+                "balance": 382.5
+            }]
+        }],
+        "total_count": 6905
+    },
+    "errors": [],
+    "warnings": []
+}
