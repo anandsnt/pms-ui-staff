@@ -102,73 +102,87 @@ sntRover.controller('RVInvoiceSearchController',
 			});
 		};
 		// add the print orientation before printing
-	var addPrintOrientation = function() {
-		$( 'head' ).append( "<style id='print-orientation'>@page { size: portrait; }</style>" );
-	};
+		var addPrintOrientation = function() {
+			$( 'head' ).append( "<style id='print-orientation'>@page { size: portrait; }</style>" );
+		};
 
-	// add the print orientation after printing
-	var removePrintOrientation = function() {
-		$scope.isPrint = false;
-		$( '#print-orientation' ).remove();
-	};
-			// print the page
-	var printBill = function(data) {
-		var printDataFetchSuccess = function(successData) {
+		// add the print orientation after printing
+		var removePrintOrientation = function() {
+			$( '#print-orientation' ).remove();
+		};
+				// print the page
+		var printBill = function(data) {
+			var printDataFetchSuccess = function(successData) {
 
-			$scope.isPrint = true;
-			$scope.printData = successData;
-			$scope.errorMessage = "";
+				$scope.printData = successData;
+				$scope.errorMessage = "";
 
-			// CICO-9569 to solve the hotel logo issue
-			$("header .logo").addClass('logo-hide');
-			$("header .h2").addClass('text-hide');
-
-		    // add the orientation
-		    addPrintOrientation();
-
-		    /*
-		    *	======[ READY TO PRINT ]======
-		    */
-		    // this will show the popup with full bill
-		    $timeout(function() {
-		    	/*
-		    	*	======[ PRINTING!! JS EXECUTION IS PAUSED ]======
-		    	*/
-
-		    	$window.print();
-		    	if ( sntapp.cordovaLoaded ) {
-		    		cordova.exec(function(success) {}, function(error) {}, 'RVCardPlugin', 'printWebView', []);
-		    	}
-		    }, 200);
-
-		    /*
-		    *	======[ PRINTING COMPLETE. JS EXECUTION WILL UNPAUSE ]======
-		    */
-
-		    $timeout(function() {
 				// CICO-9569 to solve the hotel logo issue
-				$("header .logo").removeClass('logo-hide');
+				$("header .logo").addClass('logo-hide');
 				$("header .h2").addClass('text-hide');
 
-				// remove the orientation after similar delay
-		    	removePrintOrientation();
-		    }, 200);
+			    // add the orientation
+			    addPrintOrientation();
 
+			    /*
+			    *	======[ READY TO PRINT ]======
+			    */
+			    // this will show the popup with full bill
+			    $timeout(function() {
+			    	/*
+			    	*	======[ PRINTING!! JS EXECUTION IS PAUSED ]======
+			    	*/
+
+			    	$window.print();
+			    	if ( sntapp.cordovaLoaded ) {
+			    		cordova.exec(function(success) {}, function(error) {}, 'RVCardPlugin', 'printWebView', []);
+			    	}
+			    }, 200);
+
+			    /*
+			    *	======[ PRINTING COMPLETE. JS EXECUTION WILL UNPAUSE ]======
+			    */
+
+			    $timeout(function() {
+					// CICO-9569 to solve the hotel logo issue
+					$("header .logo").removeClass('logo-hide');
+					$("header .h2").addClass('text-hide');
+
+					// remove the orientation after similar delay
+			    	removePrintOrientation();
+			    }, 200);
+
+			};
+
+			var printDataFailureCallback = function(errorData) {
+				$scope.$emit('hideLoader');
+				$scope.errorMessage = errorData;
+			};
+
+			$scope.invokeApi(RVBillCardSrv.fetchBillPrintData, data, printDataFetchSuccess, printDataFailureCallback);
 		};
-
-		var printDataFailureCallback = function(errorData) {
-			$scope.$emit('hideLoader');
-			$scope.errorMessage = errorData;
+			// print bill
+		$scope.clickedPrint = function(requestData) {
+			$scope.closeDialog();
+			printBill(requestData);
 		};
+		$scope.clickedEmail = function(data) {
+			$scope.closeDialog();
+			var sendEmailSuccessCallback = function(successData) {
+				$scope.$emit('hideLoader');
+				$scope.statusMsg = $filter('translate')('EMAIL_SENT_SUCCESSFULLY');
+				$scope.status = "success";
+				$scope.showEmailSentStatusPopup();
+			};
+			var sendEmailFailureCallback = function(errorData) {
+				$scope.$emit('hideLoader');
+				$scope.statusMsg = $filter('translate')('EMAIL_SEND_FAILED');
+				$scope.status = "alert";
+				$scope.showEmailSentStatusPopup();
+			};
 
-		$scope.invokeApi(RVBillCardSrv.fetchBillPrintData, data, printDataFetchSuccess, printDataFailureCallback);
-	};
-		// print bill
-	$scope.clickedPrint = function(requestData) {
-		$scope.closeDialog();
-		printBill(requestData);
-		//scrollToTop();
-	};
+			$scope.invokeApi(RVBillCardSrv.sendEmail, data, sendEmailSuccessCallback, sendEmailFailureCallback);
+		};
 		/*
 		 * Initialization
 		 */
@@ -179,7 +193,6 @@ sntRover.controller('RVInvoiceSearchController',
 			$scope.invoiceSearchFlags.showFindInvoice = true;
 			$scope.invoiceSearchFlags.isQueryEntered = false;
 			$scope.totalResultCount = 0;
-			$scope.isPrint = false;
 			$scope.printData = {};
 			$scope.invoiceSearchPagination = {
 				id: 'INVOICE_SEARCH',
