@@ -8,9 +8,9 @@ sntGuestWeb.config(['$stateProvider', '$urlRouterProvider', function($stateProvi
             screenMappings: function(GwWebSrv) {
                 return GwWebSrv.fetchScreenMappings();
             },
-            zestwebData: function(GwWebSrv, $stateParams) {
+            zestwebData: function(GwWebSrv, $stateParams, $location) {
 
-                var absUrl = window.location.href;
+                var absUrl = $location.$$absUrl;
                 var apiUrl = "";
 
                 var setAPiURLfromWindowUrl = function() {

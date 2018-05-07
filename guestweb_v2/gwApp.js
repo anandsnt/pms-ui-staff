@@ -41,8 +41,8 @@ sntGuestWeb.controller('RootController', ['$scope', '$rootScope', '$state', '$co
 
 }]);
 
-sntGuestWeb.controller('HomeController', ['$scope', '$rootScope', '$state', '$controller', 'zestwebData', 'screenMappings', 'GwWebSrv', 'GwCheckinSrv',
-    function($scope, $rootScope, $state, $controller, zestwebData, screenMappings, GwWebSrv, GwCheckinSrv) {
+sntGuestWeb.controller('HomeController', ['$scope', '$rootScope', '$state', '$controller', 'zestwebData', 'screenMappings', 'GwWebSrv', 'GwCheckinSrv', '$location',
+    function($scope, $rootScope, $state, $controller, zestwebData, screenMappings, GwWebSrv, GwCheckinSrv, $location) {
 
         $controller('BaseController', {
             $scope: $scope
@@ -88,7 +88,7 @@ sntGuestWeb.controller('HomeController', ['$scope', '$rootScope', '$state', '$co
         else if (reservationAndhotelDetails.is_checkin === "false" && reservationAndhotelDetails.access_token.length > 0) {
             $state.go('checkoutRoomVerification');
         } else if (reservationAndhotelDetails.is_checkin === "true" && reservationAndhotelDetails.access_token.length > 0) {
-            var absUrl = window.location.href;
+            var absUrl = $location.$$absUrl;
 
             if (absUrl.indexOf("/guest_web/") !== -1 && absUrl.indexOf("/checkin?guest_web_token=") !== -1 &&
                 reservationAndhotelDetails.skip_checkin_verification && reservationAndhotelDetails.reservation_details) {

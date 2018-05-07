@@ -224,7 +224,8 @@ sntGuestWeb.controller('homeController', ['$rootScope', '$scope', '$location', '
 		$rootScope.bypassCheckinVerification = (reservationAndhotelData.is_sent_to_que === 'true' && !!reservationAndhotelData.zest_web_use_new_sent_to_que_action);
 
 		var navigatePageBasedOnUrlAndType = function() {
-			var absUrl = window.location.href;
+			var absUrl = $location.$$absUrl;
+
 			if (absUrl.indexOf("/guest_web/") !== -1 && absUrl.indexOf("/checkin?guest_web_token=") !== -1 &&
 				reservationAndhotelData.skip_checkin_verification && reservationAndhotelData.reservation_details) {
 				checkinDetailsService.setResponseData(reservationAndhotelData.reservation_details);
