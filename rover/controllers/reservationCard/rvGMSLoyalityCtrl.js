@@ -119,7 +119,7 @@ sntRover.controller('rvGMSLoyalityController', ['$scope', '$rootScope', '$filter
                 $scope.iframe = null;
                 $timeout(function() {
                     $scope.iframe = document.getElementById('gms-iframe');
-                    $scope.GMSiFrameSrc = $scope.ngDialogData.GMSSettings.end_point;
+                    $scope.GMSiFrameSrc = $scope.ngDialogData.GMSSettings.iframe_end_point;
                     if ($scope.iframe) {
                         $scope.iframe.addEventListener('load', sendInitialMessage, false);
                         $scope.iframe.addEventListener('error', loadingError, false);
@@ -127,7 +127,7 @@ sntRover.controller('rvGMSLoyalityController', ['$scope', '$rootScope', '$filter
                     }
                 }, 3000);
             };
-        
+
         $scope.closeGMSDialog = function () {
             closeGMSiFrame();
             $scope.closeDialog();
