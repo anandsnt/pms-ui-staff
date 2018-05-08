@@ -52,7 +52,8 @@ sntZestStation.service('zsGeneralSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
             'merrill': 'The Merrill Hotel And Conference Center',
             'martins': 'Martins Hotel',
             'arc': 'Arc The Hotel',
-            'alessandra': 'Hotel Alessandra'
+            'alessandra': 'Hotel Alessandra',
+            'story': 'Story Hotels'
         };
 
         this.isThemeConfigured = function(theme) {
