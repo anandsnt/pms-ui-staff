@@ -21,9 +21,14 @@
         <div class="info-left" ng-if="printData.card_type === 'COMPANY'">
             <strong >{{printData.translation.invoice_date}}:&nbsp; </strong>{{printData.invoice_date | date:dateFormat}}<br/>
             <span ng-show="!isInformationalInvoice"><strong>{{printData.translation.invoice_number}}:&nbsp;</strong>{{printData.invoice_number}}<br></span>
+            <span ng-if="printData.folio_number">
+                <strong>{{printData.translation.folio_number}}:&nbsp;</strong>
+                {{printData.folio_number}}<br>
+            </span>
             <span ng-show="printData.has_enabled_invoice_number_sequence && printData.mod_invoice_number && !isInformationalInvoice">
                 <strong >{{printData.mod_label}}:&nbsp;</strong>{{printData.mod_invoice_number}}<br/>
             </span>
+
             <span ng-show="printData.control_code !== '' && !isInformationalInvoice">
                 <strong >{{printData.translation.control_code}}:&nbsp;</strong> {{printData.control_code | limitTo : 30}}
                 <br/>

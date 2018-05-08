@@ -206,7 +206,7 @@ angular.module('sntRover').service('RVReservationCardSrv', ['$http', '$q', 'RVBa
 		// CICO-24928 
 		this.updateReservationNote = function(data) {
 			var deferred = $q.defer(),
-				url = 'api/notes/' + data.id;
+				url = '/reservation_notes/' + data.id;
 
 			rvBaseWebSrvV2.putJSON(url, data)
 				.then(function(data) {

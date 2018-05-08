@@ -3,7 +3,8 @@ sntRover.controller('RVInvoiceSearchController',
 	'$rootScope',
 	'$timeout',
 	'RVInvoiceSearchSrv',
-	function($scope, $rootScope, $timeout, RVInvoiceSearchSrv) {
+	'$filter',
+	function($scope, $rootScope, $timeout, RVInvoiceSearchSrv, $filter) {
 		BaseCtrl.call(this, $scope);
 
 		const scrollOptions =  {preventDefaultException: { tagName: /^(INPUT|LI)$/ }, preventDefault: false},
@@ -11,6 +12,16 @@ sntRover.controller('RVInvoiceSearchController',
 			PER_PAGE = 10;	
 
 		$scope.setScroller('invoice-list', scrollOptions);
+		/**
+		* function to set Headinng
+		* @return - {None}
+		*/
+		$scope.setTitleAndHeading = function(title) {
+ 
+            $scope.setTitle(title);
+            $scope.$parent.heading = title;
+        };
+
 		// To refresh the scroll
 		const refreshScroll = function() {
 			$timeout(function() { 
@@ -62,7 +73,10 @@ sntRover.controller('RVInvoiceSearchController',
 
 				$scope.callAPI(RVInvoiceSearchSrv.searchForInvoice, options);
 			} else {
+				$scope.totalResultCount = 0;
+				$scope.invoiceSearchData.reservationsList = [];
 				$scope.invoiceSearchFlags.isQueryEntered = false;
+				$scope.invoiceSearchFlags.showFindInvoice = true;
 			}
 		};
 		/*
@@ -80,6 +94,9 @@ sntRover.controller('RVInvoiceSearchController',
 				api: $scope.searchInvoice,
 				perPage: PER_PAGE
 			};
+			var title = $filter('translate')('FIND_INVOICE');
+
+			$scope.setTitleAndHeading(title);
 		};
 		
 		that.init();

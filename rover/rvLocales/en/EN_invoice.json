@@ -22,4 +22,5 @@
 "REF_NO:"			: "Reference No.: ",
 "TAX_ID:"			: "Tax ID: ",
 "AR_NUMBER:"		: "AR No.: ",
-"AR_NO:"            : "AR Number: "
+"AR_NO:"            : "AR Number: ",
+"FIND_INVOICE"      : "Find Invoice"

@@ -34,7 +34,10 @@ module.exports = {
             'nomo': [themeCSSRoot + 'nomo.less'],
             'merrill': [themeCSSRoot + 'merrill.less'],
             'martins': [themeCSSRoot + 'martins.less'],
-            'arc': [themeCSSRoot + 'arc.less']
+            'arc': [themeCSSRoot + 'arc.less'],
+            'alessandra': [themeCSSRoot + 'alessandra.less'],
+            'story': [themeCSSRoot + 'story.less'],
+            'pod': [themeCSSRoot + 'pod.less']
 		};
 	}
 };
