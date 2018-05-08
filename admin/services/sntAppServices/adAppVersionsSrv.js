@@ -88,46 +88,10 @@ admin.service('adAppVersionsSrv', ['$http', '$q', 'ADBaseWebSrv', 'ADBaseWebSrvV
 	var count = 0;
 	this.checkVersionStatus = function(params) {
 		var deferred = $q.defer();
-
-		var url = '/sample_json/snt_admin/build_pending.json';
+		var url = '/admin/service_application_types/check_pending_builds';
 
 		ADBaseWebSrvV2.getJSON(url, params).then(function(data) {
-			var response = [];
-			count++;
-
-			if (count < 2) {
-				_.each(params.pending_upload_ids, function(buildId, index) {
-					response.push({
-						'id': buildId,
-						'upload_status': 'PENDING'
-					});
-				});
-			} else if (count >= 2 && count < 4) {
-				_.each(params.pending_upload_ids, function(buildId, index) {
-					if (index === 0) {
-						response.push({
-							'id': buildId,
-							'upload_status': 'SUCCESS'
-						});
-					} else {
-						response.push({
-							'id': buildId,
-							'upload_status': 'PENDING'
-						});
-					}
-				});
-			} else {
-				_.each(params.pending_upload_ids, function(buildId, index) {
-					response.push({
-						'id': buildId,
-						'upload_status': 'FAILED',
-						'upload_failure_reason': 'Network error. Please try after some time'
-					});
-				});
-				count = 0;
-			}
-			deferred.resolve(response);
-
+			deferred.resolve(data);
 		}, function(data) {
 			deferred.reject(data);
 		});

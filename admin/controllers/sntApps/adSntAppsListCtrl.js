@@ -8,6 +8,7 @@ admin.controller('ADSntAppsListCtrl', ['$scope',
 		var checkStatusOfpendingUploadIds = function() {
 			var fetchVersionsStatusSuccess = function(response) {
 				var allStatusUpdated = true;
+
 				_.each(response, function(build, index) {
 					if (build.upload_status === 'PENDING') {
 						allStatusUpdated = false;
@@ -25,15 +26,16 @@ admin.controller('ADSntAppsListCtrl', ['$scope',
 						});
 					}
 				});
-				if (!allStatusUpdated) {
+				if (!allStatusUpdated || response.length === 0) {
 					$timeout(checkStatusOfpendingUploadIds, 3000);
 				}
 			};
 			$scope.callAPI(adAppVersionsSrv.checkVersionStatus, {
 				params: {
-					pending_upload_ids: pendingUploadIds
+					pending_upload_ids: pendingUploadIds,
+					service_application_type_id: $scope.filterType.id
 				},
-				blocker: 'NONE',
+				loader: 'NONE',
 				successCallBack: fetchVersionsStatusSuccess,
 				failureCallBack: function() {
 					// do nothing
@@ -44,14 +46,7 @@ admin.controller('ADSntAppsListCtrl', ['$scope',
 		var fetchAppVersions = function() {
 
 			var fetchAppListSuccessCallback = function(data) {
-				// TO DO: delete below code
-				 _.each(data, function(app, index) {
-            		if(index == 0 || index == 1){
-            			app.upload_status = 'PENDING';
-            		} else{
-            			app.upload_status = 'SUCCESS';
-            		}
-          		});
+
 				$scope.appList = data;
 				// check if any of the version upload is in pending status
 				pendingUploadIds = [];
