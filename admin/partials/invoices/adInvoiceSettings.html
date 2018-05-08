@@ -17,6 +17,9 @@
 					<fieldset class="holder left">
 						<ad-toggle-button label="{{'EXT_TAX_BREAKDOWN' | translate}}" is-checked="invoiceSettings.has_enabled_extended_tax_breakdown"></ad-toggle-button>
 					</fieldset>
+					<fieldset class="holder right hidden">
+						<ad-toggle-button label="{{'ACTIVATE_FOLIO_NUMBER' | translate}}" is-checked="invoiceSettings.has_activate_folio_number"></ad-toggle-button>
+					</fieldset>
 
 					<div class="actions float">
 						<button type="button" id="cancel" class="button blank" ng-click="goBackToPreviousState()"translate>
