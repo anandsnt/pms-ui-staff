@@ -983,7 +983,10 @@ sntRover.controller('rvReservationCardActionsController', ['$scope', '$filter', 
                         // For now, Adding fix for CICO-51610, ie to show the loading indicator till the popup is opened
                         sntActivity.stop('FETCH_ACTIONS_LIST');
                     }, 900);
+                } else {
+                    sntActivity.stop('FETCH_ACTIONS_LIST');
                 }
+
                 $scope.openingPopup = false;
             };
             var onFailure = function(data) {
