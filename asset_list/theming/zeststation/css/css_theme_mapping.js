@@ -36,7 +36,8 @@ module.exports = {
             'martins': [themeCSSRoot + 'martins.less'],
             'arc': [themeCSSRoot + 'arc.less'],
             'alessandra': [themeCSSRoot + 'alessandra.less'],
-            'story': [themeCSSRoot + 'story.less']
+            'story': [themeCSSRoot + 'story.less'],
+            'pod': [themeCSSRoot + 'pod.less']
 		};
 	}
 };
