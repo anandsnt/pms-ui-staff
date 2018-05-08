@@ -32,7 +32,7 @@ admin.controller('ADSntAppsListCtrl', ['$scope',
 			};
 			$scope.callAPI(adAppVersionsSrv.checkVersionStatus, {
 				params: {
-					pending_upload_ids: pendingUploadIds,
+					pending_upload_ids: JSON.stringify(pendingUploadIds),
 					service_application_type_id: $scope.filterType.id
 				},
 				loader: 'NONE',
