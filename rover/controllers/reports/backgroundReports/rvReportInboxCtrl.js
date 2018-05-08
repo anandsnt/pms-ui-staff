@@ -67,7 +67,7 @@ angular.module('sntRover').controller('RVReportsInboxCtrl', [
         $scope.getRequestedReportStatus = (report) => {
             let status = report.message;
 
-            if (report.status.value === 'IN_PROGRESS') {
+            if (report.status.value === 'IN_PROGRESS' || report.status.value === 'REQUESTED') {
                 status = report.status.description;
             }
 
