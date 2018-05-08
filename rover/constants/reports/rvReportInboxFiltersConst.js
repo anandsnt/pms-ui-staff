@@ -118,6 +118,7 @@ angular.module('reportsModule')
         "include_cancelled": "Include Cancelled",
         "show_room_revenue": "Show Room Revenue",
         "with_vat_number": "With Vat Number",
-        "without_vat_number": "Without Vat Number"
+        "without_vat_number": "Without Vat Number",
+        "include_companycard_ta": "Include CC/TA"
         
     });
