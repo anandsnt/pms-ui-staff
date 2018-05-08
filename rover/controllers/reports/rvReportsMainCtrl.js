@@ -2137,7 +2137,10 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
             };
 
             var sucssCallback = function (response) {
-                if ($rootScope.isBackgroundReportsEnabled && $state.current.name !== 'rover.reports.inbox') {
+                if ($rootScope.isBackgroundReportsEnabled
+                    && $state.current.name !== 'rover.reports.inbox'
+                    // flag to decide whether its paginated response or not, configured from rvReportsSubSrv.js
+                    && !response.isPaginatedResponse) {
                     $state.go('rover.reports.inbox');
                     return;
                 }
