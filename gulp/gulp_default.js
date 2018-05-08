@@ -141,7 +141,6 @@ module.exports = function(gulp, $, options) {
     });
 
     gulp.task('gw-asset-precompile', function(callback) {
-        processArgs();
         return runSequence('guestweb-asset-prod-precompile', 'guestweb-inject-assets-to-templates', 'copy-guestweb-base-html', callback);
     });
 
