@@ -7,7 +7,8 @@ sntRover.controller('RVInvoiceSearchController',
 	'$filter',
 	'RVBillCardSrv',
 	'$window',
-	function($scope, $rootScope, $timeout, RVInvoiceSearchSrv, ngDialog, $filter, RVBillCardSrv, $window) {
+	'rvAccountTransactionsSrv',
+	function($scope, $rootScope, $timeout, RVInvoiceSearchSrv, ngDialog, $filter, RVBillCardSrv, $window, rvAccountTransactionsSrv) {
 
 		BaseCtrl.call(this, $scope);
 
@@ -23,9 +24,9 @@ sntRover.controller('RVInvoiceSearchController',
 		*/
 		$scope.setTitleAndHeading = function(title) {
  
-            $scope.setTitle(title);
-            $scope.$parent.heading = title;
-        };
+			$scope.setTitle(title);
+			$scope.$parent.heading = title;
+		};
 
 		// To refresh the scroll
 		const refreshScroll = function() {
@@ -65,13 +66,13 @@ sntRover.controller('RVInvoiceSearchController',
 						refreshScroll();
 					},
 					params = {
-                        'query': $scope.invoiceSearchData.query,
-                        'no_control_number': true,
-                        // 'per_page': rvAccountsSrv.DEFAULT_PER_PAGE,
-                        'page_no': page || 1,
-                        'per_page': PER_PAGE
-                    },
-                    options = {
+						'query': $scope.invoiceSearchData.query,
+						'no_control_number': true,
+						// 'per_page': rvAccountsSrv.DEFAULT_PER_PAGE,
+						'page_no': page || 1,
+						'per_page': PER_PAGE
+					},
+					options = {
 						params: params,
 						successCallBack: successCallBackOfPayment
 					};
@@ -90,13 +91,23 @@ sntRover.controller('RVInvoiceSearchController',
 		 * @param billNo boolean bill no
 		 * @param isActiveBill boolean is bill active or not
 		 */
-		$scope.showFormatBillPopup = function(billNo, isActiveBill) {
-			$scope.billNo = 1;
+		$scope.showFormatBillPopup = function(parentIndex, billIndex) {
+			$scope.billNo = $scope.invoiceSearchData.reservationsList.results[parentIndex].bills[billIndex].bill_no;
 			$scope.isSettledBill = true;
 			$scope.isInformationalInvoice = false;
-			$scope.reservationBillData = {
-				"reservation_id": 2192441
-			};
+			if ($scope.invoiceSearchData.reservationsList.results[parentIndex].associated_item.type === 'RESERVATION') {
+				$scope.invoiceSearchFlags.isClickedReservation = true;
+				$scope.reservationBillData = {
+					"reservation_id": $scope.invoiceSearchData.reservationsList.results[parentIndex].associated_item.item_id
+				};
+			} else {
+				// We have to show toggle in popup
+				$scope.reservationBillData = {}; // To handle print in posting accounts
+				$scope.isFromInvoiceSearchScreen = true;
+				$scope.clickedInvoiceData = $scope.invoiceSearchData.reservationsList.results[parentIndex];
+				$scope.invoiceSearchFlags.isClickedReservation = false;
+			}
+			
 			ngDialog.open({
 					template: '/assets/partials/popups/billFormat/rvBillFormatPopup.html',
 					controller: 'rvBillFormatPopupCtrl',
@@ -113,62 +124,82 @@ sntRover.controller('RVInvoiceSearchController',
 		var removePrintOrientation = function() {
 			$( '#print-orientation' ).remove();
 		};
-				// print the page
+
+		// print the page
 		var printBill = function(data) {
 			var printDataFetchSuccess = function(successData) {
+					if ($scope.invoiceSearchFlags.isClickedReservation){
+						$scope.printData = successData;
+					} else {
+						$scope.printData = successData.data;
+					}
+					
+					$scope.errorMessage = "";
 
-				$scope.printData = successData;
-				$scope.errorMessage = "";
-
-				// CICO-9569 to solve the hotel logo issue
-				$("header .logo").addClass('logo-hide');
-				$("header .h2").addClass('text-hide');
-
-			    // add the orientation
-			    addPrintOrientation();
-
-			    /*
-			    *	======[ READY TO PRINT ]======
-			    */
-			    // this will show the popup with full bill
-			    $timeout(function() {
-			    	/*
-			    	*	======[ PRINTING!! JS EXECUTION IS PAUSED ]======
-			    	*/
-
-			    	$window.print();
-			    	if ( sntapp.cordovaLoaded ) {
-			    		cordova.exec(function(success) {}, function(error) {}, 'RVCardPlugin', 'printWebView', []);
-			    	}
-			    }, 200);
-
-			    /*
-			    *	======[ PRINTING COMPLETE. JS EXECUTION WILL UNPAUSE ]======
-			    */
-
-			    $timeout(function() {
 					// CICO-9569 to solve the hotel logo issue
-					$("header .logo").removeClass('logo-hide');
+					$("header .logo").addClass('logo-hide');
 					$("header .h2").addClass('text-hide');
 
-					// remove the orientation after similar delay
-			    	removePrintOrientation();
-			    }, 200);
+					// add the orientation
+					addPrintOrientation();
 
-			};
+					/*
+					*	======[ READY TO PRINT ]======
+					*/
+					// this will show the popup with full bill
+					$timeout(function() {
+						/*
+						*	======[ PRINTING!! JS EXECUTION IS PAUSED ]======
+						*/
 
-			var printDataFailureCallback = function(errorData) {
-				$scope.$emit('hideLoader');
-				$scope.errorMessage = errorData;
-			};
+						$window.print();
+						if ( sntapp.cordovaLoaded ) {
+							cordova.exec(function(success) {}, function(error) {}, 'RVCardPlugin', 'printWebView', []);
+						}
+					}, 200);
 
-			$scope.invokeApi(RVBillCardSrv.fetchBillPrintData, data, printDataFetchSuccess, printDataFailureCallback);
+					/*
+					*	======[ PRINTING COMPLETE. JS EXECUTION WILL UNPAUSE ]======
+					*/
+
+					$timeout(function() {
+						// CICO-9569 to solve the hotel logo issue
+						$("header .logo").removeClass('logo-hide');
+						$("header .h2").addClass('text-hide');
+
+						// remove the orientation after similar delay
+						removePrintOrientation();
+					}, 200);
+
+				},
+				printDataFailureCallback = function(errorData) {
+					$scope.$emit('hideLoader');
+					$scope.errorMessage = errorData;
+				}, 
+				options = {
+					params: data,
+					successCallBack: printDataFetchSuccess,
+					failureCallBack: printDataFailureCallback
+				};
+
+				$scope.callAPI(RVInvoiceSearchSrv.searchForInvoice, options);
+
+			if ($scope.invoiceSearchFlags.isClickedReservation) {
+				$scope.callAPI(RVBillCardSrv.fetchBillPrintData, options);				
+			} else {
+				$scope.callAPI(rvAccountTransactionsSrv.fetchAccountBillsForPrint, options);				
+			}
+			
 		};
-			// print bill
+		
+		// print bill
 		$scope.clickedPrint = function(requestData) {
 			$scope.closeDialog();
 			printBill(requestData);
 		};
+		/*
+		 * To send email
+		 */
 		$scope.clickedEmail = function(data) {
 			$scope.closeDialog();
 			var sendEmailSuccessCallback = function(successData) {
@@ -195,6 +226,7 @@ sntRover.controller('RVInvoiceSearchController',
 			$scope.invoiceSearchFlags = {};
 			$scope.invoiceSearchFlags.showFindInvoice = true;
 			$scope.invoiceSearchFlags.isQueryEntered = false;
+			$scope.invoiceSearchFlags.isClickedReservation = true;
 			$scope.totalResultCount = 0;
 			$scope.printData = {};
 			$scope.invoiceSearchPagination = {
