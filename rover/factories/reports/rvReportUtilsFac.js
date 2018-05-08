@@ -645,6 +645,10 @@ angular.module('reportsModule')
                     __pushGeneralOptionData( report, filter, false );
                 }
 
+                if ( report.title === reportNames['IN_HOUSE_GUEST'] && filter.value === 'NO_NATIONALITY') {
+                    __pushGeneralOptionData( report, filter, false );
+                }
+
 
                  // fill up DS for options combo box
                 if ( __excludeFilterNames[filter.value] ) {
