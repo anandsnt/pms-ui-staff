@@ -162,7 +162,7 @@ angular.module('sntRover').controller('RVReportsInboxCtrl', [
         self.generateRequestParams = (pageNo) => {
             let params = {
                 user_id: $rootScope.userId,
-                from_date: $scope.reportInboxData.filter.selectedDate,
+                generated_date: $scope.reportInboxData.filter.selectedDate,
                 per_page: RVReportsInboxSrv.PER_PAGE,
                 page: pageNo,
                 query: $scope.reportInboxData.filter.searchTerm
@@ -305,6 +305,21 @@ angular.module('sntRover').controller('RVReportsInboxCtrl', [
             $scope.$parent.heading = listTitle;
         };
 
+        // Reset the report selection and filters
+        self.resetPreviousReportSelection = () => {
+            _.map($scope.$parent.reportList,
+                function (report) {
+                    report.uiChosen = false;
+                    _.map(report.filters, (filter) => {
+                        if (filter.filled) {
+                           filter.filled = false; 
+                       }                        
+                    })
+                }
+            );
+
+        };
+
         // Initialize
         self.init = () => {            
             $scope.reportInboxData = {
@@ -329,7 +344,9 @@ angular.module('sntRover').controller('RVReportsInboxCtrl', [
 
             self.refreshPagination();
 
-            self.refreshScroll();          
+            self.refreshScroll();  
+
+            self.resetPreviousReportSelection();        
         };
 
         self.init();

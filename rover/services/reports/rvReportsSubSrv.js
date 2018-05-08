@@ -370,12 +370,14 @@ angular.module('sntRover').service('RVreportsSubSrv', [
             });
         };
 
-        service.fetchRoomTypeList = function() {
+        service.fetchRoomTypeList = function(params) {
+            params = params || {}
             return callApi({
                 name: 'roomTypeList',
                 method: 'getJSON',
                 url: 'api/room_types',
-                resKey: 'results'
+                resKey: 'results',
+                params: params
             });
         };
 
@@ -570,12 +572,15 @@ angular.module('sntRover').service('RVreportsSubSrv', [
             });
         };
 
-        service.fetchTravelAgents = function() {
+        service.fetchTravelAgents = function(params) {
+            params = params || {};
+
             return callApi({
                 name: 'accounts',
                 method: 'getJSON',
                 url: ' /api/reports/list_travel_agents',
-                resKey: 'travel_agents'
+                resKey: 'travel_agents',
+                params: params
             });
         };
 
@@ -588,6 +593,41 @@ angular.module('sntRover').service('RVreportsSubSrv', [
                 url: '/api/groups/search',
                 resKey: 'groups',
                 params: params
+            });
+        };
+
+        /**
+         * Fetch group by id
+         * @param {Number} id identifier for the group
+         * @return {Promise} promise
+         */
+        service.fetchGroupById = function(id) {
+            return callApi({               
+                method: 'getJSON',
+                url: 'groups/' + id  + '/group_name'                           
+            });
+        };
+
+        /**
+         * Fetch accounts (CC/TA) by id
+         * @param {Number} id identifier for the account
+         * @return {Promise} promise
+         */
+        service.fetchAccountsById = function(id) {
+            return callApi({                
+                method: 'getJSON',
+                url: '/api/accounts/' + id                             
+            });
+        };
+
+        /**
+         * Fetch rate types 
+         * @return {Promise} promise
+         */
+        service.fetchRateTypes = function() {
+            return callApi({                
+                method: 'getJSON',
+                url: '/api/rate_types.json?sort_field=is_active&sort_dir=false&per_page=1000&page=1'                            
             });
         };
 
