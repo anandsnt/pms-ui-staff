@@ -338,7 +338,8 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
             INCLUDE_DUE_OUT: 'INCLUDE_DUE_OUT',
             RESTRICTED_POST_ONLY: 'RESTRICTED_POST_ONLY',
             INCLUDE_TAX: 'INCLUDE_TAX',
-            INCLUDE_LEDGER_DATA: 'INCLUDE_LEDGER_DATA'
+            INCLUDE_LEDGER_DATA: 'INCLUDE_LEDGER_DATA',
+            NO_NATIONALITY: 'NO_NATIONALITY'
         };
 
         var matchSortFields = {

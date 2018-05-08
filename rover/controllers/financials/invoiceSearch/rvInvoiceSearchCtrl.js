@@ -78,7 +78,10 @@ sntRover.controller('RVInvoiceSearchController',
 
 				$scope.callAPI(RVInvoiceSearchSrv.searchForInvoice, options);
 			} else {
+				$scope.totalResultCount = 0;
+				$scope.invoiceSearchData.reservationsList = [];
 				$scope.invoiceSearchFlags.isQueryEntered = false;
+				$scope.invoiceSearchFlags.showFindInvoice = true;
 			}
 		};
 
