@@ -1,7 +1,8 @@
 <div id="guest-card-header" class="card-header" ng-class="UICardClass('guest-card')" ng-controller="RVGuestCardCtrl" ng-click="guestCardClicked()">
     <section ng-if="!searchMode">
         <figure class="guest-image" ng-click="switchCard('guest-card')">
-            <img ng-src="{{guestCardData.contactInfo.avatar}}" />
+            <img ng-src="{{guestCardData.contactInfo.avatar}}" />            
+            <span class="stay-count" ng-if="guestCardData.contactInfo.stayCount > 0">{{::guestCardData.contactInfo.stayCount}}</span>
             <span class="vip" ng-show="guestCardData.contactInfo.vip">VIP</span>
         </figure>
         <form name="change-name" id="change-name" class="dual-actions">
