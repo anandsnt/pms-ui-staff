@@ -141,8 +141,8 @@
 
 <!-- When search results exist and print button is tapped, add invoice details here -->
 <div class="invoice" ng-if="invoiceSearchFlags.isClickedReservation">
-    <div ng-include="'/assets/partials/financials/invoiceSearch/rvPrintReservationCard.html'" ></div>
+    <div ng-include="'/assets/partials/bill/rvPrintBillCard.html'" ></div>
 </div>
 <div class="invoice" ng-if="!invoiceSearchFlags.isClickedReservation">
-    <div ng-include="'/assets/partials/financials/invoiceSearch/rvAccountInvoiceFromInvoice.html'" ></div>
+    <div ng-include="'/assets/partials/accounts/transactions/rvAccountInvoice.html'" ></div>
 </div>
