@@ -77,7 +77,7 @@ admin.service('adAppVersionsSrv', ['$http', '$q', 'ADBaseWebSrv', 'ADBaseWebSrvV
 		var deferred = $q.defer();
 		var url = '/admin/service_application_types/delete_build';
 
-		ADBaseWebSrvV2.deleteJSON(url, data).then(function(data) {
+		ADBaseWebSrv.deleteJSON(url, data).then(function(data) {
 			deferred.resolve(data);
 		}, function(data) {
 			deferred.reject(data);

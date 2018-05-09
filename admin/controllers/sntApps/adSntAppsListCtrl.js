@@ -58,8 +58,7 @@ admin.controller('ADSntAppsListCtrl', ['$scope',
 						pendingUploadIds.push(app.id);
 					}
 				});
-				
-				// REMEMBER - ADDED A hidden class in ng-table angular module js. Search for hidde or pull-right
+
 				$scope.tableParams = new ngTableParams({
 					// show first page
 					page: 1,

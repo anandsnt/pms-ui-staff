@@ -64,7 +64,8 @@
                                 </div>
                             </td>
                             <td>
-                                <span class="icons delete_small cursor_pointer" ng-click="deleteVersion(app)" ng-hide="false">&nbsp;</span>
+                                <span class="icons disabled-delete" ng-show="app.upload_status === 'PENDING'" >&nbsp;</span>
+                                <span class="icons delete_small cursor_pointer" ng-click="deleteVersion(app)" ng-hide="app.upload_status === 'PENDING'" >&nbsp;</span>
                             </td>
                         </tr>
                     </tbody>
