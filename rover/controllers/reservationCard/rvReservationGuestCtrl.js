@@ -417,6 +417,11 @@ sntRover.controller('rvReservationGuestController', ['$scope', '$rootScope', 'RV
 				$scope.maxAdultsForReservation = $scope.otherData.maxAdults;
 				$scope.$emit('hideLoader');
 				$scope.guestData = data;
+				
+				// CICO-51935
+				if ($scope.guestCardData && $scope.guestCardData.contactInfo) {
+					$scope.guestCardData.contactInfo.stayCount = data.primary_guest_details && data.primary_guest_details.stay_count;
+				}				
 
                 $scope.accompanyingGuests = $scope.guestData.accompanying_guests_details ? groupAccompanyingGuestsByType($scope.guestData.accompanying_guests_details) : $scope.accompanyingGuests;
                 applyGuestCountRuleOnAccompanyingGuests($scope.guestData.adult_count, $scope.guestData.children_count, $scope.guestData.infants_count, $scope.accompanyingGuests);
