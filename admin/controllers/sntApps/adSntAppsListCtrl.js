@@ -14,14 +14,14 @@ admin.controller('ADSntAppsListCtrl', ['$scope',
 					if (build.upload_status === 'PENDING') {
 						allStatusUpdated = false;
 					}
-					if (build.upload_status === 'SUCCESS' || build.upload_status === 'FAILED') {
+					if (build.upload_status === 'SUCCESS' || build.upload_status === 'FAILURE') {
 						pendingUploadIds = _.without(pendingUploadIds, build.id);
 					}
 					// update the list wrt to this API response
 					_.each($scope.appList, function(app) {
 						if (app.id === build.id) {
 							app.upload_status = build.upload_status;
-							if (build.upload_status === 'FAILED') {
+							if (build.upload_status === 'FAILURE') {
 								app.upload_failure_reason = build.upload_failure_reason;
 							}
 						}

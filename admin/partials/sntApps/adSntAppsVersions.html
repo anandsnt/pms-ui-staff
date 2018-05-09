@@ -54,7 +54,7 @@
                             </td>
                             <td>
                                 <span class="green-text" ng-show="app.upload_status == 'SUCCESS'">{{app.upload_status}}</span>
-                                <div ng-show="app.upload_status === 'FAILED'">
+                                <div ng-show="app.upload_status === 'FAILURE'">
                                     <span class="red-text">{{app.upload_status}}</span></br/>
                                     <span class="status-sub-text">{{app.upload_failure_reason}}</span>
                                 </div>
