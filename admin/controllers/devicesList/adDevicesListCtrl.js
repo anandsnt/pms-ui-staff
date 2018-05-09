@@ -14,6 +14,7 @@ admin.controller('ADDevicesListCtrl', ['$scope', '$state', 'ngTableParams', 'adD
         var serviceType = _.find($scope.filterList, function(filter) {
           return device.service_application_type_id === filter.id;
         });
+        
         return serviceType;
       };
       
