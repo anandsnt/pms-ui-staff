@@ -13,7 +13,6 @@ sntRover.controller('RVInvoiceSearchController',
 
 		BaseCtrl.call(this, $scope);
 
-
 		const scrollOptions =  {preventDefaultException: { tagName: /^(INPUT|LI)$/ }, preventDefault: false},
 			that = this,
 			PER_PAGE = 10;	
