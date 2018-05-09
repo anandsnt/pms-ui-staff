@@ -68,7 +68,6 @@ sntRover.controller('RVInvoiceSearchController',
 					params = {
 						'query': $scope.invoiceSearchData.query,
 						'no_control_number': true,
-						// 'per_page': rvAccountsSrv.DEFAULT_PER_PAGE,
 						'page_no': page || 1,
 						'per_page': PER_PAGE
 					},
