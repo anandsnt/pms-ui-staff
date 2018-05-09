@@ -232,20 +232,6 @@
                         .confirmation,
                         .icons { margin-right: 10px; }
 
-                        .stay-count {
-                            position: absolute;
-                            top: 0;
-                            right: 0;
-                            font-size: 12px;
-                            font-weight: 400;
-                            text-transform: uppercase;
-                            line-height: 30px;
-                            padding: 0 10px;
-                            color: @grey4;
-                            background: rgba(0,0,0,.05);
-                            #border-radius > .rounded();
-                        }
-
                         &.no-stay {
                             margin-right: 0;
                             .calc-width(100, 70);
@@ -1664,7 +1650,8 @@
                 .guest-image {
                     width: 20px;
 
-                    .vip {
+                    .vip,
+                    .stay-count {
                         font-size: 8px;
                         line-height: 12px;
                         .square(12px);
@@ -2783,6 +2770,12 @@
                         line-height: 20px;
                         .square(18px);
                     }
+
+                    .stay-count {
+                        font-size: 12px;
+                        line-height: 18px;
+                        .square(18px);
+                    } 
                 }
 
                 .show-vacant {
