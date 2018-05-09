@@ -24,7 +24,7 @@ sntRover.controller('rvBillFormatPopupCtrl', ['$scope', '$rootScope', '$filter',
                     // Only TA card is attached.
                     $scope.isCompanyCardInvoice = false;
                     $scope.disableCompanyCardInvoice = true;
-                } else if ($scope.clickedInvoiceData.associated_item.company_card !== null && $scope.clickedInvoiceData.associated_item.travel_agent_card === null){
+                } else if ($scope.clickedInvoiceData.associated_item.company_card !== null && $scope.clickedInvoiceData.associated_item.travel_agent_card === null) {
                     // Only Company card is attached.
                     $scope.disableCompanyCardInvoice = true;
                 }

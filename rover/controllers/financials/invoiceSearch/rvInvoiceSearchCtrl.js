@@ -92,7 +92,7 @@ sntRover.controller('RVInvoiceSearchController',
 		 */
 		$scope.showFormatBillPopup = function(parentIndex, billIndex) {
 			$scope.billNo = $scope.invoiceSearchData.reservationsList.results[parentIndex].bills[billIndex].bill_no;
-			if ($rootScope.isInfrasecActivated && $rootScope.isInfrasecActivatedForWorkstation){
+			if ($rootScope.isInfrasecActivated && $rootScope.isInfrasecActivatedForWorkstation) {
 				$scope.isSettledBill = !$scope.invoiceSearchData.reservationsList.results[parentIndex].bills[billIndex].is_control_code_exist;
 			} else {
 				$scope.isSettledBill = true;
@@ -131,7 +131,7 @@ sntRover.controller('RVInvoiceSearchController',
 		// print the page
 		var printBill = function(data) {
 			var printDataFetchSuccess = function(successData) {
-					if ($scope.invoiceSearchFlags.isClickedReservation){
+					if ($scope.invoiceSearchFlags.isClickedReservation) {
 						$scope.printData = successData;
 					} else {
 						$scope.printData = successData.data;
@@ -202,13 +202,13 @@ sntRover.controller('RVInvoiceSearchController',
 		 */
 		$scope.clickedEmail = function(data) {
 			$scope.closeDialog();
-			var sendEmailSuccessCallback = function(successData) {
+			var sendEmailSuccessCallback = function() {
 					$scope.$emit('hideLoader');
 					$scope.statusMsg = $filter('translate')('EMAIL_SENT_SUCCESSFULLY');
 					$scope.status = "success";
 					$scope.showEmailSentStatusPopup();
 				},
-				sendEmailFailureCallback = function(errorData) {
+				sendEmailFailureCallback = function() {
 					$scope.$emit('hideLoader');
 					$scope.statusMsg = $filter('translate')('EMAIL_SEND_FAILED');
 					$scope.status = "alert";
