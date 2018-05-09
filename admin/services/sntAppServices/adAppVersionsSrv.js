@@ -85,7 +85,6 @@ admin.service('adAppVersionsSrv', ['$http', '$q', 'ADBaseWebSrv', 'ADBaseWebSrvV
 		return deferred.promise;
 	};
 
-	var count = 0;
 	this.checkVersionStatus = function(params) {
 		var deferred = $q.defer();
 		var url = '/admin/service_application_types/check_pending_builds';

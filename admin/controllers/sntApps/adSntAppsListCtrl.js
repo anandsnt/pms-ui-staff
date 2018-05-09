@@ -6,30 +6,33 @@ admin.controller('ADSntAppsListCtrl', ['$scope',
 
 		var pendingUploadIds = [];
 		var checkStatusOfpendingUploadIds = function() {
+
 			var fetchVersionsStatusSuccess = function(response) {
 				var allStatusUpdated = true;
 
-				_.each(response, function(build, index) {
+				_.each(response, function(build) {
 					if (build.upload_status === 'PENDING') {
 						allStatusUpdated = false;
 					}
 					if (build.upload_status === 'SUCCESS' || build.upload_status === 'FAILED') {
-
 						pendingUploadIds = _.without(pendingUploadIds, build.id);
-						_.each($scope.appList, function(app, index) {
-							if (app.id === build.id) {
-								app.upload_status = build.upload_status;
-								if (build.upload_status === 'FAILED') {
-									app.upload_failure_reason = build.upload_failure_reason;
-								}
-							}
-						});
 					}
+					// update the list wrt to this API response
+					_.each($scope.appList, function(app) {
+						if (app.id === build.id) {
+							app.upload_status = build.upload_status;
+							if (build.upload_status === 'FAILED') {
+								app.upload_failure_reason = build.upload_failure_reason;
+							}
+						}
+					});
 				});
-				if (!allStatusUpdated || response.length === 0) {
+
+				if (!allStatusUpdated) {
 					$timeout(checkStatusOfpendingUploadIds, 3000);
 				}
 			};
+
 			$scope.callAPI(adAppVersionsSrv.checkVersionStatus, {
 				params: {
 					pending_upload_ids: JSON.stringify(pendingUploadIds),
@@ -50,7 +53,7 @@ admin.controller('ADSntAppsListCtrl', ['$scope',
 				$scope.appList = data;
 				// check if any of the version upload is in pending status
 				pendingUploadIds = [];
-				_.each($scope.appList, function(app, index) {
+				_.each($scope.appList, function(app) {
 					if (app.upload_status === 'PENDING') {
 						pendingUploadIds.push(app.id);
 					}
@@ -84,7 +87,7 @@ admin.controller('ADSntAppsListCtrl', ['$scope',
 				$scope.changeToListView();
 				$scope.tableParams.reload();
 				// if any of the versions is in PENDING status call API to retrive the status continuosly
-				if(pendingUploadIds.length > 0) {
+				if (pendingUploadIds.length > 0) {
 					checkStatusOfpendingUploadIds();
 				}
 			};
