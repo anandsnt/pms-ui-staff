@@ -176,7 +176,6 @@ sntRover.controller('RVInvoiceSearchController',
 
 				},
 				printDataFailureCallback = function(errorData) {
-					$scope.$emit('hideLoader');
 					$scope.errorMessage = errorData;
 				}, 
 				options = {
@@ -203,13 +202,11 @@ sntRover.controller('RVInvoiceSearchController',
 		$scope.clickedEmail = function(data) {
 			$scope.closeDialog();
 			var sendEmailSuccessCallback = function() {
-					$scope.$emit('hideLoader');
 					$scope.statusMsg = $filter('translate')('EMAIL_SENT_SUCCESSFULLY');
 					$scope.status = "success";
 					$scope.showEmailSentStatusPopup();
 				},
 				sendEmailFailureCallback = function() {
-					$scope.$emit('hideLoader');
 					$scope.statusMsg = $filter('translate')('EMAIL_SEND_FAILED');
 					$scope.status = "alert";
 					$scope.showEmailSentStatusPopup();
