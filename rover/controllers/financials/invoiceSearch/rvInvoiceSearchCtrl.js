@@ -186,14 +186,11 @@ sntRover.controller('RVInvoiceSearchController',
 					failureCallBack: printDataFailureCallback
 				};
 
-				$scope.callAPI(RVInvoiceSearchSrv.searchForInvoice, options);
-
 			if ($scope.invoiceSearchFlags.isClickedReservation) {
 				$scope.callAPI(RVBillCardSrv.fetchBillPrintData, options);				
 			} else {
 				$scope.callAPI(rvAccountTransactionsSrv.fetchAccountBillsForPrint, options);				
-			}
-			
+			}			
 		};
 
 		// print bill
@@ -229,8 +226,6 @@ sntRover.controller('RVInvoiceSearchController',
 			} else {
 				$scope.callAPI(rvAccountsConfigurationSrv.emailInvoice, options);				
 			}
-
-			//$scope.invokeApi(RVBillCardSrv.sendEmail, data, sendEmailSuccessCallback, sendEmailFailureCallback);
 		};
 		/*
 		 * Initialization
