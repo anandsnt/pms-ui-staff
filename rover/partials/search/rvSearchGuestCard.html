@@ -20,14 +20,13 @@
                 <li class="reservation identify-guest" ng-repeat="guest in guestSearch.results" ng-hide="shouldHideSearchResults()">
                     <a ui-sref="rover.guest.details({guestId: guest.id, query: textInQueryBox})">
                         <figure class="guest-image">
-                            <img src="{{guest.image_url}}" alt="" />                            
+                            <img src="{{guest.image_url}}" alt="" /> 
+                            <span class="stay-count" ng-if="guest.stay_count > 0">{{::guest.stay_count}}</span>
                             <span class="vip" ng-if="guest.vip">VIP</span>
                         </figure>
                         <div class="data" ng-class="{'no-stay': guest.stay_count === 0}">
                             <h2 ng-show="escapeNull(guest.first_name) != '' || escapeNull(guest.last_name) != ''" ng-bind-html="getGuestName(guest.first_name, guest.last_name) | highlightWords :searchWords">
-                            </h2>                            
-                            <span class="stay-count" ng-if="guest.stay_count > 1">{{guest.stay_count}} stays</span>
-                            <span class="stay-count" ng-if="guest.stay_count === 1">{{guest.stay_count}} stay</span>
+                            </h2>
                             <span class="confirmation" ng-if="!!guest.address.postal_code">{{guest.address.postal_code}}</span>
                             <span class="icons icon-location" ng-hide = "(guest.address.city == null || guest.address.city == '') && (guest.address.state =='' || guest.address.state == null)">
                                 <span ng-bind-html="guest.address.city | highlight:textInQueryBox:false" ng-if="escapeNull(guest.address.city) != ''"></span>
