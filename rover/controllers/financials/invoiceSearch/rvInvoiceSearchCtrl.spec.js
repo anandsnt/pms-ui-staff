@@ -10,7 +10,9 @@ describe('RVInvoiceSearchController', function () {
         $rootScope,
         RVInvoiceSearchSrv,
         RVBillCardSrv,
+        rvAccountTransactionsSrv,
         rvInvoiceSearchController,
+        rvAccountsConfigurationSrv,
         results = jsonResult;    
 
         describe('variable initalizations', function () {
@@ -18,13 +20,14 @@ describe('RVInvoiceSearchController', function () {
             beforeEach(function () {
                 module('sntRover');
 
-                inject(function (_$controller_, _RVInvoiceSearchSrv_, _RVBillCardSrv_, _$q_, _$rootScope_) {
+                inject(function (_$controller_, _RVInvoiceSearchSrv_, _RVBillCardSrv_, _$q_, _$rootScope_, _rvAccountTransactionsSrv_ ,_rvAccountsConfigurationSrv_) {
                     $controller = _$controller_;
                     RVInvoiceSearchSrv = _RVInvoiceSearchSrv_;
                     RVBillCardSrv = _RVBillCardSrv_;
                     $q = _$q_;
                     $rootScope = _$rootScope_;
-
+                    rvAccountTransactionsSrv = _rvAccountTransactionsSrv_;
+                    rvAccountsConfigurationSrv = _rvAccountsConfigurationSrv_;
                     $scope = _$rootScope_.$new();
                 });
 
@@ -98,44 +101,57 @@ describe('RVInvoiceSearchController', function () {
                
             }); 
             // =================================================
+            // 
+            describe('clickedEmail', function() {
 
-            it('clickedEmail method should call send mail method of accounts if clicked posting account call reservation mail if it is reservation', function () {
-                
-               // spyOn(RVBillCardSrv, 'sendEmail').and.callFake(function () {
-               //      var deferred = $q.defer();
+                const sampleData = {
+                        sample_user_data: {
+                            'name': 'test'
+                        }
+                    };
+                    
+                beforeEach(function() {
 
-               //      deferred.resolve(results);
-               //      return deferred.promise;
-               //  });   
-                spyOn($scope, "callAPI");    
-                $scope.invoiceSearchFlags = {};
-                $scope.invoiceSearchFlags.isClickedReservation = true;   
+                    $scope.invoiceSearchFlags = {};
+                    
+                });
 
-                $scope.clickedEmail({
-                                        "reservation_id":1660484,
-                                        "bill_number":1,
-                                        "locale":"en",
-                                        "bill_layout":"1",
-                                        "to_address":"nidhin@stayntouch.com",
-                                        "is_informational_invoice":false
-                                    });
+                it('clickedEmail method should call send mail method of accounts if clicked posting account call reservation mail if it is reservation', function() {
+                    
+                    spyOn(RVBillCardSrv, "sendEmail").and.callFake(function() {
+                        var deferred = $q.defer();
 
-                var options = { "params":
-                                    {
-                                        "reservation_id":1660484,
-                                        "bill_number":1,
-                                        "locale":"en",
-                                        "bill_layout":"1",
-                                        "to_address":"nidhin@stayntouch.com",
-                                        "is_informational_invoice":false
-                                    },                                
-                                "successCallBack": function(){},
-                                "failureCallBack": function(){}
-                            };
+                        deferred.resolve(results);
+                        return deferred.promise;
+                    });
 
-                expect($scope.callAPI).toHaveBeenCalledWith(RVBillCardSrv.sendEmail, options);
-               
+                    $scope.invoiceSearchFlags.isClickedReservation = true;
+
+                    $scope.clickedEmail();
+
+                    expect(RVBillCardSrv.sendEmail).toHaveBeenCalled();
+
+                });
+
+                it('clickedEmail method should call send mail method of accounts if clicked posting account call reservation mail if it is reservation', function() {
+
+                    spyOn(rvAccountsConfigurationSrv, "emailInvoice").and.callFake(function() {
+                        var deferred = $q.defer();
+
+                        deferred.resolve(results);
+                        return deferred.promise;
+                    });
+
+                    $scope.invoiceSearchFlags.isClickedReservation = false;
+
+                    $scope.clickedEmail(sampleData);
+
+                    expect(rvAccountsConfigurationSrv.emailInvoice).toHaveBeenCalledWith(sampleData);
+
+                });
             });
+
+           
 
         });    
 });
