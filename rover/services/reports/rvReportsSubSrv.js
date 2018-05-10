@@ -34,6 +34,7 @@ angular.module('sntRover').service('RVreportsSubSrv', [
                 paginatedResult = response.results.slice(start, end);
 
             response.results = paginatedResult;
+            response.isPaginatedResponse = true;
             return response;
         };
 

@@ -11,8 +11,4 @@ describe('Report Details Controller', function() {
         $scope = _$rootScope_.$new();
 
     }));
-
-    it('Unit test goes here', function() {
-        $controller('RVReportDetailsCtrl', { $scope: $scope });
-    });
 });

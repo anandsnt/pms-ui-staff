@@ -91,7 +91,7 @@
                                 <div class="report-actions" ng-if="!shouldDisableInboxItem(report)">
                                     <button type="button" class="button green" ng-click="showGeneratedReport(report)">Show</button>
                                     <!-- If export exists -->
-                                    <button type="button" class="button with-icon purple" ng-if="report.shouldShowExport">
+                                    <button type="button" class="button with-icon purple" ng-if="report.shouldShowExport" ng-click="exportCSV(report)">
                                         <span class="icons icon-save"></span>
                                         <span class="text">Export</span>
                                     </button>
