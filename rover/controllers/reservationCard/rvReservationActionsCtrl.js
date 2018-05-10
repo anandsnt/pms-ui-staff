@@ -1185,10 +1185,6 @@ sntRover.controller('reservationActionsController', [
             if ($scope.reservationData.reservation_card.is_hourly_reservation) {
                 return false;
             }
-            // CICO-29302 - Check comment
-            if ($scope.reservationData.reservation_card.group_id !== '') {
-                return false;
-            }
 
 			var resData = $scope.reservationData.reservation_card;
 
