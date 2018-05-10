@@ -1,5 +1,3 @@
- // import suburbs from '../../../unitTestSampleData/invoiceSearchSampleData.json';
-
 describe('RVInvoiceSearchController', function () {
 
     jasmine.getJSONFixtures().fixturesPath = 'base/unitTestSampleData/';
@@ -11,6 +9,7 @@ describe('RVInvoiceSearchController', function () {
         $q,
         $rootScope,
         RVInvoiceSearchSrv,
+        RVBillCardSrv,
         rvInvoiceSearchController,
         results = jsonResult;    
 
@@ -19,9 +18,10 @@ describe('RVInvoiceSearchController', function () {
             beforeEach(function () {
                 module('sntRover');
 
-                inject(function (_$controller_, _RVInvoiceSearchSrv_, _$q_, _$rootScope_) {
+                inject(function (_$controller_, _RVInvoiceSearchSrv_, _RVBillCardSrv_, _$q_, _$rootScope_) {
                     $controller = _$controller_;
                     RVInvoiceSearchSrv = _RVInvoiceSearchSrv_;
+                    RVBillCardSrv = _RVBillCardSrv_;
                     $q = _$q_;
                     $rootScope = _$rootScope_;
 
@@ -34,6 +34,9 @@ describe('RVInvoiceSearchController', function () {
 
                 angular.extend($scope, {
                     'refreshScroll': function() {
+                        return true;
+                    },
+                    'closeDialog' : function() {
                         return true;
                     }
                 });
@@ -94,5 +97,69 @@ describe('RVInvoiceSearchController', function () {
                 expect($scope.invoiceSearchFlags.isQueryEntered).toEqual(false);                
                
             }); 
+            // =================================================
+
+            it('clickedEmail method should call send mail method of accounts if clicked posting account call reservation mail if it is reservation', function () {
+                
+               // spyOn(RVBillCardSrv, 'sendEmail').and.callFake(function () {
+               //      var deferred = $q.defer();
+
+               //      deferred.resolve(results);
+               //      return deferred.promise;
+               //  });   
+                spyOn($scope, "callAPI");    
+                $scope.invoiceSearchFlags = {};
+                $scope.invoiceSearchFlags.isClickedReservation = true;   
+
+                $scope.clickedEmail({
+                                        "reservation_id":1660484,
+                                        "bill_number":1,
+                                        "locale":"en",
+                                        "bill_layout":"1",
+                                        "to_address":"nidhin@stayntouch.com",
+                                        "is_informational_invoice":false
+                                    });
+
+                var options = { "params":
+                                    {
+                                        "reservation_id":1660484,
+                                        "bill_number":1,
+                                        "locale":"en",
+                                        "bill_layout":"1",
+                                        "to_address":"nidhin@stayntouch.com",
+                                        "is_informational_invoice":false
+                                    },                                
+                                "successCallBack": function(){},
+                                "failureCallBack": function(){}
+                            };
+
+                expect($scope.callAPI).toHaveBeenCalledWith(RVBillCardSrv.sendEmail, options);
+               
+            });
+
         });    
 });
+/*
+
+
+1
+2
+3
+4
+5
+6
+7
+8
+describe("Person toString() Test", function() {
+    it("calls the getName() function", function() {
+        var testPerson = new Person();
+        spyOn(testPerson, "getName");
+        testPerson.toString();
+        expect(testPerson.getName).toHaveBeenCalled();
+    });
+});
+
+
+https://www.htmlgoodies.com/html5/javascript/spy-on-javascript-methods-using-the-jasmine-testing-framework.html
+
+*/

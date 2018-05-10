@@ -50,7 +50,7 @@ module.exports = function(config, module) {
             suppressPassed: false,      // do not print information about passed tests
             suppressSkipped: true,      // do not print information about skipped tests
             showSpecTiming: true,      // print the time elapsed for each spec
-            failFast: true              // test would finish with error when a first fail occurs.
+            failFast: false              // test would finish with error when a first fail occurs.
         },
         // list of files / patterns to exclude
         exclude: [],

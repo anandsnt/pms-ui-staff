@@ -4,6 +4,9 @@ module.exports = function(config) {
 
     baseConfig = baseConfig(config, 'rover');
 
+    const failFast = require('fail-fast');
+    //jasmine.getEnv().addReporter(failFast.init());
+
     config.set(merge(baseConfig, {
         // list of files / patterns to load in the browser
         files: [

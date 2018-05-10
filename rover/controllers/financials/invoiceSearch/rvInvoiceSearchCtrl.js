@@ -218,6 +218,7 @@ sntRover.controller('RVInvoiceSearchController',
 				};
 
 			if ($scope.invoiceSearchFlags.isClickedReservation) {
+				console.log("----")
 				$scope.callAPI(RVBillCardSrv.sendEmail, options);				
 			} else {
 				$scope.callAPI(rvAccountsConfigurationSrv.emailInvoice, options);				
