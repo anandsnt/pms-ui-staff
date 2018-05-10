@@ -2,365 +2,75 @@
     <header class="content-title float">
         <h2 translate>STATIONERY</h2>
         <a ng-click="goBackToPreviousState()" class="action back" translate> BACK</a>
+        <div class="filters language">
+            <label for="email-hotel-logo" translate> SELECT LANGUAGE </label>
+            <div class="select">
+                <select ng-model="data.locale" name="locale" ng-change="onLocaleChange()">
+                    <option ng-repeat="locale in languages.locales" value="{{locale.value}}" ng-selected="locale.value==data.locale"> {{locale.description}} </option>
+                </select>
+            </div>
+        </div>
     </header>
     <section class="content-scroll">
         <div ng-include="'/assets/partials/common/notification_message.html'"></div>
         <div ng-include="'/assets/partials/common/notification_success_message.html'"></div>
-        <form class="form float">
-            <!-- Customize Common Confirmation Communication Section -->
-            <fieldset class="holder full-width">
-                <div class="form-title">
-                    <h3>
-                        <span>{{'CUSTOMIZE' | translate}}</span>
-                        {{'CONFIRMATION_COMMUNICATION' | translate}}
-                    </h3>
-                </div>
-                <section class="holder left">
-                    <!-- 2.Check box to 'Show Hotel Picture' -->
-                    <ad-checkbox is-checked="data.show_hotel_picture" label="{{ 'SHOW_HOTEL_PICTURE' | translate}}"></ad-checkbox>
+        
+        <form class="form float stationery-form">
 
-                    <div class="entry full-width">
-                        <label translate>HOTEL_PICTURE</label>
-                        <div class="file-upload with-preview">
-                            <span class="input">{{hotel_picture_file || fileName}}</span>
-                            <a id="deleteLogo" class="icons icon-delete large-icon delete_item" ng-show="isLogoAvailable(data.hotel_picture)" ng-click="data.hotel_picture = 'false'"></a>
-                            <input type="file" ng-model="data.hotel_picture" accept="image/*" app-filereader />
-                            <button type="button" class="button brand-colors">
-                                Choose file
-                            </button>
-                        </div>
-                        <span class="file-preview"> <img ng-src="{{data.hotel_picture}}" alt="" height="112" width="auto"> </span>
-                    </div>
-
-                    <div class="entry full-width">
-                        <label for="email-hotel-logo" translate> HOTEL_LOGO </label>
-                        <div class="select">
-                            <select ng-model="data.email_logo_type" name="email-hotel-logo" class="placeholder">
-                                <option value="" translate> SELECT_LOGO_TYPE </option>
-                                <option ng-repeat="item in data.hotel_logo" value="{{item.value}}" ng-selected="item.value == data.email_logo_type">{{item.name}}</option>
-                            </select>
-                        </div>
-                    </div>                    
-                </section>
-
-                <div class="entry full-width">
-                    <label translate>GETTING_TO_THE_HOTEL</label>
-                    <ad-textarea rows="4" div-class="full-width" text-area-class="full-width" value="data.location_text"></ad-textarea>
+            <!-- General Settings -->
+            <fieldset class="stationery-block" ng-class = "{'active': is_general_active}">
+                <div class="form-title has-toggle" ng-click = "is_general_active = !is_general_active;"> <!-- Clicking this toggles class 'active' on L10 -->
+                    <h3>General Settings</h3>
                 </div>
-
-                <section class="holder left">
-                    <!-- 9. Location Photo -->
-                    <div class="entry full-width">
-                        <label translate>LOCATION_IMAGE</label>
-                        <div class="file-upload with-preview">
-                            <span class="input">{{location_image_file}}</span>
-                            <a id="deleteLogo" class="icons icon-delete large-icon delete_item" ng-show="isLogoAvailable(data.location_image)" ng-click="data.location_image = 'false'"></a>
-                            <input type="file" ng-model="data.location_image" accept="image/*" app-filereader />
-                            <button type="button" class="button brand-colors">
-                                Choose file
-                            </button>
-                        </div>
-                        <span class="file-preview"> <img ng-src="{{data.location_image}}" alt="" height="112" width="auto"> </span>
-                    </div>
-                </section>
-
-                <section class="holder right">
-                    <!-- 10a. Location URL -->
-                    <div class="entry full-width">
-                        <ad-textbox value="data.location_url" label="{{'LOCATION_URL'| translate}}" placeholder="{{'ENTER_LOCATION_URL'| translate}}"></ad-textbox>
-                    </div>
-                    <!-- 10b. Location URL label -->
-                    <div class="entry full-width">
-                        <ad-textbox value="data.location_url_label" label="{{'LOCATION_URL_LABEL'| translate}}" placeholder="{{'ENTER_LOCATION_URL_LABEL'| translate}}"></ad-textbox>
-                    </div>
-                </section>
-            </fieldset>
-            <!-- Guest Communication Section -->
-            <fieldset class="holder full-width">
-                <div class="form-title">
-                    <h3>
-                        <span>{{'GUEST' | translate}}</span>
-                        {{'CONFIRMATION' | translate}}
-                    </h3>
-                </div>
-                <section class="holder left">
-                    <div class="entry full-width">
-                        <label for="email-hotel-logo" translate> SELECT LANGUAGE </label>
-                        <div class="select">
-                            <select ng-model="locale" name="locale" class="placeholder" ng-change="onLocaleChange()">
-                                <option ng-repeat="locale in languages.locales" value="{{locale.value}}" ng-selected="locale.value==locale"> {{locale.description}} </option>
-                            </select>
-                        </div>
-                    </div>
-                    <ad-toggle-button div-class="hidden" label="{{ 'PRINT_CONFIRMATION_LETTER' | translate }}" is-checked="data.print_confirmation_letter"></ad-toggle-button>
-
-                    <ad-toggle-button label="{{ 'SEND_CONFIRMATION_LETTER' | translate }}" is-checked="data.send_confirmation_letter"></ad-toggle-button>
-
-                    <ad-toggle-button label="{{ 'CUSTOM_TEXT_PER_RESERVATION' | translate }}" is-checked="data.is_custom_text_per_reservation"></ad-toggle-button>
-                </section>
-                <section class="holder right">
-
-                    <ad-textbox styleclass="full-width" value="data.confirmation_email_subject" label="{{'CONFIRMATION_EMAIL_SUBJECT'| translate}}" placeholder="{{'ENTER_SUBJECT'| translate}}"></ad-textbox>
-
-                    <!-- 4.Check box to 'Display Add-Ons'-->
-                    <ad-checkbox is-checked="data.display_addons" label="{{ 'DISPLAY_ADD_ONS' | translate}}" div-class="full-width"></ad-checkbox>
-                    <!-- 5.Check box to 'Display Total Stay Cost'-->
-                    <ad-checkbox is-checked="data.display_total_stay_cost" label="{{ 'DISPLAY_TOTAL_STAY_COST' | translate}}" div-class="full-width"></ad-checkbox>
-                    <!-- 6.'Display Average Daily Rate' -->
-                    <ad-checkbox is-checked="data.display_average_daily_rate" label="{{ 'DISPLAY_ADR' | translate}}" div-class="full-width"></ad-checkbox>
-                    <!-- 7.'Add deposit rules' -->
-                    <ad-checkbox is-checked="data.add_deposit_rules" label="{{ 'ADD_DEPOSIT_RULES' | translate}}" div-class="full-width"></ad-checkbox>
-                    <!-- 8.'Add cancellation_policy_description' -->
-                    <ad-checkbox is-checked="data.add_cancellation_policy_description" label="{{ 'ADD_CANCELLATION_POLICY_DESC' | translate}}" div-class="full-width"></ad-checkbox>
-                </section>
-                <div class="entry full-width">
-                    <ad-checkbox is-checked="data.show_links_to_download_app" label="{{ 'SHOW_LINKS_TO_DOWNLOAD_APP' | translate}}" div-class="full-width"></ad-checkbox>
-                </div>
-                <div class="entry" ng-show="!!data.show_links_to_download_app">
-                    <ad-textbox styleclass="full-width" value="data.app_link_app_store" label="{{'APP_LINK_IN_ITUNES_STORE'| translate}}" placeholder="{{'ENTER_APP_LINK_IN_ITUNES_STORE'| translate}}"></ad-textbox>
-                </div>
-                <div class="entry" ng-show="!!data.show_links_to_download_app">
-                    <ad-textbox styleclass="full-width" value="data.app_link_google_play" label="{{'APP_LINK_IN_GOOGLE_PLAY'| translate}}" placeholder="{{'ENTER_APP_LINK_IN_GOOGLE_PLAY'| translate}}"></ad-textbox>
-                </div>
-                <div class="entry full-width" ng-show="!!data.show_links_to_download_app">
-                    <label>Marketing text for app to show on confirmation</label>
-                    <ad-textarea rows="4" div-class="full-width" text-area-class="full-width" value="data.app_marketing_text"></ad-textarea>
-                </div>
-                <!-- 11. Social Network URLs -->
-                <div class="entry full-width">
-                    {{ 'SOCIAL_NETWORK_LINKS' | translate }}
-                    <a id="add-new-button" class="action add stationary" ng-click="onAddNewSocialLink()" translate ng-hide="currentSocialLink == 'NEW'">ADD_NEW</a>
-                    <section ng-include="'/assets/partials/stationary/adSocialLinks.html'">
-                    </section>
-                </div>
-                <!-- 12. Confirmation Letter Text -->
-                <div class="entry full-width">
-                    <label translate>CONFIRMATION_LETTER_TEXT</label>
-                    <ad-textarea rows="4" div-class="full-width" text-area-class="full-width" value="data.confirmation_template_text"></ad-textarea>
-                </div>
-            </fieldset>
-            <!-- Customize Confirmation Communication Section -->
-            <fieldset class="holder left">
-                <div class="form-title">
-                    <h3>
-                    <span>{{'CUSTOMIZE' | translate}}</span>
-                    {{'GUEST_BILL_TITLE' | translate}}
-                </h3>
-                </div>
-
-                <div class="entry full-width">
-                    <label for="guest-bill-template" translate>DEFAULT_GUEST_BILL</label>
-                    <div class="select">
-                        <select ng-model="data.selected_guest_bill" name="guest-bill-template" class="placeholder">
-                            <option ng-repeat="item in data.guest_bill_settings" value="{{item.value}}" ng-selected="item.value == data.selected_guest_bill">{{item.name}}</option>
-                        </select>
-                    </div>
-                </div>
-                <div class="entry full-width">
-                    <label for="account-bill-template" translate>DEFAULT_ACCOUNT_BILL</label>
-                    <div class="select">
-                        <select ng-model="data.selected_account_bill" name="account-bill-template" class="placeholder">
-                            <option ng-repeat="item in data.account_bill_settings" value="{{item.value}}" ng-selected="item.value == data.selected_account_bill">{{item.name}}</option>
-                        </select>
-                    </div>
-                </div>
-
-                <ad-textbox styleclass="full-width" value="data.guest_bill_email_subject" label="{{'GUEST_BILL_EMAIL_SUBJECT'| translate}}" placeholder="{{'ENTER_SUBJECT'| translate}}"></ad-textbox>
-
-                <ad-textarea rows="4" div-class="full-width" text-area-class="full-width" value="data.guest_bill_email_body" label="{{'GUEST_BILL_EMAIL_BODY'| translate}} " placeholder="{{'EMAIL_BODY_TEXT_PLACEHOLDER' | translate }}"></ad-textarea>
-
-                <ad-textbox styleclass="full-width" value="data.company_ta_bill_subject" label="{{'CARDS_BILL_EMAIL_SUBJECT'| translate}}" placeholder="{{'ENTER_SUBJECT'| translate}}"></ad-textbox>
-
-                <ad-textarea rows="4" div-class="full-width" text-area-class="full-width" value="data.company_ta_bill_body" label="{{'CARDS_BILL_EMAIL_BODY'| translate}} " placeholder="{{'EMAIL_BODY_TEXT_PLACEHOLDER' | translate }}"></ad-textarea>
-
-                <div class="entry full-width">
-                    <label for="hotel-logo" translate> HOTEL_LOGO </label>
-                    <div class="select">
-                        <select ng-model="data.logo_type" name="hotel-logo" class="placeholder">
-                            <option value="" translate> SELECT_LOGO_TYPE </option>
-                            <option ng-repeat="item in data.hotel_logo" value="{{item.value}}" ng-selected="item.value == data.logo_type">{{item.name}}</option>
-                        </select>
-                    </div>
-                </div>
-                <ad-toggle-button label="{{'SHOW_HOTEL_ADDRESS' | translate}}" is-checked="data.show_hotel_address"></ad-toggle-button>
-                <ad-toggle-button label="{{'EMAIL_GUEST_BILL_ON_CHECKOUT' | translate}}" is-checked="data.is_email_enabled_on_checkout"></ad-toggle-button>
-                <div class="entry"></div>
-                <div class="entry full-width">
-                    <label translate>CUSTOM_TEXT</label>
-                    <ad-textarea rows="4" div-class="full-width" text-area-class="full-width" value="data.custom_text_header" label="{{'HEADER'| translate}} " placeholder="{{'CUSTOM_TEXT_PLACEHOLDER' | translate }}"></ad-textarea>
-                    <ad-textarea rows="4" div-class="full-width" text-area-class="full-width" value="data.custom_text_footer" label="{{'FOOTER'| translate}} " placeholder="{{'CUSTOM_TEXT_PLACEHOLDER' | translate }}"></ad-textarea>
-                    <ad-textarea rows="4" div-class="full-width" text-area-class="full-width" value="data.ar_invoice_billing_text" label="{{'AR_INVOICE_BILLING_TEXT'| translate}}" placeholder="{{'CUSTOM_TEXT_PLACEHOLDER' | translate }}"></ad-textarea>
-                </div>
-            </fieldset>
-            <fieldset class="holder right">
-                <div class="form-title">
-                    <h3>
-                    <span>{{'CANCELLATION' | translate}}</span>
-                    {{'COMMUNICATIONS' | translate}}
-                </h3>
-                </div>
-
-                <ad-textbox styleclass="full-width" value="data.cancellation_email_subject" label="{{'CANCELLATION_EMAIL_SUBJECT'| translate}}" placeholder="{{'ENTER_SUBJECT'| translate}}"></ad-textbox>
-
-                <div class="entry full-width">
-                    <ad-textarea rows="4" div-class="full-width" text-area-class="full-width" value="data.cancellation_email_body" label="{{'CANCELLATION_EMAIL_BODY'| translate}} " placeholder="{{'CANCELLATION_TEXT_PLACEHOLDER' | translate }}"></ad-textarea>
-                </div>
-                <ad-toggle-button label="{{'SEND_CANCELLATION_LETTER' | translate}}" is-checked="data.send_cancellation_letter"></ad-toggle-button>
-                <ad-toggle-button is-disabled="!data.send_cancellation_letter" label="{{ 'PRINT_CANCELLATION_LETTER' | translate }}" is-checked="data.print_cancellation_letter"></ad-toggle-button>
-                <div class="entry full-width" ng-show="data.send_cancellation_letter">
-                    <label for="hotel-logo" translate> HOTEL_LOGO </label>
-                    <div class="select">
-                        <select ng-model="data.logo_type_for_cancellation" name="hotel-logo" class="placeholder">
-                            <option value="" translate> SELECT_LOGO_TYPE </option>
-                            <option ng-repeat="item in data.hotel_logo" value="{{item.value}}" ng-selected="item.value == data.logo_type_for_cancellation">{{item.name}}</option>
-                        </select>
-                    </div>
-                </div>
-                <div class="entry full-width" ng-show="data.send_cancellation_letter">
-                    <ad-textarea rows="4" div-class="full-width" text-area-class="full-width" value="data.cancellation_letter_body" label="{{'CANCELLATION_LETTER_BODY'| translate}} " placeholder="{{'CANCELLATION_TEXT_PLACEHOLDER' | translate }}"></ad-textarea>
-                </div>
+                <div class="stationery-group" ng-include="'/assets/partials/stationary/adStationeryGeneral.html'"></div>
             </fieldset>
 
-            <!-- Customize salutation Section -->
-
-            <fieldset class="holder left">
-                <div class="form-title">
-                    <h3>
-                        <span>{{'CUSTOMIZE' | translate}}</span>
-                        {{'SALUTATION' | translate}}
-                    </h3>
+             <!-- Terms & Conditions -->
+            <fieldset id="terms-settings" class="stationery-block" ng-class = "{'active': is_terms_and_conditions_active}">
+                <div class="form-title has-toggle" ng-click = "fetchTermsAndConditions()"> <!-- Clicking this toggles class 'active' on L33 -->
+                    <h3 translate>TERMS_AND_CONDITIONS</h3>
                 </div>
-                <div class="entry full-width">
-                    <label for="item-type"><span translate>GUEST_SALUTATION_TYPES</span></label>
-                    <div class="boxes">
-                        <label class="radio" ng-class = "{'checked': data.salutation_by=='FIRST_NAME'}">
-                            <span class="icon-form icon-radio " ng-class = "{'checked': data.salutation_by=='FIRST_NAME'}"></span>
-                            <input type="radio" name="item-type" ng-model="data.salutation_by" id="salutaion_by_first_name" value="FIRST_NAME" />
-                            <span translate>BY_FIRST_NAME</span>
-                        </label>
-                        <label class="radio" ng-class = "{'checked': data.salutation_by=='LAST_NAME'}">
-                            <span class="icon-form icon-radio" ng-class = "{'checked': data.salutation_by=='LAST_NAME'}"></span>
-                            <input type="radio" name="item-type" ng-model="data.salutation_by" id="salutaion_by_last_name" value="LAST_NAME" />
-                            <span translate>BY_LAST_NAME</span>
-                        </label>
-                        <label class="radio" ng-class = "{'checked': data.salutation_by=='BOTH'}">
-                            <span class="icon-form icon-radio" ng-class = "{'checked': data.salutation_by=='BOTH'}"></span>
-                            <input type="radio" name="item-type" ng-model="data.salutation_by" id="salutaion_by_first_last_name" value="BOTH" />
-                           <span translate>BY_FIRST_LAST_NAME</span>
-                        </label>
-
-                        <label class="radio" ng-class = "{'checked': data.salutation_by=='CUSTOM'}">
-                            <span class="icon-form icon-radio" ng-class = "{'checked': data.salutation_by=='CUSTOM'}"></span>
-                            <input type="radio" name="item-type" ng-model="data.salutation_by" id="salutaion_by_custom_text" value="CUSTOM" />
-                           <span translate>BY_CUSTOM_TEXT</span>
-                        </label>
-
-                        <div class="entry" ng-show="data.salutation_by =='CUSTOM'">
-                            <label for="screen-id"><span translate>CUSTOM_SALUTATION</span></label>
-                             <input type="text" name="custom_text" ng-model="data.salutation_custom_text" id="item-name" placeholder="Enter salutation" value="{Item Name}" required />
-                        </div>
-
-                    </div>
-                </div>
-
-                <div class="entry full-width">
-                    <ad-checkbox is-checked="data.is_include_title" label="{{ 'INCLUDE_TITLE' | translate}}" div-class="full-width"></ad-checkbox>
-                </div>
-
-            </fieldset>
-            <fieldset class="holder right">
-                <div class="form-title">
-                    <h3>
-                        <span>{{'CUSTOMIZE' | translate}}</span>
-                        {{'REGISTRATION_COMMUNICATION' | translate}}
-                    </h3>
-                </div>
-                <ad-toggle-button label="{{ 'SHOW_REGISTRATION_CARD_PRINT' | translate }}" is-checked="data.is_show_registration_card_button"></ad-toggle-button>
-                <div class="entry full-width" ng-show="data.is_show_registration_card_button">
-                    <label translate>REGISTRATION_TEMPLATE</label>
-                    <div class="select">
-                        <select convert-to-number ng-model="data.selected_guest_registration_template" name="guest-bill-template" class="placeholder">
-                            <option value="" translate> SELECT_REGISTRATION_TEMPLATE </option>
-                            <option ng-repeat="item in data.guest_registration_template" value="{{item.value}}" ng-selected="item.value == data.selected_guest_registration_template">{{item.name}}</option>
-                        </select>
-                    </div>
-                </div>
-                <div class="entry full-width" ng-show="data.is_show_registration_card_button">
-                    <ad-toggle-button label="{{'SHOW_VEHICLE_INFORMATION'| translate}} " is-checked="data.show_vehicle_information"></ad-toggle-button>
-                </div>
+                <div class="stationery-group" ng-include="'/assets/partials/stationary/adStationaryTermsAndConditions.html'" ng-controller="ADStationaryTermsAndConditionsCtrl"></div>
             </fieldset>
 
-            <!-- Group Confirmation Section -->
-            <fieldset class="holder left">
-                <div class="form-title">
-                    <h3>
-                        <span>{{'GROUP' | translate}}</span>
-                        {{'CONFIRMATION' | translate}}
-                    </h3>
+            <!-- Confirmations -->
+            <fieldset class="stationery-block" ng-class = "{'active': is_confirmations_active}">
+                <div class="form-title has-toggle" ng-click = "is_confirmations_active = !is_confirmations_active;"> <!-- Clicking this toggles class 'active' on L20 -->
+                    <h3>Confirmations / Cancellations</h3>
                 </div>
-
-                <div class="entry full-width">
-                     <ad-textbox styleclass="full-width" value="data.group_confirmation_email_subject" label="{{'GROUP_CONFIRMATION_EMAIL_SUBJECT'| translate}}" placeholder="{{'ENTER_SUBJECT'| translate}}"></ad-textbox>
-                     <label for="email-hotel-logo" translate>HOLD_STATUS </label>
-                    <div class="select">
-                        <select convert-to-number ng-model="data.groupholdstatus" name="email-hotel-logo" class="placeholder" ng-change="showConfirmationHeaderFooterBasedOnHoldStatus()">
-                            <option value="" translate> SELECT_HOLD_STATUS </option>
-                            <option ng-repeat="item in holdStatusList" value="{{item.id}}">{{item.name}}</option>
-                        </select>
-                    </div>
-                </div>
-
-                <div class="entry full-width">
-                     <ad-textarea rows="4" div-class="full-width" text-area-class="full-width" value="data.group_confirmation_header" label="{{'CONFIRMATION_HEADER_TEXT'| translate}} " placeholder="{{'CONFIRMATION_HEADER_TEXT_PLACE_HOLDER' | translate }}" disabled="data.groupholdstatus == ''"></ad-textarea>
-                     <ad-textarea rows="4" div-class="full-width" text-area-class="full-width" value="data.group_confirmation_footer" label="{{'CONFIRMATION_FOOTER_TEXT'| translate}} " placeholder="{{'CONFIRMATION_FOOTER_TEXT_PLACE_HOLDER' | translate }}" disabled="data.groupholdstatus == ''"></ad-textarea>
-                </div>
-
-                <div class="entry full-width">
-                    <label translate>GETTING_TO_THE_HOTEL</label>
-                    <ad-textarea rows="4" div-class="full-width" text-area-class="full-width" value="data.group_location_text"></ad-textarea>
-                </div>
+                <div class="stationery-group" ng-include="'/assets/partials/stationary/adStationeryConfirmations.html'"></div>
             </fieldset>
 
-            <!-- Group Confirmation Section -->
-            <fieldset class="holder right">
-                <div class="form-title">
-                    <h3>
-                        <span>{{'CUSTOMIZE' | translate}}</span>
-                        {{'AR_STATEMNT' | translate}}
-                    </h3>
+            <!-- Registration -->
+            <fieldset class="stationery-block" ng-class = "{'active': is_registration_active}">
+                <div class="form-title has-toggle" ng-click = "is_registration_active = !is_registration_active"> <!-- Clicking this toggles class 'active' on L30 -->
+                    <h3>Registration Card</h3>
                 </div>
-
-                <ad-textbox styleclass="full-width" value="data.ar_statement_email_subject" label="{{'AR_STATEMNT_EMAIL_SUBJECT'| translate}}" placeholder="{{'ENTER_SUBJECT'| translate}}"></ad-textbox>
-
-                <ad-textarea rows="4" div-class="full-width" text-area-class="full-width" value="data.ar_statement_email_body" label="{{'AR_STATEMNT_EMAIL_BODY'| translate}} " placeholder="{{'EMAIL_BODY_TEXT_PLACEHOLDER' | translate }}"></ad-textarea>
-
-                <div class="entry full-width">
-                     <ad-textarea rows="4" div-class="full-width" text-area-class="full-width" value="data.ar_statement_custom_text_header" label="{{'CUSTOM_TEXT_HEADER'| translate}} " placeholder="{{'CUSTOM_TEXT_HEADER_PLACE_HOLDER' | translate }}"></ad-textarea>
-                     <ad-textarea rows="4" div-class="full-width" text-area-class="full-width" value="data.ar_statement_custom_text_footer" label="{{'CUSTOM_TEXT_FOOTER'| translate}} " placeholder="{{'CUSTOM_TEXT_FOOTER_PLACE_HOLDER' | translate }}"></ad-textarea>
-                </div>
-            </fieldset>
-            <fieldset class="holder left">
-                <div class="form-title">
-                    <h3>
-                        <span>{{'CUSTOMIZE' | translate}}</span>
-                        {{'PRO_FORMA_INVOICE' | translate}}
-                    </h3>
-                </div>
-                <ad-toggle-button label="{{ 'SHOW_PERFORMA_INVOICE' | translate }}" is-checked="data.is_pro_forma_enabled"></ad-toggle-button>
-                <ad-textbox styleclass="full-width" value="data.pro_forma_invoice_subject" label="{{'PRO_FORMA_INVOICE_SUBJECT'| translate}}" placeholder="{{'ENTER_SUBJECT'| translate}}" ng-show="data.is_pro_forma_enabled"></ad-textbox> 
-                <div class="entry full-width" ng-show="data.is_pro_forma_enabled">
-                    <ad-textarea rows="4" div-class="full-width" text-area-class="full-width" value="data.pro_forma_invoice_body" label="{{'PRO_FORMA_INVOICE_BODY'| translate}} " placeholder="{{'PRO_FORMA_BODY_TEXT_PLACEHOLDER' | translate }}"></ad-textarea>
-                    <ad-textarea  rows="4" div-class="full-width" text-area-class="full-width" value="data.pro_forma_invoice_custom_header" label="{{'PRO_FORMA_INVOICE_HEADER'| translate}} " placeholder="{{'CUSTOM_TEXT_HEADER_PLACE_HOLDER' | translate }}"></ad-textarea>
-                     
-                     <ad-textarea rows="4" div-class="full-width" text-area-class="full-width" value="data.pro_forma_invoice_custom_footer" label="{{'PRO_FORMA_INVOICE_FOOTER'| translate}} " placeholder="{{'CUSTOM_TEXT_FOOTER_PLACE_HOLDER' | translate }}"></ad-textarea>
-                </div>
+                <div class="stationery-group" ng-include="'/assets/partials/stationary/adStationeryRegistration.html'"></div>
             </fieldset>
 
-            <div class="actions float">
-                <button type="button" ng-click="goBackToPreviousState()" class="button blank" translate>CANCEL
-                </button>
-                <button type="button" ng-click="clickedSave()" class="button green" translate>SAVE_CHANGES
-                </button>
+            <!-- Invoices -->
+            <fieldset class="stationery-block" ng-class = "{'active': is_invoices_active}">
+                <div class="form-title has-toggle" ng-click = "is_invoices_active = !is_invoices_active"> <!-- Clicking this toggles class 'active' on L40 -->
+                    <h3>Invoices</h3>
+                </div>
+                <div class="stationery-group" ng-include="'/assets/partials/stationary/adStationeryInvoices.html'"></div>
+            </fieldset> 
+
+            <!-- Accounts Receivables -->
+            <fieldset class="stationery-block" ng-class = "{'active': is_account_receivables_active}">
+                 <div class="form-title has-toggle" ng-click = "is_account_receivables_active = !is_account_receivables_active"> <!-- Clicking this toggles class 'active' on L50 -->
+                    <h3>Accounts Receivables</h3>
+                </div>
+                <div class="stationery-group" ng-include="'/assets/partials/stationary/adStationeryAccountReceivables.html'"></div>
+            </fieldset>   
+            
+            <!-- Actions -->
+            <div class="actions fixed">
+                <div class="actions-inner">
+                    <button type="button" ng-click="goBackToPreviousState()" class="button blank" translate>CANCEL</button>
+                    <button type="button" ng-click="clickedSave()" class="button green" translate>SAVE_CHANGES</button>
+                </div>
             </div>
         </form>
     </section>

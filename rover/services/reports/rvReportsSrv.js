@@ -78,6 +78,10 @@ angular.module('sntRover').service('RVreportsSrv', [
                 'LAST_OCTOBER',
                 'LAST_NOVEMBER',
                 'LAST_DECEMBER'
+             ],
+             'Journal Export': [
+                'YESTERDAY',
+                'TODAY'
              ]
 
         };
@@ -416,8 +420,7 @@ angular.module('sntRover').service('RVreportsSrv', [
         // Get the time periods for each of the reports in the schedule reports
         service.getScheduleReportTimePeriods = function( title ) {
         	return SCHEDULE_REPORT_TIMEPERIODS[title];
-        };
-
+        };        
 
 		return service;
 	}

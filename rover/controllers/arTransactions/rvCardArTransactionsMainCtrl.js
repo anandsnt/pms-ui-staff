@@ -9,8 +9,9 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 	'RVReservationCardSrv',
 	'$window',
     '$filter',
+    'RVContactInfoSrv',
     'rvPermissionSrv',
-	function($scope, $rootScope, $stateParams, ngDialog, $timeout, rvAccountsArTransactionsSrv, RVReservationCardSrv, $window, $filter, rvPermissionSrv) {
+	function($scope, $rootScope, $stateParams, ngDialog, $timeout, rvAccountsArTransactionsSrv, RVReservationCardSrv, $window, $filter, RVContactInfoSrv, rvPermissionSrv) {
 		BaseCtrl.call(this, $scope);
 		$scope.errorMessage = '';
 
@@ -35,7 +36,6 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 			'includePayments': false,
 			'statementEmailAddress': ''
 		};
-
 
 		/*
 		 * Data Object set to handle various AR transaction lists.
@@ -68,8 +68,9 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 			'totalAllocatedAmount': 0,
 			'availableAmount': 0,
 			'accountId': ( typeof $scope.contactInformation === 'undefined' ) ? $stateParams.id : $scope.contactInformation.id
-
 		};
+		// List of listner values as object hash.
+		var listeners = {};
 		
 		/*
 		 * To create the parameters which is to be passed to API
@@ -342,6 +343,9 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 				$scope.errorMessage = [];
 				$scope.arFlags.insufficientAmount = true;
 			}
+			else {
+				$scope.errorMessage = errorMessage;
+			}
 		};
 
 		/*
@@ -413,6 +417,7 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 			_.each($scope.arDataObj.balanceList, function (eachItem) {
 				eachItem.isSelected = false;
 			});
+			$scope.fetchTransactions();
 		};
 		/*
 		 * Should show footer instead of pagination
@@ -454,22 +459,23 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 
 			passData.details.swipedDataToRenderInScreen = swipedCardDataToRender;
 			$scope.$broadcast('SHOW_SWIPED_DATA_ON_PAY_SCREEN', swipedCardDataToRender);
-
 		};
 
 		/*
 		 * Handle swipe action
+		 * @param {Object} - [event object]
+		 * @param {Object} - [swipedCardData object]
+		 * @return {undefined}
 		 */
-
-		$scope.$on('SWIPE_ACTION', function(event, swipedCardData) {
+		listeners['SWIPE_ACTION'] = $scope.$on('SWIPE_ACTION', function(event, swipedCardData) {
 			if ($scope.paymentModalOpened) {
-				var swipeOperationObj = new SwipeOperation();
-				var getTokenFrom = swipeOperationObj.createDataToTokenize(swipedCardData);
-				var tokenizeSuccessCallback = function(tokenValue) {
-					$scope.$emit('hideLoader');
-					swipedCardData.token = tokenValue;
-					processSwipedData(swipedCardData);
-				};
+				var swipeOperationObj = new SwipeOperation(),
+					getTokenFrom = swipeOperationObj.createDataToTokenize(swipedCardData),
+					tokenizeSuccessCallback = function(tokenValue) {
+						$scope.$emit('hideLoader');
+						swipedCardData.token = tokenValue;
+						processSwipedData(swipedCardData);
+					};
 
 				$scope.invokeApi(RVReservationCardSrv.tokenize, getTokenFrom, tokenizeSuccessCallback);
 			} else {
@@ -486,40 +492,40 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 		};
 
 		// Catch error messges from child controllers.
-		$scope.$on('SHOW_ERROR_MSG', function( event, errorMessage ) {
+		listeners['SHOW_ERROR_MSG'] = $scope.$on('SHOW_ERROR_MSG', function( event, errorMessage ) {
 			$scope.errorMessage = errorMessage;
 		});
 		// Refresh balance list - after adding new manual balance
 		// and after succesfull payment with Allocate payment after posting checked
-		$scope.$on('REFRESH_BALANCE_LIST', function() { 
+		listeners['REFRESH_BALANCE_LIST'] = $scope.$on('REFRESH_BALANCE_LIST', function() { 
 			$scope.arFlags.currentSelectedArTab = 'balance';
 			$scope.arDataObj.balancePageNo = 1;
 			$scope.fetchTransactions();			
 		});
 		// Refresh balance list - after adding new manual balance
 		// and after succesfull payment with Allocate payment after posting checked
-		$scope.$on('REFRESH_UNALLOCATED', function() {
+		listeners['REFRESH_UNALLOCATED'] = $scope.$on('REFRESH_UNALLOCATED', function() {
 			$scope.arFlags.currentSelectedArTab = 'unallocated';
 			$scope.fetchTransactions();
 		});
 		// Refresh paid bills list - after adding new manual balance
 		// and after succesfull payment with Allocate payment after posting checked
-		$scope.$on('REFRESH_PAID_BILLS', function() {
+		listeners['REFRESH_PAID_BILLS'] = $scope.$on('REFRESH_PAID_BILLS', function() {
 			$scope.arFlags.currentSelectedArTab = 'paid-bills';
 			$scope.fetchTransactions();
 		});
 		// Refresh allacated list - After unallocate
-		$scope.$on('REFRESH_ALLOCATED', function() {
+		listeners['REFRESH_ALLOCATED'] = $scope.$on('REFRESH_ALLOCATED', function() {
 			$scope.arFlags.currentSelectedArTab = 'allocated';
 			$scope.fetchTransactions();
 		});
 
 		// Refresh selected list
-		$scope.$on("REFRESH_SELECTED_LIST", function() {
+		listeners['REFRESH_SELECTED_LIST'] = $scope.$on('REFRESH_SELECTED_LIST', function() {
 			$scope.fetchTransactions();
 		});
 		// Clicked allocate button from unallocated tab
-		$scope.$on("CLICKED_ALLOCATE_BUTTON", function(event, selectedPaymentData) {
+		listeners['CLICKED_ALLOCATE_BUTTON'] = $scope.$on('CLICKED_ALLOCATE_BUTTON', function(event, selectedPaymentData) {
 			$scope.arFlags.shouldShowPayAllButton = true;
 			$scope.arFlags.currentSelectedArTab = 'balance';
 			$scope.allocatedPayment = selectedPaymentData;
@@ -538,7 +544,7 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 		/*
 		 * Initial loading of this AR transactions tab
 		 */
-		$scope.$on("arTransactionTabActive", function() {
+		listeners['arTransactionTabActive'] = $scope.$on('arTransactionTabActive', function() {
 			init();
 			$scope.arFlags.isArTabActive = true;
 		});
@@ -598,30 +604,52 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 		// -------/ PAGINATION LOGIC /----------- //
 
 		// Handler for statement button click
-		$scope.clickedArStatementButton = function() {
-
-		var dataFetchSuccess = function(data) {
-			$scope.statementEmailAddress = !!data.to_address ? data.to_address : '';
-				ngDialog.open({
+		var successCallBackForLanguagesFetch = function(data) {
+			$scope.$emit('hideLoader');
+			if (data.languages) {
+				data.languages = _.filter(data.languages, {
+					is_show_on_guest_card: true
+				});
+			}
+			$scope.languageData = data;
+			$scope.filterData.locale = data.selected_language_code;
+			ngDialog.open({
 				template: '/assets/partials/companyCard/arTransactions/rvArStatementPopup.html',
 				className: '',
 				closeByDocument: false,
 				scope: $scope
 			});
-		},
-		dataFailureCallback = function(errorData) {
-			$scope.errorMessage = errorData;
+		};
+		/**
+		* Fetch the guest languages list and settings
+		* @return {undefined}
+		*/
+		var fetchGuestLanguages = function() {
+			// call api
+			$scope.invokeApi(RVContactInfoSrv.fetchGuestLanguages, {},
+			successCallBackForLanguagesFetch);
 		};
 
-		var params = { 'id': $scope.arDataObj.accountId };
+		// Handle Ar Statement button actions.
+		$scope.clickedArStatementButton = function() {
 
-		var options = {
-			params: params,
-			successCallBack: dataFetchSuccess,
-			failureCallBack: dataFailureCallback
-		};
+			var dataFetchSuccess = function(data) {
+				$scope.statementEmailAddress = !!data.to_address ? data.to_address : '';
+				fetchGuestLanguages();
+			},
+			dataFailureCallback = function(errorData) {
+				$scope.errorMessage = errorData;
+			};
 
-		$scope.callAPI(rvAccountsArTransactionsSrv.fetchArStatementData, options);
+			var params = { 'id': $scope.arDataObj.accountId };
+
+			var options = {
+				params: params,
+				successCallBack: dataFetchSuccess,
+				failureCallBack: dataFailureCallback
+			};
+
+			$scope.callAPI(rvAccountsArTransactionsSrv.fetchArStatementData, options);
 		};
 
         // Checks whether include payment checkbox should be shown or not
@@ -662,6 +690,7 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 
                 paramsToSend.room_search = true;
             }
+            paramsToSend.locale = $scope.filterData.locale;
             return paramsToSend;
         };
 
@@ -791,7 +820,7 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 		 * Same popup used for listing payments from 'Please select payment' - in Balance tab
 		 */
 		$scope.getAllocatedPayments = function () {
-			$scope.type = "REFUND";
+			$scope.type = 'REFUND';
 			ngDialog.open({
 				template: '/assets/partials/companyCard/arTransactions/rvCompanyTravelAgentCardArPaymentPopup.html',
 				controller: 'RVArPaymentForAllocationController',
@@ -802,8 +831,7 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 		 * Clicked refund button action
 		 * Open new dialog to show refund payment screen
 		 */
-
-		$scope.$on("CLICKED_REFUND_BUTTON", function(event, payment) {
+		listeners['CLICKED_REFUND_BUTTON'] = $scope.$on('CLICKED_REFUND_BUTTON', function(event, payment) {
 			if (payment.payment_type_value === "CC") {
                 payment.card_details.ending_with = payment.card_details.last_digits;
                 payment.card_details.expiry_date = payment.card_details.expire_date;
@@ -833,6 +861,43 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 				$scope.paymentModalOpened = true;
 
 			}, 500);
+		});
+
+		// CICO-47819: Handling action after navigation back from Staycard
+		listeners['BACK_FROM_STAY_CARD'] = $scope.$on('BACK_FROM_STAY_CARD', function() {
+			if (typeof $scope.arDataObj.accountId === 'undefined') {
+				$timeout(function() {
+					init();
+				}, 2000);
+			}
+		});
+		/* 
+		 * CICO-50427 : AR: Move zero invoices to the Paid tab even if no allocations exist.
+		 * Handle the Move Zero Invoice As Paid button click.
+		 */
+		$scope.clickedMoveZeroInvoicesAsPaid = function() {
+			var params = {
+				account_id: $scope.arDataObj.accountId
+			},
+            moveZeroInvoiceSuccessCallback = function() {
+                $scope.errorMessage = '';
+                $scope.fetchTransactions();
+            },
+            moveZeroInvoiceFailureCallback = function(errorData) {
+                $scope.errorMessage = errorData;
+            },
+            options = {
+                params: params,
+                successCallBack: moveZeroInvoiceSuccessCallback,
+                failureCallBack: moveZeroInvoiceFailureCallback
+            };
+
+            $scope.callAPI(rvAccountsArTransactionsSrv.moveZeroInvoiceAsPaid, options);
+		};
+
+		// Destory listeners
+		angular.forEach(listeners, function(listener) {
+			$scope.$on('$destroy', listener);
 		});
 
 }]);

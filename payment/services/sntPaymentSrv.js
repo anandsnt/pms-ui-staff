@@ -24,7 +24,7 @@ if (status === 406) { // 406- Network error
                 deferred.reject(errors);
             } else if (status === 500) { // 500- Internal Server Error
                 deferred.reject(['Internal server error occured']);
-            } else if (status === 501 || status === 502 || status === 503) { // 500- Internal Server Error
+            } else if (status === 501 || status === 502 || status === 503 || status === 504) { // 500- Internal Server Error
                 $window.location.href = '/500';
             } else if (status === 401) { // 401- Unauthorized
                 // so lets redirect to login page
@@ -496,7 +496,7 @@ if (status === 406) { // 406- Network error
 
         service.checkARStatus = function(postingAccountId) {
             var deferred = $q.defer();
-            var url = 'api/posting_accounts/' + postingAccountId + '/is_ar_account_attached';
+            var url = 'api/posting_accounts/' + postingAccountId + '/check_ar_account_attached';
 
             $http.get(url).then(response => {
                 deferred.resolve(response.data);

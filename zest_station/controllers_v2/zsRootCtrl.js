@@ -9,8 +9,8 @@ sntZestStation.controller('zsRootCtrl', [
     '$scope',
     'zsEventConstants',
     '$state', 'zsGeneralSrv', '$rootScope', 'ngDialog', '$sce',
-    'zsUtilitySrv', '$translate', 'zsHotelDetailsSrv', 'cssMappings', 
-    'zestStationSettings', '$timeout', 'zsModeConstants', 'hotelTimeData', 'hotelLanguages', '$filter', '$log', '$window',
+    'zsUtilitySrv', '$translate', 'zsHotelDetailsSrv', 'cssMappings', 'hotelTranslations',
+    'zestStationSettings', '$timeout', 'zsModeConstants', 'hotelTimeData', 'hotelLanguages', '$filter', '$log', '$window', 'languages',
     function($scope,
 		zsEventConstants,
 		$state,
@@ -22,6 +22,7 @@ sntZestStation.controller('zsRootCtrl', [
 		$translate,
 		zsHotelDetailsSrv,
 		cssMappings,
+        hotelTranslations,
 		zestStationSettings,
 		$timeout,
 		zsModeConstants,
@@ -29,7 +30,8 @@ sntZestStation.controller('zsRootCtrl', [
         hotelLanguages,
 		$filter,
         $log,
-        $window
+        $window,
+        languages
         ) {
 
 
@@ -109,6 +111,23 @@ sntZestStation.controller('zsRootCtrl', [
         };
 
         var setupLanguageTranslations = function() {
+            // workaround to fix for castellona
+            // castellona is not present in the hotel languages list, it is present only with station languages
+            // TODO: remove this code when castellano is added to hotel languages
+            var castellanoIndexInZestLanguages = _.findIndex(languages.languages, function(language) {
+                return language.name === 'castellano';
+            });
+            var castellanoIndexInHotelLanguages = _.findIndex(hotelLanguages.languages, function(language) {
+                return language.code === 'cl';
+            });
+           
+            if (castellanoIndexInHotelLanguages === -1 && castellanoIndexInZestLanguages !== -1) {
+                hotelLanguages.languages.push({
+                    'name': 'castellano',
+                    'code': 'cl'
+                });
+            }
+
             if (hotelLanguages.languages.length > 0) {
                 var codeForLang, locales = zsGeneralSrv.refToLatestPulledTranslations;
 
@@ -129,7 +148,7 @@ sntZestStation.controller('zsRootCtrl', [
         $scope.getTagValue = function(tag) {
             var currentLanguageCode = $scope.currentLanguageCode;
 
-            return $scope.tagInEdit.language[currentLanguageCode][tag];
+            return $scope.tagInEdit.language[currentLanguageCode] ? $scope.tagInEdit.language[currentLanguageCode][tag] : '';
         };
 
 		/**
@@ -443,7 +462,8 @@ sntZestStation.controller('zsRootCtrl', [
                 $scope.icons.url.creditcard_icmp = $scope.iconsPath + '/icmp_swipe.svg';
                 $scope.icmp = true;
             }
-            else if ($scope.zestStationData.theme === 'huntley') {
+            else if ($scope.zestStationData.theme === 'huntley' ||
+                $scope.zestStationData.theme === 'row-nyc') {
                 $scope.icons.url.createkey_icmp = $scope.iconsPath + '/encode_image.svg';
                 $scope.icons.url.creditcard_icmp = $scope.iconsPath + '/demo_swiper.svg';
                 $scope.icmp = true;
@@ -815,7 +835,8 @@ sntZestStation.controller('zsRootCtrl', [
                     left_arrow_icon: commonIconsPath + '/arrow-left.svg',
                     right_arrow_icon: commonIconsPath + '/arrow-right.svg',
                     late_checkout_icon: iconBasePath + '/late-checkout.svg',
-                    scanpassport: iconBasePath + ($scope.zestStationData.scan_passport_file_uploaded.length > 0) ? $scope.zestStationData.scan_passport_file_uploaded : ''
+                    scanpassport: iconBasePath + ($scope.zestStationData.scan_passport_file_uploaded.length > 0) ? $scope.zestStationData.scan_passport_file_uploaded : '',
+                    success: iconBasePath + '/success.svg'
                 }
             };
 
@@ -872,7 +893,7 @@ sntZestStation.controller('zsRootCtrl', [
             var commonIconsPath = '/assets/zest_station/css/icons/default';
 
             // var basicHomeIcons = ['zoku'],
-            var niceHomeIcons = ['avenue', 'sohotel', 'epik', 'public', 'public_v2', 'duke', 'de-jonker', 'chalet-view', 'freehand', 'row-nyc', 'circle-inn-fairfield', 'cachet-boutique', 'hi-ho', 'first', 'viceroy-chicago', 'amrath', 'jupiter', 'huntley', 'queen'],
+            var niceHomeIcons = ['avenue', 'sohotel', 'epik', 'public', 'public_v2', 'duke', 'de-jonker', 'chalet-view', 'freehand', 'row-nyc', 'circle-inn-fairfield', 'cachet-boutique', 'hi-ho', 'first', 'viceroy-chicago', 'amrath', 'jupiter', 'huntley', 'queen', 'belle'],
                 nonCircleNavIcons = ['public_v2'];// minor adjustment to the back/close icons for some themes (only show the inner x or <)
 
 
@@ -1064,7 +1085,8 @@ sntZestStation.controller('zsRootCtrl', [
 					// when user activity is not recorded for more than idle_timer.prompt
 					// time set in admin, display inactivity popup
                     if (userInActivityTimeInSeconds >= idlePopupTime) {
-                        if (currentState === 'zest_station.checkInSignature' || currentState === 'zest_station.checkInCardSwipe') {
+                        if (currentState === 'zest_station.checkInSignature' || currentState === 'zest_station.checkInCardSwipe' ||
+                            currentState === 'zest_station.payment') {
                             $scope.$broadcast('USER_ACTIVITY_TIMEOUT');
                         } else {
                             // opens timeout popup w/ ng-class/css
@@ -1321,8 +1343,9 @@ sntZestStation.controller('zsRootCtrl', [
         var socketOpenedFailed = function() {
             $log.info('Websocket:-> socket connection failed');
             $scope.zestStationData.stationHandlerConnectedStatus = 'Not-Connected';
-            $scope.runDigestCycle();
             $scope.$broadcast('SOCKET_FAILED');
+            $scope.runDigestCycle();
+            
         };
 
         var socketOpenedSuccess = function() {
@@ -1885,6 +1908,17 @@ sntZestStation.controller('zsRootCtrl', [
             $scope.trackSessionActivity('EXIT_APP', 'APP_CLOSE_EVT', 'GOING_OFFLINE', 'GOING_OFFLINE', true);
         };
 
+        $scope.retrieveTranslations = function() {
+            var selecteLanguage = _.find($scope.zestStationData.hotelLanguages, function(language) {
+                return language.code === $translate.use();
+            });
+            var languageId = selecteLanguage ? selecteLanguage.id : '';
+            var propertyTranslations = _.find($scope.zestStationData.hotelTranslations, function(translation) {
+                return translation.language_id === languageId;
+            });
+            return propertyTranslations ? propertyTranslations.translations : [];
+        };
+
 		/** *
 		 * [initializeMe description]
 		 * @return {[type]} [description]
@@ -1895,6 +1929,7 @@ sntZestStation.controller('zsRootCtrl', [
 			// call Zest station settings API
             $scope.zestStationData = zestStationSettings;
             $scope.zestStationData.hotelLanguages = hotelLanguages.languages;
+            $scope.zestStationData.hotelTranslations = hotelTranslations;
             if (hotelLanguages) {
                 setupLanguageTranslations();
             }
@@ -1980,6 +2015,8 @@ sntZestStation.controller('zsRootCtrl', [
             $scope.zestStationData.makingAdditionalKey = false;
             $scope.zestStationData.autoIpadKeyboardEnabled = false;
             $scope.zestStationData.appVersion = null;
+            $scope.zestStationData.connectedDeviceDetails = {};
+            
             if ($scope.isIpad) {
                 try {
                     // check for the method getAppInfo via rvcardplugin, if it does not exist,

@@ -35,6 +35,15 @@ angular.module('sntRover').service('rvAllotmentConfigurationSrv', ['$q', 'rvBase
 			"selected_room_types_and_rates": []
 		};
 
+		// ---------------------------- cache
+		// Used to cache the demographics information of the last fetched allotment so that it can be used to capture the
+		// info while creating a reservation from the Create Reservation module
+
+		this.lastFetchedAllotment = {
+			id: null,
+			demographics: null
+		};
+
 		/**
 		 * Function to get list of Hold status to display
 		 * @return {Promise} - After resolving it will return the list of Hold status
@@ -273,6 +282,10 @@ angular.module('sntRover').service('rvAllotmentConfigurationSrv', ['$q', 'rvBase
 							data.rate = -1;
 						}
 						summaryHolder.allotmentSummary = data;
+						self.lastFetchedAllotment = {
+							id: data.allotment_id,
+							demographics: data.demographics
+						};
 						// To be covered in CICO-19135
 						/* getAccountSummary(deferred, {
 							accountId: data.posting_account_id

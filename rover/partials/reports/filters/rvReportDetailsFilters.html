@@ -749,6 +749,33 @@
                 options="chosenReport.hasURLsList.options"></multi-option-selection>
         </div>
 
+               
+        <!-- YEARLY VAT-->
+         <a href="" class="settings-title toggle has-arrow" ng-show="chosenReport.hasVatYear" ng-class="{'active': filterItemsToggle.item_51}" ng-click="toggleFilterItems('item_51')">
+            <span class="title">Year</span>
+        </a>
+        <div class="report-col settings-content" ng-show="chosenReport.hasVatYear" ng-class="{ 'hidden': !filterItemsToggle.item_51 }">            
+            <select name="time-from" ng-model="chosenReport.year" ng-options="year.value as year.value for year in chosenReport.yearFilter" iscroll-stop-propagation>        
+            </select>
+        </div>
+
+        <a href="" class="settings-title toggle has-arrow" ng-show="chosenReport.hasCompanyTravelAgentWithOrWithoutVat" ng-class="{'active': filterItemsToggle.item_52}" ng-click="toggleFilterItems('item_52')">
+            <span class="title">Company / Travel Agent</span>
+        </a>
+        <div class="report-col settings-content" ng-show="chosenReport.hasCompanyTravelAgentWithOrWithoutVat" ng-class="{ 'hidden': !filterItemsToggle.item_52 }">            
+             <label class="checkbox inline" ng-class="{'checked':chosenReport.with_vat_number}">
+                <span class="icon-form icon-checkbox" ng-class="{'checked':chosenReport.with_vat_number}"></span>
+                <input type="checkbox" checked="checked" ng-model="chosenReport.with_vat_number">
+                Cards With Tax ID
+            </label>
+            <label class="checkbox inline" ng-class="{'checked':chosenReport.without_vat_number}">
+                <span class="icon-form icon-checkbox" ng-class="{'checked':chosenReport.without_vat_number}"></span>
+                <input type="checkbox" checked="checked" ng-model="chosenReport.without_vat_number">
+                Cards Without Tax ID
+            </label>
+        </div>        
+        <!-- YEARLY VAT END-->
+
 
         <!-- item_43: Completion Status -->
         <a href="" class="settings-title toggle has-arrow" ng-show="chosenReport.hasCompletionStatus && chosenReport.hasCompletionStatus.data.length" ng-class="{'active': filterItemsToggle.item_43}" ng-click="toggleFilterItems('item_43')">
@@ -777,6 +804,8 @@
         on-update="refreshFilterScroll"
         data="uiChosenReport.hasIncludeAgingBalance.data"
         options="uiChosenReport.hasIncludeAgingBalance.options"></multi-option-selection>
+
+        
 
         <div class="entry search" ng-show="uiChosenReport.hasIncludeAccountName">
             <label>Account Name</label>

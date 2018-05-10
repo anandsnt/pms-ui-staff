@@ -1,0 +1,176 @@
+/* StayNTouch Zest Station Styles | Georgetown Theme */
+
+/* 1. COLORS
+==========================================================*/
+    @brandColor:            #be6b2f;
+    
+    @textColor:             @brandColor;
+    @backgroundColor:       #f5ebd1;
+    
+    @actionColor:           @white;
+    @actionBackground:      @brandColor;
+    
+    @inputBackground:       #f4f4f4;
+    @transparentColor:      rgba(0,0,0,.5);
+
+/* 2. TYPOGRAPHY
+==========================================================*/
+
+    @fontFamily: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+
+
+/* 3. IMAGES
+==========================================================*/
+    @background: @backgroundColor url("../css/themes/georgetown/background.jpg") no-repeat 0% 100%;
+    @backgroundSize: cover;
+    
+    @headerIconsColor:      @brandColor;
+    @headerIconsActive:     @brandColor;
+
+    .icons { 
+        &.icon-create-key {
+            fill: @brandColor;
+            stroke: @brandColor;
+        }
+
+        &.icon-no-print { stroke: @white; }
+
+        &.icon-oos {
+            fill: @brandColor;
+        }
+
+        &.icon-arrow-left,
+        &.icon-arrow-right {
+            fill: none;
+            stroke: @white;
+        }
+    
+    }
+
+/* 4. LAYOUT
+==========================================================*/
+    
+    #georgetown {
+
+        .logo-svg{
+            background-image: url("../css/themes/georgetown/logo.svg");
+            background-repeat: no-repeat;
+            background-size: contain;
+            background-position: center;
+            height: 75px;
+            width: 431px;
+        }
+ 
+        #header {
+            height: 120px;
+        }
+
+        #main {
+            #calc > #height > .remove(100%, 120px);
+            top: 120px;
+            &.centered {
+                padding-top: 0;
+            }
+        }
+        .entry.input {
+            .icons {
+                fill: @brandColor;
+            }
+        }
+
+        input,
+        select {
+            background: #707070;
+            color: @white;
+
+            &::-webkit-input-placeholder {
+                color: fade( @white, 50 );
+            }
+
+            &::-moz-placeholder {
+                color: fade( @white, 50 );
+            }
+
+            &:-ms-input-placeholder {
+                color: fade( @white, 50 );
+            }
+
+            &:-moz-placeholder {
+                color: fade( @white, 50 );
+            }
+        }
+        
+        #logo { 
+
+            .logo {
+                width: auto;
+                height: 75px;
+            }
+        }
+
+        #options {
+            
+            .icon-text {
+                color: @white;
+            }
+
+            .icons {
+                fill: @white;
+            }
+
+            li.break {
+                padding-top: 60px;
+
+                &:after,
+                &:before {
+                    display: none;
+                }
+            }
+        }
+
+        #selection {
+            li {
+                .details {
+                    
+                }
+            }
+        }
+
+        #guests {
+            .button {
+                color: @white;
+                background-color: #8b8b8b;
+            }
+        }  
+
+        .add-on {
+
+            .input-group {
+                input {
+                    color: @brandColor;
+                }
+            }
+        }
+
+        .upgrade-list {
+            .upgrade-content {
+                background-color: fade(@backgroundColor, 75);
+            }
+        }
+ 
+
+        #rate {
+            li {
+                &.sub {
+                    color: #a1a1a1;
+                }
+            }
+        }
+
+        #textual,
+        .popup {
+            .icons {
+                fill: @white;
+            }
+        }
+    }

@@ -28,9 +28,6 @@ angular.module('sntRover').config([
             templateUrl: '/assets/partials/rvRover.html',
             controller: 'roverController',
             resolve: {
-                mappingList: function(jsMappings) {
-                    return jsMappings.fetchMappingList();
-                },
                 hotelDetails: function(RVHotelDetailsSrv) {
                     return RVHotelDetailsSrv.fetchHotelDetails();
                 },
@@ -40,6 +37,10 @@ angular.module('sntRover').config([
                 permissions: function(rvPermissionSrv) {
                     return rvPermissionSrv.fetchRoverPermissions();
                 }
+            },
+            lazyLoad: function ($transition$) {
+                return $transition$.injector().get('jsMappings')
+                    .fetchMappingList();
             }
         });
 

@@ -23,10 +23,11 @@ sntRover.controller('roverController', [
     '$location',
     '$interval',
     'sntActivity',
+    '$transitions',
     function ($rootScope, $scope, $state, $window, RVDashboardSrv, RVHotelDetailsSrv,
               ngDialog, $translate, hotelDetails, userInfoDetails, $stateParams,
               rvMenuSrv, rvPermissionSrv, $timeout, rvUtilSrv, jsMappings, $q, $sce,
-              $log, sntAuthorizationSrv, $location, $interval, sntActivity) {
+              $log, sntAuthorizationSrv, $location, $interval, sntActivity, $transitions) {
 
 
         var observeDeviceInterval;
@@ -123,6 +124,10 @@ sntRover.controller('roverController', [
 
         $rootScope.isCurrentUserChangingBussinessDate = false;
         $rootScope.termsAndConditionsText = hotelDetails.terms_and_conditions;
+        // CICO-50810 checking for any interface enabled.
+        $rootScope.roverObj = {
+            isAnyInterfaceEnabled: hotelDetails.interface.is_avida_enabled || hotelDetails.interface.is_baseware_enabled
+        };
         /*
          * hotel Details
          */
@@ -144,7 +149,8 @@ sntRover.controller('roverController', [
         $rootScope.isRoomDiaryEnabled = true;
         $rootScope.isManualCCEntryEnabled = hotelDetails.is_allow_manual_cc_entry;
         $rootScope.isAnMPHotel = hotelDetails.is_multi_property;
-        /**
+
+         /**
          * CICO-34068
          * NOTE: Temporary Fix
          * As saferpay is not supported in Rover, if saferpay is selected in SNT Admin; default to sixpayments
@@ -605,7 +611,8 @@ sntRover.controller('roverController', [
                         {
                             template: '/assets/partials/postCharge/rvPostChargeV2.html',
                             controller: 'RVOutsidePostChargeController',
-                            scope: $scope
+                            scope: $scope,
+                            className: ''
                         });
                 });
         };
@@ -664,33 +671,33 @@ sntRover.controller('roverController', [
 
         // when state change start happens, we need to show the activity activator to prevent further clicking
         // this will happen when prefetch the data
-        $rootScope.$on('$stateChangeStart', function (event, toState) {
-            // Show a loading message until promises are not resolved
-            $scope.$emit('showLoader');
-            sntActivity.start('STATE_CHANGE' + toState.name.toUpperCase());
+
+        // https://ui-router.github.io/guide/transitions#transition-lifecycle
+        $transitions.onCreate({}, function (transition) {
+            sntActivity.start('STATE_CHANGE' + transition.to().name.toUpperCase());
 
             // if menu is open, close it
             if ($scope.menuOpen) {
                 $scope.menuOpen = !$scope.menuOpen;
                 $scope.showSubMenu = false;
             }
+
+            return true;
         });
 
-        $rootScope.$on('$stateChangeSuccess', function (e, curr, currParams, from, fromParams) {
-            sntActivity.stop('STATE_CHANGE' + curr.name.toUpperCase());
-            // Hide loading message
-            $scope.$emit('hideLoader');
-            $rootScope.previousState = from;
-            $rootScope.previousStateParams = fromParams;
-
-
+        $transitions.onStart({}, function (transition) {
+            $rootScope.previousState = transition.from();
+            $rootScope.previousStateParams = transition.params('from');
         });
-        $rootScope.$on('$stateChangeError', function (event, toState, toParams, fromState, fromParams, error) {
-            // Hide loading message
-            sntActivity.stop('STATE_CHANGE' + toState.name.toUpperCase());
-            $scope.$emit('hideLoader');
-            console.error(error);
-            $scope.$broadcast('showErrorMessage', error);
+
+
+        $transitions.onSuccess({}, function (transition) {
+            sntActivity.stop('STATE_CHANGE' + transition.to().name.toUpperCase());
+        });
+
+        $transitions.onError({}, function (transition) {
+            sntActivity.stop('STATE_CHANGE' + transition.to().name.toUpperCase());
+            $log.error('showErrorMessage', transition.error());
         });
 
         // This variable is used to identify whether guest card is visible
@@ -777,24 +784,13 @@ sntRover.controller('roverController', [
             });
         }
 
-
-        /*
-         * Start Card reader now!.
-         */
-        if ($rootScope.paymentGateway !== 'sixpayments') {
-            /* Enabling desktop Swipe if we access the app from desktop ( not from devices) and
+        /* Enabling desktop Swipe if we access the app from desktop ( not from devices) and
          * desktopSwipeEnabled flag is true
         */
-            if ($rootScope.desktopSwipeEnabled && !rvUtilSrv.checkDevice.any()) {
-                $rootScope.isDesktopUUIDServiceInvoked = true;
-                initiateDesktopCardReader();
-            }
-
-        }
-
-        // If desktopSwipe is not enabled, we have to invoke the desktopUUID service like below
-        if (!$rootScope.isDesktopUUIDServiceInvoked && !rvUtilSrv.checkDevice.any()) {
-            sntapp.desktopUUIDService.startDesktopUUIDService($rootScope.ccSwipeListeningPort, options);
+        if (!rvUtilSrv.checkDevice.any()) {
+            sntapp.desktopCardReader.isDesktopSwipeEnabled = $rootScope.desktopSwipeEnabled;
+            $rootScope.isDesktopUUIDServiceInvoked = true;
+            initiateDesktopCardReader();
         }
 
         /*
@@ -1109,6 +1105,17 @@ sntRover.controller('roverController', [
         document.addEventListener('WS_CONNECTION_LOST', function () {
             $scope.formMenu();
         });
+
+        (function() {
+            if ($window.dataLayer) {
+                $window.dataLayer.push({
+                    hotelCode: hotelDetails.hotel_code,
+                    userRole: (_.values(hotelDetails.current_user.roles)).
+                        map(function(r) {return r.name;}).
+                        join(', ')
+                });
+            }
+        })();
 
     }
 ]);

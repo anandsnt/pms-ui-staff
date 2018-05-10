@@ -10,23 +10,26 @@ sntGuestWeb.config(['$stateProvider', '$urlRouterProvider', function($stateProvi
         url: '/guestwebRoot/:mode/:reservationId',
         controller: 'homeController',
         resolve: {
-            reservationAndhotelData: ['sntGuestWebSrv', '$stateParams', function(sntGuestWebSrv, $stateParams) {
+            reservationAndhotelData: ['sntGuestWebSrv', '$stateParams', '$location', function(sntGuestWebSrv, $stateParams, $location) {
 
-                var absUrl = window.location.href;
+                var absUrl = $location.$$absUrl;
                 var apiUrl = "";
-                // if the guestweb is accessed normaly, ie invoked using
-                // the mail sent from the hotel admin
 
-                if (absUrl.indexOf("/guest_web/home/index?guest_web_token=") !== -1) {
+                var setAPiURLfromWindowUrl = function() {
                     absUrl = (absUrl.indexOf("#") !== -1) ? absUrl.substring(0, absUrl.indexOf("#")) : absUrl;
                     var offset = absUrl.indexOf("?");
                     var startingUrl = absUrl.substring(0, offset);
                     // to strip away state URLS
                     var remainingURl = decodeURIComponent(absUrl.substring(offset, absUrl.length));
 
-                        remainingURl = (remainingURl.indexOf("#") !== -1) ? remainingURl.substring(0, remainingURl.indexOf("#")) : remainingURl;
+                    remainingURl = (remainingURl.indexOf("#") !== -1) ? remainingURl.substring(0, remainingURl.indexOf("#")) : remainingURl;
                     apiUrl = startingUrl + "_data" + remainingURl;
+                };
+                // if the guestweb is accessed normaly, ie invoked using
+                // the mail sent from the hotel admin
 
+                if (absUrl.indexOf("/guest_web/home/index?guest_web_token=") !== -1) {  
+                    setAPiURLfromWindowUrl();
                 }
                 // invoked when forgot password or email verification is
                 // requested from the zest apps
@@ -39,7 +42,9 @@ sntGuestWeb.config(['$stateProvider', '$urlRouterProvider', function($stateProvi
 
                         remainingURl = (remainingURl.indexOf("#") !== -1) ? remainingURl.substring(0, remainingURl.indexOf("#")) : remainingURl;
                     apiUrl = "/guest_web/home/activate_user.json" + remainingURl;
-                    console.log(apiUrl);
+                }
+                else if ( absUrl.indexOf("/guest_web/") !== -1 && absUrl.indexOf("/checkin?guest_web_token=") !== -1) {
+                    setAPiURLfromWindowUrl();
                 }
                 // direct URL checkin - accessing URLS set in hotel admin for checkin
                 else if (absUrl.indexOf("checkin") !== -1) {

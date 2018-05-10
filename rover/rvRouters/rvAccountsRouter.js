@@ -12,7 +12,7 @@ angular.module('accountsModule', [])
             templateUrl: '/assets/partials/accounts/rvAccountsRoot.html',
             controller: 'rvAccountsRootCtrl',
             resolve: {               
-                accountsAssets: function(jsMappings, mappingList) {
+                accountsAssets: function(jsMappings) {
                     return jsMappings.fetchAssets(['rover.accounts', 'directives']);
                 }
             }
@@ -46,17 +46,15 @@ angular.module('accountsModule', [])
 
         // group summary : CICO-6096
         $stateProvider.state('rover.accounts.config', {
-            url: '/account/:id/:activeTab/:isFromArTransactions/:isFromCards',
+            url: '/account',
+            params: {
+                id: 'NEW_ACCOUNT',
+                activeTab: 'ACCOUNT',
+                isFromArTransactions: '',
+                isFromCards: ''
+            },
             templateUrl: '/assets/partials/accounts/rvAccountsConfiguration.html',
             controller: 'rvAccountsConfigurationCtrl',
-            onEnter: ['$stateParams', function($stateParams) {
-                if (!$stateParams.id) {
-                    $stateParams.id = "NEW_ACCOUNT";
-                }
-                if (!$stateParams.activeTab) {
-                    $stateParams.activeTab = "ACCOUNT";
-                }
-            }],
             resolve: {
                 loadPaymentMapping: function (jsMappings) {
                     return jsMappings.loadPaymentMapping();

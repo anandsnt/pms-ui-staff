@@ -6,13 +6,15 @@ sntRover.controller('RVActivityLogCtrl', [
     'activeUserList',
     '$state',
     'RVActivityLogSrv',
-	function($scope, $rootScope, $filter, activityLogResponse, activeUserList, $state, RVActivityLogSrv) {
+    '$timeout',
+	function($scope, $rootScope, $filter, activityLogResponse, activeUserList, $state, RVActivityLogSrv, $timeout) {
 
 	BaseCtrl.call(this, $scope);
 
     // we are hardcoding the min.width & max.width
-    var resizableMinWidth = 30;
-    var resizableMaxWidth = 260;
+    var resizableMinWidth = 30,
+        resizableMaxWidth = 260,
+        PAGINATION_ID = 'RESERVATION_ACTIVITY_LOGS';
 
 
 	/**
@@ -100,12 +102,13 @@ sntRover.controller('RVActivityLogCtrl', [
     };
     $scope.updateReportFilter = function() {
         $scope.isUpdateReportFilter = true;
-        $scope.initPaginationParams();
+        initPaginationParams();
         $scope.initSort();
         $scope.updateReport();
     };
 
-    $scope.updateReport = function() {
+    $scope.updateReport = function(pageNo) {
+        pageNo = pageNo || 1;
         var callback = function(data) {
                 $scope.totalResults = data.total_count;
                 $scope.activityLogData = data.results;
@@ -121,10 +124,12 @@ sntRover.controller('RVActivityLogCtrl', [
                 }
                 $scope.end = $scope.start + $scope.activityLogData.length - 1;
                 $scope.$emit('hideLoader');
+                refreshPagination();
         };
+
         var params = {
                 id: $scope.$parent.reservation.reservation_card.reservation_id,
-                page: $scope.page,
+                page: pageNo,
                 per_page: $scope.perPage
         };
 
@@ -198,53 +203,12 @@ sntRover.controller('RVActivityLogCtrl', [
     };
 
     /*
-    * Pagination
+    * Initialize pagination params
     */
-    $scope.initPaginationParams = function() {
-        if ($scope.activityLogData.total_count === 0) {
-             $scope.start = 0;
-             $scope.end = 0;
-        } else {
-        $scope.start = 1;
-        $scope.end = $scope.start + $scope.activityLogData.length - 1;
-        }
+    var initPaginationParams = function() {       
         $scope.page = 1;
-        $scope.perPage = 50;
-        $scope.nextAction = false;
-        $scope.prevAction = false;
-    };
-
-    $scope.loadNextSet = function() {
-        $scope.page++;
-        $scope.nextAction = true;
-        $scope.prevAction = false;
-        $scope.updateReport();
-    };
-
-    $scope.loadPrevSet = function() {
-        $scope.page--;
-        $scope.nextAction = false;
-        $scope.prevAction = true;
-        $scope.updateReport();
-    };
-
-    $scope.isNextButtonDisabled = function() {
-        var isDisabled = false;
-
-        if ($scope.end >= $scope.totalResults) {
-            isDisabled = true;
-        }
-        return isDisabled;
-    };
-
-    $scope.isPrevButtonDisabled = function() {
-        var isDisabled = false;
-
-        if ($scope.page === 1) {
-            isDisabled = true;
-        }
-        return isDisabled;
-    };
+        $scope.perPage = 50;               
+    };    
 
 
     function split(val) {
@@ -343,6 +307,27 @@ sntRover.controller('RVActivityLogCtrl', [
         }
     };
     $scope.userEmail = '';
+
+    // Configure pagination options
+    var configurePagination = function () {
+            $scope.pageOptions = {
+                id: PAGINATION_ID,
+                perPage: $scope.perPage,
+                api: $scope.updateReport
+            };
+        },
+        // Refresh pagination controls after changing the data
+        refreshPagination = function () {
+            $timeout(function () {
+                $scope.$broadcast('updatePagination', PAGINATION_ID);
+            }, 100);
+        };
+
+    // Checks whether pagination should be shown or not
+    $scope.shouldShowPagination = function () {
+        return $scope.totalResults > $scope.perPage;
+    };
+
 	$scope.init = function() {
         var reservationDetails = $scope.$parent.reservation.reservation_card;
         // setting the header caption
@@ -376,7 +361,7 @@ sntRover.controller('RVActivityLogCtrl', [
 
         // Paginaton
         $scope.totalResults = activityLogResponse.total_count;
-        $scope.initPaginationParams();
+        initPaginationParams();
 
         // Sorting
         $scope.initSort();
@@ -435,6 +420,8 @@ sntRover.controller('RVActivityLogCtrl', [
 
         initializeAutoCompletion();
 
+        configurePagination();
+        refreshPagination();
 	};
 	$scope.init();
 

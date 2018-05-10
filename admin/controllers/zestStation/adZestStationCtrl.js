@@ -1,6 +1,5 @@
 admin.controller('ADZestStationCtrl', ['$scope', '$rootScope', '$state', '$stateParams', 'ADZestStationSrv', '$filter', 'ngDialog', '$timeout', '$log', 'sntAuthorizationSrv', function($scope, $state, $rootScope, $stateParams, ADZestStationSrv, $filter, ngDialog, $timeout, $log, sntAuthorizationSrv) {
     BaseCtrl.call(this, $scope);
-    $scope.$emit('changedSelectedMenu', 10);
 
     $scope.data = {};
     var zestLanguageDataCopy = {};
@@ -261,7 +260,7 @@ admin.controller('ADZestStationCtrl', ['$scope', '$rootScope', '$state', '$state
         } else if (lang === 'it') {
             lang = 'italian';
 
-        } else if (lang === 'cs') {
+        } else if (lang === 'cl') {
             lang = 'castellano';
 
         } else {

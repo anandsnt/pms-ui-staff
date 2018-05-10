@@ -7,7 +7,7 @@ angular.module('EndOfDayModule', [])
             templateUrl: '/assets/partials/endOfDay/rvEndofDay.html',
             controller: 'RVEndOfDayController',
             resolve: {
-                jsAssets: function(jsMappings, mappingList) {
+                jsAssets: function(jsMappings) {
                     return jsMappings.fetchAssets(['endofday']);
                 }
             }

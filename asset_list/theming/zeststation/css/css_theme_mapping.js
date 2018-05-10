@@ -26,7 +26,18 @@ module.exports = {
 			'amrath': [themeCSSRoot + 'amrath.less'],
             'jupiter': [themeCSSRoot + 'jupiter.less'],
             'huntley': [themeCSSRoot + 'huntley.less'],
-            'queen': [themeCSSRoot + 'queen.less']
+            'queen': [themeCSSRoot + 'queen.less'],
+            'belle': [themeCSSRoot + 'belle.less'],
+            'freehand-ny': [themeCSSRoot + 'freehand-ny.less'],
+            'freehand-miami': [themeCSSRoot + 'freehand-miami.less'],
+            'georgetown': [themeCSSRoot + 'georgetown.less'],
+            'nomo': [themeCSSRoot + 'nomo.less'],
+            'merrill': [themeCSSRoot + 'merrill.less'],
+            'martins': [themeCSSRoot + 'martins.less'],
+            'arc': [themeCSSRoot + 'arc.less'],
+            'alessandra': [themeCSSRoot + 'alessandra.less'],
+            'story': [themeCSSRoot + 'story.less'],
+            'pod': [themeCSSRoot + 'pod.less']
 		};
 	}
 };

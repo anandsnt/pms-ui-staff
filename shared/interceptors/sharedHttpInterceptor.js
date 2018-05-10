@@ -77,11 +77,11 @@ angular.module('sharedHttpInterceptor').factory('sharedHttpInterceptor', [
                 if (rejection.status === 503) {
                     $window.location.href = '/500';
                 }
-                if (rejection.status === 502) {
-                    $rootScope.showOWSError && $rootScope.showOWSError();
-                    return;
-                }
-                if (rejection.status === 504) {
+                /**
+                 * CICO-48362
+                 * Both 502 and 504 should be handled as time-out
+                 */
+                if (rejection.status === 502 || rejection.status === 504) {
                     $rootScope.showTimeoutError && $rootScope.showTimeoutError();
                     return;
                 }

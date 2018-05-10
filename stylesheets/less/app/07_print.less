@@ -30,6 +30,7 @@
     .release-notes,
     .fullscreen-header,
     .overbooking-header { display: none !important; }
+    #find-invoices { display: none !important; }
 
 /* 2. TYPOGRAPHY
 ==========================================================*/
@@ -1215,8 +1216,7 @@
                 .tab-header,
                 .search-results,
                 .billing-sidebar,
-                .no-content,
-                .billing-footer  { .hide; }
+                .billing-footer { .hide; }
 
                 .ar-statement {
                     display: block;
@@ -1243,12 +1243,12 @@
                         text-transform: uppercase;
                         background-color: @grey2;
                         padding:4pt 0;
-                        font-size: 5pt;
+                        font-size: 4pt;
+                        word-break: break-word;
 
                         &:last-child {
                             padding-right: 4pt;
                         }
-
 
                         &.charge-date,
                         &.charge-code,
@@ -1258,8 +1258,16 @@
 
                         /*Add space to Charge Amount and Amount Due*/
                         &:nth-child(5),
-                        &:nth-child(6){
+                        &:nth-child(6),
+                        &.charge-code,
+                        &.charge-date {
                             padding-right: 4pt;
+                        }
+
+                        &.charge-description {
+                            strong {
+                                font-weight: 700;
+                            }
                         }
                     }
 
@@ -1275,155 +1283,162 @@
                             padding-top:4pt;
                         }
 
+
                         tr {
                             td {
                                 border-bottom:1px solid @grey2;
                                 padding: 4pt 4pt 4pt 0;
 
                                 &.charge-description {
-                                    padding-right:8pt;
+                                    padding-right: 8pt;
                                     word-break: break-word;
-                                }
+                                } 
 
                                 &.amount-due {
                                     vertical-align: bottom;
-                                } 
-                            }
-                        }
-
-                        .charges-table-container {
-                            padding-right: 0;
-                        }
-                        .charges-table {
-                            tr td {
-                                &.charge-date,
-                                &.charge-code,
-                                &.charge-amount {
-                                    width: 45pt !important;
                                 }
                             }
-                            tr:last-child td {
-                                border-bottom: none;
-                            }
-                            tr:first-child td {
-                                padding-top: 0;
-                            }
                         }
                     }
 
-                    .statement-header {
-                        &:after {
-                            display: table;
-                            clear: both;
-                            content: '';
-                        }
+                    .charges-table-container {
+                        padding-right: 0;
                     }
 
-                    .statement-header-text {
-                        text-align:left;
-                    }
-
-                    .invoice-header {
-                        margin-top: 1.5cm;
-                        position: relative;
-
-                        img {
-                            position: absolute;
-                            height: 30px;
-                            top: -30px;
-                            right: 0;
-                        }
-                        h1 {
-                            font-size:18pt;
-                            font-weight: 600;
+                    .charges-table {
+                        tr td {
+                            &.charge-date,
+                            &.charge-code,
+                            &.charge-amount {
+                                width: 45pt !important;
+                            } 
                         }
 
-                        .statement-company-address {
-                            font-size:10pt;
-                            font-style: italic;
+                        tr:last-child td {
+                            border-bottom: none;
+                        }
+                        tr:first-child td {
+                            padding-top: 0;
                         }
                     }
+                }
 
-                    .guest-info {
-                        font-size: 9pt;
-                        width:50%;
-                        float:left;
+                .statement-header {
+                    &:after {
+                        display: table;
+                        clear: both;
+                        content: '';
+                    }
+                }
 
-                        img {
-                            .size(40px, auto);
-                        }
+                .invoice-header {
+                    margin-top: 1.5cm;
+                    position: relative;
+
+                    img {
+                        position: absolute;
+                        height: 30px;
+                        top: -30px;
+                        right: 0;
                     }
 
-                    .person td,
-                    .payment td {
-                        vertical-align: top;
-                        &.person-info {
-                            width: 3.5cm;
-                        }
-                        .name {
-                            font-size:11pt;
-                        }
+                    h1 {
+                        font-size:18pt;
+                        font-weight: 600;
+                    }
 
-                        .person-meta {
-                            margin-top:0.05cm;
+                    .statement-company-address {
+                        font-size:10pt;
+                        font-style: italic;
+                    }
+                }
+
+                .guest-info {
+                    font-size: 9pt;
+                    width:50%;
+                    float:left;
+
+                    img {
+                        .size(40px, auto);
+                    }
+                }
+
+                .person td,
+                .payment td {
+                    padding:5pt 0;
+                    vertical-align: top;
+
+                    &.person-info {
+                        width: 3.5cm;
+                    }
+
+                    .name {
+                        font-size:11pt;
+                    }
+
+                    .person-meta {
+                        margin-top:0.05cm;
+                        display: block;
+
+                        strong {
                             display: block;
-                            strong {
-                                display: block;
-                            }
+                        }
+                    }
+                }
+
+                .tax-breakdown {
+                    td,th {
+                        padding: 4pt;
+                        text-align: right;
+
+                        &:first-child {
+                            text-align: left;
+                            padding-left: 4pt;
                         }
                     }
 
-                    .tax-breakdown {
-                        td,th {
-                            padding: 4pt;
-                            text-align: right;
-
-                            &:first-child {
-                                text-align: left;
-                                padding-left: 4pt;
-                            }
-                        }
-
-                        tfoot td {
-                            background-color: @grey2;
-                            font-weight: bold;
-                        }
-
-                        .tax-description {
-                            width: 50%;
-
-                        }
+                    th {
+                        font-size: 8pt;
                     }
 
-                    .statement-info {
-                        width:50%;
-                        float:right;
-                        margin-bottom:0.5cm;
-
-                        &:after {
-                            display: table;
-                            content: '';
-                            clear: both;
-                        }
+                    tfoot td {
+                        background-color: @grey2;
+                        font-weight: bold;
                     }
 
-                    .statement-meta {
-                        width:50%;
-                        float:left;
-                        font-size:9pt;
-                        margin-bottom:0.1cm;
+                    .tax-description {
+                        width: 50%;
+                    }
+                }
 
-                        strong { display:block; }
+                .statement-info {
+                    width:50%;
+                    float:right;
+                    margin-bottom:0.5cm;
+
+                    &:after {
+                        display: table;
+                        content: '';
+                        clear: both;
+                    }
+                }
+
+                .statement-meta {
+                    width:50%;
+                    float:left;
+                    font-size:9pt;
+                    margin-bottom:0.1cm;
+
+                    strong { display:block; }
 
 
-                        &:nth-child(3) {
-                            clear: both;
-                        }
+                    &:nth-child(3) {
+                        clear: both;
+                    }
 
-                        &:nth-child(3),
-                        &:first-child{
-                            padding-right: 1em;
-                        }
+                    &:nth-child(3),
+                    &:first-child{
+                        padding-right: 1em;
                     }
                 }
             }
@@ -2515,6 +2530,7 @@
                 border-spacing: 0;
 
                 thead {
+                    display: table-row-group;
                     tr {
                         th {
 
@@ -2569,7 +2585,7 @@
                 tbody {
                     tr {
                         td {
-                            border-bottom: 1px solid rgba(0,0,0,0.1);
+                            page-break-inside: avoid;
 
                             &.name {
 
@@ -2586,14 +2602,21 @@
                                 .guest-date {
                                     clear: both;
 
+                                    .guest-status { .hide(); }
+
                                     .date {
-                                        margin-top: 5pt;
+                                        margin-top: 0;
                                         display: block;
-                                        line-height: 20px;
+                                        line-height: 15px;
+
+                                        &:first-child { margin-top: 5pt; }
                                     }
 
                                     span {
                                         margin:0 2pt;
+
+                                        &:first-child { margin-left: 0pt; }
+                                        &:last-child { margin-right: 0pt; }
                                     }
                                 }
                             }
@@ -2609,18 +2632,19 @@
                             td {
                                  padding-left:0;
                             }
-                        }
+                        } 
                     }
                 }
 
                 tfoot {
-
-                    tr {
+                    display: table-row-group;
+                    tr { 
                         &.totals {
                             td {
                                 font-size: 14px;
                             }
                         }
+
                         &.pagination {
                             display: none;
                         }
@@ -2960,6 +2984,15 @@
                     color: @grey3;
                     margin-top: 4pt;
                 }
+
+                &.vat-report {
+                    font-weight: 600;
+
+                    li {
+                        text-align: right;
+                        width: 120px;
+                    }
+                }
             }
 
             .grid-footer {
@@ -3010,6 +3043,24 @@
                 }
 
                 &.title-3 { border-bottom: 1px solid @grey2; }
+
+                /* VAT Report ***/
+                &.vat-report {
+                    strong {
+                        .calc-width(100, 240);
+
+                        em {
+                            color: @grey3;
+                            font-weight: 400;
+                            padding-left: 8px;
+                        }
+                    }
+
+                    span:not(.currency) { 
+                        text-align: right;
+                        width: 120px; 
+                    }
+                }
             }
 
             .grid-content {
@@ -3045,9 +3096,26 @@
                                 white-space: normal;
                             }
                         }
+
+                        &.vat-revenue {
+                            text-align: right;
+                            width: 120px;
+                        }
                     }
 
                     &.pagination { .hide; }
+                }
+
+                &.vat-report {
+                    
+                    .number {
+                        width: 140px;
+                    }
+                    
+                    .revenue {
+                        text-align: right;
+                        width: 120px;
+                    }
                 }
             }
         }
@@ -3197,101 +3265,39 @@
             }
         }
 
-         &.print-commission-agent {
+        &.print-commission-agent {
+
+            .travel-agent-single-print {
+                .show();
+            }
 
             &.scrollable {
                 overflow: hidden;
             }
 
-            .travel-agent {
-                &:not(.printing) {
-                    .hide();
-                }
-
-                .button {
-                    .hide();
-                }
-            }
-
-            .travel-agent-print {
+            .travel-agent-print,
+            .wrapper {
                 .hide();
-            }
+            } 
         }
 
         &.print-commission-summary {
-            .commission-reports,
-            h2,
-            .iScrollVerticalScrollbar,
+
+            .travel-agent-single-print,
+            .travel-agent-print,
             .button {
                 .hide();
             }
 
-            // Fix bug with the scroll
             &.scrollable {
                 overflow: hidden;
             }
 
             .travel-agent {
+                margin-bottom: 20pt;
                 border-bottom: 1px solid @grey2;
-                &.last {
-                    border-bottom: 0
-                }
-            }
-            .grid-footer {
-                .show();
-            }
-            .travel-agent-print {
-                .float;
-                padding: 4pt 0;
 
-                .data {
-                    width: 40%;
-                    margin-top: 10px;
-                    .pull-left;
-
-                    h2 {
-                        .show();
-                        width:100%;
-                        line-height: 1;
-                        white-space: normal;
-                        margin-bottom: 6px;
-                        padding-right: 5px;
-                        display: block;
-                        font-size: 10pt
-
-                    }
-                }
-
-                .info-holder {
-                    .pull-right;
-                    width: 60%;
-                    margin:0;
-                    padding:0;
-
-                    li {
-
-                        margin-top: 5px;
-                        text-align: center;
-                        width: 50%;
-                        color: @grey3;
-                        .pull-left();
-
-                        strong {
-                            font-size: 15pt;
-                            line-height: 1.25em;
-                            font-weight: 600;
-                            text-transform: uppercase;
-                            color: @black;
-                            display: block;
-                        }
-
-                        span {
-                            font-size: 10pt;
-                            text-transform: uppercase;
-                        }
-
-                    }
-                }
+                &:last-child { margin-bottom: 10pt; }
             }
         }
     }

@@ -7,14 +7,17 @@
  */
 sntRover.directive('rvFullscreen', [
     '$rootScope',
-    function($rootScope) {
+    '$transitions',
+    function($rootScope, $transitions) {
         return {
             restrict: 'A',
             link: function(scope, element, attr) {
+                var bodyEl = angular.element(document.querySelector('body'))[0],
+                    fullscreenData = {};
+
                 ['click', 'touchstart'].map(function(type) {
                     element.on(type, function(e) {
-                        var bodyEl = angular.element(document.querySelector('body'))[0],
-                            fullscreenData = {};
+                        e.stopPropagation();
 
                         fullscreenData.subHeader = attr.fsSubHeader;
                         fullscreenData.toggleClass = attr.fsToggleClass ? attr.fsToggleClass
@@ -28,8 +31,20 @@ sntRover.directive('rvFullscreen', [
                             scope.refreshScroller(key);
                         });
                         $rootScope.$digest();
-                        e.stopPropagation();
+                        return false;
                     });
+                });
+
+                /**
+                 * Fix for CICO-50759, Removing all full-screen related styles body element
+                 * when state changes
+                 */
+                $transitions.onStart({}, function() {
+                    try {
+                        bodyEl.classList.remove('is-fullscreen', $rootScope.fullscreenData.toggleClass);
+                    } catch (e) {
+                        bodyEl.classList.remove('is-fullscreen');
+                    }
                 });
             }
         };

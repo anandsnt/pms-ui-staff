@@ -24,7 +24,11 @@ module.exports = {
 				'!'+loginRoot+'stationLoginJsAssetList.js',
                 // these files used for zest station chromeapp 
                 // (need to prompt for virtual keyboard if launched from within a chrome-app)
-				zestRoot + 'zsVirtualKeyboard.js'
+				zestRoot + 'zsVirtualKeyboard.js',
+                // Eliminate all spec files
+                '!**/*.spec.js',
+                '!**/*.conf.js'
+
 			]	
 		};
 		return loginJsAssets;

@@ -765,20 +765,21 @@
             /* Post charge ***/
             &.post-charge {
                 padding: 0;
-                .size(580px, 920px);
+                .size(680px, 960px);
                 .float;
 
                 .content-left,
                 .content-right {
                     position: relative;
                     overflow: hidden;
-                    .size(100%, 50%);
+                    height: 100%;
                     .pull-left;
                 }
 
                 .content-left { 
                     padding: 20px 0;
                     background: rgba(0,0,0,.05);
+                    width: 40%;
 
                     .search-form {
                         text-align: left;
@@ -882,40 +883,34 @@
                 .content-right {
                     position: relative;
                     padding: 20px;
+                    width: 60%;
                     .box-shadow(0 -2px 2px rgba(0,0,0,.3));
 
-                    .no-content {
-                        position: static;
-                        .calc-height(100, 80);
-
-                        .h1 { 
-                            font-size: 24px; 
-                            margin: 0;
-                        }
-                    }
-
+                    /* Elements ***/
                     .scrollable { 
-                        position: absolute;
-                        left: 15px;
-                        top: 80px; 
-                        height: 180px;
-                        .calc-width(100, 20);
+                        position: relative;
+                        padding-right: 20px;
+                        width: 100%;
+                        .transition();
 
-                        > .wrapper { padding-bottom: 2px; }
+                        > .wrapper { 
+                            padding-bottom: 2px; 
+                        }
 
                         li {
                             position: relative;
-                            margin: 0 20px 0 0;
-                            padding: 5px 80px 5px 5px;
+                            padding: 6px 80px 6px 0;
                             text-align: left;
-                            line-height: 1.1em;
+                            line-height: 1;
                             font-weight: 600;
                             cursor: pointer;
-                            .transition;
+                            margin-bottom: 0;
+                            .transition();
 
                             span {
                                 color: @grey3;
                                 font-weight: 400;
+                                .transition();
 
                                 &.base {
                                     font-size: 14px;
@@ -932,11 +927,21 @@
                                 }
                             }
 
-                            &.selected { 
+                            &:not(:last-child) {
+                                .box-shadow(inset 0 -1px 0 rgba(0,0,0,.1));
+                            }
+
+                            &.selected {
+                                margin: 5px 0;
+                                padding-left: 10px;
                                 background-color: @white;
                                 #border-radius > .rounded();
                                 .box-shadow();
                                 .show;
+
+                                .price {
+                                    right: 10px;
+                                }
                             }
                         }
 
@@ -948,14 +953,13 @@
                     }
 
                     #total-charge {
-                        position: absolute;
-                        left: 15px;
-                        bottom: 250px;
-                        border-top: 2px solid rgba(0,0,0,.1);
+                        margin-top: 10px;
                         padding-top: 10px;
                         font-weight: 600;
                         line-height: 30px;
-                        .calc-width(100, 40);
+                        text-transform: uppercase;
+                        .box-shadow(inset 0 2px 0 rgba(0,0,0,.1));
+                        .calc-width(100, 20);
                         .float;
                         
                         .price {
@@ -969,8 +973,14 @@
                         position: absolute;
                         left: 20px;
                         bottom: 20px;
-                        .square(230px);
+                        .size(245px, 230px);
                         .float;
+
+                        .numpad-title {
+                            font-size: 14px;
+                            font-weight: 600;
+                            text-transform: uppercase;
+                        }
 
                         .button {
                             display: inline-block;
@@ -1010,11 +1020,81 @@
                         }   
                     }
 
-                    .actions {
+                    .form {
                         position: absolute;
                         right: 20px;
                         bottom: 20px;
-                        .calc-width(100, 280);
+                        .calc-width(100, 300);
+
+                        label {
+                            margin-bottom: 0;
+
+                            &:not(.checkbox) {
+                                font-weight: 600;
+                            }
+                        }
+
+                        .checkbox {
+                            font-size: 14px;
+                            text-transform: uppercase;
+                        }
+
+                        .button {
+                            font-size: 16px;
+                            width: 50%;
+                            padding: 0 10px;
+                            .pull-left;
+                        }
+
+                        .actions {
+                            padding-top: 20px;
+                            .box-shadow(inset 0 2px 0 rgba(0,0,0,.1));
+                        }
+                    }
+
+                    /* Case 1 - No content ***/
+                    .no-content {
+                        position: static;
+                        .calc-height(100, 80);
+
+                        .h1 {
+                            font-size: 24px;
+                            margin: 0;
+                        }
+                    }
+
+                    /* Case 2 - Showing grid of added items ***/
+                    .grid-only {
+                        .scrollable {
+                           max-height: 455px;
+                        }
+
+                        #numpad,
+                        .form .entry {
+                            .hide();
+                        }
+
+                        .form {
+                            left: 20px;
+                            .calc-width(100, 40);
+
+                            .actions {
+                                text-align: center;
+                            }
+
+                            .button {
+                                display: inline-block;
+                                float: none;
+                                width: auto;
+                            }
+                        }
+                    }
+
+                    /* Case 3 - Showing selected charge details ***/
+                    .charge-details {
+                        .scrollable {
+                            max-height: 255px;
+                        }
                     }
                 }
 
@@ -1048,10 +1128,6 @@
                             visibility: visible;
                             #fade > .in();
                         }
-                    }
-
-                    .content-right {
-                        .scrollable { height: 90px; }
                     }
 
                     .cards {
@@ -1176,15 +1252,40 @@
                         }
                     }
 
-                    @media only screen and (min-height: 768px) {
-                        height: 670px;
+                    .grid-only {
+                        .scrollable {
+                           max-height: 355px;
+                        }
+                    }
 
+                    .charge-details {
+                        .scrollable {
+                            max-height: 160px;
+                        }
+                    }
+                }
+
+                @media only screen and (max-height: 767px) and (min-width: 1280px) {
+                    height: 600px;
+
+                    &.extended {
                         .content-right {
-                            .scrollable { height: 180px; }
+                            
+                            .grid-only {
+                                .scrollable {
+                                   max-height: 275px;
+                                }
+                            }
+
+                            .charge-details {
+                                .scrollable { 
+                                    max-height: 80px; 
+                                }
+                            }
                         }
 
                         .cards {
-                            &.open { height: 670px; }
+                            &.open { height: 600px; }
                         }
                     }
                 }
@@ -1204,9 +1305,17 @@
                     strong { .show; }
                 }
 
-                input[type="text"] {
-                    font-size: 18px;
-                    font-weight: 600;
+                label {
+                    margin-bottom: 0;
+                }
+
+                .checkbox {
+                    font-size: 14px;
+                    text-transform: uppercase;
+                }
+
+                textarea {
+                    height: 80px;
                 }
 
                 .button { 
@@ -1219,9 +1328,31 @@
                     position: relative;
 
                     .switch-button { 
-
                         .data-off,
                         .data-on { font-size: 14px; }
+                    }
+
+                    .search-codes {
+                        .float;
+
+                        input {
+                            width: 280px;
+                            .pull-left;
+                        }
+
+                        .mini-select {
+                            .pull-left;
+                        }       
+                    }
+
+                    .charge-code-list {
+                        position: absolute;
+                        top: 40px;
+                        left: 0px;
+                        width: 280px;
+                        max-height: 240px;
+                        overflow: hidden;
+                        background-color: @white;
                     }
 
                     &.notice {
@@ -1262,27 +1393,9 @@
                         }
                     }
 
-                    .search-codes {
-                        .float;
-
-                        input {
-                            width: 280px;
-                            .pull-left;
-                        }
-
-                        .mini-select {
-                            .pull-left;
-                        }       
-                    }
-
-                    .charge-code-list {
-                        position: absolute;
-                        top: 40px;
-                        left: 0px;
-                        width: 280px;
-                        max-height: 240px;
-                        overflow: hidden;
-                        background-color: @white;
+                    &.break {
+                        padding: 10px 0;
+                        box-shadow: inset 0 -1px 0 rgba(0,0,0,.1), inset 0 1px 0 rgba(0,0,0,.1);
                     }
                 }
 
@@ -1867,7 +1980,7 @@
 
             /* Format bill ***/
             &.format-bill {
-                width: 360px;
+                width: 400px;
 
                 label { 
                     margin-bottom: 0;
@@ -1876,17 +1989,15 @@
                     } 
                 }
 
+                .entry.margin {
+                    clear: both;
+                }
+
                 .actions {
                     margin-top: 20px;
                     padding-top: 19px;
                     border-top: 1px solid rgba(0,0,0,.1);
                     .float;
-                }
-
-                &.rooming-list {
-                    .actions {
-                        margin-top: 10px;
-                    }
                 }
 
                 .button { 
@@ -1909,7 +2020,7 @@
                     }
                 }
 
-             .switch-button {
+                .switch-button {
                     background: @grey2;
                     #border-radius > .rounded();
                     .size(40px, 260px);
@@ -1955,6 +2066,12 @@
                     &.on {
                         .data-off { left: auto; right: -100%; }
                         .data-on { left: auto; right: 0; }
+                    }
+                }
+
+                &.rooming-list {
+                    .actions {
+                        margin-top: 10px;
                     }
                 }
             }
@@ -7583,7 +7700,7 @@
 
             /* Commissions ***/
             &.commissions {
-                width: 315px;
+                width: 380px;
 
                 .h2 {
                     margin-bottom: 10px;
@@ -7593,6 +7710,10 @@
                     text-transform: none;
                     font-style: italic;
                     margin-bottom: 10px;
+                }
+
+                label {
+                    margin-bottom: 0;
                 }
 
                 &:not(.exporting) {
@@ -7653,6 +7774,20 @@
                     }
                 }
 
+                .entry {
+                    padding-top: 20px;
+
+                    .radio {
+                        &:not(:last-child) {
+                            margin-bottom: 10px;
+                        }
+                    }
+
+                    + .entry {
+                        padding-top: 0;
+                    }
+                }
+
                 .actions {
                     padding-top: 20px;
                     margin-top: 20px;
@@ -7684,7 +7819,7 @@
                     }
                 }
             }
-            
+
             /* Overbooking ***/
             &.overbooking {
                 width: 260px;
@@ -7892,9 +8027,24 @@
                     }
 
                     .overbooking-limit {
-                        width: 380px;
+                        width: 420px;
                         .box-shadow(0 -2px 2px rgba(0,0,0,.3));
                     }
+                }
+            }
+
+            /* Loyalty ***/
+            &.loyalty-gms {
+                padding: 0;
+                .square(640px);
+                
+                #gms-frame-container {
+                    .square(100%);
+                }
+
+                #gms-iframe {
+                    border: 0;
+                    .square(100%);
                 }
             }
         }
@@ -7963,7 +8113,27 @@
 
             em {
                 font-size:16px;
-            } 
+            }
+
+            .button {
+                position: absolute;
+                top: 20px;
+                right: 20px;
+                line-height: 45px;
+                height: 45px;
+                width: auto;
+                max-width: 200px;
+                .nowrap();
+
+                &.with-icon {
+                    padding: 0 20px 0 50px;
+                    .icons {
+                        left: 20px;
+                        top: 12px;
+                        margin-left: 0;
+                    }
+                }
+            }
         }
 
         .modal-body {
@@ -8111,31 +8281,33 @@
     }
 
 /* SignaturePad             ==============================*/
-    #signature-pad {
-        height: auto;
+    #signature {
+        position: relative;
+        padding-top: 1px; 
+        height: 320px;
         width: 100%;
+        background: @white;
+        .box-shadow(inset 1px 1px 1px rgba(0,0,0,.5));
+        #border-radius > .rounded(5px);
 
-        .sigWrapper {
-            clear: both;
-            height: 140px;
-            padding: 10px;
-            margin-bottom: 20px;
-            background: @white;
-            .box-shadow(inset 1px 1px 1px rgba(0,0,0,.5));
-            #border-radius > .rounded(5px);
-            .show;
+        .jSignature {
+            position: relative;
+            background: transparent !important;
+            cursor: @signaturePen, crosshair;
+            cursor: @signaturePen 16 16, crosshair;
+            z-index: 99;
+            .square(100%);           
+        }
 
-            .pad {
-                position: relative;
-                cursor: @signaturePen, crosshair;
-                cursor: @signaturePen 16 16, crosshair;
-                -ms-touch-action: none;
-                -webkit-user-select: none;
-                -moz-user-select: none;
-                -ms-user-select: none;
-                -o-user-select: none;
-                user-select: none;
-            }
+        &:after {
+            content: '';
+            position: absolute;
+            bottom: 20px;
+            left: 20%;
+            background-color: @grey2;
+            z-index: 2;
+            .show();
+            .size(2px, 60%);
         }
     }
 

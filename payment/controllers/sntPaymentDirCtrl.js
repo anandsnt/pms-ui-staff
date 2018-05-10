@@ -132,6 +132,15 @@ angular.module('sntPay').controller('sntPaymentController',
                 if (isEmptyParentScrollerOptions) {
                     $scope.myScrollOptions = {};
                 }
+
+                // CICO-48381
+                if (sntapp.browser === 'rv_native' && sntapp.cordovaLoaded) {
+                    scrollerOptions.click = false;
+                    scrollerOptions.tap = true;
+                    scrollerOptions.preventDefault = false;
+                    scrollerOptions.deceleration =  0.0001;
+                }
+
                 $scope.myScrollOptions[key] = scrollerOptions;
             }
 
@@ -900,7 +909,15 @@ angular.module('sntPay').controller('sntPaymentController',
                     return false;
                 }
 
-                var selectedPaymentType;    
+                /** CICO-47989
+                 * To handle scenarios where the bill might have a payment type associated, but it is no longer available in the list
+                 * In such cases, clear the selected payment type
+                 */
+                if (!_.find($scope.paymentTypes, {name: $scope.selectedPaymentType})) {
+                    $scope.selectedPaymentType = '';
+                }
+
+                var selectedPaymentType;
 
                 if (isReset && $scope.payment.isEditable && $scope.selectedPaymentType === 'GIFT_CARD') {
                     $scope.payment.amount = 0;

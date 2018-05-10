@@ -149,10 +149,10 @@ sntRover.controller('rvAccountsSearchCtrl',	[
 		* to Search for accounts
 		* @return - None
 		*/
-		$scope.search = function() {
+		$scope.search = function(page) {
 			// am trying to search something, so we have to change the initial search helping screen if no rsults
 			$scope.amFirstTimeHere = false;
-
+			$scope.page = page || 1;
 			// resetting error message
 			$scope.errorMessage = '';
 
@@ -177,6 +177,9 @@ sntRover.controller('rvAccountsSearchCtrl',	[
 
 			// total result count
 			$scope.totalResultCount = data.total_count;
+			$timeout (function() {
+				$scope.$broadcast('updatePagination', 'ACCOUNT_SEARCH');
+			}, 800);			
 
 			// we have changed the data
 			refreshScrollers ();
@@ -216,19 +219,6 @@ sntRover.controller('rvAccountsSearchCtrl',	[
 		};
 
 		/**
-		* Pagination things
-		*/
-		var setInitialPaginationAndAPIThings = function() {
-			// pagination
-			$scope.perPage 	= rvAccountsSrv.DEFAULT_PER_PAGE;
-			$scope.start 	= 1;
-			$scope.end 		= initialAccountsListing.posting_accounts.length;
-
-			// what is page that we are requesting in the API
-			$scope.page = 1;
-		};
-
-		/**
 		* should we show pagination area
 		* @return {Boolean}
 		*/
@@ -260,21 +250,6 @@ sntRover.controller('rvAccountsSearchCtrl',	[
 			return (!$scope.amFirstTimeHere && !hasSomeSearchResults());
 		};
 
-		/**
-		* should we disable next button
-		* @return {Boolean}
-		*/
-		$scope.isNextButtonDisabled = function() {
-			return ($scope.end >= $scope.totalResultCount);
-		};
-
-		/**
-		* should we disable prev button
-		* @return {Boolean}
-		*/
-		$scope.isPrevButtonDisabled = function() {
-			return ($scope.start === 1);
-		};
 
 		/**
 		* should show add new button
@@ -282,61 +257,7 @@ sntRover.controller('rvAccountsSearchCtrl',	[
 		*/
 		$scope.shouldShowAddNewButton = function() {
 			return ($scope.hasPermissionToAddNewAccount());
-		};
-
-		/**
-		* function to trgger on clicking the next button
-		* will call the search API after updating the current page
-		* return - None
-		*/
-		$scope.loadPrevSet = function() {
-			var isAtEnd = ($scope.end === $scope.totalResultCount);
-
-			if (isAtEnd) {
-				// last diff will be diff from our normal diff
-				var lastDiff = ($scope.totalResultCount % $scope.perPage);
-
-				if (lastDiff === 0) {
-					lastDiff = $scope.perPage;
-				}
-
-				$scope.start = $scope.start - $scope.perPage;
-				$scope.end 	 = $scope.end - lastDiff;
-			}
-			else {
-				$scope.start = $scope.start - $scope.perPage;
-				$scope.end   = $scope.end - $scope.perPage;
-			}
-
-			// Decreasing the page param used for API calling
-			$scope.page--;
-
-			// yes we are calling the API
-			$scope.search();
-		};
-
-		/**
-		* function to trgger on clicking the next button
-		* will call the search API after updating the current page
-		* return - None
-		*/
-		$scope.loadNextSet = function() {
-			$scope.start = $scope.start + $scope.perPage;
-			var willNextBeEnd = (($scope.end + $scope.perPage) > $scope.totalResultCount);
-
-			if (willNextBeEnd) {
-				$scope.end = $scope.totalResultCount;
-			}
-			else {
-				$scope.end = $scope.end + $scope.perPage;
-			}
-
-			// Increasing the page param used for API calling
-			$scope.page++;
-
-			// yes we are calling the API
-			$scope.search();
-		};
+		};		
 
 		/**
 		 * Navigate to the account configuration state for editing the account
@@ -346,7 +267,7 @@ sntRover.controller('rvAccountsSearchCtrl',	[
 			$state.go('rover.accounts.config', {
 				id: accountID,
 				activeTab: 'ACCOUNT',
-        isFromCards: true
+        		isFromCards: true
 			});
 		};
 
@@ -381,14 +302,21 @@ sntRover.controller('rvAccountsSearchCtrl',	[
 
 			$scope.query = '';
 			// Initial search param
-			$scope.isNonZero = true;
+			$scope.isNonZero = false;
 			$scope.status = 'OPEN';
+
 
 			// scroller and related things
 			setScrollerForMe();
+			// Set pagination
+			$scope.perPage 	= rvAccountsSrv.DEFAULT_PER_PAGE;
+			$scope.accountSearchPagination = {
+				id: 'ACCOUNT_SEARCH',
+				api: $scope.search,
+				perPage: rvAccountsSrv.DEFAULT_PER_PAGE
+			};
+			$scope.search();
 
-			// pagination  & API things
-			setInitialPaginationAndAPIThings();
 		}());
 
 

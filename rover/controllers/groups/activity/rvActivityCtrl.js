@@ -6,6 +6,7 @@ angular.module('sntRover').controller('rvActivityCtrl', [
 	'$timeout',
 	function($scope, $rootScope, $filter, $stateParams, $timeout) {
 		BaseCtrl.call(this, $scope);
+		var ACCOUNT_ACTIVITY_LOG_PER_PAGE = 50;
 
 		/**
 		 * initialisation and basic configuration
@@ -13,52 +14,28 @@ angular.module('sntRover').controller('rvActivityCtrl', [
 		 */
 		$scope.init = function() {
 			$scope.page = 1;
-	        $scope.perPage = 50;
-	        $scope.nextAction = false;
-	        $scope.prevAction = false;
+	        $scope.perPage = ACCOUNT_ACTIVITY_LOG_PER_PAGE;
 	        $scope.errorMessage = '';
-	        $scope.start = 1;
-	        $scope.end = 0;
+	        // Defined pagination for activity log - accounts
+			$scope.accountActivityLogPagination = {
+				id: 'ACCOUNT_ACTIVITY_LOG',
+				api: $scope.updateReport,
+				perPage: ACCOUNT_ACTIVITY_LOG_PER_PAGE
+			};
 	        $scope.setScroller('report_content');
+	        
 
 		};
 		$scope.$on('PopulateLogData', function(e, data) {
 			$scope.count = data.total_count;
 			$scope.activityLogData = data.results;
-			$scope.dataLength = $scope.activityLogData.length;
-			if ($scope.nextAction) {
-					$scope.page++;
-	                $scope.start = $scope.start + $scope.perPage;
-	                $scope.nextAction = false;
-	                $scope.initSort();
-	                }
-	            if ($scope.prevAction) {
-	            	$scope.page--;
-	                $scope.start = $scope.start - $scope.perPage;
-	                $scope.prevAction = false;
-	                $scope.initSort();
-	                }
-	        $scope.end = $scope.start + $scope.dataLength - 1;
 	        $scope.$emit('hideLoader');
 	        $scope.refreshScroller('report_content');
+	        $timeout(function() {
+	        	$scope.$broadcast('updatePagination', 'ACCOUNT_ACTIVITY_LOG');	
+	        }, 800);
+	        	
 		});
-		/**
-		 * load next page
-		 */
-		$scope.loadNextSet = function() {
-	        $scope.nextAction = true;
-	        $scope.prevAction = false;
-	        $scope.updateReport();
-		};
-
-		/**
-		 * load Previous page
-		 */
-		$scope.loadPrevSet = function() {
-	        $scope.nextAction = false;
-	        $scope.prevAction = true;
-	        $scope.updateReport();
-		};
 
 		/**
 		 * checking Whether oldvalue of detail have any value
@@ -72,31 +49,6 @@ angular.module('sntRover').controller('rvActivityCtrl', [
 	        	}
     	};
 
-		/**
-		 * for pagination
-		 * @return {boolean}
-		 */
-		$scope.isPrevButtonDisabled = function() {
-			var isDisabled = false;
-
-	        if ($scope.page === 1) {
-	            isDisabled = true;
-	        }
-	        return isDisabled;
-		};
-
-		/**
-		 * for pagination
-		 * @return {boolean}
-		 */
-		$scope.isNextButtonDisabled = function() {
-			var isDisabled = false;
-
-	        if ($scope.end >= $scope.count) {
-	            isDisabled = true;
-	        }
-	        return isDisabled;
-		};
 
 		/*
 		*@param {none}
@@ -168,11 +120,11 @@ angular.module('sntRover').controller('rvActivityCtrl', [
 	        }
 	        $scope.updateReport();
 	    };
-		$scope.updateReport = function() {
+		$scope.updateReport = function(page) {
 	        var params = {
-	            page: $scope.prevAction ? $scope.page - 1 : ($scope.nextAction ? $scope.page + 1 : $scope.page),
+	            page: page || 1,
 	            per_page: $scope.perPage
-	        	};
+	        };
 
 	        params['sort_order'] = $scope.sort_order;
 	        params['sort_field'] = $scope.sort_field;

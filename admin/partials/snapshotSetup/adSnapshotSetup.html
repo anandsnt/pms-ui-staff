@@ -95,7 +95,7 @@
                                 'MULTIPLE_PER_DAY_LABEL' | translate}}
                             </label>
                         </div>
-
+                        <!--once incremental export time-->
                         <section ng-show="snapshotData.incremental_export_option=='once'">
                             <div class="entry full-width">
                                 <label>
@@ -122,31 +122,8 @@
                                     </div>
                                 </div>
                             </div>
-
-                            <div class="entry">
-                                <label>
-                                    {{ 'RETRY_INTERVAL_LABEL' | translate}}
-                                </label>
-                                <div class="select select-col select-width-30">
-                                    <select ng-model="snapshotData.incremental_export_once_retry_interval">
-                                        <option value="">MM</option>
-                                        <option ng-repeat="minute in minutes" value="{{minute}}"
-                                                ng-bind="minute"></option>
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="entry full-width">
-                                <label>
-                                    {{ 'NO_OF_RETRIES_LABEL' | translate}}
-                                </label>
-                                <div class="select select-col select-width-30">
-                                    <select ng-options="retry for retry  in retry_count_options"
-                                            ng-model="snapshotData.incremental_export_once_retry_count">
-                                    </select>
-                                </div>
-                            </div>
                         </section>
-
+                        <!--multiple times incremental export start time-->
                         <section ng-if="snapshotData.incremental_export_option=='multiple'">
                             <div class="entry full-width">
                                 <label>
@@ -171,6 +148,31 @@
                                                 ng-model="snapshotData.incremental_export_multiple_prime_time">
                                         </select>
                                     </div>
+                                </div>
+                            </div>
+                        </section>
+                        <!-- retry settings-->
+                        <section>
+                            <div class="entry">
+                                <label>
+                                    {{ 'RETRY_INTERVAL_LABEL' | translate}}
+                                </label>
+                                <div class="select select-col select-width-30">
+                                    <select ng-model="snapshotData.incremental_export_once_retry_interval">
+                                        <option value="">MM</option>
+                                        <option ng-repeat="minute in minutes" value="{{minute}}"
+                                                ng-bind="minute"></option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="entry full-width">
+                                <label>
+                                    {{ 'NO_OF_RETRIES_LABEL' | translate}}
+                                </label>
+                                <div class="select select-col select-width-30">
+                                    <select ng-options="retry for retry  in retry_count_options"
+                                            ng-model="snapshotData.incremental_export_once_retry_count">
+                                    </select>
                                 </div>
                             </div>
                         </section>

@@ -34,8 +34,8 @@ sntGuestWeb.controller('rootController', ['$state', '$scope', function($state, $
 		$state.go('noOptionAvailable');
 	});
 }]);
-sntGuestWeb.controller('homeController', ['$rootScope', '$scope', '$location', '$state', '$timeout', 'reservationAndhotelData', '$window',
-	function($rootScope, $scope, $location, $state, $timeout, reservationAndhotelData, $window) {
+sntGuestWeb.controller('homeController', ['$rootScope', '$scope', '$location', '$state', '$timeout', 'reservationAndhotelData', '$window', 'checkinDetailsService',
+	function($rootScope, $scope, $location, $state, $timeout, reservationAndhotelData, $window, checkinDetailsService) {
 
 		loadAssets('/assets/favicon.png', 'icon', 'image/png');
 		loadAssets('/assets/apple-touch-icon-precomposed.png', 'apple-touch-icon-precomposed');
@@ -44,9 +44,14 @@ sntGuestWeb.controller('homeController', ['$rootScope', '$scope', '$location', '
 		loadAssets('/assets/apple-touch-startup-image-1536x2008.png', 'apple-touch-startup-image', '', '(device-width: 768px) and (orientation: portrait) and (-webkit-device-pixel-ratio: 2)');
 		loadAssets('/assets/apple-touch-startup-image-2048x1496.png', 'apple-touch-startup-image', '', '(device-width: 768px) and (orientation: landscape) and (-webkit-device-pixel-ratio: 2)');
 
-		var trackinID = reservationAndhotelData.google_analytics_tracking_id;
+		// the below tracking ID is SNT Tracking IDs - ZEST WEB in hotel admin
+		$rootScope.trackingID = reservationAndhotelData.google_analytics_tracking_id;
 		// initialise google analytics
-		$window.ga('create', trackinID, 'auto');
+		if ($rootScope.trackingID && $rootScope.trackingID.length > 0) {
+			$window.ga('create', $rootScope.trackingID, 'auto');
+			$window.ga('set', 'anonymizeIp', true);
+		}
+		
 		// store basic details as rootscope variables
 		if (typeof reservationAndhotelData.access_token !== "undefined") {
 			$rootScope.accessToken = reservationAndhotelData.access_token;
@@ -218,6 +223,24 @@ sntGuestWeb.controller('homeController', ['$rootScope', '$scope', '$location', '
 		//check if we are using new send to que settings.
 		$rootScope.bypassCheckinVerification = (reservationAndhotelData.is_sent_to_que === 'true' && !!reservationAndhotelData.zest_web_use_new_sent_to_que_action);
 
+		var navigatePageBasedOnUrlAndType = function() {
+			var absUrl = $location.$$absUrl;
+
+			if (absUrl.indexOf("/guest_web/") !== -1 && absUrl.indexOf("/checkin?guest_web_token=") !== -1 &&
+				reservationAndhotelData.skip_checkin_verification && reservationAndhotelData.reservation_details) {
+				checkinDetailsService.setResponseData(reservationAndhotelData.reservation_details);
+				$rootScope.upgradesAvailable = (reservationAndhotelData.reservation_details.is_upgrades_available === "true") ? true : false;
+				$rootScope.isUpgradeAvailableNow = reservationAndhotelData.reservation_details.is_upsell_available_now;
+				$rootScope.outStandingBalance = reservationAndhotelData.reservation_details.outstanding_balance;
+				$rootScope.payment_method_used = reservationAndhotelData.reservation_details.payment_method_used;
+				$rootScope.paymentDetails = reservationAndhotelData.reservation_details.payment_details;
+				// navigate to next page
+				$state.go('checkinReservationDetails');
+				customizeStylesBasedOnUrlTyppe();
+			} else {
+				$state.go('checkinConfirmation'); //checkin starting -> page precheckin + auto checkin
+			}
+		};
 
 		if (typeof reservationAndhotelData.accessToken !== "undefined") {
 			$rootScope.accessToken = reservationAndhotelData.accessToken;
@@ -230,7 +253,7 @@ sntGuestWeb.controller('homeController', ['$rootScope', '$scope', '$location', '
 		} else if (reservationAndhotelData.is_external_verification === "true") {
 			$state.go('externalVerification'); //external checkout URL
 		} else if (reservationAndhotelData.is_precheckin_only === 'true' && reservationAndhotelData.reservation_status === 'RESERVED' && (reservationAndhotelData.is_auto_checkin === 'true' || (reservationAndhotelData.is_sent_to_que === 'true' && !!reservationAndhotelData.zest_web_use_new_sent_to_que_action))) {
-			$state.go('checkinConfirmation'); //checkin starting -> page precheckin + auto checkin
+			navigatePageBasedOnUrlAndType();
 		} else if (reservationAndhotelData.is_precheckin_only === 'true' && reservationAndhotelData.reservation_status === 'RESERVED' && (reservationAndhotelData.is_sent_to_que === 'true')) {
 			$state.go('preCheckinTripDetails'); // only available for Fontainbleau -> precheckin + sent to que
 		} else if ($rootScope.isCheckedin) {

@@ -7,17 +7,13 @@ module.exports = {
 				filename: roverJsListRoot + 'diaryJsAssetList.js',
 				babelify: false
 			},
-			'rover.todo': {
-				filename: roverJsListRoot + 'todoJsAssetList.js',
-				babelify: true
-			},
 			'rover.dashboard': {
 				filename: roverJsListRoot + 'dashboardJsAssetList.js',
 				babelify: false
 			},
 			'rover.reservation': {
 				filename: roverJsListRoot + 'stayCardJsAssetList.js',
-				babelify: false
+				babelify: true
 			},
 			'rover.availability': {
 				filename: roverJsListRoot + 'availabilityJsAssetList.js',
@@ -50,7 +46,7 @@ module.exports = {
 			},
 			'rover.financials': {
 				filename: roverJsListRoot + 'financialsJsAssetList.js',
-				babelify: false
+				babelify: true
 			},
 			'postcharge': {
 				filename: roverJsListRoot + 'postChargeJsAssetList.js',
@@ -127,7 +123,15 @@ module.exports = {
 			'rover.overbooking': {
 				filename: roverJsListRoot + 'overBookingJsAssetList.js',
 				babelify: false
-			}
+			},
+			'rover.guestcardsearch': {
+				filename: roverJsListRoot + 'guestCardSearchJsAssetList.js',
+				babelify: false
+			},
+			'rover.guestcarddetails': {
+				filename: roverJsListRoot + 'guestCardDetailsJsAssetList.js',
+				babelify: true
+			}			
 		};
 	}
 };

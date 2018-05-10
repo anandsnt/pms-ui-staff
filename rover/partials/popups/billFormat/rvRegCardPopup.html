@@ -1,0 +1,29 @@
+<div role="dialog" id="modal" class="modal-show" ng-class="{'modal-show': !modalClosing}" ng-cloak ng-click="clearErrorMessage();">
+
+<div class="modal-content form format-bill">
+    <button id="modal-close" type="button"><span class="icons icon-close invert" ng-click="closeDialog()"></button>
+
+    <strong class="h2 message">Registration Card</strong>
+
+    <!-- Show this part when languages are available  -->
+    <div class="entry full-width" >
+        <label for="languages">Language</label>
+        <div  class="select">
+            <select convert-to-number iscroll-stop-propagation ng-model="regCardData.selectedLocale">
+                <option style="display:none" value=""></option>
+                <option value="{{item.code}}" ng-repeat="item in languageData.languages"
+                    ng-selected="item.code === regCardData.selectedLocale"
+                    >{{item.language}}</option>
+            </select>
+        </div>
+    </div>
+
+    <div class="actions">
+        <button type="button" class="button with-icon blue" ng-click="printRegistrationCard()">
+            <span class="icons icon-print"></span>
+            Print
+        </button>
+        <button type="button" class="button with-icon blank inline" ng-click="closeDialog()">Cancel</button>
+    </div>
+</div>
+</div>

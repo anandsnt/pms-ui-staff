@@ -272,7 +272,7 @@ angular.module('sntRover').controller('rvGroupRoomBlockCtrl', [
             return hasScopeItems &&
                 !! $scope.roomtype_rate.can_edit &&
                 ! $scope.groupConfigData.summary.rate !== -1 &&
-                $scope.roomtype_rate.rate_config.single_rate === null;
+                !$scope.roomtype_rate.rate_config.is_single_rate_configured;
         };
 
         /**
@@ -284,7 +284,7 @@ angular.module('sntRover').controller('rvGroupRoomBlockCtrl', [
             return hasScopeItems &&
                 !! $scope.roomtype_rate.can_edit &&
                 ! $scope.groupConfigData.summary.rate !== -1 &&
-                $scope.roomtype_rate.rate_config.double_rate === null;
+                !$scope.roomtype_rate.rate_config.is_double_rate_configured;
         };
 
 		/**
@@ -311,8 +311,8 @@ angular.module('sntRover').controller('rvGroupRoomBlockCtrl', [
 
                 return list_of_triples.length > 0;
             } else {
-                return typeof roomType.rate_config.extra_adult_rate === 'number' &&
-						typeof roomType.rate_config.double_rate === 'number';
+                return roomType.rate_config.is_extra_adult_rate_configured &&
+						roomType.rate_config.is_double_rate_configured;
             }
         };
 
@@ -337,8 +337,8 @@ angular.module('sntRover').controller('rvGroupRoomBlockCtrl', [
 
                 return list_of_quadruples.length > 0;
             } else {
-                return typeof roomType.rate_config.extra_adult_rate === 'number' &&
-						typeof roomType.rate_config.double_rate === 'number';
+                return roomType.rate_config.is_extra_adult_rate_configured &&
+						roomType.rate_config.is_double_rate_configured;
             }
         };
 
@@ -2231,6 +2231,27 @@ angular.module('sntRover').controller('rvGroupRoomBlockCtrl', [
 
 
         }());
+
+        /**
+         * Checks whether the tripple button should be shown or not
+         */
+        $scope.shouldShowAddTrippleButton = function (roomTypeRate) {
+            var showTrippleBtn = $scope.groupConfigData.summary.rate == -1 && roomTypeRate.can_edit && roomTypeRate.rate_config.is_extra_adult_rate_configured &&
+                                 !$scope.shouldShowTripleEntryRow(roomTypeRate);
+
+            return showTrippleBtn;
+        };
+
+        /**
+         * Checks whether the quadruple button should be shown or not
+         */
+        $scope.shouldShowAddQuadrupleButton = function (roomTypeRate) {
+            var showQuadrupleBtn = $scope.groupConfigData.summary.rate == -1 && roomTypeRate.can_edit && 
+                                   roomTypeRate.rate_config.is_extra_adult_rate_configured &&
+                                   !$scope.shouldShowQuadrupleEntryRow(roomTypeRate) && $scope.shouldShowTripleEntryRow(roomTypeRate);                                  
+
+            return showQuadrupleBtn;
+        };
 
 
     }

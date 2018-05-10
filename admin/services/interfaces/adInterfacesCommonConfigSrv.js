@@ -86,5 +86,52 @@ admin.service('adInterfacesCommonConfigSrv', ['$http', '$q', 'ADBaseWebSrvV2', '
             return deferred.promise;
         };
 
+        service.countryList = [];
+        service.currencyList = [];
+
+        service.fetchCountryList = function() {
+            var deferred = $q.defer();
+            var url = '/ui/country_list.json';
+
+            if (service.countryList.length) {
+                deferred.resolve(service.countryList);
+            } else {
+                ADBaseWebSrvV2.getJSON(url).then(function(countyList) {
+                    // change key names for the select box directive
+                    _.each(countyList, function(country) {
+                        country.name = country.value;
+                        country.value = country.id;
+                    });
+                    service.countryList = countyList;
+                    deferred.resolve(countyList);
+                }, function(data) {
+                    deferred.reject(data);
+                });
+            }
+            return deferred.promise;
+        };
+
+        service.fetchCurrencyList = function() {
+            var deferred = $q.defer();
+            var url = '/ui/currency_list';
+            
+            if (service.countryList.length) {
+                deferred.resolve(service.currencyList);
+            } else {
+                ADBaseWebSrvV2.getJSON(url).then(function(currencyList) {
+                    // change key names for the select box directive
+                    _.each(currencyList, function(currency) {
+                        currency.name = currency.code;
+                        currency.value = currency.id;
+                    });
+                    service.currencyList = currencyList;
+                    deferred.resolve(currencyList);
+                }, function(data) {
+                    deferred.reject(data);
+                });
+            }
+            return deferred.promise;
+        };
+
     }
 ]);

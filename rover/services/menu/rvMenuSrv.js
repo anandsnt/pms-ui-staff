@@ -177,6 +177,10 @@ angular.module('sntRover').service('rvMenuSrv',
 		            action: "rover.financials.journal({ id: 'CASHIER' })",
 		            menuIndex: "cashier"
 		        }, {
+		            title: "MENU_GUESTS",
+		            action: "rover.guest.search",
+		            menuIndex: "guests"
+		        }, {
 		            title: "MENU_ACCOUNTS",
 		            action: "rover.accounts.search",
 		            menuIndex: "accounts"
@@ -297,6 +301,10 @@ angular.module('sntRover').service('rvMenuSrv',
 		            title: "MENU_COMMISIONS",
 		            action: "rover.financials.commisions",
 		            menuIndex: "commisions"
+		        }, {
+		            title: "MENU_INVOICE_SEARCH",
+		            action: "rover.financials.invoiceSearch",
+		            menuIndex: "invoiceSearch"
 		        }]
             }, {
                 title: "MENU_ACTIONS_MANAGER",
@@ -306,7 +314,7 @@ angular.module('sntRover').service('rvMenuSrv',
                 submenu: []
             }, {
 		        title: "MENU_REPORTS",
-		        action: "rover.reports",
+		        action: "rover.reports.dashboard",
 		        menuIndex: "reports",
 		        iconClass: "icon-reports",
 		        submenu: []
@@ -345,7 +353,7 @@ angular.module('sntRover').service('rvMenuSrv',
 			},
 			{
 				title: "MENU_REPORTS",
-				action: "rover.reports",
+				action: "rover.reports.dashboard",
 				menuIndex: "reports",
 				iconClass: "icon-reports",
 				submenu: []

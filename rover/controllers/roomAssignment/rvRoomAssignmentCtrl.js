@@ -57,6 +57,11 @@ sntRover.controller('RVroomAssignmentController', [
 	$scope.roomAssgnment.inProgress = false;
 	$scope.roomTransfer = {};
 	$scope.isRoomLockedForThisReservation = $stateParams.cannot_move_room;
+
+	// CICO-47546 Overbooking selection flag
+	$scope.overbooking = {
+		isOpted: false
+	};
 	/**
 	* function to to get the rooms based on the selected room type
 	*/
@@ -204,7 +209,7 @@ sntRover.controller('RVroomAssignmentController', [
 						className: 'ngdialog-theme-default',
 						scope: $scope
 					});
-				} else {
+				} else {					
 					ngDialog.open({
 						template: '/assets/partials/roomAssignment/rvOverBookRoom.html',
 						controller: 'RVOverBookRoomDialogController',
@@ -634,12 +639,21 @@ sntRover.controller('RVroomAssignmentController', [
 		}
 	};
 
-	/**
-	* function to go back to reservation details
-	*/
-	$scope.backToStayCard = function() {
-		$state.go("rover.reservation.staycard.reservationcard.reservationdetails", {id: $scope.reservationData.reservation_card.reservation_id, confirmationId: $scope.reservationData.reservation_card.confirmation_num, isrefresh: false, isOnlineRoomMove: isOnlineRoomMove, isKeySystemAvailable: isKeySystemAvailable});
-	};
+        /**
+         * function to go back to reservation details
+         */
+        $scope.backToStayCard = function() {
+            $state.go(
+                'rover.reservation.staycard.reservationcard.reservationdetails',
+                {
+                    id: $scope.reservationData.reservation_card.reservation_id,
+                    confirmationId: $scope.reservationData.reservation_card.confirmation_num,
+                    isrefresh: true,
+                    isOnlineRoomMove: isOnlineRoomMove,
+                    isKeySystemAvailable: isKeySystemAvailable
+                });
+        };
+
 	/**
 	* function to show and hide the filters view
 	*/

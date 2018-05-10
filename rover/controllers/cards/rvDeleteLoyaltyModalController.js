@@ -15,6 +15,7 @@ sntRover.controller('rvDeleteLoyaltyModalController', ['$scope', '$rootScope', '
 			var successCallbackDeleteLoyalty = function() {
 				$scope.loyaltyProgramDeleted($scope.loaytyID, $scope.loyaltyIndexToDelete, $scope.loyaltyProgramToDelete);
 				$rootScope.$broadcast('loyaltyProgramDeleted', $scope.loaytyID, $scope.loyaltyIndexToDelete, $scope.loyaltyProgramToDelete);
+				$scope.$emit('REFRESH_CONTACT_INFO', {guestId: $scope.$parent.guestCardData.userId});
 				$scope.dimissLoaderAndDialog();
 			};
 			var errorCallbackDeleteLoyalty = function(error) {

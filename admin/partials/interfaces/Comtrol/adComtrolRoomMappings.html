@@ -36,6 +36,15 @@
                                     label="{{'EXTERNAL_ROOM' | translate}}"
                                     required="yes"
                                     placeholder="{{'EXTERNAL_ROOM_PLACEHOLDER' | translate}}"></ad-textbox>
+                        <ad-dropdown-name label-in-drop-down="{{'SELECT_ACCESS_LEVEL_PLACEHOLDER' | translate}}"
+                                          savemodel="state.new.external_access_level"
+                                          valueproperty="id"
+                                          label-properties="['id', 'value']"
+                                          required="yes"
+                                          list="state.accessLevels"
+                                          label="{{'ACCESS_LEVEL' | translate}}"
+                                          class="full-width">
+                        </ad-dropdown-name>
                     </fieldset>
                     <fieldset class="holder right float">
                         <ad-textbox styleclass="full-width" value="state.new.external_extension"
@@ -49,8 +58,8 @@
                             CANCEL
                         </button>
                         <button type="button" ng-click="onSave()" class="button green edit-data-inline"
-                                ng-class="{'grey' : state.new.room_no == '' || state.new.external_room == '' || state.new.external_extension == ''}"
-                                ng-disabled="state.new.room_no == '' || state.new.external_room == '' || state.new.external_extension == ''"
+                                ng-class="{'grey' : state.new.room_no == '' || state.new.external_room === '' || state.new.external_extension === '' || state.new.external_access_level === ''}"
+                                ng-disabled="state.new.room_no === '' || state.new.external_room === '' || state.new.external_extension === '' || state.new.external_access_level === ''"
                                 translate>
                             SAVE_CHANGES
                         </button>
@@ -87,9 +96,14 @@
                         <a class="edit-data-inline">{{mapping.external_room}}</a>
                     </td>
 
-                    <td data-item="2" data-title="'External Extension'" ng-click="onSelect($index, mapping)"
+                    <td data-item="3" data-title="'External Extension'" ng-click="onSelect($index, mapping)"
                         header-class="width-30" ng-hide="state.selected === $index">
                         <a class="edit-data-inline">{{mapping.external_extension}}</a>
+                    </td>
+
+                    <td data-item="4" data-title="'Station Access Level'" ng-click="onSelect($index, mapping)"
+                        header-class="width-30" ng-hide="state.selected === $index">
+                        <a class="edit-data-inline">{{mapping.external_access_level}} - {{getAccessLevelName(mapping.external_access_level)}}</a>
                     </td>
 
                     <td header-class="width-10" data-title="'Delete'" class="delete"
@@ -128,6 +142,15 @@
                                                     label="{{'EXTERNAL_ROOM' | translate}}"
                                                     required="yes"
                                                     placeholder="{{'EXTERNAL_ROOM_PLACEHOLDER' | translate}}"></ad-textbox>
+                                        <ad-dropdown-name label-in-drop-down="{{'SELECT_ACCESS_LEVEL_PLACEHOLDER' | translate}}"
+                                                          savemodel="mapping.external_access_level"
+                                                          valueproperty="id"
+                                                          label-properties="['id', 'value']"
+                                                          required="yes"
+                                                          list="state.accessLevels"
+                                                          label="{{'ACCESS_LEVEL' | translate}}"
+                                                          class="full-width">
+                                        </ad-dropdown-name>
                                     </fieldset>
                                     <fieldset class="holder right float">
                                         <ad-textbox styleclass="full-width" value="mapping.external_extension"
@@ -143,8 +166,8 @@
                                         </button>
                                         <button type="button" ng-click="onUpdate(mapping)"
                                                 class="button green edit-data-inline"
-                                                ng-class="{'grey' : mapping.room_no == '' || mapping.external_room == '' || mapping.external_extension == ''}"
-                                                ng-disabled="mapping.room_no == '' || mapping.external_room == '' || mapping.external_extension == ''"
+                                                ng-class="{'grey' : mapping.room_no === '' || mapping.external_room === '' || mapping.external_extension === '' || mapping.external_access_level === ''}"
+                                                ng-disabled="mapping.room_no === '' || mapping.external_room === '' || mapping.external_extension === '' || mapping.external_access_level === ''"
                                                 translate>
                                             SAVE_CHANGES
                                         </button>

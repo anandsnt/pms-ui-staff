@@ -270,29 +270,35 @@ angular.module('sntRover').controller('stayCardMainCtrl', ['$rootScope', '$scope
 				activeScreen: 'STAY_CARD'
 			};
 
-			// group details fetch
-			var paramsForGroupDetails = {
-				groupId: groupId
-			};
+			// CICO-49183
+			if (!!groupId) {
+				// group details fetch
+				var paramsForGroupDetails = {
+					groupId: groupId
+				};
 
-			promises.push(rvGroupConfigurationSrv
-				.getGroupSummary(paramsForGroupDetails)
-				.then(successCallbackOfGroupDetailsFetch)
-			);
+				promises.push(rvGroupConfigurationSrv
+					.getGroupSummary(paramsForGroupDetails)
+					.then(successCallbackOfGroupDetailsFetch)
+				);
 
-			// reservation list fetch
-			var paramsForHoldListFetch = {
-				is_group: true
-			};
+				// reservation list fetch
+				var paramsForHoldListFetch = {
+					is_group: true
+				};
 
-			promises.push(rvGroupConfigurationSrv
-				.getHoldStatusList(paramsForHoldListFetch)
-				.then(successCallBackOfGroupHoldListFetch)
-			);
+				promises.push(rvGroupConfigurationSrv
+					.getHoldStatusList(paramsForHoldListFetch)
+					.then(successCallBackOfGroupHoldListFetch)
+				);
 
-			// Lets start the processing
-			$q.all(promises)
-				.then(successFetchOfAllReqdForGroupDetailsShowing, failedToFetchOfAllReqdForGroupDetailsShowing);
+				// Lets start the processing
+				$q.all(promises)
+					.then(successFetchOfAllReqdForGroupDetailsShowing, failedToFetchOfAllReqdForGroupDetailsShowing);
+
+			}
+
+			
 		};
 
 		/**
@@ -743,7 +749,7 @@ angular.module('sntRover').controller('stayCardMainCtrl', ['$rootScope', '$scope
 				$scope.reservationData.travelAgent.name = cardData.account_name;
 			}
 
-			var onReplaceSuccess = function() {
+			var onReplaceSuccess = function(data) {
 					$scope.cardRemoved(card);
 					$scope.cardReplaced(card, cardData);
 
@@ -752,7 +758,9 @@ angular.module('sntRover').controller('stayCardMainCtrl', ['$rootScope', '$scope
 					if (!!$scope.viewState.lastCardSlot && !!$scope.viewState.lastCardSlot.cardType && card !== $scope.viewState.lastCardSlot.cardType) {
 						$scope.removeCard($scope.viewState.lastCardSlot.cardType, $scope.viewState.lastCardSlot.cardId, true);
 					}
-
+					if (card === 'travel_agent') {
+						$scope.$broadcast('travelagentcardreplaced', data.data);
+					}
 					$scope.viewState.lastCardSlot = "";
 					$scope.$emit('hideLoader');
 					$scope.newCardData = cardData;
@@ -837,8 +845,7 @@ angular.module('sntRover').controller('stayCardMainCtrl', ['$rootScope', '$scope
 				} else {
 					$state.go('rover.reservation.staycard.reservationcard.reservationdetails', {
 						"id": typeof $stateParams.id === "undefined" ? $scope.reservationData.reservationId : $stateParams.id,
-						"confirmationId": $stateParams.confirmationId,
-						"isrefresh": false
+						"confirmationId": $stateParams.confirmationId
 					});
 				}
 			}
@@ -877,6 +884,7 @@ angular.module('sntRover').controller('stayCardMainCtrl', ['$rootScope', '$scope
 				$scope.reservationData.travelAgent.id = "";
 				$scope.reservationDetails.travelAgent.id = "";
 				$scope.reservationDetails.travelAgent.futureReservations = 0;
+				$scope.$broadcast('travelagentcardremoved');
 			}
 
 

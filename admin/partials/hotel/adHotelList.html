@@ -29,7 +29,7 @@
 							<td data-title="'Reservation Import'" class="activate long" header-class="width-40">
 								<div class="entry" ng-show="hotel.is_external_pms_available ==='true'">
 									<label for="reservation-import-1"></label>
-									<div class="switch-button single" ng-class="{ on : hotel.is_res_import_on == 'true' }" ng-click="toggleClicked(hotel)">
+									<div class="switch-button single" ng-class="{ on : hotel.is_res_import_on }" ng-click="toggleClicked(hotel)">
 										<input type="checkbox" name="reservation-import" id="reservation-import-1">
 										<span class="switch-icon"></span>
 									</div>

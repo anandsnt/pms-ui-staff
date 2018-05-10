@@ -7,7 +7,7 @@
 </div>
 <!-- Report content -->
 <!-- add .with-pagination if has pagination -->
-<div id="report-content" class="report-content statistics books" ng-hide="hasNoResults" ng-controller="RVBusinessOnBooksController" ng-class="{'with-pagination' : totalCount >businessOnBooksPagination.perPage}">
+<div id="report-content" class="report-content statistics books" ng-hide="hasNoResults" ng-controller="RVBusinessOnBooksController" ng-class="{'with-pagination' : totalCount >paginationConfig.perPage}">
     <!-- Left side - table legend. Number of list items here should be identical to the number of table rows on the right side  -->
     <div class="statistics-headings">
         <!-- Attach iscroll here, should scroll vertically. While scrolling it should update iscoll on the right side as well -->
@@ -108,5 +108,5 @@
         </div>
     </div>
 </div>
-<rv-pagination  page-options="paginationConfig" page-data="totalCount" ng-if="showReportDetails">
+<rv-pagination  page-options="paginationConfig" page-data="totalCount">
 </rv-pagination>

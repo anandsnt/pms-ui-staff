@@ -38,8 +38,6 @@
 
 			<ad-checkbox is-disabled="editData.value == 'CC'" is-checked="editData.is_web_only" label="{{ 'WEB_ONLY' | translate}}" div-class="full-width" change="webOnlyChanged()"></ad-checkbox>
 
-			<ad-checkbox is-disabled="editData.value == 'CC'" is-checked="editData.is_display_reference" label="{{ 'DISPLAY_REFERENCE' | translate}}" div-class="full-width"></ad-checkbox>
-
 			<div class="entry radio-check " ng-hide="editData.value == 'CC' && !isEditCC" ng-if="isStandAlone">
                 <label class="checkbox">
                     <span class="icon-form icon-checkbox" ng-class="{'checked': editData.restrict_post}"></span>

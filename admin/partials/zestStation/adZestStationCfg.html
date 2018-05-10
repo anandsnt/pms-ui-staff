@@ -21,14 +21,14 @@
                     <h3><span translate>ACTIVATE_BOOKING_ENGINE_POPUP</span> </h3>
                 </div>
                 <ad-toggle-button is-checked="zestSettings.home_screen.booking_pop_up.enable_pop_up" label="{{'ACTIVATE_BOOKING_ENGINE_POPUP'| translate}}" div-class="full-width"></ad-toggle-button>
-                <ad-textbox value="zestSettings.home_screen.booking_pop_up.booking_engine_url" name="zest-web" id="zest-web" label="{{'BOOKING_URL'| translate}}" placeholder="" styleclass="full-width" ng-hide="!zestSettings.home_screen.booking_pop_up.enable_pop_up"></ad-textbox>
+                <ad-textbox value="zestSettings.home_screen.booking_pop_up.booking_engine_url" name="zest-web" id="zest-web" label="{{'BOOKING_URL'| translate}}" placeholder="" styleclass="full-width" ng-show="zestSettings.home_screen.booking_pop_up.enable_pop_up"></ad-textbox>
             </fieldset>
             <fieldset class="holder left">
                 <div class="form-title full-width">
                     <h3><span translate> STATION_LANGUAGE_SUPPORT</span> </h3>
                 </div>
                 <ad-toggle-button is-checked="zestSettings.zest_lang.enabled" label="{{'STATION_LANGUAGE_SUPPORT_SWITCH'| translate}}" div-class=""></ad-toggle-button>
-                <ad-dropdown ng-click="updateDefaultLanguageDropdown()" label="{{'STATION_LANGUAGE_DEFAULT' | translate}}" label-in-drop-down="{{'STATION_LANGUAGE_DEFAULT_PLACEHOLDER' | translate}}" list="enabledLangs" savemodel="zestSettings.zest_lang.default_language" valueproperty="value" property="name" selected-Id='zestSettings.zest_lang.default_language' required='no' selbox-class='placeholder' div-class="{{defaultLangsDivClass}}"></ad-dropdown>
+                <ad-dropdown  label="{{'STATION_LANGUAGE_DEFAULT' | translate}}" label-in-drop-down="{{'STATION_LANGUAGE_DEFAULT_PLACEHOLDER' | translate}}" list="enabledLangs" savemodel="zestSettings.zest_lang.default_language" valueproperty="value" property="name" selected-Id='zestSettings.zest_lang.default_language' required='no' selbox-class='placeholder' div-class="{{defaultLangsDivClass}}"></ad-dropdown>
                 <!-- english -->
                 <div class="entry full-width station-language-entry">
                     <ad-checkbox on-click="updateDefaultLanguageDropdown()" is-checked="zestSettings.zest_lang.English" label="{{ 'STATION_LANGUAGE_ENGLISH' | translate}}"></ad-checkbox>
@@ -119,7 +119,7 @@
                             <input type="file" ng-model="zestSettings.zest_lang.castellano_translations_file" accept="*" app-filereader emit-data="italian_translations_file" />
                             <button type="button" class="button brand-colors">{{'STATION_LANGUAGE_ATTACH_FILE' | translate}}</button>
                             <button type="button" class="button download-arrow icons " ng-click="downloadLang('cl')" ng-show="hasFileUpdatedOrUploading('castellano')"></button>
-                            <button type="button" ng-show="hasFileUpdatedOrUploading('castellano')" class="button download-arrow icons right " ng-click="editLang('cs')">
+                            <button type="button" ng-show="hasFileUpdatedOrUploading('castellano')" class="button download-arrow icons right " ng-click="editLang('cl')">
                                 <text ng-include="'/assets/cssimg/admin/adEditorIconSvg.svg'"></text>
                             </button>
                         </div>
@@ -184,6 +184,10 @@
                     <label class="radio" ng-class="{'checked':zestSettings.kiosk_key_creation_method == 'ingenico_infinea_key'}">
                         <span class="icon-form icon-radio " ng-class="{checked:zestSettings.kiosk_key_creation_method == 'ingenico_infinea_key'}"></span>
                         <input type="radio" value="ingenico_infinea_key" ng-model="zestSettings.kiosk_key_creation_method">{{ 'INGENICO_INFINEA_KEY' | translate}}
+                    </label>
+                    <label class="radio" ng-class="{'checked':zestSettings.kiosk_key_creation_method == 'manual'}">
+                        <span class="icon-form icon-radio " ng-class="{checked:zestSettings.kiosk_key_creation_method == 'manual'}"></span>
+                        <input type="radio" value="manual" ng-model="zestSettings.kiosk_key_creation_method">{{ 'MANUAL' | translate}}
                     </label>
                 </div>
                 <!-- Upload image for Key Creation In Progress Screen -->

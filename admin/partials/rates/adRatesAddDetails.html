@@ -97,6 +97,12 @@
                 </div>
             </div>
 
+            <div class="entry full-width" ng-show='is_edit'>
+                <button type="button" class="button" ng-class="{'blue':rateData.id !== null, 'grey': rateData.id === null }" ng-disabled="rateData.id === null" ng-click="clickedSyncButton()" translate>SYNC</button>
+                <span ng-if="rateData.id && rateData.last_sync_status && rateData.last_sync_at !== null" class="green">{{ 'SYNC_SUCCESS_MSG' | translate }} {{rateData.last_sync_at}}</span>
+                <span ng-if="rateData.id && !rateData.last_sync_status && rateData.last_sync_at !== null" class="red">{{ 'SYNC_ERROR_MSG' | translate }} {{rateData.last_sync_at}}</span>                                  
+            </div>
+
         </fieldset>
         <fieldset class="holder right" ng-class="{'overlay' : rateData.is_global_contract}">
             <ad-textarea rows="2" div-class="full-width" text-area-class="full-width rate_description" value="rateData.description" label="Description " placeholder="Enter Rate Description" required="true"></ad-textarea>
