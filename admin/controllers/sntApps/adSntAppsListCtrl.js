@@ -156,13 +156,14 @@ admin.controller('ADSntAppsListCtrl', ['$scope',
 
 				$scope.callAPI(adAppVersionsSrv.uploadBuild, {
 					params: params,
-					loader: 'NONE'
-				});
-				ngDialog.open({
-					template: '/assets/partials/sntApps/adUPloadInProgressPopup.html',
-					className: 'ngdialog-theme-default',
-					scope: $scope,
-					closeByDocument: false
+					successCallBack: function() {
+						ngDialog.open({
+							template: '/assets/partials/sntApps/adUPloadInProgressPopup.html',
+							className: 'ngdialog-theme-default',
+							scope: $scope,
+							closeByDocument: false
+						});
+					}
 				});
 			}
 		};
