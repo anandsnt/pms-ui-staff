@@ -2,10 +2,10 @@
 
 /* 1. COLORS
 ==========================================================*/
-    @brandColor:            #cea83a;
+    @brandColor:            #82b8c9;
     
     @textColor:             @black;
-    @backgroundColor:       #f4f4f4;
+    @backgroundColor:       #f0f0f0;
     
     @actionColor:           @white;
     @actionBackground:      @brandColor;
@@ -24,8 +24,8 @@
     @background: @backgroundColor;
     @backgroundSize: '';
     
-    @headerIconsColor:      @black;
-    @headerIconsActive:     @black;
+    @headerIconsColor:      @white;
+    @headerIconsActive:     @white;
 
     .icons { 
         &.icon-create-key {
@@ -48,30 +48,27 @@
     }
 
     .logo-svg{
-        background-image: url("../css/themes/alessandra/logo.svg");
+        background-image: url("../css/themes/pod/logo.svg");
         background-repeat: no-repeat;
         background-size: contain;
-        width: 143px;
-        height: 95px;
-        background-position: center; 
+        width: 191px;
+        height: 80px;
+        background-position: center;
     }
 
 /* 4. LAYOUT
 ==========================================================*/
     
-    #alessandra {
+    #pod {
  
         #header {
-            height: 135px;
-            background: @white;
+            height: 145px;
+            background: #da2b27;
         }
 
         #main {
-            #calc > #height > .remove(100%, 135px);
-            top: 135px;
-            &.centered {
-                padding-top: 0;
-            }
+            #calc > #height > .remove(100%, 145px);
+            top: 145px;
         }
         .entry.input {
             .icons {
@@ -96,7 +93,7 @@
 
             .logo {
                 width: auto;
-                height: 95px;
+                height: 80px;
             }
         }
 
@@ -178,6 +175,17 @@
         .popup {
             .icons {
                 fill: @white;
+            }
+        }
+
+        #selection {
+            &:not(.editable) {
+                li {
+                    .details {
+                        background: @brandColor;
+                        color: @white;
+                    }
+                }
             }
         }
     }
