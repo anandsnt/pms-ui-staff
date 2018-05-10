@@ -61,6 +61,16 @@ module.exports = function(config) {
             './controllers/**/*.js': ['babel'],
             './services/rateManager_/rvRateManagerCoreSrv.js': ['babel'],
             './partials/**/*.html': ['ng-html2js']
+        },
+
+        // start these browsers
+        // available browser launchers: https://npmjs.org/browse/keyword/karma-launcher
+        browsers: ['ChromeHeadlessNoSandbox'],
+        customLaunchers: {
+            ChromeHeadlessNoSandbox: {
+                base: 'ChromeHeadless',
+                flags: ['--no-sandbox']
+            }
         }
     }));
 };
