@@ -84,7 +84,13 @@ sntRover.controller('RVInvoiceSearchController',
 				$scope.invoiceSearchFlags.showFindInvoice = true;
 			}
 		};
-
+		/*
+		 * Update informational invoice flag
+		 * Based on checkbox in popup
+		 */
+	    $scope.$on("UPDATE_INFORMATIONAL_INVOICE", function(event, isInformationalInvoice) {
+	    	$scope.isInformationalInvoice = isInformationalInvoice;
+	    });
 		/*
 		 * Opens the popup which have the option to choose the bill layout while print/email
 		 * @param billNo boolean bill no
