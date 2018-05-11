@@ -129,7 +129,7 @@ sntRover.controller('RVInvoiceSearchController',
 		};
 
 		// print the page
-		var printBill = function(data) {
+		that.printBill = function(data) {
 			var printDataFetchSuccess = function(successData) {
 					if ($scope.invoiceSearchFlags.isClickedReservation) {
 						$scope.printData = successData;
@@ -194,7 +194,7 @@ sntRover.controller('RVInvoiceSearchController',
 		// print bill
 		$scope.clickedPrint = function(requestData) {
 			$scope.closeDialog();
-			printBill(requestData);
+			that.printBill(requestData);
 		};
 		/*
 		 * To send email
