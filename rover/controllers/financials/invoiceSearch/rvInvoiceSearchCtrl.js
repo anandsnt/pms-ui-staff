@@ -129,7 +129,7 @@ sntRover.controller('RVInvoiceSearchController',
 		};
 
 		// print the page
-		this.printBill = function(data) {
+		that.printBill = function(data) {
 			var printDataFetchSuccess = function(successData) {
 					if ($scope.invoiceSearchFlags.isClickedReservation) {
 						$scope.printData = successData;
@@ -194,7 +194,7 @@ sntRover.controller('RVInvoiceSearchController',
 		// print bill
 		$scope.clickedPrint = function(requestData) {
 			$scope.closeDialog();
-			printBill(requestData);
+			that.printBill(requestData);
 		};
 		/*
 		 * To send email
@@ -218,7 +218,6 @@ sntRover.controller('RVInvoiceSearchController',
 				};
 
 			if ($scope.invoiceSearchFlags.isClickedReservation) {
-				console.log("----")
 				$scope.callAPI(RVBillCardSrv.sendEmail, options);				
 			} else {
 				$scope.callAPI(rvAccountsConfigurationSrv.emailInvoice, options);				

@@ -20,7 +20,7 @@ describe('RVInvoiceSearchController', function () {
             beforeEach(function () {
                 module('sntRover');
 
-                inject(function (_$controller_, _RVInvoiceSearchSrv_, _RVBillCardSrv_, _$q_, _$rootScope_, _rvAccountTransactionsSrv_ ,_rvAccountsConfigurationSrv_) {
+                inject(function (_$controller_, _RVInvoiceSearchSrv_, _RVBillCardSrv_, _$q_, _$rootScope_, _rvAccountTransactionsSrv_, _rvAccountsConfigurationSrv_) {
                     $controller = _$controller_;
                     RVInvoiceSearchSrv = _RVInvoiceSearchSrv_;
                     RVBillCardSrv = _RVBillCardSrv_;
@@ -39,7 +39,7 @@ describe('RVInvoiceSearchController', function () {
                     'refreshScroll': function() {
                         return true;
                     },
-                    'closeDialog' : function() {
+                    'closeDialog': function() {
                         return true;
                     }
                 });

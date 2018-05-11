@@ -44,7 +44,6 @@
     "gulp-util": "3.0.7",
     "imagemin-pngquant": "5.0.0",
     "jasmine-core": "^2.99.1",
-    "jasmine-fail-fast": "^2.0.0",
     "karma": "^2.0.2",
     "karma-babel-preprocessor": "^7.0.0",
     "karma-chrome-launcher": "^2.2.0",
@@ -62,7 +61,6 @@
     "yargs": "6.3.0"
   },
   "dependencies": {
-    "fail-fast": "^1.0.0",
     "fs-extra": "1.0.0",
     "imagemin-optipng": "5.2.1"
   },
