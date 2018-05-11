@@ -129,7 +129,7 @@ sntRover.controller('RVInvoiceSearchController',
 		};
 
 		// print the page
-		var printBill = function(data) {
+		this.printBill = function(data) {
 			var printDataFetchSuccess = function(successData) {
 					if ($scope.invoiceSearchFlags.isClickedReservation) {
 						$scope.printData = successData;

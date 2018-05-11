@@ -101,7 +101,7 @@ describe('RVInvoiceSearchController', function () {
                
             }); 
             // =================================================
-            // 
+
             describe('clickedEmail', function() {
 
                 const sampleData = {
@@ -116,7 +116,7 @@ describe('RVInvoiceSearchController', function () {
                     
                 });
 
-                it('clickedEmail method should call send mail method of accounts if clicked posting account call reservation mail if it is reservation', function() {
+                it('clickedEmail method should call send mail method of accounts if clicked posting account, call reservation mail if it is reservation', function() {
                     
                     spyOn(RVBillCardSrv, "sendEmail").and.callFake(function() {
                         var deferred = $q.defer();
@@ -133,7 +133,7 @@ describe('RVInvoiceSearchController', function () {
 
                 });
 
-                it('clickedEmail method should call send mail method of accounts if clicked posting account call reservation mail if it is reservation', function() {
+                it('clickedEmail method should call send mail method of accounts if clicked posting account, call reservation mail if it is reservation', function() {
 
                     spyOn(rvAccountsConfigurationSrv, "emailInvoice").and.callFake(function() {
                         var deferred = $q.defer();
@@ -150,32 +150,49 @@ describe('RVInvoiceSearchController', function () {
 
                 });
             });
+            // =====================================
 
-           
+            describe('clickedPrint', function() {
 
+                beforeEach(function() {
+
+                    $scope.invoiceSearchFlags = {};
+                    
+                });
+
+                it('printBill method should ptint the correct data when clicked reservation', function() {
+                    
+                    spyOn(RVBillCardSrv, "fetchBillPrintData").and.callFake(function() {
+                        var deferred = $q.defer();
+
+                        deferred.resolve(results);
+                        return deferred.promise;
+                    });
+
+                    $scope.invoiceSearchFlags.isClickedReservation = true;
+
+                    rvInvoiceSearchController.printBill();
+
+                    expect(RVBillCardSrv.fetchBillPrintData).toHaveBeenCalled();
+
+                });
+
+                it('printBill method should ptint the correct data when clicked accounts', function() {
+
+                    spyOn(rvAccountTransactionsSrv, "fetchAccountBillsForPrint").and.callFake(function() {
+                        var deferred = $q.defer();
+
+                        deferred.resolve(results);
+                        return deferred.promise;
+                    });
+
+                    $scope.invoiceSearchFlags.isClickedReservation = false;
+
+                    rvInvoiceSearchController.printBill();
+
+                    expect(rvAccountTransactionsSrv.fetchAccountBillsForPrint).toHaveBeenCalled();
+
+                });
+            });
         });    
 });
-/*
-
-
-1
-2
-3
-4
-5
-6
-7
-8
-describe("Person toString() Test", function() {
-    it("calls the getName() function", function() {
-        var testPerson = new Person();
-        spyOn(testPerson, "getName");
-        testPerson.toString();
-        expect(testPerson.getName).toHaveBeenCalled();
-    });
-});
-
-
-https://www.htmlgoodies.com/html5/javascript/spy-on-javascript-methods-using-the-jasmine-testing-framework.html
-
-*/
