@@ -24,7 +24,7 @@ admin.service('adReportsSrv', ['$q', 'ADBaseWebSrvV2', 'adReportsFilterSrv', '$h
             canView: false,
             subTitle: "",
             title: "Client Usage"
-        },{
+        }, {
             key: "ENABLED_INTERFACES",
             desc: "Enabled Interface",
             canExport: true,
