@@ -26,15 +26,15 @@ describe('rvAddOverBookingDatePickerCtrl', function() {
 
     it('On selecting FROM date', function() {
         $scope.addOverBookingObj.type = 'FROM';
-        $scope.init();
-        $scope.setUpData();
+        that.init();
+        that.setUpData();
         expect($scope.date).toBe($scope.addOverBookingObj.fromDate);
     });
 
     it('On selecting TO date', function() {
         $scope.addOverBookingObj.type = 'TO';
-        $scope.init();
-        $scope.setUpData();
+        that.init();
+        that.setUpData();
         expect($scope.date).toBe($scope.addOverBookingObj.toDate);
     });
 });

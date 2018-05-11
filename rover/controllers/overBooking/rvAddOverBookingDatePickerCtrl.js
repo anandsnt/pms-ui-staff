@@ -2,7 +2,7 @@ angular.module('sntRover').controller('rvAddOverBookingDatePickerCtrl', ['$scope
 	var that = this;
 
 	// Init values
-	$scope.init = function() {
+	that.init = function() {
 		that.minDateSelected = moment(tzIndependentDate($rootScope.businessDate))
 					.format($rootScope.momentFormatForAPI),
 		that.type = $scope.addOverBookingObj.type;
@@ -17,7 +17,7 @@ angular.module('sntRover').controller('rvAddOverBookingDatePickerCtrl', ['$scope
 	};
 
     // Setup options.
-	$scope.setUpData = function() {
+	that.setUpData = function() {
 		$scope.dateOptions = {
 			changeYear: true,
 			changeMonth: true,
@@ -29,6 +29,6 @@ angular.module('sntRover').controller('rvAddOverBookingDatePickerCtrl', ['$scope
 		};
 	};
 
-	$scope.init();
-	$scope.setUpData();
+	that.init();
+	that.setUpData();
 }]);
