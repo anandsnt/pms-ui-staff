@@ -113,7 +113,11 @@ angular.module('sntRover').controller('stayCardMainCtrl', ['$rootScope', '$scope
 
             // Handles cases where Guest with email is replaced with a Guest w/o an email address!
             $scope.otherData.isGuestPrimaryEmailChecked = !!(data.email && data.email.length > 0);
-            data.stayCount = $scope.guestCardData && $scope.guestCardData.contactInfo && $scope.guestCardData.contactInfo.stayCount;
+
+            if (!data.stayCount) {
+            	data.stayCount = $scope.guestCardData && $scope.guestCardData.contactInfo && $scope.guestCardData.contactInfo.stayCount;
+            }
+            
             //	CICO-9169
             contactInfoData = {
                 'contactInfo': data,
