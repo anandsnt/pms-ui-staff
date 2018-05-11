@@ -34,7 +34,6 @@
         "module": false,
         "inject": false
     },
-    "installedESLint":true,
     "parserOptions":{
         "ecmaFeatures":{
             "experimentalObjectRestSpread":true,
