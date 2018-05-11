@@ -91,6 +91,7 @@ sntRover.controller('RVInvoiceSearchController',
 		var updateInformationalInvoiceListener = $scope.$on("UPDATE_INFORMATIONAL_INVOICE", function(event, isInformationalInvoice) {
 			$scope.isInformationalInvoice = isInformationalInvoice;
 		});
+		
 		/*
 		 * Opens the popup which have the option to choose the bill layout while print/email
 		 * @param billNo boolean bill no
