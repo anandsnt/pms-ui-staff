@@ -15,8 +15,9 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
     'RVReportPaginationIdsConst',
     '$state',
     '$log',
+    'ngDialog',
     function ($rootScope, $scope, payload, reportsSrv, reportsSubSrv, reportUtils, reportParams, reportMsgs,
-              reportNames, $filter, $timeout, util, rvPermissionSrv, reportPaginationIds, $state, $log) {
+              reportNames, $filter, $timeout, util, rvPermissionSrv, reportPaginationIds, $state, $log, ngDialog) {
         var isNotTimeOut = false;
         var timeOut;
         var listTitle = $filter('translate')('STATS_&_REPORTS_TITLE');
@@ -2141,7 +2142,12 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
                     && $state.current.name !== 'rover.reports.inbox'
                     // flag to decide whether its paginated response or not, configured from rvReportsSubSrv.js
                     && !response.isPaginatedResponse) {
-                    $state.go('rover.reports.inbox');
+                    $scope.$emit('hideLoader');
+                    ngDialog.open( {
+                        template: '/assets/partials/reports/backgroundReports/rvReportGenerationStatusPopup.html',
+                        scope: $scope,
+                        closeByDocument: true
+                    });
                     return;
                 }
                 
@@ -2636,6 +2642,17 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
                 collision: 'flip'
             }
         }, autoCompleteForGrp);
+
+        // Closes the dialog
+        $scope.closeDialog = () => {
+            ngDialog.close();
+        };
+
+        // Navigate to reports inbox
+        $scope.navigateToReportInbox = () => {
+            $scope.closeDialog();
+            $state.go('rover.reports.inbox');
+        };
 
 
         (function () {
