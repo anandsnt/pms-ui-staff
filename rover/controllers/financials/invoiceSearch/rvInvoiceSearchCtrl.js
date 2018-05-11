@@ -88,7 +88,7 @@ sntRover.controller('RVInvoiceSearchController',
 		 * Update informational invoice flag
 		 * Based on checkbox in popup
 		 */
-		$scope.$on("UPDATE_INFORMATIONAL_INVOICE", function(event, isInformationalInvoice) {
+		var updateInformationalInvoiceListener = $scope.$on("UPDATE_INFORMATIONAL_INVOICE", function(event, isInformationalInvoice) {
 			$scope.isInformationalInvoice = isInformationalInvoice;
 		});
 		/*
@@ -252,4 +252,6 @@ sntRover.controller('RVInvoiceSearchController',
 		};
 		
 		that.init();
+
+		$scope.$on('$destroy', updateInformationalInvoiceListener);
 }]);
