@@ -10,13 +10,12 @@ admin.controller('ADDevicesListCtrl', ['$scope', '$state', 'ngTableParams', 'adD
       getParams.sort_dir = getParams.sort_dir ? "asc" : "desc";
       delete getParams.rate_type_id;
       
-      var findLatestAppversion = function(device) {
+      var findServiceType = function(device) {
         var serviceType = _.find($scope.filterList, function(filter) {
           return device.service_application_type_id === filter.id;
         });
-        var latestServiceVersion = serviceType ? serviceType.latest_build : '';
-
-        return latestServiceVersion;
+        
+        return serviceType;
       };
       
       var fetchSuccessOfItemList = function(data) {
@@ -34,14 +33,17 @@ admin.controller('ADDevicesListCtrl', ['$scope', '$state', 'ngTableParams', 'adD
             if (_.indexOf(_.pluck(appTypes, 'id'), device.service_application_type_id) === -1) {
               // if the service type not registered
               device.build_status = 'N/A';
-            } else if (device.build_status !== 'FAILED' && device.app_version !== findLatestAppversion(device)) {
+            } else if (device.build_status !== 'FAILED' && device.app_version !== findServiceType(device).latest_build) {
               // if the service upgrade version is not latest and upgrade didn't failed
               device.build_status = 'PENDING';
-            } else if (device.app_version === findLatestAppversion(device)) {
+              device.service_type = findServiceType(device).value;
+            } else if (device.app_version === findServiceType(device).latest_build) {
               // if the app version is upto date
               device.build_status = 'SUCCESS';
+              device.service_type = findServiceType(device).value;
             } else {
               device.build_status = (device.build_status === 'FAILED') ? 'FAILED' : '';
+              device.service_type = findServiceType(device).value;
             }
           });
           $scope.data = data.results;

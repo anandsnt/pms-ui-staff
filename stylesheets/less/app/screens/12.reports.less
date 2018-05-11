@@ -1699,6 +1699,27 @@
 
                             &:first-child { padding-left: 0; }
                         }
+
+                        &[data-count] {
+                            position: relative;
+                            padding-right: 30px;
+
+                            &:before {
+                                content: attr(data-count);
+                                position: absolute;
+                                top: 8px;
+                                right: 10px;
+                                font-size: 12px;
+                                line-height: 20px;
+                                font-weight: 600;
+                                text-transform: uppercase;
+                                text-align: center;
+                                color: @white;
+                                background: @blue;
+                                .square(20px);
+                                #border-radius > .rounded(50%);
+                            }  
+                        }
                     }
                 }
             }
