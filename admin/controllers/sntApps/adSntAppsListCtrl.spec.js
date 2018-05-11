@@ -2,7 +2,6 @@ describe('ADSntAppsListCtrl', function() {
 
     var $controller,
         $scope = {},
-        adDebuggingSetupSrv,
         adAppVersionsSrv,
         appTypes,
         ngDialog,
@@ -20,9 +19,8 @@ describe('ADSntAppsListCtrl', function() {
             }]);
         });
 
-        inject(function(_$controller_, _$rootScope_, _adDebuggingSetupSrv_, _adAppVersionsSrv_, _$q_, _appTypes_, _ngDialog_) {
+        inject(function(_$controller_, _$rootScope_, _adAppVersionsSrv_, _$q_, _appTypes_, _ngDialog_) {
             $controller = _$controller_;
-            adDebuggingSetupSrv = _adDebuggingSetupSrv_;
             adAppVersionsSrv = _adAppVersionsSrv_;
             $q = _$q_;
             $scope = _$rootScope_.$new();
@@ -38,13 +36,18 @@ describe('ADSntAppsListCtrl', function() {
         $scope.errorMessage = '';
     });
 
+    var commonApiActions = function() {
+        var deferred = $q.defer();
+
+        deferred.resolve();
+        return deferred.promise;
+    };
+
     describe('Fetch Service versions', function() {
 
         beforeEach(function() {
             spyOn(adAppVersionsSrv, 'checkVersionStatus').and.callFake(function() {
-                var deferred = $q.defer();
-                deferred.resolve();
-                return deferred.promise;
+                commonApiActions();
             });
         });
 
@@ -55,8 +58,9 @@ describe('ADSntAppsListCtrl', function() {
                     response = [{
                         'id': 87,
                         'version': '1.5.0.3',
-                        'upload_status': 'PENDING',
+                        'upload_status': 'PENDING'
                     }];
+
                 deferred.resolve(response);
                 return deferred.promise;
             });
@@ -75,6 +79,7 @@ describe('ADSntAppsListCtrl', function() {
                         'version': '1.5.0.3',
                         'upload_status': 'SUCCESS'
                     }];
+
                 deferred.resolve(response);
                 return deferred.promise;
             });
@@ -88,6 +93,7 @@ describe('ADSntAppsListCtrl', function() {
     it('if app type is changed, fetch the list again with new params', function() {
         spyOn(adAppVersionsSrv, 'fetchAppVersions').and.callFake(function() {
             var deferred = $q.defer();
+
             deferred.resolve();
             return deferred.promise;
         });
@@ -108,9 +114,7 @@ describe('ADSntAppsListCtrl', function() {
 
         beforeEach(function() {
             spyOn(adAppVersionsSrv, 'uploadBuild').and.callFake(function() {
-                var deferred = $q.defer();
-                deferred.resolve();
-                return deferred.promise;
+                commonApiActions();
             });
 
             $scope.selectedApp = {
