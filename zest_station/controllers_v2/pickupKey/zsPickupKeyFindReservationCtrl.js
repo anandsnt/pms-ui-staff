@@ -20,11 +20,10 @@ sntZestStation.controller('zsPickupKeyFindReservationCtrl', [
 		$scope.setScreenIcon('key');
 		$scope.mode = 'LAST_NAME_ENTRY';
 		$scope.reservationParams = {
-			'last_name': 'AAAA',
-			'room_no': 'wv101'
+			'last_name': '',
+			'room_no': ''
 		};
-
-		var dismissKeyBoardActions = function () {
+		var dismissKeyBoardActions = function() {
 			$scope.hideKeyboardIfUp();
 			$scope.callBlurEventForIpad();
 			$scope.resetTime();
@@ -109,28 +108,41 @@ sntZestStation.controller('zsPickupKeyFindReservationCtrl', [
 			$state.go('zest_station.pickUpKeyDispense', stateParams);
 		};
 
-		var searchReservation = function() {
-			var checkoutVerificationSuccess = function(data) {
-				if (typeof data !== typeof undefined) {
-					$scope.reservation_id = data.reservation_id ? data.reservation_id : 'UNDEFINED';
-				}
-				if (data.is_checked_in) {
+
+		var validateCConFile = function(reservationData) {
+			$scope.mode = 'CC_ENTRY';
+
+			var onSuccess = function(response) {
+				if (reservationData.is_checked_in) {
 					var stateParams = {
-						'reservation_id': data.reservation_id,
+						'reservation_id': reservationData.reservation_id,
 						'room_no': $scope.reservationParams.room_no,
-						'first_name': data.first_name
+						'first_name': reservationData.first_name
 					};
 					if ($scope.zestStationData.check_in_collect_passport) {
-						fetchGuestDetails(data, stateParams);
+						fetchGuestDetails(reservationData, stateParams);
 					} else {
 						goToKeyDispense(stateParams);
 					}
 				} else {
-					if (!data.is_checked_in && data.guest_arriving_today) {
+					if (!reservationData.is_checked_in && reservationData.guest_arriving_today) {
 						fetchReservationDetailsForCheckingIn(data.reservation_id);
 					} else {
 						generalFailureActions();
 					}
+				}
+			};
+			$scope.creditCardNumberEntered = function() {
+				onSuccess({});
+			};
+		};
+
+		var searchReservation = function() {
+			var checkoutVerificationSuccess = function(data) {
+				if (!data.is_checked_in && !data.guest_arriving_today) {
+					generalFailureActions();
+				} else {
+					validateCConFile(data);
 				}
 			};
 			var params = {

@@ -87,21 +87,23 @@
             </ul>
         </nav>
     </div>
-    <span ng-include="'/assets/partials_v2/zsTabletFooter.html'"></span>
-</section>
-
-<!-- user has already checkout -->
-<section id="main" class="centered" role="main" ng-show="alreadyCheckedOut">
-    <div id="content">
+    <!-- CC -->
+    <div id="content" class="input-field-contents" ng-show="mode === 'CC_ENTRY'">
         <h1>
-            <text data-ng-bind-html="getTagValue('USER_CHECKED_OUT_ALRDY_HEADER')" editable-text="USER_CHECKED_OUT_ALRDY_HEADER"></text>
+            <text data-ng-bind-html="getTagValue('ENTER_LAST_CC_DIGITS')" editable-text="ENTER_LAST_CC_DIGITS"></text>
         </h1>
-        <h2 class="nocaps">
-            <text data-ng-bind-html="getTagValue('USER_CHECKED_OUT_ALRDY_SUB')" editable-text="USER_CHECKED_OUT_ALRDY_SUB"></text>
+        <h2>
+            <text data-ng-bind-html="getTagValue('ENTER_LAST_CC_DIGITS_INSTRUCTION')" editable-text="ENTER_LAST_CC_DIGITS_INSTRUCTION"></text>
         </h2>
-        <button type="button" class="button done-btn" click-touch="alreadyCheckedOutActions()">
-            <text data-ng-bind-html="getTagValue('USER_CHECKED_OUT_ALRDY_RTN')" editable-text="USER_CHECKED_OUT_ALRDY_RTN"></text>
-        </button>
+        <form method="post" class="form">
+            <div class="entry input">
+                <input type="tel" placeholder="{{ 'CC_PLACEHOLDER' | translate }}" ng-focus="showOnScreenKeyboard('credit-card')" click-touch="showOnScreenKeyboard('credit-card')" ng-model="creditCardNumber" enter-press="creditCardNumberEntered()" id="cc" ng-keydown="resetTime()" touch-press/>
+            </div>
+            <div class="entry action">
+                <button type="button" class="button" click-touch="creditCardNumberEntered()">
+                    <text data-ng-bind-html="getTagValue('NEXT_BTN')" editable-text="NEXT_BTN"></text>
+                </button>
+            </div>
+        </form>
     </div>
-    <span ng-include="'/assets/partials_v2/zsTabletFooter.html'"></span>
 </section>

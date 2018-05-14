@@ -635,6 +635,10 @@
    "PAYMENT": "PAYMENT",
 
    "CHECK_HANDLER_IS_RUNNING_MSG": "Please ensure that the Zest station Hanlder is running",
-   "HOW_WOULD_YOU_LIKE_TO_REFUND": "How Would You Like your Refund ?"
+   "HOW_WOULD_YOU_LIKE_TO_REFUND": "How Would You Like your Refund ?",
+
+   "ENTER_LAST_CC_DIGITS": "Enter 4 last digits",
+   "ENTER_LAST_CC_DIGITS_INSTRUCTION": "From the credit card used to book the reservation",
+   "CC_PLACEHOLDER": "4 Digits"
 
 }
