@@ -1108,7 +1108,10 @@ sntRover.controller('reservationActionsController', [
 		};
 
 		$scope.allowOverbook = function() { // check user permission for overbook_house
-			return rvPermissionSrv.getPermissionValue('OVERBOOK_HOUSE');
+            var hasOverBookHousePermission = rvPermissionSrv.getPermissionValue('OVERBOOK_HOUSE'),
+            hasOverBookRoomTypePermission = rvPermissionSrv.getPermissionValue('OVERBOOK_ROOM_TYPE');
+
+			return hasOverBookHousePermission && hasOverBookRoomTypePermission;
 		};
 
 		var promptReinstate = function(isAvailable, isSuite) {
@@ -1195,7 +1198,7 @@ sntRover.controller('reservationActionsController', [
 
 		var succesfullCallbackForEmailCancellation = function(data) {
 			$scope.$emit('hideLoader');
-			$scope.DailogeState.successMessage = data.message;
+			$scope.DailogeState.sisReinstateVisibleuccessMessage = data.message;
 			$scope.DailogeState.failureMessage = '';
 		};
 		var failureCallbackForEmailCancellation = function(error) {
