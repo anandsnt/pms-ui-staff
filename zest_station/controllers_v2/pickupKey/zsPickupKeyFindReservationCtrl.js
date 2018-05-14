@@ -20,9 +20,10 @@ sntZestStation.controller('zsPickupKeyFindReservationCtrl', [
 		$scope.setScreenIcon('key');
 		$scope.mode = 'LAST_NAME_ENTRY';
 		$scope.reservationParams = {
-			'last_name': '',
-			'room_no': ''
+			'last_name': 'AAAA',
+			'room_no': 'WV101'
 		};
+		$scope.creditCardNumber = '';
 		var dismissKeyBoardActions = function() {
 			$scope.hideKeyboardIfUp();
 			$scope.callBlurEventForIpad();
@@ -109,9 +110,8 @@ sntZestStation.controller('zsPickupKeyFindReservationCtrl', [
 		};
 
 
-		var validateCConFile = function(reservationData) {
-			$scope.mode = 'CC_ENTRY';
-
+		$scope.validateCConFile = function(reservationData) {
+			
 			var onSuccess = function(response) {
 				if (reservationData.is_checked_in) {
 					var stateParams = {
@@ -132,9 +132,14 @@ sntZestStation.controller('zsPickupKeyFindReservationCtrl', [
 					}
 				}
 			};
-			$scope.creditCardNumberEntered = function() {
-				onSuccess({});
+			var onFailure = function(){
+				$scope.mode = 'CC_MATCH_FAILED';
 			};
+			onFailure({});
+		};
+
+		$scope.reEnterCC =  function() {
+			$scope.mode = 'CC_ENTRY';
 		};
 
 		var searchReservation = function() {
@@ -142,7 +147,7 @@ sntZestStation.controller('zsPickupKeyFindReservationCtrl', [
 				if (!data.is_checked_in && !data.guest_arriving_today) {
 					generalFailureActions();
 				} else {
-					validateCConFile(data);
+					$scope.mode = 'CC_ENTRY';
 				}
 			};
 			var params = {
