@@ -1198,7 +1198,7 @@ sntRover.controller('reservationActionsController', [
 
 		var succesfullCallbackForEmailCancellation = function(data) {
 			$scope.$emit('hideLoader');
-			$scope.DailogeState.sisReinstateVisibleuccessMessage = data.message;
+			$scope.DailogeState.successMessage = data.message;
 			$scope.DailogeState.failureMessage = '';
 		};
 		var failureCallbackForEmailCancellation = function(error) {
