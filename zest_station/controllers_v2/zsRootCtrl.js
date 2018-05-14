@@ -10,7 +10,7 @@ sntZestStation.controller('zsRootCtrl', [
     'zsEventConstants',
     '$state', 'zsGeneralSrv', '$rootScope', 'ngDialog', '$sce',
     'zsUtilitySrv', '$translate', 'zsHotelDetailsSrv', 'cssMappings', 'hotelTranslations',
-    'zestStationSettings', '$timeout', 'zsModeConstants', 'hotelTimeData', 'hotelLanguages', '$filter', '$log', '$window', 'languages',
+    'zestStationSettings', '$timeout', 'zsModeConstants', 'hotelTimeData', 'hotelLanguages', '$filter', '$log', '$window', 'languages', 'defaultTranslations',
     function($scope,
 		zsEventConstants,
 		$state,
@@ -31,7 +31,8 @@ sntZestStation.controller('zsRootCtrl', [
 		$filter,
         $log,
         $window,
-        languages
+        languages,
+        defaultTranslations
         ) {
 
 
@@ -144,11 +145,16 @@ sntZestStation.controller('zsRootCtrl', [
             }
         };
 
-
         $scope.getTagValue = function(tag) {
             var currentLanguageCode = $scope.currentLanguageCode;
 
-            return $scope.tagInEdit.language[currentLanguageCode] ? $scope.tagInEdit.language[currentLanguageCode][tag] : '';
+            // check if the tag is present in the translation file,
+            // if not present use the default text in the master translation file.
+            if ($scope.tagInEdit.language[currentLanguageCode] && $scope.tagInEdit.language[currentLanguageCode][tag]) {
+                return $scope.tagInEdit.language[currentLanguageCode][tag];
+            } else {
+                return defaultTranslations[tag];
+            }
         };
 
 		/**
