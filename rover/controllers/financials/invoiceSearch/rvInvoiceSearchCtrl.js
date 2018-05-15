@@ -84,7 +84,14 @@ sntRover.controller('RVInvoiceSearchController',
 				$scope.invoiceSearchFlags.showFindInvoice = true;
 			}
 		};
-
+		/*
+		 * Update informational invoice flag
+		 * Based on checkbox in popup
+		 */
+		var updateInformationalInvoiceListener = $scope.$on("UPDATE_INFORMATIONAL_INVOICE", function(event, isInformationalInvoice) {
+			$scope.isInformationalInvoice = isInformationalInvoice;
+		});
+		
 		/*
 		 * Opens the popup which have the option to choose the bill layout while print/email
 		 * @param billNo boolean bill no
@@ -129,7 +136,7 @@ sntRover.controller('RVInvoiceSearchController',
 		};
 
 		// print the page
-		var printBill = function(data) {
+		that.printBill = function(data) {
 			var printDataFetchSuccess = function(successData) {
 					if ($scope.invoiceSearchFlags.isClickedReservation) {
 						$scope.printData = successData;
@@ -194,7 +201,7 @@ sntRover.controller('RVInvoiceSearchController',
 		// print bill
 		$scope.clickedPrint = function(requestData) {
 			$scope.closeDialog();
-			printBill(requestData);
+			that.printBill(requestData);
 		};
 		/*
 		 * To send email
@@ -246,4 +253,6 @@ sntRover.controller('RVInvoiceSearchController',
 		};
 		
 		that.init();
+
+		$scope.$on('$destroy', updateInformationalInvoiceListener);
 }]);
