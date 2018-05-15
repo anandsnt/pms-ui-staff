@@ -133,7 +133,7 @@ sntZestStation.controller('zsPickupKeyFindReservationCtrl', [
 				} else {
 					// if the reservation is not checked in, procced to checkin
 					if (!$scope.reservationData.is_checked_in && $scope.reservationData.guest_arriving_today) {
-						fetchDetailsForCheckingIn(data.reservation_id);
+						fetchDetailsForCheckingIn($scope.reservationData.reservation_id);
 					} else {
 						generalFailureActions();
 					}
@@ -169,7 +169,6 @@ sntZestStation.controller('zsPickupKeyFindReservationCtrl', [
 				}
 			};
 			var params = {
-				'checked_in': true,
 				'last_name': $scope.reservationParams.last_name,
 				'room_no': $scope.reservationParams.room_no + ''.replace(/\-/g, '') // adding '' to for non-str values
 			};
