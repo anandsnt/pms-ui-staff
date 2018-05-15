@@ -126,7 +126,7 @@ angular.module('sntRover').controller('stayCardMainCtrl', ['$rootScope', '$scope
                 // in case another reservation is created for the same guest
                 'userId': $scope.reservationDetails.guestCard.id || $scope.reservationData.guest.id,
                 'avatar': $scope.guestCardData.cardHeaderImage,
-                'guestId': null,
+                'guestId': $scope.reservationDetails.guestCard.id || $scope.reservationData.guest.id,
                 'vip': data.vip
             };
 
