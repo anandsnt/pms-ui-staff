@@ -155,6 +155,7 @@ sntZestStation.controller('zsPickupKeyFindReservationCtrl', [
 
 		$scope.reEnterCC = function() {
 			$scope.mode = 'CC_ENTRY';
+			$scope.focusInputField('credit-card');
 		};
 
 		var searchReservation = function() {
@@ -164,6 +165,7 @@ sntZestStation.controller('zsPickupKeyFindReservationCtrl', [
 					generalFailureActions();
 				} else {
 					$scope.mode = 'CC_ENTRY';
+					$scope.focusInputField('credit-card');
 				}
 			};
 			var params = {
