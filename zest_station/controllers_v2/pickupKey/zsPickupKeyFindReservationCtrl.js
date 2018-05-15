@@ -21,14 +21,13 @@ sntZestStation.controller('zsPickupKeyFindReservationCtrl', [
 			$scope.setScreenIcon('key');
 			$scope.mode = 'LAST_NAME_ENTRY';
 			$scope.reservationParams = {
-				'last_name': 'AAAA',
-				'room_no': 'WV101'
+				'last_name': '',
+				'room_no': ''
 			};
 			$scope.creditCardNumber = '';
+			$scope.reservationData = {};
 		})();
 
-
-		var reservationData;
 		var dismissKeyBoardActions = function() {
 			$scope.hideKeyboardIfUp();
 			$scope.callBlurEventForIpad();
@@ -118,21 +117,22 @@ sntZestStation.controller('zsPickupKeyFindReservationCtrl', [
 		$scope.validateCConFile = function() {
 
 			var onCCVerificationSuccess = function(response) {
-				if (reservationData.is_checked_in) {
+				console.log($scope.reservationData);
+				if ($scope.reservationData.is_checked_in) {
 					var stateParams = {
-						'reservation_id': reservationData.reservation_id,
+						'reservation_id': $scope.reservationData.reservation_id,
 						'room_no': $scope.reservationParams.room_no,
-						'first_name': reservationData.first_name
+						'first_name': $scope.reservationData.first_name
 					};
 					// Check if ID scan is required
 					if ($scope.zestStationData.check_in_collect_passport) {
-						fetchGuestDetails(reservationData, stateParams);
+						fetchGuestDetails($scope.reservationData, stateParams);
 					} else {
 						goToKeyDispense(stateParams);
 					}
 				} else {
 					// if the reservation is not checked in, procced to checkin
-					if (!reservationData.is_checked_in && reservationData.guest_arriving_today) {
+					if (!$scope.reservationData.is_checked_in && $scope.reservationData.guest_arriving_today) {
 						fetchDetailsForCheckingIn(data.reservation_id);
 					} else {
 						generalFailureActions();
@@ -160,8 +160,8 @@ sntZestStation.controller('zsPickupKeyFindReservationCtrl', [
 
 		var searchReservation = function() {
 			var checkoutVerificationSuccess = function(data) {
-				reservationData = data;
-				if (!reservationData.is_checked_in && !reservationData.guest_arriving_today) {
+				$scope.reservationData = data;
+				if (!$scope.reservationData.is_checked_in && !$scope.reservationData.guest_arriving_today) {
 					generalFailureActions();
 				} else {
 					$scope.mode = 'CC_ENTRY';
@@ -199,7 +199,9 @@ sntZestStation.controller('zsPickupKeyFindReservationCtrl', [
 		};
 
 		$scope.reEnterText = function(type) {
+			console.log(type);
 			dismissKeyBoardActions();
+			console.log(type);
 			if (type === 'room') {
 				$scope.mode = 'ROOM_NUMBER_ENTRY';
 				$scope.focusInputField('room-number');
