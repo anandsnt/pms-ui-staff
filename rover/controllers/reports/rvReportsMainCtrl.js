@@ -18,9 +18,10 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
     'ngDialog',
     function ($rootScope, $scope, payload, reportsSrv, reportsSubSrv, reportUtils, reportParams, reportMsgs,
               reportNames, $filter, $timeout, util, rvPermissionSrv, reportPaginationIds, $state, $log, ngDialog) {
-        var isNotTimeOut = false;
-        var timeOut;
-        var listTitle = $filter('translate')('STATS_&_REPORTS_TITLE');
+        var self = this,
+            isNotTimeOut = false,
+            timeOut,
+            listTitle = $filter('translate')('STATS_&_REPORTS_TITLE');
 
         BaseCtrl.call(this, $scope);
 
@@ -2137,7 +2138,7 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
                 }
             };
 
-            var sucssCallback = function (response) {
+            self.sucssCallback = function (response) {
                 if ($rootScope.isBackgroundReportsEnabled
                     && $state.current.name !== 'rover.reports.inbox'
                     // flag to decide whether its paginated response or not, configured from rvReportsSubSrv.js
@@ -2254,13 +2255,13 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
             if (chosenReport.generatedReportId) {
                 var options = {
                     params: params,
-                    successCallBack: sucssCallback,
+                    successCallBack: self.sucssCallback,
                     failureCallBack: errorCallback
                 };
 
                 $scope.callAPI(reportsSubSrv.fetchGeneratedReportDetails, options);
             } else {
-                $scope.invokeApi(reportsSubSrv.fetchReportDetails, params, sucssCallback, errorCallback);
+                $scope.invokeApi(reportsSubSrv.fetchReportDetails, params, self.sucssCallback, errorCallback);
             }
         };
 
