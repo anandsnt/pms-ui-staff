@@ -1845,6 +1845,7 @@ angular.module('sntRover').controller('guestCardController', [
                 $scope.initGuestCard(guest);
                 $scope.callAPI(RVContactInfoSrv.getGuestDetails, {
                     successCallBack: function(data) {
+                        data.stayCount = guest.stayCount;
                         $scope.$emit("UPDATE_GUEST_CARD_DETAILS", data);
                         $scope.closeGuestCard();
                     },

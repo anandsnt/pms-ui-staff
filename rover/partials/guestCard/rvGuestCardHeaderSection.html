@@ -2,6 +2,7 @@
     <section>
         <figure class="guest-image" ng-click="switchCard('guest-card')">
             <img ng-src="{{guestCardData.contactInfo.avatar}}" />
+             <span class="stay-count" ng-if="guestCardData.contactInfo.stay_count > 0 && isStandAlone">{{guestCardData.contactInfo.stay_count}}</span>
             <span class="vip" ng-show="guestCardData.contactInfo.vip">VIP</span>
         </figure>
         <form name="change-name" id="change-name" class="dual-actions">

@@ -1108,7 +1108,10 @@ sntRover.controller('reservationActionsController', [
 		};
 
 		$scope.allowOverbook = function() { // check user permission for overbook_house
-			return rvPermissionSrv.getPermissionValue('OVERBOOK_HOUSE');
+            var hasOverBookHousePermission = rvPermissionSrv.getPermissionValue('OVERBOOK_HOUSE'),
+            hasOverBookRoomTypePermission = rvPermissionSrv.getPermissionValue('OVERBOOK_ROOM_TYPE');
+
+			return hasOverBookHousePermission && hasOverBookRoomTypePermission;
 		};
 
 		var promptReinstate = function(isAvailable, isSuite) {
