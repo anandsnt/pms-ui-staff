@@ -1188,7 +1188,7 @@ sntRover.controller('reservationActionsController', [
             var resData = $scope.reservationData.reservation_card;
 
             // set not visible for Hourly in 1.11
-            if (resData.is_hourly_reservation || resData.group_status === "Cancel") {
+            if (resData.is_hourly_reservation || resData.group_status === "Cancel" || resData.allotment_status === "Cancel") {
                 return false;
             }
 
