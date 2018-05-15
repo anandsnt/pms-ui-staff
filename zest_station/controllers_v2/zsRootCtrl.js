@@ -152,9 +152,8 @@ sntZestStation.controller('zsRootCtrl', [
             // if not present use the default text in the master translation file.
             if ($scope.tagInEdit.language[currentLanguageCode] && $scope.tagInEdit.language[currentLanguageCode][tag]) {
                 return $scope.tagInEdit.language[currentLanguageCode][tag];
-            } else {
-                return defaultTranslations[tag];
-            }
+            } 
+            return defaultTranslations[tag];
         };
 
 		/**
