@@ -1,9 +1,10 @@
 sntRover.controller('RVdashboardController',
     ['$scope', 'ngDialog', 'RVDashboardSrv', 'RVSearchSrv', 'dashBoarddata',
-        '$rootScope', '$filter', '$state', 'RVWorkstationSrv', 'roomTypes', '$timeout', '$interval', '$log', 
-        'RVHotelDetailsSrv',
+        '$rootScope', '$filter', '$state', 'RVWorkstationSrv', 'roomTypes', '$timeout', '$interval', '$log',
+        'RVHotelDetailsSrv', '$transitions',
         function($scope, ngDialog, RVDashboardSrv, RVSearchSrv, dashBoarddata,
-                 $rootScope, $filter, $state, RVWorkstationSrv, roomTypes, $timeout, $interval, $log, RVHotelDetailsSrv) {
+                 $rootScope, $filter, $state, RVWorkstationSrv, roomTypes, $timeout, $interval, $log,
+                 RVHotelDetailsSrv, $transitions) {
 
             // setting the heading of the screen
             $scope.heading = 'DASHBOARD_HEADING';
@@ -135,7 +136,7 @@ sntRover.controller('RVdashboardController',
                 fetchReleaseNotes();
             };
 
-            $scope.$on("$stateChangeError", function(event, toState, toParams, fromState, fromParams, error) {
+            $transitions.onError({}, function () {
                 $scope.errorMessage = 'Sorry the feature you are looking for is not implemented yet, or some  errors are occured!!!';
             });
 
@@ -267,6 +268,8 @@ sntRover.controller('RVdashboardController',
                 return deviceId;
             };
 
+
+            // TODO: 49259 Move this to the router; use the redirectTo parameter (https://ui-router.github.io/guide/ng1/migrate-to-1_0#state-hook-redirectto)
             var reddirectToDefaultDashboard = function() {
                 var defaultDashboardMappedWithStates = {
                     'FRONT_DESK': 'rover.dashboard.frontoffice',

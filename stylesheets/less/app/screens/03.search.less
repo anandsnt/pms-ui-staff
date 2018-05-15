@@ -5,7 +5,8 @@
     #find-account,
     #find-allotment,
     #rooms,
-    #find-guests {
+    #find-guests,
+    #find-invoices {
        &.no-results {
             .wrapper,
             .search-results { height: 100%; }            
@@ -230,20 +231,6 @@
 
                         .confirmation,
                         .icons { margin-right: 10px; }
-
-                        .stay-count {
-                            position: absolute;
-                            top: 0;
-                            right: 0;
-                            font-size: 12px;
-                            font-weight: 400;
-                            text-transform: uppercase;
-                            line-height: 30px;
-                            padding: 0 10px;
-                            color: @grey4;
-                            background: rgba(0,0,0,.05);
-                            #border-radius > .rounded();
-                        }
 
                         &.no-stay {
                             margin-right: 0;
@@ -1663,7 +1650,8 @@
                 .guest-image {
                     width: 20px;
 
-                    .vip {
+                    .vip,
+                    .stay-count {
                         font-size: 8px;
                         line-height: 12px;
                         .square(12px);
@@ -2499,6 +2487,149 @@
                     }
                 }               
             }
+
+            /* Invoice ***/
+            &.invoice-item {
+                padding: 10px;
+                background-color: @white;
+                #border-radius > .rounded();
+                .box-shadow();
+
+                .bill {
+                    display: grid;
+                    grid-template-columns: 30px calc(~'100% - 330px') 280px;
+                    grid-column-gap: 10px;
+
+                    &:not(:last-child) {
+                        padding-bottom: 5px;
+                        margin-bottom: 5px;
+                        box-shadow: 0 1px 0 rgba(0,0,0,.1);
+                    }
+                }
+
+                .guest-image {
+                    grid-column: 1;
+                    margin: 5px 0;
+                    .square(30px);
+
+                    &.icons {
+                        background-size: 80px;
+                    }
+
+                    &.icon-company {
+                        background-color: @ccard;
+                        background-position: 10px -2337px;
+                    }
+
+                    &.icon-travel-agent {
+                        background-color: @tacard;
+                        background-position: 8px -2378px;
+                    }
+
+                    &.accompany {
+                        .square(30px);
+
+                        img {
+                            .square(20px);
+
+                            &:nth-child(2) {
+                                top: 10px;
+                                left: 10px;
+                            }
+                        }
+                    }
+                }
+
+                .group-info {
+                    grid-column: 1;
+                    font-size: 18px;
+                    line-height: 30px;
+                    text-transform: uppercase;
+                    font-weight: 600;
+                    text-align: center;
+                    color: @grey3;
+                    background-color: @grey1;
+                    margin: 5px 0;
+                    .square(30px);
+                }
+
+                .data {
+                    grid-column: 2;
+                    margin: 5px 0;
+                    height: 30px;
+                    #flexbox > .parent(row wrap, '', center, '');
+
+                    h2 {
+                        font-size: 18px;
+                        line-height: 1;
+                        width: 100%;
+                        .nowrap();
+                    }
+
+                    .confirmation,
+                    .icons {
+                        color: @textColor;
+                        font-size: 14px;
+                        line-height: 1;
+                        .pull-left;
+                    }
+
+                    .confirmation {
+                        font-weight: 600;
+                        margin-right: 10px;
+                    }
+
+                    .confirmation-text {
+                        font-weight: normal;
+                        color: @grey3;
+                        text-transform: uppercase;
+                    }
+
+                    .icons {
+                        color: @grey3;
+                        background-size: 90px;
+                        padding-left: 16px;
+                        margin-right: 10px;
+
+                        &.icon-location {
+                            background-position: 0 -28px;
+                        }
+
+                        &.icon-guest-company {
+                            background-position: 0 -569px;
+                        }
+
+                        &.icon-guest-travelagent {
+                            background-position: 0 -614px;
+                        }
+                    }                    
+                }
+
+                .invoice-info {
+                    grid-column: 3;
+                    width: 280px;
+                    text-align: right;
+                    #flexbox > .parent(row wrap, '', center, '');
+
+                    .number {
+                        width: 100px;
+                    }
+
+                    .balance {
+                        width: 120px;
+                        margin-right: 20px;
+
+                        &.text-red {
+                            color: @red;
+                            font-weight: 600;
+                        } 
+                    }
+
+                    .button {
+                        .square(40px);
+                    }
+                }                
+            }
         }
     }
 }
@@ -2639,6 +2770,12 @@
                         line-height: 20px;
                         .square(18px);
                     }
+
+                    .stay-count {
+                        font-size: 12px;
+                        line-height: 18px;
+                        .square(18px);
+                    } 
                 }
 
                 .show-vacant {

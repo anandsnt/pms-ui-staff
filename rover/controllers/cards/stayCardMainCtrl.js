@@ -114,6 +114,10 @@ angular.module('sntRover').controller('stayCardMainCtrl', ['$rootScope', '$scope
             // Handles cases where Guest with email is replaced with a Guest w/o an email address!
             $scope.otherData.isGuestPrimaryEmailChecked = !!(data.email && data.email.length > 0);
 
+            if (!data.stayCount) {
+            	data.stayCount = $scope.guestCardData && $scope.guestCardData.contactInfo && $scope.guestCardData.contactInfo.stayCount;
+            }
+            
             //	CICO-9169
             contactInfoData = {
                 'contactInfo': data,
@@ -845,8 +849,7 @@ angular.module('sntRover').controller('stayCardMainCtrl', ['$rootScope', '$scope
 				} else {
 					$state.go('rover.reservation.staycard.reservationcard.reservationdetails', {
 						"id": typeof $stateParams.id === "undefined" ? $scope.reservationData.reservationId : $stateParams.id,
-						"confirmationId": $stateParams.confirmationId,
-						"isrefresh": false
+						"confirmationId": $stateParams.confirmationId
 					});
 				}
 			}

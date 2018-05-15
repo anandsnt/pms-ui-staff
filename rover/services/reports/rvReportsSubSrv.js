@@ -1,7 +1,9 @@
 angular.module('sntRover').service('RVreportsSubSrv', [
     '$q',
     'rvBaseWebSrvV2',
-    function($q, rvBaseWebSrvV2) {
+    'rvReportsCache',
+    'RVReportMsgsConst',
+    function($q, rvBaseWebSrvV2, reportsCache, RVReportMsgsConst) {
         var service = {};
 
         var store = {};
@@ -85,6 +87,17 @@ angular.module('sntRover').service('RVreportsSubSrv', [
                         service.setIntoStore(options.name, resolveData);
                     }
                     clearInterval(refreshIntervalId);
+
+                    if (
+                        [
+                            RVReportMsgsConst['REPORT_SUBMITED'],
+                            RVReportMsgsConst['REPORT_UPDATED'],
+                            RVReportMsgsConst['REPORT_PAGE_CHANGED'],
+                            RVReportMsgsConst['REPORT_FILTER_CHANGED']
+                        ].indexOf(options.action) >= 0) {
+                        reportsCache.put('LAST_FETCHED_REPORT', resolveData);
+                    }
+
                     deferred.resolve( resolveData );
                 }
             };
@@ -105,8 +118,9 @@ angular.module('sntRover').service('RVreportsSubSrv', [
 
             // if there is a request params object
             else if ( options.params ) {
-
-                if ( options.params.reportTitle === 'Credit Check Report' ) {
+                if (options.action === RVReportMsgsConst['REPORT_LOAD_LAST_REPORT']) {
+                    deferred.resolve(reportsCache.get('LAST_FETCHED_REPORT'));
+                } else if ( options.params.reportTitle === 'Credit Check Report' ) {
                     options.params = _.omit(options.params, 'reportTitle');
                     rvBaseWebSrvV2.postJSONWithSpecialStatusHandling( options.url, options.params ).then( success, failed );
                 } else {
@@ -136,7 +150,8 @@ angular.module('sntRover').service('RVreportsSubSrv', [
                 // no name here since we dont want to cache it in the store ever
                 method: 'postJSON',
                 url: '/api/reports/' + params.id + '/submit',
-                params: _.omit(params, 'id')
+                params: _.omit(params, ['id', 'action']),
+                action: params.action
             });
         };
 

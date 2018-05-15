@@ -3,11 +3,12 @@ module.exports = function(gulp, $, options) {
     var runSequence             = require('run-sequence');
     var ADMIN_TEMPLATE_ROOT     = '../views/admin/settings/',
         ADMIN_HTML_FILE         = ADMIN_TEMPLATE_ROOT + 'settings.html',
-        extend                     = require('util')._extend,
-        options                 = extend({
-            'ADMIN_TEMPLATE_ROOT'    : ADMIN_TEMPLATE_ROOT,
-            'ADMIN_HTML_FILE'         : ADMIN_HTML_FILE
-        }, options);
+        _ = require('lodash');
+
+    _.extend(options, {
+        'ADMIN_TEMPLATE_ROOT': ADMIN_TEMPLATE_ROOT,
+        'ADMIN_HTML_FILE': ADMIN_HTML_FILE
+    });
 
     require('./admin/admin_js_gulp')(gulp, $, options);
     require('./admin/admin_css_gulp')(gulp, $, options);

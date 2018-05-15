@@ -134,7 +134,7 @@ angular.module('sntRover').controller('rvGuestDetailsController',
 
         // Back navigation handler
         $scope.navigateBack = function () {
-          $state.go('rover.guestcardsearch', {
+          $state.go('rover.guest.search', {
             textInQueryBox: $stateParams.query
           });
         };
