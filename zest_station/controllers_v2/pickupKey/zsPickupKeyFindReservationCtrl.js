@@ -10,20 +10,25 @@ sntZestStation.controller('zsPickupKeyFindReservationCtrl', [
 	'zsGeneralSrv',
 	function($scope, $rootScope, $state, zsEventConstants, zsCheckoutSrv, $stateParams, $timeout, zsCheckinSrv, zsGeneralSrv) {
 
-		BaseCtrl.call(this, $scope);
 
-		$scope.$emit(zsEventConstants.SHOW_BACK_BUTTON);
-		$scope.$emit(zsEventConstants.SHOW_CLOSE_BUTTON);
-		$scope.$on(zsEventConstants.CLICKED_ON_BACK_BUTTON, function() {
-			$state.go('zest_station.home');
-		});
-		$scope.setScreenIcon('key');
-		$scope.mode = 'LAST_NAME_ENTRY';
-		$scope.reservationParams = {
-			'last_name': 'AAAA',
-			'room_no': 'WV101'
-		};
-		$scope.creditCardNumber = '';
+		(function init() {
+			BaseCtrl.call(this, $scope);
+			$scope.$emit(zsEventConstants.HIDE_BACK_BUTTON);
+			$scope.$emit(zsEventConstants.SHOW_CLOSE_BUTTON);
+			$scope.$on(zsEventConstants.CLICKED_ON_BACK_BUTTON, function() {
+				$state.go('zest_station.home');
+			});
+			$scope.setScreenIcon('key');
+			$scope.mode = 'LAST_NAME_ENTRY';
+			$scope.reservationParams = {
+				'last_name': 'AAAA',
+				'room_no': 'WV101'
+			};
+			$scope.creditCardNumber = '';
+		})();
+
+
+		var reservationData;
 		var dismissKeyBoardActions = function() {
 			$scope.hideKeyboardIfUp();
 			$scope.callBlurEventForIpad();
@@ -39,7 +44,7 @@ sntZestStation.controller('zsPickupKeyFindReservationCtrl', [
 		/*                If the reservation is not checked in, proceed to checkin flow                   */
 		/* ********************************************************************************************** */
 
-		var fetchReservationDetailsForCheckingIn = function(reservation_id) {
+		var fetchDetailsForCheckingIn = function(reservation_id) {
 
 			var goToCheckinFlow = function(response) {
 				zsCheckinSrv.setSelectedCheckInReservation(response.results);
@@ -66,7 +71,7 @@ sntZestStation.controller('zsPickupKeyFindReservationCtrl', [
 		/*  If scan option is turned ON and ID wasn't scanned during checkin, scan ID in pickupkey flow   */
 		/* ********************************************************************************************** */
 
-		var fetchReservationForPassportScanning = function(reservation_id, stateParams) {
+		var fetchDetailsForPassportScanning = function(reservation_id, stateParams) {
 			var onSuccess = function(response) {
 				zsCheckinSrv.setSelectedCheckInReservation(response.results); // important
 				$state.go('zest_station.checkInScanPassport', stateParams);
@@ -89,7 +94,7 @@ sntZestStation.controller('zsPickupKeyFindReservationCtrl', [
 						goToKeyDispense(stateParams);
 					};
 					stateParams.from_pickup_key = true;
-					fetchReservationForPassportScanning(data.reservation_id, stateParams);
+					fetchDetailsForPassportScanning(data.reservation_id, stateParams);
 				} else {
 					goToKeyDispense(stateParams);
 				}
@@ -110,41 +115,52 @@ sntZestStation.controller('zsPickupKeyFindReservationCtrl', [
 		};
 
 
-		$scope.validateCConFile = function(reservationData) {
-			
-			var onSuccess = function(response) {
+		$scope.validateCConFile = function() {
+
+			var onCCVerificationSuccess = function(response) {
 				if (reservationData.is_checked_in) {
 					var stateParams = {
 						'reservation_id': reservationData.reservation_id,
 						'room_no': $scope.reservationParams.room_no,
 						'first_name': reservationData.first_name
 					};
+					// Check if ID scan is required
 					if ($scope.zestStationData.check_in_collect_passport) {
 						fetchGuestDetails(reservationData, stateParams);
 					} else {
 						goToKeyDispense(stateParams);
 					}
 				} else {
+					// if the reservation is not checked in, procced to checkin
 					if (!reservationData.is_checked_in && reservationData.guest_arriving_today) {
-						fetchReservationDetailsForCheckingIn(data.reservation_id);
+						fetchDetailsForCheckingIn(data.reservation_id);
 					} else {
 						generalFailureActions();
 					}
 				}
 			};
-			var onFailure = function(){
+			var onCCVerificationFailure = function() {
 				$scope.mode = 'CC_MATCH_FAILED';
 			};
-			onFailure({});
+			var options = {
+				params: {
+					'credit_card': $scope.creditCardNumber
+				},
+				successCallBack: onCCVerificationSuccess,
+				failureCallBack: onCCVerificationFailure
+			};
+
+			$scope.callAPI(zsCheckoutSrv.validateCC, options);
 		};
 
-		$scope.reEnterCC =  function() {
+		$scope.reEnterCC = function() {
 			$scope.mode = 'CC_ENTRY';
 		};
 
 		var searchReservation = function() {
 			var checkoutVerificationSuccess = function(data) {
-				if (!data.is_checked_in && !data.guest_arriving_today) {
+				reservationData = data;
+				if (!reservationData.is_checked_in && !reservationData.guest_arriving_today) {
 					generalFailureActions();
 				} else {
 					$scope.mode = 'CC_ENTRY';
