@@ -5,7 +5,8 @@ describe('zsPickupKeyFindReservationCtrl', function() {
         zsCheckinSrv,
         zsCheckoutSrv,
         zsGeneralSrv,
-        $q;
+        $q,
+        $state;
 
     beforeEach(function() {
 
@@ -13,13 +14,14 @@ describe('zsPickupKeyFindReservationCtrl', function() {
             $provide.value('zsEventConstants', {});
         });
 
-        inject(function(_$controller_, _$rootScope_, _zsCheckinSrv_, _$q_, _zsCheckoutSrv_, _zsGeneralSrv_) {
+        inject(function(_$controller_, _$rootScope_, _zsCheckinSrv_, _$q_, _zsCheckoutSrv_, _zsGeneralSrv_, _$state_) {
             $controller = _$controller_;
             zsCheckinSrv = _zsCheckinSrv_;
             zsCheckoutSrv = _zsCheckoutSrv_;
             zsGeneralSrv = _zsGeneralSrv_;
             $q = _$q_;
             $scope = _$rootScope_.$new();
+            $state = _$state_;
         });
 
           angular.extend($scope, {
@@ -188,33 +190,26 @@ describe('zsPickupKeyFindReservationCtrl', function() {
             $scope.$digest();
             expect($scope.mode).toBe('CC_MATCH_FAILED');
         });
-        // it('On CC validation succes, go to next screens', function() {
-        //     spyOn(zsCheckoutSrv, 'validateCC').and.callFake(function() {
-        //         var deferred = $q.defer();
-        //         deferred.resolve();
-        //         return deferred.promise;
-        //     });
-        //     $scope.reservationParams.room_no = '101';
-        //     $scope.reservationParams.last_name = 'test';
+        it('On CC validation succes, go to next screens', function() {
+            
+            spyOn(zsCheckoutSrv, 'validateCC').and.callFake(function() {
+                var deferred = $q.defer();
+                deferred.resolve();
+                return deferred.promise;
+            });
+            spyOn($state, 'go');
+            $scope.reservationParams.room_no = '101';
+            $scope.reservationParams.last_name = 'test';
 
-
-        //     spyOn(zsGeneralSrv, 'fetchGuestDetails').and.callFake(function() {
-        //         var deferred = $q.defer();
-        //         deferred.resolve({
-        //             'accompanying_guests_details': [{'id': 1, 'is_passport_present': false}]
-        //         });
-        //         return deferred.promise;
-        //     });
-        //     $scope.reservationData = {
-        //         check_in_collect_passport: true,
-        //         is_checked_in: true,
-        //         guest_arriving_today: true
-        //     };
-        //     $scope.zestStationData.check_in_collect_passport = true;
-        //     $scope.validateCConFile();
-        //     $scope.$digest();
-        //     expect(zsGeneralSrv.fetchGuestDetails).toHaveBeenCalled();
-        // });
+            $scope.reservationData = {
+                is_checked_in: true,
+                guest_arriving_today: true
+            };
+            $scope.zestStationData.check_in_collect_passport = false;
+            $scope.validateCConFile();
+            $scope.$digest();
+            expect($state.go).toHaveBeenCalled();
+        });
     });
 
 });
