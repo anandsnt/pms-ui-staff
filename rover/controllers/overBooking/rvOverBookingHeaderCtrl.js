@@ -3,7 +3,8 @@ angular.module('sntRover').controller('RvOverBookingHeaderCtrl', [
 	'$rootScope',
 	'ngDialog',
 	'$timeout',
-	function($scope, $rootScope, ngDialog, $timeout) {
+	'$window',
+	function($scope, $rootScope, ngDialog, $timeout, $window) {
 
 	BaseCtrl.call(this, $scope);
 	$scope.setScroller('roomTypeFilterList');
@@ -129,6 +130,49 @@ angular.module('sntRover').controller('RvOverBookingHeaderCtrl', [
 			scope: $scope,
 			closeByDocument: false
 		});
+	};
+
+	// print the sell limit page
+	var printSellLimit = function() {
+
+		$timeout(function() {
+
+			// add the orientation
+			var orientation = 'landscape';
+
+			$( 'head' ).append( "<style id='print-orientation'>@page { size: " + orientation + "; }</style>" );
+
+			/*
+			 *	======[ READY TO PRINT ]======
+			 */
+			// this will show the popup with full bill
+			$timeout(function() {
+				/*
+				*	======[ PRINTING!! JS EXECUTION IS PAUSED ]======
+				*/
+
+				$window.print();
+
+				if ( sntapp.cordovaLoaded ) {
+					cordova.exec(function(success) {}, function(error) {}, 'RVCardPlugin', 'printWebView', []);
+				}
+			}, 100);
+
+			/*
+			 *	======[ PRINTING COMPLETE. JS EXECUTION WILL UNPAUSE ]======
+			 */
+
+			// remove the orientation after similar delay
+			$timeout( function(){
+				$( '#print-orientation' ).remove();
+			}, 100 );
+
+		}, 250);
+	};
+
+	// Handle print action
+	$scope.clickedPrintButton = function() {
+		printSellLimit();
 	};
 
 	// Cleaning listener.
