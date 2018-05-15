@@ -669,6 +669,7 @@
             /* Rooms ***/
             &.room {
                 position: relative;
+                margin-right: 5px;
 
                 a,
                 .faux-anchor {
@@ -786,6 +787,15 @@
                     line-height: 12px;
                     background: @grey1;
                     color: @grey3;
+                    bottom: -2px;
+                    .square(12px);
+                }
+
+                .stay-count {
+                    font-size: 6pt;
+                    line-height: 12px;
+                    background: @grey1;
+                    color: @black;
                     bottom: -2px;
                     .square(12px);
                 }
@@ -1822,6 +1832,27 @@
                                     }
                                 }
                             }
+                        }
+
+                        &[data-count] {
+                            position: relative;
+                            padding-right: 30px;
+
+                            &:before {
+                                content: attr(data-count);
+                                position: absolute;
+                                top: 5px;
+                                right: 10px;
+                                font-size: 10pt;
+                                line-height: 15pt;
+                                font-weight: 600;
+                                text-transform: uppercase;
+                                text-align: center;
+                                color: @black;
+                                background: @grey1;
+                                .square(14pt);
+                                #border-radius > .rounded(50%);
+                            }  
                         }
                     }
 

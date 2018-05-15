@@ -5,6 +5,9 @@ module.exports = function(gulp, $, options) {
                     DEST_ROOT_PATH = '../../public/assets/',
                     runSequence = require('run-sequence'); //will be running from app/assets, so..
 
+    const path = require('path');
+    const eslint = require('gulp-eslint');
+
     options.environment = require('./../environments/environment');
 
             gulp.task('clean', function () {
@@ -119,6 +122,31 @@ module.exports = function(gulp, $, options) {
         }
     };
 
+    $.onChangeJSinDev = function(file) {
+        const destination = file.replace(/\/app\//ig, '/public/');
+
+        console.log('\x1b[33m%s\x1b[0m', 'change detected on file... ' + file);
+
+        gulp.src(file).
+            pipe($.jsvalidate()).
+            on('error', options.silentErrorShowing).
+            pipe($.babel()).
+            on('error', options.silentErrorShowing).
+            pipe(eslint({
+                configFile: './.eslintrc.json'
+            })).
+            pipe(eslint.result(function(result) {
+                console.log('\x1b[1;35m', `\u2757 ${result.warningCount} WARNINGS`, '\x1b[0m',
+                    '\x1b[1;31m', `\u26D4 ${result.errorCount} ERRORS`, '\x1b[0m');
+            })).
+            pipe(gulp.dest(path.dirname(destination), {
+                overwrite: true
+            }));
+
+        console.log('\x1b[32m', '.. copied to ...' + destination);
+        console.log('\x1b[0m');
+    };
+
     /**
      * overrides default variables with specific values for the environment
      * @returns {undefined}
@@ -140,11 +168,11 @@ module.exports = function(gulp, $, options) {
         return runSequence(copyBaseHtmlToPublicAssets, callback)
     });
 
-    gulp.task('gw-asset-precompile', function (callback) {
+    gulp.task('gw-asset-precompile', function(callback) {
         return runSequence('guestweb-asset-prod-precompile', 'guestweb-inject-assets-to-templates', 'copy-guestweb-base-html', callback);
     });
 
-    gulp.task('asset-precompile', function (callback) {
+    gulp.task('asset-precompile', ['gw-asset-precompile'], function(callback) {
         processArgs();
         setEnvironment();
         return runSequence(compilationTasks, tasksAfterCompilation, copyBaseHtmlToPublicAssets, callback);

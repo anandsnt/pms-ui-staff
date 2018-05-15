@@ -1,11 +1,11 @@
-/* StayNTouch Zest Station Styles | Amrath Theme */
+/* StayNTouch Zest Station Styles | Hotel von Belle Theme */
 
 /* 1. COLORS
 ==========================================================*/
-    @brandColor:            #cea83a;
+    @brandColor:            #b40d0f;
     
     @textColor:             @black;
-    @backgroundColor:       #f4f4f4;
+    @backgroundColor:       #f3f0e9;
     
     @actionColor:           @white;
     @actionBackground:      @brandColor;
@@ -21,11 +21,11 @@
 
 /* 3. IMAGES
 ==========================================================*/
-    @background: @backgroundColor;
-    @backgroundSize: '';
+    @background: url("../css/themes/story/background.jpg");
+    @backgroundSize: cover;
     
-    @headerIconsColor:      @black;
-    @headerIconsActive:     @black;
+    @headerIconsColor:      @brandColor;
+    @headerIconsActive:     @brandColor;   
 
     .icons { 
         &.icon-create-key {
@@ -47,39 +47,40 @@
     
     }
 
-    .logo-svg{
-        background-image: url("../css/themes/alessandra/logo.svg");
-        background-repeat: no-repeat;
-        background-size: contain;
-        width: 143px;
-        height: 95px;
-        background-position: center; 
-    }
-
 /* 4. LAYOUT
 ==========================================================*/
     
-    #alessandra {
- 
+    #story {
+        
+        .logo-svg{
+            background-image: url("../css/themes/story/logo.svg");
+            background-repeat: no-repeat;
+            background-size: contain;
+            background-position: center;
+            height: 95px;
+            width: 281px;
+            margin-top: 50px;
+        }
+
         #header {
-            height: 135px;
-            background: @white;
+            height: 145px;
+
+            .button {
+                .icons {
+                    fill: @black;
+                }
+            }
         }
 
         #main {
-            #calc > #height > .remove(100%, 135px);
-            top: 135px;
+            #calc > #height > .remove(100%, 145px);
+            top: 145px;
 
             &.centered {
                 padding-top: 100px;
                 #content {
                     height: 100%;
                 }
-            }
-        }
-        .entry.input {
-            .icons {
-                fill: @brandColor;
             }
         }
 
@@ -101,6 +102,7 @@
             .logo {
                 width: auto;
                 height: 95px;
+                margin-top: 50px;
             }
         }
 
@@ -127,7 +129,7 @@
         #guests {
             .button {
                 color: @white;
-                background: @black;
+                background-color: @black;
             }
         } 
 
@@ -147,7 +149,19 @@
 
             .input-group {
                 input {
-                    color: @black;
+                    color: @brandColor;
+                }
+            }
+
+            #options {
+                li {
+                    .option {
+                        &.not-selected {
+                            .icon-text {
+                                color: @brandColor;
+                            }
+                        }
+                    }
                 }
             }
         }
@@ -161,13 +175,6 @@
                 background: @white;
             }
 
-            #rate {
-                li {
-                    &.total {
-                        color: @black;
-                    }
-                }
-            }
         }
 
         #rate {

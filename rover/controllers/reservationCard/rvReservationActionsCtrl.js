@@ -1107,11 +1107,15 @@ sntRover.controller('reservationActionsController', [
 			$timeout(removePrintOrientation, 100);
 		};
 
-		$scope.allowOverbook = function() { // check user permission for overbook_house
-			return rvPermissionSrv.getPermissionValue('OVERBOOK_HOUSE');
+		var setAllowOverbookflag = function() { // check user permission for overbook_house
+            var hasOverBookHousePermission = rvPermissionSrv.getPermissionValue('OVERBOOK_HOUSE'),
+            hasOverBookRoomTypePermission = rvPermissionSrv.getPermissionValue('OVERBOOK_ROOM_TYPE');
+
+            $scope.allowOverbook = hasOverBookHousePermission && hasOverBookRoomTypePermission;
 		};
 
 		var promptReinstate = function(isAvailable, isSuite) {
+            setAllowOverbookflag();
 			ngDialog.open({
 				template: '/assets/partials/reservation/alerts/rvReinstate.html',
 				closeByDocument: false,
@@ -1181,16 +1185,12 @@ sntRover.controller('reservationActionsController', [
 		 * @return {Boolean}
 		 */
 		$scope.isReinstateVisible = function() {
-                        // set not visible for Hourly in 1.11
-            if ($scope.reservationData.reservation_card.is_hourly_reservation) {
-                return false;
-            }
-            // CICO-29302 - Check comment
-            if ($scope.reservationData.reservation_card.group_id !== '') {
-                return false;
-            }
+            var resData = $scope.reservationData.reservation_card;
 
-			var resData = $scope.reservationData.reservation_card;
+            // set not visible for Hourly in 1.11
+            if (resData.is_hourly_reservation || resData.group_status === "Cancel") {
+                return false;
+            }
 
 			return (resData.reservation_status === 'CANCELED' || resData.reservation_status === 'NOSHOW') && // ONLY cancelled and noshow reservations  can be reinstated
 				new TZIDate(resData.departure_date) > new TZIDate($rootScope.businessDate) && // can't reinstate if the reservation's dates have passed

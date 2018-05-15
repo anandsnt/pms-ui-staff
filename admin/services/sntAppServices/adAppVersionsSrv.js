@@ -77,12 +77,25 @@ admin.service('adAppVersionsSrv', ['$http', '$q', 'ADBaseWebSrv', 'ADBaseWebSrvV
 		var deferred = $q.defer();
 		var url = '/admin/service_application_types/delete_build';
 
-		ADBaseWebSrvV2.deleteJSON(url, data).then(function(data) {
+		ADBaseWebSrv.deleteJSON(url, data).then(function(data) {
 			deferred.resolve(data);
 		}, function(data) {
 			deferred.reject(data);
 		});
 		return deferred.promise;
 	};
+
+	this.checkVersionStatus = function(params) {
+		var deferred = $q.defer();
+		var url = '/admin/service_application_types/check_pending_builds';
+
+		ADBaseWebSrvV2.getJSON(url, params).then(function(data) {
+			deferred.resolve(data);
+		}, function(data) {
+			deferred.reject(data);
+		});
+		return deferred.promise;
+	};
+
 
 }]);

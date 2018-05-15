@@ -1,5 +1,3 @@
- // import suburbs from '../../../unitTestSampleData/invoiceSearchSampleData.json';
-
 describe('RVInvoiceSearchController', function () {
 
     jasmine.getJSONFixtures().fixturesPath = 'base/unitTestSampleData/';
@@ -11,7 +9,10 @@ describe('RVInvoiceSearchController', function () {
         $q,
         $rootScope,
         RVInvoiceSearchSrv,
+        RVBillCardSrv,
+        rvAccountTransactionsSrv,
         rvInvoiceSearchController,
+        rvAccountsConfigurationSrv,
         results = jsonResult;    
 
         describe('variable initalizations', function () {
@@ -19,12 +20,14 @@ describe('RVInvoiceSearchController', function () {
             beforeEach(function () {
                 module('sntRover');
 
-                inject(function (_$controller_, _RVInvoiceSearchSrv_, _$q_, _$rootScope_) {
+                inject(function (_$controller_, _RVInvoiceSearchSrv_, _RVBillCardSrv_, _$q_, _$rootScope_, _rvAccountTransactionsSrv_, _rvAccountsConfigurationSrv_) {
                     $controller = _$controller_;
                     RVInvoiceSearchSrv = _RVInvoiceSearchSrv_;
+                    RVBillCardSrv = _RVBillCardSrv_;
                     $q = _$q_;
                     $rootScope = _$rootScope_;
-
+                    rvAccountTransactionsSrv = _rvAccountTransactionsSrv_;
+                    rvAccountsConfigurationSrv = _rvAccountsConfigurationSrv_;
                     $scope = _$rootScope_.$new();
                 });
 
@@ -34,6 +37,9 @@ describe('RVInvoiceSearchController', function () {
 
                 angular.extend($scope, {
                     'refreshScroll': function() {
+                        return true;
+                    },
+                    'closeDialog': function() {
                         return true;
                     }
                 });
@@ -94,5 +100,99 @@ describe('RVInvoiceSearchController', function () {
                 expect($scope.invoiceSearchFlags.isQueryEntered).toEqual(false);                
                
             }); 
+            // =================================================
+
+            describe('clickedEmail', function() {
+
+                const sampleData = {
+                        sample_user_data: {
+                            'name': 'test'
+                        }
+                    };
+                    
+                beforeEach(function() {
+
+                    $scope.invoiceSearchFlags = {};
+                    
+                });
+
+                it('clickedEmail method should call send mail method of accounts if clicked posting account, call reservation mail if it is reservation', function() {
+                    
+                    spyOn(RVBillCardSrv, "sendEmail").and.callFake(function() {
+                        var deferred = $q.defer();
+
+                        deferred.resolve(results);
+                        return deferred.promise;
+                    });
+
+                    $scope.invoiceSearchFlags.isClickedReservation = true;
+
+                    $scope.clickedEmail();
+
+                    expect(RVBillCardSrv.sendEmail).toHaveBeenCalled();
+
+                });
+
+                it('clickedEmail method should call send mail method of accounts if clicked posting account, call reservation mail if it is reservation', function() {
+
+                    spyOn(rvAccountsConfigurationSrv, "emailInvoice").and.callFake(function() {
+                        var deferred = $q.defer();
+
+                        deferred.resolve(results);
+                        return deferred.promise;
+                    });
+
+                    $scope.invoiceSearchFlags.isClickedReservation = false;
+
+                    $scope.clickedEmail(sampleData);
+
+                    expect(rvAccountsConfigurationSrv.emailInvoice).toHaveBeenCalledWith(sampleData);
+
+                });
+            });
+            // =====================================
+
+            describe('clickedPrint', function() {
+
+                beforeEach(function() {
+
+                    $scope.invoiceSearchFlags = {};
+                    
+                });
+
+                it('printBill method should ptint the correct data when clicked reservation', function() {
+                    
+                    spyOn(RVBillCardSrv, "fetchBillPrintData").and.callFake(function() {
+                        var deferred = $q.defer();
+
+                        deferred.resolve(results);
+                        return deferred.promise;
+                    });
+
+                    $scope.invoiceSearchFlags.isClickedReservation = true;
+
+                    rvInvoiceSearchController.printBill();
+
+                    expect(RVBillCardSrv.fetchBillPrintData).toHaveBeenCalled();
+
+                });
+
+                it('printBill method should ptint the correct data when clicked accounts', function() {
+
+                    spyOn(rvAccountTransactionsSrv, "fetchAccountBillsForPrint").and.callFake(function() {
+                        var deferred = $q.defer();
+
+                        deferred.resolve(results);
+                        return deferred.promise;
+                    });
+
+                    $scope.invoiceSearchFlags.isClickedReservation = false;
+
+                    rvInvoiceSearchController.printBill();
+
+                    expect(rvAccountTransactionsSrv.fetchAccountBillsForPrint).toHaveBeenCalled();
+
+                });
+            });
         });    
 });
