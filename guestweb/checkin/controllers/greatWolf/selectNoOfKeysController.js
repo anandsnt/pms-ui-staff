@@ -1,6 +1,9 @@
 (function() {
 	var selectNoOfkeysController = function($scope, $state, checkinKeysService, $rootScope) {
 
+		var isValidData = function(data) {
+			return data !== null && data.length > 0;
+		};
 
 		var init = (function() {
 			$scope.isLoading = true;
@@ -13,9 +16,9 @@
 				$scope.isLoading = false;
 				var screenCMSDetails = {};
 
-				screenCMSDetails.title = keyData.key_prompt_title.length > 0 ? keyData.key_prompt_title : "No of keys?";
-				screenCMSDetails.description = keyData.key_prompt_text.length > 0 ? keyData.key_prompt_text : "How many keys would you like? At Great Wolf, your key is a band that your wear on your wrist or ankle.";
-				screenCMSDetails.errorMessage = keyData.key_prompt_save_error.length > 0 ? keyData.key_prompt_save_error : "Something went wrong. Sorry for the Inconvenience, Please click on skip to continue.";
+				screenCMSDetails.title = isValidData(keyData.key_prompt_title) ? keyData.key_prompt_title : "No of keys?";
+				screenCMSDetails.description = isValidData(keyData.key_prompt_text) ? keyData.key_prompt_text : "How many keys would you like? At Great Wolf, your key is a band that your wear on your wrist or ankle.";
+				screenCMSDetails.errorMessage = isValidData(keyData.key_prompt_save_error) ? keyData.key_prompt_save_error : "Something went wrong. Sorry for the Inconvenience, Please click on skip to continue.";
 				$scope.screenDetails = screenCMSDetails;
 
 				$scope.noOfKeys = 1;
