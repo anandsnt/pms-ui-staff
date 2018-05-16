@@ -13,7 +13,7 @@ sntRover.controller('rvReservationSearchController', ['$scope', '$rootScope', '$
     $scope.shouldShowQueuedRooms = true;
     // changing the header
     $scope.heading = 'SEARCH_TITLE';
-    // updating the left side menuhh
+    // updating the left side menu
     $scope.$emit("updateRoverLeftMenu", "reservationSearch");
 
     // setting search back button caption
