@@ -259,7 +259,7 @@ sntGuestWeb.controller('homeController', ['$rootScope', '$scope', '$location', '
 		} else if ($rootScope.isCheckedin) {
 			$state.go('checkinSuccess'); //already checked in
 		} else if (reservationAndhotelData.is_checkin === 'true') {
-			$state.go('checkinConfirmation'); //checkin starting page -> precheckin turned off
+			navigatePageBasedOnUrlAndType(); //checkin starting page -> precheckin turned off
 		} else if ($rootScope.isCheckedout) {
 			$state.go('checkOutStatus'); //already checked out
 		} else if ($rootScope.hasOwnProperty('isPasswordResetView')) {
