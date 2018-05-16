@@ -96,6 +96,7 @@ angular.module('sntRover').service('rvMenuSrv',
 		_.each (menuList, function(menuItem) {
 			// if the menu is hi
 			var isMenuItemVisible = self.shouldShowMenuItem(menuItem.menuIndex);
+			
 			if (isMenuItemVisible) {
 				subMenuCount = menuItem.submenu ? menuItem.submenu.length : 0;
 				hasSubMenu = (subMenuCount > 0) ? true : false;
