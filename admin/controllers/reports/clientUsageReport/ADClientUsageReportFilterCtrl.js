@@ -67,9 +67,9 @@ admin.controller('ADClientUsageReportFilterCtrl', ['$scope', '$rootScope', '$fil
             }, commonDateOptions)
         };
 
-        $scope.exportCSV = function() {
+        $scope.exportCSV = function(report) {
             $scope.invokeApi(adReportsSrv.exportCSV, {
-                url: '/api/reports/client_usage.csv',
+                url: '/api/reports/' + report.key.toLocaleLowerCase() + '.csv',
                 payload: genParams()
             }, function(response) {
                 $scope.$emit('hideLoader');
