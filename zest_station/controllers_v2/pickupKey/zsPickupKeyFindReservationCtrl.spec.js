@@ -108,12 +108,12 @@ describe('zsPickupKeyFindReservationCtrl', function() {
                     expect($scope.mode).toBe('CC_ENTRY');
                 });
 
-                it('On enetering the last name in retry mode, go to screen to enter CC last 4 digits', function() {
+                it('On entering the last name in retry mode, go to screen to enter CC last 4 digits', function() {
                     $scope.reservationParams.room_no = '101';
                     $scope.lastNameEntered();
                 });
-                
-                it('On enetering the room number, go to screen to enter CC last 4 digits', function() {
+
+                it('On entering the room number, go to screen to enter CC last 4 digits', function() {
                     $scope.reservationParams.room_no = '101';
                     $scope.roomNumberEntered();
                 });
@@ -139,12 +139,12 @@ describe('zsPickupKeyFindReservationCtrl', function() {
                     expect($scope.mode).toBe('NO_MATCH');
                 });
 
-                it('On enetering the last name in retry mode, go to no match found mode', function() {
+                it('On entering the last name in retry mode, go to no match found mode', function() {
                     $scope.reservationParams.room_no = '101';
                     $scope.lastNameEntered();
                 });
 
-                it('On enetering the room number, go to no match found mode', function() {
+                it('On entering the room number, go to no match found mode', function() {
                     $scope.reservationParams.room_no = '101';
                     $scope.roomNumberEntered();
                 });
@@ -166,12 +166,12 @@ describe('zsPickupKeyFindReservationCtrl', function() {
                     expect($scope.mode).toBe('NO_MATCH');
                 });
 
-                it('On enetering the last name in retry mode, go to screen to enter CC last 4 digits', function() {
+                it('On entering the last name in retry mode, go to screen to enter CC last 4 digits', function() {
                     $scope.reservationParams.room_no = '101';
                     $scope.lastNameEntered();
                 });
 
-                it('On enetering the room number, go to screen to enter CC last 4 digits', function() {
+                it('On entering the room number, go to screen to enter CC last 4 digits', function() {
                     $scope.reservationParams.room_no = '101';
                     $scope.roomNumberEntered();
                 });
@@ -203,7 +203,40 @@ describe('zsPickupKeyFindReservationCtrl', function() {
             expect($scope.mode).toBe('CC_MATCH_FAILED');
         });
 
-        it('On CC validation succes and if passport scan is turned OFF, go to key creation screen', function() {
+
+        it('On CC validation succes, if the reservation is not checked in, go to checkin flow', function() {
+
+            spyOn(zsCheckoutSrv, 'validateCC').and.callFake(function() {
+                var deferred = $q.defer();
+                deferred.resolve();
+                return deferred.promise;
+            });
+
+            spyOn(zsGeneralSrv, 'fetchCheckinReservationDetails').and.callFake(function() {
+                var deferred = $q.defer();
+                deferred.resolve({
+                    'results': [{
+                        'guest_details': [{
+                            'is_primary': true
+                        }]
+                    }]
+                });
+                return deferred.promise;
+            });
+
+            spyOn($state, 'go');
+
+            $scope.reservationData = {
+                is_checked_in: false,
+                guest_arriving_today: true
+            };
+            $scope.zestStationData.check_in_collect_passport = false;
+            $scope.validateCConFile();
+            $scope.$digest();
+            expect($state.go).toHaveBeenCalledWith('zest_station.checkInReservationDetails', jasmine.any(Object));
+        });
+
+        it('On CC validation succes and if the ID scan is turned OFF, go to key creation screen', function() {
 
             spyOn(zsCheckoutSrv, 'validateCC').and.callFake(function() {
                 var deferred = $q.defer();
@@ -223,7 +256,7 @@ describe('zsPickupKeyFindReservationCtrl', function() {
             expect($state.go).toHaveBeenCalledWith('zest_station.pickUpKeyDispense', jasmine.any(Object));
         });
 
-        it('On CC validation succes and if passport scan is turned ON, go to passport scan screen', function() {
+        it('On CC validation succes and if the ID scan is turned ON, go to ID scan screen', function() {
 
             spyOn(zsCheckoutSrv, 'validateCC').and.callFake(function() {
                 var deferred = $q.defer();
@@ -258,39 +291,6 @@ describe('zsPickupKeyFindReservationCtrl', function() {
             $scope.validateCConFile();
             $scope.$digest();
             expect($state.go).toHaveBeenCalledWith('zest_station.checkInScanPassport', jasmine.any(Object));
-        });
-
-
-        it('On CC validation succes, if reservation is not checked in, go to checkin flow', function() {
-
-            spyOn(zsCheckoutSrv, 'validateCC').and.callFake(function() {
-                var deferred = $q.defer();
-                deferred.resolve();
-                return deferred.promise;
-            });
-
-            spyOn(zsGeneralSrv, 'fetchCheckinReservationDetails').and.callFake(function() {
-                var deferred = $q.defer();
-                deferred.resolve({
-                    'results': [{
-                        'guest_details': [{
-                            'is_primary': true
-                        }]
-                    }]
-                });
-                return deferred.promise;
-            });
-
-            spyOn($state, 'go');
-
-            $scope.reservationData = {
-                is_checked_in: false,
-                guest_arriving_today: true
-            };
-            $scope.zestStationData.check_in_collect_passport = false;
-            $scope.validateCConFile();
-            $scope.$digest();
-            expect($state.go).toHaveBeenCalledWith('zest_station.checkInReservationDetails', jasmine.any(Object));
         });
     });
 });
