@@ -15,11 +15,13 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
     'RVReportPaginationIdsConst',
     '$state',
     '$log',
+    'ngDialog',
     function ($rootScope, $scope, payload, reportsSrv, reportsSubSrv, reportUtils, reportParams, reportMsgs,
-              reportNames, $filter, $timeout, util, rvPermissionSrv, reportPaginationIds, $state, $log) {
-        var isNotTimeOut = false;
-        var timeOut;
-        var listTitle = $filter('translate')('STATS_&_REPORTS_TITLE');
+              reportNames, $filter, $timeout, util, rvPermissionSrv, reportPaginationIds, $state, $log, ngDialog) {
+        var self = this,
+            isNotTimeOut = false,
+            timeOut,
+            listTitle = $filter('translate')('STATS_&_REPORTS_TITLE');
 
         BaseCtrl.call(this, $scope);
 
@@ -2136,12 +2138,17 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
                 }
             };
 
-            var sucssCallback = function (response) {
+            self.sucssCallback = function (response) {
                 if ($rootScope.isBackgroundReportsEnabled
                     && $state.current.name !== 'rover.reports.inbox'
                     // flag to decide whether its paginated response or not, configured from rvReportsSubSrv.js
                     && !response.isPaginatedResponse) {
-                    $state.go('rover.reports.inbox');
+                    $scope.$emit('hideLoader');
+                    ngDialog.open( {
+                        template: '/assets/partials/reports/backgroundReports/rvReportGenerationStatusPopup.html',
+                        scope: $scope,
+                        closeByDocument: true
+                    });
                     return;
                 }
                 
@@ -2248,13 +2255,13 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
             if (chosenReport.generatedReportId) {
                 var options = {
                     params: params,
-                    successCallBack: sucssCallback,
+                    successCallBack: self.sucssCallback,
                     failureCallBack: errorCallback
                 };
 
                 $scope.callAPI(reportsSubSrv.fetchGeneratedReportDetails, options);
             } else {
-                $scope.invokeApi(reportsSubSrv.fetchReportDetails, params, sucssCallback, errorCallback);
+                $scope.invokeApi(reportsSubSrv.fetchReportDetails, params, self.sucssCallback, errorCallback);
             }
         };
 
@@ -2636,6 +2643,17 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
                 collision: 'flip'
             }
         }, autoCompleteForGrp);
+
+        // Closes the dialog
+        $scope.closeDialog = () => {
+            ngDialog.close();
+        };
+
+        // Navigate to reports inbox
+        $scope.navigateToReportInbox = () => {
+            $scope.closeDialog();
+            $state.go('rover.reports.inbox');
+        };
 
 
         (function () {
