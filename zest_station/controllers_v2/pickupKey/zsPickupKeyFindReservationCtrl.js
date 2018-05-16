@@ -50,6 +50,7 @@ sntZestStation.controller('zsPickupKeyFindReservationCtrl', [
 				var primaryGuest = _.find(response.results[0].guest_details, function(guest_detail) {
 					return guest_detail.is_primary === true;
 				});
+
 				$state.go('zest_station.checkInReservationDetails', {
 					'first_name': primaryGuest.first_name,
 					'pickup_key_mode': 'manual'
@@ -116,13 +117,14 @@ sntZestStation.controller('zsPickupKeyFindReservationCtrl', [
 
 		$scope.validateCConFile = function() {
 
-			var onCCVerificationSuccess = function(response) {
+			var onCCVerificationSuccess = function() {
 				if ($scope.reservationData.is_checked_in) {
 					var stateParams = {
 						'reservation_id': $scope.reservationData.reservation_id,
 						'room_no': $scope.reservationParams.room_no,
 						'first_name': $scope.reservationData.first_name
 					};
+					
 					// Check if ID scan is required
 					if ($scope.zestStationData.check_in_collect_passport) {
 						fetchGuestDetails($scope.reservationData, stateParams);
