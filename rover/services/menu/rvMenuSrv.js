@@ -247,10 +247,6 @@ angular.module('sntRover').service('rvMenuSrv',
 		            title: "MENU_TA_CARDS",
 		            action: "rover.companycardsearch",
 		            menuIndex: "cards"
-		        }, {
-		            title: "MENU_DISTRIBUTION_MANAGER",
-		            action: "",
-		            menuIndex: "distribution_manager"
 		        }]
 		    }, {
 		        title: "MENU_HOUSEKEEPING",
