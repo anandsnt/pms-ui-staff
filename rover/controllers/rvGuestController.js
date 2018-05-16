@@ -1781,7 +1781,7 @@ angular.module('sntRover').controller('guestCardController', [
                 $scope.initCompanyCard(company);
                 $scope.viewState.isAddNewCard = false;
                 // CICO-32856
-                if(useCardRate) {
+                if (useCardRate) {
                     $scope.navigateToRoomAndRates();
                 }
             } else {
