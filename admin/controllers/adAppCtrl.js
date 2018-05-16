@@ -131,7 +131,7 @@ admin.controller('ADAppCtrl', [
                                 }
                             }, {
                                 title: "MENU_GUESTS",
-                                action: "rover.guestcardsearch",                    
+                                action: "rover.guest.search",
                                 menuIndex: "guests"
                             }, {
                                 title: 'MENU_ACCOUNTS',
@@ -258,7 +258,7 @@ admin.controller('ADAppCtrl', [
 
                     }, {
                         title: 'MENU_REPORTS',
-                        action: 'rover.reports',
+                        action: 'rover.reports.dashboard',
                         menuIndex: 'reports',
                         iconClass: 'icon-reports',
                         submenu: []
@@ -297,7 +297,7 @@ admin.controller('ADAppCtrl', [
                         }]
                     }, {
                         title: 'MENU_REPORTS',
-                        action: 'rover.reports',
+                        action: 'rover.reports.dashboard',
                         menuIndex: 'reports',
                         iconClass: 'icon-reports',
                         submenu: []

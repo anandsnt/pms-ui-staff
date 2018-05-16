@@ -1,9 +1,9 @@
 <section class="content current admin-scrollfix" div-touch-move-stop-propogate ng-click='clearErrorMessage()' ng-show="screenMode === 'BUILD_LIST'">
     <div>
         <header class="content-title float">
-            <h2>Versions </h2>
+            <h2 style="font-size: 20px;font-weight: 600;">{{filterType.value}} Versions </h2>
             <a ng-click="goBackToPreviousState()" class="action back ng-scope" translate="">Services</a>
-            <a class="action add" ng-click="changeToUploadBuildMode()">Upload new build</a>
+            <a class="action add" ng-click="changeToUploadBuildMode()">Upload build</a>
             <div class="filters">
                 <p class="filter-label">Service Type</p>
                 <div class="filter select" style="width:200px;">
@@ -24,16 +24,19 @@
                 <table id="brands" class="grid " ng-table="tableParams" template-pagination="">
                     <thead>
                         <tr>
-                            <th width="20%" rowspan="2">
+                            <th width="10%" rowspan="2">
                                 <div><i class="glyphicon glyphicon-user"></i> <span>Version</span></div>
                             </th>
-                            <th width="30%" rowspan="2">
+                            <th width="20%" rowspan="2">
                                 <div><span>Updated on</span></div>
                             </th>
                             <th width="30%" rowspan="2">
                                 <div><span>Description</span></div>
                             </th>
-                            <th width="20%" rowspan="2">
+                            <th width="30%" rowspan="2">
+                                <div><span>Upload status</span></div>
+                            </th>
+                            <th width="10%" rowspan="2">
                                 <div><span>Delete</span></div>
                             </th>
                         </tr>
@@ -50,7 +53,19 @@
                                 {{app.description}}
                             </td>
                             <td>
-                                <span class="icons delete_small cursor_pointer" ng-click="deleteVersion(app)" ng-hide="false">&nbsp;</span>
+                                <span class="green-text" ng-show="app.upload_status == 'SUCCESS'">{{app.upload_status}}</span>
+                                <div ng-show="app.upload_status === 'FAILURE'">
+                                    <span class="red-text">{{app.upload_status}}</span></br/>
+                                    <span class="status-sub-text">{{app.upload_failure_reason}}</span>
+                                </div>
+                                <div ng-show="app.upload_status === 'PENDING'">
+                                    <span>{{app.upload_status}}</span></br>
+                                    <span class="blink-text status-sub-text">Upload in progress</span>
+                                </div>
+                            </td>
+                            <td>
+                                <span class="icons disabled-delete" ng-show="app.upload_status === 'PENDING'" >&nbsp;</span>
+                                <span class="icons delete_small cursor_pointer" ng-click="deleteVersion(app)" ng-hide="app.upload_status === 'PENDING'" >&nbsp;</span>
                             </td>
                         </tr>
                     </tbody>

@@ -98,6 +98,12 @@
                 <ad-textbox value="selectedDevice.device_type" label="{{'DEBUG_DEVICE_TYPE_LABEL' | translate}}" disabled="true" styleclass="full-width"></ad-textbox>
                 <ad-textbox value="selectedDevice.device_version" label="{{'DEBUG_DEVICE_VERSION_LABEL' | translate}}" disabled="true" styleclass="full-width"></ad-textbox>
                 <ad-textbox value="selectedDevice.app_version" label="{{'DEBUG_APP_VERSION_LABEL' | translate}}" disabled="true" styleclass="full-width"></ad-textbox>
+            </fieldset>
+            <fieldset class="holder left" ng-show="selectedDevice.service_type">
+                <div class="form-title">
+                    <h3><span>Installed Service Details</span> </h3>
+                </div>
+                <ad-textbox value="selectedDevice.service_type" label="{{'SERVICE_TYPE' | translate}}" disabled="true" styleclass="full-width" readonly="yes"></ad-textbox>
                 <ad-textbox value="selectedDevice.build_status" label="{{'BUILD_STATUS' | translate}}" disabled="true" styleclass="full-width" readonly="yes"></ad-textbox>
                 <ad-textarea value="selectedDevice.build_status_info" label="{{'BUILD_STATUS_INFO' | translate}}" div-class="full-width" text-area-class="full-width"  disabled="true"></ad-textbox>
             </fieldset>

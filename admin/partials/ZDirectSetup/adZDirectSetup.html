@@ -57,6 +57,11 @@
         <fieldset class="holder left">
             <ad-toggle-button is-checked="config.membership_feature"
                               label="{{'ZDIRECT_MEMBERSHIP_FEATURE'| translate}}"></ad-toggle-button>
+            <ad-textbox ng-if="config.membership_feature"
+                        inputtype="text"
+                        value="config.iframe_end_point"
+                        label="{{'IFRAME_END_POINT'| translate}}"
+                        styleclass="full-width"></ad-textbox>
         </fieldset>
         <fieldset class="holder right">
             <div class="entry full-width">
@@ -76,6 +81,10 @@
                     </div>
                 </div>
             </div>
+        </fieldset>
+        <fieldset class="holder left">
+            <ad-toggle-button is-checked="config.stay_info_after_checkout"
+                              label="{{'STAY_INFO_AFTER_CHECKOUT'| translate}}"></ad-toggle-button>
         </fieldset>
     </fieldset>
 

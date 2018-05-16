@@ -23,7 +23,12 @@ sntRover.controller('reservationDetailsController',
 	'RVReservationStateService',
 	'RVReservationBaseSearchSrv',
 	'RVReservationPackageSrv',
-	function($scope, $rootScope, rvPermissionSrv, RVReservationCardSrv, RVCCAuthorizationSrv, $stateParams, reservationListData, reservationDetails, ngDialog, RVSaveWakeupTimeSrv, $filter, RVNewsPaperPreferenceSrv, RVLoyaltyProgramSrv, $state, RVSearchSrv, $vault, RVReservationSummarySrv, baseData, $timeout, paymentTypes, reseravationDepositData, dateFilter, RVReservationStateService, RVReservationBaseSearchSrv, RVReservationPackageSrv) {
+	'transitions',
+	function($scope, $rootScope, rvPermissionSrv, RVReservationCardSrv, RVCCAuthorizationSrv, $stateParams,
+             reservationListData, reservationDetails, ngDialog, RVSaveWakeupTimeSrv, $filter,
+             RVNewsPaperPreferenceSrv, RVLoyaltyProgramSrv, $state, RVSearchSrv, $vault,
+             RVReservationSummarySrv, baseData, $timeout, paymentTypes, reseravationDepositData, dateFilter,
+             RVReservationStateService, RVReservationBaseSearchSrv, RVReservationPackageSrv, transitions) {
 		// pre setups for back button
 		var backTitle,
 			backParam,
@@ -128,19 +133,18 @@ sntRover.controller('reservationDetailsController',
 				title: 'Room Diary'
 
 			};
-		} else if ($scope.previousState.name === "rover.reports" || $rootScope.stayCardStateBookMark.previousState === 'rover.reports') {
-			if ($scope.previousState.name === "rover.reports") {
-				setNavigationBookMark();
-			}
-			$rootScope.setPrevState = {
-				title: 'REPORTS',
-				name: 'rover.reports',
-				param: {
-					id: $rootScope.stayCardStateBookMark.previousStateParams.id,
-					activeTab: "REPORTS"
-				}
-			};
-		} else if ($scope.previousState.name === "rover.companycarddetails") {
+        } else if ((transitions.get().from()['name'].match(/rover\.reports/))) {
+            $rootScope.setPrevState = {
+                title: 'REPORTS',
+                name: transitions.get().from()['name'],
+                param: angular.extend(
+                    angular.copy(transitions.get().params('from')), {
+                        action: 'report.show.last'
+                    })
+            };
+
+            
+        } else if ($scope.previousState.name === "rover.companycarddetails") {
 
             setNavigationBookMark();
             $rootScope.setPrevState = {
@@ -189,6 +193,11 @@ sntRover.controller('reservationDetailsController',
 			$scope.goBackSearch = function() {
 				$scope.$emit('showLoader');
 				$scope.updateSearchCache();
+				// With the previous version of ui-router, this useCache state param was
+                // set to true in case of a back navigation in the $rootScope.loadPrevState method of rvApp.js file
+                // With the upgraded ui-router the stateparams cannot be changed in the middle of a transition
+                backParam = backParam || {};
+                backParam.useCache = true;
 				$state.go('rover.search', backParam);
 			};
 		}
@@ -720,7 +729,8 @@ sntRover.controller('reservationDetailsController',
 		$scope.isStayDatesChangeAllowed = function() {
 			var is_hourly_reservation = $scope.reservationData.reservation_card.is_hourly_reservation,
 				reservation_status    = $scope.reservationData.reservation_card.reservation_status,
-				group_id              = $scope.reservationData.reservation_card.group_id;
+				group_id              = $scope.reservationData.reservation_card.group_id,
+                isStayDatesChangeAllowed;
 
 			var not_hourly_reservation = ! is_hourly_reservation,
 				checking_in_reserved   = {'CHECKING_IN': true, 'RESERVED': true}[reservation_status],

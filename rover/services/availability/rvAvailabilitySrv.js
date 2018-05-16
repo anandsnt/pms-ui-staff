@@ -894,7 +894,4 @@ angular.module('sntRover').service('rvAvailabilitySrv', ['$q', 'rvBaseWebSrvV2',
 
             return deferred.promise;
         };
-
-	/** *************************************************************************************************/
-
-}]);
+    }]);

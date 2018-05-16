@@ -1254,6 +1254,18 @@ body { overflow: hidden; }
 	                .calc-width(100, 50); 
 	            }
 	        }
+
+	        /* Invoices ***/
+	        &.invoice-search {
+	            .search { 
+	                .calc-width(100, 200); 
+	            }
+
+	            .options {
+	                width: 180px;
+	                .pull-right;
+	            }
+	        }
 		}
 	}
 
@@ -1770,10 +1782,21 @@ body { overflow: hidden; }
 			left: -5px;
 		}
 
+		.global-card {
+        position: absolute;
+        top: -5px;
+        left: -5px;
+    }
+
+    .stay-count {
+        position: absolute;
+        top: -5px;
+        right: -5px;
+    }
+
 		img {
 			width: 100%;
 			height: auto;
-			
 			#border-radius > .rounded();
 		}
 

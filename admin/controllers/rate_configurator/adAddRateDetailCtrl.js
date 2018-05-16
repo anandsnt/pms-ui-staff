@@ -1,5 +1,5 @@
-admin.controller('ADaddRatesDetailCtrl', ['$scope', '$rootScope', 'ADRatesAddDetailsSrv', 'ngDialog',
-    function($scope, $rootScope, ADRatesAddDetailsSrv, ngDialog) {
+admin.controller('ADaddRatesDetailCtrl', ['$scope', '$rootScope', 'ADRatesAddDetailsSrv', 'ngDialog', 'ADReservationToolsSrv',
+    function($scope, $rootScope, ADRatesAddDetailsSrv, ngDialog, ADReservationToolsSrv) {
 
         $scope.init = function() {
             BaseCtrl.call(this, $scope);
@@ -162,6 +162,9 @@ admin.controller('ADaddRatesDetailCtrl', ['$scope', '$rootScope', 'ADRatesAddDet
             $scope.rateTypesDetails.depositPolicies = $scope.depositRequiredActivated ? $scope.rateTypesDetails.depositPolicies : [];
             $scope.rateTypesDetails.cancelationPenalties = $scope.cancelPenaltiesActivated ? $scope.rateTypesDetails.cancelationPenalties : [];
             $scope.rateData.currency_code_id = $scope.rateTypesDetails.hotel_settings.currency.id;
+
+            $scope.rateData.last_sync_status = null;
+            $scope.rateData.last_sync_at = null;
         };
         /*
          * Set commission data
@@ -441,6 +444,29 @@ admin.controller('ADaddRatesDetailCtrl', ['$scope', '$rootScope', 'ADRatesAddDet
                 }
             });
             console.log("$scope.rateData.tasks", $scope.rateData.tasks);
+        };
+
+        /*  
+         *  Handle Sync button click.
+         */
+        $scope.clickedSyncButton = function() {
+            var successCallback = function(data) {
+                $scope.rateData.last_sync_status = data.last_sync_status;
+                $scope.rateData.last_sync_at = data.last_sync_at;
+            },
+            failureCallback = function(errorMessage) {
+                $scope.errorMessage = errorMessage;
+            },
+            data = {
+                id: $scope.rateData.id
+            },
+            options = {
+                params: data,
+                successCallBack: successCallback,
+                failureCallBack: failureCallback
+            };
+
+            $scope.callAPI(ADReservationToolsSrv.reSyncRates, options);
         };
 
         $scope.init();

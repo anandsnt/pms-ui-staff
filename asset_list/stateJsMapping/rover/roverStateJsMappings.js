@@ -46,7 +46,7 @@ module.exports = {
 			},
 			'rover.financials': {
 				filename: roverJsListRoot + 'financialsJsAssetList.js',
-				babelify: false
+				babelify: true
 			},
 			'postcharge': {
 				filename: roverJsListRoot + 'postChargeJsAssetList.js',
