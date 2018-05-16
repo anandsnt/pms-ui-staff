@@ -223,11 +223,15 @@ sntGuestWeb.controller('homeController', ['$rootScope', '$scope', '$location', '
 		//check if we are using new send to que settings.
 		$rootScope.bypassCheckinVerification = (reservationAndhotelData.is_sent_to_que === 'true' && !!reservationAndhotelData.zest_web_use_new_sent_to_que_action);
 
+		var isBypassAuthenticationUrl = function () {
+			var absUrl = $location.$$absUrl;
+			return absUrl.indexOf("/guest_web/") !== -1 && absUrl.indexOf("/checkin?guest_web_token=") !== -1 &&
+				reservationAndhotelData.skip_checkin_verification && reservationAndhotelData.reservation_details;
+		};
 		var navigatePageBasedOnUrlAndType = function() {
 			var absUrl = $location.$$absUrl;
 
-			if (absUrl.indexOf("/guest_web/") !== -1 && absUrl.indexOf("/checkin?guest_web_token=") !== -1 &&
-				reservationAndhotelData.skip_checkin_verification && reservationAndhotelData.reservation_details) {
+			if (isBypassAuthenticationUrl()) {
 				checkinDetailsService.setResponseData(reservationAndhotelData.reservation_details);
 				$rootScope.upgradesAvailable = (reservationAndhotelData.reservation_details.is_upgrades_available === "true") ? true : false;
 				$rootScope.isUpgradeAvailableNow = reservationAndhotelData.reservation_details.is_upsell_available_now;
@@ -257,6 +261,9 @@ sntGuestWeb.controller('homeController', ['$rootScope', '$scope', '$location', '
 		} else if (reservationAndhotelData.is_precheckin_only === 'true' && reservationAndhotelData.reservation_status === 'RESERVED' && (reservationAndhotelData.is_sent_to_que === 'true')) {
 			$state.go('preCheckinTripDetails'); // only available for Fontainbleau -> precheckin + sent to que
 		} else if ($rootScope.isCheckedin) {
+			if (isBypassAuthenticationUrl()) {
+				customizeStylesBasedOnUrlTyppe();
+			}
 			$state.go('checkinSuccess'); //already checked in
 		} else if (reservationAndhotelData.is_checkin === 'true') {
 			navigatePageBasedOnUrlAndType(); //checkin starting page -> precheckin turned off
