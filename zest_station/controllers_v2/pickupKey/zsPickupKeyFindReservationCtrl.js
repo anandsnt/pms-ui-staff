@@ -70,7 +70,7 @@ sntZestStation.controller('zsPickupKeyFindReservationCtrl', [
 		/*  If scan option is turned ON and ID wasn't scanned during checkin, scan ID in pickupkey flow   */
 		/* ********************************************************************************************** */
 
-		var fetchDetailsForPassportScanning = function(reservation_id, stateParams) {
+		var fetchDetailsForIdScanning = function(reservation_id, stateParams) {
 			var onSuccess = function(response) {
 				zsCheckinSrv.setSelectedCheckInReservation(response.results); // important
 				$state.go('zest_station.checkInScanPassport', stateParams);
@@ -93,7 +93,7 @@ sntZestStation.controller('zsPickupKeyFindReservationCtrl', [
 						goToKeyDispense(stateParams);
 					};
 					stateParams.from_pickup_key = true;
-					fetchDetailsForPassportScanning(data.reservation_id, stateParams);
+					fetchDetailsForIdScanning(data.reservation_id, stateParams);
 				} else {
 					goToKeyDispense(stateParams);
 				}
@@ -117,7 +117,6 @@ sntZestStation.controller('zsPickupKeyFindReservationCtrl', [
 		$scope.validateCConFile = function() {
 
 			var onCCVerificationSuccess = function(response) {
-				console.log($scope.reservationData);
 				if ($scope.reservationData.is_checked_in) {
 					var stateParams = {
 						'reservation_id': $scope.reservationData.reservation_id,
@@ -159,9 +158,9 @@ sntZestStation.controller('zsPickupKeyFindReservationCtrl', [
 		};
 
 		var searchReservation = function() {
-			var checkoutVerificationSuccess = function(data) {
+			var findReservationSuccess = function(data) {
 				$scope.reservationData = data;
-				if (!$scope.reservationData.is_checked_in && !$scope.reservationData.guest_arriving_today) {
+				if ((!data.is_checked_in && !data.guest_arriving_today) || data.is_checked_out) {
 					generalFailureActions();
 				} else {
 					$scope.mode = 'CC_ENTRY';
@@ -174,7 +173,7 @@ sntZestStation.controller('zsPickupKeyFindReservationCtrl', [
 			};
 			var options = {
 				params: params,
-				successCallBack: checkoutVerificationSuccess,
+				successCallBack: findReservationSuccess,
 				failureCallBack: generalFailureActions
 			};
 
@@ -194,13 +193,13 @@ sntZestStation.controller('zsPickupKeyFindReservationCtrl', [
 
 		$scope.roomNumberEntered = function() {
 			dismissKeyBoardActions();
-			$scope.reservationParams.room_no.length > 0 ? searchReservation() : '';
+			if ($scope.reservationParams.room_no.length > 0) {
+				searchReservation();
+			}
 		};
 
 		$scope.reEnterText = function(type) {
-			console.log(type);
 			dismissKeyBoardActions();
-			console.log(type);
 			if (type === 'room') {
 				$scope.mode = 'ROOM_NUMBER_ENTRY';
 				$scope.focusInputField('room-number');

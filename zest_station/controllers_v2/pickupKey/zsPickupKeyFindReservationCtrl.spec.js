@@ -24,7 +24,7 @@ describe('zsPickupKeyFindReservationCtrl', function() {
             $state = _$state_;
         });
 
-          angular.extend($scope, {
+        angular.extend($scope, {
             setScreenIcon: function() {
                 return;
             },
@@ -46,7 +46,7 @@ describe('zsPickupKeyFindReservationCtrl', function() {
             $scope: $scope
         });
 
-            // Root controller methods
+        // Root controller methods
         angular.extend($scope, {
             zestStationData: {
                 sessionActivity: [],
@@ -55,9 +55,9 @@ describe('zsPickupKeyFindReservationCtrl', function() {
             trackEvent: function() {
                 return;
             },
-              reservationHasPassportsScanned: function() {
+            reservationHasPassportsScanned: function() {
                 return;
-            },
+            }
         });
 
         $scope.errorMessage = '';
@@ -81,6 +81,7 @@ describe('zsPickupKeyFindReservationCtrl', function() {
         beforeEach(function() {
             $scope.reservationParams.last_name = 'test';
         });
+
         it('if the last name is entered and no rooom number is entered and then if next is clicked, go to room number entry mode', function() {
             $scope.reservationParams.room_no = '';
             $scope.lastNameEntered();
@@ -100,15 +101,18 @@ describe('zsPickupKeyFindReservationCtrl', function() {
                         return deferred.promise;
                     });
                 });
+
                 afterEach(function() {
                     $scope.$digest();
                     expect(zsCheckoutSrv.findReservation).toHaveBeenCalled();
                     expect($scope.mode).toBe('CC_ENTRY');
                 });
+
                 it('On enetering the last name in retry mode, go to screen to enter CC last 4 digits', function() {
                     $scope.reservationParams.room_no = '101';
                     $scope.lastNameEntered();
                 });
+                
                 it('On enetering the room number, go to screen to enter CC last 4 digits', function() {
                     $scope.reservationParams.room_no = '101';
                     $scope.roomNumberEntered();
@@ -116,6 +120,7 @@ describe('zsPickupKeyFindReservationCtrl', function() {
             });
 
             describe('Reservation not checked in and is not arrivay today', function() {
+
                 beforeEach(function() {
                     spyOn(zsCheckoutSrv, 'findReservation').and.callFake(function() {
                         var deferred = $q.defer();
@@ -126,16 +131,19 @@ describe('zsPickupKeyFindReservationCtrl', function() {
                         return deferred.promise;
                     });
                 });
+
                 afterEach(function() {
                     $scope.lastNameEntered();
                     $scope.$digest();
                     expect(zsCheckoutSrv.findReservation).toHaveBeenCalled();
                     expect($scope.mode).toBe('NO_MATCH');
                 });
+
                 it('On enetering the last name in retry mode, go to no match found mode', function() {
                     $scope.reservationParams.room_no = '101';
                     $scope.lastNameEntered();
                 });
+
                 it('On enetering the room number, go to no match found mode', function() {
                     $scope.reservationParams.room_no = '101';
                     $scope.roomNumberEntered();
@@ -143,6 +151,7 @@ describe('zsPickupKeyFindReservationCtrl', function() {
             });
 
             describe('No Reservation found', function() {
+
                 beforeEach(function() {
                     spyOn(zsCheckoutSrv, 'findReservation').and.callFake(function() {
                         var deferred = $q.defer();
@@ -150,15 +159,18 @@ describe('zsPickupKeyFindReservationCtrl', function() {
                         return deferred.promise;
                     });
                 });
+
                 afterEach(function() {
                     $scope.$digest();
                     expect(zsCheckoutSrv.findReservation).toHaveBeenCalled();
                     expect($scope.mode).toBe('NO_MATCH');
                 });
+
                 it('On enetering the last name in retry mode, go to screen to enter CC last 4 digits', function() {
                     $scope.reservationParams.room_no = '101';
                     $scope.lastNameEntered();
                 });
+
                 it('On enetering the room number, go to screen to enter CC last 4 digits', function() {
                     $scope.reservationParams.room_no = '101';
                     $scope.roomNumberEntered();
@@ -190,16 +202,16 @@ describe('zsPickupKeyFindReservationCtrl', function() {
             $scope.$digest();
             expect($scope.mode).toBe('CC_MATCH_FAILED');
         });
-        it('On CC validation succes, go to next screens', function() {
-            
+
+        it('On CC validation succes and if passport scan is turned OFF, go to key creation screen', function() {
+
             spyOn(zsCheckoutSrv, 'validateCC').and.callFake(function() {
                 var deferred = $q.defer();
                 deferred.resolve();
                 return deferred.promise;
             });
+
             spyOn($state, 'go');
-            $scope.reservationParams.room_no = '101';
-            $scope.reservationParams.last_name = 'test';
 
             $scope.reservationData = {
                 is_checked_in: true,
@@ -208,8 +220,77 @@ describe('zsPickupKeyFindReservationCtrl', function() {
             $scope.zestStationData.check_in_collect_passport = false;
             $scope.validateCConFile();
             $scope.$digest();
-            expect($state.go).toHaveBeenCalled();
+            expect($state.go).toHaveBeenCalledWith('zest_station.pickUpKeyDispense', jasmine.any(Object));
+        });
+
+        it('On CC validation succes and if passport scan is turned ON, go to passport scan screen', function() {
+
+            spyOn(zsCheckoutSrv, 'validateCC').and.callFake(function() {
+                var deferred = $q.defer();
+                deferred.resolve();
+                return deferred.promise;
+            });
+
+            spyOn(zsGeneralSrv, 'fetchGuestDetails').and.callFake(function() {
+                var deferred = $q.defer();
+                deferred.resolve({
+                    'reservation_id': 123
+                });
+                return deferred.promise;
+            });
+
+            spyOn(zsGeneralSrv, 'fetchCheckinReservationDetails').and.callFake(function() {
+                var deferred = $q.defer();
+                deferred.resolve({
+                    'results': []
+                });
+                return deferred.promise;
+            });
+
+            spyOn($state, 'go');
+
+            $scope.reservationData = {
+                is_checked_in: true,
+                guest_arriving_today: true
+            };
+
+            $scope.zestStationData.check_in_collect_passport = true;
+            $scope.validateCConFile();
+            $scope.$digest();
+            expect($state.go).toHaveBeenCalledWith('zest_station.checkInScanPassport', jasmine.any(Object));
+        });
+
+
+        it('On CC validation succes, if reservation is not checked in, go to checkin flow', function() {
+
+            spyOn(zsCheckoutSrv, 'validateCC').and.callFake(function() {
+                var deferred = $q.defer();
+                deferred.resolve();
+                return deferred.promise;
+            });
+
+            spyOn(zsGeneralSrv, 'fetchCheckinReservationDetails').and.callFake(function() {
+                var deferred = $q.defer();
+                deferred.resolve({
+                    'results': [{
+                        'guest_details': [{
+                            'is_primary': true
+                        }]
+                    }]
+                });
+                return deferred.promise;
+            });
+
+            spyOn($state, 'go');
+
+            $scope.reservationData = {
+                is_checked_in: false,
+                guest_arriving_today: true
+            };
+            $scope.zestStationData.check_in_collect_passport = false;
+            $scope.validateCConFile();
+            $scope.$digest();
+            expect($state.go).toHaveBeenCalledWith('zest_station.checkInReservationDetails', jasmine.any(Object));
         });
     });
-
 });
