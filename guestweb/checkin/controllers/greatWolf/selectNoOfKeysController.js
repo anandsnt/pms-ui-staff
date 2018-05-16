@@ -2,8 +2,8 @@
 	var selectNoOfkeysController = function($scope, $state, checkinKeysService, $rootScope) {
 
 		var isValidData = function(data) {
-			return data !== null && data.length > 0
-		}
+			return data !== null && data.length > 0;
+		};
 
 		var init = (function() {
 			$scope.isLoading = true;
