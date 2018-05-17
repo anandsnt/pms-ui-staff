@@ -126,7 +126,7 @@ angular.module('sntRover').controller('stayCardMainCtrl', ['$rootScope', '$scope
                 // in case another reservation is created for the same guest
                 'userId': $scope.reservationDetails.guestCard.id || $scope.reservationData.guest.id,
                 'avatar': $scope.guestCardData.cardHeaderImage,
-                'guestId': null,
+                'guestId': $scope.reservationDetails.guestCard.id || $scope.reservationData.guest.id,
                 'vip': data.vip
             };
 
@@ -260,7 +260,9 @@ angular.module('sntRover').controller('stayCardMainCtrl', ['$rootScope', '$scope
 						excluded_rate_ids: addon.excluded_rate_ids
 					});
 				});
-				$scope.navigateToRoomAndRates(options);
+				if (!$scope.reservationData.keepExistingRate) {
+					$scope.navigateToRoomAndRates(options);
+				}
 			});
 		};
 
@@ -642,7 +644,6 @@ angular.module('sntRover').controller('stayCardMainCtrl', ['$rootScope', '$scope
 		$scope.noRoutingToReservation = function() {
 			ngDialog.close();
 			that.reloadStaycard();
-
 		};
 
 		$scope.applyRoutingToReservation = function() {
