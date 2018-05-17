@@ -1688,6 +1688,9 @@ angular.module('sntRover').controller('guestCardController', [
             });
         };
         // To keep existing rate and proceed.
+        // CICO-50623 : Handle keep existing state scenario
+        // This flag will use in stayCardMainStrl.js
+        $scope.reservationData.keepExistingRate = false;
 
         $scope.selectCard = function(cardData, chooseCardRate) {
             if (cardData.account_type === 'COMPANY') {
@@ -1696,7 +1699,10 @@ angular.module('sntRover').controller('guestCardController', [
             if (cardData.account_type === 'TRAVELAGENT') {
                 $scope.selectTravelAgent(cardData, chooseCardRate);
             }
-            // ngDialog.close();
+            
+            if (!chooseCardRate) {
+                $scope.reservationData.keepExistingRate = true;
+            }
         };
         // To change to contracted Rate and proceed.
         $scope.changeToContractedRate = function(cardData) {
@@ -1781,9 +1787,7 @@ angular.module('sntRover').controller('guestCardController', [
                 $scope.initCompanyCard(company);
                 $scope.viewState.isAddNewCard = false;
                 // CICO-32856
-                if (useCardRate) {
-                    $scope.navigateToRoomAndRates();
-                }
+                $scope.navigateToRoomAndRates();
             } else {
                 if (!$scope.reservationDetails.companyCard.futureReservations || $scope.reservationDetails.companyCard.futureReservations <= 0) {
                     $scope.replaceCardCaller('company', company, false, useCardRate);
