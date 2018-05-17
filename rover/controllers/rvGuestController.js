@@ -1687,6 +1687,7 @@ angular.module('sntRover').controller('guestCardController', [
                 scope: $scope
             });
         };
+        
         // To keep existing rate and proceed.
         // CICO-50623 : Handle keep existing state scenario
         // This flag will use in stayCardMainStrl.js
