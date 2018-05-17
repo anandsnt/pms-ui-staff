@@ -64,7 +64,7 @@ angular.module('sntRover').service('RVreportsSubSrv', [
                 } else {
                     rvBaseWebSrvV2.getJSONWithSpecialStatusHandling(async_callback_url).then(function(data) {
                         // if the request is still not proccesed
-                        if ((!!data.status && data.status === 'processing_not_completed') || data === 'null') {
+                        if (!!data.status && data.status === 'processing_not_completed' || data === 'null') {
                             // is this same URL ?
                             setTimeout(function() {
                                 console.info('POLLING::-> for print response');
@@ -372,7 +372,7 @@ angular.module('sntRover').service('RVreportsSubSrv', [
         };
 
         service.fetchRoomTypeList = function(params) {
-            params = params || {}
+            params = params || {};
             return callApi({
                 name: 'roomTypeList',
                 method: 'getJSON',
@@ -409,7 +409,7 @@ angular.module('sntRover').service('RVreportsSubSrv', [
         };
 
         service.fetchScheduleFrequency = function(exportOnly) {
-            var url = exportOnly ? 'admin/export_frequencies.json?export_only=true' : 'admin/export_frequencies.json'
+            var url = exportOnly ? 'admin/export_frequencies.json?export_only=true' : 'admin/export_frequencies.json';
 
             return callApi({
                 method: 'getJSON',
@@ -605,7 +605,7 @@ angular.module('sntRover').service('RVreportsSubSrv', [
         service.fetchGroupById = function(id) {
             return callApi({               
                 method: 'getJSON',
-                url: 'groups/' + id  + '/group_name'                           
+                url: 'groups/' + id + '/group_name'                           
             });
         };
 
@@ -638,17 +638,17 @@ angular.module('sntRover').service('RVreportsSubSrv', [
             var deferred = $q.defer(),
                 url = '/api/accounts/revenue_and_tax';
 
-                rvBaseWebSrvV2.getJSON(url, data.postParamsToApi).then(function(revenueData) {
-                    revenueData.accountVatType = data.accountVatType;
-                    revenueData.isPrint = data.isPrint;
-                    revenueData.accountTypeId = data.accountTypeId;
-                    deferred.resolve(revenueData);
-                }, function(data) {
-                    deferred.reject(data);
-                });
+            rvBaseWebSrvV2.getJSON(url, data.postParamsToApi).then(function(revenueData) {
+                revenueData.accountVatType = data.accountVatType;
+                revenueData.isPrint = data.isPrint;
+                revenueData.accountTypeId = data.accountTypeId;
+                deferred.resolve(revenueData);
+            }, function(data) {
+                deferred.reject(data);
+            });
 
             return deferred.promise;
-        }
+        };
 
         /**
          * Fetch rate info for an array of rate ids
@@ -659,11 +659,11 @@ angular.module('sntRover').service('RVreportsSubSrv', [
             var deferred = $q.defer(),
                 url = '/api/rates/list';
 
-                rvBaseWebSrvV2.getJSON(url, params).then(function(response) {                    
-                    deferred.resolve(response.rates);
-                }, function(error) {
-                    deferred.reject(error);
-                });
+            rvBaseWebSrvV2.postJSON(url, params).then(function(response) {
+                deferred.resolve(response.rates);
+            }, function(error) {
+                deferred.reject(error);
+            });
 
             return deferred.promise;
         };
