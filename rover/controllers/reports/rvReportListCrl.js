@@ -10,8 +10,9 @@ sntRover.controller('RVReportListCrl', [
     'RVReportApplyIconClass',
     'RVReportApplyFlags',
     'RVReportSetupDates',
+    '$state',
     function($scope, $rootScope, $filter, reportsSrv, reportsSubSrv, reportUtils, reportMsgs,
-             $timeout, applyIconClass, applyFlags, setupDates) {
+             $timeout, applyIconClass, applyFlags, setupDates, $state) {
 
         BaseCtrl.call(this, $scope);
 
@@ -125,10 +126,7 @@ sntRover.controller('RVReportListCrl', [
                 }
             }, 2010);
         };
-
-        postProcess( $scope.$parent.reportList );
-
-
+ 
         // show hide filter toggle
         $scope.toggleFilter = function(e, report) {
             if ( e ) {
@@ -192,6 +190,11 @@ sntRover.controller('RVReportListCrl', [
          * init method
          */
         (function () {
+            
+            if ($state.params.refresh) {
+                postProcess( $scope.$parent.reportList );
+            }
+
             var chosenReport = _.find($scope.$parent.reportList, {uiChosen: true});
 
             if (chosenReport) {
