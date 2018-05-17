@@ -201,7 +201,7 @@ angular.module('sntRover').controller('RVCompanyCardCtrl', ['$scope', '$rootScop
 				if (!rvPermissionSrv.getPermissionValue ('EDIT_COMPANY_CARD')) {
 					isDisabledFields = true;
 				}
-			}
+			} 
 			return isDisabledFields;
 		};
 
