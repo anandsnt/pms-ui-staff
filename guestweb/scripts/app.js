@@ -222,12 +222,14 @@ sntGuestWeb.controller('homeController', ['$rootScope', '$scope', '$location', '
 
 		//check if we are using new send to que settings.
 		$rootScope.bypassCheckinVerification = (reservationAndhotelData.is_sent_to_que === 'true' && !!reservationAndhotelData.zest_web_use_new_sent_to_que_action);
-
-		var isBypassAuthenticationUrl = function () {
+		
+    var isBypassAuthenticationUrl = function () {
 			var absUrl = $location.$$absUrl;
+      
 			return absUrl.indexOf("/guest_web/") !== -1 && absUrl.indexOf("/checkin?guest_web_token=") !== -1 &&
 				reservationAndhotelData.skip_checkin_verification && reservationAndhotelData.reservation_details;
 		};
+    
 		var navigatePageBasedOnUrlAndType = function() {
 			var absUrl = $location.$$absUrl;
 
