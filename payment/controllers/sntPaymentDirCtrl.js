@@ -766,7 +766,7 @@ angular.module('sntPay').controller('sntPaymentController',
 
                 //  --- CBA ---
                 if ($scope.selectedPaymentType === 'CC' &&
-                    $scope.hotelConfig.paymentGateway === 'CBA') {
+                    ($scope.hotelConfig.paymentGateway === 'CBA' || $scope.hotelConfig.paymentGateway === 'CBA_AND_MLI')) {
                     $scope.$broadcast('INITIATE_CBA_PAYMENT', params);
                     return;
                 }
@@ -1378,7 +1378,7 @@ angular.module('sntPay').controller('sntPaymentController',
                 $scope.hotelConfig.emvTimeout = $scope.hotelConfig.emvTimeout || 120;
                 $scope.hotelConfig.paymentGateway = $scope.hotelConfig.paymentGateway || '';
 
-                if ($scope.hotelConfig.paymentGateway === 'CBA') {
+                if ($scope.hotelConfig.paymentGateway === 'CBA' || $scope.hotelConfig.paymentGateway === 'CBA_AND_MLI') {
                     initiateCBAlisteners();
                 } else if ($scope.hotelConfig.paymentGateway === 'SHIJI') {
                     initiateSHIJIListeners();

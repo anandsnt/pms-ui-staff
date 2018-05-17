@@ -376,6 +376,7 @@ if (status === 406) { // 406- Network error
                 case "MLI":
                 case "CBA":
                 case "SHIJI":
+                case "CBA_AND_MLI":
                     break;
                 case "sixpayments":
                     var time = new Date().getTime(),
