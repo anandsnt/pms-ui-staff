@@ -1781,7 +1781,9 @@ angular.module('sntRover').controller('guestCardController', [
                 $scope.initCompanyCard(company);
                 $scope.viewState.isAddNewCard = false;
                 // CICO-32856
-                $scope.navigateToRoomAndRates();
+                if (useCardRate) {
+                    $scope.navigateToRoomAndRates();
+                }
             } else {
                 if (!$scope.reservationDetails.companyCard.futureReservations || $scope.reservationDetails.companyCard.futureReservations <= 0) {
                     $scope.replaceCardCaller('company', company, false, useCardRate);
