@@ -100,6 +100,10 @@ angular.module('sntPay').controller('payMLIOperationsController',
             };
 
             var renderDataFromSwipe = function (event, swipedCardData) {
+                // Discard swipe actions incase of CBA + MLI and if the action is PAYMENT
+                if ($scope.hotelConfig.paymentGateway === 'CBA_AND_MLI' && !$scope.payment.isAddPaymentMode) {
+                    return;
+                }
                 isSwiped = true;
                 if ($scope.hotelConfig.isEMVEnabled) {
                     $scope.payment.isManualEntryInsideIFrame = true;
@@ -267,13 +271,16 @@ angular.module('sntPay').controller('payMLIOperationsController',
                 }
             };
 
+            // To Mock MLI swipe - 
+            // Once payment screen is loaded, 
+            // In browser console call document.dispatchEvent(new Event('MOCK_MLI_SWIPE')) 
+
             document.addEventListener('MOCK_MLI_SWIPE', (e) => {
                 $scope.$emit('showLoader');
                 $timeout(() => {
                     $scope.$emit('hideLoader');
                     mockSwipeAction();
                 }, 2000);
-
             });
 
             /** **************** init ***********************************************/

@@ -309,9 +309,10 @@ angular.module('sntPay').controller('sntPaymentController',
                 var isCCPresent = $scope.selectedPaymentType === 'CC' &&
                     (!!$scope.selectedCC && (!!$scope.selectedCC.ending_with || !!$scope.selectedCC.card_number));
                 var isManualEntry = isEMVEnabled && $scope.payment.isManualEntryInsideIFrame;
+                var isCBAMLIPayment = $scope.hotelConfig.paymentGateway === 'CBA_AND_MLI' && !$scope.payment.isAddPaymentMode;
 
                 return !isCardSelectionDisabled() && (isCCPresent && $scope.payment.screenMode === 'PAYMENT_MODE' &&
-                    (isManualEntry || !isEMVEnabled));
+                    (isManualEntry || !isEMVEnabled)) && !isCBAMLIPayment;
             };
 
             /**
