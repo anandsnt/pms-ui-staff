@@ -342,7 +342,7 @@ angular.module('stayCardModule', [])
                 }
             },
             lazyLoad: function ($transition$) {
-                $transition$.injector().get('jsMappings')
+                return $transition$.injector().get('jsMappings')
                     .fetchAssets(['rover.reservation.staycard.roomassignment', 'directives']);
             }
         });
