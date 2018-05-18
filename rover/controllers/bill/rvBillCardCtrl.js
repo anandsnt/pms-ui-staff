@@ -1981,8 +1981,9 @@ sntRover.controller('RVbillCardController',
 			successCallBack: successCallBackOfApiCall,
 			failureCallBack: failureCallBackOfApiCall
 		};
-
-		$scope.callAPI( RVBillCardSrv.callBlackBoxApi, options );
+		console.log("-----call Blackbox API----")
+successCallBackOfApiCall();
+		//$scope.callAPI( RVBillCardSrv.callBlackBoxApi, options );
 	};
 
 	// CICO-45029 - handle check-out in progress tracking so user doesnt initiate errors
@@ -2036,12 +2037,13 @@ sntRover.controller('RVbillCardController',
 		}
 		var finalBillBalance = "0.00",
 			paymentType = reservationBillData.bills[$scope.currentActiveBill].credit_card_details.payment_type,
-			isAllowDirectDebit = reservationBillData.bills[$scope.currentActiveBill].is_allow_direct_debit,
-			directBillWithBalanceFlag = $rootScope.isStandAlone && finalBillBalance !== "0.00" && paymentType === "DB"  && !$scope.performCompleteCheckoutAction;
+			isAllowDirectDebit = reservationBillData.bills[$scope.currentActiveBill].is_allow_direct_debit;
+			
 
 		if (typeof $scope.reservationBillData.bills[$scope.currentActiveBill].total_fees[0] !== 'undefined') {
 			finalBillBalance = $scope.reservationBillData.bills[$scope.currentActiveBill].total_fees[0].balance_amount;
 		}
+		var directBillWithBalanceFlag = $rootScope.isStandAlone && finalBillBalance !== "0.00" && paymentType === "DB"  && !$scope.performCompleteCheckoutAction;
 
 		if ($scope.isCheckoutWithoutSettlement) {
 			var data = {
@@ -2052,7 +2054,8 @@ sntRover.controller('RVbillCardController',
 			};
 			
 			sntActivity.start('COMPLETE_CHECKOUT');
-			$scope.invokeApi(RVBillCardSrv.completeCheckout, data, $scope.completeCheckoutSuccessCallback, $scope.completeCheckoutFailureCallback);
+			console.log("clicked complete checkout ----------- 1")
+			//$scope.invokeApi(RVBillCardSrv.completeCheckout, data, $scope.completeCheckoutSuccessCallback, $scope.completeCheckoutFailureCallback);
 		} else if (directBillWithBalanceFlag && !isAllowDirectDebit) {
 			$scope.checkoutInProgress = false;
 			showDirectDebitDisabledPopup();	
@@ -2111,7 +2114,8 @@ sntRover.controller('RVbillCardController',
 			};
 
 			sntActivity.start('COMPLETE_CHECKOUT');
-			$scope.invokeApi(RVBillCardSrv.completeCheckout, data, $scope.completeCheckoutSuccessCallback, $scope.completeCheckoutFailureCallback);
+			console.log("clicked complete checkout ----------- 2")
+			//$scope.invokeApi(RVBillCardSrv.completeCheckout, data, $scope.completeCheckoutSuccessCallback, $scope.completeCheckoutFailureCallback);
 		}
 	};
 
