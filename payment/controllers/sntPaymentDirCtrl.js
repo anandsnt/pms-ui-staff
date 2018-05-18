@@ -49,6 +49,12 @@ angular.module('sntPay').controller('sntPaymentController',
 
             $scope.errorMessage = '';
 
+            $scope.$on('REMOVE_PAYMENT_TYPE', function(ev, data) {
+                $scope.paymentTypes = _.without($scope.paymentTypes, _.findWhere($scope.paymentTypes, {
+                    name: data.paymentType
+                }));
+            });
+
             // ---------------------------------------------------------------------------------------------------------
             /**
              *
@@ -765,8 +771,13 @@ angular.module('sntPay').controller('sntPaymentController',
                 }
 
                 //  --- CBA ---
-                if ($scope.selectedPaymentType === 'CC' &&
-                    ($scope.hotelConfig.paymentGateway === 'CBA' || $scope.hotelConfig.paymentGateway === 'CBA_AND_MLI')) {
+                if ($scope.selectedPaymentType === 'CC' && $scope.hotelConfig.paymentGateway === 'CBA') {
+                    $scope.$broadcast('INITIATE_CBA_PAYMENT', params);
+                    return;
+                }
+
+                // ---- CBA + MLI ----
+                if ($scope.selectedPaymentType === 'CBA' && $scope.hotelConfig.paymentGateway === 'CBA_AND_MLI') {
                     $scope.$broadcast('INITIATE_CBA_PAYMENT', params);
                     return;
                 }
@@ -1406,6 +1417,9 @@ angular.module('sntPay').controller('sntPaymentController',
 
                 $scope.payment.iFrameUrl = paths.iFrameUrl;
                 $scope.paymentGatewayUIInterfaceUrl = paths.paymentGatewayUIInterfaceUrl;
+
+
+                $scope.payment.isAddCardAction = sntPaymentSrv.isAddCardAction($scope.actionType);
 
                 /* In case there is swiped data available
                  * This scenario is possible in case of add payments in stay-card; guest-card and stay-card bill screens.

@@ -8,7 +8,11 @@ angular.module('sntPay').controller('payCBAAndMLICtrl', ['$scope', '$controller'
             $controller('payMLIOperationsController', {
                 $scope: $scope
             });
-
+            
+            $scope.$emit('REMOVE_PAYMENT_TYPE', {
+                'paymentType': $scope.payment.isAddCardAction ? 'CBA' : 'CC'
+            });
+         
         })();
 
     }
