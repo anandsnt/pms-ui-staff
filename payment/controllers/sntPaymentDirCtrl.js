@@ -182,7 +182,9 @@ angular.module('sntPay').controller('sntPaymentController',
              * @return {boolean} If card selection is not available for the payment gateway configured
              */
             function isCardSelectionDisabled() {
-                return !!PAYMENT_CONFIG[$scope.hotelConfig.paymentGateway].disableCardSelection;
+                let isCBAMLIPayment = $scope.hotelConfig.paymentGateway === 'CBA_AND_MLI';
+
+                return !!PAYMENT_CONFIG[$scope.hotelConfig.paymentGateway].disableCardSelection || (isCBAMLIPayment && !$scope.payment.isAddCardAction);
             }
 
             /**
