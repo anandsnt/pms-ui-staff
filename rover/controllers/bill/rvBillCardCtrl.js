@@ -1981,9 +1981,8 @@ sntRover.controller('RVbillCardController',
 			successCallBack: successCallBackOfApiCall,
 			failureCallBack: failureCallBackOfApiCall
 		};
-		console.log("-----call Blackbox API----")
-successCallBackOfApiCall();
-		//$scope.callAPI( RVBillCardSrv.callBlackBoxApi, options );
+
+		$scope.callAPI( RVBillCardSrv.callBlackBoxApi, options );
 	};
 
 	// CICO-45029 - handle check-out in progress tracking so user doesnt initiate errors
@@ -2055,7 +2054,7 @@ successCallBackOfApiCall();
 			
 			sntActivity.start('COMPLETE_CHECKOUT');
 			console.log("clicked complete checkout ----------- 1")
-			//$scope.invokeApi(RVBillCardSrv.completeCheckout, data, $scope.completeCheckoutSuccessCallback, $scope.completeCheckoutFailureCallback);
+			$scope.invokeApi(RVBillCardSrv.completeCheckout, data, $scope.completeCheckoutSuccessCallback, $scope.completeCheckoutFailureCallback);
 		} else if (directBillWithBalanceFlag && !isAllowDirectDebit) {
 			$scope.checkoutInProgress = false;
 			showDirectDebitDisabledPopup();	
@@ -2115,7 +2114,7 @@ successCallBackOfApiCall();
 
 			sntActivity.start('COMPLETE_CHECKOUT');
 			console.log("clicked complete checkout ----------- 2")
-			//$scope.invokeApi(RVBillCardSrv.completeCheckout, data, $scope.completeCheckoutSuccessCallback, $scope.completeCheckoutFailureCallback);
+			$scope.invokeApi(RVBillCardSrv.completeCheckout, data, $scope.completeCheckoutSuccessCallback, $scope.completeCheckoutFailureCallback);
 		}
 	};
 
