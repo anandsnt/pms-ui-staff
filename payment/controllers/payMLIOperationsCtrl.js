@@ -280,7 +280,7 @@ angular.module('sntPay').controller('payMLIOperationsController',
                 $timeout(() => {
                     $scope.$emit('hideLoader');
                     mockSwipeAction();
-                }, 2000);
+                }, 1000);
             });
 
             /** **************** init ***********************************************/
