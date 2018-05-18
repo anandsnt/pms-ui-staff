@@ -265,6 +265,7 @@ angular.module('sntPay').controller('payMLIOperationsController',
                 var swipeOperationObj = new SwipeOperation(),
                     swipedCardDataToRender = swipeOperationObj.createSWipedDataToRender(sntPaymentSrv.sampleMLISwipedCardResponse);
                 $scope.selectedPaymentType = 'CC';
+
                 renderDataFromSwipe({}, swipedCardDataToRender);
                 if (!$scope.$$phase) {
                     $scope.$apply();
@@ -275,7 +276,7 @@ angular.module('sntPay').controller('payMLIOperationsController',
             // Once payment screen is loaded, 
             // In browser console call document.dispatchEvent(new Event('MOCK_MLI_SWIPE')) 
 
-            document.addEventListener('MOCK_MLI_SWIPE', (e) => {
+            document.addEventListener('MOCK_MLI_SWIPE', () => {
                 $scope.$emit('showLoader');
                 $timeout(() => {
                     $scope.$emit('hideLoader');
