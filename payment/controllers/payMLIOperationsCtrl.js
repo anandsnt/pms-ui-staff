@@ -256,6 +256,26 @@ angular.module('sntPay').controller('payMLIOperationsController',
             // when destroying we have to remove the attached '$on' events
             $scope.$on('destroy', resetCardEventHandler);
 
+
+            var mockSwipeAction = () => {
+                var swipeOperationObj = new SwipeOperation(),
+                    swipedCardDataToRender = swipeOperationObj.createSWipedDataToRender(sntPaymentSrv.sampleMLISwipedCardResponse);
+                $scope.selectedPaymentType = 'CC';
+                renderDataFromSwipe({}, swipedCardDataToRender);
+                if (!$scope.$$phase) {
+                    $scope.$apply();
+                }
+            };
+
+            document.addEventListener('MOCK_MLI_SWIPE', (e) => {
+                $scope.$emit('showLoader');
+                $timeout(() => {
+                    $scope.$emit('hideLoader');
+                    mockSwipeAction();
+                }, 2000);
+
+            });
+
             /** **************** init ***********************************************/
 
             (function () {
