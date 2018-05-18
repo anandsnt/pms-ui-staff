@@ -263,6 +263,9 @@ angular.module('sntRover').controller('stayCardMainCtrl', ['$rootScope', '$scope
 				if (!$scope.reservationData.keepExistingRate) {
 					$scope.navigateToRoomAndRates(options);
 				}
+                else {
+                    $scope.reloadTheStaycard();
+                }
 			});
 		};
 
