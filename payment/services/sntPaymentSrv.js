@@ -527,6 +527,7 @@ if (status === 406) { // 406- Network error
 
         service.isAddCardAction = function(actoionType) {
             let addCardActionTypes = ['ADD_PAYMENT_GUEST_CARD', 'ADD_PAYMENT_BILL', 'ADD_PAYMENT_STAY_CARD'];
+            
             return _.contains(addCardActionTypes, actoionType);
         };
 

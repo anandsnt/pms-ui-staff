@@ -24,7 +24,7 @@ angular.module('sntPay').service('sntCBAGatewaySrv', ['$q', '$http', '$log', '$t
         // In browser console call document.dispatchEvent(new Event('MOCK_CBA')) 
     
         
-        document.addEventListener('MOCK_CBA', (e) => {
+        document.addEventListener('MOCK_CBA', () => {
             cordovaAPI = new CBAMockOperation();
         });
         /**
