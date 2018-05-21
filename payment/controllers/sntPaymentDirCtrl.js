@@ -49,6 +49,9 @@ angular.module('sntPay').controller('sntPaymentController',
 
             $scope.errorMessage = '';
 
+            // For some payment gateways, we might need to hide some payment types
+            // conditionally. For eg:- Hide Credit card payment type for CBA + MLI payments
+            // and hide CBA - Credit card for CBA + MLI card additions
             $scope.$on('REMOVE_PAYMENT_TYPE', function(ev, data) {
                 $scope.paymentTypes = _.without($scope.paymentTypes, _.findWhere($scope.paymentTypes, {
                     name: data.paymentType
@@ -182,6 +185,7 @@ angular.module('sntPay').controller('sntPaymentController',
              * @return {boolean} If card selection is not available for the payment gateway configured
              */
             function isCardSelectionDisabled() {
+                // For CBA payments, we have to always use a new card
                 let isCBAMLIPayment = $scope.hotelConfig.paymentGateway === 'CBA_AND_MLI';
 
                 return !!PAYMENT_CONFIG[$scope.hotelConfig.paymentGateway].disableCardSelection || (isCBAMLIPayment && !$scope.payment.isAddCardAction);
@@ -311,6 +315,7 @@ angular.module('sntPay').controller('sntPaymentController',
                 var isCCPresent = $scope.selectedPaymentType === 'CC' &&
                     (!!$scope.selectedCC && (!!$scope.selectedCC.ending_with || !!$scope.selectedCC.card_number));
                 var isManualEntry = isEMVEnabled && $scope.payment.isManualEntryInsideIFrame;
+                // For CBA payments, we have to always use a new card
                 var isCBAMLIPayment = $scope.hotelConfig.paymentGateway === 'CBA_AND_MLI' && !$scope.payment.isAddPaymentMode;
 
                 return !isCardSelectionDisabled() && (isCCPresent && $scope.payment.screenMode === 'PAYMENT_MODE' &&
@@ -1421,7 +1426,7 @@ angular.module('sntPay').controller('sntPaymentController',
                 $scope.payment.iFrameUrl = paths.iFrameUrl;
                 $scope.paymentGatewayUIInterfaceUrl = paths.paymentGatewayUIInterfaceUrl;
 
-
+                // To disntiguish between Add card and Submit payment actions
                 $scope.payment.isAddCardAction = sntPaymentSrv.isAddCardAction($scope.actionType);
 
                 /* In case there is swiped data available
