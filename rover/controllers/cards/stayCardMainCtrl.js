@@ -263,6 +263,12 @@ angular.module('sntRover').controller('stayCardMainCtrl', ['$rootScope', '$scope
 				if (!$scope.reservationData.keepExistingRate) {
 					$scope.navigateToRoomAndRates(options);
 				}
+                else {
+                    $state.go('rover.reservation.staycard.reservationcard.reservationdetails', {
+						"id": typeof $stateParams.id === "undefined" ? $scope.reservationData.reservationId : $stateParams.id,
+						"confirmationId": $stateParams.confirmationId
+					});
+                }
 			});
 		};
 
