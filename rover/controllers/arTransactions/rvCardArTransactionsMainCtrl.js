@@ -15,6 +15,9 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 		BaseCtrl.call(this, $scope);
 		$scope.errorMessage = '';
 
+		var DEBOUNCE_DELAY = 600, // Delay the function execution by this much ms
+			that = this; // Reference to this pointer.
+
 		$scope.arFlags = {
 			'currentSelectedArTab': 'balance',
 			'isAddBalanceScreenVisible': false,
@@ -76,7 +79,7 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 		 * To create the parameters which is to be passed to API
 		 */
 
-		var createParametersFetchTheData = function () {
+		that.createParametersFetchTheData = function () {
 			$scope.arDataObj.accountId = ( typeof $scope.contactInformation === 'undefined' ) ? $stateParams.id : $scope.contactInformation.id;
 			var dataToSend = {
 				account_id: $scope.arDataObj.accountId,
@@ -151,6 +154,7 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 						eachItem.balanceAfter = 0;
 						eachItem.initialAmount = eachItem.amount;
 					});
+					$scope.arDataObj.balanceList = [];
 					$scope.arDataObj.balanceList = data.ar_transactions;
 					$scope.arDataObj.balanceTotalCount = data.total_count;
 					appendActiveClass($scope.arDataObj.balanceList);
@@ -162,6 +166,7 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 
 					break;
 				case 'paid-bills':
+					$scope.arDataObj.paidList = [];
 					$scope.arDataObj.paidList = data.ar_transactions;
 					$scope.arDataObj.paidTotalCount = data.total_count;
 					appendActiveClass($scope.arDataObj.paidList);
@@ -173,6 +178,7 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 
 				break;
 				case 'unallocated':
+					$scope.arDataObj.unallocatedList = [];
 					$scope.arDataObj.unallocatedList = data.ar_transactions;
 					$scope.arDataObj.unallocatedTotalCount = data.total_count;
 					appendActiveClass($scope.arDataObj.unallocatedList);
@@ -184,6 +190,7 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 
 				break;
 				case 'allocated':
+					$scope.arDataObj.allocatedList = [];
 					$scope.arDataObj.allocatedList = data.ar_transactions;
 					$scope.arDataObj.allocatedTotalCount = data.total_count;
 					appendActiveClass($scope.arDataObj.allocatedList);
@@ -200,6 +207,17 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 		};
 
 		/*
+		* Fetch transactions API
+		* @param dataToSend data object to API
+		*/
+		that.fetchTransactions = function () {
+			$scope.callAPI(rvAccountsArTransactionsSrv.fetchTransactionDetails, {
+				successCallBack: successCallbackOfFetchAPI,
+				params: that.createParametersFetchTheData()
+			});
+		};
+
+		/*
 		 * Switching btw different tabs in AR transaction screen
 		 * @param tab is selected tab
 		 */
@@ -211,7 +229,7 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 			$scope.arDataObj.balancePageNo = $scope.arDataObj.paidPageNo 
 			= $scope.arDataObj.unallocatePageNo = $scope.arDataObj.allocatePageNo = 1;
 
-			$scope.fetchTransactions();
+			that.fetchTransactions();
 		};
 		/*
 		 * Show Add balance screen
@@ -274,20 +292,12 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 			$scope.arFlags.isPaymentSelected = true;
 			ngDialog.close();
 		};
-		/*
-		* Fetch transactions API
-		* @param dataToSend data object to API
-		*/
-		$scope.fetchTransactions = function () {
-			var dataToApi = createParametersFetchTheData();
 
-			$scope.invokeApi(rvAccountsArTransactionsSrv.fetchTransactionDetails, dataToApi, successCallbackOfFetchAPI );
-		};
 		/*
 		 * Here is the method to fetch the data in each tab
 		 * Params will be different on each tab
 		 */
-		$scope.filterChanged = function() {
+		$scope.filterChanged = _.debounce(function() {
 			
 			switch ($scope.arFlags.currentSelectedArTab) {
 				case 'balance':
@@ -304,8 +314,10 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 					break;
 			}
 
-			$scope.fetchTransactions();
-		};
+			that.fetchTransactions();
+			
+		}, DEBOUNCE_DELAY);
+
 		/*
 		 * Add payment method
 		 */
@@ -331,7 +343,7 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 			$scope.arFlags.shouldShowFooter = false;
 			$scope.arDataObj.availableAmount = 0;
 						
-			$scope.fetchTransactions();
+			that.fetchTransactions();
 		};
 
 		/*
@@ -417,7 +429,7 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 			_.each($scope.arDataObj.balanceList, function (eachItem) {
 				eachItem.isSelected = false;
 			});
-			$scope.fetchTransactions();
+			that.fetchTransactions();
 		};
 		/*
 		 * Should show footer instead of pagination
@@ -488,7 +500,7 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 		 *
 		 */
 		var init = function() {
-			$scope.fetchTransactions();
+			that.fetchTransactions();
 		};
 
 		// Catch error messges from child controllers.
@@ -500,29 +512,29 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 		listeners['REFRESH_BALANCE_LIST'] = $scope.$on('REFRESH_BALANCE_LIST', function() { 
 			$scope.arFlags.currentSelectedArTab = 'balance';
 			$scope.arDataObj.balancePageNo = 1;
-			$scope.fetchTransactions();			
+			that.fetchTransactions();			
 		});
 		// Refresh balance list - after adding new manual balance
 		// and after succesfull payment with Allocate payment after posting checked
 		listeners['REFRESH_UNALLOCATED'] = $scope.$on('REFRESH_UNALLOCATED', function() {
 			$scope.arFlags.currentSelectedArTab = 'unallocated';
-			$scope.fetchTransactions();
+			that.fetchTransactions();
 		});
 		// Refresh paid bills list - after adding new manual balance
 		// and after succesfull payment with Allocate payment after posting checked
 		listeners['REFRESH_PAID_BILLS'] = $scope.$on('REFRESH_PAID_BILLS', function() {
 			$scope.arFlags.currentSelectedArTab = 'paid-bills';
-			$scope.fetchTransactions();
+			that.fetchTransactions();
 		});
 		// Refresh allacated list - After unallocate
 		listeners['REFRESH_ALLOCATED'] = $scope.$on('REFRESH_ALLOCATED', function() {
 			$scope.arFlags.currentSelectedArTab = 'allocated';
-			$scope.fetchTransactions();
+			that.fetchTransactions();
 		});
 
 		// Refresh selected list
 		listeners['REFRESH_SELECTED_LIST'] = $scope.$on('REFRESH_SELECTED_LIST', function() {
-			$scope.fetchTransactions();
+			that.fetchTransactions();
 		});
 		// Clicked allocate button from unallocated tab
 		listeners['CLICKED_ALLOCATE_BUTTON'] = $scope.$on('CLICKED_ALLOCATE_BUTTON', function(event, selectedPaymentData) {
@@ -570,7 +582,7 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 					$scope.arDataObj.unallocatePageNo = pageNo;
 					break;
 				}
-			$scope.invokeApi(rvAccountsArTransactionsSrv.fetchTransactionDetails, createParametersFetchTheData(), successCallbackOfFetchAPI );
+			$scope.invokeApi(rvAccountsArTransactionsSrv.fetchTransactionDetails, that.createParametersFetchTheData(), successCallbackOfFetchAPI );
 		};
 
 		// Pagination options for BALANCE
@@ -881,7 +893,7 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 			},
             moveZeroInvoiceSuccessCallback = function() {
                 $scope.errorMessage = '';
-                $scope.fetchTransactions();
+                that.fetchTransactions();
             },
             moveZeroInvoiceFailureCallback = function(errorData) {
                 $scope.errorMessage = errorData;
