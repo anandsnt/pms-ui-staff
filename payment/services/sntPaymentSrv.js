@@ -547,7 +547,7 @@ if (status === 406) { // 406- Network error
             "RVCardReadTrack2KSN": "9012080B2ACA76000878",
             "RVCardReadTrack3": "",
             "RVCardReadTrack3KSN": "9012080B2ACA76000878",
-            "token": "XXXXXXXXXXXX1111"
+            "token": "374200030001006"
         };
     }
 ]);

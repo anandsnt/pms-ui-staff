@@ -1332,9 +1332,11 @@ angular.module('sntPay').controller('sntPaymentController',
             };
 
             $scope.showSixPaymentsModeSelection = function () {
-                var isMLIEMV = $scope.hotelConfig.paymentGateway === 'MLI' &&
-                    $scope.hotelConfig.isEMVEnabled,
-                    isPendingPayment = !$scope.paymentAttempted || // no payments attempted
+                var isMLIEMV = ($scope.hotelConfig.paymentGateway === 'MLI' &&
+                    $scope.hotelConfig.isEMVEnabled) || ($scope.hotelConfig.paymentGateway === 'CBA_AND_MLI' &&
+                    $scope.hotelConfig.isEMVEnabled && $scope.payment.isAddCardAction);
+                    
+                var isPendingPayment = !$scope.paymentAttempted || // no payments attempted
                         // attempted payment failed
                         $scope.isPaymentFailure ||
                         // CICO-41498 in the middle of split bill payments
@@ -1445,7 +1447,7 @@ angular.module('sntPay').controller('sntPaymentController',
                 /**
                  *
                  */
-                if (!$scope.hotelConfig.isStandAlone && !isCardSelectionDisabled()) {
+                if (!$scope.hotelConfig.isStandAlone && !isCardSelectionDisabled() && $scope.hotelConfig.paymentGateway !== 'CBA_AND_MLI') {
                     changeToCardAddMode();
                 }
 
@@ -1464,7 +1466,7 @@ angular.module('sntPay').controller('sntPaymentController',
                 config = $scope.hotelConfig;
 
                 isEMVEnabled = config.paymentGateway === 'sixpayments' ||
-                    (config.paymentGateway === 'MLI' && config.isEMVEnabled);
+                    ((config.paymentGateway === 'MLI' || config.paymentGateway === 'CBA_AND_MLI') && config.isEMVEnabled);
 
                 $scope.showSelectedCard();
 
