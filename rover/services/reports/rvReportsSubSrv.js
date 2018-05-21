@@ -31,7 +31,8 @@ angular.module('sntRover').service('RVreportsSubSrv', [
             var response = angular.copy(service.cachedInboxReport),
                 start = (params.page - 1) * params.per_page,
                 end = start + params.per_page,
-                paginatedResult = response.results.slice(start, end);
+                paginatedResult = _.isArray(response.results) ? response.results.slice(start, end)
+                    : response.results;
 
             response.results = paginatedResult;
             response.isPaginatedResponse = true;
