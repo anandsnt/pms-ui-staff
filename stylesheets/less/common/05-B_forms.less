@@ -138,16 +138,8 @@ textarea[disabled] {
     cursor: default;
     color: @grey3;
     -webkit-text-fill-color: @grey4;
+    background: rgba(0,0,0,.01) !important;
     .box-shadow(inset 1px 1px 1px rgba(0,0,0,.05));
-
-    // Not an element with Icon in the background.
-    &:not(.icons) {
-        background: rgba(0,0,0,.01) !important;
-    }
-    // Has an icon in the background
-    &.icons {
-        background-color: rgba(0,0,0,.01) !important;
-    }
 }
 select[readonly],
 select[disabled],{
