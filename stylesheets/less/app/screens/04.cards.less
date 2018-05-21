@@ -88,6 +88,12 @@
                         margin-right: 5px;
                         .box-shadow(inset 0 0 2px rgba(0,0,0,.1));
                     }
+
+                    &[readonly]:not(.datepicker):not(.hasDatepicker):not(.range-datepicker),
+                    &[disabled] {
+                        color: @white;
+                        -webkit-text-fill-color: @white;
+                    }
                 }
 
                 .holder {
