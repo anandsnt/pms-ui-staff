@@ -102,6 +102,9 @@ angular.module('sntPay').controller('payMLIOperationsController',
             var renderDataFromSwipe = function (event, swipedCardData) {
                 // Discard swipe actions incase of CBA + MLI and if the action is PAYMENT
                 if ($scope.hotelConfig.paymentGateway === 'CBA_AND_MLI' && !$scope.payment.isAddPaymentMode) {
+                    var errorMessage = ['Wrong Device ! Please use the CBA device to proceed with the payment action'];
+                    
+                    $scope.$emit(payEvntConst.PAYMENTAPP_ERROR_OCCURED, errorMessage);
                     return;
                 }
                 isSwiped = true;
@@ -117,6 +120,9 @@ angular.module('sntPay').controller('payMLIOperationsController',
                 $scope.cardData.cardType = swipedCardData.cardType;
                 $scope.payment.screenMode = 'CARD_ADD_MODE';
                 $scope.payment.addCCMode = 'ADD_CARD';
+                if (!$scope.$$phase) {
+                    $scope.$apply();
+                }
             };
 
             var tokenize = function (params) {
@@ -267,9 +273,6 @@ angular.module('sntPay').controller('payMLIOperationsController',
                 
                 $scope.selectedPaymentType = 'CC';
                 renderDataFromSwipe({}, swipedCardDataToRender);
-                if (!$scope.$$phase) {
-                    $scope.$apply();
-                }
             };
 
             // To Mock MLI swipe - 
