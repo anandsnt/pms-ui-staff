@@ -151,6 +151,7 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 						eachItem.balanceAfter = 0;
 						eachItem.initialAmount = eachItem.amount;
 					});
+					$scope.arDataObj.balanceList = [];
 					$scope.arDataObj.balanceList = data.ar_transactions;
 					$scope.arDataObj.balanceTotalCount = data.total_count;
 					appendActiveClass($scope.arDataObj.balanceList);
@@ -162,6 +163,7 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 
 					break;
 				case 'paid-bills':
+					$scope.arDataObj.paidList = [];
 					$scope.arDataObj.paidList = data.ar_transactions;
 					$scope.arDataObj.paidTotalCount = data.total_count;
 					appendActiveClass($scope.arDataObj.paidList);
@@ -173,6 +175,7 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 
 				break;
 				case 'unallocated':
+					$scope.arDataObj.unallocatedList = [];
 					$scope.arDataObj.unallocatedList = data.ar_transactions;
 					$scope.arDataObj.unallocatedTotalCount = data.total_count;
 					appendActiveClass($scope.arDataObj.unallocatedList);
@@ -184,6 +187,7 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 
 				break;
 				case 'allocated':
+					$scope.arDataObj.allocatedList = [];
 					$scope.arDataObj.allocatedList = data.ar_transactions;
 					$scope.arDataObj.allocatedTotalCount = data.total_count;
 					appendActiveClass($scope.arDataObj.allocatedList);
@@ -279,9 +283,10 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 		* @param dataToSend data object to API
 		*/
 		$scope.fetchTransactions = function () {
-			var dataToApi = createParametersFetchTheData();
-
-			$scope.invokeApi(rvAccountsArTransactionsSrv.fetchTransactionDetails, dataToApi, successCallbackOfFetchAPI );
+			$scope.callAPI(rvAccountsArTransactionsSrv.fetchTransactionDetails, {
+				successCallBack: successCallbackOfFetchAPI,
+				params: createParametersFetchTheData()
+			});
 		};
 		/*
 		 * Here is the method to fetch the data in each tab
