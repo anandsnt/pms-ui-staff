@@ -2053,7 +2053,6 @@ sntRover.controller('RVbillCardController',
 			};
 			
 			sntActivity.start('COMPLETE_CHECKOUT');
-			console.log("clicked complete checkout ----------- 1")
 			$scope.invokeApi(RVBillCardSrv.completeCheckout, data, $scope.completeCheckoutSuccessCallback, $scope.completeCheckoutFailureCallback);
 		} else if (directBillWithBalanceFlag && !isAllowDirectDebit) {
 			$scope.checkoutInProgress = false;
@@ -2113,7 +2112,6 @@ sntRover.controller('RVbillCardController',
 			};
 
 			sntActivity.start('COMPLETE_CHECKOUT');
-			console.log("clicked complete checkout ----------- 2")
 			$scope.invokeApi(RVBillCardSrv.completeCheckout, data, $scope.completeCheckoutSuccessCallback, $scope.completeCheckoutFailureCallback);
 		}
 	};
