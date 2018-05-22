@@ -203,7 +203,9 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 				break;
 				}
 
-				$scope.$emit('hideLoader');
+				// CICO-53406 : Workaround to focus textbox
+				var input = document.getElementById('arTransactionQuery');
+				input.focus();
 		};
 
 		/*
@@ -239,6 +241,10 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 			}
 
 			that.fetchTransactions();
+
+			// CICO-53406 : Workaround to blur textbox
+			var input = document.getElementById('arTransactionQuery');
+			input.blur();
 		};
 
 		// CICO-53406 : Handle search action with debounce.
@@ -583,8 +589,12 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 				case 'UNALLOCATE':
 					$scope.arDataObj.unallocatePageNo = pageNo;
 					break;
-				}
-			$scope.invokeApi(rvAccountsArTransactionsSrv.fetchTransactionDetails, that.createParametersFetchTheData(), successCallbackOfFetchAPI );
+			}
+			
+			$scope.callAPI(rvAccountsArTransactionsSrv.fetchTransactionDetails, {
+				successCallBack: successCallbackOfFetchAPI,
+				params: that.createParametersFetchTheData()
+			});
 		};
 
 		// Pagination options for BALANCE
