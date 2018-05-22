@@ -19,6 +19,10 @@ sntRover.controller('RVReportListCrl', [
         var REPORT_LIST_SCROLL = 'report-list-scroll',
             REPORT_FILTERS_SCROLL = 'report-filters-scroll';
 
+        var reportAPIfailed = $scope.$on(reportMsgs['REPORT_API_FAILED'], function () {
+            $scope.errorMessage = $scope.$parent.errorMessage;
+        });
+
         $scope.refreshFilterScroll = function(scrollUp) {
             $scope.refreshScroller(REPORT_FILTERS_SCROLL);
             if ( !!scrollUp && $scope.myScroll.hasOwnProperty(REPORT_FILTERS_SCROLL) ) {
@@ -185,6 +189,7 @@ sntRover.controller('RVReportListCrl', [
 
         // removing event listners when scope is destroyed
         $scope.$on( '$destroy', serveRefresh );
+        $scope.$on( '$destroy', reportAPIfailed );
 
         /**
          * init method
