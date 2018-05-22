@@ -205,6 +205,7 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 
 				// CICO-53406 : Workaround to focus textbox
 				var input = document.getElementById('arTransactionQuery');
+            
 				input.focus();
 		};
 
@@ -244,6 +245,7 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 
 			// CICO-53406 : Workaround to blur textbox
 			var input = document.getElementById('arTransactionQuery');
+            
 			input.blur();
 		};
 
