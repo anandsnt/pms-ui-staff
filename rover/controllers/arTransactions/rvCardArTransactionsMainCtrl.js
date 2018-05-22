@@ -218,6 +218,33 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 		};
 
 		/*
+		 * Here is the method to fetch the data in each tab
+		 * Params will be different on each tab
+		 */
+		that.filterChanged = function() {
+			
+			switch ($scope.arFlags.currentSelectedArTab) {
+				case 'balance':
+					$scope.arDataObj.balancePageNo = 1;
+					break;
+				case 'paid-bills':
+					$scope.arDataObj.paidPageNo = 1;
+					break;
+				case 'unallocated':
+					$scope.arDataObj.unallocatePageNo = 1;
+					break;
+				case 'allocated':
+					$scope.arDataObj.allocatePageNo = 1;
+					break;
+			}
+
+			that.fetchTransactions();
+		};
+
+		// CICO-53406 : Handle search action with debounce.
+		$scope.queryEntered = _.debounce ( that.filterChanged, DEBOUNCE_DELAY );
+
+		/*
 		 * Switching btw different tabs in AR transaction screen
 		 * @param tab is selected tab
 		 */
@@ -250,21 +277,21 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 		// Clear from date
 		$scope.clearFromDate = function() {
 			$scope.filterData.fromDate = '';
-			$scope.filterChanged();
+			that.filterChanged();
 		};
 		// Clear to date
 		$scope.clearToDate = function() {
 			$scope.filterData.toDate = '';
-			$scope.filterChanged();
+			that.filterChanged();
 		};
 		// To handle from date change
 		$scope.$on('fromDateChanged', function() {
-			$scope.filterChanged();
+			that.filterChanged();
 		});
 
 		// To handle to date change
 		$scope.$on('toDateChanged', function() {
-			$scope.filterChanged();
+			that.filterChanged();
 		});
 		// Show calendar popup.
 		$scope.popupCalendar = function(clickedOn) {
@@ -292,31 +319,6 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 			$scope.arFlags.isPaymentSelected = true;
 			ngDialog.close();
 		};
-
-		/*
-		 * Here is the method to fetch the data in each tab
-		 * Params will be different on each tab
-		 */
-		$scope.filterChanged = _.debounce(function() {
-			
-			switch ($scope.arFlags.currentSelectedArTab) {
-				case 'balance':
-					$scope.arDataObj.balancePageNo = 1;
-					break;
-				case 'paid-bills':
-					$scope.arDataObj.paidPageNo = 1;
-					break;
-				case 'unallocated':
-					$scope.arDataObj.unallocatePageNo = 1;
-					break;
-				case 'allocated':
-					$scope.arDataObj.allocatePageNo = 1;
-					break;
-			}
-
-			that.fetchTransactions();
-			
-		}, DEBOUNCE_DELAY);
 
 		/*
 		 * Add payment method
@@ -825,7 +827,7 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 		// CICO-45342 Handle clear search button click
 		$scope.clearResults = function () {
 			$scope.filterData.query = '';
-			$scope.filterChanged();
+			that.filterChanged();
 		};
 		/*
 		 * To list all allocated payments on click refund button
