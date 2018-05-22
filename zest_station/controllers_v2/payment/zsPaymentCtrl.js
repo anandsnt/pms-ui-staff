@@ -28,7 +28,7 @@ angular.module('sntZestStation').controller('zsPaymentCtrl', ['$scope', '$log', 
 
         /**  ***************************** CBA **************************************/
 
-        if ($scope.zestStationData.paymentGateway === 'CBA') {
+        if ($scope.zestStationData.paymentGateway === 'CBA' || ($scope.zestStationData.paymentGateway === 'MLI' && $scope.zestStationData.hotelSettings.mli_cba_enabled)) {
             $controller('payCBACtrl', {
                 $scope: $scope
             });
