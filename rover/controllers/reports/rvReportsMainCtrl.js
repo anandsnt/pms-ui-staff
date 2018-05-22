@@ -40,7 +40,6 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
             report: null
         };
 
-
         $scope.scrollToLast = function () {
             $timeout(function () {
                 if ($scope.$parent.myScroll.hasOwnProperty('FULL_REPORT_SCROLL')) {
