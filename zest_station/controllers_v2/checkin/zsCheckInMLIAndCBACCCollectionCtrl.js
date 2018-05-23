@@ -11,7 +11,7 @@ sntZestStation.controller('zsCheckInMLIAndCBACCCollectionCtrl', [
 	'sntPaymentSrv',
 	'zsPaymentSrv',
 	function($scope, $stateParams, $state, zsEventConstants, $controller, $timeout, zsCheckinSrv, zsModeConstants, zsGeneralSrv, sntPaymentSrv, zsPaymentSrv) {
-		
+
 		BaseCtrl.call(this, $scope);
 		var stateParams = JSON.parse($stateParams.params);
 
@@ -36,7 +36,6 @@ sntZestStation.controller('zsCheckInMLIAndCBACCCollectionCtrl', [
 
 
 		var startCBAPayment = function() {
-			var paymentParams = zsPaymentSrv.getPaymentData();
 			$scope.screenMode.isCBADespositMode = true;
 			$scope.initiateCBAlisteners();
 			$scope.startCBAPayment();
@@ -69,7 +68,7 @@ sntZestStation.controller('zsCheckInMLIAndCBACCCollectionCtrl', [
 			$scope.swipeTimeout = false;
 		};
 		var onCCTimeout = function() {
-			if($scope.screenMode.isCBADespositMode){
+			if ($scope.screenMode.isCBADespositMode) {
 				return;
 			}
 			$scope.waitingForSwipe = false;
@@ -80,7 +79,7 @@ sntZestStation.controller('zsCheckInMLIAndCBACCCollectionCtrl', [
 			$state.go('zest_station.checkInReservationDetails', stateParams);
 		};
 
-		var onCCSave = $scope.$on('SAVE_CC_SUCCESS', function() {
+		var onMLICCSave = $scope.$on('SAVE_CC_SUCCESS', function() {
 			// on CC addition, collect deposit if applicable
 			// else to signature page
 			if (stateParams.mode === 'DEPOSIT') {
@@ -101,6 +100,7 @@ sntZestStation.controller('zsCheckInMLIAndCBACCCollectionCtrl', [
 		$scope.$on('$destroy', timeOutListener);
 		$scope.$on('$destroy', paymentFailureListener);
 		$scope.$on('$destroy', paymentSuccessListener);
+		$scope.$on('$destroy', onMLICCSave);
 
 
 		document.addEventListener('ACTIVITY_TIMEOUT', function() {

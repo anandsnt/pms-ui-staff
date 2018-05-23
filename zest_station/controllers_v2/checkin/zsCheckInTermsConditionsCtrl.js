@@ -179,6 +179,7 @@ sntZestStation.controller('zsCheckInTermsConditionsCtrl', [
             if ($scope.zestStationData.paymentGateway === 'MLI' && $scope.zestStationData.hotelSettings.mli_cba_enabled) {
                 stateparams.payment_method = $stateParams.payment_method;
                 var toParamsJson = JSON.stringify(stateparams);
+                
                 $state.go('zest_station.checkInMLIAndCBACCCollection', {params: toParamsJson});
             } else {
                 $state.go('zest_station.checkInDeposit', stateparams);

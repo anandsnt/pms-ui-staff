@@ -251,7 +251,7 @@ angular.module('sntZestStation').controller('zsPaymentCtrl', ['$scope', '$log', 
         });
 
         var saveSwipedCardMLI = function(data) {
-            var successSavePayment = function(){
+            var successSavePayment = function() {
                 $scope.$broadcast('SAVE_CC_SUCCESS');
             };
 
