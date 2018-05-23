@@ -23,6 +23,7 @@ angular.module('sntZestStation').controller('zsPaymentCtrl', ['$scope', '$log', 
             $scope.screenMode.paymentInProgress = false;
             $scope.screenMode.paymentFailure = true;
             $scope.screenMode.value = 'PAYMENT_FAILED';
+            $scope.$emit('PAYMENT_FAILED');
             runDigestCycle();
         };
 
@@ -92,6 +93,7 @@ angular.module('sntZestStation').controller('zsPaymentCtrl', ['$scope', '$log', 
                         $scope.screenMode.paymentInProgress = false;
                         $scope.screenMode.paymentSuccess = true;
                         $scope.$emit('hideLoader');
+                        $scope.$emit('CBA_PAYMENT_COMPLETED');
                     },
                     function(errorMessage) {
                         $log.warn(errorMessage);
@@ -108,7 +110,7 @@ angular.module('sntZestStation').controller('zsPaymentCtrl', ['$scope', '$log', 
                 $scope.screenMode.paymentInProgress = false;
                 $scope.screenMode.paymentFailure = true;
                 $scope.screenMode.value = 'PAYMENT_FAILED';
-                // TODO : Handle Error here!
+                $scope.$emit('PAYMENT_FAILED');
             });
 
             $scope.$on('$destroy', listenerCBAPaymentFailure);
@@ -248,6 +250,18 @@ angular.module('sntZestStation').controller('zsPaymentCtrl', ['$scope', '$log', 
             }
         });
 
+        var saveSwipedCardMLI = function(data) {
+            var successSavePayment = function(){
+                $scope.$broadcast('SAVE_CC_SUCCESS');
+            };
+
+            $scope.callAPI(zsPaymentSrv.savePayment, {
+                params: data,
+                successCallBack: successSavePayment,
+                failureCallBack: paymentFailureActions
+            });
+        };
+
         var processSwipeCardData = function(swipedCardData) {
             var swipeOperationObj = new SwipeOperation();
             var params = swipeOperationObj.createDataToTokenize(swipedCardData);
@@ -278,7 +292,7 @@ angular.module('sntZestStation').controller('zsPaymentCtrl', ['$scope', '$log', 
                     if ($scope.screenMode.paymentAction === 'PAY_AMOUNT') {
                         callSubmitPaymentApi(data);
                     } else {
-                        // add card - TODO for checkin
+                        saveSwipedCardMLI(data);
                     }
                 },
                 'failureCallBack': function() {
@@ -288,7 +302,7 @@ angular.module('sntZestStation').controller('zsPaymentCtrl', ['$scope', '$log', 
         };
 
         $scope.$on('SWIPE_ACTION', function (evt, response) {
-            if (!$scope.screenMode.paymentFailure && !$scope.screenMode.paymentSuccess) {
+            if (!$scope.screenMode.paymentFailure && !$scope.screenMode.paymentSuccess && !$scope.screenMode.isCBADespositMode) {
                 processSwipeCardData(response);
             }
             
@@ -342,5 +356,18 @@ angular.module('sntZestStation').controller('zsPaymentCtrl', ['$scope', '$log', 
             }
 
         };
+
+
+        // To Mock MLI swipe - 
+        // Once payment screen is loaded, 
+        // In browser console call document.dispatchEvent(new Event('MOCK_MLI_SWIPE')) 
+
+        document.addEventListener('MOCK_MLI_SWIPE', function() {
+            $scope.$emit('showLoader');
+            $timeout(function() {
+                $scope.$emit('hideLoader');
+                processSwipeCardData(sntPaymentSrv.sampleMLISwipedCardResponse);
+            }, 1000);
+        });
     }
 ]);

@@ -228,7 +228,7 @@ sntZestStation.controller('zsCheckInTermsConditionsCtrl', [
                     checkInGuest();
                 } else {
                     var toParamsJson = JSON.stringify(stateParams);
-                    
+
                     $state.go('zest_station.checkInMLIAndCBACCCollection',  {params: toParamsJson});
                 }
             } else {

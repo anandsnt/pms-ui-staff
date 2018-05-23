@@ -11,97 +11,68 @@ sntZestStation.controller('zsCheckInMLIAndCBACCCollectionCtrl', [
 	'sntPaymentSrv',
 	'zsPaymentSrv',
 	function($scope, $stateParams, $state, zsEventConstants, $controller, $timeout, zsCheckinSrv, zsModeConstants, zsGeneralSrv, sntPaymentSrv, zsPaymentSrv) {
+		
 		BaseCtrl.call(this, $scope);
-
 		var stateParams = JSON.parse($stateParams.params);
-		stateParams.deposit_amount = '0.1';
 
+		$scope.screenMode = {};
+		$controller('zsPaymentCtrl', {
+			$scope: $scope
+		});
+		$scope.reservation_id = stateParams.reservation_id;
+
+		// if CC is already present, collect deposit if applicable
 		if (stateParams.payment_method === 'CC' && stateParams.mode === 'DEPOSIT') {
+			$scope.screenMode.paymentAction = 'PAY_AMOUNT';
 			$scope.depositAmount = stateParams.deposit_amount;
-			$scope.screeMode = 'DEPOSIT';
+			$scope.screenMode.value = 'DEPOSIT';
 		} else {
-			$scope.screeMode = 'CC_COLLECTION';
-			$scope.zestStationData.waitingForSwipe = true;
+			// action type for determining which process to be done in zsPaymentCtrl
+			$scope.screenMode.paymentAction = 'ADD_CARD';
+			// screen display mode
+			$scope.screenMode.value = 'CC_COLLECTION';
+			$scope.waitingForSwipe = true;
 		}
-		console.log(stateParams);
 
-		var goToCardSign = function() {
-			//TODO: uncomment below code
-			// $state.go('zest_station.checkInSignature', stateParams);
-			console.log("card sign");
+
+		var startCBAPayment = function() {
+			var paymentParams = zsPaymentSrv.getPaymentData();
+			$scope.screenMode.isCBADespositMode = true;
+			$scope.initiateCBAlisteners();
+			$scope.startCBAPayment();
 		};
 
-		// CBA payment
+		// stateParams.deposit_amount = '0.1';
+		// $scope.isIpad = true;
+		// $scope.zestStationData.noCheckInsDebugger = true;
+
+		// CBA
+		var goToCardSign = function() {
+			zsPaymentSrv.setPaymentData({});
+			$state.go('zest_station.checkInSignature', stateParams);
+		};
 
 		$scope.proceedToDeposit = function() {
-			// do CBA payment
-			var paymentSuccess = function() {
-				goToCardSign();
-			};
-			paymentSuccess();
+			startCBAPayment();
 		};
 
-
 		// MLI card collection
-
 		var goToSwipeError = function() {
-			$scope.zestStationData.waitingForSwipe = false;
+			$scope.waitingForSwipe = false;
 			$scope.swipeTimeout = false;
 			$scope.swipeError = true;
 		};
 
-		var successSavePayment = function(){
-			if(stateParams.mode === 'DEPOSIT'){
-				$scope.depositAmount = stateParams.deposit_amount;
-				$scope.screeMode = 'DEPOSIT';
-			} else{
-				goToCardSign();
-			}
-		};
-
-		var saveSwipedCardMLI = function(response) {
-            var swipeOperationObj = new SwipeOperation();
-            var postData = swipeOperationObj.createSWipedDataToSave(response);
-
-            postData.reservation_id = stateParams.reservation_id;
-
-			$scope.callAPI(zsPaymentSrv.savePayment, {
-				params: postData,
-				successCallBack: successSavePayment,
-				failureCallBack: goToSwipeError
-			});
-        };
-
-		 var processSwipeCardData = function(swipedCardData) {
-            var swipeOperationObj = new SwipeOperation();
-            var params = swipeOperationObj.createDataToTokenize(swipedCardData);
-			var onFetchMLITokenResponse = function(response) {
-				swipedCardData.token = response;
-				saveSwipedCardMLI(swipedCardData);
-			};
-
-            $scope.callAPI(zsGeneralSrv.tokenize, {
-                params: params,
-                successCallBack: onFetchMLITokenResponse,
-                failureCallBack: goToSwipeError
-            });
-        };
-
-
-		var onCardSwipeResponse = function(evt, swipedCardData) {
-			if($scope.screeMode === 'DEPOSIT'){
-				return;
-			}
-			processSwipeCardData(swipedCardData);
-		};
-
-		$scope.reTryCardSwipe = function(){
-			$scope.zestStationData.waitingForSwipe = true;
+		$scope.reTryCardSwipe = function() {
+			$scope.waitingForSwipe = true;
 			$scope.swipeError = false;
 			$scope.swipeTimeout = false;
 		};
 		var onCCTimeout = function() {
-			$scope.zestStationData.waitingForSwipe = false;
+			if($scope.screenMode.isCBADespositMode){
+				return;
+			}
+			$scope.waitingForSwipe = false;
 			$scope.swipeError = false;
 			$scope.swipeTimeout = true;
 		};
@@ -109,29 +80,36 @@ sntZestStation.controller('zsCheckInMLIAndCBACCCollectionCtrl', [
 			$state.go('zest_station.checkInReservationDetails', stateParams);
 		};
 
-		var backButtonActionListener = $scope.$on(zsEventConstants.CLICKED_ON_BACK_BUTTON, backButtonAction);
-		var swipeListener = $scope.$on('SWIPE_ACTION', onCardSwipeResponse);
-		var timeOutListener = $scope.$on('USER_ACTIVITY_TIMEOUT', onCCTimeout);
-
-		$scope.$on('$destroy', backButtonActionListener);
-		$scope.$on('$destroy', swipeListener);
-		$scope.$on('$destroy', timeOutListener);
-
-		// To Mock MLI swipe - 
-		// Once payment screen is loaded, 
-		// In browser console call document.dispatchEvent(new Event('MOCK_MLI_SWIPE')) 
-
-		document.addEventListener('MOCK_MLI_SWIPE', function() {
-			$scope.$emit('showLoader');
-			$timeout(function() {
-				$scope.$emit('hideLoader');
-				onCardSwipeResponse({}, sntPaymentSrv.sampleMLISwipedCardResponse);
-			}, 1000);
+		var onCCSave = $scope.$on('SAVE_CC_SUCCESS', function() {
+			// on CC addition, collect deposit if applicable
+			// else to signature page
+			if (stateParams.mode === 'DEPOSIT') {
+				$scope.depositAmount = stateParams.deposit_amount;
+				$scope.screenMode.value = 'DEPOSIT';
+			} else {
+				goToCardSign();
+			}
 		});
 
-		document.addEventListener('TIMEOUT', function() {
-			onActivityTimeout();
-			$scope.$emit('RUN_APPLY');
+		// Listeners
+		var backButtonActionListener = $scope.$on(zsEventConstants.CLICKED_ON_BACK_BUTTON, backButtonAction);
+		var timeOutListener = $scope.$on('USER_ACTIVITY_TIMEOUT', onCCTimeout);
+		var paymentFailureListener = $scope.$on('PAYMENT_FAILED', goToSwipeError);
+		var paymentSuccessListener = $scope.$on('CBA_PAYMENT_COMPLETED', goToCardSign);
+
+		$scope.$on('$destroy', backButtonActionListener);
+		$scope.$on('$destroy', timeOutListener);
+		$scope.$on('$destroy', paymentFailureListener);
+		$scope.$on('$destroy', paymentSuccessListener);
+
+
+		document.addEventListener('ACTIVITY_TIMEOUT', function() {
+			onCCTimeout();
+			$scope.$digest();
+		});
+		document.addEventListener('PAYMENT_FAILED', function() {
+			goToSwipeError();
+			$scope.$digest();
 		});
 	}
 ]);

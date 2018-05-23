@@ -7,7 +7,8 @@ sntZestStation.controller('zsCheckInReservationDetailsCtrl', [
     '$stateParams',
     '$log',
     '$timeout',
-    function($scope, $rootScope, $state, zsEventConstants, zsCheckinSrv, $stateParams, $log, $timeout) {
+    'zsPaymentSrv',
+    function($scope, $rootScope, $state, zsEventConstants, zsCheckinSrv, $stateParams, $log, $timeout, zsPaymentSrv) {
 
 
         // This controller is used for viewing reservation details 
@@ -360,6 +361,16 @@ sntZestStation.controller('zsCheckInReservationDetailsCtrl', [
         var initTermsPage = function() {
             $log.log($scope.zestStationData);
             $log.info('$scope.selectedReservation: ', $scope.selectedReservation);
+
+            zsPaymentSrv.setPaymentData({
+                amount: $scope.selectedReservation.reservation_details.deposit_amount,
+                reservation_id: $scope.selectedReservation.reservation_details.reservation_id,
+                workstation_id: $rootScope.workstation_id,
+                bill_id: $scope.selectedReservation.reservation_details.default_bill_id,
+                payment_method_used: $scope.selectedReservation.reservation_details.payment_method_used,
+                payment_details: $scope.selectedReservation.reservation_details.payment_details
+            });
+
             var stateParams = {
                 'guest_id': $scope.selectedReservation.guest_details[0].id,
                 'reservation_id': $scope.selectedReservation.reservation_details.reservation_id,
