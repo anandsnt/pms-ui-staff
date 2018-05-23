@@ -102,7 +102,7 @@ sntZestStation.controller('zsCheckInMLIAndCBACCCollectionCtrl', [
 		$scope.$on('$destroy', paymentSuccessListener);
 		$scope.$on('$destroy', onMLICCSave);
 
-
+		// mocking actions
 		document.addEventListener('ACTIVITY_TIMEOUT', function() {
 			onCCTimeout();
 			$scope.$digest();
