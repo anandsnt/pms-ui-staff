@@ -15,7 +15,7 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 		BaseCtrl.call(this, $scope);
 		$scope.errorMessage = '';
 
-		var DEBOUNCE_DELAY = 600, // Delay the function execution by this much ms
+		var DEBOUNCE_DELAY = 800, // Delay the function execution by this much ms
 			that = this; // Reference to this pointer.
 
 		$scope.arFlags = {
