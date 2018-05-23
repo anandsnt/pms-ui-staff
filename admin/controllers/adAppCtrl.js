@@ -634,6 +634,8 @@ admin.controller('ADAppCtrl', [
 			$rootScope.emvTimeout = data.emv_timeout || 120; // default timeout is 120s
             $rootScope.wsCCSwipeUrl = data.cc_swipe_listening_url;
             $rootScope.wsCCSwipePort = data.cc_swipe_listening_port;
+            // CICO-51146
+            $rootScope.isBackgroundReportsEnabled = data.background_report;
 
             // CICO-40544 - Now we have to enable menu in all standalone hotels
             // API not removing for now - Because if we need to disable it we can use the same param
