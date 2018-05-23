@@ -218,10 +218,10 @@ angular.module('sntRover').service('RVReservationCardSrv', ['$http', '$q', 'RVBa
 		};
 
 		this.getGuestDetails = function(guestData) {
-			var deferred = $q.defer(),
-			    url = '/api/guest_details/' + guestData.id;
+            var deferred = $q.defer(),
+                url = '/api/guest_details/' + guestData.id;
 
-			if (guestData.id == null) {
+			if (guestData.id === null) {
 				deferred.reject([""]);
 			} else {
 				rvBaseWebSrvV2.getJSON(url).then(function(data) {

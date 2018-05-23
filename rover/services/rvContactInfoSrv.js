@@ -124,7 +124,7 @@ angular.module('sntRover').service('RVContactInfoSrv', [
             var deffered = $q.defer(),
                 url = '/api/guest_details/' + guestId;
 
-            if (guestId == null) {
+            if (guestId === null) {
                 deffered.reject([""]);
             } else {
                rvBaseWebSrvV2.getJSON(url).then (function (data) {
