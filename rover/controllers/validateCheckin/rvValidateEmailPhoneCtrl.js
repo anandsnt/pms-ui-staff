@@ -121,6 +121,7 @@ sntRover.controller('RVValidateEmailPhoneCtrl', ['$rootScope', '$scope', '$state
                                     (reservationStatus === 'RESERVED' || reservationStatus === 'CHECKING_IN');
 
             var cannotMoveState   =  $scope.reservationData.reservation_card.cannot_move_room && $scope.reservationData.reservation_card.room_number !== "";
+            
             $state.go("rover.reservation.staycard.roomassignment", {
                 "reservation_id": $scope.reservationData.reservation_card.reservation_id,
                 "room_type": $scope.reservationData.reservation_card.room_type_code,
