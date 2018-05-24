@@ -11,8 +11,7 @@ sntRover.controller('rvBillCardPopupCtrl',
 		$scope.calculateHeightAndRefreshScroll();
 	};
 
-	var hideLoaderAndClosePopup = function() {		
-		
+	var hideLoaderAndClosePopup = function() {			
 		ngDialog.close();
 		$timeout(function() {
 			$scope.HIDE_LOADER_FROM_POPUP && $scope.HIDE_LOADER_FROM_POPUP();

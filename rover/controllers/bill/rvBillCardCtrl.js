@@ -1921,31 +1921,19 @@ sntRover.controller('RVbillCardController',
 
 			var reservationId = $scope.reservationBillData.reservation_id;
 
-			var successCallBackOfGenerateFolioNumber = function(response) {
-
-				},
-				failureCallBackOfGenerateFolioNumber = function() {
-
-				},
-				paramsToService = {
+			var paramsToService = {
 					'bill_id': billId,
 					'reservation_id': reservationId
 				},
 			    options = {
-					params: paramsToService,
-					successCallBack: successCallBackOfGenerateFolioNumber,
-					failureCallBack: failureCallBackOfGenerateFolioNumber
-				};
-
-		
+					params: paramsToService
+				};		
 			$scope.callAPI( RVBillCardSrv.generateFolioNumber, options );
-		}
-		
+		}		
 	};
 	// To handle success callback of complete checkout
 	$scope.completeCheckoutSuccessCallback = function(response) {
 		$scope.showSuccessPopup(response);
-
 		$timeout(function() {
 			// slight delay on-success so user doesnt re-click review & checkout again and initiate an error
 			// CICO-45029
