@@ -279,12 +279,13 @@ angular.module('sntRover').service('RVReportsInboxSrv', [
          * @return {void} 
          */
         this.fillOriginInfo = (value, key, promises, formatedFilter) => {
-            let params = {
-                ids: value
-            };
-
             promises.push(RVreportsSubSrv.fetchOrigins().then((origins) => {
-                formatedFilter[reportInboxFilterLabelConst[key]] = _.pluck(origins, 'value').join(',');
+                let filteredOrigins = _.filter(origins,
+                    function(origin) {
+                        return _.contains(value, origin.value);
+                    });
+
+                formatedFilter[reportInboxFilterLabelConst[key]] = _.pluck(filteredOrigins, 'description').join(',');
             }));
         };
 
@@ -297,12 +298,13 @@ angular.module('sntRover').service('RVReportsInboxSrv', [
          * @return {void} 
          */
         this.processOriginUrls = (value, key, promises, formatedFilter) => {
-            let params = {
-                ids: value
-            };
-
             promises.push(RVreportsSubSrv.fetchURLs().then((urls) => {
-                formatedFilter[reportInboxFilterLabelConst[key]] = _.pluck(origins, 'name').join(',');
+                let filteredUrls = _.filter(urls,
+                    function(url) {
+                        return _.contains(value, url.id);
+                    });
+
+                formatedFilter[reportInboxFilterLabelConst[key]] = _.pluck(filteredUrls, 'name').join(',');
             }));
         };
 
@@ -798,7 +800,7 @@ angular.module('sntRover').service('RVReportsInboxSrv', [
                    case reportParamsConst['SHOW_ACTIONABLES']:
                    case reportParamsConst['INCLUDE_GUARANTEE_TYPE']:
                    case reportParamsConst['ORIGIN_VALUES']:
-                        self.processArrayValuesWithNoFormating(value, key, processedFilter);
+                        self.fillOriginInfo(value, key, promises, processedFilter);
                         break;                   
                    case reportParamsConst['ORIGIN_URLS']:
                         self.processOriginUrls(value, key, promises, processedFilter);
