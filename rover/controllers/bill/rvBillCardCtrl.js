@@ -129,6 +129,7 @@ sntRover.controller('RVbillCardController',
 			var chargeCodes = billTabsData[$scope.currentActiveBill].total_fees[0].fees_details;
 
 			var chargeCodesId = [];
+			
 			_.each(chargeCodes, function(chargeCode) {
 			  chargeCode.isSelected = bool;
 			  chargeCodesId.push(chargeCode.id);
