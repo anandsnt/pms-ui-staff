@@ -95,7 +95,8 @@ angular.module('sntRover').service('rvMenuSrv',
     	// we are processing on the menu list we have
 		_.each (menuList, function(menuItem) {
 			// if the menu is hi
-			isMenuItemVisible = self.shouldShowMenuItem(menuItem.menuIndex);
+			var isMenuItemVisible = self.shouldShowMenuItem(menuItem.menuIndex);
+			
 			if (isMenuItemVisible) {
 				subMenuCount = menuItem.submenu ? menuItem.submenu.length : 0;
 				hasSubMenu = (subMenuCount > 0) ? true : false;
@@ -152,7 +153,7 @@ angular.module('sntRover').service('rvMenuSrv',
 		        submenu: [{
 		            title: "MENU_SEARCH_RESERVATIONS",
 		            action: "rover.search",
-		            menuIndex: "search"
+		            menuIndex: "reservationSearch"
 		        }, {
 		            title: "MENU_CREATE_RESERVATION",
 		            action: "rover.reservation.search",

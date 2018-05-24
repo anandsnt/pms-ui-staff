@@ -19,9 +19,9 @@
             </div>
 
             <fieldset class="holder left float">
-                <ad-textbox styleclass="full-width" value="singleAddon.name" name="name" id="name" label="{{'NAME' | translate}}" placeholder="{{'ENTER_ADDON_NAME' | translate}}" required="yes"  ng-show="isDefaulLanguageSelected()"></ad-textbox>
+                <ad-textbox styleclass="full-width" value="singleAddon.name" name="name" id="name" label="{{'NAME' | translate}}" placeholder="{{'ENTER_ADDON_NAME' | translate}}" required="yes"  hide="!isDefaulLanguageSelected()"></ad-textbox>
 
-                <ad-textbox styleclass="full-width" value="translations.translated_name" name="name" id="name" label="{{'NAME' | translate}}" placeholder="{{'ENTER_ADDON_NAME' | translate}}" required="yes" ng-hide="isDefaulLanguageSelected()"></ad-textbox>
+                <ad-textbox styleclass="full-width" value="translations.translated_name" name="name" id="name" label="{{'NAME' | translate}}" placeholder="{{'ENTER_ADDON_NAME' | translate}}" required="yes" hide="isDefaulLanguageSelected()"></ad-textbox>
 
                 <ad-textbox ng-if="::isConnectedToPMS" styleclass="full-width" value="singleAddon.package_code" name="name" disabled="true" id="name" label="{{'CODE' | translate}}" ></ad-textbox>
 
