@@ -129,7 +129,7 @@ sntRover.controller('RVbillCardController',
 			var chargeCodes = billTabsData[$scope.currentActiveBill].total_fees[0].fees_details;
 
 			var chargeCodesId = [];
-			
+
 			_.each(chargeCodes, function(chargeCode) {
 			  chargeCode.isSelected = bool;
 			  chargeCodesId.push(chargeCode.id);
@@ -2851,6 +2851,7 @@ sntRover.controller('RVbillCardController',
 	$scope.calculateBillDaysWidth = function() {
 		angular.forEach(reservationBillData.bills, function(value, key) {
 			var billDaysWidth = 0;
+			
 			angular.forEach(value.days, function(daysValue, daysKey) {
 				billDaysWidth = parseInt(billDaysWidth) + parseInt(70);
 			});
