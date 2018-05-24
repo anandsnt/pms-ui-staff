@@ -557,7 +557,7 @@ sntRover.controller('RVbillCardController',
 		if ($rootScope.roverObj.hasActivatedFolioNumber && $scope.shouldGenerateFolioNumber) {
 			var currentActiveBill = $scope.reservationBillData.bills[$scope.currentActiveBill];
 
-			generateFolioNumber(currentActiveBill.bill_id, currentActiveBill.total_fees[0].balance_amount, , currentActiveBill.is_folio_number_exists);
+			generateFolioNumber(currentActiveBill.bill_id, currentActiveBill.total_fees[0].balance_amount, currentActiveBill.is_folio_number_exists);
 		}	
 	};
 
@@ -2851,7 +2851,7 @@ sntRover.controller('RVbillCardController',
 	$scope.calculateBillDaysWidth = function() {
 		angular.forEach(reservationBillData.bills, function(value, key) {
 			var billDaysWidth = 0;
-			
+
 			angular.forEach(value.days, function(daysValue, daysKey) {
 				billDaysWidth = parseInt(billDaysWidth) + parseInt(70);
 			});
