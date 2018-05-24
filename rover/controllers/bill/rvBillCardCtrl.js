@@ -1928,10 +1928,12 @@ sntRover.controller('RVbillCardController',
 				},
 			    options = {
 					params: paramsToService
-				};		
+				};
+						
 			$scope.callAPI( RVBillCardSrv.generateFolioNumber, options );
 		}		
 	};
+
 	// To handle success callback of complete checkout
 	$scope.completeCheckoutSuccessCallback = function(response) {
 		$scope.showSuccessPopup(response);
