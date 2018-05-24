@@ -128,7 +128,7 @@ sntRover.controller('RVbillCardController',
 			var billTabsData = $scope.reservationBillData.bills;
 			var chargeCodes = billTabsData[$scope.currentActiveBill].total_fees[0].fees_details;
 
-			chargeCodesId = [];
+			var chargeCodesId = [];
 			_.each(chargeCodes, function(chargeCode) {
 			  chargeCode.isSelected = bool;
 			  chargeCodesId.push(chargeCode.id);
@@ -764,6 +764,11 @@ sntRover.controller('RVbillCardController',
 		reservationBillData = data;
 		$scope.init(data);
 		$scope.calculateBillDaysWidth();
+		if ($rootScope.roverObj.hasActivatedFolioNumber) {
+			var currentActiveBill = $scope.reservationBillData.bills[$scope.currentActiveBill];
+
+			generateFolioNumber(currentActiveBill.bill_id, currentActiveBill.total_fees[0].balance_amount)
+		}	
 	};
 	// Utility method to reload bill screen after other operations.
 	var reloadBillScreen = function() {
@@ -1897,9 +1902,44 @@ sntRover.controller('RVbillCardController',
     $scope.toggleCheckoutWithoutSettlement = function() {
     	$scope.isCheckoutWithoutSettlement = !$scope.isCheckoutWithoutSettlement;
     };
+
+    /*
+	 * Function to generate folio number
+	 * @param billId is the bill id
+	 * @param balanceAmount is the balance Amount
+	 */
+	var generateFolioNumber = function (billId, balanceAmount) {
+		console.log("===GENERATE FOLIO NUMBER INSIDE METHOD====")
+		console.log($scope.reservationBillData)
+		if (balanceAmount === "0.00" && $scope.reservationBillData.reservation_status === "CHECKEDOUT") {
+			console.log("===GENERATE FOLIO NUMBER INSIDE METHOD - TO CALL API====")
+			var reservationId = $scope.reservationBillData.reservation_id;
+
+			var successCallBackOfGenerateFolioNumber = function(response) {
+
+				},
+				failureCallBackOfGenerateFolioNumber = function() {
+
+				},
+				paramsToService = {
+					'bill_id': billId,
+					'reservation_id': reservationId
+				},
+			    options = {
+					params: paramsToService,
+					successCallBack: successCallBackOfGenerateFolioNumber,
+					failureCallBack: failureCallBackOfGenerateFolioNumber
+				};
+
+		
+			$scope.callAPI( RVBillCardSrv.generateFolioNumber, options );
+		}
+		
+	};
 	// To handle success callback of complete checkout
 	$scope.completeCheckoutSuccessCallback = function(response) {
 		$scope.showSuccessPopup(response);
+
 		$timeout(function() {
 			// slight delay on-success so user doesnt re-click review & checkout again and initiate an error
 			// CICO-45029
@@ -1940,7 +1980,7 @@ sntRover.controller('RVbillCardController',
 		}
 
 		return isArAccountNeeded;
-	};
+	};	
 
 	// CICO-49105 Blackbox API on each bill having payments exist..
 	var callBlackBoxAPI = function() {
@@ -2809,7 +2849,7 @@ sntRover.controller('RVbillCardController',
 	};
 	$scope.calculateBillDaysWidth = function() {
 		angular.forEach(reservationBillData.bills, function(value, key) {
-			billDaysWidth = 0;
+			var billDaysWidth = 0;
 			angular.forEach(value.days, function(daysValue, daysKey) {
 				billDaysWidth = parseInt(billDaysWidth) + parseInt(70);
 			});

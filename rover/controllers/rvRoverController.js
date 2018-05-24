@@ -126,7 +126,8 @@ sntRover.controller('roverController', [
         $rootScope.termsAndConditionsText = hotelDetails.terms_and_conditions;
         // CICO-50810 checking for any interface enabled.
         $rootScope.roverObj = {
-            isAnyInterfaceEnabled: hotelDetails.interface.is_avida_enabled || hotelDetails.interface.is_baseware_enabled
+            isAnyInterfaceEnabled: hotelDetails.interface.is_avida_enabled || hotelDetails.interface.is_baseware_enabled,
+            hasActivatedFolioNumber: true // hotelDetails.has_activate_folio_number
         };
         /*
          * hotel Details
