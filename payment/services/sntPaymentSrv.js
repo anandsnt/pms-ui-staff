@@ -376,6 +376,7 @@ if (status === 406) { // 406- Network error
                 case "MLI":
                 case "CBA":
                 case "SHIJI":
+                case "CBA_AND_MLI":
                     break;
                 case "sixpayments":
                     var time = new Date().getTime(),
@@ -524,5 +525,29 @@ if (status === 406) { // 406- Network error
             return !!amount && !isNaN(Number(amount)) && Number(amount) !== 0;
         };
 
+        service.isAddCardAction = function(actoionType) {
+            let addCardActionTypes = ['ADD_PAYMENT_GUEST_CARD', 'ADD_PAYMENT_BILL', 'ADD_PAYMENT_STAY_CARD'];
+            
+            return _.contains(addCardActionTypes, actoionType);
+        };
+
+        service.sampleMLISwipedCardResponse = {
+            "RVCardReadCardIIN": "374200",
+            "RVCardReadCardName": "TEST CARD 12 UAT USA",
+            "RVCardReadCardType": "AX",
+            "RVCardReadETB": "",
+            "RVCardReadETBKSN": "",
+            "RVCardReadExpDate": "2001",
+            "RVCardReadIsEncrypted": "1",
+            "RVCardReadMaskedPAN": "374200030001006",
+            "RVCardReadPAN": "374200030001006",
+            "RVCardReadTrack1": "30D979FBE08486736DB43D12C57B4EBE3BD471584B6AD3D6F3BCFE38D9167FD35E7D9AF57FC2FF32D9B6BFFEE6661366E43BF709837A38EB5335AFD8D357BE553D0D923D0C00283A",
+            "RVCardReadTrack1KSN": "9012080B2ACA76000878",
+            "RVCardReadTrack2": "D791C3A38FF3FAC1B241D97DBB717B826E4D356163B374BA2CC5CF156510DCD50FF6997EFF06B6B4",
+            "RVCardReadTrack2KSN": "9012080B2ACA76000878",
+            "RVCardReadTrack3": "",
+            "RVCardReadTrack3KSN": "9012080B2ACA76000878",
+            "token": "374200030001006"
+        };
     }
 ]);
