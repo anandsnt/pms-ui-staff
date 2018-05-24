@@ -532,22 +532,17 @@ if (status === 406) { // 406- Network error
         };
 
         service.sampleMLISwipedCardResponse = {
-            "RVCardReadCardIIN": "374200",
-            "RVCardReadCardName": "TEST CARD 12 UAT USA",
-            "RVCardReadCardType": "AX",
-            "RVCardReadETB": "",
-            "RVCardReadETBKSN": "",
-            "RVCardReadExpDate": "2001",
-            "RVCardReadIsEncrypted": "1",
-            "RVCardReadMaskedPAN": "374200030001006",
-            "RVCardReadPAN": "374200030001006",
-            "RVCardReadTrack1": "30D979FBE08486736DB43D12C57B4EBE3BD471584B6AD3D6F3BCFE38D9167FD35E7D9AF57FC2FF32D9B6BFFEE6661366E43BF709837A38EB5335AFD8D357BE553D0D923D0C00283A",
-            "RVCardReadTrack1KSN": "9012080B2ACA76000878",
-            "RVCardReadTrack2": "D791C3A38FF3FAC1B241D97DBB717B826E4D356163B374BA2CC5CF156510DCD50FF6997EFF06B6B4",
-            "RVCardReadTrack2KSN": "9012080B2ACA76000878",
-            "RVCardReadTrack3": "",
-            "RVCardReadTrack3KSN": "9012080B2ACA76000878",
-            "token": "374200030001006"
+            "cardType": "VA",
+            "cardNumber": "xxxx-xxxx-xxxx-0135",
+            "nameOnCard": "UAT USA/TEST CARD 19",
+            "cardExpiry": "1912",
+            "cardExpiryMonth": "12",
+            "cardExpiryYear": "19",
+            "et2": "",
+            "ksn": "FFFF987654165420000E",
+            "pan": "476173000000**35",
+            "etb": "DA9693715C1DC7B6183F830BF0713E9FE849D0275D30FFF2677F44FB34383B4BE8A2CE89D62D2CC138668CFB914C2D998602969CC58326B5BDD1585174A846FD90096C75903BA1907C4B820B3AE9441F317F21DBDB2CCE8327E24C56CE6866A39085467D0C4D15528B1240C8777B83634DEA58EFD3D90AA3",
+            "token": "8045832471460135",
+            "isEncrypted": true
         };
-    }
-]);
+}]);
