@@ -268,11 +268,8 @@ angular.module('sntPay').controller('payMLIOperationsController',
 
 
             var mockSwipeAction = () => {
-                var swipeOperationObj = new SwipeOperation(),
-                    swipedCardDataToRender = swipeOperationObj.createSWipedDataToRender(sntPaymentSrv.sampleMLISwipedCardResponse);
-                
                 $scope.selectedPaymentType = 'CC';
-                renderDataFromSwipe({}, swipedCardDataToRender);
+                renderDataFromSwipe({}, sntPaymentSrv.sampleMLISwipedCardResponse);
             };
 
             // To Mock MLI swipe - 

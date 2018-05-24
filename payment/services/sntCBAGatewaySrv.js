@@ -71,10 +71,13 @@ angular.module('sntPay').service('sntCBAGatewaySrv', ['$q', '$http', '$log', '$t
                 "external_print_data": cordovaResponse.custom_data,
                 "external_message": null,
                 "payment_method": {
+                    "payment_type": "CBA",
+                    "do_not_attach_cc_to_bill": true,
                     "card_name": cordovaResponse.card_name,
                     "card_expiry": formattedExpiry,
-                    "card_number": cordovaResponse.pan,
-                    "credit_card_type": cordovaResponse.card_type
+                    "mli_token": cordovaResponse.pan, // For MLI payment gateway with CBA
+                    "credit_card_type": cordovaResponse.card_type,
+                    "card_number": cordovaResponse.pan
                 }
             });
         };
