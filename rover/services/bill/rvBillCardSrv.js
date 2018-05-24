@@ -351,7 +351,7 @@ angular.module('sntRover').service('RVBillCardSrv', ['$http', '$q', 'BaseWebSrvV
     // Generate folio number 
     this.generateFolioNumber = function(params) {
         var deferred = $q.defer(),
-            url = '/api/bills/' + params.bill_id + '/generate_foilo_number';
+            url = '/api/bills/' + params.bill_id + '/generate_folio_number';
 
         BaseWebSrvV2.postJSON(url, params).then(function(response) {
             deferred.resolve(response.data);
