@@ -120,15 +120,19 @@ angular.module('sntRover').service('RVContactInfoSrv', [
          * @param {Number} guestId id of the guest
          * @return {Promise} Promise
          */        
-        service.getGuestDetailsById = function (guestId) {
+        service.getGuestDetailsById = function (guestId) {            
             var deffered = $q.defer(),
                 url = '/api/guest_details/' + guestId;
 
-            rvBaseWebSrvV2.getJSON(url).then (function (data) {
-                deffered.resolve (data);
-            }, function (error) {
-                deffered.resolve(error);
-            });
+            if (guestId === null) {
+                deffered.reject([""]);
+            } else {
+               rvBaseWebSrvV2.getJSON(url).then (function (data) {
+                    deffered.resolve (data);
+                }, function (error) {
+                    deffered.reject(error);
+                }); 
+            }
 
             return deffered.promise;
         };
