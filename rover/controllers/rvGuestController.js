@@ -1687,7 +1687,11 @@ angular.module('sntRover').controller('guestCardController', [
                 scope: $scope
             });
         };
+        
         // To keep existing rate and proceed.
+        // CICO-50623 : Handle keep existing state scenario
+        // This flag will use in stayCardMainStrl.js
+        $scope.reservationData.keepExistingRate = false;
 
         $scope.selectCard = function(cardData, chooseCardRate) {
             if (cardData.account_type === 'COMPANY') {
@@ -1696,7 +1700,10 @@ angular.module('sntRover').controller('guestCardController', [
             if (cardData.account_type === 'TRAVELAGENT') {
                 $scope.selectTravelAgent(cardData, chooseCardRate);
             }
-            // ngDialog.close();
+            
+            if (!chooseCardRate) {
+                $scope.reservationData.keepExistingRate = true;
+            }
         };
         // To change to contracted Rate and proceed.
         $scope.changeToContractedRate = function(cardData) {

@@ -204,6 +204,7 @@ admin.controller('ADAppCtrl', [
                                 title: 'MENU_TA_CARDS',
                                 action: 'rover.companycardsearch',
                                 menuIndex: 'cards'
+<<<<<<< HEAD
                             },
                             {
                                 title: 'MENU_DISTRIBUTION_MANAGER',
@@ -219,6 +220,9 @@ admin.controller('ADAppCtrl', [
                                 hidden: $rootScope.isHourlyRatesEnabled
                             }
                         ]
+=======
+                            }]
+>>>>>>> 2f9474a03bf1cfd4aeea4bf284aff5152578b1bd
                     }, {
                         title: 'MENU_HOUSEKEEPING',
                         action: '',
