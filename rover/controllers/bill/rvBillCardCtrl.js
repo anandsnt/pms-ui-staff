@@ -556,7 +556,7 @@ sntRover.controller('RVbillCardController',
 		if ($rootScope.roverObj.hasActivatedFolioNumber && $scope.shouldGenerateFolioNumber) {
 			var currentActiveBill = $scope.reservationBillData.bills[$scope.currentActiveBill];
 
-			generateFolioNumber(currentActiveBill.bill_id, currentActiveBill.total_fees[0].balance_amount)
+			generateFolioNumber(currentActiveBill.bill_id, currentActiveBill.total_fees[0].balance_amount, , currentActiveBill.is_folio_number_exists);
 		}	
 	};
 
@@ -772,7 +772,7 @@ sntRover.controller('RVbillCardController',
 		if ($rootScope.roverObj.hasActivatedFolioNumber && $scope.shouldGenerateFolioNumber) {
 			var currentActiveBill = $scope.reservationBillData.bills[$scope.currentActiveBill];
 
-			generateFolioNumber(currentActiveBill.bill_id, currentActiveBill.total_fees[0].balance_amount)
+			generateFolioNumber(currentActiveBill.bill_id, currentActiveBill.total_fees[0].balance_amount, currentActiveBill.is_folio_number_exists);
 		}	
 	};
 	// Utility method to reload bill screen after other operations.
@@ -1914,12 +1914,11 @@ sntRover.controller('RVbillCardController',
 	 * @param billId is the bill id
 	 * @param balanceAmount is the balance Amount
 	 */
-	var generateFolioNumber = function (billId, balanceAmount) {
-		console.log("===GENERATE FOLIO NUMBER INSIDE METHOD====")
-		console.log($scope.reservationBillData)
+	var generateFolioNumber = function (billId, balanceAmount, isFolioNumberExists) {
+
 		$scope.shouldGenerateFolioNumber = false;
-		if (balanceAmount === "0.00" && $scope.reservationBillData.reservation_status === "CHECKEDOUT") {
-			console.log("===GENERATE FOLIO NUMBER INSIDE METHOD - TO CALL API====")
+		if (balanceAmount === "0.00" && $scope.reservationBillData.reservation_status === "CHECKEDOUT" && !isFolioNumberExists) {
+
 			var reservationId = $scope.reservationBillData.reservation_id;
 
 			var successCallBackOfGenerateFolioNumber = function(response) {
@@ -2782,7 +2781,7 @@ sntRover.controller('RVbillCardController',
 	 		if ($rootScope.roverObj.hasActivatedFolioNumber && $scope.shouldGenerateFolioNumber) {
 				var currentActiveBill = $scope.reservationBillData.bills[$scope.currentActiveBill];
 
-				generateFolioNumber(currentActiveBill.bill_id, currentActiveBill.total_fees[0].balance_amount)
+				generateFolioNumber(currentActiveBill.bill_id, currentActiveBill.total_fees[0].balance_amount, currentActiveBill.is_folio_number_exists);
 			}
 
 		 	// CICO-10906 review process continues after payment.
