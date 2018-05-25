@@ -87,6 +87,9 @@ angular.module('sntZestStation').controller('zsPaymentCtrl', ['$scope', '$log', 
                 $scope.$emit('showLoader');
                 params.postData.payment_type_id = response.payment_method_id;
                 params.postData.credit_card_transaction_id = response.id;
+                if ($scope.zestStationData.paymentGateway === 'MLI' && $scope.zestStationData.hotelSettings.mli_cba_enabled) {
+                    params.postData.payment_type = 'CBA';
+                }
                 sntPaymentSrv.submitPayment(params).then(
                     function() {
                         $scope.screenMode.value = 'PAYMENT_SUCCESS';

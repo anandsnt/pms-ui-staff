@@ -19,6 +19,7 @@ sntZestStation.controller('zsCheckInMLIAndCBACCCollectionCtrl', [
 		$controller('zsPaymentCtrl', {
 			$scope: $scope
 		});
+		$scope.initiateCBAlisteners();
 		$scope.reservation_id = stateParams.reservation_id;
 
 		// if CC is already present, collect deposit if applicable
@@ -38,7 +39,6 @@ sntZestStation.controller('zsCheckInMLIAndCBACCCollectionCtrl', [
 
 		var startCBAPayment = function() {
 			$scope.screenMode.isCBADespositMode = true;
-			$scope.initiateCBAlisteners();
 			$scope.startCBAPayment();
 		};
 
