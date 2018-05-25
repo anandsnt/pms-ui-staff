@@ -120,14 +120,15 @@ angular.module('sntRover').controller('RVReportsInboxCtrl', [
         // Refreshes the scroller
        self.refreshScroll = () => {
             $timeout(() => {
-                $scope.refreshScroller(REPORT_INBOX_SCROLLER); 
+                $scope.refreshScroller(REPORT_INBOX_SCROLLER);
+                $scope.getScroller(REPORT_INBOX_SCROLLER).scrollTo(0, 0);
             }, 300);
-                           
+
        };
 
 
         // Create date dropdown for the filter section
-        self.createDateDropdownData = () => {            
+        self.createDateDropdownData = () => {
             let hotelBusinessDate = new tzIndependentDate($rootScope.businessDate),
                 hotelYesterday = new tzIndependentDate(hotelBusinessDate),
                 hotelDayBeforeYesterday = new tzIndependentDate(hotelBusinessDate),
@@ -140,19 +141,19 @@ angular.module('sntRover').controller('RVReportsInboxCtrl', [
             let dateDropDown = [
                 {
                     name: 'Today(' + $filter('date')(hotelBusinessDate, $rootScope.dateFormat) + ')',
-                    value: $filter('date')(hotelBusinessDate, 'yyyy-MM-dd') 
+                    value: $filter('date')(hotelBusinessDate, 'yyyy-MM-dd')
                 },
                 {
                     name: 'Yesterday(' + $filter('date')(hotelYesterday, $rootScope.dateFormat) + ')',
-                    value: $filter('date')(hotelYesterday, 'yyyy-MM-dd') 
+                    value: $filter('date')(hotelYesterday, 'yyyy-MM-dd')
                 },
                 {
                     name:  $filter('date')(hotelDayBeforeYesterday, $rootScope.dateFormat),
-                    value: $filter('date')(hotelDayBeforeYesterday, 'yyyy-MM-dd') 
+                    value: $filter('date')(hotelDayBeforeYesterday, 'yyyy-MM-dd')
                 },
                 {
                     name:  $filter('date')(hotelFourDaysBefore, $rootScope.dateFormat),
-                    value: $filter('date')(hotelFourDaysBefore, 'yyyy-MM-dd') 
+                    value: $filter('date')(hotelFourDaysBefore, 'yyyy-MM-dd')
                 }
             ];
             return dateDropDown;
@@ -181,7 +182,7 @@ angular.module('sntRover').controller('RVReportsInboxCtrl', [
          * @param {Number} pageNo current page no
          * @return {void}
          */
-        self.fetchGeneratedReports = (pageNo) => {            
+        self.fetchGeneratedReports = (pageNo) => {
 
             let onReportsFetchSuccess = (data) => {
                     $scope.reportInboxData.generatedReports = self.getFormatedGeneratedReports(data.results, $scope.reportList);
