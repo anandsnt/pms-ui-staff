@@ -151,6 +151,22 @@ angular.module('sntZestStation').controller('zsPaymentCtrl', ['$scope', '$log', 
             }
         };
 
+        var socketActions = function(hideLoader = false) {
+            if ($scope.inDemoMode()) {
+                processSwipeCardData(zsPaymentSrv.sampleMLISwipedCardResponse);
+            } else if ($scope.socketOperator.returnWebSocketObject().readyState === 1) {
+                if (!hideLoader) {
+                    $scope.$emit('showLoader');
+                }
+                observeForDesktopSwipe();
+            } else {
+                if (!hideLoader) {
+                    $scope.$emit('showLoader');
+                }
+                $scope.$emit('CONNECT_WEBSOCKET');
+            }
+        };
+
         $scope.payUsingNewCard = function() {
             $scope.screenMode.value = 'PAYMENT_IN_PROGRESS';
             $scope.screenMode.isUsingExistingCardPayment = false;
@@ -164,15 +180,7 @@ angular.module('sntZestStation').controller('zsPaymentCtrl', ['$scope', '$log', 
                         proceedWithEMVPayment();
             } else if ($scope.zestStationData.paymentGateway === 'MLI' && $scope.zestStationData.ccReader === 'websocket') {
                 // Check if socket is ready
-                if ($scope.inDemoMode()) {
-                    processSwipeCardData(zsPaymentSrv.sampleMLISwipedCardResponse);
-                } else if ($scope.socketOperator.returnWebSocketObject().readyState === 1) {
-                    $scope.$emit('showLoader');
-                    observeForDesktopSwipe();
-                } else {
-                    $scope.$emit('showLoader');
-                    $scope.$emit('CONNECT_WEBSOCKET');
-                }
+               socketActions();
             } else if ($scope.zestStationData.paymentGateway === 'MLI' && $scope.zestStationData.ccReader === 'local') {
                 proceedWithiPadPayments();
             } else {
@@ -362,7 +370,11 @@ angular.module('sntZestStation').controller('zsPaymentCtrl', ['$scope', '$log', 
         $scope.$on('START_MLI_ACTIONS', function(){
             var hideLoader = true;
 
-            proceedWithiPadPayments(hideLoader);
+            if ($scope.isIpad) {
+                proceedWithiPadPayments(hideLoader);
+            } else {
+                socketActions(hideLoader);
+            }
         });
 
 
@@ -374,7 +386,7 @@ angular.module('sntZestStation').controller('zsPaymentCtrl', ['$scope', '$log', 
             $scope.$emit('showLoader');
             $timeout(function() {
                 $scope.$emit('hideLoader');
-                processSwipeCardData(sntPaymentSrv.sampleMLISwipedCardResponse);
+                processSwipeCardData(zsPaymentSrv.sampleMLISwipedCardResponse);
             }, 1000);
         });
     }

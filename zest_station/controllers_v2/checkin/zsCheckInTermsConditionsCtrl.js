@@ -5,11 +5,10 @@ sntZestStation.controller('zsCheckInTermsConditionsCtrl', [
     '$stateParams',
     'zsEventConstants',
     'zsCheckinSrv',
-    '$stateParams',
     '$timeout',
     '$sce',
     'zsUtilitySrv',
-    function($scope, $rootScope, $state, $stateParams, zsEventConstants, zsCheckinSrv, $stateParams, $timeout, $sce, zsUtilitySrv) {
+    function($scope, $rootScope, $state, $stateParams, zsEventConstants, zsCheckinSrv, $timeout, $sce, zsUtilitySrv) {
 
 		/** ********************************************************************************************
 		 **		Please note that, not all the stateparams passed to this state will not be used in this state, 
