@@ -48,7 +48,7 @@ angular.module('sntRover').controller('RVReportsInboxCtrl', [
          * @color {String} color for the given report status         
          */
         $scope.getColorCodeForReportStatus = (report) => {
-            let color = "";
+            let color = '';
 
             if (report.message) {
                 color = 'red';
@@ -82,23 +82,23 @@ angular.module('sntRover').controller('RVReportsInboxCtrl', [
          */
         $scope.showReportDetails = (report) => {
             if (!report.isExpanded) {               
-               if (report.filterDetails) {
-                 report.isExpanded = !report.isExpanded;
-                 self.refreshScroll();
-               } else {
+                if (report.filterDetails) {
+                    report.isExpanded = !report.isExpanded;
+                    self.refreshScroll();
+                } else {
                     sntActivity.start(REPORT_FILTERS_PROC_ACTIVITY);
                     RVReportsInboxSrv.processFilters(report.filters).then(function(formatedFilters) {
                         report.filterDetails = formatedFilters;                        
                         report.isExpanded = !report.isExpanded;
                         sntActivity.stop(REPORT_FILTERS_PROC_ACTIVITY);
                         self.refreshScroll();
-                    }).catch(function(error){
+                    }).catch(function(error) {
                         report.filterDetails = error;
                         report.isExpanded = !report.isExpanded;
                         sntActivity.stop(REPORT_FILTERS_PROC_ACTIVITY);
                         self.refreshScroll();
                     });
-               }
+                }
                
             } else {
                 report.isExpanded = !report.isExpanded;
@@ -109,25 +109,27 @@ angular.module('sntRover').controller('RVReportsInboxCtrl', [
 
         // Set scroller for report inbox
         self.setScroller = () => {            
-                var scrollerOptions = {
-                    tap: true,
-                    preventDefault: false
-                };
+            var scrollerOptions = {
+                tap: true,
+                preventDefault: false
+            };
 
-                $scope.setScroller(REPORT_INBOX_SCROLLER, scrollerOptions);            
+            $scope.setScroller(REPORT_INBOX_SCROLLER, scrollerOptions);            
         };
 
         // Refreshes the scroller
-       self.refreshScroll = () => {
+        self.refreshScroll = () => {
             $timeout(() => {
-                $scope.refreshScroller(REPORT_INBOX_SCROLLER); 
+                $scope.getScroller(REPORT_INBOX_SCROLLER).scrollTo(0, 0);
+                $timeout(() => {
+                    $scope.refreshScroller(REPORT_INBOX_SCROLLER);
+                }, 500);
             }, 300);
-                           
-       };
+        };
 
 
         // Create date dropdown for the filter section
-        self.createDateDropdownData = () => {            
+        self.createDateDropdownData = () => {
             let hotelBusinessDate = new tzIndependentDate($rootScope.businessDate),
                 hotelYesterday = new tzIndependentDate(hotelBusinessDate),
                 hotelDayBeforeYesterday = new tzIndependentDate(hotelBusinessDate),
@@ -140,21 +142,22 @@ angular.module('sntRover').controller('RVReportsInboxCtrl', [
             let dateDropDown = [
                 {
                     name: 'Today(' + $filter('date')(hotelBusinessDate, $rootScope.dateFormat) + ')',
-                    value: $filter('date')(hotelBusinessDate, 'yyyy-MM-dd') 
+                    value: $filter('date')(hotelBusinessDate, 'yyyy-MM-dd')
                 },
                 {
                     name: 'Yesterday(' + $filter('date')(hotelYesterday, $rootScope.dateFormat) + ')',
-                    value: $filter('date')(hotelYesterday, 'yyyy-MM-dd') 
+                    value: $filter('date')(hotelYesterday, 'yyyy-MM-dd')
                 },
                 {
-                    name:  $filter('date')(hotelDayBeforeYesterday, $rootScope.dateFormat),
-                    value: $filter('date')(hotelDayBeforeYesterday, 'yyyy-MM-dd') 
+                    name: $filter('date')(hotelDayBeforeYesterday, $rootScope.dateFormat),
+                    value: $filter('date')(hotelDayBeforeYesterday, 'yyyy-MM-dd')
                 },
                 {
-                    name:  $filter('date')(hotelFourDaysBefore, $rootScope.dateFormat),
-                    value: $filter('date')(hotelFourDaysBefore, 'yyyy-MM-dd') 
+                    name: $filter('date')(hotelFourDaysBefore, $rootScope.dateFormat),
+                    value: $filter('date')(hotelFourDaysBefore, 'yyyy-MM-dd')
                 }
             ];
+
             return dateDropDown;
 
         };
@@ -181,7 +184,7 @@ angular.module('sntRover').controller('RVReportsInboxCtrl', [
          * @param {Number} pageNo current page no
          * @return {void}
          */
-        self.fetchGeneratedReports = (pageNo) => {            
+        self.fetchGeneratedReports = (pageNo) => {
 
             let onReportsFetchSuccess = (data) => {
                     $scope.reportInboxData.generatedReports = self.getFormatedGeneratedReports(data.results, $scope.reportList);
@@ -204,15 +207,15 @@ angular.module('sntRover').controller('RVReportsInboxCtrl', [
 
         // Set page options for the pagination directive
         self.setPageOptions = () => {
-                $scope.pageOptions = {
-                    id: PAGINATION_ID,
-                    api: self.fetchGeneratedReports,
-                    perPage: RVReportsInboxSrv.PER_PAGE
-                };
+            $scope.pageOptions = {
+                id: PAGINATION_ID,
+                api: self.fetchGeneratedReports,
+                perPage: RVReportsInboxSrv.PER_PAGE
+            };
         };
         // Refresh pagination controls
         self.refreshPagination = () => {
-                $scope.refreshPagination(PAGINATION_ID);
+            $scope.refreshPagination(PAGINATION_ID);
         };
 
         /**
@@ -242,14 +245,14 @@ angular.module('sntRover').controller('RVReportsInboxCtrl', [
         };
 
         // Filter the report inbox by name
-        $scope.filterByQuery =  _.debounce(() => {
-                self.fetchGeneratedReports(1);
+        $scope.filterByQuery = _.debounce(() => {
+            self.fetchGeneratedReports(1);
         }, 100);
 
         // Clear the report search box
         $scope.clearQuery = function () {
-                $scope.reportInboxData.filter.searchTerm = '';
-                self.fetchGeneratedReports(1);               
+            $scope.reportInboxData.filter.searchTerm = '';
+            self.fetchGeneratedReports(1);               
         };
         /*
         * store selected report to service,
@@ -259,7 +262,7 @@ angular.module('sntRover').controller('RVReportsInboxCtrl', [
         * @return none
         * */
         var setChoosenReport = function (selectedreport) {
-            var lastReportID  = reportsSrv.getChoosenReport().id,
+            var lastReportID = reportsSrv.getChoosenReport().id,
                 mainCtrlScope = $scope.$parent,
                 choosenReport = _.find($scope.reportList,
                     function(report) {
@@ -267,7 +270,7 @@ angular.module('sntRover').controller('RVReportsInboxCtrl', [
                     });
 
             // generatedReportId is required make API call
-            choosenReport.generatedReportId  = selectedreport.id;
+            choosenReport.generatedReportId = selectedreport.id;
             // if the two reports are not the same, just call
             // 'resetSelf' on printOption to clear out any method
             // that may have been created a specific report ctrl
@@ -317,9 +320,9 @@ angular.module('sntRover').controller('RVReportsInboxCtrl', [
                     report.uiChosen = false;
                     _.map(report.filters, (filter) => {
                         if (filter.filled) {
-                           filter.filled = false; 
-                       }                        
-                    })
+                            filter.filled = false; 
+                        }                        
+                    });
                 }
             );
 
