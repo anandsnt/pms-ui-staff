@@ -32,6 +32,7 @@ sntZestStation.controller('zsCheckInMLIAndCBACCCollectionCtrl', [
 			// screen display mode
 			$scope.screenMode.value = 'CC_COLLECTION';
 			$scope.waitingForSwipe = true;
+			$scope.$emit('START_MLI_ACTIONS');
 		}
 
 

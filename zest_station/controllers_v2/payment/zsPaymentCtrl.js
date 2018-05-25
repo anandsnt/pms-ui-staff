@@ -323,13 +323,15 @@ angular.module('sntZestStation').controller('zsPaymentCtrl', ['$scope', '$log', 
 
         /**  *********************** Ipad device actions ********************************/
 
-        var proceedWithiPadPayments = function() {
+        var proceedWithiPadPayments = function(hideLoader = false) {
             if ($scope.inDemoMode()) {
                 processSwipeCardData(zsPaymentSrv.sampleMLISwipedCardResponse);
             }
             // show error if the device is not iPad
             else if ($scope.isIpad) {
-                $scope.$emit('showLoader');
+                if(!hideLoader){
+                    $scope.$emit('showLoader');
+                }
                 $scope.screenMode.paymentInProgress = true;
                 $scope.cardReader.startReader({
                     'successCallBack': function(response) {
@@ -356,6 +358,12 @@ angular.module('sntZestStation').controller('zsPaymentCtrl', ['$scope', '$log', 
             }
 
         };
+
+        $scope.$on('START_MLI_ACTIONS', function(){
+            var hideLoader = true;
+
+            proceedWithiPadPayments(hideLoader);
+        });
 
 
         // To Mock MLI swipe - 
