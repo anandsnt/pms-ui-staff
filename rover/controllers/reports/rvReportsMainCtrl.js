@@ -42,6 +42,10 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
             report: null
         };
 
+        $scope.viewStatus = {
+            showDetails: false
+        };
+
         $scope.scrollToLast = function () {
             $timeout(function () {
                 if ($scope.$parent.myScroll.hasOwnProperty('FULL_REPORT_SCROLL')) {
@@ -2157,29 +2161,33 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
                 $scope.errorMessage = [];
                 $scope.$emit('hideLoader');
 
-                if ($state.current.name !== 'rover.reports.show') {
-
-                    $state.go('rover.reports.show', {
-                        action: msg || '',
-                        report: angular.copy($scope.selectedReport) || chosenReport
-                    });
+                if (reportsSrv.getPrintClickedState()) {
+                    $scope.viewStatus.showDetails = true;
                 } else {
-                    $state.go('.', {
-                        page: loadPage,
-                        action: msg || ''
-                    }, {
-                        location: true,
-                        inherit: true,
-                        relative: $state.$current,
-                        notify: false
-                    });
-                }
+                   if ($state.current.name !== 'rover.reports.show') {
 
-                $scope.$broadcast('FILTER_SELECTION_UPDATED', $scope.filter_selected_value);
+                        $state.go('rover.reports.show', {
+                            action: msg || '',
+                            report: angular.copy($scope.selectedReport) || chosenReport
+                        });
+                     } else {
+                        $state.go('.', {
+                            page: loadPage,
+                            action: msg || ''
+                        }, {
+                            location: true,
+                            inherit: true,
+                            relative: $state.$current,
+                            notify: false
+                        });
+                    }
 
-                if (msg) {
-                    $scope.$broadcast(msg);
-                }
+                   $scope.$broadcast('FILTER_SELECTION_UPDATED', $scope.filter_selected_value);                   
+
+                   if (msg) {
+                     $scope.$broadcast(msg);
+                   }                 }
+                
             };
 
             var errorCallback = function (response) {

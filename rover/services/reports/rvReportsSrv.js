@@ -6,7 +6,8 @@ angular.module('sntRover').service('RVreportsSrv', [
 	'$http',
 	function($q, rvBaseWebSrvV2, subSrv, $vault, $http) {
 		var service       = {},
-			choosenReport = {};
+			choosenReport = {},
+			printClicked = false;
 
 		var SCHEDULE_TYPES = {
 			SCHEDULE_REPORT: 'SCHEDULE_REPORT',
@@ -420,7 +421,15 @@ angular.module('sntRover').service('RVreportsSrv', [
         // Get the time periods for each of the reports in the schedule reports
         service.getScheduleReportTimePeriods = function( title ) {
         	return SCHEDULE_REPORT_TIMEPERIODS[title];
-        };        
+        }; 
+
+        service.setPrintClicked = (val) => {
+        	this.printClicked = val;
+        };
+
+        service.getPrintClickedState = () => {
+        	return this.printClicked;
+        };
 
 		return service;
 	}

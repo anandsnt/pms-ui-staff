@@ -23,6 +23,8 @@ angular.module('sntRover').controller('RVReportsInboxCtrl', [
 
         BaseCtrl.call(this, $scope);
 
+        $scope.viewStatus.showDetails = false;
+
         const REPORT_INBOX_SCROLLER = 'report-inbox-scroller',
             REPORT_FILTERS_PROC_ACTIVITY = 'report_filters_proc_activity',
             PAGINATION_ID = 'report_inbox_pagination';
@@ -323,6 +325,14 @@ angular.module('sntRover').controller('RVReportsInboxCtrl', [
                 }
             );
 
+        };
+
+        $scope.printReport = (report) => {
+            var mainCtrlScope = $scope.$parent;
+
+            setChoosenReport(report);
+            reportsSrv.setPrintClicked(true);
+            mainCtrlScope.genReport(false, 1, 1000);
         };
 
         // Initialize

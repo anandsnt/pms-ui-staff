@@ -102,7 +102,7 @@
                                     <!-- if print exists -->
                                     <!-- this will put the report HTML inside the .only-print in dashboard.html -->
                                     <!-- If this report has a print modal {report-date-range, report-print-options}, show that modal -->
-                                    <button type="button" class="button with-icon blue">
+                                    <button type="button" class="button with-icon blue" ng-click="printReport(report)">
                                         <span class="icons icon-print"></span>
                                         <span class="text">Print</span>
                                     </button>
@@ -120,6 +120,7 @@
             </div>
         </div>
     </div>
+    
     <!-- If there are no reports, replace L31-L70 with this: -->
     <div class="no-content" ng-show="!shouldShowReportList()">
         <div class="info">
@@ -129,4 +130,8 @@
         </div>
     </div>
 </section>
+
+<div class="only-print" ng-include="'/assets/partials/reports/rvReportsDetailedView.html'" ng-controller="RVReportDetailsCtrl" ng-if="viewStatus.showDetails">
+    
+</div>
 

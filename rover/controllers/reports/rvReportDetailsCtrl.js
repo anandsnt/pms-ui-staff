@@ -1173,9 +1173,7 @@ sntRover.controller('RVReportDetailsCtrl', [
         };
 
 
-        // print the page
-        var printReport = function () {
-        };
+        
 
 		// print the page
 		var printReport = function() {
@@ -1234,9 +1232,15 @@ sntRover.controller('RVReportDetailsCtrl', [
                     if ('function' == typeof $scope.printOptions.afterPrint) {
                         $scope.printOptions.afterPrint();
                     }
-
-                    // load the report with the original page
-                    $scope.fetchNextPage($scope.returnToPage);
+                    
+                    if (reportsSrv.getPrintClickedState()) {
+                        reportsSrv.setPrintClicked(false);
+                        $scope.viewStatus.showDetails = false;
+                    } else {
+                        // load the report with the original page
+                        $scope.fetchNextPage($scope.returnToPage);
+                    }
+                    
                 }, 2000);
             });
         };
@@ -1450,25 +1454,40 @@ sntRover.controller('RVReportDetailsCtrl', [
             $scope.$broadcast("FETCH_FULL_YEARLY_TAX_REPORT");
         };
 
-        (function () {
-            $rootScope.setPrevState = {
-                title: $filter('translate')('REPORTS'),
-                callback: 'goBackReportList',
-                name: 'rover.reports.dashboard',
-                scope: $scope
-            };
+        var loadPrintView = () => {
+            $scope.errorMessage = [];            
+            afterFetch();
+            $scope.heading = $scope.$parent.heading;
+            findBackNames();
+            printReport();
+        };
 
-            switch ($state.params.action) {
-                case reportMsgs['REPORT_SUBMITED']:
-                    onReportSubmit();
-                    break;
-                case reportMsgs['REPORT_PAGE_CHANGED']:
-                    onReportPageChange();
-                    break;
-                case reportMsgs['REPORT_LOAD_LAST_REPORT']:
-                default:
-                // do nothing .. wait for event from rvReportsMainCtrl.js
+        (function () {
+
+            if (reportsSrv.getPrintClickedState()) {
+                loadPrintView();
+            } else {
+                  $rootScope.setPrevState = {
+                    title: $filter('translate')('REPORTS'),
+                    callback: 'goBackReportList',
+                    name: 'rover.reports.dashboard',
+                    scope: $scope
+                  };
+
+                switch ($state.params.action) {
+                    case reportMsgs['REPORT_SUBMITED']:
+                        onReportSubmit();
+                        break;
+                    case reportMsgs['REPORT_PAGE_CHANGED']:
+                        onReportPageChange();
+                        break;
+                    case reportMsgs['REPORT_LOAD_LAST_REPORT']:
+                    default:
+                    // do nothing .. wait for event from rvReportsMainCtrl.js
+                }  
             }
+            
+
         })();
     }
 
