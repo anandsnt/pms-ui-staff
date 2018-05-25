@@ -387,7 +387,8 @@ sntRover.controller('companyCardContractsCtrl', ['$rootScope', '$scope', 'RVComp
 
 			var dataNew = {
 				"id": data.id,
-				"contract_name": $scope.addData.contract_name
+				"contract_name": $scope.addData.contract_name,
+				"contract_code": $scope.addData.contract_code
 			};
 
 			var businessDate = new Date($rootScope.businessDate);
@@ -402,7 +403,7 @@ sntRover.controller('companyCardContractsCtrl', ['$rootScope', '$scope', 'RVComp
 
 			$scope.contractList.contractSelected.id = data.id;
 			$scope.addData.contract_name = "";
-
+			$scope.addData.contract_code = "";
 		};
 
 		// To handle click on nights button
@@ -470,6 +471,7 @@ sntRover.controller('companyCardContractsCtrl', ['$rootScope', '$scope', 'RVComp
 		$scope.CancelAddNewContract = function() {
 			$scope.contractList.isAddMode = false;
 			$scope.addData.contract_name = "";
+			$scope.addData.contract_code = "";
 			$scope.errorMessage = "";
 			checkContractListEmpty();
 		};
@@ -585,6 +587,7 @@ sntRover.controller('companyCardContractsCtrl', ['$rootScope', '$scope', 'RVComp
 		$scope.cancelRenameContract = function() {
 			$scope.contractList.isRenameMode = false;
 			$scope.addData.contract_name = "";
+			$scope.addData.contract_code = "";
 			$scope.errorMessage = "";
 			checkContractListEmpty();
 		};

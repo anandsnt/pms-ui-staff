@@ -380,7 +380,8 @@ angular.module('sntRover').controller('cardContractsCtrl', ['$rootScope', '$scop
 
 			var dataNew = {
 				"id": data.id,
-				"contract_name": $scope.addData.contract_name
+				"contract_name": $scope.addData.contract_name,
+				"contract_code": $scope.addData.contract_code
 			};
 
 			var businessDate = new Date($rootScope.businessDate);
@@ -395,6 +396,7 @@ angular.module('sntRover').controller('cardContractsCtrl', ['$rootScope', '$scop
 
 			$scope.contractList.contractSelected.id = data.id;
 			$scope.addData.contract_name = "";
+			$scope.addData.contract_code = "";
 			$scope.contractList.isAddMode = false;
 		};
 
@@ -474,6 +476,7 @@ angular.module('sntRover').controller('cardContractsCtrl', ['$rootScope', '$scop
 		$scope.CancelAddNewContract = function() {
 			$scope.contractList.isAddMode = false;
 			$scope.addData.contract_name = "";
+			$scope.addData.contract_code = "";
 			$scope.errorMessage = "";
 			checkContractListEmpty();
 		};
@@ -588,6 +591,7 @@ angular.module('sntRover').controller('cardContractsCtrl', ['$rootScope', '$scop
 		$scope.cancelRenameContract = function() {
 			$scope.contractList.isRenameMode = false;
 			$scope.addData.contract_name = "";
+			$scope.addData.contract_code = "";
 			$scope.errorMessage = "";
 			checkContractListEmpty();
 		};
