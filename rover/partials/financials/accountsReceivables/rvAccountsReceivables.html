@@ -41,28 +41,28 @@
         <div ng-hide="filterData.hideArHeader" class="accounts-ar-header">
             <ul class="accounts-ar-totals">
                 <li class="number">
-                    <span>Open Bills</span>
+                    <span translate>OPEN_BILLS</span>
                     <span class="amount">
                         {{arOverviewData.open_guest_bill}}
                     </span>
                 </li>
                 <li>
-                    <span>Open Balance</span>
+                    <span translate>OPEN_BALANCE</span>
                     <span class="amount red">
                         <span class="currency">{{currencySymbol}}</span>
                         {{arOverviewData.unpaid_balance | number: precisonTwo }}
                     </span>
                 </li>
                 <li>
-                    <span>Credit</span>
+                    <span translate>CREDIT</span>
                     <span class="amount green">
                         <span class="currency">{{currencySymbol}}</span>
                         {{arOverviewData.credit | number: precisonTwo }}
                     </span>
                 </li>
                 <li>
-                    <span>AR Balance</span>
-                    <span class="amount {'red' when > 0, otherwise 'green'}">
+                    <span translate>AR_BALANCE</span>
+                    <span class="amount" ng-class="{'red': arOverviewData.ar_balance >= 0, 'green': arOverviewData.ar_balance < 0}">
                         <span class="currency">{{currencySymbol}}</span>
                         {{arOverviewData.ar_balance | number: precisonTwo }}
                     </span>
@@ -81,8 +81,8 @@
                                 <strong class="confirmation">{{account.ar_number}}</strong>
                                 <span class="icons icon-location" ng-hide="escapeNullStr(account.location)==''" >{{escapeNullStr(account.location)}}
                             </span>
-                                <span ng-if="(account.type === 'COMPANY')" ng-hide="escapeNullStr(account.account_number)==''"  class="icons icon-guest-company">{{account.account_number}}</span>
-                                <span ng-if="(account.type === 'TRAVELAGENT')" ng-hide="escapeNullStr(account.account_number)==''"  class="icons icon-guest-travelagent">{{account.account_number}}</span>
+                                <span ng-if="(account.type === 'COMPANY')" ng-hide="escapeNullStr(account.account_number)==''" class="icons icon-guest-company">{{account.account_number}}</span>
+                                <span ng-if="(account.type === 'TRAVELAGENT')" ng-hide="escapeNullStr(account.account_number)==''" class="icons icon-guest-travelagent">{{account.account_number}}</span>
                                 <span ng-hide="escapeNullStr(account.ageing_date)==' '" class="icons icon-time confirmation">{{account.ageing_date}}</span>
                             </div>
                             <div class="info-holder">
@@ -98,7 +98,7 @@
                                     <strong ng-class="{'red':account.credit_amount >= 0, 'green':account.credit_amount < 0 }">
                                         {{currencySymbol}} {{account.credit_amount | number: precisonTwo }}
                                     </strong>
-                                    <span>Credit</span>
+                                    <span translate>CREDIT</span>
                                 </div>
                                 <div class="info value">
                                     <strong ng-class="{'red':account.current_balance >= 0, 'green':account.current_balance < 0 }">
