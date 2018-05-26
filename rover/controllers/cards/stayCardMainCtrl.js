@@ -260,7 +260,15 @@ angular.module('sntRover').controller('stayCardMainCtrl', ['$rootScope', '$scope
 						excluded_rate_ids: addon.excluded_rate_ids
 					});
 				});
-				$scope.navigateToRoomAndRates(options);
+				if (!$scope.reservationData.keepExistingRate) {
+					$scope.navigateToRoomAndRates(options);
+				}
+                else {
+                    $state.go('rover.reservation.staycard.reservationcard.reservationdetails', {
+						"id": typeof $stateParams.id === "undefined" ? $scope.reservationData.reservationId : $stateParams.id,
+						"confirmationId": $stateParams.confirmationId
+					});
+                }
 			});
 		};
 
@@ -642,7 +650,6 @@ angular.module('sntRover').controller('stayCardMainCtrl', ['$rootScope', '$scope
 		$scope.noRoutingToReservation = function() {
 			ngDialog.close();
 			that.reloadStaycard();
-
 		};
 
 		$scope.applyRoutingToReservation = function() {

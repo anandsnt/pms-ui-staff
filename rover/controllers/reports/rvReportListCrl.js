@@ -10,13 +10,18 @@ sntRover.controller('RVReportListCrl', [
     'RVReportApplyIconClass',
     'RVReportApplyFlags',
     'RVReportSetupDates',
+    '$state',
     function($scope, $rootScope, $filter, reportsSrv, reportsSubSrv, reportUtils, reportMsgs,
-             $timeout, applyIconClass, applyFlags, setupDates) {
+             $timeout, applyIconClass, applyFlags, setupDates, $state) {
 
         BaseCtrl.call(this, $scope);
 
         var REPORT_LIST_SCROLL = 'report-list-scroll',
             REPORT_FILTERS_SCROLL = 'report-filters-scroll';
+
+        var reportAPIfailed = $scope.$on(reportMsgs['REPORT_API_FAILED'], function () {
+            $scope.errorMessage = $scope.$parent.errorMessage;
+        });
 
         $scope.refreshFilterScroll = function(scrollUp) {
             $scope.refreshScroller(REPORT_FILTERS_SCROLL);
@@ -125,10 +130,7 @@ sntRover.controller('RVReportListCrl', [
                 }
             }, 2010);
         };
-
-        postProcess( $scope.$parent.reportList );
-
-
+ 
         // show hide filter toggle
         $scope.toggleFilter = function(e, report) {
             if ( e ) {
@@ -187,11 +189,17 @@ sntRover.controller('RVReportListCrl', [
 
         // removing event listners when scope is destroyed
         $scope.$on( '$destroy', serveRefresh );
+        $scope.$on( '$destroy', reportAPIfailed );
 
         /**
          * init method
          */
         (function () {
+            
+            if ($state.params.refresh) {
+                postProcess( $scope.$parent.reportList );
+            }
+
             var chosenReport = _.find($scope.$parent.reportList, {uiChosen: true});
 
             if (chosenReport) {

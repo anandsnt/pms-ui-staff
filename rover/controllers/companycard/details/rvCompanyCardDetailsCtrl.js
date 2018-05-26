@@ -662,9 +662,11 @@ angular.module('sntRover').controller('companyCardDetailsController', ['$scope',
 			 * Due to the special requirement, we need to do DOM access here.
 			 * Since we are explicitily triggering click event, this should be outside of angular digest loop.
 			 */
-			$timeout(function() {
-				angular.element('#uplaodCompanyLogo').trigger('click');
-			}, 0, false);
+			if ($scope.isUpdateEnabled()) {
+				$timeout(function() {
+					angular.element('#uplaodCompanyLogo').trigger('click');
+				}, 0, false);
+			}
 		};
 
 		$scope.isEmptyObject = isEmptyObject;
