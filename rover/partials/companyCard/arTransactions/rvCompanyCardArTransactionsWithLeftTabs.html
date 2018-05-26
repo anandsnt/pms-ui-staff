@@ -3,16 +3,16 @@
         <!-- Remove .active if the billing-content is not active-->
         <!-- Add .active on click & show appropriate billing-content-->
         <li ng-class="{'active': arFlags.currentSelectedArTab === 'balance'}" ng-click="switchArTransactionTab('balance')">
-            Balance
-            <strong class="{totalClass}"><span class="currency">{{currencySymbol}}</span>{{arDataObj.unpaidAmount}}</strong>
+            Open Bills
+            <strong ng-class="{'red': arDataObj.unpaidAmount > 0, 'green': arDataObj.unpaidAmount <= 0 }"><span class="currency">{{currencySymbol}}</span>{{arDataObj.unpaidAmount}}</strong>
         </li>
         <li ng-class="{'active': arFlags.currentSelectedArTab === 'paid-bills'}" ng-click="switchArTransactionTab('paid-bills')">
-            Paid bills
+            Paid Bills
             <strong> <span class="currency">{{currencySymbol}}</span>{{arDataObj.paidAmount}}</strong>
         </li>
         <li ng-class="{'active': arFlags.currentSelectedArTab === 'unallocated'}"  ng-click="switchArTransactionTab('unallocated')">
-            Unallocated
-            <strong class="{totalClass}"> <span class="currency">{{currencySymbol}}</span>{{arDataObj.unallocatedCredit}}</strong>
+            Credit
+            <strong ng-class="{'red': arDataObj.unallocatedCredit < 0, 'green': arDataObj.unallocatedCredit >= 0 }"> <span class="currency">{{currencySymbol}}</span>{{arDataObj.unallocatedCredit}}</strong>
         </li>
         <li ng-class="{'active': arFlags.currentSelectedArTab === 'allocated'}"  ng-click="switchArTransactionTab('allocated')">
             Allocated
