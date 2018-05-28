@@ -6,7 +6,7 @@ admin.controller('ADGuestDataRemovalCtrl', [
         BaseCtrl.call(this, $scope);
 
         $scope.confirmSave = function() {
-            if ($scope.GDRSettings.hotels_of_chain > 1) {
+            if ($scope.GDRSettings.chain_hotels_count > 1) {
                 ngDialog.open({
                     template: '/assets/partials/guestDataRemoval/adConfirmSaveDailog.html',
                     className: 'ngdialog-theme-default',
