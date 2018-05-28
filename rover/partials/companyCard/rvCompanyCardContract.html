@@ -3,20 +3,20 @@
 	<div id="cc-contracts-header" class="tab-header with-filters">
 		<div class="entry" ng-hide="contractList.isAddMode || contractList.isRenameMode">
 			<div class="select" >
-				<select convert-to-number iscroll-stop-propagation name="company-contract" ng-model="contractList.contractSelected">
+				<select convert-to-number iscroll-stop-propagation name="company-contract" ng-change="contractChanged()" ng-model="contractSelected.id">
 					<option value="" class="placeholder" disabled="" translate>SELECT_CONTRACT</option>
 					<optgroup label="Current">
-						<option  value="{{type}}" ng-selected="type.id==contractList.contractSelected.id" ng-repeat="type in contractList.current_contracts" >{{type.contract_name}}</option>
+						<option  value="{{type.id}}" ng-selected="type.id==contractSelected.id" ng-repeat="type in contractList.current_contracts" >{{type.contract_name}}</option>
 					</optgroup>
 					<optgroup label="Future">
-						<option  value="{{type}}" ng-selected="type.id==contractList.contractSelected.id" ng-repeat="type in contractList.future_contracts" >{{type.contract_name}}</option>
+						<option  value="{{type.id}}" ng-selected="type.id==contractSelected.id" ng-repeat="type in contractList.future_contracts" >{{type.contract_name}}</option>
 					</optgroup>
 					<optgroup label="History">
-						<option  value="{{type}}" ng-selected="type.id==contractList.contractSelected.id" ng-repeat="type in contractList.history_contracts" >{{type.contract_name}}</option>
+						<option  value="{{type.id}}" ng-selected="type.id==contractSelected.id" ng-repeat="type in contractList.history_contracts" >{{type.contract_name}}</option>
 					</optgroup>
 				</select>
 			</div>
-			<input type="text" id="cc-contract-rate-code" placeholder="{{ 'RATE_CODE_PLCHOLDER' | translate }}" value="{{contractList.contractSelected.contract_code}}" readonly />
+			<input type="text" id="cc-contract-rate-code" placeholder="{{ 'RATE_CODE_PLCHOLDER' | translate }}" value="{{contractSelected.contract_code}}" readonly />
 			<button ng-hide="contractList.isRenameMode || isContractListEmpty()" id="company-rename-contract" type="button" class="button purple" ng-click="renameButtonClicked()" translate>RENAME</button>
 			<button type="button" class="button red" ng-show="isDeleteAllowed && hasPermisionToDeleteContract()" ng-click="deleteContract()">Delete Contract</button>
 		</div>
