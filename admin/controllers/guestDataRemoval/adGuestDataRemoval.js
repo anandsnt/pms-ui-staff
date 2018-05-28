@@ -23,14 +23,16 @@ admin.controller('ADGuestDataRemovalCtrl', [
             $scope.callAPI(adGuestDataRemovalSrv.updateGDRSettings, {
                 params: {
                     automatic_guest_data_removal: $scope.GDRSettings.automatic_guest_data_removal,
-                    no_of_days_after_last_checkout: $scope.GDRSettings.no_of_days_after_last_checkout
+                    no_of_days_after_last_checkout: parseInt($scope.GDRSettings.no_of_days_after_last_checkout)
                 },
                 onFailure: function(err) {
                     $scope.errorMessage = err;
+                    $scope.closeDialog();
                 },
                 onSuccess: function (response) {
                     $scope.GuestDataRemovalSettings = response.data;
                     $scope.successMessage = 'Guest data settings updated';
+                    $scope.closeDialog();
                 }
             });
         };
