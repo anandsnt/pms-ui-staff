@@ -4,6 +4,13 @@
     <div ng-include="'/assets/partials/common/rvFullscreenHeader.html'" class="fullscreen-header"></div>
 
     <div class="tab-header">
+        <div class="ar-balance">
+            <span class="ar-label">AR Balance</span>
+            <strong class="ar-amount" ng-class="{'red': arDataObj.arBalance > 0, 'green': arDataObj.arBalance <= 0 }">
+                <span class="currency">{currencySymbol}}</span>
+                {{arDataObj.arBalance | number:2}}
+            </strong>
+        </div>
         <div class="search-form has-dates">
             <div class="entry search">
                 <button class="clear-query" ng-click="clearResults()" ng-class="{'visible': filterData.query!=''}">
