@@ -33,7 +33,7 @@ angular.module('sntRover').controller('RVHKRoomTabCtrl', [
 		$scope.inService = true;
 
 		// by default dont show the form
-		$scope.showForm = false;
+		$scope.showForm = true;
 
 		// by default dont show the details (disabled) form
 		$scope.showSaved = false;
@@ -117,6 +117,7 @@ angular.module('sntRover').controller('RVHKRoomTabCtrl', [
 		// fetch callback of all service status
 		function $_allServiceStatusCallback(data) {
 			$scope.allServiceStatus = data;
+            $scope.showForm = true;
 
 			// find and update ooOsTitle
 			var item = _.find($scope.allServiceStatus, function(item) {
@@ -167,19 +168,18 @@ angular.module('sntRover').controller('RVHKRoomTabCtrl', [
 			});
 
 			$scope.ooOsTitle = item.description;
-
+            // show the update form
+            $scope.showForm = true;
 			// check if user just set it to in service
 			$scope.inService = $scope.updateService.room_service_status_id !== $_inServiceId ? false : true;
 
 			// show update form only when the user chooses a status that is not update yet
 			// eg: if original status was OO them show form only when user choose OS
-			if (!$scope.inService) {
+
 				if ($_originalStatusId !== $scope.updateService.room_service_status_id) {
 					if (tzIndependentDate($rootScope.businessDate).toDateString() === tzIndependentDate($scope.updateService.selected_date).toDateString()) {
 						$scope.roomDetails.room_reservation_hk_status = $scope.updateService.room_service_status_id;
 					}
-					// show the update form
-					$scope.showForm = true;
 					$scope.showSaved = false;
 
 					// reset dates and reason and comment
@@ -202,43 +202,6 @@ angular.module('sntRover').controller('RVHKRoomTabCtrl', [
 				if (!$scope.$$phase) {
 					$scope.$apply();
 				}
-			} else {
-				$scope.showForm = false;
-				$scope.showSaved = false;
-				if (tzIndependentDate($rootScope.businessDate).toDateString() === tzIndependentDate($scope.updateService.selected_date).toDateString()) {
-					$scope.roomDetails.room_reservation_hk_status = $scope.updateService.room_service_status_id;
-				}
-				var _params = {
-					room_id: $scope.roomDetails.id,
-					inServiceID: 1,
-					from_date: $filter('date')(tzIndependentDate($scope.updateService.from_date), 'yyyy-MM-dd'),
-					to_date: $filter('date')(tzIndependentDate($scope.updateService.to_date), 'yyyy-MM-dd')
-				};
-
-				var _errorCallback = function(error) {
-					$scope.$emit('hideLoader');
-					$scope.errorMessage = error;
-					$scope.updateService.room_service_status_id = $scope.prev_room_service_status_id;
-					$_updateRoomDetails('room_reservation_hk_status', $scope.prev_room_service_status_id);
-					$scope.statusChange();
-				};
-
-				var _successCallback = function() {
-					$scope.$emit('hideLoader');
-					$scope.showSaved = false;
-
-					// change the original status
-					$_originalStatusId = $scope.updateService.room_service_status_id;
-					$_updateRoomDetails('room_reservation_hk_status', 1);
-					$scope.updateCalendar();
-				};
-
-				// only "put" in service if original status was not inService
-				if ($_originalStatusId !== $scope.updateService.room_service_status_id) {
-					$scope.invokeApi(RVHkRoomDetailsSrv.putRoomInService, _params, _successCallback, _errorCallback);
-				}
-			}
-
 			$scope.refreshScroller('room-tab-scroll');
 		};
 
@@ -479,7 +442,7 @@ angular.module('sntRover').controller('RVHKRoomTabCtrl', [
 			$scope.updateService.to_date = $filter('date')(tzIndependentDate($scope.updateService.to_date), 'yyyy-MM-dd');
 
 			// POST or PUT (read service to understand better)
-			if ($_originalStatusId === $_inServiceId) {
+			if ($_originalStatusId === $_inServiceId || !$scope.inService) {
 				$scope.invokeApi(RVHkRoomDetailsSrv.postRoomServiceStatus, $scope.updateService, _callback, _error);
 			} else {
 				$scope.invokeApi(RVHkRoomDetailsSrv.putRoomServiceStatus, $scope.updateService, _callback, _error);
@@ -566,9 +529,7 @@ angular.module('sntRover').controller('RVHKRoomTabCtrl', [
 		$scope.$watch("updateService.selected_date", function() {
 			if ($scope.updateService.room_service_status_id > 1) {
 				$scope.showSaved = false;
-				$scope.showForm = true;
 			} else {
-				$scope.showForm = false;
 				$scope.showSaved = false;
 			}
 			$scope.refreshScroller('room-tab-scroll');
