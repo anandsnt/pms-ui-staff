@@ -155,7 +155,10 @@ sntRover.controller('roverController', [
          * NOTE: Temporary Fix
          * As saferpay is not supported in Rover, if saferpay is selected in SNT Admin; default to sixpayments
          */
-        if (hotelDetails.payment_gateway === 'SAFERPAY') {
+        if (hotelDetails.payment_gateway === 'MLI' && hotelDetails.mli_cba_enabled) {
+            $rootScope.paymentGateway = 'CBA_AND_MLI';
+        }
+        else if (hotelDetails.payment_gateway === 'SAFERPAY') {
             $rootScope.paymentGateway = 'sixpayments';
         } else {
             $rootScope.paymentGateway = hotelDetails.payment_gateway;
