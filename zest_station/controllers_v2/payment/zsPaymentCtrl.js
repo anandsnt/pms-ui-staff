@@ -362,9 +362,11 @@ angular.module('sntZestStation').controller('zsPaymentCtrl', ['$scope', '$log', 
 
         };
 
-        $scope.$on('START_MLI_ACTIONS', function(){
+        $scope.$on('START_MLI_CARD_COLLECTION', function(){
             var hideLoader = true;
 
+            // hide loader till the tokenization API is called for letting user read the
+            // texts on the screen.
             if ($scope.isIpad) {
                 proceedWithiPadPayments(hideLoader);
             } else {

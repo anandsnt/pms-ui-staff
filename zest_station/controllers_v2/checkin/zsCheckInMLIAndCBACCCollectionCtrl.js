@@ -33,7 +33,7 @@ sntZestStation.controller('zsCheckInMLIAndCBACCCollectionCtrl', [
 			// screen display mode
 			$scope.screenMode.value = 'CC_COLLECTION';
 			$scope.waitingForSwipe = true;
-			$scope.$emit('START_MLI_ACTIONS');
+			$scope.$emit('START_MLI_CARD_COLLECTION');
 		}
 
 
@@ -41,10 +41,6 @@ sntZestStation.controller('zsCheckInMLIAndCBACCCollectionCtrl', [
 			$scope.screenMode.isCBADespositMode = true;
 			$scope.startCBAPayment();
 		};
-
-		// stateParams.deposit_amount = '0.1';
-		// $scope.isIpad = true;
-		// $scope.zestStationData.noCheckInsDebugger = true;
 
 		// CBA
 		var goToCardSign = function() {
@@ -94,7 +90,7 @@ sntZestStation.controller('zsCheckInMLIAndCBACCCollectionCtrl', [
 				// screen display mode
 				$scope.screenMode.value = 'CC_COLLECTION';
 				$scope.waitingForSwipe = true;
-				$scope.$emit('START_MLI_ACTIONS');
+				$scope.$emit('START_MLI_CARD_COLLECTION');
 			}
 		};
 
