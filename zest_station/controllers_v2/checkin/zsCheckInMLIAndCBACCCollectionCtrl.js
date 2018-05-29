@@ -22,8 +22,8 @@ sntZestStation.controller('zsCheckInMLIAndCBACCCollectionCtrl', [
 		$scope.initiateCBAlisteners();
 		$scope.reservation_id = stateParams.reservation_id;
 
-		// if CC is already present, collect deposit if applicable
-		if (stateParams.payment_method === 'CC' && stateParams.mode === 'DEPOSIT') {
+		// Collect deposit if applicable
+		if (stateParams.mode === 'DEPOSIT') {
 			$scope.screenMode.paymentAction = 'PAY_AMOUNT';
 			$scope.depositAmount = stateParams.deposit_amount;
 			$scope.screenMode.value = 'DEPOSIT';
@@ -83,23 +83,26 @@ sntZestStation.controller('zsCheckInMLIAndCBACCCollectionCtrl', [
 			$state.go('zest_station.checkInReservationDetails', stateParams);
 		};
 
-		var onMLICCSave = $scope.$on('SAVE_CC_SUCCESS', function() {
-			// on CC addition, collect deposit if applicable
-			// else to signature page
-			if (stateParams.mode === 'DEPOSIT') {
-				$scope.depositAmount = stateParams.deposit_amount;
-				$scope.screenMode.value = 'DEPOSIT';
-				$scope.screenMode.paymentAction = 'PAY_AMOUNT';
-			} else {
+		var onMLICCSave = $scope.$on('SAVE_CC_SUCCESS', goToCardSign);
+
+		var cbaPaymentCompletedActions = function() {
+			// If primary method is not CC , collect CC
+			if (stateParams.payment_method === 'CC') {
 				goToCardSign();
+			} else {
+				$scope.screenMode.paymentAction = 'ADD_CARD';
+				// screen display mode
+				$scope.screenMode.value = 'CC_COLLECTION';
+				$scope.waitingForSwipe = true;
+				$scope.$emit('START_MLI_ACTIONS');
 			}
-		});
+		};
 
 		// Listeners
 		var backButtonActionListener = $scope.$on(zsEventConstants.CLICKED_ON_BACK_BUTTON, backButtonAction);
 		var timeOutListener = $scope.$on('USER_ACTIVITY_TIMEOUT', onCCTimeout);
 		var paymentFailureListener = $scope.$on('PAYMENT_FAILED', goToSwipeError);
-		var paymentSuccessListener = $scope.$on('CBA_PAYMENT_COMPLETED', goToCardSign);
+		var paymentSuccessListener = $scope.$on('CBA_PAYMENT_COMPLETED', cbaPaymentCompletedActions);
 
 		$scope.$on('$destroy', backButtonActionListener);
 		$scope.$on('$destroy', timeOutListener);
