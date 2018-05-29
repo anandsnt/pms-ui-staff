@@ -686,5 +686,13 @@ sntZestStation.controller('zsCheckinCCSwipeCtrl', [
 
         init();
 
+        document.addEventListener('MOCK_MLI_CC_SWIPE', function() {
+            $scope.$emit('showLoader');
+            $timeout(function() {
+                $scope.$emit('hideLoader');
+                processSwipeCardData(zsPaymentSrv.sampleMLISwipedCardResponse);
+            }, 1000);
+        });
+
     }
 ]);
