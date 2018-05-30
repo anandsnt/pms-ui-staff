@@ -120,13 +120,14 @@ sntRover.controller('roverController', [
             'ACCOUNTS': false,
             'ALLOTMENT': false
         };
-        enableBillingInfo = $rootScope.UPDATED_BI_ENABLED_ON; // Need to be removed finally.
+        var enableBillingInfo = $rootScope.UPDATED_BI_ENABLED_ON; // Need to be removed finally.
 
         $rootScope.isCurrentUserChangingBussinessDate = false;
         $rootScope.termsAndConditionsText = hotelDetails.terms_and_conditions;
         // CICO-50810 checking for any interface enabled.
         $rootScope.roverObj = {
-            isAnyInterfaceEnabled: hotelDetails.interface.is_avida_enabled || hotelDetails.interface.is_baseware_enabled
+            isAnyInterfaceEnabled: hotelDetails.interface.is_avida_enabled || hotelDetails.interface.is_baseware_enabled,
+            hasActivatedFolioNumber: hotelDetails.has_activate_folio_number
         };
         /*
          * hotel Details
