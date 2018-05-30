@@ -34,7 +34,7 @@ angular.module('sntRover')
                 document.addEventListener('touchmove', window.touchmovepreventdefault, false);
                 document.addEventListener('touchmove', window.touchmovestoppropogate, false);
             });
-            var isFromStayCard = !_.isUndefined($stateParams.isFromStayCard) && $stateParams.isFromStayCard === 'true';
+            var isFromStayCard = $stateParams.isFromStayCard === 'true';
 
             /*
              * utility method Initiate controller
