@@ -326,7 +326,8 @@ angular.module('sntZestStation').controller('zsPaymentCtrl', ['$scope', '$log', 
 
         /**  *********************** Ipad device actions ********************************/
 
-        var proceedWithiPadPayments = function(hideLoader = false) {
+        var proceedWithiPadPayments = function(hideLoader) {
+
             if ($scope.inDemoMode()) {
                 processSwipeCardData(zsPaymentSrv.sampleMLISwipedCardResponse);
             }
