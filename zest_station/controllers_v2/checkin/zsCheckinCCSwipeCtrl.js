@@ -217,7 +217,7 @@ sntZestStation.controller('zsCheckinCCSwipeCtrl', [
             }
         };
 
-        var successSavePayment = function(response) {
+        var successSavePayment = function() {
             if (atCardSwipeScreen()) {
                 $scope.$emit('hideLoader');
                 goToCardSign();

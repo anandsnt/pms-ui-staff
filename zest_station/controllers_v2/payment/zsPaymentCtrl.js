@@ -332,7 +332,7 @@ angular.module('sntZestStation').controller('zsPaymentCtrl', ['$scope', '$log', 
             }
             // show error if the device is not iPad
             else if ($scope.isIpad) {
-                if(!hideLoader){
+                if (!hideLoader) {
                     $scope.$emit('showLoader');
                 }
                 $scope.screenMode.paymentInProgress = true;
@@ -362,7 +362,7 @@ angular.module('sntZestStation').controller('zsPaymentCtrl', ['$scope', '$log', 
 
         };
 
-        $scope.$on('START_MLI_CARD_COLLECTION', function(){
+        $scope.$on('START_MLI_CARD_COLLECTION', function() {
             var hideLoader = true;
 
             // hide loader till the tokenization API is called for letting user read the
