@@ -13,7 +13,7 @@ angular.module('sntZestStation').controller('zsPaymentCtrl', ['$scope', '$log', 
 
         var runDigestCycle = function() {
             if (!$scope.$$phase) {
-                $scope.$digest();
+                $scope.$apply();
             }
         };
 
@@ -373,6 +373,7 @@ angular.module('sntZestStation').controller('zsPaymentCtrl', ['$scope', '$log', 
             } else {
                 paymentFailureActions();
             }
+           runDigestCycle();
         });
 
 
