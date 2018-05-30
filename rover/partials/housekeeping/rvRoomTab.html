@@ -19,18 +19,17 @@
         <div class="wrapper room-service-status">
             <div ng-include="'/assets/partials/common/notification_message.html'"></div>
             <!-- 3.A  Room Tab - Room in service -->
-            <div ng-if="inService && !showForm">
-                <strong class="h2">In Service</strong>
-                <span class="icon-no-content icon-ok"></span>
-            </div>
+            <!--CICO-53177-->
+            <!--<div ng-if="inService && !showForm">-->
+                <!--<strong class="h2">In Service</strong>-->
+                <!--<span class="icon-no-content icon-ok"></span>-->
+            <!--</div>-->
 
             <!-- 3.A  Room Tab - Room not in service -->
-            <div ng-if="!inService && !showForm">
-                <strong class="h2">{{ ooOsTitle }}</strong>
-            </div>
 
             <form method="post" action="" name="room-content" ng-if="showForm">
-                <strong class="h2">{{ ooOsTitle }}</strong>
+                <strong class="h2" ng-show="inService">In Service</strong>
+                <strong class="h2" ng-hide="inService">{{ ooOsTitle }}</strong>
                 <div id="dates" class="row">
                     <!-- From / To dates should have the same flow as do arrival/departure dates on main create reservation search screen, just without dual month datepicker -->
                     <div id="out-from" class="entry">
@@ -72,7 +71,7 @@
                         </div>                        
                     </div>
                 </div>
-                <div id="reason" class="row">
+                <div id="reason" class="row" ng-hide="inService">
                     <div class="entry">
                         <label for="reason">Reason</label>
                         <div class="select">
@@ -81,7 +80,7 @@
                             </select>
                         </div>
                     </div>
-                    <div class="entry">
+                    <div class="entry" ng-hide="inService">
                         <label for="reason-comments">Comments <span>(optional)</span>
                         </label>
                         <textarea name="reason-comments" id="reason-comments" rows="4" ng-model="updateService.comment"></textarea>
@@ -93,6 +92,8 @@
             </form>
 
             <form method="post" action="" name="room-content" ng-if="showSaved">
+                <strong class="h2" ng-show="inService">In Service</strong>
+                <strong class="h2" ng-hide="inService">{{ ooOsTitle }}</strong>
                 <div id="dates" class="row">
                     <!-- From / To dates should have the same flow as do arrival/departure dates on main create reservation search screen, just without dual month datepicker -->
                     <div id="out-from" class="entry disabled">
@@ -114,14 +115,14 @@
                         </div>
                     </div>
                 </div>
-                <div id="reason" class="row">
+                <div id="reason" class="row" ng-hide="inService">
                     <div class="entry">
                         <label for="reason">Reason</label>
                         <div class="select">
                             <select name="reason" id="reason" ng-model="editService.reason_id" ng-options="item.value as item.name for item in maintenanceReasonsList" disabled></select>
                         </div>
                     </div>
-                    <div class="entry">
+                    <div class="entry" ng-hide="inService">
                         <label for="reason-comments">Comments <span>(optional)</span>
                         </label>
                         <textarea name="reason-comments" id="reason-comments" rows="4" ng-model="editService.comment" disabled></textarea>
