@@ -47,6 +47,9 @@
         <div class="info-left" ng-if="printData.card_type === 'TRAVELAGENT'">
             <strong >{{printData.translation.invoice_date}}:&nbsp;</strong>{{printData.invoice_date | date:dateFormat}}<br/>
             <strong >{{printData.translation.invoice_number}}:&nbsp;</strong>{{printData.invoice_number}}<br>
+            <span ng-show="printData.has_enabled_invoice_number_sequence && printData.mod_invoice_number && !isInformationalInvoice">
+                <strong >{{printData.mod_label}}:&nbsp;</strong>{{printData.mod_invoice_number}}<br/>
+            </span>
             <div ng-if="printData.custom_reference_number != null">
             <strong >{{printData.translation.custom_reference_number}}:&nbsp;</strong>{{printData.custom_reference_number}}</div><br/>
             <strong ng-if="printData.ta_card_details.payment_due_in_days" >{{printData.translation.payment_due_days}} : </strong>{{printData.ta_card_details.payment_due_in_days}}<br ng-if="printData.ta_card_details.payment_due_in_days" />
