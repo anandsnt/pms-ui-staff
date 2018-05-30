@@ -49,14 +49,14 @@
                     <span translate>OPEN_BALANCE</span>
                     <span class="amount red">
                         <span class="currency">{{currencySymbol}}</span>
-                        {{arOverviewData.unpaid_balance | number: precisonTwo }}
+                        {{arOverviewData.open_balance | number: precisonTwo }}
                     </span>
                 </li>
                 <li class="number">
                     <span translate>CREDIT</span>
                     <span class="amount green">
                         <span class="currency">{{currencySymbol}}</span>
-                        {{arOverviewData.credit | number: precisonTwo }}
+                        {{arOverviewData.total_credit | number: precisonTwo }}
                     </span>
                 </li>
                 <li class="number">
@@ -94,13 +94,13 @@
                                     <span translate>OPEN_BILLS</span>
                                 </div>
                                 <div class="info value">
-                                    <strong ng-class="{'red':account.credit_amount > 0, 'green':account.credit_amount <= 0 }">
-                                        {{currencySymbol}} {{account.credit_amount | number: precisonTwo }}
+                                    <strong ng-class="{'red': account.credit > 0, 'green': account.credit <= 0 }">
+                                        {{currencySymbol}} {{account.credit | number: precisonTwo }}
                                     </strong>
                                     <span translate>CREDIT</span>
                                 </div>
                                 <div class="info value">
-                                    <strong ng-class="{'red':account.current_balance > 0, 'green':account.current_balance <= 0 }">
+                                    <strong ng-class="{'red': account.current_balance > 0, 'green': account.current_balance <= 0 }">
                                         {{currencySymbol}} {{account.current_balance | number: precisonTwo }}
                                     </strong>
                                     <span translate>OPEN_BALANCE</span>
