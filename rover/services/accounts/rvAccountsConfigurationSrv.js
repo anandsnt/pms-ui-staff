@@ -29,6 +29,7 @@ angular.module('sntRover').service('rvAccountsConfigurationSrv', ['$q', 'rvBaseW
 				deferred.resolve(angular.copy(self.baseAccountSummaryData));
 			} else {
 				var url = 'api/posting_accounts/' + params.accountId;
+				
 				rvBaseWebSrvV2.getJSON(url).then(
 					function(data) {
 						deferred.resolve(data);

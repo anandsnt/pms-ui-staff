@@ -4,7 +4,7 @@ describe('RVbillCardController', function () {
     var fixtures = loadJSONFixtures('reservationSampleData.json'),
         reservationSampleData = fixtures['reservationSampleData.json'],
         reservationBillSampleDataFixtures = loadJSONFixtures('reservationBillSampleData.json'),
-        reservationBillSampleData = fixtures['reservationBillSampleData.json']; 
+        reservationBillSampleData = reservationBillSampleDataFixtures['reservationBillSampleData.json']; 
 
     var $controller,
         $scope,
