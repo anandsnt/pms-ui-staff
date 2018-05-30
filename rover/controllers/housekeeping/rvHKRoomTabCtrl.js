@@ -20,9 +20,6 @@ angular.module('sntRover').controller('RVHKRoomTabCtrl', [
 		// keep ref to room details in local scope
 		$scope.roomDetails = $scope.$parent.roomDetails;
 
-		// low level method to update the top bar color
-		var $_updateRoomDetails = $scope.$parent.updateRoomDetails;
-
 		// original room status when user opened room tab
 		var $_originalStatusId = $scope.roomDetails.room_reservation_hk_status;
 
