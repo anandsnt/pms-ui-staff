@@ -1920,12 +1920,8 @@ sntRover.controller('RVbillCardController',
 	that.generateFolioNumber = function (billId, balanceAmount, isFolioNumberExists) {
 
 		$scope.shouldGenerateFolioNumber = false;
-		console.log("**************")
-		console.log($scope.reservationBillData.reservation_status)
-		console.log(isFolioNumberExists)
-		console.log(balanceAmount)
 		if (balanceAmount === "0.00" && $scope.reservationBillData.reservation_status === "CHECKEDOUT" && !isFolioNumberExists) {
-	console.log("*******++++=*******")
+
 			var reservationId = $scope.reservationBillData.reservation_id;
 
 			var paramsToService = {
