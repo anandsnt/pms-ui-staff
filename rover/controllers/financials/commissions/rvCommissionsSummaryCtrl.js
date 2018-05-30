@@ -343,6 +343,20 @@ sntRover.controller('RVCommissionsSummaryController', ['$scope',
             });
         };
 
+        var getParams = function(){
+            return {
+                        'query': $scope.filterData.searchQuery,
+                        'page': $scope.filterData.page,
+                        'per_page': $scope.filterData.perPage,
+                        'bill_status': $scope.filterData.billStatus.value,
+                        'sort_by': $scope.filterData.sort_by.value,
+                        'min_commission_amount': $scope.filterData.minAmount,
+                        'begin_date': $scope.dateData.fromDateForAPI !== '' ? $filter('date')($scope.dateData.fromDateForAPI, 'yyyy-MM-dd') : '',
+                        'end_date': $scope.dateData.toDateForAPI !== '' ? $filter('date')($scope.dateData.toDateForAPI, 'yyyy-MM-dd') : '',
+                        'include_non_commissionable': $scope.filterData.non_commissionable
+                    }
+        }
+
         $scope.fetchAgentsData = function(pageNo) {
             $scope.filterData.page = pageNo ? pageNo : 1;
             var onFetchSuccess = function(data) {
@@ -361,17 +375,7 @@ sntRover.controller('RVCommissionsSummaryController', ['$scope',
             };
 
             $scope.callAPI(RVCommissionsSrv.fetchCommissions, {
-                        params: {
-                            'query': $scope.filterData.searchQuery,
-                            'page': $scope.filterData.page,
-                            'per_page': $scope.filterData.perPage,
-                            'bill_status': $scope.filterData.billStatus.value,
-                            'sort_by': $scope.filterData.sort_by.value,
-                            'min_commission_amount': $scope.filterData.minAmount,
-                            'begin_date': $scope.dateData.fromDateForAPI !== '' ? $filter('date')($scope.dateData.fromDateForAPI, 'yyyy-MM-dd') : '',
-                            'end_date': $scope.dateData.toDateForAPI !== '' ? $filter('date')($scope.dateData.toDateForAPI, 'yyyy-MM-dd') : '',
-                            'include_non_commissionable': $scope.filterData.non_commissionable
-                        },
+                        params: getParams(),
                         successCallBack: onFetchSuccess,
                         failureCallBack: function(response) {
                             $scope.errorMessage = response;
@@ -417,12 +421,24 @@ sntRover.controller('RVCommissionsSummaryController', ['$scope',
 
         /* *************** search ends here **************************** */
         $scope.printButtonClick = function() {
-            $timeout(function() {
-                $window.print();
-                if (sntapp.cordovaLoaded) {
-                    cordova.exec(function() {}, function() {}, 'RVCardPlugin', 'printWebView', []);
-                }
-            }, 100);
+
+            var successCallback = function(data) {
+                $scope.printData = data;
+                $timeout(function() {
+                    $window.print();
+                    if (sntapp.cordovaLoaded) {
+                        cordova.exec(function() {}, function() {}, 'RVCardPlugin', 'printWebView', []);
+                    }
+                }, 100);
+            }
+
+            $scope.callAPI(RVCommissionsSrv.printCommissionOverview, {
+                        params: getParams(),
+                        successCallBack: successCallback,
+                        failureCallBack: function(response) {
+                            $scope.errorMessage = response;
+                        }
+                    });
         };
       
         $scope.navigateToTA = function(account) {
