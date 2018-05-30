@@ -1923,8 +1923,7 @@ sntRover.controller('RVbillCardController',
 			var reservationId = $scope.reservationBillData.reservation_id;
 
 			var paramsToService = {
-					'bill_id': billId,
-					'reservation_id': reservationId
+					'bill_id': billId
 				},
 			    options = {
 					params: paramsToService
