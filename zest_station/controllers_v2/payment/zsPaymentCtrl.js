@@ -339,7 +339,7 @@ angular.module('sntZestStation').controller('zsPaymentCtrl', ['$scope', '$log', 
                 $scope.screenMode.paymentInProgress = true;
                 $scope.cardReader.startReader({
                     'successCallBack': function(response) {
-                        if (!$scope.screenMode.paymentFailure && !$scope.screenMode.paymentSuccess) {
+                        if ((!$scope.screenMode.paymentFailure && !$scope.screenMode.paymentSuccess) || $scope.screenMode.paymentAction === 'ADD_CARD') {
                             processSwipeCardData(response);
                         }
                         $scope.$broadcast('RESET_TIMER');
