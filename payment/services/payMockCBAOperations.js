@@ -13,7 +13,7 @@ var CBAMockOperation = function() {
             cvv: '',
             data_field: '',
             date_settlement: '200416',
-            expiry_date: '0418',
+            expiry_date: '0425',
             pan: '494052******5694',
             processed_offline: '0',
             rrn: '',
