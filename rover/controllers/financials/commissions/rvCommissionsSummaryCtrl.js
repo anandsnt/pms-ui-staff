@@ -424,12 +424,14 @@ sntRover.controller('RVCommissionsSummaryController', ['$scope',
 
             var successCallback = function(data) {
                 $scope.printData = data;
+                $scope.$emit('hideLoader');
                 $timeout(function() {
+                    $('head').append('<style id=\'print-orientation\'>@page { size: landscape; }</style>');
                     $window.print();
                     if (sntapp.cordovaLoaded) {
                         cordova.exec(function() {}, function() {}, 'RVCardPlugin', 'printWebView', []);
                     }
-                }, 100);
+                }, 500);
             }
 
             $scope.callAPI(RVCommissionsSrv.printCommissionOverview, {

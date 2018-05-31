@@ -356,10 +356,16 @@
 
 
     }
+    .commissions-print {
+      display: none;
+    }
 }
 
 @media print {
-  .commissions-filters, .commissions-header  {
+  .commissions-filters, .commissions-header, .commissions-list  {
     display: none;
+  }
+  .commissions-print {
+    display: block;
   }
 }
