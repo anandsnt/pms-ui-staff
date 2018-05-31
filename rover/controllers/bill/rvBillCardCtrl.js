@@ -2794,6 +2794,7 @@ sntRover.controller('RVbillCardController',
 
 		// update the bill screen and handle futher payments
 		$scope.invokeApi(RVBillCardSrv.fetch, $scope.reservationBillData.reservation_id, fetchBillDataSuccessCallback);
+		$scope.$broadcast('FETCH_REMAINING_AUTH');
 	});
 
 	// To update paymentModalOpened scope - To work normal swipe in case if payment screen opened and closed - CICO-8617
