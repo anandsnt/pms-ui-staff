@@ -35,7 +35,8 @@
         "FastClick": false,
         "module": false,
         "inject": false,
-        "CBAMockOperation": false
+        "CBAMockOperation": false,
+        "sntZestStation": false
     },
     "installedESLint": true,
     "parserOptions": {
