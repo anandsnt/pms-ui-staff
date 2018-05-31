@@ -424,6 +424,7 @@ angular.module('sntRover').controller('cardContractsCtrl', ['$rootScope', '$scop
 			$scope.addData.contract_name = "";
 			$scope.addData.contract_code = "";
 			$scope.contractList.isAddMode = false;
+			$scope.contractChanged();
 		};
 
 		// To handle click on nights button

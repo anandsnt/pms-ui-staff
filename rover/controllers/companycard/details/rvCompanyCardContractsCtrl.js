@@ -430,6 +430,7 @@ sntRover.controller('companyCardContractsCtrl', ['$rootScope', '$scope', 'RVComp
 			$scope.contractSelected.id = data.id;
 			$scope.addData.contract_name = "";
 			$scope.addData.contract_code = "";
+			$scope.contractChanged();
 		};
 
 		// To handle click on nights button

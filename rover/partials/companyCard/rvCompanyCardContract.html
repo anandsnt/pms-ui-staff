@@ -18,7 +18,7 @@
 			</div>
 			<input type="text" id="cc-contract-rate-code" placeholder="{{ 'RATE_CODE_PLCHOLDER' | translate }}" value="{{contractSelected.contract_code}}" readonly />
 			<button ng-hide="contractList.isRenameMode || isContractListEmpty()" id="company-rename-contract" type="button" class="button purple" ng-click="renameButtonClicked()" translate>RENAME</button>
-			<button type="button" class="button red" ng-show="isDeleteAllowed && hasPermisionToDeleteContract()" ng-click="deleteContract()">Delete Contract</button>
+			<button type="button" class="button red" ng-show="isDeleteAllowed && hasPermisionToDeleteContract()" ng-click="deleteContract()" translate>DELETE</button>
 		</div>
 		<div class="entry" ng-show="contractList.isAddMode">
 			<input ng-model="addData.contract_name" placeholder="Contract Name" name="company-contract-new" class="" value="{{addData.contract_name}}" type="text" />
@@ -26,6 +26,7 @@
 		</div>
 		<div class="entry" ng-show="contractList.isRenameMode">
 			<input name="company-contract-rename" class="" type="text" ng-model="contractList.contractNameToChange" />
+			<input type="text" placeholder="{{ 'RATE_CODE_PLCHOLDER' | translate }}" value="{{contractSelected.contract_code}}" readonly />
 		</div>
 		<div class="actions">
 			<button ng-hide="contractList.isAddMode || contractList.isRenameMode" id="company-new-contract" type="button" class="button green" ng-click="AddNewButtonClicked()" translate>NEW_CONTRACT</button>
