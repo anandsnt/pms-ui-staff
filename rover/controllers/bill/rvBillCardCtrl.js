@@ -1922,8 +1922,6 @@ sntRover.controller('RVbillCardController',
 		$scope.shouldGenerateFolioNumber = false;
 		if (balanceAmount === "0.00" && $scope.reservationBillData.reservation_status === "CHECKEDOUT" && !isFolioNumberExists) {
 
-			var reservationId = $scope.reservationBillData.reservation_id;
-
 			var paramsToService = {
 					'bill_id': billId
 				},

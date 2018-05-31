@@ -35,6 +35,8 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 		sntActivity) {
 
 		BaseCtrl.call(this, $scope);
+		var that = this;
+
 		$scope.perPage = 50;
 		$scope.businessDate = $rootScope.businessDate;
 
@@ -224,6 +226,28 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 			$scope.callAPI( RVBillCardSrv.callBlackBoxApi, options );
 		};
 
+		/*
+		 * Function to generate folio number
+		 * @param billId is the bill id
+		 * @param balanceAmount is the balance Amount
+		 */
+		that.generateFolioNumber = function (billId, balanceAmount, isFolioNumberExists) {
+
+			$scope.shouldGenerateFolioNumber = false;
+			if (balanceAmount === "0.0" && !isFolioNumberExists) {
+
+				var paramsToService = {
+						'bill_id': billId
+					},
+				    options = {
+						params: paramsToService
+					};
+							
+				$scope.callAPI( RVBillCardSrv.generateFolioNumber, options );
+			}		
+		};
+
+
 		/**
 		 * Successcallback of transaction list fetch
 		 * @param  {[type]} data [description]
@@ -232,13 +256,21 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 		var onTransactionFetchSuccess = function(data) {
 
 			$scope.transactionsDetails = data;
+
+			var currentActiveBill = $scope.transactionsDetails.bills[$scope.currentActiveBill];
 			// Balance amount must be zero and only after payment success - call black box api
-			if ($scope.transactionsDetails.bills[$scope.currentActiveBill].balance_amount === "0.0" && $scope.isFromPaymentScreen) {
+			if (currentActiveBill.balance_amount === "0.0" && $scope.isFromPaymentScreen) {
 				$scope.isFromPaymentScreen = false;
 				if ($rootScope.isInfrasecActivated && $rootScope.isInfrasecActivatedForWorkstation) {
 					requestControlDigitsFromBlackBox();
 				}
 				
+			} 
+			if (currentActiveBill.balance_amount === "0.0") {
+
+				if ($rootScope.roverObj.hasActivatedFolioNumber && $scope.shouldGenerateFolioNumber) {
+					that.generateFolioNumber(currentActiveBill.bill_id, currentActiveBill.balance_amount, currentActiveBill.is_folio_number_exists);
+				}
 			}
 
 			configSummaryDateFlags();
@@ -295,6 +327,8 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 		 *
 		 */
 		var updateTransactionData = $scope.$on('UPDATE_TRANSACTION_DATA', function(event, data) {
+
+			$scope.shouldGenerateFolioNumber = true;	
 			$scope.isFromPaymentScreen = data.isFromPaymentSuccess;
 			getTransactionDetails();
 		});
@@ -1281,5 +1315,11 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 
 			$scope.callAPI(RVBillCardSrv.hideBill, dataToSend);
 		};
+
+		var updateGenerateFolioFlag = $scope.$on('UPDATE_GENERATE_FOLIO_FLAG', function() {
+			$scope.shouldGenerateFolioNumber = true;
+		});
+
+		$scope.$on( '$destroy', updateGenerateFolioFlag );
 	}
 ]);
