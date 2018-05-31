@@ -258,6 +258,7 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 			$scope.transactionsDetails = data;
 
 			var currentActiveBill = $scope.transactionsDetails.bills[$scope.currentActiveBill];
+			
 			// Balance amount must be zero and only after payment success - call black box api
 			if (currentActiveBill.balance_amount === "0.0" && $scope.isFromPaymentScreen) {
 				$scope.isFromPaymentScreen = false;
