@@ -217,14 +217,10 @@ sntZestStation.controller('zsCheckinCCSwipeCtrl', [
             }
         };
 
-        var successSavePayment = function(response) {
+        var successSavePayment = function() {
             if (atCardSwipeScreen()) {
                 $scope.$emit('hideLoader');
-                if (response.status === 'success') {
-                    goToCardSign();
-                } else {
-                    goToSwipeError();
-                }
+                goToCardSign();
             }
         };
 
@@ -689,6 +685,14 @@ sntZestStation.controller('zsCheckinCCSwipeCtrl', [
         };
 
         init();
+
+        document.addEventListener('MOCK_MLI_CC_SWIPE', function() {
+            $scope.$emit('showLoader');
+            $timeout(function() {
+                $scope.$emit('hideLoader');
+                processSwipeCardData(zsPaymentSrv.sampleMLISwipedCardResponse);
+            }, 1000);
+        });
 
     }
 ]);

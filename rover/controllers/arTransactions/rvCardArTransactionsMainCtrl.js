@@ -144,6 +144,7 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 			$scope.arDataObj.allocatedCredit = data.allocated_credit;
 			$scope.arDataObj.unallocatedCredit = data.unallocated_credit;
 			$scope.arDataObj.company_or_ta_bill_id = data.company_or_ta_bill_id;
+            $scope.arDataObj.arBalance = data.ar_balance;
 
 			switch ($scope.arFlags.currentSelectedArTab) {
 				case 'balance':
