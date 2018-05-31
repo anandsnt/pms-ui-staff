@@ -48,9 +48,6 @@ describe('RVInvoiceSearchController', function () {
              // ============================================
             it('clearquery method should clear all data', function () {       
 
-                 // var haha = suburbs;
-                 // console.log(haha)
-
                 $scope.invoiceSearchFlags = {};
 
                 $scope.invoiceSearchData = {};

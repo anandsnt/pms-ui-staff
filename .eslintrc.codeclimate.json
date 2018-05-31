@@ -34,7 +34,9 @@
         "SwipeOperation": false,
         "FastClick": false,
         "module": false,
-        "inject": false
+        "inject": false,
+        "CBAMockOperation": false,
+        "sntZestStation": false
     },
     "installedESLint": true,
     "parserOptions": {
