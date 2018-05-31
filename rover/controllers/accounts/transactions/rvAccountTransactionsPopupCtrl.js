@@ -35,6 +35,7 @@ sntRover.controller('RVAccountTransactionsPopupCtrl',
 			},
 			"id": $scope.selectedTransaction.id
 		};
+		
 		$scope.$emit('UPDATE_GENERATE_FOLIO_FLAG');
 	 	var options = {
 			params: params,
@@ -112,6 +113,7 @@ sntRover.controller('RVAccountTransactionsPopupCtrl',
 			loader: 'NONE',
 			successCallBack: hideLoaderAndClosePopup
 		};
+
 		$scope.$emit('UPDATE_GENERATE_FOLIO_FLAG');
 		$scope.callAPI (rvAccountTransactionsSrv.transactionEdit, options);
 
