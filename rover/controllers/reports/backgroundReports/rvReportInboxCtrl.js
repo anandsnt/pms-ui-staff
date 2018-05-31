@@ -120,11 +120,11 @@ angular.module('sntRover').controller('RVReportsInboxCtrl', [
         // Refreshes the scroller
         self.refreshScroll = () => {
             $timeout(() => {
-                $scope.getScroller(REPORT_INBOX_SCROLLER).scrollTo(0, 0);
+                $scope.refreshScroller(REPORT_INBOX_SCROLLER);
                 $timeout(() => {
-                    $scope.refreshScroller(REPORT_INBOX_SCROLLER);
-                }, 500);
-            }, 300);
+                    $scope.getScroller(REPORT_INBOX_SCROLLER).scrollTo(0, 0);
+                }, 200);
+            }, 800);
         };
 
 
