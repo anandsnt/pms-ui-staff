@@ -236,11 +236,15 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 			$scope.shouldGenerateFolioNumber = false;
 			if (balanceAmount === "0.0" && !isFolioNumberExists) {
 
-				var paramsToService = {
+				var successCallBackOfGenerateFolioNumber = function(data) {
+						$scope.transactionsDetails.bills[$scope.currentActiveBill].is_active = false;
+						$scope.transactionsDetails.bills[$scope.currentActiveBill].is_folio_number_exists = true;
+					},paramsToService = {
 						'bill_id': billId
 					},
 				    options = {
-						params: paramsToService
+						params: paramsToService,
+						successCallBack: successCallBackOfGenerateFolioNumber
 					};
 							
 				$scope.callAPI( RVBillCardSrv.generateFolioNumber, options );
@@ -258,7 +262,7 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 			$scope.transactionsDetails = data;
 
 			var currentActiveBill = $scope.transactionsDetails.bills[$scope.currentActiveBill];
-			
+
 			// Balance amount must be zero and only after payment success - call black box api
 			if (currentActiveBill.balance_amount === "0.0" && $scope.isFromPaymentScreen) {
 				$scope.isFromPaymentScreen = false;
