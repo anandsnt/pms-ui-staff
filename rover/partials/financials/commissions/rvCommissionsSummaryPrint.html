@@ -6,7 +6,7 @@
             <table class="commission-reports">
                 <thead>
                     <tr> 
-                        <th class="room" rowspan="2">Reservation</th>
+                        <th class="reservation" rowspan="2" >Reservation</th>
                         <th class="guest" rowspan="2">Guest</th>
                         <th class="amount" rowspan="2">Rate Amount</th>
                         <th class="comission" colspan="3">Commission</th>
@@ -22,7 +22,7 @@
                 <tbody >
 
                     <tr ng-repeat-start="reservation in travel_agents.reservation_details.reservations" ng-if="travel_agents.reservation_details.reservations.length > 0">
-                        <td rowspan="{{reservation.rate_details.length}}">
+                        <td class="confirm-no" rowspan="{{reservation.rate_details.length}}">
                             <strong class="title">{{reservation.confirm_no}}</strong>
                         </td>
                         <td class="name" rowspan="{{reservation.rate_details.length}}">
