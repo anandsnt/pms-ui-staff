@@ -407,7 +407,7 @@ angular.module('sntRover').controller('cardContractsCtrl', ['$rootScope', '$scop
 			var dataNew = {
 				"id": data.id,
 				"contract_name": $scope.addData.contract_name,
-				"contract_code": $scope.addData.contract_code
+				"contract_code": data.contract_code
 			};
 
 			var businessDate = new Date($rootScope.businessDate);
