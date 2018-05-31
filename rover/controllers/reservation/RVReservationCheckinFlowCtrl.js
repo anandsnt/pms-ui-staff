@@ -358,7 +358,7 @@ angular.module('sntRover').controller('RVReservationCheckInFlowCtrl',
                     ngDialog.close();
                 });
 
-                listeners['STOP_CHECKIN_PROCESS'] = $scope.$on('PAYMENT_SUCCESS', function() {
+                listeners['PAYMENT_SUCCESS'] = $scope.$on('PAYMENT_SUCCESS', function() {
                     $scope.checkInState.isAuthInfoFetchComplete = false;
                     sntActivity.start('REFRESH_PRE_AUTH_INFO');
                     fetchAuthInfo();
@@ -369,6 +369,7 @@ angular.module('sntRover').controller('RVReservationCheckInFlowCtrl',
                 $scope.$on('$destroy', listeners['CONTINUE_CHECKIN']);
                 $scope.$on('$destroy', listeners['SWIPED_CARD_ADDED']);
                 $scope.$on('$destroy', listeners['STOP_CHECKIN_PROCESS']);
+                $scope.$on('$destroy', listeners['PAYMENT_SUCCESS']);
             };
 
             // ------------------------------------------------------------------------------------ Init
