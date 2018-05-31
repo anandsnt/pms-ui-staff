@@ -35,6 +35,7 @@ angular.module('sntRover').controller('RVReservationCheckInFlowCtrl',
                             canPayIncidentalsOnly: canPayIncidentalsOnly
                         });
                         $scope.checkInState.isAuthInfoFetchComplete = true;
+                        sntActivity.stop('REFRESH_PRE_AUTH_INFO');
                     },
                     failureCallBack: function (errorMessage) {
                         $scope.errorMessage = errorMessage;
@@ -355,6 +356,12 @@ angular.module('sntRover').controller('RVReservationCheckInFlowCtrl',
                     $scope.checkInState.isListeningSwipe = false;
                     $scope.checkInState.authorizationAmount = $scope.authorizationInfo.pre_auth_amount_at_checkin;
                     ngDialog.close();
+                });
+
+                listeners['STOP_CHECKIN_PROCESS'] = $scope.$on('PAYMENT_SUCCESS', function() {
+                    $scope.checkInState.isAuthInfoFetchComplete = false;
+                    sntActivity.start('REFRESH_PRE_AUTH_INFO');
+                    fetchAuthInfo();
                 });
 
                 // ------------------------------------------------------------------------------------ Clean up...
