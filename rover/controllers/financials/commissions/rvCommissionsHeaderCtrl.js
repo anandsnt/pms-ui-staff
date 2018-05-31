@@ -65,7 +65,8 @@ sntRover.controller('RVCommisionsHeaderCtrl', ['$scope', 'ngDialog', '$log', '$t
             receipient_email: $scope.filterData.receipientEmail,
             begin_date: $scope.dateData.fromDateForAPI !== '' ? $filter('date')($scope.dateData.fromDateForAPI, 'yyyy-MM-dd') : '',
             end_date: $scope.dateData.toDateForAPI !== '' ? $filter('date')($scope.dateData.toDateForAPI, 'yyyy-MM-dd') : '',
-            include_non_commissionable: $scope.filterData.non_commissionable
+            include_non_commissionable: $scope.filterData.non_commissionable,
+            email_report: $scope.filterData.email_report
         };
         
         var options = {

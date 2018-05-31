@@ -20,10 +20,12 @@ sntRover.controller('RVCommissionsSummaryController', ['$scope',
             }
         };
 
-        var updateHeader = function() {
+        var updateHeader = function(isPrint = false) {
             // Setting up the screen heading and browser title.
-            $scope.$emit('HeaderChanged', $filter('translate')('MENU_COMMISIONS'));
-            $scope.setTitle($filter('translate')('MENU_COMMISSIONS'));
+            // Need to change the header for print template
+            var title = isPrint? $filter('translate')('COMMISSIONS_REPORT_TITLE') : $filter('translate')('MENU_COMMISIONS');
+            $scope.$emit('HeaderChanged', title);
+            $scope.setTitle(title);
             $scope.$emit('updateRoverLeftMenu', 'commisions');
         };
 
@@ -425,12 +427,14 @@ sntRover.controller('RVCommissionsSummaryController', ['$scope',
             var successCallback = function(data) {
                 $scope.printData = data;
                 $scope.$emit('hideLoader');
+                updateHeader(true)
                 $timeout(function() {
                     $('head').append('<style id=\'print-orientation\'>@page { size: landscape; }</style>');
                     $window.print();
                     if (sntapp.cordovaLoaded) {
                         cordova.exec(function() {}, function() {}, 'RVCardPlugin', 'printWebView', []);
                     }
+                    updateHeader();
                 }, 500);
             }
 
