@@ -239,7 +239,8 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 				var successCallBackOfGenerateFolioNumber = function(data) {
 						$scope.transactionsDetails.bills[$scope.currentActiveBill].is_active = false;
 						$scope.transactionsDetails.bills[$scope.currentActiveBill].is_folio_number_exists = true;
-					},paramsToService = {
+					},
+					paramsToService = {
 						'bill_id': billId
 					},
 				    options = {
