@@ -13,7 +13,7 @@ angular.module('sntZestStation').controller('zsPaymentCtrl', ['$scope', '$log', 
 
         var runDigestCycle = function() {
             if (!$scope.$$phase) {
-                $scope.$digest();
+                $scope.$apply();
             }
         };
 
@@ -326,7 +326,8 @@ angular.module('sntZestStation').controller('zsPaymentCtrl', ['$scope', '$log', 
 
         /**  *********************** Ipad device actions ********************************/
 
-        var proceedWithiPadPayments = function(hideLoader = false) {
+        var proceedWithiPadPayments = function(hideLoader) {
+
             if ($scope.inDemoMode()) {
                 processSwipeCardData(zsPaymentSrv.sampleMLISwipedCardResponse);
             }
@@ -338,7 +339,7 @@ angular.module('sntZestStation').controller('zsPaymentCtrl', ['$scope', '$log', 
                 $scope.screenMode.paymentInProgress = true;
                 $scope.cardReader.startReader({
                     'successCallBack': function(response) {
-                        if (!$scope.screenMode.paymentFailure && !$scope.screenMode.paymentSuccess) {
+                        if ((!$scope.screenMode.paymentFailure && !$scope.screenMode.paymentSuccess) || $scope.screenMode.paymentAction === 'ADD_CARD') {
                             processSwipeCardData(response);
                         }
                         $scope.$broadcast('RESET_TIMER');
@@ -372,6 +373,7 @@ angular.module('sntZestStation').controller('zsPaymentCtrl', ['$scope', '$log', 
             } else {
                 paymentFailureActions();
             }
+           runDigestCycle();
         });
 
 
