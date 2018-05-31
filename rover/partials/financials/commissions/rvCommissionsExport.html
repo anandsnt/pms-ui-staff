@@ -53,7 +53,14 @@
         </label>
     </div>
     -->
-
+    <div class="entry full-width" ng-hide="exportInProgess || exportFailed || exportSuccess">
+        <label class="checkbox">
+            <span class="icon-form icon-checkbox" ng-class="{'checked': filterData.email_report}"></span>
+            <input name="email_reposrt" ng-model="filterData.email_report" type="checkbox" />
+            {{ 'EMAIL_PAYMENT_REPORT_SWITCH' | translate }}
+        </label>
+    </div>
+    
     <div class="entry full-width" ng-hide="exportInProgess || exportFailed || exportSuccess">
         <label>
             {{ 'ADD_RECIPIENT' | translate }}
@@ -61,7 +68,6 @@
         </label>
         <input ng-model="filterData.receipientEmail">
     </div>
-
 
     <div class="actions">
         <!-- On Default: -->
