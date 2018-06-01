@@ -604,9 +604,9 @@ angular.module('sntRover').service('RVreportsSubSrv', [
          * @return {Promise} promise
          */
         service.fetchGroupById = function(id) {
-            return callApi({               
+            return callApi({
                 method: 'getJSON',
-                url: 'groups/' + id + '/group_name'                           
+                url: '/api/groups/' + id + '/group_name'
             });
         };
 
@@ -616,20 +616,20 @@ angular.module('sntRover').service('RVreportsSubSrv', [
          * @return {Promise} promise
          */
         service.fetchAccountsById = function(id) {
-            return callApi({                
+            return callApi({
                 method: 'getJSON',
-                url: '/api/accounts/' + id                             
+                url: '/api/accounts/' + id
             });
         };
 
         /**
-         * Fetch rate types 
+         * Fetch rate types
          * @return {Promise} promise
          */
         service.fetchRateTypes = function() {
-            return callApi({                
+            return callApi({
                 method: 'getJSON',
-                url: '/api/rate_types.json?sort_field=is_active&sort_dir=false&per_page=1000&page=1'                            
+                url: '/api/rate_types.json?sort_field=is_active&sort_dir=false&per_page=1000&page=1'
             });
         };
 
