@@ -9,7 +9,9 @@ angular.module('sntRover').service('RVReportsInboxSrv', [
     'RVReservationBaseSearchSrv', 
     'RVreportsSubSrv', 
     '$filter',
-    '$rootScope',      
+    '$rootScope',
+    'RVReportNamesConst',
+    'RVReportUtilsFac',
     function($q, 
         rvBaseWebSrvV2,
         applyIconClass, 
@@ -20,7 +22,9 @@ angular.module('sntRover').service('RVReportsInboxSrv', [
         RVReservationBaseSearchSrv,
         RVreportsSubSrv,
         $filter,
-        $rootScope ) {
+        $rootScope,
+        reportNames,
+        reportUtils ) {
 
         var self = this;
 
@@ -946,6 +950,8 @@ angular.module('sntRover').service('RVReportsInboxSrv', [
                 report.reportIconCls = selectedReport.reportIconCls;
                 report.shouldShowExport = selectedReport.display_export_button;
                 report.isExpanded = false;
+                reportUtils.parseDatesInObject(report.filters.rawData);
+                report.rawData = report.filters.rawData;                
                 self.fillReportDates(report);
             });
             

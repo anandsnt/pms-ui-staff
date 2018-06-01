@@ -5,6 +5,8 @@ angular.module('sntRover')
     'RVreportsSubSrv',
     '$q',
     'sntActivity',
+    'RVreportsSrv',
+    '$state',
 
     // eslint-disable-next-line max-params
     function (
@@ -12,8 +14,9 @@ angular.module('sntRover')
         $timeout,
         RVreportsSubSrv,
         $q,
-        sntActivity
-
+        sntActivity,
+        reportsSrv,
+        $state
     ) {
 
         BaseCtrl.call(this, $scope);
@@ -110,11 +113,13 @@ angular.module('sntRover')
                 $scope.results.without_vat_id.accounts[0].isCollapsed = $scope.yearlyTaxReportDataObject.withoutVatId.Accounts[0].isCollapsed;
                 $scope.results.without_vat_id.accounts[1].isCollapsed = $scope.yearlyTaxReportDataObject.withoutVatId.Accounts[1].isCollapsed;
             }
-
+            if ($state.$current.name !== 'rover.reports.show' && reportsSrv.getChoosenReport) {
+                reportsSrv.getChoosenReport().generatedReportId = null;
+            }
             $scope.refreshScroll();
         };
         /*
-         * After print reset to initial state - when click on Cancel button
+         * After print reset to initial state - when cli$state.curremt.name === '' && ck on Cancel button
          */
         listeners['clickedCancelPrint'] = $scope.$on("YEARLY_TAX_PRINT_COMPLETED", function() {
             $scope.handlePrintCancel();
