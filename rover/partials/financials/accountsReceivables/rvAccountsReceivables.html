@@ -94,7 +94,7 @@
                                     <span translate>OPEN_BILLS</span>
                                 </div>
                                 <div class="info value">
-                                    <strong ng-class="{'green': account.credit >= 0, 'green': account.credit < 0 }">
+                                    <strong ng-class="{'green': account.credit >= 0, 'red': account.credit < 0 }">
                                         {{currencySymbol}} {{account.credit | number: precisonTwo }}
                                     </strong>
                                     <span translate>CREDIT</span>
