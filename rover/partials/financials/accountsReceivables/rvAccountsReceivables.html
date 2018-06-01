@@ -94,13 +94,13 @@
                                     <span translate>OPEN_BILLS</span>
                                 </div>
                                 <div class="info value">
-                                    <strong ng-class="{'red': account.credit > 0, 'green': account.credit <= 0 }">
+                                    <strong ng-class="{'green': account.credit >= 0, 'green': account.credit < 0 }">
                                         {{currencySymbol}} {{account.credit | number: precisonTwo }}
                                     </strong>
                                     <span translate>CREDIT</span>
                                 </div>
                                 <div class="info value">
-                                    <strong ng-class="{'red': account.current_balance > 0, 'green': account.current_balance <= 0 }">
+                                    <strong ng-class="{'red': account.current_balance >= 0, 'green': account.current_balance < 0 }">
                                         {{currencySymbol}} {{account.current_balance | number: precisonTwo }}
                                     </strong>
                                     <span translate>OPEN_BALANCE</span>
