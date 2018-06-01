@@ -1922,14 +1922,16 @@ sntRover.controller('RVbillCardController',
 		$scope.shouldGenerateFolioNumber = false;
 		if (balanceAmount === "0.00" && $scope.reservationBillData.reservation_status === "CHECKEDOUT" && !isFolioNumberExists) {
 
-			var reservationId = $scope.reservationBillData.reservation_id;
-
-			var paramsToService = {
-					'bill_id': billId,
-					'reservation_id': reservationId
+			var successCallBackOfGenerateFolioNumber = function(data) {
+					$scope.reservationBillData.bills[$scope.currentActiveBill].is_active = false;
+					$scope.reservationBillData.bills[$scope.currentActiveBill].is_folio_number_exists = true;
+				},
+				paramsToService = {
+					'bill_id': billId
 				},
 			    options = {
-					params: paramsToService
+					params: paramsToService,
+					successCallBack: successCallBackOfGenerateFolioNumber
 				};
 						
 			$scope.callAPI( RVBillCardSrv.generateFolioNumber, options );
@@ -2797,6 +2799,7 @@ sntRover.controller('RVbillCardController',
 
 		// update the bill screen and handle futher payments
 		$scope.invokeApi(RVBillCardSrv.fetch, $scope.reservationBillData.reservation_id, fetchBillDataSuccessCallback);
+		$scope.$broadcast('FETCH_REMAINING_AUTH');
 	});
 
 	// To update paymentModalOpened scope - To work normal swipe in case if payment screen opened and closed - CICO-8617
