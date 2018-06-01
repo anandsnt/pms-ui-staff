@@ -130,7 +130,7 @@ sntZestStation.controller('zsPrintBillCtrl', [
                         // we will call websocket services to print
                             handleStarTacPrinterActions();
                         } else {
-                            $window.print();
+                            $scope.$emit('PRINT_CURRENT_PAGE');
                             setTimeout(function() {
                                 var printopted = 'true';
 
