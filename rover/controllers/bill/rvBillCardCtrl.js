@@ -1922,11 +1922,16 @@ sntRover.controller('RVbillCardController',
 		$scope.shouldGenerateFolioNumber = false;
 		if (balanceAmount === "0.00" && $scope.reservationBillData.reservation_status === "CHECKEDOUT" && !isFolioNumberExists) {
 
-			var paramsToService = {
+			var successCallBackOfGenerateFolioNumber = function(data) {
+					$scope.reservationBillData.bills[$scope.currentActiveBill].is_active = false;
+					$scope.reservationBillData.bills[$scope.currentActiveBill].is_folio_number_exists = true;
+				},
+				paramsToService = {
 					'bill_id': billId
 				},
 			    options = {
-					params: paramsToService
+					params: paramsToService,
+					successCallBack: successCallBackOfGenerateFolioNumber
 				};
 						
 			$scope.callAPI( RVBillCardSrv.generateFolioNumber, options );
