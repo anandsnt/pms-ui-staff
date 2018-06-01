@@ -18,6 +18,7 @@ angular.module('sntPay').controller('sntPaymentController',
                     preventDefaultException: {tagName: /^(INPUT|TEXTAREA|BUTTON|SELECT|A)$/}
                 },
                 isEMVEnabled;
+            var isInIpadApp = sntapp.browser === 'rv_native' && sntapp.cordovaLoaded;
 
             // ---------------------------------------------------------------------------------------------------------
             $scope.payment = {
@@ -143,7 +144,7 @@ angular.module('sntPay').controller('sntPaymentController',
                 }
 
                 // CICO-48381
-                if (sntapp.browser === 'rv_native' && sntapp.cordovaLoaded) {
+                if (isInIpadApp) {
                     scrollerOptions.click = false;
                     scrollerOptions.tap = true;
                     scrollerOptions.preventDefault = false;
@@ -786,7 +787,11 @@ angular.module('sntPay').controller('sntPaymentController',
 
                 // ---- CBA + MLI ----
                 if ($scope.selectedPaymentType === 'CBA' && $scope.hotelConfig.paymentGateway === 'CBA_AND_MLI') {
-                    $scope.$broadcast('INITIATE_CBA_PAYMENT', params);
+                    if (isInIpadApp) {
+                        $scope.$broadcast('INITIATE_CBA_PAYMENT', params);
+                    } else {
+                        $scope.errorMessage = $scope.errorMessage = [$filter('translate')('USE_IPAD_TO_USE_CBA')];
+                    }
                     return;
                 }
 

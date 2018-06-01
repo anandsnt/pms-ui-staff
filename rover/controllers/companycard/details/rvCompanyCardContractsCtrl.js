@@ -414,7 +414,7 @@ sntRover.controller('companyCardContractsCtrl', ['$rootScope', '$scope', 'RVComp
 			var dataNew = {
 				"id": data.id,
 				"contract_name": $scope.addData.contract_name,
-				"contract_code": $scope.addData.contract_code
+				"contract_code": data.contract_code
 			};
 
 			var businessDate = new Date($rootScope.businessDate);
@@ -430,6 +430,7 @@ sntRover.controller('companyCardContractsCtrl', ['$rootScope', '$scope', 'RVComp
 			$scope.contractSelected.id = data.id;
 			$scope.addData.contract_name = "";
 			$scope.addData.contract_code = "";
+			$scope.contractChanged();
 		};
 
 		// To handle click on nights button
