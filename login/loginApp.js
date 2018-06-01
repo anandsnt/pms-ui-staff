@@ -1,5 +1,16 @@
-var login = angular.module('login', ['ui.router', 'documentTouchMovePrevent', 'ngSanitize', 'ng-iscroll', 'ngDialog', 'clickTouch']);
+var login = angular.module('login', [
+    'ui.router',
+    'documentTouchMovePrevent',
+    'ngSanitize',
+    'ng-iscroll',
+    'ngDialog',
+    'clickTouch',
+    'sharedHttpInterceptor']);
 
+login.config([
+    '$httpProvider', function($httpProvider) {
+        $httpProvider.interceptors.push('sharedHttpInterceptor');
+    }]);
 /*
  * Set page Titles
  */
@@ -196,6 +207,11 @@ login.controller('loginCtrl', ['$scope', 'loginSrv', '$window', '$state', 'reset
             $window.open('https://stayntouch.freshdesk.com/support/home', '_blank');
         }
     };
+
+    (function() {
+        // clear existing jwt
+        loginSrv.reset();
+    })();
 
 }]);
 /*
