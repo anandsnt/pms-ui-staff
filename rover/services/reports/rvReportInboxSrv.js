@@ -9,7 +9,8 @@ angular.module('sntRover').service('RVReportsInboxSrv', [
     'RVReservationBaseSearchSrv', 
     'RVreportsSubSrv', 
     '$filter',
-    '$rootScope',      
+    '$rootScope',
+    'RVReportNamesConst',      
     function($q, 
         rvBaseWebSrvV2,
         applyIconClass, 
@@ -20,7 +21,8 @@ angular.module('sntRover').service('RVReportsInboxSrv', [
         RVReservationBaseSearchSrv,
         RVreportsSubSrv,
         $filter,
-        $rootScope ) {
+        $rootScope,
+        reportNames ) {
 
         var self = this;
 
@@ -706,23 +708,58 @@ angular.module('sntRover').service('RVReportsInboxSrv', [
 
             formatedFilter[reportInboxFilterLabelConst[key]] = value;   
         };
+
+        /**
+         * Get from/to date range label based on report
+         * @params {String} key filter name in api
+         * @params {String} reportName name of the report
+         * @return {String} label name of the filter based on report
+         */
+        this.getDateRangeLabelName = (key, reportName) => {
+            var label = reportInboxFilterLabelConst[key];
+
+            if (key === reportParamsConst['FROM_DATE']) {
+                switch(reportName) {
+                    case reportNames['BOOKING_SOURCE_MARKET_REPORT']:
+                         label = reportInboxFilterLabelConst['BOOKED_DATE_FROM'];
+                         break;
+                    case reportNames['CANCELLATION_NO_SHOW']:
+                         label = reportInboxFilterLabelConst['arrival_from_date'];
+                         break;
+
+                }
+            } else if (key === reportParamsConst['TO_DATE']) {
+                switch(reportName) {
+                    case reportNames['BOOKING_SOURCE_MARKET_REPORT']:
+                         label = reportInboxFilterLabelConst['BOOKED_DATE_TO'];
+                         break;
+                    case reportNames['CANCELLATION_NO_SHOW']:
+                         label = reportInboxFilterLabelConst['arrival_to_date'];
+                         break;
+
+                }
+            }
+            return label
+        };
         
         /**
          * Process filters for the given generated report
-         * @param {Object} filters filter which was chosen to run the report
+         * @param {Object} report generated report
          * @return {void}
          */
-        this.processFilters = function(filters) {
+        this.processFilters = function(report) {
             let processedFilter = {},
                 promises = [],
                 deferred = $q.defer();
 
 
 
-            _.each(filters, function(value, key) {
+            _.each(report.filters, function(value, key) {
                 switch(key) {
                    case reportParamsConst['FROM_DATE']:
                    case reportParamsConst['TO_DATE']:
+                        processedFilter[self.getDateRangeLabelName(key, report.name)] = value ? $filter('date')(tzIndependentDate(value), $rootScope.dateFormat) : value;
+                        break;
                    case reportParamsConst['CANCEL_FROM_DATE']:
                    case reportParamsConst['CANCEL_TO_DATE']:
                    case reportParamsConst['ARRIVAL_FROM_DATE']:
@@ -778,7 +815,8 @@ angular.module('sntRover').service('RVReportsInboxSrv', [
                    case reportParamsConst['INCLUDE_NEW']:  
                    case reportParamsConst['SHOW_RATE_ADJUSTMENTS_ONLY']:     
                    case reportParamsConst['EXCLUDE_TAX']:   
-                   case reportParamsConst['DUE_OUT_DEPARTURES']:       
+                   case reportParamsConst['DUE_OUT_DEPARTURES']:  
+                   case reportParamsConst['INCLUDE_DUE_OUT']:     
                         self.processOptions(value, key, processedFilter);
                         break;
                    case reportParamsConst['SHOW_DELETED_CHARGES']:
@@ -787,7 +825,7 @@ angular.module('sntRover').service('RVReportsInboxSrv', [
                    case reportParamsConst['INCLUDE_ORIGIN']:
                    case reportParamsConst['INCLUDE_SEGMENT']:
                    case reportParamsConst['INCLUDE_SOURCE']:
-                   case reportParamsConst['SHOW_ROOM_REVENUE']:
+                   //case reportParamsConst['SHOW_ROOM_REVENUE']:
                         self.processDisplayFilter(value, key, processedFilter);
                         break;
                    case reportParamsConst['ACCOUNT_SEARCH']:
@@ -825,8 +863,7 @@ angular.module('sntRover').service('RVReportsInboxSrv', [
                         self.fillCheckedInCheckedOut(value, key, processedFilter);
                         break;
                    case reportParamsConst['SHOW_TRAVEL_AGENT']:
-                   case reportParamsConst['SHOW_COMPANY']:
-                   case reportParamsConst['INCLUDE_DUE_OUT']:
+                   case reportParamsConst['SHOW_COMPANY']:                   
                    case reportParamsConst['INCLUDE_INHOUSE']:
                    case reportParamsConst['OOO']:
                    case reportParamsConst['OOS']:
@@ -896,8 +933,10 @@ angular.module('sntRover').service('RVReportsInboxSrv', [
 
             });
 
-            if(processedFilter[reportInboxFilterLabelConst['OPTIONS']]) {
+            if(processedFilter[reportInboxFilterLabelConst['OPTIONS']] && processedFilter[reportInboxFilterLabelConst['OPTIONS']].length > 0 ) {
               processedFilter[reportInboxFilterLabelConst['OPTIONS']] = processedFilter[reportInboxFilterLabelConst['OPTIONS']].join(',');  
+            } else {
+                delete processedFilter[reportInboxFilterLabelConst['OPTIONS']];
             }
 
             if(processedFilter[reportInboxFilterLabelConst['SHOW']]) {
