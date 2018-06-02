@@ -40,9 +40,11 @@ angular.module('sntPay').controller('payCBACtrl',
                     ).then(response => {
                         sntCBAGatewaySrv.finishTransaction(transaction.id);
                         $scope.$emit('hideLoader');
+                        sntActivity.stop('INIT_CBA_PAYMENT');
                         $scope.$emit('CBA_PAYMENT_SUCCESS', response.data);
                     }, errorMessage => {
                         $log.error('update to server failed...');
+                        sntActivity.stop('INIT_CBA_PAYMENT');
                         $scope.$emit('hideLoader');
                         $scope.$emit('CBA_PAYMENT_FAILED', errorMessage.data);
                     });
@@ -59,6 +61,7 @@ angular.module('sntPay').controller('payCBACtrl',
                         transaction.id,
                         err
                     ).then(() => {
+                        sntActivity.stop('INIT_CBA_PAYMENT');
                         var errorCode = parseInt(err.RVErrorCode, 10),
                             errorMessage = [err.RVErrorCode + ' ' + err.RVErrorDesc];
 
@@ -109,7 +112,7 @@ angular.module('sntPay').controller('payCBACtrl',
                     ).then(response => {
                         transaction.id = response.data.id;
                         Number(params.postData.amount) > 0 ? doPayment() : doRefund();
-                        sntActivity.stop('INIT_CBA_PAYMENT');
+                        // sntActivity.stop('INIT_CBA_PAYMENT');
                     }, errorMessage => {
                         $scope.$emit('hideLoader');
                         $scope.$emit('CBA_PAYMENT_FAILED', errorMessage.data);

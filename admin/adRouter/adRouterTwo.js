@@ -917,4 +917,10 @@ angular.module('adminModuleTwo', []).config(function ($stateProvider) {
         }
     });
 
+    $stateProvider.state('admin.guestDataRemoval', {
+        templateUrl: '/assets/partials/guestDataRemoval/adGuestDataRemoval.html',
+        controller: 'ADGuestDataRemovalCtrl',
+        url: '/hkSections'
+    });
+
 });

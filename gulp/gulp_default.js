@@ -128,9 +128,9 @@ module.exports = function(gulp, $, options) {
         console.log('\x1b[33m%s\x1b[0m', 'change detected on file... ' + file);
 
         gulp.src(file).
-            pipe($.jsvalidate()).
-            on('error', options.silentErrorShowing).
             pipe($.babel()).
+            on('error', options.silentErrorShowing).
+            pipe($.jsvalidate()).
             on('error', options.silentErrorShowing).
             pipe(eslint({
                 configFile: './.eslintrc.json'
