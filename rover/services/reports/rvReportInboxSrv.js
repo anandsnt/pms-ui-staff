@@ -464,7 +464,7 @@ angular.module('sntRover').service('RVReportsInboxSrv', [
         this.fillChargeCodes = (value, key, promises, formatedFilter) => {            
 
             promises.push(RVreportsSubSrv.fetchChargeCodes().then(function(chargeCodes) {
-                formatedFilter[reportInboxFilterLabelConst[key]] = _.pluck(self.filterArrayValues(chargeCodes, value, 'id'), 'description').join(',');
+                formatedFilter[reportInboxFilterLabelConst[key]] = _.pluck(self.filterArrayValues(chargeCodes, value, 'id'), 'name').join(',');
             }));
         };
 
