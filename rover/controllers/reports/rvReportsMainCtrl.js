@@ -997,7 +997,8 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
                     'completion_status': [],
                     'age_buckets': [],
                     'account_ids': [],
-                    'travel_agent_ids': []
+                    'travel_agent_ids': [],
+                    'segments': []
                 };
             }
 
@@ -1560,6 +1561,29 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
                     // in case if all guarantee type is selected
                     if (changeAppliedFilter && report['hasGuaranteeType']['data'].length === selected.length) {
                         $scope.appliedFilter.guarantees = ['All Guarantees'];
+                    }
+                }
+            }
+
+            // include segments
+            if (report.hasOwnProperty('hasSegmentsList')) {
+                selected = _.where(report['hasSegmentsList']['data'], {selected: true});
+
+                if (selected.length > 0) {
+                    key = reportParams['SEGMENT_IDS'];
+                    params[key] = [];
+                    /**/
+                    _.each(selected, function (segment) {
+                        params[key].push(segment.name);
+                        /**/
+                        if (changeAppliedFilter) {
+                            $scope.appliedFilter.segments.push(segment.name);
+                        }
+                    });
+
+                    // in case if all guarantee type is selected
+                    if (changeAppliedFilter && report['hasSegmentsList']['data'].length === selected.length) {
+                        $scope.appliedFilter.segments = ['All Segments'];
                     }
                 }
             }
