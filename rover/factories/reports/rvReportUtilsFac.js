@@ -2267,6 +2267,14 @@ angular.module('reportsModule')
             }
         };
 
+        /**
+         * Marke the element in Object array which matches the ids as selected
+         * @params {Array} objArr object array
+         * @params {Array} filterArr array of selected ids
+         * @params {String} key the value to be compared
+         * @return void
+         *
+         */
         factory.markAsSelected = (objArr, filterArr, key) => {
             _.each(objArr, function(obj) {
                 if (filterArr.indeOf(obj[key]) > -1) {
@@ -2276,6 +2284,7 @@ angular.module('reportsModule')
 
         };
 
+        //Mark the selected entries in the filter
         factory.markSelectedEntriesForFilter = (report) => {
            
             if (report.filters[reportParams['RESTRICTION_IDS']] && report.filters[reportParams['RESTRICTION_IDS']].length > 0) {                

@@ -338,14 +338,7 @@ angular.module('sntRover').controller('RVReportsInboxCtrl', [
             );
 
         };
-
-        self.populateAddonGroupsData = () => {
-            reportsSubSrv.fetchChargeNAddonGroups().then(function(chargeNAddonGroups) {            
-                
-                reportsSubSrv.fetchAddons({ 'addon_group_ids': _.pluck(chargeNAddonGroups, 'id') })
-                    .then( self.pouplateAddons.bind(null, chargeNAddonGroups) );
-            });
-        };
+       
 
         /**
          * Print the report from the report inbox

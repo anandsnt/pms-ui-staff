@@ -422,11 +422,12 @@ angular.module('sntRover').service('RVreportsSrv', [
         service.getScheduleReportTimePeriods = function( title ) {
         	return SCHEDULE_REPORT_TIMEPERIODS[title];
         }; 
-
+        // Set the report inbox print clicked state
         service.setPrintClicked = (val) => {
         	this.printClicked = val;
         };
 
+        // Get the report inbox print clicked state
         service.getPrintClickedState = () => {
         	return this.printClicked;
         };
