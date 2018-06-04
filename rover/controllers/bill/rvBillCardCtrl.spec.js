@@ -43,7 +43,7 @@ describe('RVbillCardController', function () {
 
             }); 
 
-            it('printBill method should ptint the correct data when clicked reservation', function() {
+            it('call generateFolioNumber method if it satisfies condition', function() {
                
                 spyOn(RVBillCardSrv, "generateFolioNumber").and.callFake(function() {
                     var deferred = $q.defer();
