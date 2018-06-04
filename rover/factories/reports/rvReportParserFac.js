@@ -385,7 +385,9 @@ sntRover.factory('RVReportParserFac', [
                 actionData = {},
                 cancelData = {},
                 adjustData = [],
-                options    = options;
+                options    = options,
+                guestNoteData = {},
+                reservationNoteData = {};
 
             var i, j;
 

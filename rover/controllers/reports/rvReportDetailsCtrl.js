@@ -12,8 +12,10 @@ sntRover.controller('RVReportDetailsCtrl', [
     '$state',
     'RVReportPaginationIdsConst',
     '$log',
+    'RVReportUtilsFac',
+    'sntActivity',
     function ($scope, $rootScope, $filter, $timeout, $window, reportsSrv, reportParser,
-              reportMsgs, reportNames, ngDialog, $state, reportPaginationIds, $log) {
+              reportMsgs, reportNames, ngDialog, $state, reportPaginationIds, $log, reportUtils, sntActivity) {
 
         BaseCtrl.call(this, $scope);
 
@@ -1173,9 +1175,7 @@ sntRover.controller('RVReportDetailsCtrl', [
         };
 
 
-        // print the page
-        var printReport = function () {
-        };
+        
 
 		// print the page
 		var printReport = function() {
@@ -1234,9 +1234,19 @@ sntRover.controller('RVReportDetailsCtrl', [
                     if ('function' == typeof $scope.printOptions.afterPrint) {
                         $scope.printOptions.afterPrint();
                     }
-
-                    // load the report with the original page
-                    $scope.fetchNextPage($scope.returnToPage);
+                    
+                    if (reportsSrv.getPrintClickedState()) {
+                        reportsSrv.setPrintClicked(false);
+                        $scope.viewStatus.showDetails = false;
+                        if ($state.$current.name !== 'rover.reports.show' && reportsSrv.getChoosenReport()) {
+                          reportsSrv.getChoosenReport().generatedReportId = null;  
+                        }
+                        
+                    } else {
+                        // load the report with the original page
+                        $scope.fetchNextPage($scope.returnToPage);
+                    }
+                    
                 }, 2000);
             });
         };
@@ -1450,9 +1460,61 @@ sntRover.controller('RVReportDetailsCtrl', [
             $scope.$broadcast("FETCH_FULL_YEARLY_TAX_REPORT");
         };
 
+        var markSelectedEntriesForFilters = () => {
+            reportUtils.markSelectedEntriesForFilter(reportsSrv.getChoosenReport()).then(invokePrint);
+        };
+
+        // Invokes actual print 
+        var invokePrint = () => {
+            $timeout(function() {
+                sntActivity.stop("PRINTING_FROM_REPORT_INBOX");
+                if ('function' == typeof $scope.printOptions.showModal) {
+                    $scope.printOptions.showModal();
+                } else {
+                    if (reportsSrv.getChoosenReport().title === reportNames['YEARLY_TAX']) {
+                        $scope.$broadcast("FETCH_FULL_YEARLY_TAX_REPORT");
+                    } else {
+                        printReport();
+                    }                
+            } 
+            }, 2000);
+        };
+
+        // Setting up the data for the report for printing
+        var loadPrintView = () => {
+            $scope.errorMessage = [];            
+            afterFetch();
+            $scope.heading = $scope.$parent.heading;
+            findBackNames();
+            reportUtils.findFillFilters(reportsSrv.getChoosenReport(), $scope.$parent.reportList)
+                    .then(invokePrint);            
+                       
+        };
+
+        // Listener for the printing the report
+        var printReportListener = $scope.$on('PRINT_REPORT', function() {
+            loadPrintView();             
+        });
+
+        // Listener for printing the report having modal with options
+        var printModalReportListener = $scope.$on('PRINT_MODAL_REPORT', function() {
+            printReport();
+        });
+
+        //Destroying the listeners
+        $scope.$on('$destroy', printReportListener);
+        $scope.$on('$destroy', printModalReportListener);
+
         (function () {
+            
+            var title = $filter('translate')('REPORTS');
+
+            // Coming from report inbox
+            if (reportsSrv.getChoosenReport().generatedReportId) {
+                title = $filter('translate')('MENU_REPORTS_INBOX');
+            }
             $rootScope.setPrevState = {
-                title: $filter('translate')('REPORTS'),
+                title: title,
                 callback: 'goBackReportList',
                 name: 'rover.reports.dashboard',
                 scope: $scope
@@ -1468,7 +1530,9 @@ sntRover.controller('RVReportDetailsCtrl', [
                 case reportMsgs['REPORT_LOAD_LAST_REPORT']:
                 default:
                 // do nothing .. wait for event from rvReportsMainCtrl.js
-            }
+            }  
+            
+
         })();
     }
 
