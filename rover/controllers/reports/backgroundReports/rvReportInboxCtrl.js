@@ -8,6 +8,8 @@ angular.module('sntRover').controller('RVReportsInboxCtrl', [
     'sntActivity',
     '$timeout',
     'RVreportsSrv',
+    'RVReportNamesConst',
+    'RVreportsSubSrv',
     function (
         $rootScope, 
         $scope,
@@ -17,11 +19,15 @@ angular.module('sntRover').controller('RVReportsInboxCtrl', [
         $filter,
         sntActivity,
         $timeout,
-        reportsSrv) {
+        reportsSrv,
+        reportNames,
+        reportsSubSrv) {
 
         var self = this;
 
         BaseCtrl.call(this, $scope);
+
+        $scope.viewStatus.showDetails = false;
 
         const REPORT_INBOX_SCROLLER = 'report-inbox-scroller',
             REPORT_FILTERS_PROC_ACTIVITY = 'report_filters_proc_activity',
@@ -87,7 +93,7 @@ angular.module('sntRover').controller('RVReportsInboxCtrl', [
                     self.refreshScroll();
                 } else {
                     sntActivity.start(REPORT_FILTERS_PROC_ACTIVITY);
-                    RVReportsInboxSrv.processFilters(report.filters).then(function(formatedFilters) {
+                    RVReportsInboxSrv.processFilters(report).then(function(formatedFilters) {
                         report.filterDetails = formatedFilters;                        
                         report.isExpanded = !report.isExpanded;
                         sntActivity.stop(REPORT_FILTERS_PROC_ACTIVITY);
@@ -262,7 +268,7 @@ angular.module('sntRover').controller('RVReportsInboxCtrl', [
         * @return none
         * */
         var setChoosenReport = function (selectedreport) {
-            var lastReportID = reportsSrv.getChoosenReport().id,
+            var lastReportID  = reportsSrv.getChoosenReport() ? reportsSrv.getChoosenReport().id : null,
                 mainCtrlScope = $scope.$parent,
                 choosenReport = _.find($scope.reportList,
                     function(report) {
@@ -278,6 +284,10 @@ angular.module('sntRover').controller('RVReportsInboxCtrl', [
             if ( lastReportID !== selectedreport.id ) {
                 mainCtrlScope.printOptions.resetSelf();
             }
+            
+            // Setting the raw data containing the filter state while running the report
+            // These filter data is used in some of the reports controller 
+            choosenReport = _.extend(choosenReport, selectedreport.rawData);
             reportsSrv.setChoosenReport( choosenReport );
         };
 
@@ -292,6 +302,7 @@ angular.module('sntRover').controller('RVReportsInboxCtrl', [
             setChoosenReport(selectedreport);
             mainCtrlScope.genReport();
         };
+       
         /*
         * handle Export Button action's in report inbox screen
         * @params Object Selected report object
@@ -327,6 +338,20 @@ angular.module('sntRover').controller('RVReportsInboxCtrl', [
             );
 
         };
+       
+
+        /**
+         * Print the report from the report inbox
+         * @params Object report selected generated report
+         * @return void
+         */
+        $scope.printReport = (report) => { 
+            var mainCtrlScope = $scope.$parent;
+
+            setChoosenReport(report);
+            reportsSrv.setPrintClicked(true);
+            mainCtrlScope.genReport(false, 1, 1000); 
+        };
 
         // Initialize
         self.init = () => {            
@@ -354,7 +379,12 @@ angular.module('sntRover').controller('RVReportsInboxCtrl', [
 
             self.refreshScroll();  
 
-            self.resetPreviousReportSelection();        
+            self.resetPreviousReportSelection();   
+
+           if (reportsSrv.getChoosenReport()) {
+                reportsSrv.getChoosenReport().generatedReportId = null;
+            }
+
         };
 
         self.init();

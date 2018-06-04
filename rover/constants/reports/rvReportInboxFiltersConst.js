@@ -59,10 +59,10 @@ angular.module('reportsModule')
         "age_buckets": "Aging Balance",
         "account_ids": "Account Name(s)",
         "0to30": "0-30 DAYS",
-        "31to60": "0-30 DAYS",
-        "61to90": "0-30 DAYS",
-        "91to120": "0-30 DAYS",
-        "120plus": "0-30 DAYS",
+        "31to60": "31-60 DAYS",
+        "61to90": "61-90 DAYS",
+        "91to120": "91-120 DAYS",
+        "120plus": "120+ DAYS",
 
         "actions_by": "Show",
         "origin": "Origin(s)",
@@ -119,6 +119,8 @@ angular.module('reportsModule')
         "show_room_revenue": "Show Room Revenue",
         "with_vat_number": "With Vat Number",
         "without_vat_number": "Without Vat Number",
-        "include_companycard_ta": "Include CC/TA"
-        
+        "include_companycard_ta": "Include CC/TA",
+        "BOOKED_DATE_FROM": "Booked Date (From)",
+        "BOOKED_DATE_TO": "Booked Date (To)"        
+
     });
