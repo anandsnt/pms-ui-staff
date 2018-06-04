@@ -17,22 +17,22 @@ angular.module('sntPay').controller('payCBACtrl',
             var cbaActionsInProgressInSeconds = 0;
             var cbaTimeout = 180; // In seconds
             var cbaTimer;
+            var stopCbaTimer = function() {
+                cbaActionsInProgressInSeconds = 0;
+                $interval.cancel(cbaTimer);
+            };
             var startCbaTimer = function() {
                 cbaTimer = $interval(function() {
                     if (cbaActionsInProgressInSeconds > cbaTimeout) {
-                        cbaActionsInProgressInSeconds = 0;
                         $scope.$emit('CBA_PAYMENT_FAILED', [$filter('translate')('CBA_TIMED_OUT')]);
                         sntActivity.stop('INIT_CBA_PAYMENT');
-                        $interval.cancel(cbaTimer);
+                        stopCbaTimer();
                     } else {
                         cbaActionsInProgressInSeconds++;
                     }
                 }, 1000);
             };
-            var stopCbaTimer = function() {
-                cbaActionsInProgressInSeconds = 0;
-                $interval.cancel(cbaTimer);
-            };
+            
             
             var transaction = {
                     id: null,
@@ -139,8 +139,7 @@ angular.module('sntPay').controller('payCBACtrl',
                         $scope.$emit('hideLoader');
                         $scope.$emit('CBA_PAYMENT_FAILED', errorMessage.data);
                         sntActivity.stop('INIT_CBA_PAYMENT');
-                        cbaActionsInProgressInSeconds = 0;
-                        $interval.cancel(cbaTimer);
+                        stopCbaTimer();
                     });
                 };
 
