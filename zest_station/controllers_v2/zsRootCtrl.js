@@ -1924,6 +1924,17 @@ sntZestStation.controller('zsRootCtrl', [
             return propertyTranslations ? propertyTranslations.translations : [];
         };
 
+
+        $scope.$on('PRINT_CURRENT_PAGE', function() {
+            // if zest station is loaded in Electron App, proceed with silent printing
+            // using electron App (Communicate asynchronously from a renderer process to the main process.)
+            if (navigator.userAgent.indexOf('Electron') !== -1 && window.ipcRenderer) {
+                window.ipcRenderer.send('printCurrentPage');
+            } else {
+                $window.print();
+            }
+        });
+
 		/** *
 		 * [initializeMe description]
 		 * @return {[type]} [description]
