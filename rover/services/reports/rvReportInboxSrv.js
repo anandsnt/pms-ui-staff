@@ -154,7 +154,7 @@ angular.module('sntRover').service('RVReportsInboxSrv', [
 
         this.processRateIds = ( value, key, promises, formatedFilter) => {
             let params = {                
-                "ids[]": value
+                "ids": value
             };
 
             promises.push(RVreportsSubSrv.fetchRateDetailsByIds(params).then(function(rates) {
