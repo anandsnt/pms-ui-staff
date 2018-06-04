@@ -241,7 +241,7 @@ sntRover.controller('RVAddonForecastReportByDateCtrl', [
 			});
 
 			$scope.modifiedResults = {};
-			for (reportKey in results) {
+			for (var reportKey in results) {
 				if ( ! results.hasOwnProperty(reportKey) ) {
 					continue;
 				}
@@ -260,7 +260,7 @@ sntRover.controller('RVAddonForecastReportByDateCtrl', [
 				for (i = 0, j = addonGroups.length; i < j; i++) {
 					var addonGrpObj = addonGroups[i];
 
-					for (addonGroupKey in addonGrpObj) {
+					for (var addonGroupKey in addonGrpObj) {
 						if ( '$$hashKey' == addonGroupKey || ! addonGrpObj.hasOwnProperty(addonGroupKey) ) {
 							continue;
 						}
@@ -279,7 +279,7 @@ sntRover.controller('RVAddonForecastReportByDateCtrl', [
 						for (k = 0, l = addons.length; k < l; k++) {
 							var addonObj = addons[k];
 
-							for (addonKey in addonObj) {
+							for (var addonKey in addonObj) {
 								if ( '$$hashKey' == addonKey || ! addonObj.hasOwnProperty(addonKey) ) {
 									continue;
 								}

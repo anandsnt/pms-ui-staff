@@ -42,6 +42,10 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
             report: null
         };
 
+        $scope.viewStatus = {
+            showDetails: false
+        };
+
         $scope.scrollToLast = function () {
             $timeout(function () {
                 if ($scope.$parent.myScroll.hasOwnProperty('FULL_REPORT_SCROLL')) {
@@ -958,6 +962,8 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
                 return params;
             }
             params.id = report.id;
+            var rawData = {};
+
             var key = '',
                 fromKey = '',
                 untilKey = '',
@@ -1009,6 +1015,8 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
                     if (changeAppliedFilter) {
                         $scope.appliedFilter['fromDate'] = angular.copy(report.fromDate);
                     }
+                    rawData.fromDate = params[fromKey];
+
                 }
 
                 if (!!report.untilDate) {
@@ -1017,7 +1025,11 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
                     if (changeAppliedFilter) {
                         $scope.appliedFilter['toDate'] = angular.copy(report.untilDate);
                     }
+                    rawData.untilDate = params[fromKey];
                 }
+
+
+
             }
 
             // include cancel dates
@@ -1032,6 +1044,8 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
                     $scope.appliedFilter['cancelFromDate'] = angular.copy(report.fromCancelDate);
                     $scope.appliedFilter['cancelToDate'] = angular.copy(report.untilCancelDate);
                 }
+                rawData.fromCancelDate = params[fromKey];
+                rawData.untilCancelDate = params[untilKey];
             }
 
             // include arrival dates -- IFF both the limits of date range have been selected
@@ -1046,6 +1060,9 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
                     $scope.appliedFilter['arrivalFromDate'] = angular.copy(report.fromArrivalDate);
                     $scope.appliedFilter['arrivalToDate'] = angular.copy(report.untilArrivalDate);
                 }
+
+                rawData.fromArrivalDate = params[fromKey];
+                rawData.untilArrivalDate = params[untilKey];
             }
 
             // include group start dates -- IFF both the limits of date range have been selected
@@ -1060,6 +1077,9 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
                     $scope.appliedFilter['groupFromDate'] = angular.copy(report.groupStartDate);
                     $scope.appliedFilter['groupToDate'] = angular.copy(report.groupEndDate);
                 }
+
+                rawData.groupStartDate = params[fromKey];
+                rawData.groupEndDate = params[untilKey];
             }
 
             // include deposit due dates
@@ -1074,6 +1094,9 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
                     $scope.appliedFilter['depositFromDate'] = angular.copy(report.fromDepositDate);
                     $scope.appliedFilter['depositToDate'] = angular.copy(report.untilDepositDate);
                 }
+
+                rawData.fromDepositDate = params[fromKey];
+                rawData.untilDepositDate = params[untilKey];
             }
 
             // include paid dates
@@ -1088,6 +1111,8 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
                     $scope.appliedFilter['paidFromDate'] = angular.copy(report.fromPaidDate);
                     $scope.appliedFilter['paidToDate'] = angular.copy(report.untilPaidDate);
                 }
+                rawData.fromPaidDate = params[fromKey];
+                rawData.untilPaidDate = params[untilKey];
             }
 
             // include create dates
@@ -1102,6 +1127,8 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
                     $scope.appliedFilter['createFromDate'] = angular.copy(report.fromCreateDate);
                     $scope.appliedFilter['createToDate'] = angular.copy(report.untilCreateDate);
                 }
+                rawData.fromCreateDate = params[fromKey];
+                rawData.untilCreateDate = params[untilKey];
             }
 
             // include single dates
@@ -1113,6 +1140,7 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
                 if (changeAppliedFilter) {
                     $scope.appliedFilter['singleValueDate'] = angular.copy(report.singleValueDate);
                 }
+                rawData.singleValueDate = params[key];
             }
 
             // rate
@@ -1196,6 +1224,9 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
                     $scope.appliedFilter['adjustmentFromDate'] = angular.copy(report.fromAdjustmentDate);
                     $scope.appliedFilter['adjustmentToDate'] = angular.copy(report.untilAdjustmentDate);
                 }
+
+                rawData.fromAdjustmentDate = params[fromKey];
+                rawData.untilAdjustmentDate = params[untilKey];
             }
 
             // include times
@@ -2004,12 +2035,21 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
             // keep a copy of the current params
             $scope.oldParams = angular.copy(params);
 
+            // We are sending the additional params to the api, as its required while view/printing
+            // the report from the report inbox
+            if ($rootScope.isBackgroundReportsEnabled) {
+                // This is a temp fix. Once api fixes the issue this should be removed
+                params.per_page = 2000;
+                params.rawData = _.extend(reportUtils.reduceObject(report), rawData);
+            }
+            
+
             return params;
         }
 
         /**
          * Should we show export button
-         * @return {Boolean}
+         * @return {Boolean}reportUtils
          */
         $scope.shouldShowExportButton = function (report) {
             var chosenReport = report || reportsSrv.getChoosenReport();
@@ -2157,29 +2197,43 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
                 $scope.errorMessage = [];
                 $scope.$emit('hideLoader');
 
-                if ($state.current.name !== 'rover.reports.show') {
-
-                    $state.go('rover.reports.show', {
-                        action: msg || '',
-                        report: angular.copy($scope.selectedReport) || chosenReport
-                    });
+                // Checks whether the print is clicked from the report inbox
+                if (reportsSrv.getPrintClickedState()) {
+                    // This flag will make the report details page and its controller
+                    $scope.viewStatus.showDetails = true;
+                    if (_.isUndefined($scope.printOptions.showModal)) {
+                       $timeout(function() {
+                            $scope.$broadcast('PRINT_REPORT');
+                        }, 1000); 
+                    } else {                        
+                         $scope.$broadcast('PRINT_MODAL_REPORT');
+                    }
+                    
                 } else {
-                    $state.go('.', {
-                        page: loadPage,
-                        action: msg || ''
-                    }, {
-                        location: true,
-                        inherit: true,
-                        relative: $state.$current,
-                        notify: false
-                    });
-                }
+                   if ($state.current.name !== 'rover.reports.show') {
 
-                $scope.$broadcast('FILTER_SELECTION_UPDATED', $scope.filter_selected_value);
+                        $state.go('rover.reports.show', {
+                            action: msg || '',
+                            report: angular.copy($scope.selectedReport) || chosenReport
+                        });
+                     } else {
+                        $state.go('.', {
+                            page: loadPage,
+                            action: msg || ''
+                        }, {
+                            location: true,
+                            inherit: true,
+                            relative: $state.$current,
+                            notify: false
+                        });
+                    }
 
-                if (msg) {
-                    $scope.$broadcast(msg);
-                }
+                   $scope.$broadcast('FILTER_SELECTION_UPDATED', $scope.filter_selected_value);                   
+
+                   if (msg) {
+                     $scope.$broadcast(msg);
+                   }                 }
+                
             };
 
             var errorCallback = function (response) {
@@ -2260,7 +2314,7 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
                 };
 
                 $scope.callAPI(reportsSubSrv.fetchGeneratedReportDetails, options);
-            } else {
+            } else {                
                 $scope.invokeApi(reportsSubSrv.fetchReportDetails, params, self.sucssCallback, errorCallback);
             }
         };

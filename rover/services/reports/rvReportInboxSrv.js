@@ -10,7 +10,8 @@ angular.module('sntRover').service('RVReportsInboxSrv', [
     'RVreportsSubSrv', 
     '$filter',
     '$rootScope',
-    'RVReportNamesConst',      
+    'RVReportNamesConst',
+    'RVReportUtilsFac',
     function($q, 
         rvBaseWebSrvV2,
         applyIconClass, 
@@ -22,7 +23,8 @@ angular.module('sntRover').service('RVReportsInboxSrv', [
         RVreportsSubSrv,
         $filter,
         $rootScope,
-        reportNames ) {
+        reportNames,
+        reportUtils ) {
 
         var self = this;
 
@@ -985,6 +987,8 @@ angular.module('sntRover').service('RVReportsInboxSrv', [
                 report.reportIconCls = selectedReport.reportIconCls;
                 report.shouldShowExport = selectedReport.display_export_button;
                 report.isExpanded = false;
+                reportUtils.parseDatesInObject(report.filters.rawData);
+                report.rawData = report.filters.rawData;                
                 self.fillReportDates(report);
             });
             
