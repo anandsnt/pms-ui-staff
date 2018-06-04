@@ -13,8 +13,9 @@ sntRover.controller('RVReportDetailsCtrl', [
     'RVReportPaginationIdsConst',
     '$log',
     'RVReportUtilsFac',
+    'sntActivity',
     function ($scope, $rootScope, $filter, $timeout, $window, reportsSrv, reportParser,
-              reportMsgs, reportNames, ngDialog, $state, reportPaginationIds, $log, reportUtils) {
+              reportMsgs, reportNames, ngDialog, $state, reportPaginationIds, $log, reportUtils, sntActivity) {
 
         BaseCtrl.call(this, $scope);
 
@@ -1237,6 +1238,10 @@ sntRover.controller('RVReportDetailsCtrl', [
                     if (reportsSrv.getPrintClickedState()) {
                         reportsSrv.setPrintClicked(false);
                         $scope.viewStatus.showDetails = false;
+                        if ($state.$current.name !== 'rover.reports.show' && reportsSrv.getChoosenReport()) {
+                          reportsSrv.getChoosenReport().generatedReportId = null;  
+                        }
+                        
                     } else {
                         // load the report with the original page
                         $scope.fetchNextPage($scope.returnToPage);
@@ -1462,6 +1467,7 @@ sntRover.controller('RVReportDetailsCtrl', [
         // Invokes actual print 
         var invokePrint = () => {
             $timeout(function() {
+                sntActivity.stop("PRINTING_FROM_REPORT_INBOX");
                 if ('function' == typeof $scope.printOptions.showModal) {
                     $scope.printOptions.showModal();
                 } else {

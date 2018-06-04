@@ -353,7 +353,7 @@ angular.module('sntRover').service('RVreportsSubSrv', [
         service.fetchRateTypesAndRateList = function() {
             return callApi({
                 name: 'rateTypeAndRateList',
-                method: 'getJSON',
+                method: 'postJSON',
                 url: '/api/rates/list',
                 resKey: 'rates'
                 // params: {

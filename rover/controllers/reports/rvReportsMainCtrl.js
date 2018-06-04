@@ -16,8 +16,9 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
     '$state',
     '$log',
     'ngDialog',
+    'sntActivity',
     function ($rootScope, $scope, payload, reportsSrv, reportsSubSrv, reportUtils, reportParams, reportMsgs,
-              reportNames, $filter, $timeout, util, rvPermissionSrv, reportPaginationIds, $state, $log, ngDialog) {
+              reportNames, $filter, $timeout, util, rvPermissionSrv, reportPaginationIds, $state, $log, ngDialog, sntActivity) {
         var self = this,
             isNotTimeOut = false,
             timeOut,
@@ -2199,6 +2200,7 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 
                 // Checks whether the print is clicked from the report inbox
                 if (reportsSrv.getPrintClickedState()) {
+                    sntActivity.start("PRINTING_FROM_REPORT_INBOX");
                     // This flag will make the report details page and its controller
                     $scope.viewStatus.showDetails = true;
                     if (_.isUndefined($scope.printOptions.showModal)) {

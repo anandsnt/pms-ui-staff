@@ -839,6 +839,8 @@ angular.module('sntRover').service('RVReportsInboxSrv', [
                    case reportParamsConst['COMPLETION_STATUS']:
                    case reportParamsConst['SHOW_ACTIONABLES']:
                    case reportParamsConst['INCLUDE_GUARANTEE_TYPE']:
+                        self.processArrayValuesWithNoFormating(value, key, processedFilter);
+                        break;
                    case reportParamsConst['ORIGIN_VALUES']:
                         self.fillOriginInfo(value, key, promises, processedFilter);
                         break;                   
