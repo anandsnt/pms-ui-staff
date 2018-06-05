@@ -154,7 +154,7 @@ angular.module('sntRover').service('RVReportsInboxSrv', [
 
         this.processRateIds = ( value, key, promises, formatedFilter) => {
             let params = {                
-                "ids[]": value
+                "ids": value
             };
 
             promises.push(RVreportsSubSrv.fetchRateDetailsByIds(params).then(function(rates) {
@@ -516,7 +516,12 @@ angular.module('sntRover').service('RVReportsInboxSrv', [
         this.fillUserInfo = (value, key, promises, formatedFilter) => {            
 
             promises.push(RVreportsSubSrv.fetchActiveUsers().then(function(users) {
-                formatedFilter[reportInboxFilterLabelConst[key]] = _.pluck(self.filterArrayValues(users, value, 'id'), 'full_name').join(',');
+                var selectedUsers = self.filterArrayValues(users, value, 'id');
+
+                selectedUsers = _.map(selectedUsers, (user) => {
+                                    return user.full_name || user.email;
+                                });
+                formatedFilter[reportInboxFilterLabelConst[key]] = selectedUsers.join(',');
             }));
         };
 
@@ -608,7 +613,7 @@ angular.module('sntRover').service('RVReportsInboxSrv', [
                 "ids[]": value
             };          
 
-            promises.push(RVreportsSubSrv.fetchRoomTypeList(params).then(function(roomTypes) {
+            promises.push(self.fetchRoomtypesByIds(params).then(function(roomTypes) {
                 formatedFilter[reportInboxFilterLabelConst[key]] = _.pluck(roomTypes, 'name').join(',');
             }));
         };
@@ -932,6 +937,10 @@ angular.module('sntRover').service('RVReportsInboxSrv', [
                    case reportParamsConst['SORT_FIELD']:
                         self.fillSortField(value, key, processedFilter);
                         break;
+                   case reportParamsConst['SEGMENT_IDS']:
+                        processedFilter[reportInboxFilterLabelConst[key]] = value.join(",");
+                        break;
+
 
                 }                
 
@@ -995,6 +1004,25 @@ angular.module('sntRover').service('RVReportsInboxSrv', [
             });
             
             return generatedReports;
+        };
+
+        /**
+         * Fetches the list of of room types by their ids
+         * @param {Object} contain the params used in api
+         * @return {Promise} promise
+         */
+        this.fetchRoomtypesByIds = (params) => {
+            var deferred = $q.defer(),            
+               url = '/api/room_types';
+
+            rvBaseWebSrvV2.getJSON(url, params)
+            .then(function(data) {                
+                deferred.resolve(data.results);
+            }, function(error) {
+                deferred.reject(error);
+            });
+
+            return deferred.promise;
         };
         
     }
