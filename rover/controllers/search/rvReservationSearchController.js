@@ -14,7 +14,7 @@ sntRover.controller('rvReservationSearchController', ['$scope', '$rootScope', '$
     // changing the header
     $scope.heading = 'SEARCH_TITLE';
     // updating the left side menu
-    $scope.$emit("updateRoverLeftMenu", "search");
+    $scope.$emit("updateRoverLeftMenu", "reservationSearch");
 
     // setting search back button caption
     $scope.$emit("UpdateSearchBackbuttonCaption", "");
@@ -30,6 +30,8 @@ sntRover.controller('rvReservationSearchController', ['$scope', '$rootScope', '$
       'PRE_CHECKIN': 'PRE_CHECKIN',
       'MOBILE_CHECKIN': 'MOBILE_CHECKIN'
     };
+
+    var heading;
 
     // Special case: Search by swipe in back navigation. We have to display the card number as well.
     // So we store the title as sucn in $vault

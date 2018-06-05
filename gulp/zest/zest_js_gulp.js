@@ -109,9 +109,10 @@ module.exports = function(gulp, $, options){
 		var glob 	= require('glob-all'),
 			fileList = zestJSMappingList.minifiedFiles.concat(zestJSMappingList.nonMinifiedFiles),
 			fileList = glob.sync(fileList);
-		return gulp.watch(fileList, function(){
-			return runSequence('build-zeststation-js-dev', 'copy-zest-base-html');
-		});
+
+		gulp.watch(fileList).on('change', function(file) {
+            $.onChangeJSinDev(file.path);
+        });
 	});
 	
 	gulp.task('zest-copy-js-files', function(){

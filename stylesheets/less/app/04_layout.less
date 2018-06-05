@@ -1255,7 +1255,20 @@ body { overflow: hidden; }
 	                .calc-width(100, 50); 
 	            }
 	        }
-	        /* Reports Screen ***/
+	         
+	        /* Invoices ***/
+	        &.invoice-search {
+	            .search { 
+	                .calc-width(100, 200); 
+	            }
+
+	            .options {
+	                width: 180px;
+	                .pull-right;
+	            }
+	        }
+			
+			/* Reports ***/
 	        &.reports {
 	            &.enable-adding {
 	                .search {
@@ -1825,10 +1838,21 @@ body { overflow: hidden; }
 			left: -5px;
 		}
 
+		.global-card {
+        position: absolute;
+        top: -5px;
+        left: -5px;
+    }
+
+    .stay-count {
+        position: absolute;
+        top: -5px;
+        right: -5px;
+    }
+
 		img {
 			width: 100%;
 			height: auto;
-			
 			#border-radius > .rounded();
 		}
 

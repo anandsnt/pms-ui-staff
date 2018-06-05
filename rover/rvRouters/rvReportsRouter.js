@@ -20,7 +20,10 @@ angular.module('reportsModule', [])
         $stateProvider.state('rover.reports.dashboard', {
             url: '/list',
             templateUrl: '/assets/partials/reports/rvReportsDashboard.html',
-            controller: 'RVReportsDashboardCtrl'            
+            controller: 'RVReportsDashboardCtrl',
+            params: {
+                refresh: true
+            }
         });
 
         $stateProvider.state('rover.reports.show', {

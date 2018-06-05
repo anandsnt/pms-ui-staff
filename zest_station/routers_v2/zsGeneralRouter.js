@@ -53,6 +53,9 @@ sntZestStation.config(['$stateProvider', '$urlRouterProvider', '$translateProvid
 				},
 				hotelTranslations: function(zsGeneralSrv) {
 					return zsGeneralSrv.fetchHotelTranslations();
+				},
+				defaultTranslations: function(zsGeneralSrv) {
+					return zsGeneralSrv.fetchDefaultTranslations();
 				}
 			}
 		});

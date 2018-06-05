@@ -32,6 +32,8 @@
 		&.icon-allotments { background-position: 0 -870px; }
 		&.icon-settings { background-position: 0 -930px; }
         &.icon-layers { background-position: 0 -990px; }
+        &.icon-alert { background-position: 0 -1035px; }
+        &.icon-invoice { background-position: 0 -1095px; }
 
 		@media only screen and (min-width: 600px) {
 			background-size: 125px;
@@ -55,6 +57,8 @@
 			&.icon-allotments { background-position: 0 -1800px; }
 			&.icon-settings { background-position: 0 -1920px; }
             &.icon-layers { background-position: 0 -2040px; }
+            &.icon-alert { background-position: 0 -2160px; }
+            &.icon-invoice { background-position: 0 -2280px; }
 		}
 
 		@media @highdpi { background-image: @iconNoContent2x; }
@@ -953,6 +957,19 @@
 	@media only screen and (min-width: 600px) {
 		.search-indicator { .square(20px); }
 	}
+
+	.global-card,
+    .stay-count {
+        font-size: 12px;
+        line-height: 20px;
+        font-weight: 600;
+        text-transform: uppercase;
+        text-align: center;
+        color: @white;
+        background: @blue;
+        .square(20px);
+        #border-radius > .rounded(50%);
+    }
 
 	.stars {
 		display: inline-block;

@@ -10,7 +10,7 @@ sntZestStation.controller('zsRootCtrl', [
     'zsEventConstants',
     '$state', 'zsGeneralSrv', '$rootScope', 'ngDialog', '$sce',
     'zsUtilitySrv', '$translate', 'zsHotelDetailsSrv', 'cssMappings', 'hotelTranslations',
-    'zestStationSettings', '$timeout', 'zsModeConstants', 'hotelTimeData', 'hotelLanguages', '$filter', '$log', '$window', 'languages',
+    'zestStationSettings', '$timeout', 'zsModeConstants', 'hotelTimeData', 'hotelLanguages', '$filter', '$log', '$window', 'languages', 'defaultTranslations',
     function($scope,
 		zsEventConstants,
 		$state,
@@ -31,7 +31,8 @@ sntZestStation.controller('zsRootCtrl', [
 		$filter,
         $log,
         $window,
-        languages
+        languages,
+        defaultTranslations
         ) {
 
 
@@ -144,11 +145,15 @@ sntZestStation.controller('zsRootCtrl', [
             }
         };
 
-
         $scope.getTagValue = function(tag) {
             var currentLanguageCode = $scope.currentLanguageCode;
 
-            return $scope.tagInEdit.language[currentLanguageCode] ? $scope.tagInEdit.language[currentLanguageCode][tag] : '';
+            // check if the tag is present in the translation file,
+            // if not present use the default text in the master translation file.
+            if ($scope.tagInEdit.language[currentLanguageCode] && $scope.tagInEdit.language[currentLanguageCode][tag]) {
+                return $scope.tagInEdit.language[currentLanguageCode][tag];
+            } 
+            return defaultTranslations[tag];
         };
 
 		/**
@@ -1918,6 +1923,17 @@ sntZestStation.controller('zsRootCtrl', [
             });
             return propertyTranslations ? propertyTranslations.translations : [];
         };
+
+
+        $scope.$on('PRINT_CURRENT_PAGE', function() {
+            // if zest station is loaded in Electron App, proceed with silent printing
+            // using electron App (Communicate asynchronously from a renderer process to the main process.)
+            if (navigator.userAgent.indexOf('Electron') !== -1 && window.ipcRenderer) {
+                window.ipcRenderer.send('printCurrentPage');
+            } else {
+                $window.print();
+            }
+        });
 
 		/** *
 		 * [initializeMe description]

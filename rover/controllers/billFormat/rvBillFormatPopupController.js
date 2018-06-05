@@ -17,7 +17,18 @@ sntRover.controller('rvBillFormatPopupCtrl', ['$scope', '$rootScope', '$filter',
             params.is_type = "Reservation";
         } else {
             $scope.hideCompanyCardInvoiceToggle = false;
-            if (!!$scope.groupConfigData) {
+            if ($scope.isFromInvoiceSearchScreen) {
+                if ($scope.clickedInvoiceData.associated_item.company_card === null && $scope.clickedInvoiceData.associated_item.travel_agent_card === null) {
+                    $scope.hideCompanyCardInvoiceToggle = true;
+                } else if ($scope.clickedInvoiceData.associated_item.company_card === null && $scope.clickedInvoiceData.associated_item.travel_agent_card !== null) {
+                    // Only TA card is attached.
+                    $scope.isCompanyCardInvoice = false;
+                    $scope.disableCompanyCardInvoice = true;
+                } else if ($scope.clickedInvoiceData.associated_item.company_card !== null && $scope.clickedInvoiceData.associated_item.travel_agent_card === null) {
+                    // Only Company card is attached.
+                    $scope.disableCompanyCardInvoice = true;
+                }
+            } else if (!!$scope.groupConfigData) {
                 params.id = $scope.groupConfigData.summary.group_id;
                 params.is_group = true;
                 params.is_type = "Account";
@@ -131,7 +142,7 @@ sntRover.controller('rvBillFormatPopupCtrl', ['$scope', '$rootScope', '$filter',
                 params.group_id = $scope.groupConfigData.summary.group_id;
                 params.is_group = true;
             } else {
-                params.account_id = $scope.accountConfigData.summary.posting_account_id;
+                params.account_id = ($scope.isFromInvoiceSearchScreen) ? $scope.clickedInvoiceData.associated_item.item_id : $scope.accountConfigData.summary.posting_account_id;
                 params.is_group = false;
             }
             params.type = $scope.isCompanyCardInvoice ? 'COMPANY' : 'TRAVELAGENT';

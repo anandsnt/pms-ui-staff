@@ -129,10 +129,11 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 
             // tell report list controller to refresh scroll
             $scope.$broadcast(reportMsgs['REPORT_LIST_SCROLL_REFRESH']);
+
             if (reportsSrv.getChoosenReport().generatedReportId) {
                 $state.go('rover.reports.inbox');
             } else {
-                $state.go('rover.reports.dashboard');
+                $state.go('rover.reports.dashboard', { refresh: false });
             }
         };
 

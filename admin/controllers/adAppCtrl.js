@@ -204,9 +204,6 @@ admin.controller('ADAppCtrl', [
                                 title: 'MENU_TA_CARDS',
                                 action: 'rover.companycardsearch',
                                 menuIndex: 'cards'
-                            }, {
-                                title: 'MENU_DISTRIBUTION_MANAGER',
-                                action: ''
                             }]
                     }, {
                         title: 'MENU_HOUSEKEEPING',
