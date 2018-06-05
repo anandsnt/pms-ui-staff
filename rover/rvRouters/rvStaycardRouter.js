@@ -141,7 +141,7 @@ angular.module('stayCardModule', [])
                         params.promotion_id = $stateParams.promotion_id;
                     if ($stateParams.room_type_id)
                         params.room_type_id = $stateParams.room_type_id;
-                    if ($stateParams.is_member == 'true')
+                    if ($stateParams.is_member)
                         params.is_member = $stateParams.is_member;
 
                     var activeTab = RVReservationBaseSearchSrv.getRoomRatesDefaultView();
