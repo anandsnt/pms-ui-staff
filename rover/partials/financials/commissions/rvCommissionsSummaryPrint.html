@@ -102,19 +102,5 @@
                 </tfoot>
             </table>
         </div>
-
-        <ul class="grid-footer">
-            <li>
-                From <span>{{ appliedFilter.fromDate | date:dateFormat }}</span> to <span>{{ appliedFilter.toDate | date:dateFormat }}</span><br/>
-            </li>
-            <li>
-                Business date <span>{{ userInfo.business_date | date:dateFormat }}</span><br/>
-                User <span>{{ userInfo.first_name }} {{ userInfo.last_name }}</span>
-            </li>
-        </ul> 
-
     </div>
 </div>
-
-<rv-pagination  page-options="commisionReportTAPagination" page-data="totalCount" >
-</rv-pagination>
