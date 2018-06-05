@@ -1,13 +1,14 @@
 <!-- Commissions summary content -->
-<div  id="report-content" ng-iscroll="report-details-scroll" class="report-content grid scrollable with-pagination print-commission-summary"> <!-- Add class "with-pagination" if pagination is shown -->
+<div  id="report-content" ng-iscroll="report-details-scroll" class="report-content grid scrollable with-pagination only-print"> <!-- Add class "with-pagination" if pagination is shown -->
     <div class="wrapper">
-        <div ng-repeat="travel_agents in printData.results">
+        <div ng-repeat="travel_agents in printData.results" class="travel-agent" ng-class="{'last' : printData.results.length-1 == $index }">
             <h2 class="padding-top-ta">{{travel_agents.travel_agent_name}}, IATA: {{travel_agents.IATA_number}}</h2>
-            <table class="commission-reports">
+            <table class="commission-reports payment-report">
                 <thead>
                     <tr> 
-                        <th class="reservation" rowspan="2" >Reservation</th>
+                        <th class="room" rowspan="2" >Reservation</th>
                         <th class="guest" rowspan="2">Guest</th>
+                        <th class="code" rowspan="2"></th>
                         <th class="amount" rowspan="2">Rate Amount</th>
                         <th class="comission" colspan="3">Commission</th>
                     </tr>
@@ -48,6 +49,9 @@
                                     </time>
                                 </div>
                             </div>
+                        </td>
+                        <td>
+                            <!-- place holder for rate code -->
                         </td>
                         <td>
                             <span class="currency">{{currencySymbol}}</span>{{reservation.rate_details[0].rate_amount}}

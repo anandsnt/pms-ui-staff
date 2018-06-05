@@ -2560,6 +2560,29 @@
                 border-collapse: collapse;
                 border-spacing: 0;
 
+                /* styles for commission summary print */ 
+                &.payment-report {
+                    thead {
+                        display: table-row-group;
+                        tr {
+                            th {
+                                &.room {
+                                    width: 75pt;
+                                }
+                            }
+                        }
+                    }
+                    tbody {
+                        tr {
+                            td {
+                                &.confirm-no {
+                                    width: 75pt;
+                                }
+                            }    
+                        }
+                    }
+                }
+
                 thead {
                     display: table-row-group;
                     tr {
@@ -2572,10 +2595,6 @@
 
                             &.code {
                                 width: 150pt;
-                            }
-
-                            &.reservation {
-                                width: 75pt;
                             }
 
                             &.room {
@@ -2621,10 +2640,6 @@
                     tr {
                         td {
                             page-break-inside: avoid;
-
-                            &.confirm-no {
-                                width: 75pt;
-                            }
 
                             &.name {
 
