@@ -438,8 +438,11 @@ sntRover.controller('RVCommissionsSummaryController', ['$scope',
                 }, 500);
             }
 
+            var printParams = getParams();
+            printParams.travel_agent_ids =  _.pluck($scope.commissionsData.accounts, 'id'); 
+
             $scope.callAPI(RVCommissionsSrv.printCommissionOverview, {
-                        params: getParams(),
+                        params: printParams,
                         successCallBack: successCallback,
                         failureCallBack: function(response) {
                             $scope.errorMessage = response;
