@@ -1320,6 +1320,7 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 
             // include sort bys
             if (report.sortByOptions) {
+                rawData.sortOptions = report.sortByOptions;
                 if (!!report.chosenSortBy) {
                     key = reportParams['SORT_FIELD'];
                     params[key] = report.chosenSortBy;
@@ -1474,7 +1475,7 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
             // include company/ta
             if (report.hasOwnProperty('hasIncludeCompanyTa') && !!report.chosenIncludeCompanyTa) {
                 key = report.hasIncludeCompanyTa.value.toLowerCase();
-                params[key] = [];
+                params[key] = [];                
                 /**/
                 _.each(report.chosenIncludeCompanyTa.split(', '), function (entry) {
                     params[key].push(entry);
@@ -2518,7 +2519,7 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
                 this.value = uiValue.join(', ');
                 $timeout(function () {
                     $scope.$apply(function () {
-                        touchedReport.uiChosenIncludeCompanyTa = uiValue.join(', ');
+                        touchedReport.uiChosenIncludeCompanyTa = uiValue.join(', ');                      
                     });
                 }, 100);
                 return false;

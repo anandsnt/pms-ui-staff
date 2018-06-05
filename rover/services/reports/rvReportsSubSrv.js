@@ -245,22 +245,7 @@ angular.module('sntRover').service('RVreportsSubSrv', [
                 params: params,
                 resKey: 'results'
             });
-        };
-
-        /**
-         * Fetch addons name for given array of addon ids
-         * @params {Object} contains an array of ids
-         * @return {Promise} promise
-         */
-        service.fetchAddonById = function (params) {
-            return callApi({
-                name: 'addons',
-                method: 'postJSON',
-                url: 'api/addons/names_list',
-                params: params,
-                resKey: 'results'
-            });
-        };
+        };     
 
 
         service.fetchMarkets = function(params) {
@@ -654,7 +639,7 @@ angular.module('sntRover').service('RVreportsSubSrv', [
         /**
          * Fetch rate info for an array of rate ids
          * @param {Object} params hold array of rate ids
-         * return {Promise}
+         * @return {Promise}
          */
         service.fetchRateDetailsByIds = (params) => {
             var deferred = $q.defer(),
@@ -668,6 +653,42 @@ angular.module('sntRover').service('RVreportsSubSrv', [
 
             return deferred.promise;
         };
+
+        /**
+         * Fetch addons name for given array of addon ids
+         * @param {Object} contains an array of ids
+         * @return {Promise}
+         */
+        service.fetchAddonsByIds = (params) => {
+            var deferred = $q.defer(),
+                url = '/api/addons/names_list';
+
+            rvBaseWebSrvV2.postJSON(url, params).then(function(response) {
+                deferred.resolve(response.results);
+            }, function(error) {
+                deferred.reject(error);
+            });
+
+            return deferred.promise;
+        }; 
+
+        /**
+         * Fetch travel agents by ids
+         * @params {Object} contains an array of ids
+         * @return {Promise}
+         */
+        service.fetchTravelAgentsByIds = (params) => {
+            var deferred = $q.defer(),
+                url = '/api/reports/list_travel_agents';
+
+            rvBaseWebSrvV2.getJSON(url, params).then(function(response) {
+                deferred.resolve(response.travel_agents);
+            }, function(error) {
+                deferred.reject(error);
+            });
+
+            return deferred.promise;
+        };        
 
         return service;
     }
