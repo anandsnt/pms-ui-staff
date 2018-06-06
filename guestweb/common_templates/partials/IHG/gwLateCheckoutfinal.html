@@ -8,27 +8,27 @@
 <div class="container">
     <!-- request text -->
     <div class="row" ng-hide="posted || netWorkError">
-        <div class="col-lg-2"></div>
-        <div class="col-lg-8 top-spacing">
+        <div class="col-md-2"></div>
+        <div class="col-md-8 top-spacing">
             <p class="request-text">Your request is being processed. This may take a few seconds..... please wait!</p>
         </div>
-        <div class="col-lg-2">
+        <div class="col-md-2">
         </div>
     </div>
     <!-- error message -->
     <div class="row" ng-show="netWorkError">
-        <div class="col-lg-2"></div>
-        <div class="col-lg-8 top-spacing">
+        <div class="col-md-2"></div>
+        <div class="col-md-8 top-spacing">
             <p class="error-text">Our apologies, something went wrong, please complete your check-out at our front desk. You can also call the hotel at <a href="tel: {{hotelPhone}}" class="phone-text">{{hotelPhone}}.</a></p>
         </div>
-        <div class="col-lg-2">
+        <div class="col-md-2">
         </div>
     </div>
     <!-- late checkout success -->
     <div class="row" ng-show="success">
-        <div class="col-lg-2"></div>
+        <div class="col-md-2"></div>
         <!-- left side -->
-        <div class="col-lg-4">
+        <div class="col-md-4">
             <div class="section-container">
                 <p class="main-text">Thank You.</p>
                 <p class="sub-main-text">The following will appear on your bill.</p>
@@ -39,12 +39,12 @@
                 </p>
             </div>
         </div>
-        <div class="col-lg-1"></div>
+        <div class="col-md-1"></div>
         <!-- right side -->
-        <div class="col-lg-4 top-spacing margin-top-40 margin-bottom-40">
+        <div class="col-md-4 top-spacing margin-top-40 margin-bottom-40">
             <button class="btn btn-template margin-top-10" ui-sref="checkOutConfirmation"> Back to Check-out</button>
         </div>
-        <div class="col-lg-1">
+        <div class="col-md-1">
         </div>
     </div>
 </div>

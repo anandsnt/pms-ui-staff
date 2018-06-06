@@ -32,12 +32,12 @@ p
 .main-text, 
 .sub-main-text {
     text-align: center !important;
-    font-size: 20px!important;
 }
 .main-text {
-    font-size: 35px;
+    font-size: 35px !important;
 }
 .sub-text{
+    font-size: 20px !important;
     margin-bottom: 4px;
 }
 .logo-image {
@@ -214,6 +214,9 @@ p
     .footer-text {
         margin-top: 22px;
     }
-
 }
-
+@media (max-width: 1200px) {
+    .extended-btn{
+        margin-top: 23px;
+    }
+}

@@ -33,7 +33,7 @@
             <p class="main-text">Select your new<br>check out time:</p>
         </div>
        <!-- right side -->
-        <div class="col-md-5 top-spacing mob-no-padding">
+        <div class="col-md-5 mob-no-padding">
             <div class="row options-container">
              <a class="btn triple-button one-third-width {{ charge.class }}" ng-repeat="charge in charges" ng-click="gotToNextStep(charge.amount,charge.id)">
                  <div class="row">
@@ -54,8 +54,8 @@
                 </div>
              </a>
             </div>
-            <div class=" row margin-top-40">
-            <a class="no-thanks" ui-sref="checkOutOptions">NO, THANKS</a>
+            <div class=" row margin-top-40 align-center">
+                <a class="no-thanks" ui-sref="checkOutOptions">NO, THANKS</a>
             </div>
         </div>  
         <div class="col-md-1"></div>               
