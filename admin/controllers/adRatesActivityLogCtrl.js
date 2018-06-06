@@ -138,10 +138,9 @@ admin.controller('ADRatesActivityLogCtrl', ['$scope', '$rootScope', '$state', '$
             else if ( dateFormat === 'dd/MM/yyyy' || dateFormat === 'dd-MM-yyyy' ) {
                 delimiter = dateFormat.split('')[2];
                 temp = date.split(delimiter);
-                newDate = temp[1]+delimiter+temp[0]+delimiter+temp[2];
+                newDate = temp[1] + delimiter + temp[0] + delimiter + temp[2];
                 newDate = $filter('date')(tzIndependentDate(newDate), 'yyyy-MM-dd' );
             }
-
             return newDate;
         };
 
