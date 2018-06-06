@@ -26,26 +26,27 @@
     </div>
     <!-- cc entry -->
     <div class="row" ng-hide="isFetching || netWorkError || ccSaved">
-        <div class="col-md-4"></div>
-        <div class="col-md-4 top-spacing no-section-side-padding">
+        <div class="col-md-1"></div>
+        <div class="col-md-4 top-spacing">
             <p class="main-text">Payment Info</p>
-            <p class="sub-main-text margin-top-20">Please enter your credit card or debit card information.</p>
-            <div class="section-container margin-top-40">
-                <div class="row margin-bottom-5">
+            <p class="sub-main-text">Please enter your credit card or debit card information.</p>
+        </div>
+        <div class="col-md-2"></div>
+        <div class="col-md-4 top-spacing">
+            <div class="section-container">
+                <div class="row">
                     <!-- card number -->
                     <div class="cc-input-field pull-left">
                         <span class="sub-text upper-case pull-left">card number</span>
                         <br>
-                        <br>
-                        <input class="input-field" ng-model="cardNumber"></input>
+                        <input type="text" class="input-field" ng-model="cardNumber"></input>
                     </div>
                     <!-- cvv -->
                     <div class="cvv-input-field pull-right">
                         <span class="sub-text pull-left">#CVV</span>
                         <br>
-                        <br>
-                        <input class="input-field" ng-model="ccv"></input>
-                        <a class="query-text pull-left margin-top-10" ng-click="showCcvPopup()">What is this?</a>
+                        <input type="text" class="input-field" ng-model="ccv"></input>
+                        <a class="query-text pull-left" ng-click="showCcvPopup()">What is this?</a>
                     </div>
                 </div>
                 <div class="row">
@@ -55,7 +56,7 @@
                         <br>
                         <br>
                         <div class="select-style">
-                            <select  ng-model="monthSelected" ng-options="month.value as month.name for month in months">
+                            <select class="margin-top-10" ng-model="monthSelected" ng-options="month.value as month.name for month in months">
                                 <option value="">Month</option>
                             </select>
                         </div>
@@ -66,31 +67,37 @@
                         <br>
                         <br>
                         <div class="select-style left-margin-5">
-                            <select  ng-model="yearSelected" ng-options="year as year  for year in years">
+                            <select class="margin-top-10" ng-model="yearSelected" ng-options="year as year  for year in years">
                                 <option value="">Year</option>
                             </select>
                         </div>
                     </div>
                 </div>
                 <!-- save payment button  -->
-                 <input type="submit" class="btn btn-template margin-top-40" ng-click="savePaymentDetails()" value="NEXT" />
+                <a class="btn btn-template margin-top-20" ng-click="savePaymentDetails()"> Continue</a>
             </div>
         </div>
-        <div class="col-md-4">
+        <div class="col-md-1">
         </div>
     </div>
     <!-- contentarea starts here-->
     <div class="row" ng-hide="isFetching || netWorkError || !ccSaved">
-        <div class="col-md-4"></div>
+        <div class="col-md-1"></div>
         <!-- left side -->
-        <div class="col-md-4 top-spacing no-section-side-padding">
+        <div class="col-md-4 top-spacing">
             <p class="main-text final-text"> Success!</p>
-            <p class="sub-text margin-top-20"> Card Information stored successfully.</p>
-            <form>
-                <input type="submit" class="btn btn-template margin-top-40 padding-3" ng-click="nextButtonClicked()" value="Continue" />
-            </form>
+            <p class="sub-text"> Card Information stored successfully.</p>
         </div>
-        <div class="col-md-4">
+        <div class="horizontal-line-sep-mobile"></div>
+        <!-- right side -->
+        <div class="col-md-2">
+            <div class="vertical-line">&nbsp;</div>
+        </div>
+        <div class="col-md-3 top-spacing sm-no-top-spacing">
+
+            <a class="btn btn-template margin-top-20" ng-click="nextButtonClicked()"> Continue</a>
+        </div>
+        <div class="col-md-1">
         </div>
         <!-- checkinbtn section ends here-->
     </div>

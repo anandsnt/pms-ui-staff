@@ -1,7 +1,7 @@
 <!-- navbar -->
 <div class="container-fluid padding-0">
     <div class="row header-bar">
-        <img alt="" class="logo-image" src="{{hotelLogo}}" />
+        <img alt="" class="logo-image" src="{{hotelLogo}}"/>
     </div>
 </div>
 <!-- main section starts here -->
@@ -10,33 +10,41 @@
     <div class="row" ng-hide="posted || netWorkError">
         <div class="col-md-2"></div>
         <div class="col-md-8 top-spacing">
-            <p class="request-text">Your request is being processed. This may take a few seconds..... please wait!</p>
+            <p class="request-text">Your request is being processed.
+            This may take a few seconds..... please wait!</p>
         </div>
         <div class="col-md-2">
-        </div>
+        </div>                   
     </div>
     <!-- error message -->
     <div class="row" ng-show="netWorkError">
         <div class="col-md-2"></div>
         <div class="col-md-8 top-spacing">
-            <p class="error-text">Our apologies, something went wrong, please complete your check out at our front desk. You can also call the hotel at <a href="tel: {{hotelPhone}}" class="phone-text">{{hotelPhone}}.</a></p>
+            <p class="error-text">Our apologies, something went wrong, please complete your check-out at our front desk. You can also call the hotel at <a href="tel: {{hotelPhone}}" class="phone-text">{{hotelPhone}}.</a></p>
         </div>
         <div class="col-md-2">
-        </div>
+        </div>                   
     </div>
     <!-- late checkout success -->
     <div class="row" ng-show="success">
-        <div class="col-md-4"></div>
+        <div class="col-md-2"></div>
         <!-- left side -->
-        <div class="col-md-4 no-section-side-padding top-spacing">
-            <p class="main-text text-left margin-top-40">Thank you for purchasing Late check out.
-            </p>
-            <p class="sub-main-text margin-top-20 text-left">
-                Your room keys are set to expire at {{oldCheckoutTime}}. Please see a Public Advisor to re-activate your keys for the late checkout time selected.
-            </p>
-            <input type="submit" class="btn btn-template margin-top-40" ng-click="goTocheckOutConfirmation()" value="Back to check out" />
+        <div class="col-md-4 top-spacing">
+            <p class="main-text">Thank You.</p>
+            <p class="sub-main-text"><em>The following will appear on your bill.</em>
+	        </p>
+	       <p class="sub-main-text">Late Check-out ({{ lateCheckOut.time }} {{ lateCheckOut.ap }} ) .... {{currencySymbol}}{{ lateCheckOut.amount }}
+           </p>
+           <p class="sub-main-text">
+            <em>{{keyExpiry}}</em>
+           </p>
         </div>
-        <div class="col-md-4">
+        <div class="col-md-1"></div>
+        <!-- right side -->
+        <div class="col-md-3 top-spacing sm-no-top-spacing">
+            <a class="btn btn-template margin-top-10" ui-sref="checkOutConfirmation"> Back to Check-out</a>
         </div>
+        <div class="col-md-1">
+        </div>                   
     </div>
 </div>

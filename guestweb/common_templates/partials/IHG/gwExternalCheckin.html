@@ -1,6 +1,6 @@
 <div class="container-fluid padding-0">
     <div class="row header-bar">
-        <img alt="" class="logo-image" src="{{hotelLogo}}" />
+        <img alt="" class="logo-image" src="{{hotelLogo}}"/>
     </div>
 </div>
 <div class="container">
@@ -21,39 +21,39 @@
         <div class="col-md-2">
         </div>
     </div>
-    <div class="row" ng-hide="isLoading || netWorkError || !searchMode || isCalender">
-        <div class="col-md-4"></div>
-        <div class="col-md-4 top-spacing no-section-side-padding">
+    <div class="row" ng-hide="isLoading || netWorkError || !searchMode">
+        <div class="col-md-3"></div>
+        <div class="col-md-6 top-spacing sm-no-top-spacing">
             <!-- default main text -->
-            <p class="main-text text-left" ng-if="!screenCMSDetails.title">Find Your Reservation</p>
+            <p class="main-text" ng-if="!screenCMSDetails.title">Find Your Reservation</p>
             <!-- default sub  text -->
-            <p class="sub-main-text margin-top-20 text-left" ng-if="!screenCMSDetails.description">Please enter your last name and either your confirmation number OR departure date:</p>
+            <p class="sub-main-text" ng-if="!screenCMSDetails.description">Enter your last name and either your confirmation number OR departure date:</p>
             <!-- fields -->
-            <div class="section-container margin-top-40">
+            <div class="section-container">
                 <form>
                     <!-- Lat name -->
-                    <p class="pull-left sub-text">LAST NAME ON RESERVATION</p>
-                    <input type="text" class="input-field" ng-model="lastname"></input>
+                    <p class="pull-left sub-text margin-top-10">LAST NAME ON RESERVATION</p>
+                    <input type="text" class="input-field padding-2" ng-model="lastname"></input>
                     <!-- Confirmation number -->
-                    <p class="pull-left sub-text margin-top-20">CONFIRMATION NUMBER</p>
-                    <input type="text" class="input-field" ng-model="confirmationNumber"></input>
+                    <p class="pull-left sub-text margin-top-10">CONFIRMATION NUMBER</p>
+                    <input type="text" class="input-field padding-2" ng-model="confirmationNumber"></input>
                     <br/>
-                    <p class="sub-text margin-top-20 text-left" ng-if="showDepartureDateForExtUrl">OR</p>
+                    <p class="sub-text margin-top-10" ng-if="showDepartureDateForExtUrl">OR</p>
                     <!-- Departure date -->
                     <p class="pull-left sub-text margin-top-10" ng-if="showDepartureDateForExtUrl">DEPARTURE DATE</p>
-                    <input class="input-field calendar-button" ng-click="showCalender()" ng-model="departureDate" placeholder="{{dateFormatPlaceholder}}" readonly ng-if="showDepartureDateForExtUrl"></input>
+                    <input class="input-field padding-2 calendar-button" ng-click="showCalender()" ng-model="departureDate" placeholder="{{dateFormatPlaceholder}}" readonly ng-if="showDepartureDateForExtUrl"></input>
                     <!-- Submit button -->
-                    <input type="submit" class="btn btn-template margin-top-40" ng-click="nextButtonClicked()" value="NEXT" />
+                    <a type="submit" class="btn btn-template margin-top-20 padding-3" ng-click="nextButtonClicked()">Continue</a>
                 </form>
             </div>
         </div>
-        <div class="col-md-4">
+        <div class="col-md-3">
         </div>
     </div>
     <!-- no matches -->
     <div class="row" ng-hide="isLoading || netWorkError || !noMatch">
-        <div class="col-md-4"></div>
-        <div class="col-md-4 top-spacing no-section-side-padding">
+        <div class="col-md-3"></div>
+        <div class="col-md-6 top-spacing sm-no-top-spacing">
             <!-- default main text -->
             <p class="main-text">No Match</p>
             <!-- default sub  text -->
@@ -65,16 +65,16 @@
                 <p class="sub-text margin-top-10 full-width" ng-show="lastname.length >0" ng-bind="lastname"></p>
                 <p class="sub-text margin-top-10 full-width" ng-show="confirmationNumber.length>0" ng-bind="confirmationNumber"></p>
                 <p class="sub-text margin-top-10 full-width" ng-show="departureDate.length >0" ng-bind="departureDate"></p>
-                <a class="btn btn-template margin-top-40 padding-3" ng-click="tryAgain()"> Try Again</a>
+                <a class="btn btn-template margin-top-20 padding-3" ng-click="tryAgain()"> Try Again</a>
             </div>
         </div>
-        <div class="col-md-4">
+        <div class="col-md-3">
         </div>
     </div>
     <!-- multiple matches -->
     <div class="row" ng-hide="isLoading || netWorkError || !multipleResults">
-        <div class="col-md-4"></div>
-        <div class="col-md-4 top-spacing no-section-side-padding">
+        <div class="col-md-3"></div>
+        <div class="col-md-6 top-spacing sm-no-top-spacing">
             <!-- default main text -->
             <p class="main-text">Multiple Matches</p>
             <!-- default sub  text -->
@@ -91,11 +91,11 @@
                     <p class="sub-text margin-top-10">CONFIRMATION NUMBER</p>
                     <input type="text" class="input-field padding-2" ng-model="confirmationNumber"></input>
                     <br/>
-                    <input type="submit" class="btn btn-template margin-top-40" ng-click="nextButtonClicked()" value="NEXT" />
+                    <input type="submit" class="btn btn-template margin-top-20 padding-3" ng-click="nextButtonClicked()" value="Continue" />
                 </form>
             </div>
         </div>
-        <div class="col-md-4">
+        <div class="col-md-3">
         </div>
     </div>
 </div>

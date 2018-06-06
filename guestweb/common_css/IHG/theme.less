@@ -17,6 +17,7 @@ a,a:hover,
 .footer-sub-text,
 .footer-sub-text:hover,
 .phone-label,
+.footer-text,
 p
 
 { 
@@ -41,7 +42,7 @@ p
 .logo-image {
      margin: 4% auto 2%;
 }
- .header-bar{
+.header-bar{
      background:#fff;
 }
 .btn-template,{
@@ -56,6 +57,9 @@ p
 }
 .margin-top-20{
     margin-top: 23px;
+}
+.btn{
+    text-transform: uppercase;
 }
 
  .view-bill{
@@ -130,7 +134,30 @@ p
 .margin-top-20 {
     margin-top: 26px!important;
 }
- @media (max-width: 990px) {
+.accept-charge-icon, 
+.checkout-icon, 
+.late-checkout-icon, 
+.upgrade-icon {
+    margin: 15px auto 20px;
+}
+.dual-button{
+    width: 50%;
+    height: 168px;
+    padding: 0px;
+    p {
+        margin-bottom: 0px;
+        color: #fff;
+        font-size: 23px;
+        line-height: 26px;
+    }
+    p:first-child {
+        margin-top: 33px;
+    }
+}
+.footer-text {
+    font-style: normal;
+}
+@media (max-width: 990px) {
     .section-container {
         padding-bottom: 20px;
     }
@@ -150,11 +177,19 @@ p
         font-size: 23px !important;
         margin-bottom: 27px;
     }
-    .sub-main-text {
+    .sub-main-text,.footer-text {
         font-size: 13px !important;
         margin-bottom: 0px !important;
     }
     .sub-text {
         font-size: 12px !important;
+    }
+    .padded-text{
+        width: 223px;
+        margin: 0 auto;
+        text-align: center;
+    }
+    .footer-text {
+        margin-top: 22px;
     }
 }

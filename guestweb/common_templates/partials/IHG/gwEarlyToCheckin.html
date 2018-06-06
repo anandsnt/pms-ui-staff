@@ -1,0 +1,29 @@
+<!-- navbar -->
+<div class="container-fluid padding-0">
+    <div class="row header-bar">
+        <img alt="" class="logo-image" src="{{hotelLogo}}" />
+    </div>
+</div>
+<!-- main section starts here -->
+<div class="container">
+    <!-- email entry -->
+    <div class="row">
+        <div class="col-md-3"></div>
+        <div class="col-md-6 top-spacing sm-no-top-spacing">
+            <form>
+                <div class="top-spacing section-container">
+                    <p class="main-text">Too Early</p>
+                    <p class="sub-main-text">We found your reservation, but it is too early to check in.</p>
+                    <p class="sub-main-text">You can check in on {{checkinAvailableDateAfter}}.
+                        <p>
+                </div>
+                <br/>
+                <br/>
+                <!--  submit button-->
+                <a class="btn btn-template  margin-top-10" ui-sref="externalCheckinVerification"> Find Reservation</a>
+            </form>
+        </div>
+        <div class="col-md-3">
+        </div>
+    </div>
+</div>
