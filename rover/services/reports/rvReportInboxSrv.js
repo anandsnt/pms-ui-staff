@@ -835,7 +835,6 @@ angular.module('sntRover').service('RVReportsInboxSrv', [
          * @return {void} 
          */
         this.fillGroupByInfo = (value, key, formatedFilter) => { 
-
             if(value) {
                 formatedFilter[reportInboxFilterLabelConst['GROUP_BY']] = reportInboxFilterLabelConst[key];
             } 
