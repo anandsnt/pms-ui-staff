@@ -385,22 +385,22 @@ angular.module('sntRover').service('RVReportsInboxSrv', [
          * @param {String} key the key to be used in the formatted filter
          * @param {Promises} promises array of promises
          * @param {Object} formatedFilter the formatted filter object
-         * @param {String} entityType values are GROUP/TRAVELAGENT/COMPANY
          * @return {void} 
          */
-        this.fillCompanyTaGroupDetails = (value, key, promises, formatedFilter, entityType) => {
-            var entityId = value.split("_")[1];           
-            switch (entityType) {
-                case "GROUP":
-                      self.fillGroupInfo(entityId, key, promises, formatedFilter);
-                      break;
-                case "TRAVELAGENT":
-                case "COMPANY":
-                      self.fillTaCCDetails(entityId, key, promises, formatedFilter)
-                      break;
+        this.fillCompanyTaGroupDetails = (value, key, promises, formatedFilter) => {
+            var entity = value.split("_"); 
 
-            }            
-        };
+            if (entity.length === 2 && entity[0] === 'account') {
+                promises.push(RVreportsSubSrv.fetchAccountsById(entity[1]).then(function(response) {
+                   formatedFilter[reportInboxFilterLabelConst[key]] = response.account_details.account_name; 
+                }));
+            } else if (entity.length === 2 && entity[0] === 'group') {
+                promises.push(RVreportsSubSrv.fetchGroupById(entity[1]).then(function(response) {
+                   formatedFilter[reportInboxFilterLabelConst[key]] = response.group_name;
+                }));
+            }       
+                       
+        }; 
 
         /**
          * Fill company/ta details
@@ -944,7 +944,8 @@ angular.module('sntRover').service('RVReportsInboxSrv', [
                         self.fillOptionsWithoutFormating(value, key, processedFilter);
                         break; 
                    case reportParamsConst['INCLUDE_COMPANYCARD_TA_GROUP']:
-                        self.fillCompanyTaGroupDetails(value, key, promises, processedFilter, filters.entity_type);
+                   case reportParamsConst['GROUP_COMPANY_TA_CARD']:
+                        self.fillCompanyTaGroupDetails(value, key, promises, processedFilter);
                         break;
                    case reportParamsConst['INCLUDE_COMPANYCARD_TA']:
                         self.fillCompanyTaDetails(value, key, promises, processedFilter, report);

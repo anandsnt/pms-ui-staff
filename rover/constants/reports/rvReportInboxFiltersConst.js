@@ -125,7 +125,8 @@ angular.module('reportsModule')
         "SHOW_CHECKINS_AND_CHECKOUTS": "Show Check Ins and Check Outs",
         "no_nationality": "No Nationality",
         "rate_id": "Rate",
-        "COMPANY/TA": "Company/TA"
+        "COMPANY/TA": "Company/TA",
+        "group_company_ta_card": "Company/TA/Group"
 
 
     });

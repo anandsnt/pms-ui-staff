@@ -119,5 +119,6 @@ angular.module('reportsModule')
         "INCLUDE_CANCELLED": "include_cancelled",
         "ENTITY_TYPE": 'entity_type',
         "INCLUDE_COMPANYCARD_TA": "include_companycard_ta",
-        "NO_NATIONALITY": "no_nationality"
+        "NO_NATIONALITY": "no_nationality",
+        "GROUP_COMPANY_TA_CARD": "group_company_ta_card"
     });
