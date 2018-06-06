@@ -1,5 +1,5 @@
-sntRover.controller('rvAccountSummaryCtrl', ['$scope', '$rootScope', '$filter', '$stateParams', 'RVPaymentSrv', 'RVDepositBalanceSrv', 'rvAccountsConfigurationSrv', 'RVReservationSummarySrv', 'ngDialog', 'rvPermissionSrv', 'RVReservationCardSrv',
-	function($scope, $rootScope, $filter, $stateParams, RVPaymentSrv, RVDepositBalanceSrv, rvAccountsConfigurationSrv, RVReservationSummarySrv, ngDialog, rvPermissionSrv, RVReservationCardSrv) {
+sntRover.controller('rvAccountSummaryCtrl', ['$scope', '$rootScope', '$filter', '$stateParams', 'RVPaymentSrv', 'RVDepositBalanceSrv', 'rvAccountsConfigurationSrv', 'RVReservationSummarySrv', 'ngDialog', 'rvPermissionSrv', 'RVReservationCardSrv', 'RVBillCardSrv',
+	function($scope, $rootScope, $filter, $stateParams, RVPaymentSrv, RVDepositBalanceSrv, rvAccountsConfigurationSrv, RVReservationSummarySrv, ngDialog, rvPermissionSrv, RVReservationCardSrv, RVBillCardSrv) {
 		BaseCtrl.call(this, $scope);
 
 		var summaryMemento = {};
@@ -110,6 +110,17 @@ sntRover.controller('rvAccountSummaryCtrl', ['$scope', '$rootScope', '$filter', 
 		// Update the balance after payment
 		$scope.$on("BALANCE_AFTER_PAYMENT", function (event, balance) {
 			$scope.accountConfigData.summary.balance = balance;
+			if (balance === "0.0" && $rootScope.roverObj.hasActivatedFolioNumber) {
+				
+				var paramsToService = {
+						'bill_id': $scope.depositBalanceData.primary_bill_id
+					},
+				    options = {
+						params: paramsToService
+					};
+							
+				$scope.callAPI( RVBillCardSrv.generateFolioNumber, options );
+			}
 		});
 
 		/**
