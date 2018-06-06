@@ -74,6 +74,11 @@ describe("RVReportsInboxCtrl", function() {
 	        		}
         	];
 
+            $scope.viewStatus = {
+                showDetails: false
+            };
+
+
     		reportInboxCtrl = $controller('RVReportsInboxCtrl', {
             	$scope: $scope,
             	generatedReportsList: generatedResponse
