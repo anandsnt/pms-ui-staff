@@ -917,7 +917,11 @@ angular.module('reportsModule')
                     value: -1
                 };
 
-                data.push(UNDEFINED);
+                var undefinedEntry = _.find(data, {name: 'UNDEFINED'});
+
+                if (!undefinedEntry) {
+                    data.push(UNDEFINED);
+                }                
                 _.each(reportList, function(report) {
                     foundFilter = _.find(report['filters'], { value: 'INCLUDE_GUARANTEE_TYPE' });
 
@@ -1000,7 +1004,11 @@ angular.module('reportsModule')
                     value: -1
                 };
 
-                data.push(UNDEFINED);
+                var undefinedEntry = _.find(data, {name: 'UNDEFINED'});
+
+                if (!undefinedEntry) {
+                    data.push(UNDEFINED);
+                } 
 
                 _.each(reportList, function(report) {
                     foundFilter = _.find(report['filters'], { value: 'CHOOSE_MARKET' });
@@ -1032,7 +1040,12 @@ angular.module('reportsModule')
                     value: -1
                 };
 
-                data.push(UNDEFINED);
+                var undefinedEntry = _.find(data, {name: 'UNDEFINED'});
+
+                if (!undefinedEntry) {
+                    data.push(UNDEFINED);
+                } 
+
                 _.each(reportList, function(report) {
                     foundFilter = _.find(report['filters'], { value: 'CHOOSE_SEGMENT' });
 
@@ -1063,7 +1076,12 @@ angular.module('reportsModule')
                     value: -1
                 };
 
-                data.push(UNDEFINED);
+                var undefinedEntry = _.find(data, {name: 'UNDEFINED'});
+
+                if (!undefinedEntry) {
+                    data.push(UNDEFINED);
+                } 
+
                 _.each(reportList, function(report) {
                     foundFilter = _.find(report['filters'], { value: 'CHOOSE_SOURCE' });
 
@@ -1095,7 +1113,12 @@ angular.module('reportsModule')
                     value: -1
                 };
 
-                data.push(UNDEFINED);
+                var undefinedEntry = _.find(data, {name: 'UNDEFINED'});
+
+                if (!undefinedEntry) {
+                    data.push(UNDEFINED);
+                } 
+                
                 _.each(reportList, function(report) {
                     foundFilter = _.find(report['filters'], { value: 'CHOOSE_BOOKING_ORIGIN' });
 

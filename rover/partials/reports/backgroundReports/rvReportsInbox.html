@@ -89,7 +89,7 @@
                                 </div>
                                 <!-- If disabled, there are no actions -->
                                 <div class="report-actions" ng-if="!shouldDisableInboxItem(report)">
-                                    <button type="button" class="button green" ng-click="showGeneratedReport(report)">Show</button>
+                                    <button type="button" class="button green" ng-click="showGeneratedReport(report)" ng-if="report.shouldDisplayView">Show</button>
                                     <!-- If export exists -->
                                     <button type="button" class="button with-icon purple" ng-if="report.shouldShowExport" ng-click="exportCSV(report)">
                                         <span class="icons icon-save"></span>
@@ -102,12 +102,12 @@
                                     <!-- if print exists -->
                                     <!-- this will put the report HTML inside the .only-print in dashboard.html -->
                                     <!-- If this report has a print modal {report-date-range, report-print-options}, show that modal -->
-                                    <button type="button" class="button with-icon blue" ng-click="printReport(report)">
+                                    <button type="button" class="button with-icon blue" ng-click="printReport(report)" ng-if="report.shouldDisplayView">
                                         <span class="icons icon-print"></span>
                                         <span class="text">Print</span>
                                     </button>
                                     <!-- if print does not exist -->
-                                    <span class="button with-icon" ng-hide="true">
+                                    <span class="button with-icon" ng-if="!report.shouldDisplayView">
                         <span class="icons icon-print-unavailable"></span>
                                     </span>
                                     <button type="button" class="button red">Delete</button>
