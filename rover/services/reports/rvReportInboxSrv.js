@@ -30,6 +30,16 @@ angular.module('sntRover').service('RVReportsInboxSrv', [
 
         this.PER_PAGE = 10; 
 
+        var RESERVATION_STATUS_DEPOSIT_REPORT = [
+            {id: -2, status: "DUE IN", selected: true},
+            {id: -1, status: "DUE OUT", selected: true},
+            {id: 1,  status: "RESERVED", selected: true},
+            {id: 2,  status: "CHECKED IN", selected: true},
+            {id: 3,  status: "CHECKED OUT", selected: true},
+            {id: 4,  status: "NO SHOW", selected: true},
+            {id: 5,  status: "CANCEL", selected: true}
+        ];
+
 
         /**
          * Fetches the list of generated reports
@@ -359,13 +369,17 @@ angular.module('sntRover').service('RVReportsInboxSrv', [
          * @param {String} key the key to be used in the formatted filter
          * @param {Promises} promises array of promises
          * @param {Object} formatedFilter the formatted filter object
+         * @param {Object} report selected report
          * @return {void} 
          */
-        this.fillReservationStatus = (value, key, promises, formatedFilter) => {           
-
-            promises.push(RVreportsSubSrv.fetchReservationStatus().then((statuses) => {
+        this.fillReservationStatus = (value, key, promises, formatedFilter, report) => {
+            if (report.name === reportNames['DEPOSIT_REPORT']) {                
+                formatedFilter[reportInboxFilterLabelConst[key]] = _.pluck(self.filterArrayValues(RESERVATION_STATUS_DEPOSIT_REPORT, value, 'id'), 'status').join(',');
+            } else {
+              promises.push(RVreportsSubSrv.fetchReservationStatus().then((statuses) => {
                 formatedFilter[reportInboxFilterLabelConst[key]] = _.pluck(self.filterArrayValues(statuses, value, 'id'), 'status').join(',');
-            }));
+              }));  
+            }
         };
 
         /**
@@ -951,7 +965,7 @@ angular.module('sntRover').service('RVReportsInboxSrv', [
                         self.fillAddons(value, key, promises, processedFilter);
                         break;
                    case reportParamsConst['RESERVATION_STATUS']:
-                        self.fillReservationStatus(value, key, promises, processedFilter);
+                        self.fillReservationStatus(value, key, promises, processedFilter, report);
                         break;
                    case reportParamsConst['ADDON_GROUP_BY']:
                         self.fillOptionsWithoutFormating(value, key, processedFilter);
