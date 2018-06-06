@@ -839,6 +839,23 @@ angular.module('sntRover').service('RVReportsInboxSrv', [
                 formatedFilter[reportInboxFilterLabelConst['GROUP_BY']] = reportInboxFilterLabelConst[key];
             } 
         };
+
+        /**
+         * Fill Account names
+         * @param {Array} value 
+         * @param {String} key the key to be used in the formatted filter
+         * @param {Promises} promises array of promises
+         * @param {Object} formatedFilter the formatted filter object
+         * @return {void} 
+         */
+        this.fillAccountInfo = (value, key, promises, formatedFilter) => { 
+            if(!formatedFilter[reportInboxFilterLabelConst[key]]) {
+                formatedFilter[reportInboxFilterLabelConst[key]] = [];
+            }
+            promises.push(RVreportsSubSrv.fetchAccounts().then(function(accounts) {
+                formatedFilter[reportInboxFilterLabelConst[key]] = _.pluck(self.filterArrayValues(accounts, value, 'id'), 'account_name').join(',');
+            })); 
+        };
         
         /**
          * Process filters for the given generated report
@@ -928,7 +945,7 @@ angular.module('sntRover').service('RVReportsInboxSrv', [
                         self.processDisplayFilter(value, key, processedFilter);
                         break;
                    case reportParamsConst['ACCOUNT_SEARCH']:
-                        self.processAccounts(value, key, processedFilter);
+                        self.fillAccountInfo(value, key, promises, processedFilter);
                         break;
                    case reportParamsConst['AGING_BALANCE']:
                         self.processAgingBalance(value, key, processedFilter);
