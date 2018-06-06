@@ -1,17 +1,7 @@
 <!-- header -->
 <div class="container-fluid padding-0">
-    <div class="row header-bar ng-scope">
-        <div class="col-xs-2 padding-2">&nbsp;
-            <a ui-sref="checkOutOptions">
-                <div class="half-widh pull-left back-to-checkout">
-                </div>
-                <span class="sub-main-text pull-right hide-in-mobile back-text">back</span>
-            </a>
-        </div>
-        <div class="col-xs-8">
-            <img alt="" class="logo-image" src="{{hotelLogo}}"/>
-        </div>
-        <div class="col-xs-2"></div>
+    <div class="row header-bar">
+        <img alt="" class="logo-image" src="{{hotelLogo}}"/>
     </div>
 </div>
 <!-- main section starts here -->
@@ -39,7 +29,7 @@
     <div class="row" ng-hide="isFetching || netWorkError">
         <div class="col-md-2"></div>
         <!-- left side -->
-        <div class="col-md-4 top-spacing">
+        <div class="col-md-4">
             <p class="main-text">Select your new<br>check out time:</p>
         </div>
        <!-- right side -->
@@ -59,13 +49,13 @@
                         </div>
                     </div>
                     <div class="row late-charge">
-                    <span class="for">for</span><br/>
+                    <span class="for">for</span>
                     <span class="amount">{{currencySymbol}}{{charge.amount| number:0}}</span>
                 </div>
              </a>
             </div>
-            <div class=" row margin-top-10">
-             <a class="no-thanks" ui-sref="checkOutOptions">NO, THANKS</a>
+            <div class=" row margin-top-40">
+            <a class="no-thanks" ui-sref="checkOutOptions">NO, THANKS</a>
             </div>
         </div>  
         <div class="col-md-1"></div>               
