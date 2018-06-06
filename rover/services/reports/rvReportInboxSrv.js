@@ -153,6 +153,10 @@ angular.module('sntRover').service('RVReportsInboxSrv', [
          */
 
         this.processRateIds = ( value, key, promises, formatedFilter) => {
+            if (!_.isArray(value)) {
+                value = [value];
+            }
+            
             let params = {                
                 "ids": value
             };
@@ -202,7 +206,8 @@ angular.module('sntRover').service('RVReportsInboxSrv', [
          * @param {Object} formatedFilter the formatted filter object        
          * @return {void} 
          */
-        this.processOptions = (value, key, formatedFilter) => {
+        this.processOptions = (value, key, formatedFilter, report) => {            
+
             if(!formatedFilter[reportInboxFilterLabelConst['OPTIONS']]) {
                 formatedFilter[reportInboxFilterLabelConst['OPTIONS']] = [];
             }
@@ -343,7 +348,7 @@ angular.module('sntRover').service('RVReportsInboxSrv', [
                 addon_ids: value
             };
 
-            promises.push(RVreportsSubSrv.fetchAddonById(params).then((addonNames) => {
+            promises.push(RVreportsSubSrv.fetchAddonsByIds(params).then((addonNames) => {
                 formatedFilter[reportInboxFilterLabelConst[key]] = addonNames.join(',');
             }));
         };
@@ -380,22 +385,43 @@ angular.module('sntRover').service('RVReportsInboxSrv', [
          * @param {String} key the key to be used in the formatted filter
          * @param {Promises} promises array of promises
          * @param {Object} formatedFilter the formatted filter object
-         * @param {String} entityType values are GROUP/TRAVELAGENT/COMPANY
          * @return {void} 
          */
-        this.fillCompanyTaGroupDetails = (value, key, promises, formatedFilter, entityType) => {
-            var entityId = value.split("_")[1];           
-            switch (entityType) {
-                case "GROUP":
-                      self.fillGroupInfo(entityId, key, promises, formatedFilter);
-                      break;
-                case "TRAVELAGENT":
-                case "COMPANY":
-                      self.fillTaCCDetails(entityId, key, promises, formatedFilter)
-                      break;
+        this.fillCompanyTaGroupDetails = (value, key, promises, formatedFilter) => {
+            var entity = value.split("_"); 
 
-            }            
-        };
+            if (entity.length === 2 && entity[0] === 'account') {
+                promises.push(RVreportsSubSrv.fetchAccountsById(entity[1]).then(function(response) {
+                   formatedFilter[reportInboxFilterLabelConst[key]] = response.account_details.account_name; 
+                }));
+            } else if (entity.length === 2 && entity[0] === 'group') {
+                promises.push(RVreportsSubSrv.fetchGroupById(entity[1]).then(function(response) {
+                   formatedFilter[reportInboxFilterLabelConst[key]] = response.group_name;
+                }));
+            }       
+                       
+        }; 
+
+        /**
+         * Fill company/ta details
+         * @param {String} value of the option
+         * @param {String} key the key to be used in the formatted filter
+         * @param {Promises} promises array of promises
+         * @param {Object} formatedFilter the formatted filter object
+         * @return {void} 
+         */
+        this.fillCompanyTaDetails = (value, key, promises, formatedFilter) => {
+            if(!formatedFilter[reportInboxFilterLabelConst['COMPANY/TA']]) {
+                formatedFilter[reportInboxFilterLabelConst['COMPANY/TA']] = [];
+            }
+            
+            _.each(value, (id, idx) => {
+                promises.push(RVreportsSubSrv.fetchAccountsById(id).then(function(response) {
+                   formatedFilter[reportInboxFilterLabelConst['COMPANY/TA']].push(response.account_details.account_name); 
+                }));               
+            });
+                       
+        };        
 
         /**
          * Fill checkin checkout details
@@ -646,7 +672,7 @@ angular.module('sntRover').service('RVReportsInboxSrv', [
                 "ids[]": value
             };
 
-            promises.push(RVreportsSubSrv.fetchTravelAgents(params).then(function(travelAgents) {
+            promises.push(RVreportsSubSrv.fetchTravelAgentsByIds(params).then(function(travelAgents) {
                 formatedFilter[reportInboxFilterLabelConst[key]] = _.pluck(travelAgents, 'account_name').join(',');
             }));
         };
@@ -703,17 +729,24 @@ angular.module('sntRover').service('RVReportsInboxSrv', [
 
         /**
          * Fill sort field
-         * @param {String} value sort field
-         * @param {String} key the key to be used in the formatted filter
-         * @param {Object} formatedFilter the formatted filter object
+         * @params {String} value sort field
+         * @params {String} key the key to be used in the formatted filter
+         * @params {Object} formatedFilter the formatted filter object
+         * @params {Object} report selected report
          * @return {void} 
          */
-        this.fillSortField = (value, key, formatedFilter) => {            
-            if (value) {
-              value = value.replace(/_/g, " ");
-            }
+        this.fillSortField = (value, key, formatedFilter, report) => { 
+            var sortFieldDesc = '';
 
-            formatedFilter[reportInboxFilterLabelConst[key]] = value;   
+            if(report.filters.rawData && _.isArray(report.filters.rawData.sortOptions) ) {
+                var sortField = _.find(report.filters.rawData.sortOptions, {value: value});
+
+                sortFieldDesc = sortField.description;
+            } else {
+               sortFieldDesc = value.replace(/_/g, " ");
+            } 
+
+            formatedFilter[reportInboxFilterLabelConst[key]] = sortFieldDesc;   
         };
 
         /**
@@ -747,6 +780,51 @@ angular.module('sntRover').service('RVReportsInboxSrv', [
                 }
             }
             return label
+        };
+
+        /**
+         * Fill Due Out status name based on report
+         * @params {String} value value of the filter
+         * @params {String} key the key to be used in the formatted filter
+         * @params {Object} formatedFilter the formatted filter object
+         * @params {Object} report selected report
+         * @return {void} 
+         */
+        self.processDueOut = (value, key, formatedFilter, report) => {
+            if (value) {
+                var displayLabel = reportInboxFilterLabelConst[key];
+
+               if (report.name === reportNames['CREDIT_CHECK_REPORT']) {
+                    if(!formatedFilter[reportInboxFilterLabelConst['SHOW']]) {
+                        formatedFilter[reportInboxFilterLabelConst['SHOW']] = [displayLabel];
+                    } else {
+                        formatedFilter[reportInboxFilterLabelConst['SHOW']].push(displayLabel);
+                    }
+                } else {
+                    if(!formatedFilter[reportInboxFilterLabelConst['OPTIONS']]) {
+                        formatedFilter[reportInboxFilterLabelConst['OPTIONS']] = [displayLabel];
+                    } else {
+                        formatedFilter[reportInboxFilterLabelConst['OPTIONS']].push(displayLabel);
+                    }
+                } 
+            }
+            
+        };
+
+        
+        /**
+         * Fill restriction names from an array of ids
+         * @param {Array} value array of restriction ids
+         * @param {String} key the key to be used in the formatted filter
+         * @param {Promises} promises array of promises
+         * @param {Object} formatedFilter the formatted filter object
+         * @return {void} 
+         */
+        this.fillRestrictions = (value, key, promises, formatedFilter) => {  
+
+            promises.push(RVreportsSubSrv.fetchRestrictionList().then(function(restrictions) {
+                formatedFilter[reportInboxFilterLabelConst[key]] = _.pluck(self.filterArrayValues(restrictions, value, 'id'), 'description').join(',');
+            }));
         };
         
         /**
@@ -789,6 +867,7 @@ angular.module('sntRover').service('RVReportsInboxSrv', [
                         processedFilter[reportInboxFilterLabelConst[key]] = value;
                         break;
                    case reportParamsConst['RATE_IDS']:
+                   case reportParamsConst['RATE_ID']:
                         self.processRateIds(value, key, promises, processedFilter);
                         break;
                    case reportParamsConst['ASSIGNED_DEPARTMENTS']:
@@ -820,10 +899,10 @@ angular.module('sntRover').service('RVReportsInboxSrv', [
                    case reportParamsConst['INCLUDE_VARIANCE']: 
                    case reportParamsConst['INCLUDE_BOTH']: 
                    case reportParamsConst['INCLUDE_NEW']:  
-                   case reportParamsConst['SHOW_RATE_ADJUSTMENTS_ONLY']:     
-                   case reportParamsConst['EXCLUDE_TAX']:   
-                   case reportParamsConst['DUE_OUT_DEPARTURES']:  
-                   case reportParamsConst['INCLUDE_DUE_OUT']:     
+                   case reportParamsConst['SHOW_RATE_ADJUSTMENTS_ONLY']: 
+                   case reportParamsConst['NO_NATIONALITY']:       
+                   //case reportParamsConst['EXCLUDE_TAX']:   
+                   case reportParamsConst['DUE_OUT_DEPARTURES']: 
                         self.processOptions(value, key, processedFilter);
                         break;
                    case reportParamsConst['SHOW_DELETED_CHARGES']:
@@ -865,7 +944,11 @@ angular.module('sntRover').service('RVReportsInboxSrv', [
                         self.fillOptionsWithoutFormating(value, key, processedFilter);
                         break; 
                    case reportParamsConst['INCLUDE_COMPANYCARD_TA_GROUP']:
-                        self.fillCompanyTaGroupDetails(value, key, promises, processedFilter, filters.entity_type);
+                   case reportParamsConst['GROUP_COMPANY_TA_CARD']:
+                        self.fillCompanyTaGroupDetails(value, key, promises, processedFilter);
+                        break;
+                   case reportParamsConst['INCLUDE_COMPANYCARD_TA']:
+                        self.fillCompanyTaDetails(value, key, promises, processedFilter, report);
                         break;
                    case reportParamsConst['CHECKED_IN']:
                    case reportParamsConst['CHECKED_OUT']:
@@ -876,6 +959,7 @@ angular.module('sntRover').service('RVReportsInboxSrv', [
                    case reportParamsConst['INCLUDE_INHOUSE']:
                    case reportParamsConst['OOO']:
                    case reportParamsConst['OOS']:
+                   case reportParamsConst['EXCEEDED_ONLY']:
                         self.fillShowFields(value, key, processedFilter);
                         break; 
                    case reportParamsConst['MIN_REVENUE']:
@@ -935,13 +1019,17 @@ angular.module('sntRover').service('RVReportsInboxSrv', [
                         self.fillSortDir(value, key, processedFilter);
                         break;
                    case reportParamsConst['SORT_FIELD']:
-                        self.fillSortField(value, key, processedFilter);
+                        self.fillSortField(value, key, processedFilter, report);
+                        break;
+                   case reportParamsConst['INCLUDE_DUE_OUT']: 
+                        self.processDueOut(value, key, processedFilter, report);
                         break;
                    case reportParamsConst['SEGMENT_IDS']:
                         processedFilter[reportInboxFilterLabelConst[key]] = value.join(",");
                         break;
-
-
+                   case reportParamsConst['RESTRICTION_IDS']:
+                        self.fillRestrictions(value, key, promises, processedFilter);
+                        break;
                 }                
 
             });
@@ -965,7 +1053,12 @@ angular.module('sntRover').service('RVReportsInboxSrv', [
             } 
 
             if(processedFilter[reportInboxFilterLabelConst['CHECK IN/ CHECK OUT']]) {
-              processedFilter[reportInboxFilterLabelConst['CHECK IN/ CHECK OUT']] = processedFilter[reportInboxFilterLabelConst['CHECK IN/ CHECK OUT']].join(',');  
+              if (processedFilter[reportInboxFilterLabelConst['CHECK IN/ CHECK OUT']].length === 2) {
+                processedFilter[reportInboxFilterLabelConst['CHECK IN/ CHECK OUT']] = reportInboxFilterLabelConst['SHOW_CHECKINS_AND_CHECKOUTS'];
+              } else {
+                processedFilter[reportInboxFilterLabelConst['CHECK IN/ CHECK OUT']] = processedFilter[reportInboxFilterLabelConst['CHECK IN/ CHECK OUT']].join(',');  
+              }
+              
             } 
 
             if(processedFilter[reportInboxFilterLabelConst['DISPLAY']]) {
@@ -974,6 +1067,7 @@ angular.module('sntRover').service('RVReportsInboxSrv', [
            
 
             $q.all(promises).then(function() {
+                self.formatResponseOnPromiseResolve(processedFilter);
                 deferred.resolve(processedFilter);
             }, function(errorMessage) {
                 deferred.reject(processedFilter);
@@ -982,6 +1076,13 @@ angular.module('sntRover').service('RVReportsInboxSrv', [
             return deferred.promise;
 
         };
+
+        // Formats filters after resolving the promise
+        self.formatResponseOnPromiseResolve = (formatedFilter) => {
+            if (formatedFilter[reportInboxFilterLabelConst['COMPANY/TA']]) {
+                formatedFilter[reportInboxFilterLabelConst['COMPANY/TA']] = formatedFilter[reportInboxFilterLabelConst['COMPANY/TA']].join(", ");
+            }
+        }
 
         /**
          * Add the missing report details in the generated reports data

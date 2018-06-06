@@ -73,8 +73,8 @@ angular.module('reportsModule')
         "include_companycard_ta_group": "Company/TA/Group",
         "due_in_arrivals": "DUE IN ARRIVALS",
         "include_actions": "INCLUDE ACTIONS",
-        "checked_in": "CHECKED IN",
-        "checked_out": "CHECKED OUT",
+        "checked_in": "Show only Check Ins", // CHECKED IN
+        "checked_out": "Show only Check Outs", // CHECKED OUT
         "CHECK IN/ CHECK OUT": "CHECK IN/ CHECK OUT",
         "SHOW": "SHOW",
         "show_company": "SHOW COMPANY",
@@ -117,10 +117,16 @@ angular.module('reportsModule')
         "guest": "Guest",
         "include_cancelled": "Include Cancelled",
         "show_room_revenue": "Show Room Revenue",
-        "with_vat_number": "With Vat Number",
-        "without_vat_number": "Without Vat Number",
+        "with_vat_number": "Cards with tax id",
+        "without_vat_number": "Cards without tax id",
         "include_companycard_ta": "Include CC/TA",
         "BOOKED_DATE_FROM": "Booked Date (From)",
-        "BOOKED_DATE_TO": "Booked Date (To)"        
+        "BOOKED_DATE_TO": "Booked Date (To)",
+        "SHOW_CHECKINS_AND_CHECKOUTS": "Show Check Ins and Check Outs",
+        "no_nationality": "No Nationality",
+        "rate_id": "Rate",
+        "COMPANY/TA": "Company/TA",
+        "group_company_ta_card": "Company/TA/Group"
+
 
     });
