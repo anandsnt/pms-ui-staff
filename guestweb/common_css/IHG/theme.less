@@ -1,44 +1,86 @@
 /*------------------------------- Themes ----------------------------------------------------*/
  @import "../style.less";
- .back-text{
-     color:#fff !important;
+
+@font-face {
+  font-family: SanFranciscoText;
+  src: local("SanFranciscoText"),
+       local("SanFranciscoText"),
+       url('/assets/type/SF-Compact-Text-Regular.otf');
 }
- .logo-image {
+
+.main-text, 
+.sub-main-text, 
+.sub-text,  
+.back-text,
+a,a:hover,
+.res-date, 
+.footer-sub-text,
+.footer-sub-text:hover,
+.phone-label,
+p
+
+{ 
+    font-family: 'SanFranciscoText','Roboto', sans-serif;
+    color: #272727;
+}
+.main-text,
+.sub-main-text, 
+.sub-text {
+    font-weight: 400;
+}
+.main-text, 
+.sub-main-text {
+    text-align: center !important;
+}
+.main-text {
+    font-size: 35px;
+}
+
+.logo-image {
      margin: 4% auto 2%;
 }
  .header-bar{
-     background:#FB8B33;
+     background:#fff;
 }
- .back-text{
-     color:#fff !important;
+.btn-template,{
+    height: 67px;
+    padding: 0px;
+    text-transform: uppercase;
+    font-size: 23px;
 }
- a,a:hover,.main-text, .res-date, .footer-sub-text,.footer-sub-text:hover,.phone-label{
-     color:#1A1A1A;
+.input-field{
+    height: 40px;
+    min-height: 40px;
 }
- .sub-main-text{
-     color:#444444;
+.margin-top-20{
+    margin-top: 23px;
 }
+
  .view-bill{
      color:#FB8B33;
 }
+
+.calendar-button {
+    padding-left: 10px;
+}
  .btn,.btn:hover{
-     background:#000;
+     background:#d96932;
      color:@white;
 }
  .dark-button,.dark-button:hover{
-     background: #FF7B00 !important;
+     background: #d96932 !important;
 }
  .light-button,.light-button:hover{
-     background: #FB8B33 !important;
+     background: #e69d7a !important;
 }
  .checkouttime1,.checkouttime1:hover{
-     background: #FFA07A;
+     background: #e69d7a;
 }
  .checkouttime2,.checkouttime2:hover{
-     background: #FB8B33;
+     background: #e1875b;
 }
  .checkouttime3,.checkouttime3:hover{
-     background: #FF7B00;
+     background: #d96932;
 }
  .down-arrow-button{
      background-image:url('/assets/guestweb/common_images/orange/down_arrow.png');
@@ -83,11 +125,27 @@
      background-color:rgba(251, 139, 51,0.8);
 }
  @media (max-width: 990px) {
-     .logo-image {
-         margin: 9% auto 7%;
+    .header-bar {
+        margin-bottom: 29px;
+    }
+    .logo-image {
+         width: 91px;
+         height: 36px;
+         margin-top: 30px;
          max-width: 250px;
     }
-     .back-to-checkout{
+    .back-to-checkout{
          display:none;
+    }
+    .main-text {
+        font-size: 23px !important;
+        margin-bottom: 35px;
+    }
+    .sub-main-text {
+        font-size: 13px !important;
+        margin-bottom: 0px !important;
+    }
+    .sub-text {
+        font-size: 12px !important;
     }
 }
