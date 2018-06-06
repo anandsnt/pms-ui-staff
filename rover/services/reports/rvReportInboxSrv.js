@@ -208,7 +208,7 @@ angular.module('sntRover').service('RVReportsInboxSrv', [
          */
         this.processOptions = (value, key, formatedFilter, report) => {            
 
-            if(!formatedFilter[reportInboxFilterLabelConst['OPTIONS']]) {
+            if (!formatedFilter[reportInboxFilterLabelConst['OPTIONS']]) {
                 formatedFilter[reportInboxFilterLabelConst['OPTIONS']] = [];
             }
 
@@ -226,7 +226,7 @@ angular.module('sntRover').service('RVReportsInboxSrv', [
          * @return {void} 
          */
         this.processDisplayFilter = (value, key, formatedFilter) => {
-            if(!formatedFilter[reportInboxFilterLabelConst['DISPLAY']]) {
+            if (!formatedFilter[reportInboxFilterLabelConst['DISPLAY']]) {
                 formatedFilter[reportInboxFilterLabelConst['DISPLAY']] = [];
             }
 
@@ -325,11 +325,7 @@ angular.module('sntRover').service('RVReportsInboxSrv', [
          * @param {Object} formatedFilter the formatted filter object
          * @return {void} 
          */
-        this.fillAddonGroups = (value, key, promises, formatedFilter) => {
-            let params = {
-                ids: value
-            };
-
+        this.fillAddonGroups = (value, key, promises, formatedFilter) => {            
             promises.push(RVreportsSubSrv.fetchChargeNAddonGroups().then((addonGroups) => {
                 formatedFilter[reportInboxFilterLabelConst[key]] = _.pluck(self.filterArrayValues(addonGroups, value, 'id'), 'name').join(',');
             }));
@@ -411,7 +407,7 @@ angular.module('sntRover').service('RVReportsInboxSrv', [
          * @return {void} 
          */
         this.fillCompanyTaDetails = (value, key, promises, formatedFilter) => {
-            if(!formatedFilter[reportInboxFilterLabelConst['COMPANY/TA']]) {
+            if (!formatedFilter[reportInboxFilterLabelConst['COMPANY/TA']]) {
                 formatedFilter[reportInboxFilterLabelConst['COMPANY/TA']] = [];
             }
             
@@ -447,7 +443,7 @@ angular.module('sntRover').service('RVReportsInboxSrv', [
          * @return {void} 
          */
         this.fillShowFields = (value, key, formatedFilter) => {
-            if(!formatedFilter[reportInboxFilterLabelConst['SHOW']]) {
+            if (!formatedFilter[reportInboxFilterLabelConst['SHOW']]) {
                 formatedFilter[reportInboxFilterLabelConst['SHOW']] = [];
             }
 
@@ -521,7 +517,7 @@ angular.module('sntRover').service('RVReportsInboxSrv', [
          * @return {void} 
          */
         this.fillGuestAccount = (value, key, formatedFilter) => {
-            if(!formatedFilter[reportInboxFilterLabelConst['GUEST/ACCOUNT']]) {
+            if (!formatedFilter[reportInboxFilterLabelConst['GUEST/ACCOUNT']]) {
                 formatedFilter[reportInboxFilterLabelConst['GUEST/ACCOUNT']] = [];
             }
 
@@ -685,7 +681,7 @@ angular.module('sntRover').service('RVReportsInboxSrv', [
          * @return {void} 
          */
         this.fillVatInfo = (value, key, formatedFilter) => {
-            if(!formatedFilter[reportInboxFilterLabelConst['COMPANY/TRAVEL_AGENT']]) {
+            if (!formatedFilter[reportInboxFilterLabelConst['COMPANY/TRAVEL_AGENT']]) {
                 formatedFilter[reportInboxFilterLabelConst['COMPANY/TRAVEL_AGENT']] = [];
             }
 
@@ -738,7 +734,7 @@ angular.module('sntRover').service('RVReportsInboxSrv', [
         this.fillSortField = (value, key, formatedFilter, report) => { 
             var sortFieldDesc = '';
 
-            if(report.filters.rawData && _.isArray(report.filters.rawData.sortOptions) ) {
+            if (report.filters.rawData && _.isArray(report.filters.rawData.sortOptions) ) {
                 var sortField = _.find(report.filters.rawData.sortOptions, {value: value});
 
                 sortFieldDesc = sortField.description;
@@ -835,9 +831,26 @@ angular.module('sntRover').service('RVReportsInboxSrv', [
          * @return {void} 
          */
         this.fillGroupByInfo = (value, key, formatedFilter) => { 
-            if(value) {
+            if (value) {
                 formatedFilter[reportInboxFilterLabelConst['GROUP_BY']] = reportInboxFilterLabelConst[key];
             } 
+        };
+
+        /**
+         * Fill Account names
+         * @param {Array} value 
+         * @param {String} key the key to be used in the formatted filter
+         * @param {Promises} promises array of promises
+         * @param {Object} formatedFilter the formatted filter object
+         * @return {void} 
+         */
+        this.fillAccountInfo = (value, key, promises, formatedFilter) => { 
+            if (!formatedFilter[reportInboxFilterLabelConst[key]]) {
+                formatedFilter[reportInboxFilterLabelConst[key]] = [];
+            }
+            promises.push(RVreportsSubSrv.fetchAccounts().then(function(accounts) {
+                formatedFilter[reportInboxFilterLabelConst[key]] = _.pluck(self.filterArrayValues(accounts, value, 'id'), 'account_name').join(',');
+            })); 
         };
         
         /**
@@ -928,7 +941,7 @@ angular.module('sntRover').service('RVReportsInboxSrv', [
                         self.processDisplayFilter(value, key, processedFilter);
                         break;
                    case reportParamsConst['ACCOUNT_SEARCH']:
-                        self.processAccounts(value, key, processedFilter);
+                        self.fillAccountInfo(value, key, promises, processedFilter);
                         break;
                    case reportParamsConst['AGING_BALANCE']:
                         self.processAgingBalance(value, key, processedFilter);
@@ -1052,25 +1065,25 @@ angular.module('sntRover').service('RVReportsInboxSrv', [
 
             });
 
-            if(processedFilter[reportInboxFilterLabelConst['OPTIONS']] && processedFilter[reportInboxFilterLabelConst['OPTIONS']].length > 0 ) {
+            if (processedFilter[reportInboxFilterLabelConst['OPTIONS']] && processedFilter[reportInboxFilterLabelConst['OPTIONS']].length > 0 ) {
               processedFilter[reportInboxFilterLabelConst['OPTIONS']] = processedFilter[reportInboxFilterLabelConst['OPTIONS']].join(',');  
             } else {
                 delete processedFilter[reportInboxFilterLabelConst['OPTIONS']];
             }
 
-            if(processedFilter[reportInboxFilterLabelConst['SHOW']]) {
+            if (processedFilter[reportInboxFilterLabelConst['SHOW']]) {
               processedFilter[reportInboxFilterLabelConst['SHOW']] = processedFilter[reportInboxFilterLabelConst['SHOW']].join(',');  
             } 
 
-            if(processedFilter[reportInboxFilterLabelConst['COMPANY/TRAVEL_AGENT']]) {
+            if (processedFilter[reportInboxFilterLabelConst['COMPANY/TRAVEL_AGENT']]) {
               processedFilter[reportInboxFilterLabelConst['COMPANY/TRAVEL_AGENT']] = processedFilter[reportInboxFilterLabelConst['COMPANY/TRAVEL_AGENT']].join(',');  
             } 
 
-            if(processedFilter[reportInboxFilterLabelConst['GUEST/ACCOUNT']]) {
+            if (processedFilter[reportInboxFilterLabelConst['GUEST/ACCOUNT']]) {
               processedFilter[reportInboxFilterLabelConst['GUEST/ACCOUNT']] = processedFilter[reportInboxFilterLabelConst['GUEST/ACCOUNT']].join(',');  
             } 
 
-            if(processedFilter[reportInboxFilterLabelConst['CHECK IN/ CHECK OUT']]) {
+            if (processedFilter[reportInboxFilterLabelConst['CHECK IN/ CHECK OUT']]) {
               if (processedFilter[reportInboxFilterLabelConst['CHECK IN/ CHECK OUT']].length === 2) {
                 processedFilter[reportInboxFilterLabelConst['CHECK IN/ CHECK OUT']] = reportInboxFilterLabelConst['SHOW_CHECKINS_AND_CHECKOUTS'];
               } else {
@@ -1079,7 +1092,7 @@ angular.module('sntRover').service('RVReportsInboxSrv', [
               
             } 
 
-            if(processedFilter[reportInboxFilterLabelConst['DISPLAY']]) {
+            if (processedFilter[reportInboxFilterLabelConst['DISPLAY']]) {
               processedFilter[reportInboxFilterLabelConst['DISPLAY']] = processedFilter[reportInboxFilterLabelConst['DISPLAY']].join(',');  
             }             
            

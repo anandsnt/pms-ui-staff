@@ -36,7 +36,7 @@ angular.module('reportsModule')
         'campaign_types': 'Campaign Types',
         'status': 'Completion Status',
         'age_buckets': 'Aging Balance',
-        'account_ids': 'Accounts',
+        'account_ids': 'Account Name(s)',
         'travel_agent_ids': 'Travel Agents',
         'floor': 'Floors',
 
