@@ -23,7 +23,8 @@ sntRover.controller('RVCommissionsSummaryController', ['$scope',
         var updateHeader = function(isPrint = false) {
             // Setting up the screen heading and browser title.
             // Need to change the header for print template
-            var title = isPrint? $filter('translate')('COMMISSIONS_REPORT_TITLE') : $filter('translate')('MENU_COMMISIONS');
+            var title = isPrint ? $filter('translate')('COMMISSIONS_REPORT_TITLE') : $filter('translate')('MENU_COMMISIONS');
+            
             $scope.$emit('HeaderChanged', title);
             $scope.setTitle(title);
             $scope.$emit('updateRoverLeftMenu', 'commisions');
@@ -345,7 +346,7 @@ sntRover.controller('RVCommissionsSummaryController', ['$scope',
             });
         };
 
-        var getParams = function(){
+        var getParams = function() {
             return {
                         'query': $scope.filterData.searchQuery,
                         'page': $scope.filterData.page,
@@ -356,8 +357,8 @@ sntRover.controller('RVCommissionsSummaryController', ['$scope',
                         'begin_date': $scope.dateData.fromDateForAPI !== '' ? $filter('date')($scope.dateData.fromDateForAPI, 'yyyy-MM-dd') : '',
                         'end_date': $scope.dateData.toDateForAPI !== '' ? $filter('date')($scope.dateData.toDateForAPI, 'yyyy-MM-dd') : '',
                         'include_non_commissionable': $scope.filterData.non_commissionable
-                    }
-        }
+                    };
+        };
 
         $scope.fetchAgentsData = function(pageNo) {
             $scope.filterData.page = pageNo ? pageNo : 1;
@@ -427,7 +428,7 @@ sntRover.controller('RVCommissionsSummaryController', ['$scope',
             var successCallback = function(data) {
                 $scope.printData = data;
                 $scope.$emit('hideLoader');
-                updateHeader(true)
+                updateHeader(true);
                 $timeout(function() {
                     $('head').append('<style id=\'print-orientation\'>@page { size: landscape; }</style>');
                     $window.print();
@@ -436,9 +437,10 @@ sntRover.controller('RVCommissionsSummaryController', ['$scope',
                     }
                     updateHeader();
                 }, 500);
-            }
+            };
 
             var printParams = getParams();
+            
             printParams.travel_agent_ids =  _.pluck($scope.commissionsData.accounts, 'id'); 
 
             $scope.callAPI(RVCommissionsSrv.printCommissionOverview, {
