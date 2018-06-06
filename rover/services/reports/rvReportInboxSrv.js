@@ -826,6 +826,20 @@ angular.module('sntRover').service('RVReportsInboxSrv', [
                 formatedFilter[reportInboxFilterLabelConst[key]] = _.pluck(self.filterArrayValues(restrictions, value, 'id'), 'description').join(',');
             }));
         };
+
+        /**
+         * Fill Group by field
+         * @param {Array} value 
+         * @param {String} key the key to be used in the formatted filter
+         * @param {Object} formatedFilter the formatted filter object
+         * @return {void} 
+         */
+        this.fillGroupByInfo = (value, key, formatedFilter) => { 
+
+            if(value) {
+                formatedFilter[reportInboxFilterLabelConst['GROUP_BY']] = reportInboxFilterLabelConst[key];
+            } 
+        };
         
         /**
          * Process filters for the given generated report
@@ -1029,6 +1043,11 @@ angular.module('sntRover').service('RVReportsInboxSrv', [
                         break;
                    case reportParamsConst['RESTRICTION_IDS']:
                         self.fillRestrictions(value, key, promises, processedFilter);
+                        break;
+                   case reportParamsConst['GROUP_BY_DATE']:
+                   case reportParamsConst['GROUP_BY_USER']:
+                   case reportParamsConst['GROUP_BY_GROUP_NAME']:
+                        self.fillGroupByInfo(value, key, processedFilter);
                         break;
                 }                
 
