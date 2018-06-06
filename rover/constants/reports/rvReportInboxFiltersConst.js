@@ -126,7 +126,10 @@ angular.module('reportsModule')
         "no_nationality": "No Nationality",
         "rate_id": "Rate",
         "COMPANY/TA": "Company/TA",
-        "group_company_ta_card": "Company/TA/Group"
-
+        "group_company_ta_card": "Company/TA/Group",
+        "GROUP_BY": "Group By",
+        "group_by_date": "Date",
+        "group_by_user": "User",
+        "group_by_group_name": "Group name"
 
     });
