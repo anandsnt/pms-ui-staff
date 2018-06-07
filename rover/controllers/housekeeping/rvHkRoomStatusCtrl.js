@@ -548,8 +548,9 @@ angular.module('sntRover').controller('RVHkRoomStatusCtrl', [
 		$scope.timeSelectorList = util.getListForTimeSelector (intervalForTimeSelector, mode);
 
 		$scope.shouldShowTimeSelector = function() {
+            var isInService = $scope.updateServiceData.room_service_status_id === 1;
 
-			return $rootScope.isHourlyRateOn;
+            return $rootScope.isHourlyRateOn && !isInService;
 		};
 
 		$scope.closeDialog = function() {
@@ -646,15 +647,6 @@ angular.module('sntRover').controller('RVHkRoomStatusCtrl', [
 
 
 		};
-
-		/**
-		 * @return {Boolean}
-		 */
-		$scope.shouldShowTimeSelector = function() {
-			// as per CICO-11840 we will show this for hourly hotels only
-			return $rootScope.isHourlyRateOn;
-		};
-
 
 		/**
 		 * Service Stauts update action
