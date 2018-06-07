@@ -222,7 +222,7 @@ sntGuestWeb.controller('externalCheckinVerificationViewController', dependencies
 })();
 
 
-sntGuestWeb.controller('earlyToCheckinCtrl', ['$scope', '$stateParams', '$state'
+sntGuestWeb.controller('earlyToCheckinCtrl', ['$scope', '$stateParams', '$state',
 
 	function($scope, $stateParams, $state) {
 		$scope.checkinAvailableDateAfter = $stateParams.date;
