@@ -8,6 +8,15 @@
        url('/assets/type/SF-Compact-Text-Regular.otf');
 }
 
+@font-face {
+  font-family: SanFranciscoTextLight;
+  src: local("SanFranciscoTextLight"),
+       local("SanFranciscoTextLight"),
+       url('/assets/type/SF-Compact-Display-Thin.otf');
+}
+
+
+
 .main-text, 
 .sub-main-text, 
 .sub-text,  
@@ -40,6 +49,7 @@ p
 .error-text, 
 .request-text{
     font-size: 20px !important;
+    line-height: 1.5em;
 }
 .sub-text{
     font-size: 17px !important;
@@ -57,6 +67,15 @@ p
     padding: 0px;
     text-transform: uppercase;
     font-size: 23px;
+    font-weight: 200;
+    font-family: 'SanFranciscoTextLight', 'SanFranciscoText','Roboto', sans-serif;
+}
+.btn {
+    font-weight: 200 !important;
+    font-family: 'SanFranciscoTextLight', 'SanFranciscoText','Roboto', sans-serif;
+    p, span {
+        font-family: 'SanFranciscoTextLight', 'SanFranciscoText','Roboto', sans-serif;
+    }
 }
 .early-checkin-button, .early-checkin-button:hover {
     font-size: 23px !important;
@@ -143,6 +162,7 @@ p
 .query-text, .query-text:hover {
     font-size: 11px;
 }
+
 /*----------------- date picker -------------------------*/
  .pickadate-cell .pickadate-active.pickadate-outofrange-disabled a {
      color: #363634;
@@ -249,5 +269,17 @@ p
     }
     .footer-text {
         margin-top: 22px;
+    }
+    .sub-main-text, 
+    .error-text, 
+    .request-text{
+        line-height: 2em;
+    }
+}
+
+
+@media (min-width: 992px) {
+    .show-bill-wrap {
+        position: relative;
     }
 }

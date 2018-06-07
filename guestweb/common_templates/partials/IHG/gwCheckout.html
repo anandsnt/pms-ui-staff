@@ -7,28 +7,22 @@
 <!-- main section starts here -->
 <div class="container-fluid">
     <div class="row">
-        <div class="col-xl-1"></div>
+        <div class="col-md-4"></div>
         <!-- left side -->
-        <div class="col-xl-4">
+        <div class="col-md-4 section-container align-center">
             <p class="main-text">Ready to Check-out?</p>
-            <p class="sub-main-text">{{checkoutTimessage}} {{checkoutTime}}.</p>
-        </div>
-        <div class="col-xl-1"></div>
-        <!-- right side -->
-        <div class="col-xl-3 align-center">
-            <div class="section-container">
-                <a class="btn dual-button dark-button extended-btn margin-top-20" ui-sref="checkoutBalance">
-                    <p>Check-out</p>
-                    <p>now</p>
-                    <div class="checkout-icon"></div>
-                </a>
+            <p class="sub-main-text">{{checkoutTimessage}} {{checkoutTime}}.</p>=
+            <a class="btn dual-button dark-button extended-btn margin-top-20" ui-sref="checkoutBalance">
+                <p>Check-out</p>
+                <p>now</p>
+                <div class="checkout-icon"></div>
+            </a>
+            <div class="row footer-text">
+                <em class="base-text">{{footerMessage1}}</em>
+                <br> Come back to this page to Check-out at any time before {{checkoutTime}}.
             </div>
         </div>
-        <div class="col-xl-2">
+        <div class="col-md-4">
         </div>
-    </div>
-    <div class="row footer-text">
-        <em class="base-text">{{footerMessage1}}</em>
-        <br> Come back to this page to Check-out at any time before {{checkoutTime}}.
     </div>
 </div>

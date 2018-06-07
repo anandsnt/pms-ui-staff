@@ -172,7 +172,8 @@ sntGuestWeb.config(['$stateProvider', '$urlRouterProvider', function($stateProvi
         .state('guestCheckinLate', {
             url: '/guestCheckinLate',
             templateUrl: '/assets/common_templates/partials/checkin/gwLateToCheckin.html',
-            title: 'Check-in'
+            title: 'Check-in',
+            controller: 'lateToCheckinController'
         });
 
     $stateProvider.state('emailAddition', {

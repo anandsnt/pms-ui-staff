@@ -26,15 +26,15 @@
 </div>
 <div class="container-fluid" ng-hide="isLoading || netWorkError">
     <div class="row">
-        <div class="col-md-3"></div>
-        <div class="col-md-6 sm-no-top-spacing">
+        <div class="col-md-4"></div>
+        <div class="col-md-4">
             <p class="main-text">Ready to Check-out?</p>
-            <p class="sub-main-text margin-top-20" ng-if="roomVerificationInstruction">
+            <p class="sub-main-text" ng-if="roomVerificationInstruction">
                 (&nbsp;{{roomVerificationInstruction}}&nbsp;)
             </p>
             <div class="section-container">
                 <!-- room number -->
-                <p class="pull-left sub-text margin-top-10">Your Room Number</p>
+                <p class="pull-left sub-text first-field">Your Room Number</p>
                 <input type="text" class="input-field padding-2" ng-model="stayDetails.room_number"></input>
                 <!-- Lat name -->
                 <p class="pull-left sub-text margin-top-20">Last Name</p>
@@ -49,10 +49,10 @@
                 <p class="pull-left sub-text margin-top-20">Your e-mail address (optional)</p>
                 <input type="text" class="input-field padding-2" ng-model="stayDetails.email"></input>
                 <!-- Submit button -->
-                <button class="btn btn-template margin-top-20 padding-3" ng-click="submit()"> Continue</button>    
+                <button class="btn btn-template margin-top-20" ng-click="submit()"> Continue</button>    
             </div>
         </div>
-        <div class="col-md-3">
+        <div class="col-md-4">
         </div>                   
     </div>
 </div>
