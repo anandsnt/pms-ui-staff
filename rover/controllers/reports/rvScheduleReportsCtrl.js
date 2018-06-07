@@ -10,7 +10,8 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
     '$timeout',
     'rvUtilSrv',
     'ngDialog',
-    function($rootScope, $scope, reportsSrv, reportUtils, reportParams, reportMsgs, reportNames, $filter, $timeout, util, ngDialog) {
+    'RVReportApplyIconClass',
+    function($rootScope, $scope, reportsSrv, reportUtils, reportParams, reportMsgs, reportNames, $filter, $timeout, util, ngDialog, applyIconClass) {
 
 
         var REPORT_SCHEDULES_SCROLL = 'REPORT_SCHEDULES_SCROLL';
@@ -608,6 +609,7 @@ angular.module('sntRover').controller('RVScheduleReportsCtrl', [
                     found = _.find($scope.$parent.$parent.reportList, { 'id': id });
 
                     if ( angular.isDefined(found) ) {
+                        applyIconClass.init(found);
                         $scope.$parent.$parent.schedulableReports.push({
                             id: found.id,
                             filters: found.filters,
