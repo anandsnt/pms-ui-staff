@@ -172,7 +172,7 @@ angular.module('sntRover').service('RVReportsInboxSrv', [
             };
 
             promises.push(RVreportsSubSrv.fetchRateDetailsByIds(params).then(function(rates) {
-                formatedFilter[reportInboxFilterLabelConst[key]] = _.pluck(rates, 'rate_name').join(',');
+                formatedFilter[reportInboxFilterLabelConst[key]] = _.pluck(rates, 'rate_name').join(', ');
             }));
         };
 
@@ -187,7 +187,7 @@ angular.module('sntRover').service('RVReportsInboxSrv', [
         this.fillDepartmentNames = (value, key, promises, formatedFilter) => {            
 
             promises.push(RVreportsSubSrv.fetchDepartments().then((departments) => {
-                formatedFilter[reportInboxFilterLabelConst[key]] = _.pluck(self.filterArrayValues(departments, value, 'value'), 'name').join(',');
+                formatedFilter[reportInboxFilterLabelConst[key]] = _.pluck(self.filterArrayValues(departments, value, 'value'), 'name').join(', ');
             }));
         };        
 
@@ -205,7 +205,7 @@ angular.module('sntRover').service('RVReportsInboxSrv', [
             };
 
             promises.push(RVreportsSubSrv.fetchMarkets().then((markets) => {
-                formatedFilter[reportInboxFilterLabelConst[key]] = _.pluck(markets, 'name').join(',');
+                formatedFilter[reportInboxFilterLabelConst[key]] = _.pluck(markets, 'name').join(', ');
             }));
         };
 
@@ -274,7 +274,7 @@ angular.module('sntRover').service('RVReportsInboxSrv', [
             ageBuckets.push(reportInboxFilterLabelConst[bucket]);
           });
 
-          formatedFilter[reportInboxFilterLabelConst[key]] =  ageBuckets.join(',');
+          formatedFilter[reportInboxFilterLabelConst[key]] =  ageBuckets.join(', ');
             
         };        
 
@@ -286,7 +286,7 @@ angular.module('sntRover').service('RVReportsInboxSrv', [
          * @return {void} 
          */
         this.processArrayValuesWithNoFormating = (value, key, formatedFilter) => { 
-          formatedFilter[reportInboxFilterLabelConst[key]] =  value.join(',');            
+          formatedFilter[reportInboxFilterLabelConst[key]] =  value.join(', ');            
         };
 
          /**
@@ -304,7 +304,7 @@ angular.module('sntRover').service('RVReportsInboxSrv', [
                         return _.contains(value, origin.value);
                     });
 
-                formatedFilter[reportInboxFilterLabelConst[key]] = _.pluck(filteredOrigins, 'description').join(',');
+                formatedFilter[reportInboxFilterLabelConst[key]] = _.pluck(filteredOrigins, 'description').join(', ');
             }));
         };
 
@@ -323,7 +323,7 @@ angular.module('sntRover').service('RVReportsInboxSrv', [
                         return _.contains(value, url.id);
                     });
 
-                formatedFilter[reportInboxFilterLabelConst[key]] = _.pluck(filteredUrls, 'name').join(',');
+                formatedFilter[reportInboxFilterLabelConst[key]] = _.pluck(filteredUrls, 'name').join(', ');
             }));
         };
 
@@ -337,7 +337,7 @@ angular.module('sntRover').service('RVReportsInboxSrv', [
          */
         this.fillAddonGroups = (value, key, promises, formatedFilter) => {            
             promises.push(RVreportsSubSrv.fetchChargeNAddonGroups().then((addonGroups) => {
-                formatedFilter[reportInboxFilterLabelConst[key]] = _.pluck(self.filterArrayValues(addonGroups, value, 'id'), 'name').join(',');
+                formatedFilter[reportInboxFilterLabelConst[key]] = _.pluck(self.filterArrayValues(addonGroups, value, 'id'), 'name').join(', ');
             }));
         };
 
@@ -355,7 +355,7 @@ angular.module('sntRover').service('RVReportsInboxSrv', [
             };
 
             promises.push(RVreportsSubSrv.fetchAddonsByIds(params).then((addonNames) => {
-                formatedFilter[reportInboxFilterLabelConst[key]] = addonNames.join(',');
+                formatedFilter[reportInboxFilterLabelConst[key]] = addonNames.join(', ');
             }));
         };
 
@@ -370,10 +370,10 @@ angular.module('sntRover').service('RVReportsInboxSrv', [
          */
         this.fillReservationStatus = (value, key, promises, formatedFilter, report) => {
             if (report.name === reportNames['DEPOSIT_REPORT']) {                
-                formatedFilter[reportInboxFilterLabelConst[key]] = _.pluck(self.filterArrayValues(RESERVATION_STATUS_DEPOSIT_REPORT, value, 'id'), 'status').join(',');
+                formatedFilter[reportInboxFilterLabelConst[key]] = _.pluck(self.filterArrayValues(RESERVATION_STATUS_DEPOSIT_REPORT, value, 'id'), 'status').join(', ');
             } else {
               promises.push(RVreportsSubSrv.fetchReservationStatus().then((statuses) => {
-                formatedFilter[reportInboxFilterLabelConst[key]] = _.pluck(self.filterArrayValues(statuses, value, 'id'), 'status').join(',');
+                formatedFilter[reportInboxFilterLabelConst[key]] = _.pluck(self.filterArrayValues(statuses, value, 'id'), 'status').join(', ');
               }));  
             }
         };
@@ -489,7 +489,7 @@ angular.module('sntRover').service('RVReportsInboxSrv', [
         this.fillRateTypes = (value, key, promises, formatedFilter) => {            
 
             promises.push(RVreportsSubSrv.fetchRateTypes().then(function(rates) {
-                formatedFilter[reportInboxFilterLabelConst[key]] = _.pluck(self.filterArrayValues(rates.results, value, "id"), 'name').join(',');
+                formatedFilter[reportInboxFilterLabelConst[key]] = _.pluck(self.filterArrayValues(rates.results, value, "id"), 'name').join(', ');
             }));
         };
 
@@ -504,7 +504,7 @@ angular.module('sntRover').service('RVReportsInboxSrv', [
         this.fillChargeCodes = (value, key, promises, formatedFilter) => {            
 
             promises.push(RVreportsSubSrv.fetchChargeCodes().then(function(chargeCodes) {
-                formatedFilter[reportInboxFilterLabelConst[key]] = _.pluck(self.filterArrayValues(chargeCodes, value, 'id'), 'name').join(',');
+                formatedFilter[reportInboxFilterLabelConst[key]] = _.pluck(self.filterArrayValues(chargeCodes, value, 'id'), 'name').join(', ');
             }));
         };
 
@@ -519,7 +519,7 @@ angular.module('sntRover').service('RVReportsInboxSrv', [
         this.fillChargeGroups = (value, key, promises, formatedFilter) => {            
 
             promises.push(RVreportsSubSrv.fetchChargeNAddonGroups().then(function(chargeGroups) {
-                formatedFilter[reportInboxFilterLabelConst[key]] = _.pluck(self.filterArrayValues(chargeGroups, value, 'id'), 'description').join(',');
+                formatedFilter[reportInboxFilterLabelConst[key]] = _.pluck(self.filterArrayValues(chargeGroups, value, 'id'), 'description').join(', ');
             }));
         };
 
@@ -557,7 +557,7 @@ angular.module('sntRover').service('RVReportsInboxSrv', [
                 selectedUsers = _.map(selectedUsers, (user) => {
                                     return user.full_name || user.email;
                                 });
-                formatedFilter[reportInboxFilterLabelConst[key]] = selectedUsers.join(',');
+                formatedFilter[reportInboxFilterLabelConst[key]] = selectedUsers.join(', ');
             }));
         };
 
@@ -572,7 +572,7 @@ angular.module('sntRover').service('RVReportsInboxSrv', [
         this.fillBookingOrigins = (value, key, promises, formatedFilter) => {            
 
             promises.push(RVreportsSubSrv.fetchBookingOrigins().then(function(origins) {
-                formatedFilter[reportInboxFilterLabelConst[key]] = _.pluck(self.filterArrayValues(origins, value, 'value'), 'name').join(',');
+                formatedFilter[reportInboxFilterLabelConst[key]] = _.pluck(self.filterArrayValues(origins, value, 'value'), 'name').join(', ');
             }));
         };
 

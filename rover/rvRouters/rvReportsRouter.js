@@ -52,7 +52,8 @@ angular.module('reportsModule', [])
                     var params = {
                         generated_date: $filter('date')($rootScope.businessDate, 'yyyy-MM-dd'),
                         per_page: RVReportsInboxSrv.PER_PAGE,
-                        user_id: $rootScope.userId
+                        user_id: $rootScope.userId,
+                        page: 1
                     };
                     
                     return RVReportsInboxSrv.fetchReportInbox(params);
