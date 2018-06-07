@@ -30,7 +30,7 @@
     <!-- main content -->
     <div class="row" ng-hide="isLoading || netWorkError">
         <!-- detailed view -->
-        <div class="col-md-8 top-spacing sm-no-top-spacing section-container float-none addon-section-container" ng-show="mode === 'DETAILED_VIEW' && !selectedAddon.isLco">
+        <div class="col-md-4 section-container float-none addon-section-container" ng-show="mode === 'DETAILED_VIEW' && !selectedAddon.isLco">
             <img src="{{selectedAddon.image_original}}" class="content-image  margin-top-20" alt="">
             <p class="main-text no-text-case bold-text margin-top-20" ng-bind="addonPurchaseMsgForDisplay" ng-hide="showPurchaseStatus"></p>
             <div ng-hide="showPurchaseStatus" class="addon-details">
@@ -49,8 +49,8 @@
                     </div>
                 </div>
                 <!-- submit -->
-                <a class="btn btn-template margin-top-20" ng-click="purchaseAddon(selectedAddon)" ng-hide="hideAddAddonButton()">{{addonPurchase}}</a>
-                <a class="btn btn-template margin-top-20" ng-click="removeAddon(selectedAddon)" ng-show="hideAddAddonButton()">{{addonRemove}}</a>
+                <button class="btn btn-template margin-top-40" ng-click="purchaseAddon(selectedAddon)" ng-hide="hideAddAddonButton()">{{addonPurchase}}</button>
+                <button class="btn btn-template margin-top-40" ng-click="removeAddon(selectedAddon)" ng-show="hideAddAddonButton()">{{addonRemove}}</button>
                 <div class="row no-thanks-wrap margin-top-20">
                     <p class="centeralign no-thanks">
                         <a ng-click="noThanksClicked()" class="sub-text no-text-case">{{addonSkip}}</a>
@@ -60,12 +60,12 @@
             <div ng-show="showPurchaseStatus" class="margin-bottom-10">
                 <p class="main-text no-text-case bold-text margin-top-20" ng-bind="selectedAddon.title"></p>
                 <p class="sub-main-text no-text-case margin-top-20">{{purchaseStatusText}}</p>
-                <a class="btn btn-template margin-top-80 margin-bottom-10" ng-click="doneClicked()">Done</a>
+                <button class="btn btn-template margin-top-40 margin-bottom-10" ng-click="doneClicked()">Done</button>
             </div>
         </div>
 
         <!-- LCO addon -->
-        <div class="col-md-8 top-spacing sm-no-top-spacing section-container float-none addon-section-container" ng-show="mode === 'DETAILED_VIEW' && selectedAddon.isLco">
+        <div class="col-md-4 section-container float-none addon-section-container" ng-show="mode === 'DETAILED_VIEW' && selectedAddon.isLco">
             <img ng-src="{{selectedAddon.image_original}}" class="content-image  margin-top-20" alt="">
             <p class="main-text no-text-case bold-text margin-top-20" ng-bind="addonPurchaseMsgForDisplay" ng-hide="showPurchaseStatus"></p>
             <div ng-hide="showPurchaseStatus" class="addon-details">
@@ -75,8 +75,8 @@
                 <div ng-repeat="addon in selectedAddon.lco_addons" class="margin-top-40">
                     <p class="main-text no-text-case bold-text margin-top-20">{{addon.name}}</p>
                     <p class="sub-main-text no-text-case">{{lcoAddonStartingMsg}}&nbsp;<b>{{addon.time}} PM</b>&nbsp;{{lcoAddonEndingMsg}}&nbsp;<b>{{currencySymbol}}{{addon.amount}}</b></p>
-                    <a class="btn btn-template margin-top-20" ng-click="purchaseAddon(addon)" ng-hide="addon.is_selected" ng-class="{'disabled-addon' : isOneLcoAdded() && !addon.is_selected}">{{addonPurchase}}</a>
-                    <a class="btn btn-template margin-top-20" ng-click="removeAddon(addon)" ng-show="addon.is_selected">{{addonRemove}}</a>
+                    <button class="btn btn-template margin-top-40" ng-click="purchaseAddon(addon)" ng-hide="addon.is_selected" ng-class="{'disabled-addon' : isOneLcoAdded() && !addon.is_selected}">{{addonPurchase}}</button>
+                    <button class="btn btn-template margin-top-40" ng-click="removeAddon(addon)" ng-show="addon.is_selected">{{addonRemove}}</button>
                 </div>
                 <div class="row no-thanks-wrap margin-top-20">
                     <p class="centeralign no-thanks">
@@ -87,12 +87,12 @@
             <div ng-show="showPurchaseStatus" class="margin-bottom-10">
                 <p class="main-text no-text-case bold-text margin-top-20" ng-bind="selectedAddon.title"></p>
                 <p class="sub-main-text no-text-case margin-top-20">{{purchaseStatusText}}</p>
-                <a class="btn btn-template margin-top-80 margin-bottom-10" ng-click="doneClicked()">Done</a>
+                <button class="btn btn-template margin-top-40 margin-bottom-10" ng-click="doneClicked()">Done</button>
             </div>
         </div>
 
         <!-- List view -->
-        <div class="col-md-8 top-spacing sm-no-top-spacing section-container float-none addon-section-container" ng-show="mode === 'LIST_VIEW'">
+        <div class="col-md-4 section-container float-none addon-section-container" ng-show="mode === 'LIST_VIEW'">
             <p class="main-text no-text-case">{{addonListTitle}}</p>
             <p class="sub-main-text no-text-case margin-top-20">showing {{addonList.length}} of {{addonList.length}}</p>
             <div ng-repeat="addon in addonList" class="addon-container margin-top-10" ng-click="addonSelected(addon)" ng-class="{'selected':((addon.is_selected || addon.quantity > 0) && !addon.isLco) || (addon.isLco && isOneLcoAdded())}">
@@ -109,7 +109,7 @@
                     </p>
                 </div>
             </div>
-            <a class="btn btn-template margin-top-20" ng-click="noThanksClicked()">{{addonContinue}}</a>
+            <button class="btn btn-template margin-top-20" ng-click="noThanksClicked()">{{addonContinue}}</button>
             <div class="row no-thanks-wrap margin-top-20">
                 <p class="centeralign no-thanks">
                     <a ng-click="noThanksClicked()" class="sub-text no-text-case">{{addonSkip}}</a>
