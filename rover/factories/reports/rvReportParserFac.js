@@ -1,3 +1,4 @@
+'use strict';
 sntRover.factory('RVReportParserFac', [
     '$rootScope',
     '$filter',
@@ -387,9 +388,9 @@ sntRover.factory('RVReportParserFac', [
                 adjustData = [],
                 options    = options,
                 guestNoteData = {},
-                reservationNoteData = {};
+                reservationNoteData = {}
 
-            var i, j;
+            var i, j, m, n;
 
             var excludeReports = function(names) {
                 return !!_.find(names, function(n) {
