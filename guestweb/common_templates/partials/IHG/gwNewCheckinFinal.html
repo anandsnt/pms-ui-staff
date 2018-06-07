@@ -31,17 +31,12 @@
         <div class="col-md-4 top-spacing">
             <p class="main-text final-text">You're checked in!</p>
             <p class="sub-text">Reservation #:{{confirmationNumber}}</p>
-            <br/>
-            <br/>
-            <p class="sub-main-text">{{responseData.delivery_message}}</p>
-            <br/>
-            <br/>
-            <p class="sub-main-text top-spacing" ng-if="mobileMarketingOn">
+            <p class="sub-main-text margin-top-20">{{responseData.delivery_message}}</p>
+            <p class="sub-main-text margin-top-20" ng-if="mobileMarketingOn">
                  <description template="{{mobileAppText}}">
                  </description>
             </p>
-            <br>
-            <div ng-class="{'dual-app-icons-container': apps.app_store.available && apps.play_store.available, 'single-app-icon-container': ((apps.app_store.available && !apps.play_store.available) || (!apps.app_store.available && apps.play_store.available))}" ng-if="mobileMarketingOn">
+            <div ng-class="{'dual-app-icons-container': apps.app_store.available && apps.play_store.available, 'single-app-icon-container': ((apps.app_store.available && !apps.play_store.available) || (!apps.app_store.available && apps.play_store.available))}" ng-if="mobileMarketingOn" class="margin-top-20">
                 <a ng-if="apps.app_store.available" href="{{apps.app_store.url}}" target='_blank'><img src="{{apps.app_store.img}}"</a>
                 <a ng-if="apps.play_store.available" href="{{apps.play_store.url}}" target='_blank'><img src="{{apps.play_store.img}}"</a>
             </div>

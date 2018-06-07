@@ -26,15 +26,12 @@
     </div>
     <!-- cc entry -->
     <div class="row" ng-hide="isFetching || netWorkError || ccSaved">
-        <div class="col-md-1"></div>
-        <div class="col-md-4 top-spacing">
+        <div class="col-md-4"></div>
+        <div class="col-md-4">
             <p class="main-text">Payment Info</p>
             <p class="sub-main-text">Please enter your credit card or debit card information.</p>
-        </div>
-        <div class="col-md-2"></div>
-        <div class="col-md-4 top-spacing">
             <div class="section-container">
-                <div class="row">
+                <div class="row first-field">
                     <!-- card number -->
                     <div class="cc-input-field pull-left">
                         <span class="sub-text upper-case pull-left">card number</span>
@@ -49,7 +46,7 @@
                         <a class="query-text pull-left" ng-click="showCcvPopup()">What is this?</a>
                     </div>
                 </div>
-                <div class="row">
+                <div class="row margin-top-20">
                     <!-- month -->
                     <div class="drop-down-container pull-left">
                         <span class="sub-text upper-case pull-left">Expiration date</span>
@@ -74,30 +71,21 @@
                     </div>
                 </div>
                 <!-- save payment button  -->
-                <a class="btn btn-template margin-top-20" ng-click="savePaymentDetails()"> Continue</a>
+                <button class="btn btn-template margin-top-40" ng-click="savePaymentDetails()"> Continue</button>
             </div>
         </div>
-        <div class="col-md-1">
-        </div>
+        <div class="col-md-4"></div>
     </div>
     <!-- contentarea starts here-->
     <div class="row" ng-hide="isFetching || netWorkError || !ccSaved">
-        <div class="col-md-1"></div>
+        <div class="col-md-4"></div>
         <!-- left side -->
         <div class="col-md-4 top-spacing">
-            <p class="main-text final-text"> Success!</p>
-            <p class="sub-text"> Card Information stored successfully.</p>
+            <p class="main-text final-text">Success!</p>
+            <p class="sub-text">Card Information stored successfully.</p>
+            <button class="btn btn-template margin-top-20" ng-click="nextButtonClicked()"> Continue</button>
         </div>
-        <div class="horizontal-line-sep-mobile"></div>
-        <!-- right side -->
-        <div class="col-md-2">
-            <div class="vertical-line">&nbsp;</div>
-        </div>
-        <div class="col-md-3 top-spacing sm-no-top-spacing">
-
-            <a class="btn btn-template margin-top-20" ng-click="nextButtonClicked()"> Continue</a>
-        </div>
-        <div class="col-md-1">
+        <div class="col-md-4">
         </div>
         <!-- checkinbtn section ends here-->
     </div>
