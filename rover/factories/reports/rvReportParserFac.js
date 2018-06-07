@@ -1,4 +1,3 @@
-'use strict';
 sntRover.factory('RVReportParserFac', [
     '$rootScope',
     '$filter',
