@@ -216,7 +216,12 @@ angular.module('sntRover')
                
                 $scope.setTitle(title);
                 $scope.$parent.heading = title;
-            };         
+            }; 
+
+            // Reload the current state
+            $scope.reloadState = () => {
+                $state.reload();
+            };        
 
             /**
              * Set the navigation to previous screen
@@ -225,14 +230,32 @@ angular.module('sntRover')
              * return {void} set the previous state object
              */
             let setPrevState = (showScheduledReports, showScheduledExports) => {
-                $rootScope.setPrevState = {
-                    title: $filter('translate')('SCHEDULED_REPORTS'),
-                    name: 'rover.reports.scheduleReportsAndExports',
-                    param: {
-                        showScheduledReports: showScheduledReports,
-                        showScheduledExports: showScheduledExports                        
-                    }                    
-                };
+                var backNaviagtionLabel = $filter('translate')('SCHEDULED_REPORTS');
+
+                if (showScheduledExports) {
+                    backNaviagtionLabel = $filter('translate')('SCHEDULED_EXPORTS');
+                }
+                // Reload the current state when there is no change in the state params
+                if ($stateParams && $stateParams.showScheduledReports === showScheduledReports && 
+                    $stateParams.showScheduledExports === showScheduledExports) {
+                        $rootScope.setPrevState = {
+                            title: backNaviagtionLabel,
+                            callback: 'reloadState',
+                            scope: $scope                    
+                        };
+
+                } else {
+                   $rootScope.setPrevState = {
+                        title: backNaviagtionLabel,
+                        name: 'rover.reports.scheduleReportsAndExports',
+                        param: {
+                            showScheduledReports: showScheduledReports,
+                            showScheduledExports: showScheduledExports                        
+                        }                    
+                    }; 
+                }
+                
+                
             };
 
             // Navigate to new report schedule creation screen
