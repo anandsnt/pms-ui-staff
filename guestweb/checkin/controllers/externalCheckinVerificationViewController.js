@@ -231,3 +231,13 @@ sntGuestWeb.controller('earlyToCheckinCtrl', ['$scope', '$stateParams', '$state'
 		};
 	}
 ]);
+
+sntGuestWeb.controller('lateToCheckinController', ['$scope', '$state',
+
+	function($scope, $state) {
+
+		$scope.goToFindReservation = function() {
+			$state.go('externalCheckinVerification');
+		};
+	}
+]);

@@ -8,17 +8,12 @@
 <div class="container">
     <!-- email entry -->
     <div class="row">
-        <div class="col-md-3"></div>
-        <div class="col-md-6 top-spacing sm-no-top-spacing">
-            <form>
-                <div class="top-spacing section-container">
-                    <p class="main-text">Late Arrival</p>
-                    <p class="sub-main-text">You're arriving late. To Check-in, please visit the hotel's front desk.</p>
-                </div>
-                <br/>
-                <br/>
+        <div class="col-md-4"></div>
+        <div class="col-md-4 section-container">
+                <p class="main-text">Late Arrival</p>
+                <p class="sub-main-text">You're arriving late. To Check-in, please visit the hotel's front desk.</p>
                 <!--  submit button-->
-                <a class="btn btn-template  margin-top-10" ui-sref="externalCheckinVerification"> Find Reservation</a>
+                <button class="btn btn-template  margin-top-40" ng-click="goToFindReservation()"> Find Reservation</button>
             </form>
         </div>
         <div class="col-md-3">
