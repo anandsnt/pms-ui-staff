@@ -312,7 +312,7 @@ angular.module('sntRover').service('rvMenuSrv',
 		        menuIndex: "reports",		        
 		        submenu: [{
 		            title: "MENU_NEW_REPORT",
-		            action: "rover.reports.dashboard({fromReportInbox: true})",
+		            action: "rover.reports.dashboard",
 		            menuIndex: "new_report"
 		        }, {
 		            title: "MENU_REPORTS_INBOX",
@@ -364,7 +364,7 @@ angular.module('sntRover').service('rvMenuSrv',
 		        menuIndex: "reports",		        
 		        submenu: [{
 		            title: "MENU_NEW_REPORT",
-		            action: "rover.reports.dashboard({fromReportInbox: true})",
+		            action: "rover.reports.dashboard",
 		            menuIndex: "new_report"
 		        }, {
 		            title: "MENU_REPORTS_INBOX",

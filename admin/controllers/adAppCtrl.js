@@ -260,7 +260,7 @@ admin.controller('ADAppCtrl', [
                         menuIndex: "reports",               
                         submenu: [{
                             title: "MENU_NEW_REPORT",
-                            action: "rover.reports.dashboard({fromReportInbox: true})",
+                            action: "rover.reports.dashboard",
                             menuIndex: "new_report"
                         }, {
                             title: "MENU_REPORTS_INBOX",
@@ -312,7 +312,7 @@ admin.controller('ADAppCtrl', [
                         menuIndex: "reports",               
                         submenu: [{
                             title: "MENU_NEW_REPORT",
-                            action: "rover.reports.dashboard({fromReportInbox: true})",
+                            action: "rover.reports.dashboard",
                             menuIndex: "new_report"
                         }, {
                             title: "MENU_REPORTS_INBOX",

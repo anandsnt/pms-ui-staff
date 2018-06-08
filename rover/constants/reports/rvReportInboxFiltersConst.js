@@ -130,6 +130,7 @@ angular.module('reportsModule')
         "GROUP_BY": "Group By",
         "group_by_date": "Date",
         "group_by_user": "User",
-        "group_by_group_name": "Group name"
-
+        "group_by_group_name": "Group name",
+        "DEPOSIT_DUE_FROM_DATE": "Deposit Due From Date",
+        "DEPOSIT_DUE_TO_DATE": "Deposit Due To Date"
     });

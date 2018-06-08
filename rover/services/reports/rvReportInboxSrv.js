@@ -788,6 +788,18 @@ angular.module('sntRover').service('RVReportsInboxSrv', [
                          break;
 
                 }
+            } else if (key === reportParamsConst['DEPOSIT_FROM_DATE']) {
+                switch(reportName) {
+                    case reportNames['DEPOSIT_REPORT']:
+                         label = reportInboxFilterLabelConst['DEPOSIT_DUE_FROM_DATE'];
+                         break;
+                }
+            } else if (key === reportParamsConst['DEPOSIT_TO_DATE']) {
+                switch(reportName) {
+                    case reportNames['DEPOSIT_REPORT']:
+                         label = reportInboxFilterLabelConst['DEPOSIT_DUE_TO_DATE'];
+                         break;
+                }
             }
             return label
         };
@@ -883,6 +895,8 @@ angular.module('sntRover').service('RVReportsInboxSrv', [
                 switch(key) {
                    case reportParamsConst['FROM_DATE']:
                    case reportParamsConst['TO_DATE']:
+                   case reportParamsConst['DEPOSIT_FROM_DATE']:
+                   case reportParamsConst['DEPOSIT_TO_DATE']:
                         processedFilter[self.getDateRangeLabelName(key, report.name)] = value ? $filter('date')(tzIndependentDate(value), $rootScope.dateFormat) : value;
                         break;
                    case reportParamsConst['CANCEL_FROM_DATE']:
@@ -890,9 +904,7 @@ angular.module('sntRover').service('RVReportsInboxSrv', [
                    case reportParamsConst['ARRIVAL_FROM_DATE']:
                    case reportParamsConst['ARRIVAL_TO_DATE']:
                    case reportParamsConst['GROUP_START_DATE']:
-                   case reportParamsConst['GROUP_END_DATE']:
-                   case reportParamsConst['DEPOSIT_FROM_DATE']:
-                   case reportParamsConst['DEPOSIT_TO_DATE']:
+                   case reportParamsConst['GROUP_END_DATE']:                   
                    case reportParamsConst['PAID_FROM_DATE']:
                    case reportParamsConst['PAID_TO_DATE']:
                    case reportParamsConst['CREATE_FROM_DATE']:
