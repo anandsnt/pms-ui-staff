@@ -1066,10 +1066,9 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 
 		// ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// --- PERMISSIONS
 
-		$scope.restrictIfOverbook = function(roomId, rateId) {
+		$scope.restrictIfOverbook = function(roomId, rateId, availability) {
 			var canOverbookHouse = rvPermissionSrv.getPermissionValue('OVERBOOK_HOUSE'),
 				canOverbookRoomType = rvPermissionSrv.getPermissionValue('OVERBOOK_ROOM_TYPE');
-
 
 			if (!!$scope.reservationData.group.id || !!$scope.reservationData.allotment.id) {
 				// CICO-26707 Skip house avbl check for group/allotment reservations
@@ -1079,6 +1078,11 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 					return true;
 				}
 				// CICO-24923 TEMPORARY
+			}
+
+			// CICO-53368 : If there is no Room Type Permission & availability <= 0, ie OverBooking - hide BOOK button.
+			if (typeof availability !== 'undefined' && availability <= 0 && !canOverbookRoomType) {
+				return true;
 			}
 
 			if (canOverbookHouse && canOverbookRoomType) {
