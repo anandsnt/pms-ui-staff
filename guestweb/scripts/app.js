@@ -228,7 +228,8 @@ sntGuestWeb.controller('homeController', ['$rootScope', '$scope', '$location', '
 		var theme = reservationAndhotelData.hotel_theme;
 
 		var navigatePageBasedOnUrlAndType = function() {
-
+			// If zestweb is loaded inside  mobile App in webview
+			// customize style - like hide header and footer and other styles
 			if (isInvokedFromApp && reservationAndhotelData.skip_checkin_verification && reservationAndhotelData.reservation_details) {
 				checkinDetailsService.setResponseData(reservationAndhotelData.reservation_details);
 				$rootScope.upgradesAvailable = (reservationAndhotelData.reservation_details.is_upgrades_available === "true") ? true : false;
