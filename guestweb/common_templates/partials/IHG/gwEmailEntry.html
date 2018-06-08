@@ -5,7 +5,7 @@
     </div>
 </div>
 <!-- main section starts here -->
-<div class="container">
+<div class="container-fluid">
     <!-- request text -->
     <div class="row" ng-show="isLoading && !netWorkError">
         <div class="col-md-2"></div>
@@ -33,7 +33,7 @@
             <p class="sub-text pull-left first-field">E-MAIL ADDRESS</p>
             <input type="email" class="input-field padding-3" ng-model="guestDetails.email"></input>
             <!--  submit button-->
-            <button class="btn btn-template margin-top-40" ng-click="emailSubmitted()">Continue</button>
+            <button class="btn btn-template margin-top-20" ng-click="emailSubmitted()">Continue</button>
         </div>
         <div class="col-md-4">
         </div>
@@ -44,7 +44,7 @@
         <div class="col-md-4 section-container">
             <p class="main-text"> E-mail Address Updated</p>
             <p class="sub-main-text"> We updated your Guest profile to include this e-mail address: {{guestDetails.email}}</p>
-            <button class="btn btn-template margin-top-40" ng-click="continueToPrecheckin()" value="Continue">Continue</button>
+            <button class="btn btn-template margin-top-20" ng-click="continueToPrecheckin()" value="Continue">Continue</button>
             <button class="btn btn-template margin-top-20 grey-btn" ng-click="changeEmail()"> Change Email address</button>
         </div>
         <div class="col-md-4">
