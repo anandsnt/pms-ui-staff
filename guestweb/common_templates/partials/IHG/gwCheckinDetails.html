@@ -8,7 +8,7 @@
 <div class="container-fluid">
     <div class="row">
         <div class="col-md-4"></div>
-        <div class="col-md-5 res-date-container">
+        <div class="col-md-4 res-date-container">
             <!--  -->
             <p class="sub-text light-text margin-top-20">RESERVATION #{{confirmationNumber}}</p>
             <p class="main-text" ng-hide="ShowupgradedLabel">
@@ -85,11 +85,12 @@
                     <span class="footer-sub-text left-margin-10">I ACCEPT ALL TERMS AND CONDITIONS</span>
                 </div>
             </div>
-            <button class="btn btn-template margin-top-40" ng-click="checkInButtonClicked()"> Continue</button>
+            <button class="btn btn-template margin-top-20" ng-click="checkInButtonClicked()"> Continue</button>
             <div class="footer-sub-text margin-top-10">
                 QUESTIONS? <a href="tel:{{hotelPhone}}"><u class="phone-label">CALL US AT  {{hotelPhone}}.</u></a>
             </div>
         </div>
+        <div class="col-md-4"></div>
     </div>
     <!-- terms starts here -->
     <div class="date-picker-bg" ng-show="showTermsPopup">

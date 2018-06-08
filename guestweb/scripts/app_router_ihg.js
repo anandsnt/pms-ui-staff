@@ -160,18 +160,18 @@ sntGuestWeb.config(['$stateProvider', '$urlRouterProvider', function($stateProvi
             title: 'External Check in verification'
         }).state('guestCheckinTurnedOff', {
             url: '/guestCheckinTurnedOff',
-            templateUrl: '/assets/common_templates/partials/checkin/gwExternalCheckInTurnedOff.html',
+            templateUrl: '/assets/common_templates/partials/IHG/gwExternalCheckInTurnedOff.html',
             title: 'Check-in'
         })
         .state('guestCheckinEarly', {
             url: '/guestCheckinEarly/:date',
-            templateUrl: '/assets/common_templates/partials/checkin/gwEarlyToCheckin.html',
+            templateUrl: '/assets/common_templates/partials/IHG/gwEarlyToCheckin.html',
             controller: 'earlyToCheckinCtrl',
             title: 'Check-in'
         })
         .state('guestCheckinLate', {
             url: '/guestCheckinLate',
-            templateUrl: '/assets/common_templates/partials/checkin/gwLateToCheckin.html',
+            templateUrl: '/assets/common_templates/partials/IHG/gwLateToCheckin.html',
             title: 'Check-in',
             controller: 'lateToCheckinController'
         });
@@ -198,7 +198,7 @@ sntGuestWeb.config(['$stateProvider', '$urlRouterProvider', function($stateProvi
     // Addon state
     $stateProvider.state('offerAddonOptions', {
         url: '/addonOptions/:isFrom',
-        templateUrl: '/assets/common_templates/partials/checkin/IHG/gwOfferAddonOptions.html',
+        templateUrl: '/assets/common_templates/partials/IHG/gwOfferAddonOptions.html',
         controller: 'offerAddonOptionsController',
         title: 'Addons'
     });

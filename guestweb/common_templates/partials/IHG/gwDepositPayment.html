@@ -33,7 +33,7 @@
                 <p class="sub-main-text" ng-bind="screenDetails.description"></p>
                 <p class="sub-main-text">DepositAmount:</p>
                 <p class="sub-main-text">{{depositAmount}}</p>
-                <button class="btn btn-template early-checkin-button margin-top-40" ng-click="payNow()"> Pay {{depositAmount}}</a>
+                <button class="btn btn-template early-checkin-button margin-top-20" ng-click="payNow()"> Pay {{depositAmount}}</a>
                 <button class="btn btn-template early-checkin-button margin-top-20 grey-btn" ng-click="cancelActions()">Cancel</a>
             </div>
         </div>
@@ -51,13 +51,13 @@
     </div>
     <!-- deposit payment success -->
     <div class="row" ng-show="paymentSuccess">
-        <div class="col-md-3"></div>
+        <div class="col-md-4"></div>
         <div class="col-md-4 section-container">
             <p class="main-text" ng-bind="screenDetailsPaymentSuccesMessage.title"></p>
             <p class="sub-main-text" ng-bind="screenDetailsPaymentSuccesMessage.description"></p>
             <button class="btn btn-template margin-top-10" ng-click="paymentSuccessContinueAction()">Continue</button>
         </div>
-        <div class="col-md-3"></div>
+        <div class="col-md-4"></div>
     </div>
     <!-- deposit no payment method -->
     <div class="row" ng-show="noPaymentMethod">

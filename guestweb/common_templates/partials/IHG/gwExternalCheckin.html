@@ -22,7 +22,7 @@
         </div>
     </div>
     <div class="row" ng-hide="isLoading || netWorkError || !searchMode">
-        <div class="col-md-3"></div>
+        <div class="col-md-4"></div>
         <div class="col-md-4 section-container">
             <!-- default main text -->
             <p class="main-text" ng-if="!screenCMSDetails.title">Find Your Reservation</p>
@@ -62,7 +62,7 @@
                 <p class="sub-text first-field full-width" ng-show="lastname.length >0" ng-bind="lastname"></p>
                 <p class="sub-text margin-top-20 full-width" ng-show="confirmationNumber.length>0" ng-bind="confirmationNumber"></p>
                 <p class="sub-text margin-top-20 full-width" ng-show="departureDate.length >0" ng-bind="departureDate"></p>
-                <button class="btn btn-template margin-top-40" ng-click="tryAgain()"> Try Again</button>
+                <button class="btn btn-template margin-top-20" ng-click="tryAgain()"> Try Again</button>
             </div>
         </div>
         <div class="col-md-4">
@@ -83,7 +83,7 @@
             <p class="sub-text margin-top-20 full-width" ng-show="departureDate.length >0" ng-bind="departureDate"></p>
             <p class="sub-text margin-top-20 pull-left">CONFIRMATION NUMBER</p>
             <input type="text" class="input-field padding-2" ng-model="confirmationNumber"></input>
-            <button type="submit" class="btn btn-template margin-top-40" ng-click="nextButtonClicked()">Continue</button>
+            <button type="submit" class="btn btn-template margin-top-20" ng-click="nextButtonClicked()">Continue</button>
         </div>
         <div class="col-md-4">
         </div>
