@@ -61,7 +61,7 @@
                 <span class="status {{getColorCodeForReportStatus(report)}}" ng-show="shouldDisableInboxItem(report)">{{getRequestedReportStatus(report)}}</span>
                 
                                 <!-- On click, when not expanded, will go to the generated report screen-->
-                                <div class="report-item-wrapper">
+                                <div class="report-item-wrapper" ng-click="showGeneratedReport(report)">
                                     <!-- 'icon-class' -> Icon class from all-reports.html -->
                                     <span class="{{report.reportIconCls}} icon-20w"></span>
                                     <div class="data">
