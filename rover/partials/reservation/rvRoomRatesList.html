@@ -130,7 +130,7 @@
                                     RESV_BOOK
                                 </button>
                                 <!-- making sure that this button always show when borrow -->
-                                <button class="button {{room.defaultRate.buttonClass}}" ng-show="borrowForGroups" ng-click="handleBooking(room.id,room.defaultRate.id,$event)" translate>
+                                <button class="button {{room.defaultRate.buttonClass}}" ng-show="borrowForGroups && !restrictIfOverbook(room.id,room.defaultRate.id,room.availability)" ng-click="handleBooking(room.id,room.defaultRate.id,$event)" translate>
                                     RESV_BOOK
                                 </button>
                             <!-- </div> -->
