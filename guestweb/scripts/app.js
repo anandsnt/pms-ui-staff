@@ -223,11 +223,13 @@ sntGuestWeb.controller('homeController', ['$rootScope', '$scope', '$location', '
 		//check if we are using new send to que settings.
 		$rootScope.bypassCheckinVerification = (reservationAndhotelData.is_sent_to_que === 'true' && !!reservationAndhotelData.zest_web_use_new_sent_to_que_action);
 
-		var navigatePageBasedOnUrlAndType = function() {
-			var absUrl = $location.$$absUrl;
+		var absUrl = $location.$$absUrl;
+		var isInvokedFromApp = absUrl.indexOf("/guest_web/") !== -1 && absUrl.indexOf("/checkin?guest_web_token=") !== -1;
+		var theme = reservationAndhotelData.hotel_theme;
 
-			if (absUrl.indexOf("/guest_web/") !== -1 && absUrl.indexOf("/checkin?guest_web_token=") !== -1 &&
-				reservationAndhotelData.skip_checkin_verification && reservationAndhotelData.reservation_details) {
+		var navigatePageBasedOnUrlAndType = function() {
+
+			if (isInvokedFromApp && reservationAndhotelData.skip_checkin_verification && reservationAndhotelData.reservation_details) {
 				checkinDetailsService.setResponseData(reservationAndhotelData.reservation_details);
 				$rootScope.upgradesAvailable = (reservationAndhotelData.reservation_details.is_upgrades_available === "true") ? true : false;
 				$rootScope.isUpgradeAvailableNow = reservationAndhotelData.reservation_details.is_upsell_available_now;
@@ -236,7 +238,7 @@ sntGuestWeb.controller('homeController', ['$rootScope', '$scope', '$location', '
 				$rootScope.paymentDetails = reservationAndhotelData.reservation_details.payment_details;
 				// navigate to next page
 				$state.go('checkinReservationDetails');
-				customizeStylesBasedOnUrlTyppe();
+				customizeStylesBasedOnUrlType(theme);
 			} else {
 				$state.go('checkinConfirmation'); //checkin starting -> page precheckin + auto checkin
 			}
@@ -266,7 +268,14 @@ sntGuestWeb.controller('homeController', ['$rootScope', '$scope', '$location', '
 			var path = $rootScope.isPasswordResetView === 'true' ? 'resetPassword' : 'emailVerification';
 			$state.go(path);
 		} else {
-			!reservationAndhotelData.error_occured ? $state.go('checkoutRoomVerification') : $state.go('errorOccured'); // checkout landing page
+			if(reservationAndhotelData.error_occured)  {
+				$state.go('errorOccured');
+			} else {
+				if(isInvokedFromApp) {
+					customizeStylesBasedOnUrlType(theme);
+				}
+				$state.go('checkoutRoomVerification');
+			}
 		}
 
 		$(".loading-container").hide();
