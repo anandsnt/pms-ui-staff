@@ -1,14 +1,14 @@
 <ad-common-parts-in-form-dir on-save-button-click="confirmSave"
-                             header-caption="{{'GDPR Settings' | translate}}">
+                             header-caption="{{'Data Removal' | translate}}">
     <fieldset class="holder full-width">
         <div class="form-title">
-            <h3>GDPR Settings</h3>
+            <h3>Data Removal</h3>
         </div>
 
         <fieldset class="holder">
-            <ad-toggle-button is-checked="GDRSettings.automatic_guest_data_removal" label="{{'ACTIVE'| translate}}" div-class=""></ad-toggle-button>
+            <ad-toggle-button is-checked="GDRSettings.automatic_guest_data_removal" label="{{'Automatic Guest Data Removal'| translate}}" div-class=""></ad-toggle-button>
             <ad-textbox value="GDRSettings.no_of_days_after_last_checkout"
-                        disabled="!GDRSettings.automatic_guest_data_removal" name="zest-web" id="zest-web" label="{{'NO OF DAYS'| translate}}" placeholder=""></ad-textbox>
+                        disabled="!GDRSettings.automatic_guest_data_removal" name="zest-web" id="zest-web" label="{{'No of days since last checkout'| translate}}" placeholder=""></ad-textbox>
         </fieldset>
     </fieldset>
 

@@ -123,17 +123,36 @@ admin.controller('ADRatesActivityLogCtrl', ['$scope', '$rootScope', '$state', '$
                 per_page: 50
         };
 
+        /*
+         *  Utility to format custom date.
+         *  @param {string} - date with 'dd-MM-yyyy' format
+         *  @return {string} - date with 'yyyy-MM-dd' format
+         */
+        var generateDateForAPIFormat = function( date ) {
+            var temp = [], newDate = '', delimiter = '',
+                dateFormat = $rootScope.dateFormat;
+
+            if ( dateFormat === 'MM/dd/yyyy' || dateFormat === 'MM-dd-yyyy' ) {
+                newDate = $filter('date')(tzIndependentDate(date), 'yyyy-MM-dd' );
+            }
+            else if ( dateFormat === 'dd/MM/yyyy' || dateFormat === 'dd-MM-yyyy' ) {
+                delimiter = dateFormat.split('')[2];
+                temp = date.split(delimiter);
+                newDate = temp[1] + delimiter + temp[0] + delimiter + temp[2];
+                newDate = $filter('date')(tzIndependentDate(newDate), 'yyyy-MM-dd' );
+            }
+            return newDate;
+        };
+
         if ($scope.isUpdateReportFilter) {
             $scope.fromDate = $('#activity-range-from').val();
             $scope.toDate = $('#activity-range-to').val();
             if ($scope.fromDate !== '') {
-                params['from_date'] = $filter('date')(new Date($scope.fromDate), 'yyyy-MM-dd');
+                params['from_date'] = generateDateForAPIFormat($scope.fromDate);
             }
             if ($scope.toDate !== '') {
-                params['to_date'] = $filter('date')(new Date($scope.toDate), 'yyyy-MM-dd');
+                params['to_date'] = generateDateForAPIFormat($scope.toDate);
             }
-
-
         }
         params['sort_order'] = $scope.sort_order;
         params['sort_field'] = $scope.sort_field;
