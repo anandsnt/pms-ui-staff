@@ -2737,6 +2737,14 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
             $state.go('rover.reports.inbox');
         };
 
+        // Listener for updating the report header
+        var reportHeadingUpdateListener = $scope.$on('UPDATE_REPORT_HEADING', (event, data) => {
+            $scope.heading = data.heading;
+        });
+
+        // Destroy the listener
+        $scope.$on('$destroy', reportHeadingUpdateListener);
+
 
         (function () {
             var transitionParams = $state.transition.params();

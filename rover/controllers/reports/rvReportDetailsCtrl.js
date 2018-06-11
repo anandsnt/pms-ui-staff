@@ -1236,6 +1236,7 @@ sntRover.controller('RVReportDetailsCtrl', [
                     }
                     
                     if (reportsSrv.getPrintClickedState()) {
+                        $scope.$emit('UPDATE_REPORT_HEADING', { heading: $filter('translate')('MENU_REPORTS_INBOX')});
                         reportsSrv.setPrintClicked(false);
                         $scope.viewStatus.showDetails = false;
                         if ($state.$current.name !== 'rover.reports.show' && reportsSrv.getChoosenReport()) {
@@ -1484,7 +1485,7 @@ sntRover.controller('RVReportDetailsCtrl', [
         var loadPrintView = () => {
             $scope.errorMessage = [];            
             afterFetch();
-            $scope.heading = $scope.$parent.heading;
+            $scope.$emit('UPDATE_REPORT_HEADING', {heading: $scope.heading});            
             findBackNames();
             reportUtils.findFillFilters(reportsSrv.getChoosenReport(), $scope.$parent.reportList)
                     .then(invokePrint);            
