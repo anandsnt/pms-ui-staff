@@ -1,6 +1,6 @@
 <section id="report-details" class="content reports-wrapper" role="main">
         <span>
-            <div id="report-update" class="sidebar-left ui-resizable" ng-class="{'open': showSidebar}" ng-click="toggleSidebar($event)" ng-include="'/assets/partials/reports/filters/rvReportDetailsFilters.html'"></div>
+            <div id="report-update" class="sidebar-left ui-resizable" ng-class="{'open': showSidebar}" ng-click="toggleSidebar($event)" ng-include="'/assets/partials/reports/filters/rvReportDetailsFilters.html'" ng-if="!isBackgroundReportsEnabled"></div>
 
             <div class="report-header" ng-show="showReportHeader">
                 <div ng-show="hasReportTotals && !hasNoResults" ng-include="'/assets/partials/reports/shared/summaryCounts.html'"></div>
