@@ -274,8 +274,7 @@ var customizeStylesForIhgApp = function() {
   var node = document.createElement('style');
   node.innerHTML = ".row.header-bar {margin-bottom: 22px !important;}";
 
-  if (navigator.userAgent.match(/Andorid/i) && navigator.userAgent.match(/Andorid/i) !== -1) {
-    // for IHG, font family for android App is to be Roboto
+  if (navigator.userAgent.match(/Andorid/i) !== -1) {
     node.innerHTML = node.innerHTML + ".res-details-heading,.back-text,.btn,.btn p,.btn span p,.footer-sub-text,.footer-sub-text:hover,.footer-text,.phone-label,.res-date,.sub-main-text,.sub-text,a,a:hover,.main-text{font-family: Roboto,sans-serif !important}";
     node.innerHTML = node.innerHTML + ".btn,.btn p,.btn span p, .btn-template {font-wight: 400 !important}";
   }
@@ -289,6 +288,7 @@ var customizeStylesBasedOnUrlType = function(theme) {
   node.innerHTML = ".logo-image {display: none;} .row.header-bar {margin-bottom: 50px !important;} #zest-footer{ display: none !important;}";
   document.head.appendChild(node);
   if (theme === 'guestweb_ihg') {
+    // for IHG, font family for android App is to be Roboto
     customizeStylesForIhgApp();
   }
 };
