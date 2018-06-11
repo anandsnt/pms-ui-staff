@@ -63,7 +63,11 @@
                         label="{{'IFRAME_END_POINT'| translate}}"
                         styleclass="full-width"></ad-textbox>
         </fieldset>
-        <fieldset class="holder right">
+        <fieldset class="holder">
+            <ad-toggle-button is-checked="config.stay_info_after_checkout"
+                              label="{{'STAY_INFO_AFTER_CHECKOUT'| translate}}"></ad-toggle-button>
+        </fieldset>
+        <fieldset class="holder left">
             <div class="entry full-width">
                 <label>STAY INFO REVENUE</label>
                 <div class="switch-container">
@@ -82,9 +86,10 @@
                 </div>
             </div>
         </fieldset>
-        <fieldset class="holder left">
-            <ad-toggle-button is-checked="config.stay_info_after_checkout"
-                              label="{{'STAY_INFO_AFTER_CHECKOUT'| translate}}"></ad-toggle-button>
+        <fieldset class="holder">
+            <ad-toggle-button is-checked="config.routed_charges"
+                              label="{{'CRM_ROUTE_CHARGES_LABEL'| translate}}"></ad-toggle-button>
+            <p class="container"><em>{{'CRM_ROUTE_CHARGES_DESCRIPTION'| translate}}</em></p>
         </fieldset>
     </fieldset>
 
