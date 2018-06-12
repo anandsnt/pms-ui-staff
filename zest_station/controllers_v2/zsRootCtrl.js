@@ -898,7 +898,28 @@ sntZestStation.controller('zsRootCtrl', [
             var commonIconsPath = '/assets/zest_station/css/icons/default';
 
             // var basicHomeIcons = ['zoku'],
-            var niceHomeIcons = ['avenue', 'sohotel', 'epik', 'public', 'public_v2', 'duke', 'de-jonker', 'chalet-view', 'freehand', 'row-nyc', 'circle-inn-fairfield', 'cachet-boutique', 'hi-ho', 'first', 'viceroy-chicago', 'amrath', 'jupiter', 'huntley', 'queen', 'belle'],
+            var niceHomeIcons = ['avenue',
+                    'sohotel',
+                    'epik',
+                    'public',
+                    'public_v2',
+                    'duke',
+                    'de-jonker',
+                    'chalet-view',
+                    'freehand',
+                    'row-nyc',
+                    'circle-inn-fairfield',
+                    'cachet-boutique',
+                    'hi-ho',
+                    'first',
+                    'viceroy-chicago',
+                    'amrath',
+                    'jupiter',
+                    'huntley',
+                    'queen',
+                    'belle',
+                    'ihg'
+                ],
                 nonCircleNavIcons = ['public_v2'];// minor adjustment to the back/close icons for some themes (only show the inner x or <)
 
 
@@ -1923,6 +1944,17 @@ sntZestStation.controller('zsRootCtrl', [
             });
             return propertyTranslations ? propertyTranslations.translations : [];
         };
+
+
+        $scope.$on('PRINT_CURRENT_PAGE', function() {
+            // if zest station is loaded in Electron App, proceed with silent printing
+            // using electron App (Communicate asynchronously from a renderer process to the main process.)
+            if (navigator.userAgent.indexOf('Electron') !== -1 && window.ipcRenderer) {
+                window.ipcRenderer.send('printCurrentPage');
+            } else {
+                $window.print();
+            }
+        });
 
 		/** *
 		 * [initializeMe description]

@@ -37,7 +37,9 @@ module.exports = {
             'arc': [themeCSSRoot + 'arc.less'],
             'alessandra': [themeCSSRoot + 'alessandra.less'],
             'story': [themeCSSRoot + 'story.less'],
-            'pod': [themeCSSRoot + 'pod.less']
+            'pod': [themeCSSRoot + 'pod.less'],
+            'ihg': [themeCSSRoot + 'ihg.less'],
+            'surf-sand': [themeCSSRoot + 'surf-sand.less']
 		};
 	}
 };

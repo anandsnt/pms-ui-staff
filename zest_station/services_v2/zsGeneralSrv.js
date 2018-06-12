@@ -54,7 +54,9 @@ sntZestStation.service('zsGeneralSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
             'arc': 'Arc The Hotel',
             'alessandra': 'Hotel Alessandra',
             'story': 'Story Hotels',
-            'pod': 'Pod DC'
+            'pod': 'Pod DC',
+            'ihg': 'IHG',
+            'surf-sand': 'Surf And Sand Hotel'
         };
 
         this.isThemeConfigured = function(theme) {

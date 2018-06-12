@@ -2,8 +2,8 @@
  * Service used for tablet-kiosk UI (Zest Station)
  */
 
-sntZestStation.service('zsPaymentSrv', ['$http', '$q', 'zsBaseWebSrv', '$rootScope',
-    function($http, $q, zsBaseWebSrv, $rootScope) {
+sntZestStation.service('zsPaymentSrv', ['$http', '$q', 'zsBaseWebSrv', '$rootScope', 'zsBaseWebSrv2',
+    function($http, $q, zsBaseWebSrv, $rootScope, zsBaseWebSrv2) {
         // service provider for common utilities
         var that = this,
             TERMINAL_POLLING_INTERVAL_MS = 3000;
@@ -37,7 +37,7 @@ sntZestStation.service('zsPaymentSrv', ['$http', '$q', 'zsBaseWebSrv', '$rootSco
             var deferred = $q.defer(),
                 url = '/staff/reservation/save_payment';
 
-            zsBaseWebSrv.postJSON(url, params).then(function(data) {
+            zsBaseWebSrv2.postJSON(url, params).then(function(data) {
                 deferred.resolve(data);
             }, function(data) {
                 deferred.reject(data);

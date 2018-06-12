@@ -95,7 +95,7 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 					$scope.reservationData.allotment.id ||
 					$stateParams.promotion_id ||
 					$scope.reservationData.promotionId ||
-					$stateParams.is_member == "true";
+					$stateParams.is_member;
 			},
 			isMembershipValid = function() {
 				var membership = $scope.reservationData.guestMemberships,
@@ -737,7 +737,7 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 				}
 				if ($stateParams.travel_agent_id || $stateParams.company_id
 					 || $stateParams.group_id || $stateParams.allotment_id
-					 || $stateParams.is_member == "true" || $stateParams.promotion_id) {
+					 || $stateParams.is_member || $stateParams.promotion_id) {
 					$scope.stateCheck.activeView = 'RECOMMENDED';
 				}
 

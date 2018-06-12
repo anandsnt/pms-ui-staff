@@ -635,6 +635,12 @@
    "PAYMENT": "PAYMENT",
 
    "CHECK_HANDLER_IS_RUNNING_MSG": "Please ensure that the Zest station Hanlder is running",
-   "HOW_WOULD_YOU_LIKE_TO_REFUND": "How Would You Like your Refund ?"
+   "HOW_WOULD_YOU_LIKE_TO_REFUND": "How Would You Like your Refund ?",
+
+   "CBA_IN_PROGRESS": "Deposit collection",
+   "CBA_IN_PROGRESS_SUB_TEXT": "For Deposit collection, please use the CBA device to proceed.",
+   "CBA_PAYMENT_FAILED": "Payment failed!",
+   "CBA_SWIPE_CARD_PLEASE": "Swipe Credit Card"
+
 
 }
