@@ -40,6 +40,11 @@ angular.module('sntRover').service('RVReportsInboxSrv', [
             {id: 5,  status: "CANCEL", selected: true}
         ];
 
+        var UNDEFINED_ENTRY = {
+            is_active: true,
+            name: 'UNDEFINED',
+            value: -1
+        };
 
         /**
          * Fetches the list of generated reports
@@ -572,6 +577,12 @@ angular.module('sntRover').service('RVReportsInboxSrv', [
         this.fillBookingOrigins = (value, key, promises, formatedFilter) => {            
 
             promises.push(RVreportsSubSrv.fetchBookingOrigins().then(function(origins) {
+                var undefinedEntry = _.find(origins, {name: 'UNDEFINED'});
+
+                if (!undefinedEntry) {
+                    origins.push(UNDEFINED_ENTRY);
+                }
+
                 formatedFilter[reportInboxFilterLabelConst[key]] = _.pluck(self.filterArrayValues(origins, value, 'value'), 'name').join(', ');
             }));
         };
@@ -587,7 +598,13 @@ angular.module('sntRover').service('RVReportsInboxSrv', [
         this.fillMarkets = (value, key, promises, formatedFilter) => {            
 
             promises.push(RVreportsSubSrv.fetchMarkets().then(function(markets) {
-                formatedFilter[reportInboxFilterLabelConst[key]] = _.pluck(self.filterArrayValues(markets, value, 'value'), 'name').join(',');
+                var undefinedEntry = _.find(markets, {name: 'UNDEFINED'});
+
+                if (!undefinedEntry) {
+                    markets.push(UNDEFINED_ENTRY);
+                }
+
+                formatedFilter[reportInboxFilterLabelConst[key]] = _.pluck(self.filterArrayValues(markets, value, 'value'), 'name').join(', ');
             }));
         };
 
@@ -602,7 +619,34 @@ angular.module('sntRover').service('RVReportsInboxSrv', [
         this.fillSources = (value, key, promises, formatedFilter) => {           
 
             promises.push(RVreportsSubSrv.fetchSources().then(function(sources) {
-                formatedFilter[reportInboxFilterLabelConst[key]] = _.pluck(self.filterArrayValues(sources, value, 'value'), 'name').join(',');
+                var undefinedEntry = _.find(sources, {name: 'UNDEFINED'});
+
+                if (!undefinedEntry) {
+                    sources.push(UNDEFINED_ENTRY);
+                }
+
+                formatedFilter[reportInboxFilterLabelConst[key]] = _.pluck(self.filterArrayValues(sources, value, 'value'), 'name').join(', ');
+            }));
+        };
+
+        /**
+         * Fill segment names from the array of ids
+         * @param {Array} value array of segment ids
+         * @param {String} key the key to be used in the formatted filter
+         * @param {Promises} promises array of promises
+         * @param {Object} formatedFilter the formatted filter object
+         * @return {void} 
+         */
+        this.fillSegments = function (value, key, promises, formatedFilter) {
+
+            promises.push(RVreportsSubSrv.fetchSegments().then(function (segments) {
+                var undefinedEntry = _.find(segments, {name: 'UNDEFINED'});
+
+                if (!undefinedEntry) {
+                    segments.push(UNDEFINED_ENTRY);
+                } 
+
+                formatedFilter[reportInboxFilterLabelConst[key]] = _.pluck(self.filterArrayValues(segments, value, 'value'), 'name').join(', ');
             }));
         };
 
@@ -617,7 +661,7 @@ angular.module('sntRover').service('RVReportsInboxSrv', [
         this.fillHoldStatuses = (value, key, promises, formatedFilter) => {           
 
             promises.push(RVreportsSubSrv.fetchHoldStatus().then(function(statuses) {
-                formatedFilter[reportInboxFilterLabelConst[key]] = _.pluck(self.filterArrayValues(statuses, value, 'id'), 'name').join(',');
+                formatedFilter[reportInboxFilterLabelConst[key]] = _.pluck(self.filterArrayValues(statuses, value, 'id'), 'name').join(', ');
             }));
         };
 
@@ -650,7 +694,7 @@ angular.module('sntRover').service('RVReportsInboxSrv', [
             };          
 
             promises.push(self.fetchRoomtypesByIds(params).then(function(roomTypes) {
-                formatedFilter[reportInboxFilterLabelConst[key]] = _.pluck(roomTypes, 'name').join(',');
+                formatedFilter[reportInboxFilterLabelConst[key]] = _.pluck(roomTypes, 'name').join(', ');
             }));
         };
 
@@ -665,7 +709,7 @@ angular.module('sntRover').service('RVReportsInboxSrv', [
         this.fillFloors = (value, key, promises, formatedFilter) => {                     
 
             promises.push(RVreportsSubSrv.fetchFloors().then(function(floors) {
-                formatedFilter[reportInboxFilterLabelConst[key]] = _.pluck(self.filterArrayValues(floors, value, 'floor_number'), 'floor_number').join(',');
+                formatedFilter[reportInboxFilterLabelConst[key]] = _.pluck(self.filterArrayValues(floors, value, 'floor_number'), 'floor_number').join(', ');
             }));
         };
 
@@ -683,7 +727,7 @@ angular.module('sntRover').service('RVReportsInboxSrv', [
             };
 
             promises.push(RVreportsSubSrv.fetchTravelAgentsByIds(params).then(function(travelAgents) {
-                formatedFilter[reportInboxFilterLabelConst[key]] = _.pluck(travelAgents, 'account_name').join(',');
+                formatedFilter[reportInboxFilterLabelConst[key]] = _.pluck(travelAgents, 'account_name').join(', ');
             }));
         };
 
@@ -716,7 +760,7 @@ angular.module('sntRover').service('RVReportsInboxSrv', [
         this.fillCampaignTypesInfo = (value, key, promises, formatedFilter) => {  
 
             promises.push(RVreportsSubSrv.fetchCampaignTypes().then(function(campaignTypes) {
-                formatedFilter[reportInboxFilterLabelConst[key]] = _.pluck(self.filterArrayValues(campaignTypes, value, 'value'), 'name').join(',');
+                formatedFilter[reportInboxFilterLabelConst[key]] = _.pluck(self.filterArrayValues(campaignTypes, value, 'value'), 'name').join(', ');
             }));
         };
 
@@ -1077,7 +1121,7 @@ angular.module('sntRover').service('RVReportsInboxSrv', [
                         self.processDueOut(value, key, processedFilter, report);
                         break;
                    case reportParamsConst['SEGMENT_IDS']:
-                        processedFilter[reportInboxFilterLabelConst[key]] = value.join(",");
+                        self.fillSegments(value, key, promises, processedFilter);
                         break;
                    case reportParamsConst['RESTRICTION_IDS']:
                         self.fillRestrictions(value, key, promises, processedFilter);
