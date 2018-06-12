@@ -104,8 +104,7 @@
 .report-item {
     position: relative;
     padding: 15px;
-    background: @white @arrowRight no-repeat;
-    background-position: calc(~'100% - 15px') 50%;
+    background-color: @white;
     cursor: pointer;
     z-index: 40;
     .float();
@@ -135,6 +134,7 @@
             font-size: 21px;
             line-height: 20px;
             font-weight: 700;
+            .flex(center);
             .nowrap();
 
             .notice {
@@ -159,11 +159,6 @@
     }
 
     &:not(:last-child) { margin-bottom: 10px; }
-
-    &:hover,
-    &:active { 
-        .box-shadow(inset 1px 1px 1px rgba(0,0,0,.15));
-    }
 
     &:not(.active) {
         @media @highdpi {
@@ -196,7 +191,6 @@
     }
 
     &.inbox-item {
-        
         cursor: default; 
         background-position: calc(~'100% - 110px') 18px;
         padding: 0;
@@ -326,7 +320,7 @@
                     text-align: right;
                     border-right: 1px solid rgba( 0, 0, 0, 0.1 );
                     white-space: normal;
-                    
+
                     span {
                         color: @grey3;
                     }
@@ -452,8 +446,23 @@
                 }
             }
         }
-        
-    }    
+    }
+
+    &:not(.export-item) {
+        background-image: @arrowRight;
+        background-repeat: no-repeat;
+        background-position: calc(~'100% - 15px') 50%;
+
+        &:hover,
+        &:active { 
+            .box-shadow(inset 1px 1px 1px rgba(0,0,0,.15));
+        }
+
+        @media @highdpi {
+            background-image: @arrowRight2x; 
+            background-size: 14px 14px;
+        }
+    }   
 }
 
 .report-item-header {
@@ -466,25 +475,6 @@
     background: rgba( 0, 0, 0, 0.05 ); 
     margin: 0 20px 0 0;
     .float();
-
-    .expand {
-        width: 40px;
-        background: rgba( 0, 0, 0, 0.05 ); 
-        padding: 12px;
-        .pull-left;
-
-        .expand-arrow {
-            .square(16px);
-            .icons > .rotate-up();
-            background-size: 100px;
-            background-position: 1px -1281px;
-
-            &:not(.active) {
-                opacity: 0.2;
-                .icons > .rotate-down();
-            }
-        }
-    }
 
     .actions {
         width: 95px;
@@ -1057,7 +1047,7 @@
                     background: @orange;
                 }
             }
-        }
+        } 
 
         &.with-pagination {
             .report-inbox {
