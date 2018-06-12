@@ -171,6 +171,14 @@ angular.module('admin').controller('ADWebhookListCtrl', ['$scope', 'webHooks', '
         };
 
         $scope.testURLConnectivity = function(url) {
+            $scope.callAPI(ADWebhookSrv.testURLConnectivity, {
+                params: {
+                    url: url
+                },
+                successCallBack: function(response) {
+                    $scope.message = response;
+                }
+            });
         };
 
         (function () {

@@ -26,7 +26,7 @@
             </fieldset>
 
             <fieldset class="holder right">
-                <div class="entry full-width" ng-show="webHook.delivery_type==='mlife'">
+                <div class="entry half-width" ng-show="webHook.delivery_type==='mlife'">
                     <label> {{ 'CONFIGURATION' | translate }} </label>
                     <textarea json-text ng-model='webHook.options' rows="6"
                               placeholder="Enter Configuration in JSON format"></textarea>
@@ -37,6 +37,16 @@
                             class="button ng-binding blue">TEST ENDPOINT
                     </button>
                 </div>
+                <div class="entry full-width"  ng-if="message.request" snt-highlight-syntax>
+                  <strong>Request</strong>
+                  <pre class="interface-message brush: js; auto-links: false">
+                      {{message.request}}
+                  </pre>
+                  <strong>Response</strong>
+                  <pre class="interface-message brush: js; auto-links: false">
+                      {{message.response}}
+                  </pre>
+                </div>
             </fieldset>
 
         </fieldset>
@@ -45,15 +55,15 @@
             <div class="form-title">
                 <h3>Subscriptions</h3>
             </div>
-            <fieldset class="holder left">
+            <!-- <fieldset class="holder left">
                 <ad-textarea rows="2" div-class="full-width"
                              text-area-class="full-width"
                              value="webHook.selectedEvents"
                              disabled="true"
                              label="{{ 'SELECTED_SUBSCRIPTIONS' | translate}}" placeholder="">
                 </ad-textarea>
-            </fieldset>
-            <fieldset class="holder right">
+            </fieldset> -->
+            <fieldset class="holder left">
                 <ad-textbox inputtype="text"
                             value="eventSearch"
                             div-class="full-width"
