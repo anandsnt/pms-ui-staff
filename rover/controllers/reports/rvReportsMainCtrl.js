@@ -1608,7 +1608,7 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
                     params[key] = [];
                     /**/
                     _.each(selected, function (segment) {
-                        params[key].push(segment.name);
+                        params[key].push(segment.value);
                         /**/
                         if (changeAppliedFilter) {
                             $scope.appliedFilter.segments.push(segment.name);
