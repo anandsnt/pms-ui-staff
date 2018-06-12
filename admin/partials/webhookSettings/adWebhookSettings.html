@@ -37,14 +37,14 @@
                             class="button ng-binding blue">TEST ENDPOINT
                     </button>
                 </div>
-                <div class="entry full-width"  ng-if="message.request" snt-highlight-syntax>
+                <div class="entry full-width"  ng-if="webHook.delivery_type==='generic' && (testMessage.request || testMessage.response)" snt-highlight-syntax>
                   <strong>Request</strong>
                   <pre class="interface-message brush: js; auto-links: false">
-                      {{message.request}}
+                      {{testMessage.request}}
                   </pre>
                   <strong>Response</strong>
                   <pre class="interface-message brush: js; auto-links: false">
-                      {{message.response}}
+                      {{testMessage.response}}
                   </pre>
                 </div>
             </fieldset>
