@@ -222,12 +222,12 @@ sntZestStation.controller('zsCheckinCCSwipeCtrl', [
         var successSavePayment = function(response) {
             if (atCardSwipeScreen()) {
                 $scope.$emit('hideLoader');
-                $stateParams.pre_auth_amount_for_zest_station = 3;
 
-                var authAtCheckinRequired = $stateParams.authorize_cc_at_checkin,
+                var authAtCheckinRequired = $stateParams.authorize_cc_at_checkin  === 'true',
                     authCCAmount = $stateParams.pre_auth_amount_for_zest_station;
 
                 authCCAmount = parseInt(authCCAmount) > 0 ? authCCAmount : '1.00';
+                
                 if (authAtCheckinRequired) {
                     $scope.callAPI(zsCheckinSrv.authorizeCC, {
                         params: {
