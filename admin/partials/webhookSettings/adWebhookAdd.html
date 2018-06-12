@@ -13,7 +13,8 @@
                                   required="yes"
                                   change-handler="onWebHookTypeChange"
                                   change-handler-param="state.new"
-                                  property="delivery_type"
+                                  property="delivery_type_display"
+                                  prefixValue="true"
                                   list="meta.deliveryTypes"
                                   label="{{'WEBHOOK_TYPE'| translate}}"
                                   div-class="full-width">
@@ -25,7 +26,7 @@
                             styleclass="full-width"></ad-textbox>
             </fieldset>
 
-            <fieldset class="holder right">
+            <fieldset class="holder right" ng-show="state.new.delivery_type==='mlife'">
                 <div class="entry full-width">
                     <label> {{ 'CONFIGURATION' | translate }} </label>
                     <textarea json-text ng-model='state.new.options' rows="6"
@@ -64,7 +65,7 @@
                             <span class="ivh-treeview-node-label"
                                   style="padding-left: 10px;"
                                   ivh-treeview-toggle>
-                                            {{trvw.label(node)}}
+                                            {{trvw.label(node) | translate}}
                                             </span>
                             <div style="margin-top: 1em;" ivh-treeview-children></div>
                         </script>

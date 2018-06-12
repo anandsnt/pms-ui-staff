@@ -170,6 +170,9 @@ angular.module('admin').controller('ADWebhookListCtrl', ['$scope', 'webHooks', '
             }
         };
 
+        $scope.testURLConnectivity = function(url) {
+        };
+
         (function () {
             $scope.meta = null;
             $scope.webHooks = webHooks;
