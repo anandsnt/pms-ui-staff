@@ -1,5 +1,5 @@
 // To fix the issue with csrf token in ajax requests
-login.config(function($httpProvider) {
+angular.module('login').config(function($httpProvider) {
     $httpProvider.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
     var m = document.getElementsByTagName('meta');
 

@@ -826,4 +826,17 @@ admin.controller('ADAppCtrl', [
             index = _.isUndefined(index) ? $scope.selectedIndex : index;
             return index;
         };
-}]);
+
+        (function() {
+            if (!adminMenuData.menus.length) {
+                let staffURL = '/staff/h/';
+
+                $('body').addClass('no-animation');
+                $('#admin-header').css({'z-index': '0'});
+                $('section.content-scroll').css({'overflow': 'visible'});
+
+                staffURL += sntAuthorizationSrv.getProperty();
+                $window.location.href = staffURL;
+            }
+        })();
+    }]);
