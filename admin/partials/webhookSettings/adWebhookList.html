@@ -21,7 +21,7 @@
                 <td data-item="1" data-title="'DELIVERY TYPE'" ng-click="onSelect($index, webHook)"
                     header-class="width-20" ng-hide="state.selected === $index">
                     <a class="edit-data-inline">
-                        {{webHook.delivery_type}}
+                        {{webHook.delivery_type | translate}}
                     </a>
                 </td>
                 <td data-item="2" data-title="'URL'" ng-click="onSelect($index, webHook)"
