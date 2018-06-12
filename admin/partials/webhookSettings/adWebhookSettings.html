@@ -26,25 +26,25 @@
             </fieldset>
 
             <fieldset class="holder right">
-                <div class="entry half-width" ng-show="webHook.delivery_type==='mlife'">
+                <div class="entry full-width" ng-show="webHook.delivery_type==='mlife'">
                     <label> {{ 'CONFIGURATION' | translate }} </label>
                     <textarea json-text ng-model='webHook.options' rows="6"
                               placeholder="Enter Configuration in JSON format"></textarea>
                 </div>
                 <div class="entry full-width" ng-show="webHook.delivery_type==='generic'">
                     <button style="margin: 24px;"
-                            ng-click="testURLConnectivity(webHook.url);"
+                            ng-click="testURLConnectivity(webHook);"
                             class="button ng-binding blue">TEST ENDPOINT
                     </button>
                 </div>
-                <div class="entry full-width"  ng-if="webHook.delivery_type==='generic' && (testMessage.request || testMessage.response)" snt-highlight-syntax>
+                <div class="entry full-width"  ng-if="webHook.delivery_type==='generic' && (webHook.testMessage.request || webHook.testMessage.response)" snt-highlight-syntax>
                   <strong>Request</strong>
                   <pre class="interface-message brush: js; auto-links: false">
-                      {{testMessage.request}}
+                      {{webHook.testMessage.request}}
                   </pre>
                   <strong>Response</strong>
                   <pre class="interface-message brush: js; auto-links: false">
-                      {{testMessage.response}}
+                      {{webHook.testMessage.response}}
                   </pre>
                 </div>
             </fieldset>
