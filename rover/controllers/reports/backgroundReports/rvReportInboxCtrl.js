@@ -303,7 +303,7 @@ angular.module('sntRover').controller('RVReportsInboxCtrl', [
             var mainCtrlScope = $scope.$parent;
 
             setChoosenReport(selectedreport);
-            mainCtrlScope.genReport(false, $scope.currentPage);
+            mainCtrlScope.genReport(true, $scope.currentPage);
         };
        
         /*
