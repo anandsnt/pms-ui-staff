@@ -583,10 +583,6 @@ sntRover.controller('RVReportDetailsCtrl', [
                     if (_.findWhere($scope.chosenReport.hasIncludeAgingBalance.data, {selected: true, id: "120plus"})) {
                         result.age_120plus = buildResult(result.age_120plus);
                     }                   
-                    // result.age_31to60 = buildResult(result.age_31to60);
-                    // result.age_61to90 = buildResult(result.age_61to90);
-                    // result.age_91to120 = buildResult(result.age_91to120);
-                    // result.age_120plus = buildResult(result.age_120plus);
                     result.balance = buildResult(result.balance);
                     result.payment = buildResult(result.payment);
                 });
