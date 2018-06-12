@@ -131,6 +131,7 @@ angular.module('admin').controller('ADWebhookListCtrl', ['$scope', 'webHooks', '
         };
 
         $scope.onCancelEdit = function () {
+            $scope.testMessage = {};
             $scope.state.mode = '';
             revertEdit();
             $scope.state.selected = null;
@@ -148,6 +149,7 @@ angular.module('admin').controller('ADWebhookListCtrl', ['$scope', 'webHooks', '
             $scope.callAPI(ADWebhookSrv.update, {
                 params: webHook,
                 successCallBack: function () {
+                    $scope.testMessage = {};
                     $scope.state.mode = '';
                     $scope.state.selected = null;
                 }
@@ -155,6 +157,7 @@ angular.module('admin').controller('ADWebhookListCtrl', ['$scope', 'webHooks', '
         };
 
         $scope.onSelect = function (idx, webHook) {
+            $scope.testMessage = {};
             var showEdit = function () {
                 $scope.state.editRef = angular.copy(webHook);
                 webHook.availableEvents = getTreeSelectorData($scope.meta.events, webHook.subscriptions);
@@ -171,12 +174,13 @@ angular.module('admin').controller('ADWebhookListCtrl', ['$scope', 'webHooks', '
         };
 
         $scope.testURLConnectivity = function(url) {
+            $scope.testMessage = {};
             $scope.callAPI(ADWebhookSrv.testURLConnectivity, {
                 params: {
                     url: url
                 },
                 successCallBack: function(response) {
-                    $scope.message = response;
+                    $scope.testMessage = response;
                 }
             });
         };
@@ -185,6 +189,7 @@ angular.module('admin').controller('ADWebhookListCtrl', ['$scope', 'webHooks', '
             $scope.meta = null;
             $scope.webHooks = webHooks;
             $scope.totalCount = webHooks.length;
+            $scope.testMessage = {};
 
             $scope.state = {
                 deletedCount: 0,
