@@ -1,16 +1,19 @@
-<label id="{{menuImage}}" class="nav-toggle" ng-class="{'active': menuOpen}"  click-touch="toggleDrawerMenu($event)">Menu</label>
+ <!-- Add class "menu-hotel" when L8 is tapped, "menu-open" when menu is open, and "menu-closing" when menu is closing. Remove classes "menu-open" and "menu-closed" when menu is closed -->
+<a href="#main-menu" class="nav-toggle" click-touch="toggleDrawerMenu($event)">Menu</a>
 
 <div id="nav" ng-show="isHotelAdmin || isHotelStaff">
 
-	<!-- Property switch -->
-	<div class="change-hotel" ng-show="shouldShowMultiPropertySwitch()">
-		<h5 ng-click="toggleHotelList()">{{currentHotelData.name}}</h5>
-		<dl class="dropdown">
-			<dt>Change hotel:</dt>
-			<dd ng-repeat="hotel in hotelDetails.userHotelsData.hotel_list"><a ng-click="redirectToHotel(hotel)">{{ hotel.hotel_name}}</a></dd>
-		</dl>
+	<div class="change-hotel">
+		<h5 ng-click="toggleHotelList()">{{currentHotelData.name}}</h5>			
+	    <!-- List of hotels -->
+	    <div class="scrollable" ng-iscroll="hotels-list" > <!-- iScroll here -->
+			<dl class="wrapper">
+				<dd ng-repeat="hotel in hotelDetails.userHotelsData.hotel_list">
+					<a ng-click="redirectToHotel(hotel)">{{ hotel.hotel_name}}</a>
+				</dd>
+			</dl>
+		</div>
 	</div>
-
 	<!-- If only 1 hotel available don't show the switch, just show this: -->
 	<h5 ng-hide="shouldShowMultiPropertySwitch()">Menu</h5>
 
@@ -60,3 +63,4 @@
 		<a ng-class="{'active':selectedMenuIndex == menuItem.menuIndex}" ng-if="menuItem.action == ''&& menuItem.actionPopup" ng-click="subMenuAction(menuItem.menuIndex)" translate="{{menuItem.title}}" ng-hide="menuItem.hideItem"></a>
 	</li>
 </ul>
+
