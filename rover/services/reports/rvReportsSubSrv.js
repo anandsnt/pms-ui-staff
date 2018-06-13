@@ -27,14 +27,38 @@ angular.module('sntRover').service('RVreportsSubSrv', [
          * @param  {Object} params {page: per_page}
          * @return {Object} processed response with paginated result
          */
-        service.getcachedInboxReportByPage = function(params) {
-            var response = angular.copy(service.cachedInboxReport),
+        service.processResults = function(params) {
+            var results = angular.copy(service.cachedInboxReport).results,
                 start = (params.page - 1) * params.per_page,
                 end = start + params.per_page,
-                paginatedResult = _.isArray(response.results) ? response.results.slice(start, end)
-                    : response.results;
+                paginatedResult = _.isArray(results) ? results.slice(start, end)
+                    : results;
 
-            response.results = paginatedResult;
+            return paginatedResult;
+        };
+        /**
+         * Process Total Result Row vallue- Returns null
+         * until the page is NOT last one
+         * @param  {Object} params {page: per_page}
+         * @return {Object} processed total result row or Null
+         */
+        service.processToatlResultRow = function(params) {
+            var response = angular.copy(service.cachedInboxReport),
+                toatalCount = response.total_count,
+                lastPage = Math.ceil(toatalCount / params.per_page);
+
+            return params.page === lastPage ? response.results_total_row : null;
+        };
+        /**
+         * Abstract the response based on params
+         * @param  {Object} params {page: per_page}
+         * @return {Object} processed response
+         */
+        service.getcachedInboxReportByParams = function(params) {
+            var response = angular.copy(service.cachedInboxReport);
+
+            response.results = service.processResults(params);
+            response.results_total_row = service.processToatlResultRow(params);
             response.isPaginatedResponse = true;
             return response;
         };
@@ -181,12 +205,12 @@ angular.module('sntRover').service('RVreportsSubSrv', [
             if (params.page === 1) {
                 rvBaseWebSrvV2.getJSON(url).then(function(data) {
                     service.cachedInboxReport = data;
-                    deferred.resolve(service.getcachedInboxReportByPage(params));
+                    deferred.resolve(service.getcachedInboxReportByParams(params));
                 }, function(data) {
                     deferred.reject(data);
                 });
             } else {
-                deferred.resolve(service.getcachedInboxReportByPage(params));
+                deferred.resolve(service.getcachedInboxReportByParams(params));
             }
 
             return deferred.promise;
