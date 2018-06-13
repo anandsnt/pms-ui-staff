@@ -30,7 +30,7 @@
     <!-- main content -->
     <div class="row" ng-hide="isLoading || netWorkError">
         <!-- detailed view -->
-        <div class="col-md-4 section-container float-none addon-section-container" ng-show="mode === 'DETAILED_VIEW' && !selectedAddon.isLco">
+        <div class="col-md-4 section-container float-none addon-section-container align-center" ng-show="mode === 'DETAILED_VIEW' && !selectedAddon.isLco">
             <img src="{{selectedAddon.image_original}}" class="content-image  margin-top-20" alt="">
             <p class="main-text no-text-case bold-text margin-top-20" ng-bind="addonPurchaseMsgForDisplay" ng-hide="showPurchaseStatus"></p>
             <div ng-hide="showPurchaseStatus" class="addon-details">
@@ -65,7 +65,7 @@
         </div>
 
         <!-- LCO addon -->
-        <div class="col-md-4 section-container float-none addon-section-container" ng-show="mode === 'DETAILED_VIEW' && selectedAddon.isLco">
+        <div class="col-md-4 section-container float-none addon-section-container align-center" ng-show="mode === 'DETAILED_VIEW' && selectedAddon.isLco">
             <img ng-src="{{selectedAddon.image_original}}" class="content-image  margin-top-20" alt="">
             <p class="main-text no-text-case bold-text margin-top-20" ng-bind="addonPurchaseMsgForDisplay" ng-hide="showPurchaseStatus"></p>
             <div ng-hide="showPurchaseStatus" class="addon-details">
