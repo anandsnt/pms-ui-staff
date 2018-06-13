@@ -272,7 +272,6 @@ var customizeStylesForIhgApp = function() {
   // customize style
   // logo is not in a common HTML
   var node = document.createElement('style');
-  node.innerHTML = ".row.header-bar {margin-bottom: 22px !important;}";
 
   if (navigator.userAgent.match(/Andorid/i) !== -1) {
     node.innerHTML = node.innerHTML + ".res-details-heading,.back-text,.btn,.btn p,.btn span p,.footer-sub-text,.footer-sub-text:hover,.footer-text,.phone-label,.res-date,.sub-main-text,.sub-text,a,a:hover,.main-text{font-family: Roboto,sans-serif !important}";
