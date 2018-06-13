@@ -273,7 +273,7 @@ var customizeStylesForIhgApp = function() {
   // logo is not in a common HTML
   var node = document.createElement('style');
 
-  if (navigator.userAgent.match(/Andorid/i) !== -1) {
+  if (navigator.userAgent.match(/Android/i) !== -1 && navigator.userAgent.match(/Android/i) !== null) {
     node.innerHTML = node.innerHTML + ".res-details-heading,.back-text,.btn,.btn p,.btn span p,.footer-sub-text,.footer-sub-text:hover,.footer-text,.phone-label,.res-date,.sub-main-text,.sub-text,a,a:hover,.main-text{font-family: Roboto,sans-serif !important}";
     node.innerHTML = node.innerHTML + ".btn,.btn p,.btn span p, .btn-template {font-wight: 400 !important}";
   }
