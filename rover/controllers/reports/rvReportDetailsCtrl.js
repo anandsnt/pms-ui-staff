@@ -1517,19 +1517,24 @@ sntRover.controller('RVReportDetailsCtrl', [
         $scope.$on('$destroy', printModalReportListener);
 
         (function () {
-            
-            var title = $filter('translate')('REPORTS');
 
-            // Coming from report inbox
-            if (reportsSrv.getChoosenReport().generatedReportId) {
-                title = $filter('translate')('MENU_REPORTS_INBOX');
+            // Don't need to set the back button during print from report inbox
+            if (!reportsSrv.getPrintClickedState()) {
+                var title = $filter('translate')('REPORTS');
+
+                // Coming from report inbox
+                if (reportsSrv.getChoosenReport().generatedReportId) {
+                    title = $filter('translate')('MENU_REPORTS_INBOX');
+                }
+                $rootScope.setPrevState = {
+                    title: title,
+                    callback: 'goBackReportList',
+                    name: 'rover.reports.dashboard',
+                    scope: $scope
+                };
             }
-            $rootScope.setPrevState = {
-                title: title,
-                callback: 'goBackReportList',
-                name: 'rover.reports.dashboard',
-                scope: $scope
-            };
+            
+            
 
             switch ($state.params.action) {
                 case reportMsgs['REPORT_SUBMITED']:
