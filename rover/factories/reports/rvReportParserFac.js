@@ -261,7 +261,7 @@ sntRover.factory('RVReportParserFac', [
              * WHY? Coz we have to!
              */
 
-            var i, j;
+            var i, j, uuid;
 
             var returnObj = {};
 
