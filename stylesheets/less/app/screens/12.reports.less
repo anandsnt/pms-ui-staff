@@ -452,18 +452,12 @@
             background: rgba( 0, 0, 0, 0.05 );
 
             .report-item-wrapper {
-                cursor: default;
                 border: 0;
 
                 .calc-width(100, 40);
                 .data {
                     padding-right: 145px;
                 }
-            }
-
-            &:hover,
-            &:active { 
-                .box-shadow();
             }
         }
     }   
@@ -3676,9 +3670,8 @@
                                 text-transform: uppercase;
                                 font-weight: 600;
                                 line-height: 40px;
-                                background: @grey2 @arrowSort no-repeat 90% 50%;
-                                padding: 0 40px 0 10px;
-                                cursor: pointer;
+                                background: @grey3;
+                                padding: 0 10px;
                                 .nowrap();
                                 .box-shadow(1px 1px 0 rgba(0,0,0,.3));
 
@@ -3687,7 +3680,7 @@
                             }
 
                             .title { .calc-width(100, 55); }
-                            .count { width: 50px; }
+                            .count { width: 50px; text-align: right; }
                         }
 
                         &.footer {
