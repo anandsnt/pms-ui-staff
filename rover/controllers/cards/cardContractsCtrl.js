@@ -565,7 +565,7 @@ angular.module('sntRover').controller('cardContractsCtrl', ['$rootScope', '$scop
 				contractInfo = dataToUpdate;
 			}
 			if (!dataUpdated) {
-				var data = dclone($scope.contractData, ['occupancy', 'statistics', 'rates', 'total_contracted_nights']);
+				var data = dclone($scope.contractData, ['occupancy', 'statistics', 'rates', 'total_contracted_nights', 'rate_name', 'rate_code']);
 
 				if ($stateParams.id === "add") {
 					var account_id = $scope.contactInformation.id;
@@ -573,6 +573,8 @@ angular.module('sntRover').controller('cardContractsCtrl', ['$rootScope', '$scop
 					var account_id = $scope.currentCard;
 				}
 				if ($scope.contractSelected.id) {
+					data.contract_name = getContractObj().contract_name;
+					data.contract_code = getContractObj().contract_code;
 					if (typeof account_id !== "undefined") {
 						$scope.invokeApi(RVCompanyCardSrv.updateContract, {
 							"account_id": account_id,
