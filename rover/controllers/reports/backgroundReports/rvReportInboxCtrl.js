@@ -21,7 +21,7 @@ angular.module('sntRover').controller('RVReportsInboxCtrl', [
         $timeout,
         reportsSrv,
         reportNames,
-        reportsSubSrv ) {
+        reportsSubSrv) {
 
         var self = this;
 
@@ -184,7 +184,6 @@ angular.module('sntRover').controller('RVReportsInboxCtrl', [
 
             return params;
         };
-       
 
         /**
          * Fetches the generated reports
@@ -192,8 +191,6 @@ angular.module('sntRover').controller('RVReportsInboxCtrl', [
          * @return {void}
          */
         self.fetchGeneratedReports = (pageNo) => {
-            // Keep the current page to restore to the same page later
-            $scope.currentPage = pageNo;
 
             let onReportsFetchSuccess = (data) => {
                     $scope.reportInboxData.generatedReports = self.getFormatedGeneratedReports(data.results, $scope.reportList);
@@ -303,7 +300,7 @@ angular.module('sntRover').controller('RVReportsInboxCtrl', [
             var mainCtrlScope = $scope.$parent;
 
             setChoosenReport(selectedreport);
-            mainCtrlScope.genReport(true, $scope.currentPage);
+            mainCtrlScope.genReport();
         };
        
         /*
@@ -377,14 +374,8 @@ angular.module('sntRover').controller('RVReportsInboxCtrl', [
             RVReportsInboxSrv.processReports($scope.reportList);
             $scope.reportInboxData.generatedReports = self.getFormatedGeneratedReports(generatedReportsList.results, $scope.reportList);
             $scope.totalResultCount = generatedReportsList.total_count;
-            
 
-            $timeout(function() {
-                $scope.$broadcast('updatePagination', PAGINATION_ID);
-                $scope.$broadcast('updatePageNo', $state.params.page);
-                
-            }, 50); 
-
+            self.refreshPagination();
 
             self.refreshScroll();  
 

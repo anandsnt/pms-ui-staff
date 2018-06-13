@@ -18,7 +18,7 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
     'ngDialog',
     'sntActivity',
     function ($rootScope, $scope, payload, reportsSrv, reportsSubSrv, reportUtils, reportParams, reportMsgs,
-              reportNames, $filter, $timeout, util, rvPermissionSrv, reportPaginationIds, $state, $log, ngDialog, sntActivity ) {
+              reportNames, $filter, $timeout, util, rvPermissionSrv, reportPaginationIds, $state, $log, ngDialog, sntActivity) {
         var self = this,
             isNotTimeOut = false,
             timeOut,
@@ -131,9 +131,7 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
             $scope.$broadcast(reportMsgs['REPORT_LIST_SCROLL_REFRESH']);
 
             if (reportsSrv.getChoosenReport().generatedReportId) {
-                $state.go('rover.reports.inbox', {
-                    page: $state.params.page.value
-                });
+                $state.go('rover.reports.inbox');
             } else {
                 $state.go('rover.reports.dashboard', { refresh: false });
             }
@@ -2244,10 +2242,7 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 
                         $state.go('rover.reports.show', {
                             action: msg || '',
-                            report: angular.copy($scope.selectedReport) || chosenReport,
-                            page: {
-                                value: page
-                            }
+                            report: angular.copy($scope.selectedReport) || chosenReport
                         });
                      } else {
                         $state.go('.', {
