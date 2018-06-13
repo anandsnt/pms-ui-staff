@@ -444,12 +444,18 @@
             background: rgba( 0, 0, 0, 0.05 );
 
             .report-item-wrapper {
+                cursor: default;
                 border: 0;
 
                 .calc-width(100, 40);
                 .data {
                     padding-right: 145px;
                 }
+            }
+
+            &:hover,
+            &:active { 
+                .box-shadow();
             }
         }
         
