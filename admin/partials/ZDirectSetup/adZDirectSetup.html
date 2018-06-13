@@ -11,16 +11,13 @@
             <span class="switch-icon"></span>
         </div>
     </div>
-
     <ad-sync-block ng-if="config.enabled"
                    interface="{{interface}}"
                    config="config">
     </ad-sync-block>
-
     <div class="form-title full-width">
         <h3><span translate>ZDIRECT_SUB_TITLE</span></h3>
     </div>
-
     <fieldset class="holder left">
         <ad-textbox inputtype="text" value="config.user_name"
                     label="{{'USER_NAME'| translate}}"
@@ -34,7 +31,6 @@
                     label="{{'URL_LABEL'| translate}}"
                     styleclass="full-width"></ad-textbox>
     </fieldset>
-
     <fieldset class="holder right">
         <ad-textbox inputtype="text"
                     value="config.hotel_code"
@@ -49,7 +45,6 @@
                     label="{{'ZDIRECT_PROPERTY_NAME_LABEL'| translate}}"
                     styleclass="full-width"></ad-textbox>
     </fieldset>
-
     <fieldset class="holder full-width">
         <div class="form-title">
             <h3>Feature Settings</h3>
@@ -89,8 +84,7 @@
         <fieldset class="holder">
             <ad-toggle-button is-checked="config.routed_charges"
                               label="{{'CRM_ROUTE_CHARGES_LABEL'| translate}}"></ad-toggle-button>
-            <p class="container"><em>{{'CRM_ROUTE_CHARGES_DESCRIPTION'| translate}}</em></p>
+            <p class="holder full-width"><em>{{'CRM_ROUTE_CHARGES_DESCRIPTION'| translate}}</em></p>
         </fieldset>
     </fieldset>
-
 </ad-common-parts-in-form-dir>
