@@ -260,7 +260,7 @@ sntGuestWeb.controller('homeController', ['$rootScope', '$scope', '$location', '
 		} else if (reservationAndhotelData.is_precheckin_only === 'true' && reservationAndhotelData.reservation_status === 'RESERVED' && (reservationAndhotelData.is_sent_to_que === 'true')) {
 			$state.go('preCheckinTripDetails'); // only available for Fontainbleau -> precheckin + sent to que
 		} else if ($rootScope.isCheckedin) {
-			if (isBypassAuthenticationUrl()) {
+			if (isInvokedFromApp && reservationAndhotelData.skip_checkin_verification) {
 				customizeStylesBasedOnUrlTyppe();
 			}
 			$state.go('checkinSuccess'); //already checked in
