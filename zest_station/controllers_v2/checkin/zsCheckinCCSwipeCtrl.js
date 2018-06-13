@@ -217,10 +217,28 @@ sntZestStation.controller('zsCheckinCCSwipeCtrl', [
             }
         };
 
-        var successSavePayment = function() {
+        var successSavePayment = function(response) {
             if (atCardSwipeScreen()) {
                 $scope.$emit('hideLoader');
-                goToCardSign();
+                
+                var authAtCheckinRequired = $stateParams.authorize_cc_at_checkin  === 'true',
+                    authCCAmount = $stateParams.pre_auth_amount_for_zest_station;
+
+                // In deposit mode the card is just saved now.
+                // Will add the authorization related to deposit flow later - CICO-54295
+                if ($stateParams.mode !== 'DEPOSIT' && authAtCheckinRequired && parseInt(authCCAmount) > 0) {
+                    $scope.callAPI(zsCheckinSrv.authorizeCC, {
+                        params: {
+                            'payment_method_id': response.id,
+                            'reservation_id': $stateParams.reservation_id,
+                            'amount': authCCAmount
+                        },
+                        'successCallBack': goToCardSign,
+                        'failureCallBack': goToSwipeError
+                    });
+                } else {
+                    goToCardSign();
+                }
             }
         };
 
