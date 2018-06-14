@@ -99,4 +99,6 @@
 	"BASWARE_HEADER": "Basware",
 	"MOBILE": "Mobile",
   "ENHANCE_DEPOSIT_NOTES": "Enhance Deposit Notes",
-  "SALESFORCE_LOCATION": "Location"
+  "SALESFORCE_LOCATION": "Location",
+  "SALESFORCE_SUB_TITLE": "Salesforce API Access Configuration",
+  "SALESFORCE_SETUP_HEADER": "Salesforce"

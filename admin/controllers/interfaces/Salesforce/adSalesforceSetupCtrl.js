@@ -4,8 +4,7 @@ admin.controller('adSalesforceSetupCtrl', ['$scope', '$rootScope', 'config', 'ad
         var interfaceIdentifier = 'salesforce';
 
         $scope.sync = {
-            start_date: null,
-            end_date: null
+            start_date: null
         };
 
         $scope.toggleEnabled = function() {
@@ -23,16 +22,7 @@ admin.controller('adSalesforceSetupCtrl', ['$scope', '$rootScope', 'config', 'ad
                 }
             });
         };
-        var validDateSelection = function(from, to) {
-            var fromInTime = new Date(from).getTime(),
-                toInTime = new Date(to).getTime();
-
-            if (fromInTime > toInTime) {
-                return false;
-            }
-            return true;
-        };
-
+        
         // sync
         $scope.startSync = function() {
             var isValidDateSelection = validDateSelection($scope.sync.start_date, $scope.sync.end_date);
