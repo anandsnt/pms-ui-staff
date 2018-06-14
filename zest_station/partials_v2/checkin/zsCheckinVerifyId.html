@@ -1,0 +1,15 @@
+<section id="main" class="centered" role="main" ng-show="screenMode === 'WAIT_FOR_STAFF'" click-touch='resetTime()'>
+    <div id="content">
+        <h1>
+            <text data-ng-bind-html="getTagValue('GID_WAIT_HEADER')" editable-text="GID_WAIT_HEADER"></text>
+        </h1>
+        <h2>
+            <text data-ng-bind-html="getTagValue('GID_WAIT_SUB')" editable-text="GID_WAIT_SUB"></text>
+        </h2>
+    </div>
+    <div>
+        <button class='button blue invis bottom-left' click-touch="adminVerify()">
+            Admin
+        </button>
+    </div>
+</section>
