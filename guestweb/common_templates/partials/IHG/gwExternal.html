@@ -33,23 +33,25 @@
                 (&nbsp;{{roomVerificationInstruction}}&nbsp;)
             </p>
             <div class="section-container">
-                <!-- room number -->
-                <p class="pull-left sub-text first-field">Your Room Number</p>
-                <input type="text" class="input-field padding-2" ng-model="stayDetails.room_number"></input>
-                <!-- Lat name -->
-                <p class="pull-left sub-text margin-top-20">Last Name</p>
-                <input type="text" class="input-field padding-2" ng-model="stayDetails.last_name"></input>
-                <!-- Arrival date -->
-                <p class="pull-left sub-text margin-top-20">Arrival date</p>
-                <input class="input-field padding-2 calendar-button" ng-click="showCalender()" ng-model="stayDetails.arrival_date" placeholder="{{dateFormatPlaceholder}}" readonly></input>
-                <!-- email -->
-                <p class="sub-text margin-top-20">To receive a copy of your bill,<br/>
-                    please enter your e-mail address
-                </p>
-                <p class="pull-left sub-text margin-top-20">Your e-mail address (optional)</p>
-                <input type="text" class="input-field padding-2" ng-model="stayDetails.email"></input>
-                <!-- Submit button -->
-                <button class="btn btn-template margin-top-20" ng-click="submit()"> Continue</button>    
+                <form>
+                    <!-- room number -->
+                    <p class="pull-left sub-text first-field">Your Room Number</p>
+                    <input type="text" class="input-field padding-2" ng-model="stayDetails.room_number"></input>
+                    <!-- Lat name -->
+                    <p class="pull-left sub-text margin-top-20">Last Name</p>
+                    <input type="text" class="input-field padding-2" ng-model="stayDetails.last_name"></input>
+                    <!-- Arrival date -->
+                    <p class="pull-left sub-text margin-top-20">Arrival date</p>
+                    <input class="input-field padding-2 calendar-button" ng-click="showCalender()" ng-model="stayDetails.arrival_date" placeholder="{{dateFormatPlaceholder}}" readonly></input>
+                    <!-- email -->
+                    <p class="sub-text margin-top-20">To receive a copy of your bill,<br/>
+                        please enter your e-mail address
+                    </p>
+                    <p class="pull-left sub-text margin-top-20">Your e-mail address (optional)</p>
+                    <input type="text" class="input-field padding-2" ng-model="stayDetails.email"></input>
+                    <!-- Submit button -->
+                    <button type="submit" class="btn btn-template margin-top-20" ng-click="submit()"> Continue</button>    
+                </form>
             </div>
         </div>
         <div class="col-md-4">
