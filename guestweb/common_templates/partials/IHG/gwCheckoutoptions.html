@@ -1,0 +1,37 @@
+<!-- navbar -->
+<div class="container-fluid padding-0">
+    <div class="row header-bar">
+        <img alt="" class="logo-image" src="{{hotelLogo}}" />
+    </div>
+</div>
+<!-- main section starts here -->
+<div class="container-fluid padding-0">
+    <div class="row padding-0 no-side-margin">
+        <div class="col-md-4"></div>
+        <!-- left side -->
+        <div class="col-md-4 no-side-padding">
+            <div class="section-container">
+                <p class="main-text">Late Check-out?</p>
+                <p class="sub-main-text template-text padded-text">Check-out time is at {{checkoutTime}}. Request a late check-out if you need more time!</span>
+                </p>
+                <div class="button-container">
+                    <a class="btn dual-button half-width pull-left light-button" ui-sref="checkOutConfirmation">
+                        <p>Check-out</p>
+                        <p>now</p>
+                        <div class="checkout-icon"></div>
+                    </a>
+                    <a class="btn dual-button half-width pull-right dark-button" ui-sref="checkOutLaterOptions">
+                        <p>Check-out</p>
+                        <p>later</p>
+                        <div class="late-checkout-icon"></div>
+                    </a>
+                </div>
+                <div class="margin-top-20">
+                    <p class="sub-main-text template-text padded-text">Come back to this page to check-out any time before {{checkoutTime}}.</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+        </div>
+    </div>
+</div>
