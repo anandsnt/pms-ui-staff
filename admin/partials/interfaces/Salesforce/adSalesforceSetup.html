@@ -1,8 +1,5 @@
 <ad-common-parts-in-form-dir on-save-button-click="saveInterfaceConfig"
                              header-caption="{{'SALESFORCE_SETUP_HEADER'|translate}}">
-    <div class="form-title full-width">
-        <h3><span translate>SALESFORCE_SUB_TITLE</span></h3>
-    </div>
     <div class="entry full-width">
         <label><span translate>ACTIVATE_INACTIVATE</span></label>
         <div name="active-inactive-toggle" class="switch-button single" ng-class="{ on: config.enabled }"
@@ -12,15 +9,19 @@
         </div>
     </div>
 
+    <div class="form-title full-width">
+        <h3><span translate>DUETTO_EXPORT_CONFIG</span></h3>
+    </div>
+
     <fieldset class="holder left">
-        
-        <ad-textbox inputtype="text"
-                    value="config.sftp_location"
-                    label="{{'SALESFORCE_LOCATION'| translate}}"
-                    styleclass="full-width"></ad-textbox>
         <ad-textbox inputtype="text"
                     value="config.sftp_host"
-                    label="{{'END_POINT'| translate}}"
+                    label="{{'SFTP_ADDRESS'| translate}}"
+                    styleclass="full-width"></ad-textbox>
+
+        <ad-textbox inputtype="text"
+                    value="config.sftp_location"
+                    label="{{'FILE_PATH'| translate}}"
                     styleclass="full-width"></ad-textbox>
     </fieldset>
 
@@ -28,17 +29,16 @@
         <ad-textbox inputtype="text" value="config.sftp_username"
                     label="{{'USER_NAME'| translate}}"
                     styleclass="full-width"></ad-textbox>
+
         <ad-textbox inputtype="password"
                     value="config.sftp_password"
                     label="{{'PASSWORD'| translate}}"
                     styleclass="full-width"></ad-textbox>
     </fieldset>
 
-
-<!-- salesforce resync -->
-
     <ad-sync-block ng-if="config.enabled"
                    single-date = "true"
+                   exclude-today="true"
                    interface="{{interface}}"
                    config="config">
     </ad-sync-block>

@@ -128,6 +128,12 @@ angular.module('admin').controller('adSyncBlockCtrl', ['$scope', '$rootScope', '
                 $scope.startDatePickerOptions.minDate = maxDate;
                 $scope.startDatePickerOptions.maxDate = new Date();
 
+                if ($scope.excludeToday) {
+                    let dateObj = new Date();
+
+                    $scope.startDatePickerOptions.maxDate = tzIndependentDate(dateObj.setDate(dateObj.getDate() - 1));
+                }
+
                 if ($scope.historicalDateRangeDays) {
                     $scope.fromDate = new Date(fromDate.setDate(fromDate.getDate() - parseInt($scope.historicalDateRangeDays)));
                 } else {

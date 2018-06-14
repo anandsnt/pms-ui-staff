@@ -5,6 +5,7 @@ admin.directive('adSyncBlock', function () {
                 config: '=',
                 interface: '@',
                 historicalDateRangeDays: '@',
+                excludeToday: '=',
                 singleDate: '='
             },
             templateUrl: '/assets/directives/adSyncBlock/adSyncBlockPartial.html',
