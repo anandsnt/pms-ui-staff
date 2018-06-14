@@ -13,6 +13,8 @@
         </button>
     </div>
 </section>
+
+<!--  staff PIN -->
 <section id="main" class="centered test" role="main" ng-show="screenMode ===  'ADMIN_PIN_ENTRY'" click-touch='resetTime()'>
     <div id="content" class="input-field-contents">
         <h1>
@@ -34,6 +36,8 @@
         </form>
     </div>
 </section>
+
+<!-- PIN error -->
 <section id="main" class="centered" role="main" ng-show="screenMode ===  'PIN_ERROR'" click-touch='resetTime()'>
     <div id="content">
         <h1>
@@ -47,13 +51,15 @@
         </button>
     </div>
 </section>
+
+<!-- Guest list -->
 <section id="main" class="centered test add_remove_main" role="main" click-touch='resetTime()' ng-show="screenMode == 'GUEST_LIST'">
     <div id="content" class='add-guest-mode-content'>
         <h1>
-            <text data-ng-bind-html="getTagValue('GID_SCAN_RESULTS_HEADER')" editable-text="GID_SCAN_RESULTS_HEADER"></text>
+            <text data-ng-bind-html="getTagValue('VERIFY_GUESTS_HEADER')" editable-text="VERIFY_GUESTS_HEADER"></text>
         </h1>
         <h2>
-            <text data-ng-bind-html="getTagValue('GID_SCAN_RESULTS_SUB_HEADER')" editable-text="GID_SCAN_RESULTS_SUB_HEADER"></text>
+            <text data-ng-bind-html="getTagValue('VERIFY_GUESTS_SUB_HEADER')" editable-text="VERIFY_GUESTS_SUB_HEADER"></text>
         </h2>
         <ul id="selection" class="editable" style="height:50%;overflow-y: scroll;">
             <li ng-repeat='guest in selectedReservation.guest_details track by $index' style="background: #eee;border: 1px #eee solid;border-radius:8px;width: 95%;">
@@ -93,7 +99,7 @@
     </div>
 </section>
 
-
+<!-- warning ppoup -->
 <div id="popup" class="popup" ng-class="{'open':showWarningPopup}">
     <!-- Remove class "open" to hide popup content -->
     <div class="popup-content message">

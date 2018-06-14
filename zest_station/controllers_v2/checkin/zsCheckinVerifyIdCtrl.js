@@ -1,119 +1,104 @@
-sntZestStation.controller('zsCheckinVerifyIdCtrl', [
-	'$scope',
-	'$state',
-	'zsEventConstants',
-	'$stateParams',
-	function($scope, $state, zsEventConstants, $stateParams) {
+	sntZestStation.controller('zsCheckinVerifyIdCtrl', [
+		'$scope',
+		'$state',
+		'zsEventConstants',
+		'$stateParams',
+		'zsGeneralSrv',
+		function($scope, $state, zsEventConstants, $stateParams, zsGeneralSrv) {
 
-		var initializeMe = (function() {
+			
 			BaseCtrl.call(this, $scope);
 			$scope.$emit(zsEventConstants.HIDE_BACK_BUTTON);
 			$scope.$emit(zsEventConstants.SHOW_CLOSE_BUTTON);
-			$scope.screenMode = 'GUEST_LIST';
+			$scope.screenMode = 'WAIT_FOR_STAFF';
 			$scope.adminPin = '';
 			$scope.showWarningPopup = false;
-			$scope.selectedReservation = {
-				guest_details: [{
-					'id': 1,
-					'guest_type': 'ADULT',
-					'first_name': 'Resheil',
-					'last_name': 'Mohammed',
-				}, {
-					'id': 2,
-					'guest_type': 'ADULT',
-					'first_name': 'guest 1',
-					'last_name': 'guest 1'
-				}, {
-					'id': 3,
-					'guest_type': 'ADULT',
-					'first_name': 'guest 2',
-					'last_name': 'guest 2'
-				}, {
-					'id': 4,
-					'guest_type': 'CHILDREN',
-					'first_name': 'guest 3',
-					'last_name': 'guest 3'
-				}]
-			};
-			
+			$scope.selectedReservation = zsGeneralSrv.testData();
 			console.log(JSON.parse($stateParams.params));
-		}());
+	
 
-		$scope.adminVerify = function() {
-			$scope.screenMode = 'ADMIN_PIN_ENTRY';
-		};
-
-		$scope.goToNext = function () {
-			var successCallback = function () {
-				$scope.screenMode = 'GUEST_LIST';
-
-			};
-			var failureCallback = function () {
-				$scope.screenMode = 'PIN_ERROR';
-			};
-
-			if($scope.adminPin == '') {
-				failureCallback();
-			} else {
-				successCallback();
-			}
-
-		};
-
-		$scope.retryPinEntry = function () {
-			$scope.screenMode = 'ADMIN_PIN_ENTRY';
-		};
-
-		var apiParams = {
-			guests_accepted_with_id: [],
-			guests_accepted_without_id: []
-		};
-		var allGuestsAreVerified;
-
-		var generateApiParams = function(approvePendingIds) {
-			apiParams = {
+			var apiParams = {
 				guests_accepted_with_id: [],
 				guests_accepted_without_id: []
 			};
-			allGuestsAreVerified = true;
-			_.each($scope.selectedReservation.guest_details, function(guest) {
-				if (guest.review_status === '1') {
-					apiParams.guests_accepted_with_id.push(guest.id);
-				} else if (guest.review_status === '2' || approvePendingIds) {
-					apiParams.guests_accepted_without_id.push(guest.id);
+			var allGuestsAreVerified;
+
+			$scope.adminVerify = function() {
+				$scope.screenMode = 'ADMIN_PIN_ENTRY';
+			};
+
+			$scope.goToNext = function() {
+				var successCallback = function() {
+					$scope.screenMode = 'GUEST_LIST';
+				};
+				var failureCallback = function() {
+					$scope.screenMode = 'PIN_ERROR';
+				};
+				var options = {
+					params: {
+						'pin': $scope.adminPin
+					},
+					successCallBack: successCallback,
+					failureCallBack: failureCallback
+				};
+
+				$scope.callAPI(zsGeneralSrv.verifyStaffByPin, options);
+			};
+
+			$scope.retryPinEntry = function() {
+				$scope.screenMode = 'ADMIN_PIN_ENTRY';
+			};
+
+			var generateApiParams = function(approvePendingIds) {
+				apiParams = {
+					guests_accepted_with_id: [],
+					guests_accepted_without_id: []
+				};
+				allGuestsAreVerified = true;
+				_.each($scope.selectedReservation.guest_details, function(guest) {
+					if (guest.review_status === '1') {
+						apiParams.guests_accepted_with_id.push(guest.id);
+					} else if (guest.review_status === '2' || approvePendingIds) {
+						apiParams.guests_accepted_without_id.push(guest.id);
+					} else {
+						allGuestsAreVerified = false;
+					}
+				});
+				console.log(apiParams);
+			};
+
+			var callApiToRecord = function() {
+				var options = {
+					params: apiParams,
+					successCallBack: function() {
+						console.log("next page");
+					}
+				};
+
+				$scope.callAPI(zsGeneralSrv.recordIdVerification, options);
+			};
+
+			$scope.acceptWithoutID = function() {
+				var approvePendingIds = true;
+				generateApiParams(approvePendingIds);
+				callApiToRecord();
+			};
+
+			$scope.abortCheckin = function() {
+				$state.go('zest_station.home');
+			};
+
+			$scope.hideWarningPopup = function() {
+				$scope.showWarningPopup = false;
+			};
+
+			$scope.continueToNextScreen = function() {
+				generateApiParams();
+				if (!allGuestsAreVerified) {
+					$scope.showWarningPopup = true;
 				} else {
-					allGuestsAreVerified = false;
+					callApiToRecord();
 				}
-			});
-			console.log(apiParams);
-		};
-
-		$scope.callApiToRecord = function () {
-			// call API
-			console.log("record");
-			console.log(apiParams);
-		};
-
-		$scope.acceptWithoutID = function () {
-			var approvePendingIds = true;
-			generateApiParams(approvePendingIds)
-		};
-
-		$scope.abortCheckin = function() {
-			$state.go('zeststation.home');
-		};
-
-		$scope.hideWarningPopup = function(){
-			$scope.showWarningPopup = false;
-		};
-		$scope.continueToNextScreen = function(guest) {
-			generateApiParams();
-			if(!allGuestsAreVerified) {
-				$scope.showWarningPopup = true;
-			} else {
-				$scope.callApiToRecord();
-			}
-		};
-
-	}
-]);
+			};
+		}
+	]);

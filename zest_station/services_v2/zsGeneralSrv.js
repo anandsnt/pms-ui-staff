@@ -616,5 +616,53 @@ sntZestStation.service('zsGeneralSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
             return deferred.promise;
         };
 
+        this.verifyStaffByPin = function() {
+            var deferred = $q.defer(),
+                url = 'zest_station/fetch_default_translations';
+            // zsBaseWebSrv2.getJSON(url).then(function(data) {
+                deferred.resolve();
+            // }, function(data) {
+            //     deferred.reject(data);
+            // });
+            return deferred.promise;
+        };
+
+        this.recordIdVerification = function(params) {
+            console.log(params);
+            var deferred = $q.defer(),
+                url = 'zest_station/fetch_default_translations';
+            // zsBaseWebSrv2.getJSON(url).then(function(data) {
+                deferred.resolve();
+            // }, function(data) {
+            //     deferred.reject(data);
+            // });
+            return deferred.promise;
+        };
+
+    this.testData = function() {
+        return {
+            guest_details: [{
+                'id': 1,
+                'guest_type': 'ADULT',
+                'first_name': 'Resheil',
+                'last_name': 'Mohammed'
+            }, {
+                'id': 2,
+                'guest_type': 'ADULT',
+                'first_name': 'guest 1',
+                'last_name': 'guest 1'
+            }, {
+                'id': 3,
+                'guest_type': 'ADULT',
+                'first_name': 'guest 2',
+                'last_name': 'guest 2'
+            }, {
+                'id': 4,
+                'guest_type': 'CHILDREN',
+                'first_name': 'guest 3',
+                'last_name': 'guest 3'
+            }]
+        }
+    };
     }
 ]);
