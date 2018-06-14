@@ -13,9 +13,9 @@ angular.module('sntPay').controller('payCBACtrl',
              always use $emit events. If you have any further queries, please contact Resheil or Dilip
              
              **/
-            
+            $scope.hotelConfig.emvTimeout = $scope.hotelConfig.emvTimeout || 180;
             var cbaActionsInProgressInSeconds = 0;
-            var cbaTimeout = 180; // In seconds
+            var cbaTimeout = parseInt($scope.hotelConfig.emvTimeout);
             var cbaTimer;
             var stopCbaTimer = function() {
                 cbaActionsInProgressInSeconds = 0;

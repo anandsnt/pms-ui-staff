@@ -574,6 +574,7 @@ sntRover.controller('roverController', [
 
         $scope.toggleHotelList = function (e) {
             $scope.showHotelSwitchList = !$scope.showHotelSwitchList;
+            $scope.refreshScroller("hotels-list");
         };
 
         $scope.closeDrawerMenu = function () {
@@ -1079,6 +1080,7 @@ sntRover.controller('roverController', [
             };
 
             $scope.setScroller(MENU_SCROLLER, scrollerOptions);
+            $scope.setScroller("hotels-list", scrollerOptions);
         };
 
         setupScrolls();

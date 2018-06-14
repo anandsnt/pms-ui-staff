@@ -1944,11 +1944,17 @@ angular.module('sntRover').controller('rvGroupRoomingListCtrl', [
             var isInRoomingList = ($scope.groupConfigData.activeTab === "ROOMING"),
             	amDirectlyComingToRoomingList = $stateParams.activeTab === 'ROOMING';
 
-            if (isInRoomingList && (amDirectlyComingToRoomingList)) {
-                $timeout(function() {
-                    callInitialAPIs();
-                }, 10);
+            if ($stateParams.id !== "NEW_GROUP") {
+                if (isInRoomingList && (amDirectlyComingToRoomingList)) {
+                    $timeout(function() {
+                        callInitialAPIs();
+                    }, 10);
+                }
+            } else {
+                $scope.groupConfigData.activeTab = "SUMMARY";
+                $stateParams.activeTab = "SUMMARY";
             }
+            
         }());
 
 
