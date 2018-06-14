@@ -31,7 +31,7 @@ angular.module('overBookingModule', []).
                         'end_date': moment(tzIndependentDate(startDate)).
                             add(DATE_SHIFT_LIMIT, 'd').
                             format('YYYY-MM-DD'),
-                        'show_rooms_left_to_sell': false,
+                        'show_rooms_left_to_sell': true,
                         'room_type_ids': _.pluck(
                             completeRoomTypeListData.isCheckedTrue, 'id')
                     });

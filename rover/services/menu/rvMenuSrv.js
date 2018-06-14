@@ -253,7 +253,7 @@ angular.module('sntRover').service('rvMenuSrv',
 		            action: "",
 		            menuIndex: "distribution_manager"
 		        }, {
-		            title: "MENU_OVER_BOOKING",
+		            title: "MENU_SELL_LIMITS",
 		            action: "rover.overbooking",
 		            menuIndex: "overbooking",
 		            hidden: isHourlyRateOn
