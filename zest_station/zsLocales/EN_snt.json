@@ -640,7 +640,20 @@
    "CBA_IN_PROGRESS": "Deposit collection",
    "CBA_IN_PROGRESS_SUB_TEXT": "For Deposit collection, please use the CBA device to proceed.",
    "CBA_PAYMENT_FAILED": "Payment failed!",
-   "CBA_SWIPE_CARD_PLEASE": "Swipe Credit Card"
+   "CBA_SWIPE_CARD_PLEASE": "Swipe Credit Card",
+
+   "ADMIN_PIN_HEADER": "Admin PIN",
+   "ADMIN_PIN_SUB_HEADER": "Please enter your PIN to proceed",
+
+   "PIN_ERROR_HEADER": "PIN Error",
+   "PIN_ERROR_SUB_HEADER": "Please enter the correct PIN",
+   "ABORT": "Abort",
+
+   "VERIFICATION_PENDING": "Verifications Pending",
+   "VERIFICATION_PENDING_MSG": "Some of the guests are not verified. You can either accept pending guests without ID",
+
+   "ACCEPT": "Accept",
+   "CANCEL": "CANCEL"
 
 
 }
