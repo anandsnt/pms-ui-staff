@@ -83,10 +83,15 @@ angular.module('admin').controller('adSyncBlockCtrl', ['$scope', '$rootScope', '
             }
 
             payLoad = {
-                start_date: dateFilter($scope.fromDate, $rootScope.dateFormatForAPI),
-                end_date: dateFilter($scope.toDate, $rootScope.dateFormatForAPI),
                 items: items
             };
+
+            if (!$scope.singleDate) {
+                payLoad['start_date'] = dateFilter($scope.fromDate, $rootScope.dateFormatForAPI);
+                payLoad['end_date'] = dateFilter($scope.toDate, $rootScope.dateFormatForAPI);
+            } else {
+                payLoad['for_date'] = dateFilter($scope.forDate, $rootScope.dateFormatForAPI);
+            }
 
             if ($scope.syncHistoricalData) {
                 payLoad['sync_type'] = 'historical';
@@ -147,6 +152,7 @@ angular.module('admin').controller('adSyncBlockCtrl', ['$scope', '$rootScope', '
             $scope.errorMessage = $scope.successMessage = '';
             $scope.fromDate = null;
             $scope.toDate = null;
+            $scope.forDate = null;
 
             // Disable toggle if either of the lists is empty!
             $scope.disableSyncHistoricalDataToggle = !$scope.config.real_time_data_sync_items ||
