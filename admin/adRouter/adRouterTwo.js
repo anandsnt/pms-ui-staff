@@ -240,6 +240,12 @@ angular.module('adminModuleTwo', []).config(function ($stateProvider) {
         url: '/chargeGroups'
     });
 
+    $stateProvider.state('admin.taxExemptTypes', {
+        templateUrl: '/assets/partials/taxExempt/adTaxExempts.html',
+        controller: 'ADTaxExemptCtrl',
+        url: '/taxExempts'
+    });
+
     $stateProvider.state('admin.paymentMethods', {
         templateUrl: '/assets/partials/paymentMethods/adPaymentMethods.html',
         controller: 'ADPaymentMethodsCtrl',
