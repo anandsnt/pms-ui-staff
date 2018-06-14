@@ -189,6 +189,9 @@
                         <span class="icon-form icon-radio " ng-class="{checked:zestSettings.kiosk_key_creation_method == 'manual'}"></span>
                         <input type="radio" value="manual" ng-model="zestSettings.kiosk_key_creation_method">{{ 'MANUAL' | translate}}
                     </label>
+
+                    <ad-toggle-button is-hide="zestSettings.kiosk_key_creation_method != 'manual'" is-checked="zestSettings.show_pin_code" label="{{'SHOW_PIN_LABEL'| translate}}" div-class="full-width"></ad-toggle-button>
+
                 </div>
                 <!-- Upload image for Key Creation In Progress Screen -->
                 <label translate>KEY_CREATION_IMAGE </label>
