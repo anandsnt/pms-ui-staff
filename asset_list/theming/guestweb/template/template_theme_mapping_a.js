@@ -263,11 +263,18 @@ module.exports = {
                 'guestweb/**/common_templates/partials/gwNoOption.html',
                 checkoutNowPartials + '*.html',
                 checkinPartials + '*.html',
-                precheckinPartials + '*.html']
+                precheckinPartials + '*.html'],
             // 'guestweb_lonestar_court_austin': commonNonMgmTemplates,
             // 'guestweb_Pasea': commonNonMgmTemplates,
             // 'guestweb_sobro': commonNonMgmTemplates,
-            // 'guestweb_covington': commonNonMgmTemplates
+            // 'guestweb_covington': commonNonMgmTemplates,
+            'guestweb_ihg': [ 'guestweb/**/common_templates/partials/checkin/**.html',
+                'guestweb/**/common_templates/partials/checkout/**.html',
+                'guestweb/**/common_templates/partials/gwNoOption.html',
+                'guestweb/**/common_templates/partials/IHG/**.html',
+                checkoutNowPartials + '*.html',
+                checkinPartials + '*.html',
+                precheckinPartials + '*.html'],
         };
     }
 };
