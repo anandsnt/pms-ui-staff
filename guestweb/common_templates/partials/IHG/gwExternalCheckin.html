@@ -23,26 +23,28 @@
     </div>
     <div class="row" ng-hide="isLoading || netWorkError || !searchMode">
         <div class="col-md-4"></div>
-        <div class="col-md-4 section-container">
-            <!-- default main text -->
-            <p class="main-text" ng-if="!screenCMSDetails.title">Find Your Reservation</p>
-            <!-- default sub  text -->
-            <p class="sub-main-text" ng-if="!screenCMSDetails.description">Enter your last name and either your confirmation number OR departure date:</p>
-            <form>
-                <!-- Lat name -->
-                <p class="pull-left sub-text first-field">LAST NAME ON RESERVATION</p>
-                <input type="text" class="input-field padding-2" ng-model="lastname"></input>
-                <!-- Confirmation number -->
-                <p class="pull-left sub-text margin-top-20">CONFIRMATION NUMBER</p>
-                <input type="text" class="input-field padding-2" ng-model="confirmationNumber"></input>
-                <br/>
-                <p class="sub-text margin-top-10" ng-if="showDepartureDateForExtUrl">OR</p>
-                <!-- Departure date -->
-                <p class="pull-left sub-text margin-top-10" ng-if="showDepartureDateForExtUrl">DEPARTURE DATE</p>
-                <input class="input-field padding-2 calendar-button" ng-click="showCalender()" ng-model="departureDate" placeholder="{{dateFormatPlaceholder}}" readonly ng-if="showDepartureDateForExtUrl"></input>
-                <!-- Submit button -->
-                <button type="submit" class="btn btn-template margin-top-20 padding-3" ng-click="nextButtonClicked()">Continue</button>
-            </form>
+        <div class="col-md-4">
+            <div class="section-container">
+                <!-- default main text -->
+                <p class="main-text" ng-if="!screenCMSDetails.title">Find Your Reservation</p>
+                <!-- default sub  text -->
+                <p class="sub-main-text" ng-if="!screenCMSDetails.description">Enter your last name and either your confirmation number OR departure date:</p>
+                <form>
+                    <!-- Lat name -->
+                    <p class="pull-left sub-text first-field">LAST NAME ON RESERVATION</p>
+                    <input type="text" class="input-field padding-2" ng-model="lastname"></input>
+                    <!-- Confirmation number -->
+                    <p class="pull-left sub-text margin-top-20">CONFIRMATION NUMBER</p>
+                    <input type="text" class="input-field padding-2" ng-model="confirmationNumber"></input>
+                    <br/>
+                    <p class="sub-text margin-top-10" ng-if="showDepartureDateForExtUrl">OR</p>
+                    <!-- Departure date -->
+                    <p class="pull-left sub-text margin-top-10" ng-if="showDepartureDateForExtUrl">DEPARTURE DATE</p>
+                    <input class="input-field padding-2 calendar-button" ng-click="showCalender()" ng-model="departureDate" placeholder="{{dateFormatPlaceholder}}" readonly ng-if="showDepartureDateForExtUrl"></input>
+                    <!-- Submit button -->
+                    <button type="submit" class="btn btn-template margin-top-20 padding-3" ng-click="nextButtonClicked()">Continue</button>
+                </form>
+            </div>
         </div>
         <div class="col-md-4">
         </div>
@@ -50,7 +52,7 @@
     <!-- no matches -->
     <div class="row" ng-hide="isLoading || netWorkError || !noMatch">
         <div class="col-md-4"></div>
-        <div class="col-md-4 top-spacing sm-no-top-spacing">
+        <div class="col-md-4">
             <!-- default main text -->
             <p class="main-text">No Match</p>
             <!-- default sub  text -->
@@ -71,19 +73,21 @@
     <!-- multiple matches -->
     <div class="row" ng-hide="isLoading || netWorkError || !multipleResults">
         <div class="col-md-4"></div>
-        <div class="col-md-4 section-container">
-            <!-- default main text -->
-            <p class="main-text">Multiple Matches</p>
-            <!-- default sub  text -->
-            <p class="sub-main-text">We found more than one matching reservation with the information you provided. Enter the confirmation number to continue:</p>
-            <!-- CMS sub  text -->
-            <p class="sub-main-text" ng-if="screenCMSDetails.description" ng-bind-html="screenCMSDetails.description"></p>
-            <p class="sub-text first-field full-width" ng-show="lastname.length >0" ng-bind="lastname"></p>
-            <p class="sub-text margin-top-20 full-width" ng-show="confirmationNumber.length>0" ng-bind="confirmationNumber"></p>
-            <p class="sub-text margin-top-20 full-width" ng-show="departureDate.length >0" ng-bind="departureDate"></p>
-            <p class="sub-text margin-top-20 pull-left">CONFIRMATION NUMBER</p>
-            <input type="text" class="input-field padding-2" ng-model="confirmationNumber"></input>
-            <button type="submit" class="btn btn-template margin-top-20" ng-click="nextButtonClicked()">Continue</button>
+        <div class="col-md-4">
+            <div class="section-container">
+                <!-- default main text -->
+                <p class="main-text">Multiple Matches</p>
+                <!-- default sub  text -->
+                <p class="sub-main-text">We found more than one matching reservation with the information you provided. Enter the confirmation number to continue:</p>
+                <!-- CMS sub  text -->
+                <p class="sub-main-text" ng-if="screenCMSDetails.description" ng-bind-html="screenCMSDetails.description"></p>
+                <p class="sub-text first-field full-width" ng-show="lastname.length >0" ng-bind="lastname"></p>
+                <p class="sub-text margin-top-20 full-width" ng-show="confirmationNumber.length>0" ng-bind="confirmationNumber"></p>
+                <p class="sub-text margin-top-20 full-width" ng-show="departureDate.length >0" ng-bind="departureDate"></p>
+                <p class="sub-text margin-top-20 pull-left">CONFIRMATION NUMBER</p>
+                <input type="text" class="input-field padding-2" ng-model="confirmationNumber"></input>
+                <button type="submit" class="btn btn-template margin-top-20" ng-click="nextButtonClicked()">Continue</button>
+            </div>
         </div>
         <div class="col-md-4">
         </div>

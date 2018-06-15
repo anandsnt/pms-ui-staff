@@ -28,15 +28,17 @@
     <div class="row" ng-show="success">
         <div class="col-md-4"></div>
         <!-- left side -->
-        <div class="col-md-4 section-container">
-            <p class="main-text">Thank You.</p>
-            <p class="sub-main-text">The following will appear on your bill.</p>
-            <p class="sub-main-text">Late check-out ({{ lateCheckOut.time }} {{ lateCheckOut.ap }} ) .... {{currencySymbol}}{{ lateCheckOut.amount }}
-            </p>
-            <p class="sub-main-text margin-top-20">
-                {{keyExpiry}}
-            </p>
-            <button class="btn btn-template margin-top-20" ng-click="gotoCheckoutNowFlow()">Back to Check-out</button>
+        <div class="col-md-4">
+            <div class="section-container">
+                <p class="main-text">Thank You.</p>
+                <p class="sub-main-text">The following will appear on your bill.</p>
+                <p class="sub-main-text">Late check-out ({{ lateCheckOut.time }} {{ lateCheckOut.ap }} ) .... {{currencySymbol}}{{ lateCheckOut.amount }}
+                </p>
+                <p class="sub-main-text margin-top-20">
+                    {{keyExpiry}}
+                </p>
+                <button class="btn btn-template margin-top-20" ng-click="gotoCheckoutNowFlow()">Back to Check-out</button>
+            </div>
         </div>
         <div class="col-md-4">
         </div>
