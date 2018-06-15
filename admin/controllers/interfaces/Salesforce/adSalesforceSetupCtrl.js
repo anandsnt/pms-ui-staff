@@ -1,5 +1,5 @@
-admin.controller('adSalesforceSetupCtrl', ['$scope', '$rootScope', 'config', 'adInterfacesCommonConfigSrv', 'dateFilter',
-    function($scope, $rootScope, config, adInterfacesCommonConfigSrv, dateFilter) {
+admin.controller('adSalesforceSetupCtrl', ['$scope', '$rootScope', 'config', 'adInterfacesCommonConfigSrv',
+    function($scope, $rootScope, config, adInterfacesCommonConfigSrv) {
 
         var interfaceIdentifier = 'salesforce';
 
