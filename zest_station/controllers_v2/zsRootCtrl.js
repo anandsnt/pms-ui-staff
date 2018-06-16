@@ -150,7 +150,7 @@ sntZestStation.controller('zsRootCtrl', [
 
             // check if the tag is present in the translation file,
             // if not present use the default text in the master translation file.
-            if ($scope.tagInEdit.language[currentLanguageCode] && $scope.tagInEdit.language[currentLanguageCode][tag]) {
+            if ($scope.tagInEdit.language[currentLanguageCode] && !_.isUndefined($scope.tagInEdit.language[currentLanguageCode][tag])) {
                 return $scope.tagInEdit.language[currentLanguageCode][tag];
             } 
             return defaultTranslations[tag];
