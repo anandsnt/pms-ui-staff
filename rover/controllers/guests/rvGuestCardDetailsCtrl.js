@@ -12,8 +12,10 @@ angular.module('sntRover').controller('rvGuestDetailsController',
   'RVSearchSrv',
   'idTypesList',
   'rvPermissionSrv',
+  '$timeout',
+  '$window',
   function($scope, contactInfo, countries, $stateParams, $state, $filter, $rootScope, RVGuestCardSrv,
-    RVContactInfoSrv, RVSearchSrv, idTypesList, rvPermissionSrv) {        
+    RVContactInfoSrv, RVSearchSrv, idTypesList, rvPermissionSrv, $timeout, $window) {        
 
         BaseCtrl.call(this, $scope);
         GuestCardBaseCtrl.call (this, $scope, RVSearchSrv, RVContactInfoSrv, rvPermissionSrv, $rootScope);
@@ -305,7 +307,59 @@ angular.module('sntRover').controller('rvGuestDetailsController',
             $state.go('rover.reservation.search', {
                 guestId: $scope.guestCardData.contactInfo.user_id
             });
-        };        
+        }; 
+
+        // add the print orientation before printing
+        var addPrintOrientation = function() {
+            $( 'head' ).append( "<style id='print-orientation'>@page { size: portrait; }</style>" );
+        };
+
+        // add the print orientation after printing
+        var removePrintOrientation = function() {
+            $( '#print-orientation' ).remove();
+        };
+        
+        $scope.printGuestCard = function() {
+            $scope.printState = {
+                clicked: true
+            };
+            $("header .logo").addClass('logo-hide');
+            $("header .h2").addClass('text-hide');
+
+            // add the orientation
+            addPrintOrientation();
+
+            /*
+            *   ======[ READY TO PRINT ]======
+            */
+            // this will show the popup with full bill
+            $timeout(function() {
+                /*
+                *   ======[ PRINTING!! JS EXECUTION IS PAUSED ]======
+                */
+
+                $window.print();
+                if ( sntapp.cordovaLoaded ) {
+                    cordova.exec(function(success) {}, function(error) {}, 'RVCardPlugin', 'printWebView', []);
+                }
+            }, 200);
+
+            /*
+            *   ======[ PRINTING COMPLETE. JS EXECUTION WILL UNPAUSE ]======
+            */
+
+            $timeout(function() {
+                $scope.printState.clicked = false;
+                // CICO-9569 to solve the hotel logo issue
+                $("header .logo").removeClass('logo-hide');
+                $("header .h2").addClass('text-hide');
+
+                // remove the orientation after similar delay
+                removePrintOrientation();
+            }, 200);
+
+        };
+       
 
         init();        
 }]);

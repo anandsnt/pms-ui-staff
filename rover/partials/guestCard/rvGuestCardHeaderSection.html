@@ -42,6 +42,7 @@
             <button type="button" class="button add-new-button" ng-click="createReservationFromGuestCard()">+ {{ 'CREATE_RESERVATION' | translate}}</button>
             <button type="button" class="button toggle has-arrow" ng-click="toggleCardActions()" ng-class="{'active' : manageCardState.isOpen, '' : !manageCardState.isOpen}">Manage Card</button>            
             <div class="manage-cards" ng-class="{'hidden': !manageCardState.isOpen, '' : manageCardState.isOpen}">
+                <button type="button" class="button blue" ng-click="printGuestCard()">Print Card</button>
                 <button type="button" class="button" ng-click="removeGuestDetails(guestCardData.contactInfo.user_id)" ng-class="{'grey':shouldDisableRemoveGuestBtn(),'white red-text': !shouldDisableRemoveGuestBtn()}" ng-disabled="shouldDisableRemoveGuestBtn()">Remove</button>
                 <button type="button" class="button purple" ng-hide="true">Archive Card</button>
                 <button type="button" class="button red" ng-hide="true">Delete Card</button>

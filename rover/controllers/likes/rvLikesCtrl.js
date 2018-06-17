@@ -322,5 +322,7 @@ sntRover.controller('RVLikesController', ['$scope', 'RVLikesSrv', 'dateFilter', 
 		});
 
 		$scope.$on('$destroy', guestLikeTabActivateListener);
+
+		$scope.init();
 	}
 ]);
