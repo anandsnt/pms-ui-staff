@@ -86,7 +86,7 @@ angular.module('sntRover').controller('roomAvailabilityMainController', [
 		var dataForWebservice = {
 			'from_date': $filter('date')(tzIndependentDate ($scope.data.selectedDate), $rootScope.dateFormatForAPI),
 			'to_date': $filter('date')(tzIndependentDate (dateAfter), $rootScope.dateFormatForAPI),
-			'is_include_overbooking': $scope.data.isIncludeOverbooking
+			'is_include_overbooking': true
 		};
 
 		return dataForWebservice;
@@ -162,7 +162,6 @@ angular.module('sntRover').controller('roomAvailabilityMainController', [
 	$scope.clickedIncludeOverbooking = function() {
 		$scope.data.isIncludeOverbooking = !$scope.data.isIncludeOverbooking;
 		$scope.$broadcast('INCLUDE_OVERBOOKING', $scope.data.isIncludeOverbooking);
-		$scope.changedAvailabilityDataParams();
 	};
 
 	$scope.changedAvailabilityDataParams();
