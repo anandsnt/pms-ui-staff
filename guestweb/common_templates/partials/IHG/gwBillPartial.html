@@ -1,0 +1,59 @@
+
+    <div>
+        <div class="bill-contain-wrap">
+            <div class="bill-contain">
+                <div>
+                    <p class="left-align">Room {{ roomNo }}</p>
+                    <p class="left-align">{{ userName }}<span ng-show="userCity.length > 0 || userState.length > 0"> | </span> {{ userCity }}<span ng-show="userCity.length > 0 && userState.length > 0">,</span> {{ userState }}</p>
+                </div>
+                <!-- bill list -->
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Description</th>
+                            <th>Fees</th>
+                        </tr>
+                    </thead>
+                    <tbody ng-repeat="bill in billData.fee_details">
+                        <tr>
+                            <td>
+                                <span>{{ bill.date }}</span>
+                            </td>
+                            <td>
+                            </td>
+                        </tr>
+                        <tr ng-show="{{bill.guest_room_text.length > 0}}">
+                            <td>
+                                <span>{{ bill.guest_room_text}}:<span>{{bill.guest_room_description}}</span></span>
+                            </td>
+                            <td>
+                                <span class="right-text">{{ bill.guest_room_fees}}</span>
+                            </td>
+                        </tr>
+                        <tr ng-repeat="amountDetails in bill.charge_details">
+                            <td>
+                                <span>{{ amountDetails.description }}
+                                        </td>
+                                        <td class="right-text">
+                                            <span>{{ amountDetails.amount }}</span>
+                            </td>
+                        </tr>
+                    </tbody>
+                    <tfoot>
+                        <tr class="total">
+                            <td>TOTAL</td>
+                            <td>{{billData.total_fees}}</td>
+                        </tr>
+                        <tr class="total">
+                            <td>CREDIT</td>
+                            <td>{{billData.credits}}</td>
+                        </tr>
+                        <tr class="total">
+                            <td>BALANCE</td>
+                            <td class="balance">{{billData.balance}}</td>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+        </div>
+    </div>
