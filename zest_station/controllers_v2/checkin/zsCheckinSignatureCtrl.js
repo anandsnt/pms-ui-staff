@@ -145,8 +145,13 @@ sntZestStation.controller('zsCheckinSignatureCtrl', [
                 
             } else {
                 if ($scope.zestStationData.kiosk_manual_id_scan) {
+                    var stateParams = $stateParams;
+
+                    stateParams.signature = signatureBase64Data;
+                    stateParams = JSON.stringify(stateParams);
+
                     $state.go('zest_station.checkInIdVerification', {
-                        params: JSON.stringify($stateParams)
+                        params: stateParams
                     });
                 }
                 else if (collectPassportEnabled && !$stateParams.passports_scanned) {
