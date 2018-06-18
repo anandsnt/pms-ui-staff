@@ -246,6 +246,12 @@ angular.module('adminModuleTwo', []).config(function ($stateProvider) {
         url: '/taxExempts'
     });
 
+    $stateProvider.state('admin.adTaxExemptDetails', {
+        templateUrl: '/assets/partials/taxExempt/adTaxExemptDetails.html',
+        controller: 'ADTaxExemptDetailsCtrl',
+        url: '/taxExempts/:taxExemptId'
+    });    
+
     $stateProvider.state('admin.paymentMethods', {
         templateUrl: '/assets/partials/paymentMethods/adPaymentMethods.html',
         controller: 'ADPaymentMethodsCtrl',

@@ -3,74 +3,25 @@ function($scope, $state, $timeout, ADTaxExemptSrv) {
 	BaseCtrl.call(this, $scope);
 
 	$scope.$emit("changedSelectedMenu", 5);
-	
-	// $scope.editData = {};
-	// $scope.addData = {};
-	$scope.currentClickedElementCC = -1;
-	$scope.currentClickedElement = -1;
-	// $scope.addData.charge_code_ids = [];
 
-
-	$scope.addNewTaxExempt = function() {
-		$scope.currentClickedElement = 'new';	
-		$scope.addData = {
-			queryParam: null,
-			selectedCount: 0,
-			charge_code_ids: []
-		}		
-	};
-
-	$scope.searchChargeCodes = function() {
-		var fetchChargeCodeSuccess = function(data) {
-			$scope.chargeCodes = [];
-			$scope.chargeCodes = data.charge_codes;
-			angular.forEach($scope.chargeCodes, function(item) {
-		        item.is_selected = false;
-		  	});
-
-			$scope.$emit('hideLoader');
+	$scope.deleteTaxExempt = function(taxExemptId) {
+		var successCallBack = function(data) {
+			$scope.fetchTaxExempts();
 		};
 		var options = {
 			params: {
-				query: $scope.addData.queryParam
+				"id": taxExemptId
 			},
-			successCallBack: fetchChargeCodeSuccess
+			onSuccess: successCallBack
 		};
 
-		$scope.callAPI(ADTaxExemptSrv.fetchChargeCodes, options);
+		$scope.callAPI(ADTaxExemptSrv.deleteTaxExempts, options);
 	};
-
-	$scope.selectedChargeCode = function() {
-		$scope.addData.selectedCount = 0;
-		$scope.addData.charge_code_ids = [];
-		angular.forEach($scope.chargeCodes, function(item) {
-	    	if(item.is_selected) {
-	    		$scope.addData.selectedCount++;
-	    		$scope.addData.charge_code_ids.push(item.value);
-	    	}
-	  	});
-	};
-
-	$scope.saveTaxExempt = function() {
-		var saveSuccess = function(data) {
-
-			$scope.$emit('hideLoader');
-		};
-		var options = {
-			successCallBack: saveSuccess,
-			params: {
-				"name": $scope.addData.name,
-				"charge_code_ids": $scope.addData.charge_code_ids
-			}
-		};
-
-		$scope.callAPI(ADTaxExemptSrv.saveTaxExempts, options);
-	};
-
-	$scope.init =  function() {
+	
+	$scope.fetchTaxExempts =  function() {
 		$scope.chargeCodes = [];
 		var successCallBack = function(data) {
-			$scope.taxExempts = data;
+			$scope.taxExempts = data.results;
 		};
 		var options = {
 			onSuccess: successCallBack
@@ -78,8 +29,5 @@ function($scope, $state, $timeout, ADTaxExemptSrv) {
 
 		$scope.callAPI(ADTaxExemptSrv.fetchTaxExempts, options);
 	};
-	$scope.init();
-	
-
-	
+	$scope.fetchTaxExempts();	
 }]);
