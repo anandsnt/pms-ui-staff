@@ -6,11 +6,12 @@ describe('zsCheckinVerifyIdCtrl', function() {
         $scope = {},
         $rootScope,
         zsGeneralSrv,
+        zsCheckinSrv,
         $q;
 
     beforeEach(function() {
         module('sntZestStation');
-        inject(function(_$controller_, _$rootScope_, _$state_, _$stateParams_, _zsGeneralSrv_, _$q_) {
+        inject(function(_$controller_, _$rootScope_, _$state_, _$stateParams_, _zsGeneralSrv_, _$q_, _zsCheckinSrv_) {
             $q = _$q_;
             $controller = _$controller_;
             $rootScope = _$rootScope_.$new();
@@ -19,6 +20,7 @@ describe('zsCheckinVerifyIdCtrl', function() {
             zsGeneralSrv = _zsGeneralSrv_;
             $stateParams = _$stateParams_;
             $stateParams.params = "{}";
+            zsCheckinSrv = _zsCheckinSrv_;
         });
         $controller('zsCheckinVerifyIdCtrl', {
             $scope: $scope

@@ -620,7 +620,7 @@ sntZestStation.service('zsGeneralSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
             var deferred = $q.defer(),
                 url = 'zest_station/fetch_default_translations';
             // zsBaseWebSrv2.getJSON(url).then(function(data) {
-                deferred.resolve();
+                deferred.resolve({id: 2631});
             // }, function(data) {
             //     deferred.reject(data);
             // });

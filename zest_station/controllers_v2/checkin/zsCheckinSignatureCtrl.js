@@ -144,7 +144,7 @@ sntZestStation.controller('zsCheckinSignatureCtrl', [
                 }
                 
             } else {
-                if ($scope.zestStationData.verify_id) {
+                if ($scope.zestStationData.kiosk_manual_id_scan) {
                     $state.go('zest_station.checkInIdVerification', {
                         params: JSON.stringify($stateParams)
                     });
