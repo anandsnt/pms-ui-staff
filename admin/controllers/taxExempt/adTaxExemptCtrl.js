@@ -23,7 +23,7 @@ function($scope, $state, $timeout, ADTaxExemptSrv) {
 	$scope.searchChargeCodes = function() {
 		var fetchChargeCodeSuccess = function(data) {
 			$scope.chargeCodes = [];
-			$scope.chargeCodes = data.charge_codes;
+			$scope.chargeCodes = data.data.charge_codes;
 			angular.forEach($scope.chargeCodes, function(item) {
 		        item.is_selected = false;
 		  	});
