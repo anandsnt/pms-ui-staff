@@ -4,7 +4,7 @@
  */
 angular.module('reportsModule')
     .constant('RVReportInboxFilterLabelConst', {
-    	'from_date': 'Date Range (From)',
+        'from_date': 'Date Range (From)',
         'to_date': 'Date Range (To)',
         'cancel_from_date': 'Cancel From Date',
         'cancel_to_date': 'Cancel To Date',

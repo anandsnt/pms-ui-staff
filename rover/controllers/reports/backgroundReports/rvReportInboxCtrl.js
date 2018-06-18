@@ -102,7 +102,8 @@ angular.module('sntRover').controller('RVReportsInboxCtrl', [
                         report.isExpanded = !report.isExpanded;
                         sntActivity.stop(REPORT_FILTERS_PROC_ACTIVITY);
                         self.refreshScroll();
-                    }).catch(function(error) {
+                    }).
+                    catch(function(error) {
                         report.filterDetails = error;
                         report.isExpanded = !report.isExpanded;
                         sntActivity.stop(REPORT_FILTERS_PROC_ACTIVITY);
