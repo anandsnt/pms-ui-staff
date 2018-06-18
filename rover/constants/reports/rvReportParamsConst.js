@@ -21,9 +21,6 @@ angular.module('reportsModule')
         'FROM_TIME': 'from_time',
         'TO_TIME': 'to_time',
 
-        'CHECKED_IN': 'checked_in',
-        'CHECKED_OUT': 'checked_out',
-
         'SORT_FIELD': 'sort_field',
         'SORT_DIR': 'sort_dir',
 
@@ -82,10 +79,8 @@ angular.module('reportsModule')
         "INCLUDE_ACTIONS": "include_actions",
         "INCLUDE_GUEST_NOTES": "include_guest_notes",
         "INCLUDE_RESERVATION_NOTES": "include_reservation_notes",
-        "INCLUDE_ACTIONS": "include_actions",
         "INCLUDE_COMPANYCARD_TA_GROUP": "include_companycard_ta_group",
         "DUE_IN_ARRIVALS": "due_in_arrivals",
-        "INCLUDE_ACTIONS": "include_actions",
         "CHECKED_IN": "checked_in",
         "CHECKED_OUT": "checked_out",
         "SHOW_TRAVEL_AGENT": "show_travel_agent",

@@ -225,7 +225,7 @@ sntRover.controller('RVAddonForecastReportByDateCtrl', [
             }
             try {
                 addons = $scope.chosenReport.hasAddons.data;
-            } catch(err) {
+            } catch (err) {
                 addons = [];
             }
 			results      = mainCtrlScope.results;

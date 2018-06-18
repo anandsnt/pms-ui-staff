@@ -201,10 +201,7 @@ angular.module('sntRover').controller('RVReportsInboxCtrl', [
                     $scope.totalResultCount = data.total_count;
                     self.refreshPagination();
                     self.refreshScroll();
-                },
-                onReportsFetchFailure = (error) => {
-
-                },
+                },                
                 options = {
                     onSuccess: onReportsFetchSuccess,
                     onFailure: onReportsFetchFailure,

@@ -206,7 +206,8 @@ angular.module('sntRover')
              */
             var setTitleAndHeading = function() {
                 let title = '';
-                if($scope.reportViewStore.showingScheduledReports || $scope.reportViewStore.showingExportReports) {
+
+                if ($scope.reportViewStore.showingScheduledReports || $scope.reportViewStore.showingExportReports) {
                     title = $filter('translate')('SCHEDULED_REPORTS_AND_EXPORTS');
                 } else if ($scope.reportViewStore.showingScheduleAReport) {
                     title = $filter('translate')('SCHEDULE_REPORT');

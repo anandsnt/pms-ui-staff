@@ -1031,8 +1031,6 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
                     rawData.untilDate = params[fromKey];
                 }
 
-
-
             }
 
             // include cancel dates

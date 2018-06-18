@@ -387,7 +387,7 @@ sntRover.factory('RVReportParserFac', [
                 adjustData = [],
                 options    = options,
                 guestNoteData = {},
-                reservationNoteData = {}
+                reservationNoteData = {};
 
             var i, j, m, n;
 

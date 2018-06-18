@@ -1208,6 +1208,7 @@ angular.module('reportsModule')
                                 {id: "COMPLETED",  status: "COMPLETED", selected: true}
                             ],
                         foundFilter;
+
                 _.each(reportList, function(report) {
                     foundFilter = _.find(report['filters'], { value: 'INCLUDE_COMPLETION_STATUS' });
                     if ( !! foundFilter ) {
@@ -1235,8 +1236,6 @@ angular.module('reportsModule')
                                 {id: "120plus",  status: "120+ DAYS", selected: true}
                             ],
                     foundFilter;
-
-
 
                 _.each(reportList, function(report) {
                     foundFilter = _.find(report['filters'], { value: 'INCLUDE_AGING_BALANCE' });
@@ -1287,6 +1286,7 @@ angular.module('reportsModule')
 
             function fillRateCodeList (data) {
                 var foundFilter;
+
                 data[0].selected = true;
                 _.each(reportList, function(report) {
                     foundFilter = _.find(report['filters'], { value: 'RATE_CODE' });
@@ -1329,6 +1329,7 @@ angular.module('reportsModule')
 
             function fillRoomTypeList (data) {
                 var foundFilter;
+
                 _.each(reportList, function(report) {
                     foundFilter = _.find(report['filters'], { value: 'ROOM_TYPE' });
                     if ( !! foundFilter ) {
@@ -1361,6 +1362,7 @@ angular.module('reportsModule')
 
             function fillRestrictionList (data) {
                 var foundFilter;
+
                 _.each(reportList, function(report) {
                     foundFilter = _.find(report['filters'], { value: 'RESTRICTION' });
                     if ( !! foundFilter ) {
@@ -1383,6 +1385,7 @@ angular.module('reportsModule')
             }
             function fillOrigins (data) {
                 var foundFilter;
+
                 _.each(reportList, function(report) {
                     foundFilter = _.find(report['filters'], { value: 'ORIGIN' });
                     if ( !! foundFilter ) {
@@ -1413,6 +1416,7 @@ angular.module('reportsModule')
 
             function fillURLs (data) {
                 var foundFilter;
+
                 _.each(reportList, function(report) {
                     foundFilter = _.find(report['filters'], { value: 'URLS'});
                     if ( !! foundFilter ) {
@@ -1439,6 +1443,7 @@ angular.module('reportsModule')
 
             function fillCampaignTypes (data) {
                 var foundFilter;
+
                 _.each(reportList, function(report) {
                     foundFilter = _.find(report['filters'], { value: 'CAMPAIGN_TYPES'});
                     if ( !! foundFilter ) {
@@ -1465,6 +1470,7 @@ angular.module('reportsModule')
 
             function fillFloors (data) {
                 var foundFilter;
+
                 _.each(reportList, function(report) {
                     foundFilter = _.find(report['filters'], { value: 'FLOOR'});
                     if ( !! foundFilter ) {
@@ -2314,7 +2320,7 @@ angular.module('reportsModule')
 
         };
 
-        //Mark the selected entries in the filter
+        // Mark the selected entries in the filter
         factory.markSelectedEntriesForFilter = (report) => {
            
             if (report.filters[reportParams['RESTRICTION_IDS']] && report.filters[reportParams['RESTRICTION_IDS']].length > 0) {                

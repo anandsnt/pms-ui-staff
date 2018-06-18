@@ -1184,9 +1184,6 @@ sntRover.controller('RVReportDetailsCtrl', [
             $('#print-orientation').remove();
         };
 
-
-        
-
 		// print the page
 		var printReport = function() {
 
@@ -1471,10 +1468,7 @@ sntRover.controller('RVReportDetailsCtrl', [
             $scope.$broadcast("FETCH_FULL_YEARLY_TAX_REPORT");
         };
 
-        var markSelectedEntriesForFilters = () => {
-            reportUtils.markSelectedEntriesForFilter(reportsSrv.getChoosenReport()).then(invokePrint);
-        };
-
+        
         // Invokes actual print 
         var invokePrint = () => {
             $timeout(function() {
@@ -1511,7 +1505,7 @@ sntRover.controller('RVReportDetailsCtrl', [
             printReport();
         });
 
-        //Destroying the listeners
+        // Destroying the listeners
         $scope.$on('$destroy', printReportListener);
         $scope.$on('$destroy', printModalReportListener);
 
@@ -1532,8 +1526,6 @@ sntRover.controller('RVReportDetailsCtrl', [
                     scope: $scope
                 };
             }
-            
-            
 
             switch ($state.params.action) {
                 case reportMsgs['REPORT_SUBMITED']:
