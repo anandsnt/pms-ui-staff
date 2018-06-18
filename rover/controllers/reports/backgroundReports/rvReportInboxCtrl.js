@@ -49,7 +49,7 @@ angular.module('sntRover').controller('RVReportsInboxCtrl', [
          * @return {Boolean} true/fals based on the status
          */
         $scope.shouldDisableInboxItem = (report) => {
-            return report.message || report.status.value === 'IN_PROGRESS' || report.status.value === 'REQUESTED' || (report.shouldShowExport && !report.shouldDisplayView);
+            return report.message || report.status.value === 'IN_PROGRESS' || report.status.value === 'REQUESTED';
         };
 
         /**
