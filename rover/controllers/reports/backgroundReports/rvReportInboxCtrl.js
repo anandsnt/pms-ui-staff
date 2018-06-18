@@ -287,7 +287,7 @@ angular.module('sntRover').controller('RVReportsInboxCtrl', [
             
             // Setting the raw data containing the filter state while running the report
             // These filter data is used in some of the reports controller 
-            choosenReport = _.extend(choosenReport, selectedreport.rawData);
+            choosenReport = _.extend(JSON.parse(JSON.stringify(choosenReport)), selectedreport.rawData);
             reportsSrv.setChoosenReport( choosenReport );
         };
 

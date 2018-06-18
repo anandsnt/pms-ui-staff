@@ -1759,13 +1759,15 @@ angular.module('reportsModule')
             if ( report['title'] === reportNames['AR_SUMMARY_REPORT']) {
                 var nameSortBy    = angular.copy( _.find(report['sort_fields'], { 'value': 'ACCOUNT_NAME' }) ),
                     accountSortBy = angular.copy( _.find(report['sort_fields'], { 'value': 'ACCOUNT_NO' }) ),
-                    balanceSortBy = angular.copy( _.find(report['sort_fields'], { 'value': 'BALANCE' }) );
+                    openBalanceSortBy = angular.copy( _.find(report['sort_fields'], { 'value': 'OPEN_BALANCE' }) ),
+                    creditSortBy = angular.copy( _.find(report['sort_fields'], { 'value': 'CREDIT' }) );
 
                 report['sort_fields'][0] = nameSortBy;
                 report['sort_fields'][1] = accountSortBy;
                 report['sort_fields'][2] = null;
                 report['sort_fields'][3] = null;
-                report['sort_fields'][4] = balanceSortBy;
+                report['sort_fields'][4] = openBalanceSortBy;
+                report['sort_fields'][5] = creditSortBy;
             }
 
             // for in-house report the sort by items must be
