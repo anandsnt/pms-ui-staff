@@ -10,6 +10,8 @@ angular.module('sntRover').controller('RVReportsInboxCtrl', [
     'RVreportsSrv',
     'RVReportNamesConst',
     'RVreportsSubSrv',
+    'RVReportUtilsFac',
+    '$q',
     function (
         $rootScope, 
         $scope,
@@ -21,7 +23,9 @@ angular.module('sntRover').controller('RVReportsInboxCtrl', [
         $timeout,
         reportsSrv,
         reportNames,
-        reportsSubSrv) {
+        reportsSubSrv,
+        reportUtils,
+        $q) {
 
         var self = this;
 
@@ -273,7 +277,8 @@ angular.module('sntRover').controller('RVReportsInboxCtrl', [
                 choosenReport = _.find($scope.reportList,
                     function(report) {
                         return selectedreport.report_id === report.id;
-                    });
+                    }),
+                   deffered = $q.defer();
 
             // generatedReportId is required make API call
             choosenReport.generatedReportId = selectedreport.id;
@@ -284,11 +289,18 @@ angular.module('sntRover').controller('RVReportsInboxCtrl', [
             if ( lastReportID !== selectedreport.id ) {
                 mainCtrlScope.printOptions.resetSelf();
             }
+            reportsSrv.processSelectedReport(choosenReport);
+
+            reportUtils.findFillFilters(choosenReport, $scope.$parent.reportList).
+            then(function () {
+                // Setting the raw data containing the filter state while running the report
+                // These filter data is used in some of the reports controller 
+                choosenReport = _.extend(JSON.parse(JSON.stringify(choosenReport)), selectedreport.rawData);
+                reportsSrv.setChoosenReport( choosenReport );
+                deffered.resolve();
+            });            
             
-            // Setting the raw data containing the filter state while running the report
-            // These filter data is used in some of the reports controller 
-            choosenReport = _.extend(JSON.parse(JSON.stringify(choosenReport)), selectedreport.rawData);
-            reportsSrv.setChoosenReport( choosenReport );
+            return deffered.promise;            
         };
 
         /*
@@ -299,8 +311,10 @@ angular.module('sntRover').controller('RVReportsInboxCtrl', [
         $scope.showGeneratedReport = function( selectedreport ) {
             var mainCtrlScope = $scope.$parent;
 
-            setChoosenReport(selectedreport);
-            mainCtrlScope.genReport();
+            setChoosenReport(selectedreport).then(function() {
+               mainCtrlScope.genReport(); 
+            });
+                  
         };
        
         /*
@@ -311,8 +325,9 @@ angular.module('sntRover').controller('RVReportsInboxCtrl', [
         $scope.exportCSV = function( selectedreport ) {
             var mainCtrlScope = $scope.$parent;
 
-            setChoosenReport(selectedreport);
-            mainCtrlScope.exportCSV();
+            setChoosenReport(selectedreport).then(function() {
+                 mainCtrlScope.exportCSV();
+            });           
         };
         /**
          * Set title and heading
@@ -348,9 +363,11 @@ angular.module('sntRover').controller('RVReportsInboxCtrl', [
         $scope.printReport = (report) => { 
             var mainCtrlScope = $scope.$parent;
 
-            setChoosenReport(report);
-            reportsSrv.setPrintClicked(true);
-            mainCtrlScope.genReport(false, 1, 1000); 
+            setChoosenReport(report).then(function() {
+                mainCtrlScope.genReport(false, 1, 1000);
+            });
+            reportsSrv.setPrintClicked(true);                       
+            
         };
 
         // Initialize

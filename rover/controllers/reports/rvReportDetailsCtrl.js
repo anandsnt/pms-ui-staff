@@ -1493,13 +1493,12 @@ sntRover.controller('RVReportDetailsCtrl', [
 
         // Setting up the data for the report for printing
         var loadPrintView = () => {
-            $scope.errorMessage = [];            
+            $scope.errorMessage = []; 
+
             afterFetch();
             $scope.$emit('UPDATE_REPORT_HEADING', {heading: $scope.heading});            
-            findBackNames();
-            reportUtils.findFillFilters(reportsSrv.getChoosenReport(), $scope.$parent.reportList)
-                    .then(invokePrint);            
-                       
+            findBackNames(); 
+            invokePrint();
         };
 
         // Listener for the printing the report
