@@ -104,6 +104,10 @@
 			$scope.posted = true;
 		});
 
+		$scope.gotoCheckoutNowFlow = function() {
+			$state.go('checkOutConfirmation');
+		};
+
 	}
 };
 

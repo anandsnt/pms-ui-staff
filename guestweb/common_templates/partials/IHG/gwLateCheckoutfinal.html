@@ -1,0 +1,46 @@
+<!-- navbar -->
+<div class="container-fluid padding-0">
+    <div class="row header-bar">
+        <img alt="" class="logo-image" src="{{hotelLogo}}" />
+    </div>
+</div>
+<!-- main section starts here -->
+<div class="container-fluid">
+    <!-- request text -->
+    <div class="row" ng-hide="posted || netWorkError">
+        <div class="col-md-2"></div>
+        <div class="col-md-8 top-spacing">
+            <p class="request-text">Your request is being processed. This may take a few seconds..... please wait!</p>
+        </div>
+        <div class="col-md-2">
+        </div>
+    </div>
+    <!-- error message -->
+    <div class="row" ng-show="netWorkError">
+        <div class="col-md-2"></div>
+        <div class="col-md-8 top-spacing">
+            <p class="error-text">Our apologies, something went wrong, please complete your check-out at our front desk. You can also call the hotel at <a href="tel: {{hotelPhone}}" class="phone-text">{{hotelPhone}}.</a></p>
+        </div>
+        <div class="col-md-2">
+        </div>
+    </div>
+    <!-- late checkout success -->
+    <div class="row" ng-show="success">
+        <div class="col-md-4"></div>
+        <!-- left side -->
+        <div class="col-md-4">
+            <div class="section-container">
+                <p class="main-text">Thank You.</p>
+                <p class="sub-main-text">The following will appear on your bill.</p>
+                <p class="sub-main-text">Late check-out ({{ lateCheckOut.time }} {{ lateCheckOut.ap }} ) .... {{currencySymbol}}{{ lateCheckOut.amount }}
+                </p>
+                <p class="sub-main-text margin-top-20">
+                    {{keyExpiry}}
+                </p>
+                <button class="btn btn-template margin-top-20" ng-click="gotoCheckoutNowFlow()">Back to Check-out</button>
+            </div>
+        </div>
+        <div class="col-md-4">
+        </div>
+    </div>
+</div>
