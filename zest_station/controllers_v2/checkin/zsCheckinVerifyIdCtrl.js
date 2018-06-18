@@ -76,8 +76,6 @@
 					'email': stateParams.guest_email
 				};
 
-				console.log(nextStateParams);
-
 				if ($scope.zestStationData.is_kiosk_ows_messages_active) {
 					$scope.setScreenIcon('checkin');
 					$state.go('zest_station.checkinSuccess', nextStateParams);
@@ -107,22 +105,19 @@
 					params: checkinParams,
 					successCallBack: afterGuestCheckinCallback,
 					failureCallBack: function() {
-						var stateParams = {
+						$state.go('zest_station.speakToStaff', {
 							'message': 'Checkin Failed.'
-						};
-						$state.go('zest_station.speakToStaff', stateParams);
+						});
 						$scope.checkinInProgress = false;
 					}
 				};
-
-				console.log(options);
 
 				if ($scope.inDemoMode()) {
 					afterGuestCheckinCallback();
 				} else {
 					$scope.callAPI(zsCheckinSrv.checkInGuest, options);
 				}
-			}
+			};
 
 
 			var generateApiParams = function(approvePendingIds) {
@@ -144,8 +139,8 @@
 
 			var callApiToRecord = function() {
 				var params = apiParams;
+
 				params.staff_id = verfiedStaffId;
-				console.log(apiParams);
 				var options = {
 					params: apiParams,
 					successCallBack: checkinGuest

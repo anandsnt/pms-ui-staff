@@ -49,7 +49,7 @@ describe('zsCheckinVerifyIdCtrl', function() {
     describe('Admin verification', function() {
         beforeEach(function() {
             $scope.adminVerify();
-            $scope.adminPin = '12'
+            $scope.adminPin = '12';
         });
         it('On Admin verification failure, change mode to PIN error', function() {
             spyOn(zsGeneralSrv, 'verifyStaffByPin').and.callFake(function() {
@@ -76,8 +76,6 @@ describe('zsCheckinVerifyIdCtrl', function() {
         });
     });
 
-
-
     it('On continuing with any one pending guest ID verification, show warning', function() {
         $scope.selectedReservation = {
             guest_details: [{
@@ -90,7 +88,7 @@ describe('zsCheckinVerifyIdCtrl', function() {
                 'id': 2,
                 'guest_type': 'ADULT',
                 'first_name': '',
-                'last_name': '',
+                'last_name': ''
             }]
         };
         $scope.continueToNextScreen();
@@ -140,7 +138,7 @@ describe('zsCheckinVerifyIdCtrl', function() {
                 'id': 2,
                 'guest_type': 'ADULT',
                 'first_name': '',
-                'last_name': '',
+                'last_name': ''
             }]
         };
         $scope.acceptWithoutID();
