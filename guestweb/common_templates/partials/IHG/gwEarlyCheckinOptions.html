@@ -1,0 +1,23 @@
+<!-- navbar -->
+<div class="container-fluid padding-0">
+    <div class="row header-bar">
+        <img alt="" class="logo-image" src="{{hotelLogo}}" />
+    </div>
+</div>
+<!-- main section starts here -->
+<div class="container-fluid">
+    <div class="row" ng-hide="isPosting || netWorkError">
+        <div class="col-md-4"></div>
+        <div class="col-md-4">
+            <div class="section-container">
+                <p class="main-text">Early Check-in</p>
+                <p class="sub-main-text"> You have selected an <b>Early Check-in Time</b> (standard check-in time is {{checkinTime}}). You may Check-in early for a charge of {{earlyCheckinCharge}}, which will be added to your bill.</em>
+                </p>
+                <button class="btn btn-template early-checkin-button margin-top-20" ng-click="nextButtonClicked()">Purchase</button>
+                <button class="btn btn-template early-checkin-button margin-top-20 grey-btn" ng-click="changeArrivalTime()">Change Arrival Time</button>
+            </div>
+        </div>
+        <div class="col-md-4">
+        </div>
+    </div>
+</div>
