@@ -203,8 +203,7 @@ angular.module('sntRover').controller('RVReportsInboxCtrl', [
                     self.refreshScroll();
                 },                
                 options = {
-                    onSuccess: onReportsFetchSuccess,
-                    onFailure: onReportsFetchFailure,
+                    onSuccess: onReportsFetchSuccess,                    
                     params: self.generateRequestParams(pageNo)
                 };
 
