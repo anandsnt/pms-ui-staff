@@ -771,6 +771,16 @@
                     &:last-child { .box-shadow(none); }
                 }
 
+                .scrollable {
+                    width: 100%;
+                    overflow: hidden;
+                    position: relative;
+
+                    &.small {
+                        height: 140px;
+                    }
+                }
+
                 &.hidden { #fade > .out(); }
             }
 
@@ -878,6 +888,18 @@
                         font-size: 10px;
                     }
                 }
+
+                .scrollable {
+                    width: 100%;
+                    overflow: hidden;
+                    position: relative;
+
+                    &.small {
+                        height: 140px;
+                    }
+                }
+
+                .iScrollVerticalScrollbar { top: 5px; bottom: 5px; }
 
                 &.hidden { #fade > .out(); }
             }
