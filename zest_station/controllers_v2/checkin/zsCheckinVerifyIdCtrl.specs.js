@@ -22,6 +22,7 @@ describe('zsCheckinVerifyIdCtrl', function() {
             var params = {
                 'guest_email': 'r@s.com'
             };
+            
             $stateParams.params = JSON.stringify(params);
             zsCheckinSrv = _zsCheckinSrv_;
         });

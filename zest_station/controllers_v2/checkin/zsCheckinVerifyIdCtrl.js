@@ -151,6 +151,7 @@
 
 			$scope.acceptWithoutID = function() {
 				var approvePendingIds = true;
+				
 				generateApiParams(approvePendingIds);
 				callApiToRecord();
 			};
