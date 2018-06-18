@@ -2066,7 +2066,7 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
             // the report from the report inbox
             if ($rootScope.isBackgroundReportsEnabled) {
                 // This is a temp fix. Once api fixes the issue this should be removed
-                params.per_page = 2000;
+                params.per_page = 99999;
                 params.rawData = _.extend(reportUtils.reduceObject(report), rawData);
             }
             

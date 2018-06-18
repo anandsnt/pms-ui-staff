@@ -51,9 +51,13 @@
                         <ul class="wrapper">
                             <!-- Add .disabled if in progress or has an error-->
                             <!-- add .expanded if expanded -->
-                            <li class="report-item inbox-item" ng-repeat="report in reportInboxData.generatedReports track by $index" ng-class="{'disabled': shouldDisableInboxItem(report), 'expanded': report.isExpanded}">
+                            <li class="report-item inbox-item" ng-repeat="report in reportInboxData.generatedReports track by $index" ng-class="{'disabled': shouldDisableInboxItem(report), 'expanded': report.isExpanded, 'export-item': report.shouldShowExport && !report.shouldDisplayView }">
                                 <!-- On click, expand the report -->
-                                <div class="expand" ng-click="showReportDetails(report)">
+                                <div class="expand" ng-click="showReportDetails(report)" ng-if="!shouldDisableInboxItem(report)">
+                                    <!-- add .active if expanded -->
+                                    <span class="icons icon-double-arrow black expand-arrow" ng-class="{'active': report.isExpanded}"></span>
+                                </div> 
+                                <div class="expand" ng-if="shouldDisableInboxItem(report)">
                                     <!-- add .active if expanded -->
                                     <span class="icons icon-double-arrow black expand-arrow" ng-class="{'active': report.isExpanded}"></span>
                                 </div>                                

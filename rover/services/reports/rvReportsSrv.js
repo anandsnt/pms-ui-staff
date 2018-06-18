@@ -4,7 +4,10 @@ angular.module('sntRover').service('RVreportsSrv', [
 	'RVreportsSubSrv',
 	'$vault',
 	'$http',
-	function($q, rvBaseWebSrvV2, subSrv, $vault, $http) {
+	'RVReportApplyFlags',
+    'RVReportUtilsFac',
+    'RVReportSetupDates',
+	function($q, rvBaseWebSrvV2, subSrv, $vault, $http, applyFlags, reportUtils, setupDates) {
 		var service       = {},
 			choosenReport = {},
 			printClicked = false;
@@ -430,6 +433,39 @@ angular.module('sntRover').service('RVreportsSrv', [
         // Get the report inbox print clicked state
         service.getPrintClickedState = () => {
         	return this.printClicked;
+        };
+
+        // Process and apply filter flags on the selected report
+        service.processSelectedReport = (report) => {            
+
+            // apply certain flags based on the report name
+            applyFlags.init( report );
+
+            // add users filter for needed reports
+            // unfortunately this is not sent from server
+            reportUtils.addIncludeUserFilter( report );
+            reportUtils.addIncludeOtherFilter(report);
+
+
+            setupDates.init( report );
+            _.each(report['filters'], function(filter) {
+                setupDates.execFilter( report, filter );
+            });
+
+            // to reorder & map the sort_by to report details columns - for this report
+            // re-order must be called before processing
+            reportUtils.reOrderSortBy( report );
+
+            // to process the sort by for this report
+            // processing must be called after re-odering
+            reportUtils.processSortBy( report );
+
+            // to assign inital date values for this report
+            // reportUtils.initDateValues( report[i] );
+
+            // to process the group by for this report
+            reportUtils.processGroupBy( report );
+
         };
 
 		return service;
