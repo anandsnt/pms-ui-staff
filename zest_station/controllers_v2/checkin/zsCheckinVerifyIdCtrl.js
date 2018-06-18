@@ -16,6 +16,14 @@
 			$scope.adminPin = '';
 			$scope.showWarningPopup = false;
 			$scope.selectedReservation = zsCheckinSrv.getSelectedCheckInReservation();
+			var showOnlyPrimaryGuest = true;
+
+			if (showOnlyPrimaryGuest) {
+				$scope.selectedReservation.guest_details = _.filter($scope.selectedReservation.guest_details, function(guest) {
+					return guest.is_primary;
+				});
+			}
+
 			var stateParams = JSON.parse($stateParams.params);
 			var verfiedStaffId = '';
 			var apiParams = {
