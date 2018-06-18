@@ -9,9 +9,9 @@
 		</header>
 		<section class="content-scroll">
 			<div ng-include="'/assets/partials/common/notification_message.html'"></div>
-			<table id="items" class="grid datatable dataTable" ng-table="itemList">
-				<tr role="row" ng-repeat="item in taxExempts">
-					<td class="sorting" data-title="'Name'" sortable="'item_description'">
+			<table id="items" class="grid datatable dataTable" ng-table="tableParams" template-pagination="custom/pager">
+				<tr role="row" ng-repeat="item in $data">
+					<td class="sorting" data-title="'Name'">
 						<a ui-sref="admin.adTaxExemptDetails({taxExemptId: item.id})">{{item.name}}</a>
 					</td>
 					<td class="sorting" data-title="'Number Of Chargecodes'">
@@ -22,6 +22,30 @@
 					</td>					
 				</tr>				
 			</table>
+			<script type="text/ng-template" id="custom/pager">
+				<div class = "pager">ghjjjjjjjjjjjjjjjjjjjjjjjg
+					<span ng-show="totalCount>0">Showing {{startCount}} to {{endCount}} of {{totalCount}} items</span>
+					<span ng-show="totalCount==0">Showing 0 items</span>
+					<ul class="ng-cloak">
+		              	<li ng-repeat="page in pages"
+			                ng-class="{'previous': page.type == 'prev', 'next': page.type == 'next'}"
+			                ng-show="page.type == 'prev' || page.type == 'next'" ng-switch="page.type">
+		
+			                <a ng-switch-when="prev" ng-click="params.page(1)" class="page" ng-class="{'disabled': !page.active}">First</a>
+			                <a ng-switch-when="prev" ng-click="params.page(page.number)" class="page" ng-class="{'disabled': !page.active}">Previous</a>
+			                <a ng-switch-when="prev" ng-click="params.page(page.number)" class="page" ng-class="{'disabled': !page.active}">{{page.number}}</a>
+			                
+			                <a ng-switch-when="next" ng-click="params.page(page.number)" class="page" ng-class="{'disabled': !page.active}">{{page.number}}</a>
+			                <a ng-switch-when="next" ng-click="params.page(page.number)" class="page" ng-class="{'disabled': !page.active}">Next</a>
+			                <a ng-switch-when="next" ng-click="params.page(totalPage)" class="page" ng-class="{'disabled': !page.active}">Last</a>
+			          	</li>
+		            </ul>
+		        </div>
+		    </script>
 		</section>
+		<!-- <script type="text/ng-template" id="custom/pager"> -->
+
+			
+		<!-- </script> -->
 	</div>
 </section>

@@ -3,11 +3,11 @@ function($q, ADBaseWebSrvV2) {
 	/*
 	* To fetch hotel PaymentMethods
 	*/
-	this.fetchTaxExempts = function() {
+	this.fetchTaxExempts = function(params) {
 		var deferred = $q.defer();
 		var url = '/api/tax_exempt_types';
 
-		ADBaseWebSrvV2.getJSON(url).then(function(data) {
+		ADBaseWebSrvV2.getJSON(url, params).then(function(data) {
 			deferred.resolve(data);
 		}, function(errorMessage) {
 			deferred.reject(errorMessage);
@@ -17,7 +17,7 @@ function($q, ADBaseWebSrvV2) {
 
 	this.fetchChargeCodes = function(params) {
 		var deferred = $q.defer();
-		var url = '/admin/charge_codes/list.json';
+		var url = "/admin/charge_codes/list.json?charge_code_type='TAX'";
 
 		ADBaseWebSrvV2.getJSON(url).then(function(data) {
 			deferred.resolve(data);

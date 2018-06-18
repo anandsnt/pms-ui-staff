@@ -1,30 +1,20 @@
 <section class="content current admin-scrollfix" div-touch-move-stop-propogate ng-click="clearErrorMessage()"><!-- Add new Item -->
 	<div id="add-new-item" data-view="ItemsDetailsView">
 		<header class="content-title float">
-			<h2 ng-show="mod == 'edit'">{{'EDIT' | translate}} <span>{{itemDetails.item_description}} </span></h2>
-			<h2 ng-show="mod == 'add'" translate>ADD_NEW_ITEM</h2>
+			<h2 ng-show="!isAddMode">{{'EDIT' | translate}} <span></span></h2>
+			<h2 ng-show="isAddMode" translate>ADD_NEW_ITEM</h2>
 			
-			<a data-type="load-details" class="action back" ng-click="goBack()" translate>BACK_TO_ITEMS</a>
-			<em class="status required" ng-show="mod == 'edit'">
-				{{'MANDATORY_FIELDS_MESSAGE1' | translate}}
-				<strong>*</strong>
-				{{'MANDATORY_FIELDS_MESSAGE2' | translate}}
-			</em>
+			<a data-type="load-details" class="action back" ng-click="goBack()" translate>BACK_TO_ITEMS</a>			
 		</header>
 		<section class="content-scroll">
 			<div ng-include="'/assets/partials/common/notification_message.html'"></div>
 			<form name="item-details" method="post" class="form float">
-				<fieldset class="holder full-width float" ng-show="mod == 'add'">
+				<fieldset class="holder full-width float" ng-show="isAddMode">
 					<div class="form-title" >
 						<h3>
 							<span translate>ADD_NEW</span>
 							{{'ITEM' | translate}}
-						</h3>
-						<em class="status">
-							{{'MANDATORY_FIELDS_MESSAGE1' | translate}}
-							<strong>*</strong>
-							{{'MANDATORY_FIELDS_MESSAGE2' | translate}}
-						</em>
+						</h3>						
 					</div>
 				</fieldset>
 				<fieldset class="holder left float">
@@ -33,23 +23,23 @@
 				required="yes" styleclass="full-width"></ad-textbox>					
 
 				</fieldset>
-				<fieldset ng-class="holder right">
-					<div class="entry rel">
-						<label for="select-rate">Select Charge Codes</label>
-			            <!-- Add .active when showing options -->
-			            <div class="faux-select">
-			                <span class="value">{{addData.selectedCount}} selected</span>
-			            </div>
-						<div id="select-rate" class="faux-select-options">
-
-			                <label class="checkbox" ng-repeat="chargeCode in chargeCodes">
-			                    <!-- add .checked if checked -->
-			                    <span class="icon-form icon-checkbox" ng-class="{'checked': chargeCode.is_selected}"></span>
-			                    <!-- add checked="checked" if checked -->
-			                    <input name="resync_rate" ng-model="chargeCode.is_selected" ng-class="{'checked': chargeCode.is_selected}" ng-change="selectedChargeCode()"  value="{{chargeCode.value}}" type="checkbox">
-			                    <span class="text">{{chargeCode.charge_code}}</span>
-			                </label>	
-			            </div>				
+				
+				<fieldset class="holder full-width">
+					<div class="entry full-width">
+						<div class="boxes">
+							
+							<label class="checkbox inline" ng-repeat="chargeCode in chargeCodes">
+								<div class="entry radio-check {{divClass}}" ng-click="onClick()">
+									<label class="checkbox {{parentLabelClass}}" ng-class="{'checked': chargeCode.is_selected}" >
+										<span class="icon-form icon-checkbox" ng-class="{'checked': isChecked, 'checkbox-background': !chargeCode.is_selected}"></span>
+										<span class="icon-form icon-checkbox" ng-class="{'checked': chargeCode.is_selected}"></span>
+										<input type="checkbox" ng-model="chargeCode.is_selected"  ng-change='selectedChargeCode(chargeCode.is_selected)'>
+										{{chargeCode.charge_code}}							
+									</label>
+								</div>
+							</label>
+						</div>
+					</div>
 				</fieldset>				
 			<div class="actions float">
 				<button type="button" id="cancel" class="button blank add-data-inline" ng-click="goBack()" translate>CANCEL</button>
