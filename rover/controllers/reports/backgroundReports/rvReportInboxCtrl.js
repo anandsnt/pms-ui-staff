@@ -49,7 +49,7 @@ angular.module('sntRover').controller('RVReportsInboxCtrl', [
          * @return {Boolean} true/fals based on the status
          */
         $scope.shouldDisableInboxItem = (report) => {
-            return report.message || report.status.value === 'IN_PROGRESS' || report.status.value === 'REQUESTED';
+            return report.message || report.status.value === 'IN_PROGRESS' || report.status.value === 'REQUESTED' || (report.shouldShowExport && !report.shouldDisplayView);
         };
 
         /**
@@ -260,6 +260,27 @@ angular.module('sntRover').controller('RVReportsInboxCtrl', [
             $scope.reportInboxData.filter.searchTerm = '';
             self.fetchGeneratedReports(1);               
         };
+
+        // Get master data for configuring the filters for reports
+        var getConfigData = () => {
+            var config = {
+                    'guaranteeTypes': $scope.$parent.guaranteeTypes,
+                    'markets': $scope.$parent.markets,
+                    'sources': $scope.$parent.sources,
+                    'origins': $scope.$parent.origins,
+                    'codeSettings': $scope.$parent.codeSettings,
+                    'holdStatus': $scope.$parent.holdStatus,
+                    'chargeNAddonGroups': $scope.$parent.chargeNAddonGroups,
+                    'chargeCodes': $scope.$parent.chargeCodes,
+                    'addons': $scope.$parent.addons,
+                    'reservationStatus': $scope.$parent.reservationStatus,
+                    'assigned_departments': $scope.$parent.assigned_departments,
+                    'activeUserList': $scope.$parent.activeUserList,
+                    'travel_agent_ids': $scope.$parent.travel_agents
+                };
+
+            return config;
+        };
         /*
         * store selected report to service,
         *  Case 1: For Inbox Report, append generatedReportId for choosenReport
@@ -285,7 +306,7 @@ angular.module('sntRover').controller('RVReportsInboxCtrl', [
             if ( lastReportID !== selectedreport.id ) {
                 mainCtrlScope.printOptions.resetSelf();
             }
-            reportsSrv.processSelectedReport(choosenReport);
+            reportsSrv.processSelectedReport(choosenReport, getConfigData());
 
             reportUtils.findFillFilters(choosenReport, $scope.$parent.reportList).
             then(function () {
@@ -305,6 +326,10 @@ angular.module('sntRover').controller('RVReportsInboxCtrl', [
         * @return none
         * */
         $scope.showGeneratedReport = function( selectedreport ) {
+            if (selectedreport.shouldShowExport && !selectedreport.shouldDisplayView ) {
+                return;
+            }
+            
             var mainCtrlScope = $scope.$parent;
 
             setChoosenReport(selectedreport).then(function() {

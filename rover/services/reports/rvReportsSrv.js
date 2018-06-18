@@ -436,7 +436,7 @@ angular.module('sntRover').service('RVreportsSrv', [
         };
 
         // Process and apply filter flags on the selected report
-        service.processSelectedReport = (report) => {            
+        service.processSelectedReport = (report, config) => {            
 
             // apply certain flags based on the report name
             applyFlags.init( report );
@@ -451,6 +451,9 @@ angular.module('sntRover').service('RVreportsSrv', [
             _.each(report['filters'], function(filter) {
                 setupDates.execFilter( report, filter );
             });
+
+            // to process the filters for this report
+            reportUtils.processFilters(report, config);
 
             // to reorder & map the sort_by to report details columns - for this report
             // re-order must be called before processing

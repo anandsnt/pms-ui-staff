@@ -278,7 +278,7 @@ sntRover.factory('RVReportParserFac', [
                 ithUuid,
                 roomName;
 
-            for (dateKey in apiResponse) {
+            for (var dateKey in apiResponse) {
                 if ( ! apiResponse.hasOwnProperty(dateKey) ) {
                     continue;
                 }
