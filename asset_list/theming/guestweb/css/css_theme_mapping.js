@@ -4,6 +4,7 @@ module.exports = {
         var themeCSSRoot = 'stylesheets/guestweb/';
 
         return {
+            'guestweb_hilo_seaside_hotel': [ themeCSSRoot + 'guestweb_hilo_seaside_hotel.css'],
             'guestweb_surf_and_sand_hotel': [ themeCSSRoot + 'guestweb_surf_and_sand_hotel.css'],
             'guestweb_the_shore_house': [ themeCSSRoot + 'guestweb_the_shore_house.css'],
             'guestweb_story_hotels': [ themeCSSRoot + 'guestweb_story_hotels.css'],
@@ -174,7 +175,8 @@ module.exports = {
             'guestweb_viceroy_chicago': [ themeCSSRoot + 'guestweb_viceroy_chicago.css'],
             'guestweb_hotel_alessandra': [ themeCSSRoot + 'guestweb_hotel_alessandra.css'],
             'guestweb_george_texas': [ themeCSSRoot + 'guestweb_george_texas.css'],
-            'guestweb_eden_v2': [ themeCSSRoot + 'guestweb_eden_v2.css']
+            'guestweb_eden_v2': [ themeCSSRoot + 'guestweb_eden_v2.css'],
+            'guestweb_ihg': [ themeCSSRoot + 'guestweb_ihg.css']
         };
     }
 };

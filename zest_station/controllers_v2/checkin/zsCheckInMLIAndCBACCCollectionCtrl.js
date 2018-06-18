@@ -45,6 +45,8 @@ sntZestStation.controller('zsCheckInMLIAndCBACCCollectionCtrl', [
 		// CBA
 		var goToCardSign = function() {
 			zsPaymentSrv.setPaymentData({});
+			// next state is expecting email as param
+			stateParams.email = stateParams.guest_email;
 			$state.go('zest_station.checkInSignature', stateParams);
 		};
 

@@ -346,6 +346,7 @@ sntRover.controller('companyCardContractsCtrl', ['$rootScope', '$scope', 'RVComp
 					}
 				});
 				$scope.contractSelected.contract_code = getContractObj().contract_code;
+				
 			}
 		};
 
@@ -414,7 +415,7 @@ sntRover.controller('companyCardContractsCtrl', ['$rootScope', '$scope', 'RVComp
 			var dataNew = {
 				"id": data.id,
 				"contract_name": $scope.addData.contract_name,
-				"contract_code": $scope.addData.contract_code
+				"contract_code": data.contract_code
 			};
 
 			var businessDate = new Date($rootScope.businessDate);
@@ -430,6 +431,7 @@ sntRover.controller('companyCardContractsCtrl', ['$rootScope', '$scope', 'RVComp
 			$scope.contractSelected.id = data.id;
 			$scope.addData.contract_name = "";
 			$scope.addData.contract_code = "";
+			$scope.contractChanged();
 		};
 
 		// To handle click on nights button
@@ -562,7 +564,7 @@ sntRover.controller('companyCardContractsCtrl', ['$rootScope', '$scope', 'RVComp
 				contractInfo = dataToUpdate;
 			}
 			if (!dataUpdated && !$scope.contractList.isAddMode) {
-				var data = dclone($scope.contractData, ['occupancy', 'statistics', 'rates', 'total_contracted_nights']);
+				var data = dclone($scope.contractData, ['occupancy', 'statistics', 'rates', 'total_contracted_nights', 'rate_name', 'rate_code']);
 
 				if ($stateParams.id === "add") {
 					var account_id = $scope.contactInformation.id;
@@ -570,6 +572,8 @@ sntRover.controller('companyCardContractsCtrl', ['$rootScope', '$scope', 'RVComp
 					var account_id = $stateParams.id;
 				}
 				if ($scope.contractSelected.id) {
+					data.contract_name = getContractObj().contract_name;
+					data.contract_code = getContractObj().contract_code;
 					$scope.invokeApi(RVCompanyCardSrv.updateContract, {
 						"account_id": account_id,
 						"contract_id": $scope.contractSelected.id,
