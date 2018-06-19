@@ -617,28 +617,27 @@ sntZestStation.service('zsGeneralSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
             return deferred.promise;
         };
 
-        this.verifyStaffByPin = function() {
+        this.verifyStaffByPin = function(params) {
             var deferred = $q.defer(),
-                url = 'zest_station/fetch_default_translations';
+                url = '/api/users/authenticate_user_by_pin_code';
 
-            // zsBaseWebSrv2.getJSON(url).then(function(data) {
-                deferred.resolve({id: 2631});
-            // }, function(data) {
-            //     deferred.reject(data);
-            // });
+            zsBaseWebSrv.postJSON(url, params).then(function(response) {
+                deferred.resolve(response);
+            }, function(data) {
+                deferred.reject(data);
+            });
             return deferred.promise;
         };
-
         this.recordIdVerification = function(params) {
-            console.log(params);
-            var deferred = $q.defer(),
-                url = 'zest_station/fetch_default_translations';
 
-            // zsBaseWebSrv2.getJSON(url).then(function(data) {
-                deferred.resolve();
-            // }, function(data) {
-            //     deferred.reject(data);
-            // });
+            var deferred = $q.defer(),
+                url = '/api/reservation_actions';
+
+            zsBaseWebSrv.postJSON(url, params).then(function(response) {
+                deferred.resolve(response);
+            }, function(data) {
+                deferred.reject(data);
+            });
             return deferred.promise;
         };
 

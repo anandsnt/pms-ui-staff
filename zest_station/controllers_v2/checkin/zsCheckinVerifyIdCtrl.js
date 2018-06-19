@@ -16,7 +16,7 @@
 			$scope.adminPin = '';
 			$scope.showWarningPopup = false;
 			$scope.selectedReservation = zsCheckinSrv.getSelectedCheckInReservation();
-			var showOnlyPrimaryGuest = true;
+			var showOnlyPrimaryGuest = false;
 
 			if (showOnlyPrimaryGuest) {
 				$scope.selectedReservation.guest_details = _.filter($scope.selectedReservation.guest_details, function(guest) {
@@ -38,7 +38,7 @@
 
 			$scope.goToNext = function() {
 				var successCallback = function(response) {
-					verfiedStaffId = response.id;
+					verfiedStaffId = response.user_id;
 					$scope.screenMode = 'GUEST_LIST';
 				};
 				var failureCallback = function() {
@@ -46,7 +46,7 @@
 				};
 				var options = {
 					params: {
-						'pin': $scope.adminPin
+						'pin_code': $scope.adminPin
 					},
 					successCallBack: successCallback,
 					failureCallBack: failureCallback
@@ -127,8 +127,7 @@
 				}
 			};
 
-
-			var generateApiParams = function(approvePendingIds) {
+			var generateDataSet = function(approvePendingIds) {
 				apiParams = {
 					guests_accepted_with_id: [],
 					guests_accepted_without_id: []
@@ -136,21 +135,44 @@
 				allGuestsAreVerified = true;
 				_.each($scope.selectedReservation.guest_details, function(guest) {
 					if (guest.review_status === '1') {
-						apiParams.guests_accepted_with_id.push(guest.id);
+						apiParams.guests_accepted_with_id.push(guest);
 					} else if (guest.review_status === '2' || approvePendingIds) {
-						apiParams.guests_accepted_without_id.push(guest.id);
+						apiParams.guests_accepted_without_id.push(guest);
 					} else {
 						allGuestsAreVerified = false;
 					}
 				});
 			};
 
-			var callApiToRecord = function() {
-				var params = apiParams;
+			var addGuestDataToParams = function(params, guestData, key) {
+				if (guestData.length > 0) {
+					var newData = {
+						'key': key,
+						'new_value': ''
+					};
+					var guestNames = _.map(guestData, function(guest) {
+						return guest.first_name + ' ' + guest.last_name;
+					});
+					newData.new_value = guestNames.join(', ');
+					params.details.push(newData);
+				}
+				return params;
+			};
 
-				params.staff_id = verfiedStaffId;
+			var callApiToRecord = function() {
+				var params = {
+					"id": stateParams.reservation_id,
+					"user_id": verfiedStaffId,
+					"application": 'ROVER',
+					"action_type": "ID_REVIEWED",
+					"details": []
+				};
+
+				params = addGuestDataToParams(params, apiParams.guests_accepted_with_id, 'Guests Verified With ID');
+				params = addGuestDataToParams(params, apiParams.guests_accepted_without_id, 'Guests Verified Without ID');
+
 				var options = {
-					params: apiParams,
+					params: params,
 					successCallBack: checkinGuest
 				};
 
@@ -160,7 +182,7 @@
 			$scope.acceptWithoutID = function() {
 				var approvePendingIds = true;
 				
-				generateApiParams(approvePendingIds);
+				generateDataSet(approvePendingIds);
 				callApiToRecord();
 			};
 
@@ -173,7 +195,7 @@
 			};
 
 			$scope.continueToNextScreen = function() {
-				generateApiParams();
+				generateDataSet();
 				if (!allGuestsAreVerified) {
 					$scope.showWarningPopup = true;
 				} else {
