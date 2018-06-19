@@ -1,4 +1,4 @@
-describe('ADTaxExemptCtrl', function() {
+describe('ADTaxExemptDetailsCtrl', function() {
 
     jasmine.getJSONFixtures().fixturesPath = 'base/unitTestSampleData/';
     var fixtures = loadJSONFixtures('taxExemptSampleData.json'),
@@ -7,7 +7,7 @@ describe('ADTaxExemptCtrl', function() {
     var $controller,
         $scope = {},
         ADTaxExemptSrv,
-        ADTaxExemptCtrl,
+        ADTaxExemptDetailsCtrl,
         $q,
         results = jsonResult,
         $defer,
@@ -23,36 +23,18 @@ describe('ADTaxExemptCtrl', function() {
             $defer = $q.defer();
             $rootScope = _$rootScope_;
             $scope = _$rootScope_.$new();
-            ngTableParams = _ngTableParams_;
-
         });
 
-        ADTaxExemptCtrl = $controller('ADTaxExemptCtrl', {
+        ADTaxExemptDetailsCtrl = $controller('ADTaxExemptDetailsCtrl', {
             $scope: $scope,
             $rootScope : $rootScope
         });
 
     });
-    // =======================
-    it('delete method should invoke, if delete icon clicked', function() {
 
-        spyOn(ADTaxExemptSrv, "deleteTaxExempts").and.callFake(function() {
-            var deferred = $q.defer();
-
-            deferred.resolve();
-            return deferred.promise;
-        });
-
-        var taxExemptId = 5;
-
-        $scope.deleteTaxExempt(taxExemptId);
-
-        expect(ADTaxExemptSrv.deleteTaxExempts).toHaveBeenCalled();
-
-    });
     // ============================================
 
-    it('List all tax exempts', function () {       
+    it('List all charge codes', function () {       
         
         spyOn(ADTaxExemptSrv, 'fetchTaxExempts').and.callFake(function () {
             var deferred = $q.defer();
