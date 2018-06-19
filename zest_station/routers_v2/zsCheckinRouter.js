@@ -396,5 +396,12 @@ sntZestStation.config(['$stateProvider',
             controller: 'zsCheckInMLIAndCBACCCollectionCtrl'
         });
 
+        $stateProvider.state('zest_station.checkInIdVerification', {
+            // url: '/checkInScanPassport/:reservation_id/:email/:first_name/:room_no/:guest_id/:guest_email_blacklisted/:signature/:passports_scanned/:quickJumpMode/:isQuickJump/:from_pickup_key',
+            url: '/checkInIdVerification/:params',
+            templateUrl: '/assets/partials_v2/checkin/zsCheckinVerifyId.html',
+            controller: 'zsCheckinVerifyIdCtrl'
+        });
+
     }
 ]);

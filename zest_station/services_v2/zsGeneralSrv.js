@@ -616,5 +616,30 @@ sntZestStation.service('zsGeneralSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
             return deferred.promise;
         };
 
+        this.verifyStaffByPin = function() {
+            var deferred = $q.defer(),
+                url = 'zest_station/fetch_default_translations';
+
+            // zsBaseWebSrv2.getJSON(url).then(function(data) {
+                deferred.resolve({id: 2631});
+            // }, function(data) {
+            //     deferred.reject(data);
+            // });
+            return deferred.promise;
+        };
+
+        this.recordIdVerification = function(params) {
+            console.log(params);
+            var deferred = $q.defer(),
+                url = 'zest_station/fetch_default_translations';
+
+            // zsBaseWebSrv2.getJSON(url).then(function(data) {
+                deferred.resolve();
+            // }, function(data) {
+            //     deferred.reject(data);
+            // });
+            return deferred.promise;
+        };
+
     }
 ]);

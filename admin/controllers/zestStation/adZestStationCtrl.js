@@ -1,4 +1,4 @@
-admin.controller('ADZestStationCtrl', ['$scope', '$rootScope', '$state', '$stateParams', 'ADZestStationSrv', '$filter', 'ngDialog', '$timeout', '$log', 'sntAuthorizationSrv', function($scope, $state, $rootScope, $stateParams, ADZestStationSrv, $filter, ngDialog, $timeout, $log, sntAuthorizationSrv) {
+admin.controller('ADZestStationCtrl', ['$scope', '$rootScope', '$state', '$stateParams', 'ADZestStationSrv', '$filter', 'ngDialog', '$timeout', '$log', 'sntAuthorizationSrv', function($scope, $rootScope, $state, $stateParams, ADZestStationSrv, $filter, ngDialog, $timeout, $log, sntAuthorizationSrv) {
     BaseCtrl.call(this, $scope);
 
     $scope.data = {};
@@ -369,6 +369,10 @@ admin.controller('ADZestStationCtrl', ['$scope', '$rootScope', '$state', '$state
 
     $scope.saveAsText = '';
     $scope.isChrome = window.navigator.userAgent.toLowerCase().indexOf('chrome') !== -1;
+
+    $scope.goToUsers = function() {
+        $state.go('admin.users');
+    };
 
     $scope.init = function() {
         fetchSettings();
