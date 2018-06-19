@@ -26,9 +26,9 @@ function($scope, $state, $timeout, ngTableParams, ADTaxExemptSrv) {
 	 * @param params is the params for pagination
 	 */
 	$scope.fetchTaxExempts =  function($defer, params) {
-		console.log(params)
+
 		var getParams = $scope.calculateGetParams(params),
-			successCallBack = function(data) {
+			successCallBack = function(data) {console.log("successCallBack")
 					$scope.totalCount = data.total_count;
 					$scope.totalPage = Math.ceil(data.total_count / $scope.displyCount);
 					$scope.data = data.results;

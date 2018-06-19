@@ -9,20 +9,27 @@ describe('ADTaxExemptCtrl', function() {
         ADTaxExemptSrv,
         ADTaxExemptCtrl,
         $q,
-        results = jsonResult;
+        results = jsonResult,
+        $defer,
+        $rootScope,
+        ngTableParams;
 
     beforeEach(function() {
         module('admin');
-        inject(function (_$controller_, _$rootScope_, _ADTaxExemptSrv_, _$q_ ) {
+        inject(function (_$controller_, _$rootScope_, _ADTaxExemptSrv_, _$q_, _ngTableParams_) {
             $controller = _$controller_;
             ADTaxExemptSrv = _ADTaxExemptSrv_;
             $q = _$q_;
-            $defer = $defer;
+            $defer = $q.defer();
+            $rootScope = _$rootScope_;
             $scope = _$rootScope_.$new();
+            ngTableParams = _ngTableParams_;
+
         });
 
         ADTaxExemptCtrl = $controller('ADTaxExemptCtrl', {
-            $scope: $scope
+            $scope: $scope,
+            $rootScope : $rootScope
         });
 
     });
@@ -53,20 +60,28 @@ describe('ADTaxExemptCtrl', function() {
             deferred.resolve(results);
             return deferred.promise;
         });
+        $scope.displyCount = 10;
+        $scope.tableParams = new ngTableParams({
+                page: 1,  // show first page
+                count: $scope.displyCount // count per page
+        
+            }, {
+                total: 0, // length of data
+                getData: $scope.fetchTaxExempts
+            }
+        );
 
-        $scope.invoiceSearchData = {};
+       
+        //$scope.results = results;
 
-        $scope.invoiceSearchData.query = 'ghl';
+        // $scope.fetchTaxExempts($defer, $scope.tableParams);
 
-        $scope.results = results;
-
-        $scope.fetchTaxExempts(1);
-
-         // Promise won't be resolved till $apply runs....
+          // Promise won't be resolved till $apply runs....
         $rootScope.$apply();
 
-        expect($scope.results.data.results[0].associated_item.number).toBe(results.data.results[0].associated_item.number);
-        expect($scope.results.data.results[0].bills[2].routing_details.is_primary).toEqual(results.data.results[0].bills[2].routing_details.is_primary);
+
+        expect($scope.data[0].name).toBe(results.results[0].name);
+        // expect($scope.results.data.results[0].bills[2].routing_details.is_primary).toEqual(results.data.results[0].bills[2].routing_details.is_primary);
        
     });
 
