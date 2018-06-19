@@ -656,7 +656,10 @@
    "CANCEL": "CANCEL",
 
    "VERIFY_GUESTS_HEADER": "Verify guest IDs",
-   "VERIFY_GUESTS_SUB_HEADER": ""
+   "VERIFY_GUESTS_SUB_HEADER": "",
+
+   "ID_VERIFICATION_HEADER": "ID verification",
+   "ID_VERIFICATION_SUB_HEADER": "Please contact a staff to review your ID before completing the checkin process"
 
 
 
