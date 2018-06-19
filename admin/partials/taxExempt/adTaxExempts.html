@@ -5,33 +5,47 @@
 			<span class="count"> (
 				{{taxExempts.length}}
 				) </span>
-			<a class='action add' ng-click="addNewTaxExempt()" translate>ADD_NEW</a>
+			<a id="add-new-button" ui-sref="admin.adTaxExemptDetails({taxExemptId:''})" class="action add" translate>ADD_NEW</a>
 		</header>
 		<section class="content-scroll">
 			<div ng-include="'/assets/partials/common/notification_message.html'"></div>
-			<div id = "new-form-holder" ng-show="currentClickedElement == 'new'" ng-include="'/assets/partials/taxExempt/adAddTaxExempt.html'"></div>		
-
-			<table id="items" class="grid datatable dataTable" ng-table="itemList">
+			<table id="items" class="grid datatable dataTable" ng-table="tableParams" template-pagination="custom/pager">
 				<tr role="row" ng-repeat="item in $data">
-					<td width="25%" class="sorting" data-title="'Description'" sortable="'item_description'">
-						<a ui-sref="admin.itemdetails({itemid: item.item_id})">{{item.item_description}}</a>
+					<td class="sorting" data-title="'Name'">
+						<a ui-sref="admin.adTaxExemptDetails({taxExemptId: item.id})">{{item.name}}</a>
 					</td>
-					<td width="25%" class="sorting" data-title="'Charge Group'" sortable="'category_name'">
-						{{item.category_name}}
-					</td>
-					<td width="14%" class="" data-title="'Unit Price'" style="text-align:center;">
-						{{item.currency_symbol}} {{item.unit_price}}
-					</td>
-					<td width="14%" class="activate" data-title="'Favorite'">
-						<ad-toggle-button is-checked="item.is_favourite" ng-click='toggleFavourite(item.item_id, item.is_favourite)'></ad-toggle-button>
-					</td>
-					<td width="12%" class="delete" data-title="'Delete'">
-						<a class="icons icon-delete large-icon" ng-click="deleteItem($index, item.item_id)"></a>
-						
-					</td>
-				</tr>
-				
+					<td class="sorting" data-title="'Number Of Chargecodes'">
+						<a>{{item.charge_codes.length}}</a>
+					</td>	
+					<td class="sorting" data-title="'Delete'"">
+						<a class="icons icon-delete large-icon delete_item" ng-click="deleteTaxExempt(item.id)"></a>
+					</td>					
+				</tr>				
 			</table>
+			<script type="text/ng-template" id="custom/pager">
+				<div class = "pager">
+					<span ng-show="totalCount>0">Showing {{startCount}} to {{endCount}} of {{totalCount}} items</span>
+					<span ng-show="totalCount==0">Showing 0 items</span>
+					<ul class="ng-cloak">
+		              	<li ng-repeat="page in pages"
+			                ng-class="{'previous': page.type == 'prev', 'next': page.type == 'next'}"
+			                ng-show="page.type == 'prev' || page.type == 'next'" ng-switch="page.type">
+		
+			                <a ng-switch-when="prev" ng-click="params.page(1)" class="page" ng-class="{'disabled': !page.active}">First</a>
+			                <a ng-switch-when="prev" ng-click="params.page(page.number)" class="page" ng-class="{'disabled': !page.active}">Previous</a>
+			                <a ng-switch-when="prev" ng-click="params.page(page.number)" class="page" ng-class="{'disabled': !page.active}">{{page.number}}</a>
+			                
+			                <a ng-switch-when="next" ng-click="params.page(page.number)" class="page" ng-class="{'disabled': !page.active}">{{page.number}}</a>
+			                <a ng-switch-when="next" ng-click="params.page(page.number)" class="page" ng-class="{'disabled': !page.active}">Next</a>
+			                <a ng-switch-when="next" ng-click="params.page(totalPage)" class="page" ng-class="{'disabled': !page.active}">Last</a>
+			          	</li>
+		            </ul>
+		        </div>
+		    </script>
 		</section>
+		<!-- <script type="text/ng-template" id="custom/pager"> -->
+
+			
+		<!-- </script> -->
 	</div>
 </section>

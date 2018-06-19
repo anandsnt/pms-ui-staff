@@ -10,6 +10,7 @@ angular.module('reportsModule').constant('RVReportPaginationIdsConst', {
     'Login and out Activity': 'LOGIN_AND_OUT_ACTIVITY',
     'Rate Adjustment Report': 'RATE_ADJUSTMENTS_REPORT',
     'Vacant Rooms Report': 'VACANT_ROOMS_REPORT',
+    'A/R Summary Report': 'AR_SUMMARY_REPORT',
     'Forecast': 'FORECAST_BY_DATE',
     'Forecast Guests & Groups': 'FORECAST_GUEST_GROUPS',
     'Reservations By User': 'RESERVATIONS_BY_USER',
