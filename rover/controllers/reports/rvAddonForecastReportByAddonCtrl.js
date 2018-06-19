@@ -224,8 +224,16 @@ sntRover.controller('RVAddonForecastReportByAddonCtrl', [
  		}
 
  		function setup () {
- 			addonGroups  = $scope.chosenReport.hasAddonGroups.data || [];
- 			addons       = $scope.chosenReport.hasAddons.data || [];
+            try {
+                addonGroups  = $scope.chosenReport.hasAddonGroups.data;
+            } catch (err) {
+                addonGroups  = [];
+            }
+            try {
+                addons = $scope.chosenReport.hasAddons.data;
+            } catch (err) {
+                addons = [];
+            }
  			results      = mainCtrlScope.results;
 			addonGrpHash = {};
 			addonHash    = {};

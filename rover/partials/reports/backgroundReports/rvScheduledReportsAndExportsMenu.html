@@ -1,0 +1,16 @@
+<ul id="report-main-menu">
+    
+    <li ng-class="{ 'active': reportViewStore.showingScheduledReports || reportViewStore.showingScheduleAReport }"
+      ng-click="reportMainMenuChange(reportViewActions.SHOW_SCHEDULED_REPORTS)"
+      ng-show="shouldShowScheduleReport()">
+        <i class="icon-report icon-schedule"></i>
+        <span class="title has-arrow next-view">Scheduled Reports</span>
+    </li>
+    <li ng-class="{ 'active': reportViewStore.showingExportReports || reportViewStore.showingExportAReport }"
+      ng-click="reportMainMenuChange(reportViewActions.SHOW_EXPORT_REPORTS)"
+      ng-show="shouldShowExportReport()">
+        <i class="icon-report icon-schedule"></i>
+        <span class="title has-arrow next-view">Scheduled Exports</span>
+    </li>   
+</ul>
+
