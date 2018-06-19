@@ -120,13 +120,14 @@ sntRover.controller('roverController', [
             'ACCOUNTS': false,
             'ALLOTMENT': false
         };
-        enableBillingInfo = $rootScope.UPDATED_BI_ENABLED_ON; // Need to be removed finally.
+        var enableBillingInfo = $rootScope.UPDATED_BI_ENABLED_ON; // Need to be removed finally.
 
         $rootScope.isCurrentUserChangingBussinessDate = false;
         $rootScope.termsAndConditionsText = hotelDetails.terms_and_conditions;
         // CICO-50810 checking for any interface enabled.
         $rootScope.roverObj = {
-            isAnyInterfaceEnabled: hotelDetails.interface.is_avida_enabled || hotelDetails.interface.is_baseware_enabled
+            isAnyInterfaceEnabled: hotelDetails.interface.is_avida_enabled || hotelDetails.interface.is_baseware_enabled,
+            hasActivatedFolioNumber: hotelDetails.has_activate_folio_number
         };
         /*
          * hotel Details
@@ -155,7 +156,10 @@ sntRover.controller('roverController', [
          * NOTE: Temporary Fix
          * As saferpay is not supported in Rover, if saferpay is selected in SNT Admin; default to sixpayments
          */
-        if (hotelDetails.payment_gateway === 'SAFERPAY') {
+        if (hotelDetails.payment_gateway === 'MLI' && hotelDetails.mli_cba_enabled) {
+            $rootScope.paymentGateway = 'CBA_AND_MLI';
+        }
+        else if (hotelDetails.payment_gateway === 'SAFERPAY') {
             $rootScope.paymentGateway = 'sixpayments';
         } else {
             $rootScope.paymentGateway = hotelDetails.payment_gateway;
@@ -570,6 +574,7 @@ sntRover.controller('roverController', [
 
         $scope.toggleHotelList = function (e) {
             $scope.showHotelSwitchList = !$scope.showHotelSwitchList;
+            $scope.refreshScroller("hotels-list");
         };
 
         $scope.closeDrawerMenu = function () {
@@ -1074,6 +1079,7 @@ sntRover.controller('roverController', [
             };
 
             $scope.setScroller(MENU_SCROLLER, scrollerOptions);
+            $scope.setScroller("hotels-list", scrollerOptions);
         };
 
         setupScrolls();

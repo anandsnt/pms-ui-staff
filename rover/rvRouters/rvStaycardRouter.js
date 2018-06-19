@@ -141,7 +141,7 @@ angular.module('stayCardModule', [])
                         params.promotion_id = $stateParams.promotion_id;
                     if ($stateParams.room_type_id)
                         params.room_type_id = $stateParams.room_type_id;
-                    if ($stateParams.is_member == 'true')
+                    if ($stateParams.is_member)
                         params.is_member = $stateParams.is_member;
 
                     var activeTab = RVReservationBaseSearchSrv.getRoomRatesDefaultView();
@@ -305,7 +305,7 @@ angular.module('stayCardModule', [])
                 },
                 roomUpgrades: function (RVUpgradesSrv, $stateParams) {
                     // check if roomupgrade is available
-                    if ($stateParams.upgrade_available === 'true') {
+                    if ($stateParams.upgrade_available || $stateParams.upgrade_available === 'true') {
                         var params = {};
 
                         params.reservation_id = $stateParams.reservation_id;
@@ -318,7 +318,7 @@ angular.module('stayCardModule', [])
                 }
             },
             lazyLoad: function ($transition$) {
-                $transition$.injector().get('jsMappings')
+                return $transition$.injector().get('jsMappings')
                     .fetchAssets(['rover.reservation.staycard.roomassignment', 'directives']);
             }
         });
@@ -342,7 +342,7 @@ angular.module('stayCardModule', [])
                 }
             },
             lazyLoad: function ($transition$) {
-                $transition$.injector().get('jsMappings')
+                return $transition$.injector().get('jsMappings')
                     .fetchAssets(['rover.reservation.staycard.roomassignment', 'directives']);
             }
         });

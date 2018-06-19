@@ -3,7 +3,7 @@ angular.module('sntRover').service('RVLikesSrv', ['$q', 'RVBaseWebSrv', function
 	this.fetchLikes = function(param) {
 		var deferred = $q.defer();
 
-		if (param.isRefresh === "true") {
+		if (param.isRefresh === true) {
 			var userId = param.userId;
 			var url = '/staff/preferences/likes.json?user_id=' + userId;
 

@@ -348,4 +348,17 @@ angular.module('sntRover').service('RVBillCardSrv', ['$http', '$q', 'BaseWebSrvV
         return deferred.promise;
     };
 
+    // Generate folio number 
+    this.generateFolioNumber = function(params) {
+        var deferred = $q.defer(),
+            url = '/api/bills/' + params.bill_id + '/generate_folio_number';
+
+        BaseWebSrvV2.postJSON(url, params).then(function(response) {
+            deferred.resolve(response.data);
+        }, function (data) {
+            deferred.reject(data);
+        });
+        return deferred.promise;
+    };
+
 }]);

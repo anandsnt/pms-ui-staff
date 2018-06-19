@@ -210,7 +210,7 @@ admin.controller('ADAppCtrl', [
                                 action: ''
                             },
                             {
-                                title: 'MENU_OVER_BOOKING',
+                                title: 'MENU_SELL_LIMITS',
                                 action: 'rover.overbooking',
                                 actionParams: {
                                     start_date: $rootScope.businessDate

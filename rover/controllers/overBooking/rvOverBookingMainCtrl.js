@@ -92,8 +92,8 @@ angular.module('sntRover').controller('RvOverBookingMainCtrl', [
 	// Initialization..
 	var init = function() {
 
-		$scope.heading = $filter('translate')('MENU_OVER_BOOKING');
-		$scope.setTitle($filter('translate')('MENU_OVER_BOOKING'));
+		$scope.heading = $filter('translate')('MENU_SELL_LIMITS');
+		$scope.setTitle($filter('translate')('MENU_SELL_LIMITS'));
 		$scope.$emit('updateRoverLeftMenu', 'overbooking');
 
 		setScroller();
@@ -106,7 +106,7 @@ angular.module('sntRover').controller('RvOverBookingMainCtrl', [
 			startDate: moment(tzIndependentDate($rootScope.businessDate)).format($rootScope.momentFormatForAPI),
 			endDate: moment(tzIndependentDate($rootScope.businessDate)).add(DATE_SHIFT_LIMIT, 'd')
 					.format($rootScope.momentFormatForAPI),
-			isShowRoomsLeftToSell: false,
+			isShowRoomsLeftToSell: true,
 			isShowRoomTypeFilter: false,
 			editData: {}
 		};

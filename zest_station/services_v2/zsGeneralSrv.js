@@ -54,7 +54,10 @@ sntZestStation.service('zsGeneralSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
             'arc': 'Arc The Hotel',
             'alessandra': 'Hotel Alessandra',
             'story': 'Story Hotels',
-            'pod': 'Pod DC'
+            'pod': 'Pod DC',
+            'ihg': 'IHG',
+            'bunk': 'Bunk Hotels',
+            'surf-sand': 'Surf And Sand Hotel'
         };
 
         this.isThemeConfigured = function(theme) {
@@ -601,5 +604,18 @@ sntZestStation.service('zsGeneralSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
             });
             return deferred.promise;
         };
+
+         this.fetchDefaultTranslations = function() {
+            var deferred = $q.defer(),
+                url = 'zest_station/fetch_default_translations';
+
+            zsBaseWebSrv.getJSON(url).then(function(data) {
+                deferred.resolve(data);
+            }, function(data) {
+                deferred.reject(data);
+            });
+            return deferred.promise;
+        };
+
     }
 ]);
