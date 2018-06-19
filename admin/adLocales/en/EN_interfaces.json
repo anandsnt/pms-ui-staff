@@ -26,6 +26,8 @@
 	"SNAPSHOT_SETUP": "Snapshot",
 	"SNAPSHOT_PUBLISH_INSTRUCTIONS": "Publish a full export containing Reservations, Financials and Groups. Full export should occur only once and must be coordinated with Snapshot.",
 	"ZDIRECT_MEMBERSHIP_FEATURE": "Enable Membership Program",
+	"CRM_ROUTE_CHARGES_LABEL": "Include Routed Charges in Stay Info",
+	"CRM_ROUTE_CHARGES_DESCRIPTION": "When enabled, all transactions associated with a reservation, including routed ones, will be included in the stay info message of the originating reservation sent to vendors",
 	"STAY_INFO_AFTER_CHECKOUT": "Stay Info After Checkout",
 	"IFRAME_END_POINT": "IFrame URL",
 	"INCREMENTAL_EXPORT_LABEL": "Incremental Export Schedule",

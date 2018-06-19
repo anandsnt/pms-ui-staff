@@ -11,10 +11,45 @@ angular.module('reportsModule')
     function($rootScope, $filter, $timeout, $q, reportNames, reportFilters, reportsSubSrv) {
         var factory = {};
 
+        var DATE_FILTERS = [
+            'fromCancelDate',
+            'untilCancelDate',
+            'fromDepositDate',
+            'untilDepositDate',
+            'fromPaidDate',
+            'untilPaidDate',
+            'fromDate',
+            'untilDate',
+            'fromCreateDate',
+            'untilCreateDate',
+            'fromAdjustmentDate',
+            'untilAdjustmentDate',
+            'fromArrivalDate',
+            'untilArrivalDate',
+            'groupStartDate',
+            'groupEndDate',
+            'singleValueDate'
+        ];
+
+        var OTHER_FILTERS = [           
+            'year',
+            'with_vat_number',
+            'without_vat_number',            
+            'fromTime',
+            'untilTime',
+            'chosenCico',
+            'chosenIncludeCompanyTa',
+            'chosenIncludeCompanyTaGroup',
+            'chosenIncludeGroup',
+            'hasMinRoomNights',
+            'hasMinRevenue',
+            'showActionables'
+        ];
+
         /**
-         * This function can return CG & CC with no payment entries or with only payment entries
-         * @param  {Array} chargeGroupsAry Array of charge groups
-         * @param  {Array} chargeCodesAry  Array of charge codes
+         * This function canshowActionables return CG & CC with no payment entries or with only payment entries
+         * @param  {Array} chargeGroyearupsAry Array of charge groups
+         * @param  {Array} chargeCodesAry  Array of charge codehasMinRevenues
          * @param  {String} setting         Remove payments or only payments
          * @return {Object}                 Processed CG & CC
          */
@@ -882,7 +917,11 @@ angular.module('reportsModule')
                     value: -1
                 };
 
-                data.push(UNDEFINED);
+                var undefinedEntry = _.find(data, {name: 'UNDEFINED'});
+
+                if (!undefinedEntry) {
+                    data.push(UNDEFINED);
+                }                
                 _.each(reportList, function(report) {
                     foundFilter = _.find(report['filters'], { value: 'INCLUDE_GUARANTEE_TYPE' });
 
@@ -965,7 +1004,11 @@ angular.module('reportsModule')
                     value: -1
                 };
 
-                data.push(UNDEFINED);
+                var undefinedEntry = _.find(data, {name: 'UNDEFINED'});
+
+                if (!undefinedEntry) {
+                    data.push(UNDEFINED);
+                } 
 
                 _.each(reportList, function(report) {
                     foundFilter = _.find(report['filters'], { value: 'CHOOSE_MARKET' });
@@ -997,7 +1040,12 @@ angular.module('reportsModule')
                     value: -1
                 };
 
-                data.push(UNDEFINED);
+                var undefinedEntry = _.find(data, {name: 'UNDEFINED'});
+
+                if (!undefinedEntry) {
+                    data.push(UNDEFINED);
+                } 
+
                 _.each(reportList, function(report) {
                     foundFilter = _.find(report['filters'], { value: 'CHOOSE_SEGMENT' });
 
@@ -1028,7 +1076,12 @@ angular.module('reportsModule')
                     value: -1
                 };
 
-                data.push(UNDEFINED);
+                var undefinedEntry = _.find(data, {name: 'UNDEFINED'});
+
+                if (!undefinedEntry) {
+                    data.push(UNDEFINED);
+                } 
+
                 _.each(reportList, function(report) {
                     foundFilter = _.find(report['filters'], { value: 'CHOOSE_SOURCE' });
 
@@ -1060,7 +1113,12 @@ angular.module('reportsModule')
                     value: -1
                 };
 
-                data.push(UNDEFINED);
+                var undefinedEntry = _.find(data, {name: 'UNDEFINED'});
+
+                if (!undefinedEntry) {
+                    data.push(UNDEFINED);
+                } 
+                
                 _.each(reportList, function(report) {
                     foundFilter = _.find(report['filters'], { value: 'CHOOSE_BOOKING_ORIGIN' });
 
@@ -1144,11 +1202,13 @@ angular.module('reportsModule')
             }
 
             function fillCompletionStatus() {
-                customData = [
+              var  customData = [
                                 {id: "UNASSIGNED", status: "UNASSIGNED", selected: true},
                                 {id: "ASSIGNED", status: "ASSIGNED", selected: true},
                                 {id: "COMPLETED",  status: "COMPLETED", selected: true}
-                            ];
+                            ],
+                        foundFilter;
+
                 _.each(reportList, function(report) {
                     foundFilter = _.find(report['filters'], { value: 'INCLUDE_COMPLETION_STATUS' });
                     if ( !! foundFilter ) {
@@ -1168,14 +1228,14 @@ angular.module('reportsModule')
             }
 
             function fillAgingBalance() {
-                customData = [
+              var  customData = [
                                 {id: "0to30", status: "0-30 DAYS", selected: true},
                                 {id: "31to60", status: "31-60 DAYS", selected: true},
                                 {id: "61to90",  status: "61-90 DAYS", selected: true},
                                 {id: "91to120",  status: "91-120 DAYS", selected: true},
                                 {id: "120plus",  status: "120+ DAYS", selected: true}
-                            ];
-
+                            ],
+                    foundFilter;
 
                 _.each(reportList, function(report) {
                     foundFilter = _.find(report['filters'], { value: 'INCLUDE_AGING_BALANCE' });
@@ -1225,6 +1285,8 @@ angular.module('reportsModule')
             }
 
             function fillRateCodeList (data) {
+                var foundFilter;
+
                 data[0].selected = true;
                 _.each(reportList, function(report) {
                     foundFilter = _.find(report['filters'], { value: 'RATE_CODE' });
@@ -1266,6 +1328,8 @@ angular.module('reportsModule')
             }
 
             function fillRoomTypeList (data) {
+                var foundFilter;
+
                 _.each(reportList, function(report) {
                     foundFilter = _.find(report['filters'], { value: 'ROOM_TYPE' });
                     if ( !! foundFilter ) {
@@ -1297,6 +1361,8 @@ angular.module('reportsModule')
             }
 
             function fillRestrictionList (data) {
+                var foundFilter;
+
                 _.each(reportList, function(report) {
                     foundFilter = _.find(report['filters'], { value: 'RESTRICTION' });
                     if ( !! foundFilter ) {
@@ -1318,6 +1384,8 @@ angular.module('reportsModule')
                 checkAllCompleted();
             }
             function fillOrigins (data) {
+                var foundFilter;
+
                 _.each(reportList, function(report) {
                     foundFilter = _.find(report['filters'], { value: 'ORIGIN' });
                     if ( !! foundFilter ) {
@@ -1347,6 +1415,8 @@ angular.module('reportsModule')
             }
 
             function fillURLs (data) {
+                var foundFilter;
+
                 _.each(reportList, function(report) {
                     foundFilter = _.find(report['filters'], { value: 'URLS'});
                     if ( !! foundFilter ) {
@@ -1372,6 +1442,8 @@ angular.module('reportsModule')
             }
 
             function fillCampaignTypes (data) {
+                var foundFilter;
+
                 _.each(reportList, function(report) {
                     foundFilter = _.find(report['filters'], { value: 'CAMPAIGN_TYPES'});
                     if ( !! foundFilter ) {
@@ -1397,6 +1469,8 @@ angular.module('reportsModule')
             }
 
             function fillFloors (data) {
+                var foundFilter;
+
                 _.each(reportList, function(report) {
                     foundFilter = _.find(report['filters'], { value: 'FLOOR'});
                     if ( !! foundFilter ) {
@@ -2201,6 +2275,62 @@ angular.module('reportsModule')
             }
 
             return _ret;
+        };
+
+        /**
+         * Generate a subset of object with the given set of keys
+         * @param {Object} obj source object
+         * @param {Array} keys array of keys
+         * @return subset of object
+         */
+        factory.reduceObject = (obj, keys) => {
+            keys = keys || DATE_FILTERS.concat(OTHER_FILTERS);
+
+            return _.pick(obj, keys);
+        };
+
+        /**
+         * Parses the date string in the object
+         * @params {Object} obj object with keys having date string
+         * @return void
+         *
+         */
+        factory.parseDatesInObject = (obj) => {
+           for (var key in obj) {
+              if (DATE_FILTERS.indexOf(key) !== -1) {
+                obj[key] = tzIndependentDate(obj[key]);
+              }  
+            }
+        };
+
+        /**
+         * Marke the element in Object array which matches the ids as selected
+         * @params {Array} objArr object array
+         * @params {Array} filterArr array of selected ids
+         * @params {String} key the value to be compared
+         * @return void
+         *
+         */
+        factory.markAsSelected = (objArr, filterArr, key) => {
+            _.each(objArr, function(obj) {
+                if (filterArr.indeOf(obj[key]) > -1) {
+                    obj.selected = true;
+                }
+            });
+
+        };
+
+        // Mark the selected entries in the filter
+        factory.markSelectedEntriesForFilter = (report) => {
+           
+            if (report.filters[reportParams['RESTRICTION_IDS']] && report.filters[reportParams['RESTRICTION_IDS']].length > 0) {                
+                factory.markAsSelected(report.hasRestrictionListFilter.data, report.filters[reportParams['RESTRICTION_IDS']], 'id');
+            }
+
+            if (report.filters[reportParams['ROOM_TYPE_IDS']] && report.filters[reportParams['ROOM_TYPE_IDS']].length > 0) {                
+                factory.markAsSelected(report.hasRestrictionListFilter.data, report.filters[reportParams['ROOM_TYPE_IDS']], 'id');
+            }
+
         };
 
         return factory;

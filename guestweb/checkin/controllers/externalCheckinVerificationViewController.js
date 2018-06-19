@@ -222,7 +222,22 @@ sntGuestWeb.controller('externalCheckinVerificationViewController', dependencies
 })();
 
 
-sntGuestWeb.controller('earlyToCheckinCtrl', ['$scope', '$stateParams',
- function($scope, $stateParams) {
- 	$scope.checkinAvailableDateAfter = $stateParams.date;
- }]);
+sntGuestWeb.controller('earlyToCheckinCtrl', ['$scope', '$stateParams', '$state',
+
+	function($scope, $stateParams, $state) {
+		$scope.checkinAvailableDateAfter = $stateParams.date;
+		$scope.goToFindReservation = function() {
+			$state.go('externalCheckinVerification');
+		};
+	}
+]);
+
+sntGuestWeb.controller('lateToCheckinController', ['$scope', '$state',
+
+	function($scope, $state) {
+
+		$scope.goToFindReservation = function() {
+			$state.go('externalCheckinVerification');
+		};
+	}
+]);
