@@ -38,7 +38,8 @@ module.exports = {
             'alessandra': [themeCSSRoot + 'alessandra.less'],
             'story': [themeCSSRoot + 'story.less'],
             'pod': [themeCSSRoot + 'pod.less'],
-            'ihg': [themeCSSRoot + 'ihg.less']
+            'ihg': [themeCSSRoot + 'ihg.less'],
+            'bunk': [themeCSSRoot + 'bunk.less']
 		};
 	}
 };
