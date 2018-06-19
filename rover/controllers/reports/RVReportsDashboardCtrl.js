@@ -1,6 +1,15 @@
 angular.module('sntRover')
-    .controller('RVReportsDashboardCtrl', ['$scope', '$timeout',
-        function ($scope, $timeout) {
+    .controller('RVReportsDashboardCtrl', [  
+            '$scope',
+            '$timeout',
+            '$state',
+            '$filter',
+            '$rootScope',
+            function ($scope,
+                      $timeout,
+                      $state,
+                      $filter,
+                      $rootScope) {
 
             var intialReportViewStore = {
                 showingAllReport: false,
@@ -188,10 +197,42 @@ angular.module('sntRover')
 
             $scope.$on('REPORT_LIST_FILTER_SCROLL_REFRESH', refreshScroller);
 
+            /**
+             * Set title and heading 
+             */
+            var setTitleAndHeading = function() {
+                let listTitle = $filter('translate')('MENU_NEW_REPORT');
+                
+                $scope.setTitle(listTitle);
+                $scope.$parent.heading = listTitle;
+            };
+            
+            // Create new report schedule
+            $scope.createNewReportSchedule = () => {
+                $scope.fromReportInbox = true;                
+                $scope.$broadcast("CREATE_NEW_SCHEDULE");
+            };
+
+            /**
+             * Set the navigation to previous screen
+             * 
+             */
+            let setPrevState = () => {
+                if ($rootScope.isBackgroundReportsEnabled) {
+                    $rootScope.setPrevState = {
+                        title: $filter('translate')('MENU_REPORTS_INBOX'),
+                        name: 'rover.reports.inbox'                                            
+                    };
+                }                
+            };
+
             (function () {
                 $scope.updateViewCol($scope.viewColsActions.ONE);
                 $scope.updateView($scope.reportViewActions.SHOW_ALL_REPORT);
-                setupScroll();
+                setupScroll();                
+                setTitleAndHeading();
+                setPrevState();
+
             })();
 
 
