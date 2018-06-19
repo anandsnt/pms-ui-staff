@@ -22,17 +22,17 @@ describe('zsCheckinVerifyIdCtrl', function() {
             var params = {
                 'guest_email': 'r@s.com'
             };
-            
+
             $stateParams.params = JSON.stringify(params);
             zsCheckinSrv = _zsCheckinSrv_;
         });
         $controller('zsCheckinVerifyIdCtrl', {
             $scope: $scope
         });
-        $scope.inDemoMode = function () {
+        $scope.inDemoMode = function() {
             return false;
         };
-        $scope.setScreenIcon = function () {
+        $scope.setScreenIcon = function() {
             return false;
         };
         $scope.zestStationData = {};
@@ -64,6 +64,12 @@ describe('zsCheckinVerifyIdCtrl', function() {
             expect($scope.screenMode).toEqual('PIN_ERROR');
         });
 
+        it('On PIN retry, change mode to enter PIN', function() {
+            $scope.screenMode = 'PIN_ERROR';
+            $scope.retryPinEntry();
+            expect($scope.screenMode).toEqual('ADMIN_PIN_ENTRY');
+        });
+
         it('On Admin verification success, change mode to guest list', function() {
             spyOn(zsGeneralSrv, 'verifyStaffByPin').and.callFake(function() {
                 var deferred = $q.defer();
@@ -75,6 +81,12 @@ describe('zsCheckinVerifyIdCtrl', function() {
             $scope.$digest();
             expect($scope.screenMode).toEqual('GUEST_LIST');
         });
+    });
+
+    it('On aborting, go to Home screen', function() {
+        spyOn($state, 'go');
+        $scope.abortCheckin();
+        expect($state.go).toHaveBeenCalledWith('zest_station.home');
     });
 
     it('On continuing with any one pending guest ID verification, show warning', function() {
@@ -142,8 +154,16 @@ describe('zsCheckinVerifyIdCtrl', function() {
                 'last_name': ''
             }]
         };
+        $scope.continueToNextScreen();
+        expect($scope.showWarningPopup).toEqual(true);
         $scope.acceptWithoutID();
         expect(zsGeneralSrv.recordIdVerification).toHaveBeenCalled();
+    });
+
+    it('On Cancelling, dismiss the popup', function() {
+        $scope.showWarningPopup = true;
+        $scope.hideWarningPopup();
+        expect($scope.showWarningPopup).toEqual(false);
     });
 
     describe('On accepting guests with or without IDs, checkin the reservation', function() {
