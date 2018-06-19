@@ -55,9 +55,9 @@
 						<input type="password" ng-model="data.confirm_password" required="yes" placeholder="Confirm password" name="re-password" id="confirm-password" autocomplete="off">
 					</div>
 
-					<div class="entry full-width" ng-show="data.kiosk_manual_id_scan">
+					<div class="entry full-width" ng-show="manualIDScanEnabled">
 						<label> PIN CODE</label>
-						<input type="password" ng-model="data.user_pin_code" placeholder="PIN code"/>
+						<input type="password" ng-model="data.pin_code" placeholder="PIN code"/>
 					</div>
 
 					<!-- Activation Status -->

@@ -161,7 +161,7 @@
 
 
 "MANUAL_ID_VERIFFICATION": "Manual ID verification",
-"ASSIGN_PIN_FOR_STAFF_TO_VERIFY_ID": "To approve guest ID's, each staff member needs an assigned PIN. Please go to user setup to add",
+"ASSIGN_PIN_FOR_STAFF_TO_VERIFY_ID": "To approve guest ID's, each staff member needs an assigned PIN. After saving this setting, please go to user setup to add",
 "GO_TO_USERS": "Go to User setup"
 
 
