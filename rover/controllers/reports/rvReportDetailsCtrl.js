@@ -12,8 +12,10 @@ sntRover.controller('RVReportDetailsCtrl', [
     '$state',
     'RVReportPaginationIdsConst',
     '$log',
+    'RVReportUtilsFac',
+    'sntActivity',
     function ($scope, $rootScope, $filter, $timeout, $window, reportsSrv, reportParser,
-              reportMsgs, reportNames, ngDialog, $state, reportPaginationIds, $log) {
+              reportMsgs, reportNames, ngDialog, $state, reportPaginationIds, $log, reportUtils, sntActivity) {
 
         BaseCtrl.call(this, $scope);
 
@@ -568,11 +570,21 @@ sntRover.controller('RVReportDetailsCtrl', [
 
             if ($scope.chosenReport.title === reportNames['A/R_AGING']) {
                 _.each(results, function (result) {
-                    result.age_0to30 = buildResult(result.age_0to30);
-                    result.age_31to60 = buildResult(result.age_31to60);
-                    result.age_61to90 = buildResult(result.age_61to90);
-                    result.age_91to120 = buildResult(result.age_91to120);
-                    result.age_120plus = buildResult(result.age_120plus);
+                    if (_.findWhere($scope.chosenReport.hasIncludeAgingBalance.data, {selected: true, id: "0to30"})) {
+                        result.age_0to30 = buildResult(result.age_0to30);
+                    }
+                    if (_.findWhere($scope.chosenReport.hasIncludeAgingBalance.data, {selected: true, id: "31to60"})) {
+                        result.age_31to60 = buildResult(result.age_31to60);
+                    } 
+                    if (_.findWhere($scope.chosenReport.hasIncludeAgingBalance.data, {selected: true, id: "61to90"})) {
+                        result.age_61to90 = buildResult(result.age_61to90);
+                    }  
+                    if (_.findWhere($scope.chosenReport.hasIncludeAgingBalance.data, {selected: true, id: "91to120"})) {
+                        result.age_91to120 = buildResult(result.age_91to120);
+                    } 
+                    if (_.findWhere($scope.chosenReport.hasIncludeAgingBalance.data, {selected: true, id: "120plus"})) {
+                        result.age_120plus = buildResult(result.age_120plus);
+                    }                   
                     result.balance = buildResult(result.balance);
                     result.payment = buildResult(result.payment);
                 });
@@ -609,26 +621,28 @@ sntRover.controller('RVReportDetailsCtrl', [
                     show_rate_adjustments_only: false
                 };
 
-                _.each($scope.chosenReport.hasGeneralOptions.data, function (each) {
-                    if (each.paramKey === 'include_actions' && each.selected) {
-                        retObj.include_actions = true;
-                    }
-                    if (each.paramKey === 'include_guest_notes' && each.selected) {
-                        retObj.include_guest_notes = true;
-                    }
-                    if (each.paramKey === 'include_reservation_notes' && each.selected) {
-                        retObj.include_reservation_notes = true;
-                    }
-                    if (each.paramKey === 'show_guests' && each.selected) {
-                        retObj.show_guests = true;
-                    }
-                    if (each.paramKey === 'include_cancelled' && each.selected) {
-                        retObj.include_cancelled = true;
-                    }
-                    if (each.paramKey === 'show_rate_adjustments_only' && each.selected) {
-                        retObj.show_rate_adjustments_only = true;
-                    }
-                });
+                if ($scope.chosenReport.hasGeneralOptions) {
+                    _.each($scope.chosenReport.hasGeneralOptions.data, function (each) {
+                        if (each.paramKey === 'include_actions' && each.selected) {
+                            retObj.include_actions = true;
+                        }
+                        if (each.paramKey === 'include_guest_notes' && each.selected) {
+                            retObj.include_guest_notes = true;
+                        }
+                        if (each.paramKey === 'include_reservation_notes' && each.selected) {
+                            retObj.include_reservation_notes = true;
+                        }
+                        if (each.paramKey === 'show_guests' && each.selected) {
+                            retObj.show_guests = true;
+                        }
+                        if (each.paramKey === 'include_cancelled' && each.selected) {
+                            retObj.include_cancelled = true;
+                        }
+                        if (each.paramKey === 'show_rate_adjustments_only' && each.selected) {
+                            retObj.show_rate_adjustments_only = true;
+                        }
+                    });
+                }
 
                 return retObj;
             })();
@@ -1170,8 +1184,8 @@ sntRover.controller('RVReportDetailsCtrl', [
             $('#print-orientation').remove();
         };
 
-        // print the page
-        var printReport = function () {
+		// print the page
+		var printReport = function() {
 
             // add the orientation
             addPrintOrientation();
@@ -1227,9 +1241,20 @@ sntRover.controller('RVReportDetailsCtrl', [
                     if ('function' == typeof $scope.printOptions.afterPrint) {
                         $scope.printOptions.afterPrint();
                     }
-
-                    // load the report with the original page
-                    $scope.fetchNextPage($scope.returnToPage);
+                    
+                    if (reportsSrv.getPrintClickedState()) {
+                        $scope.$emit('UPDATE_REPORT_HEADING', { heading: $filter('translate')('MENU_REPORTS_INBOX')});
+                        reportsSrv.setPrintClicked(false);
+                        $scope.viewStatus.showDetails = false;
+                        if ($state.$current.name !== 'rover.reports.show' && reportsSrv.getChoosenReport()) {
+                          reportsSrv.getChoosenReport().generatedReportId = null;  
+                        }
+                        
+                    } else {
+                        // load the report with the original page
+                        $scope.fetchNextPage($scope.returnToPage);
+                    }
+                    
                 }, 2000);
             });
         };
@@ -1432,17 +1457,75 @@ sntRover.controller('RVReportDetailsCtrl', [
             return !!reportPaginationIds[$scope.chosenReport.title];
         };
 
+        /*
+        * Result with vat id collapsed or not
+        */
+        $scope.setResultWithVatCollapsedOrNot = function () {
+            $scope.results.with_vat_id.isCollapsed = !$scope.results.with_vat_id.isCollapsed;
+        };
+
         $scope.fetchFullYearlyTaxReport = function() {
             $scope.$broadcast("FETCH_FULL_YEARLY_TAX_REPORT");
         };
 
+        
+        // Invokes actual print 
+        var invokePrint = () => {
+            $timeout(function() {
+                sntActivity.stop("PRINTING_FROM_REPORT_INBOX");
+                if ('function' == typeof $scope.printOptions.showModal) {
+                    $scope.printOptions.showModal();
+                } else {
+                    if (reportsSrv.getChoosenReport().title === reportNames['YEARLY_TAX']) {
+                        $scope.$broadcast("FETCH_FULL_YEARLY_TAX_REPORT");
+                    } else {
+                        printReport();
+                    }                
+            } 
+            }, 2000);
+        };
+
+        // Setting up the data for the report for printing
+        var loadPrintView = () => {
+            $scope.errorMessage = []; 
+
+            afterFetch();
+            $scope.$emit('UPDATE_REPORT_HEADING', {heading: $scope.heading});            
+            findBackNames(); 
+            invokePrint();
+        };
+
+        // Listener for the printing the report
+        var printReportListener = $scope.$on('PRINT_REPORT', function() {
+            loadPrintView();             
+        });
+
+        // Listener for printing the report having modal with options
+        var printModalReportListener = $scope.$on('PRINT_MODAL_REPORT', function() {
+            printReport();
+        });
+
+        // Destroying the listeners
+        $scope.$on('$destroy', printReportListener);
+        $scope.$on('$destroy', printModalReportListener);
+
         (function () {
-            $rootScope.setPrevState = {
-                title: $filter('translate')('REPORTS'),
-                callback: 'goBackReportList',
-                name: 'rover.reports.dashboard',
-                scope: $scope
-            };
+
+            // Don't need to set the back button during print from report inbox
+            if (!reportsSrv.getPrintClickedState()) {
+                var title = $filter('translate')('REPORTS');
+
+                // Coming from report inbox
+                if (reportsSrv.getChoosenReport().generatedReportId) {
+                    title = $filter('translate')('MENU_REPORTS_INBOX');
+                }
+                $rootScope.setPrevState = {
+                    title: title,
+                    callback: 'goBackReportList',
+                    name: 'rover.reports.dashboard',
+                    scope: $scope
+                };
+            }
 
             switch ($state.params.action) {
                 case reportMsgs['REPORT_SUBMITED']:
@@ -1454,8 +1537,9 @@ sntRover.controller('RVReportDetailsCtrl', [
                 case reportMsgs['REPORT_LOAD_LAST_REPORT']:
                 default:
                 // do nothing .. wait for event from rvReportsMainCtrl.js
+            }  
+            
 
-            }
         })();
     }
 
