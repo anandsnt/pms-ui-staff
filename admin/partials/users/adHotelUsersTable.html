@@ -1,6 +1,6 @@
 <table id="users_list_table" class="grid datatable table" ng-table="tableParams" template-pagination="custom/pager">
 	<tr ng-repeat="user in $data">
-		<td data-title="'Name'" sortable="'full_name'"><a ui-sref="admin.userdetails({ page: 'edit', id: user.id, hotelId: hotelId, isUnlocking: false })"  class="title">{{user.full_name}} </a></td>
+		<td data-title="'Name'" sortable="'full_name'"><a ui-sref="admin.userdetails({ page: 'edit', id: user.id, hotelId: hotelId, isUnlocking: false , manual_id_scan_enabled: manualIDScanEnabled})"  class="title">{{user.full_name}} </a></td>
 		<td data-title="'Email'" sortable="'email'"> {{user.email}}  </td>
 		<td data-title="'Department'" >{{user.department}}</td>
 		<td data-title="'Last Login'" ><span class="login">{{user.last_login_date | date : dateFormat}} {{user.last_login_time}}</span></td>
