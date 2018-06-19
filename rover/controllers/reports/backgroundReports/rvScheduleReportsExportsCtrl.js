@@ -1,14 +1,16 @@
 angular.module('sntRover')
-    .controller('RVReportsDashboardCtrl', [  
+    .controller('RVScheduleReportsAndExportsCtrl', [  
             '$scope',
             '$timeout',
             '$state',
             '$filter',
+            '$stateParams',
             '$rootScope',
             function ($scope,
                       $timeout,
                       $state,
                       $filter,
+                      $stateParams,
                       $rootScope) {
 
             var intialReportViewStore = {
@@ -198,42 +200,96 @@ angular.module('sntRover')
             $scope.$on('REPORT_LIST_FILTER_SCROLL_REFRESH', refreshScroller);
 
             /**
-             * Set title and heading 
+             * Set title and heading
+             * @param {Boolean} isFromReportsInbox - indication whether navigating from inbox
+             * @return {void}
              */
             var setTitleAndHeading = function() {
-                let listTitle = $filter('translate')('MENU_NEW_REPORT');
-                
-                $scope.setTitle(listTitle);
-                $scope.$parent.heading = listTitle;
-            };
-            
-            // Create new report schedule
-            $scope.createNewReportSchedule = () => {
-                $scope.fromReportInbox = true;                
-                $scope.$broadcast("CREATE_NEW_SCHEDULE");
-            };
+                let title = '';
+
+                if ($scope.reportViewStore.showingScheduledReports || $scope.reportViewStore.showingExportReports) {
+                    title = $filter('translate')('SCHEDULED_REPORTS_AND_EXPORTS');
+                } else if ($scope.reportViewStore.showingScheduleAReport) {
+                    title = $filter('translate')('SCHEDULE_REPORT');
+                } else if ($scope.reportViewStore.showingExportAReport) {
+                    title = $filter('translate')('SCHEDULE_EXPORT');
+                }
+               
+                $scope.setTitle(title);
+                $scope.$parent.heading = title;
+            }; 
+
+            // Reload the current state
+            $scope.reloadState = () => {
+                $state.reload();
+            };        
 
             /**
              * Set the navigation to previous screen
-             * 
+             * @param {Boolean} showScheduledReports should show scheduled reports
+             * @param {Boolean} showScheduledExports should show scheduled exports
+             * return {void} set the previous state object
              */
-            let setPrevState = () => {
-                if ($rootScope.isBackgroundReportsEnabled) {
-                    $rootScope.setPrevState = {
-                        title: $filter('translate')('MENU_REPORTS_INBOX'),
-                        name: 'rover.reports.inbox'                                            
-                    };
-                }                
+            let setPrevState = (showScheduledReports, showScheduledExports) => {
+                var backNaviagtionLabel = $filter('translate')('SCHEDULED_REPORTS');
+
+                if (showScheduledExports) {
+                    backNaviagtionLabel = $filter('translate')('SCHEDULED_EXPORTS');
+                }
+                // Reload the current state when there is no change in the state params
+                if ($stateParams && $stateParams.showScheduledReports === showScheduledReports && 
+                    $stateParams.showScheduledExports === showScheduledExports) {
+                        $rootScope.setPrevState = {
+                            title: backNaviagtionLabel,
+                            callback: 'reloadState',
+                            scope: $scope                    
+                        };
+
+                } else {
+                   $rootScope.setPrevState = {
+                        title: backNaviagtionLabel,
+                        name: 'rover.reports.scheduleReportsAndExports',
+                        param: {
+                            showScheduledReports: showScheduledReports,
+                            showScheduledExports: showScheduledExports                        
+                        }                    
+                    }; 
+                }
+                
+                
             };
+
+            // Navigate to new report schedule creation screen
+            $scope.createNewReportSchedule = () => {
+                $scope.$broadcast('CREATE_NEW_REPORT_SCHEDULE'); 
+                setPrevState(true, false);              
+            };
+
+            // Navigate to new export schedule creation screen
+            $scope.createNewExportSchedule = () => {
+                $scope.$broadcast('CREATE_NEW_EXPORT_SCHEDULE');
+                setPrevState(false, true);
+            };
+
+            // Update title and heading
+            $scope.$on('UPDATE_TITLE_AND_HEADING', () => {
+                setTitleAndHeading();
+            });
 
             (function () {
                 $scope.updateViewCol($scope.viewColsActions.ONE);
-                $scope.updateView($scope.reportViewActions.SHOW_ALL_REPORT);
-                setupScroll();                
+                if ($stateParams.showScheduledReports) {
+                    $scope.updateView($scope.reportViewActions.SHOW_SCHEDULED_REPORTS);
+                } else if ($stateParams.showScheduledExports) {
+                    $scope.updateView($scope.reportViewActions.SHOW_EXPORT_REPORTS);
+                } else {
+                    $scope.updateView($scope.reportViewActions.SHOW_SCHEDULED_REPORTS);
+                }
+                
+                setupScroll();
+                
                 setTitleAndHeading();
-                setPrevState();
 
             })();
-
 
         }]);
