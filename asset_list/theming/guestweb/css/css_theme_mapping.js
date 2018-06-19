@@ -4,6 +4,7 @@ module.exports = {
         var themeCSSRoot = 'stylesheets/guestweb/';
 
         return {
+            'guestweb_bunk_hotels': [ themeCSSRoot + 'guestweb_bunk_hotels.css'],
             'guestweb_maui_seaside_hotel': [ themeCSSRoot + 'guestweb_maui_seaside_hotel.css'],
             'guestweb_hilo_seaside_hotel': [ themeCSSRoot + 'guestweb_hilo_seaside_hotel.css'],
             'guestweb_surf_and_sand_hotel': [ themeCSSRoot + 'guestweb_surf_and_sand_hotel.css'],
@@ -149,12 +150,12 @@ module.exports = {
             'guestweb_stella_hotel': [ themeCSSRoot + 'guestweb_stella_hotel.css'],
             'guestweb_beau_rivage': [ themeCSSRoot + 'guestweb_beau_rivage.css'],
             'guestweb_park_mgm': [ themeCSSRoot + 'guestweb_park_mgm.css'],
-		'guestweb_gold_strike': [ themeCSSRoot + 'guestweb_gold_strike.css'],
+            'guestweb_gold_strike': [ themeCSSRoot + 'guestweb_gold_strike.css'],
             'guestweb_historic_taos_inn': [ themeCSSRoot + 'guestweb_historic_taos_inn.css'],
             'guestweb_public_ny_v2': [ themeCSSRoot + 'guestweb_public_ny_v2.css'],
             'guestweb_mgm_grand_detroit': [ themeCSSRoot + 'guestweb_mgm_grand_detroit.css'],
             'guestweb_arc_the_hotel': [ themeCSSRoot + 'guestweb_arc_the_hotel.css'],
-		'guestweb_hotel_hiho': [ themeCSSRoot + 'guestweb_hotel_hiho.css'],
+            'guestweb_hotel_hiho': [ themeCSSRoot + 'guestweb_hotel_hiho.css'],
             'guestweb_circle_fairfield': [ themeCSSRoot + 'guestweb_circle_fairfield.css'],
             'guestweb_foundation_hotel_detroit': [ themeCSSRoot + 'guestweb_foundation_hotel_detroit.css'],
             'guestweb_hotel_royal': [ themeCSSRoot + 'guestweb_hotel_royal.css'],
@@ -162,7 +163,7 @@ module.exports = {
             'guestweb_orchard_hotel': [ themeCSSRoot + 'guestweb_orchard_hotel.css'],
             'guestweb_avenue_suites_georgetown': [ themeCSSRoot + 'guestweb_avenue_suites_georgetown.css'],
             'guestweb_georgetown_inn': [ themeCSSRoot + 'guestweb_georgetown_inn.css'],
-		'guestweb_maidestone_hotel': [ themeCSSRoot + 'guestweb_maidestone_hotel.css'],
+            'guestweb_maidestone_hotel': [ themeCSSRoot + 'guestweb_maidestone_hotel.css'],
             'guestweb_hotel_de_jonker': [ themeCSSRoot + 'guestweb_hotel_de_jonker.css'],
             'guestweb_carillon_v2': [ themeCSSRoot + 'guestweb_carillon_v2.css'],
             'guestweb_cachet_boutique': [ themeCSSRoot + 'guestweb_cachet_boutique.css'],
