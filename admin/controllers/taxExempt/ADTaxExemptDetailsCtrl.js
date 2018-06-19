@@ -35,7 +35,7 @@ function($scope, $state, $timeout, $stateParams, ADTaxExemptSrv) {
 	 * Load all tax charge codes
 	 */
 	$scope.searchChargeCodes = function() {
-		var fetchChargeCodeSuccess = function(data) {
+		var fetchChargeCodeSuccess = function(data) { 
 				$scope.chargeCodes = [];
 				$scope.chargeCodes = data.data.charge_codes;
 				angular.forEach($scope.chargeCodes, function(item) {
@@ -52,7 +52,9 @@ function($scope, $state, $timeout, $stateParams, ADTaxExemptSrv) {
 
 		$scope.callAPI(ADTaxExemptSrv.fetchChargeCodes, options);
 	};
-
+	/* 
+	 * Handle charge code selection
+	 */
 	$scope.selectedChargeCode = function() {
 		$scope.addData.charge_code_ids = [];
 		angular.forEach($scope.chargeCodes, function(item) {

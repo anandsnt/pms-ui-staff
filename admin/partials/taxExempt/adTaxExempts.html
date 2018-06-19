@@ -14,8 +14,10 @@
 					<td class="sorting" header-class="text-left width-60" data-title="'Name'">
 						<a ui-sref="admin.adTaxExemptDetails({taxExemptId: item.id})">{{item.name}}</a>
 					</td>
-					<td class="sorting" header-class="text-left width-20" data-title="'Number Of Chargecodes'">
-						<a>{{item.charge_codes.length}}</a>
+					<td class="sorting" header-class="text-left width-20" data-title="'Chargecodes'">
+						<div class="linkwith" ng-repeat="item in item.charge_codes">
+							{{item.charge_code}}
+						</div>
 					</td>	
 					<td class="sorting" data-title="'Delete'"" header-class="text-center width-20">
 						<a class="icons icon-delete large-icon delete_item" ng-click="deleteTaxExempt(item.id)"></a>

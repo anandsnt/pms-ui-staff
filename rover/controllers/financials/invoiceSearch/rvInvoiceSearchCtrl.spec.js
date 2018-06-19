@@ -176,7 +176,7 @@ describe('RVInvoiceSearchController', function () {
 
                 it('printBill method should ptint the correct data when clicked accounts', function() {
 
-                    spyOn(rvAccountTransactionsSrv, "deleteTaxExempts").and.callFake(function() {
+                    spyOn(rvAccountTransactionsSrv, "fetchAccountBillsForPrint").and.callFake(function() {
                         var deferred = $q.defer();
 
                         deferred.resolve(results);
@@ -187,7 +187,7 @@ describe('RVInvoiceSearchController', function () {
 
                     rvInvoiceSearchController.printBill();
 
-                    expect(rvAccountTransactionsSrv.deleteTaxExempts).toHaveBeenCalled();
+                    expect(rvAccountTransactionsSrv.fetchAccountBillsForPrint).toHaveBeenCalled();
 
                 });
             });
