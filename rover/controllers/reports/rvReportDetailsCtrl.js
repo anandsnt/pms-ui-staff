@@ -240,20 +240,23 @@ sntRover.controller('RVReportDetailsCtrl', [
                     $scope.hasReportTotals = true;
                     $scope.hasNoResults = false;
                     $scope.hasNoTotals = false;
-                    setTotalsForReport(totals);// refreshes Totals
+                    // Fix for CICO-54294
+                    // setTotalsForReport(totals);// refreshes Totals
                     break;
                 case reportNames['MOBILE_CHECKIN']:
                     $scope.hasReportTotals = true;
                     $scope.hasNoResults = false;
                     $scope.hasNoTotals = false;
-                    setTotalsForReport(totals);// refreshes Totals
+                    // Fix for CICO-54294
+                    // setTotalsForReport(totals);// refreshes Totals
                     break;
 
                 case reportNames['ROOM_UPSELL']:
                     $scope.hasReportTotals = true;
                     $scope.hasNoResults = false;
                     $scope.hasNoTotals = false;
-                    setTotalsForReport(totals);// refreshes Totals
+                    // Fix for CICO-54294
+                    // setTotalsForReport(totals);// refreshes Totals
                     break;
                 case reportNames['ACTIONS_MANAGER']:
                     $scope.isActionsManager = true;
