@@ -7,8 +7,9 @@
         <div class="block-item additional-detail item-tax-exempt">
             <h3 class="block-title">Tax Exempt</h3>
             <div class="entry">
-                <div class="switch-button" ng-class="{'on': isTaxExemptEnabled}" >
-                    <input type="checkbox" ng-click="toggleTaxExempt()"/>
+                <div class="switch-button" ng-class="{'on': additionalDetails.isTaxExemptEnabled}" >
+                    <div class="click-catcher" style="position:absolute; left:0; right:0; top:0; bottom:0; z-index:999;" ng-click="toggleTaxExempt()"></div>
+                    <input type="checkbox" ng-model="additionalDetails.isTaxExemptEnabled" ng-checked="additionalDetails.isTaxExemptEnabled" />
                     <label class="data-off">
                         <span class="value">Off</span>
                         <span class="switch-icon">On</span>
@@ -18,10 +19,10 @@
                         <span class="value">On</span>
                     </label>
                 </div>
-                <div class="select"><!-- Remove class 'hidden' when L11 is checked -->
-                    <select class="placeholder">
+                <div class="select" ng-show="additionalDetails.isTaxExemptEnabled"><!-- Remove class 'hidden' when L11 is checked -->
+                    <select class="placeholder" ng-model="additionalDetails.taxExemptType" ng-change="updateTaxExemptData()">
                         <option value="">Select Tax Exempt Type</option>
-                        <option ng-repeat="taxExempt in taxExemptTypes" value="taxExempt.id">{{taxExempt.name}}</option>
+                        <option ng-repeat="taxExempt in taxExemptTypes" value="{{taxExempt.id}}">{{taxExempt.name}}</option>
                         </select>
                     </select>
                 </div>
