@@ -29,7 +29,8 @@
     .search-form,
     .release-notes,
     .fullscreen-header,
-    .overbooking-header { display: none !important; }
+    .overbooking-header { display: none !important; },
+    .commissions-filters,
     #find-invoices { display: none !important; }
 
 /* 2. TYPOGRAPHY
@@ -2560,6 +2561,29 @@
                 border-collapse: collapse;
                 border-spacing: 0;
 
+                /* styles for commission summary print */ 
+                &.payment-report {
+                    thead {
+                        display: table-row-group;
+                        tr {
+                            th {
+                                &.room {
+                                    width: 75pt;
+                                }
+                            }
+                        }
+                    }
+                    tbody {
+                        tr {
+                            td {
+                                &.confirm-no {
+                                    width: 75pt;
+                                }
+                            }    
+                        }
+                    }
+                }
+
                 thead {
                     display: table-row-group;
                     tr {
@@ -4507,7 +4531,7 @@
         }
     }
 
-/* Commisions               =============================*/
+/* Commisions               ==============================*/
     .commissions-content {
         margin: 0 2cm;
 
@@ -4670,6 +4694,7 @@
             }
 
             .commission-details {
+                display: block !important;
                 th,
                 td {
                     &:first-child {

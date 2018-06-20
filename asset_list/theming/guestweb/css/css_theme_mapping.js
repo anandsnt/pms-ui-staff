@@ -4,6 +4,7 @@ module.exports = {
         var themeCSSRoot = 'stylesheets/guestweb/';
 
         return {
+            'guestweb_kona_seaside_hotel': [ themeCSSRoot + 'guestweb_kona_seaside_hotel.css'],
             'guestweb_bunk_hotels': [ themeCSSRoot + 'guestweb_bunk_hotels.css'],
             'guestweb_maui_seaside_hotel': [ themeCSSRoot + 'guestweb_maui_seaside_hotel.css'],
             'guestweb_hilo_seaside_hotel': [ themeCSSRoot + 'guestweb_hilo_seaside_hotel.css'],
