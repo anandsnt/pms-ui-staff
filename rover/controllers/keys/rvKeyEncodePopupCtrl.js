@@ -1,6 +1,6 @@
 sntRover.controller('RVKeyEncodePopupCtrl', [
-    '$rootScope', '$scope', '$state', 'ngDialog', 'RVKeyPopupSrv', '$filter', '$timeout', '$log', 'sntActivity',
-    function ($rootScope, $scope, $state, ngDialog, RVKeyPopupSrv, $filter, $timeout, $log, sntActivity) {
+    '$rootScope', '$scope', '$state', 'ngDialog', 'RVKeyPopupSrv', '$filter', '$timeout', '$log', 'sntActivity', '$window',
+    function ($rootScope, $scope, $state, ngDialog, RVKeyPopupSrv, $filter, $timeout, $log, sntActivity, $window) {
         BaseCtrl.call(this, $scope);
 	var that = this;
 
@@ -45,6 +45,7 @@ sntRover.controller('RVKeyEncodePopupCtrl', [
 			$scope.data.is_late_checkout = false;
 			$scope.data.confirmNumber = $scope.reservationBillData.confirm_no;
 			$scope.data.roomNumber = $scope.reservationBillData.room_number;
+			$scope.data.key_settings = $scope.reservationBillData.key_settings;
 		// If the keypopup inviked from inhouse - staycard card)
 		} else {
 			reservationStatus = $scope.reservationData.reservation_card.reservation_status;
@@ -52,7 +53,7 @@ sntRover.controller('RVKeyEncodePopupCtrl', [
 			$scope.data.is_late_checkout = $scope.reservationData.reservation_card.is_opted_late_checkout;
 			$scope.data.confirmNumber = $scope.reservationData.reservation_card.confirmation_num;
 			$scope.data.roomNumber = $scope.reservationData.reservation_card.room_number;
-
+			$scope.data.key_settings = $scope.reservationData.reservation_card.key_settings;
 		}
 
     	if ($scope.data.is_late_checkout) {
@@ -125,6 +126,32 @@ sntRover.controller('RVKeyEncodePopupCtrl', [
 
             $scope.showDeviceConnectingMessge();
         }
+	};
+
+	$scope.printPinCode = function() {
+		$('.nav-bar').addClass('no-print');
+		$('.cards-header').addClass('no-print');
+		$('.card-tabs-nav').addClass('no-print');
+		$('.content').addClass('no-print');
+
+		// this will show the popup with full report
+		$timeout(function() {
+
+			/*
+			 *	======[ PRINTING!! JS EXECUTION IS PAUSED ]======
+			 */
+
+			$window.print();
+			if (sntapp.cordovaLoaded) {
+				cordova.exec(function(success) {}, function(error) {}, 'RVCardPlugin', 'printWebView', []);
+			}
+
+			$('.nav-bar').removeClass('no-print');
+			$('.cards-header').removeClass('no-print');
+			$('.card-tabs-nav').removeClass('no-print');
+			$('.content').removeClass('no-print');
+
+		}, 100);
 	};
 
 	$scope.isPrintKeyEnabled = function() {
