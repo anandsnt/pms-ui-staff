@@ -1987,7 +1987,6 @@ sntZestStation.controller('zsRootCtrl', [
             $scope.zestStationData.sessionOosReason = [];
             $scope.zestStationData.historicalOosReason = [];
             $scope.zestStationData.sessionActivity = [];
-            $scope.zestStationData.sendNonCCGuestsToStaff = true;
             setHistoricalOOSReasons();
 
 			// $scope.zestStationData.checkin_screen.authentication_settings.departure_date = true;//left from debuggin?
