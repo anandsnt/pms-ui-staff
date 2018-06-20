@@ -17,7 +17,7 @@ describe('RvOverBookingHeaderCtrl', function() {
             $controller = _$controller_;
             $scope = _$rootScope_.$new();
             $rootScope = _$rootScope_.$new();
-            $q = _$q_,
+            $q = _$q_;
             rvOverBookingSrv = _rvOverBookingSrv_;
         });
 

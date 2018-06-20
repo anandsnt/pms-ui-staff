@@ -10,6 +10,7 @@ angular.module('sntRover').controller('RvOverBookingMainCtrl', [
 	function($scope, rvOverBookingSrv, $rootScope, ngDialog, $filter, $timeout, completeRoomTypeListData, overBookingGridData) {
 
 	BaseCtrl.call(this, $scope);
+	var that = this;
 
     var LEFT_PANE_SCROLL = 'overBookingLeftSectionScroll',
         RIGHT_PANE_SCROLL = 'overBookingGridScroll',
@@ -90,7 +91,7 @@ angular.module('sntRover').controller('RvOverBookingMainCtrl', [
     };
 
 	// Initialization..
-	var init = function() {
+	that.init = function() {
 
 		$scope.heading = $filter('translate')('MENU_SELL_LIMITS');
 		$scope.setTitle($filter('translate')('MENU_SELL_LIMITS'));
@@ -116,7 +117,7 @@ angular.module('sntRover').controller('RvOverBookingMainCtrl', [
 	 *	Generating List of Selected Room Type Ids, used for calling fetchGridData API.
 	 *  @return { Array }
 	 */
-	var getSelectedRoomTypeIdList = function() {
+	that.getSelectedRoomTypeIdList = function() {
 		var selectedRommTypeIdList = [];
 
 		_.map($scope.overBookingObj.roomTypeList, function(value) {
@@ -146,7 +147,7 @@ angular.module('sntRover').controller('RvOverBookingMainCtrl', [
             'start_date': moment(tzIndependentDate($scope.overBookingObj.startDate)).format($rootScope.momentFormatForAPI),
             'end_date': moment(tzIndependentDate($scope.overBookingObj.endDate)).format($rootScope.momentFormatForAPI),
             'show_rooms_left_to_sell': $scope.overBookingObj.isShowRoomsLeftToSell,
-            'room_type_ids': getSelectedRoomTypeIdList()
+            'room_type_ids': that.getSelectedRoomTypeIdList()
         };
 
 		$scope.callAPI(rvOverBookingSrv.fetchOverBookingGridData, {
@@ -196,6 +197,6 @@ angular.module('sntRover').controller('RvOverBookingMainCtrl', [
     $scope.$on('$destroy', listenerOverbooking);
     $scope.$on('$destroy', listenerRefreshScroll);
 
-	init();
+	that.init();
 
 }]);
