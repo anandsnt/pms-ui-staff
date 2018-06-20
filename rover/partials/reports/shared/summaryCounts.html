@@ -195,7 +195,7 @@
 <!-- Guest/Account Deposit Balance Summary Report -->
 <ul ng-if="isThisReport( 'A/R_AGING' )" class="totals">
     <li>Payments<span><span class="currency">{{summaryCounts.payments}}</span></span></li>
-    <li>Total AR Balance<span><span class="green"><span class="currency">{{summaryCounts.total_ar_balance | currency:currencySymbol:2 }}</span></span></span></li>
+    <li>Total Open Balance<span><span class="green"><span class="currency">{{summaryCounts.total_ar_balance | currency:currencySymbol:2 }}</span></span></span></li>
     <li>0-30 Days<span><span class="currency">{{summaryCounts.days_0_30_sum | currency:currencySymbol:2 }}</span></span>
     </li>
     <li>31-60 Days<span><span class="currency">{{summaryCounts.days_31_60_sum | currency:currencySymbol:2 }}</span></span>

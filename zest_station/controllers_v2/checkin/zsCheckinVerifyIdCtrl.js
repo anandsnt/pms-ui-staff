@@ -6,7 +6,8 @@
 		'zsGeneralSrv',
 		'zsCheckinSrv',
 		'zsUtilitySrv',
-		function($scope, $state, zsEventConstants, $stateParams, zsGeneralSrv, zsCheckinSrv, zsUtilitySrv) {
+		'$timeout',
+		function($scope, $state, zsEventConstants, $stateParams, zsGeneralSrv, zsCheckinSrv, zsUtilitySrv, $timeout) {
 
 
 			BaseCtrl.call(this, $scope);
@@ -16,6 +17,7 @@
 			$scope.adminPin = '';
 			$scope.showWarningPopup = false;
 			$scope.selectedReservation = zsCheckinSrv.getSelectedCheckInReservation();
+			$scope.setScroller('guests-list');
 			var showOnlyPrimaryGuest = false;
 
 			if (showOnlyPrimaryGuest) {
@@ -40,6 +42,7 @@
 				var successCallback = function(response) {
 					verfiedStaffId = response.user_id;
 					$scope.screenMode = 'GUEST_LIST';
+					$scope.refreshScroller('guests-list');
 				};
 				var failureCallback = function() {
 					$scope.screenMode = 'PIN_ERROR';

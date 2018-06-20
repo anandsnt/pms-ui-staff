@@ -26,7 +26,7 @@
         <!-- user name -->
         <form method="post" class="form">
             <div class="entry input">
-                <input type="text" placeholder="" ng-focus="showOnScreenKeyboard('input_text')" click-touch="showOnScreenKeyboard('input_text')" ng-model="adminPin" enter-press="goToNext()" id="input_text" touch-press/>
+                <input type="password" placeholder="" ng-focus="showOnScreenKeyboard('input_text')" click-touch="showOnScreenKeyboard('input_text')" ng-model="adminPin" enter-press="goToNext()" id="input_text" touch-press/>
             </div>
             <div class="entry action">
                 <button type="button" class="button" touch-press='goToNext()' ng-class="{'overlay': input.inputTextValue.length < 1}">
@@ -53,57 +53,52 @@
 </section>
 
 <!-- Guest list -->
-<section id="main" class="centered test add_remove_main" role="main" click-touch='resetTime()' ng-show="screenMode == 'GUEST_LIST'">
-    <div id="content" class='add-guest-mode-content'>
+<section id="main" role="main" click-touch='resetTime()' ng-show="screenMode == 'GUEST_LIST'">
+    <div id="content">
         <h1>
             <text data-ng-bind-html="getTagValue('VERIFY_GUESTS_HEADER')" editable-text="VERIFY_GUESTS_HEADER"></text>
         </h1>
         <h2>
             <text data-ng-bind-html="getTagValue('VERIFY_GUESTS_SUB_HEADER')" editable-text="VERIFY_GUESTS_SUB_HEADER"></text>
         </h2>
-        <ul id="selection" class="editable" style="height:50%;overflow-y: scroll;">
-            <li ng-repeat='guest in selectedReservation.guest_details track by $index' style="background: #eee;border: 1px #eee solid;border-radius:8px;width: 95%;">
-                <span class="details icon-adult" style="width:75%; background: #eee;">
-                <!-- guest icons, adult, student, infant -->
-                <!-- primaryGuest is always an adult , and wont have guest_type included -->
-                <figure ng-show='guest.guest_type === "ADULT" || !guest.guest_type' class="guest-image guest-icons icon-adult"></figure>
-                <figure ng-show='guest.guest_type === "CHILDREN"' class="guest-image guest-icons icon-student"></figure>
-                <figure ng-show='guest.guest_type === "INFANTS"' class="guest-image guest-icons icon-infant"></figure>
-                <span ng-if='guest.last_name !== guest.first_name'>
+        <div id="guestsList" ng-iscroll="guests-list" ng-iscroll-delay="100" ng-init="setScroll()">
+            <ul id="selection" class="editable wrapper">
+                <li ng-repeat='guest in selectedReservation.guest_details track by $index'>
+                    <span class="details" ng-if='guest.last_name !== guest.first_name'>
                         {{guest.first_name}}&nbsp;{{guest.last_name}}
                     </span>
-                <span ng-if="guest.last_name === guest.first_name && guest.full_name !== undefined ">
+                    <span class="details" ng-if="guest.last_name === guest.first_name && guest.full_name !== undefined ">
                         {{guest.full_name}}    
                     </span>
-                <span ng-if="guest.last_name === guest.first_name && guest.full_name === undefined ">
+                    <span class="details" ng-if="guest.last_name === guest.first_name && guest.full_name === undefined ">
                         {{guest.first_name}}    
                     </span>
-                </span>
-                <span class="passport-scan-status" style="width: 25%;position: relative;">
-                       <select style="transform: translateY(-50%);top: 50%;position: absolute;" ng-model="guest.review_status">
-                         <option value="">NOT REVIEWED</option>
-                         <option value="1">ACCEPT WITH ID</option>
-                         <option value="2">ACCEPT W/O ID</option>
-                       </select>
-                </span>
-            </li>
-        </ul>
-    </div>
-   <div id="actions" style="padding: 0 60px;">
-        <button type="button" class="button transparent" click-touch="abortCheckin()">
-            <text data-ng-bind-html="getTagValue('ABORT')" editable-text="ABORT"></text>
-        </button>
-        <button type="button" class="button" click-touch="continueToNextScreen()">
-            <text data-ng-bind-html="getTagValue('CONTINUE')" editable-text="CONTINUE"></text>
-        </button>
+                    </span>
+                    <div class="entry select">
+                        <select ng-model="guest.review_status">
+                            <option value="">Not Reviewed</option>
+                            <option value="1">ID Approved</option>
+                            <option value="2">Approved without ID</option> 
+                        </select>
+                    </div>
+                </li>
+            </ul>
+        </div>
+        <div id="actions">
+            <button type="button" class="button transparent" click-touch="abortCheckin()">
+                <text data-ng-bind-html="getTagValue('ABORT')" editable-text="ABORT"></text>
+            </button>
+            <button type="button" class="button" click-touch="continueToNextScreen()">
+                <text data-ng-bind-html="getTagValue('CONTINUE')" editable-text="CONTINUE"></text>
+            </button>
+        </div>
     </div>
 </section>
 
 <!-- warning ppoup -->
-<div id="popup" class="popup" ng-class="{'open':showWarningPopup}">
-    <!-- Remove class "open" to hide popup content -->
+<!-- Popup -->
+<div id="popup" class="popup" ng-class="{'open':showWarningPopup}"> <!-- Add class "open" to show popup content -->
     <div class="popup-content message">
-        <!-- Add class "single-message" if there's only 1 message to show. Otherwise add class "message" -->
         <h2 class="nocaps">
              <text data-ng-bind-html="getTagValue('VERIFICATION_PENDING')" editable-text="VERIFICATION_PENDING"></text>
         </h2>
@@ -112,15 +107,16 @@
                 <text data-ng-bind-html="getTagValue('VERIFICATION_PENDING_MSG')" editable-text="VERIFICATION_PENDING_MSG"></text>
             </h3>
         </div>
-        <!-- If multiple messages, show: -->
-        <div id="message-action">
+        <div id="message-action" class="centered">
             <button type="button" class="button" touch-press='acceptWithoutID()'>
                 <text data-ng-bind-html="getTagValue('ACCEPT')" editable-text="ACCEPT"></text>
             </button>
             <button type="button" class="button" touch-press='hideWarningPopup()'>
                 <text data-ng-bind-html="getTagValue('CANCEL')" editable-text="CANCEL"></text>
             </button>
-        </div>
+        </div> 
+        
     </div>
 </div>
-<div id="popup-overlay" class="" ng-class="{'open':showWarningPopup}"></div>
+<div id="popup-overlay" ng-class="{'open':showWarningPopup}"></div> <!-- Add class "open" to show popup overlay -->
+
