@@ -149,7 +149,8 @@
 "BYPASS_CC_AUTH": "Bypass CC Authorization (Always bypass CC collection)",
 "COLLECT_BALANCE": "Collect balance",
 "MANUAL": "Manual",
-"SEND_NON_CC_TO_STAFF": "Only Allow CC Guaranteed Reservations"
+"SEND_NON_CC_TO_STAFF": "Only Allow CC Guaranteed Reservations",
+"SHOW_PIN_LABEL": "Show PIN code"
 
 
 
