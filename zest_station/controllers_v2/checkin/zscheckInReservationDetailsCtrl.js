@@ -66,7 +66,8 @@ sntZestStation.controller('zsCheckInReservationDetailsCtrl', [
                     $scope.selectedReservation.reservation_details = data.data.reservation_card;
                     $scope.zestStationData.selectedReservation = $scope.selectedReservation;
                     if ($scope.zestStationData.sendNonCCGuestsToStaff && $scope.selectedReservation.reservation_details.payment_method_used !== 'CC') {
-                        console.log("no CC");
+                        $scope.$emit(zsEventConstants.HIDE_BACK_BUTTON);
+                        $state.go('zest_station.noCCPresentForCheckin');
                     }
                     else{
                         if ($scope.isRateSuppressed()) {
