@@ -20,6 +20,20 @@ sntRover.service('RVCommissionsSrv', ['$http', '$q', 'BaseWebSrvV2', function($h
         return deferred.promise;
     };
 
+    that.printCommissionOverview = function(params) {
+
+        var deferred = $q.defer();
+        var url = '/api/accounts/print_commission_overview';
+        // var url = 'ui/show?json_input=commissions/commissons.json&format=json';
+
+        BaseWebSrvV2.postJSON(url, params).then(function(data) {
+            deferred.resolve(data);
+        }, function(data) {
+            deferred.reject(data);
+        });
+        return deferred.promise;
+    };
+
     that.fetchReservationOfCommissions = function(params) {
 
         var deferred = $q.defer();

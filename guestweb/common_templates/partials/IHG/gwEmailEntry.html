@@ -27,8 +27,8 @@
     <!-- email entry -->
     <div class="row" ng-hide="isLoading || netWorkError || emailUpdated">
         <div class="col-md-4"></div>
-        <div class="col-md-4 section-container">
-            <form>
+        <div class="col-md-4">
+            <form class="section-container">
                 <p class="main-text">Enter Your E-mail Address</p>
                 <p class="sub-main-text">We use your e-mail address to send you your room number:</p>
                 <p class="sub-text pull-left first-field">E-MAIL ADDRESS</p>
@@ -43,11 +43,13 @@
     <!-- email updated -->
     <div class="row" ng-hide="isLoading || netWorkError || !emailUpdated">
         <div class="col-md-4"></div>
-        <div class="col-md-4 section-container">
-            <p class="main-text"> E-mail Address Updated</p>
-            <p class="sub-main-text"> We updated your Guest profile to include this e-mail address: {{guestDetails.email}}</p>
-            <button class="btn btn-template margin-top-20" ng-click="continueToPrecheckin()" value="Continue">Continue</button>
-            <button class="btn btn-template margin-top-20 grey-btn" ng-click="changeEmail()"> Change Email address</button>
+        <div class="col-md-4">
+            <div class="section-container">
+                <p class="main-text"> E-mail Address Updated</p>
+                <p class="sub-main-text"> We updated your Guest profile to include this e-mail address: {{guestDetails.email}}</p>
+                <button class="btn btn-template margin-top-20" ng-click="continueToPrecheckin()" value="Continue">Continue</button>
+                <button class="btn btn-template margin-top-20 grey-btn" ng-click="changeEmail()"> Change Email address</button>
+            </div>
         </div>
         <div class="col-md-4">
         </div>
