@@ -52,8 +52,14 @@
                         <table ng-if="item2Values.hasData" class="grid-content" ng-class="{ 'hidden': !openResrv && !item3Values.hidden }"> <!-- Toggle class hidden when L156-162 tapped -->
                             <thead>
                                 <tr>
-                                    <th><span class="sort" ng-class="{ 'sorting-asc': true === item3Values.roomSortDir, 'sorting-desc': false === item3Values.roomSortDir }" ng-click="sortRes('ROOM', item3Values)">Room</span></th>
-                                    <th><span class="sort" ng-class="{ 'sorting-asc': true === item3Values.nameSortDir, 'sorting-desc': false === item3Values.nameSortDir }" ng-click="sortRes('NAME', item3Values)">Guest Name</span></th>
+                                    <th>
+                                        <span class="sort" ng-class="{ 'sorting-asc': true === item3Values.roomSortDir, 'sorting-desc': false === item3Values.roomSortDir }" ng-click="sortRes('ROOM', item3Values)" ng-if="!isBackgroundReportsEnabled">Room</span>
+                                        <span ng-if="isBackgroundReportsEnabled">Room</span>
+                                    </th>
+                                    <th>
+                                        <span class="sort" ng-class="{ 'sorting-asc': true === item3Values.nameSortDir, 'sorting-desc': false === item3Values.nameSortDir }" ng-click="sortRes('NAME', item3Values)" ng-if="!isBackgroundReportsEnabled">Guest Name</span>
+                                        <span ng-if="isBackgroundReportsEnabled">Guest Name</span>
+                                    </th>
                                     <th><span>Reservation #</span></th>
                                     <th><span>Guests</span></th>
                                     <th><span>Accompanying</span></th>

@@ -14,7 +14,17 @@
                      div-class="full-width">
         </ad-checkbox>
 
-        <div class="entry has-datepicker margin">
+        <div class="entry has-datepicker margin" ng-show = "singleDate">
+            <label>{{'DATE' | translate}}
+            </label>
+            <input type="text" ui-date="startDatePickerOptions"
+                   ng-model="fromDate"
+                   placeholder="Select Date"
+                   class="date-picker-input-small"
+                   readonly>
+        </div>
+
+        <div class="entry has-datepicker margin" ng-show = "!singleDate">
             <label>{{'FROM_DATE' | translate}}
             </label>
             <input type="text" ui-date="startDatePickerOptions"
@@ -23,7 +33,7 @@
                    class="date-picker-input-small"
                    readonly>
         </div>
-        <div class="entry has-datepicker margin">
+        <div class="entry has-datepicker margin" ng-show = "!singleDate">
             <label>{{'TO_DATE' | translate}}
             </label>
             <input type="text" ui-date="endDatePickerOptions"

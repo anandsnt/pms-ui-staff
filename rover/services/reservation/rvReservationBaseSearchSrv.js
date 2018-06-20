@@ -574,5 +574,35 @@ angular.module('sntRover').service('RVReservationBaseSearchSrv', ['$q', 'rvBaseW
 
             return deferred.promise;
         };
+
+        this.fetchRateDetailsForIds = function(params) {
+            var fetchRateListIds = formFilteredRateIds(params),
+                deferred = $q.defer(),
+                url = '/api/rates/search.json',
+                payload = {};
+
+                payload['rate_ids'] = fetchRateListIds;
+                if (fetchRateListIds.length === 0) {
+                    deferred.resolve({});
+                } else {
+                    RVBaseWebSrvV2.postJSON(url, payload).then(function(response) {
+                        _.each(response.results, function(rate) {
+                            that.rateDetailsList[rate.id] = {
+                                expiryDate: Date.now() + (that.cache['config'].lifeSpan * 1000),
+                                details: rate };
+                        });
+                        var cachedRateIds = _.difference(params.rate_ids, fetchRateListIds);
+
+                        _.each(cachedRateIds, function(rateId) {
+                            response.results.push(that.rateDetailsList[rateId].details);
+                        });
+                        deferred.resolve(response.results);
+                    }, function(data) {
+                        deferred.reject(data);
+                    });
+                }
+
+            return deferred.promise;
+        };
     }
 ]);

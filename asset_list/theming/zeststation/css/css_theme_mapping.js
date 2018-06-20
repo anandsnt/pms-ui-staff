@@ -40,7 +40,8 @@ module.exports = {
             'story': [themeCSSRoot + 'story.less'],
             'pod': [themeCSSRoot + 'pod.less'],
             'ihg': [themeCSSRoot + 'ihg.less'],
-            'surf-sand': [themeCSSRoot + 'surf-sand.less']
+            'surf-sand': [themeCSSRoot + 'surf-sand.less'],
+            'bunk': [themeCSSRoot + 'bunk.less']
         };
     }
 };

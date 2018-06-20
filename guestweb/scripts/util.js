@@ -272,7 +272,7 @@ var customizeStylesForIhgApp = function() {
   // customize style
   // logo is not in a common HTML
   var node = document.createElement('style');
-
+  node.innerHTML = '.row.header-bar {margin-bottom:35px !important;}';
   if (navigator.userAgent.match(/Android/i) !== -1 && navigator.userAgent.match(/Android/i) !== null) {
     node.innerHTML = node.innerHTML + ".res-details-heading,.back-text,.btn,.btn p,.btn span p,.footer-sub-text,.footer-sub-text:hover,.footer-text,.phone-label,.res-date,.sub-main-text,.sub-text,a,a:hover,.main-text{font-family: Roboto,sans-serif !important}";
     node.innerHTML = node.innerHTML + ".btn,.btn p,.btn span p, .btn-template {font-weight: 400 !important}";
