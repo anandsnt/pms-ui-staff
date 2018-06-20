@@ -54,7 +54,6 @@ describe('RvOverBookingHeaderCtrl', function() {
         that = $controller('RvOverBookingHeaderCtrl', {
             $scope: $scope
         });
-
     });
 
     it('On clicked clickedShowRoomsLeftTosell', function() {
@@ -69,13 +68,172 @@ describe('RvOverBookingHeaderCtrl', function() {
     });
 
     it('On clicked clickedPrevDateButton', function() {
-        $scope.overBookingObj.startDate = '2017-12-22';
+        $scope.overBookingObj.startDate = '2017-02-16';
 
         $scope.clickedPrevDateButton();
-        console.log($scope.overBookingObj.startDate);
-        console.log($scope.overBookingObj.endDate);
 
-        expect($scope.overBookingObj.startDate).toBe($scope.overBookingObj.endDate);
+        expect($scope.overBookingObj.startDate.slice(0,10)).toBe('2017-02-03');
+        expect($scope.overBookingObj.endDate.slice(0,10)).toBe('2017-02-16');
     });
 
+    it('On clicked clickedNextDateButton', function() {
+        $scope.overBookingObj.startDate = '2017-02-16';
+
+        $scope.clickedNextDateButton();
+
+        expect($scope.overBookingObj.startDate.slice(0,10)).toBe('2017-02-16');
+        expect($scope.overBookingObj.endDate.slice(0,10)).toBe('2017-03-01');
+    });
+
+    it('On clicked toggleRoomTypeFilter', function() {
+        var isCheckedBefore = $scope.overBookingObj.isShowRoomTypeFilter,
+            isCheckedAfter = '';
+
+        $scope.toggleRoomTypeFilter();
+        
+        isCheckedAfter = $scope.overBookingObj.isShowRoomTypeFilter;
+        expect(isCheckedBefore).toBe(!isCheckedAfter);
+    });
+
+    it('On clicked clickedRoomTypeCheckbox', function() {
+        var isCheckedBefore = $scope.overBookingObj.roomTypeList[0].isChecked,
+            isCheckedAfter = '';
+
+        $scope.clickedRoomTypeCheckbox(0);
+        
+        isCheckedAfter = $scope.overBookingObj.roomTypeList[0].isChecked;
+        expect(isCheckedBefore).toBe(!isCheckedAfter);
+    });
+
+    describe('Get showRoomTypeSelectionStatus', function() {
+
+        it('check NOT SHOWING', function() {
+            $scope.overBookingObj.roomTypeList = [{
+                "name": "00_a",
+                "id": 611,
+                "isChecked": false
+            }, {
+                "name": "00_b",
+                "id": 612,
+                "isChecked": false
+            }, {
+                "name": "BB",
+                "id": 628,
+                "isChecked": false
+            }, {
+                "name": "Bunk",
+                "id": 232,
+                "isChecked": false
+            }, {
+                "name": "comp_one",
+                "id": 584,
+                "isChecked": false
+            }, {
+                "name": "comp_two",
+                "id": 585,
+                "isChecked": false
+            }];
+
+            var status = $scope.showRoomTypeSelectionStatus();
+        
+            expect(status).toBe('NOT SHOWING');
+        });
+
+        it('check SHOW ALL', function() {
+            $scope.overBookingObj.roomTypeList = [{
+                "name": "00_a",
+                "id": 611,
+                "isChecked": true
+            }, {
+                "name": "00_b",
+                "id": 612,
+                "isChecked": true
+            }, {
+                "name": "BB",
+                "id": 628,
+                "isChecked": true
+            }, {
+                "name": "Bunk",
+                "id": 232,
+                "isChecked": true
+            }, {
+                "name": "comp_one",
+                "id": 584,
+                "isChecked": true
+            }, {
+                "name": "comp_two",
+                "id": 585,
+                "isChecked": true
+            }];
+
+            var status = $scope.showRoomTypeSelectionStatus();
+        
+            expect(status).toBe('SHOW ALL');
+        });
+
+        it('check Select 1 item', function() {
+            $scope.overBookingObj.roomTypeList = [{
+                "name": "00_a",
+                "id": 611,
+                "isChecked": false
+            }, {
+                "name": "00_b",
+                "id": 612,
+                "isChecked": false
+            }, {
+                "name": "BB",
+                "id": 628,
+                "isChecked": false
+            }, {
+                "name": "Bunk",
+                "id": 232,
+                "isChecked": true
+            }, {
+                "name": "comp_one",
+                "id": 584,
+                "isChecked": false
+            }, {
+                "name": "comp_two",
+                "id": 585,
+                "isChecked": false
+            }];
+
+            var status = $scope.showRoomTypeSelectionStatus();
+        
+            expect(status).toBe('Bunk');
+        });
+
+        it('check Select more than 1 item', function() {
+            $scope.overBookingObj.roomTypeList = [{
+                "name": "00_a",
+                "id": 611,
+                "isChecked": false
+            }, {
+                "name": "00_b",
+                "id": 612,
+                "isChecked": false
+            }, {
+                "name": "BB",
+                "id": 628,
+                "isChecked": true
+            }, {
+                "name": "Bunk",
+                "id": 232,
+                "isChecked": true
+            }, {
+                "name": "comp_one",
+                "id": 584,
+                "isChecked": false
+            }, {
+                "name": "comp_two",
+                "id": 585,
+                "isChecked": true
+            }];
+
+            var status = $scope.showRoomTypeSelectionStatus();
+        
+            expect(status).toBe('3 OF 6 SELECTED');
+        });
+        
+    });
 });
