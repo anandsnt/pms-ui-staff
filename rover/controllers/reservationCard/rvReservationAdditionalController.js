@@ -85,6 +85,11 @@ sntRover.controller('rvReservationAdditionalController', ['$rootScope', '$scope'
 			}, updateSuccess, updateFailure);
 		};
 
+
+		$scope.toggleTaxExempt = function() {
+			$scope.isTaxExemptEnabled = !$scope.isTaxExemptEnabled;
+		};
+
 		$rootScope.$on('UPDATERESERVATIONTYPE', function(e, data, paymentId ) {
             $scope.reservationParentData.demographics.reservationType = data;
             // CICO-24768 - Updating Payment id after adding new CC.

@@ -2,6 +2,31 @@
     <a class="block-title toggle has-arrow" ng-class="{'active': !additionalDetails.hideDetails}" ng-click="clickedAdditionalDetails($event)">Additional details</a>
     <div ng-include="'/assets/partials/common/notification_message.html'"></div>
     <div ng-class="{'hidden': additionalDetails.hideDetails }">
+
+        <!-- Tax Exempt -->
+        <div class="block-item additional-detail item-tax-exempt">
+            <h3 class="block-title">Tax Exempt</h3>
+            <div class="entry">
+                <div class="switch-button" ng-class="{'on': isTaxExemptEnabled}" >
+                    <input type="checkbox" ng-click="toggleTaxExempt()"/>
+                    <label class="data-off">
+                        <span class="value">Off</span>
+                        <span class="switch-icon">On</span>
+                    </label>
+                    <label class="data-on">
+                        <span class="switch-icon grey">Off</span>
+                        <span class="value">On</span>
+                    </label>
+                </div>
+                <div class="select"><!-- Remove class 'hidden' when L11 is checked -->
+                    <select class="placeholder">
+                        <option value="">Select Tax Exempt Type</option>
+                        <option ng-repeat="taxExempt in taxExemptTypes" value="taxExempt.id">{{taxExempt.name}}</option>
+                        </select>
+                    </select>
+                </div>
+            </div>
+        </div>
         <!-- Reservation Type -->
         <div class="block-item item-type additional-detail">
             <h3 class="block-title">Reservation Type</h3>
