@@ -285,7 +285,11 @@ angular.module('sntRover').controller('rvGuestDetailsController',
 
             $scope.paymentData = {};
             setTitleAndHeading();
-            setBackNavigation();            
+            setBackNavigation();  
+
+            $scope.printState = {
+                clicked: false
+            };          
         };
 
         // Listener for setting the guestData information
@@ -320,9 +324,9 @@ angular.module('sntRover').controller('rvGuestDetailsController',
         };
         
         $scope.printGuestCard = function() {
-            $scope.printState = {
-                clicked: true
-            };
+            $scope.printState.clicked = true;
+            $scope.manageCardState.isOpen = false;
+            
             $("header .logo").addClass('logo-hide');
             $("header .h2").addClass('text-hide');
 
