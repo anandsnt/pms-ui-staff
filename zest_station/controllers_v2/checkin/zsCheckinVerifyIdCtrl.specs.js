@@ -174,6 +174,12 @@ describe('zsCheckinVerifyIdCtrl', function() {
                 deferred.resolve({});
                 return deferred.promise;
             });
+            spyOn(zsGeneralSrv, 'recordIdVerification').and.callFake(function() {
+                var deferred = $q.defer();
+
+                deferred.resolve({});
+                return deferred.promise;
+            });
             $scope.selectedReservation = {
                 guest_details: [{
                     'id': 1,
@@ -186,9 +192,10 @@ describe('zsCheckinVerifyIdCtrl', function() {
             spyOn($state, 'go');
         });
 
-        it('Should call checkin API', function() {
+        it('Should call record API and checkin API', function() {
             $scope.continueToNextScreen();
             $scope.$digest();
+            expect(zsGeneralSrv.recordIdVerification).toHaveBeenCalled()
             expect(zsCheckinSrv.checkInGuest).toHaveBeenCalled();
         });
 
