@@ -13,17 +13,11 @@
 			BaseCtrl.call(this, $scope);
 			$scope.$emit(zsEventConstants.HIDE_BACK_BUTTON);
 			$scope.$emit(zsEventConstants.SHOW_CLOSE_BUTTON);
+			$scope.setScroller('guests-list');
 			$scope.screenMode = 'WAIT_FOR_STAFF';
 			$scope.adminPin = '';
 			$scope.showWarningPopup = false;
 			$scope.selectedReservation = zsCheckinSrv.getSelectedCheckInReservation();
-			var scrollerOptions = {
-				tap: true,
-				preventDefault: false,
-				deceleration: 0.0001,
-				shrinkScrollbars: 'clip'
-			}
-			$scope.setScroller('guests-list', scrollerOptions);
 			var showOnlyPrimaryGuest = false;
 
 			if (showOnlyPrimaryGuest) {
