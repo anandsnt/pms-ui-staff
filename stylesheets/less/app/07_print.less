@@ -4741,8 +4741,9 @@
                     }
                 }
             }
+        }
 
-            .notice,
+         .notice,
             .card-tabs-nav { .hide; }
 
             .card-tab { 
@@ -4756,11 +4757,12 @@
 
                     label { 
                         display: inline-block;
-                        &:not(.checkbox) {
+                        &:not(.checkbox):not(.radio) {
                             width: 150px;
                         }
 
-                        &.checkbox {
+                        &.checkbox,
+                        &.radio {
                             &:not(.checked),
                             .icon-form,
                             input { .hide; }
@@ -4788,7 +4790,8 @@
 
                     input,
                     select,
-                    label.checkbox {
+                    label.checkbox,
+                    label.radio {
                         background: transparent;
                         min-height: auto;
                         height: auto;
@@ -4835,7 +4838,6 @@
                 }
                 .add-new-button { .hide; }
             }
-        }
     }
     
 /* 6. IE
