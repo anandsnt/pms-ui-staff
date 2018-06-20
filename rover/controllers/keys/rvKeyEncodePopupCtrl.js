@@ -132,7 +132,12 @@ sntRover.controller('RVKeyEncodePopupCtrl', [
 		$('.nav-bar').addClass('no-print');
 		$('.cards-header').addClass('no-print');
 		$('.card-tabs-nav').addClass('no-print');
-		$('.content').addClass('no-print');
+
+		var pinEl = document.createElement("b");
+		var node = document.createTextNode("Room Pin Code is xxxx");
+		pinEl.appendChild(node);
+		pinEl.style.fontSize = '25px';
+		document.body.appendChild(pinEl);
 
 		// this will show the popup with full report
 		$timeout(function() {
@@ -149,7 +154,7 @@ sntRover.controller('RVKeyEncodePopupCtrl', [
 			$('.nav-bar').removeClass('no-print');
 			$('.cards-header').removeClass('no-print');
 			$('.card-tabs-nav').removeClass('no-print');
-			$('.content').removeClass('no-print');
+			document.body.removeChild(pinEl);
 
 		}, 100);
 	};
