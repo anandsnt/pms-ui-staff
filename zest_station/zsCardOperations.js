@@ -1,5 +1,4 @@
 var CardOperation = function() {
-	console.info('card operation started');
 	// class for handling operations with payment device
 
 	var that = this;

@@ -54,7 +54,7 @@ angular.module('adminModuleOne', []).config(function($stateProvider, $urlRouterP
 		$stateProvider.state('admin.userdetails', {
 			templateUrl: '/assets/partials/users/adUserDetails.html',
 			controller: 'ADUserDetailsCtrl',
-			url: '/user/:page/:id/:hotelId/:isUnlocking'
+			url: '/user/:page/:id/:hotelId/:isUnlocking/:manual_id_scan_enabled'
 		});
 
 		$stateProvider.state('admin.linkexisting', {
