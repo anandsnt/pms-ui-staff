@@ -643,9 +643,30 @@
    "CBA_SWIPE_CARD_PLEASE": "Swipe Credit Card",
 
 
-   "NO_CC_TO_CHECKIN_HEADER": "Please reach out to a Staff Member.",
-   "NO_CC_TO_CHECKIN_SUB_HEADER": "You will need a credit card on file to proceed.",
-   "RETURN_TO_HOME": "Done"
 
+   "NO_CC_TO_CHECKIN_HEADER": "Please reach out to a Staff Member.",
+   "NO_CC_TO_CHECKIN_SUB_HEADER": "A credit card is not attached to this reservation. Please see staff member for assistance with check in.",
+   "RETURN_TO_HOME": "Done",
+
+   "ADMIN_PIN_HEADER": "Staff member ID",
+   "ADMIN_PIN_SUB_HEADER": "Please enter your ID to proceed",
+
+   "PIN_ERROR_HEADER": "ID Error",
+   "PIN_ERROR_SUB_HEADER": "Please enter the correct ID",
+   "ABORT": "Abort",
+
+   "VERIFICATION_PENDING": "Verifications Pending",
+   "VERIFICATION_PENDING_MSG": "Some of the guests are not verified. You can either accept pending guests without ID",
+
+   "ACCEPT": "Accept",
+   "CANCEL": "CANCEL",
+
+   "VERIFY_GUESTS_HEADER": "Verify guest IDs",
+   "VERIFY_GUESTS_SUB_HEADER": "",
+
+   "ID_VERIFICATION_HEADER": "ID verification",
+   "ID_VERIFICATION_SUB_HEADER": "Please contact a staff member to review",
+
+   "CALL_STAFF": "Call Staff"
 
 }

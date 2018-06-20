@@ -401,5 +401,11 @@ sntZestStation.config(['$stateProvider',
             templateUrl: '/assets/partials_v2/checkin/zsCheckInNoCCAvailable.html'
         });
 
+        $stateProvider.state('zest_station.checkInIdVerification', {
+            url: '/checkInIdVerification/:params',
+            templateUrl: '/assets/partials_v2/checkin/zsCheckinVerifyId.html',
+            controller: 'zsCheckinVerifyIdCtrl'
+        });
+
     }
 ]);

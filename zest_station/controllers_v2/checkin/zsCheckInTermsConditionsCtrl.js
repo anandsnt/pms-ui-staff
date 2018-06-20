@@ -133,7 +133,12 @@ sntZestStation.controller('zsCheckInTermsConditionsCtrl', [
                 };   
             }
 
-            if ($scope.zestStationData.noCheckInsDebugger === 'true') {
+            if ($scope.zestStationData.kiosk_manual_id_scan) {
+                $state.go('zest_station.checkInIdVerification', {
+                    params: JSON.stringify($stateParams)
+                });
+            }
+            else if ($scope.zestStationData.noCheckInsDebugger === 'true') {
                 if (collectPassportEnabled && !$stateParams.passports_scanned) {
                     $state.go('zest_station.checkInScanPassport', $stateParams);
                 } else {
