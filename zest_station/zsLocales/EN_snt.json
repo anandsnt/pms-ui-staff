@@ -642,11 +642,11 @@
    "CBA_PAYMENT_FAILED": "Payment failed!",
    "CBA_SWIPE_CARD_PLEASE": "Swipe Credit Card",
 
-   "ADMIN_PIN_HEADER": "Admin PIN",
-   "ADMIN_PIN_SUB_HEADER": "Please enter your PIN to proceed",
+   "ADMIN_PIN_HEADER": "Staff member ID",
+   "ADMIN_PIN_SUB_HEADER": "Please enter your ID to proceed",
 
-   "PIN_ERROR_HEADER": "PIN Error",
-   "PIN_ERROR_SUB_HEADER": "Please enter the correct PIN",
+   "PIN_ERROR_HEADER": "ID Error",
+   "PIN_ERROR_SUB_HEADER": "Please enter the correct ID",
    "ABORT": "Abort",
 
    "VERIFICATION_PENDING": "Verifications Pending",
@@ -659,7 +659,9 @@
    "VERIFY_GUESTS_SUB_HEADER": "",
 
    "ID_VERIFICATION_HEADER": "ID verification",
-   "ID_VERIFICATION_SUB_HEADER": "Please contact a staff to review your ID before completing the checkin process"
+   "ID_VERIFICATION_SUB_HEADER": "Please contact a staff member to review",
+
+   "CALL_STAFF": "Call Staff"
 
 
 

@@ -17,7 +17,13 @@
 			$scope.adminPin = '';
 			$scope.showWarningPopup = false;
 			$scope.selectedReservation = zsCheckinSrv.getSelectedCheckInReservation();
-			$scope.setScroller('guests-list');
+			var scrollerOptions = {
+				tap: true,
+				preventDefault: false,
+				deceleration: 0.0001,
+				shrinkScrollbars: 'clip'
+			}
+			$scope.setScroller('guests-list', scrollerOptions);
 			var showOnlyPrimaryGuest = false;
 
 			if (showOnlyPrimaryGuest) {
@@ -36,6 +42,11 @@
 
 			$scope.adminVerify = function() {
 				$scope.screenMode = 'ADMIN_PIN_ENTRY';
+			};
+
+			$scope.ringBell = function() {
+				var audio = new Audio('/assets/zest_station/zsSounds/DoorBell.mp3');
+				audio.play();
 			};
 
 			$scope.goToNext = function() {

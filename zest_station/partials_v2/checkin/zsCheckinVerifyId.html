@@ -6,6 +6,9 @@
         <h2>
             <text data-ng-bind-html="getTagValue('ID_VERIFICATION_SUB_HEADER')" editable-text="ID_VERIFICATION_SUB_HEADER"></text>
         </h2>
+        <button type="button" class="button done-btn" click-touch="ringBell()">
+            <text data-ng-bind-html="getTagValue('CALL_STAFF')" editable-text="CALL_STAFF"></text>
+        </button>
     </div>
     <div>
         <button class='button blue invis bottom-left' click-touch="adminVerify()">
