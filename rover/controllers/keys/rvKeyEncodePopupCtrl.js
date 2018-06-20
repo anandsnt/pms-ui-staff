@@ -128,15 +128,25 @@ sntRover.controller('RVKeyEncodePopupCtrl', [
         }
 	};
 
+	var getPrintContent = function() {
+		return '<div id="key-status" class="pin">' +
+					// '<span class="h2 message">Pin Code</span>' +
+			        '<span class="text">Room Pin Code is</span>' +
+			        '<span class="pin-number">xxxx</span>' + 
+	    		'</div>';
+
+	}
+
 	$scope.printPinCode = function() {
 		$('.nav-bar').addClass('no-print');
 		$('.cards-header').addClass('no-print');
 		$('.card-tabs-nav').addClass('no-print');
 
-		var pinEl = document.createElement("b");
-		var node = document.createTextNode("Room Pin Code is xxxx");
-		pinEl.appendChild(node);
-		pinEl.style.fontSize = '25px';
+		var pinEl = document.createElement("div");
+		// var node = document.createTextNode("Room Pin Code is xxxx");
+		// pinEl.appendChild(node);
+		// pinEl.style.fontSize = '25px';
+		pinEl.innerHTML = getPrintContent();		
 		document.body.appendChild(pinEl);
 
 		// this will show the popup with full report
