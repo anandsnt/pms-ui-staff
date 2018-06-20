@@ -65,17 +65,22 @@ sntZestStation.controller('zsCheckInReservationDetailsCtrl', [
                 if (data.data) {
                     $scope.selectedReservation.reservation_details = data.data.reservation_card;
                     $scope.zestStationData.selectedReservation = $scope.selectedReservation;
-                    if ($scope.isRateSuppressed()) {
-                        $scope.selectedReservation.reservation_details.balance = 0;
+                    if ($scope.zestStationData.sendNonCCGuestsToStaff && $scope.selectedReservation.reservation_details.payment_method_used !== 'CC') {
+                        console.log("no CC");
                     }
-                    if (!$scope.zestStationData.is_standalone) {
-                        // In overlay , the accomanying guest can be changed after import process
-                        // so we have to update the guest list with latest data after OPERA sync in reservation details API
-                        updateGuestList(data.data.reservation_card.accompaying_guests);
+                    else{
+                        if ($scope.isRateSuppressed()) {
+                            $scope.selectedReservation.reservation_details.balance = 0;
+                        }
+                        if (!$scope.zestStationData.is_standalone) {
+                            // In overlay , the accomanying guest can be changed after import process
+                            // so we have to update the guest list with latest data after OPERA sync in reservation details API
+                            updateGuestList(data.data.reservation_card.accompaying_guests);
+                        }
+                        fetchAddons();
+                        setDisplayContentHeight(); // utils function
+                        refreshScroller();
                     }
-                    fetchAddons();
-                    setDisplayContentHeight(); // utils function
-                    refreshScroller();
                 } else {
                     // else some error occurred
                     generalError();   
