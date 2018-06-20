@@ -38,7 +38,7 @@
 			};
 
 			$scope.ringBell = function() {
-				var audio = new Audio('/assets/zest_station/zsSounds/DoorBell.mp3');
+				var audio = new Audio('/assets/zest_station/zsSounds/Doorbell.mp3');
 				audio.play();
 			};
 
