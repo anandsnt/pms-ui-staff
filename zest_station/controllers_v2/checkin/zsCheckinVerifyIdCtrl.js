@@ -6,8 +6,7 @@
 		'zsGeneralSrv',
 		'zsCheckinSrv',
 		'zsUtilitySrv',
-		'$timeout',
-		function($scope, $state, zsEventConstants, $stateParams, zsGeneralSrv, zsCheckinSrv, zsUtilitySrv, $timeout) {
+		function($scope, $state, zsEventConstants, $stateParams, zsGeneralSrv, zsCheckinSrv, zsUtilitySrv) {
 
 
 			BaseCtrl.call(this, $scope);
