@@ -4672,67 +4672,69 @@
 
 /* Card Print               ==============================*/
     .card-print {
-        .cards-header {
-            display: block !important;
-            height: auto;
-            margin-bottom: 20px;
+        .cards-wrapper {
+            .cards-header {
+                display: block !important;
+                height: auto;
+                margin-bottom: 20px;
 
-            .card-header {
-                .float;
+                .card-header {
+                    .float;
 
-                .guest-image {
-                    .show;
-                    .pull-left;
-                    .square(40px);
-                    margin-right: 10px;
+                    .guest-image {
+                        .show;
+                        .pull-left;
+                        .square(40px);
+                        margin-right: 10px;
 
-                    .vip { .hide; }
-                }
-
-                form {
-                    .calc-width(100, 50);
-                    .pull-left;
-                    text-align: left;
-
-                    .status {
-                        display: inline-block;
-                        font-weight: inherit;
-                        font-size: inherit;
+                        .vip { .hide; }
                     }
 
-                    .name { font-size: 1.5em; font-weight: 600; }
+                    form {
+                        .calc-width(100, 50);
+                        .pull-left;
+                        text-align: left;
 
-                    ul {
-                        li {
+                        .status {
                             display: inline-block;
-                            margin: 0 10px 0 0;
+                            font-weight: inherit;
+                            font-size: inherit;
                         }
-                    }
 
-                    .switch-button {
-                        vertical-align: middle;
-                        padding-left: 10px;
-                        margin-left: 10px;
-                        border-left: 1px solid rgba(0,0,0,0.1);
-                        width: auto;
-                        &.on { display: inline-block; }
-                        &:not(.on),
-                        .data-off,
-                        input { .hide; }
+                        .name { font-size: 1.5em; font-weight: 600; }
 
-                        .data-on { 
-                            .float;
+                        ul {
+                            li {
+                                display: inline-block;
+                                margin: 0 10px 0 0;
+                            }
+                        }
 
-                            .value { .hide; }
-                            .switch-icon { 
-                                .pull-left;
-                                background: transparent;
-                                border-radius: 0;
-                                color: @black;
-                                font-size: inherit;
+                        .switch-button {
+                            vertical-align: middle;
+                            padding-left: 10px;
+                            margin-left: 10px;
+                            border-left: 1px solid rgba(0,0,0,0.1);
+                            width: auto;
+                            &.on { display: inline-block; }
+                            &:not(.on),
+                            .data-off,
+                            input { .hide; }
 
-                                &.vip {
-                                    font-weight: inherit;
+                            .data-on { 
+                                .float;
+
+                                .value { .hide; }
+                                .switch-icon { 
+                                    .pull-left;
+                                    background: transparent;
+                                    border-radius: 0;
+                                    color: @black;
+                                    font-size: inherit;
+
+                                    &.vip {
+                                        font-weight: inherit;
+                                    }
                                 }
                             }
                         }
