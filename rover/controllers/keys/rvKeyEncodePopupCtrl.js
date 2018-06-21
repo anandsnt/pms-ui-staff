@@ -47,6 +47,7 @@ sntRover.controller('RVKeyEncodePopupCtrl', [
 			$scope.data.roomNumber = $scope.reservationBillData.room_number;
 			$scope.data.key_settings = $scope.reservationBillData.key_settings;
 			$scope.data.pin_code = $scope.reservationBillData.pin_code;
+			$scope.data.reservation_id = $scope.reservationBillData.reservation_id
 		// If the keypopup inviked from inhouse - staycard card)
 		} else {
 			reservationStatus = $scope.reservationData.reservation_card.reservation_status;
@@ -56,6 +57,7 @@ sntRover.controller('RVKeyEncodePopupCtrl', [
 			$scope.data.roomNumber = $scope.reservationData.reservation_card.room_number;
 			$scope.data.key_settings = $scope.reservationData.reservation_card.key_settings;
 			$scope.data.pin_code = $scope.reservationData.reservation_card.pin_code;
+			$scope.data.reservation_id = $scope.reservationData.reservation_card.reservation_id;
 		}
 
     	if ($scope.data.is_late_checkout) {
@@ -363,6 +365,46 @@ sntRover.controller('RVKeyEncodePopupCtrl', [
 		that.showKeyPrintFailure(message);
 	};
 	/*
+	* Server call to send the email with pincode.
+	*/
+	$scope.sendEmailWithPincode = function() {
+		var successCallback = function() {
+			mailSent();
+		};
+		var failureCallback = function(errorMessage) {
+			mailFailed();
+		};
+		var postParams = { "reservation_id": $scope.data.reservation_id };
+		$scope.callAPI(RVKeyPopupSrv.sendEmailWithPincode, {
+            params: postParams,
+            successCallBack: successCallback,
+            failureCallBack: failureCallback
+        });
+	};
+
+	/*
+    *  Shows the popup to show the email send status
+    */
+    var showEmailSentStatusPopup = function(status) {
+        ngDialog.open({
+            template: '/assets/partials/popups/rvEmailSentStatusPopup.html',
+            className: '',
+            scope: $scope
+        });
+    };
+
+    var mailSent = function() {
+        // Handle mail Sent Success
+        $scope.statusMsg = $filter('translate')('EMAIL_SENT_SUCCESSFULLY');
+        $scope.status = "success";
+        showEmailSentStatusPopup();
+    };
+    var mailFailed = function() {
+        $scope.statusMsg = $filter('translate')('EMAIL_SEND_FAILED');
+        $scope.status = "alert";
+        showEmailSentStatusPopup();
+    };
+	/*
 	* Server call to fetch the key data.
 	*/
 	this.callKeyFetchAPI = function(cardInfo) {
@@ -370,12 +412,7 @@ sntRover.controller('RVKeyEncodePopupCtrl', [
 		that.setStatusAndMessage($filter('translate')('KEY_GETTING_KEY_IMAGE_STATUS'), 'pending');
 		var reservationId = '';
 
-		if ($scope.viewFromBillScreen) {
-			reservationId = $scope.reservationBillData.reservation_id;
-		} else {
-			reservationId = $scope.reservationData.reservation_card.reservation_id;
-		}
-	    var postParams = {"reservation_id": reservationId, "key": 1, "is_additional": true};
+	    var postParams = {"reservation_id": $scope.data.reservation_id, "key": 1, "is_additional": true};
 	    // for initial case the key we are requesting is not additional
 
 	    if (!that.isAdditional) {
