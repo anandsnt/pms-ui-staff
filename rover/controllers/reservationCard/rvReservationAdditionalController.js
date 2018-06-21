@@ -1,16 +1,21 @@
 sntRover.controller('rvReservationAdditionalController', ['$rootScope', '$scope', 'RVReservationSummarySrv', 'rvPermissionSrv',
 	function($rootScope, $scope, RVReservationSummarySrv, rvPermissionSrv) {
 		BaseCtrl.call(this, $scope);
+
 		$scope.additionalDetails = {
 			segmentAvailable: !!$scope.reservationParentData.demographics.segment,
 			hideDetails: true,
-			isTaxExemptEnabled: $scope.reservationParentData.tax_exempt,
-			taxExemptType: $scope.reservationParentData.tax_exempt_type.id
+			isTaxExemptEnabled: $scope.reservationData.reservation_card.tax_exempt,
+			taxExemptType: $scope.reservationData.reservation_card.tax_exempt_type.id
 		};
 		$scope.isEmptyObject = isEmptyObject;
-		// $scope.isTaxExemptEnabled = true;
+
 		$scope.hasPermissionForCommissionUpdate = function() {
 			return rvPermissionSrv.getPermissionValue('UPDATE_COMMISSION');
+		};
+
+		$scope.shouldShowTaxExempt = function() {
+			return rvPermissionSrv.getPermissionValue('TAX_EXEMPT');
 		};
 
 		$scope.isSegmentAutoComputed = function() {
@@ -98,7 +103,7 @@ sntRover.controller('rvReservationAdditionalController', ['$rootScope', '$scope'
 				}
 
 			if($scope.additionalDetails.isTaxExemptEnabled) {
-				paramsToApi.tax_exempt_type_id = $scope.additionalDetails.taxExemptType
+				paramsToApi.tax_exempt_type_id = parseInt($scope.additionalDetails.taxExemptType)
 			}
 
 			var	options = {
