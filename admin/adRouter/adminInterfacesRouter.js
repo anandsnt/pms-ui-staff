@@ -662,6 +662,17 @@ angular.module('adminInterfacesRouter', []).config(function($stateProvider) {
         }
     });
 
+    $stateProvider.state('admin.concept4000', {
+        templateUrl: '/assets/partials/interfaces/MobileKeys/Concept4000/adConcept4000Setup.html',
+        controller: 'adConcept4000SetupCtrl',
+        url: '/concept4000/setup',
+        resolve: {
+            config: ['adInterfacesCommonConfigSrv', function (adInterfacesCommonConfigSrv) {
+                return adInterfacesCommonConfigSrv.fetchConfiguration('concept4000');
+            }]
+        }
+    });
+
     $stateProvider.state('admin.monsciergeSetup', {
         templateUrl: '/assets/partials/monsciergeSetup/adMonsciergeSetup.html',
         controller: 'adMonsciergeSetupCtrl',
