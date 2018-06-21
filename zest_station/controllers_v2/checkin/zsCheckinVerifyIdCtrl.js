@@ -45,6 +45,7 @@
 			};
 
 			$scope.goToNext = function() {
+				$scope.callBlurEventForIpad();
 				var successCallback = function(response) {
 					verfiedStaffId = response.user_id;
 					$scope.screenMode = 'GUEST_LIST';
