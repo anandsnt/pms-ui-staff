@@ -17,7 +17,7 @@ function($q, ADBaseWebSrvV2) {
 
 	this.fetchChargeCodes = function(params) {
 		var deferred = $q.defer();
-		var url = "/admin/charge_codes/list.json?charge_code_type='TAX'";
+		var url = "/admin/charge_codes/list.json?charge_code_type=TAX";
 
 		ADBaseWebSrvV2.getJSON(url).then(function(data) {
 			deferred.resolve(data);

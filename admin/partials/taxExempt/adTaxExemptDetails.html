@@ -2,9 +2,9 @@
 	<div id="add-new-item" data-view="ItemsDetailsView">
 		<header class="content-title float">
 			<h2 ng-show="!isAddMode">{{'EDIT' | translate}} <span></span></h2>
-			<h2 ng-show="isAddMode" translate>ADD_NEW_ITEM</h2>
+			<h2 ng-show="isAddMode" translate>ADD_NEW_TAX_EXEMPT_TYPE</h2>
 			
-			<a data-type="load-details" class="action back" ng-click="goBack()" translate>BACK_TO_ITEMS</a>			
+			<a data-type="load-details" class="action back" ng-click="goBack()" translate>BACK_TO_TAX_EXEMPT_TYPES</a>			
 		</header>
 		<section class="content-scroll">
 			<div ng-include="'/assets/partials/common/notification_message.html'"></div>
@@ -12,14 +12,13 @@
 				<fieldset class="holder full-width float" ng-show="isAddMode">
 					<div class="form-title" >
 						<h3>
-							<span translate>ADD_NEW</span>
-							{{'ITEM' | translate}}
+							<span translate>ADD</span>
 						</h3>						
 					</div>
 				</fieldset>
 				<fieldset class="holder left float">
 					<ad-textbox inputtype="text" value="addData.name"
-				label = "Description" placeholder = "Enter name"
+				label = "Name" placeholder = "Enter name"
 				required="yes" styleclass="full-width"></ad-textbox>					
 
 				</fieldset>
