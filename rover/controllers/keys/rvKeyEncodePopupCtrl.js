@@ -47,7 +47,7 @@ sntRover.controller('RVKeyEncodePopupCtrl', [
 			$scope.data.roomNumber = $scope.reservationBillData.room_number;
 			$scope.data.key_settings = $scope.reservationBillData.key_settings;
 			$scope.data.pin_code = $scope.reservationBillData.pin_code;
-			$scope.data.reservation_id = $scope.reservationBillData.reservation_id
+			$scope.data.reservation_id = $scope.reservationBillData.reservation_id;
 		// If the keypopup inviked from inhouse - staycard card)
 		} else {
 			reservationStatus = $scope.reservationData.reservation_card.reservation_status;
@@ -139,7 +139,7 @@ sntRover.controller('RVKeyEncodePopupCtrl', [
 			        '<span class="pin-number">' + $scope.data.pin_code + '</span>' + 
 	    		'</div>';
 
-	}
+	};
 
 	$scope.printPinCode = function() {
 		$('.nav-bar').addClass('no-print');
@@ -147,9 +147,7 @@ sntRover.controller('RVKeyEncodePopupCtrl', [
 		$('.card-tabs-nav').addClass('no-print');
 
 		var pinEl = document.createElement("div");
-		// var node = document.createTextNode("Room Pin Code is xxxx");
-		// pinEl.appendChild(node);
-		// pinEl.style.fontSize = '25px';
+		
 		pinEl.innerHTML = getPrintContent();		
 		document.body.appendChild(pinEl);
 
@@ -162,7 +160,7 @@ sntRover.controller('RVKeyEncodePopupCtrl', [
 
 			$window.print();
 			if (sntapp.cordovaLoaded) {
-				cordova.exec(function(success) {}, function(error) {}, 'RVCardPlugin', 'printWebView', []);
+				cordova.exec(function() {}, function() {}, 'RVCardPlugin', 'printWebView', []);
 			}
 
 			$('.nav-bar').removeClass('no-print');
@@ -371,10 +369,11 @@ sntRover.controller('RVKeyEncodePopupCtrl', [
 		var successCallback = function() {
 			mailSent();
 		};
-		var failureCallback = function(errorMessage) {
+		var failureCallback = function() {
 			mailFailed();
 		};
 		var postParams = { "reservation_id": $scope.data.reservation_id };
+
 		$scope.callAPI(RVKeyPopupSrv.sendEmailWithPincode, {
             params: postParams,
             successCallBack: successCallback,
@@ -385,7 +384,7 @@ sntRover.controller('RVKeyEncodePopupCtrl', [
 	/*
     *  Shows the popup to show the email send status
     */
-    var showEmailSentStatusPopup = function(status) {
+    var showEmailSentStatusPopup = function() {
         ngDialog.open({
             template: '/assets/partials/popups/rvEmailSentStatusPopup.html',
             className: '',
@@ -399,11 +398,13 @@ sntRover.controller('RVKeyEncodePopupCtrl', [
         $scope.status = "success";
         showEmailSentStatusPopup();
     };
+
     var mailFailed = function() {
         $scope.statusMsg = $filter('translate')('EMAIL_SEND_FAILED');
         $scope.status = "alert";
         showEmailSentStatusPopup();
     };
+    
 	/*
 	* Server call to fetch the key data.
 	*/
