@@ -40,4 +40,5 @@
 "SELECT_PAYMENT_TYPE":"Select Payment Type",
 "TAX_EXEMPTS": "Tax Exempts",
 "ADD_NEW_TAX_EXEMPT_TYPE":"Add New Tax Exempt Type",
-"BACK_TO_TAX_EXEMPT_TYPES":"Back to Tax Exempt Types"
+"BACK_TO_TAX_EXEMPT_TYPES":"Back to Tax Exempt Types",
+"SELECT_CHARGE_CODES": "Select Charge Codes"
