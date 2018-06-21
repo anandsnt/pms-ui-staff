@@ -189,6 +189,9 @@
                         <span class="icon-form icon-radio " ng-class="{checked:zestSettings.kiosk_key_creation_method == 'manual'}"></span>
                         <input type="radio" value="manual" ng-model="zestSettings.kiosk_key_creation_method">{{ 'MANUAL' | translate}}
                     </label>
+
+                    <ad-toggle-button is-hide="zestSettings.kiosk_key_creation_method != 'manual'" is-checked="zestSettings.show_pin_code" label="{{'SHOW_PIN_LABEL'| translate}}" div-class="full-width"></ad-toggle-button>
+
                 </div>
                 <!-- Upload image for Key Creation In Progress Screen -->
                 <label translate>KEY_CREATION_IMAGE </label>
@@ -222,8 +225,17 @@
                 <div class="form-title full-width">
                     <h3><span translate>STATION_GUEST_ID_ACTIVATE</span> </h3>
                 </div>
-                <ad-toggle-button is-checked="zestSettings.scan_guest_id" label="{{'STATION_GUEST_ID_ACTIVATE_DESCRIPTION'| translate}}" div-class="full-width"></ad-toggle-button>
-                <ad-toggle-button is-checked="zestSettings.scanner_use_v1_lib" label="{{'USE_V1_SCAN'| translate}}" div-class="full-width"></ad-toggle-button>
+                <ad-toggle-button is-checked="zestSettings.scan_guest_id" label="{{'STATION_GUEST_ID_ACTIVATE_DESCRIPTION'| translate}}" div-class="full-width" is-disabled="zestSettings.kiosk_manual_id_scan"></ad-toggle-button>
+                <ad-toggle-button is-checked="zestSettings.scanner_use_v1_lib" label="{{'USE_V1_SCAN'| translate}}" div-class="full-width" is-disabled="zestSettings.kiosk_manual_id_scan"
+                ng-show="zestSettings.scan_guest_id"></ad-toggle-button>
+                <ad-toggle-button is-checked="zestSettings.kiosk_manual_id_scan" label="{{'MANUAL_ID_VERIFFICATION'| translate}}" div-class="full-width" is-disabled="zestSettings.scan_guest_id"></ad-toggle-button>
+                <div class="entry full-width" ng-show="zestSettings.kiosk_manual_id_scan">
+                    <label style="line-height: 1.5em" translate>ASSIGN_PIN_FOR_STAFF_TO_VERIFY_ID</label>
+                    <button style="margin-top: 20px;" class="button ng-binding blue" ng-click="goToUsers()" translate>
+                        GO_TO_USERS
+                    </button>
+                </div>
+
             </fieldset>
 
             <fieldset class="holder left">

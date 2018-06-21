@@ -11,6 +11,10 @@ admin.controller('adIFCComtrolSetupCtrl', ['$scope', 'ifcComtrolSetupValues', 'a
 		$scope.ifc_comtrol.enabled = !$scope.ifc_comtrol.enabled;
 	};
 
+	$scope.toggleOracodeEnabled = function() {
+		$scope.ifc_comtrol.oracode_enabled = !$scope.ifc_comtrol.oracode_enabled;
+	};
+
 	/**
 	 * when the save is success
 	 */
@@ -39,6 +43,7 @@ admin.controller('adIFCComtrolSetupCtrl', ['$scope', 'ifcComtrolSetupValues', 'a
 				'password',
 				'keys_password',
 				'access_level',
+				'oracode_enabled',
 				'enabled');
 
 		if (!$scope.ifc_comtrol.enabled) {
