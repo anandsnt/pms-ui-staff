@@ -74,34 +74,6 @@ sntRover.controller('RVReportDetailsCtrl', [
             'agent': false
         };
 
-        var setTotalsForReport = function (totals) {
-            var totalsForReport = [], v;
-
-            _.each(totals, function (item) {
-                if (item.label.indexOf('Conversion') !== -1) {
-                    if (typeof item.value == typeof 'str' && item.value.indexOf('%') != -1) {
-                        v = item.value.split('%')[0] + '%';
-                    } else if (item.label.indexOf('Mobile Check In Conversion') !== -1 || item.label.indexOf('Auto Check In Conversion') !== -1) {
-                        v = item.value + '%';// these values are currently being passed without the percentage...just need to add the % sign
-                    } else {
-                        v = 'N/A';
-                    }
-                } else if (item.label.indexOf('Revenue') !== -1) {
-                    if (typeof item.value == typeof 'str') {
-                        v = item.value;
-                    } else {
-                        v = 'N/A';
-                    }
-                } else if (item.label) {
-                    v = parseInt(item.value);
-                } else {
-                    v = 0;
-                }
-                totalsForReport.push(v);
-            });
-            $scope.resultsTotalRow = totalsForReport;
-        };
-
         // common methods to do things after fetch report
         var afterFetch = function () {
             var totals = $scope.$parent.totals,
@@ -240,23 +212,17 @@ sntRover.controller('RVReportDetailsCtrl', [
                     $scope.hasReportTotals = true;
                     $scope.hasNoResults = false;
                     $scope.hasNoTotals = false;
-                    // Fix for CICO-54294
-                    // setTotalsForReport(totals);// refreshes Totals
                     break;
                 case reportNames['MOBILE_CHECKIN']:
                     $scope.hasReportTotals = true;
                     $scope.hasNoResults = false;
                     $scope.hasNoTotals = false;
-                    // Fix for CICO-54294
-                    // setTotalsForReport(totals);// refreshes Totals
                     break;
 
                 case reportNames['ROOM_UPSELL']:
                     $scope.hasReportTotals = true;
                     $scope.hasNoResults = false;
                     $scope.hasNoTotals = false;
-                    // Fix for CICO-54294
-                    // setTotalsForReport(totals);// refreshes Totals
                     break;
                 case reportNames['ACTIONS_MANAGER']:
                     $scope.isActionsManager = true;
