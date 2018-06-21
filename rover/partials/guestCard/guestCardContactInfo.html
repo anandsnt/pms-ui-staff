@@ -46,11 +46,13 @@
 		</div> 		
 		<div class="holder right">
 				<rv-textbox value="guestCardData.contactInfo.email" label="E-mail address" styleclass="{{getStyleClassForPrint(guestCardData.contactInfo.email, 'full-width')}}"></rv-textbox>
-				<div click-tap class="entry radio-check full-width" ng-class="{'no-print': !guestCardData.contactInfo.is_opted_promotion_email}">
-					<label id="guestcard_email_checkbox" class="checkbox"ng-class="{'checked': guestCardData.contactInfo.is_opted_promotion_email}">
+				<div click-tap class="entry radio-check full-width no-label" ng-class="{'no-print': !guestCardData.contactInfo.is_opted_promotion_email}">
+					<label class="only-print" for="opt-in">Email Opt In</label>
+					<label class="checkbox">
 						<span class="icon-form icon-checkbox" ng-class="{'checked': guestCardData.contactInfo.is_opted_promotion_email}"></span>
-						<input type="checkbox"  name="opt-in" id="opt-in" ng-model="guestCardData.contactInfo.is_opted_promotion_email">
-						<span class="guest_card_promotions">Promotions &amp; News Email Opt In </span> 
+			            <input name="opt-in" id="opt-in" value="opt-in" type="checkbox" ng-model="guestCardData.contactInfo.is_opted_promotion_email"/>
+			            Promotions &amp; News Email Opt In
+        			</label>					
 				</label>
 				</div>
 				<rv-textbox value="guestCardData.contactInfo.address.street1" label="Address" styleclass="{{getStyleClassForPrint(guestCardData.contactInfo.address.street1, 'margin')}}"></rv-textbox>
