@@ -388,7 +388,7 @@ angular.module('sntRover').controller('RVReportsInboxCtrl', [
             var mainCtrlScope = $scope.$parent;
 
             setChoosenReport(report).then(function() {
-                mainCtrlScope.genReport(false, 1, 1000);
+                mainCtrlScope.genReport(false, 1, 99999);
             });
             reportsSrv.setPrintClicked(true);                       
             
