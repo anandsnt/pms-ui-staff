@@ -326,6 +326,7 @@ sntRover.controller('RVLikesController', ['$scope', 'RVLikesSrv', 'dateFilter', 
 		// Checks whether any of the room feature is selected
 		$scope.hasRoomFeatures = function() {
 			var isAnyFeatureOptionSelected = false;
+			
 			_.each($scope.guestLikesData.room_features, function(value, key) {
 				_.each(value.values, function(roomFeatureValue, roomFeatureKey) {					
 
