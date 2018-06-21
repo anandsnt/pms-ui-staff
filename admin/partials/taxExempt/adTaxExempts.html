@@ -3,7 +3,7 @@
 		<header class="content-title float">
 			<h2 translate> TAX_EXEMPTS </h2>
 			<span class="count"> (
-				{{taxExempts.length}}
+				{{data.length}}
 				) </span>
 			<a id="add-new-button" ui-sref="admin.adTaxExemptDetails({taxExemptId:''})" class="action add" translate>ADD_NEW</a>
 		</header>
@@ -11,13 +11,15 @@
 			<div ng-include="'/assets/partials/common/notification_message.html'"></div>
 			<table id="items" class="grid datatable dataTable" ng-table="tableParams" template-pagination="custom/pager">
 				<tr role="row" ng-repeat="item in $data">
-					<td class="sorting" data-title="'Name'">
+					<td class="sorting" header-class="text-left width-60" data-title="'Name'">
 						<a ui-sref="admin.adTaxExemptDetails({taxExemptId: item.id})">{{item.name}}</a>
 					</td>
-					<td class="sorting" data-title="'Number Of Chargecodes'">
-						<a>{{item.charge_codes.length}}</a>
+					<td class="sorting" header-class="text-left width-20" data-title="'Chargecodes'">
+						<div class="linkwith" ng-repeat="item in item.charge_codes">
+							{{item.charge_code}}
+						</div>
 					</td>	
-					<td class="sorting" data-title="'Delete'"">
+					<td class="sorting" data-title="'Delete'"" header-class="text-center width-20">
 						<a class="icons icon-delete large-icon delete_item" ng-click="deleteTaxExempt(item.id)"></a>
 					</td>					
 				</tr>				
