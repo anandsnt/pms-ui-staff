@@ -344,7 +344,7 @@ angular.module('sntRover').controller('rvGuestDetailsController',
 
                 $window.print();
                 if ( sntapp.cordovaLoaded ) {
-                    cordova.exec(function(success) {}, function(error) {}, 'RVCardPlugin', 'printWebView', []);
+                    cordova.exec(function() {}, function() {}, 'RVCardPlugin', 'printWebView', []);
                 }
             }, 200);
 

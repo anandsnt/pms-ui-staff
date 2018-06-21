@@ -101,7 +101,7 @@
                    </label >
                </div>
            </span>
-           <span class="only-print" ng-if="guestCardData.likes.room_features[0].user_selection.length === 0">No Features</span>
+           <span class="only-print" ng-if="!hasRoomFeatures()">No Features</span>
        </div>
    </div>
 </form>

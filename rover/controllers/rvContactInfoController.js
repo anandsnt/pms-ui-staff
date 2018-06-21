@@ -264,7 +264,9 @@ angular.module('sntRover').controller('RVContactInfoController', ['$scope', '$ro
          * @return {String} calculated style class
          */
         $scope.getStyleClassForPrint = function(value, defaultStyleClass) {
-            if(value === "" || value === null || _.isUndefined(value)) {
+            defaultStyleClass = defaultStyleClass || '';
+            
+            if (value === "" || value === null || _.isUndefined(value)) {
                 defaultStyleClass = defaultStyleClass + ' no-print';
             }
 

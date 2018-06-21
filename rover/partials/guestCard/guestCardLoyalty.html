@@ -5,7 +5,7 @@
         </div>
         <!-- Frequent Flyer Program -->
         <div class="holder left" ng-hide='!hotelFrequentFlyerProgramEnabled'>
-            <strong class="h3" translate>FREQUENT_FLYER_PROGRAM</strong>
+            <strong class="h3" translate ng-class="{'no-print': loyaltyData.userMemberships.frequentFlyerProgram.length === 0}">FREQUENT_FLYER_PROGRAM</strong>
             <a class="active-item item-loyalty" ng-repeat="freaquentLoyalty in loyaltyData.userMemberships.frequentFlyerProgram track by freaquentLoyalty.id" click-touch="showDeleteModal(freaquentLoyalty.id, $index, 'FFP')">
                <span class="value code">{{freaquentLoyalty.membership_type}}</span>
                 <span class="value number">{{freaquentLoyalty.membership_card_number}}</span>
@@ -17,7 +17,7 @@
 
         <!-- Hotel Loyalty Program -->
         <div class="holder right" ng-hide='!hotelLoyaltyProgramEnabled'>
-            <strong class="h3" translate>HOTEL_LOYALTY_PROGRAM</strong>
+            <strong class="h3" translate ng-class="{'no-print': loyaltyData.userMemberships.hotelLoyaltyProgram.length === 0}">HOTEL_LOYALTY_PROGRAM</strong>
             <a class="active-item item-loyalty" ng-repeat="hotelLoyalty in loyaltyData.userMemberships.hotelLoyaltyProgram track by hotelLoyalty.id" click-touch="showDeleteModal(hotelLoyalty.id, $index, 'HLP')">
                 <span class="value code">{{hotelLoyalty.membership_type}}</span>
                 <span class="value number">{{hotelLoyalty.membership_card_number}}</span>

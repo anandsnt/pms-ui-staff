@@ -323,6 +323,21 @@ sntRover.controller('RVLikesController', ['$scope', 'RVLikesSrv', 'dateFilter', 
 
 		$scope.$on('$destroy', guestLikeTabActivateListener);
 
+		// Checks whether any of the room feature is selected
+		$scope.hasRoomFeatures = function() {
+			var isAnyFeatureOptionSelected = false;
+			_.each($scope.guestLikesData.room_features, function(value, key) {
+				_.each(value.values, function(roomFeatureValue, roomFeatureKey) {					
+
+					if (roomFeatureValue.isSelected) {
+						isAnyFeatureOptionSelected = true;
+					}
+
+				});
+			});			
+			return isAnyFeatureOptionSelected;
+		};
+
 		$scope.init();
 	}
 ]);
