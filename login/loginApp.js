@@ -281,6 +281,19 @@ login.controller('resetCtrl', ['$scope', 'resetSrv', '$window', '$state', '$stat
         }
     };
 
+	$scope.onSystemStatusClick = function() {
+		if (sntapp.cordovaLoaded) {
+			ngDialog.open({
+				template: '/assets/partials/systemStatus.html',
+				className: '',
+				controller: '',
+				scope: $scope
+			});
+		} else {
+			$window.open('https://status.stayntouch.com', '_blank');
+		}
+	};
+
 }]);
 /*
  * Activate User Controller - Activate user when clicks on activation link in mail
@@ -390,6 +403,19 @@ login.controller('activateCtrl', ['$scope', 'resetSrv', '$window', '$state', '$s
         }
     };
 
+    $scope.onSystemStatusClick = function() {
+		if (sntapp.cordovaLoaded) {
+			ngDialog.open({
+				template: '/assets/partials/systemStatus.html',
+				className: '',
+				controller: '',
+				scope: $scope
+			});
+		} else {
+			$window.open('https://status.stayntouch.com', '_blank');
+		}
+	};
+
 }]);
 
 login.controller('stationLoginCtrl', ['$scope', 'loginSrv', '$window', '$state', 'resetSrv', 'ngDialog', function($scope, loginSrv, $window, $state, resetSrv, ngDialog) {
@@ -431,6 +457,19 @@ login.controller('stationLoginCtrl', ['$scope', 'loginSrv', '$window', '$state',
 	            $window.open('https://stayntouch.freshdesk.com/support/home', '_blank');
 	        }
 	    };
+
+		$scope.onSystemStatusClick = function() {
+			if (sntapp.cordovaLoaded) {
+				ngDialog.open({
+					template: '/assets/partials/systemStatus.html',
+					className: '',
+					controller: '',
+					scope: $scope
+				});
+			} else {
+				$window.open('https://status.stayntouch.com', '_blank');
+			}
+		};
 
         if (localStorage.email) {
                $scope.data.email = localStorage.email;
