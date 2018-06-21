@@ -787,7 +787,7 @@ angular.module('sntPay').controller('sntPaymentController',
 
                 // ---- CBA + MLI ----
                 if ($scope.selectedPaymentType === 'CBA' && $scope.hotelConfig.paymentGateway === 'CBA_AND_MLI') {
-                    if (isInIpadApp) {
+                    if (isInIpadApp || sntPaymentSrv.mockCba) {
                         $scope.$broadcast('INITIATE_CBA_PAYMENT', params);
                     } else {
                         $scope.errorMessage = $scope.errorMessage = [$filter('translate')('USE_IPAD_TO_USE_CBA')];
