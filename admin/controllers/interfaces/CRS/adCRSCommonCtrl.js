@@ -1,8 +1,16 @@
-angular.module('admin').controller('adCRSCommonCtrl', ['$scope', '$rootScope', 'config', 'adInterfacesCommonConfigSrv', 'dateFilter', '$stateParams',
-    function($scope, $rootScope, config, adInterfacesCommonConfigSrv, dateFilter, $stateParams) {
+angular.module('admin').controller('adCRSCommonCtrl', 
+    ['$scope', 
+    '$rootScope', 
+    'config', 
+    'adInterfacesCommonConfigSrv', 
+    'dateFilter', 
+    '$stateParams',
+    'chargeGroups',
+    function($scope, $rootScope, config, adInterfacesCommonConfigSrv, dateFilter, $stateParams, chargeGroups) {
 
         var interfaceIdentifier = $stateParams.id;
-
+        console.log("------------")
+console.log(chargeGroups)
         $scope.toggleEnabled = function() {
             config.enabled = !config.enabled;
         };
