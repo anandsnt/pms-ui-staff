@@ -46,6 +46,7 @@ sntRover.controller('RVKeyEncodePopupCtrl', [
 			$scope.data.confirmNumber = $scope.reservationBillData.confirm_no;
 			$scope.data.roomNumber = $scope.reservationBillData.room_number;
 			$scope.data.key_settings = $scope.reservationBillData.key_settings;
+			$scope.data.pin_code = $scope.reservationBillData.pin_code;
 		// If the keypopup inviked from inhouse - staycard card)
 		} else {
 			reservationStatus = $scope.reservationData.reservation_card.reservation_status;
@@ -54,6 +55,7 @@ sntRover.controller('RVKeyEncodePopupCtrl', [
 			$scope.data.confirmNumber = $scope.reservationData.reservation_card.confirmation_num;
 			$scope.data.roomNumber = $scope.reservationData.reservation_card.room_number;
 			$scope.data.key_settings = $scope.reservationData.reservation_card.key_settings;
+			$scope.data.pin_code = $scope.reservationData.reservation_card.pin_code;
 		}
 
     	if ($scope.data.is_late_checkout) {
@@ -131,8 +133,8 @@ sntRover.controller('RVKeyEncodePopupCtrl', [
 	var getPrintContent = function() {
 		return '<div id="key-status" class="pin">' +
 					// '<span class="h2 message">Pin Code</span>' +
-			        '<span class="text">Room Pin Code is</span>' +
-			        '<span class="pin-number">xxxx</span>' + 
+			        '<span class="text">Room Pin Code is </span>' +
+			        '<span class="pin-number">' + $scope.data.pin_code + '</span>' + 
 	    		'</div>';
 
 	}
