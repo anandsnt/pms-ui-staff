@@ -197,6 +197,19 @@ login.controller('loginCtrl', ['$scope', 'loginSrv', '$window', '$state', 'reset
         }
     };
 
+	$scope.onSystemStatusClick = function() {
+		if (sntapp.cordovaLoaded) {
+			ngDialog.open({
+				template: '/assets/partials/systemStatus.html',
+				className: '',
+				controller: '',
+				scope: $scope
+			});
+		} else {
+			$window.open('https://status.stayntouch.com', '_blank');
+		}
+	};
+
 }]);
 /*
  * Reset Password Controller - First time login of snt admin
