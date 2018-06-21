@@ -42,6 +42,6 @@ module.exports = {
             'ihg': [themeCSSRoot + 'ihg.less'],
             'surf-sand': [themeCSSRoot + 'surf-sand.less'],
             'bunk': [themeCSSRoot + 'bunk.less']
-		};
-	}
+        };
+    }
 };

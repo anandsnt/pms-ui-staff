@@ -1,5 +1,5 @@
-angular.module('sntPay').service('sntCBAGatewaySrv', ['$q', '$http', '$log', '$timeout', '$rootScope',
-    function($q, $http, $log, $timeout, $rootScope) {
+angular.module('sntPay').service('sntCBAGatewaySrv', ['$q', '$http', '$log', '$timeout', '$rootScope', 'sntPaymentSrv',
+    function($q, $http, $log, $timeout, $rootScope, sntPaymentSrv) {
         var service = this,
             isCheckLastTransactionInProgress = false,
             cordovaAPI = new CardOperation(),
@@ -26,6 +26,7 @@ angular.module('sntPay').service('sntCBAGatewaySrv', ['$q', '$http', '$log', '$t
         
         document.addEventListener('MOCK_CBA', () => {
             cordovaAPI = new CBAMockOperation();
+            sntPaymentSrv.mockCba = true;
         });
         /**
          *

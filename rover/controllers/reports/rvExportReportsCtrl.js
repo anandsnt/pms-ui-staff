@@ -1041,6 +1041,8 @@ angular.module('sntRover').controller('RVExportReportsCtrl', [
             $scope.updateViewCol($scope.viewColsActions.ONE);
 
             $scope.refreshReportSchedulesScroll(reset);
+
+            $scope.$emit('UPDATE_TITLE_AND_HEADING');
         };
 
         $scope.checkCanCancel = function() {
@@ -1119,6 +1121,13 @@ angular.module('sntRover').controller('RVExportReportsCtrl', [
 
             return match.id;
         };
+
+        // Listener for scheduling new report
+        let createNewExportScheduleListener = $scope.$on('CREATE_NEW_EXPORT_SCHEDULE', () => {
+            $scope.scheduleReport();
+        });
+
+        $scope.$on('$destroy', createNewExportScheduleListener);
 
         /**
          * Start everything
