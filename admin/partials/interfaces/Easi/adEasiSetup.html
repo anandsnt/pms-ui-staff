@@ -7,21 +7,123 @@
         </fieldset>
     </div>
 
-    <!--<ad-sync-block ng-if="config.enabled"-->
-    <!--interface="{{interface}}"-->
-    <!--config="config">-->
-    <!--</ad-sync-block>-->
-
-    <fieldset class="holder full-width">
+    <fieldset class="holder full-width" >
         <div class="form-title">
-            <h3>Export Configuration</h3>
+            <h3>Export<span> Settings</span></h3>
         </div>
-
-        <fieldset class="holder right">
-            <ad-textarea value="config.emails"
-                         required="true"
-                         label="{{'EMAIL_RECIPIENT_FOR_EOD_EXPORTS'| translate}}"
-                         styleclass="full-width"></ad-textarea>
+        <fieldset class="holder left">
+            <ad-textbox inputtype="text"
+                        value="config.hotel_code"
+                        label="{{'HOTEL_CODE'| translate}}"
+                        styleclass="full-width"></ad-textbox>
+        </fieldset>
+        <fieldset class="holder right" >
+            <section>
+                <ad-form-title full-width="true" form-title="Export FTP Delivery"></ad-form-title>
+                <ad-textbox inputtype="text" value="config.ftp_host" label="FTP host"
+                            styleclass="full-width"></ad-textbox>
+                <ad-textbox inputtype="text" value="config.ftp_location" label="FTP location"
+                            styleclass="full-width"></ad-textbox>
+                <ad-textbox inputtype="text" value="config.ftp_username" label="FTP user name"
+                            styleclass="full-width"></ad-textbox>
+                <ad-textbox inputtype="text" value="config.ftp_password" label="FTP password"
+                            styleclass="full-width"></ad-textbox>
+            </section>
         </fieldset>
     </fieldset>
+    <fieldset class="holder left">
+      <label translate>PAID_OUT_GROUP</label>
+      <select ng-model="config.paid_out_group_id" ng-options="charge_groups.value as charge_groups.name for charge_groups in chargeGroups" ></select>
+    </fieldset>
+
+
+    <fieldset class="holder full-width">
+          
+          <div class="form-title">
+              <h3>
+                  <span>Data Type</span>
+              </h3>
+              <em class="status">
+                  <span>Select at least one data type</span>
+              </em>
+          </div>
+          <div class="entry has-sortable">
+              <label class="center_align"><em class="rate_roomtype_text">Available Data Types</em></label>
+
+              <ul class="boxes sortable ui-sortable short-list" data-type="source" data-drop="true"
+                  ng-model="config.availableTaxChargeCodes" style="overflow-y: scroll !important;"
+                  jqyoui-droppable="{multiple:true, onOver: 'onUnSelectChargeCode'}" data-j qyoui-options="{accept:'.selected_reports'}">
+
+                  <li ng-repeat="availableTaxChargeCode in config.availableTaxChargeCodes"
+                      data-drag="true"
+                      ng-model="config.availableTaxChargeCodes"
+                      jqyoui-draggable="{index: {{$index}}, animate:false, onStart:'hideCurrentDragItem', onStop:'showCurrentDragItem' }"
+                      data-jqyoui-options="{revert: 'invalid', helper:'clone',appendTo: 'body'}"
+                      class="available-reports li-draggable"
+                      ng-click="chooseAvailableChargeCode($index)"
+                      ng-class='{selected: chosenAvailableReports.indexOf($index) > -1}'>
+
+                      <span class="icons icon-handle"></span>
+                      <span class="icons icon-handle"></span>
+                      {{ availableTaxChargeCode.code }}
+                  </li>
+              </ul>
+          </div>
+          <div class="entry movers rates_mover">
+              <span class="top_mover">
+                  <span class="icons icon-mover-right to-target"
+                        data-type="target"
+                        ng-click="selectChosen()"
+                        ng-class="{active: chosenAvailableReports.length >= 1}"
+                        data-type="source">
+                      Select Report(s)
+                  </span>
+                  <span class="icons icon-mover-left to-source"
+                        data-type="source"
+                        ng-click="unSelectChosen()"
+                        ng-class="{active: chosenSelectedReports.length >= 1}">
+                      Un-select Report(s)
+                  </span>
+              </span>
+              <span>
+                  <div class="green_gradient icons">
+                      <span class="active to-source green_mover icons_rates"
+                            data-type="source"
+                            ng-click="selectAll()">
+                          Select Report(s)
+                      </span>
+                  </div>
+                  <div class="red_gradient icons">
+                      <span class="active to-target  red_mover icons_rates"
+                            data-type="target"
+                            ng-click="unSelectAll()">
+                          Un-select Report(s)
+                      </span>
+                  </div>
+              </span>
+      </div>
+          <div class="entry has-sortable">
+              <label class="center_align">
+                  <span class="assigned_room_text">Selected Data Types</span></label>
+              <ul class="boxes sortable ui-sortable short-list"
+                  data-type="target"
+                  data-drop="true"
+                  ng-model="config.selectedTaxChargeCodes"
+                  jqyoui-droppable="{multiple:true, onOver: 'onSelectReport'}"
+                  data-jqyoui-options="{accept:'.available-reports'}">
+                  <li ng-repeat="selectedTaxChargeCode in config.selectedTaxChargeCodes"
+                      ng-click="chooseSelectedChargeCode($index)"
+                      ng-class='{selected: chosenSelectedReports.indexOf($index) > -1}'
+                      class="selected-reports li-draggable"
+                      data-jqyoui-options="{revert: 'invalid', helper:'clone',appendTo: 'body'}"
+                      data-drag="true"
+                      ng-model="config.selectedTaxChargeCodes"
+                      jqyoui-draggable="{index: {{$index}}, animate:false, onStart:'hideCurrentDragItem', onStop:'showCurrentDragItem' }">
+                      <span class="icons icon-handle"></span>
+                      <span class="icons icon-handle"></span>
+                      {{ selectedTaxChargeCode.code }}
+                  </li>
+              </ul>
+          </div>
+      </fieldset>
 </ad-common-parts-in-form-dir>
