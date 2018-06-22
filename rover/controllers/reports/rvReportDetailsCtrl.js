@@ -1221,8 +1221,9 @@ sntRover.controller('RVReportDetailsCtrl', [
                         reportsSrv.setPrintClicked(false);
                         $scope.viewStatus.showDetails = false;
                         if ($state.$current.name !== 'rover.reports.show' && reportsSrv.getChoosenReport()) {
-                          reportsSrv.getChoosenReport().generatedReportId = null;  
+                          reportsSrv.setChoosenReport({});  
                         }
+                        sntActivity.stop("PRINTING_FROM_REPORT_INBOX");
                         
                     } else {
                         // load the report with the original page

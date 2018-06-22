@@ -40,6 +40,10 @@ angular.module('sntRover').controller('RVReportsInboxCtrl', [
 
         // Navigate to new report request section
         $scope.createNewReport = () => {
+            // Reset the report list, this is required because some of the fields
+            // eg: sort_fields are formatted and don't work with the current values
+            // Hence restored the original list while naviagting to report dashboard
+            $scope.$parent.reportList = JSON.parse(JSON.stringify($scope.reportListCopy));
             $state.go('rover.reports.dashboard');
         };
 
@@ -82,6 +86,13 @@ angular.module('sntRover').controller('RVReportsInboxCtrl', [
             }
 
             return status;            
+        };
+
+        // Refreshes the scroller
+        self.refreshScroll = () => {
+            $timeout(() => {
+                $scope.refreshScroller(REPORT_INBOX_SCROLLER);                
+            }, 800);
         };
         
 
@@ -128,8 +139,8 @@ angular.module('sntRover').controller('RVReportsInboxCtrl', [
             $scope.setScroller(REPORT_INBOX_SCROLLER, scrollerOptions);            
         };
 
-        // Refreshes the scroller
-        self.refreshScroll = () => {
+        // Refreshes and set the scroller position
+        self.refreshAndAdjustScroll = () => {
             $timeout(() => {
                 $scope.refreshScroller(REPORT_INBOX_SCROLLER);
                 $timeout(() => {
@@ -203,7 +214,7 @@ angular.module('sntRover').controller('RVReportsInboxCtrl', [
                     $scope.reportInboxData.generatedReports = self.getFormatedGeneratedReports(data.results, $scope.reportList);
                     $scope.totalResultCount = data.total_count;
                     self.refreshPagination();
-                    self.refreshScroll();
+                    self.refreshAndAdjustScroll();
                 },                
                 options = {
                     onSuccess: onReportsFetchSuccess,                    
@@ -418,7 +429,7 @@ angular.module('sntRover').controller('RVReportsInboxCtrl', [
 
             self.refreshPagination();
 
-            self.refreshScroll();  
+            self.refreshAndAdjustScroll();  
 
             self.resetPreviousReportSelection();   
 
