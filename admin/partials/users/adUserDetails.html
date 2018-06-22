@@ -55,6 +55,11 @@
 						<input type="password" ng-model="data.confirm_password" required="yes" placeholder="Confirm password" name="re-password" id="confirm-password" autocomplete="off">
 					</div>
 
+					<div class="entry full-width" ng-show="manualIDScanEnabled">
+						<label translate>STAFF_ID</label>
+						<input type="password" ng-model="data.pin_code" placeholder="Staff ID"/>
+					</div>
+
 					<!-- Activation Status -->
 					<div class="entry re-invite" ng-show="mod == 'edit'">
 						<label> Activation Status </label>

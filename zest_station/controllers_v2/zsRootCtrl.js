@@ -10,7 +10,7 @@ sntZestStation.controller('zsRootCtrl', [
     'zsEventConstants',
     '$state', 'zsGeneralSrv', '$rootScope', 'ngDialog', '$sce',
     'zsUtilitySrv', '$translate', 'zsHotelDetailsSrv', 'cssMappings', 'hotelTranslations',
-    'zestStationSettings', '$timeout', 'zsModeConstants', 'hotelTimeData', 'hotelLanguages', '$filter', '$log', '$window', 'languages',
+    'zestStationSettings', '$timeout', 'zsModeConstants', 'hotelTimeData', 'hotelLanguages', '$filter', '$log', '$window', 'languages', 'defaultTranslations',
     function($scope,
 		zsEventConstants,
 		$state,
@@ -31,7 +31,8 @@ sntZestStation.controller('zsRootCtrl', [
 		$filter,
         $log,
         $window,
-        languages
+        languages,
+        defaultTranslations
         ) {
 
 
@@ -144,11 +145,18 @@ sntZestStation.controller('zsRootCtrl', [
             }
         };
 
-
         $scope.getTagValue = function(tag) {
             var currentLanguageCode = $scope.currentLanguageCode;
 
-            return $scope.tagInEdit.language[currentLanguageCode] ? $scope.tagInEdit.language[currentLanguageCode][tag] : '';
+            // check if the tag is present in the translation file,
+            // if not present use the default text in the master translation file.
+            if ($scope.tagInEdit.language[currentLanguageCode] && !_.isUndefined($scope.tagInEdit.language[currentLanguageCode][tag])) {
+                return $scope.tagInEdit.language[currentLanguageCode][tag];
+            } 
+            // return defaultTranslations[tag];
+            // Showing default tags are causing issues like when some one edits any tags
+            // in admin leaving other tags are empty. So will revert this logic to what it was before.
+            return '';
         };
 
 		/**
@@ -893,7 +901,28 @@ sntZestStation.controller('zsRootCtrl', [
             var commonIconsPath = '/assets/zest_station/css/icons/default';
 
             // var basicHomeIcons = ['zoku'],
-            var niceHomeIcons = ['avenue', 'sohotel', 'epik', 'public', 'public_v2', 'duke', 'de-jonker', 'chalet-view', 'freehand', 'row-nyc', 'circle-inn-fairfield', 'cachet-boutique', 'hi-ho', 'first', 'viceroy-chicago', 'amrath', 'jupiter', 'huntley', 'queen', 'belle'],
+            var niceHomeIcons = ['avenue',
+                    'sohotel',
+                    'epik',
+                    'public',
+                    'public_v2',
+                    'duke',
+                    'de-jonker',
+                    'chalet-view',
+                    'freehand',
+                    'row-nyc',
+                    'circle-inn-fairfield',
+                    'cachet-boutique',
+                    'hi-ho',
+                    'first',
+                    'viceroy-chicago',
+                    'amrath',
+                    'jupiter',
+                    'huntley',
+                    'queen',
+                    'belle',
+                    'ihg'
+                ],
                 nonCircleNavIcons = ['public_v2'];// minor adjustment to the back/close icons for some themes (only show the inner x or <)
 
 
@@ -1918,6 +1947,17 @@ sntZestStation.controller('zsRootCtrl', [
             });
             return propertyTranslations ? propertyTranslations.translations : [];
         };
+
+
+        $scope.$on('PRINT_CURRENT_PAGE', function() {
+            // if zest station is loaded in Electron App, proceed with silent printing
+            // using electron App (Communicate asynchronously from a renderer process to the main process.)
+            if (navigator.userAgent.indexOf('Electron') !== -1 && window.ipcRenderer) {
+                window.ipcRenderer.send('printCurrentPage');
+            } else {
+                $window.print();
+            }
+        });
 
 		/** *
 		 * [initializeMe description]

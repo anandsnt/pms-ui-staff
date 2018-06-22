@@ -20,7 +20,10 @@ angular.module('reportsModule', [])
         $stateProvider.state('rover.reports.dashboard', {
             url: '/list',
             templateUrl: '/assets/partials/reports/rvReportsDashboard.html',
-            controller: 'RVReportsDashboardCtrl'
+            controller: 'RVReportsDashboardCtrl',
+            params: {
+                refresh: true
+            }
         });
 
         $stateProvider.state('rover.reports.show', {
@@ -38,5 +41,35 @@ angular.module('reportsModule', [])
                     dynamic: true
                 }
             }
+        });        
+
+        $stateProvider.state('rover.reports.inbox', {
+            url: '/inbox',
+            templateUrl: '/assets/partials/reports/backgroundReports/rvReportsInbox.html',
+            controller: 'RVReportsInboxCtrl',
+            resolve: {
+                generatedReportsList: function (RVReportsInboxSrv, $filter, $rootScope) {
+                    var params = {
+                        generated_date: $filter('date')($rootScope.serverDate, 'yyyy-MM-dd'),
+                        per_page: RVReportsInboxSrv.PER_PAGE,
+                        user_id: $rootScope.userId,
+                        page: 1
+                    };
+                    
+                    return RVReportsInboxSrv.fetchReportInbox(params);
+                }
+            }            
         });
+
+        $stateProvider.state('rover.reports.scheduleReportsAndExports', {
+            url: '/scheduleReportsAndExports',
+            templateUrl: '/assets/partials/reports/backgroundReports/rvScheduleReportsAndExports.html',
+            controller: 'RVScheduleReportsAndExportsCtrl',
+            params: {
+                showScheduledReports: false,
+                showScheduledExports: false
+            }
+        });
+
+        
     });

@@ -54,11 +54,23 @@ sntZestStation.controller('zscheckInReservationSearchCtrl', [
 				$scope.zestStationData.checkin_screen.authentication_settings.confirmation;
         }());
 
+        var focusDepartureDateField = function() {
+            // A small timeout for making sure the mode is changed to departure date
+            // and trigger click event to launch calendar
+            $timeout(function() {
+                $("#departure-date").click();
+                 $scope.$emit('hideLoader');
+            }, 200);
+        };
+
 
         $scope.findByDate = function() {
             $scope.trackEvent('FIND_BY_DATE', 'user_selected');
             $scope.mode = 'FIND_BY_DATE';
-            $scope.focusInputField('departure-date');
+            // To prevent conflicting calender actions
+            // (auto popup and manula trigger)
+            $scope.$emit('showLoader');
+            focusDepartureDateField();
             $scope.resetTime();
         };
         $scope.findByNoOfNights = function() {
@@ -283,9 +295,7 @@ sntZestStation.controller('zscheckInReservationSearchCtrl', [
                 $scope.focusInputField('guest-email');
 
             } else if ($scope.reservationParams.date.length > 0) {
-                $scope.mode = 'FIND_BY_DATE';
-                $scope.focusInputField('departure-date');
-
+                $scope.findByDate();
             } else {
                 return;
             }

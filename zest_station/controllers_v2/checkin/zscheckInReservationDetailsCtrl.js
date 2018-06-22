@@ -7,7 +7,8 @@ sntZestStation.controller('zsCheckInReservationDetailsCtrl', [
     '$stateParams',
     '$log',
     '$timeout',
-    function($scope, $rootScope, $state, zsEventConstants, zsCheckinSrv, $stateParams, $log, $timeout) {
+    'zsPaymentSrv',
+    function($scope, $rootScope, $state, zsEventConstants, zsCheckinSrv, $stateParams, $log, $timeout, zsPaymentSrv) {
 
 
         // This controller is used for viewing reservation details 
@@ -64,17 +65,23 @@ sntZestStation.controller('zsCheckInReservationDetailsCtrl', [
                 if (data.data) {
                     $scope.selectedReservation.reservation_details = data.data.reservation_card;
                     $scope.zestStationData.selectedReservation = $scope.selectedReservation;
-                    if ($scope.isRateSuppressed()) {
-                        $scope.selectedReservation.reservation_details.balance = 0;
+                    if ($scope.zestStationData.kiosk_prevent_non_cc_guests && $scope.selectedReservation.reservation_details.payment_method_used !== 'CC') {
+                        $scope.$emit(zsEventConstants.HIDE_BACK_BUTTON);
+                        $state.go('zest_station.noCCPresentForCheckin');
                     }
-                    if (!$scope.zestStationData.is_standalone) {
-                        // In overlay , the accomanying guest can be changed after import process
-                        // so we have to update the guest list with latest data after OPERA sync in reservation details API
-                        updateGuestList(data.data.reservation_card.accompaying_guests);
+                    else {
+                        if ($scope.isRateSuppressed()) {
+                            $scope.selectedReservation.reservation_details.balance = 0;
+                        }
+                        if (!$scope.zestStationData.is_standalone) {
+                            // In overlay , the accomanying guest can be changed after import process
+                            // so we have to update the guest list with latest data after OPERA sync in reservation details API
+                            updateGuestList(data.data.reservation_card.accompaying_guests);
+                        }
+                        fetchAddons();
+                        setDisplayContentHeight(); // utils function
+                        refreshScroller();
                     }
-                    fetchAddons();
-                    setDisplayContentHeight(); // utils function
-                    refreshScroller();
                 } else {
                     // else some error occurred
                     generalError();   
@@ -360,6 +367,16 @@ sntZestStation.controller('zsCheckInReservationDetailsCtrl', [
         var initTermsPage = function() {
             $log.log($scope.zestStationData);
             $log.info('$scope.selectedReservation: ', $scope.selectedReservation);
+
+            zsPaymentSrv.setPaymentData({
+                amount: $scope.selectedReservation.reservation_details.deposit_amount,
+                reservation_id: $scope.selectedReservation.reservation_details.reservation_id,
+                workstation_id: $rootScope.workstation_id,
+                bill_id: $scope.selectedReservation.reservation_details.default_bill_id,
+                payment_method_used: $scope.selectedReservation.reservation_details.payment_method_used,
+                payment_details: $scope.selectedReservation.reservation_details.payment_details
+            });
+
             var stateParams = {
                 'guest_id': $scope.selectedReservation.guest_details[0].id,
                 'reservation_id': $scope.selectedReservation.reservation_details.reservation_id,
@@ -373,7 +390,8 @@ sntZestStation.controller('zsCheckInReservationDetailsCtrl', [
                 'balance_amount': $scope.selectedReservation.reservation_details.balance_amount,
                 'confirmation_number': $scope.selectedReservation.confirmation_number,
                 'pre_auth_amount_for_zest_station': $scope.selectedReservation.reservation_details.pre_auth_amount_for_zest_station,
-                'authorize_cc_at_checkin': $scope.selectedReservation.reservation_details.authorize_cc_at_checkin
+                'authorize_cc_at_checkin': $scope.selectedReservation.reservation_details.authorize_cc_at_checkin,
+                'payment_method': $scope.selectedReservation.reservation_details.payment_method_used
             };
             // check if this page was invoked through pickupkey flow
 

@@ -23,10 +23,10 @@
                 <tbody >
 
                     <tr ng-repeat-start="reservation in travel_agents.reservation_details.reservations" ng-if="travel_agents.reservation_details.reservations.length > 0">
-                        <td rowspan="{{reservation.rate_details.length}}">
+                        <td rowspan="{{reservation.rate_details.length === 0 ? 1 : reservation.rate_details.length}}">
                             <strong class="title">{{reservation.room_no}}</strong>
                         </td>
-                        <td class="name" rowspan="{{reservation.rate_details.length}}">
+                        <td class="name" rowspan="{{reservation.rate_details.length === 0 ? 1 : reservation.rate_details.length}}">
                             <strong class="title">
                                 <a href="#">{{reservation.last_name}}, {{reservation.first_name}}</a>
                             </strong>
@@ -56,13 +56,13 @@
                         <td>
                             <span class="currency">{{currencySymbol}}</span>{{reservation.rate_details[0].rate_amount}}
                         </td>
-                        <td rowspan="{{reservation.rate_details.length}}">
+                        <td rowspan="{{reservation.rate_details.length === 0 ? 1 : reservation.rate_details.length}}">
                             <span class="currency">{{currencySymbol}}</span>{{reservation.commission_revenue}}
                         </td>
-                        <td rowspan="{{reservation.rate_details.length}}">
+                        <td rowspan="{{reservation.rate_details.length === 0 ? 1 : reservation.rate_details.length}}">
                             <span>{{reservation.commission_amount}}</span>
                         </td>
-                        <td rowspan="{{reservation.rate_details.length}}">
+                        <td rowspan="{{reservation.rate_details.length === 0 ? 1 : reservation.rate_details.length}}">
                             <span class="currency">{{currencySymbol}}</span>{{reservation.net_amount}}
                         </td>
                     </tr>
