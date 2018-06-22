@@ -98,9 +98,11 @@ angular.module('admin').controller('adCRSCommonCtrl',
             $scope.chargeGroups = chargeGroups.data.charge_groups;
             $scope.config.availableTaxChargeCodes = taxChargeCodes.data.charge_codes;
             $scope.config.selectedTaxChargeCodes = [];
+            config.selected_tax_charge_ids = (config.selected_tax_charge_ids !== null) ? config.selected_tax_charge_ids : [];
             angular.forEach($scope.config.availableTaxChargeCodes, function(item, index) {
-                if (_.indexOf(taxChargeCodes.data.selected_tax_charge_ids, item.id)) {
+                if (_.indexOf(config.selected_tax_charge_ids, item.id) !== -1) {
                     $scope.config.selectedTaxChargeCodes.push(item);
+                    $scope.config.availableTaxChargeCodes.splice(item);
                 }
             });
         })();
