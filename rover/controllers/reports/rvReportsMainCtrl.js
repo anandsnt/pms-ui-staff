@@ -47,6 +47,11 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
             showDetails: false
         };
 
+        // Hold the page no when navigating back to report inbox from report details page
+        $scope.reportInboxPageState = {
+            returnPage: 1
+        };
+
         $scope.scrollToLast = function () {
             $timeout(function () {
                 if ($scope.$parent.myScroll.hasOwnProperty('FULL_REPORT_SCROLL')) {
@@ -131,7 +136,9 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
             $scope.$broadcast(reportMsgs['REPORT_LIST_SCROLL_REFRESH']);
 
             if (reportsSrv.getChoosenReport().generatedReportId) {
-                $state.go('rover.reports.inbox');
+                $state.go('rover.reports.inbox', {
+                    page: $scope.reportInboxPageState.returnPage
+                });
             } else {
                 $state.go('rover.reports.dashboard', { refresh: false });
             }

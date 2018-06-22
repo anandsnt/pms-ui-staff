@@ -48,16 +48,19 @@ angular.module('reportsModule', [])
             templateUrl: '/assets/partials/reports/backgroundReports/rvReportsInbox.html',
             controller: 'RVReportsInboxCtrl',
             resolve: {
-                generatedReportsList: function (RVReportsInboxSrv, $filter, $rootScope) {
+                generatedReportsList: function (RVReportsInboxSrv, $filter, $rootScope, $state) {
                     var params = {
                         generated_date: $filter('date')($rootScope.serverDate, 'yyyy-MM-dd'),
                         per_page: RVReportsInboxSrv.PER_PAGE,
                         user_id: $rootScope.userId,
-                        page: 1
+                        page: $state.transition.params().page
                     };
                     
                     return RVReportsInboxSrv.fetchReportInbox(params);
                 }
+            },
+            params: {
+                page: 1
             }            
         });
 
