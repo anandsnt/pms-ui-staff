@@ -98,6 +98,7 @@ angular.module('admin').controller('adCRSCommonCtrl',
             $scope.chargeGroups = chargeGroups.data.charge_groups;
             $scope.config.availableTaxChargeCodes = taxChargeCodes.data.charge_codes;
             $scope.config.selectedTaxChargeCodes = [];
+            taxChargeCodes.data.selected_tax_charge_ids = (taxChargeCodes.data.selected_tax_charge_ids!== null) ? taxChargeCodes.data.selected_tax_charge_ids : [];
             angular.forEach($scope.config.availableTaxChargeCodes, function(item, index) {
                 if (_.indexOf(taxChargeCodes.data.selected_tax_charge_ids, item.id)) {
                     $scope.config.selectedTaxChargeCodes.push(item);
