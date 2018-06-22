@@ -35,6 +35,9 @@ describe('zsCheckinVerifyIdCtrl', function() {
         $scope.setScreenIcon = function() {
             return false;
         };
+        $scope.callBlurEventForIpad = function() {
+            return false;
+        };
         $scope.zestStationData = {};
     });
 
