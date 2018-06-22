@@ -209,6 +209,7 @@ angular.module('sntRover').controller('RVReportsInboxCtrl', [
          * @return {void}
          */
         self.fetchGeneratedReports = (pageNo) => {
+            $scope.reportInboxPageState.returnPage = pageNo;
 
             let onReportsFetchSuccess = (data) => {
                     $scope.reportInboxData.generatedReports = self.getFormatedGeneratedReports(data.results, $scope.reportList);
@@ -427,7 +428,10 @@ angular.module('sntRover').controller('RVReportsInboxCtrl', [
             $scope.reportInboxData.generatedReports = self.getFormatedGeneratedReports(generatedReportsList.results, $scope.reportList);
             $scope.totalResultCount = generatedReportsList.total_count;
 
-            self.refreshPagination();
+            $timeout(function() {
+               $scope.$broadcast('updatePagination', PAGINATION_ID);
+               $scope.$broadcast('updatePageNo', $state.params.page);
+            }, 50);            
 
             self.refreshAndAdjustScroll();  
 
