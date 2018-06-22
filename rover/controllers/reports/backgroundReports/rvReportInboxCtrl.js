@@ -141,7 +141,9 @@ angular.module('sntRover').controller('RVReportsInboxCtrl', [
 
         // Create date dropdown for the filter section
         self.createDateDropdownData = () => {
-            let hotelBusinessDate = new tzIndependentDate($rootScope.businessDate),
+            // Using the system date to show the date filter.Sometimes the business date and system date may
+            // be different for properties in dev env. 
+            let hotelBusinessDate = new tzIndependentDate($rootScope.serverDate),
                 hotelYesterday = new tzIndependentDate(hotelBusinessDate),
                 hotelDayBeforeYesterday = new tzIndependentDate(hotelBusinessDate),
                 hotelFourDaysBefore = new tzIndependentDate(hotelBusinessDate);
@@ -327,7 +329,7 @@ angular.module('sntRover').controller('RVReportsInboxCtrl', [
         * @return none
         * */
         $scope.showGeneratedReport = function( selectedreport ) {
-            if (selectedreport.shouldShowExport && !selectedreport.shouldDisplayView ) {
+            if ( (selectedreport.shouldShowExport && !selectedreport.shouldDisplayView) || $scope.shouldDisableInboxItem(selectedreport) ) {
                 return;
             }
             
@@ -386,7 +388,7 @@ angular.module('sntRover').controller('RVReportsInboxCtrl', [
             var mainCtrlScope = $scope.$parent;
 
             setChoosenReport(report).then(function() {
-                mainCtrlScope.genReport(false, 1, 1000);
+                mainCtrlScope.genReport(false, 1, 99999);
             });
             reportsSrv.setPrintClicked(true);                       
             
@@ -398,7 +400,7 @@ angular.module('sntRover').controller('RVReportsInboxCtrl', [
                 selectedReportAppliedFilters: {},
                 generatedReports: [],
                 filter: {
-                    selectedDate: $filter('date')($rootScope.businessDate, 'yyyy-MM-dd'),
+                    selectedDate: $filter('date')($rootScope.serverDate, 'yyyy-MM-dd'),
                     searchTerm: ''
                 },
                 isReportInboxOpen: false
