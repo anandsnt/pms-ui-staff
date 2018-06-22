@@ -5,8 +5,7 @@ angular.module('sntRover')
     'RVreportsSubSrv',
     '$q',
     'sntActivity',
-    'RVreportsSrv',
-    '$state',
+    'RVreportsSrv',    
 
     // eslint-disable-next-line max-params
     function (
@@ -15,8 +14,7 @@ angular.module('sntRover')
         RVreportsSubSrv,
         $q,
         sntActivity,
-        reportsSrv,
-        $state
+        reportsSrv
     ) {
 
         BaseCtrl.call(this, $scope);
