@@ -1,7 +1,11 @@
 angular.module('sntRover').controller('rvAddOverBookingPopupCtrl', ['$scope', '$rootScope', 'ngDialog', 'rvOverBookingSrv', function($scope, $rootScope, ngDialog, rvOverBookingSrv) {
 
+	var that = this;
+
+	BaseCtrl.call(this, $scope);
+
 	// Initialization
-	var init = function() {
+	that.init = function() {
 		$scope.addOverBookingObj = {
 			fromDate: moment(tzIndependentDate($rootScope.businessDate)).format($rootScope.momentFormatForAPI),
 			toDate: moment(tzIndependentDate($rootScope.businessDate)).format($rootScope.momentFormatForAPI),
@@ -22,12 +26,12 @@ angular.module('sntRover').controller('rvAddOverBookingPopupCtrl', ['$scope', '$
 		};
 		$scope.setScroller('roomTypeFilterList');
 	},
-	datePickerDialogId = '';
+	that.datePickerDialogId = '';
 
 	// To popup contract start date
 	$scope.showDatePicker = function( type ) {
 		$scope.addOverBookingObj.type = type;
-		datePickerDialogId = ngDialog.open({
+		that.datePickerDialogId = ngDialog.open({
 			template: '/assets/partials/overBooking/rvOverBookingDatePicker.html',
 			controller: 'rvAddOverBookingDatePickerCtrl',
 			className: '',
@@ -57,15 +61,9 @@ angular.module('sntRover').controller('rvAddOverBookingPopupCtrl', ['$scope', '$
 				$scope.addOverBookingObj.fromDate = formattedDate;
 			}
         }
-        ngDialog.close(datePickerDialogId.id);
+        ngDialog.close(that.datePickerDialogId.id);
     });
 
-	// Handle click action on each checkbox inside week days.
-	$scope.clickedRoomTypeCheckbox = function ( index ) {
-		var item = $scope.addOverBookingObj.weekDayList[index];
-
-		item.isChecked = !item.isChecked;
-	};
 	// Apply for house checkbox click action.
 	$scope.clickedApplyForHouse = function() {
 		$scope.addOverBookingObj.applyForHouse = !$scope.addOverBookingObj.applyForHouse;
@@ -103,7 +101,7 @@ angular.module('sntRover').controller('rvAddOverBookingPopupCtrl', ['$scope', '$
 	 *  @input [Array] conatains 'id' as one key.
 	 *  @return { Array }
 	 */
-	var getSelectedIdList = function( inputList ) {
+	that.getSelectedIdList = function( inputList ) {
 		var selectedIdList = [];
 
 		_.map( inputList, function(value) {
@@ -132,8 +130,8 @@ angular.module('sntRover').controller('rvAddOverBookingPopupCtrl', ['$scope', '$
             'start_date': moment(tzIndependentDate($scope.addOverBookingObj.fromDate)).format($rootScope.momentFormatForAPI),
             'end_date': moment(tzIndependentDate($scope.addOverBookingObj.toDate)).format($rootScope.momentFormatForAPI),
             'house_overbooking': $scope.addOverBookingObj.applyForHouse,
-            'wdays_selected': getSelectedIdList($scope.addOverBookingObj.weekDayList),
-            'room_type_ids': getSelectedIdList($scope.addOverBookingObj.roomTypeList),
+            'wdays_selected': that.getSelectedIdList($scope.addOverBookingObj.weekDayList),
+            'room_type_ids': that.getSelectedIdList($scope.addOverBookingObj.roomTypeList),
             'limit': $scope.addOverBookingObj.limitValue
         };
 
@@ -148,7 +146,7 @@ angular.module('sntRover').controller('rvAddOverBookingPopupCtrl', ['$scope', '$
         ngDialog.close();
     };
 
-	init();
+	that.init();
 	// Cleaning listener.
     $scope.$on('$destroy', listenerDateChanged);
 }]);

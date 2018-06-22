@@ -3,7 +3,7 @@ angular.module('sntRover').service('rvOverBookingSrv', ['$q', 'rvBaseWebSrvV2', 
 
 	var that = this;
 
-	this.gridDataForOverbooking = {};
+	that.gridDataForOverbooking = {};
 
     /*
      * This method returns an array of dates including the from and to Date provided to it
@@ -11,7 +11,7 @@ angular.module('sntRover').service('rvOverBookingSrv', ['$q', 'rvBaseWebSrvV2', 
      * @param toDate String in yyyy-MM-dd format
      * @returns {Array}
      */
-    var getDateRange = function(fromDate, toDate) {
+    that.getDateRange = function(fromDate, toDate) {
         var dates = [],
             currDate = new tzIndependentDate(fromDate) * 1,
             lastDate = new tzIndependentDate(toDate) * 1;
@@ -30,7 +30,7 @@ angular.module('sntRover').service('rvOverBookingSrv', ['$q', 'rvBaseWebSrvV2', 
 	/*
 	 * Function to fetch item inventory between from date & to date
 	 */
-	this.fetchOverBookingGridData = function (params) {
+	that.fetchOverBookingGridData = function (params) {
 		var firstDate 	= (params.start_date),
 			secondDate 	= (params.end_date);
 
@@ -43,7 +43,7 @@ angular.module('sntRover').service('rvOverBookingSrv', ['$q', 'rvBaseWebSrvV2', 
                 'houseSellLimits': resultFromAPI.house_sell_limits,
                 'roomTypeSellLimits': resultFromAPI.room_type_sell_limits,
                 'selectedRoomTypeNameList': _.pluck(resultFromAPI.room_type_sell_limits, 'name'),
-                'dateRangeList': getDateRange(firstDate, secondDate)
+                'dateRangeList': that.getDateRange(firstDate, secondDate)
             };
 			deferred.resolve(that.gridDataForOverbooking);
 		}, function(data) {
@@ -57,7 +57,7 @@ angular.module('sntRover').service('rvOverBookingSrv', ['$q', 'rvBaseWebSrvV2', 
 	 * Function to get list of Room types
 	 * @return {Promise} - After resolving it will return the list of Hold Room types
 	 */
-	this.getAllRoomTypes = function() {
+	that.getAllRoomTypes = function() {
 		var deferred = $q.defer(),
 			url = '/api/room_types.json?exclude_pseudo=true&exclude_suite=true',
 			resultWithIsCheckedTrue = [], resultWithIsCheckedFalse = [];
@@ -88,7 +88,7 @@ angular.module('sntRover').service('rvOverBookingSrv', ['$q', 'rvBaseWebSrvV2', 
 	/*
 	 * Function to add over booking
 	 */
-	this.addOrEditOverBooking = function (params) {
+	that.addOrEditOverBooking = function (params) {
 
 		// Webservice calling section
 		var deferred = $q.defer(),
