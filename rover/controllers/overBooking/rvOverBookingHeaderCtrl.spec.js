@@ -9,7 +9,8 @@ describe('RvOverBookingHeaderCtrl', function() {
 
     jasmine.getJSONFixtures().fixturesPath = 'base/unitTestSampleData/';
     var fixtures = loadJSONFixtures('overbookingSampleData.json'),
-        jsonResultData = fixtures['overbookingSampleData.json'];
+        jsonResultData = fixtures['overbookingSampleData.json'],
+        completeRoomTypeListSampleData = loadJSONFixtures('completeRoomTypeListSampleData.json')['completeRoomTypeListSampleData.json'];
 
     beforeEach(function() {
         module('sntRover');
@@ -108,31 +109,8 @@ describe('RvOverBookingHeaderCtrl', function() {
     describe('Get showRoomTypeSelectionStatus', function() {
 
         it('check NOT SHOWING', function() {
-            $scope.overBookingObj.roomTypeList = [{
-                "name": "00_a",
-                "id": 611,
-                "isChecked": false
-            }, {
-                "name": "00_b",
-                "id": 612,
-                "isChecked": false
-            }, {
-                "name": "BB",
-                "id": 628,
-                "isChecked": false
-            }, {
-                "name": "Bunk",
-                "id": 232,
-                "isChecked": false
-            }, {
-                "name": "comp_one",
-                "id": 584,
-                "isChecked": false
-            }, {
-                "name": "comp_two",
-                "id": 585,
-                "isChecked": false
-            }];
+
+            $scope.overBookingObj.roomTypeList = completeRoomTypeListSampleData.isCheckedFalse;
 
             var status = $scope.showRoomTypeSelectionStatus();
         
@@ -140,31 +118,8 @@ describe('RvOverBookingHeaderCtrl', function() {
         });
 
         it('check SHOW ALL', function() {
-            $scope.overBookingObj.roomTypeList = [{
-                "name": "00_a",
-                "id": 611,
-                "isChecked": true
-            }, {
-                "name": "00_b",
-                "id": 612,
-                "isChecked": true
-            }, {
-                "name": "BB",
-                "id": 628,
-                "isChecked": true
-            }, {
-                "name": "Bunk",
-                "id": 232,
-                "isChecked": true
-            }, {
-                "name": "comp_one",
-                "id": 584,
-                "isChecked": true
-            }, {
-                "name": "comp_two",
-                "id": 585,
-                "isChecked": true
-            }];
+
+            $scope.overBookingObj.roomTypeList = completeRoomTypeListSampleData.isCheckedTrue;
 
             var status = $scope.showRoomTypeSelectionStatus();
         
