@@ -6,5 +6,5 @@
 	"WORKSTATIONS":"Work Stations",
 	"WORKSTATION_IS_OOS":"Out of Service",
 	"WORKSTATION_OOS_MSG":"OOS Message",
-	"ROVER_DEVICE_ID" : "Rover Device ID",
-	"PAID_OUT_GROUP": "Paid out group"
+	"ROVER_DEVICE_ID" : "Rover Device ID"
+
