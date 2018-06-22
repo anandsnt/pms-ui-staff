@@ -113,11 +113,7 @@ angular.module('sntRover')
                 $scope.results.without_vat_id.accounts[0].isCollapsed = $scope.yearlyTaxReportDataObject.withoutVatId.Accounts[0].isCollapsed;
                 $scope.results.without_vat_id.accounts[1].isCollapsed = $scope.yearlyTaxReportDataObject.withoutVatId.Accounts[1].isCollapsed;
             }
-            if ($state.$current.name !== 'rover.reports.show' && reportsSrv.getChoosenReport) {
-                reportsSrv.setPrintClicked(false);
-                $scope.viewStatus.showDetails = false;
-                reportsSrv.getChoosenReport().generatedReportId = null;
-            }
+            
             $scope.refreshScroll();
         };
         /*

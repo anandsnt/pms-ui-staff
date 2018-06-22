@@ -178,6 +178,11 @@ sntRover.controller('RVReportListCrl', [
             if ( lastReportID != report.id ) {
                 mainCtrlScope.printOptions.resetSelf();
             }
+            // CICO-51146 Clear the generatedreportid while submitting the report
+            if (report.generatedReportId) {
+               report.generatedReportId = null; 
+            }
+            
             reportsSrv.setChoosenReport( report );
             mainCtrlScope.genReport();
         };
