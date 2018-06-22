@@ -525,6 +525,9 @@ angular.module('adminInterfacesRouter', []).config(function($stateProvider) {
             }],
             chargeGroups: ['adInterfacesCommonConfigSrv', function(adInterfacesCommonConfigSrv) {
                 return adInterfacesCommonConfigSrv.fetchChargeGroups();
+            }],
+            taxChargeCodes: ['adInterfacesCommonConfigSrv', function(adInterfacesCommonConfigSrv) {
+                return adInterfacesCommonConfigSrv.fetchTaxChargeCodes();
             }]
         }
     });
