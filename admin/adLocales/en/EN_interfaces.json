@@ -101,4 +101,7 @@
 	"BASWARE_HEADER": "Basware",
 	"MOBILE": "Mobile",
   "ENHANCE_DEPOSIT_NOTES": "Enhance Deposit Notes",
-  "PAID_OUT_GROUP": "Paid out group"
+  "PAID_OUT_GROUP": "Paid out group",
+  "TAX_CHARGE_CODE_6": "Tax Charge Code 6%",
+  "TAX_CHARGE_CODE_12": "Tax Charge Code 12%",
+  "TAX_CHARGE_CODE_21": "Tax Charge Code 21%"

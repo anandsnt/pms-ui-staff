@@ -7,7 +7,7 @@
         </fieldset>
     </div>
 
-    <fieldset class="holder full-width" >
+    <fieldset class="holder full-width" ng-if="config.enabled">
         <div class="form-title">
             <h3>Export<span> Settings</span></h3>
         </div>
@@ -31,115 +31,45 @@
             </section>
         </fieldset>
     </fieldset>
-    <fieldset class="holder left">
-      <label translate>PAID_OUT_GROUP</label>
-      <select ng-model="config.paid_out_group_id" ng-options="charge_groups.value as charge_groups.name for charge_groups in chargeGroups" >        
-        <option value="" disabled selected>Select paid out group</option>
-      </select>
-    </fieldset>
-    <fieldset class="holder right">
-      <label translate>TAX_CHARGE_CODE_6</label>
-      <select ng-model="config.tax1_charge_code_id" ng-options="charge_code_for_one.id as charge_code_for_one.code for charge_code_for_one in availableTaxChargeCodesForTaxExemptOne" >        
-        <option value="" disabled selected>Select Tax Exempt 1</option>
-      </select>
-      <label translate>TAX_CHARGE_CODE_12</label>
-      <select ng-model="config.tax2_charge_code_id" ng-options="charge_code_for_two.id as charge_code_for_two.code for charge_code_for_two in availableTaxChargeCodesForTaxExemptTwo" >        
-        <option value="" disabled selected>Select Tax Exempt 1</option>
-      </select>
-      <label translate>TAX_CHARGE_CODE_21</label>
-      <select ng-model="config.tax3_charge_code_id" ng-options="charge_code_for_three.id as charge_code_for_three.code for charge_code_for_three in availableTaxChargeCodesForTaxExemptThree" >        
-        <option value="" disabled selected>Select Tax Exempt 3</option>
-      </select>
-    </fieldset>
-
-
-    <fieldset class="holder full-width">
-          
-          <div class="form-title">
-              <h3>
-                  <span>Charge Codes</span>
-              </h3>
-              <em class="status">
-                  <span>Select three charge codes</span>
-              </em>
-          </div>
-          <div class="entry has-sortable">
-              <label class="center_align"><em class="rate_roomtype_text">Available Charge Codes</em></label>
-
-              <ul class="boxes sortable ui-sortable short-list" data-type="source" data-drop="true"
-                  ng-model="config.availableTaxChargeCodes" style="overflow-y: scroll !important;"
-                  jqyoui-droppable="{multiple:true, onOver: 'onUnSelectChargeCode'}" data-j qyoui-options="{accept:'.selected_reports'}">
-
-                  <li ng-repeat="availableTaxChargeCode in config.availableTaxChargeCodes"
-                      data-drag="true"
-                      ng-model="config.availableTaxChargeCodes"
-                      jqyoui-draggable="{index: {{$index}}, animate:false, onStart:'hideCurrentDragItem', onStop:'showCurrentDragItem' }"
-                      data-jqyoui-options="{revert: 'invalid', helper:'clone',appendTo: 'body'}"
-                      class="available-reports li-draggable"
-                      ng-click="chooseAvailableChargeCode($index)"
-                      ng-class='{selected: chosenAvailableReports.indexOf($index) > -1}'>
-
-                      <span class="icons icon-handle"></span>
-                      <span class="icons icon-handle"></span>
-                      {{ availableTaxChargeCode.code }}
-                  </li>
-              </ul>
-          </div>
-          <div class="entry movers rates_mover">
-              <span class="top_mover">
-                  <span class="icons icon-mover-right to-target"
-                        data-type="target"
-                        ng-click="selectChosen()"
-                        ng-class="{active: chosenAvailableReports.length >= 1}"
-                        data-type="source">
-                      Select Charge Codes(s)
-                  </span>
-                  <span class="icons icon-mover-left to-source"
-                        data-type="source"
-                        ng-click="unSelectChosen()"
-                        ng-class="{active: chosenSelectedReports.length >= 1}">
-                      Un-select Charge Codes(s)
-                  </span>
-              </span>
-              <span>
-                  <div class="green_gradient icons">
-                      <span class="active to-source green_mover icons_rates"
-                            data-type="source"
-                            ng-click="selectAll()">
-                          Select Charge Codes(s)
-                      </span>
-                  </div>
-                  <div class="red_gradient icons">
-                      <span class="active to-target  red_mover icons_rates"
-                            data-type="target"
-                            ng-click="unSelectAll()">
-                          Un-select Charge Codes(s)
-                      </span>
-                  </div>
-              </span>
+    <fieldset class="holder left" ng-if="config.enabled">
+      <div class="form-title">
+        <h3><span>Paid Out</span> Settings </h3>       
       </div>
-          <div class="entry has-sortable">
-              <label class="center_align">
-                  <span class="assigned_room_text">Selected Charge Codes</span></label>
-              <ul class="boxes sortable ui-sortable short-list"
-                  data-type="target"
-                  data-drop="true"
-                  ng-model="config.selectedTaxChargeCodes"
-                  jqyoui-droppable="{multiple:true, onOver: 'onSelectReport'}"
-                  data-jqyoui-options="{accept:'.available-reports'}">
-                  <li ng-repeat="selectedTaxChargeCode in config.selectedTaxChargeCodes"
-                      ng-click="chooseSelectedChargeCode($index)"
-                      ng-class='{selected: chosenSelectedReports.indexOf($index) > -1}'
-                      class="selected-reports li-draggable"
-                      data-jqyoui-options="{revert: 'invalid', helper:'clone',appendTo: 'body'}"
-                      data-drag="true"
-                      ng-model="config.selectedTaxChargeCodes"
-                      jqyoui-draggable="{index: {{$index}}, animate:false, onStart:'hideCurrentDragItem', onStop:'showCurrentDragItem' }">
-                      <span class="icons icon-handle"></span>
-                      <span class="icons icon-handle"></span>
-                      {{ selectedTaxChargeCode.code }}
-                  </li>
-              </ul>
-          </div>
-      </fieldset>
+      <div class="entry">
+        <label translate>PAID_OUT_GROUP</label>
+        <select ng-model="config.paid_out_group_id" ng-options="charge_groups.value as charge_groups.name for charge_groups in chargeGroups" >        
+          <option value="" disabled selected>Select paid out group</option>
+        </select>
+      </div>
+    </fieldset>
+    <fieldset class="holder right" ng-if="config.enabled">
+      <div class="form-title">
+        <h3><span>Charge Code</span> Settings </h3>       
+      </div>
+      <div class="entry">
+        
+        <label translate>TAX_CHARGE_CODE_6</label>
+        <div class="select">
+          <select ng-model="config.tax1_charge_code_id" ng-options="charge_code_for_one.id as charge_code_for_one.code for charge_code_for_one in availableTaxChargeCodesForTaxExemptOne" >        
+            <option value="" disabled selected>Select Tax Charge Code</option>
+          </select>
+        </div>
+      </div>
+      <div class="entry">
+        <label translate>TAX_CHARGE_CODE_12</label>
+        <div class="select">
+          <select ng-model="config.tax2_charge_code_id" ng-options="charge_code_for_two.id as charge_code_for_two.code for charge_code_for_two in availableTaxChargeCodesForTaxExemptTwo" >        
+            <option value="" class="placeholder" disabled selected>Select Tax Charge Code</option>
+          </select>
+        </div>
+      </div>
+      <div class="entry">
+        <label translate>TAX_CHARGE_CODE_21</label>
+        <div class="select">
+          <select ng-model="config.tax3_charge_code_id" ng-options="charge_code_for_three.id as charge_code_for_three.code for charge_code_for_three in availableTaxChargeCodesForTaxExemptThree" >        
+            <option value="" disabled selected>Select Tax Charge Code</option>
+          </select>
+        </div>
+      </div>
+    </fieldset>
 </ad-common-parts-in-form-dir>
