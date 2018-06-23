@@ -227,7 +227,7 @@
                 </div>
                 <ad-toggle-button is-checked="zestSettings.scan_guest_id" label="{{'STATION_GUEST_ID_ACTIVATE_DESCRIPTION'| translate}}" div-class="full-width" is-disabled="zestSettings.kiosk_manual_id_scan"></ad-toggle-button>
                 <ad-toggle-button is-checked="zestSettings.scanner_use_v1_lib" label="{{'USE_V1_SCAN'| translate}}" div-class="full-width" is-disabled="zestSettings.kiosk_manual_id_scan"
-                ng-show="zestSettings.scan_guest_id"></ad-toggle-button>
+                is-hide="!zestSettings.scan_guest_id"></ad-toggle-button>
                 <ad-toggle-button is-checked="zestSettings.kiosk_manual_id_scan" label="{{'MANUAL_ID_VERIFFICATION'| translate}}" div-class="full-width" is-disabled="zestSettings.scan_guest_id"></ad-toggle-button>
                 <div class="entry full-width" ng-show="zestSettings.kiosk_manual_id_scan">
                     <label style="line-height: 1.5em" translate>ASSIGN_PIN_FOR_STAFF_TO_VERIFY_ID</label>
@@ -235,6 +235,7 @@
                         GO_TO_USERS
                     </button>
                 </div>
+                <ad-toggle-button is-checked="zestSettings.kiosk_staff_notification_sound" label="{{'STAFF_NOTIFICATION_SOUND'| translate}}" div-class="full-width" is-disabled="zestSettings.scan_guest_id" is-hide="!zestSettings.kiosk_manual_id_scan"></ad-toggle-button>
 
             </fieldset>
 
