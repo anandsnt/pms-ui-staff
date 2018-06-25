@@ -52,42 +52,28 @@ angular.module('admin').controller('adCRSCommonCtrl',
             $scope.chargeGroups = chargeGroups.data.charge_groups;
             $scope.availableTaxChargeCodesForTaxExemptOne = $scope.availableTaxChargeCodesForTaxExemptTwo = $scope.availableTaxChargeCodesForTaxExemptThree = taxChargeCodes.data.charge_codes;
         })();
-
-        $scope.changedTaxExemptOne = function(value) {
-            var taxExemptOne = _.findWhere(taxChargeCodes.data.charge_codes, {"id": $scope.config.tax1_charge_code_id}),
-                taxExemptTwo = _.findWhere(taxChargeCodes.data.charge_codes, {"id": $scope.config.tax2_charge_code_id})
-                taxExemptThree = _.findWhere(taxChargeCodes.data.charge_codes, {"id": $scope.config.tax3_charge_code_id});
-            switch (value) {
-                case "one":
-                    var taxExemptsToBeRemoved = [];
-
-                    taxExemptsToBeRemoved.push(taxExemptTwo);
-                    taxExemptsToBeRemoved.push(taxExemptThree);
-                    break;
-                case "two":
-                    lowBound = parseInt(input[0]);
-                    highBound = parseInt(input[1]);
-                    break;
-                case "three":
-                    lowBound = parseInt(input[0]);
-                    highBound = parseInt(input[1]);
-                    step = parseInt(input[2]);
-                    break;
-            }
-            
-            $scope.availableTaxChargeCodesForTaxExemptTwo = _.difference(taxChargeCodes.data.charge_codes, taxExemptsToBeRemoved);
-
-        }
-
-        $scope.changedTaxExemptTwo = function() {
-            var taxExemptsToBeRemoved = [],
-                taxExemptOne = _.findWhere(taxChargeCodes.data.charge_codes, {"id": $scope.config.tax2_charge_code_id}),
+        /*
+         * Changed tax exempt
+         * Update other tax fields
+         */
+        $scope.changedTaxExempt = function() {
+            var taxExemptsToBeRemovedForOne = [],
+                taxExemptsToBeRemovedForTwo = [],
+                taxExemptsToBeRemovedForThree = [],
+                taxExemptOne = _.findWhere(taxChargeCodes.data.charge_codes, {"id": $scope.config.tax1_charge_code_id}),
+                taxExemptTwo = _.findWhere(taxChargeCodes.data.charge_codes, {"id": $scope.config.tax2_charge_code_id}),
                 taxExemptThree = _.findWhere(taxChargeCodes.data.charge_codes, {"id": $scope.config.tax3_charge_code_id});
 
-            taxExemptsToBeRemoved.push(taxExemptOne);
-            taxExemptsToBeRemoved.push(taxExemptThree);
-            $scope.availableTaxChargeCodesForTaxExemptTwo = _.difference(taxChargeCodes.data.charge_codes, taxExemptsToBeRemoved);
-
+                taxExemptsToBeRemovedForOne.push(taxExemptTwo);
+                taxExemptsToBeRemovedForOne.push(taxExemptThree);
+                taxExemptsToBeRemovedForTwo.push(taxExemptOne);
+                taxExemptsToBeRemovedForTwo.push(taxExemptThree);
+                taxExemptsToBeRemovedForThree.push(taxExemptOne);
+                taxExemptsToBeRemovedForThree.push(taxExemptTwo);
+                $scope.availableTaxChargeCodesForTaxExemptOne = _.difference(taxChargeCodes.data.charge_codes, taxExemptsToBeRemovedForOne);
+                $scope.availableTaxChargeCodesForTaxExemptTwo = _.difference(taxChargeCodes.data.charge_codes, taxExemptsToBeRemovedForTwo);
+                $scope.availableTaxChargeCodesForTaxExemptThree = _.difference(taxChargeCodes.data.charge_codes, taxExemptsToBeRemovedForThree);
         }
+
     }
 ]);
