@@ -50,7 +50,7 @@ angular.module('reportsModule', [])
             resolve: {
                 generatedReportsList: function (RVReportsInboxSrv, $filter, $rootScope, $state) {
                     var params = {
-                        generated_date: $filter('date')($rootScope.serverDate, 'yyyy-MM-dd'),
+                        generated_date: $state.transition.params().date,
                         per_page: RVReportsInboxSrv.PER_PAGE,
                         user_id: $rootScope.userId,
                         page: $state.transition.params().page
@@ -60,7 +60,8 @@ angular.module('reportsModule', [])
                 }
             },
             params: {
-                page: 1
+                page: 1,
+                date: ''
             }            
         });
 
