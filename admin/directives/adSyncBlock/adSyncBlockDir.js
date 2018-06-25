@@ -4,7 +4,9 @@ admin.directive('adSyncBlock', function () {
             scope: {
                 config: '=',
                 interface: '@',
-                historicalDateRangeDays: '@'
+                historicalDateRangeDays: '@',
+                excludeToday: '=',
+                singleDate: '='
             },
             templateUrl: '/assets/directives/adSyncBlock/adSyncBlockPartial.html',
             controller: 'adSyncBlockCtrl'

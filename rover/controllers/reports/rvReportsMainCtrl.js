@@ -47,6 +47,8 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
             showDetails: false
         };
 
+        $scope.reportListCopy = JSON.parse(JSON.stringify(payload.reportsResponse.results));
+
         $scope.scrollToLast = function () {
             $timeout(function () {
                 if ($scope.$parent.myScroll.hasOwnProperty('FULL_REPORT_SCROLL')) {
