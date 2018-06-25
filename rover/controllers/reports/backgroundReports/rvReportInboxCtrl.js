@@ -257,6 +257,7 @@ angular.module('sntRover').controller('RVReportsInboxCtrl', [
 
         // Refresh report inbox
         $scope.refreshReportInbox = () => {
+            $scope.reportInboxPageState.returnDate = $scope.reportInboxData.filter.selectedDate;
             self.fetchGeneratedReports(1);
         };
 
@@ -427,6 +428,7 @@ angular.module('sntRover').controller('RVReportsInboxCtrl', [
             RVReportsInboxSrv.processReports($scope.reportList);
             $scope.reportInboxData.generatedReports = self.getFormatedGeneratedReports(generatedReportsList.results, $scope.reportList);
             $scope.totalResultCount = generatedReportsList.total_count;
+            $scope.reportInboxPageState.returnDate = $scope.reportInboxData.filter.selectedDate;
 
             $timeout(function() {
                $scope.$broadcast('updatePagination', PAGINATION_ID);
