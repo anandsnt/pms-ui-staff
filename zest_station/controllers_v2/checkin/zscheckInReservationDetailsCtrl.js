@@ -69,7 +69,7 @@ sntZestStation.controller('zsCheckInReservationDetailsCtrl', [
                         $scope.$emit(zsEventConstants.HIDE_BACK_BUTTON);
                         $state.go('zest_station.noCCPresentForCheckin');
                     }
-                    else{
+                    else {
                         if ($scope.isRateSuppressed()) {
                             $scope.selectedReservation.reservation_details.balance = 0;
                         }

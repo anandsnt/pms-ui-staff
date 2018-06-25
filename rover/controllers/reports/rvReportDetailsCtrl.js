@@ -1094,9 +1094,14 @@ sntRover.controller('RVReportDetailsCtrl', [
             // since we are loading the entire report and show its print preview
             // we need to keep a back up of the original report with its pageNo
             $scope.returnToPage = $_pageNo;
+            var perPageCount = 1000;
+
+            if ($rootScope.isBackgroundReportsEnabled) {
+                perPageCount = 99999;
+            }
 
             // should-we-change-view, specify-page, per-page-value
-            $scope.genReport(false, 1, 1000);
+            $scope.genReport(false, 1, perPageCount);
         }
 
         // add the print orientation before printing
@@ -1216,8 +1221,9 @@ sntRover.controller('RVReportDetailsCtrl', [
                         reportsSrv.setPrintClicked(false);
                         $scope.viewStatus.showDetails = false;
                         if ($state.$current.name !== 'rover.reports.show' && reportsSrv.getChoosenReport()) {
-                          reportsSrv.getChoosenReport().generatedReportId = null;  
+                          reportsSrv.setChoosenReport({});  
                         }
+                        sntActivity.stop("PRINTING_FROM_REPORT_INBOX");
                         
                     } else {
                         // load the report with the original page

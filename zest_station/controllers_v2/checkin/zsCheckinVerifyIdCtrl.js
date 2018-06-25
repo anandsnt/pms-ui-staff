@@ -38,11 +38,14 @@
 			};
 
 			$scope.ringBell = function() {
-				var audio = new Audio('/assets/zest_station/zsSounds/Doorbell.mp3');
-				audio.play();
+				if (!$scope.zestStationData.bellSound) {
+					$scope.zestStationData.bellSound = new Audio('/assets/zest_station/zsSounds/Doorbell.mp3');
+				}
+				$scope.zestStationData.bellSound.play();
 			};
 
 			$scope.goToNext = function() {
+				$scope.callBlurEventForIpad();
 				var successCallback = function(response) {
 					verfiedStaffId = response.user_id;
 					$scope.screenMode = 'GUEST_LIST';
