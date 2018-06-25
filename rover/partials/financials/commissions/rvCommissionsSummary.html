@@ -161,7 +161,7 @@
    </div>
    <!-- Add .no-pagination when there is no pagination -->
    <!-- Add .no-commisions-header when there is no header -->
-   <div class="commissions-list">
+   <div class="commissions-list no-print">
       <!-- Add .hidden if no results (Hide)-->
       <ul class="commissions-list-header" ng-show="commissionsData.accounts.length">
          <li class="expand">
@@ -300,4 +300,5 @@
          </div>
       </div>
    </div>
+   <div id="commissions-print" class="commissions-print" ng-include="'/assets/partials/financials/commissions/rvCommissionsSummaryPrint.html'"></div>
 </section>
