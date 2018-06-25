@@ -55,6 +55,10 @@ angular.module('sntRover').service('RVReportsInboxSrv', [
             var deferred = $q.defer(),            
                url = '/api/generated_reports';
 
+            if (_.isEmpty(params.generated_date) ) {
+              params.generated_date = $filter('date')($rootScope.serverDate, 'yyyy-MM-dd');  
+            }
+
             rvBaseWebSrvV2.getJSON(url, params)
             .then(function(data) {                
                 deferred.resolve(data);
