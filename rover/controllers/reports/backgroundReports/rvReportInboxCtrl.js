@@ -40,6 +40,10 @@ angular.module('sntRover').controller('RVReportsInboxCtrl', [
 
         // Navigate to new report request section
         $scope.createNewReport = () => {
+            // Reset the report list, this is required because some of the fields
+            // eg: sort_fields are formatted and don't work with the current values
+            // Hence restored the original list while naviagting to report dashboard
+            $scope.$parent.reportList = JSON.parse(JSON.stringify($scope.reportListCopy));
             $state.go('rover.reports.dashboard');
         };
 
@@ -82,6 +86,13 @@ angular.module('sntRover').controller('RVReportsInboxCtrl', [
             }
 
             return status;            
+        };
+
+        // Refreshes the scroller
+        self.refreshScroll = () => {
+            $timeout(() => {
+                $scope.refreshScroller(REPORT_INBOX_SCROLLER);                
+            }, 800);
         };
         
 
@@ -128,8 +139,8 @@ angular.module('sntRover').controller('RVReportsInboxCtrl', [
             $scope.setScroller(REPORT_INBOX_SCROLLER, scrollerOptions);            
         };
 
-        // Refreshes the scroller
-        self.refreshScroll = () => {
+        // Refreshes and set the scroller position
+        self.refreshAndAdjustScroll = () => {
             $timeout(() => {
                 $scope.refreshScroller(REPORT_INBOX_SCROLLER);
                 $timeout(() => {
@@ -141,7 +152,9 @@ angular.module('sntRover').controller('RVReportsInboxCtrl', [
 
         // Create date dropdown for the filter section
         self.createDateDropdownData = () => {
-            let hotelBusinessDate = new tzIndependentDate($rootScope.businessDate),
+            // Using the system date to show the date filter.Sometimes the business date and system date may
+            // be different for properties in dev env. 
+            let hotelBusinessDate = new tzIndependentDate($rootScope.serverDate),
                 hotelYesterday = new tzIndependentDate(hotelBusinessDate),
                 hotelDayBeforeYesterday = new tzIndependentDate(hotelBusinessDate),
                 hotelFourDaysBefore = new tzIndependentDate(hotelBusinessDate);
@@ -201,7 +214,7 @@ angular.module('sntRover').controller('RVReportsInboxCtrl', [
                     $scope.reportInboxData.generatedReports = self.getFormatedGeneratedReports(data.results, $scope.reportList);
                     $scope.totalResultCount = data.total_count;
                     self.refreshPagination();
-                    self.refreshScroll();
+                    self.refreshAndAdjustScroll();
                 },                
                 options = {
                     onSuccess: onReportsFetchSuccess,                    
@@ -327,7 +340,7 @@ angular.module('sntRover').controller('RVReportsInboxCtrl', [
         * @return none
         * */
         $scope.showGeneratedReport = function( selectedreport ) {
-            if (selectedreport.shouldShowExport && !selectedreport.shouldDisplayView ) {
+            if ( (selectedreport.shouldShowExport && !selectedreport.shouldDisplayView) || $scope.shouldDisableInboxItem(selectedreport) ) {
                 return;
             }
             
@@ -386,7 +399,7 @@ angular.module('sntRover').controller('RVReportsInboxCtrl', [
             var mainCtrlScope = $scope.$parent;
 
             setChoosenReport(report).then(function() {
-                mainCtrlScope.genReport(false, 1, 1000);
+                mainCtrlScope.genReport(false, 1, 99999);
             });
             reportsSrv.setPrintClicked(true);                       
             
@@ -398,7 +411,7 @@ angular.module('sntRover').controller('RVReportsInboxCtrl', [
                 selectedReportAppliedFilters: {},
                 generatedReports: [],
                 filter: {
-                    selectedDate: $filter('date')($rootScope.businessDate, 'yyyy-MM-dd'),
+                    selectedDate: $filter('date')($rootScope.serverDate, 'yyyy-MM-dd'),
                     searchTerm: ''
                 },
                 isReportInboxOpen: false
@@ -416,7 +429,7 @@ angular.module('sntRover').controller('RVReportsInboxCtrl', [
 
             self.refreshPagination();
 
-            self.refreshScroll();  
+            self.refreshAndAdjustScroll();  
 
             self.resetPreviousReportSelection();   
 

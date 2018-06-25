@@ -34,11 +34,12 @@
 								{{'DELIVER_MSG_TO_GUEST' | translate }}
 							</label>
 
-							<ad-textarea rows="2" ng-if="data.room_key_delivery_for_guestzest_check_in == 'front_desk'" div-class="full-width" text-area-class="full-width" value="data.key_delivery_message" label = "{{ 'ROOM_KEY_DELIVERY_MESSAGE_TITLE' | translate}}" placeholder = ""></ad-textarea>
+							<ad-textarea rows="2" ng-if="data.room_key_delivery_for_guestzest_check_in == 'front_desk'" div-class="full-width" text-area-class="full-width" value="data.key_delivery_message" label = "{{ 'ROOM_KEY_DELIVERY_MESSAGE_TITLE' | translate}}" placeholder = ""></ad-textarea>					
 
 							<ad-checkbox  is-checked="data.offer_mobilekey_from_zest" label="{{'OFFER_MOBILEKEY_LABEL' | translate }}" div-class="key-delivery-checkbox" span-class="checkbox-background"></ad-checkbox>
 
-							<ad-checkbox is-checked="data.show_oracode_in_room_ready_email" label="{{'SHOW_ORACODE_IN_ROOM_READY_EMAIL' | translate }}" div-class="key-delivery-checkbox" span-class="checkbox-background"></ad-checkbox>
+							<ad-checkbox is-checked="data.show_pincode_in_room_ready_email" label="{{'SHOW_PINCODE_IN_ROOM_READY_EMAIL' | translate }}" div-class="key-delivery-checkbox" span-class="checkbox-background"></ad-checkbox>
+							
 							<br>
 						</div>
 						<br>
@@ -90,6 +91,11 @@
 								<input ng-model="data.room_key_delivery_for_rover_check_in" type="radio" value="qr_code_tablet" name="guest-zest" id="type3" class="change-data">
 								{{'SHOW_QR_CODE_FOR_ROOM_KEY' | translate }}
 							</label>
+							<label class="radio" ng-class="{checked: data.room_key_delivery_for_rover_check_in == 'pin'}">
+								<span class="icon-form icon-radio" ng-class="{checked: data.room_key_delivery_for_rover_check_in == 'pin'}"></span>
+								<input ng-model="data.room_key_delivery_for_rover_check_in" type="radio" value="pin" name="guest-zest" id="type3" class="change-data">
+								{{'SHOW_PIN_FOR_ROOM_KEY' | translate }}
+							</label>
 							<label class="radio" ng-class="{checked: data.room_key_delivery_for_rover_check_in == 'no_key_delivery'}">
 								<span class="icon-form icon-radio" ng-class="{checked: data.room_key_delivery_for_rover_check_in == 'no_key_delivery'}"></span>
 								<input ng-model="data.room_key_delivery_for_rover_check_in" type="radio" value="no_key_delivery" name="guest-zest" id="type4" class="change-data">
@@ -138,6 +144,7 @@
                     </div>
                     <ad-toggle-button is-checked="data.enable_qr_code_encryption"
                                       label="{{'ACTIVATE_INACTIVATE'| translate}}"></ad-toggle-button>
+
                 </fieldset>
 				
 				<div class="actions float">

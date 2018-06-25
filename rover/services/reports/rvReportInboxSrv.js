@@ -28,7 +28,7 @@ angular.module('sntRover').service('RVReportsInboxSrv', [
 
         var self = this;
 
-        this.PER_PAGE = 10; 
+        this.PER_PAGE = 50; 
 
         var RESERVATION_STATUS_DEPOSIT_REPORT = [
             {id: -2, status: "DUE IN", selected: true},

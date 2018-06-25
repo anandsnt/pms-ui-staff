@@ -157,7 +157,12 @@
 "GUEST_ID_SETUP":"Guest ID Scan Setup",
 "VIEW_GUEST_ID":"View Scanned Guest IDs",
 "GUEST_ID_TYPES":"ID Types",
-"ID_TYPES_PASSPORT":"Passport"
+"ID_TYPES_PASSPORT":"Passport",
+
+
+"MANUAL_ID_VERIFFICATION": "Manual ID verification",
+"ASSIGN_PIN_FOR_STAFF_TO_VERIFY_ID": "To approve guest ID's, each staff member needs an staff ID. After saving this setting, please go to user setup to add",
+"GO_TO_USERS": "Go to User setup"
 
 
 
