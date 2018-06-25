@@ -51,6 +51,7 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
         $scope.reportInboxPageState = {
             returnPage: 1
         };
+        $scope.reportListCopy = JSON.parse(JSON.stringify(payload.reportsResponse.results));
 
         $scope.scrollToLast = function () {
             $timeout(function () {
