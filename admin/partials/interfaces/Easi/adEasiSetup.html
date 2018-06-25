@@ -50,7 +50,7 @@
         
         <label translate>TAX_CHARGE_CODE_6</label>
         <div class="select">
-          <select ng-model="config.tax1_charge_code_id" ng-options="charge_code_for_one.id as charge_code_for_one.code for charge_code_for_one in availableTaxChargeCodesForTaxExemptOne" >        
+          <select ng-model="config.tax1_charge_code_id" ng-change="changedTaxExemptOne()" ng-options="charge_code_for_one.id as charge_code_for_one.code for charge_code_for_one in availableTaxChargeCodesForTaxExemptOne" >        
             <option value="" disabled selected>Select Tax Charge Code</option>
           </select>
         </div>
