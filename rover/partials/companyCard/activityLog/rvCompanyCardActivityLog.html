@@ -45,7 +45,17 @@
                         </td>
                         <td class="date">{{item.date | date: dateFormat }}, {{item.time}}</td>
                         <td class="action">{{item.action}}</td>
-                        <td>{{item.details}}</td>
+                        <td class="details">
+                            <span ng-repeat="details in item.details">
+                                <span class="old" ng-show="isOldValue(details.old_value)">{{ details.key }}
+                                    <strong>{{ details.old_value }}</strong>
+                                </span>
+                                {{details.key}}
+                                <span class="currency">
+                                    <strong>{{details.new_value}}</strong>
+                                </span>                        
+                            </span>
+                        </td>
                     </tr>
                 </tbody>
             </table>

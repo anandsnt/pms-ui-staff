@@ -144,6 +144,19 @@ sntRover.controller('RVCompanyCardActivityLogCtrl',
 		loadAPIData();
     });
 
+	/**
+	*	checking Whether oldvalue of detail have any value
+	*	@return - Boolean
+	*/
+    $scope.isOldValue = function(value) {
+        if (value === "" || typeof value === "undefined" || value === null) {
+            return false;
+        }
+        else {
+            return true;
+        }
+    };
+
     init();
 
 }]);
