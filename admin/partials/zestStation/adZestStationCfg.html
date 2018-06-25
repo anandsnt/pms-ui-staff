@@ -235,10 +235,9 @@
                         GO_TO_USERS
                     </button>
                 </div>
-                <ad-toggle-button is-checked="zestSettings.kiosk_staff_notification_sound" label="{{'STAFF_NOTIFICATION_SOUND'| translate}}" div-class="full-width" is-disabled="zestSettings.scan_guest_id" is-hide="!zestSettings.kiosk_manual_id_scan"></ad-toggle-button>
 
             </fieldset>
-
+        
             <fieldset class="holder left">
                 <div class="form-title full-width">
                     <h3><span translate>ZEST_STATION_OFFLINE_SETTINGS</span> </h3>
@@ -256,6 +255,13 @@
                     selbox-class='placeholder' 
                     div-class="{{defaultLangsDivClass}}">
                 </ad-dropdown>
+            </fieldset>
+
+            <fieldset class="holder right" ng-show="zestSettings.kiosk_manual_id_scan">
+                <div class="form-title full-width">
+                    <h3><span translate>STAFF_NOTIFICATION_SOUND</span> </h3>
+                </div>
+                 <ad-toggle-button is-checked="zestSettings.kiosk_staff_notification_sound" label="{{'STAFF_NOTIFICATION_SOUND'| translate}}" div-class="full-width" is-disabled="zestSettings.scan_guest_id"></ad-toggle-button>
             </fieldset>
 
             <div class="actions float">
