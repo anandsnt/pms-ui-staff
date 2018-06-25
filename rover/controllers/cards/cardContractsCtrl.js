@@ -55,8 +55,7 @@ angular.module('sntRover').controller('cardContractsCtrl', ['$rootScope', '$scop
 			return rvPermissionSrv.getPermissionValue ('DELETE_CONTRACT');
 		};
 
-		clientWidth = $(window).width();
-		clientHeight = $(window).height();
+		
 		var drawGraph = function() {
 			$scope.highchartsNG = {
 				options: {
