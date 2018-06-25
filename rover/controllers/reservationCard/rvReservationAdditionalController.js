@@ -92,7 +92,9 @@ sntRover.controller('rvReservationAdditionalController', ['$rootScope', '$scope'
 				'segment_id': parseInt($scope.reservationParentData.demographics.segment)
 			}, updateSuccess, updateFailure);
 		};
-
+		/*
+		 * Update tax exempt data for a reservation
+		 */
 		$scope.updateTaxExemptData = function() {
 			var paramsToApi = {
 					"id": $scope.reservationParentData.reservationId,
@@ -120,8 +122,9 @@ sntRover.controller('rvReservationAdditionalController', ['$rootScope', '$scope'
 
 			$scope.callAPI(RVReservationSummarySrv.saveTaxExempt, options);
 		};
-
-
+		/*
+		 * Toggle action tax exempt
+		 */
 		$scope.toggleTaxExempt = function($event) {
 			$scope.additionalDetails.isTaxExemptEnabled = !$scope.additionalDetails.isTaxExemptEnabled;
 			if(!$scope.additionalDetails.isTaxExemptEnabled) {
