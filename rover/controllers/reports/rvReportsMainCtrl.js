@@ -47,7 +47,6 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
             showDetails: false
         };
 
-
         $scope.reportListCopy = JSON.parse(JSON.stringify(payload.reportsResponse.results));
 
         // Hold the page no when navigating back to report inbox from report details page
