@@ -1,0 +1,61 @@
+<form method="post" id="cc-activity-log" name="cc-activity-log" class="form card-tab inner-header activity-log">
+    
+    <div class="tab-header with-filters overlay">
+        <div class="entry">
+            <div class="select">
+                <select id="company-module">
+                    <option value="all" selected="">All Modules</option>
+                    <option value="payments">Commission</option>
+                    <option value="payments">Contracts</option>
+                    ... repeat for each module
+                </select>
+            </div>
+        </div>
+
+        <div class="entry">
+            <button type="button" class="button green">Show</button>
+        </div>
+    </div>
+
+    <!-- If there are open bills: -->
+    <div class="tab-details scrollable" ng-iscroll="rvCompanyCardActivityLogScroll" ng-iscroll-delay="100" ng-class="{ 'with-pagination': showPagination() }">
+        <div class="wrapper">
+            <table>
+                <thead>
+                    <tr>
+                        <th>
+                            <span ng-click="sortByAction('USERNAME')" class="sort" ng-class="{'sorting-asc':activityLogFilter.user == 'asc','sorting-desc':activityLogFilter.user == 'desc'}">User</span>
+                        </th> 
+                        <th>
+                            <span ng-click="sortByAction('DATE')" class="sort" ng-class="{'sorting-asc':activityLogFilter.date == 'asc','sorting-desc':activityLogFilter.date == 'desc'}">Date &amp; Time</span>
+                        </th>
+                        <th>
+                            <span ng-click="sortByAction('ACTION')" class="sort" ng-class="{'sorting-asc':activityLogFilter.action == 'asc','sorting-desc':activityLogFilter.action == 'desc'}">Action</span>
+                        </th>
+                        <th>
+                            <span>Details</span>
+                        </th> 
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="item in activityLogObj.response.results">
+                        <td class="name">
+                            {{item.user_name}}
+                            <span class="property">{{item.property}}</span>
+                        </td>
+                        <td class="date">{{item.date | date: dateFormat }}, {{item.time}}</td>
+                        <td class="action">{{item.action}}</td>
+                        <td>{{item.details}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        
+    </div>
+
+    <rv-pagination ng-show="showPagination()" page-options="activityLogPagination" page-data="activityLogObj.response"></rv-pagination>
+
+</form>
+
+
+
