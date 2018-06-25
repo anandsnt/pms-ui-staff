@@ -129,7 +129,7 @@ angular.module('admin').controller('adSyncBlockCtrl', ['$scope', '$rootScope', '
                 $scope.startDatePickerOptions.maxDate = new Date();
 
                 if ($scope.excludeToday) {
-                    let dateObj = new Date();
+                    var dateObj = new Date();
 
                     $scope.startDatePickerOptions.maxDate = tzIndependentDate(dateObj.setDate(dateObj.getDate() - 1));
                 }

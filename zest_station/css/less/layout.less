@@ -1642,6 +1642,14 @@
             #flexbox > .flex();
             #flexbox > .parent(row wrap, '', '', '');
 
+            &.centered {
+                #flexbox > .parent(row wrap, space-between, '', '');
+
+                .button {
+                    margin: 0;
+                }
+            }
+
             p {
                 font-size: 16px;
                 color: fade(@black, 40);
@@ -1939,6 +1947,40 @@
         }
     }
 
+/* Guest Lists / Verification ***/
+    #guestsList {
+        position: relative;
+        overflow: hidden;
+        padding: 0 10px;
+        #calc  > #height > .remove( 100%, 250px );
+
+        .select {
+            width: 300px;
+            padding: 0;
+            margin: 0 0 0 10px; 
+
+            select {
+                padding: 0 35px 0 20px;
+                font-size: 16px;
+            }
+        }
+
+        .iScrollVerticalScrollbar {
+            position: absolute;
+            width: 5px;
+            top: 0px;
+            right: 0px;
+            bottom: 0px;
+            z-index: 99;
+
+            .iScrollIndicator {
+                position: absolute;
+                width: 100%;
+                background: rgba(0, 0, 0, 0.15);
+                #rounded > .round();
+            }
+        }
+    }
 
 /******** ************************************* *******/
 /******** auto-complete plugin styling *******/

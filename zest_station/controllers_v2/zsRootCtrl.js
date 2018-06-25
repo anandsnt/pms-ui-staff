@@ -153,7 +153,10 @@ sntZestStation.controller('zsRootCtrl', [
             if ($scope.tagInEdit.language[currentLanguageCode] && !_.isUndefined($scope.tagInEdit.language[currentLanguageCode][tag])) {
                 return $scope.tagInEdit.language[currentLanguageCode][tag];
             } 
-            return defaultTranslations[tag];
+            // return defaultTranslations[tag];
+            // Showing default tags are causing issues like when some one edits any tags
+            // in admin leaving other tags are empty. So will revert this logic to what it was before.
+            return '';
         };
 
 		/**
