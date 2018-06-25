@@ -15,6 +15,7 @@ sntRover.controller('RVCompanyCardActivityLogCtrl',
             $scope.refreshScroller('rvCompanyCardActivityLogScroll');
         }, 500);
     };
+
     // Initialization.
     var init = function () {
         // Data set ninitialization
@@ -39,7 +40,6 @@ sntRover.controller('RVCompanyCardActivityLogCtrl',
 			api: loadAPIData,
 			perPage: $scope.activityLogObj.perPage
 		};
-
 		
         // Setting up scroller with refresh options.
         $scope.setScroller('rvCompanyCardActivityLogScroll', {});
@@ -101,7 +101,7 @@ sntRover.controller('RVCompanyCardActivityLogCtrl',
 		switch ( type ) {
 
 			case 'USERNAME' :
-				if ( filterObj.user === '' | filterObj.user === 'asc' ) {
+				if ( filterObj.user === '' || filterObj.user === 'asc' ) {
 					filterObj.user = 'desc';
 				}
 				else {
@@ -111,7 +111,7 @@ sntRover.controller('RVCompanyCardActivityLogCtrl',
 				break;
 
 			case 'DATE' :
-				if ( filterObj.date === '' | filterObj.date === 'asc' ) {
+				if ( filterObj.date === '' || filterObj.date === 'asc' ) {
 					filterObj.date = 'desc';
 				}
 				else {
@@ -121,7 +121,7 @@ sntRover.controller('RVCompanyCardActivityLogCtrl',
 				break;
 
 			case 'ACTION' :
-				if ( filterObj.action === '' | filterObj.action === 'asc' ) {
+				if ( filterObj.action === '' || filterObj.action === 'asc' ) {
 					filterObj.action = 'desc';
 				}
 				else {
