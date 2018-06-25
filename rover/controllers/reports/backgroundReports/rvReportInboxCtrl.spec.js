@@ -83,6 +83,9 @@ describe("RVReportsInboxCtrl", function() {
                     return deferred.promise;
                 });             
                 
+                $scope.reportInboxPageState = {
+                    returnPage: 1
+                };
                 
                 reportInboxCtrl.fetchGeneratedReports(1);
 
