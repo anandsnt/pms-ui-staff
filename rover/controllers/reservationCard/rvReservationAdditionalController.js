@@ -97,8 +97,14 @@ sntRover.controller('rvReservationAdditionalController', ['$rootScope', '$scope'
 			var paramsToApi = {
 					"id": $scope.reservationParentData.reservationId,
 					"tax_exempt": $scope.additionalDetails.isTaxExemptEnabled
+				},				
+				successCallBackOfUpdate = function(data) {
+					if(!$scope.additionalDetails.isTaxExemptEnabled) {
+						$scope.additionalDetails.taxExemptType = '';
+					}
 				},
 				failureCallBackOfUpdate = function(errorMessage) {
+					$scope.additionalDetails.isTaxExemptEnabled = !$scope.additionalDetails.isTaxExemptEnabled;
 					$scope.errorMessage = errorMessage;
 				}
 
@@ -108,6 +114,7 @@ sntRover.controller('rvReservationAdditionalController', ['$rootScope', '$scope'
 
 			var	options = {
 					params: paramsToApi,
+					successCallBack: successCallBackOfUpdate,
 					failureCallBack: failureCallBackOfUpdate
 				};
 
@@ -118,8 +125,7 @@ sntRover.controller('rvReservationAdditionalController', ['$rootScope', '$scope'
 		$scope.toggleTaxExempt = function($event) {
 			$scope.additionalDetails.isTaxExemptEnabled = !$scope.additionalDetails.isTaxExemptEnabled;
 			if(!$scope.additionalDetails.isTaxExemptEnabled) {
-				$scope.updateTaxExemptData();
-				$scope.additionalDetails.taxExemptType = '';
+				$scope.updateTaxExemptData();				
 			}
 		};
 
