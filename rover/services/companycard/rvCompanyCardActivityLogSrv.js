@@ -5,7 +5,7 @@ angular.module('sntRover').service('RVCompanyCardActivityLogSrv', [
 
 		this.fetchActivityLog = function(params) {
 			var deferred = $q.defer(),
-				url = '/api/account_actions/' + params.id;
+				url = '/api/account_actions';
 
 			rvBaseWebSrvV2.getJSON(url, params)
 			.then(function(data) {
