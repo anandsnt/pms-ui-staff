@@ -20,7 +20,7 @@
                 <label for="company-country">{{'COUNTRY' | translate}}<strong ng-if="roverObj.isAnyInterfaceEnabled"> * </strong></label>
                 <div class="select">
                     <select ng-model="contactInformation.address_details.country_id" ng-options="country.id as country.value for country in countries" >        
-                       <option value="" disabled selected translate>SELECT_COUNTRY</option>
+                       <option value="" translate>SELECT_COUNTRY</option>
                     </select>
                 </div>
             </div>
