@@ -14,9 +14,12 @@
             <div class="report-block" ng-if="sources.length">
                 <ul class="graph-summary">
                     <li class="header">
-                        <span class="sort title" ng-class="{'sorting-asc': reportStatus.sort.source.name && reportStatus.sort.source.ascending, 'sorting-desc': reportStatus.sort.source.name && !reportStatus.sort.source.ascending}" ng-click="sort()">Source</span>
+                        <span class="sort title" ng-class="{'sorting-asc': reportStatus.sort.source.name && reportStatus.sort.source.ascending, 'sorting-desc': reportStatus.sort.source.name && !reportStatus.sort.source.ascending}" ng-click="sort()" ng-if="!isBackgroundReportsEnabled">Source</span>
+                        <span class="title" ng-if="isBackgroundReportsEnabled">Source</span>
                         <!-- Add class 'sorting-asc' for ASC sort, and 'sorting-desc' for DESC sort -->
-                        <span class="sort count" ng-class="{'sorting-asc': !reportStatus.sort.source.name && reportStatus.sort.source.ascending, 'sorting-desc': !reportStatus.sort.source.name && !reportStatus.sort.source.ascending}" ng-click="sort(false,true)">#</span>
+                        <span class="sort count" ng-class="{'sorting-asc': !reportStatus.sort.source.name && reportStatus.sort.source.ascending, 'sorting-desc': !reportStatus.sort.source.name && !reportStatus.sort.source.ascending}" ng-click="sort(false,true)" ng-if="!isBackgroundReportsEnabled">#</span>
+
+                        <span class="count" ng-if="isBackgroundReportsEnabled">#</span>
                     </li>
 
                     <!-- Repeat this <li> for all sources -->
@@ -143,9 +146,14 @@
             <div class="report-block" ng-if="markets.length">
                 <ul class="graph-summary">
                     <li class="header">
-                        <span class="sort title" ng-class="{'sorting-asc': reportStatus.sort.market.name && reportStatus.sort.market.ascending, 'sorting-desc': reportStatus.sort.market.name && !reportStatus.sort.market.ascending}" ng-click="sort(true)">Market</span>
+                        <span class="sort title" ng-class="{'sorting-asc': reportStatus.sort.market.name && reportStatus.sort.market.ascending, 'sorting-desc': reportStatus.sort.market.name && !reportStatus.sort.market.ascending}" ng-click="sort(true)" ng-if="!isBackgroundReportsEnabled">Market</span>
+
+                        <span class="title" ng-if="isBackgroundReportsEnabled">Market</span>
+
                         <!-- Add class 'sorting-asc' for ASC sort, and 'sorting-desc' for DESC sort -->
-                        <span class="sort count" ng-class="{'sorting-asc': !reportStatus.sort.market.name && reportStatus.sort.market.ascending, 'sorting-desc': !reportStatus.sort.market.name && !reportStatus.sort.market.ascending}" ng-click="sort(true,true)">#</span>
+                        <span class="sort count" ng-class="{'sorting-asc': !reportStatus.sort.market.name && reportStatus.sort.market.ascending, 'sorting-desc': !reportStatus.sort.market.name && !reportStatus.sort.market.ascending}" ng-click="sort(true,true)" ng-if="!isBackgroundReportsEnabled">#</span>
+
+                        <span class="count" ng-if="isBackgroundReportsEnabled">#</span>
                     </li>
                     <!-- Repeat this <li> for all markets -->
                     <li ng-repeat="marketName in markets" ng-class="{'undefined' : marketName == 'Not Defined'}">

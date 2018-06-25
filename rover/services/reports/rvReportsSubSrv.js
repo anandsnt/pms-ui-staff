@@ -19,6 +19,49 @@ angular.module('sntRover').service('RVreportsSubSrv', [
         service.setIntoStore = function(key, value) {
             store[key] = value;
         };
+        // Holds data for Generated Inbox report for pagination
+        service.cachedInboxReport = {};
+        /**
+         * Handle pagination for generated Inbox report
+         * in the below service methods
+         * @param  {Object} params {page: per_page}
+         * @return {Object} processed response with paginated result
+         */
+        service.processResults = function(params) {
+            var results = angular.copy(service.cachedInboxReport).results,
+                start = (params.page - 1) * params.per_page,
+                end = start + params.per_page,
+                paginatedResult = _.isArray(results) ? results.slice(start, end)
+                    : results;
+
+            return paginatedResult;
+        };
+        /**
+         * Process Total Result Row vallue- Returns null
+         * until the page is NOT last one
+         * @param  {Object} params {page: per_page}
+         * @return {Object} processed total result row or Null
+         */
+        service.processToatlResultRow = function(params) {
+            var response = angular.copy(service.cachedInboxReport),
+                toatalCount = response.total_count,
+                lastPage = Math.ceil(toatalCount / params.per_page);
+
+            return params.page === lastPage ? response.results_total_row : null;
+        };
+        /**
+         * Abstract the response based on params
+         * @param  {Object} params {page: per_page}
+         * @return {Object} processed response
+         */
+        service.getcachedInboxReportByParams = function(params) {
+            var response = angular.copy(service.cachedInboxReport);
+
+            response.results = service.processResults(params);
+            response.results_total_row = service.processToatlResultRow(params);
+            response.isPaginatedResponse = true;
+            return response;
+        };
 
         /**
         * centralised method for making api request and managing promises
@@ -46,7 +89,7 @@ angular.module('sntRover').service('RVreportsSubSrv', [
                 } else {
                     rvBaseWebSrvV2.getJSONWithSpecialStatusHandling(async_callback_url).then(function(data) {
                         // if the request is still not proccesed
-                        if ((!!data.status && data.status === 'processing_not_completed') || data === 'null') {
+                        if (!!data.status && data.status === 'processing_not_completed' || data === 'null') {
                             // is this same URL ?
                             setTimeout(function() {
                                 console.info('POLLING::-> for print response');
@@ -155,6 +198,24 @@ angular.module('sntRover').service('RVreportsSubSrv', [
             });
         };
 
+        service.fetchGeneratedReportDetails = function(params) {
+            var deferred = $q.defer();
+            var url = '/api/generated_reports/' + params.id + '/view';
+
+            if (params.page === 1) {
+                rvBaseWebSrvV2.getJSON(url).then(function(data) {
+                    service.cachedInboxReport = data;
+                    deferred.resolve(service.getcachedInboxReportByParams(params));
+                }, function(data) {
+                    deferred.reject(data);
+                });
+            } else {
+                deferred.resolve(service.getcachedInboxReportByParams(params));
+            }
+
+            return deferred.promise;
+        };
+
         service.getReservationsOfTravelAgents = function(params) {
             return callApi({
                 // no name here since we dont want to cache it in the store ever
@@ -208,7 +269,8 @@ angular.module('sntRover').service('RVreportsSubSrv', [
                 params: params,
                 resKey: 'results'
             });
-        };
+        };     
+
 
         service.fetchMarkets = function(params) {
             return callApi({
@@ -300,7 +362,7 @@ angular.module('sntRover').service('RVreportsSubSrv', [
         service.fetchRateTypesAndRateList = function() {
             return callApi({
                 name: 'rateTypeAndRateList',
-                method: 'getJSON',
+                method: 'postJSON',
                 url: '/api/rates/list',
                 resKey: 'rates'
                 // params: {
@@ -319,12 +381,14 @@ angular.module('sntRover').service('RVreportsSubSrv', [
             });
         };
 
-        service.fetchRoomTypeList = function() {
+        service.fetchRoomTypeList = function(params) {
+            params = params || {};
             return callApi({
                 name: 'roomTypeList',
                 method: 'getJSON',
                 url: 'api/room_types',
-                resKey: 'results'
+                resKey: 'results',
+                params: params
             });
         };
 
@@ -355,7 +419,7 @@ angular.module('sntRover').service('RVreportsSubSrv', [
         };
 
         service.fetchScheduleFrequency = function(exportOnly) {
-            var url = exportOnly ? 'admin/export_frequencies.json?export_only=true' : 'admin/export_frequencies.json'
+            var url = exportOnly ? 'admin/export_frequencies.json?export_only=true' : 'admin/export_frequencies.json';
 
             return callApi({
                 method: 'getJSON',
@@ -519,12 +583,15 @@ angular.module('sntRover').service('RVreportsSubSrv', [
             });
         };
 
-        service.fetchTravelAgents = function() {
+        service.fetchTravelAgents = function(params) {
+            params = params || {};
+
             return callApi({
                 name: 'accounts',
                 method: 'getJSON',
                 url: ' /api/reports/list_travel_agents',
-                resKey: 'travel_agents'
+                resKey: 'travel_agents',
+                params: params
             });
         };
 
@@ -540,23 +607,112 @@ angular.module('sntRover').service('RVreportsSubSrv', [
             });
         };
 
+        /**
+         * Fetch group by id
+         * @param {Number} id identifier for the group
+         * @return {Promise} promise
+         */
+        service.fetchGroupById = function(id) {
+            return callApi({
+                method: 'getJSON',
+                url: '/api/groups/' + id + '/group_name'
+            });
+        };
+
+        /**
+         * Fetch accounts (CC/TA) by id
+         * @param {Number} id identifier for the account
+         * @return {Promise} promise
+         */
+        service.fetchAccountsById = function(id) {
+            return callApi({
+                method: 'getJSON',
+                url: '/api/accounts/' + id
+            });
+        };
+
+        /**
+         * Fetch rate types
+         * @return {Promise} promise
+         */
+        service.fetchRateTypes = function() {
+            return callApi({
+                method: 'getJSON',
+                url: '/api/rate_types.json?sort_field=is_active&sort_dir=false&per_page=1000&page=1'
+            });
+        };
+
         // Method to get the revenue and tax of accounts
         // @data - params to API
         service.getRevenueAndTax = function(data) {
             var deferred = $q.defer(),
                 url = '/api/accounts/revenue_and_tax';
 
-                rvBaseWebSrvV2.getJSON(url, data.postParamsToApi).then(function(revenueData) {
-                    revenueData.accountVatType = data.accountVatType;
-                    revenueData.isPrint = data.isPrint;
-                    revenueData.accountTypeId = data.accountTypeId;
-                    deferred.resolve(revenueData);
-                }, function(data) {
-                    deferred.reject(data);
-                });
+            rvBaseWebSrvV2.getJSON(url, data.postParamsToApi).then(function(revenueData) {
+                revenueData.accountVatType = data.accountVatType;
+                revenueData.isPrint = data.isPrint;
+                revenueData.accountTypeId = data.accountTypeId;
+                deferred.resolve(revenueData);
+            }, function(data) {
+                deferred.reject(data);
+            });
 
             return deferred.promise;
-        }
+        };
+
+        /**
+         * Fetch rate info for an array of rate ids
+         * @param {Object} params hold array of rate ids
+         * @return {Promise}
+         */
+        service.fetchRateDetailsByIds = (params) => {
+            var deferred = $q.defer(),
+                url = '/api/rates/list';
+
+            rvBaseWebSrvV2.postJSON(url, params).then(function(response) {
+                deferred.resolve(response.rates);
+            }, function(error) {
+                deferred.reject(error);
+            });
+
+            return deferred.promise;
+        };
+
+        /**
+         * Fetch addons name for given array of addon ids
+         * @param {Object} contains an array of ids
+         * @return {Promise}
+         */
+        service.fetchAddonsByIds = (params) => {
+            var deferred = $q.defer(),
+                url = '/api/addons/names_list';
+
+            rvBaseWebSrvV2.postJSON(url, params).then(function(response) {
+                deferred.resolve(response.results);
+            }, function(error) {
+                deferred.reject(error);
+            });
+
+            return deferred.promise;
+        }; 
+
+        /**
+         * Fetch travel agents by ids
+         * @params {Object} contains an array of ids
+         * @return {Promise}
+         */
+        service.fetchTravelAgentsByIds = (params) => {
+            var deferred = $q.defer(),
+                url = '/api/reports/list_travel_agents';
+
+            rvBaseWebSrvV2.getJSON(url, params).then(function(response) {
+                deferred.resolve(response.travel_agents);
+            }, function(error) {
+                deferred.reject(error);
+            });
+
+            return deferred.promise;
+        };        
 
         return service;
     }
