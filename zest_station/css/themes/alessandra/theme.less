@@ -1,0 +1,187 @@
+/* StayNTouch Zest Station Styles | Amrath Theme */
+
+/* 1. COLORS
+==========================================================*/
+    @brandColor:            #cea83a;
+    
+    @textColor:             @black;
+    @backgroundColor:       #f4f4f4;
+    
+    @actionColor:           @white;
+    @actionBackground:      @brandColor;
+    
+    @inputBackground:       #707070;
+    @transparentColor:      rgba(0,0,0,.5);
+
+/* 2. TYPOGRAPHY
+==========================================================*/
+
+    @fontFamily: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+
+
+/* 3. IMAGES
+==========================================================*/
+    @background: @backgroundColor;
+    @backgroundSize: '';
+    
+    @headerIconsColor:      @black;
+    @headerIconsActive:     @black;
+
+    .icons { 
+        &.icon-create-key {
+            fill: @brandColor;
+            stroke: @brandColor;
+        }
+
+        &.icon-no-print { stroke: @white; }
+
+        &.icon-oos {
+            fill: @brandColor;
+        }
+
+        &.icon-arrow-left,
+        &.icon-arrow-right {
+            fill: none;
+            stroke: @white;
+        }
+    
+    }
+
+    .logo-svg{
+        background-image: url("../css/themes/alessandra/logo.svg");
+        background-repeat: no-repeat;
+        background-size: contain;
+        width: 143px;
+        height: 95px;
+        background-position: center; 
+    }
+
+/* 4. LAYOUT
+==========================================================*/
+    
+    #alessandra {
+ 
+        #header {
+            height: 135px;
+            background: @white;
+        }
+
+        #main {
+            #calc > #height > .remove(100%, 135px);
+            top: 135px;
+
+            &.centered {
+                padding-top: 100px;
+                #content {
+                    height: 100%;
+                }
+            }
+        }
+        .entry.input {
+            .icons {
+                fill: @brandColor;
+            }
+        }
+
+        input,
+        select,
+        button {
+            font-size: 1.3em;
+        }
+
+        input,
+        select {
+            background: @inputBackground;
+            color: @white;
+        }
+        
+        #logo {
+            padding-top: 0;
+
+            .logo {
+                width: auto;
+                height: 95px;
+            }
+        }
+
+        #options {
+            
+            .icon-text {
+                color: @white;
+            }
+
+            .icons {
+                fill: @white;
+            }
+
+            li.break {
+                padding-top: 60px;
+
+                &:after,
+                &:before {
+                    display: none;
+                }
+            }
+        }
+
+        #guests {
+            .button {
+                color: @white;
+                background: @black;
+            }
+        } 
+
+        .add-on-list {
+
+            // The second row is getting chunked on lower viewport height
+            @media screen and (max-height:800px) {
+                &.add-on-list-rows {
+                    li:nth-child(n+4) {
+                        margin-top: 0;
+                    }
+                }
+            }
+        }
+
+        .add-on {
+
+            .input-group {
+                input {
+                    color: @black;
+                }
+            }
+        }
+
+        #textual {
+            background: @white;
+             
+
+            &:before,
+            &:after {
+                background: @white;
+            }
+
+            #rate {
+                li {
+                    &.total {
+                        color: @black;
+                    }
+                }
+            }
+        }
+
+        #rate {
+            li {
+                &.sub {
+                    color: #a1a1a1;
+                }
+            }
+        }
+
+        #textual,
+        .popup {
+            .icons {
+                fill: @white;
+            }
+        }
+    }

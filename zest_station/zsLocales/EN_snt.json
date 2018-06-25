@@ -117,7 +117,7 @@
    "CLEAR_BTN": "Clear",
 
 
-   "CC_SIGN_TIMEOUT":"Hello? 你好? Здравствуйте? Are you still there?",
+   "CC_SIGN_TIMEOUT":"Are you still there?",
    "CC_SIGN_TIMEOUT_SUB":"We haven't detected your signature. Please select one of the following:",
    "CC_SIGN_TIMEOUT_SIGN":"Re-Sign",
 
@@ -623,6 +623,55 @@
    "GID_VERIFY_CLEAR_SIGNATURE": "Clear signature",
 
    "ENDING_WITH": "Ending with",
-   "EXPIRES": "Expires"
+   "EXPIRES": "Expires",
+   "MANUAL_KEY_PICKUP_HEADER": "Manual Key Pickup",
+   "MANUAL_KEY_PICKUP_MSG": "Please pick your key from the front desk",
+
+   "HOW_WOULD_YOU_LIKE_TO_PAY": "How Would You Like To Pay ?",
+   "USE_NEW_CARD": "Use a New Card",
+   "PAYMENT": "PAYMENT",
+   "PAYMENT_SUCCESSFULL": "Payment Successful",
+   "BALANCE_WAS_PAID": "Your balance was paid successfully!!",
+   "PAYMENT": "PAYMENT",
+
+   "CHECK_HANDLER_IS_RUNNING_MSG": "Please ensure that the Zest station Hanlder is running",
+   "HOW_WOULD_YOU_LIKE_TO_REFUND": "How Would You Like your Refund ?",
+
+   "CBA_IN_PROGRESS": "Deposit collection",
+   "CBA_IN_PROGRESS_SUB_TEXT": "For Deposit collection, please use the CBA device to proceed.",
+   "CBA_PAYMENT_FAILED": "Payment failed!",
+   "CBA_SWIPE_CARD_PLEASE": "Swipe Credit Card",
+
+
+
+   "NO_CC_TO_CHECKIN_HEADER": "Please reach out to a Staff Member.",
+   "NO_CC_TO_CHECKIN_SUB_HEADER": "A credit card is not attached to this reservation. Please see staff member for assistance with check in.",
+   "RETURN_TO_HOME": "Done",
+
+   "ADMIN_PIN_HEADER": "Staff member ID",
+   "ADMIN_PIN_SUB_HEADER": "Please enter your ID to proceed",
+
+   "PIN_ERROR_HEADER": "ID Error",
+   "PIN_ERROR_SUB_HEADER": "Please enter the correct ID",
+   "ABORT": "Abort",
+
+   "VERIFICATION_PENDING": "Verifications Pending",
+   "VERIFICATION_PENDING_MSG": "Some of the guests are not verified. You can either accept pending guests without ID",
+
+   "ACCEPT": "Accept",
+   "CANCEL": "CANCEL",
+
+   "VERIFY_GUESTS_HEADER": "Verify guest IDs",
+   "VERIFY_GUESTS_SUB_HEADER": "",
+
+   "ID_VERIFICATION_HEADER": "ID verification",
+   "ID_VERIFICATION_SUB_HEADER": "Please contact a staff member to review",
+
+   "CALL_STAFF": "Call Staff",
+
+   "NOT_REVIEWED": "Not Reviewed",
+   "ID_APPROVED": "ID Approved",
+   "ID_APPROVED_WITHOUT_ID": "Approved without ID"
+
 
 }

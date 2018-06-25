@@ -1,4 +1,4 @@
-sntRover.service('RVCommissionsSrv', ['$http', '$q', 'BaseWebSrvV2', '$window', function($http, $q, BaseWebSrvV2, $window) {
+sntRover.service('RVCommissionsSrv', ['$http', '$q', 'BaseWebSrvV2', function($http, $q, BaseWebSrvV2) {
 
     var that = this;
     /*
@@ -13,6 +13,20 @@ sntRover.service('RVCommissionsSrv', ['$http', '$q', 'BaseWebSrvV2', '$window', 
         // var url = 'ui/show?json_input=commissions/commissons.json&format=json';
 
         BaseWebSrvV2.getJSON(url, params).then(function(data) {
+            deferred.resolve(data);
+        }, function(data) {
+            deferred.reject(data);
+        });
+        return deferred.promise;
+    };
+
+    that.printCommissionOverview = function(params) {
+
+        var deferred = $q.defer();
+        var url = '/api/accounts/print_commission_overview';
+        // var url = 'ui/show?json_input=commissions/commissons.json&format=json';
+
+        BaseWebSrvV2.postJSON(url, params).then(function(data) {
             deferred.resolve(data);
         }, function(data) {
             deferred.reject(data);
@@ -49,25 +63,10 @@ sntRover.service('RVCommissionsSrv', ['$http', '$q', 'BaseWebSrvV2', '$window', 
     that.exportCommissions = function(params) {
 
         var deferred = $q.defer();
-        var url = '/api/reports/unpaid_commission_export.csv';
+        var url = '/api/reports/unpaid_commission_export';
 
-        $http({
-            method: 'GET',
-            url: url,
-            params: params
-        }).then(function(response) {
-            var data = response.data,
-                headers = response.headers;
-
-            var hiddenAnchor = angular.element('<a/>'),
-                blob = new Blob([data]);
-
-            hiddenAnchor.attr({
-                href: $window.URL.createObjectURL(blob),
-                target: '_blank',
-                download: headers()['content-disposition'].match(/filename[^;=\n]*=((['"]).*?\2|[^;\n]*)/)[1].replace(/['"]+/g, '')
-            })[0].click();
-            deferred.resolve(true);
+         BaseWebSrvV2.postJSON(url, params).then(function(data) {
+            deferred.resolve(data);
         }, function(data) {
             deferred.reject(data);
         });
@@ -80,6 +79,8 @@ sntRover.service('RVCommissionsSrv', ['$http', '$q', 'BaseWebSrvV2', '$window', 
         'innerPerPage': 25,
         'searchQuery': '',
         'minAmount': '',
+        'selectedExportType': 'standard',
+        'receipientEmail': '',
         'billStatus': {
             'value': 'UN_PAID',
             'name': 'UN_PAID'
@@ -111,7 +112,51 @@ sntRover.service('RVCommissionsSrv', ['$http', '$q', 'BaseWebSrvV2', '$window', 
         }, {
             'value': 'AMOUNT_DESC',
             'name': 'AMOUNT DESC'
-        }]
+        }],
+        'non_commissionable': false
+    };
+
+    that.onyxExportCommissions = function(params) {
+
+        var deferred = $q.defer();
+        var url = '/api/reports/onyx_commission_export';
+
+         BaseWebSrvV2.postJSON(url, params).then(function(data) {
+            deferred.resolve(data);
+        }, function(data) {
+            deferred.reject(data);
+        });
+        return deferred.promise;
+    };
+
+
+    that.fetchExportTypeData = function() {
+
+        var deferred = $q.defer();
+        var url = '/api/accounts/fetch_enabled_commission_interface';
+
+        BaseWebSrvV2.getJSON(url).then(function(data) {
+            deferred.resolve(data);
+        }, function(data) {
+            deferred.reject(data);
+        });
+        return deferred.promise;
+    };
+
+    this.fetchHotelBusinessDate = function() {
+        var deferred = $q.defer(),
+            url = '/api/business_dates/active';
+
+        BaseWebSrvV2.getJSON(url).then(
+            function(data) {
+                deferred.resolve(data);
+            },
+            function(errorMessage) {
+                deferred.reject(errorMessage);
+            }
+        );
+
+        return deferred.promise;
     };
 
 }]);

@@ -34,7 +34,7 @@ sntZestStation.controller('zsCheckinFinalCtrl', [
             var keyType = $stateParams.key_type;
 
             if (printOpted) {
-                if (keyType === 'ONLY_MOBILE_KEY') {
+                if (keyType === 'ONLY_MOBILE_KEY' || keyType === 'MANUAL') {
                     if (printSuccess) {
                         $scope.subtext = 'PRINT_SUCCESS';
                     } else {
@@ -55,7 +55,7 @@ sntZestStation.controller('zsCheckinFinalCtrl', [
                 }
 
             } else {
-                if (keyType === 'ONLY_MOBILE_KEY') {
+                if (keyType === 'ONLY_MOBILE_KEY' || keyType === 'MANUAL') {
                     if (emailSuccess) {
                         $scope.subtext = 'EMAIL_SUCCESS';
                     } else {

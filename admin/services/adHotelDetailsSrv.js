@@ -26,7 +26,7 @@ admin.service('ADHotelDetailsSrv', [
 	};
 
         that.fetchLanguages = function(deferred) {
-            var url = '/api/reference_values.json?type=language',
+            var url = '/admin/locales.json?',
                 UUID = ADHotelListSrv.getSelectedProperty();
 
             if (UUID) {
@@ -34,7 +34,7 @@ admin.service('ADHotelDetailsSrv', [
             }
 
             ADBaseWebSrvV2.getJSON(url).then(function(data) {
-                hotelDetailsData.languages = data;
+                hotelDetailsData.languages = data.locales;
                 deferred.resolve(hotelDetailsData);
             }, function(data) {
                 deferred.reject(data);

@@ -6,14 +6,27 @@ sntRover.controller('RVCommissionsSummaryController', ['$scope',
     '$timeout',
     '$window',
     '$state',
-    function($scope, $rootScope, $stateParams, $filter, RVCommissionsSrv, $timeout, $window, $state) {
+    'businessDate', 
+    'rvUtilSrv',
+    'sntActivity',
+    function($scope, $rootScope, $stateParams, $filter, RVCommissionsSrv, $timeout, $window, $state, businessDate, util, sntActivity) {
 
         BaseCtrl.call(this, $scope);
+        $scope.filterData = RVCommissionsSrv.filterData;
 
-        var updateHeader = function() {
+        var runDigestCycle = function() {
+            if (!$scope.$$phase) {
+                $scope.$digest();
+            }
+        };
+
+        var updateHeader = function(isPrint = false) {
             // Setting up the screen heading and browser title.
-            $scope.$emit('HeaderChanged', $filter('translate')('MENU_COMMISIONS'));
-            $scope.setTitle($filter('translate')('MENU_COMMISSIONS'));
+            // Need to change the header for print template
+            var title = isPrint ? $filter('translate')('COMMISSIONS_REPORT_TITLE') : $filter('translate')('MENU_COMMISIONS');
+            
+            $scope.$emit('HeaderChanged', title);
+            $scope.setTitle(title);
             $scope.$emit('updateRoverLeftMenu', 'commisions');
         };
 
@@ -266,7 +279,7 @@ sntRover.controller('RVCommissionsSummaryController', ['$scope',
         $scope.setFilterTab = function(selectedTab) {
             $scope.commissionsData = {};
             $scope.filterData.billStatus.value = selectedTab === 'ON_HOLD' ? 'ON_HOLD' : 'UN_PAID';
-            $scope.searchAccounts();
+            $scope.fetchAgentsData();
             $scope.filterData.filterTab = selectedTab;
         };
 
@@ -314,9 +327,15 @@ sntRover.controller('RVCommissionsSummaryController', ['$scope',
                             id: account.id,
                             'page': page,
                             'per_page': $scope.filterData.innerPerPage,
-                            'action_type': $scope.filterData.filterTab
+                            'action_type': $scope.filterData.filterTab,
+                            'begin_date': $scope.dateData.fromDateForAPI !== '' ? $filter('date')($scope.dateData.fromDateForAPI, 'yyyy-MM-dd') : '',
+                            'end_date': $scope.dateData.toDateForAPI !== '' ? $filter('date')($scope.dateData.toDateForAPI, 'yyyy-MM-dd') : '',
+                            'include_non_commissionable': $scope.filterData.non_commissionable
                         },
-                        successCallBack: onFetchListSuccess
+                        successCallBack: onFetchListSuccess,
+                        failureCallBack: function(response) {
+                            $scope.errorMessage = response;
+                        }
                     });
                 };
                 account.paginationData = {
@@ -325,6 +344,20 @@ sntRover.controller('RVCommissionsSummaryController', ['$scope',
                     perPage: $scope.filterData.innerPerPage
                 };
             });
+        };
+
+        var getParams = function() {
+            return {
+                        'query': $scope.filterData.searchQuery,
+                        'page': $scope.filterData.page,
+                        'per_page': $scope.filterData.perPage,
+                        'bill_status': $scope.filterData.billStatus.value,
+                        'sort_by': $scope.filterData.sort_by.value,
+                        'min_commission_amount': $scope.filterData.minAmount,
+                        'begin_date': $scope.dateData.fromDateForAPI !== '' ? $filter('date')($scope.dateData.fromDateForAPI, 'yyyy-MM-dd') : '',
+                        'end_date': $scope.dateData.toDateForAPI !== '' ? $filter('date')($scope.dateData.toDateForAPI, 'yyyy-MM-dd') : '',
+                        'include_non_commissionable': $scope.filterData.non_commissionable
+                    };
         };
 
         $scope.fetchAgentsData = function(pageNo) {
@@ -341,53 +374,213 @@ sntRover.controller('RVCommissionsSummaryController', ['$scope',
                     $scope.$broadcast('updatePagination', 'TA_LIST');
                 }, 100);
                 $scope.initialLoading = false;
+                $scope.sideFilterData.openSideFilter = false; // close the side filter
             };
 
             $scope.callAPI(RVCommissionsSrv.fetchCommissions, {
-                        params: {
-                            'query': $scope.filterData.searchQuery,
-                            'page': $scope.filterData.page,
-                            'per_page': $scope.filterData.perPage,
-                            'bill_status': $scope.filterData.billStatus.value,
-                            'sort_by': $scope.filterData.sort_by.value,
-                            'min_commission_amount': $scope.filterData.minAmount
-                        },
-                        successCallBack: onFetchSuccess
+                        params: getParams(),
+                        successCallBack: onFetchSuccess,
+                        failureCallBack: function(response) {
+                            $scope.errorMessage = response;
+                        }
                     });
-        };
-
-        $scope.searchAccounts = function() {
-            $scope.fetchAgentsData();
         };
 
         $scope.clearSearchQuery = function() {
             $scope.filterData.searchQuery = '';
             $scope.fetchAgentsData();
         };
+
+        $scope.openSideFilters = function() {
+            // set the filter data wrt applied filter data. Discard previous non applied filters
+            $scope.sideFilterData.minAmount = angular.copy($scope.filterData.minAmount);
+            $scope.sideFilterData.sort_by.value = angular.copy($scope.filterData.sort_by.value);
+            $scope.sideFilterData.non_commissionable = angular.copy($scope.filterData.non_commissionable);
+
+            $scope.sideFilterData.openSideFilter = !$scope.sideFilterData.openSideFilter;
+        };
+
+        $scope.returnNumberOfFilterApplied = function () {
+            var filtersSelected = 0;
+
+            if ($scope.filterData.minAmount.length) {
+                filtersSelected++;
+            }
+            if ($scope.filterData.sort_by.value.length) {
+                filtersSelected++;
+            }
+            if ($scope.filterData.non_commissionable) {
+                filtersSelected++;
+            }
+            return filtersSelected;
+        };
+
+        $scope.applyFilter = function() {
+            $scope.filterData.minAmount = angular.copy($scope.sideFilterData.minAmount);
+            $scope.filterData.sort_by.value = angular.copy($scope.sideFilterData.sort_by.value);
+            $scope.filterData.non_commissionable = angular.copy($scope.sideFilterData.non_commissionable);
+            $scope.fetchAgentsData();
+        };
+
         /* *************** search ends here **************************** */
         $scope.printButtonClick = function() {
-            $timeout(function() {
-                $window.print();
-                if (sntapp.cordovaLoaded) {
-                    cordova.exec(function() {}, function() {}, 'RVCardPlugin', 'printWebView', []);
-                }
-            }, 100);
+
+            var successCallback = function(data) {
+                $scope.printData = data;
+                $scope.$emit('hideLoader');
+                updateHeader(true);
+                $timeout(function() {
+                    $('head').append('<style id=\'print-orientation\'>@page { size: landscape; }</style>');
+                    $window.print();
+                    if (sntapp.cordovaLoaded) {
+                        cordova.exec(function() {}, function() {}, 'RVCardPlugin', 'printWebView', []);
+                    }
+                    updateHeader();
+                }, 500);
+            };
+
+            var printParams = getParams();
+            
+            printParams.travel_agent_ids =  _.pluck($scope.commissionsData.accounts, 'id'); 
+
+            $scope.callAPI(RVCommissionsSrv.printCommissionOverview, {
+                        params: printParams,
+                        successCallBack: successCallback,
+                        failureCallBack: function(response) {
+                            $scope.errorMessage = response;
+                        }
+                    });
         };
       
         $scope.navigateToTA = function(account) {
+            sntActivity.start('NAVIGATING_TO_TA_COMMISSIONS');
             // https://stayntouch.atlassian.net/browse/CICO-40583
             // Can navigate to TA even if commission is off.
             $state.go('rover.companycarddetails', {
                 id: account.id,
+                fromDate: $scope.dateData.fromDateForAPI !== '' ? $filter('date')($scope.dateData.fromDateForAPI, 'yyyy-MM-dd') : '',
+                toDate: $scope.dateData.toDateForAPI !== '' ? $filter('date')($scope.dateData.toDateForAPI, 'yyyy-MM-dd') : '',
                 type: 'TRAVELAGENT',
                 origin: 'COMMISION_SUMMARY'
             });
         };
 
+        var fetchExportTypeData = function() {
+            var options = {
+                params: {},
+                successCallBack: function(exportTypeData) {
+                    $scope.filterData.exportType = exportTypeData.export_type;
+                    $scope.filterData.non_commissionable = angular.copy(exportTypeData.export_type === 'onyx');
+                    $scope.sideFilterData.non_commissionable = angular.copy(exportTypeData.export_type === 'onyx');
+                    // fetch initial data
+                    $scope.fetchAgentsData();
+                },
+                failureCallBack: function() {
+                    $scope.filterData.exportType = '';
+                }
+            };
+
+            $scope.callAPI(RVCommissionsSrv.fetchExportTypeData, options);
+        };
+
+        $scope.dateData = {};
+
+        // set default from date as last week
+        var lastWeekDay = new Date(tzIndependentDate(businessDate.business_date));
+
+        lastWeekDay.setDate(lastWeekDay.getDate() - 7);
+        // default from date, as per CICO-13899 it will be business date
+        $scope.fromDate = $filter('date')(lastWeekDay,
+            $rootScope.dateFormat);
+        $scope.dateData.fromDateForAPI = $filter('date')(lastWeekDay,
+            'yyyy-MM-dd');
+
+        // set end date as previous day
+        var lastDay = new Date(tzIndependentDate(businessDate.business_date));
+
+        lastDay.setDate(lastDay.getDate() - 1);
+        $scope.toDate = $filter('date')(lastDay,
+            $rootScope.dateFormat);
+        $scope.dateData.toDateForAPI = $filter('date')(lastDay,
+            'yyyy-MM-dd');
+
+        var fromDateChoosed = function(date, datePickerObj) {
+            $scope.fromDate = date;
+            $scope.dateData.fromDateForAPI = tzIndependentDate(util.get_date_from_date_picker(datePickerObj));
+            runDigestCycle();
+            $scope.fetchAgentsData();
+        };
+
+        var toDateChoosed = function(date, datePickerObj) {
+            $scope.toDate = date;
+            $scope.dateData.toDateForAPI = tzIndependentDate(util.get_date_from_date_picker(datePickerObj));
+            runDigestCycle();
+            $scope.fetchAgentsData();
+        };
+
+        $scope.clearFromDate = function() {
+            $scope.fromDate = '';
+            $scope.dateData.fromDateForAPI = '';
+            // TODO: find why the input value is not clearing on setting model empty.
+            $('#commisions-date-from').val('');
+            runDigestCycle();
+            $scope.fetchAgentsData();
+        };
+
+        $scope.clearToDate = function() {
+            $scope.toDate = '';
+            $scope.dateData.toDateForAPI = '';
+            // TODO: find why the input value is not clearing on setting model empty.
+            $('#commisions-date-to').val('');
+            runDigestCycle();
+            $scope.fetchAgentsData();
+        };
+
+        // date picker options - Common
+        var commonDateOptions = {
+            showOn: 'button',
+            dateFormat: $rootScope.jqDateFormat,
+            changeYear: true,
+            changeMonth: true,
+            yearRange: "-5:+5"
+        };
+
+        // date picker options - From
+        $scope.fromDateOptions = _.extend({
+            onSelect: fromDateChoosed
+        }, commonDateOptions);
+
+        // date picker options - Departute
+        $scope.toDateOptions = _.extend({
+            onSelect: toDateChoosed
+        }, commonDateOptions);
+       
+
         (function() {
             updateHeader();
+            $scope.errorMessage = '';
             $scope.commissionsData = {};
-            $scope.filterData = RVCommissionsSrv.filterData;
+            $scope.filterData.filterTab = 'PAYABLE';
+            $scope.filterData.billStatus.value = 'UN_PAID';
+            // side filetr date is to be applied only after the apply filter button is clicked 
+            $scope.sideFilterData = {
+                'openSideFilter': false,
+                'minAmount': '',
+                'sort_by': {
+                    'value': 'NAME_ASC',
+                    'name': 'NAME_ASC'
+                },
+                'non_commissionable': false
+            };
+
+            // reset all filter values which are set from service
+            $scope.filterData.non_commissionable = $scope.sideFilterData.non_commissionable;
+            $scope.filterData.minAmount = '';
+            $scope.filterData.searchQuery = '';
+            $scope.filterData.selectedExportType = 'standard';
+            $scope.filterData.receipientEmail = '';
+
+            fetchExportTypeData();
             // set intial values
             $scope.noOfTASelected = 0;
             // if select ALL is applied, it will update all items in other pages also.
@@ -403,8 +596,6 @@ sntRover.controller('RVCommissionsSummaryController', ['$scope',
             };
             $scope.setScroller('commissionOverViewScroll', {});
             $scope.initialLoading = true;
-            // fetch initial data
-            $scope.fetchAgentsData();
         })();
 
     }

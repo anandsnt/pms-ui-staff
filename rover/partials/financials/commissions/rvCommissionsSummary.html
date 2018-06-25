@@ -1,5 +1,6 @@
 <!-- Search form -->
-<form method="get" action="" name="commisions-search-form" id="commisions-search-form" class="search-form has-options two-options" role="search">
+<form method="get" action="" class="search-form has-dates commissions" role="search">
+
    <!-- Add .commision-checked when one or more commisions are checked -->
    <div class="entry search">
       <!-- add class .visible when keywords are entered -->
@@ -7,30 +8,79 @@
       <span class="icons icon-clear-search" translate>CLEAR_QUERY</span>
       </button>
       <button class="icons icon-search" translate>SEARCH</button>
-      <input name="commisions-query" class="query" placeholder="Search by Agent Name, IATA Number or City" type="search" autocomplete="off" ng-model="filterData.searchQuery" ng-change="searchAccounts()">
+      <input name="commisions-query" class="query" placeholder="Search by Agent Name, IATA Number or City" type="search" autocomplete="off" ng-model="filterData.searchQuery" ng-change="fetchAgentsData()">
    </div>
-   <div class="entry options">
-      <div class="input with-label">
-         <label for="min-amount">{{'MIN_AMOUNT' | translate}}({{ ::currencySymbol }})</label>
-         <input type="text" ng-model="filterData.minAmount" id="min-amount" ng-change="searchAccounts()">
-      </div>
-      <div class="select with-label larger-select">
-         <label for="sort-by" translate>SORT_BY</label>
-         <select ng-init="filterData.sort_by = filterData.sortOptions[0]" ng-model="filterData.sort_by" ng-change="searchAccounts()" id="sort-by"  ng-options="option.name for option in filterData.sortOptions">
-         </select>
-      </div>
+   <div class="entry dates">
+    <div class="entry-data has-datepicker">
+        <label for="commisions-date-from">From</label>
+        <button type="button" class="clear-query" ng-class="{'visible': fromDate.length > 0}" ng-click="clearFromDate()"><span class="icons icon-clear-search">Clear query</span></button>
+        <!-- add class .visible when date selected -->
+       <input name="commisions-date-to"  id="commisions-date-from" class="datepicker" readonly type="text" rv-clear-text-box listen-this="fromDate" ui-date="fromDateOptions" value="{{fromDate}}" />        
+      <!--  <input id="commisions-date-drom" class="datepicker" ui-date="fromDateOptions"
+                               ng-model="fromDate" value="" readonly/> -->
+
+    </div>
+    <div class="entry-data has-datepicker">
+        <label for="commisions-date-to">To</label>
+        <button type="button" class="clear-query"  ng-class="{'visible': toDate.length > 0}" ng-click="clearToDate()"><span class="icons icon-clear-search">Clear query</span></button>
+        <!-- add class .visible when date selected -->
+       <input name="commisions-date-to"  id="commisions-date-to" class="datepicker" readonly type="text" ui-date="toDateOptions" value="{{toDate}}" rv-clear-text-box listen-this="toDate" />
+
    </div>
-   <div class="entry actions">
-      <button type="button" class="button blue with-icon only-icon" ng-click="printButtonClick()">
-      <span class="icons icon-print"></span>
-      </button>
    </div>
+
+    <div class="entry actions">
+        <button type="button" class="button white with-icon only-icon" click-touch="openSideFilters()" ng-class="{'active': sideFilterData.openSideFilter}"> <!-- Add class 'active' when clicked to show filters -->
+            <span class="count" ng-hide="returnNumberOfFilterApplied() === 0">{{ returnNumberOfFilterApplied()}}</span>
+            <span class="icons icon-filter" ng-class="{'active': sideFilterData.openSideFilter}"></span> 
+        </button>
+        <button type="button" class="button blue with-icon only-icon" click-touch="printButtonClick()">
+            <span class="icons icon-print"></span>
+        </button>
+    </div>
+
 </form>
 <!-- Search pagination -->
 <rv-pagination ng-show="showPagination" page-options="paginationData" page-data="commissionsData.total_count"></rv-pagination>
 <!--  -->
 <!-- Search panel - WITH RESULTS -->
 <section class="content commissions-content" role="main" ng-hide="initialLoading">
+    <!-- Filters -->
+   <div class="commissions-filters" ng-class="{'visible': sideFilterData.openSideFilter}">
+       <div class="filters-header">
+           <h2 translate>FILTERS</h2>
+           <p translate>SELECT_FILTERS_AND_APPLY</p>
+       </div>
+       <div class="filters-list scrollable">
+           <!-- Attach iScroll here -->
+           <div class="wrapper">
+               <div class="entry">
+                   <label for="min-amount">{{'MIN_AMOUNT' | translate}}({{ ::currencySymbol }})</label>
+                   <input type="text" ng-model="sideFilterData.minAmount" id="min-amount">
+               </div>
+               <div class="entry">
+                   <label for="sort-by" translate>SORT_BY</label>
+                   <div class="select">
+                       <select ng-init="sideFilterData.sort_by = filterData.sortOptions[0]" ng-model="sideFilterData.sort_by" id="sort-by" ng-options="option.name for option in filterData.sortOptions">
+                        </select>
+                   </div>
+               </div>
+               <div class="entry">
+                   <label for="sort-by">{{'INCLUDE' | translate}}</label>
+                   <label class="checkbox">
+                       <!-- Add Class "checked" if L83 is checked -->
+                       <span class="icon-form icon-checkbox" ng-class="{'checked': sideFilterData.non_commissionable}"></span>
+                       <!-- Add Class "checked" if L83 is checked -->
+                       <input type="checkbox" ng-model="sideFilterData.non_commissionable" ng-class="{'checked': sideFilterData.non_commissionable}"/> {{ 'NON_COMMISSIONABLE_BILLS' | translate }}
+                   </label>
+               </div>
+           </div>
+       </div>
+       <div class="actions">
+           <button type="button" class="button green" click-touch="applyFilter()" translate>APPLY</button>
+       </div>
+   </div>
+
    <!-- When searching, add .searching-->
    <div class="commissions-header searching" ng-controller="RVCommisionsHeaderCtrl">
       <ul class="filters" ng-hide="areAllAgentsSelected() || areAgentsPartialySelected() || areAnyReservationsPartialySelected()">
@@ -105,13 +155,13 @@
          </li>
          <li>
             <span translate>TOTAL_OWING</span>
-            <span class="amount red">{{ ::currencySymbol }}{{ ::commissionsData.amount_totals.owing | number: precisonTwo }}</span>
+            <span class="amount red">{{ ::currencySymbol }}{{ commissionsData.amount_totals.owing | number: precisonTwo }}</span>
          </li>
       </ul>
    </div>
    <!-- Add .no-pagination when there is no pagination -->
    <!-- Add .no-commisions-header when there is no header -->
-   <div class="commissions-list">
+   <div class="commissions-list no-print">
       <!-- Add .hidden if no results (Hide)-->
       <ul class="commissions-list-header" ng-show="commissionsData.accounts.length">
          <li class="expand">
@@ -250,4 +300,5 @@
          </div>
       </div>
    </div>
+   <div id="commissions-print" class="commissions-print" ng-include="'/assets/partials/financials/commissions/rvCommissionsSummaryPrint.html'"></div>
 </section>

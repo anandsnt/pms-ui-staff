@@ -299,6 +299,7 @@ admin.controller('adRoomDetailsCtrl', ['$timeout', '$scope', '$rootScope', 'ADRo
 		postData.suite_room_numbers = _.pluck($scope.data.suite_rooms, "room_number");
 		postData.is_suite_or_pseudo = $scope.isSuite || _.findWhere($scope.data.room_types, {"value": postData.room_type_id}).is_pseudo;
         postData.hk_section_id = $scope.data.hk_section_id;
+        postData.is_component_suite_door = $scope.data.is_component_suite_door;
 		// to get selected features
 		for (var i = 0; i < $scope.data.room_features.length; i++) {
 			if ($scope.data.room_features[i].selected === true ) {

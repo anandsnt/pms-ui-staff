@@ -16,4 +16,8 @@
 "DEBUG_DEVICE_USER_LABEL": "Last logged in user :",
 "START_LABEL" : "Started at :",
 "DEBUG_DEVICE_NAME_LABEL" : "Device name :",
-"END_LABEL" : "Ends at :"
+"END_LABEL" : "Ends at :",
+"APP_VERSION": "App version",
+"BUILD_STATUS": "Service Update status",
+"BUILD_STATUS_INFO": "Service Update status info",
+"SERVICE_TYPE": "Service Type"

@@ -88,8 +88,8 @@ angular.module('sntRover').controller('rvGroupAddRoomsAndRatesPopupCtrl', [
 		 * @return {[type]}              [description]
 		 */
 		$scope.changeBestAvailableRate = function(row) {
-			var roomType = _.findWhere($scope.roomTypes, {
-				"room_type_id": row.room_type_id
+			var roomType = _.find($scope.roomTypes, function (roomType) {
+				return roomType.room_type_id == row.room_type_id;
 			});
 
 			if (roomType) {
@@ -201,11 +201,25 @@ angular.module('sntRover').controller('rvGroupAddRoomsAndRatesPopupCtrl', [
 			return params;
 		};
 
+		// Checks whether single rate is configured for the room types added
+		var isSingleRateConfigured = function () {
+			var isSingleRateConfigured = _.every($scope.selectedRoomTypeAndRates, function (roomAndRate) {
+											return roomAndRate.single_rate !== null;
+										});
+
+			return isSingleRateConfigured;
+		};
+
 		/**
 		 * Check whether group custom rate is changed and open new popup if true, otherwise updates room
 		 * types and rates.  
 		 */ 
 		$scope.checkIfGroupCustomRateChanged = function() {
+			if (!isSingleRateConfigured()) {
+				$scope.errorMessage = [$filter('translate')('NO_SINGLE_RATE_CONFIGURED')];
+				return;
+			}
+
 			if (isGroupCustomRateChanged()) {
 				$scope.closeDialog();
 				$timeout(function(argument) {

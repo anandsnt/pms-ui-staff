@@ -19,7 +19,10 @@
                 <thead>
                     <tr>
                     <th ng-repeat="item in subHeaders track by $index">
-                        <span ng-class="{'sort': hasSort($index), 'sorting-asc': isAsc($index), 'sorting-desc': isDesc($index)}" ng-click="sortResultBy(chosenReport.sortByOptions[$index], chosenReport)">
+                        <span ng-class="{'sort': hasSort($index), 'sorting-asc': isAsc($index), 'sorting-desc': isDesc($index)}" ng-click="sortResultBy(chosenReport.sortByOptions[$index], chosenReport)" ng-if="!isBackgroundReportsEnabled">
+                            {{ item }}
+                        </span>
+                        <span ng-if="isBackgroundReportsEnabled">
                             {{ item }}
                         </span>
                     </th>
@@ -38,6 +41,6 @@
     </div>
 </div>
 
-<rv-pagination  page-options="paginationConfig" page-data="totalCount" ng-if="showReportDetails">
+<rv-pagination  page-options="paginationConfig" page-data="totalCount">
 </rv-pagination>
 

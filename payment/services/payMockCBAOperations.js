@@ -7,13 +7,13 @@ var CBAMockOperation = function() {
             binary_format: 'A',
             card_name: 'VISA ISMP',
             card_sequence: '01',
-            card_type: '',
+            card_type: 'VA',
             currency_code: '',
             custom_data: '',
             cvv: '',
             data_field: '',
             date_settlement: '200416',
-            expiry_date: '0418',
+            expiry_date: '0425',
             pan: '494052******5694',
             processed_offline: '0',
             rrn: '',
@@ -98,9 +98,9 @@ var CBAMockOperation = function() {
         switch (options.action) {
             case 'doPayment':
                 //  Success
-                /* options.successCallBack(paymentActionSuccessResponse) */
+                options.successCallBack(paymentActionSuccessResponse);
                 //  Failure
-                options.failureCallBack(paymentActionFailureResponse[2]);
+                // options.failureCallBack(paymentActionFailureResponse[2]);
                 //  Random
                 /* Math.random() > 0.5 ? options.successCallBack(paymentActionSuccessResponse)
                  : options.failureCallBack(paymentActionFailureResponse); */

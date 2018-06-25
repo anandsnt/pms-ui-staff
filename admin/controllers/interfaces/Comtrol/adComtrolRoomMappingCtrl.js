@@ -1,5 +1,5 @@
-admin.controller('adComtrolRoomMappingCtrl', ['$scope', 'adComtrolRoomMappingSrv', 'ngTableParams',
-    function($scope, adComtrolRoomMappingSrv, ngTableParams) {
+admin.controller('adComtrolRoomMappingCtrl', ['$scope', 'adComtrolRoomMappingSrv', 'ngTableParams', 'COMTROL_REF',
+    function($scope, adComtrolRoomMappingSrv, ngTableParams, COMTROL_REF) {
 
         ADBaseTableCtrl.call(this, $scope, ngTableParams);
 
@@ -8,12 +8,13 @@ admin.controller('adComtrolRoomMappingCtrl', ['$scope', 'adComtrolRoomMappingSrv
                 $scope.state.new = {
                     room_no: '',
                     external_room: '',
-                    external_extension: ''
+                    external_extension: '',
+                    external_access_level: ''
                 };
             },
             revertEdit = function() {
                 if ($scope.state.editRef) {
-                    $scope.data[$scope.state.selected] = angular.copy($scope.state.editRef);
+                    $scope.mappings[$scope.state.selected] = angular.copy($scope.state.editRef);
                     $scope.state.editRef = null;
                 }
             },
@@ -55,13 +56,15 @@ admin.controller('adComtrolRoomMappingCtrl', ['$scope', 'adComtrolRoomMappingSrv
         $scope.onSave = function() {
             var room_no = $scope.state.new.room_no,
                 external_room = $scope.state.new.external_room,
-                external_extension = $scope.state.new.external_extension;
+                external_extension = $scope.state.new.external_extension,
+                external_access_level = $scope.state.new.external_access_level;
 
             $scope.callAPI(adComtrolRoomMappingSrv.create, {
                 params: {
                     room_no: room_no,
                     external_room: external_room,
-                    external_extension: external_extension
+                    external_extension: external_extension,
+                    external_access_level: external_access_level
                 },
                 successCallBack: function() {
                     $scope.tableParams.reload();
@@ -125,6 +128,14 @@ admin.controller('adComtrolRoomMappingCtrl', ['$scope', 'adComtrolRoomMappingSrv
             });
         };
 
+        $scope.getAccessLevelName = function(externalCategoryName) {
+            var mappedExternalCode = _.find(COMTROL_REF.POS_POSTING_CATEGORIES, {
+                code: externalCategoryName
+            });
+
+            return mappedExternalCode && mappedExternalCode.value;
+        };
+
         $scope.fetchTableData = function($defer, params) {
             var getParams = $scope.calculateGetParams(params),
                 fetchSuccessOfItemList = function(data) {
@@ -139,6 +150,14 @@ admin.controller('adComtrolRoomMappingCtrl', ['$scope', 'adComtrolRoomMappingSrv
                 };
 
             $scope.invokeApi(adComtrolRoomMappingSrv.fetch, getParams, fetchSuccessOfItemList);
+        };
+
+        $scope.getAccessLevelName = function(id) {
+            var accessLevel = _.find(COMTROL_REF.ACCESS_LEVELS, {
+                id: parseInt(id, 10)
+            });
+
+            return accessLevel && accessLevel.value;
         };
 
         $scope.loadTable = function() {
@@ -160,6 +179,7 @@ admin.controller('adComtrolRoomMappingCtrl', ['$scope', 'adComtrolRoomMappingSrv
          */
         (function() {
             $scope.state = {
+                accessLevels: COMTROL_REF.ACCESS_LEVELS,
                 roomNumbers: null,
                 deletedCount: 0,
                 selected: null,
@@ -168,7 +188,8 @@ admin.controller('adComtrolRoomMappingCtrl', ['$scope', 'adComtrolRoomMappingSrv
                 new: {
                     room_no: '',
                     external_room: '',
-                    external_extension: ''
+                    external_extension: '',
+                    external_access_level: ''
                 }
             };
 

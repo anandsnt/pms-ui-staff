@@ -24,16 +24,29 @@
             <label for="guest-email" translate>EMAIL</label>
             <input name="guest-email" id="guest-email" value="" type="text" autocomplete="off" ng-model="DailogeState.sendConfirmatonMailTo"/>
         </div>
+
+        <div class="entry full-width" >
+            <label for="languages">Language</label>
+            <div  class="select">
+                <select convert-to-number iscroll-stop-propagation ng-model="cancellationData.locale">
+                    <option style="display:none" value=""></option>
+                    <option value="{{item.code}}" ng-if="item.is_show_on_guest_card" ng-repeat="item in languageData.languages"
+                        ng-selected="item.code === cancellationData.locale"
+                        >{{item.language}}</option>
+                </select>
+            </div>
+        </div>
+
         <div class="actions">
             <button type="button" class="button with-icon Grey" ng-show ="sendCancellationLetter && (!DailogeState.sendConfirmatonMailTo&&!isEmailAttached())">
                 <span class="icons icon-email"></span> 
                 {{'EMAIL_CANCELLATION' | translate}}
             </button>
-            <button type="button" class="button with-icon blue" ng-show ="sendCancellationLetter && (DailogeState.sendConfirmatonMailTo||isEmailAttached())" ng-click="sendReservationCancellation()">
+            <button type="button" class="button with-icon blue" ng-show ="sendCancellationLetter && (DailogeState.sendConfirmatonMailTo||isEmailAttached())" ng-click="sendReservationCancellation(cancellationData.locale)">
                 <span class="icons icon-email"></span>
                 {{'EMAIL_CANCELLATION' | translate}}
             </button>
-            <button type="button" class="button with-icon blue" ng-click="printReservationCancellation()" ng-show="printCancellationLetter" >
+            <button type="button" class="button with-icon blue" ng-click="printReservationCancellation(cancellationData.locale)" ng-show="printCancellationLetter" >
                 <span class="icons icon-print"></span> 
                 {{'PRINT_CANCELLATION' | translate}}
             </button>

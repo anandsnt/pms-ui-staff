@@ -1,3 +1,4 @@
+<div ng-include="'/assets/partials/common/notification_message.html'"></div>
 <div class="entry date-range" ng-show="uiChosenReport.hasCancelDateFilter">
     <label>{{ uiChosenReport.hasCancelDateFilter.description }} <span>(From)</span></label>
     <div class="has-datepicker">
@@ -17,6 +18,26 @@
     </div>
 </div>
 
+<!-- YEARLY VAT-->
+<div class="entry date-range" ng-show="uiChosenReport.hasVatYear">
+    <label>Year</label>
+    <select name="time-from" ng-model="uiChosenReport.year" ng-options="year.value as year.value for year in uiChosenReport.yearFilter" iscroll-stop-propagation>        
+    </select>
+</div>
+<div class="entry date-range" ng-show="uiChosenReport.hasCompanyTravelAgentWithOrWithoutVat">
+    <label>Company / Travel Agent</label>
+    <label class="checkbox inline" ng-class="{'checked':uiChosenReport.with_vat_number}">
+        <span class="icon-form icon-checkbox" ng-class="{'checked':uiChosenReport.with_vat_number}"></span>
+        <input type="checkbox" checked="checked" ng-model="uiChosenReport.with_vat_number">
+        Cards With Tax ID
+    </label>
+     <label class="checkbox inline" ng-class="{'checked':uiChosenReport.without_vat_number}">
+        <span class="icon-form icon-checkbox" ng-class="{'checked':uiChosenReport.without_vat_number}"></span>
+        <input type="checkbox" checked="checked" ng-model="uiChosenReport.without_vat_number">
+        Cards Without Tax ID
+    </label>
+</div>
+<!-- YEARLY VAT END-->
 <div class="entry date-range" ng-show="uiChosenReport.hasDepositDateFilter">
     <label>{{ uiChosenReport.hasDepositDateFilter.description }} <span>(From)</span></label>
     <div class="has-datepicker">

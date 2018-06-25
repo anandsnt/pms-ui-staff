@@ -35,7 +35,8 @@ sntRover.controller('RVAccountTransactionsPopupCtrl',
 			},
 			"id": $scope.selectedTransaction.id
 		};
-
+		
+		$scope.$emit('UPDATE_GENERATE_FOLIO_FLAG');
 	 	var options = {
 			params: params,
 			loader: 'NONE',
@@ -92,15 +93,17 @@ sntRover.controller('RVAccountTransactionsPopupCtrl',
    /*
 	 * API call edit transaction
 	 */
-	$scope.editCharge = function(newAmount, chargeCode, adjustmentReason) {
+	$scope.editCharge = function() {
 		$scope.$emit('showLoader');
 		var editData =
 		{
 			"updatedDate":
 						{
-				  			"new_amount": newAmount,
-				  			"charge_code_id": chargeCode.id,
-				  			"adjustment_reason": adjustmentReason
+				  			"new_amount": $scope.newAmount,
+				  			"charge_code_id": $scope.selectedChargeCode.id,
+				  			"adjustment_reason": $scope.adjustmentReason,
+							"reference_text": $scope.reference_text,
+							"show_ref_on_invoice": $scope.show_ref_on_invoice
 						},
 					"id": $scope.selectedTransaction.id
 		};
@@ -111,6 +114,7 @@ sntRover.controller('RVAccountTransactionsPopupCtrl',
 			successCallBack: hideLoaderAndClosePopup
 		};
 
+		$scope.$emit('UPDATE_GENERATE_FOLIO_FLAG');
 		$scope.callAPI (rvAccountTransactionsSrv.transactionEdit, options);
 
 	};

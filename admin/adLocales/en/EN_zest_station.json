@@ -147,7 +147,10 @@
 "CREDIT_CARD_AND_PAYMENT_OPTIONS": "Credit Card & Payment Options",
 "BYPASS_SIGNATURE_CAPTURE": "Bypass Signature Capture",
 "BYPASS_CC_AUTH": "Bypass CC Authorization (Always bypass CC collection)",
-"VIEW_CC_ON_FILE": "View CC on file"
+"COLLECT_BALANCE": "Collect balance",
+"MANUAL": "Manual",
+"SEND_NON_CC_TO_STAFF": "Only Allow CC Guaranteed Reservations",
+"SHOW_PIN_LABEL": "Show PIN code"
 
 
 

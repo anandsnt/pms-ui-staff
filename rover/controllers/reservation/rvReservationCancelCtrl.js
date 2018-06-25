@@ -20,7 +20,8 @@
 				cardNumber: "",
 				expiry_date: "",
 				card_type: "",
-				addToGuestCard: false
+				addToGuestCard: false,
+				locale: $scope.languageData.selected_language_code
 			};
 			$scope.cancellationData.paymentType = "";
 			$scope.DailogeState = typeof $scope.$parent.DailogeState !== 'undefined' ? $scope.$parent.DailogeState : {};
@@ -266,13 +267,9 @@
 
 			$scope.completeCancellationProcess = function() {
 				if ($scope.DailogeState.isCancelled) {
-					$state.go('rover.reservation.staycard.reservationcard.reservationdetails', {
-						"id": $scope.reservationData.reservationId || $scope.reservationParentData.reservationId,
-						"confirmationId": $scope.reservationData.confirmNum || $scope.reservationParentData.confirmNum,
-						"isrefresh": ($state.params && $state.params.isrefresh === 'false') // CICO-47743 - State not getting refreshed
-						
-					});					
+					$state.reload($state.current.name);
 				}
+
 				$scope.closeReservationCancelModal();
 			};
 
@@ -534,9 +531,10 @@
 			};
 
 			// Action against email button in staycard.
-			$scope.sendReservationCancellation = function() {
+			$scope.sendReservationCancellation = function(locale) {
 				var postData = {
 					"type": "cancellation",
+					"locale": locale,
 					"emails": $scope.isEmailAttached() ? [$scope.guestCardData.contactInfo.email] : [$scope.DailogeState.sendConfirmatonMailTo]
 				};
 				var data = {
@@ -579,7 +577,7 @@
 			};
 
 			// Action against print button in staycard.
-			$scope.printReservationCancellation = function() {
+			$scope.printReservationCancellation = function(locale) {
 				var succesfullCallback = function(data) {
 					$scope.printData = data.data;
 					printPage();
@@ -592,7 +590,8 @@
 					successCallBack: succesfullCallback,
 					failureCallBack: failureCallbackPrint,
 					params: {
-						'reservation_id': $scope.passData.reservationId
+						'reservation_id': $scope.passData.reservationId,
+						'locale': locale
 					}
 				});
 			};

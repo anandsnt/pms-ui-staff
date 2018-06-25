@@ -193,7 +193,7 @@ sntRover.controller('rvAllotmentRoomBlockCtrl', [
 
 				return (list_of_triples.length > 0);
 			} else {
-				return !!roomType.rate_config.extra_adult_rate && !!roomType.rate_config.double_rate;
+				return roomType.rate_config.is_extra_adult_rate_configured && roomType.rate_config.is_double_rate_configured;
 			}
 		};
 
@@ -215,7 +215,7 @@ sntRover.controller('rvAllotmentRoomBlockCtrl', [
 
 				return (list_of_quadruples.length > 0 && $scope.shouldShowTripleEntryRow(roomType));
 			} else {
-				return !!roomType.rate_config.extra_adult_rate && !!roomType.rate_config.double_rate;
+				return roomType.rate_config.is_extra_adult_rate_configured && roomType.rate_config.is_double_rate_configured;
 			}
 		};
 

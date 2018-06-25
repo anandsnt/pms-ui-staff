@@ -3,7 +3,8 @@
         "browser": true,
         "es6": true,
         "jquery": true,
-        "node": true
+        "node": true,
+        "jasmine": true
     },
     "globals": {
         "angular": false,
@@ -28,9 +29,11 @@
         "CardOperation": false,
         "jsHue": false,
         "webSocketOperations": false,
-        "moment": false
+        "moment": false,
+        "FastClick": false,
+        "module": false,
+        "inject": false
     },
-    "installedESLint":true,
     "parserOptions":{
         "ecmaFeatures":{
             "experimentalObjectRestSpread":true,

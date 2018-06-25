@@ -14,6 +14,24 @@
                 <h6><span translate="">ZESTWEB_SETTINGS_INSTRUCTION</span></h6>
             </div>
             <div class="entry full-width">
+                <label  translate="">
+                    LANGUAGE_SUPPORT
+                </label>
+                <div class="entry">
+                    <div class="file-upload">
+                        <span class="input" ng-show="globalSettings.english_translation_file.length > 0">{{'FILE_ATTACHED' | translate}}</span>
+                        <span class="input" ng-hide="globalSettings.english_translation_file.length > 0">{{'CHOOSE_FILE' | translate}}</span>
+                        <input type="file" ng-model="globalSettings.english_translation_file" accept="*" app-filereader />
+                        <button type="button" class="button brand-colors">{{'ATTACH_FILE' | translate}}</button>
+                        <button type="button" class="button download-arrow icons " style="width:30px;" ng-click="downloadLang('cl')" ng-show="globalSettings.english_translation_file.length > 0"></button>
+                        <button type="button" ng-show="globalSettings.english_translation_file.length > 0 " class="button download-arrow icons right " ng-click="editLang('en')" style="width:30px;">
+                            <text ng-include="'/assets/cssimg/admin/adEditorIconSvg.svg'"></text>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="entry full-width">
                 <label translate="">
                     TEMPLATE_FONT
                 </label>
@@ -28,14 +46,14 @@
         <fieldset class="holder left max-width">
             <table class="grid rate_addons entry-text-color-picker">
                 <col width="20%">
+                <col width="25%"><!-- 
                 <col width="25%">
-                <col width="25%">
-                <col width="25%">
+                <col width="25%"> -->
                 <thead>
                     <th class="header">#</th>
-                    <th class="header">color</th>
+                    <th class="header">color</th><!-- 
                     <th class="header">small screen font size(px)</th>
-                    <th class="header center_align">large screen font size(px)</th>
+                    <th class="header center_align">large screen font size(px)</th> -->
                 </thead>
                 <tbody>
                     <tr>
@@ -44,25 +62,25 @@
                             <ui-colorpicker ng-model="globalSettings.title_text.color"></ui-colorpicker>
                             <input ng-model="globalSettings.title_text.color">
                         </td>
-                        <td>
+                     <!--    <td>
                             <input ng-model="globalSettings.title_text.sd_font_size">
                         </td>
                         <td>
                             <input ng-model="globalSettings.title_text.ld_font_size">
                         </td>
-                    </tr>
+ -->                    </tr>
                     <tr>
                         <td translate="">SUB_TEXT_COLOR</td>
                         <td>
                             <ui-colorpicker ng-model="globalSettings.sub_title_text.color"></ui-colorpicker>
                             <input ng-model="globalSettings.sub_title_text.color">
                         </td>
-                        <td>
+                       <!--  <td>
                             <input ng-model="globalSettings.sub_title_text.sd_font_size">
                         </td>
                         <td>
                             <input ng-model="globalSettings.sub_title_text.ld_font_size">
-                        </td>
+                        </td> -->
                     </tr>
                     <tr>
                         <td translate="">BUTTON_TEXT_COLOR</td>
@@ -70,12 +88,12 @@
                             <ui-colorpicker ng-model="globalSettings.button_text.color"></ui-colorpicker>
                             <input ng-model="globalSettings.button_text.color">
                         </td>
-                        <td>
+                       <!--  <td>
                             <input ng-model="globalSettings.button_text.sd_font_size">
                         </td>
                         <td>
                             <input ng-model="globalSettings.button_text.ld_font_size">
-                        </td>
+                        </td> -->
                     </tr>
                     <tr>
                         <td translate="">FOOTER_TEXT_COLOR</td>
@@ -83,12 +101,12 @@
                             <ui-colorpicker ng-model="globalSettings.footer_text.color"></ui-colorpicker>
                             <input ng-model="globalSettings.footer_text.color">
                         </td>
-                        <td>
+                       <!--  <td>
                             <input ng-model="globalSettings.footer_text.sd_font_size">
                         </td>
                         <td>
                             <input ng-model="globalSettings.footer_text.ld_font_size">
-                        </td>
+                        </td> -->
                     </tr>
                     <tr>
                         <td translate="">LABEL_TEXT_COLOR</td>
@@ -96,12 +114,12 @@
                             <ui-colorpicker ng-model="globalSettings.label_text.color"></ui-colorpicker>
                             <input ng-model="globalSettings.label_text.color">
                         </td>
-                        <td>
+                       <!--  <td>
                             <input ng-model="globalSettings.label_text.sd_font_size">
                         </td>
                         <td>
                             <input ng-model="globalSettings.label_text.ld_font_size">
-                        </td>
+                        </td> -->
                     </tr>
                 </tbody>
             </table>

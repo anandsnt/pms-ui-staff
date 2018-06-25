@@ -1,5 +1,5 @@
-sntRover.controller('rvReservationSearchController', ['$scope', '$rootScope', '$state', '$stateParams', '$filter', 'searchResultdata', '$vault',
-  function($scope, $rootScope, $state, $stateParams, $filter, searchResultdata, $vault) {
+sntRover.controller('rvReservationSearchController', ['$scope', '$rootScope', '$state', '$stateParams', '$filter', '$timeout', 'searchResultdata', '$vault', 'RVSearchSrv',
+  function($scope, $rootScope, $state, $stateParams, $filter, $timeout, searchResultdata, $vault, RVSearchSrv) {
 
     /*
      * Controller class for search,
@@ -14,7 +14,7 @@ sntRover.controller('rvReservationSearchController', ['$scope', '$rootScope', '$
     // changing the header
     $scope.heading = 'SEARCH_TITLE';
     // updating the left side menu
-    $scope.$emit("updateRoverLeftMenu", "search");
+    $scope.$emit("updateRoverLeftMenu", "reservationSearch");
 
     // setting search back button caption
     $scope.$emit("UpdateSearchBackbuttonCaption", "");
@@ -30,6 +30,8 @@ sntRover.controller('rvReservationSearchController', ['$scope', '$rootScope', '$
       'PRE_CHECKIN': 'PRE_CHECKIN',
       'MOBILE_CHECKIN': 'MOBILE_CHECKIN'
     };
+
+    var heading;
 
     // Special case: Search by swipe in back navigation. We have to display the card number as well.
     // So we store the title as sucn in $vault
@@ -89,6 +91,13 @@ sntRover.controller('rvReservationSearchController', ['$scope', '$rootScope', '$
       }
     };
 
+    // Defined pagination for dashboard search
+    $scope.dashboardSearchPagination = {
+      id: 'DASHBOARD_SEARCH',
+      api: $scope.fetchSearchResults,
+      perPage: RVSearchSrv.searchPerPage
+    };
+
     // we are returning to this screen
     if ($rootScope.isReturning()) {
       scrollerOptions.scrollToPrevLoc = !!$vault.get('result_showing_area') ? $vault.get('result_showing_area') : 0;
@@ -96,6 +105,9 @@ sntRover.controller('rvReservationSearchController', ['$scope', '$rootScope', '$
 
     // finally
     $scope.setScroller('result_showing_area', scrollerOptions);
+    $timeout(function() { 
+      $scope.$broadcast('updatePagination', 'DASHBOARD_SEARCH');
+    }, 1000);
     var totalNgIncludeRequested = 0;
     // click function on search area, mainly for closing the drawer
 

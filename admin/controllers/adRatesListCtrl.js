@@ -1,5 +1,5 @@
-admin.controller('ADRatesListCtrl', ['$scope', '$rootScope', '$state', 'ADRatesSrv', 'ADHotelSettingsSrv', 'ngTableParams', '$filter', '$timeout', '$stateParams',
-	function($scope, $rootScope, $state, ADRatesSrv, ADHotelSettingsSrv, ngTableParams, $filter, $timeout, $stateParams) {
+admin.controller('ADRatesListCtrl', ['$scope', '$rootScope', '$state', 'ADRatesSrv', 'ADHotelSettingsSrv', 'ngTableParams', '$filter', '$timeout', '$stateParams', 'ngDialog',
+	function($scope, $rootScope, $state, ADRatesSrv, ADHotelSettingsSrv, ngTableParams, $filter, $timeout, $stateParams, ngDialog) {
 
 	$scope.errorMessage = '';
 	$scope.successMessage = "";
@@ -281,6 +281,39 @@ admin.controller('ADRatesListCtrl', ['$scope', '$rootScope', '$state', 'ADRatesS
 		}
 
 	};
+
+	$scope.openCsvUploadPopup = function() {
+		$scope.csvData = {
+			'csv_file': ''
+		};
+		ngDialog.open({
+			template: '/assets/partials/popups/adCsvUploadPopUp.html',
+			className: 'ngdialog-theme-default1 modal-theme1',
+			closeByDocument: true,
+			scope: $scope
+		});
+	};
+
+	$scope.uploadCSVFile = function() {
+		var uploadCSVFileSuccess = function() {
+			$scope.successMessage = $filter('translate')('IMPORT_IS_IN_PROGRESS');
+			ngDialog.close();
+			$timeout(function() {
+		        $scope.successMessage = "";
+		    }, 10000);
+		};
+		var options = {
+			params: $scope.csvData,
+			onSuccess: uploadCSVFileSuccess,
+			onFailure: function(err) {
+				ngDialog.close();
+				$scope.errorMessage = err;
+			}
+		};
+
+		$scope.callAPI(ADRatesSrv.uploadCSVFile, options);
+	};
+
 
 }]);
 

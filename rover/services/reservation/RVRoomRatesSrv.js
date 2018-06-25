@@ -89,14 +89,20 @@ angular.module('sntRover').service('RVRoomRatesSrv', ['$q', 'rvBaseWebSrvV2', 'R
             processParamsForRoomTypeAndRateRequest(params);
 
             RVBaseWebSrvV2.getJSON(url, params).then(function(response) {
-                if (!!params.group_id) {
-                    _.each(response.results, function(roomType) {
-                        if (roomType.rate_id === null) {
-                            roomType.rate_id = '_CUSTOM_' + params.group_id;
-                        }
-                    });
-                }
-                deferred.resolve(response);
+                var payload = {};
+
+                payload.rate_ids = _.uniq(_.pluck(response.results, 'rate_id'));
+                RVReservationBaseSearchSrv.fetchRatesDetails(payload).then(function() {
+                    if (!!params.group_id) {
+                        _.each(response.results, function(roomType) {
+                            if (roomType.rate_id === null) {
+                                roomType.rate_id = '_CUSTOM_' + params.group_id;
+                            }
+                        });
+                    }
+                    deferred.resolve(response);
+                });
+
             }, function(data) {
                 deferred.reject(data);
             });
@@ -114,14 +120,20 @@ angular.module('sntRover').service('RVRoomRatesSrv', ['$q', 'rvBaseWebSrvV2', 'R
             processParamsForRoomTypeAndRateRequest(params);
 
             RVBaseWebSrvV2.getJSON(url, params).then(function(response) {
-                if (!!params.group_id) {
-                    _.each(response.results, function(rate) {
-                        if (rate.id === null) {
-                            rate.id = '_CUSTOM_' + params.group_id;
-                        }
-                    });
-                }
-                deferred.resolve(response);
+                var payload = {};
+
+                payload.rate_ids = _.pluck(response.results, 'id');
+                RVReservationBaseSearchSrv.fetchRatesDetails(payload).then(function() {
+                    if (!!params.group_id) {
+                        _.each(response.results, function(roomType) {
+                            if (roomType.id === null) {
+                                roomType.rate_id = '_CUSTOM_' + params.group_id;
+                                roomType.id = '_CUSTOM_' + params.group_id;
+                            }
+                        });
+                    }
+                    deferred.resolve(response);
+                });
             }, function(data) {
                 deferred.reject(data);
             });

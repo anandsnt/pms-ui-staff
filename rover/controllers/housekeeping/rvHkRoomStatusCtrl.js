@@ -57,6 +57,8 @@ angular.module('sntRover').controller('RVHkRoomStatusCtrl', [
 		$scope.setScroller('room-status-filter');
 		$scope.setScroller('room-service-status-update');
 		$scope.setScroller('rooms-list-to-forcefully-update');
+		
+
 		setTimeout(function() {
 			$scope.refreshScroller('room-status-filter');
 			$scope.refreshScroller('rooms-list-to-forcefully-update');
@@ -170,8 +172,13 @@ angular.module('sntRover').controller('RVHkRoomStatusCtrl', [
 
 
 		/* ***** ***** ***** ***** ***** */
-
-
+		// Defined pagination for dashboard search
+		$scope.hkSearchPagination = {
+			id: 'HK_SEARCH',
+			api: $_callRoomsApi,
+			perPage: $scope.currentFilters.perPage
+		};
+		
 		// true represent that this is a fetchPayload call
 		// and the worktypes and assignments has already be fetched
 		$_fetchRoomListCallback(fetchPayload.roomList, true);
@@ -187,7 +194,7 @@ angular.module('sntRover').controller('RVHkRoomStatusCtrl', [
 			$_page++;
 			$_updateFilters('page', $_page);
 
-			$_callRoomsApi();
+			$_callRoomsApi($_page);
 		};
 
 		$scope.loadPrevPage = function(e) {
@@ -198,7 +205,7 @@ angular.module('sntRover').controller('RVHkRoomStatusCtrl', [
 			$_page--;
 			$_updateFilters('page', $_page);
 
-			$_callRoomsApi();
+			$_callRoomsApi($_page);
 		};
 
 		// store the current room list scroll position
@@ -424,13 +431,7 @@ angular.module('sntRover').controller('RVHkRoomStatusCtrl', [
 					$scope.multiRoomAction.anyChosen = false;
 				}
 			}
-
-			// check if all rooms have been selected to make the 'All Selected' enabled in filters
-			if ( $scope.uiTotalCount === $scope.multiRoomAction.rooms.length ) {
-				$scope.multiRoomAction.allChosen = true;
-			} else {
-				$scope.multiRoomAction.allChosen = false;
-			}
+			
 		};
 
 		$scope.toggleRoomSelection = function() {
@@ -547,8 +548,9 @@ angular.module('sntRover').controller('RVHkRoomStatusCtrl', [
 		$scope.timeSelectorList = util.getListForTimeSelector (intervalForTimeSelector, mode);
 
 		$scope.shouldShowTimeSelector = function() {
+            var isInService = $scope.updateServiceData.room_service_status_id === 1;
 
-			return $rootScope.isHourlyRateOn;
+            return $rootScope.isHourlyRateOn && !isInService;
 		};
 
 		$scope.closeDialog = function() {
@@ -645,15 +647,6 @@ angular.module('sntRover').controller('RVHkRoomStatusCtrl', [
 
 
 		};
-
-		/**
-		 * @return {Boolean}
-		 */
-		$scope.shouldShowTimeSelector = function() {
-			// as per CICO-11840 we will show this for hourly hotels only
-			return $rootScope.isHourlyRateOn;
-		};
-
 
 		/**
 		 * Service Stauts update action
@@ -1029,6 +1022,9 @@ angular.module('sntRover').controller('RVHkRoomStatusCtrl', [
 			}
 
 			$_updateFilters('page', $_page);
+			$timeout(function() {
+				$scope.$broadcast('updatePagination', 'HK_SEARCH');
+			}, 700);
 		}
 
 
@@ -1118,7 +1114,11 @@ angular.module('sntRover').controller('RVHkRoomStatusCtrl', [
 		/* ***** ***** ***** ***** ***** */
 
 
-		function $_callRoomsApi() {
+		function $_callRoomsApi(page) {
+			var clickedPage = page || 1;
+
+			$_updateFilters('page', clickedPage);
+
 			$scope.hasActiveWorkSheet = false;
 			$scope.rooms              = [];
 

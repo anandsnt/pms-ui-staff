@@ -12,7 +12,8 @@ angular.module('sntRover').controller('rvGroupConfigurationCtrl', [
     '$timeout',
     'rvAccountTransactionsSrv',
     'ngDialog',
-    function($scope, $rootScope, rvGroupSrv, $filter, $stateParams, rvGroupConfigurationSrv, summaryData, holdStatusList, $state, rvPermissionSrv, $timeout, rvAccountTransactionsSrv, ngDialog) {
+    'hotelSettings',
+    function($scope, $rootScope, rvGroupSrv, $filter, $stateParams, rvGroupConfigurationSrv, summaryData, holdStatusList, $state, rvPermissionSrv, $timeout, rvAccountTransactionsSrv, ngDialog, hotelSettings) {
 
         BaseCtrl.call(this, $scope);
 
@@ -1010,7 +1011,8 @@ angular.module('sntRover').controller('rvGroupConfigurationCtrl', [
          * Save the new Group
          * @return undefined
          */
-        $scope.saveNewGroup = function() {
+        $scope.saveNewGroup = function() {            
+            $scope.closeDialog();
             $scope.errorMessage = "";
             if (rvPermissionSrv.getPermissionValue('CREATE_GROUP_SUMMARY') && !$scope.groupConfigData.summary.group_id) {
                 if (ifMandatoryValuesEntered()) {
@@ -1400,13 +1402,26 @@ angular.module('sntRover').controller('rvGroupConfigurationCtrl', [
             var activeMenu = ($scope.isInAddMode()) ? "menuCreateGroup" : "menuManageGroup";
 
             $scope.$emit("updateRoverLeftMenu", activeMenu);
-        };
+        }; 
+
+        // Event published from summary ctrl while saving the demographics
+        $scope.$on('SAVE_GROUP', function () {
+            $scope.saveNewGroup();
+        });
+
+        // Method invoked while clicking the Save Group btn in header
+        $scope.createGroup = function () {
+            $scope.$broadcast('CREATE_GROUP');
+        }; 
 
         /**
          * function to initialize things for group config.
          * @return - None
          */
         var initGroupConfig = function() {
+
+            // CICO-42249 - Hotel settings
+            $scope.hotelSettings = hotelSettings;
 
             // forming the data model if it is in add mode or populating the data if it is in edit mode
             $scope.initializeDataModelForSummaryScreen();

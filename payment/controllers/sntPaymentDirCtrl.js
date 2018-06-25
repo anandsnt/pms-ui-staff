@@ -18,6 +18,7 @@ angular.module('sntPay').controller('sntPaymentController',
                     preventDefaultException: {tagName: /^(INPUT|TEXTAREA|BUTTON|SELECT|A)$/}
                 },
                 isEMVEnabled;
+            var isInIpadApp = sntapp.browser === 'rv_native' && sntapp.cordovaLoaded;
 
             // ---------------------------------------------------------------------------------------------------------
             $scope.payment = {
@@ -48,6 +49,15 @@ angular.module('sntPay').controller('sntPaymentController',
             };
 
             $scope.errorMessage = '';
+
+            // For some payment gateways, we might need to hide some payment types
+            // conditionally. For eg:- Hide Credit card payment type for CBA + MLI payments
+            // and hide CBA - Credit card for CBA + MLI card additions
+            $scope.$on('REMOVE_PAYMENT_TYPE', function(ev, data) {
+                $scope.paymentTypes = _.without($scope.paymentTypes, _.findWhere($scope.paymentTypes, {
+                    name: data.paymentType
+                }));
+            });
 
             // ---------------------------------------------------------------------------------------------------------
             /**
@@ -132,6 +142,15 @@ angular.module('sntPay').controller('sntPaymentController',
                 if (isEmptyParentScrollerOptions) {
                     $scope.myScrollOptions = {};
                 }
+
+                // CICO-48381
+                if (isInIpadApp) {
+                    scrollerOptions.click = false;
+                    scrollerOptions.tap = true;
+                    scrollerOptions.preventDefault = false;
+                    scrollerOptions.deceleration =  0.0001;
+                }
+
                 $scope.myScrollOptions[key] = scrollerOptions;
             }
 
@@ -167,7 +186,10 @@ angular.module('sntPay').controller('sntPaymentController',
              * @return {boolean} If card selection is not available for the payment gateway configured
              */
             function isCardSelectionDisabled() {
-                return !!PAYMENT_CONFIG[$scope.hotelConfig.paymentGateway].disableCardSelection;
+                // For CBA payments, we have to always use a new card
+                let isCBAMLIPayment = $scope.hotelConfig.paymentGateway === 'CBA_AND_MLI';
+
+                return !!PAYMENT_CONFIG[$scope.hotelConfig.paymentGateway].disableCardSelection || (isCBAMLIPayment && !$scope.payment.isAddCardAction);
             }
 
             /**
@@ -294,9 +316,11 @@ angular.module('sntPay').controller('sntPaymentController',
                 var isCCPresent = $scope.selectedPaymentType === 'CC' &&
                     (!!$scope.selectedCC && (!!$scope.selectedCC.ending_with || !!$scope.selectedCC.card_number));
                 var isManualEntry = isEMVEnabled && $scope.payment.isManualEntryInsideIFrame;
+                // For CBA payments, we have to always use a new card
+                var isCBAMLIPayment = $scope.hotelConfig.paymentGateway === 'CBA_AND_MLI' && !$scope.payment.isAddPaymentMode;
 
                 return !isCardSelectionDisabled() && (isCCPresent && $scope.payment.screenMode === 'PAYMENT_MODE' &&
-                    (isManualEntry || !isEMVEnabled));
+                    (isManualEntry || !isEMVEnabled)) && !isCBAMLIPayment;
             };
 
             /**
@@ -756,9 +780,18 @@ angular.module('sntPay').controller('sntPaymentController',
                 }
 
                 //  --- CBA ---
-                if ($scope.selectedPaymentType === 'CC' &&
-                    $scope.hotelConfig.paymentGateway === 'CBA') {
+                if ($scope.selectedPaymentType === 'CC' && $scope.hotelConfig.paymentGateway === 'CBA') {
                     $scope.$broadcast('INITIATE_CBA_PAYMENT', params);
+                    return;
+                }
+
+                // ---- CBA + MLI ----
+                if ($scope.selectedPaymentType === 'CBA' && $scope.hotelConfig.paymentGateway === 'CBA_AND_MLI') {
+                    if (isInIpadApp || sntPaymentSrv.mockCba) {
+                        $scope.$broadcast('INITIATE_CBA_PAYMENT', params);
+                    } else {
+                        $scope.errorMessage = $scope.errorMessage = [$filter('translate')('USE_IPAD_TO_USE_CBA')];
+                    }
                     return;
                 }
 
@@ -900,7 +933,15 @@ angular.module('sntPay').controller('sntPaymentController',
                     return false;
                 }
 
-                var selectedPaymentType;    
+                /** CICO-47989
+                 * To handle scenarios where the bill might have a payment type associated, but it is no longer available in the list
+                 * In such cases, clear the selected payment type
+                 */
+                if (!_.find($scope.paymentTypes, {name: $scope.selectedPaymentType})) {
+                    $scope.selectedPaymentType = '';
+                }
+
+                var selectedPaymentType;
 
                 if (isReset && $scope.payment.isEditable && $scope.selectedPaymentType === 'GIFT_CARD') {
                     $scope.payment.amount = 0;
@@ -1296,9 +1337,11 @@ angular.module('sntPay').controller('sntPaymentController',
             };
 
             $scope.showSixPaymentsModeSelection = function () {
-                var isMLIEMV = $scope.hotelConfig.paymentGateway === 'MLI' &&
-                    $scope.hotelConfig.isEMVEnabled,
-                    isPendingPayment = !$scope.paymentAttempted || // no payments attempted
+                var isMLIEMV = ($scope.hotelConfig.paymentGateway === 'MLI' &&
+                    $scope.hotelConfig.isEMVEnabled) || ($scope.hotelConfig.paymentGateway === 'CBA_AND_MLI' &&
+                    $scope.hotelConfig.isEMVEnabled && $scope.payment.isAddCardAction);
+                    
+                var isPendingPayment = !$scope.paymentAttempted || // no payments attempted
                         // attempted payment failed
                         $scope.isPaymentFailure ||
                         // CICO-41498 in the middle of split bill payments
@@ -1361,7 +1404,7 @@ angular.module('sntPay').controller('sntPaymentController',
                 $scope.hotelConfig.emvTimeout = $scope.hotelConfig.emvTimeout || 120;
                 $scope.hotelConfig.paymentGateway = $scope.hotelConfig.paymentGateway || '';
 
-                if ($scope.hotelConfig.paymentGateway === 'CBA') {
+                if ($scope.hotelConfig.paymentGateway === 'CBA' || $scope.hotelConfig.paymentGateway === 'CBA_AND_MLI') {
                     initiateCBAlisteners();
                 } else if ($scope.hotelConfig.paymentGateway === 'SHIJI') {
                     initiateSHIJIListeners();
@@ -1390,6 +1433,9 @@ angular.module('sntPay').controller('sntPaymentController',
                 $scope.payment.iFrameUrl = paths.iFrameUrl;
                 $scope.paymentGatewayUIInterfaceUrl = paths.paymentGatewayUIInterfaceUrl;
 
+                // To disntiguish between Add card and Submit payment actions
+                $scope.payment.isAddCardAction = sntPaymentSrv.isAddCardAction($scope.actionType);
+
                 /* In case there is swiped data available
                  * This scenario is possible in case of add payments in stay-card; guest-card and stay-card bill screens.
                  */
@@ -1406,7 +1452,7 @@ angular.module('sntPay').controller('sntPaymentController',
                 /**
                  *
                  */
-                if (!$scope.hotelConfig.isStandAlone && !isCardSelectionDisabled()) {
+                if (!$scope.hotelConfig.isStandAlone && !isCardSelectionDisabled() && $scope.hotelConfig.paymentGateway !== 'CBA_AND_MLI') {
                     changeToCardAddMode();
                 }
 
@@ -1425,7 +1471,7 @@ angular.module('sntPay').controller('sntPaymentController',
                 config = $scope.hotelConfig;
 
                 isEMVEnabled = config.paymentGateway === 'sixpayments' ||
-                    (config.paymentGateway === 'MLI' && config.isEMVEnabled);
+                    ((config.paymentGateway === 'MLI' || config.paymentGateway === 'CBA_AND_MLI') && config.isEMVEnabled);
 
                 $scope.showSelectedCard();
 

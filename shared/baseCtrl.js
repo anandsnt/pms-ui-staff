@@ -1,4 +1,4 @@
-function BaseCtrl($scope) {
+BaseCtrl = function($scope) {
 
     $scope.businessDate = '';
 
@@ -75,7 +75,8 @@ function BaseCtrl($scope) {
             showLoader = loader.toUpperCase() === 'BLOCKER',
             successCallBack = options['successCallBack'] ? options['successCallBack'] :
                 (options['onSuccess'] ? options['onSuccess'] : $scope.fetchedCompleted),
-            failureCallBack = options['failureCallBack'] ? options['failureCallBack'] : $scope.fetchedFailed,
+            failureCallBack = options['failureCallBack'] ? options['failureCallBack'] :
+                (options['onFailure'] ? options['onFailure'] : $scope.fetchedFailed),
             successCallBackParameters = options['successCallBackParameters'] ? options['successCallBackParameters'] : null,
             failureCallBackParameters = options['failureCallBackParameters'] ? options['failureCallBackParameters'] : null;
 
@@ -229,7 +230,13 @@ function BaseCtrl($scope) {
         if (isEmptyParentScrollerOptions) {
             $scope.$parent.myScrollOptions = {};
         }
-
+        
+        if (sntapp.browser === 'rv_native' && sntapp.cordovaLoaded) {
+            scrollerOptions.click = false;
+            scrollerOptions.tap = true;
+            scrollerOptions.preventDefault = false;
+            scrollerOptions.deceleration =  0.0001;
+        }
         $scope.$parent.myScrollOptions[key] = scrollerOptions;
     };
 
@@ -301,4 +308,11 @@ function BaseCtrl($scope) {
 
     };
 
-}
+    // Refresh pagination every time the data changes
+    $scope.refreshPagination = function (paginationId) {
+        setTimeout(function() {
+            $scope.$broadcast('updatePagination', paginationId);
+        }, 100);        
+    };
+
+};

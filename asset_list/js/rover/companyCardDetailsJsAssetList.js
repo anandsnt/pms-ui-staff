@@ -17,13 +17,17 @@ module.exports = {
 				roverRoot + "services/accounts/rvAccountsArTransactionsSrv.js",
 				roverRoot + "services/postCharge/rvPostChargeSrvV2.js",
 				'rover/services/payment/rvPaymentSrv.js',
+				'rover/services/rvContactInfoSrv.js',
 				'rover/services/accounts/rvAccountsTransactionSrv.js',
 				'rover/controllers/contractStartCalendarCtrl.js',
 				'rover/controllers/contractEndCalendarCtrl.js',
 				'rover/controllers/cardsOutside/rvArTransactionsPayCreditsController.js',
 				'rover/controllers/cardsOutside/rvArTransactionsDatePickerController.js',
 				'rover/controllers/contractedNightsCtrl.js',
-				'rover/controllers/rvCommissionsDatePickerController.js'
+				'rover/controllers/rvCommissionsDatePickerController.js',
+
+                // Eliminate all spec files
+                '!**/*.spec.js'
 			]
 		};
 		return companycardDetailsJsAssets;

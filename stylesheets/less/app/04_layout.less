@@ -30,6 +30,7 @@ body { overflow: hidden; }
 
 /* App screens				==============================*/
 	@media not print {
+		.only-print { .hidden; }
 		.container {
 			position: relative;
 			overflow: hidden;
@@ -234,7 +235,8 @@ body { overflow: hidden; }
 			&#search,
 			&#find-group,
 			&#find-account,
-			&#find-allotment {
+			&#find-allotment,
+			&#find-guests {
 				top: 120px;
 				.calc-height(100, 180);
 
@@ -764,6 +766,10 @@ body { overflow: hidden; }
 	        .registration-content {
 	            margin-top: 60px;
 	            .calc-height(100, 60);
+    
+	            &.with-complete-registration {
+	                .calc-height(100, 140);
+	            }
 
 	            > .wrapper {
 	                padding-bottom: 20px;
@@ -1249,6 +1255,73 @@ body { overflow: hidden; }
 	                .calc-width(100, 50); 
 	            }
 	        }
+	         
+	        /* Invoices ***/
+	        &.invoice-search {
+	            .search { 
+	                .calc-width(100, 200); 
+	            }
+
+	            .options {
+	                width: 180px;
+	                .pull-right;
+	            }
+	        }
+			
+			/* Reports ***/
+	        &.reports {
+	            &.enable-adding {
+	                .search {
+	                    .calc-width( 100, 200 );
+	                }
+	            }
+
+	            &.inbox {
+	                .search {
+	                    .calc-width( 100, 360 );
+	                }
+	            }
+
+	            .entry {
+	                &.new {
+	                    padding: 0;
+	                    width: auto;
+	                    max-width: 190px;
+
+	                    .add-new-button {
+	                        width: auto;
+	                    }
+	                }
+
+	                &.report-requested {
+	                    width: 160px;
+	                }
+
+	                .select,
+	                .input {
+	                    &.with-label {
+
+	                        select {
+	                            padding: 15px 30px 0 10px;
+	                            font-size: 14px;
+	                        }
+
+	                        input {
+	                            padding: 10px 10px 0 10px;
+	                        }
+
+	                        label {
+	                            position: absolute;
+	                            top: 0;
+	                            left: 10px;
+	                            font-size: 12px;
+	                            text-transform: uppercase;
+	                            color: @grey3;
+	                        }
+	                    }
+	                }
+	            }
+	        }
 		}
 	}
 
@@ -1515,6 +1588,64 @@ body { overflow: hidden; }
 					&.rooms-checked { right: 120px; }
 				}
 			}	
+
+			/* Commissions ***/
+	        &.commissions {
+	            .entry {
+
+	                &.search {
+	                    .calc-width(100, 420);
+	                }
+
+	                &.dates {
+	                    width: 300px;
+
+	                    .entry-data {
+	                        width: 140px;
+	                    }
+	                }
+
+	                &.actions {
+	                    width: 100px;
+
+	                    .button {
+	                        position: relative;
+	                        overflow: visible;
+
+	                        .count {
+	                            position: absolute;
+	                            background-color: @logoPrimary;
+	                            color: @white;
+	                            font-size: 11px;
+	                            line-height: 20px;
+	                            text-align: center;
+	                            border-radius: 50%;
+	                            left: -5px;
+	                            top: -5px;
+	                            text-indent: initial;
+	                            z-index: 10;
+	                            .square(20px);
+	                        }
+
+	                        &:focus,
+	                        &:active {
+	                            overflow: visible;
+	                        }
+
+	                        &.active {
+	                            .count {
+	                                background-color: @white;
+	                                color: @logoPrimary;
+	                            }
+	                        }
+
+	                        &:not(:last-child) {
+	                            margin-right: 10px;
+	                        }
+	                    }
+	                }
+	            }
+	        }
 		}
 	}
 
@@ -1707,10 +1838,21 @@ body { overflow: hidden; }
 			left: -5px;
 		}
 
+		.global-card {
+        position: absolute;
+        top: -5px;
+        left: -5px;
+    }
+
+    .stay-count {
+        position: absolute;
+        top: -5px;
+        right: -5px;
+    }
+
 		img {
 			width: 100%;
 			height: auto;
-			
 			#border-radius > .rounded();
 		}
 

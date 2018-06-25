@@ -12,7 +12,8 @@ sntRover.config(function($httpProvider) {
 });
 
 
-angular.module('sntRover').service('rvBaseWebSrvV2', ['$http', '$q', '$window', '$rootScope', function($http, $q, $window, $rootScope) {
+angular.module('sntRover').service('rvBaseWebSrvV2', ['$http', '$q', '$window', '$rootScope', '$log',
+    function($http, $q, $window, $rootScope, $log) {
 
     var webserviceErrorActions = function(url, deferred, errors, status) {
         var urlStart = url.split('?')[0];
@@ -28,6 +29,13 @@ angular.module('sntRover').service('rvBaseWebSrvV2', ['$http', '$q', '$window', 
             deferred.reject(['Internal server error occured']);
         } else if (status === 501 || status === 502 || status === 503) { // 500- Internal Server Error
             $window.location.href = '/500';
+        } else if (status === 504) {
+            if ($rootScope.showTimeoutError) {
+                $rootScope.showTimeoutError();
+            } else {
+                $log.error('504 - Not handled!');
+            }
+            return;
         } else if (status === 401) { // 401- Unauthorized
             // so lets redirect to login page
             $window.location.href = '/logout';
@@ -59,12 +67,15 @@ angular.module('sntRover').service('rvBaseWebSrvV2', ['$http', '$q', '$window', 
             httpDict = {};
 
         if (angular.isUndefined(params)) {
-            params = "";
+            params = {};
         }
         httpDict.url = url;
         httpDict.method = httpMethod;
         if (httpMethod === 'GET' || httpMethod === 'DELETE') {
-            httpDict.params = params;
+            httpDict.params = params || {};
+            if (angular.isDefined($rootScope.workstation_id)) {
+                httpDict.params.workstation_id = $rootScope.workstation_id;
+            }
         }
         else if (httpMethod === 'POST' || httpMethod === 'PUT') {
             httpDict.data = params;
@@ -121,6 +132,9 @@ angular.module('sntRover').service('rvBaseWebSrvV2', ['$http', '$q', '$window', 
         httpDict.method = httpMethod;
         if (httpMethod === 'GET' || httpMethod === 'DELETE') {
             httpDict.params = params;
+            if (typeof $rootScope.workstation_id !== 'undefined') {
+                httpDict.params.workstation_id = $rootScope.workstation_id;
+            }
         } else if (httpMethod === 'POST' || httpMethod === 'PUT') {
             httpDict.data = params;
             if (typeof $rootScope.workstation_id !== 'undefined') {

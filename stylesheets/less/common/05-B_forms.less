@@ -138,8 +138,16 @@ textarea[disabled] {
     cursor: default;
     color: @grey3;
     -webkit-text-fill-color: @grey4;
-    background: rgba(0,0,0,.01) !important;
     .box-shadow(inset 1px 1px 1px rgba(0,0,0,.05));
+
+     // Not an element with Icon in the background.
+     &:not(.icons) {
+         background: rgba(0,0,0,.01) !important;
+     }
+     // Has an icon in the background
+     &.icons {
+         background-color: rgba(0,0,0,.01) !important;
+     }
 }
 select[readonly],
 select[disabled],{
@@ -243,20 +251,23 @@ select[disabled],{
 
 /* File upload                  ==========================*/
     .file-upload {
+        position: relative;
         width: 100%;
         min-height: 40px;
         background-color: @white;
-        position: relative;
         .transition;
         .box-shadow(inset 1px 1px 1px rgba(0,0,0,.15));
         #border-radius > .rounded();
 
         input,
         .input,
+        .icon-delete,
         .button { position: absolute; }
 
         input,
-        .input { .size(40px, 100%); }
+        .input { 
+            .size(40px, 100%); 
+        }
 
         input { 
             cursor: pointer;
@@ -276,11 +287,27 @@ select[disabled],{
             text-overflow: ellipsis;
         }
 
+        .icon-delete {
+            top: 5px;
+            right: 130px;
+            background-color: @white;
+            background-position: 10px -540px;
+            border-radius: 3px;
+            z-index: 44;
+            .box-shadow(1px 1px 1px rgba(0,0,0,.15));
+            .square(30px);
+
+            &.large-icon {
+                background-position: 7px -643px;
+            }
+        }
+
         .button {
             top: 5px;
             right: 5px;
             line-height: 30px;
             height: 30px;
+            width: 120px;
             padding: 0 10px;
             font-size: 14px;
             z-index: 9;
@@ -292,57 +319,83 @@ select[disabled],{
 
             &.large-preview { .calc-width(100, 340); }
             &.small-preview { .calc-width(100, 80); }
+            &.logo-preview { .calc-width(100, 198); }
         }
     }
 
     .file-preview {
-        line-height: 100px;
-        vertical-align: middle;
+        position: relative;
         background: @grey1;
         .square(100px);
-        .box-shadow(inset 1px 1px 1px rgba(0,0,0,.15));
-        #border-radius > .rounded();
+        #border-radius > .rounded(3px);
+        #flexbox > .parent(row wrap, center, center, '');
         .pull-right;
 
         img {
-            width: 100%;
-            height: auto;
-            vertical-align: middle;
-            #border-radius > .rounded();
+            height: 100%;
+            width: auto;
+            max-width: 100%;
+            flex: 1 1 auto;
+            #border-radius > .rounded(3px);
         }
 
         em {
             font-size: 12px;
-            line-height: 18px;
-            padding-top: 32px;
+            line-height: 1.2;
             text-transform: uppercase;
             text-align: center;
             color: @grey3;
+            padding: 0 10px;
             .show;
+        }
+
+        &:after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            z-index: 1;
+            #border-radius > .rounded(3px);
+            .box-shadow(inset 1px 1px 2px rgba(0,0,0,.3));
+            .square(100%);
         }
 
         &.large-preview {
             width: 320px;
+            min-height: 320px;
             height: auto;
-            line-height: auto;
+            
+            img {
+                height: auto;
+                width: 100%;
+            }
         }
 
         &.small-preview {
-            line-height: 60px;
             .square(60px);
         }
 
-        &:not(.large-preview) {
-            img { max-height: 100px; }
+        &.logo-preview {
+            padding: 10px;
+            .size(55px, 178px);
+
+            img {
+                flex: 0 0 auto;
+                width: auto;
+                height: 100%;
+            }
         }
     }
 
     #deleteLogo,
     #deleteTemplate{
-        position: relative;
-        float: right;
-        top: 42px;
-        left: -20px;
+        position: absolute;
+        top: 5px;
+        right: 130px;
+        background-color: @white;
+        background-position: 10px -540px;
+        border-radius: 3px;
+        .box-shadow(1px 1px 1px rgba(0,0,0,.15));
         
         &.hidden{ display: none; }
     }

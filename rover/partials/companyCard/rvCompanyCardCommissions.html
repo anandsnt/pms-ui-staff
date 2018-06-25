@@ -55,7 +55,7 @@
             <!-- Remove class "hidden" when selecting all/individual commisions -->
             <div class="recalculate-form" ng-show="(filterData.selectAll || selectedCommissions.length > 0)">
                 
-                <div class="entry paid-status" ng-show="filterData.commissionStatus == 'Commissionable'">
+                <div class="entry paid-status" >
                     
                     <div class="select with-label">
                         <label for="commision-paid" translate>COMMISSION_HOLD_STATUS</label>
@@ -66,7 +66,7 @@
                         </select>
                     </div>
                 </div>
-                <div class="entry paid-status" ng-show="filterData.commissionStatus == 'Commissionable' && filterData.paidStatus != 'Prepaid'">
+                <div class="entry paid-status" ng-show="filterData.paidStatus != 'Prepaid'">
                     
                     <div class="select with-label">
                         <label for="commision-paid" translate>COMMISSION_PAID_STATUS</label>
@@ -77,13 +77,13 @@
                         </select>
                     </div>
                 </div>
-                <div class="entry commission" ng-show="filterData.commissionStatus == 'Commissionable'">
+                <div class="entry commission" >
                     
                     <div class="entry input with-label">
-                        <label for="commision-paid" >Recalculate Commission</label>
+                        <label for="commision-paid" >Recalculate Comm.</label>
                         <input type="text" placeholder="Enter Number" ng-model="filterData.commssionRecalculationValue">
-                        <div class="switch-button" ng-class="{'on': filterData.toggleCommission}">
-                            <input id="recalculate-commission" value="" type="checkbox" ng-click="toggleCommission()">
+                        <div class="switch-button" ng-class="{'on': filterData.toggleCommission}" ng-click="toggleCommission()">
+                            <input id="recalculate-commission" value="" type="checkbox">
                             <label class="data-off">
                                 <span class="switch-icon">%</span>
                                 <span class="value">{{ currencySymbol }}</span>
@@ -155,10 +155,10 @@
             <li class="amount">{{'COMMISSION_AMOUNT' | translate}}</li>
 
             <!-- Hide this if commission status is Non-Commissionable (add class .hidden)-->
-            <li class="hold" ng-show="commissionDetail.commission_data.paid_status != 'Prepaid' && filterData.commissionStatus == 'Commissionable'">{{'COMMISSION_HOLD' | translate}}</li>
+            <li class="hold" ng-show="commissionDetail.commission_data.paid_status != 'Prepaid'">{{'COMMISSION_HOLD' | translate}}</li>
 
             <!-- Hide this if commission status is Non-Commissionable (add class .hidden)-->
-            <li class="paid" ng-show="filterData.commissionStatus == 'Commissionable'">{{'COMMISSION_PAID' | translate}}</li>
+            <li class="paid" >{{'COMMISSION_PAID' | translate}}</li>
         </ul>
 
         <div id="travel-agent-commision-list" class="scrollable" ng-class="{ 'print-selected' : (filterData.selectAll || selectedCommissions.length > 0 || prePaidCommissions.length > 0)}" ng-iscroll="commission-list" >
@@ -184,7 +184,7 @@
                             
                             
                             <!-- Hide this if commission status is Non-Commissionable (add class .hidden)-->
-                            <div class="commission"><strong>{{commissionDetail.commission_data.rate}}</strong></div>
+                            <div class="commission" ng-class="{'recalculated':commissionDetail.commission_data.is_recalculated}"><strong>{{commissionDetail.commission_data.rate}}</strong></div>
                             <!-- Hide this if commission status is Non-Commissionable (add class .hidden)-->
                             <div class="amount"><strong><span ng-if="commissionDetail.commission_data.amount !== undefined">{{ currencySymbol }}</span>{{commissionDetail.commission_data.amount | number : 2}}</strong></div>
                             <!-- 
@@ -193,7 +193,7 @@
                         </a>
 
                         <!-- Hide this if commission status is Non-Commissionable (add class .hidden)-->
-                        <div class="hold-status" ng-show="filterData.commissionStatus == 'Commissionable'">
+                        <div class="hold-status" >
 
                             <!-- Don't show this button if the commission is paid or prepaid -->
                             <!-- If on Hold, add class .active -->
@@ -204,17 +204,17 @@
 
 
                         </div>
-                        <div class="paid-status" ng-show="filterData.commissionStatus == 'Commissionable'">
+                        <div class="paid-status" >
                             <span ng-show="commissionDetail.commission_data.paid_status == 'Prepaid'" translate>COMMISSION_PREPAID</span>
                             <div class="switch-button" ng-class="{'on': commissionDetail.commission_data.paid_status === 'Paid','overlay' : !hasPermissionToEditPaid()}" ng-show="commissionDetail.commission_data.paid_status != 'Prepaid'">
                                 <input value="" type="checkbox" ng-click="togglePaidStatus(commissionDetail)"/>
                                 <label class="data-off">
-                                    <span class="value" translate>COMMISSION_UNPAID</span>
-                                    <span class="switch-icon" translate>COMMISSION_PAID</span>
-                                </label>
-                                <label class="data-on">
                                     <span class="switch-icon" translate>COMMISSION_UNPAID</span>
                                     <span class="value" translate>COMMISSION_PAID</span>
+                                </label>
+                                <label class="data-on">
+                                    <span class="value" translate>COMMISSION_UNPAID</span>
+                                    <span class="switch-icon" translate>COMMISSION_PAID</span>
                                 </label>
                             </div>
                         </div>                        

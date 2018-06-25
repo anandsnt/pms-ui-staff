@@ -6,7 +6,7 @@
 	<section role="complementary" id="registration-details" class="content stay-card-inner check-in">
 
 		<!-- Reservation Header -->
-		<div class="reservation-header">
+		<div class="reservation-header view-bill">
 			<div class="actions">
 				<!-- Fullscreen button -->
 				<button type="button" data-fullscreen="bill" class="button white icons icon-expand" rv-fullscreen fs-sub-header="{{'Res. #'+lastResBillData.confirm_no}}" fs-toggle-class="fullscreen-bill">Fullscreen</button>
@@ -31,10 +31,10 @@
 					<span class="guest-status nights"></span> {{reservationBillData.number_of_nights}}
 					{{setNightsString()}}
 				</span>
-				<span class="date"> <span class="guest-status small-icon check-in" translate>CHECK_IN</span>
+				<span class="date"> <span class="guest-status small-icon check-in" translate></span>
 				 {{reservationBillData.checkin_date | date:dayInWeek}}
 				 {{reservationBillData.checkin_date | date:dateFormat}} </span>
-				<span class="date"> <span class="guest-status small-icon check-out" translate>CHECK_OUT</span>
+				<span class="date"> <span class="guest-status small-icon check-out" translate></span>
 				{{reservationBillData.checkout_date | date:dayInWeek}}
 				{{reservationBillData.checkout_date | date:dateFormat}} </span>
 			</div>
@@ -42,7 +42,7 @@
 		<!-- Fullscreen Header -->
 		<div ng-include="'/assets/partials/common/rvFullscreenHeader.html'" class="fullscreen-header"></div>
 		<!-- Registration Content -->
-		<div ng-iscroll="registration-content" ng-iscroll-delay="1000" class="registration-content scrollable" ng-class="{ 'print-registration-card': isPrintRegistrationCard }">
+		<div ng-iscroll="registration-content" ng-iscroll-delay="1000" class="registration-content scrollable" ng-class="{ 'print-registration-card': isPrintRegistrationCard , 'with-complete-registration': isCompleteRegistration}">
 			<div class="wrapper">
 				<div ng-include="'/assets/partials/common/notification_message.html'"></div>
 
@@ -94,8 +94,8 @@
             		<!-- Bills summary navigation-->
                 	<div class="bill-tabs scrollable" ng-iscroll="bill-tab-scroller" ng-iscroll-delay="100">
                 		<ul class="wrapper" style="width:{{getWidthForBillTabsScroll()}}px">
-                			<li click-touch="setActiveBill($index)" ng-class="showActiveBill($index)" ng-repeat="billTab in reservationBillData.bills">
-								<div class="bill-toggle" ng-class="{'error': billTab.has_crossed_credit_limit}">
+                			<li ng-class="showActiveBill($index)" ng-repeat="billTab in reservationBillData.bills">
+								<a click-touch="setActiveBill($index)" class="bill-toggle" ng-class="{'error': billTab.has_crossed_credit_limit, 'has-icon': !billTab.is_active && (billTab.is_control_code_exist || billTab.is_folio_number_exists)}">
 									<div class="price" ng-show="isBalanceShown(billTab.is_rate_suppressed)">
 										<span translate>BILL #{{billTab.bill_number}}</span>
 										<span class="currency">{{currencySymbol}}</span>{{billTab.total_amount | number: precisonZero}}
@@ -108,13 +108,15 @@
 										{{billTab.credit_card_details.payment_type_description}}
 									</div>
 									<figure class="card-logo" ng-show="billTab.credit_card_details.payment_type == 'CC' &&billTab.is_active">
-										<img ng-src="/assets/images/{{billTab.credit_card_details.card_code}}.png" alt="" class="credit-card-image">
+										<img ng-if="billTab.credit_card_details.card_code !== ''" ng-src="/assets/images/{{billTab.credit_card_details.card_code}}.png" alt="" class="credit-card-image">
 										<span class="number"> {{billTab.credit_card_details.card_number}}</span>
 									</figure>
-									<div class="payment" ng-show="!billTab.is_active">Moved to A/R</div>
-								</div>
+									<span class="icons icon-room-lock" ng-show="!billTab.is_active && (billTab.is_control_code_exist || billTab.is_folio_number_exists)"></span> 
+									<div class="payment" ng-show="billTab.is_moved_to_ar">Moved to A/R</div>
+								</a>
+								<button ng-if="($index === reservationBillData.bills.length - 1) && !billTab.is_transactions_exist && !billTab.is_routing_exist" click-touch="clickedRemoveBill($index)" type="button" class="button icons icon-remove-10"></button>
 							</li>
-							<li class="new-bill" ng-show="reservationBillData.bills.length<10 && isStandAlone">
+							<li class="new-bill" ng-show="reservationBillData.bills.length < 10 && isStandAlone">
 								<button type="button" class="button with-icon only-icon brand-colors" ng-click="createNewBill()">
 									<span class="icons icon-plus"></span>
 								</button>
@@ -271,15 +273,30 @@
 						<!-- Balance / Signature / Card -->
 						<div class="total-stay-fees" ng-include="'/assets/partials/bill/rvTotalStayFees.html'" ></div>
 
-						<!-- Signature -->
-						<div ng-include="'/assets/partials/bill/rvSignature.html'"></div>
-
 						<!-- Registration card -->
 						<div id="regDiv" class="registration-card" ng-include="'/assets/partials/bill/rvRegistrationCard.html'"></div>
+					</div>
+
+
+					<!-- Signature for Check In and Check Out -->
+					<!--Reverse checkout doesn't need signature-->
+					<div class="signature-header no-print" ng-show="showSignaturePad()">
+						<h2>Please sign below</h2>
+						<button id="clear-signature" type="button" ng-click='clickedClearSignature()' class="button blank red-text">Clear signature</button>
+					</div>
+					<!--Reverse checkout doesn't need signature-->
+					<div id="signature"
+						ui-jq="jSignature"
+						ui-options="signaturePluginOptions"
+						ng-mouseover="disableScroll()"
+						ng-mouseleave="enableScroll()"
+						div-touch-move-stop-propogate ng-show="showSignaturePad()" class="no-print">
 					</div>
 				</div>
 			</div>
 		</div>
+		<!--Partial's for Checkin, Checkout and Reverse checkout actions-->
+		<div ng-include="'/assets/partials/bill/rvCheckinCheckoutFlow.html'"></div>
 	</section>
 
 </div>

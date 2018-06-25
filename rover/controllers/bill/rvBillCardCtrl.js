@@ -35,6 +35,8 @@ sntRover.controller('RVbillCardController',
 
 
 	BaseCtrl.call(this, $scope);
+	var that = this;
+
 	// set a back button on header
 	$rootScope.setPrevState = {
 		title: $filter('translate')('STAY_CARD'),
@@ -42,7 +44,7 @@ sntRover.controller('RVbillCardController',
 		scope: $scope
 	};
 	$scope.encoderTypes = [];
-
+	$scope.shouldGenerateFolioNumber = false;
 	$scope.isSRViewRateBtnClicked = RVReservationStateService.getReservationFlag("isSRViewRateBtnClicked");
 
 	// Flag for CC auth permission
@@ -51,13 +53,14 @@ sntRover.controller('RVbillCardController',
     };
 
 	// Setup ng-scroll for 'registration-content' , 'bill-tab-scroller' , 'billDays'
-	var scrollerOptionsForGraph = {scrollX: true, click: true, preventDefault: true, mouseWheel: false};
-	var scrollerOptionForSummary = {scrollX: true };
-	var scrollOptions =  {preventDefaultException: { tagName: /^(INPUT|TEXTAREA|BUTTON|SELECT|A|DIV)$/ }, preventDefault: false};
+	var scrollerOptionsForGraph = {scrollX: true, click: true, preventDefault: true, mouseWheel: false},
+		scrollerOptionForSummary = {scrollX: true },
+		scrollOptions =  {preventDefaultException: { tagName: /^(INPUT|TEXTAREA|BUTTON|SELECT|A|DIV)$/ }, preventDefault: false},
+		// CICO-49105 - Blackbox enabled or not.
+		isBlackBoxEnabled = $rootScope.isInfrasecActivated && $rootScope.isInfrasecActivatedForWorkstation;
 
 	$scope.setScroller('registration-content', scrollOptions);
   	$scope.setScroller ('bill-tab-scroller', scrollerOptionsForGraph);
-
 
 	$scope.clickedButton = $stateParams.clickedButton;
 	$scope.saveData = {};
@@ -66,6 +69,7 @@ sntRover.controller('RVbillCardController',
 	$scope.saveData.termsAndConditions = $scope.reservation.reservation_card.is_pre_checkin ? $scope.reservation.reservation_card.is_pre_checkin : false;
 	$scope.reviewStatusArray = [];
 	$scope.isAllBillsReviewed = false;
+	$scope.isLastBillSucceededWithBlackBoxAPI = false;
 	$scope.saveData.isEarlyDepartureFlag = false;
 	$scope.saveData.isEmailPopupFlag = false;
 	$scope.isRefreshOnBackToStaycard = false;
@@ -99,13 +103,19 @@ sntRover.controller('RVbillCardController',
 	// CICO-6089 : Flag for Guest Bill: Check out without Settlement
 	$scope.isCheckoutWithoutSettlement = false;
 
-	$rootScope.$on('arAccountCreated', function() {
-		 $timeout(function() {
-		 	$scope.showAdvancedBillDialog();
-		 	$scope.$emit("hideLoader");
-		 }, 1000);
-		 
+	// Catching event boradcasted : arAccountCreated
+	var listnerArAccount = $rootScope.$on('arAccountCreated', function() {
+		var isViaReviewProcess = true;
+
+		$timeout(function() {
+			$scope.showAdvancedBillDialog( isViaReviewProcess );
+			$scope.$emit("hideLoader");
+		}, 100);
 	});
+
+	// the listner must be destroyed when no needed anymore
+	$scope.$on( '$destroy', listnerArAccount );
+
 	// set up flags for checkbox actions
 	$scope.hasMoveToOtherBillPermission = function() {
         return ($rootScope.isStandAlone && rvPermissionSrv.getPermissionValue ('MOVE_CHARGES_RESERVATION_ACCOUNT'));
@@ -120,7 +130,8 @@ sntRover.controller('RVbillCardController',
 			var billTabsData = $scope.reservationBillData.bills;
 			var chargeCodes = billTabsData[$scope.currentActiveBill].total_fees[0].fees_details;
 
-			chargeCodesId = [];
+			var chargeCodesId = [];
+
 			_.each(chargeCodes, function(chargeCode) {
 			  chargeCode.isSelected = bool;
 			  chargeCodesId.push(chargeCode.id);
@@ -261,9 +272,8 @@ sntRover.controller('RVbillCardController',
 	var screenWidth = angular.element($window).width(); // Calculating screen width.
 
 	$scope.signaturePluginOptions = {
-			height: 130,
-			width: screenWidth - 60,
-			lineWidth: 1
+        'width': screenWidth - 60,
+        'decor-color': 'transparent'
 	};
 
 	if ($scope.clickedButton === "checkoutButton") {
@@ -356,7 +366,30 @@ sntRover.controller('RVbillCardController',
 	$scope.hasPermissionToMoveCharges = function() {
 		return rvPermissionSrv.getPermissionValue ('MOVE_CHARGES');
 	};
+	/**
+    * Method to decide whether the signature box should show or not
+    * @param {none}
+    * @return {Boolean}
+    */
+	$scope.showSignaturePad = function() {
+         if ($scope.clickedButton === 'checkinButton' && $scope.currentActiveBill === 0) {
+             if ($scope.reservationBillData.required_signature_at === 'CHECKIN'
+                 && $scope.reservationBillData.signature_details.is_signed === 'false'
+                 && !$scope.reservation.reservation_card.is_pre_checkin) {
+                    return true;
+             }
+         }
 
+        if (($scope.clickedButton === 'checkoutButton') &&
+            ($scope.reservationBillData.reservation_status === 'CHECKING_OUT'
+                || $scope.reservationBillData.reservation_status === 'CHECKEDIN')) {
+            if ($scope.reservationBillData.required_signature_at === 'CHECKOUT'
+                && (($scope.currentActiveBill + 1) === $scope.reservationBillData.bills.length)) {
+                    return true;
+            }
+        }
+        return false;
+    };
 	/**
 	* function to check whether the user has permission
 	* to Post Room Charge
@@ -379,7 +412,7 @@ sntRover.controller('RVbillCardController',
 	* @return {Boolean}
 	*/
 	$scope.shouldShowEnableDisableChargeButton = function() {
-		return ($scope.clickedButton === 'checkinButton' &&
+		return (!$rootScope.isStandAlone && $scope.clickedButton === 'checkinButton' &&
 			!$scope.reservationBillData.is_res_posting_control_disabled);
 	};
 
@@ -422,7 +455,7 @@ sntRover.controller('RVbillCardController',
 		if ($scope.reservationBillData.bills.length < 10) {
 			width = width + 50;
 		}
-		width =  133 * $scope.reservationBillData.bills.length + 10 + width;
+		width =  133 * $scope.reservationBillData.bills.length + width + 60;
 		return width;
 	};
 
@@ -523,6 +556,11 @@ sntRover.controller('RVbillCardController',
      	$scope.refreshScroller('bill-tab-scroller');
      	$scope.billingData.billingInfoTitle = ($scope.reservationBillData.routing_array.length > 0) ? $filter('translate')('BILLING_INFO_TITLE') : $filter('translate')('ADD_BILLING_INFO_TITLE');
 		setChargeCodesSelectedStatus(false);
+		if ($rootScope.roverObj.hasActivatedFolioNumber && $scope.shouldGenerateFolioNumber) {
+			var currentActiveBill = $scope.reservationBillData.bills[$scope.currentActiveBill];
+
+			that.generateFolioNumber(currentActiveBill.bill_id, currentActiveBill.total_fees[0].balance_amount, currentActiveBill.is_folio_number_exists);
+		}	
 	};
 
 	/*
@@ -603,9 +641,17 @@ sntRover.controller('RVbillCardController',
 	 */
 	$scope.showActiveBill = function(index) {
 
-		var activeBillClass = "";
+		var activeBillClass = "",
+			activeBill = $scope.reservationBillData.bills[index],
+			billCount = $scope.reservationBillData.bills.length,
+			isTransactionsExist = activeBill.is_transactions_exist;
 
-		if (index === $scope.currentActiveBill) {
+		// CICO-37047 : We need to show Remove Bill icon ('X') for -
+		// a last bill window having no transactions exist.
+		if (index !== 0 && index === $scope.currentActiveBill && (billCount === index + 1) && !isTransactionsExist ) {
+			activeBillClass = "ui-tabs-active ui-state-active with-button";
+		}
+		else if (index === $scope.currentActiveBill) {
 			activeBillClass = "ui-tabs-active ui-state-active";
 		}
 		return activeBillClass;
@@ -718,18 +764,33 @@ sntRover.controller('RVbillCardController',
 		 	}
 		}
 	 };
-	 /*
-	  * Success callback of fetch - After moving fees item from one bill to another
-	  */
-	 $scope.fetchSuccessCallback = function(data) {
-	 	$scope.$emit('hideLoader');
-	 	reservationBillData = data;
-	 	$scope.init(data);
-	 	$scope.calculateBillDaysWidth();
-	 };
-	 $scope.moveToBillActionfetchSuccessCallback = function(data) {
-	 	$scope.fetchSuccessCallback(data);
-	 };
+	/*
+	* Success callback of fetch - After moving fees item from one bill to another
+	*/
+	$scope.fetchSuccessCallback = function(data) {
+		$scope.$emit('hideLoader');
+		reservationBillData = data;
+		$scope.init(data);
+		$scope.calculateBillDaysWidth();
+		if ($rootScope.roverObj.hasActivatedFolioNumber && $scope.shouldGenerateFolioNumber) {
+			var currentActiveBill = $scope.reservationBillData.bills[$scope.currentActiveBill];
+
+			that.generateFolioNumber(currentActiveBill.bill_id, currentActiveBill.total_fees[0].balance_amount, currentActiveBill.is_folio_number_exists);
+		}	
+	};
+	// Utility method to reload bill screen after other operations.
+	var reloadBillScreen = function() {
+		var dataToSend = {
+			params: $scope.reservationBillData.reservation_id,
+			successCallBack: $scope.fetchSuccessCallback
+		};
+
+		$scope.callAPI(RVBillCardSrv.fetch, dataToSend);
+    };
+
+	$scope.moveToBillActionfetchSuccessCallback = function(data) {
+		$scope.fetchSuccessCallback(data);
+	};
 	 /*
 	  * MOve fees item from one bill to another
 	  * @param {int} old Bill Value
@@ -967,11 +1028,7 @@ sntRover.controller('RVbillCardController',
 			};
 
 			$scope.invokeApi(RVReservationCardSrv.tokenize, getTokenFrom, tokenizeSuccessCallback);
-
-
 	 	 }
-
-
 	});
 
 	 /*
@@ -1127,6 +1184,7 @@ sntRover.controller('RVbillCardController',
 		// cos' we are gods, and this is what we wish
 		// just kidding.. :P
 		$scope.isRefreshOnBackToStaycard = true;
+		$scope.shouldGenerateFolioNumber = true;		
 		$scope.invokeApi(RVBillCardSrv.fetch, $scope.reservationBillData.reservation_id, $scope.fetchSuccessCallback);
 	});
 
@@ -1517,7 +1575,12 @@ sntRover.controller('RVbillCardController',
              * put in Queue should not attempt to auth CC during normal workflow in Overlay,
              * in Standalone, $scope.putInQueue should always be false; (until we start supporting standalone put in queue)
              */
-
+           
+		// check if the T&C was shown, if shown pass true if was accepted
+		if ($scope.reservationBillData.is_disabled_terms_conditions_checkin === 'false') {
+			data.accepted_terms_and_conditions = $scope.saveData.termsAndConditions;
+		}
+		
 		if (isCheckinWithoutAuth || ($scope.putInQueue && !$scope.checkGuestInFromQueue) || queueRoom === true) {
                         // $scope.putInQueue is set to true when going through the overlay -> put in queue advanced flow process (basically the same as check-in, without CC auth-CICO-19673)
                         // --- also the guest is not checked-in, so the user gets redirected back to the stay card, where they will see the option to "remove from queue"
@@ -1762,7 +1825,7 @@ sntRover.controller('RVbillCardController',
 
 		var errorMsg = "", signatureData = $scope.getSignature();
 
-		if ($scope.signatureNeeded(signatureData)) {
+		if ($scope.signatureNeeded(signatureData) && !$scope.reservation.reservation_card.is_pre_checkin) {
 			errorMsg = "Signature is missing";
 			$scope.showErrorPopup(errorMsg);
 
@@ -1848,9 +1911,35 @@ sntRover.controller('RVbillCardController',
     $scope.toggleCheckoutWithoutSettlement = function() {
     	$scope.isCheckoutWithoutSettlement = !$scope.isCheckoutWithoutSettlement;
     };
+
+    /*
+	 * Function to generate folio number
+	 * @param billId is the bill id
+	 * @param balanceAmount is the balance Amount
+	 */
+	that.generateFolioNumber = function (billId, balanceAmount, isFolioNumberExists) {
+
+		$scope.shouldGenerateFolioNumber = false;
+		if (balanceAmount === "0.00" && $scope.reservationBillData.reservation_status === "CHECKEDOUT" && !isFolioNumberExists) {
+
+			var successCallBackOfGenerateFolioNumber = function(data) {
+					$scope.reservationBillData.bills[$scope.currentActiveBill].is_active = false;
+					$scope.reservationBillData.bills[$scope.currentActiveBill].is_folio_number_exists = true;
+				},
+				paramsToService = {
+					'bill_id': billId
+				},
+			    options = {
+					params: paramsToService,
+					successCallBack: successCallBackOfGenerateFolioNumber
+				};
+						
+			$scope.callAPI( RVBillCardSrv.generateFolioNumber, options );
+		}		
+	};
+
 	// To handle success callback of complete checkout
 	$scope.completeCheckoutSuccessCallback = function(response) {
-		
 		$scope.showSuccessPopup(response);
 		$timeout(function() {
 			// slight delay on-success so user doesnt re-click review & checkout again and initiate an error
@@ -1867,17 +1956,19 @@ sntRover.controller('RVbillCardController',
 
 	// To handle ar account details in case of direct bills
 	$scope.isArAccountNeeded = function(index) {
+		var isArAccountNeeded = false;
 
 		// CICO-15493: A reservation being linked to a Group Account should be sufficient to be able to check out to Direct Bill; no need to check for AR account
 		if ($scope.reservationBillData.is_linked_to_group_account) {
-			return false;
+			return isArAccountNeeded;
 		}
 		// Prompt for AR account
 		if ($scope.reservationBillData.bills[index].credit_card_details.payment_type === "DB" && $scope.reservationBillData.bills[index].ar_number === null && $rootScope.isStandAlone) {
 
 			if ($scope.reservationBillData.account_id === null || typeof $scope.reservationBillData.account_id === 'undefined') {
 				$scope.showErrorPopup($filter('translate')('ACCOUNT_ID_NIL_MESSAGE'));
-			} else {
+			} 
+			else {
 				$scope.account_id = $scope.reservationBillData.account_id;
 				ngDialog.open({
 					template: '/assets/partials/payment/rvAccountReceivableMessagePopup.html',
@@ -1886,10 +1977,53 @@ sntRover.controller('RVbillCardController',
 					scope: $scope
 				});
 			}
-			return true;
-		} else {
-			return false;
+			isArAccountNeeded = true;
 		}
+
+		return isArAccountNeeded;
+	};	
+
+	// CICO-49105 Blackbox API on each bill having payments exist..
+	var callBlackBoxAPI = function() {
+
+		var currentActiveBill = $scope.reservationBillData.bills[$scope.currentActiveBill],
+			billCount = $scope.reservationBillData.bills.length;
+
+		var successCallBackOfApiCall = function(data) {
+			// If the user is on last Bill - proceed CHECKOUT PROCESS.
+			// Else proceed REVIEW PROCESS.
+			if ($scope.isViaReviewProcess && (billCount === $scope.currentActiveBill + 1)) {
+				// Set isLastBillSucceededWithBlackBoxAPI flag to true in order to proceed further checkout process.
+				$scope.isLastBillSucceededWithBlackBoxAPI = true;
+				$scope.clickedCompleteCheckout();
+			}
+			else if ($scope.isViaReviewProcess) {
+				// Updating review status of the bill.
+				$scope.reviewStatusArray[$scope.currentActiveBill].reviewStatus = true;
+				// Locking the bill.
+				currentActiveBill.is_active = false;
+				// Moving to next bill to review
+				$scope.findNextBillToReview();
+			}
+			else {
+				// Locking the bill. - Call after payment.
+				currentActiveBill.is_active = false;
+			}
+		},
+		failureCallBackOfApiCall = function(errorMessage) {
+			$scope.errorMessage = errorMessage;
+		},
+		paramsToService = {
+			'bill_id': currentActiveBill.bill_id
+		};
+
+		var options = {
+			params: paramsToService,
+			successCallBack: successCallBackOfApiCall,
+			failureCallBack: failureCallBackOfApiCall
+		};
+
+		$scope.callAPI( RVBillCardSrv.callBlackBoxApi, options );
 	};
 
 	// CICO-45029 - handle check-out in progress tracking so user doesnt initiate errors
@@ -1899,15 +2033,29 @@ sntRover.controller('RVbillCardController',
 	$scope.clickedCompleteCheckout = function() {
 		$scope.checkoutInProgress = true;
 		$scope.findNextBillToReview();	// Verifying wheather any bill is remaing for reviewing.
-
 		if (!$scope.isAllBillsReviewed) {
 			$scope.checkoutInProgress = false;
 			return;
 		}
 
+		var isPaymentExist = $scope.reservationBillData.bills[$scope.currentActiveBill].is_payment_exist,
+			isControlCodeExist = $scope.reservationBillData.bills[$scope.currentActiveBill].is_control_code_exist;
+
+		// CICO-49105 : Calling blackbox API prior to checkout API if :
+		// 1. Blackbox enabled.
+		// 2. There should be payment exist in the bill.
+		// 3. Not opted checkoutWithoutSettlement.
+		// 4. Not having existing control code.
+		// NB : blackbox API Needed to be success inorder to proceed on further complete checkout API call.
+		if (isBlackBoxEnabled && isPaymentExist && !$scope.isLastBillSucceededWithBlackBoxAPI && !$scope.isCheckoutWithoutSettlement && !isControlCodeExist) {
+			$scope.isViaReviewProcess = true;
+			callBlackBoxAPI();
+			return;
+		}
+
 		// To check for ar account details in case of direct bills
-		var index = $scope.reservationBillData.bills.length - 1;
-		var signatureBase64Data = $scope.getSignatureBase64Data();
+		var index = $scope.reservationBillData.bills.length - 1,
+			signatureBase64Data = $scope.getSignatureBase64Data();
 
 		if ($scope.isArAccountNeeded(index)) {
 			$scope.checkoutInProgress = false;
@@ -1921,22 +2069,21 @@ sntRover.controller('RVbillCardController',
 		else {
 			var signatureData = $scope.signatureData;
 		}
-		var errorMsg = "";
-		var totalBal = 0;
+		var errorMsg = "", totalBal = 0;
 
 		// calculate total
 		for (var i = 0; i < reservationBillData.bills.length; i++) {
-			var bill = reservationBillData.bills[i];
-
-			totalBal += bill.total_amount * 1;
+			totalBal += reservationBillData.bills[i].total_amount * 1;
 		}
-
-		var finalBillBalance = "0.00";
+		var finalBillBalance = "0.00",
+			paymentType = reservationBillData.bills[$scope.currentActiveBill].credit_card_details.payment_type,
+			isAllowDirectDebit = reservationBillData.bills[$scope.currentActiveBill].is_allow_direct_debit;
+			
 
 		if (typeof $scope.reservationBillData.bills[$scope.currentActiveBill].total_fees[0] !== 'undefined') {
 			finalBillBalance = $scope.reservationBillData.bills[$scope.currentActiveBill].total_fees[0].balance_amount;
 		}
-		var paymentType = reservationBillData.bills[$scope.currentActiveBill].credit_card_details.payment_type;
+		var directBillWithBalanceFlag = $rootScope.isStandAlone && finalBillBalance !== "0.00" && paymentType === "DB"  && !$scope.performCompleteCheckoutAction;
 
 		if ($scope.isCheckoutWithoutSettlement) {
 			var data = {
@@ -1948,10 +2095,13 @@ sntRover.controller('RVbillCardController',
 			
 			sntActivity.start('COMPLETE_CHECKOUT');
 			$scope.invokeApi(RVBillCardSrv.completeCheckout, data, $scope.completeCheckoutSuccessCallback, $scope.completeCheckoutFailureCallback);
-		}
-		else if ($rootScope.isStandAlone && finalBillBalance !== "0.00" && paymentType === "DB"  && !$scope.performCompleteCheckoutAction  && !reservationBillData.bills[$scope.currentActiveBill].is_allow_direct_debit ) {
-			showDirectDebitDisabledPopup();
+		} else if (directBillWithBalanceFlag && !isAllowDirectDebit) {
 			$scope.checkoutInProgress = false;
+			showDirectDebitDisabledPopup();	
+		} else if (directBillWithBalanceFlag && isAllowDirectDebit && isBlackBoxEnabled) {
+			$scope.checkoutInProgress = false;
+			$scope.reservationBillData.isCheckout = true;
+			$scope.clickedPayButton(true);			
 		}
 		else if ($rootScope.isStandAlone && finalBillBalance !== "0.00" && paymentType !== "DB") {
 			$scope.reservationBillData.isCheckout = true;
@@ -2050,16 +2200,35 @@ sntRover.controller('RVbillCardController',
 			return;
 		}
 		// CICO-9721 : Payment should be prompted on Bill 1 first before moving to review Bill 2 when balance is not 0.00.
-		var ActiveBillBalance = $scope.reservationBillData.bills[$scope.currentActiveBill].total_fees[0].balance_amount;
-		var paymentType = reservationBillData.bills[$scope.currentActiveBill].credit_card_details.payment_type;
+		var ActiveBillBalance = $scope.reservationBillData.bills[$scope.currentActiveBill].total_fees[0].balance_amount,
+			paymentType = reservationBillData.bills[$scope.currentActiveBill].credit_card_details.payment_type,
+			isPaymentExist = $scope.reservationBillData.bills[$scope.currentActiveBill].is_payment_exist,
+			isControlCodeExist = $scope.reservationBillData.bills[$scope.currentActiveBill].is_control_code_exist;
 
 		if ($rootScope.isStandAlone && ( ActiveBillBalance === "0.00" || $scope.isCheckoutWithoutSettlement )) {
-			// Checking bill balance for stand-alone only.
-			$scope.reviewStatusArray[index].reviewStatus = true;
-			$scope.findNextBillToReview();
+
+			// CICO-49105 : Calling blackbox API in review process if :
+			// 1. Blackbox enabled.
+			// 2. There should be payment exist in the bill.
+			// 3. Not opted checkoutWithoutSettlement.
+			// 4. Not having existing control code.
+			if (isBlackBoxEnabled && isPaymentExist && !$scope.isCheckoutWithoutSettlement && !isControlCodeExist) {
+				$scope.isViaReviewProcess = true;
+				callBlackBoxAPI();
+			}
+			else {
+				// Checking bill balance for stand-alone only.
+				$scope.reviewStatusArray[index].reviewStatus = true;
+				$scope.findNextBillToReview();
+			}
 		}
 		else if ( $rootScope.isStandAlone && ActiveBillBalance !== "0.00" && paymentType === "DB"  && !reservationBillData.bills[$scope.currentActiveBill].is_allow_direct_debit ) {
 			showDirectDebitDisabledPopup();
+		} 
+		else if ( $rootScope.isStandAlone && ActiveBillBalance !== "0.00" && paymentType === "DB"  && reservationBillData.bills[$scope.currentActiveBill].is_allow_direct_debit ) {
+			// Show payment popup for stand-alone only.
+			$scope.reservationBillData.isCheckout = true;
+			$scope.clickedPayButton(true);
 		}
 		else if ($rootScope.isStandAlone && ActiveBillBalance !== "0.00" && paymentType !== "DB") {
 			// Show payment popup for stand-alone only.
@@ -2080,8 +2249,8 @@ sntRover.controller('RVbillCardController',
 
 			// Checking last bill balance for stand-alone only.
 			if ($rootScope.isStandAlone && typeof $scope.reservationBillData.bills[i].total_fees[0] !== 'undefined') {
-				var billBalance = $scope.reservationBillData.bills[i].total_fees[0].balance_amount;
-				var paymentType = $scope.reservationBillData.bills[i].credit_card_details.payment_type;
+				var billBalance = $scope.reservationBillData.bills[i].total_fees[0].balance_amount,
+				    paymentType = $scope.reservationBillData.bills[i].credit_card_details.payment_type;
 
 				if (billBalance !== "0.00" && paymentType !== "DB" && !$scope.isCheckoutWithoutSettlement ) {
 					$scope.reviewStatusArray[i].reviewStatus = false;
@@ -2214,21 +2383,21 @@ sntRover.controller('RVbillCardController',
     };
 
 	/*
-	 * to show the advance bill confirmation dialog
-	 *
+	 * To show the advance bill confirmation dialog
+	 * @param  {Boolean} [is Via ReviewProcess or not ]
+	 * @return {undefined}
 	 */
-	$scope.showAdvancedBillDialog = function() {
+	$scope.showAdvancedBillDialog = function( isViaReviewProcess ) {
 		if ($rootScope.isStandAlone && $scope.reservationBillData.reservation_status === 'CHECKEDIN' && !$scope.reservationBillData.is_advance_bill && !$scope.reservationBillData.is_hourly) {
 		 		ngDialog.open({
 	    		template: '/assets/partials/bill/rvAdvanceBillConfirmPopup.html',
 	    		className: '',
 	    		scope: $scope
 	    	});
-	 	} else {
-	 		$scope.clickedPayButton();
+	 	} 
+	 	else {
+	 		$scope.clickedPayButton( isViaReviewProcess );
 	 	}
-
-
 	};
 
 	/*
@@ -2284,7 +2453,7 @@ sntRover.controller('RVbillCardController',
    /*
 	 * open popup for edit/split/remove transaction
 	 */
-	$scope.openActionsPopup = function(id, desc, amount, type, credits) {
+	$scope.openActionsPopup = function(id, desc, amount, type, credits, reference_text, show_ref_on_invoice) {
 
 		$scope.errorMessage = "";
 		// hide edit and remove options in case type is  payment
@@ -2292,6 +2461,8 @@ sntRover.controller('RVbillCardController',
 		$scope.selectedTransaction = {};
 		$scope.selectedTransaction.id = id;
 		$scope.selectedTransaction.desc = desc;
+		$scope.reference_text = reference_text;
+		$scope.show_ref_on_invoice = show_ref_on_invoice;
 
 		if (amount) {
 			$scope.selectedTransaction.amount = amount;
@@ -2490,6 +2661,7 @@ sntRover.controller('RVbillCardController',
 	};
 
 	$scope.printRegistrationCard = function() {
+		ngDialog.close();
 		scrollToTop();
 
 		var sucessCallback = function(data) {
@@ -2554,32 +2726,80 @@ sntRover.controller('RVbillCardController',
 			$scope.$emit('hideLoader');
 			$scope.errorMessage = errorData;
 		};
+		var params = {
+			'reservation_id': $scope.reservationBillData.reservation_id,
+			'locale': $scope.regCardData.selectedLocale
+		};
+		
+		$scope.invokeApi(RVBillCardSrv.fetchRegistrationCardPrintData, params, sucessCallback, failureCallback);
+	};
 
-		$scope.invokeApi(RVBillCardSrv.fetchRegistrationCardPrintData, { 'reservation_id': $scope.reservationBillData.reservation_id }, sucessCallback, failureCallback);
+	$scope.openRegCardPopup = function() {
+		$scope.regCardData = {};
+		var failureCallback = function(errorData) {
+			$scope.isPrintRegistrationCard = false;
+			$scope.$emit('hideLoader');
+			$scope.errorMessage = errorData;
+		};
+		var onLanguageFetchSuccess = function(data) {
+			$scope.$emit('hideLoader');
+			$scope.languageData = data;
+			$scope.regCardData.selectedLocale = data.selected_language_code;
+			ngDialog.open({
+				template: '/assets/partials/popups/billFormat/rvRegCardPopup.html',
+				className: '',
+				scope: $scope
+			});
+		};
+		var options = {
+			params: {},
+			successCallBack: onLanguageFetchSuccess,
+			failureCallBack: failureCallback
+		};
+
+		$scope.callAPI(RVBillCardSrv.fetchGuestLanguages, options);
 	};
 
 
 	 $scope.$on('BILL_PAYMENT_SUCCESS', function(event, data) {
 	 	$scope.signatureData = JSON.stringify($("#signature").jSignature("getData", "native"));
-	 	var billCount = $scope.reservationBillData.bills.length;
-
+	 	$scope.shouldGenerateFolioNumber = true;
 		$scope.isRefreshOnBackToStaycard = true;
 		var fetchBillDataSuccessCallback = function(billData) {
 		 	$scope.$emit('hideLoader');
 		 	reservationBillData = billData;
 		 	$scope.init(billData);
 		 	$scope.calculateBillDaysWidth();
+		 	var billCount = $scope.reservationBillData.bills.length,
+	 			reservationStatus = $scope.reservationBillData.reservation_status;
+
+	 		if ($rootScope.roverObj.hasActivatedFolioNumber && $scope.shouldGenerateFolioNumber) {
+				var currentActiveBill = $scope.reservationBillData.bills[$scope.currentActiveBill];
+
+				that.generateFolioNumber(currentActiveBill.bill_id, currentActiveBill.total_fees[0].balance_amount, currentActiveBill.is_folio_number_exists);
+			}
+
 		 	// CICO-10906 review process continues after payment.
 			if ( (data.bill_balance === 0.0 || data.bill_balance === "0.0") && $scope.isViaReviewProcess ) {
-				(billCount === data.billNumber) ? $scope.clickedCompleteCheckout() :
-						$scope.clickedReviewButton(data.billNumber - 1);
+				// If last bill - continue checkout..Else proceed Review process.
+				if (billCount === $scope.currentActiveBill + 1) {
+					$scope.clickedCompleteCheckout();
+				}
+				else {
+					$scope.clickedReviewButton(data.billNumber - 1);
+				}
+			}
+			else if (reservationStatus === 'CHECKEDOUT' && (data.bill_balance === 0.0 || data.bill_balance === "0.0") && isBlackBoxEnabled) {
+				// CICO-49105 : For CHECKED OUT (WITH BALANCE)
+				// ie., After checkout and trying to settle the bill, we need to trigger Blackbox API
+				$scope.isViaReviewProcess = false;
+				callBlackBoxAPI();
 			}
 		};
 
 		// update the bill screen and handle futher payments
 		$scope.invokeApi(RVBillCardSrv.fetch, $scope.reservationBillData.reservation_id, fetchBillDataSuccessCallback);
-
-
+		$scope.$broadcast('FETCH_REMAINING_AUTH');
 	});
 
 	// To update paymentModalOpened scope - To work normal swipe in case if payment screen opened and closed - CICO-8617
@@ -2592,8 +2812,7 @@ sntRover.controller('RVbillCardController',
 	$scope.createNewBill = function(type) {
 		$scope.movedIndex = $scope.reservationBillData.bills.length;
 		var billData = {
-			"reservation_id": $scope.reservationBillData.reservation_id,
-			"bill_number": $scope.reservationBillData.bills.length + 1
+			"reservation_id": $scope.reservationBillData.reservation_id
 		};
 		/*
 		 * Success Callback of move action
@@ -2610,13 +2829,10 @@ sntRover.controller('RVbillCardController',
 			data.billIndex = $scope.reservationBillData.bills.length;
 			$scope.isAllBillsReviewed = false;
 			$scope.reviewStatusArray.push(data);
-
-
 		};
 
 		$scope.invokeApi(RVBillCardSrv.createAnotherBill, billData, createBillSuccessCallback);
 	};
-
 
 	/*
 	*Open the terms and conditions dialog after fetching
@@ -2641,7 +2857,8 @@ sntRover.controller('RVbillCardController',
 	};
 	$scope.calculateBillDaysWidth = function() {
 		angular.forEach(reservationBillData.bills, function(value, key) {
-			billDaysWidth = 0;
+			var billDaysWidth = 0;
+
 			angular.forEach(value.days, function(daysValue, daysKey) {
 				billDaysWidth = parseInt(billDaysWidth) + parseInt(70);
 			});
@@ -2682,7 +2899,6 @@ sntRover.controller('RVbillCardController',
 	$scope.setupReviewStatusArray();
 
 	$scope.calculateBillDaysWidth();
-
 
 	$scope.clickedReverseCheckoutButton = function() {
 
@@ -2740,9 +2956,18 @@ sntRover.controller('RVbillCardController',
 	$scope.$on('PAYMENT_MAP_ERROR', function(event, data) {
         $scope.errorMessage = data;
     });
+	/*
+	 * Update informational invoice flag
+	 * Based on checkbox in popup
+	 */
+    $scope.$on("UPDATE_INFORMATIONAL_INVOICE", function(event, isInformationalInvoice) {
+    	$scope.isInformationalInvoice = isInformationalInvoice;
+    });
 
     $scope.showFormatBillPopup = function(billNo) {
     	$scope.billNo = billNo;
+    	$scope.isInformationalInvoice = false;
+    	$scope.isSettledBill = $scope.reservationBillData.bills[$scope.currentActiveBill].is_active;
     	ngDialog.open({
     		template: '/assets/partials/popups/billFormat/rvBillFormatPopup.html',
     		controller: 'rvBillFormatPopupCtrl',
@@ -2808,5 +3033,50 @@ sntRover.controller('RVbillCardController',
     $scope.billHasCreditCard = function () {
         return $scope.reservationBillData.bills[$scope.currentActiveBill].credit_card_details.payment_type === "CC";
     };
+
+    /*
+	 * Handle click action on Remove Bill button
+	 * @param {int} index of bill
+	 */
+	$scope.clickedRemoveBill = function(billIndex) {
+
+		var hideBillSuccessCallback = function() {
+			// Removing the last bill details from review list.
+			$scope.reviewStatusArray = $scope.reviewStatusArray.slice(0, -1);
+			// Reload Bill screen and reset active bill tab ..
+			reloadBillScreen();
+			$scope.setActiveBill(billIndex - 1);
+		},
+		hideBillFailureCallback = function(errorMessage) {
+			$scope.errorMessage = errorMessage;
+		};
+
+		var dataToSend = {
+			params: {
+				'bill_id': $scope.reservationBillData.bills[billIndex].bill_id
+			},
+			successCallBack: hideBillSuccessCallback,
+			failureCallBack: hideBillFailureCallback
+		};
+
+		$scope.callAPI(RVBillCardSrv.hideBill, dataToSend);
+	};
+
+	var updateGenerateFolioFlag = $scope.$on('UPDATE_GENERATE_FOLIO_FLAG', function() {
+		$scope.shouldGenerateFolioNumber = true;
+	});
+
+	$scope.$on( '$destroy', updateGenerateFolioFlag );
+
+    var init = function() {
+        $scope.isCompleteRegistration = false;
+        if ($scope.clickedButton === 'checkinButton'
+            || $scope.clickedButton === 'checkoutButton'
+            || $scope.clickedButton === 'reverseCheckoutButton') {
+            $scope.isCompleteRegistration = true;
+        }
+    };
+
+    init();
 
 }]);

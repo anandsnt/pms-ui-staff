@@ -100,5 +100,17 @@ admin.service('ADChargeCodesSrv', ['$http', '$q', 'ADBaseWebSrv', 'ADBaseWebSrvV
 		return deferred.promise;
 	};
 
+	this.uploadCSVFile = function(params) {
+		var deferred = $q.defer();
+		var url = "/api/charge_codes/upload";
+
+		ADBaseWebSrvV2.postJSON(url, params).then(function(data) {
+			deferred.resolve(data.results);
+		}, function(data) {
+			deferred.reject(data);
+		});
+		return deferred.promise;
+	};
+
 
 }]);

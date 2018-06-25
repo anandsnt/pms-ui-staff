@@ -95,7 +95,8 @@ angular.module('sntRover').service('rvMenuSrv',
     	// we are processing on the menu list we have
 		_.each (menuList, function(menuItem) {
 			// if the menu is hi
-			isMenuItemVisible = self.shouldShowMenuItem(menuItem.menuIndex);
+			var isMenuItemVisible = self.shouldShowMenuItem(menuItem.menuIndex);
+			
 			if (isMenuItemVisible) {
 				subMenuCount = menuItem.submenu ? menuItem.submenu.length : 0;
 				hasSubMenu = (subMenuCount > 0) ? true : false;
@@ -152,7 +153,7 @@ angular.module('sntRover').service('rvMenuSrv',
 		        submenu: [{
 		            title: "MENU_SEARCH_RESERVATIONS",
 		            action: "rover.search",
-		            menuIndex: "search"
+		            menuIndex: "reservationSearch"
 		        }, {
 		            title: "MENU_CREATE_RESERVATION",
 		            action: "rover.reservation.search",
@@ -176,6 +177,10 @@ angular.module('sntRover').service('rvMenuSrv',
 		            title: "MENU_CASHIER",
 		            action: "rover.financials.journal({ id: 'CASHIER' })",
 		            menuIndex: "cashier"
+		        }, {
+		            title: "MENU_GUESTS",
+		            action: "rover.guest.search",
+		            menuIndex: "guests"
 		        }, {
 		            title: "MENU_ACCOUNTS",
 		            action: "rover.accounts.search",
@@ -243,10 +248,6 @@ angular.module('sntRover').service('rvMenuSrv',
 		            title: "MENU_TA_CARDS",
 		            action: "rover.companycardsearch",
 		            menuIndex: "cards"
-		        }, {
-		            title: "MENU_DISTRIBUTION_MANAGER",
-		            action: "",
-		            menuIndex: "distribution_manager"
 		        }]
 		    }, {
 		        title: "MENU_HOUSEKEEPING",
@@ -292,6 +293,10 @@ angular.module('sntRover').service('rvMenuSrv',
 		            title: "MENU_COMMISIONS",
 		            action: "rover.financials.commisions",
 		            menuIndex: "commisions"
+		        }, {
+		            title: "MENU_INVOICE_SEARCH",
+		            action: "rover.financials.invoiceSearch",
+		            menuIndex: "invoiceSearch"
 		        }]
             }, {
                 title: "MENU_ACTIONS_MANAGER",
@@ -299,13 +304,27 @@ angular.module('sntRover').service('rvMenuSrv',
                 menuIndex: "actionManager",
                 iconClass: "icon-actions",
                 submenu: []
-            }, {
-		        title: "MENU_REPORTS",
-		        action: "rover.reports",
-		        menuIndex: "reports",
+            },
+            {
+		        title: "MENU_REPORTS",		        
+		        action: "",
 		        iconClass: "icon-reports",
-		        submenu: []
-		    }
+		        menuIndex: "reports",		        
+		        submenu: [{
+		            title: "MENU_NEW_REPORT",
+		            action: "rover.reports.dashboard",
+		            menuIndex: "new_report"
+		        }, {
+		            title: "MENU_REPORTS_INBOX",
+		            action: "rover.reports.inbox",
+		            menuIndex: "reports-inbox",
+		            hidden: !$rootScope.isBackgroundReportsEnabled
+		        }, {
+		            title: "MENU_SCHEDULE_REPORT_OR_EXPORT",
+		            action: "rover.reports.scheduleReportsAndExports",
+		            menuIndex: "schedule_report_export"
+		        }]
+            }            
 		];
 
 		return processMenuList (menuList);
@@ -339,12 +358,25 @@ angular.module('sntRover').service('rvMenuSrv',
 				]
 			},
 			{
-				title: "MENU_REPORTS",
-				action: "rover.reports",
-				menuIndex: "reports",
-				iconClass: "icon-reports",
-				submenu: []
-			}
+		        title: "MENU_REPORTS",		        
+		        action: "",
+		        iconClass: "icon-reports",
+		        menuIndex: "reports",		        
+		        submenu: [{
+		            title: "MENU_NEW_REPORT",
+		            action: "rover.reports.dashboard",
+		            menuIndex: "new_report"
+		        }, {
+		            title: "MENU_REPORTS_INBOX",
+		            action: "rover.reports.inbox",
+		            menuIndex: "reports-inbox",
+		            hidden: !$rootScope.isBackgroundReportsEnabled
+		        }, {
+		            title: "MENU_SCHEDULE_REPORT_OR_EXPORT",
+		            action: "rover.reports.scheduleReportsAndExports",
+		            menuIndex: "schedule_report_export"
+		        }]
+            }
 		];
 
 		return processMenuList (menu);

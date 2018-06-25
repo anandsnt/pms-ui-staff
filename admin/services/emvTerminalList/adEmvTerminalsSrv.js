@@ -151,5 +151,21 @@ admin.service('ADEmvTerminalsSrv', ['$q', 'ADBaseWebSrv', 'ADBaseWebSrvV2', '$ro
             });
             return deferred.promise;
         };
+        /*
+         * Service to get the infrasec details
+         *
+         */
+
+        this.getHotelInfrasecDetails = function (data) { 
+            var url = "/admin/hotels/" + data.hotel_id + "/hotel_infrasec_details";
+            var deferred = $q.defer();
+
+            ADBaseWebSrvV2.getJSON(url).then(function (data) {
+                deferred.resolve(data);
+            }, function (errorMessage) {
+                deferred.reject(errorMessage);
+            });
+            return deferred.promise;
+        };
 
     }]);

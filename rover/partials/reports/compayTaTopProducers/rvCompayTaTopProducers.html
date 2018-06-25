@@ -20,10 +20,10 @@
                 </tr>
                 <tr class="bottom-row">
                     <th ng-repeat="item in subHeaders track by $index">
-                        <span ng-if="!!chosenReport.sortByOptions[$index]" class="sort" ng-class="{'sorting-asc': isAsc($index), 'sorting-desc': isDesc($index)}" ng-click="sortResultBy(chosenReport.sortByOptions[$index], chosenReport)">
+                        <span ng-if="!!chosenReport.sortByOptions[$index] && !isBackgroundReportsEnabled" class="sort" ng-class="{'sorting-asc': isAsc($index), 'sorting-desc': isDesc($index)}" ng-click="sortResultBy(chosenReport.sortByOptions[$index], chosenReport)">
                             {{ item }}
                         </span>
-                        <em ng-if="!chosenReport.sortByOptions[$index]">{{ item }}</em>
+                        <em ng-if="!chosenReport.sortByOptions[$index] || isBackgroundReportsEnabled">{{ item }}</em>
                     </th>
                 </tr>
             </thead>
@@ -37,5 +37,5 @@
     </div>
 </div>
 
-<rv-pagination  page-options="paginationConfig" page-data="totalCount" ng-if="showReportDetails">
+<rv-pagination  page-options="paginationConfig" page-data="totalCount">
 </rv-pagination>
