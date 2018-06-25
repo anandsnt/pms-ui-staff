@@ -27,25 +27,27 @@
     <!-- main content -->
     <div class="row" ng-hide="isFetching || netWorkError">
         <div class="col-md-4"></div>
-        <div class="col-md-4 section-container align-center">
-            <p class="main-text">Check-Out</p>
-            <p class="sub-main-text">Your balance is</p>
-            <p class="balance-amount">{{currencySymbol}}{{billData.balance}}</p>
-            <div class="view-bill" ng-hide="showBill" ng-click="showBill = true">
-                <div class="right-arrow-button"></div>VIEW BILL
+        <div class="col-md-4">
+            <div class="section-container align-center">
+                <p class="main-text">Check-Out</p>
+                <p class="sub-main-text">Your balance is</p>
+                <p class="balance-amount">{{currencySymbol}}{{billData.balance}}</p>
+                <div class="view-bill" ng-hide="showBill" ng-click="showBill = true">
+                    <div class="right-arrow-button"></div>VIEW BILL
+                </div>
+                <div class="view-bill" ng-show="showBill" ng-click="showBill = false">
+                    <div class="down-arrow-button">&nbsp;</div>VIEW BILL
+                </div>
+                <!--  bill content -->
+                <div class="show-bill-wrap" ng-show="showBill">
+                    <div ng-include="'/assets/common_templates/partials/IHG/gwBillPartial.html'"></div>
+                </div>
+                <a class="btn dual-button dark-button extended-btn margin-top-20" ng-click="gotToNextStep()">
+                    <p>Accept charges</p>
+                    <p>and Check-out</p>
+                    <div class="accept-charge-icon"></div>
+                </a>
             </div>
-            <div class="view-bill" ng-show="showBill" ng-click="showBill = false">
-                <div class="down-arrow-button">&nbsp;</div>VIEW BILL
-            </div>
-            <!--  bill content -->
-            <div class="show-bill-wrap" ng-show="showBill">
-                <div ng-include="'/assets/common_templates/partials/IHG/gwBillPartial.html'"></div>
-            </div>
-            <a class="btn dual-button dark-button extended-btn margin-top-20" ng-click="gotToNextStep()">
-                <p>Accept charges</p>
-                <p>and Check-out</p>
-                <div class="accept-charge-icon"></div>
-            </a>
         </div>
         <div class="col-md-4">
         </div>

@@ -28,11 +28,11 @@
     <div class="row" ng-hide="isFetching || netWorkError">
         <div class="col-md-4"></div>
         <div class="col-md-4">
-            <p class="main-text">Payment</p>
-            <p class="sub-main-text" ng-hide="isFromCheckoutNow">Late Check-out fee</p>
-            <p class="sub-main-text" ng-show="isFromCheckoutNow">You balance is</p>
-            <p class="balance-amount">{{currencySymbol}}{{fee}}</p>
             <div class="section-container">
+                <p class="main-text">Payment</p>
+                <p class="sub-main-text" ng-hide="isFromCheckoutNow">Late Check-out fee</p>
+                <p class="sub-main-text" ng-show="isFromCheckoutNow">You balance is</p>
+                <p class="balance-amount">{{currencySymbol}}{{fee}}</p>
                 <div class="row first-field">
                     <!-- card number -->
                     <div class="cc-input-field pull-left">
@@ -47,33 +47,34 @@
                         <input type="text" class="input-field" ng-model="ccv"></input>
                         <a class="query-text pull-left" ng-click="showCcvPopup()">What is this?</a>
                     </div>
-                </div>
-                <div class="row margin-top-20">
-                    <!-- month -->
-                    <div class="drop-down-container pull-left">
-                        <span class="sub-text upper-case pull-left">Expiration date</span>
-                        <br>
-                        <br>
-                        <div class="select-style">
-                            <select ng-model="monthSelected" ng-options="month.value as month.name for month in months">
-                                <option value="">Month</option>
-                            </select>
+                    </div>
+                    <div class="row margin-top-20">
+                        <!-- month -->
+                        <div class="drop-down-container pull-left">
+                            <span class="sub-text upper-case pull-left">Expiration date</span>
+                            <br>
+                            <br>
+                            <div class="select-style">
+                                <select ng-model="monthSelected" ng-options="month.value as month.name for month in months">
+                                    <option value="">Month</option>
+                                </select>
+                            </div>
+                        </div>
+                        <!-- year -->
+                        <div class="drop-down-container pull-right">
+                            <span class="sub-text upper-case  pull-left">&nbsp;&nbsp;</span>
+                            <br>
+                            <br>
+                            <div class="select-style left-margin-5">
+                                <select ng-model="yearSelected" ng-options="year as year  for year in years">
+                                    <option value="">Year</option>
+                                </select>
+                            </div>
                         </div>
                     </div>
-                    <!-- year -->
-                    <div class="drop-down-container pull-right">
-                        <span class="sub-text upper-case  pull-left">&nbsp;&nbsp;</span>
-                        <br>
-                        <br>
-                        <div class="select-style left-margin-5">
-                            <select ng-model="yearSelected" ng-options="year as year  for year in years">
-                                <option value="">Year</option>
-                            </select>
-                        </div>
-                    </div>
+                    <!-- save payment button  -->
+                    <button class="btn btn-template margin-top-40" ng-click="savePaymentDetails()"> Continue</button>
                 </div>
-                <!-- save payment button  -->
-                <button class="btn btn-template margin-top-40" ng-click="savePaymentDetails()"> Continue</button>
             </div>
         </div>
         <div class="col-md-4"></div>
