@@ -268,8 +268,10 @@ angular.module('sntRover').controller('RVReportsInboxCtrl', [
 
         // Filter the report inbox by name
         $scope.filterByQuery = _.debounce(() => {
-            self.fetchGeneratedReports(1);
-        }, 100);
+            $scope.$apply(function() {
+                self.fetchGeneratedReports(1);
+            });            
+        }, 800);
 
         // Clear the report search box
         $scope.clearQuery = function () {
@@ -329,6 +331,7 @@ angular.module('sntRover').controller('RVReportsInboxCtrl', [
                 // Setting the raw data containing the filter state while running the report
                 // These filter data is used in some of the reports controller 
                 choosenReport = _.extend(JSON.parse(JSON.stringify(choosenReport)), selectedreport.rawData);
+                choosenReport.appliedFilter = selectedreport.appliedFilter;
                 reportsSrv.setChoosenReport( choosenReport );
                 deffered.resolve();
             });            
@@ -408,12 +411,14 @@ angular.module('sntRover').controller('RVReportsInboxCtrl', [
         };
 
         // Initialize
-        self.init = () => {            
+        self.init = () => { 
+            var chosenDate = $state.params.date ? $state.params.date : $rootScope.serverDate;
+
             $scope.reportInboxData = {
                 selectedReportAppliedFilters: {},
                 generatedReports: [],
                 filter: {
-                    selectedDate: $filter('date')($rootScope.serverDate, 'yyyy-MM-dd'),
+                    selectedDate: $filter('date')(chosenDate, 'yyyy-MM-dd'),
                     searchTerm: ''
                 },
                 isReportInboxOpen: false
