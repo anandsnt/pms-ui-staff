@@ -1,5 +1,5 @@
 <tr ng-repeat="each in results track by $index" class="{{ each.className }}" ngrepeatend>
-	<td ng-if="each.isReport && each.stay_count > 0" rowspan="{{ each.rowspan }}" data-count="{{each.stay_count}}">
+	<td ng-if="each.isReport && each.stay_count > 0 && isStandAlone" rowspan="{{ each.rowspan }}" data-count="{{each.stay_count}}">
 		<strong ng-if="each.room_no" class="title">{{ each.room_no }}</strong>
 		<span class="data status">{{ each.status }}</span>
 	</td>

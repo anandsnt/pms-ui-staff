@@ -4,6 +4,13 @@ module.exports = {
         var themeCSSRoot = 'stylesheets/guestweb/';
 
         return {
+            'guestweb_rydges_sydney_airport': [ themeCSSRoot + 'guestweb_rydges_sydney_airport.css'],
+            'guestweb_kona_seaside_hotel': [ themeCSSRoot + 'guestweb_kona_seaside_hotel.css'],
+            'guestweb_bunk_hotels': [ themeCSSRoot + 'guestweb_bunk_hotels.css'],
+            'guestweb_maui_seaside_hotel': [ themeCSSRoot + 'guestweb_maui_seaside_hotel.css'],
+            'guestweb_hilo_seaside_hotel': [ themeCSSRoot + 'guestweb_hilo_seaside_hotel.css'],
+            'guestweb_surf_and_sand_hotel': [ themeCSSRoot + 'guestweb_surf_and_sand_hotel.css'],
+            'guestweb_the_shore_house': [ themeCSSRoot + 'guestweb_the_shore_house.css'],
             'guestweb_story_hotels': [ themeCSSRoot + 'guestweb_story_hotels.css'],
             'guestweb_cortana_inn_and_suites': [ themeCSSRoot + 'guestweb_cortana_inn_and_suites.css'],
             'guestweb_madison_hotel': [ themeCSSRoot + 'guestweb_madison_hotel.css'],
@@ -145,12 +152,12 @@ module.exports = {
             'guestweb_stella_hotel': [ themeCSSRoot + 'guestweb_stella_hotel.css'],
             'guestweb_beau_rivage': [ themeCSSRoot + 'guestweb_beau_rivage.css'],
             'guestweb_park_mgm': [ themeCSSRoot + 'guestweb_park_mgm.css'],
-		'guestweb_gold_strike': [ themeCSSRoot + 'guestweb_gold_strike.css'],
+            'guestweb_gold_strike': [ themeCSSRoot + 'guestweb_gold_strike.css'],
             'guestweb_historic_taos_inn': [ themeCSSRoot + 'guestweb_historic_taos_inn.css'],
             'guestweb_public_ny_v2': [ themeCSSRoot + 'guestweb_public_ny_v2.css'],
             'guestweb_mgm_grand_detroit': [ themeCSSRoot + 'guestweb_mgm_grand_detroit.css'],
             'guestweb_arc_the_hotel': [ themeCSSRoot + 'guestweb_arc_the_hotel.css'],
-		'guestweb_hotel_hiho': [ themeCSSRoot + 'guestweb_hotel_hiho.css'],
+            'guestweb_hotel_hiho': [ themeCSSRoot + 'guestweb_hotel_hiho.css'],
             'guestweb_circle_fairfield': [ themeCSSRoot + 'guestweb_circle_fairfield.css'],
             'guestweb_foundation_hotel_detroit': [ themeCSSRoot + 'guestweb_foundation_hotel_detroit.css'],
             'guestweb_hotel_royal': [ themeCSSRoot + 'guestweb_hotel_royal.css'],
@@ -158,7 +165,7 @@ module.exports = {
             'guestweb_orchard_hotel': [ themeCSSRoot + 'guestweb_orchard_hotel.css'],
             'guestweb_avenue_suites_georgetown': [ themeCSSRoot + 'guestweb_avenue_suites_georgetown.css'],
             'guestweb_georgetown_inn': [ themeCSSRoot + 'guestweb_georgetown_inn.css'],
-		'guestweb_maidestone_hotel': [ themeCSSRoot + 'guestweb_maidestone_hotel.css'],
+            'guestweb_maidestone_hotel': [ themeCSSRoot + 'guestweb_maidestone_hotel.css'],
             'guestweb_hotel_de_jonker': [ themeCSSRoot + 'guestweb_hotel_de_jonker.css'],
             'guestweb_carillon_v2': [ themeCSSRoot + 'guestweb_carillon_v2.css'],
             'guestweb_cachet_boutique': [ themeCSSRoot + 'guestweb_cachet_boutique.css'],
@@ -172,7 +179,8 @@ module.exports = {
             'guestweb_viceroy_chicago': [ themeCSSRoot + 'guestweb_viceroy_chicago.css'],
             'guestweb_hotel_alessandra': [ themeCSSRoot + 'guestweb_hotel_alessandra.css'],
             'guestweb_george_texas': [ themeCSSRoot + 'guestweb_george_texas.css'],
-            'guestweb_eden_v2': [ themeCSSRoot + 'guestweb_eden_v2.css']
+            'guestweb_eden_v2': [ themeCSSRoot + 'guestweb_eden_v2.css'],
+            'guestweb_ihg': [ themeCSSRoot + 'guestweb_ihg.css']
         };
     }
 };

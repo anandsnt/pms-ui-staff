@@ -166,8 +166,13 @@
 "FILE_ATTACHED":"File Attached",
 "CHOOSE_FILE":"Choose File...",
 "ATTACH_FILE":"Attach File",
-"LANGUAGE_SUPPORT":"Language Support"
+"LANGUAGE_SUPPORT":"Language Support",
+"MENU_NEW_REPORT": "New Report",
+"MENU_REPORTS_INBOX": "Reports Inbox",
+"MENU_SCHEDULE_REPORT_OR_EXPORT": "Schedule a Report/Export",
 
+"SETTINGS_HAVE_BEEN_SAVED": "Success! Settings have been saved",
+"STAFF_ID": "STAFF ID"
 
 
 

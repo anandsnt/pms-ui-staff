@@ -21,7 +21,7 @@
                     <a ui-sref="rover.guest.details({guestId: guest.id, query: textInQueryBox})">
                         <figure class="guest-image">
                             <img src="{{guest.image_url}}" alt="" /> 
-                            <span class="stay-count" ng-if="guest.stay_count > 0">{{::guest.stay_count}}</span>
+                            <span class="stay-count" ng-if="guest.stay_count > 0 && isStandAlone">{{::guest.stay_count}}</span>
                             <span class="vip" ng-if="guest.vip">VIP</span>
                         </figure>
                         <div class="data" ng-class="{'no-stay': guest.stay_count === 0}">

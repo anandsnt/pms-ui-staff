@@ -65,7 +65,12 @@
     <div class="info-bottom float">
         <div class="info-left">
             <strong >{{printData.translation.invoice_date}}:</strong>{{printData.invoice_date | date:dateFormat}}<br/>
-            <strong >{{printData.translation.invoice_number}}:</strong>{{printData.invoice_number}}<br/>
+            <span ng-show="!isInformationalInvoice">
+                <strong >{{printData.translation.invoice_number}}:</strong>{{printData.invoice_number}}<br/>
+            </span>
+            <span ng-if="printData.folio_number">
+                <strong >{{printData.translation.folio_number}}:</strong>{{printData.folio_number}}<br/>
+            </span>
             <span ng-show="printData.has_enabled_invoice_number_sequence && printData.mod_invoice_number && !isInformationalInvoice">
                 <strong >{{printData.mod_label}}:</strong>{{printData.mod_invoice_number}}<br/>
             </span>

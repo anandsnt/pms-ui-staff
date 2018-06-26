@@ -95,7 +95,7 @@
                 	<div class="bill-tabs scrollable" ng-iscroll="bill-tab-scroller" ng-iscroll-delay="100">
                 		<ul class="wrapper" style="width:{{getWidthForBillTabsScroll()}}px">
                 			<li ng-class="showActiveBill($index)" ng-repeat="billTab in reservationBillData.bills">
-								<a click-touch="setActiveBill($index)" class="bill-toggle" ng-class="{'error': billTab.has_crossed_credit_limit, 'has-icon': !billTab.is_active && billTab.is_control_code_exist}">
+								<a click-touch="setActiveBill($index)" class="bill-toggle" ng-class="{'error': billTab.has_crossed_credit_limit, 'has-icon': !billTab.is_active && (billTab.is_control_code_exist || billTab.is_folio_number_exists)}">
 									<div class="price" ng-show="isBalanceShown(billTab.is_rate_suppressed)">
 										<span translate>BILL #{{billTab.bill_number}}</span>
 										<span class="currency">{{currencySymbol}}</span>{{billTab.total_amount | number: precisonZero}}
@@ -111,7 +111,7 @@
 										<img ng-if="billTab.credit_card_details.card_code !== ''" ng-src="/assets/images/{{billTab.credit_card_details.card_code}}.png" alt="" class="credit-card-image">
 										<span class="number"> {{billTab.credit_card_details.card_number}}</span>
 									</figure>
-									<span class="icons icon-room-lock" ng-show="!billTab.is_active && billTab.is_control_code_exist"></span> 
+									<span class="icons icon-room-lock" ng-show="!billTab.is_active && (billTab.is_control_code_exist || billTab.is_folio_number_exists)"></span> 
 									<div class="payment" ng-show="billTab.is_moved_to_ar">Moved to A/R</div>
 								</a>
 								<button ng-if="($index === reservationBillData.bills.length - 1) && !billTab.is_transactions_exist && !billTab.is_routing_exist" click-touch="clickedRemoveBill($index)" type="button" class="button icons icon-remove-10"></button>
@@ -259,7 +259,7 @@
 											<td class="price"
 												ng-if="isBalanceShown(billData.is_rate_suppressed)"> <span class="currency">{{currencySymbol}}</span>{{billGroupExpense.expense | number: precisonTwo}}
 											</td>
-											<td> {{billGroupExpense.title}} </td>
+											<td> {{billGroupExpense.location}} </td>
 											<td> {{billGroupExpense.date | date:'MM-dd-yyyy'}} </td>
 										</tr>
 									</tbody>
