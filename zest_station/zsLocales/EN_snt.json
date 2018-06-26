@@ -667,6 +667,11 @@
    "ID_VERIFICATION_HEADER": "ID verification",
    "ID_VERIFICATION_SUB_HEADER": "Please contact a staff member to review",
 
-   "CALL_STAFF": "Call Staff"
+   "CALL_STAFF": "Call Staff",
+
+   "NOT_REVIEWED": "Not Reviewed",
+   "ID_APPROVED": "ID Approved",
+   "ID_APPROVED_WITHOUT_ID": "Approved without ID"
+
 
 }

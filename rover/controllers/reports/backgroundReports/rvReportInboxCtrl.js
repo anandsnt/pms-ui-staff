@@ -40,6 +40,10 @@ angular.module('sntRover').controller('RVReportsInboxCtrl', [
 
         // Navigate to new report request section
         $scope.createNewReport = () => {
+            // Reset the report list, this is required because some of the fields
+            // eg: sort_fields are formatted and don't work with the current values
+            // Hence restored the original list while naviagting to report dashboard
+            $scope.$parent.reportList = JSON.parse(JSON.stringify($scope.reportListCopy));
             $state.go('rover.reports.dashboard');
         };
 
@@ -82,6 +86,13 @@ angular.module('sntRover').controller('RVReportsInboxCtrl', [
             }
 
             return status;            
+        };
+
+        // Refreshes the scroller
+        self.refreshScroll = () => {
+            $timeout(() => {
+                $scope.refreshScroller(REPORT_INBOX_SCROLLER);                
+            }, 800);
         };
         
 
@@ -128,8 +139,8 @@ angular.module('sntRover').controller('RVReportsInboxCtrl', [
             $scope.setScroller(REPORT_INBOX_SCROLLER, scrollerOptions);            
         };
 
-        // Refreshes the scroller
-        self.refreshScroll = () => {
+        // Refreshes and set the scroller position
+        self.refreshAndAdjustScroll = () => {
             $timeout(() => {
                 $scope.refreshScroller(REPORT_INBOX_SCROLLER);
                 $timeout(() => {
@@ -198,12 +209,13 @@ angular.module('sntRover').controller('RVReportsInboxCtrl', [
          * @return {void}
          */
         self.fetchGeneratedReports = (pageNo) => {
+            $scope.reportInboxPageState.returnPage = pageNo;
 
             let onReportsFetchSuccess = (data) => {
                     $scope.reportInboxData.generatedReports = self.getFormatedGeneratedReports(data.results, $scope.reportList);
                     $scope.totalResultCount = data.total_count;
                     self.refreshPagination();
-                    self.refreshScroll();
+                    self.refreshAndAdjustScroll();
                 },                
                 options = {
                     onSuccess: onReportsFetchSuccess,                    
@@ -245,6 +257,7 @@ angular.module('sntRover').controller('RVReportsInboxCtrl', [
 
         // Refresh report inbox
         $scope.refreshReportInbox = () => {
+            $scope.reportInboxPageState.returnDate = $scope.reportInboxData.filter.selectedDate;
             self.fetchGeneratedReports(1);
         };
 
@@ -255,8 +268,10 @@ angular.module('sntRover').controller('RVReportsInboxCtrl', [
 
         // Filter the report inbox by name
         $scope.filterByQuery = _.debounce(() => {
-            self.fetchGeneratedReports(1);
-        }, 100);
+            $scope.$apply(function() {
+                self.fetchGeneratedReports(1);
+            });            
+        }, 800);
 
         // Clear the report search box
         $scope.clearQuery = function () {
@@ -316,6 +331,7 @@ angular.module('sntRover').controller('RVReportsInboxCtrl', [
                 // Setting the raw data containing the filter state while running the report
                 // These filter data is used in some of the reports controller 
                 choosenReport = _.extend(JSON.parse(JSON.stringify(choosenReport)), selectedreport.rawData);
+                choosenReport.appliedFilter = selectedreport.appliedFilter;
                 reportsSrv.setChoosenReport( choosenReport );
                 deffered.resolve();
             });            
@@ -395,12 +411,14 @@ angular.module('sntRover').controller('RVReportsInboxCtrl', [
         };
 
         // Initialize
-        self.init = () => {            
+        self.init = () => { 
+            var chosenDate = $state.params.date ? $state.params.date : $rootScope.serverDate;
+
             $scope.reportInboxData = {
                 selectedReportAppliedFilters: {},
                 generatedReports: [],
                 filter: {
-                    selectedDate: $filter('date')($rootScope.serverDate, 'yyyy-MM-dd'),
+                    selectedDate: $filter('date')(chosenDate, 'yyyy-MM-dd'),
                     searchTerm: ''
                 },
                 isReportInboxOpen: false
@@ -415,10 +433,14 @@ angular.module('sntRover').controller('RVReportsInboxCtrl', [
             RVReportsInboxSrv.processReports($scope.reportList);
             $scope.reportInboxData.generatedReports = self.getFormatedGeneratedReports(generatedReportsList.results, $scope.reportList);
             $scope.totalResultCount = generatedReportsList.total_count;
+            $scope.reportInboxPageState.returnDate = $scope.reportInboxData.filter.selectedDate;
 
-            self.refreshPagination();
+            $timeout(function() {
+               $scope.$broadcast('updatePagination', PAGINATION_ID);
+               $scope.$broadcast('updatePageNo', $state.params.page);
+            }, 50);            
 
-            self.refreshScroll();  
+            self.refreshAndAdjustScroll();  
 
             self.resetPreviousReportSelection();   
 
