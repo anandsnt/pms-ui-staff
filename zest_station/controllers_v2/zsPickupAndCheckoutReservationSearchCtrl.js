@@ -89,8 +89,8 @@ sntZestStation.controller('zsPickupAndCheckoutReservationSearchCtrl', [
             // There are too many conditions and flows to and fro (like back button actions).
             //  So the safe way will be to navigate from this state to the new state
             //  There will be CC actions also coming to this new state shortly
-            var collectCCDuringPickupKey = true;
-            if ($stateParams.mode === 'PICKUP_KEY' && collectCCDuringPickupKey) {
+
+            if ($stateParams.mode === 'PICKUP_KEY' && $scope.zestStationData.pickupkey_authenticate_cc) {
                 $state.go('zest_station.pickUpKeyReservationSearch');
             }
         };
