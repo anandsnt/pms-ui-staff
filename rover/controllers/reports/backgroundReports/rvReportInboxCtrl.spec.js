@@ -65,6 +65,11 @@ describe("RVReportsInboxCtrl", function() {
                 showDetails: false
             };
 
+            $scope.reportInboxPageState = {
+                    returnPage: 1,
+                    returnDate: ''
+            };
+
 
             reportInboxCtrl = $controller('RVReportsInboxCtrl', {
                 $scope: $scope,
@@ -81,8 +86,9 @@ describe("RVReportsInboxCtrl", function() {
 
                     deferred.resolve(generatedResponse);
                     return deferred.promise;
-                });             
+                });            
                 
+
                 
                 reportInboxCtrl.fetchGeneratedReports(1);
 
@@ -93,10 +99,10 @@ describe("RVReportsInboxCtrl", function() {
         });
 
         it("create drop dowm data for date filter",  function() {
-            $rootScope.businessDate = "2017-11-22";
-            let data = reportInboxCtrl.createDateDropdownData();
+            $rootScope.serverDate = "2017-06-21";
+            let data = reportInboxCtrl.createDateDropdownData();            
 
-            expect(data[1].value).toEqual("2017-11-21");
+            expect(data.length).toEqual(4);
         });
 
         it("get color code for report status", function() {

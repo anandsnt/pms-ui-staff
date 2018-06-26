@@ -28,7 +28,7 @@ angular.module('sntRover').service('RVReportsInboxSrv', [
 
         var self = this;
 
-        this.PER_PAGE = 10; 
+        this.PER_PAGE = 50; 
 
         var RESERVATION_STATUS_DEPOSIT_REPORT = [
             {id: -2, status: "DUE IN", selected: true},
@@ -54,6 +54,10 @@ angular.module('sntRover').service('RVReportsInboxSrv', [
         this.fetchReportInbox = function(params) {
             var deferred = $q.defer(),            
                url = '/api/generated_reports';
+
+            if (_.isEmpty(params.generated_date) ) {
+              params.generated_date = $filter('date')($rootScope.serverDate, 'yyyy-MM-dd');  
+            }
 
             rvBaseWebSrvV2.getJSON(url, params)
             .then(function(data) {                

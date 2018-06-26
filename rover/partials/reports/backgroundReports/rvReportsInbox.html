@@ -75,10 +75,10 @@
                                         </div>
                                         <div class="dates">
                                             <div class="date">
-                                                <span>{{report.fromDate}}</span>
+                                                <span>{{report.fromDate | date:dateFormat}}</span>
                                             </div>
                                             <div class="date">
-                                                <span>{{report.toDate}}</span>
+                                                <span>{{report.toDate | date:dateFormat}}</span>
                                             </div>
                                         </div>
                                     </div>
@@ -93,14 +93,14 @@
                                 </div>
                                 <!-- If disabled, there are no actions -->
                                 <div class="report-actions" ng-if="!shouldDisableInboxItem(report)">
-                                    <button type="button" class="button green" ng-click="showGeneratedReport(report)" ng-if="report.shouldDisplayView">Show</button>
+                                    <button type="button" class="button green" ng-click="showGeneratedReport(report)" ng-show="report.shouldDisplayView">Show</button>
                                     <!-- If export exists -->
-                                    <button type="button" class="button with-icon purple" ng-if="report.shouldShowExport" ng-click="exportCSV(report)">
+                                    <button type="button" class="button with-icon purple" ng-show="report.shouldShowExport" ng-click="exportCSV(report)">
                                         <span class="icons icon-save"></span>
                                         <span class="text">Export</span>
                                     </button>
                                     <!-- if export does not exist -->
-                                    <span class="button with-icon" ng-if="!report.shouldShowExport">
+                                    <span class="button with-icon" ng-show="!report.shouldShowExport">
                         <span class="icons icon-export-unavailable"></span>
                                     </span>
                                     <!-- if print exists -->
@@ -111,10 +111,10 @@
                                         <span class="text">Print</span>
                                     </button>
                                     <!-- if print does not exist -->
-                                    <span class="button with-icon" ng-if="!report.shouldDisplayView">
+                                    <span class="button with-icon" ng-show="!report.shouldDisplayView">
                         <span class="icons icon-print-unavailable"></span>
                                     </span>
-                                    <button type="button" class="button red">Delete</button>
+                                    <button type="button" class="button red" ng-hide="true">Delete</button>
                                 </div>
                             </li>
                         </ul>
