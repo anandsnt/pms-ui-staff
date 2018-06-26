@@ -8,6 +8,7 @@ sntRover.controller('RVCompanyCardActivityLogCtrl',
 	function($scope, $rootScope, $stateParams, $timeout, RVCompanyCardActivityLogSrv ) {
     
     BaseCtrl.call(this, $scope);
+    var that = this;
     
     // Refresh scroller.
     var refreshScroll = function() {
@@ -37,7 +38,7 @@ sntRover.controller('RVCompanyCardActivityLogCtrl',
         // Pagination options for Activity Log
 		$scope.activityLogPagination = {
 			id: 'ACTIVITY_LOG',
-			api: loadAPIData,
+			api: that.loadAPIData,
 			perPage: $scope.activityLogObj.perPage
 		};
 		
@@ -64,7 +65,7 @@ sntRover.controller('RVCompanyCardActivityLogCtrl',
 	 * Fetch transactions APIs
 	 * @param pageType { String } , Page No { String } to API
 	 */
-	var loadAPIData = function ( pageNo ) {
+	that.loadAPIData = function ( pageNo ) {
 
 		$scope.activityLogObj.page = pageNo ? pageNo : 1;
 		$scope.activityLogObj.accountId = ( typeof $scope.contactInformation === 'undefined' ) ? $stateParams.id : $scope.contactInformation.id;
@@ -131,7 +132,7 @@ sntRover.controller('RVCompanyCardActivityLogCtrl',
 				break;
 		}
 
-		loadAPIData();
+		that.loadAPIData();
 	};
 
 	// Sort by User/Date/Action
@@ -140,8 +141,8 @@ sntRover.controller('RVCompanyCardActivityLogCtrl',
 	};
 
 	// Refresh the scroller when the tab is active.
-    $scope.$on('activityLogTabActive', function() {
-		loadAPIData();
+    var listener =  $scope.$on('activityLogTabActive', function() {
+		that.loadAPIData();
     });
 
 	/**
@@ -158,5 +159,7 @@ sntRover.controller('RVCompanyCardActivityLogCtrl',
     };
 
     init();
+
+    $scope.$on('$destroy', listener);
 
 }]);
