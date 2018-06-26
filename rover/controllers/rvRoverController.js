@@ -184,6 +184,7 @@ sntRover.controller('roverController', [
 
         // CICO-51146
         $rootScope.isBackgroundReportsEnabled = hotelDetails.background_report;
+        $rootScope.serverDate = hotelDetails.background_report_default_date;
 
         // need to set some default timeout
         // discuss with Mubarak
