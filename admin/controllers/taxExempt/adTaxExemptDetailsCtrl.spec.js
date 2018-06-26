@@ -7,11 +7,9 @@ describe('ADTaxExemptDetailsCtrl', function() {
     var $controller,
         $scope,
         ADTaxExemptSrv,
-        ADTaxExemptDetailsCtrl,
         $q,
         $rootScope,
-        $stateParams,
-        taxExemptData = {"id":11,"name":"second","charge_codes":[{"charge_code":"1001","id":13107},{"charge_code":"1002","id":13108}]},
+        $stateParams,       
         chargeCodesData = jsonResult;
 
     beforeEach(function() {
@@ -20,13 +18,12 @@ describe('ADTaxExemptDetailsCtrl', function() {
             $controller = _$controller_;
             ADTaxExemptSrv = _ADTaxExemptSrv_;
             $q = _$q_;
-            $rootScope = _$rootScope_;
             $stateParams = _$stateParams_;
             $scope = _$rootScope_.$new();
 
         });
 
-        ADTaxExemptDetailsCtrl = $controller('ADTaxExemptDetailsCtrl', {
+        $controller('ADTaxExemptDetailsCtrl', {
             $scope: $scope
         });
 

@@ -100,18 +100,18 @@ sntRover.controller('rvReservationAdditionalController', ['$rootScope', '$scope'
 					"id": $scope.reservationParentData.reservationId,
 					"tax_exempt": $scope.additionalDetails.isTaxExemptEnabled
 				},				
-				successCallBackOfUpdate = function(data) {
-					if(!$scope.additionalDetails.isTaxExemptEnabled) {
+				successCallBackOfUpdate = function() {
+					if (!$scope.additionalDetails.isTaxExemptEnabled) {
 						$scope.additionalDetails.taxExemptType = '';
 					}
 				},
 				failureCallBackOfUpdate = function(errorMessage) {
 					$scope.additionalDetails.isTaxExemptEnabled = !$scope.additionalDetails.isTaxExemptEnabled;
 					$scope.errorMessage = errorMessage;
-				}
+				};
 
-			if($scope.additionalDetails.isTaxExemptEnabled) {
-				paramsToApi.tax_exempt_type_id = parseInt($scope.additionalDetails.taxExemptType)
+			if ($scope.additionalDetails.isTaxExemptEnabled) {
+				paramsToApi.tax_exempt_type_id = parseInt($scope.additionalDetails.taxExemptType);
 			}
 
 			var	options = {
@@ -125,9 +125,9 @@ sntRover.controller('rvReservationAdditionalController', ['$rootScope', '$scope'
 		/*
 		 * Toggle action tax exempt
 		 */
-		$scope.toggleTaxExempt = function($event) {
+		$scope.toggleTaxExempt = function() {
 			$scope.additionalDetails.isTaxExemptEnabled = !$scope.additionalDetails.isTaxExemptEnabled;
-			if(!$scope.additionalDetails.isTaxExemptEnabled) {
+			if (!$scope.additionalDetails.isTaxExemptEnabled) {
 				$scope.updateTaxExemptData();				
 			}
 		};

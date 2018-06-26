@@ -7,7 +7,6 @@ describe('ADTaxExemptCtrl', function() {
     var $controller,
         $scope = {},
         ADTaxExemptSrv,
-        ADTaxExemptCtrl,
         $q,
         results = jsonResult,
         $defer,
@@ -27,9 +26,9 @@ describe('ADTaxExemptCtrl', function() {
 
         });
 
-        ADTaxExemptCtrl = $controller('ADTaxExemptCtrl', {
+        $controller('ADTaxExemptCtrl', {
             $scope: $scope,
-            $rootScope : $rootScope
+            $rootScope: $rootScope
         });
 
     });

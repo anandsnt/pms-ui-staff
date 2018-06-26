@@ -9,7 +9,7 @@ function($scope, $state, $timeout, ngTableParams, ADTaxExemptSrv) {
 	 * @param taxExemptId is tax exempt id
 	 */
 	$scope.deleteTaxExempt = function(taxExemptId) {
-		var successCallBack = function(data) {
+		var successCallBack = function() {
 				$state.reload();
 			},
 			options = {
@@ -28,7 +28,7 @@ function($scope, $state, $timeout, ngTableParams, ADTaxExemptSrv) {
 	$scope.fetchTaxExempts =  function($defer, params) {
 
 		var getParams = $scope.calculateGetParams(params),
-			successCallBack = function(data) {console.log("successCallBack")
+			successCallBack = function(data) {
 					$scope.totalCount = data.total_count;
 					$scope.totalPage = Math.ceil(data.total_count / $scope.displyCount);
 					$scope.data = data.results;

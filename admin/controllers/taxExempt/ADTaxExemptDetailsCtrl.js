@@ -19,7 +19,8 @@ function($scope, $state, $timeout, $stateParams, ADTaxExemptSrv) {
 					var indexValue = _.findIndex(data.charge_codes, function(chargeCodeItem) {
 						return chargeCodeItem.id === parseInt(item.value);
 					});
-					item.is_selected = (indexValue != -1);      
+
+					item.is_selected = (indexValue !== -1);      
 				});
 			},
 			options = {
@@ -30,7 +31,8 @@ function($scope, $state, $timeout, $stateParams, ADTaxExemptSrv) {
 			};
 
 		$scope.callAPI(ADTaxExemptSrv.getTaxExemptDetails, options);
-	}	
+	};
+
 	/*
 	 * Load all tax charge codes
 	 */
@@ -41,7 +43,7 @@ function($scope, $state, $timeout, $stateParams, ADTaxExemptSrv) {
 				angular.forEach($scope.chargeCodes, function(item) {
 					item.is_selected = false;
 				});
-				if($stateParams.taxExemptId) {
+				if ($stateParams.taxExemptId) {
 					$scope.isAddMode = false;
 					$scope.setTaxExemptData();
 				}
@@ -59,7 +61,7 @@ function($scope, $state, $timeout, $stateParams, ADTaxExemptSrv) {
 		$scope.addData.charge_code_ids = [];
 		angular.forEach($scope.chargeCodes, function(item) {
 
-			if(item.is_selected) {
+			if (item.is_selected) {
 				$scope.addData.charge_code_ids.push(item.value);
 			}
 		});
@@ -68,7 +70,7 @@ function($scope, $state, $timeout, $stateParams, ADTaxExemptSrv) {
 	 * Save/Update tax exempt
 	 */
 	$scope.saveTaxExempt = function() {
-		var saveSuccess = function(data) {
+		var saveSuccess = function() {
 				$state.go('admin.taxExemptTypes');
 			},
 			options = {
@@ -79,7 +81,7 @@ function($scope, $state, $timeout, $stateParams, ADTaxExemptSrv) {
 				}
 			};
 			
-		if($stateParams.taxExemptId) {
+		if ($stateParams.taxExemptId) {
 			options.params.id = $stateParams.taxExemptId;
 			$scope.callAPI(ADTaxExemptSrv.updateTaxExempts, options);
 		} else {

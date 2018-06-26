@@ -15,7 +15,7 @@ function($q, ADBaseWebSrvV2) {
 		return deferred.promise;
 	};
 
-	this.fetchChargeCodes = function(params) {
+	this.fetchChargeCodes = function() {
 		var deferred = $q.defer();
 		var url = "/admin/charge_codes/list.json?charge_code_type=TAX";
 
@@ -73,7 +73,7 @@ function($q, ADBaseWebSrvV2) {
 			deferred.reject(errorMessage);
 		});
 		return deferred.promise;
-	}
+	};
 	
 	
 }]);
