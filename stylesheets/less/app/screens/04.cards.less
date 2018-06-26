@@ -3334,18 +3334,85 @@
                     }
                 }
 
-                /* Activity Log Cart **/
+                /* Activity Log **/
                 &.activity-log {
                     .tab-header {
-                        padding: 20px;
-
+                        padding: 0;
+                        overflow: visible;
+                        position: relative;
+                        z-index: 999;
                         select {
                             padding-right: 25px;
                         }
 
                         .entry {
+                            padding: 0;
+
                             &:not(:last-child) {
                                 margin-right: 10px;
+                            }
+                        }
+
+                        .search-form {
+                            padding: 20px;
+                            width: 100%;
+                            height: 80px; 
+                            background: transparent;
+                            overflow: visible;
+                            .box-shadow(none);
+
+                            .entry {
+                                height: 42px;
+                                visibility: visible;
+                                box-shadow: none;
+
+                                &.search {
+                                    .calc-width(100, 780);
+
+                                    input {
+                                        font-size: 18px;
+                                        font-weight: 600;
+                                    }
+
+                                    .clear-query { right: 10px; }
+
+                                    .query { width: 100%; }
+                                }
+
+                                &.dates {
+                                    width: 220px;
+
+                                    input {
+                                        font-size: 14px;
+                                    }
+
+                                    .entry-data { width: 105px; }
+                                }
+
+                                &:not(.search):not(.dates) {
+                                    width: 150px;
+                                    text-align: left;
+                                }
+
+                                .multi-select {
+                                    &.active {
+                                        &:after {
+                                            transform: rotate(180deg);
+                                        }
+                                    }
+
+                                    .checkbox {
+                                        display: block;
+                                    }
+                                }
+
+                                .multi-select-options {
+                                    .scrollable {
+                                        max-height: 180px;
+                                        position: relative;
+                                        overflow: hidden;
+                                    }
+                                }
                             }
                         }
                     }
@@ -3358,19 +3425,19 @@
                             }
                         }
                         table {
-                            width: 100%; 
+                            width: 100%;
                             font-size: 14px;
                             line-height: 1.2;
                             text-transform: uppercase;
                             table-layout: auto;
-                            border-collapse: separate; 
+                            border-collapse: separate;
                             border-spacing: 0 10px;
                             margin: 0;
 
                             strong { font-weight: 600; }
 
                             tr {
-                                th { 
+                                th {
                                     font-weight: 600;
                                     white-space: normal;
                                     overflow: visible;
@@ -3387,7 +3454,7 @@
                                     vertical-align: top;
                                 }
                             }
- 
+
                             th {
                                 line-height: 35px;
                                 height: 35px;
@@ -3422,7 +3489,7 @@
                                 &:last-child {
                                     span { width: 100%; }
                                 }
-                            }  
+                            }
 
                             .property {
                                 display: block;
