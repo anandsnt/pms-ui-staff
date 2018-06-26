@@ -1196,7 +1196,8 @@ angular.module('sntRover').service('RVReportsInboxSrv', [
                 report.shouldDisplayView = selectedReport.display_show_button;
                 report.isExpanded = false;
                 reportUtils.parseDatesInObject(report.filters.rawData);
-                report.rawData = report.filters.rawData;                
+                report.rawData = report.filters.rawData; 
+                report.appliedFilter = report.filters.appliedFilter;               
                 self.fillReportDates(report);
             });
             

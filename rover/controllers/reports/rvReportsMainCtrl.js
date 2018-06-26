@@ -1381,6 +1381,7 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
                 if (report.title === reportNames['ADDON_FORECAST'] && ('ADDON' === report.chosenGroupBy || 'DATE' === report.chosenGroupBy)) {
                     key = reportParams['ADDON_GROUP_BY'];
                     params[key] = report.chosenGroupBy;
+                    rawData.chosenGroupBy = report.chosenGroupBy;
                     /**/
                     if (changeAppliedFilter) {
                         $scope.appliedFilter['groupBy'] = 'GROUP BY ' + report.chosenGroupBy;
@@ -2077,6 +2078,7 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
                 // This is a temp fix. Once api fixes the issue this should be removed
                 params.per_page = 99999;
                 params.rawData = _.extend(reportUtils.reduceObject(report), rawData);
+                params.appliedFilter = $scope.appliedFilter;
             }
             
 
@@ -2232,6 +2234,8 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 
                 $scope.errorMessage = [];
                 $scope.$emit('hideLoader');
+
+                $scope.appliedFilter = chosenReport.appliedFilter;
 
                 // Checks whether the print is clicked from the report inbox
                 if (reportsSrv.getPrintClickedState()) {
