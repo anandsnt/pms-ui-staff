@@ -56,8 +56,9 @@ sntZestStation.service('zsGeneralSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
             'story': 'Story Hotels',
             'pod': 'Pod DC',
             'ihg': 'IHG',
+            'surf-sand': 'Surf And Sand Hotel',
             'bunk': 'Bunk Hotels',
-            'surf-sand': 'Surf And Sand Hotel'
+            'rydges': 'Rydges Sydney Airport'
         };
 
         this.isThemeConfigured = function(theme) {
