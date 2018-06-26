@@ -2235,7 +2235,9 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
                 $scope.errorMessage = [];
                 $scope.$emit('hideLoader');
 
-                $scope.appliedFilter = chosenReport.appliedFilter;
+                if ($rootScope.isBackgroundReportsEnabled) {
+                    $scope.appliedFilter = chosenReport.appliedFilter;
+                }
 
                 // Checks whether the print is clicked from the report inbox
                 if (reportsSrv.getPrintClickedState()) {
