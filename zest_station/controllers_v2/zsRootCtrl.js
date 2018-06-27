@@ -1242,6 +1242,9 @@ sntZestStation.controller('zsRootCtrl', [
             }
             $log.info('going to----->' + to.name);
             $scope.resetTime();
+            // In some states the APIs are resloved in router, so till API is finshed the loader is to be shown
+            // and on state change the loader is to be hidden
+            $scope.$emit('hideLoader');
         });
 
 

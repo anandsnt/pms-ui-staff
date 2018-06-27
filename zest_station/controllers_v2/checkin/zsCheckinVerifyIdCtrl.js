@@ -97,6 +97,7 @@
 				}
 				// if collectiing nationality after email, but email is already valid
 				else if ($scope.zestStationData.check_in_collect_nationality && haveValidGuestEmail) {
+					$scope.$emit('showLoader');
 					$state.go('zest_station.collectNationality', nextStateParams);
 				} else if (haveValidGuestEmail) {
 					$state.go('zest_station.checkinKeyDispense', nextStateParams);
