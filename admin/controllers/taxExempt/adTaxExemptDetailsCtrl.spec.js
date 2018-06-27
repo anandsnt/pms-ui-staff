@@ -8,7 +8,6 @@ describe('ADTaxExemptDetailsCtrl', function() {
         $scope,
         ADTaxExemptSrv,
         $q,
-        $rootScope,
         $stateParams,       
         chargeCodesData = jsonResult;
 
