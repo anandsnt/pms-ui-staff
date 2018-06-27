@@ -3,12 +3,7 @@ describe('rvReservationAdditionalController', function () {
     var $controller,
         $scope,
         $q,
-        $rootScope,
-        RVReservationSummarySrv,
-        rvPermissionSrv,
-        rvReservationAdditionalController
-
-
+        RVReservationSummarySrv
 
         describe('variable initalizations', function () {
 
@@ -19,15 +14,14 @@ describe('rvReservationAdditionalController', function () {
                     $controller = _$controller_;
                     RVReservationSummarySrv = _RVReservationSummarySrv_;
                     $q = _$q_;
-                    $rootScope = _$rootScope_;
                     $scope = _$rootScope_.$new();
                     $scope.reservationParentData = {};
 
                     $scope.reservationParentData.demographics = {};
                     $scope.reservationParentData.demographics.segment = true;
 
-                    $scope.reservationData = {}
-                    $scope.reservationData.reservation_card = {}
+                    $scope.reservationData = {};
+                    $scope.reservationData.reservation_card = {};
                     $scope.reservationData.reservation_card.tax_exempt = true;
                     $scope.reservationData.reservation_card.tax_exempt_type = {};
                     $scope.reservationData.reservation_card.tax_exempt_type.id = 5;
@@ -35,7 +29,7 @@ describe('rvReservationAdditionalController', function () {
                 });
 
 
-                rvReservationAdditionalController = $controller('rvReservationAdditionalController', {
+                $controller('rvReservationAdditionalController', {
                     $scope: $scope
                 });
 
