@@ -3,8 +3,8 @@ describe('rvReservationAdditionalController', function () {
     var $controller,
         $scope,
         $q,
-        RVReservationSummarySrv
-
+        RVReservationSummarySrv;
+        
         describe('variable initalizations', function () {
 
             beforeEach(function () {
