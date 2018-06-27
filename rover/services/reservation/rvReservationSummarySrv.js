@@ -378,7 +378,7 @@ angular.module('sntRover').service('RVReservationSummarySrv', ['$q', 'rvBaseWebS
          * Save reservation tax exempt data
          */
         this.saveTaxExempt = function(data) {
-            var deferred = $q.defer();
+            var deferred = $q.defer(),
                 url = '/api/reservations/save_tax_exempt';
 
             rvBaseWebSrvV2.postJSON(url, data).then(function(data) {
