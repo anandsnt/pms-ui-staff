@@ -1327,6 +1327,47 @@ body { overflow: hidden; }
     }
 }
 
+/* iScroll Scrollbar        ==============================*/
+    .iScrollVerticalScrollbar {
+        position: absolute;
+        width: 4px;
+        top: 10px;
+        right: 5px;
+        bottom: 10px;
+        z-index: 99;
+
+        .iScrollIndicator {
+            position: absolute;
+            width: 100%;
+            background: @logoGradientStart;
+            #border-radius > .rounded(4px);
+        }
+    }
+
+    .iScrollHorizontalScrollbar {
+        position: absolute;
+        height: 4px;
+        left: 5px;
+        right: 5px;
+        top: 10px;
+        z-index: 99;
+
+        .iScrollIndicator {
+            position: absolute;
+            height: 100%;
+            background: @logoGradientStart;
+            #border-radius > .rounded(4px);
+        }
+    }
+
+    /* 600px+               ==============================*/
+    @media only screen and (min-width: 600px) {
+        .iScrollVerticalScrollbar {
+            top: 20px;
+            bottom: 20px;
+        }
+    }
+
 
 
 /* 6. IE
