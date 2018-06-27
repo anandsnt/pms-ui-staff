@@ -117,6 +117,21 @@ angular.module('sntRover').service('RVHotelDetailsSrv', ['$q', 'rvBaseWebSrvV2',
 
             return deferred.promise;
         };
+        /*
+         * To fetch tax exempts
+         */
+        service.fetchTaxExempts = function () {
+            var deferred = $q.defer();
+            var url = 'api/tax_exempt_types?page=1&per_page=1000';
+
+            RVBaseWebSrvV2.getJSON(url).then(function (data) {
+                    deferred.resolve(data);
+            }, function (errorMessage) {
+                deferred.reject(errorMessage);
+            });
+
+            return deferred.promise;
+        };
 
     }]
 );
