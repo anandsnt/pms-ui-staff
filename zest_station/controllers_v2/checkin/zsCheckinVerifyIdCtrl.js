@@ -141,9 +141,9 @@
 				};
 				allGuestsAreVerified = true;
 				_.each($scope.selectedReservation.guest_details, function(guest) {
-					if (guest.review_status === '1') {
+					if (guest.review_status === 'WITH_ID') {
 						apiParams.guests_accepted_with_id.push(guest);
-					} else if (guest.review_status === '2' || approvePendingIds) {
+					} else if (guest.review_status === 'WITHOUT_ID' || approvePendingIds) {
 						apiParams.guests_accepted_without_id.push(guest);
 					} else {
 						allGuestsAreVerified = false;
@@ -193,21 +193,14 @@
 				callApiToRecord();
 			};
 
-			$scope.abortCheckin = function() {
-				$state.go('zest_station.home');
-			};
-
-			$scope.hideWarningPopup = function() {
-				$scope.showWarningPopup = false;
-			};
-
-			$scope.continueToNextScreen = function() {
+			$scope.approveGuest = function(guest, approvalType) {
+				guest.review_status = (approvalType === 'WITH_ID') ? 'WITH_ID' : 'WITHOUT_ID';
 				generateDataSet();
-				if (!allGuestsAreVerified) {
-					$scope.showWarningPopup = true;
-				} else {
+				if (allGuestsAreVerified) {
 					callApiToRecord();
 				}
+				return;
 			};
+
 		}
 	]);
