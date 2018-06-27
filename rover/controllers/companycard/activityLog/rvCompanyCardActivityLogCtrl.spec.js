@@ -98,4 +98,18 @@ describe('RVCompanyCardActivityLogCtrl', function() {
         expect(responce).toEqual(true);
     });
 
+    it('Call loadAPIData', function() {
+
+        spyOn(RVCompanyCardActivityLogSrv, "fetchActivityLog").and.callFake(function() {
+            var deferred = $q.defer();
+
+            deferred.resolve();
+            return deferred.promise;
+        });
+
+        that.loadAPIData(1);
+
+        expect(RVCompanyCardActivityLogSrv.fetchActivityLog).toHaveBeenCalled();
+    })
+
 });

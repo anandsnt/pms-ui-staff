@@ -63,7 +63,7 @@ sntRover.controller('RVCompanyCardActivityLogCtrl',
     };
 	/*
 	 * Fetch transactions APIs
-	 * @param pageType { String } , Page No { String } to API
+	 * @param  { String } [Page No to API]
 	 */
 	that.loadAPIData = function ( pageNo ) {
 
@@ -94,7 +94,10 @@ sntRover.controller('RVCompanyCardActivityLogCtrl',
 		$scope.callAPI(RVCompanyCardActivityLogSrv.fetchActivityLog, dataToSend);
 	};
 
-	// Handle sortby action..
+	/*
+	*	Handle sortby action..
+	*	@param  - {String} - [Filter type value]
+	*/
 	var toggleFilterAction = function( type ) {
 		$scope.activityLogObj.sortField = type;
 		var filterObj = $scope.activityLogFilter;
@@ -135,7 +138,10 @@ sntRover.controller('RVCompanyCardActivityLogCtrl',
 		that.loadAPIData();
 	};
 
-	// Sort by User/Date/Action
+	/*
+	* Sort by User/Date/Action
+	*	@param  - {String} - [Filter type value]
+	*/
 	$scope.sortByAction = function( type ) {
 		toggleFilterAction( type );
 	};
@@ -147,7 +153,8 @@ sntRover.controller('RVCompanyCardActivityLogCtrl',
 
 	/**
 	*	checking Whether oldvalue of detail have any value
-	*	@return - Boolean
+	*	@param  - {Any type} - [input value]
+	*	@return - {Boolean}
 	*/
     $scope.isOldValue = function(value) {
         if (value === "" || typeof value === "undefined" || value === null) {
