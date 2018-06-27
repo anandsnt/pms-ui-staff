@@ -65,6 +65,11 @@ describe("RVReportsInboxCtrl", function() {
                 showDetails: false
             };
 
+            $scope.reportInboxPageState = {
+                    returnPage: 1,
+                    returnDate: ''
+            };
+
 
             reportInboxCtrl = $controller('RVReportsInboxCtrl', {
                 $scope: $scope,
@@ -81,8 +86,9 @@ describe("RVReportsInboxCtrl", function() {
 
                     deferred.resolve(generatedResponse);
                     return deferred.promise;
-                });             
+                });            
                 
+
                 
                 reportInboxCtrl.fetchGeneratedReports(1);
 

@@ -62,7 +62,7 @@ sntRover.controller('reservationDetailsController',
 		$scope.guestIdAdminEnabled = $rootScope.hotelDetails.guest_id_scan.scan_guest_id_active;
    		$scope.hasGuestIDPermission = rvPermissionSrv.getPermissionValue('ACCESS_GUEST_ID_DETAILS');
    		$scope.guestIDsAvailable = [];
-
+   		
 		if (!$rootScope.stayCardStateBookMark) {
 			setNavigationBookMark();
 		}
