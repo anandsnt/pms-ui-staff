@@ -193,7 +193,10 @@
 			Guarantee Types: <span>{{ appliedFilter.guarantees.join(', ') }}</span>
 		</div>
 
-
+		<!-- chosen markets -->
+		<div ng-if="appliedFilter.segments.length">
+			Markets: <span>{{ appliedFilter.segments.join(', ') }}</span>
+		</div>
 
 		<!-- chosen charge groups -->
 		<div ng-if="appliedFilter.chargeGroups.length">

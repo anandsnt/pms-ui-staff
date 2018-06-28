@@ -198,6 +198,17 @@ angular.module('adminInterfacesRouter', []).config(function($stateProvider) {
         }
     });
 
+    $stateProvider.state('admin.salesforceSetup', {
+        templateUrl: '/assets/partials/interfaces/Salesforce/adSalesforceSetup.html',
+        controller: 'adSalesforceSetupCtrl',
+        url: '/salesforce/setup',
+        resolve: {
+            config: ['adInterfacesCommonConfigSrv', function(adInterfacesCommonConfigSrv) {
+                return adInterfacesCommonConfigSrv.fetchConfiguration('salesforce');
+            }]
+        }
+    });
+
     $stateProvider.state('admin.accountViewSetup', {
         templateUrl: '/assets/partials/interfaces/AccountView/adAccountViewSetup.html',
         controller: 'adAccountViewSetupCtrl',
@@ -511,6 +522,12 @@ angular.module('adminInterfacesRouter', []).config(function($stateProvider) {
         resolve: {
             config: ['adInterfacesCommonConfigSrv', function(adInterfacesCommonConfigSrv) {
                 return adInterfacesCommonConfigSrv.fetchConfiguration('easi');
+            }],
+            chargeGroups: ['adInterfacesCommonConfigSrv', function(adInterfacesCommonConfigSrv) {
+                return adInterfacesCommonConfigSrv.fetchChargeGroups();
+            }],
+            taxChargeCodes: ['adInterfacesCommonConfigSrv', function(adInterfacesCommonConfigSrv) {
+                return adInterfacesCommonConfigSrv.fetchTaxChargeCodes();
             }]
         }
     });
@@ -647,6 +664,17 @@ angular.module('adminInterfacesRouter', []).config(function($stateProvider) {
         resolve: {
             config: ['adInterfacesCommonConfigSrv', function (adInterfacesCommonConfigSrv) {
                 return adInterfacesCommonConfigSrv.fetchConfiguration('openkey');
+            }]
+        }
+    });
+
+    $stateProvider.state('admin.concept4000', {
+        templateUrl: '/assets/partials/interfaces/MobileKeys/Concept4000/adConcept4000Setup.html',
+        controller: 'adConcept4000SetupCtrl',
+        url: '/concept4000/setup',
+        resolve: {
+            config: ['adInterfacesCommonConfigSrv', function (adInterfacesCommonConfigSrv) {
+                return adInterfacesCommonConfigSrv.fetchConfiguration('concept4000');
             }]
         }
     });

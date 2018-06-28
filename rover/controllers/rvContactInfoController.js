@@ -257,6 +257,22 @@ angular.module('sntRover').controller('RVContactInfoController', ['$scope', '$ro
             
         };
 
+        /**
+         * Get the style class for the contact info tab contents during print
+         * @param {String} value - value of the input control
+         * @param {String} defaultStyleClass default style class
+         * @return {String} calculated style class
+         */
+        $scope.getStyleClassForPrint = function(value, defaultStyleClass) {
+            defaultStyleClass = defaultStyleClass || '';
+            
+            if (value === "" || value === null || _.isUndefined(value)) {
+                defaultStyleClass = defaultStyleClass + ' no-print';
+            }
+
+            return defaultStyleClass;
+        };
+
         init();
     }
 ]);

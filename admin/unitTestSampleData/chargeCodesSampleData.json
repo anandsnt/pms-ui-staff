@@ -1,0 +1,99 @@
+{
+	"status": "success",
+	"data": {
+		"is_connected_to_pms": "false",
+		"total_count": 52,
+		"charge_codes": [{
+			"value": "90973",
+			"charge_code": "10",
+			"description": "Cba credit card",
+			"charge_group": "Payments",
+			"charge_code_type": "PAYMENT",
+			"link_with": [],
+			"snapshot_subgroup": "",
+			"inclusive_or_exclusive": null
+		}, {
+			"value": "13107",
+			"charge_code": "1001",
+			"description": "Inclusive Tax",
+			"charge_group": "Tax",
+			"charge_code_type": "TAX",
+			"link_with": [],
+			"snapshot_subgroup": "",
+			"inclusive_or_exclusive": null
+		}, {
+			"value": "13108",
+			"charge_code": "1002",
+			"description": "Exclusive Tax",
+			"charge_group": "Tax",
+			"charge_code_type": "TAX",
+			"link_with": [],
+			"snapshot_subgroup": "",
+			"inclusive_or_exclusive": null
+		}, {
+			"value": "81950",
+			"charge_code": "1003",
+			"description": "Tourist Tax",
+			"charge_group": "Tax",
+			"charge_code_type": "TOURIST TAX",
+			"link_with": [],
+			"snapshot_subgroup": "",
+			"inclusive_or_exclusive": null
+		}, {
+			"value": "90960",
+			"charge_code": "1729",
+			"description": "3 tax charge",
+			"charge_group": "Room",
+			"charge_code_type": "ROOM",
+			"link_with": ["1730", "1731", "1732"],
+			"snapshot_subgroup": "",
+			"inclusive_or_exclusive": "Exclusive"
+		}, {
+			"value": "90957",
+			"charge_code": "1730",
+			"description": "4%  tax",
+			"charge_group": "Tax",
+			"charge_code_type": "TAX",
+			"link_with": [],
+			"snapshot_subgroup": "",
+			"inclusive_or_exclusive": null
+		}, {
+			"value": "90958",
+			"charge_code": "1731",
+			"description": "6% tax",
+			"charge_group": "Tax",
+			"charge_code_type": "TAX",
+			"link_with": [],
+			"snapshot_subgroup": "",
+			"inclusive_or_exclusive": null
+		}, {
+			"value": "90959",
+			"charge_code": "1732",
+			"description": "2% tax",
+			"charge_group": "Tax",
+			"charge_code_type": "TAX",
+			"link_with": [],
+			"snapshot_subgroup": "",
+			"inclusive_or_exclusive": null
+		}, {
+			"value": "13110",
+			"charge_code": "201",
+			"description": "Cash Payment",
+			"charge_group": "Payments",
+			"charge_code_type": "PAYMENT",
+			"link_with": [],
+			"snapshot_subgroup": "",
+			"inclusive_or_exclusive": null
+		}, {
+			"value": "13111",
+			"charge_code": "202",
+			"description": "Check  Payment",
+			"charge_group": "Payments",
+			"charge_code_type": "PAYMENT",
+			"link_with": [],
+			"snapshot_subgroup": "",
+			"inclusive_or_exclusive": null
+		}]
+	},
+	"errors": []
+}

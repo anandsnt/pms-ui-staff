@@ -224,8 +224,16 @@ sntRover.controller('RVAddonForecastReportByAddonCtrl', [
  		}
 
  		function setup () {
- 			addonGroups  = $scope.chosenReport.hasAddonGroups.data || [];
- 			addons       = $scope.chosenReport.hasAddons.data || [];
+            try {
+                addonGroups  = $scope.chosenReport.hasAddonGroups.data;
+            } catch (err) {
+                addonGroups  = [];
+            }
+            try {
+                addons = $scope.chosenReport.hasAddons.data;
+            } catch (err) {
+                addons = [];
+            }
  			results      = mainCtrlScope.results;
 			addonGrpHash = {};
 			addonHash    = {};
@@ -239,7 +247,7 @@ sntRover.controller('RVAddonForecastReportByAddonCtrl', [
  			});
 
  			$scope.modifiedResults = {};
- 			for (reportKey in results) {
+ 			for (var reportKey in results) {
  				if ( ! results.hasOwnProperty(reportKey) ) {
  					continue;
  				}
@@ -258,7 +266,7 @@ sntRover.controller('RVAddonForecastReportByAddonCtrl', [
  				for (i = 0, j = addonsAry.length; i < j; i++) {
  					var addonObj = addonsAry[i];
 
- 					for (addonKey in addonObj) {
+ 					for (var addonKey in addonObj) {
  						if ( '$$hashKey' == addonKey || ! addonObj.hasOwnProperty(addonKey) ) {
  							continue;
  						}
@@ -277,7 +285,7 @@ sntRover.controller('RVAddonForecastReportByAddonCtrl', [
  						for (k = 0, l = datesAry.length; k < l; k++) {
  							var dateObj = datesAry[k];
 
- 							for (dateKey in dateObj) {
+ 							for (var dateKey in dateObj) {
  								if ( '$$hashKey' == dateKey || ! dateObj.hasOwnProperty(dateKey) ) {
  									continue;
  								}

@@ -41,5 +41,39 @@ angular.module('reportsModule', [])
                     dynamic: true
                 }
             }
+        });        
+
+        $stateProvider.state('rover.reports.inbox', {
+            url: '/inbox',
+            templateUrl: '/assets/partials/reports/backgroundReports/rvReportsInbox.html',
+            controller: 'RVReportsInboxCtrl',
+            resolve: {
+                generatedReportsList: function (RVReportsInboxSrv, $filter, $rootScope, $state) {
+                    var params = {
+                        generated_date: $state.transition.params().date,
+                        per_page: RVReportsInboxSrv.PER_PAGE,
+                        user_id: $rootScope.userId,
+                        page: $state.transition.params().page
+                    };
+                    
+                    return RVReportsInboxSrv.fetchReportInbox(params);
+                }
+            },
+            params: {
+                page: 1,
+                date: ''
+            }            
         });
+
+        $stateProvider.state('rover.reports.scheduleReportsAndExports', {
+            url: '/scheduleReportsAndExports',
+            templateUrl: '/assets/partials/reports/backgroundReports/rvScheduleReportsAndExports.html',
+            controller: 'RVScheduleReportsAndExportsCtrl',
+            params: {
+                showScheduledReports: false,
+                showScheduledExports: false
+            }
+        });
+
+        
     });

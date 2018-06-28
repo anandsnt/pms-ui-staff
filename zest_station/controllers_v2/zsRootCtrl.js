@@ -150,10 +150,13 @@ sntZestStation.controller('zsRootCtrl', [
 
             // check if the tag is present in the translation file,
             // if not present use the default text in the master translation file.
-            if ($scope.tagInEdit.language[currentLanguageCode] && $scope.tagInEdit.language[currentLanguageCode][tag]) {
+            if ($scope.tagInEdit.language[currentLanguageCode] && !_.isUndefined($scope.tagInEdit.language[currentLanguageCode][tag])) {
                 return $scope.tagInEdit.language[currentLanguageCode][tag];
             } 
-            return defaultTranslations[tag];
+            // return defaultTranslations[tag];
+            // Showing default tags are causing issues like when some one edits any tags
+            // in admin leaving other tags are empty. So will revert this logic to what it was before.
+            return '';
         };
 
 		/**
@@ -1954,6 +1957,13 @@ sntZestStation.controller('zsRootCtrl', [
             } else {
                 $window.print();
             }
+        });
+
+
+        var bellSound = new Audio('/assets/zest_station/zsSounds/Doorbell.mp3');
+
+        $scope.$on('PLAY_BELL_SOUND', function () {
+            bellSound.play();
         });
 
 		/** *
