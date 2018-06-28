@@ -1959,6 +1959,13 @@ sntZestStation.controller('zsRootCtrl', [
             }
         });
 
+
+        var bellSound = new Audio('/assets/zest_station/zsSounds/Doorbell.mp3');
+
+        $scope.$on('PLAY_BELL_SOUND', function () {
+            bellSound.play();
+        });
+
 		/** *
 		 * [initializeMe description]
 		 * @return {[type]} [description]

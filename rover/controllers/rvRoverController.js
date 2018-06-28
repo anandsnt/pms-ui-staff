@@ -24,10 +24,11 @@ sntRover.controller('roverController', [
     '$interval',
     'sntActivity',
     '$transitions',
+    'taxExempts',
     function ($rootScope, $scope, $state, $window, RVDashboardSrv, RVHotelDetailsSrv,
               ngDialog, $translate, hotelDetails, userInfoDetails, $stateParams,
               rvMenuSrv, rvPermissionSrv, $timeout, rvUtilSrv, jsMappings, $q, $sce,
-              $log, sntAuthorizationSrv, $location, $interval, sntActivity, $transitions) {
+              $log, sntAuthorizationSrv, $location, $interval, sntActivity, $transitions, taxExempts) {
 
 
         var observeDeviceInterval;
@@ -215,6 +216,8 @@ sntRover.controller('roverController', [
             $log.error(err);
         }
         $rootScope.isSingleDigitSearch = hotelDetails.is_single_digit_search;
+
+        $rootScope.taxExemptTypes = taxExempts.results;
 
 
         // handle six payment iFrame communication

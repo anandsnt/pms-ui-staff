@@ -949,12 +949,13 @@ angular.module('sntRover').controller('rvGroupRoomBlockCtrl', [
             if (isHouseOverbooked && isRoomTypeOverbooked && canOverBookBoth) {
                 return 'HOUSE_AND_ROOMTYPE_OVERBOOK';
             }
-            else if (isHouseOverbooked && canOverbookHouse) {
-                return 'HOUSE_OVERBOOK';
-            }
-            else if (isRoomTypeOverbooked && canOverbookRoomType) {
+            else if (isRoomTypeOverbooked && canOverbookRoomType && (!isHouseOverbooked || (isHouseOverbooked && canOverbookHouse) )) {
                 return 'ROOMTYPE_OVERBOOK';
             }
+            else if (isHouseOverbooked && canOverbookHouse && (!isRoomTypeOverbooked || (isRoomTypeOverbooked && canOverbookRoomType) )) {
+                return 'HOUSE_OVERBOOK';
+            }
+                        
 			// Overbooking occurs and has no permission.
             else {
                 return 'NO_PERMISSION';
