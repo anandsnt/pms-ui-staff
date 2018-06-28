@@ -642,8 +642,10 @@
    "ENTER_LAST_CC_DIGITS_INSTRUCTION": "From the credit card used to book the reservation",
    "CC_PLACEHOLDER": "4 Digits",
    "LAST_4_DIGITS_INCORRECT": "Last 4 Digits are not correct",
-   "LAST_4_DIGITS_INCORRECT_MSG": "Please seleect one of the following:",
+   "LAST_4_DIGITS_INCORRECT_MSG": "Please Select One of the Following:",
    "RE_ENTER": "RE-ENTER",
+   "NO_CC_ON_FILE_HEADER": "No Credit Card Found",
+   "NO_CC_ON_FILE_SUB_HEADER": "Please Speak to our Staff Member",
 
    "CBA_IN_PROGRESS": "Deposit collection",
    "CBA_IN_PROGRESS_SUB_TEXT": "For Deposit collection, please use the CBA device to proceed.",

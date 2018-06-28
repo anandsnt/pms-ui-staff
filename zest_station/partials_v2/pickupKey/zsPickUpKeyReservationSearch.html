@@ -88,16 +88,12 @@
         </nav>
     </div>
     <!-- CC -->
-    <div id="content" class="input-field-contents" ng-show="mode === 'CC_ENTRY'">
-        <h1>
-            <text data-ng-bind-html="getTagValue('ENTER_LAST_CC_DIGITS')" editable-text="ENTER_LAST_CC_DIGITS"></text>
-        </h1>
-        <h2>
-            <text data-ng-bind-html="getTagValue('ENTER_LAST_CC_DIGITS_INSTRUCTION')" editable-text="ENTER_LAST_CC_DIGITS_INSTRUCTION"></text>
-        </h2>
+    <div id="content" ng-show="mode === 'CC_ENTRY'">
+        <h1><text data-ng-bind-html="getTagValue('ENTER_LAST_CC_DIGITS')" editable-text="ENTER_LAST_CC_DIGITS"></text></h1>
+        <h3><text data-ng-bind-html="getTagValue('ENTER_LAST_CC_DIGITS_INSTRUCTION')" editable-text="ENTER_LAST_CC_DIGITS_INSTRUCTION"></text></h3>
         <form method="post" class="form">
             <div class="entry input">
-                <input type="tel" placeholder="{{ 'CC_PLACEHOLDER' | translate }}" ng-focus="showOnScreenKeyboard('credit-card')" click-touch="showOnScreenKeyboard('credit-card')" ng-model="creditCardNumber" enter-press="validateCConFile()" id="credit-card" ng-keydown="resetTime()" touch-press/>
+                <input type="password" placeholder="{{ 'CC_PLACEHOLDER' | translate }}" ng-focus="showOnScreenKeyboard('credit-card')" click-touch="showOnScreenKeyboard('credit-card')" ng-model="creditCardNumber" enter-press="validateCConFile()" id="credit-card" ng-keydown="resetTime()" maxlength="4" touch-press/>
             </div>
             <div class="entry action">
                 <button type="button" class="button" click-touch="validateCConFile()">
@@ -106,14 +102,11 @@
             </div>
         </form>
     </div>
+
     <!-- CC check failed -->
-     <div id="content" ng-show="mode === 'CC_MATCH_FAILED'">
-        <h1>
-             <text data-ng-bind-html="getTagValue('LAST_4_DIGITS_INCORRECT')" editable-text="LAST_4_DIGITS_INCORRECT"></text>
-        </h1>
-        <h2>
-            <text data-ng-bind-html="getTagValue('LAST_4_DIGITS_INCORRECT_MSG')" editable-text="LAST_4_DIGITS_INCORRECT_MSG"></text>
-        </h2>
+    <div id="content" ng-show="mode === 'CC_MATCH_FAILED'">
+        <h1><text data-ng-bind-html="getTagValue('LAST_4_DIGITS_INCORRECT')" editable-text="LAST_4_DIGITS_INCORRECT"></text></h1>
+        <h2><text data-ng-bind-html="getTagValue('LAST_4_DIGITS_INCORRECT_MSG')" editable-text="LAST_4_DIGITS_INCORRECT_MSG"></text></h2>
         <nav id="options" role="nav">
             <ul role="menu">
                 <li>
@@ -122,15 +115,49 @@
                         <div ng-include="icons.url.keyboard"></div>
                     </button>
                     <text data-ng-bind-html="getTagValue('RE_ENTER')" editable-text="RE_ENTER"></text>
-                    <span ng-bind="creditCardNumber"></span>
+                    <span>xxxx</span>
                 </li>
                 <li class="break">
-                    <span>
-                        <text data-ng-bind-html="getTagValue('OR_TEXT')" editable-text="OR_TEXT"></text>
-                    </span>
+                    <text data-ng-bind-html="getTagValue('OR_TEXT')" editable-text="OR_TEXT"></text>
                 </li>
                 <li>
                     <button type="button" class="button option" touch-press='talkToStaff()'>
+                        <!--div ng-include="'/assets/zest_station/css/icons/staff.svg'"></div-->
+                        <div ng-include="icons.url.staff"></div>
+                    </button>
+                    <text data-ng-bind-html="getTagValue('RES_SRCH_TALK')" editable-text="RES_SRCH_TALK"></text>
+                    <span>
+                        <text data-ng-bind-html="getTagValue('RES_SRCH_TALK_SUB')" editable-text="RES_SRCH_TALK_SUB"></text>
+                    </span>
+                </li>
+            </ul>
+        </nav>
+    </div>
+
+    <!-- NO cc -->
+    <div id="content" ng-show="mode === 'NO_CC_ON_FILE'">
+        <h1><text data-ng-bind-html="getTagValue('NO_CC_ON_FILE_HEADER')" editable-text="NO_CC_ON_FILE_HEADER"></text></h1>
+        <!-- Phase 1: -->
+        <h2><text data-ng-bind-html="getTagValue('NO_CC_ON_FILE_SUB_HEADER')" editable-text="NO_CC_ON_FILE_SUB_HEADER"></text></h2>
+        <!-- Phase 2: --
+        <h2>Please Select One of the Following:</h2>
+        -->
+        <nav id="options" role="nav">
+            <ul role="menu">
+                <!-- Phase 2: include also --
+                <li>
+                <button type="button" class="button option">
+                {../assets/icons/creditcard.svg}
+                </button>
+                Add New
+                <span>Credit Card</span> 
+                </li>
+                <li class="break">
+                <span>Or</span>
+                </li>
+                -->
+                <li>
+                    <button type="button" class="button option" touch-press='talkToStaff(); resetTime();'>
                         <!--div ng-include="'/assets/zest_station/css/icons/staff.svg'"></div-->
                         <div ng-include="icons.url.staff"></div>
                     </button>

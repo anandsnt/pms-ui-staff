@@ -81,13 +81,14 @@ describe('zsPickupKeyFindReservationCtrl', function() {
 
         describe('On retrying the last name or entering room number, search for the reservation', function() {
 
-            describe('Reservation is checked in', function() {
+            describe('Reservation is checked in and has CC', function() {
                 beforeEach(function() {
                     spyOn(zsCheckoutSrv, 'findReservation').and.callFake(function() {
                         var deferred = $q.defer();
                         deferred.resolve({
                             'is_checked_in': true,
-                            'guest_arriving_today': true
+                            'guest_arriving_today': true,
+                            'has_cc': true
                         });
                         return deferred.promise;
                     });
@@ -108,6 +109,37 @@ describe('zsPickupKeyFindReservationCtrl', function() {
                     $scope.reservationParams.room_no = '101';
                     $scope.roomNumberEntered();
                 });
+            });
+
+            describe('Reservation is checked in, but doesn\'t has CC', function() {
+                beforeEach(function() {
+                    spyOn(zsCheckoutSrv, 'findReservation').and.callFake(function() {
+                        var deferred = $q.defer();
+                        deferred.resolve({
+                            'is_checked_in': true,
+                            'guest_arriving_today': true,
+                            'has_cc': false
+                        });
+                        return deferred.promise;
+                    });
+                });
+
+                afterEach(function() {
+                    $scope.$digest();
+                    expect(zsCheckoutSrv.findReservation).toHaveBeenCalled();
+                    expect($scope.mode).toBe('NO_CC_ON_FILE');
+                });
+
+                it('On entering the last name in retry mode, go to screen to enter CC last 4 digits', function() {
+                    $scope.reservationParams.room_no = '101';
+                    $scope.lastNameEntered();
+                });
+
+                it('On entering the room number, go to screen to enter CC last 4 digits', function() {
+                    $scope.reservationParams.room_no = '101';
+                    $scope.roomNumberEntered();
+                });
+
             });
 
             describe('Reservation is not checked in and is not arrivay today', function() {

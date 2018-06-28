@@ -116,7 +116,7 @@ sntZestStation.controller('zsPickupKeyFindReservationCtrl', [
 
 
 		$scope.validateCConFile = function() {
-
+			$scope.callBlurEventForIpad();
 			var onCCVerificationSuccess = function() {
 				if ($scope.reservationData.is_checked_in) {
 					var stateParams = {
@@ -165,8 +165,12 @@ sntZestStation.controller('zsPickupKeyFindReservationCtrl', [
 				if ((!data.is_checked_in && !data.guest_arriving_today) || data.is_checked_out) {
 					generalFailureActions();
 				} else {
-					$scope.mode = 'CC_ENTRY';
-					$scope.focusInputField('credit-card');
+					if ($scope.reservationData.has_cc) {
+						$scope.mode = 'CC_ENTRY';
+						$scope.focusInputField('credit-card');
+					} else {
+						$scope.mode = 'NO_CC_ON_FILE';
+					}
 				}
 			};
 			var params = {
