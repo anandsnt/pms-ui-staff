@@ -29,7 +29,7 @@
                 ng-hide="rate.isDefaultRoomTypeSuiteUnavailable || (stateCheck.selectedStayDate.rate.id == rate.id &&
                     (stateCheck.selectedStayDate.roomType.id == rate.defaultRoomTypeId ||
                         reservationData.rooms[activeRoom].roomTypeId == rate.defaultRoomTypeId )) ||
-                            restrictIfOverbook(rate.defaultRoomTypeId,rate.id)"
+                            restrictIfOverbook(rate.defaultRoomTypeId,rate.id,rate.defaultRoomTypeAvailability)"
                 ng-click="handleBooking(rate.defaultRoomTypeId,rate.id,$event)" translate>
                 RESV_BOOK
             </button>
