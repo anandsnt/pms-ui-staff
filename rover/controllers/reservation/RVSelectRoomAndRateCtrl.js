@@ -1072,7 +1072,7 @@ sntRover.controller('RVSelectRoomAndRateCtrl', [
 				canOverbookRoomType = rvPermissionSrv.getPermissionValue('OVERBOOK_ROOM_TYPE');
 
 			if (typeof availability === 'undefined') {
-				throw "availability cannot be undefined here"
+				throw new Error("availability cannot be undefined here");
 			}
 
 			if (!!$scope.reservationData.group.id || !!$scope.reservationData.allotment.id) {
