@@ -659,7 +659,7 @@
    "VERIFICATION_PENDING_MSG": "Some of the guests are not verified. You can either accept pending guests without ID",
 
    "ACCEPT": "Accept",
-   "CANCEL": "CANCEL",
+   "ID_CANCEL": "CANCEL",
 
    "VERIFY_GUESTS_HEADER": "Verify guest IDs",
    "VERIFY_GUESTS_SUB_HEADER": "",

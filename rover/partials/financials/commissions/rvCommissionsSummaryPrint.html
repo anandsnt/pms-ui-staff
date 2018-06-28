@@ -8,7 +8,6 @@
                     <tr> 
                         <th class="room" rowspan="2" >Reservation</th>
                         <th class="guest" rowspan="2">Guest</th>
-                        <th class="code" rowspan="2"></th>
                         <th class="amount" rowspan="2">Rate Amount</th>
                         <th class="comission" colspan="3">Commission</th>
                     </tr>
@@ -50,9 +49,7 @@
                                 </div>
                             </div>
                         </td>
-                        <td>
-                            <!-- place holder for rate code -->
-                        </td>
+                        
                         <td>
                             <span class="currency">{{currencySymbol}}</span>{{reservation.rate_details[0].rate_amount}}
                         </td>
@@ -87,7 +84,7 @@
                         </td>
                     </tr>
                     <tr class="totals">
-                        <td colspan="3"></td>
+                        <td colspan="2"></td>
                         <td>
                             Subtotals
                         </td>

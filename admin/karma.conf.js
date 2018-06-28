@@ -46,6 +46,7 @@ module.exports = function(config) {
             '../shared/directives/ngClassWithoutAnimation/ngClassWithoutAnimation.js',
             '../shared/directives/convertToNumber/convertToNumberDir.js',
             '../shared/directives/tooltip/qtip2.js',
+            '../shared/directives/touchPress/touchPress.js',
 
             '../shared/baseCtrl.js',
             '../shared/iBeaconOperations.js',
