@@ -42,7 +42,8 @@ module.exports = {
             'ihg': [themeCSSRoot + 'ihg.less'],
             'surf-sand': [themeCSSRoot + 'surf-sand.less'],
             'bunk': [themeCSSRoot + 'bunk.less'],
-            'rydges': [themeCSSRoot + 'rydges.less']
+            'rydges': [themeCSSRoot + 'rydges.less'],
+            'freehand-la': [themeCSSRoot + 'freehand-la.less']
         };
     }
 };
