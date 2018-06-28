@@ -158,7 +158,7 @@
 							$rootScope.primaryGuestId 	= response.results[0].primary_guest_id;
 							$rootScope.reservationID 	= response.results[0].reservation_id;
 							$rootScope.isPrecheckinOnly = (response.is_precheckin_only === "true" && response.results[0].reservation_status === 'RESERVED') ? true : false;
-							$rootScope.isAutoCheckinOn = (response.is_auto_checkin === "true" && response.is_sent_to_que === "true") && $rootScope.isPrecheckinOnly;
+							$rootScope.isAutoCheckinOn = (response.is_auto_checkin === "true" || response.is_sent_to_que === "true") && $rootScope.isPrecheckinOnly;
 							getToken(response);
 						}
 					}
