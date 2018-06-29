@@ -3,8 +3,6 @@ describe('RvOverBookingHeaderCtrl', function() {
     var $controller,
         $scope = {},
         $rootScope = {},
-        $q,
-        that,
         rvOverBookingSrv;
 
     jasmine.getJSONFixtures().fixturesPath = 'base/unitTestSampleData/';
@@ -14,11 +12,10 @@ describe('RvOverBookingHeaderCtrl', function() {
 
     beforeEach(function() {
         module('sntRover');
-        inject(function (_$controller_, _rvOverBookingSrv_, _$rootScope_, _$q_) {
+        inject(function (_$controller_, _rvOverBookingSrv_, _$rootScope_) {
             $controller = _$controller_;
             $scope = _$rootScope_.$new();
             $rootScope = _$rootScope_.$new();
-            $q = _$q_;
             rvOverBookingSrv = _rvOverBookingSrv_;
         });
 
@@ -52,7 +49,7 @@ describe('RvOverBookingHeaderCtrl', function() {
             }
         });
 
-        that = $controller('RvOverBookingHeaderCtrl', {
+        $controller('RvOverBookingHeaderCtrl', {
             $scope: $scope
         });
     });
@@ -73,8 +70,8 @@ describe('RvOverBookingHeaderCtrl', function() {
 
         $scope.clickedPrevDateButton();
 
-        expect($scope.overBookingObj.startDate.slice(0,10)).toBe('2017-02-03');
-        expect($scope.overBookingObj.endDate.slice(0,10)).toBe('2017-02-16');
+        expect($scope.overBookingObj.startDate.slice(0, 10)).toBe('2017-02-03');
+        expect($scope.overBookingObj.endDate.slice(0, 10)).toBe('2017-02-16');
     });
 
     it('On clicked clickedNextDateButton', function() {
@@ -82,8 +79,8 @@ describe('RvOverBookingHeaderCtrl', function() {
 
         $scope.clickedNextDateButton();
 
-        expect($scope.overBookingObj.startDate.slice(0,10)).toBe('2017-02-16');
-        expect($scope.overBookingObj.endDate.slice(0,10)).toBe('2017-03-01');
+        expect($scope.overBookingObj.startDate.slice(0, 10)).toBe('2017-02-16');
+        expect($scope.overBookingObj.endDate.slice(0, 10)).toBe('2017-03-01');
     });
 
     it('On clicked toggleRoomTypeFilter', function() {

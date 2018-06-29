@@ -8,12 +8,12 @@ angular.module('sntRover').controller('rvAddOverBookingDatePickerCtrl', ['$scope
 		that.type = $scope.addOverBookingObj.type;
 
 		// Setup default selected date.
-	    if (that.type === 'FROM') {
+		if (that.type === 'FROM') {
 			$scope.date = $scope.addOverBookingObj.fromDate;
-	    }
-	    else if (that.type === 'TO') {
+		}
+		else if (that.type === 'TO') {
 			$scope.date = $scope.addOverBookingObj.toDate;
-	    }
+		}
 	};
 
     // Setup options.
