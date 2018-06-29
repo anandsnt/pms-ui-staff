@@ -146,21 +146,24 @@ angular.module('sntRover').service('RVNightlyDiarySrv',
             $q.when().then(function() {
                 return that.fetchRoomsList(params).then(function(response) {
                     data.roomList = response;
-                })
-            }).then(function() {                 
+                });
+            })
+            .then(function() {                 
                 params.page = data.roomList.page_number;
                 return that.fetchReservationsList(params).then(function(response) {
                     data.reservationList = response;
-                })
-            }).then(function() {
+                });
+            })
+            .then(function() {
                 return that.fetchDatesList(params).then(function(response) {
                     data.dateList = response;
-                })
-            }).then(function() {
+                });
+            })
+            .then(function() {
                 deferred.resolve(data);
             }, function(errorMessage) {
                 deferred.reject(errorMessage);
-            });;
+            });
 
             return deferred.promise;
         };
