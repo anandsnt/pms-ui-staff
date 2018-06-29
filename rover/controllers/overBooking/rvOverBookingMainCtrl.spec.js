@@ -3,8 +3,6 @@ describe('RvOverBookingMainCtrl', function() {
     var $controller,
         $scope = {},
         $rootScope = {},
-        $q,
-        $filter,
         that,
         rvOverBookingSrv;
 
@@ -16,12 +14,10 @@ describe('RvOverBookingMainCtrl', function() {
 
     beforeEach(function() {
         module('sntRover');
-        inject(function (_$controller_, _rvOverBookingSrv_, _$rootScope_, _$q_, _$filter_) {
+        inject(function (_$controller_, _rvOverBookingSrv_, _$rootScope_) {
             $controller = _$controller_;
             $scope = _$rootScope_.$new();
             $rootScope = _$rootScope_.$new();
-            $q = _$q_;
-            $filter = _$filter_;
             rvOverBookingSrv = _rvOverBookingSrv_;
         });
 

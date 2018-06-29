@@ -17,7 +17,7 @@ describe('rvAddOverBookingPopupCtrl', function() {
             $controller = _$controller_;
             $scope = _$rootScope_.$new();
             $rootScope = _$rootScope_.$new();
-            $q = _$q_,
+            $q = _$q_;
             rvOverBookingSrv = _rvOverBookingSrv_;
         });
 
@@ -92,8 +92,10 @@ describe('rvAddOverBookingPopupCtrl', function() {
 
     it('On clicked WeekDays cell', function() {
         var isCheckedBefore = $scope.addOverBookingObj.weekDayList[5].isChecked;
+
         $scope.clickedWeekDay(5);
         var isCheckedAfter = $scope.addOverBookingObj.weekDayList[5].isChecked;
+        
         expect(isCheckedBefore).toBe(!isCheckedAfter);
     });
 

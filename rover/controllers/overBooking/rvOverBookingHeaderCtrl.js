@@ -154,7 +154,7 @@ angular.module('sntRover').controller('RvOverBookingHeaderCtrl', [
 				$window.print();
 
 				if ( sntapp.cordovaLoaded ) {
-					cordova.exec(function(success) {}, function(error) {}, 'RVCardPlugin', 'printWebView', []);
+					cordova.exec(function() {}, function() {}, 'RVCardPlugin', 'printWebView', []);
 				}
 			}, 100);
 
@@ -163,7 +163,7 @@ angular.module('sntRover').controller('RvOverBookingHeaderCtrl', [
 			 */
 
 			// remove the orientation after similar delay
-			$timeout( function(){
+			$timeout( function() {
 				$( '#print-orientation' ).remove();
 			}, 100 );
 
