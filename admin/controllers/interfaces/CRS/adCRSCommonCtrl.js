@@ -11,11 +11,6 @@ angular.module('admin').controller('adCRSCommonCtrl',
 
         var interfaceIdentifier = $stateParams.id;
 
-        var resetChosenChargeCode = function() {
-            $scope.chosenAvailableChargeCodes = [];
-            $scope.chosenSelectedChargecodes = [];
-        };
-
         $scope.toggleEnabled = function() {
             config.enabled = !config.enabled;
         };
@@ -73,7 +68,7 @@ angular.module('admin').controller('adCRSCommonCtrl',
                 $scope.availableTaxChargeCodesForTaxExemptOne = _.difference(taxChargeCodes.data.charge_codes, taxExemptsToBeRemovedForOne);
                 $scope.availableTaxChargeCodesForTaxExemptTwo = _.difference(taxChargeCodes.data.charge_codes, taxExemptsToBeRemovedForTwo);
                 $scope.availableTaxChargeCodesForTaxExemptThree = _.difference(taxChargeCodes.data.charge_codes, taxExemptsToBeRemovedForThree);
-        }
+        };
 
     }
 ]);

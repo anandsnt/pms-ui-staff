@@ -46,6 +46,7 @@ module.exports = {
 				sharedRoot + 'directives/ngClassWithoutAnimation/*.js',
                 sharedRoot + 'directives/convertToNumber/*.js',
 				sharedRoot + 'directives/tooltip/qtip2.js',
+				sharedRoot + 'directives/touchPress/touchPress.js',
 				sharedRoot + 'baseCtrl.js',
 				sharedRoot + 'iBeaconOperations.js',
 				jsLibRoot + 'date.js',
