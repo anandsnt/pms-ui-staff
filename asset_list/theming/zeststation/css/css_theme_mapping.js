@@ -43,7 +43,8 @@ module.exports = {
             'surf-sand': [themeCSSRoot + 'surf-sand.less'],
             'bunk': [themeCSSRoot + 'bunk.less'],
             'rydges': [themeCSSRoot + 'rydges.less'],
-            'freehand-la': [themeCSSRoot + 'freehand-la.less']
+            'freehand-la': [themeCSSRoot + 'freehand-la.less'],
+            'east-london': [themeCSSRoot + 'east-london.less']
         };
     }
 };
