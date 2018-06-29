@@ -87,7 +87,7 @@ angular.module('admin').controller('adSyncBlockCtrl', ['$scope', '$rootScope', '
                 items: items
             };
 
-            if (!$scope.singleDate) {                
+            if (!$scope.isExport) {
                 payLoad['end_date'] = dateFilter($scope.toDate, $rootScope.dateFormatForAPI);
             }
 

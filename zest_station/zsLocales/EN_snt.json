@@ -659,7 +659,7 @@
    "VERIFICATION_PENDING_MSG": "Some of the guests are not verified. You can either accept pending guests without ID",
 
    "ACCEPT": "Accept",
-   "CANCEL": "CANCEL",
+   "ID_CANCEL": "CANCEL",
 
    "VERIFY_GUESTS_HEADER": "Verify guest IDs",
    "VERIFY_GUESTS_SUB_HEADER": "",
@@ -668,6 +668,10 @@
    "ID_VERIFICATION_SUB_HEADER": "Please contact a staff member to review",
 
    "CALL_STAFF": "Call Staff",
-   "PAYMENT_METHOD": "Payment method"
+   "PAYMENT_METHOD": "Payment method",
+
+   "NOT_REVIEWED": "Not Reviewed",
+   "ID_APPROVED": "ID Approved",
+   "ID_APPROVED_WITHOUT_ID": "Approved without ID"
 
 }
