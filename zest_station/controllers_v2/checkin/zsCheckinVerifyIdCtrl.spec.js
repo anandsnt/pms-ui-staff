@@ -146,8 +146,6 @@ describe('zsCheckinVerifyIdCtrl', function() {
         });
     });
 
-
-
     describe('On accepting guests with or without IDs, checkin the reservation', function() {
         beforeEach(function() {
             spyOn(zsCheckinSrv, 'checkInGuest').and.callFake(function() {
