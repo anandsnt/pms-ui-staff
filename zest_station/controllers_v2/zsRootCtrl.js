@@ -844,7 +844,9 @@ sntZestStation.controller('zsRootCtrl', [
                     right_arrow_icon: commonIconsPath + '/arrow-right.svg',
                     late_checkout_icon: iconBasePath + '/late-checkout.svg',
                     scanpassport: iconBasePath + ($scope.zestStationData.scan_passport_file_uploaded.length > 0) ? $scope.zestStationData.scan_passport_file_uploaded : '',
-                    success: iconBasePath + '/success.svg'
+                    success: iconBasePath + '/success.svg',
+                    user_with_id: iconBasePath + '/user-id.svg',
+                    user_without_id: iconBasePath + '/user.svg'
                 }
             };
 

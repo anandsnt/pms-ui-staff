@@ -119,7 +119,7 @@ describe('zsCheckinVerifyIdCtrl', function() {
                     'review_status': ''
                 }]
             };
-            $scope.approveGuest($scope.selectedReservation.guest_details[1], 'WITH_ID');
+            $scope.approveGuest();
             $scope.$digest();
             expect(zsGeneralSrv.recordIdVerification).not.toHaveBeenCalled();
         });
@@ -132,15 +132,15 @@ describe('zsCheckinVerifyIdCtrl', function() {
                     'guest_type': 'ADULT',
                     'first_name': '',
                     'last_name': '',
-                    'review_status': 'WITH_ID'
+                    'review_status': 'with-id'
                 }, {
                     'id': 2,
                     'guest_type': 'ADULT',
                     'first_name': '',
-                    'review_status': ''
+                    'review_status': 'no-id'
                 }]
             };
-            $scope.approveGuest($scope.selectedReservation.guest_details[1], 'WITHOUT_ID');
+            $scope.approveGuest();
             $scope.$digest();
             expect(zsGeneralSrv.recordIdVerification).toHaveBeenCalled();
         });
@@ -166,14 +166,14 @@ describe('zsCheckinVerifyIdCtrl', function() {
                     'guest_type': 'ADULT',
                     'first_name': '',
                     'last_name': '',
-                    'review_status': ''
+                    'review_status': 'with-id'
                 }]
             };
             spyOn($state, 'go');
         });
 
         it('Should call record API and checkin API', function() {
-            $scope.approveGuest($scope.selectedReservation.guest_details[0], 'WITHOUT_ID');
+            $scope.approveGuest();
             $scope.$digest();
             expect(zsGeneralSrv.recordIdVerification).toHaveBeenCalled()
             expect(zsCheckinSrv.checkInGuest).toHaveBeenCalled();
@@ -181,7 +181,7 @@ describe('zsCheckinVerifyIdCtrl', function() {
 
         it('If OWS messages display is turned ON, go to checkin success state', function() {
             $scope.zestStationData.is_kiosk_ows_messages_active = true;
-            $scope.approveGuest($scope.selectedReservation.guest_details[0], 'WITHOUT_ID');
+            $scope.approveGuest();
             $scope.$digest();
             expect($state.go).toHaveBeenCalledWith('zest_station.checkinSuccess', jasmine.any(Object));
         });
@@ -189,7 +189,7 @@ describe('zsCheckinVerifyIdCtrl', function() {
         it('If nationality collection is turned ON and reservation has a valid email ID, go to nationality collection', function() {
             $scope.zestStationData.is_kiosk_ows_messages_active = false;
             $scope.zestStationData.check_in_collect_nationality = true;
-            $scope.approveGuest($scope.selectedReservation.guest_details[0], 'WITHOUT_ID');
+            $scope.approveGuest();
             $scope.$digest();
             expect($state.go).toHaveBeenCalledWith('zest_station.collectNationality', jasmine.any(Object));
         });
@@ -197,7 +197,7 @@ describe('zsCheckinVerifyIdCtrl', function() {
         it('If nationality collection is turned OFF and reservation has a valid email ID, go to key collection', function() {
             $scope.zestStationData.is_kiosk_ows_messages_active = false;
             $scope.zestStationData.check_in_collect_nationality = false;
-            $scope.approveGuest($scope.selectedReservation.guest_details[0], 'WITHOUT_ID');
+            $scope.approveGuest();
             $scope.$digest();
             expect($state.go).toHaveBeenCalledWith('zest_station.checkinKeyDispense', jasmine.any(Object));
         });

@@ -135,16 +135,16 @@
 				}
 			};
 
-			var generateDataSet = function(approvePendingIds) {
+			var generateDataSet = function() {
 				apiParams = {
 					guests_accepted_with_id: [],
 					guests_accepted_without_id: []
 				};
 				allGuestsAreVerified = true;
 				_.each($scope.selectedReservation.guest_details, function(guest) {
-					if (guest.review_status === 'WITH_ID') {
+					if (guest.review_status === 'with-id') {
 						apiParams.guests_accepted_with_id.push(guest);
-					} else if (guest.review_status === 'WITHOUT_ID' || approvePendingIds) {
+					} else if (guest.review_status === 'no-id') {
 						apiParams.guests_accepted_without_id.push(guest);
 					} else {
 						allGuestsAreVerified = false;
@@ -187,15 +187,7 @@
 				$scope.callAPI(zsGeneralSrv.recordIdVerification, options);
 			};
 
-			$scope.acceptWithoutID = function() {
-				var approvePendingIds = true;
-				
-				generateDataSet(approvePendingIds);
-				callApiToRecord();
-			};
-
-			$scope.approveGuest = function(guest, approvalType) {
-				guest.review_status = (approvalType === 'WITH_ID') ? 'WITH_ID' : 'WITHOUT_ID';
+			$scope.approveGuest = function() {
 				generateDataSet();
 				if (allGuestsAreVerified) {
 					callApiToRecord();
