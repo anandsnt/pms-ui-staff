@@ -97,6 +97,7 @@
 				}
 				// if collectiing nationality after email, but email is already valid
 				else if ($scope.zestStationData.check_in_collect_nationality && haveValidGuestEmail) {
+					$scope.$emit('showLoader');
 					$state.go('zest_station.collectNationality', nextStateParams);
 				} else if (haveValidGuestEmail) {
 					$state.go('zest_station.checkinKeyDispense', nextStateParams);
@@ -134,16 +135,16 @@
 				}
 			};
 
-			var generateDataSet = function(approvePendingIds) {
+			var generateDataSet = function() {
 				apiParams = {
 					guests_accepted_with_id: [],
 					guests_accepted_without_id: []
 				};
 				allGuestsAreVerified = true;
 				_.each($scope.selectedReservation.guest_details, function(guest) {
-					if (guest.review_status === '1') {
+					if (guest.review_status === 'WITH_ID') {
 						apiParams.guests_accepted_with_id.push(guest);
-					} else if (guest.review_status === '2' || approvePendingIds) {
+					} else if (guest.review_status === 'NO_ID') {
 						apiParams.guests_accepted_without_id.push(guest);
 					} else {
 						allGuestsAreVerified = false;
@@ -186,28 +187,13 @@
 				$scope.callAPI(zsGeneralSrv.recordIdVerification, options);
 			};
 
-			$scope.acceptWithoutID = function() {
-				var approvePendingIds = true;
-				
-				generateDataSet(approvePendingIds);
-				callApiToRecord();
-			};
-
-			$scope.abortCheckin = function() {
-				$state.go('zest_station.home');
-			};
-
-			$scope.hideWarningPopup = function() {
-				$scope.showWarningPopup = false;
-			};
-
-			$scope.continueToNextScreen = function() {
+			$scope.approveGuest = function() {
 				generateDataSet();
-				if (!allGuestsAreVerified) {
-					$scope.showWarningPopup = true;
-				} else {
+				if (allGuestsAreVerified) {
 					callApiToRecord();
 				}
+				return;
 			};
+
 		}
 	]);

@@ -204,7 +204,21 @@ admin.controller('ADAppCtrl', [
                                 title: 'MENU_TA_CARDS',
                                 action: 'rover.companycardsearch',
                                 menuIndex: 'cards'
-                            }]
+                            },
+                            {
+                                title: 'MENU_DISTRIBUTION_MANAGER',
+                                action: ''
+                            },
+                            {
+                                title: 'MENU_SELL_LIMITS',
+                                action: 'rover.overbooking',
+                                actionParams: {
+                                    start_date: $rootScope.businessDate
+                                },
+                                standAlone: true,
+                                hidden: $rootScope.isHourlyRatesEnabled
+                            }
+                        ]
                     }, {
                         title: 'MENU_HOUSEKEEPING',
                         action: '',

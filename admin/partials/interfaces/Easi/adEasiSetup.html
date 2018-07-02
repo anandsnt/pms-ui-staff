@@ -5,7 +5,7 @@
             <ad-toggle-button is-checked="config.enabled"
                               label="{{'ACTIVATE_INACTIVATE'| translate}}"></ad-toggle-button>
         </fieldset>
-    </div>    
+    </div>
     <fieldset class="holder left" ng-if="config.enabled">
       <div class="form-title">
         <h3>Export<span> Settings</span></h3>
@@ -37,7 +37,7 @@
       </div>
       <div class="entry">
         <label translate>PAID_OUT_CHARGE_GROUP</label>
-        <select ng-model="config.paid_out_charge_group_id" ng-options="charge_groups.value as charge_groups.name for charge_groups in chargeGroups" >        
+        <select ng-model="config.paid_out_charge_group_id" ng-options="charge_groups.value as charge_groups.name for charge_groups in chargeGroups" >
           <option value="" disabled selected>Select paid out group</option>
         </select>
       </div>
@@ -46,7 +46,7 @@
       <div class="form-title">
         <h3><span>Charge Code</span> Settings </h3>       
       </div>
-      <div class="entry">  
+      <div class="entry">
         <label translate>TAX_CHARGE_CODE_6</label>
         <div class="select">
           <select ng-model="config.tax1_charge_code_id" ng-change="changedTaxExempt()" ng-options="charge_code_for_one.id as charge_code_for_one.code for charge_code_for_one in availableTaxChargeCodesForTaxExemptOne" >

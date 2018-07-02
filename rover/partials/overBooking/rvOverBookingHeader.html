@@ -1,0 +1,45 @@
+<!-- Overbooking Header -->
+<div class="overbooking-header" ng-controller="RvOverBookingHeaderCtrl">
+    <!-- Set Start Date -->
+	<div class="entry date">
+	    <button ng-click="clickedPrevDateButton()" ng-class="{'overlay': disablePrevDateButton() }" type="button" class="button with-icon only-icon">
+	        <span class="icons icon-double-arrow black"></span>
+	    </button>
+	    <div ng-click="showDatePicker()" class="entry-data">
+	        <input type="text" class="datepicker" value="{Start Date}" readonly />
+	        <span class="date-range">{{overBookingObj.startDate|date:'dd MMM'}} - {{overBookingObj.endDate|date:'dd MMM yyyy'}}</span>
+	    </div>
+	    <button ng-click="clickedNextDateButton()"  type="button" class="button with-icon only-icon">
+	        <span class="icons icon-double-arrow black rotate-right"></span>
+	    </button>
+	</div>
+	<div ng-click="clickedShowRoomsLeftTosell()" class="entry">
+	    <label class="checkbox" ng-class="{'checked':overBookingObj.isShowRoomsLeftToSell}">
+	        <span class="icon-form icon-checkbox" ng-class="{'checked':overBookingObj.isShowRoomsLeftToSell}"></span>
+	        <input type="checkbox" />
+	        {{ 'SHOW_ROOMS_LEFT_TO_SELL' | translate }}
+	    </label>
+	</div>
+	<!-- Filter Room Types -->
+	<div class="entry room-type">
+	    <div class="multi-select" ng-class="{'active': overBookingObj.isShowRoomTypeFilter }" ng-click="toggleRoomTypeFilter()">
+	        <label translate>ROOM_TYPE_S</label>
+	        <span class="value">{{showRoomTypeSelectionStatus()}}</span>
+	    </div>
+	    <div class="multi-select-options scrollable" ng-show="overBookingObj.isShowRoomTypeFilter" ng-iscroll="roomTypeFilterList"  ng-iscroll-delay="500">
+	        <div class="wrapper">
+	            <label class="checkbox inline" ng-repeat="item in overBookingObj.roomTypeList track by $index" ng-class="{'checked': item.isChecked}" ng-click="clickedRoomTypeCheckbox($index)">
+	                <span class="icon-form icon-checkbox" ng-class="{'checked': item.isChecked}"></span>
+	                <input type="checkbox" ng-checked="item.isChecked"/>
+	                {{item.name}}
+	            </label>
+	        </div>
+	    </div>
+	</div>
+	
+	<div class="actions">
+		<button type="button" class="button blue with-icon only-icon" ng-click="clickedPrintButton()"><span class="icons icon-print"></span></button>
+	    <button ng-click="clickedAddOverBookingButton()" type="button" class="button green" translate>ADD_SELL_LIMITS</button>
+	</div>
+	
+</div>
