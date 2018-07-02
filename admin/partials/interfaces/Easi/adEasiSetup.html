@@ -5,7 +5,7 @@
             <ad-toggle-button is-checked="config.enabled"
                               label="{{'ACTIVATE_INACTIVATE'| translate}}"></ad-toggle-button>
         </fieldset>
-    </div>    
+    </div>
     <fieldset class="holder left" ng-if="config.enabled">
       <div class="form-title">
         <h3>Export<span> Settings</span></h3>
@@ -17,16 +17,16 @@
     </fieldset>
     <fieldset class="holder right" ng-if="config.enabled">
       <div class="form-title">
-        <h3>Export FTP<span> Settings</span></h3>
+        <h3>Export SFTP<span> Settings</span></h3>
       </div>
         <section>
-            <ad-textbox inputtype="text" value="config.ftp_host" label="FTP host"
+            <ad-textbox inputtype="text" value="config.sftp_host" label="SFTP host"
                         styleclass="full-width"></ad-textbox>
-            <ad-textbox inputtype="text" value="config.ftp_location" label="FTP location"
+            <ad-textbox inputtype="text" value="config.sftp_location" label="SFTP location"
                         styleclass="full-width"></ad-textbox>
-            <ad-textbox inputtype="text" value="config.ftp_username" label="FTP user name"
+            <ad-textbox inputtype="text" value="config.sftp_username" label="SFTP user name"
                         styleclass="full-width"></ad-textbox>
-            <ad-textbox inputtype="text" value="config.ftp_password" label="FTP password"
+            <ad-textbox inputtype="password" value="config.sftp_password" label="SFTP password"
                         styleclass="full-width"></ad-textbox>
         </section>
     </fieldset>
@@ -37,7 +37,7 @@
       </div>
       <div class="entry">
         <label translate>PAID_OUT_CHARGE_GROUP</label>
-        <select ng-model="config.paid_out_charge_group_id" ng-options="charge_groups.value as charge_groups.name for charge_groups in chargeGroups" >        
+        <select ng-model="config.paid_out_charge_group_id" ng-options="charge_groups.value as charge_groups.name for charge_groups in chargeGroups" >
           <option value="" disabled selected>Select paid out group</option>
         </select>
       </div>
@@ -46,7 +46,7 @@
       <div class="form-title">
         <h3><span>Charge Code</span> Settings </h3>       
       </div>
-      <div class="entry">  
+      <div class="entry">
         <label translate>TAX_CHARGE_CODE_6</label>
         <div class="select">
           <select ng-model="config.tax1_charge_code_id" ng-change="changedTaxExempt()" ng-options="charge_code_for_one.id as charge_code_for_one.code for charge_code_for_one in availableTaxChargeCodesForTaxExemptOne" >

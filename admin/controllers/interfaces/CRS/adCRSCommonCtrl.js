@@ -11,11 +11,6 @@ angular.module('admin').controller('adCRSCommonCtrl',
 
         var interfaceIdentifier = $stateParams.id;
 
-        var resetChosenChargeCode = function() {
-            $scope.chosenAvailableChargeCodes = [];
-            $scope.chosenSelectedChargecodes = [];
-        };
-
         $scope.toggleEnabled = function() {
             config.enabled = !config.enabled;
         };

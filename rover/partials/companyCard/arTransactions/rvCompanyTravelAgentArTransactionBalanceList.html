@@ -11,7 +11,7 @@
             <div class="data" ng-if="balance.associated_type === 'Reservation'">
                 <!-- add class .group/.allotment if group or allotment -->
                 <h2 ng-if="balance.guest_first_name!==null && balance.guest_last_name!==null">
-                    {{balance.guest_first_name}},  {{balance.guest_last_name}}
+                    {{balance.guest_last_name}},  {{balance.guest_first_name}}
                 </h2>
                 <h2 ng-if="balance.guest_first_name!=='' && balance.guest_last_name===''">
                     {{balance.guest_first_name}}
