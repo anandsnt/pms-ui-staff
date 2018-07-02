@@ -77,10 +77,6 @@
                         {{guest.first_name}}    
                     </span>
                     </span>
-                   <!--  <div class="entry">
-                        <button class="button" touch-press="approveGuest(guest, 'WITH_ID')" ng-class="{'transparent': guest.review_status !== 'WITH_ID'}">OK</button>
-                        <button class="button" touch-press="approveGuest(guest, 'WITHOUT_ID')" ng-class="{'transparent': guest.review_status !== 'WITHOUT_ID'}"> Not ok</button>
-                    </div> -->
                     <nav id="options" role="nav" class="small-icons">
                         <ul role="menu">
                             <!-- both radio buttons have to have the same name attribute for each guest
@@ -88,14 +84,14 @@
                     This wil ensure that one radio will be deselected if another is selected.
                     -->
                             <li class="radio-option">
-                                <input type="radio" name="id_guest[{{ $index }}]" id="radio-guest-{{ $index }}-1" value="with-id" ng-model="guest.review_status" ng-change="approveGuest()"/>
+                                <input type="radio" name="id_guest[{{ $index }}]" id="radio-guest-{{ $index }}-1" value="WITH_ID" ng-model="guest.review_status" ng-change="approveGuest()"/>
                                 <label class="button option" for="radio-guest-{{ $index }}-1">
                                     <ng-include src="icons.url.user_with_id"></ng-include>
                                 </label>
                                 <span translate>WITH_ID</span>
                             </li>
                             <li class="radio-option">
-                                <input type="radio" name="id_guest[{{ $index }}]" id="radio-guest-{{ $index }}-2" value="no-id" ng-model="guest.review_status" ng-change="approveGuest()"/>
+                                <input type="radio" name="id_guest[{{ $index }}]" id="radio-guest-{{ $index }}-2" value="NO_ID" ng-model="guest.review_status" ng-change="approveGuest()"/>
                                 <label class="button option" for="radio-guest-{{ $index }}-2">
                                     <ng-include src="icons.url.user_without_id"></ng-include>
                                 </label>

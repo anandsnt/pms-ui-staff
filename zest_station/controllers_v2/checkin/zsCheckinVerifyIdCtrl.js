@@ -142,9 +142,9 @@
 				};
 				allGuestsAreVerified = true;
 				_.each($scope.selectedReservation.guest_details, function(guest) {
-					if (guest.review_status === 'with-id') {
+					if (guest.review_status === 'WITH_ID') {
 						apiParams.guests_accepted_with_id.push(guest);
-					} else if (guest.review_status === 'no-id') {
+					} else if (guest.review_status === 'NO_ID') {
 						apiParams.guests_accepted_without_id.push(guest);
 					} else {
 						allGuestsAreVerified = false;

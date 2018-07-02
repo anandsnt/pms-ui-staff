@@ -132,12 +132,12 @@ describe('zsCheckinVerifyIdCtrl', function() {
                     'guest_type': 'ADULT',
                     'first_name': '',
                     'last_name': '',
-                    'review_status': 'with-id'
+                    'review_status': 'WITH_ID'
                 }, {
                     'id': 2,
                     'guest_type': 'ADULT',
                     'first_name': '',
-                    'review_status': 'no-id'
+                    'review_status': 'NO_ID'
                 }]
             };
             $scope.approveGuest();
@@ -166,7 +166,7 @@ describe('zsCheckinVerifyIdCtrl', function() {
                     'guest_type': 'ADULT',
                     'first_name': '',
                     'last_name': '',
-                    'review_status': 'with-id'
+                    'review_status': 'WITH_ID'
                 }]
             };
             spyOn($state, 'go');
