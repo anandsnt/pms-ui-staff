@@ -263,7 +263,16 @@
                 &:before {
                     .size(230px, 2px);
                 }
-            }  
+            } 
+
+            &.radio-option {
+                input[type=radio] { .hide; }
+                display: block;
+
+                input[type=radio]:not(:checked) + .button {
+                    background: fade(@black, 30);
+                }
+            }
         }
 
         &.large-icons {
@@ -282,6 +291,18 @@
 
                 &:first-child { margin-left: 0; }
                 &:last-child { margin-right: 0; }
+            }
+        }
+
+        &.small-icons {
+            .option {
+                #rounded > .round(75px);
+                .square(75px);
+
+                .icons {
+                    margin: 15px;
+                    .square(40px);
+                }
             }
         }
     }
@@ -1954,14 +1975,19 @@
         padding: 0 10px;
         #calc  > #height > .remove( 100%, 250px );
 
-        .select {
-            width: 300px;
-            padding: 0;
-            margin: 0 0 0 10px; 
+        #options {
+            width: 255px;
+            margin: 0;
 
-            select {
-                padding: 0 35px 0 20px;
-                font-size: 16px;
+            ul {
+                margin: 0;
+
+                li { 
+                    margin: 0; 
+                    .option { 
+                        margin-bottom: 0; 
+                    }
+                }
             }
         }
 
