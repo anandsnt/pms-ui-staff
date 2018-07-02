@@ -325,7 +325,7 @@ angular.module('sntRover').controller('companyCardDetailsController', ['$scope',
 		};
 
 		$scope.shouldShowCommissionsTab = function() {
-			return ($scope.account_type === 'TRAVELAGENT');
+			return (isUpdateEnabledForTravelAgent);
 		};
 		$scope.isUpdateEnabled = function() {
 			if ($scope.contactInformation.is_global_enabled === undefined) {
@@ -662,11 +662,20 @@ angular.module('sntRover').controller('companyCardDetailsController', ['$scope',
 			 * Due to the special requirement, we need to do DOM access here.
 			 * Since we are explicitily triggering click event, this should be outside of angular digest loop.
 			 */
-			if ($scope.isUpdateEnabled()) {
-				$timeout(function() {
-					angular.element('#uplaodCompanyLogo').trigger('click');
-				}, 0, false);
-			}
+			if ($stateParams.type === "TRAVELAGENT") {
+				if (!$scope.isUpdateEnabledForTravelAgent()) {
+					$timeout(function() {
+						angular.element('#uplaodCompanyLogo').trigger('click');
+					}, 0, false);
+				}
+			 
+			} else if ($stateParams.type === "COMPANY") {
+				if (!$scope.isUpdateEnabled()) {
+					$timeout(function() {
+						angular.element('#uplaodCompanyLogo').trigger('click');
+					}, 0, false);
+				}
+			}			
 		};
 
 		$scope.isEmptyObject = isEmptyObject;
