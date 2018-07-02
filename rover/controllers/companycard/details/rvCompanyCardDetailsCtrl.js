@@ -325,7 +325,7 @@ angular.module('sntRover').controller('companyCardDetailsController', ['$scope',
 		};
 
 		$scope.shouldShowCommissionsTab = function() {
-			return (isUpdateEnabledForTravelAgent);
+			return ($scope.account_type === 'TRAVELAGENT');
 		};
 		$scope.isUpdateEnabled = function() {
 			if ($scope.contactInformation.is_global_enabled === undefined) {
