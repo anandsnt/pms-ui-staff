@@ -12,7 +12,12 @@
 			BaseCtrl.call(this, $scope);
 			$scope.$emit(zsEventConstants.HIDE_BACK_BUTTON);
 			$scope.$emit(zsEventConstants.SHOW_CLOSE_BUTTON);
-			$scope.setScroller('guests-list');
+			var scrollOptions = {
+				click: false,
+				preventDefaultException: {tagName:/.*/}
+			};
+
+			$scope.setScroller('guests-list', scrollOptions);
 			$scope.screenMode = 'WAIT_FOR_STAFF';
 			$scope.adminPin = '';
 			$scope.showWarningPopup = false;
