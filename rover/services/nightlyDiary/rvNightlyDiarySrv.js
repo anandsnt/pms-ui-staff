@@ -137,29 +137,34 @@ angular.module('sntRover').service('RVNightlyDiarySrv',
 
         this.fetchRoomsListAndReservationList = function(params) {
             var deferred = $q.defer(),
-                promises = [],
                 data = {
                     roomList: null,
                     reservationList: null,
                     dateList: null
                 };
 
-            promises.push(that.fetchRoomsList(params).then(function(response) {
-                data.roomList = response;
-            }));
-            promises.push(that.fetchReservationsList(params).then(function(response) {
-                data.reservationList = response;
-            }));
-            promises.push(that.fetchDatesList(params).then(function(response) {
-                data.dateList = response;
-            }));
-
-            $q.all(promises).then(function() {
+            $q.when().then(function() {
+                return that.fetchRoomsList(params).then(function(response) {
+                    data.roomList = response;
+                });
+            })
+            .then(function() {                 
+                params.page = data.roomList.page_number;
+                return that.fetchReservationsList(params).then(function(response) {
+                    data.reservationList = response;
+                });
+            })
+            .then(function() {
+                return that.fetchDatesList(params).then(function(response) {
+                    data.dateList = response;
+                });
+            })
+            .then(function() {
                 deferred.resolve(data);
             }, function(errorMessage) {
                 deferred.reject(errorMessage);
             });
-            return deferred.promise;
 
+            return deferred.promise;
         };
     }]);
