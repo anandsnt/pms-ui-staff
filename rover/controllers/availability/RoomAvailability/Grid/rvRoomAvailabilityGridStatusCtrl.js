@@ -210,7 +210,11 @@ angular.module('sntRover')
                 toggleSection( 'roomInventory', show );
                 $scope.refreshScroller('room_availability_scroller');
             };
-
+            
+            /*
+            * function to toggle the display of individual group/allotmet on clicking
+            * the toogle button
+            */
             $scope.toggleShowGroupAllotmentTotals = function (show) {
                 var deferred = $q.defer(),
                     delay = 100;
@@ -233,8 +237,10 @@ angular.module('sntRover')
 
                 return deferred.promise;
             };
-
-            $scope.$on('PRINT_AVAILABILITY', function (event) {
+            
+            var listenrs = {};
+            
+            listeners['PRINT_AVAILABILITY'] = $scope.$on('PRINT_AVAILABILITY', function (event) {
                 openAllSections().then(function() {
                     var delay = 500,
                         closeDelay = 1000;
@@ -253,7 +259,7 @@ angular.module('sntRover')
             });
             // --------------------------------------------------------------------------------------------------------------
 
-            $scope.$on('$includeContentLoaded', function (event) {
+            listeners['$includeContentLoaded'] = $scope.$on('$includeContentLoaded', function (event) {
                 $scope.$emit('hideLoader');
                 $scope.refreshScroller('room_availability_scroller');
             });
@@ -263,7 +269,6 @@ angular.module('sntRover')
             var isFullDataAvaillable = function () {
                 return $scope.data.hasOwnProperty('additionalData');
             };
-
 
             var handleDataChange = function (multiple) {
                 $scope.data = rvAvailabilitySrv.getGridData();
@@ -281,9 +286,9 @@ angular.module('sntRover')
             * when data changed from super controller, it will broadcast an event 'changedRoomAvailableData'
             */
 
-            $scope.$on('changedRoomAvailableData', handleDataChange);
+            listeners['changedRoomAvailableData'] = $scope.$on('changedRoomAvailableData', handleDataChange);
 
-            $scope.$on('changedGrpNAllotData', function () {
+            listeners['changedGrpNAllotData'] = $scope.$on('changedGrpNAllotData', function () {
                 $scope.data.gridDataForGroupAvailability = rvAvailabilitySrv.getGridDataForGroupAvailability();
                 $scope.data.gridDataForAllotmentAvailability = rvAvailabilitySrv.getGridDataForAllotmentAvailability();
 
@@ -294,12 +299,6 @@ angular.module('sntRover')
             });
 
             /*
-            * function to toggle the display of individual group/allotmet on clicking
-            * the toogle button
-            */
-
-
-            /*
             * param - Holdstatus id
             * return Hold status name
             */
@@ -308,7 +307,6 @@ angular.module('sntRover')
 
                 return found && found.name;
             };
-
 
             /**
              * For iScroll, we need width of the table
@@ -350,10 +348,15 @@ angular.module('sntRover')
                 return retCls;
             };
             // Catching INCLUDE_OVERBOOKING message from parent.
-            $scope.$on('INCLUDE_OVERBOOKING', function( event, flag ) {
+            listeners['INCLUDE_OVERBOOKING'] = $scope.$on('INCLUDE_OVERBOOKING', function( event, flag ) {
                 $scope.isIncludeOverbooking = flag;
             });
 
             init();
+            
+            // Destory listeners
+            angular.forEach(listeners, function(listener) {
+                $scope.$on('$destroy', listener);
+            });
         }
     ]);
