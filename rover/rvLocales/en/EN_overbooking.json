@@ -9,7 +9,7 @@
 "MESSAGE_NOT_SELECTED_ANY_ROOM_TYPES": "You haven't selected any room types to show.",
 
 "APPLY_TO_ROOM_TYPES": "Apply to Room Types",
-"OVERBOOKING_WARN_MSG": "This will override all existing house or room type limits for selected dates.",
+"OVERBOOKING_WARN_MSG": "This will override all existing house and room type limits for selected dates. Please review availability is correct.",
 "FROM": "From",
 "TO": "To",
 "EVERY": "Every",
