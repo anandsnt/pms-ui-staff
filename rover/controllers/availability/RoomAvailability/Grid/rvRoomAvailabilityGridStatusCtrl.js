@@ -238,7 +238,8 @@ angular.module('sntRover')
                 return deferred.promise;
             };
             
-            var listenrs = {};
+            // Listener hash to catch each events
+            var listeners = {};
             
             listeners['PRINT_AVAILABILITY'] = $scope.$on('PRINT_AVAILABILITY', function (event) {
                 openAllSections().then(function() {
