@@ -214,16 +214,22 @@ sntRover.controller('rvOccupancyRevenueReportCtrl', [
 			// since we moved these from main controller
             // CICO-38515 - Copied the market list which is already set
 			$scope.markets = angular.copy(chosenReport.hasMarketsList);
-            // CICO-38515 - Removed the last item in the list "UNDEFINED" which is "UNASSIGNED" here
-            // Here the api provides the data for the "UNASSIGNED" ones
-            $scope.markets.data.pop();
+            
+            $scope.isUndefinedMarketSelected = false;
 
 			angular.forEach($scope.markets.data, function(marketValue, index) {
-				if (marketValue.hasOwnProperty("selected")) {
+				if (marketValue.hasOwnProperty("selected") && marketValue.selected) {
 					$scope.marketExists = true;
+					if (marketValue.name === 'UNDEFINED') {
+					   $scope.isUndefinedMarketSelected	= true;
+					}
 					return true;
 				}
 			});
+
+			// CICO-38515 - Removed the last item in the list "UNDEFINED" which is "UNASSIGNED" here
+            // Here the api provides the data for the "UNASSIGNED" ones
+            $scope.markets.data.pop();
 
 			// deep check if we have these flags choosen by the user
 			var hasIncludeLastYear = _.find(chosenReport.hasGeneralOptions.data, { paramKey: 'include_last_year' });
