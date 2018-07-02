@@ -1159,8 +1159,10 @@
         &.editable {
             
             li {
-                #flexbox > .flex();
-                #flexbox > .parent('', space-between, '', '');
+                &:not(.radio-option) {
+                    #flexbox > .flex();
+                    #flexbox > .parent('', space-between, '', '');
+                }
                 
                 .details {
                     color: @black;
