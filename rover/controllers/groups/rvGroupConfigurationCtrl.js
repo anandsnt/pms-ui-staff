@@ -491,7 +491,7 @@ angular.module('sntRover').controller('rvGroupConfigurationCtrl', [
                     closeByEscape: false,
                     scope: $scope
                 });
-            }
+            };
 
             /**
              * [failureCallBackOfMoveDatesAPI description]
