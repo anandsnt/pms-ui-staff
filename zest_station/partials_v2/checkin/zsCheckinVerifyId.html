@@ -27,16 +27,16 @@
             <text data-ng-bind-html="getTagValue('ADMIN_PIN_SUB_HEADER')" editable-text="ADMIN_PIN_SUB_HEADER"></text>
         </h2>
         <!-- user name -->
-        <form method="post" class="form">
+        <div class="form">
             <div class="entry input">
-                <input type="password" placeholder="" ng-focus="showOnScreenKeyboard('input_text')" click-touch="showOnScreenKeyboard('input_text')" ng-model="adminPin" enter-press="goToNext()" id="input_text" touch-press/>
+                <input type="password" placeholder="" ng-focus="showOnScreenKeyboard('input_text')" click-touch="showOnScreenKeyboard('input_text')" ng-model="adminPin" id="input_text" touch-press/>
             </div>
             <div class="entry action">
-                <button type="button" class="button" touch-press='goToNext()' ng-class="{'overlay': input.inputTextValue.length < 1}">
+                <button type="button" class="button" touch-press='goToNext()' ng-class="{'overlay':adminPin.length < 1}">
                     <text data-ng-bind-html="getTagValue('NEXT_BTN')" editable-text="NEXT_BTN"></text>
                 </button>
             </div>
-        </form>
+        </div>
     </div>
 </section>
 
@@ -85,14 +85,14 @@
                     -->
                             <li class="radio-option">
                                 <input type="radio" name="id_guest[{{ $index }}]" id="radio-guest-{{ $index }}-1" value="WITH_ID" ng-model="guest.review_status" ng-change="approveGuest()"/>
-                                <label class="button option" for="radio-guest-{{ $index }}-1">
+                                <label class="button option" for="radio-guest-{{ $index }}-1" style="transition: none;">
                                     <ng-include src="icons.url.user_with_id"></ng-include>
                                 </label>
                                 <span translate>WITH_ID</span>
                             </li>
                             <li class="radio-option">
                                 <input type="radio" name="id_guest[{{ $index }}]" id="radio-guest-{{ $index }}-2" value="NO_ID" ng-model="guest.review_status" ng-change="approveGuest()"/>
-                                <label class="button option" for="radio-guest-{{ $index }}-2">
+                                <label class="button option" for="radio-guest-{{ $index }}-2" style="transition: none;">
                                     <ng-include src="icons.url.user_without_id"></ng-include>
                                 </label>
                                 <span translate>WITHOUT_ID</span>
