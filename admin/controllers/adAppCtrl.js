@@ -871,7 +871,7 @@ admin.controller('ADAppCtrl', [
 
         (function() {
             if (!adminMenuData.menus.length) {
-                let staffURL = '/staff/h/';
+                var staffURL = '/staff/h/';
 
                 $('body').addClass('no-animation');
                 $('#admin-header').css({'z-index': '0'});
