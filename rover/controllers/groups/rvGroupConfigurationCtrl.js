@@ -425,6 +425,14 @@ angular.module('sntRover').controller('rvGroupConfigurationCtrl', [
             };
 
             /**
+             * if the user has enough permission to over book House
+             * @return {Boolean}
+             */
+            var hasPermissionToHouseOverBook = function () {
+                return rvPermissionSrv.getPermissionValue('OVERBOOK_HOUSE');
+            };
+
+            /**
              * should show proceed button
              * @return {Boolean}
              */
@@ -471,6 +479,21 @@ angular.module('sntRover').controller('rvGroupConfigurationCtrl', [
             };
 
             /**
+             * [openNoHouseAndRoomTypeAvailabilityPopup description]
+             * @return {[type]} [description]
+             */
+            var openNoHouseAndRoomTypeAvailabilityPopup = function () {
+                ngDialog.open(
+                {
+                    template: '/assets/partials/groups/summary/popups/changeDates/rvGroupChangeDatesNoHouseAndRoomTypeAvailabilityPopup.html',
+                    className: '',
+                    closeByDocument: false,
+                    closeByEscape: false,
+                    scope: $scope
+                });
+            }
+
+            /**
              * [failureCallBackOfMoveDatesAPI description]
              * @param  {[type]} errorMessage [description]
              * @return {[type]}              [description]
@@ -485,7 +508,12 @@ angular.module('sntRover').controller('rvGroupConfigurationCtrl', [
                         case 470:
                             $timeout(
                                 function() {
-                                    openNoAvailabilityPopup ();
+                                    if (!error.is_house_available && !hasPermissionToHouseOverBook()) {
+                                        openNoHouseAndRoomTypeAvailabilityPopup();
+                                    }
+                                    else {
+                                        openNoAvailabilityPopup ();
+                                    }
                                 },
                             750);
                             break;
@@ -651,7 +679,12 @@ angular.module('sntRover').controller('rvGroupConfigurationCtrl', [
                         case 470:
                             $timeout(
                                 function() {
-                                    openNoAvailabilityPopup ();
+                                    if (!error.is_house_available && !hasPermissionToHouseOverBook()) {
+                                        openNoHouseAndRoomTypeAvailabilityPopup();
+                                    }
+                                    else {
+                                        openNoAvailabilityPopup ();
+                                    }
                                 },
                             750);
                             break;
