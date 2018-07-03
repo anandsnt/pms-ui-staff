@@ -52,6 +52,9 @@
 					verfiedStaffId = response.user_id;
 					$scope.screenMode = 'GUEST_LIST';
 					$scope.refreshScroller('guests-list');
+					// for some reason keyboard did popup even after the above code
+					// sorry, will investigate later
+					$scope.callBlurEventForIpad();
 				};
 				var failureCallback = function() {
 					$scope.screenMode = 'PIN_ERROR';
