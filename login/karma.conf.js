@@ -22,6 +22,7 @@ module.exports = function(config) {
             '../shared/lib/js/ngDialog.min.js',
             '../shared/lib/js/SyntaxHighlighter/shCore.js',
             '../shared/lib/js/Utils.js',
+            '../shared/interceptors/**/*.js',
             './loginApp.js',
             './services/**/*.js',
             './controllers/**/*.js'
