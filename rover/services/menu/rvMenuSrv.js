@@ -256,7 +256,7 @@ angular.module('sntRover').service('rvMenuSrv',
 		            title: "MENU_SELL_LIMITS",
 		            action: "rover.overbooking",
 		            menuIndex: "overbooking",
-		            hidden: isHourlyRateOn || !$rootScope.isSellLimitEnabled
+		            hidden: isHourlyRateOn() || !$rootScope.isSellLimitEnabled
 		        }]
 		    }, {
 		        title: "MENU_HOUSEKEEPING",
