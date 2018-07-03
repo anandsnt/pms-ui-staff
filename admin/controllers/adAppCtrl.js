@@ -216,7 +216,7 @@ admin.controller('ADAppCtrl', [
                                     start_date: $rootScope.businessDate
                                 },
                                 standAlone: true,
-                                hidden: $rootScope.isHourlyRatesEnabled
+                                hidden: $rootScope.isHourlyRatesEnabled || !$rootScope.isSellLimitEnabled
                             }
                         ]
                     }, {
@@ -653,6 +653,9 @@ admin.controller('ADAppCtrl', [
             // $rootScope.isRoomDiaryEnabled = data.is_room_diary_enabled;
             $rootScope.isRoomDiaryEnabled = true;
             $rootScope.isPmsProductionEnv = data.is_pms_prod;
+
+            // CICO-54961 - Hide Sell Limit feature for all hotels except for the pilot property 
+            $rootScope.isSellLimitEnabled = data.is_sell_limit_enabled || false;
 
 			// CICO-18040
 			$rootScope.isFFPActive = data.is_ffp_active;

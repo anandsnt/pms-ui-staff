@@ -149,6 +149,10 @@ sntRover.controller('roverController', [
         // CICO-40544 - Now we have to enable menu in all standalone hotels
         // API not removing for now - Because if we need to disable it we can use the same param
         $rootScope.isRoomDiaryEnabled = true;
+
+        // CICO-54961 - Hide Sell Limit feature for all hotels except for the pilot property 
+        $rootScope.isSellLimitEnabled = data.is_sell_limit_enabled || false;
+
         $rootScope.isManualCCEntryEnabled = hotelDetails.is_allow_manual_cc_entry;
         $rootScope.isAnMPHotel = hotelDetails.is_multi_property;
 
