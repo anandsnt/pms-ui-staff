@@ -1,0 +1,11 @@
+<!-- Grid -->
+<div class="overbooking-grid scrollable" ng-iscroll="overBookingGridScroll" ng-iscroll-delay="500" ng-show="overBookingObj.overBookingGridData.roomTypeSellLimits.length > 0">
+    <div class="wrapper">
+        <div class="row" ng-repeat="($indexOne, row) in overBookingObj.overBookingGridData.roomTypeSellLimits track by $index">
+            <div class="cell" ng-click="clickedEditOverBookingCell('ROOM_TYPE', $indexOne, $indexTwo)" ng-repeat="($indexTwo, cell) in row.overbooking_details track by $index" ng-class="{'weekend': overBookingObj.overBookingGridData.dateRangeList[$index].isWeekend}">
+                <span ng-show="overBookingObj.isShowRoomsLeftToSell" class="rooms" ng-class="{'unavailable':cell.left_to_sell < 3 }">{{cell.left_to_sell}}</span>
+                <span class="limit">{{cell.sell_limit}}</span>
+            </div>
+        </div>
+    </div>
+</div>

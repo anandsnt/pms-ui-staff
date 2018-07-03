@@ -514,7 +514,7 @@ angular.module('adminInterfacesRouter', []).config(function($stateProvider) {
 
     $stateProvider.state('admin.easiSetup', {
         templateUrl: '/assets/partials/interfaces/Easi/adEasiSetup.html',
-        controller: 'adCRSCommonCtrl',
+        controller: 'adEasiCtrl',
         url: '/interfaces/setup/:id',
         onEnter: ['$stateParams', function($stateParams) {
             $stateParams.id = 'easi';
