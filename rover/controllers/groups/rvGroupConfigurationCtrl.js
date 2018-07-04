@@ -463,33 +463,53 @@ angular.module('sntRover').controller('rvGroupConfigurationCtrl', [
                 }
             };
 
-            /**
-             * [openNoAvailabilityPopup description]
-             * @return {[type]} [description]
-             */
-            var openNoAvailabilityPopup = function () {
-                ngDialog.open(
-                {
-                    template: '/assets/partials/groups/summary/popups/changeDates/rvGroupChangeDatesNoAvailabilityPopup.html',
-                    className: '',
-                    closeByDocument: false,
-                    closeByEscape: false,
-                    scope: $scope
-                });
+            // Utility method to check overbooking status
+            var checkOverBooking = function(error) {
+                var isHouseOverbooked       = !error.is_house_available,
+                    isRoomTypeOverbooked    = !error.room_type_available,
+                    canOverbookHouse        = hasPermissionToHouseOverBook(),
+                    canOverbookRoomType     = hasPermissionToOverBook(),
+                    canOverBookBoth         = canOverbookHouse && canOverbookRoomType;
+
+                if ( !(isRoomTypeOverbooked || isHouseOverbooked) ) {
+                    return 'PROCEED_BOOK';
+                }
+
+                // show appropriate overbook message.
+                if (isHouseOverbooked && isRoomTypeOverbooked && canOverBookBoth) {
+                    return 'HOUSE_AND_ROOMTYPE_OVERBOOK';
+                }
+                else if (isRoomTypeOverbooked && canOverbookRoomType && (!isHouseOverbooked || (isHouseOverbooked && canOverbookHouse) )) {
+                    return 'ROOMTYPE_OVERBOOK';
+                }
+                else if (isHouseOverbooked && canOverbookHouse && (!isRoomTypeOverbooked || (isRoomTypeOverbooked && canOverbookRoomType) )) {
+                    return 'HOUSE_OVERBOOK';
+                }
+                            
+                // Overbooking occurs and has no permission.
+                else {
+                    return 'NO_PERMISSION_TO_OVERBOOK';
+                }
             };
 
             /**
-             * [openNoHouseAndRoomTypeAvailabilityPopup description]
-             * @return {[type]} [description]
+             * Method to show oerbooking popup
+             * @return undefined
              */
-            var openNoHouseAndRoomTypeAvailabilityPopup = function () {
-                ngDialog.open(
-                {
-                    template: '/assets/partials/groups/summary/popups/changeDates/rvGroupChangeDatesNoHouseAndRoomTypeAvailabilityPopup.html',
+            var showOverBookingPopup = function(message, proceedOverbook) {
+                // Show overbooking message
+                var dialogData = {
+                    message: message,
+                    proceedOverbook: proceedOverbook
+                };
+
+                ngDialog.open({
+                    template: '/assets/partials/groups/summary/popups/changeDates/rvGroupChangeSellLimitPopup.html',
                     className: '',
+                    scope: $scope,
                     closeByDocument: false,
                     closeByEscape: false,
-                    scope: $scope
+                    data: JSON.stringify(dialogData)
                 });
             };
 
@@ -508,15 +528,26 @@ angular.module('sntRover').controller('rvGroupConfigurationCtrl', [
                         case 470:
                             $timeout(
                                 function() {
-                                    if (!hasPermissionToHouseOverBook() && !hasPermissionToOverBook() && error.is_house_available && !error.room_type_available) {
-                                        openNoHouseAndRoomTypeAvailabilityPopup();
+
+                                    var overbookStatus = checkOverBooking(error),
+                                        message = '',
+                                        proceedOverbook = false;
+
+                                    if ( overbookStatus === 'PROCEED_BOOK' ) {
+                                        message = 'ROOM_TYPE_NO_AVAILABILITY_CHANGE_DATES';
+                                        proceedOverbook = true;
                                     }
-                                    else if (!error.is_house_available && !hasPermissionToHouseOverBook()) {
-                                        openNoHouseAndRoomTypeAvailabilityPopup();
-                                    }
+                                    else if ( overbookStatus === 'NO_PERMISSION_TO_OVERBOOK' ) {
+                                        // Room Block exceeds Room Type Availability - no permission to overbook.
+                                        message = overbookStatus;
+                                        proceedOverbook = false;
+                                    }   
                                     else {
-                                        openNoAvailabilityPopup ();
+                                        message = overbookStatus;
+                                        proceedOverbook = true;
                                     }
+
+                                    showOverBookingPopup (message, proceedOverbook);
                                 },
                             750);
                             break;
@@ -682,15 +713,26 @@ angular.module('sntRover').controller('rvGroupConfigurationCtrl', [
                         case 470:
                             $timeout(
                                 function() {
-                                    if (!hasPermissionToHouseOverBook() && !hasPermissionToOverBook() && error.is_house_available && !error.room_type_available) {
-                                        openNoHouseAndRoomTypeAvailabilityPopup();
+
+                                    var overbookStatus = checkOverBooking(error),
+                                        message = '',
+                                        proceedOverbook = false;
+
+                                    if ( overbookStatus === 'PROCEED_BOOK' ) {
+                                        message = 'ROOM_TYPE_NO_AVAILABILITY_CHANGE_DATES';
+                                        proceedOverbook = true;
                                     }
-                                    else if (!error.is_house_available && !hasPermissionToHouseOverBook()) {
-                                        openNoHouseAndRoomTypeAvailabilityPopup();
-                                    }
+                                    else if ( overbookStatus === 'NO_PERMISSION_TO_OVERBOOK' ) {
+                                        // Room Block exceeds Room Type Availability - no permission to overbook.
+                                        message = overbookStatus;
+                                        proceedOverbook = false;
+                                    }   
                                     else {
-                                        openNoAvailabilityPopup ();
+                                        message = overbookStatus;
+                                        proceedOverbook = true;
                                     }
+
+                                    showOverBookingPopup (message, proceedOverbook);
                                 },
                             750);
                             break;
