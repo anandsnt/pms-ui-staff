@@ -14,7 +14,7 @@
 			</select>
 		</div>
 		<!-- Show Overbooking -->
-		<label ng-hide="isHourlyRateOn || !isSellLimitEnabled" class="checkbox" ng-click="clickedIncludeOverbooking()" ng-class="{'checked': data.isIncludeOverbooking }"> <!-- Add class 'checked' if L17 is checked -->
+		<label ng-hide="isHourlyRateOn || (isPmsProductionEnv && !isSellLimitEnabled)" class="checkbox" ng-click="clickedIncludeOverbooking()" ng-class="{'checked': data.isIncludeOverbooking }"> <!-- Add class 'checked' if L17 is checked -->
 			<span class="icon-form icon-checkbox" ng-class="{'checked': data.isIncludeOverbooking }"></span>
 	        <input type="checkbox">
 	        Include Sell Limits

@@ -151,7 +151,7 @@ sntRover.controller('roverController', [
         $rootScope.isRoomDiaryEnabled = true;
 
         // CICO-54961 - Hide Sell Limit feature for all hotels except for the pilot property 
-        $rootScope.isSellLimitEnabled = hotelDetails.is_sell_limit_enabled || false;
+        $rootScope.isSellLimitEnabled = hotelDetails.is_sell_limit_enabled;
 
         $rootScope.isManualCCEntryEnabled = hotelDetails.is_allow_manual_cc_entry;
         $rootScope.isAnMPHotel = hotelDetails.is_multi_property;
