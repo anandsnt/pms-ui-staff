@@ -508,7 +508,10 @@ angular.module('sntRover').controller('rvGroupConfigurationCtrl', [
                         case 470:
                             $timeout(
                                 function() {
-                                    if (!error.is_house_available && !hasPermissionToHouseOverBook()) {
+                                    if (!hasPermissionToHouseOverBook() && !hasPermissionToOverBook() && error.is_house_available && !error.room_type_available) {
+                                        openNoHouseAndRoomTypeAvailabilityPopup();
+                                    }
+                                    else if (!error.is_house_available && !hasPermissionToHouseOverBook()) {
                                         openNoHouseAndRoomTypeAvailabilityPopup();
                                     }
                                     else {
@@ -679,7 +682,10 @@ angular.module('sntRover').controller('rvGroupConfigurationCtrl', [
                         case 470:
                             $timeout(
                                 function() {
-                                    if (!error.is_house_available && !hasPermissionToHouseOverBook()) {
+                                    if (!hasPermissionToHouseOverBook() && !hasPermissionToOverBook() && error.is_house_available && !error.room_type_available) {
+                                        openNoHouseAndRoomTypeAvailabilityPopup();
+                                    }
+                                    else if (!error.is_house_available && !hasPermissionToHouseOverBook()) {
                                         openNoHouseAndRoomTypeAvailabilityPopup();
                                     }
                                     else {
