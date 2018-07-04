@@ -2006,44 +2006,7 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
                     $scope.appliedFilter['hasMinNoOfDaysNotOccupied'] = report.hasMinNoOfDaysNotOccupied.data;
                 }
             }
-
-            // need to reset the "group by" if any new filter has been applied
-            // Added a patch to ignore the following for addon forecast report
-            // @TODO: Fix this. May be refactor the whole logic
-            if (!!report.groupByOptions && !!$scope.oldParams && reportNames['ADDON_FORECAST'] != report.title) {
-                for (key in params) {
-                    if (!params.hasOwnProperty(key)) {
-                        continue;
-                    }
-
-                    if (key === 'group_by_date' || key === 'group_by_user' || key === 'group_by_charge_type' || key === 'group_by_group_name' || key === 'page' || key === 'per_page') {
-                        continue;
-                    } else if (params[key] !== $scope.oldParams[key]) {
-                        // For Reservations by user report, if no grouping is present the chosenGroupBy is expected as ''. Else it will load another HTML 
-                        // and will cause the rvPagination directive to call link function again.
-                        report.chosenGroupBy = (reportNames['RESERVATIONS_BY_USER'] === report.title) ? '' : 'BLANK';
-                        /**/
-                        if (params.hasOwnProperty('group_by_date')) {
-                            params['group_by_date'] = undefined;
-                        }
-                        if (params.hasOwnProperty('group_by_user')) {
-                            params['group_by_user'] = undefined;
-                        }
-                        /**/
-                        if (params.hasOwnProperty('group_by_group_name')) {
-                            params['group_by_group_name'] = undefined;
-                        }
-                        if (params.hasOwnProperty('group_by_charge_type')) {
-                            params['group_by_charge_type'] = undefined;
-                        }
-                        /**/
-                        if (changeAppliedFilter) {
-                            $scope.appliedFilter['groupBy'] = undefined;
-                        }
-                        break;
-                    }
-                }
-            }
+            
             // CICO-34650
             if (report.hasShowActionables) {
                 if (report.showActionables) {
