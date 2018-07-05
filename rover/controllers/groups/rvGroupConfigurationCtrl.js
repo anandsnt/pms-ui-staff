@@ -469,23 +469,30 @@ angular.module('sntRover').controller('rvGroupConfigurationCtrl', [
                     isRoomTypeOverbooked    = !error.room_type_available,
                     canOverbookHouse        = hasPermissionToHouseOverBook(),
                     canOverbookRoomType     = hasPermissionToOverBook(),
-                    canOverBookBoth         = canOverbookHouse && canOverbookRoomType;
+                    canOverBookBoth         = canOverbookHouse && canOverbookRoomType,
+                    overBookingStatusOutput = '';
                 
                 // show appropriate overbook message.
                 if (isHouseOverbooked && isRoomTypeOverbooked && canOverBookBoth) {
-                    return 'HOUSE_AND_ROOMTYPE_OVERBOOK';
+                    overBookingStatusOutput = 'HOUSE_AND_ROOMTYPE_OVERBOOK';
                 }
                 else if (isRoomTypeOverbooked && canOverbookRoomType && (!isHouseOverbooked || (isHouseOverbooked && canOverbookHouse) )) {
-                    return 'ROOMTYPE_OVERBOOK';
+                    overBookingStatusOutput = 'ROOMTYPE_OVERBOOK';
                 }
                 else if (isHouseOverbooked && canOverbookHouse && (!isRoomTypeOverbooked || (isRoomTypeOverbooked && canOverbookRoomType) )) {
-                    return 'HOUSE_OVERBOOK';
+                    overBookingStatusOutput = 'HOUSE_OVERBOOK';
                 }
-                            
-                // Overbooking occurs and has no permission.
                 else {
-                    return 'NO_PERMISSION_TO_OVERBOOK';
+                    overBookingStatusOutput = 'NO_PERMISSION_TO_OVERBOOK';
                 }
+
+                console.log('isHouseOverbooked    : ', isHouseOverbooked);
+                console.log('isRoomTypeOverbooked : ', isRoomTypeOverbooked);
+                console.log('canOverbookHouse     : ', canOverbookHouse);
+                console.log('canOverbookRoomType  : ', canOverbookRoomType);
+                console.log('OUTPUT               : ', overBookingStatusOutput);
+
+                return overBookingStatusOutput;
             };
 
             /**
