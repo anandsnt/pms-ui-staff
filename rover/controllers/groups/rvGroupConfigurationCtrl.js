@@ -1072,6 +1072,8 @@ angular.module('sntRover').controller('rvGroupConfigurationCtrl', [
                     data: JSON.stringify(data)
                 });
             }, 500);
+
+            $scope.groupConfigData.activeTab = 'SUMMARY';
         };
 
         var updateGroupSummaryInProgress =  false;
@@ -1116,8 +1118,7 @@ angular.module('sntRover').controller('rvGroupConfigurationCtrl', [
                     };
 
                 var summaryData = JSON.parse(JSON.stringify($scope.groupConfigData.summary));
-                console.log("=====")
-console.log($scope.groupConfigData.summary)
+
                 summaryData.block_from = $filter('date')(summaryData.block_from, $rootScope.dateFormatForAPI);
                 summaryData.block_to = $filter('date')(summaryData.block_to, $rootScope.dateFormatForAPI);
                 summaryData.release_date = $filter('date')(summaryData.release_date, $rootScope.dateFormatForAPI);
