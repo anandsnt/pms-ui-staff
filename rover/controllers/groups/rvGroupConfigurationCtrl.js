@@ -463,8 +463,11 @@ angular.module('sntRover').controller('rvGroupConfigurationCtrl', [
                 }
             };
 
-            // Utility method to check overbooking status
-            var checkOverBooking = function(error) {
+            /* Utility method to check overbooking status
+             * @param {Object} [470 error data with is_house_available ,room_type_available flags ]
+             * @return {String} [Overbooking status message]
+             */ 
+            var checkOverBooking = function( error ) {
                 var isHouseOverbooked       = !error.is_house_available,
                     isRoomTypeOverbooked    = !error.room_type_available,
                     canOverbookHouse        = hasPermissionToHouseOverBook(),
@@ -472,7 +475,6 @@ angular.module('sntRover').controller('rvGroupConfigurationCtrl', [
                     canOverBookBoth         = canOverbookHouse && canOverbookRoomType,
                     overBookingStatusOutput = '';
                 
-                // show appropriate overbook message.
                 if (isHouseOverbooked && isRoomTypeOverbooked && canOverBookBoth) {
                     overBookingStatusOutput = 'HOUSE_AND_ROOMTYPE_OVERBOOK';
                 }
@@ -485,12 +487,6 @@ angular.module('sntRover').controller('rvGroupConfigurationCtrl', [
                 else {
                     overBookingStatusOutput = 'NO_PERMISSION_TO_OVERBOOK';
                 }
-
-                console.log('isHouseOverbooked    : ', isHouseOverbooked);
-                console.log('isRoomTypeOverbooked : ', isRoomTypeOverbooked);
-                console.log('canOverbookHouse     : ', canOverbookHouse);
-                console.log('canOverbookRoomType  : ', canOverbookRoomType);
-                console.log('OUTPUT               : ', overBookingStatusOutput);
 
                 return overBookingStatusOutput;
             };
@@ -533,24 +529,13 @@ angular.module('sntRover').controller('rvGroupConfigurationCtrl', [
                                 function() {
 
                                     var overbookStatus = checkOverBooking(error),
-                                        message = '',
                                         proceedOverbook = false;
 
-                                    if ( overbookStatus === 'PROCEED_BOOK' ) {
-                                        message = 'ROOM_TYPE_NO_AVAILABILITY_CHANGE_DATES';
+                                    if ( overbookStatus !== 'NO_PERMISSION_TO_OVERBOOK' ) {
                                         proceedOverbook = true;
-                                    }
-                                    else if ( overbookStatus === 'NO_PERMISSION_TO_OVERBOOK' ) {
-                                        // Room Block exceeds Room Type Availability - no permission to overbook.
-                                        message = overbookStatus;
-                                        proceedOverbook = false;
                                     }   
-                                    else {
-                                        message = overbookStatus;
-                                        proceedOverbook = true;
-                                    }
 
-                                    showOverBookingPopup (message, proceedOverbook);
+                                    showOverBookingPopup (overbookStatus, proceedOverbook);
                                 },
                             750);
                             break;
@@ -718,24 +703,13 @@ angular.module('sntRover').controller('rvGroupConfigurationCtrl', [
                                 function() {
 
                                     var overbookStatus = checkOverBooking(error),
-                                        message = '',
                                         proceedOverbook = false;
 
-                                    if ( overbookStatus === 'PROCEED_BOOK' ) {
-                                        message = 'ROOM_TYPE_NO_AVAILABILITY_CHANGE_DATES';
+                                    if ( overbookStatus !== 'NO_PERMISSION_TO_OVERBOOK' ) {
                                         proceedOverbook = true;
-                                    }
-                                    else if ( overbookStatus === 'NO_PERMISSION_TO_OVERBOOK' ) {
-                                        // Room Block exceeds Room Type Availability - no permission to overbook.
-                                        message = overbookStatus;
-                                        proceedOverbook = false;
                                     }   
-                                    else {
-                                        message = overbookStatus;
-                                        proceedOverbook = true;
-                                    }
 
-                                    showOverBookingPopup (message, proceedOverbook);
+                                    showOverBookingPopup (overbookStatus, proceedOverbook);
                                 },
                             750);
                             break;
