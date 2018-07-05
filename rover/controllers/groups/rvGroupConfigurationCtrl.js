@@ -470,11 +470,7 @@ angular.module('sntRover').controller('rvGroupConfigurationCtrl', [
                     canOverbookHouse        = hasPermissionToHouseOverBook(),
                     canOverbookRoomType     = hasPermissionToOverBook(),
                     canOverBookBoth         = canOverbookHouse && canOverbookRoomType;
-
-                if ( !(isRoomTypeOverbooked || isHouseOverbooked) ) {
-                    return 'PROCEED_BOOK';
-                }
-
+                
                 // show appropriate overbook message.
                 if (isHouseOverbooked && isRoomTypeOverbooked && canOverBookBoth) {
                     return 'HOUSE_AND_ROOMTYPE_OVERBOOK';
