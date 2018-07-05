@@ -136,6 +136,30 @@
                     <span class="icons icon-addons"></span> Add-Ons
                 </a>
             </div>
+             <!-- Tax Exempt -->
+            <div class="entry full-width tax-exempt" ng-if="shouldShowTaxExempt()">
+                <label for="group-tax-exempt">Tax Exempt</label>
+                <div class="switch-button" ng-click="toggleGroupTaxExempt()" ng-class="{'on': groupConfigData.summary.is_tax_exempt}" >
+
+                    <input type="checkbox" ng-model="groupConfigData.summary.is_tax_exempt" ng-checked="groupConfigData.summary.is_tax_exempt" />
+                    <label class="data-off">
+                        <span class="value">Off</span>
+                        <span class="switch-icon">On</span>
+                    </label>
+                    <label class="data-on">
+                        <span class="switch-icon grey">Off</span>
+                        <span class="value">On</span>
+                    </label>
+                </div>
+
+                <div id="group-tax-exempt-type" class="select" ng-show="groupConfigData.summary.is_tax_exempt">
+                    <select ng-change="updateTaxExemptData()" 
+                            ng-model="groupConfigData.summary.tax_exempt_type_id"
+                            ng-options="taxExempt.id as taxExempt.name for taxExempt in taxExemptTypes">
+                    </select>
+                </div>
+            </div>
+
             <!-- Notes -->
             <strong class="h3 margin">Notes</strong>
             <div class="entry full-width no-label with-notes">

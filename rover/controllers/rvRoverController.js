@@ -315,6 +315,9 @@ sntRover.controller('roverController', [
         if ($rootScope.adminRole === 'Hotel Admin' || $rootScope.adminRole === 'Chain Admin') {
             $scope.isHotelAdmin = true;
         }
+        $scope.shouldShowTaxExempt = function() {
+            return rvPermissionSrv.getPermissionValue('TAX_EXEMPT');
+        };
         /**
          * menu - forming & associate logic
          * NOTE: Menu forming and logic and things are in service rvMenuSrv

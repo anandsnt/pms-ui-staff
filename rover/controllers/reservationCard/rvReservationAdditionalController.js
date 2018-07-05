@@ -14,10 +14,6 @@ sntRover.controller('rvReservationAdditionalController', ['$rootScope', '$scope'
 			return rvPermissionSrv.getPermissionValue('UPDATE_COMMISSION');
 		};
 
-		$scope.shouldShowTaxExempt = function() {
-			return rvPermissionSrv.getPermissionValue('TAX_EXEMPT');
-		};
-
 		$scope.isSegmentAutoComputed = function() {
 			var currentSegment = $scope.reservationParentData.demographics.segment,
 				aptSegment = "";

@@ -852,8 +852,10 @@ angular.module('sntRover').controller('rvGroupConfigurationCtrl', [
                 selectAddons: false, // To be set to true while showing addons full view
                 addons: {},
                 selectedAddons: [],
-                activeScreen: 'GROUP_ACTUAL'
+                activeScreen: 'GROUP_ACTUAL',
+
             };
+            $scope.groupConfigData.summary.tax_exempt_type_id = summaryData.groupSummary.tax_exempt_type.id
             var groupSummary = $scope.groupConfigData.summary;
 
             $timeout(function() {
@@ -1109,7 +1111,8 @@ angular.module('sntRover').controller('rvGroupConfigurationCtrl', [
                     };
 
                 var summaryData = JSON.parse(JSON.stringify($scope.groupConfigData.summary));
-
+                console.log("=====")
+console.log($scope.groupConfigData.summary)
                 summaryData.block_from = $filter('date')(summaryData.block_from, $rootScope.dateFormatForAPI);
                 summaryData.block_to = $filter('date')(summaryData.block_to, $rootScope.dateFormatForAPI);
                 summaryData.release_date = $filter('date')(summaryData.release_date, $rootScope.dateFormatForAPI);
