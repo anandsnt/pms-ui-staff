@@ -7,6 +7,8 @@
             
         </fieldset>
         <ad-sync-block ng-if="config.enabled"
+                   is-export = "true"
+                   exclude-today="true"
                    interface="{{interface}}"
                    config="config">
         </ad-sync-block>
