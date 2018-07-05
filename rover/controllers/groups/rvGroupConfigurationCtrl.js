@@ -855,7 +855,10 @@ angular.module('sntRover').controller('rvGroupConfigurationCtrl', [
                 activeScreen: 'GROUP_ACTUAL',
 
             };
-            $scope.groupConfigData.summary.tax_exempt_type_id = summaryData.groupSummary.tax_exempt_type.id
+            if (!$scope.isInAddMode()) {
+                $scope.groupConfigData.summary.tax_exempt_type_id = summaryData.groupSummary.tax_exempt_type.id;
+            }
+            
             var groupSummary = $scope.groupConfigData.summary;
 
             $timeout(function() {
