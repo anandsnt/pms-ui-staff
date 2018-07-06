@@ -13,7 +13,8 @@ var GlobalApp = function() {
 
 
     this.setBrowser = function(browser) {
-        
+        console.log(browser)
+        var url = "/assets/shared/cordova.js";
         if (typeof browser === 'undefined' || browser === '') {
             that.browser = "other";
         }
@@ -21,8 +22,13 @@ var GlobalApp = function() {
             that.browser = browser;
         }
         if (browser === 'rv_native' && !that.cordovaLoaded) {
-           // TODO: check URL
-            var url = "/assets/shared/cordova.js";
+           that.loadScript(url);
+        }
+
+    };
+
+    this.loadScript = function(url) {
+        // TODO: check URL
             /* Using XHR instead of $HTTP service, to avoid angular dependency, as this will be invoked from
              * webview of iOS / Android.
              */
@@ -38,10 +44,8 @@ var GlobalApp = function() {
             xhr.open("GET", url, true);
 
             xhr.send(); // TODO: Loading indicator
-
-        }
-
-    };
+            console.log(url)
+    }
 
 
     // success function of coddova plugin's appending
@@ -49,11 +53,14 @@ var GlobalApp = function() {
         // $("body").append('<script type="text/javascript">'+ script +'</script>');
         
         var script_node = document.createElement('script');
+        // script_node.src = url;
 
         script_node.innerHTML = script;
+        console.log(script)
 
         document.getElementById("login-page").appendChild(script_node);
         that.cordovaLoaded = true;
+        
         try {
             
            that.loginUpdate = new LoginOperation();
