@@ -1125,7 +1125,7 @@ angular.module('sntRover').controller('rvGroupConfigurationCtrl', [
                 if (!summaryData.rate) {
                     summaryData.rate = -1;
                 }
-                summaryData.is_tax_exempt = $scope.groupConfigData.summary.is_tax_exempt;
+
                 updateGroupSummaryInProgress =  true;
 
                 $scope.callAPI(rvGroupConfigurationSrv.updateGroupSummary, {
