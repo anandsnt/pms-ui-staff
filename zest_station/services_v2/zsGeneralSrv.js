@@ -56,8 +56,11 @@ sntZestStation.service('zsGeneralSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
             'story': 'Story Hotels',
             'pod': 'Pod DC',
             'ihg': 'IHG',
+            'surf-sand': 'Surf And Sand Hotel',
             'bunk': 'Bunk Hotels',
-            'surf-sand': 'Surf And Sand Hotel'
+            'rydges': 'Rydges Sydney Airport',
+            'freehand-la': 'Freehand Los Angels',
+            'east-london': 'The East London Hotel'
         };
 
         this.isThemeConfigured = function(theme) {
@@ -611,6 +614,30 @@ sntZestStation.service('zsGeneralSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
 
             zsBaseWebSrv.getJSON(url).then(function(data) {
                 deferred.resolve(data);
+            }, function(data) {
+                deferred.reject(data);
+            });
+            return deferred.promise;
+        };
+
+        this.verifyStaffByPin = function(params) {
+            var deferred = $q.defer(),
+                url = '/api/users/authenticate_user_by_pin_code';
+
+            zsBaseWebSrv.postJSON(url, params).then(function(response) {
+                deferred.resolve(response);
+            }, function(data) {
+                deferred.reject(data);
+            });
+            return deferred.promise;
+        };
+        this.recordIdVerification = function(params) {
+
+            var deferred = $q.defer(),
+                url = '/api/reservation_actions';
+
+            zsBaseWebSrv.postJSON(url, params).then(function(response) {
+                deferred.resolve(response);
             }, function(data) {
                 deferred.reject(data);
             });

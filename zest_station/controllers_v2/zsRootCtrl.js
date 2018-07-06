@@ -153,7 +153,10 @@ sntZestStation.controller('zsRootCtrl', [
             if ($scope.tagInEdit.language[currentLanguageCode] && !_.isUndefined($scope.tagInEdit.language[currentLanguageCode][tag])) {
                 return $scope.tagInEdit.language[currentLanguageCode][tag];
             } 
-            return defaultTranslations[tag];
+            // return defaultTranslations[tag];
+            // Showing default tags are causing issues like when some one edits any tags
+            // in admin leaving other tags are empty. So will revert this logic to what it was before.
+            return '';
         };
 
 		/**
@@ -841,7 +844,9 @@ sntZestStation.controller('zsRootCtrl', [
                     right_arrow_icon: commonIconsPath + '/arrow-right.svg',
                     late_checkout_icon: iconBasePath + '/late-checkout.svg',
                     scanpassport: iconBasePath + ($scope.zestStationData.scan_passport_file_uploaded.length > 0) ? $scope.zestStationData.scan_passport_file_uploaded : '',
-                    success: iconBasePath + '/success.svg'
+                    success: iconBasePath + '/success.svg',
+                    user_with_id: iconBasePath + '/user-id.svg',
+                    user_without_id: iconBasePath + '/user.svg'
                 }
             };
 
@@ -1239,6 +1244,9 @@ sntZestStation.controller('zsRootCtrl', [
             }
             $log.info('going to----->' + to.name);
             $scope.resetTime();
+            // In some states the APIs are resloved in router, so till API is finshed the loader is to be shown
+            // and on state change the loader is to be hidden
+            $scope.$emit('hideLoader');
         });
 
 
@@ -1954,6 +1962,13 @@ sntZestStation.controller('zsRootCtrl', [
             } else {
                 $window.print();
             }
+        });
+
+
+        var bellSound = new Audio('/assets/zest_station/zsSounds/Doorbell.mp3');
+
+        $scope.$on('PLAY_BELL_SOUND', function () {
+            bellSound.play();
         });
 
 		/** *

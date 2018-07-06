@@ -640,7 +640,38 @@
    "CBA_IN_PROGRESS": "Deposit collection",
    "CBA_IN_PROGRESS_SUB_TEXT": "For Deposit collection, please use the CBA device to proceed.",
    "CBA_PAYMENT_FAILED": "Payment failed!",
-   "CBA_SWIPE_CARD_PLEASE": "Swipe Credit Card"
+   "CBA_SWIPE_CARD_PLEASE": "Swipe Credit Card",
 
+
+
+   "NO_CC_TO_CHECKIN_HEADER": "Please reach out to a Staff Member.",
+   "NO_CC_TO_CHECKIN_SUB_HEADER": "A credit card is not attached to this reservation. Please see staff member for assistance with check in.",
+   "RETURN_TO_HOME": "Done",
+
+   "ADMIN_PIN_HEADER": "Staff member ID",
+   "ADMIN_PIN_SUB_HEADER": "Please enter your ID to proceed",
+
+   "PIN_ERROR_HEADER": "ID Error",
+   "PIN_ERROR_SUB_HEADER": "Please enter the correct ID",
+   "ABORT": "Abort",
+
+   "VERIFICATION_PENDING": "Verifications Pending",
+   "VERIFICATION_PENDING_MSG": "Some of the guests are not verified. You can either accept pending guests without ID",
+
+   "ACCEPT": "Accept",
+   "ID_CANCEL": "CANCEL",
+
+   "VERIFY_GUESTS_HEADER": "Verify guest IDs",
+   "VERIFY_GUESTS_SUB_HEADER": "",
+
+   "ID_VERIFICATION_HEADER": "ID verification",
+   "ID_VERIFICATION_SUB_HEADER": "Please contact a staff member to review",
+
+   "CALL_STAFF": "Call Staff",
+   "PAYMENT_METHOD": "Payment method",
+
+
+   "WITH_ID": "With ID",
+   "WITHOUT_ID": "Without ID"
 
 }

@@ -1,0 +1,98 @@
+<div id="modal" class="modal-show" ng-class="{'modal-show': !modalClosing}">
+    <div class="modal-content form overbooking new-overbooking" ng-class="{'showing-rooms': addOverBookingObj.applyForRoomTypes }">
+	    <button id="modal-close" ng-click="closeDialog()" type="button" class="modal-close"><span class="icons icon-close invert"></button>
+	    <!-- List of Room Types -->
+	    <fieldset class="overbooking-rooms" ng-show="addOverBookingObj.applyForRoomTypes">
+	        <h3 translate>APPLY_TO_ROOM_TYPES</h3>
+	        <div class="scrollable" ng-iscroll="roomTypeFilterList" ng-iscroll-delay="500">
+	            <div class="wrapper">
+	                <div class="row" ng-click="clickedRoomTypeCheckbox($index)" ng-repeat="item in addOverBookingObj.roomTypeList track by $index">
+	                    <label class="checkbox inline" ng-class="{'checked': item.isChecked}">
+	                        <span class="icon-form icon-checkbox" ng-class="{'checked': item.isChecked}"></span>
+	                        <input type="checkbox"/>
+	                        {{item.name}}
+	                    </label>
+	                </div>
+	            </div>
+	        </div>
+	    </fieldset>
+
+	    <!-- Main Content -->
+	    <fieldset class="overbooking-limit">
+
+	    	<div ng-include="'/assets/partials/common/notification_message.html'"></div>
+	    	
+	        <strong class="h2 message" translate>ADD_SELL_LIMITS</strong>
+	        
+	        <em class="text warning" translate>OVERBOOKING_WARN_MSG</em>        
+	        
+	        <!-- Start Date -->
+	        <div ng-click="showDatePicker('FROM')" class="entry margin has-datepicker">
+	            <label for="start-date" translate>FROM</label>
+	            <input id="start-date" type="text" class="datepicker" value="{{addOverBookingObj.fromDate | date:dateFormat}}" readonly />
+	        </div>
+
+	        <!-- End Date -->
+	        <div ng-click="showDatePicker('TO')" class="entry has-datepicker">
+	            <label for="end-date" translate>TO</label>
+	            <input id="end-date" type="text" class="datepicker" value="{{addOverBookingObj.toDate | date:dateFormat}}" readonly />
+	        </div>
+
+	        <!-- Days of week to include (all checked by default) -->
+	        <div class="entry full-width">
+	            <label translate>EVERY</label>
+	            <div class="limit-days">
+	                <label class="checkbox" ng-click="clickedWeekDay($index)" ng-repeat="day in addOverBookingObj.weekDayList" ng-class="{'checked': day.isChecked}">
+	                    <span class="icon-form icon-checkbox" ng-class="{'checked': day.isChecked}"></span>
+	                    <input type="checkbox" />
+	                    {{day.name}}
+	                </label>
+	            </div>
+	        </div>
+
+	        <!-- House / Room Type -->
+	        <div class="entry full-width break">
+	            <label translate>APPLY_FOR</label>
+	            <div class="limit-apply">
+	                <!-- Appy Limit to House - checked by defalt -->
+	                <label for="apply-house" class="checkbox" ng-class="{'checked': addOverBookingObj.applyForHouse}">
+	                    <span class="icon-form icon-checkbox" ng-class="{'checked': addOverBookingObj.applyForHouse}"></span>
+	                    <input ng-click="clickedApplyForHouse()" id="apply-house" type="checkbox" checked/>
+	                    {{'HOUSE' | translate}}
+	                </label>
+	                <!-- Appy Limit to Room Type -->
+	                <label for="apply-room-type" class="checkbox" ng-class="{'checked': addOverBookingObj.applyForRoomTypes}">
+	                    <span class="icon-form icon-checkbox" ng-class="{'checked': addOverBookingObj.applyForRoomTypes}"></span>
+	                    <input ng-click="clickedApplyForRoomTypes()" id="apply-room-type" type="checkbox"/>
+	                    {{'ROOM_TYPE_S' | translate}}
+	                </label>
+	            </div>
+	        </div>
+
+	        <!-- Limit Value -->
+	        <div class="entry full-width entry-limit">
+	            <div class="limit-input">
+	            	<label class="switch-label" for="limit-value" translate>LIMIT</label>
+	                <div class="switch-button overlay hidden"> <!-- Add class 'on' if L68 is checked -->
+	                    <input id="limit-type" type="checkbox"> <!-- Rooms number if not checked, percentage if checked -->
+	                    <label class="data-off">
+	                        <span class="switch-icon" translate>RMS</span>
+	                        <span class="value">%</span>
+	                    </label>
+	                    <label class="data-on">
+	                        <span class="value" translate>RMS</span>
+	                        <span class="switch-icon">%</span>
+	                    </label>
+	                </div>
+	                <input ng-model="addOverBookingObj.limitValue" type="number" id="limit-value"/>
+	            </div>
+	        </div>
+
+	        <!-- Actions -->
+	        <div class="actions">
+	            <button ng-click="addOverBookingApiCall()" type="button" class="button green" translate>ADD_LIMIT</button>
+	            <button ng-click="closeDialog()" type="button" class="button blank" translate>CANCEL</button> 
+	        </div>
+	    </fieldset>
+	</div>
+</div>

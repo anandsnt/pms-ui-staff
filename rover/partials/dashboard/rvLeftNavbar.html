@@ -1,9 +1,8 @@
  <!-- Add class "menu-hotel" when L8 is tapped, "menu-open" when menu is open, and "menu-closing" when menu is closing. Remove classes "menu-open" and "menu-closed" when menu is closed -->
 <a href="#main-menu" class="nav-toggle" click-touch="toggleDrawerMenu($event)">Menu</a>
-
 <div id="nav" ng-show="isHotelAdmin || isHotelStaff">
 
-	<div class="change-hotel">
+	<div class="change-hotel" ng-show="shouldShowMultiPropertySwitch()">
 		<h5 ng-click="toggleHotelList()">{{currentHotelData.name}}</h5>			
 	    <!-- List of hotels -->
 	    <div class="scrollable" ng-iscroll="hotels-list" > <!-- iScroll here -->

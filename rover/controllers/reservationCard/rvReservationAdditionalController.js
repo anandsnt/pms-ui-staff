@@ -1,13 +1,21 @@
 sntRover.controller('rvReservationAdditionalController', ['$rootScope', '$scope', 'RVReservationSummarySrv', 'rvPermissionSrv',
 	function($rootScope, $scope, RVReservationSummarySrv, rvPermissionSrv) {
 		BaseCtrl.call(this, $scope);
+
 		$scope.additionalDetails = {
 			segmentAvailable: !!$scope.reservationParentData.demographics.segment,
-			hideDetails: true
+			hideDetails: true,
+			isTaxExemptEnabled: $scope.reservationData.reservation_card.tax_exempt,
+			taxExemptType: $scope.reservationData.reservation_card.tax_exempt_type.id
 		};
 		$scope.isEmptyObject = isEmptyObject;
+
 		$scope.hasPermissionForCommissionUpdate = function() {
 			return rvPermissionSrv.getPermissionValue('UPDATE_COMMISSION');
+		};
+
+		$scope.shouldShowTaxExempt = function() {
+			return rvPermissionSrv.getPermissionValue('TAX_EXEMPT');
 		};
 
 		$scope.isSegmentAutoComputed = function() {
@@ -83,6 +91,45 @@ sntRover.controller('rvReservationAdditionalController', ['$rootScope', '$scope'
 				'booking_origin_id': parseInt($scope.reservationParentData.demographics.origin),
 				'segment_id': parseInt($scope.reservationParentData.demographics.segment)
 			}, updateSuccess, updateFailure);
+		};
+		/*
+		 * Update tax exempt data for a reservation
+		 */
+		$scope.updateTaxExemptData = function() {
+			var paramsToApi = {
+					"id": $scope.reservationParentData.reservationId,
+					"tax_exempt": $scope.additionalDetails.isTaxExemptEnabled
+				},				
+				successCallBackOfUpdate = function() {
+					if (!$scope.additionalDetails.isTaxExemptEnabled) {
+						$scope.additionalDetails.taxExemptType = '';
+					}
+				},
+				failureCallBackOfUpdate = function(errorMessage) {
+					$scope.additionalDetails.isTaxExemptEnabled = !$scope.additionalDetails.isTaxExemptEnabled;
+					$scope.errorMessage = errorMessage;
+				};
+
+			if ($scope.additionalDetails.isTaxExemptEnabled) {
+				paramsToApi.tax_exempt_type_id = parseInt($scope.additionalDetails.taxExemptType);
+			}
+
+			var	options = {
+					params: paramsToApi,
+					successCallBack: successCallBackOfUpdate,
+					failureCallBack: failureCallBackOfUpdate
+				};
+
+			$scope.callAPI(RVReservationSummarySrv.saveTaxExempt, options);
+		};
+		/*
+		 * Toggle action tax exempt
+		 */
+		$scope.toggleTaxExempt = function() {
+			$scope.additionalDetails.isTaxExemptEnabled = !$scope.additionalDetails.isTaxExemptEnabled;
+			if (!$scope.additionalDetails.isTaxExemptEnabled) {
+				$scope.updateTaxExemptData();				
+			}
 		};
 
 		$rootScope.$on('UPDATERESERVATIONTYPE', function(e, data, paymentId ) {
