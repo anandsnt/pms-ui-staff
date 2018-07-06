@@ -289,12 +289,6 @@ angular.module('sntRover').controller('rvGroupConfigurationSummaryTab', ['$scope
             $scope.changeDatesActions.showDateChangeInvalidWarning(options);
         };
 
-        $scope.toggleGroupTaxExempt = function () {
-            if (!$scope.groupConfigData.summary.is_tax_exempt) {
-                $scope.groupConfigData.summary.tax_exempt_type_id = '';
-            }
-        };
-
         /**
          * [shouldShowMoveButton description]
          * @return {[type]} [description]

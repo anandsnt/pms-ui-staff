@@ -852,10 +852,10 @@ angular.module('sntRover').controller('rvGroupConfigurationCtrl', [
                 selectAddons: false, // To be set to true while showing addons full view
                 addons: {},
                 selectedAddons: [],
-                activeScreen: 'GROUP_ACTUAL',
-
+                activeScreen: 'GROUP_ACTUAL'
             };
             if (!$scope.isInAddMode()) {
+                $scope.groupConfigData.summary.is_tax_exempt = summaryData.groupSummary.is_tax_exempt;
                 $scope.groupConfigData.summary.tax_exempt_type_id = summaryData.groupSummary.tax_exempt_type.id;
             } else {
                 $scope.groupConfigData.summary.is_tax_exempt = false;
@@ -1125,7 +1125,9 @@ angular.module('sntRover').controller('rvGroupConfigurationCtrl', [
                 if (!summaryData.rate) {
                     summaryData.rate = -1;
                 }
+                summaryData.is_tax_exempt = $scope.groupConfigData.summary.is_tax_exempt;
                 updateGroupSummaryInProgress =  true;
+
                 $scope.callAPI(rvGroupConfigurationSrv.updateGroupSummary, {
                     successCallBack: onGroupUpdateSuccess,
                     failureCallBack: onGroupUpdateFailure,
