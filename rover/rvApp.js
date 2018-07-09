@@ -36,6 +36,7 @@ var sntRover = angular.module('sntRover', [
 		'emitWhen',
 		'ng-augment-native-scroll',
         'sntActivityIndicator',
+        'overBookingModule',
         'guestCardModule',
         'snt.transitionManager'
 	]);

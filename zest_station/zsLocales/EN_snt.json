@@ -668,10 +668,10 @@
    "ID_VERIFICATION_SUB_HEADER": "Please contact a staff member to review",
 
    "CALL_STAFF": "Call Staff",
+   "PAYMENT_METHOD": "Payment method",
 
-   "NOT_REVIEWED": "Not Reviewed",
-   "ID_APPROVED": "ID Approved",
-   "ID_APPROVED_WITHOUT_ID": "Approved without ID"
 
+   "WITH_ID": "With ID",
+   "WITHOUT_ID": "Without ID"
 
 }

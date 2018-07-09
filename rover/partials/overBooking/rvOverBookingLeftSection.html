@@ -1,0 +1,15 @@
+<!-- Room Types -->
+<div class="overbooking-rooms">
+    <!-- Label -->
+	<div class="overbooking-timeline">
+	    <strong ng-if="overBookingObj.isShowRoomsLeftToSell" class="label" translate>HOUSE_ROOMS_AND_LIMIT</strong>
+	    <strong ng-if="!overBookingObj.isShowRoomsLeftToSell" class="label" translate>HOUSE_LIMIT</strong>
+	</div>
+
+	<!-- Rows -->
+	<div class="overbooking-grid scrollable" ng-iscroll="overBookingLeftSectionScroll">
+	    <div class="wrapper">
+	        <div ng-repeat="roomTypeName in overBookingObj.overBookingGridData.selectedRoomTypeNameList" class="row">{{roomTypeName}}</div>
+	    </div>
+	</div>
+</div>
