@@ -107,6 +107,9 @@ sntRover.controller('rvReservationAdditionalController', ['$rootScope', '$scope'
 				},
 				failureCallBackOfUpdate = function(errorMessage) {
 					$scope.additionalDetails.isTaxExemptEnabled = !$scope.additionalDetails.isTaxExemptEnabled;
+					if (!$scope.additionalDetails.isTaxExemptEnabled) {
+						$scope.additionalDetails.taxExemptType = '';
+					}
 					$scope.errorMessage = errorMessage;
 				};
 
