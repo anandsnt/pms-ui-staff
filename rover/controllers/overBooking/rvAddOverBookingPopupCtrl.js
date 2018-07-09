@@ -137,7 +137,7 @@ angular.module('sntRover').controller('rvAddOverBookingPopupCtrl', ['$scope', '$
         };
 
         if (weekDaysSelected.length === 0) {
-        	$scope.errorMessage = ['Please select days to apply sell limit'];
+			$scope.errorMessage = ['Please select days to apply sell limit'];
         }
         else {
 			$scope.callAPI(rvOverBookingSrv.addOrEditOverBooking, {
