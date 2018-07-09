@@ -1137,7 +1137,12 @@ angular.module('sntRover').controller('rvGroupConfigurationCtrl', [
             var unwantedKeys = [
                 'selected_room_types_and_bookings',
                 'selected_room_types_and_occupanies',
-                'selected_room_types_and_rates'
+                'selected_room_types_and_rates',
+                'group_room_types_count',
+                'rooms_pickup',
+                'rooms_total',
+                'revenue_actual',
+                'revenue_potential'
             ],
             summaryDataCopy = JSON.parse(JSON.stringify(summaryData));
 
