@@ -6,6 +6,7 @@
 "PASSWORD": "Password",
 "FTP_URL": "Ftp Url",
 "FTP_LOCATION1": "Ftp Location1",
-"FTP_LOCATION2": "Ftp Location2"
+"FTP_LOCATION2": "Ftp Location2",
+"FTP_PORT": "Port"
 
 
