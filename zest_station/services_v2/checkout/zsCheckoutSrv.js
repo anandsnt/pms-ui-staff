@@ -146,9 +146,9 @@ sntZestStation.service('zsCheckoutSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseW
 
         this.validateCC = function(params) {
             var deferred = $q.defer(),
-                url = '/sample_json/zestweb_v2/ext_checkin_verfication.json';
+                url = 'guest/reservations/' + params.id + '/validate_cc';
 
-            zsBaseWebSrv.getJSON(url, params).then(function(data) {
+            zsBaseWebSrv2.getJSON(url, params).then(function(data) {
                 deferred.resolve(data);
 
             }, function(data) {

@@ -145,7 +145,8 @@ sntZestStation.controller('zsPickupKeyFindReservationCtrl', [
 			};
 			var options = {
 				params: {
-					'credit_card': $scope.creditCardNumber
+					'last_four_cc_digits': $scope.creditCardNumber,
+					'id': $scope.reservationData.reservation_id
 				},
 				successCallBack: onCCVerificationSuccess,
 				failureCallBack: onCCVerificationFailure
