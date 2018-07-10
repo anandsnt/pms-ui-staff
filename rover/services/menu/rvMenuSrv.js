@@ -255,8 +255,7 @@ angular.module('sntRover').service('rvMenuSrv',
 		        }, {
 		            title: "MENU_SELL_LIMITS",
 		            action: "rover.overbooking",
-		            menuIndex: "overbooking",
-		            hidden: isHourlyRateOn
+		            menuIndex: "overbooking"
 		        }]
 		    }, {
 		        title: "MENU_HOUSEKEEPING",
@@ -622,7 +621,9 @@ angular.module('sntRover').service('rvMenuSrv',
 
 			// dont wanted to show on hourly enabled hotels
 			case 'overbooking':
-				returnValue = !isHourlyRateOn() && !isConnected();
+				var isSellLimitEnabled = ($rootScope.isPmsProductionEnv) ? $rootScope.isSellLimitEnabled : true;
+
+				returnValue = !isHourlyRateOn() && !isConnected() && isSellLimitEnabled;
 				break;
 
 			default:
