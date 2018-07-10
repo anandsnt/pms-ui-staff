@@ -1368,7 +1368,7 @@ sntRover.controller('RVbillCardController',
 	$scope.completeCheckinSuccessCallback = function(data) {
 		// CICO-6109 : Without Authorization flow ..
 		$scope.$emit('hideLoader');
-		$scope.reservationBillData.room_pin = data.room_pin
+		$scope.reservationBillData.room_pin = data.room_pin;
 	 	$scope.triggerKeyCreationProcess();
 	};
 
