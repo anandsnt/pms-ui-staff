@@ -773,7 +773,7 @@ sntRover.controller('RVKeyEncodePopupCtrl', [
 	// Close popup
 	$scope.closeDialog = function() {
 		
-		if ($scope.fromView === 'checkin' && $scope.data.key_settings == "pin") {
+		if ($scope.fromView === 'checkin' && $scope.data.key_settings === "pin") {
 			$scope.goToStaycard();
 
 		} else if ($scope.fromView === 'checkin') {
