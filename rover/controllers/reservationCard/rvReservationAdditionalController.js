@@ -14,10 +14,6 @@ sntRover.controller('rvReservationAdditionalController', ['$rootScope', '$scope'
 			return rvPermissionSrv.getPermissionValue('UPDATE_COMMISSION');
 		};
 
-		$scope.shouldShowTaxExempt = function() {
-			return rvPermissionSrv.getPermissionValue('TAX_EXEMPT');
-		};
-
 		$scope.isSegmentAutoComputed = function() {
 			var currentSegment = $scope.reservationParentData.demographics.segment,
 				aptSegment = "";
@@ -107,6 +103,9 @@ sntRover.controller('rvReservationAdditionalController', ['$rootScope', '$scope'
 				},
 				failureCallBackOfUpdate = function(errorMessage) {
 					$scope.additionalDetails.isTaxExemptEnabled = !$scope.additionalDetails.isTaxExemptEnabled;
+					if (!$scope.additionalDetails.isTaxExemptEnabled) {
+						$scope.additionalDetails.taxExemptType = '';
+					}
 					$scope.errorMessage = errorMessage;
 				};
 
