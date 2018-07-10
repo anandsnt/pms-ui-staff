@@ -77,10 +77,12 @@ admin.controller('ADAppCtrl', [
 	    var isNeighboursEnabled = false;
 
         var setupLeftMenu = function() {
-            var shouldHideNightlyDiaryMenu = true;
+            var shouldHideNightlyDiaryMenu = true,
+                shouldHideSellLimitMenu = true;
 
             if (!$rootScope.isHourlyRatesEnabled) {
                 shouldHideNightlyDiaryMenu  = !$rootScope.isRoomDiaryEnabled && $rootScope.isPmsProductionEnv;
+                shouldHideSellLimitMenu = !$rootScope.isSellLimitEnabled && $rootScope.isPmsProductionEnv;
             }
             if ($scope.isStandAlone) {
                 $scope.menu = [
@@ -204,7 +206,21 @@ admin.controller('ADAppCtrl', [
                                 title: 'MENU_TA_CARDS',
                                 action: 'rover.companycardsearch',
                                 menuIndex: 'cards'
-                            }]
+                            },
+                            {
+                                title: 'MENU_DISTRIBUTION_MANAGER',
+                                action: ''
+                            },
+                            {
+                                title: 'MENU_SELL_LIMITS',
+                                action: 'rover.overbooking',
+                                actionParams: {
+                                    start_date: $rootScope.businessDate
+                                },
+                                standAlone: true,
+                                hidden: shouldHideSellLimitMenu
+                            }
+                        ]
                     }, {
                         title: 'MENU_HOUSEKEEPING',
                         action: '',
@@ -639,6 +655,9 @@ admin.controller('ADAppCtrl', [
             // $rootScope.isRoomDiaryEnabled = data.is_room_diary_enabled;
             $rootScope.isRoomDiaryEnabled = true;
             $rootScope.isPmsProductionEnv = data.is_pms_prod;
+
+            // CICO-54961 - Hide Sell Limit feature for all hotels except for the pilot property 
+            $rootScope.isSellLimitEnabled = data.is_sell_limit_enabled;
 
 			// CICO-18040
 			$rootScope.isFFPActive = data.is_ffp_active;

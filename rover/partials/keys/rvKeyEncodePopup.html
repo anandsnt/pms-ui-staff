@@ -22,7 +22,21 @@
 		<!--end-->
 
 		<!-- Right contents -->
-		<div id="key-status" class="print-key" ng-class="{'connecting': deviceConnecting, 'connected': showPrintKeyOptions || keysPrinted , 'not-connected' : deviceNotConnected || pressedCancelStatus, 'completed' : keysPrinted}">
+		<!-- If key_settings is pin -->
+		<div id="key-status" class="pin" ng-show="data.key_settings == 'pin'">
+	        <span class="h2 message">Pin Code</span>
+	        <span class="text">Room Pin Code is</span>
+	        <span class="pin-number">{{data.pin_code}}</span>
+	        <div class="actions">
+	            <button class="button blue" click-touch="sendEmailWithPincode();">Email</button>
+	            <button class="button blue" click-touch="printPinCode();">Print</button>
+	           
+	            <button class="button blank modal-close" click-touch="closeDialog();">Close Window</button>
+	        </div>
+    	</div>
+
+		<!-- If key_settings is not pin -->
+		<div id="key-status" class="print-key" ng-class="{'connecting': deviceConnecting, 'connected': showPrintKeyOptions || keysPrinted , 'not-connected' : deviceNotConnected || pressedCancelStatus, 'completed' : keysPrinted}" ng-show="data.key_settings != 'pin'">
 
 			<span ng-show="deviceConnecting && !isRemoteEncodingEnabled">
 				<span class="h2 message" translate>PRINT_ROOM_KEY</span>

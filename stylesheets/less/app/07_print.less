@@ -4,7 +4,7 @@
         text-shadow: none !important;
         filter:none !important;
         -ms-filter: none !important;
-        -webkit-print-color-adjust:exact;
+        -webkit-print-color-adjust: exact;
     }
 
     @page { margin: 1cm; }
@@ -30,6 +30,7 @@
     .release-notes,
     .fullscreen-header,
     .commissions-filters,
+    .overbooking-header { display: none !important; }
     #find-invoices { display: none !important; }
 
 /* 2. TYPOGRAPHY
@@ -4714,6 +4715,134 @@
         }
     }
 
+/* Overbooking              ==============================*/
+    .overbooking-content {
+        #flexbox > .parent(row nowrap, '', '', '');
+
+        .row {
+            height: 18pt;
+            width: 100%;
+            box-shadow: inset 0 -1px 0 @grey2;
+            overflow: hidden;
+            #flexbox > .parent(row nowrap, '', '', '');
+        }
+
+        .cell {
+            line-height: 18pt;
+            text-align: right;
+            box-shadow: inset 1px 0 0 @grey2;
+            .size(18pt, 7.14%);
+            #flexbox > .parent(row nowrap, '', '', '');
+
+            .rooms {
+                font-size: 8pt;
+                font-style: italic;
+                color: @grey3;
+                display: none;
+
+                &.unavailable {
+                    color: @red;
+                }
+            }
+
+            .limit {
+                display: block;
+                padding: 0 8pt;
+                width: 100%;
+            }
+
+            &:last-child {
+                box-shadow: inset 1px 0 0 @grey2, inset -1px 0 0 @grey2;
+            }
+        }
+
+        .overbooking-timeline {
+            background-color: @grey1;
+            box-shadow: inset 0 -1px 0 @grey2, inset 0 1px 0 @grey2;
+            .size(44pt, 100%);
+            #flexbox > .parent(column wrap, space-between, '', '');
+
+            .wrapper {
+                padding: 5px;
+            }
+
+            .label {
+                margin-top: auto;
+                margin-left: auto;
+                font-weight: 600;
+                font-size: 8pt;
+                line-height: 22pt;
+                color: @textColor;
+            }
+
+            .row {
+                overflow: hidden;
+                .size(22pt, 100%);
+            }
+
+            .cell {
+                line-height: 22pt;
+                height: 22pt;
+
+                &.day {
+                    line-height: 1;
+                    text-align: center;
+                    text-transform: uppercase;
+                    padding: 4pt 6pt;
+                    flex-wrap: wrap;
+
+                    span {
+                        width: 100%;
+                        .show();
+                    }
+
+                    strong {
+                        font-weight: 600;
+                        width: 100%;
+                    }
+                }
+            }           
+
+            .limit {
+                font-size: 10pt;
+                font-weight: 600;
+            }
+        }
+
+        .overbooking-rooms {
+            width: 180px;
+            box-shadow: inset 1px 0 0 @grey2;
+
+            .row {
+                line-height: 1;
+                text-transform: uppercase;
+                text-align: right;
+                padding: 0 6pt;
+                #flexbox > .parent(column wrap, center, flex-end, '');
+            }
+        }
+
+        .overbooking-limits {
+            width: calc(~'100% - 180px');
+        }
+
+        /* Showing rooms left to sell ***/ 
+        &.showing-rooms {
+            .rooms {
+                display: block;
+                padding: 0 4pt 0 8pt;
+                width: 24pt;
+                box-shadow: inset -1px 0 0 @grey2;
+            }
+
+            .limit {
+                display: block;
+                padding-left: 4pt;
+                width: calc(~'100% - 24pt');
+            }
+        }
+    }
+
 /* Card Print               ==============================*/
     .card-print {
         .cards-wrapper {
@@ -4894,7 +5023,7 @@
             .add-new-button { .hide; }
         }
     }
-    
+
 /* 6. IE
 ==========================================================*/
 /* 7. RESPONSIVE
