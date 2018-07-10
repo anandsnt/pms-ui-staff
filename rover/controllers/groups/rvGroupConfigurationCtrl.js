@@ -913,6 +913,13 @@ angular.module('sntRover').controller('rvGroupConfigurationCtrl', [
                 selectedAddons: [],
                 activeScreen: 'GROUP_ACTUAL'
             };
+            if (!$scope.isInAddMode()) {
+                $scope.groupConfigData.summary.is_tax_exempt = summaryData.groupSummary.is_tax_exempt;
+                $scope.groupConfigData.summary.tax_exempt_type_id = summaryData.groupSummary.tax_exempt_type.id;
+            } else {
+                $scope.groupConfigData.summary.is_tax_exempt = false;
+            }
+            
             var groupSummary = $scope.groupConfigData.summary;
 
             $timeout(function() {
@@ -1124,6 +1131,8 @@ angular.module('sntRover').controller('rvGroupConfigurationCtrl', [
                     data: JSON.stringify(data)
                 });
             }, 500);
+
+            $scope.groupConfigData.activeTab = 'SUMMARY';
         };
 
         var updateGroupSummaryInProgress =  false;
@@ -1196,7 +1205,9 @@ angular.module('sntRover').controller('rvGroupConfigurationCtrl', [
                 if (!summaryData.rate) {
                     summaryData.rate = -1;
                 }
+
                 updateGroupSummaryInProgress =  true;
+
                 $scope.callAPI(rvGroupConfigurationSrv.updateGroupSummary, {
                     successCallBack: onGroupUpdateSuccess,
                     failureCallBack: onGroupUpdateFailure,

@@ -278,7 +278,8 @@ angular.module('sntRover').service('rvGroupConfigurationSrv', ['$q', 'rvBaseWebS
 					"groupSummary": self.baseConfigurationSummary
 				}));
 			} else {
-				url = 'api/groups/' + params.groupId;
+				var url = 'api/groups/' + params.groupId;
+
 				rvBaseWebSrvV2.getJSON(url).then(
 					function(groupSummary) {
 						var postingAccId = groupSummary.posting_account_id,
