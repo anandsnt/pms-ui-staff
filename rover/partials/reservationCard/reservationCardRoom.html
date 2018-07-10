@@ -41,7 +41,8 @@
 
   		<a ng-hide="!showKeysButton(reservationData.reservation_card.reservation_status)" ng-show="showKeysButton(reservationData.reservation_card.reservation_status)" click-touch="clickedIconKey()" id="add-keys" class="button with-icon blue"> <!-- Add attribute data-position="bottom-right" if QR is to be shown -->
     		<span class="icons icon-key"></span>
-    		Keys
+    		<span ng-show="reservationData.reservation_card.key_settings != 'pin'">Keys</span>
+    		<span ng-show="reservationData.reservation_card.key_settings == 'pin'">Pin</span>
   		</a>
 
 	</div>
