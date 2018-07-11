@@ -16,6 +16,8 @@
 "USE_MOBILE_PHONE_KEY":"Use Mobile Phone Key",
 "ROOM_KEY_SYSTEM_VENDOR":"Room Key System Vendor",
 "KEY_SYSTEM_ACCESS_URL":"Key System Access URL",
+"AXBASE_END_POINT":"End Point URL",
+"AXBASE_END_POINT_URL_PLACEHOLDER":"Enter End Point URL",
 "KEY_SYSTEM_ACCESS_URL_PLACEHOLDER":"Enter Key System Access URL",
 "KEY_SYSTEM_ACCESS_PORT":"Key System Access Port",
 "KEY_SYSTEM_ACCESS_PORT_PLACEHOLDER":"Enter Key System Access Port",

@@ -18,13 +18,12 @@ angular.module('admin').controller('adAXbaseCtrl', ['$scope', '$rootScope', 'con
                 });
             _.each(data.rooms,
                 function(room) {
-                        roomlist.push({
-                            room_number: room.room_number,
-                            external_value: ''
-                        });
+                    roomlist.push({
+                        room_number: room.room_number,
+                        external_value: ''
+                    });
 
                 });
-            console.log(roomlist);
 
             return roomlist;
         };
@@ -51,8 +50,8 @@ angular.module('admin').controller('adAXbaseCtrl', ['$scope', '$rootScope', 'con
                     config: $scope.config,
                     interfaceIdentifier: interfaceIdentifier
                 },
-                onSuccess: function(d) {
-                    $scope.roomMappings = d.room_mappings;
+                onSuccess: function(data) {
+                    $scope.roomMappings = data.room_mappings;
                     constructRoomMappingList();
                 }
             });
@@ -105,7 +104,16 @@ angular.module('admin').controller('adAXbaseCtrl', ['$scope', '$rootScope', 'con
                     interfaceIdentifier: interfaceIdentifier
                 },
                 onSuccess: function() {
-                    $scope.goBackToPreviousState();
+                }
+            });
+        };
+
+        $scope.startImportRooms = function() {
+            $scope.callAPI(adInterfacesCommonConfigSrv.startImportRooms, {
+                params: {
+                    interfaceIdentifier: interfaceIdentifier
+                },
+                onSuccess: function() {
                 }
             });
         };
