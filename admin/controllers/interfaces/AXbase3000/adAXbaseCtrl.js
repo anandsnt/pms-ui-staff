@@ -52,7 +52,6 @@ angular.module('admin').controller('adAXbaseCtrl', ['$scope', '$rootScope', 'con
                 },
                 onSuccess: function(data) {
                     $scope.roomMappings = data.room_mappings;
-                    constructRoomMappingList();
                 }
             });
         };
