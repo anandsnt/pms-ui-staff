@@ -32,7 +32,11 @@ sntRover.controller('RVCompanyCardActivityLogCtrl',
         $scope.activityLogFilter = {
 			user: '',
 			date: 'asc',
-			action: ''
+			action: '',
+			actionsList: [],
+			selectedAction: null,
+			fromDate: tzIndependentDate($rootScope.businessDate),
+			toDate: tzIndependentDate($rootScope.businessDate)
         };
 
         // Pagination options for Activity Log
@@ -45,6 +49,19 @@ sntRover.controller('RVCompanyCardActivityLogCtrl',
         // Setting up scroller with refresh options.
         $scope.setScroller('rvCompanyCardActivityLogScroll', {});
         refreshScroll();
+
+        var dataToSend = {
+			params: {
+			},
+			successCallBack: function( data ) {
+				$scope.activityLogFilter.actionsList = data.actions_list;
+			},
+			failureCallBack: function( errorMessage ) {
+				$scope.errorMessage = errorMessage;
+			}
+		};
+
+		$scope.callAPI(RVCompanyCardActivityLogSrv.fetchFilterData, dataToSend);
     };
 
 	// -------/ PAGINATION LOGIC /----------- //
@@ -76,7 +93,11 @@ sntRover.controller('RVCompanyCardActivityLogCtrl',
 				'per_page': $scope.activityLogObj.perPage,
 				'sort_field': $scope.activityLogObj.sortField,
 				'sort_order': $scope.activityLogObj.sortOrder,
-				'id': $scope.activityLogObj.accountId
+				'id': $scope.activityLogObj.accountId,
+
+                'action': $scope.activityLogFilter.selectedAction,
+                'from_date': $scope.activityLogFilter.fromDate,
+                'to_date': $scope.activityLogFilter.toDate
 			},
 			successCallBack: function( data ) {
 				$scope.activityLogObj.response = data;
@@ -91,6 +112,7 @@ sntRover.controller('RVCompanyCardActivityLogCtrl',
 			}
 		};
 
+		console.log(dataToSend);
 		$scope.callAPI(RVCompanyCardActivityLogSrv.fetchActivityLog, dataToSend);
 	};
 
@@ -163,6 +185,10 @@ sntRover.controller('RVCompanyCardActivityLogCtrl',
         else {
             return true;
         }
+    };
+
+    $scope.clickedFilterButton = function() {
+    	that.loadAPIData();
     };
 
     init();
