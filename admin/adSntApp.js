@@ -12,15 +12,15 @@ var AdminGlobalApp = function() {
         
         if (typeof browser === 'undefined' || browser === '') {
             that.browser = "other";
-        }
-        else {
+        } else if (browser === 'rv_native_android') {
+            that.browser = 'rv_native';
+            that.cordovaLoaded = true;
+        } else {
             that.browser = browser;
         }
 
         if (browser === 'rv_native' && !that.cordovaLoaded) {
-           if (browser === 'rv_native' && !that.cordovaLoaded) {
-               that.loadScript(url);
-            }
+           that.loadScript(url);
         }
 
     };
