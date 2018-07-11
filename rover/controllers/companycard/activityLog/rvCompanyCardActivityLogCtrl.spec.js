@@ -37,7 +37,12 @@ describe('RVCompanyCardActivityLogCtrl', function() {
             activityLogFilter: {
                 user: '',
                 date: 'asc',
-                action: ''
+                action: '',
+                actionsList: [],
+                selectedAction: '',
+                fromDate: $rootScope.businessDate,
+                toDate: $rootScope.businessDate,
+                query: ''
             },
             activityLogPagination: {
                 id: 'ACTIVITY_LOG',
@@ -110,6 +115,20 @@ describe('RVCompanyCardActivityLogCtrl', function() {
         that.loadAPIData(1);
 
         expect(RVCompanyCardActivityLogSrv.fetchActivityLog).toHaveBeenCalled();
-    })
+    });
 
+    it('Check clear date', function() {
+
+        $scope.clearDate('FROM');
+        expect($scope.activityLogFilter.fromDate).toEqual('');
+
+        $scope.clearDate('TO');
+        expect($scope.activityLogFilter.toDate).toEqual('');
+    });
+
+    it('Check clear query', function() {
+
+        $scope.clearQuery();
+        expect($scope.activityLogFilter.query).toEqual('');
+    });
 });
