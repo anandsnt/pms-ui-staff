@@ -5,33 +5,33 @@
             <div class="entry dates">
                 <div class="entry-data has-datepicker">
                     <label for="activity-log-date-from">From</label>
-                    <button id="activity-log-date-from-clear" class="clear-query">
+                    <button ng-click="clearDate('FROM')" ng-class="{'visible': escapeNull(activityLogFilter.fromDate) !=''}" id="activity-log-date-from-clear" class="clear-query">
                         <span class="icons icon-clear-search">Clear query</span>
                     </button>
-                    <input name="activity-log-date-from" id="activity-log-date-from" type="text" class="datepicker" value="{{activityLogFilter.fromDate | date:dateFormat}}" readonly="">
+                    <input name="activity-log-date-from" id="activity-log-date-from" type="text" class="datepicker" value="{{activityLogFilter.fromDate | date:dateFormat}}" ng-click="clickedFromDate()" readonly="">
                 </div>
                 <div class="entry-data has-datepicker">
                     <label for="activity-log-date-to">To</label>
-                    <button id="activity-log-date-to-clear" class="clear-query">
+                    <button ng-click="clearDate('TO')" id="activity-log-date-to-clear" class="clear-query" ng-class="{'visible': escapeNull(activityLogFilter.toDate) !=''}">
                         <span class="icons icon-clear-search">Clear query</span>
                     </button>
-                    <input name="activity-log-date-to" id="activity-log-date-to" type="text" class="datepicker" value="{{activityLogFilter.toDate | date:dateFormat}}" readonly="">
+                    <input name="activity-log-date-to" id="activity-log-date-to" type="text" class="datepicker" value="{{activityLogFilter.toDate | date:dateFormat}}" ng-click="clickedToDate()" readonly="">
                 </div>
             </div>
             <div class="entry">
                 <div class="select">
                     <select id="activity-log-activities" ng-model="activityLogFilter.selectedAction">
-                        <option ng-selected="activityLogFilter.selectedAction === null">All Actions</option>
+                        <option value="" ng-selected="activityLogFilter.selectedAction === ''">All Actions</option>
                         <option value="{{action.id}}" ng-repeat="action in activityLogFilter.actionsList" ng-selected="activityLogFilter.selectedAction === action.id">{{action.name}}</option>
                     </select>
                 </div>
             </div>
             <div class="entry search">
-                <button class="clear-query">
+                <button class="clear-query" ng-click="clearQuery()" ng-class="{'visible': activityLogFilter.query!=''}">
                     <span class="icons icon-clear-search">Clear query</span>
                 </button>
                 <button type="submit" name="submit" class="icons icon-search">Search</button>
-                <input name="activity-log-search" class="query" placeholder="Search by Details" type="search" autocomplete="off">
+                <input name="activity-log-search" class="query" placeholder="Search by Details" type="search" autocomplete="off" ng-model="activityLogFilter.query">
             </div> 
             <button type="button" class="button green" ng-click="clickedFilterButton()">Filter</button>
         </div> 

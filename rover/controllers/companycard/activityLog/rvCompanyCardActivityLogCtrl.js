@@ -5,7 +5,8 @@ sntRover.controller('RVCompanyCardActivityLogCtrl',
 	'$stateParams',
 	'$timeout',
 	'RVCompanyCardActivityLogSrv',
-	function($scope, $rootScope, $stateParams, $timeout, RVCompanyCardActivityLogSrv ) {
+	'ngDialog',
+	function($scope, $rootScope, $stateParams, $timeout, RVCompanyCardActivityLogSrv, ngDialog ) {
     
     BaseCtrl.call(this, $scope);
     var that = this;
@@ -34,9 +35,10 @@ sntRover.controller('RVCompanyCardActivityLogCtrl',
 			date: 'asc',
 			action: '',
 			actionsList: [],
-			selectedAction: null,
-			fromDate: tzIndependentDate($rootScope.businessDate),
-			toDate: tzIndependentDate($rootScope.businessDate)
+			selectedAction: '',
+			fromDate: $rootScope.businessDate,
+			toDate: $rootScope.businessDate,
+			query: ''
         };
 
         // Pagination options for Activity Log
@@ -94,10 +96,10 @@ sntRover.controller('RVCompanyCardActivityLogCtrl',
 				'sort_field': $scope.activityLogObj.sortField,
 				'sort_order': $scope.activityLogObj.sortOrder,
 				'id': $scope.activityLogObj.accountId,
-
                 'action': $scope.activityLogFilter.selectedAction,
                 'from_date': $scope.activityLogFilter.fromDate,
-                'to_date': $scope.activityLogFilter.toDate
+                'to_date': $scope.activityLogFilter.toDate,
+                'query': $scope.activityLogFilter.query
 			},
 			successCallBack: function( data ) {
 				$scope.activityLogObj.response = data;
@@ -112,7 +114,6 @@ sntRover.controller('RVCompanyCardActivityLogCtrl',
 			}
 		};
 
-		console.log(dataToSend);
 		$scope.callAPI(RVCompanyCardActivityLogSrv.fetchActivityLog, dataToSend);
 	};
 
@@ -187,9 +188,51 @@ sntRover.controller('RVCompanyCardActivityLogCtrl',
         }
     };
 
-    $scope.clickedFilterButton = function() {
-    	that.loadAPIData();
-    };
+	/*
+	 * 	Show calendar popup.
+	 *	@param {string} [clicked FROM/TO]
+	 *	@return {undefined}
+	 */
+	var popupCalendar = function(clickedOn) {
+		$scope.clickedOn = clickedOn;
+		ngDialog.open({
+			template: '/assets/partials/companyCard/rvCompanyCardContractsCalendar.html',
+			controller: 'RVCompanyCardActivityLogDatePickerController',
+			className: '',
+			scope: $scope
+		});
+	};
+
+	/* Handling different date picker clicks */
+	$scope.clickedFromDate = function() {
+		popupCalendar('FROM');
+	};
+	$scope.clickedToDate = function() {
+		popupCalendar('TO');
+	};
+
+	/*
+	 * 	Handle CLEAR DATES.
+	 *	@param {string} [clicked FROM/TO]
+	 *	@return {undefined}
+	 */
+    $scope.clearDate = function ( type ) {
+    	if (type === 'FROM') {
+    		$scope.activityLogFilter.fromDate = '';
+    	}
+    	else {
+    		$scope.activityLogFilter.toDate = '';
+    	}
+	};
+	// Handle CLEAR QUERY
+	$scope.clearQuery = function () {
+		$scope.activityLogFilter.query = '';
+	};
+
+	// Handle FILTER button click
+	$scope.clickedFilterButton = function() {
+		that.loadAPIData();
+	};
 
     init();
 
