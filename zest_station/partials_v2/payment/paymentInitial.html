@@ -48,7 +48,8 @@
                         <button type="button" class="button option">
                             <div ng-include="icons.url.creditcard"></div>
                         </button>
-                        <text data-ng-bind-html="getTagValue('SWIPE_CARD_PLEASE')" editable-text="SWIPE_CARD_PLEASE">
+                        <text data-ng-bind-html="getTagValue('SWIPE_CARD_PLEASE')" editable-text="SWIPE_CARD_PLEASE"></text>
+                        <img src="/assets/zest_station/css/icons/default/ingenico.png" alt="" class="device-image device-ingenico" ng-if="zestStationData.paymentGateway === 'CBA' || (zestStationData.paymentGateway === 'MLI' && zestStationData.hotelSettings.mli_cba_enabled)"/>
                     </li>
                 </ul>
             </nav>
