@@ -1368,6 +1368,7 @@ sntRover.controller('RVbillCardController',
 	$scope.completeCheckinSuccessCallback = function(data) {
 		// CICO-6109 : Without Authorization flow ..
 		$scope.$emit('hideLoader');
+		$scope.reservationBillData.room_pin = data.room_pin;
 	 	$scope.triggerKeyCreationProcess();
 	};
 
@@ -2611,6 +2612,7 @@ sntRover.controller('RVbillCardController',
 	var printBill = function(data) {
 		var printDataFetchSuccess = function(successData) {
 			$scope.isPrintRegistrationCard = false;
+			$scope.printBillCardActive = true;
 			$scope.$emit('hideLoader');
 			$scope.printData = successData;
 			$scope.errorMessage = "";
@@ -2648,6 +2650,7 @@ sntRover.controller('RVbillCardController',
 
 				// remove the orientation after similar delay
 		    	removePrintOrientation();
+		    	$scope.printBillCardActive = false;
 		    }, 200);
 
 		};

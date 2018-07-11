@@ -206,12 +206,25 @@ angular.module('login').controller('loginCtrl', ['$scope', 'loginSrv', '$window'
         } else {
             $window.open('https://stayntouch.freshdesk.com/support/home', '_blank');
         }
-    };
+	};
+		
+	$scope.onSystemStatusClick = function() {
+		if (sntapp.cordovaLoaded) {
+			ngDialog.open({
+				template: '/assets/partials/systemStatus.html',
+				className: '',
+				controller: '',
+				scope: $scope
+			});
+		} else {
+			$window.open('https://status.stayntouch.com', '_blank');
+		}
+	};
 
-    (function() {
+	(function() {
         // clear existing jwt
         loginSrv.reset();
-    })();
+	})();
 
 }]);
 /*
@@ -283,6 +296,19 @@ angular.module('login').controller('resetCtrl', ['$scope', 'resetSrv', '$window'
             $window.open('https://stayntouch.freshdesk.com/support/home', '_blank');
         }
     };
+
+	$scope.onSystemStatusClick = function() {
+		if (sntapp.cordovaLoaded) {
+			ngDialog.open({
+				template: '/assets/partials/systemStatus.html',
+				className: '',
+				controller: '',
+				scope: $scope
+			});
+		} else {
+			$window.open('https://status.stayntouch.com', '_blank');
+		}
+	};
 
 }]);
 /*
@@ -393,6 +419,19 @@ login.controller('activateCtrl', ['$scope', 'resetSrv', '$window', '$state', '$s
         }
     };
 
+    $scope.onSystemStatusClick = function() {
+		if (sntapp.cordovaLoaded) {
+			ngDialog.open({
+				template: '/assets/partials/systemStatus.html',
+				className: '',
+				controller: '',
+				scope: $scope
+			});
+		} else {
+			$window.open('https://status.stayntouch.com', '_blank');
+		}
+	};
+
 }]);
 
 angular.module('login').controller('stationLoginCtrl', ['$scope', 'loginSrv', '$window', '$state', 'resetSrv', 'ngDialog', function($scope, loginSrv, $window, $state, resetSrv, ngDialog) {
@@ -434,6 +473,19 @@ angular.module('login').controller('stationLoginCtrl', ['$scope', 'loginSrv', '$
 	            $window.open('https://stayntouch.freshdesk.com/support/home', '_blank');
 	        }
 	    };
+
+		$scope.onSystemStatusClick = function() {
+			if (sntapp.cordovaLoaded) {
+				ngDialog.open({
+					template: '/assets/partials/systemStatus.html',
+					className: '',
+					controller: '',
+					scope: $scope
+				});
+			} else {
+				$window.open('https://status.stayntouch.com', '_blank');
+			}
+		};
 
         if (localStorage.email) {
                $scope.data.email = localStorage.email;
