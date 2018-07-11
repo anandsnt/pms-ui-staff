@@ -45,7 +45,7 @@ var GlobalApp = function() {
             xhr.open("GET", url, true);
 
             xhr.send(); // TODO: Loading indicator
-    }
+    };
 
 
     // success function of coddova plugin's appending
@@ -56,7 +56,6 @@ var GlobalApp = function() {
         // script_node.src = url;
 
         script_node.innerHTML = script;
-        console.log(script)
 
         document.getElementById("login-page").appendChild(script_node);
         that.cordovaLoaded = true;

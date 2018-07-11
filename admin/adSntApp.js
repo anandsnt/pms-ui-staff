@@ -42,8 +42,7 @@ var AdminGlobalApp = function() {
             xhr.open("GET", url, true);
 
             xhr.send(); // TODO: Loading indicator
-            console.log(url)
-    }
+    };
 
 
     // success function of coddova plugin's appending
