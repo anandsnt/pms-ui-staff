@@ -51,7 +51,7 @@ angular.module('sharedHttpInterceptor').factory('sharedHttpInterceptor', [
                 return config;
             },
             response: function(response) {
-                const jwt = response.headers('auth_token');
+                const jwt = response.headers('Auth-Token');
 
                 // if manual bussiness date change is in progress alert user.
                 if (response.data.is_eod_in_progress && !$rootScope.isCurrentUserChangingBussinessDate) {

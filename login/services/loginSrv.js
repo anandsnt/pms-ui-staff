@@ -13,7 +13,7 @@ angular.module('login').service('loginSrv',
 
                 $http.post("/login/submit", data).then(function(response) {
                     if (response.data.status === "success") {
-                        $window.localStorage.setItem('jwt', response.headers('auth_token'));
+                        $window.localStorage.setItem('jwt', response.headers('Auth-Token'));
                         successCallback(response.data.data);
                     } else {
                         // please note the type of error expecting is array
@@ -46,7 +46,7 @@ angular.module('login').service('loginSrv',
                 // Sample params {params:{"email":email}}
                 $http.post("/login/send_temporary_password", data).then(function(response) {
                     if (response.data.status === "success") {
-                        $window.localStorage.setItem('jwt', response.headers('auth_token'));
+                        $window.localStorage.setItem('jwt', response.headers('Auth-Token'));
                         successCallback(response.data.data);
                     } else {
                         // please note the type of error expecting is array
