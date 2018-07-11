@@ -140,7 +140,7 @@ sntRover.controller('RVKeyEncodePopupCtrl', [
 				            
 	            				'</br><span >Room: ' + $scope.data.roomNumber + '</span>' +
 							'</h1>' +
-							'</br><span > Reservation ' + $scope.data.confirmNumber + '</span>'+
+							'</br><span > Reservation ' + $scope.data.confirmNumber + '</span>' +
 						   '</div>' +
 			'<div class="only-print" style="height: 320px;display: table;position: absolute;bottom:100px;padding: 20px;text-align: center;float: left;    width: 100%;"> <span >Pin Code</span>' +
 	        '</br></br><span >Room Pin Code is</span></br>' +
