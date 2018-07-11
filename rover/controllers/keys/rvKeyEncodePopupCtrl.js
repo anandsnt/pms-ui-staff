@@ -133,11 +133,20 @@ sntRover.controller('RVKeyEncodePopupCtrl', [
 	};
 
 	var getPrintContent = function() {
-		return '<div id="key-status" class="pin" style="position:fixed;top:0px;">' +
-					// '<span class="h2 message">Pin Code</span>' +
-			        '<span class="text">Room Pin Code is </span>' +
-			        '<span class="pin-number">' + $scope.data.room_pin + '</span>' + 
-	    		'</div>';
+		
+	 var pincodeContent = '<div class="only-print" style="height: 320px;display: table;position: absolute;top:10px;padding: 20px;text-align: center;float: left;    width: 100%;">' +
+	 						'<h1 style="font-size: 48px;font-weight: 300;width: 100%;margin: 0 auto;text-overflow: ellipsis;overflow: hidden;white-space: nowrap;display: block;">' +
+								'<span >' + $scope.guestCardData.contactInfo.first_name + " " + $scope.guestCardData.contactInfo.last_name + '</span>' +
+				            
+	            				'</br><span >Room: ' + $scope.data.roomNumber + '</span>' +
+							'</h1>' +
+							'</br><span > Reservation ' + $scope.data.confirmNumber + '</span>'+
+						   '</div>' +
+			'<div class="only-print" style="height: 320px;display: table;position: absolute;bottom:100px;padding: 20px;text-align: center;float: left;    width: 100%;"> <span >Pin Code</span>' +
+	        '</br></br><span >Room Pin Code is</span></br>' +
+	        '<span style="font-size: 80px;font-weight: 700;letter-spacing: 10px;display: block;line-height: 80px;height: 80px;margin-top: 50px;margin-bottom: 40px;">' + $scope.data.room_pin + '</span></div>';
+
+	 return pincodeContent;
 
 	};
 
@@ -145,6 +154,7 @@ sntRover.controller('RVKeyEncodePopupCtrl', [
 		$('.nav-bar').addClass('no-print');
 		$('.cards-header').addClass('no-print');
 		$('.card-tabs-nav').addClass('no-print');
+
 
 		var pinEl = document.createElement("div");
 		
