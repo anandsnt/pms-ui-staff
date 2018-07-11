@@ -363,8 +363,8 @@ admin.controller('ADRatesAddonsCtrl', [
                 addon_image: $scope.singleAddon.addon_image,
                 is_sell_separate: $scope.singleAddon.is_sell_separate,
                 is_display_suffix: $scope.singleAddon.is_display_suffix,
-                suffix_label: $scope.singleAddon.suffix_label
-
+                suffix_label: $scope.singleAddon.suffix_label,
+                notify_staff_on_purchase: $scope.singleAddon.notify_staff_on_purchase
             };
 
             if ($scope.isDefaulLanguageSelected()) {

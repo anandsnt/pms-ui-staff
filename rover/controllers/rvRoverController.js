@@ -24,10 +24,11 @@ sntRover.controller('roverController', [
     '$interval',
     'sntActivity',
     '$transitions',
+    'taxExempts',
     function ($rootScope, $scope, $state, $window, RVDashboardSrv, RVHotelDetailsSrv,
               ngDialog, $translate, hotelDetails, userInfoDetails, $stateParams,
               rvMenuSrv, rvPermissionSrv, $timeout, rvUtilSrv, jsMappings, $q, $sce,
-              $log, sntAuthorizationSrv, $location, $interval, sntActivity, $transitions) {
+              $log, sntAuthorizationSrv, $location, $interval, sntActivity, $transitions, taxExempts) {
 
 
         var observeDeviceInterval;
@@ -148,6 +149,10 @@ sntRover.controller('roverController', [
         // CICO-40544 - Now we have to enable menu in all standalone hotels
         // API not removing for now - Because if we need to disable it we can use the same param
         $rootScope.isRoomDiaryEnabled = true;
+
+        // CICO-54961 - Hide Sell Limit feature for all hotels except for the pilot property 
+        $rootScope.isSellLimitEnabled = hotelDetails.is_sell_limit_enabled;
+
         $rootScope.isManualCCEntryEnabled = hotelDetails.is_allow_manual_cc_entry;
         $rootScope.isAnMPHotel = hotelDetails.is_multi_property;
 
@@ -215,6 +220,8 @@ sntRover.controller('roverController', [
             $log.error(err);
         }
         $rootScope.isSingleDigitSearch = hotelDetails.is_single_digit_search;
+
+        $rootScope.taxExemptTypes = taxExempts.results;
 
 
         // handle six payment iFrame communication
@@ -312,6 +319,9 @@ sntRover.controller('roverController', [
         if ($rootScope.adminRole === 'Hotel Admin' || $rootScope.adminRole === 'Chain Admin') {
             $scope.isHotelAdmin = true;
         }
+        $scope.shouldShowTaxExempt = function() {
+            return rvPermissionSrv.getPermissionValue('TAX_EXEMPT');
+        };
         /**
          * menu - forming & associate logic
          * NOTE: Menu forming and logic and things are in service rvMenuSrv

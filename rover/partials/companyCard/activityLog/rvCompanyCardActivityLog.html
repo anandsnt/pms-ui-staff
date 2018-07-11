@@ -8,14 +8,14 @@
                     <button id="activity-log-date-from-clear" class="clear-query">
                         <span class="icons icon-clear-search">Clear query</span>
                     </button>
-                    <input name="activity-log-date-from" id="activity-log-date-from" type="text" class="datepicker" value="{{activityLogFilter.fromDate}}" readonly="">
+                    <input name="activity-log-date-from" id="activity-log-date-from" type="text" class="datepicker" value="{{activityLogFilter.fromDate | date:dateFormat}}" readonly="">
                 </div>
                 <div class="entry-data has-datepicker">
                     <label for="activity-log-date-to">To</label>
                     <button id="activity-log-date-to-clear" class="clear-query">
                         <span class="icons icon-clear-search">Clear query</span>
                     </button>
-                    <input name="activity-log-date-to" id="activity-log-date-to" type="text" class="datepicker" value="{{activityLogFilter.toDate}}" readonly="">
+                    <input name="activity-log-date-to" id="activity-log-date-to" type="text" class="datepicker" value="{{activityLogFilter.toDate | date:dateFormat}}" readonly="">
                 </div>
             </div>
             <div class="entry">

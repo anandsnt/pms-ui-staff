@@ -1,4 +1,10 @@
-angular.module('admin').controller('adCRSCommonCtrl', ['$scope', '$rootScope', 'config', 'adInterfacesCommonConfigSrv', 'dateFilter', '$stateParams',
+angular.module('admin').controller('adCRSCommonCtrl', 
+    ['$scope', 
+    '$rootScope', 
+    'config', 
+    'adInterfacesCommonConfigSrv', 
+    'dateFilter', 
+    '$stateParams',
     function($scope, $rootScope, config, adInterfacesCommonConfigSrv, dateFilter, $stateParams) {
 
         var interfaceIdentifier = $stateParams.id;
@@ -31,7 +37,6 @@ angular.module('admin').controller('adCRSCommonCtrl', ['$scope', '$rootScope', '
             $scope.callAPI(adInterfacesCommonConfigSrv.fetchOptionsList, {
                 onSuccess: onFetchMetaSuccess
             });
-
             $scope.config = config;
             $scope.availableSettings = _.keys(config);
             $scope.interface = interfaceIdentifier.toUpperCase();

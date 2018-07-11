@@ -49,6 +49,12 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 
         $scope.reportListCopy = JSON.parse(JSON.stringify(payload.reportsResponse.results));
 
+        // Hold the page no when navigating back to report inbox from report details page
+        $scope.reportInboxPageState = {
+            returnPage: 1,
+            returnDate: $rootScope.serverDate
+        };
+
         $scope.scrollToLast = function () {
             $timeout(function () {
                 if ($scope.$parent.myScroll.hasOwnProperty('FULL_REPORT_SCROLL')) {
@@ -133,7 +139,10 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
             $scope.$broadcast(reportMsgs['REPORT_LIST_SCROLL_REFRESH']);
 
             if (reportsSrv.getChoosenReport().generatedReportId) {
-                $state.go('rover.reports.inbox');
+                $state.go('rover.reports.inbox', {
+                    page: $scope.reportInboxPageState.returnPage,
+                    date: $scope.reportInboxPageState.returnDate
+                });
             } else {
                 $state.go('rover.reports.dashboard', { refresh: false });
             }
@@ -1372,6 +1381,7 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
                 if (report.title === reportNames['ADDON_FORECAST'] && ('ADDON' === report.chosenGroupBy || 'DATE' === report.chosenGroupBy)) {
                     key = reportParams['ADDON_GROUP_BY'];
                     params[key] = report.chosenGroupBy;
+                    rawData.chosenGroupBy = report.chosenGroupBy;
                     /**/
                     if (changeAppliedFilter) {
                         $scope.appliedFilter['groupBy'] = 'GROUP BY ' + report.chosenGroupBy;
@@ -1996,44 +2006,7 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
                     $scope.appliedFilter['hasMinNoOfDaysNotOccupied'] = report.hasMinNoOfDaysNotOccupied.data;
                 }
             }
-
-            // need to reset the "group by" if any new filter has been applied
-            // Added a patch to ignore the following for addon forecast report
-            // @TODO: Fix this. May be refactor the whole logic
-            if (!!report.groupByOptions && !!$scope.oldParams && reportNames['ADDON_FORECAST'] != report.title) {
-                for (key in params) {
-                    if (!params.hasOwnProperty(key)) {
-                        continue;
-                    }
-
-                    if (key === 'group_by_date' || key === 'group_by_user' || key === 'group_by_charge_type' || key === 'group_by_group_name' || key === 'page' || key === 'per_page') {
-                        continue;
-                    } else if (params[key] !== $scope.oldParams[key]) {
-                        // For Reservations by user report, if no grouping is present the chosenGroupBy is expected as ''. Else it will load another HTML 
-                        // and will cause the rvPagination directive to call link function again.
-                        report.chosenGroupBy = (reportNames['RESERVATIONS_BY_USER'] === report.title) ? '' : 'BLANK';
-                        /**/
-                        if (params.hasOwnProperty('group_by_date')) {
-                            params['group_by_date'] = undefined;
-                        }
-                        if (params.hasOwnProperty('group_by_user')) {
-                            params['group_by_user'] = undefined;
-                        }
-                        /**/
-                        if (params.hasOwnProperty('group_by_group_name')) {
-                            params['group_by_group_name'] = undefined;
-                        }
-                        if (params.hasOwnProperty('group_by_charge_type')) {
-                            params['group_by_charge_type'] = undefined;
-                        }
-                        /**/
-                        if (changeAppliedFilter) {
-                            $scope.appliedFilter['groupBy'] = undefined;
-                        }
-                        break;
-                    }
-                }
-            }
+            
             // CICO-34650
             if (report.hasShowActionables) {
                 if (report.showActionables) {
@@ -2068,6 +2041,7 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
                 // This is a temp fix. Once api fixes the issue this should be removed
                 params.per_page = 99999;
                 params.rawData = _.extend(reportUtils.reduceObject(report), rawData);
+                params.appliedFilter = $scope.appliedFilter;
             }
             
 
@@ -2223,6 +2197,10 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 
                 $scope.errorMessage = [];
                 $scope.$emit('hideLoader');
+
+                if ($rootScope.isBackgroundReportsEnabled) {
+                    $scope.appliedFilter = chosenReport.appliedFilter;
+                }
 
                 // Checks whether the print is clicked from the report inbox
                 if (reportsSrv.getPrintClickedState()) {

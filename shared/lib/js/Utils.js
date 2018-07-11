@@ -673,7 +673,7 @@ var replaceValueWithinObject = function (obj, findStr, replaceObj ) {
     Object.keys(obj).forEach(function (key) {
         if ( obj[key] != null && typeof obj[key] === 'object') {
             return replaceValueWithinObject(obj[key], findStr, replaceObj);
-        } else if (obj[key] == findStr) {
+        } else if (obj[key] === findStr) {
             obj[key] = replaceObj;
         }
     });

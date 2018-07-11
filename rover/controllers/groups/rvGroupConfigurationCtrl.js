@@ -136,7 +136,8 @@ angular.module('sntRover').controller('rvGroupConfigurationCtrl', [
             var activeMode = null,
                 lastSuccessCallback = null,
                 lastFailureCallback = null,
-                lastApiFnParams     = null;
+                lastApiFnParams     = null,
+                lastCancelCallback = null;
 
             /**
              * to set current move
@@ -425,6 +426,14 @@ angular.module('sntRover').controller('rvGroupConfigurationCtrl', [
             };
 
             /**
+             * if the user has enough permission to over book House
+             * @return {Boolean}
+             */
+            var hasPermissionToHouseOverBook = function () {
+                return rvPermissionSrv.getPermissionValue('OVERBOOK_HOUSE');
+            };
+
+            /**
              * should show proceed button
              * @return {Boolean}
              */
@@ -455,18 +464,52 @@ angular.module('sntRover').controller('rvGroupConfigurationCtrl', [
                 }
             };
 
+            /* Utility method to check overbooking status
+             * @param {Object} [470 error data with is_house_available ,room_type_available flags ]
+             * @return {String} [Overbooking status message]
+             */ 
+            var checkOverBooking = function( error ) {
+                var isHouseOverbooked       = !error.is_house_available,
+                    isRoomTypeOverbooked    = !error.room_type_available,
+                    canOverbookHouse        = hasPermissionToHouseOverBook(),
+                    canOverbookRoomType     = hasPermissionToOverBook(),
+                    canOverBookBoth         = canOverbookHouse && canOverbookRoomType,
+                    overBookingStatusOutput = '';
+                
+                if (isHouseOverbooked && isRoomTypeOverbooked && canOverBookBoth) {
+                    overBookingStatusOutput = 'HOUSE_AND_ROOMTYPE_OVERBOOK';
+                }
+                else if (isRoomTypeOverbooked && canOverbookRoomType && (!isHouseOverbooked || (isHouseOverbooked && canOverbookHouse) )) {
+                    overBookingStatusOutput = 'ROOMTYPE_OVERBOOK';
+                }
+                else if (isHouseOverbooked && canOverbookHouse && (!isRoomTypeOverbooked || (isRoomTypeOverbooked && canOverbookRoomType) )) {
+                    overBookingStatusOutput = 'HOUSE_OVERBOOK';
+                }
+                else {
+                    overBookingStatusOutput = 'NO_PERMISSION_TO_OVERBOOK';
+                }
+
+                return overBookingStatusOutput;
+            };
+
             /**
-             * [openNoAvailabilityPopup description]
-             * @return {[type]} [description]
+             * Method to show oerbooking popup
+             * @return undefined
              */
-            var openNoAvailabilityPopup = function () {
-                ngDialog.open(
-                {
-                    template: '/assets/partials/groups/summary/popups/changeDates/rvGroupChangeDatesNoAvailabilityPopup.html',
+            var showOverBookingPopup = function(message, proceedOverbook) {
+                // Show overbooking message
+                var dialogData = {
+                    message: message,
+                    proceedOverbook: proceedOverbook
+                };
+
+                ngDialog.open({
+                    template: '/assets/partials/groups/summary/popups/changeDates/rvGroupChangeSellLimitPopup.html',
                     className: '',
+                    scope: $scope,
                     closeByDocument: false,
                     closeByEscape: false,
-                    scope: $scope
+                    data: JSON.stringify(dialogData)
                 });
             };
 
@@ -485,7 +528,15 @@ angular.module('sntRover').controller('rvGroupConfigurationCtrl', [
                         case 470:
                             $timeout(
                                 function() {
-                                    openNoAvailabilityPopup ();
+
+                                    var overbookStatus = checkOverBooking(error),
+                                        proceedOverbook = false;
+
+                                    if ( overbookStatus !== 'NO_PERMISSION_TO_OVERBOOK' ) {
+                                        proceedOverbook = true;
+                                    }   
+
+                                    showOverBookingPopup (overbookStatus, proceedOverbook);
                                 },
                             750);
                             break;
@@ -651,7 +702,15 @@ angular.module('sntRover').controller('rvGroupConfigurationCtrl', [
                         case 470:
                             $timeout(
                                 function() {
-                                    openNoAvailabilityPopup ();
+
+                                    var overbookStatus = checkOverBooking(error),
+                                        proceedOverbook = false;
+
+                                    if ( overbookStatus !== 'NO_PERMISSION_TO_OVERBOOK' ) {
+                                        proceedOverbook = true;
+                                    }   
+
+                                    showOverBookingPopup (overbookStatus, proceedOverbook);
                                 },
                             750);
                             break;
@@ -854,6 +913,13 @@ angular.module('sntRover').controller('rvGroupConfigurationCtrl', [
                 selectedAddons: [],
                 activeScreen: 'GROUP_ACTUAL'
             };
+            if (!$scope.isInAddMode()) {
+                $scope.groupConfigData.summary.is_tax_exempt = summaryData.groupSummary.is_tax_exempt;
+                $scope.groupConfigData.summary.tax_exempt_type_id = summaryData.groupSummary.tax_exempt_type.id;
+            } else {
+                $scope.groupConfigData.summary.is_tax_exempt = false;
+            }
+            
             var groupSummary = $scope.groupConfigData.summary;
 
             $timeout(function() {
@@ -1065,9 +1131,32 @@ angular.module('sntRover').controller('rvGroupConfigurationCtrl', [
                     data: JSON.stringify(data)
                 });
             }, 500);
+
+            $scope.groupConfigData.activeTab = 'SUMMARY';
         };
 
         var updateGroupSummaryInProgress =  false;
+
+        /**
+         * Get group summary fields whose changes will decide whether update API should be invoked or not
+         * @param {Object} summaryData - group summary data
+         * @return {Object} return the object containing the summary fields alone which is used for comparison
+         */
+        var getGroupSummaryFields = function(summaryData) {
+            var unwantedKeys = [
+                'selected_room_types_and_bookings',
+                'selected_room_types_and_occupanies',
+                'selected_room_types_and_rates',
+                'group_room_types_count',
+                'rooms_pickup',
+                'rooms_total',
+                'revenue_actual',
+                'revenue_potential'
+            ],
+            summaryDataCopy = JSON.parse(JSON.stringify(summaryData));
+
+            return dclone(summaryDataCopy, unwantedKeys);
+        };
 
         /**
          * Update the group data
@@ -1075,7 +1164,7 @@ angular.module('sntRover').controller('rvGroupConfigurationCtrl', [
          */
         $scope.updateGroupSummary = function() {
             if (rvPermissionSrv.getPermissionValue('EDIT_GROUP_SUMMARY')) {
-                if (angular.equals($scope.groupSummaryMemento, $scope.groupConfigData.summary) || updateGroupSummaryInProgress) {
+                if (angular.equals(getGroupSummaryFields($scope.groupSummaryMemento), getGroupSummaryFields($scope.groupConfigData.summary)) || updateGroupSummaryInProgress) {
                     return false;
                 }
                 var onGroupUpdateSuccess = function(data) {
@@ -1116,7 +1205,9 @@ angular.module('sntRover').controller('rvGroupConfigurationCtrl', [
                 if (!summaryData.rate) {
                     summaryData.rate = -1;
                 }
+
                 updateGroupSummaryInProgress =  true;
+
                 $scope.callAPI(rvGroupConfigurationSrv.updateGroupSummary, {
                     successCallBack: onGroupUpdateSuccess,
                     failureCallBack: onGroupUpdateFailure,
