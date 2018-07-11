@@ -128,5 +128,12 @@ sntZestStation.config(['$stateProvider',
             description: '',
             icon: 'checkout_final.png'
         });
+
+
+        $stateProvider.state('zest_station.pickUpKeyReservationSearch', {
+            url: '/pickUpKeyReservationSearch',
+            templateUrl: '/assets/partials_v2/pickupKey/zsPickUpKeyReservationSearch.html',
+            controller: 'zsPickupKeyFindReservationCtrl'
+        });
     }
 ]);

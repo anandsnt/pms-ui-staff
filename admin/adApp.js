@@ -28,6 +28,7 @@ var admin = angular.module('admin',
     'limitInputRange',
     'convertToNumber',
     'ADChainRouter',
+    'touchPress',
     'ivh.treeview']);
 
 // adding shared http interceptor, which is handling our webservice errors & in future our authentication if needed

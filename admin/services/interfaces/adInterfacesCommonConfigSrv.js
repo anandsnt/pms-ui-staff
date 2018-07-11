@@ -170,5 +170,28 @@ admin.service('adInterfacesCommonConfigSrv', ['$http', '$q', 'ADBaseWebSrvV2', '
             return deferred.promise;
         };
 
+        service.fetchChargeGroups = function() {
+            var deferred = $q.defer();
+            var url = '/admin/charge_groups';
+
+            ADBaseWebSrvV2.getJSON(url).then(function(chargeGroups) {
+                deferred.resolve(chargeGroups);
+            }, function(data) {
+                deferred.reject(data);
+            });
+            return deferred.promise;
+        };
+
+        service.fetchTaxChargeCodes = function() {
+            var deferred = $q.defer();
+            var url = '/admin/charge_codes/tax_charge_code';
+
+            ADBaseWebSrvV2.getJSON(url).then(function(taxChargeCodes) {
+                deferred.resolve(taxChargeCodes);
+            }, function(data) {
+                deferred.reject(data);
+            });
+            return deferred.promise;
+        };
     }
 ]);
