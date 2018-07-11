@@ -1,5 +1,5 @@
-admin.service('adInterfacesCommonConfigSrv', ['$http', '$q', 'ADBaseWebSrvV2', '$log', 'adExternalInterfaceCommonSrv',
-    function($http, $q, ADBaseWebSrvV2, $log, adExternalInterfaceCommonSrv) {
+admin.service('adInterfacesCommonConfigSrv', ['$http', '$q', 'ADBaseWebSrvV2', '$log', 'adExternalInterfaceCommonSrv', 'adAxbaseSrv',
+    function($http, $q, ADBaseWebSrvV2, $log, adExternalInterfaceCommonSrv, adAxbaseSrv) {
 
         var service = this;
 
@@ -105,7 +105,7 @@ admin.service('adInterfacesCommonConfigSrv', ['$http', '$q', 'ADBaseWebSrvV2', '
                 promises = [],
                 meta = {};
 
-            promises.push(adExternalInterfaceCommonSrv.fetchRoomMappings().then(function(response) {
+            promises.push(adAxbaseSrv.fetchRoomMappings().then(function(response) {
                 meta.room_mappings = response.room_mappings;
             }));
 

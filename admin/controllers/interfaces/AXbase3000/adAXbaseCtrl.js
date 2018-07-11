@@ -103,6 +103,8 @@ angular.module('admin').controller('adAXbaseCtrl', ['$scope', '$rootScope', 'con
                     interfaceIdentifier: interfaceIdentifier
                 },
                 onSuccess: function() {
+                    $scope.errorMessage = '';
+                    $scope.successMessage = 'SUCCESS: Room mapping updated!';
                 }
             });
         };
@@ -113,6 +115,8 @@ angular.module('admin').controller('adAXbaseCtrl', ['$scope', '$rootScope', 'con
                     interfaceIdentifier: interfaceIdentifier
                 },
                 onSuccess: function() {
+                    $scope.errorMessage = '';
+                    $scope.successMessage = 'SUCCESS: Room import Initiated!';
                 }
             });
         };
