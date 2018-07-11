@@ -13,8 +13,9 @@ var GlobalApp = function() {
 
 
     this.setBrowser = function(browser) {
-        console.log(browser)
+        
         var url = "/assets/shared/cordova.js";
+
         if (typeof browser === 'undefined' || browser === '') {
             that.browser = "other";
         }
@@ -44,7 +45,6 @@ var GlobalApp = function() {
             xhr.open("GET", url, true);
 
             xhr.send(); // TODO: Loading indicator
-            console.log(url)
     }
 
 
@@ -71,7 +71,7 @@ var GlobalApp = function() {
 
     };
     // success function of coddova plugin's appending
-    this.fetchFailedOfCordovaPlugins = function(errorMessage) {
+    this.fetchFailedOfCordovaPlugins = function() {
         that.cordovaLoaded = false;
     };
 };
