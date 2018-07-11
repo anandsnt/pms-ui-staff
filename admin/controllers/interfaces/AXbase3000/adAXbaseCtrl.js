@@ -97,7 +97,7 @@ angular.module('admin').controller('adAXbaseCtrl', ['$scope', '$rootScope', 'con
         };
 
         $scope.updateMappings = function(room) {
-            $scope.callAPI(adInterfacesCommonConfigSrv.saveConfiguration, {
+            $scope.callAPI(adInterfacesCommonConfigSrv.updateMappings, {
                 params: {
                     config: room,
                     interfaceIdentifier: interfaceIdentifier
