@@ -672,6 +672,8 @@
 
 
    "WITH_ID": "With ID",
-   "WITHOUT_ID": "Without ID"
+   "WITHOUT_ID": "Without ID",
+
+   "ROOM_PIN_TEXT": "Your room door key code is"
 
 }
