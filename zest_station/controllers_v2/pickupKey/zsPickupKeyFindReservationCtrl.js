@@ -97,7 +97,7 @@ sntZestStation.controller('zsPickupKeyFindReservationCtrl', [
 
 		var fetchGuestDetails = function(data, stateParams) {
 			var successCallBack = function(guest_details) {
-				if (!$scope.reservationHasPassportsScanned(guest_details)) {
+				if (!$scope.reservationHasPassportsScanned(guest_details) && !guest_details.primary_guest_details.guest_id_reviewed) {
 					$scope.zestStationData.continuePickupFlow = function() {
 						goToKeyDispense(stateParams);
 					};
