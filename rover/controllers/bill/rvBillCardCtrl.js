@@ -78,8 +78,9 @@ sntRover.controller('RVbillCardController',
 	$scope.paymentModalSwipeHappened = false;
 	$scope.isSwipeHappenedDuringCheckin = false;
 	$scope.do_not_cc_auth = false;
-	$scope.isDuringCheckoutPayment = false;
-	var isAlreadyShownPleaseSwipeForCheckingIn = false;
+	
+	var isAlreadyShownPleaseSwipeForCheckingIn = false,
+		isDuringCheckoutPayment = false;
 
 	// Scope variable to set active bill
 	$scope.currentActiveBill = 0;
@@ -621,7 +622,7 @@ sntRover.controller('RVbillCardController',
 				setBillValue(billIndex);
 				$scope.setActiveBill(billIndex);
 				$scope.setupReviewStatusArray();
-				if ($scope.isDuringCheckoutPayment) {
+				if (isDuringCheckoutPayment) {
 					$scope.moveToNextBillAfterSuccessPaymentDuringCheckout();
 				}
 				
@@ -2311,7 +2312,6 @@ sntRover.controller('RVbillCardController',
         .then(function() {
         	$scope.$emit('hideLoader');
         	if ($rootScope.UPDATED_BI_ENABLED_ON['RESERVATION']) {
-        		console.log("##Billing-info updated version");
 			    ngDialog.open({
 			        template: '/assets/partials/billingInformation/reservation/rvBillingInfoReservationMain.html',
 			        controller: 'rvBillingInfoReservationMainCtrl',
@@ -2320,7 +2320,6 @@ sntRover.controller('RVbillCardController',
 			    });
 			}
 			else {
-				console.log("##Billing-info old version");
 				ngDialog.open({
 			        template: '/assets/partials/bill/rvBillingInformationPopup.html',
 			        controller: 'rvBillingInformationPopupCtrl',
@@ -2710,7 +2709,7 @@ sntRover.controller('RVbillCardController',
 	};
 
 	$scope.moveToNextBillAfterSuccessPaymentDuringCheckout = function() {
-			$scope.isDuringCheckoutPayment = false;
+			isDuringCheckoutPayment = false;
 			$scope.reservationBillData = reservationBillData;
 		 	$scope.calculateBillDaysWidth();
 		 	var billCount = $scope.reservationBillData.bills.length,
@@ -2720,8 +2719,7 @@ sntRover.controller('RVbillCardController',
 				var currentActiveBill = $scope.reservationBillData.bills[$scope.currentActiveBill];
 
 				that.generateFolioNumber(currentActiveBill.bill_id, currentActiveBill.total_fees[0].balance_amount, currentActiveBill.is_folio_number_exists);
-			}
-			console.log($scope.reservationBillData.bills[$scope.currentActiveBill].total_fees[0].balance_amount);
+			}			
 		 	// CICO-10906 review process continues after payment.
 			if (($scope.reservationBillData.bills[$scope.currentActiveBill].total_fees[0].balance_amount === 0.00 || $scope.reservationBillData.bills[$scope.currentActiveBill].total_fees[0].balance_amount === "0.00") && $scope.isViaReviewProcess) {
 				// If last bill - continue checkout..Else proceed Review process.
@@ -2746,7 +2744,7 @@ sntRover.controller('RVbillCardController',
 	 	$scope.shouldGenerateFolioNumber = true;
 		$scope.isRefreshOnBackToStaycard = true;
 		if ($scope.isViaReviewProcess) {
-			$scope.isDuringCheckoutPayment = true;
+			isDuringCheckoutPayment = true;
 		}
 		
 		$scope.getBillData($scope.currentActiveBill);
