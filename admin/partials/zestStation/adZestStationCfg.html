@@ -190,7 +190,7 @@
                         <input type="radio" value="manual" ng-model="zestSettings.kiosk_key_creation_method">{{ 'MANUAL' | translate}}
                     </label>
 
-                    <ad-toggle-button is-hide="zestSettings.kiosk_key_creation_method != 'manual'" is-checked="zestSettings.show_pin_code" label="{{'SHOW_PIN_LABEL'| translate}}" div-class="full-width"></ad-toggle-button>
+                    <ad-toggle-button is-hide="zestSettings.kiosk_key_creation_method != 'manual'" is-checked="zestSettings.kiosk_show_room_pin" label="{{'SHOW_PIN_LABEL'| translate}}" div-class="full-width"></ad-toggle-button>
 
                 </div>
                 <!-- Upload image for Key Creation In Progress Screen -->
@@ -227,7 +227,7 @@
                 </div>
                 <ad-toggle-button is-checked="zestSettings.scan_guest_id" label="{{'STATION_GUEST_ID_ACTIVATE_DESCRIPTION'| translate}}" div-class="full-width" is-disabled="zestSettings.kiosk_manual_id_scan"></ad-toggle-button>
                 <ad-toggle-button is-checked="zestSettings.scanner_use_v1_lib" label="{{'USE_V1_SCAN'| translate}}" div-class="full-width" is-disabled="zestSettings.kiosk_manual_id_scan"
-                ng-show="zestSettings.scan_guest_id"></ad-toggle-button>
+                is-hide="!zestSettings.scan_guest_id"></ad-toggle-button>
                 <ad-toggle-button is-checked="zestSettings.kiosk_manual_id_scan" label="{{'MANUAL_ID_VERIFFICATION'| translate}}" div-class="full-width" is-disabled="zestSettings.scan_guest_id"></ad-toggle-button>
                 <div class="entry full-width" ng-show="zestSettings.kiosk_manual_id_scan">
                     <label style="line-height: 1.5em" translate>ASSIGN_PIN_FOR_STAFF_TO_VERIFY_ID</label>
@@ -237,7 +237,7 @@
                 </div>
 
             </fieldset>
-
+        
             <fieldset class="holder left">
                 <div class="form-title full-width">
                     <h3><span translate>ZEST_STATION_OFFLINE_SETTINGS</span> </h3>
@@ -255,6 +255,13 @@
                     selbox-class='placeholder' 
                     div-class="{{defaultLangsDivClass}}">
                 </ad-dropdown>
+            </fieldset>
+
+            <fieldset class="holder right" ng-show="zestSettings.kiosk_manual_id_scan">
+                <div class="form-title full-width">
+                    <h3><span translate>STAFF_NOTIFICATION_SOUND</span> </h3>
+                </div>
+                 <ad-toggle-button is-checked="zestSettings.kiosk_staff_notification_sound" label="{{'STAFF_NOTIFICATION_SOUND'| translate}}" div-class="full-width" is-disabled="zestSettings.scan_guest_id"></ad-toggle-button>
             </fieldset>
 
             <div class="actions float">

@@ -8,7 +8,7 @@ angular.module('divTouchMoveStopPropogate', []).directive('divTouchMoveStopPropo
             event.stopPropagation();
         };
     	if (hasTouch) {
-	      element.on('touchmove',window.touchmovestoppropogate );
+	      element.on('touchmove',window.touchmovestoppropogate, {passive: false} );
 	    }
     }
   };

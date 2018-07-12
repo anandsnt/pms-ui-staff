@@ -1,4 +1,3 @@
- 
 "EDIT": "Edit",
 "ALL": "All",
 "ADD":"Add",
@@ -30,6 +29,7 @@
 "MENU_RATE_MANAGER":"Rate Manager",
 "MENU_TA_CARDS":"Company & TA Cards",
 "MENU_DISTRIBUTION_MANAGER":"Distribution Manager",
+"MENU_SELL_LIMITS":"Sell Limits",
 "MENU_HOUSEKEEPING":"Housekeeping",
 "MENU_ROOM_STATUS": "Room Status",
 "MENU_TASK_MANAGEMENT":"Task Management",
@@ -54,6 +54,7 @@
 "MENU_GUESTS": "Guests",
 
 "CAMPAIGNS_LIST_TITLE": "Campaigns",
+
 "CAMPAIGN": "Campaign",
 "ID": "ID",
 "NAME":"Name",
