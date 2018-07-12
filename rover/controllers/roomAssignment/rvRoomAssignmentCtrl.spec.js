@@ -5,14 +5,15 @@ describe("RVroomAssignmentController", function() {
 
 	jasmine.getJSONFixtures().fixturesPath = 'base/unitTestSampleData/';
 	var fixtures = loadJSONFixtures('roomTypesSampleData.json'),
-	roomTypesSampleData = fixtures['roomTypesSampleData.json'],        
-	roomPreferences = {
-		room_types: roomTypesSampleData,
-		floors: {
-			floor_details: []
-		},
-		room_features: []
-	};
+		roomTypesSampleData = fixtures['roomTypesSampleData.json'],        
+		roomPreferences = {
+			room_types: roomTypesSampleData,
+			floors: {
+				floor_details: []
+			},
+			room_features: []
+		};
+
 	describe("Room types available for assignment in the case of group reservations", function() {
 		beforeEach(function() {
 			module('sntRover');
@@ -44,7 +45,7 @@ describe("RVroomAssignmentController", function() {
 				$scope: $scope,
 				roomPreferences: roomPreferences,
 				roomsList: [],
-				roomUpgrades:[]
+				roomUpgrades: []
 
 			});
 		});
@@ -85,7 +86,7 @@ describe("RVroomAssignmentController", function() {
 				$scope: $scope,
 				roomPreferences: roomPreferences,
 				roomsList: [],
-				roomUpgrades:[]
+				roomUpgrades: []
 
 			});
 		});
@@ -98,8 +99,6 @@ describe("RVroomAssignmentController", function() {
 		});
 
 	});  
-
-	
 
 	describe("Room types available for assignment in the case of normal reservations without group and allotment", function() {
 		beforeEach(function() {
@@ -132,7 +131,7 @@ describe("RVroomAssignmentController", function() {
 				$scope: $scope,
 				roomPreferences: roomPreferences,
 				roomsList: [],
-				roomUpgrades:[]
+				roomUpgrades: []
 
 			});
 		});
@@ -145,7 +144,5 @@ describe("RVroomAssignmentController", function() {
 		});
 
 	});    
-
-	
 
 });
