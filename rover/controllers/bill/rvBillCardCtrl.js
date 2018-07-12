@@ -2771,7 +2771,7 @@ sntRover.controller('RVbillCardController',
 		var createBillSuccessCallback = function(data) {
 			$scope.$emit('hideLoader');
 			// Update Review status array.
-			$scope.reservationBillData.bills[data.bill_number -1] = {
+			$scope.reservationBillData.bills[data.bill_number - 1] = {
 				bill_id: data.id,
 				bill_number: data.bill_number,
 				total_amount: 0
