@@ -60,7 +60,8 @@ sntZestStation.service('zsGeneralSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
             'bunk': 'Bunk Hotels',
             'rydges': 'Rydges Sydney Airport',
             'freehand-la': 'Freehand Los Angels',
-            'east-london': 'The East London Hotel'
+            'east-london': 'The East London Hotel',
+            'farmers-daughter': 'Farmers Daughter'
         };
 
         this.isThemeConfigured = function(theme) {
