@@ -24,7 +24,8 @@
 			$scope.isPosting = true;
 			var dataTosend = {
 				'reservation_id': $rootScope.reservationID,
-				'early_checkin_offer_id': offerId
+				'early_checkin_offer_id': offerId,
+                'application': 'WEB'
 			};
 
 			earlyCheckinService.applyEarlyCheckin(dataTosend).then(function(response) {
