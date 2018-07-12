@@ -152,8 +152,8 @@
 "SEND_NON_CC_TO_STAFF": "Only Allow CC Guaranteed Reservations",
 "SHOW_PIN_LABEL": "Show PIN code",
 
-"STAFF_NOTIFICATION_SOUND": "Staff notification sound"
-
+"STAFF_NOTIFICATION_SOUND": "Staff notification sound",
+"ROOM_PIN_PREFIX_TEXT": "Room PIN text"
 
 
 

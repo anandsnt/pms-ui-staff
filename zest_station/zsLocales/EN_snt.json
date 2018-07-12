@@ -637,6 +637,16 @@
    "CHECK_HANDLER_IS_RUNNING_MSG": "Please ensure that the Zest station Hanlder is running",
    "HOW_WOULD_YOU_LIKE_TO_REFUND": "How Would You Like your Refund ?",
 
+
+   "ENTER_LAST_CC_DIGITS": "Enter 4 last digits",
+   "ENTER_LAST_CC_DIGITS_INSTRUCTION": "From the credit card used to book the reservation",
+   "CC_PLACEHOLDER": "4 Digits",
+   "LAST_4_DIGITS_INCORRECT": "Last 4 Digits are not correct",
+   "LAST_4_DIGITS_INCORRECT_MSG": "Please Select One of the Following:",
+   "RE_ENTER": "RE-ENTER",
+   "NO_CC_ON_FILE_HEADER": "No Credit Card Found",
+   "NO_CC_ON_FILE_SUB_HEADER": "Please Speak to our Staff Member",
+
    "CBA_IN_PROGRESS": "Deposit collection",
    "CBA_IN_PROGRESS_SUB_TEXT": "For Deposit collection, please use the CBA device to proceed.",
    "CBA_PAYMENT_FAILED": "Payment failed!",
@@ -668,10 +678,11 @@
    "ID_VERIFICATION_SUB_HEADER": "Please contact a staff member to review",
 
    "CALL_STAFF": "Call Staff",
+   "PAYMENT_METHOD": "Payment method",
+   
+   "WITH_ID": "With ID",
+   "WITHOUT_ID": "Without ID",
 
-   "NOT_REVIEWED": "Not Reviewed",
-   "ID_APPROVED": "ID Approved",
-   "ID_APPROVED_WITHOUT_ID": "Approved without ID"
-
+   "ROOM_PIN_TEXT": "Your room door key code is"
 
 }

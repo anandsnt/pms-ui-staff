@@ -27,16 +27,16 @@
             <text data-ng-bind-html="getTagValue('ADMIN_PIN_SUB_HEADER')" editable-text="ADMIN_PIN_SUB_HEADER"></text>
         </h2>
         <!-- user name -->
-        <form method="post" class="form">
+        <div class="form">
             <div class="entry input">
-                <input type="password" placeholder="" ng-focus="showOnScreenKeyboard('input_text')" click-touch="showOnScreenKeyboard('input_text')" ng-model="adminPin" enter-press="goToNext()" id="input_text" touch-press/>
+                <input type="password" placeholder="" ng-focus="showOnScreenKeyboard('input_text')" click-touch="showOnScreenKeyboard('input_text')" ng-model="adminPin" id="input_text" touch-press/>
             </div>
             <div class="entry action">
-                <button type="button" class="button" touch-press='goToNext()' ng-class="{'overlay': input.inputTextValue.length < 1}">
+                <button type="button" class="button" touch-press='goToNext()' ng-class="{'overlay':adminPin.length < 1}">
                     <text data-ng-bind-html="getTagValue('NEXT_BTN')" editable-text="NEXT_BTN"></text>
                 </button>
             </div>
-        </form>
+        </div>
     </div>
 </section>
 
@@ -77,49 +77,31 @@
                         {{guest.first_name}}    
                     </span>
                     </span>
-                    <div class="entry select">
-                        <select ng-model="guest.review_status">
-                            <option value="" disabled translate>NOT_REVIEWED</option>
-                            <option value="1" translate>ID_APPROVED</option>
-                            <option value="2" translate>ID_APPROVED_WITHOUT_ID</option> 
-                        </select>
-                    </div>
+                    <nav id="options" role="nav" class="small-icons">
+                        <ul role="menu">
+                            <!-- both radio buttons have to have the same name attribute for each guest
+                    in this example: guest 1 would have id_guest[0] and guest 2 would have id_guest[1] on both radio inputs
+                    This wil ensure that one radio will be deselected if another is selected.
+                    -->
+                            <li class="radio-option">
+                                <input type="radio" name="id_guest[{{ $index }}]" id="radio-guest-{{ $index }}-1" value="WITH_ID" ng-model="guest.review_status" ng-change="approveGuest()"/>
+                                <label class="button option" for="radio-guest-{{ $index }}-1" style="transition: none;">
+                                    <ng-include src="icons.url.user_with_id"></ng-include>
+                                </label>
+                                <span translate>WITH_ID</span>
+                            </li>
+                            <li class="radio-option">
+                                <input type="radio" name="id_guest[{{ $index }}]" id="radio-guest-{{ $index }}-2" value="NO_ID" ng-model="guest.review_status" ng-change="approveGuest()"/>
+                                <label class="button option" for="radio-guest-{{ $index }}-2" style="transition: none;">
+                                    <ng-include src="icons.url.user_without_id"></ng-include>
+                                </label>
+                                <span translate>WITHOUT_ID</span>
+                            </li>
+                        </ul>
+                    </nav>
+
                 </li>
             </ul>
         </div>
-        <div id="actions">
-            <button type="button" class="button transparent" click-touch="abortCheckin()">
-                <text data-ng-bind-html="getTagValue('ABORT')" editable-text="ABORT"></text>
-            </button>
-            <button type="button" class="button" click-touch="continueToNextScreen()">
-                <text data-ng-bind-html="getTagValue('CONTINUE')" editable-text="CONTINUE"></text>
-            </button>
-        </div>
     </div>
 </section>
-
-<!-- warning ppoup -->
-<!-- Popup -->
-<div id="popup" class="popup" ng-class="{'open':showWarningPopup}"> <!-- Add class "open" to show popup content -->
-    <div class="popup-content message">
-        <h2 class="nocaps">
-             <text data-ng-bind-html="getTagValue('VERIFICATION_PENDING')" editable-text="VERIFICATION_PENDING"></text>
-        </h2>
-        <div id="message-content">
-            <h3>
-                <text data-ng-bind-html="getTagValue('VERIFICATION_PENDING_MSG')" editable-text="VERIFICATION_PENDING_MSG"></text>
-            </h3>
-        </div>
-        <div id="message-action" class="centered">
-            <button type="button" class="button" touch-press='acceptWithoutID()'>
-                <text data-ng-bind-html="getTagValue('ACCEPT')" editable-text="ACCEPT"></text>
-            </button>
-            <button type="button" class="button" touch-press='hideWarningPopup()'>
-                <text data-ng-bind-html="getTagValue('ID_CANCEL')" editable-text="ID_CANCEL"></text>
-            </button>
-        </div> 
-        
-    </div>
-</div>
-<div id="popup-overlay" ng-class="{'open':showWarningPopup}"></div> <!-- Add class "open" to show popup overlay -->
-
