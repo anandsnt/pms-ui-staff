@@ -278,20 +278,69 @@ describe('zsPickupKeyFindReservationCtrl', function() {
                 expect($state.go).toHaveBeenCalledWith('zest_station.pickUpKeyDispense', jasmine.any(Object));
             });
 
-            it('On CC validation succes, if the ID scan is turned ON, go to ID scan screen', function() {
+            describe('On CC validation succes', function() {
+                beforeEach(function() {
+                    spyOn(zsGeneralSrv, 'fetchGuestDetails').and.callFake(function() {
+                        var deferred = $q.defer();
 
+                        deferred.resolve({
+                            "primary_guest_details": {
+                                "is_passport_present": false,
+                                "guest_id_reviewed": false
+                            },
+                            "accompanying_guests_details": []
+                        });
+                        return deferred.promise;
+                    });
+
+                    spyOn(zsGeneralSrv, 'fetchCheckinReservationDetails').and.callFake(function() {
+                        var deferred = $q.defer();
+
+                        deferred.resolve({
+                            'results': []
+                        });
+                        return deferred.promise;
+                    });
+
+                    $scope.reservationData = {
+                        is_checked_in: true,
+                        guest_arriving_today: true
+                    };
+                });
+
+
+                it('On CC validation succes, if the ID scan is turned ON, go to ID scan screen', function() {
+                    $scope.zestStationData.check_in_collect_passport = true;
+                    $scope.validateCConFile();
+                    $scope.$digest();
+                    expect($state.go).toHaveBeenCalledWith('zest_station.checkInScanPassport', jasmine.any(Object));
+                });
+                it('On CC validation succes, if the Manul ID scan is turned ON, go to Manual ID scan screen', function() {
+                    $scope.zestStationData.check_in_collect_passport = false;
+                    $scope.zestStationData.kiosk_manual_id_scan = true;
+                    $scope.validateCConFile();
+                    $scope.$digest();
+                    expect($state.go).toHaveBeenCalledWith('zest_station.checkInIdVerification', jasmine.any(Object));
+                });
+            });
+
+            it('On CC validation succes, if the Manual ID scan is turned ON and ID was already verified, go to key creation screen', function() {
                 spyOn(zsGeneralSrv, 'fetchGuestDetails').and.callFake(function() {
                     var deferred = $q.defer();
 
                     deferred.resolve({
-                        'reservation_id': 123
+                        "primary_guest_details": {
+                            "is_passport_present": false,
+                            "guest_id_reviewed": true
+                        },
+                        "accompanying_guests_details": []
                     });
                     return deferred.promise;
                 });
 
                 spyOn(zsGeneralSrv, 'fetchCheckinReservationDetails').and.callFake(function() {
                     var deferred = $q.defer();
-                    
+
                     deferred.resolve({
                         'results': []
                     });
@@ -302,12 +351,13 @@ describe('zsPickupKeyFindReservationCtrl', function() {
                     is_checked_in: true,
                     guest_arriving_today: true
                 };
-
-                $scope.zestStationData.check_in_collect_passport = true;
+                $scope.zestStationData.check_in_collect_passport = false;
+                $scope.zestStationData.kiosk_manual_id_scan = true;
                 $scope.validateCConFile();
                 $scope.$digest();
-                expect($state.go).toHaveBeenCalledWith('zest_station.checkInScanPassport', jasmine.any(Object));
+                expect($state.go).toHaveBeenCalledWith('zest_station.pickUpKeyDispense', jasmine.any(Object));
             });
+
         });
     });
 });
