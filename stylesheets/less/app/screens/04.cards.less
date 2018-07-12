@@ -3384,11 +3384,13 @@
 
                 /* Activity Log **/
                 &.activity-log {
+
                     .tab-header {
                         padding: 0;
                         overflow: visible;
                         position: relative;
                         z-index: 999;
+
                         select {
                             padding-right: 25px;
                         }
@@ -3415,7 +3417,7 @@
                                 box-shadow: none;
 
                                 &.search {
-                                    .calc-width(100, 780);
+                                    .calc-width(100, 500);
 
                                     input {
                                         font-size: 18px;
@@ -3428,38 +3430,18 @@
                                 }
 
                                 &.dates {
-                                    width: 220px;
+                                    width: 260px;
 
                                     input {
                                         font-size: 14px;
                                     }
 
-                                    .entry-data { width: 105px; }
+                                    .entry-data { width: 125px; }
                                 }
 
                                 &:not(.search):not(.dates) {
                                     width: 150px;
                                     text-align: left;
-                                }
-
-                                .multi-select {
-                                    &.active {
-                                        &:after {
-                                            transform: rotate(180deg);
-                                        }
-                                    }
-
-                                    .checkbox {
-                                        display: block;
-                                    }
-                                }
-
-                                .multi-select-options {
-                                    .scrollable {
-                                        max-height: 180px;
-                                        position: relative;
-                                        overflow: hidden;
-                                    }
                                 }
                             }
                         }
