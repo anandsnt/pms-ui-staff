@@ -56,6 +56,10 @@ angular.module('admin').controller('adAXbaseCtrl', ['$scope', '$rootScope', 'con
             });
         };
 
+        $scope.toggleButton = function() {
+            $scope.isActivateTabSelected = !$scope.isActivateTabSelected;
+        }
+
         $scope.fetchTableData = function($defer, params) {
 
             $scope.callAPI(adInterfacesCommonConfigSrv.fetchRoomMappings, {
@@ -127,6 +131,7 @@ angular.module('admin').controller('adAXbaseCtrl', ['$scope', '$rootScope', 'con
             $scope.roomMappingsList = [];
             $scope.loadTable();
             $scope.fetchRoomMappings();
+            $scope.isActivateTabSelected = true;
         })();
     }
 ]);
