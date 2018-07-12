@@ -50,7 +50,7 @@ angular.module('admin').controller('adAXbaseCtrl', ['$scope', '$rootScope', 'con
                 $scope.loadTable();
             }
             $scope.isActivateTabSelected = !$scope.isActivateTabSelected;
-        }
+        };
 
         $scope.fetchTableData = function($defer, params) {
 
@@ -81,15 +81,15 @@ angular.module('admin').controller('adAXbaseCtrl', ['$scope', '$rootScope', 'con
 
         $scope.loadTable = function() {
             $scope.tableParams = new ngTableParams({
-                    page: 1,  // show first page
-                    count: $scope.displyCount, // count per page
-                    sorting: {
-                        name: 'asc' // initial sorting
-                    }
-                }, {
-                    total: 0, // length of data
-                    getData: $scope.fetchTableData
+                page: 1,  // show first page
+                count: $scope.displyCount, // count per page
+                sorting: {
+                    name: 'asc' // initial sorting
                 }
+            }, {
+                total: 0, // length of data
+                getData: $scope.fetchTableData
+            }
             );
         };
 
