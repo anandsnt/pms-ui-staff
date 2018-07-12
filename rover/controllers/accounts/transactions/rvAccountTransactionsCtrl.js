@@ -1151,6 +1151,11 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 			});
  			activebillTab.transactions = data.transactions;
  			activebillTab.total_count  = data.total_count;
+ 			
+ 			activebillTab.pageOptions = {
+	            perPage: $scope.perPage,
+	            api: getBillTransactionDetails
+	        };
 
  			// Compute the start, end and total count parameters
 			if (activebillTab.nextAction) {
@@ -1224,43 +1229,8 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 
 		// Pagination block starts here ..
 
-		$scope.loadNextSet = function() {
-			var activebillTab = $scope.transactionsDetails.bills[$scope.currentActiveBill];
+		
 
-			activebillTab.page_no++;
-			activebillTab.nextAction = true;
-			activebillTab.prevAction = false;
-			getBillTransactionDetails();
-		};
-
-		$scope.loadPrevSet = function() {
-			var activebillTab = $scope.transactionsDetails.bills[$scope.currentActiveBill];
-
-			activebillTab.page_no--;
-			activebillTab.nextAction = false;
-			activebillTab.prevAction = true;
-			getBillTransactionDetails();
-		};
-
-		$scope.isNextButtonDisabled = function() {
-			var activebillTab = $scope.transactionsDetails.bills[$scope.currentActiveBill];
-			var isDisabled = false;
-
-			if (!!activebillTab && (activebillTab.end >= activebillTab.total_count)) {
-				isDisabled = true;
-			}
-			return isDisabled;
-		};
-
-		$scope.isPrevButtonDisabled = function() {
-			var activebillTab = $scope.transactionsDetails.bills[$scope.currentActiveBill];
-			var isDisabled = false;
-
-			if (activebillTab.page_no === 1) {
-				isDisabled = true;
-			}
-			return isDisabled;
-		};
 		// Pagination block ends here ..
 
 		/*
