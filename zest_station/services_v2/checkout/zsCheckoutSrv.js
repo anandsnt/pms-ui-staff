@@ -144,6 +144,17 @@ sntZestStation.service('zsCheckoutSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseW
             return deferred.promise;
         };
 
+        this.validateCC = function(params) {
+            var deferred = $q.defer(),
+                url = 'guest/reservations/' + params.id + '/validate_cc';
 
+            zsBaseWebSrv2.getJSON(url, params).then(function(data) {
+                deferred.resolve(data);
+
+            }, function(data) {
+                deferred.reject(data);
+            });
+            return deferred.promise;
+        };
     }
 ]);

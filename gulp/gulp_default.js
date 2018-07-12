@@ -38,7 +38,8 @@ module.exports = function(gulp, $, options) {
                     'login-inject-assets-to-templates', 
                     'station-login-inject-assets-to-templates', 
                     'zest-inject-assets-to-templates',
-                    'guestweb-v2-inject-assets-to-templates'
+                    'guestweb-v2-inject-assets-to-templates',
+                    'copy-cordova-assets'
                 ],
 
         copyBaseHtmlToPublicAssets = [
@@ -59,7 +60,8 @@ module.exports = function(gulp, $, options) {
                     'build-zest-dev', 
                     'build-guestweb-dev',
                     'build-guestweb-v2-dev',
-                    'build-payment-dev'
+                    'build-payment-dev',
+                    'copy-cordova-assets'
                 ],
 
         watchTasks = [
