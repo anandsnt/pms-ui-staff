@@ -79,6 +79,10 @@ admin.service('ADAppSrv', ['ADBaseWebSrv', 'ADBaseWebSrvV2', '$q',
         return deferred.promise;
     };
 
+    this.signOut = function() {
+        return ADBaseWebSrvV2.getJSON('/logout');
+    };
+
     /*
   	* To fetch user details
   	* @return {object} user details
