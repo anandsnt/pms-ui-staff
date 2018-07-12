@@ -14,19 +14,27 @@ var GlobalApp = function() {
 
     this.setBrowser = function(browser) {
         
+        var url = "/assets/shared/cordova.js";
+
         if (typeof browser === 'undefined' || browser === '') {
             that.browser = "other";
-        }
-        else {
+        } else if (browser === 'rv_native_android') {
+            that.browser = 'rv_native';
+            that.cordovaLoaded = true;
+        } else {
             that.browser = browser;
         }
         if (browser === 'rv_native' && !that.cordovaLoaded) {
-           // TODO: check URL
-            var url = "/assets/shared/cordova.js";
+           that.loadScript(url);
+        }
+
+    };
+
+    this.loadScript = function(url) {
             /* Using XHR instead of $HTTP service, to avoid angular dependency, as this will be invoked from
              * webview of iOS / Android.
              */
-            var xhr = new XMLHttpRequest(); // TODO: IE support?
+            var xhr = new XMLHttpRequest(); // LATER: IE support?
 
             xhr.onreadystatechange = function() {
                 if (xhr.readyState === 4 && xhr.status === 200) {
@@ -37,10 +45,7 @@ var GlobalApp = function() {
             };
             xhr.open("GET", url, true);
 
-            xhr.send(); // TODO: Loading indicator
-
-        }
-
+            xhr.send(); // LATER: Loading indicator
     };
 
 
@@ -49,11 +54,13 @@ var GlobalApp = function() {
         // $("body").append('<script type="text/javascript">'+ script +'</script>');
         
         var script_node = document.createElement('script');
+        // script_node.src = url;
 
         script_node.innerHTML = script;
 
         document.getElementById("login-page").appendChild(script_node);
         that.cordovaLoaded = true;
+        
         try {
             
            that.loginUpdate = new LoginOperation();
@@ -64,7 +71,7 @@ var GlobalApp = function() {
 
     };
     // success function of coddova plugin's appending
-    this.fetchFailedOfCordovaPlugins = function(errorMessage) {
+    this.fetchFailedOfCordovaPlugins = function() {
         that.cordovaLoaded = false;
     };
 };

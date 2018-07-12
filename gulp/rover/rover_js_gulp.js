@@ -58,7 +58,7 @@ module.exports = function(gulp, $, options) {
 	        .pipe(gulp.dest(ROVER_TEMPLATE_ROOT, { overwrite: true }))
 	});
 
-	gulp.task('rover-build-js-and-mapping-list-prod', ['copy-cordova-assets'], function(){
+	gulp.task('rover-build-js-and-mapping-list-prod', function(){
 		var glob = require('glob-all'),
 			fileList = [],
 			es = require('event-stream'),
@@ -142,7 +142,7 @@ module.exports = function(gulp, $, options) {
 		});
 	});
 
-	gulp.task('rover-babelify-dev', ['rover-generate-mapping-list-dev', 'copy-cordova-assets'], function(){
+	gulp.task('rover-babelify-dev', ['rover-generate-mapping-list-dev'], function(){
 		delete require.cache[require.resolve(ROVER_JS_MAPPING_FILE)];
 		stateMappingList = require(ROVER_JS_MAPPING_FILE).getStateMappingList();
 		var fileList = [];
@@ -203,7 +203,7 @@ module.exports = function(gulp, $, options) {
 	});
 	
 	gulp.task('copy-cordova-assets', function(){
-		return gulp.src(['shared/cordova.js', 'shared/cordova_plugins.js'], {base: '.'})
+		return gulp.src(['shared/cordova.js'], {base: '.'})
 			.pipe(gulp.dest(DEST_ROOT_PATH, { overwrite: true }));
 	});
 
@@ -219,7 +219,8 @@ module.exports = function(gulp, $, options) {
 			combinedList = require(stateMappingList[state].filename).getList();
 			fileList = fileList.concat(combinedList.minifiedFiles.concat(combinedList.nonMinifiedFiles));
 		}
-		fileList = fileList.concat('shared/cordova.js');
+		// fileList = fileList.concat('shared/cordova.js')
+		// 			.concat('shared/cordova_android.js');
 		return gulp.src(fileList, {base: '.'})
 			.pipe(gulp.dest(DEST_ROOT_PATH, { overwrite: true }));
 	});

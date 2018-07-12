@@ -143,7 +143,9 @@ angular.module('sntRover').controller('reservationRoomStatus',
                         className: '',
                         scope: $scope
                     });
-		} else if ($scope.reservationData.reservation_card.reservation_status !== 'CHECKING_IN') {
+		} else if (keySettings === "pin") {
+            openKeyEncodePopup();
+        } else if ($scope.reservationData.reservation_card.reservation_status !== 'CHECKING_IN') {
                     ngDialog.open({
                         template: '/assets/partials/keys/rvKeyPopupNewDuplicate.html',
                         controller: 'RVKeyQRCodePopupController',
@@ -182,7 +184,7 @@ angular.module('sntRover').controller('reservationRoomStatus',
 		}
 
 		// Display the key encoder popup
-		else if (keySettings === "encode" || keySettings === "mobile_key_encode") {
+		else if (keySettings === "encode" || keySettings === "mobile_key_encode" ) {
             if ($scope.reservationData.reservation_card.is_remote_encoder_enabled && $scope.encoderTypes !== undefined && $scope.encoderTypes.length <= 0) {
                 fetchEncoderTypes();
             } else {
