@@ -3,7 +3,8 @@ angular.module('admin').controller('adAXbaseCtrl', ['$scope', '$rootScope', 'con
 
         ADBaseTableCtrl.call(this, $scope, ngTableParams);
 
-        var interfaceIdentifier = $stateParams.id;
+        var interfaceIdentifier = $stateParams.id,
+            isTableLoaded;
         var getFormatedRoomsList = function(data) {
             var roomlist = [];
 
@@ -44,19 +45,10 @@ angular.module('admin').controller('adAXbaseCtrl', ['$scope', '$rootScope', 'con
             });
         };
 
-        $scope.fetchRoomMappings = function() {
-            $scope.callAPI(adInterfacesCommonConfigSrv.fetchRoomMappings, {
-                params: {
-                    config: $scope.config,
-                    interfaceIdentifier: interfaceIdentifier
-                },
-                onSuccess: function(data) {
-                    $scope.roomMappings = data.room_mappings;
-                }
-            });
-        };
-
         $scope.toggleButton = function() {
+            if ($scope.isActivateTabSelected && !isTableLoaded) {
+                $scope.loadTable();
+            }
             $scope.isActivateTabSelected = !$scope.isActivateTabSelected;
         }
 
@@ -79,6 +71,7 @@ angular.module('admin').controller('adAXbaseCtrl', ['$scope', '$rootScope', 'con
                     $scope.data = getFormatedRoomsList(data);
                     $scope.currentPage = params.page();
                     params.total($scope.totalCount);
+                    $scope.isTableLoaded = true;
                     $defer.resolve($scope.data);
                 }
             });
@@ -129,9 +122,8 @@ angular.module('admin').controller('adAXbaseCtrl', ['$scope', '$rootScope', 'con
             $scope.config = config;
             $scope.interface = interfaceIdentifier.toUpperCase();
             $scope.roomMappingsList = [];
-            $scope.loadTable();
-            $scope.fetchRoomMappings();
             $scope.isActivateTabSelected = true;
+            isTableLoaded = false;
         })();
     }
 ]);
