@@ -92,6 +92,7 @@ admin.controller('ADUserListCtrl', ['$scope', '$rootScope', '$q', '$state', '$st
             $scope.data = data.users;
             $scope.currentPage = params.page();
             params.total(data.total_count);
+            $scope.manualIDScanEnabled = data.kiosk_manual_id_scan;
             $defer.resolve($scope.data);
         };
 

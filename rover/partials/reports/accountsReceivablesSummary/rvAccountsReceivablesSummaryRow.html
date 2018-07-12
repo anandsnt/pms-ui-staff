@@ -5,5 +5,6 @@
     <td>{{item.account_no}}</td>
     <td>{{item.corporate_id_or_iata}}</td>
     <td><span ng-if="item.commission.commission_type === 'amount'"><span class="currency">{{currencySymbol}}</span></span>{{item.commission.commission_value}}<span ng-if="item.commission.commission_type === 'percent'">%</span></td>
-    <td class="balance" ng-class="{'red': item.balance > 0, 'green': item.balance < 0}"><span class="currency">{{currencySymbol}}</span>{{item.balance | number:2}}</td>
+    <td class="balance red"><span class="currency">{{currencySymbol}}</span>{{item.open_balance | number:2}}</td>
+    <td class="balance green"><span class="currency">{{currencySymbol}}</span>{{item.credit | number:2}}</td>
 </tr>

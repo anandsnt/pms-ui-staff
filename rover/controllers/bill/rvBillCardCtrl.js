@@ -1368,6 +1368,7 @@ sntRover.controller('RVbillCardController',
 	$scope.completeCheckinSuccessCallback = function(data) {
 		// CICO-6109 : Without Authorization flow ..
 		$scope.$emit('hideLoader');
+		$scope.reservationBillData.room_pin = data.room_pin;
 	 	$scope.triggerKeyCreationProcess();
 	};
 
@@ -1435,7 +1436,7 @@ sntRover.controller('RVbillCardController',
 
 			// Display the key encoder popup
 			// https://stayntouch.atlassian.net/browse/CICO-21898?focusedCommentId=58632&page=com.atlassian.jira.plugin.system.issuetabpanels:comment-tabpanel#comment-58632
-			else if (keySettings === "encode"  || keySettings === "mobile_key_encode") {
+			else if (keySettings === "encode"  || keySettings === "mobile_key_encode" || keySettings === "pin") {
 				// when checking in we are creating a new key, popup controller expects this flag.
 				if ($scope.reservationData && $scope.reservationData.status && $scope.reservationData.status === 'CHECKING_IN') {
 					$scope.keyType = 'New';
@@ -2611,6 +2612,7 @@ sntRover.controller('RVbillCardController',
 	var printBill = function(data) {
 		var printDataFetchSuccess = function(successData) {
 			$scope.isPrintRegistrationCard = false;
+			$scope.printBillCardActive = true;
 			$scope.$emit('hideLoader');
 			$scope.printData = successData;
 			$scope.errorMessage = "";
@@ -2648,6 +2650,7 @@ sntRover.controller('RVbillCardController',
 
 				// remove the orientation after similar delay
 		    	removePrintOrientation();
+		    	$scope.printBillCardActive = false;
 		    }, 200);
 
 		};

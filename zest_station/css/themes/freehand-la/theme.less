@@ -1,0 +1,156 @@
+/* StayNTouch Zest Station Styles | Freehand NY Theme */
+
+/* 1. COLORS
+==========================================================*/
+    @brandColor:            #a32e27;
+    
+    @textColor:             @black;
+    @backgroundColor:       #f9f6e4;
+    
+    @actionColor:           @white;
+    @actionBackground:      @brandColor;
+    
+    @inputBackground:       #707070;
+    @transparentColor:      rgba(0,0,0,.35);
+
+/* 2. TYPOGRAPHY
+==========================================================*/
+    @fontFamily: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+
+/* 3. IMAGES
+==========================================================*/
+    @background:            @backgroundColor url("../css/themes/freehand-la/background.jpg") no-repeat 0% 100%;
+    @backgroundSize:        cover;
+    
+
+    @headerIconsColor:      @white;
+    @headerIconsActive:     @brandColor;
+
+    .icons { 
+        &.icon-create-key {
+            fill: @white;
+            stroke: @white;
+        }
+
+        &.icon-no-print { stroke: @white; }
+
+        &.icon-oos {
+            fill: @white;
+        }
+
+        &.icon-arrow-left,
+        &.icon-arrow-right {
+            fill: none;
+            stroke: @white;
+        }
+    }
+
+    .logo-svg{
+        background-image: url("../css/themes/freehand-la/logo.svg");
+        background-repeat: no-repeat;
+        background-size: contain;
+        width: 248px;
+        height: 126px;
+        background-position: center;
+        margin-top: 3.5%;
+    }
+
+/* 4. LAYOUT
+==========================================================*/
+    
+    #freehand-ny {
+
+        input,
+        select {
+            color: @white;
+        }
+
+        .button:not(.transparent):not(.blank):not(.option):not([disabled]):not(.disabled) {
+            background: fade(@actionBackground, 80%);
+        }
+        
+        .button {
+            &.disabled,
+            &[disabled] {
+                background: rgba(0,0,0,0.5);
+            }
+        }
+
+        #options li.break {
+            &:after,
+            &:before {
+                width: 4px;
+                border-radius:4px;
+                left: calc( 50% - 2px);
+            }
+        }
+
+        #logo {
+            padding-top: 60px;
+
+            .logo {
+                .size(auto, 248px);
+            }
+        }
+
+        #actions {
+            &.pull-right {
+                p {
+                    strong {
+                        font-size: 18px;
+                        font-weight: 400; 
+                    }
+                    color: @textColor;
+                }
+            }
+        }
+
+        #header {
+            .button {
+                .icons {
+                    fill: @black;
+                }
+            }
+        }
+
+        #main {
+          #calc > #height > .remove(100%, 125px);
+          top: 125px;
+          &.centered {
+            padding-top: 0;
+          }
+        }
+        
+        #options {
+            .icons {
+                fill: @white;
+            }
+        }
+
+        #guests {
+            .button {
+                color: @white;
+                background-color: @black;
+            }
+        }
+
+        #textual,
+        .popup {
+            .icons {
+                fill: @white;
+            }
+        }
+
+        .add-on { 
+            .add-on-content { 
+                .price { 
+                    .action  {
+                        input {
+                            color: @textColor;
+                        }
+                    }
+                }
+            }
+        }
+        
+    }

@@ -943,6 +943,14 @@ sntRover.controller('RVroomAssignmentController', [
 	$scope.init = function() {
 
 		$scope.roomTypes = roomPreferences.room_types;
+
+		// CICO-54354 - Exclude suite room types for allotment reservations in room assignment screen as its not implemented
+		if ( $scope.reservationData.allotment && $scope.reservationData.allotment.id) {
+			$scope.roomTypes = _.filter( $scope.roomTypes, function( roomType) {
+									return !roomType.is_suite;
+							 });
+		}
+
 		$scope.roomFeatures = roomPreferences.room_features;
 		$scope.allRooms = roomsList.rooms;// $scope.allRooms - CICO-23077
 		$scope.rooms = [];// CICO-23077

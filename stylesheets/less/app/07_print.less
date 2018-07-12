@@ -4,7 +4,7 @@
         text-shadow: none !important;
         filter:none !important;
         -ms-filter: none !important;
-        -webkit-print-color-adjust:exact;
+        -webkit-print-color-adjust: exact;
     }
 
     @page { margin: 1cm; }
@@ -29,6 +29,8 @@
     .search-form,
     .release-notes,
     .fullscreen-header,
+    .commissions-filters,
+    .overbooking-header { display: none !important; }
     #find-invoices { display: none !important; }
 
 /* 2. TYPOGRAPHY
@@ -2559,6 +2561,29 @@
                 border-collapse: collapse;
                 border-spacing: 0;
 
+                /* styles for commission summary print */ 
+                &.payment-report {
+                    thead {
+                        display: table-row-group;
+                        tr {
+                            th {
+                                &.room {
+                                    width: 75pt;
+                                }
+                            }
+                        }
+                    }
+                    tbody {
+                        tr {
+                            td {
+                                &.confirm-no {
+                                    width: 75pt;
+                                }
+                            }    
+                        }
+                    }
+                }
+
                 thead {
                     display: table-row-group;
                     tr {
@@ -4506,7 +4531,7 @@
         }
     }
 
-/* Commisions               =============================*/
+/* Commisions               ==============================*/
     .commissions-content {
         margin: 0 2cm;
 
@@ -4669,6 +4694,7 @@
             }
 
             .commission-details {
+                display: block !important;
                 th,
                 td {
                     &:first-child {
@@ -4688,7 +4714,316 @@
             }
         }
     }
-    
+
+/* Overbooking              ==============================*/
+    .overbooking-content {
+        #flexbox > .parent(row nowrap, '', '', '');
+
+        .row {
+            height: 18pt;
+            width: 100%;
+            box-shadow: inset 0 -1px 0 @grey2;
+            overflow: hidden;
+            #flexbox > .parent(row nowrap, '', '', '');
+        }
+
+        .cell {
+            line-height: 18pt;
+            text-align: right;
+            box-shadow: inset 1px 0 0 @grey2;
+            .size(18pt, 7.14%);
+            #flexbox > .parent(row nowrap, '', '', '');
+
+            .rooms {
+                font-size: 8pt;
+                font-style: italic;
+                color: @grey3;
+                display: none;
+
+                &.unavailable {
+                    color: @red;
+                }
+            }
+
+            .limit {
+                display: block;
+                padding: 0 8pt;
+                width: 100%;
+            }
+
+            &:last-child {
+                box-shadow: inset 1px 0 0 @grey2, inset -1px 0 0 @grey2;
+            }
+        }
+
+        .overbooking-timeline {
+            background-color: @grey1;
+            box-shadow: inset 0 -1px 0 @grey2, inset 0 1px 0 @grey2;
+            .size(44pt, 100%);
+            #flexbox > .parent(column wrap, space-between, '', '');
+
+            .wrapper {
+                padding: 5px;
+            }
+
+            .label {
+                margin-top: auto;
+                margin-left: auto;
+                font-weight: 600;
+                font-size: 8pt;
+                line-height: 22pt;
+                color: @textColor;
+            }
+
+            .row {
+                overflow: hidden;
+                .size(22pt, 100%);
+            }
+
+            .cell {
+                line-height: 22pt;
+                height: 22pt;
+
+                &.day {
+                    line-height: 1;
+                    text-align: center;
+                    text-transform: uppercase;
+                    padding: 4pt 6pt;
+                    flex-wrap: wrap;
+
+                    span {
+                        width: 100%;
+                        .show();
+                    }
+
+                    strong {
+                        font-weight: 600;
+                        width: 100%;
+                    }
+                }
+            }           
+
+            .limit {
+                font-size: 10pt;
+                font-weight: 600;
+            }
+        }
+
+        .overbooking-rooms {
+            width: 180px;
+            box-shadow: inset 1px 0 0 @grey2;
+
+            .row {
+                line-height: 1;
+                text-transform: uppercase;
+                text-align: right;
+                padding: 0 6pt;
+                #flexbox > .parent(column wrap, center, flex-end, '');
+            }
+        }
+
+        .overbooking-limits {
+            width: calc(~'100% - 180px');
+        }
+
+        /* Showing rooms left to sell ***/ 
+        &.showing-rooms {
+            .rooms {
+                display: block;
+                padding: 0 4pt 0 8pt;
+                width: 24pt;
+                box-shadow: inset -1px 0 0 @grey2;
+            }
+
+            .limit {
+                display: block;
+                padding-left: 4pt;
+                width: calc(~'100% - 24pt');
+            }
+        }
+    }
+
+/* Card Print               ==============================*/
+    .card-print {
+        .cards-wrapper {
+            .cards-header {
+                display: block !important;
+                height: auto;
+                margin-bottom: 20px;
+
+                .card-header {
+                    .float;
+
+                    .guest-image {
+                        .show;
+                        .pull-left;
+                        .square(40px);
+                        margin-right: 10px;
+
+                        .vip { .hide; }
+                    }
+
+                    form {
+                        .calc-width(100, 50);
+                        .pull-left;
+                        text-align: left;
+
+                        .status {
+                            display: inline-block;
+                            font-weight: inherit;
+                            font-size: inherit;
+                        }
+
+                        .name { font-size: 1.5em; font-weight: 600; }
+
+                        ul {
+                            li {
+                                display: inline-block;
+                                margin: 0 10px 0 0;
+                            }
+                        }
+
+                        .switch-button {
+                            vertical-align: middle;
+                            padding-left: 10px;
+                            margin-left: 10px;
+                            border-left: 1px solid rgba(0,0,0,0.1);
+                            width: auto;
+                            &.on { display: inline-block; }
+                            &:not(.on),
+                            .data-off,
+                            input { .hide; }
+
+                            .data-on { 
+                                .float;
+
+                                .value { .hide; }
+                                .switch-icon { 
+                                    .pull-left;
+                                    background: transparent;
+                                    border-radius: 0;
+                                    color: @black;
+                                    font-size: inherit;
+
+                                    &.vip {
+                                        font-weight: inherit;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        .notice,
+        .card-tabs-nav { .hide; }
+
+        .card-tab { 
+            display: block !important; 
+            .float;
+
+            .entry {
+                width: 100%;
+                margin: 0;
+                .float;
+
+                /** Something in PMS that can't be removed? */
+                .check-block { display: inline-block; }
+
+                label { 
+                    display: inline-block;
+                    &:not(.checkbox):not(.radio) {
+                        width: 150px;
+                    }
+
+                    &.checkbox,
+                    &.radio {
+                        &:not(.checked),
+                        .icon-form,
+                        input { .hide; }
+
+                        float: none;
+
+                        &.checked {
+                            &.print-block { display: block !important; }
+                        }
+                    }
+                }
+
+                input,
+                .select {
+                    display: inline-block;
+                    vertical-align: middle;
+                    .calc-width(100,200);
+                }
+                
+                .select {
+                    &:after { .hide; }
+                }
+
+                .clear-value { .hide; }
+
+                input,
+                select,
+                label.checkbox,
+                label.radio {
+                    background: transparent;
+                    min-height: auto;
+                    height: auto;
+                    line-height: 18px;
+                    border:0;
+                    padding: 0;
+                    font-size: 14px;
+                    .box-shadow(none);
+                }
+            }
+
+            .holder,
+            .entry {
+                span {
+                    &.only-print { font-size: 14px; }
+                }
+            }
+
+            .h3 {
+                margin-bottom: 15px;
+                margin-top: 30px;
+                font-size: 16px;
+                font-weight: 600;
+            }
+
+            .active-item {
+                display: block;
+                padding: 10px 0;
+                border-bottom: 1px solid rgba(0,0,0,0.15);
+
+                &.item-loyalty {
+                    .value {
+                        &.code,
+                        &.number {
+                            margin-rigth: 40px;
+                        }
+
+                        &.code {
+                            width: 100px;
+                        }
+
+                        &.number {
+                            width: 150px;
+                        }
+                    }
+                }
+                .card-logo {
+                    margin: 0 40px 0 0;
+                }
+                .primary { .hide; }
+                
+            }
+            .add-new-button { .hide; }
+        }
+    }
+
 /* 6. IE
 ==========================================================*/
 /* 7. RESPONSIVE

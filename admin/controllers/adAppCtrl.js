@@ -77,10 +77,12 @@ admin.controller('ADAppCtrl', [
 	    var isNeighboursEnabled = false;
 
         var setupLeftMenu = function() {
-            var shouldHideNightlyDiaryMenu = true;
+            var shouldHideNightlyDiaryMenu = true,
+                shouldHideSellLimitMenu = true;
 
             if (!$rootScope.isHourlyRatesEnabled) {
                 shouldHideNightlyDiaryMenu  = !$rootScope.isRoomDiaryEnabled && $rootScope.isPmsProductionEnv;
+                shouldHideSellLimitMenu = !$rootScope.isSellLimitEnabled && $rootScope.isPmsProductionEnv;
             }
             if ($scope.isStandAlone) {
                 $scope.menu = [
@@ -204,7 +206,21 @@ admin.controller('ADAppCtrl', [
                                 title: 'MENU_TA_CARDS',
                                 action: 'rover.companycardsearch',
                                 menuIndex: 'cards'
-                            }]
+                            },
+                            {
+                                title: 'MENU_DISTRIBUTION_MANAGER',
+                                action: ''
+                            },
+                            {
+                                title: 'MENU_SELL_LIMITS',
+                                action: 'rover.overbooking',
+                                actionParams: {
+                                    start_date: $rootScope.businessDate
+                                },
+                                standAlone: true,
+                                hidden: shouldHideSellLimitMenu
+                            }
+                        ]
                     }, {
                         title: 'MENU_HOUSEKEEPING',
                         action: '',
@@ -254,11 +270,24 @@ admin.controller('ADAppCtrl', [
                         submenu: []
 
                     }, {
-                        title: 'MENU_REPORTS',
-                        action: 'rover.reports.dashboard',
-                        menuIndex: 'reports',
-                        iconClass: 'icon-reports',
-                        submenu: []
+                        title: "MENU_REPORTS",              
+                        action: "",
+                        iconClass: "icon-reports",
+                        menuIndex: "reports",               
+                        submenu: [{
+                            title: "MENU_NEW_REPORT",
+                            action: "rover.reports.dashboard",
+                            menuIndex: "new_report"
+                        }, {
+                            title: "MENU_REPORTS_INBOX",
+                            action: "rover.reports.inbox",
+                            menuIndex: "reports-inbox",
+                            hidden: !$rootScope.isBackgroundReportsEnabled
+                        }, {
+                            title: "MENU_SCHEDULE_REPORT_OR_EXPORT",
+                            action: "rover.reports.scheduleReportsAndExports",
+                            menuIndex: "schedule_report_export"
+                        }]
                     }];
                 // menu for mobile views
                 $scope.mobileMenu = [
@@ -293,11 +322,24 @@ admin.controller('ADAppCtrl', [
                             menuIndex: 'roomStatus'
                         }]
                     }, {
-                        title: 'MENU_REPORTS',
-                        action: 'rover.reports.dashboard',
-                        menuIndex: 'reports',
-                        iconClass: 'icon-reports',
-                        submenu: []
+                        title: "MENU_REPORTS",              
+                        action: "",
+                        iconClass: "icon-reports",
+                        menuIndex: "reports",               
+                        submenu: [{
+                            title: "MENU_NEW_REPORT",
+                            action: "rover.reports.dashboard",
+                            menuIndex: "new_report"
+                        }, {
+                            title: "MENU_REPORTS_INBOX",
+                            action: "rover.reports.inbox",
+                            menuIndex: "reports-inbox",
+                            hidden: !$rootScope.isBackgroundReportsEnabled
+                        }, {
+                            title: "MENU_SCHEDULE_REPORT_OR_EXPORT",
+                            action: "rover.reports.scheduleReportsAndExports",
+                            menuIndex: "schedule_report_export"
+                        }]
                     }
                 ];
                 // menu for mobile views
@@ -605,12 +647,17 @@ admin.controller('ADAppCtrl', [
 			$rootScope.emvTimeout = data.emv_timeout || 120; // default timeout is 120s
             $rootScope.wsCCSwipeUrl = data.cc_swipe_listening_url;
             $rootScope.wsCCSwipePort = data.cc_swipe_listening_port;
+            // CICO-51146
+            $rootScope.isBackgroundReportsEnabled = data.background_report;
 
             // CICO-40544 - Now we have to enable menu in all standalone hotels
             // API not removing for now - Because if we need to disable it we can use the same param
             // $rootScope.isRoomDiaryEnabled = data.is_room_diary_enabled;
             $rootScope.isRoomDiaryEnabled = true;
             $rootScope.isPmsProductionEnv = data.is_pms_prod;
+
+            // CICO-54961 - Hide Sell Limit feature for all hotels except for the pilot property 
+            $rootScope.isSellLimitEnabled = data.is_sell_limit_enabled;
 
 			// CICO-18040
 			$rootScope.isFFPActive = data.is_ffp_active;

@@ -41,7 +41,7 @@ module.exports = {
 				sharedRoot + 'directives/**/*.js',
 				sharedRoot + 'baseCtrl.js',
                 sharedRoot + 'cardReaderCtrl.js',
-                sharedRoot + 'cordova.js',
+                // sharedRoot + 'cordova.js',
                 sharedRoot + 'sntTransitionManager/**/*.js',
 
 				roverRoot + 'rvRouters/**/*.js',

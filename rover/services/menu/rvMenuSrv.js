@@ -46,7 +46,7 @@ angular.module('sntRover').service('rvMenuSrv',
     * @return {Boolean}
     */
     var isConnected = function() {
-    	return (RVHotelDetailsSrv.hotelDetails.pms_type === null);
+    	return (RVHotelDetailsSrv.hotelDetails.pms_type !== null);
     };
     /**
      * Decide whether the task management submenu is to be shown in housekeeping menu
@@ -248,6 +248,14 @@ angular.module('sntRover').service('rvMenuSrv',
 		            title: "MENU_TA_CARDS",
 		            action: "rover.companycardsearch",
 		            menuIndex: "cards"
+		        }, {
+		            title: "MENU_DISTRIBUTION_MANAGER",
+		            action: "",
+		            menuIndex: "distribution_manager"
+		        }, {
+		            title: "MENU_SELL_LIMITS",
+		            action: "rover.overbooking",
+		            menuIndex: "overbooking"
 		        }]
 		    }, {
 		        title: "MENU_HOUSEKEEPING",
@@ -304,13 +312,27 @@ angular.module('sntRover').service('rvMenuSrv',
                 menuIndex: "actionManager",
                 iconClass: "icon-actions",
                 submenu: []
-            }, {
-		        title: "MENU_REPORTS",
-		        action: "rover.reports.dashboard",
-		        menuIndex: "reports",
+            },
+            {
+		        title: "MENU_REPORTS",		        
+		        action: "",
 		        iconClass: "icon-reports",
-		        submenu: []
-		    }
+		        menuIndex: "reports",		        
+		        submenu: [{
+		            title: "MENU_NEW_REPORT",
+		            action: "rover.reports.dashboard",
+		            menuIndex: "new_report"
+		        }, {
+		            title: "MENU_REPORTS_INBOX",
+		            action: "rover.reports.inbox",
+		            menuIndex: "reports-inbox",
+		            hidden: !$rootScope.isBackgroundReportsEnabled
+		        }, {
+		            title: "MENU_SCHEDULE_REPORT_OR_EXPORT",
+		            action: "rover.reports.scheduleReportsAndExports",
+		            menuIndex: "schedule_report_export"
+		        }]
+            }            
 		];
 
 		return processMenuList (menuList);
@@ -344,12 +366,25 @@ angular.module('sntRover').service('rvMenuSrv',
 				]
 			},
 			{
-				title: "MENU_REPORTS",
-				action: "rover.reports.dashboard",
-				menuIndex: "reports",
-				iconClass: "icon-reports",
-				submenu: []
-			}
+		        title: "MENU_REPORTS",		        
+		        action: "",
+		        iconClass: "icon-reports",
+		        menuIndex: "reports",		        
+		        submenu: [{
+		            title: "MENU_NEW_REPORT",
+		            action: "rover.reports.dashboard",
+		            menuIndex: "new_report"
+		        }, {
+		            title: "MENU_REPORTS_INBOX",
+		            action: "rover.reports.inbox",
+		            menuIndex: "reports-inbox",
+		            hidden: !$rootScope.isBackgroundReportsEnabled
+		        }, {
+		            title: "MENU_SCHEDULE_REPORT_OR_EXPORT",
+		            action: "rover.reports.scheduleReportsAndExports",
+		            menuIndex: "schedule_report_export"
+		        }]
+            }
 		];
 
 		return processMenuList (menu);
@@ -497,7 +532,8 @@ angular.module('sntRover').service('rvMenuSrv',
 			'accounts': ['ACCESS_ACCOUNTS'],
 
 			'changePassword': ['SETTINGS_CHANGE_PASSWORD_MENU'],
-			'adminSettings': ['SETTINGS_ACCESS_TO_HOTEL_ADMIN']
+			'adminSettings': ['SETTINGS_ACCESS_TO_HOTEL_ADMIN'],
+			'overbooking': ['OVERBOOKING_MENU']
 
 
 		};
@@ -582,6 +618,13 @@ angular.module('sntRover').service('rvMenuSrv',
 				returnValue = isNeighboursEnabled();
 				break;
 				// we display social lobby to only
+
+			// dont wanted to show on hourly enabled hotels
+			case 'overbooking':
+				var isSellLimitEnabled = ($rootScope.isPmsProductionEnv) ? $rootScope.isSellLimitEnabled : true;
+
+				returnValue = !isHourlyRateOn() && !isConnected() && isSellLimitEnabled;
+				break;
 
 			default:
         		break;
