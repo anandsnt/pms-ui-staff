@@ -139,7 +139,16 @@ sntZestStation.controller('zsPickupAndCheckoutReservationSearchCtrl', [
             var onSuccess = function(response) {
                 zsCheckinSrv.setSelectedCheckInReservation(response.results);// important
 
-                $state.go('zest_station.checkInScanPassport', stateParams);
+                if ($scope.zestStationData.kiosk_manual_id_scan) {
+                    stateParams.mode = 'PICKUP_KEY';
+                    stateParams.reservation_id = reservation_id;
+                    $state.go('zest_station.checkInIdVerification', {
+                        params: JSON.stringify(stateParams)
+                    });
+                } else {
+                    $state.go('zest_station.checkInScanPassport', stateParams);
+                }
+
             };
 
             var options = {
@@ -179,7 +188,7 @@ sntZestStation.controller('zsPickupAndCheckoutReservationSearchCtrl', [
                             station setting is active
                      */
 
-                    if ($scope.zestStationData.check_in_collect_passport) {
+                    if ($scope.zestStationData.check_in_collect_passport || $scope.zestStationData.kiosk_manual_id_scan) {
                          // if passport setting is ON, 
                          //  call api to fetch guest details prior to continuing
                          //  
@@ -189,7 +198,7 @@ sntZestStation.controller('zsPickupAndCheckoutReservationSearchCtrl', [
 
                         var successCallBack = function(guest_details) {
 
-                            if (!$scope.reservationHasPassportsScanned(guest_details)) {
+                            if (!$scope.reservationHasPassportsScanned(guest_details)  && !guest_details.primary_guest_details.guest_id_reviewed) {
 
                                 $scope.trackSessionActivity('PUK', 'Fetch Success', 'R' + data.reservation_id, 'TO_SCAN_PASSPORTS');
                                     // 

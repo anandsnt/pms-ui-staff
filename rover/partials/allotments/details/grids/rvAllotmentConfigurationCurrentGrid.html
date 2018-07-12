@@ -138,7 +138,7 @@
                         rv-delay-textbox
                         delay="100"
                         function-to-fire="bookingDataChanging"
-                        ng-disabled="!isValueConfigured(dateData.single_contract)"
+                        ng-disabled="shouldDisableSingleEntryBox(dateData, roomType)"
                         ng-model="dateData.single"
                         class="cell" /> <!-- Add attr "disabled" when group is canceled -->
                     <input type="text"
@@ -165,7 +165,7 @@
                         delay="100"
                         function-to-fire="bookingDataChanging"
                         ng-model="dateData.double"
-                        ng-disabled="!isValueConfigured(dateData.double_contract)" 
+                        ng-disabled="shouldDisableDoubleEntryBox(dateData, roomType)" 
                         class="cell" />
                     <input type="text"
                         rv-delay-textbox
@@ -191,7 +191,7 @@
                         delay="100"
                         function-to-fire="bookingDataChanging"
                         ng-model="dateData.triple"
-                        ng-disabled="!isValueConfigured(dateData.triple_contract)"
+                        ng-disabled="shouldDisableTripleEntryBox(dateData, roomType)"
                         class="cell" />
                     <input type="text"
                         rv-delay-textbox
@@ -217,7 +217,7 @@
                         rv-delay-textbox
                         delay="100"
                         function-to-fire="bookingDataChanging"
-                        ng-disabled="!isValueConfigured(dateData.quadruple_contract)"
+                        ng-disabled="shouldDisableQuadrupleEntryBox(dateData, roomType)"
                         ng-model="dateData.quadruple"
                         class="cell" />
                     <input type="text"
