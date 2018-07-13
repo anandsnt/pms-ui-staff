@@ -1,0 +1,92 @@
+<section class="content current admin-scrollfix" div-touch-move-stop-propogate ng-click='clearErrorMessage()'>
+    <header class="content-title">
+        <h2 translate> AXBASE3000 </h2>
+        <a ng-click ="goBackToPreviousState()" class="action back" translate>BACK</a>
+        <div class="actions float pull-right">
+            <button type="button" class="button add-data-inline toggle-tab" ng-click="toggleButton()"
+                    ng-class="{'orange' : isActivateTabSelected, 'white' : !isActivateTabSelected}">
+                ACTIVATE AXBASE3000
+            </button>
+            <button type="button" class="button add-data-inline toggle-tab" ng-click="toggleButton()"
+                    ng-class="{'orange' : !isActivateTabSelected, 'white' : isActivateTabSelected}">
+                Room Mappings
+            </button>
+        </div>
+    </header>
+    <section class="content-scroll" ng-show="isActivateTabSelected">
+        <div ng-include="'/assets/partials/common/notification_message.html'"></div>
+        <div ng-include="'/assets/partials/common/notification_success_message.html'"></div>
+        <form class="form float" >
+            <div class="entry full-width">
+                <fieldset class="holder left">
+                    <ad-toggle-button is-checked="config.enabled" label="{{'ACTIVATE_INACTIVATE'| translate}}"></ad-toggle-button>
+                    <ad-textbox value="config.endpoint" label="{{'AXBASE_END_POINT' | translate }}" placeholder="{{'AXBASE_END_POINT_URL_PLACEHOLDER' | translate }}" required="yes"></ad-textbox>
+                    <div class="entry full-width" ng-show="config.enabled">
+                        <label>
+                            Import Rooms
+                        </label>
+                        <button type="button" like-type="common" class="button ng-binding blue sm-refresh-btn" ng-click="startImportRooms()" translate>
+                            Import Rooms
+                        </button>
+                    </div>
+
+                </fieldset>
+            </div>
+            <div class="actions float">
+                <button type="button" id="cancel" class="button blank add-data-inline" ng-click="goBackToPreviousState()" translate>
+                    CANCEL
+                </button>
+                <button type="button" like-type="common" id="update" class="button ng-binding green" ng-click="saveInterfaceConfig()" translate>
+                    SAVE_CHANGES
+                </button>
+            </div>
+        </form>
+    </section>
+    <!-- Manage Floors Section -->
+
+    <section class="content-scroll" ng-show="selectedTab !== 'isActivateTabSelected'">
+        <div ng-include="'/assets/partials/common/notification_message.html'"></div>
+        <div ng-include="'/assets/partials/common/notification_success_message.html'"></div>
+        <table id="rooms" class="grid datatable" ng-table="tableParams" template-pagination="custom/pager">
+            <tbody>
+            <tr ng-repeat="room in $data" room-id="{{room.room_id}}">
+                <td data-title="'Room Number'" sortable="'room_number'" header-class="width-50">
+                    <a ui-sref='admin.roomdetails({roomId:room.room_id})' class="number edit-data">
+                        {{room.room_number}}
+                    </a>
+                </td>
+                <td data-title="'Room Type'" sortable="'room_type_name'" header-class="width-50">
+                    <div class="entry">
+                        <div class="select">
+                            <select class="placeholder" ng-model="room.external_value" ng-options="roomMapping.external_value as roomMapping.meta_data.description for roomMapping in roomMappings" ng-change="updateMappings(room)">
+                                <option value="" disabled>Select Mapping</option>
+                            </select>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+
+        <!--Custom pagination footer goes here-->
+        <script type="text/ng-template" id="custom/pager">
+            <div class="pager">
+                <span ng-show="totalCount>0">Showing {{startCount}} to {{endCount}} of {{totalCount}} items</span>
+                <span ng-show="totalCount==0">Showing 0 items</span>
+                <ul class="ng-cloak">
+                    <li ng-repeat="page in pages" ng-class="{'previous': page.type == 'prev', 'next': page.type == 'next'}" ng-show="page.type == 'prev' || page.type == 'next'" ng-switch="page.type">
+
+                        <a ng-switch-when="prev" ng-click="params.page(1)" class="page" ng-class="{'disabled': !page.active}">First</a>
+                        <a ng-switch-when="prev" ng-click="params.page(page.number)" class="page" ng-class="{'disabled': !page.active}">Previous</a>
+                        <a ng-switch-when="prev" ng-click="params.page(page.number)" class="page" ng-class="{'disabled': !page.active}">{{page.number}}</a>
+
+                        <a ng-switch-when="next" ng-click="params.page(page.number)" class="page" ng-class="{'disabled': !page.active}">{{page.number}}</a>
+                        <a ng-switch-when="next" ng-click="params.page(page.number)" class="page" ng-class="{'disabled': !page.active}">Next</a>
+                        <a ng-switch-when="next" ng-click="params.page(totalPage)" class="page" ng-class="{'disabled': !page.active}">Last</a>
+                    </li>
+                </ul>
+            </div>
+        </script>
+        <!--end-->
+    </section>
+</section>

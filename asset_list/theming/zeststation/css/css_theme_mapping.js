@@ -44,7 +44,8 @@ module.exports = {
             'bunk': [themeCSSRoot + 'bunk.less'],
             'rydges': [themeCSSRoot + 'rydges.less'],
             'freehand-la': [themeCSSRoot + 'freehand-la.less'],
-            'east-london': [themeCSSRoot + 'east-london.less']
+            'east-london': [themeCSSRoot + 'east-london.less'],
+            'farmers-daughter': [themeCSSRoot + 'farmers-daughter.less']
         };
     }
 };
