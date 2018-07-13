@@ -45,9 +45,10 @@
             <nav id="options" role="nav" class="options-menu">
                 <ul role="menu">
                     <li>
-                        <button type="button" class="button option" ng-if="!isCBAPayment">
+                        <button type="button" class="button option" ng-if="!isCBAPayment && !icmp">
                             <div ng-include="icons.url.creditcard"></div>
                         </button>
+                        <div ng-include="icons.url.creditcard_icmp" ng-if="!isCBAPayment  && icmp"></div>
                         <text data-ng-bind-html="getTagValue('SWIPE_CARD_PLEASE')" editable-text="SWIPE_CARD_PLEASE"></text>
                         <img src="/assets/zest_station/css/icons/default/ingenico.png" alt="" class="device-image device-ingenico" ng-if="isCBAPayment"/>
                     </li>

@@ -475,7 +475,12 @@ sntZestStation.controller('zsRootCtrl', [
                 $scope.icons.url.createkey_icmp = $scope.iconsPath + '/encode_image.svg';
                 $scope.icons.url.creditcard_icmp = $scope.iconsPath + '/demo_swiper.svg';
                 $scope.icmp = true;
-            } else {
+            } 
+            else if ($scope.zestStationData.theme === 'ihg' && readLocally()){
+                // TO DO: clean above code to avoid duplicate code after this HF
+                $scope.icons.url.creditcard_icmp = $scope.iconsPath + '/demo_swiper.svg'
+                $scope.icmp = true;
+            }else {
                 $scope.icmp = false;
             }
         };
