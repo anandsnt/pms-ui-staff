@@ -8,7 +8,7 @@ describe('rvGroupConfigurationSummaryTab', function () {
             beforeEach(function () {
                 module('sntRover');
 
-                inject(function (_$controller_, _$q_, _$rootScope_, _rvGroupSrv_) {
+                inject(function (_$controller_, _$q_, _$rootScope_) {
                     $controller = _$controller_;
                     $scope = _$rootScope_.$new();
                     $scope.groupConfigData = {};
