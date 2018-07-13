@@ -59,6 +59,9 @@ sntZestStation.controller('zsCheckInMLIAndCBACCCollectionCtrl', [
 			$scope.waitingForSwipe = false;
 			$scope.swipeTimeout = false;
 			$scope.swipeError = true;
+			if (stateParams.mode === 'DEPOSIT') {
+				$scope.screenMode.value = 'DEPOSIT';
+			}
 		};
 
 		$scope.reTryCardSwipe = function() {
@@ -66,6 +69,7 @@ sntZestStation.controller('zsCheckInMLIAndCBACCCollectionCtrl', [
 			$scope.swipeError = false;
 			$scope.swipeTimeout = false;
 			if ($scope.screenMode.paymentAction === 'PAY_AMOUNT') {
+				$scope.screenMode.value = 'PAYMENT_IN_PROGRESS';
 				startCBAPayment();
 			}
 		};
