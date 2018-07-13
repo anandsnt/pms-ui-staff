@@ -1643,6 +1643,14 @@ angular.module('sntRover').controller('rvGroupConfigurationSummaryTab', ['$scope
                 $scope.shouldShowSegments = $scope.shouldShowSegments && $scope.hotelSettings.force_segments;
             }
         };
+        /*
+         * Set tax exempt type id null when toggle is inactivated
+         */
+        $scope.clickedTaxExemptToggle = function() {
+            if (!$scope.groupConfigData.summary.is_tax_exempt) {
+                $scope.groupConfigData.summary.tax_exempt_type_id = '';
+            }            
+        };
 
         /**
          * Invoked from the groupconfig ctrl while saving a new group
