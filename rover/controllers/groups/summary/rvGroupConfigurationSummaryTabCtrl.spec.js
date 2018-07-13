@@ -1,11 +1,7 @@
 describe('rvGroupConfigurationSummaryTab', function () {
 
     var $controller,
-        $scope,
-        $q,
-        $rootScope,
-        rvGroupSrv,
-        RVGroupConfigurationSummaryTabController;
+        $scope;
 
         describe('Folio Generation', function () {
 
@@ -14,10 +10,6 @@ describe('rvGroupConfigurationSummaryTab', function () {
 
                 inject(function (_$controller_, _$q_, _$rootScope_, _rvGroupSrv_) {
                     $controller = _$controller_;
-                    rvGroupSrv = _rvGroupSrv_;
-                    $q = _$q_;
-                    $rootScope = _$rootScope_;
-
                     $scope = _$rootScope_.$new();
                     $scope.groupConfigData = {};
                     $scope.groupConfigData.summary = {};
@@ -41,7 +33,7 @@ describe('rvGroupConfigurationSummaryTab', function () {
                     }
                 });
 
-                 RVGroupConfigurationSummaryTabController = $controller('rvGroupConfigurationSummaryTab', {
+                $controller('rvGroupConfigurationSummaryTab', {
                     $scope: $scope
                 });
             }); 
