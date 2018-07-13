@@ -3736,7 +3736,22 @@
                             .iScrollIndicator { background: rgba(0,0,0,.1); }
                         }
 
-                        &.search { .calc-height(100, 190); }
+                        &.search { 
+                            .calc-height(100, 190);
+
+                            &.entities-list-cards {
+                                .calc-height(100, 220);
+                            }
+                        }
+                    }
+
+                    .search-filter {
+                        &.checkbox {
+                            position: absolute;
+                            bottom: 60px;
+                            left: 20px;
+                            margin: 0;
+                        }
                     }
 
                     #cancel-entity-search {
