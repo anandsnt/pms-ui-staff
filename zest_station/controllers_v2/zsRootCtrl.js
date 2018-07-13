@@ -476,11 +476,11 @@ sntZestStation.controller('zsRootCtrl', [
                 $scope.icons.url.creditcard_icmp = $scope.iconsPath + '/demo_swiper.svg';
                 $scope.icmp = true;
             } 
-            else if ($scope.zestStationData.theme === 'ihg' && readLocally()){
+            else if ($scope.zestStationData.theme === 'ihg' && readLocally()) {
                 // TO DO: clean above code to avoid duplicate code after this HF
                 $scope.icons.url.creditcard_icmp = $scope.iconsPath + '/demo_swiper.svg'
                 $scope.icmp = true;
-            }else {
+            } else {
                 $scope.icmp = false;
             }
         };
