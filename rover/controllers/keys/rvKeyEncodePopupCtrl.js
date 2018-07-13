@@ -46,7 +46,7 @@ sntRover.controller('RVKeyEncodePopupCtrl', [
 			$scope.data.confirmNumber = $scope.reservationBillData.confirm_no;
 			$scope.data.roomNumber = $scope.reservationBillData.room_number;
 			$scope.data.key_settings = $scope.reservationBillData.key_settings;
-			$scope.data.pin_code = $scope.reservationBillData.pin_code;
+			$scope.data.room_pin = $scope.reservationBillData.room_pin;
 			$scope.data.reservation_id = $scope.reservationBillData.reservation_id;
 		// If the keypopup inviked from inhouse - staycard card)
 		} else {
@@ -56,7 +56,7 @@ sntRover.controller('RVKeyEncodePopupCtrl', [
 			$scope.data.confirmNumber = $scope.reservationData.reservation_card.confirmation_num;
 			$scope.data.roomNumber = $scope.reservationData.reservation_card.room_number;
 			$scope.data.key_settings = $scope.reservationData.reservation_card.key_settings;
-			$scope.data.pin_code = $scope.reservationData.reservation_card.pin_code;
+			$scope.data.room_pin = $scope.reservationData.reservation_card.room_pin;
 			$scope.data.reservation_id = $scope.reservationData.reservation_card.reservation_id;
 		}
 
@@ -133,11 +133,20 @@ sntRover.controller('RVKeyEncodePopupCtrl', [
 	};
 
 	var getPrintContent = function() {
-		return '<div id="key-status" class="pin">' +
-					// '<span class="h2 message">Pin Code</span>' +
-			        '<span class="text">Room Pin Code is </span>' +
-			        '<span class="pin-number">' + $scope.data.pin_code + '</span>' + 
-	    		'</div>';
+		
+	 var pincodeContent = '<div class="only-print" style="height: 320px;display: table;position: absolute;top:10px;padding: 20px;text-align: center;float: left;    width: 100%;">' +
+	 						'<h1 style="font-size: 48px;font-weight: 300;width: 100%;margin: 0 auto;text-overflow: ellipsis;overflow: hidden;white-space: nowrap;display: block;">' +
+								'<span >' + $scope.guestCardData.contactInfo.first_name + " " + $scope.guestCardData.contactInfo.last_name + '</span>' +
+				            
+	            				'</br><span >Room: ' + $scope.data.roomNumber + '</span>' +
+							'</h1>' +
+							'</br><span > Reservation ' + $scope.data.confirmNumber + '</span>' +
+						   '</div>' +
+			'<div class="only-print" style="height: 320px;display: table;position: absolute;bottom:100px;padding: 20px;text-align: center;float: left;    width: 100%;"> <span >Pin Code</span>' +
+	        '</br></br><span >Room Pin Code is</span></br>' +
+	        '<span style="font-size: 80px;font-weight: 700;letter-spacing: 10px;display: block;line-height: 80px;height: 80px;margin-top: 50px;margin-bottom: 40px;">' + $scope.data.room_pin + '</span></div>';
+
+	 return pincodeContent;
 
 	};
 
@@ -146,9 +155,11 @@ sntRover.controller('RVKeyEncodePopupCtrl', [
 		$('.cards-header').addClass('no-print');
 		$('.card-tabs-nav').addClass('no-print');
 
+
 		var pinEl = document.createElement("div");
 		
-		pinEl.innerHTML = getPrintContent();		
+		pinEl.innerHTML = getPrintContent();
+		// var currenBody = document.body.innerHTML;		
 		document.body.appendChild(pinEl);
 
 		// this will show the popup with full report
@@ -411,14 +422,13 @@ sntRover.controller('RVKeyEncodePopupCtrl', [
 	this.callKeyFetchAPI = function(cardInfo) {
         sntActivity.start('GET_KEY_IMAGE');
 		that.setStatusAndMessage($filter('translate')('KEY_GETTING_KEY_IMAGE_STATUS'), 'pending');
-		var reservationId = '';
 
 	    var postParams = {"reservation_id": $scope.data.reservation_id, "key": 1, "is_additional": true};
 	    // for initial case the key we are requesting is not additional
 
 	    if (!that.isAdditional) {
 	    	that.isAdditional = true;
-	    	var postParams = {"reservation_id": reservationId, "key": 1, "is_additional": false};
+	    	var postParams = {"reservation_id": $scope.data.reservation_id, "key": 1, "is_additional": false};
 	    }
 	    if (typeof cardInfo !== 'undefined') {
 	    	postParams.card_info = cardInfo;
@@ -771,7 +781,11 @@ sntRover.controller('RVKeyEncodePopupCtrl', [
 
 	// Close popup
 	$scope.closeDialog = function() {
-		if ($scope.fromView === 'checkin') {
+		
+		if ($scope.fromView === 'checkin' && $scope.data.key_settings === "pin") {
+			$scope.goToStaycard();
+
+		} else if ($scope.fromView === 'checkin') {
 			$scope.pressedCancel();
 
 		} else {

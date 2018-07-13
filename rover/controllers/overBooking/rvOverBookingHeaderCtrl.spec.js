@@ -54,17 +54,6 @@ describe('RvOverBookingHeaderCtrl', function() {
         });
     });
 
-    it('On clicked clickedShowRoomsLeftTosell', function() {
-        var isCheckedBefore = $scope.overBookingObj.isShowRoomsLeftToSell,
-            isCheckedAfter = '';
-
-        $scope.clickedShowRoomsLeftTosell();
-        setTimeout(function() {
-            isCheckedAfter = $scope.overBookingObj.isShowRoomsLeftToSell;
-            expect(isCheckedBefore).toBe(!isCheckedAfter);
-        }, 500);
-    });
-
     it('On clicked clickedPrevDateButton', function() {
         $scope.overBookingObj.startDate = '2017-02-16';
 

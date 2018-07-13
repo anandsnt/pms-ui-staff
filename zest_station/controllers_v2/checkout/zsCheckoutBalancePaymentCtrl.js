@@ -38,6 +38,7 @@ angular.module('sntZestStation').controller('zsCheckoutBalancePaymentCtrl', ['$s
             $scope.balanceDue = parseFloat(paymentParams.amount);
             $scope.cardDetails = paymentParams.payment_details;
             $scope.reservation_id = paymentParams.reservation_id;
+            $scope.isCBAPayment = $scope.zestStationData.paymentGateway === 'CBA' || ($scope.zestStationData.paymentGateway === 'MLI' && $scope.zestStationData.hotelSettings.mli_cba_enabled);
 
             if (($scope.zestStationData.paymentGateway === 'CBA' || ($scope.zestStationData.paymentGateway === 'MLI' && $scope.zestStationData.hotelSettings.mli_cba_enabled)) && $scope.isIpad) {
                 // for CBA always use new payment method
