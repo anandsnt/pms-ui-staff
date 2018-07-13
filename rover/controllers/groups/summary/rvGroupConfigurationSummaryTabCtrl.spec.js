@@ -1,11 +1,5 @@
 describe('rvGroupConfigurationSummaryTab', function () {
 
-    // jasmine.getJSONFixtures().fixturesPath = 'base/unitTestSampleData/';
-    // var fixtures = loadJSONFixtures('reservationSampleData.json'),
-    //     reservationSampleData = fixtures['reservationSampleData.json'],
-    //     reservationBillSampleDataFixtures = loadJSONFixtures('reservationBillSampleData.json'),
-    //     reservationBillSampleData = reservationBillSampleDataFixtures['reservationBillSampleData.json']; 
-
     var $controller,
         $scope,
         $q,
@@ -29,10 +23,6 @@ describe('rvGroupConfigurationSummaryTab', function () {
                     $scope.groupConfigData.summary = {};
                     $scope.groupConfigData.summary.block_from = '';
                     $scope.groupConfigData.summary.block_to = '';
-
-                    // $scope.reservation = reservationSampleData;
-                    // $rootScope.roverObj = {};
-                    // $rootScope.roverObj.hasActivatedFolioNumber = true;
                 });               
 
                 angular.extend($scope, {
