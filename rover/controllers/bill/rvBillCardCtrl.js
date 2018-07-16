@@ -778,6 +778,13 @@ sntRover.controller('RVbillCardController',
 		var moveToBillSuccessCallback = function(data) {
 			$scope.$emit('hideLoader');
 			$scope.movedIndex = parseInt(newBillValue) - 1;
+			if (newBillValue > $scope.reservationBillData.bills.length) {
+				$scope.reservationBillData.bills[newBillValue - 1] = {
+					bill_id: data.id,
+					bill_number: data.bill_number,
+					total_amount: 0
+				};
+			}
 			$scope.getBillData($scope.currentActiveBill);
 			// $scope.refreshBillView();	
 		};
