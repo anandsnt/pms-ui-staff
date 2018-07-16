@@ -169,7 +169,7 @@
 								<tfoot>
 									<tr class="pagination" ng-show="billData.total_count > perPage && billData.transactions.length > 0">
 										<td colspan="8">
-											<rv-pagination page-options="billData.pageOptions" page-data="billData.total_count"></rv-pagination>
+											<rv-pagination ng-if="billData.pageOptions" page-options="billData.pageOptions" page-data="billData.total_count"></rv-pagination>
 										</td>
 									</tr>
 									<tr class="active edit">
