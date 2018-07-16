@@ -534,7 +534,6 @@ sntRover.controller('RVbillCardController',
 	};
 
     $scope.$on('REFRESH_BILLCARD_VIEW', function() {
-        $scope.refreshBillView();
         setTimeout(function() {
 			$scope.isRefreshOnBackToStaycard = true;
 			$scope.getBillData($scope.currentActiveBill);
@@ -543,7 +542,17 @@ sntRover.controller('RVbillCardController',
     });
 
     $scope.refreshBillView = function() {
-        $scope.init($scope.lastResBillData);
+        //$scope.init($scope.lastResBillData);
+  //       var getBillSummaryDataSuccess = function(response) {
+		// 		$scope.fetch(response);		
+		// 		$scope.getBillData($scope.currentActiveBill);		
+		// 	},
+		// 	dataToSend = {
+		// 		params: $scope.reservationBillData.reservation_id,
+		// 		successCallBack: getBillSummaryDataSuccess
+		// 	};
+
+		// $scope.callAPI(RVBillCardSrv.fetchReservationBillData, dataToSend);
     };
 	
 	$scope.openPleaseSwipe = function() {
@@ -770,6 +779,7 @@ sntRover.controller('RVbillCardController',
 			$scope.$emit('hideLoader');
 			$scope.movedIndex = parseInt(newBillValue) - 1;
 			$scope.getBillData($scope.currentActiveBill);
+			// $scope.refreshBillView();	
 		};
 
 		/*
