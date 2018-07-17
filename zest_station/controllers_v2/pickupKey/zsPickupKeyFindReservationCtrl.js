@@ -175,7 +175,7 @@ sntZestStation.controller('zsPickupKeyFindReservationCtrl', [
 					generalFailureActions();
 				} else {
 					if ($scope.reservationData.has_cc) {
-						$scope.mode = 'CC_ENTRY';
+						$scope.mode = $scope.hideAddCardOption ? 'CC_ENTRY' : 'CC_OPTIONS';
 						$scope.focusInputField('credit-card');
 					} else {
 						$scope.mode = 'NO_CC_ON_FILE';
@@ -222,6 +222,20 @@ sntZestStation.controller('zsPickupKeyFindReservationCtrl', [
 				$scope.mode = 'LAST_NAME_ENTRY';
 				$scope.focusInputField('last-name');
 			}
+		};
+
+		/* CC actions starts here */
+
+		$scope.hideAddCardOption = $scope.zestStationData.paymentGateway === 'CBA' || 
+								  ($scope.zestStationData.paymentGateway === 'MLI' && $scope.zestStationData.mliEmvEnabled) || 
+								   $scope.zestStationData.paymentGateway === 'sixpayments';
+
+		$scope.useNewCard = function () {
+			$controller('zsPaymentCtrl', {
+            	$scope: $scope
+        	});
+			$scope.screenMode.paymentAction = 'ADD_CARD'; 
+			$scope.payUsingNewCard();
 		};
 	}
 ]);

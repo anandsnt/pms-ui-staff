@@ -134,6 +134,10 @@ angular.module('sntZestStation').controller('zsPaymentCtrl', ['$scope', '$log', 
                     $scope.screenMode.value = 'PAYMENT_SUCCESS';
                     $scope.screenMode.paymentSuccess = true;
                     $scope.screenMode.paymentInProgress = false;
+                    // stop observe for swipe once payment is success
+                    if ($scope.zestStationData.paymentGateway === 'MLI' && $scope.zestStationData.ccReader === 'local') {
+                        $scope.cardReader.stopReader();
+                    }
                     runDigestCycle();
                 },
                 'failureCallBack': function() {
@@ -258,6 +262,10 @@ angular.module('sntZestStation').controller('zsPaymentCtrl', ['$scope', '$log', 
 
         var saveSwipedCardMLI = function(data) {
             var successSavePayment = function() {
+                // stop observe for swipe once CC is saved
+                if ($scope.zestStationData.paymentGateway === 'MLI' && $scope.zestStationData.ccReader === 'local') {
+                   $scope.cardReader.stopReader();
+                }
                 $scope.$broadcast('SAVE_CC_SUCCESS');
             };
 

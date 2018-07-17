@@ -87,6 +87,42 @@
             </ul>
         </nav>
     </div>
+
+    <!-- CC check failed -->
+    <div id="content" ng-show="mode === 'CC_OPTIONS'">
+        <h1><text data-ng-bind-html="getTagValue('CC_OPTIONS_HEADER')" editable-text="CC_OPTIONS_HEADER"></text></h1>
+        <h2><text data-ng-bind-html="getTagValue('CC_OPTIONS_SUB_HEADER')" editable-text="CC_OPTIONS_SUB_HEADER"></text></h2>
+        <nav id="options" role="nav">
+            <ul role="menu">
+                <li>
+                    <button type="button" class="button option" touch-press="reEnterCC()">
+                        <div ng-include="icons.url.keyboard"></div>
+                    </button>
+                    <text data-ng-bind-html="getTagValue('ENTER_CC_LAST_4')" editable-text="ENTER_CC_LAST_4"></text>
+                </li>
+                <li class="break">
+                    <text data-ng-bind-html="getTagValue('OR_TEXT')" editable-text="OR_TEXT"></text>
+                </li>
+                <li>
+                    <button type="button" class="button option" touch-press="useNewCard()">
+                        <div ng-include="icons.url.creditcard"></div>
+                    </button>
+                    <text data-ng-bind-html="getTagValue('USE_NEW_CC')" editable-text="USE_NEW_CC"></text>
+                </li>
+                <li>
+                    <button type="button" class="button option" touch-press='talkToStaff()'>
+                        <!--div ng-include="'/assets/zest_station/css/icons/staff.svg'"></div-->
+                        <div ng-include="icons.url.staff"></div>
+                    </button>
+                    <text data-ng-bind-html="getTagValue('RES_SRCH_TALK')" editable-text="RES_SRCH_TALK"></text>
+                    <span>
+                        <text data-ng-bind-html="getTagValue('RES_SRCH_TALK_SUB')" editable-text="RES_SRCH_TALK_SUB"></text>
+                    </span>
+                </li>
+            </ul>
+        </nav>
+    </div>
+
     <!-- CC -->
     <div id="content" ng-show="mode === 'CC_ENTRY'">
         <h1><text data-ng-bind-html="getTagValue('ENTER_LAST_CC_DIGITS')" editable-text="ENTER_LAST_CC_DIGITS"></text></h1>
