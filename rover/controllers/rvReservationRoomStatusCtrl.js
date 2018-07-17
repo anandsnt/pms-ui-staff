@@ -320,9 +320,10 @@ angular.module('sntRover').controller('reservationRoomStatus',
 
     $scope.showDoNotMoveToggleButton = function() {
         var shouldShowDNMToggleButton = true,
-            reservationStatus = $scope.reservationData.reservation_card.reservation_status;
+            reservationStatus = $scope.reservationData.reservation_card.reservation_status,
+            buttonIsOn = $scope.reservationData.reservation_card.cannot_move_room;
 
-        if (!$scope.isStandAlone || reservationStatus === 'NOSHOW' || reservationStatus === 'CHECKEDOUT' || reservationStatus === 'CANCELED' || $scope.reservationData.reservation_card.room_number === "" || !rvPermissionSrv.getPermissionValue('DO_NOT_MOVE_RESERVATION')) {
+        if (!$scope.isStandAlone || reservationStatus === 'NOSHOW' || reservationStatus === 'CHECKEDOUT' || reservationStatus === 'CANCELED' || ($scope.reservationData.reservation_card.room_number === "" && !buttonIsOn ) || !rvPermissionSrv.getPermissionValue('DO_NOT_MOVE_RESERVATION')) {
             shouldShowDNMToggleButton = false;
         }
 
