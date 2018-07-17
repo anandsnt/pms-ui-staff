@@ -542,17 +542,7 @@ sntRover.controller('RVbillCardController',
     });
 
     $scope.refreshBillView = function() {
-        //$scope.init($scope.lastResBillData);
-  //       var getBillSummaryDataSuccess = function(response) {
-		// 		$scope.fetch(response);		
-		// 		$scope.getBillData($scope.currentActiveBill);		
-		// 	},
-		// 	dataToSend = {
-		// 		params: $scope.reservationBillData.reservation_id,
-		// 		successCallBack: getBillSummaryDataSuccess
-		// 	};
-
-		// $scope.callAPI(RVBillCardSrv.fetchReservationBillData, dataToSend);
+        $scope.init($scope.lastResBillData);
     };
 	
 	$scope.openPleaseSwipe = function() {
@@ -778,13 +768,12 @@ sntRover.controller('RVbillCardController',
 		var moveToBillSuccessCallback = function(response) {
 			$scope.$emit('hideLoader');
 			$scope.movedIndex = parseInt(newBillValue) - 1;
-			// if (parseInt(newBillValue) > $scope.reservationBillData.bills.length) {
-				$scope.reservationBillData.bills[parseInt(response.data[0].to_bill_number) - 1] = {
-					bill_id: response.data[0].to_bill_id,
-					bill_number: response.data[0].to_bill_number,
-					total_amount: response.data[0].bill_amount
-				};
-			// }
+			$scope.reservationBillData.bills[parseInt(response.data[0].to_bill_number) - 1] = {
+				bill_id: response.data[0].to_bill_id,
+				bill_number: response.data[0].to_bill_number,
+				total_amount: response.data[0].bill_amount
+			};
+
 			$scope.getBillData($scope.currentActiveBill);
 		};
 
@@ -2212,7 +2201,6 @@ sntRover.controller('RVbillCardController',
 		var billIndex = 0;
 
 		for (var i = 0; i < $scope.reviewStatusArray.length ; i++) {
-		//for (var i = 0; i < $scope.currentActiveBill ; i++) {
 			// Checking last bill balance for stand-alone only.
 			if ($rootScope.isStandAlone && typeof $scope.reservationBillData.bills[i].total_fees[0] !== 'undefined') {
 				var billBalance = $scope.reservationBillData.bills[i].total_fees[0].balance_amount,
