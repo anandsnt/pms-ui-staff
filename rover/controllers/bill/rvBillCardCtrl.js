@@ -617,7 +617,7 @@ sntRover.controller('RVbillCardController',
 	$scope.getBillData = function(billIndex) {
 		
 		var getBillDataSuccess = function(data) {
-				reservationBillData.bills[billIndex] = data;
+				$scope.reservationBillData.bills[billIndex] = data;
 				setBillValue(billIndex);
 				$scope.setActiveBill(billIndex);
 				$scope.setupReviewStatusArray();
