@@ -14,7 +14,7 @@ angular.module('reportsModule')
                         'MARKET_SEGMENT_STAT_REPORT': ['hasSysDateLimit'],
                         'ROOMS_QUEUED': ['hasSysDateLimit'],
                         'RATE_ADJUSTMENTS_REPORT': ['hasDateLimit', 'canRemoveDate'],
-                        'ADDON_FORECAST': ['canRemoveDate'],
+                        'ADDON_FORECAST': ['canRemoveDate', 'hasOneYearLimit'],
                         'DAILY_PRODUCTION_ROOM_TYPE': ['canRemoveDate', 'hasOneYearLimit'],
                         'DAILY_PRODUCTION_DEMO': ['hasOneYearLimit'],
                         'DAILY_PRODUCTION_RATE': ['hasOneYearLimit'],
