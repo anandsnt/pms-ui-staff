@@ -775,18 +775,17 @@ sntRover.controller('RVbillCardController',
 		/*
 		 * Success Callback of move action
 		 */
-		var moveToBillSuccessCallback = function(data) {
+		var moveToBillSuccessCallback = function(response) {
 			$scope.$emit('hideLoader');
 			$scope.movedIndex = parseInt(newBillValue) - 1;
-			if (newBillValue > $scope.reservationBillData.bills.length) {
-				$scope.reservationBillData.bills[newBillValue - 1] = {
-					bill_id: data.id,
-					bill_number: data.bill_number,
-					total_amount: 0
+			// if (parseInt(newBillValue) > $scope.reservationBillData.bills.length) {
+				$scope.reservationBillData.bills[parseInt(response.data[0].to_bill_number) - 1] = {
+					bill_id: response.data[0].to_bill_id,
+					bill_number: response.data[0].to_bill_number,
+					total_amount: response.data[0].bill_amount
 				};
-			}
+			// }
 			$scope.getBillData($scope.currentActiveBill);
-			// $scope.refreshBillView();	
 		};
 
 		/*
@@ -2212,8 +2211,8 @@ sntRover.controller('RVbillCardController',
 	$scope.findNextBillToReview = function() {		
 		var billIndex = 0;
 
-		// for (var i = 0; i < $scope.reviewStatusArray.length ; i++) {
-		for (var i = 0; i < $scope.currentActiveBill ; i++) {
+		for (var i = 0; i < $scope.reviewStatusArray.length ; i++) {
+		//for (var i = 0; i < $scope.currentActiveBill ; i++) {
 			// Checking last bill balance for stand-alone only.
 			if ($rootScope.isStandAlone && typeof $scope.reservationBillData.bills[i].total_fees[0] !== 'undefined') {
 				var billBalance = $scope.reservationBillData.bills[i].total_fees[0].balance_amount,
