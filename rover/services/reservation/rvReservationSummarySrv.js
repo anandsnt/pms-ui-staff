@@ -401,5 +401,17 @@ angular.module('sntRover').service('RVReservationSummarySrv', ['$q', 'rvBaseWebS
             });
             return deferred.promise;
         };
+
+        this.retrieveRoomPin = function(params) {
+            var deferred = $q.defer(),
+                url = '/api/reservations/' + params.id + '/room_pin'; 
+
+            rvBaseWebSrvV2.getJSON(url).then(function(data) {
+                deferred.resolve(data);
+            }, function(data) {
+                deferred.reject(data);
+            });
+            return deferred.promise;
+        };
     }
 ]);

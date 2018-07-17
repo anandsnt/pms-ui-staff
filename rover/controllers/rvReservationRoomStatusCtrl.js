@@ -146,7 +146,17 @@ angular.module('sntRover').controller('reservationRoomStatus',
                         scope: $scope
                     });
 		} else if (keySettings === "pin") {
-            openKeyEncodePopup();
+            var options = {
+                params: {
+                    'id': $scope.reservationData.reservation_card.reservation_id
+                },
+                successCallBack: function(response) {
+                    $scope.reservationData.room_pin = response.pin;
+                    openKeyEncodePopup();
+                }
+            };
+
+            $scope.callAPI(RVReservationSummarySrv.retrieveRoomPin, options);
         } else if ($scope.reservationData.reservation_card.reservation_status !== 'CHECKING_IN') {
                     ngDialog.open({
                         template: '/assets/partials/keys/rvKeyPopupNewDuplicate.html',
