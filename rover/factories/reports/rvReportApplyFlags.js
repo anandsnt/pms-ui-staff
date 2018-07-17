@@ -8,7 +8,7 @@ angular.module('reportsModule')
                         'BOOKING_SOURCE_MARKET_REPORT': ['canRemoveDate'],
                         'LOGIN_AND_OUT_ACTIVITY': ['hasUserFilter'],
                         'DEPOSIT_REPORT': ['canRemoveDate'],
-                        'IN_HOUSE_GUEST': ['canRemoveDate'],
+                        'IN_HOUSE_GUEST': ['canRemoveDate', 'hasOneMonthLimit'],
                         'OCCUPANCY_REVENUE_SUMMARY': ['hasPrevDateLimit'],
                         'RESERVATIONS_BY_USER': ['hasUserFilter', 'canRemoveDate'],
                         'MARKET_SEGMENT_STAT_REPORT': ['hasSysDateLimit'],
@@ -22,10 +22,15 @@ angular.module('reportsModule')
                         'FINANCIAL_TRANSACTIONS_ADJUSTMENT_REPORT': ['hasUserFilter'],
                         'CANCELLATION_NO_SHOW': ['canRemoveDate'],
                         'COMPARISION_BY_DATE': ['hasSysDateLimit'],
-                        'BUSINESS_ON_BOOKS': ['hasSixMonthsLimit'],
+                        'BUSINESS_ON_BOOKS': ['hasOneYearLimit'],
                         'COMPANY_TA_TOP_PRODUCERS': ['hasPrevDateLimit'],
                         'GROUP_ROOMS_REPORT': ['hasThirtyOneDaysLimit'],
-                        'ADDON_UPSELLS': ['hasSixMonthsLimit']
+                        'ADDON_UPSELLS': ['hasOneYearLimit'],
+                        'FORECAST_BY_DATE': ['hasOneYearLimit'],
+                        'FORECAST_GUEST_GROUPS': ['hasOneYearLimit'],
+                        'ARRIVAL': ['hasOneMonthLimit'],
+                        'DEPARTURE': ['hasOneMonthLimit']                       
+
                     };
 
                     var reportName = _.findKey(reportNames, function(value, key) {
