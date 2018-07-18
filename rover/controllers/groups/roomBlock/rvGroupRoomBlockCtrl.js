@@ -1961,7 +1961,8 @@ angular.module('sntRover').controller('rvGroupRoomBlockCtrl', [
                     oldFromDate: oldSumryData.block_from,
                     oldToDate: oldSumryData.block_to,
                     successCallBack: successCallBackOfMoveButton,
-                    failureCallBack: failureCallBackOfMoveButton
+                    failureCallBack: failureCallBackOfMoveButton,
+                    cancelPopupCallBack: cancelCallBackofDateChange
                 };
 
             $scope.changeDatesActions.clickedOnMoveSaveButton (options);
