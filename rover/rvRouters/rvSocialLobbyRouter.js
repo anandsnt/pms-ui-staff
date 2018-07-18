@@ -5,7 +5,7 @@ angular.module('SocialLobbyModule', [])
             abstract: false,
             url: '/socialLobby',
             templateUrl: '/assets/partials/socialLobby/rvSLPosts.html',
-            controller: 'RVSocialLobbyCrl',
+            controller: 'RVSocialLobbyCtrl',
             resolve: {
                 jsAssets: function(jsMappings, mappingList) {
                     return jsMappings.fetchAssets(['sociallobby']);
