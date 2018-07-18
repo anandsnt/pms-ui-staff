@@ -96,14 +96,14 @@
         </div>
     </div>
 </div>
-</br></br></br></br></br></br></br></br>
+</br>
 <div class="invoice-header text-center">
     {{printData.custom_text_header}}
 </div>
 
 <div class="invoice-body">
     <table class="invoice-details">
-        <thead>
+        <thead style="display:table-row-group;">
             <tr>
                 <th >{{printData.translation.date_of_charge}}</th>
                 <th >{{printData.translation.charge_description}}</th>
@@ -176,7 +176,7 @@
 </div>
 
 <table class="invoice-details extended-tax-table" ng-if="printData.has_enabled_extended_tax_breakdown">
-    <thead>
+    <thead style="display:table-row-group;">
         <tr>
             <th class="text-align-left" >{{printData.translation.tax_description}}</th>
             <th >{{printData.translation.gross}}</th>
