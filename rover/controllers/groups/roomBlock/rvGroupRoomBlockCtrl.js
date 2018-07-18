@@ -958,7 +958,7 @@ angular.module('sntRover').controller('rvGroupRoomBlockCtrl', [
                         
 			// Overbooking occurs and has no permission.
             else {
-                return 'NO_PERMISSION';
+                return 'NO_PERMISSION_TO_OVERBOOK';
             }
 
         };
@@ -1000,7 +1000,7 @@ angular.module('sntRover').controller('rvGroupRoomBlockCtrl', [
                         $scope.saveRoomBlock(true);
                     }
                     else {
-                        if (message === 'NO_PERMISSION') {
+                        if (message === 'NO_PERMISSION_TO_OVERBOOK') {
                             showNoPermissionOverBookingPopup();
                         } else {
                             showOverBookingPopup(message);
@@ -1537,7 +1537,8 @@ angular.module('sntRover').controller('rvGroupRoomBlockCtrl', [
                         $scope.saveMassUpdate(true, lastCalledMassUpdateConfig);
                     }
                     else {
-                        if (message === 'NO_PERMISSION') {
+                        if (message === 'NO_PERMISSION_TO_OVERBOOK') {
+                            $scope.overBookingMessage = message;
                             $scope.disableButtons = true;
                         } else {
                             $scope.overBookingMessage = message;
