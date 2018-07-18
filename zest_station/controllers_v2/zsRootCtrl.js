@@ -580,13 +580,15 @@ sntZestStation.controller('zsRootCtrl', [
 
                     }
                 }
+                scrollContentsDown();
             }
         };
-        $scope.showOnScreenKeyboard = function(id) {
+        $scope.showOnScreenKeyboard = function(id, scrollUp) {
 			// in console, allow debugging to test out keyboard in any browser
             if (zestSntApp.virtualKeyBoardEnabled) {
                 if (id) {
                     $scope.lastKeyboardId = id;
+                    scrollContentsUpIfNeeded(scrollUp);
                     new initScreenKeyboardListener('station', id, true, $scope.resetTime); // on change event fire reset time
                 }
             } else {
@@ -605,6 +607,7 @@ sntZestStation.controller('zsRootCtrl', [
 
                 if (shouldShowKeyboard) {
                     if (id) {
+                        scrollContentsUpIfNeeded(scrollUp);
                         new initScreenKeyboardListener('station', id, true, $scope.resetTime); // on change event fire reset time
                     }
                 }
