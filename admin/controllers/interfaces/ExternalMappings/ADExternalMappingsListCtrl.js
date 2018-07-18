@@ -11,6 +11,10 @@ admin.controller('ADExternalMappingsListCtrl', ['$scope', '$state', '$stateParam
             });
         };
 
+        $scope.displayCountChanged = function(count) {
+            $scope.displyCount = count;
+        };
+
         $scope.navigateBack = function() {
             $state.go('admin.externalMappings');
         };
