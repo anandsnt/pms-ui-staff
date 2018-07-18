@@ -2,14 +2,13 @@ angular.module('SocialLobbyModule', [])
     .config(function($stateProvider, $urlRouterProvider, $translateProvider) {
 
         $stateProvider.state('rover.socialLobby', {
-            abstract: false,
             url: '/socialLobby',
+            abstract: false,
             templateUrl: '/assets/partials/socialLobby/rvSLPosts.html',
             controller: 'RVSocialLobbyCtrl',
-            resolve: {
-                jsAssets: function(jsMappings, mappingList) {
-                    return jsMappings.fetchAssets(['sociallobby']);
-                }
+            lazyLoad: function ($transition$) {
+                return $transition$.injector().get('jsMappings').
+                    fetchAssets(['sociallobby']);
             }
         });
 
