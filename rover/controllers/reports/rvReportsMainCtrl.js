@@ -1017,7 +1017,8 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
                     'age_buckets': [],
                     'account_ids': [],
                     'travel_agent_ids': [],
-                    'segments': []
+                    'segments': [],
+                    'market_ids': []
                 };
             }
 
@@ -1526,6 +1527,7 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
                     params[key] = [];
                     /**/
                     _.each(selected, function (market) {
+                        $scope.appliedFilter.market_ids.push(market);
                         params[key].push(market.value);
                         /**/
                         if (changeAppliedFilter) {
