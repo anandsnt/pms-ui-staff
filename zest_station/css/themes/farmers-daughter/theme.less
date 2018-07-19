@@ -1,0 +1,143 @@
+/* StayNTouch Zest Station Styles | Farmer's Daughter Theme */
+
+/* 1. COLORS
+==========================================================*/
+    @brandColor:            #303030;
+    
+    @textColor:             @brandColor;
+    @backgroundColor:       @white;
+    
+    @actionColor:           @white;
+    @actionBackground:      @brandColor;
+    
+    @inputBackground:       #707070;
+    @transparentColor:      rgba(0,0,0,.5);
+
+/* 2. TYPOGRAPHY
+==========================================================*/
+
+    @fontFamily: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+
+
+/* 3. IMAGES
+==========================================================*/
+    @background: url("../css/themes/farmers-daughter/background.jpg");
+    @backgroundSize: 240px;
+    
+    @headerIconsColor:      @brandColor;
+    @headerIconsActive:     @brandColor;
+
+    .icons { 
+        &.icon-create-key {
+            fill: @brandColor;
+            stroke: @brandColor;
+        }
+
+        &.icon-no-print { stroke: @white; }
+
+        &.icon-oos {
+            fill: @brandColor;
+        }
+
+        &.icon-arrow-left,
+        &.icon-arrow-right {
+            fill: none;
+            stroke: @white;
+        }
+    
+    }
+
+    .logo-svg{
+        background-image: url("../css/themes/farmers-daughter/logo.svg");
+        background-repeat: no-repeat;
+        background-size: contain;
+        width: 128px;
+        height: 115px;
+        background-position: center; 
+    }
+
+/* 4. LAYOUT
+==========================================================*/
+    
+    #farmers-daughter {
+ 
+        #header {
+            height: 145px;
+        }
+
+        #main {
+            #calc > #height > .remove(100%, 145px);
+            top: 145px;
+        }
+        .entry.input {
+            .icons {
+                fill: @brandColor;
+            }
+        }
+
+        input,
+        select {
+            background: @inputBackground;
+            color: @white;
+        }
+        
+        #logo {
+            padding-top: 20px;
+
+            .logo {
+                width: auto;
+                height: 115px;
+            }
+        }
+
+        #options {
+            
+            .icon-text {
+                color: @white;
+            }
+
+            .icons {
+                fill: @white;
+            }
+
+            li.break {
+                padding-top: 60px;
+
+                &:after,
+                &:before {
+                    display: none;
+                }
+            }
+        }
+
+        #upgrade {
+            .upgrade-price {
+                color: @white;
+                background: @brandColor;
+            }
+        }
+
+        .add-on {
+
+            .input-group {
+                input {
+                    color: @brandColor;
+                }
+            }
+        }
+
+        #rate {
+            li {
+                &.sub {
+                    color: #a1a1a1;
+                }
+            }
+        }
+
+        #textual,
+        .popup {
+            .icons {
+                fill: @white;
+            }
+        }
+    }

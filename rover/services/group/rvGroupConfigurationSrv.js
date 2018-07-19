@@ -9,8 +9,8 @@ angular.module('sntRover').service('rvGroupConfigurationSrv', ['$q', 'rvBaseWebS
 			"group_code": null,
 			"first_name": "",
 			"last_name": "",
-			"contact_phone": "",
-			"contact_email": "",
+			"contact_phone": null,
+			"contact_email": null,
 			"demographics": {
 				"reservation_type_id": "",
 				"market_segment_id": "",
@@ -270,14 +270,16 @@ angular.module('sntRover').service('rvGroupConfigurationSrv', ['$q', 'rvBaseWebS
 		/** * DEPRICATED 'summaryHolder{}' & 'getAccountSummary()' ***/
 
 		this.getGroupSummary = function(params) {
-			var deferred = $q.defer();
+			var deferred = $q.defer(),
+			    url = '';
 
 			if (params.groupId === "NEW_GROUP") {
 				deferred.resolve(angular.copy({
 					"groupSummary": self.baseConfigurationSummary
 				}));
 			} else {
-				url = 'api/groups/' + params.groupId;
+				var url = 'api/groups/' + params.groupId;
+
 				rvBaseWebSrvV2.getJSON(url).then(
 					function(groupSummary) {
 						var postingAccId = groupSummary.posting_account_id,

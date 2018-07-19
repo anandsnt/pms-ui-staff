@@ -4,8 +4,17 @@
         <fieldset class="holder left">
             <ad-toggle-button is-checked="config.enabled"
                               label="{{'ACTIVATE_INACTIVATE'| translate}}"></ad-toggle-button>
+            
         </fieldset>
+
+        <ad-sync-block ng-if="config.enabled"
+                   is-export = "true"
+                   exclude-today="true"
+                   interface="{{interface}}"
+                   config="config">
+        </ad-sync-block>
     </div>
+
     <fieldset class="holder left" ng-if="config.enabled">
       <div class="form-title">
         <h3>Export<span> Settings</span></h3>

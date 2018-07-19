@@ -126,20 +126,29 @@ angular.module('sntRover').controller('rvAddOverBookingPopupCtrl', ['$scope', '$
 		onAddOverBookingApiFailure = function( errorMessage ) {
 			$scope.errorMessage = errorMessage;
 		},
+		weekDaysSelected = that.getSelectedIdList($scope.addOverBookingObj.weekDayList),
 		dataToSend = {
             'start_date': moment(tzIndependentDate($scope.addOverBookingObj.fromDate)).format($rootScope.momentFormatForAPI),
             'end_date': moment(tzIndependentDate($scope.addOverBookingObj.toDate)).format($rootScope.momentFormatForAPI),
             'house_overbooking': $scope.addOverBookingObj.applyForHouse,
-            'wdays_selected': that.getSelectedIdList($scope.addOverBookingObj.weekDayList),
+            'wdays_selected': weekDaysSelected,
             'room_type_ids': that.getSelectedIdList($scope.addOverBookingObj.roomTypeList),
             'limit': $scope.addOverBookingObj.limitValue
         };
 
-		$scope.callAPI(rvOverBookingSrv.addOrEditOverBooking, {
-			successCallBack: onAddOverBookingApiSuccess,
-			failureCallBack: onAddOverBookingApiFailure,
-			params: dataToSend
-		});
+        if (weekDaysSelected.length === 0) {
+			$scope.errorMessage = ['Please select days to apply sell limit'];
+        }
+        else if (!$scope.addOverBookingObj.applyForHouse && !$scope.addOverBookingObj.applyForRoomTypes) {
+			$scope.errorMessage = ['Please select House or Room Type(s)'];
+        }
+        else {
+			$scope.callAPI(rvOverBookingSrv.addOrEditOverBooking, {
+				successCallBack: onAddOverBookingApiSuccess,
+				failureCallBack: onAddOverBookingApiFailure,
+				params: dataToSend
+			});
+		}
 	};
 	// close dialog
 	$scope.closeDialog = function() {

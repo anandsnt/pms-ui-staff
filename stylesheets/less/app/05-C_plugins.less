@@ -1501,6 +1501,7 @@
                     &.not-connected { height: 320px; }
                     &.connected { height: 540px; }
                     &.completed { height: 320px; }
+                    &.pin { height: 440px; }
                 }
 
                 #room-status {
@@ -1645,6 +1646,29 @@
                         
                         &.connected { 
                             .info { color: @green; }
+                        }
+                    }
+
+                    &.pin {
+                        .actions {
+                            padding-top: 10px;
+                            margin-top: 10px;
+                            border-top: 1px solid rgba(0,0,0,.1);
+
+                            .button {
+                                margin-bottom: 10px;
+                            }
+                        }
+
+                        .pin-number {
+                            font-size: 80px;
+                            font-weight: bold;
+                            letter-spacing: 10px;
+                            display: block;
+                            line-height: 80px;
+                            height: 80px;
+                            margin-top: 50px;
+                            margin-bottom: 40px;
                         }
                     }
                 }
@@ -3284,7 +3308,7 @@
                 
                 &.selected-bill,
                 &.selected-account {
-                    height: 455px;
+                    height: 510px;
                     .actions{
                         .show();
                     }

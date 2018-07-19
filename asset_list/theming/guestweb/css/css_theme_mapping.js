@@ -5,6 +5,8 @@ module.exports = {
 
         return {
             'guestweb_tourists': [ themeCSSRoot + 'guestweb_tourists.css'],
+            'guestweb_park_james_hotel': [ themeCSSRoot + 'guestweb_park_james_hotel.css'],
+            'guestweb_the_collegiate_hotel': [ themeCSSRoot + 'guestweb_the_collegiate_hotel.css'],
             'guestweb_the_wheelhouse_hotel': [ themeCSSRoot + 'guestweb_the_wheelhouse_hotel.css'],
             'guestweb_farmers_daughter': [ themeCSSRoot + 'guestweb_farmers_daughter.css'],
             'guestweb_the_east_london_hotel': [ themeCSSRoot + 'guestweb_the_east_london_hotel.css'],

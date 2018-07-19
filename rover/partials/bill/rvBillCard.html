@@ -95,7 +95,7 @@
                 	<div class="bill-tabs scrollable" ng-iscroll="bill-tab-scroller" ng-iscroll-delay="100">
                 		<ul class="wrapper" style="width:{{getWidthForBillTabsScroll()}}px">
                 			<li ng-class="showActiveBill($index)" ng-repeat="billTab in reservationBillData.bills">
-								<a click-touch="setActiveBill($index)" class="bill-toggle" ng-class="{'error': billTab.has_crossed_credit_limit, 'has-icon': !billTab.is_active && (billTab.is_control_code_exist || billTab.is_folio_number_exists)}">
+								<a click-touch="getBillData($index)" class="bill-toggle" ng-class="{'error': billTab.has_crossed_credit_limit, 'has-icon': !billTab.is_active && (billTab.is_control_code_exist || billTab.is_folio_number_exists)}">
 									<div class="price" ng-show="isBalanceShown(billTab.is_rate_suppressed)">
 										<span translate>BILL #{{billTab.bill_number}}</span>
 										<span class="currency">{{currencySymbol}}</span>{{billTab.total_amount | number: precisonZero}}
@@ -268,13 +268,13 @@
 						</div>
 
 						<!-- Invoice -->
-						<div id="invoiceDiv" class="invoice" ng-include="'/assets/partials/bill/rvPrintBillCard.html'"></div>
+						<div id="invoiceDiv" ng-if="printBillCardActive" class="invoice" ng-include="'/assets/partials/bill/rvPrintBillCard.html'"></div>
 
 						<!-- Balance / Signature / Card -->
 						<div class="total-stay-fees" ng-include="'/assets/partials/bill/rvTotalStayFees.html'" ></div>
 
 						<!-- Registration card -->
-						<div id="regDiv" class="registration-card" ng-include="'/assets/partials/bill/rvRegistrationCard.html'"></div>
+						<div id="regDiv" ng-if="printRegistrationCardActive" class="registration-card" ng-include="'/assets/partials/bill/rvRegistrationCard.html'"></div>
 					</div>
 
 
