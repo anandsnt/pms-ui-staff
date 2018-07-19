@@ -808,7 +808,8 @@ sntRover.controller('RVKeyEncodePopupCtrl', [
 		$state.go('rover.search');
 
 	};
+	var reservationEmail = !!$scope.guestCardData.contactInfo.email ? $scope.guestCardData.contactInfo.email : '';
 
-	$scope.hasValidEmail = rvUtilSrv.isEmailValid($scope.guestCardData.contactInfo.email);
+	$scope.hasValidEmail = rvUtilSrv.isEmailValid(reservationEmail);
 	
 }]);
