@@ -233,7 +233,9 @@ sntRover.controller('rvOccupancyRevenueReportCtrl', [
             $scope.isUndefinedMarketSelected = false;
 
             // CICO-54574
-            tagSelectedMarkets(chosenReport.appliedFilter.market_ids);
+            if ($rootScope.isBackgroundReportsEnabled) {
+            	tagSelectedMarkets(chosenReport.appliedFilter.market_ids);
+            }            
 
 			angular.forEach($scope.markets.data, function(marketValue, index) {
 				if (marketValue.hasOwnProperty("selected") && marketValue.selected) {
