@@ -1,4 +1,4 @@
-angular.module('sntRover').service('RVreportsSubSrv', [
+sangular.module('sntRover').service('RVreportsSubSrv', [
     '$q',
     'rvBaseWebSrvV2',
     'rvReportsCache',
@@ -256,7 +256,7 @@ angular.module('sntRover').service('RVreportsSubSrv', [
             return callApi({
                 name: 'chargeCodes',
                 method: 'getJSON',
-                url: 'api/charge_codes?is_get_all_charge_codes=true',
+                url: 'api/charge_codes',
                 resKey: 'results'
             });
         };
