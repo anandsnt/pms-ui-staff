@@ -1120,7 +1120,7 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 
 			// Load the data only if an active date is present and there is no data already fetched.
 			if (!!activebillTab.activeDate && activebillTab.transactions.length === 0 ) {
-				//CICO-51236 : Set pagination value for bills.
+				// CICO-51236 : Set pagination value for bills.
 				$timeout(function() {
 					activebillTab.pageOptions = {
 						id: activebillTab.bill_number,
