@@ -10,7 +10,10 @@ admin.controller('ADExternalMappingsListCtrl', ['$scope', '$state', '$stateParam
                 interface_name: $stateParams.interface_name
             });
         };
-
+        /*
+         * This methode is to set page count.
+         * @param {number} page count
+         */
         $scope.displayCountChanged = function(count) {
             $scope.displyCount = count;
         };
