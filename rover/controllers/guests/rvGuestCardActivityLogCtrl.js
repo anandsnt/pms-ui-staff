@@ -147,7 +147,7 @@ sntRover.controller('RVGuestCardActivityLogController',
 	};
 
 	// Refresh the scroller when the tab is active.
-    var listener =  $scope.$on('activityLogTabActive', function() {
+    var listener =  $scope.$on('GUEST_ACTIVITY_LOADED', function() {
 		that.loadAPIData();
     });
 
