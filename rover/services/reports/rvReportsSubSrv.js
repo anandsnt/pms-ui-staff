@@ -1,4 +1,4 @@
-sangular.module('sntRover').service('RVreportsSubSrv', [
+angular.module('sntRover').service('RVreportsSubSrv', [
     '$q',
     'rvBaseWebSrvV2',
     'rvReportsCache',
