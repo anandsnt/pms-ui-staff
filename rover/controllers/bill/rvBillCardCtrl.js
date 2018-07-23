@@ -1130,6 +1130,10 @@ sntRover.controller('RVbillCardController',
 	$scope.$on('cc_auth_updated', function($event, do_not_cc_auth) {
 		$scope.do_not_cc_auth = do_not_cc_auth;
 	});
+	/*
+	 * Show tax exempt waring message in a popup
+	 * @data response data
+	 */
 	var showTaxExemptAlertMessage = function(data) {
 		$scope.message = data.message;
 		$timeout(function() {
