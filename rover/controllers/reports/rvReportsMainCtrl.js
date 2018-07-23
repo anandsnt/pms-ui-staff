@@ -333,6 +333,7 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 
                 $scope.toDateOptionsOneYearLimit.minDate = selectedDate;
                 $scope.toDateOptionsOneYearLimit.maxDate = reportUtils.processDate(selectedDate).aYearAfter;
+                $scope.touchedReport.untilDate = $scope.toDateOptionsOneYearLimit.maxDate;
             }
         }, datePickerCommon);
 
@@ -343,6 +344,7 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 
                 $scope.toDateOptionsOneMonthLimit.minDate = selectedDate;
                 $scope.toDateOptionsOneMonthLimit.maxDate = reportUtils.processDate(selectedDate).aMonthAfter;
+                $scope.touchedReport.untilDate = $scope.toDateOptionsOneMonthLimit.maxDate;
             }
         }, datePickerCommon);
 
@@ -365,6 +367,7 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 
                 $scope.toDateOptionsSixMonthsLimit.minDate = selectedDate;
                 $scope.toDateOptionsSixMonthsLimit.maxDate = reportUtils.processDate(selectedDate).sixMonthsAfter;
+                $scope.touchedReport.untilDate = $scope.toDateOptionsSixMonthsLimit.maxDate;
             }
         }, datePickerCommon);
 
@@ -1017,7 +1020,8 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
                     'age_buckets': [],
                     'account_ids': [],
                     'travel_agent_ids': [],
-                    'segments': []
+                    'segments': [],
+                    'market_ids': []
                 };
             }
 
@@ -1526,6 +1530,7 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
                     params[key] = [];
                     /**/
                     _.each(selected, function (market) {
+                        $scope.appliedFilter.market_ids.push(market);
                         params[key].push(market.value);
                         /**/
                         if (changeAppliedFilter) {
