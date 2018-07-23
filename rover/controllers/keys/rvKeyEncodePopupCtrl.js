@@ -1,6 +1,6 @@
 sntRover.controller('RVKeyEncodePopupCtrl', [
-    '$rootScope', '$scope', '$state', 'ngDialog', 'RVKeyPopupSrv', '$filter', '$timeout', '$log', 'sntActivity', '$window',
-    function ($rootScope, $scope, $state, ngDialog, RVKeyPopupSrv, $filter, $timeout, $log, sntActivity, $window) {
+    '$rootScope', '$scope', '$state', 'ngDialog', 'RVKeyPopupSrv', '$filter', '$timeout', '$log', 'sntActivity', '$window', 'rvUtilSrv',
+    function ($rootScope, $scope, $state, ngDialog, RVKeyPopupSrv, $filter, $timeout, $log, sntActivity, $window, rvUtilSrv) {
         BaseCtrl.call(this, $scope);
 	var that = this;
 
@@ -808,4 +808,8 @@ sntRover.controller('RVKeyEncodePopupCtrl', [
 		$state.go('rover.search');
 
 	};
+	var reservationEmail = !!$scope.guestCardData.contactInfo.email ? $scope.guestCardData.contactInfo.email : '';
+
+	$scope.hasValidEmail = rvUtilSrv.isEmailValid(reservationEmail);
+	
 }]);
