@@ -137,9 +137,9 @@
                 </a>
             </div>
              <!-- Tax Exempt -->
-            <div class="entry full-width tax-exempt" ng-if="shouldShowTaxExempt()">
+            <div class="entry full-width tax-exempt" ng-if="shouldShowTaxExempt()" >
                 <label for="group-tax-exempt">Tax Exempt </label>
-                <div class="switch-button" ng-class="{'on': groupConfigData.summary.is_tax_exempt}" >
+                <div class="switch-button" ng-click="clickedTaxExemptToggle()" ng-class="{'on': groupConfigData.summary.is_tax_exempt}" >
 
                     <input type="checkbox" ng-model="groupConfigData.summary.is_tax_exempt" ng-checked="groupConfigData.summary.is_tax_exempt" />
                     <label class="data-off">
@@ -153,8 +153,7 @@
                 </div>
 
                 <div id="group-tax-exempt-type" class="select" ng-show="groupConfigData.summary.is_tax_exempt">
-                    <select ng-change="updateTaxExemptData()" 
-                            ng-model="groupConfigData.summary.tax_exempt_type_id"
+                    <select ng-model="groupConfigData.summary.tax_exempt_type_id"
                             ng-options="taxExempt.id as taxExempt.name for taxExempt in taxExemptTypes">
                     </select>
                 </div>
