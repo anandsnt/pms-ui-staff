@@ -2906,7 +2906,10 @@ sntRover.controller('RVbillCardController',
 
 	};
 
-	$scope.$on('moveChargeSuccsess', function() {
+	$scope.$on('moveChargeSuccsess', function(event, data) {
+		if (data.message) {
+			showTaxExemptAlertMessage(data);			
+		}
 		$scope.getBillData($scope.currentActiveBill);
 	});
 
