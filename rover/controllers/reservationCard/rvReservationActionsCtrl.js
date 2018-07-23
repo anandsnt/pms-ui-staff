@@ -122,8 +122,8 @@ sntRover.controller('reservationActionsController', [
 
 		// update the price on staycard.
 		/* jslint unparam: true*/
-		var postchargeAdded = $scope.$on('postcharge.added', function(event, netPrice) {
-			$scope.reservationData.reservation_card.balance_amount = parseFloat(netPrice);
+		var postchargeAdded = $scope.$on('postcharge.added', function(event, data) {
+			$scope.reservationData.reservation_card.balance_amount = parseFloat(data.total_balance_amount);
 		});
 		/* jslint unparam: false*/
 
