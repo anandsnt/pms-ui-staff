@@ -1144,7 +1144,7 @@ sntRover.controller('RVbillCardController',
 				scope: $scope
 			});
 		}, 1000);
-	}
+	};
 
 	// just fetch the bills again ;)
 	var postchargeAdded = $scope.$on('postcharge.added', function(event, data) {
