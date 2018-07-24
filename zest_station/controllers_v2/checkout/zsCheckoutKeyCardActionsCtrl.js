@@ -176,7 +176,7 @@ sntZestStation.controller('zsCheckoutKeyCardActionsCtrl', [
         };
 
         $scope.alreadyCheckedOutActions = function() {
-            $scope.$emit('EJECT_KEYCARD');
+            $scope.socketOperator.CaptureKeyCard();
             $state.go('zest_station.home');
         };
     }
