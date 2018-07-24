@@ -993,6 +993,16 @@ sntZestStation.controller('zsRootCtrl', [
             }
         };
 
+        var isOnline = true;
+        
+        window.addEventListener('offline', function() {
+            isOnline = false;
+        });
+
+        window.addEventListener('online', function() {
+            isOnline = true;
+        });
+
 		/** ******************************************************************************
 		 *  User activity timer
 		 *  starts here
@@ -1042,7 +1052,7 @@ sntZestStation.controller('zsRootCtrl', [
                     idlePopupTime = $scope.zestStationData.idle_timer.prompt,
                     idleToHomeTime = $scope.zestStationData.idle_timer.max,
                     idleTimerEnabled = $scope.zestStationData.idle_timer.enabled,
-                    getWorkstationsAtTime = 120; // refresh workstation data every 120seconds
+                    getWorkstationsAtTime = isOnline ? 120 : 5; // refresh workstation data every 120 seconds or 5 seconds
                     // timeUntilRefreshCheck = 30; // check if workstation requires refresh, default every 30s
 
 				/**
@@ -1085,7 +1095,7 @@ sntZestStation.controller('zsRootCtrl', [
                     }
                     $scope.runDigestCycle();
                 } else {
-                    getWorkstationsAtTime = 120;
+                    getWorkstationsAtTime = isOnline ? 120 : 5;
                     $scope.zestStationData.timeDebugger = 'false';
                 }
 
