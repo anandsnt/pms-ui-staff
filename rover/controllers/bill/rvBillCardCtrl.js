@@ -1891,6 +1891,12 @@ sntRover.controller('RVbillCardController',
     $scope.toggleCheckoutWithoutSettlement = function() {
     	$scope.isCheckoutWithoutSettlement = !$scope.isCheckoutWithoutSettlement;
     };
+	// CICO-43344 : Handle toggle email opt button.
+	$scope.toggleOptedForEmail = function() {
+		var currentItem = $scope.emailOptedStatusList[$scope.currentActiveBill];
+
+		currentItem.isOptedForEmail = !currentItem.isOptedForEmail;
+	};
 
     /*
 	 * Function to generate folio number
@@ -2049,16 +2055,19 @@ sntRover.controller('RVbillCardController',
 		else {
 			var signatureData = $scope.signatureData;
 		}
-		var errorMsg = "", totalBal = 0;
+		var errorMsg = "", totalBal = 0, optedBillForEmail = [];
 
-		// calculate total
+		// calculate total and CICO-43344 : fetch optedBillForEmail list.
 		for (var i = 0; i < reservationBillData.bills.length; i++) {
 			totalBal += reservationBillData.bills[i].total_amount * 1;
+
+			if ( $scope.emailOptedStatusList[i].isOptedForEmail ) {
+				optedBillForEmail.push($scope.emailOptedStatusList[i].billId);
+			}
 		}
 		var finalBillBalance = "0.00",
 			paymentType = reservationBillData.bills[$scope.currentActiveBill].credit_card_details.payment_type,
 			isAllowDirectDebit = reservationBillData.bills[$scope.currentActiveBill].is_allow_direct_debit;
-			
 
 		if (typeof $scope.reservationBillData.bills[$scope.currentActiveBill].total_fees[0] !== 'undefined') {
 			finalBillBalance = $scope.reservationBillData.bills[$scope.currentActiveBill].total_fees[0].balance_amount;
@@ -2070,7 +2079,8 @@ sntRover.controller('RVbillCardController',
 				"reservation_id": $scope.reservationBillData.reservation_id,
 				"email": $scope.guestCardData.contactInfo.email,
 				"signature": signatureBase64Data,
-				"allow_checkout_without_settlement": true
+				"allow_checkout_without_settlement": true,
+				"opted_bills_for_email": optedBillForEmail
 			};
 			
 			sntActivity.start('COMPLETE_CHECKOUT');
@@ -2129,7 +2139,8 @@ sntRover.controller('RVbillCardController',
 			var data = {
 				"reservation_id": $scope.reservationBillData.reservation_id,
 				"email": $scope.guestCardData.contactInfo.email,
-				"signature": signatureBase64Data
+				"signature": signatureBase64Data,
+				"opted_bills_for_email": optedBillForEmail
 			};
 
 			sntActivity.start('COMPLETE_CHECKOUT');
@@ -2868,7 +2879,6 @@ sntRover.controller('RVbillCardController',
 				data.billIndex = key;
 				$scope.reviewStatusArray.push(data);
 			}
-			
 		});
 	};
 
@@ -3113,7 +3123,17 @@ sntRover.controller('RVbillCardController',
 			var currentActiveBill = $scope.reservationBillData.bills[$scope.currentActiveBill];
 
 			that.generateFolioNumber(currentActiveBill.bill_id, currentActiveBill.total_fees[0].balance_amount, currentActiveBill.is_folio_number_exists);
-		}	
+		}
+
+		// CICO-43344 : Set isOptedForEmail value true for first bill only.
+		$scope.emailOptedStatusList = [];
+		_.each($scope.reservationBillData.bills, function(bill, index) {
+			var obj = {};
+
+			obj.billId = bill.bill_id;
+			obj.isOptedForEmail = (index === 0);
+			$scope.emailOptedStatusList.push(obj);
+		});
 	};
 	$scope.init(reservationBillData);
     var init = function() {
