@@ -20,5 +20,4 @@
 "APP_VERSION": "App version",
 "BUILD_STATUS": "Service Update status",
 "BUILD_STATUS_INFO": "Service Update status info",
-"SERVICE_TYPE": "Service Type",
-"EXCLUDE_FROM_AUTO_UPGRADE_LABEL": "Exclude from auto upgrade"
+"SERVICE_TYPE": "Service Type"
