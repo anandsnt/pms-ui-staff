@@ -109,7 +109,8 @@ admin.controller('ADDevicesListCtrl', ['$scope', '$state', 'ngTableParams', 'adD
         hours_log_enabled: $scope.selectedDevice.hours_log_enabled,
         is_logging_enabled: $scope.selectedDevice.is_logging_enabled,
         last_logged_in_user: $scope.selectedDevice.last_logged_in_user,
-        service_application_type_id: $scope.selectedDevice.service_application_type_id
+        service_application_type_id: $scope.selectedDevice.service_application_type_id,
+        is_excluded_from_auto_upgrade: $scope.selectedDevice.is_excluded_from_auto_upgrade
       };
      
       $scope.invokeApi(adDebuggingSetupSrv.saveSetup, params, saveDebugSetupSuccessCallback);
