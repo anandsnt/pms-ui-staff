@@ -745,8 +745,6 @@ sntZestStation.controller('zsRootCtrl', [
             return false;
         };
 
-        
-
         $scope.$on('RUN_APPLY', function() {
             $scope.$apply();
             $scope.$digest();

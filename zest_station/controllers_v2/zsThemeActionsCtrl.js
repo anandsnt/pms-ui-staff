@@ -252,7 +252,7 @@ sntZestStation.controller('zsThemeActionsCtrl', [
         };
 
 
-        //setSvgsToBeLoaded(iconsPath, iconsPath, true); // (icons path, default path, use default icons)
+        setSvgsToBeLoaded(iconsPath, iconsPath, true); // (icons path, default path, use default icons)
 
         var setPrinterOptions = function(theme) {
 			// zsUtils function
