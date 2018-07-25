@@ -189,7 +189,13 @@
 
 				var options = {
 					params: params,
-					successCallBack: checkinGuest
+					successCallBack: function() {
+						if (stateParams.mode === 'PICKUP_KEY') {
+							$scope.zestStationData.continuePickupFlow();
+						} else {
+							checkinGuest();
+						}
+					}
 				};
 
 				$scope.callAPI(zsGeneralSrv.recordIdVerification, options);

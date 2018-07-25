@@ -27,7 +27,8 @@ sntGuestWeb.controller('gwEarlyCheckinOptionsController', ['$scope', '$state', '
 			};
 			var params = {
 				'reservation_id': GwWebSrv.zestwebData.reservationID,
-				'early_checkin_offer_id': $stateParams.id
+				'early_checkin_offer_id': $stateParams.id,
+                'application': 'WEB'
 			};
 			var options = {
 				params: params,
