@@ -1042,7 +1042,7 @@ sntZestStation.controller('zsRootCtrl', [
                     idlePopupTime = $scope.zestStationData.idle_timer.prompt,
                     idleToHomeTime = $scope.zestStationData.idle_timer.max,
                     idleTimerEnabled = $scope.zestStationData.idle_timer.enabled,
-                    getWorkstationsAtTime = navigator.onLine ? 120 : 5; // refresh workstation data every 120 seconds or 5 seconds
+                    getWorkstationsAtTime = 120; // refresh workstation data every 120seconds
                     // timeUntilRefreshCheck = 30; // check if workstation requires refresh, default every 30s
 
 				/**
@@ -1085,7 +1085,7 @@ sntZestStation.controller('zsRootCtrl', [
                     }
                     $scope.runDigestCycle();
                 } else {
-                    getWorkstationsAtTime = navigator.onLine ? 120 : 5;
+                    getWorkstationsAtTime = 120;
                     $scope.zestStationData.timeDebugger = 'false';
                 }
 
