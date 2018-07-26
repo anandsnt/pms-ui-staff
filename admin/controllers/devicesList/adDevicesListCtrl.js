@@ -105,7 +105,8 @@ admin.controller('ADDevicesListCtrl', ['$scope', '$state', 'ngTableParams', 'adD
         last_logged_in_user: device.last_logged_in_user,
         service_application_type_id: device.service_application_type_id,
         is_excluded_from_auto_upgrade: device.is_excluded_from_auto_upgrade
-      }
+      };
+
       return params;
     };
 
