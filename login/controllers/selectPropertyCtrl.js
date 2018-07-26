@@ -1,4 +1,4 @@
-login.controller('selectPropertyCtrl', ['$scope', 'selectPropertySrv', '$window', '$state', '$stateParams', 'ngDialog',
+angular.module('login').controller('selectPropertyCtrl', ['$scope', 'selectPropertySrv', '$window', '$state', '$stateParams', 'ngDialog',
     function($scope, selectPropertySrv, $window, $state, $stateParams, ngDialog) {
         
         BaseCtrl.call(this, $scope);

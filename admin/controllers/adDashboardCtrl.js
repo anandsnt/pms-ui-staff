@@ -5,7 +5,7 @@ admin.controller('ADDashboardCtrl', ['$scope', '$state', '$stateParams', '$rootS
 
         // CICO-36466 Admin Interfaces Menu to be sorted by alphabetical
         // NOTE: Currently only the Interfaces Menu items are sorted!
-        if ($scope.selectedMenu.menu_name === "Interfaces") {
+        if ($scope.selectedMenu && $scope.selectedMenu.menu_name === "Interfaces") {
             $scope.selectedMenu.components = _.sortBy($scope.data.menus[$stateParams.menu].components, function(menu) {
                 return menu.name.toLowerCase();
             });
