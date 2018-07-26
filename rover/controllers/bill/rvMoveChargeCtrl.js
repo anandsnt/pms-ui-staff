@@ -205,9 +205,9 @@ sntRover.controller('RVMoveChargeCtrl',
    				 "to_bill": $scope.targetBillId,
     			 "financial_transaction_ids": $scope.moveChargeData.selectedTransactionIds
 			};
-			var chargesMovedSuccess = function() {
+			var chargesMovedSuccess = function(response) {
 				$scope.$emit("hideLoader");
-				$scope.$emit('moveChargeSuccsess');
+				$scope.$emit('moveChargeSuccsess', response.data);
 				$scope.closeDialog();
 			};
 			var failureCallback = function(data) {

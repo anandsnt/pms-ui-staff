@@ -314,7 +314,8 @@ sntZestStation.controller('zscheckInReservationSearchCtrl', [
                 yearRange: '0:+10',
                 minDate: minDate,
                 onSelect: function(value) {
-                    $scope.showDatePicker();
+                    $scope.showDatePick = false;
+                    $scope.dateEntered();
                 }
             };
 
