@@ -241,9 +241,15 @@
 </div>
 
 <div class="entry search" ng-show="uiChosenReport.hasIncludeCompanyTaGroup">
-    <label>Company/TA/Group</label>
+    <label>Company/TA/Group +++</label>
     <input class="icons icon-search" auto-complete auto-options="compTaGrpAutoCompleteOnList" data-card-type="" type="text" placeholder="Search by Company/TA/Group" value="" autocomplete="off" ng-model="uiChosenReport.uiChosenIncludeCompanyTaGroup" report-source="reportList" report-index="{{ $index }}" ul-class="find-cards" ng-focus="returnuiChosenReport(uiChosenReport)" ng-change="removeCompTaGrpId(uiChosenReport, 'uiChosenIncludeCompanyTaGroup', 'chosenIncludeCompanyTaGroup')">
     <input type="text" class="hidden" ng-model="uiChosenReport.chosenIncludeCompanyTaGroup">
+</div>
+
+<div class="entry search" ng-show="uiChosenReport.hasGroupCode">
+    <label>Group Code==</label>
+    <input class="icons icon-search" auto-complete auto-options="groupCodeOnList" data-card-type="" type="text" placeholder="Search by Group Code" value="" autocomplete="off" ng-model="uiChosenReport.uiChosenIncludeGroupCode" report-source="reportList" report-index="{{ $index }}" ul-class="find-cards" ng-focus="returnuiChosenReport(uiChosenReport)" ng-change="removeCompTaGrpId(uiChosenReport, 'uiChosenIncludeCompanyTaGroup', 'chosenIncludeCompanyTaGroup')">
+    <input type="text" class="hidden" ng-model="uiChosenReport.chosenIncludeGroupCode">
 </div>
 
 <div class="entry search" ng-show="uiChosenReport.hasIncludeGroup">
@@ -342,6 +348,12 @@
     on-update="refreshFilterScroll"
     data="uiChosenReport.hasIncludeAgingBalance.data"
     options="uiChosenReport.hasIncludeAgingBalance.options"></multi-option-selection>
+
+<multi-option-selection ng-show="uiChosenReport.hasIncludeTaxExempts && uiChosenReport.hasIncludeTaxExempts.data.length"
+    label="Tax Exempt Types"
+    on-update="refreshFilterScroll"
+    data="uiChosenReport.hasIncludeTaxExempts.data"
+    options="uiChosenReport.hasIncludeTaxExempts.options"></multi-option-selection>
 
 <multi-option-selection ng-show="uiChosenReport.hasAccountSearch && uiChosenReport.hasAccountSearch.data.length"
     label="Account Name"
