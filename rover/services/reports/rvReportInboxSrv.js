@@ -414,6 +414,21 @@ angular.module('sntRover').service('RVReportsInboxSrv', [
         }; 
 
         /**
+         * Fill group codes
+         * @param {String} value of the option
+         * @param {String} key the key to be used in the formatted filter
+         * @param {Promises} promises array of promises
+         * @param {Object} formatedFilter the formatted filter object
+         * @return {void} 
+         */
+        this.fillGroupCodes = (value, key, promises, formatedFilter) => {
+            
+            promises.push(RVreportsSubSrv.fetchGroupByCode(entity[1]).then(function(response) {
+               formatedFilter[reportInboxFilterLabelConst[key]] = response.group_code;
+            }));
+        }; 
+
+        /**
          * Fill company/ta details
          * @param {String} value of the option
          * @param {String} key the key to be used in the formatted filter
@@ -1040,6 +1055,9 @@ angular.module('sntRover').service('RVReportsInboxSrv', [
                    case reportParamsConst['INCLUDE_COMPANYCARD_TA']:
                         self.fillCompanyTaDetails(value, key, promises, processedFilter, report);
                         break;
+                   case reportParamsConst['TAX_EXEMPT']:
+                        self.fillGroupCodes(value, key, promises, processedFilter, report);
+                        break; 
                    case reportParamsConst['CHECKED_IN']:
                    case reportParamsConst['CHECKED_OUT']:
                         self.fillCheckedInCheckedOut(value, key, processedFilter);

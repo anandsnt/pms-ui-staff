@@ -331,6 +331,17 @@ angular.module('sntRover').service('RVreportsSubSrv', [
             });
         };
 
+        service.fetchGroupCode = function(query, exclude_groups) {
+            var urlPrams = '?query=' + query;
+
+            return callApi({
+                // no name here since we dont want to cache it in the store ever
+                method: 'getJSON',
+                url: 'api/reports/search_group_by_code' + urlPrams,
+                resKey: 'results'
+            });
+        };
+
         service.fetchHoldStatus = function() {
             return callApi({
                 name: 'holdStatus',
