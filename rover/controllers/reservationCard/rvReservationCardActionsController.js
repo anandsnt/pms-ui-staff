@@ -731,7 +731,14 @@ sntRover.controller('rvReservationCardActionsController', ['$scope', '$filter', 
                     list[x].due_at_time = list[x].time_due ? $filter('date')(list[x].due_at_str, "HH:mm") : "00:00";
 
                     if (typeof list[x].due_at === typeof 'string') {
-                        list[x].due_at_date = $filter('date')(list[x].due_at_str, $rootScope.dateFormat);
+                        var splitDueTimeString = list[x].due_at_str.split("T");
+
+                        // 24 hr format for the dropdown in the right panel
+                        list[x].due_at_time_str = dateFilter(splitDueTimeString[0] + "T" +  splitDueTimeString[1].split(/[+-]/)[0], "hh:mm a");
+                        // 12 hr format for binding in the list
+
+                        list[x].due_at_time = dateFilter(splitDueTimeString[0] + "T" +  splitDueTimeString[1].split(/[+-]/)[0], "HH:mm");
+                        list[x].due_at_date = dateFilter(splitDueTimeString[0], $rootScope.dateFormat);
                         list[x].hasDate = true;
                     } else {
                         list[x].hasDate = false;
@@ -1237,13 +1244,12 @@ sntRover.controller('rvReservationCardActionsController', ['$scope', '$filter', 
             $scope.closeNewCalendar();
         };
 
-        $scope.departmentSelect = {};
-        $scope.assignDepartment = function() {
-            var params = $scope.getBaseParams();
-
-            if ($scope.departmentSelect.selected) {
-                params['assigned_to'] = $scope.departmentSelect.selected.value;
-                params.action_task.id  = $scope.selectedAction.id;
+        /**
+         * Update the selected action with the edited data
+         * @param {Object} params holding the updated action details
+         * @return {void}
+         */
+        var updateSelectedAction = function(params) {
 
                 var onSuccess = function() {
                     // switch back to selected
@@ -1261,8 +1267,10 @@ sntRover.controller('rvReservationCardActionsController', ['$scope', '$filter', 
                 };
 
                 $scope.invokeApi(rvActionTasksSrv.updateNewAction, params, onSuccess, onFailure);
-            }
+           
         };
+
+        $scope.departmentSelect = {};        
 
         $scope.initRefresh = function(del) {
             $scope.isRefreshing = true;
@@ -1360,6 +1368,79 @@ sntRover.controller('rvReservationCardActionsController', ['$scope', '$filter', 
             }
 
 
+        };
+
+        // Get the action status info
+        $scope.getActionStatusInfo = function(action) {
+            var status = action.action_status;
+
+            if (action.over_due && status !== 'COMPLETED') {
+                status = 'OVERDUE';
+            }
+
+            return status;
+        };
+
+        // Checks whether edit/complete btn should be shown or not
+        $scope.shouldShowEditAndCompleteBtns = function(action) {
+            return ['UNASSIGNED', 'ASSIGNED'].indexOf(action.action_status) > -1 ;
+        };
+
+        // Checks whether the delete action btn should be shown or not
+        $scope.shouldShowDeleteBtn = function(action) {
+            return ['UNASSIGNED', 'ASSIGNED', 'COMPLETED'].indexOf(action.action_status) > -1 ;
+        };
+
+        // Prepare the edit action screen
+        $scope.prepareEditAction = function(action) {
+            $scope.actionSelected = 'edit';
+            var assignedTo = action.assigned_to.id + '',
+                department = _.findWhere($scope.departments, { value: assignedTo });
+
+            $scope.newAction = {
+                department: department,
+                time_due: action.due_at_time,
+                date_due: action.due_at_date,
+                hasDate: true,
+                notes: action.description,
+                actionId: action.id
+            };
+        };
+
+        // Get the params required for updating an action
+        var getUpdateRequestParams = function() {
+            var params = $scope.getBaseParams();
+
+            params.action_task.id  = $scope.newAction.actionId;
+
+            if ($scope.newAction.department) {
+               params.assigned_to = $scope.newAction.department.value;               
+            }
+
+            if ($scope.newAction.date_due) {
+                var dateObj = $scope.newAction.dueDateObj;
+
+                if (!dateObj) {
+                    var dateParts = $scope.newAction.date_due.split('-');
+                    dateObj = getTZIndependentDateFromDayMonthYear(dateParts[0], dateParts[1], dateParts[2]);
+                }
+
+                params.due_at = $filter('date')(dateObj, $rootScope.dateFormatForAPI) +
+                    ($scope.newAction.time_due ? "T" + $scope.newAction.time_due + ":00" : "");
+            }
+
+            if ($scope.newAction.notes) {
+                params.action_task.description = $scope.newAction.notes;
+            }
+
+            return params;
+        };
+
+        // Handler for the update action
+        $scope.handleActionUpdate = function() {
+            var params = getUpdateRequestParams();
+
+            updateSelectedAction(params);
         };
 
 
