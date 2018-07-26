@@ -30,22 +30,21 @@
                             <strong>{{selectedAction.due_at_time_str}}</strong>
                         </li>
                     </ul>
-                    <!-- If completed --
+                    <!-- If completed -->
                     <ul class="completed">
                         <li>
                             Completed by
-                            <strong>{Department}</strong>
+                            <strong>{{selectedAction.completed_by}}</strong>
                         </li>
                         <li>
-                            Date Due
-                            <strong>{Date Due}</strong>
+                            Date Completed
+                            <strong>{{selectedAction.completed_date}}</strong>
                         </li>
                         <li>
-                            Time Due
-                            <strong>{Time Due}</strong>
+                            Time Completed
+                            <strong>{{selectedAction.completed_time_str}}</strong>
                         </li>
-                    </ul>
-                    -->
+                    </ul>                    
                 </div>
 
                 <!-- Add .hidden when showing edit or new action screen -->
@@ -53,7 +52,7 @@
             <div class="detail-actions">
                 <!-- If Unnasigned or assigned -->
                 <button type="button" class="button white purple-text" ng-if="shouldShowEditAndCompleteBtns(selectedAction)" ng-click="prepareEditAction(selectedAction)">Edit</button>
-                <button type="button" class="button white green-text" ng-if="shouldShowEditAndCompleteBtns(selectedAction)">Complete</button>
+                <button type="button" class="button white green-text" ng-if="shouldShowEditAndCompleteBtns(selectedAction)" ng-click="completeAction()">Complete</button>
                 
                 <!-- If unnasigned, assigned or completed -->
                 <button type="button" class="button white red-text" ng-if="shouldShowDeleteBtn(selectedAction)">Delete</button>

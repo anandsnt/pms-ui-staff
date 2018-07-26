@@ -964,6 +964,11 @@ sntRover.controller('rvReservationCardActionsController', ['$scope', '$filter', 
                         list[x].isCompleted = true;
                         list[x].date_completed = getFormattedDate(list[x].completed_at, 'date_completed');
                         list[x].time_completed = getCompletedTimeFromDateMilli(list[x].completed_at, 'time_completed');
+
+                        var splitDueTimeString = list[x].completed_at.split("T");
+
+                        list[x].completed_time_str = dateFilter(splitDueTimeString[0] + "T" +  splitDueTimeString[1].split(/[+-]/)[0], "hh:mm a");
+                        list[x].completed_date = dateFilter(splitDueTimeString[0], $rootScope.dateFormat);
                     }
 
                     if (list[x].created_at) {
