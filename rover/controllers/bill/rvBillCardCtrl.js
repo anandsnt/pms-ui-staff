@@ -1130,15 +1130,40 @@ sntRover.controller('RVbillCardController',
 	$scope.$on('cc_auth_updated', function($event, do_not_cc_auth) {
 		$scope.do_not_cc_auth = do_not_cc_auth;
 	});
+	/*
+	 * Show tax exempt waring message in a popup
+	 * @data response data
+	 */
+	var showTaxExemptAlertMessage = function(data) {
+		$scope.message = data.message;
+		$timeout(function() {
+			ngDialog.open({
+				template: '/assets/partials/bill/rvShowMessagePopup.html',
+				className: '',
+				closeByDocument: false,
+				scope: $scope
+			});
+		}, 1000);
+	};
 
 	// just fetch the bills again ;)
-	var postchargeAdded = $scope.$on('postcharge.added', function(event, netPrice) {
+	var postchargeAdded = $scope.$on('postcharge.added', function(event, data) {
 
 		// cos' we are gods, and this is what we wish
 		// just kidding.. :P
 		$scope.isRefreshOnBackToStaycard = true;
 		$scope.shouldGenerateFolioNumber = true;	
+		if (data.message) {
+			showTaxExemptAlertMessage(data);			
+		}
 		$scope.getBillData($scope.currentActiveBill);	
+	});
+
+	var routingAdded = $scope.$on('SHOW_TAX_EXEMPT_ALERT_MESSAGE', function(event, data) {
+
+		if (data.tax_exempt_warning) {
+			showTaxExemptAlertMessage();			
+		}
 	});
 
 	// Reload bill card when routing popup is dismissed
@@ -1164,7 +1189,8 @@ sntRover.controller('RVbillCardController',
 
 	// the listner must be destroyed when no needed anymore
 	$scope.$on( '$destroy', postchargeAdded );
-
+	$scope.$on( '$destroy', routingAdded );	
+			
 	$scope.closeDialog = function() {
 		ngDialog.close();
 	};
@@ -2884,7 +2910,10 @@ sntRover.controller('RVbillCardController',
 
 	};
 
-	$scope.$on('moveChargeSuccsess', function() {
+	$scope.$on('moveChargeSuccsess', function(event, data) {
+		if (data.message) {
+			showTaxExemptAlertMessage(data);			
+		}
 		$scope.getBillData($scope.currentActiveBill);
 	});
 
