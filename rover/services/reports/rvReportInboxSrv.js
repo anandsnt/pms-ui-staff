@@ -422,8 +422,8 @@ angular.module('sntRover').service('RVReportsInboxSrv', [
          * @return {void} 
          */
         this.fillGroupCodes = (value, key, promises, formatedFilter) => {
-            console.log("reaaaaaaa")
-             promises.push(RVreportsSubSrv.fetchGroupByCode(entity[1]).then(function(response) {
+            
+            promises.push(RVreportsSubSrv.fetchGroupByCode(entity[1]).then(function(response) {
                formatedFilter[reportInboxFilterLabelConst[key]] = response.group_code;
             }));
         }; 

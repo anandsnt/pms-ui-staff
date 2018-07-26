@@ -788,7 +788,6 @@ sntRover.controller('RVReportDetailsCtrl', [
                     $scope.detailsTemplateUrl = '/assets/partials/reports/taxExempt/taxExemptReportDetails.html';
                     break;
 
-
                 default:
                     $scope.hasReportTotals = true;
                     $scope.showReportHeader = _.isEmpty($scope.$parent.results) ? false : true;

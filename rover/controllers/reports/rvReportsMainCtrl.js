@@ -1515,8 +1515,7 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
             // include company/ta/group
             if (report.hasOwnProperty('hasGroupCode') && !!report.chosenIncludeGroupCode) {
                 key = report.hasGroupCode.value.toLowerCase();
-                //params[key] = report.chosenIncludeGroupCode;
-                // params[reportParams['ENTITY_TYPE']] = report.chosenIncludeCompanyTaGroupType;
+
                 params[key] = [];                
                 /**/
                 _.each(report.chosenIncludeGroupCode.split(', '), function (entry) {
