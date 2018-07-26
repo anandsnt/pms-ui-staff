@@ -1515,8 +1515,13 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
             // include company/ta/group
             if (report.hasOwnProperty('hasGroupCode') && !!report.chosenIncludeGroupCode) {
                 key = report.hasGroupCode.value.toLowerCase();
-                params[key] = report.chosenIncludeGroupCode;
+                //params[key] = report.chosenIncludeGroupCode;
                 // params[reportParams['ENTITY_TYPE']] = report.chosenIncludeCompanyTaGroupType;
+                params[key] = [];                
+                /**/
+                _.each(report.chosenIncludeGroupCode.split(', '), function (entry) {
+                    params[key].push(entry);
+                });
                 /* Note: Using the ui value here */
                 if (changeAppliedFilter) {
                     $scope.appliedFilter['groupCode'] = report.uiChosenIncludeGroupCode;
@@ -2640,6 +2645,7 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
                     });
             },
             select: function (event, ui) {
+
                 this.value = ui.item.label;
                 $timeout(function () {
                     $scope.$apply(function () {
@@ -2672,33 +2678,51 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
         }, autoCompleteForCompTaGrp);
 
         // for Company TA Group
+        var groupCodeArray = [],
+            groupCodeIds = [];
+
         var autoCompleteForGroupCode = {
             source: function (request, response) {
+                var term = extractLast(request.term);
                 $scope.$emit('showLoader');
-                reportsSubSrv.fetchGroupCode(request.term)
+                reportsSubSrv.fetchGroupCode(term)
                     .then(function (data) {
-                        var list = [];
-                        var entry = {};
+                        var found;
 
-                        $.map(data, function (each) {
-                            entry = {
-                                label: each.group_code,
-                                value: each.id
-                            };
-                            list.push(entry);
+                        _.each(data, function (item) {
+                            var hasIn = _.find(groupCodeArray, function (added) {
+                                return added.value === item.id;
+                            });
+
+                            if (!hasIn) {
+                                groupCodeArray.push({
+                                    label: item.group_code,
+                                    value: item.id
+                                });
+                            }
                         });
 
-                        response(list);
+                        found = $.ui.autocomplete.filter(groupCodeArray, term);
+                        response(found);
+
                         $scope.$emit('hideLoader');
                     });
             },
             select: function (event, ui) {
-                this.value = ui.item.label;
+
+                var uiValue = split(this.value);
+
+                uiValue.pop();
+                uiValue.push(ui.item.label);
+                uiValue.push('');
+
+                groupCodeIds.push(ui.item.value);
+ 
+                this.value = uiValue.join(', ');
                 $timeout(function () {
                     $scope.$apply(function () {
-                        touchedReport.uiChosenIncludeGroupCode = ui.item.label;
-                        touchedReport.chosenIncludeGroupCode = ui.item.value;
-                        // touchedReport.chosenIncludeCompanyTaGroupType = ui.item.type;
+                        touchedReport.uiChosenIncludeGroupCode = uiValue.join(', ');
+                        touchedReport.chosenIncludeGroupCode = groupCodeIds.join(', ');                    
                     });
                 }, 100);
                 return false;
