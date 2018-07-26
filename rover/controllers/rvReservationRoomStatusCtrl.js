@@ -148,10 +148,10 @@ angular.module('sntRover').controller('reservationRoomStatus',
 		} else if (keySettings === "pin") {
             var options = {
                 params: {
-                    'id': $scope.reservationData.reservation_card.reservation_id
+                    'reservation_id': $scope.reservationData.reservation_card.reservation_id
                 },
                 successCallBack: function(response) {
-                    $scope.reservationData.room_pin = response.pin;
+                    $scope.reservationData.room_pin = response.room_pin;
                     openKeyEncodePopup();
                 }
             };

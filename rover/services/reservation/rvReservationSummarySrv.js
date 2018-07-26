@@ -404,9 +404,9 @@ angular.module('sntRover').service('RVReservationSummarySrv', ['$q', 'rvBaseWebS
 
         this.retrieveRoomPin = function(params) {
             var deferred = $q.defer(),
-                url = '/api/reservations/' + params.id + '/room_pin'; 
+                url = '/staff/reservation/get_room_pin'; 
 
-            rvBaseWebSrvV2.getJSON(url).then(function(data) {
+            rvBaseWebSrvV2.getJSON(url, params).then(function(data) {
                 deferred.resolve(data);
             }, function(data) {
                 deferred.reject(data);
