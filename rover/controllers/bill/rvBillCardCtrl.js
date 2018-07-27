@@ -19,6 +19,7 @@ sntRover.controller('RVbillCardController',
 	'$q',
 	'sntActivity',
 	'RVReservationStateService',
+	'$log',
 	function($scope, $rootScope,
 			$state, $stateParams,
 			RVBillCardSrv, reservationBillData,
@@ -30,7 +31,7 @@ sntRover.controller('RVbillCardController',
 			$sce,
 
 			RVKeyPopupSrv, RVPaymentSrv,
-			RVSearchSrv, rvPermissionSrv, jsMappings, $q, sntActivity, RVReservationStateService) {
+			RVSearchSrv, rvPermissionSrv, jsMappings, $q, sntActivity, RVReservationStateService, $log) {
 
 
 	BaseCtrl.call(this, $scope);
