@@ -70,7 +70,7 @@ angular.module('sntRover').service('RVKeyPopupSrv', ['$q', 'RVBaseWebSrv', 'rvBa
      */
     this.generatePinCode = function(params) {
         var deferred = $q.defer();
-        var url =  "/api/reservation/"+params.interface.toLowerCase()+"/"+params.confirmation_number+"/generate";
+        var url =  "/api/reservation/" + params.interface.toLowerCase() + "/" + params.confirmation_number + "/generate";
 
 
         rvBaseWebSrvV2.postJSON(url, params).then(function(data) {
