@@ -55,7 +55,7 @@ sntRover.controller('RVKeyEncodePopupCtrl', [
 			$scope.data.confirmNumber = $scope.reservationData.reservation_card.confirmation_num;
 			$scope.data.roomNumber = $scope.reservationData.reservation_card.room_number;
 			$scope.data.key_settings = $scope.reservationData.reservation_card.key_settings;
-			$scope.data.room_pin = $scope.reservationData.reservation_card.room_pin;
+			$scope.data.room_pin = $scope.reservationData.room_pin;
 			$scope.data.reservation_id = $scope.reservationData.reservation_card.reservation_id;
 			$scope.data.room_pin_interface = $scope.reservationData.reservation_card.room_pin_interface;
 		}
