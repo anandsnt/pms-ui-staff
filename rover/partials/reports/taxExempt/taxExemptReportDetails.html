@@ -22,7 +22,7 @@
                         <th><span>Name</span></th>
                         <th><span class="dates">Dates</span></th>
                         <th><span>Nights</span></th>
-                        <th><span class="account">Account</span></th>
+                        <th><span class="account">Company / Travel Agent</span></th>
                         <th><span>Rate</span></th>
                         <th><span>Tax Exempt Type</span></th>
                     </tr>
@@ -30,15 +30,13 @@
                 <tfoot>
                     <tr>
                         <td colspan="3">
-                            Date Range from <span>{Range From}</span> to <span>{Range To}</span>
+                            Date Range from <span>{{ appliedFilter.fromDate | date:dateFormat }}</span> to <span>{{ appliedFilter.toDate | date:dateFormat }}</span>
                         </td>
                         <td colspan="3">
                             <li>
 				                Business date <span>{{ userInfo.business_date | date:dateFormat }}</span><br/>
 				                User <span>{{ userInfo.first_name }} {{ userInfo.last_name }}</span>
 				            </li>
-                        </td>
-                    </tr>
                 </tfoot>
                 <tbody>
                     <tr class="row-break" ng-repeat="eachRow in results">
@@ -61,9 +59,10 @@
                                 </div>
                             </div>
                         </td>
-                        <td>{Nights}{{eachRow.confirm_no}}</td>
+                        <td>{{eachRow.total_nights}}</td>
                         <td class="account">
                             <strong>{{eachRow.travel_agent_name}} | <em>{{eachRow.confirm_no}}{Account No.}</em></strong>
+                            <strong>{{eachRow.company_name}} | <em>{{eachRow.confirm_no}}{Account No.}</em></strong>
                             <!-- If has group code 
                             <span class="icons icon-group">{Group Code}</span>
                             -->

@@ -971,7 +971,7 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
         function genParams(report, page, perPage, changeAppliedFilter) {
             var params = {
                 'page': page,
-                'per_page': perPage
+                'per_page': 1
             };
 
             // For Report Inbox, set id as generated id and skip all other params
