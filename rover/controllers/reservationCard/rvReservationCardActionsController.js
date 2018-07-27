@@ -1229,7 +1229,7 @@ sntRover.controller('rvReservationCardActionsController', ['$scope', '$filter', 
         ];
         $scope.initPopup = function() {
             ngDialog.open({
-                template: '/assets/partials/reservationCard/Actions/rvReservationCardActionsPopup.html',
+                template: '/assets/partials/reservationCard/actions/rvReservationCardActionsPopup.html',
                 className: 'ngdialog-theme-default',
                 scope: $scope,
                 closeByDocument: false,

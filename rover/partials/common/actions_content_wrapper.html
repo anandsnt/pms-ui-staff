@@ -20,10 +20,8 @@
         <div class="summary" ng-include="'/assets/partials/common/actions_assign.html'"></div>
     </div>
 
-    <div class="content-right"  ng-class="{'full-width': actions.totalCount === 0}" ng-show="(showNewAction() || actionSelected === 'edit') && !refreshingToNonEmpty()">
-        <div  id="summary" class="summary" ng-include="'/assets/partials/common/actions_new_action.html'" ng-show="showNewAction() && !refreshingToNonEmpty()"></div>
-        <div  id="summary" class="summary" ng-include="'/assets/partials/common/edit_action.html'" ng-show="actionSelected === 'edit' && !refreshingToNonEmpty()"></div>
-        </div>        
+    <div class="content-right" ng-show="showNewAction() && !refreshingToNonEmpty()" ng-class="{'full-width': actions.totalCount === 0}">
+        <div id="summary" class="summary" ng-include="'/assets/partials/common/actions_new_action.html'"></div>
     </div>
 
 </section>
