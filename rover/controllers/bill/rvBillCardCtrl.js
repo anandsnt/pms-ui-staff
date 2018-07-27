@@ -61,9 +61,9 @@ sntRover.controller('RVbillCardController',
 		hasActivatedFolioNumber = reservationBillData.has_activate_folio_number;
 
 	// Log to track the issue.
-	$log.info('is_infrasec_activated_for_hotel',reservationBillData.is_infrasec_activated_for_hotel);
-	$log.info('is_infrasec_activated_for_workstation',reservationBillData.is_infrasec_activated_for_workstation);
-	$log.info('has_activate_folio_number',reservationBillData.has_activate_folio_number);
+	$log.info('is_infrasec_activated_for_hotel', reservationBillData.is_infrasec_activated_for_hotel);
+	$log.info('is_infrasec_activated_for_workstation', reservationBillData.is_infrasec_activated_for_workstation);
+	$log.info('has_activate_folio_number', reservationBillData.has_activate_folio_number);
 
 	$scope.setScroller('registration-content', scrollOptions);
   	$scope.setScroller ('bill-tab-scroller', scrollerOptionsForGraph);
