@@ -910,8 +910,6 @@ angular.module('reportsModule')
                     // requested++;
                     fillAgingBalance();
                 } else if ( 'TAX_EXEMPT_TYPE' === filter.value && ! filter.filled) {
-                    console.log("reached")
-                    // requested++;
                     fillTaxExemptTypes();
                 } else if ( 'ACCOUNT_SEARCH' === filter.value && ! filter.filled) {
                     requested++;
