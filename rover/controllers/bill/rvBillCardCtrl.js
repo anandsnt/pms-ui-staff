@@ -56,7 +56,7 @@ sntRover.controller('RVbillCardController',
 		scrollerOptionForSummary = {scrollX: true },
 		scrollOptions =  {preventDefaultException: { tagName: /^(INPUT|TEXTAREA|BUTTON|SELECT|A|DIV)$/ }, preventDefault: false},
 		// CICO-49105 - Blackbox enabled or not.
-		isBlackBoxEnabled = $rootScope.isInfrasecActivated && $rootScope.isInfrasecActivatedForWorkstation;
+		isBlackBoxEnabled = reservationBillData.is_infrasec_activated_for_hotel && reservationBillData.is_infrasec_activated_for_workstation;
 
 	$scope.setScroller('registration-content', scrollOptions);
   	$scope.setScroller ('bill-tab-scroller', scrollerOptionsForGraph);
