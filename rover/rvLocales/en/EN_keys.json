@@ -38,4 +38,6 @@
     "KEY_CREATED_BAND_ADDING_FAILED": "Key created successfully, but failed in adding band",
     "WRITING_BAND_TYPE": "Writing band type..",
     "KEY_BAND_CREATED_SUCCESSFULLY": "Key, Band created successfully",
-    "KEY_BAND_CREATED_FAILED_WRITING_BANDTYPE": "Key created, Band Added, Writing band type failed.."
+    "KEY_BAND_CREATED_FAILED_WRITING_BANDTYPE": "Key created, Band Added, Writing band type failed..",
+    "NO_PIN_MSG": "PIN code is not ready. Please check back soon.",
+    "YOUR_ROOM_PIN_IS": "Room Pin Code is"

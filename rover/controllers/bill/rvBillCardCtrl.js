@@ -1382,7 +1382,7 @@ sntRover.controller('RVbillCardController',
 		$scope.viewFromBillScreen = true;
 		$scope.fromView = "checkin";
         // As per CICO-29735
-		if (keySettings !== "no_key_delivery") {
+		if (keySettings !== "no_key_delivery" && keySettings !== "pin") {
 			// show email popup
 			if (keySettings === "email") {
 
@@ -1415,7 +1415,7 @@ sntRover.controller('RVbillCardController',
 
 			// Display the key encoder popup
 			// https://stayntouch.atlassian.net/browse/CICO-21898?focusedCommentId=58632&page=com.atlassian.jira.plugin.system.issuetabpanels:comment-tabpanel#comment-58632
-			else if (keySettings === "encode"  || keySettings === "mobile_key_encode" || keySettings === "pin") {
+			else if (keySettings === "encode"  || keySettings === "mobile_key_encode") {
 				// when checking in we are creating a new key, popup controller expects this flag.
 				if ($scope.reservationData && $scope.reservationData.status && $scope.reservationData.status === 'CHECKING_IN') {
 					$scope.keyType = 'New';
