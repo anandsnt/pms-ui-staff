@@ -147,6 +147,8 @@ sntGuestWeb.controller('homeController', ['$rootScope', '$scope', '$location', '
 		// Footer Settings
 		$rootScope.footerSettings = reservationAndhotelData.zest_web_footer_settings;
 
+		$rootScope.hotelCheckinTime = reservationAndhotelData.hotel_checkin_time;
+
 		// Marketting apps
 		$rootScope.mobileMarketingOn = reservationAndhotelData.zest_web_checkin_details_about_mobile_app;
 		$rootScope.mobileAppText = reservationAndhotelData.zest_web_checkin_mobile_app_call_to_action;
