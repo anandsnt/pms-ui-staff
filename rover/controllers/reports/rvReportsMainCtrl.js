@@ -2351,7 +2351,7 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
                 $scope.paginationConfig = {
                     id: reportPaginationIds[chosenReport.title],
                     api: loadAPIData,
-                    perPage: 25,
+                    perPage: 1,
                     currentPage: loadPage
                 };
             }

@@ -1,18 +1,3 @@
-<!-- Report details -->
-<!-- <section id="report-details" class="content reports-wrapper" role="main"> -->
-
-    <!-- Report header -->
-<!--     <div class="report-header">
-        <ul class="totals">
-            <li>Total Tax Exempt Reservations<span>{Value}</span></li>
-        </ul>
-        <div class="actions">
-            <button id="email-report" type="button" class="button with-icon only-icon blue"><span class="icons icon-email"></span></button>
-            <button id="print-report" type="button" class="button with-icon only-icon blue"><span class="icons icon-print"></span></button>
-            <button id="save-report" type="button" class="button with-icon only-icon purple"><span class="icons icon-save"></span></button>
-        </div>
-    </div> -->
-
     <!-- Report content -->
     <div id="report-content" class="report-content scrollable"> <!-- Add class "with-pagination" if pagination is shown -->
         <div class="wrapper">
@@ -28,6 +13,7 @@
                     </tr>
                 </thead>
                 <tfoot>
+
                     <tr>
                         <td colspan="3">
                             Date Range from <span>{{ appliedFilter.fromDate | date:dateFormat }}</span> to <span>{{ appliedFilter.toDate | date:dateFormat }}</span>
@@ -61,11 +47,11 @@
                         </td>
                         <td>{{eachRow.total_nights}}</td>
                         <td class="account">
-                            <strong>{{eachRow.travel_agent_name}} | <em>{{eachRow.confirm_no}}{Account No.}</em></strong>
-                            <strong>{{eachRow.company_name}} | <em>{{eachRow.confirm_no}}{Account No.}</em></strong>
-                            <!-- If has group code 
-                            <span class="icons icon-group">{Group Code}</span>
-                            -->
+                            <strong ng-if = "eachRow.travel_agent_name !== '' && eachRow.travel_agent_name !== null">{{eachRow.travel_agent_name}} | <em>{{eachRow.travel_agent_no}}</em></strong>
+                            <strong ng-if = "eachRow.company_name !== '' && eachRow.company_name !== null">{{eachRow.company_name}} | <em>{{eachRow.company_no}}</em></strong>
+                            <!-- If has group code -->
+                            <span class="icons icon-group" ng-if = "eachRow.group_code !== '' && eachRow.group_code !== null">{{eachRow.group_code}}</span>
+                            
                         </td>
                         <td>{{eachRow.rate_code}}</td>
                         <td>{{eachRow.tax_exempt_type}}</td>
@@ -75,7 +61,4 @@
         </div>
     </div>
 
-    <!-- Report pagination // Shown when needed
-    {../_shared/pagination.html} -->
-    
-<!-- </section> -->
+    <rv-pagination  page-options="paginationConfig" page-data="totalCount"></rv-pagination>
