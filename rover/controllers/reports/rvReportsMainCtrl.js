@@ -971,7 +971,7 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
         function genParams(report, page, perPage, changeAppliedFilter) {
             var params = {
                 'page': page,
-                'per_page': 1
+                'per_page': perPage
             };
 
             // For Report Inbox, set id as generated id and skip all other params
@@ -2351,7 +2351,7 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
                 $scope.paginationConfig = {
                     id: reportPaginationIds[chosenReport.title],
                     api: loadAPIData,
-                    perPage: 1,
+                    perPage: 25,
                     currentPage: loadPage
                 };
             }
