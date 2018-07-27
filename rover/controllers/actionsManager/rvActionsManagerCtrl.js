@@ -50,6 +50,7 @@ sntRover.controller('RVActionsManagerController',
 
                 action.dueDate = dateFilter(splitDueTimeString[0], $rootScope.dateFormatForAPI);
                 action.dueTime = dateFilter(splitDueTimeString[0] + "T" +  splitDueTimeString[1].split(/[+-]/)[0], "HH:mm");
+                action.dueTimeAmPm = dateFilter(splitDueTimeString[0] + "T" +  splitDueTimeString[1].split(/[+-]/)[0], "hh:mm a");
                 return action;
             },
             getActionDetails = function () {
@@ -58,6 +59,7 @@ sntRover.controller('RVActionsManagerController',
                         params: $scope.filterOptions.selectedActionId,
                         successCallBack: function (response) {
                             $scope.selectedAction = getBindabaleAction(response.data);
+                            $scope.selectedView = "list";
                         }
                     });
                 }
@@ -235,13 +237,14 @@ sntRover.controller('RVActionsManagerController',
         };
 
         $scope.initNewAction = function () {
-            ngDialog.open({
-                template: '/assets/partials/actionsManager/rvNewActionPopup.html',
-                scope: $scope,
-                controller: 'RVNewActionCtrl',
-                closeByDocument: true,
-                closeByEscape: true
-            });
+            // ngDialog.open({
+            //     template: '/assets/partials/actionsManager/rvNewActionPopup.html',
+            //     scope: $scope,
+            //     controller: 'RVNewActionCtrl',
+            //     closeByDocument: true,
+            //     closeByEscape: true
+            // });
+            $scope.selectedView = "new";
         };
 
         $scope.onSelectAction = function (actionId) {
@@ -348,6 +351,7 @@ sntRover.controller('RVActionsManagerController',
 
         var listenerNewActionPosted = $scope.$on("NEW_ACTION_POSTED", function () {
             ngDialog.close();
+            $scope.selectedView = "list";
             fetchActionsList();
         });
 
@@ -472,6 +476,16 @@ sntRover.controller('RVActionsManagerController',
             setAppliedFilter();
 
             $scope.invokeApi(reportsSubSrv.fetchReportDetails, params, sucessCallback, failureCallback);
+        };
+
+        // Checks whether edit/complete btn should be shown or not
+        $scope.shouldShowEditAndCompleteBtn = function(action) {
+            return ["UNASSIGNED", 'ASSIGNED'].indexOf(action.action_status) > -1;
+        };
+
+        // Checks whether delete button should be shown or not
+        $scope.shouldShowDeleteBtn = function(action) {
+            return ["UNASSIGNED", 'ASSIGNED', 'COMPLETED'].indexOf(action.action_status) > -1;
         };
 
         init();
