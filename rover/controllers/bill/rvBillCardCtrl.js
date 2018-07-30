@@ -633,7 +633,7 @@ sntRover.controller('RVbillCardController',
 					$scope.moveToNextBillAfterSuccessPaymentDuringCheckout();
 				}
 				if (callGenerateFolioNumberApiAfterLoadingCurrentBill) {
-					callGenerateFolioNumberApi();
+					that.callGenerateFolioNumberApi();
 				}
 				
 			},
@@ -724,8 +724,10 @@ sntRover.controller('RVbillCardController',
 		 	}
 		}
 	 };
-
-	var callGenerateFolioNumberApi = function() {
+	/* 
+	 * Set up the data to generate folio number
+	 */
+	that.callGenerateFolioNumberApi = function() {
 		callGenerateFolioNumberApiAfterLoadingCurrentBill =  false;
 		var currentActiveBill = $scope.reservationBillData.bills[$scope.currentActiveBill];
 
@@ -742,7 +744,7 @@ sntRover.controller('RVbillCardController',
 		$scope.init(data);
 		$scope.calculateBillDaysWidth();
 		if (hasActivatedFolioNumber && $scope.shouldGenerateFolioNumber) {
-			callGenerateFolioNumberApi();
+			that.callGenerateFolioNumberApi();
 		}	
 	};
 	// Utility method to reload bill screen after other operations.
@@ -2764,7 +2766,7 @@ sntRover.controller('RVbillCardController',
 	 			reservationStatus = $scope.reservationBillData.reservation_status;
 
 	 		if (hasActivatedFolioNumber && $scope.shouldGenerateFolioNumber) {
-				callGenerateFolioNumberApi();
+				that.callGenerateFolioNumberApi();
 			}			
 		 	// CICO-10906 review process continues after payment.
 			if (($scope.reservationBillData.bills[$scope.currentActiveBill].total_fees[0].balance_amount === 0.00 || $scope.reservationBillData.bills[$scope.currentActiveBill].total_fees[0].balance_amount === "0.00") && $scope.isViaReviewProcess) {
@@ -3131,7 +3133,7 @@ sntRover.controller('RVbillCardController',
      	$scope.billingData.billingInfoTitle = ($scope.reservationBillData.routing_array.length > 0) ? $filter('translate')('BILLING_INFO_TITLE') : $filter('translate')('ADD_BILLING_INFO_TITLE');
 		setChargeCodesSelectedStatus(false);
 		if (hasActivatedFolioNumber && $scope.shouldGenerateFolioNumber) {
-			callGenerateFolioNumberApi();
+			that.callGenerateFolioNumberApi();
 		}	
 	};
 	$scope.init(reservationBillData);
