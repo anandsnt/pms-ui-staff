@@ -159,7 +159,7 @@
     <tbody>
         <tr>
             <td>{{ printRegCardData.translation['phone'] }}</td>
-            <td>Mobile</td>
+            <td>{{ printRegCardData.translation['mobile'] }}</td>
             <td>{{ printRegCardData.translation['email'] }}</td>
         </tr>
     </tbody>
@@ -167,8 +167,8 @@
 <table class="guest-data-enter fixed" ng-if="printRegCardData.reg_card_show_contact_info">
     <tbody>
         <tr>
-            <td>ID Type</td>
-            <td>ID Number</td>       
+            <td>{{ printRegCardData.translation['id_type'] }}</td>
+            <td>{{ printRegCardData.translation['id_number'] }}r</td>       
         </tr>
     </tbody>
 </table>
