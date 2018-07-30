@@ -58,7 +58,7 @@ sntRover.controller('RVbillCardController',
 		scrollOptions =  {preventDefaultException: { tagName: /^(INPUT|TEXTAREA|BUTTON|SELECT|A|DIV)$/ }, preventDefault: false},
 		// CICO-49105 - Blackbox enabled or not.
 		isBlackBoxEnabled = reservationBillData.is_infrasec_activated_for_hotel && reservationBillData.is_infrasec_activated_for_workstation,
-		hasActivatedFolioNumber = reservationBillData.has_activate_folio_number;
+		hasActivatedFolioNumber = true;//reservationBillData.has_activate_folio_number;
 
 	// Log to track the issue.
 	$log.info('is_infrasec_activated_for_hotel', reservationBillData.is_infrasec_activated_for_hotel);
@@ -1907,7 +1907,7 @@ sntRover.controller('RVbillCardController',
 	that.generateFolioNumber = function (billId, balanceAmount, isFolioNumberExists) {
 
 		$scope.shouldGenerateFolioNumber = false;
-		if (balanceAmount === "0.00" && $scope.reservationBillData.reservation_status === "CHECKEDOUT" && !isFolioNumberExists) {
+		if (balanceAmount === "0.00" && ($scope.reservationBillData.reservation_status === "CHECKEDOUT" || $scope.reservationBillData.reservation_status === "NOSHOW") && !isFolioNumberExists) {
 
 			var successCallBackOfGenerateFolioNumber = function(data) {
 					$scope.reservationBillData.bills[$scope.currentActiveBill].is_active = false;
@@ -2783,6 +2783,13 @@ sntRover.controller('RVbillCardController',
 		if ($scope.isViaReviewProcess) {
 			isDuringCheckoutPayment = true;
 		}
+		var reservationStatus = $scope.reservationBillData.reservation_status;
+
+ 		if (hasActivatedFolioNumber && $scope.shouldGenerateFolioNumber && (reservationStatus === 'CHECKEDOUT' ||  reservationStatus === 'NOSHOW')) {
+			var currentActiveBill = $scope.reservationBillData.bills[$scope.currentActiveBill];
+
+			that.generateFolioNumber(currentActiveBill.bill_id, currentActiveBill.total_fees[0].balance_amount, currentActiveBill.is_folio_number_exists);
+		}	
 		
 		$scope.getBillData($scope.currentActiveBill);
 		$scope.$broadcast('FETCH_REMAINING_AUTH');
