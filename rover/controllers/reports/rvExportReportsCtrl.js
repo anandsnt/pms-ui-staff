@@ -1105,6 +1105,10 @@ angular.module('sntRover').controller('RVExportReportsCtrl', [
                 $scope.addingStage === STAGES.SHOW_DETAILS;
         };
 
+        $scope.changedScheduledTimePeriod = function () {
+            console.log("----")
+        }
+
         $scope.notRunOnce = function () {
             var match = _.find($scope.originalScheduleFrequency, { id: $scope.scheduleParams.frequency_id }) || {};
 
