@@ -732,7 +732,6 @@ sntRover.controller('RVbillCardController',
 		var currentActiveBill = $scope.reservationBillData.bills[$scope.currentActiveBill];
 
 		that.generateFolioNumber(currentActiveBill.bill_id, currentActiveBill.total_fees[0].balance_amount, currentActiveBill.is_folio_number_exists);
-
 	};
 
 	/*
