@@ -58,7 +58,7 @@ sntRover.controller('RVbillCardController',
 		scrollOptions =  {preventDefaultException: { tagName: /^(INPUT|TEXTAREA|BUTTON|SELECT|A|DIV)$/ }, preventDefault: false},
 		// CICO-49105 - Blackbox enabled or not.
 		isBlackBoxEnabled = reservationBillData.is_infrasec_activated_for_hotel && reservationBillData.is_infrasec_activated_for_workstation,
-		hasActivatedFolioNumber = true;//reservationBillData.has_activate_folio_number;
+		hasActivatedFolioNumber = reservationBillData.has_activate_folio_number;
 
 	// Log to track the issue.
 	$log.info('is_infrasec_activated_for_hotel', reservationBillData.is_infrasec_activated_for_hotel);
