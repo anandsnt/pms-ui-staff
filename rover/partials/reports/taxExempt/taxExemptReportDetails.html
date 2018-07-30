@@ -47,7 +47,7 @@
                         </td>
                         <td>{{eachRow.total_nights}}</td>
                         <td class="account">
-                            <strong ng-if = "eachRow.travel_agent_name !== '' && eachRow.travel_agent_name !== null">{{eachRow.travel_agent_name}} | <em>{{eachRow.travel_agent_no}}</em></strong>
+                            <strong ng-if = "eachRow.travel_agent_name !== '' && eachRow.travel_agent_name !== null">{{eachRow.travel_agent_name}} | <em>{{eachRow.travel_agent_no}}</em></strong><br />
                             <strong ng-if = "eachRow.company_name !== '' && eachRow.company_name !== null">{{eachRow.company_name}} | <em>{{eachRow.company_no}}</em></strong>
                             <!-- If has group code -->
                             <span class="icons icon-group" ng-if = "eachRow.group_code !== '' && eachRow.group_code !== null">{{eachRow.group_code}}</span>

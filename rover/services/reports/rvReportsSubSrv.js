@@ -331,7 +331,7 @@ angular.module('sntRover').service('RVreportsSubSrv', [
             });
         };
 
-        service.fetchGroupCode = function(query, exclude_groups) {
+        service.fetchGroupCode = function(query) {
             var urlPrams = '?query=' + query;
 
             return callApi({

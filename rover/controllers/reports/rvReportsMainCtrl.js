@@ -2685,6 +2685,7 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
         var autoCompleteForGroupCode = {
             source: function (request, response) {
                 var term = extractLast(request.term);
+                
                 $scope.$emit('showLoader');
                 reportsSubSrv.fetchGroupCode(term)
                     .then(function (data) {
