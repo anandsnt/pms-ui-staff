@@ -2612,22 +2612,20 @@ sntRover.controller('RVbillCardController',
 		    	if ( sntapp.cordovaLoaded ) {
 		    		cordova.exec(function(success) {}, function(error) {}, 'RVCardPlugin', 'printWebView', []);
 		    	}
-		    }, 200);
+		    	 /*
+			    *	======[ PRINTING COMPLETE. JS EXECUTION WILL UNPAUSE ]======
+			    */
 
-		    /*
-		    *	======[ PRINTING COMPLETE. JS EXECUTION WILL UNPAUSE ]======
-		    */
+			    $timeout(function() {
+					// CICO-9569 to solve the hotel logo issue
+					$("header .logo").removeClass('logo-hide');
+					$("header .h2").addClass('text-hide');
 
-		    $timeout(function() {
-				// CICO-9569 to solve the hotel logo issue
-				$("header .logo").removeClass('logo-hide');
-				$("header .h2").addClass('text-hide');
-
-				// remove the orientation after similar delay
-		    	removePrintOrientation();
-		    	$scope.printBillCardActive = false;
-		    }, 200);
-
+					// remove the orientation after similar delay
+			    	removePrintOrientation();
+			    	$scope.printBillCardActive = false;
+			    }, 1000);
+		    }, 300);
 		};
 
 		var printDataFailureCallback = function(errorData) {
@@ -2645,9 +2643,8 @@ sntRover.controller('RVbillCardController',
 		var sucessCallback = function(data) {
 
 			$scope.isPrintRegistrationCard = true;
-
-			$scope.$emit('hideLoader');
 			$scope.printRegistrationCardActive = true;
+			$scope.$emit('hideLoader');
 			$scope.printRegCardData = data;
 			$scope.errorMessage = "";
 
@@ -2673,30 +2670,29 @@ sntRover.controller('RVbillCardController',
 		    *	======[ READY TO PRINT ]======
 		    */
 		    // this will show the popup with full bill
-		    $timeout(function() {
+			$timeout(function() {
+				// For some reason the loader is not getting hidden
+				$("#loading").addClass('ng-hide');
+				/*
+				 *	======[ PRINTING!! JS EXECUTION IS PAUSED ]======
+				 */
+				$window.print();
+				if (sntapp.cordovaLoaded) {
+					cordova.exec(function(success) {}, function(error) {}, 'RVCardPlugin', 'printWebView', []);
+				}
+				/*
+				 *	======[ PRINTING COMPLETE. JS EXECUTION WILL UNPAUSE ]======
+				 */
+				$timeout(function() {
 
-		    	/*
-		    	*	======[ PRINTING!! JS EXECUTION IS PAUSED ]======
-		    	*/
-		    	$window.print();
-		    	if ( sntapp.cordovaLoaded ) {
-		    		cordova.exec(function(success) {}, function(error) {}, 'RVCardPlugin', 'printWebView', []);
-		    	}
-		    }, 500);
-
-		    /*
-		    *	======[ PRINTING COMPLETE. JS EXECUTION WILL UNPAUSE ]======
-		    */
-		    $timeout(function() {
-
-		    	$scope.printRegistrationCardActive = false;
-				// CICO-9569 to solve the hotel logo issue
-				$("header .logo").removeClass('logo-hide');
-				$("header .h2").addClass('text-hide');
-				// remove the orientation after similar delay
-		    	removePrintOrientation();
-		    }, 500);
-
+					$scope.printRegistrationCardActive = false;
+					// CICO-9569 to solve the hotel logo issue
+					$("header .logo").removeClass('logo-hide');
+					$("header .h2").addClass('text-hide');
+					// remove the orientation after similar delay
+					removePrintOrientation();
+				}, 1000);
+			}, 300);
 		};
 
 		var failureCallback = function(errorData) {
