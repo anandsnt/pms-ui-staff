@@ -87,7 +87,8 @@ sntRover.controller('RVbillCardController',
 	$scope.do_not_cc_auth = false;
 	
 	var isAlreadyShownPleaseSwipeForCheckingIn = false,
-		isDuringCheckoutPayment = false;
+		isDuringCheckoutPayment = false,
+		callGenerateFolioNumberApiAfterLoadingCurrentBill = false;
 
 	// Scope variable to set active bill
 	$scope.currentActiveBill = 0;
@@ -631,6 +632,9 @@ sntRover.controller('RVbillCardController',
 				if (isDuringCheckoutPayment) {
 					$scope.moveToNextBillAfterSuccessPaymentDuringCheckout();
 				}
+				if (callGenerateFolioNumberApiAfterLoadingCurrentBill) {
+					callGenerateFolioNumberApi();
+				}
 				
 			},
 			dataToSend = {
@@ -720,6 +724,15 @@ sntRover.controller('RVbillCardController',
 		 	}
 		}
 	 };
+
+	var callGenerateFolioNumberApi = function() {
+		callGenerateFolioNumberApiAfterLoadingCurrentBill =  false;
+		var currentActiveBill = $scope.reservationBillData.bills[$scope.currentActiveBill];
+
+		that.generateFolioNumber(currentActiveBill.bill_id, currentActiveBill.total_fees[0].balance_amount, currentActiveBill.is_folio_number_exists);
+
+	};
+
 	/*
 	* Success callback of fetch - After moving fees item from one bill to another
 	*/
@@ -729,9 +742,7 @@ sntRover.controller('RVbillCardController',
 		$scope.init(data);
 		$scope.calculateBillDaysWidth();
 		if (hasActivatedFolioNumber && $scope.shouldGenerateFolioNumber) {
-			var currentActiveBill = $scope.reservationBillData.bills[$scope.currentActiveBill];
-
-			that.generateFolioNumber(currentActiveBill.bill_id, currentActiveBill.total_fees[0].balance_amount, currentActiveBill.is_folio_number_exists);
+			callGenerateFolioNumberApi();
 		}	
 	};
 	// Utility method to reload bill screen after other operations.
@@ -2753,9 +2764,7 @@ sntRover.controller('RVbillCardController',
 	 			reservationStatus = $scope.reservationBillData.reservation_status;
 
 	 		if (hasActivatedFolioNumber && $scope.shouldGenerateFolioNumber) {
-				var currentActiveBill = $scope.reservationBillData.bills[$scope.currentActiveBill];
-
-				that.generateFolioNumber(currentActiveBill.bill_id, currentActiveBill.total_fees[0].balance_amount, currentActiveBill.is_folio_number_exists);
+				callGenerateFolioNumberApi();
 			}			
 		 	// CICO-10906 review process continues after payment.
 			if (($scope.reservationBillData.bills[$scope.currentActiveBill].total_fees[0].balance_amount === 0.00 || $scope.reservationBillData.bills[$scope.currentActiveBill].total_fees[0].balance_amount === "0.00") && $scope.isViaReviewProcess) {
@@ -2786,9 +2795,7 @@ sntRover.controller('RVbillCardController',
 		var reservationStatus = $scope.reservationBillData.reservation_status;
 
  		if (hasActivatedFolioNumber && $scope.shouldGenerateFolioNumber && (reservationStatus === 'CHECKEDOUT' ||  reservationStatus === 'NOSHOW')) {
-			var currentActiveBill = $scope.reservationBillData.bills[$scope.currentActiveBill];
-
-			that.generateFolioNumber(currentActiveBill.bill_id, currentActiveBill.total_fees[0].balance_amount, currentActiveBill.is_folio_number_exists);
+			callGenerateFolioNumberApiAfterLoadingCurrentBill = true;
 		}	
 		
 		$scope.getBillData($scope.currentActiveBill);
@@ -3124,9 +3131,7 @@ sntRover.controller('RVbillCardController',
      	$scope.billingData.billingInfoTitle = ($scope.reservationBillData.routing_array.length > 0) ? $filter('translate')('BILLING_INFO_TITLE') : $filter('translate')('ADD_BILLING_INFO_TITLE');
 		setChargeCodesSelectedStatus(false);
 		if (hasActivatedFolioNumber && $scope.shouldGenerateFolioNumber) {
-			var currentActiveBill = $scope.reservationBillData.bills[$scope.currentActiveBill];
-
-			that.generateFolioNumber(currentActiveBill.bill_id, currentActiveBill.total_fees[0].balance_amount, currentActiveBill.is_folio_number_exists);
+			callGenerateFolioNumberApi();
 		}	
 	};
 	$scope.init(reservationBillData);
