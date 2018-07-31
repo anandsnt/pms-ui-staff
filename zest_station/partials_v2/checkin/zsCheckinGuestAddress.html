@@ -7,7 +7,7 @@
                     <button type="button" class="button option" touch-press='usePresentAddress()'>
                         <ng-include src="icons.url.location"></ng-include src>
                     </button>
-                     <text data-ng-bind-html="getTagValue('ADDRESS_ON_FILE')" editable-text="ADDRESS_ON_FILE"></text>
+                     <text data-ng-bind-html="getTagValue('USE_ADDRESS_ON_FILE')" editable-text="USE_ADDRESS_ON_FILE"></text>
                     <p>
                         {{presentAddress.street1}}, {{presentAddress.street2}}
                         <br> {{presentAddress.city}}, {{presentAddress.state}} {{presentAddress.postal_code}}
@@ -23,7 +23,7 @@
                     <button type="button" class="button option" touch-press='useNewAddress()'>
                         <ng-include src="icons.url.location"></ng-include src>
                     </button>
-                    <text data-ng-bind-html="getTagValue('NEW_ADDRESS')" editable-text="NEW_ADDRESS"></text>
+                    <text data-ng-bind-html="getTagValue('ADD_NEW_ADDRESS')" editable-text="ADD_NEW_ADDRESS"></text>
                 </li>
             </ul>
         </nav>
@@ -58,8 +58,21 @@
                 </div>
             </form>
             <div id="actions" class="pull-right">
-                <button type="button" class="button" ng-click="saveAddress()">Next</button>
+                <button type="button" class="button" ng-click="nextButtonClicked()">Next</button>
             </div>
         </div>
     </div>        
 </section>
+
+
+<div class="popup" ng-class="{'open': showErrorMessage}">
+    <!-- Remove class "open" to hide popup content -->
+    <div class="popup-content">
+        <h2 class="nocaps">
+            <text data-ng-bind-html="getTagValue('PLEASE_PROVIDE_ALL_REQUIRED_INFO')" editable-text="PLEASE_PROVIDE_ALL_REQUIRED_INFO"></text>
+        </h2>
+        <button type="button" class="button idle-timeout-btn" click-touch='dismissPopup();'>
+            <text data-ng-bind-html="getTagValue('OK')" editable-text="OK"></text>
+        </button>
+    </div>
+</div>

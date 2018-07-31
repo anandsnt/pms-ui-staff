@@ -12,14 +12,15 @@ sntZestStation.controller('zsCheckinGuestAddressCtrl', [
 		$scope.usePresentAddress = function() {
 			$state.go('zest_station.checkInReservationDetails');
 		};
-		
+
 		$scope.useNewAddress = function() {
 			$scope.mode = "NEW_ADDRESS";
 			$scope.focusInputField('address-1');
 		};
 
-		$scope.saveAddress = function() {
+		var saveAddress = function () {
 			var params = angular.copy($scope.guestDetails);
+
 			params.reservation_id = selectedReservation.id;
 
 			var options = {
@@ -28,7 +29,24 @@ sntZestStation.controller('zsCheckinGuestAddressCtrl', [
 					$state.go('zest_station.checkInReservationDetails');
 				}
 			};
+
 			$scope.callAPI(zsCheckinSrv.saveGuestAddress, options);
+		};
+
+		var isValidAddress = function(addrees) {
+			return !!addrees.country_id && (!!addrees.street || !!addrees.street1) && (!!addrees.state || !!addrees.city);
+		};
+
+		$scope.nextButtonClicked = function() {
+			if (isValidAddress($scope.guestDetails)) {
+				saveAddress();
+			} else {
+				$scope.showErrorMessage = true;
+			}
+		};
+
+		$scope.dismissPopup = function(){
+			$scope.showErrorMessage = false;
 		};
 
 		(function() {
@@ -53,8 +71,9 @@ sntZestStation.controller('zsCheckinGuestAddressCtrl', [
 				'street2': '',
 				'country_id': ''
 			};
+			$scope.showErrorMessage = false;
 
-			if (!!guestAddress.street1 && !!guestAddress.street2 && !!guestAddress.state) {
+			if (isValidAddress(guestAddress)) {
 				$scope.mode = "SELECT_ADDRESS";
 				$scope.presentAddress = guestAddress;
 				var guestCountry = _.find(countryList, function(country) {

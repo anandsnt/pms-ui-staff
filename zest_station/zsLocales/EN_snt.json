@@ -693,7 +693,9 @@
    "POSTAL_OR_ZIP_CODE": "Postal/ZIP code",
 
    "YOUR_ADDRESS": "Your Address",
-   "ADDRESS_ON_FILE": "Address on File",
-   "NEW_ADDRESS": "New Address"
+   "USE_ADDRESS_ON_FILE": "Use Address on File",
+   "ADD_NEW_ADDRESS": "Add New Address",
+   "OK": "OK",
+   "PLEASE_PROVIDE_ALL_REQUIRED_INFO": "Please provide all the required information"
 
 }
