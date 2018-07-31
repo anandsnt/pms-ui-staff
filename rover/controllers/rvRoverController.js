@@ -320,7 +320,7 @@ sntRover.controller('roverController', [
             $scope.isHotelAdmin = true;
         }
         $scope.shouldShowTaxExempt = function() {
-            return rvPermissionSrv.getPermissionValue('TAX_EXEMPT');
+            return (rvPermissionSrv.getPermissionValue('TAX_EXEMPT') && $scope.taxExemptTypes.length);
         };
         /**
          * menu - forming & associate logic
