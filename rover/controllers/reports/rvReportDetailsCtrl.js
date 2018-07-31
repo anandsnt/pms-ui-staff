@@ -390,6 +390,11 @@ sntRover.controller('RVReportDetailsCtrl', [
                     $scope.rightColSpan = 3;
                     break;
 
+                case reportNames['TAX_EXEMPT']:
+                    $scope.leftColSpan = 5;
+                    $scope.rightColSpan = 3;
+                    break;
+
                 default:
                     $scope.leftColSpan = 2;
                     $scope.rightColSpan = 2;
@@ -781,6 +786,13 @@ sntRover.controller('RVReportDetailsCtrl', [
                     $scope.detailsTemplateUrl = '/assets/partials/reports/yearlyVat/yearlyVatReportDetails.html';
                     break;
 
+                case reportNames['TAX_EXEMPT']:
+                    $scope.hasReportTotals = true;
+                    $scope.showReportHeader = true;
+                    $scope.showPrintOption = true;
+                    $scope.detailsTemplateUrl = '/assets/partials/reports/taxExempt/taxExemptReportDetails.html';
+                    break;
+
                 default:
                     $scope.hasReportTotals = true;
                     $scope.showReportHeader = _.isEmpty($scope.$parent.results) ? false : true;
@@ -892,6 +904,10 @@ sntRover.controller('RVReportDetailsCtrl', [
 
                 case reportNames['COMPLIMENTARY_ROOM_REPORT']:
                     template = '/assets/partials/reports/complimentaryRoomReport/rvComplimentaryRoomReport.html';
+                    break;
+
+                case reportNames['TAX_EXEMPT']:
+                    template = '/assets/partials/reports/taxExempt/rvComplimentaryRoomReport.html';
                     break;
 
                 // Default report row
