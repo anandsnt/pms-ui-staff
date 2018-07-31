@@ -185,6 +185,7 @@ angular.module('sntRover').controller('RVExportReportsCtrl', [
             if ( $scope.scheduleParams.time_period_id ) {
                 params.time_period_id = $scope.scheduleParams.time_period_id;
             }
+            params.export_date = $scope.scheduleParams.export_date;
 
             // fill 'frequency_id', 'starts_on', 'repeats_every' and 'ends_on_date'
             params.frequency_id = $scope.scheduleParams.frequency_id;
@@ -278,6 +279,7 @@ angular.module('sntRover').controller('RVExportReportsCtrl', [
             if ( $scope.scheduleParams.time_period_id ) {
                 params.time_period_id = $scope.scheduleParams.time_period_id;
             }
+            params.export_date = $filter('date')($scope.scheduleParams.export_date, 'yyyy/MM/dd');
 
             // fill 'frequency_id', 'starts_on', 'repeats_every' and 'ends_on_date'
             params.frequency_id = $scope.scheduleParams.frequency_id;
@@ -661,6 +663,9 @@ angular.module('sntRover').controller('RVExportReportsCtrl', [
             var success = function(payload) {
                 $scope.originalScheduleFrequency = payload.scheduleFrequency;
                 $scope.originalScheduleTimePeriods = payload.scheduleTimePeriods;
+                console.log("===================")
+                console.log($scope.originalScheduleTimePeriods)
+
                 $scope.$parent.$parent.schedulesList = [];
                 $scope.$parent.$parent.schedulableReports = [];
                 $scope.scheduleDeliveryTypes = payload.scheduleDeliveryTypes;
@@ -1105,9 +1110,14 @@ angular.module('sntRover').controller('RVExportReportsCtrl', [
                 $scope.addingStage === STAGES.SHOW_DETAILS;
         };
 
-        $scope.changedScheduledTimePeriod = function () {
-            console.log("----")
-        }
+        $scope.shouldShowCalenderDate = function () {
+            var dateFieldObject = _.find($scope.originalScheduleTimePeriods, function(item){ return item.value === 'DATE'; });
+
+            if (dateFieldObject.id === $scope.scheduleParams.time_period_id) {
+                return true;
+            }
+            return false;
+        };
 
         $scope.notRunOnce = function () {
             var match = _.find($scope.originalScheduleFrequency, { id: $scope.scheduleParams.frequency_id }) || {};

@@ -332,6 +332,11 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', 'jsMappings', '$s
             }
         };
 
+        $scope.$on("PAYMENT_TYPE_CHANGED", function() {
+            alert("test")
+            refreshScrolls();
+        });
+
         $scope.$on("TOKEN_CREATED", function(e, data) {
             $rootScope.$emit("showLoader");
             $scope.newPaymentInfo = data;

@@ -53,7 +53,7 @@
             <div class="entry" ng-hide="isGuestBalanceReport || isYearlyTaxReport">
                 <label for="time-period">Time Period</label>
                 <div class="select">
-                    <select ng-change="changedScheduledTimePeriod()" ng-model="scheduleParams.time_period_id"
+                    <select ng-model="scheduleParams.time_period_id"
                         ng-options="timePeriod.id as timePeriod.description for timePeriod in scheduleTimePeriods"
                         ng-disabled="isGuestBalanceReport"
                         iscroll-stop-propagation>
