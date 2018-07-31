@@ -2384,19 +2384,22 @@ sntRover.controller('RVbillCardController',
 	 * @param  {Boolean} [is Via ReviewProcess or not ]
 	 * @return {undefined}
 	 */
-	$scope.showAdvancedBillDialog = function( isViaReviewProcess ) {
-		if ($rootScope.isStandAlone && $scope.reservationBillData.reservation_status === 'CHECKEDIN' && !$scope.reservationBillData.is_advance_bill && !$scope.reservationBillData.is_hourly) {
-		 		ngDialog.open({
-	    		template: '/assets/partials/bill/rvAdvanceBillConfirmPopup.html',
-	    		className: '',
-	    		scope: $scope
-	    	});
-	 	} 
-	 	else {
-	 		$scope.clickedPayButton( isViaReviewProcess );
-	 	}
+    $scope.showAdvancedBillDialog = function( isViaReviewProcess ) {
+        $scope.clickedPayButton( isViaReviewProcess );
 	};
 
+    /*
+     * Open Advance Bill pop-up
+     * @param  none
+     * @return void
+     */
+    $scope.clickedAdvanceBill = function() {
+        ngDialog.open({
+            template: '/assets/partials/bill/rvAdvanceBillConfirmPopup.html',
+            className: '',
+            scope: $scope
+        });
+    };
 	/*
 	 * to invoke the api on opting the advance bill and fetch the advanced bill details
 	 *
@@ -2413,7 +2416,6 @@ sntRover.controller('RVbillCardController',
 
 			reservation.reservation_card.balance_amount = successData.reservation_balance;
 			RVReservationCardSrv.updateResrvationForConfirmationNumber($scope.reservationBillData.confirm_no, reservation);
-			$scope.clickedPayButton();
 			$scope.reservationBillData.is_advance_bill = true;
 		};
 		var getAdvanceBillErrorCallback = function(error) {
@@ -2431,7 +2433,6 @@ sntRover.controller('RVbillCardController',
 	 */
 	$scope.closeAdanceBillDialog = function() {
 		ngDialog.close();
-		$scope.clickedPayButton();
 	};
 
 
