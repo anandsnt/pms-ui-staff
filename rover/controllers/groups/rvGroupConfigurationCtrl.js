@@ -1164,6 +1164,9 @@ angular.module('sntRover').controller('rvGroupConfigurationCtrl', [
          */
         $scope.updateGroupSummary = function() {
             if (rvPermissionSrv.getPermissionValue('EDIT_GROUP_SUMMARY')) {
+                if ($scope.groupConfigData.summary.tax_exempt_type_id === null || $scope.groupConfigData.summary.tax_exempt_type_id === "") {
+                    $scope.groupConfigData.summary.is_tax_exempt = false;
+                }
                 if (angular.equals(getGroupSummaryFields($scope.groupSummaryMemento), getGroupSummaryFields($scope.groupConfigData.summary)) || updateGroupSummaryInProgress) {
                     return false;
                 }

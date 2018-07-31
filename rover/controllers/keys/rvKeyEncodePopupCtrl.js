@@ -1,6 +1,6 @@
 sntRover.controller('RVKeyEncodePopupCtrl', [
-    '$rootScope', '$scope', '$state', 'ngDialog', 'RVKeyPopupSrv', '$filter', '$timeout', '$log', 'sntActivity', '$window',
-    function ($rootScope, $scope, $state, ngDialog, RVKeyPopupSrv, $filter, $timeout, $log, sntActivity, $window) {
+    '$rootScope', '$scope', '$state', 'ngDialog', 'RVKeyPopupSrv', '$filter', '$timeout', '$log', 'sntActivity', '$window', 'rvUtilSrv',
+    function ($rootScope, $scope, $state, ngDialog, RVKeyPopupSrv, $filter, $timeout, $log, sntActivity, $window, rvUtilSrv) {
         BaseCtrl.call(this, $scope);
 	var that = this;
 
@@ -56,7 +56,7 @@ sntRover.controller('RVKeyEncodePopupCtrl', [
 			$scope.data.confirmNumber = $scope.reservationData.reservation_card.confirmation_num;
 			$scope.data.roomNumber = $scope.reservationData.reservation_card.room_number;
 			$scope.data.key_settings = $scope.reservationData.reservation_card.key_settings;
-			$scope.data.room_pin = $scope.reservationData.reservation_card.room_pin;
+			$scope.data.room_pin = $scope.reservationData.room_pin;
 			$scope.data.reservation_id = $scope.reservationData.reservation_card.reservation_id;
 		}
 
@@ -808,4 +808,8 @@ sntRover.controller('RVKeyEncodePopupCtrl', [
 		$state.go('rover.search');
 
 	};
+	var reservationEmail = !!$scope.guestCardData.contactInfo.email ? $scope.guestCardData.contactInfo.email : '';
+
+	$scope.hasValidEmail = rvUtilSrv.isEmailValid(reservationEmail);
+	
 }]);
