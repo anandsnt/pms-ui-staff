@@ -1,0 +1,63 @@
+<section id="main" role="main" ng-show="mode === 'SELECT_ADDRESS'">
+    <div id="content">
+        <h1>Your Address</h1>
+        <nav id="options" role="nav">
+            <ul role="menu">
+                <li>
+                    <button type="button" class="button option" touch-press='usePresentAddress()'>
+                        <ng-include src="icons.url.location"></ng-include src>
+                    </button>
+                    Address on File
+                    <p>
+                        {{presentAddress.street1}}, {{presentAddress.street2}}
+                        <br> {{presentAddress.city}}, {{presentAddress.state}} {{presentAddress.postal_code}}
+                        <br> {{presentAddress.country}}
+                    </p>
+                </li>
+                <li class="break">
+                    <span>Or</span>
+                </li>
+                <li>
+                    <button type="button" class="button option" touch-press='useNewAddress()'>
+                        <ng-include src="icons.url.location"></ng-include src>
+                    </button>
+                    New Address
+                </li>
+            </ul>
+        </nav>
+    </div>
+</section>
+
+<!--  Home -->
+<section id="main" class="address-screen" role="main" ng-show="mode === 'NEW_ADDRESS'">
+    <div id="content">
+        <h1 data-ng-bind-html="getTagValue('ENTER_ADDRESS')" editable-text="ENTER_ADDRESS"></h1>
+        <div id="flex-holder">
+            <form method="post" class="pull-left form">
+               <div class="entry entry-address">
+                    <input type="text" placeholder="{{ 'ADDRESS_1' | translate }}" ng-focus="showOnScreenKeyboard('address-1', 'scroll-up')" click-touch="showOnScreenKeyboard('address-1', 'scroll-up')" ng-model="guestDetails.street" id="address-1" touch-press/>
+                </div>
+                <div class="entry entry-address">
+                    <input type="text" placeholder="{{ 'ADDRESS_2' | translate }}" ng-focus="showOnScreenKeyboard('address-2', 'scroll-up')" click-touch="showOnScreenKeyboard('address-2', 'scroll-up')" ng-model="guestDetails.street2" id="address-2"  touch-press/>
+                </div>
+                <div class="entry entry-address address-small">
+                    <input type="text" placeholder="{{ 'CITY' | translate }}" ng-focus="showOnScreenKeyboard('city', 'scroll-up')" click-touch="showOnScreenKeyboard('city', 'scroll-up')" ng-model="guestDetails.city" id="city"  touch-press/>
+                </div>
+                <div class="entry entry-address">
+                    <input type="text" placeholder="{{ 'STATE_OR_PROVINCE' | translate }}" ng-focus="showOnScreenKeyboard('state', 'scroll-up')" click-touch="showOnScreenKeyboard('state', 'scroll-up')" ng-model="guestDetails.state" id="state"  touch-press/>
+                </div>
+                <div class="entry entry-address address-small">
+                    <input type="text" placeholder="{{ 'POSTAL_OR_ZIP_CODE' | translate }}" ng-focus="showOnScreenKeyboard('pin', 'scroll-up')" click-touch="showOnScreenKeyboard('pin', 'scroll-up')" ng-model="guestDetails.postal_code" id="pin"  touch-press />
+                </div>
+                <div class="select entry entry-address">
+                    <select name="Country" ng-options="country.id as country.value for country in countryList" ng-model="guestDetails.country_id">
+                        <option value="">{{'COUNTRY' | translate}}</option>
+                    </select>
+                </div>
+            </form>
+            <div id="actions" class="pull-right">
+                <button type="button" class="button" ng-click="saveAddress()">Next</button>
+            </div>
+        </div>
+    </div>        
+</section>
