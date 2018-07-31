@@ -37,7 +37,7 @@ sntRover.controller('rvAccountTransactionsCtrl', [
 		BaseCtrl.call(this, $scope);
 		var that = this;
 
-		$scope.perPage = 10;
+		$scope.perPage = 50;
 		$scope.businessDate = $rootScope.businessDate;
 
 		// Success callback for transaction fetch API.
