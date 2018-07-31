@@ -600,10 +600,10 @@ angular.module('sntRover').controller('RVExportReportsCtrl', [
                 $scope.scheduleParams.time_period_id = undefined;
             }
 
-            if ( angular.isDefined($scope.selectedEntityDetails.time) ) {
+            if ( angular.isDefined($scope.selectedEntityDetails.export_date) ) {
                 $scope.scheduleParams.export_date = $scope.selectedEntityDetails.export_date;
             } else {
-                $scope.scheduleParams.export_date = tzIndependentDate($rootScope.businessDate - 1)
+                $scope.scheduleParams.export_date = moment(tzIndependentDate($rootScope.businessDate)).subtract(1, 'days').calendar();
             }            
 
             if ( angular.isDefined($scope.selectedEntityDetails.time) ) {
