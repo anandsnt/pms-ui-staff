@@ -58,5 +58,13 @@ describe('RVbillCardController', function () {
 
             });
 
+            it('call generateFolioNumber method with the required data', function() {
+                spyOn(RVbillCardController, 'generateFolioNumber');
+
+                RVbillCardController.callGenerateFolioNumberApi();
+
+                expect(RVbillCardController.generateFolioNumber).toHaveBeenCalled();               
+            });
+
         });    
 });
