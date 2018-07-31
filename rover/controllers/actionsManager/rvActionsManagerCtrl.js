@@ -29,6 +29,13 @@ sntRover.controller('RVActionsManagerController',
                     preventDefault: false,
                     fadeScrollbars: true
                 });
+
+                $scope.setScroller("create-action-scroller", {
+                    scrollbars: true,
+                    preventDefault: false,
+                    fadeScrollbars: true
+                });
+
                 $scope.departments = departments.data.departments;
                 if (!!$state.params.restore && !!rvActionTasksSrv.getFilterState()) {
                     $scope.filterOptions = rvActionTasksSrv.getFilterState();
@@ -101,6 +108,10 @@ sntRover.controller('RVActionsManagerController',
                         }));
                     });
 
+                    if (!$scope.actions.length) {
+                        $scope.selectedView = 'new';
+                    }
+
                     if ($scope.actions.length > 0) {
                         // By default the first action is selected
                         // While coming back from staycard, the previously selected action is selected
@@ -171,6 +182,9 @@ sntRover.controller('RVActionsManagerController',
                 numberOfMonths: 1,
                 beforeShow: addDatePickerOverlay,
                 onClose: removeDatePickerOverlay
+            },
+            refreshCreateActionScroller = function () {
+                $scope.refreshScroller('create-action-scroller');
             };
 
 
@@ -245,6 +259,8 @@ sntRover.controller('RVActionsManagerController',
             //     closeByEscape: true
             // });
             $scope.selectedView = "new";
+            refreshCreateActionScroller();
+
         };
 
         $scope.onSelectAction = function (actionId) {
@@ -282,12 +298,16 @@ sntRover.controller('RVActionsManagerController',
         $scope.updateAction = function () {
             var payLoad = {
                 action_task: {
-                    id: $scope.selectedAction.id
-                },
-                assigned_to: $scope.selectedAction.department || null,
+                    id: $scope.selectedAction.id,
+                    description: $scope.selectedAction.note
+                },                
                 due_at: dateFilter($scope.selectedAction.dueDate, $rootScope.dateFormatForAPI) +
                 ($scope.selectedAction.dueTime ? "T" + $scope.selectedAction.dueTime + ":00" : "")
             };
+
+            if ($scope.selectedAction.department) {
+               payLoad.assigned_to = $scope.selectedAction.department.value
+            }            
 
             if (!!$scope.selectedAction.reservation_id) {
                 payLoad.reservation_id = $scope.selectedAction.reservation_id;
@@ -302,6 +322,7 @@ sntRover.controller('RVActionsManagerController',
                 params: payLoad,
                 successCallBack: function (response) {
                     $scope.selectedAction = getBindabaleAction(response.data);
+                    $scope.selectedView = 'list';
                     updateListEntry();
                 }
             });
@@ -487,6 +508,16 @@ sntRover.controller('RVActionsManagerController',
         $scope.shouldShowDeleteBtn = function(action) {
             return ["UNASSIGNED", 'ASSIGNED', 'COMPLETED'].indexOf(action.action_status) > -1;
         };
+
+        // Prepare the view for editing action
+        $scope.prepareEditAction = function() {
+            $scope.selectedView = 'edit';
+        };
+
+        // Cancel the edit operation
+        $scope.cancelEdit = function() {
+            $scope.selectedView = 'list';
+        }
 
         init();
     }

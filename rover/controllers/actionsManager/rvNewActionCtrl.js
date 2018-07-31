@@ -5,14 +5,36 @@ sntRover.controller('RVNewActionCtrl', ['$scope', '$rootScope', 'rvUtilSrv', 'da
 
             $scope.__maxLengthOfNotes = 255;
 
-            $scope.newAction = {
-                reservation: null,
-                group: null,
-                dueDate: $rootScope.businessDate,
-                dueTime: "00:00",
-                note: "",
-                department: ""
-            };
+            if ($scope.selectedView === 'edit') {
+                var splitDueTimeString = $scope.selectedAction.due_at_str.split("T"),
+                    dueAtTime = dateFilter(splitDueTimeString[0] + "T" +  splitDueTimeString[1].split(/[+-]/)[0], "HH:mm"),
+                    dueAtDate = dateFilter(splitDueTimeString[0], $rootScope.dateFormat),
+                    assignedTo = $scope.selectedAction.assigned_to && $scope.selectedAction.assigned_to.id,
+                    department = '';
+
+                if (assignedTo) {
+                   department = _.findWhere($scope.departments, { value: assignedTo+"" }); 
+                }               
+               
+               _.extend($scope.selectedAction, {                    
+                    dueDate: dueAtDate,
+                    dueTime: dueAtTime,
+                    note: $scope.selectedAction.description,
+                    department: department
+                });               
+
+            } else {
+               $scope.newAction = {
+                    reservation: null,
+                    group: null,
+                    dueDate: $rootScope.businessDate,
+                    dueTime: "00:00",
+                    note: "",
+                    department: ""
+                }; 
+            }
+
+            
 
             $scope.dueDateOptions = {
                 minDate: tzIndependentDate($rootScope.businessDate),

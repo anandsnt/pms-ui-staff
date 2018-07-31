@@ -54,11 +54,11 @@
     </div>
 </div>
 
-<div class="actions">
+<div class="actions">    
+    <button type="button" class="button blank" ng-click="cancel()">Cancel</button>
     <button type="button" class="button green" ng-click="saveNewAction()"
             ng-class="{'grey':!newAction.reservation.id && !newAction.group.id || !newAction.note}"
             ng-disabled="!newAction.reservation.id && !newAction.group.id || !newAction.note">
         Post Action
     </button>
-    <button type="button" class="button blank" ng-click="closeDialog()">Cancel</button>
 </div>

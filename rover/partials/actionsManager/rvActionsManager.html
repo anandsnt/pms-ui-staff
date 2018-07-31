@@ -210,11 +210,11 @@
             <!-- if Delete status add class .inline -->
             <div class="detail-actions" ng-hide="selectedView === 'new' || selectedView === 'edit'">
                 <!-- If Unnasigned or assigned -->
-                <button type="button" class="button white purple-text" ng-if="shouldShowEditAndCompleteBtn(selectedAction)">Edit</button>
-                <button type="button" class="button white green-text" ng-if="shouldShowEditAndCompleteBtn(selectedAction)">Complete</button>
+                <button type="button" class="button white purple-text" ng-show="shouldShowEditAndCompleteBtn(selectedAction)" ng-click="prepareEditAction()">Edit</button>
+                <button type="button" class="button white green-text" ng-show="shouldShowEditAndCompleteBtn(selectedAction)" ng-click="completeAction()">Complete</button>
                
                 <!-- If unnasigned, assigned or completed -->
-                <button type="button" class="button white red-text" ng-if="shouldShowDeleteBtn(selectedAction)">Delete</button>
+                <button type="button" class="button white red-text" ng-show="shouldShowDeleteBtn(selectedAction)">Delete</button>
                 
 
                 <!-- if delete status --
@@ -227,7 +227,7 @@
             <div id="secondary-actions" class="add-content" ng-controller="RVNewActionCtrl" ng-if="selectedView === 'new' && actions.length > 0" ng-include="'/assets/partials/actionsManager/rvAddAction.html'">
             </div>
             <!-- remove .hidden when showing edit or new screens -->
-            <div id="secondary-actions" class="add-content" ng-controller="RVNewActionCtrl" ng-if="selectedView === 'edit'" ng-include="'/assets/partials/actionsManager/rvAddAction.html'">                
+            <div id="secondary-actions" class="add-content" ng-controller="RVNewActionCtrl" ng-if="selectedView === 'edit'" ng-include="'/assets/partials/actionsManager/rvEditAction.html'">                
             </div>
         </div>
     </div>

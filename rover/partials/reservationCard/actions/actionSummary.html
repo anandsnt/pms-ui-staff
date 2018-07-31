@@ -38,24 +38,24 @@
                         </li>
                         <li>
                             Date Completed
-                            <strong>{{selectedAction.completed_date}}</strong>
+                            <strong>{{selectedAction.completed_at | date: dateFormat}}</strong>
                         </li>
                         <li>
                             Time Completed
-                            <strong>{{selectedAction.completed_time_str}}</strong>
+                            <strong>{{selectedAction.completed_at | date: "hh:mm a"}}</strong>
                         </li>
                     </ul>                    
                 </div>
 
                 <!-- Add .hidden when showing edit or new action screen -->
             <!-- if Delete status add class .inline -->
-            <div class="detail-actions">
+            <div class="detail-actions" ng-show="actionSelected === 'selected'">
                 <!-- If Unnasigned or assigned -->
-                <button type="button" class="button white purple-text" ng-if="shouldShowEditAndCompleteBtns(selectedAction)" ng-click="prepareEditAction(selectedAction)">Edit</button>
-                <button type="button" class="button white green-text" ng-if="shouldShowEditAndCompleteBtns(selectedAction)" ng-click="completeAction()">Complete</button>
+                <button type="button" class="button white purple-text" ng-show="shouldShowEditAndCompleteBtns(selectedAction)" ng-click="prepareEditAction(selectedAction)">Edit</button>
+                <button type="button" class="button white green-text" ng-show="shouldShowEditAndCompleteBtns(selectedAction)" ng-click="completeAction()">Complete</button>
                 
                 <!-- If unnasigned, assigned or completed -->
-                <button type="button" class="button white red-text" ng-if="shouldShowDeleteBtn(selectedAction)">Delete</button>
+                <button type="button" class="button white red-text" ng-show="shouldShowDeleteBtn(selectedAction)">Delete</button>
               
 
                 <!-- if delete status --
@@ -63,12 +63,5 @@
                 <button type="button" class="button red">Delete Action</button>
                 -->
             </div>
-
-            <!-- remove .hidden when showing edit or new screens -->
-            <div id="secondary-actions" class="add-content hidden">
-                <!-- Show this when adding a new action (and there are other actions there)-->
-                {../conversations/actions/new.html}
-                <!-- show this when editing an action -->
-                {../conversations/actions/edit.html}
-            </div>
+            
 </div>

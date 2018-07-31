@@ -35,7 +35,7 @@
         <label for="due-date">Date Due</label>
         <input id="due-date" type="text" class="datepicker" value="{{newAction.date_due}}" readonly />
     </div>
-    <div ng-show="newCalendarShow" class="ngmodal-uidate-wrap" id="newCalendar" ng-include="'/assets/partials/reservationCard/Actions/rvReservationCardActionsCalendar.html'"></div>
+    <div ng-show="newCalendarShow" class="ngmodal-uidate-wrap" id="newCalendar" ng-include="'/assets/partials/reservationCard/actions/rvReservationCardActionsCalendar.html'"></div>
     <div class="entry" ng-class="{'overlay': !newAction.hasDate}">
         <label for="due-time">Time Due</label>
         <select id="due-time" ng-model="newAction.time_due">

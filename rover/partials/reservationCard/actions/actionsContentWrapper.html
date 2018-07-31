@@ -14,11 +14,7 @@
     <!-- Action summary -->
     <div class="content-right" ng-show="showActionSummary()" ng-click="stopEditClick()">
         <div class="summary" ng-include="'/assets/partials/reservationCard/actions/actionSummary.html'"></div>
-    </div>
-    <!-- Action Assignment -->
-    <div class="content-right" ng-show="showAssignScreen()">
-        <div class="summary" ng-include="'/assets/partials/reservationCard/actions/actionsAssign.html'"></div>
-    </div>
+    </div>    
 
     <div class="content-right"  ng-class="{'full-width': actions.totalCount === 0}" ng-show="(showNewAction() || actionSelected === 'edit') && !refreshingToNonEmpty()">
         <div  id="summary" class="summary" ng-include="'/assets/partials/reservationCard/actions/createAction.html'" ng-show="showNewAction() && !refreshingToNonEmpty()"></div>
