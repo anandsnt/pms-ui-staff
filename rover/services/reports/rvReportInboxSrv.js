@@ -422,11 +422,19 @@ angular.module('sntRover').service('RVReportsInboxSrv', [
          * @return {void} 
          */
         this.fillGroupCodes = (value, key, promises, formatedFilter) => {
-            var entity = value.split(","); 
+            // var entity = value.split(","); 
 
-            promises.push(RVreportsSubSrv.fetchGroupByCode(entity[1]).then(function(response) {
-               formatedFilter[reportInboxFilterLabelConst[key]] = response.group_code;
-            }));
+            // promises.push(RVreportsSubSrv.fetchGroupByCode(entity[1]).then(function(response) {
+            //    formatedFilter[reportInboxFilterLabelConst[key]] = response.group_code;
+            // }));
+            var groupNameArray = [];
+             _.each(value, (id) => {
+                promises.push(RVreportsSubSrv.fetchGroupById(parseInt(id)).then(function(response) {
+                    groupNameArray.push(response.group_name)
+                    formatedFilter[reportInboxFilterLabelConst[key]] = groupNameArray.join(', ');
+                }));
+            });
+            // console.log(groupNameArray)
         }; 
 
         /**
@@ -1050,13 +1058,14 @@ angular.module('sntRover').service('RVReportsInboxSrv', [
                         self.fillOptionsWithoutFormating(value, key, processedFilter);
                         break; 
                    case reportParamsConst['INCLUDE_COMPANYCARD_TA_GROUP']:
-                   case reportParamsConst['GROUP_COMPANY_TA_CARD']:
+                   case reportParamsConst['GROUP_COMPANY_TA_CARD']:                        
                         self.fillCompanyTaGroupDetails(value, key, promises, processedFilter);
                         break;
                    case reportParamsConst['INCLUDE_COMPANYCARD_TA']:
+                   case reportParamsConst['TA_CC_CARD']:
                         self.fillCompanyTaDetails(value, key, promises, processedFilter, report);
                         break;
-                   case reportParamsConst['TAX_EXEMPT']:
+                   case reportParamsConst['GROUP_CODE']:
                         self.fillGroupCodes(value, key, promises, processedFilter, report);
                         break; 
                    case reportParamsConst['CHECKED_IN']:

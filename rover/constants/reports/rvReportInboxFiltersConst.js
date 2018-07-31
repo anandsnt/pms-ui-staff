@@ -131,5 +131,5 @@ angular.module('reportsModule')
         "group_by_group_name": "Group name",
         "DEPOSIT_DUE_FROM_DATE": "Deposit Due From Date",
         "DEPOSIT_DUE_TO_DATE": "Deposit Due To Date",
-        "GROUP_CODE": "Group Code"
+        "group_code": "Group Code"
     });
