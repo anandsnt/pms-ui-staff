@@ -422,19 +422,14 @@ angular.module('sntRover').service('RVReportsInboxSrv', [
          * @return {void} 
          */
         this.fillGroupCodes = (value, key, promises, formatedFilter) => {
-            // var entity = value.split(","); 
-
-            // promises.push(RVreportsSubSrv.fetchGroupByCode(entity[1]).then(function(response) {
-            //    formatedFilter[reportInboxFilterLabelConst[key]] = response.group_code;
-            // }));
             var groupNameArray = [];
+
              _.each(value, (id) => {
                 promises.push(RVreportsSubSrv.fetchGroupById(parseInt(id)).then(function(response) {
-                    groupNameArray.push(response.group_name)
+                    groupNameArray.push(response.group_name);
                     formatedFilter[reportInboxFilterLabelConst[key]] = groupNameArray.join(', ');
                 }));
             });
-            // console.log(groupNameArray)
         }; 
 
         /**
