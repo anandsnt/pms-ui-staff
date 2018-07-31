@@ -12,6 +12,7 @@ sntZestStation.controller('zsCheckinGuestAddressCtrl', [
 		$scope.usePresentAddress = function() {
 			$state.go('zest_station.checkInReservationDetails');
 		};
+		
 		$scope.useNewAddress = function() {
 			$scope.mode = "NEW_ADDRESS";
 			$scope.focusInputField('address-1');

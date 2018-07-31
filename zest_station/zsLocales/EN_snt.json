@@ -690,6 +690,10 @@
    "ADDRESS_2": "Address line 2",
    "CITY": "City",
    "STATE_OR_PROVINCE": "State/Province",
-   "POSTAL_OR_ZIP_CODE": "Postal/ZIP code"
+   "POSTAL_OR_ZIP_CODE": "Postal/ZIP code",
+
+   "YOUR_ADDRESS": "Your Address",
+   "ADDRESS_ON_FILE": "Address on File",
+   "NEW_ADDRESS": "New Address"
 
 }
