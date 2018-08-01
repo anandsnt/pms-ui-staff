@@ -251,17 +251,9 @@ sntRover.controller('RVActionsManagerController',
             fetchActionsList();
         };
 
-        $scope.initNewAction = function () {
-            // ngDialog.open({
-            //     template: '/assets/partials/actionsManager/rvNewActionPopup.html',
-            //     scope: $scope,
-            //     controller: 'RVNewActionCtrl',
-            //     closeByDocument: true,
-            //     closeByEscape: true
-            // });
+        $scope.initNewAction = function () {            
             $scope.selectedView = "new";
             refreshCreateActionScroller();
-
         };
 
         $scope.onSelectAction = function (actionId) {
