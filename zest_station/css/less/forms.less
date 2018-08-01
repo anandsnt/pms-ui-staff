@@ -126,6 +126,10 @@ select {
     }
 }
 
+.form:not(.ng-hide) {
+    display: table !important;
+}
+
 .entry {
     &.select {
         position: relative;
@@ -148,8 +152,8 @@ select {
     }
     &.input {
         position: relative;
-        margin-right: 10px;
-        #calc > #width > .remove(85%, 10px);
+        display: table-cell !important;
+        width: 100%;
 
         .icons {
             position: absolute;

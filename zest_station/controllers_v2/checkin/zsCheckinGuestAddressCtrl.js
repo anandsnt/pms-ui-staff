@@ -45,7 +45,7 @@ sntZestStation.controller('zsCheckinGuestAddressCtrl', [
 			}
 		};
 
-		$scope.dismissPopup = function(){
+		$scope.dismissPopup = function() {
 			$scope.showErrorMessage = false;
 		};
 
