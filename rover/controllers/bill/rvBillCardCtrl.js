@@ -2841,6 +2841,13 @@ sntRover.controller('RVbillCardController',
 			data.billIndex = $scope.reservationBillData.bills.length;
 			$scope.isAllBillsReviewed = false;
 			$scope.reviewStatusArray.push(data);
+			// CICO-43344 : Update emailOptedStatusList array
+			var obj = {
+				billId: data.id,
+				isOptedForEmail: false
+			};
+
+			$scope.emailOptedStatusList.push(obj);
 		};
 
 		$scope.invokeApi(RVBillCardSrv.createAnotherBill, billData, createBillSuccessCallback);
