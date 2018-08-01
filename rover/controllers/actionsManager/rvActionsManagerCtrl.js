@@ -510,7 +510,7 @@ sntRover.controller('RVActionsManagerController',
         // Cancel the edit operation
         $scope.cancelEdit = function() {
             $scope.selectedView = 'list';
-        }
+        };
 
         // Checks the permission to edit action
         $scope.hasPermissionToEditAction = function() {

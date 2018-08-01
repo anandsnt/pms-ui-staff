@@ -1231,7 +1231,7 @@ sntRover.controller('rvReservationCardActionsController', ['$scope', '$filter', 
             var templateUrl = '/assets/partials/reservationCard/actions/rvReservationCardActionsPopup.html';
 
             if (!$rootScope.isStandAlone) {
-                templateUrl = '/assets/partials/reservationCard/actions/overlay/rvReservationCardActionsPopupOverlay.html'
+                templateUrl = '/assets/partials/reservationCard/actions/overlay/rvReservationCardActionsPopupOverlay.html';
             }
 
             ngDialog.open({
