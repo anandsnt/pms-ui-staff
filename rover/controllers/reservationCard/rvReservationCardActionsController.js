@@ -1228,8 +1228,14 @@ sntRover.controller('rvReservationCardActionsController', ['$scope', '$filter', 
                                     '2315', '2330', '2345'
         ];
         $scope.initPopup = function() {
+            var templateUrl = '/assets/partials/reservationCard/actions/rvReservationCardActionsPopup.html';
+
+            if (!$rootScope.isStandAlone) {
+                templateUrl = '/assets/partials/reservationCard/actions/overlay/rvReservationCardActionsPopupOverlay.html'
+            }
+
             ngDialog.open({
-                template: '/assets/partials/reservationCard/actions/rvReservationCardActionsPopup.html',
+                template: templateUrl,
                 className: 'ngdialog-theme-default',
                 scope: $scope,
                 closeByDocument: false,
@@ -1275,7 +1281,33 @@ sntRover.controller('rvReservationCardActionsController', ['$scope', '$filter', 
            
         };
 
-        $scope.departmentSelect = {};        
+        $scope.departmentSelect = {};  
+
+        $scope.assignDepartment = function() {
+            var params = $scope.getBaseParams();
+
+            if ($scope.departmentSelect.selected) {
+                params['assigned_to'] = $scope.departmentSelect.selected.value;
+                params.action_task.id  = $scope.selectedAction.id;
+
+                var onSuccess = function() {
+                    // switch back to selected
+                    $scope.actionSelected = 'selected';
+                    $scope.lastSelectedItemId = params.action_task.id;
+                    $scope.refreshActionList();
+                    $scope.clearAssignSection();
+                };
+                var onFailure = function(data) {
+                    // show failed msg, so user can try again-?
+                    if (data[0]) {
+                        $scope.errorMessage = 'Internal Error Occured';
+                    }
+                    $scope.$parent.$emit('hideLoader');
+                };
+
+                $scope.invokeApi(rvActionTasksSrv.updateNewAction, params, onSuccess, onFailure);
+            }
+        };      
 
         $scope.initRefresh = function(del) {
             $scope.isRefreshing = true;

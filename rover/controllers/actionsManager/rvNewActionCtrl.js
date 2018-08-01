@@ -39,7 +39,12 @@ sntRover.controller('RVNewActionCtrl', ['$scope', '$rootScope', 'rvUtilSrv', 'da
                 dateFormat: $rootScope.jqDateFormat,
                 numberOfMonths: 1,
                 onSelect: function (date, datePickerObj) {
-                    $scope.newAction.dueDate = new tzIndependentDate(rvUtilSrv.get_date_from_date_picker(datePickerObj));
+                    if ($scope.selectedView === 'edit') {
+                        $scope.selectedAction.dueDate = new tzIndependentDate(rvUtilSrv.get_date_from_date_picker(datePickerObj)); 
+                    } else {
+                       $scope.newAction.dueDate = new tzIndependentDate(rvUtilSrv.get_date_from_date_picker(datePickerObj)); 
+                    }
+                    
                 },
                 beforeShow: function() {
                     angular.element("#ui-datepicker-div").after(angular.element('<div></div>', {
