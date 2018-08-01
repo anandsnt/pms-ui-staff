@@ -1,5 +1,5 @@
-sntRover.controller('rvReservationCardActionsController', ['$scope', '$filter', '$rootScope', 'ngDialog', 'rvActionTasksSrv', 'RVReservationCardSrv', 'rvUtilSrv', 'dateFilter', '$timeout', 'sntActivity',
-    function($scope, $filter, $rootScope, ngDialog, rvActionTasksSrv, RVReservationCardSrv, rvUtilSrv, dateFilter, $timeout, sntActivity) {
+sntRover.controller('rvReservationCardActionsController', ['$scope', '$filter', '$rootScope', 'ngDialog', 'rvActionTasksSrv', 'RVReservationCardSrv', 'rvUtilSrv', 'dateFilter', '$timeout', 'sntActivity', 'rvPermissionSrv',
+    function($scope, $filter, $rootScope, ngDialog, rvActionTasksSrv, RVReservationCardSrv, rvUtilSrv, dateFilter, $timeout, sntActivity, rvPermissionSrv) {
         $scope.reservationNotes = "";
         /*
          *To save the reservation note and update the ui accordingly
@@ -1487,6 +1487,11 @@ sntRover.controller('rvReservationCardActionsController', ['$scope', '$filter', 
         // Cancel the action edit operation
         $scope.cancel = function() {
             $scope.actionSelected = 'selected';
+        };
+
+        // Checks the permission to edit action
+        $scope.hasPermissionToEditAction = function() {
+            return rvPermissionSrv.getPermissionValue('EDIT_ACTION');
         };
 
         init();

@@ -11,12 +11,13 @@ sntRover.controller('RVActionsManagerController',
     '$window',
     '$timeout',
     '$filter',
+    'rvPermissionSrv',
     function ($scope, $rootScope,
              ngDialog, rvActionTasksSrv,
              departments, dateFilter,
              rvUtilSrv, $state,
              reportsSubSrv, $window,
-            $timeout, $filter ) {
+            $timeout, $filter, rvPermissionSrv ) {
         BaseCtrl.call(this, $scope);
 
         // -------------------------------------------------------------------------------------------------------------- B. Local Methods
@@ -518,6 +519,11 @@ sntRover.controller('RVActionsManagerController',
         $scope.cancelEdit = function() {
             $scope.selectedView = 'list';
         }
+
+        // Checks the permission to edit action
+        $scope.hasPermissionToEditAction = function() {
+            return rvPermissionSrv.getPermissionValue('EDIT_ACTION');
+        };
 
         init();
     }

@@ -210,7 +210,7 @@
             <!-- if Delete status add class .inline -->
             <div class="detail-actions" ng-hide="selectedView === 'new' || selectedView === 'edit'">
                 <!-- If Unnasigned or assigned -->
-                <button type="button" class="button white purple-text" ng-show="shouldShowEditAndCompleteBtn(selectedAction)" ng-click="prepareEditAction()">Edit</button>
+                <button type="button" class="button white purple-text" ng-show="shouldShowEditAndCompleteBtn(selectedAction) && hasPermissionToEditAction()" ng-click="prepareEditAction()">Edit</button>
                 <button type="button" class="button white green-text" ng-show="shouldShowEditAndCompleteBtn(selectedAction)" ng-click="completeAction()">Complete</button>
                
                 <!-- If unnasigned, assigned or completed -->
