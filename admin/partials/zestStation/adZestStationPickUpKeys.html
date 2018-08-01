@@ -55,7 +55,12 @@
                 <div class="form-title full-width">
                     <h3><span translate>STATION_GUEST_ID_ACTIVATE</span> </h3>
                 </div>
-                <ad-toggle-button is-checked="zestSettings.pickup_key_always_ask_for_id" label="{{'ALWAYS_ASK_FOR_ID_VERIFICATION'| translate}}" div-class="full-width"></ad-toggle-button>
+                <div class="form-subtitle-title">
+                    <h6>
+                        <span translate="">ALWAYS_REQUIRE_STAFF_TO_VERIFY_IDS_IN_PICKUP_KEY</span> 
+                    </h6>
+                </div>
+                <ad-toggle-button is-checked="zestSettings.pickup_key_always_ask_for_id" label="{{'RE_VERIFY_IDS'| translate}}" div-class="full-width"></ad-toggle-button>
             </fieldset>
             <div class="actions float">
                 <button type="button" id="cancel" class="button blank add-data-inline" ng-click="goBackToPreviousState()" translate>
