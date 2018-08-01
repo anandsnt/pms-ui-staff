@@ -13,7 +13,7 @@ sntRover.controller('RVNewActionCtrl', ['$scope', '$rootScope', 'rvUtilSrv', 'da
                     department = '';
 
                 if (assignedTo) {
-                   department = _.findWhere($scope.departments, { value: assignedTo+"" }); 
+                   department = _.findWhere($scope.departments, { value: assignedTo + "" }); 
                 }               
                
                _.extend($scope.selectedAction, {                    
@@ -33,8 +33,6 @@ sntRover.controller('RVNewActionCtrl', ['$scope', '$rootScope', 'rvUtilSrv', 'da
                     department: ""
                 }; 
             }
-
-            
 
             $scope.dueDateOptions = {
                 minDate: tzIndependentDate($rootScope.businessDate),

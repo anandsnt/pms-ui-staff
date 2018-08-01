@@ -306,7 +306,7 @@ sntRover.controller('RVActionsManagerController',
             };
 
             if ($scope.selectedAction.department) {
-               payLoad.assigned_to = $scope.selectedAction.department.value
+               payLoad.assigned_to = $scope.selectedAction.department.value;
             }            
 
             if (!!$scope.selectedAction.reservation_id) {

@@ -1403,7 +1403,7 @@ sntRover.controller('rvReservationCardActionsController', ['$scope', '$filter', 
                 department = '';
 
             if (assignedTo) {                
-                department = _.findWhere($scope.departments, { value: assignedTo+ "" });
+                department = _.findWhere($scope.departments, { value: assignedTo + "" });
             }
 
             $scope.newAction = {
