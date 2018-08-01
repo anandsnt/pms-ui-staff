@@ -283,6 +283,15 @@
 						<span class="switch-icon"></span>
 					</div>
 				</div>
+				<div class="entry">
+					<label for="hotel-time-zone"> Property Currency Format <strong>*</strong> </label>
+					<div class="select">
+						<select convert-to-number ng-model="data.hotel_currency_format" name="hotel-time-zone" id="hotel-time-zone" class="placeholder" >
+							<option value=""> Property Currency Format </option>
+							<option ng-repeat="formats in data.currency_formats"  value="{{formats.id}}" ng-selected="formats.id==data.hotel_currency_format">{{formats.value}}</option>
+						</select>
+					</div>
+				</div>
 				<div class="entry is-pms-tokenized" ng-if="data.enable_mod_type">
 					<label>Invoice Number Sequence</label>
 					<div class="select">
