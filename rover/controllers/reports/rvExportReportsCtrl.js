@@ -634,7 +634,7 @@ angular.module('sntRover').controller('RVExportReportsCtrl', [
             }
 
             $scope.startsOnOptions = angular.extend({
-                minDate: tzIndependentDate($rootScope.businessDate),
+                maxDate: tzIndependentDate($rootScope.businessDate),
                 onSelect: function(value) {
                     $scope.endsOnOptions.minDate = value;
                 }
@@ -669,9 +669,6 @@ angular.module('sntRover').controller('RVExportReportsCtrl', [
             var success = function(payload) {
                 $scope.originalScheduleFrequency = payload.scheduleFrequency;
                 $scope.originalScheduleTimePeriods = payload.scheduleTimePeriods;
-                console.log("===================")
-                console.log($scope.originalScheduleTimePeriods)
-
                 $scope.$parent.$parent.schedulesList = [];
                 $scope.$parent.$parent.schedulableReports = [];
                 $scope.scheduleDeliveryTypes = payload.scheduleDeliveryTypes;
@@ -1117,11 +1114,13 @@ angular.module('sntRover').controller('RVExportReportsCtrl', [
         };
 
         $scope.shouldShowCalenderDate = function () {
-            var dateFieldObject = _.find($scope.originalScheduleTimePeriods, function(item){ return item.value === 'DATE'; });
+            if ($scope.selectedEntityDetails.report.title === 'Journal Export') {
+                var dateFieldObject = _.find($scope.originalScheduleTimePeriods, function(item){ return item.value === 'DATE'; });
 
-            if (dateFieldObject.id === $scope.scheduleParams.time_period_id) {
-                return true;
-            }
+                if (dateFieldObject.id === $scope.scheduleParams.time_period_id) {
+                    return true;
+                }
+            }                
             return false;
         };
 
