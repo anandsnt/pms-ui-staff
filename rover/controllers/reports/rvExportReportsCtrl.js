@@ -635,7 +635,10 @@ angular.module('sntRover').controller('RVExportReportsCtrl', [
             } else {
                 $scope.scheduleParams.scheduleEndsOn = 'NEVER';
             }
-
+            /*
+             * Export Calender Options
+             * max date is business date
+             */
             $scope.exportCalenderOptions = angular.extend({
                 maxDate: tzIndependentDate($rootScope.businessDate)
             }, datePickerCommon);            
@@ -1119,7 +1122,9 @@ angular.module('sntRover').controller('RVExportReportsCtrl', [
                 $scope.addingStage === STAGES.SHOW_PARAMETERS ||
                 $scope.addingStage === STAGES.SHOW_DETAILS;
         };
-
+        /*
+         * Show export calender only for joyrnal export
+         */
         $scope.shouldShowExportCalenderDate = function () {
             if ($scope.selectedEntityDetails.report.title === 'Journal Export') {
                 var dateFieldObject = _.find($scope.originalScheduleTimePeriods, 
