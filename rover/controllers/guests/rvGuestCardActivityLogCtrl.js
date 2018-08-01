@@ -4,8 +4,8 @@ sntRover.controller('RVGuestCardActivityLogController',
 	'$rootScope',
 	'$stateParams',
 	'$timeout',
-	'RVCompanyCardActivityLogSrv',
-	function($scope, $rootScope, $stateParams, $timeout, RVCompanyCardActivityLogSrv ) {
+	'RVGuestCardActivityLogSrv',
+	function($scope, $rootScope, $stateParams, $timeout, RVGuestCardActivityLogSrv ) {
     
     BaseCtrl.call(this, $scope);
     var that = this;
@@ -91,7 +91,7 @@ sntRover.controller('RVGuestCardActivityLogController',
 			}
 		};
 
-		$scope.callAPI(RVCompanyCardActivityLogSrv.fetchActivityLog, dataToSend);
+		$scope.callAPI(RVGuestCardActivityLogSrv.fetchActivityLog, dataToSend);
 	};
 
 	/*
