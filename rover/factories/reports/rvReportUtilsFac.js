@@ -407,6 +407,18 @@ angular.module('reportsModule')
                     );
                     break;
 
+                case reportNames['TAX_EXEMPT']:
+                    report['filters'].push({
+                        'value': "GROUP_CODE",
+                        'description': "Group Code"
+                    }
+                    , {
+                        'value': "TAX_EXEMPT_TYPE",
+                        'description': "Include Tax Exempt"
+                    }
+                    );
+                    break;
+
                 default:
                     // no op
                     break;
@@ -590,6 +602,10 @@ angular.module('reportsModule')
                     report['hasIncludeAgingBalance'] = filter;
                 }
 
+                if ( filter.value === 'TAX_EXEMPT_TYPE' ) {
+                    report['hasIncludeTaxExempts'] = filter;
+                }
+
                 if ( filter.value === 'ACCOUNT_SEARCH' ) {
                     report['hasAccountSearch'] = filter;
                 }
@@ -599,7 +615,7 @@ angular.module('reportsModule')
                 }
 
                 // check for include company/ta filter and keep a ref to that item
-                if ( filter.value === 'INCLUDE_COMPANYCARD_TA' ) {
+                if ( filter.value === 'INCLUDE_COMPANYCARD_TA' || filter.value === 'TA_CC_CARD') {
                     report['hasIncludeCompanyTa'] = filter;
                 }
 
@@ -610,6 +626,10 @@ angular.module('reportsModule')
                 // check for include company/ta/group filter and keep a ref to that item
                 if ( filter.value === 'INCLUDE_COMPANYCARD_TA_GROUP' || filter.value === 'GROUP_COMPANY_TA_CARD' ) {
                     report['hasIncludeCompanyTaGroup'] = filter;
+                }
+
+                if ( filter.value === 'GROUP_CODE' ) {
+                    report['hasGroupCode'] = filter;
                 }
 
                 if ( filter.value === 'MIN_REVENUE' ) {
@@ -889,6 +909,8 @@ angular.module('reportsModule')
                 } else if ( 'INCLUDE_AGING_BALANCE' === filter.value && ! filter.filled) {
                     // requested++;
                     fillAgingBalance();
+                } else if ( 'TAX_EXEMPT_TYPE' === filter.value && ! filter.filled) {
+                    fillTaxExemptTypes();
                 } else if ( 'ACCOUNT_SEARCH' === filter.value && ! filter.filled) {
                     requested++;
                     reportsSubSrv.fetchAccounts()
@@ -1227,8 +1249,28 @@ angular.module('reportsModule')
                 });
             }
 
+            function fillTaxExemptTypes() {
+              var foundFilter;
+
+                _.each(reportList, function(report) {
+                    foundFilter = _.find(report['filters'], { value: 'TAX_EXEMPT_TYPE' });
+                    if ( !! foundFilter ) {
+                        foundFilter['filled'] = true;
+                        report.hasIncludeTaxExempts = {
+                            data: $rootScope.taxExemptTypes,
+                            options: {
+                                hasSearch: false,
+                                selectAll: true,
+                                key: 'name',
+                                defaultValue: 'Select Tax Exempt Types'
+                            }
+                        };
+                    }
+                });
+            }            
+
             function fillAgingBalance() {
-              var  customData = [
+                var  customData = [
                                 {id: "0to30", status: "0-30 DAYS", selected: true},
                                 {id: "31to60", status: "31-60 DAYS", selected: true},
                                 {id: "61to90",  status: "61-90 DAYS", selected: true},
