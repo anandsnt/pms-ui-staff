@@ -762,6 +762,13 @@ sntRover.controller('rvRouteDetailsCtrl', ['$scope', '$rootScope', '$filter', 'R
                 bill_number: data.bill_number,
                 total_amount: 0
             };
+            if (data.tax_exempt_warning) {
+                var message = [];
+
+                    message.push(data.tax_exempt_warning);
+                $scope.$emit('displayErrorMessage', message);
+            }
+            
             $scope.$parent.$emit('hideLoader');
             if (data.has_crossed_credit_limit) {
                 showLimitExceedPopup();
