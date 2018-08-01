@@ -94,6 +94,22 @@ admin.controller('ADDevicesListCtrl', ['$scope', '$state', 'ngTableParams', 'adD
       $scope.selectedDeviceId = -1;
     };
 
+    var buildApiParams = function(device) {
+      var params = {
+        application: device.application || 'ROVER',
+        device_name: device.device_name,
+        device_uid: device.unique_id,
+        device_version: device.device_version,
+        hours_log_enabled: device.hours_log_enabled,
+        is_logging_enabled: device.is_logging_enabled,
+        last_logged_in_user: device.last_logged_in_user,
+        service_application_type_id: device.service_application_type_id,
+        is_excluded_from_auto_upgrade: device.is_excluded_from_auto_upgrade
+      };
+
+      return params;
+    };
+
     $scope.saveDebugSettings = function () {
       var saveDebugSetupSuccessCallback = function() {
         $scope.isLoading = false;
@@ -101,19 +117,23 @@ admin.controller('ADDevicesListCtrl', ['$scope', '$state', 'ngTableParams', 'adD
         $scope.reloadTable();
         $scope.resetDeviceSelection();
       };
-      var params = {
-        application: $scope.selectedDevice.application || 'ROVER',
-        device_name: $scope.selectedDevice.device_name,
-        device_uid: $scope.selectedDevice.unique_id,
-        device_version: $scope.selectedDevice.device_version,
-        hours_log_enabled: $scope.selectedDevice.hours_log_enabled,
-        is_logging_enabled: $scope.selectedDevice.is_logging_enabled,
-        last_logged_in_user: $scope.selectedDevice.last_logged_in_user,
-        service_application_type_id: $scope.selectedDevice.service_application_type_id
-      };
+      var params = buildApiParams($scope.selectedDevice);
      
       $scope.invokeApi(adDebuggingSetupSrv.saveSetup, params, saveDebugSetupSuccessCallback);
 
+    };
+
+    $scope.toggleManualUpgrade = function(device) {
+      var params =  buildApiParams(device);
+
+      params.is_excluded_from_auto_upgrade = !params.is_excluded_from_auto_upgrade;
+      
+      $scope.callAPI(adDebuggingSetupSrv.saveSetup, {
+        params: params,
+        successCallBack: function() {
+          device.is_excluded_from_auto_upgrade = !device.is_excluded_from_auto_upgrade;
+        }
+      });
     };
 
     (function() {
