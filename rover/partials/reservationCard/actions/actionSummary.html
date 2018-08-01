@@ -51,7 +51,7 @@
             <!-- if Delete status add class .inline -->
             <div class="detail-actions" ng-show="actionSelected === 'selected'">
                 <!-- If Unnasigned or assigned -->                
-                <button type="button" class="button white purple-text" ng-show="shouldShowEditAndCompleteBtns(selectedAction) && hasPermissionToEditAction()" ng-click="prepareEditAction(selectedAction)">Edit</button>
+                <button type="button" class="button white purple-text" ng-show="shouldShowEditAndCompleteBtns(selectedAction) " ng-click="prepareEditAction(selectedAction)" ng-class="{'overlay': !hasPermissionToEditAction()}">Edit</button>
                 <button type="button" class="button white green-text" ng-show="shouldShowEditAndCompleteBtns(selectedAction)" ng-click="completeAction()">Complete</button>
                 
                 <!-- If unnasigned, assigned or completed -->

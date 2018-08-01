@@ -48,7 +48,7 @@
 </div>
 
 <div class="actions">
-    <button type="button" class="button blank" ng-click="cancel()">Cancel</button>    
+    <button type="button" class="button blank" ng-click="cancelEdit()">Cancel</button>    
     <button type="button" class="button green" ng-click="updateAction()"
             ng-class="{'grey':!selectedAction.reservation_id && !selectedAction.group_id || !selectedAction.note}"
             ng-disabled="!selectedAction.reservation_id && !selectedAction.group_id || !selectedAction.note">

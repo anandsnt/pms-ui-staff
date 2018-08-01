@@ -55,8 +55,8 @@
         </label>
         <textarea id="notes" ng-model='newAction.notes' name="notes" placeholder="Enter message..." rows="4" maxlength="255"></textarea>
     </div> 
-    <div id="new_action_post" class="actions">
-        <button type="button" class="button green action-post-btn" ng-click='postAction()' ng-class="{'overlay': !newAction.hasDate || !newAction.notes || (!departmentSelected && !isStandAlone)}">Post Action</button> 
-        <button type="button" class="button blank" ng-click='cancelNewAction()'>Cancel</button> 
+    <div id="new_action_post" class="actions">        
+        <button type="button" class="button blank" ng-click='cancel()'>Cancel</button>
+        <button type="button" class="button green action-post-btn" ng-click='postAction()' ng-class="{'overlay': !newAction.hasDate || !newAction.notes || (!departmentSelected && !isStandAlone)}">Post Action</button>  
     </div> 
 </div> 
