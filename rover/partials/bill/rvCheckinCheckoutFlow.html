@@ -56,6 +56,11 @@
             <input type="checkbox" ng-click="toggleCheckoutWithoutSettlement()" ng-model="isCheckoutWithoutSettlement">
             {{ 'CHECK_OUT_WITHOUT_SETTLEMENT' | translate }}
         </label>
+        <label class="checkbox inline"> <!-- Add class 'single' if this is the only checkbox visible -->
+            <span class="icon-form icon-checkbox" ng-class="{ 'checked': emailOptedStatusList[currentActiveBill].isOptedForEmail }"></span>
+            <input type="checkbox" ng-click="toggleOptedForEmail()">
+            Email Bill #{{currentActiveBill}} to Guest Email
+        </label>
         <!--
         CICO-9597 : While required_signature_at is not 'CHECKOUT',
                     #terms-and-conditions field is making hidden and
