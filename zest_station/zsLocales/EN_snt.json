@@ -683,6 +683,19 @@
    "WITH_ID": "With ID",
    "WITHOUT_ID": "Without ID",
 
-   "ROOM_PIN_TEXT": "Your room door key code is"
+   "ROOM_PIN_TEXT": "Your room door key code is",
+
+   "ENTER_ADDRESS": "Enter Your Address",
+   "ADDRESS_1": "Address line 1",
+   "ADDRESS_2": "Address line 2",
+   "CITY": "City",
+   "STATE_OR_PROVINCE": "State/Province",
+   "POSTAL_OR_ZIP_CODE": "Postal/ZIP code",
+
+   "YOUR_ADDRESS": "Your Address",
+   "USE_ADDRESS_ON_FILE": "Use Address on File",
+   "ADD_NEW_ADDRESS": "Add New Address",
+   "OK": "OK",
+   "PLEASE_PROVIDE_ALL_REQUIRED_INFO": "Please provide all the required information"
 
 }
