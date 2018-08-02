@@ -1411,7 +1411,9 @@ sntRover.controller('rvReservationCardActionsController', ['$scope', '$filter', 
         $scope.getActionStatusInfo = function(action) {
             var status = action.action_status;
 
-            if (action.over_due && status !== 'COMPLETED') {
+            if (status === 'delete') {
+                status = 'Delete Action?';
+            } else if (action.over_due && status !== 'COMPLETED') {
                 status = 'OVERDUE';
             }
 
@@ -1419,12 +1421,12 @@ sntRover.controller('rvReservationCardActionsController', ['$scope', '$filter', 
         };
 
         // Checks whether edit/complete btn should be shown or not
-        $scope.shouldShowEditAndCompleteBtns = function(action) {
+        $scope.shouldShowEditAndCompleteBtns = function(action) {            
             return ['UNASSIGNED', 'ASSIGNED'].indexOf(action.action_status) > -1 ;
         };
 
         // Checks whether the delete action btn should be shown or not
-        $scope.shouldShowDeleteBtn = function(action) {
+        $scope.shouldShowDeleteBtn = function(action) {            
             return ['UNASSIGNED', 'ASSIGNED', 'COMPLETED'].indexOf(action.action_status) > -1 ;
         };
 
@@ -1492,6 +1494,42 @@ sntRover.controller('rvReservationCardActionsController', ['$scope', '$filter', 
         // Checks the permission to edit action
         $scope.hasPermissionToEditAction = function() {
             return rvPermissionSrv.getPermissionValue('EDIT_ACTION');
+        };
+
+        // Prepare delete Action
+        $scope.prepareDeletAction = function() {
+            $scope.selectedAction.originalStatus = $scope.selectedAction.action_status;
+            $scope.selectedAction.action_status = 'delete';
+        };
+
+        // Delete action
+        $scope.deleteAction = function() {
+          var onSuccess = function() {                    
+                    $scope.fetchActionsList();
+                    $scope.refreshScroller("rvActionListScroller");
+                },
+                onFailure = function(data) {
+                    // show failed msg, so user can try again-?
+                    if (data[0]) {
+                        $scope.errorMessage = 'Internal Error Occured';
+                    }                    
+                };
+            var apiConfig = {
+                params: $scope.selectedAction.id,
+                onSuccess: onSuccess,
+                onFailure: onFailure
+            }
+            $scope.callAPI(rvActionTasksSrv.deleteActionTask, apiConfig);            
+        };
+
+        // Checks the permission to edit action
+        $scope.hasPermissionToDeleteAction = function() {
+            return rvPermissionSrv.getPermissionValue('DELETE_ACTION');
+        };
+
+        // Cancel delete operation
+        $scope.cancelDelete = function() {
+            $scope.selectedAction.action_status = $scope.selectedAction.originalStatus;
         };
 
         init();
