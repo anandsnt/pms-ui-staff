@@ -127,7 +127,9 @@ admin.controller('ADUserListCtrl', ['$scope', '$rootScope', '$q', '$state', '$st
     };
 
     $scope.loadTable();
-
+    /*
+     * Show inactive users akong with active users
+     */
     $scope.clickedShowInactiveUsers = function() {
         $scope.tableParams.page(1);
         $scope.tableParams.reload();
