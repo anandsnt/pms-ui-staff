@@ -81,6 +81,10 @@ admin.controller('ADUserListCtrl', ['$scope', '$rootScope', '$q', '$state', '$st
             getParams.hotel_uuid = ADHotelListSrv.getSelectedProperty();
         }
 
+        if($scope.showInactiveUser) {
+            getParams.include_inactive = $scope.showInactiveUser;
+        }
+
         /*
         * Success Callback of for Fetching User details API
         */
@@ -123,6 +127,11 @@ admin.controller('ADUserListCtrl', ['$scope', '$rootScope', '$q', '$state', '$st
     };
 
     $scope.loadTable();
+
+    $scope.clickedShowInactiveUsers = function() {
+        $scope.tableParams.page(1);
+        $scope.tableParams.reload();
+    };
     /*
     * To Activate/Inactivate user
     * @param {string} user id
