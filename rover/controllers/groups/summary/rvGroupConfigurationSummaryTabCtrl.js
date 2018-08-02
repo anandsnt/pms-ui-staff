@@ -88,7 +88,8 @@ angular.module('sntRover').controller('rvGroupConfigurationSummaryTab', ['$scope
                     oldFromDate: oldSumryData.block_from,
                     oldToDate: oldSumryData.block_to,
                     successCallBack: successCallBackOfMoveButton,
-                    failureCallBack: failureCallBackOfMoveButton
+                    failureCallBack: failureCallBackOfMoveButton,
+                    cancelPopupCallBack: cancelCallBackofDateChange
                 };
 
             $scope.changeDatesActions.clickedOnMoveSaveButton (options);
@@ -1642,6 +1643,14 @@ angular.module('sntRover').controller('rvGroupConfigurationSummaryTab', ['$scope
                 $scope.shouldShowOriginOfBooking = $scope.shouldShowOriginOfBooking && $scope.hotelSettings.force_origin_of_booking;
                 $scope.shouldShowSegments = $scope.shouldShowSegments && $scope.hotelSettings.force_segments;
             }
+        };
+        /*
+         * Set tax exempt type id null when toggle is inactivated
+         */
+        $scope.clickedTaxExemptToggle = function() {
+            if (!$scope.groupConfigData.summary.is_tax_exempt) {
+                $scope.groupConfigData.summary.tax_exempt_type_id = '';
+            }            
         };
 
         /**

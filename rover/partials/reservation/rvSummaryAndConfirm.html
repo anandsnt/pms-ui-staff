@@ -235,7 +235,7 @@
                 </ul>
             </div>
         </div>
-        <form class="form payment-info scrollable" ng-click="clearErrorMessage()" ng-iscroll='paymentInfo'>
+        <div class="form payment-info scrollable" ng-click="clearErrorMessage()" ng-iscroll='paymentInfo'>
             <div class="wrapper">
                 <div ng-include="'/assets/partials/common/notification_message.html'"></div>
                 <div id="set-payment" class="payment-form for-reservation" ng-if="!!reservationData.reservationId">
@@ -272,8 +272,10 @@
                                 ng-disabled="isContinueDisabled()" ng-click="clickedContinueButton()">Continue
                         </button>
                     </div>
+                    
+
                 </div>
             </div>
-        </form>
+        </div>
     </div>
 </section>

@@ -10,7 +10,7 @@ sntZestStation.controller('zsRootCtrl', [
     'zsEventConstants',
     '$state', 'zsGeneralSrv', '$rootScope', 'ngDialog', '$sce',
     'zsUtilitySrv', '$translate', 'zsHotelDetailsSrv', 'cssMappings', 'hotelTranslations',
-    'zestStationSettings', '$timeout', 'zsModeConstants', 'hotelTimeData', 'hotelLanguages', '$filter', '$log', '$window', 'languages', 'defaultTranslations',
+    'zestStationSettings', '$timeout', 'zsModeConstants', 'hotelTimeData', 'hotelLanguages', '$filter', '$log', '$window', 'languages', 'defaultTranslations', '$controller',
     function($scope,
 		zsEventConstants,
 		$state,
@@ -32,9 +32,9 @@ sntZestStation.controller('zsRootCtrl', [
         $log,
         $window,
         languages,
-        defaultTranslations
+        defaultTranslations,
+        $controller
         ) {
-
 
         // in order to prevent url change or fresh url entering with states
         BaseCtrl.call(this, $scope);
@@ -456,72 +456,20 @@ sntZestStation.controller('zsRootCtrl', [
             } else { // sankyo_websocket
                 $scope.zestStationData.ccReader = 'websocket';
             }
-            changeIconsIfDemo();
+            $scope.$broadcast('changeIconsBasedOnHotelSetting');
         };
 
-        var changeIconsIfDemo = function() {
-            if (forDemo()) { // if we are reading locally, we'll show the ICMP icons for our SNT 
-                $scope.icons.url.creditcard_icmp = $scope.iconsPath + '/demo_swiper.svg';
-                $scope.icons.url.createkey_icmp = $scope.iconsPath + '/demo_keyencoder.svg';
-                $log.warn('using demo icons for create key and credit card reading');
-                $scope.icmp = true;
-            } else if ($scope.zestStationData.theme === 'public_v2') {
-                $scope.icons.url.createkey_icmp = $scope.iconsPath + '/encode_image.svg';
-                $scope.icons.url.creditcard_icmp = $scope.iconsPath + '/icmp_swipe.svg';
-                $scope.icmp = true;
-            }
-            else if ($scope.zestStationData.theme === 'huntley' ||
-                $scope.zestStationData.theme === 'row-nyc') {
-                $scope.icons.url.createkey_icmp = $scope.iconsPath + '/encode_image.svg';
-                $scope.icons.url.creditcard_icmp = $scope.iconsPath + '/demo_swiper.svg';
-                $scope.icmp = true;
-            } else {
-                $scope.icmp = false;
-            }
-        };
-
-        var forDemo = function() {
-            if (readLocally() && $scope.zestStationData.theme === 'snt') {
-                $log.info('forDemo: !!!');
-                return true;
-            }
-            $log.info('not forDemo: ');
-            return false;
-        };
-
-
-        $scope.keyFromSocket = function() {
-            if ($scope.zestStationData.keyWriter === 'websocket') {
-                return true;
-            }
-            return false;
-        };
         $scope.writeLocally = function() {
-            if ($scope.zestStationData.keyWriter === 'local') {
-                return true;
-            }
-            return false;
+            return $scope.zestStationData.keyWriter === 'local';
         };
 
         $scope.inDemoMode = function() {
-            if ($scope.zestStationData.demoModeEnabled === 'true') {
-                $log.warn('in demo mode');
-                return true;
-            }
-            return false;
+            return $scope.zestStationData.demoModeEnabled === 'true';
         };
 
         $scope.usingFakeReservation = function() {
             if ($scope.zestStationData.fakeReservation === 'true') {
                 $log.warn('using demo reservation');
-                return true;
-            }
-            return false;
-        };
-
-
-        var readLocally = function() {
-            if ($scope.zestStationData.ccReader === 'local') {
                 return true;
             }
             return false;
@@ -796,183 +744,6 @@ sntZestStation.controller('zsRootCtrl', [
             }
             return false;
         };
-
-        $scope.setSvgsToBeLoaded = function(iconsPath, commonIconsPath, useCommonIcons, diffHomeIconsOnly) {
-            var iconBasePath = !useCommonIcons ? iconsPath : commonIconsPath;
-            
-            $scope.activeScreenIcon = 'bed';
-            if ($scope.zestStationData.key_create_file_uploaded.indexOf('/logo.png') !== -1) {
-                $scope.zestStationData.key_create_file_uploaded = '';
-            }
-            if (typeof $scope.zestStationData.scan_passport_file_uploaded === 'undefined') {
-                $scope.zestStationData.scan_passport_file_uploaded = '';
-            }
-
-            $scope.icons = {
-                url: {
-                    active_screen_icon: iconsPath + '/screen-' + $scope.activeScreenIcon + '.svg',
-                    booknow: iconBasePath + '/calendar.svg', // TODO, need generic icon for default (css update needed)
-
-                    checkin: iconBasePath + '/checkin.svg',
-                    checkout: iconBasePath + '/checkout.svg',
-                    key: iconBasePath + '/key.svg',
-
-                    checkmark: commonIconsPath + '/checkmark.svg',
-
-                    oos: iconBasePath + '/oos.svg',
-                    back: iconBasePath + '/back.svg',
-                    close: iconBasePath + '/close.svg',
-
-                    date: iconBasePath + '/date.svg',
-                    staff: iconBasePath + '/staff.svg',
-                    email: iconBasePath + '/email.svg',
-                    pen: iconBasePath + '/pen.svg',
-                    creditcard: iconBasePath + '/creditcard.svg',
-                    keyboard: iconBasePath + '/keyboard.svg',
-                    noprint: iconBasePath + '/no-print.svg',
-                    print: iconBasePath + '/print.svg',
-                    confirmation: iconBasePath + '/confirmation.svg',
-                    moon: iconBasePath + '/moon.svg',
-                    qr: iconBasePath + '/qr-scan.svg',
-                    qr_noarrow: iconBasePath + '/qr-scan_noarrow.svg',
-                    createkey: iconBasePath + ($scope.zestStationData.key_create_file_uploaded.length > 0) ? $scope.zestStationData.key_create_file_uploaded : '',
-                    logo: iconBasePath + '/print_logo.svg',
-                    watch: iconBasePath + '/watch.svg',
-                    qr_arrow: iconBasePath + '/qr-arrow.svg',
-                    clear_icon: iconBasePath + '/x.svg',
-                    left_arrow_icon: commonIconsPath + '/arrow-left.svg',
-                    right_arrow_icon: commonIconsPath + '/arrow-right.svg',
-                    late_checkout_icon: iconBasePath + '/late-checkout.svg',
-                    scanpassport: iconBasePath + ($scope.zestStationData.scan_passport_file_uploaded.length > 0) ? $scope.zestStationData.scan_passport_file_uploaded : '',
-                    success: iconBasePath + '/success.svg',
-                    user_with_id: iconBasePath + '/user-id.svg',
-                    user_without_id: iconBasePath + '/user.svg'
-                }
-            };
-
-            if ($scope.icons.url.scanpassport.length > 0) {
-                $scope.scanpassport_image_uploaded = true;
-            } else {
-                $scope.scanpassport_image_uploaded = false;
-            }
-
-            if (useCommonIcons) {
-                $scope.icons.url.qr_noarrow = iconsPath + '/key.svg';
-            }
-            if ($scope.zestStationData.theme === 'duke') {
-                $scope.icons.url.logo = iconsPath + '/logo.svg';
-            }
-            if (diffHomeIconsOnly) {
-                $scope.icons.url.checkin = iconsPath + '/checkin.svg';
-                $scope.icons.url.checkout = iconsPath + '/checkout.svg';
-                $scope.icons.url.key = iconsPath + '/key.svg';
-                if ($scope.zestStationData.theme !== 'epik') {
-                    $scope.icons.url.logo = iconsPath + '/logo-print.svg';
-                }
-                $scope.icons.url.logo = iconsPath + '/logo-print.svg';
-            }
-
-            if ($scope.zestStationData.theme === 'yotel') {
-                $scope.icons.url.checkmark = iconsPath + '/checkmark.svg';
-            }
-            if ($scope.zestStationData.theme === 'public_v2') {
-                $scope.icons.url.pen = $scope.icons.url.keyboard;
-                $scope.icons.url.checkmark = iconsPath + '/checkmark.svg';
-            }
-        };
-
-		/** ******************************************************************************
-		 *  Yotel has and icon at the top of the page which change depending on the state
-		 ********************************************************************************/
-
-        $scope.setScreenIcon = function(name) {
-            if ($scope.zestStationData.theme !== 'yotel') {
-                return;
-            } 
-            $scope.activeScreenIcon = name;
-            if ($scope.icons && $scope.icons.url) {
-                $scope.icons.url.active_screen_icon = $scope.iconsPath + '/screen-' + $scope.activeScreenIcon + '.svg';
-            }
-            
-        };
-		/**
-		 * get paths for theme based Icon files
-		 **/
-        $scope.nonCircleNavIcons = false;
-        $scope.$on('updateIconPath', function(evt, theme) {
-            var commonIconsPath = '/assets/zest_station/css/icons/default';
-
-            // var basicHomeIcons = ['zoku'],
-            var niceHomeIcons = ['avenue',
-                    'sohotel',
-                    'epik',
-                    'public',
-                    'public_v2',
-                    'duke',
-                    'de-jonker',
-                    'chalet-view',
-                    'freehand',
-                    'row-nyc',
-                    'circle-inn-fairfield',
-                    'cachet-boutique',
-                    'hi-ho',
-                    'first',
-                    'viceroy-chicago',
-                    'amrath',
-                    'jupiter',
-                    'huntley',
-                    'queen',
-                    'belle',
-                    'ihg'
-                ],
-                nonCircleNavIcons = ['public_v2'];// minor adjustment to the back/close icons for some themes (only show the inner x or <)
-
-
-            if (_.contains(nonCircleNavIcons, theme)) {
-                $scope.nonCircleNavIcons = true;
-                commonIconsPath = '/assets/zest_station/css/icons/public_v2';
-            } else {
-                $scope.nonCircleNavIcons = false;
-            }
-
-            if (theme === 'yotel') {
-                $scope.$emit('DONT_USE_NAV_ICONS');
-                $scope.theme = theme;
-                $scope.iconsPath = '/assets/zest_station/css/icons/yotel';
-                $scope.setSvgsToBeLoaded($scope.iconsPath, commonIconsPath, false);
-            } else if (theme === 'fontainebleau') {
-                $scope.useNavIcons = true;
-				// nothing else
-            } else if (theme === 'conscious') {
-                $scope.useNavIcons = true;
-                $scope.theme = theme;
-                $scope.iconsPath = '/assets/zest_station/css/icons/conscious';
-                $scope.setSvgsToBeLoaded($scope.iconsPath, commonIconsPath, true);
-
-            } else if (_.contains(niceHomeIcons, theme)) {
-                $scope.useNavIcons = true;
-                $scope.theme = theme;
-                $scope.iconsPath = '/assets/zest_station/css/icons/' + theme;
-                if (theme === 'public_v2') {
-                    $scope.iconsPath = commonIconsPath;
-                    $scope.zestStationData.themeUsesLighterSubHeader = true;
-                }
-                $scope.setSvgsToBeLoaded($scope.iconsPath, commonIconsPath, true, true); // last arg, is to only show different icons on Home, other icons use default
-
-            } else { // zoku and snt use default path
-                $scope.useNavIcons = true;
-                $scope.iconsPath = commonIconsPath;
-                $scope.setSvgsToBeLoaded($scope.iconsPath, commonIconsPath, true);
-            }
-
-            if (theme === 'yotel') {
-                $scope.jumpGalleryIconPath = '/assets/zest_station/css/themes/' + theme + '/gallery/';
-            } else { // default icons for all other hotels (for now)
-                $scope.jumpGalleryIconPath = '/assets/zest_station/css/themes/snt/gallery/';
-            }
-            
-
-        });
 
         $scope.$on('RUN_APPLY', function() {
             $scope.$apply();
@@ -1980,6 +1751,9 @@ sntZestStation.controller('zsRootCtrl', [
             $('body').css('display', 'none'); // this will hide contents until svg logos are loaded
 			// call Zest station settings API
             $scope.zestStationData = zestStationSettings;
+            $controller('zsThemeActionsCtrl', {
+                $scope: $scope
+            });
             $scope.zestStationData.hotelLanguages = hotelLanguages.languages;
             $scope.zestStationData.hotelTranslations = hotelTranslations;
             if (hotelLanguages) {

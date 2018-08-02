@@ -320,7 +320,7 @@ sntRover.controller('roverController', [
             $scope.isHotelAdmin = true;
         }
         $scope.shouldShowTaxExempt = function() {
-            return rvPermissionSrv.getPermissionValue('TAX_EXEMPT');
+            return (rvPermissionSrv.getPermissionValue('TAX_EXEMPT') && $scope.taxExemptTypes.length);
         };
         /**
          * menu - forming & associate logic
@@ -529,7 +529,7 @@ sntRover.controller('roverController', [
 
             if (($rootScope.paymentGateway === 'CBA' || $rootScope.paymentGateway === 'CBA_AND_MLI') && sntapp.cordovaLoaded) {
                 doCBAPowerFailureCheck();
-                $rootScope.disableObserveForSwipe = true;
+                $rootScope.disableObserveForSwipe = $rootScope.paymentGateway === 'CBA';
             }
 
             // for iPad we need to show the connected device status
