@@ -8,6 +8,7 @@ sntRover.controller('RVCompanyCardActivityLogCtrl',
 	function($scope, $rootScope, $stateParams, $timeout, RVCompanyCardActivityLogSrv ) {
     
     BaseCtrl.call(this, $scope);
+    var that = this;
     
     // Refresh scroller.
     var refreshScroll = function() {
@@ -15,6 +16,7 @@ sntRover.controller('RVCompanyCardActivityLogCtrl',
             $scope.refreshScroller('rvCompanyCardActivityLogScroll');
         }, 500);
     };
+
     // Initialization.
     var init = function () {
         // Data set ninitialization
@@ -36,10 +38,9 @@ sntRover.controller('RVCompanyCardActivityLogCtrl',
         // Pagination options for Activity Log
 		$scope.activityLogPagination = {
 			id: 'ACTIVITY_LOG',
-			api: loadAPIData,
+			api: that.loadAPIData,
 			perPage: $scope.activityLogObj.perPage
 		};
-
 		
         // Setting up scroller with refresh options.
         $scope.setScroller('rvCompanyCardActivityLogScroll', {});
@@ -62,9 +63,9 @@ sntRover.controller('RVCompanyCardActivityLogCtrl',
     };
 	/*
 	 * Fetch transactions APIs
-	 * @param pageType { String } , Page No { String } to API
+	 * @param  { String } [Page No to API]
 	 */
-	var loadAPIData = function ( pageNo ) {
+	that.loadAPIData = function ( pageNo ) {
 
 		$scope.activityLogObj.page = pageNo ? pageNo : 1;
 		$scope.activityLogObj.accountId = ( typeof $scope.contactInformation === 'undefined' ) ? $stateParams.id : $scope.contactInformation.id;
@@ -93,7 +94,10 @@ sntRover.controller('RVCompanyCardActivityLogCtrl',
 		$scope.callAPI(RVCompanyCardActivityLogSrv.fetchActivityLog, dataToSend);
 	};
 
-	// Handle sortby action..
+	/*
+	*	Handle sortby action..
+	*	@param  - {String} - [Filter type value]
+	*/
 	var toggleFilterAction = function( type ) {
 		$scope.activityLogObj.sortField = type;
 		var filterObj = $scope.activityLogFilter;
@@ -101,7 +105,7 @@ sntRover.controller('RVCompanyCardActivityLogCtrl',
 		switch ( type ) {
 
 			case 'USERNAME' :
-				if ( filterObj.user === '' | filterObj.user === 'asc' ) {
+				if ( filterObj.user === '' || filterObj.user === 'asc' ) {
 					filterObj.user = 'desc';
 				}
 				else {
@@ -111,7 +115,7 @@ sntRover.controller('RVCompanyCardActivityLogCtrl',
 				break;
 
 			case 'DATE' :
-				if ( filterObj.date === '' | filterObj.date === 'asc' ) {
+				if ( filterObj.date === '' || filterObj.date === 'asc' ) {
 					filterObj.date = 'desc';
 				}
 				else {
@@ -121,7 +125,7 @@ sntRover.controller('RVCompanyCardActivityLogCtrl',
 				break;
 
 			case 'ACTION' :
-				if ( filterObj.action === '' | filterObj.action === 'asc' ) {
+				if ( filterObj.action === '' || filterObj.action === 'asc' ) {
 					filterObj.action = 'desc';
 				}
 				else {
@@ -131,19 +135,38 @@ sntRover.controller('RVCompanyCardActivityLogCtrl',
 				break;
 		}
 
-		loadAPIData();
+		that.loadAPIData();
 	};
 
-	// Sort by User/Date/Action
+	/*
+	* Sort by User/Date/Action
+	*	@param  - {String} - [Filter type value]
+	*/
 	$scope.sortByAction = function( type ) {
 		toggleFilterAction( type );
 	};
 
 	// Refresh the scroller when the tab is active.
-    $scope.$on('activityLogTabActive', function() {
-		loadAPIData();
+    var listener =  $scope.$on('activityLogTabActive', function() {
+		that.loadAPIData();
     });
 
+	/**
+	*	checking Whether oldvalue of detail have any value
+	*	@param  - {Any type} - [input value]
+	*	@return - {Boolean}
+	*/
+    $scope.isOldValue = function(value) {
+        if (value === "" || typeof value === "undefined" || value === null) {
+            return false;
+        }
+        else {
+            return true;
+        }
+    };
+
     init();
+
+    $scope.$on('$destroy', listener);
 
 }]);
