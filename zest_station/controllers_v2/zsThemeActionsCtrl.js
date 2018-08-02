@@ -58,7 +58,8 @@ sntZestStation.controller('zsThemeActionsCtrl', [
                     scanpassport: iconBasePath + ($scope.zestStationData.scan_passport_file_uploaded.length > 0) ? $scope.zestStationData.scan_passport_file_uploaded : '',
                     success: iconBasePath + '/success.svg',
                     user_with_id: iconBasePath + '/user-id.svg',
-                    user_without_id: iconBasePath + '/user.svg'
+                    user_without_id: iconBasePath + '/user.svg',
+                    location: iconBasePath + '/location.svg'
                 }
             };
 
@@ -86,6 +87,7 @@ sntZestStation.controller('zsThemeActionsCtrl', [
 
             if ($scope.zestStationData.theme === 'yotel') {
                 $scope.icons.url.checkmark = iconsPath + '/checkmark.svg';
+                $scope.icons.url.location = iconsPath + '/location.svg';
             }
             if ($scope.zestStationData.theme === 'public_v2') {
                 $scope.icons.url.pen = $scope.icons.url.keyboard;
