@@ -81,7 +81,7 @@ admin.controller('ADUserListCtrl', ['$scope', '$rootScope', '$q', '$state', '$st
             getParams.hotel_uuid = ADHotelListSrv.getSelectedProperty();
         }
 
-        if($scope.showInactiveUser) {
+        if ($scope.showInactiveUser) {
             getParams.include_inactive = $scope.showInactiveUser;
         }
 
