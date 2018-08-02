@@ -85,7 +85,8 @@ angular.module('sntRover').service('RVreportsSrv', [
              ],
              'Journal Export': [
                 'YESTERDAY',
-                'TODAY'
+                'TODAY',
+                'DATE'
              ]
 
         };
