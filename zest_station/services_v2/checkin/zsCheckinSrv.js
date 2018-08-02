@@ -375,6 +375,30 @@ sntZestStation.service('zsCheckinSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
             return deferred.promise;
         };
 
+        this.fetchReservationAddress = function(id) {
+            var deferred = $q.defer(),
+                url = '/guest_web/guest_details/' +id;
+
+            zsBaseWebSrv.getJSON(url).then(function(data) {
+                deferred.resolve(data);
+            }, function(data) {
+                deferred.reject(data);
+            });
+            return deferred.promise;
+        };
+
+        this.saveGuestAddress = function(params) {
+            var deferred = $q.defer(),
+                url = '/guest_web/guest_details/' + params.reservation_id;
+
+            zsBaseWebSrv.putJSON(url, params).then(function(data) {
+                deferred.resolve(data);
+            }, function(data) {
+                deferred.reject(data);
+            });
+            return deferred.promise;
+        };
+
         this.fetchReservationBalanceDetails = function(params) {
 
             var deferred = $q.defer(),

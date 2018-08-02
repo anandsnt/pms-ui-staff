@@ -300,6 +300,8 @@ sntRover.controller('RVActionsManagerController',
 
             if ($scope.selectedAction.department) {
                payLoad.assigned_to = $scope.selectedAction.department.value;
+            } else {
+                payLoad.assigned_to = '';
             }            
 
             if (!!$scope.selectedAction.reservation_id) {
@@ -515,6 +517,55 @@ sntRover.controller('RVActionsManagerController',
         // Checks the permission to edit action
         $scope.hasPermissionToEditAction = function() {
             return rvPermissionSrv.getPermissionValue('EDIT_ACTION');
+        };
+
+        // Checks the permission to edit action
+        $scope.hasPermissionToDeleteAction = function() {
+            return rvPermissionSrv.getPermissionValue('DELETE_ACTION');
+        };
+
+        // Prepare delete Action
+        $scope.prepareDeletAction = function() {
+            $scope.selectedAction.originalStatus = $scope.selectedAction.action_status;
+            $scope.selectedAction.action_status = 'delete';
+        };
+
+        // Delete action
+        $scope.deleteAction = function() {
+          var onSuccess = function() {                    
+                    fetchActionsList();
+                },
+                onFailure = function(data) {
+                    // show failed msg, so user can try again-?
+                    if (data[0]) {
+                        $scope.errorMessage = 'Internal Error Occured';
+                    }                    
+                };
+            var apiConfig = {
+                params: $scope.selectedAction.id,
+                onSuccess: onSuccess,
+                onFailure: onFailure
+            };
+            
+            $scope.callAPI(rvActionTasksSrv.deleteActionTask, apiConfig);            
+        };
+
+        // Cancel delete operation
+        $scope.cancelDelete = function() {
+            $scope.selectedAction.action_status = $scope.selectedAction.originalStatus;
+        };
+
+        // Get the action status info
+        $scope.getActionStatusInfo = function(action) {
+            var status = action.action_status;
+
+            if (status === 'delete') {
+                status = 'Delete Action?';
+            } else if (action.over_due && status !== 'COMPLETED') {
+                status = 'OVERDUE';
+            }
+
+            return status;
         };
 
         init();
