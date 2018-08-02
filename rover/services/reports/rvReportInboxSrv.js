@@ -55,6 +55,10 @@ angular.module('sntRover').service('RVReportsInboxSrv', [
             var deferred = $q.defer(),            
                url = '/api/generated_reports';
 
+            if (_.isEmpty(params.generated_date) ) {
+              params.generated_date = $filter('date')($rootScope.serverDate, 'yyyy-MM-dd');  
+            }
+
             rvBaseWebSrvV2.getJSON(url, params)
             .then(function(data) {                
                 deferred.resolve(data);
@@ -407,6 +411,25 @@ angular.module('sntRover').service('RVReportsInboxSrv', [
                 }));
             }       
                        
+        }; 
+
+        /**
+         * Fill group codes
+         * @param {String} value of the option
+         * @param {String} key the key to be used in the formatted filter
+         * @param {Promises} promises array of promises
+         * @param {Object} formatedFilter the formatted filter object
+         * @return {void} 
+         */
+        this.fillGroupCodes = (value, key, promises, formatedFilter) => {
+            var groupNameArray = [];
+
+             _.each(value, (id) => {
+                promises.push(RVreportsSubSrv.fetchGroupById(parseInt(id)).then(function(response) {
+                    groupNameArray.push(response.group_name);
+                    formatedFilter[reportInboxFilterLabelConst[key]] = groupNameArray.join(', ');
+                }));
+            });
         }; 
 
         /**
@@ -1030,12 +1053,16 @@ angular.module('sntRover').service('RVReportsInboxSrv', [
                         self.fillOptionsWithoutFormating(value, key, processedFilter);
                         break; 
                    case reportParamsConst['INCLUDE_COMPANYCARD_TA_GROUP']:
-                   case reportParamsConst['GROUP_COMPANY_TA_CARD']:
+                   case reportParamsConst['GROUP_COMPANY_TA_CARD']:                        
                         self.fillCompanyTaGroupDetails(value, key, promises, processedFilter);
                         break;
                    case reportParamsConst['INCLUDE_COMPANYCARD_TA']:
+                   case reportParamsConst['TA_CC_CARD']:
                         self.fillCompanyTaDetails(value, key, promises, processedFilter, report);
                         break;
+                   case reportParamsConst['GROUP_CODE']:
+                        self.fillGroupCodes(value, key, promises, processedFilter, report);
+                        break; 
                    case reportParamsConst['CHECKED_IN']:
                    case reportParamsConst['CHECKED_OUT']:
                         self.fillCheckedInCheckedOut(value, key, processedFilter);
@@ -1192,7 +1219,8 @@ angular.module('sntRover').service('RVReportsInboxSrv', [
                 report.shouldDisplayView = selectedReport.display_show_button;
                 report.isExpanded = false;
                 reportUtils.parseDatesInObject(report.filters.rawData);
-                report.rawData = report.filters.rawData;                
+                report.rawData = report.filters.rawData; 
+                report.appliedFilter = report.filters.appliedFilter;               
                 self.fillReportDates(report);
             });
             

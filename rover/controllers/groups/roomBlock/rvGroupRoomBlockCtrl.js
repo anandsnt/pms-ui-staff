@@ -949,15 +949,16 @@ angular.module('sntRover').controller('rvGroupRoomBlockCtrl', [
             if (isHouseOverbooked && isRoomTypeOverbooked && canOverBookBoth) {
                 return 'HOUSE_AND_ROOMTYPE_OVERBOOK';
             }
-            else if (isHouseOverbooked && canOverbookHouse) {
-                return 'HOUSE_OVERBOOK';
-            }
-            else if (isRoomTypeOverbooked && canOverbookRoomType) {
+            else if (isRoomTypeOverbooked && canOverbookRoomType && (!isHouseOverbooked || (isHouseOverbooked && canOverbookHouse) )) {
                 return 'ROOMTYPE_OVERBOOK';
             }
+            else if (isHouseOverbooked && canOverbookHouse && (!isRoomTypeOverbooked || (isRoomTypeOverbooked && canOverbookRoomType) )) {
+                return 'HOUSE_OVERBOOK';
+            }
+                        
 			// Overbooking occurs and has no permission.
             else {
-                return 'NO_PERMISSION';
+                return 'NO_PERMISSION_TO_OVERBOOK';
             }
 
         };
@@ -999,7 +1000,7 @@ angular.module('sntRover').controller('rvGroupRoomBlockCtrl', [
                         $scope.saveRoomBlock(true);
                     }
                     else {
-                        if (message === 'NO_PERMISSION') {
+                        if (message === 'NO_PERMISSION_TO_OVERBOOK') {
                             showNoPermissionOverBookingPopup();
                         } else {
                             showOverBookingPopup(message);
@@ -1536,7 +1537,8 @@ angular.module('sntRover').controller('rvGroupRoomBlockCtrl', [
                         $scope.saveMassUpdate(true, lastCalledMassUpdateConfig);
                     }
                     else {
-                        if (message === 'NO_PERMISSION') {
+                        if (message === 'NO_PERMISSION_TO_OVERBOOK') {
+                            $scope.overBookingMessage = message;
                             $scope.disableButtons = true;
                         } else {
                             $scope.overBookingMessage = message;
@@ -1959,7 +1961,8 @@ angular.module('sntRover').controller('rvGroupRoomBlockCtrl', [
                     oldFromDate: oldSumryData.block_from,
                     oldToDate: oldSumryData.block_to,
                     successCallBack: successCallBackOfMoveButton,
-                    failureCallBack: failureCallBackOfMoveButton
+                    failureCallBack: failureCallBackOfMoveButton,
+                    cancelPopupCallBack: cancelCallBackofDateChange
                 };
 
             $scope.changeDatesActions.clickedOnMoveSaveButton (options);

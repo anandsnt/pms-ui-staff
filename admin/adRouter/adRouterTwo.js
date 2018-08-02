@@ -240,6 +240,18 @@ angular.module('adminModuleTwo', []).config(function ($stateProvider) {
         url: '/chargeGroups'
     });
 
+    $stateProvider.state('admin.taxExemptTypes', {
+        templateUrl: '/assets/partials/taxExempt/adTaxExempts.html',
+        controller: 'ADTaxExemptCtrl',
+        url: '/taxExempts'
+    });
+
+    $stateProvider.state('admin.adTaxExemptDetails', {
+        templateUrl: '/assets/partials/taxExempt/adTaxExemptDetails.html',
+        controller: 'ADTaxExemptDetailsCtrl',
+        url: '/taxExempts/:taxExemptId'
+    });    
+
     $stateProvider.state('admin.paymentMethods', {
         templateUrl: '/assets/partials/paymentMethods/adPaymentMethods.html',
         controller: 'ADPaymentMethodsCtrl',
@@ -620,13 +632,6 @@ angular.module('adminModuleTwo', []).config(function ($stateProvider) {
         controller: 'adAnalyticSetupCtrl',
         url: '/analyticSetup'
     });
-
-    $stateProvider.state('admin.debuggingSetup', {
-        templateUrl: '/assets/partials/debuggingSetup/adDebuggingSetup.html',
-        controller: 'adDebuggingSetupCtrl',
-        url: '/debuggingSetup'
-    });
-
 
     $stateProvider.state('admin.emailBlacklist', {
         templateUrl: '/assets/partials/EmailBlackList/adEmailBlackList.html',

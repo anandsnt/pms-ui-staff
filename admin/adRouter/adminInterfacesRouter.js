@@ -456,6 +456,20 @@ angular.module('adminInterfacesRouter', []).config(function($stateProvider) {
         }
     });
 
+    $stateProvider.state('admin.axbase3000', {
+        templateUrl: '/assets/partials/interfaces/axbase3000/adAXbaseSetUp.html',
+        controller: 'adAXbaseCtrl',
+        url: '/interfaces/setup/:id',
+        onEnter: ['$stateParams', function($stateParams) {
+            $stateParams.id = 'axbase3000';
+        }],
+        resolve: {
+            config: ['adInterfacesCommonConfigSrv', function(adInterfacesCommonConfigSrv) {
+                return adInterfacesCommonConfigSrv.fetchConfiguration('axbase3000');
+            }]
+        }
+    });
+
 	$stateProvider.state('admin.rainmakerSetup', {
         templateUrl: '/assets/partials/interfaces/Rainmaker/adRainmakerSetup.html',
         controller: 'adCRSCommonCtrl',
@@ -514,7 +528,7 @@ angular.module('adminInterfacesRouter', []).config(function($stateProvider) {
 
     $stateProvider.state('admin.easiSetup', {
         templateUrl: '/assets/partials/interfaces/Easi/adEasiSetup.html',
-        controller: 'adCRSCommonCtrl',
+        controller: 'adEasiCtrl',
         url: '/interfaces/setup/:id',
         onEnter: ['$stateParams', function($stateParams) {
             $stateParams.id = 'easi';
@@ -522,6 +536,12 @@ angular.module('adminInterfacesRouter', []).config(function($stateProvider) {
         resolve: {
             config: ['adInterfacesCommonConfigSrv', function(adInterfacesCommonConfigSrv) {
                 return adInterfacesCommonConfigSrv.fetchConfiguration('easi');
+            }],
+            chargeGroups: ['adInterfacesCommonConfigSrv', function(adInterfacesCommonConfigSrv) {
+                return adInterfacesCommonConfigSrv.fetchChargeGroups();
+            }],
+            taxChargeCodes: ['adInterfacesCommonConfigSrv', function(adInterfacesCommonConfigSrv) {
+                return adInterfacesCommonConfigSrv.fetchTaxChargeCodes();
             }]
         }
     });

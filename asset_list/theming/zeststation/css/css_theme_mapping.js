@@ -41,7 +41,13 @@ module.exports = {
             'pod': [themeCSSRoot + 'pod.less'],
             'ihg': [themeCSSRoot + 'ihg.less'],
             'surf-sand': [themeCSSRoot + 'surf-sand.less'],
-            'bunk': [themeCSSRoot + 'bunk.less']
+            'bunk': [themeCSSRoot + 'bunk.less'],
+            'rydges': [themeCSSRoot + 'rydges.less'],
+            'freehand-la': [themeCSSRoot + 'freehand-la.less'],
+            'east-london': [themeCSSRoot + 'east-london.less'],
+            'farmers-daughter': [themeCSSRoot + 'farmers-daughter.less'],
+            'park-james': [themeCSSRoot + 'park-james.less'],
+            'annapolis': [themeCSSRoot + 'annapolis.less']
         };
     }
 };

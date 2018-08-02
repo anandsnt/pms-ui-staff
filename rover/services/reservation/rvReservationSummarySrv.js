@@ -374,6 +374,21 @@ angular.module('sntRover').service('RVReservationSummarySrv', ['$q', 'rvBaseWebS
             });
             return deferred.promise;
         };
+        /*
+         * Save reservation tax exempt data
+         */
+        this.saveTaxExempt = function(data) {
+            var deferred = $q.defer(),
+                url = '/api/reservations/save_tax_exempt';
+
+            rvBaseWebSrvV2.postJSON(url, data).then(function(data) {
+                deferred.resolve(data);
+            }, function(data) {
+                deferred.reject(data);
+            });
+            return deferred.promise;
+        };
+        
 
         this.checkUpsellAvailability = function(reservationId) {
             var deferred = $q.defer(),
@@ -381,6 +396,18 @@ angular.module('sntRover').service('RVReservationSummarySrv', ['$q', 'rvBaseWebS
 
             rvBaseWebSrvV2.getJSON(url).then(function(data) {
                 deferred.resolve(data.is_upsell_available);
+            }, function(data) {
+                deferred.reject(data);
+            });
+            return deferred.promise;
+        };
+
+        this.retrieveRoomPin = function(params) {
+            var deferred = $q.defer(),
+                url = '/staff/reservation/get_room_pin'; 
+
+            rvBaseWebSrvV2.getJSON(url, params).then(function(data) {
+                deferred.resolve(data);
             }, function(data) {
                 deferred.reject(data);
             });

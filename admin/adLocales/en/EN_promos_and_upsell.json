@@ -50,6 +50,9 @@
 "POST_ON_LAST_NIGHT":"Post on Last Night",
 "SUFFIX":"Suffix",
 "DISPLAY_SUFFIX":"Display Suffix",
-"LABEL":"Label"
+"LABEL":"Label",
+"ZEST_ADDON_STAFF_ALERT": "Zest addon staff alert",
+"EMAIL_ADDON_STAFF_ALERT_TEXT": "Zest addon staff alert email (SEPERATED BY SEMICOLON [;])",
+"NOTIFY_STAFF_ON_GUEST_PURCHASE": "Notify staff on guest purchase"
 
 

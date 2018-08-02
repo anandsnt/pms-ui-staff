@@ -37,11 +37,11 @@
                 <input type="text" data-size="{{guestCardData.contactInfo.email.length}}" class="masked-input icons icon-gc-email" ng-model="guestCardData.contactInfo.email" ng-blur="updateContactInfo()" auto-grow-field />
             </div>
             <ul class="only-print">
-                <li>City: {{guestCardData.contactInfo.address.city}}</li>
-                <li>State: {{guestCardData.contactInfo.address.state}}</li>
-                <li>Mobile: {{guestCardData.contactInfo.mobile}}</li>
-                <li>Phone: {{guestCardData.contactInfo.phone}}</li>
-                <li>Email: {{guestCardData.contactInfo.email}}</li>
+                <li ng-if="guestCardData.contactInfo.address.city">City: {{guestCardData.contactInfo.address.city}}</li>
+                <li ng-if="guestCardData.contactInfo.address.state">State: {{guestCardData.contactInfo.address.state}}</li>
+                <li ng-if="guestCardData.contactInfo.mobile">Mobile: {{guestCardData.contactInfo.mobile}}</li>
+                <li ng-if="guestCardData.contactInfo.phone">Phone: {{guestCardData.contactInfo.phone}}</li>
+                <li ng-if="guestCardData.contactInfo.email">Email: {{guestCardData.contactInfo.email}}</li>
             </ul>
         </form>
         <div class="card-actions dual-actions" ng-if="viewState.isAddNewCard">

@@ -932,6 +932,54 @@
                             .checkbox { width: 100%; }
                         }
 
+                        &.tax-exempt {
+                            .float;
+
+                            .switch-button {
+                                .pull-left;
+                                .size(40px, 120px);
+
+                                input[type="checkbox"] { 
+                                    line-height: 40px;
+                                    .size(40px, 100%);
+                                }   
+
+                                .data-off,
+                                .data-on {
+                                    left: auto;
+                                    line-height: 30px;
+                                    height: 30px;
+
+                                    &.data-off { 
+                                        right: -100%;
+
+                                        .switch-icon { 
+                                            margin: 0 5px 0 0; 
+                                        }
+                                    }
+                                    
+                                    &.data-on { 
+                                        right: 0;
+
+                                        .switch-icon { 
+                                            margin: 0 0 0 5px; 
+                                        }
+                                    }
+                                }
+
+                                &.on {
+                                    .data-off { right: 0; }
+                                    .data-on { right: 100%; }
+                                }
+                            }
+
+                            .select {
+                                margin-left: 10px;
+                                width: 180px;
+                                .pull-left;
+                            }
+                        }
+
                         &.hidden { #fade > .out(); }
                     }
 

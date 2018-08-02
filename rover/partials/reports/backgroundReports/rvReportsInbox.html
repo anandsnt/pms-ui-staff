@@ -9,7 +9,7 @@
             <span class="icons icon-clear-search" ng-click="clearQuery()">Clear query</span>
         </button>
         <button type="button" name="submit" class="icons icon-search">Search</button>
-        <input id="reports-query" class="query" placeholder="Search by Report Name" type="search" autocomplete="off" ng-model="reportInboxData.filter.searchTerm" ng-keyup="filterByQuery()">
+        <input id="reports-query" class="query" placeholder="Search by Report Name" type="search" autocomplete="off" ng-model="reportInboxData.filter.searchTerm" ng-change="filterByQuery()">
     </div>
     <div class="entry report-requested">
         <div class="select with-label">
@@ -75,10 +75,10 @@
                                         </div>
                                         <div class="dates">
                                             <div class="date">
-                                                <span>{{report.fromDate}}</span>
+                                                <span>{{report.fromDate | date:dateFormat}}</span>
                                             </div>
                                             <div class="date">
-                                                <span>{{report.toDate}}</span>
+                                                <span>{{report.toDate | date:dateFormat}}</span>
                                             </div>
                                         </div>
                                     </div>

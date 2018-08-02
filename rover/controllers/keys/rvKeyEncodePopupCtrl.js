@@ -1,6 +1,6 @@
 sntRover.controller('RVKeyEncodePopupCtrl', [
-    '$rootScope', '$scope', '$state', 'ngDialog', 'RVKeyPopupSrv', '$filter', '$timeout', '$log', 'sntActivity',
-    function ($rootScope, $scope, $state, ngDialog, RVKeyPopupSrv, $filter, $timeout, $log, sntActivity) {
+    '$rootScope', '$scope', '$state', 'ngDialog', 'RVKeyPopupSrv', '$filter', '$timeout', '$log', 'sntActivity', '$window', 'rvUtilSrv',
+    function ($rootScope, $scope, $state, ngDialog, RVKeyPopupSrv, $filter, $timeout, $log, sntActivity, $window, rvUtilSrv) {
         BaseCtrl.call(this, $scope);
 	var that = this;
 
@@ -45,6 +45,8 @@ sntRover.controller('RVKeyEncodePopupCtrl', [
 			$scope.data.is_late_checkout = false;
 			$scope.data.confirmNumber = $scope.reservationBillData.confirm_no;
 			$scope.data.roomNumber = $scope.reservationBillData.room_number;
+			$scope.data.key_settings = $scope.reservationBillData.key_settings;
+			$scope.data.reservation_id = $scope.reservationBillData.reservation_id;
 		// If the keypopup inviked from inhouse - staycard card)
 		} else {
 			reservationStatus = $scope.reservationData.reservation_card.reservation_status;
@@ -52,7 +54,10 @@ sntRover.controller('RVKeyEncodePopupCtrl', [
 			$scope.data.is_late_checkout = $scope.reservationData.reservation_card.is_opted_late_checkout;
 			$scope.data.confirmNumber = $scope.reservationData.reservation_card.confirmation_num;
 			$scope.data.roomNumber = $scope.reservationData.reservation_card.room_number;
-
+			$scope.data.key_settings = $scope.reservationData.reservation_card.key_settings;
+			$scope.data.room_pin = $scope.reservationData.room_pin;
+			$scope.data.reservation_id = $scope.reservationData.reservation_card.reservation_id;
+			$scope.data.room_pin_interface = $scope.reservationData.reservation_card.room_pin_interface;
 		}
 
     	if ($scope.data.is_late_checkout) {
@@ -125,6 +130,56 @@ sntRover.controller('RVKeyEncodePopupCtrl', [
 
             $scope.showDeviceConnectingMessge();
         }
+	};
+
+	var getPrintContent = function() {
+		
+	 var pincodeContent = '<div class="only-print" style="height: 320px;display: table;position: absolute;top:10px;padding: 20px;text-align: center;float: left;    width: 100%;">' +
+	 						'<h1 style="font-size: 48px;font-weight: 300;width: 100%;margin: 0 auto;text-overflow: ellipsis;overflow: hidden;white-space: nowrap;display: block;">' +
+								'<span >' + $scope.guestCardData.contactInfo.first_name + " " + $scope.guestCardData.contactInfo.last_name + '</span>' +
+				            
+	            				'</br><span >Room: ' + $scope.data.roomNumber + '</span>' +
+							'</h1>' +
+							'</br><span > Reservation ' + $scope.data.confirmNumber + '</span>' +
+						   '</div>' +
+			'<div class="only-print" style="height: 320px;display: table;position: absolute;bottom:100px;padding: 20px;text-align: center;float: left;    width: 100%;"> <span >Pin Code</span>' +
+	        '</br></br><span >Room Pin Code is</span></br>' +
+	        '<span style="font-size: 80px;font-weight: 700;letter-spacing: 10px;display: block;line-height: 80px;height: 80px;margin-top: 50px;margin-bottom: 40px;">' + $scope.data.room_pin + '</span></div>';
+
+	 return pincodeContent;
+
+	};
+
+	$scope.printPinCode = function() {
+		$('.nav-bar').addClass('no-print');
+		$('.cards-header').addClass('no-print');
+		$('.card-tabs-nav').addClass('no-print');
+
+
+		var pinEl = document.createElement("div");
+		
+		pinEl.innerHTML = getPrintContent();
+		// var currenBody = document.body.innerHTML;		
+		document.body.appendChild(pinEl);
+
+		// this will show the popup with full report
+		$timeout(function() {
+
+			/*
+			 *	======[ PRINTING!! JS EXECUTION IS PAUSED ]======
+			 */
+
+			$window.print();
+			if (sntapp.cordovaLoaded) {
+				cordova.exec(function() {}, function() {}, 'RVCardPlugin', 'printWebView', []);
+			}
+
+			$('.nav-bar').removeClass('no-print');
+			$('.cards-header').removeClass('no-print');
+			$('.card-tabs-nav').removeClass('no-print');
+			document.body.removeChild(pinEl);
+
+		}, 100);
 	};
 
 	$scope.isPrintKeyEnabled = function() {
@@ -319,24 +374,80 @@ sntRover.controller('RVKeyEncodePopupCtrl', [
 		that.showKeyPrintFailure(message);
 	};
 	/*
+	* Server call to send the email with pincode.
+	*/
+	$scope.sendEmailWithPincode = function() {
+		var successCallback = function() {
+			mailSent();
+		};
+		var failureCallback = function() {
+			mailFailed();
+		};
+		var postParams = { "reservation_id": $scope.data.reservation_id };
+
+		$scope.callAPI(RVKeyPopupSrv.sendEmailWithPincode, {
+            params: postParams,
+            successCallBack: successCallback,
+            failureCallBack: failureCallback
+        });
+	};
+
+	/*
+    * Server call to generate pincode.
+    */
+    $scope.generatePinCode = function() {
+        var successCallback = function(response) {
+            $scope.data.room_pin = response.pin;
+        };
+        var failureCallback = function(errorMessage) {
+            $scope.errorMessage = errorMessage;
+        };
+        var postParams = { "confirmation_number": $scope.data.confirmNumber, interface: $scope.data.room_pin_interface };
+
+        $scope.callAPI(RVKeyPopupSrv.generatePinCode, {
+            params: postParams,
+            successCallBack: successCallback,
+            failureCallBack: failureCallback
+        });
+    };
+
+	/*
+    *  Shows the popup to show the email send status
+    */
+    var showEmailSentStatusPopup = function() {
+        ngDialog.open({
+            template: '/assets/partials/popups/rvEmailSentStatusPopup.html',
+            className: '',
+            scope: $scope
+        });
+    };
+
+    var mailSent = function() {
+        // Handle mail Sent Success
+        $scope.statusMsg = $filter('translate')('EMAIL_SENT_SUCCESSFULLY');
+        $scope.status = "success";
+        showEmailSentStatusPopup();
+    };
+
+    var mailFailed = function() {
+        $scope.statusMsg = $filter('translate')('EMAIL_SEND_FAILED');
+        $scope.status = "alert";
+        showEmailSentStatusPopup();
+    };
+    
+	/*
 	* Server call to fetch the key data.
 	*/
 	this.callKeyFetchAPI = function(cardInfo) {
         sntActivity.start('GET_KEY_IMAGE');
 		that.setStatusAndMessage($filter('translate')('KEY_GETTING_KEY_IMAGE_STATUS'), 'pending');
-		var reservationId = '';
 
-		if ($scope.viewFromBillScreen) {
-			reservationId = $scope.reservationBillData.reservation_id;
-		} else {
-			reservationId = $scope.reservationData.reservation_card.reservation_id;
-		}
-	    var postParams = {"reservation_id": reservationId, "key": 1, "is_additional": true};
+	    var postParams = {"reservation_id": $scope.data.reservation_id, "key": 1, "is_additional": true};
 	    // for initial case the key we are requesting is not additional
 
 	    if (!that.isAdditional) {
 	    	that.isAdditional = true;
-	    	var postParams = {"reservation_id": reservationId, "key": 1, "is_additional": false};
+	    	var postParams = {"reservation_id": $scope.data.reservation_id, "key": 1, "is_additional": false};
 	    }
 	    if (typeof cardInfo !== 'undefined') {
 	    	postParams.card_info = cardInfo;
@@ -689,7 +800,11 @@ sntRover.controller('RVKeyEncodePopupCtrl', [
 
 	// Close popup
 	$scope.closeDialog = function() {
-		if ($scope.fromView === 'checkin') {
+		
+		if ($scope.fromView === 'checkin' && $scope.data.key_settings === "pin") {
+			$scope.goToStaycard();
+
+		} else if ($scope.fromView === 'checkin') {
 			$scope.pressedCancel();
 
 		} else {
@@ -712,4 +827,8 @@ sntRover.controller('RVKeyEncodePopupCtrl', [
 		$state.go('rover.search');
 
 	};
+	var reservationEmail = !!$scope.guestCardData.contactInfo.email ? $scope.guestCardData.contactInfo.email : '';
+
+	$scope.hasValidEmail = rvUtilSrv.isEmailValid(reservationEmail);
+	
 }]);
