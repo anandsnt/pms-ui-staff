@@ -26,9 +26,9 @@ sntRover.controller('RVGuestCardActivityLogController',
             page: 1,
             sortField: 'DATE',
             sortOrder: 'asc',
-            accountId: $scope.guestCardData.guestId
+            accountId: ''
         };
-console.log($scope.guestCardData);
+
         $scope.activityLogFilter = {
 			user: '',
 			date: 'asc',
@@ -68,7 +68,7 @@ console.log($scope.guestCardData);
 	that.loadAPIData = function ( pageNo ) {
 
 		$scope.activityLogObj.page = pageNo ? pageNo : 1;
-		$scope.activityLogObj.accountId = ( typeof $scope.contactInformation === 'undefined' ) ? $stateParams.id : $scope.contactInformation.id;
+		$scope.activityLogObj.accountId = ( typeof $scope.guestCardData === 'undefined' ) ? $stateParams.id : $scope.guestCardData.guestId;
 
 		var dataToSend = {
 			params: {
