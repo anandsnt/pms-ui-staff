@@ -26,9 +26,10 @@ sntRover.controller('RVGuestCardActivityLogController',
             page: 1,
             sortField: 'DATE',
             sortOrder: 'asc',
-            accountId: ''
+            accountId: $scope.reservationData.guest.id
         };
-
+console.log($scope.reservationData.guest.id);
+console.log($scope.guestCardData.contactInfo.user_id);
         $scope.activityLogFilter = {
 			user: '',
 			date: 'asc',
