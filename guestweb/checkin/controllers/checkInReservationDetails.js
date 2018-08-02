@@ -43,15 +43,6 @@
 		$scope.showTermsPopup = false;
 	};
 
-	$scope.cardPresent = true;
-	$scope.paymentMethodDetails = {
-		payment_details:{
-			card_number: '1111',
-			card_name: 'VISA',
-			card_expiry: '12/19',
-			card_type_image: "images/" +  "va.png"
-		}
-	};	
 	/*
 	*	if birthday selection is turened on in admin, show birthday page 
 	*   Else if prompt for guest details (the new version of guest details)
