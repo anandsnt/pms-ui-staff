@@ -53,7 +53,7 @@ describe('zsCheckinGuestAddressCtrl', function() {
         spyOn($state, 'go');
         $scope.usePresentAddress();
         expect($state.go)
-            .toHaveBeenCalledWith('zest_station.checkInReservationDetails');
+            .toHaveBeenCalledWith('zest_station.checkInReservationDetails', jasmine.any(Object));
     });
 
     it('On selecting new address, screen mode has to NEW_ADDRESS and address1 has to be focused', function () {
@@ -114,7 +114,7 @@ describe('zsCheckinGuestAddressCtrl', function() {
             $scope.nextButtonClicked();
             $scope.$digest();
             expect($state.go)
-                .toHaveBeenCalledWith('zest_station.checkInReservationDetails');
+                .toHaveBeenCalledWith('zest_station.checkInReservationDetails', jasmine.any(Object));
         });
     });
 });
