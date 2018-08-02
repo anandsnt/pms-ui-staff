@@ -1538,6 +1538,17 @@ sntRover.controller('rvReservationCardActionsController', ['$scope', '$filter', 
             $scope.selectedAction.action_status = $scope.selectedAction.originalStatus;
         };
 
+        // Get action status based class name
+        $scope.getActionStatusClass = function(action) {
+            var status = action.action_status;
+
+            if (status === 'delete') {
+                status = action.originalStatus;
+            }
+
+            return status;
+        };
+
         init();
     }
 ]);

@@ -532,6 +532,7 @@ sntRover.controller('RVActionsManagerController',
 
         // Delete action
         $scope.deleteAction = function() {
+
           var onSuccess = function() {                    
                     fetchActionsList();
                 },
@@ -546,6 +547,8 @@ sntRover.controller('RVActionsManagerController',
                 onSuccess: onSuccess,
                 onFailure: onFailure
             };
+            
+            $scope.errorMessage = [];
             
             $scope.callAPI(rvActionTasksSrv.deleteActionTask, apiConfig);            
         };
