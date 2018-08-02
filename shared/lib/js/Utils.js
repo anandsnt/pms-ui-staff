@@ -690,3 +690,31 @@ var isObjectAllValuesEmpty = function (obj) {
     });
     return ( emptyKeys.length == Object.keys(obj).length );
 };
+// Convert the given date object to timezone independent date
+var getTzIndependentDate = function(dateObj) {   
+
+    var r = dateObj.getTime();
+
+    if ( (dateObj.getHours() != 0) || (dateObj.getMinutes() != 0) ) {
+        r += dateObj.getTimezoneOffset() * 60 * 1000;
+    }
+
+    if ( dateObj.getTimezoneOffset() < 0 ) {
+        r -= dateObj.getTimezoneOffset() * 60 * 1000;
+    }
+
+    var adjustedDate = new Date(r)
+
+    if(adjustedDate.isOnDST()){
+        return new Date(r += Math.abs(dateObj.getDSTDifference()) * 60 * 1000);
+    }
+
+    return adjustedDate;
+};
+// Get timezone independent date for the given day, month and year
+var getTZIndependentDateFromDayMonthYear = function(day, month, year) {
+    var d = new Date(year, month-1, day);
+
+    return getTzIndependentDate(d);
+
+};

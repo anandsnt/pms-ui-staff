@@ -1969,7 +1969,12 @@
 
             &.card-authorization-check-reports {
                 margin-bottom: 2em;
-
+                td,
+                th {
+                    &.rate {
+                        width: 200px;
+                    }
+                }
                 td {
 
                     &.entity-name {
@@ -2479,6 +2484,48 @@
 
                         &.row-break {
                             td { border-bottom: 0; }
+                        }
+                    }
+                }
+                
+                &.tax-exempt-report {
+                    th,
+                    td {
+                        &.dates { width: 140px; }
+                    }
+                    tbody {
+                        td {
+                            &.name {
+                                min-width: 250px;
+                            }
+
+                            &.account {
+                                width: 250px;
+                            }
+
+                            .date {
+                                .nowrap();
+                                .pull-left;
+
+                                &:not(:last-child) { margin-right: 20px; }
+                            }
+
+                            .icons {
+                                font-size: 12px;
+                                margin-right: 5px;
+                                color: @grey3;
+                                &:not(.time) { padding-left: 25px; line-height: 20px; }
+
+                                &.time {
+                                    background-size: 80px;
+                                    background-color: @grey1;
+                                    .square(20px);
+                                    .pull-left;
+                                    
+                                    &.check-in { background-position: 6px -368px; }
+                                    &.check-out { background-position: 6px -395px; }
+                                }
+                            }
                         }
                     }
                 }
