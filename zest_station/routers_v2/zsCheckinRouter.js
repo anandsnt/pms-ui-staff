@@ -407,5 +407,19 @@ sntZestStation.config(['$stateProvider',
             controller: 'zsCheckinVerifyIdCtrl'
         });
 
+        $stateProvider.state('zest_station.collectGuestAddress', {
+            url: '/collectGuestAddress',
+            templateUrl: '/assets/partials_v2/checkin/zsCheckinGuestAddress.html',
+            controller: 'zsCheckinGuestAddressCtrl',
+            resolve: {
+                guestAddress: function(zsCheckinSrv) {
+                    return zsCheckinSrv.fetchReservationAddress(zsCheckinSrv.getSelectedCheckInReservation().id);
+                },
+                countryList: function(zsGeneralSrv) {
+                    return zsGeneralSrv.fetchCountryList();
+                }
+            }
+        });
+    
     }
 ]);

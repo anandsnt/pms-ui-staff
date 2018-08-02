@@ -379,6 +379,8 @@ this.initScreenKeyboardListener = function(from, id, show, onChangeEvent) {
                 elementObj.getkeyboard().close();
             }
         }
+        scrollContentsDown();
+
     };
     elementObj.focus(this.focusHandler).blur(this.blurHandler).keydown(function(e) {
         if (e.keyCode === 13) { // enter
