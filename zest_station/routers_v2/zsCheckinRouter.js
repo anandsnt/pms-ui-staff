@@ -15,7 +15,7 @@ sntZestStation.config(['$stateProvider',
 
         // checkin reservation details 
         $stateProvider.state('zest_station.checkInReservationDetails', {
-            url: '/checkInReservationDetails/:pickup_key_mode/:isQuickJump/:quickJumpMode',
+            url: '/checkInReservationDetails/:pickup_key_mode/:isQuickJump/:quickJumpMode/:previousState',
             templateUrl: '/assets/partials_v2/checkin/zsCheckinReservationDetails.html',
             controller: 'zsCheckInReservationDetailsCtrl',
             jumper: true,
