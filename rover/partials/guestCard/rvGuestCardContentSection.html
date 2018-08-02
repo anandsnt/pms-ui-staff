@@ -34,7 +34,7 @@
         <!-- Guest Card Tab 4 loyalty-->
         <span ng-include="'/assets/partials/guestCard/guestCardLoyalty.html'"></span>
         <!-- Guest Card Tab 5 Activity Log-->
-        <span ng-include="'/assets/partials/guestCard/guestCardActivityLog.html'"></span>
+        <span ng-if="current == 'activity-log' && isStandAlone" ng-include="'/assets/partials/guestCard/guestCardActivityLog.html'"></span>
         <!-- Guest Card Tab 4 loyalty-->
         <span ng-if="current == 'notes' && isStandAlone" ng-include="'/assets/partials/guestCard/guestCardNotes.html'"></span>
     </div>
