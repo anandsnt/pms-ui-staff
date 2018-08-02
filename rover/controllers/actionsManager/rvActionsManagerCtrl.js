@@ -534,7 +534,6 @@ sntRover.controller('RVActionsManagerController',
         $scope.deleteAction = function() {
           var onSuccess = function() {                    
                     fetchActionsList();
-                    //$scope.refreshScroller("rvActionListScroller");
                 },
                 onFailure = function(data) {
                     // show failed msg, so user can try again-?
@@ -546,7 +545,8 @@ sntRover.controller('RVActionsManagerController',
                 params: $scope.selectedAction.id,
                 onSuccess: onSuccess,
                 onFailure: onFailure
-            }
+            };
+            
             $scope.callAPI(rvActionTasksSrv.deleteActionTask, apiConfig);            
         };
 

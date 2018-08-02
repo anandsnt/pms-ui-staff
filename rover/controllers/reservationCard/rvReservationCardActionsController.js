@@ -1518,7 +1518,8 @@ sntRover.controller('rvReservationCardActionsController', ['$scope', '$filter', 
                 params: $scope.selectedAction.id,
                 onSuccess: onSuccess,
                 onFailure: onFailure
-            }
+            };
+            
             $scope.callAPI(rvActionTasksSrv.deleteActionTask, apiConfig);            
         };
 
