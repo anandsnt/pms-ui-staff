@@ -7,7 +7,8 @@ module.exports = {
                 minifiedFiles: [                    
                 ],
                 nonMinifiedFiles: [                    
-                    controllerRoot + "guests/rvGuestCardDetailsCtrl.js",                    
+                    controllerRoot + "guests/rvGuestCardDetailsCtrl.js",
+                    controllerRoot + "guests/rvGuestCardActivityLogCtrl.js",                    
                     controllerRoot + "rvContactInfoDatePickerCtrl.js",
                     controllerRoot + "rvAddLoyaltyProgramController.js",
                     controllerRoot + "rvGuestCardLoyaltyCtrl.js",                    
