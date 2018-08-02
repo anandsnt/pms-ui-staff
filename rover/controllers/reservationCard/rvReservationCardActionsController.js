@@ -352,6 +352,11 @@ sntRover.controller('rvReservationCardActionsController', ['$scope', '$filter', 
                 if (action.description) {
                     $scope.lastSavedDescription = action.description;
                 }
+
+                // CICO-55027 - Restore the original status if nothing is done after opting for delete
+                if ($scope.selectedAction.originalStatus) {
+                   $scope.selectedAction.action_status = $scope.selectedAction.originalStatus; 
+                }
             }
 
             $scope.setRightPane('selected');
@@ -1519,7 +1524,7 @@ sntRover.controller('rvReservationCardActionsController', ['$scope', '$filter', 
                 onSuccess: onSuccess,
                 onFailure: onFailure
             };
-            
+
             $scope.callAPI(rvActionTasksSrv.deleteActionTask, apiConfig);            
         };
 

@@ -210,16 +210,16 @@
             <!-- if Delete status add class .inline -->
             <div class="detail-actions" ng-hide="selectedView === 'new' || selectedView === 'edit'" ng-class="{'inline': selectedAction.action_status === 'delete'}">
                 <!-- If Unnasigned or assigned -->
-                <button type="button" class="button white purple-text" ng-if="shouldShowEditAndCompleteBtn(selectedAction)" ng-click="prepareEditAction()" ng-class="{'overlay': !hasPermissionToEditAction()}">Edit</button>
-                <button type="button" class="button white green-text" ng-if="shouldShowEditAndCompleteBtn(selectedAction)" ng-click="completeAction()">Complete</button>
+                <button type="button" class="button white purple-text"  ng-click="prepareEditAction()" ng-class="{'overlay': !hasPermissionToEditAction(), 'hidden': !shouldShowEditAndCompleteBtn(selectedAction)}">Edit</button>
+                <button type="button" class="button white green-text" ng-click="completeAction()" ng-class="{'hidden': !shouldShowEditAndCompleteBtn(selectedAction)}">Complete</button>
                
                 <!-- If unnasigned, assigned or completed -->
-                <button type="button" class="button white red-text" ng-if="shouldShowDeleteBtn(selectedAction)" ng-click="prepareDeletAction()" ng-class="{'overlay': !hasPermissionToDeleteAction()}">Delete</button>
+                <button type="button" class="button white red-text" ng-click="prepareDeletAction()" ng-class="{'overlay': !hasPermissionToDeleteAction(), 'hidden': !shouldShowDeleteBtn(selectedAction)}">Delete</button>
                 
 
                 <!-- if delete status -->
-                <button type="button" class="button blank" ng-if="selectedAction.action_status === 'delete' " ng-click="cancelDelete()">Cancel</button>
-                <button type="button" class="button red" ng-if="selectedAction.action_status === 'delete' " ng-click="deleteAction()">Delete Action</button>
+                <button type="button" class="button blank"  ng-click="cancelDelete()" ng-class="{'hidden': selectedAction.action_status !== 'delete'}">Cancel</button>
+                <button type="button" class="button red" ng-class="{'hidden': selectedAction.action_status !== 'delete'}" ng-click="deleteAction()">Delete Action</button>
                 
             </div>
 
