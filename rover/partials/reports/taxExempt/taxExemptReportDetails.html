@@ -28,7 +28,7 @@
                     <tr class="row-break" ng-repeat="eachRow in results">
                         <td class="name">
                             <div class="info">
-                                <span class="guest-status small-icon" ng-class="{{eachRow.status}}">{{eachRow.status}}</span>
+                                <span class="guest-status small-icon" ng-class="getReservationStatus(eachRow.status)">{{eachRow.status}}</span>
                                 <strong>{{eachRow.name}}</strong>
                                 <em>{{eachRow.confirm_no}}</em>
                             </div>
