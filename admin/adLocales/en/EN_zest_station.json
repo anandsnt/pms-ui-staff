@@ -95,7 +95,9 @@
 "USE_SOCKET_PRINTING" : "Use Socket print",
 "USE_SOCKET_PRINTING_DESC" : "turn this ON if Station is being run on a Windows-touchscreen computer, not a Tablet device",
 "USE_ZEST_STATION_HANDLER" : "Use Zest Station Handler",
+"ADD_UPDATE_GUEST_DETAILS": "Add/Update Guest Details",
 "USE_ADD_REMOVE_GUESTS" : "Add/Remove Guests",
+"COLLECT_GUEST_ADDRESS": "Collect Guest Address",
 "ZEST_STATION_OUT_OF_ORDER_TRESHOLD" : "Out of Order Threshold",
 
 "ZEST_STATION_OFFLINE_SETTINGS" : "Offline Re-Connect Settings",
@@ -153,7 +155,9 @@
 "SHOW_PIN_LABEL": "Show PIN code",
 
 "STAFF_NOTIFICATION_SOUND": "Staff notification sound",
-"ROOM_PIN_PREFIX_TEXT": "Room PIN text"
+"ROOM_PIN_PREFIX_TEXT": "Room PIN text",
+"RE_VERIFY_IDS": "Re-Verify ID",
+"ALWAYS_REQUIRE_STAFF_TO_VERIFY_IDS_IN_PICKUP_KEY": "Always require staff to verify ID during the key pick up"
 
 
 
