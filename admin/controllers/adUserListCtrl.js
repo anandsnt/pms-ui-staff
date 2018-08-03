@@ -41,7 +41,6 @@ admin.controller('ADUserListCtrl', ['$scope', '$rootScope', '$q', '$state', '$st
         $scope.flagObject.showChainAdminsOnly = false;
         // Default value for the departments filter select: All departments
         $scope.flagObject.departmentSelected = '-1';
-        $scope.flagObject.showIncludeInactiveCheckbox = true;
         // Array which will contain hotel id's of selected hotels from Hotel multi-select filter.
         $scope.selectedMPHotelIdsInFilter = [];
 
