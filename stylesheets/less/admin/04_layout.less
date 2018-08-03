@@ -68,6 +68,28 @@ body { overflow: hidden; }
                 background: @background;
                 z-index: 999;
             }
+
+            .table-filters {
+                .pull-right;
+
+                .checkbox {
+                    background: white;
+                    padding: 10px 20px 10px 40px;
+                    margin: 0;
+                    .box-shadow();
+
+                    .icon-form {
+                        top: 10px;
+                        left: 10px;
+                    }
+                }
+
+                .entry {
+                    &:not(:last-child) {
+                        margin-right: 10px;
+                    }
+                }
+            }
         }
     }
 

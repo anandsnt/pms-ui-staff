@@ -523,36 +523,34 @@ sntZestStation.controller('zsRootCtrl', [
 
                     }
                 }
+                scrollContentsDown();
             }
         };
-        $scope.showOnScreenKeyboard = function(id) {
-			// in console, allow debugging to test out keyboard in any browser
-            if (zestSntApp.virtualKeyBoardEnabled) {
-                if (id) {
-                    $scope.lastKeyboardId = id;
-                    new initScreenKeyboardListener('station', id, true, $scope.resetTime); // on change event fire reset time
-                }
+        $scope.showOnScreenKeyboard = function(id, scrollUp) {
+            // in console, allow debugging to test out keyboard in any browser
+            if (zestSntApp.virtualKeyBoardEnabled && id) {
+                $scope.lastKeyboardId = id;
+                scrollContentsUpIfNeeded(scrollUp);
+                new initScreenKeyboardListener('station', id, true, $scope.resetTime); // on change event fire reset time
             } else {
-				// restrict keyboard if screen is resized
-				// to lower height
+                // restrict keyboard if screen is resized
+                // to lower height
                 if (window.innerHeight < 700) {
                     return;
                 }
                 $scope.lastKeyboardId = id;
-				// pull up the virtual keyboard (snt) theme... if chrome & fullscreen
+                // pull up the virtual keyboard (snt) theme... if chrome & fullscreen
                 var isTouchDevice = 'ontouchstart' in window,
                     onWindowsDevice = window.navigator.userAgent.toLowerCase().indexOf('window') !== -1,
                     themeUsesKeyboard = $scope.theme === 'yotel' || !$scope.theme;
 
                 var shouldShowKeyboard = ($scope.inChromeApp || $scope.inElectron) && onWindowsDevice && isTouchDevice && themeUsesKeyboard;
-
-                if (shouldShowKeyboard) {
-                    if (id) {
-                        new initScreenKeyboardListener('station', id, true, $scope.resetTime); // on change event fire reset time
-                    }
+            
+                if (shouldShowKeyboard && id) {
+                    scrollContentsUpIfNeeded(scrollUp);
+                    new initScreenKeyboardListener('station', id, true, $scope.resetTime);
                 }
             }
-
         };
 
         $scope.jumperData = {
