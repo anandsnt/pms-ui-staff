@@ -1438,11 +1438,11 @@ sntRover.controller('rvReservationCardActionsController', ['$scope', '$filter', 
         // Prepare the edit action screen
         $scope.prepareEditAction = function(action) {
             $scope.actionSelected = 'edit';
-            var assignedTo = action.assigned_to.id,
+            var assignedTo = action.assigned_to,
                 department = '';
 
-            if (assignedTo) {                
-                department = _.findWhere($scope.departments, { value: assignedTo + "" });
+            if (assignedTo && assignedTo.id) {                
+                department = _.findWhere($scope.departments, { value: assignedTo.id + "" });
             }
 
             $scope.newAction = {

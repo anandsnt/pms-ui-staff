@@ -167,7 +167,8 @@ sntRover.controller('RVActionsManagerController',
                     departmentName: !!departmentId ? _.find($scope.departments, {
                         value: departmentId.toString()
                     }).name : "",
-                    isCompleted: !!$scope.selectedAction.completed_at
+                    isCompleted: !!$scope.selectedAction.completed_at,
+                    description: $scope.selectedAction.description
                 });
             },
             addDatePickerOverlay = function () {
@@ -549,7 +550,7 @@ sntRover.controller('RVActionsManagerController',
             };
             
             $scope.errorMessage = [];
-            
+
             $scope.callAPI(rvActionTasksSrv.deleteActionTask, apiConfig);            
         };
 
