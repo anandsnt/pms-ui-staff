@@ -62,8 +62,10 @@ sntZestStation.controller('zsCheckinGuestAddressCtrl', [
 			// back button action
 			$scope.$on(zsEventConstants.CLICKED_ON_BACK_BUTTON, function() {
 				var reservations = zsCheckinSrv.getCheckInReservations();
-
-				if (reservations.length > 0) {
+				
+				if (isValidAddress(guestAddress) && $scope.mode === "NEW_ADDRESS") {
+					$scope.mode = "SELECT_ADDRESS";
+				} else if (reservations.length > 0) {
 					$state.go('zest_station.selectReservationForCheckIn');
 				} else {
 					$state.go('zest_station.checkInReservationSearch');
