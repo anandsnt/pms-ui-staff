@@ -160,7 +160,7 @@
 "ID_TYPES_PASSPORT":"Passport",
 
 
-"MANUAL_ID_VERIFFICATION": "Manual ID verification",
+"MANUAL_ID_VERIFFICATION": "One-time Manual ID verification",
 "ASSIGN_PIN_FOR_STAFF_TO_VERIFY_ID": "To approve guest ID's, each staff member needs an staff ID. After saving this setting, please go to user setup to add",
 "GO_TO_USERS": "Go to User setup",
 
