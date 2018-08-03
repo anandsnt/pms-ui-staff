@@ -134,13 +134,15 @@ admin.controller('ADUserListCtrl', ['$scope', '$rootScope', '$q', '$state', '$st
     $scope.clickedShowInactiveUsers = function() {
         $scope.reloadTable();
     };
-    $scope.searchEntered = function() {
+    /*
+     * Changed search text
+     */
+    $scope.changedSearchText = function() {
         if ($scope.searchTerm !== '') {
             $scope.flagObject.showIncludeInactiveCheckbox = false;
         } else {
             $scope.flagObject.showIncludeInactiveCheckbox = true;
-        }      
-        $scope.reloadTable();
+        }              
     };
 
     $scope.reloadTable = function() {
