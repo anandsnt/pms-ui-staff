@@ -1463,6 +1463,8 @@ sntRover.controller('rvReservationCardActionsController', ['$scope', '$filter', 
 
             if ($scope.newAction.department) {
                params.assigned_to = $scope.newAction.department.value;               
+            } else {
+              params.assigned_to = '';  
             }
 
             if ($scope.newAction.date_due) {
