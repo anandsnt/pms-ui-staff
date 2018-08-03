@@ -91,3 +91,14 @@ var setDisplayContentHeight = function() {
 		return;
 	}
 };
+
+var scrollContentsUpIfNeeded = function(scrollUp) {
+	if (scrollUp && !$( "body" ).hasClass( "showing-keyboard" )) {
+		$("body").addClass("showing-keyboard");
+	}
+	return;
+};
+
+var scrollContentsDown = function() {
+	$("body").removeClass("showing-keyboard");
+};
