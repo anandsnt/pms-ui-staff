@@ -10,7 +10,9 @@ sntZestStation.controller('zsCheckinGuestAddressCtrl', [
 		var selectedReservation = zsCheckinSrv.getSelectedCheckInReservation();
 
 		$scope.usePresentAddress = function() {
-			$state.go('zest_station.checkInReservationDetails');
+			$state.go('zest_station.checkInReservationDetails', {
+				previousState: 'COLLECT_ADRESS'
+			});
 		};
 
 		$scope.useNewAddress = function() {
@@ -20,13 +22,17 @@ sntZestStation.controller('zsCheckinGuestAddressCtrl', [
 
 		var saveAddress = function () {
 			var params = angular.copy($scope.guestDetails);
+			params.country = params.country_id;
+			delete params.country_id;
 
 			params.reservation_id = selectedReservation.id;
 
 			var options = {
 				params: params,
 				successCallBack: function() {
-					$state.go('zest_station.checkInReservationDetails');
+					$state.go('zest_station.checkInReservationDetails', {
+						previousState: 'COLLECT_ADRESS'
+					});
 				}
 			};
 
@@ -51,6 +57,7 @@ sntZestStation.controller('zsCheckinGuestAddressCtrl', [
 
 		(function() {
 			BaseCtrl.call(this, $scope);
+			$scope.$emit('hideLoader');
 			$scope.$emit(zsEventConstants.SHOW_CLOSE_BUTTON);
 			// back button action
 			$scope.$on(zsEventConstants.CLICKED_ON_BACK_BUTTON, function() {
