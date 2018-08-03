@@ -3259,6 +3259,17 @@ body { overflow: hidden; }
 	                    font-size: 24px;
 	                }
 
+	                .action-summary {
+	                    padding: 0 10px;
+	                    .calc-height( 100, 40 );
+
+	                    .iScrollVerticalScrollbar { 
+	                        right: 0;
+
+	                        .iScrollIndicator { background: rgba( 0, 0, 0, 0.1 ); }
+	                    }
+	                }
+
 	                .icon-action {
 	                    text-align: center;
 	                    text-transform: uppercase;
@@ -3466,6 +3477,7 @@ body { overflow: hidden; }
 	                position: absolute;
 	                bottom: 0;
 	                left: 0;
+	                background: @white;
 	                .box-shadow(0 -1px 1px rgba(0,0,0,.2));
 	                .size(50px, 100%);
 	                .float;
