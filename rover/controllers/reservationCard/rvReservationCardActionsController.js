@@ -1438,11 +1438,11 @@ sntRover.controller('rvReservationCardActionsController', ['$scope', '$filter', 
         // Prepare the edit action screen
         $scope.prepareEditAction = function(action) {
             $scope.actionSelected = 'edit';
-            var assignedTo = action.assigned_to.id,
+            var assignedTo = action.assigned_to,
                 department = '';
 
-            if (assignedTo) {                
-                department = _.findWhere($scope.departments, { value: assignedTo + "" });
+            if (assignedTo && assignedTo.id) {                
+                department = _.findWhere($scope.departments, { value: assignedTo.id + "" });
             }
 
             $scope.newAction = {
@@ -1536,6 +1536,17 @@ sntRover.controller('rvReservationCardActionsController', ['$scope', '$filter', 
         // Cancel delete operation
         $scope.cancelDelete = function() {
             $scope.selectedAction.action_status = $scope.selectedAction.originalStatus;
+        };
+
+        // Get action status based class name
+        $scope.getActionStatusClass = function(action) {
+            var status = action.action_status;
+
+            if (status === 'delete') {
+                status = action.originalStatus;
+            }
+
+            return status;
         };
 
         init();
