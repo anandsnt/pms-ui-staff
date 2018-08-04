@@ -33,6 +33,7 @@ sntZestStation.controller('zsCheckinGuestAddressCtrl', [
 
 		var saveAddress = function () {
 			var params = angular.copy($scope.guestDetails);
+			
 			params.country = params.country_id;
 			delete params.country_id;
 
