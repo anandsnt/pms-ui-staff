@@ -3309,7 +3309,8 @@ body { overflow: hidden; }
 	                        border-top: 1px solid rgba(0,0,0,.1);
 	                        #flexbox > .display();
 
-	                        &:last-child {
+	                        &:last-child,
+	                        &.last {
 	                            border-bottom: 1px solid rgba(0,0,0,.1);
 	                        }
 
@@ -3498,14 +3499,14 @@ body { overflow: hidden; }
 	                        content: "";
 	                        position: absolute;
 	                        top: 10px;
-	                        right: 0;
+	                        left: 0;
 	                        background: rgba(0,0,0,.1);
 	                        width: 1px;
 	                        .calc-height(100, 20);
 	                        .show;
 	                    }
 
-	                    &:last-child {
+	                    &:first-child {
 	                        &:after { .hide; }
 	                    }
 	                }
