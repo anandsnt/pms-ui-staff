@@ -1025,7 +1025,7 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
                     'segments': [],
                     'market_ids': [],
                     'tax_exempt_type_ids': [],
-                    'group_code': []
+                    'group_code_ids': []
                 };
             }
 
@@ -1517,7 +1517,7 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 
             // include company/ta/group
             if (report.hasOwnProperty('hasGroupCode') && !!report.uiChosenIncludeGroupCode) {
-                key = report.hasGroupCode.value.toLowerCase();
+                key = "group_code_ids";// report.hasGroupCode.value.toLowerCase(); TO DO: change migration
 
                 params[key] = [];                
                 /**/
