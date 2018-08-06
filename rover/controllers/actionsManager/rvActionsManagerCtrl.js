@@ -37,6 +37,12 @@ sntRover.controller('RVActionsManagerController',
                     fadeScrollbars: true
                 });
 
+                $scope.setScroller("actionSummaryScroller", {
+                    scrollbars: true,
+                    preventDefault: false,
+                    fadeScrollbars: true
+                });
+
                 $scope.departments = departments.data.departments;
                 if (!!$state.params.restore && !!rvActionTasksSrv.getFilterState()) {
                     $scope.filterOptions = rvActionTasksSrv.getFilterState();
@@ -68,6 +74,7 @@ sntRover.controller('RVActionsManagerController',
                         successCallBack: function (response) {
                             $scope.selectedAction = getBindabaleAction(response.data);
                             $scope.selectedView = "list";
+                            refreshActionSummaryScroller();
                         }
                     });
                 }
@@ -187,6 +194,9 @@ sntRover.controller('RVActionsManagerController',
             },
             refreshCreateActionScroller = function () {
                 $scope.refreshScroller('create-action-scroller');
+            },
+            refreshActionSummaryScroller = function () {
+                $scope.refreshScroller('actionSummaryScroller');
             };
 
 
