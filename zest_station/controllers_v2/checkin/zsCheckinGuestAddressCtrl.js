@@ -8,6 +8,16 @@ sntZestStation.controller('zsCheckinGuestAddressCtrl', [
 	function($scope, $state, zsEventConstants, countryList, zsCheckinSrv, guestAddress) {
 
 		var selectedReservation = zsCheckinSrv.getSelectedCheckInReservation();
+		var resetValues = function() {
+			$scope.guestDetails = {
+				'postal_code': '',
+				'state': '',
+				'city': '',
+				'street': '',
+				'street2': '',
+				'country_id': ''
+			};
+		};
 
 		$scope.usePresentAddress = function() {
 			$state.go('zest_station.checkInReservationDetails', {
@@ -16,12 +26,14 @@ sntZestStation.controller('zsCheckinGuestAddressCtrl', [
 		};
 
 		$scope.useNewAddress = function() {
+			resetValues();
 			$scope.mode = "NEW_ADDRESS";
 			$scope.focusInputField('address-1');
 		};
 
 		var saveAddress = function () {
 			var params = angular.copy($scope.guestDetails);
+			
 			params.country = params.country_id;
 			delete params.country_id;
 
@@ -62,22 +74,17 @@ sntZestStation.controller('zsCheckinGuestAddressCtrl', [
 			// back button action
 			$scope.$on(zsEventConstants.CLICKED_ON_BACK_BUTTON, function() {
 				var reservations = zsCheckinSrv.getCheckInReservations();
-
-				if (reservations.length > 0) {
+				
+				if (isValidAddress(guestAddress) && $scope.mode === "NEW_ADDRESS") {
+					$scope.mode = "SELECT_ADDRESS";
+				} else if (reservations.length > 0) {
 					$state.go('zest_station.selectReservationForCheckIn');
 				} else {
 					$state.go('zest_station.checkInReservationSearch');
 				}
 			});
 			$scope.countryList = countryList;
-			$scope.guestDetails = {
-				'postal_code': '',
-				'state': '',
-				'city': '',
-				'street': '',
-				'street2': '',
-				'country_id': ''
-			};
+			resetValues();
 			$scope.showErrorMessage = false;
 
 			if (isValidAddress(guestAddress)) {
