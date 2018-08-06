@@ -1,11 +1,10 @@
-angular.module('sntRover').controller('rvDeviceStatusCtrl', ['$scope', 'ngDialog', '$log', 'sntActivity', 'rvDeviceStatusSrv',
-    function ($scope, ngDialog, $log, sntActivity, rvDeviceStatusSrv) {
+angular.module('sntRover').controller('rvDeviceStatusCtrl', ['$scope', 'ngDialog', '$log', 'sntActivity', 'rvDeviceStatusSrv', 'rvUtilSrv',
+    function ($scope, ngDialog, $log, sntActivity, rvDeviceStatusSrv, rvUtilSrv) {
 
         var actionResponse = {};
         var callBacks = {
             'successCallBack': function (response) {
-                $scope.screenMode = 'DISPLAY_MESSAGE';
-                actionResponse = angular.toJson(response);
+                actionResponse = response;
                 ngDialog.open({
                     template: '/assets/partials/settings/rvDeviceMessage.html',
                     scope: $scope,
@@ -34,13 +33,13 @@ angular.module('sntRover').controller('rvDeviceStatusCtrl', ['$scope', 'ngDialog
                 return;
             }
             sntActivity.start('RUN_DEVICE_ACTION');
-            $scope.actionDisplayName = device.display_name;
             sntapp.cardReader.doDeviceAction({
                 service: action.service_name,
                 action: action.action_name,
                 successCallBack: callBacks['successCallBack'],
                 failureCallBack: callBacks['failureCallBack']
             });
+            $scope.actionDisplayName = action.display_name;
         };
 
         $scope.printReceipt = function() {
@@ -52,22 +51,32 @@ angular.module('sntRover').controller('rvDeviceStatusCtrl', ['$scope', 'ngDialog
 
         $scope.emailReceipt = function() {
             $scope.screenMode = 'EMAIL_ENTRY';
-            $scope.emailId = '';
+            $scope.screenData.emailId = '';
+        };
+
+        $scope.isEmailValid = function() {
+            return rvUtilSrv.isEmailValid($scope.screenData.emailId)
         };
 
         $scope.sendEmail = function() {
             var options = {
                 params: {
-                    'email': $scope.emailId,
-                    'message': actionResponse
+                    'email': $scope.screenData.emailId,
+                    'message': actionResponse.message
                 },
-                successCallBack: $scope.closeThisDialog
+                successCallBack: function(){
+                    $scope.screenMode = 'DISPLAY_MESSAGE';
+                }
             };
 
             $scope.callAPI(rvDeviceStatusSrv.sendLastReceipt, options);
         };
 
         (function () {
+            $scope.screenMode = 'DISPLAY_MESSAGE';
+            $scope.screenData = {
+                'emailId': ''
+            };
             $scope.clearErrorMessage();
             $scope.setScroller('deviceMessage', {
                 snap: false,

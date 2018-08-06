@@ -35,10 +35,10 @@
         <!-- ngIf: !isEmailAttached() -->
         <div class="entry full-width ng-scope" style="">
             <label for="guest-email" translate="" class="ng-scope">E-mail</label>
-            <input name="guest-email" id="guest-email" type="text" autocomplete="off" ng-model="emailId" class="ng-pristine ng-untouched ng-valid ng-empty">
+            <input name="guest-email" id="guest-email" type="text" autocomplete="off" ng-model="screenData.emailId" class="ng-pristine ng-untouched ng-valid ng-empty">
         </div>
         <div class="actions">
-            <button type="button" class="button with-icon Grey ng-binding ng-scope" ><span class="icons icon-email" ng-click="sendEmail()"></span> EMAIL</button>
+            <button type="button" class="button with-icon" ng-class="{'green': isEmailValid() }" ng-click="sendEmail()" ng-disabled="!isEmailValid()"><span class="icons icon-email"></span> EMAIL</button>
             <button type="button" class="button blank ng-scope" ng-click="closeThisDialog()" translate="">Close</button>
         </div>
     </form>

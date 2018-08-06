@@ -1,12 +1,9 @@
 angular.module('sntRover').service('rvDeviceStatusSrv', ['$http', '$q', 'BaseWebSrvV2', function($http, $q, BaseWebSrvV2) {
 
-    that.sendLastReceipt = function(params) {
+    this.sendLastReceipt = function(params) {
 
         var deferred = $q.defer();
-        var url = "/api/send_last_receipt";
-        url = '/sample_json/zestweb_v2/ext_checkin_verfication.json';
-
-        alert(JSON.stringify(params));
+        var url = "/guest/email_last_receipt";
 
         BaseWebSrvV2.getJSON(url, params).then(function(data) {
             deferred.resolve(data);
@@ -15,5 +12,6 @@ angular.module('sntRover').service('rvDeviceStatusSrv', ['$http', '$q', 'BaseWeb
         });
         return deferred.promise;
     };
+
 
 }]);
