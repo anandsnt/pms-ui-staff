@@ -27,7 +27,7 @@
                     <ul class="completed" ng-hide="!selectedAction.date_completed || (!isTrace(selectedAction.action_task_type) && !isMessage(selectedAction.action_task_type))">
                         <li>
                             Completed by
-                            <strong>{{selectedAction.completed_by}}</strong>
+                            <strong ng-if="selectedAction.completed_by">{{selectedAction.completed_by.name}}</strong>
                         </li>
                         <li>
                             Date Completed
