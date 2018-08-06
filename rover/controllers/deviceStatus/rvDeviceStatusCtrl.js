@@ -1,8 +1,11 @@
-angular.module('sntRover').controller('rvDeviceStatusCtrl', ['$scope', 'ngDialog', '$log', 'sntActivity',
-    function ($scope, ngDialog, $log, sntActivity) {
+angular.module('sntRover').controller('rvDeviceStatusCtrl', ['$scope', 'ngDialog', '$log', 'sntActivity', 'rvDeviceStatusSrv',
+    function ($scope, ngDialog, $log, sntActivity, rvDeviceStatusSrv) {
 
+        var actionResponse = {};
         var callBacks = {
             'successCallBack': function (response) {
+                $scope.screenMode = 'DISPLAY_MESSAGE';
+                actionResponse = angular.toJson(response);
                 ngDialog.open({
                     template: '/assets/partials/settings/rvDeviceMessage.html',
                     scope: $scope,
@@ -31,12 +34,37 @@ angular.module('sntRover').controller('rvDeviceStatusCtrl', ['$scope', 'ngDialog
                 return;
             }
             sntActivity.start('RUN_DEVICE_ACTION');
+            $scope.actionDisplayName = device.display_name;
             sntapp.cardReader.doDeviceAction({
                 service: action.service_name,
                 action: action.action_name,
                 successCallBack: callBacks['successCallBack'],
                 failureCallBack: callBacks['failureCallBack']
             });
+        };
+
+        $scope.printReceipt = function() {
+            sntapp.cardReader.doDeviceAction({
+                service: 'RVDevicePlugin',
+                action: 'printLastReceipt'
+            });
+        };
+
+        $scope.emailReceipt = function() {
+            $scope.screenMode = 'EMAIL_ENTRY';
+            $scope.emailId = '';
+        };
+
+        $scope.sendEmail = function() {
+            var options = {
+                params: {
+                    'email': $scope.emailId,
+                    'message': actionResponse
+                },
+                successCallBack: $scope.closeThisDialog
+            };
+
+            $scope.callAPI(rvDeviceStatusSrv.sendLastReceipt, options);
         };
 
         (function () {
