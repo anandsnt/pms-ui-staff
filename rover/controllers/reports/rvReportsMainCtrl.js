@@ -2680,9 +2680,8 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
         }, autoCompleteForCompTaGrp);
 
         // for Company TA Group
-        var groupCodeIds = [];
-
-        var groupCodeArray = [];
+        var groupCodeArray = [],
+            groupCodeIds = [];       
 
         var autoCompleteForGroupCode = {
             source: function (request, response) {
@@ -2730,9 +2729,6 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
                     });
                 }, 100);
                 return false;
-            },
-            change: function () {
-                console.log("hhh")
             },
             focus: function () {
                 return false;
