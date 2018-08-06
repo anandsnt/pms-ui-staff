@@ -193,7 +193,7 @@
                         <ul class="completed" ng-if="selectedAction.action_status === 'COMPLETED' ">
                             <li>
                                 Completed by
-                                <strong>{{selectedAction.completed_by.name}}</strong>
+                                <strong ng-if="selectedAction.completed_by">{{selectedAction.completed_by.name}}</strong>
                             </li>
                             <li>
                                 Date Completed
