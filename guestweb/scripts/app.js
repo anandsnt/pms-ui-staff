@@ -131,7 +131,7 @@ sntGuestWeb.controller('homeController', ['$rootScope', '$scope', '$location', '
 		if (!_.isUndefined(reservationAndhotelData.zestweb_cc_authorization_amount) && reservationAndhotelData.zestweb_cc_authorization_amount.length > 0){
 			$rootScope.ccAuthorizationAmount = reservationAndhotelData.zestweb_cc_authorization_amount;
 		} else {
-			$rootScope.ccAuthorizationAmount = '50';
+			$rootScope.ccAuthorizationAmount = reservationAndhotelData.hotel_theme === 'guestweb_ihg' ? '40' : '50';
 		}
 
 
