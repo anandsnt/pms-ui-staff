@@ -1517,7 +1517,7 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 
             // include company/ta/group
             if (report.hasOwnProperty('hasGroupCode') && !!report.uiChosenIncludeGroupCode) {
-                key =  report.hasGroupCode.value.toLowerCase(); // TO DO: change migration
+                key =  report.hasGroupCode.value.toLowerCase();
 
                 params[key] = [];                
                 /**/
