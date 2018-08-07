@@ -68,7 +68,7 @@ sntRover.controller('RVGuestCardActivityLogController',
 	that.loadAPIData = function ( pageNo ) {
 
 		$scope.activityLogObj.page = pageNo ? pageNo : 1;
-		$scope.activityLogObj.accountId = ( typeof $scope.guestCardData === 'undefined' ) ? $stateParams.id : $scope.guestCardData.guestId;
+		$scope.activityLogObj.accountId = ( typeof $scope.contactInformation === 'undefined' ) ? $stateParams.id : $scope.contactInformation.id;
 
 		var dataToSend = {
 			params: {
@@ -157,12 +157,12 @@ sntRover.controller('RVGuestCardActivityLogController',
 	*	@return - {Boolean}
 	*/
     $scope.isOldValue = function(value) {
+		var isOldValue = true;
+
         if (value === "" || typeof value === "undefined" || value === null) {
-            return false;
+            isOldValue = false;
         }
-        else {
-            return true;
-        }
+        return isOldValue;
     };
 
     init();
