@@ -1464,7 +1464,6 @@ sntRover.controller('RVReportDetailsCtrl', [
         $scope.getReservationStatus = function(reservationStatus) {
             return getReservationStatusClass(reservationStatus);
         };
-
         
         // Invokes actual print 
         var invokePrint = () => {

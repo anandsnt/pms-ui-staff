@@ -620,20 +620,20 @@
 
         <!-- item_34: company/ta -->
         <a href="" class="settings-title toggle has-arrow" ng-show="chosenReport.hasIncludeCompanyTa" ng-class="{'active': filterItemsToggle.item_34}" ng-click="toggleFilterItems('item_34')">
-            <span class="title">Company/TA</span>
+            <span class="title">Company / Travel Agent</span>
         </a>
         <div class="settings-content" ng-show="chosenReport.hasIncludeCompanyTa" ng-class="{'hidden': !filterItemsToggle.item_34}">
-            <input class="icons icon-search" auto-complete auto-options="compTaAutoCompleteOnDetails" data-card-type="" type="text" placeholder="Search by Company/TA" value="" autocomplete="off" ng-model="chosenReport.uiChosenIncludeCompanyTa" report-source="reportList" report-index="{{ $index }}" ul-class="find-cards" ng-focus="returnItem(chosenReport)" ng-change="removeCompTaGrpId(chosenReport, 'uiChosenIncludeCompanyTa', 'chosenIncludeCompanyTa')">
+            <input class="icons icon-search" auto-complete auto-options="compTaAutoCompleteOnDetails" data-card-type="" type="text" placeholder="Search by Company / Travel Agent" value="" autocomplete="off" ng-model="chosenReport.uiChosenIncludeCompanyTa" report-source="reportList" report-index="{{ $index }}" ul-class="find-cards" ng-focus="returnItem(chosenReport)" ng-change="removeCompTaGrpId(chosenReport, 'uiChosenIncludeCompanyTa', 'chosenIncludeCompanyTa')">
             <input type="text" class="hidden" ng-model="chosenReport.chosenIncludeCompanyTa">
         </div>
 
         <!--item_53-->
 
-         <a href="" class="settings-title toggle has-arrow" ng-show="chosenReport.hasGroupCode" ng-class="{'active': filterItemsToggle.item_53}" ng-click="toggleFilterItems('item_53')">
+        <a href="" class="settings-title toggle has-arrow" ng-show="chosenReport.hasGroupCode" ng-class="{'active': filterItemsToggle.item_53}" ng-click="toggleFilterItems('item_53')">
             <span class="title">Group Code</span>
         </a>
         <div class="settings-content" ng-show="chosenReport.hasGroupCode" ng-class="{'hidden': !filterItemsToggle.item_53}">
-            <input class="icons icon-search" auto-complete auto-options="grpAutoCompleteOnDetails" data-card-type="" type="text" placeholder="Search by Group Code" value="" autocomplete="off" ng-model="chosenReport.uiChosenIncludeGroupCode" report-source="reportList" report-index="{{ $index }}" ul-class="find-cards" ng-focus="returnuiChosenReport(chosenReport)" ng-change="removeCompTaGrpId(chosenReport, 'uiChosenIncludeGroup', 'chosenIncludeGroup')">
+            <input class="icons icon-search" auto-complete auto-options="groupCodeOnDetails" data-card-type="" type="text" placeholder="Search by Group Code" value="" autocomplete="off" ng-model="chosenReport.uiChosenIncludeGroupCode" report-source="reportList" report-index="{{ $index }}" ul-class="find-cards" ng-focus="returnuiChosenReport(chosenReport)" >
             <input type="text" class="hidden" ng-model="chosenReport.chosenIncludeGroup">
         </div>
 
