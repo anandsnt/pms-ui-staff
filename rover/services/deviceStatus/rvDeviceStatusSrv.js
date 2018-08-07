@@ -13,5 +13,4 @@ angular.module('sntRover').service('rvDeviceStatusSrv', ['$http', '$q', 'BaseWeb
         return deferred.promise;
     };
 
-
 }]);
