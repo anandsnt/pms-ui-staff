@@ -55,7 +55,7 @@ angular.module('sntRover').controller('rvDeviceStatusCtrl', ['$scope', 'ngDialog
         };
 
         $scope.isEmailValid = function() {
-            return rvUtilSrv.isEmailValid($scope.screenData.emailId)
+            return rvUtilSrv.isEmailValid($scope.screenData.emailId);
         };
 
         $scope.sendEmail = function() {
@@ -64,7 +64,7 @@ angular.module('sntRover').controller('rvDeviceStatusCtrl', ['$scope', 'ngDialog
                     'email': $scope.screenData.emailId,
                     'message': actionResponse.message
                 },
-                successCallBack: function(){
+                successCallBack: function() {
                     $scope.screenMode = 'DISPLAY_MESSAGE';
                 }
             };
