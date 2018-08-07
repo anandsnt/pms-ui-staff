@@ -11,26 +11,30 @@
             <rv-textbox value="contactInformation.address_details.street2" placeholder = "Enter Address Line 2" styleclass="no-label" disabled="((account_type == 'COMPANY') ? isUpdateEnabled() : isUpdateEnabledForTravelAgent())"></rv-textbox>
             <rv-textbox value="contactInformation.address_details.street3" placeholder = "Enter Address Line 3" styleclass="no-label full-width" disabled="((account_type == 'COMPANY') ? isUpdateEnabled() : isUpdateEnabledForTravelAgent())"></rv-textbox>
             <rv-textbox value="contactInformation.address_details.city" label="City" placeholder = "Enter City" styleclass="margin" disabled="((account_type == 'COMPANY') ? isUpdateEnabled() : isUpdateEnabledForTravelAgent())"></rv-textbox>
-            <rv-textbox value="contactInformation.address_details.postal_code" label="Postal code" placeholder = "Enter Postal code" disabled="((account_type == 'COMPANY') ? isUpdateEnabled() : isUpdateEnabledForTravelAgent())"></rv-textbox>
+            <rv-textbox value="contactInformation.address_details.postal_code" label="Postal code"  placeholder = "Enter Postal code" disabled="((account_type == 'COMPANY') ? isUpdateEnabled() : isUpdateEnabledForTravelAgent())"></rv-textbox>
             <rv-textbox value="contactInformation.address_details.state" label="State" placeholder = "Enter State" styleclass="margin" disabled="((account_type == 'COMPANY') ? isUpdateEnabled() : isUpdateEnabledForTravelAgent())"></rv-textbox>
 
             <!--<rv-dropdown label="Country" label-in-drop-down="Select country" list="contactInformation.countries" selected-Id='contactInformation.address_details.country' ></rv-dropdown> -->
             <!-- drop down directive is name & value, but in here it is different-->
             <div class="entry">
-                <label for="company-country" translate>COUNTRY</label>
+                <label for="company-country">{{'COUNTRY' | translate}}</label>
                 <div class="select">
-                    <select iscroll-stop-propagation id="company-country" name="company-country" ng-model="contactInformation.address_details.country_id" ng-disabled="((account_type == 'COMPANY') ? isUpdateEnabled() : isUpdateEnabledForTravelAgent())">
-                        <option value="" class="placeholder" translate>SELECT_COUNTRY</option>
-                        <option ng-repeat="country in countries" value="{{country.id}}" ng-selected="country.id==contactInformation.address_details.country_id" >
-                            {{country.value}}
-                        </option>
+                    <select ng-model="contactInformation.address_details.country_id" ng-options="country.id as country.value for country in countries" >        
+                       <option value="" translate>SELECT_COUNTRY</option>
                     </select>
                 </div>
             </div>
 
             <rv-textbox value="contactInformation.address_details.phone" inputtype="tel" label="Phone" placeholder = "Enter Contact Phone" styleclass="margin" disabled="((account_type == 'COMPANY') ? isUpdateEnabled() : isUpdateEnabledForTravelAgent())"></rv-textbox>
             <rv-textbox value="contactInformation.address_details.fax" inputtype="tel" label="Fax" placeholder = "Enter Contact Fax" disabled="((account_type == 'COMPANY') ? isUpdateEnabled() : isUpdateEnabledForTravelAgent())"></rv-textbox>
-            <rv-textbox value="contactInformation.address_details.email_address" label="E-mail address" placeholder = "Enter Contact Email Address" styleclass="full-width" disabled="((account_type == 'COMPANY') ? isUpdateEnabled() : isUpdateEnabledForTravelAgent())"></rv-textbox>
+            <rv-textbox value="contactInformation.address_details.email_address" label="E-mail address" placeholder = "Enter Contact Email Address" styleclass="{{contactInformation.emailStyleClass}}" disabled="((account_type == 'COMPANY') ? isUpdateEnabled() : isUpdateEnabledForTravelAgent())"></rv-textbox>
+            <div class="entry" ng-if="roverObj.isAnyInterfaceEnabled">
+                <label for="company-invoice-preference">E-Inovice preference</label>
+                <div class="select">
+                    <select ng-model="contactInformation.invoice_preference_id" name="company-invoice-preference" id="company-invoice-preference" ng-options="invoice_preference.id as invoice_preference.description for invoice_preference in contactInformation.invoice_preferences">                       
+                    </select>
+                </div>
+            </div>
             <rv-textbox value="contactInformation.account_details.web_page" label="Web Page" placeholder = "Enter Web Page" styleclass="full-width" disabled="((account_type == 'COMPANY') ? isUpdateEnabled() : isUpdateEnabledForTravelAgent())"></rv-textbox>
 
             <div class="entry full-width" ng-hide="true">
@@ -51,7 +55,7 @@
             <rv-textbox ng-if="account_type == 'COMPANY'" value="contactInformation.account_details.account_number" label="Corporate ID" placeholder = "Enter Corporate ID" styleclass="margin" disabled="((account_type == 'COMPANY') ? isUpdateEnabled() : isUpdateEnabledForTravelAgent())"></rv-textbox>
             <rv-textbox ng-if="account_type == 'TRAVELAGENT'" value="contactInformation.account_details.account_number" label="IATA Number" placeholder = "Enter IATA Number" styleclass="margin" disabled="((account_type == 'COMPANY') ? isUpdateEnabled() : isUpdateEnabledForTravelAgent())"></rv-textbox>
             <div class="entry">
-                <label for="company-corporate-vat" translate>TAX_ID</label>
+                <label for="company-corporate-vat">{{'TAX_ID' | translate}}</label>
                 <input id="company-corporate-vat" ng-model="contactInformation.account_details.tax_number" placeholder = "Enter Tax ID" type="text" ng-disabled="((account_type == 'COMPANY') ? isUpdateEnabled() : isUpdateEnabledForTravelAgent())"/>
             </div>
 

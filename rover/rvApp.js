@@ -35,7 +35,10 @@ var sntRover = angular.module('sntRover', [
 		'iscrollStopPropagation',
 		'emitWhen',
 		'ng-augment-native-scroll',
-        'sntActivityIndicator'
+        'sntActivityIndicator',
+        'overBookingModule',
+        'guestCardModule',
+        'snt.transitionManager'
 	]);
 
 sntRover.config([
@@ -43,9 +46,11 @@ sntRover.config([
 	'ngDialogProvider',
 	'$provide',
 	'$locationProvider',
-	function($httpProvider, ngDialogProvider, $provide, $locationProvider) {
+	'$qProvider',
+	function($httpProvider, ngDialogProvider, $provide, $locationProvider, $qProvider) {
 
         $locationProvider.html5Mode(true);
+        $qProvider.errorOnUnhandledRejections(false);
 
         // $provide.decorator('$browser', ['$delegate', function ($delegate) {
         //     $delegate.onUrlChange = function () {};
@@ -56,6 +61,8 @@ sntRover.config([
 
         // adding shared http interceptor, which is handling our webservice errors & in future our authentication if needed
 		$httpProvider.interceptors.push('sharedHttpInterceptor');
+
+		$qProvider.errorOnUnhandledRejections(false);
 
 	    ngDialogProvider.setDefaults({
 	        appendTo: '.root-view'
@@ -88,7 +95,9 @@ sntRover.run([
     '$$animateJs',
     '$log',
     '$window',
-    function ($rootScope, $state, $stateParams, RVHkRoomStatusSrv, $$animateJs, $log, $window) {
+    '$trace',
+    '$transitions',
+    function ($rootScope, $state, $stateParams, RVHkRoomStatusSrv, $$animateJs, $log, $window, $trace, $transitions) {
         var hidden, visibilityChange;
 
         $rootScope.$state = $state;
@@ -114,7 +123,6 @@ sntRover.run([
 		*	@private
 		*/
 		var $_mustRevAnim = false,
-			$_userReqBack = false,
 			$_prevStateName = '',
 			$_prevStateParam = {},
 			$_prevStateTitle = '';
@@ -262,9 +270,6 @@ sntRover.run([
 		*/
 		$rootScope.loadPrevState = function() {
 
-			// flag $_userReqBack as true
-			$_userReqBack = true;
-
 			// since these folks will be created anyway
 			// so what the hell, put them here
 			var options = $rootScope.setPrevState,
@@ -292,6 +297,13 @@ sntRover.run([
 			// check necessary as we can have a case where both can be null
 			if ( !!name ) {
 				$_mustRevAnim = reverse ? options.reverse : true;
+
+                // With the previous version of ui-router, this useCache state param was
+                // set to true in case of a back navigation in the $rootScope.loadPrevState method of rvApp.js file
+                // With the upgraded ui-router the stateparams cannot be changed in the middle of a transition
+                param = param || {};
+                param.useCache = true;
+
 				$state.go( name, param );
 			}
 		};
@@ -302,6 +314,13 @@ sntRover.run([
 		};
 
 
+		$transitions.onExit({}, function () {
+            // this must be reset with every state change
+            // invidual controllers can then set it
+            // with its own desired values
+            $rootScope.setPrevState = {};
+        });
+
 		/**
 		*	For certain state transitions
 		*	the transition animation must be reversed
@@ -311,7 +330,12 @@ sntRover.run([
 		*	check this template to see how this class is applied:
 		*	app/assets/rover/partials/staycard/rvStaycard.html
 		*/
-		$rootScope.$on('$stateChangeSuccess', function(event, toState, toParams, fromState, fromParams) {
+        $transitions.onSuccess({}, function(transition) {
+            var fromState = transition.from(),
+                toState = transition.to(),
+                fromParams = transition.params('from');
+
+
 	        if (fromState.name === 'rover.reservation.staycard.roomassignment' && toState.name === 'rover.diary') {
 	            // cico-13697, fix until proper workflow routes are developed
 	            return;
@@ -353,12 +377,6 @@ sntRover.run([
 			 * I will look for you, I will find you and I will kill you.
 			 */
 
-
-			// this must be reset with every state change
-			// invidual controllers can then set it
-			// with its own desired values
-			$rootScope.setPrevState = {};
-
 			// choose slide animation direction
 			if ( $_mustRevAnim || $_shouldRevDir(fromState.name, toState.name) ) {
 				$rootScope.returnBack = true;
@@ -384,11 +402,11 @@ sntRover.run([
 		*	on such request the service will look for certain values in $vault,
 		*	if they are avaliable the cached data will be updated before returning the data
 		*/
-		$rootScope.$on('$stateChangeStart', function(event, toState, toParams, fromState, fromParams) {
-			if ( $_userReqBack ) {
-				toParams.useCache = true;
-				$_userReqBack = false;
-			}
+		$transitions.onStart({}, function(transition) {
+            var fromState = transition.from(),
+                toState = transition.to(),
+                fromParams = transition.params('from'),
+                toParams = transition.params('to');
 
 			// reset this flag
 			$rootScope.returnBack = false;
@@ -429,5 +447,8 @@ sntRover.run([
         };
 
         FastClick.attach(document.body);
+
+        // TODO: 49259 Disbale the transition traces!
+        // $trace.enable('TRANSITION');
 	}
 ]);

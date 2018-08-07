@@ -84,9 +84,12 @@ angular.module('admin').controller('adSyncBlockCtrl', ['$scope', '$rootScope', '
 
             payLoad = {
                 start_date: dateFilter($scope.fromDate, $rootScope.dateFormatForAPI),
-                end_date: dateFilter($scope.toDate, $rootScope.dateFormatForAPI),
                 items: items
             };
+
+            if (!$scope.isExport) {
+                payLoad['end_date'] = dateFilter($scope.toDate, $rootScope.dateFormatForAPI);
+            }
 
             if ($scope.syncHistoricalData) {
                 payLoad['sync_type'] = 'historical';
@@ -124,6 +127,12 @@ angular.module('admin').controller('adSyncBlockCtrl', ['$scope', '$rootScope', '
 
                 $scope.startDatePickerOptions.minDate = maxDate;
                 $scope.startDatePickerOptions.maxDate = new Date();
+
+                if ($scope.excludeToday) {
+                    var dateObj = new Date();
+
+                    $scope.startDatePickerOptions.maxDate = tzIndependentDate(dateObj.setDate(dateObj.getDate() - 1));
+                }
 
                 if ($scope.historicalDateRangeDays) {
                     $scope.fromDate = new Date(fromDate.setDate(fromDate.getDate() - parseInt($scope.historicalDateRangeDays)));

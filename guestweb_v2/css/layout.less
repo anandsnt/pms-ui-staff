@@ -88,13 +88,12 @@
 
 .btn-template,.input-field{
     width:100%  !important;
-    min-height:60px;
-    padding: 7px 6%;
+    padding: 3% 6%;
     max-width:400px;
     max-height:80px;
 }
 .btn-template{
-  font-size: 30px;
+  font-size: 28px;
 }
 .input-field{
   font-size: 24px;
@@ -453,3 +452,67 @@
     }
 }
 
+/***  Addons ***/
+
+.content-image{
+    max-width:100%;
+}
+.addon-details{
+    .price-details{
+      font-size: 2.2em !important;
+      font-weight:500;
+    }
+}
+.addon-container{
+    background:#eee;
+    border:1px #A9A9A9 solid;
+    padding:10px;
+    min-height:118px;
+    margin-bottom:15px;
+    cursor:pointer;
+    display: -webkit-inline-flex;
+    display: -ms-inline-flexbox;
+    display: inline-flex;
+    width:100%;
+    .content-image{
+      width:40%;
+      position:relative;
+      display:flex;
+      display: -ms-flexbox;
+      display: -webkit-flex;
+      align-items:center;
+      -webkit-align-items: center;
+      -ms-align-items: center;
+      img{
+        max-height:100%;
+        border:1px #A9A9A9 solid;
+        background:#fff;
+      }
+      min-height:98px;
+    }
+    .content-image,.content-desc{
+        float:left;
+    }
+    .content-desc{
+     width:55%;
+        margin-left:20px;
+        p{
+            text-align: left;
+        }
+        p:first-of-type {
+            font-weight:500;
+        }
+    }
+}
+.addon-container.selected{
+  background:#C0C0C0;
+  border:2px #A9A9A9 solid;
+}
+.select-style.addon-numbers{
+  margin:0 auto;
+  width:33%;
+}
+
+.disabled-addon{
+    background:grey !important;
+}

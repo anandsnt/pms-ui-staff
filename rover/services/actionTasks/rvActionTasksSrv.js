@@ -215,6 +215,18 @@ angular.module('sntRover').service('rvActionTasksSrv', ['$q', 'BaseWebSrvV2', 'r
         });
         return deferred.promise;
     };
+    // Service to delete a action task
+    this.deleteActionTask = function(taskId) {
+        var deferred = $q.defer();
+        var url = "/api/action_tasks/" + taskId;
+
+        BaseWebSrvV2.deleteJSON(url).then(function (data) {
+            deferred.resolve(data);
+        }, function (data) {
+            deferred.reject(data);
+        });
+        return deferred.promise;
+    };
 
     // -------------------------------------------------------------------------------------------------------------- CACHE CONTAINERS
 

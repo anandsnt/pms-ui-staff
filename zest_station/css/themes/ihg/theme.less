@@ -1,0 +1,181 @@
+/* StayNTouch Zest Station Styles | Arc Theme */
+
+/* 1. COLORS
+==========================================================*/
+    @brandColor:            #d96932;
+    
+    @textColor:             @black;
+    @backgroundColor:       @white;
+    
+    @actionColor:           @white;
+    @actionBackground:      @brandColor;
+    
+    @inputBackground:       #707070;
+    @transparentColor:      rgba(0,0,0,.5);
+
+/* 2. TYPOGRAPHY
+==========================================================*/
+
+    @fontFamily: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+
+
+/* 3. IMAGES
+==========================================================*/
+    @background: @white;
+    @backgroundSize: '';
+    
+    @headerIconsColor:      @black;
+    @headerIconsActive:     @black;
+
+    .icons { 
+        &.icon-create-key {
+            fill: @brandColor;
+            stroke: @brandColor;
+        }
+
+        &.icon-no-print { stroke: @white; }
+
+        &.icon-oos {
+            fill: @brandColor;
+        }
+
+        &.icon-arrow-left,
+        &.icon-arrow-right {
+            fill: none;
+            stroke: @white;
+        }
+        &.cc-icmp {
+            width: 300px !important;
+            height: auto !important;
+            fill: @actionBackground !important;
+            stroke: @actionBackground;
+        }
+    
+    }
+
+    .logo-svg{
+        background-image: url("../css/themes/ihg/logo.svg");
+        background-repeat: no-repeat;
+        background-size: contain;
+        width: 151px;
+        height: 60px;
+        background-position: center;
+    }
+
+/* 4. LAYOUT
+==========================================================*/
+    
+    #ihg {
+ 
+        #header {
+            height: 90px;
+        }
+
+        input,
+        select {
+            background: @inputBackground;
+            color: @white;
+        }
+        
+        #logo {
+            padding-top: 0;
+            margin-left: 20px;
+
+            .logo {
+                width: auto;
+                height: 60px;
+            }
+        }
+
+        #options {
+            
+            .icon-text {
+                color: @white;
+            }
+
+            .icons {
+                fill: @white;
+            }
+
+            li.break {
+                padding-top: 60px;
+
+                &:after,
+                &:before {
+                    display: none;
+                }
+            }
+        }
+
+        #selection {
+            li {
+                .details {
+                    background-color: fade(@brandColor, 5);
+                }
+            }
+        }
+
+        #guests {
+            .button {
+                color: @white;
+                background-color: #8b8b8b;
+            }
+        } 
+
+        .add-on-list {
+            li {
+
+                &:not(.selected){
+                    border-color: rgba(0,0,0,0.05);
+
+                    .add-on-content {
+                        background: rgba(0,0,0,0.05);
+                    }
+                }
+                
+            }
+        }
+
+        .add-on {
+
+            .input-group {
+                input {
+                    color: @black;
+                }
+            }
+        }
+
+        .upgrade-list {
+            &.upgrade-list-v2 {
+                .upgrade-content {
+                    background-color: fade(@brandColor, 10);
+                }
+            }
+        }
+
+        #textual {
+            background: #ececec;
+             
+
+            &:before,
+            &:after {
+                background: #ececec;
+            }
+
+        }
+
+        #rate {
+            li {
+                &.sub {
+                    color: #a1a1a1;
+                }
+            }
+        }
+
+        #textual,
+        .popup {
+            .icons {
+                fill: @white;
+            }
+        }
+    }

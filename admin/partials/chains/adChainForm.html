@@ -30,8 +30,9 @@
 				<ad-textbox value="editData.name"   label = "Chain Name" placeholder = "Enter chain name" required = "yes" styleclass="full-width"></ad-textbox>
 
 
-        <ad-toggle-button is-checked="editData.share_multiple_ows_instances" label="SHARE MULTIPLE OWS INSTANCES" ></ad-toggle-button>
+                <ad-toggle-button is-checked="editData.share_multiple_ows_instances" label="SHARE MULTIPLE OWS INSTANCES" ></ad-toggle-button>
 
+				<ad-toggle-button is-checked="editData.integrations_gdpr_enabled" label="Integrations GDPR" ></ad-toggle-button>
 
 			</fieldset>
 			<div class="form-title">
@@ -64,6 +65,9 @@
 				<ad-textbox value="editData.sftp_respath"   label = "SFTP Respath" placeholder = "Enter SFTP Respath"  styleclass="full-width"></ad-textbox>
 
 			</fieldset>
+            <fieldset class="holder left float">
+                <ad-toggle-button is-checked="editData.import_email_addresses" label="Import Email Address" ></ad-toggle-button>
+            </fieldset>
 
 
                         <div class="form-title">
@@ -347,4 +351,3 @@
 		</form>
 	</div>
 </div>
-

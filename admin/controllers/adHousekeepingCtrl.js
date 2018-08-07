@@ -1,4 +1,4 @@
-admin.controller('adHousekeepingCtrl', ['$state', '$scope', '$rootScope', 'ADHotelSettingsSrv', '$state', function($state, $scope, $rootScope, ADHotelSettingsSrv, $state) {
+admin.controller('adHousekeepingCtrl', ['$state', '$scope', '$rootScope', 'ADHotelSettingsSrv', function($state, $scope, $rootScope, ADHotelSettingsSrv) {
 
 	BaseCtrl.call(this, $scope);
 	$scope.isRoverCheckinRFID = false;

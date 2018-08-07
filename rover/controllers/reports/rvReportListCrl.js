@@ -10,12 +10,18 @@ sntRover.controller('RVReportListCrl', [
     'RVReportApplyIconClass',
     'RVReportApplyFlags',
     'RVReportSetupDates',
-    function($scope, $rootScope, $filter, reportsSrv, reportsSubSrv, reportUtils, reportMsgs, $timeout, applyIconClass, applyFlags, setupDates) {
+    '$state',
+    function($scope, $rootScope, $filter, reportsSrv, reportsSubSrv, reportUtils, reportMsgs,
+             $timeout, applyIconClass, applyFlags, setupDates, $state) {
 
         BaseCtrl.call(this, $scope);
 
         var REPORT_LIST_SCROLL = 'report-list-scroll',
             REPORT_FILTERS_SCROLL = 'report-filters-scroll';
+
+        var reportAPIfailed = $scope.$on(reportMsgs['REPORT_API_FAILED'], function () {
+            $scope.errorMessage = $scope.$parent.errorMessage;
+        });
 
         $scope.refreshFilterScroll = function(scrollUp) {
             $scope.refreshScroller(REPORT_FILTERS_SCROLL);
@@ -40,9 +46,12 @@ sntRover.controller('RVReportListCrl', [
 
             $scope.setScroller(REPORT_LIST_SCROLL, scrollerOptions);
             $scope.setScroller(REPORT_FILTERS_SCROLL, scrollerOptions);
-        };
 
-        setScroller();
+            // NOTE Intentional timeout to give a moment for the scroll bar to be initialized!
+            $timeout(function () {
+                $scope.getScroller(REPORT_LIST_SCROLL).scrollToElement('.report-item.active', 500, 0, 0);
+            }, 300);
+        };
 
         /**
          *   Post processing fetched data to modify and add additional data
@@ -101,14 +110,13 @@ sntRover.controller('RVReportListCrl', [
                 // to process the group by for this report
                 reportUtils.processGroupBy( report[i] );
 
-
                 // CICO-8010: for Yotel make "date" default sort by filter
                 if ($rootScope.currentHotelData === 'Yotel London Heathrow') {
                     var sortDate = _.find(report[i].sortByOptions, function(item) {
                         return item.value === 'DATE';
                     });
 
-                    if (!!sortDate) {
+                    if (sortDate) {
                         report[i].chosenSortBy = sortDate.value;
                     }
                 }
@@ -116,12 +124,13 @@ sntRover.controller('RVReportListCrl', [
 
             // SUPER forcing scroll refresh!
             // 2000 is the delay for slide anim, so firing again after 2010
-            $timeout( $scope.refreshAllScroll, 2010 );
+            $timeout(function () {
+                if (!$scope.$parent.uiChosenReport) {
+                    $scope.refreshAllScroll();
+                }
+            }, 2010);
         };
-
-        postProcess( $scope.$parent.reportList );
-
-
+ 
         // show hide filter toggle
         $scope.toggleFilter = function(e, report) {
             if ( e ) {
@@ -130,9 +139,12 @@ sntRover.controller('RVReportListCrl', [
             }
 
             var callback = function() {
-                if ( !! $scope.$parent.uiChosenReport ) {
-                    $scope.$parent.uiChosenReport.uiChosen = false;
-                }
+                // deselect all reports
+                _.map($scope.$parent.reportList,
+                    function (report) {
+                        report.uiChosen = false;
+                    }
+                );
 
                 report.uiChosen = true;
                 $scope.$parent.uiChosenReport = report;
@@ -147,11 +159,11 @@ sntRover.controller('RVReportListCrl', [
             };
 
             $scope.$emit( 'showLoader' );
-            if ( !! report.allFiltersProcessed ) {
+            if (report.allFiltersProcessed) {
                 callback();
             } else {
-                reportUtils.findFillFilters( report, $scope.$parent.reportList )
-                    .then( callback );
+                reportUtils.findFillFilters(report, $scope.$parent.reportList)
+                    .then(callback);
             }
         };
 
@@ -166,6 +178,11 @@ sntRover.controller('RVReportListCrl', [
             if ( lastReportID != report.id ) {
                 mainCtrlScope.printOptions.resetSelf();
             }
+            // CICO-51146 Clear the generatedreportid while submitting the report
+            if (report.generatedReportId) {
+               report.generatedReportId = null; 
+            }
+            
             reportsSrv.setChoosenReport( report );
             mainCtrlScope.genReport();
         };
@@ -177,7 +194,26 @@ sntRover.controller('RVReportListCrl', [
 
         // removing event listners when scope is destroyed
         $scope.$on( '$destroy', serveRefresh );
+        $scope.$on( '$destroy', reportAPIfailed );
 
+        /**
+         * init method
+         */
+        (function () {
+            
+            if ($state.params.refresh) {
+                postProcess( $scope.$parent.reportList );
+            }
+
+            var chosenReport = _.find($scope.$parent.reportList, {uiChosen: true});
+
+            if (chosenReport) {
+                $scope.toggleFilter(null, chosenReport);
+            }
+
+            setScroller();
+
+        })();
 
     }
 

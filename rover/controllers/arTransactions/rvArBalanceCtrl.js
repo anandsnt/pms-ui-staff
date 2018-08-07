@@ -20,7 +20,7 @@ sntRover.controller('RvArBalanceController', ['$scope', '$timeout', 'rvAccountsA
 			_.each($scope.arDataObj.balanceList, function (eachItem) {			    	    
 				$scope.arDataObj.totalOfAllInvoicesInBalanceTab = parseFloat($scope.arDataObj.totalOfAllInvoicesInBalanceTab) + parseFloat(eachItem.amount);
 			});
-			$scope.arDataObj.totalAllocatedAmount = $scope.arDataObj.totalOfAllInvoicesInBalanceTab;
+			$scope.arDataObj.totalAllocatedAmount = Number(parseFloat($scope.arDataObj.totalOfAllInvoicesInBalanceTab).toFixed(2));
 			
 		});	
 		/*
@@ -33,6 +33,7 @@ sntRover.controller('RvArBalanceController', ['$scope', '$timeout', 'rvAccountsA
 					$scope.arDataObj.totalAllocatedAmount = parseFloat($scope.arDataObj.totalAllocatedAmount) + parseFloat(eachItem.amount);		    		
 				}
 			});
+			$scope.arDataObj.totalAllocatedAmount = Number(parseFloat($scope.arDataObj.totalAllocatedAmount).toFixed(2));
 		};
 
 		/*
@@ -60,26 +61,31 @@ sntRover.controller('RvArBalanceController', ['$scope', '$timeout', 'rvAccountsA
 		 * Select individual invoices in balance tab
 		 * update the selected invoices variable
 		 */ 
-		var selectInvoice = function (transactionId) { 
+		var selectInvoice = function (transactionId, index) { 
 			$scope.arFlags.insufficientAmount = false;
-			_.each($scope.arDataObj.balanceList, function (eachItem) {
-				if (eachItem.transaction_id === transactionId) {
-					eachItem.isSelected = !eachItem.isSelected;
-					var selectedInvoiceObj = {};
+			$timeout(function() { 
+				_.each($scope.arDataObj.balanceList, function (eachItem) {
+					if (eachItem.transaction_id === transactionId) {						
+							eachItem.isSelected = !eachItem.isSelected;
+							var selectedInvoiceObj = {};
 
-					selectedInvoiceObj.invoice_id = transactionId;
-					selectedInvoiceObj.amount = eachItem.amount;
-					if (eachItem.isSelected) {
-						$scope.arDataObj.selectedInvoices.push(selectedInvoiceObj);		    			
-					} else { 
-						
-						$scope.arDataObj.selectedInvoices = _.filter($scope.arDataObj.selectedInvoices, function (item) {
-							return item.invoice_id !== transactionId;
-						});
+							selectedInvoiceObj.invoice_id = transactionId;
+							selectedInvoiceObj.amount = eachItem.amount;
+							if (eachItem.isSelected) {								
+								$scope.arDataObj.selectedInvoices.push(selectedInvoiceObj);		    			
+							} else { 						
+								selectedInvoiceObj.amount = eachItem.initialAmount;
+								$scope.arDataObj.selectedInvoices = _.filter($scope.arDataObj.selectedInvoices, function (item) {
+									return item.invoice_id !== transactionId;
+								});
+							}						
 					}
-				}
-			});
-			calculateTotalAmount();
+				});
+				$scope.arDataObj.balanceList[index].amount = $scope.arDataObj.balanceList[index].initialAmount;
+				$scope.arDataObj.balanceList[index].balanceAfter = 0;
+				$scope.arDataObj.balanceList[index].balanceNow = $scope.arDataObj.balanceList[index].amount;
+				calculateTotalAmount();
+			}, 400);		
 		};
 
 		// Handle balance tab api call.
@@ -108,16 +114,18 @@ sntRover.controller('RvArBalanceController', ['$scope', '$timeout', 'rvAccountsA
 		// Handle click events on balance list
 		$scope.clickedOnParentList = function( event, index ) { 
 			var clikedItem = $scope.arDataObj.balanceList[index],
-				element = event.target;	
+				element = event.target,
+				amount = clikedItem.amount;
 
 				event.stopImmediatePropagation();
 				event.stopPropagation();
 
-			if (element.parentElement.classList.contains('checkbox') || element.classList.contains('checkbox')) {
+			if (amount >= 0 && (element.parentElement.classList.contains('checkbox') || element.classList.contains('checkbox'))) {
 				// Checkbox selection logic will be called here..
-				selectInvoice(clikedItem.transaction_id);
+				selectInvoice(clikedItem.transaction_id, index);
 			}
 			else if (!element.parentElement.classList.contains('actions') && !element.classList.contains('icon-edit-40') && !element.classList.contains('icon-double-arrow') && !element.classList.contains("text-box") && !element.classList.contains('button-edit')) { 
+				// Expand-collapse logic..
 				clickedBalanceListItem(index);				
 			}
 		};
@@ -240,7 +248,7 @@ sntRover.controller('RvArBalanceController', ['$scope', '$timeout', 'rvAccountsA
 						refreshScroll();
 					},
 					failureCallBack: function(errorMessage) {
-						$scope.errorMessage = errorMessage;
+						$scope.$emit('SHOW_ERROR_MSG', errorMessage);
 					}
 				});
 			} else {
@@ -303,6 +311,27 @@ sntRover.controller('RvArBalanceController', ['$scope', '$timeout', 'rvAccountsA
 				template: '/assets/partials/companyCard/arTransactions/rvArTransactionPostCharge.html',
 				controller: 'RvArPostChargeController',
 				scope: $scope
+			});
+		};
+
+		/* 
+		 *	CICO-50150 : Handle Move To Credit actions.
+		 *	@param {object} [balance data object]
+		 *	@return {undefined}
+		 */
+		$scope.moveToCreditButtonClicked = function( item ) {
+			
+			$scope.callAPI(rvAccountsArTransactionsSrv.moveToCreditInvoice, {
+				params: {
+					'invoice_id': item.transaction_id,
+					'account_id': $scope.arDataObj.accountId
+				},
+				successCallBack: function() {
+					$scope.$emit('REFRESH_BALANCE_LIST');
+				},
+				failureCallBack: function(errorMessage) {
+					$scope.$emit('SHOW_ERROR_MSG', errorMessage);
+				}
 			});
 		};
 }]);

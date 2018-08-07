@@ -6,6 +6,7 @@ module.exports = {
 		controllerRoot 	= roverRoot + 'controllers/',
 		serviceRoot 	= roverRoot + 'services/',
 		directiveRoot	= roverRoot + 'directives/',
+		constantsRoot	= roverRoot + 'constants/',
 		roverJsAssets 	= {
 			minifiedFiles: [
 				jsLibRoot + 'jquery.min.js',
@@ -13,7 +14,7 @@ module.exports = {
 				jsLibRoot + 'jquery.ui.touch-punch.min.js',
 				jsLibRoot + 'angular.min.js',
 				jsLibRoot + 'angular-route.min.js',
-				jsLibRoot + 'angular-ui-router.min.js',
+				jsLibRoot + 'angular-ui-router.1.0.15.min.js',
 				jsLibRoot + 'angular-animate.min.js',
 				jsLibRoot + 'angular-dragdrop.min.js',
 				jsLibRoot + 'oclazyload/ocLazyLoad.min.js',
@@ -24,7 +25,10 @@ module.exports = {
 				jsLibRoot + 'underscore.min.js',
 				jsLibRoot + 'ngDialog.min.js',
                 jsLibRoot + 'fastclick/fastclick.min.js',
-				jsLibRoot + 'moment.min.js'
+				jsLibRoot + 'moment.min.js',
+
+                // Eliminate all spec files
+                '!**/*.spec.js'
 			],
 			nonMinifiedFiles: [
 				jsLibRoot + 'iscroll.js',
@@ -37,7 +41,8 @@ module.exports = {
 				sharedRoot + 'directives/**/*.js',
 				sharedRoot + 'baseCtrl.js',
                 sharedRoot + 'cardReaderCtrl.js',
-                sharedRoot + 'cordova.js',
+                // sharedRoot + 'cordova.js',
+                sharedRoot + 'sntTransitionManager/**/*.js',
 
 				roverRoot + 'rvRouters/**/*.js',
 				roverRoot + 'rvApp.js',
@@ -82,9 +87,13 @@ module.exports = {
 				serviceRoot + 'availability/rvAvailabilitySrv.js',
 				serviceRoot + 'workstation/workstationSrv.js',
 				serviceRoot + 'housekeeping/rvHkRoomStatusSrv.js',
+
 				directiveRoot + 'Outside Click handler/outsideClickDirective.js',
 				directiveRoot + 'pagination/*.js',
-				directiveRoot + 'fullscreen/*.js'
+				directiveRoot + 'fullscreen/*.js',
+
+                // Eliminate all spec files
+                '!**/*.spec.js'
 			]
 		};
 

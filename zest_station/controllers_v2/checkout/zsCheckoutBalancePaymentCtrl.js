@@ -38,8 +38,13 @@ angular.module('sntZestStation').controller('zsCheckoutBalancePaymentCtrl', ['$s
             $scope.balanceDue = parseFloat(paymentParams.amount);
             $scope.cardDetails = paymentParams.payment_details;
             $scope.reservation_id = paymentParams.reservation_id;
-            
-            if ($scope.zestStationData.paymentGateway !== 'CBA') {
+            $scope.isCBAPayment = $scope.zestStationData.paymentGateway === 'CBA' || ($scope.zestStationData.paymentGateway === 'MLI' && $scope.zestStationData.hotelSettings.mli_cba_enabled);
+
+            if (($scope.zestStationData.paymentGateway === 'CBA' || ($scope.zestStationData.paymentGateway === 'MLI' && $scope.zestStationData.hotelSettings.mli_cba_enabled)) && $scope.isIpad) {
+                // for CBA always use new payment method
+                $scope.initiateCBAlisteners();
+                $scope.startCBAPayment();
+            } else if ($scope.zestStationData.paymentGateway !== 'CBA') {
                 // check if  card is present, if so show two options
                 if (paymentParams.payment_details && paymentParams.payment_details.card_number && paymentParams.payment_details.card_number.length) {
                     $scope.screenMode.value = 'SELECT_PAYMENT_METHOD';
@@ -47,11 +52,6 @@ angular.module('sntZestStation').controller('zsCheckoutBalancePaymentCtrl', ['$s
                     // no CC on File
                     $scope.payUsingNewCard();
                 }
-            }
-            else if ($scope.zestStationData.paymentGateway === 'CBA' && $scope.isIpad) {
-                // for CBA always use new payment method
-                $scope.initiateCBAlisteners();
-                $scope.startCBAPayment();
             } else {
                 $scope.screenMode.value = 'PAYMENT_FAILED';
             }

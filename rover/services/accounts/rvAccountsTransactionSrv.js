@@ -11,10 +11,6 @@ angular.module('sntRover').service('rvAccountTransactionsSrv', ['$q', 'rvBaseWeb
 				.then(function(data) {
 					angular.forEach(data.bills, function(bill, index2) {
 						bill.page_no = 1;
-						bill.start = 1;
-						bill.end = 1;
-						bill.nextAction = false;
-						bill.prevAction = false;
 						bill.transactions = [];
 						bill.activeDate = null;
 					});
@@ -283,8 +279,9 @@ angular.module('sntRover').service('rvAccountTransactionsSrv', ['$q', 'rvBaseWeb
 
 
 		this.checkForArAccount = function(params) {
-			var deferred = $q.defer();
-			var url = '/api/posting_accounts/' + params.account_id + '/is_ar_account_attached';
+
+			var deferred = $q.defer(),
+			    url = '/api/posting_accounts/' + params.account_id + '/check_ar_account_attached';
 
 			rvBaseWebSrvV2.getJSON(url)
 				.then(function(data) {

@@ -140,6 +140,8 @@
 					<label for="hotel-zipcode"> ZipCode</label>
 					<input type="text" ng-model="data.zipcode" value="{{data.zipcode}}" required="" placeholder="Enter zip code" name="hotel-zipcode" id="hotel-zipcode">
 				</div>
+				<ad-textbox value="data.tax_id" label="{{'TAX_ID' | translate}}" placeholder="{{'TAX_ID_PLACEHOLDER' | translate}}" styleclass="half-width" ng-if="isStandAlone && !isHourlyRatesEnabled"></ad-textbox>
+				<ad-textbox value="data.swift_code" label="{{'SWIFT_CODE' | translate}}" placeholder="{{'SWIFT_PLACEHOLDER' | translate}}" styleclass="half-width" ng-if="isStandAlone && !isHourlyRatesEnabled"></ad-textbox>
 				<div class="entry full-width registration-for-rover" ng-if="!isAdminSnt">
 					<label for="rover"> Rover Registration </label>
 					<div  id="registration-for-rover" class="boxes">
@@ -279,6 +281,15 @@
 					<div class="switch-button single" ng-class="{ on : data.enable_mod_type == true }" ng-click="toggleInvoiceSequence()">
 						<input type="checkbox" value="{{data.enable_mod_type}}" name="is-mod-enabled" id="is-mod-enabled">
 						<span class="switch-icon"></span>
+					</div>
+				</div>
+				<div class="entry">
+					<label for="hotel-time-zone"> Property Currency Format</label>
+					<div class="select">
+						<select convert-to-number ng-model="data.hotel_currency_format" name="hotel-time-zone" id="hotel-time-zone" class="placeholder" >
+							<option value=""> Property Currency Format </option>
+							<option ng-repeat="formats in data.currency_formats"  value="{{formats.id}}" ng-selected="formats.id==data.hotel_currency_format">{{formats.value}}</option>
+						</select>
 					</div>
 				</div>
 				<div class="entry is-pms-tokenized" ng-if="data.enable_mod_type">
@@ -448,8 +459,8 @@
 				</div> -->
 
 				<div class="entry full-width" ng-if="!isAdminSnt">
-					<label for="hotel-logo"> Hotel Logo Image for Rover (316x70px 9:2 ratio)  </label>
-					<div class="file-upload with-preview">
+					<label for="hotel-logo"> Hotel Logo Image for Rover (316x70px 9:2 ratio)</label>
+					<div class="file-upload with-preview logo-preview">
 						<span class="input">{{hotel_logo_file}}</span>
 						<a id="deleteLogo" class="icons icon-delete large-icon delete_item" ng-if="isLogoAvailable(data.hotel_logo)" ng-click = "data.hotel_logo = 'false'"></a>
 						<input type="file" ng-model="data.hotel_logo" accept="image/*" app-filereader />
@@ -457,12 +468,12 @@
 							Choose file
 						</button>
 					</div>
-					<span class="file-preview"> <img ng-src="{{data.hotel_logo}}" alt="" height="112" width="auto"> </span>
+					<span class="file-preview logo-preview"> <img ng-src="{{data.hotel_logo}}" alt=""> </span>
 				</div>
 
 				<div class="entry full-width" ng-if="!isAdminSnt">
-					<label for="hotel-logo"> Hotel Logo Image for Templates (500x115px)  </label>
-					<div class="file-upload with-preview">
+					<label for="hotel-logo"> Hotel Logo Image for Templates (500x115px)</label>
+					<div class="file-upload with-preview logo-preview">
 						<span class="input">{{hotel_template_logo_file}}</span>
 						<a id="deleteLogo" class="icons icon-delete large-icon delete_item" ng-if="isLogoAvailable(data.hotel_template_logo)" ng-click = "data.hotel_template_logo = 'false'"></a>
 						<input type="file" ng-model="data.hotel_template_logo" accept="image/*" app-filereader />
@@ -470,7 +481,7 @@
 							Choose file
 						</button>
 					</div>
-					<span class="file-preview"> <img src="{{data.hotel_template_logo}}" alt="" height="112" width="auto"> </span>
+					<span class="file-preview logo-preview"> <img src="{{data.hotel_template_logo}}" alt=""> </span>
 				</div>
 			</fieldset>
 
@@ -666,6 +677,8 @@
 				  	[Public IP for PosLynx] should be replaced with the domain name or the public IP of the PosLynx machine.
 					</span>
 				</div>
+
+                <ad-toggle-button is-checked="data.mli_cba_enabled" label="Enable CBA Payment Type" is-hide="!isAdminSnt || data.payment_gateway !== 'MLI'"></ad-toggle-button>
 
 				<div class="entry full-width" ng-if="data.payment_gateway === 'MLI'">
 					<button type="button" id="test-mli-payment-gateway" class="button blue" ng-click="testMLIPaymentGateway()">

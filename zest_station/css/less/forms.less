@@ -33,6 +33,29 @@ select {
     .size(64px, 100%);
 }
 
+input,
+select {
+    &::-webkit-input-placeholder {
+        font-style: italic;
+        color: fade(contrast(@inputBackground), 50);
+    }
+
+    &::-moz-placeholder {
+        font-style: italic;
+        color: fade(contrast(@inputBackground), 50);
+    }
+
+    &:-ms-input-placeholder {
+        font-style: italic;
+        color: fade(contrast(@inputBackground), 50);
+    }
+
+    &:-moz-placeholder {
+        font-style: italic;
+        color: fade(contrast(@inputBackground), 50);
+    }
+}
+
 .button {
     text-align: center;
     color: @actionColor;
@@ -128,8 +151,10 @@ select {
         }
     }
     &.input {
+        position: relative;
         display: table-cell !important;
-        width: 100% !important;
+        width: 100%;
+
         .icons {
             position: absolute;
             top: 10px;
@@ -144,7 +169,7 @@ select {
         font-style: italic;
     }
     &.select-with-button {
-        width: 84.1%;
+        width: 82%;
         margin-right: 3px;
     }
     &.with-label {
@@ -187,6 +212,23 @@ select {
     }
     &.action {
         padding-left: 10px;
+    }
+    &.entry-address {
+        margin: 0 20px 20px 0;
+        #calc > #width > .remove(35%, 13.33px);
+        float: left;
+
+        &.address-small {
+            #calc > #width > .remove(25%, 13.33px);
+        }
+        &.select {
+            clear: inherit;
+            .box-shadow(none);
+        }
+
+        &:nth-child(3n) {
+            margin-right: 0;
+        }
     }
 }
 
@@ -362,21 +404,15 @@ select {
 .entry&.input > ng-include > .icons&.icon-date {
     position: absolute !important;
     margin-left: -6% !important;
-    top: 57%!important;
-    left: 66%;
 
     @media only screen and (min-width: 1024px) and (max-width: 1024px) { 
         margin-left: -11% !important;
         margin-top: .5%;
-        top: 52.5%!important;
-        left: 66%;
     }
 
     @media only screen and (min-width: 1366px) and (max-width: 1366px) { 
         margin-left: -11% !important;
         margin-top: 0% !important;
-        top: 57%!important;
-        left: 71%;
     }
 }
 /*Home Screen "Book-Now"*/

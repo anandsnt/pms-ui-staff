@@ -1,8 +1,8 @@
 admin.controller('ADAppCtrl', [
     '$state', '$scope', '$rootScope', 'ADAppSrv', '$stateParams', '$window', '$translate', 'adminMenuData', 'businessDate',
-    '$timeout', 'ngDialog', 'sntAuthorizationSrv', '$filter',
+    '$timeout', 'ngDialog', 'sntAuthorizationSrv', '$filter', '$sce',
     function($state, $scope, $rootScope, ADAppSrv, $stateParams, $window, $translate, adminMenuData, businessDate,
-             $timeout, ngDialog, sntAuthorizationSrv, $filter) {
+             $timeout, ngDialog, sntAuthorizationSrv, $filter, $sce) {
 
 		// hide the loading text that is been shown when entering Admin
 		$( ".loading-container" ).hide();
@@ -77,10 +77,12 @@ admin.controller('ADAppCtrl', [
 	    var isNeighboursEnabled = false;
 
         var setupLeftMenu = function() {
-            var shouldHideNightlyDiaryMenu = true;
+            var shouldHideNightlyDiaryMenu = true,
+                shouldHideSellLimitMenu = true;
 
             if (!$rootScope.isHourlyRatesEnabled) {
                 shouldHideNightlyDiaryMenu  = !$rootScope.isRoomDiaryEnabled && $rootScope.isPmsProductionEnv;
+                shouldHideSellLimitMenu = !$rootScope.isSellLimitEnabled && $rootScope.isPmsProductionEnv;
             }
             if ($scope.isStandAlone) {
                 $scope.menu = [
@@ -130,10 +132,13 @@ admin.controller('ADAppCtrl', [
                                     id: 'CASHIER'
                                 }
                             }, {
+                                title: "MENU_GUESTS",
+                                action: "rover.guest.search",
+                                menuIndex: "guests"
+                            }, {
                                 title: 'MENU_ACCOUNTS',
                                 action: 'rover.accounts.search',
-                                menuIndex: 'accounts'
-                                // hidden: $rootScope.isHourlyRatesEnabled
+                                menuIndex: 'accounts'                                
                             }, {
                                 title: 'MENU_END_OF_DAY',
                                 action: 'rover.endOfDay.starteod'
@@ -201,10 +206,21 @@ admin.controller('ADAppCtrl', [
                                 title: 'MENU_TA_CARDS',
                                 action: 'rover.companycardsearch',
                                 menuIndex: 'cards'
-                            }, {
+                            },
+                            {
                                 title: 'MENU_DISTRIBUTION_MANAGER',
                                 action: ''
-                            }]
+                            },
+                            {
+                                title: 'MENU_SELL_LIMITS',
+                                action: 'rover.overbooking',
+                                actionParams: {
+                                    start_date: $rootScope.businessDate
+                                },
+                                standAlone: true,
+                                hidden: shouldHideSellLimitMenu
+                            }
+                        ]
                     }, {
                         title: 'MENU_HOUSEKEEPING',
                         action: '',
@@ -254,11 +270,24 @@ admin.controller('ADAppCtrl', [
                         submenu: []
 
                     }, {
-                        title: 'MENU_REPORTS',
-                        action: 'rover.reports',
-                        menuIndex: 'reports',
-                        iconClass: 'icon-reports',
-                        submenu: []
+                        title: "MENU_REPORTS",              
+                        action: "",
+                        iconClass: "icon-reports",
+                        menuIndex: "reports",               
+                        submenu: [{
+                            title: "MENU_NEW_REPORT",
+                            action: "rover.reports.dashboard",
+                            menuIndex: "new_report"
+                        }, {
+                            title: "MENU_REPORTS_INBOX",
+                            action: "rover.reports.inbox",
+                            menuIndex: "reports-inbox",
+                            hidden: !$rootScope.isBackgroundReportsEnabled
+                        }, {
+                            title: "MENU_SCHEDULE_REPORT_OR_EXPORT",
+                            action: "rover.reports.scheduleReportsAndExports",
+                            menuIndex: "schedule_report_export"
+                        }]
                     }];
                 // menu for mobile views
                 $scope.mobileMenu = [
@@ -293,11 +322,24 @@ admin.controller('ADAppCtrl', [
                             menuIndex: 'roomStatus'
                         }]
                     }, {
-                        title: 'MENU_REPORTS',
-                        action: 'rover.reports',
-                        menuIndex: 'reports',
-                        iconClass: 'icon-reports',
-                        submenu: []
+                        title: "MENU_REPORTS",              
+                        action: "",
+                        iconClass: "icon-reports",
+                        menuIndex: "reports",               
+                        submenu: [{
+                            title: "MENU_NEW_REPORT",
+                            action: "rover.reports.dashboard",
+                            menuIndex: "new_report"
+                        }, {
+                            title: "MENU_REPORTS_INBOX",
+                            action: "rover.reports.inbox",
+                            menuIndex: "reports-inbox",
+                            hidden: !$rootScope.isBackgroundReportsEnabled
+                        }, {
+                            title: "MENU_SCHEDULE_REPORT_OR_EXPORT",
+                            action: "rover.reports.scheduleReportsAndExports",
+                            menuIndex: "schedule_report_export"
+                        }]
                     }
                 ];
                 // menu for mobile views
@@ -605,12 +647,17 @@ admin.controller('ADAppCtrl', [
 			$rootScope.emvTimeout = data.emv_timeout || 120; // default timeout is 120s
             $rootScope.wsCCSwipeUrl = data.cc_swipe_listening_url;
             $rootScope.wsCCSwipePort = data.cc_swipe_listening_port;
+            // CICO-51146
+            $rootScope.isBackgroundReportsEnabled = data.background_report;
 
             // CICO-40544 - Now we have to enable menu in all standalone hotels
             // API not removing for now - Because if we need to disable it we can use the same param
             // $rootScope.isRoomDiaryEnabled = data.is_room_diary_enabled;
             $rootScope.isRoomDiaryEnabled = true;
             $rootScope.isPmsProductionEnv = data.is_pms_prod;
+
+            // CICO-54961 - Hide Sell Limit feature for all hotels except for the pilot property 
+            $rootScope.isSellLimitEnabled = data.is_sell_limit_enabled;
 
 			// CICO-18040
 			$rootScope.isFFPActive = data.is_ffp_active;
@@ -642,6 +689,48 @@ admin.controller('ADAppCtrl', [
 		$scope.$on('hotelNameChanged', function(e, data) {
 			$scope.data.current_hotel = data.new_name;
 		});
+
+        /** ************************** Hide partially completed admin menus ******** **/
+        /** ********* hide the admin menus in release and production *************** **/
+
+        var url = document.location,
+            inDevEnvironment = false;
+
+        if ((url.hostname && typeof url.hostname === typeof 'str') && (url.hostname.indexOf('pms-dev') !== -1 ||
+                url.hostname.indexOf('localhost') !== -1)) {
+            inDevEnvironment = true;
+        }
+        // add the menu or sub menu names you need to hide in production
+        var partiallyCompeletedMenuNames = ['Email Templates Settings'];
+
+        if (partiallyCompeletedMenuNames.length && !inDevEnvironment) {
+            _.each(partiallyCompeletedMenuNames, function(partiallyCompeletedMenuName) {
+                _.each(adminMenuData.menus, function(menu, menuIndex) {
+                    // check if partially completed menu is one of the main menu item
+                    if (menu && partiallyCompeletedMenuName === menu.menu_name) {
+                        adminMenuData.menus.splice(menuIndex, 1);
+                    }
+                    if (menu) {
+                        _.each(menu.components, function(component, componentIndex) {
+                            // check if partially completed menu is one of the sub menu item
+                            if (component && partiallyCompeletedMenuName === component.name) {
+                                menu.components.splice(componentIndex, 1);
+                            }
+                            if (component) {
+                                _.each(component.sub_components, function(subComponent, subComponentIndex) {
+                                    // check if partially completed menu is one of the sub sub menu item
+                                    if (subComponent && partiallyCompeletedMenuName === subComponent.name) {
+                                        component.sub_components.splice(subComponentIndex, 1);
+                                    }
+                                });
+                            }
+                        });
+                    }
+                });
+            });
+        }
+
+        /** *************************************************************************** **/
 
 		$scope.data = adminMenuData;
 		$scope.selectedMenu = $scope.data.menus[$scope.selectedIndex];
@@ -684,6 +773,16 @@ admin.controller('ADAppCtrl', [
 		$scope.$on("hideLoader", function() {
 			$scope.hasLoader = false;
 		});
+
+        /*
+        *  Handle inline styles inside ng-bind-html directive.
+        *  Let   =>  $scope.htmlData = "<p style='font-size:8pt;''>Sample Text</p>";
+        *  Usage =>  <td data-ng-bind-html="trustAsHtml(htmlData)"></td>
+        *  REF   =>  https://docs.angularjs.org/api/ng/service/$sce
+        */
+        $rootScope.trustHtml = function(str) {
+            return $sce.trustAsHtml(str);
+        };
 
 
 		/**
@@ -760,4 +859,18 @@ admin.controller('ADAppCtrl', [
 
         $scope.disableFeatureInNonDevEnv = sntapp.environment === 'PROD';
 
+        /**
+         * [findMainMenuIndex find the main menu index for highlighting]
+         * @param  {[string]} mainMenuName [description]
+         * @return {[integer]}              [description]
+         */
+        $scope.findMainMenuIndex = function(mainMenuName) {
+            var index = _.indexOf($scope.data.menus, _.find($scope.data.menus, function(menu) {
+                return menu.menu_name === mainMenuName;
+            }));
+            
+            // if index is not defined, set it as current selected index
+            index = _.isUndefined(index) ? $scope.selectedIndex : index;
+            return index;
+        };
 }]);

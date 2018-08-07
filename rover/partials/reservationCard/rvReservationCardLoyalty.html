@@ -12,17 +12,17 @@
                         </option>
 
                     <optgroup ng-if="$parent.reservationData.use_hlp"  label="{{::('HOTEL_LOYALTY_LABEL'|translate)}}"></optgroup>
-                        <option ng-if="$parent.reservationData.use_hlp" value="{{::hotelloyalty.id}}" ng-repeat="hotelloyalty in ::$parent.reservationData.reservation_card.loyalty_level.hotelLoyaltyProgram" ng-selected="selectedLoyaltyID==hotelloyalty.id">
-                                {{::hotelloyalty.membership_type}}
-                                {{::hotelloyalty.membership_card_number}}
+                        <option ng-if="$parent.reservationData.use_hlp" value="{{hotelloyalty.id}}" ng-repeat="hotelloyalty in $parent.reservationData.reservation_card.loyalty_level.hotelLoyaltyProgram" ng-selected="selectedLoyaltyID==hotelloyalty.id">
+                                {{hotelloyalty.membership_type}}
+                                {{hotelloyalty.membership_card_number}}
                         </option>
 		</select>
 		<!-- Calculates the default selected loyalty -->
-		<div id="reservationLoyalty" class="selected" ng-show="showSelectedLoyalty()">
+		<div id="reservationLoyalty" class="selected" ng-show="showSelectedLoyalty">
 			<span class="value code"> {{selectedLoyalty.membership_type}}</span>
-			<span class="number"> Ending with <span class="value number"> {{selectedLoyalty.membership_card_number.substr(selectedLoyalty.membership_card_number.length - 4)}} </span> </span>
+			<span class="number"> Ending with <span class="value number"> {{selectedLoyalty.membership_card_number}} </span> </span>
 		</div>
-		<div id="reservationLoyalty" class="selected" ng-hide="showSelectedLoyalty()">
+		<div id="reservationLoyalty" class="selected" ng-hide="showSelectedLoyalty">
 			<span class="value code"> </span>
 			<span class="number" translate> LOYALTY_PROGRAM_SELECT_LABEL  </span>
 		</div>

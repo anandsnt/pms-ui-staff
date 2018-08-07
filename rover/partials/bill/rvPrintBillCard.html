@@ -11,9 +11,15 @@
     <div class="info-left">
         <span ng-bind-html="printData.guest_details.address"></span>
         <div class="info-bottom">
-            <strong >{{printData.translation.invoice_date}}:</strong>{{printData.invoice_date | date:dateFormat}}<br/>
+            <strong >{{printData.translation.invoice_date}}: </strong>{{printData.invoice_date | date:dateFormat}}<br/>
             <span ng-show="!isInformationalInvoice">
                 <strong >{{printData.translation.invoice_number}}:</strong>{{printData.invoice_number}}<br/>
+            </span>
+            <span ng-if="printData.folio_number">
+                <strong >{{printData.translation.folio_number}}:</strong>{{printData.folio_number}}<br/>
+            </span>
+            <span ng-show="printData.has_enabled_invoice_number_sequence && printData.mod_invoice_number && !isInformationalInvoice">
+                <strong >{{printData.mod_label}}: </strong>{{printData.mod_invoice_number}}<br/>
             </span>
             <span ng-show="printData.control_code !== '' && !isInformationalInvoice">
                 <strong >{{printData.translation.control_code}}: </strong> {{printData.control_code | limitTo : 30}}
@@ -59,7 +65,26 @@
     <div class="info-bottom float">
         <div class="info-left">
             <strong >{{printData.translation.invoice_date}}:</strong>{{printData.invoice_date | date:dateFormat}}<br/>
-            <strong >{{printData.translation.invoice_number}}:</strong>{{printData.invoice_number}}<br/>
+            <span ng-show="!isInformationalInvoice">
+                <strong >{{printData.translation.invoice_number}}:</strong>{{printData.invoice_number}}<br/>
+            </span>
+            <span ng-if="printData.folio_number">
+                <strong >{{printData.translation.folio_number}}:</strong>{{printData.folio_number}}<br/>
+            </span>
+            <span ng-show="printData.has_enabled_invoice_number_sequence && printData.mod_invoice_number && !isInformationalInvoice">
+                <strong >{{printData.mod_label}}:</strong>{{printData.mod_invoice_number}}<br/>
+            </span>
+            <span ng-show="printData.control_code !== '' && !isInformationalInvoice">
+                <strong >{{printData.translation.control_code}}: </strong> {{printData.control_code | limitTo : 30}}
+                <br/>
+            </span>
+            <span ng-show="printData.control_unit !== '' && !isInformationalInvoice">
+                <strong >{{printData.translation.control_unit}}: </strong> {{printData.control_unit}}
+                <br/>
+            </span>
+            <span ng-show="printData.register_id !== '' && isInfrasecActivated && isInfrasecActivatedForWorkstation">
+                <strong >{{printData.translation.register_id}}: </strong> {{printData.register_id}}
+            </span>
             <strong ng-if="printData.reference_number">{{printData.translation.reference_number}}:</strong>{{printData.reference_number}}<br ng-if="printData.reference_number" />
             <strong ng-if="printData.payment_due_in_days">{{printData.translation.payment_due_days}}:</strong>{{printData.payment_due_in_days}}<br/>
         </div>
@@ -71,14 +96,14 @@
         </div>
     </div>
 </div>
-</br></br></br></br></br></br></br></br>
+</br>
 <div class="invoice-header text-center">
     {{printData.custom_text_header}}
 </div>
 
 <div class="invoice-body">
     <table class="invoice-details">
-        <thead>
+        <thead style="display:table-row-group;">
             <tr>
                 <th >{{printData.translation.date_of_charge}}</th>
                 <th >{{printData.translation.charge_description}}</th>
@@ -151,7 +176,7 @@
 </div>
 
 <table class="invoice-details extended-tax-table" ng-if="printData.has_enabled_extended_tax_breakdown">
-    <thead>
+    <thead style="display:table-row-group;">
         <tr>
             <th class="text-align-left" >{{printData.translation.tax_description}}</th>
             <th >{{printData.translation.gross}}</th>
@@ -180,7 +205,5 @@
 <div ng-if="printData.is_from_cards" class="invoice-footer text-center">
     {{printData.ar_invoice_billing_text}}
 </div>
-
-<div class="invoice-footer text-center">
-    {{printData.custom_text_footer}}
+<div class="invoice-footer text-center" ng-bind-html="trustAsHtml(printData.custom_text_footer)">
 </div>

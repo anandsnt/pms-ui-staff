@@ -175,24 +175,28 @@ sntRover.controller('RVReservationMainCtrl', ['$scope',
             if (typeof $scope.reservationData.rateDetails[roomIndex] !== "undefined") {
                 _.each($scope.reservationData.rateDetails[roomIndex], function(d, dateIter) {
                     if (dateIter !== $scope.reservationData.departureDate && $scope.reservationData.rooms[roomIndex].stayDates[dateIter].rate.id !== '' && parseFloat($scope.reservationData.rooms[roomIndex].stayDates[dateIter].rateDetails.actual_amount) !== 0.00) {
-                        var rateToday = d[$scope.reservationData.rooms[roomIndex].stayDates[dateIter].rate.id].rateBreakUp;
+                        var rateToday = d[$scope.reservationData.rooms[roomIndex].stayDates[dateIter].rate.id] ? d[$scope.reservationData.rooms[roomIndex].stayDates[dateIter].rate.id].rateBreakUp :
+                                        null;
                         var numAdults = parseInt($scope.reservationData.rooms[roomIndex].stayDates[dateIter].guests.adults);
                         var numChildren = parseInt($scope.reservationData.rooms[roomIndex].stayDates[dateIter].guests.children);
 
-                        if (rateToday.single === null && rateToday.double === null && rateToday.extra_adult === null && rateToday.child === null) {
+                        if (rateToday && rateToday.single === null && rateToday.double === null && rateToday.extra_adult === null && rateToday.child === null) {
                             rateConfigured = false;
                         } else {
                             // Step 2: Check for the other constraints here
                             // Step 2 A : Children
-                            if (numChildren > 0 && rateToday.child === null) {
+                            if (rateToday) {
+                              if (numChildren > 0 && rateToday.child === null) {
                                 rateConfigured = false;
-                            } else if (numAdults === 1 && rateToday.single === null) { // Step 2 B: one adult - single needs to be configured
+                              } else if (numAdults === 1 && rateToday.single === null) { // Step 2 B: one adult - single needs to be configured
                                 rateConfigured = false;
-                            } else if (numAdults >= 2 && rateToday.double === null) { // Step 2 C: more than one adult - double needs to be configured
+                              } else if (numAdults >= 2 && rateToday.double === null) { // Step 2 C: more than one adult - double needs to be configured
                                 rateConfigured = false;
-                            } else if (numAdults > 2 && rateToday.extra_adult === null) { // Step 2 D: more than two adults - need extra_adult to be configured
+                              } else if (numAdults > 2 && rateToday.extra_adult === null) { // Step 2 D: more than two adults - need extra_adult to be configured
                                 rateConfigured = false;
+                              }  
                             }
+                            
                         }
                     }
                 });
@@ -200,7 +204,7 @@ sntRover.controller('RVReservationMainCtrl', ['$scope',
             return rateConfigured;
         };
 
-        $scope.checkOccupancyLimit = function(date, reset, index) {
+        $scope.checkOccupancyLimit = function(date, reset, index, roomTypeId) {
             // CICO-11716
             if ($scope.reservationData.isHourly) {
                 return false;
@@ -237,6 +241,11 @@ sntRover.controller('RVReservationMainCtrl', ['$scope',
                             name: name
                         };
                     };
+                    
+                    // CICO-44842
+                    if (!activeRoom && roomTypeId) {
+                        activeRoom = roomTypeId;
+                    }
 
                     var roomPref = getMaxOccupancy(activeRoom);
 
@@ -757,8 +766,8 @@ sntRover.controller('RVReservationMainCtrl', ['$scope',
                 }
             },
             setCcTaAllotmentGroupDetails = function (data) {
-                data.company_id = $scope.reservationData.company.id || $scope.reservationData.group.company;
-                data.travel_agent_id = $scope.reservationData.travelAgent.id || $scope.reservationData.group.travelAgent;
+                data.company_id = $scope.reservationData.company.id || $scope.reservationData.group.company || $scope.reservationData.allotment.company ;
+                data.travel_agent_id = $scope.reservationData.travelAgent.id || $scope.reservationData.group.travelAgent || $scope.reservationData.allotment.travelAgent;
                 data.group_id = $scope.reservationData.group.id;
                 data.allotment_id = $scope.reservationData.allotment.id;
             },
@@ -1031,11 +1040,8 @@ sntRover.controller('RVReservationMainCtrl', ['$scope',
             });
             //  end of payload changes
             data.stay_dates = stay;
-
-            data.company_id = $scope.reservationData.company.id || $scope.reservationData.group.company;
-            data.travel_agent_id = $scope.reservationData.travelAgent.id || $scope.reservationData.group.travelAgent;
-            data.group_id = $scope.reservationData.group.id;
-            data.allotment_id = $scope.reservationData.allotment.id;
+            
+            setCcTaAllotmentGroupDetails(data);
 
             // DEMOGRAPHICS
             var demographicsData = $scope.reservationData.demographics;

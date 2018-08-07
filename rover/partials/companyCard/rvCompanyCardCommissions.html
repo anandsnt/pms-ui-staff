@@ -184,7 +184,7 @@
                             
                             
                             <!-- Hide this if commission status is Non-Commissionable (add class .hidden)-->
-                            <div class="commission"><strong>{{commissionDetail.commission_data.rate}}</strong></div>
+                            <div class="commission" ng-class="{'recalculated':commissionDetail.commission_data.is_recalculated}"><strong>{{commissionDetail.commission_data.rate}}</strong></div>
                             <!-- Hide this if commission status is Non-Commissionable (add class .hidden)-->
                             <div class="amount"><strong><span ng-if="commissionDetail.commission_data.amount !== undefined">{{ currencySymbol }}</span>{{commissionDetail.commission_data.amount | number : 2}}</strong></div>
                             <!-- 
@@ -209,12 +209,12 @@
                             <div class="switch-button" ng-class="{'on': commissionDetail.commission_data.paid_status === 'Paid','overlay' : !hasPermissionToEditPaid()}" ng-show="commissionDetail.commission_data.paid_status != 'Prepaid'">
                                 <input value="" type="checkbox" ng-click="togglePaidStatus(commissionDetail)"/>
                                 <label class="data-off">
-                                    <span class="value" translate>COMMISSION_UNPAID</span>
-                                    <span class="switch-icon" translate>COMMISSION_PAID</span>
-                                </label>
-                                <label class="data-on">
                                     <span class="switch-icon" translate>COMMISSION_UNPAID</span>
                                     <span class="value" translate>COMMISSION_PAID</span>
+                                </label>
+                                <label class="data-on">
+                                    <span class="value" translate>COMMISSION_UNPAID</span>
+                                    <span class="switch-icon" translate>COMMISSION_PAID</span>
                                 </label>
                             </div>
                         </div>                        

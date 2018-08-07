@@ -319,7 +319,12 @@ sntZestStation.service('zsCheckinSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
         this.checkInGuest = function(params) {
             var deferred = $q.defer(),
                 url = '/staff/checkin';
-
+            var selectedReservation = that.getSelectedCheckInReservation();
+            
+            if (selectedReservation.reservation_details.accepted_terms_and_conditions) {
+                params.accepted_terms_and_conditions = selectedReservation.reservation_details.accepted_terms_and_conditions;
+            }
+            
             zsBaseWebSrv2.postJSON(url, params).then(function(data) {
                 deferred.resolve(data);
             }, function(data) {
@@ -363,6 +368,30 @@ sntZestStation.service('zsCheckinSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
                 url = '/guest/reservations/assign_room';
 
             zsBaseWebSrv.postJSON(url, params).then(function(data) {
+                deferred.resolve(data);
+            }, function(data) {
+                deferred.reject(data);
+            });
+            return deferred.promise;
+        };
+
+        this.fetchReservationAddress = function(id) {
+            var deferred = $q.defer(),
+                url = '/guest_web/guest_details/' +id;
+
+            zsBaseWebSrv.getJSON(url).then(function(data) {
+                deferred.resolve(data);
+            }, function(data) {
+                deferred.reject(data);
+            });
+            return deferred.promise;
+        };
+
+        this.saveGuestAddress = function(params) {
+            var deferred = $q.defer(),
+                url = '/guest_web/guest_details/' + params.reservation_id;
+
+            zsBaseWebSrv.putJSON(url, params).then(function(data) {
                 deferred.resolve(data);
             }, function(data) {
                 deferred.reject(data);

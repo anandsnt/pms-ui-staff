@@ -635,6 +635,67 @@
    "PAYMENT": "PAYMENT",
 
    "CHECK_HANDLER_IS_RUNNING_MSG": "Please ensure that the Zest station Hanlder is running",
-   "HOW_WOULD_YOU_LIKE_TO_REFUND": "How Would You Like your Refund ?"
+   "HOW_WOULD_YOU_LIKE_TO_REFUND": "How Would You Like your Refund ?",
+
+
+   "ENTER_LAST_CC_DIGITS": "Enter 4 last digits",
+   "ENTER_LAST_CC_DIGITS_INSTRUCTION": "From the credit card used to book the reservation",
+   "CC_PLACEHOLDER": "4 Digits",
+   "LAST_4_DIGITS_INCORRECT": "Last 4 Digits are not correct",
+   "LAST_4_DIGITS_INCORRECT_MSG": "Please Select One of the Following:",
+   "RE_ENTER": "RE-ENTER",
+   "NO_CC_ON_FILE_HEADER": "No Credit Card Found",
+   "NO_CC_ON_FILE_SUB_HEADER": "Please Speak to our Staff Member",
+
+   "CBA_IN_PROGRESS": "Deposit collection",
+   "CBA_IN_PROGRESS_SUB_TEXT": "For Deposit collection, please use the CBA device to proceed.",
+   "CBA_PAYMENT_FAILED": "Payment failed!",
+   "CBA_SWIPE_CARD_PLEASE": "Swipe Credit Card",
+
+
+
+   "NO_CC_TO_CHECKIN_HEADER": "Please reach out to a Staff Member.",
+   "NO_CC_TO_CHECKIN_SUB_HEADER": "A credit card is not attached to this reservation. Please see staff member for assistance with check in.",
+   "RETURN_TO_HOME": "Done",
+
+   "ADMIN_PIN_HEADER": "Staff member ID",
+   "ADMIN_PIN_SUB_HEADER": "Please enter your ID to proceed",
+
+   "PIN_ERROR_HEADER": "ID Error",
+   "PIN_ERROR_SUB_HEADER": "Please enter the correct ID",
+   "ABORT": "Abort",
+
+   "VERIFICATION_PENDING": "Verifications Pending",
+   "VERIFICATION_PENDING_MSG": "Some of the guests are not verified. You can either accept pending guests without ID",
+
+   "ACCEPT": "Accept",
+   "ID_CANCEL": "CANCEL",
+
+   "VERIFY_GUESTS_HEADER": "Verify guest IDs",
+   "VERIFY_GUESTS_SUB_HEADER": "",
+
+   "ID_VERIFICATION_HEADER": "ID verification",
+   "ID_VERIFICATION_SUB_HEADER": "Please contact a staff member to review",
+
+   "CALL_STAFF": "Call Staff",
+   "PAYMENT_METHOD": "Payment method",
+   
+   "WITH_ID": "With ID",
+   "WITHOUT_ID": "Without ID",
+
+   "ROOM_PIN_TEXT": "Your room door key code is",
+
+   "ENTER_ADDRESS": "Enter Your Address",
+   "ADDRESS_1": "Address line 1",
+   "ADDRESS_2": "Address line 2",
+   "CITY": "City",
+   "STATE_OR_PROVINCE": "State/Province",
+   "POSTAL_OR_ZIP_CODE": "Postal/ZIP code",
+
+   "YOUR_ADDRESS": "Your Address",
+   "USE_ADDRESS_ON_FILE": "Use Address on File",
+   "ADD_NEW_ADDRESS": "Add New Address",
+   "OK": "OK",
+   "PLEASE_PROVIDE_ALL_REQUIRED_INFO": "Please provide all the required information"
 
 }

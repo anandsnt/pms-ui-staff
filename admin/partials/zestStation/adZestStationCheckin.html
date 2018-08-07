@@ -27,6 +27,7 @@
                     <h3><span translate>REG_CARD</span> </h3>
                 </div>
                 <ad-textbox value="zestSettings.kiosk_reg_card_heading_text"  label="{{'CUSTOM_REG_CARD_HEADING'| translate}}" placeholder="" styleclass="full-width"></ad-textbox>
+                <ad-textbox value="zestSettings.kiosk_reg_card_room_pin_text"  label="{{'ROOM_PIN_PREFIX_TEXT'| translate}}" placeholder="" styleclass="full-width" hide="!zestSettings.show_room_pin"></ad-textbox>
                 <div class="entry full-width">
                     <label translate>
                         REG_CARD_TEXT
@@ -71,6 +72,7 @@
                 <ad-toggle-button is-checked="zestSettings.enforce_deposit" label="{{'ENFORCE_DEPOSIT'| translate}}"></ad-toggle-button>
                 <ad-toggle-button is-checked="zestSettings.bypass_kiosk_signature" label="{{'BYPASS_SIGNATURE_CAPTURE'| translate}}"></ad-toggle-button>
                 <ad-toggle-button is-checked="zestSettings.bypass_kiosk_cc_auth" label="{{'BYPASS_CC_AUTH'| translate}}"></ad-toggle-button>
+                <ad-toggle-button is-checked="zestSettings.kiosk_prevent_non_cc_guests" label="{{'SEND_NON_CC_TO_STAFF'| translate}}"></ad-toggle-button>
             </fieldset>
 
 
@@ -100,9 +102,10 @@
 
             <fieldset class="holder right">
                 <div class="form-title full-width">
-                    <h3><span translate>USE_ADD_REMOVE_GUESTS </span> </h3>
+                    <h3><span translate>ADD_UPDATE_GUEST_DETAILS </span> </h3>
                 </div>
                 <ad-toggle-button is-checked="zestSettings.kiosk_add_remove_guests" label="{{'USE_ADD_REMOVE_GUESTS'| translate}}" div-class="full-width"></ad-toggle-button>
+                <ad-toggle-button is-checked="zestSettings.kiosk_collect_guest_address" label="{{'COLLECT_GUEST_ADDRESS'| translate}}" div-class="full-width"></ad-toggle-button>
             </fieldset>
 
 

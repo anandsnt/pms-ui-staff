@@ -11,10 +11,45 @@ angular.module('reportsModule')
     function($rootScope, $filter, $timeout, $q, reportNames, reportFilters, reportsSubSrv) {
         var factory = {};
 
+        var DATE_FILTERS = [
+            'fromCancelDate',
+            'untilCancelDate',
+            'fromDepositDate',
+            'untilDepositDate',
+            'fromPaidDate',
+            'untilPaidDate',
+            'fromDate',
+            'untilDate',
+            'fromCreateDate',
+            'untilCreateDate',
+            'fromAdjustmentDate',
+            'untilAdjustmentDate',
+            'fromArrivalDate',
+            'untilArrivalDate',
+            'groupStartDate',
+            'groupEndDate',
+            'singleValueDate'
+        ];
+
+        var OTHER_FILTERS = [           
+            'year',
+            'with_vat_number',
+            'without_vat_number',            
+            'fromTime',
+            'untilTime',
+            'chosenCico',
+            'chosenIncludeCompanyTa',
+            'chosenIncludeCompanyTaGroup',
+            'chosenIncludeGroup',
+            'hasMinRoomNights',
+            'hasMinRevenue',
+            'showActionables'
+        ];
+
         /**
-         * This function can return CG & CC with no payment entries or with only payment entries
-         * @param  {Array} chargeGroupsAry Array of charge groups
-         * @param  {Array} chargeCodesAry  Array of charge codes
+         * This function canshowActionables return CG & CC with no payment entries or with only payment entries
+         * @param  {Array} chargeGroyearupsAry Array of charge groups
+         * @param  {Array} chargeCodesAry  Array of charge codehasMinRevenues
          * @param  {String} setting         Remove payments or only payments
          * @return {Object}                 Processed CG & CC
          */
@@ -275,6 +310,7 @@ angular.module('reportsModule')
                 if ( filter.value === 'VIP_ONLY' || filter.value === 'RESTRICTED_POST_ONLY' ) {
                     isRadioOption = true;
                 }
+
             }
 
             report['hasGeneralOptions']['data'].push({
@@ -371,6 +407,18 @@ angular.module('reportsModule')
                     );
                     break;
 
+                case reportNames['TAX_EXEMPT']:
+                    report['filters'].push({
+                        'value': "GROUP_CODE",
+                        'description': "Group Code"
+                    }
+                    , {
+                        'value': "TAX_EXEMPT_TYPE",
+                        'description': "Include Tax Exempt"
+                    }
+                    );
+                    break;
+
                 default:
                     // no op
                     break;
@@ -382,6 +430,17 @@ angular.module('reportsModule')
                     report['filters'].push({
                         'value': "INCLUDE_TRAVEL_AGENT",
                         'description': "Include Travel Agent"
+                    });
+                    break;
+
+                case reportNames['YEARLY_TAX']:
+                    report['filters'].push({
+                        'value': "VAT_YEAR",
+                        'description': "Year"
+                    },
+                    {
+                        'value': "CO_TA_WITH_OR_WITHOUT_VAT",
+                        'description': "company_travelagent_with_without_vat"
                     });
                     break;
 
@@ -543,6 +602,10 @@ angular.module('reportsModule')
                     report['hasIncludeAgingBalance'] = filter;
                 }
 
+                if ( filter.value === 'TAX_EXEMPT_TYPE' ) {
+                    report['hasIncludeTaxExempts'] = filter;
+                }
+
                 if ( filter.value === 'ACCOUNT_SEARCH' ) {
                     report['hasAccountSearch'] = filter;
                 }
@@ -552,7 +615,7 @@ angular.module('reportsModule')
                 }
 
                 // check for include company/ta filter and keep a ref to that item
-                if ( filter.value === 'INCLUDE_COMPANYCARD_TA' ) {
+                if ( filter.value === 'INCLUDE_COMPANYCARD_TA' || filter.value === 'TA_CC_CARD') {
                     report['hasIncludeCompanyTa'] = filter;
                 }
 
@@ -563,6 +626,10 @@ angular.module('reportsModule')
                 // check for include company/ta/group filter and keep a ref to that item
                 if ( filter.value === 'INCLUDE_COMPANYCARD_TA_GROUP' || filter.value === 'GROUP_COMPANY_TA_CARD' ) {
                     report['hasIncludeCompanyTaGroup'] = filter;
+                }
+
+                if ( filter.value === 'GROUP_CODE' ) {
+                    report['hasGroupCode'] = filter;
                 }
 
                 if ( filter.value === 'MIN_REVENUE' ) {
@@ -576,6 +643,21 @@ angular.module('reportsModule')
                     report['hasIncludeAccountName'] = filter;
                 }
 
+                if (filter.value === 'CO_TA_WITH_OR_WITHOUT_VAT') {
+                    report['hasCompanyTravelAgentWithOrWithoutVat'] = filter;
+                }
+
+                if (filter.value === 'VAT_YEAR') {
+                    report['hasVatYear'] = filter;
+                    report['yearFilter'] = Array.from( {length: 10}, 
+                        function (v, i) {
+                           return {
+                                "value": moment().add(-1 * i, 'y')
+                                        .format('YYYY')
+                                };
+                        });
+                    report['year'] =  moment().format('YYYY');
+                }
 
                 if ( filter.value === 'MIN_NUMBER_OF_DAYS_NOT_OCCUPIED' ) {
                     report['hasMinNoOfDaysNotOccupied'] = filter;
@@ -614,7 +696,11 @@ angular.module('reportsModule')
                 if ( report.title === reportNames['IN_HOUSE_GUEST'] && filter.value === 'INCLUDE_DUE_OUT' ) {
                     __pushGeneralOptionData( report, filter, true );
                 }
-                 if ( report.title === reportNames['IN_HOUSE_GUEST'] && filter.value === 'RESTRICTED_POST_ONLY' && $rootScope.isStandAlone) {
+                if ( report.title === reportNames['IN_HOUSE_GUEST'] && filter.value === 'RESTRICTED_POST_ONLY' && $rootScope.isStandAlone) {
+                    __pushGeneralOptionData( report, filter, false );
+                }
+
+                if ( report.title === reportNames['IN_HOUSE_GUEST'] && filter.value === 'NO_NATIONALITY') {
                     __pushGeneralOptionData( report, filter, false );
                 }
 
@@ -823,6 +909,8 @@ angular.module('reportsModule')
                 } else if ( 'INCLUDE_AGING_BALANCE' === filter.value && ! filter.filled) {
                     // requested++;
                     fillAgingBalance();
+                } else if ( 'TAX_EXEMPT_TYPE' === filter.value && ! filter.filled) {
+                    fillTaxExemptTypes();
                 } else if ( 'ACCOUNT_SEARCH' === filter.value && ! filter.filled) {
                     requested++;
                     reportsSubSrv.fetchAccounts()
@@ -851,7 +939,11 @@ angular.module('reportsModule')
                     value: -1
                 };
 
-                data.push(UNDEFINED);
+                var undefinedEntry = _.find(data, {name: 'UNDEFINED'});
+
+                if (!undefinedEntry) {
+                    data.push(UNDEFINED);
+                }                
                 _.each(reportList, function(report) {
                     foundFilter = _.find(report['filters'], { value: 'INCLUDE_GUARANTEE_TYPE' });
 
@@ -934,7 +1026,11 @@ angular.module('reportsModule')
                     value: -1
                 };
 
-                data.push(UNDEFINED);
+                var undefinedEntry = _.find(data, {name: 'UNDEFINED'});
+
+                if (!undefinedEntry) {
+                    data.push(UNDEFINED);
+                } 
 
                 _.each(reportList, function(report) {
                     foundFilter = _.find(report['filters'], { value: 'CHOOSE_MARKET' });
@@ -966,7 +1062,12 @@ angular.module('reportsModule')
                     value: -1
                 };
 
-                data.push(UNDEFINED);
+                var undefinedEntry = _.find(data, {name: 'UNDEFINED'});
+
+                if (!undefinedEntry) {
+                    data.push(UNDEFINED);
+                } 
+
                 _.each(reportList, function(report) {
                     foundFilter = _.find(report['filters'], { value: 'CHOOSE_SEGMENT' });
 
@@ -997,7 +1098,12 @@ angular.module('reportsModule')
                     value: -1
                 };
 
-                data.push(UNDEFINED);
+                var undefinedEntry = _.find(data, {name: 'UNDEFINED'});
+
+                if (!undefinedEntry) {
+                    data.push(UNDEFINED);
+                } 
+
                 _.each(reportList, function(report) {
                     foundFilter = _.find(report['filters'], { value: 'CHOOSE_SOURCE' });
 
@@ -1029,7 +1135,12 @@ angular.module('reportsModule')
                     value: -1
                 };
 
-                data.push(UNDEFINED);
+                var undefinedEntry = _.find(data, {name: 'UNDEFINED'});
+
+                if (!undefinedEntry) {
+                    data.push(UNDEFINED);
+                } 
+                
                 _.each(reportList, function(report) {
                     foundFilter = _.find(report['filters'], { value: 'CHOOSE_BOOKING_ORIGIN' });
 
@@ -1113,11 +1224,13 @@ angular.module('reportsModule')
             }
 
             function fillCompletionStatus() {
-                customData = [
+              var  customData = [
                                 {id: "UNASSIGNED", status: "UNASSIGNED", selected: true},
                                 {id: "ASSIGNED", status: "ASSIGNED", selected: true},
                                 {id: "COMPLETED",  status: "COMPLETED", selected: true}
-                            ];
+                            ],
+                        foundFilter;
+
                 _.each(reportList, function(report) {
                     foundFilter = _.find(report['filters'], { value: 'INCLUDE_COMPLETION_STATUS' });
                     if ( !! foundFilter ) {
@@ -1136,15 +1249,35 @@ angular.module('reportsModule')
                 });
             }
 
+            function fillTaxExemptTypes() {
+              var foundFilter;
+
+                _.each(reportList, function(report) {
+                    foundFilter = _.find(report['filters'], { value: 'TAX_EXEMPT_TYPE' });
+                    if ( !! foundFilter ) {
+                        foundFilter['filled'] = true;
+                        report.hasIncludeTaxExempts = {
+                            data: $rootScope.taxExemptTypes,
+                            options: {
+                                hasSearch: false,
+                                selectAll: true,
+                                key: 'name',
+                                defaultValue: 'Select Tax Exempt Types'
+                            }
+                        };
+                    }
+                });
+            }            
+
             function fillAgingBalance() {
-                customData = [
+                var  customData = [
                                 {id: "0to30", status: "0-30 DAYS", selected: true},
                                 {id: "31to60", status: "31-60 DAYS", selected: true},
                                 {id: "61to90",  status: "61-90 DAYS", selected: true},
                                 {id: "91to120",  status: "91-120 DAYS", selected: true},
                                 {id: "120plus",  status: "120+ DAYS", selected: true}
-                            ];
-
+                            ],
+                    foundFilter;
 
                 _.each(reportList, function(report) {
                     foundFilter = _.find(report['filters'], { value: 'INCLUDE_AGING_BALANCE' });
@@ -1194,6 +1327,8 @@ angular.module('reportsModule')
             }
 
             function fillRateCodeList (data) {
+                var foundFilter;
+
                 data[0].selected = true;
                 _.each(reportList, function(report) {
                     foundFilter = _.find(report['filters'], { value: 'RATE_CODE' });
@@ -1235,6 +1370,8 @@ angular.module('reportsModule')
             }
 
             function fillRoomTypeList (data) {
+                var foundFilter;
+
                 _.each(reportList, function(report) {
                     foundFilter = _.find(report['filters'], { value: 'ROOM_TYPE' });
                     if ( !! foundFilter ) {
@@ -1266,6 +1403,8 @@ angular.module('reportsModule')
             }
 
             function fillRestrictionList (data) {
+                var foundFilter;
+
                 _.each(reportList, function(report) {
                     foundFilter = _.find(report['filters'], { value: 'RESTRICTION' });
                     if ( !! foundFilter ) {
@@ -1287,6 +1426,8 @@ angular.module('reportsModule')
                 checkAllCompleted();
             }
             function fillOrigins (data) {
+                var foundFilter;
+
                 _.each(reportList, function(report) {
                     foundFilter = _.find(report['filters'], { value: 'ORIGIN' });
                     if ( !! foundFilter ) {
@@ -1316,6 +1457,8 @@ angular.module('reportsModule')
             }
 
             function fillURLs (data) {
+                var foundFilter;
+
                 _.each(reportList, function(report) {
                     foundFilter = _.find(report['filters'], { value: 'URLS'});
                     if ( !! foundFilter ) {
@@ -1341,6 +1484,8 @@ angular.module('reportsModule')
             }
 
             function fillCampaignTypes (data) {
+                var foundFilter;
+
                 _.each(reportList, function(report) {
                     foundFilter = _.find(report['filters'], { value: 'CAMPAIGN_TYPES'});
                     if ( !! foundFilter ) {
@@ -1366,6 +1511,8 @@ angular.module('reportsModule')
             }
 
             function fillFloors (data) {
+                var foundFilter;
+
                 _.each(reportList, function(report) {
                     foundFilter = _.find(report['filters'], { value: 'FLOOR'});
                     if ( !! foundFilter ) {
@@ -1660,13 +1807,15 @@ angular.module('reportsModule')
             if ( report['title'] === reportNames['AR_SUMMARY_REPORT']) {
                 var nameSortBy    = angular.copy( _.find(report['sort_fields'], { 'value': 'ACCOUNT_NAME' }) ),
                     accountSortBy = angular.copy( _.find(report['sort_fields'], { 'value': 'ACCOUNT_NO' }) ),
-                    balanceSortBy = angular.copy( _.find(report['sort_fields'], { 'value': 'BALANCE' }) );
+                    openBalanceSortBy = angular.copy( _.find(report['sort_fields'], { 'value': 'OPEN_BALANCE' }) ),
+                    creditSortBy = angular.copy( _.find(report['sort_fields'], { 'value': 'CREDIT' }) );
 
                 report['sort_fields'][0] = nameSortBy;
                 report['sort_fields'][1] = accountSortBy;
                 report['sort_fields'][2] = null;
                 report['sort_fields'][3] = null;
-                report['sort_fields'][4] = balanceSortBy;
+                report['sort_fields'][4] = openBalanceSortBy;
+                report['sort_fields'][5] = creditSortBy;
             }
 
             // for in-house report the sort by items must be
@@ -2168,6 +2317,62 @@ angular.module('reportsModule')
             }
 
             return _ret;
+        };
+
+        /**
+         * Generate a subset of object with the given set of keys
+         * @param {Object} obj source object
+         * @param {Array} keys array of keys
+         * @return subset of object
+         */
+        factory.reduceObject = (obj, keys) => {
+            keys = keys || DATE_FILTERS.concat(OTHER_FILTERS);
+
+            return _.pick(obj, keys);
+        };
+
+        /**
+         * Parses the date string in the object
+         * @params {Object} obj object with keys having date string
+         * @return void
+         *
+         */
+        factory.parseDatesInObject = (obj) => {
+           for (var key in obj) {
+              if (DATE_FILTERS.indexOf(key) !== -1) {
+                obj[key] = tzIndependentDate(obj[key]);
+              }  
+            }
+        };
+
+        /**
+         * Marke the element in Object array which matches the ids as selected
+         * @params {Array} objArr object array
+         * @params {Array} filterArr array of selected ids
+         * @params {String} key the value to be compared
+         * @return void
+         *
+         */
+        factory.markAsSelected = (objArr, filterArr, key) => {
+            _.each(objArr, function(obj) {
+                if (filterArr.indeOf(obj[key]) > -1) {
+                    obj.selected = true;
+                }
+            });
+
+        };
+
+        // Mark the selected entries in the filter
+        factory.markSelectedEntriesForFilter = (report) => {
+           
+            if (report.filters[reportParams['RESTRICTION_IDS']] && report.filters[reportParams['RESTRICTION_IDS']].length > 0) {                
+                factory.markAsSelected(report.hasRestrictionListFilter.data, report.filters[reportParams['RESTRICTION_IDS']], 'id');
+            }
+
+            if (report.filters[reportParams['ROOM_TYPE_IDS']] && report.filters[reportParams['ROOM_TYPE_IDS']].length > 0) {                
+                factory.markAsSelected(report.hasRestrictionListFilter.data, report.filters[reportParams['ROOM_TYPE_IDS']], 'id');
+            }
+
         };
 
         return factory;

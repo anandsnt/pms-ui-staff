@@ -5,12 +5,13 @@ module.exports = {
 			minifiedFiles: [],
 			nonMinifiedFiles: [
 				roverRoot + "controllers/companycard/details/**/*.js",
+				roverRoot + "controllers/companycard/activityLog/*.js",
 				roverRoot + "controllers/arTransactions/*.js",
 				roverRoot + "controllers/arTransactions/**/*.js",
 				roverRoot + "controllers/cardsOutside/rvCompanyCardArTransactionsCtrl.js",
 				roverRoot + "controllers/roverPayment/rvCardOptionsCtrl.js",
 				roverRoot + "services/rvCompanyCardSrv.js",
-				roverRoot + "services/companycard/rvCompanyCardNotesSrv.js",
+				roverRoot + "services/companycard/*.js",
 				roverRoot + "services/payment/rvPaymentSrv.js",
 				roverRoot + "services/rvReservationSrv.js",
 				roverRoot + "services/accounts/rvAccountsArTransactionsSrv.js",
@@ -23,7 +24,10 @@ module.exports = {
 				'rover/controllers/cardsOutside/rvArTransactionsPayCreditsController.js',
 				'rover/controllers/cardsOutside/rvArTransactionsDatePickerController.js',
 				'rover/controllers/contractedNightsCtrl.js',
-				'rover/controllers/rvCommissionsDatePickerController.js'
+				'rover/controllers/rvCommissionsDatePickerController.js',
+
+                // Eliminate all spec files
+                '!**/*.spec.js'
 			]
 		};
 		return companycardDetailsJsAssets;

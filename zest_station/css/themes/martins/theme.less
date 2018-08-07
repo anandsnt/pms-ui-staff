@@ -1,0 +1,168 @@
+/* StayNTouch Zest Station Styles | Martins Theme */
+
+/* 1. COLORS
+==========================================================*/
+    @brandColor:            #4ba2ac;
+ 
+    
+    @textColor:             @black;
+    @backgroundColor:       #fff;
+    
+    @actionColor:           @white;
+    @actionBackground:      @brandColor;
+    
+    @inputBackground:       #707070;
+    @transparentColor:      rgba(0,0,0,.35);
+
+/* 2. TYPOGRAPHY
+==========================================================*/
+    @fontFamily: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+
+/* 3. IMAGES
+==========================================================*/
+    @background:            @backgroundColor;
+    @backgroundSize:        cover;
+
+    @headerIconsColor:      @white;
+    @headerIconsActive:     @brandColor;
+
+    .icons { 
+        &.icon-create-key {
+            fill: @white;
+            stroke: @white;
+        }
+
+        &.icon-no-print { stroke: @white; }
+
+        &.icon-oos {
+            fill: @white;
+        }
+
+        &.icon-arrow-left,
+        &.icon-arrow-right {
+            fill: none;
+            stroke: @white;
+        }
+    }
+
+    .logo-svg{
+        background-image: url("../css/themes/martins/logo.svg");
+        background-repeat: no-repeat;
+        background-size: contain;
+        width: 131px;
+        height: 105px;
+        background-position: center;
+    }
+
+/* 4. LAYOUT
+==========================================================*/
+    
+    #martins {
+
+        input,
+        select {
+            color: @white;
+        }
+
+        #header {
+            background-color: #192325;
+            height: 145px;
+        }
+
+        #main {
+            #calc > #height > .remove(100%, 145px);
+            top: 145px;
+        }
+
+        #actions {
+            &.pull-right {
+                p {
+                    strong {
+                        font-size: 18px;
+                        font-weight: 400; 
+                    }
+                    color: @textColor;
+                }
+            }
+        }
+         
+        #logo {
+            padding-top: 0;
+
+            .logo {
+                width: auto;
+                height: 105px; 
+            }
+        }
+
+        #options {
+            .icons {
+                fill: @white;
+            }
+        }
+
+        #selection {
+            li {
+                .details {
+                    color: @white;
+                    background: @transparentColor;
+                }
+            }
+        }
+
+        #guests {
+            .button {
+                background-color: #192325;
+            }
+        }
+
+        #textual {
+            #rate {
+                li {
+                    &.total {
+                        color: #192325;
+                    }
+                }
+            }
+        }
+
+        .popup {
+            #message-content {
+                .button {
+                    .icons { fill: white; }
+                }
+            }
+        }
+
+        #upgrade {
+            .upgrade-price {
+                background: @brandColor;
+                color: white;
+            }
+
+            .upgrade-info {
+                top: 0;
+                #calc > #height > .remove(100%, 90px);
+            }
+        }
+
+        .upgrade-list {
+            h2 { font-size: 16px; }
+        }
+
+        .add-on {
+            &:not(.selected) {
+                border-color: @brandColor;
+            }
+            .add-on-content { 
+                .price { 
+                    .action  {
+                        input {
+                            color: @textColor;
+                        }
+                    }
+                }
+            }
+        }
+        
+    }

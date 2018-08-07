@@ -25,6 +25,14 @@
                 <div class="stationery-group" ng-include="'/assets/partials/stationary/adStationeryGeneral.html'"></div>
             </fieldset>
 
+             <!-- Terms & Conditions -->
+            <fieldset id="terms-settings" class="stationery-block" ng-class = "{'active': is_terms_and_conditions_active}">
+                <div class="form-title has-toggle" ng-click = "fetchTermsAndConditions()"> <!-- Clicking this toggles class 'active' on L33 -->
+                    <h3 translate>TERMS_AND_CONDITIONS</h3>
+                </div>
+                <div class="stationery-group" ng-include="'/assets/partials/stationary/adStationaryTermsAndConditions.html'" ng-controller="ADStationaryTermsAndConditionsCtrl"></div>
+            </fieldset>
+
             <!-- Confirmations -->
             <fieldset class="stationery-block" ng-class = "{'active': is_confirmations_active}">
                 <div class="form-title has-toggle" ng-click = "is_confirmations_active = !is_confirmations_active;"> <!-- Clicking this toggles class 'active' on L20 -->

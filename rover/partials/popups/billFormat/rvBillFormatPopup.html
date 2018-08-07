@@ -8,7 +8,7 @@
         <div class="entry full-width" ng-hide="hideCompanyCardInvoiceToggle">
             <label>Generate Invoice for</label>
             <div class="switch-button" ng-class="{'on': isCompanyCardInvoice, 'overlay': disableCompanyCardInvoice }">
-                <input type="checkbox" checked ng-model="isCompanyCardInvoice" ng-click="changeCompanyCardInvoiceToggle()" />
+                <input type="checkbox" ng-model="isCompanyCardInvoice"/>
                 <label class="data-off">
                     <span class="value">Company</span>
                     <span class="switch-icon">Travel Agent</span>
@@ -47,7 +47,7 @@
                 </select>
             </div>
         </div>
-        <div class="entry full-width" ng-show="isFromBillScreen">
+        <div class="entry full-width">
             <label class="checkbox inline" ng-class="{checked: isInformationalInvoice, disabled: isInformationalInvoiceDisabled}">
                 <span class="icon-form icon-checkbox" ng-class="{checked: isInformationalInvoice, disabled: isInformationalInvoiceDisabled}">
                 </span>

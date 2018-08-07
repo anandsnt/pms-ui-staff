@@ -54,11 +54,23 @@ sntZestStation.controller('zscheckInReservationSearchCtrl', [
 				$scope.zestStationData.checkin_screen.authentication_settings.confirmation;
         }());
 
+        var focusDepartureDateField = function() {
+            // A small timeout for making sure the mode is changed to departure date
+            // and trigger click event to launch calendar
+            $timeout(function() {
+                $("#departure-date").click();
+                 $scope.$emit('hideLoader');
+            }, 200);
+        };
+
 
         $scope.findByDate = function() {
             $scope.trackEvent('FIND_BY_DATE', 'user_selected');
             $scope.mode = 'FIND_BY_DATE';
-            $scope.focusInputField('departure-date');
+            // To prevent conflicting calender actions
+            // (auto popup and manula trigger)
+            $scope.$emit('showLoader');
+            focusDepartureDateField();
             $scope.resetTime();
         };
         $scope.findByNoOfNights = function() {
@@ -90,12 +102,15 @@ sntZestStation.controller('zscheckInReservationSearchCtrl', [
                 if (data.results.length === 0) {
                     $scope.mode = 'NO_MATCH';
                     $scope.callBlurEventForIpad();
-                } else if (data.results.length === 1) {
+                }
+                else if (data.results.length === 1) {
                     $scope.$emit('showLoader');
                     zsCheckinSrv.setSelectedCheckInReservation(data.results);
-
-                    $state.go('zest_station.checkInReservationDetails');
-                    
+                    if ($scope.zestStationData.kiosk_collect_guest_address) {
+                        $state.go('zest_station.collectGuestAddress');
+                    } else {
+                        $state.go('zest_station.checkInReservationDetails');
+                    }    
                 } else {
                     zsCheckinSrv.setCheckInReservations(data.results);
                     $state.go('zest_station.selectReservationForCheckIn');
@@ -283,9 +298,7 @@ sntZestStation.controller('zscheckInReservationSearchCtrl', [
                 $scope.focusInputField('guest-email');
 
             } else if ($scope.reservationParams.date.length > 0) {
-                $scope.mode = 'FIND_BY_DATE';
-                $scope.focusInputField('departure-date');
-
+                $scope.findByDate();
             } else {
                 return;
             }
@@ -304,7 +317,8 @@ sntZestStation.controller('zscheckInReservationSearchCtrl', [
                 yearRange: '0:+10',
                 minDate: minDate,
                 onSelect: function(value) {
-                    $scope.showDatePicker();
+                    $scope.showDatePick = false;
+                    $scope.dateEntered();
                 }
             };
 

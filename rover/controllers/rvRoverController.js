@@ -23,10 +23,12 @@ sntRover.controller('roverController', [
     '$location',
     '$interval',
     'sntActivity',
+    '$transitions',
+    'taxExempts',
     function ($rootScope, $scope, $state, $window, RVDashboardSrv, RVHotelDetailsSrv,
               ngDialog, $translate, hotelDetails, userInfoDetails, $stateParams,
               rvMenuSrv, rvPermissionSrv, $timeout, rvUtilSrv, jsMappings, $q, $sce,
-              $log, sntAuthorizationSrv, $location, $interval, sntActivity) {
+              $log, sntAuthorizationSrv, $location, $interval, sntActivity, $transitions, taxExempts) {
 
 
         var observeDeviceInterval;
@@ -119,10 +121,15 @@ sntRover.controller('roverController', [
             'ACCOUNTS': false,
             'ALLOTMENT': false
         };
-        enableBillingInfo = $rootScope.UPDATED_BI_ENABLED_ON; // Need to be removed finally.
+        var enableBillingInfo = $rootScope.UPDATED_BI_ENABLED_ON; // Need to be removed finally.
 
         $rootScope.isCurrentUserChangingBussinessDate = false;
         $rootScope.termsAndConditionsText = hotelDetails.terms_and_conditions;
+        // CICO-50810 checking for any interface enabled.
+        $rootScope.roverObj = {
+            isAnyInterfaceEnabled: hotelDetails.interface.is_avida_enabled || hotelDetails.interface.is_baseware_enabled,
+            hasActivatedFolioNumber: hotelDetails.has_activate_folio_number
+        };
         /*
          * hotel Details
          */
@@ -144,6 +151,10 @@ sntRover.controller('roverController', [
         // CICO-40544 - Now we have to enable menu in all standalone hotels
         // API not removing for now - Because if we need to disable it we can use the same param
         $rootScope.isRoomDiaryEnabled = true;
+
+        // CICO-54961 - Hide Sell Limit feature for all hotels except for the pilot property 
+        $rootScope.isSellLimitEnabled = hotelDetails.is_sell_limit_enabled;
+
         $rootScope.isManualCCEntryEnabled = hotelDetails.is_allow_manual_cc_entry;
         $rootScope.isAnMPHotel = hotelDetails.is_multi_property;
 
@@ -152,7 +163,10 @@ sntRover.controller('roverController', [
          * NOTE: Temporary Fix
          * As saferpay is not supported in Rover, if saferpay is selected in SNT Admin; default to sixpayments
          */
-        if (hotelDetails.payment_gateway === 'SAFERPAY') {
+        if (hotelDetails.payment_gateway === 'MLI' && hotelDetails.mli_cba_enabled) {
+            $rootScope.paymentGateway = 'CBA_AND_MLI';
+        }
+        else if (hotelDetails.payment_gateway === 'SAFERPAY') {
             $rootScope.paymentGateway = 'sixpayments';
         } else {
             $rootScope.paymentGateway = hotelDetails.payment_gateway;
@@ -173,6 +187,10 @@ sntRover.controller('roverController', [
 
         // CICO-41410
         $rootScope.isDashboardSwipeEnabled = hotelDetails.enable_dashboard_swipe;
+
+        // CICO-51146
+        $rootScope.isBackgroundReportsEnabled = hotelDetails.background_report;
+        $rootScope.serverDate = hotelDetails.background_report_default_date;
 
         // need to set some default timeout
         // discuss with Mubarak
@@ -204,6 +222,8 @@ sntRover.controller('roverController', [
             $log.error(err);
         }
         $rootScope.isSingleDigitSearch = hotelDetails.is_single_digit_search;
+
+        $rootScope.taxExemptTypes = taxExempts.results;
 
 
         // handle six payment iFrame communication
@@ -301,6 +321,9 @@ sntRover.controller('roverController', [
         if ($rootScope.adminRole === 'Hotel Admin' || $rootScope.adminRole === 'Chain Admin') {
             $scope.isHotelAdmin = true;
         }
+        $scope.shouldShowTaxExempt = function() {
+            return (rvPermissionSrv.getPermissionValue('TAX_EXEMPT') && $scope.taxExemptTypes.length);
+        };
         /**
          * menu - forming & associate logic
          * NOTE: Menu forming and logic and things are in service rvMenuSrv
@@ -506,9 +529,9 @@ sntRover.controller('roverController', [
             $scope.menuOpen = false;
             $rootScope.showNotificationForCurrentUser = true;
 
-            if ($rootScope.paymentGateway === 'CBA' && sntapp.cordovaLoaded) {
+            if (($rootScope.paymentGateway === 'CBA' || $rootScope.paymentGateway === 'CBA_AND_MLI') && sntapp.cordovaLoaded) {
                 doCBAPowerFailureCheck();
-                $rootScope.disableObserveForSwipe = true;
+                $rootScope.disableObserveForSwipe = $rootScope.paymentGateway === 'CBA';
             }
 
             // for iPad we need to show the connected device status
@@ -567,6 +590,7 @@ sntRover.controller('roverController', [
 
         $scope.toggleHotelList = function (e) {
             $scope.showHotelSwitchList = !$scope.showHotelSwitchList;
+            $scope.refreshScroller("hotels-list");
         };
 
         $scope.closeDrawerMenu = function () {
@@ -668,33 +692,33 @@ sntRover.controller('roverController', [
 
         // when state change start happens, we need to show the activity activator to prevent further clicking
         // this will happen when prefetch the data
-        $rootScope.$on('$stateChangeStart', function (event, toState) {
-            // Show a loading message until promises are not resolved
-            $scope.$emit('showLoader');
-            sntActivity.start('STATE_CHANGE' + toState.name.toUpperCase());
+
+        // https://ui-router.github.io/guide/transitions#transition-lifecycle
+        $transitions.onCreate({}, function (transition) {
+            sntActivity.start('STATE_CHANGE' + transition.to().name.toUpperCase());
 
             // if menu is open, close it
             if ($scope.menuOpen) {
                 $scope.menuOpen = !$scope.menuOpen;
                 $scope.showSubMenu = false;
             }
+
+            return true;
         });
 
-        $rootScope.$on('$stateChangeSuccess', function (e, curr, currParams, from, fromParams) {
-            sntActivity.stop('STATE_CHANGE' + curr.name.toUpperCase());
-            // Hide loading message
-            $scope.$emit('hideLoader');
-            $rootScope.previousState = from;
-            $rootScope.previousStateParams = fromParams;
-
-
+        $transitions.onStart({}, function (transition) {
+            $rootScope.previousState = transition.from();
+            $rootScope.previousStateParams = transition.params('from');
         });
-        $rootScope.$on('$stateChangeError', function (event, toState, toParams, fromState, fromParams, error) {
-            // Hide loading message
-            sntActivity.stop('STATE_CHANGE' + toState.name.toUpperCase());
-            $scope.$emit('hideLoader');
-            console.error(error);
-            $scope.$broadcast('showErrorMessage', error);
+
+
+        $transitions.onSuccess({}, function (transition) {
+            sntActivity.stop('STATE_CHANGE' + transition.to().name.toUpperCase());
+        });
+
+        $transitions.onError({}, function (transition) {
+            sntActivity.stop('STATE_CHANGE' + transition.to().name.toUpperCase());
+            $log.error('showErrorMessage', transition.error());
         });
 
         // This variable is used to identify whether guest card is visible
@@ -1071,6 +1095,7 @@ sntRover.controller('roverController', [
             };
 
             $scope.setScroller(MENU_SCROLLER, scrollerOptions);
+            $scope.setScroller("hotels-list", scrollerOptions);
         };
 
         setupScrolls();
@@ -1102,6 +1127,17 @@ sntRover.controller('roverController', [
         document.addEventListener('WS_CONNECTION_LOST', function () {
             $scope.formMenu();
         });
+
+        (function() {
+            if ($window.dataLayer) {
+                $window.dataLayer.push({
+                    hotelCode: hotelDetails.hotel_code,
+                    userRole: (_.values(hotelDetails.current_user.roles)).
+                        map(function(r) {return r.name;}).
+                        join(', ')
+                });
+            }
+        })();
 
     }
 ]);

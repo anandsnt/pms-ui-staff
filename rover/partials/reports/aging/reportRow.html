@@ -3,9 +3,11 @@
         <strong>{{item.account_name}}</strong>
     </td>
     <td>{{item.ar_number}}</td>
-    <td><span class="currency">{{item.age_0to30}}</span> </td>
-    <td><span class="currency">{{item.age_31to60}}</span></td>
-    <td><span class="currency">{{item.age_61to90}}</span></td>
-    <td><span class="currency">{{item.age_91to120}}</span></td>
-    <td><span class="currency">{{item.age_120plus}}</span></td>
+    <td ng-if="item.age_0to30"><span class="currency" >{{item.age_0to30}}</span> </td>
+    <td ng-if="item.age_31to60"><span class="currency" >{{item.age_31to60}}</span></td>
+    <td ng-if="item.age_61to90"><span class="currency" >{{item.age_61to90}}</span></td>
+    <td ng-if="item.age_91to120"><span class="currency" >{{item.age_91to120}}</span></td>
+    <td ng-if="item.age_120plus"><span class="currency" >{{item.age_120plus}}</span></td>
+    <td><span class="currency">{{item.payment}}</span></td>
+    <td><span class="currency">{{item.balance}}</span></td>
 </tr>

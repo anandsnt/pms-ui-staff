@@ -179,7 +179,7 @@ sntZestStation.controller('zsCheckinRegCardDeliveryOptionsCtrl', [
                                 handleStarTacPrinterActions();
                             } else {
 
-                                $window.print();
+                                $scope.$emit('PRINT_CURRENT_PAGE');
                                 setTimeout(function() {
                                     printSuccessActions();
                                 }, 100);

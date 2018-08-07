@@ -1,0 +1,14 @@
+<!-- speak to staff -->
+<section id="main" class="centered" role="main" click-touch='resetTime()'>
+    <div id="content">
+        <h1>
+            <text data-ng-bind-html="getTagValue('NO_CC_TO_CHECKIN_HEADER')" editable-text="NO_CC_TO_CHECKIN_HEADER"></text>
+        </h1>
+        <h2 class="nocaps">
+            <text data-ng-bind-html="getTagValue('NO_CC_TO_CHECKIN_SUB_HEADER')" editable-text="NO_CC_TO_CHECKIN_SUB_HEADER"></text>
+        </h2>
+        <button type="button" class="button done-btn" click-touch="navToHome()">
+            <text data-ng-bind-html="getTagValue('RETURN_TO_HOME')" editable-text="RETURN_TO_HOME"></text>
+        </button>
+    </div>
+</section>

@@ -108,8 +108,8 @@ sntRover.controller('rvAccountSummaryCtrl', ['$scope', '$rootScope', '$filter', 
 		};
 
 		// Update the balance after payment
-		$scope.$on("BALANCE_AFTER_PAYMENT", function (event, balance) {
-			$scope.accountConfigData.summary.balance = balance;
+		var balanceAfterPaymentListener = $scope.$on("BALANCE_AFTER_PAYMENT", function (event, balance) {
+			$scope.accountConfigData.summary.balance = balance;			
 		});
 
 		/**
@@ -434,6 +434,8 @@ sntRover.controller('rvAccountSummaryCtrl', ['$scope', '$rootScope', '$filter', 
 
 			$scope.invokeApi(RVReservationCardSrv.tokenize, getTokenFrom, tokenizeSuccessCallback );
 		});
+
+		$scope.$on('$destroy', balanceAfterPaymentListener);
 
 		// -- CICO-16913 - Implement Deposit / Balance screen in Accounts -- //
 	}

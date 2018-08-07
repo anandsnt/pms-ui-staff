@@ -67,7 +67,12 @@
     "TACS_EXPORT": "Tacs Commission Export",
     "ADD_RECIPIENT": "ADD RECIPIENT",
     "NON_COMMISSIONABLE_BILLS": "Non-Commissionable Bills",
-    "SELECT_FILTERS_AND_APPLY": "Select filters and press 'Apply'"
+    "SELECT_FILTERS_AND_APPLY": "Select filters and press 'Apply'",
+    "EMAIL_PAYMENT_REPORT_SWITCH": "Email Payment Report",
+    "EMAIL_LABEL": "Email",
+    "EMAIL_PLACEHOLDER": "Enter An Email",
+    "COMMISSIONS_REPORT_TITLE": "Commission Payment Report"
+
 
 
 

@@ -5,7 +5,7 @@
 			<header class="content-title float">
 				<h2>Users</h2>
 				<span class="count">({{totalCount}})</span>
-				<a id="add_new_user" class="action add" ui-sref="admin.userdetails({ page: 'add', id: '', hotelId: hotelId })" ng-hide="flagObject.showAllUsers===true">Add New</a>
+				<a id="add_new_user" class="action add" ui-sref="admin.userdetails({ page: 'add', id: '', hotelId: hotelId ,manual_id_scan_enabled: manualIDScanEnabled})" ng-hide="flagObject.showAllUsers===true">Add New</a>
 				<a id="find_existing_user" class="action link" ng-show="isAdminSnt" ui-sref="admin.linkexisting({id:hotelId})" >Link Existing</a>
 				<a id="go_back" data-type="load-details" class="action back" ng-show="isAdminSnt" ui-sref="admin.snthoteldetails({action:'edit',id:hotelId})">Back</a>
 
@@ -27,11 +27,21 @@
 				</div>
 				<span class="count-entries">entries</span>
 
-				<div class="entry table-search">
-					<span class="search-text">Search</span>
-					<span class="icons icon-search" name="submit" type="submit"></span>
-					<input placeholder="" autocomplete="off" type="text" ad-delay-textbox ng-model="searchTerm" delay="1000" function-to-fire="searchEntered" />
+				<div class="table-filters">
+				    <div class="entry pull-left" ng-show="flagObject.showIncludeInactiveCheckbox">
+				         <label class="checkbox" ng-class="{'checked': showInactiveUser}">
+				            <span class="icon-form icon-checkbox" ng-class="{'checked': showInactiveUser}"></span>
+				            <input ng-class="{'checked': showInactiveUser}" type="checkbox" ng-click="clickedShowInactiveUsers()" name="inactive" value="1" ng-model="showInactiveUser" />
+				            Include inactive users
+				         </label>
+				    </div>
+				    <div class="entry table-search">
+						<span class="search-text">Search</span>
+						<span class="icons icon-search" name="submit" type="submit"></span>
+						<input placeholder="" autocomplete="off" type="text" ad-delay-textbox ng-model="searchTerm" ng-change="changedSearchText()" delay="1000" function-to-fire="searchEntered" />
+					</div>
 				</div>
+				
 				<!--Per_page and search ends here-->
 				<div ng-if="!flagObject.showAllUsers" ng-include="'/assets/partials/users/adHotelUsersTable.html'" includeReplace></div>
 

@@ -38,8 +38,13 @@
         <ul class="search-results" ng-show="unallocatedCreditTransaction.active">
             <li class="reservation transaction" ng-repeat="item in unallocatedCreditTransaction.transactions">
                 <div class="faux-anchor">
-                    <div class="data">
-                        <h2>{{item.guest_last_name}} {{item.guest_first_name}}</h2>
+                    <div class="data" ng-if="item.associated_type === 'PostingAccount'">
+                        <h2>{{item.account_name}}</h2>
+                        <span class="invoice">Invoice #<span class="value">{{item.invoice_number}}</span></span>
+                        <span class="invoice">Account #<span class="value">{{item.account_number}}</span></span>
+                    </div>
+                    <div class="data" ng-if="item.associated_type !== 'PostingAccount'">
+                        <h2>{{item.guest_last_name}}, {{item.guest_first_name}}</h2>
                         <span class="invoice">Invoice #<span class="value">{{item.invoice_number}}</span></span>
                         <span ng-hide="item.is_manual_balance" class="confirmation">Conf #<span class="value">{{item.reservation_confirm_no}}</span></span>
                     </div>

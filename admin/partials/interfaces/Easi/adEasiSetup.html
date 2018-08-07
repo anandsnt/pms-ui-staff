@@ -1,0 +1,83 @@
+  <ad-common-parts-in-form-dir on-save-button-click="saveInterfaceConfig"
+                               header-caption="{{interface + '_HEADER' | translate}}">
+    <div class="entry full-width">
+        <fieldset class="holder left">
+            <ad-toggle-button is-checked="config.enabled"
+                              label="{{'ACTIVATE_INACTIVATE'| translate}}"></ad-toggle-button>
+            
+        </fieldset>
+
+        <ad-sync-block ng-if="config.enabled"
+                   is-export = "true"
+                   exclude-today="true"
+                   interface="{{interface}}"
+                   config="config">
+        </ad-sync-block>
+    </div>
+
+    <fieldset class="holder left" ng-if="config.enabled">
+      <div class="form-title">
+        <h3>Export<span> Settings</span></h3>
+      </div>
+        <ad-textbox inputtype="text"
+                    value="config.hotel_code"
+                    label="{{'HOTEL_CODE'| translate}}"
+                    styleclass="full-width"></ad-textbox>
+    </fieldset>
+    <fieldset class="holder right" ng-if="config.enabled">
+      <div class="form-title">
+        <h3>Export SFTP<span> Settings</span></h3>
+      </div>
+        <section>
+            <ad-textbox inputtype="text" value="config.sftp_host" label="SFTP host"
+                        styleclass="full-width"></ad-textbox>
+            <ad-textbox inputtype="text" value="config.sftp_location" label="SFTP location"
+                        styleclass="full-width"></ad-textbox>
+            <ad-textbox inputtype="text" value="config.sftp_username" label="SFTP user name"
+                        styleclass="full-width"></ad-textbox>
+            <ad-textbox inputtype="password" value="config.sftp_password" label="SFTP password"
+                        styleclass="full-width"></ad-textbox>
+        </section>
+    </fieldset>
+
+    <fieldset class="holder left" ng-if="config.enabled">
+      <div class="form-title">
+        <h3><span>Paid Out</span> Settings </h3>
+      </div>
+      <div class="entry">
+        <label translate>PAID_OUT_CHARGE_GROUP</label>
+        <select ng-model="config.paid_out_charge_group_id" ng-options="charge_groups.value as charge_groups.name for charge_groups in chargeGroups" >
+          <option value="" disabled selected>Select paid out group</option>
+        </select>
+      </div>
+    </fieldset>
+    <fieldset class="holder right" ng-if="config.enabled">
+      <div class="form-title">
+        <h3><span>Charge Code</span> Settings </h3>       
+      </div>
+      <div class="entry">
+        <label translate>TAX_CHARGE_CODE_6</label>
+        <div class="select">
+          <select ng-model="config.tax1_charge_code_id" ng-change="changedTaxExempt()" ng-options="charge_code_for_one.id as charge_code_for_one.code for charge_code_for_one in availableTaxChargeCodesForTaxExemptOne" >
+            <option value="" disabled selected>Select Tax Charge Code</option>
+          </select>
+        </div>
+      </div>
+      <div class="entry">
+        <label translate>TAX_CHARGE_CODE_12</label>
+        <div class="select">
+          <select ng-model="config.tax2_charge_code_id" ng-change="changedTaxExempt()" ng-options="charge_code_for_two.id as charge_code_for_two.code for charge_code_for_two in availableTaxChargeCodesForTaxExemptTwo" >
+            <option value="" class="placeholder" disabled selected>Select Tax Charge Code</option>
+          </select>
+        </div>
+      </div>
+      <div class="entry">
+        <label translate>TAX_CHARGE_CODE_21</label>
+        <div class="select">
+          <select ng-model="config.tax3_charge_code_id" ng-change="changedTaxExempt()" ng-options="charge_code_for_three.id as charge_code_for_three.code for charge_code_for_three in availableTaxChargeCodesForTaxExemptThree" >
+            <option value="" disabled selected>Select Tax Charge Code</option>
+          </select>
+        </div>
+      </div>
+    </fieldset>
+</ad-common-parts-in-form-dir>

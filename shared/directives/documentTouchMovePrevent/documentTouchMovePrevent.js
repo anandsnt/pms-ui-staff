@@ -9,7 +9,7 @@ angular.module('documentTouchMovePrevent', []).directive('documentTouchMovePreve
                 event.preventDefault();
             };
             if (hasTouch) {
-                document.addEventListener('touchmove', touchmovepreventdefault);
+                document.addEventListener('touchmove', touchmovepreventdefault, {passive: false});
             }
         }
     };

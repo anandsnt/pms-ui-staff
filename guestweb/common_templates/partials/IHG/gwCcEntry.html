@@ -1,0 +1,82 @@
+<!-- navbar -->
+<div class="container-fluid padding-0">
+    <div class="row header-bar">
+        <img alt="" class="logo-image" src="{{hotelLogo}}" />
+    </div>
+</div>
+<!-- main section starts here -->
+<div class="container-fluid">
+    <!-- request text -->
+    <div class="row" ng-show="isFetching && !netWorkError">
+        <div class="col-md-2"></div>
+        <div class="col-md-8 top-spacing">
+            <p class="request-text">Your request is being processed. This may take a few seconds..... please wait!</p>
+        </div>
+        <div class="col-md-2">
+        </div>
+    </div>
+    <!-- error message -->
+    <div class="row" ng-show="netWorkError">
+        <div class="col-md-2"></div>
+        <div class="col-md-8 top-spacing">
+            <p class="error-text">Our apologies, something went wrong, please complete your check-out at our front desk. You can also call the hotel at <a href="tel: {{hotelPhone}}" class="phone-text">{{hotelPhone}}.</a></p>
+        </div>
+        <div class="col-md-2">
+        </div>
+    </div>
+    <!-- cc entry -->
+    <div class="row" ng-hide="isFetching || netWorkError">
+        <div class="col-md-4"></div>
+        <div class="col-md-4">
+            <div class="section-container">
+                <p class="main-text">Payment</p>
+                <p class="sub-main-text" ng-hide="isFromCheckoutNow">Late Check-out fee</p>
+                <p class="sub-main-text" ng-show="isFromCheckoutNow">You balance is</p>
+                <p class="balance-amount">{{currencySymbol}}{{fee}}</p>
+                <div class="row first-field">
+                    <!-- card number -->
+                    <div class="cc-input-field pull-left">
+                        <span class="sub-text upper-case pull-left">card number</span>
+                        <br>
+                        <input type="text" class="input-field" ng-model="cardNumber"></input>
+                    </div>
+                    <!-- cvv -->
+                    <div class="cvv-input-field pull-right">
+                        <span class="sub-text pull-left">#CVV</span>
+                        <br>
+                        <input type="text" class="input-field" ng-model="ccv"></input>
+                        <a class="query-text pull-left" ng-click="showCcvPopup()">What is this?</a>
+                    </div>
+                    </div>
+                    <div class="row margin-top-20">
+                        <!-- month -->
+                        <div class="drop-down-container pull-left">
+                            <span class="sub-text upper-case pull-left">Expiration date</span>
+                            <br>
+                            <br>
+                            <div class="select-style">
+                                <select ng-model="monthSelected" ng-options="month.value as month.name for month in months">
+                                    <option value="">Month</option>
+                                </select>
+                            </div>
+                        </div>
+                        <!-- year -->
+                        <div class="drop-down-container pull-right">
+                            <span class="sub-text upper-case  pull-left">&nbsp;&nbsp;</span>
+                            <br>
+                            <br>
+                            <div class="select-style left-margin-5">
+                                <select ng-model="yearSelected" ng-options="year as year  for year in years">
+                                    <option value="">Year</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- save payment button  -->
+                    <button class="btn btn-template margin-top-40" ng-click="savePaymentDetails()"> Continue</button>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4"></div>
+    </div>
+</div>

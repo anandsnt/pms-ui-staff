@@ -1,4 +1,4 @@
-admin.controller('ADZestStationCtrl', ['$scope', '$rootScope', '$state', '$stateParams', 'ADZestStationSrv', '$filter', 'ngDialog', '$timeout', '$log', 'sntAuthorizationSrv', function($scope, $state, $rootScope, $stateParams, ADZestStationSrv, $filter, ngDialog, $timeout, $log, sntAuthorizationSrv) {
+admin.controller('ADZestStationCtrl', ['$scope', '$rootScope', '$state', '$stateParams', 'ADZestStationSrv', '$filter', 'ngDialog', '$timeout', '$log', 'sntAuthorizationSrv', function($scope, $rootScope, $state, $stateParams, ADZestStationSrv, $filter, ngDialog, $timeout, $log, sntAuthorizationSrv) {
     BaseCtrl.call(this, $scope);
 
     $scope.data = {};
@@ -189,7 +189,7 @@ admin.controller('ADZestStationCtrl', ['$scope', '$rootScope', '$state', '$state
         checkIfFileWasAdded(zestLanguageDataCopy.castellano_translations_file) ? zestLanguageDataCopy.castellano_translations_file_updated = true : '';
     };
 
-    $scope.saveSettings = function(dontReturn) {
+    $scope.saveSettings = function() {
         // /handling for the api for now, api has some issue with the default image setting back to snt logo...
         // api dev should resolve this at some point
         if ($scope.zestSettings.key_create_file_uploaded.indexOf('/logo.png') !== -1) {
@@ -197,12 +197,9 @@ admin.controller('ADZestStationCtrl', ['$scope', '$rootScope', '$state', '$state
         }
         var saveSuccess = function() {
             $scope.zestSettings.zest_lang = angular.copy(zestLanguageDataCopy);
-            $scope.successMessage = 'Success';
+            $scope.successMessage = $filter('translate')('SETTINGS_HAVE_BEEN_SAVED');
             $scope.$emit('hideLoader');
-            if (!dontReturn) {
-                $scope.goBackToPreviousState();
-            }
-
+            angular.element(document.querySelector('.content-scroll')).scrollTop(0);
         };
 
         setUpTranslationFilesStatus();
@@ -260,7 +257,7 @@ admin.controller('ADZestStationCtrl', ['$scope', '$rootScope', '$state', '$state
         } else if (lang === 'it') {
             lang = 'italian';
 
-        } else if (lang === 'cs') {
+        } else if (lang === 'cl') {
             lang = 'castellano';
 
         } else {
@@ -369,6 +366,10 @@ admin.controller('ADZestStationCtrl', ['$scope', '$rootScope', '$state', '$state
 
     $scope.saveAsText = '';
     $scope.isChrome = window.navigator.userAgent.toLowerCase().indexOf('chrome') !== -1;
+
+    $scope.goToUsers = function() {
+        $state.go('admin.users');
+    };
 
     $scope.init = function() {
         fetchSettings();

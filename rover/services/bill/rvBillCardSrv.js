@@ -1,19 +1,60 @@
 angular.module('sntRover').service('RVBillCardSrv', ['$http', '$q', 'BaseWebSrvV2', 'RVBaseWebSrv', 'rvBaseWebSrvV2', function($http, $q, BaseWebSrvV2, RVBaseWebSrv, rvBaseWebSrvV2) {
 
+	var that = this;
 
-	this.fetch = function(reservationId) {
-		var deferred = $q.defer();
-		var url = '/staff/reservation/bill_card.json?reservation_id=' + reservationId;
+	this.fetchReservationBillData = function (reservationId) {
 
-			BaseWebSrvV2.getJSON(url).then(function(data) {
+        var deferred = $q.defer(),
+		    url = '/api/reservations/' + reservationId + '/bills_summary';
 
-			   	 deferred.resolve(data);
+			rvBaseWebSrvV2.getJSON(url).then(function(response) {
+				
+			   	deferred.resolve(response.data);
 			}, function(data) {
 			    deferred.reject(data);
 			});
+        return deferred.promise;
+    };
+    this.fetchBillData = function (billNo) {
+
+        var deferred = $q.defer(),
+		    url = '/api/bills/' + billNo;
+
+			rvBaseWebSrvV2.getJSON(url).then(function(response) {
+			   	 deferred.resolve(response.data);
+			}, function(data) {
+			    deferred.reject(data);
+			});
+        return deferred.promise;
+    };
+
+	this.fetch = function(reservationId) {
+			var reservationBillData = '',
+			    deferred = $q.defer(),
+			    billNumber = '',
+        		billIndex = '';
+
+			$q.when().then(function() {
+                return that.fetchReservationBillData(reservationId).then(function(response) {
+                    reservationBillData = response;
+                });
+            })           
+            .then(function() {
+            	billNumber = reservationBillData.bills[0].bill_id;
+				billIndex = parseInt(reservationBillData.bills[0].bill_number) - 1;
+                return that.fetchBillData(billNumber).then(function(response) {
+                    reservationBillData.bills[billIndex] = response;
+                });
+            })
+            .then(function() {
+                deferred.resolve(reservationBillData);
+            }, function(errorMessage) {
+                deferred.reject(errorMessage);
+            });
+
 
 		return deferred.promise;
-	};
+	};	
 
 	this.fetchBillPrintData = function(params) {
 		var deferred = $q.defer();
@@ -221,11 +262,11 @@ angular.module('sntRover').service('RVBillCardSrv', ['$http', '$q', 'BaseWebSrvV
 		return deferred.promise;
 	};
 
-	this.createAnotherBill = function(data) {
+	this.createAnotherBill = function(params) {
 		var deferred = $q.defer();
 		var url = '/api/bills/create_bill';
 
-			BaseWebSrvV2.postJSON(url, data).then(function(data) {
+			BaseWebSrvV2.postJSON(url, params).then(function(data) {
 			   	 deferred.resolve(data);
 			}, function(data) {
 			    deferred.reject(data);
@@ -339,6 +380,19 @@ angular.module('sntRover').service('RVBillCardSrv', ['$http', '$q', 'BaseWebSrvV
     this.callBlackBoxApi = function(params) {
         var deferred = $q.defer(),
             url = '/api/hotel_settings/infrasec/generate_control_code';
+
+        BaseWebSrvV2.postJSON(url, params).then(function(response) {
+            deferred.resolve(response.data);
+        }, function (data) {
+            deferred.reject(data);
+        });
+        return deferred.promise;
+    };
+
+    // Generate folio number 
+    this.generateFolioNumber = function(params) {
+        var deferred = $q.defer(),
+            url = '/api/bills/' + params.bill_id + '/generate_folio_number';
 
         BaseWebSrvV2.postJSON(url, params).then(function(response) {
             deferred.resolve(response.data);

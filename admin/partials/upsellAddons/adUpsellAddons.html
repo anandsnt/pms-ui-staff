@@ -1,68 +1,91 @@
-<ad-common-parts-in-form-dir on-save-button-click="saveDetails" header-caption="{{'UPSELL_ADDONS' | translate}}">
-    <fieldset class="holder full-width">
-         <div class="form-title">
-                <h3>
+<div id="wrapper" class="content current admin-scrollfix" div-touch-move-stop-propogate ng-click="clearErrorMessage()">
+    <header class="content-title float">
+        <h2 translate>ZEST_UPSELL_ADDONS</h2>
+        <a ng-click="goBackToPreviousState()" class="action back" translate>BACK</a>
+        <a class="action no-icon" ui-sref="admin.ratesAddons" translate>ADDON_SETTINGS</a>
+        <a class="action no-icon" ui-sref="admin.zestWebAddons" ng-show="data.zest_web_addon_upsell_availability" translate>ZEST_WEB_SETTINGS</a>
+        <a class="action no-icon" ui-sref="admin.zestStationAddons" ng-show="data.zest_station_addon_upsell_availability" translate>ZEST_STATION_SETTINGS</a>
+    </header>
+    <section class="content-scroll">
+        <div ng-include="'/assets/partials/common/notification_success_message.html'"></div>
+        <div ng-include="'/assets/partials/common/notification_message.html'"></div>
+        <form class="form float">
+            <fieldset class="holder full-width">
+                <div class="form-title">
+                    <h3>
                     <span>{{'UPSELL_ADDONS' | translate}}</span>
                 </h3>
-                <div class="select select-col addon-lang-dropdown" ng-show='availableLanguagesSet.show_language_field'>
-                     <select ng-model="selectedLanguage.code" name="locale" ng-change="onLanguageChange()">
-                        <option ng-repeat="locale in availableLanguagesSet.locales" value="{{locale.value}}" ng-selected="locale.value == selectedLanguage.code"> {{locale.language}} </option>
-                    </select>
+                    <div class="select select-col addon-lang-dropdown" ng-show='availableLanguagesSet.show_language_field'>
+                        <select ng-model="selectedLanguage.code" name="locale" ng-change="onLanguageChange()">
+                            <option ng-repeat="locale in availableLanguagesSet.locales" value="{{locale.value}}" ng-selected="locale.value == selectedLanguage.code"> {{locale.language}} </option>
+                        </select>
+                    </div>
                 </div>
-            </div>
-        <ad-form-sub-title title="CUSTOMIZE_WHERE_TO_OFFER_UPSELL"></ad-form-sub-title>
-    </fieldset>
-    <fieldset class="holder half-width">
-        <ad-toggle-button is-checked="data.zest_web_addon_upsell_availability" label="{{ 'OFFER_IN_ZEST_WEB' | translate}}" div-class="full-width same-line-toggle paddig-left-30"></ad-toggle-button>
-        <ad-toggle-button is-checked="data.zest_station_addon_upsell_availability" label="{{ 'OFFER_IN_ZEST_STATION' | translate}}" div-class="full-width same-line-toggle paddig-left-30"></ad-toggle-button>
-    </fieldset>
-    <fieldset class="holder full-width">
-        <fieldset class="holder full-width">
-            <ad-form-title form-title="{{'DISPLAY_ORDER' | translate}}"></ad-form-title>
-            <ad-form-sub-title title="DISPLAY_ORDER"></ad-form-sub-title>
-            <div id="options" class="entry paddig-left-30">
-                <ad-radio-dir dir-model="data.upsell_display_order" dir-value="amount_then_post_type" dir-label="Amount Type then Post Type"></ad-radio-dir>
-                <ad-radio-dir dir-model="data.upsell_display_order" dir-value="post_then_amount_type" dir-label="Post Type then Amount Type"></ad-radio-dir>
-            </div>
-        </fieldset>
-        <fieldset class="holder full-width">
-            <ad-form-sub-title title="CUSTOMIZE_LABEL_FOR_GUEST"></ad-form-sub-title>
-            <table class="content-table">
-                <tr>
-                    <th translate>AMOUNT_TYPE</th>
-                    <th class="label-heading" translate>LABEL</th>
-                </tr>
-                <tr ng-repeat="amountType in translated_amount_types">
-                    <td ng-bind="amountType.description"></td>
-                    <td>
-                        <ad-textbox value="amountType.label" label="" styleclass="full-width" placeholder=""></ad-textbox>
-                    </td>
-                </tr>
-            </table>
-            <table class="content-table">
-                <tr>
-                    <th translate>POST_TYPE</th>
-                    <th class="label-heading" translate>LABEL</th>
-                </tr>
-                <tr ng-repeat="postType in translated_post_types">
-                    <td ng-bind="postType.description"></td>
-                    <td>
-                        <ad-textbox value="postType.label" label="" styleclass="full-width" placeholder=""></ad-textbox>
-                    </td>
-                </tr>
-            </table>
-            <ad-form-title form-title="Add-on default image"></ad-form-title>
-            <div class="entry half-width">
-                <label for="hotel-logo">Add-on default image (900*600 px)</label>
-                <div class="file-upload with-preview">
-                    <span class="input">{{data.addon_default_image}}</span>
-                    <a id="deleteLogo" class="icons icon-delete large-icon delete_item" ng-if="data.addon_default_image.length > 0" ng-click="data.addon_default_image = ''"></a>
-                    <input type="file" ng-model="data.addon_default_image" accept="image/*" app-filereader />
-                    <button type="button" class="button brand-colors">
-                        Choose file
+                <ad-form-sub-title title="CUSTOMIZE_WHERE_TO_OFFER_UPSELL"></ad-form-sub-title>
+            </fieldset>
+            <fieldset class="holder half-width">
+                <ad-toggle-button is-checked="data.zest_web_addon_upsell_availability" label="{{ 'OFFER_IN_ZEST_WEB' | translate}}" div-class="full-width same-line-toggle paddig-left-30"></ad-toggle-button>
+                <ad-toggle-button is-checked="data.zest_station_addon_upsell_availability" label="{{ 'OFFER_IN_ZEST_STATION' | translate}}" div-class="full-width same-line-toggle paddig-left-30"></ad-toggle-button>
+                <ad-toggle-button is-checked="data.zest_addon_staff_alert" label="{{ 'ZEST_ADDON_STAFF_ALERT' | translate}}" div-class="full-width same-line-toggle paddig-left-30"></ad-toggle-button>
+                <ad-textarea ng-if="data.zest_addon_staff_alert" rows="4" div-class="full-width paddig-left-30" text-area-class="full-width" value="data.zest_addon_staff_alert_emails" label="{{ 'EMAIL_ADDON_STAFF_ALERT_TEXT' | translate}}" placeholder=""></ad-textarea>
+            </fieldset>
+            <fieldset class="holder full-width">
+                <fieldset class="holder full-width">
+                    <ad-form-title form-title="{{'DISPLAY_ORDER' | translate}}"></ad-form-title>
+                    <ad-form-sub-title title="DISPLAY_ORDER"></ad-form-sub-title>
+                    <div id="options" class="entry paddig-left-30">
+                        <ad-radio-dir dir-model="data.upsell_display_order" dir-value="amount_then_post_type" dir-label="Amount Type then Post Type"></ad-radio-dir>
+                        <ad-radio-dir dir-model="data.upsell_display_order" dir-value="post_then_amount_type" dir-label="Post Type then Amount Type"></ad-radio-dir>
+                    </div>
+                </fieldset>
+                <fieldset class="holder full-width">
+                    <ad-form-sub-title title="CUSTOMIZE_LABEL_FOR_GUEST"></ad-form-sub-title>
+                    <table class="content-table">
+                        <tr>
+                            <th translate>AMOUNT_TYPE</th>
+                            <th class="label-heading" translate>LABEL</th>
+                        </tr>
+                        <tr ng-repeat="amountType in translated_amount_types">
+                            <td ng-bind="amountType.description"></td>
+                            <td>
+                                <ad-textbox value="amountType.label" label="" styleclass="full-width" placeholder=""></ad-textbox>
+                            </td>
+                        </tr>
+                    </table>
+                    <table class="content-table">
+                        <tr>
+                            <th translate>POST_TYPE</th>
+                            <th class="label-heading" translate>LABEL</th>
+                        </tr>
+                        <tr ng-repeat="postType in translated_post_types">
+                            <td ng-bind="postType.description"></td>
+                            <td>
+                                <ad-textbox value="postType.label" label="" styleclass="full-width" placeholder=""></ad-textbox>
+                            </td>
+                        </tr>
+                    </table>
+                    <ad-form-title form-title="Add-on default image"></ad-form-title>
+                    <div class="entry half-width">
+                        <label for="hotel-logo">Add-on default image (900*600 px)</label>
+                        <div class="file-upload with-preview">
+                            <span class="input">{{data.addon_default_image}}</span>
+                            <a id="deleteLogo" class="icons icon-delete large-icon delete_item" ng-if="data.addon_default_image.length > 0" ng-click="data.addon_default_image = ''"></a>
+                            <input type="file" ng-model="data.addon_default_image" accept="image/*" app-filereader />
+                            <button type="button" class="button brand-colors">
+                                Choose file
+                            </button>
+                        </div>
+                        <span class="file-preview"> <img src="{{data.addon_default_image}}" alt="" height="112" width="auto"> </span>
+                    </div>
+                </fieldset>
+                <div class="actions float">
+                    <button type="button" id="cancel" class="button blank add-data-inline" ng-click="goBackToPreviousState()" translate>
+                        CANCEL
+                    </button>
+                    <button type="button" like-type="common" id="update" class="button ng-binding green" ng-click="saveDetails()" translate>
+                        SAVE_CHANGES
                     </button>
                 </div>
-                <span class="file-preview"> <img src="{{data.addon_default_image}}" alt="" height="112" width="auto"> </span>
-            </div>
-        </fieldset>
-</ad-common-parts-in-form-dir>
+        </form>
+    </section>
+</div>
