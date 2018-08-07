@@ -103,10 +103,10 @@ var CurrencyInfoMappings = {
 
 // CICO-35453 - Mapping of various Currency Formats.
 var CurrencyFormatMappings = {
-    'FORMAT-1': ['FORMAT-1', '1,222,00'],
-    'FORMAT-2': ['FORMAT-2', '1,222.00'],
-    'FORMAT-3': ['FORMAT-3', '1.222'],
-    'FORMAT-4': ['FORMAT-4', '1,222']
+    '1,222,00': ['FORMAT-1', '1,222,00'],
+    '1,222.00': ['FORMAT-2', '1,222.00'],
+    '1.222':    ['FORMAT-3', '1.222'],
+    '1,222':    ['FORMAT-4', '1,222']
 };
 
 /**
