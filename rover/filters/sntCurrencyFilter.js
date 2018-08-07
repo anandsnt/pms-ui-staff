@@ -53,7 +53,7 @@ var CurrencyFormatSeperatorMappings = {
 };
 
 var getSeperatorType = function(seperator) {
-    return CurrencyFormatSeperatorMappings[seperator][0];
+    return (seperator === null) ? '' : CurrencyFormatSeperatorMappings[seperator][0];
 };
 
 function processSntCurrency(paramObj) {
