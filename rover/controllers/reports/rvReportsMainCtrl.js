@@ -2691,6 +2691,7 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
                 reportsSubSrv.fetchGroupCode(term)
                     .then(function (data) {
                         var found;
+                            
                         groupCodeArray = [];
                         _.each(data, function (item) {
 
