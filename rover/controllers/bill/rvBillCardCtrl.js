@@ -1175,6 +1175,12 @@ sntRover.controller('RVbillCardController',
 		if (data.message) {
 			showTaxExemptAlertMessage(data);			
 		}
+
+		var reservationStatus = $scope.reservationBillData.reservation_status;
+
+ 		if (hasActivatedFolioNumber && $scope.shouldGenerateFolioNumber && (reservationStatus === 'CHECKEDOUT' ||  reservationStatus === 'NOSHOW')) {
+			callGenerateFolioNumberApiAfterLoadingCurrentBill = true;
+		}
 		$scope.getBillData($scope.currentActiveBill);	
 	});
 
@@ -2949,6 +2955,12 @@ sntRover.controller('RVbillCardController',
 	$scope.$on('moveChargeSuccsess', function(event, data) {
 		if (data.message) {
 			showTaxExemptAlertMessage(data);			
+		}
+		$scope.shouldGenerateFolioNumber = true;
+		var reservationStatus = $scope.reservationBillData.reservation_status;
+
+ 		if (hasActivatedFolioNumber && $scope.shouldGenerateFolioNumber && (reservationStatus === 'CHECKEDOUT' ||  reservationStatus === 'NOSHOW')) {
+			callGenerateFolioNumberApiAfterLoadingCurrentBill = true;
 		}
 		$scope.getBillData($scope.currentActiveBill);
 	});
