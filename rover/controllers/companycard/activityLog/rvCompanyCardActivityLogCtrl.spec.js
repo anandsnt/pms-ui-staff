@@ -2,7 +2,6 @@ describe('RVCompanyCardActivityLogCtrl', function() {
 
     var $controller,
         $scope = {},
-        $rootScope = {},
         $q,
         that,
         RVCompanyCardActivityLogSrv;
@@ -16,7 +15,6 @@ describe('RVCompanyCardActivityLogCtrl', function() {
         inject(function (_$controller_, _RVCompanyCardActivityLogSrv_, _$rootScope_, _$q_) {
             $controller = _$controller_;
             $scope = _$rootScope_.$new();
-            $rootScope = _$rootScope_.$new();
             $q = _$q_;
             RVCompanyCardActivityLogSrv = _RVCompanyCardActivityLogSrv_;
         });
@@ -89,13 +87,13 @@ describe('RVCompanyCardActivityLogCtrl', function() {
 
     it('Check old value validation', function() {
 
-        var responce = $scope.isOldValue();
+        var responceOne = $scope.isOldValue();
 
-        expect(responce).toEqual(false);
+        expect(responceOne).toEqual(false);
 
-        var responce = $scope.isOldValue('test data');
+        var responcetwo = $scope.isOldValue('test data');
 
-        expect(responce).toEqual(true);
+        expect(responcetwo).toEqual(true);
     });
 
     it('Call loadAPIData', function() {
@@ -110,6 +108,6 @@ describe('RVCompanyCardActivityLogCtrl', function() {
         that.loadAPIData(1);
 
         expect(RVCompanyCardActivityLogSrv.fetchActivityLog).toHaveBeenCalled();
-    })
+    });
 
 });

@@ -1024,7 +1024,8 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
                     'travel_agent_ids': [],
                     'segments': [],
                     'market_ids': [],
-                    'tax_exempt_type_ids': []
+                    'tax_exempt_type_ids': [],
+                    'group_code_ids': []
                 };
             }
 
@@ -1515,8 +1516,8 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
             }
 
             // include company/ta/group
-            if (report.hasOwnProperty('hasGroupCode') && !!report.chosenIncludeGroupCode) {
-                key = report.hasGroupCode.value.toLowerCase();
+            if (report.hasOwnProperty('hasGroupCode') && !!report.uiChosenIncludeGroupCode) {
+                key =  report.hasGroupCode.value.toLowerCase();
 
                 params[key] = [];                
                 /**/
@@ -2680,7 +2681,7 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 
         // for Company TA Group
         var groupCodeArray = [],
-            groupCodeIds = [];
+            groupCodeIds = [];       
 
         var autoCompleteForGroupCode = {
             source: function (request, response) {
@@ -2698,7 +2699,7 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 
                             if (!hasIn) {
                                 groupCodeArray.push({
-                                    label: item.group_code,
+                                    label: item.group_name,
                                     value: item.id
                                 });
                             }
@@ -2724,7 +2725,7 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
                 $timeout(function () {
                     $scope.$apply(function () {
                         touchedReport.uiChosenIncludeGroupCode = uiValue.join(', ');
-                        touchedReport.chosenIncludeGroupCode = groupCodeIds.join(', ');                    
+                        touchedReport.chosenIncludeGroupCode = (_.uniq(groupCodeIds)).join(', ');                    
                     });
                 }, 100);
                 return false;

@@ -157,12 +157,12 @@ sntRover.controller('RVCompanyCardActivityLogCtrl',
 	*	@return - {Boolean}
 	*/
     $scope.isOldValue = function(value) {
+		var isOldValue = true;
+
         if (value === "" || typeof value === "undefined" || value === null) {
-            return false;
+            isOldValue = false;
         }
-        else {
-            return true;
-        }
+        return isOldValue;
     };
 
     init();
