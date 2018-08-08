@@ -93,9 +93,6 @@ function processSntCurrency(paramObj) {
 		integerPart  = inputArray[0];
 	}
 
-	// Reversing the Interger part.
-	integerPart = reverseString(integerPart);
-
 	// STEP-2 : Process Interger part and add appropriate seperator type.
 
 	for ( i = integerPart.length-1, j = 0 ; i >= 0; i--, j++ ) {
@@ -106,6 +103,9 @@ function processSntCurrency(paramObj) {
 			processData = processData + integerPart[i];
 		}
 	}
+
+	// Reversing the process data
+	processData = reverseString(processData);
 
 	if ( fractionPart !== null && paramObj.fractionSeperatorType !== null) {
 		// STEP-3 : Appending central seperator.
