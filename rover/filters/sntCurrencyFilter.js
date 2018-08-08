@@ -1,7 +1,9 @@
 angular.module('sntRover').filter('sntCurrency', function() {
-	return function(input, scope) {
+	return function(input, scope, isWithoutSymbol, precision) {
 
-		if (input && scope) {
+		var DEFAULT_PRECISION = 2;
+
+		if (typeof input !== 'undefined' && scope) {
 
 			if( typeof input === 'undefined' || isNaN(input)) {
 				console.warn("sntCurrency exception :: Invalid input");
@@ -13,7 +15,9 @@ angular.module('sntRover').filter('sntCurrency', function() {
 
 			var paramObj = {
 				input: input,
-				symbol: scope.currencySymbol
+				symbol: scope.currencySymbol,
+				isWithoutSymbol: !!isWithoutSymbol,
+				precision: typeof precision === 'undefined' ? DEFAULT_PRECISION : precision
 			};
 
 			switch(scope.currencyFormat) {
@@ -63,13 +67,16 @@ var getSeperatorType = function(seperator) {
     return (seperator === null) ? '' : CurrencyFormatSeperatorMappings[seperator][0];
 };
 
+/*
+ *	Method to process currency data.
+ *	@param {object} [input data contains input, symbol, isWithoutSymbol]
+ */
 function processSntCurrency(paramObj) {
 
 	var inputArray = [],
 		integerPart = null, fractionPart = null,
-		i = 0, j=0,
-		processData = '', sntCurrency = '',
-		CONST_PRECISION = 2;
+		i = 0, j = 0,
+		processData = '', sntCurrency = '';
 
 	/* 
 	 *	STEP-1 : Splits a given input value (type {string}) into two pieces - Integer part & Fractional part,
@@ -100,23 +107,24 @@ function processSntCurrency(paramObj) {
 		}
 	}
 
-	console.log(processData);
-
 	if ( fractionPart !== null && paramObj.fractionSeperatorType !== null) {
 		// STEP-3 : Appending central seperator.
 		processData = processData + getSeperatorType(paramObj.fractionSeperatorType);
 			
-		// CONST_PRECISION digit precision on fractional part.
-		var fraction = fractionPart.slice(0, CONST_PRECISION);
+		// Calculating precision on fractional part.
+		var fraction = fractionPart.slice(0, paramObj.precision);
 			
 		// STEP-4 : Add fractional part.
 		processData = processData + fraction;
 	}
 
-	// STEP-5 : Append currency symbol.
-	sntCurrency = paramObj.symbol + ' ' + processData;
-
-	console.log(sntCurrency);
+	// STEP-5 : Append currency symbol based on isWithoutSymbol flag.
+	if (paramObj.isWithoutSymbol) {
+		sntCurrency = processData;
+	}
+	else{
+		sntCurrency = '<span class="currency">' + paramObj.symbol + '</span> ' + processData;
+	}
 
 	return sntCurrency;
 };
