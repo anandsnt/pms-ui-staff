@@ -353,7 +353,8 @@ sntRover.controller('RVCompanyCardArTransactionsMainCtrl',
 			$scope.arFlags.shouldShowPayAllButton = false;
 			$scope.arFlags.shouldShowFooter = false;
 			$scope.arDataObj.availableAmount = 0;
-						
+			$scope.arDataObj.selectedInvoices = [];
+
 			that.fetchTransactions();
 		};
 
