@@ -44,11 +44,16 @@ angular.module('sntRover').controller('rvDeviceStatusCtrl', ['$scope', 'ngDialog
         };
 
         $scope.printReceipt = function() {
+            $scope.$emit('showLoader');
             sntapp.cardReader.doDeviceAction({
                 service: 'RVCardPlugin',
                 action: 'printLastReceipt',
-                successCallBack: function() {},
-                failureCallBack: function() {}
+                successCallBack: function() {
+                    $scope.$emit('hideLoader');
+                },
+                failureCallBack: function() {
+                    $scope.$emit('hideLoader');
+                }
             });
         };
 
