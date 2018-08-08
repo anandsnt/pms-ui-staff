@@ -395,7 +395,7 @@ sntRover.controller('rvReservationCardActionsController', ['$scope', '$filter', 
             }
         });
         $scope.clearErrorMessage = function () {
-                $scope.errorMessage = [];
+                $scope.errorMessage = '';
         };
         $scope.postAction = function() {
             $scope.selectedAction = 'selected';
