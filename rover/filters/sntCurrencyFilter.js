@@ -3,6 +3,14 @@ angular.module('sntRover').filter('sntCurrency', function() {
 
 		if (input && scope) {
 
+			if( typeof input === 'undefined' || isNaN(input)) {
+				console.warn("sntCurrency exception :: Invalid input");
+				return;
+			}
+			else if (typeof input !== 'string') {
+				input = input.toString();
+			}
+
 			var paramObj = {
 				input: input,
 				symbol: scope.currencySymbol,
@@ -58,8 +66,6 @@ var getSeperatorType = function(seperator) {
 
 function processSntCurrency(paramObj) {
 
-	paramObj.input = '123456789123456789.12';
-
 	var inputArray = [],
 		integerPart = null, fractionPart = null,
 		i = 0, j=0,
@@ -97,27 +103,19 @@ function processSntCurrency(paramObj) {
 
 	console.log(processData);
 
-	// STEP-3 : Appending central seperator.
-
-	processData = processData + getSeperatorType(paramObj.fractionSeperatorType);
-
-	// STEP-4 : Add fractional part.
-
-	if ( fractionPart !== null ) {
-		// 2 digit precision
+	if ( fractionPart !== null && paramObj.fractionSeperatorType !== null) {
+		// STEP-3 : Appending central seperator.
+		processData = processData + getSeperatorType(paramObj.fractionSeperatorType);
+			
+		// CONST_PRECISION digit precision on fractional part.
 		var fraction = fractionPart.slice(0, CONST_PRECISION);
-
+			
+		// STEP-4 : Add fractional part.
 		processData = processData + fraction;
 	}
 
-	// STEP-5 : Append/prepend currency symbol based on place value.
-
-	if (typeof paramObj.place !== 'undefined' && !paramObj.place) {
-		sntCurrency = processData + ' ' + paramObj.symbol;
-	}
-	else {
-		sntCurrency = paramObj.symbol + ' ' + processData;
-	}
+	// STEP-5 : Append currency symbol.
+	sntCurrency = paramObj.symbol + ' ' + processData;
 
 	console.log(sntCurrency);
 
