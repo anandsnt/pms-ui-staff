@@ -116,7 +116,7 @@ angular.module('reportsModule')
         "INCLUDE_COMPANYCARD_TA": "include_companycard_ta",
         "NO_NATIONALITY": "no_nationality",
         "GROUP_COMPANY_TA_CARD": "group_company_ta_card",
-        "GROUP_CODE": "group_code_ids",
+        "GROUP_CODE": "group_code",
         "TAX_EXEMPT_TYPE": "tax_exempt_type_ids",
         "TA_CC_CARD": "ta_cc_card"
     });

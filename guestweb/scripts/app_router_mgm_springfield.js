@@ -231,7 +231,7 @@ sntGuestWeb.config(['$stateProvider', '$urlRouterProvider', function($stateProvi
         .state('checkOutStatus', {
             url: '/checkOutStatus',
             controller: 'checkOutStatusController',
-            templateUrl: '/assets/common_templates/partials/MGM/Aria/gwCheckoutfinal.html',
+            templateUrl: '/assets/common_templates/partials/MGM/gwCheckoutfinal.html',
             title: 'Status - Check-out Now'
         })
         .state('roomNotToSell', {
