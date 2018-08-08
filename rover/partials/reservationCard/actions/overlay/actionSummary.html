@@ -5,7 +5,7 @@
                 <h3>{{selectedAction.description}}</h3>
                 <span class="info" ng-hide="!isTrace(selectedAction.action_task_type) && !isMessage(selectedAction.action_task_type)">Created {{selectedAction.created_at_date}} at {{selectedAction.created_at_time}}<span ng-if="selectedAction.assigned_to"> by {{selectedAction.assigned_to.name}}</span></span>
 
-                <div class="info-lists" ng-hide="!isTrace(selectedAction.action_task_type)">
+                <div class="info-lists" ng-hide="!isTrace(selectedAction.action_task_type) && !isMessage(selectedAction.action_task_type)">
                     <ul>
                         <li ng-hide="!isTrace(selectedAction.action_task_type)">
                             Assigned to
@@ -22,9 +22,9 @@
                             Time Due
                             <strong>{{selectedAction.due_at_time_str}}</strong>
                         </li>
-                    </ul>
+                    </ul>                   
                     <!-- If completed -->
-                    <ul class="completed" ng-hide="!selectedAction.date_completed || (!isTrace(selectedAction.action_task_type) && !isMessage(selectedAction.action_task_type))">
+                    <ul class="completed" ng-hide="selectedAction.action_status !== 'COMPLETED' || (!isTrace(selectedAction.action_task_type) && !isMessage(selectedAction.action_task_type))">
                         <li>
                             Completed by
                             <strong ng-if="selectedAction.completed_by">{{selectedAction.completed_by.name}}</strong>

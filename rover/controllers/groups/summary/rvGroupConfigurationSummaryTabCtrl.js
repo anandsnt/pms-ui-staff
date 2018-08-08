@@ -1584,6 +1584,15 @@ angular.module('sntRover').controller('rvGroupConfigurationSummaryTab', ['$scope
                 $scope.groupConfigData.summary.pending_group_action_tasks_count = parseInt($scope.groupConfigData.summary.pending_group_action_tasks_count) + parseInt(1);
             } else if (value === 'complete') {
                 $scope.groupConfigData.summary.pending_group_action_tasks_count = parseInt($scope.groupConfigData.summary.pending_group_action_tasks_count) - parseInt(1);
+            } 
+
+            // Update the action count when deleting an action with different status
+            if (_.isObject(value)) {
+               $scope.groupConfigData.summary.total_group_action_tasks_count = parseInt($scope.groupConfigData.summary.total_group_action_tasks_count) - parseInt(1);
+
+               if (value.deletedActionStatus !== 'COMPLETED') {
+                 $scope.groupConfigData.summary.pending_group_action_tasks_count = parseInt($scope.groupConfigData.summary.pending_group_action_tasks_count) - parseInt(1);
+               }               
             }
         });
 
