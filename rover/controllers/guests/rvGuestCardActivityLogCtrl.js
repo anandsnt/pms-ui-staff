@@ -68,7 +68,7 @@ sntRover.controller('RVGuestCardActivityLogController',
 	that.loadAPIData = function ( pageNo ) {
 
 		$scope.activityLogObj.page = pageNo ? pageNo : 1;
-		$scope.activityLogObj.accountId = ( typeof $scope.contactInformation === 'undefined' ) ? $stateParams.id : $scope.contactInformation.id;
+		$scope.activityLogObj.accountId = ( typeof $scope.guestCardData === 'undefined' ) ? $stateParams.guestId : $scope.guestCardData.guestId;
 
 		var dataToSend = {
 			params: {
