@@ -1,5 +1,5 @@
 angular.module('sntRover').filter('sntCurrency', function() {
-	return function(input, scope, place) {
+	return function(input, scope) {
 
 		if (input && scope) {
 
@@ -13,8 +13,7 @@ angular.module('sntRover').filter('sntCurrency', function() {
 
 			var paramObj = {
 				input: input,
-				symbol: scope.currencySymbol,
-				place: place
+				symbol: scope.currencySymbol
 			};
 
 			switch(scope.currencyFormat) {
