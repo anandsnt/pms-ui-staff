@@ -185,6 +185,9 @@ angular.module('sntRover').controller('RVExportReportsCtrl', [
             if ( $scope.scheduleParams.time_period_id ) {
                 params.time_period_id = $scope.scheduleParams.time_period_id;
             }
+            if ( $scope.scheduleParams.export_date ) {
+                params.export_date = $scope.scheduleParams.export_date;
+            }            
 
             // fill 'frequency_id', 'starts_on', 'repeats_every' and 'ends_on_date'
             params.frequency_id = $scope.scheduleParams.frequency_id;
@@ -278,6 +281,7 @@ angular.module('sntRover').controller('RVExportReportsCtrl', [
             if ( $scope.scheduleParams.time_period_id ) {
                 params.time_period_id = $scope.scheduleParams.time_period_id;
             }
+            params.export_date = $filter('date')($scope.scheduleParams.export_date, 'yyyy/MM/dd');
 
             // fill 'frequency_id', 'starts_on', 'repeats_every' and 'ends_on_date'
             params.frequency_id = $scope.scheduleParams.frequency_id;
@@ -598,6 +602,13 @@ angular.module('sntRover').controller('RVExportReportsCtrl', [
                 $scope.scheduleParams.time_period_id = undefined;
             }
 
+            if ( angular.isDefined($scope.selectedEntityDetails.export_date) ) {
+                $scope.scheduleParams.export_date = $scope.selectedEntityDetails.export_date;
+            } else {
+                $scope.scheduleParams.export_date = moment(tzIndependentDate($rootScope.businessDate)).subtract(1, 'days')
+                                                    .calendar();
+            }            
+
             if ( angular.isDefined($scope.selectedEntityDetails.time) ) {
                 $scope.scheduleParams.time = $scope.selectedEntityDetails.time;
             } else {
@@ -624,6 +635,13 @@ angular.module('sntRover').controller('RVExportReportsCtrl', [
             } else {
                 $scope.scheduleParams.scheduleEndsOn = 'NEVER';
             }
+            /*
+             * Export Calender Options
+             * max date is business date
+             */
+            $scope.exportCalenderOptions = angular.extend({
+                maxDate: tzIndependentDate($rootScope.businessDate)
+            }, datePickerCommon);            
 
             $scope.startsOnOptions = angular.extend({
                 minDate: tzIndependentDate($rootScope.businessDate),
@@ -1103,6 +1121,22 @@ angular.module('sntRover').controller('RVExportReportsCtrl', [
             return $scope.addingStage === STAGES.SHOW_SCHEDULE_LIST ||
                 $scope.addingStage === STAGES.SHOW_PARAMETERS ||
                 $scope.addingStage === STAGES.SHOW_DETAILS;
+        };
+        /*
+         * Show export calender only for joyrnal export
+         */
+        $scope.shouldShowExportCalenderDate = function () {
+            if ($scope.selectedEntityDetails.report.title === 'Journal Export') {
+                var dateFieldObject = _.find($scope.originalScheduleTimePeriods, 
+                    function(item) { 
+                        return item.value === 'DATE'; }
+                    );
+
+                if (dateFieldObject.id === $scope.scheduleParams.time_period_id) {
+                    return true;
+                }
+            }                
+            return false;
         };
 
         $scope.notRunOnce = function () {

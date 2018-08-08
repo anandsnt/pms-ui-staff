@@ -1,6 +1,6 @@
 sntRover.controller('RVKeyEncodePopupCtrl', [
-    '$rootScope', '$scope', '$state', 'ngDialog', 'RVKeyPopupSrv', '$filter', '$timeout', '$log', 'sntActivity', '$window',
-    function ($rootScope, $scope, $state, ngDialog, RVKeyPopupSrv, $filter, $timeout, $log, sntActivity, $window) {
+    '$rootScope', '$scope', '$state', 'ngDialog', 'RVKeyPopupSrv', '$filter', '$timeout', '$log', 'sntActivity', '$window', 'rvUtilSrv',
+    function ($rootScope, $scope, $state, ngDialog, RVKeyPopupSrv, $filter, $timeout, $log, sntActivity, $window, rvUtilSrv) {
         BaseCtrl.call(this, $scope);
 	var that = this;
 
@@ -46,7 +46,6 @@ sntRover.controller('RVKeyEncodePopupCtrl', [
 			$scope.data.confirmNumber = $scope.reservationBillData.confirm_no;
 			$scope.data.roomNumber = $scope.reservationBillData.room_number;
 			$scope.data.key_settings = $scope.reservationBillData.key_settings;
-			$scope.data.room_pin = $scope.reservationBillData.room_pin;
 			$scope.data.reservation_id = $scope.reservationBillData.reservation_id;
 		// If the keypopup inviked from inhouse - staycard card)
 		} else {
@@ -56,8 +55,9 @@ sntRover.controller('RVKeyEncodePopupCtrl', [
 			$scope.data.confirmNumber = $scope.reservationData.reservation_card.confirmation_num;
 			$scope.data.roomNumber = $scope.reservationData.reservation_card.room_number;
 			$scope.data.key_settings = $scope.reservationData.reservation_card.key_settings;
-			$scope.data.room_pin = $scope.reservationData.reservation_card.room_pin;
+			$scope.data.room_pin = $scope.reservationData.room_pin;
 			$scope.data.reservation_id = $scope.reservationData.reservation_card.reservation_id;
+			$scope.data.room_pin_interface = $scope.reservationData.reservation_card.room_pin_interface;
 		}
 
     	if ($scope.data.is_late_checkout) {
@@ -391,6 +391,25 @@ sntRover.controller('RVKeyEncodePopupCtrl', [
             failureCallBack: failureCallback
         });
 	};
+
+	/*
+    * Server call to generate pincode.
+    */
+    $scope.generatePinCode = function() {
+        var successCallback = function(response) {
+            $scope.data.room_pin = response.pin;
+        };
+        var failureCallback = function(errorMessage) {
+            $scope.errorMessage = errorMessage;
+        };
+        var postParams = { "confirmation_number": $scope.data.confirmNumber, interface: $scope.data.room_pin_interface };
+
+        $scope.callAPI(RVKeyPopupSrv.generatePinCode, {
+            params: postParams,
+            successCallBack: successCallback,
+            failureCallBack: failureCallback
+        });
+    };
 
 	/*
     *  Shows the popup to show the email send status
@@ -808,4 +827,8 @@ sntRover.controller('RVKeyEncodePopupCtrl', [
 		$state.go('rover.search');
 
 	};
+	var reservationEmail = !!$scope.guestCardData.contactInfo.email ? $scope.guestCardData.contactInfo.email : '';
+
+	$scope.hasValidEmail = rvUtilSrv.isEmailValid(reservationEmail);
+	
 }]);

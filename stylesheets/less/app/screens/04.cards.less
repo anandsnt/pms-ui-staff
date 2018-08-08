@@ -3381,6 +3381,182 @@
                         &.with-pagination { .calc-height(100, 120); }
                     }
                 }
+
+                /* Activity Log **/
+                &.activity-log {
+                    .tab-header {
+                        padding: 0;
+                        overflow: visible;
+                        position: relative;
+                        z-index: 999;
+                        select {
+                            padding-right: 25px;
+                        }
+
+                        .entry {
+                            padding: 0;
+
+                            &:not(:last-child) {
+                                margin-right: 10px;
+                            }
+                        }
+
+                        .search-form {
+                            padding: 20px;
+                            width: 100%;
+                            height: 80px; 
+                            background: transparent;
+                            overflow: visible;
+                            .box-shadow(none);
+
+                            .entry {
+                                height: 42px;
+                                visibility: visible;
+                                box-shadow: none;
+
+                                &.search {
+                                    .calc-width(100, 780);
+
+                                    input {
+                                        font-size: 18px;
+                                        font-weight: 600;
+                                    }
+
+                                    .clear-query { right: 10px; }
+
+                                    .query { width: 100%; }
+                                }
+
+                                &.dates {
+                                    width: 220px;
+
+                                    input {
+                                        font-size: 14px;
+                                    }
+
+                                    .entry-data { width: 105px; }
+                                }
+
+                                &:not(.search):not(.dates) {
+                                    width: 150px;
+                                    text-align: left;
+                                }
+
+                                .multi-select {
+                                    &.active {
+                                        &:after {
+                                            transform: rotate(180deg);
+                                        }
+                                    }
+
+                                    .checkbox {
+                                        display: block;
+                                    }
+                                }
+
+                                .multi-select-options {
+                                    .scrollable {
+                                        max-height: 180px;
+                                        position: relative;
+                                        overflow: hidden;
+                                    }
+                                }
+                            }
+                        }
+                    }
+
+                    .tab-details {
+
+                        &.with-pagination {
+                            .wrapper {
+                                padding-bottom: 60px;
+                            }
+                        }
+                        table {
+                            width: 100%;
+                            font-size: 14px;
+                            line-height: 1.2;
+                            text-transform: uppercase;
+                            table-layout: auto;
+                            border-collapse: separate;
+                            border-spacing: 0 10px;
+                            margin: 0;
+
+                            strong { font-weight: 600; }
+
+                            tr {
+                                th {
+                                    font-weight: 600;
+                                    white-space: normal;
+                                    overflow: visible;
+                                    vertical-align: top;
+
+                                    &.align-right { text-align: right; }
+                                }
+
+                                td {
+                                    background: @white;
+                                    padding: 10px;
+                                    white-space: normal;
+                                    overflow: visible;
+                                    vertical-align: top;
+
+                                    .old { 
+                                        text-decoration: line-through;
+
+                                        strong {
+                                            color: @grey3;
+                                            &:after { .show; }
+                                        }
+                                    }
+                                }
+                            }
+
+                            th {
+                                line-height: 35px;
+                                height: 35px;
+                                padding: 0;
+                                vertical-align: top;
+                                background-color: @grey1;
+
+                                span {
+                                    color: @white;
+                                    padding: 0 10px;
+                                    margin-right: 5px;
+                                    background-color: @grey2;
+                                    height: 35px;
+                                    .calc-width(100, 5);
+                                    .show;
+                                    .nowrap();
+                                    .box-shadow(1px 1px 0 rgba(0,0,0,.3));
+
+                                    &.sort {
+                                        cursor: pointer;
+                                        background: darken(@grey2, 10) @arrowSort no-repeat;
+                                        background-position: -webkit-calc(~"100% - 10px") 50%;
+                                        background-position: -moz-calc(~"100% - 10px") 50%;
+                                        background-position: calc(~"100% - 10px") 50%;
+                                        padding-right: 40px;
+
+                                        &.sorting-asc { background-image: @arrowSortAsc; }
+                                        &.sorting-desc { background-image: @arrowSortDesc; }
+                                    }
+                                }
+
+                                &:last-child {
+                                    span { width: 100%; }
+                                }
+                            }
+
+                            .property {
+                                display: block;
+                                font-size: 12px;
+                                font-weight: 600;
+                                color: @grey4;
+                            }
+                        }
+                    }
+                }
             }
 
             &.card-tabs { padding: 20px; }

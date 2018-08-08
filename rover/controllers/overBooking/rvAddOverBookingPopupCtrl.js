@@ -73,7 +73,7 @@ angular.module('sntRover').controller('rvAddOverBookingPopupCtrl', ['$scope', '$
 		var roomTypeList = $scope.addOverBookingObj.roomTypeList;
 		
 		_.each( roomTypeList, function(obj) {
-			obj.isChecked = false;
+			obj.isChecked = true;
 		});
 	};
 

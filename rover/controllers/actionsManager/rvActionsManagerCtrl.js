@@ -11,12 +11,13 @@ sntRover.controller('RVActionsManagerController',
     '$window',
     '$timeout',
     '$filter',
+    'rvPermissionSrv',
     function ($scope, $rootScope,
              ngDialog, rvActionTasksSrv,
              departments, dateFilter,
              rvUtilSrv, $state,
              reportsSubSrv, $window,
-            $timeout, $filter ) {
+            $timeout, $filter, rvPermissionSrv ) {
         BaseCtrl.call(this, $scope);
 
         // -------------------------------------------------------------------------------------------------------------- B. Local Methods
@@ -29,6 +30,19 @@ sntRover.controller('RVActionsManagerController',
                     preventDefault: false,
                     fadeScrollbars: true
                 });
+
+                $scope.setScroller("create-action-scroller", {
+                    scrollbars: true,
+                    preventDefault: false,
+                    fadeScrollbars: true
+                });
+
+                $scope.setScroller("actionSummaryScroller", {
+                    scrollbars: true,
+                    preventDefault: false,
+                    fadeScrollbars: true
+                });
+
                 $scope.departments = departments.data.departments;
                 if (!!$state.params.restore && !!rvActionTasksSrv.getFilterState()) {
                     $scope.filterOptions = rvActionTasksSrv.getFilterState();
@@ -50,6 +64,7 @@ sntRover.controller('RVActionsManagerController',
 
                 action.dueDate = dateFilter(splitDueTimeString[0], $rootScope.dateFormatForAPI);
                 action.dueTime = dateFilter(splitDueTimeString[0] + "T" +  splitDueTimeString[1].split(/[+-]/)[0], "HH:mm");
+                action.dueTimeAmPm = dateFilter(splitDueTimeString[0] + "T" +  splitDueTimeString[1].split(/[+-]/)[0], "hh:mm a");
                 return action;
             },
             getActionDetails = function () {
@@ -58,6 +73,8 @@ sntRover.controller('RVActionsManagerController',
                         params: $scope.filterOptions.selectedActionId,
                         successCallBack: function (response) {
                             $scope.selectedAction = getBindabaleAction(response.data);
+                            $scope.selectedView = "list";
+                            refreshActionSummaryScroller();
                         }
                     });
                 }
@@ -98,6 +115,10 @@ sntRover.controller('RVActionsManagerController',
                             }).name : ""
                         }));
                     });
+
+                    if (!$scope.actions.length) {
+                        $scope.selectedView = 'new';
+                    }
 
                     if ($scope.actions.length > 0) {
                         // By default the first action is selected
@@ -153,7 +174,8 @@ sntRover.controller('RVActionsManagerController',
                     departmentName: !!departmentId ? _.find($scope.departments, {
                         value: departmentId.toString()
                     }).name : "",
-                    isCompleted: !!$scope.selectedAction.completed_at
+                    isCompleted: !!$scope.selectedAction.completed_at,
+                    description: $scope.selectedAction.description
                 });
             },
             addDatePickerOverlay = function () {
@@ -169,6 +191,12 @@ sntRover.controller('RVActionsManagerController',
                 numberOfMonths: 1,
                 beforeShow: addDatePickerOverlay,
                 onClose: removeDatePickerOverlay
+            },
+            refreshCreateActionScroller = function () {
+                $scope.refreshScroller('create-action-scroller');
+            },
+            refreshActionSummaryScroller = function () {
+                $scope.refreshScroller('actionSummaryScroller');
             };
 
 
@@ -234,14 +262,9 @@ sntRover.controller('RVActionsManagerController',
             fetchActionsList();
         };
 
-        $scope.initNewAction = function () {
-            ngDialog.open({
-                template: '/assets/partials/actionsManager/rvNewActionPopup.html',
-                scope: $scope,
-                controller: 'RVNewActionCtrl',
-                closeByDocument: true,
-                closeByEscape: true
-            });
+        $scope.initNewAction = function () {            
+            $scope.selectedView = "new";
+            refreshCreateActionScroller();
         };
 
         $scope.onSelectAction = function (actionId) {
@@ -279,12 +302,18 @@ sntRover.controller('RVActionsManagerController',
         $scope.updateAction = function () {
             var payLoad = {
                 action_task: {
-                    id: $scope.selectedAction.id
-                },
-                assigned_to: $scope.selectedAction.department || null,
+                    id: $scope.selectedAction.id,
+                    description: $scope.selectedAction.note
+                },                
                 due_at: dateFilter($scope.selectedAction.dueDate, $rootScope.dateFormatForAPI) +
                 ($scope.selectedAction.dueTime ? "T" + $scope.selectedAction.dueTime + ":00" : "")
             };
+
+            if ($scope.selectedAction.department) {
+               payLoad.assigned_to = $scope.selectedAction.department.value;
+            } else {
+                payLoad.assigned_to = '';
+            }            
 
             if (!!$scope.selectedAction.reservation_id) {
                 payLoad.reservation_id = $scope.selectedAction.reservation_id;
@@ -299,6 +328,7 @@ sntRover.controller('RVActionsManagerController',
                 params: payLoad,
                 successCallBack: function (response) {
                     $scope.selectedAction = getBindabaleAction(response.data);
+                    $scope.selectedView = 'list';
                     updateListEntry();
                 }
             });
@@ -348,6 +378,7 @@ sntRover.controller('RVActionsManagerController',
 
         var listenerNewActionPosted = $scope.$on("NEW_ACTION_POSTED", function () {
             ngDialog.close();
+            $scope.selectedView = "list";
             fetchActionsList();
         });
 
@@ -472,6 +503,83 @@ sntRover.controller('RVActionsManagerController',
             setAppliedFilter();
 
             $scope.invokeApi(reportsSubSrv.fetchReportDetails, params, sucessCallback, failureCallback);
+        };
+
+        // Checks whether edit/complete btn should be shown or not
+        $scope.shouldShowEditAndCompleteBtn = function(action) {
+            return ["UNASSIGNED", 'ASSIGNED'].indexOf(action.action_status) > -1;
+        };
+
+        // Checks whether delete button should be shown or not
+        $scope.shouldShowDeleteBtn = function(action) {
+            return ["UNASSIGNED", 'ASSIGNED', 'COMPLETED'].indexOf(action.action_status) > -1;
+        };
+
+        // Prepare the view for editing action
+        $scope.prepareEditAction = function() {
+            $scope.selectedView = 'edit';
+        };
+
+        // Cancel the edit operation
+        $scope.cancelEdit = function() {
+            $scope.selectedView = 'list';
+        };
+
+        // Checks the permission to edit action
+        $scope.hasPermissionToEditAction = function() {
+            return rvPermissionSrv.getPermissionValue('EDIT_ACTION');
+        };
+
+        // Checks the permission to edit action
+        $scope.hasPermissionToDeleteAction = function() {
+            return rvPermissionSrv.getPermissionValue('DELETE_ACTION');
+        };
+
+        // Prepare delete Action
+        $scope.prepareDeletAction = function() {
+            $scope.selectedAction.originalStatus = $scope.selectedAction.action_status;
+            $scope.selectedAction.action_status = 'delete';
+        };
+
+        // Delete action
+        $scope.deleteAction = function() {
+
+          var onSuccess = function() {                    
+                    fetchActionsList();
+                },
+                onFailure = function(data) {
+                    // show failed msg, so user can try again-?
+                    if (data[0]) {
+                        $scope.errorMessage = 'Internal Error Occured';
+                    }                    
+                };
+            var apiConfig = {
+                params: $scope.selectedAction.id,
+                onSuccess: onSuccess,
+                onFailure: onFailure
+            };
+            
+            $scope.errorMessage = [];
+
+            $scope.callAPI(rvActionTasksSrv.deleteActionTask, apiConfig);            
+        };
+
+        // Cancel delete operation
+        $scope.cancelDelete = function() {
+            $scope.selectedAction.action_status = $scope.selectedAction.originalStatus;
+        };
+
+        // Get the action status info
+        $scope.getActionStatusInfo = function(action) {
+            var status = action.action_status;
+
+            if (status === 'delete') {
+                status = 'Delete Action?';
+            } else if (action.over_due && status !== 'COMPLETED') {
+                status = 'OVERDUE';
+            }
+
+            return status;
         };
 
         init();

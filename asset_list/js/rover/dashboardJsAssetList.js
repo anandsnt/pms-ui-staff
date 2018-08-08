@@ -86,6 +86,7 @@ module.exports = {
 				serviceRoot + 'availability/rvAvailabilitySrv.js',
 				serviceRoot + 'workstation/workstationSrv.js',
 				serviceRoot + 'housekeeping/rvHkRoomStatusSrv.js',
+				serviceRoot + 'deviceStatus/rvDeviceStatusSrv.js',
 
 				directiveRoot + 'Outside Click handler/outsideClickDirective.js',
 				directiveRoot + 'pagination/*.js',

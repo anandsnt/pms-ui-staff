@@ -313,4 +313,10 @@ angular.module('sntRover').service('rvUtilSrv', ['$filter', function($filter) {
                     (roundedMins.length === 2 ? roundedMins : "0" + roundedMins);
             };
 
+		this.isEmailValid = function(email) {
+			email = _.isUndefined(email) ? '' : email;
+			email = email.replace(/\s+/g, '');
+			return (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email));
+		};
+
 }]);

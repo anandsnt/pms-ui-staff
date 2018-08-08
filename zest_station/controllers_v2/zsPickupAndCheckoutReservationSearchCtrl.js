@@ -198,7 +198,7 @@ sntZestStation.controller('zsPickupAndCheckoutReservationSearchCtrl', [
 
                         var successCallBack = function(guest_details) {
 
-                            if (!$scope.reservationHasPassportsScanned(guest_details)  && !guest_details.primary_guest_details.guest_id_reviewed) {
+                            if (!$scope.reservationHasPassportsScanned(guest_details)  && (!guest_details.primary_guest_details.guest_id_reviewed || $scope.zestStationData.pickup_key_always_ask_for_id)) {
 
                                 $scope.trackSessionActivity('PUK', 'Fetch Success', 'R' + data.reservation_id, 'TO_SCAN_PASSPORTS');
                                     // 

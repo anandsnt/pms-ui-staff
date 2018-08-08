@@ -5,7 +5,7 @@
             <h1 ng-show="balanceDue > 0"><text data-ng-bind-html="getTagValue('HOW_WOULD_YOU_LIKE_TO_PAY')" editable-text="HOW_WOULD_YOU_LIKE_TO_PAY"></text></h1>
             <h1 ng-show="balanceDue < 0"><text data-ng-bind-html="getTagValue('HOW_WOULD_YOU_LIKE_TO_REFUND')" editable-text="HOW_WOULD_YOU_LIKE_TO_REFUND"></text></h1>
             <div id="balance">
-                <span class="value"><text data-ng-bind-html="getTagValue('BILL_BAL')" editable-text="BILL_BAL"></text>&nbsp;{{zestStationData.currencySymbol}}{{balanceDue}}</span>
+                <span class="value"><text data-ng-bind-html="getTagValue('BILL_BAL')" editable-text="BILL_BAL"></text>&nbsp;{{zestStationData.currencySymbol}}{{balanceDueForDisplay}}</span>
             </div>
             <nav id="options" role="nav" class="options-menu">
                 <ul role="menu">
@@ -40,7 +40,7 @@
         <div id="content">
             <h1><text data-ng-bind-html="getTagValue('PAYMENT')" editable-text="PAYMENT"></h1>
             <div id="balance">
-                <span class="value"><text data-ng-bind-html="getTagValue('BILL_BAL')" editable-text="BILL_BAL"></text>&nbsp;{{zestStationData.currencySymbol}}{{balanceDue}}</span>
+                <span class="value"><text data-ng-bind-html="getTagValue('BILL_BAL')" editable-text="BILL_BAL"></text>&nbsp;{{zestStationData.currencySymbol}}{{balanceDueForDisplay}}</span>
             </div>
             <nav id="options" role="nav" class="options-menu">
                 <ul role="menu">
