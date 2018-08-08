@@ -1413,6 +1413,7 @@ sntRover.controller('rvGroupActionsCtrl', ['$scope', '$filter', '$rootScope', 'n
 
                 if (!dateObj) {
                     var dateParts = $scope.newAction.date_due.split('-');
+                    
                     dateObj = getTZIndependentDateFromDayMonthYear(dateParts[0], dateParts[1], dateParts[2]);
                 }
 
@@ -1493,9 +1494,6 @@ sntRover.controller('rvGroupActionsCtrl', ['$scope', '$filter', '$rootScope', 'n
             return status;
         };
         
-             
-
-
         init();
     }
 ]);
