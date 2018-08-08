@@ -1,5 +1,5 @@
-angular.module('sntRover').controller('rvDeviceStatusCtrl', ['$scope', 'ngDialog', '$log', 'sntActivity', 'rvDeviceStatusSrv', 'rvUtilSrv',
-    function ($scope, ngDialog, $log, sntActivity, rvDeviceStatusSrv, rvUtilSrv) {
+angular.module('sntRover').controller('rvDeviceStatusCtrl', ['$scope', 'ngDialog', '$log', 'sntActivity', 'rvDeviceStatusSrv', 'rvUtilSrv', '$timeout',
+    function ($scope, ngDialog, $log, sntActivity, rvDeviceStatusSrv, rvUtilSrv, $timeout) {
 
         var actionResponse = {};
         var callBacks = {
@@ -43,12 +43,23 @@ angular.module('sntRover').controller('rvDeviceStatusCtrl', ['$scope', 'ngDialog
             $scope.actionDisplayName = action.display_name;
         };
 
+        var dismissLoader = function() {
+            $timeout(function() {
+                $scope.$emit('hideLoader');
+            }, 3000);
+        };
+
         $scope.printReceipt = function() {
+            $scope.$emit('showLoader');
             sntapp.cardReader.doDeviceAction({
                 service: 'RVCardPlugin',
                 action: 'printLastReceipt',
-                successCallBack: function() {},
-                failureCallBack: function() {}
+                successCallBack: function() {
+                    dismissLoader();
+                },
+                failureCallBack: function() {
+                    dismissLoader();
+                }
             });
         };
 
