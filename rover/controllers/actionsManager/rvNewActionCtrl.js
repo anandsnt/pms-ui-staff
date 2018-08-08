@@ -111,7 +111,7 @@ sntRover.controller('RVNewActionCtrl', ['$scope', '$rootScope', 'rvUtilSrv', 'da
         var listenerGroupSelect = $scope.$on("GROUP_SELECTED", function(e, selectedGroup) {
 
             var businessDate = new tzIndependentDate($rootScope.businessDate),
-                arrivalDate = new tzIndependentDate(selectedGroup.from_date);
+                arrivalDate = new tzIndependentDate(selectedGroup.arrival_date);
 
             $scope.newAction.dueDate = businessDate > arrivalDate ? businessDate : arrivalDate;
         });
