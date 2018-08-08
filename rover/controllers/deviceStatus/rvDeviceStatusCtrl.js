@@ -5,6 +5,7 @@ angular.module('sntRover').controller('rvDeviceStatusCtrl', ['$scope', 'ngDialog
         var callBacks = {
             'successCallBack': function (response) {
                 actionResponse = response;
+                $scope.screenMode = 'DISPLAY_MESSAGE';
                 ngDialog.open({
                     template: '/assets/partials/settings/rvDeviceMessage.html',
                     scope: $scope,
@@ -44,8 +45,10 @@ angular.module('sntRover').controller('rvDeviceStatusCtrl', ['$scope', 'ngDialog
 
         $scope.printReceipt = function() {
             sntapp.cardReader.doDeviceAction({
-                service: 'RVDevicePlugin',
-                action: 'printLastReceipt'
+                service: 'RVCardPlugin',
+                action: 'printLastReceipt',
+                successCallBack: function() {},
+                failureCallBack: function() {}
             });
         };
 
