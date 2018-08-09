@@ -174,6 +174,9 @@ sntZestStation.controller('zsRootCtrl', [
 
             $scope.trackEvent(currentState, 'clicked_close_button');
             $state.go('zest_station.home');
+            if ($scope.zestStationData.paymentGateway === 'MLI' && $scope.zestStationData.ccReader === 'local') {
+                $scope.$emit('STOP_OBSERVE_FOR_SWIPE');
+            }
         };
         $scope.talkToStaff = function() {
             var currentState = $state.current.name;
@@ -1738,6 +1741,13 @@ sntZestStation.controller('zsRootCtrl', [
 
         $scope.$on('PLAY_BELL_SOUND', function () {
             bellSound.play();
+        });
+
+        $scope.$on('STOP_OBSERVE_FOR_SWIPE', function() {
+            $scope.cardReader.stopReader({
+                'successCallBack': function() {},
+                'failureCallBack': function() {}
+            });
         });
 
 		/** *
