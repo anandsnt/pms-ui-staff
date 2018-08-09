@@ -1,4 +1,4 @@
-angular.module('sntCurrencyFilter').filter('sntCurrency', function() {
+angular.module('sntCurrencyFilter', []).filter('sntCurrency', function() {
 	return function(input, scope, isWithoutSymbol, precision) {
 
 		var DEFAULT_PRECISION = 2;
