@@ -77,7 +77,8 @@ function($scope, $state, $timeout, $stateParams, ADTaxExemptSrv) {
 				successCallBack: saveSuccess,
 				params: {
 					"name": $scope.addData.name,
-					"charge_code_ids": $scope.addData.charge_code_ids
+					"charge_code_ids": $scope.addData.charge_code_ids,
+					"is_default": $scope.addData.is_default
 				}
 			};
 			
