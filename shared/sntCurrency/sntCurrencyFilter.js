@@ -21,22 +21,22 @@ angular.module('sntCurrencyFilter', []).filter('sntCurrency', function() {
 			};
 
 			switch(scope.currencyFormat) {
-				case 'FORMAT-1': 
+				case '1,222,00': 
 					// EG : 1234567.89 => 1,234,567,89
 					paramObj.integerSeperatorType  = 'COMMA';
 					paramObj.fractionSeperatorType = 'COMMA';
 					break;
-				case 'FORMAT-2': 
+				case '1,222.00': 
 					// EG : 1234567.89 => 1,234,567.89
 					paramObj.integerSeperatorType  = 'COMMA';
 					paramObj.fractionSeperatorType = 'DOT';
 					break;
-				case 'FORMAT-3':
+				case '1.222':
 					// EG : 1234567.89 => 1.234.567 
 					paramObj.integerSeperatorType  = 'DOT';
 					paramObj.fractionSeperatorType = null;
 					break;
-				case 'FORMAT-4': 
+				case '1,222': 
 					// EG : 1234567.89 => 1,234,567
 					paramObj.integerSeperatorType  = 'COMMA';
 					paramObj.fractionSeperatorType = null;
