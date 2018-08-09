@@ -15,8 +15,8 @@ sntZestStation.controller('zsPickupKeyFindReservationCtrl', [
 		(function init() {
 			BaseCtrl.call(this, $scope);
 			$controller('zsPaymentCtrl', {
-            	$scope: $scope
-        	});
+				$scope: $scope
+			});
 			$scope.$emit(zsEventConstants.HIDE_BACK_BUTTON);
 			$scope.$emit(zsEventConstants.SHOW_CLOSE_BUTTON);
 			$scope.$on(zsEventConstants.CLICKED_ON_BACK_BUTTON, function() {
@@ -238,16 +238,16 @@ sntZestStation.controller('zsPickupKeyFindReservationCtrl', [
 
 		$scope.useNewCard = function () {
 			$scope.mainScreenMode = 'PAYMENT_IN_PROGRESS';
-        	$scope.reservation_id = $scope.reservationData.reservation_id;
+			$scope.reservation_id = $scope.reservationData.reservation_id;
 			$scope.screenMode.paymentAction = 'ADD_CARD'; 
 			$scope.payUsingNewCard();
 		};
 
-        $scope.$on('SAVE_CC_SUCCESS', function() {
-        	var stateParams = getStateParams();
+		$scope.$on('SAVE_CC_SUCCESS', function() {
+			var stateParams = getStateParams();
 
-        	goToKeyDispense(stateParams);
-        });
+			goToKeyDispense(stateParams);
+		});
 
         $scope.$on('PAYMENT_FAILED', function () {
         	$scope.mainScreenMode = 'PAYMENT_FAILED';

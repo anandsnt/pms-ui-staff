@@ -124,7 +124,11 @@ angular.module('sntZestStation').controller('zsPaymentCtrl', ['$scope', '$log', 
             $scope.$on('$destroy', listenerUpdateErrorMessage);
         };
         /**  ***************************** CBA code ends here **************************************/
-
+        var stopObeserveForSwipe = function() {
+            if ($scope.zestStationData.paymentGateway === 'MLI' && $scope.zestStationData.ccReader === 'local') {
+                $scope.$emit('STOP_OBSERVE_FOR_SWIPE');
+            }
+        };
         var callSubmitPaymentApi = function(params, loader) {
             $scope.screenMode.paymentInProgress = true;
             $scope.callAPI(zsPaymentSrv.submitDeposit, {
@@ -135,9 +139,7 @@ angular.module('sntZestStation').controller('zsPaymentCtrl', ['$scope', '$log', 
                     $scope.screenMode.paymentSuccess = true;
                     $scope.screenMode.paymentInProgress = false;
                     // stop observe for swipe once payment is success
-                    if ($scope.zestStationData.paymentGateway === 'MLI' && $scope.zestStationData.ccReader === 'local') {
-                        $scope.$emit('STOP_OBSERVE_FOR_SWIPE');
-                    }
+                    stopObeserveForSwipe();
                     runDigestCycle();
                 },
                 'failureCallBack': function() {
@@ -226,7 +228,7 @@ angular.module('sntZestStation').controller('zsPaymentCtrl', ['$scope', '$log', 
                     'payment_type': 'CC'
                 };
 
-            if($scope.screenMode.paymentAction === 'PAY_AMOUNT') {
+            if ($scope.screenMode.paymentAction === 'PAY_AMOUNT') {
                 callSubmitPaymentApi(params);
             } else {
                 saveCardByEmv(params);
@@ -286,9 +288,7 @@ angular.module('sntZestStation').controller('zsPaymentCtrl', ['$scope', '$log', 
         var saveSwipedCardMLI = function(data) {
             var successSavePayment = function() {
                 // stop observe for swipe once CC is saved
-                if ($scope.zestStationData.paymentGateway === 'MLI' && $scope.zestStationData.ccReader === 'local') {
-                    $scope.$emit('STOP_OBSERVE_FOR_SWIPE');
-                }
+                stopObeserveForSwipe();
                 $scope.$broadcast('SAVE_CC_SUCCESS');
             };
 
