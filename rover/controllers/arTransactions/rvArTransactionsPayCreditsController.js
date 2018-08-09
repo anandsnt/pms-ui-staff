@@ -100,6 +100,7 @@ sntRover.controller('RVArTransactionsPayCreditsController',
         }
         $scope.arFlags.isPaymentSelected = true;   
         $scope.arFlags.insufficientAmount = false; 
+        $scope.arDataObj.selectedInvoices = [];
 
         // Reload the ar transaction listing after payment
         if (data.allocatePaymentAfterPosting) {

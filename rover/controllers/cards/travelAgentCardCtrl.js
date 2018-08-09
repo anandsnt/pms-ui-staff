@@ -51,6 +51,9 @@ angular.module('sntRover').controller('RVTravelAgentCardCtrl', ['$scope', '$root
 			else if (tabToSwitch === 'cc-commissions') {
 				$scope.$broadcast("commissionsTabActive");
 			}
+			else if (tabToSwitch === 'cc-activity-log') {
+				$scope.$broadcast("activityLogTabActive");
+			}
 			if (tabToSwitch === 'cc-ar-transactions' && !isArNumberAvailable) {
 			  	console.warn("Save AR Account and Navigate to AR Transactions");
 			}
