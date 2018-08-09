@@ -14,6 +14,9 @@ sntZestStation.controller('zsPickupKeyFindReservationCtrl', [
 
 		(function init() {
 			BaseCtrl.call(this, $scope);
+			$controller('zsPaymentCtrl', {
+            	$scope: $scope
+        	});
 			$scope.$emit(zsEventConstants.HIDE_BACK_BUTTON);
 			$scope.$emit(zsEventConstants.SHOW_CLOSE_BUTTON);
 			$scope.$on(zsEventConstants.CLICKED_ON_BACK_BUTTON, function() {
@@ -21,6 +24,7 @@ sntZestStation.controller('zsPickupKeyFindReservationCtrl', [
 			});
 			$scope.setScreenIcon('key');
 			$scope.mode = 'LAST_NAME_ENTRY';
+			$scope.mainScreenMode = 'CARD_ENTRY';
 			$scope.reservationParams = {
 				'last_name': '',
 				'room_no': ''
@@ -230,15 +234,9 @@ sntZestStation.controller('zsPickupKeyFindReservationCtrl', [
 
 		/* CC actions starts here */
 
-		$scope.hideAddCardOption = $scope.zestStationData.paymentGateway === 'CBA' || 
-								  ($scope.zestStationData.paymentGateway === 'MLI' && $scope.zestStationData.mliEmvEnabled) ||
-                                  ($scope.zestStationData.paymentGateway === 'MLI' && $scope.zestStationData.hotelSettings.mli_cba_enabled) ||
-                                  $scope.zestStationData.paymentGateway === 'sixpayments';
+		$scope.hideAddCardOption = ($scope.zestStationData.paymentGateway === 'MLI' && $scope.zestStationData.hotelSettings.mli_cba_enabled);
 
 		$scope.useNewCard = function () {
-			$controller('zsPaymentCtrl', {
-            	$scope: $scope
-        	});
         	$scope.reservation_id = $scope.reservationData.reservation_id;
 			$scope.screenMode.paymentAction = 'ADD_CARD'; 
 			$scope.payUsingNewCard();
@@ -249,5 +247,10 @@ sntZestStation.controller('zsPickupKeyFindReservationCtrl', [
 
         	goToKeyDispense(stateParams);
         });
+
+        $scope.$on('PAYMENT_FAILED', function () {
+        	$scope.mainScreenMode = 'PAYMENT_FAILED';
+        });
+
 	}
 ]);

@@ -1,4 +1,4 @@
-<section id="main" role="main" class="centered search-content" click-touch='resetTime()' ng-hide="alreadyCheckedOut">
+<section id="main" role="main" class="centered search-content" click-touch='resetTime()' ng-hide="mainScreenMode === 'PAYMENT_FAILED'">
     <!-- last name -->
     <div id="content" class="input-field-contents" ng-show="mode === 'LAST_NAME_ENTRY'">
         <h1>
@@ -201,3 +201,38 @@
         </nav>
     </div>
 </section>
+
+<section id="main" class="centered kiosk" role="main" ng-show="mainScreenMode === 'PAYMENT_FAILED'">
+    <div id="content">
+        <h1 data-ng-bind-html="getTagValue('SWIPE_ERR_HEADER')" editable-text="SWIPE_ERR_HEADER">
+        </h1>
+        <h2 ng-show="screenMode.errorMessage.length">
+            ({{screenMode.errorMessage}})
+        </h2>
+        <nav id="options" class="large-icons" role="nav">
+            <ul role="menu">
+                <li>
+                    <button type="button" class="button option" touch-press='useNewCard()'>
+                        <div ng-include="icons.url.creditcard"></div>
+                    </button>
+                    <h1 data-ng-bind-html="getTagValue('TRY_AGAIN')" editable-text="TRY_AGAIN">
+                    </h1>
+                </li>
+                <li class="break">
+                    <span data-ng-bind-html="getTagValue('OR_TEXT')" editable-text="OR_TEXT">
+                    </span>
+                </li>
+                <li>
+                    <button type="button" class="button option" touch-press='talkToStaff()'>
+                        <div ng-include="icons.url.staff"></div>
+                    </button>
+                    <h1 data-ng-bind-html="getTagValue('SPEAK')" editable-text="SPEAK">
+                    </h1>
+                    <h4 data-ng-bind-html="getTagValue('SPEAK_SUB')" editable-text="SPEAK_SUB">
+                    </h4>
+                </li>
+            </ul>
+        </nav>
+    </div>
+</section>
+

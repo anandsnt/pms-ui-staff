@@ -197,17 +197,35 @@ angular.module('sntZestStation').controller('zsPaymentCtrl', ['$scope', '$log', 
         };
         /**  *************************** EMV **********************************/
 
+        var saveCardByEmv = function (params) {
+            $scope.callAPI(zsPaymentSrv.chipAndPinGetToken, {
+                params: params,
+                'successCallBack': function() {
+                    $scope.$emit('hideLoader');
+                    $scope.$emit('SAVE_CC_SUCCESS');
+                    runDigestCycle();
+                },
+                'failureCallBack': function() {
+                    paymentFailureActions();
+                }
+            });
+        };
+
         var proceedWithEMVPayment = function() {
             var params = {
                     'is_emv_request': true,
-                    'reservation_id': $scope.reservation_id,
+                    'reservation_id': $scope.reservation_id.toString(),
                     'add_to_guest_card': false,
                     'amount': $scope.balanceDue,
                     'bill_number': 1,
                     'payment_type': 'CC'
                 };
-
-            callSubmitPaymentApi(params);
+                
+            if($scope.screenMode.paymentAction === 'PAY_AMOUNT') {
+                callSubmitPaymentApi(params);
+            } else {
+                saveCardByEmv(params);
+            }
         };
 
         $scope.payUsingExistingCard = function() {
