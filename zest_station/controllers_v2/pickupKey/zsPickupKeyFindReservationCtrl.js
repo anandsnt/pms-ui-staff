@@ -8,7 +8,8 @@ sntZestStation.controller('zsPickupKeyFindReservationCtrl', [
 	'$timeout',
 	'zsCheckinSrv',
 	'zsGeneralSrv',
-	function($scope, $rootScope, $state, zsEventConstants, zsCheckoutSrv, $stateParams, $timeout, zsCheckinSrv, zsGeneralSrv) {
+	'$controller',
+	function($scope, $rootScope, $state, zsEventConstants, zsCheckoutSrv, $stateParams, $timeout, zsCheckinSrv, zsGeneralSrv, $controller) {
 
 
 		(function init() {
@@ -122,16 +123,19 @@ sntZestStation.controller('zsPickupKeyFindReservationCtrl', [
 			$state.go('zest_station.pickUpKeyDispense', stateParams);
 		};
 
+		var getStateParams = function() {
+			return {
+				'reservation_id': $scope.reservationData.reservation_id,
+				'room_no': $scope.reservationParams.room_no,
+				'first_name': $scope.reservationData.first_name
+			};
+		};
 
 		$scope.validateCConFile = function() {
 			$scope.callBlurEventForIpad();
 			var onCCVerificationSuccess = function() {
 				if ($scope.reservationData.is_checked_in) {
-					var stateParams = {
-						'reservation_id': $scope.reservationData.reservation_id,
-						'room_no': $scope.reservationParams.room_no,
-						'first_name': $scope.reservationData.first_name
-					};
+					var stateParams = getStateParams();
 					
 					// Check if ID scan is required
 					if ($scope.zestStationData.check_in_collect_passport || $scope.zestStationData.kiosk_manual_id_scan) {
@@ -227,15 +231,23 @@ sntZestStation.controller('zsPickupKeyFindReservationCtrl', [
 		/* CC actions starts here */
 
 		$scope.hideAddCardOption = $scope.zestStationData.paymentGateway === 'CBA' || 
-								  ($scope.zestStationData.paymentGateway === 'MLI' && $scope.zestStationData.mliEmvEnabled) || 
-								   $scope.zestStationData.paymentGateway === 'sixpayments';
+								  ($scope.zestStationData.paymentGateway === 'MLI' && $scope.zestStationData.mliEmvEnabled) ||
+                                  ($scope.zestStationData.paymentGateway === 'MLI' && $scope.zestStationData.hotelSettings.mli_cba_enabled) ||
+                                  $scope.zestStationData.paymentGateway === 'sixpayments';
 
 		$scope.useNewCard = function () {
 			$controller('zsPaymentCtrl', {
             	$scope: $scope
         	});
+        	$scope.reservation_id = $scope.reservationData.reservation_id;
 			$scope.screenMode.paymentAction = 'ADD_CARD'; 
 			$scope.payUsingNewCard();
 		};
+
+        $scope.$on('SAVE_CC_SUCCESS', function() {
+        	var stateParams = getStateParams();
+
+        	goToKeyDispense(stateParams);
+        });
 	}
 ]);

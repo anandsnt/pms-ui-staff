@@ -91,14 +91,14 @@
     <!-- CC check failed -->
     <div id="content" ng-show="mode === 'CC_OPTIONS'">
         <h1><text data-ng-bind-html="getTagValue('CC_OPTIONS_HEADER')" editable-text="CC_OPTIONS_HEADER"></text></h1>
-        <h2><text data-ng-bind-html="getTagValue('CC_OPTIONS_SUB_HEADER')" editable-text="CC_OPTIONS_SUB_HEADER"></text></h2>
+        <h2><text data-ng-bind-html="getTagValue('PLEASE_SELECT_ONE')" editable-text="PLEASE_SELECT_ONE"></text></h2>
         <nav id="options" role="nav">
             <ul role="menu">
                 <li>
                     <button type="button" class="button option" touch-press="reEnterCC()">
                         <div ng-include="icons.url.keyboard"></div>
                     </button>
-                    <text data-ng-bind-html="getTagValue('ENTER_CC_LAST_4')" editable-text="ENTER_CC_LAST_4"></text>
+                    <text data-ng-bind-html="getTagValue('ENTER_LAST_CC_DIGITS')" editable-text="ENTER_LAST_CC_DIGITS"></text>
                 </li>
                 <li class="break">
                     <text data-ng-bind-html="getTagValue('OR_TEXT')" editable-text="OR_TEXT"></text>
@@ -107,17 +107,8 @@
                     <button type="button" class="button option" touch-press="useNewCard()">
                         <div ng-include="icons.url.creditcard"></div>
                     </button>
-                    <text data-ng-bind-html="getTagValue('USE_NEW_CC')" editable-text="USE_NEW_CC"></text>
-                </li>
-                <li>
-                    <button type="button" class="button option" touch-press='talkToStaff()'>
-                        <!--div ng-include="'/assets/zest_station/css/icons/staff.svg'"></div-->
-                        <div ng-include="icons.url.staff"></div>
-                    </button>
-                    <text data-ng-bind-html="getTagValue('RES_SRCH_TALK')" editable-text="RES_SRCH_TALK"></text>
-                    <span>
-                        <text data-ng-bind-html="getTagValue('RES_SRCH_TALK_SUB')" editable-text="RES_SRCH_TALK_SUB"></text>
-                    </span>
+                    <text data-ng-bind-html="getTagValue('ADD_NEW')" editable-text="ADD_NEW"></text>
+                    <span data-ng-bind-html="getTagValue('CREDIT_CARD')" editable-text="CREDIT_CARD">
                 </li>
             </ul>
         </nav>
@@ -156,7 +147,7 @@
                 <li class="break">
                     <text data-ng-bind-html="getTagValue('OR_TEXT')" editable-text="OR_TEXT"></text>
                 </li>
-                <li>
+                <li ng-if="hideAddCardOption">
                     <button type="button" class="button option" touch-press='talkToStaff()'>
                         <!--div ng-include="'/assets/zest_station/css/icons/staff.svg'"></div-->
                         <div ng-include="icons.url.staff"></div>
@@ -164,6 +155,14 @@
                     <text data-ng-bind-html="getTagValue('RES_SRCH_TALK')" editable-text="RES_SRCH_TALK"></text>
                     <span>
                         <text data-ng-bind-html="getTagValue('RES_SRCH_TALK_SUB')" editable-text="RES_SRCH_TALK_SUB"></text>
+                    </span>
+                </li>
+                <li ng-if="!hideAddCardOption">
+                    <button type="button" class="button option" touch-press="useNewCard()">
+                        <div ng-include="icons.url.creditcard"></div>
+                    </button>
+                    <text data-ng-bind-html="getTagValue('ADD_NEW')" editable-text="ADD_NEW"></text>
+                    <span data-ng-bind-html="getTagValue('CREDIT_CARD')" editable-text="CREDIT_CARD">
                     </span>
                 </li>
             </ul>
@@ -180,20 +179,16 @@
         -->
         <nav id="options" role="nav">
             <ul role="menu">
-                <!-- Phase 2: include also --
-                <li>
-                <button type="button" class="button option">
-                {../assets/icons/creditcard.svg}
-                </button>
-                Add New
-                <span>Credit Card</span> 
+                <li ng-if="!hideAddCardOption">
+                    <button type="button" class="button option" touch-press="useNewCard()">
+                        <div ng-include="icons.url.creditcard"></div>
+                    </button>
+                    <text data-ng-bind-html="getTagValue('ADD_NEW')" editable-text="ADD_NEW"></text>
+                    <span data-ng-bind-html="getTagValue('CREDIT_CARD')" editable-text="CREDIT_CARD">
+                    </span>
                 </li>
-                <li class="break">
-                <span>Or</span>
-                </li>
-                -->
-                <li>
-                    <button type="button" class="button option" touch-press='talkToStaff(); resetTime();'>
+                <li ng-if="hideAddCardOption">
+                    <button type="button" class="button option" touch-press='talkToStaff()'>
                         <!--div ng-include="'/assets/zest_station/css/icons/staff.svg'"></div-->
                         <div ng-include="icons.url.staff"></div>
                     </button>
