@@ -5,21 +5,46 @@ sntRover.controller('RVNewActionCtrl', ['$scope', '$rootScope', 'rvUtilSrv', 'da
 
             $scope.__maxLengthOfNotes = 255;
 
-            $scope.newAction = {
-                reservation: null,
-                group: null,
-                dueDate: $rootScope.businessDate,
-                dueTime: "00:00",
-                note: "",
-                department: ""
-            };
+            if ($scope.selectedView === 'edit') {
+                var splitDueTimeString = $scope.selectedAction.due_at_str.split("T"),
+                    dueAtTime = dateFilter(splitDueTimeString[0] + "T" +  splitDueTimeString[1].split(/[+-]/)[0], "HH:mm"),
+                    dueAtDate = $filter('date')($scope.selectedAction.due_at_str, 'yyyy-MM-dd'),
+                    assignedTo = $scope.selectedAction.assigned_to && $scope.selectedAction.assigned_to.id,
+                    department = '';
+
+                if (assignedTo) {
+                   department = _.findWhere($scope.departments, { value: assignedTo + "" }); 
+                }               
+               
+               _.extend($scope.selectedAction, {                    
+                    dueDate: dueAtDate,
+                    dueTime: dueAtTime,
+                    note: $scope.selectedAction.description,
+                    department: department
+                });               
+
+            } else {
+               $scope.newAction = {
+                    reservation: null,
+                    group: null,
+                    dueDate: $rootScope.businessDate,
+                    dueTime: "00:00",
+                    note: "",
+                    department: ""
+                }; 
+            }
 
             $scope.dueDateOptions = {
                 minDate: tzIndependentDate($rootScope.businessDate),
                 dateFormat: $rootScope.jqDateFormat,
                 numberOfMonths: 1,
                 onSelect: function (date, datePickerObj) {
-                    $scope.newAction.dueDate = new tzIndependentDate(rvUtilSrv.get_date_from_date_picker(datePickerObj));
+                    if ($scope.selectedView === 'edit') {
+                        $scope.selectedAction.dueDate = new tzIndependentDate(rvUtilSrv.get_date_from_date_picker(datePickerObj)); 
+                    } else {
+                       $scope.newAction.dueDate = new tzIndependentDate(rvUtilSrv.get_date_from_date_picker(datePickerObj)); 
+                    }
+                    
                 },
                 beforeShow: function() {
                     angular.element("#ui-datepicker-div").after(angular.element('<div></div>', {
@@ -86,7 +111,7 @@ sntRover.controller('RVNewActionCtrl', ['$scope', '$rootScope', 'rvUtilSrv', 'da
         var listenerGroupSelect = $scope.$on("GROUP_SELECTED", function(e, selectedGroup) {
 
             var businessDate = new tzIndependentDate($rootScope.businessDate),
-                arrivalDate = new tzIndependentDate(selectedGroup.from_date);
+                arrivalDate = new tzIndependentDate(selectedGroup.arrival_date);
 
             $scope.newAction.dueDate = businessDate > arrivalDate ? businessDate : arrivalDate;
         });
