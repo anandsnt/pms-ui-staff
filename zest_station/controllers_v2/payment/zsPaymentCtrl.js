@@ -343,7 +343,7 @@ angular.module('sntZestStation').controller('zsPaymentCtrl', ['$scope', '$log', 
                 processSwipeCardData(response);
             }
             
-            $scope.$emit('hideLoader');
+            // $scope.$emit('hideLoader');
             runDigestCycle();
         });
         $scope.$on('SOCKET_CONNECTED', function() {
