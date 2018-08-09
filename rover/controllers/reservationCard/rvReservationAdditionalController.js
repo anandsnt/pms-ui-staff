@@ -141,6 +141,7 @@ sntRover.controller('rvReservationAdditionalController', ['$rootScope', '$scope'
          */
         $scope.updateCommissionFromStaycard = function() {
             var params = $scope.reservationData.reservation_card.commission_details;
+
             params.reservationId = $scope.reservationParentData.reservationId;
 
             var	options = {
