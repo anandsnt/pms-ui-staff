@@ -237,6 +237,7 @@ sntZestStation.controller('zsPickupKeyFindReservationCtrl', [
 		$scope.hideAddCardOption = ($scope.zestStationData.paymentGateway === 'MLI' && $scope.zestStationData.hotelSettings.mli_cba_enabled);
 
 		$scope.useNewCard = function () {
+			$scope.mainScreenMode = 'PAYMENT_IN_PROGRESS';
         	$scope.reservation_id = $scope.reservationData.reservation_id;
 			$scope.screenMode.paymentAction = 'ADD_CARD'; 
 			$scope.payUsingNewCard();

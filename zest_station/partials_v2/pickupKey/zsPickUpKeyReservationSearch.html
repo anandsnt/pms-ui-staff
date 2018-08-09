@@ -1,4 +1,4 @@
-<section id="main" role="main" class="centered search-content" click-touch='resetTime()' ng-hide="mainScreenMode === 'PAYMENT_FAILED'">
+<section id="main" role="main" class="centered search-content" click-touch='resetTime()' ng-show="mainScreenMode === 'CARD_ENTRY'">
     <!-- last name -->
     <div id="content" class="input-field-contents" ng-show="mode === 'LAST_NAME_ENTRY'">
         <h1>
@@ -196,6 +196,26 @@
                     <span>
                         <text data-ng-bind-html="getTagValue('RES_SRCH_TALK_SUB')" editable-text="RES_SRCH_TALK_SUB"></text>
                     </span>
+                </li>
+            </ul>
+        </nav>
+    </div>
+</section>
+
+   <!-- payment in progress -->
+<section id="main" role="main" ng-show="mainScreenMode === 'PAYMENT_IN_PROGRESS'" class="centered">
+    <!-- hide below content when payment is in progress -->
+    <div id="content">
+        <h1><text data-ng-bind-html="getTagValue('ADD_NEW_CREDIT_CARD')" editable-text="ADD_NEW_CREDIT_CARD"></h1>
+        <nav id="options" role="nav" class="options-menu">
+            <ul role="menu">
+                <li>
+                    <button type="button" class="button option" ng-if="!isCBAPayment && !icmp">
+                        <div ng-include="icons.url.creditcard"></div>
+                    </button>
+                    <div ng-include="icons.url.creditcard_icmp" ng-if="!isCBAPayment  && icmp"></div>
+                    <text data-ng-bind-html="getTagValue('SWIPE_CARD_PLEASE')" editable-text="SWIPE_CARD_PLEASE"></text>
+                    <img src="/assets/zest_station/css/icons/default/ingenico.png" alt="" class="device-image device-ingenico" ng-if="isCBAPayment"/>
                 </li>
             </ul>
         </nav>
