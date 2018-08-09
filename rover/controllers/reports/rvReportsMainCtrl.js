@@ -147,7 +147,7 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
                 // This is for handling the case when user navigate back from the other states back to report state
                 // eg: For arrival report, the user can navigate to staycard and come back again to report details screen
                 // In such case, the report list should be processed again to set the flags and so
-                var shouldRefresh = $scope.shouldProcessReportList ? $scope.shouldProcessReportList: false;
+                var shouldRefresh = $scope.shouldProcessReportList ? $scope.shouldProcessReportList : false;
 
                 $state.go('rover.reports.dashboard', { refresh: shouldRefresh});
 
