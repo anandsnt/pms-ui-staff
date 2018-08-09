@@ -2,9 +2,7 @@ describe('RVGuestCardActivityLogController', function() {
 
     var $controller,
         $scope = {},
-        $q,
-        that,
-        RVCompanyCardActivityLogSrv;
+        that;
 
     jasmine.getJSONFixtures().fixturesPath = 'base/unitTestSampleData/';
     var fixtures = loadJSONFixtures('activityLogSampleData.json'),
@@ -12,11 +10,9 @@ describe('RVGuestCardActivityLogController', function() {
 
     beforeEach(function() {
         module('sntRover');
-        inject(function (_$controller_, _RVCompanyCardActivityLogSrv_, _$rootScope_, _$q_) {
+        inject(function (_$controller_, _$rootScope_) {
             $controller = _$controller_;
             $scope = _$rootScope_.$new();
-            $q = _$q_;
-            RVCompanyCardActivityLogSrv = _RVCompanyCardActivityLogSrv_;
         });
 
         that = $controller('RVGuestCardActivityLogController', {
