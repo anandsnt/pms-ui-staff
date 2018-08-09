@@ -43,6 +43,7 @@ module.exports = {
                 sharedRoot + 'cardReaderCtrl.js',
                 // sharedRoot + 'cordova.js',
                 sharedRoot + 'sntTransitionManager/**/*.js',
+                sharedRoot + 'sntCurrency/sntCurrencyFilter.js',
 
 				roverRoot + 'rvRouters/**/*.js',
 				roverRoot + 'rvApp.js',
@@ -60,7 +61,6 @@ module.exports = {
 				roverRoot + 'filters/roundFilter.js',
 				roverRoot + 'filters/highlightWordsFilter.js',
 				roverRoot + 'filters/rvTrustAsResourceUrl.js',
-				roverRoot + 'filters/sntCurrencyFilter.js',
 
 				controllerRoot + 'rvTopCtrl.js',
 				controllerRoot + 'rvRoverController.js',

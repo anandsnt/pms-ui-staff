@@ -1,12 +1,12 @@
-angular.module('sntRover').filter('sntCurrency', function() {
+angular.module('sntCurrencyFilter').filter('sntCurrency', function() {
 	return function(input, scope, isWithoutSymbol, precision) {
 
 		var DEFAULT_PRECISION = 2;
 
 		if (typeof input !== 'undefined' && scope) {
 
-			if( typeof input === 'undefined' || isNaN(input)) {
-				console.warn("sntCurrency exception :: Invalid input");
+			if (isNaN(input)) {
+				console.warn("sntCurrency exception :: Invalid input - ",input);
 				return;
 			}
 			else if (typeof input !== 'string') {
