@@ -166,13 +166,18 @@ angular.module('sntZestStation').controller('zsPaymentCtrl', ['$scope', '$log', 
             $scope.screenMode.isUsingExistingCardPayment = false;
             $scope.screenMode.paymentFailure = false;
             $scope.screenMode.errorMessage = '';
-            if (($scope.zestStationData.paymentGateway === 'CBA' || ($scope.zestStationData.paymentGateway === 'MLI' && $scope.zestStationData.hotelSettings.mli_cba_enabled)) && $scope.isIpad) {
+            var isCBA = ($scope.zestStationData.paymentGateway === 'CBA' || ($scope.zestStationData.paymentGateway === 'MLI' && $scope.zestStationData.hotelSettings.mli_cba_enabled)) && $scope.isIpad;
+            var isEMVPayment = ($scope.zestStationData.paymentGateway === 'MLI' && $scope.zestStationData.mliEmvEnabled) ||
+                $scope.zestStationData.paymentGateway === 'sixpayments';
+            var isDesktopMLIPayment = $scope.zestStationData.paymentGateway === 'MLI' && $scope.zestStationData.ccReader === 'websocket';
+            var isIpadDevicePayment = $scope.zestStationData.paymentGateway === 'MLI' && $scope.zestStationData.ccReader === 'local';
+
+            if (isCBA) {
                 $scope.startCBAPayment();
-            } else if (($scope.zestStationData.paymentGateway === 'MLI' && $scope.zestStationData.mliEmvEnabled) || 
-            $scope.zestStationData.paymentGateway === 'sixpayments') {            // for EMV start sending request to terminal
-                        // add 4 seconds delay for the screen to show the activity indicator
-                        proceedWithEMVPayment();
-            } else if ($scope.zestStationData.paymentGateway === 'MLI' && $scope.zestStationData.ccReader === 'websocket') {
+            } else if (isEMVPayment) { // for EMV start sending request to terminal
+                // add 4 seconds delay for the screen to show the activity indicator
+                proceedWithEMVPayment();
+            } else if (isDesktopMLIPayment) {
                 // Check if socket is ready
                 if ($scope.inDemoMode()) {
                     processSwipeCardData(zsPaymentSrv.sampleMLISwipedCardResponse);
@@ -183,7 +188,7 @@ angular.module('sntZestStation').controller('zsPaymentCtrl', ['$scope', '$log', 
                     $scope.$emit('showLoader');
                     $scope.$emit('CONNECT_WEBSOCKET');
                 }
-            } else if ($scope.zestStationData.paymentGateway === 'MLI' && $scope.zestStationData.ccReader === 'local') {
+            } else if (isIpadDevicePayment) {
                 proceedWithiPadPayments();
             } else {
                 $scope.$emit('showLoader');
@@ -220,7 +225,7 @@ angular.module('sntZestStation').controller('zsPaymentCtrl', ['$scope', '$log', 
                     'bill_number': 1,
                     'payment_type': 'CC'
                 };
-                
+
             if($scope.screenMode.paymentAction === 'PAY_AMOUNT') {
                 callSubmitPaymentApi(params);
             } else {
@@ -402,7 +407,7 @@ angular.module('sntZestStation').controller('zsPaymentCtrl', ['$scope', '$log', 
             } else {
                 paymentFailureActions();
             }
-           runDigestCycle();
+            runDigestCycle();
         });
 
 
