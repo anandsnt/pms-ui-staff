@@ -1,4 +1,5 @@
-<section id="main" role="main" class="centered search-content" click-touch='resetTime()' ng-show="mainScreenMode === 'CARD_ENTRY'">
+<section id="main" role="main" class="centered search-content" click-touch='resetTime()' ng-show="mainScreenMode === 'FIND_RESERVATION'">
+
     <!-- last name -->
     <div id="content" class="input-field-contents" ng-show="mode === 'LAST_NAME_ENTRY'">
         <h1>
@@ -15,6 +16,7 @@
             </div>
         </form>
     </div>
+
     <!-- room number -->
     <div id="content" class="input-field-contents" ng-show="mode === 'ROOM_NUMBER_ENTRY'">
         <h1>
@@ -38,6 +40,7 @@
             </div>
         </form>
     </div>
+
     <!-- no match -->
     <div id="content" ng-show="mode === 'NO_MATCH'">
         <h1>
@@ -114,7 +117,7 @@
         </nav>
     </div>
 
-    <!-- CC -->
+    <!-- CC Manual entry-->
     <div id="content" ng-show="mode === 'CC_ENTRY'">
         <h1><text data-ng-bind-html="getTagValue('ENTER_LAST_CC_DIGITS')" editable-text="ENTER_LAST_CC_DIGITS"></text></h1>
         <h3><text data-ng-bind-html="getTagValue('ENTER_LAST_CC_DIGITS_INSTRUCTION')" editable-text="ENTER_LAST_CC_DIGITS_INSTRUCTION"></text></h3>
@@ -222,6 +225,7 @@
     </div>
 </section>
 
+<!-- CC addition failed -->
 <section id="main" class="centered kiosk" role="main" ng-show="mainScreenMode === 'PAYMENT_FAILED'">
     <div id="content">
         <h1 data-ng-bind-html="getTagValue('SWIPE_ERR_HEADER')" editable-text="SWIPE_ERR_HEADER">

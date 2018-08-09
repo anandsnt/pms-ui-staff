@@ -24,7 +24,7 @@ sntZestStation.controller('zsPickupKeyFindReservationCtrl', [
 			});
 			$scope.setScreenIcon('key');
 			$scope.mode = 'LAST_NAME_ENTRY';
-			$scope.mainScreenMode = 'CARD_ENTRY';
+			$scope.mainScreenMode = 'FIND_RESERVATION';
 			$scope.reservationParams = {
 				'last_name': '',
 				'room_no': ''
