@@ -341,9 +341,10 @@ angular.module('sntZestStation').controller('zsPaymentCtrl', ['$scope', '$log', 
         $scope.$on('SWIPE_ACTION', function (evt, response) {
             if (!$scope.screenMode.paymentFailure && !$scope.screenMode.paymentSuccess && !$scope.screenMode.isCBADespositMode) {
                 processSwipeCardData(response);
+            } else {
+                $scope.$emit('hideLoader');
             }
             
-            // $scope.$emit('hideLoader');
             runDigestCycle();
         });
         $scope.$on('SOCKET_CONNECTED', function() {
