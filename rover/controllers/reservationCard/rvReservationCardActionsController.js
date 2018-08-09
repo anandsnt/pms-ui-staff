@@ -61,6 +61,12 @@ sntRover.controller('rvReservationCardActionsController', ['$scope', '$filter', 
                 fadeScrollbars: true,
                 click: true
             });
+            $scope.setScroller("actionSummaryScroller", {
+                scrollbars: true,
+                preventDefault: false,
+                fadeScrollbars: true,
+                click: true
+            });
 
            // initially use the count from the staycard init request for reservation details
            var setActionsCount = function() {
@@ -360,6 +366,7 @@ sntRover.controller('rvReservationCardActionsController', ['$scope', '$filter', 
             }
 
             $scope.setRightPane('selected');
+            $scope.refreshScroller('actionSummaryScroller');
             $scope.clearAssignSection();
         };
         $scope.setRightPane = function(toView) {
@@ -388,7 +395,7 @@ sntRover.controller('rvReservationCardActionsController', ['$scope', '$filter', 
             }
         });
         $scope.clearErrorMessage = function () {
-                $scope.errorMessage = [];
+                $scope.errorMessage = '';
         };
         $scope.postAction = function() {
             $scope.selectedAction = 'selected';
@@ -1360,6 +1367,7 @@ sntRover.controller('rvReservationCardActionsController', ['$scope', '$filter', 
                         $scope.actionSelected = 'selected';
                     }
                      $scope.isRefreshing = false;
+                    $scope.refreshScroller('actionSummaryScroller');
                 };
                 var onFailure = function(data) {
                     if (data[0]) {
@@ -1463,6 +1471,8 @@ sntRover.controller('rvReservationCardActionsController', ['$scope', '$filter', 
 
             if ($scope.newAction.department) {
                params.assigned_to = $scope.newAction.department.value;               
+            } else {
+              params.assigned_to = '';  
             }
 
             if ($scope.newAction.date_due) {

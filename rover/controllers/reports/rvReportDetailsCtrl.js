@@ -1458,7 +1458,12 @@ sntRover.controller('RVReportDetailsCtrl', [
         $scope.fetchFullYearlyTaxReport = function() {
             $scope.$broadcast("FETCH_FULL_YEARLY_TAX_REPORT");
         };
-
+        /*
+         * Method to get the reservations status
+         */
+        $scope.getReservationStatus = function(reservationStatus) {
+            return getReservationStatusClass(reservationStatus);
+        };
         
         // Invokes actual print 
         var invokePrint = () => {

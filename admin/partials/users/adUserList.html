@@ -28,7 +28,7 @@
 				<span class="count-entries">entries</span>
 
 				<div class="table-filters">
-				    <div class="entry pull-left">
+				    <div class="entry pull-left" ng-show="flagObject.showIncludeInactiveCheckbox">
 				         <label class="checkbox" ng-class="{'checked': showInactiveUser}">
 				            <span class="icon-form icon-checkbox" ng-class="{'checked': showInactiveUser}"></span>
 				            <input ng-class="{'checked': showInactiveUser}" type="checkbox" ng-click="clickedShowInactiveUsers()" name="inactive" value="1" ng-model="showInactiveUser" />
@@ -38,7 +38,7 @@
 				    <div class="entry table-search">
 						<span class="search-text">Search</span>
 						<span class="icons icon-search" name="submit" type="submit"></span>
-						<input placeholder="" autocomplete="off" type="text" ad-delay-textbox ng-model="searchTerm" delay="1000" function-to-fire="searchEntered" />
+						<input placeholder="" autocomplete="off" type="text" ad-delay-textbox ng-model="searchTerm" ng-change="changedSearchText()" delay="1000" function-to-fire="searchEntered" />
 					</div>
 				</div>
 				

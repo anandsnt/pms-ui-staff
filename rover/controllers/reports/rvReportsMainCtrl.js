@@ -1024,7 +1024,8 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
                     'travel_agent_ids': [],
                     'segments': [],
                     'market_ids': [],
-                    'tax_exempt_type_ids': []
+                    'tax_exempt_type_ids': [],
+                    'group_code': []
                 };
             }
 
@@ -1515,8 +1516,8 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
             }
 
             // include company/ta/group
-            if (report.hasOwnProperty('hasGroupCode') && !!report.chosenIncludeGroupCode) {
-                key = report.hasGroupCode.value.toLowerCase();
+            if (report.hasOwnProperty('hasGroupCode') && !!report.uiChosenIncludeGroupCode) {
+                key =  report.hasGroupCode.value.toLowerCase();
 
                 params[key] = [];                
                 /**/
@@ -2680,7 +2681,7 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 
         // for Company TA Group
         var groupCodeArray = [],
-            groupCodeIds = [];
+            groupCodeIds = [];       
 
         var autoCompleteForGroupCode = {
             source: function (request, response) {
@@ -2690,18 +2691,14 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
                 reportsSubSrv.fetchGroupCode(term)
                     .then(function (data) {
                         var found;
-
+                            
+                        groupCodeArray = [];
                         _.each(data, function (item) {
-                            var hasIn = _.find(groupCodeArray, function (added) {
-                                return added.value === item.id;
-                            });
 
-                            if (!hasIn) {
                                 groupCodeArray.push({
                                     label: item.group_code,
                                     value: item.id
                                 });
-                            }
                         });
 
                         found = $.ui.autocomplete.filter(groupCodeArray, term);
@@ -2724,7 +2721,7 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
                 $timeout(function () {
                     $scope.$apply(function () {
                         touchedReport.uiChosenIncludeGroupCode = uiValue.join(', ');
-                        touchedReport.chosenIncludeGroupCode = groupCodeIds.join(', ');                    
+                        touchedReport.chosenIncludeGroupCode = (_.uniq(groupCodeIds)).join(', ');                    
                     });
                 }, 100);
                 return false;

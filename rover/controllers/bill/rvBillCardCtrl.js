@@ -792,6 +792,12 @@ sntRover.controller('RVbillCardController',
 				bill_number: response.data[0].to_bill_number,
 				total_amount: response.data[0].bill_amount
 			};
+			$scope.shouldGenerateFolioNumber = true;
+			var reservationStatus = $scope.reservationBillData.reservation_status;
+
+	 		if (hasActivatedFolioNumber && $scope.shouldGenerateFolioNumber && (reservationStatus === 'CHECKEDOUT' ||  reservationStatus === 'NOSHOW')) {
+				callGenerateFolioNumberApiAfterLoadingCurrentBill = true;
+			}
 
 			$scope.getBillData($scope.currentActiveBill);
 		};
@@ -1174,6 +1180,12 @@ sntRover.controller('RVbillCardController',
 		$scope.shouldGenerateFolioNumber = true;	
 		if (data.message) {
 			showTaxExemptAlertMessage(data);			
+		}
+
+		var reservationStatus = $scope.reservationBillData.reservation_status;
+
+ 		if (hasActivatedFolioNumber && $scope.shouldGenerateFolioNumber && (reservationStatus === 'CHECKEDOUT' ||  reservationStatus === 'NOSHOW')) {
+			callGenerateFolioNumberApiAfterLoadingCurrentBill = true;
 		}
 		$scope.getBillData($scope.currentActiveBill);	
 	});
@@ -2949,6 +2961,12 @@ sntRover.controller('RVbillCardController',
 	$scope.$on('moveChargeSuccsess', function(event, data) {
 		if (data.message) {
 			showTaxExemptAlertMessage(data);			
+		}
+		$scope.shouldGenerateFolioNumber = true;
+		var reservationStatus = $scope.reservationBillData.reservation_status;
+
+ 		if (hasActivatedFolioNumber && $scope.shouldGenerateFolioNumber && (reservationStatus === 'CHECKEDOUT' ||  reservationStatus === 'NOSHOW')) {
+			callGenerateFolioNumberApiAfterLoadingCurrentBill = true;
 		}
 		$scope.getBillData($scope.currentActiveBill);
 	});
