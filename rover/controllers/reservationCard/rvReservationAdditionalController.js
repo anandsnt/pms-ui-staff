@@ -129,9 +129,7 @@ sntRover.controller('rvReservationAdditionalController', ['$rootScope', '$scope'
 		 */
 		$scope.toggleTaxExempt = function() {
 			$scope.additionalDetails.isTaxExemptEnabled = !$scope.additionalDetails.isTaxExemptEnabled;
-			// if (!$scope.additionalDetails.isTaxExemptEnabled) {
-				$scope.updateTaxExemptData();				
-			// }
+			$scope.updateTaxExemptData();
 		};
 
 		$rootScope.$on('UPDATERESERVATIONTYPE', function(e, data, paymentId ) {
