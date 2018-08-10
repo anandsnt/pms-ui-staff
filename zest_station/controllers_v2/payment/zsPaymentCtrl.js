@@ -411,13 +411,7 @@ angular.module('sntZestStation').controller('zsPaymentCtrl', ['$scope', '$log', 
             runDigestCycle();
         });
 
-
-        // To Mock MLI swipe - 
-        // Once payment screen is loaded, 
-        // In browser console call document.dispatchEvent(new Event('MOCK_MLI_SWIPE')) 
-
-        document.addEventListener('MOCK_MLI_SWIPE', function() {
-            $scope.$emit('showLoader');
+        $scope.$on('ON_MOCK_CC_SWIPE', function () {
             $timeout(function() {
                 $scope.$emit('hideLoader');
                 processSwipeCardData(zsPaymentSrv.sampleMLISwipedCardResponse);

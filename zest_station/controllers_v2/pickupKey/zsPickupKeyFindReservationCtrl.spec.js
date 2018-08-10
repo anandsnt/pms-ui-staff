@@ -384,11 +384,5 @@ describe('zsPickupKeyFindReservationCtrl', function() {
             expect($scope.mainScreenMode).toBe('PAYMENT_FAILED');
         });
 
-        it(' On saving CC, go to key creation screen', function() {
-            spyOn($state, 'go');
-            $scope.$emit('SAVE_CC_SUCCESS');
-            expect($state.go).toHaveBeenCalledWith('zest_station.pickUpKeyDispense', jasmine.any(Object));
-        });
-
     });
 });

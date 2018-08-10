@@ -105,7 +105,7 @@ sntZestStation.controller('zsPickupKeyFindReservationCtrl', [
 
 		var fetchGuestDetails = function(data, stateParams) {
 			var successCallBack = function(guest_details) {
-				if (!$scope.reservationHasPassportsScanned(guest_details) && !guest_details.primary_guest_details.guest_id_reviewed) {
+				if (!$scope.reservationHasPassportsScanned(guest_details) && (!guest_details.primary_guest_details.guest_id_reviewed || $scope.zestStationData.pickup_key_always_ask_for_id)) {
 					$scope.zestStationData.continuePickupFlow = function() {
 						goToKeyDispense(stateParams);
 					};
@@ -130,35 +130,33 @@ sntZestStation.controller('zsPickupKeyFindReservationCtrl', [
 			$state.go('zest_station.pickUpKeyDispense', stateParams);
 		};
 
-		var getStateParams = function() {
-			return {
-				'reservation_id': $scope.reservationData.reservation_id,
-				'room_no': $scope.reservationParams.room_no,
-				'first_name': $scope.reservationData.first_name
-			};
+
+		var onCCVerificationSuccess = function() {
+			if ($scope.reservationData.is_checked_in) {
+				var stateParams = {
+					'reservation_id': $scope.reservationData.reservation_id,
+					'room_no': $scope.reservationParams.room_no,
+					'first_name': $scope.reservationData.first_name
+				};
+
+				// Check if ID scan is required
+				if ($scope.zestStationData.check_in_collect_passport || $scope.zestStationData.kiosk_manual_id_scan) {
+					fetchGuestDetails($scope.reservationData, stateParams);
+				} else {
+					goToKeyDispense(stateParams);
+				}
+			} else {
+				// if the reservation is not checked in, procced to checkin
+				if (!$scope.reservationData.is_checked_in && $scope.reservationData.guest_arriving_today) {
+					fetchDetailsForCheckingIn($scope.reservationData.reservation_id);
+				} else {
+					generalFailureActions();
+				}
+			}
 		};
 
 		$scope.validateCConFile = function() {
 			$scope.callBlurEventForIpad();
-			var onCCVerificationSuccess = function() {
-				if ($scope.reservationData.is_checked_in) {
-					var stateParams = getStateParams();
-					
-					// Check if ID scan is required
-					if ($scope.zestStationData.check_in_collect_passport || $scope.zestStationData.kiosk_manual_id_scan) {
-						fetchGuestDetails($scope.reservationData, stateParams);
-					} else {
-						goToKeyDispense(stateParams);
-					}
-				} else {
-					// if the reservation is not checked in, procced to checkin
-					if (!$scope.reservationData.is_checked_in && $scope.reservationData.guest_arriving_today) {
-						fetchDetailsForCheckingIn($scope.reservationData.reservation_id);
-					} else {
-						generalFailureActions();
-					}
-				}
-			};
 			var onCCVerificationFailure = function() {
 				$scope.mode = 'CC_MATCH_FAILED';
 			};
@@ -245,9 +243,10 @@ sntZestStation.controller('zsPickupKeyFindReservationCtrl', [
 		};
 
 		$scope.$on('SAVE_CC_SUCCESS', function() {
-			var stateParams = getStateParams();
+			$timeout(function() {
+				onCCVerificationSuccess();
 
-			goToKeyDispense(stateParams);
+			}, 200);
 		});
 
 		$scope.$on('PAYMENT_FAILED', function() {

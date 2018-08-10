@@ -1888,5 +1888,15 @@ sntZestStation.controller('zsRootCtrl', [
         };
 
         $window.onbeforeunload = $scope.onExitApplication;
+
+
+        // To Mock MLI swipe - 
+        // Once payment screen is loaded, 
+        // In browser console call document.dispatchEvent(new Event('MOCK_MLI_SWIPE')) 
+
+        document.addEventListener('MOCK_MLI_SWIPE', function() {
+            $scope.$emit('showLoader');
+            $scope.$broadcast('ON_MOCK_CC_SWIPE');
+        });
     }
 ]);
