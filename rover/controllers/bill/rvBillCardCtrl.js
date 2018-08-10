@@ -652,7 +652,7 @@ sntRover.controller('RVbillCardController',
 
 		$scope.currentActiveBill = billIndex;
 		$scope.showActiveBillFeesDetails = billIndex;
-		// $scope.calculateHeightAndRefreshScroll();
+		$scope.calculateHeightAndRefreshScroll();
 		setChargeCodesSelectedStatus(false);
 	};
 	/* $state
