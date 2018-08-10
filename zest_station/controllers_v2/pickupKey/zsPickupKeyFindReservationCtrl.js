@@ -251,9 +251,9 @@ sntZestStation.controller('zsPickupKeyFindReservationCtrl', [
 			goToKeyDispense(stateParams);
 		});
 
-        $scope.$on('PAYMENT_FAILED', function () {
-        	$scope.mainScreenMode = 'PAYMENT_FAILED';
-        });
+		$scope.$on('PAYMENT_FAILED', function() {
+			$scope.mainScreenMode = 'PAYMENT_FAILED';
+		});
 
 	}
 ]);
