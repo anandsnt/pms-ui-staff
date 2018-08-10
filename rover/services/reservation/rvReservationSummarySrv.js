@@ -402,6 +402,18 @@ angular.module('sntRover').service('RVReservationSummarySrv', ['$q', 'rvBaseWebS
             return deferred.promise;
         };
 
+        this.updateCommission = function(data) {
+            var deferred = $q.defer(),
+                url = '/api/reservations/' + data.reservationId + '/update_commission';
+
+            rvBaseWebSrvV2.putJSON(url, data).then(function(data) {
+                deferred.resolve(data);
+            }, function(data) {
+                deferred.reject(data);
+            });
+            return deferred.promise;
+        };
+
         this.retrieveRoomPin = function(params) {
             var deferred = $q.defer(),
                 url = '/staff/reservation/get_room_pin'; 
