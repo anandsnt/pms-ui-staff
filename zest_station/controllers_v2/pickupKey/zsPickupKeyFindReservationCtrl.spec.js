@@ -379,7 +379,7 @@ describe('zsPickupKeyFindReservationCtrl', function() {
             expect($scope.payUsingNewCard).toHaveBeenCalled();
         });
 
-        if('On card Add failure, change mainScreenMode to PAYMENT_FAILED', function() {
+        it('On card Add failure, change mainScreenMode to PAYMENT_FAILED', function() {
             $scope.$emit('PAYMENT_FAILED');
             expect($scope.mainScreenMode).toBe('PAYMENT_FAILED');
         });
