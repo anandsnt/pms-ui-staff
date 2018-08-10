@@ -31,6 +31,10 @@ sntZestStation.controller('zsPickupKeyFindReservationCtrl', [
 			};
 			$scope.creditCardNumber = '';
 			$scope.reservationData = {};
+			$scope.hideAddCardOption = ($scope.zestStationData.paymentGateway === 'MLI' &&
+					$scope.zestStationData.hotelSettings.mli_cba_enabled) ||
+				$scope.zestStationData.paymentGateway === 'CBA';
+
 		})();
 
 		var dismissKeyBoardActions = function() {
@@ -233,8 +237,6 @@ sntZestStation.controller('zsPickupKeyFindReservationCtrl', [
 		};
 
 		/* CC actions starts here */
-
-		$scope.hideAddCardOption = ($scope.zestStationData.paymentGateway === 'MLI' && $scope.zestStationData.hotelSettings.mli_cba_enabled);
 
 		$scope.useNewCard = function () {
 			$scope.mainScreenMode = 'PAYMENT_IN_PROGRESS';
