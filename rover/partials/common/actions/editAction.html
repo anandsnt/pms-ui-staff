@@ -1,6 +1,6 @@
-<!-- div id="newaction" class="add-content scrollable" ng-class="{'action-mgr-screen':isActionManager}"  ng-iscroll="details" ng-iscroll-delay="100" ng-init="setScroll()" -->
-<div id="newaction" class="add-content" ng-class="{'action-mgr-screen':isActionManager}" >
-    <span class="h2 message">New Action</span>
+<!-- div id="newAction" class="add-content scrollable" ng-class="{'action-mgr-screen':isActionManager}"  ng-iscroll="details" ng-iscroll-delay="100" ng-init="setScroll()" -->
+<div id="secondary-actions" class="add-content" ng-class="{'action-mgr-screen':isActionManager}" >
+    <span class="h2 message">Edit Action</span>
     
    <div class="entry full-width" ng-show="isActionManager">
         <label for="guest_input">
@@ -35,7 +35,7 @@
         <label for="due-date">Date Due</label>
         <input id="due-date" type="text" class="datepicker" value="{{newAction.date_due}}" readonly />
     </div>
-    <div ng-show="newCalendarShow" class="ngmodal-uidate-wrap" id="newCalendar" ng-include="'/assets/partials/reservationCard/Actions/rvReservationCardActionsCalendar.html'"></div>
+    <div ng-show="newCalendarShow" class="ngmodal-uidate-wrap" id="newCalendar" ng-include="'/assets/partials/common/actions/rvReservationCardActionsCalendar.html'"></div>
     <div class="entry" ng-class="{'overlay': !newAction.hasDate}">
         <label for="due-time">Time Due</label>
         <select id="due-time" ng-model="newAction.time_due">
@@ -56,7 +56,8 @@
         <textarea id="notes" ng-model='newAction.notes' name="notes" placeholder="Enter message..." rows="4" maxlength="255"></textarea>
     </div> 
     <div id="new_action_post" class="actions">
-        <button type="button" class="button green action-post-btn" ng-click='postAction()' ng-class="{'overlay': !newAction.hasDate || !newAction.notes || (!departmentSelected && !isStandAlone)}">Post Action</button> 
-        <button type="button" class="button blank" ng-click='cancelNewAction()'>Cancel</button> 
+        <button type="button" class="button blank" ng-click='cancel()'>Cancel</button>
+        <button type="button" class="button green action-post-btn" ng-click='handleActionUpdate()' ng-class="{'overlay': !newAction.hasDate || !newAction.notes || (!newAction.department && !isStandAlone)}">Save Changes</button> 
+         
     </div> 
 </div> 
