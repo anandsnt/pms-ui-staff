@@ -11,7 +11,6 @@ sntZestStation.controller('zsPickupKeyFindReservationCtrl', [
 	'$controller',
 	function($scope, $rootScope, $state, zsEventConstants, zsCheckoutSrv, $stateParams, $timeout, zsCheckinSrv, zsGeneralSrv, $controller) {
 
-
 		(function init() {
 			BaseCtrl.call(this, $scope);
 			$controller('zsPaymentCtrl', {
