@@ -6,10 +6,6 @@
             <h2>Users for <strong>{{serviceProviderName}}</strong></h2>
             <span class="count">({{totalCount}})</span>
             <a ui-sref="admin.serviceprovideruserdetails({ serviceProviderId: serviceProviderId,name:serviceProviderName})" class="action add">Add new</a>
-            <a ui-sref="admin.sntserviceproviderdetails({action:'edit',id:serviceProviderId})" class="action back">Back to {{serviceProviderName}}</a>
-        </header>    
-        <section>
-        <div ng-include="'/assets/partials/common/notification_message.html'"></div>
             <div class="table-filters">
                 <div class="entry pull-left">
                     <label class="checkbox" ng-class="{'checked': includeInactiveUsers}">
@@ -19,6 +15,10 @@
                     </label>
                 </div>
             </div>
+            <a ui-sref="admin.sntserviceproviderdetails({action:'edit',id:serviceProviderId})" class="action back">Back to {{serviceProviderName}}</a>
+        </header>    
+        <section>
+        <div ng-include="'/assets/partials/common/notification_message.html'"></div>
             <table class="grid datatable" id="users_list_table" ng-table="tableParams"
             template-pagination="custom/pager">    
                 <tbody>
