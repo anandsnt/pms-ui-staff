@@ -4,6 +4,7 @@ module.exports = {
         var themeCSSRoot = 'stylesheets/guestweb/';
 
         return {
+            'guestweb_origins_red_rocks': [ themeCSSRoot + 'guestweb_origins_red_rocks.css'],
             'guestweb_mgm_springfield': [ themeCSSRoot + 'guestweb_mgm_springfield.css'],
             'guestweb_rsvp_motel': [ themeCSSRoot + 'guestweb_rsvp_motel.css'],
             'guestweb_hotel_annapolis': [ themeCSSRoot + 'guestweb_hotel_annapolis.css'],
