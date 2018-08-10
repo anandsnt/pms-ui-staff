@@ -72,9 +72,9 @@ describe('zsPickupKeyFindReservationCtrl', function() {
 
     it('Start the screen with Last name entry Mode and the initial values are empty', function() {
         expect($scope.mode).toBe('LAST_NAME_ENTRY');
-        // expect($scope.reservationParams.last_name).toBe('');
-        // expect($scope.reservationParams.room_no).toBe('');
-        // expect($scope.creditCardNumber).toBe('');
+        expect($scope.reservationParams.last_name).toBe('');
+        expect($scope.reservationParams.room_no).toBe('');
+        expect($scope.creditCardNumber).toBe('');
     });
 
     describe('Find reservation', function() {
