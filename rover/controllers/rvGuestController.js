@@ -322,6 +322,9 @@ angular.module('sntRover').controller('guestCardController', [
             } else if (tab === 'guest-contact') {
                 $scope.$broadcast('CONTACTINFOLOADED');
             }
+            else if (tab === 'activity-log') {
+                $scope.$broadcast('GUEST_ACTIVITY_LOADED');
+            }
 
             $scope.$broadcast('REFRESHLIKESSCROLL');
             if (!$scope.viewState.isAddNewCard) {
