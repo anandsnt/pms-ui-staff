@@ -132,6 +132,39 @@ sntRover.controller('rvReservationAdditionalController', ['$rootScope', '$scope'
 			$scope.updateTaxExemptData();
 		};
 
+		/*
+		 * Toggle commission
+		 */
+		$scope.toggleCommission = function() {
+            $scope.reservationData.reservation_card.commission_details.is_on = !$scope.reservationData.reservation_card.commission_details.is_on;
+            $scope.updateCommissionFromStaycard();
+        };
+
+        /*
+         * Save commission details
+         */
+        $scope.updateCommissionFromStaycard = function() {
+            var params = $scope.reservationData.reservation_card.commission_details;
+
+            params.reservationId = $scope.reservationParentData.reservationId;
+
+            var	options = {
+                params: params,
+                successCallBack: function(data) {
+                    $scope.reservationData.reservation_card.commission_details = data.commission_details;
+                },
+                failureCallBack: function(errorMessage) {
+                    $scope.errorMessage = errorMessage;
+                }
+            };
+
+            $scope.callAPI(RVReservationSummarySrv.updateCommission, options);
+        };
+
+        $scope.hasPermissionToEditCommission = function() {
+            return rvPermissionSrv.getPermissionValue('UPDATE_COMMISSION') && $scope.reservationData.reservation_card.reservation_status !== 'CHECKEDOUT';
+        };
+
 		$rootScope.$on('UPDATERESERVATIONTYPE', function(e, data, paymentId ) {
             $scope.reservationParentData.demographics.reservationType = data;
             // CICO-24768 - Updating Payment id after adding new CC.
