@@ -3097,6 +3097,7 @@ sntRover.controller('RVbillCardController',
 	var updateGenerateFolioFlag = $scope.$on('UPDATE_GENERATE_FOLIO_FLAG', function() {
 		$scope.shouldGenerateFolioNumber = true;
 	});
+	
 	/* 
 	 * To reload the current Active Bill
 	 */

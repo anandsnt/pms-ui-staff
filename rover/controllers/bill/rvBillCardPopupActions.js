@@ -4,7 +4,7 @@ sntRover.controller('rvBillCardPopupCtrl',
 	BaseCtrl.call(this, $scope);
 	$scope.newAmount = '';
 
-	var refreshListWithData = function(data) {
+	var refreshListWithData = function() {
 		$timeout(function() {
 			$scope.reloadCurrentActiveBill();
 		}, 700);
