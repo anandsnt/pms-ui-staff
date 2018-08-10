@@ -440,7 +440,7 @@ sntRover.controller('RVbillCardController',
 	$scope.calculateHeightAndRefreshScroll = function() {
 		$timeout(function() {
 			$scope.refreshScroller('registration-content');
-		}, 2000);
+		}, 500);
 	};
 
 
