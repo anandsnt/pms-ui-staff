@@ -130,6 +130,39 @@ sntRover.controller('RVReportListCrl', [
                 }
             }, 2010);
         };
+
+        // Clear the date restrictions
+        var clearDateRestrictions = function( report ) {
+            var datesUsedForCalendar = reportUtils.processDate();
+
+            $scope.fromDateOptions.maxDate = $filter('date')($rootScope.businessDate, $rootScope.dateFormat);
+            $scope.untilDateOptions.maxDate = $filter('date')($rootScope.businessDate, $rootScope.dateFormat);
+            $scope.fromDateOptionsTillYesterday = (function () {
+                var currentDate = new tzIndependentDate($rootScope.businessDate);
+
+                currentDate.setDate(currentDate.getDate() - 1);
+                return $filter('date')(currentDate, $rootScope.dateFormat);
+            }());
+            $scope.untilDateOptionsTillYesterday.maxDate = (function () {
+                var currentDate = new tzIndependentDate($rootScope.businessDate);
+
+                currentDate.setDate(currentDate.getDate() - 1);
+                return $filter('date')(currentDate, $rootScope.dateFormat);
+            }());
+            $scope.fromDateOptionsSysLimit.maxDate = new Date();
+            $scope.untilDateOptionsSysLimit.maxDate = new Date();
+            $scope.toDateOptionsOneYearLimit.minDate = datesUsedForCalendar.monthStart;
+            $scope.toDateOptionsOneYearLimit.maxDate = reportUtils.processDate(datesUsedForCalendar.monthStart).aYearAfter;
+            $scope.toDateOptionsOneMonthLimit.minDate = new tzIndependentDate($rootScope.businessDate);
+            $scope.toDateOptionsOneMonthLimit.maxDate = reportUtils.processDate(($rootScope.businessDate)).aMonthAfter;
+            $scope.toDateOptionsSixMonthsLimit.minDate = new tzIndependentDate($rootScope.businessDate);
+            $scope.toDateOptionsSixMonthsLimit.maxDate = reportUtils.processDate(($rootScope.businessDate)).sixMonthsAfter;
+            $scope.toDateOptionsThirtyOneDaysLimit.minDate = new tzIndependentDate($rootScope.businessDate);
+            $scope.toDateOptionsThirtyOneDaysLimit.maxDate = reportUtils.processDate(($rootScope.businessDate)).thirtyOneDaysAfter;
+            
+            // Initialize report default dates
+            setupDates.init( report );
+        };
  
         // show hide filter toggle
         $scope.toggleFilter = function(e, report) {
@@ -149,6 +182,11 @@ sntRover.controller('RVReportListCrl', [
                 report.uiChosen = true;
                 $scope.$parent.uiChosenReport = report;
                 $scope.selectedReport.report = report;
+
+                // CICO-55843 Clear the date restrictions when each report is invoked
+                // Otherwise restrictions for the previously chosen report will be there as the date
+                // options are shared across the reports
+                clearDateRestrictions( report );
 
                 $scope.updateViewCol($scope.viewColsActions.TWO);
 
