@@ -31,8 +31,8 @@ sntZestStation.controller('zsPickupKeyFindReservationCtrl', [
 			};
 			$scope.creditCardNumber = '';
 			$scope.reservationData = {};
-			$scope.hideAddCardOption = ($scope.zestStationData.paymentGateway === 'MLI' &&
-					$scope.zestStationData.hotelSettings.mli_cba_enabled) ||
+			$scope.hideAddCardOption = $scope.zestStationData.paymentGateway === 'MLI' &&
+					$scope.zestStationData.hotelSettings.mli_cba_enabled ||
 				$scope.zestStationData.paymentGateway === 'CBA';
 
 		})();
@@ -183,7 +183,7 @@ sntZestStation.controller('zsPickupKeyFindReservationCtrl', [
 		var searchReservation = function() {
 			var findReservationSuccess = function(data) {
 				$scope.reservationData = data;
-				if ((!data.is_checked_in && !data.guest_arriving_today) || data.is_checked_out) {
+				if (!data.is_checked_in && !data.guest_arriving_today || data.is_checked_out) {
 					generalFailureActions();
 				} else {
 					if ($scope.reservationData.has_cc) {
