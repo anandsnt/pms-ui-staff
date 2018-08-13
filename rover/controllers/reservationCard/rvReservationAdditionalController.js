@@ -107,7 +107,13 @@ sntRover.controller('rvReservationAdditionalController', ['$rootScope', '$scope'
 				};
 
 			if ($scope.additionalDetails.isTaxExemptEnabled) {
-				paramsToApi.tax_exempt_type_id = parseInt($scope.additionalDetails.taxExemptType);
+				if ($scope.additionalDetails.taxExemptType) {
+					paramsToApi.tax_exempt_type_id = parseInt($scope.additionalDetails.taxExemptType);
+				} else {
+					paramsToApi.tax_exempt_type_id = parseInt($scope.defaultTaxExemptTypeId);
+					$scope.additionalDetails.taxExemptType = parseInt($scope.defaultTaxExemptTypeId);
+				}
+				
 			}
 
 			var	options = {
@@ -123,9 +129,7 @@ sntRover.controller('rvReservationAdditionalController', ['$rootScope', '$scope'
 		 */
 		$scope.toggleTaxExempt = function() {
 			$scope.additionalDetails.isTaxExemptEnabled = !$scope.additionalDetails.isTaxExemptEnabled;
-			if (!$scope.additionalDetails.isTaxExemptEnabled) {
-				$scope.updateTaxExemptData();				
-			}
+			$scope.updateTaxExemptData();
 		};
 
 		/*
