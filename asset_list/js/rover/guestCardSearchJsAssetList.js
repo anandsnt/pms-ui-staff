@@ -6,6 +6,7 @@ module.exports = {
 			nonMinifiedFiles: [				
 				roverRoot + "controllers/guests/**/*.js",				
 				roverRoot + "services/guestcard/rvGuestCardSrv.js",
+				roverRoot + "services/guestcard/rvGuestCardActivityLogSrv.js",
 
                 // Eliminate all spec files
                 '!**/*.spec.js'
