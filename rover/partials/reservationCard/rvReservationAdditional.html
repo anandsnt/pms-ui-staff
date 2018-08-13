@@ -62,7 +62,7 @@
                        type="text"
                        ng-model="reservationData.reservation_card.commission_details.commission_value"
                        ng-disabled="!hasPermissionToEditCommission()"
-                       ng-change="updateCommissionFromStaycard()" />
+                       ng-blur="updateCommissionFromStaycard()" />
                 <div class="select">
                     <select convert-to-number name="travel-agent-commission-type"
                             ng-model="reservationData.reservation_card.commission_details.commission_type"
