@@ -174,6 +174,9 @@ sntZestStation.controller('zsRootCtrl', [
 
             $scope.trackEvent(currentState, 'clicked_close_button');
             $state.go('zest_station.home');
+            if ($scope.zestStationData.paymentGateway === 'MLI' && $scope.zestStationData.ccReader === 'local') {
+                $scope.$emit('STOP_OBSERVE_FOR_SWIPE');
+            }
         };
         $scope.talkToStaff = function() {
             var currentState = $state.current.name;
@@ -1740,6 +1743,13 @@ sntZestStation.controller('zsRootCtrl', [
             bellSound.play();
         });
 
+        $scope.$on('STOP_OBSERVE_FOR_SWIPE', function() {
+            $scope.cardReader.stopReader({
+                'successCallBack': function() {},
+                'failureCallBack': function() {}
+            });
+        });
+
 		/** *
 		 * [initializeMe description]
 		 * @return {[type]} [description]
@@ -1878,5 +1888,15 @@ sntZestStation.controller('zsRootCtrl', [
         };
 
         $window.onbeforeunload = $scope.onExitApplication;
+
+
+        // To Mock MLI swipe - 
+        // Once payment screen is loaded, 
+        // In browser console call document.dispatchEvent(new Event('MOCK_MLI_SWIPE')) 
+
+        document.addEventListener('MOCK_MLI_SWIPE', function() {
+            $scope.$emit('showLoader');
+            $scope.$broadcast('ON_MOCK_CC_SWIPE');
+        });
     }
 ]);
