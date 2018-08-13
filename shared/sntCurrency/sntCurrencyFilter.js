@@ -52,7 +52,8 @@ angular.module('sntCurrencyFilter', []).filter('sntCurrency', function() {
 	};
 });
 
-/* Utility method to reverse a given string value.
+/**
+ * Utility method to reverse a given string value.
  * @param {string} [string input ]
  * @return {string}
  */
@@ -67,7 +68,7 @@ var CurrencyFormatSeperatorMappings = {
     'DOT': ['.', '1,222.00']
 };
 
-/*
+/**
  *  Get seperator type symbol
  *  @param {string}
  *  @return {string}
@@ -76,7 +77,30 @@ var getSeperatorType = function(seperator) {
     return (seperator === null) ? '' : CurrencyFormatSeperatorMappings[seperator][0];
 };
 
-/*
+/**
+ *	process integer array to append with seperator type
+ *	@param {Array} - Array of string as integer part
+ *	@param {string} - seperatort type
+ *	@return {string} - amount appended by sepeartor.
+ */
+var processIntegerPart = function( integerPart, seperatorType ) {
+	var i = 0, j = 0, data = '';
+
+	for ( i = integerPart.length - 1, j = 0 ; i >= 0; i --, j ++ ) {
+		if (j % 3 === 0 && j > 2) {
+			data = data + getSeperatorType(seperatorType) + integerPart[i];
+		}
+		else {
+			data = data + integerPart[i];
+		}
+	}
+
+	// Reversing the data
+	data = reverseString(data);
+	return data;
+};
+
+/**
  *	Method to process currency data.
  *	@param {object} [input data contains input, symbol, isWithoutSymbol]
  */
@@ -87,7 +111,7 @@ function processSntCurrency( paramObj ) {
 		i = 0, j = 0,
 		processData = '', sntCurrency = '';
 
-	/* 
+	/**
 	 *	STEP-1 : Splits a given input value (type {string}) into two pieces - Integer part & Fractional part,
 	 * 	Then reversing the integer part for parsing.
 	 * 	Eg : 1234567.89 =>  [ '1234567', '89' ] => [ '7654321', '89' ]
@@ -103,18 +127,7 @@ function processSntCurrency( paramObj ) {
 	}
 
 	// STEP-2 : Process Interger part and add appropriate seperator type.
-
-	for ( i = integerPart.length - 1, j = 0 ; i >= 0; i --, j ++ ) {
-		if (j % 3 === 0 && j > 2) {
-			processData = processData + getSeperatorType(paramObj.integerSeperatorType) + integerPart[i];
-		}
-		else {
-			processData = processData + integerPart[i];
-		}
-	}
-
-	// Reversing the process data
-	processData = reverseString(processData);
+	processData = processIntegerPart(integerPart, paramObj.integerSeperatorType);
 
 	if ( fractionPart !== null && paramObj.fractionSeperatorType !== null) {
 		// STEP-3 : Appending central seperator.
