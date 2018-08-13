@@ -58,7 +58,13 @@ sntRover.controller('reservationDetailsController',
         };
 
 		$scope.taxExemptTypes = taxExempts.results;
-		$scope.defaultTaxExemptTypeId = (_.findWhere($scope.taxExemptTypes, {is_default: true})).id;
+		var defaultTaxExemptObject = _.findWhere($scope.taxExemptTypes, {is_default: true});
+
+		$scope.defaultTaxExemptTypeId = '';
+		if (typeof defaultTaxExemptObject !== "undefined") {
+			$scope.defaultTaxExemptTypeId = defaultTaxExemptObject.id;
+		} 
+		
 		// CICO-29343 - Set the flag to false initially and checking the View SR permission
 		$scope.hasSRViewPermission = rvPermissionSrv.getPermissionValue('VIEW_SUPPRESSED_RATE');
 		RVReservationStateService.setReservationFlag("isSRViewRateBtnClicked", false);
