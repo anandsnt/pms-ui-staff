@@ -86,6 +86,7 @@ var getSeperatorType = function(seperator) {
 var processIntegerPart = function( integerPart, seperatorType ) {
 	var i = 0, j = 0, data = '';
 
+	// Eg : integerPart => [ '1234567' ] and let seperatorType => ','.
 	for ( i = integerPart.length - 1, j = 0 ; i >= 0; i --, j ++ ) {
 		if (j % 3 === 0 && j > 2) {
 			data = data + getSeperatorType(seperatorType) + integerPart[i];
@@ -95,7 +96,8 @@ var processIntegerPart = function( integerPart, seperatorType ) {
 		}
 	}
 
-	// Reversing the data
+	// After the above process data => '765,432,1'
+	// Then reversing the resultant data to get actual result => '1,234,567'
 	data = reverseString(data);
 	return data;
 };
@@ -111,9 +113,8 @@ function processSntCurrency( paramObj ) {
 		processData = '', sntCurrency = '';
 
 	/**
-	 *	STEP-1 : Splits a given input value (type {string}) into two pieces - Integer part & Fractional part,
-	 * 	Then reversing the integer part for parsing.
-	 * 	Eg : 1234567.89 =>  [ '1234567', '89' ] => [ '7654321', '89' ]
+	 *	STEP-1 : Splitting the given input value (type {string}) into two pieces - Integer part & Fractional part,
+	 * 	Eg : '1234567.89' =>  [ '1234567', '89' ]
 	 */
 	inputArray = paramObj.input.split('.');
 
@@ -126,16 +127,19 @@ function processSntCurrency( paramObj ) {
 	}
 
 	// STEP-2 : Process Interger part and add appropriate seperator type.
+	// Eg : processIntegerPart( ['1234567'], ',') => '1,234,567'
 	processData = processIntegerPart(integerPart, paramObj.integerSeperatorType);
 
 	if ( fractionPart !== null && paramObj.fractionSeperatorType !== null) {
 		// STEP-3 : Appending central seperator.
+		// Eg : '1,234,567' + '.' => '1,234,567.'
 		processData = processData + getSeperatorType(paramObj.fractionSeperatorType);
 			
 		// Calculating precision on fractional part.
 		var fraction = fractionPart.slice(0, paramObj.precision);
 			
 		// STEP-4 : Add fractional part.
+		// Eg : '1,234,567.' + '89' => '1,234,567.89'
 		processData = processData + fraction;
 	}
 
