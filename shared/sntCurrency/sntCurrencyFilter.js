@@ -108,7 +108,6 @@ function processSntCurrency( paramObj ) {
 
 	var inputArray = [],
 		integerPart = null, fractionPart = null,
-		i = 0, j = 0,
 		processData = '', sntCurrency = '';
 
 	/**
