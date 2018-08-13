@@ -6,7 +6,7 @@ angular.module('sntCurrencyFilter', []).filter('sntCurrency', function() {
 		if (typeof input !== 'undefined' && scope) {
 
 			if (isNaN(input)) {
-				console.warn("sntCurrency exception :: Invalid input - ",input);
+				console.warn("sntCurrency exception :: Invalid input - ", input);
 				return;
 			}
 			else if (typeof input !== 'string') {
@@ -20,7 +20,7 @@ angular.module('sntCurrencyFilter', []).filter('sntCurrency', function() {
 				precision: typeof precision === 'undefined' ? DEFAULT_PRECISION : precision
 			};
 
-			switch(scope.currencyFormat) {
+			switch (scope.currencyFormat) {
 				case '1,222,00': 
 					// EG : 1234567.89 => 1,234,567,89
 					paramObj.integerSeperatorType  = 'COMMA';
@@ -52,17 +52,26 @@ angular.module('sntCurrencyFilter', []).filter('sntCurrency', function() {
 	};
 });
 
-// Utility method to reverse a given string value.
+/* Utility method to reverse a given string value.
+ * @param {string} [string input ]
+ * @return {string}
+ */
 function reverseString(str) {
-    return str.split("").reverse().join("");
+    return str.split("").reverse()
+    .join("");
 }
 
 // CICO-35453 - Mapping of various Currency Formats.
 var CurrencyFormatSeperatorMappings = {
     'COMMA': [',', '1,222,00'],
-    'DOT':   ['.', '1,222.00']
+    'DOT': ['.', '1,222.00']
 };
 
+/*
+ *  Get seperator type symbol
+ *  @param {string}
+ *  @return {string}
+ */
 var getSeperatorType = function(seperator) {
     return (seperator === null) ? '' : CurrencyFormatSeperatorMappings[seperator][0];
 };
@@ -71,7 +80,7 @@ var getSeperatorType = function(seperator) {
  *	Method to process currency data.
  *	@param {object} [input data contains input, symbol, isWithoutSymbol]
  */
-function processSntCurrency(paramObj) {
+function processSntCurrency( paramObj ) {
 
 	var inputArray = [],
 		integerPart = null, fractionPart = null,
@@ -95,8 +104,8 @@ function processSntCurrency(paramObj) {
 
 	// STEP-2 : Process Interger part and add appropriate seperator type.
 
-	for ( i = integerPart.length-1, j = 0 ; i >= 0; i--, j++ ) {
-		if (j%3 === 0 && j > 2) {
+	for ( i = integerPart.length - 1, j = 0 ; i >= 0; i --, j ++ ) {
+		if (j % 3 === 0 && j > 2) {
 			processData = processData + getSeperatorType(paramObj.integerSeperatorType) + integerPart[i];
 		}
 		else {
@@ -122,9 +131,9 @@ function processSntCurrency(paramObj) {
 	if (paramObj.isWithoutSymbol) {
 		sntCurrency = processData;
 	}
-	else{
+	else {
 		sntCurrency = '<span class="currency">' + paramObj.symbol + '</span> ' + processData;
 	}
 
 	return sntCurrency;
-};
+}
