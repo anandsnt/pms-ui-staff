@@ -24,11 +24,12 @@ sntRover.controller('reservationDetailsController',
 	'RVReservationBaseSearchSrv',
 	'RVReservationPackageSrv',
 	'transitions',
+	'taxExempts',
 	function($scope, $rootScope, rvPermissionSrv, RVReservationCardSrv, RVCCAuthorizationSrv, $stateParams,
              reservationListData, reservationDetails, ngDialog, RVSaveWakeupTimeSrv, $filter,
              RVNewsPaperPreferenceSrv, RVLoyaltyProgramSrv, $state, RVSearchSrv, $vault,
              RVReservationSummarySrv, baseData, $timeout, paymentTypes, reseravationDepositData, dateFilter,
-             RVReservationStateService, RVReservationBaseSearchSrv, RVReservationPackageSrv, transitions) {
+             RVReservationStateService, RVReservationBaseSearchSrv, RVReservationPackageSrv, transitions, taxExempts) {
 		// pre setups for back button
 		var backTitle,
 			backParam,
@@ -52,6 +53,18 @@ sntRover.controller('reservationDetailsController',
 			};
 		};
 
+		$scope.shouldShowTaxExempt = function() {
+            return (rvPermissionSrv.getPermissionValue('TAX_EXEMPT') && $scope.taxExemptTypes.length);
+        };
+
+		$scope.taxExemptTypes = taxExempts.results;
+		var defaultTaxExemptObject = _.findWhere($scope.taxExemptTypes, {is_default: true});
+
+		$scope.defaultTaxExemptTypeId = '';
+		if (typeof defaultTaxExemptObject !== "undefined") {
+			$scope.defaultTaxExemptTypeId = defaultTaxExemptObject.id;
+		} 
+		
 		// CICO-29343 - Set the flag to false initially and checking the View SR permission
 		$scope.hasSRViewPermission = rvPermissionSrv.getPermissionValue('VIEW_SUPPRESSED_RATE');
 		RVReservationStateService.setReservationFlag("isSRViewRateBtnClicked", false);

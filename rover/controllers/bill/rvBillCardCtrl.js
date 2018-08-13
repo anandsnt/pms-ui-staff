@@ -746,15 +746,6 @@ sntRover.controller('RVbillCardController',
 			that.callGenerateFolioNumberApi();
 		}	
 	};
-	// Utility method to reload bill screen after other operations.
-	var reloadBillScreen = function() {
-		var dataToSend = {
-			params: $scope.reservationBillData.reservation_id,
-			successCallBack: $scope.fetchSuccessCallback
-		};
-
-		$scope.getBillData($scope.currentActiveBill);
-    };
 
 	$scope.moveToBillActionfetchSuccessCallback = function(data) {
 		$scope.fetchSuccessCallback(data);
@@ -792,6 +783,12 @@ sntRover.controller('RVbillCardController',
 				bill_number: response.data[0].to_bill_number,
 				total_amount: response.data[0].bill_amount
 			};
+			$scope.shouldGenerateFolioNumber = true;
+			var reservationStatus = $scope.reservationBillData.reservation_status;
+
+	 		if (hasActivatedFolioNumber && $scope.shouldGenerateFolioNumber && (reservationStatus === 'CHECKEDOUT' ||  reservationStatus === 'NOSHOW')) {
+				callGenerateFolioNumberApiAfterLoadingCurrentBill = true;
+			}
 
 			$scope.getBillData($scope.currentActiveBill);
 		};
@@ -847,6 +844,7 @@ sntRover.controller('RVbillCardController',
 	    else if (!openCloseStatus && length > 0) {
 	    	openCloseClass = "has-arrow";
 	    }
+
 	    return openCloseClass;
 	 };
 	 /*
@@ -3099,6 +3097,13 @@ sntRover.controller('RVbillCardController',
 	var updateGenerateFolioFlag = $scope.$on('UPDATE_GENERATE_FOLIO_FLAG', function() {
 		$scope.shouldGenerateFolioNumber = true;
 	});
+	
+	/* 
+	 * To reload the current Active Bill
+	 */
+	$scope.reloadCurrentActiveBill = function() {
+		$scope.getBillData($scope.currentActiveBill);
+	};	
 
 	$scope.$on( '$destroy', updateGenerateFolioFlag );
 	    $scope.putInQueue = false;

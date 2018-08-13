@@ -645,7 +645,7 @@
    "LAST_4_DIGITS_INCORRECT_MSG": "Please Select One of the Following:",
    "RE_ENTER": "RE-ENTER",
    "NO_CC_ON_FILE_HEADER": "No Credit Card Found",
-   "NO_CC_ON_FILE_SUB_HEADER": "Please Speak to our Staff Member",
+   "NO_CC_ON_FILE_SUB_HEADER": "Please use a new credit card to proceed",
 
    "CBA_IN_PROGRESS": "Deposit collection",
    "CBA_IN_PROGRESS_SUB_TEXT": "For Deposit collection, please use the CBA device to proceed.",
@@ -696,6 +696,12 @@
    "USE_ADDRESS_ON_FILE": "Use Address on File",
    "ADD_NEW_ADDRESS": "Add New Address",
    "OK": "OK",
-   "PLEASE_PROVIDE_ALL_REQUIRED_INFO": "Please provide all the required information"
+   "PLEASE_PROVIDE_ALL_REQUIRED_INFO": "Please provide all the required information",
+
+   "ADD_NEW": "Add New",
+   "CREDIT_CARD": "Credit card",
+   "PLEASE_SELECT_ONE": "Please select one of the following",
+   "CC_OPTIONS_HEADER": "Proceed or add new credit card",
+   "ADD_NEW_CREDIT_CARD": "Add new Credit card"
 
 }
