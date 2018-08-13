@@ -1098,6 +1098,10 @@ angular.module('sntRover').controller('rvGroupConfigurationCtrl', [
                         $scope.groupConfigData.summary.rate = -1;
                     }
 
+                    if ($scope.groupConfigData.summary.tax_exempt_type_id === "" || $scope.groupConfigData.summary === null) {
+                        $scope.groupConfigData.summary.is_tax_exempt = false;
+                    }
+
                     $scope.callAPI(rvGroupConfigurationSrv.saveGroupSummary, {
                         successCallBack: onGroupSaveSuccess,
                         failureCallBack: onGroupSaveFailure,
