@@ -254,6 +254,9 @@ angular.module('stayCardModule', [])
                 },
                 reseravationDepositData: function (RVReservationCardSrv, $stateParams, $rootScope) {
                     return $rootScope.isStandAlone ? RVReservationCardSrv.fetchDepositDetails($stateParams.id) : {};
+                },
+                taxExempts: function(RVHotelDetailsSrv) {
+                    return RVHotelDetailsSrv.fetchTaxExempts();
                 }
             }
         });

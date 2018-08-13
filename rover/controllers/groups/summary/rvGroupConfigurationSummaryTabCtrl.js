@@ -1659,7 +1659,11 @@ angular.module('sntRover').controller('rvGroupConfigurationSummaryTab', ['$scope
         $scope.clickedTaxExemptToggle = function() {
             if (!$scope.groupConfigData.summary.is_tax_exempt) {
                 $scope.groupConfigData.summary.tax_exempt_type_id = '';
-            }            
+            } else {
+                if ($scope.groupConfigData.summary.tax_exempt_type_id === null || $scope.groupConfigData.summary.tax_exempt_type_id === "") {
+                    $scope.groupConfigData.summary.tax_exempt_type_id = $scope.defaultTaxExemptTypeId;
+                }
+            }           
         };
 
         /**
