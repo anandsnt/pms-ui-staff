@@ -1522,7 +1522,12 @@ angular.module('sntRover').controller('rvGroupConfigurationCtrl', [
             // CICO-42249 - Hotel settings
             $scope.hotelSettings = hotelSettings;
             $scope.taxExemptTypes = taxExempts.results;
-            $scope.defaultTaxExemptTypeId = (_.findWhere($scope.taxExemptTypes, {is_default: true})).id;
+            var defaultTaxExemptObject = _.findWhere($scope.taxExemptTypes, {is_default: true});
+
+            $scope.defaultTaxExemptTypeId = '';
+            if (typeof defaultTaxExemptObject !== "undefined") {
+                $scope.defaultTaxExemptTypeId = defaultTaxExemptObject.id;
+            }           
 
             // forming the data model if it is in add mode or populating the data if it is in edit mode
             $scope.initializeDataModelForSummaryScreen();
