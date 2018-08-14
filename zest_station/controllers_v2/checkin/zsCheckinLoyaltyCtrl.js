@@ -14,17 +14,14 @@ sntZestStation.controller('zsCheckinLoyaltyCtrl', [
 		$scope.$on('FETCH_USER_MEMBERSHIPS', function() {
 			var onSuccessResponse = function(response) {
 				$scope.existingLoyaltyPgms = [];
-
+				$scope.loyaltyMode = 'SELECT_LOYALTY';
 				// Check the existing loyalty programs in the guest card
 				if (response.hotelLoyaltyProgram.length > 0 || response.frequentFlyerProgram.length > 0) {
 					$scope.existingLoyaltyPgms = response.hotelLoyaltyProgram.concat(response.frequentFlyerProgram);
-					$scope.loyaltyMode = 'SELECT_LOYALTY';
-				} else {
-					$scope.loyaltyMode = 'ADD_NEW_LOYALTY';
 				}
 			};
 			var onFailureResponse = function() {
-				$scope.loyaltyMode = 'ADD_NEW_LOYALTY';
+				$scope.loyaltyMode = 'SELECT_LOYALTY';
 			};
 
 			$scope.callAPI(zsCheckinSrv.fetchUserMemberships, {
@@ -89,6 +86,16 @@ sntZestStation.controller('zsCheckinLoyaltyCtrl', [
 				pageNumber--;
 				setPageNumberDetails();
 			}, 500);
+		};
+
+		$scope.addNewLoyalty = function() {
+			$scope.loyaltyMode = 'ADD_NEW_LOYALTY';
+		};
+		$scope.addFreaquentFlyerLoyalty = function() {
+			$scope.loyaltyMode = 'ADD_NEW_FF_LOYALTY';
+		};
+		$scope.addHotelLoyalty = function() {
+			$scope.loyaltyMode = 'ADD_HOTEL_LOYALTY';
 		};
 	}
 ]);

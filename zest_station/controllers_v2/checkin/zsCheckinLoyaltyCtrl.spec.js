@@ -34,24 +34,7 @@ describe('zsCheckinLoyaltyCtrl', function() {
     });
 
     describe('On emiting FETCH_USER_MEMBERSHIPS from reservation details', function() {
-        it('call fetchUserMemberships API and if no programs are present change loyaltyMode to ADD_NEW_LOYALTY', function() {
-            spyOn(zsCheckinSrv, 'fetchUserMemberships').and.callFake(function() {
-                var respone = {
-                    hotelLoyaltyProgram: [],
-                    frequentFlyerProgram: []
-                };
-
-                deferred.resolve(respone);
-                return deferred.promise;
-            });
-
-            $scope.$emit('FETCH_USER_MEMBERSHIPS');
-            $scope.$digest();
-            expect(zsCheckinSrv.fetchUserMemberships).toHaveBeenCalledWith(jasmine.any(Object));
-            expect($scope.loyaltyMode).toEqual('ADD_NEW_LOYALTY');
-        });
-
-        it('call fetchUserMemberships API and if there are existing programs, change loyaltyMode to SELECT_LOYALTY', function() {
+        it('Call fetchUserMemberships API and change loyaltyMode to SELECT_LOYALTY', function() {
             spyOn(zsCheckinSrv, 'fetchUserMemberships').and.callFake(function() {
                 var respone = {
                     "frequentFlyerProgram": [{
@@ -113,5 +96,20 @@ describe('zsCheckinLoyaltyCtrl', function() {
         }];
         $scope.selectExistingLoyalty();
         expect($scope.loyaltyMode).toEqual('SELECT_FROM_MULTIPLE_LOYALTIES');
+    });
+
+    it('On clicking Add new loyalty, change loyaltyMode to ADD_NEW_LOYALTY', function() {
+        $scope.addNewLoyalty();
+        expect($scope.loyaltyMode).toEqual('ADD_NEW_LOYALTY');
+    });
+
+    it('On clicking Add new Frequent Flyer loyalty, change loyaltyMode to ADD_NEW_FF_LOYALTY', function() {
+        $scope.addFreaquentFlyerLoyalty();
+        expect($scope.loyaltyMode).toEqual('ADD_NEW_FF_LOYALTY');
+    });
+    
+    it('On clicking Add new Hotel Loyalty, change loyaltyMode to ADD_HOTEL_LOYALTY', function() {
+        $scope.addHotelLoyalty();
+        expect($scope.loyaltyMode).toEqual('ADD_HOTEL_LOYALTY');
     });
 });
