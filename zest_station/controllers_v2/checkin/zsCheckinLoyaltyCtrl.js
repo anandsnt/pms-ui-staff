@@ -1,9 +1,12 @@
 sntZestStation.controller('zsCheckinLoyaltyCtrl', [
 	'$scope',
 	'zsCheckinSrv',
-	function($scope, zsCheckinSrv) {
+	'zsGeneralSrv',
+	'$timeout',
+	function($scope, zsCheckinSrv, zsGeneralSrv, $timeout) {
 
 		BaseCtrl.call(this, $scope);
+		var pageNumber;
 		var navigateToNextScreen = function() {
 			$scope.$emit('NAVIGATE_FROM_LOYALTY_SCREEN');
 		};
@@ -15,17 +18,8 @@ sntZestStation.controller('zsCheckinLoyaltyCtrl', [
 				$scope.existingLoyaltyPgms = [];
 
 				// Check the existing loyalty programs in the guest card
-				if (response.hotelLoyaltyProgram.length === 1 && response.frequentFlyerProgram.length === 0) {
-					$scope.existingLoyaltyPgms.push(response.hotelLoyaltyProgram[0]);
-					$scope.loyaltyMode = 'SELECT_LOYALTY';
-				} else if (response.frequentFlyerProgram.length === 1 && response.hotelLoyaltyProgram.length === 0) {
-					$scope.existingLoyaltyPgms.push(response.frequentFlyerProgram[0]);
-					$scope.loyaltyMode = 'SELECT_LOYALTY';
-				} else if (response.hotelLoyaltyProgram.length > 0 || response.frequentFlyerProgram.length > 0) {
-					$scope.existingLoyaltyPgms = [{
-						hotelLoyaltyPrograms: response.hotelLoyaltyProgram,
-						frequentFlyerPrograms: response.frequentFlyerProgram
-					}];
+				if (response.hotelLoyaltyProgram.length > 0 || response.frequentFlyerProgram.length > 0) {
+					$scope.existingLoyaltyPgms = response.hotelLoyaltyProgram.concat(response.frequentFlyerProgram);
 					$scope.loyaltyMode = 'SELECT_LOYALTY';
 				} else {
 					$scope.loyaltyMode = 'ADD_NEW_LOYALTY';
@@ -44,6 +38,10 @@ sntZestStation.controller('zsCheckinLoyaltyCtrl', [
 			});
 		});
 
+		$scope.skipLoyalties = function() {
+			navigateToNextScreen();
+		};
+
 		$scope.setLoyaltyForReservation = function(pgmId) {
 			$scope.callAPI(zsCheckinSrv.setLoyaltyForReservation, {
 				params: {
@@ -59,7 +57,40 @@ sntZestStation.controller('zsCheckinLoyaltyCtrl', [
 				$scope.setLoyaltyForReservation($scope.existingLoyaltyPgms[0].id);
 			} else {
 				$scope.loyaltyMode = 'SELECT_FROM_MULTIPLE_LOYALTIES';
+				pageNumber = 1;
+				$scope.pageData = {
+					disableNextButton: false,
+					disablePreviousButton: false,
+					pageStartingIndex: 1,
+					pageEndingIndex: '',
+					viewableItems: []
+				};
+				setPageNumberDetails();
 			}
+		};
+
+		var setPageNumberDetails = function() {
+			$scope.$emit('hideLoader');
+			var itemsPerPage = 5;
+			$scope.pageData =  zsGeneralSrv.proceesPaginationDetails($scope.existingLoyaltyPgms, itemsPerPage, pageNumber);
+		};
+
+		$scope.viewNextPage = function() {
+			$scope.pageData.disableNextButton = true;
+			$scope.$emit('showLoader');
+			$timeout(function() {
+				pageNumber++;
+				setPageNumberDetails();
+			}, 500);
+		};
+
+		$scope.viewPreviousPage = function() {
+			$scope.pageData.disablePreviousButton = true;
+			$scope.$emit('showLoader');
+			$timeout(function() {
+				pageNumber--;
+				setPageNumberDetails();
+			}, 500);
 		};
 	}
 ]);
