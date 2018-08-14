@@ -1,26 +1,38 @@
-<section id="main" role="main" class="centered">
+<section id="main" role="main">
     <div id="content">
-        <h1>
-            ADD LOYALTY PROGRAM
-        </h1>
+        <h1>Add Loyalty Program</h1>
         <nav id="options" role="nav">
             <ul role="menu">
-                <li ng-show="existingLoyaltyPgms.length > 0">
+                <!-- Output L18-L32 ONLY IF MEMBERSHIP IS ATTACHED -->
+                <li>
                     <button type="button" class="button option" touch-press='selectExistingLoyalty()'>
-                        <div ng-include="icons.url.moon"></div>
+                        <!-- {../assets/icons/loyalty.svg} or if Yotel use use {../assets/yotel/icons/loyalty.svg} -->
+                        <ng-include src="icons.url.loyalty"></ng-include>
                     </button>
-                    SELECT EXISTING
+                    Select Existing
+                    <!-- If Only 1 membership is attached, show details immediately (no levels for FFP): -->
+                    <p class="cc-details" ng-show="existingLoyaltyPgms.length === 1">
+                        <strong>{{ existingLoyaltyPgms[0].membership_type }}</strong>
+                        <br>
+                        <span>Number: </span> {{existingLoyaltyPgms[0].membership_card_number}}
+                        <br>
+                        <span ng-show="existingLoyaltyPgms[0].membership_level">Level: </span> {{existingLoyaltyPgms[0].membership_level}}
+                    </p>
                 </li>
-                <li class="break" ng-show="existingLoyaltyPgms.length > 0">
-                    <span translate>OR_TEXT</span>
+                <li class="break">
+                    <span>Or</span>
                 </li>
                 <li>
-                    <button type="button" class="button option" touch-press='findByNoOfNights()'>
-                        <div ng-include="icons.url.moon"></div>
+                    <button type="button" class="button option">
+                        <ng-include src="icons.url.loyalty"></ng-include>
+                        <!-- {../assets/icons/loyalty.svg} or if Yotel use use {../assets/yotel/icons/loyalty.svg} -->
                     </button>
-                    ADD NEW
+                    Add New
                 </li>
             </ul>
         </nav>
+        <div id="actions" class="align-right">
+            <button type="button" class="button">No Thanks</button>
+        </div>
     </div>
 </section>
