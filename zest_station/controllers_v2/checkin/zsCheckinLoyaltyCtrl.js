@@ -11,8 +11,6 @@ sntZestStation.controller('zsCheckinLoyaltyCtrl', [
 			$scope.$emit('NAVIGATE_FROM_LOYALTY_SCREEN');
 		};
 
-		$scope.userMemberShips = [];
-
 		$scope.$on('FETCH_USER_MEMBERSHIPS', function() {
 			var onSuccessResponse = function(response) {
 				$scope.existingLoyaltyPgms = [];
