@@ -47,7 +47,7 @@
             </h3>
             <div class="entry">
                 <div class="switch-button" ng-class="{'on': reservationData.reservation_card.commission_details.is_on}">
-                    <div class="click-catcher" style="position:absolute; left:0; right:0; top:0; bottom:0; z-index:999;" ng-click="toggleCommission()" ng-if="hasPermissionToEditCommission()" ></div>
+                    <div class="click-catcher" style="position:absolute; left:0; right:0; top:0; bottom:0; z-index:999;" ng-click="toggleCommission()" ng-if="::hasPermissionToEditCommission" ></div>
                     <input id="ta-commission" value="1" type="checkbox" checked disabled />
                     <label class="data-off">
                         <span class="value">Off</span>
@@ -60,13 +60,14 @@
                 </div>
                 <input value="{{reservationData.reservation_card.commission_details.commission_value}}"
                        type="text"
+                       ng-model-options="{ updateOn: 'blur' }"
                        ng-model="reservationData.reservation_card.commission_details.commission_value"
-                       ng-disabled="!hasPermissionToEditCommission()"
-                       ng-blur="updateCommissionFromStaycard()" />
+                       ng-disabled="::!hasPermissionToEditCommission"
+                       ng-change="updateCommissionFromStaycard()" />
                 <div class="select">
                     <select convert-to-number name="travel-agent-commission-type"
                             ng-model="reservationData.reservation_card.commission_details.commission_type"
-                            ng-disabled="!hasPermissionToEditCommission()"
+                            ng-disabled="::!hasPermissionToEditCommission"
                             ng-change="updateCommissionFromStaycard()">
                         <option value="percent">%</option>
                         <option value="amount">{{currencySymbol}}</option>
