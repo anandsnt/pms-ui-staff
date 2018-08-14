@@ -24,11 +24,10 @@ sntRover.controller('roverController', [
     '$interval',
     'sntActivity',
     '$transitions',
-    'taxExempts',
     function ($rootScope, $scope, $state, $window, RVDashboardSrv, RVHotelDetailsSrv,
               ngDialog, $translate, hotelDetails, userInfoDetails, $stateParams,
               rvMenuSrv, rvPermissionSrv, $timeout, rvUtilSrv, jsMappings, $q, $sce,
-              $log, sntAuthorizationSrv, $location, $interval, sntActivity, $transitions, taxExempts) {
+              $log, sntAuthorizationSrv, $location, $interval, sntActivity, $transitions) {
 
 
         var observeDeviceInterval;
@@ -221,9 +220,6 @@ sntRover.controller('roverController', [
         }
         $rootScope.isSingleDigitSearch = hotelDetails.is_single_digit_search;
 
-        $rootScope.taxExemptTypes = taxExempts.results;
-
-
         // handle six payment iFrame communication
         var eventMethod = window.addEventListener ? 'addEventListener' : 'attachEvent';
         var eventer = window[eventMethod];
@@ -318,10 +314,7 @@ sntRover.controller('roverController', [
 
         if ($rootScope.adminRole === 'Hotel Admin' || $rootScope.adminRole === 'Chain Admin') {
             $scope.isHotelAdmin = true;
-        }
-        $scope.shouldShowTaxExempt = function() {
-            return rvPermissionSrv.getPermissionValue('TAX_EXEMPT');
-        };
+        }        
         /**
          * menu - forming & associate logic
          * NOTE: Menu forming and logic and things are in service rvMenuSrv

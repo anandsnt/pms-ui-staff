@@ -102,12 +102,15 @@ sntZestStation.controller('zscheckInReservationSearchCtrl', [
                 if (data.results.length === 0) {
                     $scope.mode = 'NO_MATCH';
                     $scope.callBlurEventForIpad();
-                } else if (data.results.length === 1) {
+                }
+                else if (data.results.length === 1) {
                     $scope.$emit('showLoader');
                     zsCheckinSrv.setSelectedCheckInReservation(data.results);
-
-                    $state.go('zest_station.checkInReservationDetails');
-                    
+                    if ($scope.zestStationData.kiosk_collect_guest_address) {
+                        $state.go('zest_station.collectGuestAddress');
+                    } else {
+                        $state.go('zest_station.checkInReservationDetails');
+                    }    
                 } else {
                     zsCheckinSrv.setCheckInReservations(data.results);
                     $state.go('zest_station.selectReservationForCheckIn');
@@ -314,7 +317,8 @@ sntZestStation.controller('zscheckInReservationSearchCtrl', [
                 yearRange: '0:+10',
                 minDate: minDate,
                 onSelect: function(value) {
-                    $scope.showDatePicker();
+                    $scope.showDatePick = false;
+                    $scope.dateEntered();
                 }
             };
 

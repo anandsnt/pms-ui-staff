@@ -173,8 +173,12 @@ sntZestStation.controller('zsCheckInReservationDetailsCtrl', [
 
             var reservations = zsCheckinSrv.getCheckInReservations();
 
+            if ($stateParams.previousState === 'COLLECT_ADRESS') {
+                $scope.$emit('showLoader');
+                $state.go('zest_station.collectGuestAddress');
+            }
             // can't handle back from T&C for auto assign room, as the rooom status is not returned from API now.
-            if ($stateParams.pickup_key_mode) {
+            else if ($stateParams.pickup_key_mode) {
                 $state.go('zest_station.checkOutReservationSearch', {
                     'mode': 'PICKUP_KEY'
                 });

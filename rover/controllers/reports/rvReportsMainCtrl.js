@@ -144,7 +144,14 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
                     date: $scope.reportInboxPageState.returnDate
                 });
             } else {
-                $state.go('rover.reports.dashboard', { refresh: false });
+                // This is for handling the case when user navigate back from the other states back to report state
+                // eg: For arrival report, the user can navigate to staycard and come back again to report details screen
+                // In such case, the report list should be processed again to set the flags and so
+                var shouldRefresh = $scope.shouldProcessReportList ? $scope.shouldProcessReportList : false;
+
+                $state.go('rover.reports.dashboard', { refresh: shouldRefresh});
+
+                $scope.shouldProcessReportList = false;
             }
         };
 
@@ -214,7 +221,9 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
             item_49: false,
             item_50: false,
             item_51: false,
-            item_52: false
+            item_52: false,
+            item_53: false,
+            item_54: false
         };
         $scope.toggleFilterItems = function (item) {
             if (!$scope.filterItemsToggle.hasOwnProperty(item)) {
@@ -333,6 +342,7 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 
                 $scope.toDateOptionsOneYearLimit.minDate = selectedDate;
                 $scope.toDateOptionsOneYearLimit.maxDate = reportUtils.processDate(selectedDate).aYearAfter;
+                $scope.touchedReport.untilDate = $scope.toDateOptionsOneYearLimit.maxDate;
             }
         }, datePickerCommon);
 
@@ -343,6 +353,7 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 
                 $scope.toDateOptionsOneMonthLimit.minDate = selectedDate;
                 $scope.toDateOptionsOneMonthLimit.maxDate = reportUtils.processDate(selectedDate).aMonthAfter;
+                $scope.touchedReport.untilDate = $scope.toDateOptionsOneMonthLimit.maxDate;
             }
         }, datePickerCommon);
 
@@ -365,6 +376,7 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
 
                 $scope.toDateOptionsSixMonthsLimit.minDate = selectedDate;
                 $scope.toDateOptionsSixMonthsLimit.maxDate = reportUtils.processDate(selectedDate).sixMonthsAfter;
+                $scope.touchedReport.untilDate = $scope.toDateOptionsSixMonthsLimit.maxDate;
             }
         }, datePickerCommon);
 
@@ -1018,7 +1030,9 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
                     'account_ids': [],
                     'travel_agent_ids': [],
                     'segments': [],
-                    'market_ids': []
+                    'market_ids': [],
+                    'tax_exempt_type_ids': [],
+                    'group_code': []
                 };
             }
 
@@ -1508,6 +1522,21 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
                 }
             }
 
+            // include company/ta/group
+            if (report.hasOwnProperty('hasGroupCode') && !!report.uiChosenIncludeGroupCode) {
+                key =  report.hasGroupCode.value.toLowerCase();
+
+                params[key] = [];                
+                /**/
+                _.each(report.chosenIncludeGroupCode.split(', '), function (entry) {
+                    params[key].push(entry);
+                });
+                /* Note: Using the ui value here */
+                if (changeAppliedFilter) {
+                    $scope.appliedFilter['groupCode'] = report.uiChosenIncludeGroupCode;
+                }
+            }
+
             // include group
             if (report.hasOwnProperty('hasIncludeGroup') && !!report.chosenIncludeGroup) {
                 key = report.hasIncludeGroup.value.toLowerCase();
@@ -1840,7 +1869,30 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
                         $scope.appliedFilter.age_buckets = ['All Aging Balance'];
                     }
                 }
-            }           
+            }
+
+            // include Tax Exempt Types
+            if (report.hasOwnProperty('hasIncludeTaxExempts')) {
+                selected = _.where(report['hasIncludeTaxExempts']['data'], {selected: true});
+
+                if (selected.length > 0) {
+                    key = reportParams['TAX_EXEMPT_TYPE'];
+                    params[key] = [];
+                    /**/
+                    _.each(selected, function (each) {
+                        params[key].push(each.id.toString());
+                        /**/
+                        if (changeAppliedFilter) {
+                            $scope.appliedFilter.tax_exempt_type_ids.push(each.id);
+                        }
+                    });
+
+                    // in case if all reservation status are selected
+                    if (changeAppliedFilter && report['hasIncludeTaxExempts']['data'].length === selected.length) {
+                        $scope.appliedFilter.tax_exempt_type_ids = ['All Tax Exempts'];
+                    }
+                }
+            }                      
 
             // Include accounts
             if (report.hasOwnProperty('hasAccountSearch')) {
@@ -2602,6 +2654,7 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
                     });
             },
             select: function (event, ui) {
+
                 this.value = ui.item.label;
                 $timeout(function () {
                     $scope.$apply(function () {
@@ -2615,7 +2668,7 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
             focus: function () {
                 return false;
             }
-        };
+        };        
 
         $scope.compTaGrpAutoCompleteOnList = angular.extend({
             position: {
@@ -2632,6 +2685,74 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
                 collision: 'flip'
             }
         }, autoCompleteForCompTaGrp);
+
+        // for Company TA Group
+        var groupCodeArray = [],
+            groupCodeIds = [];       
+
+        var autoCompleteForGroupCode = {
+            source: function (request, response) {
+                var term = extractLast(request.term);
+                
+                $scope.$emit('showLoader');
+                reportsSubSrv.fetchGroupCode(term)
+                    .then(function (data) {
+                        var found;
+                            
+                        groupCodeArray = [];
+                        _.each(data, function (item) {
+
+                                groupCodeArray.push({
+                                    label: item.group_code,
+                                    value: item.id
+                                });
+                        });
+
+                        found = $.ui.autocomplete.filter(groupCodeArray, term);
+                        response(found);
+
+                        $scope.$emit('hideLoader');
+                    });
+            },
+            select: function (event, ui) {
+
+                var uiValue = split(this.value);
+
+                uiValue.pop();
+                uiValue.push(ui.item.label);
+                uiValue.push('');
+
+                groupCodeIds.push(ui.item.value);
+ 
+                this.value = uiValue.join(', ');
+                $timeout(function () {
+                    $scope.$apply(function () {
+                        touchedReport.uiChosenIncludeGroupCode = uiValue.join(', ');
+                        touchedReport.chosenIncludeGroupCode = (_.uniq(groupCodeIds)).join(', ');                    
+                    });
+                }, 100);
+                return false;
+            },
+            focus: function () {
+                return false;
+            }
+        };
+
+        $scope.groupCodeOnList = angular.extend({
+            position: {
+                my: 'left top',
+                at: 'left bottom',
+                collision: 'flip'
+            }
+        }, autoCompleteForGroupCode);
+
+        $scope.groupCodeOnDetails = angular.extend({
+            position: {
+                my: 'left bottom',
+                at: 'right+20 bottom',
+                collision: 'flip'
+            }
+        }, autoCompleteForGroupCode);
 
         // for Group
         var autoCompleteForGrp = {
@@ -2732,6 +2853,8 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
             if (transitionParams.report) {
                 $scope.selectedReport = transitionParams.report;
                 $scope.genReport(true, transitionParams.page);
+                // CICO-55905 - Report list should be processed again to set the flags once comming back from other unreleated states
+                $scope.shouldProcessReportList = true;
             }
 
         })();

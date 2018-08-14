@@ -256,6 +256,24 @@ sntRover.controller('rvAllotmentRoomBlockCtrl', [
 		};
 
 		/**
+         * Checks whether the tripple button should be shown or not
+         */
+        $scope.shouldShowAddTrippleButton = function (roomTypeRate) {
+            var showTrippleBtn = $scope.allotmentConfigData.summary.rate === -1 && !$scope.shouldShowTripleEntryRow(roomTypeRate);
+
+            return showTrippleBtn;
+        };
+
+        /**
+         * Checks whether the quadruple button should be shown or not
+         */
+        $scope.shouldShowAddQuadrupleButton = function (roomTypeRate) {
+            var showQuadrupleBtn = $scope.allotmentConfigData.summary.rate === -1 && !$scope.shouldShowQuadrupleEntryRow(roomTypeRate) && $scope.shouldShowTripleEntryRow(roomTypeRate);                                  
+
+            return showQuadrupleBtn;
+        };
+
+		/**
 		 * should we wanted to disable single box entry
 		 * @param {Object} [dateData] [description]
 		 * @param {Object} - Room Type data row

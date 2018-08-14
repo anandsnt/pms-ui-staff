@@ -506,12 +506,12 @@ sntRover.controller('RVPostChargeControllerV2',
 					}
 					// update the price in staycard
 					else if (!$scope.isOutsidePostCharge) {
-						$scope.$emit('postcharge.added', data.total_balance_amount);
-						$scope.closeDialog();
+						$scope.$emit('postcharge.added', data);
+						$scope.closeDialog();						
 					}
 					else {
 						$rootScope.$emit( 'CHARGEPOSTED' );
-						$rootScope.$broadcast('postcharge.added'); // To reload the View bill Screen.
+						$rootScope.$broadcast('postcharge.added'); // To reload the View bill Screen.						
 					}
 				};
 
