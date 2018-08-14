@@ -1651,7 +1651,6 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', 'jsMappings', '$s
             $timeout(function() {
                 $scope.refreshScroller('paymentInfo');
             }, 2000);
-
         }); 
 
         // Find guest type id by name
