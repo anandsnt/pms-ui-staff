@@ -1642,7 +1642,6 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', 'jsMappings', '$s
         });
         $scope.shouldIncludeScrollFixClass = false; 
         $scope.$on('PAYMENT_TYPE_CHANGED', function(e, paymentType) {
-            console.log(paymentType)
             if (paymentType === "CC") {
                 $scope.shouldIncludeScrollFixClass = true; 
             } else {
@@ -1650,7 +1649,7 @@ sntRover.controller('RVReservationSummaryCtrl', ['$rootScope', 'jsMappings', '$s
             }
             $timeout(function() {
                 $scope.refreshScroller('paymentInfo');
-            }, 2000);
+            }, 700);
         }); 
 
         // Find guest type id by name
