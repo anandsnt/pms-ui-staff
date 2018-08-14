@@ -173,7 +173,10 @@ sntZestStation.controller('zsCheckInReservationDetailsCtrl', [
 
             var reservations = zsCheckinSrv.getCheckInReservations();
 
-            if ($stateParams.previousState === 'COLLECT_ADRESS') {
+            if ($scope.mode === 'TERMS_CONDITIONS' || $scope.mode === 'LOYALTY_PROGRAMS') {
+                $scope.mode = 'RESERVATION_DETAILS';
+            }
+            else if ($stateParams.previousState === 'COLLECT_ADRESS') {
                 $scope.$emit('showLoader');
                 $state.go('zest_station.collectGuestAddress');
             }
@@ -418,6 +421,17 @@ sntZestStation.controller('zsCheckInReservationDetailsCtrl', [
             }, 600);
         };
 
+        var nextPageModeActions = function() {
+            if ($scope.zestStationData.add_loyalty_program) {
+                $scope.mode = 'LOYALTY_PROGRAMS';
+                $scope.$broadcast('FETCH_USER_MEMBERSHIPS');
+            } else if (!$scope.zestStationData.kiosk_display_terms_and_condition) {
+                routeToNext();
+            } else {
+                showTermsAndCondition();
+            }
+        };
+
 
         var assignRoomToReseravtion = function() {
             var reservation_id = $scope.selectedReservation.id;
@@ -439,12 +453,7 @@ sntZestStation.controller('zsCheckInReservationDetailsCtrl', [
                 // will need to check and combine one later
                 // fixing for hotfix
                 $scope.selectedReservation.reservation_details.room_number = response.data.room_number;
-                if (!$scope.zestStationData.kiosk_display_terms_and_condition) {
-                    routeToNext();
-                }
-                else {
-                    showTermsAndCondition();
-                }
+                nextPageModeActions();
             } else {
                 initRoomError();
             }
@@ -559,11 +568,7 @@ sntZestStation.controller('zsCheckInReservationDetailsCtrl', [
         $scope.onNextFromDetails = function() {
             if ($scope.usingFakeReservation()) {
                 $log.warn(':: usingFakeReservation ::');
-                if (!$scope.zestStationData.kiosk_display_terms_and_condition) {
-                    routeToNext();
-                } else {
-                    showTermsAndCondition();
-                }
+                nextPageModeActions();
                 return;
             }
 
@@ -592,12 +597,7 @@ sntZestStation.controller('zsCheckInReservationDetailsCtrl', [
 
                     } else if (roomIsAssigned() && roomIsReady()) {
                         $log.info('room is assigned and ready, continuing');
-                        if (!$scope.zestStationData.kiosk_display_terms_and_condition) {
-                            routeToNext();
-                        } else {
-                            showTermsAndCondition();
-                        }
-
+                        nextPageModeActions();
                     } else if (roomIsAssigned() && !roomIsReady()) {
                         $log.info('room assigned but not ready, show room error');
                         initRoomError();

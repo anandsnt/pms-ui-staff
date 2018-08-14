@@ -1,0 +1,26 @@
+<section id="main" role="main" class="centered">
+    <div id="content">
+        <h1>
+            ADD LOYALTY PROGRAM
+        </h1>
+        <nav id="options" role="nav">
+            <ul role="menu">
+                <li ng-show="existingLoyaltyPgms.length > 0">
+                    <button type="button" class="button option" touch-press='selectExistingLoyalty()'>
+                        <div ng-include="icons.url.moon"></div>
+                    </button>
+                    SELECT EXISTING
+                </li>
+                <li class="break" ng-show="existingLoyaltyPgms.length > 0">
+                    <span translate>OR_TEXT</span>
+                </li>
+                <li>
+                    <button type="button" class="button option" touch-press='findByNoOfNights()'>
+                        <div ng-include="icons.url.moon"></div>
+                    </button>
+                    ADD NEW
+                </li>
+            </ul>
+        </nav>
+    </div>
+</section>

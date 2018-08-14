@@ -414,6 +414,8 @@ sntZestStation.controller('zsRootCtrl', [
                 $scope.zestStationData.wsCCSwipeUrl = data.cc_swipe_listening_url;
                 $scope.zestStationData.wsCCSwipePort = data.cc_swipe_listening_port;
                 configureSwipeSettings();
+                // TODO: chnage this to hotel settings
+                $scope.zestStationData.add_loyalty_program = true;
                 // create a websocket obj
                 $scope.socketOperator = new webSocketOperations(socketOpenedSuccess, socketOpenedFailed, socketActions, $scope.zestStationData.wsCCSwipeUrl, $scope.zestStationData.wsCCSwipePort);
             };

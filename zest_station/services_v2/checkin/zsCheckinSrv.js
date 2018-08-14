@@ -629,6 +629,18 @@ sntZestStation.service('zsCheckinSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
             return deferred.promise;
         };
 
+        this.fetchUserMemberships = function(params) {
+            var url = '/staff/user_memberships.json?user_id=' + params.userId;;
+
+            return zsBaseWebSrv2.getJSON(url);
+        };
+
+        this.setLoyaltyForReservation = function(params) {
+            var url = '/staff/user_memberships/link_to_reservation';
+
+            return zsBaseWebSrv2.postJSON(url, params);
+        };
+
 
         this.eciDemoData = { "early_checkin_on": true, "early_checkin_available": true, "checkin_time": " 3:00 PM", "eci_upsell_limit_reached": false, "offer_eci_bypass": false, "is_room_already_assigned": true, "is_room_ready": false, "is_donot_move_room_marked": false, "guest_arriving_today": true, "reservation_in_early_checkin_window": true, "early_checkin_charge": "\u00a353.00", "is_early_checkin_purchased": false, "is_early_checkin_bundled": false, "is_early_checkin_bundled_by_addon": false, "free_eci_for_vips": true, "is_vip": false, "early_checkin_restrict_hour_for_display": " 9", "early_checkin_restrict_hour": "09", "early_checkin_restrict_minute": "45", "early_checkin_restrict_primetime": "PM", "early_checkin_restrict_time": "09:45:00 PM", "early_checkin_offer_id": 1836 };
 
