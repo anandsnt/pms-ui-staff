@@ -697,11 +697,9 @@
    "ADD_NEW_ADDRESS": "Add New Address",
    "OK": "OK",
    "PLEASE_PROVIDE_ALL_REQUIRED_INFO": "Please provide all the required information",
-
    "ADD_NEW": "Add New",
    "CREDIT_CARD": "Credit card",
    "PLEASE_SELECT_ONE": "Please select one of the following",
    "CC_OPTIONS_HEADER": "Proceed or add new credit card",
    "ADD_NEW_CREDIT_CARD": "Add new Credit card"
-
 }

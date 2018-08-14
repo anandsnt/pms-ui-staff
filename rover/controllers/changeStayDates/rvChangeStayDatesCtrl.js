@@ -822,12 +822,10 @@ sntRover.controller('RVchangeStayDatesController', ['$state', '$stateParams', '$
 					calEvt.id = "availability" + index; // Id should be unique
 					calEvt.className = "type-available";
 				}
-				// CICO-47200 - preventGroupSuiteRoomOverBook
-				if (preventGroupSuiteRoomOverBook || preventSuiteRoomOverBook || preventOverbookHouse || 
-					preventBookingRestrictedRate || preventOverbookRoomType) {
-					extendThrough = false;
-				}
 
+				// CICO-47200 - preventGroupSuiteRoomOverBook
+                extendThrough = !(preventGroupSuiteRoomOverBook || preventSuiteRoomOverBook || preventOverbookHouse ||
+                    preventBookingRestrictedRate || preventOverbookRoomType);
 
 				if (extendThrough || ((thisDate.getTime() >= checkinDate.getTime()) && (thisDate.getTime() <= checkoutDate.getTime()))) {
 					events.push(calEvt);
