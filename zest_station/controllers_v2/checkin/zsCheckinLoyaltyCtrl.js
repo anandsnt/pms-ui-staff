@@ -1,9 +1,9 @@
 sntZestStation.controller('zsCheckinLoyaltyCtrl', [
 	'$scope',
-	'zsCheckinSrv',
+	'zsCheckinLoyaltySrv',
 	'zsGeneralSrv',
 	'$timeout',
-	function($scope, zsCheckinSrv, zsGeneralSrv, $timeout) {
+	function($scope, zsCheckinLoyaltySrv, zsGeneralSrv, $timeout) {
 
 		BaseCtrl.call(this, $scope);
 		var pageNumber;
@@ -24,7 +24,7 @@ sntZestStation.controller('zsCheckinLoyaltyCtrl', [
 				$scope.loyaltyMode = 'SELECT_LOYALTY';
 			};
 
-			$scope.callAPI(zsCheckinSrv.fetchUserMemberships, {
+			$scope.callAPI(zsCheckinLoyaltySrv.fetchUserMemberships, {
 				params: {
 					userId: $scope.selectedReservation.guest_details[0].id
 				},
@@ -38,7 +38,7 @@ sntZestStation.controller('zsCheckinLoyaltyCtrl', [
 		};
 
 		$scope.setLoyaltyForReservation = function(pgmId) {
-			$scope.callAPI(zsCheckinSrv.setLoyaltyForReservation, {
+			$scope.callAPI(zsCheckinLoyaltySrv.setLoyaltyForReservation, {
 				params: {
 					membership_id: pgmId,
 					reservation_id: $scope.selectedReservation.id

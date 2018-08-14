@@ -3,7 +3,7 @@ describe('zsCheckinLoyaltyCtrl', function() {
     var $controller,
         $timeout,
         $scope = {},
-        zsCheckinSrv,
+        zsCheckinLoyaltySrv,
         zsGeneralSrv,
         $rootScope,
         $q,
@@ -11,13 +11,13 @@ describe('zsCheckinLoyaltyCtrl', function() {
 
     beforeEach(function() {
         module('sntZestStation');
-        inject(function(_$controller_, _$rootScope_, _$timeout_, _zsCheckinSrv_, _zsGeneralSrv_, _$q_) {
+        inject(function(_$controller_, _$rootScope_, _$timeout_, _zsCheckinLoyaltySrv_, _zsGeneralSrv_, _$q_) {
             $controller = _$controller_;
             $rootScope = _$rootScope_.$new();
             $timeout = _$timeout_;
             $scope = $rootScope.$new();
             zsGeneralSrv = _zsGeneralSrv_;
-            zsCheckinSrv = _zsCheckinSrv_;
+            zsCheckinLoyaltySrv = _zsCheckinLoyaltySrv_;
             $q = _$q_;
         });
 
@@ -35,7 +35,7 @@ describe('zsCheckinLoyaltyCtrl', function() {
 
     describe('On emiting FETCH_USER_MEMBERSHIPS from reservation details', function() {
         it('Call fetchUserMemberships API and change loyaltyMode to SELECT_LOYALTY', function() {
-            spyOn(zsCheckinSrv, 'fetchUserMemberships').and.callFake(function() {
+            spyOn(zsCheckinLoyaltySrv, 'fetchUserMemberships').and.callFake(function() {
                 var respone = {
                     "frequentFlyerProgram": [{
                         "id": 1975,
@@ -51,7 +51,7 @@ describe('zsCheckinLoyaltyCtrl', function() {
             });
             $scope.$emit('FETCH_USER_MEMBERSHIPS');
             $scope.$digest();
-            expect(zsCheckinSrv.fetchUserMemberships).toHaveBeenCalledWith(jasmine.any(Object));
+            expect(zsCheckinLoyaltySrv.fetchUserMemberships).toHaveBeenCalledWith(jasmine.any(Object));
             expect($scope.loyaltyMode).toEqual('SELECT_LOYALTY');
         });
     });
@@ -63,7 +63,7 @@ describe('zsCheckinLoyaltyCtrl', function() {
     });
 
     it('On selecting existing loyalties, if only one loyalty is present, call API to add that to the reservation', function() {
-        spyOn(zsCheckinSrv, 'setLoyaltyForReservation').and.callFake(function() {
+        spyOn(zsCheckinLoyaltySrv, 'setLoyaltyForReservation').and.callFake(function() {
             deferred.resolve({});
             return deferred.promise;
         });
@@ -75,11 +75,11 @@ describe('zsCheckinLoyaltyCtrl', function() {
         }];
         $scope.selectExistingLoyalty();
         $scope.$digest();
-        expect(zsCheckinSrv.setLoyaltyForReservation).toHaveBeenCalledWith(jasmine.any(Object));
+        expect(zsCheckinLoyaltySrv.setLoyaltyForReservation).toHaveBeenCalledWith(jasmine.any(Object));
     });
 
     it('On selecting existing loyalties, if more than one loyalty is present, change loyaltyMode to SELECT_FROM_MULTIPLE_LOYALTIES', function() {
-        spyOn(zsCheckinSrv, 'setLoyaltyForReservation').and.callFake(function() {
+        spyOn(zsCheckinLoyaltySrv, 'setLoyaltyForReservation').and.callFake(function() {
             deferred.resolve({});
             return deferred.promise;
         });
