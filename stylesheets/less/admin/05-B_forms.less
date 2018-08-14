@@ -16,6 +16,11 @@
         #border-radius > .rounded();
         .float;
 
+        &.with-pagination {
+            padding-bottom: 60px;
+            position: relative;
+        }
+
         .form-title {
             position: relative;
             line-height: 30px;
@@ -777,7 +782,12 @@
                     position: relative;
 
                     &.small {
-                        height: 140px;
+                        max-height: 140px;
+                    }
+
+                    &.no-margin {
+                        .checkbox,
+                        .radio { margin: 0; }
                     }
                 }
 
@@ -895,7 +905,12 @@
                     position: relative;
 
                     &.small {
-                        height: 140px;
+                        max-height: 140px;
+                    }
+                    
+                    &.no-margin {
+                        .checkbox,
+                        .radio { margin: 0; }
                     }
                 }
 
@@ -1379,7 +1394,7 @@
                             font-weight: 400;
                         }
 
-                        &:nth-child(3) {
+                        &:nth-child(3):not(.restriction) {
                             text-align: right;
                         }
                     }
@@ -1774,6 +1789,10 @@
                     padding-bottom: 60px;
                     position: relative;
                 }
+
+                &.with-padding {
+                    padding-top: 20px;
+                }
             }
 
             h3 {
@@ -1993,6 +2012,10 @@
                     background-repeat: no-repeat, repeat;
                     background-size: 6px 7px, auto;
                 }
+            }
+
+            &.red:not(.on) {
+                .gradient(@redEnd, @redStart);
             }
 
             &.on {

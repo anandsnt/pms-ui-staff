@@ -605,7 +605,9 @@ body { overflow: hidden; }
             }
 
             &.activate,
-            &.delete { text-align: center; }
+            &.delete,
+            &.restriction { text-align: center; }
+
             &.activate { width: 110px; }
             &.delete { width: 60px; }
             
@@ -613,6 +615,7 @@ body { overflow: hidden; }
             &.with-shadow {
                 .box-shadow(1px 0px 0px rgba(0,0,0,0.1));
             }
+            &.restriction { width: 150px; }
         }
 
         thead,
