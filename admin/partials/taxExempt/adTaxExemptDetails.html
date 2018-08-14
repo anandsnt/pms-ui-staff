@@ -18,6 +18,7 @@
 					<ad-textbox inputtype="text" value="addData.name"
 				label = "Name" placeholder = "Enter name"
 				required="yes" styleclass="full-width"></ad-textbox>
+				<ad-checkbox is-checked="addData.is_default" label="{{ 'DEFAULT_TAX_EXEMPT_TYPE' | translate}}" div-class="full-width"></ad-checkbox>
 					<div class="entry full-width actions_margin_top">
 			            <div id="available-charge-codes" class="boxes col2">
 			                <ad-checkbox ng-repeat="chargeCode in chargeCodes"
