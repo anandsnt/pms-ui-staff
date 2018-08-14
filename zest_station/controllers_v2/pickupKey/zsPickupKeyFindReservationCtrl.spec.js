@@ -7,6 +7,7 @@ describe('zsPickupKeyFindReservationCtrl', function() {
         $q,
         $state;
 
+
     beforeEach(function() {
 
         module('sntZestStation', function($provide) {
@@ -40,18 +41,15 @@ describe('zsPickupKeyFindReservationCtrl', function() {
             }
         });
 
-        $controller('zsPickupKeyFindReservationCtrl', {
-            $scope: $scope
-        });
-
         // Root controller methods
         angular.extend($scope, {
             zestStationData: {
                 sessionActivity: [],
-                idle_timer: {}
-            },
-            trackEvent: function() {
-                return;
+                idle_timer: {},
+                paymentGateway: 'MLI',
+                hotelSettings: {
+                    mli_cba_enabled: false
+                }
             },
             reservationHasPassportsScanned: function() {
                 return;
@@ -59,6 +57,17 @@ describe('zsPickupKeyFindReservationCtrl', function() {
         });
 
         $scope.errorMessage = '';
+
+        $controller('zsPickupKeyFindReservationCtrl', {
+            $scope: $scope
+        });
+
+        angular.extend($scope, {
+            trackEvent: function() {
+                return;
+            }
+        });
+
     });
 
     it('Start the screen with Last name entry Mode and the initial values are empty', function() {
@@ -97,7 +106,7 @@ describe('zsPickupKeyFindReservationCtrl', function() {
                 afterEach(function() {
                     $scope.$digest();
                     expect(zsCheckoutSrv.findReservation).toHaveBeenCalled();
-                    expect($scope.mode).toBe('CC_ENTRY');
+                    expect($scope.mode).toBe('CC_OPTIONS');
                 });
 
                 it('On entering the last name in retry mode, go to screen to enter CC last 4 digits', function() {
@@ -359,5 +368,21 @@ describe('zsPickupKeyFindReservationCtrl', function() {
             });
 
         });
+    });
+    
+    describe('Add new CC', function() {
+
+        it('On clicking Add new card, set mainScreenMode as PAYMENT_IN_PROGRESS and call payUsingNewCard inside zsPaymentCtrl', function() {
+            spyOn($scope, 'payUsingNewCard');
+            $scope.useNewCard();
+            expect($scope.mainScreenMode).toBe('PAYMENT_IN_PROGRESS');
+            expect($scope.payUsingNewCard).toHaveBeenCalled();
+        });
+
+        it('On card Add failure, change mainScreenMode to PAYMENT_FAILED', function() {
+            $scope.$emit('PAYMENT_FAILED');
+            expect($scope.mainScreenMode).toBe('PAYMENT_FAILED');
+        });
+
     });
 });
