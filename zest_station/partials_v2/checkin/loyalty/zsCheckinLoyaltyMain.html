@@ -1,3 +1,6 @@
+<section id="main" role="main" ng-show="loyaltyMode === ''">
+</section>
+
 <!-- SELECT PROGRAM -->
 <ng-include src="'/assets/partials_v2/checkin/loyalty/zsCheckinSelectLoyalty.html'" 
 			ng-show="loyaltyMode === 'SELECT_LOYALTY'">
@@ -26,3 +29,8 @@
 		ng-show="loyaltyMode === 'ADD_HOTEL_LOYALTY'">
 </ng-include> 
 
+<!-- ADD NEW PROGRAM FAILED-->
+<ng-include 
+		src="'/assets/partials_v2/checkin/loyalty/zsCheckinAddNewLoyaltyFailed.html'" 
+		ng-show="loyaltyMode === 'ADD_NEW_LOYALTY_FAILED'">
+</ng-include>

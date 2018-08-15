@@ -6,15 +6,17 @@ sntZestStation.controller('zsCheckinLoyaltyCtrl', [
 	'zsEventConstants',
 	function($scope, zsCheckinLoyaltySrv, zsGeneralSrv, $timeout, zsEventConstants) {
 
-		BaseCtrl.call(this, $scope);
-		$scope.ffLoyalties = [];
-		$scope.hotelLoyalties = [];
 		var userId = $scope.selectedReservation.guest_details[0].id;
 		var reservationId = $scope.selectedReservation.id;
 		var pageNumber;
 		var navigateToNextScreen = function() {
 			$scope.$emit('NAVIGATE_FROM_LOYALTY_SCREEN');
 		};
+
+		BaseCtrl.call(this, $scope);
+		$scope.ffLoyalties = [];
+		$scope.hotelLoyalties = [];
+		
 
 		$scope.$on('LOYALTY_PROGRAMS_BACK_NAVIGATIONS', function() {
 			if ($scope.loyaltyMode === 'SELECT_LOYALTY') {
@@ -122,8 +124,11 @@ sntZestStation.controller('zsCheckinLoyaltyCtrl', [
 			$scope.callAPI(zsCheckinLoyaltySrv.saveLoyaltyPgm, {
 				params: params,
 				'successCallBack': navigateToNextScreen,
-				'failureCallBack': function() {
-
+				'failureCallBack': function(response) {
+					if (Array.isArray(response)) {
+						$scope.errorMessage = response[0] == 'Membership type has already been taken' ? 'Membership already taken' : 'Something went wrong';
+					}
+					$scope.loyaltyMode = 'ADD_NEW_LOYALTY_FAILED';
 				}
 			});
 		};
