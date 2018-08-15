@@ -172,9 +172,16 @@ sntZestStation.controller('zsCheckInReservationDetailsCtrl', [
             $scope.zestStationData.session_conf = '';
 
             var reservations = zsCheckinSrv.getCheckInReservations();
-
-            if ($scope.mode === 'TERMS_CONDITIONS' || $scope.mode === 'LOYALTY_PROGRAMS') {
-                $scope.mode = 'RESERVATION_DETAILS';
+            if( $scope.mode === 'LOYALTY_PROGRAMS') {
+                $scope.$broadcast('LOYALTY_PROGRAMS_BACK_NAVIGATIONS');
+            }
+            else if ($scope.mode === 'TERMS_CONDITIONS') {
+                if ($scope.zestStationData.add_loyalty_program) {
+                    $scope.mode = 'LOYALTY_PROGRAMS';
+                    $scope.$broadcast('FETCH_USER_MEMBERSHIPS');
+                } else {
+                    $scope.mode = 'RESERVATION_DETAILS';
+                }
             }
             else if ($stateParams.previousState === 'COLLECT_ADRESS') {
                 $scope.$emit('showLoader');
@@ -193,6 +200,10 @@ sntZestStation.controller('zsCheckInReservationDetailsCtrl', [
             // what needs to be passed back to re-init search results
             //  if more than 1 reservation was found? else go back to input 2nd screen (confirmation, no of nites, etc..)
         };
+
+        $scope.$on('CHANGE_MODE_TO_RESERVATION_DETAILS', function() {
+            $scope.mode = 'RESERVATION_DETAILS';
+        });
         var initComplete = function() {
             // called after getting selectedReservation details
 
@@ -422,7 +433,7 @@ sntZestStation.controller('zsCheckInReservationDetailsCtrl', [
         };
 
         var nextPageModeActions = function() {
-            if ($scope.zestStationData.add_loyalty_program) {
+            if ($scope.zestStationData.add_loyalty_program && $scope.mode !== 'LOYALTY_PROGRAMS') {
                 $scope.mode = 'LOYALTY_PROGRAMS';
                 $scope.$broadcast('FETCH_USER_MEMBERSHIPS');
             } else if (!$scope.zestStationData.kiosk_display_terms_and_condition) {
@@ -431,6 +442,10 @@ sntZestStation.controller('zsCheckInReservationDetailsCtrl', [
                 showTermsAndCondition();
             }
         };
+
+        $scope.$on('NAVIGATE_FROM_LOYALTY_SCREEN', function() {
+            nextPageModeActions();
+        });
 
 
         var assignRoomToReseravtion = function() {

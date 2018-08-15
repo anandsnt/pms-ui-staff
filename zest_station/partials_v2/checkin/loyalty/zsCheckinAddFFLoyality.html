@@ -3,16 +3,15 @@
         <h1>Enter Frequent Flyer Program Details</h1>
         <form method="post" class="form short">
             <div class="entry select">
-                <select id="showing-structure">
+                <select id="showing-structure" ng-options="loyalty.ff_value as loyalty.ff_description for loyalty in ffLoyalties" ng-model="ffLoyalty.id">
                     <option value="" selected>Select Airline</option>
-                    <option value="{value}">{Airline Name}</option>
                 </select>
             </div>
             <div class="entry input">
-                <input type="text" placeholder="Enter Code" value="" />
+                <input type="text" placeholder="Enter Code" ng-model="ffLoyalty.code" />
             </div>
             <div class="entry action">
-                <button type="button" class="button">Next</button>
+                <button type="button" class="button" touch-press='saveFFLoyalty()'>Next</button>
             </div>
         </form>
     </div>
