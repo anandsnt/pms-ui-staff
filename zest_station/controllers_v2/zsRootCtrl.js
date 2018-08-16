@@ -174,6 +174,9 @@ sntZestStation.controller('zsRootCtrl', [
 
             $scope.trackEvent(currentState, 'clicked_close_button');
             $state.go('zest_station.home');
+            if ($scope.zestStationData.paymentGateway === 'MLI' && $scope.zestStationData.ccReader === 'local') {
+                $scope.$emit('STOP_OBSERVE_FOR_SWIPE');
+            }
         };
         $scope.talkToStaff = function() {
             var currentState = $state.current.name;
@@ -523,36 +526,34 @@ sntZestStation.controller('zsRootCtrl', [
 
                     }
                 }
+                scrollContentsDown();
             }
         };
-        $scope.showOnScreenKeyboard = function(id) {
-			// in console, allow debugging to test out keyboard in any browser
-            if (zestSntApp.virtualKeyBoardEnabled) {
-                if (id) {
-                    $scope.lastKeyboardId = id;
-                    new initScreenKeyboardListener('station', id, true, $scope.resetTime); // on change event fire reset time
-                }
+        $scope.showOnScreenKeyboard = function(id, scrollUp) {
+            // in console, allow debugging to test out keyboard in any browser
+            if (zestSntApp.virtualKeyBoardEnabled && id) {
+                $scope.lastKeyboardId = id;
+                scrollContentsUpIfNeeded(scrollUp);
+                new initScreenKeyboardListener('station', id, true, $scope.resetTime); // on change event fire reset time
             } else {
-				// restrict keyboard if screen is resized
-				// to lower height
+                // restrict keyboard if screen is resized
+                // to lower height
                 if (window.innerHeight < 700) {
                     return;
                 }
                 $scope.lastKeyboardId = id;
-				// pull up the virtual keyboard (snt) theme... if chrome & fullscreen
+                // pull up the virtual keyboard (snt) theme... if chrome & fullscreen
                 var isTouchDevice = 'ontouchstart' in window,
                     onWindowsDevice = window.navigator.userAgent.toLowerCase().indexOf('window') !== -1,
                     themeUsesKeyboard = $scope.theme === 'yotel' || !$scope.theme;
 
                 var shouldShowKeyboard = ($scope.inChromeApp || $scope.inElectron) && onWindowsDevice && isTouchDevice && themeUsesKeyboard;
-
-                if (shouldShowKeyboard) {
-                    if (id) {
-                        new initScreenKeyboardListener('station', id, true, $scope.resetTime); // on change event fire reset time
-                    }
+            
+                if (shouldShowKeyboard && id) {
+                    scrollContentsUpIfNeeded(scrollUp);
+                    new initScreenKeyboardListener('station', id, true, $scope.resetTime);
                 }
             }
-
         };
 
         $scope.jumperData = {
@@ -1742,6 +1743,13 @@ sntZestStation.controller('zsRootCtrl', [
             bellSound.play();
         });
 
+        $scope.$on('STOP_OBSERVE_FOR_SWIPE', function() {
+            $scope.cardReader.stopReader({
+                'successCallBack': function() {},
+                'failureCallBack': function() {}
+            });
+        });
+
 		/** *
 		 * [initializeMe description]
 		 * @return {[type]} [description]
@@ -1880,5 +1888,15 @@ sntZestStation.controller('zsRootCtrl', [
         };
 
         $window.onbeforeunload = $scope.onExitApplication;
+
+
+        // To Mock MLI swipe - 
+        // Once payment screen is loaded, 
+        // In browser console call document.dispatchEvent(new Event('MOCK_MLI_SWIPE')) 
+
+        document.addEventListener('MOCK_MLI_SWIPE', function() {
+            $scope.$emit('showLoader');
+            $scope.$broadcast('ON_MOCK_CC_SWIPE');
+        });
     }
 ]);

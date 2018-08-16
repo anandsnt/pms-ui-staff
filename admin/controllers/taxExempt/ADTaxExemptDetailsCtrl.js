@@ -15,12 +15,17 @@ function($scope, $state, $timeout, $stateParams, ADTaxExemptSrv) {
 	$scope.setTaxExemptData = function() {
 		var fetchSuccess = function(data) {
 				$scope.addData.name = data.name;
+				$scope.addData.is_default = data.is_default;
+				$scope.addData.charge_code_ids = [];
 				angular.forEach($scope.chargeCodes, function(item) {
 					var indexValue = _.findIndex(data.charge_codes, function(chargeCodeItem) {
 						return chargeCodeItem.id === parseInt(item.value);
 					});
 
-					item.is_selected = (indexValue !== -1);      
+					item.is_selected = (indexValue !== -1);    
+					if (item.is_selected) {
+						$scope.addData.charge_code_ids.push(item.value);
+					}  
 				});
 			},
 			options = {
@@ -77,7 +82,8 @@ function($scope, $state, $timeout, $stateParams, ADTaxExemptSrv) {
 				successCallBack: saveSuccess,
 				params: {
 					"name": $scope.addData.name,
-					"charge_code_ids": $scope.addData.charge_code_ids
+					"charge_code_ids": $scope.addData.charge_code_ids,
+					"is_default": $scope.addData.is_default
 				}
 			};
 			

@@ -62,7 +62,8 @@ sntZestStation.service('zsGeneralSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
             'freehand-la': 'Freehand Los Angels',
             'east-london': 'The East London Hotel',
             'farmers-daughter': 'Farmers Daughter',
-            'park-james': 'Park James Hotel'
+            'park-james': 'Park James Hotel',
+            'annapolis': 'Hotel Annapolis'
         };
 
         this.isThemeConfigured = function(theme) {
