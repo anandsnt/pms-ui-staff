@@ -164,6 +164,7 @@ angular.module('sntZestStation').controller('zsPaymentCtrl', ['$scope', '$log', 
         };
 
         $scope.payUsingNewCard = function() {
+            $scope.resetTime();
             $scope.screenMode.value = 'PAYMENT_IN_PROGRESS';
             $scope.screenMode.isUsingExistingCardPayment = false;
             $scope.screenMode.paymentFailure = false;
