@@ -8,46 +8,34 @@
 		</header>
 		<section class="content-scroll">
 			<div ng-include="'/assets/partials/common/notification_message.html'"></div>
-			<form name="item-details" method="post" class="form float">
-				<fieldset class="holder full-width float" ng-show="isAddMode">
+			<form name="item-details" method="post" class="form inline-form float">
 					<div class="form-title" >
 						<h3>
 							<span translate>ADD</span>
 						</h3>						
 					</div>
-				</fieldset>
-				<fieldset class="holder left float">
+					<br />
 					<ad-textbox inputtype="text" value="addData.name"
 				label = "Name" placeholder = "Enter name"
-				required="yes" styleclass="full-width"></ad-textbox>					
+				required="yes" styleclass="full-width"></ad-textbox>
+				<ad-checkbox is-checked="addData.is_default" label="{{ 'DEFAULT_TAX_EXEMPT_TYPE' | translate}}" div-class="full-width"></ad-checkbox>
+					<div class="entry full-width actions_margin_top">
+			            <div id="available-charge-codes" class="boxes col2">
+			                <ad-checkbox ng-repeat="chargeCode in chargeCodes"
+                             is-checked="chargeCode.is_selected"
+                             label="{{chargeCode.charge_code +' - ' + chargeCode.description}}"
+                             parent-label-class="room-likes" span-class="checkbox-background"
+                             on-click="selectedChargeCode(chargeCode.is_selected)"></ad-checkbox>
+			            </div>
+			        </div>
+				<div class="actions float">
+					<br />
+					<button type="button" id="cancel" class="button blank add-data-inline" ng-click="goBack()" translate>CANCEL</button>
 
-				</fieldset>
-				
-				<fieldset class="holder full-width">
-					<div class="entry full-width">
-						<label translate>SELECT_CHARGE_CODES</label>
-						<div class="boxes">
-							
-							<label class="checkbox inline" ng-repeat="chargeCode in chargeCodes">
-								<div class="entry radio-check {{divClass}}" ng-click="onClick()">
-									<label class="checkbox {{parentLabelClass}}" ng-class="{'checked': chargeCode.is_selected}" >
-										<span class="icon-form icon-checkbox" ng-class="{'checked': isChecked, 'checkbox-background': !chargeCode.is_selected}"></span>
-										<span class="icon-form icon-checkbox" ng-class="{'checked': chargeCode.is_selected}"></span>
-										<input type="checkbox" ng-model="chargeCode.is_selected"  ng-change='selectedChargeCode(chargeCode.is_selected)'>
-										{{chargeCode.charge_code}}							
-									</label>
-								</div>
-							</label>
-						</div>
-					</div>
-				</fieldset>				
-			<div class="actions float">
-				<button type="button" id="cancel" class="button blank add-data-inline" ng-click="goBack()" translate>CANCEL</button>
+					<button type="button" id="save" class="button green add-data-inline"  ng-click="saveTaxExempt()" translate>SAVE_CHANGES</button>
 
-				<button type="button" id="save" class="button green add-data-inline"  ng-click="saveTaxExempt()" translate>SAVE_CHANGES</button>
-
-			</div>
-		</form>
-	</section>
-</div>
+				</div>
+			</form>
+		</section>
+	</div>
 </section>

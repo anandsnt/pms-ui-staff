@@ -10,9 +10,8 @@ sntRover.controller('rvReservationAdditionalController', ['$rootScope', '$scope'
 		};
 		$scope.isEmptyObject = isEmptyObject;
 
-		$scope.hasPermissionForCommissionUpdate = function() {
-			return rvPermissionSrv.getPermissionValue('UPDATE_COMMISSION');
-		};
+        $scope.hasPermissionToEditCommission = rvPermissionSrv.getPermissionValue('UPDATE_COMMISSION') &&
+            $scope.reservationData.reservation_card.reservation_status !== 'CHECKEDOUT';
 
 		$scope.isSegmentAutoComputed = function() {
 			var currentSegment = $scope.reservationParentData.demographics.segment,
@@ -96,21 +95,24 @@ sntRover.controller('rvReservationAdditionalController', ['$rootScope', '$scope'
 					"id": $scope.reservationParentData.reservationId,
 					"tax_exempt": $scope.additionalDetails.isTaxExemptEnabled
 				},				
-				successCallBackOfUpdate = function() {
+				successCallBackOfUpdate = function(data) {
+					$scope.errorMessage = data;
 					if (!$scope.additionalDetails.isTaxExemptEnabled) {
 						$scope.additionalDetails.taxExemptType = '';
 					}
 				},
 				failureCallBackOfUpdate = function(errorMessage) {
-					$scope.additionalDetails.isTaxExemptEnabled = !$scope.additionalDetails.isTaxExemptEnabled;
-					if (!$scope.additionalDetails.isTaxExemptEnabled) {
-						$scope.additionalDetails.taxExemptType = '';
-					}
 					$scope.errorMessage = errorMessage;
 				};
 
 			if ($scope.additionalDetails.isTaxExemptEnabled) {
-				paramsToApi.tax_exempt_type_id = parseInt($scope.additionalDetails.taxExemptType);
+				if ($scope.additionalDetails.taxExemptType) {
+					paramsToApi.tax_exempt_type_id = parseInt($scope.additionalDetails.taxExemptType);
+				} else {
+					paramsToApi.tax_exempt_type_id = parseInt($scope.defaultTaxExemptTypeId);
+					$scope.additionalDetails.taxExemptType = parseInt($scope.defaultTaxExemptTypeId);
+				}
+				
 			}
 
 			var	options = {
@@ -126,10 +128,39 @@ sntRover.controller('rvReservationAdditionalController', ['$rootScope', '$scope'
 		 */
 		$scope.toggleTaxExempt = function() {
 			$scope.additionalDetails.isTaxExemptEnabled = !$scope.additionalDetails.isTaxExemptEnabled;
-			if (!$scope.additionalDetails.isTaxExemptEnabled) {
-				$scope.updateTaxExemptData();				
-			}
+			if (($scope.additionalDetails.isTaxExemptEnabled && $scope.defaultTaxExemptTypeId !== '') || !$scope.additionalDetails.isTaxExemptEnabled) {
+				$scope.updateTaxExemptData();
+			}			
 		};
+
+		/*
+		 * Toggle commission
+		 */
+		$scope.toggleCommission = function() {
+            $scope.reservationData.reservation_card.commission_details.is_on = !$scope.reservationData.reservation_card.commission_details.is_on;
+            $scope.updateCommissionFromStaycard();
+        };
+
+        /*
+         * Save commission details
+         */
+        $scope.updateCommissionFromStaycard = function() {
+            var params = $scope.reservationData.reservation_card.commission_details;
+
+            params.reservationId = $scope.reservationParentData.reservationId;
+
+            var	options = {
+                params: params,
+                successCallBack: function(data) {
+                    $scope.reservationData.reservation_card.commission_details = data.commission_details;
+                },
+                failureCallBack: function(errorMessage) {
+                    $scope.errorMessage = errorMessage;
+                }
+            };
+
+            $scope.callAPI(RVReservationSummarySrv.updateCommission, options);
+        };
 
 		$rootScope.$on('UPDATERESERVATIONTYPE', function(e, data, paymentId ) {
             $scope.reservationParentData.demographics.reservationType = data;

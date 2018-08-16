@@ -633,13 +633,6 @@ angular.module('adminModuleTwo', []).config(function ($stateProvider) {
         url: '/analyticSetup'
     });
 
-    $stateProvider.state('admin.debuggingSetup', {
-        templateUrl: '/assets/partials/debuggingSetup/adDebuggingSetup.html',
-        controller: 'adDebuggingSetupCtrl',
-        url: '/debuggingSetup'
-    });
-
-
     $stateProvider.state('admin.emailBlacklist', {
         templateUrl: '/assets/partials/EmailBlackList/adEmailBlackList.html',
         controller: 'ADEmailBlackListCtrl',

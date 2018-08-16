@@ -13,7 +13,8 @@ angular.module('sntRover').controller('rvGroupConfigurationCtrl', [
     'rvAccountTransactionsSrv',
     'ngDialog',
     'hotelSettings',
-    function($scope, $rootScope, rvGroupSrv, $filter, $stateParams, rvGroupConfigurationSrv, summaryData, holdStatusList, $state, rvPermissionSrv, $timeout, rvAccountTransactionsSrv, ngDialog, hotelSettings) {
+    'taxExempts',
+    function($scope, $rootScope, rvGroupSrv, $filter, $stateParams, rvGroupConfigurationSrv, summaryData, holdStatusList, $state, rvPermissionSrv, $timeout, rvAccountTransactionsSrv, ngDialog, hotelSettings, taxExempts) {
 
         BaseCtrl.call(this, $scope);
 
@@ -1097,6 +1098,10 @@ angular.module('sntRover').controller('rvGroupConfigurationCtrl', [
                         $scope.groupConfigData.summary.rate = -1;
                     }
 
+                    if ($scope.groupConfigData.summary.tax_exempt_type_id === "" || $scope.groupConfigData.summary === null) {
+                        $scope.groupConfigData.summary.is_tax_exempt = false;
+                    }
+
                     $scope.callAPI(rvGroupConfigurationSrv.saveGroupSummary, {
                         successCallBack: onGroupSaveSuccess,
                         failureCallBack: onGroupSaveFailure,
@@ -1164,6 +1169,9 @@ angular.module('sntRover').controller('rvGroupConfigurationCtrl', [
          */
         $scope.updateGroupSummary = function() {
             if (rvPermissionSrv.getPermissionValue('EDIT_GROUP_SUMMARY')) {
+                if ($scope.groupConfigData.summary.tax_exempt_type_id === null || $scope.groupConfigData.summary.tax_exempt_type_id === "") {
+                    $scope.groupConfigData.summary.is_tax_exempt = false;
+                }
                 if (angular.equals(getGroupSummaryFields($scope.groupSummaryMemento), getGroupSummaryFields($scope.groupConfigData.summary)) || updateGroupSummaryInProgress) {
                     return false;
                 }
@@ -1503,7 +1511,11 @@ angular.module('sntRover').controller('rvGroupConfigurationCtrl', [
         // Method invoked while clicking the Save Group btn in header
         $scope.createGroup = function () {
             $scope.$broadcast('CREATE_GROUP');
-        }; 
+        };
+
+        $scope.shouldShowTaxExempt = function() {
+            return (rvPermissionSrv.getPermissionValue('TAX_EXEMPT') && $scope.taxExemptTypes.length);
+        };
 
         /**
          * function to initialize things for group config.
@@ -1513,6 +1525,13 @@ angular.module('sntRover').controller('rvGroupConfigurationCtrl', [
 
             // CICO-42249 - Hotel settings
             $scope.hotelSettings = hotelSettings;
+            $scope.taxExemptTypes = taxExempts.results;
+            var defaultTaxExemptObject = _.findWhere($scope.taxExemptTypes, {is_default: true});
+
+            $scope.defaultTaxExemptTypeId = '';
+            if (typeof defaultTaxExemptObject !== "undefined") {
+                $scope.defaultTaxExemptTypeId = defaultTaxExemptObject.id;
+            }           
 
             // forming the data model if it is in add mode or populating the data if it is in edit mode
             $scope.initializeDataModelForSummaryScreen();

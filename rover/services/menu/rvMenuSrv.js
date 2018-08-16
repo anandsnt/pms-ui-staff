@@ -249,10 +249,6 @@ angular.module('sntRover').service('rvMenuSrv',
 		            action: "rover.companycardsearch",
 		            menuIndex: "cards"
 		        }, {
-		            title: "MENU_DISTRIBUTION_MANAGER",
-		            action: "",
-		            menuIndex: "distribution_manager"
-		        }, {
 		            title: "MENU_SELL_LIMITS",
 		            action: "rover.overbooking",
 		            menuIndex: "overbooking"

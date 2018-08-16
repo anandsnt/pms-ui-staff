@@ -3382,9 +3382,8 @@
                     }
                 }
 
-                /* Activity Log **/
+                /* Activity Log ***/
                 &.activity-log {
-
                     .tab-header {
                         padding: 0;
                         overflow: visible;
@@ -3449,6 +3448,10 @@
 
                     .tab-details {
 
+                        &.no-filters {
+                            height: 100%;
+                        }
+
                         &.with-pagination {
                             .wrapper {
                                 padding-bottom: 60px;
@@ -3482,14 +3485,14 @@
                                     white-space: normal;
                                     overflow: visible;
                                     vertical-align: top;
+                                }
 
-                                    .old { 
-                                        text-decoration: line-through;
+                                .old { 
+                                    text-decoration: line-through;
 
-                                        strong {
-                                            color: @grey3;
-                                            &:after { .show; }
-                                        }
+                                    strong {
+                                        color: @grey3;
+                                        &:after { .show; }
                                     }
                                 }
                             }
