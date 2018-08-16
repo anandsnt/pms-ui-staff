@@ -885,11 +885,17 @@ sntZestStation.controller('zsRootCtrl', [
 
                 if (idleTimerEnabled === 'true' && !inAnIgnoreState && !currentlyDispensingKey) {
                     userInActivityTimeInSeconds = userInActivityTimeInSeconds + 1;
+
+                    var creditCardUsingStates = ['zest_station.checkInSignature',
+                        'zest_station.checkInCardSwipe',
+                        'zest_station.payment',
+                        'zest_station.pickUpKeyReservationSearch'
+                    ];
+
 					// when user activity is not recorded for more than idle_timer.prompt
 					// time set in admin, display inactivity popup
                     if (userInActivityTimeInSeconds >= idlePopupTime) {
-                        if (currentState === 'zest_station.checkInSignature' || currentState === 'zest_station.checkInCardSwipe' ||
-                            currentState === 'zest_station.payment') {
+                        if (creditCardUsingStates.indexOf(currentState) > -1) {
                             $scope.$broadcast('USER_ACTIVITY_TIMEOUT');
                         } else {
                             // opens timeout popup w/ ng-class/css
