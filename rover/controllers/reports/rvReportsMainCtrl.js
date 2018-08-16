@@ -334,8 +334,7 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
                 var selectedDate = new tzIndependentDate(util.get_date_from_date_picker(datePickerObj));
 
                 $scope.toDateOptionsOneYearLimit.minDate = selectedDate;
-                $scope.toDateOptionsOneYearLimit.maxDate = reportUtils.processDate(selectedDate).aYearAfter;
-                $scope.touchedReport.untilDate = $scope.toDateOptionsOneYearLimit.maxDate;
+                $scope.toDateOptionsOneYearLimit.maxDate = reportUtils.processDate(selectedDate).aYearAfter;                
             }
         }, datePickerCommon);
 
@@ -345,8 +344,7 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
                 var selectedDate = new tzIndependentDate(util.get_date_from_date_picker(datePickerObj));
 
                 $scope.toDateOptionsOneMonthLimit.minDate = selectedDate;
-                $scope.toDateOptionsOneMonthLimit.maxDate = reportUtils.processDate(selectedDate).aMonthAfter;
-                $scope.touchedReport.untilDate = $scope.toDateOptionsOneMonthLimit.maxDate;
+                $scope.toDateOptionsOneMonthLimit.maxDate = reportUtils.processDate(selectedDate).aMonthAfter;                
             }
         }, datePickerCommon);
 
@@ -368,8 +366,7 @@ angular.module('sntRover').controller('RVReportsMainCtrl', [
                 var selectedDate = new tzIndependentDate(util.get_date_from_date_picker(datePickerObj));
 
                 $scope.toDateOptionsSixMonthsLimit.minDate = selectedDate;
-                $scope.toDateOptionsSixMonthsLimit.maxDate = reportUtils.processDate(selectedDate).sixMonthsAfter;
-                $scope.touchedReport.untilDate = $scope.toDateOptionsSixMonthsLimit.maxDate;
+                $scope.toDateOptionsSixMonthsLimit.maxDate = reportUtils.processDate(selectedDate).sixMonthsAfter;                
             }
         }, datePickerCommon);
 
