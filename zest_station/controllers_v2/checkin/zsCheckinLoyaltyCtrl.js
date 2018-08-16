@@ -137,14 +137,14 @@ sntZestStation.controller('zsCheckinLoyaltyCtrl', [
 
 		$scope.addFreaquentFlyerLoyalty = function() {
 			$scope.ffLoyalties = [];
+			$scope.ffLoyalty = {
+						id: '',
+						code: ''
+					};
 			$scope.callAPI(zsCheckinLoyaltySrv.getAvailableFreaquentFlyerLoyaltyPgms, {
 				params: {},
 				'successCallBack': function(response) {
 					$scope.ffLoyalties = response;
-					$scope.ffLoyalty = {
-						id: '',
-						code: ''
-					};
 					$scope.loyaltyMode = 'ADD_NEW_FF_LOYALTY';
 				}
 			});
@@ -169,18 +169,13 @@ sntZestStation.controller('zsCheckinLoyaltyCtrl', [
 			$scope.hotelLoyalty = {
 				id: '',
 				code: '',
-				level: ''
+				level: '',
+				selectedLoyalty: {}
 			};
 			$scope.callAPI(zsCheckinLoyaltySrv.getAvailableHotelLoyaltyPgms, {
 				params: {},
 				'successCallBack': function(response) {
 					$scope.hotelLoyalties = response;
-					$scope.hotelLoyalty = {
-						id: '',
-						code: '',
-						level: '',
-						selectedLoyalty: {}
-					};
 					$scope.loyaltyMode = 'ADD_HOTEL_LOYALTY';
 				}
 			});
