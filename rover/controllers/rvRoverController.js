@@ -138,7 +138,7 @@ sntRover.controller('roverController', [
         $rootScope.businessDate = hotelDetails.business_date;
         $rootScope.currencySymbol = getCurrencySign(hotelDetails.currency.value);
         // CICO-35453 Currency Format
-        $rootScope.currencyFormat = hotelDetails.currency_format.value;
+        $rootScope.currencyFormat = hotelDetails.currency_format && hotelDetails.currency_format.value;
         $rootScope.dateFormat = getDateFormat(hotelDetails.date_format.value);
         $rootScope.jqDateFormat = getJqDateFormat(hotelDetails.date_format.value);
         $rootScope.MLImerchantId = hotelDetails.mli_merchant_id;
