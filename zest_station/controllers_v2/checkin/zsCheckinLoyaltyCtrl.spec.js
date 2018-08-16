@@ -54,6 +54,19 @@ describe('zsCheckinLoyaltyCtrl', function() {
             $scope.$digest();
             expect(zsCheckinLoyaltySrv.fetchUserMemberships).toHaveBeenCalledWith(jasmine.any(Object));
             expect($scope.loyaltyMode).toEqual('SELECT_LOYALTY');
+            expect($scope.existingLoyaltyPgms.length).toEqual(1);
+        });
+
+        it('On fetchUserMemberships API failure, change loyaltyMode to SELECT_LOYALTY with no existing program to choose', function() {
+            spyOn(zsCheckinLoyaltySrv, 'fetchUserMemberships').and.callFake(function() {
+                deferred.reject({});
+                return deferred.promise;
+            });
+            $scope.$emit('FETCH_USER_MEMBERSHIPS');
+            $scope.$digest();
+            expect(zsCheckinLoyaltySrv.fetchUserMemberships).toHaveBeenCalledWith(jasmine.any(Object));
+            expect($scope.loyaltyMode).toEqual('SELECT_LOYALTY');
+            expect($scope.existingLoyaltyPgms.length).toEqual(0);
         });
     });
 
@@ -121,6 +134,72 @@ describe('zsCheckinLoyaltyCtrl', function() {
         expect($scope.loyaltyMode).toEqual('SELECT_FROM_MULTIPLE_LOYALTIES');
     });
 
+    describe('Test pagination', function() {
+        beforeEach(function() {
+            $scope.existingLoyaltyPgms = [{
+                "id": 1975,
+                "membership_type": "AF",
+                "membership_card_number": "3RTTTT",
+                "membership_level": ""
+            }, {
+                "id": 1976,
+                "membership_type": "AF",
+                "membership_card_number": "2XXXX",
+                "membership_level": ""
+            }, {
+                "id": 1977,
+                "membership_type": "AF",
+                "membership_card_number": "3RTTTT",
+                "membership_level": ""
+            }, {
+                "id": 1978,
+                "membership_type": "AF",
+                "membership_card_number": "2XXXX",
+                "membership_level": ""
+            }, {
+                "id": 1979,
+                "membership_type": "AF",
+                "membership_card_number": "3RTTTT",
+                "membership_level": ""
+            }, {
+                "id": 1980,
+                "membership_type": "AF",
+                "membership_card_number": "2XXXX",
+                "membership_level": ""
+            }];
+            $scope.pageData = {
+                disableNextButton: false,
+                disablePreviousButton: false,
+                pageStartingIndex: 1,
+                pageEndingIndex: '',
+                viewableItems: [],
+                pageNumber: 1
+            };
+        });
+        it('On clicking Next page with a 5 item per page, show 1 item in second page', function() {
+            spyOn(zsGeneralSrv, 'proceesPaginationDetails').and.callThrough();
+            $scope.viewNextPage();
+            // flush timeout(s) for all code under test.
+            $timeout.flush();
+            // this will throw an exception if there are any pending timeouts.
+            $timeout.verifyNoPendingTasks();
+            expect($scope.pageData.viewableItems.length).toEqual(1);
+        });
+
+        it('On clicking Previous page from second page of a total to 6 items, show 5 items in first page', function() {
+            $scope.pageData.pageNumber = 2;
+            spyOn(zsGeneralSrv, 'proceesPaginationDetails').and.callThrough();
+            $scope.viewPreviousPage();
+            // flush timeout(s) for all code under test.
+            $timeout.flush();
+            // this will throw an exception if there are any pending timeouts.
+            $timeout.verifyNoPendingTasks();
+            expect($scope.pageData.viewableItems.length).toEqual(5);
+        });
+    });
+
+    
+
     it('On clicking Add new loyalty, change loyaltyMode to ADD_NEW_LOYALTY', function() {
         $scope.addNewLoyalty();
         expect($scope.loyaltyMode).toEqual('ADD_NEW_LOYALTY');
@@ -175,5 +254,23 @@ describe('zsCheckinLoyaltyCtrl', function() {
             $scope.$digest();
             expect(zsCheckinLoyaltySrv.saveLoyaltyPgm).toHaveBeenCalledWith(jasmine.any(Object));
         });
+    });
+
+    it('On save loyalty API failure, change loyaltyMode to ADD_NEW_LOYALTY_FAILED', function() {
+        spyOn(zsCheckinLoyaltySrv, 'saveLoyaltyPgm').and.callFake(function() {
+            deferred.reject(['Membership type has already been taken']);
+            return deferred.promise;
+        });
+        $scope.hotelLoyalty = {
+            id: '',
+            code: '',
+            level: '',
+            selectedLoyalty: {}
+        };
+        $scope.saveHotelLoyalty();
+        $scope.$digest();
+        expect($scope.loyaltyMode).toEqual('ADD_NEW_LOYALTY_FAILED');
+        expect($scope.errorMessage).toEqual('Membership already taken');
+
     });
 });

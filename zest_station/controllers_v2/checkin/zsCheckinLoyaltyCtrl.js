@@ -8,7 +8,6 @@ sntZestStation.controller('zsCheckinLoyaltyCtrl', [
 
 		var userId = $scope.selectedReservation.guest_details[0].id;
 		var reservationId = $scope.selectedReservation.id;
-		var pageNumber;
 		var navigateToNextScreen = function() {
 			$scope.$emit('NAVIGATE_FROM_LOYALTY_SCREEN');
 		};
@@ -30,8 +29,8 @@ sntZestStation.controller('zsCheckinLoyaltyCtrl', [
 
 		$scope.$on('FETCH_USER_MEMBERSHIPS', function() {
 			$scope.loyaltyMode = '';
+			$scope.existingLoyaltyPgms = [];
 			var onSuccessResponse = function(response) {
-				$scope.existingLoyaltyPgms = [];
 				$scope.loyaltyMode = 'SELECT_LOYALTY';
 				// Check the existing loyalty programs in the guest card
 				if (response.hotelLoyaltyProgram.length > 0 || response.frequentFlyerProgram.length > 0) {
@@ -72,13 +71,13 @@ sntZestStation.controller('zsCheckinLoyaltyCtrl', [
 				$scope.setLoyaltyForReservation($scope.existingLoyaltyPgms[0].id);
 			} else {
 				$scope.loyaltyMode = 'SELECT_FROM_MULTIPLE_LOYALTIES';
-				pageNumber = 1;
 				$scope.pageData = {
 					disableNextButton: false,
 					disablePreviousButton: false,
 					pageStartingIndex: 1,
 					pageEndingIndex: '',
-					viewableItems: []
+					viewableItems: [],
+					pageNumber: 1
 				};
 				setPageNumberDetails();
 			}
@@ -87,14 +86,14 @@ sntZestStation.controller('zsCheckinLoyaltyCtrl', [
 		var setPageNumberDetails = function() {
 			$scope.$emit('hideLoader');
 			var itemsPerPage = 5;
-			$scope.pageData = zsGeneralSrv.proceesPaginationDetails($scope.existingLoyaltyPgms, itemsPerPage, pageNumber);
+			$scope.pageData = zsGeneralSrv.proceesPaginationDetails($scope.existingLoyaltyPgms, itemsPerPage, $scope.pageData.pageNumber);
 		};
 
 		$scope.viewNextPage = function() {
 			$scope.pageData.disableNextButton = true;
 			$scope.$emit('showLoader');
 			$timeout(function() {
-				pageNumber++;
+				$scope.pageData.pageNumber++;
 				setPageNumberDetails();
 			}, 500);
 		};
@@ -103,7 +102,7 @@ sntZestStation.controller('zsCheckinLoyaltyCtrl', [
 			$scope.pageData.disablePreviousButton = true;
 			$scope.$emit('showLoader');
 			$timeout(function() {
-				pageNumber--;
+				$scope.pageData.pageNumber--;
 				setPageNumberDetails();
 			}, 500);
 		};
