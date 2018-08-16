@@ -22,7 +22,7 @@ angular.module('sntZestStation').controller('zsPaymentCtrl', ['$scope', '$log', 
 
         var paymentFailureActions = function () {
             $scope.$emit('hideLoader');
-            $scope.$broadcast('RESET_TIMER');
+            $scope.resetTime();
             $scope.screenMode.paymentInProgress = false;
             $scope.screenMode.paymentFailure = true;
             $scope.screenMode.value = 'PAYMENT_FAILED';
@@ -376,7 +376,7 @@ angular.module('sntZestStation').controller('zsPaymentCtrl', ['$scope', '$log', 
                         if ((!$scope.screenMode.paymentFailure && !$scope.screenMode.paymentSuccess) || $scope.screenMode.paymentAction === 'ADD_CARD') {
                             processSwipeCardData(response);
                         }
-                        $scope.$broadcast('RESET_TIMER');
+                        $scope.resetTime();
                         runDigestCycle();
                     },
                     'failureCallBack': function() {
