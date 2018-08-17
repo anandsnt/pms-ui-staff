@@ -51,10 +51,17 @@ sntRover.controller('RVCompanyCardActivityLogCtrl',
         // Setting up scroller with refresh options.
         $scope.setScroller('rvCompanyCardActivityLogScroll', {});
         refreshScroll();
+    };
 
-        var dataToSend = {
+    /*
+     *	Fetch Action filter data
+     *	@return {undefined}
+     */
+    that.fetchFilterData = function() {
+
+    	var dataToSend = {
 			params: {
-				'id': $scope.activityLogObj.accountId,
+				'id': $scope.activityLogObj.accountId
 			},
 			successCallBack: function( data ) {
 				$scope.activityLogFilter.actionsList = data.results;
@@ -81,6 +88,7 @@ sntRover.controller('RVCompanyCardActivityLogCtrl',
         }
         return showPagination;
     };
+
 	/*
 	 * Fetch transactions APIs
 	 * @param  { String } [Page No to API]
@@ -88,6 +96,7 @@ sntRover.controller('RVCompanyCardActivityLogCtrl',
 	that.loadAPIData = function ( pageNo ) {
 
 		$scope.activityLogObj.page = pageNo ? pageNo : 1;
+		$scope.activityLogObj.accountId = ( typeof $scope.contactInformation === 'undefined' ) ? $stateParams.id : $scope.contactInformation.id;
 
 		var dataToSend = {
 			params: {
@@ -172,6 +181,7 @@ sntRover.controller('RVCompanyCardActivityLogCtrl',
 	// Refresh the scroller when the tab is active.
     var listener =  $scope.$on('activityLogTabActive', function() {
 		that.loadAPIData();
+		that.fetchFilterData();
     });
 
 	/**
