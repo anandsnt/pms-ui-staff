@@ -2,7 +2,6 @@ sntZestStation.service('zsCheckinLoyaltySrv', ['zsBaseWebSrv2', function (zsBase
 
     this.fetchUserMemberships = function (params) {
         var url = '/staff/user_memberships.json?user_id=' + params.userId;
-        ;
 
         return zsBaseWebSrv2.getJSON(url);
     };

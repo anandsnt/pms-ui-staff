@@ -1,22 +1,23 @@
 <section id="main" role="main"  class="centered">
     <div id="content">
-        <h1>New Loyalty Program</h1>
+        <h1 data-ng-bind-html="getTagValue('NEW_LOYALTY_PROGRAM')" editable-text="NEW_LOYALTY_PROGRAM">
+        </h1>
         <nav id="options" role="nav">
             <ul role="menu">
                 <li>
                     <button type="button" class="button option" touch-press='addFreaquentFlyerLoyalty()'>
                         <ng-include src="icons.url.loyalty"></ng-include>
                     </button>
-                    Frequent Flyer
+                    <span data-ng-bind-html="getTagValue('FREAQUENT_FLYER')" editable-text="FREAQUENT_FLYER"></span>
                 </li>
                 <li class="break">
-                    <span>Or</span>
+                    <span data-ng-bind-html="getTagValue('OR_TEXT')" editable-text="OR_TEXT"></span>
                 </li>
                 <li>
                     <button type="button" class="button option" touch-press='addHotelLoyalty()'>
                         <ng-include src="icons.url.loyalty"></ng-include>
                     </button>
-                    Hotel Loyalty
+                    <span data-ng-bind-html="getTagValue('HOTEL_LOYALTY')" editable-text="HOTEL_LOYALTY"></span>
                 </li>
             </ul>
         </nav>

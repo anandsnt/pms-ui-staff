@@ -172,10 +172,10 @@ sntZestStation.controller('zsCheckInReservationDetailsCtrl', [
             $scope.zestStationData.session_conf = '';
 
             var reservations = zsCheckinSrv.getCheckInReservations();
-            if( $scope.mode === 'LOYALTY_PROGRAMS') {
+            
+            if ($scope.mode === 'LOYALTY_PROGRAMS') {
                 $scope.$broadcast('LOYALTY_PROGRAMS_BACK_NAVIGATIONS');
-            }
-            else if ($scope.mode === 'TERMS_CONDITIONS') {
+            } else if ($scope.mode === 'TERMS_CONDITIONS') {
                 if ($scope.zestStationData.add_loyalty_program) {
                     $scope.mode = 'LOYALTY_PROGRAMS';
                     $scope.$broadcast('FETCH_USER_MEMBERSHIPS');

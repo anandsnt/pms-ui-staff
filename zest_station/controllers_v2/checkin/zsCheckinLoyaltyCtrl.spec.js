@@ -7,12 +7,11 @@ describe('zsCheckinLoyaltyCtrl', function() {
         zsGeneralSrv,
         $rootScope,
         $q,
-        zsEventConstants,
         deferred;
 
     beforeEach(function() {
         module('sntZestStation');
-        inject(function(_$controller_, _$rootScope_, _$timeout_, _zsCheckinLoyaltySrv_, _zsGeneralSrv_, _$q_ , _zsEventConstants_) {
+        inject(function(_$controller_, _$rootScope_, _$timeout_, _zsCheckinLoyaltySrv_, _zsGeneralSrv_, _$q_) {
             $controller = _$controller_;
             $rootScope = _$rootScope_.$new();
             $timeout = _$timeout_;
@@ -20,7 +19,6 @@ describe('zsCheckinLoyaltyCtrl', function() {
             zsGeneralSrv = _zsGeneralSrv_;
             zsCheckinLoyaltySrv = _zsCheckinLoyaltySrv_;
             $q = _$q_;
-            zsEventConstants = _zsEventConstants_;
         });
         deferred = $q.defer();
         $scope.selectedReservation = {
@@ -71,22 +69,22 @@ describe('zsCheckinLoyaltyCtrl', function() {
     });
 
     describe('Back button Actions', function() {
-        it('On navigating back from SELECT_LOYALTY, emit event CHANGE_MODE_TO_RESERVATION_DETAILS', function(){
+        it('On navigating back from SELECT_LOYALTY, emit event CHANGE_MODE_TO_RESERVATION_DETAILS', function() {
             spyOn($scope, '$emit');
-            $scope.loyaltyMode = 'SELECT_LOYALTY'; 
+            $scope.loyaltyMode = 'SELECT_LOYALTY';
             $scope.$broadcast('LOYALTY_PROGRAMS_BACK_NAVIGATIONS');
             $scope.$digest();
             expect($scope.$emit).toHaveBeenCalledWith('CHANGE_MODE_TO_RESERVATION_DETAILS');
         });
-        it('On navigating back from ADD_NEW_FF_LOYALTY or ADD_HOTEL_LOYALTY, change loyaltyMode to ADD_NEW_LOYALTY', function(){
+        it('On navigating back from ADD_NEW_FF_LOYALTY or ADD_HOTEL_LOYALTY, change loyaltyMode to ADD_NEW_LOYALTY', function() {
             spyOn($scope, '$emit');
-            $scope.loyaltyMode = 'ADD_NEW_FF_LOYALTY'; 
+            $scope.loyaltyMode = 'ADD_NEW_FF_LOYALTY';
             $scope.$broadcast('LOYALTY_PROGRAMS_BACK_NAVIGATIONS');
             expect($scope.loyaltyMode).toEqual('ADD_NEW_LOYALTY');
         });
-        it('On navigating back from ADD_NEW_LOYALTY, change loyaltyMode to SELECT_LOYALTY', function(){
+        it('On navigating back from ADD_NEW_LOYALTY, change loyaltyMode to SELECT_LOYALTY', function() {
             spyOn($scope, '$emit');
-            $scope.loyaltyMode = 'ADD_NEW_LOYALTY'; 
+            $scope.loyaltyMode = 'ADD_NEW_LOYALTY';
             $scope.$broadcast('LOYALTY_PROGRAMS_BACK_NAVIGATIONS');
             expect($scope.loyaltyMode).toEqual('SELECT_LOYALTY');
         });
@@ -198,8 +196,6 @@ describe('zsCheckinLoyaltyCtrl', function() {
         });
     });
 
-    
-
     it('On clicking Add new loyalty, change loyaltyMode to ADD_NEW_LOYALTY', function() {
         $scope.addNewLoyalty();
         expect($scope.loyaltyMode).toEqual('ADD_NEW_LOYALTY');
@@ -242,8 +238,8 @@ describe('zsCheckinLoyaltyCtrl', function() {
             expect(zsCheckinLoyaltySrv.saveLoyaltyPgm).toHaveBeenCalledWith(jasmine.any(Object));
         });
 
-        it('On changing hotel loyalty, reset hotel loyalty value and set the $scope.hotelLoyalty.selectedLoyalty object', function () {
-            
+        it('On changing hotel loyalty, reset hotel loyalty value and set the $scope.hotelLoyalty.selectedLoyalty object', function() {
+
             $scope.hotelLoyalty = {
                 id: '1223',
                 code: '222',
@@ -258,7 +254,7 @@ describe('zsCheckinLoyaltyCtrl', function() {
                 "membership_type": "FIRST",
                 "membership_card_number": "3RTTTT",
                 "membership_level": ""
-            },{
+            }, {
                 "hl_value": 1975,
                 "membership_type": "SECOND",
                 "membership_card_number": "3RTTTT",

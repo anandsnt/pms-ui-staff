@@ -23,7 +23,7 @@ describe('zsCheckinGuestAddressCtrl', function() {
             }]);
         });
 
-        inject(function (_$controller_, _$rootScope_, _$state_, _$q_, _zsCheckinSrv_ ,_zsEventConstants_) {
+        inject(function(_$controller_, _$rootScope_, _$state_, _$q_, _zsCheckinSrv_, _zsEventConstants_) {
             $q = _$q_;
             $controller = _$controller_;
             $rootScope = _$rootScope_.$new();

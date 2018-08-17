@@ -3,8 +3,7 @@ sntZestStation.controller('zsCheckinLoyaltyCtrl', [
 	'zsCheckinLoyaltySrv',
 	'zsGeneralSrv',
 	'$timeout',
-	'zsEventConstants',
-	function($scope, zsCheckinLoyaltySrv, zsGeneralSrv, $timeout, zsEventConstants) {
+	function($scope, zsCheckinLoyaltySrv, zsGeneralSrv, $timeout) {
 
 		var userId = $scope.selectedReservation.guest_details[0].id;
 		var reservationId = $scope.selectedReservation.id;
@@ -86,6 +85,7 @@ sntZestStation.controller('zsCheckinLoyaltyCtrl', [
 		var setPageNumberDetails = function() {
 			$scope.$emit('hideLoader');
 			var itemsPerPage = 5;
+
 			$scope.pageData = zsGeneralSrv.proceesPaginationDetails($scope.existingLoyaltyPgms, itemsPerPage, $scope.pageData.pageNumber);
 		};
 
@@ -125,7 +125,7 @@ sntZestStation.controller('zsCheckinLoyaltyCtrl', [
 				'successCallBack': navigateToNextScreen,
 				'failureCallBack': function(response) {
 					if (Array.isArray(response)) {
-						$scope.errorMessage = response[0] == 'Membership type has already been taken' ? 'Membership already taken' : 'Something went wrong';
+						$scope.errorMessage = response[0] === 'Membership type has already been taken' ? 'Membership already taken' : 'Something went wrong';
 					}
 					$scope.loyaltyMode = 'ADD_NEW_LOYALTY_FAILED';
 				}

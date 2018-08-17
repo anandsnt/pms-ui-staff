@@ -1,10 +1,11 @@
 <section id="main" role="main">
     <div id="content">
-        <h1>Select Loyalty Program</h1>
+        <h1 data-ng-bind-html="getTagValue('SELECT_LOYALTY_PROGRAM')" editable-text="SELECT_LOYALTY_PROGRAM">
+        </h1>
         <div id="labels" class="loyalty">
-            <span class="label">Number</span>
-            <span class="label">Airline / Type</span>
-            <span class="label">Level</span>
+            <span class="label" translate>NUMBER</span>
+            <span class="label" translate>AIR_LINE_TYPE</span>
+            <span class="label" translate>LEVEL</span>
         </div>
         <ul id="selection" class="loyalty">
             <li ng-repeat="loyalty in pageData.viewableItems"  touch-press='setLoyaltyForReservation(loyalty.id)'>
@@ -17,7 +18,7 @@
         </ul>
         <!-- If more than 3 programs, show pagination -->
         <div id="actions" class="align-right">
-            <p class="text" style="margin-right: 10px;">Showing {{pageData.pageStartingIndex}}-{{pageData.pageEndingIndex}} of {{existingLoyaltyPgms.length}} Programs</p>
+            <p class="text" style="margin-right: 10px;">{{ 'LOYALTY_FOOTER_1' | translate}}&nbsp;{{pageData.pageStartingIndex}}-{{pageData.pageEndingIndex}}&nbsp;{{ 'LOYALTY_FOOTER_2' | translate }}&nbsp;{{existingLoyaltyPgms.length}} {{ 'LOYALTY_FOOTER_3' | translate }}</p>
             <div class="button-group">
                 <!-- add 'disabled="disabled"' and .transparent if there is no previous page -->
                  <button type="button" class="button only-icon" click-touch="viewPreviousPage()" ng-hide="pageData.disablePreviousButton">
