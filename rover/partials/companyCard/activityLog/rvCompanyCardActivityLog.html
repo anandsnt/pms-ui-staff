@@ -22,7 +22,7 @@
                 <div class="select">
                     <select id="activity-log-activities" ng-model="activityLogFilter.selectedAction">
                         <option value="" ng-selected="activityLogFilter.selectedAction === ''">All Actions</option>
-                        <option value="{{action.id}}" ng-repeat="action in activityLogFilter.actionsList" ng-selected="activityLogFilter.selectedAction === action.id">{{action.name}}</option>
+                        <option value="{{action.id}}" ng-repeat="action in activityLogFilter.actionsList" ng-selected="activityLogFilter.selectedAction === action.id">{{action.description}}</option>
                     </select>
                 </div>
             </div>

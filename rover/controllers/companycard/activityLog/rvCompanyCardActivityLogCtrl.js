@@ -27,7 +27,7 @@ sntRover.controller('RVCompanyCardActivityLogCtrl',
             page: 1,
             sortField: 'DATE',
             sortOrder: 'asc',
-            accountId: ''
+            accountId: ( typeof $scope.contactInformation === 'undefined' ) ? $stateParams.id : $scope.contactInformation.id
         };
 
         $scope.activityLogFilter = {
@@ -54,9 +54,10 @@ sntRover.controller('RVCompanyCardActivityLogCtrl',
 
         var dataToSend = {
 			params: {
+				'id': $scope.activityLogObj.accountId,
 			},
 			successCallBack: function( data ) {
-				$scope.activityLogFilter.actionsList = data.actions_list;
+				$scope.activityLogFilter.actionsList = data.results;
 			},
 			failureCallBack: function( errorMessage ) {
 				$scope.errorMessage = errorMessage;
@@ -87,7 +88,6 @@ sntRover.controller('RVCompanyCardActivityLogCtrl',
 	that.loadAPIData = function ( pageNo ) {
 
 		$scope.activityLogObj.page = pageNo ? pageNo : 1;
-		$scope.activityLogObj.accountId = ( typeof $scope.contactInformation === 'undefined' ) ? $stateParams.id : $scope.contactInformation.id;
 
 		var dataToSend = {
 			params: {

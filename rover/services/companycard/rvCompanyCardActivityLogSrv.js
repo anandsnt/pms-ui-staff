@@ -19,17 +19,14 @@ angular.module('sntRover').service('RVCompanyCardActivityLogSrv', [
 
 		this.fetchFilterData = function(params) {
 			var deferred = $q.defer(),
-				// url = '/api/account_actions/filter_data',
-				data = {
-					"actions_list":[{"name":"Action-1","id":200},{"name":"Action-2","id":201}]
-				};
+				url = '/api/account_actions/' + params.id + '/account_action_types';
 
-			/*rvBaseWebSrvV2.getJSON(url, params)
+			rvBaseWebSrvV2.getJSON(url)
 			.then(function(data) {
 				deferred.resolve(data);
 			}, function(data) {
 				deferred.reject(data);
-			});*/
+			});
 
 			deferred.resolve(data);
             return deferred.promise;
