@@ -1,4 +1,3 @@
-
 sntRover.controller('RVCompanyCardActivityLogCtrl',
 	['$scope',
 	'$rootScope',
