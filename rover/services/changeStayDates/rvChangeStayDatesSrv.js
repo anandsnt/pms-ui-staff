@@ -70,4 +70,16 @@ angular.module('sntRover').service('RVChangeStayDatesSrv', ['$q', 'rvBaseWebSrvV
             return deferred.promise;
 
         };
+        this.updateBillingInformation = function (params) {
+            var deferred = $q.defer();
+            var url = "api/bill_routings/update_dates";
+            // ie::   reservation_id=1616903&action_task[description]=test
+
+            rvBaseWebSrvV2.postJSON(url, params).then(function (data) {
+                deferred.resolve(data);
+            }, function (data) {
+                deferred.reject(data);
+            });
+            return deferred.promise;
+        };
 }]);
