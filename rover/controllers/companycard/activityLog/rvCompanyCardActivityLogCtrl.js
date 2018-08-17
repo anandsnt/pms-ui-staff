@@ -96,7 +96,7 @@ sntRover.controller('RVCompanyCardActivityLogCtrl',
 				'sort_field': $scope.activityLogObj.sortField,
 				'sort_order': $scope.activityLogObj.sortOrder,
 				'id': $scope.activityLogObj.accountId,
-                'action': $scope.activityLogFilter.selectedAction,
+                'action_id': $scope.activityLogFilter.selectedAction,
                 'from_date': $scope.activityLogFilter.fromDate,
                 'to_date': $scope.activityLogFilter.toDate,
                 'query': $scope.activityLogFilter.query
