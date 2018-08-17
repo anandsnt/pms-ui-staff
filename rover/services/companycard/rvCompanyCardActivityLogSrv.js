@@ -28,7 +28,6 @@ angular.module('sntRover').service('RVCompanyCardActivityLogSrv', [
 				deferred.reject(data);
 			});
 
-			deferred.resolve(data);
             return deferred.promise;
 		};
 	}
