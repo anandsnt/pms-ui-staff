@@ -187,18 +187,22 @@
                 </div>
                 <div ng-if="::!isConnectedToPMS" class="entry radio-check">
                     <label class="checkbox">
-                        <span class="icon-form icon-checkbox" ng-class="{ checked : singleAddon.is_common_area }"></span>
-                        <label>{{'COMMON_AREA' | translate}}</label>
-                        <input type="checkbox" ng-model="singleAddon.is_common_area">
-                    </label>
-                </div>
-                <div ng-if="::!isConnectedToPMS" class="entry radio-check">
-                    <label class="checkbox">
                         <span class="icon-form icon-checkbox" ng-class="{ checked : singleAddon.forecast_for_next_day }"></span>
                         <label>{{'FORECAST_FOR_NEXT_DAY' | translate}}</label>
                         <input type="checkbox" ng-model="singleAddon.forecast_for_next_day">
                     </label>
                 </div>
+                <div ng-if="::!isConnectedToPMS" class="entry radio-check">
+                    <label class="checkbox">
+                        <span class="icon-form icon-checkbox" ng-class="{ checked : singleAddon.is_common_area }"></span>
+                        <label>{{'COMMON_AREA' | translate}}</label>
+                        <input type="checkbox" ng-model="singleAddon.is_common_area">
+                    </label>
+                </div>
+                <div ng-if="singleAddon.is_common_area" class="entry">
+                    <ad-textbox inputtype="number" styleclass="full-width" value="singleAddon.pass_level_no" name="pass_level_no" id="pass_level_no" label="{{'PASS_LEVEL_NO' | translate}}" maxlength="2" required="no"></ad-textbox>
+                </div>
+
                 <div ng-show="showChargeFullWeeksOnly()" class="entry radio-check">
                     <label class="checkbox">
                         <span class="icon-form icon-checkbox" ng-class="{ checked : singleAddon.charge_full_weeks_only }"></span>
