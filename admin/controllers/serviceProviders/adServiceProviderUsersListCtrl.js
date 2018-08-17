@@ -6,7 +6,7 @@ admin.controller('ADServiceProviderUserListCtrl', ['$scope', '$rootScope', '$q',
         $scope.errorMessage = ' ';
         $scope.serviceProviderId = $stateParams.id;
         $scope.serviceProviderName = $stateParams.name;
-        $scope.includeInactiveUsers = true;
+        $scope.includeInactiveUsers = false;
         loadTable();
     };
     /**
@@ -16,7 +16,9 @@ admin.controller('ADServiceProviderUserListCtrl', ['$scope', '$rootScope', '$q',
         var getParams = $scope.calculateGetParams(params);
 
         getParams.service_provider_id = $scope.serviceProviderId;
-        getParams.include_inactive = $scope.includeInactiveUsers;
+        if ($scope.includeInactiveUsers) {
+            getParams.include_inactive = $scope.includeInactiveUsers;
+        }
         var successCallbackFetch = function(data) {
             if (data.status === 'failure') {
                 $scope.errorMessage = data.errors;

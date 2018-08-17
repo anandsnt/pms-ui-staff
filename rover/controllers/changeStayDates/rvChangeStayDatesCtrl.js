@@ -898,6 +898,7 @@ sntRover.controller('RVchangeStayDatesController', ['$state', '$stateParams', '$
                 fromState: 'STAY_CARD',
                 company_id: $scope.reservationData.company.id,
                 travel_agent_id: $scope.reservationData.travelAgent.id,
+
 				// Related to CICO-27413 & CICO-17973
 				// group_id passing as '' => for normal reservation and group reservation
 				// rooms and rates screen - No need of group id - for both normal grp res

@@ -544,19 +544,19 @@ sntRover.controller('RVReportDetailsCtrl', [
 
             if ($scope.chosenReport.title === reportNames['A/R_AGING']) {
                 _.each(results, function (result) {
-                    if (_.findWhere($scope.chosenReport.hasIncludeAgingBalance.data, {selected: true, id: "0to30"})) {
+                    if ( result.age_0to30 ) {
                         result.age_0to30 = buildResult(result.age_0to30);
                     }
-                    if (_.findWhere($scope.chosenReport.hasIncludeAgingBalance.data, {selected: true, id: "31to60"})) {
+                    if ( result.age_31to60 ) {
                         result.age_31to60 = buildResult(result.age_31to60);
                     } 
-                    if (_.findWhere($scope.chosenReport.hasIncludeAgingBalance.data, {selected: true, id: "61to90"})) {
+                    if ( result.age_61to90 ) {
                         result.age_61to90 = buildResult(result.age_61to90);
                     }  
-                    if (_.findWhere($scope.chosenReport.hasIncludeAgingBalance.data, {selected: true, id: "91to120"})) {
+                    if ( result.age_91to120 ) {
                         result.age_91to120 = buildResult(result.age_91to120);
                     } 
-                    if (_.findWhere($scope.chosenReport.hasIncludeAgingBalance.data, {selected: true, id: "120plus"})) {
+                    if ( result.age_120plus ) {
                         result.age_120plus = buildResult(result.age_120plus);
                     }                   
                     result.balance = buildResult(result.balance);
@@ -595,25 +595,40 @@ sntRover.controller('RVReportDetailsCtrl', [
                     show_rate_adjustments_only: false
                 };
 
+                var isBackgroundReportsEnabled = $rootScope.isBackgroundReportsEnabled,
+                    appliedFilters = $scope.chosenReport.usedFilters;
+
                 if ($scope.chosenReport.hasGeneralOptions) {
                     _.each($scope.chosenReport.hasGeneralOptions.data, function (each) {
-                        if (each.paramKey === 'include_actions' && each.selected) {
-                            retObj.include_actions = true;
+                        if ( each.paramKey === 'include_actions' ) {
+                            if ( (isBackgroundReportsEnabled && !!appliedFilters.include_actions) ||  each.selected) {
+                                retObj.include_actions = true;
+                            }                            
                         }
-                        if (each.paramKey === 'include_guest_notes' && each.selected) {
-                            retObj.include_guest_notes = true;
+                        if ( each.paramKey === 'include_guest_notes' ) {
+                            if ( (isBackgroundReportsEnabled && !!appliedFilters.include_guest_notes) ||  each.selected ) {
+                                retObj.include_guest_notes = true;
+                            }                            
                         }
-                        if (each.paramKey === 'include_reservation_notes' && each.selected) {
-                            retObj.include_reservation_notes = true;
+                        if (each.paramKey === 'include_reservation_notes') {
+                            if ( (isBackgroundReportsEnabled && !!appliedFilters.include_reservation_notes) ||  each.selected ) {
+                                retObj.include_reservation_notes = true;
+                            }                            
                         }
-                        if (each.paramKey === 'show_guests' && each.selected) {
-                            retObj.show_guests = true;
+                        if (each.paramKey === 'show_guests' ) {
+                            if ( (isBackgroundReportsEnabled && !!appliedFilters.show_guests) ||  each.selected ) {
+                                retObj.show_guests = true;
+                            }
                         }
-                        if (each.paramKey === 'include_cancelled' && each.selected) {
-                            retObj.include_cancelled = true;
+                        if (each.paramKey === 'include_cancelled' ) {
+                            if ( (isBackgroundReportsEnabled && !!appliedFilters.include_cancelled) ||  each.selected ) {
+                                retObj.include_cancelled = true;
+                            }
                         }
-                        if (each.paramKey === 'show_rate_adjustments_only' && each.selected) {
-                            retObj.show_rate_adjustments_only = true;
+                        if (each.paramKey === 'show_rate_adjustments_only' ) {
+                            if ( (isBackgroundReportsEnabled && !!appliedFilters.show_rate_adjustments_only) ||  each.selected ) {
+                                retObj.show_rate_adjustments_only = true;
+                            }                            
                         }
                     });
                 }
