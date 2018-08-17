@@ -611,11 +611,13 @@ sntRover.controller('RVchangeStayDatesController', ['$state', '$stateParams', '$
 
             $scope.callAPI(RVChangeStayDatesSrv.updateBillingInformation, {
                 params: postParams,
-                successCallBack: function() {
-                    ngDialog.close();
-                    $scope.confirmUpdates();
-                }
+                successCallBack: $scope.closeBillingInfoPopup
             });
+        };
+
+        $scope.closeBillingInfoPopup = function() {
+            ngDialog.close();
+            $scope.confirmUpdates();
         };
 
         $scope.confirmUpdates = function() {
