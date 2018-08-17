@@ -58,7 +58,7 @@ sntRover.controller('RVCompanyCardActivityLogCtrl',
      */
     that.fetchFilterData = function() {
 
-    	var dataToSend = {
+		var dataToSend = {
 			params: {
 				'id': $scope.activityLogObj.accountId
 			},
@@ -225,13 +225,13 @@ sntRover.controller('RVCompanyCardActivityLogCtrl',
 	 *	@param {string} [clicked FROM/TO]
 	 *	@return {undefined}
 	 */
-    $scope.clearDate = function ( type ) {
-    	if (type === 'FROM') {
-    		$scope.activityLogFilter.fromDate = '';
-    	}
-    	else {
-    		$scope.activityLogFilter.toDate = '';
-    	}
+	$scope.clearDate = function ( type ) {
+		if (type === 'FROM') {
+			$scope.activityLogFilter.fromDate = '';
+		}
+		else {
+			$scope.activityLogFilter.toDate = '';
+		}
 	};
 	// Handle CLEAR QUERY
 	$scope.clearQuery = function () {
@@ -246,5 +246,4 @@ sntRover.controller('RVCompanyCardActivityLogCtrl',
     init();
 
     $scope.$on('$destroy', listener);
-
 }]);
