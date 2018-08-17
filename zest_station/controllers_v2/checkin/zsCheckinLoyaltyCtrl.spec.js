@@ -242,6 +242,38 @@ describe('zsCheckinLoyaltyCtrl', function() {
             expect(zsCheckinLoyaltySrv.saveLoyaltyPgm).toHaveBeenCalledWith(jasmine.any(Object));
         });
 
+        it('On changing hotel loyalty, reset hotel loyalty value and set the $scope.hotelLoyalty.selectedLoyalty object', function () {
+            
+            $scope.hotelLoyalty = {
+                id: '1223',
+                code: '222',
+                level: 'GOLD',
+                selectedLoyalty: {
+                    id: 123,
+                    levels: []
+                }
+            };
+            $scope.hotelLoyalties = [{
+                "hl_value": 1974,
+                "membership_type": "FIRST",
+                "membership_card_number": "3RTTTT",
+                "membership_level": ""
+            },{
+                "hl_value": 1975,
+                "membership_type": "SECOND",
+                "membership_card_number": "3RTTTT",
+                "membership_level": ""
+            }];
+            $scope.hotelLoyalty.id = 1975;
+
+            $scope.hotelLoyaltyChanged();
+
+            expect($scope.hotelLoyalty.code).toEqual('');
+            expect($scope.hotelLoyalty.level).toEqual('');
+            expect($scope.hotelLoyalty.selectedLoyalty.hl_value).toEqual(1975);
+
+        });
+
 
         it('On clicking save Hotel loyalty program, call API to save loyalty', function() {
             $scope.hotelLoyalty = {
