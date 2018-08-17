@@ -38,8 +38,8 @@ describe('RVCompanyCardActivityLogCtrl', function() {
                 action: '',
                 actionsList: [],
                 selectedAction: '',
-                fromDate: $rootScope.businessDate,
-                toDate: $rootScope.businessDate,
+                fromDate: $scope.businessDate,
+                toDate: $scope.businessDate,
                 query: ''
             },
             activityLogPagination: {
