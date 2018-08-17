@@ -21,7 +21,7 @@
 			var screenCMSDetails2 = sntGuestWebSrv.extractScreenDetails(screenIdentifier2);
 
 			screenCMSDetails2.title = setMessage(screenCMSDetails2.screen_title, "Deposit");
-			screenCMSDetails2.description = setMessage(screenCMSDetails2.item_description, "There was a problem with the payment. Please contact a Sidekick");
+			screenCMSDetails2.description = setMessage(screenCMSDetails2.item_description, "There was a problem with the payment. Please contact a staff member for assistance");
 			$scope.screenDetailsPaymentFailedMessage = screenCMSDetails2;
 
 			var screenIdentifier3 = "DP-3"; // this value needs to set in admin(can be anything, but has to be same in both)
