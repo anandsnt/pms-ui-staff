@@ -1060,6 +1060,7 @@ sntRover.controller('reservationDetailsController',
                         // CICO-44842 Show message when trying to overbook a suite reservation
                         $scope.restrictSuiteOverbooking = !response.data.is_room_type_available && response.data.is_suite_reservation;
                         $scope.isSuiteReservation = response.data.is_suite_reservation;
+                        $scope.routing_info = response.data.routing_info
 
 						ngDialog.open({
 							template: '/assets/partials/reservation/alerts/editDatesInStayCard.html',
@@ -1177,6 +1178,49 @@ sntRover.controller('reservationDetailsController',
 		$scope.selectAddon = function() {
 			alertAddonOverbooking(true);
 		};
+		/**
+         * Shows pop up to remind update the billing info
+         */
+        $scope.showBillingInformationPrompt = function() {
+            ngDialog.close();
+            ngDialog.open({
+                template: '/assets/partials/reservation/alerts/rvShowBillingInformationPopup.html',
+                className: '',
+                closeByDocument: false,
+                scope: $scope
+            });
+        };
+        /**
+         * Update the billing information when stay range changes if any billing info exist
+         * @params none
+         * @returns void
+         */
+        $scope.updateBillingInformation = function() {
+            var postParams = {
+                'from_date': $filter('date')(tzIndependentDate($scope.editStore.arrival), 'yyyy-MM-dd'),
+                'to_date': $filter('date')(tzIndependentDate($scope.editStore.departure), 'yyyy-MM-dd'),
+                'reservation_id': $scope.reservationData.reservation_card.reservation_id
+            };
+            $scope.callAPI(RVReservationSummarySrv.updateBillingInformation, {
+                params: postParams,
+                successCallBack: $scope.closeBillingInfoPopup
+            });
+        };
+
+        $scope.clickedOnStayDateChangeConfirmButton = function() {
+            var routing_info = $scope.routing_info;
+
+            if (routing_info.incoming_from_room || routing_info.out_going_to_room
+                || routing_info.out_going_to_comp_tra ) {
+                $scope.showBillingInformationPrompt();
+            } else {
+                $scope.closeBillingInfoPopup();
+            }
+        };
+        $scope.closeBillingInfoPopup = function() {
+            ngDialog.close();
+            $scope.changeStayDates();
+        };
 
 		$scope.changeStayDates = function(flags) {
 
