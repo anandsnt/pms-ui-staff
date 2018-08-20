@@ -159,11 +159,12 @@ angular.module('sntRover').service('RVReservationSummarySrv', ['$q', 'rvBaseWebS
             });
             return deferred.promise;
         };
-
+        /**
+         * Update Billing info
+         */
         this.updateBillingInformation = function (params) {
-            var deferred = $q.defer();
-            var url = "api/bill_routings/update_dates";
-            // ie::   reservation_id=1616903&action_task[description]=test
+            var deferred = $q.defer(),
+                url = "api/bill_routings/update_dates";
 
             rvBaseWebSrvV2.postJSON(url, params).then(function (data) {
                 deferred.resolve(data);

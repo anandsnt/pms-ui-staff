@@ -1060,7 +1060,7 @@ sntRover.controller('reservationDetailsController',
                         // CICO-44842 Show message when trying to overbook a suite reservation
                         $scope.restrictSuiteOverbooking = !response.data.is_room_type_available && response.data.is_suite_reservation;
                         $scope.isSuiteReservation = response.data.is_suite_reservation;
-                        $scope.routing_info = response.data.routing_info;
+                        $scope.routingInfo = response.data.routing_info;
 
 						ngDialog.open({
 							template: '/assets/partials/reservation/alerts/editDatesInStayCard.html',
@@ -1215,10 +1215,10 @@ sntRover.controller('reservationDetailsController',
          * @returns void
          */
         $scope.clickedOnStayDateChangeConfirmButton = function() {
-            var routing_info = $scope.routing_info;
+            var routingInfo = $scope.routingInfo;
 
-            if (routing_info.incoming_from_room || routing_info.out_going_to_room
-                || routing_info.out_going_to_comp_tra ) {
+            if (routingInfo.incoming_from_room || routingInfo.out_going_to_room
+                || routingInfo.out_going_to_comp_tra ) {
                 $scope.showBillingInformationPrompt();
             } else {
                 $scope.closeBillingInfoPopup();
