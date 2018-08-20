@@ -176,7 +176,7 @@ sntZestStation.controller('zsCheckInReservationDetailsCtrl', [
             if ($scope.mode === 'LOYALTY_PROGRAMS') {
                 $scope.$broadcast('LOYALTY_PROGRAMS_BACK_NAVIGATIONS');
             } else if ($scope.mode === 'TERMS_CONDITIONS') {
-                if ($scope.zestStationData.add_loyalty_program) {
+                if ($scope.zestStationData.add_loyalty_pgms) {
                     $scope.mode = 'LOYALTY_PROGRAMS';
                     $scope.$broadcast('FETCH_USER_MEMBERSHIPS');
                 } else {
@@ -433,7 +433,7 @@ sntZestStation.controller('zsCheckInReservationDetailsCtrl', [
         };
 
         var nextPageModeActions = function() {
-            if ($scope.zestStationData.add_loyalty_program && $scope.mode !== 'LOYALTY_PROGRAMS') {
+            if ($scope.zestStationData.add_loyalty_pgms && $scope.mode !== 'LOYALTY_PROGRAMS') {
                 $scope.mode = 'LOYALTY_PROGRAMS';
                 $scope.$broadcast('FETCH_USER_MEMBERSHIPS');
             } else if (!$scope.zestStationData.kiosk_display_terms_and_condition) {

@@ -154,16 +154,6 @@ describe('zsCheckinLoyaltyCtrl', function() {
                 "membership_type": "AF",
                 "membership_card_number": "2XXXX",
                 "membership_level": ""
-            }, {
-                "id": 1979,
-                "membership_type": "AF",
-                "membership_card_number": "3RTTTT",
-                "membership_level": ""
-            }, {
-                "id": 1980,
-                "membership_type": "AF",
-                "membership_card_number": "2XXXX",
-                "membership_level": ""
             }];
             $scope.pageData = {
                 disableNextButton: false,
@@ -192,7 +182,7 @@ describe('zsCheckinLoyaltyCtrl', function() {
             $timeout.flush();
             // this will throw an exception if there are any pending timeouts.
             $timeout.verifyNoPendingTasks();
-            expect($scope.pageData.viewableItems.length).toEqual(5);
+            expect($scope.pageData.viewableItems.length).toEqual(3);
         });
     });
 

@@ -687,7 +687,8 @@ sntZestStation.service('zsGeneralSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
                 disablePreviousButton: pageStartingIndex === 1,
                 pageStartingIndex: pageStartingIndex,
                 pageEndingIndex: pageEndingIndex,
-                viewableItems: viewableItems
+                viewableItems: viewableItems,
+                pageNumber: pageNumber
             };
 
             return pageData;

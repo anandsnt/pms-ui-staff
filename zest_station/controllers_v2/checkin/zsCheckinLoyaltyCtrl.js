@@ -84,7 +84,7 @@ sntZestStation.controller('zsCheckinLoyaltyCtrl', [
 
 		var setPageNumberDetails = function() {
 			$scope.$emit('hideLoader');
-			var itemsPerPage = 5;
+			var itemsPerPage = 3;
 
 			$scope.pageData = zsGeneralSrv.proceesPaginationDetails($scope.existingLoyaltyPgms, itemsPerPage, $scope.pageData.pageNumber);
 		};
