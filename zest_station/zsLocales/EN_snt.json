@@ -708,9 +708,7 @@
    "SELECT_LOYALTY_PROGRAM": "Select Loyalty Program",
    "NUMBER": "Number",
    "AIR_LINE_TYPE": "Airline / Type",
-   "LOYALTY_FOOTER_1": "Showing",
-   "LOYALTY_FOOTER_2": "Of",
-   "LOYALTY_FOOTER_3" : "Programs",
+   "LOYALTY_FOOTER": "Showing {{startingIndex}}-{{endingIndex}} of {{total}} programs",
    "ENTER_FREQUENT_FLYER_PROGRAM_DETAILS": "Enter Frequent Flyer Program Details",
    "SELECT_AIRLINE": "Select Airline",
    "ENTER_HOTEL_LOYALTY_PROGRAM": "Enter Hotel Loyalty Program Details",
@@ -724,6 +722,8 @@
    "NO_THANKS": "No Thanks",
    "ADD_LOYALTY_PRGM": "Add Loyalty Program",
    "SELECT_EXISTING_PGM": "Select Existing",
-   "ADD_NEW_LOYALTY": "Add New"
+   "ADD_NEW_LOYALTY": "Add New",
+   "MEMBERSHIP_ALREADY_TAKEN": "Membership already taken",
+   "LOYALTY_GENERAL_ERROR": "Something went wrong"
    
 }

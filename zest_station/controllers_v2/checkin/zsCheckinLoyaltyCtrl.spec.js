@@ -7,11 +7,12 @@ describe('zsCheckinLoyaltyCtrl', function() {
         zsGeneralSrv,
         $rootScope,
         $q,
-        deferred;
+        deferred,
+        $filter;
 
     beforeEach(function() {
         module('sntZestStation');
-        inject(function(_$controller_, _$rootScope_, _$timeout_, _zsCheckinLoyaltySrv_, _zsGeneralSrv_, _$q_) {
+        inject(function(_$controller_, _$rootScope_, _$timeout_, _zsCheckinLoyaltySrv_, _zsGeneralSrv_, _$q_, _$filter_) {
             $controller = _$controller_;
             $rootScope = _$rootScope_.$new();
             $timeout = _$timeout_;
@@ -19,8 +20,8 @@ describe('zsCheckinLoyaltyCtrl', function() {
             zsGeneralSrv = _zsGeneralSrv_;
             zsCheckinLoyaltySrv = _zsCheckinLoyaltySrv_;
             $q = _$q_;
+            $filter = _$filter_;
         });
-        deferred = $q.defer();
         $scope.selectedReservation = {
             id: 123,
             guest_details: [{
@@ -35,6 +36,7 @@ describe('zsCheckinLoyaltyCtrl', function() {
     describe('On emiting FETCH_USER_MEMBERSHIPS from reservation details', function() {
         it('Call fetchUserMemberships API and change loyaltyMode to SELECT_LOYALTY', function() {
             spyOn(zsCheckinLoyaltySrv, 'fetchUserMemberships').and.callFake(function() {
+                var deferred = $q.defer();
                 var respone = {
                     "frequentFlyerProgram": [{
                         "id": 1975,
@@ -42,7 +44,10 @@ describe('zsCheckinLoyaltyCtrl', function() {
                         "membership_card_number": "2e2e",
                         "membership_level": ""
                     }],
-                    "hotelLoyaltyProgram": []
+                    "hotelLoyaltyProgram": [],
+                    "selected_loyalty": null,
+                    "use_hlp": false,
+                    "use_ffp": true
                 };
 
                 deferred.resolve(respone);
@@ -51,12 +56,14 @@ describe('zsCheckinLoyaltyCtrl', function() {
             $scope.$emit('FETCH_USER_MEMBERSHIPS');
             $scope.$digest();
             expect(zsCheckinLoyaltySrv.fetchUserMemberships).toHaveBeenCalledWith(jasmine.any(Object));
-            expect($scope.loyaltyMode).toEqual('SELECT_LOYALTY');
             expect($scope.existingLoyaltyPgms.length).toEqual(1);
+            expect($scope.loyaltyMode).toEqual('SELECT_LOYALTY');
         });
 
         it('On fetchUserMemberships API failure, change loyaltyMode to SELECT_LOYALTY with no existing program to choose', function() {
             spyOn(zsCheckinLoyaltySrv, 'fetchUserMemberships').and.callFake(function() {
+                var deferred = $q.defer();
+
                 deferred.reject({});
                 return deferred.promise;
             });
@@ -72,9 +79,18 @@ describe('zsCheckinLoyaltyCtrl', function() {
         it('On navigating back from SELECT_LOYALTY, emit event CHANGE_MODE_TO_RESERVATION_DETAILS', function() {
             spyOn($scope, '$emit');
             $scope.loyaltyMode = 'SELECT_LOYALTY';
+            $scope.existingLoyalty = undefined;
             $scope.$broadcast('LOYALTY_PROGRAMS_BACK_NAVIGATIONS');
             $scope.$digest();
             expect($scope.$emit).toHaveBeenCalledWith('CHANGE_MODE_TO_RESERVATION_DETAILS');
+        });
+        it('On navigating back from SELECT_LOYALTY with a valid existingLoyalty, change loyaltyMode to EXISTING_LOYALTY', function() {
+            $scope.loyaltyMode = 'SELECT_LOYALTY';
+            $scope.existingLoyalty = {
+                id: 123
+            };
+            $scope.$broadcast('LOYALTY_PROGRAMS_BACK_NAVIGATIONS');
+            expect($scope.loyaltyMode).toEqual('EXISTING_LOYALTY');
         });
         it('On navigating back from ADD_NEW_FF_LOYALTY or ADD_HOTEL_LOYALTY, change loyaltyMode to ADD_NEW_LOYALTY', function() {
             spyOn($scope, '$emit');
@@ -96,8 +112,15 @@ describe('zsCheckinLoyaltyCtrl', function() {
         expect($scope.$emit).toHaveBeenCalledWith('NAVIGATE_FROM_LOYALTY_SCREEN');
     });
 
+    it('On selecting Add new loyalty from existing loyalty mode, change loyaltyMode to SELECT_LOYALTY', function() {
+        $scope.selectNewLoyalty();
+        expect($scope.loyaltyMode).toEqual('SELECT_LOYALTY');
+    });
+
     it('On selecting existing loyalties, if only one loyalty is present, call API to add that to the reservation', function() {
         spyOn(zsCheckinLoyaltySrv, 'setLoyaltyForReservation').and.callFake(function() {
+            var deferred = $q.defer();
+
             deferred.resolve({});
             return deferred.promise;
         });
@@ -114,6 +137,8 @@ describe('zsCheckinLoyaltyCtrl', function() {
 
     it('On selecting existing loyalties, if more than one loyalty is present, change loyaltyMode to SELECT_FROM_MULTIPLE_LOYALTIES', function() {
         spyOn(zsCheckinLoyaltySrv, 'setLoyaltyForReservation').and.callFake(function() {
+            var deferred = $q.defer();
+
             deferred.resolve({});
             return deferred.promise;
         });
@@ -193,6 +218,8 @@ describe('zsCheckinLoyaltyCtrl', function() {
 
     it('On clicking Add new Frequent Flyer loyalty, change loyaltyMode to ADD_NEW_FF_LOYALTY', function() {
         spyOn(zsCheckinLoyaltySrv, 'getAvailableFreaquentFlyerLoyaltyPgms').and.callFake(function() {
+            var deferred = $q.defer();
+
             deferred.resolve({});
             return deferred.promise;
         });
@@ -203,6 +230,8 @@ describe('zsCheckinLoyaltyCtrl', function() {
 
     it('On clicking Add new Hotel Loyalty, change loyaltyMode to ADD_HOTEL_LOYALTY', function() {
         spyOn(zsCheckinLoyaltySrv, 'getAvailableHotelLoyaltyPgms').and.callFake(function() {
+            var deferred = $q.defer();
+
             deferred.resolve({});
             return deferred.promise;
         });
@@ -214,6 +243,8 @@ describe('zsCheckinLoyaltyCtrl', function() {
     describe('Call save loyalty API', function() {
         beforeEach(function() {
             spyOn(zsCheckinLoyaltySrv, 'saveLoyaltyPgm').and.callFake(function() {
+                var deferred = $q.defer();
+
                 deferred.resolve({});
                 return deferred.promise;
             });
@@ -274,8 +305,10 @@ describe('zsCheckinLoyaltyCtrl', function() {
         });
     });
 
-    it('On save loyalty API failure, change loyaltyMode to ADD_NEW_LOYALTY_FAILED', function() {
+    it('On save loyalty API failure reason being membership already taken, change loyaltyMode to ADD_NEW_LOYALTY_FAILED', function() {
         spyOn(zsCheckinLoyaltySrv, 'saveLoyaltyPgm').and.callFake(function() {
+            var deferred = $q.defer();
+
             deferred.reject(['Membership type has already been taken']);
             return deferred.promise;
         });
@@ -288,7 +321,27 @@ describe('zsCheckinLoyaltyCtrl', function() {
         $scope.saveHotelLoyalty();
         $scope.$digest();
         expect($scope.loyaltyMode).toEqual('ADD_NEW_LOYALTY_FAILED');
-        expect($scope.errorMessage).toEqual('Membership already taken');
+        expect($scope.errorMessage).toEqual($filter('translate')('MEMBERSHIP_ALREADY_TAKEN'));
+
+    });
+
+    it('On save loyalty API failure due to any other reason, change loyaltyMode to ADD_NEW_LOYALTY_FAILED', function() {
+        spyOn(zsCheckinLoyaltySrv, 'saveLoyaltyPgm').and.callFake(function() {
+            var deferred = $q.defer();
+
+            deferred.reject('Cannot Add program now');
+            return deferred.promise;
+        });
+        $scope.hotelLoyalty = {
+            id: '',
+            code: '',
+            level: '',
+            selectedLoyalty: {}
+        };
+        $scope.saveHotelLoyalty();
+        $scope.$digest();
+        expect($scope.loyaltyMode).toEqual('ADD_NEW_LOYALTY_FAILED');
+        expect($scope.errorMessage).toEqual($filter('translate')('LOYALTY_GENERAL_ERROR'));
 
     });
 });

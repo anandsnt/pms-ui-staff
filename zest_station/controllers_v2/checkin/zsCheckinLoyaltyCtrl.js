@@ -3,7 +3,8 @@ sntZestStation.controller('zsCheckinLoyaltyCtrl', [
 	'zsCheckinLoyaltySrv',
 	'zsGeneralSrv',
 	'$timeout',
-	function($scope, zsCheckinLoyaltySrv, zsGeneralSrv, $timeout) {
+	'$filter',
+	function($scope, zsCheckinLoyaltySrv, zsGeneralSrv, $timeout, $filter) {
 
 		var userId = $scope.selectedReservation.guest_details[0].id;
 		var reservationId = $scope.selectedReservation.id;
@@ -14,12 +15,14 @@ sntZestStation.controller('zsCheckinLoyaltyCtrl', [
 		BaseCtrl.call(this, $scope);
 		$scope.ffLoyalties = [];
 		$scope.hotelLoyalties = [];
+		$scope.paginationTranslationData = {};
+
+		/* ************** BACK BUTTON ACTIONS ********************* */
 
 		$scope.$on('LOYALTY_PROGRAMS_BACK_NAVIGATIONS', function() {
-			if($scope.loyaltyMode === 'EXISTING_LOYALTY' || ($scope.loyaltyMode === 'SELECT_LOYALTY' && !$scope.existingLoyalty)){
+			if ($scope.loyaltyMode === 'EXISTING_LOYALTY' || ($scope.loyaltyMode === 'SELECT_LOYALTY' && !$scope.existingLoyalty)) {
 				$scope.$emit('CHANGE_MODE_TO_RESERVATION_DETAILS');
-			}
-			else if ($scope.loyaltyMode === 'SELECT_LOYALTY') {
+			} else if ($scope.loyaltyMode === 'SELECT_LOYALTY') {
 				$scope.loyaltyMode = 'EXISTING_LOYALTY';
 			} else if ($scope.loyaltyMode === 'ADD_NEW_FF_LOYALTY' || $scope.loyaltyMode === 'ADD_HOTEL_LOYALTY') {
 				$scope.loyaltyMode = 'ADD_NEW_LOYALTY';
@@ -27,6 +30,8 @@ sntZestStation.controller('zsCheckinLoyaltyCtrl', [
 				$scope.loyaltyMode = 'SELECT_LOYALTY';
 			}
 		});
+
+		/* ************** ON ENETERING LOYALTY MODE ********************* */
 
 		$scope.$on('FETCH_USER_MEMBERSHIPS', function() {
 			$scope.loyaltyMode = '';
@@ -102,6 +107,11 @@ sntZestStation.controller('zsCheckinLoyaltyCtrl', [
 			var itemsPerPage = 3;
 
 			$scope.pageData = zsGeneralSrv.proceesPaginationDetails($scope.existingLoyaltyPgms, itemsPerPage, $scope.pageData.pageNumber);
+			$scope.paginationTranslationData = {
+				'startingIndex': $scope.pageData.pageStartingIndex,
+				'endingIndex': $scope.pageData.pageEndingIndex,
+				'total': $scope.existingLoyaltyPgms.length
+			};
 		};
 
 		$scope.viewNextPage = function() {
@@ -110,7 +120,7 @@ sntZestStation.controller('zsCheckinLoyaltyCtrl', [
 			$timeout(function() {
 				$scope.pageData.pageNumber++;
 				setPageNumberDetails();
-			}, 500);
+			}, 200);
 		};
 
 		$scope.viewPreviousPage = function() {
@@ -119,7 +129,7 @@ sntZestStation.controller('zsCheckinLoyaltyCtrl', [
 			$timeout(function() {
 				$scope.pageData.pageNumber--;
 				setPageNumberDetails();
-			}, 500);
+			}, 200);
 		};
 
 		/* ************** ADD NEW LOYALITY **************************** */
@@ -139,8 +149,13 @@ sntZestStation.controller('zsCheckinLoyaltyCtrl', [
 				params: params,
 				'successCallBack': navigateToNextScreen,
 				'failureCallBack': function(response) {
+					var membershipAlreadyTakenMsg = $filter('translate')('MEMBERSHIP_ALREADY_TAKEN');
+					var generalErrorMsg = $filter('translate')('LOYALTY_GENERAL_ERROR');
+
 					if (Array.isArray(response)) {
-						$scope.errorMessage = response[0] === 'Membership type has already been taken' ? 'Membership already taken' : 'Something went wrong';
+						$scope.errorMessage = response[0] === 'Membership type has already been taken' ? membershipAlreadyTakenMsg : generalErrorMsg;
+					} else {
+						$scope.errorMessage = generalErrorMsg;
 					}
 					$scope.loyaltyMode = 'ADD_NEW_LOYALTY_FAILED';
 				}

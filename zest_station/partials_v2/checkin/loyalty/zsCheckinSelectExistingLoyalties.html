@@ -18,7 +18,7 @@
         </ul>
         <!-- If more than 3 programs, show pagination -->
         <div id="actions" class="align-right">
-            <p class="text" style="margin-right: 10px;">{{ 'LOYALTY_FOOTER_1' | translate}}&nbsp;{{pageData.pageStartingIndex}}-{{pageData.pageEndingIndex}}&nbsp;{{ 'LOYALTY_FOOTER_2' | translate }}&nbsp;{{existingLoyaltyPgms.length}} {{ 'LOYALTY_FOOTER_3' | translate }}</p>
+            <p class="text" style="margin-right: 10px;">{{ 'LOYALTY_FOOTER' | translate:paginationTranslationData}}</p>
             <div class="button-group">
                 <!-- add 'disabled="disabled"' and .transparent if there is no previous page -->
                  <button type="button" class="button only-icon" click-touch="viewPreviousPage()" ng-hide="pageData.disablePreviousButton">
