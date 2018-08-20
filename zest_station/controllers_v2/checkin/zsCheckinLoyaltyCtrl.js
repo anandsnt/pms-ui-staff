@@ -14,11 +14,13 @@ sntZestStation.controller('zsCheckinLoyaltyCtrl', [
 		BaseCtrl.call(this, $scope);
 		$scope.ffLoyalties = [];
 		$scope.hotelLoyalties = [];
-		
 
 		$scope.$on('LOYALTY_PROGRAMS_BACK_NAVIGATIONS', function() {
-			if ($scope.loyaltyMode === 'SELECT_LOYALTY') {
+			if($scope.loyaltyMode === 'EXISTING_LOYALTY' || ($scope.loyaltyMode === 'SELECT_LOYALTY' && !$scope.existingLoyalty)){
 				$scope.$emit('CHANGE_MODE_TO_RESERVATION_DETAILS');
+			}
+			else if ($scope.loyaltyMode === 'SELECT_LOYALTY') {
+				$scope.loyaltyMode = 'EXISTING_LOYALTY';
 			} else if ($scope.loyaltyMode === 'ADD_NEW_FF_LOYALTY' || $scope.loyaltyMode === 'ADD_HOTEL_LOYALTY') {
 				$scope.loyaltyMode = 'ADD_NEW_LOYALTY';
 			} else {
@@ -30,11 +32,19 @@ sntZestStation.controller('zsCheckinLoyaltyCtrl', [
 			$scope.loyaltyMode = '';
 			$scope.existingLoyaltyPgms = [];
 			var onSuccessResponse = function(response) {
-				$scope.loyaltyMode = 'SELECT_LOYALTY';
+				// if settings are turned OFF, discard the programs
+				response.hotelLoyaltyProgram = response.use_hlp ? response.hotelLoyaltyProgram : [];
+				response.frequentFlyerProgram = response.use_ffp ? response.frequentFlyerProgram : [];
+
 				// Check the existing loyalty programs in the guest card
 				if (response.hotelLoyaltyProgram.length > 0 || response.frequentFlyerProgram.length > 0) {
-					$scope.existingLoyaltyPgms = response.hotelLoyaltyProgram.concat(response.frequentFlyerProgram);
+					$scope.existingLoyaltyPgms = response.frequentFlyerProgram.concat(response.hotelLoyaltyProgram);
 				}
+
+				$scope.existingLoyalty = _.find($scope.existingLoyaltyPgms, function(loyalty) {
+					return response.selected_loyalty === loyalty.id;
+				});
+				$scope.loyaltyMode = $scope.existingLoyalty ? 'EXISTING_LOYALTY' : 'SELECT_LOYALTY';
 			};
 			var onFailureResponse = function() {
 				$scope.loyaltyMode = 'SELECT_LOYALTY';
@@ -42,12 +52,17 @@ sntZestStation.controller('zsCheckinLoyaltyCtrl', [
 
 			$scope.callAPI(zsCheckinLoyaltySrv.fetchUserMemberships, {
 				params: {
-					userId: userId
+					user_id: userId,
+					reservation_id: reservationId
 				},
 				'successCallBack': onSuccessResponse,
 				'failureCallBack': onFailureResponse
 			});
 		});
+
+		$scope.selectNewLoyalty = function() {
+			$scope.loyaltyMode = 'SELECT_LOYALTY';
+		};
 
 		$scope.skipLoyalties = function() {
 			navigateToNextScreen();

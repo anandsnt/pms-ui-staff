@@ -1,9 +1,9 @@
 sntZestStation.service('zsCheckinLoyaltySrv', ['zsBaseWebSrv2', function (zsBaseWebSrv2) {
 
     this.fetchUserMemberships = function (params) {
-        var url = '/staff/user_memberships.json?user_id=' + params.userId;
+        var url = '/staff/user_memberships.json';
 
-        return zsBaseWebSrv2.getJSON(url);
+        return zsBaseWebSrv2.getJSON(url, params);
     };
 
     this.setLoyaltyForReservation = function (params) {

@@ -703,6 +703,8 @@
    "CC_OPTIONS_HEADER": "Proceed or add new credit card",
    "ADD_NEW_CREDIT_CARD": "Add new Credit card",
 
+   "LOYALTY_ALREADY_PRESENT": "A Loyalty is already present",
+   "PROCEED_WITH_EXISTING_LOYALTY": "Proceed with existing Loyalty",
    "SELECT_LOYALTY_PROGRAM": "Select Loyalty Program",
    "NUMBER": "Number",
    "AIR_LINE_TYPE": "Airline / Type",

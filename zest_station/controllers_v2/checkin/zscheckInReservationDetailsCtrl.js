@@ -433,7 +433,9 @@ sntZestStation.controller('zsCheckInReservationDetailsCtrl', [
         };
 
         var nextPageModeActions = function() {
-            if ($scope.zestStationData.add_loyalty_pgms && $scope.mode !== 'LOYALTY_PROGRAMS') {
+            if ($scope.zestStationData.add_loyalty_pgms &&
+                $scope.mode !== 'LOYALTY_PROGRAMS' &&
+                ($scope.selectedReservation.reservation_details.loyalty_level.use_ffp || $scope.selectedReservation.reservation_details.loyalty_level.use_hlp)) {
                 $scope.mode = 'LOYALTY_PROGRAMS';
                 $scope.$broadcast('FETCH_USER_MEMBERSHIPS');
             } else if (!$scope.zestStationData.kiosk_display_terms_and_condition) {
