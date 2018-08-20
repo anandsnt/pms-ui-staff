@@ -1,11 +1,11 @@
-
 sntRover.controller('RVCompanyCardActivityLogCtrl',
 	['$scope',
 	'$rootScope',
 	'$stateParams',
 	'$timeout',
 	'RVCompanyCardActivityLogSrv',
-	function($scope, $rootScope, $stateParams, $timeout, RVCompanyCardActivityLogSrv ) {
+	'ngDialog',
+	function($scope, $rootScope, $stateParams, $timeout, RVCompanyCardActivityLogSrv, ngDialog ) {
     
     BaseCtrl.call(this, $scope);
     var that = this;
@@ -26,13 +26,18 @@ sntRover.controller('RVCompanyCardActivityLogCtrl',
             page: 1,
             sortField: 'DATE',
             sortOrder: 'asc',
-            accountId: ''
+            accountId: ( typeof $scope.contactInformation === 'undefined' ) ? $stateParams.id : $scope.contactInformation.id
         };
 
         $scope.activityLogFilter = {
 			user: '',
 			date: 'asc',
-			action: ''
+			action: '',
+			actionsList: [],
+			selectedAction: '',
+			fromDate: $rootScope.businessDate,
+			toDate: $rootScope.businessDate,
+			query: ''
         };
 
         // Pagination options for Activity Log
@@ -45,6 +50,27 @@ sntRover.controller('RVCompanyCardActivityLogCtrl',
         // Setting up scroller with refresh options.
         $scope.setScroller('rvCompanyCardActivityLogScroll', {});
         refreshScroll();
+    };
+
+    /*
+     *	Fetch Action filter data
+     *	@return {undefined}
+     */
+    that.fetchFilterData = function() {
+
+		var dataToSend = {
+			params: {
+				'id': $scope.activityLogObj.accountId
+			},
+			successCallBack: function( data ) {
+				$scope.activityLogFilter.actionsList = data.results;
+			},
+			failureCallBack: function( errorMessage ) {
+				$scope.errorMessage = errorMessage;
+			}
+		};
+
+		$scope.callAPI(RVCompanyCardActivityLogSrv.fetchFilterData, dataToSend);
     };
 
 	// -------/ PAGINATION LOGIC /----------- //
@@ -61,6 +87,7 @@ sntRover.controller('RVCompanyCardActivityLogCtrl',
         }
         return showPagination;
     };
+
 	/*
 	 * Fetch transactions APIs
 	 * @param  { String } [Page No to API]
@@ -76,7 +103,11 @@ sntRover.controller('RVCompanyCardActivityLogCtrl',
 				'per_page': $scope.activityLogObj.perPage,
 				'sort_field': $scope.activityLogObj.sortField,
 				'sort_order': $scope.activityLogObj.sortOrder,
-				'id': $scope.activityLogObj.accountId
+				'id': $scope.activityLogObj.accountId,
+                'action_type_id': $scope.activityLogFilter.selectedAction,
+                'from_date': $scope.activityLogFilter.fromDate,
+                'to_date': $scope.activityLogFilter.toDate,
+                'query': $scope.activityLogFilter.query
 			},
 			successCallBack: function( data ) {
 				$scope.activityLogObj.response = data;
@@ -149,6 +180,7 @@ sntRover.controller('RVCompanyCardActivityLogCtrl',
 	// Refresh the scroller when the tab is active.
     var listener =  $scope.$on('activityLogTabActive', function() {
 		that.loadAPIData();
+		that.fetchFilterData();
     });
 
 	/**
@@ -165,8 +197,53 @@ sntRover.controller('RVCompanyCardActivityLogCtrl',
         return isOldValue;
     };
 
+	/*
+	 * 	Show calendar popup.
+	 *	@param {string} [clicked FROM/TO]
+	 *	@return {undefined}
+	 */
+	var popupCalendar = function(clickedOn) {
+		$scope.clickedOn = clickedOn;
+		ngDialog.open({
+			template: '/assets/partials/companyCard/rvCompanyCardContractsCalendar.html',
+			controller: 'RVCompanyCardActivityLogDatePickerController',
+			className: '',
+			scope: $scope
+		});
+	};
+
+	/* Handling different date picker clicks */
+	$scope.clickedFromDate = function() {
+		popupCalendar('FROM');
+	};
+	$scope.clickedToDate = function() {
+		popupCalendar('TO');
+	};
+
+	/*
+	 * 	Handle CLEAR DATES.
+	 *	@param {string} [clicked FROM/TO]
+	 *	@return {undefined}
+	 */
+	$scope.clearDate = function ( type ) {
+		if (type === 'FROM') {
+			$scope.activityLogFilter.fromDate = '';
+		}
+		else {
+			$scope.activityLogFilter.toDate = '';
+		}
+	};
+	// Handle CLEAR QUERY
+	$scope.clearQuery = function () {
+		$scope.activityLogFilter.query = '';
+	};
+
+	// Handle FILTER button click
+	$scope.clickedFilterButton = function() {
+		that.loadAPIData();
+	};
+
     init();
 
     $scope.$on('$destroy', listener);
-
 }]);
