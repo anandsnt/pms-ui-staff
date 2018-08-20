@@ -1060,7 +1060,7 @@ sntRover.controller('reservationDetailsController',
                         // CICO-44842 Show message when trying to overbook a suite reservation
                         $scope.restrictSuiteOverbooking = !response.data.is_room_type_available && response.data.is_suite_reservation;
                         $scope.isSuiteReservation = response.data.is_suite_reservation;
-                        $scope.routing_info = response.data.routing_info
+                        $scope.routing_info = response.data.routing_info;
 
 						ngDialog.open({
 							template: '/assets/partials/reservation/alerts/editDatesInStayCard.html',
@@ -1180,6 +1180,8 @@ sntRover.controller('reservationDetailsController',
 		};
 		/**
          * Shows pop up to remind update the billing info
+         *  @params none
+         * @returns void
          */
         $scope.showBillingInformationPrompt = function() {
             ngDialog.close();
@@ -1201,12 +1203,17 @@ sntRover.controller('reservationDetailsController',
                 'to_date': $filter('date')(tzIndependentDate($scope.editStore.departure), 'yyyy-MM-dd'),
                 'reservation_id': $scope.reservationData.reservation_card.reservation_id
             };
+
             $scope.callAPI(RVReservationSummarySrv.updateBillingInformation, {
                 params: postParams,
                 successCallBack: $scope.closeBillingInfoPopup
             });
         };
-
+        /**
+         * Handle click on staydate change confirm button
+         * @params none
+         * @returns void
+         */
         $scope.clickedOnStayDateChangeConfirmButton = function() {
             var routing_info = $scope.routing_info;
 
@@ -1217,6 +1224,11 @@ sntRover.controller('reservationDetailsController',
                 $scope.closeBillingInfoPopup();
             }
         };
+        /**
+         * Close the dailoge and proceed to change stay date process.
+         * @params none
+         * @returns void
+         */
         $scope.closeBillingInfoPopup = function() {
             ngDialog.close();
             $scope.changeStayDates();
