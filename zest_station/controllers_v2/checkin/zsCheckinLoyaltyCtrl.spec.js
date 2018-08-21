@@ -191,7 +191,7 @@ describe('zsCheckinLoyaltyCtrl', function() {
         });
         it('On clicking Next page with a 5 item per page, show 1 item in second page', function() {
             spyOn(zsGeneralSrv, 'proceesPaginationDetails').and.callThrough();
-            $scope.viewNextPage();
+            $scope.paginationAction($scope.pageData.disableNextButton, true);
             // flush timeout(s) for all code under test.
             $timeout.flush();
             // this will throw an exception if there are any pending timeouts.
@@ -202,7 +202,7 @@ describe('zsCheckinLoyaltyCtrl', function() {
         it('On clicking Previous page from second page of a total to 6 items, show 5 items in first page', function() {
             $scope.pageData.pageNumber = 2;
             spyOn(zsGeneralSrv, 'proceesPaginationDetails').and.callThrough();
-            $scope.viewPreviousPage();
+            $scope.paginationAction($scope.pageData.disablePreviousButton, false);
             // flush timeout(s) for all code under test.
             $timeout.flush();
             // this will throw an exception if there are any pending timeouts.
@@ -266,7 +266,7 @@ describe('zsCheckinLoyaltyCtrl', function() {
                 code: '222',
                 level: 'GOLD',
                 selectedLoyalty: {
-                    id: 123,
+                    id: 1974,
                     levels: []
                 }
             };

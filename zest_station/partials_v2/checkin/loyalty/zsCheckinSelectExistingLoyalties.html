@@ -21,7 +21,7 @@
             <p class="text" style="margin-right: 10px;">{{ 'LOYALTY_FOOTER' | translate:paginationTranslationData}}</p>
             <div class="button-group">
                 <!-- add 'disabled="disabled"' and .transparent if there is no previous page -->
-                 <button type="button" class="button only-icon" click-touch="viewPreviousPage()" ng-hide="pageData.disablePreviousButton">
+                 <button type="button" class="button only-icon" click-touch="paginationAction(pageData.disablePreviousButton, false)" ng-hide="pageData.disablePreviousButton">
                    <div ng-include="icons.url.left_arrow_icon"></div>
                 </button>
                 <!-- touchstart is not following ng-disable, so for now keeping two versions -->
@@ -29,7 +29,7 @@
                    <div ng-include="icons.url.left_arrow_icon"></div>
                 </button>
                 <!-- add 'disabled="disabled"' if there is no next page -->
-                <button type="button" class="button only-icon" click-touch="viewNextPage()" ng-hide="pageData.disableNextButton">
+                <button type="button" class="button only-icon" click-touch="paginationAction(pageData.disableNextButton, true)" ng-hide="pageData.disableNextButton">
                    <div ng-include="icons.url.right_arrow_icon"></div>
                 </button>
                 <!-- touchstart is not following ng-disable, so for now keeping two versions -->

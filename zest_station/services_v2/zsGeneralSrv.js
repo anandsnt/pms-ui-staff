@@ -650,9 +650,7 @@ sntZestStation.service('zsGeneralSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
         this.proceesPaginationDetails = function(array, itemsPerPage, pageNumber) {
             var pageStartingIndex,
                 pageEndingIndex,
-                viewableItems = [],
-                disableNextButton,
-                disablePreviousButton;
+                viewableItems = [];
 
             if (array.length <= itemsPerPage) {
                 // if 4 or less upgrades are available
@@ -678,9 +676,6 @@ sntZestStation.service('zsGeneralSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
                     }
                 }
             }
-            // enable/disable next previous
-            disableNextButton = pageEndingIndex === array.length;
-            disablePreviousButton = pageStartingIndex === 1;
 
             var pageData = {
                 disableNextButton: pageEndingIndex === array.length,
