@@ -273,9 +273,19 @@ sntRover.controller('RVReservationBaseSearchCtrl', [
 
             $vault.set('guestDetails', JSON.stringify(guestDetails));
 
-            if ($scope.reservationData.arrivalDate === '') {
+            // CICO-53784 - Populate the value from the state variable
+            if ($stateParams.selectedArrivalDate) {
+                $scope.reservationData.arrivalDate = $stateParams.selectedArrivalDate;
+            } else if ($scope.reservationData.arrivalDate === '') {
                 $scope.reservationData.arrivalDate = dateFilter($scope.otherData.businessDate, 'yyyy-MM-dd');
             }
+
+            // CICO-53784 - Populate the value from the state variable
+            if ( $stateParams.selectedRoomTypeId ) {
+                $scope.reservationData.tabs[0].roomTypeId = $stateParams.selectedRoomTypeId;
+                $scope.reservationData.rooms[0].roomTypeId = $stateParams.selectedRoomTypeId;
+            }
+
             if ($scope.reservationData.departureDate === '') {
                 $scope.setDepartureDate();
             }

@@ -41,7 +41,9 @@ angular.module('stayCardModule', [])
         $stateProvider.state('rover.reservation.search', {
             url: '/search',
             params: {
-                guestId: null
+                guestId: null,
+                selectedArrivalDate: null,
+                selectedRoomTypeId: null
             },
             templateUrl: '/assets/partials/reservation/rvBaseSearch.html',
             controller: 'RVReservationBaseSearchCtrl',
