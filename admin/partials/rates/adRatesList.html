@@ -32,7 +32,7 @@
 			<span class="count-entries">entries</span>
 
 			<div class="table-filters">
-				<div class="entry pull-left">
+				<div class="entry pull-left" ng-hide="searchTerm !== ''">
 					<label class="checkbox">
 						<span class="icon-form icon-checkbox" ng-class="{'checked': showInactiveRates}"></span>
 						<input type="checkbox" name="inactive" ng-click="toggleInactiveRates()"/>
