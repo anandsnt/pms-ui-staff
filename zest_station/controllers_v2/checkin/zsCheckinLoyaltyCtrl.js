@@ -8,6 +8,12 @@ sntZestStation.controller('zsCheckinLoyaltyCtrl', [
 
 		var userId = $scope.selectedReservation.guest_details[0].id;
 		var reservationId = $scope.selectedReservation.id;
+		var blankMembership = {
+			id: '',
+			code: '',
+			level: '',
+			selectedLoyalty: {}
+		};
 		var navigateToNextScreen = function() {
 			$scope.$emit('NAVIGATE_FROM_LOYALTY_SCREEN');
 		};
@@ -127,17 +133,9 @@ sntZestStation.controller('zsCheckinLoyaltyCtrl', [
 			$scope.loyaltyMode = 'ADD_NEW_LOYALTY';
 		};
 
-		var callAPIToSaveLoyality = function(userMembership, classType) {
-			var params = {
-				"user_id": userId,
-				"user_membership": {
-					"membership_card_number": userMembership.code,
-					"membership_class": classType,
-					"membership_type": userMembership.type,
-					"membership_level": userMembership.level
-				},
-				"reservation_id": reservationId
-			};
+		$scope.callAPIToSaveLoyality = function(userMembership, classType) {
+
+			var params = zsCheckinLoyaltySrv.generateAPIParams(userId, reservationId, userMembership, classType);
 
 			$scope.callAPI(zsCheckinLoyaltySrv.saveLoyaltyPgm, {
 				params: params,
@@ -159,11 +157,7 @@ sntZestStation.controller('zsCheckinLoyaltyCtrl', [
 
 		$scope.addFreaquentFlyerLoyalty = function() {
 			$scope.ffLoyalties = [];
-			$scope.ffLoyalty = {
-						id: '',
-						code: '',
-						level: ''
-					};
+			$scope.ffLoyalty = angular.copy(blankMembership);
 			$scope.callAPI(zsCheckinLoyaltySrv.getAvailableFreaquentFlyerLoyaltyPgms, {
 				params: {},
 				'successCallBack': function(response) {
@@ -173,21 +167,12 @@ sntZestStation.controller('zsCheckinLoyaltyCtrl', [
 			});
 		};
 
-		$scope.saveFFLoyalty = function() {
-			callAPIToSaveLoyality($scope.ffLoyalty, 'FFP');
-		};
-
 		/* ************** ADD NEW HOTEL LOYALITY **************************** */
 
 		$scope.addHotelLoyalty = function() {
 			$scope.hotelLoyalties = [];
 			$scope.selectedLoyalty = {};
-			$scope.hotelLoyalty = {
-				id: '',
-				code: '',
-				level: '',
-				selectedLoyalty: {}
-			};
+			$scope.hotelLoyalty = angular.copy(blankMembership);
 			$scope.callAPI(zsCheckinLoyaltySrv.getAvailableHotelLoyaltyPgms, {
 				params: {},
 				'successCallBack': function(response) {
@@ -203,10 +188,6 @@ sntZestStation.controller('zsCheckinLoyaltyCtrl', [
 			$scope.hotelLoyalty.selectedLoyalty = _.find($scope.hotelLoyalties, function(loyalty) {
 				return $scope.hotelLoyalty.id === loyalty.hl_value;
 			});
-		};
-
-		$scope.saveHotelLoyalty = function() {
-			callAPIToSaveLoyality($scope.hotelLoyalty, 'HLP');
 		};
 	}
 ]);

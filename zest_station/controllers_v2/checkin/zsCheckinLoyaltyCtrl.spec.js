@@ -254,7 +254,7 @@ describe('zsCheckinLoyaltyCtrl', function() {
                 id: '',
                 code: ''
             };
-            $scope.saveFFLoyalty();
+            $scope.callAPIToSaveLoyality($scope.ffLoyalty, 'FFP');
             $scope.$digest();
             expect(zsCheckinLoyaltySrv.saveLoyaltyPgm).toHaveBeenCalledWith(jasmine.any(Object));
         });
@@ -299,7 +299,7 @@ describe('zsCheckinLoyaltyCtrl', function() {
                 level: '',
                 selectedLoyalty: {}
             };
-            $scope.saveHotelLoyalty();
+            $scope.callAPIToSaveLoyality($scope.hotelLoyalty, 'HLP');
             $scope.$digest();
             expect(zsCheckinLoyaltySrv.saveLoyaltyPgm).toHaveBeenCalledWith(jasmine.any(Object));
         });
@@ -318,7 +318,7 @@ describe('zsCheckinLoyaltyCtrl', function() {
             level: '',
             selectedLoyalty: {}
         };
-        $scope.saveHotelLoyalty();
+        $scope.callAPIToSaveLoyality($scope.hotelLoyalty, 'HLP');
         $scope.$digest();
         expect($scope.loyaltyMode).toEqual('ADD_NEW_LOYALTY_FAILED');
         expect($scope.errorMessage).toEqual($filter('translate')('MEMBERSHIP_ALREADY_TAKEN'));
@@ -338,7 +338,7 @@ describe('zsCheckinLoyaltyCtrl', function() {
             level: '',
             selectedLoyalty: {}
         };
-        $scope.saveHotelLoyalty();
+        $scope.callAPIToSaveLoyality($scope.hotelLoyalty, 'HLP');
         $scope.$digest();
         expect($scope.loyaltyMode).toEqual('ADD_NEW_LOYALTY_FAILED');
         expect($scope.errorMessage).toEqual($filter('translate')('LOYALTY_GENERAL_ERROR'));

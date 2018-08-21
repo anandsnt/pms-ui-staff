@@ -17,7 +17,7 @@
                 <input type="text" placeholder="Enter Code" ng-model="hotelLoyalty.code" id="hotel-ly-code" ng-focus="showOnScreenKeyboard('hotel-ly-code','scroll-up')" click-touch="showOnScreenKeyboard('hotel-ly-code', 'scroll-up')" touch-press/>
             </div>
             <div class="entry action">
-                <button type="button" class="button" touch-press='saveHotelLoyalty()' translate>NEXT_BTN</button>
+                <button type="button" class="button" touch-press="callAPIToSaveLoyality(hotelLoyalty, 'HLP')" translate>NEXT_BTN</button>
             </div>
         </form>
     </div>

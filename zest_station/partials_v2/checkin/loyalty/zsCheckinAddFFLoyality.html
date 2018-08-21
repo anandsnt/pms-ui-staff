@@ -12,7 +12,7 @@
                 <input type="text" placeholder="Enter Code" ng-model="ffLoyalty.code" id="ff-ly-code" ng-focus="showOnScreenKeyboard('ff-ly-code', 'scroll-up')" click-touch="showOnScreenKeyboard('ff-ly-code', 'scroll-up')" touch-press/>
             </div>
             <div class="entry action">
-                <button type="button" class="button" touch-press='saveFFLoyalty()' translate>NEXT_BTN</button>
+                <button type="button" class="button" touch-press="callAPIToSaveLoyality(ffLoyalty, 'FFP')" translate>NEXT_BTN</button>
             </div>
         </form>
     </div>
