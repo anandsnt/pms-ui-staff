@@ -21,7 +21,7 @@
                     <select ng-model="contactInformation.address_details.country_id" ng-options="country.id as country.value for country in countries" >        
                        <option value="" translate>SELECT_COUNTRY</option>
                     </select>
-                </div>contactInformation.account_details
+                </div>
             </div>
 
             <rv-textbox value="contactInformation.address_details.phone" inputtype="tel" label="Phone" placeholder = "Enter Contact Phone" styleclass="margin" disabled="((account_type == 'COMPANY') ? isUpdateEnabled() : isUpdateEnabledForTravelAgent())"></rv-textbox>
