@@ -58,7 +58,13 @@ sntRover.controller('reservationDetailsController',
         };
 
 		$scope.taxExemptTypes = taxExempts.results;
-		$scope.defaultTaxExemptTypeId = (_.findWhere($scope.taxExemptTypes, {is_default: true})).id;
+		var defaultTaxExemptObject = _.findWhere($scope.taxExemptTypes, {is_default: true});
+
+		$scope.defaultTaxExemptTypeId = '';
+		if (typeof defaultTaxExemptObject !== "undefined") {
+			$scope.defaultTaxExemptTypeId = defaultTaxExemptObject.id;
+		} 
+		
 		// CICO-29343 - Set the flag to false initially and checking the View SR permission
 		$scope.hasSRViewPermission = rvPermissionSrv.getPermissionValue('VIEW_SUPPRESSED_RATE');
 		RVReservationStateService.setReservationFlag("isSRViewRateBtnClicked", false);
@@ -1054,6 +1060,7 @@ sntRover.controller('reservationDetailsController',
                         // CICO-44842 Show message when trying to overbook a suite reservation
                         $scope.restrictSuiteOverbooking = !response.data.is_room_type_available && response.data.is_suite_reservation;
                         $scope.isSuiteReservation = response.data.is_suite_reservation;
+                        $scope.routingInfo = response.data.routing_info;
 
 						ngDialog.open({
 							template: '/assets/partials/reservation/alerts/editDatesInStayCard.html',
@@ -1171,6 +1178,61 @@ sntRover.controller('reservationDetailsController',
 		$scope.selectAddon = function() {
 			alertAddonOverbooking(true);
 		};
+		/**
+         * Shows pop up to remind update the billing info
+         *  @params none
+         * @returns void
+         */
+        $scope.showBillingInformationPrompt = function() {
+            ngDialog.close();
+            ngDialog.open({
+                template: '/assets/partials/reservation/alerts/rvShowBillingInformationPopup.html',
+                className: '',
+                closeByDocument: false,
+                scope: $scope
+            });
+        };
+        /**
+         * Update the billing information when stay range changes if any billing info exist
+         * @params none
+         * @returns void
+         */
+        $scope.updateBillingInformation = function() {
+            var postParams = {
+                'from_date': $filter('date')(tzIndependentDate($scope.editStore.arrival), 'yyyy-MM-dd'),
+                'to_date': $filter('date')(tzIndependentDate($scope.editStore.departure), 'yyyy-MM-dd'),
+                'reservation_id': $scope.reservationData.reservation_card.reservation_id
+            };
+
+            $scope.callAPI(RVReservationSummarySrv.updateBillingInformation, {
+                params: postParams,
+                successCallBack: $scope.closeBillingInfoPopup
+            });
+        };
+        /**
+         * Handle click on staydate change confirm button
+         * @params none
+         * @returns void
+         */
+        $scope.clickedOnStayDateChangeConfirmButton = function() {
+            var routingInfo = $scope.routingInfo;
+
+            if (routingInfo.incoming_from_room || routingInfo.out_going_to_room
+                || routingInfo.out_going_to_comp_tra ) {
+                $scope.showBillingInformationPrompt();
+            } else {
+                $scope.closeBillingInfoPopup();
+            }
+        };
+        /**
+         * Close the dailoge and proceed to change stay date process.
+         * @params none
+         * @returns void
+         */
+        $scope.closeBillingInfoPopup = function() {
+            ngDialog.close();
+            $scope.changeStayDates();
+        };
 
 		$scope.changeStayDates = function(flags) {
 

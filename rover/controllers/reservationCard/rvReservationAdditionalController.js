@@ -10,9 +10,8 @@ sntRover.controller('rvReservationAdditionalController', ['$rootScope', '$scope'
 		};
 		$scope.isEmptyObject = isEmptyObject;
 
-		$scope.hasPermissionForCommissionUpdate = function() {
-			return rvPermissionSrv.getPermissionValue('UPDATE_COMMISSION');
-		};
+        $scope.hasPermissionToEditCommission = rvPermissionSrv.getPermissionValue('UPDATE_COMMISSION') &&
+            $scope.reservationData.reservation_card.reservation_status !== 'CHECKEDOUT';
 
 		$scope.isSegmentAutoComputed = function() {
 			var currentSegment = $scope.reservationParentData.demographics.segment,
@@ -129,7 +128,9 @@ sntRover.controller('rvReservationAdditionalController', ['$rootScope', '$scope'
 		 */
 		$scope.toggleTaxExempt = function() {
 			$scope.additionalDetails.isTaxExemptEnabled = !$scope.additionalDetails.isTaxExemptEnabled;
-			$scope.updateTaxExemptData();
+			if (($scope.additionalDetails.isTaxExemptEnabled && $scope.defaultTaxExemptTypeId !== '') || !$scope.additionalDetails.isTaxExemptEnabled) {
+				$scope.updateTaxExemptData();
+			}			
 		};
 
 		/*
@@ -159,10 +160,6 @@ sntRover.controller('rvReservationAdditionalController', ['$rootScope', '$scope'
             };
 
             $scope.callAPI(RVReservationSummarySrv.updateCommission, options);
-        };
-
-        $scope.hasPermissionToEditCommission = function() {
-            return rvPermissionSrv.getPermissionValue('UPDATE_COMMISSION') && $scope.reservationData.reservation_card.reservation_status !== 'CHECKEDOUT';
         };
 
 		$rootScope.$on('UPDATERESERVATIONTYPE', function(e, data, paymentId ) {
