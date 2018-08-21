@@ -94,14 +94,7 @@ sntZestStation.controller('zsCheckinLoyaltyCtrl', [
 				$scope.setLoyaltyForReservation($scope.existingLoyaltyPgms[0].id);
 			} else {
 				$scope.loyaltyMode = 'SELECT_FROM_MULTIPLE_LOYALTIES';
-				$scope.pageData = {
-					disableNextButton: false,
-					disablePreviousButton: false,
-					pageStartingIndex: 1,
-					pageEndingIndex: '',
-					viewableItems: [],
-					pageNumber: 1
-				};
+				$scope.pageData = zsGeneralSrv.retrievePaginationStartingData();
 				setPageNumberDetails();
 			}
 		};

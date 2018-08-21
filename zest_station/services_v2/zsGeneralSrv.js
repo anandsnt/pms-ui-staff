@@ -689,5 +689,16 @@ sntZestStation.service('zsGeneralSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
             return pageData;
         };
 
+        this.retrievePaginationStartingData = function() {
+            return {
+                disableNextButton: false,
+                disablePreviousButton: false,
+                pageStartingIndex: 1,
+                pageEndingIndex: '',
+                viewableItems: [],
+                pageNumber: 1
+            }
+        };
+
     }
 ]);
