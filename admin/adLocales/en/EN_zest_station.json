@@ -52,6 +52,7 @@
 "CHECKOUT":"Check Out",
 "CHECKIN":"Check In",
 "REG_CARD_TEXT":"Registration Card Text",
+"CUSTOM_REG_CARD_EMAIL_SUBJECT": "Custom Registration Subject",
 "CUSTOM_REG_CARD_HEADING": "Custom Registration Card Heading text",
 "REG_CARD":"Registration Card",
 "ON_SCREEN_ROOM_NUMBER":"On-Screen Room Number",
