@@ -1,0 +1,19 @@
+<section id="main" role="main">
+    <div id="content">
+        <h1 data-ng-bind-html="getTagValue('ENTER_FREQUENT_FLYER_PROGRAM_DETAILS')" editable-text="ENTER_FREQUENT_FLYER_PROGRAM_DETAILS">
+        </h1>
+        <form method="post" class="form short">
+            <div class="entry select">
+                <select id="showing-structure" ng-options="loyalty.ff_value as loyalty.ff_description for loyalty in ffLoyalties" ng-model="ffLoyalty.id">
+                    <option value="" selected translate>SELECT_AIRLINE</option>
+                </select>
+            </div>
+            <div class="entry input">
+                <input type="text" placeholder="Enter Code" ng-model="ffLoyalty.code" id="ff-ly-code" ng-focus="showOnScreenKeyboard('ff-ly-code', 'scroll-up')" click-touch="showOnScreenKeyboard('ff-ly-code', 'scroll-up')" touch-press/>
+            </div>
+            <div class="entry action">
+                <button type="button" class="button" touch-press="callAPIToSaveLoyality(ffLoyalty, 'FFP')" translate>NEXT_BTN</button>
+            </div>
+        </form>
+    </div>
+</section>
