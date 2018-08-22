@@ -136,7 +136,7 @@ sntZestStation.controller('zsCheckinLoyaltyCtrl', [
 		$scope.addNewLoyalty = function() {
 			if (isHlpActive && isFfpActive) {
 				$scope.loyaltyMode = 'ADD_NEW_LOYALTY';
-			} else if(isHlpActive) {
+			} else if (isHlpActive) {
 				$scope.addHotelLoyalty();
 			} else {
 				$scope.addFreaquentFlyerLoyalty();
