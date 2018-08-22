@@ -14,6 +14,8 @@ sntZestStation.controller('zsCheckinLoyaltyCtrl', [
 			level: '',
 			selectedLoyalty: {}
 		};
+		var isHlpActive = false;
+		var isFfpActive = false;
 		var navigateToNextScreen = function() {
 			$scope.$emit('NAVIGATE_FROM_LOYALTY_SCREEN');
 		};
@@ -30,7 +32,7 @@ sntZestStation.controller('zsCheckinLoyaltyCtrl', [
 				$scope.$emit('CHANGE_MODE_TO_RESERVATION_DETAILS');
 			} else if ($scope.loyaltyMode === 'SELECT_LOYALTY') {
 				$scope.loyaltyMode = 'EXISTING_LOYALTY';
-			} else if ($scope.loyaltyMode === 'ADD_NEW_FF_LOYALTY' || $scope.loyaltyMode === 'ADD_HOTEL_LOYALTY') {
+			} else if (($scope.loyaltyMode === 'ADD_NEW_FF_LOYALTY' && isHlpActive) || ($scope.loyaltyMode === 'ADD_HOTEL_LOYALTY' && isFfpActive)) {
 				$scope.loyaltyMode = 'ADD_NEW_LOYALTY';
 			} else {
 				$scope.loyaltyMode = 'SELECT_LOYALTY';
@@ -43,6 +45,8 @@ sntZestStation.controller('zsCheckinLoyaltyCtrl', [
 			$scope.loyaltyMode = '';
 			$scope.existingLoyaltyPgms = [];
 			var onSuccessResponse = function(response) {
+				isHlpActive = response.use_hlp;
+				isFfpActive = response.use_ffp;
 				// if settings are turned OFF, discard the programs
 				response.hotelLoyaltyProgram = response.use_hlp ? response.hotelLoyaltyProgram : [];
 				response.frequentFlyerProgram = response.use_ffp ? response.frequentFlyerProgram : [];
@@ -130,7 +134,13 @@ sntZestStation.controller('zsCheckinLoyaltyCtrl', [
 		/* ************** ADD NEW LOYALITY **************************** */
 
 		$scope.addNewLoyalty = function() {
-			$scope.loyaltyMode = 'ADD_NEW_LOYALTY';
+			if (isHlpActive && isFfpActive) {
+				$scope.loyaltyMode = 'ADD_NEW_LOYALTY';
+			} else if(isHlpActive) {
+				$scope.addHotelLoyalty();
+			} else {
+				$scope.addFreaquentFlyerLoyalty();
+			}
 		};
 
 		$scope.callAPIToSaveLoyality = function(userMembership, classType) {
