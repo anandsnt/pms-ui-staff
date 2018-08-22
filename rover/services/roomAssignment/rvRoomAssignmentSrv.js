@@ -5,6 +5,12 @@ angular.module('sntRover').service('RVRoomAssignmentSrv', ['$q', 'RVBaseWebSrv',
 		var url =  '/staff/rooms/get_rooms';
 
 		RVBaseWebSrv.postJSON(url, param).then(function(data) {
+			var start = (param.page - 1) * param.per_page,
+			    end = start + param.per_page;
+
+			data.totalCount =  data.rooms.length;   
+			data.rooms = data.rooms.slice(start, end);
+
 			deferred.resolve(data);
 		}, function(data) {
 			deferred.reject(data);
@@ -55,6 +61,19 @@ angular.module('sntRover').service('RVRoomAssignmentSrv', ['$q', 'RVBaseWebSrv',
 		var url =  '/staff/reservation/room_inhouse_move';
 
 		rvBaseWebSrvV2.getJSON(url, param).then(function(data) {
+			deferred.resolve(data);
+		}, function(data) {
+			deferred.reject(data);
+		});
+		return deferred.promise;
+
+	};
+	// Search rooms based on the query string
+	this.searchRooms = function( param ) {
+		var deferred = $q.defer();
+		var url =  '/staff/rooms/get_rooms';
+
+		RVBaseWebSrv.postJSON(url, param).then(function(data) {	
 			deferred.resolve(data);
 		}, function(data) {
 			deferred.reject(data);
