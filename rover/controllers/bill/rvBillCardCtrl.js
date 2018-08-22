@@ -37,7 +37,7 @@ sntRover.controller('RVbillCardController',
 	BaseCtrl.call(this, $scope);
 	var that = this,
 		DEFAULT_BILL_LAYOUT = 1,
-		DEGAULT_LOCALE = 'en';
+		DEFAULT_LOCALE = 'en';
 
 
 	// set a back button on header
@@ -2217,7 +2217,7 @@ sntRover.controller('RVbillCardController',
 	var getDefaultPrintParams = function() {
 		var printParams = {};
 			printParams.bill_layout = DEFAULT_BILL_LAYOUT;
-			printParams.locale = DEGAULT_LOCALE;
+			printParams.locale = DEFAULT_LOCALE;
 			printParams.reservation_id = $scope.reservationBillData.reservation_id;
 			printParams.bill_number = $scope.currentActiveBill + 1;
 		return printParams;
