@@ -59,7 +59,8 @@ sntZestStation.controller('zsThemeActionsCtrl', [
                     success: iconBasePath + '/success.svg',
                     user_with_id: iconBasePath + '/user-id.svg',
                     user_without_id: iconBasePath + '/user.svg',
-                    location: iconBasePath + '/location.svg'
+                    location: iconBasePath + '/location.svg',
+                    loyalty: iconBasePath + '/loyalty.svg'
                 }
             };
 
