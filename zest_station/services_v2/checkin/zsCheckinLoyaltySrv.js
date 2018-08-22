@@ -33,7 +33,8 @@ sntZestStation.service('zsCheckinLoyaltySrv', ['zsBaseWebSrv2', function (zsBase
                 "membership_type": userMembership.id,
                 "membership_level": userMembership.level
             },
-            "reservation_id": reservationId
+            "reservation_id": reservationId,
+            "application": "KIOSK"
         };
     };
 
