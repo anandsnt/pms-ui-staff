@@ -2216,13 +2216,15 @@ sntRover.controller('RVbillCardController',
 	*/
 	var getDefaultPrintParams = function() {
 		var printParams = {};
+		
 			printParams.bill_layout = DEFAULT_BILL_LAYOUT;
 			printParams.locale = DEFAULT_LOCALE;
 			printParams.reservation_id = $scope.reservationBillData.reservation_id;
 			printParams.bill_number = $scope.currentActiveBill + 1;
-			
+
 		return printParams;
-	}
+	};
+
 	// To handle review button click
 	$scope.clickedReviewButton = function(index) {
 		// To check for ar account details in case of direct bills
