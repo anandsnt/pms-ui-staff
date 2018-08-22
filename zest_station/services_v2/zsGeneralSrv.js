@@ -697,7 +697,7 @@ sntZestStation.service('zsGeneralSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
                 pageEndingIndex: '',
                 viewableItems: [],
                 pageNumber: 1
-            }
+            };
         };
 
     }
