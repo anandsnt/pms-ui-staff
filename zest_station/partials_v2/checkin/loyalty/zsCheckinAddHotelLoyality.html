@@ -1,0 +1,24 @@
+<section id="main" role="main">
+    <div id="content">
+        <h1 data-ng-bind-html="getTagValue('ENTER_HOTEL_LOYALTY_PROGRAM')" editable-text="ENTER_HOTEL_LOYALTY_PROGRAM">
+        </h1>
+        <form method="post" class="form short">
+            <div class="entry select">
+                <select  ng-options="loyalty.hl_value as loyalty.hl_description for loyalty in hotelLoyalties" ng-model="hotelLoyalty.id" ng-change="hotelLoyaltyChanged()">
+                    <option value="" selected translate>SELECT_TYPE</option>
+                </select>
+            </div>
+            <div class="entry select" ng-show="hotelLoyalty.selectedLoyalty.levels.length > 0">
+                <select ng-options="level.membership_level as level.membership_level for level in hotelLoyalty.selectedLoyalty.levels" ng-model="hotelLoyalty.level">
+                    <option value="" selected translate>SELECT_LEVEL</option>
+                </select>
+            </div>
+            <div class="entry input">
+                <input type="text" placeholder="Enter Code" ng-model="hotelLoyalty.code" id="hotel-ly-code" ng-focus="showOnScreenKeyboard('hotel-ly-code','scroll-up')" click-touch="showOnScreenKeyboard('hotel-ly-code', 'scroll-up')" touch-press/>
+            </div>
+            <div class="entry action">
+                <button type="button" class="button" touch-press="callAPIToSaveLoyality(hotelLoyalty, 'HLP')" translate>NEXT_BTN</button>
+            </div>
+        </form>
+    </div>
+</section>
