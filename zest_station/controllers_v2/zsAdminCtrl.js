@@ -53,6 +53,8 @@ sntZestStation.controller('zsAdminCtrl', [
 
                     if (str[1]) {
                         name = str[1];
+                    } else {
+                        name = str[0];
                     }
                 } else {
                     name = 'Select';
