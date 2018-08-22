@@ -50,12 +50,7 @@ sntZestStation.controller('zsAdminCtrl', [
             if (name && typeof name === typeof 'str') {
                 if (name.length > 1) {
                     var str = name.split('ipp://');
-
-                    if (str[1]) {
-                        name = str[1];
-                    } else {
-                        name = str[0];
-                    }
+                    name = str[1] ? name = str[1] : str[0];
                 } else {
                     name = 'Select';
                 }
