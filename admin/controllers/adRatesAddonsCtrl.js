@@ -356,6 +356,8 @@ admin.controller('ADRatesAddonsCtrl', [
                 post_type_id: $scope.singleAddon.post_type_id,
                 rate_code_only: $scope.singleAddon.rate_code_only,
                 manual_posting: $scope.singleAddon.manual_posting,
+                is_common_area: $scope.singleAddon.is_common_area,
+                pass_level_no: $scope.singleAddon.pass_level_no,
                 forecast_for_next_day: $scope.singleAddon.forecast_for_next_day,
                 charge_full_weeks_only: (($scope.singleAddon.post_type_id === 3) && $scope.singleAddon.is_reservation_only && $scope.singleAddon.charge_full_weeks_only) ? true : false,
                 allow_rate_exclusions: $scope.singleAddon.allow_rate_exclusions,
