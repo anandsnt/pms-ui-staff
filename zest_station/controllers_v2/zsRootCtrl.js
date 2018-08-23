@@ -1342,7 +1342,6 @@ sntZestStation.controller('zsRootCtrl', [
         var cancelEmvActions = function() {
             if (($scope.zestStationData.paymentGateway === 'MLI' && $scope.zestStationData.mliEmvEnabled) ||
                 $scope.zestStationData.paymentGateway === 'sixpayments') {
-                zsPaymentSrv.emvActionStopped = true;
                 var options = {
                     params: {
                         'hotel_id': $scope.zestStationData.hotel_id
