@@ -30,6 +30,11 @@ sntZestStation.controller('zsCheckinCCSwipeCtrl', [
          *  -> switch from invoke to callAPI
          *  
          */
+        
+        $scope.clickedOnCloseButton = function () {
+            $scope.$emit('CANCEL_EMV_ACTIONS');
+            $state.go('zest_station.home');
+        };
 
         $scope.continue = function() {
             // this is a debugging function, user will touch the icon to skip payment screen,
@@ -129,7 +134,7 @@ sntZestStation.controller('zsCheckinCCSwipeCtrl', [
                     $scope.callAPI(zsPaymentSrv.submitDeposit, {
                         params: params,
                         'successCallBack': successSixPayDeposit,
-                        'failureCallBack': onSwipeError,
+                        'failureCallBack': emvFailureActions,
                         'loader': 'none'
                     });
                     // $scope.invokeApi(zsPaymentSrv.submitDeposit, params, successSixPayDeposit, onSwipeError, "NONE"); 
@@ -234,7 +239,7 @@ sntZestStation.controller('zsCheckinCCSwipeCtrl', [
                             'amount': authCCAmount
                         },
                         'successCallBack': goToCardSign,
-                        'failureCallBack': goToSwipeError
+                        'failureCallBack': emvFailureActions
                     });
                 } else {
                     goToCardSign();
@@ -557,7 +562,7 @@ sntZestStation.controller('zsCheckinCCSwipeCtrl', [
                 $scope.callAPI(zsCheckinSrv.authorizeCC, {
                     params: data,
                     'successCallBack': onSuccessCaptureAuth,
-                    'failureCallBack': onSwipeError,
+                    'failureCallBack': emvFailureActions,
                     'loader': 'none'
                 });
             }
@@ -583,6 +588,10 @@ sntZestStation.controller('zsCheckinCCSwipeCtrl', [
                 goToSwipeError();
             }
 
+        };
+        var emvFailureActions = function () {
+            $scope.$emit('CANCEL_EMV_ACTIONS');
+            onSwipeError();
         };
 
         var startEmvTerminalActions = function() {

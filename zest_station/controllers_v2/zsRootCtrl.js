@@ -1337,6 +1337,18 @@ sntZestStation.controller('zsRootCtrl', [
         }
         storage.setItem(refreshedKey, 'false');
 
+        var cancelEmvActions = function() {
+            if (($scope.zestStationData.paymentGateway === 'MLI' && $scope.zestStationData.mliEmvEnabled) ||
+                $scope.zestStationData.paymentGateway === 'sixpayments') {
+                var options = {
+                    params: {},
+                    'loader': 'none'
+                };
+
+                $scope.callAPI(zsGeneralSrv.cancelEMVActions, options);
+            }
+        };
+        $scope.$on('CANCEL_EMV_ACTIONS', cancelEmvActions);
 		/**
 		 * [setWorkStationForAdmin description]
 		 *  The workstation, status and oos reason are stored in
@@ -1401,6 +1413,7 @@ sntZestStation.controller('zsRootCtrl', [
                 } else {
                     return;
                 }
+                cancelEmvActions();
             }
         };
 		/**

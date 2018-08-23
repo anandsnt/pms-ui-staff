@@ -647,5 +647,11 @@ sntZestStation.service('zsGeneralSrv', ['$http', '$q', 'zsBaseWebSrv', 'zsBaseWe
             return deferred.promise;
         };
 
+        this.cancelEMVActions = function() {
+            var url = '/sample_json/zestweb_v2/ext_checkin_verfication.json';
+
+            return zsBaseWebSrv.getJSON(url);
+        };
+
     }
 ]);
