@@ -31,10 +31,9 @@ sntZestStation.controller('zsCheckinCCSwipeCtrl', [
          *  
          */
         
-        $scope.clickedOnCloseButton = function () {
+        $scope.$on('CLICKED_ON_CANCEL_BUTTON', function () {
             $scope.$emit('CANCEL_EMV_ACTIONS');
-            $state.go('zest_station.home');
-        };
+        });
 
         $scope.continue = function() {
             // this is a debugging function, user will touch the icon to skip payment screen,

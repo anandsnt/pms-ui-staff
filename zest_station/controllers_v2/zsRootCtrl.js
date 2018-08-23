@@ -173,6 +173,7 @@ sntZestStation.controller('zsRootCtrl', [
             var currentState = $state.current.name;
 
             $scope.trackEvent(currentState, 'clicked_close_button');
+            $scope.$broadcast('CLICKED_ON_CANCEL_BUTTON');
             $state.go('zest_station.home');
         };
         $scope.talkToStaff = function() {
@@ -1341,8 +1342,13 @@ sntZestStation.controller('zsRootCtrl', [
             if (($scope.zestStationData.paymentGateway === 'MLI' && $scope.zestStationData.mliEmvEnabled) ||
                 $scope.zestStationData.paymentGateway === 'sixpayments') {
                 var options = {
-                    params: {},
-                    'loader': 'none'
+                    params: {
+                        'hotel_id': $scope.zestStationData.hotel_id
+                    },
+                    'loader': 'none',
+                    'failureCallBack': function() {
+                        // do nothing
+                    }
                 };
 
                 $scope.callAPI(zsGeneralSrv.cancelEMVActions, options);
