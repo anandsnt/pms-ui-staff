@@ -71,9 +71,22 @@ angular.module('sntRover').service('RVRoomAssignmentSrv', ['$q', 'RVBaseWebSrv',
 	// Search rooms based on the query string
 	this.searchRooms = function( param ) {
 		var deferred = $q.defer();
-		var url =  '/staff/rooms/get_rooms';
+		var url =  'api/rooms/search';
 
 		RVBaseWebSrv.postJSON(url, param).then(function(data) {	
+			deferred.resolve(data);
+		}, function(data) {
+			deferred.reject(data);
+		});
+		return deferred.promise;
+
+	};
+	// Get rooms belonging to a given room type
+	this.getRoomsByRoomType = function(param) {
+		var deferred = $q.defer();
+		var url =  '/api/rooms/retrieve_available_rooms';
+
+		RVBaseWebSrv.postJSON(url, param).then(function(data) {		
 			deferred.resolve(data);
 		}, function(data) {
 			deferred.reject(data);
