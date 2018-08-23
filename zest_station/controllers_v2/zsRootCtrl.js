@@ -345,9 +345,10 @@ sntZestStation.controller('zsRootCtrl', [
 
 		// check if navigator is iPad
         var ipadOrIphone = function() {
-            if ((navigator.userAgent.match(/iPad/i) !== null || navigator.userAgent.match(/iPhone/i) !== null) !== true) {
+            if ((navigator.userAgent.match(/iPad/i) !== null || navigator.userAgent.match(/iPhone/i) !== null ||
+                navigator.userAgent.match(/Android/i) !== null) !== true) {
                 return false;
-            } else if (navigator.userAgent.match(/iPad/i) || navigator.userAgent.match(/iPhone/i)) {
+            } else if (navigator.userAgent.match(/iPad/i) || navigator.userAgent.match(/iPhone/i) || navigator.userAgent.match(/Android/i)) {
                 return true;
             }
         };
@@ -885,11 +886,17 @@ sntZestStation.controller('zsRootCtrl', [
 
                 if (idleTimerEnabled === 'true' && !inAnIgnoreState && !currentlyDispensingKey) {
                     userInActivityTimeInSeconds = userInActivityTimeInSeconds + 1;
+
+                    var creditCardUsingStates = ['zest_station.checkInSignature',
+                        'zest_station.checkInCardSwipe',
+                        'zest_station.payment',
+                        'zest_station.pickUpKeyReservationSearch'
+                    ];
+
 					// when user activity is not recorded for more than idle_timer.prompt
 					// time set in admin, display inactivity popup
                     if (userInActivityTimeInSeconds >= idlePopupTime) {
-                        if (currentState === 'zest_station.checkInSignature' || currentState === 'zest_station.checkInCardSwipe' ||
-                            currentState === 'zest_station.payment') {
+                        if (creditCardUsingStates.indexOf(currentState) > -1) {
                             $scope.$broadcast('USER_ACTIVITY_TIMEOUT');
                         } else {
                             // opens timeout popup w/ ng-class/css

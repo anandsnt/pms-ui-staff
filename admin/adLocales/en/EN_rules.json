@@ -25,6 +25,8 @@
     "RATE_ONLY":"Rate Only",
     "RESERVATION_ONLY":"Reservation Only",
     "MANUAL_POSTING":"Manual Posting",
+    "COMMON_AREA": "Common Area",
+    "PASS_LEVEL_NO": "Pass Level Number",
     "FORECAST_FOR_NEXT_DAY":"Forecast for Next Day",
     "CHARGE_FULL_WEEKS_ONLY":"Charge full weeks only",
     "EDIT":"Edit",

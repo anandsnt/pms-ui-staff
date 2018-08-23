@@ -159,6 +159,20 @@ angular.module('sntRover').service('RVReservationSummarySrv', ['$q', 'rvBaseWebS
             });
             return deferred.promise;
         };
+        /**
+         * Update Billing info
+         */
+        this.updateBillingInformation = function (params) {
+            var deferred = $q.defer(),
+                url = "api/bill_routings/update_dates";
+
+            rvBaseWebSrvV2.postJSON(url, params).then(function (data) {
+                deferred.resolve(data);
+            }, function (data) {
+                deferred.reject(data);
+            });
+            return deferred.promise;
+        };
 
         /**
          * Sends the confirmation email
