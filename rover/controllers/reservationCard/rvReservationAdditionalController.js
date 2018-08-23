@@ -95,14 +95,14 @@ sntRover.controller('rvReservationAdditionalController', ['$rootScope', '$scope'
 					"id": $scope.reservationParentData.reservationId,
 					"tax_exempt": $scope.additionalDetails.isTaxExemptEnabled
 				},				
-				successCallBackOfUpdate = function(data) {
-					$scope.errorMessage = data;
+				successCallBackOfUpdate = function(response) {
 					if (!$scope.additionalDetails.isTaxExemptEnabled) {
 						$scope.additionalDetails.taxExemptType = '';
 					}
+					$scope.reservationData.reservation_card.balance_amount = response.data.current_balance;
 				},
-				failureCallBackOfUpdate = function(errorMessage) {
-					$scope.errorMessage = errorMessage;
+				failureCallBackOfUpdate = function(response) {
+					$scope.errorMessage = response.errors;
 				};
 
 			if ($scope.additionalDetails.isTaxExemptEnabled) {
