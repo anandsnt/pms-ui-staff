@@ -8,13 +8,14 @@
 sntZestStation.controller('zsRootCtrl', [
     '$scope',
     'zsEventConstants',
-    '$state', 'zsGeneralSrv', '$rootScope', 'ngDialog', '$sce',
+    '$state', 'zsGeneralSrv', 'zsPaymentSrv', '$rootScope', 'ngDialog', '$sce',
     'zsUtilitySrv', '$translate', 'zsHotelDetailsSrv', 'cssMappings', 'hotelTranslations',
     'zestStationSettings', '$timeout', 'zsModeConstants', 'hotelTimeData', 'hotelLanguages', '$filter', '$log', '$window', 'languages', 'defaultTranslations', '$controller',
     function($scope,
 		zsEventConstants,
 		$state,
 		zsGeneralSrv,
+        zsPaymentSrv,
 		$rootScope,
 		ngDialog,
 		$sce,
@@ -1341,6 +1342,7 @@ sntZestStation.controller('zsRootCtrl', [
         var cancelEmvActions = function() {
             if (($scope.zestStationData.paymentGateway === 'MLI' && $scope.zestStationData.mliEmvEnabled) ||
                 $scope.zestStationData.paymentGateway === 'sixpayments') {
+                zsPaymentSrv.emvActionStopped = true;
                 var options = {
                     params: {
                         'hotel_id': $scope.zestStationData.hotel_id
@@ -1351,7 +1353,7 @@ sntZestStation.controller('zsRootCtrl', [
                     }
                 };
 
-                $scope.callAPI(zsGeneralSrv.cancelEMVActions, options);
+                $scope.callAPI(zsPaymentSrv.cancelEMVActions, options);
             }
         };
         $scope.$on('CANCEL_EMV_ACTIONS', cancelEmvActions);

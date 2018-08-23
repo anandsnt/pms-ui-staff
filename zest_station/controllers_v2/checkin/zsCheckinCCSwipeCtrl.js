@@ -231,7 +231,7 @@ sntZestStation.controller('zsCheckinCCSwipeCtrl', [
                 // In deposit mode the card is just saved now.
                 // Will add the authorization related to deposit flow later - CICO-54295
                 if ($stateParams.mode !== 'DEPOSIT' && authAtCheckinRequired && parseInt(authCCAmount) > 0) {
-                    $scope.callAPI(zsCheckinSrv.authorizeCC, {
+                    $scope.callAPI(zsPaymentSrv.authorizeCC, {
                         params: {
                             'payment_method_id': response.id,
                             'reservation_id': $stateParams.reservation_id,
@@ -558,7 +558,7 @@ sntZestStation.controller('zsCheckinCCSwipeCtrl', [
                 });
 
             } else {
-                $scope.callAPI(zsCheckinSrv.authorizeCC, {
+                $scope.callAPI(zsPaymentSrv.authorizeCC, {
                     params: data,
                     'successCallBack': onSuccessCaptureAuth,
                     'failureCallBack': emvFailureActions,
